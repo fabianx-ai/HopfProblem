@@ -103,3 +103,24 @@ bytes, and 2 public theorem declarations**.  The receipt under
 `~/s6-notes/hopf/phase5/commit04-cyclic/` records the Lake and direct
 per-theorem axiom gates.  Comparator remains deferred to the one final
 accumulated-shortcuts run.
+
+## Real cusp equivalence through square-zero exchange
+
+`Hopf/Shortcuts.lean` now records the real scalar extension
+`dualCuspNReal` of the integral dual-cusp endomorphism, together with its
+coordinate formula and square-zero law.  `Hopf/LCP/LocalModels.lean`
+identifies the real cusp matrix with the corresponding
+`S6.SquareZeroExchange.exchange`, and defines `cuspRealEquiv` using the
+generic `exchangeEquiv`.  Its public application formula, zero, addition,
+negation, real-cast, complex-cast, and lattice-preservation interfaces are
+retained; the one direct homology consumer is routed through the retained
+application formula.
+
+This is an abstraction replacement, not a mathematical or source-size
+reduction.  Relative to the cyclic-average commit, the proof-source change is
+**+21 Lean lines, +1,323 bytes, and +4 public declaration commands**.  The
+receipt under `~/s6-notes/hopf/phase5/commit05-cusp-real/` records the full
+Lake build, sampled aggregate process-group RSS, and direct per-theorem axiom
+gates.  The RSS sample can double-count shared pages and can miss peaks between
+samples; it is not a cgroup or unique-memory measurement.  Comparator remains
+deferred to the one final accumulated-shortcuts run.

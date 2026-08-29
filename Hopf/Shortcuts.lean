@@ -32,4 +32,24 @@ theorem dualCuspN_square_zero : dualCuspN * dualCuspN = 0 := by
   rw [M₀_sub_one_mulVec, M₀_sub_one_mulVec]
   fin_cases i <;> rfl
 
+/-- The real scalar extension of the dual-cusp nilpotent. -/
+abbrev dualCuspNReal : Module.End ℝ (Fin 4 → ℝ) :=
+  Matrix.toLin' ((M₀ - 1).map (Int.castRingHom ℝ))
+
+/-- The scalar-extended dual-cusp operator has its integral coordinate formula. -/
+@[simp]
+theorem dualCuspNReal_apply (x : Fin 4 → ℝ) :
+    dualCuspNReal x = ![0, 0, x 1, -x 0] := by
+  ext i
+  fin_cases i <;>
+    simp [dualCuspNReal, M₀, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Matrix.one_apply]
+
+/-- The real scalar extension remains square-zero. -/
+theorem dualCuspNReal_square_zero : dualCuspNReal * dualCuspNReal = 0 := by
+  apply LinearMap.ext
+  intro x
+  rw [Module.End.mul_apply, dualCuspNReal_apply, dualCuspNReal_apply]
+  ext i
+  fin_cases i <;> simp
+
 end Mathoverflow1973

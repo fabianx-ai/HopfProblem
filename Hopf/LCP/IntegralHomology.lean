@@ -21024,8 +21024,11 @@ theorem CuspBoundaryGammaZero.fibreMap_gamma (y : PeriodTorusHigherHomology.Prod
 theorem CuspBoundaryGammaZero.cuspRealEquiv_cons_zero (x : Fin 3 → ℝ) :
     SpecialPeriods.CuspFamily.cuspRealEquiv 1 (Fin.cons 0 x) =
       Fin.cons 0 ![x 0, x 0 + x 1, x 2] := by
+  rw [SpecialPeriods.CuspFamily.cuspRealEquiv_apply]
   ext i
-  fin_cases i <;> simp [SpecialPeriods.CuspFamily.cuspRealEquiv, add_comm] <;> rfl
+  fin_cases i <;>
+    simp [SpecialPeriods.CuspFamily.cuspIntegralMatrix, Matrix.mulVec, dotProduct,
+      Fin.sum_univ_four, add_comm] <;> rfl
 
 theorem CuspBoundaryGammaZero.fibreMap_monodromy (y : PeriodTorusHigherHomology.ProductTorus 3) :
     fibreMap (restrictedMonodromy y) = ThreefoldOverlapMappingTorus.Cusp.monodromy (fibreMap y) :=
