@@ -1,5 +1,5 @@
 import Mathlib
-import S6.CyclicAverage
+import Lib.LinearAlgebra.CyclicAverage
 
 /-!
 # Two-exceptional-fibre gluing arithmetic
@@ -310,14 +310,14 @@ as `(1, -1)`.  This is the abstract averaging input behind the exponent triple `
 theorem common_projected_seed_observables (m n : ℕ) [Invertible (m : ℚ)] [Invertible (n : ℚ)]
     (A B : Module.End ℚ M) (lambda : M →ₗ[ℚ] ℚ) (g : M)
     (hA : lambda.comp A = lambda) (hB : lambda.comp B = lambda) (hg : lambda g = 1) :
-    lambda (S6.CyclicAverage.cyclicAverage m A g) = 1 ∧
-      lambda (-S6.CyclicAverage.cyclicAverage n B g) = -1 := by
+    lambda (Lib.LinearAlgebra.CyclicAverage.cyclicAverage m A g) = 1 ∧
+      lambda (-Lib.LinearAlgebra.CyclicAverage.cyclicAverage n B g) = -1 := by
   constructor
   · have h := DFunLike.congr_fun
-      (S6.CyclicAverage.comp_cyclicAverage (m := m) lambda hA) g
+      (Lib.LinearAlgebra.CyclicAverage.comp_cyclicAverage (m := m) lambda hA) g
     simpa only [LinearMap.comp_apply, hg] using h
   · have h := DFunLike.congr_fun
-      (S6.CyclicAverage.comp_cyclicAverage (m := n) lambda hB) g
+      (Lib.LinearAlgebra.CyclicAverage.comp_cyclicAverage (m := n) lambda hB) g
     simp only [LinearMap.comp_apply] at h
     rw [map_neg, h, hg]
 

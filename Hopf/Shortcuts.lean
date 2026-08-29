@@ -4,7 +4,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 
 import Hopf.FiniteCore
-import S6.SquareZeroExchange
+import Lib.LinearAlgebra.SquareZeroExchange
 
 /-!
 # Short-proof adapters for HopfProblem

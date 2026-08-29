@@ -62,7 +62,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 -/
 
 import Hopf.LCP.BoundaryTopology
-import S6.CyclicAverage
+import S6Shortcuts
 
 set_option maxSynthPendingDepth 3
 

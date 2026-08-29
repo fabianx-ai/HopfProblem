@@ -51,12 +51,36 @@ The initial port changes no Hopf theorem or proof.  Later entries in this file
 must identify each replacement or explanatory bridge, its exact S6 source
 module, measured source delta, build/axiom gate, and final Comparator status.
 
+## Section 6 reusable linear-algebra library
+
+The proof-independent parts of V10 Lemmas 6.1--6.3 and 6.6 now live under
+`Lib/LinearAlgebra/`.  `Lib.lean` is a public routing root and a separate Lake
+library target.  It imports no `S6Shortcuts`, `S6`, `Hopf`, `Challenge`, or
+`Solution` module.  The concrete matrix certificates remain in `S6/` as
+proof-owned adapters which import the reusable layer.
+
+This first extraction exports 25 reusable source declarations: 10 for cyclic
+averaging, 11 for square-zero exchanges, and 4 for full-rank integral lattice
+index.  Their general theorem bodies were moved intact from the checked V10
+modules; the only proof-text modernization is Mathlib's nonsemantic
+`LinearEquiv.ofLinearMap` spelling for the deprecated alias
+`LinearEquiv.ofLinear`.  `Lib/AxiomAudit.lean` queries every export directly.
+
+In the expansion ledger, all 25 exports are library assets and therefore
+**free**.  The namespace-routing edits in the S6/Hopf consumers are
+proof-specific adapters; this extraction does not count library lines,
+declarations, or bytes as proof cost.  It also makes no claim that every
+export is already a verbatim Mathlib pull request: natural-namespace and
+generality refinement is a separate, checker-gated library step.  Comparator
+remains deferred to the single final accumulated-change gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism
 `dualCuspN = Matrix.toLin' (M₀ - 1)` and proves it square-zero from Hopf's
 existing coordinate formula.  `Hopf/LCP/LocalModels.lean` then identifies the
-explicit cusp matrix family with `S6.SquareZeroExchange.exchange dualCuspN`
+explicit cusp matrix family with
+`Lib.LinearAlgebra.SquareZeroExchange.exchange dualCuspN`
 and proves `cuspIntegralMatrix_add` through the generic
 `exchange_mul_exchange` theorem.  The public additive-law statement and all
 downstream consumers are unchanged.
@@ -110,7 +134,7 @@ accumulated-shortcuts run.
 `dualCuspNReal` of the integral dual-cusp endomorphism, together with its
 coordinate formula and square-zero law.  `Hopf/LCP/LocalModels.lean`
 identifies the real cusp matrix with the corresponding
-`S6.SquareZeroExchange.exchange`, and defines `cuspRealEquiv` using the
+`Lib.LinearAlgebra.SquareZeroExchange.exchange`, and defines `cuspRealEquiv` using the
 generic `exchangeEquiv`.  Its public application formula, zero, addition,
 negation, real-cast, complex-cast, and lattice-preservation interfaces are
 retained; the one direct homology consumer is routed through the retained
