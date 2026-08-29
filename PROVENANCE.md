@@ -68,3 +68,21 @@ explanatory routing improvement, not a net source shrink.  The commit receipt
 under `~/s6-notes/hopf/phase5/commit02-squarezero/` records the Lake and direct
 per-theorem axiom gates.  Per the current protocol, Comparator is deferred to
 the one final accumulated-shortcuts run.
+
+## Two-exceptional twist arithmetic
+
+`Hopf/LCP/BoundaryTopology.lean` now defines `twistOrder` as the `(3,4)`
+specialization of `S6.TwoExceptionalGluing.gluingDefect`.  The concrete
+`main_twist_value` proof is `rfl`, rather than an invocation of the generic
+consecutive-order theorem, so its previously empty axiom set remains empty.
+The sole downstream unfolding exposes both routed definitions.  The 23 public
+declaration statements and the presentation data remain unchanged; only
+`c_twistOrder`'s unfolding proof is adjusted, so the former 140-line block is
+retained at 142 source lines.  This commit makes no presentation-equivalence
+or deletion claim.
+
+Relative to the square-zero commit, the proof-source change is **+3 Lean
+lines, +96 bytes, and 0 declaration commands**.  The receipt under
+`~/s6-notes/hopf/phase5/commit03-twist/` records the Lake and direct
+per-theorem axiom gates.  Comparator remains deferred to the one final
+accumulated-shortcuts run.

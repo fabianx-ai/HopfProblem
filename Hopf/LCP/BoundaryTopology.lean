@@ -62,6 +62,7 @@ Original source lines 187883--211735; see PROVENANCE.md.
 -/
 
 import Hopf.LCP.GlobalAssembly
+import S6.TwoExceptionalGluing
 
 set_option maxSynthPendingDepth 3
 
@@ -23666,9 +23667,9 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.clockwise_meridian_pow_order
   rwa [chosenTransportedAttachingClass_eq_oriented_meridian] at h
 
 def twistOrder (ℓ₀ ℓ₁ ℓ₂ : ℤ) : ℤ :=
-  12 * ℓ₀ - 4 * ℓ₁ - 3 * ℓ₂
+  S6.TwoExceptionalGluing.gluingDefect 3 4 ℓ₀ ℓ₁ ℓ₂
 
-theorem main_twist_value : twistOrder 0 1 (-1) = -1 := by decide
+theorem main_twist_value : twistOrder 0 1 (-1) = -1 := by rfl
 
 def twistRelators (a b d : ℤ) : Fin 5 → FreeGroup (Fin 3) :=
   let c := FreeGroup.of (0 : Fin 3)
@@ -23742,7 +23743,9 @@ theorem TwistGroup.c_twistOrder (a b d : ℤ) : c a b d ^ twistOrder a b d = 1 :
   have h' := congrArg (fun z => z * (c a b d ^ b)⁻¹) h
   rw [mul_inv_cancel, ← zpow_sub] at h'
   norm_num only [Nat.cast_ofNat] at h'
-  have he : (4 * a - b - d) * 3 - b = twistOrder a b d := by unfold twistOrder; ring
+  have he : (4 * a - b - d) * 3 - b = twistOrder a b d := by
+    unfold twistOrder S6.TwoExceptionalGluing.gluingDefect
+    ring
   rwa [he] at h'
 
 theorem TwistGroup.generated_by_c (a b d : ℤ) (z : TwistGroup a b d) :
