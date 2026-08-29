@@ -50,3 +50,21 @@ are included under this repository's Apache-2.0 license.
 The initial port changes no Hopf theorem or proof.  Later entries in this file
 must identify each replacement or explanatory bridge, its exact S6 source
 module, measured source delta, build/axiom gate, and final Comparator status.
+
+## Square-zero cusp exchange
+
+`Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism
+`dualCuspN = Matrix.toLin' (M₀ - 1)` and proves it square-zero from Hopf's
+existing coordinate formula.  `Hopf/LCP/LocalModels.lean` then identifies the
+explicit cusp matrix family with `S6.SquareZeroExchange.exchange dualCuspN`
+and proves `cuspIntegralMatrix_add` through the generic
+`exchange_mul_exchange` theorem.  The public additive-law statement and all
+downstream consumers are unchanged.
+
+Relative to the source-port commit, this replacement adds one 35-line bridge
+module and changes the local-model file by +15/-4 lines: **+46 Lean lines,
++1,569 bytes, and +3 public declaration commands project-wide**.  It is an
+explanatory routing improvement, not a net source shrink.  The commit receipt
+under `~/s6-notes/hopf/phase5/commit02-squarezero/` records the Lake and direct
+per-theorem axiom gates.  Per the current protocol, Comparator is deferred to
+the one final accumulated-shortcuts run.
