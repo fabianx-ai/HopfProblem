@@ -62,6 +62,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 -/
 
 import Hopf.LCP.BoundaryTopology
+import S6.CyclicAverage
 
 set_option maxSynthPendingDepth 3
 
@@ -8945,6 +8946,22 @@ theorem PeriodFamily.Boundary.EllipticCapKernelWang.originalNormMatrixOne_three 
 theorem PeriodFamily.Boundary.EllipticCapKernelWang.originalNormMatrixOne_four :
     originalNormMatrixOne .four = !![4, 0, 0, 0; 12, 0, 0, 0; -12, 0, 0, 0; 0, 2, 2, 4] := by
   decide
+
+/-- Over `ℚ`, the order-three integral norm is three times the normalized cyclic average `P3`. -/
+theorem PeriodFamily.Boundary.EllipticCapKernelWang.originalNormMatrixOne_three_map_rat :
+    (originalNormMatrixOne .three).map (Int.castRingHom ℚ) =
+      3 • S6Shortcuts.P3 := by
+  rw [originalNormMatrixOne_three]
+  ext i j
+  fin_cases i <;> fin_cases j <;> norm_num [S6Shortcuts.P3]
+
+/-- Over `ℚ`, the order-four integral norm is four times the normalized cyclic average `P4`. -/
+theorem PeriodFamily.Boundary.EllipticCapKernelWang.originalNormMatrixOne_four_map_rat :
+    (originalNormMatrixOne .four).map (Int.castRingHom ℚ) =
+      4 • S6Shortcuts.P4 := by
+  rw [originalNormMatrixOne_four]
+  ext i j
+  fin_cases i <;> fin_cases j <;> norm_num [S6Shortcuts.P4]
 
 @[simp]
 theorem PeriodFamily.Boundary.EllipticCapKernelWang.originalNormMatrixTwo_three :

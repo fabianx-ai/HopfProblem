@@ -86,3 +86,20 @@ lines, +96 bytes, and 0 declaration commands**.  The receipt under
 `~/s6-notes/hopf/phase5/commit03-twist/` records the Lake and direct
 per-theorem axiom gates.  Comparator remains deferred to the one final
 accumulated-shortcuts run.
+
+## Rational cyclic-average endpoints
+
+`Hopf/LCP/IntegralHomology.lean` now records that, after scalar extension to
+`ℚ`, the order-three and order-four integral norm matrices are respectively
+`3 • S6Shortcuts.P3` and `4 • S6Shortcuts.P4`.  These are explanatory
+endpoints connecting Hopf's unnormalized integral norms to the normalized
+projectors formalized in `S6.CyclicAverage`.
+
+No integral or topological norm proof is replaced or deleted.  In particular,
+the new rational equalities do not identify an integral fixed lattice, prove
+saturation, or replace the homology-coordinate transport.  Relative to the
+twist-arithmetic commit, this derived-only bridge adds **17 Lean lines, 803
+bytes, and 2 public theorem declarations**.  The receipt under
+`~/s6-notes/hopf/phase5/commit04-cyclic/` records the Lake and direct
+per-theorem axiom gates.  Comparator remains deferred to the one final
+accumulated-shortcuts run.
