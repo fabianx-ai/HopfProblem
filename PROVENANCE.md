@@ -25,3 +25,28 @@ The audited splitter is retained on the split branch as
 generated-state hash map, avoiding circular self-authentication; Git and the
 external attestation receipt pin the script itself.  A second run validates
 all generator-owned output and leaves the script untouched.
+
+## V10 algebraic shortcut source
+
+The `simplify/v10-shortcuts` branch imports the following unconditional Lean
+sources from the companion S6 V10 release at commit
+`8e83d2d2bc4e4ba32b8dfe0ecfe9094d3834cea0`:
+
+- `S6Shortcuts.lean`;
+- `S6/CyclicAverage.lean`;
+- `S6/LatticeOrbitIndex.lean`;
+- `S6/SquareZeroExchange.lean`;
+- `S6/TwoExceptionalGluing.lean`;
+- `S6/UnitTransgression.lean`.
+
+Those six files are copied byte-for-byte from
+`formal/lean-source/` in that source commit.  They contain 1,244 lines and 165
+source declaration commands: 149 are non-private/non-local, 14 are private,
+and 2 are local.  The new `S6.lean` file is only the local Lake routing root.
+The source project used Lean 4.31.0-rc1; the unchanged files also elaborate
+under this repository's pinned Lean 4.33.0/Mathlib v4.33.0 environment.  They
+are included under this repository's Apache-2.0 license.
+
+The initial port changes no Hopf theorem or proof.  Later entries in this file
+must identify each replacement or explanatory bridge, its exact S6 source
+module, measured source delta, build/axiom gate, and final Comparator status.
