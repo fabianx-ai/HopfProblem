@@ -1,24 +1,31 @@
 /-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
 SPDX-License-Identifier: Apache-2.0
 -/
 
-import Mathlib
+module
+
+public import Mathlib.Algebra.Ring.GeomSum
+public import Mathlib.LinearAlgebra.Projection
 
 /-!
 # Finite cyclic averaging
 
-This file exports the proof-independent content of V10 Lemmas 6.2 and 6.3. Averaging a
-finite-order endomorphism projects onto its fixed submodule, and invariant linear observables
-survive the averaging. The statements require no finite-dimensionality and work over a
-commutative ring whenever the order is invertible.
+The normalized power sum of a finite-order endomorphism projects onto its fixed submodule. Linear
+maps invariant under the endomorphism are unchanged by this average. The construction requires no
+finite-dimensionality and works over a commutative ring whenever the order is invertible.
 -/
+
+@[expose] public section
 
 open scoped BigOperators
 
-namespace Lib.LinearAlgebra.CyclicAverage
+namespace Module.End
 
-variable {K M : Type*} [CommRing K] [AddCommGroup M] [Module K M]
+variable {K M N : Type*} [CommRing K]
+  [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
 
 /-- The normalized sum of the first `m` powers of an endomorphism. -/
 noncomputable def cyclicAverage (m : ℕ) [Invertible (m : K)] (A : Module.End K M) :
@@ -76,8 +83,8 @@ theorem isProj_cyclicAverage {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
     simpa using sub_eq_zero.mp hx
 
 /-- The cyclic average is idempotent. -/
-theorem cyclicAverage_idempotent {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
-    (hA : A ^ m = 1) : cyclicAverage m A * cyclicAverage m A = cyclicAverage m A :=
+theorem isIdempotentElem_cyclicAverage {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
+    (hA : A ^ m = 1) : IsIdempotentElem (cyclicAverage m A) :=
   (isProj_cyclicAverage hA).isIdempotentElem
 
 /-- The range of the cyclic average is exactly the fixed submodule of `A`. -/
@@ -88,12 +95,12 @@ theorem range_cyclicAverage {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
 
 /-- A linear observable invariant under `A` is unchanged by cyclic averaging. -/
 theorem comp_cyclicAverage {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
-    (lambda : M →ₗ[K] K) (hlambda : lambda.comp A = lambda) :
-    lambda.comp (cyclicAverage m A) = lambda := by
-  have hinvariant : ∀ x : M, lambda (A x) = lambda x := by
+    (f : M →ₗ[K] N) (hf : f.comp A = f) :
+    f.comp (cyclicAverage m A) = f := by
+  have hinvariant : ∀ x : M, f (A x) = f x := by
     intro x
-    exact DFunLike.congr_fun hlambda x
-  have hpow : ∀ (k : ℕ) (x : M), lambda ((A ^ k) x) = lambda x := by
+    exact DFunLike.congr_fun hf x
+  have hpow : ∀ (k : ℕ) (x : M), f ((A ^ k) x) = f x := by
     intro k
     induction k with
     | zero => simp
@@ -101,4 +108,4 @@ theorem comp_cyclicAverage {m : ℕ} [Invertible (m : K)] {A : Module.End K M}
   ext x
   simp [cyclicAverage, hpow, ← Nat.cast_smul_eq_nsmul K]
 
-end Lib.LinearAlgebra.CyclicAverage
+end Module.End

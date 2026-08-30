@@ -101,8 +101,9 @@ import and four correspondingly qualified library names.  The restored
 split-extension library form adds the repository's Apache-2.0 header, updates
 the module documentation, and changes the namespace.
 
-The cumulative Section 6 library surface is therefore 84 public source
-declarations.  `Lib/AxiomAudit.lean` queries all 84 names individually.  In
+At commit `13f4be627cbefa415e62069edfbb9d5d412c6b30`, the cumulative Section 6
+library surface is therefore 84 public source declarations, and
+`Lib/AxiomAudit.lean` queries all 84 names individually.  In
 the expansion ledger every one is a free library asset; the only charged
 changes are the proof-specific namespace/import adapters in Hopf and S6.
 
@@ -115,15 +116,39 @@ placeholder stands in for those missing results.  Natural Mathlib namespace
 and generality refinement remains a later library-only step.  Comparator is
 still deferred to the single final accumulated-change gate.
 
+## Mathlib-shaped linear APIs
+
+The three linear modules now use natural Mathlib declaration namespaces and
+minimal public imports.  Cyclic averages and square-zero one-plus-scalar flows
+are owned by `Module.End`; the full-rank integral cokernel theorem is owned by
+`Matrix`.  The square-zero module is routed as
+`Lib/LinearAlgebra/SquareZero.lean`, and the determinant theorem as
+`Lib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean`.
+
+This refinement turns the original 25-name linear export surface into 22
+higher-rank names.  The two lattice notation aliases move to the proof-owned
+`S6.LatticeOrbitIndex` adapter, while the custom matrix-injectivity helper is
+replaced by Mathlib's existing `Matrix.mulVec_injective_of_det_ne_zero`.
+`Module.End.comp_cyclicAverage` is generalized from scalar-valued observables
+to linear maps into any module.  The current cumulative library audit covers
+81 names individually.
+
+The three-name reduction is not a loss or a credit in the expansion ledger:
+library code remains free, and removing redundant/adapter-shaped public names
+raises rank per name.  No compatibility aliases preserve the former `Lib.*`
+declaration namespaces.  Concrete S6 and Hopf consumers call the natural APIs
+directly.  Comparator remains deferred to the single final accumulated-change
+gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism
 `dualCuspN = Matrix.toLin' (M₀ - 1)` and proves it square-zero from Hopf's
 existing coordinate formula.  `Hopf/LCP/LocalModels.lean` then identifies the
 explicit cusp matrix family with
-`Lib.LinearAlgebra.SquareZeroExchange.exchange dualCuspN`
+`Module.End.oneAddSMul dualCuspN`
 and proves `cuspIntegralMatrix_add` through the generic
-`exchange_mul_exchange` theorem.  The public additive-law statement and all
+`Module.End.oneAddSMul_mul_oneAddSMul` theorem.  The public additive-law statement and all
 downstream consumers are unchanged.
 
 Relative to the source-port commit, this replacement adds one 35-line bridge
@@ -175,8 +200,8 @@ accumulated-shortcuts run.
 `dualCuspNReal` of the integral dual-cusp endomorphism, together with its
 coordinate formula and square-zero law.  `Hopf/LCP/LocalModels.lean`
 identifies the real cusp matrix with the corresponding
-`Lib.LinearAlgebra.SquareZeroExchange.exchange`, and defines `cuspRealEquiv` using the
-generic `exchangeEquiv`.  Its public application formula, zero, addition,
+`Module.End.oneAddSMul`, and defines `cuspRealEquiv` using the generic
+`Module.End.oneAddSMulEquiv`.  Its public application formula, zero, addition,
 negation, real-cast, complex-cast, and lattice-preservation interfaces are
 retained; the one direct homology consumer is routed through the retained
 application formula.

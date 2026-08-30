@@ -2,8 +2,8 @@ import Lib.GroupTheory.SplitExtension
 import Lib.GroupTheory.TwoExceptionalGluing
 import Lib.HomologicalAlgebra.UnitTransgression
 import Lib.LinearAlgebra.CyclicAverage
-import Lib.LinearAlgebra.LatticeOrbitIndex
-import Lib.LinearAlgebra.SquareZeroExchange
+import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
+import Lib.LinearAlgebra.SquareZero
 
 /-!
 # Reusable V10 Section 6 library

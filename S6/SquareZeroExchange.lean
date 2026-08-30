@@ -1,11 +1,11 @@
-import Lib.LinearAlgebra.SquareZeroExchange
+import Lib.LinearAlgebra.SquareZero
 import S6Shortcuts
 
 /-!
 # Concrete square-zero exchange certificates
 
 This proof-owned adapter derives the concrete `N`, `Q0`, and `T0` certificates from the reusable
-square-zero exchange API in `Lib.LinearAlgebra.SquareZeroExchange`.
+`Module.End` square-zero API in `Lib.LinearAlgebra.SquareZero`.
 
 No assertion about the existence of a complex structure on the six-sphere is made here; the
 analytic hypotheses of the proposed construction lie outside the scope of this module.
@@ -13,7 +13,7 @@ analytic hypotheses of the proposed construction lie outside the scope of this m
 
 namespace S6.SquareZeroExchange
 
-open Lib.LinearAlgebra.SquareZeroExchange
+open Module.End
 
 section ConcreteCertificate
 
@@ -42,8 +42,8 @@ private theorem Q0_isSkewAdjoint_N : Q0Bilin.IsSkewAdjoint NEnd := by
   simpa using hadj
 
 private theorem cuspExchange_toLin (s : ℚ) :
-    Matrix.toLin' (cuspExchange s) = exchange NEnd s := by
-  simp [cuspExchange, exchange, Module.End.one_eq_id]
+    Matrix.toLin' (cuspExchange s) = oneAddSMul NEnd s := by
+  simp [cuspExchange, oneAddSMul, Module.End.one_eq_id]
 
 /-- The abstract quadratic-term argument rederives `Nᵀ Q₀ N = 0`. -/
 theorem N_quadratic_Q0_term_vanishes_derived : Matrix.transpose N * Q0 * N = 0 := by
@@ -71,7 +71,7 @@ theorem cuspExchange_preserves_Q0 (s : ℚ) :
     apply LinearMap.ext
     intro y
     simp only [LinearMap.compl₁₂_apply, cuspExchange_toLin]
-    exact exchange_preserves_bilin_of_isSkewAdjoint NEnd_square_zero Q0Bilin
+    exact oneAddSMul_preserves_bilin_of_isSkewAdjoint NEnd_square_zero Q0Bilin
       Q0_isSkewAdjoint_N s x y
   have hmatrix := congrArg (LinearMap.toMatrix₂' ℚ) hform
   simpa using hmatrix

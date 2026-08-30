@@ -5,7 +5,7 @@ import S6Shortcuts
 # Concrete cyclic-average certificates
 
 This proof-owned adapter derives the concrete rational matrix certificates from the reusable
-cyclic-averaging API in `Lib.LinearAlgebra.CyclicAverage`.
+`Module.End` cyclic-averaging API in `Lib.LinearAlgebra.CyclicAverage`.
 
 No assertion about the existence of a complex structure on the six-sphere is made here; the
 analytic hypotheses of the proposed construction lie outside the scope of this module.
@@ -15,7 +15,7 @@ open scoped BigOperators
 
 namespace S6.CyclicAverage
 
-open Lib.LinearAlgebra.CyclicAverage
+open Module.End
 
 section ConcreteCertificates
 
@@ -47,14 +47,14 @@ theorem P3_idempotent_derived : P3 * P3 = P3 := by
   apply Matrix.toLinAlgEquiv'.injective
   simp only [map_mul]
   rw [P3_toLin_eq_cyclicAverage]
-  exact cyclicAverage_idempotent A1_toLin_order_three
+  exact isIdempotentElem_cyclicAverage A1_toLin_order_three
 
 /-- Idempotence of `P4`, now obtained from the general averaging projector theorem. -/
 theorem P4_idempotent_derived : P4 * P4 = P4 := by
   apply Matrix.toLinAlgEquiv'.injective
   simp only [map_mul]
   rw [P4_toLin_eq_cyclicAverage]
-  exact cyclicAverage_idempotent A2_toLin_order_four
+  exact isIdempotentElem_cyclicAverage A2_toLin_order_four
 
 /-- Left fixedness of the order-three projector, derived from cyclic averaging. -/
 theorem A1_mul_P3_derived : A1 * P3 = P3 := by

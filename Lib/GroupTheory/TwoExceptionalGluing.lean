@@ -310,14 +310,14 @@ as `(1, -1)`.  This is the abstract averaging input behind the exponent triple `
 theorem common_projected_seed_observables (m n : ℕ) [Invertible (m : ℚ)] [Invertible (n : ℚ)]
     (A B : Module.End ℚ M) (lambda : M →ₗ[ℚ] ℚ) (g : M)
     (hA : lambda.comp A = lambda) (hB : lambda.comp B = lambda) (hg : lambda g = 1) :
-    lambda (Lib.LinearAlgebra.CyclicAverage.cyclicAverage m A g) = 1 ∧
-      lambda (-Lib.LinearAlgebra.CyclicAverage.cyclicAverage n B g) = -1 := by
+    lambda (Module.End.cyclicAverage m A g) = 1 ∧
+      lambda (-Module.End.cyclicAverage n B g) = -1 := by
   constructor
   · have h := DFunLike.congr_fun
-      (Lib.LinearAlgebra.CyclicAverage.comp_cyclicAverage (m := m) lambda hA) g
+      (Module.End.comp_cyclicAverage (m := m) lambda hA) g
     simpa only [LinearMap.comp_apply, hg] using h
   · have h := DFunLike.congr_fun
-      (Lib.LinearAlgebra.CyclicAverage.comp_cyclicAverage (m := n) lambda hB) g
+      (Module.End.comp_cyclicAverage (m := n) lambda hB) g
     simp only [LinearMap.comp_apply] at h
     rw [map_neg, h, hg]
 
