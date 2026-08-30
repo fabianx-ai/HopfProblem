@@ -1135,6 +1135,27 @@ is an evidence command rather than library content.
 #check PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
 #print axioms PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Stalk` -/
+
+#check PrincipalCoverLocalSystem.evaluationCocone
+#print axioms PrincipalCoverLocalSystem.evaluationCocone
+#check PrincipalCoverLocalSystem.stalkEvaluation
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation
+#check PrincipalCoverLocalSystem.stalkEvaluation_germ
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_germ
+#check PrincipalCoverLocalSystem.stalkEvaluation_germ_smul
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_germ_smul
+#check PrincipalCoverLocalSystem.stalkEvaluation_surjective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_surjective
+#check PrincipalCoverLocalSystem.stalkEvaluation_injective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_injective
+#check PrincipalCoverLocalSystem.stalkEvaluation_bijective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_bijective
+#check PrincipalCoverLocalSystem.stalkEvaluation_isIso
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_isIso
+#check PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
+#print axioms PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
 #check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
