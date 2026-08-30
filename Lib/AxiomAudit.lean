@@ -18,6 +18,14 @@ is an evidence command rather than library content.
 #print axioms Module.End.range_cyclicAverage
 #print axioms Module.End.comp_cyclicAverage
 
+#print axioms exteriorPower.finBasis
+#print axioms exteriorPower.finBasis_map_coefficient
+#print axioms exteriorPower.finMatrix
+#print axioms exteriorPower.toMatrix_map
+#print axioms exteriorPower.finCoordinates
+#print axioms exteriorPower.finCoordinates_apply
+#print axioms exteriorPower.finCoordinates_map
+
 #print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
 #print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime
 #print axioms Matrix.quotientRangeToLinEquivZModOfIsCoprime
