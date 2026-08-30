@@ -26,3 +26,19 @@ Compile this file directly. It is not imported by `S6.lean`.
 #print axioms S6.TwoExceptionalGluing.PresentedGluingGroup
 #print axioms S6.TwoExceptionalGluing.presentedGluingGroup_isMulCommutative
 #print axioms S6.TwoExceptionalGluing.common_projected_seed_observables
+
+#print axioms S6.UnitTransgression.transgressionMap
+#print axioms S6.UnitTransgression.TransgressionKernel
+#print axioms S6.UnitTransgression.TransgressionCokernel
+#print axioms S6.UnitTransgression.transgressionMap_apply
+#print axioms S6.UnitTransgression.transgressionKernel_subsingleton
+#print axioms S6.UnitTransgression.transgressionCokernelEquivZMod
+#print axioms S6.UnitTransgression.LowDegreeFiltration
+#print axioms S6.UnitTransgression.h2F2_eq_top
+#print axioms S6.UnitTransgression.h3F2_eq_top
+#print axioms S6.UnitTransgression.h1_subsingleton
+#print axioms S6.UnitTransgression.h2EquivZMod
+#print axioms S6.UnitTransgression.h3EquivZMod
+#print axioms S6.UnitTransgression.h2_subsingleton_of_isUnit
+#print axioms S6.UnitTransgression.h3_subsingleton_of_isUnit
+#print axioms S6.UnitTransgression.all_subsingleton_of_isUnit

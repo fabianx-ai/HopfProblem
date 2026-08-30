@@ -1,19 +1,25 @@
-import Mathlib
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+module
+
+public import Lib.Algebra.Group.Filtration
+public import Mathlib.Data.ZMod.QuotientGroup
+public import Mathlib.LinearAlgebra.BilinearMap
 
 /-!
 # Unit-transgression bookkeeping
 
-This file formalizes the explicit abelian-group bookkeeping in Lemma 6.11, without introducing a
-spectral-sequence API.  After choosing compatible integral generators, all three differentials are
-the same map `ℤ → ℤ`, multiplication by `p`.  The data below records exactly the low-degree
-filtration pieces used in the paper's proof.  Vanishing successive quotients force the sole
-surviving filtration subgroup to be the whole abutment group, eliminating extension ambiguity.
-
-This is unconditional algebra.  It neither supplies the analytic hypotheses of the proposed
-construction nor asserts that the six-sphere has a complex structure.
+This proof-owned adapter records the low-degree filtration data used in Lemma 6.11. The collapse of
+its nested additive subgroups is delegated to the reusable filtration API. No spectral-sequence or
+analytic existence assertion is introduced here.
 -/
 
-namespace Lib.HomologicalAlgebra.UnitTransgression
+@[expose] public section
+
+namespace S6.UnitTransgression
 
 noncomputable section
 
@@ -42,10 +48,11 @@ def transgressionCokernelEquivZMod (p : ℤ) :
     TransgressionCokernel p ≃+ ZMod p.natAbs :=
   Int.quotientZMultiplesEquivZMod p
 
+set_option linter.checkUnivs false in
 /--
 The low-degree abutment filtration after the spectral-sequence page calculation has been performed.
 The three occurrences of `TransgressionKernel`/`TransgressionCokernel` use the same normalized map,
-which encodes the compatible-generator hypothesis that all three differentials multiply by `p`.
+encoding the compatible-generator hypothesis that all three differentials multiply by `p`.
 -/
 structure LowDegreeFiltration (p : ℤ) where
   H1 : Type*
@@ -71,30 +78,20 @@ structure LowDegreeFiltration (p : ℤ) where
 attribute [instance] LowDegreeFiltration.h1AddCommGroup
   LowDegreeFiltration.h2AddCommGroup LowDegreeFiltration.h3AddCommGroup
 
-private theorem filtration_bottom_eq_top {A : Type*} [AddCommGroup A]
-    (F2 F1 : AddSubgroup A) (hle : F2 ≤ F1)
-    (hmiddle : Subsingleton (F1 ⧸ F2.addSubgroupOf F1))
-    (htop : Subsingleton (A ⧸ F1)) : F2 = ⊤ := by
-  have hmiddleTop : F2.addSubgroupOf F1 = ⊤ :=
-    QuotientAddGroup.addSubgroup_eq_top_of_subsingleton _ hmiddle
-  have hF1le : F1 ≤ F2 := AddSubgroup.addSubgroupOf_eq_top.mp hmiddleTop
-  have hF1top : F1 = ⊤ := QuotientAddGroup.addSubgroup_eq_top_of_subsingleton _ htop
-  exact (le_antisymm hle hF1le).trans hF1top
-
 /-- The sole surviving filtration subgroup in degree two is the whole abutment group. -/
 theorem h2F2_eq_top {p : ℤ} (D : LowDegreeFiltration p) : D.h2F2 = ⊤ :=
-  filtration_bottom_eq_top D.h2F2 D.h2F1 D.h2F2_le_h2F1
+  AddSubgroup.eq_top_of_le_of_quotient_subsingleton D.h2F2 D.h2F1 D.h2F2_le_h2F1
     D.h2MiddleVanishes D.h2TopVanishes
 
 /-- The sole surviving filtration subgroup in degree three is the whole abutment group. -/
 theorem h3F2_eq_top {p : ℤ} (D : LowDegreeFiltration p) : D.h3F2 = ⊤ :=
-  filtration_bottom_eq_top D.h3F2 D.h3F1 D.h3F2_le_h3F1
+  AddSubgroup.eq_top_of_le_of_quotient_subsingleton D.h3F2 D.h3F1 D.h3F2_le_h3F1
     D.h3MiddleVanishes D.h3TopVanishes
 
 /-- The degree-one abutment vanishes when `p` is nonzero. -/
 theorem h1_subsingleton {p : ℤ} (D : LowDegreeFiltration p) (hp : p ≠ 0) :
     Subsingleton D.H1 := by
-  letI := transgressionKernel_subsingleton hp
+  let _ := transgressionKernel_subsingleton hp
   exact ⟨fun x y => D.h1Graded.injective (Subsingleton.elim _ _)⟩
 
 /-- The degree-two abutment is the cokernel `ZMod |p|`. -/
@@ -112,14 +109,14 @@ def h3EquivZMod {p : ℤ} (D : LowDegreeFiltration p) : D.H3 ≃+ ZMod p.natAbs 
 /-- Unit defect kills the degree-two abutment. -/
 theorem h2_subsingleton_of_isUnit {p : ℤ} (D : LowDegreeFiltration p) (hp : IsUnit p) :
     Subsingleton D.H2 := by
-  haveI : Subsingleton (ZMod p.natAbs) :=
+  have _ : Subsingleton (ZMod p.natAbs) :=
     ZMod.subsingleton_iff.mpr (Int.natAbs_of_isUnit hp)
   exact ⟨fun x y => (h2EquivZMod D).injective (Subsingleton.elim _ _)⟩
 
 /-- Unit defect kills the degree-three abutment. -/
 theorem h3_subsingleton_of_isUnit {p : ℤ} (D : LowDegreeFiltration p) (hp : IsUnit p) :
     Subsingleton D.H3 := by
-  haveI : Subsingleton (ZMod p.natAbs) :=
+  have _ : Subsingleton (ZMod p.natAbs) :=
     ZMod.subsingleton_iff.mpr (Int.natAbs_of_isUnit hp)
   exact ⟨fun x y => (h3EquivZMod D).injective (Subsingleton.elim _ _)⟩
 
@@ -131,4 +128,4 @@ theorem all_subsingleton_of_isUnit {p : ℤ} (D : LowDegreeFiltration p) (hp : I
 
 end
 
-end Lib.HomologicalAlgebra.UnitTransgression
+end S6.UnitTransgression

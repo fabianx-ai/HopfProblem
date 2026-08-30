@@ -218,6 +218,35 @@ paper adapters are project-build-checked but are not claimed to lie in the
 final theorem's dependency closure.  Comparator remains deferred to the
 single final accumulated-change gate.
 
+## Unit-transgression adapter exchange
+
+The 15 low-degree bookkeeping declarations now live in
+`S6/UnitTransgression.lean`.  They are paper-specific inputs and
+consequences, so they are charged adapters rather than reusable library
+assets.  The degree-two and degree-three collapse proofs call the free generic
+`AddSubgroup.eq_top_of_le_of_quotient_subsingleton` theorem directly.
+
+This exchange retires the private nine-line
+`filtration_bottom_eq_top` hand proof with no new proof-specific helper.
+That is a gross and net nine-line specific credit.  The reusable one-step and
+two-step filtration theorems remain free under
+`Lib/Algebra/Group/Filtration.lean`; their lines are never charged.
+No compatibility aliases preserve the former
+`Lib.HomologicalAlgebra.UnitTransgression` namespace.
+
+The final reusable library surface is 38 public source commands and 39
+individually audited exported environment names, counting the generated
+additive commuting-generator theorem.  `S6/AxiomAudit.lean` separately
+queries all 35 paper-owned gluing and unit-transgression adapters.  The Hopf
+proof has no consumer of the unit-transgression adapter, so it is
+project-build-checked but is not claimed to lie in the final theorem's
+dependency closure.
+
+This module still consumes explicit post-page filtration data; it does not
+construct or run a Leray spectral sequence.  No placeholder or axiom stands
+in for that missing analytic/homological layer.  Comparator remains deferred
+to the single final accumulated-change gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism

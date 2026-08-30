@@ -50,19 +50,3 @@ is an evidence command rather than library content.
 #print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
 #print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
-
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionMap
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.TransgressionKernel
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.TransgressionCokernel
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionMap_apply
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionKernel_subsingleton
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionCokernelEquivZMod
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.LowDegreeFiltration
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h2F2_eq_top
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h3F2_eq_top
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h1_subsingleton
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h2EquivZMod
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h3EquivZMod
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h2_subsingleton_of_isUnit
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.h3_subsingleton_of_isUnit
-#print axioms Lib.HomologicalAlgebra.UnitTransgression.all_subsingleton_of_isUnit
