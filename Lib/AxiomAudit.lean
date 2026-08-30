@@ -870,6 +870,32 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
 #print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
 
+-- ExactFunctorComparison: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_mk₀
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_mk₀
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_naturality
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_naturality
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_connecting
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_connecting
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_zero_bijective
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_zero_bijective
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_bijective
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_bijective
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.equiv
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.equiv
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.precompose
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.precompose
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp_natTrans
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp_natTrans
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
+
 -- ResolutionTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.AbelianSheaf
 #print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
