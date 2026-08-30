@@ -1,5 +1,5 @@
 import Lib.GroupTheory.Abelianization.SemidirectProduct
-import Lib.GroupTheory.SplitExtension
+import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.TwoExceptionalGluing
 import Lib.HomologicalAlgebra.UnitTransgression
 import Lib.LinearAlgebra.CyclicAverage

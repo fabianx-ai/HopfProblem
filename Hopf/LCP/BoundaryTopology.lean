@@ -62,6 +62,7 @@ Original source lines 187883--211735; see PROVENANCE.md.
 -/
 
 import Hopf.LCP.GlobalAssembly
+import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.TwoExceptionalGluing
 
 set_option maxSynthPendingDepth 3
@@ -14930,6 +14931,22 @@ def PeriodFamily.Data.fundamentalGroupSemidirectEquiv {V B : Type*} [NormedAddCo
       (Multiplicative Lattice) ⋊[D.fundamentalGroupAction hq b]
         (FundamentalGroup D.BaseSpace (D.baseQuotient b)) :=
   (D.semidirectFundamentalGroupEquiv hq b).symm
+
+attribute [local instance] SpecialPeriods.triangleTorusAction
+    SpecialPeriods.triangleTorusAction_continuous in
+/-- The period-family fundamental group's abelianization, expressed through the coinvariants of
+the monodromy action on the fibre lattice's abelianization. -/
+noncomputable def PeriodFamily.Data.fundamentalGroupAbelianizationEquiv
+    {V B : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
+    [TopologicalSpace B] [ChartedSpace V B]
+    [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
+    (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B) :
+    Abelianization (FundamentalGroup D.Space (D.fundamentalGroupBasepoint b)) ≃*
+      Abelianization (FundamentalGroup D.BaseSpace (D.baseQuotient b)) ×
+        Multiplicative
+          (SemidirectProduct.AbelianizationCoinvariants (D.fundamentalGroupAction hq b)) :=
+  (D.fundamentalGroupSemidirectEquiv hq b).abelianizationCongr.trans
+    (SemidirectProduct.abelianizationMulEquiv (D.fundamentalGroupAction hq b))
 
 attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in

@@ -150,13 +150,21 @@ kernel's abelianization.  Its declarations live in the natural
 surface hides all proof-construction maps behind the final equivalence and its
 four simp lemmas.
 
-This additive commit deliberately retains the older one-step quotient model in
-`Lib/GroupTheory/SplitExtension.lean` for one green transition step.  The new
-theorem is therefore audited alongside, rather than substituted for, that
-staging API.  All ten new declarations are free library assets; there is no
-proof-specific adapter or claimed hand-proof credit in this commit.  The
-cumulative per-export audit covers 91 names.  Comparator remains deferred to
-the single final accumulated-change gate.
+The first additive commit retained the older one-step quotient model for one
+green transition step.  The subsequent exchange replaces its 21 bespoke names
+with `GroupExtension.Splitting.abelianizationMulEquiv`, a one-composition
+corollary of Mathlib's existing split-extension equivalence and the new
+semidirect-product theorem.  The resulting 11-name library surface is stated
+entirely through standard coinvariants and natural namespaces; the cumulative
+per-export audit covers 71 names.
+
+`PeriodFamily.Data.fundamentalGroupAbelianizationEquiv` is the attached
+proof-specific consumer.  It composes the long proof's already checked
+semidirect-product equivalence with the reusable theorem.  This adapter is
+charged; every line of the 11-name reusable API is free.  The declaration is
+checked by the project build but is not claimed to lie in the final
+`mathoverflow_1973` theorem's dependency closure.  Comparator remains deferred
+to the single final accumulated-change gate.
 
 ## Square-zero cusp exchange
 

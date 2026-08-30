@@ -42,6 +42,7 @@ is an evidence command rather than library content.
 #print axioms SemidirectProduct.abelianizationMulEquiv_apply_of_inr
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inl
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
+#print axioms GroupExtension.Splitting.abelianizationMulEquiv
 
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_common_projected_seed
@@ -66,28 +67,6 @@ is an evidence command rather than library content.
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.PresentedGluingGroup
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.presentedGluingGroup_isMulCommutative
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.common_projected_seed_observables
-
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantRelations
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantKernel
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantKernelNormal
-#print axioms Lib.GroupTheory.SplitExtension.Coinvariants
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantsCommGroup
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantOf
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantOf_action
-#print axioms Lib.GroupTheory.SplitExtension.semidirectToFactors
-#print axioms Lib.GroupTheory.SplitExtension.abelianizationToFactors
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantsToAbelianization
-#print axioms Lib.GroupTheory.SplitExtension.coinvariantsToAbelianization_mk
-#print axioms Lib.GroupTheory.SplitExtension.abelianizationToFactors_of_inl
-#print axioms Lib.GroupTheory.SplitExtension.abelianizationToFactors_of_inr
-#print axioms Lib.GroupTheory.SplitExtension.abelianizationToFactors_coinvariantsToAbelianization_mk
-#print axioms Lib.GroupTheory.SplitExtension.factorsToAbelianization
-#print axioms Lib.GroupTheory.SplitExtension.semidirectAbelianizationEquiv
-#print axioms Lib.GroupTheory.SplitExtension.splittingAction
-#print axioms Lib.GroupTheory.SplitExtension.semidirectToExtension
-#print axioms Lib.GroupTheory.SplitExtension.semidirectToExtension_apply
-#print axioms Lib.GroupTheory.SplitExtension.splittingMulEquiv
-#print axioms Lib.GroupTheory.SplitExtension.splitExtensionAbelianizationEquiv
 
 #print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionMap
 #print axioms Lib.HomologicalAlgebra.UnitTransgression.TransgressionKernel
