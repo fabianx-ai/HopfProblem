@@ -780,3 +780,25 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
 #check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
 #print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
+
+-- Manifold scalar restriction and smooth descent: every public declaration in source order.
+#check IsManifold.restrictScalars
+#print axioms IsManifold.restrictScalars
+#check ContMDiffWithinAt.restrictScalars
+#print axioms ContMDiffWithinAt.restrictScalars
+#check ContMDiffAt.restrictScalars
+#print axioms ContMDiffAt.restrictScalars
+#check ContMDiff.restrictScalars
+#print axioms ContMDiff.restrictScalars
+#check ContMDiffOn.restrictScalars
+#print axioms ContMDiffOn.restrictScalars
+#check Diffeomorph.restrictScalars
+#print axioms Diffeomorph.restrictScalars
+#check PartialDiffeomorph.restrictScalars
+#print axioms PartialDiffeomorph.restrictScalars
+#check contMDiff_of_comp_surjective_localDiffeomorph
+#print axioms contMDiff_of_comp_surjective_localDiffeomorph
+#check contMDiff_of_comp_surjective_localDiffeomorph_restrictScalars
+#print axioms contMDiff_of_comp_surjective_localDiffeomorph_restrictScalars
+#check contMDiffOn_of_contMDiff_restriction
+#print axioms contMDiffOn_of_contMDiff_restriction

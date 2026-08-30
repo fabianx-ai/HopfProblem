@@ -142,6 +142,8 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
 import Lib.Topology.MappingTorus.TranslationCocycle
 import Lib.Topology.MappingTorus.SquareZeroWinding
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
+import Lib.Geometry.Manifold.RestrictScalars
+import Lib.Geometry.Manifold.ContMDiff.Descent
 
 /-!
 # Reusable extracted library
