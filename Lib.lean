@@ -151,6 +151,7 @@ import Lib.Geometry.Manifold.Gluing.OverBase
 import Lib.Topology.Sheaves.ConstantPushforward
 import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
 import Lib.CategoryTheory.Sites.Leray.DegreeZero
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem
 
 /-!
 # Reusable extracted library

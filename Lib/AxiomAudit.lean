@@ -1065,6 +1065,37 @@ is an evidence command rather than library content.
 #check TopCat.ConstantSheaf.pushforwardHom_isIso
 #print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
+
+#check PrincipalCoverLocalSystem.LiftedOpen
+#print axioms PrincipalCoverLocalSystem.LiftedOpen
+#check PrincipalCoverLocalSystem.liftedAction
+#print axioms PrincipalCoverLocalSystem.liftedAction
+#check PrincipalCoverLocalSystem.liftedInclusion
+#print axioms PrincipalCoverLocalSystem.liftedInclusion
+#check PrincipalCoverLocalSystem.equivariantSections
+#print axioms PrincipalCoverLocalSystem.equivariantSections
+#check PrincipalCoverLocalSystem.mem_equivariantSections
+#print axioms PrincipalCoverLocalSystem.mem_equivariantSections
+#check PrincipalCoverLocalSystem.restrict
+#print axioms PrincipalCoverLocalSystem.restrict
+#check PrincipalCoverLocalSystem.presheaf
+#print axioms PrincipalCoverLocalSystem.presheaf
+#check PrincipalCoverLocalSystem.presheaf_map_apply
+#print axioms PrincipalCoverLocalSystem.presheaf_map_apply
+#check PrincipalCoverLocalSystem.presheaf_isSheaf
+#print axioms PrincipalCoverLocalSystem.presheaf_isSheaf
+#check PrincipalCoverLocalSystem.sheaf
+#print axioms PrincipalCoverLocalSystem.sheaf
+#check PrincipalCoverLocalSystem.invariantCoefficients
+#print axioms PrincipalCoverLocalSystem.invariantCoefficients
+#check PrincipalCoverLocalSystem.liftedTopHomeomorph
+#print axioms PrincipalCoverLocalSystem.liftedTopHomeomorph
+#check PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients
+#print axioms PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients
+#check PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
+#print axioms PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
 #check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
