@@ -153,6 +153,7 @@ import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
 import Lib.CategoryTheory.Sites.Leray.DegreeZero
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem
 import Lib.Topology.Covering.QuotientConnectedness
+import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctoriality
 
 /-!
 # Reusable extracted library

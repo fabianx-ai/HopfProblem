@@ -862,6 +862,14 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 #print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 
+-- ExactFunctoriality: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_id
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_id
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
+
 -- ResolutionTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.AbelianSheaf
 #print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
