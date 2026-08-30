@@ -224,3 +224,10 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
 #check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
+#check Monoid.PushoutI.equivOfCocone
+#print axioms Monoid.PushoutI.equivOfCocone
+#check Monoid.PushoutI.equivOfCocone_apply_of
+#print axioms Monoid.PushoutI.equivOfCocone_apply_of
+#check Monoid.PushoutI.equivOfCocone_symm_apply_f
+#print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
+
