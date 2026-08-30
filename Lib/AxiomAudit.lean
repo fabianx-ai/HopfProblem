@@ -136,6 +136,13 @@ is an evidence command rather than library content.
 #print axioms MorseCells.built_of_compact_smooth_manifold
 #print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
 
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_H
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_H
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
