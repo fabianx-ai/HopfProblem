@@ -148,6 +148,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 import Lib.Geometry.Manifold.Gluing.OverBase
 import Lib.Topology.Sheaves.ConstantPushforward
+import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
 
 /-!
 # Reusable extracted library

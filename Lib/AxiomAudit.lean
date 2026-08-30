@@ -1058,3 +1058,48 @@ is an evidence command rather than library content.
 #print axioms TopCat.ConstantSheaf.pushforwardHom_isIso_of_isBasis
 #check TopCat.ConstantSheaf.pushforwardHom_isIso
 #print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
+
+#check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality_assoc
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality_assoc
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality_assoc
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality_assoc
+#check CategoryTheory.Sheaf.Leray.underlyingPresheafComplex
+#print axioms CategoryTheory.Sheaf.Leray.underlyingPresheafComplex
+#check CategoryTheory.Sheaf.Leray.homologyPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.homologyPresheaf
+#check CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
+#print axioms CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
+#check CategoryTheory.Sheaf.Leray.sheafification
+#print axioms CategoryTheory.Sheaf.Leray.sheafification
+#check CategoryTheory.Sheaf.Leray.sheafification_additive
+#print axioms CategoryTheory.Sheaf.Leray.sheafification_additive
+#check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso
+#check CategoryTheory.Sheaf.Leray.sheafificationComplexIso
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationComplexIso
+#check CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification
+#print axioms CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso
+#check CategoryTheory.Sheaf.Leray.inverseImageResolutionSections
+#print axioms CategoryTheory.Sheaf.Leray.inverseImageResolutionSections
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionPresheafObjIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionPresheafObjIso
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
