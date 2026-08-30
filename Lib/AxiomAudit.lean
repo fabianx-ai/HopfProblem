@@ -890,3 +890,144 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #check CategoryTheory.Sheaf.Leray.resolutionTransgression
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
+
+-- Gluing over a covered base: every handwritten declaration plus structure constructors and
+-- field projections, in compiled public declaration order (generated recursors excluded).
+#check Mathoverflow1973.ThreefoldGluing.Data
+#print axioms Mathoverflow1973.ThreefoldGluing.Data
+#check Mathoverflow1973.ThreefoldGluing.Data.mk
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.mk
+#check Mathoverflow1973.ThreefoldGluing.Data.J
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.J
+#check Mathoverflow1973.ThreefoldGluing.Data.patch
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.patch
+#check Mathoverflow1973.ThreefoldGluing.Data.cover
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.cover
+#check Mathoverflow1973.ThreefoldGluing.Data.piece
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.piece
+#check Mathoverflow1973.ThreefoldGluing.Data.toBase
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.toBase
+#check Mathoverflow1973.ThreefoldGluing.Data.toBase_mem
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.toBase_mem
+#check Mathoverflow1973.ThreefoldGluing.Data.transition
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition
+#check Mathoverflow1973.ThreefoldGluing.Data.source_eq
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.source_eq
+#check Mathoverflow1973.ThreefoldGluing.Data.self_eq
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.self_eq
+#check Mathoverflow1973.ThreefoldGluing.Data.symm_eq
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.symm_eq
+#check Mathoverflow1973.ThreefoldGluing.Data.preserves_base
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.preserves_base
+#check Mathoverflow1973.ThreefoldGluing.Data.cocycle
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.cocycle
+#check Mathoverflow1973.ThreefoldGluing.Data.transition_map_source
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition_map_source
+#check Mathoverflow1973.ThreefoldGluing.Data.transition_inter
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition_inter
+#check Mathoverflow1973.ThreefoldGluing.Data.gluingCore
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluingCore
+#check Mathoverflow1973.ThreefoldGluing.Data.gluing
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluing
+#check Mathoverflow1973.ThreefoldGluing.Data.Space
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.Space
+#check Mathoverflow1973.ThreefoldGluing.Data.inclusion
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion
+#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_openEmbedding
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_openEmbedding
+#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_jointly_surjective
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_jointly_surjective
+#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_eq_iff
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_eq_iff
+#check Mathoverflow1973.ThreefoldGluing.Data.representative
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.representative
+#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_representative
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_representative
+#check Mathoverflow1973.ThreefoldGluing.Data.parametrization
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization
+#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_target
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_target
+#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_transition
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_transition
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.mk
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.mk
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.patch
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.patch
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.cover
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.cover
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.disjoint
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.disjoint
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.piece
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.piece
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_mem
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_mem
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.source_eq
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.source_eq
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.target_eq
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.target_eq
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.preserves_base
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.preserves_base
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_none
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_none
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_some
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_some
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_none
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_none
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_self
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_self
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_self
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_self
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_symm
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_symm
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData
+#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_symm_inclusion
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_symm_inclusion
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_symm
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_symm
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#check Mathoverflow1973.ThreefoldGluing.Data.chartedSpace
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.chartedSpace
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_mem_atlas
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_mem_atlas
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_apply
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_apply
+#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#check Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#print axioms Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff

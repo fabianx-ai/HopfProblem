@@ -146,6 +146,7 @@ import Lib.Geometry.Manifold.RestrictScalars
 import Lib.Geometry.Manifold.ContMDiff.Descent
 import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
+import Lib.Geometry.Manifold.Gluing.OverBase
 
 /-!
 # Reusable extracted library
