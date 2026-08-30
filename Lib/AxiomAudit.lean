@@ -633,6 +633,11 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
 
+/-! ## `Lib.Topology.Covering.QuotientConnectedness` -/
+
+#check IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
+#print axioms IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
+
 -- Basic: every public source declaration in source order.
 #check Mathoverflow1973.MappingTorus.Circle
 #print axioms Mathoverflow1973.MappingTorus.Circle
