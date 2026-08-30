@@ -1103,3 +1103,20 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionPresheafObjIso
 #check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
+
+/-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
+
+#check LinearRepresentation.ofMultiplicativeEquiv
+#print axioms LinearRepresentation.ofMultiplicativeEquiv
+#check LinearRepresentation.ofMultiplicativeEquiv_apply
+#print axioms LinearRepresentation.ofMultiplicativeEquiv_apply
+#check LinearRepresentation.ofMultiplicative
+#print axioms LinearRepresentation.ofMultiplicative
+#check LinearRepresentation.ofMultiplicative_apply
+#print axioms LinearRepresentation.ofMultiplicative_apply
+#check LinearRepresentation.contragredient
+#print axioms LinearRepresentation.contragredient
+#check LinearRepresentation.contragredient_apply
+#print axioms LinearRepresentation.contragredient_apply
+#check LinearRepresentation.freeGroup_invariant_iff
+#print axioms LinearRepresentation.freeGroup_invariant_iff
