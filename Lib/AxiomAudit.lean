@@ -19,6 +19,8 @@ is an evidence command rather than library content.
 #print axioms Module.End.comp_cyclicAverage
 
 #print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
+#print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime
+#print axioms Matrix.quotientRangeToLinEquivZModOfIsCoprime
 
 #print axioms Module.End.oneAddSMul
 #print axioms Module.End.oneAddSMul_zero
@@ -43,6 +45,11 @@ is an evidence command rather than library content.
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inl
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
 #print axioms GroupExtension.Splitting.abelianizationMulEquiv
+
+#print axioms Subgroup.isMulCommutative_of_closure_eq_top
+#print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
+#print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
+#print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
 
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_common_projected_seed
