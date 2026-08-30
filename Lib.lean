@@ -138,6 +138,7 @@ import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse
 import Lib.Algebra.Homology.ThreeColumnPage
 import Lib.Algebra.Homology.SpectralObject.MapHomologicalFunctor
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
 
 /-!
 # Reusable extracted library

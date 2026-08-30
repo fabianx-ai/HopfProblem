@@ -248,3 +248,366 @@ is an evidence command rather than library content.
 #check Monoid.PushoutI.equivOfCocone_symm_apply_f
 #print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
 
+
+#check Path.trans_mem
+#print axioms Path.trans_mem
+#check FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc
+#print axioms FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc
+#check FundamentalGroup.VanKampen.LocalPathValue
+#print axioms FundamentalGroup.VanKampen.LocalPathValue
+#check FundamentalGroup.VanKampen.LocalPathValue.mk
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.mk
+#check FundamentalGroup.VanKampen.LocalPathValue.value
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.value
+#check FundamentalGroup.VanKampen.LocalPathValue.refl
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.refl
+#check FundamentalGroup.VanKampen.LocalPathValue.trans
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.trans
+#check FundamentalGroup.VanKampen.LocalPathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.subpath_mul
+#check FundamentalGroup.VanKampen.LocalPathValue.compatible
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.compatible
+#check FundamentalGroup.VanKampen.LocalPathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.value_cast
+#check FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.PathValue
+#print axioms FundamentalGroup.VanKampen.PathValue
+#check FundamentalGroup.VanKampen.PathValue.mk
+#print axioms FundamentalGroup.VanKampen.PathValue.mk
+#check FundamentalGroup.VanKampen.PathValue.value
+#print axioms FundamentalGroup.VanKampen.PathValue.value
+#check FundamentalGroup.VanKampen.PathValue.refl
+#print axioms FundamentalGroup.VanKampen.PathValue.refl
+#check FundamentalGroup.VanKampen.PathValue.trans
+#print axioms FundamentalGroup.VanKampen.PathValue.trans
+#check FundamentalGroup.VanKampen.PathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.PathValue.subpath_mul
+#check FundamentalGroup.VanKampen.PathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.PathValue.value_cast
+#check FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one
+#check FundamentalGroup.VanKampen.PathValue.Extends
+#print axioms FundamentalGroup.VanKampen.PathValue.Extends
+#check FundamentalGroup.VanKampen.PathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.PathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.TwoOpenCover
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover
+#check FundamentalGroup.VanKampen.TwoOpenCover.mk
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.mk
+#check FundamentalGroup.VanKampen.TwoOpenCover.U
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.U
+#check FundamentalGroup.VanKampen.TwoOpenCover.V
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.V
+#check FundamentalGroup.VanKampen.TwoOpenCover.cover
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.cover
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedU
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedV
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedIntersection
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedIntersection
+#check FundamentalGroup.VanKampen.TwoOpenCover.base
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.base
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseU
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseV
+#check FundamentalGroup.VanKampen.TwoOpenCover.chart
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart
+#check FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart
+#check FundamentalGroup.VanKampen.TwoOpenCover.chart_open
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart_open
+#check FundamentalGroup.VanKampen.TwoOpenCover.chart_cover
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart_cover
+#check FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V
+#check FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo
+#check FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlap
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlap
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint
+#check FundamentalGroup.VanKampen.TwoOpenCover.baseChart
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseChart
+#check FundamentalGroup.VanKampen.TwoOpenCover.UGroup
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.UGroup
+#check FundamentalGroup.VanKampen.TwoOpenCover.VGroup
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.VGroup
+#check FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapToU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapToU
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapToV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapToV
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionU
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionV
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible
+#check FundamentalGroup.VanKampen.TwoOpenCover.Compatible
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.Compatible
+#check FundamentalGroup.VanKampen.pathIn
+#print axioms FundamentalGroup.VanKampen.pathIn
+#check FundamentalGroup.VanKampen.pathIn_apply
+#print axioms FundamentalGroup.VanKampen.pathIn_apply
+#check FundamentalGroup.VanKampen.pathIn_map
+#print axioms FundamentalGroup.VanKampen.pathIn_map
+#check FundamentalGroup.VanKampen.pathIn_refl
+#print axioms FundamentalGroup.VanKampen.pathIn_refl
+#check FundamentalGroup.VanKampen.pathIn_trans
+#print axioms FundamentalGroup.VanKampen.pathIn_trans
+#check FundamentalGroup.VanKampen.homotopyIn
+#print axioms FundamentalGroup.VanKampen.homotopyIn
+#check FundamentalGroup.VanKampen.homotopy_trans_mem
+#print axioms FundamentalGroup.VanKampen.homotopy_trans_mem
+#check FundamentalGroup.VanKampen.homotopy_transRefl_mem
+#print axioms FundamentalGroup.VanKampen.homotopy_transRefl_mem
+#check FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem
+#print axioms FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem
+#check FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem
+#print axioms FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem
+#check FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem
+#check FundamentalGroup.VanKampen.subpathTransSubpathIn
+#print axioms FundamentalGroup.VanKampen.subpathTransSubpathIn
+#check FundamentalGroup.VanKampen.PathClass.pathClass_property_cast
+#print axioms FundamentalGroup.VanKampen.PathClass.pathClass_property_cast
+#check FundamentalGroup.VanKampen.PathClass.pathClass_induction_of_open_cover
+#print axioms FundamentalGroup.VanKampen.PathClass.pathClass_induction_of_open_cover
+#check FundamentalGroup.VanKampen.PathClass.quotient_symm_trans_cancel
+#print axioms FundamentalGroup.VanKampen.PathClass.quotient_symm_trans_cancel
+#check FundamentalGroup.VanKampen.PathClass.quotient_trans_right_cancel
+#print axioms FundamentalGroup.VanKampen.PathClass.quotient_trans_right_cancel
+#check FundamentalGroup.VanKampen.PathClass.basedLoop
+#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop
+#check FundamentalGroup.VanKampen.PathClass.pathDifference
+#print axioms FundamentalGroup.VanKampen.PathClass.pathDifference
+#check FundamentalGroup.VanKampen.PathClass.basedLoop_refl
+#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_refl
+#check FundamentalGroup.VanKampen.PathClass.basedLoop_trans
+#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_trans
+#check FundamentalGroup.VanKampen.PathClass.basedLoop_comparison
+#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_comparison
+#check FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
+#check FundamentalGroup.VanKampen.TwoOpenCover.chartPath
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath
+#check FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base
+#check FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass
+#check FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base
+#check FundamentalGroup.VanKampen.TwoOpenCover.closePath
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath
+#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl
+#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans
+#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic
+#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop
+#check FundamentalGroup.VanKampen.TwoOpenCover.chartHom
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartHom
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapClose
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapClose
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible
+#check FundamentalGroup.VanKampen.TwoOpenCover.localPathValue
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localPathValue
+#check FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop
+#check FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom
+#print axioms FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom
+#check FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom_mk
+#print axioms FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom_mk
+#check FundamentalGroup.VanKampen.mem_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.mem_of_subpath_mem
+#check FundamentalGroup.VanKampen.subpath_mem_mono
+#print axioms FundamentalGroup.VanKampen.subpath_mem_mono
+#check FundamentalGroup.VanKampen.exists_path_subdivision
+#print axioms FundamentalGroup.VanKampen.exists_path_subdivision
+#check FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive
+#check FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo
+#check FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero
+#check FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step
+#check FundamentalGroup.VanKampen.LocalPathValue.exists_primitive
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.exists_primitive
+#check FundamentalGroup.VanKampen.LocalPathValue.primitive_unique
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.primitive_unique
+#check FundamentalGroup.VanKampen.convexComb_monotone
+#print axioms FundamentalGroup.VanKampen.convexComb_monotone
+#check FundamentalGroup.VanKampen.convexComb_comp
+#print axioms FundamentalGroup.VanKampen.convexComb_comp
+#check FundamentalGroup.VanKampen.subpath_subpath
+#print axioms FundamentalGroup.VanKampen.subpath_subpath
+#check FundamentalGroup.VanKampen.intervalHalf
+#print axioms FundamentalGroup.VanKampen.intervalHalf
+#check FundamentalGroup.VanKampen.trans_convexComb_first_half
+#print axioms FundamentalGroup.VanKampen.trans_convexComb_first_half
+#check FundamentalGroup.VanKampen.trans_convexComb_second_half
+#print axioms FundamentalGroup.VanKampen.trans_convexComb_second_half
+#check FundamentalGroup.VanKampen.trans_apply_intervalHalf
+#print axioms FundamentalGroup.VanKampen.trans_apply_intervalHalf
+#check FundamentalGroup.VanKampen.trans_subpath_first_half
+#print axioms FundamentalGroup.VanKampen.trans_subpath_first_half
+#check FundamentalGroup.VanKampen.trans_subpath_second_half
+#print axioms FundamentalGroup.VanKampen.trans_subpath_second_half
+#check FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq
+#check FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath
+#check FundamentalGroup.VanKampen.LocalPathValue.transport
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport
+#check FundamentalGroup.VanKampen.LocalPathValue.transport_zero
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_zero
+#check FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive
+#check FundamentalGroup.VanKampen.LocalPathValue.transport_subpath
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_subpath
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_local
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_local
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul
+#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans
+#check FundamentalGroup.VanKampen.LocalPathValue.extension
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.extension
+#check FundamentalGroup.VanKampen.LocalPathValue.extension_extends
+#print axioms FundamentalGroup.VanKampen.LocalPathValue.extension_extends
+#check FundamentalGroup.VanKampen.squareHorizontal
+#print axioms FundamentalGroup.VanKampen.squareHorizontal
+#check FundamentalGroup.VanKampen.squareVertical
+#print axioms FundamentalGroup.VanKampen.squareVertical
+#check FundamentalGroup.VanKampen.squarePathHomotopy
+#print axioms FundamentalGroup.VanKampen.squarePathHomotopy
+#check FundamentalGroup.VanKampen.convexComb_mem_Icc
+#print axioms FundamentalGroup.VanKampen.convexComb_mem_Icc
+#check FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle
+#print axioms FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle
+#check FundamentalGroup.VanKampen.rectangleHorizontalVertical
+#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical
+#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal
+#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal
+#check FundamentalGroup.VanKampen.rectangleHorizontalVertical_map
+#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical_map
+#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map
+#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map
+#check FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem
+#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem
+#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem
+#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem
+#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy
+#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy
+#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply
+#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply
+#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem
+#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem
+#check FundamentalGroup.VanKampen.PathValue.square_cell_of_local
+#print axioms FundamentalGroup.VanKampen.PathValue.square_cell_of_local
+#check FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant
+#print axioms FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant
+#check FundamentalGroup.VanKampen.PathValue.square_strip
+#print axioms FundamentalGroup.VanKampen.PathValue.square_strip
+#check FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy
+#print axioms FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy
+#check FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero
+#print axioms FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero
+#check FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one
+#print axioms FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one
+#check FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover
+#print axioms FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover
+#check FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover
+#print axioms FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover
+#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue
+#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends
+#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.TwoOpenCover.lift
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift
+#check FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem
+#check FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU
+#check FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV
+#check FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup
+#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHom
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHom
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom
+#check FundamentalGroup.VanKampen.TwoOpenCover.Pushout
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.Pushout
+#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv
+#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of
+#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
