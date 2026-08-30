@@ -140,6 +140,24 @@ declaration namespaces.  Concrete S6 and Hopf consumers call the natural APIs
 directly.  Comparator remains deferred to the single final accumulated-change
 gate.
 
+## Standard coinvariants for semidirect-product abelianization
+
+`Lib/GroupTheory/Abelianization/SemidirectProduct.lean` expresses the
+abelianization of a semidirect product through Mathlib's standard
+`Representation.Coinvariants` of the induced integral representation on the
+kernel's abelianization.  Its declarations live in the natural
+`Abelianization` and `SemidirectProduct` namespaces, and its ten-name public
+surface hides all proof-construction maps behind the final equivalence and its
+four simp lemmas.
+
+This additive commit deliberately retains the older one-step quotient model in
+`Lib/GroupTheory/SplitExtension.lean` for one green transition step.  The new
+theorem is therefore audited alongside, rather than substituted for, that
+staging API.  All ten new declarations are free library assets; there is no
+proof-specific adapter or claimed hand-proof credit in this commit.  The
+cumulative per-export audit covers 91 names.  Comparator remains deferred to
+the single final accumulated-change gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism

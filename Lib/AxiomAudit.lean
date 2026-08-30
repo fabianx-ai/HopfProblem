@@ -32,6 +32,17 @@ is an evidence command rather than library content.
 #print axioms Module.End.oneAddSMul_preserves_bilin
 #print axioms Module.End.oneAddSMul_preserves_bilin_of_isSkewAdjoint
 
+#print axioms Abelianization.mapMulAut
+#print axioms SemidirectProduct.abelianizationRepresentation
+#print axioms SemidirectProduct.AbelianizationCoinvariants
+#print axioms SemidirectProduct.coinvariantsMk
+#print axioms SemidirectProduct.coinvariantsMk_action
+#print axioms SemidirectProduct.abelianizationMulEquiv
+#print axioms SemidirectProduct.abelianizationMulEquiv_apply_of_inl
+#print axioms SemidirectProduct.abelianizationMulEquiv_apply_of_inr
+#print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inl
+#print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
+
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_common_projected_seed
 #print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_consecutive

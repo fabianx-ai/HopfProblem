@@ -1,3 +1,4 @@
+import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.SplitExtension
 import Lib.GroupTheory.TwoExceptionalGluing
 import Lib.HomologicalAlgebra.UnitTransgression
