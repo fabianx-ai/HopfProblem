@@ -135,3 +135,92 @@ is an evidence command rather than library content.
 #print axioms simplyConnectedSpace_of_open_cover
 #print axioms MorseCells.built_of_compact_smooth_manifold
 #print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
+
+#check LinearMap.RankOneNormalization
+#print axioms LinearMap.RankOneNormalization
+#check LinearMap.RankOneNormalization.mk
+#print axioms LinearMap.RankOneNormalization.mk
+#check LinearMap.RankOneNormalization.source
+#print axioms LinearMap.RankOneNormalization.source
+#check LinearMap.RankOneNormalization.target
+#print axioms LinearMap.RankOneNormalization.target
+#check LinearMap.RankOneNormalization.normalized
+#print axioms LinearMap.RankOneNormalization.normalized
+#check LinearMap.RankOneNormalization.coefficient
+#print axioms LinearMap.RankOneNormalization.coefficient
+#check LinearMap.RankOneNormalization.normalized_eq_lsmul
+#print axioms LinearMap.RankOneNormalization.normalized_eq_lsmul
+#check LinearMap.RankOneNormalization.kernelEquivNormalized
+#print axioms LinearMap.RankOneNormalization.kernelEquivNormalized
+#check LinearMap.RankOneNormalization.kernelEquiv
+#print axioms LinearMap.RankOneNormalization.kernelEquiv
+#check LinearMap.RankOneNormalization.cokernelEquivNormalized
+#print axioms LinearMap.RankOneNormalization.cokernelEquivNormalized
+#check LinearMap.RankOneNormalization.cokernelEquiv
+#print axioms LinearMap.RankOneNormalization.cokernelEquiv
+#check LinearMap.RankOneNormalization.bijective_iff_isUnit
+#print axioms LinearMap.RankOneNormalization.bijective_iff_isUnit
+
+#check ThreeColumnPage.Data
+#print axioms ThreeColumnPage.Data
+#check ThreeColumnPage.Data.mk
+#print axioms ThreeColumnPage.Data.mk
+#check ThreeColumnPage.Data.E
+#print axioms ThreeColumnPage.Data.E
+#check ThreeColumnPage.Data.addCommGroup
+#print axioms ThreeColumnPage.Data.addCommGroup
+#check ThreeColumnPage.Data.module
+#print axioms ThreeColumnPage.Data.module
+#check ThreeColumnPage.Data.differential
+#print axioms ThreeColumnPage.Data.differential
+#check ThreeColumnPage.Data.source
+#print axioms ThreeColumnPage.Data.source
+#check ThreeColumnPage.Data.target
+#print axioms ThreeColumnPage.Data.target
+#check ThreeColumnPage.Data.middle
+#print axioms ThreeColumnPage.Data.middle
+#check ThreeColumnPage.Data.ofCoefficients
+#print axioms ThreeColumnPage.Data.ofCoefficients
+#check ThreeColumnPage.Data.normalization
+#print axioms ThreeColumnPage.Data.normalization
+#check ThreeColumnPage.Data.coefficient
+#print axioms ThreeColumnPage.Data.coefficient
+#check ThreeColumnPage.Data.ofCoefficients_coefficient
+#print axioms ThreeColumnPage.Data.ofCoefficients_coefficient
+#check ThreeColumnPage.Data.Kernel
+#print axioms ThreeColumnPage.Data.Kernel
+#check ThreeColumnPage.Data.Cokernel
+#print axioms ThreeColumnPage.Data.Cokernel
+#check ThreeColumnPage.Data.kernelEquiv
+#print axioms ThreeColumnPage.Data.kernelEquiv
+#check ThreeColumnPage.Data.cokernelEquiv
+#print axioms ThreeColumnPage.Data.cokernelEquiv
+#check ThreeColumnPage.Data.differential_bijective_iff_isUnit
+#print axioms ThreeColumnPage.Data.differential_bijective_iff_isUnit
+
+#check ThreeColumnPage.FilteredAbutment
+#print axioms ThreeColumnPage.FilteredAbutment
+#check ThreeColumnPage.FilteredAbutment.mk
+#print axioms ThreeColumnPage.FilteredAbutment.mk
+#check ThreeColumnPage.FilteredAbutment.H
+#print axioms ThreeColumnPage.FilteredAbutment.H
+#check ThreeColumnPage.FilteredAbutment.addCommGroup
+#print axioms ThreeColumnPage.FilteredAbutment.addCommGroup
+#check ThreeColumnPage.FilteredAbutment.degreeOne
+#print axioms ThreeColumnPage.FilteredAbutment.degreeOne
+#check ThreeColumnPage.FilteredAbutment.bottom
+#print axioms ThreeColumnPage.FilteredAbutment.bottom
+#check ThreeColumnPage.FilteredAbutment.middle
+#print axioms ThreeColumnPage.FilteredAbutment.middle
+#check ThreeColumnPage.FilteredAbutment.bottom_le_middle
+#print axioms ThreeColumnPage.FilteredAbutment.bottom_le_middle
+#check ThreeColumnPage.FilteredAbutment.bottomGraded
+#print axioms ThreeColumnPage.FilteredAbutment.bottomGraded
+#check ThreeColumnPage.FilteredAbutment.middleGraded
+#print axioms ThreeColumnPage.FilteredAbutment.middleGraded
+#check ThreeColumnPage.FilteredAbutment.topGraded
+#print axioms ThreeColumnPage.FilteredAbutment.topGraded
+#check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
+#print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
+#check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq

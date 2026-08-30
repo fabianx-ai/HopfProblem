@@ -135,6 +135,7 @@ import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse
+import Lib.Algebra.Homology.ThreeColumnPage
 
 /-!
 # Reusable extracted library
