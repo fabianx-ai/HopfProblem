@@ -26,6 +26,14 @@ is an evidence command rather than library content.
 #print axioms exteriorPower.finCoordinates_apply
 #print axioms exteriorPower.finCoordinates_map
 
+#print axioms exteriorPower.wedge
+#print axioms exteriorPower.coe_wedge
+#print axioms exteriorPower.finCoordinates_finBasis
+#print axioms exteriorPower.finBasis_wedge_of_not_disjoint
+#print axioms exteriorPower.finCoordinates_wedge_of_not_disjoint
+#print axioms exteriorPower.finBasis_wedge_of_disjoint
+#print axioms exteriorPower.finCoordinates_wedge_of_disjoint
+
 #print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
 #print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime
 #print axioms Matrix.quotientRangeToLinEquivZModOfIsCoprime

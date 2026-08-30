@@ -103,6 +103,7 @@ import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.GeneratingSet
 import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
+import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
