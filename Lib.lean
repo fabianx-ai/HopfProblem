@@ -141,6 +141,7 @@ import Lib.Algebra.Homology.SpectralObject.MapHomologicalFunctor
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
 import Lib.Topology.MappingTorus.TranslationCocycle
 import Lib.Topology.MappingTorus.SquareZeroWinding
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 
 /-!
 # Reusable extracted library

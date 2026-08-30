@@ -612,6 +612,27 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
 
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#check FundamentalGroup.basepointChange_naturality
+#print axioms FundamentalGroup.basepointChange_naturality
+#check FundamentalGroup.basepointChange_naturality_apply
+#print axioms FundamentalGroup.basepointChange_naturality_apply
+#check FundamentalGroup.map_surjective_at_of_path
+#print axioms FundamentalGroup.map_surjective_at_of_path
+#check FundamentalGroup.map_surjective_at_of_pathConnected
+#print axioms FundamentalGroup.map_surjective_at_of_pathConnected
+#check FundamentalGroup.eq_one_of_path
+#print axioms FundamentalGroup.eq_one_of_path
+#check FundamentalGroup.simplyConnectedSpace_iff_eq_one
+#print axioms FundamentalGroup.simplyConnectedSpace_iff_eq_one
+#check FundamentalGroup.simplyConnectedSpace_of_eq_one
+#print axioms FundamentalGroup.simplyConnectedSpace_of_eq_one
+#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
+
 -- Basic: every public source declaration in source order.
 #check Mathoverflow1973.MappingTorus.Circle
 #print axioms Mathoverflow1973.MappingTorus.Circle
