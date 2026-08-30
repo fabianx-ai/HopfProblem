@@ -1156,6 +1156,33 @@ is an evidence command rather than library content.
 #check PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
 #print axioms PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison` -/
+
+#check PrincipalCoverLocalSystem.StalkComparisonData
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData
+#check PrincipalCoverLocalSystem.StalkComparisonData.mk
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.mk
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkMap
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkMap
+#check PrincipalCoverLocalSystem.StalkComparisonData.section_isLocallyConstant
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.section_isLocallyConstant
+#check PrincipalCoverLocalSystem.StalkComparisonData.section_equivariant
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.section_equivariant
+#check PrincipalCoverLocalSystem.StalkComparisonData.toSection
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.toSection
+#check PrincipalCoverLocalSystem.StalkComparisonData.sectionMap
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.sectionMap
+#check PrincipalCoverLocalSystem.StalkComparisonData.presheafHom
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.presheafHom
+#check PrincipalCoverLocalSystem.StalkComparisonData.hom
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.hom
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_comp_stalkEvaluation
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_comp_stalkEvaluation
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_isIso
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_isIso
+#check PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
 #check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits

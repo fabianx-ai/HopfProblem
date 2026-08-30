@@ -154,7 +154,7 @@ import Lib.CategoryTheory.Sites.Leray.DegreeZero
 import Lib.Topology.Covering.QuotientConnectedness
 import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctoriality
 import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctorComparison
-import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Stalk
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison
 
 /-!
 # Reusable extracted library
