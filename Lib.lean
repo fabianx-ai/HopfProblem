@@ -144,6 +144,8 @@ import Lib.Topology.MappingTorus.SquareZeroWinding
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.Geometry.Manifold.RestrictScalars
 import Lib.Geometry.Manifold.ContMDiff.Descent
+import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
+import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 
 /-!
 # Reusable extracted library

@@ -802,3 +802,91 @@ is an evidence command rather than library content.
 #print axioms contMDiff_of_comp_surjective_localDiffeomorph_restrictScalars
 #check contMDiffOn_of_contMDiff_restriction
 #print axioms contMDiffOn_of_contMDiff_restriction
+
+-- CochainTransgression: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mk
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mk
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.F
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.F
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.complex
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.complex
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.zero
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.zero
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.initial_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.initial_exact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.exact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mono_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mono_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.epi_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.epi_g
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.boundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.boundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι_toBoundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι_toBoundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_shortExact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_shortExact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second_shortExact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second_shortExact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex_exact
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex_epi_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex_epi_g
+#check CategoryTheory.Abelian.ExtTransgression.iCycles_toCycles
+#print axioms CategoryTheory.Abelian.ExtTransgression.iCycles_toCycles
+#check CategoryTheory.Abelian.ExtTransgression.cyclesInitial_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesInitial_exact
+#check CategoryTheory.Abelian.ExtTransgression.cyclesResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesResolution
+#check CategoryTheory.Abelian.ExtTransgression.cochainTransgression
+#print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression
+
+-- ResolutionTransgression: every intended public source declaration in source order.
+#check CategoryTheory.Sheaf.Leray.AbelianSheaf
+#print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
+#check CategoryTheory.Sheaf.Leray.integralSheaf
+#print axioms CategoryTheory.Sheaf.Leray.integralSheaf
+#check CategoryTheory.Sheaf.Leray.abelianSheafHasExt
+#print axioms CategoryTheory.Sheaf.Leray.abelianSheafHasExt
+#check CategoryTheory.Sheaf.Leray.sheafCohomologyAddCommGroup
+#print axioms CategoryTheory.Sheaf.Leray.sheafCohomologyAddCommGroup
+#check CategoryTheory.Sheaf.Leray.pushforward
+#print axioms CategoryTheory.Sheaf.Leray.pushforward
+#check CategoryTheory.Sheaf.Leray.pushforwardAdditive
+#print axioms CategoryTheory.Sheaf.Leray.pushforwardAdditive
+#check CategoryTheory.Sheaf.Leray.higherDirectImage
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImage
+#check CategoryTheory.Sheaf.Leray.higherDirectImageSheaf
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageSheaf
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionIso
+#check CategoryTheory.Sheaf.Leray.pushedResolution
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolution
+#check CategoryTheory.Sheaf.Leray.E₂
+#print axioms CategoryTheory.Sheaf.Leray.E₂
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
+#check CategoryTheory.Sheaf.Leray.resolutionTransgression
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
