@@ -18,6 +18,15 @@ is an evidence command rather than library content.
 #print axioms Module.End.range_cyclicAverage
 #print axioms Module.End.comp_cyclicAverage
 
+#print axioms LinearMap.dualMap_sub
+#print axioms LinearMap.dualAnnihilator_range_sub_eq_ker_sub_dualMap
+#print axioms LinearMap.dualAnnihilator_range_sub_id_eq_fixedSubmodule
+#print axioms LinearMap.range_dualMap_eq_fixedSubmodule_of_surjective_of_ker_eq_range_sub_id
+#print axioms LinearMap.dualEquivFixedSubmoduleOfSurjectiveOfKerEqRangeSubId
+#print axioms LinearMap.dualEquivFixedSubmoduleOfSurjectiveOfKerEqRangeSubId_apply_coe
+#print axioms LinearMap.injective_of_duality_naturality_of_surjective
+#print axioms LinearMap.map_range_eq_fixedSubmodule_of_duality_naturality
+
 #print axioms exteriorPower.finBasis
 #print axioms exteriorPower.finBasis_map_coefficient
 #print axioms exteriorPower.finMatrix

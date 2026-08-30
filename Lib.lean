@@ -102,6 +102,7 @@ import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.GeneratingSet
 import Lib.LinearAlgebra.CyclicAverage
+import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
