@@ -611,3 +611,149 @@ is an evidence command rather than library content.
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of
 #check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+
+-- Basic: every public source declaration in source order.
+#check Mathoverflow1973.MappingTorus.Circle
+#print axioms Mathoverflow1973.MappingTorus.Circle
+#check Mathoverflow1973.MappingTorus.deck
+#print axioms Mathoverflow1973.MappingTorus.deck
+#check Mathoverflow1973.MappingTorus.deck_zero
+#print axioms Mathoverflow1973.MappingTorus.deck_zero
+#check Mathoverflow1973.MappingTorus.deck_add
+#print axioms Mathoverflow1973.MappingTorus.deck_add
+#check Mathoverflow1973.MappingTorus.deck_continuous
+#print axioms Mathoverflow1973.MappingTorus.deck_continuous
+#check Mathoverflow1973.MappingTorus.deckHomeomorph
+#print axioms Mathoverflow1973.MappingTorus.deckHomeomorph
+#check Mathoverflow1973.MappingTorus.orbitSetoid
+#print axioms Mathoverflow1973.MappingTorus.orbitSetoid
+#check Mathoverflow1973.MappingTorus.Torus
+#print axioms Mathoverflow1973.MappingTorus.Torus
+#check Mathoverflow1973.MappingTorus.instLocal1
+#print axioms Mathoverflow1973.MappingTorus.instLocal1
+#check Mathoverflow1973.MappingTorus.mk
+#print axioms Mathoverflow1973.MappingTorus.mk
+#check Mathoverflow1973.MappingTorus.mk_continuous
+#print axioms Mathoverflow1973.MappingTorus.mk_continuous
+#check Mathoverflow1973.MappingTorus.mk_surjective
+#print axioms Mathoverflow1973.MappingTorus.mk_surjective
+#check Mathoverflow1973.MappingTorus.mk_eq_mk_iff
+#print axioms Mathoverflow1973.MappingTorus.mk_eq_mk_iff
+#check Mathoverflow1973.MappingTorus.mk_deck
+#print axioms Mathoverflow1973.MappingTorus.mk_deck
+#check Mathoverflow1973.MappingTorus.mk_sub_one
+#print axioms Mathoverflow1973.MappingTorus.mk_sub_one
+#check Mathoverflow1973.MappingTorus.mk_add_one
+#print axioms Mathoverflow1973.MappingTorus.mk_add_one
+#check Mathoverflow1973.MappingTorus.mk_preimage_image
+#print axioms Mathoverflow1973.MappingTorus.mk_preimage_image
+#check Mathoverflow1973.MappingTorus.mk_open
+#print axioms Mathoverflow1973.MappingTorus.mk_open
+#check Mathoverflow1973.MappingTorus.circle_intCast
+#print axioms Mathoverflow1973.MappingTorus.circle_intCast
+#check Mathoverflow1973.MappingTorus.circle_coe_eq_iff
+#print axioms Mathoverflow1973.MappingTorus.circle_coe_eq_iff
+#check Mathoverflow1973.MappingTorus.base
+#print axioms Mathoverflow1973.MappingTorus.base
+#check Mathoverflow1973.MappingTorus.base_mk
+#print axioms Mathoverflow1973.MappingTorus.base_mk
+
+-- TranslationCocycle: every public source declaration in source order.
+#check Mathoverflow1973.MappingTorus.TranslationCocycle
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_continuous
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_continuous
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_deck
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_deck
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.map
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_mk
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_mk
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_add_apply
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_add_apply
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_zero_apply
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_zero_apply
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear_zero
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear_zero
+
+-- SquareZeroWinding: every public source declaration in source order.
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.Torus
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.Torus
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_one
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_one
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.translationCocycle
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.translationCocycle
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_zero
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_zero
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
+#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
