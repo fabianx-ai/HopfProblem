@@ -167,6 +167,14 @@ def shear (C : TranslationCocycle monodromy) (ell : ℤ) :
   continuous_toFun := (C.map ell).continuous
   continuous_invFun := (C.map (-ell)).continuous
 
+@[simp]
+theorem base_shear (C : TranslationCocycle monodromy) (ell : ℤ)
+    (z : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph) :
+    Mathoverflow1973.MappingTorus.base monodromy.toHomeomorph (C.shear ell z) =
+      Mathoverflow1973.MappingTorus.base monodromy.toHomeomorph z := by
+  induction z using Quotient.inductionOn with
+  | _ p => rfl
+
 theorem shear_add_apply (C : TranslationCocycle monodromy) (m n : ℤ) (z) :
     C.shear (m + n) z = C.shear m (C.shear n z) :=
   C.map_add_apply m n z

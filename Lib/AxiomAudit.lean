@@ -677,6 +677,8 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_zero_apply
 #check Mathoverflow1973.MappingTorus.TranslationCocycle.shear
 #print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear
+#check Mathoverflow1973.MappingTorus.TranslationCocycle.base_shear
+#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.base_shear
 #check Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
 #print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
 #check Mathoverflow1973.MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
