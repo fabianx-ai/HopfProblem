@@ -51,30 +51,6 @@ is an evidence command rather than library content.
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
 #print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
 
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_common_projected_seed
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingDefect_consecutive
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.relationMap
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.GluingCokernel
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.bezoutQ
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.classifyingMap
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.classifyingMap_relationMap_eq_zero
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.range_relationMap_eq_ker_classifyingMap
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.classifyingMap_surjective
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingCokernelEquivZMod
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.GluingGroup
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingGroupCommGroup
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingGroupEquivZMod
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingCokernelEquivIntOfDefectEqZero
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingCokernel_subsingleton_of_defect_natAbs_eq_one
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.consecutive_gluingCokernel_subsingleton
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.isMulCommutative_of_twoExceptionalRelations
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.GluingGenerator
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.gluingRelations
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.PresentedGluingGroup
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.presentedGluingGroup_isMulCommutative
-#print axioms Lib.GroupTheory.TwoExceptionalGluing.common_projected_seed_observables
-
 #print axioms Lib.HomologicalAlgebra.UnitTransgression.transgressionMap
 #print axioms Lib.HomologicalAlgebra.UnitTransgression.TransgressionKernel
 #print axioms Lib.HomologicalAlgebra.UnitTransgression.TransgressionCokernel

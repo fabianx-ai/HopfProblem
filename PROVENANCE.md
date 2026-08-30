@@ -190,6 +190,34 @@ unit-transgression staging modules remain until their consumers are exchanged
 in separately green commits.  Comparator remains deferred to the single final
 accumulated-change gate.
 
+## Two-exceptional gluing adapter exchange
+
+The paper-facing relation data now lives in
+`S6/TwoExceptionalGluing.lean`.  Its 20 public declarations are
+proof-specific adapters: they specialize the reusable
+`Matrix.quotientRangeToLinEquivZModOfIsCoprime` theorem to the paper's
+rank-two relation matrix and use
+`Subgroup.isMulCommutative_of_closure_eq_top` for the presentation's
+commuting-generator step.  These adapters are charged; the underlying
+`Matrix` and `Subgroup` declarations remain free library assets.
+
+The exchange retires the five implementation-facing public names
+`bezoutQ`, `classifyingMap`,
+`classifyingMap_relationMap_eq_zero`,
+`range_relationMap_eq_ker_classifyingMap`, and
+`classifyingMap_surjective`.  It adds the explicit paper relation matrix and
+the theorem identifying its linear map.  No compatibility aliases preserve
+the former `Lib.GroupTheory.TwoExceptionalGluing` namespace.
+
+After this exchange, the reusable library surface is 53 public source
+commands and 54 individually audited exported environment names, counting
+the generated additive commuting-generator theorem explicitly.  The
+proof-owned S6 audit covers all 20 gluing adapter names separately.  The Hopf
+proof consumes only `S6.TwoExceptionalGluing.gluingDefect`; the remaining
+paper adapters are project-build-checked but are not claimed to lie in the
+final theorem's dependency closure.  Comparator remains deferred to the
+single final accumulated-change gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism
@@ -212,7 +240,7 @@ the one final accumulated-shortcuts run.
 ## Two-exceptional twist arithmetic
 
 `Hopf/LCP/BoundaryTopology.lean` now defines `twistOrder` as the `(3,4)`
-specialization of `Lib.GroupTheory.TwoExceptionalGluing.gluingDefect`.  The concrete
+specialization of `S6.TwoExceptionalGluing.gluingDefect`.  The concrete
 `main_twist_value` proof is `rfl`, rather than an invocation of the generic
 consecutive-order theorem, so its previously empty axiom set remains empty.
 The sole downstream unfolding exposes both routed definitions.  The 23 public
