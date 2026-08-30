@@ -55,6 +55,51 @@ theorem normalized_eq_lsmul : C.normalized = LinearMap.lsmul R R C.coefficient :
   rw [hr, f.map_smul, C.target.map_smul]
   simp [coefficient, normalized, mul_comm]
 
+/-- A map with chosen rank-one coordinates is zero exactly when its normalized coefficient is
+zero. -/
+theorem map_eq_zero_iff : f = 0 ↔ C.coefficient = 0 := by
+  constructor
+  · rintro rfl
+    simp [coefficient, normalized]
+  · intro hc
+    apply LinearMap.ext
+    intro x
+    apply C.target.injective
+    have hx := LinearMap.congr_fun C.normalized_eq_lsmul (C.source x)
+    simpa [normalized, hc] using hx
+
+/-- A map with chosen rank-one coordinates is nonzero exactly when its normalized coefficient is
+nonzero. -/
+theorem map_ne_zero_iff : f ≠ 0 ↔ C.coefficient ≠ 0 :=
+  not_congr C.map_eq_zero_iff
+
+/-- Over a domain, a map with chosen rank-one coordinates is injective exactly when its normalized
+coefficient is nonzero. -/
+theorem injective_iff_coefficient_ne_zero [IsDomain R] :
+    Function.Injective f ↔ C.coefficient ≠ 0 := by
+  constructor
+  · intro hf hc
+    have hn : Function.Injective C.normalized :=
+      C.target.injective.comp (hf.comp C.source.symm.injective)
+    exact (one_ne_zero : (1 : R) ≠ 0) (hn (by
+      rw [C.normalized_eq_lsmul, hc]
+      simp))
+  · intro hc x y hxy
+    have hn : Function.Injective C.normalized := by
+      rw [C.normalized_eq_lsmul]
+      exact LinearMap.lsmul_injective hc
+    apply C.source.injective
+    apply hn
+    show C.normalized (C.source x) = C.normalized (C.source y)
+    simp [normalized, hxy]
+
+include C
+
+/-- Over a domain, a map between modules with chosen rank-one coordinates is injective exactly
+when it is nonzero. -/
+theorem injective_iff_ne_zero [IsDomain R] : Function.Injective f ↔ f ≠ 0 :=
+  (injective_iff_coefficient_ne_zero C).trans (map_ne_zero_iff C).symm
+
 /-- Chosen source coordinates identify the kernel of `f` with the kernel of its normalized map. -/
 def kernelEquivNormalized : LinearMap.ker f ≃ₗ[R] LinearMap.ker C.normalized where
   toFun x := ⟨C.source x, by simp [normalized]⟩
@@ -192,6 +237,12 @@ def cokernelEquiv (i : Fin 3) :
 theorem differential_bijective_iff_isUnit (i : Fin 3) :
     Function.Bijective (P.differential i) ↔ IsUnit (P.coefficient i) :=
   (P.normalization i).bijective_iff_isUnit
+
+/-- A lower differential between the page's normalized rank-one modules is injective exactly when
+it is nonzero. -/
+theorem differential_injective_iff_ne_zero [IsDomain R] (i : Fin 3) :
+    Function.Injective (P.differential i) ↔ P.differential i ≠ 0 :=
+  (P.normalization i).injective_iff_ne_zero
 
 end Data
 

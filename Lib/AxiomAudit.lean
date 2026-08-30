@@ -157,6 +157,14 @@ is an evidence command rather than library content.
 #print axioms LinearMap.RankOneNormalization.coefficient
 #check LinearMap.RankOneNormalization.normalized_eq_lsmul
 #print axioms LinearMap.RankOneNormalization.normalized_eq_lsmul
+#check LinearMap.RankOneNormalization.map_eq_zero_iff
+#print axioms LinearMap.RankOneNormalization.map_eq_zero_iff
+#check LinearMap.RankOneNormalization.map_ne_zero_iff
+#print axioms LinearMap.RankOneNormalization.map_ne_zero_iff
+#check LinearMap.RankOneNormalization.injective_iff_coefficient_ne_zero
+#print axioms LinearMap.RankOneNormalization.injective_iff_coefficient_ne_zero
+#check LinearMap.RankOneNormalization.injective_iff_ne_zero
+#print axioms LinearMap.RankOneNormalization.injective_iff_ne_zero
 #check LinearMap.RankOneNormalization.kernelEquivNormalized
 #print axioms LinearMap.RankOneNormalization.kernelEquivNormalized
 #check LinearMap.RankOneNormalization.kernelEquiv
@@ -204,6 +212,8 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnPage.Data.cokernelEquiv
 #check ThreeColumnPage.Data.differential_bijective_iff_isUnit
 #print axioms ThreeColumnPage.Data.differential_bijective_iff_isUnit
+#check ThreeColumnPage.Data.differential_injective_iff_ne_zero
+#print axioms ThreeColumnPage.Data.differential_injective_iff_ne_zero
 
 #check ThreeColumnPage.FilteredAbutment
 #print axioms ThreeColumnPage.FilteredAbutment
