@@ -1,3 +1,6 @@
+import Lib.GroupTheory.SplitExtension
+import Lib.GroupTheory.TwoExceptionalGluing
+import Lib.HomologicalAlgebra.UnitTransgression
 import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.LatticeOrbitIndex
 import Lib.LinearAlgebra.SquareZeroExchange
@@ -9,6 +12,6 @@ This root exports proof-independent mathematics extracted from checked V10 modul
 the Hopf development. Files below `Lib/` do not import `S6Shortcuts`, `S6`, `Hopf`, `Challenge`,
 or `Solution`; proof-specific data and adapters live downstream.
 
-The current first extraction contains the linear-algebraic results from V10 Section 6. Group and
-homological exports are added in the next coherent migration commit.
+The exported modules contain the reusable algebraic results formalized from V10 Section 6. Results
+which still lack a Lean proof are documented as gaps rather than represented by placeholders.
 -/

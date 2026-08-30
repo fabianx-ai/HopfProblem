@@ -13,7 +13,7 @@ This is unconditional algebra.  It neither supplies the analytic hypotheses of t
 construction nor asserts that the six-sphere has a complex structure.
 -/
 
-namespace S6.UnitTransgression
+namespace Lib.HomologicalAlgebra.UnitTransgression
 
 noncomputable section
 
@@ -131,4 +131,4 @@ theorem all_subsingleton_of_isUnit {p : ℤ} (D : LowDegreeFiltration p) (hp : I
 
 end
 
-end S6.UnitTransgression
+end Lib.HomologicalAlgebra.UnitTransgression

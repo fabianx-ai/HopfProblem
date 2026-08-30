@@ -12,7 +12,7 @@ No assertion about the existence of a complex structure on the six-sphere is mad
 analytic models required by the proposed construction lie outside the scope of this module.
 -/
 
-namespace S6.TwoExceptionalGluing
+namespace Lib.GroupTheory.TwoExceptionalGluing
 
 /-- The defect integer in the two-exceptional-fibre relation matrix. -/
 def gluingDefect (m n : ℕ) (ell0 ellM ellN : ℤ) : ℤ :=
@@ -323,4 +323,4 @@ theorem common_projected_seed_observables (m n : ℕ) [Invertible (m : ℚ)] [In
 
 end ProjectedSeed
 
-end S6.TwoExceptionalGluing
+end Lib.GroupTheory.TwoExceptionalGluing

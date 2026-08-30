@@ -74,6 +74,47 @@ export is already a verbatim Mathlib pull request: natural-namespace and
 generality refinement is a separate, checker-gated library step.  Comparator
 remains deferred to the single final accumulated-change gate.
 
+## Section 6 reusable group and homological library
+
+The proof-independent group and homological modules now live under
+`Lib/GroupTheory/` and `Lib/HomologicalAlgebra/`.  This migration moves the 23
+two-exceptional gluing declarations and 15 unit-transgression declarations out
+of the proof-owned `S6/` tree.  It also restores the previously omitted V10
+Lemma 6.13 development as `Lib/GroupTheory/SplitExtension.lean`, exporting 21
+split-extension and coinvariant declarations.
+
+The authoritative inputs are from S6 V10 source commit
+`8e83d2d2bc4e4ba32b8dfe0ecfe9094d3834cea0`.  Their pre-relocation SHA-256
+digests are:
+
+- `S6/TwoExceptionalGluing.lean`:
+  `6a9d2967cee09a08049706980bf1a65b73374716459d7cef32c75a27164d9c4d`;
+- `S6/UnitTransgression.lean`:
+  `2ee8d2cb7ec688e2e3dd5e7565126972058e2048a9ff7f840e46264013fbf8aa`;
+- `S6/SplitExtension.lean`:
+  `c3892dd31b191d694a69319f73d496a0e49fb9e8abb64905463df3e15065db2b`.
+
+All three files retain their V10 theorem statements and proof bodies.
+`UnitTransgression` changes only its module namespace.  In addition to its
+namespace move, `TwoExceptionalGluing` uses the relocated cyclic-average
+import and four correspondingly qualified library names.  The restored
+split-extension library form adds the repository's Apache-2.0 header, updates
+the module documentation, and changes the namespace.
+
+The cumulative Section 6 library surface is therefore 84 public source
+declarations.  `Lib/AxiomAudit.lean` queries all 84 names individually.  In
+the expansion ledger every one is a free library asset; the only charged
+changes are the proof-specific namespace/import adapters in Hopf and S6.
+
+The export boundary does not conceal formalization gaps.  The presented
+gluing group is not yet identified with its relation cokernel; the
+unit-transgression module consumes explicit low-degree filtration data rather
+than constructing a Leray spectral sequence; and the Euler-localization and
+conductor/ghost lemmas have no Lean implementation here.  No axiom or
+placeholder stands in for those missing results.  Natural Mathlib namespace
+and generality refinement remains a later library-only step.  Comparator is
+still deferred to the single final accumulated-change gate.
+
 ## Square-zero cusp exchange
 
 `Hopf/Shortcuts.lean` defines the integral dual-cusp endomorphism
@@ -96,7 +137,7 @@ the one final accumulated-shortcuts run.
 ## Two-exceptional twist arithmetic
 
 `Hopf/LCP/BoundaryTopology.lean` now defines `twistOrder` as the `(3,4)`
-specialization of `S6.TwoExceptionalGluing.gluingDefect`.  The concrete
+specialization of `Lib.GroupTheory.TwoExceptionalGluing.gluingDefect`.  The concrete
 `main_twist_value` proof is `rfl`, rather than an invocation of the generic
 consecutive-order theorem, so its previously empty axiom set remains empty.
 The sole downstream unfolding exposes both routed definitions.  The 23 public
