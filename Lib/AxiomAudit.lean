@@ -1031,3 +1031,30 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
 #check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
 #print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+
+/-! ## `Lib.Topology.Sheaves.ConstantPushforward` -/
+
+#check TopCat.ConstantSheaf.presheaf
+#print axioms TopCat.ConstantSheaf.presheaf
+#check TopCat.ConstantSheaf.sheaf
+#print axioms TopCat.ConstantSheaf.sheaf
+#check TopCat.ConstantSheaf.unit
+#print axioms TopCat.ConstantSheaf.unit
+#check TopCat.ConstantSheaf.unit_app_surjective
+#print axioms TopCat.ConstantSheaf.unit_app_surjective
+#check TopCat.ConstantSheaf.unit_app_injective
+#print axioms TopCat.ConstantSheaf.unit_app_injective
+#check TopCat.ConstantSheaf.unit_app_bijective
+#print axioms TopCat.ConstantSheaf.unit_app_bijective
+#check TopCat.ConstantSheaf.rawPushforwardHom
+#print axioms TopCat.ConstantSheaf.rawPushforwardHom
+#check TopCat.ConstantSheaf.pushforwardHom
+#print axioms TopCat.ConstantSheaf.pushforwardHom
+#check TopCat.ConstantSheaf.unit_pushforwardHom
+#print axioms TopCat.ConstantSheaf.unit_pushforwardHom
+#check TopCat.ConstantSheaf.pushforwardHom_app_unit
+#print axioms TopCat.ConstantSheaf.pushforwardHom_app_unit
+#check TopCat.ConstantSheaf.pushforwardHom_isIso_of_isBasis
+#print axioms TopCat.ConstantSheaf.pushforwardHom_isIso_of_isBasis
+#check TopCat.ConstantSheaf.pushforwardHom_isIso
+#print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
