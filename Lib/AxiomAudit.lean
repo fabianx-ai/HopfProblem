@@ -35,6 +35,16 @@ is an evidence command rather than library content.
 #print axioms exteriorPower.finCoordinates_apply
 #print axioms exteriorPower.finCoordinates_map
 
+#print axioms exteriorPower.reindexedFinBasis
+#print axioms exteriorPower.reindexedFinBasis_apply
+#print axioms exteriorPower.reindexedFinCoordinates
+#print axioms exteriorPower.reindexedFinCoordinates_apply
+#print axioms exteriorPower.reindexedFinCoordinates_basis
+#print axioms exteriorPower.reindexedFinMatrix
+#print axioms exteriorPower.reindexedFinBasis_map_coefficient
+#print axioms exteriorPower.toMatrix_map_reindexed
+#print axioms exteriorPower.reindexedFinCoordinates_map
+
 #print axioms exteriorPower.wedge
 #print axioms exteriorPower.coe_wedge
 #print axioms exteriorPower.finCoordinates_finBasis
@@ -42,6 +52,11 @@ is an evidence command rather than library content.
 #print axioms exteriorPower.finCoordinates_wedge_of_not_disjoint
 #print axioms exteriorPower.finBasis_wedge_of_disjoint
 #print axioms exteriorPower.finCoordinates_wedge_of_disjoint
+
+#print axioms Set.powersetCard.orderIsoOfFin_permOfDisjoint_castAdd
+#print axioms Set.powersetCard.orderIsoOfFin_permOfDisjoint_natAdd
+#print axioms Set.powersetCard.permOfDisjoint_eq
+#print axioms Set.powersetCard.permOfDisjoint_eq_of_orderEmbOfFin
 
 #print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
 #print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime

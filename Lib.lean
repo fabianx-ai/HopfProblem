@@ -104,7 +104,9 @@ import Lib.GroupTheory.GeneratingSet
 import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
+import Lib.LinearAlgebra.ExteriorPower.ReindexedCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
+import Lib.LinearAlgebra.ExteriorPower.PowersetShuffle
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
