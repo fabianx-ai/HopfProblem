@@ -150,6 +150,7 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 import Lib.Geometry.Manifold.Gluing.OverBase
 import Lib.Topology.Sheaves.ConstantPushforward
 import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
+import Lib.CategoryTheory.Sites.Leray.DegreeZero
 
 /-!
 # Reusable extracted library
