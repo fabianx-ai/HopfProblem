@@ -210,6 +210,19 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.ComparisonH1
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1ExactFunctor
 import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1
+import Lib.AlgebraicTopology.SingularSmallChains.Basic
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalChains
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshBarycenter
+import Lib.AlgebraicTopology.SingularSmallChains.Projective
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Native
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSubdivision
+import Lib.AlgebraicTopology.SingularSmallChains.SubdivisionCriterion
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalHomotopy
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineSimplex
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalIteration
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineChains
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSupport
+import Lib.AlgebraicTopology.SingularCochains.Generators
 
 /-!
 # Reusable extracted library

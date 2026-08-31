@@ -2491,3 +2491,446 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.h1_global_naturality
 #check TopCat.SingularCochainSheaf.h1Comparison_naturality
 #print axioms TopCat.SingularCochainSheaf.h1Comparison_naturality
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Basic` -/
+
+#check TopCat.SingularSmallChains.singularSet
+#print axioms TopCat.SingularSmallChains.singularSet
+#check TopCat.SingularSmallChains.SingularSimplex
+#print axioms TopCat.SingularSmallChains.SingularSimplex
+#check TopCat.SingularSmallChains.simplexIndex
+#print axioms TopCat.SingularSmallChains.simplexIndex
+#check TopCat.SingularSmallChains.simplexChain
+#print axioms TopCat.SingularSmallChains.simplexChain
+#check TopCat.SingularSmallChains.chainLift
+#print axioms TopCat.SingularSmallChains.chainLift
+#check TopCat.SingularSmallChains.chainLift_simplex
+#print axioms TopCat.SingularSmallChains.chainLift_simplex
+#check TopCat.SingularSmallChains.chainMap_ext
+#print axioms TopCat.SingularSmallChains.chainMap_ext
+#check TopCat.SingularSmallChains.chainsRepr
+#print axioms TopCat.SingularSmallChains.chainsRepr
+#check TopCat.SingularSmallChains.chainsFromFinsupp
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp
+#check TopCat.SingularSmallChains.chainsFromFinsupp_single
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp_single
+#check TopCat.SingularSmallChains.chainsFromFinsupp_comp_repr
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp_comp_repr
+#check TopCat.SingularSmallChains.chainsRepr_comp_fromFinsupp
+#print axioms TopCat.SingularSmallChains.chainsRepr_comp_fromFinsupp
+#check TopCat.SingularSmallChains.chainsEquivFinsupp
+#print axioms TopCat.SingularSmallChains.chainsEquivFinsupp
+#check TopCat.SingularSmallChains.chainBasis
+#print axioms TopCat.SingularSmallChains.chainBasis
+#check TopCat.SingularSmallChains.chainBasis_repr
+#print axioms TopCat.SingularSmallChains.chainBasis_repr
+#check TopCat.SingularSmallChains.chainBasis_apply
+#print axioms TopCat.SingularSmallChains.chainBasis_apply
+#check TopCat.SingularSmallChains.mem_simplex_span_iff
+#print axioms TopCat.SingularSmallChains.mem_simplex_span_iff
+#check TopCat.SingularSmallChains.IsSmallSimplex
+#print axioms TopCat.SingularSmallChains.IsSmallSimplex
+#check TopCat.SingularSmallChains.submodule
+#print axioms TopCat.SingularSmallChains.submodule
+#check TopCat.SingularSmallChains.simplexChain_mem
+#print axioms TopCat.SingularSmallChains.simplexChain_mem
+#check TopCat.SingularSmallChains.simplexFace
+#print axioms TopCat.SingularSmallChains.simplexFace
+#check TopCat.SingularSmallChains.simplexIndex_face
+#print axioms TopCat.SingularSmallChains.simplexIndex_face
+#check TopCat.SingularSmallChains.boundary_simplex
+#print axioms TopCat.SingularSmallChains.boundary_simplex
+#check TopCat.SingularSmallChains.simplex_face_subset
+#print axioms TopCat.SingularSmallChains.simplex_face_subset
+#check TopCat.SingularSmallChains.boundary_mem
+#print axioms TopCat.SingularSmallChains.boundary_mem
+#check TopCat.SingularSmallChains.smallChainModule
+#print axioms TopCat.SingularSmallChains.smallChainModule
+#check TopCat.SingularSmallChains.differential
+#print axioms TopCat.SingularSmallChains.differential
+#check TopCat.SingularSmallChains.differential_val
+#print axioms TopCat.SingularSmallChains.differential_val
+#check TopCat.SingularSmallChains.complex
+#print axioms TopCat.SingularSmallChains.complex
+#check TopCat.SingularSmallChains.inclusion
+#print axioms TopCat.SingularSmallChains.inclusion
+#check TopCat.SingularSmallChains.inclusion_f_apply
+#print axioms TopCat.SingularSmallChains.inclusion_f_apply
+#check TopCat.SingularSmallChains.inclusion_f_injective
+#print axioms TopCat.SingularSmallChains.inclusion_f_injective
+#check TopCat.SingularSmallChains.SmallSimplex
+#print axioms TopCat.SingularSmallChains.SmallSimplex
+#check TopCat.SingularSmallChains.smallSimplex_linearIndependent
+#print axioms TopCat.SingularSmallChains.smallSimplex_linearIndependent
+#check TopCat.SingularSmallChains.smallSimplex_range
+#print axioms TopCat.SingularSmallChains.smallSimplex_range
+#check TopCat.SingularSmallChains.smallChainBasis
+#print axioms TopCat.SingularSmallChains.smallChainBasis
+#check TopCat.SingularSmallChains.smallChainBasis_apply_val
+#print axioms TopCat.SingularSmallChains.smallChainBasis_apply_val
+#check TopCat.SingularSmallChains.smallChain_projective
+#print axioms TopCat.SingularSmallChains.smallChain_projective
+#check TopCat.SingularSmallChains.chainProjection
+#print axioms TopCat.SingularSmallChains.chainProjection
+#check TopCat.SingularSmallChains.chainProjection_small_simplex
+#print axioms TopCat.SingularSmallChains.chainProjection_small_simplex
+#check TopCat.SingularSmallChains.cochainRestriction
+#print axioms TopCat.SingularSmallChains.cochainRestriction
+#check TopCat.SingularSmallChains.cochainExtension
+#print axioms TopCat.SingularSmallChains.cochainExtension
+#check TopCat.SingularSmallChains.addHomToIntLinearMap
+#print axioms TopCat.SingularSmallChains.addHomToIntLinearMap
+#check TopCat.SingularSmallChains.addHomToIntLinearMap_apply
+#print axioms TopCat.SingularSmallChains.addHomToIntLinearMap_apply
+#check TopCat.SingularSmallChains.cochainRestriction_extension
+#print axioms TopCat.SingularSmallChains.cochainRestriction_extension
+#check TopCat.SingularSmallChains.cochainRestriction_surjective
+#print axioms TopCat.SingularSmallChains.cochainRestriction_surjective
+#check TopCat.SingularSmallChains.dualHomotopyEquiv
+#print axioms TopCat.SingularSmallChains.dualHomotopyEquiv
+#check TopCat.SingularSmallChains.cochainRestrictionHomotopyEquiv
+#print axioms TopCat.SingularSmallChains.cochainRestrictionHomotopyEquiv
+#check TopCat.SingularSmallChains.cochainMap_d
+#print axioms TopCat.SingularSmallChains.cochainMap_d
+#check TopCat.SingularSmallChains.homotopy_on_cocycle_one
+#print axioms TopCat.SingularSmallChains.homotopy_on_cocycle_one
+#check TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one
+#print axioms TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one
+#check TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one
+#print axioms TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one
+#check TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one
+#print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalChains` -/
+
+#check TopCat.SingularSmallChains.Barycentric.FormalChains
+#print axioms TopCat.SingularSmallChains.Barycentric.FormalChains
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex
+#check TopCat.SingularSmallChains.Barycentric.formalLift
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift
+#check TopCat.SingularSmallChains.Barycentric.formalLift_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalChains_ext
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChains_ext
+#check TopCat.SingularSmallChains.Barycentric.formalMap
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap
+#check TopCat.SingularSmallChains.Barycentric.formalMap_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalCone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone
+#check TopCat.SingularSmallChains.Barycentric.formalCone_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_cone_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_cone_zero
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_cone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_cone
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_comp
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_cone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_cone
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshBarycenter` -/
+
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_of_convex
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_of_convex
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_convexHull
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_sub
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_sub
+#check TopCat.SingularSmallChains.Barycentric.sum_norm_vertex_sub_le
+#print axioms TopCat.SingularSmallChains.Barycentric.sum_norm_vertex_sub_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_convexHull_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_convexHull_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertexBarycenter_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertexBarycenter_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_reindex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_reindex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_convexHull_range_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_convexHull_range_le
+#check TopCat.SingularSmallChains.Barycentric.convexHull_range_diam_le
+#print axioms TopCat.SingularSmallChains.Barycentric.convexHull_range_diam_le
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Projective` -/
+
+#check TopCat.SingularSmallChains.inclusion_isHomotopyEquivalence_of_quasiIso
+#print axioms TopCat.SingularSmallChains.inclusion_isHomotopyEquivalence_of_quasiIso
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso_hom
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso_hom
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Native` -/
+
+#check TopCat.SingularSmallChains.Barycentric.Simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.Simplex
+#check TopCat.SingularSmallChains.Barycentric.Chains
+#print axioms TopCat.SingularSmallChains.Barycentric.Chains
+#check TopCat.SingularSmallChains.Barycentric.singularComplex
+#print axioms TopCat.SingularSmallChains.Barycentric.singularComplex
+#check TopCat.SingularSmallChains.Barycentric.singularChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.singularChainMap
+#check TopCat.SingularSmallChains.Barycentric.inducedChain
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply_self
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply_self
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply_succAbove
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply_succAbove
+#check TopCat.SingularSmallChains.Barycentric.simplexZero_eq_vertex
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexZero_eq_vertex
+#check TopCat.SingularSmallChains.Barycentric.simplexIndex_map
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexIndex_map
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_simplex
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_boundary
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_comp
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSubdivision` -/
+
+#check TopCat.SingularSmallChains.Barycentric.FormalCenter
+#print axioms TopCat.SingularSmallChains.Barycentric.FormalCenter
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_succ
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivision
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.SubdivisionCriterion` -/
+
+#check TopCat.SingularSmallChains.SubdivisionData
+#print axioms TopCat.SingularSmallChains.SubdivisionData
+#check TopCat.SingularSmallChains.SubdivisionData.mk
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk
+#check TopCat.SingularSmallChains.SubdivisionData.subdivision
+#print axioms TopCat.SingularSmallChains.SubdivisionData.subdivision
+#check TopCat.SingularSmallChains.SubdivisionData.subdivision_boundary
+#print axioms TopCat.SingularSmallChains.SubdivisionData.subdivision_boundary
+#check TopCat.SingularSmallChains.SubdivisionData.eventually_small
+#print axioms TopCat.SingularSmallChains.SubdivisionData.eventually_small
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy_boundary_of_cycle
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy_boundary_of_cycle
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy_small
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy_small
+#check TopCat.SingularSmallChains.SubdivisionData.rec
+#print axioms TopCat.SingularSmallChains.SubdivisionData.rec
+#check TopCat.SingularSmallChains.SubdivisionData.recOn
+#print axioms TopCat.SingularSmallChains.SubdivisionData.recOn
+#check TopCat.SingularSmallChains.SubdivisionData.casesOn
+#print axioms TopCat.SingularSmallChains.SubdivisionData.casesOn
+#check TopCat.SingularSmallChains.SubdivisionData.noConfusion
+#print axioms TopCat.SingularSmallChains.SubdivisionData.noConfusion
+#check TopCat.SingularSmallChains.SubdivisionData.noConfusionType
+#print axioms TopCat.SingularSmallChains.SubdivisionData.noConfusionType
+#check TopCat.SingularSmallChains.SubdivisionData.ctorIdx
+#print axioms TopCat.SingularSmallChains.SubdivisionData.ctorIdx
+#check TopCat.SingularSmallChains.SubdivisionData.mk.injEq
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.injEq
+#check TopCat.SingularSmallChains.SubdivisionData.mk.inj
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.inj
+#check TopCat.SingularSmallChains.SubdivisionData.mk.noConfusion
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.noConfusion
+#check TopCat.SingularSmallChains.SubdivisionData.mk.sizeOf_spec
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.sizeOf_spec
+#check TopCat.SingularSmallChains.inclusion_quasiIso_of_subdivisionData
+#print axioms TopCat.SingularSmallChains.inclusion_quasiIso_of_subdivisionData
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData_hom
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData_hom
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalHomotopy` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_simplex_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_simplex_succ
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionHomotopy
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineSimplex` -/
+
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_coe
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_coe
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_coordinate
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_coordinate
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_vertex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_vertex
+#check TopCat.SingularSmallChains.Barycentric.stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.stdVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_face
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_face
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_comp
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_convexHull
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_of_convex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_of_convex
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_coe
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_coe
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_singleton
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_singleton
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_simplexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_simplexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_mem_convexHull
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalIteration` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision_iterate
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision_iterate
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivision_iterate
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivision_iterate
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_apply
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_apply
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_succ
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_degree_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_degree_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_degree_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_degree_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionIteratedHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionIteratedHomotopy
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineChains` -/
+
+#check TopCat.SingularSmallChains.Barycentric.simplexCenter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexCenter
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_simplex
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_boundary
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.faceVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.faceVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_faceVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_faceVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_preserves_center
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_preserves_center
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_preserves_center
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_preserves_center
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_affine_natural
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_affine_natural
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSupport` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported
+#check TopCat.SingularSmallChains.Barycentric.mem_formalChainsSupported_iff
+#print axioms TopCat.SingularSmallChains.Barycentric.mem_formalChainsSupported_iff
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_mono
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_mono
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_univ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_univ
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_zero
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_inter
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_inter
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported_iff
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported_iff
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_le
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_le
+#check TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_supported
+#check TopCat.SingularSmallChains.Barycentric.formalLift_mem_of_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_mem_of_supported
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported_insert
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported_insert
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_image
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_image
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_of_preimage
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_of_preimage
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalLift_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalLinearMap_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLinearMap_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_mem_supported
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Generators` -/
+
+#check AlgebraicTopology.SingularCochains.Cochains
+#print axioms AlgebraicTopology.SingularCochains.Cochains
+#check AlgebraicTopology.SingularCochains.simplexInOpen
+#print axioms AlgebraicTopology.SingularCochains.simplexInOpen
+#check AlgebraicTopology.SingularCochains.simplexInOpen_val
+#print axioms AlgebraicTopology.SingularCochains.simplexInOpen_val
+#check AlgebraicTopology.SingularCochains.pullback_simplex
+#print axioms AlgebraicTopology.SingularCochains.pullback_simplex
+#check AlgebraicTopology.SingularCochains.cochain_ext
+#print axioms AlgebraicTopology.SingularCochains.cochain_ext
+#check AlgebraicTopology.SingularCochains.cochainFromValues
+#print axioms AlgebraicTopology.SingularCochains.cochainFromValues
+#check AlgebraicTopology.SingularCochains.cochainFromValues_simplex
+#print axioms AlgebraicTopology.SingularCochains.cochainFromValues_simplex
+
+/-! Slice-D adjacent audit count: 184 authored roots + 17 generated structure API = 201. -/
