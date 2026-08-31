@@ -251,6 +251,9 @@ import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalization
 import Lib.Topology.Sheaves.NestedOpenCohomology
 import Lib.Topology.Sheaves.FiniteClosedOpenRestriction
 import Lib.Topology.Sheaves.OpenFiniteClosedFactorization
+import Lib.Algebra.Module.FreeIntSubmodule
+import Lib.AlgebraicTopology.SingularCochains.DualEvaluation
+import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
 
 /-!
 # Reusable extracted library
