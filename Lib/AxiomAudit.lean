@@ -2456,3 +2456,38 @@ is an evidence command rather than library content.
 
 #check TopCat.SingularCochainSheaf.h1Comparison_naturality_of_global
 #print axioms TopCat.SingularCochainSheaf.h1Comparison_naturality_of_global
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1ExactFunctor` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.map
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.map
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparisonHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparisonHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality_assoc
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1` -/
+
+#check TopCat.FiniteClosedPushforward.mapResolution
+#print axioms TopCat.FiniteClosedPushforward.mapResolution
+#check TopCat.FiniteClosedPushforward.mapResolution_h1_subsingleton
+#print axioms TopCat.FiniteClosedPushforward.mapResolution_h1_subsingleton
+#check TopCat.FiniteClosedPushforward.pushedH1GlobalIso
+#print axioms TopCat.FiniteClosedPushforward.pushedH1GlobalIso
+#check TopCat.FiniteClosedPushforward.h1Global_forward
+#print axioms TopCat.FiniteClosedPushforward.h1Global_forward
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1` -/
+
+#check TopCat.SingularCochainSheaf.resolutionH1Pullback
+#print axioms TopCat.SingularCochainSheaf.resolutionH1Pullback
+#check TopCat.SingularCochainSheaf.globalWindowH1Iso_pullback
+#print axioms TopCat.SingularCochainSheaf.globalWindowH1Iso_pullback
+#check TopCat.SingularCochainSheaf.h1_global_naturality
+#print axioms TopCat.SingularCochainSheaf.h1_global_naturality
+#check TopCat.SingularCochainSheaf.h1Comparison_naturality
+#print axioms TopCat.SingularCochainSheaf.h1Comparison_naturality

@@ -207,6 +207,9 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Presheaf
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Global
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.ComparisonH1
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1ExactFunctor
+import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1
 
 /-!
 # Reusable extracted library
