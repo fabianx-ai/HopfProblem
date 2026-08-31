@@ -168,6 +168,7 @@ import Lib.Analysis.Normed.LocallyContractible
 import Lib.Geometry.Manifold.ChartedSpace.LocallyContractible
 import Lib.Topology.Homotopy.LocallyContractible
 import Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology
+import Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf
 
 /-!
 # Reusable extracted library

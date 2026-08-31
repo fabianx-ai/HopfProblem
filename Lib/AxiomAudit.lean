@@ -1505,6 +1505,57 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf` -/
+
+#check CategoryTheory.Sheaf.Leray.freeOpenFunctor
+#print axioms CategoryTheory.Sheaf.Leray.freeOpenFunctor
+#check CategoryTheory.Sheaf.Leray.sectionsFunctor
+#print axioms CategoryTheory.Sheaf.Leray.sectionsFunctor
+#check CategoryTheory.Sheaf.Leray.freeOpenSectionsIso
+#print axioms CategoryTheory.Sheaf.Leray.freeOpenSectionsIso
+#check CategoryTheory.Sheaf.Leray.sectionsFunctor_additive
+#print axioms CategoryTheory.Sheaf.Leray.sectionsFunctor_additive
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_additive
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_additive
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.representedHomologyPresheafIso
+#print axioms CategoryTheory.Sheaf.Leray.representedHomologyPresheafIso
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyPresheafIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyPresheafIsoPositive
+#check CategoryTheory.Sheaf.Leray.presheafPushforward
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_additive
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_additive
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.homologyPresheafPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.homologyPresheafPushforwardIso
+#check CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv
