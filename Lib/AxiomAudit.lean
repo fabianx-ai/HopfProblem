@@ -1659,6 +1659,27 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositive` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalResolutionCohomologyNormalizationPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalResolutionCohomologyNormalizationPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkIsoPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluationPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluationPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodGermPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_germPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_germPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_local_lift_killPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_local_lift_killPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv
