@@ -3218,3 +3218,183 @@ is an evidence command rather than library content.
 
 #check TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
 #print axioms TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
+
+/-! ## `Lib.Topology.Sheaves.OpenEmbeddingCohomology` -/
+
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage_continuous
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage_continuous
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_additive
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_additive
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage_cocontinuous
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage_cocontinuous
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_rightAdjoint
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_rightAdjoint
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_leftAdjoint
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_leftAdjoint
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteLimits
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteLimits
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteColimits
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteColimits
+#check TopCat.Sheaf.OpenEmbeddingCohomology.rawRestrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.rawRestrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.unit_restrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.unit_restrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_app_unit
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_app_unit
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_isIso
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_isIso
+#check TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap
+#check TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap_naturality
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap_naturality
+#check TopCat.Sheaf.OpenEmbeddingCohomology.constantPullback
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.constantPullback
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Composition` -/
+
+#check TopCat.ConstantSheaf.pushforwardHom_comp
+#print axioms TopCat.ConstantSheaf.pushforwardHom_comp
+#check TopCat.FiniteClosedPushforward.cohomologyForward_comp
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_comp
+#check TopCat.ConstantSheafCohomology.pullback_comp
+#print axioms TopCat.ConstantSheafCohomology.pullback_comp
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.OpenRestrictionComposition` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_comp_inclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_comp_inclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_isClosedMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_isClosedMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_finite_fibres
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_finite_fibres
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage_obj
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage_obj
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_hom_app
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_hom_app
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_global
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_global
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_neighborhoodUnit
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_neighborhoodUnit
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_openRestriction
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_openRestriction
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalization` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom_isIso
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom_isIso
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestriction_coefficient
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestriction_coefficient
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.cohomologyEvaluation_forward_open
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.cohomologyEvaluation_forward_open
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_coefficient
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_coefficient
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicConstantPullback
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicConstantPullback
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.fibreCohomology_eq_of_forward_eq
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.fibreCohomology_eq_of_forward_eq
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_forward
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_forward
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalizationConsequences` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
+
+/-! ## `Lib.Topology.Sheaves.NestedOpenCohomology` -/
+
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_apply
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_apply
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_isOpenEmbedding
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_isOpenEmbedding
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_comp_ambientInclusion
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_comp_ambientInclusion
+#check TopCat.Sheaf.NestedOpenCohomology.openImage_comp_obj
+#print axioms TopCat.Sheaf.NestedOpenCohomology.openImage_comp_obj
+#check TopCat.Sheaf.NestedOpenCohomology.openImage_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.openImage_comp
+#check TopCat.Sheaf.NestedOpenCohomology.restrictionIso
+#print axioms TopCat.Sheaf.NestedOpenCohomology.restrictionIso
+#check TopCat.Sheaf.NestedOpenCohomology.restrictionIso_hom_app
+#print axioms TopCat.Sheaf.NestedOpenCohomology.restrictionIso_hom_app
+#check TopCat.Sheaf.NestedOpenCohomology.constantRestrictionHom_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.constantRestrictionHom_comp
+#check TopCat.Sheaf.NestedOpenCohomology.representingUnit_app_unit
+#print axioms TopCat.Sheaf.NestedOpenCohomology.representingUnit_app_unit
+#check TopCat.Sheaf.NestedOpenCohomology.integralHomGlobalEquiv_eq_app_unit
+#print axioms TopCat.Sheaf.NestedOpenCohomology.integralHomGlobalEquiv_eq_app_unit
+#check TopCat.Sheaf.NestedOpenCohomology.representingUnit_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.representingUnit_comp
+#check TopCat.Sheaf.NestedOpenCohomology.cohomologyEquiv_restrict
+#print axioms TopCat.Sheaf.NestedOpenCohomology.cohomologyEquiv_restrict
+#check TopCat.Sheaf.NestedOpenCohomology.intrinsicOpenClass_restrict
+#print axioms TopCat.Sheaf.NestedOpenCohomology.intrinsicOpenClass_restrict
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedOpenRestriction` -/
+
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage_obj
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage_obj
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_hom_app
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_hom_app
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_restrictionHom
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_restrictionHom
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.cohomologyForward_openRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.cohomologyForward_openRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.sandwichCoefficient
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.sandwichCoefficient
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openRestrictionThenCoefficient
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openRestrictionThenCoefficient
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.closedPullbackThenRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.closedPullbackThenRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.pullback_openRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.pullback_openRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.constantPullback_sandwich
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.constantPullback_sandwich
+
+/-! ## `Lib.Topology.Sheaves.OpenFiniteClosedFactorization` -/
+
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage_obj
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage_obj
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_hom_app
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_hom_app
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_restrictionHom
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_restrictionHom
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.cohomologyForward_openRestriction
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.cohomologyForward_openRestriction
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedCoefficient
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedCoefficient
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedOpenPullback_forward
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedOpenPullback_forward
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.directPullback_forward_open
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.directPullback_forward_open
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.constantPullback_factorization
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.constantPullback_factorization
