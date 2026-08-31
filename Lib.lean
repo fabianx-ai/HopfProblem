@@ -173,6 +173,10 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology
 import Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation
 import Lib.AlgebraicTopology.SingularCochains
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+import Lib.Algebra.Group.SurjectiveDescent
+import Lib.LinearAlgebra.CyclicKernel
 
 /-!
 # Reusable extracted library

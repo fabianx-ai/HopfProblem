@@ -1793,3 +1793,35 @@ is an evidence command rather than library content.
 
 #check chartedSpaceStronglyLocallyContractible
 #print axioms chartedSpaceStronglyLocallyContractible
+
+/-! ## `Lib.Algebra.Group.SurjectiveDescent` -/
+
+#check Mathoverflow1973.descendHomOfSurjective
+#print axioms Mathoverflow1973.descendHomOfSurjective
+#check Mathoverflow1973.fibre_constant_of_ker_le
+#print axioms Mathoverflow1973.fibre_constant_of_ker_le
+#check Mathoverflow1973.descendHomOfSurjective_comp
+#print axioms Mathoverflow1973.descendHomOfSurjective_comp
+
+/-! ## `Lib.LinearAlgebra.CyclicKernel` -/
+
+#check Mathoverflow1973.eq_equiv_smul_generator
+#print axioms Mathoverflow1973.eq_equiv_smul_generator
+#check Mathoverflow1973.ker_le_of_cyclic_generator_zero
+#print axioms Mathoverflow1973.ker_le_of_cyclic_generator_zero
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character` -/
+
+#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift
+#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomU
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomU
+#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomV
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomV
+#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_surjective_of_left
+#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_surjective_of_left
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` -/
+
+#check Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
+#print axioms Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
