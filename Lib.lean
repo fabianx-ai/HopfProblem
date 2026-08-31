@@ -156,6 +156,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctoriality
 import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctorComparison
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison
 import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
+import Lib.Topology.Sheaves.AddCommGrpPushforward
 
 /-!
 # Reusable extracted library

@@ -6,6 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
+public import Lib.Topology.Sheaves.AddCommGrpPushforward
 public import Mathlib.Algebra.Category.Grp.Abelian
 public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
 public import Mathlib.CategoryTheory.Abelian.RightDerived
@@ -61,9 +62,12 @@ abbrev pushforward {X Y : TopCat.{0}} (f : X ⟶ Y) :
 
 variable {X Y : TopCat.{0}} (f : X ⟶ Y)
 
-/-- Pushforward of abelian sheaves is additive. -/
-instance pushforwardAdditive : (pushforward f).Additive where
-  map_add := by intros; rfl
+/-- Compatibility spelling for additivity of abelian-sheaf pushforward.
+
+The canonical typeclass instance is `TopCat.Sheaf.pushforwardAdditive`; this theorem preserves the
+previous qualified API without registering a second global instance. -/
+theorem pushforwardAdditive : (pushforward f).Additive :=
+  TopCat.Sheaf.pushforwardAdditive f
 
 /-- The genuine right-derived sheaf pushforward `Rⁿf_*`. -/
 abbrev higherDirectImage (n : ℕ) : AbelianSheaf X ⥤ AbelianSheaf Y :=

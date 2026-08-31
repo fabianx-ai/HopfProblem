@@ -896,6 +896,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
 #print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
 
+/-! ## `Lib.Topology.Sheaves.AddCommGrpPushforward` -/
+
+#check TopCat.Sheaf.pushforwardAdditive
+#print axioms TopCat.Sheaf.pushforwardAdditive
+
 -- ResolutionTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.AbelianSheaf
 #print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
