@@ -1139,6 +1139,58 @@ is an evidence command rather than library content.
 #check TopCat.ConstantSheaf.pushforwardHom_isIso
 #print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
 
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward` -/
+
+#check TopCat.FiniteClosedPushforward.fiber_mem_preimage
+#print axioms TopCat.FiniteClosedPushforward.fiber_mem_preimage
+#check TopCat.FiniteClosedPushforward.exists_open_preimage_subset
+#print axioms TopCat.FiniteClosedPushforward.exists_open_preimage_subset
+#check TopCat.FiniteClosedPushforward.pushforwardStalkComponent
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkComponent
+#check TopCat.FiniteClosedPushforward.pushforwardStalkComponent_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkComponent_germ
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_apply
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_apply
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_germ
+#check TopCat.FiniteClosedPushforward.exists_section_germ_eq_of_finite
+#print axioms TopCat.FiniteClosedPushforward.exists_section_germ_eq_of_finite
+#check TopCat.FiniteClosedPushforward.pushforward_germ_eq_of_fiber_germ_eq
+#print axioms TopCat.FiniteClosedPushforward.pushforward_germ_eq_of_fiber_germ_eq
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_injective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_injective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_surjective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_surjective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_bijective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_bijective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_apply
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_apply
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_germ
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_naturality
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_naturality
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_naturality
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_naturality
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Exact` -/
+
+#check TopCat.FiniteClosedPushforward.pullback_preservesFiniteLimits
+#print axioms TopCat.FiniteClosedPushforward.pullback_preservesFiniteLimits
+#check TopCat.FiniteClosedPushforward.pushforward_preservesInjectiveObjects
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesInjectiveObjects
+#check TopCat.FiniteClosedPushforward.pushforward_exact
+#print axioms TopCat.FiniteClosedPushforward.pushforward_exact
+#check TopCat.FiniteClosedPushforward.pushforward_preservesFiniteLimitsAndColimits
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesFiniteLimitsAndColimits
+#check TopCat.FiniteClosedPushforward.pushforward_preservesFiniteColimits
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesFiniteColimits
+#check TopCat.FiniteClosedPushforward.pushforward_shortExact
+#print axioms TopCat.FiniteClosedPushforward.pushforward_shortExact
+
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
 
 #check PrincipalCoverLocalSystem.LiftedOpen

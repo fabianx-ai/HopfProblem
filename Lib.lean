@@ -159,6 +159,8 @@ import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
 import Lib.Topology.Sheaves.AddCommGrpPushforward
 import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
+import Lib.Topology.Sheaves.FiniteClosedPushforward
+import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 
 /-!
 # Reusable extracted library
