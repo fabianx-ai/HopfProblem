@@ -1,0 +1,87 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
+public import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1
+public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
+
+/-!
+# Sheaf H¹ from an acyclic resolution
+
+This specializes the generic degree-one acyclic-resolution comparison to abelian sheaves on a
+topological space.  Mathlib's canonical degree-zero sheaf-cohomology equivalence identifies the
+degree-zero Ext complex with literal global sections.
+-/
+
+@[expose] public section
+
+set_option warningAsError true
+set_option autoImplicit false
+
+noncomputable section
+
+open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
+open TopologicalSpace Opposite
+
+namespace TopCat.SheafH1
+
+variable (X : TopCat.{0})
+
+/-- Evaluation of an abelian sheaf on the top open. -/
+def globalSectionsFunctor :
+    TopCat.Sheaf AddCommGrpCat.{0} X ⥤ AddCommGrpCat.{0} :=
+  (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj (op ⊤)
+
+instance globalSectionsFunctor_additive : (globalSectionsFunctor X).Additive where
+  map_add := by intros; rfl
+
+/-- The constant integer sheaf used in Mathlib's definition of sheaf cohomology. -/
+abbrev unitSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
+  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
+    (AddCommGrpCat.of (ULift.{0} ℤ))
+
+variable {X}
+
+/-- The canonical identification of degree-zero sheaf cohomology with global sections. -/
+def h0GlobalIso (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} F 0) ≅
+      (globalSectionsFunctor X).obj F :=
+  (CategoryTheory.Sheaf.H.equiv₀ F
+    (show IsTerminal (⊤ : Opens X) from isTerminalTop)).toAddCommGrpIso
+
+theorem h0GlobalIso_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) :
+    (extFunctorObj (unitSheaf X) 0).map f ≫ (h0GlobalIso G).hom =
+      (h0GlobalIso F).hom ≫ (globalSectionsFunctor X).map f := by
+  ext x
+  exact (CategoryTheory.Sheaf.H.equiv₀_naturality
+    (show IsTerminal (⊤ : Opens X) from isTerminalTop) f x).symm
+
+namespace AcyclicResolutionH1
+
+variable (R : CategoryTheory.Abelian.Ext.AcyclicResolutionH1
+  (C := TopCat.Sheaf AddCommGrpCat.{0} X))
+
+/-- Literal global sections of the three-term complex. -/
+abbrev globalComplex : ShortComplex AddCommGrpCat.{0} :=
+  R.complex.map (globalSectionsFunctor X)
+
+/-- Degree-zero Ext and global sections agree as short complexes. -/
+def extZeroGlobalIso : R.extZeroComplex (unitSheaf X) ≅ globalComplex R :=
+  ShortComplex.isoMk (h0GlobalIso R.complex.X₁) (h0GlobalIso R.complex.X₂)
+    (h0GlobalIso R.complex.X₃) (h0GlobalIso_naturality R.complex.f).symm
+      (h0GlobalIso_naturality R.complex.g).symm
+
+/-- Native Ext-defined sheaf H¹ is the homology of literal global sections. -/
+def h1GlobalIso [Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)] :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} R.F 1) ≅ (globalComplex R).homology := by
+  letI : Subsingleton (Ext.{0} (unitSheaf X) R.complex.X₁ 1) :=
+    ‹Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)›
+  exact R.extOneIso (unitSheaf X) ≪≫ ShortComplex.homologyMapIso (extZeroGlobalIso R)
+
+end AcyclicResolutionH1
+
+end TopCat.SheafH1

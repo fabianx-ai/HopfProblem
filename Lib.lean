@@ -186,6 +186,27 @@ import Lib.Topology.Sheaves.FunctionSheaf
 import Lib.Topology.Sheaves.H1Vanishing.Flasque
 import Lib.Topology.Sheaves.SheafificationLocal
 import Lib.Topology.Sheaves.SheafificationPushforward
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1Naturality
+import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1
+import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality
+import Lib.Topology.Sheaves.SingularCochainSheaf.Presheaf
+import Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf
+import Lib.Topology.Sheaves.SingularCochainSheaf.Augmentation
+import Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.LocalKernels
+import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono
+import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions
+import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic
+import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalResolutionH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit
+import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonH1
+import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Presheaf
+import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf
+import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Global
+import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.ComparisonH1
 
 /-!
 # Reusable extracted library
