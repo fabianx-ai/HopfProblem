@@ -1324,6 +1324,15 @@ is an evidence command rather than library content.
 #check TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
 #print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
 
+/-! ## `Lib.Topology.Sheaves.ConstantCohomologyPullback` -/
+
+#check TopCat.ConstantSheafCohomology.pullback
+#print axioms TopCat.ConstantSheafCohomology.pullback
+#check TopCat.ConstantSheafCohomology.pullback_forward
+#print axioms TopCat.ConstantSheafCohomology.pullback_forward
+#check TopCat.ConstantSheafCohomology.pullback_forward_assoc
+#print axioms TopCat.ConstantSheafCohomology.pullback_forward_assoc
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
 
 #check TopCat.Sheaf.OpenRestriction.inclusion
