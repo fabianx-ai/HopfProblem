@@ -1607,6 +1607,35 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceCohomologyPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceCohomologyPresheaf
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceResolutionPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceResolutionPresheaf
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.fibre_mem_preimage
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.fibre_mem_preimage
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.evaluationCocone
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.evaluationCocone
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_germ
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ResolutionCohomologyNormalization
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ResolutionCohomologyNormalization
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkIso
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedNeighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedNeighborhoodGerm
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_germ
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_bijective_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_bijective_of_local_lift_kill
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv

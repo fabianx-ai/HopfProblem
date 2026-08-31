@@ -170,6 +170,7 @@ import Lib.Topology.Homotopy.LocallyContractible
 import Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology
 import Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Neighborhood
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk
 
 /-!
 # Reusable extracted library
