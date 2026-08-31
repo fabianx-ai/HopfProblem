@@ -241,6 +241,7 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
+import Lib.Topology.Sheaves.ConstantSheafH1
 
 /-!
 # Reusable extracted library

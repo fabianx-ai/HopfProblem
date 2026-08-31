@@ -3208,3 +3208,8 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.globalUnitSurjective
 #check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
+
+/-! ## `Lib.Topology.Sheaves.ConstantSheafH1` -/
+
+#check TopCat.SingularCochainSheaf.exists_h1Comparison_natural
+#print axioms TopCat.SingularCochainSheaf.exists_h1Comparison_natural
