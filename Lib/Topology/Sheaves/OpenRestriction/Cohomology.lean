@@ -67,6 +67,37 @@ def freeHomAddEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
   __ := freeHomEquiv U F
   map_add' _ _ := rfl
 
+/-- The representing-section equivalence commutes with restriction along an inclusion of ambient
+opens. -/
+theorem freeHomEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
+    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (h : freeOpen V ⟶ F) :
+    freeHomEquiv U F
+        ((yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
+          presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).map i ≫ h) =
+      F.obj.map i.op (freeHomEquiv V F h) := by
+  let e₁ := sheafificationAdjunction (Opens.grothendieckTopology X) AddCommGrpCat
+  let e₂ := Adjunction.whiskerRight (Opens X)ᵒᵖ AddCommGrpCat.adj
+  have h₁ := e₁.homEquiv_naturality_left
+    (((Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free).map (yoneda.map i)) h
+  have h₂ := e₂.homEquiv_naturality_left (yoneda.map i) (e₁.homEquiv _ F h)
+  change yonedaEquiv (e₂.homEquiv _ F.obj
+      (e₁.homEquiv _ F
+        ((yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
+          presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).map i ≫ h))) =
+    (F.obj ⋙ CategoryTheory.forget AddCommGrpCat).map i.op
+      (yonedaEquiv (e₂.homEquiv _ F.obj (e₁.homEquiv _ F h)))
+  exact (congrArg (fun a => yonedaEquiv (e₂.homEquiv _ F.obj a)) h₁).trans
+    ((congrArg yonedaEquiv h₂).trans (yonedaEquiv_naturality _ i).symm)
+
+/-- Additive form of naturality of represented sections under restriction of the ambient open. -/
+theorem freeHomAddEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
+    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (h : freeOpen V ⟶ F) :
+    freeHomAddEquiv U F
+        ((yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
+          presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).map i ≫ h) =
+      F.obj.map i.op (freeHomAddEquiv V F h) :=
+  freeHomEquiv_naturality_open i F h
+
 theorem openImage_top : (openImage U).obj ⊤ = U := by
   apply Opens.ext
   ext x

@@ -1346,6 +1346,10 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality
 #check TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
 #print axioms TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality_open
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality_open
+#check TopCat.Sheaf.OpenRestriction.freeHomAddEquiv_naturality_open
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomAddEquiv_naturality_open
 #check TopCat.Sheaf.OpenRestriction.openImage_top
 #print axioms TopCat.Sheaf.OpenRestriction.openImage_top
 #check TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv
