@@ -163,6 +163,7 @@ import Lib.Topology.Sheaves.FiniteClosedPushforward
 import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 import Lib.Topology.Sheaves.OpenRestriction
+import Lib.Topology.Sheaves.OpenRestriction.Cohomology
 
 /-!
 # Reusable extracted library

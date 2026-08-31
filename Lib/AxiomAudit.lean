@@ -1257,6 +1257,49 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
 #print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.Cohomology` -/
+
+#check TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup
+#print axioms TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup
+#check TopCat.Sheaf.OpenRestriction.freeOpen
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
+#check TopCat.Sheaf.OpenRestriction.openImage_top
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_top
+#check TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv
+#check TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_sections
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_sections
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.representingUnit
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit
+#check TopCat.Sheaf.OpenRestriction.representingUnit_comp
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit_comp
+#check TopCat.Sheaf.OpenRestriction.representingUnit_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit_bijective
+#check TopCat.Sheaf.OpenRestriction.zeroEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.zeroEquiv
+#check TopCat.Sheaf.OpenRestriction.cohomologyForward
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyForward
+#check TopCat.Sheaf.OpenRestriction.cohomologyForward_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyForward_bijective
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv_mk₀
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv_mk₀
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv_naturality
+
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
 
 #check PrincipalCoverLocalSystem.LiftedOpen
