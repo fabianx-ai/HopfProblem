@@ -896,6 +896,83 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
 #print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology` -/
+
+-- Every intended public declaration is queried in source order. The sole generated reassociation
+-- theorem is queried immediately after its attributed source theorem.
+#check CategoryTheory.ShortComplex.ab_homologyπ_comp_abHomologyIso_hom
+#print axioms CategoryTheory.ShortComplex.ab_homologyπ_comp_abHomologyIso_hom
+#check CategoryTheory.ShortComplex.shortCycleClass
+#print axioms CategoryTheory.ShortComplex.shortCycleClass
+#check CategoryTheory.ShortComplex.shortHomologyMap_cycleClass
+#print axioms CategoryTheory.ShortComplex.shortHomologyMap_cycleClass
+#check CategoryTheory.HomologicalComplex.homologyIsoSc'_hom_naturality
+#print axioms CategoryTheory.HomologicalComplex.homologyIsoSc'_hom_naturality
+#check CategoryTheory.InjectiveResolution.evaluatedResolution
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolution
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionMap
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionMap
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv_d
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv_d
+#check CategoryTheory.InjectiveResolution.positiveShortComplex
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap
+#check CategoryTheory.InjectiveResolution.positiveX₁AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₁AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveX₂AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₂AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveX₃AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₃AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveShortComplex_f_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex_f_apply
+#check CategoryTheory.InjectiveResolution.positiveShortComplex_g_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex_g_apply
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_apply
+#check CategoryTheory.InjectiveResolution.positiveCycle_isCycle
+#print axioms CategoryTheory.InjectiveResolution.positiveCycle_isCycle
+#check CategoryTheory.InjectiveResolution.positiveCyclePrecomp
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclePrecomp
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_cycle
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_cycle
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_precomp
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_precomp
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_boundary
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_boundary
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_surjective
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_surjective
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_injective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_injective
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_bijective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_bijective
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso
+#check CategoryTheory.InjectiveResolution.positiveCycleClass
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass
+#check CategoryTheory.InjectiveResolution.positiveCycleClass_naturality
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass_naturality
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_cycleClass
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_cycleClass
+#check CategoryTheory.InjectiveResolution.positiveCycleClass_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass_surjective
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality_assoc
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality_assoc
+#check CategoryTheory.InjectiveResolution.coyonedaHomologyFunctor
+#print axioms CategoryTheory.InjectiveResolution.coyonedaHomologyFunctor
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
+
 /-! ## `Lib.Topology.Sheaves.AddCommGrpPushforward` -/
 
 #check TopCat.Sheaf.pushforwardAdditive
