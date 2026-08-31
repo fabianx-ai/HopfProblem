@@ -223,6 +223,24 @@ import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalIteration
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineChains
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSupport
 import Lib.AlgebraicTopology.SingularCochains.Generators
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshLebesgue
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshAffine
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshSubdivision
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.ArbitraryCoverMesh
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.RealizationSupport
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Subdivision
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionHomotopy
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.HomotopySupport
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionSupport
+import Lib.AlgebraicTopology.SingularSmallChains.Barycentric
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion
+import Lib.Topology.Sheaves.SingularCochainSheaf.BarycentricSmallChains
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatch
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatchLocal
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
 
 /-!
 # Reusable extracted library
