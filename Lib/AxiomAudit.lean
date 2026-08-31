@@ -7,6 +7,45 @@ Compile this file directly. It deliberately is not imported by `Lib.lean`, becau
 is an evidence command rather than library content.
 -/
 
+/-! ## `Lib.AlgebraicTopology.SingularCochains` -/
+
+#check AlgebraicTopology.SingularCochains.precompose
+#print axioms AlgebraicTopology.SingularCochains.precompose
+#check AlgebraicTopology.SingularCochains.moduleDual
+#print axioms AlgebraicTopology.SingularCochains.moduleDual
+#check AlgebraicTopology.SingularCochains.moduleDual_additive
+#print axioms AlgebraicTopology.SingularCochains.moduleDual_additive
+#check AlgebraicTopology.SingularCochains.dualComplexFunctor
+#print axioms AlgebraicTopology.SingularCochains.dualComplexFunctor
+#check AlgebraicTopology.SingularCochains.dualComplex
+#print axioms AlgebraicTopology.SingularCochains.dualComplex
+#check AlgebraicTopology.SingularCochains.dualMap
+#print axioms AlgebraicTopology.SingularCochains.dualMap
+#check AlgebraicTopology.SingularCochains.dualMap_id
+#print axioms AlgebraicTopology.SingularCochains.dualMap_id
+#check AlgebraicTopology.SingularCochains.dualMap_comp
+#print axioms AlgebraicTopology.SingularCochains.dualMap_comp
+#check AlgebraicTopology.SingularCochains.dualHomotopy
+#print axioms AlgebraicTopology.SingularCochains.dualHomotopy
+#check AlgebraicTopology.SingularCochains.chains
+#print axioms AlgebraicTopology.SingularCochains.chains
+#check AlgebraicTopology.SingularCochains.complex
+#print axioms AlgebraicTopology.SingularCochains.complex
+#check AlgebraicTopology.SingularCochains.pullback
+#print axioms AlgebraicTopology.SingularCochains.pullback
+#check AlgebraicTopology.SingularCochains.pullback_id
+#print axioms AlgebraicTopology.SingularCochains.pullback_id
+#check AlgebraicTopology.SingularCochains.pullback_comp
+#print axioms AlgebraicTopology.SingularCochains.pullback_comp
+#check AlgebraicTopology.SingularCochains.pullbackHomotopy
+#print axioms AlgebraicTopology.SingularCochains.pullbackHomotopy
+#check AlgebraicTopology.SingularCochains.homologyMap_eq_of_homotopy
+#print axioms AlgebraicTopology.SingularCochains.homologyMap_eq_of_homotopy
+#check AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso
+#print axioms AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso
+#check AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso_hom
+#print axioms AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso_hom
+
 #print axioms Module.End.cyclicAverage
 #print axioms Module.End.mul_sum_powers_eq_sum_powers
 #print axioms Module.End.sum_powers_mul_eq_sum_powers
