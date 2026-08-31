@@ -1636,6 +1636,29 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantPointFibre` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.Fibre
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.Fibre
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_injective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_injective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_isClosedMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_isClosedMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_finite_fibres
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_finite_fibres
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.map_fibreInclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.map_fibreInclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.ConstantNormalization
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.ConstantNormalization
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.neighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.neighborhoodGerm
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv
