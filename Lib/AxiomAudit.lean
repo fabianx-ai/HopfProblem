@@ -1208,6 +1208,55 @@ is an evidence command rather than library content.
 #check TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
 #print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
+
+#check TopCat.Sheaf.OpenRestriction.inclusion
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion
+#check TopCat.Sheaf.OpenRestriction.inclusion_isOpenEmbedding
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_isOpenEmbedding
+#check TopCat.Sheaf.OpenRestriction.inclusion_mono
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_mono
+#check TopCat.Sheaf.OpenRestriction.openImage
+#print axioms TopCat.Sheaf.OpenRestriction.openImage
+#check TopCat.Sheaf.OpenRestriction.openImage_full
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_full
+#check TopCat.Sheaf.OpenRestriction.preimageOpen
+#print axioms TopCat.Sheaf.OpenRestriction.preimageOpen
+#check TopCat.Sheaf.OpenRestriction.openImage_obj_le
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_obj_le
+#check TopCat.Sheaf.OpenRestriction.openImage_preimage
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_preimage
+#check TopCat.Sheaf.OpenRestriction.costructuredArrow_isEmpty
+#print axioms TopCat.Sheaf.OpenRestriction.costructuredArrow_isEmpty
+#check TopCat.Sheaf.OpenRestriction.lan_obj_isZero_of_not_le
+#print axioms TopCat.Sheaf.OpenRestriction.lan_obj_isZero_of_not_le
+#check TopCat.Sheaf.OpenRestriction.lan_preservesMonomorphisms
+#print axioms TopCat.Sheaf.OpenRestriction.lan_preservesMonomorphisms
+#check TopCat.Sheaf.OpenRestriction.openImage_continuous
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_continuous
+#check TopCat.Sheaf.OpenRestriction.openImage_cocontinuous
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_cocontinuous
+#check TopCat.Sheaf.OpenRestriction.restriction
+#print axioms TopCat.Sheaf.OpenRestriction.restriction
+#check TopCat.Sheaf.OpenRestriction.restriction_eq_sheafRestrict
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_eq_sheafRestrict
+#check TopCat.Sheaf.OpenRestriction.restriction_additive
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_additive
+#check TopCat.Sheaf.OpenRestriction.restriction_rightAdjoint
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_rightAdjoint
+#check TopCat.Sheaf.OpenRestriction.restriction_leftAdjoint
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_leftAdjoint
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteLimits
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteLimits
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteColimits
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteColimits
+#check TopCat.Sheaf.OpenRestriction.extension
+#print axioms TopCat.Sheaf.OpenRestriction.extension
+#check TopCat.Sheaf.OpenRestriction.extension_preservesMonomorphisms
+#print axioms TopCat.Sheaf.OpenRestriction.extension_preservesMonomorphisms
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
+
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
 
 #check PrincipalCoverLocalSystem.LiftedOpen
