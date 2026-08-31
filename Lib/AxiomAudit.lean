@@ -1333,6 +1333,27 @@ is an evidence command rather than library content.
 #check TopCat.ConstantSheafCohomology.pullback_forward_assoc
 #print axioms TopCat.ConstantSheafCohomology.pullback_forward_assoc
 
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1` -/
+
+#check TopCat.ConstantProductH1.basedContraction_homotopic
+#print axioms TopCat.ConstantProductH1.basedContraction_homotopic
+#check TopCat.ConstantProductH1.basedProductHomotopyEquiv
+#print axioms TopCat.ConstantProductH1.basedProductHomotopyEquiv
+#check TopCat.ConstantProductH1.basedFibreInclusion
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion
+#check TopCat.ConstantProductH1.basedFibreInclusion_apply
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_apply
+#check TopCat.ConstantProductH1.basedFibreInclusion_injective
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_injective
+#check TopCat.ConstantProductH1.basedFibreInclusion_isClosedMap
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_isClosedMap
+#check TopCat.ConstantProductH1.basedFibreInclusion_finite_fibres
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_finite_fibres
+#check TopCat.ConstantProductH1.singularPullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductH1.singularPullback_basedFibreInclusion_isIso
+#check TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
+#print axioms TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
 
 #check TopCat.Sheaf.OpenRestriction.inclusion
