@@ -164,6 +164,9 @@ import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 import Lib.Topology.Sheaves.OpenRestriction
 import Lib.Topology.Sheaves.OpenRestriction.Cohomology
+import Lib.Analysis.Normed.LocallyContractible
+import Lib.Geometry.Manifold.ChartedSpace.LocallyContractible
+import Lib.Topology.Homotopy.LocallyContractible
 
 /-!
 # Reusable extracted library

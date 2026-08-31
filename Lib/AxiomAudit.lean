@@ -1445,3 +1445,26 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
 #print axioms CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
+
+/-! ## `Lib.Topology.Homotopy.LocallyContractible` -/
+
+#check StronglyLocallyContractibleSpace.of_open_neighborhoods
+#print axioms StronglyLocallyContractibleSpace.of_open_neighborhoods
+#check IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
+#print axioms IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
+
+/-! ## `Lib.Analysis.Normed.LocallyContractible` -/
+
+#check normedSpaceStronglyLocallyContractible
+#print axioms normedSpaceStronglyLocallyContractible
+#check Metric.ballInClosedBallHomeomorph
+#print axioms Metric.ballInClosedBallHomeomorph
+#check Metric.ballInClosedBall_contractible
+#print axioms Metric.ballInClosedBall_contractible
+#check Metric.closedBallStronglyLocallyContractible
+#print axioms Metric.closedBallStronglyLocallyContractible
+
+/-! ## `Lib.Geometry.Manifold.ChartedSpace.LocallyContractible` -/
+
+#check chartedSpaceStronglyLocallyContractible
+#print axioms chartedSpaceStronglyLocallyContractible
