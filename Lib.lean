@@ -157,6 +157,8 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctorComparison
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison
 import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
 import Lib.Topology.Sheaves.AddCommGrpPushforward
+import Lib.Topology.Sheaves.Cohomology.AddCommGroup
+import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
 
 /-!
 # Reusable extracted library

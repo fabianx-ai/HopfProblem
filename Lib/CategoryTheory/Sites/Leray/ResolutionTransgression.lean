@@ -7,6 +7,8 @@ module
 
 public import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
 public import Lib.Topology.Sheaves.AddCommGrpPushforward
+public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
+public import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
 public import Mathlib.Algebra.Category.Grp.Abelian
 public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
 public import Mathlib.CategoryTheory.Abelian.RightDerived
@@ -25,7 +27,7 @@ two-step Ext transgression
 from Mathlib's actual sheaf pushforward, its actual right-derived functors, and a chosen injective
 resolution of `F`.
 
-This is the resolution-level map underlying the expected Leray `d₂`.  This file does not
+This is the resolution-level map underlying the expected Leray `d₂`. This file does not
 construct a Leray spectral sequence and does not prove independence from the chosen resolution or
 identify this map with the differential of a spectral-sequence object.
 -/
@@ -41,19 +43,18 @@ namespace CategoryTheory.Sheaf.Leray
 /-- The small category of sheaves of abelian groups on a topological space. -/
 abbrev AbelianSheaf (X : TopCat.{0}) := TopCat.Sheaf AddCommGrpCat.{0} X
 
-/-- The integral constant sheaf used in Mathlib's definition of sheaf cohomology. -/
+/-- Compatibility spelling for the canonical integral constant sheaf. -/
 abbrev integralSheaf (X : TopCat.{0}) : AbelianSheaf X :=
-  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-    (AddCommGrpCat.of (ULift.{0} ℤ))
+  TopCat.ConstantSheaf.integralSheaf X
 
-/-- Small abelian sheaves form a Grothendieck abelian category and hence have small Ext groups. -/
-instance abelianSheafHasExt (X : TopCat.{0}) : HasExt.{0} (AbelianSheaf X) :=
+/-- Compatibility spelling for the canonical `HasExt` instance on small abelian sheaves. -/
+theorem abelianSheafHasExt (X : TopCat.{0}) : HasExt.{0} (AbelianSheaf X) :=
   IsGrothendieckAbelian.hasExt _
 
-/-- The additive structure on sheaf cohomology, exposed through its defining Ext group. -/
-instance sheafCohomologyAddCommGroup {X : TopCat.{0}} (F : AbelianSheaf X) (n : ℕ) :
+/-- Compatibility spelling for the canonical additive group on sheaf cohomology. -/
+abbrev sheafCohomologyAddCommGroup {X : TopCat.{0}} (F : AbelianSheaf X) (n : ℕ) :
     AddCommGroup (CategoryTheory.Sheaf.H.{0} F n) :=
-  Ext.instAddCommGroup
+  CategoryTheory.Sheaf.cohomologyAddCommGroup F n
 
 /-- The actual pushforward of abelian sheaves along a continuous map. -/
 abbrev pushforward {X Y : TopCat.{0}} (f : X ⟶ Y) :

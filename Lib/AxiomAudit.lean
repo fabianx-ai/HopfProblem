@@ -901,6 +901,36 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.pushforwardAdditive
 #print axioms TopCat.Sheaf.pushforwardAdditive
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.AddCommGroup` -/
+
+#check CategoryTheory.Sheaf.cohomologyAddCommGroup
+#print axioms CategoryTheory.Sheaf.cohomologyAddCommGroup
+
+/-! ## `Lib.Topology.Sheaves.ConstantPushforward.GlobalSections` -/
+
+#check TopCat.ConstantSheaf.integralSheaf
+#print axioms TopCat.ConstantSheaf.integralSheaf
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv_id
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv_id
+#check TopCat.ConstantSheaf.integralGlobalSectionsEquiv
+#print axioms TopCat.ConstantSheaf.integralGlobalSectionsEquiv
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv_global
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv_global
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv_naturality
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv_naturality
+#check TopCat.ConstantSheaf.integralPushforwardHom_global
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_global
+#check TopCat.ConstantSheaf.integralPushforwardHom_comp
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_comp
+#check TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective
+
 -- ResolutionTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.AbelianSheaf
 #print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
