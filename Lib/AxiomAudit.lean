@@ -1244,3 +1244,8 @@ is an evidence command rather than library content.
 #print axioms LinearRepresentation.contragredient_apply
 #check LinearRepresentation.freeGroup_invariant_iff
 #print axioms LinearRepresentation.freeGroup_invariant_iff
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion` -/
+
+#check CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
