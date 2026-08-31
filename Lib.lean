@@ -177,6 +177,15 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 import Lib.Algebra.Group.SurjectiveDescent
 import Lib.LinearAlgebra.CyclicKernel
+import Lib.Algebra.Homology.HomologicalComplex.CycleLift
+import Lib.Algebra.Homology.HomologicalComplex.ChainCycleLift
+import Lib.Algebra.Homology.ShortComplex.LeftHomologyData
+import Lib.Topology.ClosedRefinement
+import Lib.Topology.Homotopy.OpenNullhomotopy
+import Lib.Topology.Sheaves.FunctionSheaf
+import Lib.Topology.Sheaves.H1Vanishing.Flasque
+import Lib.Topology.Sheaves.SheafificationLocal
+import Lib.Topology.Sheaves.SheafificationPushforward
 
 /-!
 # Reusable extracted library

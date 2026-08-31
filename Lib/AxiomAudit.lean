@@ -1825,3 +1825,175 @@ is an evidence command rather than library content.
 
 #check Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
 #print axioms Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
+/-! ## `Lib.Topology.Homotopy.OpenNullhomotopy` -/
+
+#check TopCat.exists_open_nullhomotopic_inclusion
+#print axioms TopCat.exists_open_nullhomotopic_inclusion
+
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.CycleLift` -/
+
+#check CategoryTheory.HomologicalComplex.isIso_homologyMap_succ_of_cycle_lifts
+#print axioms CategoryTheory.HomologicalComplex.isIso_homologyMap_succ_of_cycle_lifts
+
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.ChainCycleLift` -/
+
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.Cycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.Cycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleModule
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleModule
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.next_nat
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.next_nat
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycle_condition
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycle_condition
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle_val
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle_val
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.ShortCycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.ShortCycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleModule
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleModule
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.ShortBoundaries
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.ShortBoundaries
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_surjective
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_surjective
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_eq_zero_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_eq_zero_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_surjective
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_surjective
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_zero_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_zero_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortMap
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortMap
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles_val
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles_val
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.homologyMap_cycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.homologyMap_cycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
+
+/-! ## `Lib.Algebra.Homology.ShortComplex.LeftHomologyData` -/
+
+#check CategoryTheory.ShortComplex.leftHomologyDataOfExact
+#print axioms CategoryTheory.ShortComplex.leftHomologyDataOfExact
+
+/-! ## `Lib.Topology.ClosedRefinement` -/
+
+#check TopCat.ClosedRefinement
+#print axioms TopCat.ClosedRefinement
+#check TopCat.ClosedRefinement.mk
+#print axioms TopCat.ClosedRefinement.mk
+#check TopCat.ClosedRefinement.support
+#print axioms TopCat.ClosedRefinement.support
+#check TopCat.ClosedRefinement.isClosed
+#print axioms TopCat.ClosedRefinement.isClosed
+#check TopCat.ClosedRefinement.locallyFinite
+#print axioms TopCat.ClosedRefinement.locallyFinite
+#check TopCat.ClosedRefinement.subordinate
+#print axioms TopCat.ClosedRefinement.subordinate
+#check TopCat.ClosedRefinement.covers
+#print axioms TopCat.ClosedRefinement.covers
+#check TopCat.ClosedRefinement.rec
+#print axioms TopCat.ClosedRefinement.rec
+#check TopCat.ClosedRefinement.recOn
+#print axioms TopCat.ClosedRefinement.recOn
+#check TopCat.ClosedRefinement.casesOn
+#print axioms TopCat.ClosedRefinement.casesOn
+#check TopCat.ClosedRefinement.noConfusionType
+#print axioms TopCat.ClosedRefinement.noConfusionType
+#check TopCat.ClosedRefinement.noConfusion
+#print axioms TopCat.ClosedRefinement.noConfusion
+#check TopCat.ClosedRefinement.mk.injEq
+#print axioms TopCat.ClosedRefinement.mk.injEq
+#check TopCat.ClosedRefinement.mk.inj
+#print axioms TopCat.ClosedRefinement.mk.inj
+#check TopCat.ClosedRefinement.ctorIdx
+#print axioms TopCat.ClosedRefinement.ctorIdx
+#check TopCat.ClosedRefinement.mk.sizeOf_spec
+#print axioms TopCat.ClosedRefinement.mk.sizeOf_spec
+#check TopCat.ClosedRefinement.mk.noConfusion
+#print axioms TopCat.ClosedRefinement.mk.noConfusion
+#check TopCat.exists_closedRefinement
+#print axioms TopCat.exists_closedRefinement
+#check TopCat.ClosedRefinement.index
+#print axioms TopCat.ClosedRefinement.index
+#check TopCat.ClosedRefinement.mem_support_index
+#print axioms TopCat.ClosedRefinement.mem_support_index
+#check TopCat.ClosedRefinement.mem_open_index
+#print axioms TopCat.ClosedRefinement.mem_open_index
+#check TopCat.ClosedRefinement.finite_at
+#print axioms TopCat.ClosedRefinement.finite_at
+#check TopCat.ClosedRefinement.exists_controlled_neighborhood
+#print axioms TopCat.ClosedRefinement.exists_controlled_neighborhood
+
+/-! ## `Lib.Topology.Sheaves.FunctionSheaf` -/
+
+#check TopCat.FunctionSheaf.presheaf
+#print axioms TopCat.FunctionSheaf.presheaf
+#check TopCat.FunctionSheaf.presheaf_obj
+#print axioms TopCat.FunctionSheaf.presheaf_obj
+#check TopCat.FunctionSheaf.presheaf_map_apply
+#print axioms TopCat.FunctionSheaf.presheaf_map_apply
+#check TopCat.FunctionSheaf.forgetIso
+#print axioms TopCat.FunctionSheaf.forgetIso
+#check TopCat.FunctionSheaf.isSheaf
+#print axioms TopCat.FunctionSheaf.isSheaf
+#check TopCat.FunctionSheaf.sheaf
+#print axioms TopCat.FunctionSheaf.sheaf
+#check TopCat.FunctionSheaf.extendByZero
+#print axioms TopCat.FunctionSheaf.extendByZero
+#check TopCat.FunctionSheaf.restrict_extendByZero
+#print axioms TopCat.FunctionSheaf.restrict_extendByZero
+#check TopCat.FunctionSheaf.sheaf_isFlasque
+#print axioms TopCat.FunctionSheaf.sheaf_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
+
+#check TopCat.SheafH1.subsingleton_h1_of_isFlasque
+#print axioms TopCat.SheafH1.subsingleton_h1_of_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.SheafificationLocal` -/
+
+#check TopCat.SheafificationLocal.sheaf
+#print axioms TopCat.SheafificationLocal.sheaf
+#check TopCat.SheafificationLocal.unit
+#print axioms TopCat.SheafificationLocal.unit
+#check TopCat.SheafificationLocal.unit_stalk_isIso
+#print axioms TopCat.SheafificationLocal.unit_stalk_isIso
+#check TopCat.SheafificationLocal.unit_stalk_injective
+#print axioms TopCat.SheafificationLocal.unit_stalk_injective
+#check TopCat.SheafificationLocal.exists_local_representative
+#print axioms TopCat.SheafificationLocal.exists_local_representative
+#check TopCat.SheafificationLocal.germ_unit_eq_iff
+#print axioms TopCat.SheafificationLocal.germ_unit_eq_iff
+#check TopCat.SheafificationLocal.exists_restriction_eq_of_germ_unit_eq
+#print axioms TopCat.SheafificationLocal.exists_restriction_eq_of_germ_unit_eq
+
+/-! ## `Lib.Topology.Sheaves.SheafificationPushforward` -/
+
+#check TopCat.SheafificationPushforward.sheafification
+#print axioms TopCat.SheafificationPushforward.sheafification
+#check TopCat.SheafificationPushforward.liftToPushforward
+#print axioms TopCat.SheafificationPushforward.liftToPushforward
+#check TopCat.SheafificationPushforward.toSheafify_liftToPushforward
+#print axioms TopCat.SheafificationPushforward.toSheafify_liftToPushforward
+#check TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc
+#print axioms TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc
+#check TopCat.SheafificationPushforward.liftToPushforward_hom_ext
+#print axioms TopCat.SheafificationPushforward.liftToPushforward_hom_ext
+#check TopCat.SheafificationPushforward.sheafifyPullback
+#print axioms TopCat.SheafificationPushforward.sheafifyPullback
+#check TopCat.SheafificationPushforward.toSheafify_sheafifyPullback
+#print axioms TopCat.SheafificationPushforward.toSheafify_sheafifyPullback
+#check TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc
+#print axioms TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc
+#check TopCat.SheafificationPushforward.sheafifyPullback_naturality
+#print axioms TopCat.SheafificationPushforward.sheafifyPullback_naturality
