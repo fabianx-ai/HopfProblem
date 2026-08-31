@@ -161,6 +161,7 @@ import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
 import Lib.Topology.Sheaves.FiniteClosedPushforward
 import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
+import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 
 /-!
 # Reusable extracted library

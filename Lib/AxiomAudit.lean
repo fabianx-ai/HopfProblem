@@ -1191,6 +1191,23 @@ is an evidence command rather than library content.
 #check TopCat.FiniteClosedPushforward.pushforward_shortExact
 #print axioms TopCat.FiniteClosedPushforward.pushforward_shortExact
 
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology` -/
+
+#check TopCat.FiniteClosedPushforward.cohomologyForward
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward
+#check TopCat.FiniteClosedPushforward.cohomologyForward_bijective
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_bijective
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv_symm_apply
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_symm_apply
+#check TopCat.FiniteClosedPushforward.cohomologyForward_equiv
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_equiv
+#check TopCat.FiniteClosedPushforward.cohomologyForward_naturality
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_naturality
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
+
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
 
 #check PrincipalCoverLocalSystem.LiftedOpen
