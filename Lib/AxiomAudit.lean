@@ -1556,6 +1556,57 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
 #print axioms CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Neighborhood` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.freeOpenFunctor
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.freeOpenFunctor
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.inverseImage_eq_top
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.inverseImage_eq_top
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_naturality
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_sections
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_sections
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_naturality
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_comp
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_comp
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_bijective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_bijective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_symm_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_symm_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_equiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_equiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.coefficientMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.coefficientMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv
