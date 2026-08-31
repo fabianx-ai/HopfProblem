@@ -242,6 +242,7 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
 import Lib.Topology.Sheaves.ConstantSheafH1
+import Lib.Topology.Sheaves.ConstantProductH1Comparison
 
 /-!
 # Reusable extracted library

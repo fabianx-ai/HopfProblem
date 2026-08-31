@@ -3213,3 +3213,8 @@ is an evidence command rather than library content.
 
 #check TopCat.SingularCochainSheaf.exists_h1Comparison_natural
 #print axioms TopCat.SingularCochainSheaf.exists_h1Comparison_natural
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1Comparison` -/
+
+#check TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
