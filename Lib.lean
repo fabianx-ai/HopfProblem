@@ -254,6 +254,8 @@ import Lib.Topology.Sheaves.OpenFiniteClosedFactorization
 import Lib.Algebra.Module.FreeIntSubmodule
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
+import Lib.Topology.Homotopy.QuotientCoveringSpace
+import Lib.Topology.Homotopy.EquivariantCoveringLift
 
 /-!
 # Reusable extracted library

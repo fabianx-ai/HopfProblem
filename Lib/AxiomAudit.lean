@@ -3621,3 +3621,17 @@ is an evidence command rather than library content.
 #print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1Evaluation_isIso
 #check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1EvaluationAlong_isIso
 #print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1EvaluationAlong_isIso
+
+/-! ## `Lib.Topology.Homotopy.QuotientCoveringSpace` -/
+
+#check IsLocalHomeomorph.locallyPathConnectedSpace
+#print axioms IsLocalHomeomorph.locallyPathConnectedSpace
+#check IsQuotientCoveringMap.simplyConnectedSpace_of_fundamentalGroupToMulOpposite_injective
+#print axioms IsQuotientCoveringMap.simplyConnectedSpace_of_fundamentalGroupToMulOpposite_injective
+
+/-! ## `Lib.Topology.Homotopy.EquivariantCoveringLift` -/
+
+#check IsQuotientCoveringMap.lift_eq_smul_of_eq_at
+#print axioms IsQuotientCoveringMap.lift_eq_smul_of_eq_at
+#check IsQuotientCoveringMap.lift_equivariant_of_eq_at
+#print axioms IsQuotientCoveringMap.lift_equivariant_of_eq_at
