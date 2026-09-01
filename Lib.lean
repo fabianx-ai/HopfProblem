@@ -265,6 +265,8 @@ import Lib.Topology.Sheaves.SheafificationLocalGerm
 import Lib.Topology.Sheaves.ConstantProductH1FibreIndependence
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates
+import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
+import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 
 /-!
 # Reusable extracted library

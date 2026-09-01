@@ -3738,3 +3738,18 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
 #print axioms CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+/-! ## `Lib.AlgebraicTopology.SingularCochains.PositivePrimitives` -/
+
+#check AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
+#print axioms AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
+#check AlgebraicTopology.SingularCochains.pointCocycle_boundary
+#print axioms AlgebraicTopology.SingularCochains.pointCocycle_boundary
+#check AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ
+#print axioms AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ
+#check AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
+#print axioms AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive` -/
+
+#check TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
+#print axioms TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
