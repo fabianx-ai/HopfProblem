@@ -4205,3 +4205,84 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
 #check TopCat.SingularSmallChains.homotopy_on_cocycle_succ
 #print axioms TopCat.SingularSmallChains.homotopy_on_cocycle_succ
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ExactAugmentedCochainComplex` -/
+
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.initialExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.initialExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_shortExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_shortExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.recOn
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.recOn
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.rec
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.rec
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_d
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_d
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_X
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_X
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.resolutionComplexIso
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.resolutionComplexIso
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.F
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.F
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ι
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ι
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.Z
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.Z
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.epi_p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.epi_p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusion
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_ι
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_ι
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_i_zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_i_zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.stepToUnfactored
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.stepToUnfactored
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_Z_zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_Z_zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusionType
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_exact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_exact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep_exact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep_exact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.casesOn
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.casesOn
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.injEq
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i_assoc
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i_assoc
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ctorIdx
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.positiveExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.positiveExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.complex
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.complex
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p_assoc
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p_assoc
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
