@@ -4286,3 +4286,12 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p_assoc
 #check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
 #print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient` -/
+
+#check CategoryTheory.Abelian.Ext.postcomp_f_two_bijective_of_subsingleton_quotient
+#print axioms CategoryTheory.Abelian.Ext.postcomp_f_two_bijective_of_subsingleton_quotient
+#check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient
+#print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient
+#check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
+#print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
