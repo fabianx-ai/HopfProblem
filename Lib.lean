@@ -274,6 +274,7 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionExactFunctor
 import Lib.Algebra.Homology.DerivedCategory.Ext.ExactAugmentedCochainComplex
 import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3

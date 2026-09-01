@@ -4343,3 +4343,54 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod
 #check TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
 #print axioms TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionExactFunctor` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_Z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_Z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_X
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_X
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_i
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.comparisonHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.comparisonHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplexMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplexMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_map_of_surjective
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_map_of_surjective
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncComparison
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncComparison
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtOneIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtOneIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
