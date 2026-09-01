@@ -270,6 +270,8 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3
+import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility
 
 /-!
 # Reusable extracted library

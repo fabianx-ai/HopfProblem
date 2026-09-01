@@ -4032,3 +4032,131 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap_comp
 #check CategoryTheory.Abelian.Ext.AcyclicResolution.step
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.step
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.extThreeIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.extThreeIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.extTwoIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.extTwoIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.X₄
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.X₄
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.zero₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.zero₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.d₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.d₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.d₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.d₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.X₅
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.X₅
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.trunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.trunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.zero₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.zero₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.exact₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.exact₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.toAcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.toAcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.exact₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.exact₃
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.iIsKernel
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.iIsKernel
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_two_legacy_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_two_legacy_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.p_nextCycleIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.p_nextCycleIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.kernelTrunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.kernelTrunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₁
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₁
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncToKernelTrunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncToKernelTrunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₁
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₁
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_secondTail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_secondTail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_one_legacy_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_one_legacy_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_trunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_trunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
