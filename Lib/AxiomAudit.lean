@@ -4468,3 +4468,22 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global_assoc
 #check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution` -/
+
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution_d
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution_d
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution_isAcyclic
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution_isAcyclic
+#check TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap
+#print axioms TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap
+#check TopCat.FiniteClosedPushforward.indexedGlobalComplexIso
+#print axioms TopCat.FiniteClosedPushforward.indexedGlobalComplexIso
+#check TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward
+#print axioms TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward
+#check TopCat.FiniteClosedPushforward.pushedIndexedGlobalIso
+#print axioms TopCat.FiniteClosedPushforward.pushedIndexedGlobalIso
+#check TopCat.FiniteClosedPushforward.indexedGlobal_forward
+#print axioms TopCat.FiniteClosedPushforward.indexedGlobal_forward
