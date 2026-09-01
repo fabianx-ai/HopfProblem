@@ -4453,3 +4453,18 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.resolution_isAcyclic
 #check TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
 #print axioms TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive` -/
+
+#check TopCat.SingularCochainSheaf.constantSheafGlobalIso
+#print axioms TopCat.SingularCochainSheaf.constantSheafGlobalIso
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_metrizable
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_metrizable
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global_assoc
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global_assoc
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
