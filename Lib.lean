@@ -281,6 +281,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility
 import Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient
+import Lib.Topology.Sheaves.Cohomology.AcyclicResolution
 
 /-!
 # Reusable extracted library

@@ -4409,3 +4409,30 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.smallKernelGlobal
 #check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.AcyclicResolution` -/
+
+#check TopCat.SheafCohomology.AcyclicResolution.Resolution
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Resolution
+#check TopCat.SheafCohomology.AcyclicResolution.globalComplex
+#print axioms TopCat.SheafCohomology.AcyclicResolution.globalComplex
+#check TopCat.SheafCohomology.AcyclicResolution.IsAcyclic
+#print axioms TopCat.SheafCohomology.AcyclicResolution.IsAcyclic
+#check TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor
+#print axioms TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor
+#check TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso
+#print axioms TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso
+#check TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology
+#print axioms TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_id
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_id
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_comp
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_comp
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
