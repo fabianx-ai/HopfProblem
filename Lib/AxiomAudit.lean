@@ -4175,3 +4175,22 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso
 #check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
 #print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction` -/
+
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperAt
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperAt
+#check TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso_hom_eqToHom
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso_hom_eqToHom
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperAt_top
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperAt_top
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperBiprod
+#check TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfStalkwiseIso
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfStalkwiseIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
+#check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
