@@ -3344,6 +3344,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
 #print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantEvaluationBijective` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_bijective
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_bijective
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_bijective_of_pullback_isIso
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_bijective_of_pullback_isIso
+
 /-! ## `Lib.Topology.Sheaves.NestedOpenCohomology` -/
 
 #check TopCat.Sheaf.NestedOpenCohomology.inclusion
