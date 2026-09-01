@@ -259,6 +259,12 @@ import Lib.Topology.Homotopy.EquivariantCoveringLift
 import Lib.Algebra.Homology.FunctorCoherence
 import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoefficientNormalization
+import Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm
+import Lib.Topology.Sheaves.OpenRestrictionStalk
+import Lib.Topology.Sheaves.SheafificationLocalGerm
+import Lib.Topology.Sheaves.ConstantProductH1FibreIndependence
+import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange
+import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates
 
 /-!
 # Reusable extracted library

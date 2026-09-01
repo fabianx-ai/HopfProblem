@@ -3690,3 +3690,51 @@ is an evidence command rather than library content.
 #print axioms IsQuotientCoveringMap.lift_eq_smul_of_eq_at
 #check IsQuotientCoveringMap.lift_equivariant_of_eq_at
 #print axioms IsQuotientCoveringMap.lift_equivariant_of_eq_at
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.A
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.A
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.uliftDownHomEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.uliftDownHomEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.evaluationTargetEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.evaluationTargetEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation_pullback
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation_pullback
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1FibreIndependence` -/
+
+#check TopCat.ConstantProductH1.basedFibreInclusion_homotopic
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_homotopic
+#check TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_eq
+#print axioms TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_eq
+
+/-! ## `Lib.Topology.Sheaves.OpenRestrictionStalk` -/
+
+#check TopCat.Sheaf.OpenRestriction.presheafStalkIso
+#print axioms TopCat.Sheaf.OpenRestriction.presheafStalkIso
+#check TopCat.Sheaf.OpenRestriction.stalkIso
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso
+#check TopCat.Sheaf.OpenRestriction.inclusion_mem_openImage
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_mem_openImage
+#check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
+
+/-! ## `Lib.Topology.Sheaves.SheafificationLocalGerm` -/
+
+#check TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
+#print axioms TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm` -/
+
+#check CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+#print axioms CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
