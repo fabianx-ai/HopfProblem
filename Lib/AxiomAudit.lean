@@ -4436,3 +4436,20 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc
 #check TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
 #print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive` -/
+
+#check TopCat.SingularCochainSheaf.exactAugmentedComplex
+#print axioms TopCat.SingularCochainSheaf.exactAugmentedComplex
+#check TopCat.SingularCochainSheaf.resolution
+#print axioms TopCat.SingularCochainSheaf.resolution
+#check TopCat.SingularCochainSheaf.resolution_Z_zero
+#print axioms TopCat.SingularCochainSheaf.resolution_Z_zero
+#check TopCat.SingularCochainSheaf.resolution_X
+#print axioms TopCat.SingularCochainSheaf.resolution_X
+#check TopCat.SingularCochainSheaf.resolution_d
+#print axioms TopCat.SingularCochainSheaf.resolution_d
+#check TopCat.SingularCochainSheaf.resolution_isAcyclic
+#print axioms TopCat.SingularCochainSheaf.resolution_isAcyclic
+#check TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
+#print axioms TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
