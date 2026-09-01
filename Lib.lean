@@ -244,6 +244,7 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatchLocal
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
 import Lib.Topology.Sheaves.ConstantSheafH1
 import Lib.Topology.Sheaves.ConstantProductH1Comparison

@@ -4394,3 +4394,18 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality
 #check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive` -/
+
+#check TopCat.SingularCochainSheaf.SmallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.SmallKernelGlobal
+#check TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
+#check TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
+#check TopCat.SingularCochainSheaf.smallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.smallKernelGlobal
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
