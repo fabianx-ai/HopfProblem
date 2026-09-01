@@ -1574,6 +1574,23 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility` -/
+
+#check CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans
+#print axioms CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans
+#check CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app
+#print axioms CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp
+#check CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying
+#check CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit
+#print axioms CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf` -/
 
 #check CategoryTheory.Sheaf.Leray.freeOpenFunctor
@@ -1879,6 +1896,13 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.homologyMap_cycleClass
 #check CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
 #print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
+
+/-! ## `Lib.Algebra.Homology.FunctorCoherence` -/
+
+#check CategoryTheory.ShortComplex.mapHomologyIso_comp
+#print axioms CategoryTheory.ShortComplex.mapHomologyIso_comp
+#check CategoryTheory.ShortComplex.mapHomologyIso_hom_naturality_natTrans
+#print axioms CategoryTheory.ShortComplex.mapHomologyIso_hom_naturality_natTrans
 
 /-! ## `Lib.Algebra.Homology.ShortComplex.LeftHomologyData` -/
 

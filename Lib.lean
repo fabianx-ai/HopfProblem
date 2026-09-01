@@ -256,6 +256,8 @@ import Lib.AlgebraicTopology.SingularCochains.DualEvaluation
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
 import Lib.Topology.Homotopy.QuotientCoveringSpace
 import Lib.Topology.Homotopy.EquivariantCoveringLift
+import Lib.Algebra.Homology.FunctorCoherence
+import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
 
 /-!
 # Reusable extracted library
