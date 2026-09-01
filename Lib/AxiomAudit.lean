@@ -4194,3 +4194,14 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
 #check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
 #print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy` -/
+
+#check TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_succ
+#print axioms TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_succ
+#check TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_succ
+#print axioms TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_succ
+#check TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
+#print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
+#check TopCat.SingularSmallChains.homotopy_on_cocycle_succ
+#print axioms TopCat.SingularSmallChains.homotopy_on_cocycle_succ

@@ -213,6 +213,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1ExactFunctor
 import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1
 import Lib.AlgebraicTopology.SingularSmallChains.Basic
+import Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalChains
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshBarycenter
 import Lib.AlgebraicTopology.SingularSmallChains.Projective
