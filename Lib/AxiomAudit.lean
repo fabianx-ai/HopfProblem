@@ -4160,3 +4160,18 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom
 #check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections` -/
+
+#check TopCat.Sheaf.FiniteSupport.skyscraperAt
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAt
+#check TopCat.Sheaf.FiniteSupport.topEvaluation
+#print axioms TopCat.Sheaf.FiniteSupport.topEvaluation
+#check TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
+#check TopCat.Sheaf.FiniteSupport.sectionsBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.sectionsBiprodIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
