@@ -4487,3 +4487,22 @@ is an evidence command rather than library content.
 #print axioms TopCat.FiniteClosedPushforward.pushedIndexedGlobalIso
 #check TopCat.FiniteClosedPushforward.indexedGlobal_forward
 #print axioms TopCat.FiniteClosedPushforward.indexedGlobal_forward
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedPositive` -/
+
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback_i
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback_i
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback_i_assoc
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback_i_assoc
+#check TopCat.SingularCochainSheaf.resolutionPullback
+#print axioms TopCat.SingularCochainSheaf.resolutionPullback
+#check TopCat.SingularCochainSheaf.resolutionPullback_globalComplex
+#print axioms TopCat.SingularCochainSheaf.resolutionPullback_globalComplex
+#check TopCat.SingularCochainSheaf.constantSheafGlobalIso_naturality
+#print axioms TopCat.SingularCochainSheaf.constantSheafGlobalIso_naturality
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
