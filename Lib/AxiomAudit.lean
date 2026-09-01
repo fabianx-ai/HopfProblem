@@ -3753,3 +3753,53 @@ is an evidence command rather than library content.
 
 #check TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
 #print axioms TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction` -/
+
+#check TopCat.SingularCochainSheaf.OpenRestriction.extendByZero
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.extendByZero
+#check TopCat.SingularCochainSheaf.OpenRestriction.restrict_extendByZero
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.restrict_extendByZero
+#check TopCat.SingularCochainSheaf.OpenRestriction.extendByZeroAlong
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.extendByZeroAlong
+#check TopCat.SingularCochainSheaf.OpenRestriction.map_extendByZeroAlong
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.map_extendByZeroAlong
+#check TopCat.SingularCochainSheaf.OpenRestriction.presheaf_map_surjective
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.presheaf_map_surjective
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageHomeomorph
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageHomeomorph
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageMap
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageMap
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageMapInv
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageMapInv
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageCochainIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageCochainIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.restrictedPresheaf
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.restrictedPresheaf
+#check TopCat.SingularCochainSheaf.OpenRestriction.presheafIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.presheafIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.sheafIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.sheafIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom_app
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom_app
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_app_surjective
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_app_surjective
+#check TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_open_normal_paracompact
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_open_normal_paracompact
+#check TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_metrizable
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_metrizable
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic` -/
+
+#check TopCat.Sheaf.OpenRestriction.freeOpenFunctor
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpenFunctor
+#check TopCat.Sheaf.OpenRestriction.freeOpenFunctor_map_mono
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpenFunctor_map_mono
+#check TopCat.Sheaf.IsFlasque.of_injective
+#print axioms TopCat.Sheaf.IsFlasque.of_injective
+#check TopCat.SheafCohomology.subsingleton_h_succ_of_isFlasque
+#print axioms TopCat.SheafCohomology.subsingleton_h_succ_of_isFlasque
+#check TopCat.SheafCohomology.subsingleton_h_of_isFlasque
+#print axioms TopCat.SheafCohomology.subsingleton_h_of_isFlasque

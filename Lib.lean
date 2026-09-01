@@ -267,6 +267,8 @@ import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates
 import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
 import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
+import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
+import Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic
 
 /-!
 # Reusable extracted library
