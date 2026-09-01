@@ -4295,3 +4295,28 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient
 #check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
 #print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient` -/
+
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.mk
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.mk
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hOne
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hOne
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hTwo
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hTwo
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.rec
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.rec
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.recOn
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.recOn
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.casesOn
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.casesOn
+#check TopCat.SheafCohomology.hTwoMap_bijective_of_subsingleton_quotient
+#print axioms TopCat.SheafCohomology.hTwoMap_bijective_of_subsingleton_quotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfAcyclicQuotient
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfAcyclicQuotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
