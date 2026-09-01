@@ -4506,3 +4506,10 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality
 #check TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CofinalCriterion` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
