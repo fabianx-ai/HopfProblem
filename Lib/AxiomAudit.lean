@@ -4320,3 +4320,26 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfAcyclicQuotient
 #check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
 #print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperSupport` -/
+
+#check TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso
+#print axioms TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperAt_comp_counit
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperAt_comp_counit
+#check TopCat.Sheaf.FiniteSupport.sheafStalkBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.sheafStalkBiprodIso
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod_assoc
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod_assoc
+#check TopCat.Sheaf.FiniteSupport.skyscraperAt_stalk_isZero_of_ne
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAt_stalk_isZero_of_ne
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod
+#check TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
