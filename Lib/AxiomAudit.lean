@@ -193,6 +193,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 #print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
+
+#check HomologicalComplex.mapExtendXIso
+#print axioms HomologicalComplex.mapExtendXIso
+#check HomologicalComplex.mapExtendIso
+#print axioms HomologicalComplex.mapExtendIso
+
 /-! ## `Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle` -/
 
 #check CochainComplex.HomComplex.coyonedaComplex
