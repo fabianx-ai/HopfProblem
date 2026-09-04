@@ -299,6 +299,13 @@ is an evidence command rather than library content.
 #print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
 
 
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
+
+#check FundamentalGroup.map_bijective_of_homotopyEquiv
+#print axioms FundamentalGroup.map_bijective_of_homotopyEquiv
+#check FundamentalGroup.mulEquivOfHomotopyEquiv
+#print axioms FundamentalGroup.mulEquivOfHomotopyEquiv
+
 #check Path.trans_mem
 #print axioms Path.trans_mem
 #check FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc
