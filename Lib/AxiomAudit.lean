@@ -4805,6 +4805,13 @@ is an evidence command rather than library content.
 #check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
 #print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactDegreeOne` -/
+
+#check TopCat.SheafCohomology.hZeroMap_surjective_iff_globalSections_surjective
+#print axioms TopCat.SheafCohomology.hZeroMap_surjective_iff_globalSections_surjective
+#check TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
+#print axioms TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
+
 /-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperSupport` -/
 
 #check TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso
