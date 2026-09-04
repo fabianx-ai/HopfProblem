@@ -314,6 +314,7 @@ import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections
 import Lib.AlgebraicTopology.SingularCochains.Vanishing
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage
+import Lib.Algebra.Homology.SpectralObject.Postnikov
 
 /-!
 # Reusable extracted library

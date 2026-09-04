@@ -193,6 +193,21 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 #print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 
+/-! ## `Lib.Algebra.Homology.SpectralObject.Postnikov` -/
+
+#check CategoryTheory.Triangulated.TStructure.postnikovSpectralObject
+#print axioms CategoryTheory.Triangulated.TStructure.postnikovSpectralObject
+#check CategoryTheory.Triangulated.TStructure.postnikovTotalIso
+#print axioms CategoryTheory.Triangulated.TStructure.postnikovTotalIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject_isFirstQuadrant
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject_isFirstQuadrant
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralSequence
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralSequence
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
