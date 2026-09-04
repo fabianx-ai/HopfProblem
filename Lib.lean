@@ -323,6 +323,7 @@ import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology
 import Lib.Algebra.Homology.HomologicalComplex.MapExtend
 import Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionCoyoneda
+import Lib.CategoryTheory.Sites.Leray.ResolutionAbutment
 
 /-!
 # Reusable extracted library

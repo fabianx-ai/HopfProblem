@@ -1516,6 +1516,25 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionAbutment` -/
+
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolution
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolution
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolutionIso
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolutionIso
+#check CategoryTheory.Sheaf.Leray.pushforwardPreservesInjectiveObjects
+#print axioms CategoryTheory.Sheaf.Leray.pushforwardPreservesInjectiveObjects
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolution_isKInjective
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolution_isKInjective
+#check CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso
+#check CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso
+#check CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
+
 -- DegreeZero: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
