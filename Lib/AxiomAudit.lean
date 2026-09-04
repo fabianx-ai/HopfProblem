@@ -1403,6 +1403,29 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
 #print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.StalkUnit` -/
+
+#check TopCat.Sheaf.OpenRestriction.pullbackRestrictionIso
+#print axioms TopCat.Sheaf.OpenRestriction.pullbackRestrictionIso
+#check TopCat.Sheaf.OpenRestriction.nearbyExtension
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyExtension
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit
+#check TopCat.Sheaf.OpenRestriction.nearbyExtensionObjIso
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyExtensionObjIso
+#check TopCat.Sheaf.OpenRestriction.nearbyNeighborhoodDiagram
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyNeighborhoodDiagram
+#check TopCat.Sheaf.OpenRestriction.nearbySectionsStalk
+#print axioms TopCat.Sheaf.OpenRestriction.nearbySectionsStalk
+#check TopCat.Sheaf.OpenRestriction.nearbySectionsStalk_eq_colimit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbySectionsStalk_eq_colimit
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_natural
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_natural
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction.Cohomology` -/
 
 #check TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup

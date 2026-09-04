@@ -288,6 +288,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibi
 import Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient
 import Lib.Topology.Sheaves.Cohomology.AcyclicResolution
 import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution
+import Lib.Topology.Sheaves.OpenRestriction.StalkUnit
 
 /-!
 # Reusable extracted library
