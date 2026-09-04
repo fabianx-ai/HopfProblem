@@ -114,6 +114,7 @@ import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
 import Lib.LinearAlgebra.ExteriorPower.PowersetShuffle
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
+import Lib.LinearAlgebra.RankOneInt
 import Lib.LinearAlgebra.SquareZero
 import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 import Lib.GroupTheory.SplitExtension

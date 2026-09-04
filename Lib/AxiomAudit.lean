@@ -5293,3 +5293,8 @@ is an evidence command rather than library content.
 
 #check TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
 #print axioms TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
+
+/-! ## `Lib.LinearAlgebra.RankOneInt` -/
+
+#check LinearMap.domainEquivIntOfInjectiveOfNonzero
+#print axioms LinearMap.domainEquivIntOfInjectiveOfNonzero
