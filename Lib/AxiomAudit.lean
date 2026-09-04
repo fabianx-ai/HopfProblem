@@ -210,6 +210,25 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.SpectralObject.totalFiltration_top
 #print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_top
 
+/-! ## `Lib.Algebra.Homology.SpectralObject.StableEndpoint` -/
+
+#check CategoryTheory.Abelian.SpectralObject.stableE
+#print axioms CategoryTheory.Abelian.SpectralObject.stableE
+#check CategoryTheory.Abelian.SpectralObject.stableEProjection
+#print axioms CategoryTheory.Abelian.SpectralObject.stableEProjection
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_rangeRestrict
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_rangeRestrict
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_surjective
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_surjective
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_ker
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_ker
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
+
 /-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
 
 #check HomologicalComplex.mapExtendXIso

@@ -329,6 +329,7 @@ import Lib.Topology.Sheaves.StalkwiseSectionLift
 import Lib.Algebra.Homology.SpectralObject.TotalFiltration
 import Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality
 import Lib.Topology.Sheaves.StalkwiseSectionRange
+import Lib.Algebra.Homology.SpectralObject.StableEndpoint
 
 /-!
 # Reusable extracted library
