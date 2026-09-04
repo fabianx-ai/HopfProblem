@@ -475,6 +475,8 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnSpectralSequence.Convergence.sourceNormalizationOfTarget
 #check ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
 #print axioms ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
+#check ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
+#print axioms ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
 #check ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
 #print axioms ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
 

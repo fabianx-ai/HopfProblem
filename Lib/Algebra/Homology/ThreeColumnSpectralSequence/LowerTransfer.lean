@@ -147,6 +147,27 @@ noncomputable def targetNormalizationOfSource (q : ℕ)
   (LinearEquiv.ofBijective (P.d₂ 0 q).hom
     (A.d₂_bijective_of_subsingleton q hH₁ hH₂)).symm.trans source
 
+/-- Assemble all six outer coordinates from coordinates on the three alternating edges, using
+adjacent abutment vanishing to transport across the lower differentials. -/
+noncomputable def outerNormalizationOfAlternatingCoordinates
+    (hH₁ : Subsingleton (A.H 1))
+    (hH₂ : Subsingleton (A.H 2))
+    (hH₃ : Subsingleton (A.H 3))
+    (hH₄ : Subsingleton (A.H 4))
+    (target₀ : P.E₂ 2 0 ≃ₗ[R] R)
+    (source₁ : P.E₂ 0 2 ≃ₗ[R] R)
+    (source₂ : P.E₂ 0 3 ≃ₗ[R] R) :
+    OuterNormalization R P where
+  source := Fin.cases
+    (A.sourceNormalizationOfTarget 0 (by simpa using hH₁) (by simpa using hH₂) target₀)
+    (Fin.cases source₁ (Fin.cases source₂ (fun i => Fin.elim0 i)))
+  target := Fin.cases target₀
+    (Fin.cases
+      (A.targetNormalizationOfSource 1 (by simpa using hH₂) (by simpa using hH₃) source₁)
+      (Fin.cases
+        (A.targetNormalizationOfSource 2 (by simpa using hH₃) (by simpa using hH₄) source₂)
+        (fun i => Fin.elim0 i)))
+
 /-- Abutment vanishing in degrees one through three implies the paper-facing lower transfer
 condition on the actual page-two differentials. -/
 theorem lowerTransferCondition [Nontrivial R] (N : OuterNormalization R P)
