@@ -683,6 +683,13 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
 
+/-! ## `Lib.Topology.Covering.FiberFrameCentralizer` -/
+
+#check IsQuotientCoveringMap.commute_of_monodromy_eq_toPermFiber
+#print axioms IsQuotientCoveringMap.commute_of_monodromy_eq_toPermFiber
+#check IsQuotientCoveringMap.commute_fiberEquivGroup_of_monodromy_eq
+#print axioms IsQuotientCoveringMap.commute_fiberEquivGroup_of_monodromy_eq
+
 /-! ## `Lib.Topology.Covering.QuotientConnectedness` -/
 
 #check IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
