@@ -1836,6 +1836,11 @@ is an evidence command rather than library content.
 #check LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
 #print axioms LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
 
+/-! ## `Lib.LinearAlgebra.Dual.TriangularRankTwoInjective` -/
+
+#check LinearMap.dualMap_injective_of_finTwo_triangular
+#print axioms LinearMap.dualMap_injective_of_finTwo_triangular
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion` -/
 
 #check CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill

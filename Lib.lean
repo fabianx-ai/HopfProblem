@@ -105,6 +105,7 @@ import Lib.GroupTheory.Pushout.EquivOfCocone
 import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.Dual.TriangularRankTwo
+import Lib.LinearAlgebra.Dual.TriangularRankTwoInjective
 import Lib.LinearAlgebra.Dual.Contragredient
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ReindexedCoordinates
