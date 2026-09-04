@@ -4546,6 +4546,19 @@ is an evidence command rather than library content.
 #check TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
 
+/-! ## `Lib.Topology.Sheaves.ConstantProductPositiveFibreIndependence` -/
+
+#check TopCat.ConstantProductPositive.nativePullback_isIso_of_comparison
+#print axioms TopCat.ConstantProductPositive.nativePullback_isIso_of_comparison
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso_of_comparison_naturality
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso_of_comparison_naturality
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq_of_comparison_naturality
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq_of_comparison_naturality
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CofinalCriterion` -/
 
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
