@@ -283,6 +283,7 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive
+import Lib.Topology.Sheaves.SingularCochainSheaf.Vanishing
 import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedPositive
 import Lib.Topology.Sheaves.ConstantProductPositiveFibreIndependence
 import Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic

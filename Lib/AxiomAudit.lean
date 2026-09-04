@@ -4986,6 +4986,11 @@ is an evidence command rather than library content.
 #check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
 
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Vanishing` -/
+
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
+
 /-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution` -/
 
 #check TopCat.FiniteClosedPushforward.mapIndexedResolution
