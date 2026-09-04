@@ -328,6 +328,28 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnSpectralSequence.Raw.d₂
 #check ThreeColumnSpectralSequence.Raw.Einf
 #print axioms ThreeColumnSpectralSequence.Raw.Einf
+#check ThreeColumnSpectralSequence.Raw.offsetPage
+#print axioms ThreeColumnSpectralSequence.Raw.offsetPage
+#check ThreeColumnSpectralSequence.Raw.isZero_offsetPage_of_three_le
+#print axioms ThreeColumnSpectralSequence.Raw.isZero_offsetPage_of_three_le
+#check ThreeColumnSpectralSequence.Raw.middle_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.middle_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.middle_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.middle_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.middlePageSuccIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePageSuccIso
+#check ThreeColumnSpectralSequence.Raw.middlePageIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePageIso
+#check ThreeColumnSpectralSequence.Raw.middlePermanenceIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePermanenceIso
+#check ThreeColumnSpectralSequence.Raw.stable_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.stable_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.stable_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.stable_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.stablePageSuccIso
+#print axioms ThreeColumnSpectralSequence.Raw.stablePageSuccIso
+#check ThreeColumnSpectralSequence.Raw.stablePageIso
+#print axioms ThreeColumnSpectralSequence.Raw.stablePageIso
 
 #check ThreeColumnSpectralSequence.FiniteFiltration
 #print axioms ThreeColumnSpectralSequence.FiniteFiltration
@@ -356,6 +378,10 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnSpectralSequence.Convergence.filtration
 #check ThreeColumnSpectralSequence.Convergence.gradedIso
 #print axioms ThreeColumnSpectralSequence.Convergence.gradedIso
+#check ThreeColumnSpectralSequence.Convergence.Einf_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.Einf_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 

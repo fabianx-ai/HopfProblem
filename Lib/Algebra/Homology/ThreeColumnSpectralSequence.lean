@@ -62,6 +62,102 @@ The permanence theorem proves that all page transitions from page three onward a
 in the supported columns. -/
 abbrev Einf (p q : ℕ) : ModuleCat.{v} R := P.E 3 (by omega) p q
 
+/-- Page `n+2`, indexed by its offset from the initial page. -/
+abbrev offsetPage (n : ℕ) :=
+  P.spectralSequence.page ((n : ℤ) + 2) (by omega)
+
+/-- Three-column support propagates from the `E₂` page to every later page. -/
+theorem isZero_offsetPage_of_three_le (n p q : ℕ) (hp : 3 ≤ p) :
+    IsZero ((P.offsetPage n).X (p, q)) := by
+  induction n with
+  | zero =>
+      change IsZero ((P.spectralSequence.page 2).X (p, q))
+      exact P.isZero_E₂_of_three_le p q hp
+  | succ n ih =>
+      have hhomology : IsZero ((P.offsetPage n).homology (p, q)) :=
+        ((P.offsetPage n).sc (p, q)).isZero_homology_of_isZero_X₂ ih
+      exact IsZero.of_iso hhomology
+        (P.spectralSequence.iso ((n : ℤ) + 2) ((n + 1 : ℕ) + 2) (p, q) (by omega)).symm
+
+/-- No differential on page `n+2` enters column one. -/
+theorem middle_dTo_eq_zero (n q : ℕ) :
+    (P.offsetPage n).dTo (1, q) = 0 := by
+  apply (P.offsetPage n).dTo_eq_zero
+  intro h
+  rw [ComplexShape.spectralSequenceNat_rel_iff] at h
+  omega
+
+/-- No differential on page `n+2` leaves column one. -/
+theorem middle_dFrom_eq_zero (n q : ℕ) :
+    (P.offsetPage n).dFrom (1, q) = 0 := by
+  by_cases h :
+      (ComplexShape.spectralSequenceNat
+        ⟨(n : ℤ) + 2, 1 - ((n : ℤ) + 2)⟩).Rel
+          (1, q) ((ComplexShape.spectralSequenceNat
+            ⟨(n : ℤ) + 2, 1 - ((n : ℤ) + 2)⟩).next (1, q))
+  · have hp : 3 ≤ ((ComplexShape.spectralSequenceNat
+        ⟨(n : ℤ) + 2, 1 - ((n : ℤ) + 2)⟩).next (1, q)).1 := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff] at h
+      omega
+    exact (P.isZero_offsetPage_of_three_le n _ _ hp).eq_of_tgt _ _
+  · exact (P.offsetPage n).dFrom_eq_zero h
+
+/-- The middle-column object is unchanged from page `n+2` to page `n+3`. -/
+noncomputable def middlePageSuccIso (n q : ℕ) :
+    (P.offsetPage n).X (1, q) ≅ (P.offsetPage (n + 1)).X (1, q) :=
+  ((ShortComplex.HomologyData.ofZeros ((P.offsetPage n).sc (1, q))
+      (P.middle_dTo_eq_zero n q) (P.middle_dFrom_eq_zero n q)).left.homologyIso).symm ≪≫
+    P.spectralSequence.iso ((n : ℤ) + 2) ((n + 1 : ℕ) + 2) (1, q) (by omega)
+
+/-- Column one is permanent: its `E₂` object is isomorphic to every later page. -/
+noncomputable def middlePageIso (q n : ℕ) :
+    P.E₂ 1 q ≅ (P.offsetPage n).X (1, q) :=
+  Nat.rec (motive := fun n ↦ P.E₂ 1 q ≅ (P.offsetPage n).X (1, q))
+    (Iso.refl _) (fun n e ↦ e ≪≫ P.middlePageSuccIso n q) n
+
+/-- The column-one `E₂` object is the corresponding stable-page object. -/
+noncomputable def middlePermanenceIso (q : ℕ) :
+    P.E₂ 1 q ≅ P.Einf 1 q :=
+  P.middlePageIso q 1
+
+/-- From page three onward, no differential enters any of the supported columns. -/
+theorem stable_dTo_eq_zero (n : ℕ) (p : Fin 3) (q : ℕ) :
+    (P.offsetPage (n + 1)).dTo (p, q) = 0 := by
+  apply (P.offsetPage (n + 1)).dTo_eq_zero
+  intro h
+  rw [ComplexShape.spectralSequenceNat_rel_iff] at h
+  have hp : p.1 ≤ 2 := by omega
+  omega
+
+/-- From page three onward, no differential leaves any of the supported columns. -/
+theorem stable_dFrom_eq_zero (n : ℕ) (p : Fin 3) (q : ℕ) :
+    (P.offsetPage (n + 1)).dFrom (p, q) = 0 := by
+  by_cases h :
+      (ComplexShape.spectralSequenceNat
+        ⟨(n : ℤ) + 3, 1 - ((n : ℤ) + 3)⟩).Rel
+          (p, q) ((ComplexShape.spectralSequenceNat
+            ⟨(n : ℤ) + 3, 1 - ((n : ℤ) + 3)⟩).next (p, q))
+  · have hp : 3 ≤ ((ComplexShape.spectralSequenceNat
+        ⟨(n : ℤ) + 3, 1 - ((n : ℤ) + 3)⟩).next (p, q)).1 := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff] at h
+      omega
+    exact (P.isZero_offsetPage_of_three_le (n + 1) _ _ hp).eq_of_tgt _ _
+  · exact (P.offsetPage (n + 1)).dFrom_eq_zero h
+
+/-- Every supported object is unchanged across one page transition after page three. -/
+noncomputable def stablePageSuccIso (n : ℕ) (p : Fin 3) (q : ℕ) :
+    (P.offsetPage (n + 1)).X (p, q) ≅ (P.offsetPage (n + 2)).X (p, q) :=
+  ((ShortComplex.HomologyData.ofZeros ((P.offsetPage (n + 1)).sc (p, q))
+      (P.stable_dTo_eq_zero n p q) (P.stable_dFrom_eq_zero n p q)).left.homologyIso).symm ≪≫
+    P.spectralSequence.iso (((n + 1 : ℕ) : ℤ) + 2) (((n + 2 : ℕ) : ℤ) + 2)
+      (p, q) (by omega)
+
+/-- Page three is a stable page in every supported bidegree. -/
+noncomputable def stablePageIso (p : Fin 3) (q n : ℕ) :
+    P.Einf p q ≅ (P.offsetPage (n + 1)).X (p, q) :=
+  Nat.rec (motive := fun n ↦ P.Einf p q ≅ (P.offsetPage (n + 1)).X (p, q))
+    (Iso.refl _) (fun n e ↦ e ≪≫ P.stablePageSuccIso n p q) n
+
 end Raw
 
 /-- A finite increasing filtration with three successive graded pieces. -/
@@ -93,5 +189,25 @@ structure Convergence (P : Raw.{u, v} R) where
     P.Einf p q ≃ₗ[R] (filtration (p + q)).GradedPiece p
 
 attribute [instance] Convergence.addCommGroup Convergence.module
+
+namespace Convergence
+
+variable {R} {P : Raw.{u, v} R} (A : Convergence.{u, v, w} R P)
+
+/-- If an abutment group vanishes, every stable-page graded piece in that total degree vanishes. -/
+theorem Einf_subsingleton (p : Fin 3) (q : ℕ)
+    (hH : Subsingleton (A.H (p.1 + q))) : Subsingleton (P.Einf p q) := by
+  let _ : Subsingleton (A.H (p.1 + q)) := hH
+  have hgraded : Subsingleton ((A.filtration (p.1 + q)).GradedPiece p) := inferInstance
+  exact (A.gradedIso p q).toEquiv.subsingleton_congr.mpr hgraded
+
+/-- Vanishing of `H^(q+1)` forces vanishing of the middle-column `E₂^(1,q)` object. -/
+theorem middle_E₂_subsingleton (q : ℕ) (hH : Subsingleton (A.H (q + 1))) :
+    Subsingleton (P.E₂ 1 q) := by
+  have hstable : Subsingleton (P.Einf 1 q) :=
+    A.Einf_subsingleton (1 : Fin 3) q (by simpa [Nat.add_comm] using hH)
+  exact (P.middlePermanenceIso q).toLinearEquiv.toEquiv.subsingleton_congr.mpr hstable
+
+end Convergence
 
 end ThreeColumnSpectralSequence
