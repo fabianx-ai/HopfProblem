@@ -4759,6 +4759,27 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
 #print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne` -/
+
+#check CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG
+#print axioms CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG
+#check CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG_bijective
+#print axioms CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG_bijective
+#check CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG
+#print axioms CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG
+#check CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG_apply
+#print axioms CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG_apply
+#check CategoryTheory.Abelian.Ext.range_postcomp_g_zero_eq_ker_connecting
+#print axioms CategoryTheory.Abelian.Ext.range_postcomp_g_zero_eq_ker_connecting
+#check CategoryTheory.Abelian.Ext.connecting_zero_one_surjective_of_subsingleton_middle
+#print axioms CategoryTheory.Abelian.Ext.connecting_zero_one_surjective_of_subsingleton_middle
+#check CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne
+#print axioms CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne
+#check CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne_mk
+#print axioms CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne_mk
+#check CategoryTheory.Abelian.Ext.subsingleton_ext_one_iff_postcomp_g_zero_surjective
+#print axioms CategoryTheory.Abelian.Ext.subsingleton_ext_one_iff_postcomp_g_zero_surjective
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient` -/
 
 #check TopCat.SheafCohomology.AcyclicInDegreesOneTwo

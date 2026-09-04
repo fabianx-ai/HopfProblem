@@ -290,6 +290,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionExactFunctor
 import Lib.Algebra.Homology.DerivedCategory.Ext.ExactAugmentedCochainComplex
 import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient
+import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility
 import Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient
