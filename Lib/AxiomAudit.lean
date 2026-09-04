@@ -1459,6 +1459,14 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalIso
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSliceHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSliceHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovShiftedSliceHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovShiftedSliceHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
 
 -- DegreeZero: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward

@@ -6,8 +6,10 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 public import Lib.Algebra.Homology.SpectralObject.Postnikov
 public import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
+public import Mathlib.Algebra.Category.Grp.Ulift
 public import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 public import Mathlib.Algebra.Homology.Embedding.ExtendHomology
 
@@ -18,16 +20,16 @@ For a continuous map `f : X ⟶ Y`, an abelian sheaf `F` on `X`, and an injectiv
 `I` of `F`, this file constructs a genuine first-quadrant spectral sequence from the Postnikov
 tower of the derived object represented by the pushed complex `f_* I`.
 
-Its initial page is exposed as the shifted representable group of each Postnikov slice, and the
+Its initial page is exposed as the shifted representable group of each Postnikov slice.  The
 cohomology objects of the total derived object are identified with the genuine higher direct
-images `Rᵠf_*F`.
+images `Rᵠf_*F`, yielding an objectwise identification of the page with
+`Hᵖ(Y, Rᵠf_*F)` (universe-lifted at the categorical level).
 
-This is a page construction, not yet the complete Leray theorem.  In particular, this file does
-not identify each Postnikov slice with the corresponding single higher-direct-image sheaf, shrink
-the large representable groups to Mathlib's small `Ext` groups, identify `d₂` with the resolution
-transgression, or supply an `E_∞` filtration and associated-graded abutment.  Mathlib's current
-`SpectralSequence` structure contains pages and page-to-page homology isomorphisms but no such
-convergence datum.
+This is a page construction, not yet the complete Leray theorem.  The slice-to-homology
+comparison uses a noncanonical objectwise choice, so this file does not identify `d₂` with the
+resolution transgression or assert naturality of the page comparison.  Nor does it supply an
+`E_∞` filtration and associated-graded abutment: Mathlib's current `SpectralSequence` structure
+contains pages and page-to-page homology isomorphisms but no such convergence datum.
 -/
 
 @[expose] public section
@@ -111,8 +113,7 @@ def resolutionPostnikovTotalIso {F : AbelianSheaf X} (I : InjectiveResolution F)
     (pushedResolutionDerivedObject f I)
     (preadditiveCoyoneda.obj (Opposite.op (integralDerivedObject Y))) n
 
-/-- The initial page is the shifted representable group of the corresponding Postnikov slice.
-The further comparison of that slice with `Rᵠf_*F` is intentionally a separate theorem. -/
+/-- The initial page is the shifted representable group of the corresponding Postnikov slice. -/
 def resolutionPostnikovE₂PageIso {F : AbelianSheaf X}
     (I : InjectiveResolution F) (p q : ℕ) :
     ((resolutionPostnikovSpectralSequence f I).page 2).X (p, q) ≅
@@ -123,5 +124,57 @@ def resolutionPostnikovE₂PageIso {F : AbelianSheaf X}
               (pushedResolutionDerivedObject f I)))⟦(p + q : ℤ)⟧) :=
   DerivedCategory.TStructure.t.coyonedaPostnikovE₂PageIso
     (integralDerivedObject Y) (pushedResolutionDerivedObject f I) p q
+
+/-- The degree-`q` Postnikov slice of the pushed resolution is objectwise isomorphic to the
+degree-`q` single object on the genuine higher direct image.  This inherits the noncanonical
+choice in `DerivedCategory.postnikovSliceIso`. -/
+def resolutionPostnikovSliceHigherDirectImageIso {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (q : ℕ) :
+    (DerivedCategory.TStructure.t.truncGE (q : ℤ)).obj
+        ((DerivedCategory.TStructure.t.truncLT (q + 1 : ℤ)).obj
+          (pushedResolutionDerivedObject f I)) ≅
+      (DerivedCategory.singleFunctor (AbelianSheaf Y) (q : ℤ)).obj
+        (higherDirectImageSheaf f F q) :=
+  DerivedCategory.postnikovSliceIso (pushedResolutionDerivedObject f I) q ≪≫
+    (DerivedCategory.singleFunctor (AbelianSheaf Y) (q : ℤ)).mapIso
+      (pushedResolutionDerivedObjectHomologyHigherDirectImageIso f I q)
+
+/-- After the page shift, the degree-`q` slice represents degree-`p` Ext from the integral sheaf
+to the genuine higher direct image. -/
+def resolutionPostnikovShiftedSliceHigherDirectImageIso {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (p q : ℕ) :
+    ((DerivedCategory.TStructure.t.truncGE (q : ℤ)).obj
+        ((DerivedCategory.TStructure.t.truncLT (q + 1 : ℤ)).obj
+          (pushedResolutionDerivedObject f I)))⟦(p + q : ℤ)⟧ ≅
+      ((DerivedCategory.singleFunctor (AbelianSheaf Y) 0).obj
+        (higherDirectImageSheaf f F q))⟦(p : ℤ)⟧ :=
+  (shiftFunctor (DerivedCategory (AbelianSheaf Y)) (p + q : ℤ)).mapIso
+      (resolutionPostnikovSliceHigherDirectImageIso f I q) ≪≫
+    ((DerivedCategory.singleFunctors (AbelianSheaf Y)).shiftIso
+      (p + q : ℤ) (-p : ℤ) q (by omega)).app (higherDirectImageSheaf f F q) ≪≫
+    (((DerivedCategory.singleFunctors (AbelianSheaf Y)).shiftIso
+      (p : ℤ) (-p : ℤ) 0 (by omega)).app (higherDirectImageSheaf f F q)).symm
+
+/-- The initial Postnikov page is objectwise the universe lift of the actual small Leray term
+`Hᵖ(Y, Rᵠf_*F)`.  The lift is necessary because the standard derived category of small sheaves
+has large morphism types. -/
+def resolutionPostnikovE₂Iso {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (p q : ℕ) :
+    ((resolutionPostnikovSpectralSequence f I).page 2).X (p, q) ≅
+      AddCommGrpCat.of (ULift.{1} (E₂ f F p q)) :=
+  resolutionPostnikovE₂PageIso f I p q ≪≫
+    (preadditiveCoyoneda.obj (Opposite.op (integralDerivedObject Y))).mapIso
+      (resolutionPostnikovShiftedSliceHigherDirectImageIso f I p q) ≪≫
+    ((Ext.homAddEquiv (X := integralSheaf Y)
+      (Y := higherDirectImageSheaf f F q) (n := p)).symm.trans
+        AddEquiv.ulift.symm).toAddCommGrpIso
+
+/-- The same initial-page identification as an additive equivalence with the unlifted small
+Leray term. -/
+def resolutionPostnikovE₂AddEquiv {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (p q : ℕ) :
+    ((resolutionPostnikovSpectralSequence f I).page 2).X (p, q) ≃+
+      E₂ f F p q :=
+  (resolutionPostnikovE₂Iso f I p q).addCommGroupIsoToAddEquiv.trans AddEquiv.ulift
 
 end CategoryTheory.Sheaf.Leray
