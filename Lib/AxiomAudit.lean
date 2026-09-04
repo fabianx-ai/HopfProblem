@@ -193,6 +193,17 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 #print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 
+/-! ## `Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle` -/
+
+#check CochainComplex.HomComplex.coyonedaComplex
+#print axioms CochainComplex.HomComplex.coyonedaComplex
+#check CochainComplex.HomComplex.fromSingleXIso
+#print axioms CochainComplex.HomComplex.fromSingleXIso
+#check CochainComplex.HomComplex.fromSingleIso
+#print axioms CochainComplex.HomComplex.fromSingleIso
+#check CochainComplex.HomComplex.fromSingleHomologyIso
+#print axioms CochainComplex.HomComplex.fromSingleHomologyIso
+
 /-! ## `Lib.Algebra.Homology.SpectralObject.Postnikov` -/
 
 #check CategoryTheory.Triangulated.TStructure.postnikovSpectralObject

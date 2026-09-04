@@ -319,6 +319,7 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov
 import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence.LowerTransfer
 import Lib.Topology.Sheaves.OpenRestriction.StalkCriterion
+import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 
 /-!
 # Reusable extracted library
