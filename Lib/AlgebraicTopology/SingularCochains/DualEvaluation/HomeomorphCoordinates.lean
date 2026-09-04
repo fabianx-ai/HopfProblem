@@ -11,9 +11,9 @@ public import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
 /-!
 # Kronecker coordinates and pullback
 
-For the coefficient convention `ULift ℤ`, native singular `H¹` pullback preserves
+For the coefficient convention `ULift ℤ`, native singular cohomology pullback preserves
 Kronecker coordinates whenever the chosen source and target homology markings commute with the
-induced homology map.
+induced homology map.  The degree-one API is retained alongside its positive-degree version.
 -/
 
 @[expose] public section
@@ -92,6 +92,104 @@ theorem coordinateEvaluation_pullback
       ((HomologicalComplex.homologyMap f 1).hom (eX.symm c)) at happc
   have hraw := happc.trans
     (congrArg (cohomologyEvaluation A (chains Y) 0 a) (hcoord c))
+  change AddEquiv.ulift _ = AddEquiv.ulift _
+  exact congrArg AddEquiv.ulift hraw
+
+/-- Positive-degree Kronecker evaluation, expressed in chosen integral-linear coordinates on
+homology in degree `q + 1`. -/
+def coordinateEvaluationPositive
+    (q : ℕ) (X L : Type) [TopologicalSpace X]
+    [AddCommGroup L] [Module ℤ L]
+    (e : (chains X).homology (q + 1) ≃ₗ[ℤ] L) :
+    (complex X A).homology (q + 1) ⟶ AddCommGrpCat.of (Module.Dual ℤ L) :=
+  cohomologyEvaluation A (chains X) q ≫
+    AddCommGrpCat.ofHom (evaluationTargetEquiv e).toAddMonoidHom
+
+/-- Pullback preserves positive-degree Kronecker coordinates when the chosen homology markings
+commute with the induced homology map. -/
+theorem coordinateEvaluationPositive_pullback
+    (q : ℕ) {X Y L : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    [AddCommGroup L] [Module ℤ L]
+    (g : C(X, Y))
+    (eX : (chains X).homology (q + 1) ≃ₗ[ℤ] L)
+    (eY : (chains Y).homology (q + 1) ≃ₗ[ℤ] L)
+    (hcoord : ∀ c : L,
+      (HomologicalComplex.homologyMap
+        (((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+          (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom g)) (q + 1)).hom (eX.symm c) =
+        eY.symm c) :
+    HomologicalComplex.homologyMap (pullback A g) (q + 1) ≫
+        coordinateEvaluationPositive q X L eX =
+      coordinateEvaluationPositive q Y L eY := by
+  let f : chains X ⟶ chains Y :=
+    ((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+      (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom g)
+  have hnat := cohomologyEvaluation_natural A f q
+  apply AddCommGrpCat.hom_ext
+  apply AddMonoidHom.ext
+  intro a
+  apply LinearMap.ext
+  intro c
+  have happ := ConcreteCategory.congr_hom hnat a
+  have happc := congrArg (fun phi ↦ phi (eX.symm c)) happ
+  change cohomologyEvaluation A (chains X) q
+      (HomologicalComplex.homologyMap (pullback A g) (q + 1) a) (eX.symm c) =
+    cohomologyEvaluation A (chains Y) q a
+      ((HomologicalComplex.homologyMap f (q + 1)).hom (eX.symm c)) at happc
+  have hraw := happc.trans
+    (congrArg (cohomologyEvaluation A (chains Y) q a) (hcoord c))
+  change AddEquiv.ulift _ = AddEquiv.ulift _
+  exact congrArg AddEquiv.ulift hraw
+
+/-- Two pullbacks have the same positive-degree Kronecker coordinates when their induced
+integral homology maps agree in the evaluated degree. -/
+theorem pullback_comp_coordinateEvaluationPositive_eq_of_homologyMap_eq
+    (q : ℕ) {X Y L : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    [AddCommGroup L] [Module ℤ L]
+    (f g : C(X, Y))
+    (eX : (chains X).homology (q + 1) ≃ₗ[ℤ] L)
+    (hmap :
+      (HomologicalComplex.homologyMap
+          (((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+            (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom f)) (q + 1)).hom =
+        (HomologicalComplex.homologyMap
+          (((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+            (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom g)) (q + 1)).hom) :
+    HomologicalComplex.homologyMap (pullback A f) (q + 1) ≫
+        coordinateEvaluationPositive q X L eX =
+      HomologicalComplex.homologyMap (pullback A g) (q + 1) ≫
+        coordinateEvaluationPositive q X L eX := by
+  let F : chains X ⟶ chains Y :=
+    ((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+      (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom f)
+  let G : chains X ⟶ chains Y :=
+    ((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
+      (ModuleCat.of ℤ ℤ)).map (TopCat.ofHom g)
+  have hnatF := cohomologyEvaluation_natural A F q
+  have hnatG := cohomologyEvaluation_natural A G q
+  apply AddCommGrpCat.hom_ext
+  apply AddMonoidHom.ext
+  intro a
+  apply LinearMap.ext
+  intro c
+  have hF := ConcreteCategory.congr_hom hnatF a
+  have hG := ConcreteCategory.congr_hom hnatG a
+  have hFc := congrArg (fun phi ↦ phi (eX.symm c)) hF
+  have hGc := congrArg (fun phi ↦ phi (eX.symm c)) hG
+  change cohomologyEvaluation A (chains X) q
+      (HomologicalComplex.homologyMap (pullback A f) (q + 1) a) (eX.symm c) =
+    cohomologyEvaluation A (chains Y) q a
+      ((HomologicalComplex.homologyMap F (q + 1)).hom (eX.symm c)) at hFc
+  change cohomologyEvaluation A (chains X) q
+      (HomologicalComplex.homologyMap (pullback A g) (q + 1) a) (eX.symm c) =
+    cohomologyEvaluation A (chains Y) q a
+      ((HomologicalComplex.homologyMap G (q + 1)).hom (eX.symm c)) at hGc
+  have hfg :
+      (HomologicalComplex.homologyMap F (q + 1)).hom (eX.symm c) =
+        (HomologicalComplex.homologyMap G (q + 1)).hom (eX.symm c) := by
+    exact LinearMap.congr_fun hmap (eX.symm c)
+  have hraw := hFc.trans
+    ((congrArg (cohomologyEvaluation A (chains Y) q a) hfg).trans hGc.symm)
   change AddEquiv.ulift _ = AddEquiv.ulift _
   exact congrArg AddEquiv.ulift hraw
 
