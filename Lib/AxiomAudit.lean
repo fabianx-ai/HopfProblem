@@ -463,6 +463,60 @@ is an evidence command rather than library content.
 #print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_comparison
 #check FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover` -/
+
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.mk
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.mk
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.U
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.U
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.V
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.V
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.cover
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.cover
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyU
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyU
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyV
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyV
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.base
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.base
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseU
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseU
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseV
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseV
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.rec
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.rec
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.recOn
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.recOn
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.casesOn
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.casesOn
+#check FundamentalGroup.VanKampen.paths_homotopic_of_mem
+#print axioms FundamentalGroup.VanKampen.paths_homotopic_of_mem
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_mem
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_mem
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_mem
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_mem
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_trans
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_trans
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_trans
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_trans
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_base
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_base
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
+
 #check FundamentalGroup.VanKampen.TwoOpenCover.chartPath
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath
 #check FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base

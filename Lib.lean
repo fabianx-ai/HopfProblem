@@ -302,6 +302,7 @@ import Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate
 import Lib.Topology.Covering.FiberFrameCentralizer
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 
 /-!
 # Reusable extracted library
