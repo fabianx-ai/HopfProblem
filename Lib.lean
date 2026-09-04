@@ -259,6 +259,7 @@ import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalization
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalizationConsequences
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantEvaluationBijective
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CofinalCriterion
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositiveCofinalExt
 import Lib.Topology.Sheaves.NestedOpenCohomology
 import Lib.Topology.Sheaves.FiniteClosedOpenRestriction
 import Lib.Topology.Sheaves.OpenFiniteClosedFactorization

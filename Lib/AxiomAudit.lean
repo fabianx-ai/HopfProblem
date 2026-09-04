@@ -1850,6 +1850,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositiveCofinalExt` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
+
 /-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
 
 #check LinearRepresentation.ofMultiplicativeEquiv
