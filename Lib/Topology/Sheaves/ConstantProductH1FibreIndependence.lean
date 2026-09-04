@@ -1,11 +1,25 @@
-import Lib.Topology.Sheaves.ConstantProductH1Comparison
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
+public import Lib.Topology.Sheaves.ConstantProductH1Comparison
 
 /-!
 # Fibre-independence in a contractible product
 
 Restriction of a constant-sheaf H¹ class to the fibres of `S × X` is independent
 of the chosen point of a contractible base `S`, under the canonical product marking.
+
+This is a generic degree-one consequence of the canonical constant-sheaf/singular comparison
+and homotopy invariance.  It neither constructs a geometric family nor identifies a stalk,
+Leray page, or spectral-sequence differential.
 -/
+
+@[expose] public section
 
 set_option warningAsError true
 set_option autoImplicit false
