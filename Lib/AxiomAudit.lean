@@ -4356,6 +4356,21 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
 #print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.StalkCriterion` -/
+
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward_isIso
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward_isIso
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_nearbyStalkPushforward
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_nearbyStalkPushforward
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_isIso_of_mem
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_isIso_of_mem
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app_isIso_of_isIso_outside
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app_isIso_of_isIso_outside
+#check TopCat.Sheaf.OpenRestriction.globalRestrictionIsoOfIsIsoOutside
+#print axioms TopCat.Sheaf.OpenRestriction.globalRestrictionIsoOfIsIsoOutside
+
 /-! ## `Lib.Topology.Sheaves.SheafificationLocalGerm` -/
 
 #check TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
