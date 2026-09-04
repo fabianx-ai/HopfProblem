@@ -310,6 +310,53 @@ is an evidence command rather than library content.
 #check ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
 #print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
 
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
+
+#check ThreeColumnSpectralSequence.Raw
+#print axioms ThreeColumnSpectralSequence.Raw
+#check ThreeColumnSpectralSequence.Raw.mk
+#print axioms ThreeColumnSpectralSequence.Raw.mk
+#check ThreeColumnSpectralSequence.Raw.spectralSequence
+#print axioms ThreeColumnSpectralSequence.Raw.spectralSequence
+#check ThreeColumnSpectralSequence.Raw.isZero_E₂_of_three_le
+#print axioms ThreeColumnSpectralSequence.Raw.isZero_E₂_of_three_le
+#check ThreeColumnSpectralSequence.Raw.E
+#print axioms ThreeColumnSpectralSequence.Raw.E
+#check ThreeColumnSpectralSequence.Raw.E₂
+#print axioms ThreeColumnSpectralSequence.Raw.E₂
+#check ThreeColumnSpectralSequence.Raw.d₂
+#print axioms ThreeColumnSpectralSequence.Raw.d₂
+#check ThreeColumnSpectralSequence.Raw.Einf
+#print axioms ThreeColumnSpectralSequence.Raw.Einf
+
+#check ThreeColumnSpectralSequence.FiniteFiltration
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration
+#check ThreeColumnSpectralSequence.FiniteFiltration.mk
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.mk
+#check ThreeColumnSpectralSequence.FiniteFiltration.step
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step
+#check ThreeColumnSpectralSequence.FiniteFiltration.step_zero
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step_zero
+#check ThreeColumnSpectralSequence.FiniteFiltration.step_three
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step_three
+#check ThreeColumnSpectralSequence.FiniteFiltration.GradedPiece
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.GradedPiece
+
+#check ThreeColumnSpectralSequence.Convergence
+#print axioms ThreeColumnSpectralSequence.Convergence
+#check ThreeColumnSpectralSequence.Convergence.mk
+#print axioms ThreeColumnSpectralSequence.Convergence.mk
+#check ThreeColumnSpectralSequence.Convergence.H
+#print axioms ThreeColumnSpectralSequence.Convergence.H
+#check ThreeColumnSpectralSequence.Convergence.addCommGroup
+#print axioms ThreeColumnSpectralSequence.Convergence.addCommGroup
+#check ThreeColumnSpectralSequence.Convergence.module
+#print axioms ThreeColumnSpectralSequence.Convergence.module
+#check ThreeColumnSpectralSequence.Convergence.filtration
+#print axioms ThreeColumnSpectralSequence.Convergence.filtration
+#check ThreeColumnSpectralSequence.Convergence.gradedIso
+#print axioms ThreeColumnSpectralSequence.Convergence.gradedIso
+
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 
 #check FundamentalGroup.map_bijective_of_homotopyEquiv
