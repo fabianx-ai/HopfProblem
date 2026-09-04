@@ -1,4 +1,12 @@
-import Lib.Topology.Sheaves.SheafificationLocal
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
+public import Lib.Topology.Sheaves.SheafificationLocal
 
 /-!
 # Germs of local representatives in sheafification
@@ -6,7 +14,12 @@ import Lib.Topology.Sheaves.SheafificationLocal
 If a section of a sheaf identified with the sheafification of a presheaf is represented by a
 presheaf section after shrinking, its stalk value becomes the literal presheaf germ after
 applying that identification and undoing the sheafification unit on the stalk.
+
+This is a generic sheafification compatibility statement. It neither asserts proper base change
+nor identifies a sheaf stalk with the cohomology of a geometric fibre.
 -/
+
+@[expose] public section
 
 set_option warningAsError true
 set_option autoImplicit false
