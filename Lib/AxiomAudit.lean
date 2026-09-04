@@ -432,6 +432,23 @@ is an evidence command rather than library content.
 #check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
 #print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
 
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence.LowerTransfer` -/
+
+#check ThreeColumnSpectralSequence.Raw.left_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.left_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.right_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.right_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.d₂_injective_of_subsingleton_Einf
+#print axioms ThreeColumnSpectralSequence.Raw.d₂_injective_of_subsingleton_Einf
+#check ThreeColumnSpectralSequence.Raw.d₂_surjective_of_subsingleton_Einf
+#print axioms ThreeColumnSpectralSequence.Raw.d₂_surjective_of_subsingleton_Einf
+#check ThreeColumnSpectralSequence.Convergence.d₂_injective_of_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.d₂_injective_of_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.d₂_surjective_of_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.d₂_surjective_of_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
+#print axioms ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
+
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 
 #check FundamentalGroup.map_bijective_of_homotopyEquiv
