@@ -1,11 +1,24 @@
-import Mathlib.Algebra.Homology.Functor
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
+public import Mathlib.Algebra.Homology.Functor
 
 /-!
 # Coherence of homology under exact functors
 
 The canonical comparison between homology before and after applying a homology-preserving
 functor is compatible with composition of functors and with natural transformations.
+
+These are generic categorical coherence identities. They neither construct a derived functor nor
+identify any geometric cohomology theory or spectral-sequence differential.
 -/
+
+@[expose] public section
 
 set_option warningAsError true
 set_option autoImplicit false
