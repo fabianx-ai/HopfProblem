@@ -1424,6 +1424,29 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionTransgression
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov` -/
+
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject
+#check CategoryTheory.Sheaf.Leray.integralDerivedObject
+#print axioms CategoryTheory.Sheaf.Leray.integralDerivedObject
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject_isGE
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject_isGE
+#check CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE
+#print axioms CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyIso
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralObject
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralObject
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralSequence
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralSequence
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
+
 -- DegreeZero: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
 #print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward

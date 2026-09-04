@@ -315,6 +315,7 @@ import Lib.AlgebraicTopology.SingularCochains.Vanishing
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage
 import Lib.Algebra.Homology.SpectralObject.Postnikov
+import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov
 
 /-!
 # Reusable extracted library
