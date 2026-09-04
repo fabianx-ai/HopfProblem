@@ -316,6 +316,7 @@ import Lib.Algebra.Homology.ThreeColumnSpectralSequence
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage
 import Lib.Algebra.Homology.SpectralObject.Postnikov
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov
+import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 
 /-!
 # Reusable extracted library

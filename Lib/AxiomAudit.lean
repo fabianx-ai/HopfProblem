@@ -208,6 +208,19 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSlice` -/
+
+#check DerivedCategory.isoSingleFunctorHomology
+#print axioms DerivedCategory.isoSingleFunctorHomology
+#check DerivedCategory.isIso_homologyFunctor_map_truncLTι
+#print axioms DerivedCategory.isIso_homologyFunctor_map_truncLTι
+#check DerivedCategory.isIso_homologyFunctor_map_truncGEπ
+#print axioms DerivedCategory.isIso_homologyFunctor_map_truncGEπ
+#check DerivedCategory.postnikovSliceHomologyIso
+#print axioms DerivedCategory.postnikovSliceHomologyIso
+#check DerivedCategory.postnikovSliceIso
+#print axioms DerivedCategory.postnikovSliceIso
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
