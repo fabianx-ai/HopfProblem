@@ -100,6 +100,7 @@ import Lib.AlgebraicTopology.Hurewicz.PeriodicLoop
 import Lib.AlgebraicTopology.Hurewicz.SimplexPaths
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.GroupExtension.Abelianization
+import Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector
 import Lib.GroupTheory.GeneratingSet
 import Lib.GroupTheory.Pushout.EquivOfCocone
 import Lib.LinearAlgebra.CyclicAverage

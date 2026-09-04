@@ -125,6 +125,17 @@ is an evidence command rather than library content.
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
 #print axioms GroupExtension.Splitting.abelianizationMulEquiv
 
+/-! ## `Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector` -/
+
+#check Subgroup.zpowers_eq_of_mem_of_multiplicativeInt_detector
+#print axioms Subgroup.zpowers_eq_of_mem_of_multiplicativeInt_detector
+#check FreeGroup.generatorExponent
+#print axioms FreeGroup.generatorExponent
+#check FreeGroup.generatorExponent_of
+#print axioms FreeGroup.generatorExponent_of
+#check FreeGroup.zpowers_eq_of_generator_mem
+#print axioms FreeGroup.zpowers_eq_of_generator_mem
+
 #print axioms Subgroup.isMulCommutative_of_closure_eq_top
 #print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
