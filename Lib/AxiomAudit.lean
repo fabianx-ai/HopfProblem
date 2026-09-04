@@ -5288,3 +5288,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
+
+/-! ## `Lib.Topology.Sheaves.StalkwiseSectionLift` -/
+
+#check TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
+#print axioms TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
