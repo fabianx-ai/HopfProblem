@@ -322,6 +322,7 @@ import Lib.Topology.Sheaves.OpenRestriction.StalkCriterion
 import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology
 import Lib.Algebra.Homology.HomologicalComplex.MapExtend
+import Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionCoyoneda
 
 /-!
 # Reusable extracted library

@@ -2429,6 +2429,11 @@ is an evidence command rather than library content.
 #check IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
 #print axioms IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionCoyoneda` -/
+
+#check CategoryTheory.InjectiveResolution.coyonedaHomologyExtAddEquiv
+#print axioms CategoryTheory.InjectiveResolution.coyonedaHomologyExtAddEquiv
+
 /-! ## `Lib.Analysis.Normed.LocallyContractible` -/
 
 #check normedSpaceStronglyLocallyContractible
