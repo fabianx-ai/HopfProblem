@@ -4812,6 +4812,17 @@ is an evidence command rather than library content.
 #check TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
 #print axioms TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections` -/
+
+#check TopCat.SheafCohomology.GlobalSections
+#print axioms TopCat.SheafCohomology.GlobalSections
+#check TopCat.SheafCohomology.topSectionsMap
+#print axioms TopCat.SheafCohomology.topSectionsMap
+#check TopCat.SheafCohomology.globalSectionsSubobjectEquivKer
+#print axioms TopCat.SheafCohomology.globalSectionsSubobjectEquivKer
+#check TopCat.SheafCohomology.globalSectionsSubobjectEquivKer_apply_val
+#print axioms TopCat.SheafCohomology.globalSectionsSubobjectEquivKer_apply_val
+
 /-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperSupport` -/
 
 #check TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso

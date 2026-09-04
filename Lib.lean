@@ -309,6 +309,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv
 import Lib.Topology.Homotopy.PuncturedPlaneCyclic
 import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
 import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeOne
+import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections
 
 /-!
 # Reusable extracted library
