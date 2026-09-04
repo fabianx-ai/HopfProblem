@@ -165,6 +165,7 @@ import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 import Lib.Topology.Sheaves.ConstantCohomologyPullback
 import Lib.Topology.Sheaves.ConstantProductH1
+import Lib.Topology.Sheaves.CofinalNeighborhoodEvaluation
 import Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections
 import Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction
 import Lib.Topology.Sheaves.FiniteSupport.SkyscraperSupport

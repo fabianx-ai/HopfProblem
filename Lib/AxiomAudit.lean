@@ -1354,6 +1354,27 @@ is an evidence command rather than library content.
 #check TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
 #print axioms TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
 
+/-! ## `Lib.Topology.Sheaves.CofinalNeighborhoodEvaluation` -/
+
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.mk
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.mk
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.app
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.app
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.naturality
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.naturality
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.cocone
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.cocone
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_germ
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_germ
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_bijective_of_cofinal
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_bijective_of_cofinal
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
 
 #check TopCat.Sheaf.OpenRestriction.inclusion
