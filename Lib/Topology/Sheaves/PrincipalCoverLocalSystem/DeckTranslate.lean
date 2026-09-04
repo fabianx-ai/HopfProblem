@@ -15,7 +15,8 @@ public import Mathlib.Topology.Homotopy.Lifting
 Changing the chosen point in a fibre by a deck transformation conjugates the corresponding
 fundamental-group monodromy.  This file proves that formula first in Mathlib's opposite-group
 convention and then for the inverse-normalized monodromy homomorphism into the deck group.  It
-also records the resulting formulas for ranges and cyclic subgroups.
+also proves compatibility with moving the base point by a lifted path, and records the resulting
+formulas for ranges and cyclic subgroups.
 
 These are generic facts about principal quotient covers.  This file chooses no geometric family,
 puncture, meridian, or component, and makes no claim about a local system, higher direct image,
@@ -76,6 +77,61 @@ theorem inverseFundamentalGroupToMulOpposite_translate
 def deckMonodromyHom {p : E → X} (hp : IsQuotientCoveringMap p G)
     {x : X} (e : p ⁻¹' {x}) : FundamentalGroup X x →* G :=
   (MulEquiv.inv' G).symm.toMonoidHom.comp (hp.fundamentalGroupToMulOpposite e)
+
+/-- Moving the chosen fibre point by lifting a path transports deck monodromy by whiskering the
+downstairs loop with that path. -/
+theorem deckMonodromyHom_liftedPath
+    {p : E → X} (hp : IsQuotientCoveringMap p G)
+    {x y : X} (τ : Path x y) (e : p ⁻¹' {x}) (γ : FundamentalGroup X y) :
+    let e' := hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk τ) e
+    deckMonodromyHom hp e' γ =
+      deckMonodromyHom hp e
+        ((Path.Homotopic.Quotient.mk τ).trans
+          (γ.trans (Path.Homotopic.Quotient.mk τ).symm)) := by
+  dsimp only
+  change
+    ((hp.fundamentalGroupToMulOpposite
+      (hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk τ) e) γ).unop)⁻¹ =
+      ((hp.fundamentalGroupToMulOpposite e
+        ((Path.Homotopic.Quotient.mk τ).trans
+          (γ.trans (Path.Homotopic.Quotient.mk τ).symm))).unop)⁻¹
+  let e' := hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk τ) e
+  have hback :
+      hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk τ).symm
+          e' = e := by
+    have h := hp.isCoveringMap.monodromy_trans_apply
+      (Path.Homotopic.Quotient.mk τ)
+      (Path.Homotopic.Quotient.mk τ).symm e
+    rw [Path.Homotopic.Quotient.trans_symm,
+      hp.isCoveringMap.monodromy_refl] at h
+    exact h.symm
+  have hopp :
+      hp.fundamentalGroupToMulOpposite e
+          ((Path.Homotopic.Quotient.mk τ).trans
+            (γ.trans (Path.Homotopic.Quotient.mk τ).symm)) =
+        hp.fundamentalGroupToMulOpposite e' γ := by
+    apply (hp.fundamentalGroupToMulOpposite_apply_eq_Iff).mpr
+    change
+      (hp.fundamentalGroupToMulOpposite e' γ).unop • e.1 =
+        (hp.isCoveringMap.monodromy
+          ((Path.Homotopic.Quotient.mk τ).trans
+            (γ.trans (Path.Homotopic.Quotient.mk τ).symm)) e).1
+    rw [hp.isCoveringMap.monodromy_trans_apply,
+      hp.isCoveringMap.monodromy_trans_apply]
+    change
+      (hp.fundamentalGroupToMulOpposite e' γ).unop • e.1 =
+        (hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk τ).symm
+          (hp.isCoveringMap.monodromy γ e')).1
+    have hγ :
+        hp.isCoveringMap.monodromy γ e' =
+          hp.toPermFiber y (hp.fundamentalGroupToMulOpposite e' γ).unop e' := by
+      apply Subtype.ext
+      exact hp.unop_fundamentalGroupToMulOpposite_smul.symm
+    rw [hγ, hp.monodromy_toPermFiber]
+    exact congrArg
+      (fun z : p ⁻¹' {x} ↦
+        (hp.fundamentalGroupToMulOpposite e' γ).unop • z.1) hback |>.symm
+  exact congrArg Inv.inv (congrArg MulOpposite.unop hopp.symm)
 
 theorem deckMonodromyHom_translate_apply
     {p : E → X} (hp : IsQuotientCoveringMap p G)
