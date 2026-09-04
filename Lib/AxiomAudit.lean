@@ -299,6 +299,17 @@ is an evidence command rather than library content.
 #print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
 
 
+#check ThreeColumnPage.LowerTransferCondition
+#print axioms ThreeColumnPage.LowerTransferCondition
+#check ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
+#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
+#check ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
+#check ThreeColumnPage.Data.lowerTransferCondition_iff_injective
+#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_injective
+#check ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
+#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
+
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 
 #check FundamentalGroup.map_bijective_of_homotopyEquiv

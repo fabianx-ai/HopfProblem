@@ -306,6 +306,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 import Lib.Topology.Homotopy.PuncturedCyclicCover
 import Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv
 import Lib.Topology.Homotopy.PuncturedPlaneCyclic
+import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
 
 /-!
 # Reusable extracted library
