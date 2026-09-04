@@ -1375,6 +1375,23 @@ is an evidence command rather than library content.
 #check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
 #print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
 
+/-! ## `Lib.Topology.Sheaves.CokernelStalk` -/
+
+#check TopCat.Sheaf.stalkCokernelIso
+#print axioms TopCat.Sheaf.stalkCokernelIso
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom_assoc
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom_assoc
+#check TopCat.Sheaf.stalkCokernel_isZero_of_epi
+#print axioms TopCat.Sheaf.stalkCokernel_isZero_of_epi
+#check TopCat.Sheaf.stalkCokernelHom
+#print axioms TopCat.Sheaf.stalkCokernelHom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom_assoc
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom_assoc
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
 
 #check TopCat.Sheaf.OpenRestriction.inclusion
