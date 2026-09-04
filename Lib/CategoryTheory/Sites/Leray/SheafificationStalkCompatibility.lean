@@ -1,13 +1,26 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
 import Lib.Algebra.Homology.FunctorCoherence
-import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
-import Lib.Topology.Sheaves.SheafificationLocal
+public import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
+public import Lib.Topology.Sheaves.SheafificationLocal
 
 /-!
 # Compatibility of sheafification with the resolution stalk model
 
 The canonical sheafification description of the homology sheaf and the canonical comparison
 between stalks and presheaf homology induce the same stalk isomorphism.
+
+These are generic categorical coherence statements. They neither assert proper base change nor
+identify a higher-direct-image stalk with the cohomology of a geometric fibre.
 -/
+
+@[expose] public section
 
 set_option warningAsError true
 set_option autoImplicit false
