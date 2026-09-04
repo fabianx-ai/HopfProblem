@@ -320,6 +320,7 @@ import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence.LowerTransfer
 import Lib.Topology.Sheaves.OpenRestriction.StalkCriterion
 import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
+import Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology
 
 /-!
 # Reusable extracted library

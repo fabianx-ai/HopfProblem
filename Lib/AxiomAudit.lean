@@ -219,6 +219,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
+
+#check DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective
+#print axioms DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSlice` -/
 
 #check DerivedCategory.isoSingleFunctorHomology
