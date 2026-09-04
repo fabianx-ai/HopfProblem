@@ -298,6 +298,7 @@ import Lib.Topology.Sheaves.OpenRestriction.StalkUnit
 import Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility
 import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 import Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections
 
 /-!
 # Reusable extracted library
