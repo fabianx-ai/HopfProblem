@@ -3834,6 +3834,15 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
 #print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm` -/
+
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app
+#check TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit
+#check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
+
 /-! ## `Lib.Topology.Sheaves.SheafificationLocalGerm` -/
 
 #check TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative

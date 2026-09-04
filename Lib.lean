@@ -295,6 +295,7 @@ import Lib.Topology.Sheaves.Cohomology.AcyclicResolution
 import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution
 import Lib.Topology.Sheaves.OpenRestriction.StalkUnit
 import Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility
+import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 
 /-!
 # Reusable extracted library
