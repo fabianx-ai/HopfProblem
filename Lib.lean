@@ -293,6 +293,7 @@ import Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient
 import Lib.Topology.Sheaves.Cohomology.AcyclicResolution
 import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution
 import Lib.Topology.Sheaves.OpenRestriction.StalkUnit
+import Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility
 
 /-!
 # Reusable extracted library

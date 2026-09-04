@@ -1447,6 +1447,29 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
 #print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
 
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility` -/
+
+#check TopCat.Presheaf.stalk_hom_ext_of_cofinal
+#print axioms TopCat.Presheaf.stalk_hom_ext_of_cofinal
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.germ_comp_stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.germ_comp_stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.precomp
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.precomp
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkFunctorMap_comp_stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkFunctorMap_comp_stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_eq_of_cofinal_app
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_eq_of_cofinal_app
+#check TopCat.Sheaf.OpenRestriction.pullbackNearbyEvaluation
+#print axioms TopCat.Sheaf.OpenRestriction.pullbackNearbyEvaluation
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_map_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_map_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_map_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_map_comp_stalkMap
+
 /-! ## `Lib.Topology.Sheaves.OpenRestriction.Cohomology` -/
 
 #check TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup
