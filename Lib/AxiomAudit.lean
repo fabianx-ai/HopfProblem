@@ -193,6 +193,23 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 #print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
 
+/-! ## `Lib.Algebra.Homology.SpectralObject.TotalFiltration` -/
+
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationMap
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationMap
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition_comp
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition_comp
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_mono
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_mono
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_bot
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_bot
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_top
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_top
+
 /-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
 
 #check HomologicalComplex.mapExtendXIso
