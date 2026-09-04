@@ -517,6 +517,11 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
 #print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
 
+/-! ## `Lib.Topology.Homotopy.PuncturedCyclicCover` -/
+
+#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+
 #check FundamentalGroup.VanKampen.TwoOpenCover.chartPath
 #print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath
 #check FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base

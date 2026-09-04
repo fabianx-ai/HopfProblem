@@ -303,6 +303,7 @@ import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate
 import Lib.Topology.Covering.FiberFrameCentralizer
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
+import Lib.Topology.Homotopy.PuncturedCyclicCover
 
 /-!
 # Reusable extracted library
