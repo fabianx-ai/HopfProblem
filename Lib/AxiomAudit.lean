@@ -3852,6 +3852,14 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
 #print axioms CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ
+
 /-! ## `Lib.AlgebraicTopology.SingularCochains.PositivePrimitives` -/
 
 #check AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive

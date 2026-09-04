@@ -296,6 +296,7 @@ import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution
 import Lib.Topology.Sheaves.OpenRestriction.StalkUnit
 import Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility
 import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
+import Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection
 
 /-!
 # Reusable extracted library
