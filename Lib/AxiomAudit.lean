@@ -383,6 +383,27 @@ is an evidence command rather than library content.
 #check ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
 #print axioms ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
 
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage` -/
+
+#check ThreeColumnSpectralSequence.OuterNormalization
+#print axioms ThreeColumnSpectralSequence.OuterNormalization
+#check ThreeColumnSpectralSequence.OuterNormalization.mk
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.mk
+#check ThreeColumnSpectralSequence.OuterNormalization.source
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.source
+#check ThreeColumnSpectralSequence.OuterNormalization.target
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.target
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_E
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_E
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_differential
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_differential
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_source
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_source
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
+
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 
 #check FundamentalGroup.map_bijective_of_homotopyEquiv

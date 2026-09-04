@@ -313,6 +313,7 @@ import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeOne
 import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections
 import Lib.AlgebraicTopology.SingularCochains.Vanishing
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence
+import Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage
 
 /-!
 # Reusable extracted library
