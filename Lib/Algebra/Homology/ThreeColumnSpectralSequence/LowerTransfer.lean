@@ -17,7 +17,9 @@ actual page-two complex: their vanishing makes the outgoing `d₂` injective and
 surjective, respectively.
 
 No middle-column vanishing is assumed.  The adapter's two middle-column fields continue to be
-derived from degree-two and degree-three abutment vanishing.
+derived from degree-two and degree-three abutment vanishing.  When two adjacent abutment groups
+vanish, the resulting bijection also transports a chosen rank-one coordinate from either edge to
+the other.
 -/
 
 @[expose] public section
@@ -118,6 +120,32 @@ theorem d₂_surjective_of_subsingleton (q : ℕ)
     Function.Surjective (P.d₂ 0 q).hom := by
   apply P.d₂_surjective_of_subsingleton_Einf q
   exact A.Einf_subsingleton 2 q (by simpa [Nat.add_comm] using hH)
+
+/-- Vanishing of the two adjacent abutment groups makes the `q`th lower `d₂` bijective. -/
+theorem d₂_bijective_of_subsingleton (q : ℕ)
+    (hH₁ : Subsingleton (A.H (q + 1)))
+    (hH₂ : Subsingleton (A.H (q + 2))) :
+    Function.Bijective (P.d₂ 0 q).hom :=
+  ⟨A.d₂_injective_of_subsingleton q hH₁,
+    A.d₂_surjective_of_subsingleton q hH₂⟩
+
+/-- A rank-one coordinate on the target of a bijective lower `d₂` induces one on its source. -/
+noncomputable def sourceNormalizationOfTarget (q : ℕ)
+    (hH₁ : Subsingleton (A.H (q + 1)))
+    (hH₂ : Subsingleton (A.H (q + 2)))
+    (target : P.E₂ 2 q ≃ₗ[R] R) :
+    P.E₂ 0 (q + 1) ≃ₗ[R] R :=
+  (LinearEquiv.ofBijective (P.d₂ 0 q).hom
+    (A.d₂_bijective_of_subsingleton q hH₁ hH₂)).trans target
+
+/-- A rank-one coordinate on the source of a bijective lower `d₂` induces one on its target. -/
+noncomputable def targetNormalizationOfSource (q : ℕ)
+    (hH₁ : Subsingleton (A.H (q + 1)))
+    (hH₂ : Subsingleton (A.H (q + 2)))
+    (source : P.E₂ 0 (q + 1) ≃ₗ[R] R) :
+    P.E₂ 2 q ≃ₗ[R] R :=
+  (LinearEquiv.ofBijective (P.d₂ 0 q).hom
+    (A.d₂_bijective_of_subsingleton q hH₁ hH₂)).symm.trans source
 
 /-- Abutment vanishing in degrees one through three implies the paper-facing lower transfer
 condition on the actual page-two differentials. -/
