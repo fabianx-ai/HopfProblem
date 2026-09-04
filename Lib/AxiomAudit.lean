@@ -1806,6 +1806,15 @@ is an evidence command rather than library content.
 #check LinearRepresentation.freeGroup_invariant_iff
 #print axioms LinearRepresentation.freeGroup_invariant_iff
 
+/-! ## `Lib.LinearAlgebra.Dual.TriangularRankTwo` -/
+
+#check LinearMap.dualMap_mem_range_comp_iff_of_surjective
+#print axioms LinearMap.dualMap_mem_range_comp_iff_of_surjective
+#check LinearMap.finTwoSecondCoordinate
+#print axioms LinearMap.finTwoSecondCoordinate
+#check LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
+#print axioms LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion` -/
 
 #check CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
