@@ -1653,6 +1653,23 @@ is an evidence command rather than library content.
 #check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
 #print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate` -/
+
+#check PrincipalCoverLocalSystem.fundamentalGroupToMulOpposite_translate
+#print axioms PrincipalCoverLocalSystem.fundamentalGroupToMulOpposite_translate
+#check PrincipalCoverLocalSystem.inverseFundamentalGroupToMulOpposite_translate
+#print axioms PrincipalCoverLocalSystem.inverseFundamentalGroupToMulOpposite_translate
+#check PrincipalCoverLocalSystem.deckMonodromyHom
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate_range
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate_range
+#check PrincipalCoverLocalSystem.map_conj_zpowers_inv_mul_mul
+#print axioms PrincipalCoverLocalSystem.map_conj_zpowers_inv_mul_mul
+
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Stalk` -/
 
 #check PrincipalCoverLocalSystem.evaluationCocone

@@ -300,6 +300,7 @@ import Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility
 import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 import Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate
 
 /-!
 # Reusable extracted library
