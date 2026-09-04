@@ -305,6 +305,7 @@ import Lib.Topology.Covering.FiberFrameCentralizer
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 import Lib.Topology.Homotopy.PuncturedCyclicCover
 import Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv
+import Lib.Topology.Homotopy.PuncturedPlaneCyclic
 
 /-!
 # Reusable extracted library
