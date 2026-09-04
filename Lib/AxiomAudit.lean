@@ -261,6 +261,11 @@ is an evidence command rather than library content.
 #check DerivedCategory.postnikovSliceIso
 #print axioms DerivedCategory.postnikovSliceIso
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality` -/
+
+#check DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
+#print axioms DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
