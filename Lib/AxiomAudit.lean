@@ -5320,3 +5320,8 @@ is an evidence command rather than library content.
 
 #check LinearMap.domainEquivIntOfInjectiveOfNonzero
 #print axioms LinearMap.domainEquivIntOfInjectiveOfNonzero
+
+/-! ## `Lib.Topology.Sheaves.StalkwiseSectionRange` -/
+
+#check TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
+#print axioms TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
