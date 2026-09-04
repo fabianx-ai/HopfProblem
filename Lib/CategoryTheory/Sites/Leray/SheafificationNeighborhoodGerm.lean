@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 SPDX-License-Identifier: Apache-2.0
 -/
+module
+
 import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
-import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk
+public import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk
 import Lib.Topology.Sheaves.SheafificationLocalGerm
+public import Lib.Topology.Sheaves.SheafificationLocal
 
 /-!
 # Local representatives and normalized higher-direct-image germs
@@ -14,7 +17,11 @@ import Lib.Topology.Sheaves.SheafificationLocalGerm
 This adapter sends a local representative in the resolution presheaf to the normalized
 Ext-defined neighborhood germ used by fibre evaluation.  It is purely a sheafification and
 normalization compatibility statement; it assumes no proper-base-change theorem.
+
+It does not identify a higher-direct-image stalk with the cohomology of a geometric fibre.
 -/
+
+@[expose] public section
 
 set_option warningAsError true
 set_option autoImplicit false
