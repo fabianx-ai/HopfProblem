@@ -4899,6 +4899,19 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
 #print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
 
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Vanishing` -/
+
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+#check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
+#print axioms AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
+#check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology
+#print axioms AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology
+
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive` -/
 
 #check TopCat.SingularCochainSheaf.SmallKernelGlobal

@@ -310,6 +310,7 @@ import Lib.Topology.Homotopy.PuncturedPlaneCyclic
 import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
 import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeOne
 import Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections
+import Lib.AlgebraicTopology.SingularCochains.Vanishing
 
 /-!
 # Reusable extracted library
