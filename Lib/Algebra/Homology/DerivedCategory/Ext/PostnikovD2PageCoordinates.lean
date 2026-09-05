@@ -53,6 +53,63 @@ def postnikovTargetExtIso (K : CochainComplex C ℤ) (q : ℤ) :
       ((DerivedCategory.homologyFunctor C q).obj (DerivedCategory.Q.obj K))).symm
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The pair of single-object shift adapters used by `postnikovTargetExtIso` is natural even
+when the source shift is written by an expression propositionally equal to `q + 2`. -/
+@[reassoc]
+lemma postnikovTargetSingleShiftIso_naturality_of_shift
+    (q n : ℤ) (hn : n = q + 2) {A B : C} (u : A ⟶ B) :
+    (shiftFunctor (DerivedCategory C) n).map
+          ((DerivedCategory.singleFunctor C q).map u) ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app B ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app B =
+      ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app A ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app A ≫
+        (shiftFunctor (DerivedCategory C) 2).map
+          ((DerivedCategory.singleFunctor C 0).map u) := by
+  change
+    ((DerivedCategory.singleFunctors C).functor q ⋙
+        shiftFunctor (DerivedCategory C) n).map u ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app B ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app B =
+      ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app A ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app A ≫
+        ((DerivedCategory.singleFunctors C).functor 0 ⋙
+          shiftFunctor (DerivedCategory C) 2).map u
+  rw [((DerivedCategory.singleFunctors C).shiftIso
+    n (-2) q (by omega)).hom.naturality_assoc u]
+  rw [((DerivedCategory.singleFunctors C).shiftIso
+    2 (-2) 0 (by omega)).inv.naturality u]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Transporting an isomorphism through the two target shift adapters and then transporting back
+in degree two cancels exactly, for any source-shift expression equal to `q + 2`. -/
+@[reassoc]
+lemma postnikovTargetSingleShiftIso_hom_inv_of_shift
+    (q n : ℤ) (hn : n = q + 2) {A B : C} (e : A ≅ B) :
+    (shiftFunctor (DerivedCategory C) n).map
+          ((DerivedCategory.singleFunctor C q).map e.hom) ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app B ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app B ≫
+        (shiftFunctor (DerivedCategory C) 2).map
+          ((DerivedCategory.singleFunctor C 0).map e.inv) =
+      ((DerivedCategory.singleFunctors C).shiftIso
+          n (-2) q (by omega)).hom.app A ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app A := by
+  rw [postnikovTargetSingleShiftIso_naturality_of_shift_assoc q n hn e.hom]
+  simp only [← Functor.map_comp, Iso.hom_inv_id, Functor.map_id, Category.comp_id]
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The pair of single-object shift adapters used by `postnikovTargetExtIso` is natural in
 the homology object. -/
 @[reassoc]
