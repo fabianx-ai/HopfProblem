@@ -138,6 +138,13 @@ is an evidence command rather than library content.
 #check FreeGroup.zpowers_eq_of_generator_mem
 #print axioms FreeGroup.zpowers_eq_of_generator_mem
 
+/-! ## `Lib.RepresentationTheory.FreeGroupCoinvariants` -/
+
+#check Representation.freeGroupGeneratorRelations
+#print axioms Representation.freeGroupGeneratorRelations
+#check Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
+#print axioms Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
+
 #print axioms Subgroup.isMulCommutative_of_closure_eq_top
 #print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton

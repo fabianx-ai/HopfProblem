@@ -103,6 +103,7 @@ import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector
 import Lib.GroupTheory.GeneratingSet
 import Lib.GroupTheory.Pushout.EquivOfCocone
+import Lib.RepresentationTheory.FreeGroupCoinvariants
 import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.Dual.TriangularRankTwo
