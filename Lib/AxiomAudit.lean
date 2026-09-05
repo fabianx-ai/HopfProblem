@@ -321,6 +321,18 @@ is an evidence command rather than library content.
 #print axioms DerivedCategory.truncationTriangleIso_hom_hom₂
 #check DerivedCategory.truncationTriangleIso_hom_comm₃
 #print axioms DerivedCategory.truncationTriangleIso_hom_comm₃
+#check DerivedCategory.truncLTIsoQTruncLE
+#print axioms DerivedCategory.truncLTIsoQTruncLE
+#check DerivedCategory.truncGEIsoQTruncGE
+#print axioms DerivedCategory.truncGEIsoQTruncGE
+#check DerivedCategory.concreteTruncationδ
+#print axioms DerivedCategory.concreteTruncationδ
+#check DerivedCategory.truncLTIsoQTruncLE_hom_comp_ι
+#print axioms DerivedCategory.truncLTIsoQTruncLE_hom_comp_ι
+#check DerivedCategory.truncGEπ_comp_truncGEIsoQTruncGE_hom
+#print axioms DerivedCategory.truncGEπ_comp_truncGEIsoQTruncGE_hom
+#check DerivedCategory.concreteTruncationδ_eq
+#print axioms DerivedCategory.concreteTruncationδ_eq
 
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
