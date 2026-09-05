@@ -269,6 +269,17 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
 
+/-! ## `Lib.Algebra.Homology.SpectralObject.PostnikovD2` -/
+
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
 
 #check DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective
