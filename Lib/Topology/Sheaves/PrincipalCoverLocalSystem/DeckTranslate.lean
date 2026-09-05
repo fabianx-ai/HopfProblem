@@ -15,8 +15,8 @@ public import Mathlib.Topology.Homotopy.Lifting
 Changing the chosen point in a fibre by a deck transformation conjugates the corresponding
 fundamental-group monodromy.  This file proves that formula first in Mathlib's opposite-group
 convention and then for the inverse-normalized monodromy homomorphism into the deck group.  It
-also proves compatibility with moving the base point by a lifted path, and records the resulting
-formulas for ranges and cyclic subgroups.
+also proves compatibility with a homeomorphic change of the cover's base and with moving the base
+point by a lifted path, and records the resulting formulas for ranges and cyclic subgroups.
 
 These are generic facts about principal quotient covers.  This file chooses no geometric family,
 puncture, meridian, or component, and makes no claim about a local system, higher direct image,
@@ -77,6 +77,56 @@ theorem inverseFundamentalGroupToMulOpposite_translate
 def deckMonodromyHom {p : E → X} (hp : IsQuotientCoveringMap p G)
     {x : X} (e : p ⁻¹' {x}) : FundamentalGroup X x →* G :=
   (MulEquiv.inv' G).symm.toMonoidHom.comp (hp.fundamentalGroupToMulOpposite e)
+
+/-- Postcomposing a principal quotient cover with a homeomorphism of its base preserves deck
+monodromy after transporting the fundamental group along that homeomorphism. -/
+theorem deckMonodromyHom_homeomorph_comp
+    {Y : Type u} [TopologicalSpace Y]
+    {p : E → X} (hp : IsQuotientCoveringMap p G)
+    (h : X ≃ₜ Y) {x : X} (e : p ⁻¹' {x})
+    (gamma : FundamentalGroup X x) :
+    deckMonodromyHom (hp.homeomorph_comp h)
+        (⟨e.1, congrArg h e.2⟩ : (h ∘ p) ⁻¹' {h x})
+        (FundamentalGroup.map ⟨h, h.continuous⟩ x gamma) =
+      deckMonodromyHom hp e gamma := by
+  change
+    (((hp.homeomorph_comp h).fundamentalGroupToMulOpposite
+      (⟨e.1, congrArg h e.2⟩ : (h ∘ p) ⁻¹' {h x})
+      (FundamentalGroup.map ⟨h, h.continuous⟩ x gamma)).unop)⁻¹ =
+    ((hp.fundamentalGroupToMulOpposite e gamma).unop)⁻¹
+  congr 1
+  apply hp.isCancelSMul.right_cancel _ _ e.1
+  calc
+    ((hp.homeomorph_comp h).fundamentalGroupToMulOpposite
+          (⟨e.1, congrArg h e.2⟩ : (h ∘ p) ⁻¹' {h x})
+          (FundamentalGroup.map ⟨h, h.continuous⟩ x gamma)).unop • e.1 =
+        (((hp.homeomorph_comp h).isCoveringMap.monodromy
+          (FundamentalGroup.map ⟨h, h.continuous⟩ x gamma)
+          (⟨e.1, congrArg h e.2⟩ : (h ∘ p) ⁻¹' {h x})).1) :=
+      (hp.homeomorph_comp h).unop_fundamentalGroupToMulOpposite_smul
+    _ = (hp.isCoveringMap.monodromy gamma e).1 := by
+      induction gamma using Path.Homotopic.Quotient.ind with
+      | mk gamma =>
+          let Gamma := hp.isCoveringMap.liftPath gamma e.1
+            (gamma.source.trans e.2.symm)
+          have hGamma :
+              (hp.homeomorph_comp h).isCoveringMap.liftPath
+                  (gamma.map h.continuous) e.1
+                    ((gamma.map h.continuous).source.trans (congrArg h e.2).symm) =
+                Gamma := by
+            symm
+            apply ((hp.homeomorph_comp h).isCoveringMap.eq_liftPath_iff' _).mpr
+            constructor
+            · funext t
+              change h (p (Gamma t)) = h (gamma t)
+              congr 1
+              exact congrFun (hp.isCoveringMap.liftPath_lifts gamma e.1
+                (gamma.source.trans e.2.symm)) t
+            · exact hp.isCoveringMap.liftPath_zero gamma e.1
+                (gamma.source.trans e.2.symm)
+          exact congrArg (fun f ↦ f 1) hGamma
+    _ = (hp.fundamentalGroupToMulOpposite e gamma).unop • e.1 :=
+      hp.unop_fundamentalGroupToMulOpposite_smul.symm
 
 /-- Moving the chosen fibre point by lifting a path transports deck monodromy by whiskering the
 downstairs loop with that path. -/

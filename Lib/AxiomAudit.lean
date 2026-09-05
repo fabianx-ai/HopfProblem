@@ -2255,6 +2255,8 @@ is an evidence command rather than library content.
 #print axioms PrincipalCoverLocalSystem.inverseFundamentalGroupToMulOpposite_translate
 #check PrincipalCoverLocalSystem.deckMonodromyHom
 #print axioms PrincipalCoverLocalSystem.deckMonodromyHom
+#check PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
 #check PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
 #print axioms PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
 #check PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
