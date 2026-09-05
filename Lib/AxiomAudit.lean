@@ -1551,6 +1551,39 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 #print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepResolutionNaturality` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.mk
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.mk
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τF
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τF
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_f
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_f
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_g
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.first
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.first
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.second
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.second
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.connectingTwo_naturality
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.connectingTwo_naturality
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex

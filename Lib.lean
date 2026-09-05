@@ -347,6 +347,7 @@ import Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Splice
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2
 import Lib.Algebra.Homology.Embedding.ExtendHomologySequence
+import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepResolutionNaturality
 
 /-!
 # Reusable extracted library
