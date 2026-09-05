@@ -1984,6 +1984,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.cohomologyAddCommGroup
 #print axioms CategoryTheory.Sheaf.cohomologyAddCommGroup
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing` -/
+
+#check CategoryTheory.GrothendieckTopology.MayerVietorisSquare.cohomology_succ_subsingleton
+#print axioms CategoryTheory.GrothendieckTopology.MayerVietorisSquare.cohomology_succ_subsingleton
+#check TopCat.Sheaf.MayerVietoris.restrictedCohomology_succ_subsingleton
+#print axioms TopCat.Sheaf.MayerVietoris.restrictedCohomology_succ_subsingleton
+
 /-! ## `Lib.Topology.Sheaves.ConstantPushforward.GlobalSections` -/
 
 #check TopCat.ConstantSheaf.integralSheaf

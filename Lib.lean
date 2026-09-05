@@ -367,6 +367,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Normalized
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 import Lib.Topology.Sheaves.DependentFunctionSheaf
 import Lib.Topology.Sheaves.Cohomology.GodementEnvelope
+import Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing
 
 /-!
 # Reusable extracted library
