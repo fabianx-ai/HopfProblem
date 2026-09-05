@@ -138,6 +138,23 @@ lemma spliceTriangle_distinguished :
   dsimp [spliceTriangle]
   exact (Triangulated.someOctahedron _ _ _ _).mem
 
+/-- The first arrow of the splice is the map induced from the first short-exact connecting
+arrow and the inclusion of the intermediate boundary into the second middle object. -/
+lemma first_singleδ_comp_spliceTriangle_mor₁ :
+    R.first_shortExact.singleδ ≫ (spliceTriangle R).mor₁ =
+      (DerivedCategory.singleFunctor C 0).map (kernel.ι R.complex.g) ≫
+        (compositeTriangle R).mor₂ := by
+  dsimp [spliceTriangle]
+  exact (Triangulated.someOctahedron _ _ _ _).comm₁
+
+/-- The second arrow of the splice extends the terminal arrow of the original four-term exact
+sequence across the cone of its middle composite. -/
+lemma compositeTriangle_mor₂_comp_spliceTriangle_mor₂ :
+    (compositeTriangle R).mor₂ ≫ (spliceTriangle R).mor₂ =
+      (DerivedCategory.singleFunctor C 0).map R.complex.g := by
+  dsimp [spliceTriangle]
+  exact (Triangulated.someOctahedron _ _ _ _).comm₃
+
 /-- The connecting morphism of the splice is the positive composite of the two short-exact
 connecting morphisms. -/
 lemma spliceTriangle_mor₃ :
