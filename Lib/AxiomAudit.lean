@@ -5881,6 +5881,10 @@ is an evidence command rather than library content.
 #print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
 #check AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
 #print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+#check AlgebraicTopology.SingularCochains.pointCohomology_subsingleton
+#print axioms AlgebraicTopology.SingularCochains.pointCohomology_subsingleton
+#check AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
+#print axioms AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
 #check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
 #print axioms AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
 #check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology
@@ -5964,6 +5968,8 @@ is an evidence command rather than library content.
 
 #check TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
 #print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_succ_subsingleton_of_contractible
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_succ_subsingleton_of_contractible
 
 /-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution` -/
 

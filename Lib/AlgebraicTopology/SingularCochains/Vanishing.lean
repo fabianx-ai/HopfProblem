@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoefficientNormalization
+public import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
 
 /-!
 # Vanishing criteria for native singular cohomology
@@ -61,6 +62,23 @@ theorem cohomology_subsingleton_iff_of_homeomorph
     Subsingleton ((complex X A).homology n) ↔
       Subsingleton ((complex Y A).homology n) :=
   cohomology_subsingleton_iff_of_homotopyEquiv A e.toHomotopyEquiv n
+
+/-- Native singular cohomology of a point vanishes in every positive degree, for arbitrary
+small abelian coefficients. -/
+theorem pointCohomology_subsingleton (A : AddCommGrpCat.{0}) (n : ℕ) (hn : n ≠ 0) :
+    Subsingleton ((complex Unit A).homology n) :=
+  AddCommGrpCat.subsingleton_of_isZero
+    (pointCochain_exactAt_positive A n hn).isZero_homology
+
+/-- Native singular cohomology of a contractible space vanishes in every positive degree, for
+arbitrary small abelian coefficients. -/
+theorem contractibleCohomology_subsingleton
+    (X : Type) [TopologicalSpace X] [ContractibleSpace X]
+    (A : AddCommGrpCat.{0}) (n : ℕ) (hn : n ≠ 0) :
+    Subsingleton ((complex X A).homology n) :=
+  cohomology_subsingleton_of_homotopyEquiv A
+    (Classical.choice (ContractibleSpace.hequiv_unit X)) n
+    (pointCohomology_subsingleton A n hn)
 
 open DualEvaluation.LocalUCT
 

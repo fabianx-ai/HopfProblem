@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.AlgebraicTopology.SingularCochains.Vanishing
 public import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive
 
 /-!
@@ -46,5 +47,16 @@ theorem constantSheafCohomology_subsingleton_iff_singular
     let _ : Subsingleton
         ((AlgebraicTopology.SingularCochains.complex X A).homology (n + 1)) := h
     exact ((ConcreteCategory.isIso_iff_bijective E.hom).mp (by infer_instance)).1.subsingleton
+
+/-- On a contractible, locally contractible metrizable space, every positive-degree
+constant-sheaf cohomology group vanishes. -/
+theorem constantSheafCohomology_succ_subsingleton_of_contractible
+    (X : TopCat.{0}) (A : AddCommGrpCat.{0}) [ContractibleSpace X]
+    (hLC : LocallyContractibleSpace X) [MetrizableSpace X] (n : ℕ) :
+    Subsingleton
+      (CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf X A) (n + 1)) := by
+  apply (constantSheafCohomology_subsingleton_iff_singular X A hLC n).mpr
+  exact AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
+    X A (n + 1) (by omega)
 
 end TopCat.SingularCochainSheaf
