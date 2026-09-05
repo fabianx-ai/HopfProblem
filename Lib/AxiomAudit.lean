@@ -3254,6 +3254,27 @@ is an evidence command rather than library content.
 #check TopCat.FunctionSheaf.sheaf_isFlasque
 #print axioms TopCat.FunctionSheaf.sheaf_isFlasque
 
+/-! ## `Lib.Topology.Sheaves.DependentFunctionSheaf` -/
+
+#check TopCat.DependentFunctionSheaf.presheaf
+#print axioms TopCat.DependentFunctionSheaf.presheaf
+#check TopCat.DependentFunctionSheaf.presheaf_obj
+#print axioms TopCat.DependentFunctionSheaf.presheaf_obj
+#check TopCat.DependentFunctionSheaf.presheaf_map_apply
+#print axioms TopCat.DependentFunctionSheaf.presheaf_map_apply
+#check TopCat.DependentFunctionSheaf.forgetIso
+#print axioms TopCat.DependentFunctionSheaf.forgetIso
+#check TopCat.DependentFunctionSheaf.isSheaf
+#print axioms TopCat.DependentFunctionSheaf.isSheaf
+#check TopCat.DependentFunctionSheaf.sheaf
+#print axioms TopCat.DependentFunctionSheaf.sheaf
+#check TopCat.DependentFunctionSheaf.extendByZero
+#print axioms TopCat.DependentFunctionSheaf.extendByZero
+#check TopCat.DependentFunctionSheaf.restrict_extendByZero
+#print axioms TopCat.DependentFunctionSheaf.restrict_extendByZero
+#check TopCat.DependentFunctionSheaf.sheaf_isFlasque
+#print axioms TopCat.DependentFunctionSheaf.sheaf_isFlasque
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque
