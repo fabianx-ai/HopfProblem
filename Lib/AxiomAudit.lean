@@ -1755,6 +1755,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovLowerEndpointNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₁_lower
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₁_lower
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageSplice` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply

@@ -358,6 +358,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointConcreteNo
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNormalization
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates
 import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSpliceLowerNormalization
+import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovLowerEndpointNormalization
 
 /-!
 # Reusable extracted library
