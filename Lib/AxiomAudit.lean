@@ -419,6 +419,13 @@ is an evidence command rather than library content.
 #check ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
 #print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
 
+/-! ## `Lib.Algebra.Homology.SpectralSequence.NatLowerEdge` -/
+
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroOne_twoZero_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroOne_twoZero_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
+
 /-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
 
 #check ThreeColumnSpectralSequence.Raw

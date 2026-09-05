@@ -331,6 +331,7 @@ import Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality
 import Lib.Topology.Sheaves.StalkwiseSectionRange
 import Lib.Algebra.Homology.SpectralObject.StableEndpoint
 import Lib.Algebra.Homology.SpectralObject.FinitePageStabilization
+import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 
 /-!
 # Reusable extracted library
