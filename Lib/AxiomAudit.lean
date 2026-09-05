@@ -3416,6 +3416,11 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
 #print axioms TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.ProjectiveDimension` -/
+
+#check TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+#print axioms TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension` -/
 
 #check TopCat.Sheaf.OpenRestriction.integralToFreeTop

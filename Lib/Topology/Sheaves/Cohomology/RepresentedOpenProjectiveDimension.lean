@@ -6,9 +6,8 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
-public import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1
+public import Lib.Topology.Sheaves.Cohomology.ProjectiveDimension
 public import Lib.Topology.Sheaves.OpenRestriction.Cohomology
-public import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 
 /-!
 # Projective dimension of represented opens
