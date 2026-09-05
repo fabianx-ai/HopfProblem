@@ -398,5 +398,87 @@ lemma mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint (K : Cochai
     erw [DerivedCategory.postnikovUpperRouteHomology K q]
   exact mappingConeCompositeTriangle_mor₂_upper_homology K q
 
+set_option maxHeartbeats 800000 in
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
+/-- The third component of the actual-to-splice triangle comparison is the normalized upper
+Postnikov endpoint multiplied by exactly the parity scalar introduced by shifting the triangle.
+No additional scalar occurs in the concrete endpoint or homology comparison. -/
+lemma shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
+    (K : CochainComplex C ℤ) (q : ℤ) :
+    (shiftedPostnikovAdjacentTriangleIsoSplice K q).hom.hom₃ ≫
+        (spliceTriangleObj₃Iso (homologyTwoStepResolutionInt K q)).hom =
+      (q + 1).negOnePow •
+        ((DerivedCategory.shiftedPostnikovUpperEndpointIso K q).hom ≫
+          (DerivedCategory.singleFunctor C 0).map
+            ((DerivedCategory.homologyFunctorFactors C (q + 1)).hom.app K)) := by
+  have hconcrete :
+      (shiftedAdjacentTwoSliceTriangleIsoSplice K q).hom.hom₃ ≫
+          (spliceTriangleObj₃Iso (homologyTwoStepResolutionInt K q)).hom =
+        (q + 1).negOnePow •
+          ((DerivedCategory.concreteUpperEndpointPostnikovIso K q).hom ≫
+            (DerivedCategory.singleFunctor C 0).map
+              ((DerivedCategory.homologyFunctorFactors C (q + 1)).hom.app K)) := by
+    apply DerivedCategory.TStructure.t.from_truncGE_obj_ext
+    change
+      ((DerivedCategory.TStructure.t.triangleLTGE 0).obj
+          (DerivedCategory.Q.obj (K.shiftedAdjacentTwoSlice q))).mor₂ ≫
+          (shiftedAdjacentTwoSliceTriangleIsoSplice K q).hom.hom₃ ≫
+          (spliceTriangleObj₃Iso (homologyTwoStepResolutionInt K q)).hom = _
+    rw [(shiftedAdjacentTwoSliceTriangleIsoSplice K q).hom.comm₂_assoc]
+    rw [shiftedAdjacentTwoSliceTriangleIsoSplice_hom_hom₂]
+    change
+      (spliceObjTwoIsoShiftedAdjacentTwoSlice K q).inv ≫
+          (spliceTriangle (homologyTwoStepResolutionInt K q)).mor₂ ≫ 𝟙 _ = _
+    rw [Category.comp_id]
+    rw [← cancel_epi (spliceObjTwoIsoShiftedAdjacentTwoSlice K q).hom]
+    let R := homologyTwoStepResolutionInt K q
+    apply (show Function.Injective
+        (fun f : (compositeTriangle R).obj₃ ⟶
+            (DerivedCategory.singleFunctor C 0).obj R.complex.X₃ ↦
+          (compositeTriangle R).mor₂ ≫ f) by
+      intro f g h
+      rw [← sub_eq_zero]
+      have hz : (compositeTriangle R).mor₂ ≫ (f - g) = 0 := by
+        change (compositeTriangle R).mor₂ ≫ f =
+          (compositeTriangle R).mor₂ ≫ g at h
+        rw [Preadditive.comp_sub, h, sub_self]
+      obtain ⟨a, ha⟩ := (compositeTriangle R).yoneda_exact₃
+        (compositeTriangle_distinguished R) (f - g) hz
+      have hle : DerivedCategory.TStructure.t.IsLE
+          (compositeTriangle R).obj₁ 0 := by
+        change DerivedCategory.TStructure.t.IsLE
+          ((DerivedCategory.singleFunctor C 0).obj R.complex.X₁) 0
+        infer_instance
+      have hle' : DerivedCategory.TStructure.t.IsLE
+          ((compositeTriangle R).obj₁⟦(1 : ℤ)⟧) (-1) :=
+        DerivedCategory.TStructure.t.isLE_shift _ 0 1 (-1) (by omega)
+      rw [ha, DerivedCategory.TStructure.t.zero a (-1) 0 (by omega), comp_zero])
+    dsimp only
+    simp only [Iso.hom_inv_id_assoc]
+    change (compositeTriangle R).mor₂ ≫ (spliceTriangle R).mor₂ = _
+    rw [compositeTriangle_mor₂_comp_spliceTriangle_mor₂]
+    have hsplice : (spliceObjTwoIsoShiftedAdjacentTwoSlice K q).hom =
+        (compositeTriangleIsoMappingCone R).hom.hom₃ ≫
+          DerivedCategory.Q.map
+            (CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone K q).inv := by
+      rfl
+    rw [hsplice]
+    simp only [Category.assoc]
+    rw [(compositeTriangleIsoMappingCone R).hom.comm₂_assoc]
+    rw [compositeTriangleIsoMappingCone_hom_hom₂]
+    simp only [Category.id_comp, Linear.comp_units_smul]
+    rw [← smul_left_cancel_iff (q + 1).negOnePow]
+    simp only [smul_smul, Int.units_mul_self, one_smul]
+    exact (mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint K q).symm
+  dsimp only [shiftedPostnikovAdjacentTriangleIsoSplice]
+  simp only [Iso.trans_hom, comp_hom₃, Category.assoc]
+  rw [hconcrete]
+  simp only [Linear.comp_units_smul]
+  rw [smul_left_cancel_iff]
+  exact
+    DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov_assoc
+      K q _
+
 
 end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution

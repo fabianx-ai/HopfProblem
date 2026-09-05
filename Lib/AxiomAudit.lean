@@ -1719,6 +1719,8 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageSplice` -/
 
