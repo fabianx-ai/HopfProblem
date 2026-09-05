@@ -487,6 +487,17 @@ is an evidence command rather than library content.
 #check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov_assoc
 #print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov_assoc
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovUpperRouteHomology` -/
+
+#check DerivedCategory.postnikovUpperCutoffIso
+#print axioms DerivedCategory.postnikovUpperCutoffIso
+#check DerivedCategory.homologyFunctor_map_postnikovUpperEndpointIso_hom
+#print axioms DerivedCategory.homologyFunctor_map_postnikovUpperEndpointIso_hom
+#check DerivedCategory.adjacentTwoSliceUpperHomologyIso
+#print axioms DerivedCategory.adjacentTwoSliceUpperHomologyIso
+#check DerivedCategory.postnikovUpperRouteHomology
+#print axioms DerivedCategory.postnikovUpperRouteHomology
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
