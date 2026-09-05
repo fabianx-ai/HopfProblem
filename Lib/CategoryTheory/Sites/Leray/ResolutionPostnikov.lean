@@ -30,8 +30,9 @@ uses the normalized slice-to-homology comparison whose naturality is proved in
 `Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality`; the generic stable endpoint,
 finite-page stabilization, and the pushed-resolution abutment are supplied downstream by the
 `SpectralObject.StableEndpoint`, `SpectralObject.FinitePageStabilization`, and
-`Leray.ResolutionAbutment` owners.  The remaining comparison not packaged here is the
-identification of the Postnikov `d₂` with the resolution transgression.
+`Leray.ResolutionAbutment` owners.  The literal page-two differential is expanded downstream in
+`Leray.ResolutionPostnikovD2`; matching its normalized endpoints with the resolution
+transgression remains a separate comparison.
 -/
 
 @[expose] public section

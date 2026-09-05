@@ -1836,6 +1836,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2` -/
+
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionAbutment` -/
 
 #check CategoryTheory.Sheaf.Leray.mappedExtendedResolution
