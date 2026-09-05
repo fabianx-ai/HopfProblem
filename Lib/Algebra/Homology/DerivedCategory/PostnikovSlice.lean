@@ -22,7 +22,7 @@ the Postnikov slice `τ_[n,n+1) K` with `Hⁿ(K)` and obtains an object-level is
 
 The single-object isomorphism uses classical choice from Mathlib's existence theorem and is
 normalized to induce the identity on degree-`n` homology.  The downstream naturality owner proves
-that this normalization makes the comparison natural on single-degree objects.
+both its single-degree naturality and the naturality of the resulting complete Postnikov adapter.
 -/
 
 @[expose] public section
@@ -98,7 +98,7 @@ def postnikovSliceHomologyIso (K : DerivedCategory C) (n : ℤ) :
     asIso ((homologyFunctor C n).map ((TStructure.t.truncLTι (n + 1)).app K))
 
 /-- The Postnikov slice `τ_[n,n+1) K` is isomorphic to the single object on `Hⁿ(K)`.
-Naturality of this complete slice adapter is treated separately. -/
+Its naturality is proved in the downstream naturality owner. -/
 def postnikovSliceIso (K : DerivedCategory C) (n : ℤ) :
     (TStructure.t.truncGE n).obj ((TStructure.t.truncLT (n + 1)).obj K) ≅
       (singleFunctor C n).obj ((homologyFunctor C n).obj K) :=

@@ -150,4 +150,31 @@ theorem postnikovSliceHomologyIso_hom_naturality
     congrArg (fun g => (homologyFunctor C n).map g)
       ((TStructure.t.truncLTι (n + 1)).naturality f)
 
+/-- The normalized comparison from a Postnikov slice to the single object on its homology is
+natural in the derived object. -/
+@[reassoc]
+theorem postnikovSliceIso_hom_naturality
+    {K L : DerivedCategory C} (n : ℤ) (f : K ⟶ L) :
+    (TStructure.t.truncLT (n + 1) ⋙ TStructure.t.truncGE n).map f ≫
+        (postnikovSliceIso L n).hom =
+      (postnikovSliceIso K n).hom ≫
+        (singleFunctor C n).map ((homologyFunctor C n).map f) := by
+  have : ((TStructure.t.truncLT (n + 1) ⋙ TStructure.t.truncGE n).obj K).IsLE n := by
+    dsimp only [Functor.comp_obj]
+    infer_instance
+  have : ((TStructure.t.truncLT (n + 1) ⋙ TStructure.t.truncGE n).obj L).IsLE n := by
+    dsimp only [Functor.comp_obj]
+    infer_instance
+  simp only [postnikovSliceIso, Iso.trans_hom, Functor.mapIso_hom, Functor.comp_map]
+  rw [← isoSingleFunctorHomology_hom_naturality_assoc n
+    ((TStructure.t.truncGE n).map ((TStructure.t.truncLT (n + 1)).map f))]
+  simp only [Category.assoc, ← (singleFunctor C n).map_comp]
+  have h :
+      (homologyFunctor C n).map
+            ((TStructure.t.truncGE n).map ((TStructure.t.truncLT (n + 1)).map f)) ≫
+          (postnikovSliceHomologyIso L n).hom =
+        (postnikovSliceHomologyIso K n).hom ≫ (homologyFunctor C n).map f := by
+    simpa only [Functor.comp_map] using postnikovSliceHomologyIso_hom_naturality n f
+  rw [h]
+
 end DerivedCategory
