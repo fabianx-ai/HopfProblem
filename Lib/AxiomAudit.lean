@@ -3326,6 +3326,11 @@ is an evidence command rather than library content.
 #check TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
 #print axioms TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
+#print axioms TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque
