@@ -9,7 +9,7 @@ module
 public import Mathlib.Algebra.Homology.SpectralSequence.Basic
 
 /-!
-# The first three lower-left `d₂` arrows of a first-quadrant spectral sequence
+# Local lower-page facts for a first-quadrant spectral sequence
 
 This file isolates a small first-quadrant fact which does not require a global column bound.
 If the source `(0,1)` and target `(2,0)` vanish on page four, then the page-two differential
@@ -23,6 +23,10 @@ at those two groups instead of proving a global column-support theorem.
 Finally, the same bookkeeping identifies `E₂^(1,1)` with `E₃^(1,1)` as soon as its sole
 outgoing target `E₂^(3,0)` vanishes.  This is another local statement and does not assume that
 all columns beyond two vanish.
+
+Likewise, `E₂^(1,2)` reaches page four unchanged if the two successive targets
+`E₂^(3,1)` and `E₂^(4,0)` vanish.  This lets an application use a single targeted
+off-axis calculation instead of constructing a separate degree-one local-coefficient complex.
 -/
 
 @[expose] public section
@@ -353,5 +357,70 @@ theorem isZero_pageTwo_oneOne_of_isZero_pageThree
     (honeOne : IsZero ((P.page 3).X (1, 1))) :
     IsZero ((P.page 2).X (1, 1)) :=
   IsZero.of_iso honeOne (pageTwoOneOneIsoPageThree P hthreeZero)
+
+/-- If the first outgoing target `E₂^(3,1)` vanishes, the second middle term
+`E₂^(1,2)` is unchanged on page three. -/
+noncomputable def pageTwoOneTwoIsoPageThree
+    (hthreeOne : IsZero ((P.page 2).X (3, 1))) :
+    (P.page 2).X (1, 2) ≅ (P.page 3).X (1, 2) := by
+  have hTo : (P.page 2).dTo (1, 2) = 0 := by
+    apply (P.page 2).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 2).dFrom (1, 2) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨2, 1 - 2⟩).Rel (1, 2) (3, 1) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    rw [(P.page 2).dFrom_eq hrel,
+      hthreeOne.eq_of_tgt ((P.page 2).d (1, 2) (3, 1)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 2).sc (1, 2)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 2 3 (1, 2) (by omega)
+
+/-- If `E₂^(4,0)` vanishes, the second middle term is unchanged from page three to page
+four. -/
+noncomputable def pageThreeOneTwoIsoPageFour
+    (hfourZero : IsZero ((P.page 2).X (4, 0))) :
+    (P.page 3).X (1, 2) ≅ (P.page 4).X (1, 2) := by
+  have htargetHomology : IsZero ((P.page 2).homology (4, 0)) :=
+    ((P.page 2).sc (4, 0)).isZero_homology_of_isZero_X₂ hfourZero
+  have htarget : IsZero ((P.page 3).X (4, 0)) :=
+    IsZero.of_iso htargetHomology (P.iso 2 3 (4, 0) (by omega)).symm
+  have hTo : (P.page 3).dTo (1, 2) = 0 := by
+    apply (P.page 3).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 3).dFrom (1, 2) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨3, 1 - 3⟩).Rel (1, 2) (4, 0) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    rw [(P.page 3).dFrom_eq hrel,
+      htarget.eq_of_tgt ((P.page 3).d (1, 2) (4, 0)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 3).sc (1, 2)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 3 4 (1, 2) (by omega)
+
+/-- The two successive off-axis target vanishings identify `E₂^(1,2)` with
+`E₄^(1,2)`, without a global support hypothesis. -/
+noncomputable def pageTwoOneTwoIsoPageFour
+    (hthreeOne : IsZero ((P.page 2).X (3, 1)))
+    (hfourZero : IsZero ((P.page 2).X (4, 0))) :
+    (P.page 2).X (1, 2) ≅ (P.page 4).X (1, 2) :=
+  pageTwoOneTwoIsoPageThree P hthreeOne ≪≫
+    pageThreeOneTwoIsoPageFour P hfourZero
+
+/-- Vanishing of page four at `(1,2)` descends to page two once the two possible outgoing
+targets vanish. -/
+theorem isZero_pageTwo_oneTwo_of_isZero_pageFour
+    (hthreeOne : IsZero ((P.page 2).X (3, 1)))
+    (hfourZero : IsZero ((P.page 2).X (4, 0)))
+    (honeTwo : IsZero ((P.page 4).X (1, 2))) :
+    IsZero ((P.page 2).X (1, 2)) :=
+  IsZero.of_iso honeTwo
+    (pageTwoOneTwoIsoPageFour P hthreeOne hfourZero)
 
 end CategoryTheory.SpectralSequence.NatLowerEdge
