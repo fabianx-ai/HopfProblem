@@ -145,6 +145,25 @@ is an evidence command rather than library content.
 #check Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
 #print axioms Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
 
+/-! ## `Lib.RepresentationTheory.FreeGroupGeneratorCokernel` -/
+
+#check Representation.orientedFreeGenerator
+#print axioms Representation.orientedFreeGenerator
+#check Representation.freeGroupOrientedGeneratorDifference
+#print axioms Representation.freeGroupOrientedGeneratorDifference
+#check Representation.freeGroupOrientedGeneratorDifference_single
+#print axioms Representation.freeGroupOrientedGeneratorDifference_single
+#check Representation.freeGroupOrientedGeneratorDifference_range_eq_coinvariants_ker
+#print axioms Representation.freeGroupOrientedGeneratorDifference_range_eq_coinvariants_ker
+#check Representation.FreeGroupGeneratorCokernel
+#print axioms Representation.FreeGroupGeneratorCokernel
+#check Representation.freeGroupGeneratorCokernelEquivCoinvariants
+#print axioms Representation.freeGroupGeneratorCokernelEquivCoinvariants
+#check Representation.freeGroupGeneratorCokernelEquivCoinvariants_mk
+#print axioms Representation.freeGroupGeneratorCokernelEquivCoinvariants_mk
+#check Representation.freeGroupGeneratorCokernelEquivGroupHomologyH0
+#print axioms Representation.freeGroupGeneratorCokernelEquivGroupHomologyH0
+
 #print axioms Subgroup.isMulCommutative_of_closure_eq_top
 #print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
