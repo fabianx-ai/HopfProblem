@@ -1679,6 +1679,21 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSpliceLowerNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift_comp_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift_comp_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_comp_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_comp_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_comp_compositeTriangle_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_comp_compositeTriangle_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceObjTwoIsoShiftedAdjacentTwoSlice
