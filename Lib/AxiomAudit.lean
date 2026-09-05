@@ -1867,8 +1867,16 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.E₂
 #check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
 #print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_inv_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_inv_apply
 #check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
 #print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo

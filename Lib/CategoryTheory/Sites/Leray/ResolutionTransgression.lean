@@ -100,6 +100,25 @@ def resolutionCohomologyIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q 
   (CategoryTheory.Sheaf.functorH (Opens.grothendieckTopology Y) p).mapIso
     (higherDirectImageResolutionIso f F I q).symm
 
+/-- In Ext coordinates, the forward resolution-cohomology comparison is postcomposition with
+the map from resolution homology to the genuine higher direct image. -/
+@[simp]
+lemma resolutionCohomologyIso_hom_apply {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (q p : ℕ)
+    (x : Ext.{0} (integralSheaf Y) ((pushedResolution f I).homology q) p) :
+    (resolutionCohomologyIso f I q p).hom.hom x =
+      x.comp (Ext.mk₀ (higherDirectImageResolutionIso f F I q).inv) (add_zero p) := by
+  rfl
+
+/-- In Ext coordinates, the inverse resolution-cohomology comparison is postcomposition with
+the map from the genuine higher direct image to resolution homology. -/
+@[simp]
+lemma resolutionCohomologyIso_inv_apply {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (q p : ℕ) (x : E₂ f F p q) :
+    (resolutionCohomologyIso f I q p).inv.hom x =
+      x.comp (Ext.mk₀ (higherDirectImageResolutionIso f F I q).hom) (add_zero p) := by
+  rfl
+
 /-- Degree-zero cohomology of a higher direct image as morphisms from the integral sheaf into
 resolution homology. -/
 def resolutionExtZeroIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q : ℕ) :
@@ -108,6 +127,25 @@ def resolutionExtZeroIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q : �
   (Ext.addEquiv₀ (X := integralSheaf Y) (Y := higherDirectImageSheaf f F q)).toAddCommGrpIso ≪≫
     (preadditiveCoyoneda.obj (op (integralSheaf Y))).mapIso
       (higherDirectImageResolutionIso f F I q)
+
+/-- The forward degree-zero resolution coordinate is the represented morphism followed by the
+higher-direct-image comparison. -/
+@[simp]
+lemma resolutionExtZeroIso_hom_apply {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (q : ℕ) (x : E₂ f F 0 q) :
+    (resolutionExtZeroIso f I q).hom.hom x =
+      Ext.addEquiv₀ x ≫ (higherDirectImageResolutionIso f F I q).hom := by
+  rfl
+
+/-- The inverse degree-zero resolution coordinate is the degree-zero Ext class of the transported
+morphism. -/
+@[simp]
+lemma resolutionExtZeroIso_inv_apply {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (q : ℕ)
+    (x : integralSheaf Y ⟶ (pushedResolution f I).homology q) :
+    (resolutionExtZeroIso f I q).inv.hom x =
+      Ext.mk₀ (x ≫ (higherDirectImageResolutionIso f F I q).inv) := by
+  rfl
 
 /-- The resolution-level two-step transgression associated to a specified injective resolution,
 `H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)`, as a morphism of additive groups. -/
