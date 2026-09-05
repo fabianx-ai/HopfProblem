@@ -2814,6 +2814,22 @@ is an evidence command rather than library content.
 #print axioms PrincipalCoverLocalSystem.liftedOpenPreimageHomeomorph
 #check PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
 #print axioms PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
+#check PrincipalCoverLocalSystem.restrictionLiftedOpenHomeomorph
+#print axioms PrincipalCoverLocalSystem.restrictionLiftedOpenHomeomorph
+#check PrincipalCoverLocalSystem.equivariantSectionsEquivOfHomeomorph
+#print axioms PrincipalCoverLocalSystem.equivariantSectionsEquivOfHomeomorph
+#check PrincipalCoverLocalSystem.restrictionSectionsEquiv
+#print axioms PrincipalCoverLocalSystem.restrictionSectionsEquiv
+#check PrincipalCoverLocalSystem.restrictedSheaf
+#print axioms PrincipalCoverLocalSystem.restrictedSheaf
+#check PrincipalCoverLocalSystem.restrictionPresheafIso
+#print axioms PrincipalCoverLocalSystem.restrictionPresheafIso
+#check PrincipalCoverLocalSystem.restrictionSheafIso
+#print axioms PrincipalCoverLocalSystem.restrictionSheafIso
+#check PrincipalCoverLocalSystem.restrictedCoverSection
+#print axioms PrincipalCoverLocalSystem.restrictedCoverSection
+#check PrincipalCoverLocalSystem.constantSheafRestrictionIsoOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafRestrictionIsoOfSection
 
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
