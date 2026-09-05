@@ -1957,6 +1957,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
 
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates` -/
+
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionAbutment` -/
 
 #check CategoryTheory.Sheaf.Leray.mappedExtendedResolution

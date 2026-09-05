@@ -352,6 +352,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.HomologyTwoStepResolutionExtend
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageSplice
 import Lib.Algebra.Homology.DerivedCategory.Ext.DegreeZero
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageCoordinates
+import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates
 
 /-!
 # Reusable extracted library

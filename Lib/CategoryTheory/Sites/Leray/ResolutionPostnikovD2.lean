@@ -17,9 +17,10 @@ This file specializes the generic Postnikov page-two differential formula to the
 represented by a pushed injective resolution.  The result names the literal differential of
 `resolutionPostnikovSpectralSequence` as the connecting map of its adjacent two-slice triangle.
 
-The comparison with the positive two-step resolution class and the final unlifted Leray-page
-normalization are deliberately separate: this owner exposes the exact page morphism without
-assuming convergence or any application-specific support theorem.
+The target Leray-page normalization is supplied downstream by
+`Leray.ResolutionPostnikovD2Coordinates`.  The source comparison and the complete signed match
+with the positive two-step resolution class remain separate: this owner exposes the exact page
+morphism without assuming convergence or any application-specific support theorem.
 -/
 
 @[expose] public section

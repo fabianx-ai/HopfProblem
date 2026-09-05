@@ -31,8 +31,9 @@ uses the normalized slice-to-homology comparison whose naturality is proved in
 finite-page stabilization, and the pushed-resolution abutment are supplied downstream by the
 `SpectralObject.StableEndpoint`, `SpectralObject.FinitePageStabilization`, and
 `Leray.ResolutionAbutment` owners.  The literal page-two differential is expanded downstream in
-`Leray.ResolutionPostnikovD2`; matching its normalized endpoints with the resolution
-transgression remains a separate comparison.
+`Leray.ResolutionPostnikovD2`, and its target endpoint is matched with resolution cohomology in
+`Leray.ResolutionPostnikovD2Coordinates`.  Matching the source endpoint and the complete signed
+differential with the resolution transgression remains a separate comparison.
 -/
 
 @[expose] public section
