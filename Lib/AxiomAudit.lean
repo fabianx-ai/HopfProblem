@@ -3294,6 +3294,31 @@ is an evidence command rather than library content.
 #check TopCat.SheafCohomology.Godement.envelope_isFlasque
 #print axioms TopCat.SheafCohomology.Godement.envelope_isFlasque
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.GodementResolution` -/
+
+#check TopCat.SheafCohomology.Godement.remainder
+#print axioms TopCat.SheafCohomology.Godement.remainder
+#check TopCat.SheafCohomology.Godement.remainder_zero
+#print axioms TopCat.SheafCohomology.Godement.remainder_zero
+#check TopCat.SheafCohomology.Godement.remainder_succ
+#print axioms TopCat.SheafCohomology.Godement.remainder_succ
+#check TopCat.SheafCohomology.Godement.resolution
+#print axioms TopCat.SheafCohomology.Godement.resolution
+#check TopCat.SheafCohomology.Godement.resolution_Z
+#print axioms TopCat.SheafCohomology.Godement.resolution_Z
+#check TopCat.SheafCohomology.Godement.resolution_X
+#print axioms TopCat.SheafCohomology.Godement.resolution_X
+#check TopCat.SheafCohomology.Godement.resolution_i
+#print axioms TopCat.SheafCohomology.Godement.resolution_i
+#check TopCat.SheafCohomology.Godement.resolution_p
+#print axioms TopCat.SheafCohomology.Godement.resolution_p
+#check TopCat.SheafCohomology.Godement.resolution_term_isFlasque
+#print axioms TopCat.SheafCohomology.Godement.resolution_term_isFlasque
+#check TopCat.SheafCohomology.Godement.resolution_isAcyclic
+#print axioms TopCat.SheafCohomology.Godement.resolution_isAcyclic
+#check TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
+#print axioms TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque
