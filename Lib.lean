@@ -340,6 +340,7 @@ import Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone
 import Lib.Algebra.Homology.DerivedCategory.AdjacentTwoSlice
 import Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice
 import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSlice
+import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceShift
 
 /-!
 # Reusable extracted library

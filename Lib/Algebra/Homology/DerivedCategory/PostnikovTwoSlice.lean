@@ -66,4 +66,13 @@ def triangleω₁δIsoAdjacentTwoSliceTriangle
       ((q + 2 : ℤ) : EInt) (by simp) (by simp) (Q.obj K) ≪≫
     (TStructure.t.triangleLTGE (q + 1)).mapIso (postnikovTwoSliceIso K q)
 
+/-- The middle component of the adjacent-triangle comparison is precisely the concrete
+two-slice comparison. -/
+lemma triangleω₁δIsoAdjacentTwoSliceTriangle_hom_hom₂
+    (K : CochainComplex C ℤ) (q : ℤ) :
+    (triangleω₁δIsoAdjacentTwoSliceTriangle K q).hom.hom₂ =
+      (postnikovTwoSliceIso K q).hom := by
+  change 𝟙 _ ≫ (postnikovTwoSliceIso K q).hom = _
+  simp
+
 end DerivedCategory
