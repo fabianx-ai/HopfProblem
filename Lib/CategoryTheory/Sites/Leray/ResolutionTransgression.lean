@@ -210,6 +210,27 @@ lemma resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
   rw [resolutionTransgressionMorphismOfResolution_eq_connectingTwo]
   rfl
 
+set_option backward.isDefEq.respectTransparency false in
+/-- A value of the resolution transgression is nonzero exactly when its positive Yoneda
+two-step class is nonzero. -/
+lemma resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
+    {F : AbelianSheaf X} (I : InjectiveResolution F) (n : ℕ)
+    (x : E₂ f F 0 (n + 1)) :
+    resolutionTransgressionAddOfResolution f I n x ≠ 0 ↔
+      (ExtTransgression.homologyTwoStepResolution
+        (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+          (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x)) ≠ 0 := by
+  rw [resolutionTransgressionAddOfResolution_apply_eq_connectingTwo]
+  constructor
+  · intro h hy
+    apply h
+    rw [hy, map_zero]
+  · intro hy hmap
+    apply hy
+    apply (ConcreteCategory.bijective_of_isIso
+      (resolutionCohomologyIso f I n 2).hom).1
+    rw [hmap, map_zero]
+
 /-- The resolution transgression as an additive homomorphism. -/
 def resolutionTransgressionAdd (F : AbelianSheaf X) (n : ℕ) :
     E₂ f F 0 (n + 1) →+ E₂ f F 2 n :=
@@ -226,5 +247,17 @@ def resolutionTransgressionOfResolution {F : AbelianSheaf X}
 def resolutionTransgression (F : AbelianSheaf X) (n : ℕ) :
     E₂ f F 0 (n + 1) →ₗ[ℤ] E₂ f F 2 n :=
   (resolutionTransgressionAdd f F n).toIntLinearMap
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Chosen-resolution specialization of the valuewise nonvanishing criterion. -/
+lemma resolutionTransgression_apply_ne_zero_iff_connectingTwo
+    (F : AbelianSheaf X) (n : ℕ) (x : E₂ f F 0 (n + 1)) :
+    resolutionTransgression f F n x ≠ 0 ↔
+      (ExtTransgression.homologyTwoStepResolution
+        (pushedResolution f (injectiveResolution F)) n).connectingTwo (integralSheaf Y)
+          (Ext.mk₀ ((resolutionExtZeroIso f (injectiveResolution F) (n + 1)).hom.hom x)) ≠
+            0 := by
+  exact resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
+    f (injectiveResolution F) n x
 
 end CategoryTheory.Sheaf.Leray

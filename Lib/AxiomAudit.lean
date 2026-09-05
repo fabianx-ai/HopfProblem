@@ -2009,12 +2009,16 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgression
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
+#check CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo
 
 /-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov` -/
 
