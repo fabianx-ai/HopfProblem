@@ -1735,6 +1735,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo_negOnePow_cancel
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo_negOnePow_cancel
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageCoordinates` -/
 

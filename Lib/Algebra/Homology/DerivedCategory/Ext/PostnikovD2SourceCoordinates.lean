@@ -92,4 +92,18 @@ lemma coyonedaPostnikovD₂SpliceSource_eq
   rw [shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper]
   simp only [Category.assoc, Linear.comp_units_smul]
 
+omit [HasDerivedCategory C] in
+/-- Multiplying both a degree-zero source morphism and its two-step connecting class by the same
+parity scalar cancels. This is the sign algebra used after normalizing both page endpoints. -/
+lemma connectingTwo_negOnePow_cancel
+    [HasExt.{v} C] (R : TwoStepResolution (C := C)) (P : C) (n : ℤ)
+    (f : P ⟶ R.complex.X₃) :
+    n.negOnePow • R.connectingTwo P (Ext.mk₀ (n.negOnePow • f)) =
+      R.connectingTwo P (Ext.mk₀ f) := by
+  rcases Int.even_or_odd n with hn | hn
+  · rw [Int.negOnePow_even n hn]
+    simp
+  · rw [Int.negOnePow_odd n hn]
+    simp
+
 end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
