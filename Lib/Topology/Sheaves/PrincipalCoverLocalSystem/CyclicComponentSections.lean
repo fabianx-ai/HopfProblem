@@ -487,6 +487,87 @@ theorem sectionEvaluation_restrict
   change s.1 ⟨DU.base.1, hUV DU.base.2⟩ = s.1 DV.base
   exact s.1.apply_eq_of_isPreconnected DV.component_isPreconnected hbase DV.base_mem
 
+/-! ## Restriction with a shifted distinguished component -/
+
+variable {V : Opens X}
+
+/-- An element commuting with the cyclic generator acts additively on its fixed coefficients. -/
+def invariantActionEquiv (N : AddSubgroup M)
+    (hN : ∀ m : M, m ∈ N ↔ a • m = m) (g : G) (hg : Commute a g) : N ≃+ N where
+  toFun m := ⟨g • m.1, (hN _).mpr <| by
+    rw [← mul_smul, hg.eq, mul_smul, (hN m.1).mp m.2]⟩
+  invFun m := ⟨g⁻¹ • m.1, (hN _).mpr <| by
+    rw [← mul_smul, hg.inv_right.eq, mul_smul, (hN m.1).mp m.2]⟩
+  left_inv m := by
+    apply Subtype.ext
+    simp
+  right_inv m := by
+    apply Subtype.ext
+    simp
+  map_add' m n := by
+    apply Subtype.ext
+    exact smul_add g m.1 n.1
+
+/-- If the smaller evaluation base is a centralizing deck translate of the larger distinguished
+component, restriction changes component coordinates by exactly that deck action. -/
+theorem sectionEvaluation_restrict_eq_invariantActionEquiv
+    (DU : CyclicComponentData p hp U a)
+    (DV : CyclicComponentData p hp V a) (hUV : U ≤ V)
+    (N : AddSubgroup M) (hN : ∀ m : M, m ∈ N ↔ a • m = m)
+    (g : G) (c : LiftedOpen p V) (hc : c ∈ DV.component)
+    (hbase : (⟨DU.base.1, hUV DU.base.2⟩ : LiftedOpen p V) =
+      liftedAction p hp V g c)
+    (hg : Commute a g)
+    (s : equivariantSections (M := M) p hp V) :
+    DU.sectionEvaluation N hN (restrict (M := M) p hp hUV s) =
+      invariantActionEquiv N hN g hg (DV.sectionEvaluation N hN s) := by
+  apply Subtype.ext
+  change s.1 ⟨DU.base.1, hUV DU.base.2⟩ = g • s.1 DV.base
+  calc
+    s.1 ⟨DU.base.1, hUV DU.base.2⟩ =
+        s.1 (liftedAction p hp V g c) := congrArg s.1 hbase
+    _ = g • s.1 c := s.2 g c
+    _ = g • s.1 DV.base := congrArg (g • ·)
+      (s.1.apply_eq_of_isPreconnected DV.component_isPreconnected hc DV.base_mem)
+
+/-- Restriction between cyclic-component section spaces is bijective when the smaller base is a
+deck translate, by an element centralizing the generator, of the larger distinguished component.
+-/
+theorem restrict_bijective_of_commuting_component_transport
+    (DU : CyclicComponentData p hp U a)
+    (DV : CyclicComponentData p hp V a) (hUV : U ≤ V)
+    (N : AddSubgroup M) (hN : ∀ m : M, m ∈ N ↔ a • m = m)
+    (g : G) (c : LiftedOpen p V) (hc : c ∈ DV.component)
+    (hbase : (⟨DU.base.1, hUV DU.base.2⟩ : LiftedOpen p V) =
+      liftedAction p hp V g c)
+    (hg : Commute a g) :
+    Function.Bijective (restrict (M := M) p hp hUV) := by
+  let T := invariantActionEquiv N hN g hg
+  let eU := DU.sectionsEquiv N hN
+  let eV := DV.sectionsEquiv N hN
+  constructor
+  · intro s t hst
+    apply eV.injective
+    apply T.injective
+    have hs : eU (restrict (M := M) p hp hUV s) = T (eV s) := by
+      exact sectionEvaluation_restrict_eq_invariantActionEquiv DU DV hUV N hN
+        g c hc hbase hg s
+    have ht : eU (restrict (M := M) p hp hUV t) = T (eV t) := by
+      exact sectionEvaluation_restrict_eq_invariantActionEquiv DU DV hUV N hN
+        g c hc hbase hg t
+    exact hs.symm.trans ((congrArg eU hst).trans ht)
+  · intro t
+    let m : N := T.symm (eU t)
+    let s : equivariantSections (M := M) p hp V := eV.symm m
+    refine ⟨s, ?_⟩
+    apply eU.injective
+    have hs : eU (restrict (M := M) p hp hUV s) = T (eV s) := by
+      exact sectionEvaluation_restrict_eq_invariantActionEquiv DU DV hUV N hN
+        g c hc hbase hg s
+    rw [hs]
+    change T (eV s) = eU t
+    rw [eV.apply_symm_apply, T.apply_symm_apply]
+
 end CyclicComponentData
 
 end PrincipalCoverLocalSystem

@@ -2645,6 +2645,12 @@ is an evidence command rather than library content.
 #print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_bijective
 #check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
 #print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
+#check PrincipalCoverLocalSystem.CyclicComponentData.invariantActionEquiv
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.invariantActionEquiv
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict_eq_invariantActionEquiv
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict_eq_invariantActionEquiv
+#check PrincipalCoverLocalSystem.CyclicComponentData.restrict_bijective_of_commuting_component_transport
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.restrict_bijective_of_commuting_component_transport
 
 /-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate` -/
 
