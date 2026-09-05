@@ -9,7 +9,7 @@ module
 public import Mathlib.Algebra.Homology.SpectralSequence.Basic
 
 /-!
-# The first two lower-left `d₂` arrows of a first-quadrant spectral sequence
+# The first three lower-left `d₂` arrows of a first-quadrant spectral sequence
 
 This file isolates a small first-quadrant fact which does not require a global column bound.
 If the source `(0,1)` and target `(2,0)` vanish on page four, then the page-two differential
@@ -231,5 +231,94 @@ theorem isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
   let _ : Epi ((P.page 2).d (0, 2) (2, 1)) :=
     epi_d₂_zeroTwo_twoOne_of_isZero_pageFour P hfourZero htwoOne
   exact isIso_of_mono_of_epi _
+
+private theorem pageThree_threeOne_isZero_of_isZero_pageTwo
+    (h : IsZero ((P.page 2).X (3, 1))) :
+    IsZero ((P.page 3).X (3, 1)) := by
+  have hhomology : IsZero ((P.page 2).homology (3, 1)) :=
+    ((P.page 2).sc (3, 1)).isZero_homology_of_isZero_X₂ h
+  exact IsZero.of_iso hhomology (P.iso 2 3 (3, 1) (by omega)).symm
+
+private noncomputable def pageThreeZeroThreeIsoPageFour
+    (h : IsZero ((P.page 2).X (3, 1))) :
+    (P.page 3).X (0, 3) ≅ (P.page 4).X (0, 3) := by
+  have hTo : (P.page 3).dTo (0, 3) = 0 := by
+    apply (P.page 3).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 3).dFrom (0, 3) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨3, 1 - 3⟩).Rel (0, 3) (3, 1) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    have htarget : IsZero ((P.page 3).X (3, 1)) :=
+      pageThree_threeOne_isZero_of_isZero_pageTwo P h
+    rw [(P.page 3).dFrom_eq hrel,
+      htarget.eq_of_tgt ((P.page 3).d (0, 3) (3, 1)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 3).sc (0, 3)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 3 4 (0, 3) (by omega)
+
+private theorem pageFour_fourZero_isZero_of_isZero_pageTwo
+    (h : IsZero ((P.page 2).X (4, 0))) :
+    IsZero ((P.page 4).X (4, 0)) := by
+  have hhomologyTwo : IsZero ((P.page 2).homology (4, 0)) :=
+    ((P.page 2).sc (4, 0)).isZero_homology_of_isZero_X₂ h
+  have hthree : IsZero ((P.page 3).X (4, 0)) :=
+    IsZero.of_iso hhomologyTwo (P.iso 2 3 (4, 0) (by omega)).symm
+  have hhomologyThree : IsZero ((P.page 3).homology (4, 0)) :=
+    ((P.page 3).sc (4, 0)).isZero_homology_of_isZero_X₂ hthree
+  exact IsZero.of_iso hhomologyThree (P.iso 3 4 (4, 0) (by omega)).symm
+
+private noncomputable def pageFourZeroThreeIsoPageFive
+    (h : IsZero ((P.page 2).X (4, 0))) :
+    (P.page 4).X (0, 3) ≅ (P.page 5).X (0, 3) := by
+  have hTo : (P.page 4).dTo (0, 3) = 0 := by
+    apply (P.page 4).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 4).dFrom (0, 3) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨4, 1 - 4⟩).Rel (0, 3) (4, 0) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    have htarget : IsZero ((P.page 4).X (4, 0)) :=
+      pageFour_fourZero_isZero_of_isZero_pageTwo P h
+    rw [(P.page 4).dFrom_eq hrel,
+      htarget.eq_of_tgt ((P.page 4).d (0, 3) (4, 0)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 4).sc (0, 3)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 4 5 (0, 3) (by omega)
+
+/-- Page-five vanishing at `(0,3)`, together with vanishing of the only possible later
+outgoing targets `(3,1)` and `(4,0)`, makes the third lower page-two differential monic.
+Only these two off-axis page-two groups are required; no global column bound is assumed. -/
+theorem mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+    (hthreeOne : IsZero ((P.page 2).X (3, 1)))
+    (hfourZero : IsZero ((P.page 2).X (4, 0)))
+    (hzeroThree : IsZero ((P.page 5).X (0, 3))) :
+    Mono ((P.page 2).d (0, 3) (2, 2)) := by
+  have hpage4 : IsZero ((P.page 4).X (0, 3)) :=
+    IsZero.of_iso hzeroThree (pageFourZeroThreeIsoPageFive P hfourZero)
+  have hpage3 : IsZero ((P.page 3).X (0, 3)) :=
+    IsZero.of_iso hpage4 (pageThreeZeroThreeIsoPageFour P hthreeOne)
+  have hhomology : IsZero ((P.page 2).homology (0, 3)) :=
+    IsZero.of_iso hpage3 (P.iso 2 3 (0, 3) (by omega))
+  have hexact : (P.page 2).ExactAt (0, 3) :=
+    ((P.page 2).exactAt_iff_isZero_homology (0, 3)).2 hhomology
+  have hTo : (P.page 2).dTo (0, 3) = 0 := by
+    apply (P.page 2).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have : Mono ((P.page 2).dFrom (0, 3)) := hexact.mono_g hTo
+  have hrel :
+      (ComplexShape.spectralSequenceNat ⟨2, 1 - 2⟩).Rel (0, 3) (2, 2) := by
+    rw [ComplexShape.spectralSequenceNat_rel_iff]
+    omega
+  rw [← (P.page 2).dFrom_comp_xNextIso hrel]
+  infer_instance
 
 end CategoryTheory.SpectralSequence.NatLowerEdge

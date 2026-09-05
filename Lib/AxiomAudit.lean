@@ -653,6 +653,8 @@ is an evidence command rather than library content.
 #check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
 
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
 /-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
 
 #check ThreeColumnSpectralSequence.Raw
