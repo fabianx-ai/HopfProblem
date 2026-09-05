@@ -58,6 +58,29 @@ lemma homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
   simpa only [Functor.map_comp, Functor.map_id, Category.id_comp,
     shift_homologyFunctor, CochainComplex.homologyFunctor_shift] using hshift
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The inverse orientation of the quotient/shift coherence square: first identify derived
+homology after shifting, then pass through the quotient comparison.  This form is convenient
+when a shifted complex is the target of a normalized Postnikov comparison. -/
+@[reassoc]
+lemma homologyFunctor_shiftIso_hom_comp_homologyFunctorFactors
+    (n a a' : ℤ) (ha' : n + a = a') (K : CochainComplex C ℤ) :
+    ((homologyFunctor C 0).shiftIso n a a' ha').hom.app (Q.obj K) ≫
+        (homologyFunctorFactors C a').hom.app K =
+      (homologyFunctor C a).map ((Q.commShiftIso n).inv.app K) ≫
+        (homologyFunctorFactors C a).hom.app (K⟦n⟧) ≫
+        ((HomologicalComplex.homologyFunctor C (.up ℤ) 0).shiftIso
+          n a a' ha').hom.app K := by
+  let J := (homologyFunctor C a).mapIso ((Q.commShiftIso n).app K)
+  change _ = J.inv ≫ _
+  rw [← cancel_epi J.hom]
+  change (homologyFunctor C a).map ((Q.commShiftIso n).hom.app K) ≫ _ = _
+  rw [reassoc_of%
+    homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso n a a' ha' K]
+  rw [Iso.inv_hom_id_app]
+  simp only [J.hom_inv_id_assoc]
+  erw [Category.comp_id]
+
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.isDefEq.respectTransparency false in
