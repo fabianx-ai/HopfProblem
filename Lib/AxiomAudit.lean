@@ -1715,6 +1715,11 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_upper_homology
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_upper_homology
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageSplice` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply
