@@ -1809,6 +1809,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Normalized` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_hom_eq_splice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_hom_eq_splice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_d₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_d₂
+
 -- ExactFunctoriality: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
 #print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
