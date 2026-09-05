@@ -6199,3 +6199,26 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedCech.complex_X
 #check TopologicalSpace.OpenCover.OrderedCech.complex_d
 #print axioms TopologicalSpace.OpenCover.OrderedCech.complex_d
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Refinement` -/
+
+#check TopologicalSpace.OpenCover.IndexTuple.intersection
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection
+#check TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_apply
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_apply
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_intersection
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_intersection
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_not_injective
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_not_injective
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_injective
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_injective
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
