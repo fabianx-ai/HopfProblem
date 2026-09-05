@@ -1561,6 +1561,15 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_comm₃
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_comm₃
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovTwoSliceSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_comm₃_signed
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_comm₃_signed
+
 -- ExactFunctoriality: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
 #print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
