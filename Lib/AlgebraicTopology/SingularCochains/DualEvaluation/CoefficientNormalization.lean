@@ -194,4 +194,53 @@ theorem singularUliftIntCohomologyEvaluation_isIso_of_projective
       (fun k ↦ singularChains_free X k) ℤ inferInstance inferInstance
       uliftIntCoefficientEquiv n inferInstance
 
+/-- The contravariant map on `ULift ℤ` dual-complex cohomology is injective whenever the
+original map on homology in the same positive degree is surjective and the source cohomology's
+preceding homology is projective. -/
+theorem uliftIntDualHomologyMap_injective_of_homologyMap_surjective
+    {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+    [∀ k, Module.Free ℤ (L.X k)] (f : K ⟶ L) (n : ℕ)
+    [Module.Projective ℤ (L.homology n)]
+    (h : Function.Surjective (HomologicalComplex.homologyMap f (n + 1))) :
+    Function.Injective (HomologicalComplex.homologyMap
+      (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1)) := by
+  let eX := uliftIntCohomologyEvaluation K n
+  let eY := uliftIntCohomologyEvaluation L n
+  let fH := HomologicalComplex.homologyMap f (n + 1)
+  have hfH : Function.Surjective fH := h
+  have hdual : Function.Injective (precomposeLinear (B := ℤ) fH.hom) := by
+    rw [precomposeLinear_int_eq_dualMap]
+    exact LinearMap.dualMap_injective_of_surjective hfH
+  have heYIso : IsIso eY :=
+    cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
+      (K := L) (AddCommGrpCat.of (ULift.{0} ℤ)) uliftIntCoefficientEquiv n
+  have heYInjective : Function.Injective eY :=
+    ((ConcreteCategory.isIso_iff_bijective eY).mp heYIso).1
+  intro a b hab
+  have heX :
+      eX
+          (HomologicalComplex.homologyMap
+            (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1) a) =
+        eX
+          (HomologicalComplex.homologyMap
+            (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1) b) :=
+    congrArg eX hab
+  have hnat := uliftIntCohomologyEvaluation_natural f n
+  have hnatA := ConcreteCategory.congr_hom hnat a
+  have hnatB := ConcreteCategory.congr_hom hnat b
+  simp only [ConcreteCategory.comp_apply] at hnatA hnatB
+  change eX
+      (HomologicalComplex.homologyMap
+        (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1) a) =
+      precomposeLinear fH.hom (eY a) at hnatA
+  change eX
+      (HomologicalComplex.homologyMap
+        (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1) b) =
+      precomposeLinear fH.hom (eY b) at hnatB
+  have hpre : precomposeLinear fH.hom (eY a) =
+      precomposeLinear fH.hom (eY b) := by
+    simpa only [eX, eY, fH] using hnatA.symm.trans (heX.trans hnatB)
+  have heY : eY a = eY b := hdual hpre
+  exact heYInjective heY
+
 end AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT

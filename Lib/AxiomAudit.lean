@@ -4907,6 +4907,8 @@ is an evidence command rather than library content.
 #print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation_natural
 #check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularUliftIntCohomologyEvaluation_isIso_of_projective
 #print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularUliftIntCohomologyEvaluation_isIso_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntDualHomologyMap_injective_of_homologyMap_surjective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntDualHomologyMap_injective_of_homologyMap_surjective
 
 /-! ## `Lib.Topology.Homotopy.QuotientCoveringSpace` -/
 
