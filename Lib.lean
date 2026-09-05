@@ -360,6 +360,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates
 import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSpliceLowerNormalization
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovLowerEndpointNormalization
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Normalized
+import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 
 /-!
 # Reusable extracted library
