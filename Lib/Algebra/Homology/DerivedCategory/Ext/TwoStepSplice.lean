@@ -51,6 +51,44 @@ lemma compositeTriangle_distinguished :
   exact (distinguished_cocone_triangle
     ((DerivedCategory.singleFunctor C 0).map R.complex.f)).choose_spec.choose_spec.choose_spec
 
+/-- The standard mapping-cone triangle on the single-object image of the middle composite of a
+two-step resolution. -/
+noncomputable def mappingConeCompositeTriangle : Triangle (DerivedCategory C) :=
+  DerivedCategory.Q.mapTriangle.obj
+    (CochainComplex.mappingCone.triangle
+      ((CochainComplex.singleFunctor C 0).map R.complex.f))
+
+/-- The standard mapping-cone triangle on the middle composite is distinguished. -/
+lemma mappingConeCompositeTriangle_distinguished :
+    mappingConeCompositeTriangle R ∈ distTriang (DerivedCategory C) :=
+  DerivedCategory.mappingCone_triangle_distinguished _
+
+set_option backward.isDefEq.respectTransparency false
+
+/-- The chosen composite triangle is isomorphic to the standard mapping-cone triangle.  The
+comparison is normalized to be the identity on both single-object endpoints. -/
+noncomputable def compositeTriangleIsoMappingCone :
+    compositeTriangle R ≅ mappingConeCompositeTriangle R :=
+  isoTriangleOfIso₁₂ _ _ (compositeTriangle_distinguished R)
+    (mappingConeCompositeTriangle_distinguished R) (Iso.refl _) (Iso.refl _) (by
+      dsimp [compositeTriangle, mappingConeCompositeTriangle]
+      simp only [Category.comp_id, Category.id_comp]
+      change DerivedCategory.Q.map
+          ((CochainComplex.singleFunctor C 0).map R.complex.f) =
+        DerivedCategory.Q.map
+          ((CochainComplex.singleFunctor C 0).map R.complex.f)
+      rfl)
+
+@[simp]
+lemma compositeTriangleIsoMappingCone_hom_hom₁ :
+    (compositeTriangleIsoMappingCone R).hom.hom₁ = 𝟙 _ := by
+  simp [compositeTriangleIsoMappingCone]
+
+@[simp]
+lemma compositeTriangleIsoMappingCone_hom_hom₂ :
+    (compositeTriangleIsoMappingCone R).hom.hom₂ = 𝟙 _ := by
+  simp [compositeTriangleIsoMappingCone]
+
 set_option backward.isDefEq.respectTransparency false
 
 /-- The octahedral splice triangle associated to a two-step resolution. -/
