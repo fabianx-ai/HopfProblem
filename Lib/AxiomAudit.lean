@@ -236,6 +236,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
 #print axioms CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
 
+/-! ## `Lib.Algebra.Homology.Embedding.ExtendHomologySequence` -/
+
+#check HomologicalComplex.extend_opcyclesToCycles
+#print axioms HomologicalComplex.extend_opcyclesToCycles
+#check HomologicalComplex.extend_opcyclesToCycles_assoc
+#print axioms HomologicalComplex.extend_opcyclesToCycles_assoc
+
 /-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
 
 #check HomologicalComplex.mapExtendXIso
