@@ -3346,6 +3346,15 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
 #print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology
+#check TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
+#check TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque

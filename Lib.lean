@@ -370,6 +370,7 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 import Lib.Topology.Sheaves.DependentFunctionSheaf
 import Lib.Topology.Sheaves.Cohomology.GodementEnvelope
 import Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing
+import Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension
 
 /-!
 # Reusable extracted library
