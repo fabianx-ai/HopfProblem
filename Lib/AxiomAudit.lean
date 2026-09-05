@@ -254,6 +254,37 @@ is an evidence command rather than library content.
 #check CochainComplex.HomComplex.fromSingleHomologyIso
 #print axioms CochainComplex.HomComplex.fromSingleHomologyIso
 
+/-! ## `Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone` -/
+
+#check CochainComplex.relNegOneZero
+#print axioms CochainComplex.relNegOneZero
+#check CochainComplex.relZeroOne
+#print axioms CochainComplex.relZeroOne
+#check CochainComplex.chainSingleZero
+#print axioms CochainComplex.chainSingleZero
+#check CochainComplex.cochainSingleZero
+#print axioms CochainComplex.cochainSingleZero
+#check CochainComplex.twoTermData
+#print axioms CochainComplex.twoTermData
+#check CochainComplex.twoTerm
+#print axioms CochainComplex.twoTerm
+#check CochainComplex.twoTerm_isZero_X
+#print axioms CochainComplex.twoTerm_isZero_X
+#check CochainComplex.mappingCone_single_isZero_X
+#print axioms CochainComplex.mappingCone_single_isZero_X
+#check CochainComplex.twoTermPointIsoNegOne
+#print axioms CochainComplex.twoTermPointIsoNegOne
+#check CochainComplex.twoTermPointIsoZero
+#print axioms CochainComplex.twoTermPointIsoZero
+#check CochainComplex.twoTermPointIso
+#print axioms CochainComplex.twoTermPointIso
+#check CochainComplex.twoTermPointIsoNegOne_hom
+#print axioms CochainComplex.twoTermPointIsoNegOne_hom
+#check CochainComplex.twoTermPointIsoZero_hom
+#print axioms CochainComplex.twoTermPointIsoZero_hom
+#check CochainComplex.twoTermIsoMappingCone
+#print axioms CochainComplex.twoTermIsoMappingCone
+
 /-! ## `Lib.Algebra.Homology.SpectralObject.Postnikov` -/
 
 #check CategoryTheory.Triangulated.TStructure.postnikovSpectralObject
