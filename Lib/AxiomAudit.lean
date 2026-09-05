@@ -3288,6 +3288,43 @@ is an evidence command rather than library content.
 #check TopCat.ClosedRefinement.exists_controlled_neighborhood
 #print axioms TopCat.ClosedRefinement.exists_controlled_neighborhood
 
+/-! ## `Lib.Topology.Dimension.Covering` -/
+
+#check TopologicalSpace.OpenCover.Refinement
+#print axioms TopologicalSpace.OpenCover.Refinement
+#check TopologicalSpace.OpenCover.Refinement.mk
+#print axioms TopologicalSpace.OpenCover.Refinement.mk
+#check TopologicalSpace.OpenCover.Refinement.index
+#print axioms TopologicalSpace.OpenCover.Refinement.index
+#check TopologicalSpace.OpenCover.Refinement.le
+#print axioms TopologicalSpace.OpenCover.Refinement.le
+#check TopologicalSpace.OpenCover.Refinement.refl
+#print axioms TopologicalSpace.OpenCover.Refinement.refl
+#check TopologicalSpace.OpenCover.Refinement.comp
+#print axioms TopologicalSpace.OpenCover.Refinement.comp
+#check TopologicalSpace.OpenCover.Refinement.refl_index
+#print axioms TopologicalSpace.OpenCover.Refinement.refl_index
+#check TopologicalSpace.OpenCover.Refinement.comp_index
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_index
+#check TopologicalSpace.OpenCover.Refinement.refl_comp
+#print axioms TopologicalSpace.OpenCover.Refinement.refl_comp
+#check TopologicalSpace.OpenCover.Refinement.comp_refl
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_refl
+#check TopologicalSpace.OpenCover.Refinement.comp_assoc
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_assoc
+#check TopologicalSpace.OpenCover.MultiplicityLE
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE
+#check TopologicalSpace.OpenCover.MultiplicityLE.mono
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.mono
+#check TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty
+#check TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty_of_card_eq_succ
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty_of_card_eq_succ
+#check HasCoveringDimensionLE
+#print axioms HasCoveringDimensionLE
+#check HasCoveringDimensionLE.mono
+#print axioms HasCoveringDimensionLE.mono
+
 /-! ## `Lib.Topology.Sheaves.FunctionSheaf` -/
 
 #check TopCat.FunctionSheaf.presheaf
