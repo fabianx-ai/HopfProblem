@@ -6135,3 +6135,22 @@ is an evidence command rather than library content.
 
 #check TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
 #print axioms TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.OpenCover` -/
+
+#check TopologicalSpace.IsOpenCover.presheafCechComplexFunctor
+#print axioms TopologicalSpace.IsOpenCover.presheafCechComplexFunctor
+#check TopologicalSpace.IsOpenCover.sheafCechComplexFunctor
+#print axioms TopologicalSpace.IsOpenCover.sheafCechComplexFunctor
+#check TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor
+#print axioms TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor
+#check TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor
+#print axioms TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor
+#check TopologicalSpace.IsOpenCover.presheafCechComplexFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.presheafCechComplexFunctor_obj
+#check TopologicalSpace.IsOpenCover.sheafCechComplexFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.sheafCechComplexFunctor_obj
+#check TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor_obj
+#check TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj

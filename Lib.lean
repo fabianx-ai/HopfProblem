@@ -377,6 +377,7 @@ import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Trivialization
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Restriction
 import Lib.Topology.Dimension.Covering
 import Lib.Topology.Sheaves.Cohomology.ProjectiveDimension
+import Lib.Topology.Sheaves.Cohomology.Cech.OpenCover
 
 /-!
 # Reusable extracted library
