@@ -381,6 +381,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.OpenCover
 import Lib.Topology.Sheaves.Cohomology.Cech.Ordered
 import Lib.Topology.Sheaves.Cohomology.Cech.Refinement
 import Lib.Topology.Sheaves.Cohomology.Cech.RefinementHomotopy
+import Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem
 
 /-!
 # Reusable extracted library

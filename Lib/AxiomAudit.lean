@@ -6322,3 +6322,22 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapHomotopy
 #check TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
 #print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover
+#print axioms TopologicalSpace.OpenCover.SetOpenCover
+#check TopologicalSpace.OpenCover.SetOpenCover.Index
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.Index
+#check TopologicalSpace.OpenCover.SetOpenCover.family
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.family
+#check TopologicalSpace.OpenCover.SetOpenCover.refinementOfLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.refinementOfLE
+#check TopologicalSpace.OpenCover.SetOpenCover.singletonTop
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.singletonTop
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementLeft
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementLeft
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
