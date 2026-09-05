@@ -19,6 +19,10 @@ differentials on page three, so page three already equals page four there.
 The same local argument treats `(0,2) → (2,1)` once only the two possible off-axis obstructions
 `E₂^(3,0)` and `E₂^(4,0)` vanish.  Thus an application may use concrete cohomology calculations
 at those two groups instead of proving a global column-support theorem.
+
+Finally, the same bookkeeping identifies `E₂^(1,1)` with `E₃^(1,1)` as soon as its sole
+outgoing target `E₂^(3,0)` vanishes.  This is another local statement and does not assume that
+all columns beyond two vanish.
 -/
 
 @[expose] public section
@@ -320,5 +324,34 @@ theorem mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
     omega
   rw [← (P.page 2).dFrom_comp_xNextIso hrel]
   infer_instance
+
+/-- If the sole outgoing target `E₂^(3,0)` vanishes, the middle term `E₂^(1,1)` is already
+unchanged on page three.  No global support condition is needed. -/
+noncomputable def pageTwoOneOneIsoPageThree
+    (hthreeZero : IsZero ((P.page 2).X (3, 0))) :
+    (P.page 2).X (1, 1) ≅ (P.page 3).X (1, 1) := by
+  have hTo : (P.page 2).dTo (1, 1) = 0 := by
+    apply (P.page 2).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 2).dFrom (1, 1) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨2, 1 - 2⟩).Rel (1, 1) (3, 0) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    rw [(P.page 2).dFrom_eq hrel,
+      hthreeZero.eq_of_tgt ((P.page 2).d (1, 1) (3, 0)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 2).sc (1, 1)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 2 3 (1, 1) (by omega)
+
+/-- Vanishing of page three at `(1,1)` descends to page two once the only outgoing page-two
+target vanishes. -/
+theorem isZero_pageTwo_oneOne_of_isZero_pageThree
+    (hthreeZero : IsZero ((P.page 2).X (3, 0)))
+    (honeOne : IsZero ((P.page 3).X (1, 1))) :
+    IsZero ((P.page 2).X (1, 1)) :=
+  IsZero.of_iso honeOne (pageTwoOneOneIsoPageThree P hthreeZero)
 
 end CategoryTheory.SpectralSequence.NatLowerEdge
