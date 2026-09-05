@@ -1682,6 +1682,8 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
 
 -- ExactFunctoriality: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor

@@ -146,3 +146,69 @@ lemma coyonedaPostnikovE₂_d₂_splice_apply
   all_goals simp only [e, s₃, z, f, Category.assoc]
 
 end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+
+namespace CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+
+universe v u
+
+variable {C : Type u} [Category.{v} C] [Abelian C]
+  [HasDerivedCategory.{v} C] [HasExt.{v} C]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- In `Ext` coordinates, the explicitly transported and signed page-two differential is the
+connecting class of the canonical adjacent two-step homology resolution.
+
+This is the `Ext`-valued form of `coyonedaPostnikovE₂_d₂_splice_apply`.  The universe of the
+derived category is specialized to the hom universe of `C`, matching the universe-polymorphic
+level at which `TwoStepResolution.connectingTwo` is currently defined. -/
+lemma coyonedaPostnikovE₂_d₂_connectingTwo_apply
+    (K : CochainComplex C ℤ) [K.IsGE 0] (P : C) (q : ℕ)
+    (x : ((DerivedCategory.TStructure.t.coyonedaPostnikovSpectralSequence
+      ((DerivedCategory.singleFunctor C 0).obj P)
+      (DerivedCategory.Q.obj K)).page 2).X (0, q + 1)) :
+    let T :=
+      (DerivedCategory.TStructure.t.triangleω₁δ
+        ((q : ℤ) : EInt) (((q : ℤ) + 1 : ℤ) : EInt)
+        (((q : ℤ) + 2 : ℤ) : EInt) (by simp) (by simp)).obj
+          (DerivedCategory.Q.obj K)
+    let e := shiftedPostnikovAdjacentTriangleIsoSplice K (q : ℤ)
+    let s₁ := spliceTriangleObj₁Iso (homologyTwoStepResolutionInt K (q : ℤ))
+    let s₃ := spliceTriangleObj₃Iso (homologyTwoStepResolutionInt K (q : ℤ))
+    let z : (DerivedCategory.singleFunctor C 0).obj P ⟶
+        (DerivedCategory.shiftedPostnikovAdjacentTriangle K (q : ℤ)).obj₃ :=
+      (DerivedCategory.TStructure.t.coyonedaPostnikovD₂SourcePageIso
+        ((DerivedCategory.singleFunctor C 0).obj P) (DerivedCategory.Q.obj K) 0 q).hom.hom x ≫
+      eqToHom (by
+        dsimp [DerivedCategory.shiftedPostnikovAdjacentTriangle,
+          Triangle.shiftFunctor]
+        rw [Triangle.mk_obj₃,
+          DerivedCategory.TStructure.t.triangleω₁δ_obj_obj₃]
+        simp)
+    let f := (DerivedCategory.singleFunctor C 0).preimage
+      (z ≫ e.hom.hom₃ ≫ s₃.hom)
+    (Ext.homAddEquiv (X := P)
+      (Y := (homologyTwoStepResolutionInt K (q : ℤ)).F) (n := 2)).symm
+      ((((q : ℤ) + 1).negOnePow •
+          ((DerivedCategory.TStructure.t.coyonedaPostnikovD₂TargetPageIso
+            ((DerivedCategory.singleFunctor C 0).obj P) (DerivedCategory.Q.obj K) 0 q).hom.hom
+              ((((DerivedCategory.TStructure.t.coyonedaPostnikovSpectralSequence
+                ((DerivedCategory.singleFunctor C 0).obj P)
+                (DerivedCategory.Q.obj K)).page 2).d (0, q + 1) (2, q)).hom x))) ≫
+        eqToHom (by
+          dsimp [T]
+          rw [DerivedCategory.TStructure.t.triangleω₁δ_obj_obj₁]
+          simp) ≫
+        (shiftFunctorAdd' (DerivedCategory C) ((q : ℤ) + 1) 1 ((q : ℤ) + 2)
+          (by omega)).hom.app T.obj₁ ≫
+        e.hom.hom₁⟦(1 : ℤ)⟧' ≫
+        s₁.hom⟦(1 : ℤ)⟧' ≫
+        (shiftFunctorAdd' (DerivedCategory C) 1 1 2 rfl).inv.app
+          ((DerivedCategory.singleFunctor C 0).obj
+            (homologyTwoStepResolutionInt K (q : ℤ)).F)) =
+      (homologyTwoStepResolutionInt K (q : ℤ)).connectingTwo P (Ext.mk₀ f) := by
+  dsimp only
+  apply Ext.homAddEquiv.injective
+  rw [AddEquiv.apply_symm_apply, Ext.homAddEquiv_apply]
+  exact coyonedaPostnikovE₂_d₂_splice_apply K P q x
+
+end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
