@@ -6204,8 +6204,24 @@ is an evidence command rather than library content.
 
 #check TopologicalSpace.OpenCover.IndexTuple.intersection
 #print axioms TopologicalSpace.OpenCover.IndexTuple.intersection
+#check TopologicalSpace.OpenCover.IndexTuple.face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face
+#check TopologicalSpace.OpenCover.IndexTuple.intersection_le_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection_le_face
+#check TopologicalSpace.OpenCover.IndexTuple.faceHom
+#print axioms TopologicalSpace.OpenCover.IndexTuple.faceHom
 #check TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
 #print axioms TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
+#check TopologicalSpace.OpenCover.IndexTuple.deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.succAbove_deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.succAbove_deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.sign_deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sign_deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.deletePerm_sort_eq_sort_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.deletePerm_sort_eq_sort_face
+#check TopologicalSpace.OpenCover.IndexTuple.sign_sort_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sign_sort_face
 #check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
 #print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
 #check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_apply
@@ -6214,6 +6230,14 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_intersection
 #check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
 #print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_face
+#check TopologicalSpace.OpenCover.Refinement.intersection_le
+#print axioms TopologicalSpace.OpenCover.Refinement.intersection_le
+#check TopologicalSpace.OpenCover.Refinement.intersectionHom
+#print axioms TopologicalSpace.OpenCover.Refinement.intersectionHom
+#check TopologicalSpace.OpenCover.Refinement.orderedIntersectionHom
+#print axioms TopologicalSpace.OpenCover.Refinement.orderedIntersectionHom
 #check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
 #print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
 #check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_not_injective
@@ -6222,3 +6246,19 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_injective
 #check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
 #print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_comp_equiv
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_comp_equiv
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_π
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_f
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π

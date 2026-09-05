@@ -28,14 +28,14 @@ set_option autoImplicit false
 
 open Set
 
-universe u
+universe u v w t z
 
 namespace TopologicalSpace
 
 namespace OpenCover
 
 variable {X : Type u} [TopologicalSpace X]
-variable {ι κ μ : Type u}
+variable {ι : Type v} {κ : Type w} {μ : Type t}
 
 /-- A chosen refinement of `U` by `V`: every member of `V` is assigned a containing member of
 `U`. The families need not cover the space for this elementary notion. -/
@@ -81,7 +81,7 @@ theorem comp_refl (r : Refinement V U) : r.comp (refl V) = r := by
   rfl
 
 @[simp]
-theorem comp_assoc {Z : Type u} {T : Z → Opens X}
+theorem comp_assoc {Z : Type z} {T : Z → Opens X}
     (r : Refinement V U) (s : Refinement W V) (t : Refinement T W) :
     (r.comp s).comp t = r.comp (s.comp t) := by
   ext
