@@ -335,6 +335,7 @@ import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 import Lib.Algebra.Homology.DerivedCategory.TruncationTriangle
 import Lib.Algebra.Homology.SpectralObject.PostnikovD2
 import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology
+import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice
 
 /-!
 # Reusable extracted library

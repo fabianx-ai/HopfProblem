@@ -1415,6 +1415,21 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
 #print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_distinguished
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_distinguished
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
+
 -- ExactFunctoriality: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
 #print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
