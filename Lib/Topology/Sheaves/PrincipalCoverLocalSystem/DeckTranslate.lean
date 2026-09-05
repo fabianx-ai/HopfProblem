@@ -15,8 +15,9 @@ public import Mathlib.Topology.Homotopy.Lifting
 Changing the chosen point in a fibre by a deck transformation conjugates the corresponding
 fundamental-group monodromy.  This file proves that formula first in Mathlib's opposite-group
 convention and then for the inverse-normalized monodromy homomorphism into the deck group.  It
-also proves compatibility with a homeomorphic change of the cover's base and with moving the base
-point by a lifted path, and records the resulting formulas for ranges and cyclic subgroups.
+also proves compatibility with a homeomorphic change of the cover's base, transport across equal
+base points, and moving the base point by a lifted path, and records the resulting formulas for
+ranges and cyclic subgroups.
 
 These are generic facts about principal quotient covers.  This file chooses no geometric family,
 puncture, meridian, or component, and makes no claim about a local system, higher direct image,
@@ -127,6 +128,25 @@ theorem deckMonodromyHom_homeomorph_comp
           exact congrArg (fun f ↦ f 1) hGamma
     _ = (hp.fundamentalGroupToMulOpposite e gamma).unop • e.1 :=
       hp.unop_fundamentalGroupToMulOpposite_smul.symm
+
+/-- Regard a point of a cover fibre as lying over an equal base point. -/
+def fiberTransport {p : E → X} {x y : X} (hxy : x = y)
+    (e : p ⁻¹' {x}) : p ⁻¹' {y} :=
+  ⟨e.1, by simpa only [Set.mem_preimage, Set.mem_singleton_iff, ← hxy] using e.2⟩
+
+/-- Transporting both a fibre point and a fundamental-group class across an equality of base
+points preserves deck monodromy. -/
+theorem deckMonodromyHom_fiberTransport
+    {p : E → X} (hp : IsQuotientCoveringMap p G)
+    {x y : X} (hxy : x = y) (e : p ⁻¹' {x})
+    (gamma : FundamentalGroup X x) :
+    deckMonodromyHom hp (fiberTransport hxy e)
+        (FundamentalGroup.fromPath
+          ((FundamentalGroup.toPath gamma).cast hxy.symm hxy.symm)) =
+      deckMonodromyHom hp e gamma := by
+  subst y
+  simp only [Path.Homotopic.Quotient.cast_rfl_rfl]
+  congr 2
 
 /-- Moving the chosen fibre point by lifting a path transports deck monodromy by whiskering the
 downstairs loop with that path. -/

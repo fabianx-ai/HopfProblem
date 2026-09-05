@@ -2652,6 +2652,10 @@ is an evidence command rather than library content.
 #print axioms PrincipalCoverLocalSystem.deckMonodromyHom
 #check PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
 #print axioms PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
+#check PrincipalCoverLocalSystem.fiberTransport
+#print axioms PrincipalCoverLocalSystem.fiberTransport
+#check PrincipalCoverLocalSystem.deckMonodromyHom_fiberTransport
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_fiberTransport
 #check PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
 #print axioms PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
 #check PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
