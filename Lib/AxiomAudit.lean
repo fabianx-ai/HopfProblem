@@ -1700,6 +1700,8 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_shiftedLowerEndpoint
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_shiftedLowerEndpoint
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt

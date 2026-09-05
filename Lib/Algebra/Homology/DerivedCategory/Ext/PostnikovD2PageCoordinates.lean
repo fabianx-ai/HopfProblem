@@ -53,6 +53,42 @@ def postnikovTargetExtIso (K : CochainComplex C ℤ) (q : ℤ) :
       ((DerivedCategory.homologyFunctor C q).obj (DerivedCategory.Q.obj K))).symm
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The pair of single-object shift adapters used by `postnikovTargetExtIso` is natural in
+the homology object. -/
+@[reassoc]
+lemma postnikovTargetSingleShiftIso_naturality
+    (q : ℤ) {A B : C} (u : A ⟶ B) :
+    (shiftFunctor (DerivedCategory C) (q + 2)).map
+          ((DerivedCategory.singleFunctor C q).map u) ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          (q + 2) (-2) q (by omega)).hom.app B ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app B =
+      ((DerivedCategory.singleFunctors C).shiftIso
+          (q + 2) (-2) q (by omega)).hom.app A ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app A ≫
+        (shiftFunctor (DerivedCategory C) 2).map
+          ((DerivedCategory.singleFunctor C 0).map u) := by
+  change
+    ((DerivedCategory.singleFunctors C).functor q ⋙
+        shiftFunctor (DerivedCategory C) (q + 2)).map u ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          (q + 2) (-2) q (by omega)).hom.app B ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app B =
+      ((DerivedCategory.singleFunctors C).shiftIso
+          (q + 2) (-2) q (by omega)).hom.app A ≫
+        ((DerivedCategory.singleFunctors C).shiftIso
+          2 (-2) 0 (by omega)).inv.app A ≫
+        ((DerivedCategory.singleFunctors C).functor 0 ⋙
+          shiftFunctor (DerivedCategory C) 2).map u
+  rw [((DerivedCategory.singleFunctors C).shiftIso
+    (q + 2) (-2) q (by omega)).hom.naturality_assoc u]
+  rw [((DerivedCategory.singleFunctors C).shiftIso
+    2 (-2) 0 (by omega)).inv.naturality u]
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The target Ext coordinate factors through the normalized lower endpoint of the shifted
 adjacent Postnikov triangle.  The remaining maps merely reassociate its shift by one with the
 second shift used by `Ext²`; in particular, this comparison contributes no scalar. -/
