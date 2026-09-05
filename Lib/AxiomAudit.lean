@@ -321,6 +321,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Pretriangulated.triangleShift_mor₃_comp_shiftFunctorAdd_inv
 #check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
 #print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
 

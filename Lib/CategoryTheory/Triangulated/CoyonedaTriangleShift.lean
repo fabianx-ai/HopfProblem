@@ -104,4 +104,32 @@ lemma preadditiveCoyoneda_homologySequenceδ_shift_zero
       rw [preadditiveCoyoneda_homologySequenceδ_apply]
       simp only [Linear.comp_units_smul]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Transport the shifted-triangle formula across an arbitrary triangle isomorphism.  The
+argument is first carried by the third component of `e`; the result is carried back by the
+shift of its inverse first component.  After these components cancel through the third square
+of `e`, the only scalar left is the parity factor contributed by the triangle shift itself. -/
+lemma preadditiveCoyoneda_homologySequenceδ_shift_iso
+    (T T' : Triangle C) (n : ℤ)
+    (e : (Triangle.shiftFunctor C n).obj T ≅ T') {A : Cᵒᵖ}
+    (x : A.unop ⟶ ((Triangle.shiftFunctor C n).obj T).obj₃) :
+    (preadditiveCoyoneda.obj A).homologySequenceδ T' 0 1 rfl
+          ((x ≫ e.hom.hom₃) ≫
+            (shiftFunctorZero C ℤ).inv.app T'.obj₃) ≫
+        e.inv.hom₁⟦(1 : ℤ)⟧' ≫
+          (shiftFunctorAdd' C n 1 (n + 1) rfl).inv.app T.obj₁ =
+      n.negOnePow •
+        ((preadditiveCoyoneda.obj A).homologySequenceδ
+          T n (n + 1) rfl x) := by
+  rw [preadditiveCoyoneda_homologySequenceδ_zero_apply]
+  rw [Category.assoc, Category.assoc, ← e.hom.comm₃_assoc]
+  rw [← Category.assoc
+    ((shiftFunctor C (1 : ℤ)).map e.hom.hom₁)
+    ((shiftFunctor C (1 : ℤ)).map e.inv.hom₁)]
+  rw [← Functor.map_comp, e.hom_inv_id_triangle_hom₁,
+    Functor.map_id, Category.id_comp]
+  simpa only [preadditiveCoyoneda_homologySequenceδ_zero_apply,
+    Category.assoc] using
+      preadditiveCoyoneda_homologySequenceδ_shift_zero T n x
+
 end CategoryTheory.Pretriangulated
