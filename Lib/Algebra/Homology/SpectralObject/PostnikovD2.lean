@@ -34,6 +34,27 @@ variable {C : Type uC} [Category.{vC} C] [Preadditive C] [HasZeroObject C]
   [HasShift C ℤ] [∀ n : ℤ, (shiftFunctor C n).Additive] [Pretriangulated C]
   [IsTriangulated C]
 
+/-- Changing the integer representative of the total degree in a coyoneda Postnikov first-page
+coordinate only inserts the corresponding equality transport on the represented morphism. -/
+lemma coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+    (t : TStructure C) (A K : C) [t.IsLE A 0] [t.IsGE K 0]
+    (pq : ℕ × ℕ) (i₁ i₂ : EInt)
+    (hi₁ : i₁ = Abelian.SpectralObject.coreE₂CohomologicalNat.i₁ pq)
+    (hi₂ : i₂ = Abelian.SpectralObject.coreE₂CohomologicalNat.i₂ pq)
+    (n n' : ℤ)
+    (hn : n = Abelian.SpectralObject.coreE₂CohomologicalNat.deg pq)
+    (hn' : n' = Abelian.SpectralObject.coreE₂CohomologicalNat.deg pq)
+    (y : ((t.coyonedaPostnikovSpectralSequence A K).page 2).X pq) :
+    ((t.coyonedaPostnikovSpectralObject A K).spectralSequenceFirstPageXIso
+        Abelian.SpectralObject.coreE₂CohomologicalNat pq i₁ i₂ hi₁ hi₂ n hn).hom.hom y ≫
+      eqToHom (by subst n; subst n'; rfl) =
+    ((t.coyonedaPostnikovSpectralObject A K).spectralSequenceFirstPageXIso
+        Abelian.SpectralObject.coreE₂CohomologicalNat pq i₁ i₂ hi₁ hi₂ n' hn').hom.hom y := by
+  subst n
+  subst n'
+  simp only [eqToHom_refl]
+  erw [Category.comp_id]
+
 /-- The source page isomorphism for the page-two differential
 `(p,q+1) ⟶ (p+2,q)`, with all cutoffs normalized as integer expressions in `q`. -/
 def coyonedaPostnikovD₂SourcePageIso
@@ -63,6 +84,39 @@ def coyonedaPostnikovD₂TargetPageIso
     (by simp) (by simp)
     ((p : ℤ) + q + 2 : ℤ)
     (by simp only [Abelian.SpectralObject.coreE₂CohomologicalNat_deg]; omega)
+
+set_option maxHeartbeats 800000 in
+set_option backward.isDefEq.respectTransparency false in
+/-- At target bidegree `(2,q)`, the ordinary Postnikov page coordinate and the normalized
+page-two-differential target coordinate agree after transport to the common shift `q + 2`. -/
+lemma coyonedaPostnikovE₂PageIso_two_eq_d₂Target_apply
+    (t : TStructure C) (A K : C) [t.IsLE A 0] [t.IsGE K 0] (q : ℕ)
+    (y : ((t.coyonedaPostnikovSpectralSequence A K).page 2).X (2, q)) :
+    (t.coyonedaPostnikovE₂PageIso A K 2 q).hom.hom y ≫
+        eqToHom (show
+          ((t.truncGE (q : ℤ)).obj
+            ((t.truncLT ((q : ℤ) + 1)).obj K))⟦(2 : ℤ) + q⟧ =
+          ((t.truncGE (q : ℤ)).obj
+            ((t.truncLT ((q : ℤ) + 1)).obj K))⟦(q : ℤ) + 2⟧ by
+            rw [show (2 : ℤ) + q = q + 2 by omega]) =
+      (coyonedaPostnikovD₂TargetPageIso t A K 0 q).hom.hom y ≫
+        eqToHom (show
+          ((t.truncGE (q : ℤ)).obj
+            ((t.truncLT ((q : ℤ) + 1)).obj K))⟦(0 : ℤ) + q + 2⟧ =
+          ((t.truncGE (q : ℤ)).obj
+            ((t.truncLT ((q : ℤ) + 1)).obj K))⟦(q : ℤ) + 2⟧ by
+            rw [zero_add]) := by
+  have h := coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+    t A K (2, q) (q : ℤ) (((q : ℤ) + 1 : ℤ) : EInt)
+      (by simp)
+      (by exact congrArg (fun z : ℤ => (z : EInt)) (by omega))
+      ((2 : ℤ) + q) ((0 : ℤ) + q + 2)
+      (by simp only [Abelian.SpectralObject.coreE₂CohomologicalNat_deg]; omega)
+      (by simp only [Abelian.SpectralObject.coreE₂CohomologicalNat_deg]; omega) y
+  dsimp [coyonedaPostnikovE₂PageIso,
+    coyonedaPostnikovD₂TargetPageIso]
+  convert h using 1 <;> simp
+  all_goals rfl
 
 /-- The spectral-object connecting map used by `d₂` is definitionally the homological
 connecting map of the adjacent two-slice truncation triangle. -/

@@ -309,10 +309,14 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.SpectralObject.PostnikovD2` -/
 
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso_two_eq_d₂Target_apply
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso_two_eq_d₂Target_apply
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
