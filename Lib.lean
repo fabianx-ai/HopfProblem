@@ -371,6 +371,8 @@ import Lib.Topology.Sheaves.DependentFunctionSheaf
 import Lib.Topology.Sheaves.Cohomology.GodementEnvelope
 import Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing
 import Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension
+import Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence
+import Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension
 
 /-!
 # Reusable extracted library

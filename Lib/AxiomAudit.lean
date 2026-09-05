@@ -3355,6 +3355,22 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
 #print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
 
+/-! ## `Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence` -/
+
+#check CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj
+#print axioms CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj
+#check CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj_iff
+#print axioms CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj_iff
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension` -/
+
+#check TopCat.Sheaf.equivalenceOfIso
+#print axioms TopCat.Sheaf.equivalenceOfIso
+#check TopCat.Sheaf.unitSheafEquivImageIso
+#print axioms TopCat.Sheaf.unitSheafEquivImageIso
+#check TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso
+#print axioms TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque
