@@ -330,6 +330,7 @@ import Lib.Algebra.Homology.SpectralObject.TotalFiltration
 import Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality
 import Lib.Topology.Sheaves.StalkwiseSectionRange
 import Lib.Algebra.Homology.SpectralObject.StableEndpoint
+import Lib.Algebra.Homology.SpectralObject.FinitePageStabilization
 
 /-!
 # Reusable extracted library

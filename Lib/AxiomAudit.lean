@@ -229,6 +229,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
 #print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
 
+/-! ## `Lib.Algebra.Homology.SpectralObject.FinitePageStabilization` -/
+
+#check CategoryTheory.Abelian.SpectralObject.finiteEIsoStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.finiteEIsoStableE
+#check CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
+
 /-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
 
 #check HomologicalComplex.mapExtendXIso
