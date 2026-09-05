@@ -302,6 +302,15 @@ is an evidence command rather than library content.
 #check DerivedCategory.postnikovSliceIso_hom_naturality
 #print axioms DerivedCategory.postnikovSliceIso_hom_naturality
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.TruncationTriangle` -/
+
+#check DerivedCategory.truncationTriangleIso
+#print axioms DerivedCategory.truncationTriangleIso
+#check DerivedCategory.truncationTriangleIso_hom_hom₂
+#print axioms DerivedCategory.truncationTriangleIso_hom_hom₂
+#check DerivedCategory.truncationTriangleIso_hom_comm₃
+#print axioms DerivedCategory.truncationTriangleIso_hom_comm₃
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
