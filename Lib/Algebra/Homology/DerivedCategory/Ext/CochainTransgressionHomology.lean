@@ -58,6 +58,33 @@ def homologyTwoStepResolution (K : CochainComplex C ℕ) (n : ℕ) :
   mono_ι := inferInstanceAs (Mono (K.homologyι n))
   epi_g := inferInstanceAs (Epi (K.homologyπ (n + 1)))
 
+/-- The canonical four-term exact sequence
+`0 → HⁱK → Kⁱ / BⁱK → ZʲK → HʲK → 0` at any related pair of degrees `i`, `j` in a
+homological complex. -/
+def homologyTwoStepResolutionOfRel
+    {ι : Type*} {c : ComplexShape ι} (K : HomologicalComplex C c)
+    (i j : ι) (hij : c.Rel i j) : TwoStepResolution (C := C) where
+  F := K.homology i
+  complex := ShortComplex.mk
+    (K.opcyclesToCycles i j) (K.homologyπ j)
+    (K.opcyclesToCycles_homologyπ i j)
+  ι := K.homologyι i
+  zero := K.homologyι_opcyclesToCycles i j
+  initial_exact :=
+    (HomologicalComplex.HomologySequence.composableArrows₃_exact
+      K i j hij).exact 0
+  exact :=
+    (HomologicalComplex.HomologySequence.composableArrows₃_exact
+      K i j hij).exact 1
+  mono_ι := inferInstanceAs (Mono (K.homologyι i))
+  epi_g := inferInstanceAs (Epi (K.homologyπ j))
+
+/-- The canonical four-term exact sequence around two consecutive integer degrees. -/
+abbrev homologyTwoStepResolutionInt
+    (K : CochainComplex C ℤ) (q : ℤ) : TwoStepResolution (C := C) :=
+  homologyTwoStepResolutionOfRel K q (q + 1)
+    (ComplexShape.up_mk q (q + 1) (by omega))
+
 /-- The first short exact sequence of `cyclesResolution` maps to the first short exact sequence
 of `homologyTwoStepResolution` through the homology quotient. -/
 def cyclesToHomologyFirst (K : CochainComplex C ℕ) (n : ℕ) :

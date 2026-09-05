@@ -1484,6 +1484,10 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex
 #check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
 #print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionOfRel
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionOfRel
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionInt
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionInt
 #check CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
 #print axioms CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
 #check CategoryTheory.Abelian.ExtTransgression.cyclesFirst_extClass_comp_homologyπ
