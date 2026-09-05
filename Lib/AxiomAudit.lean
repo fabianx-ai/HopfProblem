@@ -311,6 +311,8 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso

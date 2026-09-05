@@ -55,6 +55,33 @@ lemma coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
   simp only [eqToHom_refl]
   erw [Category.comp_id]
 
+/-- Changing all index representatives in a coyoneda Postnikov first-page coordinate only
+inserts the equality transport between the represented morphism objects. -/
+lemma coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
+    (t : TStructure C) (A K : C) [t.IsLE A 0] [t.IsGE K 0]
+    (pq : ℕ × ℕ) (i₁ i₂ i₁' i₂' : EInt)
+    (hi₁ : i₁ = Abelian.SpectralObject.coreE₂CohomologicalNat.i₁ pq)
+    (hi₂ : i₂ = Abelian.SpectralObject.coreE₂CohomologicalNat.i₂ pq)
+    (hi₁' : i₁' = Abelian.SpectralObject.coreE₂CohomologicalNat.i₁ pq)
+    (hi₂' : i₂' = Abelian.SpectralObject.coreE₂CohomologicalNat.i₂ pq)
+    (n n' : ℤ)
+    (hn : n = Abelian.SpectralObject.coreE₂CohomologicalNat.deg pq)
+    (hn' : n' = Abelian.SpectralObject.coreE₂CohomologicalNat.deg pq)
+    (y : ((t.coyonedaPostnikovSpectralSequence A K).page 2).X pq) :
+    ((t.coyonedaPostnikovSpectralObject A K).spectralSequenceFirstPageXIso
+        Abelian.SpectralObject.coreE₂CohomologicalNat pq i₁ i₂ hi₁ hi₂ n hn).hom.hom y ≫
+      eqToHom (by subst i₁; subst i₁'; subst i₂; subst i₂'; subst n; subst n'; rfl) =
+    ((t.coyonedaPostnikovSpectralObject A K).spectralSequenceFirstPageXIso
+        Abelian.SpectralObject.coreE₂CohomologicalNat pq i₁' i₂' hi₁' hi₂' n' hn').hom.hom y := by
+  subst i₁
+  subst i₂
+  subst i₁'
+  subst i₂'
+  subst n
+  subst n'
+  simp only [eqToHom_refl]
+  erw [Category.comp_id]
+
 /-- The source page isomorphism for the page-two differential
 `(p,q+1) ⟶ (p+2,q)`, with all cutoffs normalized as integer expressions in `q`. -/
 def coyonedaPostnikovD₂SourcePageIso
