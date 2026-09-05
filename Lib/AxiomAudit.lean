@@ -355,6 +355,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality` -/
 
+#check DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
+#print axioms DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
 #check DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
 #print axioms DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
 #check DerivedCategory.homologyFunctor_map_injective_singleFunctor
