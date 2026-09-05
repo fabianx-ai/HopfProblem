@@ -363,6 +363,10 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality` -/
 
+#check DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+#print axioms DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+#check DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso_assoc
+#print axioms DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso_assoc
 #check DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
 #print axioms DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
 #check DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom

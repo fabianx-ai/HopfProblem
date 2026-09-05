@@ -9,7 +9,11 @@ module
 public import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 
 /-!
-# Naturality of the normalized single-homology comparison
+# Naturality of normalized derived-homology comparisons
+
+This file records the all-index compatibility between the derived quotient's shift comparison
+and the induced homology shift sequence, then applies the same normalization machinery to
+single objects and Postnikov slices.
 -/
 
 @[expose] public section
@@ -28,6 +32,31 @@ universe w v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
 attribute [local instance] HasDerivedCategory.standard
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Applying derived homology in degree `a` to the quotient's comparison with a shift by `n`,
+then using the induced homology shift isomorphism from `a` to `a'`, agrees with first passing to
+complex homology and then applying its shift isomorphism.  This is the all-index quotient/shift
+coherence square; it introduces no scalar. -/
+@[reassoc]
+lemma homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+    (n a a' : ℤ) (ha' : n + a = a') (K : CochainComplex C ℤ) :
+    (homologyFunctor C a).map ((Q.commShiftIso n).hom.app K) ≫
+        ((homologyFunctor C 0).shiftIso n a a' ha').hom.app (Q.obj K) =
+      (homologyFunctorFactors C a).hom.app (K⟦n⟧) ≫
+        ((HomologicalComplex.homologyFunctor C (.up ℤ) 0).shiftIso
+          n a a' ha').hom.app K ≫
+        (homologyFunctorFactors C a').inv.app K := by
+  have hshift := shiftMap_homologyFunctor_map_Q
+    (C := C) (K := K⟦n⟧) (L := K) (𝟙 (K⟦n⟧)) a a' ha'
+  dsimp [Functor.shiftMap, ShiftedHom.map] at hshift
+  rw [Q.map_id] at hshift
+  simp only [Category.id_comp] at hshift
+  rw [((HomologicalComplex.homologyFunctor C (.up ℤ) 0).shift a).map_id]
+    at hshift
+  simp only [Category.id_comp] at hshift
+  simpa only [Functor.map_comp, Functor.map_id, Category.id_comp,
+    shift_homologyFunctor, CochainComplex.homologyFunctor_shift] using hshift
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency.types false in
