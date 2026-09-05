@@ -6262,3 +6262,63 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f
 #check TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π
 #print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.RefinementHomotopy` -/
+
+#check TopologicalSpace.OpenCover.IndexTuple.prism
+#print axioms TopologicalSpace.OpenCover.IndexTuple.prism
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_zero_zero
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_zero_zero
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_last_last
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_last_last
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_of_le
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_of_le
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_eq_face_prism_castSucc
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_eq_face_prism_castSucc
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_castSucc_of_lt
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_castSucc_of_lt
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.intersection_le
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.intersection_le
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.face
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.prism
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.prism
+#check TopologicalSpace.OpenCover.Refinement.orderedSubordinate
+#print axioms TopologicalSpace.OpenCover.Refinement.orderedSubordinate
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_congr
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_congr
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_comp_map
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_comp_map
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_restrictedAlternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_restrictedAlternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent_comp_map
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent_comp_map
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent_congr
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent_congr
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_zero
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree_π
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_zero
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_zero
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapHomotopy
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapHomotopy
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
