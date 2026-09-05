@@ -313,6 +313,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices_assoc
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices_assoc
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
@@ -1750,6 +1752,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates` -/
 
+#check DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
+#print axioms DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq

@@ -13,7 +13,8 @@ public import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNor
 /-!
 # Source coordinates for the page-two Postnikov differential
 
-This file expresses a source-page element as a morphism into the chain homology object. It also
+This file identifies the ordinary source-page coordinate with the normalized upper endpoint,
+then expresses a source-page element as a morphism into the chain homology object. It also
 computes the source morphism selected by the Postnikov-to-splice triangle comparison: the two
 coordinates differ by exactly the parity scalar introduced by shifting the triangle.
 -/
@@ -27,6 +28,72 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Pretriangulated
   CategoryTheory.Triangulated Opposite
+
+namespace DerivedCategory
+
+universe w' v u
+
+variable {C : Type u} [Category.{v} C] [Abelian C]
+  [HasDerivedCategory.{w'} C]
+
+attribute [local instance] HasDerivedCategory.standard
+
+set_option maxHeartbeats 800000 in
+set_option backward.isDefEq.respectTransparency false in
+/-- At bidegree `(0,q+1)`, the ordinary Postnikov page coordinate and the normalized source
+coordinate for `d₂` agree after transport to the upper object of the shifted adjacent
+Postnikov triangle.  This comparison is unsigned. -/
+lemma coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
+    (K : CochainComplex C ℤ) [K.IsGE 0] (P : C) (q : ℕ)
+    (x : ((TStructure.t.coyonedaPostnikovSpectralSequence
+      ((singleFunctor C 0).obj P) (Q.obj K)).page 2).X (0, q + 1)) :
+    (TStructure.t.coyonedaPostnikovE₂PageIso
+        ((singleFunctor C 0).obj P) (Q.obj K) 0 (q + 1)).hom.hom x ≫
+        eqToHom (show
+          ((TStructure.t.truncGE ((q + 1 : ℕ) : ℤ)).obj
+            ((TStructure.t.truncLT (((q + 1 : ℕ) : ℤ) + 1)).obj (Q.obj K)))
+              ⟦((0 + (q + 1) : ℕ) : ℤ)⟧ =
+            (shiftedPostnikovAdjacentTriangle K (q : ℤ)).obj₃ by
+              dsimp [shiftedPostnikovAdjacentTriangle, Triangle.shiftFunctor]
+              rw [Triangle.mk_obj₃, TStructure.t.triangleω₁δ_obj_obj₃]
+              simp only [zero_add, TStructure.eTruncGE_obj_coe,
+                TStructure.eTruncLT_obj_coe]
+              rw [show (q : ℤ) + 1 + 1 = (q : ℤ) + 2 by omega]) =
+      (TStructure.t.coyonedaPostnikovD₂SourcePageIso
+          ((singleFunctor C 0).obj P) (Q.obj K) 0 q).hom.hom x ≫
+        eqToHom (show
+          ((TStructure.t.truncGE ((q : ℤ) + 1)).obj
+            ((TStructure.t.truncLT ((q : ℤ) + 2)).obj (Q.obj K)))
+              ⟦(0 : ℤ) + q + 1⟧ =
+            (shiftedPostnikovAdjacentTriangle K (q : ℤ)).obj₃ by
+              dsimp [shiftedPostnikovAdjacentTriangle, Triangle.shiftFunctor]
+              rw [Triangle.mk_obj₃, TStructure.t.triangleω₁δ_obj_obj₃]
+              simp) := by
+  have h := TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices_assoc
+    TStructure.t ((singleFunctor C 0).obj P) (Q.obj K) (0, q + 1)
+      (((q : ℤ) + 1 : ℤ) : EInt)
+      ((((q : ℤ) + 1 + 1 : ℤ)) : EInt)
+      (((q : ℤ) + 1 : ℤ) : EInt)
+      (((q : ℤ) + 2 : ℤ) : EInt)
+      (by simp) (by exact congrArg (fun z : ℤ => (z : EInt)) (by omega)) (by simp)
+      (by exact congrArg (fun z : ℤ => (z : EInt)) (by omega))
+      ((0 : ℤ) + ((q : ℤ) + 1)) ((0 : ℤ) + q + 1)
+      (by simp only [Abelian.SpectralObject.coreE₂CohomologicalNat_deg]; omega)
+      (by simp only [Abelian.SpectralObject.coreE₂CohomologicalNat_deg]; omega) x
+      (eqToHom (show
+        ((TStructure.t.truncGE ((q : ℤ) + 1)).obj
+          ((TStructure.t.truncLT ((q : ℤ) + 2)).obj (Q.obj K)))
+            ⟦(0 : ℤ) + q + 1⟧ =
+          (shiftedPostnikovAdjacentTriangle K (q : ℤ)).obj₃ by
+            dsimp [shiftedPostnikovAdjacentTriangle, Triangle.shiftFunctor]
+            rw [Triangle.mk_obj₃, TStructure.t.triangleω₁δ_obj_obj₃]
+            simp))
+  dsimp [TStructure.coyonedaPostnikovE₂PageIso,
+    TStructure.coyonedaPostnikovD₂SourcePageIso]
+  convert h using 1 <;> simp
+  all_goals congr 2
+
+end DerivedCategory
 
 namespace CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 

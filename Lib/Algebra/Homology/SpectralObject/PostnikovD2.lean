@@ -57,6 +57,7 @@ lemma coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
 
 /-- Changing all index representatives in a coyoneda Postnikov first-page coordinate only
 inserts the equality transport between the represented morphism objects. -/
+@[reassoc]
 lemma coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
     (t : TStructure C) (A K : C) [t.IsLE A 0] [t.IsGE K 0]
     (pq : ℕ × ℕ) (i₁ i₂ i₁' i₂' : EInt)
