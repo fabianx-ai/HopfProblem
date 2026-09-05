@@ -457,6 +457,12 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroOne_twoZero_of_isZero_pageFour
 #check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
 
 /-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
 
