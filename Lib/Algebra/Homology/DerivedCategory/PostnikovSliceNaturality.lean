@@ -208,6 +208,26 @@ theorem homologyFunctor_map_isoSingleFunctorHomology_hom (K : DerivedCategory C)
   change hY.hom ≫ hY.inv = 𝟙 _
   simp
 
+/-- The normalized Postnikov-slice comparison induces exactly the canonical identification of
+its degree-`n` homology with the degree-`n` homology of the original object. -/
+@[reassoc]
+theorem homologyFunctor_map_postnikovSliceIso_hom (K : DerivedCategory C) (n : ℤ) :
+    (homologyFunctor C n).map (postnikovSliceIso K n).hom ≫
+        (singleFunctorCompHomologyFunctorIso C n).hom.app
+          ((homologyFunctor C n).obj K) =
+      (postnikovSliceHomologyIso K n).hom := by
+  dsimp only [postnikovSliceIso]
+  simp only [Iso.trans_hom, Functor.map_comp, Functor.mapIso_hom,
+    Category.assoc]
+  rw [show
+    (homologyFunctor C n).map
+        ((singleFunctor C n).map (postnikovSliceHomologyIso K n).hom) =
+      (singleFunctor C n ⋙ homologyFunctor C n).map
+        (postnikovSliceHomologyIso K n).hom by rfl]
+  rw [(singleFunctorCompHomologyFunctorIso C n).hom.naturality]
+  simp only [Functor.id_map]
+  rw [homologyFunctor_map_isoSingleFunctorHomology_hom_assoc]
+
 /-- Degree-`n` homology is faithful on the image of the degree-`n` single functor. -/
 theorem homologyFunctor_map_injective_singleFunctor (A B : C) (n : ℤ) :
     Function.Injective (fun f : (singleFunctor C n).obj A ⟶ (singleFunctor C n).obj B ↦
