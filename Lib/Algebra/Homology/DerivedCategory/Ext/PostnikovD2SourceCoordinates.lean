@@ -14,9 +14,10 @@ public import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNor
 # Source coordinates for the page-two Postnikov differential
 
 This file identifies the ordinary source-page coordinate with the normalized upper endpoint,
-then expresses a source-page element as a morphism into the chain homology object. It also
-computes the source morphism selected by the Postnikov-to-splice triangle comparison: the two
-coordinates differ by exactly the parity scalar introduced by shifting the triangle.
+including the equality transports hidden by the adjacent-triangle presentation, then expresses
+a source-page element as a morphism into the chain homology object. It also computes the source
+morphism selected by the Postnikov-to-splice triangle comparison: the two coordinates differ by
+exactly the parity scalar introduced by shifting the triangle.
 -/
 
 @[expose] public section
@@ -37,6 +38,112 @@ variable {C : Type u} [Category.{v} C] [Abelian C]
   [HasDerivedCategory.{w'} C]
 
 attribute [local instance] HasDerivedCategory.standard
+
+private lemma castIso_hom_source {D : Type*} [Category D]
+    {X Y Z : D} (e : Y ≅ Z) (h : X = Y) :
+    (cast (congrArg (fun T : D ↦ T ≅ Z) h.symm) e).hom =
+      eqToHom h ≫ e.hom := by
+  subst Y
+  simp
+
+@[reassoc]
+private lemma eqToHom_comp_three_eq_id {D : Type*} [Category D]
+    {W X Y : D} (h₁ : W = X) (h₂ : X = Y) (h₃ : Y = W) :
+    eqToHom h₁ ≫ eqToHom h₂ ≫ eqToHom h₃ = 𝟙 W := by
+  subst X
+  subst Y
+  simp
+
+set_option backward.isDefEq.respectTransparency true in
+private lemma postnikovUpperEndpointIso_hom_explicit
+    (K : CochainComplex C ℤ) (q : ℤ) :
+    (postnikovUpperEndpointIso K q).hom =
+      eqToHom (show
+        ((TStructure.t.triangleω₁δ
+          (q : EInt) ((q + 1 : ℤ) : EInt) ((q + 2 : ℤ) : EInt)
+          (by simp) (by simp)).obj (Q.obj K)).obj₃ =
+            (TStructure.t.truncGE (q + 1)).obj
+              ((TStructure.t.truncLT (q + 2)).obj (Q.obj K)) by
+          rw [TStructure.t.triangleω₁δ_obj_obj₃]
+          simp only [TStructure.eTruncGE_obj_coe, TStructure.eTruncLT_obj_coe]) ≫
+        (TStructure.t.truncGE (q + 1)).map
+          (eqToHom (show
+            (TStructure.t.truncLT (q + 2)).obj (Q.obj K) =
+              (TStructure.t.truncLT ((q + 1) + 1)).obj (Q.obj K) by
+                rw [show q + 1 + 1 = q + 2 by omega])) ≫
+        (postnikovSliceIso (Q.obj K) (q + 1)).hom := by
+  let h :
+      ((TStructure.t.triangleω₁δ
+        (q : EInt) ((q + 1 : ℤ) : EInt) ((q + 2 : ℤ) : EInt)
+        (by simp) (by simp)).obj (Q.obj K)).obj₃ =
+          (TStructure.t.truncGE (q + 1)).obj
+            ((TStructure.t.truncLT (q + 2)).obj (Q.obj K)) := by
+    rw [TStructure.t.triangleω₁δ_obj_obj₃]
+    simp only [TStructure.eTruncGE_obj_coe, TStructure.eTruncLT_obj_coe]
+  change
+    (cast (congrArg (fun T : DerivedCategory C ↦ T ≅
+        (singleFunctor C (q + 1)).obj
+          ((homologyFunctor C (q + 1)).obj (Q.obj K))) h.symm)
+      ((TStructure.t.truncGE (q + 1)).mapIso
+          (eqToIso (show
+            (TStructure.t.truncLT (q + 2)).obj (Q.obj K) =
+              (TStructure.t.truncLT ((q + 1) + 1)).obj (Q.obj K) by
+                rw [show q + 1 + 1 = q + 2 by omega])) ≪≫
+        postnikovSliceIso (Q.obj K) (q + 1))).hom = _
+  rw [castIso_hom_source]
+  simp only [Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom]
+  all_goals exact h
+
+set_option backward.isDefEq.respectTransparency true in
+private lemma postnikovSourceShiftedSliceIso_hom_eq
+    (K : CochainComplex C ℤ) (q : ℤ) :
+    (shiftFunctor (DerivedCategory C) (q + 1)).map
+        (postnikovSliceIso (Q.obj K) (q + 1)).hom ≫
+      ((singleFunctors C).shiftIso (q + 1) 0 (q + 1) (by omega)).hom.app
+        ((homologyFunctor C (q + 1)).obj (Q.obj K)) =
+    eqToHom (show
+      ((TStructure.t.truncGE (q + 1)).obj
+        ((TStructure.t.truncLT ((q + 1) + 1)).obj (Q.obj K)))⟦q + 1⟧ =
+        (shiftedPostnikovAdjacentTriangle K q).obj₃ by
+          dsimp [shiftedPostnikovAdjacentTriangle, Triangle.shiftFunctor]
+          rw [Triangle.mk_obj₃, TStructure.t.triangleω₁δ_obj_obj₃]
+          simp only [TStructure.eTruncGE_obj_coe, TStructure.eTruncLT_obj_coe]
+          rw [show q + 1 + 1 = q + 2 by omega]) ≫
+      (shiftedPostnikovUpperEndpointIso K q).hom := by
+  have hu : (shiftedPostnikovUpperEndpointIso K q).hom =
+      (shiftFunctor (DerivedCategory C) (q + 1)).map
+          (postnikovUpperEndpointIso K q).hom ≫
+        ((singleFunctors C).shiftIso (q + 1) 0 (q + 1) (by omega)).hom.app
+          ((homologyFunctor C (q + 1)).obj (Q.obj K)) := by
+    rfl
+  rw [hu]
+  rw [postnikovUpperEndpointIso_hom_explicit]
+  simp only [Functor.map_comp, eqToHom_map, Category.assoc]
+  erw [eqToHom_comp_three_eq_id_assoc]
+
+set_option backward.isDefEq.respectTransparency true in
+/-- Shifting the normalized degree-`q+1` Postnikov slice by any expression equal to `q+1`
+agrees with the normalized upper endpoint of the shifted adjacent Postnikov triangle.  The
+displayed equality morphism accounts for both cutoff and triangle-object transports; no scalar
+or sign is introduced. -/
+lemma postnikovSourceShiftedSliceIso_hom_eq_of_shift
+    (K : CochainComplex C ℤ) (q n : ℤ) (hn : n = q + 1) :
+    (shiftFunctor (DerivedCategory C) n).map
+        (postnikovSliceIso (Q.obj K) (q + 1)).hom ≫
+      ((singleFunctors C).shiftIso n 0 (q + 1) (by omega)).hom.app
+        ((homologyFunctor C (q + 1)).obj (Q.obj K)) =
+    eqToHom (show
+      ((TStructure.t.truncGE (q + 1)).obj
+        ((TStructure.t.truncLT ((q + 1) + 1)).obj (Q.obj K)))⟦n⟧ =
+        (shiftedPostnikovAdjacentTriangle K q).obj₃ by
+          subst n
+          dsimp [shiftedPostnikovAdjacentTriangle, Triangle.shiftFunctor]
+          rw [Triangle.mk_obj₃, TStructure.t.triangleω₁δ_obj_obj₃]
+          simp only [TStructure.eTruncGE_obj_coe, TStructure.eTruncLT_obj_coe]
+          rw [show q + 1 + 1 = q + 2 by omega]) ≫
+      (shiftedPostnikovUpperEndpointIso K q).hom := by
+  subst n
+  exact postnikovSourceShiftedSliceIso_hom_eq K q
 
 set_option maxHeartbeats 800000 in
 set_option backward.isDefEq.respectTransparency false in

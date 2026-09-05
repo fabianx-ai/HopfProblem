@@ -1764,6 +1764,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates` -/
 
+#check DerivedCategory.postnikovSourceShiftedSliceIso_hom_eq_of_shift
+#print axioms DerivedCategory.postnikovSourceShiftedSliceIso_hom_eq_of_shift
 #check DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
 #print axioms DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
