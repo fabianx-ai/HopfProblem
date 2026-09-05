@@ -156,6 +156,22 @@ def resolutionTransgressionAddOfResolution {F : AbelianSheaf X}
     E₂ f F 0 (n + 1) →+ E₂ f F 2 n :=
   (resolutionTransgressionMorphismOfResolution f I n).hom
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Elementwise form of `resolutionTransgressionMorphismOfResolution_eq_connectingTwo`: the
+resolution transgression is the native positive two-step homology class between the maintained
+degree-zero and degree-two coordinates. -/
+lemma resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
+    {F : AbelianSheaf X} (I : InjectiveResolution F) (n : ℕ)
+    (x : E₂ f F 0 (n + 1)) :
+    resolutionTransgressionAddOfResolution f I n x =
+      (resolutionCohomologyIso f I n 2).hom.hom
+        ((ExtTransgression.homologyTwoStepResolution
+          (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+            (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x))) := by
+  change (resolutionTransgressionMorphismOfResolution f I n).hom x = _
+  rw [resolutionTransgressionMorphismOfResolution_eq_connectingTwo]
+  rfl
+
 /-- The resolution transgression as an additive homomorphism. -/
 def resolutionTransgressionAdd (F : AbelianSheaf X) (n : ℕ) :
     E₂ f F 0 (n + 1) →+ E₂ f F 2 n :=

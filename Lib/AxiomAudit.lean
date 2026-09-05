@@ -1866,6 +1866,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
