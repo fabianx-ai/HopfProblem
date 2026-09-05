@@ -149,18 +149,18 @@ end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 
 namespace CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 
-universe v u
+universe w' v u
 
 variable {C : Type u} [Category.{v} C] [Abelian C]
-  [HasDerivedCategory.{v} C] [HasExt.{v} C]
+  [HasDerivedCategory.{w'} C] [HasExt.{v} C]
 
 set_option backward.isDefEq.respectTransparency false in
 /-- In `Ext` coordinates, the explicitly transported and signed page-two differential is the
 connecting class of the canonical adjacent two-step homology resolution.
 
-This is the `Ext`-valued form of `coyonedaPostnikovE₂_d₂_splice_apply`.  The universe of the
-derived category is specialized to the hom universe of `C`, matching the universe-polymorphic
-level at which `TwoStepResolution.connectingTwo` is currently defined. -/
+This is the `Ext`-valued form of `coyonedaPostnikovE₂_d₂_splice_apply`.  The derived-category
+universe is independent of the hom universe; only `TwoStepResolution.connectingTwo` remains at
+the hom universe of `C`. -/
 lemma coyonedaPostnikovE₂_d₂_connectingTwo_apply
     (K : CochainComplex C ℤ) [K.IsGE 0] (P : C) (q : ℕ)
     (x : ((DerivedCategory.TStructure.t.coyonedaPostnikovSpectralSequence
