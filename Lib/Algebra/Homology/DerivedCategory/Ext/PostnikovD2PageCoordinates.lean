@@ -16,7 +16,9 @@ public import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceEndpoints
 This file identifies the lower Postnikov slice, shifted to the target degree of `d₂`, with the
 degree-two shift of its homology object.  It also packages the resulting target-page element as
 an `Ext²` class.  The comparison with the lower endpoint of the shifted adjacent Postnikov
-triangle keeps both shift associators visible and introduces no sign.
+triangle keeps both shift associators visible and introduces no sign.  Two generic coherence
+lemmas move a morphism through the final pair of shift adapters and cancel an intervening
+single-object shift isomorphism.
 -/
 
 @[expose] public section
@@ -238,6 +240,66 @@ lemma postnikovTargetExtIso_hom_eq_shiftedLowerEndpoint
     rfl
   rw [hlower]
   simpa only [Functor.map_comp, Category.assoc] using hexpanded
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A morphism between the lower homology objects moves through the two shift adapters which
+identify a once-shifted degree-`-1` single object with a twice-shifted degree-zero single
+object.  This is an unsigned naturality identity. -/
+@[reassoc]
+lemma lowerTargetShift_naturality {A B : C} (u : A ⟶ B) :
+    ((((DerivedCategory.singleFunctors C).shiftIso
+          1 (-1) 0 (by omega)).inv.app A)⟦(1 : ℤ)⟧') ≫
+        (shiftFunctorAdd' (DerivedCategory C) 1 1 2 rfl).inv.app
+          ((DerivedCategory.singleFunctor C 0).obj A) ≫
+        ((DerivedCategory.singleFunctor C 0).map u)⟦(2 : ℤ)⟧' =
+      ((DerivedCategory.singleFunctor C (-1)).map u)⟦(1 : ℤ)⟧' ≫
+        ((((DerivedCategory.singleFunctors C).shiftIso
+          1 (-1) 0 (by omega)).inv.app B)⟦(1 : ℤ)⟧') ≫
+        (shiftFunctorAdd' (DerivedCategory C) 1 1 2 rfl).inv.app
+          ((DerivedCategory.singleFunctor C 0).obj B) := by
+  rw [← (shiftFunctorAdd' (DerivedCategory C)
+    (1 : ℤ) 1 2 rfl).inv.naturality
+      ((DerivedCategory.singleFunctor C 0).map u)]
+  simp only [Functor.comp_map]
+  simp only [← Category.assoc]
+  rw [cancel_mono]
+  simp only [← Functor.map_comp]
+  exact congrArg (fun z ↦ (shiftFunctor (DerivedCategory C) (1 : ℤ)).map z)
+    (((DerivedCategory.singleFunctors C).shiftIso
+      1 (-1) 0 (by omega)).inv.naturality u).symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- If a lower endpoint factors through the degree-`-1` single-object shift adapter, shifting
+once more and passing to the degree-two target cancels that adapter.  This packages the exact
+unsigned coherence calculation used at the target of a Postnikov `d₂`. -/
+lemma lowerTargetShift_of_fac
+    {X : DerivedCategory C} {A B : C}
+    (r : X ⟶ ((DerivedCategory.singleFunctor C 0).obj B)⟦(1 : ℤ)⟧)
+    (l : X ⟶ (DerivedCategory.singleFunctor C (-1)).obj A)
+    (u : A ⟶ B)
+    (h : r ≫ ((DerivedCategory.singleFunctors C).shiftIso
+      1 (-1) 0 (by omega)).hom.app B =
+        l ≫ (DerivedCategory.singleFunctor C (-1)).map u) :
+    l⟦(1 : ℤ)⟧' ≫
+          ((((DerivedCategory.singleFunctors C).shiftIso
+            1 (-1) 0 (by omega)).inv.app A)⟦(1 : ℤ)⟧') ≫
+          (shiftFunctorAdd' (DerivedCategory C) 1 1 2 rfl).inv.app
+            ((DerivedCategory.singleFunctor C 0).obj A) ≫
+          ((DerivedCategory.singleFunctor C 0).map u)⟦(2 : ℤ)⟧' =
+      r⟦(1 : ℤ)⟧' ≫
+        (shiftFunctorAdd' (DerivedCategory C) 1 1 2 rfl).inv.app
+          ((DerivedCategory.singleFunctor C 0).obj B) := by
+  rw [lowerTargetShift_naturality u]
+  have hshift := congrArg
+    (fun z ↦ (shiftFunctor (DerivedCategory C) (1 : ℤ)).map z) h
+  simp only [Functor.map_comp] at hshift
+  rw [← reassoc_of% hshift]
+  let e := (shiftFunctor (DerivedCategory C) (1 : ℤ)).mapIso
+    (((DerivedCategory.singleFunctors C).shiftIso
+      1 (-1) 0 (by omega)).app B)
+  change (shiftFunctor (DerivedCategory C) (1 : ℤ)).map r ≫
+      e.hom ≫ e.inv ≫ _ = _
+  rw [e.hom_inv_id_assoc]
 
 /-- An element at bidegree `(2,q)` on page two, expressed as the corresponding normalized
 `Ext²` class of the degree-`q` homology object. -/
