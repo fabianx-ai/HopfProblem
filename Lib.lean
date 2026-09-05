@@ -342,6 +342,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice
 import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSlice
 import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceShift
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovTwoSliceSplice
+import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceEndpoints
 
 /-!
 # Reusable extracted library
