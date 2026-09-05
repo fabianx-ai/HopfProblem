@@ -1501,6 +1501,13 @@ is an evidence command rather than library content.
 #check contMDiffOn_of_contMDiff_restriction
 #print axioms contMDiffOn_of_contMDiff_restriction
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.DegreeZero` -/
+
+#check CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀
+#print axioms CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀
+#check CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀_homAddEquiv_symm
+#print axioms CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀_homAddEquiv_symm
+
 -- CochainTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
