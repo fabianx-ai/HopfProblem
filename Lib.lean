@@ -348,6 +348,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Splice
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2
 import Lib.Algebra.Homology.Embedding.ExtendHomologySequence
 import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepResolutionNaturality
+import Lib.Algebra.Homology.DerivedCategory.Ext.HomologyTwoStepResolutionExtend
 
 /-!
 # Reusable extracted library

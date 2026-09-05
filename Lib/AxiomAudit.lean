@@ -1601,6 +1601,17 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
 #print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.HomologyTwoStepResolutionExtend` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendHom
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtend_connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtend_connectingTwo
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNatHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNatHom
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNat_connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNat_connectingTwo
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle
