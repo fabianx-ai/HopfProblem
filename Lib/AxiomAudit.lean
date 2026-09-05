@@ -6177,3 +6177,25 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_le_face
 #check TopologicalSpace.OpenCover.OrderedSimplex.faceHom
 #print axioms TopologicalSpace.OpenCover.OrderedSimplex.faceHom
+#check TopologicalSpace.OpenCover.OrderedCech.object
+#print axioms TopologicalSpace.OpenCover.OrderedCech.object
+#check TopologicalSpace.OpenCover.OrderedCech.π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.π
+#check TopologicalSpace.OpenCover.OrderedCech.coface
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface
+#check TopologicalSpace.OpenCover.OrderedCech.coface_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface_π
+#check TopologicalSpace.OpenCover.OrderedCech.coface_comp_coface
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface_comp_coface
+#check TopologicalSpace.OpenCover.OrderedCech.differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential
+#check TopologicalSpace.OpenCover.OrderedCech.differential_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_π
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.complex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex
+#check TopologicalSpace.OpenCover.OrderedCech.complex_X
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex_X
+#check TopologicalSpace.OpenCover.OrderedCech.complex_d
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex_d
