@@ -89,6 +89,22 @@ lemma postnikovTargetSingleShiftIso_naturality
     2 (-2) 0 (by omega)).inv.naturality u]
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The normalized target isomorphism can be entered from any propositionally equal expression
+for the shift `q + 2`; the only extra map is the explicit equality transport. -/
+lemma postnikovTargetExtIso_hom_eq_of_shift
+    (K : CochainComplex C ℤ) (q n : ℤ) (hn : n = q + 2) :
+    (shiftFunctor (DerivedCategory C) n).map
+          (DerivedCategory.postnikovSliceIso (DerivedCategory.Q.obj K) q).hom ≫
+        ((DerivedCategory.singleFunctors C).shiftIso n (-2) q (by omega)).hom.app
+          ((DerivedCategory.homologyFunctor C q).obj (DerivedCategory.Q.obj K)) ≫
+        ((DerivedCategory.singleFunctors C).shiftIso 2 (-2) 0 (by omega)).inv.app
+          ((DerivedCategory.homologyFunctor C q).obj (DerivedCategory.Q.obj K)) =
+      eqToHom (by subst n; rfl) ≫ (postnikovTargetExtIso K q).hom := by
+  subst n
+  simp only [postnikovTargetExtIso, Iso.trans_hom, Functor.mapIso_hom,
+    Iso.app_hom, Iso.symm_hom, Iso.app_inv, eqToHom_refl, Category.id_comp]
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The target Ext coordinate factors through the normalized lower endpoint of the shifted
 adjacent Postnikov triangle.  The remaining maps merely reassociate its shift by one with the
 second shift used by `Ext²`; in particular, this comparison contributes no scalar. -/
