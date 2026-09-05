@@ -671,6 +671,12 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroTwo_twoOne_of_isZero_pageFour
 #check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive
 #check CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneOneIsoPageThree
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneOneIsoPageThree
 #check CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneOne_of_isZero_pageThree
@@ -685,8 +691,6 @@ is an evidence command rather than library content.
 #check CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneTwo_of_isZero_pageFour
 #print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneTwo_of_isZero_pageFour
 
-#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
-#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
 /-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
 
 #check ThreeColumnSpectralSequence.Raw

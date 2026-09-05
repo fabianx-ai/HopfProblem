@@ -20,6 +20,11 @@ The same local argument treats `(0,2) → (2,1)` once only the two possible off-
 `E₂^(3,0)` and `E₂^(4,0)` vanish.  Thus an application may use concrete cohomology calculations
 at those two groups instead of proving a global column-support theorem.
 
+For the third arrow `(0,3) → (2,2)`, the same method records both halves separately.  Vanishing
+of the two later source escape routes makes it monic; vanishing of the two target escape routes
+makes it epic.  Thus sufficiently sparse local data plus the actual abutment can manufacture the
+target coordinate instead of requiring it as an independent calculation.
+
 Finally, the same bookkeeping identifies `E₂^(1,1)` with `E₃^(1,1)` as soon as its sole
 outgoing target `E₂^(3,0)` vanishes.  This is another local statement and does not assume that
 all columns beyond two vanish.
@@ -328,6 +333,81 @@ theorem mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
     omega
   rw [← (P.page 2).dFrom_comp_xNextIso hrel]
   infer_instance
+
+private theorem pageThree_fiveZero_isZero_of_isZero_pageTwo
+    (h : IsZero ((P.page 2).X (5, 0))) :
+    IsZero ((P.page 3).X (5, 0)) := by
+  have hhomology : IsZero ((P.page 2).homology (5, 0)) :=
+    ((P.page 2).sc (5, 0)).isZero_homology_of_isZero_X₂ h
+  exact IsZero.of_iso hhomology (P.iso 2 3 (5, 0) (by omega)).symm
+
+private noncomputable def pageThreeTwoTwoIsoPageFour
+    (h : IsZero ((P.page 2).X (5, 0))) :
+    (P.page 3).X (2, 2) ≅ (P.page 4).X (2, 2) := by
+  have hTo : (P.page 3).dTo (2, 2) = 0 := by
+    apply (P.page 3).dTo_eq_zero
+    intro hrel
+    rw [ComplexShape.spectralSequenceNat_rel_iff] at hrel
+    omega
+  have hFrom : (P.page 3).dFrom (2, 2) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨3, 1 - 3⟩).Rel (2, 2) (5, 0) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    have htarget : IsZero ((P.page 3).X (5, 0)) :=
+      pageThree_fiveZero_isZero_of_isZero_pageTwo P h
+    rw [(P.page 3).dFrom_eq hrel,
+      htarget.eq_of_tgt ((P.page 3).d (2, 2) (5, 0)) 0, zero_comp]
+  exact
+    ((ShortComplex.HomologyData.ofZeros ((P.page 3).sc (2, 2)) hTo hFrom).left.homologyIso).symm ≪≫
+      P.iso 3 4 (2, 2) (by omega)
+
+/-- Page-four vanishing at `(2,2)`, together with vanishing of its only page-two and page-three
+outgoing targets `(4,1)` and `(5,0)`, makes the third lower page-two differential epic.
+Only these local groups are required; no global column bound is assumed. -/
+theorem epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+    (hfourOne : IsZero ((P.page 2).X (4, 1)))
+    (hfiveZero : IsZero ((P.page 2).X (5, 0)))
+    (htwoTwo : IsZero ((P.page 4).X (2, 2))) :
+    Epi ((P.page 2).d (0, 3) (2, 2)) := by
+  have hpage3 : IsZero ((P.page 3).X (2, 2)) :=
+    IsZero.of_iso htwoTwo (pageThreeTwoTwoIsoPageFour P hfiveZero)
+  have hhomology : IsZero ((P.page 2).homology (2, 2)) :=
+    IsZero.of_iso hpage3 (P.iso 2 3 (2, 2) (by omega))
+  have hexact : (P.page 2).ExactAt (2, 2) :=
+    ((P.page 2).exactAt_iff_isZero_homology (2, 2)).2 hhomology
+  have hFrom : (P.page 2).dFrom (2, 2) = 0 := by
+    have hrel :
+        (ComplexShape.spectralSequenceNat ⟨2, 1 - 2⟩).Rel (2, 2) (4, 1) := by
+      rw [ComplexShape.spectralSequenceNat_rel_iff]
+      omega
+    rw [(P.page 2).dFrom_eq hrel,
+      hfourOne.eq_of_tgt ((P.page 2).d (2, 2) (4, 1)) 0, zero_comp]
+  have : Epi ((P.page 2).dTo (2, 2)) := hexact.epi_f hFrom
+  have hrel :
+      (ComplexShape.spectralSequenceNat ⟨2, 1 - 2⟩).Rel (0, 3) (2, 2) := by
+    rw [ComplexShape.spectralSequenceNat_rel_iff]
+    omega
+  rw [← (P.page 2).xPrevIso_comp_dTo hrel]
+  infer_instance
+
+/-- The six local source, target, and endpoint vanishings make the third lower page-two
+differential an isomorphism. -/
+theorem isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive
+    (hthreeOne : IsZero ((P.page 2).X (3, 1)))
+    (hfourZero : IsZero ((P.page 2).X (4, 0)))
+    (hfourOne : IsZero ((P.page 2).X (4, 1)))
+    (hfiveZero : IsZero ((P.page 2).X (5, 0)))
+    (hzeroThree : IsZero ((P.page 5).X (0, 3)))
+    (htwoTwo : IsZero ((P.page 4).X (2, 2))) :
+    IsIso ((P.page 2).d (0, 3) (2, 2)) := by
+  let _ : Mono ((P.page 2).d (0, 3) (2, 2)) :=
+    mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+      P hthreeOne hfourZero hzeroThree
+  let _ : Epi ((P.page 2).d (0, 3) (2, 2)) :=
+    epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+      P hfourOne hfiveZero htwoTwo
+  exact isIso_of_mono_of_epi _
 
 /-- If the sole outgoing target `E₂^(3,0)` vanishes, the middle term `E₂^(1,1)` is already
 unchanged on page three.  No global support condition is needed. -/
