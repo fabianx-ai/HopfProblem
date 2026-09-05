@@ -22,6 +22,7 @@ a surjective local homeomorphism.
 noncomputable section
 
 open Filter Function Set TopologicalSpace Topology
+open scoped ContinuousMap
 
 variable {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
 
@@ -61,6 +62,14 @@ theorem locallyContractibleSpace_of_retract
     exact ContinuousMap.congr_fun hri y.1
   rw [← hcomp]
   exact hnull
+
+/-- Namespaced spelling of `locallyContractibleSpace_of_retract`. -/
+theorem LocallyContractibleSpace.of_retract
+    (hY : LocallyContractibleSpace Y)
+    (i : C(X, Y)) (r : C(Y, X))
+    (hri : r.comp i = ContinuousMap.id X) :
+    LocallyContractibleSpace X :=
+  locallyContractibleSpace_of_retract i r hri hY
 
 /-- A space is strongly locally contractible when every point has an open neighborhood which is
 strongly locally contractible in its subspace topology. -/

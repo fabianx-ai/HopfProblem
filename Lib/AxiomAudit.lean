@@ -2536,6 +2536,8 @@ is an evidence command rather than library content.
 
 #check locallyContractibleSpace_of_retract
 #print axioms locallyContractibleSpace_of_retract
+#check LocallyContractibleSpace.of_retract
+#print axioms LocallyContractibleSpace.of_retract
 #check StronglyLocallyContractibleSpace.of_open_neighborhoods
 #print axioms StronglyLocallyContractibleSpace.of_open_neighborhoods
 #check IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective

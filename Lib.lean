@@ -345,4 +345,6 @@ or `Solution`; proof-specific data and adapters live downstream.
 The exported modules contain reusable algebraic results formalized from V10 Section 6 together
 with proof-independent mathematics extracted from the checked Hopf development. Results which
 still lack a Lean proof are documented as gaps rather than represented by placeholders.
+In particular, the topology layer records that classical local contractibility descends along a
+continuous retraction.
 -/
