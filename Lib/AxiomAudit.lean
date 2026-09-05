@@ -2789,6 +2789,21 @@ is an evidence command rather than library content.
 #check PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
 #print axioms PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Trivialization` -/
+
+#check PrincipalCoverLocalSystem.sectionCoordinate
+#print axioms PrincipalCoverLocalSystem.sectionCoordinate
+#check PrincipalCoverLocalSystem.sectionCoordinate_isLocallyConstant
+#print axioms PrincipalCoverLocalSystem.sectionCoordinate_isLocallyConstant
+#check PrincipalCoverLocalSystem.constantComparisonData
+#print axioms PrincipalCoverLocalSystem.constantComparisonData
+#check PrincipalCoverLocalSystem.constantSheafHomOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafHomOfSection
+#check PrincipalCoverLocalSystem.constantSheafHomOfSection_isIso
+#print axioms PrincipalCoverLocalSystem.constantSheafHomOfSection_isIso
+#check PrincipalCoverLocalSystem.constantSheafIsoOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafIsoOfSection
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
 #check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits

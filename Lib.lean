@@ -373,6 +373,7 @@ import Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing
 import Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension
 import Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence
 import Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Trivialization
 
 /-!
 # Reusable extracted library
