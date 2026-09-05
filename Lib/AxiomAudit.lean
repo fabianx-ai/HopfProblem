@@ -404,6 +404,13 @@ is an evidence command rather than library content.
 #check CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
 #print axioms CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSlice` -/
+
+#check DerivedCategory.postnikovTwoSliceIso
+#print axioms DerivedCategory.postnikovTwoSliceIso
+#check DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle
+#print axioms DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk
