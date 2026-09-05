@@ -337,6 +337,7 @@ import Lib.Algebra.Homology.SpectralObject.PostnikovD2
 import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology
 import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice
 import Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone
+import Lib.Algebra.Homology.DerivedCategory.AdjacentTwoSlice
 
 /-!
 # Reusable extracted library

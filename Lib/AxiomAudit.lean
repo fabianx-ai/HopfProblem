@@ -369,6 +369,41 @@ is an evidence command rather than library content.
 #check DerivedCategory.concreteTruncationδ_eq
 #print axioms DerivedCategory.concreteTruncationδ_eq
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.AdjacentTwoSlice` -/
+
+#check CochainComplex.πTruncGE_f_boundary_generic
+#print axioms CochainComplex.πTruncGE_f_boundary_generic
+#check CochainComplex.πTruncGE_f_interior_generic
+#print axioms CochainComplex.πTruncGE_f_interior_generic
+#check CochainComplex.πTruncGE_f_boundary
+#print axioms CochainComplex.πTruncGE_f_boundary
+#check CochainComplex.πTruncGE_f_interior
+#print axioms CochainComplex.πTruncGE_f_interior
+#check CochainComplex.truncGE_d_fromOpcycles
+#print axioms CochainComplex.truncGE_d_fromOpcycles
+#check CochainComplex.ιTruncLE_f_boundary
+#print axioms CochainComplex.ιTruncLE_f_boundary
+#check CochainComplex.adjacentTwoSlice
+#print axioms CochainComplex.adjacentTwoSlice
+#check CochainComplex.adjacentTwoSlice_d_eq
+#print axioms CochainComplex.adjacentTwoSlice_d_eq
+#check CochainComplex.isIso_opcyclesMap_ιTruncLE
+#print axioms CochainComplex.isIso_opcyclesMap_ιTruncLE
+#check CochainComplex.shiftedAdjacentTwoSlice
+#print axioms CochainComplex.shiftedAdjacentTwoSlice
+#check CochainComplex.shiftedAdjacentTwoSlice_isZero_X
+#print axioms CochainComplex.shiftedAdjacentTwoSlice_isZero_X
+#check CochainComplex.shiftedTwoSlicePointIsoNegOne
+#print axioms CochainComplex.shiftedTwoSlicePointIsoNegOne
+#check CochainComplex.shiftedTwoSlicePointIsoZero
+#print axioms CochainComplex.shiftedTwoSlicePointIsoZero
+#check CochainComplex.shiftedTwoSlicePointIso
+#print axioms CochainComplex.shiftedTwoSlicePointIso
+#check CochainComplex.shiftedAdjacentTwoSliceIsoTwoTerm
+#print axioms CochainComplex.shiftedAdjacentTwoSliceIsoTwoTerm
+#check CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
+#print axioms CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
+
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
 #check LinearMap.RankOneNormalization.mk

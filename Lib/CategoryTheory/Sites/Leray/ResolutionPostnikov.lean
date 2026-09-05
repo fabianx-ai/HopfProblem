@@ -25,12 +25,13 @@ cohomology objects of the total derived object are identified with the genuine h
 images `Rᵠf_*F`, yielding an objectwise identification of the page with
 `Hᵖ(Y, Rᵠf_*F)` (universe-lifted at the categorical level).
 
-This is a page construction, not yet the complete Leray theorem.  The page adapter uses the
-normalized slice-to-homology comparison whose naturality is proved in
-`Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality`; this file still does not package
-that naturality or identify `d₂` with the resolution transgression.  Nor does it supply an
-`E_∞` filtration and associated-graded abutment: Mathlib's current `SpectralSequence` structure
-contains pages and page-to-page homology isomorphisms but no such convergence datum.
+This is the page-construction owner, not by itself the complete Leray theorem.  The page adapter
+uses the normalized slice-to-homology comparison whose naturality is proved in
+`Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality`; the generic stable endpoint,
+finite-page stabilization, and the pushed-resolution abutment are supplied downstream by the
+`SpectralObject.StableEndpoint`, `SpectralObject.FinitePageStabilization`, and
+`Leray.ResolutionAbutment` owners.  The remaining comparison not packaged here is the
+identification of the Postnikov `d₂` with the resolution transgression.
 -/
 
 @[expose] public section
