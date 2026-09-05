@@ -37,6 +37,26 @@ universe v u
 
 variable {C : Type u} [Category.{v} C] [Preadditive C] [HasShift C ℤ]
 
+set_option backward.isDefEq.respectTransparency false in
+/-- Reindex a representable homology-sequence connecting map along equal source and target
+degrees.  The displayed `eqToHom`s are the exact transports on the shifted endpoints. -/
+lemma preadditiveCoyoneda_homologySequenceδ_reindex_apply
+    (T : Triangle C) {A : Cᵒᵖ}
+    (n₀ n₁ n₀' n₁' : ℤ) (h : n₀ + 1 = n₁) (h' : n₀' + 1 = n₁')
+    (hn₀ : n₀ = n₀') (hn₁ : n₁ = n₁')
+    (x : A.unop ⟶ T.obj₃⟦n₀⟧) :
+    (preadditiveCoyoneda.obj A).homologySequenceδ T n₀ n₁ h x ≫
+        eqToHom (congrArg (fun n : ℤ ↦ T.obj₁⟦n⟧) hn₁) =
+      (preadditiveCoyoneda.obj A).homologySequenceδ T n₀' n₁' h'
+        (x ≫ eqToHom (congrArg (fun n : ℤ ↦ T.obj₃⟦n⟧) hn₀)) := by
+  cases hn₀
+  cases hn₁
+  rw [Subsingleton.elim h' h]
+  simp only [eqToHom_refl]
+  rw [Category.comp_id x]
+  exact Category.comp_id
+    ((preadditiveCoyoneda.obj A).homologySequenceδ T n₀ n₁ h x)
+
 /-- At degrees zero and one, the representable connecting map is literal postcomposition by
 the triangle's third arrow after cancelling the canonical shift-by-zero maps. -/
 lemma preadditiveCoyoneda_homologySequenceδ_zero_apply

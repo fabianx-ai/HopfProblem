@@ -320,6 +320,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift` -/
 
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_reindex_apply
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_reindex_apply
 #check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
 #print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
 #check CategoryTheory.Pretriangulated.triangleShift_mor₃
