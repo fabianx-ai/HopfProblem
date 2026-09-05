@@ -20,9 +20,9 @@ the Postnikov slice `τ_[n,n+1) K` with `Hⁿ(K)` and obtains an object-level is
 
 ` τ_[n,n+1) K ≅ Hⁿ(K)[-n] `.
 
-The single-object isomorphism uses classical choice from Mathlib's existence theorem and is not
-claimed to be natural in `K`.  Consequently, it is suitable for objectwise page identifications,
-but compatibility with spectral-sequence differentials requires a separate coherent comparison.
+The single-object isomorphism uses classical choice from Mathlib's existence theorem and is
+normalized to induce the identity on degree-`n` homology.  The downstream naturality owner proves
+that this normalization makes the comparison natural on single-degree objects.
 -/
 
 @[expose] public section
@@ -41,7 +41,8 @@ universe w v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
 /-- A derived object concentrated in degree `n` is isomorphic to the single object on its
-degree-`n` homology.  The isomorphism is chosen and is not asserted to be natural. -/
+degree-`n` homology.  Its normalization and naturality are proved in the downstream naturality
+owner. -/
 def isoSingleFunctorHomology (K : DerivedCategory C) (n : ℤ)
     [K.IsGE n] [K.IsLE n] :
     K ≅ (singleFunctor C n).obj ((homologyFunctor C n).obj K) := by
@@ -97,7 +98,7 @@ def postnikovSliceHomologyIso (K : DerivedCategory C) (n : ℤ) :
     asIso ((homologyFunctor C n).map ((TStructure.t.truncLTι (n + 1)).app K))
 
 /-- The Postnikov slice `τ_[n,n+1) K` is isomorphic to the single object on `Hⁿ(K)`.
-This objectwise isomorphism inherits the noncanonical choice in `isoSingleFunctorHomology`. -/
+Naturality of this complete slice adapter is treated separately. -/
 def postnikovSliceIso (K : DerivedCategory C) (n : ℤ) :
     (TStructure.t.truncGE n).obj ((TStructure.t.truncLT (n + 1)).obj K) ≅
       (singleFunctor C n).obj ((homologyFunctor C n).obj K) :=

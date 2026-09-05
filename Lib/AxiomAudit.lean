@@ -284,6 +284,12 @@ is an evidence command rather than library content.
 
 #check DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
 #print axioms DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
+#check DerivedCategory.homologyFunctor_map_injective_singleFunctor
+#print axioms DerivedCategory.homologyFunctor_map_injective_singleFunctor
+#check DerivedCategory.homologyFunctor_map_injective_of_isGE_of_isLE
+#print axioms DerivedCategory.homologyFunctor_map_injective_of_isGE_of_isLE
+#check DerivedCategory.isoSingleFunctorHomology_hom_naturality
+#print axioms DerivedCategory.isoSingleFunctorHomology_hom_naturality
 
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
