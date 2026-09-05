@@ -66,4 +66,28 @@ def domainEquivIntOfInjectiveOfNonzero
   exact (LinearEquiv.ofInjective f hf).trans
     (LinearEquiv.ofBijective g ⟨hg_injective, hg_surjective⟩).symm
 
+/-- An integral-linear map out of a module with a chosen rank-one coordinate is nonzero exactly
+when it is nonzero on the coordinate generator. -/
+theorem ne_zero_iff_apply_equivInt_symm_one
+    {A B : Type*} [AddCommGroup A] [Module ℤ A] [AddCommGroup B] [Module ℤ B]
+    (f : A →ₗ[ℤ] B) (e : A ≃ₗ[ℤ] ℤ) :
+    f ≠ 0 ↔ f (e.symm 1) ≠ 0 := by
+  constructor
+  · intro hf hgen
+    apply hf
+    ext x
+    have hx : x = e x • e.symm 1 := by
+      apply e.injective
+      simp
+    calc
+      f x = f (e x • e.symm 1) := congrArg f hx
+      _ = e x • f (e.symm 1) := map_zsmul f _ _
+      _ = e x • (0 : B) := congrArg (fun y ↦ e x • y) hgen
+      _ = 0 := zsmul_zero _
+      _ = (0 : A →ₗ[ℤ] B) x := rfl
+  · intro hgen hf
+    apply hgen
+    rw [hf]
+    rfl
+
 end LinearMap

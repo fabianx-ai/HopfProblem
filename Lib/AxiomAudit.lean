@@ -5870,6 +5870,8 @@ is an evidence command rather than library content.
 
 #check LinearMap.domainEquivIntOfInjectiveOfNonzero
 #print axioms LinearMap.domainEquivIntOfInjectiveOfNonzero
+#check LinearMap.ne_zero_iff_apply_equivInt_symm_one
+#print axioms LinearMap.ne_zero_iff_apply_equivInt_symm_one
 
 /-! ## `Lib.Topology.Sheaves.StalkwiseSectionRange` -/
 
