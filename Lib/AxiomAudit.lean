@@ -323,6 +323,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
 #check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
 #print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso_of_eq
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso_of_eq
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
 

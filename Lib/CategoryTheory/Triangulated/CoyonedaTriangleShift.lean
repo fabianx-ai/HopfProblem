@@ -132,4 +132,23 @@ lemma preadditiveCoyoneda_homologySequenceδ_shift_iso
     Category.assoc] using
       preadditiveCoyoneda_homologySequenceδ_shift_zero T n x
 
+set_option backward.isDefEq.respectTransparency false in
+/-- A version of `preadditiveCoyoneda_homologySequenceδ_shift_iso` in which the successor
+degree is named independently.  This avoids forcing clients to normalize expressions such as
+`(q + 1) + 1` and `q + 2` definitionally. -/
+lemma preadditiveCoyoneda_homologySequenceδ_shift_iso_of_eq
+    (T T' : Triangle C) (n m : ℤ) (hnm : n + 1 = m)
+    (e : (Triangle.shiftFunctor C n).obj T ≅ T') {A : Cᵒᵖ}
+    (x : A.unop ⟶ ((Triangle.shiftFunctor C n).obj T).obj₃) :
+    (preadditiveCoyoneda.obj A).homologySequenceδ T' 0 1 rfl
+          ((x ≫ e.hom.hom₃) ≫
+            (shiftFunctorZero C ℤ).inv.app T'.obj₃) ≫
+        e.inv.hom₁⟦(1 : ℤ)⟧' ≫
+          (shiftFunctorAdd' C n 1 m hnm).inv.app T.obj₁ =
+      n.negOnePow •
+        ((preadditiveCoyoneda.obj A).homologySequenceδ
+          T n m hnm x) := by
+  subst m
+  simpa using preadditiveCoyoneda_homologySequenceδ_shift_iso T T' n e x
+
 end CategoryTheory.Pretriangulated
