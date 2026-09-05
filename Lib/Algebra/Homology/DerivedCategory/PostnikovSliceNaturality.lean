@@ -121,4 +121,33 @@ theorem isoSingleFunctorHomology_hom_naturality
     homologyFunctor_map_isoSingleFunctorHomology_hom,
     Category.comp_id]
 
+/-- The canonical identification of the degree-`n` homology of a Postnikov slice with
+degree-`n` homology is natural in the derived object. -/
+@[reassoc]
+theorem postnikovSliceHomologyIso_hom_naturality
+    {K L : DerivedCategory C} (n : ℤ) (f : K ⟶ L) :
+    (homologyFunctor C n).map
+          ((TStructure.t.truncLT (n + 1) ⋙ TStructure.t.truncGE n).map f) ≫
+        (postnikovSliceHomologyIso L n).hom =
+      (postnikovSliceHomologyIso K n).hom ≫ (homologyFunctor C n).map f := by
+  have := isIso_homologyFunctor_map_truncGEπ
+    ((TStructure.t.truncLT (n + 1)).obj K) n
+  have := isIso_homologyFunctor_map_truncGEπ
+    ((TStructure.t.truncLT (n + 1)).obj L) n
+  have := isIso_homologyFunctor_map_truncLTι K n
+  have := isIso_homologyFunctor_map_truncLTι L n
+  simp only [postnikovSliceHomologyIso, Iso.trans_hom, Iso.symm_hom, asIso_hom, asIso_inv,
+    Functor.comp_map]
+  apply (cancel_epi ((homologyFunctor C n).map
+    ((TStructure.t.truncGEπ n).app
+      ((TStructure.t.truncLT (n + 1)).obj K)))).mp
+  simp only [Category.assoc]
+  rw [← (homologyFunctor C n).map_comp_assoc]
+  rw [TStructure.t.truncGEπ_naturality]
+  rw [(homologyFunctor C n).map_comp_assoc]
+  simp only [IsIso.hom_inv_id_assoc]
+  simpa only [Functor.map_comp, Functor.id_map] using
+    congrArg (fun g => (homologyFunctor C n).map g)
+      ((TStructure.t.truncLTι (n + 1)).naturality f)
+
 end DerivedCategory

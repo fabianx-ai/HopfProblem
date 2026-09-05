@@ -297,6 +297,8 @@ is an evidence command rather than library content.
 #print axioms DerivedCategory.homologyFunctor_map_injective_of_isGE_of_isLE
 #check DerivedCategory.isoSingleFunctorHomology_hom_naturality
 #print axioms DerivedCategory.isoSingleFunctorHomology_hom_naturality
+#check DerivedCategory.postnikovSliceHomologyIso_hom_naturality
+#print axioms DerivedCategory.postnikovSliceHomologyIso_hom_naturality
 
 #check LinearMap.RankOneNormalization
 #print axioms LinearMap.RankOneNormalization
