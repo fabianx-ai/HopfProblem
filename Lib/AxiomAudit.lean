@@ -1729,6 +1729,13 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageCoordinates` -/
 
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso

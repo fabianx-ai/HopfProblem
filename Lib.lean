@@ -356,6 +356,7 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates
 import Lib.Algebra.Homology.DerivedCategory.PostnikovUpperRouteHomology
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointConcreteNormalization
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNormalization
+import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates
 
 /-!
 # Reusable extracted library
