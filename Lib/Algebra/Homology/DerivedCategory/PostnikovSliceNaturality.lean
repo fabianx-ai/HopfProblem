@@ -62,6 +62,154 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.isDefEq.respectTransparency false in
 /-- The canonical homology identifications of shifted single objects commute with the
+single-functor shift comparison at arbitrary source and target degrees. -/
+@[reassoc]
+theorem singleFunctorCompHomologyFunctorIso_shiftIso_hom_of_indices
+    (A : C) (n a a' : ℤ) (ha' : n + a = a') :
+    (homologyFunctor C a).map
+        (((singleFunctors C).shiftIso n a a' ha').hom.app A) ≫
+        (singleFunctorCompHomologyFunctorIso C a).hom.app A =
+      ((homologyFunctor C 0).shiftIso n a a' ha').hom.app
+          ((singleFunctor C a').obj A) ≫
+        (singleFunctorCompHomologyFunctorIso C a').hom.app A := by
+  have hchain :
+      (HomologicalComplex.homologyFunctor C (ComplexShape.up ℤ) a).map
+          (((CochainComplex.singleFunctors C).shiftIso
+            n a a' ha').hom.app A) ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a).hom.app A =
+      ((HomologicalComplex.homologyFunctor C (ComplexShape.up ℤ) 0).shiftIso
+          n a a' ha').hom.app
+            (((CochainComplex.singleFunctors C).functor a').obj A) ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a').hom.app A := by
+    change _ =
+      (CochainComplex.ShiftSequence.shiftIso C n a a' ha').hom.app
+          (((CochainComplex.singleFunctors C).functor a').obj A) ≫ _
+    rw [CochainComplex.ShiftSequence.shiftIso_hom_app]
+    dsimp [CochainComplex.singleFunctors]
+    rw [← cancel_epi
+      (((((HomologicalComplex.single C (ComplexShape.up ℤ) a').obj A)⟦n⟧).homologyπ a))]
+    rw [HomologicalComplex.homologyπ_naturality_assoc]
+    rw [HomologicalComplex.homologyπ_singleObjHomologySelfIso_hom]
+    erw [ShortComplex.homologyπ_naturality_assoc]
+    change _ = _ ≫
+      (((HomologicalComplex.single C (ComplexShape.up ℤ) a').obj A).homologyπ a' ≫
+        (HomologicalComplex.singleObjHomologySelfIso
+          (ComplexShape.up ℤ) a' A).hom)
+    rw [HomologicalComplex.homologyπ_singleObjHomologySelfIso_hom]
+    rw [HomologicalComplex.singleObjCyclesSelfIso_hom,
+      HomologicalComplex.singleObjCyclesSelfIso_hom]
+    rw [HomologicalComplex.cyclesMap_i_assoc]
+    erw [ShortComplex.cyclesMap_i_assoc]
+    dsimp [CochainComplex.shiftShortComplexFunctorIso,
+      CochainComplex.shiftShortComplexFunctor', CochainComplex.shiftEval,
+      HomologicalComplex.singleObjXSelf,
+      HomologicalComplex.singleObjXIsoOfEq]
+    simp
+    dsimp [HomologicalComplex.XIsoOfEq]
+    simp only [eqToHom_trans]
+    dsimp only [HomologicalComplex.iCycles]
+  let α := (singleFunctorsPostcompQIso C).hom
+  let Sa' := ((CochainComplex.singleFunctors C).functor a').obj A
+  have hcomm := congrArg (fun t ↦ t.app A) (α.comm n a a' ha')
+  have hcomm' :
+      ((singleFunctors C).shiftIso n a a' ha').hom.app A ≫
+          (α.hom a).app A =
+        ((α.hom a').app A)⟦n⟧' ≫
+          (((CochainComplex.singleFunctors C).postcomp Q).shiftIso
+            n a a' ha').hom.app A := by
+    simpa using hcomm
+  have hnat := ((homologyFunctor C 0).shiftIso
+    n a a' ha').hom.naturality ((α.hom a').app A)
+  have hnat' := hnat
+  simp only [Functor.comp_map, shift_homologyFunctor] at hnat'
+  have hshift0 :
+      (homologyFunctor C a).map ((Q.commShiftIso n).hom.app Sa') ≫
+          ((homologyFunctor C 0).shiftIso n a a' ha').hom.app (Q.obj Sa') =
+        (homologyFunctorFactors C a).hom.app (Sa'⟦n⟧) ≫
+          ((HomologicalComplex.homologyFunctor C
+            (ComplexShape.up ℤ) 0).shiftIso n a a' ha').hom.app Sa' ≫
+          (homologyFunctorFactors C a').inv.app Sa' := by
+    exact homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+      n a a' ha' Sa'
+  have hshift1 :
+      ((homologyFunctor C 0).shiftIso n a a' ha').hom.app (Q.obj Sa') ≫
+          (homologyFunctorFactors C a').hom.app Sa' =
+        (homologyFunctor C a).map ((Q.commShiftIso n).inv.app Sa') ≫
+          (homologyFunctorFactors C a).hom.app (Sa'⟦n⟧) ≫
+          ((HomologicalComplex.homologyFunctor C
+            (ComplexShape.up ℤ) 0).shiftIso n a a' ha').hom.app Sa' := by
+    let J := (homologyFunctor C a).mapIso ((Q.commShiftIso n).app Sa')
+    change _ = J.inv ≫ _
+    rw [← cancel_epi J.hom]
+    change (homologyFunctor C a).map ((Q.commShiftIso n).hom.app Sa') ≫ _ = _
+    rw [reassoc_of% hshift0]
+    rw [Iso.inv_hom_id_app]
+    simp only [J.hom_inv_id_assoc]
+    erw [Category.comp_id]
+  have hpost :
+      (homologyFunctor C a).map
+          ((((CochainComplex.singleFunctors C).postcomp Q).shiftIso
+            n a a' ha').hom.app A) ≫
+        (homologyFunctorFactors C a).hom.app
+          (((CochainComplex.singleFunctors C).functor a).obj A) ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a).hom.app A =
+      ((homologyFunctor C 0).shiftIso n a a' ha').hom.app (Q.obj Sa') ≫
+        (homologyFunctorFactors C a').hom.app Sa' ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a').hom.app A := by
+    rw [SingleFunctors.postcomp_shiftIso_hom_app]
+    rw [Functor.map_comp]
+    have hfac := (homologyFunctorFactors C a).hom.naturality
+      (((CochainComplex.singleFunctors C).shiftIso
+        n a a' ha').hom.app A)
+    erw [Functor.comp_map] at hfac
+    rw [Category.assoc]
+    rw [reassoc_of% hfac]
+    erw [hchain]
+    rw [reassoc_of% hshift1]
+  dsimp [singleFunctorCompHomologyFunctorIso]
+  erw [Category.id_comp, Category.id_comp]
+  change
+    (homologyFunctor C a).map
+          (((singleFunctors C).shiftIso n a a' ha').hom.app A) ≫
+        (homologyFunctor C a).map ((α.hom a).app A) ≫
+        (homologyFunctorFactors C a).hom.app
+          (((CochainComplex.singleFunctors C).functor a).obj A) ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a).hom.app A =
+      ((homologyFunctor C 0).shiftIso n a a' ha').hom.app
+          ((singleFunctor C a').obj A) ≫
+        (homologyFunctor C a').map ((α.hom a').app A) ≫
+        (homologyFunctorFactors C a').hom.app Sa' ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a').hom.app A
+  rw [← Functor.map_comp_assoc]
+  rw [hcomm']
+  rw [Functor.map_comp_assoc]
+  erw [hpost]
+  change
+    (homologyFunctor C a).map
+          ((shiftFunctor (DerivedCategory C) n).map ((α.hom a').app A)) ≫
+        ((homologyFunctor C 0).shiftIso n a a' ha').hom.app
+            ((((CochainComplex.singleFunctors C).postcomp Q).functor a').obj A) ≫
+        (homologyFunctorFactors C a').hom.app Sa' ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a').hom.app A =
+      ((homologyFunctor C 0).shiftIso n a a' ha').hom.app
+          (((singleFunctors C).functor a').obj A) ≫
+        (homologyFunctor C a').map ((α.hom a').app A) ≫
+        (homologyFunctorFactors C a').hom.app Sa' ≫
+        (HomologicalComplex.homologyFunctorSingleIso C
+          (ComplexShape.up ℤ) a').hom.app A
+  rw [reassoc_of% hnat']
+
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency.types false in
+set_option backward.isDefEq.respectTransparency false in
+/-- The canonical homology identifications of shifted single objects commute with the
 single-functor shift comparison. -/
 @[reassoc]
 theorem singleFunctorCompHomologyFunctorIso_shiftIso_hom (A : C) (n : ℤ) :
