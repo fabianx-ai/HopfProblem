@@ -315,6 +315,10 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.TruncationTriangle` -/
 
+#check CochainComplex.isIso_ιTruncLE_f_of_lt
+#print axioms CochainComplex.isIso_ιTruncLE_f_of_lt
+#check CochainComplex.isIso_πTruncGE_f_of_lt
+#print axioms CochainComplex.isIso_πTruncGE_f_of_lt
 #check DerivedCategory.truncationTriangleIso
 #print axioms DerivedCategory.truncationTriangleIso
 #check DerivedCategory.truncationTriangleIso_hom_hom₂

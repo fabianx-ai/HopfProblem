@@ -31,6 +31,68 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Pretriangulated
   CategoryTheory.Triangulated
 
+namespace CochainComplex
+
+universe v u
+
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/-- Below the cutoff, the canonical inclusion from the good truncation is an isomorphism on
+components.  The boundary component itself is deliberately excluded: there the source is the
+cycles object. -/
+lemma isIso_ιTruncLE_f_of_lt (K : CochainComplex C ℤ) (n i : ℤ) (h : i < n) :
+    IsIso ((K.ιTruncLE n).f i) := by
+  dsimp [CochainComplex.ιTruncLE, HomologicalComplex.ιTruncLE]
+  change IsIso ((K.op.πTruncGE (ComplexShape.embeddingUpIntLE n).op).f i).unop
+  have hi : ∃ j, (ComplexShape.embeddingUpIntLE n).op.f j = i := by
+    use Int.natAbs (n - i)
+    change n - (Int.natAbs (n - i) : ℤ) = i
+    rw [Int.natAbs_of_nonneg (by omega)]
+    omega
+  obtain ⟨j, hj⟩ := hi
+  have hnb : ¬ (ComplexShape.embeddingUpIntLE n).op.BoundaryGE j := by
+    rw [ComplexShape.Embedding.op_boundaryGE_iff,
+      ComplexShape.boundaryLE_embeddingUpIntLE_iff]
+    intro hj0
+    subst j
+    simp at hj
+    omega
+  have hz := K.op.isIso_restrictionToTruncGE'
+    (ComplexShape.embeddingUpIntLE n).op j hnb
+  have hzi : IsIso ((K.op.πTruncGE (ComplexShape.embeddingUpIntLE n).op).f i) := by
+    subst i
+    apply ((ComplexShape.embeddingUpIntLE n).op.isIso_liftExtend_f_iff
+      (K.op.restrictionToTruncGE' (ComplexShape.embeddingUpIntLE n).op)
+      (K.op.restrictionToTruncGE'_hasLift (ComplexShape.embeddingUpIntLE n).op) rfl).2
+    exact hz
+  infer_instance
+
+/-- Above the cutoff, the canonical projection to the good truncation is an isomorphism on
+components.  The boundary component itself is deliberately excluded: there the target is the
+opcycles object. -/
+lemma isIso_πTruncGE_f_of_lt (K : CochainComplex C ℤ) (n i : ℤ) (h : n < i) :
+    IsIso ((K.πTruncGE n).f i) := by
+  dsimp [CochainComplex.πTruncGE, HomologicalComplex.πTruncGE]
+  have hi : ∃ j, (ComplexShape.embeddingUpIntGE n).f j = i := by
+    use Int.natAbs (i - n)
+    change n + (Int.natAbs (i - n) : ℤ) = i
+    rw [Int.natAbs_of_nonneg (by omega)]
+    omega
+  obtain ⟨j, hj⟩ := hi
+  have hnb : ¬ (ComplexShape.embeddingUpIntGE n).BoundaryGE j := by
+    rw [ComplexShape.boundaryGE_embeddingUpIntGE_iff]
+    intro hj0
+    subst j
+    simp at hj
+    omega
+  apply ((ComplexShape.embeddingUpIntGE n).isIso_liftExtend_f_iff
+    (K.restrictionToTruncGE' (ComplexShape.embeddingUpIntGE n))
+    (K.restrictionToTruncGE'_hasLift (ComplexShape.embeddingUpIntGE n)) hj).2
+  exact K.isIso_restrictionToTruncGE'
+    (ComplexShape.embeddingUpIntGE n) j hnb
+
+end CochainComplex
+
 namespace DerivedCategory
 
 universe w v u
