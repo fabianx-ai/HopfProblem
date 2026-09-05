@@ -2294,6 +2294,12 @@ is an evidence command rather than library content.
 #print axioms TopCat.ConstantSheaf.sheaf
 #check TopCat.ConstantSheaf.unit
 #print axioms TopCat.ConstantSheaf.unit
+#check TopCat.ConstantSheaf.stalkIso
+#print axioms TopCat.ConstantSheaf.stalkIso
+#check TopCat.ConstantSheaf.sectionValue
+#print axioms TopCat.ConstantSheaf.sectionValue
+#check TopCat.ConstantSheaf.sectionValue_isLocallyConstant
+#print axioms TopCat.ConstantSheaf.sectionValue_isLocallyConstant
 #check TopCat.ConstantSheaf.unit_app_surjective
 #print axioms TopCat.ConstantSheaf.unit_app_surjective
 #check TopCat.ConstantSheaf.unit_app_injective

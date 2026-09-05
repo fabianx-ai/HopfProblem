@@ -54,7 +54,8 @@ def unit (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     presheaf X A ⟶ (sheaf X A).obj :=
   CategoryTheory.toSheafify (Opens.grothendieckTopology X) (presheaf X A)
 
-private def presheafStalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+/-- The stalk of the constant presheaf is canonically its coefficient group. -/
+def presheafStalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     (presheaf X A).stalk x ≅ A := by
   letI : IsConnected (OpenNhds x)ᵒᵖ := IsFiltered.isConnected _
   exact IsColimit.coconePointUniqueUpToIso
@@ -62,7 +63,7 @@ private def presheafStalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     (isColimitConstCocone (OpenNhds x)ᵒᵖ A)
 
 @[reassoc (attr := simp)]
-private theorem presheaf_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem presheaf_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
     (x : X) (U : Opens X) (hx : x ∈ U) :
     (presheaf X A).germ U x hx ≫ (presheafStalkIso X A x).hom = 𝟙 A := by
   let : IsConnected (OpenNhds x)ᵒᵖ := IsFiltered.isConnected _
@@ -70,17 +71,18 @@ private theorem presheaf_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{
     (F := (OpenNhds.inclusion x).op ⋙ presheaf X A)
     (isColimitConstCocone (OpenNhds x)ᵒᵖ A) (op (⟨U, hx⟩ : OpenNhds x))
 
-private instance unit_stalk_isIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+instance unit_stalk_isIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A)) :=
   TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat (presheaf X A)
 
-private def stalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+/-- The canonical identification of a native constant-sheaf stalk with its coefficient group. -/
+def stalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     TopCat.Presheaf.stalk (C := AddCommGrpCat) (sheaf X A).obj x ≅ A :=
   (asIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A))).symm ≪≫
     presheafStalkIso X A x
 
 @[reassoc (attr := simp)]
-private theorem unit_stalk_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+theorem unit_stalk_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A) ≫
       (stalkIso X A x).hom = (presheafStalkIso X A x).hom := by
   change (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A) ≫
@@ -89,7 +91,7 @@ private theorem unit_stalk_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
   exact IsIso.hom_inv_id_assoc _ _
 
 @[reassoc (attr := simp)]
-private theorem unit_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem unit_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
     (x : X) (U : Opens X) (hx : x ∈ U) :
     (unit X A).app (op U) ≫ TopCat.Presheaf.germ (sheaf X A).obj U x hx ≫
       (stalkIso X A x).hom = 𝟙 A := by
@@ -99,12 +101,13 @@ private theorem unit_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
         (unit_stalk_stalkIso_hom X A x)).trans
           (presheaf_germ_stalkIso_hom X A x U hx))
 
-private def stalkEquiv (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+/-- The additive equivalence underlying `stalkIso`. -/
+def stalkEquiv (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
     TopCat.Presheaf.stalk (C := AddCommGrpCat) (sheaf X A).obj x ≃+ A :=
   (stalkIso X A x).addCommGroupIsoToAddEquiv
 
 @[simp]
-private theorem stalkEquiv_germ_unit (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem stalkEquiv_germ_unit (X : TopCat.{0}) (A : AddCommGrpCat.{0})
     (x : X) (U : Opens X) (hx : x ∈ U) (a : A) :
     stalkEquiv X A x
       (TopCat.Presheaf.germ (sheaf X A).obj U x hx ((unit X A).app (op U) a)) = a :=
@@ -125,16 +128,17 @@ private theorem exists_constant_restriction (U : Opens X)
     (TopCat.Presheaf.isLocallySurjective_iff (unit X A)).mp hloc U s x hx
   exact ⟨V, hVU, a, hxV, ha⟩
 
-private def sectionValue (U : Opens X) (s : (sheaf X A).obj.obj (op U)) (x : U) : A :=
+/-- Evaluate a section of the native constant sheaf at a point of its domain. -/
+def sectionValue (U : Opens X) (s : (sheaf X A).obj.obj (op U)) (x : U) : A :=
   stalkEquiv X A x.1 (TopCat.Presheaf.germ (sheaf X A).obj U x.1 x.2 s)
 
 @[simp]
-private theorem sectionValue_unit (U : Opens X) (a : A) (x : U) :
+theorem sectionValue_unit (U : Opens X) (a : A) (x : U) :
     sectionValue U ((unit X A).app (op U) a) x = a :=
   stalkEquiv_germ_unit X A x.1 U x.2 a
 
 @[simp]
-private theorem sectionValue_restrict {U V : Opens X} (i : V ⟶ U)
+theorem sectionValue_restrict {U V : Opens X} (i : V ⟶ U)
     (s : (sheaf X A).obj.obj (op U)) (x : V) :
     sectionValue V ((sheaf X A).obj.map i.op s) x =
       sectionValue U s ⟨x.1, i.le x.2⟩ := by
@@ -148,7 +152,8 @@ private theorem section_ext (U : Opens X) (s t : (sheaf X A).obj.obj (op U))
   apply (stalkEquiv X A x).injective
   exact h ⟨x, hx⟩
 
-private theorem sectionValue_isLocallyConstant (U : Opens X)
+/-- Pointwise values of a native constant-sheaf section are locally constant. -/
+theorem sectionValue_isLocallyConstant (U : Opens X)
     (s : (sheaf X A).obj.obj (op U)) : IsLocallyConstant (sectionValue U s) := by
   apply (IsLocallyConstant.iff_exists_open _).mpr
   intro x
