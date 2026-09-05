@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 module
 
-public import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgression
+public import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology
 public import Lib.Topology.Sheaves.AddCommGrpPushforward
 public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 public import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
@@ -118,6 +118,29 @@ def resolutionTransgressionMorphismOfResolution {F : AbelianSheaf X}
     ExtTransgression.cochainTransgression (pushedResolution f I) n (integralSheaf Y) ≫
       (extFunctorObj (integralSheaf Y) 2).map ((pushedResolution f I).homologyπ n) ≫
         (resolutionCohomologyIso f I n 2).hom
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The resolution transgression is the positive connecting map of the canonical four-term
+homology sequence, between the existing degree-zero and degree-two page coordinates. -/
+lemma resolutionTransgressionMorphismOfResolution_eq_connectingTwo
+    {F : AbelianSheaf X} (I : InjectiveResolution F) (n : ℕ) :
+    resolutionTransgressionMorphismOfResolution f I n =
+      (resolutionExtZeroIso f I (n + 1)).hom ≫
+        (Ext.addEquiv₀ (X := integralSheaf Y)
+          (Y := (pushedResolution f I).homology (n + 1))).toAddCommGrpIso.inv ≫
+        AddCommGrpCat.ofHom
+          ((ExtTransgression.homologyTwoStepResolution
+            (pushedResolution f I) n).connectingTwo (integralSheaf Y)) ≫
+        (resolutionCohomologyIso f I n 2).hom := by
+  dsimp [resolutionTransgressionMorphismOfResolution]
+  rw [← Category.assoc
+    (ExtTransgression.cochainTransgression
+      (pushedResolution f I) n (integralSheaf Y))
+    ((extFunctorObj (integralSheaf Y) 2).map
+      ((pushedResolution f I).homologyπ n))
+    ((resolutionCohomologyIso f I n 2).hom)]
+  rw [ExtTransgression.cochainTransgression_comp_homologyπ]
+  simp only [Category.assoc]
 
 /-- The resolution-level two-step transgression
 `H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)` as a morphism of additive groups, using Mathlib's chosen

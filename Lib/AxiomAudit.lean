@@ -1858,6 +1858,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
