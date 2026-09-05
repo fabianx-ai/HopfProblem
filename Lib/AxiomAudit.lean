@@ -2374,6 +2374,10 @@ is an evidence command rather than library content.
 #print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_bijective_of_cofinal
 #check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
 #print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
+#check TopCat.Presheaf.germ_bijective_of_cofinal_restriction
+#print axioms TopCat.Presheaf.germ_bijective_of_cofinal_restriction
+#check TopCat.Presheaf.germ_isIso_of_cofinal_restriction
+#print axioms TopCat.Presheaf.germ_isIso_of_cofinal_restriction
 
 /-! ## `Lib.Topology.Sheaves.CokernelStalk` -/
 

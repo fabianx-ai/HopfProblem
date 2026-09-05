@@ -118,4 +118,48 @@ theorem stalkMap_isIso_of_cofinal
 
 end CompatibleNeighborhoodEvaluation
 
+/-! ## Stalks represented by one neighborhood -/
+
+/-- A section over one neighborhood represents the stalk bijectively if restriction from that
+neighborhood is bijective on a cofinal supply of smaller neighborhoods.  This form is useful
+when the local section spaces are intrinsically constant but no preferred compatible coordinate
+on all neighborhoods has been chosen. -/
+theorem germ_bijective_of_cofinal_restriction
+    (U : Opens X) (hxU : x ∈ U)
+    (hlocal : ∀ (V : Opens X) (_hxV : x ∈ V),
+      ∃ (W : Opens X) (_hWV : W ≤ V) (_hxW : x ∈ W) (hWU : W ≤ U),
+        Function.Bijective (F.map (homOfLE hWU).op)) :
+    Function.Bijective (F.germ U x hxU) := by
+  constructor
+  · intro s t hst
+    obtain ⟨V, hxV, iVs, iVt, heq⟩ := F.germ_eq x hxU hxU s t hst
+    obtain ⟨W, hWV, _hxW, hWU, hbij⟩ := hlocal V hxV
+    apply hbij.injective
+    have hrestricted := congrArg
+      (fun a ↦ F.map (homOfLE hWV).op a) heq
+    simp only [← ConcreteCategory.comp_apply, ← F.map_comp] at hrestricted
+    have his : iVs.op ≫ (homOfLE hWV).op = (homOfLE hWU).op :=
+      Subsingleton.elim _ _
+    have hit : iVt.op ≫ (homOfLE hWV).op = (homOfLE hWU).op :=
+      Subsingleton.elim _ _
+    rw [his, hit] at hrestricted
+    exact hrestricted
+  · intro a
+    obtain ⟨V, hxV, s, rfl⟩ := F.exists_germ_eq a
+    obtain ⟨W, hWV, hxW, hWU, hbij⟩ := hlocal V hxV
+    obtain ⟨t, ht⟩ := hbij.surjective (F.map (homOfLE hWV).op s)
+    refine ⟨t, ?_⟩
+    apply F.germ_ext W hxW (homOfLE hWU) (homOfLE hWV)
+    exact ht
+
+/-- Categorical form of `germ_bijective_of_cofinal_restriction`. -/
+theorem germ_isIso_of_cofinal_restriction
+    (U : Opens X) (hxU : x ∈ U)
+    (hlocal : ∀ (V : Opens X) (_hxV : x ∈ V),
+      ∃ (W : Opens X) (_hWV : W ≤ V) (_hxW : x ∈ W) (hWU : W ≤ U),
+        Function.Bijective (F.map (homOfLE hWU).op)) :
+    IsIso (F.germ U x hxU) :=
+  (ConcreteCategory.isIso_iff_bijective (F.germ U x hxU)).mpr
+    (germ_bijective_of_cofinal_restriction F x U hxU hlocal)
+
 end TopCat.Presheaf
