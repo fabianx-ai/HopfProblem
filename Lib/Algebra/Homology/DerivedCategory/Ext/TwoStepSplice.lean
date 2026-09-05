@@ -155,6 +155,22 @@ lemma compositeTriangle_mor₂_comp_spliceTriangle_mor₂ :
   dsimp [spliceTriangle]
   exact (Triangulated.someOctahedron _ _ _ _).comm₃
 
+/-- The standard mapping-cone injection, transported back through the chosen composite
+triangle and then across the splice, is the terminal map of the four-term resolution. -/
+lemma mappingConeCompositeTriangle_mor₂_comp_inv_hom₃_comp_spliceTriangle_mor₂ :
+    (mappingConeCompositeTriangle R).mor₂ ≫
+        (compositeTriangleIsoMappingCone R).inv.hom₃ ≫
+        (spliceTriangle R).mor₂ =
+      (DerivedCategory.singleFunctor C 0).map R.complex.g := by
+  have hinv : (compositeTriangleIsoMappingCone R).inv.hom₂ = 𝟙 _ := by
+    rw [← cancel_mono (compositeTriangleIsoMappingCone R).hom.hom₂,
+      ← comp_hom₂, (compositeTriangleIsoMappingCone R).inv_hom_id,
+      compositeTriangleIsoMappingCone_hom_hom₂]
+    simp
+  rw [(compositeTriangleIsoMappingCone R).inv.comm₂_assoc]
+  rw [hinv, Category.id_comp]
+  exact compositeTriangle_mor₂_comp_spliceTriangle_mor₂ R
+
 /-- The connecting morphism of the splice is the positive composite of the two short-exact
 connecting morphisms. -/
 lemma spliceTriangle_mor₃ :
