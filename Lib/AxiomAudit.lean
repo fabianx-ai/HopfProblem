@@ -311,6 +311,17 @@ is an evidence command rather than library content.
 #check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
 #print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
 
+/-! ## `Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift` -/
+
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
+#check CategoryTheory.Pretriangulated.triangleShift_mor₃
+#print axioms CategoryTheory.Pretriangulated.triangleShift_mor₃
+#check CategoryTheory.Pretriangulated.triangleShift_mor₃_comp_shiftFunctorAdd_inv
+#print axioms CategoryTheory.Pretriangulated.triangleShift_mor₃_comp_shiftFunctorAdd_inv
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
+
 /-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
 
 #check DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective

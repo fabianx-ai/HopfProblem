@@ -343,6 +343,7 @@ import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSlice
 import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceShift
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovTwoSliceSplice
 import Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceEndpoints
+import Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift
 
 /-!
 # Reusable extracted library
