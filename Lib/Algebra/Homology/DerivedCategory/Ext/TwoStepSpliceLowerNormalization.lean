@@ -193,4 +193,53 @@ lemma spliceTriangle_mor₁_mappingCone
   simp
   rfl
 
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
+set_option linter.unusedSimpArgs false in
+omit [HasDerivedCategory C] in
+/-- The degree `-1` component of the literal lower mapping-cone inclusion is the coefficient
+inclusion of the two-step resolution.  The domain shift and the left-shift cocycle signs cancel,
+so this component carries no scalar. -/
+lemma mappingConeLowerInclusion_f_negOne
+    (R : TwoStepResolution (C := C)) :
+    (HomologicalComplex.singleObjXSelf
+          (ComplexShape.up ℤ) 0 R.F).inv ≫
+      (((CochainComplex.singleFunctor C 0).obj R.F).shiftFunctorObjXIso
+        1 (-1) 0 (by omega)).inv ≫
+      (mappingConeLowerInclusion R).f (-1) ≫
+      (CochainComplex.mappingCone.fst
+        ((CochainComplex.singleFunctor C 0).map R.complex.f)).1.v
+          (-1) 0 (by omega) ≫
+      (HomologicalComplex.singleObjXSelf
+        (ComplexShape.up ℤ) 0 R.complex.X₁).hom =
+      R.ι := by
+  dsimp [mappingConeLowerInclusion, mappingConeLowerLift]
+  simp only [Category.assoc,
+    Preadditive.neg_comp, Preadditive.comp_neg,
+    CochainComplex.mappingCone.lift_f_fst_v,
+    CochainComplex.mappingCone.lift_f_fst_v_assoc,
+    CochainComplex.HomComplex.Cocycle.leftShift_coe,
+    CochainComplex.HomComplex.Cocycle.ofHom_coe,
+    CochainComplex.HomComplex.Cochain.ofHom_v,
+    HomologicalComplex.single_map_f_self]
+  rw [CochainComplex.HomComplex.Cochain.leftShift_v
+    _ 1 1 (by omega) (-1) 0 (by omega) 0 (by omega)]
+  norm_num
+  have hsingle :
+      ((CochainComplex.singleFunctor C 0).map R.ι).f 0 =
+        (HomologicalComplex.singleObjXSelf
+            (ComplexShape.up ℤ) 0 R.F).hom ≫
+          R.ι ≫
+          (HomologicalComplex.singleObjXSelf
+            (ComplexShape.up ℤ) 0 R.complex.X₁).inv := by
+    exact HomologicalComplex.single_map_f_self
+      (c := ComplexShape.up ℤ) 0 R.ι
+  rw [hsingle]
+  erw [Category.id_comp, Category.id_comp]
+  norm_num
+  erw [Category.id_comp]
+  dsimp [HomologicalComplex.singleObjXSelf,
+    HomologicalComplex.singleObjXIsoOfEq]
+  erw [Category.id_comp]
+
 end CategoryTheory.Abelian.ExtTransgression.TwoStepResolution

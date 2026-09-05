@@ -1693,6 +1693,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_comp_compositeTriangle_mor₃
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_f_negOne
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_f_negOne
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice` -/
 
