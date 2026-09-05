@@ -3331,6 +3331,21 @@ is an evidence command rather than library content.
 #check TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
 #print axioms TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_section
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_section
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
+#check TopCat.Sheaf.OpenRestriction.unitFreeTopIso
+#print axioms TopCat.Sheaf.OpenRestriction.unitFreeTopIso
+#check TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
+#check TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+#print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque

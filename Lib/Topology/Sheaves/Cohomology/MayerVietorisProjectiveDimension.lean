@@ -6,8 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
-public import Lib.Topology.Sheaves.OpenRestriction.Cohomology
-public import Mathlib.CategoryTheory.Abelian.Projective.Dimension
+public import Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension
 public import Mathlib.Topology.Sheaves.MayerVietoris
 
 /-!
