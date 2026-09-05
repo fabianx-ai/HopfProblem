@@ -2052,6 +2052,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates` -/
 
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
 
