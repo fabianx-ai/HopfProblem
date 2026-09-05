@@ -374,6 +374,7 @@ import Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension
 import Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence
 import Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Trivialization
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Restriction
 
 /-!
 # Reusable extracted library

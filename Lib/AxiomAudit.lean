@@ -2804,6 +2804,17 @@ is an evidence command rather than library content.
 #check PrincipalCoverLocalSystem.constantSheafIsoOfSection
 #print axioms PrincipalCoverLocalSystem.constantSheafIsoOfSection
 
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Restriction` -/
+
+#check PrincipalCoverLocalSystem.restrictedMulAction
+#print axioms PrincipalCoverLocalSystem.restrictedMulAction
+#check PrincipalCoverLocalSystem.restrictedProjection
+#print axioms PrincipalCoverLocalSystem.restrictedProjection
+#check PrincipalCoverLocalSystem.liftedOpenPreimageHomeomorph
+#print axioms PrincipalCoverLocalSystem.liftedOpenPreimageHomeomorph
+#check PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
+#print axioms PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
+
 /-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
 
 #check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
