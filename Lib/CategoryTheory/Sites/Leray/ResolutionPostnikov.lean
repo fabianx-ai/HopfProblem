@@ -25,9 +25,10 @@ cohomology objects of the total derived object are identified with the genuine h
 images `Rᵠf_*F`, yielding an objectwise identification of the page with
 `Hᵖ(Y, Rᵠf_*F)` (universe-lifted at the categorical level).
 
-This is a page construction, not yet the complete Leray theorem.  The slice-to-homology
-comparison uses a noncanonical objectwise choice, so this file does not identify `d₂` with the
-resolution transgression or assert naturality of the page comparison.  Nor does it supply an
+This is a page construction, not yet the complete Leray theorem.  The page adapter uses the
+normalized slice-to-homology comparison whose naturality is proved in
+`Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality`; this file still does not package
+that naturality or identify `d₂` with the resolution transgression.  Nor does it supply an
 `E_∞` filtration and associated-graded abutment: Mathlib's current `SpectralSequence` structure
 contains pages and page-to-page homology isomorphisms but no such convergence datum.
 -/
@@ -125,9 +126,10 @@ def resolutionPostnikovE₂PageIso {F : AbelianSheaf X}
   DerivedCategory.TStructure.t.coyonedaPostnikovE₂PageIso
     (integralDerivedObject Y) (pushedResolutionDerivedObject f I) p q
 
-/-- The degree-`q` Postnikov slice of the pushed resolution is objectwise isomorphic to the
-degree-`q` single object on the genuine higher direct image.  This inherits the noncanonical
-choice in `DerivedCategory.postnikovSliceIso`. -/
+/-- The degree-`q` Postnikov slice of the pushed resolution is isomorphic to the degree-`q`
+single object on the genuine higher direct image.  The underlying normalized
+`DerivedCategory.postnikovSliceIso` is natural; this definition records its objectwise sheaf
+specialization. -/
 def resolutionPostnikovSliceHigherDirectImageIso {F : AbelianSheaf X}
     (I : InjectiveResolution F) (q : ℕ) :
     (DerivedCategory.TStructure.t.truncGE (q : ℤ)).obj

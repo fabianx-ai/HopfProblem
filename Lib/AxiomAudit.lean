@@ -1390,6 +1390,19 @@ is an evidence command rather than library content.
 #check CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 #print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression
 
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
+#check CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
+#check CategoryTheory.Abelian.ExtTransgression.cyclesFirst_extClass_comp_homologyπ
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesFirst_extClass_comp_homologyπ
+#check CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
+#print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
+
 -- ExactFunctoriality: every intended public source declaration in source order.
 #check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
 #print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
