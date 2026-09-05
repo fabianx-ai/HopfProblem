@@ -30,10 +30,10 @@ open CategoryTheory CategoryTheory.Limits CategoryTheory.Pretriangulated
 
 namespace CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 
-universe v u
+universe w' v u
 
 variable {C : Type u} [Category.{v} C] [Abelian C]
-  [HasDerivedCategory.{v} C]
+  [HasDerivedCategory.{w'} C]
 
 attribute [local instance] HasDerivedCategory.standard
 
