@@ -98,6 +98,8 @@ is an evidence command rather than library content.
 #print axioms Set.powersetCard.permOfDisjoint_eq_of_orderEmbOfFin
 
 #print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
+#check LinearMap.exists_ne_zero_smul_mem_range_of_injective
+#print axioms LinearMap.exists_ne_zero_smul_mem_range_of_injective
 #print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime
 #print axioms Matrix.quotientRangeToLinEquivZModOfIsCoprime
 
