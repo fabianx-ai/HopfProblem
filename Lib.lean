@@ -338,6 +338,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology
 import Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice
 import Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone
 import Lib.Algebra.Homology.DerivedCategory.AdjacentTwoSlice
+import Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice
 
 /-!
 # Reusable extracted library
