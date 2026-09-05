@@ -109,20 +109,41 @@ def resolutionExtZeroIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q : �
     (preadditiveCoyoneda.obj (op (integralSheaf Y))).mapIso
       (higherDirectImageResolutionIso f F I q)
 
-/-- The resolution-level two-step transgression
-`H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)` as a morphism of additive groups. -/
-def resolutionTransgressionMorphism (F : AbelianSheaf X) (n : ℕ) :
+/-- The resolution-level two-step transgression associated to a specified injective resolution,
+`H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)`, as a morphism of additive groups. -/
+def resolutionTransgressionMorphismOfResolution {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (n : ℕ) :
     AddCommGrpCat.of (E₂ f F 0 (n + 1)) ⟶ AddCommGrpCat.of (E₂ f F 2 n) :=
-  let I := injectiveResolution F
   (resolutionExtZeroIso f I (n + 1)).hom ≫
     ExtTransgression.cochainTransgression (pushedResolution f I) n (integralSheaf Y) ≫
       (extFunctorObj (integralSheaf Y) 2).map ((pushedResolution f I).homologyπ n) ≫
         (resolutionCohomologyIso f I n 2).hom
 
+/-- The resolution-level two-step transgression
+`H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)` as a morphism of additive groups, using Mathlib's chosen
+injective resolution. -/
+def resolutionTransgressionMorphism (F : AbelianSheaf X) (n : ℕ) :
+    AddCommGrpCat.of (E₂ f F 0 (n + 1)) ⟶ AddCommGrpCat.of (E₂ f F 2 n) :=
+  resolutionTransgressionMorphismOfResolution f (injectiveResolution F) n
+
+/-- The resolution transgression associated to a specified injective resolution, as an additive
+homomorphism. -/
+def resolutionTransgressionAddOfResolution {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (n : ℕ) :
+    E₂ f F 0 (n + 1) →+ E₂ f F 2 n :=
+  (resolutionTransgressionMorphismOfResolution f I n).hom
+
 /-- The resolution transgression as an additive homomorphism. -/
 def resolutionTransgressionAdd (F : AbelianSheaf X) (n : ℕ) :
     E₂ f F 0 (n + 1) →+ E₂ f F 2 n :=
   (resolutionTransgressionMorphism f F n).hom
+
+/-- The resolution transgression associated to a specified injective resolution, in
+integral-linear form. -/
+def resolutionTransgressionOfResolution {F : AbelianSheaf X}
+    (I : InjectiveResolution F) (n : ℕ) :
+    E₂ f F 0 (n + 1) →ₗ[ℤ] E₂ f F 2 n :=
+  (resolutionTransgressionAddOfResolution f I n).toIntLinearMap
 
 /-- The resolution transgression in integral-linear form. -/
 def resolutionTransgression (F : AbelianSheaf X) (n : ℕ) :

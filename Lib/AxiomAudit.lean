@@ -1552,10 +1552,16 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
 #check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
 #print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
 #check CategoryTheory.Sheaf.Leray.resolutionTransgression
 #print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
 
