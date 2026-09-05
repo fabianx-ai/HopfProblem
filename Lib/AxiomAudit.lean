@@ -6154,3 +6154,26 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor_obj
 #check TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj
 #print axioms TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Ordered` -/
+
+#check TopologicalSpace.OpenCover.OrderedSimplex
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex
+#check TopologicalSpace.OpenCover.OrderedSimplex.face
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face
+#check TopologicalSpace.OpenCover.OrderedSimplex.face_apply
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face_apply
+#check TopologicalSpace.OpenCover.OrderedSimplex.face_face_swap
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face_face_swap
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection
+#check TopologicalSpace.OpenCover.OrderedSimplex.coe_intersection
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.coe_intersection
+#check TopologicalSpace.OpenCover.OrderedSimplex.mem_intersection_iff
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.mem_intersection_iff
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_le
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_le
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_le_face
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_le_face
+#check TopologicalSpace.OpenCover.OrderedSimplex.faceHom
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.faceHom
