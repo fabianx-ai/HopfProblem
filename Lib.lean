@@ -365,6 +365,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovLowerEndpointNormalizat
 import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Normalized
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 import Lib.Topology.Sheaves.DependentFunctionSheaf
+import Lib.Topology.Sheaves.Cohomology.GodementEnvelope
 
 /-!
 # Reusable extracted library

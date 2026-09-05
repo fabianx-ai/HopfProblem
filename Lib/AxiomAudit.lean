@@ -3275,6 +3275,25 @@ is an evidence command rather than library content.
 #check TopCat.DependentFunctionSheaf.sheaf_isFlasque
 #print axioms TopCat.DependentFunctionSheaf.sheaf_isFlasque
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.GodementEnvelope` -/
+
+#check TopCat.SheafCohomology.Godement.stalkFiber
+#print axioms TopCat.SheafCohomology.Godement.stalkFiber
+#check TopCat.SheafCohomology.Godement.envelope
+#print axioms TopCat.SheafCohomology.Godement.envelope
+#check TopCat.SheafCohomology.Godement.germEmbeddingPresheaf
+#print axioms TopCat.SheafCohomology.Godement.germEmbeddingPresheaf
+#check TopCat.SheafCohomology.Godement.germEmbedding
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding
+#check TopCat.SheafCohomology.Godement.germEmbedding_app_apply
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_app_apply
+#check TopCat.SheafCohomology.Godement.germEmbedding_app_injective
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_app_injective
+#check TopCat.SheafCohomology.Godement.germEmbedding_mono
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_mono
+#check TopCat.SheafCohomology.Godement.envelope_isFlasque
+#print axioms TopCat.SheafCohomology.Godement.envelope_isFlasque
+
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
 #check TopCat.SheafH1.subsingleton_h1_of_isFlasque
