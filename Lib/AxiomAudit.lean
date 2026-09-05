@@ -1579,6 +1579,14 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone_hom_hom₂
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₁Iso
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₁Iso
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₃Iso
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₃Iso
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
 #print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
 #check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₃

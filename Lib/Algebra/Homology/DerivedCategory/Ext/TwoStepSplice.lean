@@ -107,6 +107,31 @@ noncomputable def spliceTriangle : Triangle (DerivedCategory C) := by
     (compositeTriangle_distinguished R)
   exact H.triangle
 
+/-- The first object of the chosen octahedral splice is literally the first coefficient object,
+placed in degree zero and shifted once.  This named equality avoids unfolding
+`Triangulated.someOctahedron` merely to expose the endpoint. -/
+lemma spliceTriangle_obj₁ :
+    (spliceTriangle R).obj₁ =
+      ((DerivedCategory.singleFunctor C 0).obj R.F)⟦(1 : ℤ)⟧ := rfl
+
+/-- The third object of the chosen octahedral splice is literally the degree-zero single object
+on the terminal coefficient of the two-step resolution. -/
+lemma spliceTriangle_obj₃ :
+    (spliceTriangle R).obj₃ =
+      (DerivedCategory.singleFunctor C 0).obj R.complex.X₃ := rfl
+
+/-- Isomorphism form of `spliceTriangle_obj₁`, convenient for functorial transport. -/
+noncomputable def spliceTriangleObj₁Iso :
+    (spliceTriangle R).obj₁ ≅
+      ((DerivedCategory.singleFunctor C 0).obj R.F)⟦(1 : ℤ)⟧ :=
+  Iso.refl _
+
+/-- Isomorphism form of `spliceTriangle_obj₃`, convenient for functorial transport. -/
+noncomputable def spliceTriangleObj₃Iso :
+    (spliceTriangle R).obj₃ ≅
+      (DerivedCategory.singleFunctor C 0).obj R.complex.X₃ :=
+  Iso.refl _
+
 /-- The octahedral splice triangle is distinguished. -/
 lemma spliceTriangle_distinguished :
     spliceTriangle R ∈ distTriang (DerivedCategory C) := by
