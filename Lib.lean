@@ -395,6 +395,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution
 import Lib.Topology.Sheaves.Cohomology.Cech.FlasqueAcyclic
 import Lib.Topology.Sheaves.Cohomology.Cech.ShrinkableRefinement
 import Lib.Topology.Sheaves.Cohomology.Cech.LocallyZeroCochain
+import Lib.Topology.Sheaves.Cohomology.Cech.LocalLifting
 
 /-!
 # Reusable extracted library

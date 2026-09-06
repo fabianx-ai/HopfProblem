@@ -6446,6 +6446,21 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocalLifting` -/
+
+#check TopCat.Sheaf.sectionQuotientPresheaf
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf
+#check TopCat.Sheaf.sectionQuotientPresheafProjection
+#print axioms TopCat.Sheaf.sectionQuotientPresheafProjection
+#check TopCat.Sheaf.sectionQuotientPresheaf_isLocallyZero
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf_isLocallyZero
+#check TopCat.Sheaf.sectionQuotientPresheaf_empty_isZero
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf_empty_isZero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_sectionQuotient_cochain_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_sectionQuotient_cochain_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cochain_lift
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cochain_lift
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing` -/
 
 #check TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE
