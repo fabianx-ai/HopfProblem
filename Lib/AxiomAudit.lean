@@ -6535,6 +6535,25 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
 #print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.FlasqueAcyclic` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.intersectionSectionsSheaf_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.intersectionSectionsSheaf_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheaf_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheaf_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafCycle_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafCycle_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.cocycle_boundary_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cocycle_boundary_of_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.exactAt_succ_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.exactAt_succ_of_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_isFlasque
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_isFlasque
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
 
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
