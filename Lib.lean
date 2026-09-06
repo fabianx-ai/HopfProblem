@@ -397,6 +397,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.ShrinkableRefinement
 import Lib.Topology.Sheaves.Cohomology.Cech.LocallyZeroCochain
 import Lib.Topology.Sheaves.Cohomology.Cech.LocalLifting
 import Lib.Topology.Sheaves.Cohomology.Cech.ConnectingHom
+import Lib.Topology.Sheaves.Cohomology.Cech.LongExact
 
 /-!
 # Reusable extracted library

@@ -6670,6 +6670,15 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LongExact` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCoefficientMap_injective
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCoefficientMap_injective
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex_exact
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
