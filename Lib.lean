@@ -390,6 +390,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing
 import Lib.Topology.Sheaves.Cohomology.Cech.LocallyFiniteRefinement
 import Lib.Topology.Sheaves.Cohomology.Cech.Coefficients
 import Lib.Topology.Sheaves.Cohomology.Cech.ColimitCoefficients
+import Lib.Topology.Sheaves.Cohomology.Cech.DegreeZero
 
 /-!
 # Reusable extracted library
