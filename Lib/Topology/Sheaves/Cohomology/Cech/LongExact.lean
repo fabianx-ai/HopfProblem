@@ -1008,4 +1008,259 @@ theorem coefficientConnectingCechShortComplex_exact
   rw [ShortComplex.ab_exact_iff_function_exact]
   exact exactAtRight_function hS q
 
+/-! ## Exactness at the following left term -/
+
+/-- Applying the left coefficient map to the descended class of any boundary presentation gives
+zero: its concrete coefficient image is the differential of the chosen middle lift. -/
+theorem BoundaryPresentation.cechClass_coefficient_eq_zero
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    (hS : S.ShortExact) {U : SetOpenCover X} {q : ℕ}
+    {c : CechCocycle S.X₃.presheaf U q}
+    (P : BoundaryPresentation S U q c) :
+    cechCohomologyCoefficientMap S.f.hom (q + 1) (P.cechClass hS) = 0 := by
+  let a := P.descendedCocycle hS
+  let ua := coefficientCocycle S.f.hom P.cover (q + 1) a
+  have hua : ua.1 = OrderedCech.differential S.X₂.presheaf P.cover.family q P.lift :=
+    P.descended_eq
+  have hfixed : cocycleClass S.X₂.presheaf P.cover (q + 1) ua = 0 := by
+    apply (cocycleClass_eq_zero_iff S.X₂.presheaf P.cover (q + 1) ua).2
+    let K := normalizedCechComplex (A := AddCommGrpCat.{u}) S.X₂.presheaf P.cover
+    change ∃ b : K.X ((ComplexShape.up ℕ).prev (q + 1)),
+      K.d ((ComplexShape.up ℕ).prev (q + 1)) (q + 1) b = ua.1
+    rw [CochainComplex.prev_nat_succ]
+    refine ⟨P.lift, ?_⟩
+    simpa only [K, normalizedCechComplex, OrderedCech.complex_d] using hua.symm
+  change cechCohomologyCoefficientMap S.f.hom (q + 1)
+      (toCechCohomology S.X₁.presheaf (q + 1) P.cover
+        (cocycleClass S.X₁.presheaf P.cover (q + 1) a)) = 0
+  rw [cechCohomologyCoefficientMap_cocycleClass]
+  change toCechCohomology S.X₂.presheaf (q + 1) P.cover
+    (cocycleClass S.X₂.presheaf P.cover (q + 1) ua) = 0
+  rw [hfixed]
+  exact map_zero _
+
+/-- The connecting homomorphism followed by the left coefficient map in the next degree is
+zero. -/
+theorem connectingHom_comp_coefficientMap
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    connectingHom hS q ≫
+      cechCohomologyCoefficientMap S.f.hom (q + 1) = 0 := by
+  apply AddCommGrpCat.hom_ext
+  apply AddMonoidHom.ext
+  intro x
+  change cechCohomologyCoefficientMap S.f.hom (q + 1)
+    (connectingHom hS q x) = 0
+  obtain ⟨U, c, P, _, hconnecting⟩ :=
+    connectingHom_exists_boundaryPresentation hS q x
+  rw [hconnecting]
+  exact P.cechClass_coefficient_eq_zero hS
+
+/-- If a refined left cocycle becomes the differential of a middle cochain, the right
+coefficient image of that cochain is a cocycle. -/
+def rightCocycleOfLeftBoundary
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X))
+    {U V : SetOpenCover X} (r : Refinement V.family U.family) (q : ℕ)
+    (a : CechCocycle S.X₁.presheaf U (q + 1))
+    (b : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf V.family q)
+    (hb : OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (refineCocycle S.X₁.presheaf r (q + 1) a).1 =
+      OrderedCech.differential S.X₂.presheaf V.family q b) :
+    CechCocycle S.X₃.presheaf V q :=
+  ⟨OrderedCech.coefficientMapDegree S.g.hom V.family q b, by
+    change OrderedCech.differential S.X₃.presheaf V.family q
+      (OrderedCech.coefficientMapDegree S.g.hom V.family q b) = 0
+    have hcoefficient :
+        OrderedCech.differential S.X₃.presheaf V.family q
+            (OrderedCech.coefficientMapDegree S.g.hom V.family q b) =
+          OrderedCech.coefficientMapDegree S.g.hom V.family (q + 1)
+            (OrderedCech.differential S.X₂.presheaf V.family q b) := by
+      simpa only [ConcreteCategory.comp_apply] using
+        ConcreteCategory.congr_hom
+          (OrderedCech.coefficientMapDegree_comp_differential
+            S.g.hom V.family q) b
+    rw [hcoefficient, ← hb]
+    change ((cochainShortComplex S V (q + 1)).f ≫
+      (cochainShortComplex S V (q + 1)).g)
+        (refineCocycle S.X₁.presheaf r (q + 1) a).1 = 0
+    rw [(cochainShortComplex S V (q + 1)).zero]
+    rfl⟩
+
+/-- The underlying cochain of `rightCocycleOfLeftBoundary` is the literal right coefficient
+image of the chosen middle primitive. -/
+theorem rightCocycleOfLeftBoundary_coe
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X))
+    {U V : SetOpenCover X} (r : Refinement V.family U.family) (q : ℕ)
+    (a : CechCocycle S.X₁.presheaf U (q + 1))
+    (b : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf V.family q)
+    (hb : OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (refineCocycle S.X₁.presheaf r (q + 1) a).1 =
+      OrderedCech.differential S.X₂.presheaf V.family q b) :
+    (rightCocycleOfLeftBoundary S r q a b hb).1 =
+      OrderedCech.coefficientMapDegree S.g.hom V.family q b :=
+  rfl
+
+/-- The middle primitive and the refined left cocycle form a boundary presentation for the
+associated right cocycle. -/
+def boundaryPresentationOfLeftBoundary
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X))
+    {U V : SetOpenCover X} (r : Refinement V.family U.family) (q : ℕ)
+    (a : CechCocycle S.X₁.presheaf U (q + 1))
+    (b : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf V.family q)
+    (hb : OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (refineCocycle S.X₁.presheaf r (q + 1) a).1 =
+      OrderedCech.differential S.X₂.presheaf V.family q b) :
+    BoundaryPresentation S V q (rightCocycleOfLeftBoundary S r q a b hb) where
+  cover := V
+  refinement := Refinement.refl V.family
+  lift := b
+  descended := (refineCocycle S.X₁.presheaf r (q + 1) a).1
+  lift_eq := by
+    have hrefinement := congrArg (fun k => k.f q)
+      (OrderedCech.refinementMap_refl S.X₃.presheaf V.family)
+    exact (ConcreteCategory.congr_hom hrefinement
+      (OrderedCech.coefficientMapDegree S.g.hom V.family q b)).symm
+  descended_eq := hb
+
+/-- The boundary presentation built from a killed left cocycle has descended class equal to the
+original direct-limit class. -/
+theorem boundaryPresentationOfLeftBoundary_cechClass
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    (hS : S.ShortExact) {U V : SetOpenCover X}
+    (r : Refinement V.family U.family) (q : ℕ)
+    (a : CechCocycle S.X₁.presheaf U (q + 1))
+    (b : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf V.family q)
+    (hb : OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (refineCocycle S.X₁.presheaf r (q + 1) a).1 =
+      OrderedCech.differential S.X₂.presheaf V.family q b) :
+    (boundaryPresentationOfLeftBoundary S r q a b hb).cechClass hS =
+      toCechCohomology S.X₁.presheaf (q + 1) U
+        (cocycleClass S.X₁.presheaf U (q + 1) a) := by
+  let P := boundaryPresentationOfLeftBoundary S r q a b hb
+  have hdescended : P.descendedCocycle hS =
+      refineCocycle S.X₁.presheaf r (q + 1) a := by
+    apply Subtype.ext
+    rfl
+  let h : U ≤ V := ⟨r⟩
+  calc
+    P.cechClass hS =
+        toCechCohomology S.X₁.presheaf (q + 1) V
+          (cocycleClass S.X₁.presheaf V (q + 1)
+            (P.descendedCocycle hS)) := rfl
+    _ = toCechCohomology S.X₁.presheaf (q + 1) V
+        (cocycleClass S.X₁.presheaf V (q + 1)
+          (refineCocycle S.X₁.presheaf r (q + 1) a)) := by
+            rw [hdescended]
+    _ = toCechCohomology S.X₁.presheaf (q + 1) U
+        (cocycleClass S.X₁.presheaf U (q + 1) a) := by
+          rw [← normalizedCechCohomologyMap_cocycleClass
+            S.X₁.presheaf h r (q + 1) a]
+          simpa only [ConcreteCategory.comp_apply] using
+            ConcreteCategory.congr_hom
+              (normalizedCechCohomologyMap_comp_toCechCohomology
+                S.X₁.presheaf (q + 1) h)
+              (cocycleClass S.X₁.presheaf U (q + 1) a)
+
+/-- A positive-degree left class killed by the next coefficient map is the connecting image of
+a concrete right cocycle in the preceding degree. -/
+theorem exists_connecting_preimage_succ
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
+    (a : CechCocycle S.X₁.presheaf U (q + 1))
+    (ha : cechCohomologyCoefficientMap S.f.hom (q + 1)
+      (toCechCohomology S.X₁.presheaf (q + 1) U
+        (cocycleClass S.X₁.presheaf U (q + 1) a)) = 0) :
+    ∃ (V : SetOpenCover X) (c : CechCocycle S.X₃.presheaf V q),
+      connectingHom hS q
+          (toCechCohomology S.X₃.presheaf q V
+            (cocycleClass S.X₃.presheaf V q c)) =
+        toCechCohomology S.X₁.presheaf (q + 1) U
+          (cocycleClass S.X₁.presheaf U (q + 1) a) := by
+  obtain ⟨V, r, b, hb⟩ :=
+    exists_refinement_coefficientCocycle_eq_differential S.f.hom U q a ha
+  let c := rightCocycleOfLeftBoundary S r q a b hb
+  let P := boundaryPresentationOfLeftBoundary S r q a b hb
+  refine ⟨V, c, ?_⟩
+  calc
+    connectingHom hS q
+        (toCechCohomology S.X₃.presheaf q V
+          (cocycleClass S.X₃.presheaf V q c)) =
+      P.cechClass hS :=
+        connectingHom_cocycleClass_eq_cechClass hS V q c P
+    _ = toCechCohomology S.X₁.presheaf (q + 1) U
+        (cocycleClass S.X₁.presheaf U (q + 1) a) :=
+          boundaryPresentationOfLeftBoundary_cechClass hS r q a b hb
+
+/-- Degree-zero connecting specialization of the positive-degree left-class preimage theorem. -/
+theorem exists_connecting_preimage_degree_zero
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X)
+    (a : CechCocycle S.X₁.presheaf U 1)
+    (ha : cechCohomologyCoefficientMap S.f.hom 1
+      (toCechCohomology S.X₁.presheaf 1 U
+        (cocycleClass S.X₁.presheaf U 1 a)) = 0) :
+    ∃ (V : SetOpenCover X) (c : CechCocycle S.X₃.presheaf V 0),
+      connectingHom hS 0
+          (toCechCohomology S.X₃.presheaf 0 V
+            (cocycleClass S.X₃.presheaf V 0 c)) =
+        toCechCohomology S.X₁.presheaf 1 U
+          (cocycleClass S.X₁.presheaf U 1 a) :=
+  exists_connecting_preimage_succ hS U 0 a ha
+
+/-- Exactness of the connecting homomorphism and the following left coefficient map. -/
+theorem exactAtLeftSucc_function
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    Function.Exact (connectingHom hS q)
+      (cechCohomologyCoefficientMap S.f.hom (q + 1)) := by
+  intro x
+  constructor
+  · intro hx
+    obtain ⟨U, a, ha⟩ :=
+      cechCohomology_exists_cocycle_rep S.X₁.presheaf (q + 1) x
+    have hkernel : cechCohomologyCoefficientMap S.f.hom (q + 1)
+        (toCechCohomology S.X₁.presheaf (q + 1) U
+          (cocycleClass S.X₁.presheaf U (q + 1) a)) = 0 := by
+      rw [ha]
+      exact hx
+    obtain ⟨V, c, hc⟩ := exists_connecting_preimage_succ hS U q a hkernel
+    exact ⟨toCechCohomology S.X₃.presheaf q V
+      (cocycleClass S.X₃.presheaf V q c), hc.trans ha⟩
+  · rintro ⟨y, rfl⟩
+    calc
+      cechCohomologyCoefficientMap S.f.hom (q + 1) (connectingHom hS q y) =
+        (0 : cechCohomology S.X₃.presheaf q ⟶
+          cechCohomology S.X₂.presheaf (q + 1)) y := by
+            simpa only [ConcreteCategory.comp_apply] using
+              ConcreteCategory.congr_hom (connectingHom_comp_coefficientMap hS q) y
+      _ = 0 := AddMonoidHom.zero_apply _
+
+/-- The categorical short complex formed by a connecting homomorphism and the next left
+coefficient map. -/
+noncomputable def connectingCoefficientCechShortComplex
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) : ShortComplex AddCommGrpCat.{u} :=
+  ShortComplex.mk (connectingHom hS q)
+    (cechCohomologyCoefficientMap S.f.hom (q + 1))
+    (connectingHom_comp_coefficientMap hS q)
+
+/-- Categorical exactness of a connecting homomorphism followed by the next left coefficient
+map. -/
+theorem connectingCoefficientCechShortComplex_exact
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    (connectingCoefficientCechShortComplex hS q).Exact := by
+  rw [ShortComplex.ab_exact_iff_function_exact]
+  exact exactAtLeftSucc_function hS q
+
 end TopologicalSpace.OpenCover.SetOpenCover
