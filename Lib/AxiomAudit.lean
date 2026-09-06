@@ -6558,6 +6558,30 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_boundaryPresentation
 #check TopologicalSpace.OpenCover.SetOpenCover.chosenBoundaryPresentation
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.chosenBoundaryPresentation
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_zero_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_zero_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_of_sub_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_of_sub_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.refineCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.refineCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.homologyMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.homologyMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine_descendedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine_descendedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_zero
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DegreeZero` -/
 

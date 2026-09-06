@@ -209,6 +209,117 @@ def cocycleClass (F : TopCat.Presheaf AddCommGrpCat.{u} X)
     ((normalizedCechComplex (A := AddCommGrpCat.{u}) F U).sc q).homologyπ).hom).comp
       (cocycleKernelEquiv F U q).toAddMonoidHom
 
+/-- A concrete cocycle represents zero exactly when it is the differential of a cochain in
+the preceding object of the normalized Čech complex. -/
+theorem cocycleClass_eq_zero_iff
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X)
+    (U : SetOpenCover X) (q : ℕ) (c : CechCocycle F U q) :
+    cocycleClass F U q c = 0 ↔
+      ∃ b : ((normalizedCechComplex F U).sc q).X₁,
+        ((normalizedCechComplex F U).sc q).f b = c.1 := by
+  let K := normalizedCechComplex (A := AddCommGrpCat.{u}) F U
+  let T := K.sc q
+  let c' : AddMonoidHom.ker T.g.hom := cocycleKernelEquiv F U q c
+  have hclass : T.abHomologyIso.hom (cocycleClass F U q c) =
+      QuotientAddGroup.mk' T.abToCycles.range c' := by
+    have h : T.abCyclesIso.inv ≫ T.homologyπ ≫ T.abHomologyIso.hom =
+        AddCommGrpCat.ofHom (QuotientAddGroup.mk' T.abToCycles.range) := by
+      change T.abLeftHomologyData.cyclesIso.inv ≫ T.homologyπ ≫
+        T.abLeftHomologyData.homologyIso.hom = T.abLeftHomologyData.π
+      rw [T.abLeftHomologyData.homologyπ_comp_homologyIso_hom,
+        ← Category.assoc, Iso.inv_hom_id, Category.id_comp]
+    exact ConcreteCategory.congr_hom h c'
+  constructor
+  · intro hc
+    have hq : QuotientAddGroup.mk' T.abToCycles.range c' = 0 :=
+      hclass.symm.trans
+        ((congrArg T.abHomologyIso.hom hc).trans T.abHomologyIso.hom.hom.map_zero)
+    have hb : c' ∈ T.abToCycles.range :=
+      (QuotientAddGroup.eq_zero_iff _).1 hq
+    obtain ⟨b, hb⟩ := hb
+    exact ⟨b, congrArg Subtype.val hb⟩
+  · rintro ⟨b, hb⟩
+    have hq : QuotientAddGroup.mk' T.abToCycles.range c' = 0 :=
+      (QuotientAddGroup.eq_zero_iff _).2 ⟨b, Subtype.ext hb⟩
+    apply (AddCommGrpCat.mono_iff_injective T.abHomologyIso.hom).1 inferInstance
+    exact (hclass.trans hq).trans T.abHomologyIso.hom.hom.map_zero.symm
+
+/-- Two positive-degree cocycles which differ by the differential of a cochain represent the
+same fixed-cover cohomology class. -/
+theorem cocycleClass_eq_of_sub_eq_differential
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X)
+    (U : SetOpenCover X) (q : ℕ) (c c' : CechCocycle F U (q + 1))
+    (b : OrderedCech.object (A := AddCommGrpCat.{u}) (X := X) F U.family q)
+    (h : c.1 - c'.1 = OrderedCech.differential F U.family q b) :
+    cocycleClass F U (q + 1) c = cocycleClass F U (q + 1) c' := by
+  rw [← sub_eq_zero, ← map_sub]
+  apply (cocycleClass_eq_zero_iff F U (q + 1) (c - c')).2
+  let K := normalizedCechComplex (A := AddCommGrpCat.{u}) F U
+  change ∃ b' : K.X ((ComplexShape.up ℕ).prev (q + 1)),
+    K.d ((ComplexShape.up ℕ).prev (q + 1)) (q + 1) b' = c.1 - c'.1
+  rw [CochainComplex.prev_nat_succ]
+  refine ⟨b, ?_⟩
+  simpa only [K, normalizedCechComplex, OrderedCech.complex_d] using h.symm
+
+/-- Pullback of concrete cocycles along a chosen refinement. -/
+def refineCocycle (F : TopCat.Presheaf AddCommGrpCat.{u} X)
+    {U V : SetOpenCover X} (r : Refinement V.family U.family) (q : ℕ) :
+    CechCocycle F U q →+ CechCocycle F V q where
+  toFun c := ⟨OrderedCech.refinementMapDegree F r q c.1, by
+    have hcomm := OrderedCech.refinementMapDegree_comp_differential F r q
+    calc
+      OrderedCech.differential F V.family q
+          (OrderedCech.refinementMapDegree F r q c.1) =
+        OrderedCech.refinementMapDegree F r (q + 1)
+          (OrderedCech.differential F U.family q c.1) := by
+            exact ConcreteCategory.congr_hom hcomm c.1
+      _ = 0 := by rw [c.2]; exact map_zero _⟩
+  map_zero' := by
+    apply Subtype.ext
+    exact map_zero _
+  map_add' c c' := by
+    apply Subtype.ext
+    exact map_add _ _ _
+
+/-- Refinement sends the class of a concrete cocycle to the class of its literal pullback. -/
+theorem homologyMap_cocycleClass
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X)
+    {U V : SetOpenCover X} (r : Refinement V.family U.family) (q : ℕ)
+    (c : CechCocycle F U q) :
+    HomologicalComplex.homologyMap (OrderedCech.refinementMap F r) q
+        (cocycleClass F U q c) =
+      cocycleClass F V q (refineCocycle F r q c) := by
+  let K := normalizedCechComplex (A := AddCommGrpCat.{u}) F U
+  let L := normalizedCechComplex (A := AddCommGrpCat.{u}) F V
+  let φ : K ⟶ L := OrderedCech.refinementMap F r
+  let ψ := (HomologicalComplex.shortComplexFunctor AddCommGrpCat.{u}
+    (ComplexShape.up ℕ) q).map φ
+  let z := cocycleKernelEquiv F U q c
+  let w := cocycleKernelEquiv F V q (refineCocycle F r q c)
+  have hcycles : ShortComplex.cyclesMap ψ ((K.sc q).abCyclesIso.inv z) =
+      (L.sc q).abCyclesIso.inv w := by
+    apply (AddCommGrpCat.mono_iff_injective (L.sc q).iCycles).1 inferInstance
+    rw [← ConcreteCategory.comp_apply, ShortComplex.cyclesMap_i,
+      ConcreteCategory.comp_apply, (K.sc q).abCyclesIso_inv_apply_iCycles,
+      (L.sc q).abCyclesIso_inv_apply_iCycles]
+    rfl
+  change ShortComplex.homologyMap ψ
+      ((K.sc q).homologyπ ((K.sc q).abCyclesIso.inv z)) =
+    (L.sc q).homologyπ ((L.sc q).abCyclesIso.inv w)
+  rw [← ConcreteCategory.comp_apply, ShortComplex.homologyπ_naturality,
+    ConcreteCategory.comp_apply, hcycles]
+
+/-- The thin-cover transition map has the same concrete-cocycle formula for any chosen
+refinement function witnessing it. -/
+theorem normalizedCechCohomologyMap_cocycleClass
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X)
+    {U V : SetOpenCover X} (h : U ≤ V)
+    (r : Refinement V.family U.family) (q : ℕ) (c : CechCocycle F U q) :
+    normalizedCechCohomologyMap F h q (cocycleClass F U q c) =
+      cocycleClass F V q (refineCocycle F r q c) := by
+  rw [normalizedCechCohomologyMap_eq F h r q]
+  exact homologyMap_cocycleClass F r q c
+
 /-! ## Lift--differentiate--descend presentations -/
 
 /-- A lift--differentiate--descend presentation of the connecting class of one fixed-cover
@@ -232,10 +343,66 @@ structure BoundaryPresentation
   descended_eq : OrderedCech.coefficientMapDegree S.f.hom cover.family (q + 1) descended =
     OrderedCech.differential S.X₂.presheaf cover.family q lift
 
+private structure BoundaryData
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X))
+    (U V : SetOpenCover X) (q : ℕ) (c : CechCocycle S.X₃.presheaf U q) where
+  refinement : Refinement V.family U.family
+  lift : OrderedCech.object (A := AddCommGrpCat.{u}) S.X₂.presheaf V.family q
+  descended : OrderedCech.object (A := AddCommGrpCat.{u}) S.X₁.presheaf V.family (q + 1)
+  lift_eq : OrderedCech.coefficientMapDegree S.g.hom V.family q lift =
+    OrderedCech.refinementMapDegree S.X₃.presheaf refinement q c.1
+  descended_eq : OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1) descended =
+    OrderedCech.differential S.X₂.presheaf V.family q lift
+
+private def BoundaryData.toPresentation
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U V : SetOpenCover X} {q : ℕ} {c : CechCocycle S.X₃.presheaf U q}
+    (D : BoundaryData S U V q c) : BoundaryPresentation S U q c where
+  cover := V
+  refinement := D.refinement
+  lift := D.lift
+  descended := D.descended
+  lift_eq := D.lift_eq
+  descended_eq := D.descended_eq
+
+private def BoundaryPresentation.toData
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U : SetOpenCover X} {q : ℕ} {c : CechCocycle S.X₃.presheaf U q}
+    (P : BoundaryPresentation S U q c) : BoundaryData S U P.cover q c where
+  refinement := P.refinement
+  lift := P.lift
+  descended := P.descended
+  lift_eq := P.lift_eq
+  descended_eq := P.descended_eq
+
 namespace BoundaryPresentation
 
 variable {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
 variable {U : SetOpenCover X} {q : ℕ} {c : CechCocycle S.X₃.presheaf U q}
+
+private theorem coefficient_refinement_apply
+    {P Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    {V W : SetOpenCover X} (f : P ⟶ Q)
+    (r : Refinement W.family V.family) (n : ℕ)
+    (x : OrderedCech.object (A := AddCommGrpCat.{u}) P V.family n) :
+    OrderedCech.coefficientMapDegree f W.family n
+        (OrderedCech.refinementMapDegree P r n x) =
+      OrderedCech.refinementMapDegree Q r n
+        (OrderedCech.coefficientMapDegree f V.family n x) := by
+  have h := congrArg (fun k => k.f n)
+    (OrderedCech.coefficientMap_comp_refinementMap f r)
+  exact (ConcreteCategory.congr_hom h x).symm
+
+private theorem refinement_comp_apply
+    (P : TopCat.Presheaf AddCommGrpCat.{u} X)
+    {V W Z : SetOpenCover X}
+    (r : Refinement W.family V.family) (s : Refinement Z.family W.family)
+    (n : ℕ) (x : OrderedCech.object (A := AddCommGrpCat.{u}) P V.family n) :
+    OrderedCech.refinementMapDegree P (r.comp s) n x =
+      OrderedCech.refinementMapDegree P s n
+        (OrderedCech.refinementMapDegree P r n x) := by
+  have h := congrArg (fun k => k.f n) (OrderedCech.refinementMap_comp P r s)
+  exact ConcreteCategory.congr_hom h x
 
 /-- The cochain descended in (C21) is a cocycle: applying the injective left coefficient map
 reduces its differential to `d²` of the middle-sheaf lift. -/
@@ -275,6 +442,255 @@ def cechClass (hS : S.ShortExact) (P : BoundaryPresentation S U q c) :
     ToType (cechCohomology S.X₁.presheaf (q + 1)) :=
   toCechCohomology S.X₁.presheaf (q + 1) P.cover
     (cocycleClass S.X₁.presheaf P.cover (q + 1) (P.descendedCocycle hS))
+
+/-- Pulling every cochain in a boundary presentation to a further refinement gives another
+presentation of the same original cocycle. -/
+def refine (P : BoundaryPresentation S U q c)
+    (W : SetOpenCover X) (s : Refinement W.family P.cover.family) :
+    BoundaryPresentation S U q c where
+  cover := W
+  refinement := P.refinement.comp s
+  lift := OrderedCech.refinementMapDegree S.X₂.presheaf s q P.lift
+  descended := OrderedCech.refinementMapDegree S.X₁.presheaf s (q + 1) P.descended
+  lift_eq := by
+    calc
+      OrderedCech.coefficientMapDegree S.g.hom W.family q
+          (OrderedCech.refinementMapDegree S.X₂.presheaf s q P.lift) =
+        OrderedCech.refinementMapDegree S.X₃.presheaf s q
+          (OrderedCech.coefficientMapDegree S.g.hom P.cover.family q P.lift) :=
+            coefficient_refinement_apply S.g.hom s q P.lift
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf s q
+          (OrderedCech.refinementMapDegree S.X₃.presheaf P.refinement q c.1) := by
+            rw [P.lift_eq]
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf (P.refinement.comp s) q c.1 :=
+            (refinement_comp_apply S.X₃.presheaf P.refinement s q c.1).symm
+  descended_eq := by
+    calc
+      OrderedCech.coefficientMapDegree S.f.hom W.family (q + 1)
+          (OrderedCech.refinementMapDegree S.X₁.presheaf s (q + 1) P.descended) =
+        OrderedCech.refinementMapDegree S.X₂.presheaf s (q + 1)
+          (OrderedCech.coefficientMapDegree S.f.hom P.cover.family (q + 1) P.descended) :=
+            coefficient_refinement_apply S.f.hom s (q + 1) P.descended
+      _ = OrderedCech.refinementMapDegree S.X₂.presheaf s (q + 1)
+          (OrderedCech.differential S.X₂.presheaf P.cover.family q P.lift) := by
+            rw [P.descended_eq]
+      _ = OrderedCech.differential S.X₂.presheaf W.family q
+          (OrderedCech.refinementMapDegree S.X₂.presheaf s q P.lift) := by
+            exact (ConcreteCategory.congr_hom
+              (OrderedCech.refinementMapDegree_comp_differential
+                S.X₂.presheaf s q) P.lift).symm
+
+@[simp]
+theorem refine_descendedCocycle (hS : S.ShortExact)
+    (P : BoundaryPresentation S U q c)
+    (W : SetOpenCover X) (s : Refinement W.family P.cover.family) :
+    (P.refine W s).descendedCocycle hS =
+      refineCocycle S.X₁.presheaf s (q + 1) (P.descendedCocycle hS) := by
+  apply Subtype.ext
+  rfl
+
+/-- Further refinement does not change the direct-limit class of a boundary presentation. -/
+theorem cechClass_refine (hS : S.ShortExact)
+    (P : BoundaryPresentation S U q c)
+    (W : SetOpenCover X) (s : Refinement W.family P.cover.family) :
+    (P.refine W s).cechClass hS = P.cechClass hS := by
+  let h : P.cover ≤ W := ⟨s⟩
+  calc
+    (P.refine W s).cechClass hS =
+        toCechCohomology S.X₁.presheaf (q + 1) W
+          (normalizedCechCohomologyMap S.X₁.presheaf h (q + 1)
+            (cocycleClass S.X₁.presheaf P.cover (q + 1)
+              (P.descendedCocycle hS))) := by
+      rw [normalizedCechCohomologyMap_cocycleClass
+        S.X₁.presheaf h s (q + 1) (P.descendedCocycle hS)]
+      rfl
+    _ = P.cechClass hS := by
+      simpa only [ConcreteCategory.comp_apply, cechClass] using ConcreteCategory.congr_hom
+        (normalizedCechCohomologyMap_comp_toCechCohomology
+          S.X₁.presheaf (q + 1) h)
+        (cocycleClass S.X₁.presheaf P.cover (q + 1)
+          (P.descendedCocycle hS))
+
+private theorem exists_descended_sub_eq_differential
+    (hS : S.ShortExact) {V : SetOpenCover X}
+    (D₁ D₂ : BoundaryData S U V q c)
+    (z : OrderedCech.object (A := AddCommGrpCat.{u}) S.X₂.presheaf V.family q)
+    (hkernel : OrderedCech.coefficientMapDegree S.g.hom V.family q
+      (D₂.lift - D₁.lift - z) = 0)
+    (hz : OrderedCech.differential S.X₂.presheaf V.family q z = 0) :
+    ∃ e : OrderedCech.object (A := AddCommGrpCat.{u}) S.X₁.presheaf V.family q,
+      D₂.descended - D₁.descended =
+        OrderedCech.differential S.X₁.presheaf V.family q e := by
+  obtain ⟨e, he⟩ :=
+    ((cochainShortComplex S V q).ab_exact_iff.1
+      (cochainShortComplex_exact hS V q) (D₂.lift - D₁.lift - z) hkernel)
+  change OrderedCech.coefficientMapDegree S.f.hom V.family q e =
+    D₂.lift - D₁.lift - z at he
+  refine ⟨e, ?_⟩
+  apply cochain_f_injective hS V (q + 1)
+  calc
+    OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (D₂.descended - D₁.descended) =
+      OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1) D₂.descended -
+        OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1) D₁.descended :=
+          map_sub _ _ _
+    _ = OrderedCech.differential S.X₂.presheaf V.family q D₂.lift -
+        OrderedCech.differential S.X₂.presheaf V.family q D₁.lift := by
+          rw [D₂.descended_eq, D₁.descended_eq]
+    _ = OrderedCech.differential S.X₂.presheaf V.family q
+        (D₂.lift - D₁.lift - z) := by
+          simp only [map_sub, hz, sub_zero]
+    _ = OrderedCech.differential S.X₂.presheaf V.family q
+        (OrderedCech.coefficientMapDegree S.f.hom V.family q e) := by rw [he]
+    _ = OrderedCech.coefficientMapDegree S.f.hom V.family (q + 1)
+        (OrderedCech.differential S.X₁.presheaf V.family q e) := by
+          exact ConcreteCategory.congr_hom
+            (OrderedCech.coefficientMapDegree_comp_differential
+              S.f.hom V.family q) e
+
+private theorem boundaryData_cechClass_eq_zero_degree
+    (hS : S.ShortExact) {V : SetOpenCover X}
+    (c : CechCocycle S.X₃.presheaf U 0)
+    (D₁ D₂ : BoundaryData S U V 0 c) :
+    D₁.toPresentation.cechClass hS = D₂.toPresentation.cechClass hS := by
+  have hprism := ConcreteCategory.congr_hom
+    (OrderedCech.differential_comp_refinementPrismDegree_zero
+      S.X₃.presheaf D₁.refinement D₂.refinement) c.1
+  have hprism' :
+      OrderedCech.refinementPrismDegree S.X₃.presheaf
+          D₁.refinement D₂.refinement 0
+          (OrderedCech.differential S.X₃.presheaf U.family 0 c.1) =
+        OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement 0 c.1 -
+          OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement 0 c.1 := by
+    simpa only [ConcreteCategory.comp_apply, AddCommGrpCat.hom_sub,
+      AddMonoidHom.sub_apply] using hprism
+  have hrefine :
+      OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement 0 c.1 =
+        OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement 0 c.1 := by
+    rw [c.2, map_zero] at hprism'
+    exact sub_eq_zero.1 hprism'.symm
+  have hkernel : OrderedCech.coefficientMapDegree S.g.hom V.family 0
+      (D₂.lift - D₁.lift - 0) = 0 := by
+    simp only [sub_zero, map_sub, D₂.lift_eq, D₁.lift_eq, hrefine, sub_self]
+  obtain ⟨e, he⟩ := exists_descended_sub_eq_differential hS D₁ D₂ 0 hkernel (map_zero _)
+  have hclass := cocycleClass_eq_of_sub_eq_differential
+    S.X₁.presheaf V 0
+    (D₂.toPresentation.descendedCocycle hS)
+    (D₁.toPresentation.descendedCocycle hS) e he
+  exact congrArg (toCechCohomology S.X₁.presheaf 1 V) hclass.symm
+
+private theorem boundaryData_cechClass_eq_succ
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) {V : SetOpenCover X} (n : ℕ)
+    (c : CechCocycle S.X₃.presheaf U (n + 1))
+    (D₁ D₂ : BoundaryData S U V (n + 1) c) :
+    D₁.toPresentation.cechClass hS = D₂.toPresentation.cechClass hS := by
+  let k : OrderedCech.object (A := AddCommGrpCat.{u}) S.X₃.presheaf V.family n :=
+    OrderedCech.refinementPrismDegree S.X₃.presheaf
+      D₁.refinement D₂.refinement n c.1
+  have hprism0 := ConcreteCategory.congr_hom
+    (OrderedCech.differential_comp_refinementPrismDegree_succ
+      S.X₃.presheaf D₁.refinement D₂.refinement n) c.1
+  have hprism :
+      OrderedCech.refinementPrismDegree S.X₃.presheaf
+          D₁.refinement D₂.refinement (n + 1)
+          (OrderedCech.differential S.X₃.presheaf U.family (n + 1) c.1) +
+        OrderedCech.differential S.X₃.presheaf V.family n k =
+      OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement (n + 1) c.1 -
+        OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement (n + 1) c.1 := by
+    simpa only [ConcreteCategory.comp_apply, AddCommGrpCat.hom_add,
+      AddCommGrpCat.hom_sub, AddMonoidHom.add_apply, AddMonoidHom.sub_apply, k] using hprism0
+  rw [c.2, map_zero, zero_add] at hprism
+  let _ : Epi S.g := hS.epi_g
+  obtain ⟨W, s, t, ht⟩ :=
+    exists_refinement_cochain_lift S.g V n k
+  let P₁ := D₁.toPresentation
+  let P₂ := D₂.toPresentation
+  let Q₁ := P₁.refine W s
+  let Q₂ := P₂.refine W s
+  let E₁ : BoundaryData S U W (n + 1) c := Q₁.toData
+  let E₂ : BoundaryData S U W (n + 1) c := Q₂.toData
+  have hE₁lift :
+      OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1) E₁.lift =
+        OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement (n + 1) c.1) := by
+    change OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1)
+        (OrderedCech.refinementMapDegree S.X₂.presheaf s (n + 1) D₁.lift) = _
+    calc
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.coefficientMapDegree S.g.hom V.family (n + 1) D₁.lift) :=
+            coefficient_refinement_apply S.g.hom s (n + 1) D₁.lift
+      _ = _ := by rw [D₁.lift_eq]
+  have hE₂lift :
+      OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1) E₂.lift =
+        OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement (n + 1) c.1) := by
+    change OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1)
+        (OrderedCech.refinementMapDegree S.X₂.presheaf s (n + 1) D₂.lift) = _
+    calc
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.coefficientMapDegree S.g.hom V.family (n + 1) D₂.lift) :=
+            coefficient_refinement_apply S.g.hom s (n + 1) D₂.lift
+      _ = _ := by rw [D₂.lift_eq]
+  have hdt :
+      OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1)
+          (OrderedCech.differential S.X₂.presheaf W.family n t) =
+        OrderedCech.differential S.X₃.presheaf W.family n
+          (OrderedCech.refinementMapDegree S.X₃.presheaf s n k) := by
+    calc
+      _ = OrderedCech.differential S.X₃.presheaf W.family n
+          (OrderedCech.coefficientMapDegree S.g.hom W.family n t) := by
+            exact (ConcreteCategory.congr_hom
+              (OrderedCech.coefficientMapDegree_comp_differential
+                S.g.hom W.family n) t).symm
+      _ = _ := by rw [ht]
+  have hpull :
+      OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement (n + 1) c.1) -
+        OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement (n + 1) c.1) =
+      OrderedCech.differential S.X₃.presheaf W.family n
+        (OrderedCech.refinementMapDegree S.X₃.presheaf s n k) := by
+    calc
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.refinementMapDegree S.X₃.presheaf D₂.refinement (n + 1) c.1 -
+            OrderedCech.refinementMapDegree S.X₃.presheaf D₁.refinement (n + 1) c.1) := by
+              rw [map_sub]
+      _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (n + 1)
+          (OrderedCech.differential S.X₃.presheaf V.family n k) := by rw [← hprism]
+      _ = _ := by
+        exact (ConcreteCategory.congr_hom
+          (OrderedCech.refinementMapDegree_comp_differential
+            S.X₃.presheaf s n) k).symm
+  have hkernel : OrderedCech.coefficientMapDegree S.g.hom W.family (n + 1)
+      (E₂.lift - E₁.lift -
+        OrderedCech.differential S.X₂.presheaf W.family n t) = 0 := by
+    rw [map_sub, map_sub, hE₂lift, hE₁lift, hdt, hpull, sub_self]
+  have hz : OrderedCech.differential S.X₂.presheaf W.family (n + 1)
+      (OrderedCech.differential S.X₂.presheaf W.family n t) = 0 := by
+    calc
+      _ = (OrderedCech.differential S.X₂.presheaf W.family n ≫
+          OrderedCech.differential S.X₂.presheaf W.family (n + 1)) t := by
+            rw [ConcreteCategory.comp_apply]
+      _ = 0 := by
+        rw [OrderedCech.differential_comp_differential]
+        rfl
+  obtain ⟨e, he⟩ := exists_descended_sub_eq_differential hS E₁ E₂
+    (OrderedCech.differential S.X₂.presheaf W.family n t) hkernel hz
+  have hfixed := cocycleClass_eq_of_sub_eq_differential
+    S.X₁.presheaf W (n + 1)
+    (E₂.toPresentation.descendedCocycle hS)
+    (E₁.toPresentation.descendedCocycle hS) e he
+  have hsame : E₁.toPresentation.cechClass hS = E₂.toPresentation.cechClass hS :=
+    congrArg (toCechCohomology S.X₁.presheaf (n + 2) W) hfixed.symm
+  calc
+    D₁.toPresentation.cechClass hS = Q₁.cechClass hS :=
+      (BoundaryPresentation.cechClass_refine hS P₁ W s).symm
+    _ = E₁.toPresentation.cechClass hS := by rfl
+    _ = E₂.toPresentation.cechClass hS := hsame
+    _ = Q₂.cechClass hS := by rfl
+    _ = D₂.toPresentation.cechClass hS :=
+      BoundaryPresentation.cechClass_refine hS P₂ W s
 
 end BoundaryPresentation
 
@@ -328,5 +744,78 @@ noncomputable def chosenBoundaryPresentation
     (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
     (c : CechCocycle S.X₃.presheaf U q) : BoundaryPresentation S U q c :=
   Classical.choice (exists_boundaryPresentation hS U q c)
+
+namespace BoundaryPresentation
+
+variable {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+variable {U : SetOpenCover X} {q : ℕ} {c : CechCocycle S.X₃.presheaf U q}
+
+/-- Any two lift--differentiate--descend presentations of the same fixed-cover cocycle give
+the same direct-limit class. This includes independence of the lift, refined cover, and chosen
+refinement function; the proof uses the prism identity in positive degree and the separate
+degree-zero equality. -/
+theorem cechClass_eq [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (P Q : BoundaryPresentation S U q c) :
+    P.cechClass hS = Q.cechClass hS := by
+  let W := commonRefinement P.cover Q.cover
+  let r : Refinement W.family P.cover.family := commonRefinementLeft P.cover Q.cover
+  let s : Refinement W.family Q.cover.family := commonRefinementRight P.cover Q.cover
+  let P' := P.refine W r
+  let Q' := Q.refine W s
+  have hsame : P'.cechClass hS = Q'.cechClass hS := by
+    cases q with
+    | zero =>
+        exact boundaryData_cechClass_eq_zero_degree hS c P'.toData Q'.toData
+    | succ n =>
+        exact boundaryData_cechClass_eq_succ hS n c P'.toData Q'.toData
+  calc
+    P.cechClass hS = P'.cechClass hS := (P.cechClass_refine hS W r).symm
+    _ = Q'.cechClass hS := hsame
+    _ = Q.cechClass hS := Q.cechClass_refine hS W s
+
+end BoundaryPresentation
+
+/-- The connecting class of a concrete fixed-cover cocycle, defined by one chosen
+lift--differentiate--descend presentation. -/
+noncomputable def boundaryClass
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
+    (c : CechCocycle S.X₃.presheaf U q) :
+    ToType (cechCohomology S.X₁.presheaf (q + 1)) :=
+  (chosenBoundaryPresentation hS U q c).cechClass hS
+
+/-- Fixed-cover representative formula: every valid lift--differentiate--descend presentation
+computes the chosen connecting class. -/
+theorem boundaryClass_eq_cechClass
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
+    (c : CechCocycle S.X₃.presheaf U q)
+    (P : BoundaryPresentation S U q c) :
+    boundaryClass hS U q c = P.cechClass hS :=
+  BoundaryPresentation.cechClass_eq hS (chosenBoundaryPresentation hS U q c) P
+
+/-- The connecting class of the zero cocycle is zero. -/
+@[simp]
+theorem boundaryClass_zero
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ) :
+    boundaryClass hS U q 0 = 0 := by
+  let P : BoundaryPresentation S U q 0 :=
+    { cover := U
+      refinement := Refinement.refl U.family
+      lift := 0
+      descended := 0
+      lift_eq := by simp
+      descended_eq := by simp }
+  rw [boundaryClass_eq_cechClass hS U q 0 P]
+  change toCechCohomology S.X₁.presheaf (q + 1) U
+    (cocycleClass S.X₁.presheaf U (q + 1) (P.descendedCocycle hS)) = 0
+  have hz : P.descendedCocycle hS = 0 := by
+    apply Subtype.ext
+    rfl
+  rw [hz, map_zero, map_zero]
 
 end TopologicalSpace.OpenCover.SetOpenCover
