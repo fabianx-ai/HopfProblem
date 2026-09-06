@@ -6502,6 +6502,21 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheaf
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheaf
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
 
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
