@@ -6880,3 +6880,27 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.CohomologicalDeltaFunctor
 #print axioms CategoryTheory.CohomologicalDeltaFunctor
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.ext
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.ext
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.id
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.id
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app
+#check CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend_app_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend_app_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext

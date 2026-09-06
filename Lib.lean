@@ -400,6 +400,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.ConnectingHom
 import Lib.Topology.Sheaves.Cohomology.Cech.LongExact
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Basic
 import Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor
+import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 
 /-!
 # Reusable extracted library
