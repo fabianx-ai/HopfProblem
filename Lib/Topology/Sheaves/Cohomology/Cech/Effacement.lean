@@ -11,6 +11,8 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.FlasqueAcyclic
 public import Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor
 public import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 
+@[expose] public section
+
 /-!
 # Effacement of Cech cohomology by the Godement envelope
 
