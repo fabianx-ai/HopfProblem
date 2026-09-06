@@ -6791,6 +6791,23 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment_exact
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment_exact
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_descendedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_descendedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_fixedCoverBoundaryHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_fixedCoverBoundaryHom
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
