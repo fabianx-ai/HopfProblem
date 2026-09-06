@@ -6833,3 +6833,7 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
+/-! ## `Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Basic` -/
+
+#check CategoryTheory.CohomologicalDeltaFunctor
+#print axioms CategoryTheory.CohomologicalDeltaFunctor
