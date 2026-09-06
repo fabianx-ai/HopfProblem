@@ -6904,3 +6904,49 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend_app_zero
 #check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortComplex
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortComplex
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt.effacement
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt.effacement
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.epi_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.epi_δ
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.map_comp_δ_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.map_comp_δ_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.δ_component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.δ_component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.comm_comp_π
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.comm_comp_π
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfComm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfComm
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_comm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_comm
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_left
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_left
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_right
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_right
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_eq
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_eq
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_graph
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_graph
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_naturality
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_naturality
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
