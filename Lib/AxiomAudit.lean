@@ -6516,6 +6516,24 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation_comp_differential
 #check TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
 #print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafSectionsIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafSectionsIso
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential_app_comp_sectionsIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential_app_comp_sectionsIso
+#check TopologicalSpace.OpenCover.OrderedCech.terminalInsertion_contraction
+#print axioms TopologicalSpace.OpenCover.OrderedCech.terminalInsertion_contraction
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction_zero
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction
+#check TopologicalSpace.OpenCover.OrderedCech.sheafShortComplex_exact_of_local_kernels
+#print axioms TopologicalSpace.OpenCover.OrderedCech.sheafShortComplex_exact_of_local_kernels
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex_exact
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex_exact
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
 
