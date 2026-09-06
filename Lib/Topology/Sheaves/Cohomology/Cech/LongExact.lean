@@ -1263,4 +1263,60 @@ theorem connectingCoefficientCechShortComplex_exact
   rw [ShortComplex.ab_exact_iff_function_exact]
   exact exactAtLeftSucc_function hS q
 
+/-! ## Finite exact windows -/
+
+/-- The recurring six-object window in the Cech long exact sequence. -/
+noncomputable def cechLongExactSegment
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    ComposableArrows AddCommGrpCat.{u} 5 :=
+  ComposableArrows.mk₅
+    (cechCohomologyCoefficientMap S.f.hom q)
+    (cechCohomologyCoefficientMap S.g.hom q)
+    (connectingHom hS q)
+    (cechCohomologyCoefficientMap S.f.hom (q + 1))
+    (cechCohomologyCoefficientMap S.g.hom (q + 1))
+
+/-- Exactness of the recurring six-object Cech window. -/
+theorem cechLongExactSegment_exact
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    (cechLongExactSegment hS q).Exact :=
+  ComposableArrows.exact_of_δ₀
+    (coefficientCechShortComplex_exact hS q).exact_toComposableArrows
+    (ComposableArrows.exact_of_δ₀
+      (coefficientConnectingCechShortComplex_exact hS q).exact_toComposableArrows
+      (ComposableArrows.exact_of_δ₀
+        (connectingCoefficientCechShortComplex_exact hS q).exact_toComposableArrows
+        (coefficientCechShortComplex_exact hS (q + 1)).exact_toComposableArrows))
+
+/-- The initial six-object window `0 ⟶ H⁰(A) ⟶ H⁰(B) ⟶ H⁰(C) ⟶ H¹(A) ⟶ H¹(B)`
+in the Cech long exact sequence. -/
+noncomputable def cechLongExactInitialSegment
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) : ComposableArrows AddCommGrpCat.{u} 5 :=
+  ComposableArrows.mk₅
+    (0 : AddCommGrpCat.of PUnit.{u + 1} ⟶ cechCohomology S.X₁.presheaf 0)
+    (cechCohomologyCoefficientMap S.f.hom 0)
+    (cechCohomologyCoefficientMap S.g.hom 0)
+    (connectingHom hS 0)
+    (cechCohomologyCoefficientMap S.f.hom 1)
+
+/-- Exactness of the initial six-object Cech window. -/
+theorem cechLongExactInitialSegment_exact
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) :
+    (cechLongExactInitialSegment hS).Exact :=
+  ComposableArrows.exact_of_δ₀
+    (initialCechShortComplex_exact hS).exact_toComposableArrows
+    (ComposableArrows.exact_of_δ₀
+      (coefficientCechShortComplex_exact hS 0).exact_toComposableArrows
+      (ComposableArrows.exact_of_δ₀
+        (coefficientConnectingCechShortComplex_exact hS 0).exact_toComposableArrows
+        (connectingCoefficientCechShortComplex_exact hS 0).exact_toComposableArrows))
+
 end TopologicalSpace.OpenCover.SetOpenCover
