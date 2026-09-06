@@ -223,4 +223,50 @@ theorem connectingHom_naturality
           cechCohomologyCoefficientMap φ.τ₁.hom (q + 1)) :=
       Category.assoc _ _ _
 
+/-! ## Delta-functor and degree-zero packaging -/
+
+/-- Refinement-directed Cech cohomology, with its connecting maps, as a cohomological delta
+functor. -/
+noncomputable def cechCohomologyDeltaFunctor
+    (X : TopCat.{u}) [ParacompactSpace X] [T2Space X] :
+    CohomologicalDeltaFunctor
+      (TopCat.Sheaf AddCommGrpCat.{u} X) AddCommGrpCat.{u} where
+  T := sheafCechCohomologyAdditiveFunctor (X := X)
+  δ := fun hS q => connectingHom hS q
+  naturality := fun hS hT φ q => connectingHom_naturality hS hT φ q
+  exact₁ := fun hS q => coefficientCechShortComplex_exact hS q
+  comp₂ := fun hS q => coefficientMap_comp_connectingHom hS q
+  exact₂ := fun hS q => coefficientConnectingCechShortComplex_exact hS q
+  comp₃ := fun hS q => connectingHom_comp_coefficientMap hS q
+  exact₃ := fun hS q => connectingCoefficientCechShortComplex_exact hS q
+
+/-- Global sections of abelian sheaves on a fixed space. -/
+def sheafGlobalSectionsFunctor (X : TopCat.{u}) :
+    TopCat.Sheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
+  (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+    (op (⊤ : Opens X))
+
+/-- The global-sections functor on abelian sheaves is additive. -/
+instance sheafGlobalSectionsFunctor_additive (X : TopCat.{u}) :
+    (sheafGlobalSectionsFunctor X).Additive where
+  map_add := by intros; rfl
+
+/-- Degree-zero refinement-directed Cech cohomology is naturally isomorphic to global
+sections. -/
+noncomputable def cechCohomologyDeltaFunctorZeroIsoGlobalSections
+    (X : TopCat.{u}) :
+    (sheafCechCohomologyCoefficientFunctor
+      (X := X) (A := AddCommGrpCat.{u}) 0) ≅
+      sheafGlobalSectionsFunctor X :=
+  NatIso.ofComponents
+    (fun F => cechCohomologyZeroIsoGlobalSections F)
+    (fun f => cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections _ f)
+
+/-- The degree-zero functor of the Cech cohomological delta functor is global sections. -/
+noncomputable def cechCohomologyDeltaFunctor_zeroIsoGlobalSections
+    (X : TopCat.{u}) [ParacompactSpace X] [T2Space X] :
+    ((cechCohomologyDeltaFunctor X).T 0).obj ≅
+      sheafGlobalSectionsFunctor X :=
+  cechCohomologyDeltaFunctorZeroIsoGlobalSections X
+
 end TopologicalSpace.OpenCover.SetOpenCover

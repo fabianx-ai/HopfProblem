@@ -6807,6 +6807,16 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_fixedCoverBoundaryHom
 #check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor_additive
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor_additive
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
 
