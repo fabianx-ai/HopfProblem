@@ -6362,6 +6362,33 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ShrinkableRefinement` -/
+
+#check TopologicalSpace.OpenCover.Shrinking
+#print axioms TopologicalSpace.OpenCover.Shrinking
+#check TopologicalSpace.OpenCover.Shrinking.family
+#print axioms TopologicalSpace.OpenCover.Shrinking.family
+#check TopologicalSpace.OpenCover.Shrinking.isOpenCover
+#print axioms TopologicalSpace.OpenCover.Shrinking.isOpenCover
+#check TopologicalSpace.OpenCover.Shrinking.closure_subset
+#print axioms TopologicalSpace.OpenCover.Shrinking.closure_subset
+#check TopologicalSpace.OpenCover.Shrinking.refinement
+#print axioms TopologicalSpace.OpenCover.Shrinking.refinement
+#check TopologicalSpace.OpenCover.exists_shrinking_of_isLocallyFinite
+#print axioms TopologicalSpace.OpenCover.exists_shrinking_of_isLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.fine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.fine
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.refines
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.refines
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.locallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.locallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.shrinking
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.shrinking
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_shrinkable_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_shrinkable_refinement
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl

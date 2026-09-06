@@ -393,6 +393,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.ColimitCoefficients
 import Lib.Topology.Sheaves.Cohomology.Cech.DegreeZero
 import Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution
 import Lib.Topology.Sheaves.Cohomology.Cech.FlasqueAcyclic
+import Lib.Topology.Sheaves.Cohomology.Cech.ShrinkableRefinement
 
 /-!
 # Reusable extracted library
