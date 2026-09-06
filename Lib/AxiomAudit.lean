@@ -6870,6 +6870,15 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Effacement` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_godementEnvelope
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_godementEnvelope
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_germEmbedding_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_germEmbedding_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_effaceable
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_effaceable
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
 
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
