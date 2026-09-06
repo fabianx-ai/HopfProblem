@@ -6366,3 +6366,32 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_obj
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Colimit` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_toCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_toCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCocone
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCocone
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyDesc
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyDesc
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_hom_ext
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_hom_ext
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc_unique
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_rep
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_rep
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff_exists_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff_exists_refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement

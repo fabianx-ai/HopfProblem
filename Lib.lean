@@ -383,6 +383,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.Refinement
 import Lib.Topology.Sheaves.Cohomology.Cech.RefinementHomotopy
 import Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem
 import Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem
+import Lib.Topology.Sheaves.Cohomology.Cech.Colimit
 
 /-!
 # Reusable extracted library
