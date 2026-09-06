@@ -6414,6 +6414,13 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocallyZeroCochain` -/
+
+#check TopCat.Presheaf.IsLocallyZero
+#print axioms TopCat.Presheaf.IsLocallyZero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_pullback_eq_zero_of_isLocallyZero_of_isZero_empty
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_pullback_eq_zero_of_isLocallyZero_of_isZero_empty
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Coefficients` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
