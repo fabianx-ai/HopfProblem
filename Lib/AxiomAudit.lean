@@ -6342,6 +6342,17 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.RangeCover` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCoverRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCoverRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover_multiplicityLE
+#check HasCoveringDimensionLE.exists_multiplicityLE_refinement
+#print axioms HasCoveringDimensionLE.exists_multiplicityLE_refinement
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
