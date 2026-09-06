@@ -386,6 +386,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem
 import Lib.Topology.Sheaves.Cohomology.Cech.Colimit
 import Lib.Topology.Sheaves.Cohomology.Cech.RangeCover
 import Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing
+import Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing
 
 /-!
 # Reusable extracted library

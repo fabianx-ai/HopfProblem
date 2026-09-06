@@ -6421,3 +6421,10 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
 #check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
