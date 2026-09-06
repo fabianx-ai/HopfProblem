@@ -6405,6 +6405,10 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_id
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_id
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 
@@ -6451,6 +6455,21 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
 #check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ColimitCoefficients` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_id
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_id
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
 

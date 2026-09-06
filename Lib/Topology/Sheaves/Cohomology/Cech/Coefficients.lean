@@ -228,19 +228,35 @@ theorem normalizedCechCohomologyCoefficientMap_comp_refinement
     congrArg (fun k => HomologicalComplex.homologyMap k n)
       (OrderedCech.coefficientMap_comp_refinementMap f (refinementOfLE h))
 
+/-- The identity coefficient morphism induces the identity on normalized fixed-cover Cech
+cohomology. -/
+@[simp]
+theorem normalizedCechCohomologyCoefficientMap_id
+    (P : TopCat.Presheaf A X) (U : SetOpenCover X) (n : ℕ) :
+    normalizedCechCohomologyCoefficientMap (𝟙 P) U n =
+      𝟙 (normalizedCechCohomology P U n) := by
+  dsimp only [normalizedCechCohomologyCoefficientMap, normalizedCechComplexMap]
+  rw [OrderedCech.coefficientMap_id]
+  exact HomologicalComplex.homologyMap_id (OrderedCech.complex P U.family) n
+
+/-- Normalized fixed-cover Cech coefficient maps preserve composition. -/
+@[reassoc]
+theorem normalizedCechCohomologyCoefficientMap_comp
+    (f : P ⟶ Q) (g : Q ⟶ R) (U : SetOpenCover X) (n : ℕ) :
+    normalizedCechCohomologyCoefficientMap (f ≫ g) U n =
+      normalizedCechCohomologyCoefficientMap f U n ≫
+        normalizedCechCohomologyCoefficientMap g U n := by
+  dsimp only [normalizedCechCohomologyCoefficientMap, normalizedCechComplexMap]
+  rw [OrderedCech.coefficientMap_comp, HomologicalComplex.homologyMap_comp]
+
 /-- For one set-valued cover, normalized Cech cohomology is functorial in the coefficient
 presheaf. -/
 noncomputable def normalizedCechCohomologyCoefficientFunctor
     (U : SetOpenCover X) (n : ℕ) : TopCat.Presheaf A X ⥤ A where
   obj P := normalizedCechCohomology P U n
   map f := normalizedCechCohomologyCoefficientMap f U n
-  map_id P := by
-    dsimp only [normalizedCechCohomologyCoefficientMap, normalizedCechComplexMap]
-    rw [OrderedCech.coefficientMap_id]
-    exact HomologicalComplex.homologyMap_id (OrderedCech.complex P U.family) n
-  map_comp f g := by
-    dsimp only [normalizedCechCohomologyCoefficientMap, normalizedCechComplexMap]
-    rw [OrderedCech.coefficientMap_comp, HomologicalComplex.homologyMap_comp]
+  map_id P := normalizedCechCohomologyCoefficientMap_id P U n
+  map_comp f g := normalizedCechCohomologyCoefficientMap_comp f g U n
 
 @[simp]
 theorem normalizedCechCohomologyCoefficientFunctor_obj
