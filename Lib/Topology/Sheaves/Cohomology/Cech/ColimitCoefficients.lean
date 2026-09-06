@@ -100,6 +100,29 @@ theorem cechCohomologyCoefficientMap_comp (f : P ⟶ Q) (g : Q ⟶ R) (n : ℕ) 
         (cechCohomologyCoefficientMap f n ≫
           cechCohomologyCoefficientMap g n) := Category.assoc _ _ _
 
+/-- The zero coefficient morphism induces zero on refinement-directed Cech cohomology. -/
+theorem cechCohomologyCoefficientMap_zero
+    (P Q : TopCat.Presheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    cechCohomologyCoefficientMap (0 : P ⟶ Q) n = 0 := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_zero]
+  simp
+
+/-- Refinement-directed Cech coefficient maps preserve addition. -/
+theorem cechCohomologyCoefficientMap_add
+    {P Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    (f g : P ⟶ Q) (n : ℕ) :
+    cechCohomologyCoefficientMap (f + g) n =
+      cechCohomologyCoefficientMap f n + cechCohomologyCoefficientMap g n := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_add]
+  simp only [Preadditive.add_comp, Preadditive.comp_add,
+    toCechCohomology_comp_cechCohomologyCoefficientMap]
+
 /-- Refinement-directed Cech cohomology in a fixed degree, as a functor of coefficient
 presheaves. -/
 noncomputable def cechCohomologyCoefficientFunctor (n : ℕ) :
@@ -140,5 +163,26 @@ theorem sheafCechCohomologyCoefficientFunctor_map
     (sheafCechCohomologyCoefficientFunctor (A := A) n).map f =
       cechCohomologyCoefficientMap f.hom n :=
   rfl
+
+/-- The sheaf-valued Cech cohomology coefficient functor is additive. -/
+instance sheafCechCohomologyCoefficientFunctor_additive (n : ℕ) :
+    (sheafCechCohomologyCoefficientFunctor
+      (X := X) (A := AddCommGrpCat.{u}) n).Additive where
+  map_add := fun {F G} f g => by
+    change cechCohomologyCoefficientMap (f + g).hom n =
+      cechCohomologyCoefficientMap f.hom n +
+        cechCohomologyCoefficientMap g.hom n
+    rw [show (f + g).hom = f.hom + g.hom by
+      apply NatTrans.ext
+      funext U
+      exact Sheaf.Hom.add_app f g U]
+    exact cechCohomologyCoefficientMap_add f.hom g.hom n
+
+/-- Refinement-directed Cech cohomology in a fixed degree, bundled as an additive functor. -/
+noncomputable def sheafCechCohomologyAdditiveFunctor (n : ℕ) :
+    AdditiveFunctor (TopCat.Sheaf AddCommGrpCat.{u} X) AddCommGrpCat.{u} :=
+  AdditiveFunctor.of
+    (sheafCechCohomologyCoefficientFunctor
+      (X := X) (A := AddCommGrpCat.{u}) n)
 
 end TopologicalSpace.OpenCover.SetOpenCover

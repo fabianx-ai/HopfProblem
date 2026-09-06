@@ -6425,6 +6425,10 @@ is an evidence command rather than library content.
 
 #check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
 #print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_zero
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_add
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_add
 #check TopologicalSpace.OpenCover.OrderedCech.coefficientMap
 #print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap
 #check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_id
@@ -6443,6 +6447,10 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_id
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_add
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
 
@@ -6515,10 +6523,18 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_id
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_add
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
 #check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor_additive
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor_additive
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyAdditiveFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyAdditiveFunctor
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ConnectingHom` -/
 

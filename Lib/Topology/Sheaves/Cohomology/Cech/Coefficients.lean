@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem
+public import Mathlib.Topology.Sheaves.Abelian
 
 /-!
 # Functoriality of normalized Cech cohomology in the coefficients
@@ -55,6 +56,36 @@ theorem coefficientMapDegree_π (f : P ⟶ Q)
     coefficientMapDegree f U n ≫ π Q U n σ =
       π P U n σ ≫ f.app (op (σ.intersection U)) :=
   Limits.Pi.map_π _ _
+
+/-- The zero coefficient morphism induces the zero degreewise cochain map. -/
+theorem coefficientMapDegree_zero
+    {X : TopCat.{u}} {ι : Type v}
+    (P Q : TopCat.Presheaf AddCommGrpCat.{max u v} X)
+    (U : ι → Opens X) [LinearOrder ι] (n : ℕ) :
+    coefficientMapDegree (0 : P ⟶ Q) U n = 0 := by
+  apply Limits.Pi.hom_ext
+  intro σ
+  change coefficientMapDegree (0 : P ⟶ Q) U n ≫ π Q U n σ =
+    (0 : object P U n ⟶ object Q U n) ≫ π Q U n σ
+  rw [coefficientMapDegree_π (P := P) (Q := Q)]
+  simp
+
+/-- Degreewise cochain coefficient maps preserve addition of coefficient morphisms. -/
+theorem coefficientMapDegree_add
+    {X : TopCat.{u}} {ι : Type v}
+    {P Q : TopCat.Presheaf AddCommGrpCat.{max u v} X}
+    (f g : P ⟶ Q) (U : ι → Opens X) [LinearOrder ι] (n : ℕ) :
+    coefficientMapDegree (f + g) U n =
+      coefficientMapDegree f U n + coefficientMapDegree g U n := by
+  apply Limits.Pi.hom_ext
+  intro σ
+  change coefficientMapDegree (f + g) U n ≫ π Q U n σ =
+    (coefficientMapDegree f U n + coefficientMapDegree g U n) ≫ π Q U n σ
+  rw [coefficientMapDegree_π (P := P) (Q := Q)]
+  simp only [Preadditive.add_comp, coefficientMapDegree_π]
+  rw [show (f + g).app (op (σ.intersection U)) =
+    f.app (op (σ.intersection U)) + g.app (op (σ.intersection U)) by rfl]
+  simp only [Preadditive.comp_add]
 
 /-- Coefficient maps commute with the normalized Cech differential. -/
 theorem coefficientMapDegree_comp_differential (f : P ⟶ Q)
@@ -248,6 +279,34 @@ theorem normalizedCechCohomologyCoefficientMap_comp
         normalizedCechCohomologyCoefficientMap g U n := by
   dsimp only [normalizedCechCohomologyCoefficientMap, normalizedCechComplexMap]
   rw [OrderedCech.coefficientMap_comp, HomologicalComplex.homologyMap_comp]
+
+/-- The zero coefficient morphism induces zero on normalized fixed-cover Cech cohomology. -/
+theorem normalizedCechCohomologyCoefficientMap_zero
+    (P Q : TopCat.Presheaf AddCommGrpCat.{u} X)
+    (U : SetOpenCover X) (n : ℕ) :
+    normalizedCechCohomologyCoefficientMap (0 : P ⟶ Q) U n = 0 := by
+  have hmap : normalizedCechComplexMap (0 : P ⟶ Q) U = 0 := by
+    apply HomologicalComplex.hom_ext
+    intro i
+    exact OrderedCech.coefficientMapDegree_zero P Q U.family i
+  rw [normalizedCechCohomologyCoefficientMap, hmap,
+    HomologicalComplex.homologyMap_zero]
+
+/-- Normalized fixed-cover Cech coefficient maps preserve addition. -/
+theorem normalizedCechCohomologyCoefficientMap_add
+    {P Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    (f g : P ⟶ Q) (U : SetOpenCover X) (n : ℕ) :
+    normalizedCechCohomologyCoefficientMap (f + g) U n =
+      normalizedCechCohomologyCoefficientMap f U n +
+        normalizedCechCohomologyCoefficientMap g U n := by
+  have hmap : normalizedCechComplexMap (f + g) U =
+      normalizedCechComplexMap f U + normalizedCechComplexMap g U := by
+    apply HomologicalComplex.hom_ext
+    intro i
+    exact OrderedCech.coefficientMapDegree_add f g U.family i
+  rw [normalizedCechCohomologyCoefficientMap, hmap,
+    HomologicalComplex.homologyMap_add]
+  rfl
 
 /-- For one set-valued cover, normalized Cech cohomology is functorial in the coefficient
 presheaf. -/
