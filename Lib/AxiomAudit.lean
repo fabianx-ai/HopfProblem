@@ -6378,6 +6378,21 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing` -/
+
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.object_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.object_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.normalizedCechCochain_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.normalizedCechCochain_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_multiplicityLE
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Colimit` -/
 
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology
