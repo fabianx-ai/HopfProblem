@@ -6341,3 +6341,28 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementLeft
 #check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_comp
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex_X
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex_X
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_obj
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
