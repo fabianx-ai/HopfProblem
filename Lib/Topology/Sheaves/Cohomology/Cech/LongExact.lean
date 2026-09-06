@@ -317,4 +317,407 @@ theorem exists_refinement_coefficientCocycle_eq_zero_degree_zero
     coefficientCocycle_refine, hz]
   rfl
 
+/-! ## Exactness at the middle term -/
+
+/-- A middle-sheaf cocycle in the componentwise kernel factors uniquely through a left-sheaf
+cocycle. -/
+theorem existsUnique_leftCocycle_of_middleKernel
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
+    (b : CechCocycle S.X₂.presheaf U q)
+    (hb : OrderedCech.coefficientMapDegree S.g.hom U.family q b.1 = 0) :
+    ∃! a : CechCocycle S.X₁.presheaf U q,
+      OrderedCech.coefficientMapDegree S.f.hom U.family q a.1 = b.1 := by
+  obtain ⟨a, ha⟩ := ((cochainShortComplex S U q).ab_exact_iff.1
+    (cochainShortComplex_exact hS U q) b.1 hb)
+  change OrderedCech.coefficientMapDegree S.f.hom U.family q a = b.1 at ha
+  have hac : OrderedCech.differential S.X₁.presheaf U.family q a = 0 := by
+    apply cochain_f_injective hS U (q + 1)
+    rw [map_zero]
+    calc
+      OrderedCech.coefficientMapDegree S.f.hom U.family (q + 1)
+          (OrderedCech.differential S.X₁.presheaf U.family q a) =
+        OrderedCech.differential S.X₂.presheaf U.family q
+          (OrderedCech.coefficientMapDegree S.f.hom U.family q a) := by
+            simpa only [ConcreteCategory.comp_apply] using
+              (ConcreteCategory.congr_hom
+                (OrderedCech.coefficientMapDegree_comp_differential
+                  S.f.hom U.family q) a).symm
+      _ = OrderedCech.differential S.X₂.presheaf U.family q b.1 := by rw [ha]
+      _ = 0 := b.2
+  refine ⟨⟨a, hac⟩, ha, ?_⟩
+  intro a' ha'
+  apply Subtype.ext
+  apply cochain_f_injective hS U q
+  exact ha'.trans ha.symm
+
+/-- The positive-degree correction obtained by refining a middle cocycle and subtracting the
+differential of a lifted primitive. -/
+def middleKernelCorrection
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U V W : SetOpenCover X}
+    (r : Refinement V.family U.family)
+    (s : Refinement W.family V.family) (q : ℕ)
+    (c : CechCocycle S.X₂.presheaf U (q + 1))
+    (t : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf W.family q) :
+    CechCocycle S.X₂.presheaf W (q + 1) :=
+  ⟨OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 -
+      OrderedCech.differential S.X₂.presheaf W.family q t, by
+    change OrderedCech.differential S.X₂.presheaf W.family (q + 1)
+      (OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 -
+        OrderedCech.differential S.X₂.presheaf W.family q t) = 0
+    rw [map_sub]
+    have hrefine := ConcreteCategory.congr_hom
+      (OrderedCech.refinementMapDegree_comp_differential
+        S.X₂.presheaf (r.comp s) (q + 1)) c.1
+    have hdd := ConcreteCategory.congr_hom
+      (OrderedCech.differential_comp_differential S.X₂.presheaf W.family q) t
+    simp only [ConcreteCategory.comp_apply] at hrefine hdd
+    rw [hrefine, c.2, map_zero, hdd]
+    exact sub_self 0⟩
+
+/-- The underlying cochain of `middleKernelCorrection` is exactly the reviewed subtraction
+`(r ∘ s)*c - dt`. -/
+theorem middleKernelCorrection_coe
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U V W : SetOpenCover X}
+    (r : Refinement V.family U.family)
+    (s : Refinement W.family V.family) (q : ℕ)
+    (c : CechCocycle S.X₂.presheaf U (q + 1))
+    (t : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf W.family q) :
+    (middleKernelCorrection r s q c t).1 =
+      OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 -
+        OrderedCech.differential S.X₂.presheaf W.family q t :=
+  rfl
+
+/-- Under the reviewed equations `v(r*c) = dz` and `v(t) = s*z`, the corrected middle cocycle
+lies in the componentwise kernel of the right coefficient map. -/
+theorem middleKernelCorrection_map_eq_zero
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U V W : SetOpenCover X}
+    (r : Refinement V.family U.family)
+    (s : Refinement W.family V.family) (q : ℕ)
+    (c : CechCocycle S.X₂.presheaf U (q + 1))
+    (z : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₃.presheaf V.family q)
+    (t : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf W.family q)
+    (hz : OrderedCech.coefficientMapDegree S.g.hom V.family (q + 1)
+        (refineCocycle S.X₂.presheaf r (q + 1) c).1 =
+      OrderedCech.differential S.X₃.presheaf V.family q z)
+    (ht : OrderedCech.coefficientMapDegree S.g.hom W.family q t =
+      OrderedCech.refinementMapDegree S.X₃.presheaf s q z) :
+    OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+      (middleKernelCorrection r s q c t).1 = 0 := by
+  have hcomp :
+      OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 =
+        OrderedCech.refinementMapDegree S.X₂.presheaf s (q + 1)
+          (refineCocycle S.X₂.presheaf r (q + 1) c).1 := by
+    change OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 =
+      OrderedCech.refinementMapDegree S.X₂.presheaf s (q + 1)
+        (OrderedCech.refinementMapDegree S.X₂.presheaf r (q + 1) c.1)
+    have h := congrArg (fun k => k.f (q + 1))
+      (OrderedCech.refinementMap_comp S.X₂.presheaf r s)
+    simpa only [OrderedCech.refinementMap_f, HomologicalComplex.comp_f,
+      ConcreteCategory.comp_apply] using ConcreteCategory.congr_hom h c.1
+  have hcoefficient :
+      OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+          (OrderedCech.refinementMapDegree S.X₂.presheaf s (q + 1)
+            (refineCocycle S.X₂.presheaf r (q + 1) c).1) =
+        OrderedCech.refinementMapDegree S.X₃.presheaf s (q + 1)
+          (OrderedCech.coefficientMapDegree S.g.hom V.family (q + 1)
+            (refineCocycle S.X₂.presheaf r (q + 1) c).1) := by
+    have h := congrArg (fun k => k.f (q + 1))
+      (OrderedCech.coefficientMap_comp_refinementMap S.g.hom s)
+    simpa only [OrderedCech.coefficientMap_f, OrderedCech.refinementMap_f,
+      HomologicalComplex.comp_f, ConcreteCategory.comp_apply] using
+        (ConcreteCategory.congr_hom h
+          (refineCocycle S.X₂.presheaf r (q + 1) c).1).symm
+  have hcoefficientDifferential :
+      OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+          (OrderedCech.differential S.X₂.presheaf W.family q t) =
+        OrderedCech.differential S.X₃.presheaf W.family q
+          (OrderedCech.coefficientMapDegree S.g.hom W.family q t) := by
+    simpa only [ConcreteCategory.comp_apply] using
+      (ConcreteCategory.congr_hom
+        (OrderedCech.coefficientMapDegree_comp_differential
+          S.g.hom W.family q) t).symm
+  have hrefinementDifferential :
+      OrderedCech.refinementMapDegree S.X₃.presheaf s (q + 1)
+          (OrderedCech.differential S.X₃.presheaf V.family q z) =
+        OrderedCech.differential S.X₃.presheaf W.family q
+          (OrderedCech.refinementMapDegree S.X₃.presheaf s q z) := by
+    simpa only [ConcreteCategory.comp_apply] using
+      (ConcreteCategory.congr_hom
+        (OrderedCech.refinementMapDegree_comp_differential
+          S.X₃.presheaf s q) z).symm
+  calc
+    OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+        (middleKernelCorrection r s q c t).1 =
+      OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+          (OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1) -
+        OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1)
+          (OrderedCech.differential S.X₂.presheaf W.family q t) := by
+            rw [middleKernelCorrection_coe, map_sub]
+    _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (q + 1)
+          (OrderedCech.coefficientMapDegree S.g.hom V.family (q + 1)
+            (refineCocycle S.X₂.presheaf r (q + 1) c).1) -
+        OrderedCech.differential S.X₃.presheaf W.family q
+          (OrderedCech.coefficientMapDegree S.g.hom W.family q t) := by
+            rw [hcomp, hcoefficient, hcoefficientDifferential]
+    _ = OrderedCech.refinementMapDegree S.X₃.presheaf s (q + 1)
+          (OrderedCech.differential S.X₃.presheaf V.family q z) -
+        OrderedCech.differential S.X₃.presheaf W.family q
+          (OrderedCech.refinementMapDegree S.X₃.presheaf s q z) := by
+            rw [hz, ht]
+    _ = 0 := by rw [hrefinementDifferential, sub_self]
+
+/-- The left cocycle factoring the correction represents the original middle cohomology class. -/
+theorem middleKernelCorrection_class
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    {U V W : SetOpenCover X}
+    (r : Refinement V.family U.family)
+    (s : Refinement W.family V.family) (q : ℕ)
+    (c : CechCocycle S.X₂.presheaf U (q + 1))
+    (t : OrderedCech.object (A := AddCommGrpCat.{u})
+      S.X₂.presheaf W.family q)
+    (a : CechCocycle S.X₁.presheaf W (q + 1))
+    (ha : OrderedCech.coefficientMapDegree S.f.hom W.family (q + 1) a.1 =
+      (middleKernelCorrection r s q c t).1) :
+    cechCohomologyCoefficientMap S.f.hom (q + 1)
+        (toCechCohomology S.X₁.presheaf (q + 1) W
+          (cocycleClass S.X₁.presheaf W (q + 1) a)) =
+      toCechCohomology S.X₂.presheaf (q + 1) U
+        (cocycleClass S.X₂.presheaf U (q + 1) c) := by
+  have hcoefficient : coefficientCocycle S.f.hom W (q + 1) a =
+      middleKernelCorrection r s q c t := by
+    apply Subtype.ext
+    exact ha
+  have hsub :
+      (middleKernelCorrection r s q c t).1 -
+          (refineCocycle S.X₂.presheaf (r.comp s) (q + 1) c).1 =
+        OrderedCech.differential S.X₂.presheaf W.family q (-t) := by
+    change (OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 -
+        OrderedCech.differential S.X₂.presheaf W.family q t) -
+      OrderedCech.refinementMapDegree S.X₂.presheaf (r.comp s) (q + 1) c.1 =
+        OrderedCech.differential S.X₂.presheaf W.family q (-t)
+    rw [map_neg]
+    abel
+  have hclass := cocycleClass_eq_of_sub_eq_differential S.X₂.presheaf W q
+    (middleKernelCorrection r s q c t)
+    (refineCocycle S.X₂.presheaf (r.comp s) (q + 1) c) (-t) hsub
+  let h : U ≤ W := ⟨r.comp s⟩
+  calc
+    cechCohomologyCoefficientMap S.f.hom (q + 1)
+        (toCechCohomology S.X₁.presheaf (q + 1) W
+          (cocycleClass S.X₁.presheaf W (q + 1) a)) =
+      toCechCohomology S.X₂.presheaf (q + 1) W
+        (cocycleClass S.X₂.presheaf W (q + 1)
+          (coefficientCocycle S.f.hom W (q + 1) a)) :=
+            cechCohomologyCoefficientMap_cocycleClass S.f.hom W (q + 1) a
+    _ = toCechCohomology S.X₂.presheaf (q + 1) W
+        (cocycleClass S.X₂.presheaf W (q + 1)
+          (middleKernelCorrection r s q c t)) := by rw [hcoefficient]
+    _ = toCechCohomology S.X₂.presheaf (q + 1) W
+        (cocycleClass S.X₂.presheaf W (q + 1)
+          (refineCocycle S.X₂.presheaf (r.comp s) (q + 1) c)) := by rw [hclass]
+    _ = toCechCohomology S.X₂.presheaf (q + 1) U
+        (cocycleClass S.X₂.presheaf U (q + 1) c) := by
+          rw [← normalizedCechCohomologyMap_cocycleClass
+            S.X₂.presheaf h (r.comp s) (q + 1) c]
+          simpa only [ConcreteCategory.comp_apply] using
+            ConcreteCategory.congr_hom
+              (normalizedCechCohomologyMap_comp_toCechCohomology
+                S.X₂.presheaf (q + 1) h)
+              (cocycleClass S.X₂.presheaf U (q + 1) c)
+
+/-- A positive-degree middle class killed by the right coefficient map has a left-class
+preimage, constructed by the reviewed refine--lift--subtract--factor calculation. -/
+theorem exists_left_preimage_succ
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (U : SetOpenCover X) (q : ℕ)
+    (c : CechCocycle S.X₂.presheaf U (q + 1))
+    (hc : cechCohomologyCoefficientMap S.g.hom (q + 1)
+      (toCechCohomology S.X₂.presheaf (q + 1) U
+        (cocycleClass S.X₂.presheaf U (q + 1) c)) = 0) :
+    ∃ (W : SetOpenCover X) (a : CechCocycle S.X₁.presheaf W (q + 1)),
+      cechCohomologyCoefficientMap S.f.hom (q + 1)
+          (toCechCohomology S.X₁.presheaf (q + 1) W
+            (cocycleClass S.X₁.presheaf W (q + 1) a)) =
+        toCechCohomology S.X₂.presheaf (q + 1) U
+          (cocycleClass S.X₂.presheaf U (q + 1) c) := by
+  obtain ⟨V, r, z, hz⟩ :=
+    exists_refinement_coefficientCocycle_eq_differential S.g.hom U q c hc
+  let _ : Epi S.g := hS.epi_g
+  obtain ⟨W, s, t, ht⟩ := exists_refinement_cochain_lift S.g V q z
+  let d := middleKernelCorrection r s q c t
+  have hd : OrderedCech.coefficientMapDegree S.g.hom W.family (q + 1) d.1 = 0 :=
+    middleKernelCorrection_map_eq_zero r s q c z t hz ht
+  obtain ⟨a, ha, _⟩ := existsUnique_leftCocycle_of_middleKernel hS W (q + 1) d hd
+  exact ⟨W, a, middleKernelCorrection_class r s q c t a ha⟩
+
+/-- At degree zero, a killed middle class becomes a literal kernel element after refinement and
+therefore factors through the left cocycle, without a negative-degree primitive. -/
+theorem exists_left_preimage_degree_zero
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    (hS : S.ShortExact) (U : SetOpenCover X)
+    (c : CechCocycle S.X₂.presheaf U 0)
+    (hc : cechCohomologyCoefficientMap S.g.hom 0
+      (toCechCohomology S.X₂.presheaf 0 U
+        (cocycleClass S.X₂.presheaf U 0 c)) = 0) :
+    ∃ (V : SetOpenCover X) (a : CechCocycle S.X₁.presheaf V 0),
+      cechCohomologyCoefficientMap S.f.hom 0
+          (toCechCohomology S.X₁.presheaf 0 V
+            (cocycleClass S.X₁.presheaf V 0 a)) =
+        toCechCohomology S.X₂.presheaf 0 U
+          (cocycleClass S.X₂.presheaf U 0 c) := by
+  obtain ⟨V, r, hr⟩ :=
+    exists_refinement_coefficientCocycle_eq_zero_degree_zero S.g.hom U c hc
+  let b := refineCocycle S.X₂.presheaf r 0 c
+  obtain ⟨a, ha, _⟩ := existsUnique_leftCocycle_of_middleKernel hS V 0 b hr
+  have hcoefficient : coefficientCocycle S.f.hom V 0 a = b := by
+    apply Subtype.ext
+    exact ha
+  let h : U ≤ V := ⟨r⟩
+  refine ⟨V, a, ?_⟩
+  calc
+    cechCohomologyCoefficientMap S.f.hom 0
+        (toCechCohomology S.X₁.presheaf 0 V
+          (cocycleClass S.X₁.presheaf V 0 a)) =
+      toCechCohomology S.X₂.presheaf 0 V
+        (cocycleClass S.X₂.presheaf V 0 (coefficientCocycle S.f.hom V 0 a)) :=
+          cechCohomologyCoefficientMap_cocycleClass S.f.hom V 0 a
+    _ = toCechCohomology S.X₂.presheaf 0 V
+        (cocycleClass S.X₂.presheaf V 0 b) := by rw [hcoefficient]
+    _ = toCechCohomology S.X₂.presheaf 0 U
+        (cocycleClass S.X₂.presheaf U 0 c) := by
+          rw [← normalizedCechCohomologyMap_cocycleClass
+            S.X₂.presheaf h r 0 c]
+          simpa only [ConcreteCategory.comp_apply] using
+            ConcreteCategory.congr_hom
+              (normalizedCechCohomologyMap_comp_toCechCohomology
+                S.X₂.presheaf 0 h)
+              (cocycleClass S.X₂.presheaf U 0 c)
+
+/-- The two ordinary coefficient maps in each degree compose to zero on refinement-directed
+Cech cohomology. -/
+theorem coefficientMaps_comp_zero
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)) (q : ℕ) :
+    cechCohomologyCoefficientMap S.f.hom q ≫
+      cechCohomologyCoefficientMap S.g.hom q = 0 := by
+  apply AddCommGrpCat.hom_ext
+  apply AddMonoidHom.ext
+  intro x
+  change cechCohomologyCoefficientMap S.g.hom q
+      (cechCohomologyCoefficientMap S.f.hom q x) = 0
+  obtain ⟨U, c, hc⟩ := cechCohomology_exists_cocycle_rep S.X₁.presheaf q x
+  rw [← hc, cechCohomologyCoefficientMap_cocycleClass,
+    cechCohomologyCoefficientMap_cocycleClass]
+  have hsheaf : S.f.hom ≫ S.g.hom = 0 :=
+    congrArg (fun k : S.X₁ ⟶ S.X₃ => k.hom) S.zero
+  have hmaps := congrArg (fun k => k.f q)
+    (OrderedCech.coefficientMap_comp S.f.hom S.g.hom U.family)
+  have hzero :
+      OrderedCech.coefficientMapDegree S.g.hom U.family q
+          (OrderedCech.coefficientMapDegree S.f.hom U.family q c.1) = 0 := by
+    calc
+      OrderedCech.coefficientMapDegree S.g.hom U.family q
+          (OrderedCech.coefficientMapDegree S.f.hom U.family q c.1) =
+        (OrderedCech.coefficientMap S.f.hom U.family ≫
+          OrderedCech.coefficientMap S.g.hom U.family).f q c.1 := by
+            rw [HomologicalComplex.comp_f, OrderedCech.coefficientMap_f,
+              OrderedCech.coefficientMap_f, ConcreteCategory.comp_apply]
+      _ = (OrderedCech.coefficientMap (S.f.hom ≫ S.g.hom) U.family).f q c.1 := by
+            exact (ConcreteCategory.congr_hom hmaps c.1).symm
+      _ = (OrderedCech.coefficientMap (0 : S.X₁.presheaf ⟶ S.X₃.presheaf)
+          U.family).f q c.1 := by rw [hsheaf]
+      _ = 0 := by
+        change OrderedCech.coefficientMapDegree
+          (0 : S.X₁.presheaf ⟶ S.X₃.presheaf) U.family q c.1 = 0
+        apply (Limits.Concrete.productEquiv
+          (fun σ : OrderedSimplex U.Index q =>
+            S.X₃.presheaf.obj (op (σ.intersection U.family)))).injective
+        funext σ
+        simp only [Limits.Concrete.productEquiv_apply_apply]
+        calc
+          OrderedCech.π S.X₃.presheaf U.family q σ
+              (OrderedCech.coefficientMapDegree
+                (0 : S.X₁.presheaf ⟶ S.X₃.presheaf) U.family q c.1) =
+            ConcreteCategory.hom
+              ((0 : S.X₁.presheaf ⟶ S.X₃.presheaf).app
+                (op (σ.intersection U.family)))
+                (OrderedCech.π S.X₁.presheaf U.family q σ c.1) := by
+                  simpa only [ConcreteCategory.comp_apply] using
+                    ConcreteCategory.congr_hom
+                      (OrderedCech.coefficientMapDegree_π
+                        (0 : S.X₁.presheaf ⟶ S.X₃.presheaf) U.family q σ) c.1
+          _ = 0 := AddMonoidHom.zero_apply _
+          _ = OrderedCech.π S.X₃.presheaf U.family q σ 0 :=
+            (map_zero _).symm
+  have hcocycle : coefficientCocycle S.g.hom U q
+      (coefficientCocycle S.f.hom U q c) = 0 := by
+    apply Subtype.ext
+    exact hzero
+  rw [hcocycle, map_zero, map_zero]
+
+/-- Exactness of the actual refinement-colimit coefficient maps at every middle term. -/
+theorem exactAtMiddle_function
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    Function.Exact (cechCohomologyCoefficientMap S.f.hom q)
+      (cechCohomologyCoefficientMap S.g.hom q) := by
+  intro x
+  constructor
+  · intro hx
+    obtain ⟨U, c, hc⟩ := cechCohomology_exists_cocycle_rep S.X₂.presheaf q x
+    cases q with
+    | zero =>
+        have hkernel : cechCohomologyCoefficientMap S.g.hom 0
+            (toCechCohomology S.X₂.presheaf 0 U
+              (cocycleClass S.X₂.presheaf U 0 c)) = 0 := by
+          rw [hc]
+          exact hx
+        obtain ⟨V, a, ha⟩ := exists_left_preimage_degree_zero hS U c hkernel
+        exact ⟨toCechCohomology S.X₁.presheaf 0 V
+          (cocycleClass S.X₁.presheaf V 0 a), ha.trans hc⟩
+    | succ n =>
+        have hkernel : cechCohomologyCoefficientMap S.g.hom (n + 1)
+            (toCechCohomology S.X₂.presheaf (n + 1) U
+              (cocycleClass S.X₂.presheaf U (n + 1) c)) = 0 := by
+          rw [hc]
+          exact hx
+        obtain ⟨V, a, ha⟩ := exists_left_preimage_succ hS U n c hkernel
+        exact ⟨toCechCohomology S.X₁.presheaf (n + 1) V
+          (cocycleClass S.X₁.presheaf V (n + 1) a), ha.trans hc⟩
+  · rintro ⟨y, rfl⟩
+    calc
+      cechCohomologyCoefficientMap S.g.hom q
+          (cechCohomologyCoefficientMap S.f.hom q y) =
+        (0 : cechCohomology S.X₁.presheaf q ⟶
+          cechCohomology S.X₃.presheaf q) y := by
+            simpa only [ConcreteCategory.comp_apply] using
+              ConcreteCategory.congr_hom (coefficientMaps_comp_zero S q) y
+      _ = 0 := AddMonoidHom.zero_apply _
+
+/-- The categorical short complex of consecutive coefficient maps in degree `q`. -/
+noncomputable def coefficientCechShortComplex
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)) (q : ℕ) :
+    ShortComplex AddCommGrpCat.{u} :=
+  ShortComplex.mk (cechCohomologyCoefficientMap S.f.hom q)
+    (cechCohomologyCoefficientMap S.g.hom q)
+    (coefficientMaps_comp_zero S q)
+
+/-- Categorical exactness of the two consecutive coefficient maps in every degree. -/
+theorem coefficientCechShortComplex_exact
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    [ParacompactSpace X] [T2Space X]
+    (hS : S.ShortExact) (q : ℕ) :
+    (coefficientCechShortComplex S q).Exact := by
+  rw [ShortComplex.ab_exact_iff_function_exact]
+  exact exactAtMiddle_function hS q
+
 end TopologicalSpace.OpenCover.SetOpenCover

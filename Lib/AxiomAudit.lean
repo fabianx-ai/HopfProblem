@@ -6698,6 +6698,28 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_differential
 #check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_zero_degree_zero
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_zero_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.existsUnique_leftCocycle_of_middleKernel
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.existsUnique_leftCocycle_of_middleKernel
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_coe
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_coe
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_map_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_map_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_class
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_class
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_succ
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_succ
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientMaps_comp_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientMaps_comp_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exactAtMiddle_function
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exactAtMiddle_function
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex_exact
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
 
