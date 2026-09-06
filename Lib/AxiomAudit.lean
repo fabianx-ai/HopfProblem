@@ -6353,6 +6353,15 @@ is an evidence command rather than library content.
 #check HasCoveringDimensionLE.exists_multiplicityLE_refinement
 #print axioms HasCoveringDimensionLE.exists_multiplicityLE_refinement
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocallyFiniteRefinement` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.IsLocallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.IsLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover_isLocallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover_isLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem` -/
 
 #check TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
