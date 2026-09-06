@@ -273,4 +273,150 @@ theorem nextApp_app_eq_component (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.Effac
 
 end
 
+namespace Effacement
+
+variable {T S : CohomologicalDeltaFunctor C D} {m n : ℕ}
+
+set_option linter.unusedVariables false in
+/-- Enlarging through the middle object of a short exact sequence remains effacing
+(U-G5a; equation (U19)). -/
+theorem ofShortExact_map_eq_zero {E : ShortComplex C} (hE : E.ShortExact)
+    (e : Effacement T m E.X₂) : (T.T m).obj.map (E.f ≫ e.i) = 0 := by
+  rw [CategoryTheory.Functor.map_comp, e.map_eq_zero, comp_zero]
+
+/-- The effacement of the left object obtained by composing through the middle object
+(U-G5b; before equation (U19)). -/
+def ofShortExact {E : ShortComplex C} (hE : E.ShortExact) (e : Effacement T m E.X₂) :
+    Effacement T m E.X₁ where
+  M := e.M
+  i := E.f ≫ e.i
+  mono := haveI := hE.mono_f; mono_comp _ _
+  map_eq_zero := ofShortExact_map_eq_zero hE e
+
+/-- The cokernel obligation for the middle-object enlargement (U-G5b′; before (U20)). -/
+theorem f_comp_comp_π {E : ShortComplex C} (e : Effacement T m E.X₂) :
+    E.f ≫ (e.i ≫ cokernel.π (E.f ≫ e.i)) = 0 := by
+  rw [← Category.assoc, cokernel.condition]
+
+/-- The morphism from an arbitrary short exact sequence to its effacing enlargement
+(U-G5c; equation (U20)). -/
+def homOfShortExact {E : ShortComplex C} (hE : E.ShortExact)
+    (e : Effacement T m E.X₂) : E ⟶ (ofShortExact hE e).shortComplex where
+  τ₁ := 𝟙 _
+  τ₂ := e.i
+  τ₃ := haveI := hE.epi_g
+    hE.exact.desc (e.i ≫ cokernel.π (E.f ≫ e.i)) (f_comp_comp_π e)
+  comm₁₂ := Category.id_comp _
+  comm₂₃ := haveI := hE.epi_g; (hE.exact.g_desc _ _).symm
+
+end Effacement
+
+section Assembly
+
+variable {T S : CohomologicalDeltaFunctor C D} {n : ℕ}
+
+/-- The next-degree transformation commutes with the connecting morphism of every short exact
+sequence (U-G5d; equations (U21)–(U22)). -/
+theorem nextApp_comm (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1))
+    {E : ShortComplex C} (hE : E.ShortExact) :
+    T.δ hE n ≫ (nextApp η h).app E.X₁ = η.app E.X₃ ≫ S.δ hE n := by
+  let e := Effacement.ofShortExact hE (h.effacement E.X₂)
+  let φ := Effacement.homOfShortExact hE (h.effacement E.X₂)
+  let c : E.X₃ ⟶ cokernel e.i := φ.τ₃
+  let dT : (T.T n).obj.obj (cokernel e.i) ⟶ (T.T (n + 1)).obj.obj E.X₁ := T.δ e.shortExact n
+  let dS : (S.T n).obj.obj (cokernel e.i) ⟶ (S.T (n + 1)).obj.obj E.X₁ := S.δ e.shortExact n
+  have hT := T.naturality hE e.shortExact φ n
+  change (T.T n).obj.map c ≫ dT =
+    T.δ hE n ≫ (T.T (n + 1)).obj.map (𝟙 E.X₁) at hT
+  have hS := S.naturality hE e.shortExact φ n
+  change (S.T n).obj.map c ≫ dS =
+    S.δ hE n ≫ (S.T (n + 1)).obj.map (𝟙 E.X₁) at hS
+  rw [CategoryTheory.Functor.map_id, Category.comp_id] at hT hS
+  have hη := η.naturality c
+  have hδ := Effacement.δ_component η e
+  change dT ≫ Effacement.component η e = η.app (cokernel e.i) ≫ dS at hδ
+  rw [nextApp_app_eq_component η h e, ← hT, Category.assoc, hδ,
+    ← Category.assoc, hη, Category.assoc, hS]
+
+/-- A next-degree extension compatible with every effacing connecting morphism is unique
+(U-G6; equation (U23)). -/
+theorem nextApp_unique (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1))
+    (θ : (T.T (n + 1)).obj ⟶ (S.T (n + 1)).obj)
+    (hθ : ∀ {A : C} (e : Effacement T (n + 1) A),
+      T.δ e.shortExact n ≫ θ.app A = η.app (cokernel e.i) ≫ S.δ e.shortExact n) :
+    θ = nextApp η h := by
+  apply NatTrans.ext
+  funext A
+  let e := h.effacement A
+  let dT : (T.T n).obj.obj (cokernel e.i) ⟶ (T.T (n + 1)).obj.obj A := T.δ e.shortExact n
+  let dS : (S.T n).obj.obj (cokernel e.i) ⟶ (S.T (n + 1)).obj.obj A := S.δ e.shortExact n
+  let _ : Epi dT := e.epi_δ
+  apply (cancel_epi dT).mp
+  rw [nextApp_app]
+  have hθe := hθ e
+  change dT ≫ θ.app A = η.app (cokernel e.i) ≫ dS at hθe
+  have hδe := Effacement.δ_component η e
+  change dT ≫ Effacement.component η e = η.app (cokernel e.i) ≫ dS at hδe
+  exact hθe.trans hδe.symm
+
+/-- The recursively constructed degreewise family extending a degree-zero transformation
+(U-A1; induction after (U22)). -/
+def Effaceable.extendApp (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
+    ∀ n : ℕ, (T.T n).obj ⟶ (S.T n).obj
+  | 0 => η₀
+  | n + 1 => nextApp (Effaceable.extendApp hT η₀ n) (hT (n + 1) (Nat.succ_pos n))
+
+/-- The recursive extension starts with the prescribed degree-zero transformation (U-A2). -/
+theorem Effaceable.extendApp_zero (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
+    Effaceable.extendApp hT η₀ 0 = η₀ := rfl
+
+/-- The successor equation for the recursive extension (U-A3). -/
+theorem Effaceable.extendApp_succ (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj)
+    (n : ℕ) :
+    Effaceable.extendApp hT η₀ (n + 1) =
+      nextApp (Effaceable.extendApp hT η₀ n) (hT (n + 1) (Nat.succ_pos n)) := rfl
+
+/-- The recursive family assembled as a morphism of cohomological delta functors (U-A4). -/
+def Effaceable.extendHom (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) : Hom T S where
+  app := Effaceable.extendApp hT η₀
+  comm hE n := nextApp_comm (Effaceable.extendApp hT η₀ n)
+    (hT (n + 1) (Nat.succ_pos n)) hE
+
+/-- The assembled morphism has the prescribed degree-zero component (U-A5). -/
+theorem Effaceable.extendHom_app_zero (hT : T.Effaceable)
+    (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
+    (Effaceable.extendHom hT η₀).app 0 = η₀ := rfl
+
+/-- Every morphism out of an effaceable delta functor is the recursively constructed extension
+of its degree-zero component (U-A6; final induction after (U23)). -/
+theorem Effaceable.hom_eq_extendHom (hT : T.Effaceable) (θ : Hom T S) :
+    θ = Effaceable.extendHom hT (θ.app 0) := by
+  apply Hom.ext
+  intro n
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    change θ.app n = Effaceable.extendApp hT (θ.app 0) n at ih
+    exact nextApp_unique (Effaceable.extendApp hT (θ.app 0) n)
+      (hT (n + 1) (Nat.succ_pos n)) (θ.app (n + 1))
+      (fun {A} e => by
+        let dT : (T.T n).obj.obj (cokernel e.i) ⟶ (T.T (n + 1)).obj.obj A :=
+          T.δ e.shortExact n
+        let dS : (S.T n).obj.obj (cokernel e.i) ⟶ (S.T (n + 1)).obj.obj A :=
+          S.δ e.shortExact n
+        change dT ≫ (θ.app (n + 1)).app A =
+          (Effaceable.extendApp hT (θ.app 0) n).app (cokernel e.i) ≫ dS
+        have hcomm := θ.comm e.shortExact n
+        change dT ≫ (θ.app (n + 1)).app A = (θ.app n).app (cokernel e.i) ≫ dS at hcomm
+        rw [hcomm, ih])
+
+/-- Hartshorne III.1.3A / Grothendieck, Tôhoku II.2.2.1 / Stacks 010T: an effaceable
+cohomological delta functor is universal (U-A7). -/
+theorem Effaceable.isUniversal (hT : T.Effaceable) : T.IsUniversal :=
+  fun S η₀ =>
+    ⟨Effaceable.extendHom hT η₀, Effaceable.extendHom_app_zero hT η₀,
+      fun θ hθ => by rw [Effaceable.hom_eq_extendHom hT θ, hθ]⟩
+
+end Assembly
+
 end CategoryTheory.CohomologicalDeltaFunctor

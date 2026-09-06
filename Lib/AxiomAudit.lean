@@ -6950,3 +6950,29 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app
 #check CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.f_comp_comp_π
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.f_comp_comp_π
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfShortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfShortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_comm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_comm
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_unique
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_unique
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_succ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_succ
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom_app_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom_app_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.hom_eq_extendHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.hom_eq_extendHom
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
