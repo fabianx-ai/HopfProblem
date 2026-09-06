@@ -6387,6 +6387,27 @@ is an evidence command rather than library content.
 #check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
 
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Coefficients` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_id
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_id
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp_refinementMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp_refinementMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplexMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplexMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
+
 /-! ## `Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing` -/
 
 #check TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE

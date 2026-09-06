@@ -388,6 +388,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.RangeCover
 import Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing
 import Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing
 import Lib.Topology.Sheaves.Cohomology.Cech.LocallyFiniteRefinement
+import Lib.Topology.Sheaves.Cohomology.Cech.Coefficients
 
 /-!
 # Reusable extracted library
