@@ -163,12 +163,12 @@ noncomputable def fromSphere (y : Metric.sphere (0 : Ambient) 1) : Boundary := b
       inv_mul_cancel₀ (ne_of_gt (maxAbs_pos_of_mem_sphere y))]
   exact ⟨(maxAbs (y : Ambient))⁻¹ • (y : Ambient), normalizeMax_mem_boundary⟩
 
-/-- Textbook Definition 1.3 formula (R3) for the outward radial map. -/
+/-- Textbook Definition 1.3 formula (R3) for Euclidean normalization onto the sphere. -/
 theorem toSphere_apply (x : Boundary) :
     ((toSphere x : Metric.sphere (0 : Ambient) 1) : Ambient) =
       ‖(x : Ambient)‖⁻¹ • (x : Ambient) := rfl
 
-/-- Textbook Definition 1.3 formula (R4) for the inward radial map. -/
+/-- Textbook Definition 1.3 formula (R4) for maximum-norm normalization onto the cube. -/
 theorem fromSphere_apply (y : Metric.sphere (0 : Ambient) 1) :
     ((fromSphere y : Boundary) : Ambient) =
       (maxAbs (y : Ambient))⁻¹ • (y : Ambient) := rfl
