@@ -1395,6 +1395,7 @@ public theorem exists_square_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
   refine ⟨squareGeom h (coverageVertex N h x i j k) j k, coverageSquare_mem_squares hp, ?_⟩
   exact point_mem_coverageSquare hN hh hjk hij hik (coverageVertex_apply_i N h x i j k)
     (clipped_floor_enclosure hN hh (hbounds j)) (clipped_floor_enclosure hN hh (hbounds k))
+
 /-! CD10C-I implements ordinary textbook Lemma 3.4 (I1, lines 1658–1668) and Lemma 3.5
 (I2, lines 1670–1682). Every I1 declaration below formalizes a stated coordinate, interval, or
 assembly step of lines 1658–1668; every I2 declaration formalizes a parameter, side, vertex, or
@@ -1682,9 +1683,10 @@ private theorem topK_edge_constructor {N : ℕ} {h : ℝ} {v : Ambient} {j k : F
       (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ∈ edges N h :=
   edge_mem_iff.mpr ⟨v + h • EuclideanSpace.single j 1, k, ⟨hv, hvk, hsub⟩, rfl⟩
 
+set_option linter.unusedVariables false in
 /-- I2 validity: the two lower sides are permitted edges. -/
 private theorem bottom_square_edges_valid
-    {N : ℕ} {h : ℝ} (_hN : 0 < N) (_hh : h = 2 / (N : ℝ))
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
     {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k) :
     segment ℝ v (v + h • EuclideanSpace.single j 1) ∈ edges N h ∧
     segment ℝ v (v + h • EuclideanSpace.single k 1) ∈ edges N h := by
@@ -1708,12 +1710,30 @@ private theorem shifted_square_vertices_valid
     · intro r; by_cases hr : r = j
       · subst r; simpa [shiftedVertexJ_apply_same] using lattice_successor hN hh (hp.1.1 j) hp.2.2.1
       · simpa [shiftedVertexJ_apply_ne h v hr] using hp.1.1 r
-    · exact hp.2.2.2.2 (by simpa [shiftedVertexJ] using square_first_corner_mem h v j k)
+    · have H := bottomJ_lineMap_embedding h 1 v j k (by norm_num)
+      have heq : v + h • EuclideanSpace.single j 1 =
+          v + ((1 : ℝ) * h) • EuclideanSpace.single j 1 +
+            ((0 : ℝ) * h) • EuclideanSpace.single k 1 := by
+        calc
+          v + h • EuclideanSpace.single j 1 =
+              AffineMap.lineMap v (v + h • EuclideanSpace.single j 1) 1 := by
+                rw [AffineMap.lineMap_apply_one]
+          _ = _ := H.2
+      exact hp.2.2.2.2 ⟨1, by norm_num, 0, by norm_num, heq⟩
   · constructor
     · intro r; by_cases hr : r = k
       · subst r; simpa [shiftedVertexK_apply_same] using lattice_successor hN hh (hp.1.1 k) hp.2.2.2.1
       · simpa [shiftedVertexK_apply_ne h v hr] using hp.1.1 r
-    · exact hp.2.2.2.2 (by simpa [shiftedVertexK] using square_second_corner_mem h v j k)
+    · have H := bottomK_lineMap_embedding h 1 v j k (by norm_num)
+      have heq : v + h • EuclideanSpace.single k 1 =
+          v + ((0 : ℝ) * h) • EuclideanSpace.single j 1 +
+            ((1 : ℝ) * h) • EuclideanSpace.single k 1 := by
+        calc
+          v + h • EuclideanSpace.single k 1 =
+              AffineMap.lineMap v (v + h • EuclideanSpace.single k 1) 1 := by
+                rw [AffineMap.lineMap_apply_one]
+          _ = _ := H.2
+      exact hp.2.2.2.2 ⟨0, by norm_num, 1, by norm_num, heq⟩
 
 /-- I2 validity: the two translated upper sides are permitted edges. -/
 private theorem top_square_edges_valid
