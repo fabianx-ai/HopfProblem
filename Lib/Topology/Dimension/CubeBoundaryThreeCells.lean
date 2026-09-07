@@ -1816,4 +1816,43 @@ public theorem square_boundary_edges
   exact ⟨v, j, k, hp.1, hp.2.1, hp.2.2.1, hp.2.2.2.1, hsgeom,
     hej, hek, heJ, heK, square_boundary_mem_four_segments ha hb hx hend⟩
 
+/-- Textbook Lemma 3.6, lines 1684–1688: every coordinate of a mesh vertex belongs to the
+one-dimensional mesh lattice. -/
+private theorem vertex_coordinate_mem_lattice {N : ℕ} {h : ℝ} {v : Ambient}
+    (hv : v ∈ vertices N h) (i : Fin 3) : v i ∈ lattice N h :=
+  hv.1 i
+
+/-- Textbook Lemma 3.6, lines 1684–1688: two unequal points in three-coordinate space differ in
+at least one coordinate. -/
+private theorem exists_ne_coordinate {v w : Ambient} (hvw : v ≠ w) :
+    ∃ i : Fin 3, v i ≠ w i := by
+  by_contra h
+  push Not at h
+  exact hvw (PiLp.ext h)
+
+/-- Textbook Lemma 3.6, lines 1684–1688: unequal coordinates of two mesh vertices are separated
+by at least one mesh length. -/
+private theorem vertex_coordinate_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v w : Ambient} (hv : v ∈ vertices N h)
+    (hw : w ∈ vertices N h) {i : Fin 3} (hi : v i ≠ w i) : h ≤ |v i - w i| :=
+  lattice_separation hN hh (vertex_coordinate_mem_lattice hv i)
+    (vertex_coordinate_mem_lattice hw i) hi
+
+/-- Textbook Lemma 3.6, lines 1684–1688: the absolute value of any coordinate is bounded by the
+maximum absolute coordinate. -/
+private theorem abs_apply_le_maxAbs (x : Ambient) (i : Fin 3) : |x i| ≤ maxAbs x := by
+  fin_cases i <;> simp [maxAbs]
+
+/-- Textbook Lemma 3.6, lines 1684–1688: distinct mesh vertices are separated by one mesh length
+in maximum-coordinate distance, which is bounded above by Euclidean distance. -/
+public theorem vertex_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v w : Ambient} (hv : v ∈ vertices N h)
+    (hw : w ∈ vertices N h) (hvw : v ≠ w) :
+    h ≤ maxAbs (v - w) ∧ maxAbs (v - w) ≤ ‖v - w‖ := by
+  obtain ⟨i, hi⟩ := exists_ne_coordinate hvw
+  constructor
+  · exact le_trans (vertex_coordinate_separation hN hh hv hw hi)
+      (by simpa using abs_apply_le_maxAbs (v - w) i)
+  · exact maxAbs_le_norm (v - w)
+
 end TopologicalSpace.CubeBoundaryThree
