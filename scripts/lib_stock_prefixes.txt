@@ -1,0 +1,72 @@
+# Stock prefixes: top-level namespaces (declaration-name prefixes) under Hopf/ that the
+# census in Lib/EXTRACTION_PLAN.md classified GENERIC-TEXTBOOK or GENERIC-BUT-SPECIALIZED.
+# Entry forms: `Prefix`, `Prefix.Sub`, or `Hopf/File.lean:Prefix` (file-scoped).
+# The count produced from this list may only decrease (scripts/lib_stock_baseline.txt).
+
+# --- Morse / handle / differential topology (Milnor Morse Theory; Milnor h-cobordism; Hirsch; Lee)
+Smale
+MorseCancel
+Degree
+AdaptedWindows
+NoExotic
+SmoothMorseLemma
+LineBundleTransport
+# --- singular homology, spheres, suspension, degree (Hatcher Ch. 2)
+FirstHurewicz
+SingularMayerVietoris
+SphereHomology
+EuclideanSphere
+SmallChainBiprod
+Hopf/SphereTopology.lean:CuspCentralHomology
+Hopf/SingularHomology.lean:CuspCentralHomology
+ThreefoldHomologyStarCoproduct
+SixSphereCube
+SixSphereHomology
+ManifoldAtlasTransport
+# --- torus homology / cross product (Hatcher Ex 2.48, §3.B, §3.C); the LCP definitions are
+#     generic torus homology per the census, the Specialization.lean ones are pinned to r = 4
+PeriodTorusHigherHomology
+PeriodTorusHigherHomologyPontryagin
+PeriodTorusHigherHomologyExterior
+# --- Hurewicz theorem (Hatcher Thm 4.32) and its cubical/simplicial machinery
+HigherHurewicz
+SecondHurewicz
+ThirdHurewicz
+FourthHurewicz
+FifthHurewicz
+SixthHurewicz
+# --- fundamental group / van Kampen (Hatcher Thm 1.20); DONE-PRIVATELY but still under Hopf/
+FundamentalGroupVanKampen
+SimplyConnectedCover
+TriangleRegularBaseFundamentalGroup
+_root_
+# --- complex analysis (Ahlfors; Rudin RCA; Forster; Hörmander)
+RiemannMapping
+RiemannBoundary
+SchwarzReflection
+RiemannSphere
+TriangleRiemannNormalization
+HolomorphicCousin
+AnalyticRootCover
+AnalyticRootCoverContinuation
+# --- quotients, coverings, charts on quotients (Forster §5; Hatcher §1.3)
+LocalOrbitQuotient
+OnePointAtlas
+TwoAffineCharts
+FreeActionLocus
+BranchedQuotientAtlas
+CoveringQuotient
+DiscreteQuotient
+InvariantSubsetQuotient
+CoveringOrthant
+ProductRestriction
+DiagonalQuotient
+TwoOpenTransition
+SplitGroupExtension
+# --- mapping torus and the Wang sequence (Hatcher Ex 2.48)
+MappingTorus
+MappingTorusHomology
+# --- misnamed generic homotopy lemmas
+ThreefoldHomologyFinitenessRetraction
+CuspRetraction.Patching
+TwistGroup
