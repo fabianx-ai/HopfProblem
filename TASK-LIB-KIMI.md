@@ -18,6 +18,15 @@ order, Axis 4 placement, Axis 5 exact typed ledger with the disposable
 then Axis 6 Lean. `Lib/EXTRACTION_PLAN.md` §2 has every source line range on
 721fc82 and every target file; §3 the validation recipe; §7 the hazards.
 
+**Reference example.** Before starting any lane, read
+`Lib/AlgebraicTopology/Hurewicz/` (five files; the finished degree-one
+Hurewicz extraction of github.com/fabianx-ai/mathlib4 PR #4, copied verbatim
+and building against the pinned Mathlib). Your files must look like these:
+the textbook in the module docstring, one file per textbook step, Mathlib
+names and namespaces, a docstring on every public declaration, no project
+vocabulary. `Lib/README.md`, section "Reference example", lists what to
+imitate.
+
 ## Your lanes, in execution order
 
 ### Lane C — the Hurewicz theorem in every degree (Hatcher Thm 4.32) — starts when GLM's lane A has landed

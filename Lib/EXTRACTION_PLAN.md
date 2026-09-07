@@ -164,11 +164,13 @@ each model takes its next independent lane.
   generality.
 - **Mathlib PRs.** Template of a finished extraction: `github.com/fabianx-ai/mathlib4` PR #4
   (`Mathlib/AlgebraicTopology/Hurewicz/{CycleClasses,SimplexPaths,PeriodicLoop,H1Character,
-  Degree1}.lean`, the degree-one Hurewicz theorem). Candidates in order of readiness: Morse
-  lemma (D1); smooth dependence of flows (D1); `ProjectionBundle` and the tubular neighbourhood
-  theorem (D2); Mayer–Vietoris and H_*(Sⁿ) (A); Kuhn triangulation and the Hurewicz theorem
-  (C); Wang sequence and H_*(Tʳ) (I, J); Riemann-mapping steps against #33505 and the
-  simply-connected-sphere block against #28246 (H, B); Cousin problem (H).
+  Degree1}.lean`, the degree-one Hurewicz theorem; a verbatim copy is in-tree at
+  `Lib/AlgebraicTopology/Hurewicz/` and builds against the pinned Mathlib). Candidates in
+  order of readiness: Morse lemma (D1); smooth dependence of flows (D1); `ProjectionBundle`
+  and the tubular neighbourhood theorem (D2); Mayer–Vietoris and H_*(Sⁿ) (A); Kuhn
+  triangulation and the Hurewicz theorem (C); Wang sequence and H_*(Tʳ) (I, J);
+  Riemann-mapping steps against #33505 and the simply-connected-sphere block against #28246
+  (H, B); Cousin problem (H).
 - **Universe lift.** All singular-homology statements use `(X : Type)`; lifting to `Type u`
   is a separate pass after lane A.
 - **Sphere consolidation.** Five spellings of the same sphere (`SphereHomology.UnitSphere n`,

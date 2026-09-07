@@ -13,6 +13,15 @@ textbook file) before any Lean is touched, then decomposition, then Lean.
 range on 721fc82 and every target file; its §3 gives the validation recipe;
 its §7 the hazards. This task file only sequences your lanes.
 
+**Reference example.** Before starting any lane, read
+`Lib/AlgebraicTopology/Hurewicz/` (five files; the finished degree-one
+Hurewicz extraction of github.com/fabianx-ai/mathlib4 PR #4, copied verbatim
+and building against the pinned Mathlib). Your files must look like these:
+the textbook in the module docstring, one file per textbook step, Mathlib
+names and namespaces, a docstring on every public declaration, no project
+vocabulary. `Lib/README.md`, section "Reference example", lists what to
+imitate.
+
 ## Your lanes, in execution order
 
 Each lane: create `lib/<lane>-<slug>` off `lib/textbook-extraction`; write the

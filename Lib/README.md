@@ -8,7 +8,37 @@ upstream-bound: Mathlib-shaped file paths (`Lib/AlgebraicTopology/…`, `Lib/Geo
 stating the textbook result, and no dependency on the project: **a file under `Lib/` never
 imports `Hopf.*`, `S6.*`, `S6Shortcuts`, `Challenge` or `Solution`.** The finished extraction of
 the degree-one Hurewicz theorem into `Mathlib/AlgebraicTopology/Hurewicz/*`
-(github.com/fabianx-ai/mathlib4, PR #4) is the template for what a `Lib/` file should become.
+(github.com/fabianx-ai/mathlib4, PR #4) is the template for what a `Lib/` file should become;
+a copy is in-tree, see the next section.
+
+## Reference example
+
+`Lib/AlgebraicTopology/Hurewicz/` holds the five files of that PR, verbatim apart from import
+paths (each file says so in a comment under the copyright block). They prove the Hurewicz
+theorem in degree one: for a path-connected space, singular first homology with integer
+coefficients is the abelianized fundamental group (Hatcher, Theorem 2A.1), with naturality,
+conjugation invariance, the class of an `n`-fold periodic loop, and the dictionary between
+characters of `π₁` and of `H₁`. They build unchanged against the Mathlib pinned in
+`lake-manifest.json`. Read them before starting any lane; a `Lib/` file is finished when it
+looks like these. What to imitate:
+
+- **The textbook lives in the module docstring.** `Degree1.lean` opens with the statement,
+  the five-step outline of the proof, the list of main declarations, and the reference; the
+  reader knows the mathematics before the first `def`.
+- **One file per textbook step.** `SimplexPaths` (simplices, paths as one-simplices, the
+  concatenation triangle, the homotopy square), `CycleClasses` (explicit cycles and classes
+  for a complex of modules over any ring), `Degree1` (the theorem), `PeriodicLoop` and
+  `H1Character` (consequences). Each docstring says what the file provides and where it is
+  used.
+- **Mathlib naming and namespaces.** `AlgebraicTopology.Hurewicz.hurewiczEquiv`,
+  `loopHomologyClass_trans`, `SingularH1.map_comp`: namespaces follow the directory, theorem
+  names are built from the declarations they relate, `@[simp]` marks the normal forms, and
+  every public declaration carries a docstring.
+- **No project vocabulary.** Nothing in the five files names the construction that motivated
+  them; `CycleClasses` was generalized from `ℤ` to any ring on the way.
+- **One commit per step.** The PR's history reads step by step: verbatim baseline, namespaces,
+  split into files, headline names, textbook docstrings, style, generalization. Shape a lane's
+  branch the same way.
 
 ## Placement rule (FREE / CHARGED)
 

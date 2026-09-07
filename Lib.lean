@@ -1,4 +1,9 @@
 import Lib.Algebra.Group.Filtration
+import Lib.AlgebraicTopology.Hurewicz.CycleClasses
+import Lib.AlgebraicTopology.Hurewicz.Degree1
+import Lib.AlgebraicTopology.Hurewicz.H1Character
+import Lib.AlgebraicTopology.Hurewicz.PeriodicLoop
+import Lib.AlgebraicTopology.Hurewicz.SimplexPaths
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.GeneratingSet
