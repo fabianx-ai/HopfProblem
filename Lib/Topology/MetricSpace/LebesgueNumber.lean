@@ -22,6 +22,8 @@ This file translates the ball-form Lebesgue number lemma and canonical Corollary
 cover is used unchanged to control every nonempty subset of smaller diameter.
 -/
 
+-- Positivity is retained in the textbook interface; the diameter argument does not use it.
+set_option linter.unusedVariables false in
 /-- Canonical Corollary 2.1: a nonempty set whose diameter is smaller than a fixed ball-cover
 radius lies in one member of the cover, at that same radius. -/
 public theorem subset_cover_of_diam_lt_of_ball_cover
@@ -30,7 +32,6 @@ public theorem subset_cover_of_diam_lt_of_ball_cover
     (hball : ∀ x : X, ∃ i : ι, Metric.ball x δ ⊆ U i)
     (A : Set X) (hA : A.Nonempty) (hdiam : Metric.diam A < δ) :
     ∃ i : ι, A ⊆ U i := by
-  refine (fun _ : 0 < δ => ?_) hδ
   -- L-01: choose the textbook point `a ∈ A` and the cover member containing `B(a, δ)`.
   rcases hA with ⟨a, ha⟩
   rcases hball a with ⟨i, hai⟩
