@@ -7092,3 +7092,7 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.square_coordinate_description
 #check TopologicalSpace.CubeBoundaryThree.exists_square_mem
 #print axioms TopologicalSpace.CubeBoundaryThree.exists_square_mem
+#check TopologicalSpace.CubeBoundaryThree.square_eq_of_relInterior_inter_nonempty
+#print axioms TopologicalSpace.CubeBoundaryThree.square_eq_of_relInterior_inter_nonempty
+#check TopologicalSpace.CubeBoundaryThree.square_boundary_edges
+#print axioms TopologicalSpace.CubeBoundaryThree.square_boundary_edges

@@ -1395,5 +1395,405 @@ public theorem exists_square_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
   refine ⟨squareGeom h (coverageVertex N h x i j k) j k, coverageSquare_mem_squares hp, ?_⟩
   exact point_mem_coverageSquare hN hh hjk hij hik (coverageVertex_apply_i N h x i j k)
     (clipped_floor_enclosure hN hh (hbounds j)) (clipped_floor_enclosure hN hh (hbounds k))
+/-! CD10C-I implements ordinary textbook Lemma 3.4 (I1, lines 1658–1668) and Lemma 3.5
+(I2, lines 1670–1682). Every I1 declaration below formalizes a stated coordinate, interval, or
+assembly step of lines 1658–1668; every I2 declaration formalizes a parameter, side, vertex, or
+edge step of lines 1670–1682. -/
+
+/-- I1 representation: an open interval above a bounded lattice point stays strictly in the cube. -/
+private theorem open_mesh_coordinate_abs_lt {N : ℕ} {h a x : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (ha : a ∈ lattice N h) (hau : a ≤ 1 - h)
+    (hx : x ∈ Set.Ioo a (a + h)) : |x| < 1 := by
+  rw [abs_lt]
+  have hab := lattice_subset_interval hN hh ha
+  rcases hab with ⟨hab₀, hab₁⟩
+  rcases hx with ⟨hx₀, hx₁⟩
+  constructor <;> linarith
+
+/-- I1 representation: the two moving directions are determined by a common remaining index. -/
+private theorem ordered_pair_eq_of_same_remaining {j k p q i : Fin 3}
+    (hjk : j < k) (hpq : p < q) (hij : i ≠ j) (hik : i ≠ k)
+    (hip : i ≠ p) (hiq : i ≠ q) : j = p ∧ k = q := by
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases p <;> fin_cases q <;> omega
+
+/-- I1 representation: a point open in both coordinate rectangles forces their fixed indices to agree. -/
+private theorem common_open_point_fixed_index_eq
+    {x v w : Ambient} {j k i p q r : Fin 3}
+    (hjk : j < k) (hpq : p < q)
+    (hij : i ≠ j) (hik : i ≠ k) (hrp : r ≠ p) (hrq : r ≠ q)
+    (hvi : |v i| = 1) (hwr : |w r| = 1)
+    (hx : x i = v i ∧ |x j| < 1 ∧ |x k| < 1)
+    (hx' : x r = w r ∧ |x p| < 1 ∧ |x q| < 1) : i = r := by
+  by_contra hir
+  fin_cases i <;> fin_cases r <;> fin_cases j <;> fin_cases k <;>
+    fin_cases p <;> fin_cases q <;> simp_all
+
+/-- I1 interval arithmetic: overlapping open mesh intervals with lattice lower endpoints coincide. -/
+private theorem lattice_open_intervals_overlap_eq {N : ℕ} {h a b x : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (ha : a ∈ lattice N h) (hb : b ∈ lattice N h)
+    (hxa : x ∈ Set.Ioo a (a + h)) (hxb : x ∈ Set.Ioo b (b + h)) : a = b := by
+  by_contra hab
+  have hsep := lattice_separation hN hh ha hb hab
+  rcases le_total a b with hab' | hba'
+  · rw [abs_of_nonpos (sub_nonpos.mpr hab')] at hsep
+    linarith [hxb.1, hxa.2]
+  · rw [abs_of_nonneg (sub_nonneg.mpr hba')] at hsep
+    linarith [hxa.1, hxb.2]
+
+/-- I1 assembly: fixed coordinate plus the two coincident lower intervals identify lower corners. -/
+private theorem square_lower_vertices_eq_of_common_open
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {x v w : Ambient} {j k i : Fin 3}
+    (hv : v ∈ vertices N h) (hw : w ∈ vertices N h)
+    (hij : i ≠ j) (hik : i ≠ k) (hjk : j ≠ k)
+    (hfix : x i = v i ∧ x i = w i)
+    (hj : x j ∈ Set.Ioo (v j) (v j + h) ∧ x j ∈ Set.Ioo (w j) (w j + h))
+    (hk : x k ∈ Set.Ioo (v k) (v k + h) ∧ x k ∈ Set.Ioo (w k) (w k + h)) :
+    v = w := by
+  have hi : v i = w i := hfix.1.symm.trans hfix.2
+  have hj' := lattice_open_intervals_overlap_eq hN hh (hv.1 j) (hw.1 j) hj.1 hj.2
+  have hk' := lattice_open_intervals_overlap_eq hN hh (hv.1 k) (hw.1 k) hk.1 hk.2
+  ext r
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases r <;> simp_all
+
+/-- Textbook I1: intrinsic relative interiors of distinct permitted squares are disjoint. -/
+public theorem square_eq_of_relInterior_inter_nonempty
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {s t : Set Ambient} (hs : s ∈ squares N h) (ht : t ∈ squares N h)
+    (hinter : (squareRelInterior N h ⟨s, hs⟩ ∩
+      squareRelInterior N h ⟨t, ht⟩).Nonempty) : s = t := by
+  obtain ⟨x, hxs, hxt⟩ := hinter
+  obtain ⟨v, j, k, i, hv, hjk, hvj, hvk, hij, hik, hvi, hsclosed, hsopen, _⟩ :=
+    square_coordinate_description hN hh hs
+  obtain ⟨w, p, q, r, hw, hpq, hwp, hwq, hrp, hrq, hwr, htclosed, htopen, _⟩ :=
+    square_coordinate_description hN hh ht
+  rw [hsopen] at hxs
+  rw [htopen] at hxt
+  have hjabs := open_mesh_coordinate_abs_lt hN hh (hv.1 j) hvj hxs.2.1
+  have hkabs := open_mesh_coordinate_abs_lt hN hh (hv.1 k) hvk hxs.2.2
+  have hpabs := open_mesh_coordinate_abs_lt hN hh (hw.1 p) hwp hxt.2.1
+  have hqabs := open_mesh_coordinate_abs_lt hN hh (hw.1 q) hwq hxt.2.2
+  have hir := common_open_point_fixed_index_eq hjk hpq hij hik hrp hrq hvi hwr
+    ⟨hxs.1, hjabs, hkabs⟩ ⟨hxt.1, hpabs, hqabs⟩
+  subst r
+  obtain ⟨hjp, hkq⟩ := ordered_pair_eq_of_same_remaining hjk hpq hij hik hrp hrq
+  subst p
+  subst q
+  have hvw := square_lower_vertices_eq_of_common_open hN hh hv hw hij hik (ne_of_lt hjk)
+    ⟨hxs.1, hxt.1⟩ ⟨hxs.2.1, hxt.2.1⟩ ⟨hxs.2.2, hxt.2.2⟩
+  subst w
+  rw [hsclosed, htclosed]
+
+/-- I2 scalar representation: a closed unit parameter outside the open unit interval is an endpoint. -/
+private theorem closed_not_open_endpoint {a : ℝ} (ha : a ∈ Set.Icc (0 : ℝ) 1)
+    (hna : a ∉ Set.Ioo (0 : ℝ) 1) : a = 0 ∨ a = 1 := by
+  rcases ha with ⟨ha0, ha1⟩
+  simp only [Set.mem_Ioo, not_and_or, not_lt] at hna
+  rcases hna with ha0' | ha1'
+  · exact Or.inl (le_antisymm ha0' ha0)
+  · exact Or.inr (le_antisymm ha1 ha1')
+
+/-- I2 representation: closed parameters for a square boundary point, with an endpoint case. -/
+private theorem square_boundary_parameter_case
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {s : Set Ambient} (hs : s ∈ squares N h) {x : Ambient}
+    (hxs : x ∈ s) (hxopen : x ∉ squareRelInterior N h ⟨s, hs⟩) :
+    ∃ (v : Ambient) (j k : Fin 3) (a b : ℝ),
+      SquareParam N h v j k ∧ s = squareGeom h v j k ∧
+      a ∈ Set.Icc (0 : ℝ) 1 ∧ b ∈ Set.Icc (0 : ℝ) 1 ∧
+      x = v + (a * h) • EuclideanSpace.single j 1 +
+        (b * h) • EuclideanSpace.single k 1 ∧
+      (a = 0 ∨ a = 1 ∨ b = 0 ∨ b = 1) := by
+  obtain ⟨v, j, k, hv, hjk, hvj, hvk, hsub, hsgeom, hsopen⟩ := square_presentation hN hh hs
+  rw [hsgeom] at hxs
+  obtain ⟨a, ha, b, hb, hx⟩ := hxs
+  have hend : a = 0 ∨ a = 1 ∨ b = 0 ∨ b = 1 := by
+    by_cases hao : a ∈ Set.Ioo (0 : ℝ) 1
+    · by_cases hbo : b ∈ Set.Ioo (0 : ℝ) 1
+      · exact False.elim (hxopen (hsopen.symm ▸ ⟨a, hao, b, hbo, hx⟩))
+      · rcases closed_not_open_endpoint hb hbo with h | h
+        · exact Or.inr (Or.inr (Or.inl h))
+        · exact Or.inr (Or.inr (Or.inr h))
+    · rcases closed_not_open_endpoint ha hao with h | h
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+  exact ⟨v, j, k, a, b, ⟨hv, hjk, hvj, hvk, hsub⟩, hsgeom, ha, hb, hx, hend⟩
+
+/-- Textbook I2 representation: the initial point of the upper k-edge is one j-mesh step from v. -/
+private noncomputable def shiftedVertexJ (h : ℝ) (v : Ambient) (j : Fin 3) : Ambient :=
+  v + h • EuclideanSpace.single j 1
+/-- Textbook I2 representation: the initial point of the upper j-edge is one k-mesh step from v. -/
+private noncomputable def shiftedVertexK (h : ℝ) (v : Ambient) (k : Fin 3) : Ambient :=
+  v + h • EuclideanSpace.single k 1
+
+/-- Textbook I2 representation: the j-shift raises coordinate j by exactly h. -/
+private theorem shiftedVertexJ_apply_same (h : ℝ) (v : Ambient) (j : Fin 3) :
+    shiftedVertexJ h v j j = v j + h := by simp [shiftedVertexJ]
+/-- Textbook I2 representation: the j-shift preserves every coordinate other than j. -/
+private theorem shiftedVertexJ_apply_ne (h : ℝ) (v : Ambient) {j r : Fin 3} (hr : r ≠ j) :
+    shiftedVertexJ h v j r = v r := by simp [shiftedVertexJ, hr]
+/-- Textbook I2 representation: the k-shift raises coordinate k by exactly h. -/
+private theorem shiftedVertexK_apply_same (h : ℝ) (v : Ambient) (k : Fin 3) :
+    shiftedVertexK h v k k = v k + h := by simp [shiftedVertexK]
+/-- Textbook I2 representation: the k-shift preserves every coordinate other than k. -/
+private theorem shiftedVertexK_apply_ne (h : ℝ) (v : Ambient) {k r : Fin 3} (hr : r ≠ k) :
+    shiftedVertexK h v k r = v r := by simp [shiftedVertexK, hr]
+
+/-- Textbook I2, lines 1670–1682: the two descriptions of the opposite square corner coincide. -/
+private theorem shifted_corner_commutes (h : ℝ) (v : Ambient) (j k : Fin 3) :
+    shiftedVertexK h (shiftedVertexJ h v j) k =
+      shiftedVertexJ h (shiftedVertexK h v k) j := by
+  simp only [shiftedVertexJ, shiftedVertexK]
+  module
+
+/-- Textbook I2 representation: the lower j-edge line map is square parameter (t,0). -/
+private theorem bottomJ_lineMap_embedding (h t : ℝ) (v : Ambient) (j k : Fin 3)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    AffineMap.lineMap v (v + h • EuclideanSpace.single j 1) t ∈
+        segment ℝ v (v + h • EuclideanSpace.single j 1) ∧
+      AffineMap.lineMap v (v + h • EuclideanSpace.single j 1) t =
+        v + (t * h) • EuclideanSpace.single j 1 +
+          ((0 : ℝ) * h) • EuclideanSpace.single k 1 := by
+  constructor
+  · exact lineMap_mem_segment ℝ v _ ht
+  · rw [AffineMap.lineMap_apply_module]
+    module
+
+/-- Textbook I2 representation: the lower k-edge line map is square parameter (0,t). -/
+private theorem bottomK_lineMap_embedding (h t : ℝ) (v : Ambient) (j k : Fin 3)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    AffineMap.lineMap v (v + h • EuclideanSpace.single k 1) t ∈
+        segment ℝ v (v + h • EuclideanSpace.single k 1) ∧
+      AffineMap.lineMap v (v + h • EuclideanSpace.single k 1) t =
+        v + ((0 : ℝ) * h) • EuclideanSpace.single j 1 +
+          (t * h) • EuclideanSpace.single k 1 := by
+  constructor
+  · exact lineMap_mem_segment ℝ v _ ht
+  · rw [AffineMap.lineMap_apply_module]
+    module
+
+/-- Textbook I2 representation: the upper j-edge from the k-shift is square parameter (t,1). -/
+private theorem topJ_lineMap_embedding (h t : ℝ) (v : Ambient) (j k : Fin 3)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    AffineMap.lineMap (v + h • EuclideanSpace.single k 1)
+        (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) t ∈
+        segment ℝ (v + h • EuclideanSpace.single k 1)
+          (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∧
+      AffineMap.lineMap (v + h • EuclideanSpace.single k 1)
+        (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) t =
+        v + (t * h) • EuclideanSpace.single j 1 +
+          ((1 : ℝ) * h) • EuclideanSpace.single k 1 := by
+  constructor
+  · exact lineMap_mem_segment ℝ _ _ ht
+  · rw [AffineMap.lineMap_apply_module]
+    module
+
+/-- Textbook I2 representation: the upper k-edge from the j-shift is square parameter (1,t). -/
+private theorem topK_lineMap_embedding (h t : ℝ) (v : Ambient) (j k : Fin 3)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    AffineMap.lineMap (v + h • EuclideanSpace.single j 1)
+        (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) t ∈
+        segment ℝ (v + h • EuclideanSpace.single j 1)
+          (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ∧
+      AffineMap.lineMap (v + h • EuclideanSpace.single j 1)
+        (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) t =
+        v + ((1 : ℝ) * h) • EuclideanSpace.single j 1 +
+          (t * h) • EuclideanSpace.single k 1 := by
+  constructor
+  · exact lineMap_mem_segment ℝ _ _ ht
+  · rw [AffineMap.lineMap_apply_module]
+    module
+
+/-- Textbook I2 representation: every point of the lower j-segment has square parameters (t,0). -/
+private theorem bottomJ_segment_extract {h : ℝ} {v y : Ambient} {j k : Fin 3}
+    (hy : y ∈ segment ℝ v (v + h • EuclideanSpace.single j 1)) :
+    ∃ t ∈ Set.Icc (0 : ℝ) 1,
+      y = v + (t * h) • EuclideanSpace.single j 1 +
+        ((0 : ℝ) * h) • EuclideanSpace.single k 1 := by
+  rw [segment_eq_image_lineMap ℝ] at hy
+  obtain ⟨t, ht, rfl⟩ := hy
+  exact ⟨t, ht, (bottomJ_lineMap_embedding h t v j k ht).2⟩
+
+/-- Textbook I2 representation: every point of the lower k-segment has square parameters (0,t). -/
+private theorem bottomK_segment_extract {h : ℝ} {v y : Ambient} {j k : Fin 3}
+    (hy : y ∈ segment ℝ v (v + h • EuclideanSpace.single k 1)) :
+    ∃ t ∈ Set.Icc (0 : ℝ) 1,
+      y = v + ((0 : ℝ) * h) • EuclideanSpace.single j 1 +
+        (t * h) • EuclideanSpace.single k 1 := by
+  rw [segment_eq_image_lineMap ℝ] at hy
+  obtain ⟨t, ht, rfl⟩ := hy
+  exact ⟨t, ht, (bottomK_lineMap_embedding h t v j k ht).2⟩
+
+/-- Textbook I2 representation: every point of the upper j-segment has square parameters (t,1). -/
+private theorem topJ_segment_extract {h : ℝ} {v y : Ambient} {j k : Fin 3}
+    (hy : y ∈ segment ℝ (v + h • EuclideanSpace.single k 1)
+      (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1)) :
+    ∃ t ∈ Set.Icc (0 : ℝ) 1,
+      y = v + (t * h) • EuclideanSpace.single j 1 +
+        ((1 : ℝ) * h) • EuclideanSpace.single k 1 := by
+  rw [segment_eq_image_lineMap ℝ] at hy
+  obtain ⟨t, ht, rfl⟩ := hy
+  exact ⟨t, ht, (topJ_lineMap_embedding h t v j k ht).2⟩
+
+/-- Textbook I2 representation: every point of the upper k-segment has square parameters (1,t). -/
+private theorem topK_segment_extract {h : ℝ} {v y : Ambient} {j k : Fin 3}
+    (hy : y ∈ segment ℝ (v + h • EuclideanSpace.single j 1)
+      (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1)) :
+    ∃ t ∈ Set.Icc (0 : ℝ) 1,
+      y = v + ((1 : ℝ) * h) • EuclideanSpace.single j 1 +
+        (t * h) • EuclideanSpace.single k 1 := by
+  rw [segment_eq_image_lineMap ℝ] at hy
+  obtain ⟨t, ht, rfl⟩ := hy
+  exact ⟨t, ht, (topK_lineMap_embedding h t v j k ht).2⟩
+
+/-- Textbook I2 representation: admissible lower-j edge data constructs the literal edge. -/
+private theorem bottomJ_edge_constructor {N : ℕ} {h : ℝ} {v : Ambient} {j : Fin 3}
+    (hv : v ∈ vertices N h) (hvj : v j ≤ 1 - h)
+    (hsub : segment ℝ v (v + h • EuclideanSpace.single j 1) ⊆ boundary) :
+    segment ℝ v (v + h • EuclideanSpace.single j 1) ∈ edges N h :=
+  edge_mem_iff.mpr ⟨v, j, ⟨hv, hvj, hsub⟩, rfl⟩
+
+/-- Textbook I2 representation: admissible lower-k edge data constructs the literal edge. -/
+private theorem bottomK_edge_constructor {N : ℕ} {h : ℝ} {v : Ambient} {k : Fin 3}
+    (hv : v ∈ vertices N h) (hvk : v k ≤ 1 - h)
+    (hsub : segment ℝ v (v + h • EuclideanSpace.single k 1) ⊆ boundary) :
+    segment ℝ v (v + h • EuclideanSpace.single k 1) ∈ edges N h :=
+  edge_mem_iff.mpr ⟨v, k, ⟨hv, hvk, hsub⟩, rfl⟩
+
+/-- Textbook I2 representation: admissible k-shift/j-direction data constructs the upper j-edge. -/
+private theorem topJ_edge_constructor {N : ℕ} {h : ℝ} {v : Ambient} {j k : Fin 3}
+    (hv : v + h • EuclideanSpace.single k 1 ∈ vertices N h)
+    (hvj : (v + h • EuclideanSpace.single k 1 : Ambient) j ≤ 1 - h)
+    (hsub : segment ℝ (v + h • EuclideanSpace.single k 1)
+      (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ⊆ boundary) :
+    segment ℝ (v + h • EuclideanSpace.single k 1)
+      (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∈ edges N h :=
+  edge_mem_iff.mpr ⟨v + h • EuclideanSpace.single k 1, j, ⟨hv, hvj, hsub⟩, rfl⟩
+
+/-- Textbook I2 representation: admissible j-shift/k-direction data constructs the upper k-edge. -/
+private theorem topK_edge_constructor {N : ℕ} {h : ℝ} {v : Ambient} {j k : Fin 3}
+    (hv : v + h • EuclideanSpace.single j 1 ∈ vertices N h)
+    (hvk : (v + h • EuclideanSpace.single j 1 : Ambient) k ≤ 1 - h)
+    (hsub : segment ℝ (v + h • EuclideanSpace.single j 1)
+      (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ⊆ boundary) :
+    segment ℝ (v + h • EuclideanSpace.single j 1)
+      (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ∈ edges N h :=
+  edge_mem_iff.mpr ⟨v + h • EuclideanSpace.single j 1, k, ⟨hv, hvk, hsub⟩, rfl⟩
+
+/-- I2 validity: the two lower sides are permitted edges. -/
+private theorem bottom_square_edges_valid
+    {N : ℕ} {h : ℝ} (_hN : 0 < N) (_hh : h = 2 / (N : ℝ))
+    {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k) :
+    segment ℝ v (v + h • EuclideanSpace.single j 1) ∈ edges N h ∧
+    segment ℝ v (v + h • EuclideanSpace.single k 1) ∈ edges N h := by
+  apply And.intro
+  · apply bottomJ_edge_constructor hp.1 hp.2.2.1
+    intro y hy
+    obtain ⟨t, ht, rfl⟩ := bottomJ_segment_extract (k := k) hy
+    exact hp.2.2.2.2 ⟨t, ht, 0, by simp, rfl⟩
+  · apply bottomK_edge_constructor hp.1 hp.2.2.2.1
+    intro y hy
+    obtain ⟨t, ht, rfl⟩ := bottomK_segment_extract (j := j) hy
+    exact hp.2.2.2.2 ⟨0, by simp, t, ht, rfl⟩
+
+/-- I2 validity: stepping to either upper-side initial point gives a vertex. -/
+private theorem shifted_square_vertices_valid
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k) :
+    shiftedVertexJ h v j ∈ vertices N h ∧ shiftedVertexK h v k ∈ vertices N h := by
+  constructor
+  · constructor
+    · intro r; by_cases hr : r = j
+      · subst r; simpa [shiftedVertexJ_apply_same] using lattice_successor hN hh (hp.1.1 j) hp.2.2.1
+      · simpa [shiftedVertexJ_apply_ne h v hr] using hp.1.1 r
+    · exact hp.2.2.2.2 (by simpa [shiftedVertexJ] using square_first_corner_mem h v j k)
+  · constructor
+    · intro r; by_cases hr : r = k
+      · subst r; simpa [shiftedVertexK_apply_same] using lattice_successor hN hh (hp.1.1 k) hp.2.2.2.1
+      · simpa [shiftedVertexK_apply_ne h v hr] using hp.1.1 r
+    · exact hp.2.2.2.2 (by simpa [shiftedVertexK] using square_second_corner_mem h v j k)
+
+/-- I2 validity: the two translated upper sides are permitted edges. -/
+private theorem top_square_edges_valid
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k) :
+    segment ℝ (v + h • EuclideanSpace.single k 1)
+      (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∈ edges N h ∧
+    segment ℝ (v + h • EuclideanSpace.single j 1)
+      (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ∈ edges N h := by
+  obtain ⟨hvj, hvk⟩ := shifted_square_vertices_valid hN hh hp
+  constructor
+  · apply topJ_edge_constructor hvk
+      ((shiftedVertexK_apply_ne h v (ne_of_lt hp.2.1)).trans_le hp.2.2.1)
+    intro y hy
+    obtain ⟨t, ht, rfl⟩ := topJ_segment_extract hy
+    exact hp.2.2.2.2 ⟨t, ht, 1, by simp, rfl⟩
+  · apply topK_edge_constructor hvj
+      ((shiftedVertexJ_apply_ne h v (ne_of_lt hp.2.1).symm).trans_le hp.2.2.2.1)
+    intro y hy
+    obtain ⟨t, ht, rfl⟩ := topK_segment_extract hy
+    exact hp.2.2.2.2 ⟨1, by simp, t, ht, rfl⟩
+
+/-- I2 representation: an endpoint parameter places the point on one displayed side. -/
+private theorem square_boundary_mem_four_segments
+    {h a b : ℝ} {x v : Ambient} {j k : Fin 3}
+    (ha : a ∈ Set.Icc (0 : ℝ) 1) (hb : b ∈ Set.Icc (0 : ℝ) 1)
+    (hx : x = v + (a * h) • EuclideanSpace.single j 1 +
+      (b * h) • EuclideanSpace.single k 1)
+    (hend : a = 0 ∨ a = 1 ∨ b = 0 ∨ b = 1) :
+    x ∈ segment ℝ v (v + h • EuclideanSpace.single j 1) ∨
+    x ∈ segment ℝ v (v + h • EuclideanSpace.single k 1) ∨
+    x ∈ segment ℝ (v + h • EuclideanSpace.single k 1)
+      (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∨
+    x ∈ segment ℝ (v + h • EuclideanSpace.single j 1)
+      (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) := by
+  rcases hend with rfl | rfl | rfl | rfl
+  · right; left
+    have H := bottomK_lineMap_embedding h b v j k hb
+    rw [hx, ← H.2]
+    exact H.1
+  · right; right; right
+    have H := topK_lineMap_embedding h b v j k hb
+    rw [hx, ← H.2]
+    exact H.1
+  · left
+    have H := bottomJ_lineMap_embedding h a v j k ha
+    rw [hx, ← H.2]
+    exact H.1
+  · right; right; left
+    have H := topJ_lineMap_embedding h a v j k ha
+    rw [hx, ← H.2]
+    exact H.1
+
+/-- Textbook I2: the square boundary is carried by its complete four-edge receipt. -/
+public theorem square_boundary_edges
+    {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    {s : Set Ambient} (hs : s ∈ squares N h) {x : Ambient}
+    (hxs : x ∈ s) (hxopen : x ∉ squareRelInterior N h ⟨s, hs⟩) :
+    ∃ (v : Ambient) (j k : Fin 3),
+      v ∈ vertices N h ∧ j < k ∧ v j ≤ 1 - h ∧ v k ≤ 1 - h ∧
+      s = {y : Ambient | ∃ a ∈ Set.Icc (0 : ℝ) 1, ∃ b ∈ Set.Icc (0 : ℝ) 1,
+        y = v + (a * h) • EuclideanSpace.single j 1 +
+          (b * h) • EuclideanSpace.single k 1} ∧
+      segment ℝ v (v + h • EuclideanSpace.single j 1) ∈ edges N h ∧
+      segment ℝ v (v + h • EuclideanSpace.single k 1) ∈ edges N h ∧
+      segment ℝ (v + h • EuclideanSpace.single k 1)
+        (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∈ edges N h ∧
+      segment ℝ (v + h • EuclideanSpace.single j 1)
+        (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1) ∈ edges N h ∧
+      (x ∈ segment ℝ v (v + h • EuclideanSpace.single j 1) ∨
+       x ∈ segment ℝ v (v + h • EuclideanSpace.single k 1) ∨
+       x ∈ segment ℝ (v + h • EuclideanSpace.single k 1)
+         (v + h • EuclideanSpace.single k 1 + h • EuclideanSpace.single j 1) ∨
+       x ∈ segment ℝ (v + h • EuclideanSpace.single j 1)
+         (v + h • EuclideanSpace.single j 1 + h • EuclideanSpace.single k 1)) := by
+  obtain ⟨v, j, k, a, b, hp, hsgeom, ha, hb, hx, hend⟩ :=
+    square_boundary_parameter_case hN hh hs hxs hxopen
+  obtain ⟨hej, hek⟩ := bottom_square_edges_valid hN hh hp
+  obtain ⟨heJ, heK⟩ := top_square_edges_valid hN hh hp
+  exact ⟨v, j, k, hp.1, hp.2.1, hp.2.2.1, hp.2.2.2.1, hsgeom,
+    hej, hek, heJ, heK, square_boundary_mem_four_segments ha hb hx hend⟩
 
 end TopologicalSpace.CubeBoundaryThree
