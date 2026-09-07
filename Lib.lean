@@ -403,6 +403,7 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Basic
 import Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 import Lib.Topology.Dimension.CubeBoundaryThree
+import Lib.Topology.MetricSpace.LebesgueNumber
 
 /-!
 # Reusable extracted library

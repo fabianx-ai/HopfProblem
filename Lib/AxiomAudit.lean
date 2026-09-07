@@ -8,6 +8,13 @@ Compile this file directly. It deliberately is not imported by `Lib.lean`, becau
 is an evidence command rather than library content.
 -/
 
+/-! ## `Lib.Topology.MetricSpace.LebesgueNumber` -/
+
+#check Metric.subset_cover_of_diam_lt_of_ball_cover
+#print axioms Metric.subset_cover_of_diam_lt_of_ball_cover
+#check Metric.exists_lebesgue_number_diam
+#print axioms Metric.exists_lebesgue_number_diam
+
 /-! ## `Lib.Topology.Dimension.CubeBoundaryThree` -/
 
 #check TopologicalSpace.CubeBoundaryThree.Ambient
