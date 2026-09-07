@@ -595,3 +595,94 @@ public noncomputable def brickRefinement {ι : Type r} {N : ℕ} {h epsilon lamb
 
 end
 end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- A point in the intrinsic square interior lies in that same square brick (Lemma 4.6, C1). -/
+private theorem mem_square_tag_of_relInterior {N : ℕ} {h epsilon : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary)
+    (hx : (x : Ambient) ∈ squareRelInterior N h s) :
+    x ∈ brickSet N h epsilon (.square s) := by
+  exact (mem_squareBrick s x).mpr hx
+
+/-- Outside the relative interior, the four-edge square boundary receipt gives an actual edge containing the point. Each disjunct retains its matching edge membership, including corners (Lemma 4.6, C2). -/
+private theorem exists_edge_mem_of_square_not_relInterior {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary)
+    (hxs : (x : Ambient) ∈ (s : Set Ambient))
+    (hxopen : (x : Ambient) ∉ squareRelInterior N h s) :
+    ∃ e : {e : Set Ambient // e ∈ edges N h}, (x : Ambient) ∈ (e : Set Ambient) := by
+  obtain ⟨v, j, k, _, _, _, _, _, he1, he2, he3, he4, hx⟩ :=
+    square_boundary_edges hN hh s.property hxs hxopen
+  rcases hx with hx | hx | hx | hx
+  · exact ⟨⟨_, he1⟩, hx⟩
+  · exact ⟨⟨_, he2⟩, hx⟩
+  · exact ⟨⟨_, he3⟩, hx⟩
+  · exact ⟨⟨_, he4⟩, hx⟩
+
+/-- An intrinsic endpoint is a mesh vertex. Distance below four epsilon places the point in its vertex brick (Lemma 4.6, C3). -/
+private theorem mem_vertex_tag_of_endpoint_close {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) (w : Ambient)
+    (hw : w ∈ edgeEndpoints N h e) (x : Boundary)
+    (hxw : dist (x : Ambient) w < 4 * epsilon) :
+    x ∈ brickSet N h epsilon (.vertex ⟨w, edge_endpoints_vertices hN hh e hw⟩) := by
+  exact (mem_vertexBrick ⟨w, edge_endpoints_vertices hN hh e hw⟩ x).mpr hxw
+
+/-- If neither endpoint is within four epsilon, both endpoint distances exceed three epsilon by positivity. A point on the actual edge has infimum distance zero, so lies in the edge brick (Lemma 4.6, C4). -/
+private theorem mem_edge_tag_of_endpoints_not_close {N : ℕ} {h epsilon : ℝ}
+    (hepsilon : 0 < epsilon) (e : {e : Set Ambient // e ∈ edges N h})
+    (v : Ambient) (j : Fin 3)
+    (hend : edgeEndpoints N h e = {v, v + h • EuclideanSpace.single j 1})
+    (x : Boundary) (hxe : (x : Ambient) ∈ (e : Set Ambient))
+    (hleft : ¬ dist (x : Ambient) v < 4 * epsilon)
+    (hright : ¬ dist (x : Ambient) (v + h • EuclideanSpace.single j 1) < 4 * epsilon) :
+    x ∈ brickSet N h epsilon (.edge e) := by
+  have hgap : 3 * epsilon < 4 * epsilon := by linarith
+  apply (mem_edgeBrick_of_presentation e hend x).mpr
+  exact ⟨by simpa only [Metric.infDist_zero_of_mem hxe] using hepsilon,
+    lt_of_lt_of_le hgap (not_lt.mp hleft), lt_of_lt_of_le hgap (not_lt.mp hright)⟩
+
+/-- Present the actual edge and test closeness to each of its two endpoints in turn. A close endpoint supplies a vertex brick; if both tests fail, the edge brick contains the point (Lemma 4.6, C5). -/
+private theorem mem_some_brick_of_mem_edge {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (e : {e : Set Ambient // e ∈ edges N h}) (x : Boundary)
+    (hxe : (x : Ambient) ∈ (e : Set Ambient)) :
+    ∃ c : BrickIndex N h, x ∈ brickSet N h epsilon c := by
+  obtain ⟨v, j, _, _, _, _, hend⟩ := edge_presentation hN hh e.property
+  by_cases hl : dist (x : Ambient) v < 4 * epsilon
+  · have hv : v ∈ edgeEndpoints N h e := by rw [hend]; simp
+    exact ⟨_, mem_vertex_tag_of_endpoint_close hN hh e v hv x hl⟩
+  · by_cases hr : dist (x : Ambient) (v + h • EuclideanSpace.single j 1) < 4 * epsilon
+    · have hv : v + h • EuclideanSpace.single j 1 ∈ edgeEndpoints N h e := by
+        rw [hend]
+        simp
+      exact ⟨_, mem_vertex_tag_of_endpoint_close hN hh e _ hv x hr⟩
+    · exact ⟨.edge e, mem_edge_tag_of_endpoints_not_close hepsilon e v j hend x hxe hl hr⟩
+
+/-- First choose a square containing the boundary point. Its intrinsic interior gives a square brick; otherwise a boundary edge and the two endpoint tests supply a brick (Lemma 4.6, C6). -/
+private theorem mem_some_brick {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) (x : Boundary) :
+    ∃ c : BrickIndex N h, x ∈ brickSet N h epsilon c := by
+  obtain ⟨s, hs, hxs⟩ := exists_square_mem hN hh x.property
+  by_cases hi : (x : Ambient) ∈ squareRelInterior N h ⟨s, hs⟩
+  · exact ⟨.square ⟨s, hs⟩, mem_square_tag_of_relInterior ⟨s, hs⟩ x hi⟩
+  · obtain ⟨e, hxe⟩ := exists_edge_mem_of_square_not_relInterior hN hh ⟨s, hs⟩ x hxs hi
+    exact mem_some_brick_of_mem_edge hN hh hepsilon e x hxe
+
+/-- Every boundary point belongs to an indexed raw brick, hence the union of precisely those bricks is the whole boundary (Lemma 4.6, C7). -/
+private theorem iUnion_brickSet_eq_univ {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) :
+    (⋃ c : BrickIndex N h, brickSet N h epsilon c) = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro x
+  exact Set.mem_iUnion.mpr (mem_some_brick hN hh hepsilon x)
+
+/-- The already-open brick sets have union equal to the boundary, so the unchanged open brick family is an open cover (Lemma 4.6, C8). -/
+public theorem brickOpens_isOpenCover {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) :
+    IsOpenCover (brickOpens hN hh epsilon) := by
+  exact IsOpenCover.of_sets (isOpen_brickSet hN hh epsilon)
+    (iUnion_brickSet_eq_univ hN hh hepsilon)
+
+end TopologicalSpace.CubeBoundaryThree
