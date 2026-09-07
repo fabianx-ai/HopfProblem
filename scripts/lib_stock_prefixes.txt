@@ -17,7 +17,6 @@ SingularMayerVietoris
 SphereHomology
 EuclideanSphere
 Hopf/SphereTopology.lean:CuspCentralHomology
-Hopf/SingularHomology.lean:CuspCentralHomology
 ThreefoldHomologyStarCoproduct
 SixSphereCube
 SixSphereHomology
