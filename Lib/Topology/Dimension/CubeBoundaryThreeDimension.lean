@@ -222,3 +222,65 @@ public theorem brickOpens_multiplicityLE_three
   exact (mem_brickOpens hN hh epsilon c x).mp (hT ⟨c, hc⟩)
 
 end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/- Proposition 5.3: retain the finite actual brick index, its open covering family,
+the chosen refinement and multiplicity at the same mesh. -/
+private structure FiniteBrickRefinement {ι : Type} (U : ι → Opens Boundary) where
+  N : ℕ
+  h : ℝ
+  epsilon : ℝ
+  hN : 0 < N
+  hh : h = 2 / (N : ℝ)
+  finiteIndex : Finite (BrickIndex N h)
+  cover : IsOpenCover (brickOpens hN hh epsilon)
+  refinement : OpenCover.Refinement (brickOpens hN hh epsilon) U
+  multiplicity : OpenCover.MultiplicityLE (brickOpens hN hh epsilon) 3
+
+/- Proposition 5.3: assemble the previously proved receipts at one supplied scale.
+Every component uses the same original cover and the same mesh-indexed brick family. -/
+private noncomputable def finiteBrickRefinementOfScale {ι : Type}
+    {N : ℕ} {h epsilon lambda : ℝ} (U : ι → Opens Boundary)
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
+    (h8 : 8 * epsilon < h) (h2 : 2 * epsilon < h)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda)
+    (hcontain : ∀ A : Set Boundary, A.Nonempty → Metric.diam A < lambda →
+      ∃ i : ι, A ⊆ U i) : FiniteBrickRefinement U where
+  N := N
+  h := h
+  epsilon := epsilon
+  hN := hN
+  hh := hh
+  finiteIndex := finite_brickIndex N h
+  cover := brickOpens_isOpenCover hN hh hepsilon
+  refinement := brickRefinement U hN hh hepsilon heps hv he hs hcontain
+  multiplicity := brickOpens_multiplicityLE_three hN hh h8 h2
+
+/- Proposition 5.3: for an arbitrary original cover, choose the established mesh
+package once and assemble its finite brick refinement without reselecting any scale. -/
+private theorem exists_finiteBrickRefinement {ι : Type}
+    (U : ι → Opens Boundary) (hU : IsOpenCover U) : Nonempty (FiniteBrickRefinement U) := by
+  obtain ⟨lambda, _hlambda, _hball, hcontain, _hι, N, hN, _hNlambda,
+    h, epsilon, hh, heps, _hhpos, hepsilon, _hhhalf, h8, h2, hs, he, hv⟩ :=
+    exists_cover_mesh_scale U hU
+  exact ⟨finiteBrickRefinementOfScale U hN hh hepsilon heps h8 h2 hv he hs hcontain⟩
+
+/- Proposition 5.3: the same family, refinement and multiplicity meet the existing
+criterion. It does not request the extra finite-index field retained in the record. -/
+private theorem FiniteBrickRefinement.toCriterion {ι : Type} {U : ι → Opens Boundary}
+    (p : FiniteBrickRefinement U) :
+    ∃ (κ : Type) (V : κ → Opens Boundary) (_ : OpenCover.Refinement V U),
+      IsOpenCover V ∧ OpenCover.MultiplicityLE V (2 + 1) :=
+  ⟨BrickIndex p.N p.h, brickOpens p.hN p.hh p.epsilon, p.refinement, p.cover, p.multiplicity⟩
+
+/-- Proposition 5.3: the boundary of the three-cube has covering dimension at most two.
+Every indexed open cover receives the constructed brick refinement of multiplicity three. -/
+public theorem hasCoveringDimensionLE_two : HasCoveringDimensionLE Boundary 2 := by
+  intro ι U hU
+  obtain ⟨p⟩ := exists_finiteBrickRefinement U hU
+  exact p.toCriterion
+
+end TopologicalSpace.CubeBoundaryThree
