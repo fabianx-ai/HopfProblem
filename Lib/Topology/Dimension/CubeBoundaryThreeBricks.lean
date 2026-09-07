@@ -1,5 +1,8 @@
 module
 
+public import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+public import Mathlib.Analysis.Normed.Module.Convex
+
 public import Lib.Topology.Dimension.CubeBoundaryThreeCells
 public import Mathlib.Data.Finite.Sum
 public import Mathlib.Topology.MetricSpace.HausdorffDistance
@@ -305,5 +308,164 @@ public theorem mem_brickOpens_square {N : ℕ} {h : ℝ}
     (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary) :
     x ∈ brickOpens hN hh epsilon (.square s) ↔
       (x : Ambient) ∈ squareRelInterior N h s := Iff.rfl
+
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/- Two points of a vertex brick are each within 4 epsilon of its vertex. The triangle inequality gives 8 epsilon in the ambient image, hence in the boundary subtype (Lemma 4.3). -/
+private theorem vertexBrick_diam_le {N : ℕ} {h epsilon : ℝ} (hepsilon : 0 ≤ epsilon)
+    (v : {v : Ambient // v ∈ vertices N h}) :
+    Metric.diam (vertexBrick epsilon v) ≤ 8 * epsilon := by
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le (mul_nonneg (by norm_num) hepsilon)
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  have hx' := (mem_vertexBrick v x).mp hx
+  have hy' := (mem_vertexBrick v y).mp hy
+  have ht := dist_triangle (x : Ambient) (v : Ambient) (y : Ambient)
+  rw [dist_comm (v : Ambient) (y : Ambient)] at ht
+  linarith
+
+/- An edge is the segment joining its two endpoints, equivalently their finite convex hull; thus it is compact, as used to attain the nearest points in Lemma 4.3. -/
+private theorem isCompact_edge {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) : IsCompact (e : Set Ambient) := by
+  obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+  rw [he, ← convexHull_pair]
+  exact ((Set.finite_singleton (v + h • EuclideanSpace.single j 1)).insert v).isCompact_convexHull ℝ
+
+/- The segment contains its left endpoint and is compact. Distance to this nonempty edge is therefore attained, independently of any later brick-nonemptiness result (Lemma 4.3). -/
+private theorem edge_infDist_attained {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (e : {e : Set Ambient // e ∈ edges N h}) (x : Ambient) :
+    ∃ p ∈ (e : Set Ambient), Metric.infDist x (e : Set Ambient) = dist x p := by
+  have hne : (e : Set Ambient).Nonempty := by
+    obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+    rw [he]
+    exact ⟨v, left_mem_segment ℝ v (v + h • EuclideanSpace.single j 1)⟩
+  exact (isCompact_edge hN hh e).exists_infDist_eq_dist hne x
+
+/- The endpoint displacement has one Euclidean coordinate h, so its norm is h for nonnegative h (the edge-length calculation in Lemma 4.3). -/
+private theorem edge_endpoint_dist (v : Ambient) (j : Fin 3) (h : ℝ) (hh : 0 ≤ h) :
+    dist v (v + h • EuclideanSpace.single j 1) = h := by
+  rw [dist_eq_norm]
+  simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg hh]
+
+/- The diameter of the segment equals that of its two endpoints, whose distance is h. Every pair of points of the compact edge is therefore at distance at most h (Lemma 4.3). -/
+private theorem edge_points_dist_le_mesh {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (e : {e : Set Ambient // e ∈ edges N h})
+    {p q : Ambient} (hp : p ∈ (e : Set Ambient)) (hq : q ∈ (e : Set Ambient)) :
+    dist p q ≤ h := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+  calc
+    dist p q ≤ Metric.diam (e : Set Ambient) :=
+      Metric.dist_le_diam_of_mem (isCompact_edge hN hh e).isBounded hp hq
+    _ = h := by
+      rw [he, ← convexHull_pair, convexHull_diam, Metric.diam_pair,
+        edge_endpoint_dist v j h hpos.le]
+
+/- Choose attained nearest points p and q on the edge. The two outer distances are below epsilon and the segment leg is at most h. Two triangle inequalities give h + 2 epsilon, then diameter transport gives the brick bound (Lemma 4.3). -/
+private theorem edgeBrick_diam_le {N : ℕ} {h epsilon : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (hepsilon : 0 ≤ epsilon)
+    (e : {e : Set Ambient // e ∈ edges N h}) :
+    Metric.diam (edgeBrick epsilon e) ≤ h + 2 * epsilon := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le
+    (add_nonneg hpos.le (mul_nonneg (by norm_num) hepsilon))
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  obtain ⟨p, hp, hxp⟩ := edge_infDist_attained hN hh e (x : Ambient)
+  obtain ⟨q, hq, hyq⟩ := edge_infDist_attained hN hh e (y : Ambient)
+  have hx' := ((mem_edgeBrick e x).mp hx).1
+  have hy' := ((mem_edgeBrick e y).mp hy).1
+  rw [hxp] at hx'
+  rw [hyq] at hy'
+  have hpq := edge_points_dist_le_mesh hN hh e hp hq
+  have ht₁ := dist_triangle (x : Ambient) p (y : Ambient)
+  have ht₂ := dist_triangle p q (y : Ambient)
+  rw [dist_comm q (y : Ambient)] at ht₂
+  linarith
+
+/- The two points have the same square origin and two distinct coordinate directions. Subtracting cancels the origin and leaves exactly the two parameter differences in the squared Euclidean norm (Lemma 4.3). -/
+private theorem square_parameter_dist_sq (v : Ambient) (j k : Fin 3) (hjk : j < k)
+    (h a b a' b' : ℝ) :
+    dist (v + (a*h) • EuclideanSpace.single j 1 + (b*h) • EuclideanSpace.single k 1)
+      (v + (a'*h) • EuclideanSpace.single j 1 + (b'*h) • EuclideanSpace.single k 1) ^ 2 =
+      h^2 * ((a-a')^2 + (b-b')^2) := by
+  rw [dist_eq_norm, EuclideanSpace.real_norm_sq_eq]
+  fin_cases j <;> fin_cases k
+  all_goals simp_all [Fin.sum_univ_succ, PiLp.single_apply]
+  all_goals ring
+
+/- Both square parameters lie in [0,1], so each parameter difference has absolute value at most one. Their two squares sum to at most two; the squared-norm formula and nonnegative square root give h sqrt 2 (Lemma 4.3). -/
+private theorem square_points_dist_le_mesh_sqrtTwo {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h})
+    {p q : Ambient} (hp : p ∈ (s : Set Ambient)) (hq : q ∈ (s : Set Ambient)) :
+    dist p q ≤ h * Real.sqrt 2 := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, k, _, hjk, _, _, _, hs, _⟩ := square_presentation hN hh s.property
+  rw [hs] at hp hq
+  obtain ⟨a, ha, b, hb, rfl⟩ := hp
+  obtain ⟨a', ha', b', hb', rfl⟩ := hq
+  have haa : |a - a'| ≤ 1 := abs_sub_le_iff.mpr
+    ⟨by linarith [ha.1, ha.2, ha'.1, ha'.2],
+     by linarith [ha.1, ha.2, ha'.1, ha'.2]⟩
+  have hbb : |b - b'| ≤ 1 := abs_sub_le_iff.mpr
+    ⟨by linarith [hb.1, hb.2, hb'.1, hb'.2],
+     by linarith [hb.1, hb.2, hb'.1, hb'.2]⟩
+  have haa₂ := (sq_le_one_iff_abs_le_one (a - a')).mpr haa
+  have hbb₂ := (sq_le_one_iff_abs_le_one (b - b')).mpr hbb
+  have hsum : (a - a')^2 + (b - b')^2 ≤ 2 := by linarith
+  have hmul := mul_le_mul_of_nonneg_left hsum (sq_nonneg h)
+  apply le_of_sq_le_sq ?_ (mul_nonneg hpos.le (Real.sqrt_nonneg 2))
+  rw [square_parameter_dist_sq v j k hjk h a b a' b', mul_pow,
+    Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
+  exact hmul
+
+/- An intrinsic-interior point has the same square parameters in (0,1); weakening the endpoint inequalities places it in the closed square (Lemma 4.3). -/
+private theorem squareBrick_coe_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h})
+    {x : Boundary} (hx : x ∈ squareBrick s) : (x : Ambient) ∈ (s : Set Ambient) := by
+  obtain ⟨v, j, k, _, _, _, _, _, hs, hi⟩ := square_presentation hN hh s.property
+  have hx' := (mem_squareBrick s x).mp hx
+  rw [hi] at hx'
+  obtain ⟨a, ha, b, hb, hx'⟩ := hx'
+  rw [hs]
+  exact ⟨a, ⟨ha.1.le, ha.2.le⟩, b, ⟨hb.1.le, hb.2.le⟩, hx'⟩
+
+/- Two square-brick points lie in the closed square, where the two-parameter estimate bounds their distance by h sqrt 2. Transport diameter through the boundary inclusion (Lemma 4.3). -/
+private theorem squareBrick_diam_le {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h}) :
+    Metric.diam (squareBrick s) ≤ h * Real.sqrt 2 := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le (mul_nonneg hpos.le (Real.sqrt_nonneg 2))
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  exact square_points_dist_le_mesh_sqrtTwo hN hh s
+    (squareBrick_coe_mem hN hh s hx) (squareBrick_coe_mem hN hh s hy)
+
+/- The three tags have bounds 8 epsilon, h + 2 epsilon and h sqrt 2. Composing each bound with its strict comparison to the same lambda proves the common brick estimate (Lemma 4.3). -/
+private theorem brick_diam_lt {N : ℕ} {h epsilon lambda : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (hepsilon : 0 ≤ epsilon)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda) (c : BrickIndex N h) :
+    Metric.diam (brickSet N h epsilon c) < lambda := by
+  cases c with
+  | vertex v =>
+    rw [brickSet_vertex]
+    exact lt_of_le_of_lt (vertexBrick_diam_le hepsilon v) hv
+  | edge e =>
+    rw [brickSet_edge]
+    exact lt_of_le_of_lt (edgeBrick_diam_le hN hh hepsilon e) he
+  | square s =>
+    rw [brickSet_square]
+    exact lt_of_le_of_lt (squareBrick_diam_le hN hh s) hs
 
 end TopologicalSpace.CubeBoundaryThree
