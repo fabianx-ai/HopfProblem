@@ -7102,3 +7102,36 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
 #check TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
 #print axioms TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeBricks` -/
+
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.vertex
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.edge
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.edge
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.square
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.square
+#check TopologicalSpace.CubeBoundaryThree.finite_brickIndex
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_brickIndex
+#check TopologicalSpace.CubeBoundaryThree.vertexBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.vertexBrick
+#check TopologicalSpace.CubeBoundaryThree.edgeBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.edgeBrick
+#check TopologicalSpace.CubeBoundaryThree.squareBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.squareBrick
+#check TopologicalSpace.CubeBoundaryThree.brickSet
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet
+#check TopologicalSpace.CubeBoundaryThree.mem_vertexBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_vertexBrick
+#check TopologicalSpace.CubeBoundaryThree.mem_edgeBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_edgeBrick
+#check TopologicalSpace.CubeBoundaryThree.mem_squareBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_squareBrick
+#check TopologicalSpace.CubeBoundaryThree.brickSet_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_vertex
+#check TopologicalSpace.CubeBoundaryThree.brickSet_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_edge
+#check TopologicalSpace.CubeBoundaryThree.brickSet_square
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_square
