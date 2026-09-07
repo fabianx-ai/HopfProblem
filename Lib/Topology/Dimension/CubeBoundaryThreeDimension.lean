@@ -110,3 +110,115 @@ private theorem square_eq_of_mem_squareBrick
     ⟨(x : Ambient), (mem_squareBrick s x).mp hs, (mem_squareBrick t x).mp ht⟩
 
 end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+open scoped Classical
+
+/- Proposition 5.2: the vertex part filters the original finite set by its vertex tag. -/
+private noncomputable def vertexIndexPart {N : ℕ} {h : ℝ}
+    (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
+  T.filter fun c => ∃ v : {v : Ambient // v ∈ vertices N h}, c = .vertex v
+
+/- Proposition 5.2: the edge part retains the original indices carrying actual edges. -/
+private noncomputable def edgeIndexPart {N : ℕ} {h : ℝ}
+    (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
+  T.filter fun c => ∃ e : {e : Set Ambient // e ∈ edges N h}, c = .edge e
+
+/- Proposition 5.2: the square part retains the original indices carrying actual squares. -/
+private noncomputable def squareIndexPart {N : ℕ} {h : ℝ}
+    (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
+  T.filter fun c => ∃ s : {s : Set Ambient // s ∈ squares N h}, c = .square s
+
+/- Proposition 5.2: distinct tags make the three filtered parts disjoint. Every
+original index has one of the three tags, so their union is exactly the original set. -/
+private theorem brickIndex_parts_partition {N : ℕ} {h : ℝ}
+    (T : Finset (BrickIndex N h)) :
+    Disjoint (vertexIndexPart T) (edgeIndexPart T) ∧
+    Disjoint (vertexIndexPart T ∪ edgeIndexPart T) (squareIndexPart T) ∧
+    (vertexIndexPart T ∪ edgeIndexPart T) ∪ squareIndexPart T = T := by
+  refine ⟨Finset.disjoint_left.mpr ?_, Finset.disjoint_left.mpr ?_, ?_⟩
+  · intro c hv he
+    obtain ⟨_, v, rfl⟩ := Finset.mem_filter.mp hv
+    obtain ⟨_, e, heq⟩ := Finset.mem_filter.mp he
+    cases heq
+  · intro c hve hs
+    obtain ⟨_, s, rfl⟩ := Finset.mem_filter.mp hs
+    rcases Finset.mem_union.mp hve with hv | he
+    · obtain ⟨_, v, heq⟩ := Finset.mem_filter.mp hv
+      cases heq
+    · obtain ⟨_, e, heq⟩ := Finset.mem_filter.mp he
+      cases heq
+  · apply Finset.ext
+    intro c
+    cases c <;> simp [vertexIndexPart, edgeIndexPart, squareIndexPart]
+
+/- Proposition 5.2: two indices in the vertex part give two vertex bricks at x.
+Vertex uniqueness identifies the actual vertices and therefore their original tags. -/
+private theorem vertexIndexPart_card_le_one
+    {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (h8 : 8 * epsilon < h) (x : Boundary) (T : Finset (BrickIndex N h))
+    (hT : ∀ c ∈ T, x ∈ brickSet N h epsilon c) : (vertexIndexPart T).card ≤ 1 := by
+  apply Finset.card_le_one.mpr
+  intro a ha b hb
+  obtain ⟨ha, v, rfl⟩ := Finset.mem_filter.mp ha
+  obtain ⟨hb, w, rfl⟩ := Finset.mem_filter.mp hb
+  have hv : x ∈ vertexBrick epsilon v := by simpa only [brickSet_vertex] using hT (.vertex v) ha
+  have hw : x ∈ vertexBrick epsilon w := by simpa only [brickSet_vertex] using hT (.vertex w) hb
+  exact congrArg BrickIndex.vertex (vertex_eq_of_mem_vertexBrick hN hh h8 v w x hv hw)
+
+/- Proposition 5.2: the established edge uniqueness identifies any two actual edge
+indices in the edge part whose bricks contain x, so this part has at most one index. -/
+private theorem edgeIndexPart_card_le_one
+    {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (h2 : 2 * epsilon < h) (x : Boundary) (T : Finset (BrickIndex N h))
+    (hT : ∀ c ∈ T, x ∈ brickSet N h epsilon c) : (edgeIndexPart T).card ≤ 1 := by
+  apply Finset.card_le_one.mpr
+  intro a ha b hb
+  obtain ⟨ha, e, rfl⟩ := Finset.mem_filter.mp ha
+  obtain ⟨hb, f, rfl⟩ := Finset.mem_filter.mp hb
+  have he : x ∈ edgeBrick epsilon e := by simpa only [brickSet_edge] using hT (.edge e) ha
+  have hf : x ∈ edgeBrick epsilon f := by simpa only [brickSet_edge] using hT (.edge f) hb
+  exact congrArg BrickIndex.edge (edge_eq_of_mem_edgeBrick hN hh h2 e f x he hf)
+
+/- Proposition 5.2: two square-tagged members containing x have identical actual
+squares by intrinsic-interior uniqueness, hence identical original indices. -/
+private theorem squareIndexPart_card_le_one
+    {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (x : Boundary) (T : Finset (BrickIndex N h))
+    (hT : ∀ c ∈ T, x ∈ brickSet N h epsilon c) : (squareIndexPart T).card ≤ 1 := by
+  apply Finset.card_le_one.mpr
+  intro a ha b hb
+  obtain ⟨ha, s, rfl⟩ := Finset.mem_filter.mp ha
+  obtain ⟨hb, t, rfl⟩ := Finset.mem_filter.mp hb
+  have hs : x ∈ squareBrick s := by simpa only [brickSet_square] using hT (.square s) ha
+  have ht : x ∈ squareBrick t := by simpa only [brickSet_square] using hT (.square t) hb
+  exact congrArg BrickIndex.square (square_eq_of_mem_squareBrick hN hh s t x hs ht)
+
+/- Proposition 5.2: the disjoint union formula adds the cardinalities of the three
+tag parts of the same finite T. Each is at most one, so T has at most three indices. -/
+private theorem brickIndex_card_le_three
+    {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (h8 : 8 * epsilon < h) (h2 : 2 * epsilon < h)
+    (x : Boundary) (T : Finset (BrickIndex N h))
+    (hT : ∀ c ∈ T, x ∈ brickSet N h epsilon c) : T.card ≤ 3 := by
+  have hpart := brickIndex_parts_partition T
+  have hVE := Finset.card_union_of_disjoint hpart.1
+  have hVES := Finset.card_union_of_disjoint hpart.2.1
+  rw [hpart.2.2, hVE] at hVES
+  have hV := vertexIndexPart_card_le_one hN hh h8 x T hT
+  have hE := edgeIndexPart_card_le_one hN hh h2 x T hT
+  have hS := squareIndexPart_card_le_one hN hh x T hT
+  omega
+
+/-- Proposition 5.2: the existing open brick family has index-counting multiplicity
+at most three. Open/raw membership conversion retains the same finite index set. -/
+public theorem brickOpens_multiplicityLE_three
+    {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (h8 : 8 * epsilon < h) (h2 : 2 * epsilon < h) :
+    OpenCover.MultiplicityLE (brickOpens hN hh epsilon) 3 := by
+  intro x T hT
+  apply brickIndex_card_le_three hN hh h8 h2 x T
+  intro c hc
+  exact (mem_brickOpens hN hh epsilon c x).mp (hT ⟨c, hc⟩)
+
+end TopologicalSpace.CubeBoundaryThree
