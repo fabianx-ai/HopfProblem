@@ -769,3 +769,631 @@ public theorem edge_endpoints_vertices {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h 
   · exact edge_terminal_is_vertex hN hh ⟨hv, hvj, hface⟩
 
 end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- Textbook Q1, 1622–1634: a fixed saturated coordinate and interval bounds keep the edge on the boundary. -/
+theorem edge_saturated_coordinate_suffices {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j i : Fin 3}
+    (hv : v ∈ vertices N h) (hvj : v j ≤ 1 - h) (hij : i ≠ j) (hi : |v i| = 1) :
+    edgeGeom h v j ⊆ boundary := by
+  intro x hx
+  obtain ⟨t, ht, rfl⟩ := edge_parameter_extract hx
+  have hp := (mesh_identities N h hN hh).1
+  have hb : ∀ r, |(v + (t * h) • EuclideanSpace.single j 1 : Ambient) r| ≤ 1 := by
+    intro r
+    rw [edge_coordinate_formula]
+    split_ifs with hr
+    · have hvb := lattice_subset_interval hN hh (hv.1 j)
+      rw [abs_le]
+      constructor <;> nlinarith [hvb.1, ht.2, mul_nonneg ht.1 hp.le]
+    · exact abs_le.mpr (lattice_subset_interval hN hh (hv.1 r))
+  have hfixed : |(v + (t * h) • EuclideanSpace.single j 1 : Ambient) i| = 1 := by
+    rw [edge_coordinate_formula, if_neg hij, hi]
+  change maxAbs _ = 1
+  apply le_antisymm (max_le (hb 0) (max_le (hb 1) (hb 2)))
+  calc
+    1 = |(v + (t * h) • EuclideanSpace.single j 1 : Ambient) i| := hfixed.symm
+    _ ≤ maxAbs _ := by fin_cases i <;> simp [maxAbs]
+
+/-- Textbook Q1, 1622–1634: if no fixed coordinate is saturated, the moving coordinate is the lower endpoint. -/
+theorem edge_no_other_saturated_forces_moving_neg_one {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) {v : Ambient} {j : Fin 3}
+    (hv : v ∈ vertices N h) (hvj : v j ≤ 1 - h)
+    (hother : ∀ i : Fin 3, i ≠ j → |v i| < 1) : v j = -1 := by
+  have hp := (mesh_identities N h hN hh).1
+  have hvb : maxAbs v = 1 := vertex_mem_boundary hv
+  have hjle : |v j| ≤ 1 := by
+    rw [← hvb]
+    fin_cases j <;> simp [maxAbs]
+  have hjabs : |v j| = 1 := by
+    apply le_antisymm hjle
+    by_contra hn
+    have hall : ∀ r : Fin 3, |v r| < 1 := by
+      intro r
+      by_cases hr : r = j
+      · subst r; exact lt_of_not_ge hn
+      · exact hother r hr
+    have hm : maxAbs v < 1 := max_lt (hall 0) (max_lt (hall 1) (hall 2))
+    linarith
+  rcases (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hjabs with hj | hj
+  · linarith
+  · exact hj
+
+/-- Textbook Q1, 1622–1634: the edge midpoint advances the moving coordinate by half a mesh. -/
+noncomputable def edgeMidpoint (h : ℝ) (v : Ambient) (j : Fin 3) : Ambient :=
+  v + ((1 / 2 : ℝ) * h) • EuclideanSpace.single j 1
+
+/-- Textbook Q1, 1622–1634: the parameter one half places the midpoint on the edge. -/
+theorem edgeMidpoint_mem (h : ℝ) (v : Ambient) (j : Fin 3) :
+    edgeMidpoint h v j ∈ edgeGeom h v j := by
+  rw [edgeGeom]
+  rw [segment_eq_image']
+  refine ⟨1 / 2, by norm_num, ?_⟩
+  simp [edgeMidpoint, smul_smul]
+
+/-- Textbook Q1, 1622–1634: the half-mesh step from minus one makes every midpoint coordinate strictly interior. -/
+theorem edge_midpoint_all_abs_lt {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j : Fin 3}
+    (hv : v ∈ vertices N h) (hvj : v j ≤ 1 - h)
+    (hother : ∀ i : Fin 3, i ≠ j → |v i| < 1) :
+    ∀ r : Fin 3, |edgeMidpoint h v j r| < 1 := by
+  have hj := edge_no_other_saturated_forces_moving_neg_one hN hh hv hvj hother
+  have hm := mesh_identities N h hN hh
+  intro r
+  rw [edgeMidpoint, edge_coordinate_formula]
+  split_ifs with hr
+  · rw [hj, abs_lt]
+    constructor <;> linarith [hm.1, hm.2.2]
+  · exact hother r hr
+
+/-- Textbook Q1, 1622–1634: three strictly interior absolute coordinates have maximum below one. -/
+theorem all_abs_lt_not_boundary {x : Ambient} (hall : ∀ r : Fin 3, |x r| < 1) :
+    x ∉ boundary := by
+  intro hx
+  have hm : maxAbs x < 1 := max_lt (hall 0) (max_lt (hall 1) (hall 2))
+  change maxAbs x = 1 at hx
+  linarith
+
+/-- Textbook Q1, 1622–1634: edge containment is equivalent to saturation of a fixed coordinate. -/
+theorem edge_subset_boundary_iff {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j : Fin 3}
+    (hv : v ∈ vertices N h) (hvj : v j ≤ 1 - h) :
+    edgeGeom h v j ⊆ boundary ↔ ∃ i : Fin 3, i ≠ j ∧ |v i| = 1 := by
+  constructor
+  · intro hsub
+    by_contra hn
+    have hother : ∀ i : Fin 3, i ≠ j → |v i| < 1 := by
+      intro i hij
+      have hne : |v i| ≠ 1 := fun hi => hn ⟨i, hij, hi⟩
+      have hle : |v i| ≤ 1 := by
+        rw [← (show maxAbs v = 1 from hv.2)]
+        fin_cases i <;> simp [maxAbs]
+      exact lt_of_le_of_ne hle hne
+    exact all_abs_lt_not_boundary (edge_midpoint_all_abs_lt hN hh hv hvj hother)
+      (hsub (edgeMidpoint_mem h v j))
+  · rintro ⟨i, hij, hi⟩
+    exact edge_saturated_coordinate_suffices hN hh hv hvj hij hi
+
+/-- Textbook Q2, 1622–1641: a saturated remaining coordinate keeps every square point on the boundary. -/
+theorem square_saturated_remaining_suffices {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j k i : Fin 3}
+    (hv : v ∈ vertices N h) (hjk : j < k)
+    (hvj : v j ≤ 1 - h) (hvk : v k ≤ 1 - h) (hij : i ≠ j) (hik : i ≠ k)
+    (hi : |v i| = 1) : squareGeom h v j k ⊆ boundary := by
+  intro x hx
+  obtain ⟨a, ha, b, hb, rfl⟩ := square_parameter_extract hx
+  have hp := (mesh_identities N h hN hh).1
+  have hall : ∀ r, |(v + (a * h) • EuclideanSpace.single j 1 +
+      (b * h) • EuclideanSpace.single k 1 : Ambient) r| ≤ 1 := by
+    intro r
+    rw [square_coordinate_formula h a b v j k r (ne_of_lt hjk)]
+    split_ifs with hrj hrk
+    · have hvb := lattice_subset_interval hN hh (hv.1 j)
+      rw [abs_le]
+      constructor <;> nlinarith [hvb.1, ha.2, mul_nonneg ha.1 hp.le]
+    · have hvb := lattice_subset_interval hN hh (hv.1 k)
+      rw [abs_le]
+      constructor <;> nlinarith [hvb.1, hb.2, mul_nonneg hb.1 hp.le]
+    · exact abs_le.mpr (lattice_subset_interval hN hh (hv.1 r))
+  have hfixed : |(v + (a * h) • EuclideanSpace.single j 1 +
+      (b * h) • EuclideanSpace.single k 1 : Ambient) i| = 1 := by
+    rw [square_coordinate_formula h a b v j k i (ne_of_lt hjk), if_neg hij, if_neg hik, hi]
+  change maxAbs _ = 1
+  apply le_antisymm (max_le (hall 0) (max_le (hall 1) (hall 2)))
+  calc
+    1 = |(v + (a * h) • EuclideanSpace.single j 1 +
+        (b * h) • EuclideanSpace.single k 1 : Ambient) i| := hfixed.symm
+    _ ≤ maxAbs _ := by fin_cases i <;> simp [maxAbs]
+
+/-- Textbook Q2, 1622–1641: vertex data, ordered directions, room bounds and containment form a square parameter. -/
+theorem squareParamOfContainment {N : ℕ} {h : ℝ} {v : Ambient} {j k : Fin 3}
+    (hv : v ∈ vertices N h) (hjk : j < k) (hvj : v j ≤ 1 - h)
+    (hvk : v k ≤ 1 - h) (hsub : squareGeom h v j k ⊆ boundary) :
+    SquareParam N h v j k := ⟨hv, hjk, hvj, hvk, hsub⟩
+
+/-- Textbook Q2, 1622–1641: the boundary midpoint forces saturation of the unchanged remaining coordinate. -/
+theorem square_containment_forces_remaining_abs {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j k i : Fin 3}
+    (hv : v ∈ vertices N h) (hjk : j < k) (hvj : v j ≤ 1 - h)
+    (hvk : v k ≤ 1 - h) (hij : i ≠ j) (hik : i ≠ k)
+    (hsub : squareGeom h v j k ⊆ boundary) : |v i| = 1 := by
+  exact (square_midpoint_remaining_abs (mesh_pos hN hh)
+    (squareParamOfContainment hv hjk hvj hvk hsub) hij hik).2.2
+
+/-- Textbook Q2, 1622–1641: square containment is equivalent to saturation of the remaining coordinate. -/
+theorem square_subset_boundary_iff {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {v : Ambient} {j k i : Fin 3}
+    (hv : v ∈ vertices N h) (hjk : j < k) (hvj : v j ≤ 1 - h)
+    (hvk : v k ≤ 1 - h) (hij : i ≠ j) (hik : i ≠ k) :
+    squareGeom h v j k ⊆ boundary ↔ |v i| = 1 :=
+  ⟨square_containment_forces_remaining_abs hN hh hv hjk hvj hvk hij hik,
+    square_saturated_remaining_suffices hN hh hv hjk hvj hvk hij hik⟩
+
+/-- Textbook Q3, 1625–1641: divide a coordinate displacement by the mesh to recover its closed parameter. -/
+noncomputable def closedParameter (h : ℝ) (v x : Ambient) (j : Fin 3) : ℝ :=
+  (x j - v j) / h
+
+/-- Textbook Q3, 1625–1641: a coordinate in the closed mesh interval has parameter between zero and one. -/
+theorem closedParameter_mem_Icc {h : ℝ} (hh : 0 < h) {v x : Ambient} {j : Fin 3}
+    (hx : x j ∈ Set.Icc (v j) (v j + h)) : closedParameter h v x j ∈ Set.Icc (0 : ℝ) 1 := by
+  constructor
+  · exact div_nonneg (sub_nonneg.mpr hx.1) (le_of_lt hh)
+  · rw [closedParameter, div_le_one hh]
+    linarith [hx.2]
+
+/-- Textbook Q3, 1625–1641: multiplying the recovered closed parameter by the mesh reconstructs the coordinate. -/
+theorem closedParameter_reconstruct {h : ℝ} (hh : 0 < h) {v x : Ambient} {j : Fin 3} :
+    v j + closedParameter h v x j * h = x j := by
+  rw [closedParameter, div_mul_cancel₀ _ (ne_of_gt hh)]
+  ring
+
+/-- Textbook Q3, 1625–1641: equality at three exhaustive coordinates gives equality of ambient points. -/
+theorem Ambient_ext_of_three {x y : Ambient} {i j k : Fin 3}
+    (hexhaust : ∀ r : Fin 3, r = i ∨ r = j ∨ r = k)
+    (hi : x i = y i) (hj : x j = y j) (hk : x k = y k) : x = y := by
+  ext r
+  rcases hexhaust r with rfl | rfl | rfl
+  · exact hi
+  · exact hj
+  · exact hk
+
+/-- Textbook Q3, 1625–1641: the two ordered directions and their remaining index exhaust the three coordinates. -/
+theorem square_indices_exhaust {i j k : Fin 3} (hjk : j < k)
+    (hij : i ≠ j) (hik : i ≠ k) :
+    ∀ r : Fin 3, r = i ∨ r = j ∨ r = k := by
+  intro r
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases r <;> omega
+
+/-- Textbook Q3, 1625–1641: the closed square is exactly the rectangle with one fixed and two interval coordinates. -/
+theorem square_closed_coordinate_rectangle {h : ℝ} (hh : 0 < h)
+    {v : Ambient} {j k i : Fin 3} (hjk : j < k) (hij : i ≠ j) (hik : i ≠ k) :
+    squareGeom h v j k =
+      {x : Ambient | x i = v i ∧ x j ∈ Set.Icc (v j) (v j + h) ∧
+        x k ∈ Set.Icc (v k) (v k + h)} := by
+  have hjne := ne_of_lt hjk
+  ext x
+  constructor
+  · intro hx
+    obtain ⟨a, ha, b, hb, rfl⟩ := square_parameter_extract hx
+    change _ = _ ∧ _ ∈ Set.Icc _ _ ∧ _ ∈ Set.Icc _ _
+    refine ⟨?_, ?_, ?_⟩
+    · rw [square_coordinate_formula h a b v j k i hjne, if_neg hij, if_neg hik]
+    · rw [square_coordinate_formula h a b v j k j hjne, if_pos rfl]
+      constructor <;> nlinarith [ha.1, ha.2]
+    · rw [square_coordinate_formula h a b v j k k hjne, if_neg (Ne.symm hjne), if_pos rfl]
+      constructor <;> nlinarith [hb.1, hb.2]
+  · rintro ⟨hxi, hxj, hxk⟩
+    refine ⟨closedParameter h v x j, closedParameter_mem_Icc hh hxj,
+      closedParameter h v x k, closedParameter_mem_Icc hh hxk, ?_⟩
+    apply Ambient_ext_of_three (square_indices_exhaust hjk hij hik)
+    · rw [square_coordinate_formula h _ _ v j k i hjne, if_neg hij, if_neg hik]
+      exact hxi
+    · rw [square_coordinate_formula h _ _ v j k j hjne, if_pos rfl]
+      exact (closedParameter_reconstruct hh).symm
+    · rw [square_coordinate_formula h _ _ v j k k hjne, if_neg (Ne.symm hjne), if_pos rfl]
+      exact (closedParameter_reconstruct hh).symm
+
+/-- Textbook Q3, 1625–1641: divide an interior coordinate displacement by the mesh to recover its open parameter. -/
+noncomputable def openParameter (h : ℝ) (v x : Ambient) (j : Fin 3) : ℝ :=
+  (x j - v j) / h
+
+/-- Textbook Q3, 1625–1641: an interior mesh coordinate has parameter strictly between zero and one. -/
+theorem openParameter_mem_Ioo {h : ℝ} (hh : 0 < h) {v x : Ambient} {j : Fin 3}
+    (hx : x j ∈ Set.Ioo (v j) (v j + h)) : openParameter h v x j ∈ Set.Ioo (0 : ℝ) 1 := by
+  constructor
+  · exact div_pos (sub_pos.mpr hx.1) hh
+  · rw [openParameter, div_lt_one hh]
+    linarith [hx.2]
+
+/-- Textbook Q3, 1625–1641: multiplying the recovered open parameter by the mesh reconstructs the coordinate. -/
+theorem openParameter_reconstruct {h : ℝ} (hh : 0 < h) {v x : Ambient} {j : Fin 3} :
+    v j + openParameter h v x j * h = x j := by
+  rw [openParameter, div_mul_cancel₀ _ (ne_of_gt hh)]
+  ring
+
+/-- Textbook Q3, 1625–1641: the open square is exactly the rectangle with two strict interval coordinates. -/
+theorem square_open_coordinate_rectangle {h : ℝ} (hh : 0 < h)
+    {v : Ambient} {j k i : Fin 3} (hjk : j < k) (hij : i ≠ j) (hik : i ≠ k) :
+    squareOpenGeom h v j k =
+      {x : Ambient | x i = v i ∧ x j ∈ Set.Ioo (v j) (v j + h) ∧
+        x k ∈ Set.Ioo (v k) (v k + h)} := by
+  have hjne := ne_of_lt hjk
+  ext x
+  constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩
+    change _ = _ ∧ _ ∈ Set.Ioo _ _ ∧ _ ∈ Set.Ioo _ _
+    refine ⟨?_, ?_, ?_⟩
+    · rw [square_coordinate_formula h a b v j k i hjne, if_neg hij, if_neg hik]
+    · rw [square_coordinate_formula h a b v j k j hjne, if_pos rfl]
+      constructor <;> nlinarith [ha.1, ha.2]
+    · rw [square_coordinate_formula h a b v j k k hjne, if_neg (Ne.symm hjne), if_pos rfl]
+      constructor <;> nlinarith [hb.1, hb.2]
+  · rintro ⟨hxi, hxj, hxk⟩
+    refine ⟨openParameter h v x j, openParameter_mem_Ioo hh hxj,
+      openParameter h v x k, openParameter_mem_Ioo hh hxk, ?_⟩
+    apply Ambient_ext_of_three (square_indices_exhaust hjk hij hik)
+    · rw [square_coordinate_formula h _ _ v j k i hjne, if_neg hij, if_neg hik]
+      exact hxi
+    · rw [square_coordinate_formula h _ _ v j k j hjne, if_pos rfl]
+      exact (openParameter_reconstruct hh).symm
+    · rw [square_coordinate_formula h _ _ v j k k hjne, if_neg (Ne.symm hjne), if_pos rfl]
+      exact (openParameter_reconstruct hh).symm
+
+/-- Textbook Q3, 1625–1641: each admissible square has closed and relative-open coordinate rectangles in a fixed signed face. -/
+public theorem square_coordinate_description {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {s : Set Ambient} (hs : s ∈ squares N h) :
+    ∃ (v : Ambient) (j k i : Fin 3),
+      v ∈ vertices N h ∧ j < k ∧ v j ≤ 1 - h ∧ v k ≤ 1 - h ∧
+      i ≠ j ∧ i ≠ k ∧ |v i| = 1 ∧
+      s = {x : Ambient | x i = v i ∧ x j ∈ Set.Icc (v j) (v j + h) ∧
+        x k ∈ Set.Icc (v k) (v k + h)} ∧
+      squareRelInterior N h ⟨s, hs⟩ =
+        {x : Ambient | x i = v i ∧ x j ∈ Set.Ioo (v j) (v j + h) ∧
+          x k ∈ Set.Ioo (v k) (v k + h)} ∧
+      ∃ σ : {r : ℝ // r = -1 ∨ r = 1}, σ.1 = v i ∧ s ⊆ face i σ := by
+  obtain ⟨v, j, k, hv, hjk, hvj, hvk, hsub, hsgeom, _hopen⟩ := square_presentation hN hh hs
+  obtain ⟨i, ⟨hij, hik⟩, _hunique⟩ := square_remaining_index hjk
+  have hp : SquareParam N h v j k := ⟨hv, hjk, hvj, hvk, hsub⟩
+  have hpos := mesh_pos hN hh
+  refine ⟨v, j, k, i, hv, hjk, hvj, hvk, hij, hik,
+    (square_subset_boundary_iff hN hh hv hjk hvj hvk hij hik).mp hsub,
+    hsgeom.trans (square_closed_coordinate_rectangle hpos hjk hij hik),
+    (square_relInterior_coherent hN hh ⟨s, hs⟩ hp hsgeom).trans
+      (square_open_coordinate_rectangle hpos hjk hij hik), ?_⟩
+  obtain ⟨σ, hσ, hface⟩ := square_face_sign_and_containment hpos hp hij hik
+  exact ⟨σ, hσ, hsgeom ▸ hface⟩
+
+/-- Textbook C1, 1643–1652: normalize a coordinate by shifting its lower endpoint to zero and dividing by the mesh. -/
+noncomputable def normalizedFloorInput (h t : ℝ) : ℝ := (t + 1) / h
+/-- Textbook C1, 1643–1652: the floor of the normalized coordinate selects its integer mesh index. -/
+noncomputable def unclippedFloorIndex (h t : ℝ) : ℤ := ⌊normalizedFloorInput h t⌋
+/-- Textbook C1, 1643–1652: clip the floor index at the last lower mesh index. -/
+noncomputable def clippedFloorIndex (N : ℕ) (h t : ℝ) : ℤ :=
+  min (unclippedFloorIndex h t) ((N : ℤ) - 1)
+/-- Textbook C1, 1643–1652: the clipped index determines the lower endpoint of a mesh interval. -/
+noncomputable def latticeLowerEndpoint (N : ℕ) (h t : ℝ) : ℝ :=
+  -1 + (clippedFloorIndex N h t : ℝ) * h
+
+/-- Textbook C1, 1643–1652: the defining floor inequalities enclose a real number between consecutive integers. -/
+theorem floor_real_bounds (u : ℝ) :
+    ((⌊u⌋ : ℤ) : ℝ) ≤ u ∧ u < ((⌊u⌋ : ℤ) : ℝ) + 1 := by
+  exact ⟨Int.floor_le u, Int.lt_floor_add_one u⟩
+
+/-- Textbook C1, 1643–1652: casting the last integer index to the reals preserves subtraction of one. -/
+theorem cast_int_nat_sub_one (N : ℕ) :
+    (((N : ℤ) - 1 : ℤ) : ℝ) = (N : ℝ) - 1 := by
+  push_cast
+  ring
+
+/-- Textbook C1, 1643–1652: a positive number of intervals has a nonnegative last lower index. -/
+theorem int_nat_sub_one_nonneg {N : ℕ} (hN : 0 < N) :
+    (0 : ℤ) ≤ (N : ℤ) - 1 := by omega
+
+/-- Textbook C2, 1648–1653: an integer at most N is either below N or equal to N. -/
+theorem int_floor_top_split {N : ℕ} {z : ℤ} (hz : z ≤ (N : ℤ)) :
+    z ≤ (N : ℤ) - 1 ∨ z = (N : ℤ) := by omega
+
+/-- Textbook C2, 1648–1653: multiplying the floor inequalities by the positive mesh encloses the shifted coordinate. -/
+theorem scale_floor_inequalities {h u t : ℝ} {z : ℤ} (hh : 0 < h)
+    (hu : u * h = t + 1) (hzlow : (z : ℝ) ≤ u) (hzup : u < (z : ℝ) + 1) :
+    (z : ℝ) * h ≤ t + 1 ∧ t + 1 < (z : ℝ) * h + h := by
+  constructor
+  · rw [← hu]; exact mul_le_mul_of_nonneg_right hzlow (le_of_lt hh)
+  · rw [← hu]
+    have := mul_lt_mul_of_pos_right hzup hh
+    nlinarith
+
+/-- Textbook C2, 1648–1653: the last lower mesh point is one minus the mesh and its successor is one. -/
+theorem top_endpoint_cast_algebra {N : ℕ} {h : ℝ} (hmul : (N : ℝ) * h = 2) :
+    -1 + ((((N : ℤ) - 1 : ℤ) : ℝ)) * h = 1 - h ∧
+      (-1 + ((((N : ℤ) - 1 : ℤ) : ℝ)) * h) + h = 1 := by
+  rw [cast_int_nat_sub_one]
+  constructor <;> nlinarith
+
+/-- Textbook C1, 1643–1652: normalizing an interval coordinate puts it between zero and N. -/
+theorem normalizedFloorInput_bounds {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
+    normalizedFloorInput h t ∈ Set.Icc (0 : ℝ) N := by
+  have hm := mesh_identities N h hN hh
+  constructor
+  · exact div_nonneg (by linarith [ht.1]) hm.1.le
+  · rw [normalizedFloorInput, div_le_iff₀ hm.1]
+    linarith [hm.2.1, ht.2]
+
+/-- Textbook C1, 1643–1652: the normalized floor index is an integer between zero and N. -/
+theorem unclippedFloorIndex_bounds {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
+    0 ≤ unclippedFloorIndex h t ∧ unclippedFloorIndex h t ≤ (N : ℤ) := by
+  have hb := normalizedFloorInput_bounds hN hh ht
+  constructor
+  · exact Int.floor_nonneg.mpr hb.1
+  · have hle : (unclippedFloorIndex h t : ℝ) ≤ (N : ℝ) :=
+      le_trans (floor_real_bounds (normalizedFloorInput h t)).1 hb.2
+    exact_mod_cast hle
+
+/-- Textbook C1, 1643–1652: clipping leaves every ordinary floor index unchanged. -/
+theorem clippedFloorIndex_eq_floor {N : ℕ} {h t : ℝ}
+    (hle : unclippedFloorIndex h t ≤ (N : ℤ) - 1) :
+    clippedFloorIndex N h t = unclippedFloorIndex h t := by
+  simp [clippedFloorIndex, min_eq_left hle]
+
+/-- Textbook C2, 1648–1653: clipping an index at or above the last lower index returns that last index. -/
+theorem clippedFloorIndex_eq_top {N : ℕ} {h t : ℝ}
+    (hle : (N : ℤ) - 1 ≤ unclippedFloorIndex h t) :
+    clippedFloorIndex N h t = (N : ℤ) - 1 := by
+  simp [clippedFloorIndex, min_eq_right hle]
+
+/-- Textbook C1, 1643–1652: the clipped integer index lies between zero and N minus one. -/
+theorem clippedFloorIndex_bounds {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
+    0 ≤ clippedFloorIndex N h t ∧ clippedFloorIndex N h t ≤ (N : ℤ) - 1 := by
+  have hb := unclippedFloorIndex_bounds hN hh ht
+  exact ⟨le_min hb.1 (int_nat_sub_one_nonneg hN), min_le_right _ _⟩
+
+/-- Textbook C1, 1643–1652: the selected endpoint is a lattice point below the top and leaves room for one mesh step. -/
+theorem latticeLowerEndpoint_data {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
+    latticeLowerEndpoint N h t ∈ latticeBelowTop N h ∧
+    latticeLowerEndpoint N h t ≤ 1 - h := by
+  have hb := clippedFloorIndex_bounds hN hh ht
+  have hm := mesh_identities N h hN hh
+  have hcast : (clippedFloorIndex N h t : ℝ) ≤ (((N : ℤ) - 1 : ℤ) : ℝ) := by
+    exact_mod_cast hb.2
+  rw [cast_int_nat_sub_one] at hcast
+  have hupper : latticeLowerEndpoint N h t ≤ 1 - h := by
+    dsimp [latticeLowerEndpoint]
+    nlinarith [mul_le_mul_of_nonneg_right hcast hm.1.le, hm.2.1]
+  refine ⟨⟨?_, ?_⟩, hupper⟩
+  · exact ⟨clippedFloorIndex N h t, ⟨hb.1, by omega⟩, rfl⟩
+  · simp only [Set.mem_singleton_iff]
+    linarith [hm.1]
+
+/-- Textbook C2, 1648–1653: in the ordinary floor case, scaling its inequalities encloses the shifted coordinate. -/
+theorem ordinary_floor_enclosure {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1)
+    (hle : unclippedFloorIndex h t ≤ (N : ℤ) - 1) :
+    (clippedFloorIndex N h t : ℝ) * h ≤ t + 1 ∧
+    t + 1 < (clippedFloorIndex N h t : ℝ) * h + h := by
+  have _ := unclippedFloorIndex_bounds hN hh ht
+  have hp := (mesh_identities N h hN hh).1
+  have hb := floor_real_bounds (normalizedFloorInput h t)
+  rw [clippedFloorIndex_eq_floor hle]
+  exact scale_floor_inequalities hp (div_mul_cancel₀ _ (ne_of_gt hp)) hb.1 hb.2
+
+/-- Textbook C2, 1648–1653: the top floor value forces t to equal one and selects the final mesh interval. -/
+theorem top_floor_case {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1)
+    (hfloor : unclippedFloorIndex h t = (N : ℤ)) :
+    t = 1 ∧ clippedFloorIndex N h t = (N : ℤ) - 1 ∧
+    latticeLowerEndpoint N h t = 1 - h ∧ latticeLowerEndpoint N h t + h = 1 := by
+  have _ := unclippedFloorIndex_bounds hN hh ht
+  have hm := mesh_identities N h hN hh
+  have hl : (N : ℝ) ≤ normalizedFloorInput h t := by
+    have hb := (floor_real_bounds (normalizedFloorInput h t)).1
+    change (unclippedFloorIndex h t : ℝ) ≤ _ at hb
+    rw [hfloor] at hb
+    exact_mod_cast hb
+  have hu : normalizedFloorInput h t * h = t + 1 :=
+    div_mul_cancel₀ _ (ne_of_gt hm.1)
+  have htone : t = 1 := by
+    nlinarith [mul_le_mul_of_nonneg_right hl hm.1.le, hm.2.1, ht.2]
+  have hc := clippedFloorIndex_eq_top (N := N) (h := h) (t := t) (by omega)
+  refine ⟨htone, hc, ?_⟩
+  simpa only [latticeLowerEndpoint, hc] using top_endpoint_cast_algebra hm.2.1
+
+/-- Textbook C2, 1648–1653: either the ordinary floor interval or the final interval contains the original coordinate. -/
+theorem clipped_floor_enclosure {N : ℕ} {h t : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
+    t ∈ Set.Icc (latticeLowerEndpoint N h t) (latticeLowerEndpoint N h t + h) := by
+  rcases int_floor_top_split (unclippedFloorIndex_bounds hN hh ht).2 with hlow | htop
+  · have hb := ordinary_floor_enclosure hN hh ht hlow
+    dsimp [latticeLowerEndpoint]
+    constructor <;> linarith [hb.1, hb.2]
+  · obtain ⟨htone, _hc, hlower, hupper⟩ := top_floor_case hN hh ht htop
+    have hp := (mesh_identities N h hN hh).1
+    constructor <;> linarith
+
+/-- Textbook C3, 1643–1656: after choosing a fixed index, the other two coordinates admit an increasing order. -/
+theorem other_two_ordered (i : Fin 3) :
+    ∃ j k : Fin 3, j < k ∧ i ≠ j ∧ i ≠ k ∧
+      ∀ r : Fin 3, r = i ∨ r = j ∨ r = k := by
+  fin_cases i
+  · exact ⟨1, 2, by decide, by decide, by decide, by intro r; fin_cases r <;> simp⟩
+  · exact ⟨0, 2, by decide, by decide, by decide, by intro r; fin_cases r <;> simp⟩
+  · exact ⟨0, 1, by decide, by decide, by decide, by intro r; fin_cases r <;> simp⟩
+
+/-- Textbook C3, 1643–1656: two complementary directions exhausting the coordinates with the fixed index are distinct. -/
+theorem complementary_directions_ne {i j k : Fin 3} (hij : i ≠ j) (hik : i ≠ k)
+    (hexhaust : ∀ r : Fin 3, r = i ∨ r = j ∨ r = k) : j ≠ k := by
+  intro hjk
+  subst k
+  have h0 := hexhaust 0
+  have h1 := hexhaust 1
+  have h2 := hexhaust 2
+  fin_cases i <;> fin_cases j <;> simp_all
+
+/-- Textbook C3, 1643–1656: assemble an ambient point from prescribed values at the three chosen indices. -/
+def ambientOfThreeCoordinates (i j k : Fin 3) (xi xj xk : ℝ) : Ambient :=
+  WithLp.toLp 2 (fun r : Fin 3 =>
+    if r = i then xi else if r = j then xj else if r = k then xk else 0)
+
+/-- Textbook C3, 1643–1656: the assembled point takes its first prescribed coordinate value. -/
+theorem ambientOfThreeCoordinates_apply_i (i j k : Fin 3) (xi xj xk : ℝ) :
+    ambientOfThreeCoordinates i j k xi xj xk i = xi := by simp [ambientOfThreeCoordinates]
+/-- Textbook C3, 1643–1656: distinctness from the first index recovers the second prescribed value. -/
+theorem ambientOfThreeCoordinates_apply_j {i j k : Fin 3} (hji : j ≠ i) (xi xj xk : ℝ) :
+    ambientOfThreeCoordinates i j k xi xj xk j = xj := by simp [ambientOfThreeCoordinates, hji]
+/-- Textbook C3, 1643–1656: distinctness from the preceding indices recovers the third prescribed value. -/
+theorem ambientOfThreeCoordinates_apply_k {i j k : Fin 3} (hki : k ≠ i) (hkj : k ≠ j)
+    (xi xj xk : ℝ) : ambientOfThreeCoordinates i j k xi xj xk k = xk := by
+  simp [ambientOfThreeCoordinates, hki, hkj]
+
+/-- Textbook C3, 1643–1656: retain the saturated coordinate and replace the other two by their lower mesh endpoints. -/
+noncomputable def coverageVertex (N : ℕ) (h : ℝ) (x : Ambient) (i j k : Fin 3) : Ambient :=
+  ambientOfThreeCoordinates i j k (x i) (latticeLowerEndpoint N h (x j))
+    (latticeLowerEndpoint N h (x k))
+
+/-- Textbook C3, 1643–1656: the coverage vertex retains the original fixed coordinate. -/
+theorem coverageVertex_apply_i (N : ℕ) (h : ℝ) (x : Ambient) (i j k : Fin 3) :
+    coverageVertex N h x i j k i = x i := by
+  simp [coverageVertex, ambientOfThreeCoordinates]
+
+/-- Textbook C3, 1643–1656: the coverage vertex uses the lower mesh endpoint in the first moving direction. -/
+theorem coverageVertex_apply_j {N : ℕ} {h : ℝ} {x : Ambient} {i j k : Fin 3}
+    (hji : j ≠ i) :
+    coverageVertex N h x i j k j = latticeLowerEndpoint N h (x j) := by
+  simp [coverageVertex, ambientOfThreeCoordinates, hji]
+
+/-- Textbook C3, 1643–1656: the coverage vertex uses the lower mesh endpoint in the second moving direction. -/
+theorem coverageVertex_apply_k {N : ℕ} {h : ℝ} {x : Ambient} {i j k : Fin 3}
+    (hki : k ≠ i) (hkj : k ≠ j) :
+    coverageVertex N h x i j k k = latticeLowerEndpoint N h (x k) := by
+  simp [coverageVertex, ambientOfThreeCoordinates, hki, hkj]
+
+/-- Textbook C3, 1643–1656: a boundary point has a signed saturated coordinate and all coordinates in [-1,1]. -/
+theorem boundary_face_coordinate_data {x : Ambient} (hx : x ∈ boundary) :
+    ∃ (i : Fin 3) (σ : {r : ℝ // r = -1 ∨ r = 1}),
+      x ∈ face i σ ∧ x i = σ.1 ∧ ∀ r : Fin 3, x r ∈ Set.Icc (-1 : ℝ) 1 := by
+  obtain ⟨i, σ, hface⟩ := exists_mem_face hx
+  refine ⟨i, σ, hface, (mem_face_iff x i σ).mp hface |>.2, ?_⟩
+  intro r
+  apply abs_le.mp
+  rw [← (show maxAbs x = 1 from hx)]
+  fin_cases r <;> simp [maxAbs]
+
+/-- Textbook C3, 1643–1656: either signed endpoint belongs to the mesh lattice. -/
+theorem face_coordinate_mem_lattice {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i : Fin 3}
+    {σ : {r : ℝ // r = -1 ∨ r = 1}} (hxi : x i = σ.1) : x i ∈ lattice N h := by
+  rw [hxi]
+  rcases σ.property with hneg | hpos
+  · rw [hneg]; exact (lattice_endpoints hN hh).1
+  · rw [hpos]; exact (lattice_endpoints hN hh).2
+
+/-- Textbook C3, 1643–1656: the fixed lattice coordinate and the two lower endpoints make all vertex coordinates lattice points. -/
+theorem coverageVertex_all_lattice {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i j k : Fin 3}
+    (hij : i ≠ j) (hik : i ≠ k) (hexhaust : ∀ r : Fin 3, r = i ∨ r = j ∨ r = k)
+    (hxi : x i ∈ lattice N h) (hxj : x j ∈ Set.Icc (-1 : ℝ) 1)
+    (hxk : x k ∈ Set.Icc (-1 : ℝ) 1) :
+    ∀ r : Fin 3, coverageVertex N h x i j k r ∈ lattice N h := by
+  have hjk := complementary_directions_ne hij hik hexhaust
+  intro r
+  rcases hexhaust r with rfl | rfl | rfl
+  · change (if r = r then x r else _) ∈ lattice N h
+    rw [if_pos rfl]
+    exact hxi
+  · rw [coverageVertex_apply_j (Ne.symm hij)]
+    exact (latticeLowerEndpoint_data hN hh hxj).1.1
+  · rw [coverageVertex_apply_k (Ne.symm hik) (Ne.symm hjk)]
+    exact (latticeLowerEndpoint_data hN hh hxk).1.1
+
+/-- Textbook C3, 1643–1656: lattice bounds and the retained saturated coordinate put the constructed vertex on the boundary. -/
+theorem coverageVertex_boundary {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i j k : Fin 3}
+    {σ : {r : ℝ // r = -1 ∨ r = 1}} (hxi : x i = σ.1)
+    (hlattice : ∀ r : Fin 3, coverageVertex N h x i j k r ∈ lattice N h) :
+    coverageVertex N h x i j k ∈ boundary := by
+  have hb : ∀ r, |coverageVertex N h x i j k r| ≤ 1 := fun r =>
+    abs_le.mpr (lattice_subset_interval hN hh (hlattice r))
+  have hfixed : |coverageVertex N h x i j k i| = 1 := by
+    rw [coverageVertex_apply_i, hxi]
+    rcases σ.property with he | he <;> rw [he] <;> norm_num
+  change maxAbs _ = 1
+  apply le_antisymm (max_le (hb 0) (max_le (hb 1) (hb 2)))
+  calc
+    1 = |coverageVertex N h x i j k i| := hfixed.symm
+    _ ≤ maxAbs _ := by fin_cases i <;> simp [maxAbs]
+
+/-- Textbook C3, 1643–1656: coordinatewise lattice membership together with boundary membership defines a vertex. -/
+theorem coverageVertex_mem_vertices {N : ℕ} {h : ℝ} {x : Ambient} {i j k : Fin 3}
+    (hlattice : ∀ r : Fin 3, coverageVertex N h x i j k r ∈ lattice N h)
+    (hboundary : coverageVertex N h x i j k ∈ boundary) :
+    coverageVertex N h x i j k ∈ vertices N h := ⟨hlattice, hboundary⟩
+
+/-- Textbook C3, 1643–1656: both selected lower endpoints leave room for one mesh step in their moving directions. -/
+theorem coverageVertex_direction_bounds {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i j k : Fin 3}
+    (hji : j ≠ i) (hki : k ≠ i) (hkj : k ≠ j)
+    (hxj : x j ∈ Set.Icc (-1 : ℝ) 1) (hxk : x k ∈ Set.Icc (-1 : ℝ) 1) :
+    coverageVertex N h x i j k j ≤ 1 - h ∧ coverageVertex N h x i j k k ≤ 1 - h := by
+  rw [coverageVertex_apply_j hji, coverageVertex_apply_k hki hkj]
+  exact ⟨(latticeLowerEndpoint_data hN hh hxj).2, (latticeLowerEndpoint_data hN hh hxk).2⟩
+
+/-- Textbook C3, 1643–1656: the saturated fixed coordinate and the direction bounds make the coverage square admissible. -/
+theorem coverageSquareParam {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i j k : Fin 3}
+    (hjk : j < k) (hij : i ≠ j) (hik : i ≠ k)
+    (hv : coverageVertex N h x i j k ∈ vertices N h)
+    (hvj : coverageVertex N h x i j k j ≤ 1 - h)
+    (hvk : coverageVertex N h x i j k k ≤ 1 - h) (habs : |x i| = 1) :
+    SquareParam N h (coverageVertex N h x i j k) j k := by
+  refine ⟨hv, hjk, hvj, hvk,
+    (square_subset_boundary_iff hN hh hv hjk hvj hvk hij hik).mpr ?_⟩
+  rw [coverageVertex_apply_i]
+  exact habs
+
+/-- Textbook C3, 1643–1656: an admissible coverage parameter supplies a member of the square family. -/
+theorem coverageSquare_mem_squares {N : ℕ} {h : ℝ} {x : Ambient} {i j k : Fin 3}
+    (hp : SquareParam N h (coverageVertex N h x i j k) j k) :
+    squareGeom h (coverageVertex N h x i j k) j k ∈ squares N h :=
+  ⟨coverageVertex N h x i j k, j, k, hp, rfl⟩
+
+/-- Textbook C3, 1643–1656: the fixed coordinate equation and two floor enclosures place the original point in its square. -/
+theorem point_mem_coverageSquare {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} {i j k : Fin 3}
+    (hjk : j < k) (hij : i ≠ j) (hik : i ≠ k)
+    (hxi : coverageVertex N h x i j k i = x i)
+    (hxj : x j ∈ Set.Icc (latticeLowerEndpoint N h (x j))
+      (latticeLowerEndpoint N h (x j) + h))
+    (hxk : x k ∈ Set.Icc (latticeLowerEndpoint N h (x k))
+      (latticeLowerEndpoint N h (x k) + h)) :
+    x ∈ squareGeom h (coverageVertex N h x i j k) j k := by
+  rw [square_closed_coordinate_rectangle (mesh_pos hN hh) hjk hij hik]
+  refine ⟨hxi.symm, ?_, ?_⟩
+  · simpa only [coverageVertex_apply_j (Ne.symm hij)] using hxj
+  · simpa only [coverageVertex_apply_k (Ne.symm hik) (ne_of_lt hjk).symm] using hxk
+
+/-- Textbook C3, 1643–1656 (Lemma 3.3): retaining a saturated coordinate and taking two clipped lower endpoints covers each boundary point by a square. -/
+public theorem exists_square_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {x : Ambient} (hx : x ∈ boundary) :
+    ∃ s : Set Ambient, s ∈ squares N h ∧ x ∈ s := by
+  obtain ⟨i, σ, _hface, hxi, hbounds⟩ := boundary_face_coordinate_data hx
+  obtain ⟨j, k, hjk, hij, hik, hexhaust⟩ := other_two_ordered i
+  have hfixed := face_coordinate_mem_lattice hN hh hxi
+  have hlattice := coverageVertex_all_lattice hN hh hij hik hexhaust hfixed
+    (hbounds j) (hbounds k)
+  have hboundary := coverageVertex_boundary hN hh hxi hlattice
+  have hv := coverageVertex_mem_vertices hlattice hboundary
+  obtain ⟨hvj, hvk⟩ := coverageVertex_direction_bounds hN hh (Ne.symm hij) (Ne.symm hik)
+    (ne_of_lt hjk).symm (hbounds j) (hbounds k)
+  have habs : |x i| = 1 := by
+    rw [hxi]
+    rcases σ.property with he | he <;> rw [he] <;> norm_num
+  have hp := coverageSquareParam hN hh hjk hij hik hv hvj hvk habs
+  refine ⟨squareGeom h (coverageVertex N h x i j k) j k, coverageSquare_mem_squares hp, ?_⟩
+  exact point_mem_coverageSquare hN hh hjk hij hik (coverageVertex_apply_i N h x i j k)
+    (clipped_floor_enclosure hN hh (hbounds j)) (clipped_floor_enclosure hN hh (hbounds k))
+
+end TopologicalSpace.CubeBoundaryThree

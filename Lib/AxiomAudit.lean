@@ -7088,3 +7088,7 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.finite_squares
 #check TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices
 #print axioms TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices
+#check TopologicalSpace.CubeBoundaryThree.square_coordinate_description
+#print axioms TopologicalSpace.CubeBoundaryThree.square_coordinate_description
+#check TopologicalSpace.CubeBoundaryThree.exists_square_mem
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_square_mem
