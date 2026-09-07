@@ -16,7 +16,6 @@ FirstHurewicz
 SingularMayerVietoris
 SphereHomology
 EuclideanSphere
-SmallChainBiprod
 Hopf/SphereTopology.lean:CuspCentralHomology
 Hopf/SingularHomology.lean:CuspCentralHomology
 ThreefoldHomologyStarCoproduct

@@ -62,6 +62,7 @@ Original source lines 31128--62391; see PROVENANCE.md.
 -/
 
 import Hopf.DifferentialTopology
+import Lib.Algebra.Homology.MayerVietorisShortExact
 
 set_option maxSynthPendingDepth 3
 
