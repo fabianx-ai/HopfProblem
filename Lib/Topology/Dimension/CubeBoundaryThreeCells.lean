@@ -2097,9 +2097,13 @@ private theorem same_line_coordinate_nonadjacent {h : ℝ} {v v' : Ambient} {j :
   apply PiLp.ext
   intro i
   have hf := edge_coordinate_formula h 1 v j i
+  have hf' : (v + h • EuclideanSpace.single j 1 : Ambient) i =
+      if i = j then v j + h else v i := by simpa only [one_mul] using hf
+  rw [hf']
   by_cases hi : i = j
   · subst i; simpa using hadj
-  · simpa [hi] using hfixed i hi
+  · rw [if_neg hi]
+    exact hfixed i hi
 
 /-- Textbook Lemma 3.7(b), lines 1717–1719: ordered lattice points that are not adjacent are at
 least two mesh steps apart. -/
@@ -2122,31 +2126,44 @@ private theorem ordered_parallel_segment_separation {h : ℝ} {v v' p p' : Ambie
     (hp : p ∈ edgeGeom h v j) (hp' : p' ∈ edgeGeom h v' j) : h ≤ ‖p - p'‖ := by
   obtain ⟨a, ha, rfl⟩ := edge_parameter_extract hp
   obtain ⟨b, hb, rfl⟩ := edge_parameter_extract hp'
-  have hpa : (v + (a * h) • EuclideanSpace.single j 1 : Ambient) j = v j + a * h := by
-    simp
-  have hpb : (v' + (b * h) • EuclideanSpace.single j 1 : Ambient) j = v' j + b * h := by
-    simp
-  have hc : h ≤ |(v + (a * h) • EuclideanSpace.single j 1 -
-      (v' + (b * h) • EuclideanSpace.single j 1) : Ambient) j| := by
-    rw [PiLp.sub_apply, hpa, hpb]
-    rw [abs_of_nonpos]
-    · nlinarith [mul_le_mul_of_nonneg_right ha.2 hh, mul_nonneg hb.1 hh]
-    · nlinarith [mul_le_mul_of_nonneg_right ha.2 hh, mul_nonneg hb.1 hh]
-  exact le_trans hc (le_trans (abs_apply_le_maxAbs _ j) (maxAbs_le_norm _))
+  have hpa := (edge_coordinate_formula h a v j j).trans (if_pos rfl)
+  have hpb := (edge_coordinate_formula h b v' j j).trans (if_pos rfl)
+  have ha_upper : a * h ≤ h := by
+    simpa only [one_mul] using mul_le_mul_of_nonneg_right ha.2 hh
+  have hb_lower : 0 ≤ b * h := mul_nonneg hb.1 hh
+  have hscalar : h ≤
+      (v' + (b * h) • EuclideanSpace.single j 1 : Ambient) j -
+        (v + (a * h) • EuclideanSpace.single j 1 : Ambient) j := by
+    rw [hpa, hpb]
+    linarith
+  have habs : h ≤ |(v' + (b * h) • EuclideanSpace.single j 1 : Ambient) j -
+      (v + (a * h) • EuclideanSpace.single j 1 : Ambient) j| :=
+    hscalar.trans (le_abs_self _)
+  calc
+    h ≤ |(v' + (b * h) • EuclideanSpace.single j 1 : Ambient) j -
+        (v + (a * h) • EuclideanSpace.single j 1 : Ambient) j| := habs
+    _ = |(v + (a * h) • EuclideanSpace.single j 1 -
+        (v' + (b * h) • EuclideanSpace.single j 1) : Ambient) j| := by
+      simp only [PiLp.sub_apply, abs_sub_comm]
+    _ ≤ maxAbs (v + (a * h) • EuclideanSpace.single j 1 -
+        (v' + (b * h) • EuclideanSpace.single j 1)) := abs_apply_le_maxAbs _ j
+    _ ≤ ‖v + (a * h) • EuclideanSpace.single j 1 -
+        (v' + (b * h) • EuclideanSpace.single j 1)‖ := maxAbs_le_norm _
 
 /-- Textbook Lemma 3.7(b), lines 1721–1723: two distinct moving coordinates have a unique third
 coordinate, and together the three indices exhaust the ambient coordinates. -/
 private theorem third_coordinate_exhaust {j j' : Fin 3} (hjj' : j ≠ j') :
     ∃ m : Fin 3, m ≠ j ∧ m ≠ j' ∧ ∀ r : Fin 3, r = m ∨ r = j ∨ r = j' := by
   rcases lt_or_gt_of_ne hjj' with hlt | hgt
-  · obtain ⟨m, hm, _⟩ := square_remaining_index hlt
-    exact ⟨m, hm.1, hm.2, square_indices_exhaust hlt hm.1 hm.2⟩
-  · obtain ⟨m, hm, _⟩ := square_remaining_index hgt
-    exact ⟨m, hm.2, hm.1, fun r => by
-      rcases square_indices_exhaust hgt hm.1 hm.2 r with h | h | h
-      · exact Or.inl h
-      · exact Or.inr (Or.inr h)
-      · exact Or.inr (Or.inl h)⟩
+  · obtain ⟨m, hmj, hmj'⟩ := (square_remaining_index hlt).exists
+    exact ⟨m, hmj, hmj', square_indices_exhaust hlt hmj hmj'⟩
+  · obtain ⟨m, hmj', hmj⟩ := (square_remaining_index hgt).exists
+    refine ⟨m, hmj, hmj', ?_⟩
+    intro r
+    rcases square_indices_exhaust hgt hmj' hmj r with hm | hj' | hj
+    · exact Or.inl hm
+    · exact Or.inr (Or.inr hj')
+    · exact Or.inr (Or.inl hj)
 
 /-- Textbook Lemma 3.7(b), lines 1721–1723: differing lattice values at the third coordinate
 separate arbitrary points on transverse edges by at least the mesh. -/
@@ -2174,35 +2191,41 @@ private theorem lattice_endpoint_or_gap {N : ℕ} {h a b : ℝ}
   · exact Or.inl (Or.inl hba)
   by_cases hbs : b = a + h
   · exact Or.inl (Or.inr hbs)
-  right
-  intro t ht
-  rcases lt_or_gt_of_ne hba with hlt | hgt
-  · have hs := lattice_separation hN hh ha hb (Ne.symm hba)
-    rw [abs_of_pos (sub_pos.mpr hlt)] at hs
-    rw [abs_of_nonneg]
-    · nlinarith [mul_nonneg ht.1 (mesh_pos hN hh).le]
-    · nlinarith [mul_nonneg ht.1 (mesh_pos hN hh).le]
-  · have hs := ordered_lattice_two_step hN hh ha hb ha_upper hgt (Ne.symm hbs)
-    rw [abs_of_nonpos]
-    · nlinarith [mul_le_mul_of_nonneg_right ht.2 (mesh_pos hN hh).le]
-    · nlinarith [mul_le_mul_of_nonneg_right ht.2 (mesh_pos hN hh).le]
+  have hpos := mesh_pos hN hh
+  have hsep0 := lattice_separation hN hh hb ha hba
+  rcases lt_or_gt_of_ne hba with hbelow | hab
+  · rw [abs_of_neg (sub_neg.mpr hbelow)] at hsep0
+    right
+    intro t ht
+    have ht0 := mul_nonneg ht.1 hpos.le
+    rw [abs_of_nonneg] <;> linarith
+  · rw [abs_of_pos (sub_pos.mpr hab)] at hsep0
+    have hfirst : a + h ≤ b := by linarith
+    have hstrict : a + h < b := lt_of_le_of_ne hfirst (Ne.symm hbs)
+    have hsucc := lattice_successor hN hh ha ha_upper
+    have hsep1 := lattice_separation hN hh hb hsucc hbs
+    rw [abs_of_pos (sub_pos.mpr hstrict)] at hsep1
+    right
+    intro t ht
+    have htle : t * h ≤ h := by
+      simpa only [one_mul] using mul_le_mul_of_nonneg_right ht.2 hpos.le
+    rw [abs_of_nonpos] <;> linarith
 
 /-- Textbook Lemma 3.7(b), lines 1723–1727: a fixed-coordinate mesh gap from an entire edge
 implies Euclidean separation from any point having that fixed coordinate. -/
 private theorem edge_coordinate_gap_separation {h b : ℝ} {v p p' : Ambient} {j : Fin 3}
     (hgap : ∀ t ∈ Set.Icc (0 : ℝ) 1, h ≤ |(v j + t * h) - b|)
     (hp : p ∈ edgeGeom h v j) (hp' : p' j = b) : h ≤ ‖p - p'‖ := by
-  obtain ⟨t, ht, rfl⟩ := edge_parameter_extract hp
+  obtain ⟨t, ht, hpt⟩ := edge_parameter_extract hp
   have hs := hgap t ht
-  have hcoord : (v + (t * h) • EuclideanSpace.single j 1 : Ambient) j = v j + t * h := by
-    simp
+  have hcoord : p j = v j + t * h := by
+    rw [hpt]
+    exact (edge_coordinate_formula h t v j j).trans (if_pos rfl)
   calc
     h ≤ |v j + t * h - b| := hs
-    _ = |(v + (t * h) • EuclideanSpace.single j 1 : Ambient) j - p' j| := by rw [hcoord, hp']
-    _ = |(v + (t * h) • EuclideanSpace.single j 1 - p' : Ambient) j| := by rw [PiLp.sub_apply]
-    _ ≤ maxAbs (v + (t * h) • EuclideanSpace.single j 1 - p') := by
-      exact abs_apply_le_maxAbs _ j
-    _ ≤ ‖v + (t * h) • EuclideanSpace.single j 1 - p'‖ := maxAbs_le_norm _
+    _ = |(p - p') j| := by rw [PiLp.sub_apply, hcoord, hp']
+    _ ≤ maxAbs (p - p') := abs_apply_le_maxAbs _ j
+    _ ≤ ‖p - p'‖ := maxAbs_le_norm _
 
 /-- Textbook Lemma 3.7(b), lines 1727–1731: transverse edges whose third coordinate agrees and
 whose two cross coordinates are endpoint values share one of their four literal endpoints. -/
