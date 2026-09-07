@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Mathlib.Data.Finset.Card
+public import Mathlib.Topology.Homeomorph.Defs
 public import Mathlib.Topology.Sets.OpenCover
 
 /-!
@@ -17,8 +18,10 @@ dimension. A refinement includes a chosen function from the finer indices to the
 The multiplicity bound says that no point lies in more than the prescribed number of cover
 members; equivalently, every intersection of too many distinct members is empty.
 
-Only the vocabulary and its elementary finite-intersection reformulations are developed here.
-No separation axiom, compactness assumption, or sheaf theory is involved.
+The vocabulary, its elementary finite-intersection reformulations, and transport of dimension
+bounds along homeomorphisms are developed here. Transport uses a common arbitrary universe for
+the two spaces and their cover indices. No separation axiom, compactness assumption, or sheaf
+theory is involved.
 -/
 
 @[expose] public section
@@ -173,5 +176,48 @@ theorem mono (hmn : m ≤ n) (h : HasCoveringDimensionLE X m) :
   intro ι U hU
   obtain ⟨κ, V, r, hV, hmult⟩ := h U hU
   exact ⟨κ, V, r, hV, hmult.mono (Nat.add_le_add_right hmn 1)⟩
+
+open TopologicalSpace in
+/-- Transport a covering-dimension bound along a homeomorphism between spaces in a common
+arbitrary universe, using the existing convention that cover indices share the space universe.
+
+Textbook Lemma 6.1 (CD12C-T): push an arbitrary indexed open cover forward, choose a refinement
+on the target, and pull that refinement back. The original and refinement index types and the
+chosen assignment are unchanged. Membership of a point in a finite family pulls back to
+membership of its image in the same finite family, preserving the index-counting multiplicity.
+No separation, compactness, metric, nonemptiness, or finite-cover hypothesis is required. -/
+theorem of_homeomorph {X Y : Type u}
+    [TopologicalSpace X] [TopologicalSpace Y]
+    (g : X ≃ₜ Y) {n : ℕ} (hY : HasCoveringDimensionLE Y n) :
+    HasCoveringDimensionLE X n := by
+  intro ι U hU
+  -- T01: image openness and surjectivity give a cover on the same original indices.
+  let U' : ι → Opens Y :=
+    fun i => ⟨g '' (U i : Set X), g.isOpenMap _ (U i).isOpen⟩
+  have hImageUnion : (⋃ i, g '' (U i : Set X)) = Set.univ := by
+    rw [← Set.image_iUnion, hU.iSup_set_eq_univ]
+    exact Set.image_univ_of_surjective g.surjective
+  have hImage : IsOpenCover U' :=
+    IsOpenCover.of_sets (fun i => g.isOpenMap _ (U i).isOpen) hImageUnion
+  -- T02: choose the target refinement once, with its actual assignment.
+  obtain ⟨κ, V', r, hV', hM'⟩ := hY U' hImage
+  -- T03: continuous preimages form a cover on those same refinement indices.
+  let f : C(X, Y) := ⟨g, g.continuous⟩
+  let V : κ → Opens X := fun j => (V' j).comap f
+  have hV : IsOpenCover V := hV'.comap f
+  -- T04: preimage monotonicity and injective cancellation retain the assignment.
+  have hContain : ∀ j, V j ≤ U (r.index j) := by
+    intro j
+    change g ⁻¹' (V' j : Set Y) ⊆ (U (r.index j) : Set X)
+    have hpre : g ⁻¹' (V' j : Set Y) ⊆ g ⁻¹' (g '' (U (r.index j) : Set X)) :=
+      Set.preimage_mono (r.le j)
+    simpa only [g.preimage_image] using hpre
+  let rX : OpenCover.Refinement V U := ⟨r.index, hContain⟩
+  -- T05: the same finite index family at x meets the target cover at g x.
+  have hM : OpenCover.MultiplicityLE V (n + 1) := by
+    intro x s hs
+    exact hM' (g x) s hs
+  -- T06: these witnesses satisfy the original arbitrary-cover criterion.
+  exact ⟨κ, V, rX, hV, hM⟩
 
 end HasCoveringDimensionLE

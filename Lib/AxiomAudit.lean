@@ -3401,6 +3401,8 @@ is an evidence command rather than library content.
 #print axioms HasCoveringDimensionLE
 #check HasCoveringDimensionLE.mono
 #print axioms HasCoveringDimensionLE.mono
+#check HasCoveringDimensionLE.of_homeomorph
+#print axioms HasCoveringDimensionLE.of_homeomorph
 
 /-! ## `Lib.Topology.Sheaves.FunctionSheaf` -/
 
