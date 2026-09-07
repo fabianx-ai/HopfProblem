@@ -1,5 +1,6 @@
 import Lib
 import Lib.Topology.Dimension.CubeBoundaryThree
+import Lib.Topology.Dimension.CubeBoundaryThreeCells
 import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 
 /-!
@@ -7061,3 +7062,29 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.hom_eq_extendHom
 #check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeCells` -/
+
+#check TopologicalSpace.CubeBoundaryThree.vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.vertices
+#check TopologicalSpace.CubeBoundaryThree.vertex_mem_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.vertex_mem_boundary
+#check TopologicalSpace.CubeBoundaryThree.edges
+#print axioms TopologicalSpace.CubeBoundaryThree.edges
+#check TopologicalSpace.CubeBoundaryThree.edge_presentation
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_presentation
+#check TopologicalSpace.CubeBoundaryThree.squares
+#print axioms TopologicalSpace.CubeBoundaryThree.squares
+#check TopologicalSpace.CubeBoundaryThree.squareRelInterior
+#print axioms TopologicalSpace.CubeBoundaryThree.squareRelInterior
+#check TopologicalSpace.CubeBoundaryThree.square_presentation
+#print axioms TopologicalSpace.CubeBoundaryThree.square_presentation
+#check TopologicalSpace.CubeBoundaryThree.edgeEndpoints
+#print axioms TopologicalSpace.CubeBoundaryThree.edgeEndpoints
+#check TopologicalSpace.CubeBoundaryThree.finite_vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_vertices
+#check TopologicalSpace.CubeBoundaryThree.finite_edges
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_edges
+#check TopologicalSpace.CubeBoundaryThree.finite_squares
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_squares
+#check TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices

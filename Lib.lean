@@ -406,6 +406,7 @@ import Lib.Topology.Dimension.CubeBoundaryThree
 import Lib.Topology.MetricSpace.LebesgueNumber
 import Lib.Analysis.Real.MeshScale
 import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+import Lib.Topology.Dimension.CubeBoundaryThreeCells
 
 /-!
 # Reusable extracted library
