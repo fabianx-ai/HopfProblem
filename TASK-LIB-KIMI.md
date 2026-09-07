@@ -15,17 +15,83 @@ complete proof of the general statement (`Lib/docs/<lane>.md`, ordinary
 mathematics, no Lean names), Axis 2–3 additive decomposition in dependency
 order, Axis 4 placement, Axis 5 exact typed ledger with the disposable
 `*_InterfaceCheck.lean` producer/consumer probes and their receipt, and only
-then Axis 6 Lean. `Lib/EXTRACTION_PLAN.md` §2 has every source line range on
-721fc82 and every target file; §3 the validation recipe; §7 the hazards.
+then Axis 6 Lean. The Axis-1 textbook is transcribed into the module docstring
+when the file lands (model: `Lib/AlgebraicTopology/Hurewicz/Degree1.lean`
+lines 12–70); the Axis-5 ledger stays in `Lib/docs/<lane>.md`. The reference
+example's generalization commits (`CycleClasses` from `ℤ` to any ring, then
+rebuilt on its Mathlib twin's data structure) are the model for "generalize
+inside the twin's shape". `Lib/EXTRACTION_PLAN.md` §2 has every source line
+range on 721fc82 and every target file; §3 the validation recipe; §7 the
+hazards.
 
-**Reference example.** Before starting any lane, read
-`Lib/AlgebraicTopology/Hurewicz/` (five files; the finished degree-one
+**Reference example: `Lib/AlgebraicTopology/Hurewicz/` — follow this.**
+Before starting any lane, read the five files (the finished degree-one
 Hurewicz extraction of github.com/fabianx-ai/mathlib4 PR #4, copied verbatim
-and building against the pinned Mathlib). Your files must look like these:
-the textbook in the module docstring, one file per textbook step, Mathlib
-names and namespaces, a docstring on every public declaration, no project
-vocabulary. `Lib/README.md`, section "Reference example", lists what to
-imitate.
+apart from import paths; they build against the pinned Mathlib in 8 s with
+axioms `propext`, `Classical.choice`, `Quot.sound`), `Degree1.lean` lines
+12–70 first. Their Lean came first and the textbook was written into them
+afterwards without changing a proof term; the pure-move parts of your lanes
+are work of the same kind, the generalized statements are not and follow the
+forward pipeline above. `Lib/README.md`, section "Reference example", explains
+each point; this is the checklist.
+
+COPY
+1. Mathlib header (no SPDX line), `module`, minimal `public import`s, one
+   module docstring, `open` lines, `@[expose] public noncomputable section`,
+   one `namespace` block, `variable`s hoisted once per block; no unused
+   `set_option`/`universe` (`Degree1.lean` 1–77).
+2. Module docstring in this order: `# Title`; the theorem with the exact type
+   of the headline declaration; `## Outline of the proof`, numbered, every
+   step naming its declarations; `## Main definitions and results`;
+   `## References` with the bib key; `## Tags` (`Degree1.lean` 12–70).
+   Interface files: what is provided, results list, who instantiates it
+   (`CycleClasses.lean` 11–33).
+3. `/-! ### … -/` section headers in proof order, with prose where the
+   textbook glosses a step (`Degree1.lean` 417–422, 507–512;
+   `SimplexPaths.lean` 181–185).
+4. A role-stating docstring on every public `def`, `abbrev`, `theorem`,
+   `lemma` (`SimplexPaths.lean` 446–449; `Degree1.lean` 838–841, 945–946,
+   218–222).
+5. Names: textbook names for headline objects (`hurewiczHom`,
+   `hurewiczEquiv`); `_apply`, `_val`, `_def`; `_eq_iff`, `_eq_zero_iff`;
+   `_surjective`, `_injective`; `Foo.map`, `Foo.map_id`, `Foo.map_comp`,
+   `Foo.map_<generator>`; `<thing>_induction_on` with `@[elab_as_elim]`;
+   `<equiv>_symm_<generator>`; `**The … theorem**` opening the headline
+   docstring (`Degree1.lean` 964–968, 1005–1012).
+6. One face/edge/boundary computation per lemma, short; `private` only for
+   cast normalizations and proof-internal bridges, placed right before their
+   single consumer.
+7. Morphism-level squares with `@[reassoc (attr := simp), elementwise
+   (attr := simp)]`, element forms documented but not `@[simp]`
+   (`CycleClasses.lean` 157–168, 258–266); restate a simp lemma's LHS in
+   normal form before tagging it (`Degree1.lean` 970–977).
+8. Name the Mathlib twin file before the rename commit and match it
+   (`CycleClasses` follows `Algebra/Homology/ShortComplex/ModuleCat.lean` and
+   `RepresentationTheory/Homological/GroupHomology/LowDegree.lean`; add one
+   `rfl` lemma tying the new object to the library's own functor, as
+   `SingularH1.map_eq_singularHomologyFunctor_map` does).
+9. Commits: first a provenance baseline (bytes verbatim, SHA-256 of every
+   source range in the message, only import/namespace lines changed and each
+   named); then one concern per commit (`move`, `rename`, `doc`, `style`, one
+   `refactor`), the body saying whether any proof term or statement changed
+   ("No proof term changed.") and which gate was run.
+10. Generalize only when the twin dictates it and the `Hopf/` consumer
+    recovers the original by instantiation (`CycleClasses`: `ℤ` → any ring,
+    any universe), in its own commit with the reason; a generalization beyond
+    that is the textbook-first work of your lanes.
+
+DO NOT COPY
+- the `Authors: PLACEHOLDER` line; write the real author line;
+- `(X : Type)` in some blocks and `Type*` in others (`Degree1.lean` 84 vs
+  516); pick `Type*` unless a universe constraint forces otherwise, and say
+  which;
+- linter overrides in the tree; record an import reaching a forbidden
+  directory as an open item;
+- commit messages citing audits or drafts that are not in the tree;
+- theorems without docstrings (`PeriodicLoop.lean` 42–127);
+- re-binding a hoisted variable (`Degree1.lean` 982, 1008); helpers after
+  their section (`SimplexPaths.lean` 412–421); files without `## References`
+  (four of the five).
 
 ## Your lanes, in execution order
 
@@ -208,7 +274,10 @@ imitate.
   `lake build` in the lane report.
 - Axis-5 probes: `*_InterfaceCheck.lean` / `*_InterfaceConsumerCheck.lean` in the
   tree, compiled with `lake env lean`, deleted before the commit; the receipt
-  goes in `Lib/docs/<lane>-INTERFACE_RECEIPT.md`.
+  goes in `Lib/docs/<lane>-INTERFACE_RECEIPT.md`. The durable consumer probe is
+  a real downstream file: once the lane lands, the re-routed `Hopf/` consumer
+  importing the new `Lib` module through the module boundary is recorded in the
+  receipt as the import-visible output check.
 - `python3 scripts/lib_stock_census.py --check` before every commit; `--update`
   after every extraction commit; commit the lowered baseline.
 - Axiom probe: append the lane's top theorems to `Lib/AxiomAudit.lean` and run
@@ -218,6 +287,10 @@ imitate.
 ## Commit conventions
 - Branch `lib/<lane>-<slug>`; message prefix `lib(<lane>):`; one commit per
   `Lib` file or per green unit; the rename commit separate.
+- Kinds after the prefix: `baseline` (bytes verbatim, source SHA-256s in the
+  message, only import/namespace lines changed and named), `move`, `rename`,
+  `doc`, `style`, `refactor`; the body states whether any proof term or
+  statement changed and which gate was run.
 - No trailers; attribution is handled by the repository owner's instructions.
 - NEVER git push.
 
@@ -225,8 +298,11 @@ imitate.
 `Lib/reports/<lane>.md`: the generalized statement and where its textbook proof
 lives, what moved (source ranges → target files, declaration counts, lines
 deleted), consumers re-routed, census number before / after, the
-`#print axioms` output verbatim, build wall times, the interface receipt, open
-items. An honest obstruction (the generalization needs mathematics the textbook
+`#print axioms` output verbatim, build wall times, the interface receipt, the
+Mathlib twin file per target, the count of public declarations without a
+docstring (target 0), the lint output, open items (including the questions a
+Mathlib reviewer would ask: imports reaching forbidden directories, universe
+choices). An honest obstruction (the generalization needs mathematics the textbook
 proof does not supply; a statement under `Hopf/` would have to change) is a
 valid deliverable: stop at the last isomorphic boundary, leave the pinned
 version in `Hopf/`, and record the exact seam.

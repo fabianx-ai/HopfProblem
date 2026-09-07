@@ -8,36 +8,107 @@ leanprover/lean4:v4.33.0; Mathlib pinned in lake-manifest.json).
 commons: Mathlib-shaped paths and names, a docstring on every public
 declaration, no project vocabulary inside `Lib/`. Read `lean-protocol.md`
 (repository root) and `Lib/README.md` FIRST and follow them: Axis 1 (the
-textbook file) before any Lean is touched, then decomposition, then Lean.
+module docstring: statement, reference, outline, results) before any Lean is
+touched, then the section headers, then the move.
 `Lib/EXTRACTION_PLAN.md` is the plan; its §2 table gives every source line
 range on 721fc82 and every target file; its §3 gives the validation recipe;
 its §7 the hazards. This task file only sequences your lanes.
 
-**Reference example.** Before starting any lane, read
-`Lib/AlgebraicTopology/Hurewicz/` (five files; the finished degree-one
+**Reference example: `Lib/AlgebraicTopology/Hurewicz/` — follow this.**
+Before starting any lane, read the five files (the finished degree-one
 Hurewicz extraction of github.com/fabianx-ai/mathlib4 PR #4, copied verbatim
-and building against the pinned Mathlib). Your files must look like these:
-the textbook in the module docstring, one file per textbook step, Mathlib
-names and namespaces, a docstring on every public declaration, no project
-vocabulary. `Lib/README.md`, section "Reference example", lists what to
-imitate.
+apart from import paths; they build against the pinned Mathlib in 8 s with
+axioms `propext`, `Classical.choice`, `Quot.sound`), `Degree1.lean` lines
+12–70 first. Their Lean came first and the textbook was written into them
+afterwards without changing a proof term; your pure moves are work of the same
+kind. `Lib/README.md`, section "Reference example", explains each point; this
+is the checklist.
+
+COPY
+1. Mathlib header (no SPDX line), `module`, minimal `public import`s, one
+   module docstring, `open` lines, `@[expose] public noncomputable section`,
+   one `namespace` block, `variable`s hoisted once per block; no unused
+   `set_option`/`universe` (`Degree1.lean` 1–77).
+2. Module docstring in this order: `# Title`; the theorem with the exact type
+   of the headline declaration; `## Outline of the proof`, numbered, every
+   step naming its declarations; `## Main definitions and results`;
+   `## References` with the bib key; `## Tags` (`Degree1.lean` 12–70).
+   Interface files: what is provided, results list, who instantiates it
+   (`CycleClasses.lean` 11–33).
+3. `/-! ### … -/` section headers in proof order, with prose where the
+   textbook glosses a step (`Degree1.lean` 417–422, 507–512;
+   `SimplexPaths.lean` 181–185).
+4. A role-stating docstring on every public `def`, `abbrev`, `theorem`,
+   `lemma` (`SimplexPaths.lean` 446–449; `Degree1.lean` 838–841, 945–946,
+   218–222).
+5. Names: textbook names for headline objects (`hurewiczHom`,
+   `hurewiczEquiv`); `_apply`, `_val`, `_def`; `_eq_iff`, `_eq_zero_iff`;
+   `_surjective`, `_injective`; `Foo.map`, `Foo.map_id`, `Foo.map_comp`,
+   `Foo.map_<generator>`; `<thing>_induction_on` with `@[elab_as_elim]`;
+   `<equiv>_symm_<generator>`; `**The … theorem**` opening the headline
+   docstring (`Degree1.lean` 964–968, 1005–1012).
+6. One face/edge/boundary computation per lemma, short; `private` only for
+   cast normalizations and proof-internal bridges, placed right before their
+   single consumer.
+7. Morphism-level squares with `@[reassoc (attr := simp), elementwise
+   (attr := simp)]`, element forms documented but not `@[simp]`
+   (`CycleClasses.lean` 157–168, 258–266); restate a simp lemma's LHS in
+   normal form before tagging it (`Degree1.lean` 970–977).
+8. Name the Mathlib twin file before the rename commit and match it
+   (`CycleClasses` follows `Algebra/Homology/ShortComplex/ModuleCat.lean` and
+   `RepresentationTheory/Homological/GroupHomology/LowDegree.lean`; add one
+   `rfl` lemma tying the new object to the library's own functor, as
+   `SingularH1.map_eq_singularHomologyFunctor_map` does).
+9. Commits: first a provenance baseline (bytes verbatim, SHA-256 of every
+   source range in the message, only import/namespace lines changed and each
+   named); then one concern per commit (`move`, `rename`, `doc`, `style`, one
+   `refactor`), the body saying whether any proof term or statement changed
+   ("No proof term changed.") and which gate was run.
+10. Generalize only when the twin dictates it and the `Hopf/` consumer
+    recovers the original by instantiation (`CycleClasses`: `ℤ` → any ring,
+    any universe), in its own commit with the reason.
+
+DO NOT COPY
+- the `Authors: PLACEHOLDER` line; write the real author line;
+- `(X : Type)` in some blocks and `Type*` in others (`Degree1.lean` 84 vs
+  516); pick `Type*` unless a universe constraint forces otherwise, and say
+  which;
+- linter overrides in the tree; record an import reaching a forbidden
+  directory as an open item;
+- commit messages citing audits or drafts that are not in the tree;
+- theorems without docstrings (`PeriodicLoop.lean` 42–127);
+- re-binding a hoisted variable (`Degree1.lean` 982, 1008); helpers after
+  their section (`SimplexPaths.lean` 412–421); files without `## References`
+  (four of the five).
 
 ## Your lanes, in execution order
 
-Each lane: create `lib/<lane>-<slug>` off `lib/textbook-extraction`; write the
-Axis-1 file `Lib/docs/<lane>.md` (correspondence table block → textbook theorem
-with citation → target `Lib` file → declaration names; for a pure move that IS
-the textbook file, because the proofs already exist and are not redesigned);
-then cut the declarations by declaration boundary (never by raw line) from the
-census ranges, paste into the target file with the file-level pragmas of the
-source (`set_option maxSynthPendingDepth 3`, the `open`/`open scoped` lines,
-`noncomputable section`, `universe u v`, the local notations, every
-`attribute [local instance …] … in` wrapper), delete them from `Hopf/`, add
-`import Lib.…` to each consumer, and — if a consumer references the old dotted
-name more than about fifty times — leave an `export`/`alias` shim in `Hopf/`
-(transitional namespace rule, `Lib/README.md`). Statements never change in
-your lanes; if a statement must change to compile, stop and record it as an
-open item for the Kimi task instead.
+Each lane: create `lib/<lane>-<slug>` off `lib/textbook-extraction`. Write the
+module docstring of each target file first — statement with the exact type of
+the headline declaration, reference with theorem number, outline whose steps
+name the declarations, `## Main definitions and results` — drafting it in
+`Lib/reports/<lane>.md` before any Lean is touched; the correspondence table
+(source range → target file → declarations) stays in that report. Then the
+provenance-baseline commit: cut the declarations by declaration boundary
+(never by raw line) from the census ranges, paste them verbatim into the target
+file with the file-level pragmas of the source (`set_option
+maxSynthPendingDepth 3`, the `open`/`open scoped` lines, `noncomputable
+section`, `universe u v`, the local notations, every `attribute [local
+instance …] … in` wrapper), record the SHA-256 of every source range in the
+commit message, change only import paths and `namespace` lines and name each
+such edit; delete them from `Hopf/`, add `import Lib.…` to each consumer, and
+— if a consumer references the old dotted name more than about fifty times —
+leave an `export`/`alias` shim in `Hopf/` (transitional namespace rule,
+`Lib/README.md`). Then the `doc` commit installing the module docstring and the
+`/-! ### … -/` section headers ("No proof term changed."). Then the rename
+commit, naming the Mathlib twin file each target follows; a carried pragma is
+dropped only in a later commit after a rebuild shows it unnecessary. Statements
+never change in your lanes as seen from `Hopf/`; a representation-only
+generalization of the `Lib` statement (coefficient ring, universe, binder
+hoisting) dictated by the twin is allowed in its own commit with the reason,
+provided the `Hopf/` consumer recovers the original by instantiation; if any
+other statement must change to compile, stop and record it as an open item for
+the Kimi task instead.
 
 ### Lane A — singular homology core (Hatcher §2.1–2.2, 2.B) — first, nothing waits on you
 - Source: `Hopf/SingularHomology.lean` 85–3835, 3835–4359, 30894–31281;
@@ -286,13 +357,20 @@ open item for the Kimi task instead.
 ## Commit conventions
 - Branch `lib/<lane>-<slug>`; message prefix `lib(<lane>):`; one commit per
   `Lib` file or per green unit; the rename commit separate (`lib(<lane>): rename …`).
+- Kinds after the prefix: `baseline` (bytes verbatim, source SHA-256s in the
+  message, only import/namespace lines changed and named), `move`, `rename`,
+  `doc`, `style`, `refactor`; the body states whether any proof term or
+  statement changed and which gate was run.
 - No trailers; attribution is handled by the repository owner's instructions.
 - NEVER git push.
 
 ## Report (per lane, committed)
 `Lib/reports/<lane>.md`: what moved (source ranges → target files, declaration
 counts), consumers re-routed (with shims listed), census number before / after,
-the `#print axioms` output verbatim, build wall times, open items (statements
-that would have to change, declarations left behind, upstream follow-ups). An
-honest obstruction (a block that does not move without a statement change) is a
-valid deliverable: leave it in `Hopf/`, record the exact declaration and reason.
+the `#print axioms` output verbatim, build wall times, the Mathlib twin file per
+target, the count of public declarations without a docstring (target 0), the
+lint output, open items (statements that would have to change, declarations
+left behind, upstream follow-ups, the questions a Mathlib reviewer would ask:
+imports reaching forbidden directories, universe choices). An honest
+obstruction (a block that does not move without a statement change) is a valid
+deliverable: leave it in `Hopf/`, record the exact declaration and reason.
