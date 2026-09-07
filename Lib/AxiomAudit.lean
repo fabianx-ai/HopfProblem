@@ -7162,3 +7162,8 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.brickRefinement
 #check TopologicalSpace.CubeBoundaryThree.brickOpens_isOpenCover
 #print axioms TopologicalSpace.CubeBoundaryThree.brickOpens_isOpenCover
+
+/-! ## Additivity of computed right-derived functors (PD-L04) -/
+
+#check CategoryTheory.Functor.rightDerived_additive
+#print axioms CategoryTheory.Functor.rightDerived_additive
