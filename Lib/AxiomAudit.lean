@@ -1,5 +1,6 @@
 import Lib
 import Lib.Topology.Dimension.CubeBoundaryThree
+import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 
 /-!
 # Per-export axiom audit for the reusable library
@@ -19,6 +20,13 @@ is an evidence command rather than library content.
 #print axioms Metric.subset_cover_of_diam_lt_of_ball_cover
 #check Metric.exists_lebesgue_number_diam
 #print axioms Metric.exists_lebesgue_number_diam
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeLebesgue` -/
+
+#check TopologicalSpace.CubeBoundaryThree.diam_coe_image
+#print axioms TopologicalSpace.CubeBoundaryThree.diam_coe_image
+#check TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale
 
 /-! ## `Lib.Topology.Dimension.CubeBoundaryThree` -/
 

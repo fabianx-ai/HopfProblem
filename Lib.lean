@@ -405,6 +405,7 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 import Lib.Topology.Dimension.CubeBoundaryThree
 import Lib.Topology.MetricSpace.LebesgueNumber
 import Lib.Analysis.Real.MeshScale
+import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 
 /-!
 # Reusable extracted library
