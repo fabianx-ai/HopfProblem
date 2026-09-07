@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: PLACEHOLDER (Fabian decides attribution)
+Authors: Fabian Franz
 -/
--- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure, commit 6a94f8af). Kept verbatim except for import paths.
+-- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure-v2, commit d9dafd54). Kept verbatim except for import paths.
 module
 
 public import Lib.AlgebraicTopology.Hurewicz.Degree1
@@ -19,6 +19,12 @@ loop `n` times, and its singular first-homology class is `n` times the class of 
 (`loopHomologyClass_periodicScaledLoop`). The proof splits the `(n + 1)`-fold loop at time
 `n / (n + 1)` into the `n`-fold loop followed by the basic loop, up to path homotopy
 (`periodicScaledLoop_succ_homotopic`), and applies additivity of the loop class.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorem 2A.1: the Hurewicz map is a
+  homomorphism, so the `n`-th power of a loop has `n` times its homology class. This file
+  makes that explicit for the loops traced by one-periodic maps.
 -/
 
 @[expose] public noncomputable section
@@ -40,20 +46,27 @@ def periodicScaledLoop (f : C(ℝ, X)) (hf : Function.Periodic f 1) (n : ℕ) : 
     change f ((n : ℝ) * 1) = f 0
     simpa using hf.nat_mul_eq n
 
+/-- The `n`-fold loop at time `t` is the periodic map at time `n * t`. -/
 theorem periodicScaledLoop_apply
     (f : C(ℝ, X)) (hf : Function.Periodic f 1) (n : ℕ) (t : unitInterval) :
     periodicScaledLoop f hf n t = f ((n : ℝ) * (t : ℝ)) := rfl
 
+/-- Traversing the basic loop zero times is the constant loop at the basepoint. -/
 theorem periodicScaledLoop_zero (f : C(ℝ, X)) (hf : Function.Periodic f 1) :
     periodicScaledLoop f hf 0 = Path.refl (f 0) := by
   apply Path.ext
   funext t
   simp [periodicScaledLoop]
 
+/-- Traversing the basic loop once is the periodic map itself, over one period. -/
 theorem periodicScaledLoop_one (f : C(ℝ, X)) (hf : Function.Periodic f 1) (t : unitInterval) :
     periodicScaledLoop f hf 1 t = f (t : ℝ) := by
   simp [periodicScaledLoop]
 
+/-- The `(n + 1)`-fold loop is path-homotopic to the `n`-fold loop followed by the basic loop:
+split it at time `n / (n + 1)`, where the periodic map returns to the basepoint, and
+reparametrize the two pieces. This is the inductive step of
+`loopHomologyClass_periodicScaledLoop`. -/
 theorem periodicScaledLoop_succ_homotopic (f : C(ℝ, X)) (hf : Function.Periodic f 1) (n : ℕ) :
     (periodicScaledLoop f hf (n + 1)).Homotopic
       ((periodicScaledLoop f hf n).trans (periodicScaledLoop f hf 1)) := by
@@ -123,6 +136,10 @@ theorem periodicScaledLoop_succ_homotopic (f : C(ℝ, X)) (hf : Function.Periodi
   rw [hleft, hright] at hfinal
   exact hfinal.symm
 
+/-- The singular first-homology class of the `n`-fold loop of a one-periodic map is `n` times
+the class of the basic loop: the Hurewicz map sends the `n`-th power of a loop class to
+`n` times its image, by induction on `n` with `periodicScaledLoop_succ_homotopic` and
+`loopHomologyClass_trans`. -/
 theorem loopHomologyClass_periodicScaledLoop (f : C(ℝ, X)) (hf : Function.Periodic f 1) (n : ℕ) :
     loopHomologyClass (periodicScaledLoop f hf n) =
       (n : ℤ) • loopHomologyClass (periodicScaledLoop f hf 1) := by

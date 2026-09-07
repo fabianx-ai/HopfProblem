@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: PLACEHOLDER (Fabian decides attribution)
+Authors: Fabian Franz
 -/
--- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure, commit 6a94f8af). Kept verbatim except for import paths.
+-- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure-v2, commit d9dafd54). Kept verbatim except for import paths.
 module
 
 public import Lib.AlgebraicTopology.Hurewicz.Degree1
@@ -23,6 +23,12 @@ singular first homology. This file records that dictionary and its basic calculu
 * `rebaseCharacter` and `h1CharacterOfPi1_rebaseCharacter` : moving the basepoint along a path
   does not change the induced `H₁` character;
 * `h1CharacterOfPi1_comp_map` : compatibility with continuous maps.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorem 2A.1, combined with the universal
+  property of abelianization (`Abelianization.lift`): a homomorphism from `π₁(X, b)` to an
+  abelian group factors uniquely through `π₁(X, b)ᵃᵇ ≅ H₁(X)`.
 -/
 
 @[expose] public noncomputable section
@@ -44,6 +50,8 @@ def h1CharacterOfPi1 [PathConnectedSpace X] (b : X)
     (φ : FundamentalGroup X b →* Multiplicative A) : SingularH1 X →ₗ[ℤ] A :=
   (Abelianization.lift φ).toAdditiveLeft.toIntLinearMap.comp (hurewiczEquiv b).symm.toLinearMap
 
+/-- The defining property of the induced `H₁` character: on the homology class of a loop it
+returns the value of the original `π₁` character on that loop's class. -/
 @[simp]
 theorem h1CharacterOfPi1_loop [PathConnectedSpace X] (b : X)
     (φ : FundamentalGroup X b →* Multiplicative A) (p : Path b b) :

@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: PLACEHOLDER (Fabian decides attribution)
+Authors: Fabian Franz
 -/
--- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure, commit 6a94f8af). Kept verbatim except for import paths.
+-- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure-v2, commit d9dafd54). Kept verbatim except for import paths.
 module
 
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
@@ -18,6 +18,14 @@ Topological groundwork for the degree-one Hurewicz theorem: the standard
 witnessing path concatenation, the unit square of a path homotopy cut into two
 triangles, and the fact that the edges of any continuous triangle compose up to
 path homotopy (the standard 2-simplex is simply connected).
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], proof of Theorem 2A.1: the constant
+  2-simplex whose boundary is a constant edge (fact (i)), the square of a path homotopy cut
+  into two singular 2-simplices along its diagonal (fact (ii)), and the 2-simplex whose
+  three faces are `q`, `p·q`, `p` (fact (iii)). The nullhomotopy of the boundary loop of a
+  singular 2-simplex used at the end of Hatcher's proof is `triangleEdges_homotopic`.
 -/
 
 open Set Function Topology
@@ -416,6 +424,8 @@ theorem simplexFace_vertex (n : ℕ) (i : Fin (n + 2)) (k : Fin (n + 1)) :
     simplexFace n i (stdSimplex.vertex (S := ℝ) k) = stdSimplex.vertex (S := ℝ) (i.succAbove k) :=
   by rw [simplexFace_apply, stdSimplex.map_vertex]
 
+/-- The standard `n`-simplex is contractible, being a nonempty convex set. In particular it
+is simply connected, which is what `triangleEdges_homotopic` uses. -/
 instance (n : ℕ) : ContractibleSpace (Simplex n) :=
   (convex_stdSimplex ℝ (Fin (n + 1))).contractibleSpace
     ⟨(stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))).val,

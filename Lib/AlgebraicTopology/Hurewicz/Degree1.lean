@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: PLACEHOLDER (Fabian decides attribution)
+Authors: Fabian Franz
 -/
--- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure, commit 6a94f8af). Kept verbatim except for import paths.
+-- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure-v2, commit d9dafd54). Kept verbatim except for import paths.
 module
 
 public import Lib.AlgebraicTopology.Hurewicz.CycleClasses
@@ -23,9 +23,16 @@ The equivalence sends the class of a loop `p` to the homology class of the corre
 singular one-simplex (`Hurewicz.loopHomologyClass`, see `hurewiczEquiv_loopClass`), and it is
 natural in `X` (`SingularH1.map_loopHomologyClass`).
 
+Spaces are taken in `Type` (universe `0`) wherever singular chains appear: the chain complex
+is built with coefficients in `ModuleCat.{0} ℤ`, and `singularChainComplexFunctor` needs
+coproducts indexed by the universe of the space. The fundamental-group part of the file
+(`AbelianPi1`, `loopClass`, the based loops) is stated for `Type*`.
+
 ## Outline of the proof
 
-This is the classical argument of [hatcher02], Theorem 2A.1, in five steps.
+This follows [hatcher02], Theorem 2A.1, in five steps. Steps 1–3 are Hatcher's construction
+of the homomorphism from facts (i)–(iv) of his proof; steps 4–5 replace his Δ-complex
+argument for the kernel by an explicit inverse built from a system of paths.
 
 1. *Singular chains.*  A path `p` gives a singular one-simplex `pathSimplex p`, hence a
    one-chain `pathChain p`, which is a cycle when `p` is a loop (`loopCycle`). We use the
@@ -35,7 +42,8 @@ This is the classical argument of [hatcher02], Theorem 2A.1, in five steps.
    along its diagonal, and reparametrizing a concatenation over a triangle, produce explicit
    two-chains whose boundaries show: homotopic paths have equal classes modulo boundaries, and
    the class of `p.trans q` is the sum of the classes (`pathClass_homotopic`,
-   `pathClass_trans`).
+   `pathClass_trans`); the constant path is a boundary and reversal negates the class
+   (`pathClass_refl`, `pathClass_symm`).
 3. *The Hurewicz homomorphism.*  Step 2 makes `p ↦ loopHomologyClass p` a homomorphism from
    the fundamental group to the abelian group `H₁`, so it factors through the abelianization:
    `hurewiczHom : Additive (Abelianization (FundamentalGroup X b)) →ₗ[ℤ] SingularH1 X`.
@@ -576,6 +584,9 @@ def basedLoopQuotient {X : Type*} [TopologicalSpace X] {b x y : X}
     ((Path.Homotopic.Quotient.mk (r x)).trans
       (P.trans (Path.Homotopic.Quotient.mk (r y)).symm))
 
+/-- On the class of a path, the closed-up element of the fundamental group is represented by
+the geometric closed-up loop `basedLoop r p`: the quotient-level and the path-level
+constructions agree. -/
 @[simp]
 theorem basedLoopQuotient_mk {X : Type*} [TopologicalSpace X] {b x y : X}
     (r : ∀ x : X, Path b x) (p : Path x y) :
@@ -980,8 +991,7 @@ theorem hurewiczEquiv_loopClass (b : X) [PathConnectedSpace X] (p : Path b b) :
 /-- The inverse Hurewicz isomorphism sends the homology class of a loop to its class in the
 abelianized fundamental group. -/
 @[simp]
-theorem hurewiczEquiv_symm_loopHomologyClass {X : Type} [TopologicalSpace X] (b : X)
-    [PathConnectedSpace X] (p : Path b b) :
+theorem hurewiczEquiv_symm_loopHomologyClass (b : X) [PathConnectedSpace X] (p : Path b b) :
     (hurewiczEquiv b).symm (loopHomologyClass p) =
       Additive.ofMul (Abelianization.of (FundamentalGroup.fromPath
         (Path.Homotopic.Quotient.mk p))) := by
@@ -1006,14 +1016,16 @@ theorem loopHomologyClass_surjective (b : X)
 /-- To prove a statement about all singular first-homology classes of a path-connected space,
 it suffices to prove it for classes of loops at a chosen basepoint. -/
 @[elab_as_elim]
-theorem singularH1_induction_on {X : Type} [TopologicalSpace X] [PathConnectedSpace X] (b : X)
-    {motive : SingularH1 X → Prop} (x : SingularH1 X)
+theorem singularH1_induction_on [PathConnectedSpace X] (b : X) {motive : SingularH1 X → Prop}
+    (x : SingularH1 X)
     (h : ∀ p : Path b b, motive (loopHomologyClass p)) : motive x := by
   obtain ⟨p, rfl⟩ := loopHomologyClass_surjective b x
   exact h p
 
 /-! ### Naturality and conjugation invariance -/
 
+/-- The one-simplex of the image of a path under a continuous map is the map composed with
+the path's one-simplex. This is the geometric input to naturality of the loop class. -/
 theorem pathSimplex_map {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {x y : X} (f : C(X, Y)) (p : Path x y) :
     pathSimplex (p.map f.continuous) = f.comp (pathSimplex p) :=

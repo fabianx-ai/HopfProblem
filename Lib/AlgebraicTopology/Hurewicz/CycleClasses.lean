@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: PLACEHOLDER (Fabian decides attribution)
+Authors: Fabian Franz
 -/
--- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure, commit 6a94f8af). Kept verbatim except for import paths.
+-- Reference copy of Mathlib PR fabianx-ai/mathlib4#4 (branch first-hurewicz-structure-v2, commit d9dafd54). Kept verbatim except for import paths.
 module
 
 public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
@@ -31,6 +31,13 @@ directly on `(K.sc 1).moduleCatLeftHomologyData`:
   (`cycleClass_comp_homologyMap`).
 
 The degree-one Hurewicz theorem instantiates this interface at `R = ℤ`.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Section 2.1, the definition of homology as
+  cycles modulo boundaries. This file only makes that definition explicit for the degree-one
+  term of a chain complex of modules, on top of Mathlib's `moduleCatLeftHomologyData`; no
+  theorem is proved here.
 -/
 
 @[expose] public noncomputable section
@@ -66,6 +73,8 @@ lemma cycleClass_surjective : Function.Surjective (cycleClass K) :=
   ((ModuleCat.epi_iff_surjective (K.sc 1).moduleCatHomologyIso.inv).mp inferInstance).comp
     (Submodule.mkQ_surjective _)
 
+/-- The class map from cycles to homology is an epimorphism: the categorical form of
+`cycleClass_surjective`. -/
 instance : Epi (cycleClass K) := (ModuleCat.epi_iff_surjective _).mpr (cycleClass_surjective K)
 
 /-- To prove a statement about all degree-one homology classes, it suffices to prove it for
@@ -155,6 +164,9 @@ private lemma pi_homologyIso_inv_homologyi (S : ShortComplex (ModuleCat.{v} R)) 
       S.moduleCatLeftHomologyData.i ≫ S.pOpcycles := by
   rw [← S.moduleCatCyclesIso_inv_π_assoc, S.homology_π_ι, S.moduleCatCyclesIso_inv_iCycles_assoc]
 
+/-- Taking the homology class of a cycle and then its image in one-chains modulo boundaries
+is the same as forgetting that the cycle is a cycle and taking its class modulo boundaries:
+the square formed by `cycleClass`, `homologyToChainClass`, and `chainClass` commutes. -/
 @[reassoc (attr := simp), elementwise (attr := simp)]
 lemma cycleClass_comp_homologyToChainClass :
     cycleClass K ≫ homologyToChainClass K =
