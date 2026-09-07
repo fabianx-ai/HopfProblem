@@ -7,6 +7,65 @@ module
 
 public import Mathlib
 
+/-!
+# The Mayer–Vietoris short exact sequence of chain complexes
+
+For chain complexes of ℤ-modules `K`, `L`, `J`, `T` with chain maps `a : J ⟶ K`, `b : J ⟶ L`,
+`u : K ⟶ T`, `v : L ⟶ T` commuting in the square `a ≫ u = b ≫ v`, the biproduct construction
+produces a short complex
+
+`SmallChainBiprod.shortComplexOfComplexes a b u v w :
+  CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)`
+
+with left leg `J →^{⟨a, -b⟩} K ⊞ L` and right leg `K ⊞ L →^{⟨u, v⟩} T`. Under the degreewise
+Mayer–Vietoris conditions — `a` degreewise injective, `u` and `v` jointly degreewise
+surjective, and the overlap condition `u x = v y → ∃ z, a z = x ∧ b z = y` — it is short
+exact:
+
+* `SmallChainBiprod.shortExactOfComplexes` :
+  `(shortComplexOfComplexes a b u v w).ShortExact`.
+
+This is the algebraic engine of the Mayer–Vietoris sequence
+(`Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean`): for two open sets `U`, `V`
+covering `X`, take `J = C(U ∩ V)`, `K = C(U)`, `L = C(V)`, `T = C^{U,V}(X)`.
+
+## Outline of the proof
+
+This is the biproduct half of [hatcher02], proof of Theorem 2.20, in four steps.
+
+1. *Element calculus of biproducts in `ModuleCat ℤ`.*  `fst_lift_apply`, `snd_lift_apply`,
+   `desc_inl_apply`, `desc_inr_apply`, `total_apply`, `element_ext`, `desc_apply`: elements of
+   `A ⊞ B` are pairs, and `biprod.lift`/`biprod.desc` act componentwise.
+2. *The module-level short complex.*  `shortComplex a b u v w` assembles
+   `I →^{⟨a, -b⟩} A ⊞ B →^{⟨u, v⟩} S`; `left_injective` and `right_surjective` compute the
+   image of the left leg and the kernel of the right leg, giving exactness (`exact`) and
+   short exactness (`shortExact`).
+3. *Lifting to chain complexes.*  `shortComplexOfComplexes` repeats the construction for
+   chain maps; per degree it is the module-level complex of step 2 through the iso
+   `shortComplexOfComplexesEvalIso`, built from `lift_f_biprodXIso_hom`,
+   `biprodXIso_inv_desc_f`, `biprodXIso_hom_desc_f` and `square_f`.
+4. *Degreewise short exact implies short exact.*  `shortExactOfComplexes` applies
+   `HomologicalComplex.shortExact_of_degreewise_shortExact` and
+   `CategoryTheory.ShortComplex.shortExact_of_iso` with the iso of step 3.
+
+## Main definitions and results
+
+* `SmallChainBiprod.shortComplex`, `SmallChainBiprod.exact`, `SmallChainBiprod.shortExact` :
+  the module-level sequence.
+* `SmallChainBiprod.shortComplexOfComplexes`,
+  `SmallChainBiprod.shortComplexOfComplexesEvalIso` : the chain-complex-level sequence and
+  its per-degree presentation.
+* `SmallChainBiprod.shortExactOfComplexes` : short exactness under the Mayer–Vietoris
+  conditions.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], proof of Theorem 2.20
+
+## Tags
+
+chain complexes, short exact sequence, biproducts, Mayer–Vietoris
+-/
 
 set_option maxSynthPendingDepth 3
 
@@ -27,6 +86,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Element calculus of biproducts in `ModuleCat ℤ` -/
+
+/-- `biprod.fst` after `biprod.lift` is the first component. -/
 theorem SmallChainBiprod.fst_lift_apply {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B)
     (z : I) :
     (CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom
@@ -99,6 +161,8 @@ theorem SmallChainBiprod.desc_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v
       congrArg (CategoryTheory.Limits.biprod.desc u v).hom (total_apply z).symm
     _ = _ := by rw [map_add, desc_inl_apply, desc_inr_apply]
 
+/-! ### The module-level short complex -/
+
 def SmallChainBiprod.shortComplex {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B) (u : A ⟶ S)
     (v : B ⟶ S) (w : a ≫ u = b ≫ v) : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ) :=
   CategoryTheory.ShortComplex.mk (CategoryTheory.Limits.biprod.lift a (-b))
@@ -161,6 +225,8 @@ theorem SmallChainBiprod.shortExact {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) 
   exact := exact a b u v w hoverlap
   mono_f := (ModuleCat.mono_iff_injective _).mpr (left_injective a b ha)
   epi_g := (ModuleCat.epi_iff_surjective _).mpr (right_surjective u v hjoint)
+
+/-! ### The short complex of chain complexes -/
 
 theorem SmallChainBiprod.lift_f_biprodXIso_hom {K L J : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (a : J ⟶ K) (b : J ⟶ L) (n : ℕ) :
