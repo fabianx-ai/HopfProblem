@@ -8,6 +8,11 @@ Compile this file directly. It deliberately is not imported by `Lib.lean`, becau
 is an evidence command rather than library content.
 -/
 
+/-! ## `Lib.Analysis.Real.MeshScale` -/
+
+#check Real.exists_mesh_scale
+#print axioms Real.exists_mesh_scale
+
 /-! ## `Lib.Topology.MetricSpace.LebesgueNumber` -/
 
 #check Metric.subset_cover_of_diam_lt_of_ball_cover
