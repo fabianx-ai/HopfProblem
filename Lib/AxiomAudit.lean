@@ -7171,3 +7171,8 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Functor.rightDerived_additive
 #print axioms CategoryTheory.Functor.rightDerived_additive
+
+/-! ## Specified-endpoint injective biproduct embedding (PD-L05) -/
+
+#check CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
+#print axioms CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding

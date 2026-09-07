@@ -410,6 +410,7 @@ import Lib.Topology.Dimension.CubeBoundaryThreeCells
 import Lib.Topology.Dimension.CubeBoundaryThreeBricks
 import Lib.Topology.Dimension.CubeBoundaryThreeDimension
 import Lib.CategoryTheory.Abelian.RightDerived
+import Lib.CategoryTheory.Abelian.Injective.ShortExact
 
 /-!
 # Reusable extracted library
