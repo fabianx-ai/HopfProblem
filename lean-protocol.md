@@ -154,6 +154,46 @@ particular, do not collapse file placement (axis 4), typed Lean alignment (axis 
 construction (axis 6) into one exploratory implementation task. The implementation agent should
 receive an exact typed lemma ledger and should be translating, not designing, the proof.
 
+### Extraction mode: the inverse transformation for proofs that already exist
+
+When green Lean already exists and the task is to move it into the library, the pipeline
+runs backwards. The axes change meaning; none is skipped.
+
+```text
+green Lean in a project namespace
+  → provenance baseline (verbatim placement, source hashes, only import paths changed)
+  → recovered textbook (module docstring and section headers, checked against the reference)
+  → one independent review of the recovered textbook against the reference
+  → placement, naming, and twin-file alignment, one concern per commit
+  → representation-only generalization dictated by the twin
+  → build, lint, axiom receipt
+```
+
+- Axis 1 becomes *recover*: write the textbook proof the code already implements, cite the
+  reference by book and theorem number, and mark every step the reference glosses that the
+  code had to supply.
+- Axes 2 and 3 become the `/-! ### … -/` section headers and their order. A commit that only
+  adds them says "no proof term changed".
+- Axis 4 is unchanged.
+- Axis 5 is discharged inside the file: the module docstring states the theorem with its exact
+  type, gives the proof as a numbered outline whose every step names the declarations realizing
+  it, and lists the main definitions and results; the library root registers the file; at least
+  one downstream file imports the public names through the module boundary. A typed ledger and
+  interface receipt are required only where a statement is being designed.
+- Axis 6 is restricted to refactors that change proof terms without changing mathematics. Each
+  such commit names the reason and the twin file it follows. The library statement may be more
+  general than the project statement when the project consumer recovers the original by
+  instantiation; the consumer's statement never changes.
+- Axis 7 is unchanged.
+
+For an upstream-bound file the docstring is the canonical textbook. The notes directory holds
+what the library will not accept: the independent review, the provenance hashes, the receipt,
+and a pointer from the lane to the file. Reference example:
+`Lib/AlgebraicTopology/Hurewicz/Degree1.lean`, module docstring.
+
+A proof whose statement must change to move is not in extraction mode. Return to Stage 1 for
+the changed statement only.
+
 ## Stage 1: expand the mathematics
 
 An author agent expands the selected sentence into a complete, self-contained textbook proof.
@@ -218,6 +258,11 @@ homology, or category theory.
 - State it at its natural reusable level, without project-specific types or constants.
 - Census Mathlib first. Reusing or lightly wrapping an existing theorem is a successful library
   contribution.
+- Name the twin file: the existing Mathlib file closest in subject and shape. Match its header,
+  binder hoisting, `lemma`/`theorem` choice, attribute idioms, and the shape of its API
+  (constructors, value lemmas, induction principles, `map_id`/`map_comp`, a `rfl` lemma to the
+  library's own functor when the new object is an instance of it). Record the twin in the
+  docstring or the commit message.
 - Add focused checks to `Lib/AxiomAudit.lean` when that is the repository convention.
 
 ### CHARGED application
@@ -415,7 +460,14 @@ The acceptance test is simple:
 - Run `git diff --check` before committing.
 - Commit each independently finished FREE library section promptly; do not wait for the entire
   project theorem.
-- Land green commits in the main tree promptly. Never push or send externally.
+- In extraction mode the first commit is a provenance baseline: the moved bytes placed verbatim,
+  the source SHA-256 of every file in the message, and the only edits (import paths) named one
+  by one. Every later commit carries one concern and states whether any proof term or statement
+  changed. A commit that changes proof terms names the reason and the library file whose shape
+  it follows.
+- Land green commits in the main tree promptly. Never push or send externally from a project
+  tree. A FREE library file leaves the project only through a provenance-baselined branch of the
+  target library, pushed by the repository owner as a draft pull request.
 
 ## Collaboration roles
 
