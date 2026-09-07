@@ -7158,3 +7158,5 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_edge
 #check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
 #print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
+#check TopologicalSpace.CubeBoundaryThree.brickRefinement
+#print axioms TopologicalSpace.CubeBoundaryThree.brickRefinement

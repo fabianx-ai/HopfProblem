@@ -1,5 +1,8 @@
 module
 
+public import Mathlib.Analysis.Normed.Affine.AddTorsor
+public import Lib.Topology.Dimension.Covering
+
 public import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 public import Mathlib.Analysis.Normed.Module.Convex
 
@@ -468,4 +471,127 @@ private theorem brick_diam_lt {N : ℕ} {h epsilon lambda : ℝ} (hN : 0 < N)
     rw [brickSet_square]
     exact lt_of_le_of_lt (squareBrick_diam_le hN hh s) hs
 
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+universe r
+noncomputable section
+
+/-- The vertex itself lies in Boundary and its distance to itself is zero, strictly below the positive radius 4 epsilon (Lemma 4.4, R1). -/
+private theorem vertexBrick_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hepsilon : 0 < epsilon) (v : {v : Ambient // v ∈ vertices N h}) :
+    (vertexBrick epsilon v).Nonempty := by
+  let x : Boundary := ⟨v, vertex_mem_boundary v.property⟩
+  refine ⟨x, (mem_vertexBrick v x).2 ?_⟩
+  change dist (v : Ambient) v < 4 * epsilon
+  rw [dist_self]
+  positivity
+
+/-- For the fixed mesh epsilon = h/9 with h positive, three epsilon is h/3, strictly less than h/2 (Lemma 4.4, R2). -/
+private theorem three_epsilon_lt_half_mesh {h epsilon : ℝ}
+    (hh : 0 < h) (hepsilon : epsilon = h / 9) : 3 * epsilon < h / 2 := by
+  rw [hepsilon]
+  linarith
+
+/-- The actual edge midpoint lies on its segment, so its distance to the edge is zero. Each endpoint is at distance h/2, strictly greater than three epsilon; both endpoint exclusions are retained (Lemma 4.4, R3). -/
+private theorem edgeMidpoint_mem_brick {N : ℕ} {h epsilon : ℝ}
+    (hh : 0 ≤ h) (hepsilon : 0 < epsilon) (hhalf : 3 * epsilon < h / 2)
+    (e : {e : Set Ambient // e ∈ edges N h}) (v : Ambient) (j : Fin 3)
+    (he : (e : Set Ambient) = segment ℝ v (v + h • EuclideanSpace.single j 1))
+    (hend : edgeEndpoints N h e = {v, v + h • EuclideanSpace.single j 1})
+    (hb : segment ℝ v (v + h • EuclideanSpace.single j 1) ⊆ boundary) :
+    (⟨midpoint ℝ v (v + h • EuclideanSpace.single j 1),
+      hb (midpoint_mem_segment (𝕜 := ℝ) v (v + h • EuclideanSpace.single j 1))⟩ : Boundary)
+      ∈ edgeBrick epsilon e := by
+  apply (mem_edgeBrick_of_presentation e hend _).2
+  have hm : midpoint ℝ v (v + h • EuclideanSpace.single j 1) ∈ (e : Set Ambient) := by
+    rw [he]
+    exact midpoint_mem_segment (𝕜 := ℝ) _ _
+  have hl : dist (midpoint ℝ v (v + h • EuclideanSpace.single j 1)) v = h / 2 := by
+    rw [dist_midpoint_left, edge_endpoint_dist v j h hh]
+    norm_num
+    ring
+  have hr : dist (midpoint ℝ v (v + h • EuclideanSpace.single j 1))
+      (v + h • EuclideanSpace.single j 1) = h / 2 := by
+    rw [dist_midpoint_right, edge_endpoint_dist v j h hh]
+    norm_num
+    ring
+  exact ⟨by simpa only [Metric.infDist_zero_of_mem hm] using hepsilon,
+    by simpa only [hl] using hhalf, by simpa only [hr] using hhalf⟩
+
+/-- Take the midpoint of the actual edge presentation. Positive mesh gives the endpoint clearance, and the midpoint membership supplies a witness in the edge brick (Lemma 4.4, R4). -/
+private theorem edgeBrick_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (heps : epsilon = h / 9) (e : {e : Set Ambient // e ∈ edges N h}) :
+    (edgeBrick epsilon e).Nonempty := by
+  have hhpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, _, _, hb, he, hend⟩ := edge_presentation hN hh e.property
+  exact ⟨_, edgeMidpoint_mem_brick hhpos.le hepsilon
+    (three_epsilon_lt_half_mesh hhpos heps) e v j he hend hb⟩
+
+/-- The square center has both intrinsic parameters equal to one half, strictly between zero and one, hence lies in the relative interior (Lemma 4.4, R5). -/
+private theorem squareCenter_mem_brick {N : ℕ} {h : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) (v : Ambient) (j k : Fin 3)
+    (hi : squareRelInterior N h s =
+      {x | ∃ a ∈ Set.Ioo (0 : ℝ) 1, ∃ b ∈ Set.Ioo (0 : ℝ) 1,
+        x = v + (a * h) • EuclideanSpace.single j 1 +
+          (b * h) • EuclideanSpace.single k 1})
+    (x : Boundary)
+    (hx : (x : Ambient) = v + ((1 / 2 : ℝ) * h) • EuclideanSpace.single j 1 +
+      ((1 / 2 : ℝ) * h) • EuclideanSpace.single k 1) : x ∈ squareBrick s := by
+  rw [mem_squareBrick, hi]
+  exact ⟨1 / 2, by norm_num, 1 / 2, by norm_num, hx⟩
+
+/-- The closed square presentation places its center in Boundary; the same center lies in the intrinsic open square and witnesses nonemptiness (Lemma 4.4, R6). -/
+private theorem squareBrick_nonempty {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) : (squareBrick s).Nonempty := by
+  obtain ⟨v, j, k, _, _, _, _, hb, _, hi⟩ := square_presentation hN hh s.property
+  let x : Boundary := ⟨v + ((1 / 2 : ℝ) * h) • EuclideanSpace.single j 1 +
+    ((1 / 2 : ℝ) * h) • EuclideanSpace.single k 1,
+    hb ⟨1 / 2, by norm_num, 1 / 2, by norm_num, rfl⟩⟩
+  exact ⟨x, squareCenter_mem_brick s v j k hi x rfl⟩
+
+/-- The vertex, edge and square witnesses establish nonemptiness for each of the three actual-cell tags (Lemma 4.4, R7). -/
+private theorem brickSet_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (heps : epsilon = h / 9) (c : BrickIndex N h) :
+    (brickSet N h epsilon c).Nonempty := by
+  cases c with
+  | vertex v => exact vertexBrick_nonempty hepsilon v
+  | edge e => exact edgeBrick_nonempty hN hh hepsilon heps e
+  | square s => exact squareBrick_nonempty hN hh s
+
+/-- Apply the original cover containment clause to the nonempty raw brick and its existing diameter bound at the same lambda. No mesh or cover is reselected (Lemma 4.4, R8). -/
+private theorem brickSet_subset_some_cover {ι : Type r} {N : ℕ} {h epsilon lambda : ℝ}
+    (U : ι → Opens Boundary) (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda)
+    (hcontain : ∀ A : Set Boundary, A.Nonempty → Metric.diam A < lambda →
+      ∃ i : ι, A ⊆ U i) (c : BrickIndex N h) :
+    ∃ i : ι, brickSet N h epsilon c ⊆ U i := by
+  exact hcontain (brickSet N h epsilon c) (brickSet_nonempty hN hh hepsilon heps c)
+    (brick_diam_lt hN hh hepsilon.le hv he hs c)
+
+/-- Choose a containing original member for each of the finitely many bricks, then retain that index and containment as a refinement of exactly the existing open brick family (Definition 4.5, R9). -/
+public noncomputable def brickRefinement {ι : Type r} {N : ℕ} {h epsilon lambda : ℝ}
+    (U : ι → Opens Boundary) (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda)
+    (hcontain : ∀ A : Set Boundary, A.Nonempty → Metric.diam A < lambda →
+      ∃ i : ι, A ⊆ U i) :
+    OpenCover.Refinement (brickOpens hN hh epsilon) U where
+  index c := Classical.choose
+    (brickSet_subset_some_cover U hN hh hepsilon heps hv he hs hcontain c)
+  le c := by
+    change (brickOpens hN hh epsilon c : Set Boundary) ⊆ _
+    rw [coe_brickOpens]
+    exact Classical.choose_spec
+      (brickSet_subset_some_cover U hN hh hepsilon heps hv he hs hcontain c)
+
+end
 end TopologicalSpace.CubeBoundaryThree
