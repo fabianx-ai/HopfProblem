@@ -7100,3 +7100,5 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.vertex_separation
 #check TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
 #print axioms TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
+#check TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
