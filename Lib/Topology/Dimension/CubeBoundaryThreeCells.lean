@@ -767,6 +767,7 @@ public theorem edge_endpoints_vertices {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h 
   rcases hx with rfl | rfl
   · exact hv
   · exact edge_terminal_is_vertex hN hh ⟨hv, hvj, hface⟩
+
 end TopologicalSpace.CubeBoundaryThree
 
 namespace TopologicalSpace.CubeBoundaryThree
