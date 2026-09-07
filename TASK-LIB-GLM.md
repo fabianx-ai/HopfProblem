@@ -7,7 +7,8 @@ leanprover/lean4:v4.33.0; Mathlib pinned in lake-manifest.json).
 **Nature:** GENERIC library extraction, upstream-shaped. Mathematics for the
 commons: Mathlib-shaped paths and names, a docstring on every public
 declaration, no project vocabulary inside `Lib/`. Read `lean-protocol.md`
-(repository root) and `Lib/README.md` FIRST and follow them: Axis 1 (the
+(repository root, section "Extraction mode" governs your lanes) and
+`Lib/README.md` FIRST and follow them: Axis 1 (the
 module docstring: statement, reference, outline, results) before any Lean is
 touched, then the section headers, then the move.
 `Lib/EXTRACTION_PLAN.md` is the plan; its §2 table gives every source line

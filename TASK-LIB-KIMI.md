@@ -7,7 +7,9 @@ leanprover/lean4:v4.33.0; Mathlib pinned in lake-manifest.json).
 **Nature:** GENERIC library extraction, upstream-shaped. Mathematics for the
 commons: Mathlib-shaped paths and names, a docstring on every public
 declaration, no project vocabulary inside `Lib/`. Read `lean-protocol.md`
-(repository root) and `Lib/README.md` FIRST and follow them. Your lanes are
+(repository root; the forward pipeline, Stages 1–7, governs your lanes, and
+the section "Extraction mode" governs only your pure-move steps) and
+`Lib/README.md` FIRST and follow them. Your lanes are
 *generalize-then-move*: a hand-unrolled or dimension-pinned proof becomes one
 theorem at textbook generality. That is new mathematics in the sense of the
 protocol, so the full seven-axis cycle applies: Axis 1 textbook file with the

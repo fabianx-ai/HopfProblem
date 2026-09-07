@@ -30,9 +30,9 @@ One thing to know about their history: the Lean came first. The proofs existed i
 namespace; the textbook outline in the module docstring, the section headers and the
 per-declaration docstrings were written afterwards to say what the proofs already do, and the
 commits that added them changed no proof term. The extraction lanes are work of the same kind —
-recovering the textbook from green Lean and reshaping the file around it — so "textbook before
-Lean" in `lean-protocol.md` reads here as: the module docstring and the section headers are
-written before the move is committed, and the proofs are not redesigned.
+recovering the textbook from green Lean and reshaping the file around it. They run under the
+section "Extraction mode" of `lean-protocol.md`: the module docstring and the section headers
+are written before the move is committed, and the proofs are not redesigned.
 
 What to imitate:
 
