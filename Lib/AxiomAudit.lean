@@ -7166,6 +7166,8 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.brickOpens_multiplicityLE_three
 #check TopologicalSpace.CubeBoundaryThree.hasCoveringDimensionLE_two
 #print axioms TopologicalSpace.CubeBoundaryThree.hasCoveringDimensionLE_two
+#check TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two
+#print axioms TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two
 
 /-! ## Additivity of computed right-derived functors (PD-L04) -/
 

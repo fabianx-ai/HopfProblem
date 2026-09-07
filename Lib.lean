@@ -411,6 +411,7 @@ import Lib.Topology.Dimension.CubeBoundaryThreeBricks
 import Lib.Topology.Dimension.CubeBoundaryThreeDimension
 import Lib.CategoryTheory.Abelian.RightDerived
 import Lib.CategoryTheory.Abelian.Injective.ShortExact
+import Lib.Topology.Dimension.SphereTwo
 
 /-!
 # Reusable extracted library
