@@ -1,4 +1,5 @@
 import Lib
+import Lib.Topology.Dimension.CubeBoundaryThree
 
 /-!
 # Per-export axiom audit for the reusable library
@@ -6,6 +7,61 @@ import Lib
 Compile this file directly. It deliberately is not imported by `Lib.lean`, because `#print axioms`
 is an evidence command rather than library content.
 -/
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThree` -/
+
+#check TopologicalSpace.CubeBoundaryThree.Ambient
+#print axioms TopologicalSpace.CubeBoundaryThree.Ambient
+#check TopologicalSpace.CubeBoundaryThree.maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_le_norm
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_le_norm
+#check TopologicalSpace.CubeBoundaryThree.norm_le_sqrt_three_mul_maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.norm_le_sqrt_three_mul_maxAbs
+#check TopologicalSpace.CubeBoundaryThree.continuous_maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_maxAbs
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_smul_of_nonneg
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_smul_of_nonneg
+#check TopologicalSpace.CubeBoundaryThree.boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.boundary
+#check TopologicalSpace.CubeBoundaryThree.Boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.Boundary
+#check TopologicalSpace.CubeBoundaryThree.face
+#print axioms TopologicalSpace.CubeBoundaryThree.face
+#check TopologicalSpace.CubeBoundaryThree.mem_face_iff
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_face_iff
+#check TopologicalSpace.CubeBoundaryThree.exists_mem_face
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_mem_face
+#check TopologicalSpace.CubeBoundaryThree.boundary_nonempty
+#print axioms TopologicalSpace.CubeBoundaryThree.boundary_nonempty
+#check TopologicalSpace.CubeBoundaryThree.isCompact_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.isCompact_boundary
+#check TopologicalSpace.CubeBoundaryThree.instNonemptyBoundary
+#print axioms TopologicalSpace.CubeBoundaryThree.instNonemptyBoundary
+#check TopologicalSpace.CubeBoundaryThree.instCompactSpaceBoundary
+#print axioms TopologicalSpace.CubeBoundaryThree.instCompactSpaceBoundary
+#check TopologicalSpace.CubeBoundaryThree.norm_pos_of_mem_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.norm_pos_of_mem_boundary
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_pos_of_mem_sphere
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_pos_of_mem_sphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere
+#check TopologicalSpace.CubeBoundaryThree.fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere_apply
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere_apply
+#check TopologicalSpace.CubeBoundaryThree.fromSphere_apply
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere_apply
+#check TopologicalSpace.CubeBoundaryThree.continuous_toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_toSphere
+#check TopologicalSpace.CubeBoundaryThree.continuous_fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_fromSphere
+#check TopologicalSpace.CubeBoundaryThree.fromSphere_toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere_toSphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere_fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere_fromSphere
+#check TopologicalSpace.CubeBoundaryThree.homeomorphSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.homeomorphSphere
 
 /-! ## `Lib.AlgebraicTopology.SingularCochains` -/
 
