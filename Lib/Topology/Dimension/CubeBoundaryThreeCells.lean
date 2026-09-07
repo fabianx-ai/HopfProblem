@@ -1855,4 +1855,164 @@ public theorem vertex_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
       (by simpa using abs_apply_le_maxAbs (v - w) i)
   · exact maxAbs_le_norm (v - w)
 
+/-- Textbook Lemma 3.7(a), lines 1690–1696 and 1700–1712: an oriented edge direction is a
+positive or negative coordinate unit vector. -/
+private def SignedCoordinateUnit (u : Ambient) : Prop :=
+  ∃ i : Fin 3, u = EuclideanSpace.single i 1 ∨ u = -EuclideanSpace.single i 1
+
+/-- Textbook Lemma 3.7(a), lines 1690–1696 and 1700–1712: an edge can be oriented away from
+either chosen endpoint as `w + t u`, for `0 ≤ t ≤ h` and a signed coordinate direction. -/
+private theorem edge_orientation_from_endpoint {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {e : Set Ambient} (he : e ∈ edges N h) {w : Ambient}
+    (hw : w ∈ edgeEndpoints N h ⟨e, he⟩) :
+    ∃ u : Ambient, SignedCoordinateUnit u ∧
+      e = {p : Ambient | ∃ t ∈ Set.Icc (0 : ℝ) h, p = w + t • u} := by
+  obtain ⟨v, j, _hv, _hvj, _hface, hedge, hend⟩ := edge_presentation hN hh he
+  have hpos := mesh_pos hN hh
+  rw [hend] at hw
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hw
+  rcases hw with rfl | rfl
+  · refine ⟨EuclideanSpace.single j 1, ⟨j, Or.inl rfl⟩, ?_⟩
+    rw [hedge]
+    ext p
+    constructor
+    · intro hp
+      obtain ⟨a, ha, rfl⟩ := edge_parameter_extract hp
+      exact ⟨a * h, ⟨mul_nonneg ha.1 hpos.le,
+        by simpa using mul_le_mul_of_nonneg_right ha.2 hpos.le⟩, rfl⟩
+    · rintro ⟨t, ht, rfl⟩
+      rw [segment_eq_image]
+      refine ⟨t / h, ⟨div_nonneg ht.1 hpos.le, (div_le_one hpos).2 ht.2⟩, ?_⟩
+      apply PiLp.ext
+      intro k
+      simp only [PiLp.add_apply, PiLp.smul_apply]
+      ring_nf
+      simp [ne_of_gt hpos]
+  · refine ⟨-EuclideanSpace.single j 1, ⟨j, Or.inr rfl⟩, ?_⟩
+    rw [hedge]
+    ext p
+    constructor
+    · intro hp
+      obtain ⟨a, ha, rfl⟩ := edge_parameter_extract hp
+      refine ⟨(1 - a) * h, ⟨mul_nonneg (sub_nonneg.mpr ha.2) hpos.le, ?_⟩, ?_⟩
+      · simpa using mul_le_mul_of_nonneg_right (by linarith [ha.1] : 1 - a ≤ 1) hpos.le
+      · module
+    · rintro ⟨t, ht, rfl⟩
+      rw [segment_eq_image]
+      refine ⟨1 - t / h,
+        ⟨sub_nonneg.mpr ((div_le_one hpos).2 ht.2), by linarith [div_nonneg ht.1 hpos.le]⟩, ?_⟩
+      apply PiLp.ext
+      intro k
+      simp only [PiLp.add_apply, PiLp.smul_apply, PiLp.neg_apply]
+      ring_nf
+      simp [ne_of_gt hpos]
+
+/-- Textbook Lemma 3.7(a), lines 1690–1696 and 1700–1712: two distinct edges oriented from
+the same endpoint cannot have the same direction. -/
+private theorem distinct_edge_orientations {h : ℝ} {e e' : Set Ambient} {w u u' : Ambient}
+    (heq : e = {p : Ambient | ∃ t ∈ Set.Icc (0 : ℝ) h, p = w + t • u})
+    (heq' : e' = {p : Ambient | ∃ t ∈ Set.Icc (0 : ℝ) h, p = w + t • u'})
+    (hee' : e ≠ e') : u ≠ u' := by
+  intro huu
+  apply hee'
+  rw [heq, heq', huu]
+
+/-- Textbook Lemma 3.7(a), lines 1702–1712: every signed coordinate direction has Euclidean
+norm one. -/
+private theorem signedCoordinateUnit_norm {u : Ambient} (hu : SignedCoordinateUnit u) : ‖u‖ = 1 := by
+  rcases hu with ⟨i, rfl | rfl⟩ <;> simp [PiLp.norm_single]
+
+/-- Textbook Lemma 3.7(a), lines 1702–1712: unequal signed coordinate directions are orthogonal
+or oppositely collinear, so their real inner product is nonpositive. -/
+private theorem signedCoordinateUnit_inner_nonpos {u u' : Ambient}
+    (hu : SignedCoordinateUnit u) (hu' : SignedCoordinateUnit u') (hne : u ≠ u') :
+    inner ℝ u u' ≤ 0 := by
+  rcases hu with ⟨i, rfl | rfl⟩ <;> rcases hu' with ⟨j, rfl | rfl⟩
+  · by_cases hij : i = j
+    · subst j; exact False.elim (hne rfl)
+    · simp [hij, EuclideanSpace.inner_single_left]
+  · by_cases hij : i = j <;> simp [hij, EuclideanSpace.inner_single_left]
+  · by_cases hij : i = j <;> simp [hij, EuclideanSpace.inner_single_left]
+  · by_cases hij : i = j
+    · subst j; exact False.elim (hne rfl)
+    · simp [hij, EuclideanSpace.inner_single_left]
+
+/-- Textbook Lemma 3.7(a), lines 1702–1712: for nonnegative radial parameters and nonpositive
+cross term, the norm-square expansion makes radial distance no larger than cross-edge distance. -/
+private theorem oriented_distance_le {t t' : ℝ} {u u' : Ambient}
+    (ht : 0 ≤ t) (ht' : 0 ≤ t') (hu : SignedCoordinateUnit u)
+    (hu' : SignedCoordinateUnit u') (hinner : inner ℝ u u' ≤ 0) :
+    ‖t • u‖ ≤ ‖t • u - t' • u'‖ := by
+  have hun := signedCoordinateUnit_norm hu
+  have hun' := signedCoordinateUnit_norm hu'
+  have hprod : 0 ≤ 2 * t * t' := mul_nonneg (mul_nonneg (by norm_num) ht) ht'
+  have hcross : 0 ≤ -(2 * t * t' * inner ℝ u u') := by
+    nlinarith [mul_nonneg hprod (neg_nonneg.mpr hinner)]
+  have hexpand : ‖t • u - t' • u'‖ ^ 2 =
+      t ^ 2 + t' ^ 2 - 2 * t * t' * inner ℝ u u' := by
+    rw [← real_inner_self_eq_norm_sq]
+    simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, inner_smul_right,
+      hun, hun', real_inner_self_eq_norm_sq, one_pow]
+    rw [real_inner_comm u' u]
+    ring
+  have hrad : ‖t • u‖ ^ 2 = t ^ 2 := by
+    rw [norm_smul, Real.norm_eq_abs, hun, mul_one, sq_abs]
+  apply le_of_sq_le_sq _ (norm_nonneg _)
+  rw [hrad, hexpand]
+  nlinarith
+
+/-- Textbook Lemma 3.7(a), lines 1690–1696 and 1700–1712: distinct edges sharing an endpoint
+meet only there, and the distance from that endpoint along one edge is bounded by every
+cross-edge distance. -/
+public theorem edge_common_endpoint_geometry {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) {e e' : Set Ambient} (he : e ∈ edges N h)
+    (he' : e' ∈ edges N h) (hee' : e ≠ e') {w : Ambient}
+    (hw : w ∈ edgeEndpoints N h ⟨e, he⟩)
+    (hw' : w ∈ edgeEndpoints N h ⟨e', he'⟩) :
+    e ∩ e' = {w} ∧
+      ∀ {p p' : Ambient}, p ∈ e → p' ∈ e' → ‖p - w‖ ≤ ‖p - p'‖ := by
+  obtain ⟨u, hu, heq⟩ := edge_orientation_from_endpoint hN hh he hw
+  obtain ⟨u', hu', heq'⟩ := edge_orientation_from_endpoint hN hh he' hw'
+  have hne := distinct_edge_orientations heq heq' hee'
+  have hinner := signedCoordinateUnit_inner_nonpos hu hu' hne
+  have hinner' := signedCoordinateUnit_inner_nonpos hu' hu hne.symm
+  have hpos := (mesh_pos hN hh).le
+  constructor
+  · ext p
+    constructor
+    · rintro ⟨hp, hp'⟩
+      rw [heq] at hp
+      rw [heq'] at hp'
+      obtain ⟨t, ht, hpt⟩ := hp
+      obtain ⟨t', ht', hpt'⟩ := hp'
+      have hz : ‖t • u‖ ≤ ‖(0 : Ambient)‖ := by
+        have hd := oriented_distance_le ht.1 ht'.1 hu hu' hinner
+        have hz' : t • u - t' • u' = 0 := by
+          calc
+            t • u - t' • u' = (w + t • u) - (w + t' • u') := by module
+            _ = p - p := by rw [← hpt, ← hpt']
+            _ = 0 := sub_self p
+        rw [hz'] at hd
+        exact hd
+      have ht0 : t = 0 := by
+        simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1, signedCoordinateUnit_norm hu] at hz
+        exact le_antisymm hz ht.1
+      simp [hpt, ht0]
+    · intro hp
+      have hpw : p = w := by simpa using hp
+      subst p
+      constructor
+      · rw [heq]; exact ⟨0, ⟨le_rfl, hpos⟩, by simp⟩
+      · rw [heq']; exact ⟨0, ⟨le_rfl, hpos⟩, by simp⟩
+  · intro p p' hp hp'
+    rw [heq] at hp
+    rw [heq'] at hp'
+    obtain ⟨t, ht, rfl⟩ := hp
+    obtain ⟨t', ht', rfl⟩ := hp'
+    have hd := oriented_distance_le ht.1 ht'.1 hu hu' hinner
+    calc
+      ‖(w + t • u) - w‖ = ‖t • u‖ := by apply congrArg norm; module
+      _ ≤ ‖t • u - t' • u'‖ := hd
+      _ = ‖(w + t • u) - (w + t' • u')‖ := by apply congrArg norm; module
+
 end TopologicalSpace.CubeBoundaryThree

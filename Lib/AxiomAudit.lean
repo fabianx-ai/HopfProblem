@@ -7098,3 +7098,5 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.square_boundary_edges
 #check TopologicalSpace.CubeBoundaryThree.vertex_separation
 #print axioms TopologicalSpace.CubeBoundaryThree.vertex_separation
+#check TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
