@@ -169,3 +169,141 @@ private theorem squareBrick_ambientOpen_description {N : ℕ} {h : ℝ}
     exact ⟨(hsign x hxj hxk).mpr hprod, hxj, hxk⟩
 
 end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- A vertex brick is the trace of an ambient open ball under the continuous
+boundary inclusion, hence is open in the boundary. (Lemma 4.2.) -/
+private theorem isOpen_vertexBrick {N : ℕ} {h epsilon : ℝ}
+    (v : {v : Ambient // v ∈ vertices N h}) : IsOpen (vertexBrick epsilon v) := by
+  change IsOpen ((fun x : Boundary => (x : Ambient)) ⁻¹'
+    Metric.ball (v : Ambient) (4 * epsilon))
+  exact IsOpen.preimage continuous_subtype_val Metric.isOpen_ball
+
+/-- Present the edge by its two endpoints. Distance to the edge is continuous
+because it is 1-Lipschitz, and distance to either endpoint is continuous. The tube
+and both strict endpoint exclusions are therefore open; their intersection pulls
+back to the edge brick under the boundary inclusion. (Lemma 4.2.) -/
+private theorem isOpen_edgeBrick {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) : IsOpen (edgeBrick epsilon e) := by
+  obtain ⟨v, j, _hv, _hvj, _hsub, _hseg, hend⟩ := edge_presentation hN hh e.property
+  have heq : edgeBrick epsilon e = (fun x : Boundary => (x : Ambient)) ⁻¹'
+      ({x : Ambient | Metric.infDist x (e : Set Ambient) < epsilon} ∩
+        ({x : Ambient | 3 * epsilon < dist x v} ∩
+          {x : Ambient | 3 * epsilon < dist x (v + h • EuclideanSpace.single j 1)})) := by
+    ext x
+    exact mem_edgeBrick_of_presentation e hend x
+  rw [heq]
+  apply IsOpen.preimage continuous_subtype_val
+  have htube : IsOpen {x : Ambient | Metric.infDist x (e : Set Ambient) < epsilon} :=
+    isOpen_lt (Metric.continuous_infDist_pt (e : Set Ambient)) continuous_const
+  have hfirst : IsOpen {x : Ambient | 3 * epsilon < dist x v} :=
+    isOpen_lt continuous_const (continuous_id.dist continuous_const)
+  have hlast : IsOpen {x : Ambient |
+      3 * epsilon < dist x (v + h • EuclideanSpace.single j 1)} :=
+    isOpen_lt continuous_const (continuous_id.dist continuous_const)
+  exact htube.inter (hfirst.inter hlast)
+
+/-- The square brick is the boundary trace of its signed ambient box. The
+positive face-sign condition and both open coordinate intervals are open by
+continuity of coordinate evaluation and multiplication. Their intersection has
+open preimage in the boundary. (Lemma 4.2.) -/
+private theorem isOpen_squareBrick {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) : IsOpen (squareBrick s) := by
+  obtain ⟨v, j, k, i, _hv, _hjk, _hvj, _hvk, _hij, _hik, _hvi, hdesc⟩ :=
+    squareBrick_ambientOpen_description hN hh s
+  have heq : squareBrick s = (fun x : Boundary => (x : Ambient)) ⁻¹'
+      ({x : Ambient | 0 < v i * x i} ∩
+        ((fun x : Ambient => x j) ⁻¹' Set.Ioo (v j) (v j + h) ∩
+          (fun x : Ambient => x k) ⁻¹' Set.Ioo (v k) (v k + h))) := hdesc
+  rw [heq]
+  apply IsOpen.preimage continuous_subtype_val
+  have ci := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) i
+  have cj := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) j
+  have ck := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) k
+  have hsign : IsOpen {x : Ambient | 0 < v i * x i} :=
+    isOpen_lt continuous_const (continuous_const.mul ci)
+  have hj : IsOpen ((fun x : Ambient => x j) ⁻¹' Set.Ioo (v j) (v j + h)) :=
+    IsOpen.preimage cj isOpen_Ioo
+  have hk : IsOpen ((fun x : Ambient => x k) ⁻¹' Set.Ioo (v k) (v k + h)) :=
+    IsOpen.preimage ck isOpen_Ioo
+  exact hsign.inter (hj.inter hk)
+
+/-- Each index has exactly one of the vertex, edge, or square tags. The
+corresponding openness result therefore proves every raw brick open. (Lemma 4.2.) -/
+private theorem isOpen_brickSet {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) : IsOpen (brickSet N h epsilon c) := by
+  cases c with
+  | vertex v =>
+    rw [brickSet_vertex]
+    exact isOpen_vertexBrick v
+  | edge e =>
+    rw [brickSet_edge]
+    exact isOpen_edgeBrick hN hh e
+  | square s =>
+    rw [brickSet_square]
+    exact isOpen_squareBrick hN hh s
+
+/-- The open family consists of precisely the raw bricks, equipped with the
+openness proved in Lemma 4.2. -/
+public noncomputable def brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ) :
+    BrickIndex N h → Opens Boundary :=
+  fun c => ⟨brickSet N h epsilon c, isOpen_brickSet hN hh epsilon c⟩
+
+/-- Forgetting openness recovers the same raw brick. -/
+public theorem coe_brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) :
+    (brickOpens hN hh epsilon c : Set Boundary) = brickSet N h epsilon c := by simp [brickOpens, brickSet]
+
+/-- Membership in the open family is exactly membership in the raw family. -/
+public theorem mem_brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon c ↔ x ∈ brickSet N h epsilon c := Iff.rfl
+
+/-- The vertex tag has the same underlying vertex brick. -/
+public theorem coe_brickOpens_vertex {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (v : {v : Ambient // v ∈ vertices N h}) :
+    (brickOpens hN hh epsilon (.vertex v) : Set Boundary) = vertexBrick epsilon v := by simp [brickOpens, brickSet]
+
+/-- The edge tag has the same underlying edge brick. -/
+public theorem coe_brickOpens_edge {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (e : {e : Set Ambient // e ∈ edges N h}) :
+    (brickOpens hN hh epsilon (.edge e) : Set Boundary) = edgeBrick epsilon e := by simp [brickOpens, brickSet]
+
+/-- The square tag has the same underlying square brick. -/
+public theorem coe_brickOpens_square {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (s : {s : Set Ambient // s ∈ squares N h}) :
+    (brickOpens hN hh epsilon (.square s) : Set Boundary) = squareBrick s := by simp [brickOpens, brickSet]
+
+/-- The open vertex brick retains the defining radius inequality. -/
+public theorem mem_brickOpens_vertex {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (v : {v : Ambient // v ∈ vertices N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.vertex v) ↔
+      dist (x : Ambient) (v : Ambient) < 4 * epsilon := Iff.rfl
+
+/-- The open edge brick retains the tube condition and every endpoint exclusion. -/
+public theorem mem_brickOpens_edge {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (e : {e : Set Ambient // e ∈ edges N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.edge e) ↔
+      Metric.infDist (x : Ambient) (e : Set Ambient) < epsilon ∧
+      ∀ w ∈ edgeEndpoints N h e, 3 * epsilon < dist (x : Ambient) w := Iff.rfl
+
+/-- The open square brick retains membership in its intrinsic relative interior. -/
+public theorem mem_brickOpens_square {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.square s) ↔
+      (x : Ambient) ∈ squareRelInterior N h s := Iff.rfl
+
+end TopologicalSpace.CubeBoundaryThree

@@ -7135,3 +7135,24 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.CubeBoundaryThree.brickSet_edge
 #check TopologicalSpace.CubeBoundaryThree.brickSet_square
 #print axioms TopologicalSpace.CubeBoundaryThree.brickSet_square
+
+/-! Lemma 4.2: the exact open brick family. -/
+
+#check TopologicalSpace.CubeBoundaryThree.brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.brickOpens
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_vertex
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_edge
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_square
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_square
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_vertex
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_edge
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
