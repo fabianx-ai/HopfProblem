@@ -1997,7 +1997,24 @@ public theorem edge_common_endpoint_geometry {N : ℕ} {h : ℝ} (hN : 0 < N)
       have ht0 : t = 0 := by
         simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1, signedCoordinateUnit_norm hu] at hz
         exact le_antisymm hz ht.1
-      simp [hpt, ht0]
+      have hz' : ‖t' • u'‖ ≤ ‖(0 : Ambient)‖ := by
+        have hd := oriented_distance_le ht'.1 ht.1 hu' hu hinner'
+        have hz'' : t' • u' - t • u = 0 := by
+          calc
+            t' • u' - t • u = (w + t' • u') - (w + t • u) := by module
+            _ = p - p := by rw [← hpt', ← hpt]
+            _ = 0 := sub_self p
+        rw [hz''] at hd
+        exact hd
+      have ht0' : t' = 0 := by
+        simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg ht'.1,
+          signedCoordinateUnit_norm hu'] at hz'
+        exact le_antisymm hz' ht'.1
+      have hendpoints : p = w ∧ p = w := by
+        constructor
+        · simp [hpt, ht0]
+        · simp [hpt', ht0']
+      exact hendpoints.1
     · intro hp
       have hpw : p = w := by simpa using hp
       subst p
