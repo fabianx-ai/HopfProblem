@@ -46,6 +46,7 @@ import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
 import Lib.AlgebraicTopology.Hurewicz.PrismOperator
 import Lib.AlgebraicTopology.Hurewicz.Subdivision
+import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character
