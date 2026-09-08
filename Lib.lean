@@ -41,6 +41,7 @@ import Lib.Geometry.Manifold.Collar
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
+import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character
