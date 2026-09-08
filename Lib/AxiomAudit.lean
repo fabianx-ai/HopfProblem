@@ -7341,3 +7341,9 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_eq
 #check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
 #print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
+
+-- Native positive Ext effacement and source universality.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
