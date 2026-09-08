@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator
 
 set_option maxSynthPendingDepth 3
 
@@ -794,5 +795,430 @@ theorem FourthHurewicz.CubeSubdivision.orientedPrismRealization_standardPrism {X
       (fun perm =>
         SingularChains.simplexChain X (n + 1)
           (p.comp (HigherHurewicz.CubeTriangulation.cubeSimplex perm)))
+
+/-! ## The cube chain in every degree and its Kuhn decomposition (textbook §10.3) -/
+
+/-- Dropping the zeroth coordinate of an `n + 1`-cube: the remaining coordinates as a
+continuous map. -/
+def HigherHurewicz.cubeRemainingCoordinates (n : ℕ) :
+    C(Fin n → (unitInterval), { j : Fin (n + 1) // j ≠ 0 } → (unitInterval)) where
+  toFun u j := u (j.1.pred j.2)
+  continuous_toFun := by fun_prop
+
+/-- Uncurrying a cube: the continuous map `I × (Fin n → I) → Fin (n + 1) → I` inserting the
+first coordinate at position `0`. General-`n` form of `SecondHurewicz.squareCoordinates`. -/
+def HigherHurewicz.cubeCoordinates (n : ℕ) :
+    C((unitInterval) × (Fin n → (unitInterval)), Fin (n + 1) → (unitInterval)) where
+  toFun z := Cube.insertAt (0 : Fin (n + 1)) (z.1, HigherHurewicz.cubeRemainingCoordinates n z.2)
+  continuous_toFun := by
+    apply (Cube.insertAt (0 : Fin (n + 1))).continuous.comp
+    fun_prop
+
+@[simp]
+theorem HigherHurewicz.cubeCoordinates_zero (n : ℕ)
+    (z : (unitInterval) × (Fin n → (unitInterval))) :
+    HigherHurewicz.cubeCoordinates n z 0 = z.1 := by
+  simp [HigherHurewicz.cubeCoordinates, Cube.insertAt, Homeomorph.funSplitAt_symm_apply]
+
+@[simp]
+theorem HigherHurewicz.cubeCoordinates_succ (n : ℕ)
+    (z : (unitInterval) × (Fin n → (unitInterval))) (j : Fin n) :
+    HigherHurewicz.cubeCoordinates n z j.succ = z.2 j := by
+  simp [HigherHurewicz.cubeCoordinates, Cube.insertAt, Homeomorph.funSplitAt_symm_apply,
+    HigherHurewicz.cubeRemainingCoordinates]
+
+/-- The uncurrying preserves the boundary in the second argument. -/
+theorem HigherHurewicz.cubeCoordinates_boundary_right (n : ℕ) (s : (unitInterval))
+    {u : Fin n → (unitInterval)} (hu : u ∈ Cube.boundary (Fin n)) :
+    HigherHurewicz.cubeCoordinates n (s, u) ∈ Cube.boundary (Fin (n + 1)) := by
+  obtain ⟨i, hi⟩ := hu
+  exact ⟨i.succ, by simpa using hi⟩
+
+/-- A based `n + 1`-cube as a map from the product `I × (Fin n → I)`. -/
+def HigherHurewicz.cubeMap {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin (n + 1)) X x) : C((unitInterval) × (Fin n → (unitInterval)), X) :=
+  p.val.comp (HigherHurewicz.cubeCoordinates n)
+
+/-- Currying a based `n + 1`-cube to a based `n`-cube of paths. -/
+def HigherHurewicz.curryLoop {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin (n + 1)) X x) :
+    GenLoop (Fin n) C((unitInterval), X) (ContinuousMap.const (unitInterval) x) :=
+  ⟨((HigherHurewicz.cubeMap p).comp ContinuousMap.prodSwap).curry, by
+    intro u hu
+    apply ContinuousMap.ext
+    intro s
+    exact GenLoop.boundary p _ (HigherHurewicz.cubeCoordinates_boundary_right n s hu)⟩
+
+/-- Evaluation of the curried cube recovers the cube map. -/
+theorem HigherHurewicz.evalLeft_comp_curryLoop {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin (n + 1)) X x) :
+    (FourthHurewicz.CubeSubdivision.evalLeft X).comp
+        ((ContinuousMap.id (unitInterval)).prodMap (HigherHurewicz.curryLoop p).val) =
+      HigherHurewicz.cubeMap p := by
+  ext z
+  rfl
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The fundamental singular chain of the topological `n`-cube `Fin n → I`, defined
+recursively: the `0`-cube is the point chain, the `1`-cube is the interval chain transported
+along `(Fin 1 → I) ≃ₜ I`, and the `n + 2`-cube is the cross product of the interval chain with
+the `n + 1`-cube chain, transported along the uncurrying map. -/
+def HigherHurewicz.fundamentalCubeChain :
+    (n : ℕ) → SingularChains.Chains (Fin n → (unitInterval)) n
+  | 0 => SingularChains.pointChain 0
+  | 1 => SingularChains.inducedChain
+      ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval), Fin 1 →
+        (unitInterval))) 1 SecondHurewicz.intervalChain
+  | n + 2 =>
+    SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+      (PeriodTorusHigherHomology.crossProductEdge (unitInterval) (Fin (n + 1) → (unitInterval))
+        (n + 1) SecondHurewicz.intervalChain (HigherHurewicz.fundamentalCubeChain (n + 1)))
+
+/-- The cube chain of a based `n`-cube: the image of the fundamental chain. -/
+def HigherHurewicz.cubeChain {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin n) X x) : SingularChains.Chains X n :=
+  SingularChains.inducedChain p.val n (HigherHurewicz.fundamentalCubeChain n)
+
+theorem HigherHurewicz.fundamentalCubeChain_succ (n : ℕ) :
+    HigherHurewicz.fundamentalCubeChain (n + 2) =
+      SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+          (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+          (HigherHurewicz.fundamentalCubeChain (n + 1))) :=
+  rfl
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The recursion for the cube chain: the `n + 2`-cube chain is the evaluation of the cross
+product of the interval chain with the curried `n + 1`-cube chain. -/
+theorem HigherHurewicz.cubeChain_succ {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin (n + 2)) X x) :
+    HigherHurewicz.cubeChain p =
+      (SingularChains.inducedChain (FourthHurewicz.CubeSubdivision.evalLeft X) ((n + 1) + 1))
+        ((PeriodTorusHigherHomology.crossProductEdge (unitInterval) C((unitInterval), X)
+            (n + 1)) SecondHurewicz.intervalChain
+          (HigherHurewicz.cubeChain (HigherHurewicz.curryLoop p))) := by
+  unfold HigherHurewicz.cubeChain
+  show (SingularChains.inducedChain p.val (n + 2) (HigherHurewicz.fundamentalCubeChain (n + 2))) =
+    _
+  rw [HigherHurewicz.fundamentalCubeChain_succ, ← LinearMap.comp_apply,
+    ← SingularChains.inducedChain_comp,
+    show p.val.comp (HigherHurewicz.cubeCoordinates (n + 1)) = HigherHurewicz.cubeMap p from rfl,
+    ← HigherHurewicz.evalLeft_comp_curryLoop p, SingularChains.inducedChain_comp,
+    LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+    SingularChains.inducedChain_id, LinearMap.id_apply]
+
+/-- The prism cube map factors through the uncurrying map: inserting the path simplex and the
+`e`-th permutation simplex along coordinate `0` gives the prism cube map. General-`n` form of
+`FourthHurewicz.CubeSubdivision.prismCubeMap_three`. -/
+theorem HigherHurewicz.cubeCoordinates_comp_prismCubeMap {n : ℕ} (e : Equiv.Perm (Fin n)) :
+    (HigherHurewicz.cubeCoordinates n).comp
+        ((SingularChains.pathSimplex Path.id).prodMap
+          (HigherHurewicz.CubeTriangulation.cubeSimplex e)) =
+      FourthHurewicz.CubeSubdivision.prismCubeMap e := by
+  apply ContinuousMap.ext
+  intro z
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · exact HigherHurewicz.cubeCoordinates_zero n _
+  · show HigherHurewicz.cubeCoordinates n _ j.succ = _
+    rw [HigherHurewicz.cubeCoordinates_succ]
+    rfl
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The key term identification of the induction step: the cross product of the interval chain
+with the `e`-th simplex chain of the curried cube evaluates to the `e`-th prism realization.
+General-`n` form of
+`FourthHurewicz.CubeSubdivision.intervalTetrahedronChain_eq_prismCubeRealization`. -/
+theorem HigherHurewicz.evalLeft_crossProductEdge_intervalChain_simplex {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin n)) :
+    (SingularChains.inducedChain (FourthHurewicz.CubeSubdivision.evalLeft X) (n + 1))
+        ((PeriodTorusHigherHomology.crossProductEdge (unitInterval) C((unitInterval), X) n)
+          SecondHurewicz.intervalChain
+          (SingularChains.simplexChain C((unitInterval), X) n
+            ((HigherHurewicz.curryLoop p).val.comp
+              (HigherHurewicz.CubeTriangulation.cubeSimplex e)))) =
+      FourthHurewicz.CubeSubdivision.prismCubeRealization p.val e (n + 1)
+        ((PeriodTorusHigherHomology.formalEdgeCrossProduct n)
+          (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
+          (SingularMayerVietoris.formalSimplex (fun j : Fin (n + 1) => j))) := by
+  rw [SecondHurewicz.intervalChain, SingularChains.pathChain,
+    PeriodTorusHigherHomology.crossProductEdge_simplex,
+    FourthHurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct]
+  rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+  have h : (FourthHurewicz.CubeSubdivision.evalLeft X).comp
+        ((SingularChains.pathSimplex Path.id).prodMap
+          ((HigherHurewicz.curryLoop p).val.comp
+            (HigherHurewicz.CubeTriangulation.cubeSimplex e))) =
+      p.val.comp (FourthHurewicz.CubeSubdivision.prismCubeMap e) := by
+    rw [show (SingularChains.pathSimplex Path.id).prodMap
+            ((HigherHurewicz.curryLoop p).val.comp
+              (HigherHurewicz.CubeTriangulation.cubeSimplex e)) =
+          ((ContinuousMap.id (unitInterval)).prodMap (HigherHurewicz.curryLoop p).val).comp
+            ((SingularChains.pathSimplex Path.id).prodMap
+              (HigherHurewicz.CubeTriangulation.cubeSimplex e)) from
+        by apply ContinuousMap.ext; intro z; rfl]
+    rw [← ContinuousMap.comp_assoc, HigherHurewicz.evalLeft_comp_curryLoop p]
+    rw [HigherHurewicz.cubeMap, ContinuousMap.comp_assoc,
+      HigherHurewicz.cubeCoordinates_comp_prismCubeMap]
+  rw [h]
+
+
+/-- The canonical identification of the interval with the `1`-cube, pulled back along the
+identity path simplex, is the permutation simplex of the identity: the `n = 1` corner of the
+cube-simplex dictionary. -/
+theorem HigherHurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one :
+    ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+        Fin 1 → (unitInterval))).comp (SingularChains.pathSimplex Path.id) =
+      HigherHurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 1)) := by
+  apply ContinuousMap.ext
+  intro s
+  funext j
+  apply Subtype.ext
+  have hj : j = 0 := Subsingleton.elim _ _
+  subst hj
+  show (s 1 : ℝ) = _
+  rw [HigherHurewicz.CubeTriangulation.cubeSimplex,
+    HigherHurewicz.CubeTriangulation.cubeAffineSimplex_coordinate]
+  simp [HigherHurewicz.CubeTriangulation.cubeVertex, Fin.sum_univ_two]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The cube chain in degree `1` is the single permutation simplex: the base case of the Kuhn
+decomposition. -/
+theorem HigherHurewicz.cubeChain_one {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin 1) X x) :
+    HigherHurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin 1),
+      HigherHurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X 1
+          (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) := by
+  have h1 : ∀ e : Equiv.Perm (Fin 1), e = 1 := fun e => by
+    apply Equiv.ext
+    intro j
+    exact Subsingleton.elim _ _
+  rw [Finset.sum_eq_single 1 (fun e _ he => absurd (h1 e) he) (by simp)]
+  have hsign : HigherHurewicz.CubeTriangulation.cubeOrientation (1 : Equiv.Perm (Fin 1)) = 1 := by
+    simp [HigherHurewicz.CubeTriangulation.cubeOrientation]
+  rw [hsign, one_zsmul]
+  unfold HigherHurewicz.cubeChain
+  rw [show HigherHurewicz.fundamentalCubeChain 1 =
+      SingularChains.inducedChain
+        ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+          Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain from rfl]
+  rw [SecondHurewicz.intervalChain, SingularChains.pathChain, SingularChains.inducedChain_simplex,
+    SingularChains.inducedChain_simplex]
+  congr 1
+  rw [HigherHurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one]
+
+/-- The uncurrying map in degree `2`, pulled back along the `(Fin 1 → I) ≃ₜ I` identification,
+is the square coordinates map. -/
+theorem HigherHurewicz.cubeCoordinates_one_comp_eq_squareCoordinates :
+    (HigherHurewicz.cubeCoordinates 1).comp
+        ((ContinuousMap.id (unitInterval)).prodMap
+          ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+            Fin 1 → (unitInterval)))) =
+      SecondHurewicz.squareCoordinates := by
+  apply ContinuousMap.ext
+  intro z
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · show HigherHurewicz.cubeCoordinates 1 _ 0 = SecondHurewicz.squareCoordinates z 0
+    rw [HigherHurewicz.cubeCoordinates_zero, SecondHurewicz.squareCoordinates_zero]
+    rfl
+  · have hj : j = 0 := Subsingleton.elim _ _
+    subst hj
+    show HigherHurewicz.cubeCoordinates 1 _ (0 : Fin 1).succ = SecondHurewicz.squareCoordinates z 1
+    rw [HigherHurewicz.cubeCoordinates_succ, SecondHurewicz.squareCoordinates_one]
+    rfl
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The fundamental chain of the `2`-cube is the fundamental square chain. -/
+theorem HigherHurewicz.fundamentalCubeChain_two :
+    HigherHurewicz.fundamentalCubeChain 2 = SecondHurewicz.fundamentalSquareChain := by
+  have key : (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+        (Fin 1 → (unitInterval)) 1) SecondHurewicz.intervalChain
+        ((SingularChains.inducedChain
+          ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+            Fin 1 → (unitInterval))) 1) SecondHurewicz.intervalChain) =
+      (SingularChains.inducedChain
+        ((ContinuousMap.id (unitInterval)).prodMap
+          ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+            Fin 1 → (unitInterval)))) 2) SecondHurewicz.productSquareChain := by
+    rw [SecondHurewicz.productSquareChain,
+      PeriodTorusHigherHomology.crossProductEdge_natural, SingularChains.inducedChain_id,
+      LinearMap.id_apply]
+  rw [HigherHurewicz.fundamentalCubeChain_succ 0,
+    show HigherHurewicz.fundamentalCubeChain (0 + 1) =
+        SingularChains.inducedChain
+          ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+            Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain from rfl,
+    key, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+    HigherHurewicz.cubeCoordinates_one_comp_eq_squareCoordinates]
+  rfl
+
+/-- The lower triangle of the square is the identity permutation simplex. -/
+theorem HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
+    SecondHurewicz.SimplyConnected.lowerSquareTriangle =
+      HigherHurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2)) := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  apply Subtype.ext
+  refine Fin.cases ?_ (fun j => ?_) i
+  · show (↑(SecondHurewicz.SimplyConnected.lowerSquareTriangle s 0) : ℝ) =
+      ↑((HigherHurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2))) s
+        ((1 : Equiv.Perm (Fin 2)) 0))
+    rw [SecondHurewicz.SimplyConnected.lowerSquareTriangle_zero,
+      HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate]
+    simp [Fin.sum_univ_three]
+  · have hj : j = 0 := Subsingleton.elim _ _
+    subst hj
+    show (↑(SecondHurewicz.SimplyConnected.lowerSquareTriangle s 1) : ℝ) =
+      ↑((HigherHurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2))) s
+        ((1 : Equiv.Perm (Fin 2)) 1))
+    rw [SecondHurewicz.SimplyConnected.lowerSquareTriangle_one,
+      HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate]
+    simp [Fin.sum_univ_three]
+
+/-- The upper triangle of the square is the transposition permutation simplex. -/
+theorem HigherHurewicz.upperSquareTriangle_eq_cubeSimplex_swap :
+    SecondHurewicz.SimplyConnected.upperSquareTriangle =
+      HigherHurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1) := by
+  apply ContinuousMap.ext
+  intro s
+  funext i
+  apply Subtype.ext
+  refine Fin.cases ?_ (fun j => ?_) i
+  · show (↑(SecondHurewicz.SimplyConnected.upperSquareTriangle s 0) : ℝ) =
+      ↑((HigherHurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1)) s
+        ((Equiv.swap (0 : Fin 2) 1) 1))
+    rw [SecondHurewicz.SimplyConnected.upperSquareTriangle_zero,
+      HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate]
+    simp [Fin.sum_univ_three]
+  · have hj : j = 0 := Subsingleton.elim _ _
+    subst hj
+    show (↑(SecondHurewicz.SimplyConnected.upperSquareTriangle s 1) : ℝ) =
+      ↑((HigherHurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1)) s
+        ((Equiv.swap (0 : Fin 2) 1) 0))
+    rw [SecondHurewicz.SimplyConnected.upperSquareTriangle_one,
+      HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate]
+    simp [Fin.sum_univ_three]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The cube chain in degree `2` is the alternating sum of the two permutation simplices: the
+second base case of the Kuhn decomposition. -/
+theorem HigherHurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin 2) X x) :
+    HigherHurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin 2),
+      HigherHurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X 2
+          (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) := by
+  have hub : HigherHurewicz.cubeChain p = SecondHurewicz.squareChain p := by
+    unfold HigherHurewicz.cubeChain
+    rw [HigherHurewicz.fundamentalCubeChain_two, SecondHurewicz.squareChain,
+      SecondHurewicz.suspensionOne_toLoop, SecondHurewicz.fundamentalSquareChain,
+      ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+    rfl
+  rw [hub, SecondHurewicz.SimplyConnected.squareChain_two_triangles,
+    HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one,
+    HigherHurewicz.upperSquareTriangle_eq_cubeSimplex_swap]
+  have huniv : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1} := by decide
+  rw [huniv, Finset.sum_insert (by decide), Finset.sum_singleton]
+  have hsign1 : HigherHurewicz.CubeTriangulation.cubeOrientation (1 : Equiv.Perm (Fin 2)) = 1 := by
+    simp [HigherHurewicz.CubeTriangulation.cubeOrientation]
+  have hsign2 : HigherHurewicz.CubeTriangulation.cubeOrientation (Equiv.swap (0 : Fin 2) 1) = -1 := by
+    simp [HigherHurewicz.CubeTriangulation.cubeOrientation, Equiv.Perm.sign_swap]
+  rw [hsign1, hsign2]
+  simp only [one_zsmul, neg_one_zsmul, sub_eq_add_neg]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The induction step of the Kuhn decomposition: from the decomposition in degree `k + 2` to
+degree `k + 3`, through the prism realization (textbook §10.3). -/
+theorem HigherHurewicz.cubeChain_eq_sum_simplices_step {k : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X}
+    (ih : ∀ {Y : Type} [TopologicalSpace Y] {y : Y} (q : GenLoop (Fin ((k + 1) + 1)) Y y),
+      HigherHurewicz.cubeChain q = ∑ e : Equiv.Perm (Fin ((k + 1) + 1)),
+        HigherHurewicz.CubeTriangulation.cubeOrientation e •
+          SingularChains.simplexChain Y ((k + 1) + 1)
+            (q.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)))
+    (p : GenLoop (Fin (k + 3)) X x) :
+    HigherHurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin (k + 3)),
+      HigherHurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X (k + 3)
+          (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) := by
+  rw [HigherHurewicz.cubeChain_succ (n := k + 1) p, ih (HigherHurewicz.curryLoop p)]
+  simp only [map_sum, map_zsmul,
+    HigherHurewicz.evalLeft_crossProductEdge_intervalChain_simplex]
+  rw [← FourthHurewicz.CubeSubdivision.orientedPrismRealization_eq_sum]
+  show FourthHurewicz.CubeSubdivision.orientedPrismRealization p.val (k + 3)
+      (PeriodTorusHigherHomology.formalEdgeCrossProduct (k + 2)
+        (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
+        (SingularMayerVietoris.formalSimplex (fun j : Fin (k + 3) => j))) = _
+  rw [FourthHurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard]
+  show FourthHurewicz.CubeSubdivision.orientedPrismRealization p.val ((k + 2) + 1)
+      (FourthHurewicz.CubeSubdivision.standardPrism (k + 2) (fun i : Fin 2 => i)
+        (fun j : Fin ((k + 2) + 1) => j)) =
+    ∑ e : Equiv.Perm (Fin ((k + 2) + 1)),
+      HigherHurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X ((k + 2) + 1)
+          (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e))
+  rw [FourthHurewicz.CubeSubdivision.orientedPrismRealization_standardPrism]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The Kuhn decomposition of the cube chain in every degree: the chain of a based `n`-cube is
+the alternating sum of its `n!` permutation simplices. This is the chain identity
+`[Π n] = Σ_σ sign(σ)·σ_e` of the lane's textbook (§9, L5), proved by induction through the
+prism realization (§10.3). -/
+theorem HigherHurewicz.cubeChain_eq_sum_simplices (n : ℕ) {X : Type} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x) :
+    HigherHurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin n),
+      HigherHurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X n
+          (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) := by
+  have aux : ∀ (m : ℕ) {Y : Type} [TopologicalSpace Y] {y : Y} (q : GenLoop (Fin m) Y y),
+      HigherHurewicz.cubeChain q = ∑ e : Equiv.Perm (Fin m),
+        HigherHurewicz.CubeTriangulation.cubeOrientation e •
+          SingularChains.simplexChain Y m
+            (q.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) := by
+    intro m
+    induction m using Nat.strong_induction_on with
+    | _ m ihm =>
+      intro Y inst y q
+      cases m with
+      | zero =>
+        have h1 : ∀ e : Equiv.Perm (Fin 0), e = 1 := fun e => by
+          apply Equiv.ext
+          intro j
+          exact j.elim0
+        rw [Finset.sum_eq_single 1 (fun e _ he => absurd (h1 e) he) (by simp)]
+        have hsign : HigherHurewicz.CubeTriangulation.cubeOrientation (1 : Equiv.Perm (Fin 0)) =
+            1 := by
+          simp [HigherHurewicz.CubeTriangulation.cubeOrientation]
+        rw [hsign, one_zsmul]
+        unfold HigherHurewicz.cubeChain
+        rw [show HigherHurewicz.fundamentalCubeChain 0 = SingularChains.pointChain 0 from rfl,
+          SingularChains.pointChain, SingularChains.inducedChain_simplex]
+        congr 1
+        apply ContinuousMap.ext
+        intro s
+        apply congrArg q.val
+        funext i
+        exact i.elim0
+      | succ m =>
+        cases m with
+        | zero => exact HigherHurewicz.cubeChain_one q
+        | succ m =>
+          cases m with
+          | zero => exact HigherHurewicz.cubeChain_two q
+          | succ k =>
+            exact HigherHurewicz.cubeChain_eq_sum_simplices_step (k := k)
+              (fun q' => ihm ((k + 1) + 1) (by omega) q') q
+  exact aux n p
 
 end Mathoverflow1973
