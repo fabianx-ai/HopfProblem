@@ -14,9 +14,81 @@ open Set Function Filter Manifold Topology
 
 open scoped BigOperators TensorProduct
 
+/-!
+# The singular cross product
+
+For topological spaces `X` and `Y`, the cross product of singular chains over `ℤ` and the
+induced bilinear map on homology:
+
+* `PeriodTorusHigherHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
+  [TopologicalSpace Y] (n : ℕ) :
+  (SingularChains.singularComplex X).homology 1 →ₗ[ℤ]
+  (SingularChains.singularComplex Y).homology n →ₗ[ℤ]
+  (SingularChains.singularComplex (X × Y)).homology (n + 1)`.
+
+(The file is pre-rename: declarations carry their transitional `PeriodTorusHigherHomology`
+names; the rename to the `AlgebraicTopology.SingularHomology` namespace is a separate commit
+of this lane.)
+
+## Outline of the construction
+
+This is Hatcher's §3.B construction, specialized to left degree one (with left degree two for
+the prism side condition), in five steps.
+
+1. *Bilinear plumbing.* `integerBilinearRightApply`, `integerBilinearFlip`,
+   `integerBilinearPostcompose`, `integerBilinearPrecompose` package currying and composition
+   of bilinear maps over `ℤ`; `chainBilinearLift` extends a simplex-wise bilinear assignment
+   to the free abelian chain groups (`chainBilinearMap_ext` for uniqueness).
+2. *The formal product.* `formalEdgeCrossProduct` triangulates the prism `Δ¹ × Δⁿ` (and
+   `formalTriangleCrossProduct` the product `Δ² × Δⁿ`) into affine simplices, with the Leibniz
+   boundary identities `formalBoundary_edgeCrossProduct`,
+   `formalBoundary_triangleCrossProduct`; `formalPointCrossProduct` is the degree-zero
+   companion.
+3. *The chain-level product.* `crossProductEdge` sends a singular edge and a singular
+   `n`-simplex to the product chain pushed forward along `σ.prodMap τ`
+   (`crossProductEdge_simplex`); it is natural (`crossProductEdge_natural`) and satisfies the
+   Leibniz rule `crossProductEdge_boundary`; likewise `crossProductTriangle` in left degree
+   two, which is the prism operator for the homotopy-invariance arguments of the Hurewicz
+   lane.
+4. *Descent to homology.* A cycle times a cycle is a cycle (`crossProductCycles`); a boundary
+   times a cycle is a boundary (`crossProductCycleClasses_boundary_right`,
+   `crossProductHomologyCycles_boundary_left`), so the product descends twice
+   (`crossProductHomologyFixed`, `crossProductHomologyCycles`, then `homologyDesc`) to
+   `crossProductHomology`, with `crossProductHomology_cycleClass` computing it on classes.
+5. *Degenerations at `n = 0`.* `crossProductEdge_zero_eq_zeroRight` identifies the
+   degree-zero product with point insertion, and
+   `crossProductHomology_pointClass_right` computes it on point classes.
+
+## Main definitions and results
+
+* `PeriodTorusHigherHomology.crossProductEdge`, `.crossProductTriangle` : the chain-level
+  cross products in left degrees 1 and 2.
+* `PeriodTorusHigherHomology.crossProductHomology` : the homology-level cross product
+  `H₁(X) →ₗ[ℤ] Hₙ(Y) →ₗ[ℤ] H_{n+1}(X × Y)`.
+* `PeriodTorusHigherHomology.integerLinearMapModule`, `.integerTensorModule` :
+  `@[instance_reducible]` `Module ℤ` instances on `A →ₗ[ℤ] B` and `A ⊗[ℤ] B`, used as local
+  instances throughout this file: they pin the diamond between Mathlib's two instances and
+  the one the product constructions elaborate against. (Lane-C open item: reproduced
+  verbatim; removal is attempted in a later refactor commit and the outcome recorded.)
+* Consumers: the Hurewicz lane (the fundamental cube chain by recursion on degree), the torus
+  lane (the section of the circle-splitting sequence), the Pontryagin product (the addition
+  pushforward of this product).
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §3.B
+
+## Tags
+
+singular homology, cross product, Künneth
+-/
+
+
 noncomputable section
 
 namespace Mathoverflow1973
+
+/-! ### ℤ-module instances on linear maps and tensor products -/
 
 @[instance_reducible]
 def PeriodTorusHigherHomology.integerLinearMapModule {A B : Type*} [AddCommGroup A]
@@ -29,6 +101,8 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
 def PeriodTorusHigherHomology.integerTensorModule {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     [modA : Module ℤ A] [modB : Module ℤ B] : Module ℤ (A ⊗[ℤ] B) :=
   @TensorProduct.instModule ℤ _ A B _ _ modA modB
+
+/-! ### Bilinear plumbing -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -73,6 +147,8 @@ theorem PeriodTorusHigherHomology.integerBilinearFlip_apply {A B C : Type*} [Add
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (b : B) (a : A) : integerBilinearFlip F b a = F a b :=
   rfl
+
+/-! ### Extending simplex-wise bilinear maps to chains -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -119,6 +195,8 @@ theorem PeriodTorusHigherHomology.chainBilinearMap_ext (X Y : Type) [Topological
   apply SingularChains.chainMap_ext Y q
   intro τ
   exact h σ τ
+
+/-! ### Point insertions and the zero-degree cross product -/
 
 def PeriodTorusHigherHomology.zeroSimplexValue {X : Type} [TopologicalSpace X]
     (σ : SingularChains.SingularSimplex X 0) : X :=
@@ -225,6 +303,8 @@ theorem PeriodTorusHigherHomology.crossProductZeroLeft_natural {X Y X' Y' : Type
     exact SingularHomology.inducedChain_crossInsertLeft f g (zeroSimplexValue σ) n b
   exact LinearMap.congr_fun h a
 
+/-! ### Composition of bilinear maps -/
+
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 def PeriodTorusHigherHomology.integerBilinearPostcompose {A B C D : Type*} [AddCommGroup A]
@@ -287,6 +367,8 @@ theorem PeriodTorusHigherHomology.integerBilinearPrecompose_apply {A B C A' B' :
     integerBilinearPrecompose F f g a b = F (f a) (g b) :=
   rfl
 
+/-! ### The bilinear lift on formal chains -/
+
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomology.integerFormalBilinearMap_ext (V W : Type*) (p q : ℕ) {M : Type*}
@@ -330,6 +412,8 @@ theorem PeriodTorusHigherHomology.formalBilinearLift_simplex {V W M : Type*} {n 
     formalBilinearLift f (SingularMayerVietoris.formalSimplex v)
         (SingularMayerVietoris.formalSimplex w) =
       f v w := by simp [formalBilinearLift]
+
+/-! ### The formal point cross product -/
 
 def PeriodTorusHigherHomology.formalPointCrossProduct {V W : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains V 1 →ₗ[ℤ]
@@ -407,6 +491,8 @@ theorem PeriodTorusHigherHomology.formalMap_pointCrossProduct {V W V' W' : Type*
       formalPointCrossProduct_simplex, SingularMayerVietoris.formalMap_simplex]
     rfl
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
+
+/-! ### The formal edge cross product and its boundary law -/
 
 def PeriodTorusHigherHomology.formalEdgeCrossProduct {V W : Type*} :
     (q : ℕ) →
@@ -571,6 +657,8 @@ theorem PeriodTorusHigherHomology.formalMap_edgeCrossProduct {V W V' W' : Type*}
         SingularMayerVietoris.formalMap_simplex]
     exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-! ### Affine simplices in a product -/
+
 @[simp]
 theorem PeriodTorusHigherHomology.affineSimplex_constant {n p : ℕ} (a : SingularChains.Simplex p) :
     SingularMayerVietoris.affineSimplex (fun _ : Fin (n + 1) => a) =
@@ -705,6 +793,8 @@ theorem PeriodTorusHigherHomology.inducedChain_productAffineChainMap {m p q r s 
       prodMap_productAffineSimplex]
     rfl
   exact LinearMap.congr_fun h c
+
+/-! ### The chain-level cross product in left degree one -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -844,6 +934,8 @@ theorem PeriodTorusHigherHomology.crossProductEdge_affineChainMap (p q n : ℕ)
       SingularMayerVietoris.formalMap_simplex, affineSimplex_stdVertices_image,
       affineSimplex_stdVertices_image]
   exact LinearMap.congr_fun (LinearMap.congr_fun h a) b
+
+/-! ### The formal triangle cross product -/
 
 def PeriodTorusHigherHomology.formalTriangleCrossProduct {V W : Type*} :
     (q : ℕ) →
@@ -1011,6 +1103,8 @@ theorem PeriodTorusHigherHomology.formalMap_triangleCrossProduct {V W V' W' : Ty
         SingularMayerVietoris.formalMap_boundary, SingularMayerVietoris.formalMap_simplex,
         SingularMayerVietoris.formalMap_simplex]
     exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
+
+/-! ### The chain-level cross product in left degree two -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -1335,6 +1429,8 @@ theorem PeriodTorusHigherHomology.crossProductEdge_boundary_of_left_cycle {X Y :
       -crossProductEdge X Y n a (((SingularChains.singularComplex Y).d (n + 1) n).hom b) := by
   simp only [crossProductEdge_boundary, ha, map_zero, LinearMap.zero_apply, zero_sub]
 
+/-! ### Descent to homology -/
+
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 abbrev PeriodTorusHigherHomology.homologyBoundaries (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : Submodule ℤ (SingularMayerVietoris.ModuleHomology.Cycle K n) :=
@@ -1387,6 +1483,8 @@ theorem PeriodTorusHigherHomology.homologyDesc_cycleClass (K : ChainComplex (Mod
   have h :=
     congrArg (fun q => q.hom (Submodule.Quotient.mk c)) (K.sc n).moduleCatHomologyIso.inv_hom_id
   exact congrArg ((homologyBoundaries K n).liftQ f (homologyBoundaries_le_ker K n f hf)) h
+
+/-! ### The cross product on cycles -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -1584,6 +1682,8 @@ theorem PeriodTorusHigherHomology.crossProductHomologyCycles_boundary_left {X Y 
   rw [crossProductHomologyFixed_cycleClass]
   exact crossProductCycleClasses_boundary_left n a b
 
+/-! ### The cross product on homology -/
+
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 def PeriodTorusHigherHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
@@ -1608,6 +1708,8 @@ theorem PeriodTorusHigherHomology.crossProductHomology_cycleClass (X Y : Type)
         (n + 1) (crossProductCycles X Y n a b) := by
   rw [crossProductHomology, homologyDesc_cycleClass]
   exact crossProductHomologyFixed_cycleClass n a b
+
+/-! ### Degenerations at degree zero -/
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
