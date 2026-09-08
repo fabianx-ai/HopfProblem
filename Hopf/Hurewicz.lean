@@ -62,6 +62,7 @@ Original source lines 81183--104759; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
+import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Hopf.SphereTopology
 
 set_option maxSynthPendingDepth 3
@@ -2262,29 +2263,9 @@ theorem PeriodTorusHigherHomology.zeroSimplexValue_comp {X X' : Type} [Topologic
     zeroSimplexValue (f.comp σ) = f (zeroSimplexValue σ) :=
   rfl
 
-def PeriodTorusHigherHomology.crossInsertLeft {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (x : X) : C(Y, X × Y) :=
-  ⟨fun y => (x, y), continuous_const.prodMk continuous_id⟩
-
 def PeriodTorusHigherHomology.crossInsertRight {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (y : Y) : C(X, X × Y) :=
   ⟨fun x => (x, y), continuous_id.prodMk continuous_const⟩
-
-theorem PeriodTorusHigherHomology.crossInsertLeft_natural {X Y X' Y' : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y'))
-    (x : X) : (f.prodMap g).comp (crossInsertLeft x) = (crossInsertLeft (f x)).comp g :=
-  rfl
-
-theorem PeriodTorusHigherHomology.inducedChain_crossInsertLeft {X Y X' Y' : Type}
-    [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
-    (f : C(X, X')) (g : C(Y, Y')) (x : X) (n : ℕ) (c : FirstHurewicz.Chains Y n) :
-    FirstHurewicz.inducedChain (f.prodMap g) n
-        (FirstHurewicz.inducedChain (crossInsertLeft x) n c) =
-      FirstHurewicz.inducedChain (crossInsertLeft (f x)) n (FirstHurewicz.inducedChain g n c) := by
-  have h :=
-    congrArg (fun h : C(Y, X' × Y') => FirstHurewicz.inducedChain h n c)
-      (crossInsertLeft_natural f g x)
-  simpa only [FirstHurewicz.inducedChain_comp, LinearMap.comp_apply] using h
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -23659,7 +23640,6 @@ theorem Degree.Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
   let := piFour_subsingleton x
   let := SphereHomology.unitSphere_homology_subsingleton 5 5 (by decide) (by decide)
   exact (FifthHurewicz.hurewiczPi5Equiv x).injective.subsingleton
-
 
 end Mathoverflow1973
 
