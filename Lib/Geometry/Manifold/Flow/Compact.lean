@@ -7,6 +7,29 @@ import Mathlib
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.Handle
 
+/-!
+# Flows of smooth vector fields on compact manifolds
+
+Flow boxes and partial chart fields (`Smale.FlowConstruction.*`), the Morse-block machinery
+isolating critical points (`MorseCancel.morseClosedBlock*`,
+`exists_disjoint_morse_block_field`), and inverse-function ingredients
+(`NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv`).
+
+## Main definitions and results
+
+* `Smale.FlowConstruction.*` : flow boxes and partial chart fields.
+* `NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv` : inverse function theorem form.
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Theorem 9.12
+
+## Tags
+
+flow, compact manifold, inverse function theorem
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

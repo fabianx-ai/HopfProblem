@@ -8,6 +8,27 @@ import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.Flow.HeightTranslating
 
+/-!
+# Smooth dependence of flows
+
+For a `C^∞` vector field the flow depends `C^∞` on the initial point and on time
+(`Degree.SmoothODE.*`, Lee Thm 9.12's smoothness conclusion), with coordinate-field helpers
+(`MorseCancel.coordinateField`).
+
+## Main definitions and results
+
+* `Degree.SmoothODE.*` : smooth dependence of the flow.
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Theorem 9.12
+
+## Tags
+
+ODE, smooth flow
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

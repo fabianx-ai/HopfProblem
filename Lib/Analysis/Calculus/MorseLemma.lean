@@ -6,6 +6,48 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Handle
 
+/-!
+# The Morse lemma and the signed Morse chart
+
+At a nondegenerate critical point of a `C^∞` function there are charts in which the function
+is a signed sum of squares (Milnor, Morse Theory, Lemma 2.2). The headline statement:
+
+* `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn` — existence of the signed Morse
+  chart around a critical point.
+
+The file also carries the perturbation machinery feeding it and the existence of Morse
+functions on compact manifolds (`Smale.ManifoldMorse.exists_morse_function`, Milnor
+h-cobordism Thm 2.5): `Smale.MorsePerturbation.*`, `Smale.ManifoldPerturbation.perturb`,
+`Smale.ManifoldMorse.IsMorseOn`, `exists_compact_plateau`, `exists_morse_extension`,
+`exists_morse_function_of_haar`, and the parametrized-integral tools
+(`contDiff_parametric_intervalIntegral*`).
+
+## Outline of the proof
+
+1. *Perturbations.*  `dualEquiv`, `coordinateGradient`, `linearPerturbation`;
+   `coordinateVector`, `perturb`, `contMDiff_perturb`.
+2. *Morse-ness is open.*  `IsMorseOn`, `contDiffOn_chartExpression`, `exists_compact_plateau`,
+   `exists_morse_extension`, `exists_morse_function_of_haar`, `exists_morse_function`.
+3. *The Morse lemma.*  `translationToZero`, `translateChart` (+ `_apply`, `_source`),
+   `restrictChart`, and the parametrized-integral form culminating in
+   `exists_signed_morse_chart_of_contDiffOn`.
+
+## Main definitions and results
+
+* `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn` : the signed Morse chart.
+* `Smale.ManifoldMorse.exists_morse_function` : existence of Morse functions.
+
+## References
+
+* [John Milnor, *Morse Theory*][milnor63], Lemma 2.2
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], Theorem 2.5
+
+## Tags
+
+Morse lemma, signed chart, Morse function existence
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

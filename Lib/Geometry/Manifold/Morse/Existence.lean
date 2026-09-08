@@ -11,6 +11,27 @@ import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Flow.HeightTranslating
 
+/-!
+# Existence of Morse functions and smoothing
+
+Every compact smooth manifold admits a Morse function (Milnor, h-cobordism Thm 2.5), built
+by chart-wise perturbation (`Smale.ChartMapPerturbation.*`), smoothing
+(`Smale.ManifoldSmoothing.*`), and relative homotopies (`Smale.HomotopicRelWithin.*`).
+
+## Main definitions and results
+
+* `Smale.ChartMapPerturbation.*`, `Smale.ManifoldSmoothing.*`, `Smale.HomotopicRelWithin.*`.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], Theorem 2.5
+
+## Tags
+
+Morse function existence, perturbation, smoothing
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

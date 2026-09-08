@@ -5,6 +5,31 @@ Authors: Fabian Franz
 -/
 import Mathlib
 
+/-!
+# The Morse handle: the unit-disc model of an attaching region
+
+The local model of a Morse handle: `UnitDisk N`/`UnitDisk P` for the negative and positive
+directions, the model map and its basic properties, the belt-passage coordinates used to
+trace flows through the handle, and the density of regular values.
+
+## Main definitions and results
+
+* `Smale.MorseHandle.UnitDisk`, `Smale.MorseHandle.modelMap`, `Smale.MorseHandle.modelMap_injective` :
+  the unit-disc model.
+* `Degree.BeltPassage.*` : belt-passage coordinates (`time`, `upper`, `lower`, `descentFlow`).
+* `Smale.RegularValues.dense_regularValues` : regular values are dense.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §1–2 (handles)
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §0
+
+## Tags
+
+Morse handle, belt passage, regular values
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

@@ -8,6 +8,27 @@ import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Flow.Compact
 
+/-!
+# Regular levels are manifolds
+
+A regular level set of a `C^∞` function is an embedded submanifold of one lower dimension
+(Lee, Cor 5.14): `Smale.RegularLevel.chartedSpace` and its chart lemmas, carrying the
+`letI := …` charted-space idiom of the source verbatim.
+
+## Main definitions and results
+
+* `Smale.RegularLevel.chartedSpace` : the charted-space structure on a regular level.
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Corollary 5.14
+
+## Tags
+
+regular level set, submanifold
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

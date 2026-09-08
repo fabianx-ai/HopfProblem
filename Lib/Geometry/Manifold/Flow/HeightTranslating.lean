@@ -10,6 +10,29 @@ import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 
+/-!
+# Height-translating flows
+
+Time-changing a gradient-like field by a positive factor so its flow transports between
+regular levels: `exists_heightTranslatingFlow`,
+`exists_regularSublevelHomeomorph_with_level` (Milnor h-cobordism §4's "hitting a level
+exactly").
+
+## Main definitions and results
+
+* `Smale.FlowConstruction.exists_heightTranslatingFlow` : the time-changed flow.
+* `Smale.FlowConstruction.exists_regularSublevelHomeomorph_with_level` : level transport.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §4
+
+## Tags
+
+time change, gradient-like flow, level transport
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

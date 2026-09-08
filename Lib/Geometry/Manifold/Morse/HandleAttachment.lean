@@ -9,6 +9,33 @@ import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 
+/-!
+# Handle attachment across a regular level
+
+Closed attachments, punctured handles, surgery boundary pairs, attachment boundary data,
+and the radial extension filling the core; with the homology rows
+(`lower_homologyOne_subsingleton_of_indices`,
+`attachingHomology_subsingleton_of_index`) giving the handle-attachment exact-sequence
+fragments: passing an index-λ critical point changes homology only in degrees λ−1, λ.
+
+## Main definitions and results
+
+* `Smale.ClosedAttachment.*`, `Smale.AttachmentBoundaryData.*`,
+  `Smale.SurgeryBoundaryPair.*`, `Smale.PuncturedHandle.*`, `Smale.RadialExtension.*`.
+* `Smale.ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices` : the
+  homology consequence.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §3, Thm 3.4
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §2.3
+
+## Tags
+
+handle attachment, surgery, radial extension
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 
