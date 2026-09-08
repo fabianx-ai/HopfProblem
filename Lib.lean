@@ -412,6 +412,7 @@ import Lib.Topology.Dimension.CubeBoundaryThreeDimension
 import Lib.CategoryTheory.Abelian.RightDerived
 import Lib.CategoryTheory.Abelian.Injective.ShortExact
 import Lib.Topology.Dimension.SphereTwo
+import Lib.CategoryTheory.Abelian.Injective.CompatibleResolution
 
 /-!
 # Reusable extracted library
