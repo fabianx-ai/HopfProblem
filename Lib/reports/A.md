@@ -441,3 +441,26 @@ from the DAG closure scans (dag.py with HOPI mapping):
 Drafts (red, unlanded) preserved under ~/s6-notes/hopf-lib-a/drafts/.
 Axiom probes pending: exists_morse_rearrangement_of_no_connection,
 cancel_of_transverse_level_isotopy, exists_excellent_indexed_morse_birth.
+
+---
+
+# Lane E1 unit-1 attempt (session 3 close): BLOCKED at the SurgeryWindows web
+
+The 197-decl cubic closure grew to 291 under definition-closure (the full
+MorseCancel/AdaptedWindows/AxisCoordinates/PartialChart neighborhood) and
+still fails: the kept material references `AdaptedWindows` (the band
+Lyapunov structure), whose family is interleaved with the MorseSurgeryData /
+SurgeryWindows web — the ownerless obstruction recorded at the D2 stage.
+
+Consequence: lane E1's base layer is coupled to the SurgeryWindows decision
+(the same one gating lane C's augmentation and lane G). Until that web gets
+its Stage-4 treatment (owner decision: rename-and-move as generic Morse
+window data, or keep as project code with an interface seam), the movable
+E1 units are the flow-side leaves only, and each of those needs the cubic
+core. E1 therefore joins C/F/G in the blocked column.
+
+Drafts preserved: drafts/Cubic.lean.draft (291-decl extraction),
+drafts/TimeChange.lean.draft (55), drafts/LevelCylinder.lean.draft (91),
+plus cfg-tc/cfg-lcyl/cfg-cubic and the definition-closure script inline in
+the session history. Resume order in the previous section stands, with the
+amendment: unit 1 requires the SurgeryWindows decision first.
