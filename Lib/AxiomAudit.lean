@@ -50,3 +50,10 @@ is an evidence command rather than library content.
 #print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
 #print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
+
+-- Lane A (singular homology core)
+#print axioms Mathoverflow1973.SingularMayerVietoris.exact_at_ambient
+#print axioms Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton
+-- stayed in Hopf/ (obstruction: Smale.SphereReflection/MorseSurgeryData
+-- infrastructure, lanes D1/F/G); same statement, probed via Hopf import:
+#print axioms Mathoverflow1973.Smale.LinearSphereAction.homology_eq_sign_smul

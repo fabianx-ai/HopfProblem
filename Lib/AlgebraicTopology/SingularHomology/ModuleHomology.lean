@@ -8,6 +8,58 @@ module
 public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.Chains
 
+/-!
+# Homology of a complex of ℤ-modules through explicit cycles and opchains
+
+For a short complex of ℤ-modules `S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)` and for
+morphisms of chain complexes, homology is presented without quotient APIs:
+
+* `FirstHurewicz.ChainHomology.shortCycleClass (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) :
+    ShortCycle S →ₗ[ℤ] S.homology` — surjective (`shortCycleClass_surjective`) with kernel the
+  image of `S.f` (`shortCycleClass_eq_zero_iff`);
+* `FirstHurewicz.ChainHomology.shortHomologyToChainClass S :
+    S.homology →ₗ[ℤ] ShortOpchains S` — injective (`shortHomologyToChainClass_injective`);
+* for a chain map `F`, surjectivity/injectivity of the induced homology map are detected by
+  cycle lifting and boundary lifting
+  (`SingularMayerVietoris.ModuleHomology.homologyMap_surjective_of_cycle_lifting`,
+  `homologyMap_injective_of_boundary_lifting`, `quasiIso_of_cycle_boundary_lifting`).
+
+The singular-homology files instantiate this API at the singular chain complex
+(`Chains.lean`) and use the quasi-isomorphism criteria for the small-simplices theorem
+(`MayerVietoris.lean`).
+
+## Outline of the proof
+
+1. *Cycles and opchains.*  `ShortCycle`, `ShortBoundaries`, `ShortOpchains` with their module
+   structures (`shortCycleModule`, `shortOpchainsModule`).
+2. *The two presentations.*  `shortCycleClass` composes the Mathlib homology iso
+   `S.moduleCatHomologyIso` with the quotient by boundaries; `shortHomologyToChainClass`
+   composes `S.homologyι` with `S.moduleCatOpcyclesIso`; their fibers are recorded by
+   `cycleClass_eq_iff`, `chainClass_eq_iff`, `boundaries1_le_ker`, and the element identities
+   `homologyToChainClass_cycleClass`, `homologyDesc_cycleClass`.
+3. *The morphism-level API.*  `Cycle`, `cycleClass`, `mapCycles`, `mapCycles_val`,
+   `homologyMap_cycleClass` compute the homology map on explicit cycles;
+   `homologyDesc` descends maps along boundary inclusions.
+4. *Quasi-isomorphism criteria.*  `homologyMap_surjective_of_cycle_lifting`,
+   `homologyMap_injective_of_boundary_lifting`, their combination
+   `quasiIsoAt_of_cycle_boundary_lifting`, `quasiIso_of_cycle_boundary_lifting`,
+   `quasiIso_of_injective_chain_conditions`, and `cycle_of_boundary_relation`.
+
+## Main definitions and results
+
+* `FirstHurewicz.ChainHomology.*` : the short-complex cycle/opchain API.
+* `SingularMayerVietoris.ModuleHomology.*` : the morphism API and quasi-iso criteria.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §2.1 (cycles, boundaries, homology)
+
+## Tags
+
+homology, chain complex, cycles, quasi-isomorphism
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 
@@ -28,28 +80,28 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 abbrev SingularMayerVietoris.ModuleHomology.Cycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) :=
   LinearMap.ker (K.d n ((ComplexShape.down ℕ).next n)).hom
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 instance SingularMayerVietoris.ModuleHomology.cycleModule (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : Module ℤ (SingularMayerVietoris.ModuleHomology.Cycle K n) :=
   (SingularMayerVietoris.ModuleHomology.Cycle K n).module
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.next_nat (n : ℕ) :
     (ComplexShape.down ℕ).next n = n - 1 := by cases n <;> simp
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.cycle_condition
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) : (K.d n (n - 1)).hom c.1 = 0 := by
   rw [← next_nat n]
   exact c.2
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 def SingularMayerVietoris.ModuleHomology.mkCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : K.X n) (hc : (K.d n (n - 1)).hom c = 0) :
     SingularMayerVietoris.ModuleHomology.Cycle K n :=
@@ -58,47 +110,47 @@ def SingularMayerVietoris.ModuleHomology.mkCycle (K : ChainComplex (ModuleCat.{0
     rw [next_nat n]
     exact hc⟩
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 def SingularMayerVietoris.ModuleHomology.cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] K.homology n :=
-  FirstHurewicz.ChainHomology.shortCycleClass (K.sc n)
+  SingularChains.ChainHomology.shortCycleClass (K.sc n)
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_surjective
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) : Function.Surjective (cycleClass K n) :=
-  FirstHurewicz.ChainHomology.shortCycleClass_surjective (K.sc n)
+  SingularChains.ChainHomology.shortCycleClass_surjective (K.sc n)
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_zero_iff
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) :
     cycleClass K n c = 0 ↔ ∃ b : K.X (n + 1), (K.d (n + 1) n).hom b = c.1 := by
-  refine (FirstHurewicz.ChainHomology.shortCycleClass_eq_zero_iff (K.sc n) c).trans ?_
+  refine (SingularChains.ChainHomology.shortCycleClass_eq_zero_iff (K.sc n) c).trans ?_
   change
     (∃ b : K.X ((ComplexShape.down ℕ).prev n),
         (K.d ((ComplexShape.down ℕ).prev n) n).hom b = c.1) ↔
       _
   rw [ChainComplex.prev]
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c d : SingularMayerVietoris.ModuleHomology.Cycle K n) :
     cycleClass K n c = cycleClass K n d ↔ ∃ b : K.X (n + 1), (K.d (n + 1) n).hom b = c.1 - d.1 := by
   simpa only [map_sub, sub_eq_zero, Submodule.coe_sub] using cycleClass_eq_zero_iff K n (c - d)
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 def SingularMayerVietoris.ModuleHomology.boundaryCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) (b : K.X (n + 1)) : SingularMayerVietoris.ModuleHomology.Cycle K n :=
   mkCycle K n ((K.d (n + 1) n).hom b)
     (congrArg (fun f : K.X (n + 1) ⟶ K.X (n - 1) => f.hom b) (K.d_comp_d (n + 1) n (n - 1)))
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 abbrev SingularMayerVietoris.ModuleHomology.shortMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : L ⟶ K) (n : ℕ) : L.sc n ⟶ K.sc n :=
   (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} ℤ) (ComplexShape.down ℕ) n).map f
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 def SingularMayerVietoris.ModuleHomology.mapCycles {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : L ⟶ K) (n : ℕ) :
     SingularMayerVietoris.ModuleHomology.Cycle L n →ₗ[ℤ]
@@ -106,7 +158,7 @@ def SingularMayerVietoris.ModuleHomology.mapCycles {K L : ChainComplex (ModuleCa
   ((L.sc n).moduleCatCyclesIso.inv ≫
       CategoryTheory.ShortComplex.cyclesMap (shortMap f n) ≫ (K.sc n).moduleCatCyclesIso.hom).hom
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 @[simp]
 theorem SingularMayerVietoris.ModuleHomology.mapCycles_val
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
@@ -121,7 +173,7 @@ theorem SingularMayerVietoris.ModuleHomology.mapCycles_val
       (L.sc n).moduleCatCyclesIso_inv_iCycles_assoc]
   exact congrArg (fun g => g.hom c) hcat
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle L n) :
@@ -140,7 +192,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass
     rw [CategoryTheory.ShortComplex.homologyπ_naturality]
   exact congrArg (fun g => g.hom c) hcat
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_surjective_of_cycle_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hlift :
@@ -157,7 +209,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_surjective_of_cycle_lif
   apply (cycleClass_eq_iff K n c (mapCycles f n z)).mpr
   exact ⟨b, by simpa only [mapCycles_val] using hb⟩
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_injective_of_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hlift :
@@ -177,7 +229,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_injective_of_boundary_l
   apply (cycleClass_eq_iff L n c d).mpr
   exact hlift (c - d) b (hb.trans (mapCycles_val f n (c - d)))
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.quasiIsoAt_of_cycle_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hsurj :
@@ -196,7 +248,7 @@ theorem SingularMayerVietoris.ModuleHomology.quasiIsoAt_of_cycle_boundary_liftin
     ⟨homologyMap_injective_of_boundary_lifting f n hinj,
       homologyMap_surjective_of_cycle_lifting f n hsurj⟩
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_cycle_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K)
     (hsurj :
@@ -215,7 +267,7 @@ theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_cycle_boundary_lifting
   intro n
   exact quasiIsoAt_of_cycle_boundary_lifting f n (hsurj n) (hinj n)
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.cycle_of_boundary_relation
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hf : Function.Injective (f.f (n - 1)).hom) (c : K.X n) (hc : (K.d n (n - 1)).hom c = 0)
@@ -230,7 +282,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycle_of_boundary_relation
   rw [map_zero]
   exact (congrArg (fun g : L.X n ⟶ K.X (n - 1) => g.hom z) (f.comm n (n - 1))).symm.trans hz
 
-attribute [local instance] FirstHurewicz.ChainHomology.shortCycleModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_injective_chain_conditions
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K)
     (hf : ∀ n, Function.Injective (f.f n).hom)

@@ -10,6 +10,72 @@ public import Lib.Algebra.Homology.MayerVietorisShortExact
 public import Lib.AlgebraicTopology.SingularHomology.Chains
 public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 
+/-!
+# The Mayer–Vietoris theorem for singular homology
+
+For two open sets `U`, `V` covering `X` (`U ∪ V = univ`), the singular chain complexes fit
+into a short exact sequence of chain complexes `0 → C(U ∩ V) → C(U) ⊞ C(V) → C^{U,V}(X) → 0`,
+and the induced long exact sequence in homology is the Mayer–Vietoris sequence (Hatcher
+§2.2). The headline exactness statement:
+
+* `SingularMayerVietoris.exact_at_ambient (U V : Set X) (hU : IsOpen U) (hV : IsOpen V)
+    (hcover : U ∪ V = Set.univ)` — exactness at the ambient homology of the long exact
+  sequence assembled from `chainSequence`.
+
+The sequence is built so that every chain of `C^{U,V}(X)` is small after enough barycentric
+subdivision, and small chains split into `U`- and `V`-parts (`smallInclusion_quasiIso` —
+the small simplices theorem, Hatcher Prop 2.21): the inclusion of the small chain complex
+into the ambient one is a quasi-isomorphism.
+
+## Outline of the proof
+
+1. *Supported and small chains.*  `supportedChainSubmodule`, `smallChainSubmodule`,
+   `smallComplex`, `smallInclusion`; small chains split (`toSmallLeft`, `toSmallRight`,
+   `toSmall_jointly_surjective`) and the split parts agree on the intersection
+   (`intersectionToLeft`, `intersectionToRight`).
+2. *The short exact sequence.*  `middleComplex`, `leftMap`, `rightMap`, `chainSequence`,
+   `chainSequence_shortExact` (via `SmallChainBiprod.shortExactOfComplexes`);
+   `homologyLinearMap`, `connectingMap`, and the three exactness points of the
+   module-level sequence (`exact_at_leftHomology`, `exact_at_middleHomology`,
+   `exact_at_rightHomology`).
+3. *Affine simplices and formal chains.*  `affineSimplex`, `simplexBarycenter`,
+   `formalSimplex`, `formalLift`, `formalCone`, `formalBoundary`, `formalSubdivision`;
+   the boundary identities `formalBoundary_cone`, `formalBoundary_boundary`,
+   `formalMap_boundary`.
+4. *Barycentric subdivision.*  `subdivision`, `subdivision_simplex`, `subdivision_boundary`;
+   the chain homotopy `subdivisionHomotopy` between subdivision and identity
+   (`subdivisionHomotopy_boundary`), iterated (`formalSubdivisionIteratedHomotopy`).
+5. *Small simplices.*  Supports (`formalChainsSupported`), the Lebesgue-number argument
+   (`exists_lebesgue_number_two`, `meshFactor`, `formalSubdivision_mesh`),
+   `eventually_subdivision_mem_small`, and `smallInclusion_quasiIso` — after enough
+   subdivisions every cycle is small, so `smallInclusion` is a quasi-isomorphism
+   (Hatcher Prop 2.21).
+6. *The long exact sequence.*  Comparison of the small sequence with the ambient one
+   (`smallHomologyComparison`, `small_exact_at_*`, `rightTransport_*`), the connecting
+   homomorphism `connectingHomomorphism`, and the exactness theorems
+   `exact_at_intersection`, `exact_at_pair`, `exact_at_ambient`.
+
+## Main definitions and results
+
+* `SingularMayerVietoris.chainSequence` / `chainSequence_shortExact` : the short exact
+  sequence of chain complexes.
+* `SingularMayerVietoris.subdivision`, `.subdivisionHomotopy` : barycentric subdivision and
+  its chain homotopy.
+* `SingularMayerVietoris.smallInclusion_quasiIso` : the small simplices theorem
+  (Hatcher Prop 2.21).
+* `SingularMayerVietoris.exact_at_intersection/_pair/_ambient` :
+  the Mayer–Vietoris long exact sequence (Hatcher Thm 2.20's conclusion for two opens).
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §2.2, Prop 2.21 and Theorem 2.20
+
+## Tags
+
+Mayer–Vietoris, barycentric subdivision, small simplices, long exact sequence
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 
@@ -31,55 +97,55 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 def SingularMayerVietoris.supportedChainSubmodule {X : Type} [TopologicalSpace X] (U : Set X)
-    (n : ℕ) : Submodule ℤ (FirstHurewicz.Chains X n) :=
+    (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
   Submodule.span ℤ
-    (FirstHurewicz.simplexChain X n '' {σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ U})
+    (SingularChains.simplexChain X n '' {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U})
 
 def SingularMayerVietoris.smallChainSubmodule {X : Type} [TopologicalSpace X] (U V : Set X)
-    (n : ℕ) : Submodule ℤ (FirstHurewicz.Chains X n) :=
+    (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
   supportedChainSubmodule U n ⊔ supportedChainSubmodule V n
 
 theorem SingularMayerVietoris.smallChainSubmodule_eq_span {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     smallChainSubmodule U V n =
       Submodule.span ℤ
-        (FirstHurewicz.simplexChain X n ''
-          {σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ U ∨ Set.range σ ⊆ V}) := by
+        (SingularChains.simplexChain X n ''
+          {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U ∨ Set.range σ ⊆ V}) := by
   rw [smallChainSubmodule, supportedChainSubmodule, supportedChainSubmodule, ←
     Submodule.span_union, ← Set.image_union]
   rfl
 
 theorem SingularMayerVietoris.simplexChain_mem_supported {X : Type} [TopologicalSpace X]
-    (U : Set X) (n : ℕ) (σ : FirstHurewicz.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
-    FirstHurewicz.simplexChain X n σ ∈ supportedChainSubmodule U n :=
+    (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
+    SingularChains.simplexChain X n σ ∈ supportedChainSubmodule U n :=
   Submodule.subset_span ⟨σ, hσ, rfl⟩
 
 theorem SingularMayerVietoris.simplexChain_mem_small {X : Type} [TopologicalSpace X] (U V : Set X)
-    (n : ℕ) (σ : FirstHurewicz.SingularSimplex X n) (hσ : Set.range σ ⊆ U ∨ Set.range σ ⊆ V) :
-    FirstHurewicz.simplexChain X n σ ∈ smallChainSubmodule U V n := by
+    (n : ℕ) (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U ∨ Set.range σ ⊆ V) :
+    SingularChains.simplexChain X n σ ∈ smallChainSubmodule U V n := by
   rw [smallChainSubmodule_eq_span]
   exact Submodule.subset_span ⟨σ, hσ, rfl⟩
 
 theorem SingularMayerVietoris.simplex_face_supported {X : Type} [TopologicalSpace X] (U : Set X)
-    (n : ℕ) (σ : FirstHurewicz.SingularSimplex X (n + 1)) (hσ : Set.range σ ⊆ U)
-    (i : Fin (n + 2)) : Set.range (σ.comp (FirstHurewicz.simplexFace n i)) ⊆ U := by
+    (n : ℕ) (σ : SingularChains.SingularSimplex X (n + 1)) (hσ : Set.range σ ⊆ U)
+    (i : Fin (n + 2)) : Set.range (σ.comp (SingularChains.simplexFace n i)) ⊆ U := by
   rintro x ⟨s, rfl⟩
-  exact hσ ⟨FirstHurewicz.simplexFace n i s, rfl⟩
+  exact hσ ⟨SingularChains.simplexFace n i s, rfl⟩
 
 theorem SingularMayerVietoris.boundary_mem_small_succ {X : Type} [TopologicalSpace X]
-    (U V : Set X) (n : ℕ) (c : FirstHurewicz.Chains X (n + 1))
+    (U V : Set X) (n : ℕ) (c : SingularChains.Chains X (n + 1))
     (hc : c ∈ smallChainSubmodule U V (n + 1)) :
-    ((FirstHurewicz.singularComplex X).d (n + 1) n).hom c ∈ smallChainSubmodule U V n := by
+    ((SingularChains.singularComplex X).d (n + 1) n).hom c ∈ smallChainSubmodule U V n := by
   have hle :
     smallChainSubmodule U V (n + 1) ≤
-      (smallChainSubmodule U V n).comap ((FirstHurewicz.singularComplex X).d (n + 1) n).hom := by
+      (smallChainSubmodule U V n).comap ((SingularChains.singularComplex X).d (n + 1) n).hom := by
     rw [smallChainSubmodule_eq_span]
     apply Submodule.span_le.mpr
     rintro _ ⟨σ, hσ, rfl⟩
     change
-      (FirstHurewicz.singularComplex X).d (n + 1) n (FirstHurewicz.simplexChain X (n + 1) σ) ∈
+      (SingularChains.singularComplex X).d (n + 1) n (SingularChains.simplexChain X (n + 1) σ) ∈
         smallChainSubmodule U V n
-    rw [FirstHurewicz.boundary_simplex]
+    rw [SingularChains.boundary_simplex]
     apply Submodule.sum_mem
     intro i hi
     apply (smallChainSubmodule U V n).toAddSubgroup.zsmul_mem
@@ -90,15 +156,15 @@ theorem SingularMayerVietoris.boundary_mem_small_succ {X : Type} [TopologicalSpa
   exact hle hc
 
 theorem SingularMayerVietoris.boundary_mem_small {X : Type} [TopologicalSpace X] (U V : Set X)
-    (i j : ℕ) (c : FirstHurewicz.Chains X i) (hc : c ∈ smallChainSubmodule U V i) :
-    ((FirstHurewicz.singularComplex X).d i j).hom c ∈ smallChainSubmodule U V j := by
+    (i j : ℕ) (c : SingularChains.Chains X i) (hc : c ∈ smallChainSubmodule U V i) :
+    ((SingularChains.singularComplex X).d i j).hom c ∈ smallChainSubmodule U V j := by
   by_cases hij : (ComplexShape.down ℕ).Rel i j
   · have he : j + 1 = i := hij
     subst i
     exact boundary_mem_small_succ U V j c hc
   · have he :=
-      congrArg (fun f : FirstHurewicz.Chains X i ⟶ FirstHurewicz.Chains X j => f.hom c)
-        ((FirstHurewicz.singularComplex X).shape i j hij)
+      congrArg (fun f : SingularChains.Chains X i ⟶ SingularChains.Chains X j => f.hom c)
+        ((SingularChains.singularComplex X).shape i j hij)
     rw [he]
     exact Submodule.zero_mem _
 
@@ -108,7 +174,7 @@ instance SingularMayerVietoris.smallChainModule {X : Type} [TopologicalSpace X] 
 
 def SingularMayerVietoris.smallDifferential {X : Type} [TopologicalSpace X] (U V : Set X)
     (i j : ℕ) : smallChainSubmodule U V i →ₗ[ℤ] smallChainSubmodule U V j :=
-  (((FirstHurewicz.singularComplex X).d i j).hom.comp
+  (((SingularChains.singularComplex X).d i j).hom.comp
         (smallChainSubmodule U V i).subtype).codRestrict
     _ (fun c => boundary_mem_small U V i j c.1 c.2)
 
@@ -124,8 +190,8 @@ def SingularMayerVietoris.smallComplex {X : Type} [TopologicalSpace X] (U V : Se
     intro c
     apply Subtype.ext
     exact
-      congrArg (fun f : FirstHurewicz.Chains X i ⟶ FirstHurewicz.Chains X j => f.hom c.1)
-        ((FirstHurewicz.singularComplex X).shape i j hij)
+      congrArg (fun f : SingularChains.Chains X i ⟶ SingularChains.Chains X j => f.hom c.1)
+        ((SingularChains.singularComplex X).shape i j hij)
   d_comp_d' i j k hij
     hjk := by
     apply ModuleCat.hom_ext
@@ -133,11 +199,11 @@ def SingularMayerVietoris.smallComplex {X : Type} [TopologicalSpace X] (U V : Se
     intro c
     apply Subtype.ext
     exact
-      congrArg (fun f : FirstHurewicz.Chains X i ⟶ FirstHurewicz.Chains X k => f.hom c.1)
-        ((FirstHurewicz.singularComplex X).d_comp_d i j k)
+      congrArg (fun f : SingularChains.Chains X i ⟶ SingularChains.Chains X k => f.hom c.1)
+        ((SingularChains.singularComplex X).d_comp_d i j k)
 
 def SingularMayerVietoris.smallInclusion {X : Type} [TopologicalSpace X] (U V : Set X) :
-    smallComplex U V ⟶ FirstHurewicz.singularComplex X
+    smallComplex U V ⟶ SingularChains.singularComplex X
     where
   f n := ModuleCat.ofHom (smallChainSubmodule U V n).subtype
   comm' i j
@@ -157,7 +223,7 @@ instance SingularMayerVietoris.smallInclusion_mono {X : Type} [TopologicalSpace 
     (fun n => (ModuleCat.mono_iff_injective _).mpr (smallInclusion_f_injective U V n))
 
 def SingularMayerVietoris.liftToSmall {X : Type} [TopologicalSpace X] (U V : Set X)
-    {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ FirstHurewicz.singularComplex X)
+    {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ SingularChains.singularComplex X)
     (hf : ∀ n (c : K.X n), (f.f n).hom c ∈ smallChainSubmodule U V n) : K ⟶ smallComplex U V
     where
   f n := ModuleCat.ofHom ((f.f n).hom.codRestrict _ (hf n))
@@ -167,11 +233,11 @@ def SingularMayerVietoris.liftToSmall {X : Type} [TopologicalSpace X] (U V : Set
     apply LinearMap.ext
     intro c
     apply Subtype.ext
-    exact congrArg (fun g : K.X i ⟶ FirstHurewicz.Chains X j => g.hom c) (f.comm i j)
+    exact congrArg (fun g : K.X i ⟶ SingularChains.Chains X j => g.hom c) (f.comm i j)
 
 @[simp]
 theorem SingularMayerVietoris.liftToSmall_inclusion {X : Type} [TopologicalSpace X] (U V : Set X)
-    {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ FirstHurewicz.singularComplex X)
+    {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ SingularChains.singularComplex X)
     (hf : ∀ n (c : K.X n), (f.f n).hom c ∈ smallChainSubmodule U V n) :
     liftToSmall U V f hf ≫ smallInclusion U V = f := by
   apply HomologicalComplex.hom_ext
@@ -184,89 +250,89 @@ def SingularMayerVietoris.subtypeInclusion {X : Type} [TopologicalSpace X] (U : 
   ⟨Subtype.val, continuous_subtype_val⟩
 
 def SingularMayerVietoris.restrictSimplex {X : Type} [TopologicalSpace X] (U : Set X) (n : ℕ)
-    (σ : FirstHurewicz.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
-    FirstHurewicz.SingularSimplex U n :=
+    (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
+    SingularChains.SingularSimplex U n :=
   ⟨fun p => ⟨σ p, hσ ⟨p, rfl⟩⟩, σ.continuous.subtype_mk _⟩
 
 @[simp]
 theorem SingularMayerVietoris.subtypeInclusion_comp_restrictSimplex {X : Type}
-    [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : FirstHurewicz.SingularSimplex X n)
+    [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex X n)
     (hσ : Set.range σ ⊆ U) : (subtypeInclusion U).comp (restrictSimplex U n σ hσ) = σ := by
   ext p
   rfl
 
 theorem SingularMayerVietoris.range_subtypeInclusion_comp {X : Type} [TopologicalSpace X]
-    (U : Set X) (n : ℕ) (σ : FirstHurewicz.SingularSimplex U n) :
+    (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n) :
     Set.range ((subtypeInclusion U).comp σ) ⊆ U := by
   rintro x ⟨p, rfl⟩
   exact (σ p).2
 
 @[simp]
 theorem SingularMayerVietoris.restrictSimplex_inclusion {X : Type} [TopologicalSpace X]
-    (U : Set X) (n : ℕ) (σ : FirstHurewicz.SingularSimplex U n)
+    (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n)
     (hσ : Set.range ((subtypeInclusion U).comp σ) ⊆ U) :
     restrictSimplex U n ((subtypeInclusion U).comp σ) hσ = σ := by
   ext p
   rfl
 
 def SingularMayerVietoris.simplexRetraction {X : Type} [TopologicalSpace X] (U : Set X) (n : ℕ)
-    (σ : FirstHurewicz.SingularSimplex X n) : FirstHurewicz.Chains U n := by
+    (σ : SingularChains.SingularSimplex X n) : SingularChains.Chains U n := by
   classical
     exact
-    if hσ : Set.range σ ⊆ U then FirstHurewicz.simplexChain U n (restrictSimplex U n σ hσ) else 0
+    if hσ : Set.range σ ⊆ U then SingularChains.simplexChain U n (restrictSimplex U n σ hσ) else 0
 
 def SingularMayerVietoris.subtypeChainRetraction {X : Type} [TopologicalSpace X] (U : Set X)
-    (n : ℕ) : FirstHurewicz.Chains X n →ₗ[ℤ] FirstHurewicz.Chains U n :=
-  FirstHurewicz.chainLift X n (simplexRetraction U n)
+    (n : ℕ) : SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains U n :=
+  SingularChains.chainLift X n (simplexRetraction U n)
 
 theorem SingularMayerVietoris.subtypeChainRetraction_inclusion_simplex {X : Type}
-    [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : FirstHurewicz.SingularSimplex U n) :
+    [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n) :
     subtypeChainRetraction U n
-        (FirstHurewicz.inducedChain (subtypeInclusion U) n (FirstHurewicz.simplexChain U n σ)) =
-      FirstHurewicz.simplexChain U n σ := by
-  rw [FirstHurewicz.inducedChain_simplex]
-  change FirstHurewicz.chainLift X n (simplexRetraction U n) _ = _
-  rw [FirstHurewicz.chainLift_simplex]
+        (SingularChains.inducedChain (subtypeInclusion U) n (SingularChains.simplexChain U n σ)) =
+      SingularChains.simplexChain U n σ := by
+  rw [SingularChains.inducedChain_simplex]
+  change SingularChains.chainLift X n (simplexRetraction U n) _ = _
+  rw [SingularChains.chainLift_simplex]
   simp only [simplexRetraction, dif_pos (range_subtypeInclusion_comp U n σ),
     restrictSimplex_inclusion]
 
 theorem SingularMayerVietoris.subtypeChainRetraction_comp {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
-    (subtypeChainRetraction U n).comp (FirstHurewicz.inducedChain (subtypeInclusion U) n) =
+    (subtypeChainRetraction U n).comp (SingularChains.inducedChain (subtypeInclusion U) n) =
       LinearMap.id := by
-  apply FirstHurewicz.chainMap_ext U n
+  apply SingularChains.chainMap_ext U n
   intro σ
   exact subtypeChainRetraction_inclusion_simplex U n σ
 
 theorem SingularMayerVietoris.subtypeInclusion_chain_injective {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
-    Function.Injective (FirstHurewicz.inducedChain (subtypeInclusion U) n) :=
+    Function.Injective (SingularChains.inducedChain (subtypeInclusion U) n) :=
   (show
       Function.LeftInverse (subtypeChainRetraction U n)
-        (FirstHurewicz.inducedChain (subtypeInclusion U) n)
+        (SingularChains.inducedChain (subtypeInclusion U) n)
       from fun c => LinearMap.congr_fun (subtypeChainRetraction_comp U n) c).injective
 
 theorem SingularMayerVietoris.subtypeInclusion_generator_image {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
-    FirstHurewicz.inducedChain (subtypeInclusion U) n ''
-        Set.range (FirstHurewicz.simplexChain U n) =
-      FirstHurewicz.simplexChain X n ''
-        {σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ U} := by
+    SingularChains.inducedChain (subtypeInclusion U) n ''
+        Set.range (SingularChains.simplexChain U n) =
+      SingularChains.simplexChain X n ''
+        {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U} := by
   ext c
   constructor
   · rintro ⟨_, ⟨σ, rfl⟩, rfl⟩
     exact
       ⟨(subtypeInclusion U).comp σ, range_subtypeInclusion_comp U n σ,
-        (FirstHurewicz.inducedChain_simplex (subtypeInclusion U) n σ).symm⟩
+        (SingularChains.inducedChain_simplex (subtypeInclusion U) n σ).symm⟩
   · rintro ⟨σ, hσ, rfl⟩
-    refine ⟨FirstHurewicz.simplexChain U n (restrictSimplex U n σ hσ), ⟨_, rfl⟩, ?_⟩
-    rw [FirstHurewicz.inducedChain_simplex, subtypeInclusion_comp_restrictSimplex]
+    refine ⟨SingularChains.simplexChain U n (restrictSimplex U n σ hσ), ⟨_, rfl⟩, ?_⟩
+    rw [SingularChains.inducedChain_simplex, subtypeInclusion_comp_restrictSimplex]
 
 theorem SingularMayerVietoris.subtypeInclusion_chain_range {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
-    LinearMap.range (FirstHurewicz.inducedChain (subtypeInclusion U) n) =
+    LinearMap.range (SingularChains.inducedChain (subtypeInclusion U) n) =
       supportedChainSubmodule U n := by
-  rw [LinearMap.range_eq_map, ← FirstHurewicz.simplexChain_span U n, Submodule.map_span,
+  rw [LinearMap.range_eq_map, ← SingularChains.simplexChain_span U n, Submodule.map_span,
     subtypeInclusion_generator_image]
   rfl
 
@@ -275,30 +341,30 @@ theorem SingularMayerVietoris.supportedChainSubmodule_inf {X : Type} [Topologica
     supportedChainSubmodule U n ⊓ supportedChainSubmodule V n =
       supportedChainSubmodule (U ∩ V) n := by
   have hsets :
-    ({σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ U} ∩
-        {σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ V}) =
-      {σ : FirstHurewicz.SingularSimplex X n | Set.range σ ⊆ U ∩ V} := by
+    ({σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U} ∩
+        {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ V}) =
+      {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U ∩ V} := by
     ext σ
     simp only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.subset_inter_iff]
   unfold supportedChainSubmodule
-  rw [FirstHurewicz.simplex_span_inter, hsets]
+  rw [SingularChains.simplex_span_inter, hsets]
 
 theorem SingularMayerVietoris.subtypeInclusion_chain_mem {X : Type} [TopologicalSpace X]
-    (U : Set X) (n : ℕ) (c : FirstHurewicz.Chains U n) :
-    FirstHurewicz.inducedChain (subtypeInclusion U) n c ∈ supportedChainSubmodule U n := by
+    (U : Set X) (n : ℕ) (c : SingularChains.Chains U n) :
+    SingularChains.inducedChain (subtypeInclusion U) n c ∈ supportedChainSubmodule U n := by
   rw [← subtypeInclusion_chain_range U n]
   exact ⟨c, rfl⟩
 
 def SingularMayerVietoris.toSmallLeft {X : Type} [TopologicalSpace X] (U V : Set X) :
-    FirstHurewicz.singularComplex U ⟶ smallComplex U V :=
-  liftToSmall U V (FirstHurewicz.singularChainMap (subtypeInclusion U))
+    SingularChains.singularComplex U ⟶ smallComplex U V :=
+  liftToSmall U V (SingularChains.singularChainMap (subtypeInclusion U))
     (fun n c =>
       (show supportedChainSubmodule U n ≤ smallChainSubmodule U V n from le_sup_left)
         (subtypeInclusion_chain_mem U n c))
 
 def SingularMayerVietoris.toSmallRight {X : Type} [TopologicalSpace X] (U V : Set X) :
-    FirstHurewicz.singularComplex V ⟶ smallComplex U V :=
-  liftToSmall U V (FirstHurewicz.singularChainMap (subtypeInclusion V))
+    SingularChains.singularComplex V ⟶ smallComplex U V :=
+  liftToSmall U V (SingularChains.singularChainMap (subtypeInclusion V))
     (fun n c =>
       (show supportedChainSubmodule V n ≤ smallChainSubmodule U V n from le_sup_right)
         (subtypeInclusion_chain_mem V n c))
@@ -306,19 +372,19 @@ def SingularMayerVietoris.toSmallRight {X : Type} [TopologicalSpace X] (U V : Se
 @[simp]
 theorem SingularMayerVietoris.toSmallLeft_inclusion {X : Type} [TopologicalSpace X]
     (U V : Set X) :
-    toSmallLeft U V ≫ smallInclusion U V = FirstHurewicz.singularChainMap (subtypeInclusion U) :=
+    toSmallLeft U V ≫ smallInclusion U V = SingularChains.singularChainMap (subtypeInclusion U) :=
   liftToSmall_inclusion U V _ _
 
 @[simp]
 theorem SingularMayerVietoris.toSmallRight_inclusion {X : Type} [TopologicalSpace X]
     (U V : Set X) :
-    toSmallRight U V ≫ smallInclusion U V = FirstHurewicz.singularChainMap (subtypeInclusion V) :=
+    toSmallRight U V ≫ smallInclusion U V = SingularChains.singularChainMap (subtypeInclusion V) :=
   liftToSmall_inclusion U V _ _
 
 theorem SingularMayerVietoris.toSmall_jointly_surjective {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (s : (smallComplex U V).X n) :
-    ∃ x : FirstHurewicz.Chains U n,
-      ∃ y : FirstHurewicz.Chains V n,
+    ∃ x : SingularChains.Chains U n,
+      ∃ y : SingularChains.Chains V n,
         ((toSmallLeft U V).f n).hom x + ((toSmallRight U V).f n).hom y = s := by
   obtain ⟨c, hc, d, hd, hcd⟩ := Submodule.mem_sup.mp s.2
   rw [← subtypeInclusion_chain_range U n] at hc
@@ -328,24 +394,24 @@ theorem SingularMayerVietoris.toSmall_jointly_surjective {X : Type} [Topological
   refine ⟨x, y, ?_⟩
   apply Subtype.ext
   change
-    FirstHurewicz.inducedChain (subtypeInclusion U) n x +
-        FirstHurewicz.inducedChain (subtypeInclusion V) n y =
+    SingularChains.inducedChain (subtypeInclusion U) n x +
+        SingularChains.inducedChain (subtypeInclusion V) n y =
       s.1
   rw [hx, hy]
   exact hcd
 
 def SingularMayerVietoris.intersectionToLeft {X : Type} [TopologicalSpace X] (U V : Set X) :
-    FirstHurewicz.singularComplex (U ∩ V : Set X) ⟶ FirstHurewicz.singularComplex U :=
-  FirstHurewicz.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V ⊆ U))
+    SingularChains.singularComplex (U ∩ V : Set X) ⟶ SingularChains.singularComplex U :=
+  SingularChains.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V ⊆ U))
 
 def SingularMayerVietoris.intersectionToRight {X : Type} [TopologicalSpace X] (U V : Set X) :
-    FirstHurewicz.singularComplex (U ∩ V : Set X) ⟶ FirstHurewicz.singularComplex V :=
-  FirstHurewicz.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V ⊆ V))
+    SingularChains.singularComplex (U ∩ V : Set X) ⟶ SingularChains.singularComplex V :=
+  SingularChains.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V ⊆ V))
 
 theorem SingularMayerVietoris.intersectionToLeft_ambient {X : Type} [TopologicalSpace X]
     (U V : Set X) :
-    intersectionToLeft U V ≫ FirstHurewicz.singularChainMap (subtypeInclusion U) =
-      FirstHurewicz.singularChainMap (subtypeInclusion (U ∩ V)) := by
+    intersectionToLeft U V ≫ SingularChains.singularChainMap (subtypeInclusion U) =
+      SingularChains.singularChainMap (subtypeInclusion (U ∩ V)) := by
   have h :=
     ((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
           (ModuleCat.of ℤ ℤ)).map_comp
@@ -355,8 +421,8 @@ theorem SingularMayerVietoris.intersectionToLeft_ambient {X : Type} [Topological
 
 theorem SingularMayerVietoris.intersectionToRight_ambient {X : Type} [TopologicalSpace X]
     (U V : Set X) :
-    intersectionToRight U V ≫ FirstHurewicz.singularChainMap (subtypeInclusion V) =
-      FirstHurewicz.singularChainMap (subtypeInclusion (U ∩ V)) := by
+    intersectionToRight U V ≫ SingularChains.singularChainMap (subtypeInclusion V) =
+      SingularChains.singularChainMap (subtypeInclusion (U ∩ V)) := by
   have h :=
     ((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj
           (ModuleCat.of ℤ ℤ)).map_comp
@@ -366,16 +432,16 @@ theorem SingularMayerVietoris.intersectionToRight_ambient {X : Type} [Topologica
 
 @[simp]
 theorem SingularMayerVietoris.intersectionToLeft_ambient_apply {X : Type} [TopologicalSpace X]
-    (U V : Set X) (n : ℕ) (c : FirstHurewicz.Chains (U ∩ V : Set X) n) :
-    FirstHurewicz.inducedChain (subtypeInclusion U) n (((intersectionToLeft U V).f n).hom c) =
-      FirstHurewicz.inducedChain (subtypeInclusion (U ∩ V)) n c :=
+    (U V : Set X) (n : ℕ) (c : SingularChains.Chains (U ∩ V : Set X) n) :
+    SingularChains.inducedChain (subtypeInclusion U) n (((intersectionToLeft U V).f n).hom c) =
+      SingularChains.inducedChain (subtypeInclusion (U ∩ V)) n c :=
   congrArg (fun f => (f.f n).hom c) (intersectionToLeft_ambient U V)
 
 @[simp]
 theorem SingularMayerVietoris.intersectionToRight_ambient_apply {X : Type} [TopologicalSpace X]
-    (U V : Set X) (n : ℕ) (c : FirstHurewicz.Chains (U ∩ V : Set X) n) :
-    FirstHurewicz.inducedChain (subtypeInclusion V) n (((intersectionToRight U V).f n).hom c) =
-      FirstHurewicz.inducedChain (subtypeInclusion (U ∩ V)) n c :=
+    (U V : Set X) (n : ℕ) (c : SingularChains.Chains (U ∩ V : Set X) n) :
+    SingularChains.inducedChain (subtypeInclusion V) n (((intersectionToRight U V).f n).hom c) =
+      SingularChains.inducedChain (subtypeInclusion (U ∩ V)) n c :=
   congrArg (fun f => (f.f n).hom c) (intersectionToRight_ambient U V)
 
 theorem SingularMayerVietoris.intersectionToLeft_f_injective {X : Type} [TopologicalSpace X]
@@ -384,13 +450,13 @@ theorem SingularMayerVietoris.intersectionToLeft_f_injective {X : Type} [Topolog
   apply subtypeInclusion_chain_injective (U ∩ V) n
   calc
     _ =
-        FirstHurewicz.inducedChain (subtypeInclusion U) n
+        SingularChains.inducedChain (subtypeInclusion U) n
           (((intersectionToLeft U V).f n).hom a) :=
       (intersectionToLeft_ambient_apply U V n a).symm
     _ =
-        FirstHurewicz.inducedChain (subtypeInclusion U) n
+        SingularChains.inducedChain (subtypeInclusion U) n
           (((intersectionToLeft U V).f n).hom b) :=
-      (congrArg (FirstHurewicz.inducedChain (subtypeInclusion U) n) hab)
+      (congrArg (SingularChains.inducedChain (subtypeInclusion U) n) hab)
     _ = _ := intersectionToLeft_ambient_apply U V n b
 
 theorem SingularMayerVietoris.intersection_toSmall_comm {X : Type} [TopologicalSpace X]
@@ -401,19 +467,19 @@ theorem SingularMayerVietoris.intersection_toSmall_comm {X : Type} [TopologicalS
     intersectionToLeft_ambient, intersectionToRight_ambient]
 
 theorem SingularMayerVietoris.toSmall_overlap_lift {X : Type} [TopologicalSpace X] (U V : Set X)
-    (n : ℕ) (x : FirstHurewicz.Chains U n) (y : FirstHurewicz.Chains V n)
+    (n : ℕ) (x : SingularChains.Chains U n) (y : SingularChains.Chains V n)
     (hxy : ((toSmallLeft U V).f n).hom x = ((toSmallRight U V).f n).hom y) :
-    ∃ z : FirstHurewicz.Chains (U ∩ V : Set X) n,
+    ∃ z : SingularChains.Chains (U ∩ V : Set X) n,
       ((intersectionToLeft U V).f n).hom z = x ∧ ((intersectionToRight U V).f n).hom z = y := by
   have hxy' :
-    FirstHurewicz.inducedChain (subtypeInclusion U) n x =
-      FirstHurewicz.inducedChain (subtypeInclusion V) n y :=
+    SingularChains.inducedChain (subtypeInclusion U) n x =
+      SingularChains.inducedChain (subtypeInclusion V) n y :=
     congrArg (fun s : (smallComplex U V).X n => s.1) hxy
-  have hy : FirstHurewicz.inducedChain (subtypeInclusion U) n x ∈ supportedChainSubmodule V n := by
+  have hy : SingularChains.inducedChain (subtypeInclusion U) n x ∈ supportedChainSubmodule V n := by
     rw [hxy']
     exact subtypeInclusion_chain_mem V n y
   have hi :
-    FirstHurewicz.inducedChain (subtypeInclusion U) n x ∈
+    SingularChains.inducedChain (subtypeInclusion U) n x ∈
       supportedChainSubmodule U n ⊓ supportedChainSubmodule V n :=
     ⟨subtypeInclusion_chain_mem U n x, hy⟩
   rw [supportedChainSubmodule_inf, ← subtypeInclusion_chain_range (U ∩ V) n] at hi
@@ -428,10 +494,10 @@ theorem SingularMayerVietoris.toSmall_overlap_lift {X : Type} [TopologicalSpace 
 
 def SingularMayerVietoris.middleComplex {X : Type} [TopologicalSpace X] (U V : Set X) :
     ChainComplex (ModuleCat ℤ) ℕ :=
-  FirstHurewicz.singularComplex U ⊞ FirstHurewicz.singularComplex V
+  SingularChains.singularComplex U ⊞ SingularChains.singularComplex V
 
 def SingularMayerVietoris.leftMap {X : Type} [TopologicalSpace X] (U V : Set X) :
-    FirstHurewicz.singularComplex (U ∩ V : Set X) ⟶ middleComplex U V :=
+    SingularChains.singularComplex (U ∩ V : Set X) ⟶ middleComplex U V :=
   CategoryTheory.Limits.biprod.lift (intersectionToLeft U V) (-(intersectionToRight U V))
 
 def SingularMayerVietoris.rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
@@ -441,27 +507,27 @@ def SingularMayerVietoris.rightMap {X : Type} [TopologicalSpace X] (U V : Set X)
 @[simp]
 theorem SingularMayerVietoris.leftMap_fst {X : Type} [TopologicalSpace X] (U V : Set X) :
     leftMap U V ≫
-        (CategoryTheory.Limits.biprod.fst : middleComplex U V ⟶ FirstHurewicz.singularComplex U) =
+        (CategoryTheory.Limits.biprod.fst : middleComplex U V ⟶ SingularChains.singularComplex U) =
       intersectionToLeft U V :=
   CategoryTheory.Limits.biprod.lift_fst _ _
 
 @[simp]
 theorem SingularMayerVietoris.leftMap_snd {X : Type} [TopologicalSpace X] (U V : Set X) :
     leftMap U V ≫
-        (CategoryTheory.Limits.biprod.snd : middleComplex U V ⟶ FirstHurewicz.singularComplex V) =
+        (CategoryTheory.Limits.biprod.snd : middleComplex U V ⟶ SingularChains.singularComplex V) =
       -(intersectionToRight U V) :=
   CategoryTheory.Limits.biprod.lift_snd _ _
 
 @[simp]
 theorem SingularMayerVietoris.inl_rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
-    (CategoryTheory.Limits.biprod.inl : FirstHurewicz.singularComplex U ⟶ middleComplex U V) ≫
+    (CategoryTheory.Limits.biprod.inl : SingularChains.singularComplex U ⟶ middleComplex U V) ≫
         rightMap U V =
       toSmallLeft U V :=
   CategoryTheory.Limits.biprod.inl_desc _ _
 
 @[simp]
 theorem SingularMayerVietoris.inr_rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
-    (CategoryTheory.Limits.biprod.inr : FirstHurewicz.singularComplex V ⟶ middleComplex U V) ≫
+    (CategoryTheory.Limits.biprod.inr : SingularChains.singularComplex V ⟶ middleComplex U V) ≫
         rightMap U V =
       toSmallRight U V :=
   CategoryTheory.Limits.biprod.inr_desc _ _
@@ -779,17 +845,17 @@ theorem SingularMayerVietoris.biprodSequence_second_zero_surjective
   (homologyLinearMap_second_zero_surjective hS).comp (homologyBiprodEquiv K L 0).symm.surjective
 
 abbrev SingularMayerVietoris.SingularHomology (Y : Type) [TopologicalSpace Y] (n : ℕ) :=
-  (FirstHurewicz.singularComplex Y).homology n
+  (SingularChains.singularComplex Y).homology n
 
 abbrev SingularMayerVietoris.singularHomologyMap {Y Z : Type} [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(Y, Z)) (n : ℕ) :
     SingularHomology Y n →ₗ[ℤ] SingularHomology Z n :=
-  homologyLinearMap (FirstHurewicz.singularChainMap f) n
+  homologyLinearMap (SingularChains.singularChainMap f) n
 
 @[simp]
 theorem SingularMayerVietoris.singularHomologyMap_one {Y Z : Type} [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(Y, Z)) :
-    singularHomologyMap f 1 = FirstHurewicz.inducedHomology f :=
+    singularHomologyMap f 1 = SingularChains.inducedHomology f :=
   rfl
 
 abbrev SingularMayerVietoris.SmallHomology {X : Type} [TopologicalSpace X] (U V : Set X)
@@ -819,12 +885,12 @@ theorem SingularMayerVietoris.smallLeftHomologyMap_components {X : Type} [Topolo
       (homologyLinearMap
           (leftMap U V ≫
             (CategoryTheory.Limits.biprod.fst :
-              middleComplex U V ⟶ FirstHurewicz.singularComplex U))
+              middleComplex U V ⟶ SingularChains.singularComplex U))
           n a,
         homologyLinearMap
           (leftMap U V ≫
             (CategoryTheory.Limits.biprod.snd :
-              middleComplex U V ⟶ FirstHurewicz.singularComplex V))
+              middleComplex U V ⟶ SingularChains.singularComplex V))
           n a) := by
   apply Prod.ext
   · exact
@@ -839,12 +905,12 @@ theorem SingularMayerVietoris.smallRightHomologyMap_components {X : Type} [Topol
     smallRightHomologyMap U V n a =
       homologyLinearMap
           ((CategoryTheory.Limits.biprod.inl :
-              FirstHurewicz.singularComplex U ⟶ middleComplex U V) ≫
+              SingularChains.singularComplex U ⟶ middleComplex U V) ≫
             rightMap U V)
           n a.1 +
         homologyLinearMap
           ((CategoryTheory.Limits.biprod.inr :
-              FirstHurewicz.singularComplex V ⟶ middleComplex U V) ≫
+              SingularChains.singularComplex V ⟶ middleComplex U V) ≫
             rightMap U V)
           n a.2 := by
   rw [inl_rightMap, inr_rightMap]
@@ -944,8 +1010,8 @@ theorem SingularMayerVietoris.rightTransport_second_surjective {P B C : Type*} [
     (g : P →ₗ[ℤ] B) (hg : Function.Surjective g) : Function.Surjective (e.toLinearMap.comp g) :=
   e.surjective.comp hg
 
-def SingularMayerVietoris.affineSimplex {n p : ℕ} (v : Fin (n + 1) → FirstHurewicz.Simplex p) :
-    C(FirstHurewicz.Simplex n, FirstHurewicz.Simplex p)
+def SingularMayerVietoris.affineSimplex {n p : ℕ} (v : Fin (n + 1) → SingularChains.Simplex p) :
+    C(SingularChains.Simplex n, SingularChains.Simplex p)
     where
   toFun
     t :=
@@ -960,14 +1026,14 @@ def SingularMayerVietoris.affineSimplex {n p : ℕ} (v : Fin (n + 1) → FirstHu
 
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_coordinate {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (t : FirstHurewicz.Simplex n) (j : Fin (p + 1)) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (t : SingularChains.Simplex n) (j : Fin (p + 1)) :
     affineSimplex v t j = ∑ i, t i * v i j := by
   change (∑ i, t i • (v i : Fin (p + 1) → ℝ)) j = _
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_vertex {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (i : Fin (n + 1)) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (i : Fin (n + 1)) :
     affineSimplex v (stdSimplex.vertex (S := ℝ) i) = v i := by
   apply Subtype.ext
   change
@@ -975,12 +1041,12 @@ theorem SingularMayerVietoris.affineSimplex_vertex {n p : ℕ}
       (v i : Fin (p + 1) → ℝ)
   simp [Pi.single_apply]
 
-def SingularMayerVietoris.stdVertices (n : ℕ) : Fin (n + 1) → FirstHurewicz.Simplex n :=
+def SingularMayerVietoris.stdVertices (n : ℕ) : Fin (n + 1) → SingularChains.Simplex n :=
   stdSimplex.vertex
 
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_stdVertices (n : ℕ) :
-    affineSimplex (stdVertices n) = ContinuousMap.id (FirstHurewicz.Simplex n) := by
+    affineSimplex (stdVertices n) = ContinuousMap.id (SingularChains.Simplex n) := by
   apply ContinuousMap.ext
   intro t
   apply Subtype.ext
@@ -989,21 +1055,21 @@ theorem SingularMayerVietoris.affineSimplex_stdVertices (n : ℕ) :
   simp [Finset.sum_apply, Pi.smul_apply, Pi.single_apply]
 
 theorem SingularMayerVietoris.affineSimplex_face {n p : ℕ}
-    (v : Fin (n + 2) → FirstHurewicz.Simplex p) (i : Fin (n + 2)) :
-    (affineSimplex v).comp (FirstHurewicz.simplexFace n i) =
+    (v : Fin (n + 2) → SingularChains.Simplex p) (i : Fin (n + 2)) :
+    (affineSimplex v).comp (SingularChains.simplexFace n i) =
       affineSimplex (fun j => v (i.succAbove j)) := by
   apply ContinuousMap.ext
   intro t
   apply Subtype.ext
   change
-    (∑ j : Fin (n + 2), FirstHurewicz.simplexFace n i t j • (v j : Fin (p + 1) → ℝ)) =
+    (∑ j : Fin (n + 2), SingularChains.simplexFace n i t j • (v j : Fin (p + 1) → ℝ)) =
       ∑ j : Fin (n + 1), t j • (v (i.succAbove j) : Fin (p + 1) → ℝ)
   rw [Fin.sum_univ_succAbove _ i]
-  simp only [FirstHurewicz.simplexFace_apply_self, zero_smul,
-    FirstHurewicz.simplexFace_apply_succAbove, zero_add]
+  simp only [SingularChains.simplexFace_apply_self, zero_smul,
+    SingularChains.simplexFace_apply_succAbove, zero_add]
 
 theorem SingularMayerVietoris.affineSimplex_comp {m n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (w : Fin (m + 1) → FirstHurewicz.Simplex n) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (w : Fin (m + 1) → SingularChains.Simplex n) :
     (affineSimplex v).comp (affineSimplex w) = affineSimplex (fun j => affineSimplex v (w j)) := by
   apply ContinuousMap.ext
   intro t
@@ -1015,7 +1081,7 @@ theorem SingularMayerVietoris.affineSimplex_comp {m n p : ℕ}
   exact Finset.sum_comm
 
 theorem SingularMayerVietoris.affineSimplex_mem_convexHull {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (t : FirstHurewicz.Simplex n) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (t : SingularChains.Simplex n) :
     (affineSimplex v t : Fin (p + 1) → ℝ) ∈
       convexHull ℝ (Set.range fun i => (v i : Fin (p + 1) → ℝ)) := by
   change (∑ i, t i • (v i : Fin (p + 1) → ℝ)) ∈ _
@@ -1027,21 +1093,21 @@ theorem SingularMayerVietoris.affineSimplex_mem_convexHull {n p : ℕ}
     exact subset_convexHull ℝ _ (Set.mem_range_self i)
 
 def SingularMayerVietoris.simplexBarycenter {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) : FirstHurewicz.Simplex p :=
-  affineSimplex v (stdSimplex.barycenter : FirstHurewicz.Simplex n)
+    (v : Fin (n + 1) → SingularChains.Simplex p) : SingularChains.Simplex p :=
+  affineSimplex v (stdSimplex.barycenter : SingularChains.Simplex n)
 
 theorem SingularMayerVietoris.simplexBarycenter_coe {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) :
     (simplexBarycenter v : Fin (p + 1) → ℝ) =
       ((n + 1 : ℕ) : ℝ)⁻¹ • ∑ i, (v i : Fin (p + 1) → ℝ) := by
   change (∑ i, (Fintype.card (Fin (n + 1)) : ℝ)⁻¹ • (v i : Fin (p + 1) → ℝ)) = _
   simp only [Fintype.card_fin, Finset.smul_sum]
 
 theorem SingularMayerVietoris.affineSimplex_simplexBarycenter {m n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (w : Fin (m + 1) → FirstHurewicz.Simplex n) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (w : Fin (m + 1) → SingularChains.Simplex n) :
     affineSimplex v (simplexBarycenter w) = simplexBarycenter (fun j => affineSimplex v (w j)) :=
   ContinuousMap.congr_fun (affineSimplex_comp v w)
-    (stdSimplex.barycenter : FirstHurewicz.Simplex m)
+    (stdSimplex.barycenter : SingularChains.Simplex m)
 
 abbrev SingularMayerVietoris.FormalChains (V : Type*) (n : ℕ) :=
   (Fin n → V) →₀ ℤ
@@ -1252,37 +1318,37 @@ theorem SingularMayerVietoris.formalMap_subdivision {V W : Type*} (center : Form
       rw [formalMap_cone, ih, formalMap_boundary, formalMap_simplex, hf]
     exact LinearMap.congr_fun h c
 
-def SingularMayerVietoris.simplexCenter (p : ℕ) : FormalCenter (FirstHurewicz.Simplex p) :=
+def SingularMayerVietoris.simplexCenter (p : ℕ) : FormalCenter (SingularChains.Simplex p) :=
   fun _ v => simplexBarycenter v
 
 def SingularMayerVietoris.affineChainMap (p n : ℕ) :
-    FormalChains (FirstHurewicz.Simplex p) (n + 1) →ₗ[ℤ]
-      FirstHurewicz.Chains (FirstHurewicz.Simplex p) n :=
-  formalLift fun v => FirstHurewicz.simplexChain (FirstHurewicz.Simplex p) n (affineSimplex v)
+    FormalChains (SingularChains.Simplex p) (n + 1) →ₗ[ℤ]
+      SingularChains.Chains (SingularChains.Simplex p) n :=
+  formalLift fun v => SingularChains.simplexChain (SingularChains.Simplex p) n (affineSimplex v)
 
 @[simp]
 theorem SingularMayerVietoris.affineChainMap_simplex (p n : ℕ)
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) :
     affineChainMap p n (formalSimplex v) =
-      FirstHurewicz.simplexChain (FirstHurewicz.Simplex p) n (affineSimplex v) :=
+      SingularChains.simplexChain (SingularChains.Simplex p) n (affineSimplex v) :=
   formalLift_simplex _ _
 
 theorem SingularMayerVietoris.affineChainMap_boundary (p n : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 2)) :
-    ((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d (n + 1) n).hom
+    (c : FormalChains (SingularChains.Simplex p) (n + 2)) :
+    ((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 1) n).hom
         (affineChainMap p (n + 1) c) =
       affineChainMap p n (formalBoundary (n + 1) c) := by
   have h :
-    (((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d (n + 1) n).hom).comp
+    (((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 1) n).hom).comp
         (affineChainMap p (n + 1)) =
       (affineChainMap p n).comp (formalBoundary (n + 1)) := by
     apply formalChains_ext
     intro v
     change
-      ((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d (n + 1) n).hom
+      ((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 1) n).hom
           (affineChainMap p (n + 1) (formalSimplex v)) =
         _
-    rw [affineChainMap_simplex, FirstHurewicz.boundary_simplex]
+    rw [affineChainMap_simplex, SingularChains.boundary_simplex]
     change _ = affineChainMap p n (formalBoundary (n + 1) (formalSimplex v))
     rw [formalBoundary_simplex, map_sum]
     apply Finset.sum_congr rfl
@@ -1292,16 +1358,16 @@ theorem SingularMayerVietoris.affineChainMap_boundary (p n : ℕ)
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.inducedChain_affineChainMap {m n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p)
-    (c : FormalChains (FirstHurewicz.Simplex n) (m + 1)) :
-    FirstHurewicz.inducedChain (affineSimplex v) m (affineChainMap n m c) =
+    (v : Fin (n + 1) → SingularChains.Simplex p)
+    (c : FormalChains (SingularChains.Simplex n) (m + 1)) :
+    SingularChains.inducedChain (affineSimplex v) m (affineChainMap n m c) =
       affineChainMap p m (formalMap (affineSimplex v) (m + 1) c) := by
   have h :
-    (FirstHurewicz.inducedChain (affineSimplex v) m).comp (affineChainMap n m) =
+    (SingularChains.inducedChain (affineSimplex v) m).comp (affineChainMap n m) =
       (affineChainMap p m).comp (formalMap (affineSimplex v) (m + 1)) := by
     apply formalChains_ext
     intro w
-    simp only [LinearMap.comp_apply, affineChainMap_simplex, FirstHurewicz.inducedChain_simplex,
+    simp only [LinearMap.comp_apply, affineChainMap_simplex, SingularChains.inducedChain_simplex,
       formalMap_simplex, affineSimplex_comp]
     rfl
   exact LinearMap.congr_fun h c
@@ -1309,13 +1375,13 @@ theorem SingularMayerVietoris.inducedChain_affineChainMap {m n p : ℕ}
 @[simp]
 theorem SingularMayerVietoris.affineChainMap_stdVertices (n : ℕ) :
     affineChainMap n n (formalSimplex (stdVertices n)) =
-      FirstHurewicz.simplexChain (FirstHurewicz.Simplex n) n
-        (ContinuousMap.id (FirstHurewicz.Simplex n)) := by
+      SingularChains.simplexChain (SingularChains.Simplex n) n
+        (ContinuousMap.id (SingularChains.Simplex n)) := by
   rw [affineChainMap_simplex, affineSimplex_stdVertices]
 
 theorem SingularMayerVietoris.affineSimplex_preserves_center {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) (m : ℕ)
-    (w : Fin (m + 1) → FirstHurewicz.Simplex n) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) (m : ℕ)
+    (w : Fin (m + 1) → SingularChains.Simplex n) :
     affineSimplex v (simplexCenter n m w) = simplexCenter p m (affineSimplex v ∘ w) :=
   affineSimplex_simplexBarycenter v w
 
@@ -1521,46 +1587,46 @@ theorem SingularMayerVietoris.formalMap_subdivisionIteratedHomotopy {V W : Type*
     formalMap_subdivision_iterate center center' f hf]
 
 def SingularMayerVietoris.subdivision (X : Type) [TopologicalSpace X] (k n : ℕ) :
-    FirstHurewicz.Chains X n →ₗ[ℤ] FirstHurewicz.Chains X n :=
-  FirstHurewicz.chainLift X n fun σ =>
-    FirstHurewicz.inducedChain σ n
+    SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n :=
+  SingularChains.chainLift X n fun σ =>
+    SingularChains.inducedChain σ n
       (affineChainMap n n
         ((formalSubdivision (simplexCenter n) (n + 1))^[k] (formalSimplex (stdVertices n))))
 
 @[simp]
 theorem SingularMayerVietoris.subdivision_simplex (X : Type) [TopologicalSpace X] (k n : ℕ)
-    (σ : FirstHurewicz.SingularSimplex X n) :
-    subdivision X k n (FirstHurewicz.simplexChain X n σ) =
-      FirstHurewicz.inducedChain σ n
+    (σ : SingularChains.SingularSimplex X n) :
+    subdivision X k n (SingularChains.simplexChain X n σ) =
+      SingularChains.inducedChain σ n
         (affineChainMap n n
           ((formalSubdivision (simplexCenter n) (n + 1))^[k] (formalSimplex (stdVertices n)))) :=
-  FirstHurewicz.chainLift_simplex X n _ σ
+  SingularChains.chainLift_simplex X n _ σ
 
 theorem SingularMayerVietoris.inducedChain_subdivision {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : FirstHurewicz.Chains X n) :
-    FirstHurewicz.inducedChain f n (subdivision X k n c) =
-      subdivision Y k n (FirstHurewicz.inducedChain f n c) := by
+    [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : SingularChains.Chains X n) :
+    SingularChains.inducedChain f n (subdivision X k n c) =
+      subdivision Y k n (SingularChains.inducedChain f n c) := by
   have h :
-    (FirstHurewicz.inducedChain f n).comp (subdivision X k n) =
-      (subdivision Y k n).comp (FirstHurewicz.inducedChain f n) := by
-    apply FirstHurewicz.chainMap_ext X n
+    (SingularChains.inducedChain f n).comp (subdivision X k n) =
+      (subdivision Y k n).comp (SingularChains.inducedChain f n) := by
+    apply SingularChains.chainMap_ext X n
     intro σ
-    simp only [LinearMap.comp_apply, subdivision_simplex, FirstHurewicz.inducedChain_simplex]
-    rw [FirstHurewicz.inducedChain_comp]
+    simp only [LinearMap.comp_apply, subdivision_simplex, SingularChains.inducedChain_simplex]
+    rw [SingularChains.inducedChain_comp]
     rfl
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.affineSimplex_comp_stdVertices {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) : affineSimplex v ∘ stdVertices n = v := by
+    (v : Fin (n + 1) → SingularChains.Simplex p) : affineSimplex v ∘ stdVertices n = v := by
   funext i
   exact affineSimplex_vertex v i
 
 theorem SingularMayerVietoris.subdivision_affineChainMap (p k n : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1)) :
-    subdivision (FirstHurewicz.Simplex p) k n (affineChainMap p n c) =
+    (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
+    subdivision (SingularChains.Simplex p) k n (affineChainMap p n c) =
       affineChainMap p n ((formalSubdivision (simplexCenter p) (n + 1))^[k] c) := by
   have h :
-    (subdivision (FirstHurewicz.Simplex p) k n).comp (affineChainMap p n) =
+    (subdivision (SingularChains.Simplex p) k n).comp (affineChainMap p n) =
       (affineChainMap p n).comp ((formalSubdivision (simplexCenter p) (n + 1)) ^ k) := by
     apply formalChains_ext
     intro v
@@ -1573,65 +1639,65 @@ theorem SingularMayerVietoris.subdivision_affineChainMap (p k n : ℕ)
   simpa only [LinearMap.comp_apply, Module.End.pow_apply] using LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.subdivision_boundary {X : Type} [TopologicalSpace X] (k n : ℕ)
-    (c : FirstHurewicz.Chains X (n + 1)) :
-    ((FirstHurewicz.singularComplex X).d (n + 1) n).hom (subdivision X k (n + 1) c) =
-      subdivision X k n (((FirstHurewicz.singularComplex X).d (n + 1) n).hom c) := by
+    (c : SingularChains.Chains X (n + 1)) :
+    ((SingularChains.singularComplex X).d (n + 1) n).hom (subdivision X k (n + 1) c) =
+      subdivision X k n (((SingularChains.singularComplex X).d (n + 1) n).hom c) := by
   have h :
-    (((FirstHurewicz.singularComplex X).d (n + 1) n).hom).comp (subdivision X k (n + 1)) =
-      (subdivision X k n).comp ((FirstHurewicz.singularComplex X).d (n + 1) n).hom := by
-    apply FirstHurewicz.chainMap_ext X (n + 1)
+    (((SingularChains.singularComplex X).d (n + 1) n).hom).comp (subdivision X k (n + 1)) =
+      (subdivision X k n).comp ((SingularChains.singularComplex X).d (n + 1) n).hom := by
+    apply SingularChains.chainMap_ext X (n + 1)
     intro σ
     change
-      ((FirstHurewicz.singularComplex X).d (n + 1) n).hom
-          (subdivision X k (n + 1) (FirstHurewicz.simplexChain X (n + 1) σ)) =
+      ((SingularChains.singularComplex X).d (n + 1) n).hom
+          (subdivision X k (n + 1) (SingularChains.simplexChain X (n + 1) σ)) =
         _
-    rw [subdivision_simplex, ← FirstHurewicz.inducedChain_boundary, affineChainMap_boundary,
+    rw [subdivision_simplex, ← SingularChains.inducedChain_boundary, affineChainMap_boundary,
       formalBoundary_subdivision_iterate, ← subdivision_affineChainMap, inducedChain_subdivision,
-      ← affineChainMap_boundary, FirstHurewicz.inducedChain_boundary, affineChainMap_stdVertices,
-      FirstHurewicz.inducedChain_simplex, ContinuousMap.comp_id]
+      ← affineChainMap_boundary, SingularChains.inducedChain_boundary, affineChainMap_stdVertices,
+      SingularChains.inducedChain_simplex, ContinuousMap.comp_id]
     rfl
   exact LinearMap.congr_fun h c
 
 def SingularMayerVietoris.subdivisionHomotopy (X : Type) [TopologicalSpace X] (k n : ℕ) :
-    FirstHurewicz.Chains X n →ₗ[ℤ] FirstHurewicz.Chains X (n + 1) :=
-  FirstHurewicz.chainLift X n fun σ =>
-    FirstHurewicz.inducedChain σ (n + 1)
+    SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
+  SingularChains.chainLift X n fun σ =>
+    SingularChains.inducedChain σ (n + 1)
       (affineChainMap n (n + 1)
         (formalSubdivisionIteratedHomotopy (simplexCenter n) k (n + 1)
           (formalSimplex (stdVertices n))))
 
 @[simp]
 theorem SingularMayerVietoris.subdivisionHomotopy_simplex (X : Type) [TopologicalSpace X]
-    (k n : ℕ) (σ : FirstHurewicz.SingularSimplex X n) :
-    subdivisionHomotopy X k n (FirstHurewicz.simplexChain X n σ) =
-      FirstHurewicz.inducedChain σ (n + 1)
+    (k n : ℕ) (σ : SingularChains.SingularSimplex X n) :
+    subdivisionHomotopy X k n (SingularChains.simplexChain X n σ) =
+      SingularChains.inducedChain σ (n + 1)
         (affineChainMap n (n + 1)
           (formalSubdivisionIteratedHomotopy (simplexCenter n) k (n + 1)
             (formalSimplex (stdVertices n)))) :=
-  FirstHurewicz.chainLift_simplex X n _ σ
+  SingularChains.chainLift_simplex X n _ σ
 
 theorem SingularMayerVietoris.inducedChain_subdivisionHomotopy {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : FirstHurewicz.Chains X n) :
-    FirstHurewicz.inducedChain f (n + 1) (subdivisionHomotopy X k n c) =
-      subdivisionHomotopy Y k n (FirstHurewicz.inducedChain f n c) := by
+    [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : SingularChains.Chains X n) :
+    SingularChains.inducedChain f (n + 1) (subdivisionHomotopy X k n c) =
+      subdivisionHomotopy Y k n (SingularChains.inducedChain f n c) := by
   have h :
-    (FirstHurewicz.inducedChain f (n + 1)).comp (subdivisionHomotopy X k n) =
-      (subdivisionHomotopy Y k n).comp (FirstHurewicz.inducedChain f n) := by
-    apply FirstHurewicz.chainMap_ext X n
+    (SingularChains.inducedChain f (n + 1)).comp (subdivisionHomotopy X k n) =
+      (subdivisionHomotopy Y k n).comp (SingularChains.inducedChain f n) := by
+    apply SingularChains.chainMap_ext X n
     intro σ
     simp only [LinearMap.comp_apply, subdivisionHomotopy_simplex,
-      FirstHurewicz.inducedChain_simplex]
-    rw [FirstHurewicz.inducedChain_comp]
+      SingularChains.inducedChain_simplex]
+    rw [SingularChains.inducedChain_comp]
     rfl
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.subdivisionHomotopy_affineChainMap (p k n : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1)) :
-    subdivisionHomotopy (FirstHurewicz.Simplex p) k n (affineChainMap p n c) =
+    (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
+    subdivisionHomotopy (SingularChains.Simplex p) k n (affineChainMap p n c) =
       affineChainMap p (n + 1)
         (formalSubdivisionIteratedHomotopy (simplexCenter p) k (n + 1) c) := by
   have h :
-    (subdivisionHomotopy (FirstHurewicz.Simplex p) k n).comp (affineChainMap p n) =
+    (subdivisionHomotopy (SingularChains.Simplex p) k n).comp (affineChainMap p n) =
       (affineChainMap p (n + 1)).comp
         (formalSubdivisionIteratedHomotopy (simplexCenter p) k (n + 1)) := by
     apply formalChains_ext
@@ -1644,10 +1710,10 @@ theorem SingularMayerVietoris.subdivisionHomotopy_affineChainMap (p k n : ℕ)
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero_affineChainMap (p k : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) 1) :
-    ((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d 1 0).hom
-        (subdivisionHomotopy (FirstHurewicz.Simplex p) k 0 (affineChainMap p 0 c)) =
-      affineChainMap p 0 c - subdivision (FirstHurewicz.Simplex p) k 0 (affineChainMap p 0 c) := by
+    (c : FormalChains (SingularChains.Simplex p) 1) :
+    ((SingularChains.singularComplex (SingularChains.Simplex p)).d 1 0).hom
+        (subdivisionHomotopy (SingularChains.Simplex p) k 0 (affineChainMap p 0 c)) =
+      affineChainMap p 0 c - subdivision (SingularChains.Simplex p) k 0 (affineChainMap p 0 c) := by
   rw [subdivisionHomotopy_affineChainMap, affineChainMap_boundary, subdivision_affineChainMap, ←
     map_sub]
   apply congrArg (affineChainMap p 0)
@@ -1655,14 +1721,14 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero_affineChainMap (
     formalSubdivisionIteratedHomotopy_boundary (simplexCenter p) k 0 c
 
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_affineChainMap (p k n : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 2)) :
-    ((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d (n + 2) (n + 1)).hom
-          (subdivisionHomotopy (FirstHurewicz.Simplex p) k (n + 1) (affineChainMap p (n + 1) c)) +
-        subdivisionHomotopy (FirstHurewicz.Simplex p) k n
-          (((FirstHurewicz.singularComplex (FirstHurewicz.Simplex p)).d (n + 1) n).hom
+    (c : FormalChains (SingularChains.Simplex p) (n + 2)) :
+    ((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 2) (n + 1)).hom
+          (subdivisionHomotopy (SingularChains.Simplex p) k (n + 1) (affineChainMap p (n + 1) c)) +
+        subdivisionHomotopy (SingularChains.Simplex p) k n
+          (((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 1) n).hom
             (affineChainMap p (n + 1) c)) =
       affineChainMap p (n + 1) c -
-        subdivision (FirstHurewicz.Simplex p) k (n + 1) (affineChainMap p (n + 1) c) := by
+        subdivision (SingularChains.Simplex p) k (n + 1) (affineChainMap p (n + 1) c) := by
   rw [subdivisionHomotopy_affineChainMap, affineChainMap_boundary, affineChainMap_boundary,
     subdivisionHomotopy_affineChainMap, subdivision_affineChainMap, ← map_add, ← map_sub]
   exact
@@ -1670,56 +1736,56 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_affineChainMap (p k n
       (formalSubdivisionIteratedHomotopy_boundary (simplexCenter p) k (n + 1) c)
 
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero {X : Type} [TopologicalSpace X]
-    (k : ℕ) (c : FirstHurewicz.Chains X 0) :
-    ((FirstHurewicz.singularComplex X).d 1 0).hom (subdivisionHomotopy X k 0 c) =
+    (k : ℕ) (c : SingularChains.Chains X 0) :
+    ((SingularChains.singularComplex X).d 1 0).hom (subdivisionHomotopy X k 0 c) =
       c - subdivision X k 0 c := by
   have h :
-    (((FirstHurewicz.singularComplex X).d 1 0).hom).comp (subdivisionHomotopy X k 0) =
+    (((SingularChains.singularComplex X).d 1 0).hom).comp (subdivisionHomotopy X k 0) =
       LinearMap.id - subdivision X k 0 := by
-    apply FirstHurewicz.chainMap_ext X 0
+    apply SingularChains.chainMap_ext X 0
     intro σ
     have hstd :=
       subdivisionHomotopy_boundary_zero_affineChainMap 0 k (formalSimplex (stdVertices 0))
-    have hσ := congrArg (FirstHurewicz.inducedChain σ 0) hstd
-    simpa only [map_sub, FirstHurewicz.inducedChain_boundary, inducedChain_subdivisionHomotopy,
-      inducedChain_subdivision, affineChainMap_stdVertices, FirstHurewicz.inducedChain_simplex,
+    have hσ := congrArg (SingularChains.inducedChain σ 0) hstd
+    simpa only [map_sub, SingularChains.inducedChain_boundary, inducedChain_subdivisionHomotopy,
+      inducedChain_subdivision, affineChainMap_stdVertices, SingularChains.inducedChain_simplex,
       ContinuousMap.comp_id, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply] using
       hσ
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary {X : Type} [TopologicalSpace X]
-    (k n : ℕ) (c : FirstHurewicz.Chains X (n + 1)) :
-    ((FirstHurewicz.singularComplex X).d (n + 2) (n + 1)).hom
+    (k n : ℕ) (c : SingularChains.Chains X (n + 1)) :
+    ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
           (subdivisionHomotopy X k (n + 1) c) +
-        subdivisionHomotopy X k n (((FirstHurewicz.singularComplex X).d (n + 1) n).hom c) =
+        subdivisionHomotopy X k n (((SingularChains.singularComplex X).d (n + 1) n).hom c) =
       c - subdivision X k (n + 1) c := by
   have h :
-    (((FirstHurewicz.singularComplex X).d (n + 2) (n + 1)).hom).comp
+    (((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom).comp
           (subdivisionHomotopy X k (n + 1)) +
-        (subdivisionHomotopy X k n).comp (((FirstHurewicz.singularComplex X).d (n + 1) n).hom) =
+        (subdivisionHomotopy X k n).comp (((SingularChains.singularComplex X).d (n + 1) n).hom) =
       LinearMap.id - subdivision X k (n + 1) := by
-    apply FirstHurewicz.chainMap_ext X (n + 1)
+    apply SingularChains.chainMap_ext X (n + 1)
     intro σ
     have hstd :=
       subdivisionHomotopy_boundary_affineChainMap (n + 1) k n
         (formalSimplex (stdVertices (n + 1)))
-    have hσ := congrArg (FirstHurewicz.inducedChain σ (n + 1)) hstd
-    simpa only [map_add, map_sub, FirstHurewicz.inducedChain_boundary,
+    have hσ := congrArg (SingularChains.inducedChain σ (n + 1)) hstd
+    simpa only [map_add, map_sub, SingularChains.inducedChain_boundary,
       inducedChain_subdivisionHomotopy, inducedChain_subdivision, affineChainMap_stdVertices,
-      FirstHurewicz.inducedChain_simplex, ContinuousMap.comp_id, LinearMap.comp_apply,
+      SingularChains.inducedChain_simplex, ContinuousMap.comp_id, LinearMap.comp_apply,
       LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply] using hσ
   exact LinearMap.congr_fun h c
 
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_of_cycle {X : Type}
-    [TopologicalSpace X] (k n : ℕ) (c : FirstHurewicz.Chains X n)
-    (hc : ((FirstHurewicz.singularComplex X).d n (n - 1)).hom c = 0) :
-    ((FirstHurewicz.singularComplex X).d (n + 1) n).hom (subdivisionHomotopy X k n c) =
+    [TopologicalSpace X] (k n : ℕ) (c : SingularChains.Chains X n)
+    (hc : ((SingularChains.singularComplex X).d n (n - 1)).hom c = 0) :
+    ((SingularChains.singularComplex X).d (n + 1) n).hom (subdivisionHomotopy X k n c) =
       c - subdivision X k n c := by
   cases n with
   | zero => exact subdivisionHomotopy_boundary_zero k c
   | succ
     n =>
-    have hc' : ((FirstHurewicz.singularComplex X).d (n + 1) n).hom c = 0 := by
+    have hc' : ((SingularChains.singularComplex X).d (n + 1) n).hom c = 0 := by
       simpa only [Nat.succ_sub_one] using hc
     simpa only [hc', map_zero, add_zero] using subdivisionHomotopy_boundary k n c
 
@@ -1863,17 +1929,17 @@ theorem SingularMayerVietoris.formalLinearMap_mem_of_support {V M : Type*} [AddC
   exact h (fun _ hv => hv)
 
 theorem SingularMayerVietoris.singularLinearMap_mem_of_support {M : Type*} [AddCommGroup M]
-    [Module ℤ M] {X : Type} [TopologicalSpace X] (n : ℕ) (f : FirstHurewicz.Chains X n →ₗ[ℤ] M)
-    (P : Submodule ℤ M) (c : FirstHurewicz.Chains X n)
+    [Module ℤ M] {X : Type} [TopologicalSpace X] (n : ℕ) (f : SingularChains.Chains X n →ₗ[ℤ] M)
+    (P : Submodule ℤ M) (c : SingularChains.Chains X n)
     (hf :
-      ∀ σ ∈ (FirstHurewicz.chainsEquivFinsupp X n c).support,
-        f (FirstHurewicz.simplexChain X n σ) ∈ P) :
+      ∀ σ ∈ (SingularChains.chainsEquivFinsupp X n c).support,
+        f (SingularChains.simplexChain X n σ) ∈ P) :
     f c ∈ P := by
-  let S : Set (FirstHurewicz.SingularSimplex X n) :=
-    (FirstHurewicz.chainsEquivFinsupp X n c).support
-  have hc : c ∈ Submodule.span ℤ (FirstHurewicz.simplexChain X n '' S) :=
-    (FirstHurewicz.mem_simplex_span_iff X n S c).mpr (Set.Subset.refl _)
-  have h : Submodule.span ℤ (FirstHurewicz.simplexChain X n '' S) ≤ P.comap f := by
+  let S : Set (SingularChains.SingularSimplex X n) :=
+    (SingularChains.chainsEquivFinsupp X n c).support
+  have hc : c ∈ Submodule.span ℤ (SingularChains.simplexChain X n '' S) :=
+    (SingularChains.mem_simplex_span_iff X n S c).mpr (Set.Subset.refl _)
+  have h : Submodule.span ℤ (SingularChains.simplexChain X n '' S) ≤ P.comap f := by
     apply Submodule.span_le.mpr
     rintro _ ⟨σ, hσ, rfl⟩
     exact hf σ hσ
@@ -1881,11 +1947,11 @@ theorem SingularMayerVietoris.singularLinearMap_mem_of_support {M : Type*} [AddC
 
 theorem SingularMayerVietoris.singularLinearMap_mem_of_small {M : Type*} [AddCommGroup M]
     [Module ℤ M] {X : Type} [TopologicalSpace X] (U V : Set X) (n : ℕ)
-    (f : FirstHurewicz.Chains X n →ₗ[ℤ] M) (P : Submodule ℤ M) (c : FirstHurewicz.Chains X n)
+    (f : SingularChains.Chains X n →ₗ[ℤ] M) (P : Submodule ℤ M) (c : SingularChains.Chains X n)
     (hc : c ∈ smallChainSubmodule U V n)
     (hf :
-      ∀ σ : FirstHurewicz.SingularSimplex X n,
-        (Set.range σ ⊆ U ∨ Set.range σ ⊆ V) → f (FirstHurewicz.simplexChain X n σ) ∈ P) :
+      ∀ σ : SingularChains.SingularSimplex X n,
+        (Set.range σ ⊆ U ∨ Set.range σ ⊆ V) → f (SingularChains.simplexChain X n σ) ∈ P) :
     f c ∈ P := by
   have h : smallChainSubmodule U V n ≤ P.comap f := by
     rw [smallChainSubmodule_eq_span]
@@ -1895,23 +1961,23 @@ theorem SingularMayerVietoris.singularLinearMap_mem_of_small {M : Type*} [AddCom
   exact h hc
 
 theorem SingularMayerVietoris.realizedChain_mem_supported {X : Type} [TopologicalSpace X]
-    (U : Set X) (p n : ℕ) (σ : C(FirstHurewicz.Simplex p, X)) (hσ : Set.range σ ⊆ U)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1)) :
-    FirstHurewicz.inducedChain σ n (affineChainMap p n c) ∈ supportedChainSubmodule U n := by
+    (U : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X)) (hσ : Set.range σ ⊆ U)
+    (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
+    SingularChains.inducedChain σ n (affineChainMap p n c) ∈ supportedChainSubmodule U n := by
   apply
-    formalLinearMap_mem_of_support ((FirstHurewicz.inducedChain σ n).comp (affineChainMap p n))
+    formalLinearMap_mem_of_support ((SingularChains.inducedChain σ n).comp (affineChainMap p n))
       (supportedChainSubmodule U n) c
   intro v hv
-  simp only [LinearMap.comp_apply, affineChainMap_simplex, FirstHurewicz.inducedChain_simplex]
+  simp only [LinearMap.comp_apply, affineChainMap_simplex, SingularChains.inducedChain_simplex]
   apply simplexChain_mem_supported
   rintro x ⟨t, rfl⟩
   exact hσ ⟨affineSimplex v t, rfl⟩
 
 theorem SingularMayerVietoris.realizedChain_mem_small {X : Type} [TopologicalSpace X]
-    (U V : Set X) (p n : ℕ) (σ : C(FirstHurewicz.Simplex p, X))
+    (U V : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X))
     (hσ : Set.range σ ⊆ U ∨ Set.range σ ⊆ V)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1)) :
-    FirstHurewicz.inducedChain σ n (affineChainMap p n c) ∈ smallChainSubmodule U V n := by
+    (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
+    SingularChains.inducedChain σ n (affineChainMap p n c) ∈ smallChainSubmodule U V n := by
   rcases hσ with hσ | hσ
   · exact
       (le_sup_left : supportedChainSubmodule U n ≤ smallChainSubmodule U V n)
@@ -1921,17 +1987,17 @@ theorem SingularMayerVietoris.realizedChain_mem_small {X : Type} [TopologicalSpa
         (realizedChain_mem_supported V p n σ hσ c)
 
 theorem SingularMayerVietoris.realizedChain_mem_small_of_support {X : Type} [TopologicalSpace X]
-    (U V : Set X) (p n : ℕ) (σ : C(FirstHurewicz.Simplex p, X))
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1))
+    (U V : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X))
+    (c : FormalChains (SingularChains.Simplex p) (n + 1))
     (hc :
       ∀ v ∈ c.support,
         Set.range (σ.comp (affineSimplex v)) ⊆ U ∨ Set.range (σ.comp (affineSimplex v)) ⊆ V) :
-    FirstHurewicz.inducedChain σ n (affineChainMap p n c) ∈ smallChainSubmodule U V n := by
+    SingularChains.inducedChain σ n (affineChainMap p n c) ∈ smallChainSubmodule U V n := by
   apply
-    formalLinearMap_mem_of_support ((FirstHurewicz.inducedChain σ n).comp (affineChainMap p n))
+    formalLinearMap_mem_of_support ((SingularChains.inducedChain σ n).comp (affineChainMap p n))
       (smallChainSubmodule U V n) c
   intro v hv
-  simp only [LinearMap.comp_apply, affineChainMap_simplex, FirstHurewicz.inducedChain_simplex]
+  simp only [LinearMap.comp_apply, affineChainMap_simplex, SingularChains.inducedChain_simplex]
   exact simplexChain_mem_small U V n (σ.comp (affineSimplex v)) (hc v hv)
 
 def SingularMayerVietoris.vertexBarycenter {E : Type*} [SeminormedAddCommGroup E]
@@ -2075,16 +2141,16 @@ theorem SingularMayerVietoris.eventually_meshFactor_pow_mul_lt (n : ℕ) (D : �
   exact (meshFactor_pow_mul_tendsto n D).eventually (eventually_lt_nhds hδ)
 
 theorem SingularMayerVietoris.simplex_lebesgue_number_two {X : Type*} [TopologicalSpace X]
-    {U V : Set X} {n : ℕ} (σ : C(FirstHurewicz.Simplex n, X)) (hU : IsOpen U) (hV : IsOpen V)
+    {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U) (hV : IsOpen V)
     (hcover : Set.range σ ⊆ U ∪ V) :
-    ∃ δ > 0, ∀ s : Set (FirstHurewicz.Simplex n), Metric.diam s ≤ δ → σ '' s ⊆ U ∨ σ '' s ⊆ V :=
+    ∃ δ > 0, ∀ s : Set (SingularChains.Simplex n), Metric.diam s ≤ δ → σ '' s ⊆ U ∨ σ '' s ⊆ V :=
   exists_lebesgue_number_two σ hU hV hcover
 
 theorem SingularMayerVietoris.simplex_lebesgue_number_subsimplices {X : Type*}
-    [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(FirstHurewicz.Simplex n, X)) (hU : IsOpen U)
+    [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) :
     ∃ δ > 0,
-      ∀ (m : ℕ) (f : C(FirstHurewicz.Simplex m, FirstHurewicz.Simplex n)),
+      ∀ (m : ℕ) (f : C(SingularChains.Simplex m, SingularChains.Simplex n)),
         Metric.diam (Set.range f) ≤ δ → Set.range (σ.comp f) ⊆ U ∨ Set.range (σ.comp f) ⊆ V := by
   obtain ⟨δ, hδ, hsmall⟩ := simplex_lebesgue_number_two σ hU hV hcover
   refine ⟨δ, hδ, ?_⟩
@@ -2092,11 +2158,11 @@ theorem SingularMayerVietoris.simplex_lebesgue_number_subsimplices {X : Type*}
   simpa only [ContinuousMap.coe_comp, Set.range_comp] using hsmall (Set.range f) hf
 
 theorem SingularMayerVietoris.simplex_eventually_small_of_diameter {X : Type*}
-    [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(FirstHurewicz.Simplex n, X)) (hU : IsOpen U)
+    [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) (D : ℝ) :
     ∃ N : ℕ,
       ∀ k ≥ N,
-        ∀ (m : ℕ) (f : C(FirstHurewicz.Simplex m, FirstHurewicz.Simplex n)),
+        ∀ (m : ℕ) (f : C(SingularChains.Simplex m, SingularChains.Simplex n)),
           Metric.diam (Set.range f) ≤ meshFactor n ^ k * D →
             Set.range (σ.comp f) ⊆ U ∨ Set.range (σ.comp f) ⊆ V := by
   obtain ⟨δ, hδ, hsmall⟩ := simplex_lebesgue_number_subsimplices σ hU hV hcover
@@ -2106,12 +2172,12 @@ theorem SingularMayerVietoris.simplex_eventually_small_of_diameter {X : Type*}
   exact hsmall m f (hf.trans (hN k hk).le)
 
 theorem SingularMayerVietoris.finite_family_eventually_small_of_diameter {X : Type*}
-    [TopologicalSpace X] {U V : Set X} {n : ℕ} (s : Finset C(FirstHurewicz.Simplex n, X))
+    [TopologicalSpace X] {U V : Set X} {n : ℕ} (s : Finset C(SingularChains.Simplex n, X))
     (hU : IsOpen U) (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) (D : ℝ) :
     ∃ N : ℕ,
       ∀ k ≥ N,
         ∀ σ ∈ s,
-          ∀ (m : ℕ) (f : C(FirstHurewicz.Simplex m, FirstHurewicz.Simplex n)),
+          ∀ (m : ℕ) (f : C(SingularChains.Simplex m, SingularChains.Simplex n)),
             Metric.diam (Set.range f) ≤ meshFactor n ^ k * D →
               Set.range (σ.comp f) ⊆ U ∨ Set.range (σ.comp f) ⊆ V := by
   classical
@@ -2129,32 +2195,32 @@ theorem SingularMayerVietoris.finite_family_eventually_small_of_diameter {X : Ty
     · exact hNs k ((le_max_right _ _).trans hk) τ hτ m f hf
 
 theorem SingularMayerVietoris.simplexBarycenter_eq_vertexBarycenter {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) :
+    (v : Fin (n + 1) → SingularChains.Simplex p) :
     (simplexBarycenter v : Fin (p + 1) → ℝ) =
       vertexBarycenter (fun i => (v i : Fin (p + 1) → ℝ)) := by
   rw [simplexBarycenter_coe]
   simp only [vertexBarycenter, Nat.cast_add, Nat.cast_one, one_div]
 
 theorem SingularMayerVietoris.dist_affineSimplex_le {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) {D : ℝ} (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D)
-    (t u : FirstHurewicz.Simplex n) : Dist.dist (affineSimplex v t) (affineSimplex v u) ≤ D :=
+    (v : Fin (n + 1) → SingularChains.Simplex p) {D : ℝ} (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D)
+    (t u : SingularChains.Simplex n) : Dist.dist (affineSimplex v t) (affineSimplex v u) ≤ D :=
   dist_convexHull_range_le (fun i => (v i : Fin (p + 1) → ℝ)) hpair
     (affineSimplex_mem_convexHull v t) (affineSimplex_mem_convexHull v u)
 
 theorem SingularMayerVietoris.affineSimplex_diam_le {n p : ℕ}
-    (v : Fin (n + 1) → FirstHurewicz.Simplex p) {D : ℝ}
+    (v : Fin (n + 1) → SingularChains.Simplex p) {D : ℝ}
     (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D) : Metric.diam (Set.range (affineSimplex v)) ≤ D := by
   apply Metric.diam_le_of_forall_dist_le_of_nonempty (Set.range_nonempty (affineSimplex v))
   rintro _ ⟨t, rfl⟩ _ ⟨u, rfl⟩
   exact dist_affineSimplex_le v hpair t u
 
 theorem SingularMayerVietoris.finite_family_eventually_small_of_vertices {p : ℕ} {X : Type*}
-    [TopologicalSpace X] {U V : Set X} (s : Finset C(FirstHurewicz.Simplex p, X)) (hU : IsOpen U)
+    [TopologicalSpace X] {U V : Set X} (s : Finset C(SingularChains.Simplex p, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) (D : ℝ) :
     ∃ N : ℕ,
       ∀ k ≥ N,
         ∀ σ ∈ s,
-          ∀ (m : ℕ) (v : Fin (m + 1) → FirstHurewicz.Simplex p),
+          ∀ (m : ℕ) (v : Fin (m + 1) → SingularChains.Simplex p),
             (∀ i j, Dist.dist (v i) (v j) ≤ meshFactor p ^ k * D) →
               Set.range (σ.comp (affineSimplex v)) ⊆ U ∨
                 Set.range (σ.comp (affineSimplex v)) ⊆ V := by
@@ -2256,19 +2322,19 @@ theorem SingularMayerVietoris.formalSubdivision_iterate_mesh {V E : Type*}
         w hw i j
     simpa only [pow_succ, mul_assoc, mul_left_comm] using h
 
-theorem SingularMayerVietoris.simplex_dist_le_one {p : ℕ} (x y : FirstHurewicz.Simplex p) :
+theorem SingularMayerVietoris.simplex_dist_le_one {p : ℕ} (x y : SingularChains.Simplex p) :
     Dist.dist x y ≤ 1 :=
   (Metric.dist_le_diam_of_mem (bounded_stdSimplex (Fin (p + 1))) x.property y.property).trans
     diam_stdSimplex_le
 
 theorem SingularMayerVietoris.simplex_formalSubdivision_iterate_mesh {p n : ℕ} (k : ℕ)
-    (c : FormalChains (FirstHurewicz.Simplex p) (n + 1)) :
+    (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
     ∀ w ∈ ((formalSubdivision (fun _ v => simplexBarycenter v) (n + 1))^[k] c).support,
       ∀ i j, Dist.dist (w i) (w j) ≤ meshFactor n ^ k := by
   have h :=
     formalSubdivision_iterate_mesh
-      (fun n (v : Fin (n + 1) → FirstHurewicz.Simplex p) => simplexBarycenter v)
-      (fun x : FirstHurewicz.Simplex p => (x : Fin (p + 1) → ℝ))
+      (fun n (v : Fin (n + 1) → SingularChains.Simplex p) => simplexBarycenter v)
+      (fun x : SingularChains.Simplex p => (x : Fin (p + 1) → ℝ))
       (fun _ v => simplexBarycenter_eq_vertexBarycenter v) n k c (D := 1)
       (fun v _ i j => simplex_dist_le_one (v i) (v j))
   intro w hw i j
@@ -2276,12 +2342,12 @@ theorem SingularMayerVietoris.simplex_formalSubdivision_iterate_mesh {p n : ℕ}
   simpa only [mul_one] using h w hw i j
 
 theorem SingularMayerVietoris.finite_family_formalSubdivision_eventually_small {p : ℕ} {X : Type*}
-    [TopologicalSpace X] {U V : Set X} (s : Finset C(FirstHurewicz.Simplex p, X)) (hU : IsOpen U)
+    [TopologicalSpace X] {U V : Set X} (s : Finset C(SingularChains.Simplex p, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) :
     ∃ N : ℕ,
       ∀ k ≥ N,
         ∀ σ ∈ s,
-          ∀ c : FormalChains (FirstHurewicz.Simplex p) (p + 1),
+          ∀ c : FormalChains (SingularChains.Simplex p) (p + 1),
             ∀ w ∈ ((formalSubdivision (fun _ v => simplexBarycenter v) (p + 1))^[k] c).support,
               Set.range (σ.comp (affineSimplex w)) ⊆ U ∨
                 Set.range (σ.comp (affineSimplex w)) ⊆ V := by
@@ -2292,7 +2358,7 @@ theorem SingularMayerVietoris.finite_family_formalSubdivision_eventually_small {
   simpa only [mul_one] using simplex_formalSubdivision_iterate_mesh k c w hw
 
 theorem SingularMayerVietoris.subdivisionHomotopy_mem_small {X : Type} [TopologicalSpace X]
-    (U V : Set X) (k n : ℕ) (c : FirstHurewicz.Chains X n) (hc : c ∈ smallChainSubmodule U V n) :
+    (U V : Set X) (k n : ℕ) (c : SingularChains.Chains X n) (hc : c ∈ smallChainSubmodule U V n) :
     subdivisionHomotopy X k n c ∈ smallChainSubmodule U V (n + 1) := by
   apply
     singularLinearMap_mem_of_small U V n (subdivisionHomotopy X k n)
@@ -2303,16 +2369,16 @@ theorem SingularMayerVietoris.subdivisionHomotopy_mem_small {X : Type} [Topologi
 
 theorem SingularMayerVietoris.eventually_subdivision_mem_small {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ)
-    (c : FirstHurewicz.Chains X n) :
+    (c : SingularChains.Chains X n) :
     ∃ N : ℕ, ∀ k ≥ N, subdivision X k n c ∈ smallChainSubmodule U V n := by
   classical
-  have hc : ∀ σ ∈ (FirstHurewicz.chainsEquivFinsupp X n c).support, Set.range σ ⊆ U ∪ V := by
+  have hc : ∀ σ ∈ (SingularChains.chainsEquivFinsupp X n c).support, Set.range σ ⊆ U ∪ V := by
     intro σ hσ
     rw [hcover]
     exact Set.subset_univ _
   obtain ⟨N, hN⟩ :=
     finite_family_formalSubdivision_eventually_small
-      (FirstHurewicz.chainsEquivFinsupp X n c).support hU hV hc
+      (SingularChains.chainsEquivFinsupp X n c).support hU hV hc
   refine ⟨N, ?_⟩
   intro k hk
   apply singularLinearMap_mem_of_support n (subdivision X k n) (smallChainSubmodule U V n) c
@@ -2324,24 +2390,24 @@ theorem SingularMayerVietoris.eventually_subdivision_mem_small {X : Type} [Topol
 
 theorem SingularMayerVietoris.smallInclusion_quasiIso_of_deformation {X : Type}
     [TopologicalSpace X] (U V : Set X)
-    (s : ∀ _k n : ℕ, FirstHurewicz.Chains X n →ₗ[ℤ] FirstHurewicz.Chains X n)
-    (h : ∀ _k n : ℕ, FirstHurewicz.Chains X n →ₗ[ℤ] FirstHurewicz.Chains X (n + 1))
+    (s : ∀ _k n : ℕ, SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n)
+    (h : ∀ _k n : ℕ, SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1))
     (hs :
       ∀ k n,
-        ∀ c : FirstHurewicz.Chains X (n + 1),
-          ((FirstHurewicz.singularComplex X).d (n + 1) n).hom (s k (n + 1) c) =
-            s k n (((FirstHurewicz.singularComplex X).d (n + 1) n).hom c))
+        ∀ c : SingularChains.Chains X (n + 1),
+          ((SingularChains.singularComplex X).d (n + 1) n).hom (s k (n + 1) c) =
+            s k n (((SingularChains.singularComplex X).d (n + 1) n).hom c))
     (hh :
       ∀ k n,
-        ∀ c : FirstHurewicz.Chains X n,
-          ((FirstHurewicz.singularComplex X).d n (n - 1)).hom c = 0 →
-            ((FirstHurewicz.singularComplex X).d (n + 1) n).hom (h k n c) = c - s k n c)
+        ∀ c : SingularChains.Chains X n,
+          ((SingularChains.singularComplex X).d n (n - 1)).hom c = 0 →
+            ((SingularChains.singularComplex X).d (n + 1) n).hom (h k n c) = c - s k n c)
     (hsmall :
       ∀ k n,
-        ∀ c : FirstHurewicz.Chains X n,
+        ∀ c : SingularChains.Chains X n,
           c ∈ smallChainSubmodule U V n → h k n c ∈ smallChainSubmodule U V (n + 1))
     (heventually :
-      ∀ n, ∀ c : FirstHurewicz.Chains X n, ∃ k, s k n c ∈ smallChainSubmodule U V n) :
+      ∀ n, ∀ c : SingularChains.Chains X n, ∃ k, s k n c ∈ smallChainSubmodule U V n) :
     QuasiIso (smallInclusion U V) := by
   apply ModuleHomology.quasiIso_of_injective_chain_conditions (smallInclusion U V)
   · intro n
@@ -2350,16 +2416,16 @@ theorem SingularMayerVietoris.smallInclusion_quasiIso_of_deformation {X : Type}
     obtain ⟨k, hk⟩ := heventually n c
     exact ⟨⟨s k n c, hk⟩, h k n c, hh k n c hc⟩
   · intro n c hc b hb
-    have hc' : ((FirstHurewicz.singularComplex X).d n (n - 1)).hom c.1 = 0 :=
+    have hc' : ((SingularChains.singularComplex X).d n (n - 1)).hom c.1 = 0 :=
       congrArg (fun z : (smallComplex U V).X (n - 1) => z.1) hc
-    change ((FirstHurewicz.singularComplex X).d (n + 1) n).hom b = c.1 at hb
+    change ((SingularChains.singularComplex X).d (n + 1) n).hom b = c.1 at hb
     obtain ⟨k, hk⟩ := heventually (n + 1) b
     refine
       ⟨⟨s k (n + 1) b + h k n c.1,
           (smallChainSubmodule U V (n + 1)).add_mem hk (hsmall k n c.1 c.2)⟩,
         ?_⟩
     apply Subtype.ext
-    change ((FirstHurewicz.singularComplex X).d (n + 1) n).hom (s k (n + 1) b + h k n c.1) = c.1
+    change ((SingularChains.singularComplex X).d (n + 1) n).hom (s k (n + 1) b + h k n c.1) = c.1
     rw [map_add, hs, hb, hh k n c.1 hc']
     rw [← add_sub_assoc, add_comm, add_sub_cancel_right]
 
@@ -2376,13 +2442,13 @@ theorem SingularMayerVietoris.smallInclusion_quasiIso {X : Type} [TopologicalSpa
 
 def SingularMayerVietoris.smallHomologyIso {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
-    (smallComplex U V).homology n ≅ (FirstHurewicz.singularComplex X).homology n := by
+    (smallComplex U V).homology n ≅ (SingularChains.singularComplex X).homology n := by
   letI := smallInclusion_quasiIso U V hU hV hcover
   exact isoOfQuasiIsoAt (smallInclusion U V) n
 
 def SingularMayerVietoris.smallHomologyEquiv {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
-    (smallComplex U V).homology n ≃ₗ[ℤ] (FirstHurewicz.singularComplex X).homology n :=
+    (smallComplex U V).homology n ≃ₗ[ℤ] (SingularChains.singularComplex X).homology n :=
   (smallHomologyIso U V hU hV hcover n).toLinearEquiv
 
 @[simp]

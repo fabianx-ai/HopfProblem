@@ -16,8 +16,6 @@ FirstHurewicz
 SingularMayerVietoris
 SphereHomology
 EuclideanSphere
-Hopf/SphereTopology.lean:CuspCentralHomology
-ThreefoldHomologyStarCoproduct
 SixSphereCube
 SixSphereHomology
 ManifoldAtlasTransport

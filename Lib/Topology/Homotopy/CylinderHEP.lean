@@ -1,0 +1,538 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+import Mathlib
+import Lib.Geometry.Manifold.Morse.Handle
+import Lib.Analysis.Calculus.MorseLemma
+import Lib.Geometry.Manifold.Morse.SublevelSets
+import Lib.Geometry.Manifold.Morse.Index
+import Lib.Geometry.Manifold.Flow.HeightTranslating
+import Lib.AlgebraicTopology.SingularHomology.Chains
+import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Lib.Topology.Homotopy.HandleRetraction
+import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+
+
+set_option maxSynthPendingDepth 3
+
+open Set Function Filter Manifold Topology
+
+open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
+  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
+  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
+  UpperHalfPlane
+
+universe u v
+
+noncomputable section
+
+namespace Mathoverflow1973
+
+local infixr:80 " ≫ₚ " => Path.trans
+
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
+
+def Degree.CylinderBall.boundary {V : Type*} [NormedAddCommGroup V] :
+    Set ((unitInterval) × Degree.DiskCylinder.Disk (E := V)) :=
+  {p | p.1 = 0 ∨ p.1 = 1 ∨ ‖(p.2 : V)‖ = 1}
+
+theorem Degree.CylinderBall.time_norm_le (t : (unitInterval)) : ‖(2 * t.val - 1 : ℝ)‖ ≤ 1 := by
+  rw [Real.norm_eq_abs, abs_le]
+  constructor <;> linarith [t.property.1, t.property.2]
+
+def Degree.CylinderBall.forward {V : Type*} [NormedAddCommGroup V] :
+    C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Degree.DiskCylinder.Disk (E := ℝ × V))
+    where
+  toFun
+    p :=
+    ⟨(2 * p.1.val - 1, p.2.val),
+      mem_closedBall_zero_iff.mpr
+        (max_le (time_norm_le p.1) (mem_closedBall_zero_iff.mp p.2.property))⟩
+  continuous_toFun :=
+    (((continuous_const.mul (continuous_subtype_val.comp continuous_fst)).sub
+              continuous_const).prodMk
+          (continuous_subtype_val.comp continuous_snd)).subtype_mk
+      _
+
+def Degree.CylinderBall.inverseTime {V : Type*} [NormedAddCommGroup V]
+    (z : Degree.DiskCylinder.Disk (E := ℝ × V)) : (unitInterval) :=
+  ⟨(z.val.1 + 1) / 2,
+    by
+    have hn : |z.val.1| ≤ 1 := (max_le_iff.mp (mem_closedBall_zero_iff.mp z.property)).1
+    rcases abs_le.mp hn with ⟨hl, hu⟩
+    constructor <;> linarith⟩
+
+def Degree.CylinderBall.inverseSpace {V : Type*} [NormedAddCommGroup V]
+    (z : Degree.DiskCylinder.Disk (E := ℝ × V)) : Degree.DiskCylinder.Disk (E := V) :=
+  ⟨z.val.2,
+    mem_closedBall_zero_iff.mpr ((max_le_iff.mp (mem_closedBall_zero_iff.mp z.property)).2)⟩
+
+def Degree.CylinderBall.inverse {V : Type*} [NormedAddCommGroup V] :
+    C(Degree.DiskCylinder.Disk (E := ℝ × V), (unitInterval) × Degree.DiskCylinder.Disk (E := V))
+    where
+  toFun z := (inverseTime z, inverseSpace z)
+  continuous_toFun := by
+    have ht : Continuous (fun z : Degree.DiskCylinder.Disk (E := ℝ × V) => (z.val.1 + 1) / 2) := by
+      fun_prop
+    exact (ht.subtype_mk _).prodMk ((continuous_snd.comp continuous_subtype_val).subtype_mk _)
+
+def Degree.CylinderBall.homeomorph {V : Type*} [NormedAddCommGroup V] :
+    ((unitInterval) × Degree.DiskCylinder.Disk (E := V)) ≃ₜ Degree.DiskCylinder.Disk (E := ℝ × V)
+    where
+  toFun := forward
+  invFun := inverse
+  left_inv
+    p := by
+    apply Prod.ext
+    · apply Subtype.ext
+      change ((2 * p.1.val - 1) + 1) / 2 = p.1.val
+      ring
+    · rfl
+  right_inv
+    z := by
+    apply Subtype.ext
+    apply Prod.ext
+    · change 2 * ((z.val.1 + 1) / 2) - 1 = z.val.1
+      ring
+    · rfl
+  continuous_toFun := forward.continuous
+  continuous_invFun := inverse.continuous
+
+theorem Degree.CylinderBall.norm_eq_one_iff {V : Type*} [NormedAddCommGroup V]
+    (p : (unitInterval) × Degree.DiskCylinder.Disk (E := V)) :
+    ‖((homeomorph (V := V) p).val)‖ = 1 ↔ p ∈ boundary := by
+  change Max.max ‖(2 * p.1.val - 1 : ℝ)‖ ‖p.2.val‖ = 1 ↔ _
+  constructor
+  · intro he
+    rcases le_total ‖(2 * p.1.val - 1 : ℝ)‖ ‖p.2.val‖ with h | h
+    · exact Or.inr (Or.inr (by rwa [max_eq_right h] at he))
+    · rw [max_eq_left h, Real.norm_eq_abs] at he
+      have he' : |2 * p.1.val - 1| = |(1 : ℝ)| := by simpa using he
+      rcases abs_eq_abs.mp he' with h | h
+      · exact Or.inr (Or.inl (Subtype.ext (show p.1.val = (1 : ℝ) by linarith)))
+      · exact Or.inl (Subtype.ext (show p.1.val = (0 : ℝ) by linarith))
+  · rintro (h | h | h)
+    · have ht : p.1.val = 0 := congrArg Subtype.val h
+      rw [ht]
+      norm_num
+      exact mem_closedBall_zero_iff.mp p.2.property
+    · have ht : p.1.val = 1 := congrArg Subtype.val h
+      rw [ht]
+      norm_num
+      exact mem_closedBall_zero_iff.mp p.2.property
+    · rw [h, max_eq_right (time_norm_le p.1)]
+
+def Degree.CylinderBall.diskSphereHomeomorph {V : Type*} [NormedAddCommGroup V] :
+    { z : Degree.DiskCylinder.Disk (E := V) // ‖(z : V)‖ = 1 } ≃ₜ
+      Degree.DiskCylinder.Sphere (E := V)
+    where
+  toFun z := ⟨z.val.val, mem_sphere_zero_iff_norm.mpr z.property⟩
+  invFun s := ⟨Degree.DiskCylinder.boundaryToDisk s, mem_sphere_zero_iff_norm.mp s.property⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+  continuous_toFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
+  continuous_invFun := Degree.DiskCylinder.boundaryToDisk.continuous.subtype_mk _
+
+def Degree.CylinderBall.boundaryHomeomorph {V : Type*} [NormedAddCommGroup V] :
+    boundary (V := V) ≃ₜ Degree.DiskCylinder.Sphere (E := ℝ × V) :=
+  ((homeomorph (V := V)).subtype (fun p => (norm_eq_one_iff p).symm)).trans diskSphereHomeomorph
+
+def Degree.CylinderBoundary.lower {V : Type*} [NormedAddCommGroup V] :
+    C(Degree.DiskCylinder.bottomOrSide (E := V), Degree.CylinderBall.boundary (V := V)) :=
+  ⟨fun p => ⟨p.val, p.property.elim Or.inl (fun h => Or.inr (Or.inr h))⟩,
+    continuous_subtype_val.subtype_mk _⟩
+
+def Degree.CylinderBoundary.top {V : Type*} [NormedAddCommGroup V] :
+    C(Degree.DiskCylinder.Disk (E := V), Degree.CylinderBall.boundary (V := V)) :=
+  ⟨fun z => ⟨(1, z), Or.inr (Or.inl rfl)⟩, (continuous_const.prodMk continuous_id).subtype_mk _⟩
+
+def Degree.CylinderBoundary.quotient {V : Type*} [NormedAddCommGroup V] :
+    C(Degree.DiskCylinder.bottomOrSide (E := V) ⊕ Degree.DiskCylinder.Disk (E := V),
+      Degree.CylinderBall.boundary (V := V)) :=
+  ⟨Sum.elim Degree.CylinderBoundary.lower top,
+    Degree.CylinderBoundary.lower.continuous.sumElim top.continuous⟩
+
+theorem Degree.CylinderBoundary.quotient_surjective {V : Type*} [NormedAddCommGroup V] :
+    Function.Surjective (quotient (V := V)) := by
+  rintro ⟨⟨t, z⟩, ht | ht | hz⟩
+  · exact ⟨.inl ⟨(t, z), Or.inl ht⟩, rfl⟩
+  · change t = 1 at ht
+    subst t
+    exact ⟨.inr z, rfl⟩
+  · exact ⟨.inl ⟨(t, z), Or.inr hz⟩, rfl⟩
+
+theorem Degree.CylinderBoundary.quotient_isQuotientMap {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] : Topology.IsQuotientMap (quotient (V := V)) := by
+  have hclosed : IsClosed (Degree.DiskCylinder.bottomOrSide (E := V)) :=
+    (isClosed_eq continuous_fst continuous_const).union
+      (isClosed_eq (continuous_subtype_val.comp continuous_snd).norm continuous_const)
+  let : CompactSpace (Degree.DiskCylinder.bottomOrSide (E := V)) :=
+    isCompact_iff_compactSpace.mp hclosed.isCompact
+  exact .of_surjective_continuous quotient_surjective quotient.continuous
+
+theorem Degree.CylinderBoundary.lower_top_compat {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s))
+    (a : Degree.DiskCylinder.bottomOrSide (E := V)) (b : Degree.DiskCylinder.Disk (E := V))
+    (he : Degree.CylinderBoundary.lower a = top b) :
+    Degree.DiskCylinder.gluedBottomSide f H h0 a = g b := by
+  have ht : a.val.1 = (1 : (unitInterval)) :=
+    congrArg (fun p : Degree.CylinderBall.boundary (V := V) => p.val.1) he
+  have hz : a.val.2 = b := congrArg (fun p : Degree.CylinderBall.boundary (V := V) => p.val.2) he
+  have hs : ‖(a.val.2 : V)‖ = 1 := by
+    rcases a.property with h | h
+    · exact False.elim (zero_ne_one (h.symm.trans ht))
+    · exact h
+  let s : Degree.DiskCylinder.Sphere (E := V) := ⟨a.val.2.val, mem_sphere_zero_iff_norm.mpr hs⟩
+  have ha : a = Degree.DiskCylinder.sideMap (1, s) := Subtype.ext (Prod.ext ht rfl)
+  rw [ha, Degree.DiskCylinder.gluedBottomSide_side]
+  exact (h1 s).trans (congrArg g hz)
+
+def Degree.CylinderBoundary.data {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s)) :
+    C(Degree.DiskCylinder.bottomOrSide (E := V) ⊕ Degree.DiskCylinder.Disk (E := V), X) :=
+  ⟨Sum.elim (Degree.DiskCylinder.gluedBottomSide f H h0) g,
+    (Degree.DiskCylinder.gluedBottomSide f H h0).continuous.sumElim g.continuous⟩
+
+theorem Degree.CylinderBoundary.data_constant_on_fibres {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s))
+    (a b : Degree.DiskCylinder.bottomOrSide (E := V) ⊕ Degree.DiskCylinder.Disk (E := V))
+    (he : quotient a = quotient b) : data f g H h0 a = data f g H h0 b := by
+  cases a with
+  | inl a =>
+    cases b with
+    | inl
+      b =>
+      have hv : a.val = b.val :=
+        congrArg (fun p : Degree.CylinderBall.boundary (V := V) => p.val) he
+      exact congrArg (Degree.DiskCylinder.gluedBottomSide f H h0) (Subtype.ext hv)
+    | inr b => exact lower_top_compat f g H h0 h1 a b he
+  | inr a =>
+    cases b with
+    | inl b => exact (lower_top_compat f g H h0 h1 b a he.symm).symm
+    | inr b =>
+      exact congrArg g (congrArg (fun p : Degree.CylinderBall.boundary (V := V) => p.val.2) he)
+
+def Degree.CylinderBoundary.glued {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) :
+    C(Degree.CylinderBall.boundary (V := V), X) :=
+  quotient_isQuotientMap.lift (data f g H h0) (data_constant_on_fibres f g H h0 h1)
+
+theorem Degree.CylinderBoundary.glued_lower {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s))
+    (a : Degree.DiskCylinder.bottomOrSide (E := V)) :
+    glued f g H h0 h1 (Degree.CylinderBoundary.lower a) =
+      Degree.DiskCylinder.gluedBottomSide f H h0 a :=
+  ContinuousMap.congr_fun
+    (quotient_isQuotientMap.lift_comp (data f g H h0) (data_constant_on_fibres f g H h0 h1))
+    (.inl a)
+
+theorem Degree.CylinderBoundary.glued_top {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s))
+    (z : Degree.DiskCylinder.Disk (E := V)) : glued f g H h0 h1 (top z) = g z :=
+  ContinuousMap.congr_fun
+    (quotient_isQuotientMap.lift_comp (data f g H h0) (data_constant_on_fibres f g H h0 h1))
+    (.inr z)
+
+theorem Degree.CylinderBoundary.glued_bottom {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s))
+    (z : Degree.DiskCylinder.Disk (E := V)) :
+    glued f g H h0 h1 (Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z)) = f z := by
+  rw [glued_lower, Degree.DiskCylinder.gluedBottomSide_bottom]
+
+theorem Degree.CylinderBoundary.glued_side {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
+    (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) (t : (unitInterval))
+    (s : Degree.DiskCylinder.Sphere (E := V)) :
+    glued f g H h0 h1 (Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (t, s))) =
+      H (t, s) := by rw [glued_lower, Degree.DiskCylinder.gluedBottomSide_side]
+
+def Degree.MappingPaths.ofHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
+    {f g : C(A, B)} (H : f.Homotopy g) : Path f g
+    where
+  toContinuousMap := H.curry
+  source' := H.curry_zero
+  target' := H.curry_one
+
+def Degree.MappingPaths.toHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
+    [LocallyCompactSpace A] {f g : C(A, B)} (p : Path f g) : f.Homotopy g
+    where
+  toContinuousMap := p.toContinuousMap.uncurry
+  map_zero_left a := ContinuousMap.congr_fun p.source a
+  map_one_left a := ContinuousMap.congr_fun p.target a
+
+def Degree.MappingPaths.Over {A B : Type*} [TopologicalSpace A] [TopologicalSpace B] {a₀ a₁ : A}
+    {b₀ b₁ : B} (r : A → B) (p : Path a₀ a₁) (q : Path b₀ b₁) : Prop :=
+  ∀ t, r (p t) = q t
+
+theorem Degree.MappingPaths.Over.symm {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
+    {a₀ a₁ : A} {b₀ b₁ : B} {r : A → B} {p : Path a₀ a₁} {q : Path b₀ b₁}
+    (h : Degree.MappingPaths.Over r p q) : Degree.MappingPaths.Over r p.symm q.symm := fun t =>
+  h (unitInterval.symm t)
+
+theorem Degree.MappingPaths.Over.trans {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
+    {a₀ a₁ a₂ : A} {b₀ b₁ b₂ : B} {r : A → B} {p₀ : Path a₀ a₁} {p₁ : Path a₁ a₂}
+    {q₀ : Path b₀ b₁} {q₁ : Path b₁ b₂} (h₀ : Degree.MappingPaths.Over r p₀ q₀)
+    (h₁ : Degree.MappingPaths.Over r p₁ q₁) :
+    Degree.MappingPaths.Over r (p₀.trans p₁) (q₀.trans q₁) := by
+  intro t
+  simp only [Path.trans_apply]
+  split_ifs <;>
+    first
+    | exact h₀ _
+    | exact h₁ _
+
+theorem Degree.MappingPaths.normalization_cancellation {B : Type*} [TopologicalSpace B]
+    {b₀ b₁ b₂ : B} (a : Path b₀ b₁) (h : Path b₁ b₂) :
+    (a.symm.trans ((Path.refl b₀).trans ((h.symm.trans a.symm).symm))).Homotopic h := by
+  rw [Path.trans_symm, Path.symm_symm, Path.symm_symm]
+  have hunit := Path.Homotopic.refl_trans (a.trans h)
+  have hfirst := (Path.Homotopic.refl a.symm).hcomp hunit
+  have hassoc := (Path.Homotopic.trans_assoc a.symm a h).symm
+  have hcancel := (Path.Homotopic.symm_trans a).hcomp (Path.Homotopic.refl h)
+  exact hfirst.trans (hassoc.trans (hcancel.trans (Path.Homotopic.refl_trans h)))
+
+theorem Degree.BoundaryPathTransport.exists_transport {V Y : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f : C(Degree.DiskCylinder.Disk (E := V), Y))
+    {a b : C(Degree.DiskCylinder.Sphere (E := V), Y)} (A : Path a b)
+    (ha : f.comp Degree.DiskCylinder.boundaryToDisk = a) :
+    ∃ g : C(Degree.DiskCylinder.Disk (E := V), Y),
+      ∃ P : Path f g,
+        Degree.MappingPaths.Over
+            (fun v : C(Degree.DiskCylinder.Disk (E := V), Y) =>
+              v.comp Degree.DiskCylinder.boundaryToDisk)
+            P A ∧
+          g.comp Degree.DiskCylinder.boundaryToDisk = b := by
+  let H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), Y) := A.toContinuousMap.uncurry
+  have h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s) := by
+    intro s
+    exact (ContinuousMap.congr_fun A.source s).trans (ContinuousMap.congr_fun ha.symm s)
+  let g := Degree.DiskCylinder.extensionEndpoint f H h0
+  let P := Degree.MappingPaths.ofHomotopy (Degree.DiskCylinder.extensionHomotopy f H h0)
+  have hP :
+    Degree.MappingPaths.Over
+      (fun v : C(Degree.DiskCylinder.Disk (E := V), Y) =>
+        v.comp Degree.DiskCylinder.boundaryToDisk)
+      P A := by
+    intro t
+    apply ContinuousMap.ext
+    intro s
+    exact Degree.DiskCylinder.extend_side f H h0 t s
+  refine ⟨g, P, hP, ?_⟩
+  simpa using hP 1
+
+def Degree.CylinderBoundaryFamilies.bottomFamily {V Y : Type*} [NormedAddCommGroup V]
+    [TopologicalSpace Y] (f : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y)) :
+    C(Degree.DiskCylinder.Disk (E := V), C((unitInterval), Y)) :=
+  (f.comp ContinuousMap.prodSwap).curry
+
+def Degree.CylinderBoundaryFamilies.topFamily {V Y : Type*} [NormedAddCommGroup V]
+    [TopologicalSpace Y] (g : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y)) :
+    C(Degree.DiskCylinder.Disk (E := V), C((unitInterval), Y)) :=
+  (g.comp ContinuousMap.prodSwap).curry
+
+def Degree.CylinderBoundaryFamilies.sideFamily {V Y : Type*} [NormedAddCommGroup V]
+    [TopologicalSpace Y]
+    (H : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y)) :
+    C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), C((unitInterval), Y)) :=
+  (H.comp ContinuousMap.prodSwap).curry
+
+def Degree.CylinderBoundaryFamilies.glued {V Y : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f g : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y))
+    (H : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y))
+    (h0 : ∀ t s, H (t, 0, s) = f (t, Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ t s, H (t, 1, s) = g (t, Degree.DiskCylinder.boundaryToDisk s)) :
+    C((unitInterval) × Degree.CylinderBall.boundary (V := V), Y) :=
+  (Degree.CylinderBoundary.glued (bottomFamily f) (topFamily g) (sideFamily H)
+        (fun s => ContinuousMap.ext (fun t => h0 t s))
+        (fun s => ContinuousMap.ext (fun t => h1 t s))).uncurry.comp
+    ContinuousMap.prodSwap
+
+theorem Degree.CylinderBoundaryFamilies.glued_bottom {V Y : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f g : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y))
+    (H : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y))
+    (h0 : ∀ t s, H (t, 0, s) = f (t, Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ t s, H (t, 1, s) = g (t, Degree.DiskCylinder.boundaryToDisk s)) (t : (unitInterval))
+    (z : Degree.DiskCylinder.Disk (E := V)) :
+    glued f g H h0 h1 (t, Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z)) =
+      f (t, z) :=
+  ContinuousMap.congr_fun
+    (Degree.CylinderBoundary.glued_bottom (bottomFamily f) (topFamily g) (sideFamily H)
+      (fun s => ContinuousMap.ext (fun t => h0 t s))
+      (fun s => ContinuousMap.ext (fun t => h1 t s)) z)
+    t
+
+theorem Degree.CylinderBoundaryFamilies.glued_top {V Y : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f g : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y))
+    (H : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y))
+    (h0 : ∀ t s, H (t, 0, s) = f (t, Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ t s, H (t, 1, s) = g (t, Degree.DiskCylinder.boundaryToDisk s)) (t : (unitInterval))
+    (z : Degree.DiskCylinder.Disk (E := V)) :
+    glued f g H h0 h1 (t, Degree.CylinderBoundary.top z) = g (t, z) :=
+  ContinuousMap.congr_fun
+    (Degree.CylinderBoundary.glued_top (bottomFamily f) (topFamily g) (sideFamily H)
+      (fun s => ContinuousMap.ext (fun t => h0 t s))
+      (fun s => ContinuousMap.ext (fun t => h1 t s)) z)
+    t
+
+theorem Degree.CylinderBoundaryFamilies.glued_side {V Y : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f g : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y))
+    (H : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y))
+    (h0 : ∀ t s, H (t, 0, s) = f (t, Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ t s, H (t, 1, s) = g (t, Degree.DiskCylinder.boundaryToDisk s)) (t r : (unitInterval))
+    (s : Degree.DiskCylinder.Sphere (E := V)) :
+    glued f g H h0 h1 (t, Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (r, s))) =
+      H (t, r, s) :=
+  ContinuousMap.congr_fun
+    (Degree.CylinderBoundary.glued_side (bottomFamily f) (topFamily g) (sideFamily H)
+      (fun s => ContinuousMap.ext (fun t => h0 t s))
+      (fun s => ContinuousMap.ext (fun t => h1 t s)) r s)
+    t
+
+theorem Degree.CylinderHEP.exists_extension {V Y : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    (f : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y))
+    (J : C((unitInterval) × Degree.CylinderBall.boundary (V := V), Y))
+    (h0 : ∀ p, J (0, p) = f p.val) :
+    ∃ K : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Disk (E := V)), Y),
+      (∀ p, K (0, p) = f p) ∧
+        ∀ (t : (unitInterval)) (p : Degree.CylinderBall.boundary (V := V)),
+          K (t, p.val) = J (t, p) := by
+  let e := Degree.CylinderBall.homeomorph (V := V)
+  let b := Degree.CylinderBall.boundaryHomeomorph (V := V)
+  let f' : C(Degree.DiskCylinder.Disk (E := ℝ × V), Y) := f.comp (e.symm : C(_, _))
+  let J' : C((unitInterval) × Degree.DiskCylinder.Sphere (E := ℝ × V), Y) :=
+    J.comp ((ContinuousMap.id (unitInterval)).prodMap (b.symm : C(_, _)))
+  have h0' : ∀ s, J' (0, s) = f' (Degree.DiskCylinder.boundaryToDisk s) := fun s => h0 (b.symm s)
+  let H := Degree.DiskCylinder.extend f' J' h0'
+  let K : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Disk (E := V)), Y) :=
+    H.comp ((ContinuousMap.id (unitInterval)).prodMap (e : C(_, _)))
+  refine ⟨K, ?_, ?_⟩
+  · intro p
+    change H (0, e p) = f p
+    exact
+      (Degree.DiskCylinder.extend_bottom f' J' h0' (e p)).trans
+        (congrArg f (e.symm_apply_apply p))
+  · intro t p
+    change H (t, Degree.DiskCylinder.boundaryToDisk (b p)) = J (t, p)
+    exact
+      (Degree.DiskCylinder.extend_side f' J' h0' t (b p)).trans
+        (congrArg (fun p => J (t, p)) (b.symm_apply_apply p))
+
+theorem Degree.SideRectification.boundary_cases {V : Type*} [NormedAddCommGroup V]
+    (p : Degree.CylinderBall.boundary (V := V)) :
+    (∃ z, p = Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z)) ∨
+      (∃ z, p = Degree.CylinderBoundary.top z) ∨
+        ∃ t s, p = Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (t, s)) := by
+  rcases p with ⟨⟨t, z⟩, ht | ht | hz⟩
+  · change t = 0 at ht
+    subst t
+    exact Or.inl ⟨z, rfl⟩
+  · change t = 1 at ht
+    subst t
+    exact Or.inr (Or.inl ⟨z, rfl⟩)
+  · exact Or.inr (Or.inr ⟨t, ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩, rfl⟩)
+
+theorem Degree.SideRectification.exists_rectification {V Y : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
+    {f g : C(Degree.DiskCylinder.Disk (E := V), Y)} (P : Path f g)
+    {a b : C(Degree.DiskCylinder.Sphere (E := V), Y)} (Q H : Path a b)
+    (hP :
+      Degree.MappingPaths.Over
+        (fun v : C(Degree.DiskCylinder.Disk (E := V), Y) =>
+          v.comp Degree.DiskCylinder.boundaryToDisk)
+        P Q)
+    (hQ : Q.Homotopic H) :
+    ∃ G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y),
+      (∀ z, G (0, z) = f z) ∧
+        (∀ z, G (1, z) = g z) ∧ ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H t s := by
+  obtain ⟨K⟩ := hQ
+  have hfa : f.comp Degree.DiskCylinder.boundaryToDisk = a := by simpa using hP 0
+  have hgb : g.comp Degree.DiskCylinder.boundaryToDisk = b := by simpa using hP 1
+  let side : C((unitInterval) × ((unitInterval) × Degree.DiskCylinder.Sphere (E := V)), Y) :=
+    K.toHomotopy.toContinuousMap.uncurry.comp
+      ((Homeomorph.prodAssoc (unitInterval) (unitInterval)
+            (Degree.DiskCylinder.Sphere (E := V))).symm :
+        C(_, _))
+  let fb : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y) := f.comp ContinuousMap.snd
+  let gt : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y) := g.comp ContinuousMap.snd
+  have hs0 : ∀ t s, side (t, 0, s) = fb (t, Degree.DiskCylinder.boundaryToDisk s) := by
+    intro t s
+    have he : K (t, 0) = a := (K.eq_fst t (by simp)).trans Q.source
+    exact (congrArg (fun v => v s) he).trans (ContinuousMap.congr_fun hfa.symm s)
+  have hs1 : ∀ t s, side (t, 1, s) = gt (t, Degree.DiskCylinder.boundaryToDisk s) := by
+    intro t s
+    have he : K (t, 1) = b := (K.eq_fst t (by simp)).trans Q.target
+    exact (congrArg (fun v => v s) he).trans (ContinuousMap.congr_fun hgb.symm s)
+  let J := Degree.CylinderBoundaryFamilies.glued fb gt side hs0 hs1
+  have hJ0 :
+    ∀ p : Degree.CylinderBall.boundary (V := V),
+      J (0, p) = Degree.MappingPaths.toHomotopy P p.val := by
+    intro p
+    rcases boundary_cases p with ⟨z, rfl⟩ | ⟨z, rfl⟩ | ⟨t, s, rfl⟩
+    · exact
+        (Degree.CylinderBoundaryFamilies.glued_bottom fb gt side hs0 hs1 0 z).trans
+          (ContinuousMap.congr_fun P.source z).symm
+    · exact
+        (Degree.CylinderBoundaryFamilies.glued_top fb gt side hs0 hs1 0 z).trans
+          (ContinuousMap.congr_fun P.target z).symm
+    · exact
+        (Degree.CylinderBoundaryFamilies.glued_side fb gt side hs0 hs1 0 t s).trans
+          ((congrArg (fun v => v s) (K.apply_zero t)).trans
+            (ContinuousMap.congr_fun (hP t) s).symm)
+  obtain ⟨W, _, hW⟩ :=
+    Degree.CylinderHEP.exists_extension (Degree.MappingPaths.toHomotopy P).toContinuousMap J hJ0
+  let G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y) :=
+    W.comp ⟨fun p => (1, p), continuous_const.prodMk continuous_id⟩
+  refine ⟨G, ?_, ?_, ?_⟩
+  · intro z
+    exact
+      (hW 1 (Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z))).trans
+        (Degree.CylinderBoundaryFamilies.glued_bottom fb gt side hs0 hs1 1 z)
+  · intro z
+    exact
+      (hW 1 (Degree.CylinderBoundary.top z)).trans
+        (Degree.CylinderBoundaryFamilies.glued_top fb gt side hs0 hs1 1 z)
+  · intro t s
+    exact
+      (hW 1 (Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (t, s)))).trans
+        ((Degree.CylinderBoundaryFamilies.glued_side fb gt side hs0 hs1 1 t s).trans
+          (congrArg (fun v => v s) (K.apply_one t)))
+end Mathoverflow1973

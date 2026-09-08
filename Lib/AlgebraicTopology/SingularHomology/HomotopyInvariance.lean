@@ -9,6 +9,55 @@ public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.Chains
 public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 
+/-!
+# Homotopy invariance of singular homology
+
+Homotopic maps of spaces induce the same map on singular homology, so a homotopy equivalence
+induces an isomorphism (Hatcher, Theorem 2.10):
+
+* `PeriodTorusHigherHomology.homotopic_homologyMap` — the headline statement: homotopic maps
+  induce equal maps on singular homology.
+
+Consequences: homotopy equivalences and homeomorphisms induce homology isomorphisms
+(`homotopyEquivHomologyEquiv`, `homeomorphHomologyEquiv`), and homology vanishes on totally
+disconnected, one-point, and contractible spaces, with the two null-homotopy lemmas
+`CuspCentralHomology.singularHomologyMap_const_eq_zero` and
+`singularHomologyMap_eq_zero_of_nullhomotopic`.
+
+## Outline of the proof
+
+1. *Chain homotopy.*  `singularChainHomotopy f g H n` is a degree-`n+1` chain whose boundary
+   is `g_# − f_#` on `n`-cycles; `homotopy_homologyMap` turns the identity into an equality
+   of homology maps.
+2. *Equivalences.*  `homotopyEquivHomologyEquiv` (a homotopy equivalence gives a homology
+   equivalence), `homeomorphHomologyEquiv` (a homeomorphism gives a homology equivalence,
+   functorial: `homeomorphHomologyEquiv_refl`, `_trans`, `_symm_apply`).
+3. *Vanishing.*  `connectedHomologyZeroEquiv`, `pointHomologyZeroEquiv`,
+   `contractibleHomologyEquivPoint` and the subsingleton corollaries
+   (`totallyDisconnected_homology_subsingleton`, `point_homology_subsingleton`,
+   `contractible_homology_subsingleton`).
+4. *Null-homotopy.*  `CuspCentralHomology.singularHomologyMap_const_eq_zero` and
+   `singularHomologyMap_eq_zero_of_nullhomotopic`: a constant or null-homotopic map
+   annihilates positive-degree homology maps.
+
+## Main definitions and results
+
+* `PeriodTorusHigherHomology.homotopic_homologyMap` : homotopy invariance (Hatcher Thm 2.10).
+* `PeriodTorusHigherHomology.homotopyEquivHomologyEquiv`, `.homeomorphHomologyEquiv` :
+  homology equivalences from equivalences.
+* `CuspCentralHomology.singularHomologyMap_eq_zero_of_nullhomotopic` : null-homotopy kills
+  positive-degree homology maps.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorem 2.10
+
+## Tags
+
+homotopy invariance, chain homotopy, homology equivalence
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 
@@ -30,14 +79,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 @[simp]
-theorem PeriodTorusHigherHomology.singularHomologyMap_id (X : Type) [TopologicalSpace X] (n : ℕ) :
+theorem SingularHomology.singularHomologyMap_id (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.id X) n = LinearMap.id := by
   have h :=
     ((AlgebraicTopology.singularHomologyFunctor (ModuleCat ℤ) n).obj (ModuleCat.of ℤ ℤ)).map_id
       (TopCat.of X)
   exact congrArg ModuleCat.Hom.hom h
 
-theorem PeriodTorusHigherHomology.singularHomologyMap_comp {X Y Z : Type} [TopologicalSpace X]
+theorem SingularHomology.singularHomologyMap_comp {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (g.comp f) n =
       (SingularMayerVietoris.singularHomologyMap g n).comp
@@ -47,26 +96,26 @@ theorem PeriodTorusHigherHomology.singularHomologyMap_comp {X Y Z : Type} [Topol
       (TopCat.ofHom f) (TopCat.ofHom g)
   exact congrArg ModuleCat.Hom.hom h
 
-def PeriodTorusHigherHomology.singularChainHomotopy {X Y : Type} [TopologicalSpace X]
+def SingularHomology.singularChainHomotopy {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (H : f.Homotopy g) :
-    _root_.Homotopy (FirstHurewicz.singularChainMap f) (FirstHurewicz.singularChainMap g) :=
+    _root_.Homotopy (SingularChains.singularChainMap f) (SingularChains.singularChainMap g) :=
   TopCat.Homotopy.singularChainComplexFunctorObjMap (f := TopCat.ofHom f) (g := TopCat.ofHom g) H
     (ModuleCat.of ℤ ℤ)
 
-theorem PeriodTorusHigherHomology.homotopy_homologyMap {X Y : Type} [TopologicalSpace X]
+theorem SingularHomology.homotopy_homologyMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (H : f.Homotopy g) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap f n =
       SingularMayerVietoris.singularHomologyMap g n :=
   congrArg ModuleCat.Hom.hom ((singularChainHomotopy H).homologyMap_eq n)
 
-theorem PeriodTorusHigherHomology.homotopic_homologyMap {X Y : Type} [TopologicalSpace X]
+theorem SingularHomology.homotopic_homologyMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (h : f.Homotopic g) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap f n =
       SingularMayerVietoris.singularHomologyMap g n := by
   obtain ⟨H⟩ := h
   exact homotopy_homologyMap H n
 
-def PeriodTorusHigherHomology.homotopyInverseHomologyEquiv {X Y : Type} [TopologicalSpace X]
+def SingularHomology.homotopyInverseHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (g : C(Y, X))
     (hgf : (g.comp f).Homotopic (ContinuousMap.id X))
     (hfg : (f.comp g).Homotopic (ContinuousMap.id Y)) (n : ℕ) :
@@ -85,53 +134,53 @@ def PeriodTorusHigherHomology.homotopyInverseHomologyEquiv {X Y : Type} [Topolog
     rw [singularHomologyMap_comp, singularHomologyMap_id] at h
     exact LinearMap.congr_fun h a
 
-def PeriodTorusHigherHomology.homotopyEquivHomologyEquiv {X Y : Type} [TopologicalSpace X]
+def SingularHomology.homotopyEquivHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology Y n :=
   homotopyInverseHomologyEquiv e.toFun e.invFun e.left_inv e.right_inv n
 
 @[simp]
-theorem PeriodTorusHigherHomology.homotopyEquivHomologyEquiv_toLinearMap {X Y : Type}
+theorem SingularHomology.homotopyEquivHomologyEquiv_toLinearMap {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ) :
     (homotopyEquivHomologyEquiv e n).toLinearMap =
       SingularMayerVietoris.singularHomologyMap e.toFun n :=
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homotopyEquivHomologyEquiv_apply {X Y : Type}
+theorem SingularHomology.homotopyEquivHomologyEquiv_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology X n) :
     homotopyEquivHomologyEquiv e n a = SingularMayerVietoris.singularHomologyMap e.toFun n a :=
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homotopyEquivHomologyEquiv_symm_apply {X Y : Type}
+theorem SingularHomology.homotopyEquivHomologyEquiv_symm_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology Y n) :
     (homotopyEquivHomologyEquiv e n).symm a =
       SingularMayerVietoris.singularHomologyMap e.symm.toFun n a :=
   rfl
 
-def PeriodTorusHigherHomology.homeomorphHomologyEquiv {X Y : Type} [TopologicalSpace X]
+def SingularHomology.homeomorphHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology Y n :=
   homotopyEquivHomologyEquiv e.toHomotopyEquiv n
 
 @[simp]
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_toLinearMap {X Y : Type}
+theorem SingularHomology.homeomorphHomologyEquiv_toLinearMap {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
     (homeomorphHomologyEquiv e n).toLinearMap =
       SingularMayerVietoris.singularHomologyMap (e : C(X, Y)) n :=
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_apply {X Y : Type} [TopologicalSpace X]
+theorem SingularHomology.homeomorphHomologyEquiv_apply {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     homeomorphHomologyEquiv e n a = SingularMayerVietoris.singularHomologyMap (e : C(X, Y)) n a :=
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_symm_apply {X Y : Type}
+theorem SingularHomology.homeomorphHomologyEquiv_symm_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology Y n) :
     (homeomorphHomologyEquiv e n).symm a =
@@ -139,7 +188,7 @@ theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_symm_apply {X Y : Type
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_symm {X Y : Type} [TopologicalSpace X]
+theorem SingularHomology.homeomorphHomologyEquiv_symm {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
     (homeomorphHomologyEquiv e n).symm = homeomorphHomologyEquiv e.symm n := by
   apply LinearEquiv.ext
@@ -147,7 +196,7 @@ theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_symm {X Y : Type} [Top
   rfl
 
 @[simp]
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_refl (X : Type) [TopologicalSpace X]
+theorem SingularHomology.homeomorphHomologyEquiv_refl (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     homeomorphHomologyEquiv (Homeomorph.refl X) n =
       LinearEquiv.refl ℤ (SingularMayerVietoris.SingularHomology X n) := by
@@ -157,7 +206,7 @@ theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_refl (X : Type) [Topol
   rw [singularHomologyMap_id]
   rfl
 
-theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_trans {X Y Z : Type}
+theorem SingularHomology.homeomorphHomologyEquiv_trans {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (e : X ≃ₜ Y) (f : Y ≃ₜ Z)
     (n : ℕ) :
     homeomorphHomologyEquiv (e.trans f) n =
@@ -171,50 +220,50 @@ theorem PeriodTorusHigherHomology.homeomorphHomologyEquiv_trans {X Y Z : Type}
   rw [singularHomologyMap_comp]
   rfl
 
-def PeriodTorusHigherHomology.connectedHomologyZeroEquiv (X : Type) [TopologicalSpace X]
+def SingularHomology.connectedHomologyZeroEquiv (X : Type) [TopologicalSpace X]
     [PathConnectedSpace X] : SingularMayerVietoris.SingularHomology X 0 ≃ₗ[ℤ] ℤ :=
   (CategoryTheory.asIso ((TopCat.of X).singularHomology₀ε (ModuleCat.of ℤ ℤ))).toLinearEquiv
 
-theorem PeriodTorusHigherHomology.totallyDisconnected_homology_isZero (X : Type)
+theorem SingularHomology.totallyDisconnected_homology_isZero (X : Type)
     [TopologicalSpace X] [TotallyDisconnectedSpace X] (n : ℕ) (hn : n ≠ 0) :
     CategoryTheory.Limits.IsZero (SingularMayerVietoris.SingularHomology X n) :=
   AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace (ModuleCat ℤ) n
     (ModuleCat.of ℤ ℤ) (TopCat.of X) hn
 
-theorem PeriodTorusHigherHomology.totallyDisconnected_homology_subsingleton (X : Type)
+theorem SingularHomology.totallyDisconnected_homology_subsingleton (X : Type)
     [TopologicalSpace X] [TotallyDisconnectedSpace X] (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology X n) :=
   ModuleCat.subsingleton_of_isZero (totallyDisconnected_homology_isZero X n hn)
 
-abbrev PeriodTorusHigherHomology.pointHomologyZeroEquiv :
+abbrev SingularHomology.pointHomologyZeroEquiv :
     SingularMayerVietoris.SingularHomology Unit 0 ≃ₗ[ℤ] ℤ :=
   connectedHomologyZeroEquiv Unit
 
-theorem PeriodTorusHigherHomology.point_homology_subsingleton (n : ℕ) (hn : n ≠ 0) :
+theorem SingularHomology.point_homology_subsingleton (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology Unit n) :=
   totallyDisconnected_homology_subsingleton Unit n hn
 
-def PeriodTorusHigherHomology.contractibleHomologyEquivPoint (X : Type) [TopologicalSpace X]
+def SingularHomology.contractibleHomologyEquivPoint (X : Type) [TopologicalSpace X]
     [ContractibleSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology Unit n :=
   homotopyEquivHomologyEquiv (Classical.choice (ContractibleSpace.hequiv_unit X)) n
 
-theorem PeriodTorusHigherHomology.contractible_homology_subsingleton (X : Type)
+theorem SingularHomology.contractible_homology_subsingleton (X : Type)
     [TopologicalSpace X] [ContractibleSpace X] (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology X n) := by
   let := point_homology_subsingleton n hn
   exact (contractibleHomologyEquivPoint X n).injective.subsingleton
 
-theorem CuspCentralHomology.singularHomologyMap_const_eq_zero {Y : Type} [TopologicalSpace Y]
+theorem Suspension.singularHomologyMap_const_eq_zero {Y : Type} [TopologicalSpace Y]
     (X : Type) [TopologicalSpace X] (y : Y) (n : ℕ) (hn : n ≠ 0) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.const X y) n = 0 := by
-  let := PeriodTorusHigherHomology.point_homology_subsingleton n hn
+  let := SingularHomology.point_homology_subsingleton n hn
   change
     SingularMayerVietoris.singularHomologyMap
         ((ContinuousMap.const Unit y).comp (ContinuousMap.const X ())) n =
       0
-  rw [PeriodTorusHigherHomology.singularHomologyMap_comp]
+  rw [SingularHomology.singularHomologyMap_comp]
   ext a
   change
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.const Unit y) n
@@ -224,10 +273,10 @@ theorem CuspCentralHomology.singularHomologyMap_const_eq_zero {Y : Type} [Topolo
       (0 : SingularMayerVietoris.SingularHomology Unit n),
     map_zero]
 
-theorem CuspCentralHomology.singularHomologyMap_eq_zero_of_nullhomotopic {X Y : Type}
+theorem Suspension.singularHomologyMap_eq_zero_of_nullhomotopic {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (hf : f.Nullhomotopic) (n : ℕ)
     (hn : n ≠ 0) : SingularMayerVietoris.singularHomologyMap f n = 0 := by
   obtain ⟨y, hy⟩ := hf
-  rw [PeriodTorusHigherHomology.homotopic_homologyMap hy n]
+  rw [SingularHomology.homotopic_homologyMap hy n]
   exact singularHomologyMap_const_eq_zero X y n hn
 end Mathoverflow1973
