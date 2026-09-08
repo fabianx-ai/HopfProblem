@@ -7307,3 +7307,13 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.ext_exact₃
 #check CategoryTheory.Abelian.ext_zero_injective
 #print axioms CategoryTheory.Abelian.ext_zero_injective
+
+-- M09-G: original-resolution derived transport and canonical degree-zero coherence.
+#check CategoryTheory.NatIso.rightDerived
+#print axioms CategoryTheory.NatIso.rightDerived
+#check CategoryTheory.NatIso.rightDerived_hom
+#print axioms CategoryTheory.NatIso.rightDerived_hom
+#check CategoryTheory.NatIso.rightDerived_inv
+#print axioms CategoryTheory.NatIso.rightDerived_inv
+#check CategoryTheory.NatIso.rightDerived_zero_hom
+#print axioms CategoryTheory.NatIso.rightDerived_zero_hom
