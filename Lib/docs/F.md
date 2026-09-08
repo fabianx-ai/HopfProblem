@@ -24,10 +24,13 @@ Contents:
 oriented embedded submanifolds of the oriented $(p+q)$-manifold $N$, meeting transversely. Then
 $A \cap B$ is finite when both are compact (lane E2), each intersection point carries a sign
 $\varepsilon(x) = \pm 1$ (the orientation of $T_x A \oplus T_x B$ against $T_x N$), and the
-signed count $\sum_x \varepsilon(x)$ equals the homological intersection pairing — concretely,
+signed count
+$\sum_x \varepsilon(x)$ equals the homological intersection pairing — concretely,
 the degree of the collapse map that collapses the complement of a tubular neighborhood of $B$
-onto the Thom space of its normal bundle: *the degree of a map equals the sum of its local
-degrees at the preimages of a regular value*.
+onto the Thom space of its normal bundle, read homologically (the Thom class localized at the
+intersection points; §3). For maps between equidimensional manifolds this specializes to
+Hatcher's Prop. 2.30: *the degree of a map equals the sum of its local degrees at the preimages
+of a regular value* — the form the code's cell-filtration collapse uses.
 
 **(F2) The Whitney lemma (Milnor, h-cobordism Thm. 6.4).** Let $A^p, B^q \subseteq N^m$ be
 connected, compact, oriented, embedded submanifolds of a boundaryless $m$-manifold, $p + q = m
@@ -68,10 +71,14 @@ machine, and the sphere computations are lane A. The lane's own algebra files (t
 integer presentations) depend on nothing beyond linear algebra over $\mathbb{Z}$ and land
 first.
 
-Orientations: all signs come from oriented determinants of explicit frames; the sign
-conventions are fixed once (the belt sphere's normal frame, then the attaching sphere's frame,
-against the level's orientation) and the bridge "opposite intersection sign $\iff$ opposite
-corner determinant" is proved once (§5) and used everywhere.
+Orientations: all signs come from oriented determinants of explicit frames. The conventions
+are fixed once: at an intersection point, $T_x N$ is oriented against (a normal frame of $B$,
+then a frame of $B$) — equivalently, via the transversality identifications $\nu B \cong T_x A$
+and $\nu A \cong T_x B$, against (a frame of $A$, then a frame of $B$) — and the normal bundle
+$\nu B$ is oriented by the normal-first splitting $o(\nu B) \wedge o(TB) = o(TN)|_B$; the
+bridge "opposite intersection sign $\iff$ opposite corner determinant" is proved once (§5) and
+used everywhere. (The code's sphere-normal Jacobian is the (normal of $B$, normal of $A$)
+reading; the two readings agree by the transversality isomorphism.)
 
 ## 3. The signed intersection number and the local-degree theorem
 
@@ -79,8 +86,9 @@ corner determinant" is proved once (§5) and used everywhere.
 $A \cap B$ is finite (E2, T10). At $x \in A \cap B$, transversality makes
 $T_x A \oplus T_x B \to T_x N$ an isomorphism; $\varepsilon(x)$ is its determinant sign against
 the orientations. The *signed intersection number* is
-$$\langle A, B \rangle := \sum_{x \in A \cap B} \varepsilon(x).$$
-
+$$\langle A, B \rangle := \sum_{x \in A \cap B} \varepsilon(x),$$
+with $B$ connected in the handle application (a sphere), which is where the Thom-side degree
+formulation below is used.
 **Isotopy invariance.** A compactly supported isotopy of either sheet changes the intersection
 set by the birth/death of opposite-sign pairs (a generic 1-parameter family has finitely many
 birth-death times, each creating or annihilating one $+$ and one $-$ point; at the births
@@ -91,13 +99,25 @@ correct, the homological one is cheaper in Lean.)
 
 **The local-degree theorem.** *The signed count equals the degree of the collapse.* Let $\tau
 \colon N \to \mathrm{Th}(\nu B)$ be the collapse onto the Thom space of the normal bundle of
-$B$ (tubular neighborhood — lane D2), and for $A$ oriented compact, let $[A] \in H_p(N)$ be its
-class; then $\langle A, B \rangle = \deg(\tau \circ \iota_A)$ where the degree is taken against
-the generator of $H_p(\mathrm{Th}(\nu B)) \cong \mathbb{Z}$ given by the orientation of $\nu B$.
-*Proof.* By transversality and the crossing charts of E2 §12, $\tau \circ \iota_A$ near each
-intersection point is a local homeomorphism of oriented $p$-balls with local degree
-$\varepsilon(x)$; the degree equals the sum of the local degrees at the preimages of a regular
-value (Hatcher Prop. 2.30; lane A's local-degree machine). $\square$
+$B$ (tubular neighborhood — lane D2), with $B$ connected so that
+$H_p(\mathrm{Th}(\nu B)) \cong H_0(B) \cong \mathbb{Z}$ (Thom isomorphism); orient $\nu B$ by
+the normal-first convention of §2, which fixes the generator. Then
+$\langle A, B \rangle = \deg(\tau \circ \iota_A)$.
+*Proof.* This is a homological localization, not the equidimensional local-degree formula:
+with $u \in H^p(\mathrm{Th}(\nu B))$ the Thom class, $\deg(\tau \circ \iota_A) = \langle
+\tau^* u, [A] \rangle$; the pullback $\tau^* u$ is the Poincaré dual of $[B]$ in $N$; the
+evaluation $\langle \tau^* u, [A] \rangle$ localizes by excision to the finite set
+$A \cap B$; and in the crossing charts of E2 §12 the fibre projection of $A$ at $x$ is an
+oriented linear isomorphism of determinant sign $\varepsilon(x)$ (with the normal-first
+convention — writing $o(TA) = \lambda\, o(\nu B)$ through the transversality isomorphism,
+$o(TA) \wedge o(TB) = \lambda\, o(\nu B) \wedge o(TB) = \lambda\, o(TN)$, so the local
+degree at $x$ is exactly $\varepsilon(x)$, with no hidden global sign). Hence the evaluation
+is $\sum_x \varepsilon(x)$. $\square$
+(The code proves the equidimensional instance of the same fact: the cell-filtration collapse
+of the level onto a wedge of $k$-spheres, where the attaching map runs between
+equal-dimensional manifolds and Hatcher's Prop. 2.30 applies verbatim — the
+`collapse_homology_signed_count` statement. The Thom formulation above is the same identity
+read through the tubular collapse.)
 
 In the handle-calculus application $A$ is the attaching sphere $S^k$ of an index-$(k+1)$
 handle, $B$ is the belt sphere $S^{m-k}$ of an index-$k$ handle, $N$ is the intermediate
@@ -116,11 +136,11 @@ a compact 2-disc. The model sheets are the submanifolds
 $$A_{\mathrm{mod}} := L_0 \times \mathbb{R}^{p-1} \times \{0\}, \qquad
 B_{\mathrm{mod}} := L_1 \times \{0\} \times \mathbb{R}^{q-1},$$
 of dimensions $p$ and $q$ in the model space of dimension $m$; they meet exactly at the two
-corners $(\pm 1, 0, 0, 0)$. The corner determinant sign of the model frames is
-$\operatorname{sign}(8h(2t - 1))$-style — explicitly, the Jacobian of the two sheet
-parametrizations differs in sign between $s = -1$ and $s = +1$ (a direct $2 \times 2$
-determinant computation in the bigon plane): the two corners have *opposite* intersection
-signs. This is the only property of the model that the rest of the proof uses, and it is the
+corners $(\pm 1, 0, 0, 0)$. The corner determinant of the model frames is computed directly: with the sheet frames
+$\partial_s$ (the line) and $\partial_s - 2hs\,\partial_t$ (the parabola), the planar
+determinant is $-2hs$ at the corner $(s, 0)$ — that is $+2h$ at $s = -1$ and $-2h$ at
+$s = +1$ (or the global negative, with the opposite sheet order): the two corners have
+*opposite* intersection signs. This is the only property of the model that the rest of the proof uses, and it is the
 reason for the hypothesis "opposite signs" in (F2).
 
 ## 5. The framing bridge
@@ -155,16 +175,19 @@ where a global hypothesis enters; in the handle application it is the simply-con
 the relevant level complement, recorded as the hypothesis `hnull`.
 
 *Step 2 (the embedded bigon).* The disc map is made immersion-generic rel boundary, then
-embedded: its double points are interior arcs/points removable by the Whitney finger
-construction's inverse — concretely, general position puts the 2-dimensional disc interior
-disjoint from $A$ when $2 + p < m$ and from $B$ when $2 + q < m$; when $q = 2$ or $p = 2$
-(i.e. codimension 2 of one sheet — this is exactly the case $p = q = \ldots$ of the
-code: sheets $2$ and $3$ in a $5$-manifold, where $2 + 3 = 5$ is *not* $< 5$), the residual
-intersections of the disc interior with the codimension-2 sheet come in opposite-sign pairs and
-are piped off: push each such point along an arc in the sheet to the boundary arc (which lies
-in the sheet) and absorb it into the boundary germ; this uses the sheet's dimension $\geq 2$
-for the arc to exist and the framing to keep the push embedded. The details are the code's
-`exists_filled_bigon_of_complement_contractions` chain. Result: an embedded bigon
+embedded — for $m = p + q \geq 5$ this is already general position: the generic double-point
+set of a 2-disc has dimension $4 - m \leq -1$, i.e. is empty, so immersion-generic rel
+boundary is embedding-generic. It remains to clear the interior intersections with the sheets.
+General position puts the 2-dimensional disc interior disjoint from $A$ when $2 + p < m$ and
+from $B$ when $2 + q < m$; when $q = 2$ (symmetrically $p = 2$) — the codimension-2 case,
+which is exactly the code's case $(p, q) = (2, 3)$ in a $5$-manifold, where $2 + 3 = 5$ is
+*not* $< 5$ — the residual interior intersections with the codimension-2 sheet are isolated
+points, removed one at a time by *piping* (Milnor's Lemma 6.7): for each residual point choose
+a simple arc **in the disc** from the point to the boundary arc $\beta$ (which lies in the
+sheet), avoiding the other residual points — automatic, since the disc is 2-dimensional — and
+isotope the sheet in a neighborhood of that arc, pushing the intersection point within the
+disc until it leaves across $\beta$; the framing keeps the push embedded. The details are the
+code's `exists_filled_bigon_of_complement_contractions` chain. Result: an embedded bigon
 $\iota \colon B_h \hookrightarrow N$ with boundary arcs on $A$ and $B$, interior disjoint from
 $A \cup B$, clean germs at the two corners.
 
@@ -180,8 +203,10 @@ $(p, q) = (2, 3)$).
 
 *Step 4 (the model cancellation).* In the model of §4 there is an explicit compactly supported
 isotopy moving $A_{\mathrm{mod}}$ off $B_{\mathrm{mod}}$: choose a smooth height function
-$\varphi \colon \mathbb{R} \to [0, \infty)$, compactly supported, with $\varphi(s) > h(1 - s^2)$
-on $(-1, 1)$, and push $L_0$ vertically to $t = \varphi(s)$ over the bigon (the *graph motion*),
+$\varphi \colon \mathbb{R} \to [0, \infty)$, compactly supported slightly beyond $[-1, 1]$,
+with $\varphi(s) > h(1 - s^2)$ on the **closed** interval $[-1, 1]$ (the strict inequality at
+the endpoints is what removes the corners), and push $L_0$ vertically to $t = \varphi(s)$ over
+the bigon (the *graph motion*),
 blended to the identity outside a compact neighborhood with a cutoff in the normal directions.
 The two model intersections are exactly the two corners, and the pushed line is disjoint from
 the parabola. The isotopy is elementary and explicit (this is the code's `GraphMotion`
@@ -222,16 +247,25 @@ middle matrix *is* the handle chain complex's boundary in the middle degree.
 **The slide theorem.** *Sliding handle $j$ over handle $i$ with multiplicity $c \in
 \mathbb{Z}$ is realizable by an isotopy of the attaching map (hence by a modification of $f$,
 unchanged below the level and with the same critical points and indices) and right-multiplies
-$M$ by the transvection $I + c\,E_{ji}$; every finite sequence of elementary column operations
-is realized by a sequence of slides.* The geometric step: choose an arc from the $j$-th
-attaching sphere to the $i$-th (in the level; it exists since the level is connected, and is
-made embedded and transverse by lane E2); tube it; deform the $j$-th attaching sphere along the
+$M$ by the transvection $I + c\,E_{ij}$ (adding $c$ times column $i$ to column $j$); every
+finite sequence of elementary column **additions** is realized by a sequence of slides, and a
+column sign-change is realized by reorienting the attaching sphere/core.* The geometric step:
+choose an arc from the $j$-th
+attaching sphere to the $i$-th — it exists because the level is connected, which holds in the
+handle-calculus setting after the outer indices are eliminated (a standing hypothesis of this
+section, satisfied in the application); the arc
+is made embedded and transverse by lane E2; tube it; deform the $j$-th attaching sphere along the
 tube to add $c$ copies of the $i$-th belt-linked sphere (the *passage* construction — a
 longitudinal motion in the tube realizing the connected sum at the level of homology classes),
 which adds $c$ times the $i$-th column to the $j$-th column of $M$ by §3 applied to the new
 intersections; all of it supported away from the other handles. (This is the code's
 `exists_arbitrary_column_addition`/`exists_arbitrary_column_sequence`, built from
-`LongitudinalTubeMotion` and the sheet-passage lemmas.)
+`LongitudinalTubeMotion` and the sheet-passage lemmas; its convention — class $i$ gains
+$k$ times class $q$ is `M * Matrix.transvection q i k` — is the same one.)
+
+*(Sign-order note: §3's sign is defined for the ordered pair (attaching, belt) while $M_{ij}$
+here is belt-first; the two orders differ by the entry-independent global sign
+$(-1)^{k(m-k)}$, invisible to surjectivity, unit entries, and the pivot chain.)*
 
 ## 9. The integer algebra
 
@@ -241,12 +275,12 @@ invertible over $\mathbb{Z}$ (its inverse is $I - cE_{ji}$).
 **(b) Unimodular-row reduction (the Euclidean algorithm by column operations).** Let
 $v = (v_1, \dots, v_n) \in \mathbb{Z}^n$ with $\gcd(v_1, \dots, v_n) = 1$ (equivalently the
 $1 \times n$ matrix is surjective). If two entries $v_i, v_j$ are nonzero, the column operation
-$v_j \mapsto v_j - q v_i$ with $q = \lfloor v_j / v_i \rfloor$ strictly reduces
-$\max(|v_i|, |v_j|)$ when $|v_j| \geq |v_i|$; iterating (the Euclidean algorithm on the pair)
+$v_j \mapsto v_j - q v_i$ with $q = \lfloor v_j / v_i \rfloor$ replaces $v_j$ by a remainder
+with $|v_j'| < |v_i| \leq |v_j|$ or $v_j' = 0$; iterating (the Euclidean algorithm on the pair)
 reduces the pair to $(\gcd(v_i, v_j), 0)$; iterating over pairs reduces the row to
-$(\pm 1, 0, \dots, 0)$ up to order. Termination is the well-founded descent on the maximum
-absolute value; the operations are transvections, so the reduction is a product of elementary
-column operations.
+$(\pm 1, 0, \dots, 0)$ up to order. Termination is the well-founded descent on the measure
+$\sum_k |v_k|$, which strictly decreases at every step; the operations are transvections, so
+the reduction is a product of elementary column operations.
 
 **(c) Trivial-group presentations are surjective.** If
 $\mathbb{Z}^c \xrightarrow{M} \mathbb{Z}^r \to G \to 0$ is a presentation of the trivial group,
@@ -260,7 +294,10 @@ middle homology of a homology sphere.)
 surjective (c), its row functionals are unimodular rows, (b) reduces some row to contain
 $\pm 1$, and by (F3) the reduction is realized by handle slides. The resulting unit entry is
 the algebraic hypothesis for the single-intersection criterion (§7's corollary), which (F2)
-converts to a geometric single intersection, which lane E1's first cancellation theorem turns
+converts to a geometric single intersection — here the standing hypothesis that the level's
+circles contract in the complement (simple connectivity of the level, *not* merely the homology
+vanishing) is load-bearing, and it is satisfied in the h-cobordism application — which lane
+E1's first cancellation theorem then turns
 into a pair cancellation. This chain is Milnor's proof of the basis theorem (Thm. 7.8)
 specialized to the h-cobordism's middle levels.
 
@@ -271,7 +308,9 @@ project's manifold, and the $n = 6$ instantiations stays in `Hopf/` as thin adap
 statements quantify over $p, q, m$ (Whitney side) and $k, n$ (handle side). The pinned model
 data (`Plane`, `RankThreeWhitneyModel.Lower = ℝ¹`, `Upper = ℝ²`, normal rank 3, ambient
 dimension 6, index 2/3, `Hemisphere.Sphere 2`) is recovered by instantiating $p = 2$, $q = 3$
-(sheets in the 5-level), $m = 5$ / ambient $n = 6$, $k = 3$.
+(sheets in the 5-level), $m = 5$ / ambient $n = 6$, and $k = 2$ in this document's convention
+(§8: the lower handle index); the code's row-F11 convention names the *upper* index, $k = 3$
+there.
 
 ---
 
