@@ -7333,3 +7333,11 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_T_obj
 #check CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ
+
+-- Native Ext and derived global sections: the same normalized evaluation comparison.
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_eq
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_eq
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
