@@ -190,20 +190,19 @@ case $\Delta^m \times \Delta^1$ in §6 (the prism).
 $\varphi_m \colon (\Delta^m, \partial\Delta^m) \to (I^m, \partial I^m)$, natural in the sense
 that faces go to (unions of) faces.*
 
-*Proof.* Both $\Delta^m$ and $I^m$ are compact convex subsets of Euclidean space with
-nonempty interior, and any two such are homeomorphic rel boundary: pick interior points
-(the barycenter $\bar{s}$ of $\Delta^m$ and the center $\bar{t} = (\frac12, \dots, \frac12)$ of
-$I^m$) and map the ray from $\bar{s}$ through a boundary point $s$ to the ray from $\bar{t}$ in
-the same direction, rescaling by the ratio of the distances to the boundary — the Minkowski
-functionals of the two bodies. Continuity on the boundary follows from the continuity of the
-Minkowski functional of a compact convex body; the map is bijective ray by ray and takes
-$\partial\Delta^m$ to $\partial I^m$. The construction maps each coordinate face of the simplex
-to a union of cube faces. $\square$
+*Proof.* Flatten $\Delta^m$ onto the flat simplex $F_m := \{v \in \mathbb{R}^m_{\geq 0} :
+\sum_i v_i \leq 1\}$ by dropping the zeroth coordinate, then map $F_m$ onto the cube by the
+radial rescaling $v \mapsto (\|v\|_1 / \|v\|_\infty)\cdot v$ (extended by $0$ at $0$): both
+bodies are compact convex neighborhoods of $0$ in their affine spans, the rescaling is a
+radial bijection between them (each ray meets each boundary once), and it is a homeomorphism
+by compactness; boundary points correspond to boundary points since $\|v\|_1 = 1$ iff the
+rescaled vector has $\|\cdot\|_\infty = 1$. Face-compatibility is visible in this
+construction: the coordinate facets $\{v_i = 0\}$ are preserved, and the slant facet
+$\{\sum_i v_i = 1\}$ maps onto $\{\|w\|_\infty = 1\} = \bigcup_i \{w_i = 1\}$, a union of cube
+faces. $\square$
 
-We fix such a family $\varphi_m$ once and for all. (The formalization constructs
-$\varphi_m$ explicitly by flattening the simplex onto the "flat simplex"
-$\{v \in \mathbb{R}^m_{\geq 0} : \sum v_i \leq 1\}$ and rescaling coordinates; the details do
-not matter, only that it exists, is a homeomorphism of pairs, and is compatible with faces.)
+We fix such a family $\varphi_m$ once and for all. (This is the formalization's construction:
+flatten, then rescale.)
 
 **4.2 Consequences.** (a) Based cubes and based simplices are interchangeable:
 $p \mapsto p \circ \varphi_n$ is a bijection from maps $(I^n, \partial I^n) \to (X, x)$ to maps
@@ -311,15 +310,18 @@ $[\kappa_n^{(m)}] = [I^n]$ by the same induction as 3.4. By 7.1 the class $[p_*\
 equals $[p_*\kappa_n]$.
 
 **7.3 The pinch computation (additivity of the class).** Let
-$\mathrm{pinch} \colon (I^n, \partial I^n) \to (I^n \vee I^n, \mathrm{pt})$ collapse the slab
-$\{t_1 = \frac12\}$, and let $\iota_1, \iota_2 \colon (I^n, \partial I^n) \to (I^n \vee I^n,
-\mathrm{pt})$ be the two inclusions. In $H_n(I^n \vee I^n, \mathrm{pt}) \cong \mathbb{Z} \oplus
-\mathbb{Z}$ (Mayer–Vietoris for the wedge of two cubes along a point; lane A),
-$$\mathrm{pinch}_*[I^n] = \iota_{1*}[I^n] + \iota_{2*}[I^n],$$
-because the three classes have local degree $1$ at the generic points of the left summand,
-right summand respectively (local-degree computation, Hatcher Prop. 2.30 machinery; lane A),
-and local degrees determine the class in a free abelian $H_n$. For the concatenation $p \cdot q$
-of §2, $p \cdot q = (p \vee q) \circ \mathrm{pinch}$, and so
+$\mathrm{pinch} \colon (I^n, \partial I^n) \to (I^n \vee I^n,\ \partial I^n \vee \partial I^n)$
+collapse the slab $\{t_1 = \frac12\}$, and let $\iota_1, \iota_2$ be the two inclusions of
+pairs. In $H_n(I^n \vee I^n, \partial I^n \vee \partial I^n) \cong H_n(I^n, \partial I^n)
+\oplus H_n(I^n, \partial I^n) \cong \mathbb{Z} \oplus \mathbb{Z}$ (excision on the wedge of the
+two cube *pairs*; lane A),
+$$\mathrm{pinch}_*[\kappa_n] = \iota_{1*}[\kappa_n] + \iota_{2*}[\kappa_n],$$
+because the three relative classes have local degree $1$ at the generic points of the left
+summand, right summand respectively (local-degree computation, Hatcher Prop. 2.30 machinery;
+lane A), and local degrees determine the class in a free abelian homology group. For the
+concatenation $p \cdot q$ of §2, $p \cdot q = (p \vee q) \circ \mathrm{pinch}$ as maps of pairs
+into $(X, x)$, and pushing forward to $H_n(X, x) \cong H_n(X)$ (the reduced/unreduced
+identification of §2) gives
 $$[(p \cdot q)_*\kappa_n] = (p \vee q)_*\,\mathrm{pinch}_*[\kappa_n]
 = (p \vee q)_*(\iota_{1*}[\kappa_n] + \iota_{2*}[\kappa_n]) = [p_*\kappa_n] + [q_*\kappa_n].$$
 (One checks the reparametrizations of the two halves are the affine degree-one maps of 7.1.)
@@ -332,13 +334,16 @@ is a single induction over skeleta, uniform in $n$; this is the generalization *
 lane.
 
 **Standing hypotheses:** $n \geq 1$ and $(X, x)$ is $(n-1)$-connected (§1; for the tower itself
-$n \geq 1$ suffices — the hypothesis $n \geq 2$ enters only in §11, where $\pi_n$ must be a
-group homomorphism land).
+$n \geq 1$ suffices — the hypothesis $n \geq 2$ enters only in §11, where the constructed map
+must be a homomorphism into the abelian group $H_n$).
 
-**8.1 Tower Lemma.** *Let $K$ be a finite simplicial complex of dimension $m$, $L \subseteq K$
-a subcomplex, and $f \colon K \to X$ a map with $f(L) = \{x\}$. If $m \leq n - 1$, $f$ is
-homotopic rel $L$ to the constant map $x$. If $m = n$, $f$ is homotopic rel $L$ to a map $f'$
-with $f'(\mathrm{sk}_{n-1} K) = \{x\}$.*
+**8.1 Tower Lemma.** *Let $K$ be a finite simplicial complex (or $\Delta$-complex — the proof
+uses only the skeletal filtration, the HEP of subcomplex pairs, and finiteness) of arbitrary
+dimension $m$, $L \subseteq K$
+a subcomplex, and $f \colon K \to X$ a map with $f(L) = \{x\}$. Then $f$ is homotopic rel $L$
+to a map $f'$ with $f'(\mathrm{sk}_{\min(m, n) - 1} K) = \{x\}$; in particular, if
+$m \leq n - 1$, $f'$ is the constant map $x$, and for any $m$, $f'$ is constant on the
+$(n-1)$-skeleton (the case used in 12.3 with $m = n + 1$).*
 
 *Proof.* We build a sequence of homotopies
 $F_k \colon f_k \simeq f_{k+1}$ rel $L$, $k = 0, 1, \dots$, where $f_0 = f$ and $f_k$ satisfies
@@ -369,20 +374,34 @@ $f' = f_n$ constant on $\mathrm{sk}_{n-1} K$. Concatenate the $F_k$ (a finite co
 homotopies rel $L$). $\square$
 
 **8.2 Corollary (normalization of chains).** *Let $z = \sum_j a_j \tau_j \in C_m^N(X)$ be any
-finite chain, $m \leq n$, whose boundary faces that remain in $\partial z$ are already constant
-at $x$ (e.g. $z$ a cycle, or $z$ a chain whose boundary is a sum of based simplices). Then
-there is a face-compatible family of homotopies $H_j \colon \tau_j \simeq \tau'_j$, stationary
-on every face already constant at $x$, such that every $\tau'_j$ is based: $\tau'_j$ sends
-$\partial\Delta^m$ to $x$; and if $m \leq n - 1$ every $\tau'_j$ is constant at $x$.*
+finite chain, $m \leq n + 1$ (the case $m = n + 1$ is used in 12.3), whose unnormalized
+boundary face types either cancel pairwise in $C_{m-1}(X)$ or are constant at $x$ (e.g. $z$ a
+genuine cycle, or $z$ a chain whose boundary is a sum of based simplices). Then there is a
+face-compatible family of homotopies $H_j \colon \tau_j \simeq \tau'_j$, stationary on every
+face already constant at $x$, such that every $\tau'_j$ is based: $\tau'_j$ sends
+$\partial\Delta^m$ to $x$; and if $m \leq n - 1$ every $\tau'_j$ is constant at $x$. Moreover
+the class is preserved when the family prism is computed in normalized chains: the pairwise
+cancelling face types share one homotopy and their prism terms cancel; the constant face types
+have stationary prisms, hence degenerate prism chains (each prism simplex has a repeated vertex
+image), hence vanish in $C^N_*$.*
 
-*Proof.* Let $K$ be the finite simplicial complex obtained from the disjoint union of the
+*Proof.* Let $K$ be the finite $\Delta$-complex obtained from the disjoint union of the
 $\Delta^m$'s (one per $j$, repeated with multiplicity $|a_j|$) by identifying faces that are
-equal as singular simplices of $X$ with the same sign, and let $L$ be the union of all faces
-already constant at $x$. The $\tau_j$ assemble to a map $f \colon K \to X$ with $f(L) = \{x\}$.
-Apply 8.1; the resulting homotopy, read back on the disjoint copies, is a face-compatible
-family (face-compatibility holds because identified faces received the same homotopy — the
-choice of $h_\Delta$ was made per simplex of $K$, i.e. per *face type*, not per occurrence).
-$\square$
+equal as singular simplices of $X$ as oriented simplices (all occurrences of a face type, of
+either coefficient sign, are identified and will share one homotopy), and let $L$ be the union
+of all faces already constant at $x$. The $\tau_j$ assemble to a map $f \colon K \to X$ with
+$f(L) = \{x\}$. Apply 8.1 (the $\Delta$-complex form); the resulting homotopy, read back on the
+disjoint copies, is a face-compatible family (face-compatibility holds because identified faces
+received the same homotopy — the choice of $h_\Delta$ was made per simplex of $K$, i.e. per
+*face type*, not per occurrence). $\square$
+
+*Remark (normalized cycles).* A cycle in the normalized complex $C^N_*(X)$ need not satisfy
+8.2's hypothesis: its unnormalized boundary is a general degenerate chain whose face types may
+be neither constant nor pairwise cancelling. In that case first replace it by a homologous
+genuine cycle: $\partial z \in Z_{m-1}(D_*(X))$ is a boundary in the degenerate subcomplex
+since $H_*(D_*) = 0$ (§2), say $\partial z = \partial w$ with $w \in D_m$; then $z - w$ is a
+genuine cycle representing the same class, and 8.2 applies to it. This replacement is used in
+13.1 and 14.
 
 **8.3 Remark (what the tower costs at each stage).** Stage $k$ invokes the hypothesis
 $\pi_k(X, x) = 0$ once per $k$-simplex of $K$ (finitely often) and homotopy extension once.
@@ -414,39 +433,50 @@ homotopy rel boundary.
 inverse is realized by reflection in any single coordinate,
 $[p \circ \rho_i] = -[p]$: for the first coordinate this is the definition of the inverse; the
 concatenation in coordinate $i$ is homotopic to concatenation in coordinate $1$ (Eckmann–Hilton:
-the two compositions are related by a rotation of the unit square in the $(t_1, t_i)$-plane,
-which is an isotopy of the disc model of the cube rel boundary), so inversion in coordinate $i$
-equals inversion in coordinate $1$.
+the two compositions are related by a rotation of the unit square in the $(t_1, t_i)$-plane —
+a boundary-*preserving* isotopy of the disc model of the cube (the boundary is moved as a set,
+so precomposition carries based maps to based maps and yields based homotopies rel boundary)),
+so inversion in coordinate $i$ equals inversion in coordinate $1$.
 
 *The permutation action.* For a permutation $\sigma \in S_n$, write $\hat\sigma \colon I^n \to
 I^n$ for the coordinate permutation. Then
 $$[p \circ \hat\sigma] = \operatorname{sign}(\sigma)\,[p].$$
 Proof: adjacent transpositions generate; for the transposition of coordinates $i, i+1$,
-rotate the $(t_i, t_{i+1})$-plane of the disc model through angle $\pi/2$: an isotopy from the
-identity to $\hat s_i \circ \rho_i$ (a transposition is a quarter-turn composed with a
-reflection), so $[p \circ \hat s_i] = [p \circ \rho_i] = -[p]$. $\square$
+rotate the $(t_i, t_{i+1})$-plane of the disc model through angle $\pi/2$: a
+boundary-preserving isotopy from the identity to $\hat s_i \circ \rho_i$ (a transposition is a
+quarter-turn composed with a reflection), so $[p \circ \hat s_i] = [p \circ \rho_i] = -[p]$.
+$\square$
 
-**9.2 The single-cut lemma.** *Let $p \colon (I^n, \partial I^n) \to (X, x)$ be constant equal
-to $x$ on a braid hyperplane section $H_{ij} = \{t_i = t_j\}$ of the cube. Then
-$[p] = [p_{\leq}] + [p_{\geq}]$, where $p_{\leq}, p_{\geq}$ are the restrictions of $p$ to the
-two sides $\{t_i \leq t_j\}$, $\{t_i \geq t_j\}$, transported to the cube by explicit
-piecewise-affine homeomorphisms.*
+**9.2 The cut lemma.** *Let $I^n = A \cup B$ with $A, B$ closed $n$-balls and $F := A \cap B$
+an $(n-1)$-ball contained in $\partial A \cap \partial B$, and let $p \colon (I^n, \partial
+I^n) \to (X, x)$ be constant equal to $x$ on $F$. Then $[p] = [p_A] + [p_B]$ in $\pi_n(X, x)$,
+where $p_A, p_B$ are the restrictions of $p$, transported to the cube by fixed
+orientation-preserving homeomorphisms of pairs $(A, \partial A) \cong (I^n, \partial I^n) \cong
+(B, \partial B)$ chosen once and for all for the cuts that arise.*
 
-*Proof.* The two sides are balls (each is the product of a triangle with a cube,
-$\{t_i \leq t_j\} \cong \Delta^2 \times I^{n-2}$), and $p$ is $x$ on their boundaries, so both
-restrictions define classes in $\pi_n(X, x)$ once a boundary-preserving homeomorphism with the
-cube is fixed. Fix such homeomorphisms once and for all, piecewise affine: the square-to-triangle
-homeomorphism that bisects each of the two triangles of the square's own diagonal and maps
-affinely onto the two triangles into which the target triangle is bisected (the median from the
-right-angle vertex), extended by the identity in the remaining $n - 2$ coordinates. The
-statement to prove is then: pinching the cut $H_{ij}$ to a point writes $p$ as
-$(p_{\leq} \vee p_{\geq}) \circ c$ with $[c] = \iota_1 + \iota_2$ in the wedge of two cubes —
-but this is the *definition* of addition up to reparametrization: there is a boundary-fixing
-homeomorphism $w$ of $I^n$ (the *cut warp*, an explicit piecewise-affine straightening of the
-diagonal cut to the coordinate cut $\{t_1 = \tfrac12\}$, first permuting coordinates $i
-\mapsto 1$, $j \mapsto 2$ — by 9.1 the permutation contributes its sign, which is undone by
-choosing the orientations of the two sides) such that $c$ is the standard concatenation pinch
-composed with $w$, and $w \simeq \mathrm{id}$ rel boundary by the Alexander trick. $\square$
+*Proof.* Since $p$ is constant on $F$, it factors through the pinch $c \colon I^n \to I^n/F
+\cong (A/F) \vee (B/F)$ — a wedge of two balls-with-boundary-collapsed, i.e. of two based
+$n$-spheres. It remains to compare $c$ with the standard concatenation pinch $c_0$ of §2
+(collapsing the slab $\{t_1 = \tfrac12\}$): we produce an isotopy of $p$ itself, rel boundary,
+from $p$ to a map that is constant on the slab. The cut $F$ and the slab are two embedded
+$(n-1)$-balls in $I^n$, each splitting the cube into two balls, each with boundary an embedded
+$(n-2)$-sphere in $\partial I^n$ splitting the boundary sphere into two balls. Two such spheres
+in $\partial I^n \cong S^{n-1}$ are ambiently isotopic (two embedded balls in a sphere are
+isotopic — coning reduces to the Schoenflies content that both sides are balls; all embeddings
+here are locally flat, indeed piecewise linear), and the isotopy extends to the filling balls,
+then to the two sides, giving an ambient isotopy $\varphi_s$ of the cube with
+$\varphi_s(\partial I^n) = \partial I^n$ (boundary-preserving, not pointwise), moving $F$ to
+the slab. Then $p \circ \varphi_s^{-1}$ is a homotopy of based maps rel boundary (the
+basepoint locus $\partial I^n$ is preserved as a set, so all intermediate maps are based), and
+at the end $p \circ \varphi_1^{-1}$ is constant on the slab, i.e. literally a concatenation of
+its two halves: $[p] = [p \circ \varphi_1^{-1}] = [p_A] + [p_B]$ by the definition of addition
+and the reparametrization invariance of the classes of the halves (9.1, applied to the fixed
+transport homeomorphisms composed with the restriction of $\varphi_1$). $\square$
+
+The braid-hyperplane cut $H_{ij} = \{t_i = t_j\}$ of the cube (with the two sides
+$\cong \Delta^2 \times I^{n-2}$, balls) is the case used in the first peel of the shelling
+below; the general two-ball form is what the induction of 9.4 needs, since after the first
+pinch the geometry is no longer a cube.
 
 **9.3 Shelling the braid arrangement.** Order $S_n$ by any linear extension of inversion
 number (equivalently: by a reduced-word path from the identity to the longest element in the
@@ -456,9 +486,11 @@ $\Delta_{\sigma_{m+1}} \cap B_m$ is the union of the *descent facets* of $\sigma
 facets $t_{\sigma(i)} = t_{\sigma(i+1)}$ at the descents $i$ of $\sigma_{m+1}$ (those are
 exactly the facets shared with earlier chambers, since passing to $\sigma \circ s_i$ lowers the
 inversion number precisely at descents). A nonempty proper union of facets of a simplex is a
-ball (it is a cone from any vertex lying in all omitted facets), so each step glues an $n$-ball
-onto a ball along an $(n-1)$-ball in both boundaries: every $B_m$ is a ball by induction, and
-the pinch of 9.2 is available at every step.
+ball — it is a cone from any vertex $e_k$ lying in *all* facets of the union (equivalently:
+whose opposite facet $\delta^k$ is omitted; such a vertex exists because the union is proper)
+over a smaller such union or a sphere, hence a ball by induction on $n$ — so each step glues an
+$n$-ball onto a ball along an $(n-1)$-ball in both boundaries: every $B_m$ is a ball by
+induction, and the pinch of 9.2 is available at every step.
 
 **9.4 The decomposition theorem.** *Let $n \geq 2$ and let $p \colon (I^n, \partial I^n) \to
 (X, x)$ be internally based: constant equal to $x$ on the $(n-1)$-skeleton of the Kuhn
@@ -468,8 +500,11 @@ $$[p] \ =\ \sum_{\sigma \in S_n} \operatorname{sign}(\sigma)\,\big[p \circ A_\si
 *where each piece $p \circ A_\sigma \colon (\Delta^n, \partial\Delta^n) \to (X, x)$ is based and
 is read as a $\pi_n$ element via the dictionary 4.1.*
 
-*Proof.* Induction on the shelling 9.3. At step $m+1$, pinch the descent-facet ball
-$\Delta_{\sigma_{m+1}} \cap B_m$ (on which $p$ is constant $x$): by 9.2 the class splits as
+*Proof.* Induction on the shelling 9.3. At step $m+1$, the two-ball decomposition
+$B_{m+1} = B_m \cup \Delta_{\sigma_{m+1}}$ meets the cut lemma 9.2 exactly: both sides are
+balls (9.3), the interface $\Delta_{\sigma_{m+1}} \cap B_m$ — the union of the descent facets
+of $\sigma_{m+1}$, itself a ball (9.3) lying in both boundaries — is where $p$ is constant
+$x$, so the class splits as
 $[p|_{B_m}] + [p|_{\Delta_{\sigma_{m+1}}}]$, with the second term transported to the cube by the
 fixed homeomorphism of 9.2. It remains to identify the transported class with
 $\operatorname{sign}(\sigma_{m+1})\,[p \circ A_{\sigma_{m+1}}]$: the composite of the
@@ -489,8 +524,9 @@ $$\sum_{i=0}^{n+1} (-1)^i\,\big[\tau \circ \delta^i\big] = 0 \ \in\ \pi_n(X, x).
 boundary sphere, constant $x$ on the $(n-1)$-skeleton of $\partial\Delta^{n+1}$ (every
 $(n-1)$-face is a face of a face). The decomposition theorem 9.4 applies verbatim to the
 triangulated sphere $\partial\Delta^{n+1}$ in place of the triangulated cube (its chambers are
-the $n+2$ facets, the shelling is any ordering of the facets, and the single-cut lemma is not
-even needed: the facets share the basepoint locus directly), giving
+the $n+2$ facets; the shelling is any ordering of the facets, and the cut lemma 9.2 applies at
+each step — the map is constant on every shared facet ball, including the last, equatorial,
+cut), giving
 $[\partial\tau] = \sum_i \varepsilon_i [\tau \circ \delta^i]$ in $\pi_n(X, x)$, where
 $\varepsilon_i = (-1)^i$ is the orientation sign of the $i$-th facet in the boundary of the
 oriented simplex. But $\partial\tau$ extends over $\Delta^{n+1}$ (via $\tau$), so
@@ -583,12 +619,13 @@ Assume now the hypotheses of the theorem: $n \geq 2$ and $X$ is $(n-1)$-connecte
 **12.1 The class of a based simplex.** A based singular $n$-simplex
 $\tau \colon (\Delta^n, \partial\Delta^n) \to (X, x)$ defines
 $\langle\tau\rangle := [\tau \circ \psi_n] \in \pi_n(X, x)$, where $\psi_n = \varphi_n^{-1}$ is
-the fixed dictionary homeomorphism of 4.1. Degenerate based simplices have zero class: a
-degenerate based $n$-simplex factors through a face collapse
-$(\Delta^n, \partial\Delta^n) \to (\Delta^{n-1}, \partial\Delta^{n-1})$, and any such map of
-pairs is homotopic rel boundary to constant — its boundary map $S^{n-1} \to S^{n-2}$ is
-nullhomotopic since $\pi_{n-1}(S^{n-2}) = 0$ (cellular approximation; lane A/B input), after
-which the disc map is a $\pi_n(\Delta^{n-1}) = 0$ element (contractible target). So
+the fixed dictionary homeomorphism of 4.1. Degenerate based simplices have zero class — and the
+argument needs no input at all: if $\tau = \rho \circ s^l \colon (\Delta^n, \partial\Delta^n)
+\to (X, x)$ is degenerate (factoring through the codegeneracy $s^l$) and based, then $s^l$ maps
+$\partial\Delta^n$ *onto* $\Delta^{n-1}$ (the facet whose vertices are not merged by $s^l$ maps
+homeomorphically onto $\Delta^{n-1}$), so
+$\rho(\Delta^{n-1}) = \rho(s^l(\partial\Delta^n)) = \tau(\partial\Delta^n) = \{x\}$: the map
+$\rho$ — hence $\tau$ — is the constant map, and $\langle\tau\rangle = 0$. So
 $\langle\cdot\rangle$ descends to the free abelian group on normalized based simplices.
 
 **12.2 The class operator.** For an arbitrary singular $n$-simplex $\tau$, the tower 8.1
@@ -597,10 +634,16 @@ $\tau'$ based; define the *class operator* on chains by
 $$\Psi\Big(\sum_j a_j \tau_j\Big) := \sum_j a_j\, \big\langle \tau'_j \big\rangle
 \ \in\ \pi_n(X, x),$$
 choosing the tower homotopies per face type as in 8.2 so that the assignment is
-face-compatible. This is well-defined: two normalizations differ by a homotopy of based maps
-(built by the same tower applied one dimension up, to the square interpolating between the two
-normalizations), and based homotopic simplices have the same class. By 12.1 the operator
-factors through normalized chains.
+face-compatible. This is a well-defined *function of the chain* once the homotopy recipe is
+fixed (equal chains have the same face types, hence the same chosen homotopies) — and that is
+all that is ever used: choice-independence of the induced map on homology is never invoked, the
+round-trips of §13 working with one fixed recipe throughout. (Per-simplex choice-independence
+does hold on chains whose boundary face types cancel, the $\pi_n$ ambiguities of the two
+nullhomotopies then cancelling in pairs — but no application needs it.) The operator factors
+through normalized chains: for a degenerate $\tau$, the straightened $\tau'$ is homotopic to
+$\tau$, and $\tau$ factors through the contractible $\Delta^{n-1}$, so $\tau'$ is freely
+nullhomotopic; since $\pi_1(X, x) = 0$ the $\pi_1$-action on $\pi_n$ is trivial, so a freely
+nullhomotopic based map is null in $\pi_n(X, x)$, i.e. $\langle \tau' \rangle = 0$.
 
 **12.3 The operator kills boundaries.** Let $\omega \colon \Delta^{n+1} \to X$ be a singular
 $(n+1)$-simplex. Apply the tower to $\omega$ (dimension $n+1$: normalize the $n$-skeleton —
@@ -615,8 +658,12 @@ $$\bar\Psi \colon H_n(X;\mathbb{Z}) \longrightarrow \pi_n(X, x).$$
 ## 13. The two round-trips
 
 **13.1 $h_n \circ \bar\Psi = \mathrm{id}$ on $H_n(X)$.** Let $z = \sum_j a_j \tau_j$ be a
-normalized $n$-cycle; straighten it by the tower to $z' = \sum_j a_j \tau'_j$ with all $\tau'_j$
-based (8.2; the straightening preserves the homology class by the family prism 6.2). Then
+normalized $n$-cycle. First replace it by a homologous genuine cycle: its unnormalized boundary
+is a cycle in the degenerate subcomplex, hence a boundary there ($H_*(D_*) = 0$, §2), so
+$z - w$ is a genuine cycle representing $[z]$ for a degenerate $w$; rename it $z$. Straighten
+it by the tower to $z' = \sum_j a_j \tau'_j$ with all $\tau'_j$
+based (8.2; the straightening preserves the homology class by the family prism 6.2 — the
+pairwise face cancellation makes 6.2 applicable, see 8.2's remark). Then
 $h_n(\bar\Psi[z]) = \sum_j a_j\, [c(\tau'_j \circ \psi_n)]$, and for each based simplex
 $c(\tau' \circ \psi_n) = \tau'_*(\psi_{n*}\kappa_n)$ is homologous to
 $\tau'_*(\iota_n) = \tau'$: the relative cycles $\psi_{n*}\kappa_n$ and $\iota_n$ of
@@ -647,9 +694,11 @@ for $1 \leq k < n$.
 
 *Proof.* For $k = 1$: the degree-one Hurewicz theorem (Hatcher Thm. 2A.1, already in the
 library) gives $H_1(X) \cong \pi_1(X,x)^{\mathrm{ab}} = 0$. For $2 \leq k < n$: let $z$ be a
-normalized $k$-cycle. Straighten $z$ by the tower (8.2 at $m = k \leq n - 1$): every simplex
+normalized $k$-cycle; as in 13.1, first replace it by a homologous genuine cycle (8.2's
+remark). Straighten $z$ by the tower (8.2 at $m = k \leq n - 1$): every simplex
 becomes *constant* $x$ (the tower's last stage collapses the top cells, since $\pi_k(X,x) =
-0$), so $z' = 0$ — but the straightening preserves the class (family prism 6.2), so
+0$), so $z' = 0$ — but the straightening preserves the class (family prism 6.2, applicable by
+the pairwise cancellation), so
 $[z] = [z'] = 0$. $\square$
 
 (The formalization exposes the vanishing differently — the consumers obtain $\pi_k(X, x) = 0$
@@ -698,7 +747,8 @@ structure lives).
 form the consumers use:
 
 * (sphere filling) if $X$ is $(d-1)$-connected, every map $S^{k-1} \to X$ with $k \leq d$
-  extends over $D^k$ — directly from the tower 8.1 with $K$ a triangulation of $D^k$;
+  extends over $D^k$ — this is exactly 5.2 (the vanishing of $\pi_{k-1}$ is the extension over
+  the cone, and $D^k$ is the cone on $S^{k-1}$);
 * (cylinder filling) under the same hypotheses, a homotopy $S^{k-1} \times I \to X$ between the
   boundary restrictions of two disc maps $f, g \colon D^k \to X$ extends to a homotopy
   $D^k \times I \to X$ between $f$ and $g$: the given data is a map on
@@ -945,9 +995,11 @@ dependency).
    `Lib/docs/C-INTERFACE_RECEIPT.md` are scheduled then; commands:
    `lake env lean Lib/AlgebraicTopology/Hurewicz/C_InterfaceCheck.lean` and likewise for the
    consumer probe, at HEAD with the A commits named in the receipt.
-2. **Lane-B seam (minor).** `SimplyConnectedSpace Sⁿ` and (for the degenerate-simplex lemma,
-   section 12.1) `π_{n-1}(S^{n-2}) = 0` are used from `Hopf/` until B lands; recorded
-   dependency, no `Hopf/` import will remain after B.
+2. **Lane-B seam (minor).** `SimplyConnectedSpace Sⁿ` is used from `Hopf/` until B lands;
+   recorded dependency, no `Hopf/` import will remain after B. (The degenerate-simplex lemma
+   of section 12.1 was found in review to need no input at all — the constancy argument — and
+   the previously listed `π_{n-1}(S^{n-2}) = 0` input is deleted: that group is
+   *not* zero — $\pi_3(S^2) = \mathbb{Z}$ — and the text never needed it.)
 3. **The ℤ-module diamond** (hazard from the task): disposition per boundary C1 — reproduce
    first, then attempt removal; outcome recorded in the lane report.
 4. **Universe choice.** `Type*` everywhere except
@@ -962,5 +1014,12 @@ dependency).
    reviewer checks it is wanted at that generality.
 7. **`GenLoop` naming.** The code uses un-namespaced `GenLoop (Fin n) X x`; confirm against
    pinned Mathlib (`HomotopyGroup.GenLoop`) at the rename commit.
-8. **Review.** Stage-2 independent review of sections 1–16: scheduled (reviewer agent), report
-   in `~/s6-notes/` per protocol; accepted corrections incorporated before Axis 6 starts.
+8. **Review.** Stage-2 independent review of sections 1–16: done (`~/s6-notes/C-review.md`);
+   one blocker (the false `π_{n-1}(S^{n-2}) = 0` citation — repaired by the constancy
+   argument) and six corrections (the two-ball cut lemma at its natural generality with the
+   boundary-preserving isotopy; the wedge-of-cubes homology slip repaired by the pair
+   formulation; the genuine-cycle replacement for normalized cycles; the class operator's
+   well-definedness restated as functionality in the chain; the cone criterion fixed; the
+   $\Delta$-complex and boundary-preserving phrasings) incorporated. Verified as correct as
+   written: the chain-identity sign computation (3.3), the tower (8.1), the non-circular
+   bootstrap (15), and the cross-product insertion signs (10.3).
