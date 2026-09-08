@@ -25,7 +25,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem CuspRetraction.Patching.zeroSet_isCompact {X : Type*} [TopologicalSpace X] (f : C(X, ℝ))
+theorem LocalCollapse.zeroSet_isCompact {X : Type*} [TopologicalSpace X] (f : C(X, ℝ))
     {r : ℝ} (hr : 0 < r) (hc : IsCompact {x : X | f x ≤ r}) : IsCompact {x : X | f x = 0} := by
   apply hc.of_isClosed_subset (isClosed_eq f.continuous continuous_const)
   intro x hx
@@ -33,7 +33,7 @@ theorem CuspRetraction.Patching.zeroSet_isCompact {X : Type*} [TopologicalSpace 
   rw [show f x = 0 from hx]
   exact hr.le
 
-theorem CuspRetraction.Patching.exists_positive_sublevel_subset_open {X : Type*}
+theorem LocalCollapse.exists_positive_sublevel_subset_open {X : Type*}
     [TopologicalSpace X] (f : C(X, ℝ)) (hf : ∀ x, 0 ≤ f x) {r : ℝ} (hr : 0 < r)
     (hc : IsCompact {x : X | f x ≤ r}) {U : Set X} (hU : IsOpen U) (hS : {x : X | f x = 0} ⊆ U) :
     ∃ η : ℝ, 0 < η ∧ η ≤ r ∧ {x : X | f x ≤ η} ⊆ U := by
@@ -51,7 +51,7 @@ theorem CuspRetraction.Patching.exists_positive_sublevel_subset_open {X : Type*}
   apply hsub ⟨hab.1.trans_le (hf x), hfx⟩
   exact ⟨x, ⟨hx.trans (min_le_left r (b / 2)), hxu⟩, rfl⟩
 
-structure CuspRetraction.Patching.LocalCollapse {X : Type*} [TopologicalSpace X]
+structure LocalCollapse.LocalCollapse {X : Type*} [TopologicalSpace X]
     (f : C(X, ℝ)) where
   homotopy : C(unitInterval × X, X)
   map_zero : ∀ x, homotopy (0, x) = x
@@ -61,8 +61,8 @@ structure CuspRetraction.Patching.LocalCollapse {X : Type*} [TopologicalSpace X]
   isOpen_collapseSet : IsOpen collapseSet
   map_one_zero : ∀ x ∈ collapseSet, f (homotopy (1, x)) = 0
 
-def CuspRetraction.Patching.LocalCollapse.identity {X : Type*} [TopologicalSpace X]
-    (f : C(X, ℝ)) : CuspRetraction.Patching.LocalCollapse f
+def LocalCollapse.LocalCollapse.identity {X : Type*} [TopologicalSpace X]
+    (f : C(X, ℝ)) : LocalCollapse.LocalCollapse f
     where
   homotopy := ⟨Prod.snd, continuous_snd⟩
   map_zero _ := rfl
@@ -72,8 +72,8 @@ def CuspRetraction.Patching.LocalCollapse.identity {X : Type*} [TopologicalSpace
   isOpen_collapseSet := isOpen_empty
   map_one_zero _ h := h.elim
 
-def CuspRetraction.Patching.LocalCollapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
-    (A B : CuspRetraction.Patching.LocalCollapse f) : CuspRetraction.Patching.LocalCollapse f
+def LocalCollapse.LocalCollapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
+    (A B : LocalCollapse.LocalCollapse f) : LocalCollapse.LocalCollapse f
     where
   homotopy :=
     ⟨fun p => B.homotopy (p.1, A.homotopy p),
@@ -100,8 +100,8 @@ def CuspRetraction.Patching.LocalCollapse.comp {X : Type*} [TopologicalSpace X] 
       exact A.map_one_zero x hx
     · exact B.map_one_zero (A.homotopy (1, x)) hx
 
-theorem CuspRetraction.Patching.LocalCollapse.mem_comp_collapseSet_of_zero {X : Type*}
-    [TopologicalSpace X] {f : C(X, ℝ)} (A B : CuspRetraction.Patching.LocalCollapse f) {x : X}
+theorem LocalCollapse.LocalCollapse.mem_comp_collapseSet_of_zero {X : Type*}
+    [TopologicalSpace X] {f : C(X, ℝ)} (A B : LocalCollapse.LocalCollapse f) {x : X}
     (hx : f x = 0) (h : x ∈ A.collapseSet ∪ B.collapseSet) : x ∈ (A.comp B).collapseSet := by
   rcases h with h | h
   · exact Or.inl h
@@ -109,15 +109,15 @@ theorem CuspRetraction.Patching.LocalCollapse.mem_comp_collapseSet_of_zero {X : 
     change A.homotopy (1, x) ∈ B.collapseSet
     rwa [A.fixes_zero 1 x hx]
 
-def CuspRetraction.Patching.LocalCollapse.combine {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
-    {ι : Type*} (A : ι → CuspRetraction.Patching.LocalCollapse f) :
-    List ι → CuspRetraction.Patching.LocalCollapse f
+def LocalCollapse.LocalCollapse.combine {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
+    {ι : Type*} (A : ι → LocalCollapse.LocalCollapse f) :
+    List ι → LocalCollapse.LocalCollapse f
   | [] => identity f
   | i :: l => (A i).comp (combine A l)
 
-theorem CuspRetraction.Patching.LocalCollapse.mem_combine_collapseSet_of_zero {X : Type*}
+theorem LocalCollapse.LocalCollapse.mem_combine_collapseSet_of_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*}
-    (A : ι → CuspRetraction.Patching.LocalCollapse f) (l : List ι) {x : X} (hx : f x = 0) {i : ι}
+    (A : ι → LocalCollapse.LocalCollapse f) (l : List ι) {x : X} (hx : f x = 0) {i : ι}
     (hi : i ∈ l) (hxi : x ∈ (A i).collapseSet) : x ∈ (combine A l).collapseSet := by
   induction l with
   | nil => simp at hi
@@ -127,7 +127,7 @@ theorem CuspRetraction.Patching.LocalCollapse.mem_combine_collapseSet_of_zero {X
       exact mem_comp_collapseSet_of_zero (A a) (combine A l) hx (Or.inl hxi)
     · exact mem_comp_collapseSet_of_zero (A a) (combine A l) hx (Or.inr (ih hi))
 
-theorem CuspRetraction.Patching.exists_localCollapse_covering_zero {X : Type*}
+theorem LocalCollapse.exists_localCollapse_covering_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*} (A : ι → LocalCollapse f)
     (hcompact : IsCompact {x : X | f x = 0})
     (hcover : {x : X | f x = 0} ⊆ ⋃ i, (A i).collapseSet) :
@@ -143,7 +143,7 @@ theorem CuspRetraction.Patching.exists_localCollapse_covering_zero {X : Type*}
     LocalCollapse.mem_combine_collapseSet_of_zero A s.toList hx
       (by simpa only [Finset.mem_toList] using hi) hxi
 
-theorem CuspRetraction.Patching.exists_localCollapse_covering_zero_of_local {X : Type*}
+theorem LocalCollapse.exists_localCollapse_covering_zero_of_local {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} (hcompact : IsCompact {x : X | f x = 0})
     (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse f, x ∈ A.collapseSet) :
     ∃ B : LocalCollapse f, {x : X | f x = 0} ⊆ B.collapseSet := by
@@ -153,7 +153,7 @@ theorem CuspRetraction.Patching.exists_localCollapse_covering_zero_of_local {X :
   intro x hx
   exact Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hA ⟨x, hx⟩⟩
 
-theorem CuspRetraction.Patching.exists_small_sublevel_localCollapse {X : Type*}
+theorem LocalCollapse.exists_small_sublevel_localCollapse {X : Type*}
     [TopologicalSpace X] (f : C(X, ℝ)) (hf : ∀ x, 0 ≤ f x) {r : ℝ} (hr : 0 < r)
     (hc : IsCompact {x : X | f x ≤ r})
     (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse f, x ∈ A.collapseSet) :
