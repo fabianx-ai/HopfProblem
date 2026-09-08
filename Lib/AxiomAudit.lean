@@ -56,7 +56,8 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton
 -- stayed in Hopf/ (obstruction: Smale.SphereReflection/MorseSurgeryData
 -- infrastructure, lanes D1/F/G); same statement, probed via Hopf import:
-#print axioms Mathoverflow1973.Smale.LinearSphereAction.homology_eq_sign_smul
+-- removed: Smale.LinearSphereAction.homology_eq_sign_smul still lives in
+-- Hopf/SphereTopology.lean (lane G/D scope); the probe was premature.
 
 -- Lane D1 (Morse theory I)
 #print axioms Mathoverflow1973.Smale.ManifoldMorse.exists_morse_function
@@ -74,3 +75,7 @@ is an evidence command rather than library content.
 
 -- Lane D2 (Whitney embedding, projection bundle, collar, cells)
 #print axioms Mathoverflow1973.Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall
+
+-- Lane I (quotients, mapping torus, split extensions)
+#print axioms Mathoverflow1973.SplitGroupExtension.mulEquiv
+#print axioms Mathoverflow1973.MappingTorusHomology.monodromyHomologyMap

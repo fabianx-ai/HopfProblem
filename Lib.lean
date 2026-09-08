@@ -53,6 +53,17 @@ import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
+import Lib.GroupTheory.SplitExtension
+import Lib.GroupTheory.PresentedGroup.CentralTwist
+import Lib.Topology.FiberBundle.TwoOpenTransition
+import Lib.Topology.Covering.Quotient
+import Lib.Topology.Covering.DiagonalQuotient
+import Lib.Topology.Covering.InvariantSubset
+import Lib.Topology.Homotopy.SublevelRetraction
+import Lib.Topology.Homotopy.LocalCollapse
+import Lib.Topology.MappingTorus.HomologyCover
+import Lib.AlgebraicTopology.SingularHomology.CrossInsert
+import Lib.AlgebraicTopology.SingularHomology.PathClass
 
 /-!
 # Reusable V10 Section 6 library
