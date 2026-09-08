@@ -497,3 +497,52 @@ amendment: unit 1 requires the SurgeryWindows decision first.
    TwoSimplyConnectedCover once landed.
 3. Then EuclideanSphere (14) → `Lib/Topology/InstanceSpheres.lean` per plan,
    and the SH 18734–19048 remainder.
+
+---
+
+# Q6 resolution (session 4): upstream PR draft
+
+Facts at the pin (Mathlib db584cd): `Mathlib/Analysis/Complex/RiemannMapping.lean`
+contains `Complex.exists_injective_not_dense_image_deriv_ne_zero` and
+`Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero` — statement-identical to our
+`RiemannMapping/Steps.lean` copies — but the module is a **private module** in the
+built artifacts (`RiemannMapping.olean.private`; module docstring: partial results
+towards the Riemann mapping theorem, "all lemmas strictly weaker than the final
+theorem, so they're private", complete proof upstream at mathlib4 PR #33505).
+The two lemmas are therefore unavailable downstream, and our copies stay (Q6
+default). We also import `Mathlib.Analysis.Complex.RiemannMapping` explicitly in
+`Steps.lean`'s neighborhood? — no: with the module private, downstream import is
+pointless; Steps.lean keeps `import Mathlib` only.
+
+## Mathlib PR draft (branch not pushed)
+
+**Title:** `feat(Analysis/Complex): expose the two RiemannMapping partial-result
+lemmas for downstream use`
+
+**Description:**
+
+> `Mathlib/Analysis/Complex/RiemannMapping.lean` carries partial results towards
+> the Riemann mapping theorem with the module docstring noting they will remain
+> private until the full theorem (upstream PR #33505) lands. The module is
+> nevertheless built as a private module, which makes even a *public, correct and
+> independently useful* API inaccessible to downstream projects:
+>
+> - `Complex.exists_injective_not_dense_image_deriv_ne_zero`
+> - `Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero`
+>
+> We (the Hopf-fibration formalization) needed exactly these two statements for
+> a reusable library extraction of the level-cylinder construction and had to
+> duplicate them (statement-identical, with attribution) — see
+> `Lib/Analysis/Complex/RiemannMapping/Steps.lean` in
+> github.com/fabianx-ai/HopfProblem, branch `lib/textbook-extraction`.
+>
+> This PR removes the two lemmas from the private-module list (or splits them
+> into a public module `Mathlib/Analysis/Complex/RiemannMapping/Partial.lean`),
+> so downstream work can cite them instead of duplicating. No statement changes;
+> no proof changes. The module docstring's privacy rationale is unaffected for
+> the remaining lemmas.
+
+**Steps taken here:** attempted delete-and-re-route first; failed because the
+private-module build hides the lemmas from downstream elaboration (verified by
+`#check` against `import Mathlib.Analysis.Complex.RiemannMapping`). Copies
+restored; Lib builds green.
