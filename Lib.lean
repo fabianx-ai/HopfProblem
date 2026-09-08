@@ -48,6 +48,7 @@ import Lib.AlgebraicTopology.Hurewicz.PrismOperator
 import Lib.AlgebraicTopology.Hurewicz.Subdivision
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character

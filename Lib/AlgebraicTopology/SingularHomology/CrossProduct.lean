@@ -1807,4 +1807,69 @@ theorem PeriodTorusHigherHomology.formalPointCrossProduct_edge_boundary {V W : T
   rw [formalBoundary_edge_simplex, map_sub, LinearMap.sub_apply,
     formalPointCrossProduct_simplex_left, formalPointCrossProduct_simplex_left]
 
+
+theorem PeriodTorusHigherHomology.formalPointCrossProduct_mem_supported {V W : Type*} {S : Set V}
+    {T : Set W} (q : ℕ) {c : SingularMayerVietoris.FormalChains V 1}
+    {d : SingularMayerVietoris.FormalChains W (q + 1)}
+    (hc : c ∈ SingularMayerVietoris.formalChainsSupported S 1)
+    (hd : d ∈ SingularMayerVietoris.formalChainsSupported T (q + 1)) :
+    formalPointCrossProduct q c d ∈
+      SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 1) := by
+  apply
+    SingularMayerVietoris.formalLinearMap_mem_of_supported ((formalPointCrossProduct q).flip d)
+      (SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 1)) hc
+  intro v hv
+  change formalPointCrossProduct q (SingularMayerVietoris.formalSimplex v) d ∈ _
+  rw [formalPointCrossProduct_simplex_left]
+  exact
+    SingularMayerVietoris.formalMap_mem_supported (S := T) (T := S ×ˢ T) (fun w => (v 0, w))
+      (fun _ hw => ⟨hv 0, hw⟩) hd
+
+theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_mem_supported {V W : Type*} {S : Set V}
+    {T : Set W} :
+    ∀ (q : ℕ) {c : SingularMayerVietoris.FormalChains V 2}
+      {d : SingularMayerVietoris.FormalChains W (q + 1)},
+      c ∈ SingularMayerVietoris.formalChainsSupported S 2 →
+        d ∈ SingularMayerVietoris.formalChainsSupported T (q + 1) →
+          formalEdgeCrossProduct q c d ∈
+            SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 2) := by
+  intro q
+  induction q with
+  | zero =>
+    intro c d hc hd
+    apply
+      SingularMayerVietoris.formalLinearMap_mem_of_supported (formalEdgeCrossProduct 0 c)
+        (SingularMayerVietoris.formalChainsSupported (S ×ˢ T) 2) hd
+    intro w hw
+    rw [formalEdgeCrossProduct_zero_simplex_right]
+    exact
+      SingularMayerVietoris.formalMap_mem_supported (S := S) (T := S ×ˢ T) (fun v => (v, w 0))
+        (fun _ hv => ⟨hv, hw 0⟩) hc
+  | succ q ih =>
+    intro c d hc hd
+    apply
+      SingularMayerVietoris.formalLinearMap_mem_of_supported
+        ((formalEdgeCrossProduct (q + 1)).flip d)
+        (SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 3)) hc
+    intro v hv
+    change formalEdgeCrossProduct (q + 1) (SingularMayerVietoris.formalSimplex v) d ∈ _
+    apply
+      SingularMayerVietoris.formalLinearMap_mem_of_supported
+        (formalEdgeCrossProduct (q + 1) (SingularMayerVietoris.formalSimplex v))
+        (SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 3)) hd
+    intro w hw
+    rw [formalEdgeCrossProduct_simplex_succ]
+    apply
+      SingularMayerVietoris.formalCone_mem_supported (show (v 0, w 0) ∈ S ×ˢ T from ⟨hv 0, hw 0⟩)
+    apply Submodule.sub_mem
+    · exact
+        formalPointCrossProduct_mem_supported (q + 1)
+          (SingularMayerVietoris.formalBoundary_mem_supported 1
+            (SingularMayerVietoris.formalSimplex_mem_supported hv))
+          (SingularMayerVietoris.formalSimplex_mem_supported hw)
+    · exact
+        ih (SingularMayerVietoris.formalSimplex_mem_supported hv)
+          (SingularMayerVietoris.formalBoundary_mem_supported (q + 1)
+            (SingularMayerVietoris.formalSimplex_mem_supported hw))
+
 end Mathoverflow1973
