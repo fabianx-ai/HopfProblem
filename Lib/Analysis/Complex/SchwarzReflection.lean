@@ -7,6 +7,27 @@ import Mathlib
 import Lib.Analysis.Complex.Mobius
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 
+/-!
+# Schwarz reflection
+
+Reflection of holomorphic functions across a line and across an arc of the unit circle
+(`SchwarzReflection.*`, Ahlfors Ch. 3–4 §6.5): a function holomorphic on one side with real
+boundary values extends across by reflection.
+
+## Main definitions and results
+
+* `SchwarzReflection.*` : the reflection extension across lines and circle arcs.
+
+## References
+
+* [Lars Ahlfors, *Complex Analysis*][ahlfors], Ch. 3–4, §6.5 (reflection)
+
+## Tags
+
+Schwarz reflection, holomorphic extension
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

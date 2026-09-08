@@ -65,3 +65,9 @@ is an evidence command rather than library content.
 -- The fourth probe, Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
 -- (Reeb), stayed in Hopf/Recognition.lean (obstruction: Smale.Hemisphere.Sphere, lane G);
 -- probed via a scratch import of Hopf.Recognition — receipt in Lib/reports/A.md.
+
+-- Lane H (complex analysis)
+#print axioms Mathoverflow1973.RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
+#print axioms Mathoverflow1973.HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
+#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root
+#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_ball

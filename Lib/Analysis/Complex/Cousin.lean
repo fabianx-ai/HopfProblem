@@ -11,6 +11,41 @@ import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Mathlib
 
+/-!
+# The additive Cousin problem on an open cover of ℂ
+
+Given a Cousin distribution on an open cover of `ℂ` (local holomorphic functions whose
+differences are consistent), there is a global holomorphic solution — via the Cauchy–Green
+transform and smooth partitions of unity (Forster §13–14; Hörmander Ch. I §1.2–1.4):
+
+* `HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution` — the normalized global
+  solution of the additive Cousin problem.
+
+## Outline of the proof
+
+1. *Smooth first step.*  A smooth partition of unity subordinate to the cover
+   (`exists_smoothPartitionOfUnity_eq_one_near_closed`, `.normalized_near_closed`) gives a
+   global smooth function with the prescribed local differences.
+2. *Correcting to holomorphic.*  The ∂̄ of the smooth step is a globally defined (0,1)-form;
+   the Cauchy–Green integral solves ∂̄u = that form, and holomorphicity of the correction
+   follows from the ∂̄-equation.
+
+## Main definitions and results
+
+* `HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution` : the solution theorem.
+
+## References
+
+* [Otto Forster, *Lectures on Riemann Surfaces*][forster81], §13–14
+* [Lars Hörmander, *An Introduction to Complex Analysis in Several Variables*][hormander66],
+  Ch. I §1.2–1.4
+
+## Tags
+
+Cousin problem, Cauchy–Green, dolbeault, partition of unity
+-/
+
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

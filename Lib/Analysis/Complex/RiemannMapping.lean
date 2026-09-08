@@ -9,6 +9,55 @@ import Lib.Analysis.Complex.SchwarzReflection
 import Lib.Analysis.Complex.Mobius
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 
+/-!
+# The Riemann mapping theorem
+
+Every simply connected proper domain `U ⊂ ℂ` is biholomorphic to the unit disc, and the
+biholomorphism can be normalized at a point with derivative chosen; the boundary-extension
+companions (`RiemannBoundary.*`) transport the map to the closed disc when the boundary is
+an arc:
+
+* `RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero` — the headline: a
+  biholomorphism from `U` onto the unit disc, injective with nonvanishing derivative,
+  vanishing at the chosen point (Ahlfors Ch. 6 §1; Rudin 14.8).
+
+The proof is the Koebe derivative-maximization over a normal family; the computational steps
+live in `Lib/Analysis/Complex/RiemannMapping/Steps.lean`. The boundary-extension lemmas
+(`RiemannBoundary.*`, Carathéodory-style extension to the closed disc along boundary arcs)
+are interleaved-dependent with the mapping core and share this file (lane-A
+MayerVietoris-style merge, recorded in Lib/reports/A.md). `TriangleRiemannNormalization.*`
+(normalized triangle parameters) round out the file.
+
+## Outline of the proof
+
+1. *Bounded injections form a normal family*; the supremum of derivatives at the base point
+   is attained (`_root_.Complex.*` steps: locally uniform limits of injective holomorphic
+   maps are injective or constant — `eqOn_const_or_injOn_of_tendstoLocallyUniformlyOn`).
+2. *The Koebe square trick:* if the image misses a disc, rescaling by a square root
+   increases the derivative at the base point — contradiction with maximality.
+3. *Surjectivity:* a non-surjective injection yields the missing-disc rescaling, so the
+   extremal map is onto (`exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero`).
+4. *Boundary extension:* along analytic boundary arcs the map extends to the closed disc
+   (`RiemannBoundary.*`).
+
+## Main definitions and results
+
+* `RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero` : the Riemann mapping
+  theorem with derivative normalization.
+* `RiemannBoundary.*` : Carathéodory-style boundary extension along arcs.
+* `TriangleRiemannNormalization.*` : normalized triangle parameters.
+
+## References
+
+* [Lars Ahlfors, *Complex Analysis*][ahlfors], Ch. 6 §1
+* [Walter Rudin, *Real and Complex Analysis*][rudin87], Theorem 14.8
+
+## Tags
+
+Riemann mapping theorem, normal families, Koebe maximization, boundary extension
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

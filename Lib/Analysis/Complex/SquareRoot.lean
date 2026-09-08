@@ -12,6 +12,32 @@ import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Mathlib
 
+/-!
+# Holomorphic square roots on simply connected domains
+
+A nowhere-zero holomorphic function on a simply connected domain has a holomorphic square
+root (Rudin 13.11); here specialized to the analytic root covers used by the source
+development (`AnalyticRootCover.*`, `AnalyticRootCoverContinuation.*`), with the
+`exists_analytic_unit_root` step.
+
+## Main definitions and results
+
+* `AnalyticRootCover.exists_analytic_square_root`, `.exists_analytic_square_root_ball` :
+  square roots of nonvanishing analytic functions on discs/simply connected sets.
+* `AnalyticRootCoverContinuation.*` : continuation of the root along cover refinements.
+* `SpecialPeriods.exists_analytic_unit_root` : the unit-root step (prefix kept from the
+  source; deviation recorded in Lib/reports/A.md).
+
+## References
+
+* [Walter Rudin, *Real and Complex Analysis*][rudin87], Theorem 13.11
+
+## Tags
+
+holomorphic square root, simply connected, analytic continuation
+-/
+
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

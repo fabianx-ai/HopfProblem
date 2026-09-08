@@ -237,3 +237,54 @@ rename (`Smale.ManifoldMorse.* → Morse.*` etc.) belongs to the post-F/G pass w
 
 Per-declaration docstrings for the ~750 moved D1 declarations; lint; de-shim; the
 `MorseSurgeryData`-web rejoin after F/G; `landrun` for the comparator artifact.
+
+---
+
+# Lane H progress (same branch)
+
+**Status: all movable H baselines landed (8 Lib files, ~470 declarations, green), module
+docstrings installed, axiom receipts exact. Per-decl docstrings open.**
+
+## What moved (source on 721fc82, cut BY NAME out of the SpecialPeriods project namespace)
+
+| target | source | decls | commit |
+|---|---|---:|---|
+| `Lib/Geometry/Manifold/Instances/RiemannSphere.lean` | PeriodConstruction RiemannSphere 8012–8082 + TwoAffineCharts 7758–8011 | 37 | (H baseline) |
+| `Lib/Analysis/Complex/Mobius.lean` | AnalyticFillings RiemannSphere.* 3581–4019 | 54 | (H baseline) |
+| `Lib/Analysis/Complex/SchwarzReflection.lean` | AnalyticFillings SchwarzReflection.* | 16 | (H baseline) |
+| `Lib/Analysis/Complex/RiemannMapping.lean` | AnalyticFillings RiemannMapping.* + TriangleRiemannNormalization.* + RiemannBoundary.* | 181 | (H baseline) |
+| `Lib/Analysis/Complex/RiemannMapping/Steps.lean` | AnalyticFillings _root_.* steps 4711–5413 | 31 | (H baseline) |
+| `Lib/Analysis/Complex/Cousin.lean` | PeriodConstruction HolomorphicCousin.* 15593–17278 | 95 | (H baseline) |
+| `Lib/Analysis/Complex/SquareRoot.lean` | PeriodConstruction AnalyticRootCover(+Continuation) + 1 SpecialPeriods step | 62 | (H baseline) |
+| `Lib/Geometry/Manifold/Complex/Biholomorph.lean` | AnalyticFillings TriangleUniformizationGluing.{3 lemmas + supports} | 8 | (H baseline) |
+
+Commit: 685fd91 (baselines), then docstring commit.
+
+**File-scope notes.** (1) `BoundaryExtension.lean` merges into `RiemannMapping.lean`:
+`RiemannBoundary` and `RiemannMapping` interleave-depend (46 qualified references one way,
+3 the other) — lane-A MayerVietoris precedent. (2) `TwoAffineCharts` pulled forward from
+lane I to unblock the `RiemannSphere` atlas (27 decls, Mathlib-only deps). (3)
+`DBar.lean` folds into `Cousin.lean` (the Cauchy–Green ∂̄ machinery is the Cousin proof).
+(4) `SpecialPeriods.exists_analytic_unit_root` moved with its SquareRoot consumers, prefix
+kept (deviation — the SpecialPeriods namespace is otherwise project code).
+
+## H honest obstruction
+
+The `RiemannMapping` **triangle tail** (114 decls: `triangleDomain`, `triangleMap`,
+normalization/Ford-cycle machinery) is project code per the plan's STOP-at-5579 note (seed
+closure on `SpecialPeriods`/`triangle*`); it stays in `Hopf/LCP/AnalyticFillings.lean`.
+
+## H axiom receipts
+
+- `RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero`:
+  `[propext, Classical.choice, Quot.sound]`
+- `HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution`:
+  `[propext, Classical.choice, Quot.sound]`
+- `AnalyticRootCover.exists_analytic_square_root` (+ `_ball`): `[propext, Classical.choice, Quot.sound]`
+  (the plan's `..._on_of_even_zeros` spelling does not exist in the source; the two actual
+  root-existence theorems are probed)
+
+## H open items
+
+Per-declaration docstrings; import minimization; the Q6 upstream Mathlib PR for the two
+duplicated steps; comparator `landrun`.

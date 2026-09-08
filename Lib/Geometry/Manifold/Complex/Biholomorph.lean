@@ -10,6 +10,31 @@ import Lib.Analysis.Complex.Mobius
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Mathlib
 
+/-!
+# Biholomorphs of Riemann surfaces
+
+A bijective holomorphic map with holomorphic inverse between Riemann surfaces, built from a
+homeomorphism plus holomorphicity on one side (`biholomorphOfHomeomorph`), with the
+continuity/regularity transfer lemmas (`contMDiff_of_continuous_of_finite`,
+`contMDiff_symm_of_contMDiff`, `contMDiffAt_of_continuousAt_of_punctured`,
+`differentiableOn_symm_of_differentiableOn`) — Forster §1–2.
+
+## Main definitions and results
+
+* `TriangleUniformizationGluing.biholomorphOfHomeomorph` : a homeomorphism holomorphic in
+  one direction between Riemann surfaces is a biholomorph.
+* `TriangleUniformizationGluing.contMDiff_symm_of_contMDiff` : the inverse is smooth.
+
+## References
+
+* [Otto Forster, *Lectures on Riemann Surfaces*][forster81], §1–2
+
+## Tags
+
+biholomorph, Riemann surface, inverse function
+-/
+
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

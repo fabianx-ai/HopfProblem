@@ -9,6 +9,32 @@ Authors: Fabian Franz
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Mathlib
 
+/-!
+# Steps of the Riemann mapping proof
+
+The locally-uniform-limit and analytic-order steps used by
+`Lib/Analysis/Complex/RiemannMapping.lean`: limits of injective holomorphic maps are
+injective or constant (`Complex.eqOn_const_or_injOn_of_tendstoLocallyUniformlyOn`,
+`Complex.eqOn_zero_or_forall_ne_zero_of_tendstoLocallyUniformlyOn`), the finset-product
+identity for analytic functions
+(`AnalyticOnNhd.exists_finset_eq_prod_smul_nonzero`), and the unit-disc injection lemmas
+(`Complex.exists_map_unitDisc_injOn_deriv_ne_zero₀`, `..._norm_deriv_gt`).
+
+Decision Q6: two of these steps duplicate private lemmas of Mathlib's
+`Mathlib/Analysis/Complex/RiemannMapping.lean`; they are kept here and flagged as the
+upstream follow-up (a Mathlib PR against that file).
+
+## References
+
+* [Lars Ahlfors, *Complex Analysis*][ahlfors], Ch. 6 §1
+* [Walter Rudin, *Real and Complex Analysis*][rudin87], Theorem 14.8
+
+## Tags
+
+normal families, Riemann mapping steps, analytic order
+-/
+
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

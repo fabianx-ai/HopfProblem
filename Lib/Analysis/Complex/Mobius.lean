@@ -6,6 +6,29 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 
+/-!
+# The Möbius dictionary of the Riemann sphere
+
+The Möbius transformations of the Riemann sphere and their action data: reciprocal,
+affine biholomorphisms, the disc/half-plane homeomorphisms, and the finite-image
+parametrization — the three-point normalization toolkit of Ahlfors Ch. 3–4.
+
+## Main definitions and results
+
+* `RiemannSphere.reciprocal`, `RiemannSphere.affineBiholomorph_coe` : the basic sphere maps.
+* `RiemannSphere.closedDiscHalfPlaneHomeomorph_sphere` : disc ↔ half-plane.
+* `RiemannSphere.finiteImageHomeomorph` : the finite-image presentation.
+
+## References
+
+* [Lars Ahlfors, *Complex Analysis*][ahlfors], Ch. 3 §3 and Ch. 4
+
+## Tags
+
+Möbius transformation, Riemann sphere, disc half-plane
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

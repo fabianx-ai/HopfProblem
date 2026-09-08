@@ -5,6 +5,31 @@ Authors: Fabian Franz
 -/
 import Mathlib
 
+/-!
+# The Riemann sphere and its two affine charts
+
+`RiemannSphere` is the Riemann sphere `ℂ ⊔ {∞}`, presented through two affine charts
+(`TwoAffineCharts`: a chart flag with inversion between the finite and infinite patches),
+the infinity parametrization (`infinityParametrization_*`), and the resulting
+charted-space and manifold instances.
+
+## Main definitions and results
+
+* `TwoAffineCharts` : the two-chart atlas data (left/right patches, inversion).
+* `RiemannSphere` : the sphere type; `RiemannSphere.infinityParametrization_*` : the
+  parametrization at infinity.
+* The charted-space and `IsManifold` instances for the standard complex model.
+
+## References
+
+* [Otto Forster, *Lectures on Riemann Surfaces*][forster81], §1 (the sphere ℙ¹ as two charts)
+
+## Tags
+
+Riemann sphere, affine charts, manifold instance
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 
