@@ -546,3 +546,44 @@ lemmas for downstream use`
 private-module build hides the lemmas from downstream elaboration (verified by
 `#check` against `import Mathlib.Analysis.Complex.RiemannMapping`). Copies
 restored; Lib builds green.
+
+---
+
+# Owner decisions applied (session 4) and corrected E1 sequencing
+
+## Decisions (Fabian, session 4)
+
+1. **SurgeryWindows web = lane D2, decision (a), pure move** — it was never
+   unowned: DT L10392–14114 is D2's range ("SurgeryWindows/AdaptedWindows
+   structures" → `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean`), census
+   GENERIC-TEXTBOOK. **Landed: 753ecf8 (879 declarations, 17,492 lines off
+   DifferentialTopology).** Citations for the coming docstrings: Milnor,
+   *Lectures on the h-cobordism theorem* §3–4 and *Morse Theory* §3 (NOT
+   Hatcher §4.2, which is homotopy groups/Whitehead).
+2. **Triangle-action tail stays in `Hopf/`** (SpecialPeriods is project); the
+   "properly discontinuous ℤ²-action" abstraction is generalize-then-move
+   work with an Axis-1 textbook first — named follow-up, not pure move.
+3. **Lane G = Kimi's.** Hemisphere declarations that are generic moved with D
+   (done: `Smale.Hemisphere.*` in SurgeryWindows.lean); G-specific ones stay.
+4. **Q6 resolved by pin-check:** the two duplicated steps ARE in Mathlib at
+   db584cd but the module is built private downstream — delete-and-re-route
+   is impossible, so the copies stay and the PR draft is recorded above.
+
+## Corrected E1 sequencing
+
+With the web landed, the cubic base (`MorseCancel.Model` family) now lives in
+`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean`. The remaining E1 material
+is the ST-side `MorseCancel.*` consumers (287 seeds), whose definition closure
+over the current tree reaches **1807 declarations** (SH 1057, ST 748) — the
+ST/SH files are byte-slices of one solution and cross-reference densely.
+**E1 therefore sequences AFTER lane B's sphere/SH remainder**, not before it.
+Revised resume order: B remainder (EuclideanSphere 14 → instance-spheres
+file, SH 18734–19048 tail) → E1 Cancellation/Rearrangement/Birth baselines
+against the then-smaller closure → the flow-side files (TimeChange,
+LevelCylinder drafts already exist).
+
+## Campaign state after these landings
+
+Census 9408 → **5192**. Lane B: SimplyConnectedCover (da29618),
+TwoSimplyConnectedCover (0b5d47f), VanKampen (eca3d71) landed — Hatcher
+Thm 1.20's machinery is now in `Lib`.
