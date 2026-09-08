@@ -7178,3 +7178,5 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
 #print axioms CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
+#check CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
+#print axioms CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
