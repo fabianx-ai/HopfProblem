@@ -461,11 +461,13 @@ def SingularChains.ChainHomology.shortOpchainsModule
   Submodule.Quotient.module (LinearMap.range S.f.hom)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 def SingularChains.ChainHomology.shortHomologyToChainClass
     (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : S.homology →ₗ[ℤ] ShortOpchains S :=
   (S.homologyι ≫ S.moduleCatOpcyclesIso.hom).hom
 
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 theorem SingularChains.ChainHomology.shortHomologyToChainClass_injective
@@ -473,6 +475,7 @@ theorem SingularChains.ChainHomology.shortHomologyToChainClass_injective
     Function.Injective (shortHomologyToChainClass S) :=
   (ModuleCat.mono_iff_injective (S.homologyι ≫ S.moduleCatOpcyclesIso.hom)).mp inferInstance
 
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 theorem SingularChains.ChainHomology.shortHomologyToChainClass_cycleClass
@@ -490,12 +493,14 @@ theorem SingularChains.ChainHomology.shortHomologyToChainClass_cycleClass
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 abbrev SingularChains.ChainHomology.Cycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
   ShortCycle (K.sc 1)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 abbrev SingularChains.ChainHomology.Boundaries1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
@@ -505,6 +510,7 @@ abbrev SingularChains.ChainHomology.Boundaries1 (K : ChainComplex (ModuleCat.{0}
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 def SingularChains.ChainHomology.cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
     Cycle1 K →ₗ[ℤ] K.homology 1 :=
@@ -513,6 +519,7 @@ def SingularChains.ChainHomology.cycleClass (K : ChainComplex (ModuleCat.{0} ℤ
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 theorem SingularChains.ChainHomology.cycleClass_surjective (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
     Function.Surjective (cycleClass K) :=
@@ -520,6 +527,7 @@ theorem SingularChains.ChainHomology.cycleClass_surjective (K : ChainComplex (Mo
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 def SingularChains.ChainHomology.mkCycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (z : K.X 1)
@@ -532,6 +540,7 @@ def SingularChains.ChainHomology.mkCycle1 (K : ChainComplex (ModuleCat.{0} ℤ) 
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 theorem SingularChains.ChainHomology.cycleClass_eq_zero_iff (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
@@ -548,6 +557,7 @@ theorem SingularChains.ChainHomology.cycleClass_eq_zero_iff (K : ChainComplex (M
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 def SingularChains.ChainHomology.boundaryCycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (b : K.X 2) : Cycle1 K :=
@@ -556,12 +566,14 @@ def SingularChains.ChainHomology.boundaryCycle1 (K : ChainComplex (ModuleCat.{0}
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 abbrev SingularChains.ChainHomology.Opchains (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
   K.X 1 ⧸ LinearMap.range (K.d 2 1).hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 @[instance_reducible]
@@ -572,6 +584,7 @@ def SingularChains.ChainHomology.opchainsModule (K : ChainComplex (ModuleCat.{0}
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 def SingularChains.ChainHomology.chainClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
     K.X 1 →ₗ[ℤ] Opchains K :=
@@ -579,6 +592,7 @@ def SingularChains.ChainHomology.chainClass (K : ChainComplex (ModuleCat.{0} ℤ
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 @[simp]
@@ -589,6 +603,7 @@ theorem SingularChains.ChainHomology.chainClass_boundary (K : ChainComplex (Modu
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 theorem SingularChains.ChainHomology.chainClass_eq_iff (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (x y : K.X 1) : chainClass K x = chainClass K y ↔ ∃ b : K.X 2, (K.d 2 1).hom b = x - y :=
@@ -596,6 +611,7 @@ theorem SingularChains.ChainHomology.chainClass_eq_iff (K : ChainComplex (Module
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 theorem SingularChains.ChainHomology.range_sc_one_f (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
@@ -607,6 +623,7 @@ theorem SingularChains.ChainHomology.range_sc_one_f (K : ChainComplex (ModuleCat
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 def SingularChains.ChainHomology.opchainsEquiv (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
     ShortOpchains (K.sc 1) ≃ₗ[ℤ] Opchains K :=
@@ -614,6 +631,7 @@ def SingularChains.ChainHomology.opchainsEquiv (K : ChainComplex (ModuleCat.{0} 
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 def SingularChains.ChainHomology.homologyToChainClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
@@ -623,6 +641,7 @@ def SingularChains.ChainHomology.homologyToChainClass (K : ChainComplex (ModuleC
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 theorem SingularChains.ChainHomology.homologyToChainClass_injective
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) : Function.Injective (homologyToChainClass K) :=
@@ -630,6 +649,7 @@ theorem SingularChains.ChainHomology.homologyToChainClass_injective
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 @[simp]
@@ -642,6 +662,7 @@ theorem SingularChains.ChainHomology.homologyToChainClass_cycleClass
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 theorem SingularChains.ChainHomology.boundaries1_le_ker (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
@@ -657,6 +678,7 @@ theorem SingularChains.ChainHomology.boundaries1_le_ker (K : ChainComplex (Modul
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 def SingularChains.ChainHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) {M : Type*}
     [AddCommGroup M] [Module ℤ M] (f : Cycle1 K →ₗ[ℤ] M)
@@ -665,6 +687,7 @@ def SingularChains.ChainHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} �
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 attribute [local instance] SingularChains.ChainHomology.shortOpchainsModule in
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 @[simp]
@@ -824,11 +847,13 @@ theorem SingularChains.inducedHomology_comp {X Y Z : Type} [TopologicalSpace X]
   exact congrArg ModuleCat.Hom.hom h
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 abbrev SingularChains.ChainHomology.shortMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (F : K ⟶ L) :
     K.sc 1 ⟶ L.sc 1 :=
   (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} ℤ) (ComplexShape.down ℕ) 1).map F
 
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 def SingularChains.ChainHomology.mapCycles {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (F : K ⟶ L) :
@@ -836,6 +861,7 @@ def SingularChains.ChainHomology.mapCycles {K L : ChainComplex (ModuleCat.{0} �
   ((K.sc 1).moduleCatCyclesIso.inv ≫
       CategoryTheory.ShortComplex.cyclesMap (shortMap F) ≫ (L.sc 1).moduleCatCyclesIso.hom).hom
 
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 @[simp]
@@ -850,6 +876,7 @@ theorem SingularChains.ChainHomology.mapCycles_val {K L : ChainComplex (ModuleCa
       (K.sc 1).moduleCatCyclesIso_inv_iCycles_assoc]
   exact congrArg (fun f => f.hom c) hcat
 
+attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 theorem SingularChains.ChainHomology.homologyMap_cycleClass
