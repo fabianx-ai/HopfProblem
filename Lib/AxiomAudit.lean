@@ -7293,3 +7293,17 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.extConnecting
 #check CategoryTheory.Abelian.extConnecting_eq
 #print axioms CategoryTheory.Abelian.extConnecting_eq
+
+-- M05: all three native Ext exactness positions and initial injection.
+#check CategoryTheory.Abelian.comp_extConnecting
+#print axioms CategoryTheory.Abelian.comp_extConnecting
+#check CategoryTheory.Abelian.extConnecting_comp
+#print axioms CategoryTheory.Abelian.extConnecting_comp
+#check CategoryTheory.Abelian.ext_exact₁
+#print axioms CategoryTheory.Abelian.ext_exact₁
+#check CategoryTheory.Abelian.ext_exact₂
+#print axioms CategoryTheory.Abelian.ext_exact₂
+#check CategoryTheory.Abelian.ext_exact₃
+#print axioms CategoryTheory.Abelian.ext_exact₃
+#check CategoryTheory.Abelian.ext_zero_injective
+#print axioms CategoryTheory.Abelian.ext_zero_injective
