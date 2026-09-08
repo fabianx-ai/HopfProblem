@@ -672,3 +672,19 @@ theorem extConnecting_naturality (P : C) {S S' : ShortComplex C}
   exact congrArg (fun t => (IC.extHomologyIso P n).hom ≫ t) hd.symm
 
 end CategoryTheory.Abelian
+
+namespace CategoryTheory.Abelian
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
+
+/-- The canonical identification of degree-zero Ext with Hom is the degree-zero
+Ext-to-right-derived comparison followed by the Hom functor's canonical zero-degree
+identification. This records the fixed composition without exposing its definition. -/
+theorem extFunctorObjZeroIsoCoyoneda_eq (P : C) :
+    extFunctorObjZeroIsoCoyoneda P =
+      extFunctorObjIsoRightDerived P 0 ≪≫
+        (preadditiveCoyoneda.obj (op P)).rightDerivedZeroIsoSelf := by
+  unfold extFunctorObjZeroIsoCoyoneda
+  rfl
+
+end CategoryTheory.Abelian

@@ -7321,3 +7321,7 @@ is an evidence command rather than library content.
 -- M06-N: native Ext boundary naturality for every original short exact sequence morphism.
 #check CategoryTheory.Abelian.extConnecting_naturality
 #print axioms CategoryTheory.Abelian.extConnecting_naturality
+
+-- Canonical degree-zero Ext comparison: fixed defining composition.
+#check CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
+#print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
