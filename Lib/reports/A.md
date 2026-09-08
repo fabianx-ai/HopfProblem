@@ -464,3 +464,36 @@ drafts/TimeChange.lean.draft (55), drafts/LevelCylinder.lean.draft (91),
 plus cfg-tc/cfg-lcyl/cfg-cubic and the definition-closure script inline in
 the session history. Resume order in the previous section stands, with the
 amendment: unit 1 requires the SurgeryWindows decision first.
+
+---
+
+# Lane B progress (session 3)
+
+## Landed
+
+- `Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean` (9, da29618)
+
+## Drafted, not landed (preserved in ~/s6-notes/hopf-lib-a/drafts/)
+
+- `VanKampen.lean` — 114 BT decls + 51 HW family members. The family's
+  three STRUCTURES (LocalPathValue, PathValue, TwoOpenCover) live in
+  Hurewicz.lean while their 114 lemmas live in BoundaryTopology.lean; the
+  cfg (cfg-vk.json) assembles both. Last build: 26 errors, all cross-family
+  (`SimplyConnectedCover.trans_mem` — now landable — and
+  `TriangleRegularBaseFundamentalGroup.basedLoop`).
+- `TwoSimplyConnectedCover.lean` — 31 decls (19 HW + 12 BT). The closure
+  sweeps in project-welded `SpecialPeriods.EllipticAttachingMeridians`
+  material via `LoopSquare`; name-based weld rules needed (the text-based
+  WELD regex both over-matches names like `adaptedSurgeryWindows` and
+  under-matches pure-namespace welds).
+
+## Resume (next session)
+
+1. Land `TwoSimplyConnectedCover.lean`: cfg-tri.json, HW block (19) + BT
+   block (12); refine weld to NAME-based prefixes
+   (SpecialPeriods./EllipticAttachingMeridians.) plus text-based for the
+   recorded web; expect ~2 build rounds.
+2. Land `VanKampen.lean`: cfg-vk.json; imports SimplyConnectedCover +
+   TwoSimplyConnectedCover once landed.
+3. Then EuclideanSphere (14) → `Lib/Topology/InstanceSpheres.lean` per plan,
+   and the SH 18734–19048 remainder.
