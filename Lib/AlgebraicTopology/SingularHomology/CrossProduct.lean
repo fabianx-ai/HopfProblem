@@ -1786,4 +1786,25 @@ theorem PeriodTorusHigherHomology.crossProductHomology_pointClass_right (X Y : T
     (SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass
         (SingularChains.singularChainMap (PeriodTorusHigherHomology.crossInsertRight y)) 1 c).symm
 
+
+theorem PeriodTorusHigherHomology.formalBoundary_edge_simplex {V : Type*} (v : Fin 2 → V) :
+    SingularMayerVietoris.formalBoundary 1 (SingularMayerVietoris.formalSimplex v) =
+      SingularMayerVietoris.formalSimplex (fun _ : Fin 1 => v 1) -
+        SingularMayerVietoris.formalSimplex (fun _ : Fin 1 => v 0) := by
+  rw [SingularMayerVietoris.formalBoundary_simplex]
+  change
+    (∑ i : Fin 2, (-1 : ℤ) ^ i.val • SingularMayerVietoris.formalSimplex (v ∘ i.succAbove)) = _
+  simp only [Fin.sum_univ_two, Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul,
+    neg_one_smul, ← sub_eq_add_neg]
+  congr 1 <;> congr 1 <;> funext i <;> rw [Fin.eq_zero i] <;> rfl
+
+theorem PeriodTorusHigherHomology.formalPointCrossProduct_edge_boundary {V W : Type*} (q : ℕ)
+    (v : Fin 2 → V) (d : SingularMayerVietoris.FormalChains W (q + 1)) :
+    formalPointCrossProduct q
+        (SingularMayerVietoris.formalBoundary 1 (SingularMayerVietoris.formalSimplex v)) d =
+      SingularMayerVietoris.formalMap (fun w => (v 1, w)) (q + 1) d -
+        SingularMayerVietoris.formalMap (fun w => (v 0, w)) (q + 1) d := by
+  rw [formalBoundary_edge_simplex, map_sub, LinearMap.sub_apply,
+    formalPointCrossProduct_simplex_left, formalPointCrossProduct_simplex_left]
+
 end Mathoverflow1973
