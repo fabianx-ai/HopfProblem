@@ -7204,3 +7204,7 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Functor.rightDerivedConnecting
 #check CategoryTheory.Functor.rightDerivedConnecting_eq
 #print axioms CategoryTheory.Functor.rightDerivedConnecting_eq
+
+-- PD-L22: naturality of the fixed-derived connecting morphism.
+#check CategoryTheory.Functor.rightDerivedConnecting_naturality
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_naturality
