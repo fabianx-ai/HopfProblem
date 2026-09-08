@@ -661,3 +661,9 @@ normalized form). Running total: 267 / 4,450 documented.
 MorseLemma.lean: 8 headline docstrings (IsMorseAt/IsMorseOn/IsMorse,
 critical-point set with discreteness and finiteness, the Morse lemma
 quadratic chart, existence of Morse functions). Running total: 275 / 4,450.
+
+## Docstring progress (session 5, batch 7)
+
+CellAttachment.lean: 4 headline docstrings (core collapse deformation, core
+map, handle-to-core retraction, the deformation retraction itself). Running
+total: 279 / 4,450 documented.
