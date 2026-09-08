@@ -8,6 +8,7 @@ module
 
 public import Lib.CategoryTheory.Abelian.Injective.ShortExact
 public import Mathlib.CategoryTheory.Abelian.Injective.Resolution
+public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 
 /-!
 # Recursive compatible injective presentations
@@ -315,5 +316,242 @@ theorem exists_recursive_injective_presentations
   · change IC.ι.f 0 ≫ 𝟙 _ = 𝟙 _ ≫ eC s 0
     rw [Category.comp_id, Category.id_comp]
     exact columnResolution_ι_zero XC JC (eC s) (rC s) wC hC injC
+
+end CategoryTheory.InjectiveResolution
+
+namespace CategoryTheory.InjectiveResolution
+
+open CategoryTheory.Limits
+
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/- PD-L08 (PD9): the four stage squares make inclusion and projection commute
+with the consecutive differentials r followed by e. -/
+private theorem inclusion_comm
+    (T : ℕ → ShortComplex C) (L R : ℕ → C)
+    (eA : ∀ n, (T n).X₁ ⟶ L n) (eB : ∀ n, (T n).X₂ ⟶ L n ⊞ R n)
+    (rA : ∀ n, L n ⟶ (T (n + 1)).X₁)
+    (rB : ∀ n, L n ⊞ R n ⟶ (T (n + 1)).X₂)
+    (he : ∀ n, (T n).f ≫ eB n = eA n ≫ biprod.inl)
+    (hr : ∀ n, biprod.inl ≫ rB n = rA n ≫ (T (n + 1)).f) :
+    ∀ n, biprod.inl ≫ (rB n ≫ eB (n + 1)) =
+      (rA n ≫ eA (n + 1)) ≫ biprod.inl := by
+  intro n
+  rw [← Category.assoc, hr n, Category.assoc, he (n + 1), ← Category.assoc]
+
+private theorem projection_comm
+    (T : ℕ → ShortComplex C) (L R : ℕ → C)
+    (eB : ∀ n, (T n).X₂ ⟶ L n ⊞ R n) (eC : ∀ n, (T n).X₃ ⟶ R n)
+    (rB : ∀ n, L n ⊞ R n ⟶ (T (n + 1)).X₂)
+    (rC : ∀ n, R n ⟶ (T (n + 1)).X₃)
+    (he : ∀ n, eB n ≫ biprod.snd = (T n).g ≫ eC n)
+    (hr : ∀ n, rB n ≫ (T (n + 1)).g = biprod.snd ≫ rC n) :
+    ∀ n, biprod.snd ≫ (rC n ≫ eC (n + 1)) =
+      (rB n ≫ eB (n + 1)) ≫ biprod.snd := by
+  intro n
+  rw [← Category.assoc, ← hr n, Category.assoc, ← he (n + 1), ← Category.assoc]
+
+private def mapOfConsecutive (A B : ℕ → C)
+    (dA : ∀ n, A n ⟶ A (n + 1)) (dB : ∀ n, B n ⟶ B (n + 1))
+    (sqA : ∀ n, dA n ≫ dA (n + 1) = 0)
+    (sqB : ∀ n, dB n ≫ dB (n + 1) = 0)
+    (f : ∀ n, A n ⟶ B n) (hf : ∀ n, f n ≫ dB n = dA n ≫ f (n + 1)) :
+    CochainComplex.of A dA sqA ⟶ CochainComplex.of B dB sqB :=
+  { f := f
+    comm' := by
+      intro i j h
+      obtain rfl : i + 1 = j := h
+      change f i ≫ CochainComplex.of.d B dB i (i + 1) =
+        CochainComplex.of.d A dA i (i + 1) ≫ f (i + 1)
+      simpa only [CochainComplex.of_d] using hf i }
+
+private theorem mapTransport_f (K K' L L' : CochainComplex C ℕ) (hK : K = K') (hL : L = L')
+    (f : K' ⟶ L') (n : ℕ) :
+    (eqToHom hK ≫ f ≫ eqToHom hL.symm).f n =
+      eqToHom (congrArg (fun M : CochainComplex C ℕ => M.X n) hK) ≫ f.f n ≫
+        eqToHom (congrArg (fun M : CochainComplex C ℕ => M.X n) hL.symm) := by
+  subst K'
+  subst L'
+  simp
+
+private theorem augmentationFromZero (X Y : C) (K L : CochainComplex C ℕ)
+    (a : (CochainComplex.single₀ C).obj X ⟶ K)
+    (b : (CochainComplex.single₀ C).obj Y ⟶ L) (j : K ⟶ L) (f : X ⟶ Y)
+    (h : a.f 0 ≫ j.f 0 = f ≫ b.f 0) :
+    a ≫ j = (CochainComplex.single₀ C).map f ≫ b := by
+  apply (CochainComplex.fromSingle₀Equiv L X).injective
+  apply Subtype.ext
+  change (a ≫ j).f 0 = ((CochainComplex.single₀ C).map f ≫ b).f 0
+  rw [HomologicalComplex.comp_f, HomologicalComplex.comp_f, CochainComplex.single₀_map_f_zero]
+  exact h
+
+/- The initial-row equality and the specified degree-zero augmentations give
+the two augmentation squares; equality out of the single complex is detected in degree zero. -/
+set_option linter.unusedVariables false in
+private theorem augmentation_squares
+    {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+    (S : ShortComplex C) (hS : S.ShortExact)
+    (T : ℕ → ShortComplex C) (h0 : T 0 = S) (L R : ℕ → C)
+    (eA : ∀ n, (T n).X₁ ⟶ L n)
+    (eB : ∀ n, (T n).X₂ ⟶ L n ⊞ R n)
+    (eC : ∀ n, (T n).X₃ ⟶ R n)
+    (rA : ∀ n, L n ⟶ (T (n + 1)).X₁)
+    (rB : ∀ n, L n ⊞ R n ⟶ (T (n + 1)).X₂)
+    (rC : ∀ n, R n ⟶ (T (n + 1)).X₃)
+    (hel : ∀ n, (T n).f ≫ eB n = eA n ≫ biprod.inl)
+    (her : ∀ n, eB n ≫ biprod.snd = (T n).g ≫ eC n)
+    (hrl : ∀ n, biprod.inl ≫ rB n = rA n ≫ (T (n + 1)).f)
+    (hrr : ∀ n, rB n ≫ (T (n + 1)).g = biprod.snd ≫ rC n)
+    (sqA : ∀ n, (rA n ≫ eA (n + 1)) ≫ (rA (n + 1) ≫ eA (n + 2)) = 0)
+    (sqB : ∀ n, (rB n ≫ eB (n + 1)) ≫ (rB (n + 1) ≫ eB (n + 2)) = 0)
+    (sqC : ∀ n, (rC n ≫ eC (n + 1)) ≫ (rC (n + 1) ≫ eC (n + 2)) = 0)
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (hA : IA.cocomplex = CochainComplex.of L (fun n => rA n ≫ eA (n + 1)) sqA)
+    (hB : IB.cocomplex = CochainComplex.of (fun n => L n ⊞ R n)
+      (fun n => rB n ≫ eB (n + 1)) sqB)
+    (hC : IC.cocomplex = CochainComplex.of R (fun n => rC n ≫ eC (n + 1)) sqC)
+    (haA : IA.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hA) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₁) h0.symm) ≫ eA 0)
+    (haB : IB.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hB) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₂) h0.symm) ≫ eB 0)
+    (haC : IC.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hC) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₃) h0.symm) ≫ eC 0)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (hj : ∀ n, j.f n =
+      eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hA) ≫ biprod.inl ≫
+        eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hB.symm))
+    (hq : ∀ n, q.f n =
+      eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hB) ≫ biprod.snd ≫
+        eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hC.symm)) :
+    IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι ∧
+    IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι := by
+  subst S
+  have haA' : IA.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hA) = eA 0 := by
+    simpa using haA
+  have haB' : IB.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hB) = eB 0 := by
+    simpa using haB
+  have haC' : IC.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hC) = eC 0 := by
+    simpa using haC
+  constructor
+  · apply augmentationFromZero _ _ _ _ IA.ι IB.ι j (T 0).f
+    apply (cancel_mono (eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hB))).1
+    rw [hj 0]
+    simp only [Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
+    rw [← Category.assoc, haA']
+    change eA 0 ≫ biprod.inl = ((T 0).f ≫ IB.ι.f 0) ≫
+      eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hB)
+    exact (hel 0).symm.trans ((Category.assoc _ _ _).trans
+      (congrArg (fun z => (T 0).f ≫ z) haB')).symm
+  · apply augmentationFromZero _ _ _ _ IB.ι IC.ι q (T 0).g
+    apply (cancel_mono (eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hC))).1
+    rw [hq 0]
+    simp only [Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
+    rw [← Category.assoc, haB']
+    change eB 0 ≫ biprod.snd = ((T 0).g ≫ IC.ι.f 0) ≫
+      eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hC)
+    exact (her 0).trans ((Category.assoc _ _ _).trans
+      (congrArg (fun z => (T 0).g ≫ z) haC')).symm
+
+/- The inverse middle transports cancel, leaving the biproduct zero composite. -/
+private theorem strict_zero
+    (K L M : CochainComplex C ℕ) (A B : ℕ → C)
+    (hK : ∀ n, K.X n = A n) (hL : ∀ n, L.X n = (A n ⊞ B n))
+    (hM : ∀ n, M.X n = B n) (j : K ⟶ L) (q : L ⟶ M)
+    (hj : ∀ n, j.f n = eqToHom (hK n) ≫ biprod.inl ≫ eqToHom (hL n).symm)
+    (hq : ∀ n, q.f n = eqToHom (hL n) ≫ biprod.snd ≫ eqToHom (hM n).symm) :
+    j ≫ q = 0 := by
+  apply HomologicalComplex.hom_ext
+  intro n
+  simp [hj, hq, Category.assoc]
+
+private def splittingOfComponents (X Y Z A B : C) (h₁ : X = A) (h₂ : Y = (A ⊞ B)) (h₃ : Z = B)
+    (j : X ⟶ Y) (q : Y ⟶ Z)
+    (hj : j = eqToHom h₁ ≫ biprod.inl ≫ eqToHom h₂.symm)
+    (hq : q = eqToHom h₂ ≫ biprod.snd ≫ eqToHom h₃.symm)
+    (w : j ≫ q = 0) : (ShortComplex.mk j q w).Splitting := by
+  subst X
+  subst Y
+  subst Z
+  simp only [eqToHom_refl, Category.id_comp, Category.comp_id] at hj hq
+  subst j
+  subst q
+  exact ShortComplex.Splitting.ofHasBinaryBiproduct A B
+
+/-- PD-L08, textbook PD9: the recursive presentations give a strict short exact
+sequence on the very three supplied injective resolutions. Each degree is the
+transported split biproduct row; its splitting need not commute with differentials. -/
+theorem strict_sequence_of_recursive_presentations
+    {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+    (S : ShortComplex C) (hS : S.ShortExact)
+    (T : ℕ → ShortComplex C) (h0 : T 0 = S) (L R : ℕ → C)
+    (eA : ∀ n, (T n).X₁ ⟶ L n)
+    (eB : ∀ n, (T n).X₂ ⟶ L n ⊞ R n)
+    (eC : ∀ n, (T n).X₃ ⟶ R n)
+    (rA : ∀ n, L n ⟶ (T (n + 1)).X₁)
+    (rB : ∀ n, L n ⊞ R n ⟶ (T (n + 1)).X₂)
+    (rC : ∀ n, R n ⟶ (T (n + 1)).X₃)
+    (hel : ∀ n, (T n).f ≫ eB n = eA n ≫ biprod.inl)
+    (her : ∀ n, eB n ≫ biprod.snd = (T n).g ≫ eC n)
+    (hrl : ∀ n, biprod.inl ≫ rB n = rA n ≫ (T (n + 1)).f)
+    (hrr : ∀ n, rB n ≫ (T (n + 1)).g = biprod.snd ≫ rC n)
+    (sqA : ∀ n, (rA n ≫ eA (n + 1)) ≫ (rA (n + 1) ≫ eA (n + 2)) = 0)
+    (sqB : ∀ n, (rB n ≫ eB (n + 1)) ≫ (rB (n + 1) ≫ eB (n + 2)) = 0)
+    (sqC : ∀ n, (rC n ≫ eC (n + 1)) ≫ (rC (n + 1) ≫ eC (n + 2)) = 0)
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (hA : IA.cocomplex = CochainComplex.of L (fun n => rA n ≫ eA (n + 1)) sqA)
+    (hB : IB.cocomplex = CochainComplex.of (fun n => L n ⊞ R n)
+      (fun n => rB n ≫ eB (n + 1)) sqB)
+    (hC : IC.cocomplex = CochainComplex.of R (fun n => rC n ≫ eC (n + 1)) sqC)
+    (haA : IA.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hA) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₁) h0.symm) ≫ eA 0)
+    (haB : IB.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hB) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₂) h0.symm) ≫ eB 0)
+    (haC : IC.ι.f 0 ≫ eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X 0) hC) =
+      eqToHom (congrArg (fun U : ShortComplex C => U.X₃) h0.symm) ≫ eC 0) :
+    ∃ (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+      (w : j ≫ q = 0),
+      IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι ∧
+      IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι ∧
+      (∀ n, j.f n =
+        eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hA) ≫ biprod.inl ≫
+          eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hB.symm)) ∧
+      (∀ n, q.f n =
+        eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hB) ≫ biprod.snd ≫
+          eqToHom (congrArg (fun K : CochainComplex C ℕ => K.X n) hC.symm)) ∧
+      (ShortComplex.mk j q w).ShortExact ∧
+      (∀ n, ((ShortComplex.mk j q w).map
+        (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).ShortExact ∧
+        Nonempty (((ShortComplex.mk j q w).map
+          (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).Splitting)) := by
+  let jm := mapOfConsecutive L (fun n => L n ⊞ R n)
+    (fun n => rA n ≫ eA (n + 1)) (fun n => rB n ≫ eB (n + 1)) sqA sqB
+    (fun _ => biprod.inl) (inclusion_comm T L R eA eB rA rB hel hrl)
+  let qm := mapOfConsecutive (fun n => L n ⊞ R n) R
+    (fun n => rB n ≫ eB (n + 1)) (fun n => rC n ≫ eC (n + 1)) sqB sqC
+    (fun _ => biprod.snd) (projection_comm T L R eB eC rB rC her hrr)
+  let j := eqToHom hA ≫ jm ≫ eqToHom hB.symm
+  let q := eqToHom hB ≫ qm ≫ eqToHom hC.symm
+  have hj := fun n => mapTransport_f _ _ _ _ hA hB jm n
+  have hq := fun n => mapTransport_f _ _ _ _ hB hC qm n
+  have w : j ≫ q = 0 := strict_zero _ _ _ L R
+    (fun n => congrArg (fun K : CochainComplex C ℕ => K.X n) hA)
+    (fun n => congrArg (fun K : CochainComplex C ℕ => K.X n) hB)
+    (fun n => congrArg (fun K : CochainComplex C ℕ => K.X n) hC) j q hj hq
+  have ha := augmentation_squares S hS T h0 L R eA eB eC rA rB rC
+    hel her hrl hrr sqA sqB sqC IA IB IC hA hB hC haA haB haC j q hj hq
+  let row := ShortComplex.mk j q w
+  have sp (n : ℕ) :
+      (row.map (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).Splitting :=
+    splittingOfComponents _ _ _ (L n) (R n)
+      (congrArg (fun K : CochainComplex C ℕ => K.X n) hA)
+      (congrArg (fun K : CochainComplex C ℕ => K.X n) hB)
+      (congrArg (fun K : CochainComplex C ℕ => K.X n) hC)
+      (j.f n) (q.f n) (hj n) (hq n)
+      (row.map (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).zero
+  exact ⟨j, q, w, ha.1, ha.2, hj, hq,
+    HomologicalComplex.shortExact_of_degreewise_shortExact row (fun n => (sp n).shortExact),
+    fun n => ⟨(sp n).shortExact, ⟨sp n⟩⟩⟩
 
 end CategoryTheory.InjectiveResolution

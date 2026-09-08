@@ -7188,3 +7188,7 @@ is an evidence command rather than library content.
 -- PD-L07: the shared recursive presentations retain their actual injective resolutions.
 #check CategoryTheory.InjectiveResolution.exists_recursive_injective_presentations
 #print axioms CategoryTheory.InjectiveResolution.exists_recursive_injective_presentations
+
+-- PD-L08: strict sequence on the supplied recursive injective presentations.
+#check CategoryTheory.InjectiveResolution.strict_sequence_of_recursive_presentations
+#print axioms CategoryTheory.InjectiveResolution.strict_sequence_of_recursive_presentations
