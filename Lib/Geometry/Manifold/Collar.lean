@@ -20,6 +20,37 @@ import Lib.Geometry.Manifold.Morse.Index
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 
+/-!
+# Collars of regular levels and level transport
+
+Collars of regular level sets, compactly supported ambient diffeomorphisms moving one level
+to a nearby one, and the tubular neighbourhood of an embedded closed ball:
+`Smale.CollarHeight.*`, `Smale.SupportedDiffeomorph.*` (diffeomorphisms supported in a
+given open set), `Smale.DiskFraming.*`, `Smale.SmallPerturbation.*`,
+`Smale.SphereCoordinates.*`, and
+`Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall` — Lee Ch. 10's collar and
+tubular-neighbourhood theorems in the level-transport form used by the recognition
+development. (The plan's Tubular.lean is folded here; see Lib/reports/A.md.)
+
+## Main definitions and results
+
+* `Smale.CollarHeight.*`, `Smale.SupportedDiffeomorph.*` : collar coordinates and supported
+  diffeomorphisms.
+* `Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall` : the tubular
+  neighbourhood theorem (specialized form).
+* `Smale.RegularLevel.*` : level-diffeomorphism lemmas.
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Ch. 10 (collars and tubular
+  neighbourhoods), Thm 6.24
+
+## Tags
+
+collar, tubular neighbourhood, supported diffeomorphism, level transport
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

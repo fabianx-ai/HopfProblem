@@ -71,3 +71,6 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
 #print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root
 #print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_ball
+
+-- Lane D2 (Whitney embedding, projection bundle, collar, cells)
+#print axioms Mathoverflow1973.Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall

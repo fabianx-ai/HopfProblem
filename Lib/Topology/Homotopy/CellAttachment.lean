@@ -16,6 +16,30 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+
+/-!
+# Cell attachment: a handle deformation-retracts to its core
+
+Attaching a handle is attaching a cell up to homotopy: `Smale.EmbeddedCellAttachment.*`,
+`Smale.HandleCoreAttachment.*` (the core map and its boundary behaviour), `HandleCore*`
+deformations, `DiskAnnulus`, `OuterDisk`, `ClosedHandleCore`, `RadialCoreShrink` — with the
+cell-attachment Mayer–Vietoris cover (Hatcher, Prop 0.16's consequence and §2.3's matrix).
+
+## Main definitions and results
+
+* `Smale.HandleCoreAttachment.core` : the core-cell retraction.
+* `Smale.EmbeddedCellAttachment.*` : the embedded cell attachment.
+* `Smale.DiskAnnulus.*` : the disc-annulus decomposition.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Prop 0.16 and §2.3
+
+## Tags
+
+cell attachment, handle, deformation retract
+-/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

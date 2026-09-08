@@ -18,6 +18,35 @@ import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
 
+/-!
+# The native Euclidean embedding of a compact manifold
+
+Every compact smooth manifold modeled on a finite-dimensional normed space `E` embeds into
+`EuclideanSpace ℝ (Fin e.ambientDimension)` with injective differential
+(`Smale.NativeEuclideanEmbedding.*` — Lee Thm 6.15's Whitney embedding in the native form
+used by the source development), with the tangent-space instances
+(`tangentSpaceT2`, `tangentSpaceFiniteDimensional`), the tangent/normal decompositions
+(`tangentImageEquiv`, `tangentNormalEquiv`, `contMDiff_normalProjection`), and the
+partial-diffeomorphism inverse-function lemmas
+(`exists_partialDiffeomorph_into_manifold`, `partialDiffeomorphOfInjectiveLocal`,
+`exists_partialDiffeomorph_near_compact`).
+
+## Main definitions and results
+
+* `Smale.NativeEuclideanEmbedding` : the embedding structure.
+* `Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood_in_open_of_embedded_closedBall` :
+  the tubular neighbourhood of an embedded closed ball (in Collar.lean's sibling block).
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Theorem 6.15
+
+## Tags
+
+Whitney embedding, tubular neighbourhood, partial diffeomorphism
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

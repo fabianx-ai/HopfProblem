@@ -6,6 +6,28 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Handle
 
+/-!
+# The handle retraction onto its core
+
+`Degree.Handle.Space` and the retraction of a handle onto its core cell with the
+unit-sphere equivalences — the topological half of "attaching a handle is attaching a cell"
+(Hatcher, Prop 0.16 / §2.3's matrix rows).
+
+## Main definitions and results
+
+* `Degree.Handle.Space` : the handle space.
+* `Degree.UnitSphereEquiv.*` : the unit-sphere equivalences of the core retraction.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Prop 0.16, §2.3
+
+## Tags
+
+handle, core retraction, unit sphere
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

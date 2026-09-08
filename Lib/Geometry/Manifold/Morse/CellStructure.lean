@@ -19,6 +19,31 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.Geometry.Manifold.ChartedSpace.Transport
+
+/-!
+# The finite cell structure of a compact smooth manifold
+
+Every compact smooth manifold admits a Morse function and therefore has the homotopy type
+of a finite cell complex with one cell per critical point (Milnor, Morse Theory, Thm 3.5):
+`Degree.MorseCells.*`, `Degree.Attachment.*`, `Degree.CoreAttachment.*`,
+`Degree.AttachmentMaps.*`, `Degree.Handle.*`, `Degree.FiniteCells.*`.
+
+## Main definitions and results
+
+* `Degree.FiniteCells.Built` : the inductive description of the built-up cell complex.
+* `Degree.MorseCells.built_of_compact_smooth_manifold` : the theorem (in `Hopf/`, see
+  obstruction note in Lib/reports/A.md).
+* `Degree.FiniteCells.RelativeDiskLifting` : the relative lifting datum.
+
+## References
+
+* [John Milnor, *Morse Theory*][milnor63], Theorem 3.5
+
+## Tags
+
+finite cell complex, Morse cells, homotopy type
+-/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology

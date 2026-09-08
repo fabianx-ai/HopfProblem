@@ -288,3 +288,47 @@ closure on `SpecialPeriods`/`triangle*`); it stays in `Hopf/LCP/AnalyticFillings
 
 Per-declaration docstrings; import minimization; the Q6 upstream Mathlib PR for the two
 duplicated steps; comparator `landrun`.
+
+---
+
+# Lane D2 progress (same branch)
+
+**Status: all movable D2 baselines landed (6 Lib files, ~430 declarations, green), module
+docstrings installed, axiom receipt exact. Per-decl docstrings open.**
+
+## What moved (source on 721fc82 → target, all byte-verbatim)
+
+| target | source | decls | commit |
+|---|---|---:|---|
+| `Lib/Geometry/Manifold/WhitneyEmbedding.lean` | DT 10445–11285 subset (NativeEuclideanEmbedding — Lee Thm 6.15; partial-diffeomorphism IFT lemmas) | 48 | 488c283 |
+| `Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean` | DT 11287–11600 (NoExotic.ProjectionBundle + intertwiners — Lee Thm 6.24) | 22 | 488c283 |
+| `Lib/Geometry/Manifold/Collar.lean` | DT 11602–14111 subset (collars, SupportedDiffeomorph, DiskFraming, tubular neighbourhood, SmallPerturbation, SphereCoordinates) | 137 | 488c283 |
+| `Lib/Topology/Homotopy/HandleRetraction.lean` | SH 5310–5859 (Degree.Handle retraction) | 68 | 720a5ae (listed under D1 lane execution, D2 dependency) |
+| `Lib/Topology/Homotopy/CellAttachment.lean` | SH 28353–29652 subset (132 decls: EmbeddedCellAttachment, HandleCore*, DiskAnnulus, OuterDisk) | 132 | cf18527 |
+| `Lib/Geometry/Manifold/Morse/CellStructure.lean` | Recognition 2580–3161 + 3538–3808 subset (59 decls: MorseCells, FiniteCells — Milnor Morse Theory Thm 3.5) | 59 | 4273335 |
+
+**File-scope notes.** Tubular.lean folds into Collar.lean (source-order web); the
+ProjectionBundle split keeps the plan's target name; D2's SH cell-attachment work also
+UNBLOCKED lane A's recorded ST EmbeddedCellAttachment obstruction (the MorseHandle dep is
+now in Lib — the ST copies were re-extracted as part of D1's Chains extension and D2's
+CellAttachment).
+
+## D2 honest obstructions (left in `Hopf/`)
+
+1. DT tail (26 decls) depending on `Smale.MorseSurgeryData`/`Smale.Hemisphere.*` (F/G).
+2. `Degree.MorseCells.built_of_compact_smooth_manifold` + `built_upper_sublevels`
+   (Recognition) referencing `exists_regularSublevelHomotopyEquiv` (E1) and
+   `SpecialPeriods.Threefold.chartedSpace` (project).
+3. SH `MorseSurgeryData.*` (14 decls, F/G web).
+All listed with seeds-based closure evidence; join after E1/F/G.
+
+## D2 axiom receipt
+
+- `Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall`:
+  `[propext, Classical.choice, Quot.sound]`
+  (the plan's `Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood` spelling names a
+  different, more specialized lemma — also present, at Collar.lean:530)
+
+## D2 open items
+
+Per-declaration docstrings; import minimization; lint; the E1/F/G rejoin; `landrun`.

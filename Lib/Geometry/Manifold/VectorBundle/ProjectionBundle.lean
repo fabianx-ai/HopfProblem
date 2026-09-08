@@ -19,6 +19,31 @@ import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
 import Lib.Geometry.Manifold.WhitneyEmbedding
 
+/-!
+# The projection bundle of a smooth idempotent family
+
+A smooth family of idempotent endomorphisms of constant rank defines a smooth vector bundle:
+`NoExotic.ProjectionBundle.*` and the intertwining/projection-range machinery
+(`projectionIntertwiner*`, `projectionRangeEquiv`, `gramProjection` transport) — Lee
+Thm 6.24's construction via projections.
+
+## Main definitions and results
+
+* `NoExotic.ProjectionBundle.*` : the vector-bundle structure induced by a smooth
+  idempotent family.
+* `NoExotic.projectionIntertwiner*`, `projectionRangeEquiv*` : the transport lemmas.
+
+## References
+
+* [John M. Lee, *Introduction to Smooth Manifolds*][lee13], Thm 6.24 (vector bundles from
+  projections)
+
+## Tags
+
+projection bundle, vector bundle, idempotent family
+-/
+
+
 
 set_option maxSynthPendingDepth 3
 

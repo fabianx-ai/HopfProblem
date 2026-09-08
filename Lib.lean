@@ -35,6 +35,11 @@ import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot
 import Lib.Geometry.Manifold.Complex.Biholomorph
+import Lib.Geometry.Manifold.WhitneyEmbedding
+import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+import Lib.Geometry.Manifold.Collar
+import Lib.Topology.Homotopy.CellAttachment
+import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
