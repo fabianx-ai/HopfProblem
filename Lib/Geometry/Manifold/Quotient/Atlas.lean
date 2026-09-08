@@ -6,6 +6,15 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Geometry.Manifold.Instances.RiemannSphere
+/-!
+# The one-point and branched quotient atlases
+
+  The one-point atlas and the branched quotient atlas: charts on a quotient of a
+  Riemann surface by a properly discontinuous action, pulled back through the
+  quotient map, with the transition maps between the two presentations
+  (Forster, Lectures on Riemann Surfaces, Section 1).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

@@ -14,6 +14,14 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+/-!
+# The homotopy extension property for cylinders
+
+  The homotopy extension property for product cylinders `I x X`: homotopies of
+  `X` extend over the cylinder, with the gluing used for deformation retractions
+  (Hatcher, Algebraic Topology, Proposition 0.16-adjacent).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

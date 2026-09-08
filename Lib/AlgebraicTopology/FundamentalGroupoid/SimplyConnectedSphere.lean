@@ -5,6 +5,14 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Topology.Homotopy.LoopSubdivision
+/-!
+# Spheres of dimension at least two are simply connected
+
+  Spheres of dimension at least two are simply connected: the instances and
+  path-connectedness lemmas reducing `pi_1(S^n)` to the stereographic charts
+  (Hatcher, Algebraic Topology, Proposition 1.14).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

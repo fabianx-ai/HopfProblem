@@ -6,6 +6,15 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+/-!
+# Cross-insertion chains and their naturality
+
+  Cross-insertion: the chain map inserting a point of `X` as a degenerate
+  `Y`-factor in the singular chains of `X x Y`, its naturality in both factors,
+  and the induced map on homology (Eilenberg-Steenrod, Foundations of Algebraic
+  Topology, VIII.6, chain-level precursor of cross products).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

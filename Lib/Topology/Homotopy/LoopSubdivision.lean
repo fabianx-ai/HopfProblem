@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Loop subdivision along an open cover
+
+  Loop subdivision: every loop is homotopic to a product of loops each lying in a
+  member of an open cover, via a partition of the unit interval subordinate to
+  the cover (Hatcher, Algebraic Topology, proof of Theorem 1.20).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

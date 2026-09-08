@@ -4,6 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Diagonal quotients
+
+  Diagonal quotients: the quotient of a space by an equivalence relation given as
+  the orbit relation of a group action or a family of maps, its universal
+  property, and the induced maps on fundamental groups (Hatcher, Algebraic
+  Topology, Section 1.3).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

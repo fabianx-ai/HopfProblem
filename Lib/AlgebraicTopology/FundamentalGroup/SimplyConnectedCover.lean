@@ -4,6 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# The simply connected covering construction
+
+  The simply connected cover: for a path-connected, locally path-connected and
+  semilocally simply connected space, the space of homotopy classes of paths from
+  a basepoint, covering `X` by endpoint evaluation (Hatcher, Algebraic Topology,
+  Section 1.3 prerequisites).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

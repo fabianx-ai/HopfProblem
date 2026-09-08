@@ -5,6 +5,14 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
+/-!
+# The two-sheeted simply connected cover over a two-open cover
+
+  The two-sheeted simply connected cover attached to a two-open van Kampen cover:
+  based sections, sheet membership, and the path-lifting lemmas used to split the
+  fundamental group action (Hatcher, Algebraic Topology, Section 1.3).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

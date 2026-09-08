@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# The two-open transition structure
+
+  Two-open transitions: the change-of-chart data of a bundle trivialized over
+  two open sets - sets, index map, and the cocycle condition - the atlas-level
+  precursor of the mapping torus (Hatcher, Algebraic Topology, Example 1.46).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

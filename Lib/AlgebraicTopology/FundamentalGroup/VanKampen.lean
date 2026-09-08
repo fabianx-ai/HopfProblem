@@ -6,6 +6,16 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
+/-!
+# The Seifert-van Kampen theorem for a two-open cover
+
+  The Seifert-van Kampen theorem for a two-open cover in pushout form: the
+  fundamental group of `U cup V` (both open, `U cap V` path connected, common
+  base point) is the amalgamated free product of `pi_1 U` and `pi_1 V` over
+  `pi_1 (U cap V)`, including the uniqueness half (Hatcher, Algebraic Topology,
+  Theorem 1.20).
+-/
+
 
 
 set_option maxSynthPendingDepth 3
