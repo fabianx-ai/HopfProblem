@@ -1125,3 +1125,161 @@ public theorem exists_recursive_comparison
     (fun n => (step n (fn n)).extension), (fun n => (step n (fn n)).descent)⟩
 
 end CategoryTheory.InjectiveResolution
+
+namespace CategoryTheory.InjectiveResolution
+open CategoryTheory CategoryTheory.Limits
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/-- The quotient-embedding differential factorization and the two recursive
+comparison equations give the five-term differential identity, in each position
+of the original compatible triple (PD-L13, PD14). -/
+private theorem comparisonDifferential (K K' : CochainComplex C ℕ)
+    (X X' : ℕ → C)
+    (e : ∀ n, X n ⟶ K.X n) (r : ∀ n, K.X n ⟶ X (n + 1))
+    (e' : ∀ n, X' n ⟶ K'.X n) (r' : ∀ n, K'.X n ⟶ X' (n + 1))
+    (fn : ∀ n, X n ⟶ X' n) (un : ∀ n, K.X n ⟶ K'.X n)
+    (d : ∀ n, r n ≫ e (n + 1) = K.d n (n + 1))
+    (d' : ∀ n, r' n ≫ e' (n + 1) = K'.d n (n + 1))
+    (ext : ∀ n, e n ≫ un n = fn n ≫ e' n)
+    (desc : ∀ n, r n ≫ fn (n + 1) = un n ≫ r' n) :
+    ∀ n, un n ≫ K'.d n (n + 1) = K.d n (n + 1) ≫ un (n + 1) := by
+  intro n
+  symm
+  calc
+    K.d n (n + 1) ≫ un (n + 1) = (r n ≫ e (n + 1)) ≫ un (n + 1) := by rw [d n]
+    _ = r n ≫ (fn (n + 1) ≫ e' (n + 1)) := by rw [Category.assoc, ext (n + 1)]
+    _ = (un n ≫ r' n) ≫ e' (n + 1) := by rw [← Category.assoc, desc n]
+    _ = un n ≫ K'.d n (n + 1) := by rw [Category.assoc, d' n]
+
+/-- Package the same degreewise comparisons as a cochain map of the original
+complexes, using their consecutive differential equations. -/
+private def comparisonCochainMap (K K' : CochainComplex C ℕ)
+    (un : ∀ n, K.X n ⟶ K'.X n)
+    (h : ∀ n, un n ≫ K'.d n (n + 1) = K.d n (n + 1) ≫ un (n + 1)) : K ⟶ K' :=
+  { f := un
+    comm' := by
+      intro i j hij
+      obtain rfl : i + 1 = j := hij
+      exact h i }
+
+/-- Identify the initial rows with the original sequences. Projecting the
+initial whole-row comparison equation and substituting the six original
+augmentations proves the three augmentation equations. -/
+private theorem comparisonInitialAugmentation {S S' T T' E E' : ShortComplex C}
+    (f : S ⟶ S') (h0 : T = S) (h0' : T' = S')
+    (e : T ⟶ E) (e' : T' ⟶ E') (u : E ⟶ E')
+    (a : S.X₁ ⟶ E.X₁) (b : S.X₂ ⟶ E.X₂) (c : S.X₃ ⟶ E.X₃)
+    (a' : S'.X₁ ⟶ E'.X₁) (b' : S'.X₂ ⟶ E'.X₂) (c' : S'.X₃ ⟶ E'.X₃)
+    (ha : e.τ₁ = eqToHom (congrArg (fun U : ShortComplex C => U.X₁) h0) ≫ a)
+    (hb : e.τ₂ = eqToHom (congrArg (fun U : ShortComplex C => U.X₂) h0) ≫ b)
+    (hc : e.τ₃ = eqToHom (congrArg (fun U : ShortComplex C => U.X₃) h0) ≫ c)
+    (ha' : e'.τ₁ = eqToHom (congrArg (fun U : ShortComplex C => U.X₁) h0') ≫ a')
+    (hb' : e'.τ₂ = eqToHom (congrArg (fun U : ShortComplex C => U.X₂) h0') ≫ b')
+    (hc' : e'.τ₃ = eqToHom (congrArg (fun U : ShortComplex C => U.X₃) h0') ≫ c')
+    (h : e ≫ u = (eqToHom h0 ≫ f ≫ eqToHom h0'.symm) ≫ e') :
+    a ≫ u.τ₁ = f.τ₁ ≫ a' ∧ b ≫ u.τ₂ = f.τ₂ ≫ b' ∧ c ≫ u.τ₃ = f.τ₃ ≫ c' := by
+  cases h0
+  cases h0'
+  simp only [eqToHom_refl, Category.id_comp, Category.comp_id] at ha hb hc ha' hb' hc' h
+  have h₁ : e.τ₁ ≫ u.τ₁ = f.τ₁ ≫ e'.τ₁ := congrArg (fun g => g.τ₁) h
+  have h₂ : e.τ₂ ≫ u.τ₂ = f.τ₂ ≫ e'.τ₂ := congrArg (fun g => g.τ₂) h
+  have h₃ : e.τ₃ ≫ u.τ₃ = f.τ₃ ≫ e'.τ₃ := congrArg (fun g => g.τ₃) h
+  exact ⟨by simpa only [ha, ha'] using h₁,
+    by simpa only [hb, hb'] using h₂, by simpa only [hc, hc'] using h₃⟩
+
+/-- Equality out of the degree-zero single complex is detected in degree zero;
+apply this to the original augmentation equation. -/
+private theorem comparisonAugmentationFromZero (X Y : C) (K L : CochainComplex C ℕ)
+    (a : (CochainComplex.single₀ C).obj X ⟶ K)
+    (b : (CochainComplex.single₀ C).obj Y ⟶ L) (j : K ⟶ L) (f : X ⟶ Y)
+    (h : a.f 0 ≫ j.f 0 = f ≫ b.f 0) :
+    a ≫ j = (CochainComplex.single₀ C).map f ≫ b := by
+  apply (CochainComplex.fromSingle₀Equiv L X).injective
+  apply Subtype.ext
+  change (a ≫ j).f 0 = ((CochainComplex.single₀ C).map f ≫ b).f 0
+  rw [HomologicalComplex.comp_f, HomologicalComplex.comp_f, CochainComplex.single₀_map_f_zero]
+  exact h
+
+/-- The two degreewise sequence squares give a strict map between the original
+cochain sequences, by extensionality of cochain maps. -/
+private def comparisonStrictMap (S S' : ShortComplex (CochainComplex C ℕ))
+    (a : S.X₁ ⟶ S'.X₁) (b : S.X₂ ⟶ S'.X₂) (c : S.X₃ ⟶ S'.X₃)
+    (ha : ∀ n, a.f n ≫ S'.f.f n = S.f.f n ≫ b.f n)
+    (hb : ∀ n, b.f n ≫ S'.g.f n = S.g.f n ≫ c.f n) : S ⟶ S' :=
+  ShortComplex.homMk a b c (HomologicalComplex.hom_ext _ _ ha)
+    (HomologicalComplex.hom_ext _ _ hb)
+
+/-- Every morphism of short exact sequences admits a strict simultaneous
+comparison on any two supplied compatible injective resolution triples.
+Use their recursive presentations and whole-row comparisons; PD14 supplies
+the cochain equations, the row maps supply both strict sequence squares, and
+PD12 at zero gives all three original augmentations. No monicity or epicity
+of the given morphism is required (PD-L13). -/
+public theorem exists_strict_comparison_of_compatible_resolutions (S S' : ShortComplex C) (hS : S.ShortExact) (hS' : S'.ShortExact)
+    (f : S ⟶ S')
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (w : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι)
+    (he : ∀ n, ((ShortComplex.mk j q w).map
+      (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).ShortExact)
+    (IA' : InjectiveResolution S'.X₁) (IB' : InjectiveResolution S'.X₂)
+    (IC' : InjectiveResolution S'.X₃)
+    (j' : IA'.cocomplex ⟶ IB'.cocomplex) (q' : IB'.cocomplex ⟶ IC'.cocomplex)
+    (w' : j' ≫ q' = 0)
+    (ha' : IA'.ι ≫ j' = (CochainComplex.single₀ C).map S'.f ≫ IB'.ι)
+    (hb' : IB'.ι ≫ q' = (CochainComplex.single₀ C).map S'.g ≫ IC'.ι)
+    (he' : ∀ n, ((ShortComplex.mk j' q' w').map
+      (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).ShortExact)
+    : ∃ φ : ShortComplex.mk j q w ⟶ ShortComplex.mk j' q' w',
+      IA.ι ≫ φ.τ₁ = (CochainComplex.single₀ C).map f.τ₁ ≫ IA'.ι ∧
+      IB.ι ≫ φ.τ₂ = (CochainComplex.single₀ C).map f.τ₂ ≫ IB'.ι ∧
+      IC.ι ≫ φ.τ₃ = (CochainComplex.single₀ C).map f.τ₃ ≫ IC'.ι := by
+  obtain ⟨spl, T, h0, e, r, hT, a, b, c, A, B, D, da, db, dc⟩ :=
+    exists_presentations_of_compatible_resolutions S hS IA IB IC j q w ha hb he
+  obtain ⟨spl', T', h0', e', r', hT', a', b', c', A', B', D', da', db', dc'⟩ :=
+    exists_presentations_of_compatible_resolutions S' hS' IA' IB' IC' j' q' w' ha' hb' he'
+  have z' (n : ℕ) : e' n ≫ r' n = 0 :=
+    ShortComplex.hom_ext _ _ (A' n).choose (B' n).choose (D' n).choose
+  obtain ⟨fn, un, fzero, ext, desc⟩ :=
+    exists_recursive_comparison f T _ T' _ h0 h0' e r e' r' hT he
+      A B D z' spl' (fun n => IA'.injective n) (fun n => IC'.injective n)
+  let ua := comparisonCochainMap IA.cocomplex IA'.cocomplex (fun n => (un n).τ₁)
+    (comparisonDifferential IA.cocomplex IA'.cocomplex
+      (fun n => (T n).X₁) (fun n => (T' n).X₁)
+      (fun n => (e n).τ₁) (fun n => (r n).τ₁)
+      (fun n => (e' n).τ₁) (fun n => (r' n).τ₁)
+      (fun n => (fn n).τ₁) (fun n => (un n).τ₁) da da'
+      (fun n => congrArg (fun t => t.τ₁) (ext n))
+      (fun n => congrArg (fun t => t.τ₁) (desc n)))
+  let ub := comparisonCochainMap IB.cocomplex IB'.cocomplex (fun n => (un n).τ₂)
+    (comparisonDifferential IB.cocomplex IB'.cocomplex
+      (fun n => (T n).X₂) (fun n => (T' n).X₂)
+      (fun n => (e n).τ₂) (fun n => (r n).τ₂)
+      (fun n => (e' n).τ₂) (fun n => (r' n).τ₂)
+      (fun n => (fn n).τ₂) (fun n => (un n).τ₂) db db'
+      (fun n => congrArg (fun t => t.τ₂) (ext n))
+      (fun n => congrArg (fun t => t.τ₂) (desc n)))
+  let uc := comparisonCochainMap IC.cocomplex IC'.cocomplex (fun n => (un n).τ₃)
+    (comparisonDifferential IC.cocomplex IC'.cocomplex
+      (fun n => (T n).X₃) (fun n => (T' n).X₃)
+      (fun n => (e n).τ₃) (fun n => (r n).τ₃)
+      (fun n => (e' n).τ₃) (fun n => (r' n).τ₃)
+      (fun n => (fn n).τ₃) (fun n => (un n).τ₃) dc dc'
+      (fun n => congrArg (fun t => t.τ₃) (ext n))
+      (fun n => congrArg (fun t => t.τ₃) (desc n)))
+  have initial : e 0 ≫ un 0 = (eqToHom h0 ≫ f ≫ eqToHom h0'.symm) ≫ e' 0 :=
+    (ext 0).trans (congrArg (fun g => g ≫ e' 0) fzero)
+  have aug := comparisonInitialAugmentation f h0 h0' (e 0) (e' 0) (un 0)
+    (IA.ι.f 0) (IB.ι.f 0) (IC.ι.f 0) (IA'.ι.f 0) (IB'.ι.f 0) (IC'.ι.f 0)
+    a b c a' b' c' initial
+  let φ := comparisonStrictMap (ShortComplex.mk j q w) (ShortComplex.mk j' q' w')
+    ua ub uc (fun n => (un n).comm₁₂) (fun n => (un n).comm₂₃)
+  exact ⟨φ,
+    comparisonAugmentationFromZero _ _ _ _ IA.ι IA'.ι ua f.τ₁ aug.1,
+    comparisonAugmentationFromZero _ _ _ _ IB.ι IB'.ι ub f.τ₂ aug.2.1,
+    comparisonAugmentationFromZero _ _ _ _ IC.ι IC'.ι uc f.τ₃ aug.2.2⟩
+
+end CategoryTheory.InjectiveResolution
