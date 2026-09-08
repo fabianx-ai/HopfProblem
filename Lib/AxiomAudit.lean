@@ -7317,3 +7317,7 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.NatIso.rightDerived_inv
 #check CategoryTheory.NatIso.rightDerived_zero_hom
 #print axioms CategoryTheory.NatIso.rightDerived_zero_hom
+
+-- M06-N: native Ext boundary naturality for every original short exact sequence morphism.
+#check CategoryTheory.Abelian.extConnecting_naturality
+#print axioms CategoryTheory.Abelian.extConnecting_naturality

@@ -606,4 +606,69 @@ theorem ext_zero_injective (P : C) {S : ShortComplex C} (hS : S.ShortExact) :
   simpa only [← CategoryTheory.comp_apply, Iso.hom_inv_id, CategoryTheory.id_apply] using hu
 
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The positive native Ext boundary is natural for every original morphism of
+short exact sequences (TEXTBOOK.md, 1723–1743, C29d; orientation1745–1747).
+A strict comparison sends a chosen cochain lift to a lift of the image cocycle;
+its differential is the image of the original differential. The same positive
+boundary square passes through the canonical resolution identifications.
+The quotient coefficient map is in degree n and the subobject map in degree n+1.
+Ordinary adjacent squares follow from the native degree functors' laws. -/
+theorem extConnecting_naturality (P : C) {S S' : ShortComplex C}
+    (hS : S.ShortExact) (hS' : S'.ShortExact) (f : S ⟶ S') (n : ℕ) :
+    (extFunctorObj P n).map f.τ₃ ≫ extConnecting P hS' n =
+      extConnecting P hS n ≫ (extFunctorObj P (n+1)).map f.τ₁ := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun n => (hs n).1
+  let sp := fun n =>
+    letI : Injective (((ShortComplex.mk j q z).map
+      (HomologicalComplex.eval C (.up ℕ) n)).X₁) :=
+      inferInstanceAs (Injective (IA.cocomplex.X n))
+    (he n).splittingOfInjective
+  have hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map
+      ((preadditiveCoyoneda.obj (op P)).mapHomologicalComplex (.up ℕ)))
+    (fun n => ((sp n).map (preadditiveCoyoneda.obj (op P))).shortExact)
+  obtain ⟨T',h0',L',R',eA',eB',eC',rA',rB',rC',hT',hL',hR',hB',hel',her',hrl',hrr',hA',hB'',hC',
+    sqA',sqB',sqC',IA',IB',IC',hIA',hIB',hIC',ha',hb',hc'⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S' hS'
+  obtain ⟨j',q',z',haj',haq',hj',hq',hse',hs'⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S' hS'
+      T' h0' L' R' eA' eB' eC' rA' rB' rC' hel' her' hrl' hrr' sqA' sqB' sqC'
+      IA' IB' IC' hIA' hIB' hIC' ha' hb' hc'
+  have he' := fun n => (hs' n).1
+  let sp' := fun n =>
+    letI : Injective (((ShortComplex.mk j' q' z').map
+      (HomologicalComplex.eval C (.up ℕ) n)).X₁) :=
+      inferInstanceAs (Injective (IA'.cocomplex.X n))
+    (he' n).splittingOfInjective
+  have hM' := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j' q' z').map
+      ((preadditiveCoyoneda.obj (op P)).mapHomologicalComplex (.up ℕ)))
+    (fun n => ((sp' n).map (preadditiveCoyoneda.obj (op P))).shortExact)
+  obtain ⟨φ, aφ, bφ, cφ⟩ :=
+    InjectiveResolution.exists_strict_comparison_of_compatible_resolutions
+      S S' hS hS' f IA IB IC j q z haj haq he IA' IB' IC' j' q' z' haj' haq' he'
+  let Ψ := ((preadditiveCoyoneda.obj (op P)).mapHomologicalComplex (.up ℕ)).mapShortComplex.map φ
+  have hd := HomologicalComplex.HomologySequence.δ_naturality Ψ hM hM' n (n+1) rfl
+  have hmiddle := InjectiveResolution.extHomologyIso_hom_naturality P IB IB'
+    (show IB.Hom IB' f.τ₂ from ⟨φ.τ₂, by simpa using HomologicalComplex.congr_hom bφ 0⟩) n
+  have hc := InjectiveResolution.extHomologyIso_hom_naturality P IC IC'
+    (show IC.Hom IC' f.τ₃ from ⟨φ.τ₃, by simpa using HomologicalComplex.congr_hom cφ 0⟩) n
+  have hleft := InjectiveResolution.extHomologyIso_hom_naturality P IA IA'
+    (show IA.Hom IA' f.τ₁ from ⟨φ.τ₁, by simpa using HomologicalComplex.congr_hom aφ 0⟩) (n+1)
+  apply (cancel_mono (IA'.extHomologyIso P (n+1)).hom).mp
+  rw [Category.assoc, Category.assoc, hleft,
+    extConnecting_eq P hS n IA IB IC j q z haj haq he hM,
+    extConnecting_eq P hS' n IA' IB' IC' j' q' z' haj' haq' he' hM']
+  simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
+  rw [← Category.assoc, hc, Category.assoc]
+  exact congrArg (fun t => (IC.extHomologyIso P n).hom ≫ t) hd.symm
+
 end CategoryTheory.Abelian
