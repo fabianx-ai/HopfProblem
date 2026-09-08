@@ -332,3 +332,40 @@ All listed with seeds-based closure evidence; join after E1/F/G.
 ## D2 open items
 
 Per-declaration docstrings; import minimization; lint; the E1/F/G rejoin; `landrun`.
+
+---
+
+# Lane I progress (same branch, session order A → D1 → H → D2 → I)
+
+**Status: 4 of ~14 units landed (green); the remainder is enumerated below with exact
+resume configs (cfg files in ~/s6-notes/hopf-lib-a/).**
+
+## Landed
+
+| target | source | decls | commit |
+|---|---|---:|---|
+| `Lib/Geometry/Manifold/Instances/RiemannSphere.lean` | PeriodConstruction TwoAffineCharts 7758–8011 + RiemannSphere 8012–8082 (pulled forward from lane I by lane H to unblock the atlas) | 37 | (H baseline) |
+| `Lib/Topology/Algebra/FreeActionLocus.lean` | PeriodConstruction FreeActionLocus.* | 13 | 867880d |
+| `Lib/Geometry/Manifold/Quotient/LocalOrbit.lean` | PeriodConstruction LocalOrbitQuotient.* subset | 17 | 91dc733 |
+| `Lib/Geometry/Manifold/Quotient/Atlas.lean` | PeriodConstruction OnePointAtlas.* + BranchedQuotientAtlas.* subset | 22 | 91dc733 |
+| `Lib/Topology/MappingTorus/Basic.lean` | LocalModels MappingTorus.* 6899–8394 | 76 | 79211df |
+
+## Remaining lane I units (resume order, each = one cfg + delete + build + commit)
+
+1. `MappingTorus/HomologyCover.lean` ← BoundaryTopology `MappingTorusHomology.*` 3988–4609 (58)
+2. `MappingTorus/Wang.lean` (+ `WangAlgebra.lean` split if desired) ← IntegralHomology `MappingTorusHomology.*` 7576–8688 (105) — axiom probe `wang_exact_at_mappingTorus`
+3. `GroupTheory/SplitExtension.lean` ← BoundaryTopology `SplitGroupExtension.*` (13) — probe `SplitGroupExtension.mulEquiv`
+4. `GroupTheory/PresentedGroup/CentralTwist.lean` ← BoundaryTopology `TwistGroup.*` (21)
+5. `FiberBundle/TwoOpenTransition.lean` ← BoundaryTopology `TwoOpenTransition.*` (45)
+6. `Topology/Covering/Quotient.lean` ← LocalModels `CoveringQuotient.*` (17) + DiscreteQuotient (13)
+7. `Topology/Covering/DiagonalQuotient.lean` (+ `FundamentalGroup/DiagonalQuotient.lean`) ← AF `DiagonalQuotient.*` (41) + BT `DiagonalQuotient.*` (36)
+8. `Homotopy/SublevelRetraction.lean` ← LocalModels `ThreefoldHomologyFinitenessRetraction.*` (22; rename per lane task)
+9. `Homotopy/LocalCollapse.lean` ← CuspFilling `CuspRetraction.Patching.*` 490–631 (11; rename per lane task)
+10. `Quotient/Covering.lean` ← CuspFilling `InvariantSubsetQuotient.*` (14) + `CoveringOrthant.*` (6) + `ProductRestriction.*` (5)
+
+## Lane I honest obstructions so far
+
+- LocalOrbitQuotient.localHomeomorph + 3 atlas decls: welded to
+  `SpecialPeriods.triangleGeometricAction` (project) and
+  `BranchedQuotientAtlas.contDiffAt_transition_of_lift`
+  (Hopf/LCP/Specialization.lean 14450, outside all lanes' ranges).
