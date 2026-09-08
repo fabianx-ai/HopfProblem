@@ -675,3 +675,9 @@ embedding and sublevel characterization, attachment region, the two cover
 halves of the handle attachment). Pipeline fix recorded: docstrings must be
 inserted above `attribute ... in` lines, not between them and their
 declarations. Running total: 285 / 4,450 documented.
+
+## Docstring progress (session 5, batch 9)
+
+CircleProduct.lean: 9 headline docstrings (the circle dictionary: Circle,
+two-arc cover, punctured-interval model, arc-product equivalence, section and
+projection, the Kunneth splitting). Running total: 288 / 4,450 documented.
