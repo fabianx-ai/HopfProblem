@@ -61,6 +61,7 @@ Move-only extraction from HopfProblem Solution.lean at 9ac8a456b526527837d7082ff
 Original source lines 187883--211735; see PROVENANCE.md.
 -/
 
+import Hopf.LibShims
 import Hopf.LCP.GlobalAssembly
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import S6.TwoExceptionalGluing

@@ -61,6 +61,7 @@ Move-only extraction from HopfProblem Solution.lean at 9ac8a456b526527837d7082ff
 Original source lines 81183--104759; see PROVENANCE.md.
 -/
 
+import Hopf.LibShims
 import Hopf.SphereTopology
 
 set_option maxSynthPendingDepth 3
