@@ -57,3 +57,11 @@ is an evidence command rather than library content.
 -- stayed in Hopf/ (obstruction: Smale.SphereReflection/MorseSurgeryData
 -- infrastructure, lanes D1/F/G); same statement, probed via Hopf import:
 #print axioms Mathoverflow1973.Smale.LinearSphereAction.homology_eq_sign_smul
+
+-- Lane D1 (Morse theory I)
+#print axioms Mathoverflow1973.Smale.ManifoldMorse.exists_morse_function
+#print axioms Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
+#print axioms Mathoverflow1973.Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
+-- The fourth probe, Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
+-- (Reeb), stayed in Hopf/Recognition.lean (obstruction: Smale.Hemisphere.Sphere, lane G);
+-- probed via a scratch import of Hopf.Recognition — receipt in Lib/reports/A.md.

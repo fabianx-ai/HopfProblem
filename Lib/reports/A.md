@@ -168,3 +168,72 @@ de-duplication pass (Q4) and are an open item.
    artifact; the axiom check it would perform passes.
 9. **Universe lift** (all moved singular-homology statements are `(X : Type)`, universe 0 —
    kept per lane hazard note) — the plan's separate post-A pass.
+
+---
+
+# Lane D1 progress (same branch, continuing lanes in session order)
+
+**Status: DT/SH/Recognition movable baselines landed (11 Lib files, green), module docstrings
+landed, axiom receipts exact. Rename deferred (rationale below). Per-decl docstrings open.**
+
+## What moved (source on 721fc82 → target, all byte-verbatim)
+
+| target | source | decls | commit |
+|---|---|---:|---|
+| `Lib/Geometry/Manifold/Morse/Handle.lean` | DT 85–776 (MorseHandle model, BeltPassage, RegularValues) | 78 | 913716d |
+| `Lib/Analysis/Calculus/MorseLemma.lean` | DT 777–2988 (perturbations, IsMorseOn, exists_morse_function, SmoothMorseLemma signed charts — Milnor Morse Theory Lemma 2.2) | 157 | 913716d |
+| `Lib/Geometry/Manifold/Flow/Compact.lean` | DT 2990–3543 (flow construction, morse blocks, NoExotic partial-diffeo/IFT) | 29 | 913716d |
+| `Lib/Geometry/Manifold/RegularLevel.lean` | DT 3544–3865 (RegularLevel — Lee Cor 5.14, letI idiom verbatim) | 20 | 913716d |
+| `Lib/Geometry/Manifold/Morse/HandleAttachment.lean` | DT 3867–5335 (attachments, punctured handles, boundary pairs, RadialExtension) | 125 | 913716d |
+| `Lib/Geometry/Manifold/Flow/HeightTranslating.lean` | DT 5337–6988 (global flow — Lee Thm 9.12, height translating) | 106 | 913716d |
+| `Lib/Geometry/Manifold/Morse/Existence.lean` | DT 6990–9041 (smoothing, chart-map perturbation, existence — h-cobordism Thm 2.5) | 117 | 913716d |
+| `Lib/Analysis/ODE/SmoothFlow.lean` | DT 18259–19186 (Degree.SmoothODE, coordinate fields) | 54 | 913716d |
+| `Lib/Topology/Homotopy/HandleRetraction.lean` | SH 5310–5859 (Degree.Handle retraction onto core — Prop 0.16/§2.3) | 68 | 99ee04d |
+| `Lib/Geometry/Manifold/Morse/SublevelSets.lean` | ST 2595–2678 + 7325–8214 subset (sublevel transport — Thm 3.1) | 12 | de4b876 |
+| `Lib/Geometry/Manifold/Morse/Index.lean` | ST 8216–8707 subset | 26 | de4b876 |
+| `Lib/Geometry/Manifold/ChartedSpace/Transport.lean` | Recognition 1612–1640 (atlas transport — Lee Thm 4.5-adjacent) | 3 | 44c11ef |
+| `Lib/Topology/Homotopy/CylinderHEP.lean` | Recognition 2090–2333 + 3197–3453 (I×Dⁿ ≅ D^{n+1}, HEP — Prop 0.16) | 40 | 44c11ef |
+
+## Style deviation (recorded)
+
+D1 files use the **classic header form** (`import Mathlib` + `noncomputable section`, no
+`module`/`public import`/`@[expose]`): the moved proofs contain `rfl`/`change` elaborations
+through `Diffeomorph`/`PartialDiffeomorph` structure literals that do NOT elaborate under the
+module system in this toolchain (minimal repro: the same bytes are green in classic form and
+red in module form — `translateChart_apply`). Mathlib itself is classic, so the files remain
+PR-ready. Consequence: classic Lib files cannot be imported BY module Lib files, so D1 files
+that consume classic D1 files are classic too. Lane A files remain module-form (they were
+written before this was known and are green).
+
+## D1 honest obstructions (left in `Hopf/`)
+
+1. **ST 7325–8708 majority (85 decls)** — `ManifoldMorse.MorseSurgeryData`/`SurgeryWindows`
+   consumers, `Hemisphere`/`DiskDouble`/`TwoDiskDecomposition`/`SublevelDisk` family — welded
+   to `Smale.MorseSurgeryData` (DT 10391, outside all lanes' ranges) and `SublevelDisk`/
+   `Hemisphere.Ambient` (ST 5000–6556, lane E1). Join after E1/F/G.
+2. **Recognition 11149–11254 Reeb block (4 decls)** — `nonempty_homeomorphSphere_of_two_critical_points`
+   needs `Smale.Hemisphere.Sphere` (lane G). Probe still exact (below).
+3. **Recognition leftovers** in the D1 ranges that reference the above.
+
+## D1 axiom receipts
+
+- `Smale.ManifoldMorse.exists_morse_function`: `[propext, Classical.choice, Quot.sound]`
+- `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn`: `[propext, Classical.choice, Quot.sound]`
+- `Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits`:
+  `[propext, Classical.choice, Quot.sound]`
+- `Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points` (probed via scratch
+  `import Hopf.Recognition`): `[propext, Classical.choice, Quot.sound]`
+
+## D1 rename decision (deviation recorded)
+
+No mandated rename list for D1. The `Smale.*` root is shared with lane F/G material that
+stays in `Hopf/`; renaming D1's slices alone would split one namespace across two roots and
+multiply shim surface. Twins are named per file in the docstrings/messages (MorseLemma →
+Milnor Morse Theory Lemma 2.2 presentation; RegularLevel → lee13 Cor 5.14; SmoothFlow →
+lee13 Thm 9.12; HandleRetraction/CylinderHEP → hatcher02 Prop 0.16). A namespace-normalizing
+rename (`Smale.ManifoldMorse.* → Morse.*` etc.) belongs to the post-F/G pass with the de-shim.
+
+## D1 open items
+
+Per-declaration docstrings for the ~750 moved D1 declarations; lint; de-shim; the
+`MorseSurgeryData`-web rejoin after F/G; `landrun` for the comparator artifact.
