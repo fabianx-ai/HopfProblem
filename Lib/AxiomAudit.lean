@@ -7325,3 +7325,11 @@ is an evidence command rather than library content.
 -- Canonical degree-zero Ext comparison: fixed defining composition.
 #check CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
 #print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
+
+-- Native Ext: whole additive degree functors and the same positive boundary.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_T_obj
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_T_obj
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ

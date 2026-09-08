@@ -418,6 +418,7 @@ import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
 import Lib.CategoryTheory.Abelian.Injective.Ext
+import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
 
 /-!
 # Reusable extracted library
