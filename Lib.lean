@@ -413,6 +413,7 @@ import Lib.CategoryTheory.Abelian.RightDerived
 import Lib.CategoryTheory.Abelian.Injective.ShortExact
 import Lib.Topology.Dimension.SphereTwo
 import Lib.CategoryTheory.Abelian.Injective.CompatibleResolution
+import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 
 /-!
 # Reusable extracted library

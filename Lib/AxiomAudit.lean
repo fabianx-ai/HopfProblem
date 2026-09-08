@@ -7198,3 +7198,9 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.InjectiveResolution.exists_recursive_comparison
 #check CategoryTheory.InjectiveResolution.exists_strict_comparison_of_compatible_resolutions
 #print axioms CategoryTheory.InjectiveResolution.exists_strict_comparison_of_compatible_resolutions
+
+-- PD-L21: one fixed-derived boundary and computation by every compatible choice.
+#check CategoryTheory.Functor.rightDerivedConnecting
+#print axioms CategoryTheory.Functor.rightDerivedConnecting
+#check CategoryTheory.Functor.rightDerivedConnecting_eq
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_eq
