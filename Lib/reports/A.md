@@ -629,3 +629,9 @@ HeightTranslating 106, Cousin 95, DiagonalQuotient 78, Handle 78; remainder
 Pipeline (validated): curated name -> docstring map with escaped asterisks,
 inserted above the declaration by declmap span, build after each file.
 Full pass is a dedicated session (roughly 4,000 docstrings).
+
+## Docstring progress (session 4, batch 2)
+
+VanKampen.lean: 10 headline docstrings installed (structures, chartHom,
+localValue, compatibility, pushout maps, pushoutEquiv). Running total: 235 /
+4,450 documented.
