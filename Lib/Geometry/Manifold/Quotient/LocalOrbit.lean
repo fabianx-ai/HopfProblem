@@ -1,0 +1,150 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+import Mathlib
+import Lib.Topology.Algebra.FreeActionLocus
+import Lib.Geometry.Manifold.Instances.RiemannSphere
+
+
+set_option maxSynthPendingDepth 3
+
+open Set Function Filter Manifold Topology
+
+open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
+  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
+  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
+  UpperHalfPlane
+
+universe u v
+
+noncomputable section
+
+namespace Mathoverflow1973
+
+local infixr:80 " ≫ₚ " => Path.trans
+
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
+
+@[instance_reducible]
+def LocalOrbitQuotient.restrictedAction {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) : MulAction H U
+    where
+  smul h x := ⟨(h : G) • (x : X), hU h x.property⟩
+  one_smul x := Subtype.ext (one_smul G (x : X))
+  mul_smul h k x := Subtype.ext (SemigroupAction.mul_smul (h : G) (k : G) (x : X))
+
+abbrev LocalOrbitQuotient.LocalQuotient {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) :=
+  letI := restrictedAction H U hU
+  Quotient (MulAction.orbitRel H U)
+
+def LocalOrbitQuotient.localProjection {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) : U → LocalQuotient H U hU :=
+  Quotient.mk _
+
+theorem LocalOrbitQuotient.localProjection_eq_iff {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) (x y : U) :
+    localProjection H U hU x = localProjection H U hU y ↔ ∃ h : H, (h : G) • (y : X) = (x : X) := by
+  let := restrictedAction H U hU
+  rw [localProjection, Quotient.eq]
+  change (∃ h : H, h • y = x) ↔ _
+  exact exists_congr fun h => Subtype.ext_iff
+
+theorem LocalOrbitQuotient.localProjection_surjective {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) :
+    Function.Surjective (localProjection H U hU) :=
+  Quotient.mk_surjective
+
+theorem LocalOrbitQuotient.localProjection_continuous {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) :
+    Continuous (localProjection H U hU) :=
+  continuous_quotient_mk'
+
+def LocalOrbitQuotient.imageOpen {G X : Type*} [Group G] [TopologicalSpace X] [MulAction G X]
+    (U : TopologicalSpace.Opens X) [ContinuousConstSMul G X] :
+    TopologicalSpace.Opens (Quotient (MulAction.orbitRel G X)) :=
+  ⟨Quotient.mk (MulAction.orbitRel G X) '' (U : Set X),
+    MulAction.isOpenQuotientMap_quotientMk.isOpenMap _ U.isOpen⟩
+
+def LocalOrbitQuotient.imageProjection {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (U : TopologicalSpace.Opens X) [ContinuousConstSMul G X] :
+    U → imageOpen (G := G) U := fun x => ⟨Quotient.mk _ (x : X), x, x.property, rfl⟩
+
+theorem LocalOrbitQuotient.imageProjection_surjective {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (U : TopologicalSpace.Opens X) [ContinuousConstSMul G X] :
+    Function.Surjective (imageProjection (G := G) U) := by
+  rintro ⟨q, x, hx, rfl⟩
+  exact ⟨⟨x, hx⟩, rfl⟩
+
+theorem LocalOrbitQuotient.imageProjection_continuous {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (U : TopologicalSpace.Opens X) [ContinuousConstSMul G X] :
+    Continuous (imageProjection (G := G) U) :=
+  (continuous_quotient_mk'.comp continuous_subtype_val).subtype_mk _
+
+theorem LocalOrbitQuotient.imageProjection_isOpenMap {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (U : TopologicalSpace.Opens X) [ContinuousConstSMul G X] :
+    IsOpenMap (imageProjection (G := G) U) :=
+  (MulAction.isOpenQuotientMap_quotientMk.isOpenMap.comp
+        U.isOpen.isOpenMap_subtype_val).subtype_mk
+    _
+
+theorem LocalOrbitQuotient.imageProjection_isOpenQuotientMap {G X : Type*} [Group G]
+    [TopologicalSpace X] [MulAction G X] (U : TopologicalSpace.Opens X)
+    [ContinuousConstSMul G X] : IsOpenQuotientMap (imageProjection (G := G) U) :=
+  ⟨imageProjection_surjective U, imageProjection_continuous U, imageProjection_isOpenMap U⟩
+
+def LocalOrbitQuotient.localToImage {G X : Type*} [Group G] [TopologicalSpace X] [MulAction G X]
+    (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X] :
+    LocalQuotient H U hU → imageOpen (G := G) U :=
+  Quotient.lift (imageProjection (G := G) U) fun x y h =>
+    by
+    apply Subtype.ext
+    apply Quotient.sound
+    obtain ⟨g, hg⟩ := h
+    exact ⟨(g : G), congrArg Subtype.val hg⟩
+
+theorem LocalOrbitQuotient.localToImage_continuous {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X] :
+    Continuous (localToImage H U hU) :=
+  (imageProjection_continuous U).quotient_lift _
+
+theorem LocalOrbitQuotient.localToImage_surjective {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X] :
+    Function.Surjective (localToImage H U hU) := by
+  intro q
+  obtain ⟨x, rfl⟩ := imageProjection_surjective U q
+  exact ⟨localProjection H U hU x, rfl⟩
+
+theorem LocalOrbitQuotient.localToImage_isOpenMap {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X] :
+    IsOpenMap (localToImage H U hU) :=
+  IsOpenMap.of_comp (localProjection_continuous H U hU) (localProjection_surjective H U hU)
+    (imageProjection_isOpenMap U)
+
+theorem LocalOrbitQuotient.localToImage_injective {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X]
+    (hreturn : ∀ g : G, (((g • ·) '' (U : Set X)) ∩ U).Nonempty → g ∈ H) :
+    Function.Injective (localToImage H U hU) := by
+  intro q r
+  refine Quotient.inductionOn₂ q r ?_
+  intro x y h
+  have hxy :
+    Quotient.mk (MulAction.orbitRel G X) (x : X) = Quotient.mk (MulAction.orbitRel G X) (y : X) :=
+    congrArg Subtype.val h
+  obtain ⟨g, hg⟩ := Quotient.exact hxy
+  have hgH : g ∈ H := hreturn g ⟨x, ⟨y, y.property, hg⟩, x.property⟩
+  exact (localProjection_eq_iff H U hU x y).mpr ⟨⟨g, hgH⟩, hg⟩
+end Mathoverflow1973
