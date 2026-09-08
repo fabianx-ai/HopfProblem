@@ -7236,3 +7236,17 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_effaceable
 #check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal
+
+-- M00-D: literal derived global sections, normalization and source universality.
+#check TopCat.SheafCohomology.derivedGlobalSectionsDeltaFunctor
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDeltaFunctor
+#check TopCat.SheafCohomology.derivedGlobalSectionsDegree
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDegree
+#check TopCat.SheafCohomology.derivedGlobalSectionsBoundary
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsBoundary
+#check TopCat.SheafCohomology.derivedGlobalSectionsDegreeZeroIso
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDegreeZeroIso
+#check TopCat.SheafCohomology.derivedGlobalSectionsEffaceable
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsEffaceable
+#check TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
