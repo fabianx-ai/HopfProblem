@@ -7363,3 +7363,17 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.NatIso.rightDerived_hom_connecting
 #check CategoryTheory.NatIso.rightDerived_inv_connecting
 #print axioms CategoryTheory.NatIso.rightDerived_inv_connecting
+
+-- Paired derived delta morphisms, their whole degree maps and both inverse laws.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_app
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_app
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_comp_inv
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_comp_inv
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
