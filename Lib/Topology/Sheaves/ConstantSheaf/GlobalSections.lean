@@ -14,6 +14,10 @@ public import Mathlib.Algebra.Category.Grp.Limits
 public import Mathlib.Algebra.Category.Grp.Colimits
 public import Mathlib.Algebra.Category.Grp.ForgetCorepresentable
 public import Mathlib.CategoryTheory.Adjunction.Additive
+public import Lib.CategoryTheory.Abelian.Injective.Ext
+public import Mathlib.Algebra.Category.Grp.AB
+public import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Sheaf
+public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
 
 /-!
 # Constant integer sheaves and global sections
@@ -133,5 +137,46 @@ theorem homGlobalSectionsAddEquiv_naturality
       g.hom.app (op (⊤ : Opens X)) (homGlobalSectionsAddEquiv X F f) := by
   rw [homGlobalSectionsAddEquiv_apply, homGlobalSectionsAddEquiv_apply]
   rfl
+
+section DegreeZeroNormalization
+
+open CategoryTheory.Abelian
+
+local instance : HasExt.{u}
+    (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) :=
+  hasExt_of_enoughInjectives.{u, u, u + 1} _
+
+/-- Fix the natural degree-zero normalization by composing the canonical native
+Ext⁰-to-Hom identification with evaluation of the constant integer sheaf's global
+generator. In any injective resolution, the first map is the unique factorization
+of a degree-zero cocycle through the original augmentation. The second map evaluates
+that factorization at the sheafification-unit image of `1`. The target is the actual
+group of sections on the whole space; no equality of separately chosen models is used. -/
+def extFunctorObjZeroIsoGlobalSections :
+    extFunctorObj ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ))) 0 ≅
+    (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op (⊤ : Opens X)) :=
+  extFunctorObjZeroIsoCoyoneda _ ≪≫
+    NatIso.ofComponents (fun F => (homGlobalSectionsAddEquiv X F).toAddCommGrpIso)
+      (by intro F G f; ext h; exact homGlobalSectionsAddEquiv_naturality X F h f)
+
+/-- The fixed normalization acts on every native degree-zero Ext element by the
+specified two maps: its canonical Hom image, followed by the global-section evaluation.
+This component formula retains the normalization when passing to another description
+of the source, and the natural isomorphism supplies coefficient naturality and both
+inverse identities. -/
+theorem extFunctorObjZeroIsoGlobalSections_hom_app
+    (F : CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
+    (α : (extFunctorObj ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ))) 0).obj F) :
+    (extFunctorObjZeroIsoGlobalSections X).hom.app F α =
+      homGlobalSectionsAddEquiv X F
+        ((extFunctorObjZeroIsoCoyoneda
+          ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+            (AddCommGrpCat.of (ULift.{u} ℤ)))).hom.app F α) := by
+  unfold extFunctorObjZeroIsoGlobalSections
+  rfl
+
+end DegreeZeroNormalization
 
 end TopCat.ConstantSheaf

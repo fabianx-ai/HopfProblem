@@ -2410,6 +2410,10 @@ is an evidence command rather than library content.
 #print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unique
 #check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
 #print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
+#check TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections
+#print axioms TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections
+#check TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app
+#print axioms TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app
 
 /-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward` -/
 
