@@ -414,6 +414,7 @@ import Lib.CategoryTheory.Abelian.Injective.ShortExact
 import Lib.Topology.Dimension.SphereTwo
 import Lib.CategoryTheory.Abelian.Injective.CompatibleResolution
 import Lib.CategoryTheory.Abelian.RightDerived.Connecting
+import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 
 /-!
 # Reusable extracted library

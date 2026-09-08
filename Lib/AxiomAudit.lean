@@ -7222,3 +7222,11 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Functor.rightDerived_exact₃
 #check CategoryTheory.Functor.rightDerived_zero_injective
 #print axioms CategoryTheory.Functor.rightDerived_zero_injective
+
+-- PD-L24: the same derived family and boundary, assembled as a delta functor.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_T_obj
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_T_obj
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
