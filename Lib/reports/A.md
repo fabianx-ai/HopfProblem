@@ -587,3 +587,14 @@ LevelCylinder drafts already exist).
 Census 9408 → **5192**. Lane B: SimplyConnectedCover (da29618),
 TwoSimplyConnectedCover (0b5d47f), VanKampen (eca3d71) landed — Hatcher
 Thm 1.20's machinery is now in `Lib`.
+
+## Lane B session-4 close
+
+- `LoopSubdivision.lean` (f09e304) + split into the plan's two targets:
+  `SimplyConnectedSphere.lean` (14 EuclideanSphere decls — spheres of
+  dimension >= 2 simply connected, Prop 1.14).
+- `VanKampen.lean` (165, eca3d71) — Hatcher Thm 1.20.
+- Lane B movable material: COMPLETE except the axiom probes
+  (`RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero` was
+  lane H; B's probes are covered by the landed VanKampen family) and
+  per-declaration docstrings.
