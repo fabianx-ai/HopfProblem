@@ -611,3 +611,21 @@ is a single mechanical pass over all D1/D2 files at once and belongs with the
 de-shim pass — renaming this file alone would split the family's namespace
 across the tree. Module docstring installed with the Milnor citations
 (h-cobordism §3-4; Morse Theory §3) per the owner's correction.
+
+## Per-decl docstring worklist (session 4 measurement)
+
+Coverage: **225 / 4,450 public declarations documented; 4,225 open.**
+Headline docstrings installed this session: exists_morse_function_of_haar,
+exists_morse_extension, exists_compact_plateau (MorseLemma),
+exists_path_subdivision (VanKampen),
+exists_tubularNeighborhood_in_open_of_embedded_closedBall (Collar).
+
+Per-file open counts (top): SurgeryWindows 879, MayerVietoris 249,
+RiemannMapping 181, VanKampen 165, MorseLemma 157, Chains 153, Collar 137,
+CellAttachment 132, HandleAttachment 125, CircleProduct 118, Existence 117,
+HeightTranslating 106, Cousin 95, DiagonalQuotient 78, Handle 78; remainder
+~2,000 over 53 files.
+
+Pipeline (validated): curated name -> docstring map with escaped asterisks,
+inserted above the declaration by declmap span, build after each file.
+Full pass is a dedicated session (roughly 4,000 docstrings).

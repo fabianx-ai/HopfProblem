@@ -935,6 +935,8 @@ theorem LineBundleTransport.exists_interval_cutoff (a b : ℝ) :
     (ProperSpace.isCompact_closedBall (0 : ℝ) R).of_isClosed_subset (isClosed_tsupport χ)
       (hχU.trans Metric.ball_subset_closedBall)
 
+/-- A smooth function with a prescribed compact plateau exists on any smooth manifold:
+the tool for making perturbations constant off a compact set. -/
 theorem Smale.ManifoldMorse.exists_compact_plateau {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] (p : M) :
     ∃ (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (U L : Set M),
@@ -976,6 +978,8 @@ theorem Smale.ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAd
   simpa only [extChartAt_coe, Function.comp_apply, modelWithCornersSelf_coe, id_eq] using
     e.right_inv hyt
 
+/-- A smooth function prescribed on a closed subset of a smooth manifold extends to a
+Morse function on the whole manifold (Milnor, \*Morse Theory\* Section 1). -/
 theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
@@ -1016,6 +1020,9 @@ theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommG
     exact
       perturb_inChart_eventuallyEq φ hU hUs hφ hV hGV a (hLU hx) (hLV (Set.mem_image_of_mem e hx))
 
+/-- Every smooth function on a compact smooth manifold can be uniformly approximated by
+a Morse function; in particular a compact smooth manifold admits a Morse function
+(Milnor, \*Morse Theory\* Section 1). -/
 theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [MeasurableSpace E] [BorelSpace E]

@@ -700,6 +700,9 @@ theorem FundamentalGroupVanKampen.subpath_mem_mono {X : Type*} [TopologicalSpace
   intro t ht
   exact mem_of_subpath_mem p hab hp ⟨hac.trans ht.1, ht.2.trans hdb⟩
 
+/-- Every loop in a space covered by open sets through a common point is homotopic to a
+concatenation of loops each of which lies in a single member of the cover: the
+subdivision half of the Seifert-van Kampen theorem (Hatcher, Theorem 1.20). -/
 theorem FundamentalGroupVanKampen.exists_path_subdivision {X : Type*} [TopologicalSpace X]
     {ι : Type*} {U : ι → Set X} (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ)
     {x y : X} (p : Path x y) :
