@@ -555,3 +555,376 @@ theorem strict_sequence_of_recursive_presentations
     fun n => ⟨(sp n).shortExact, ⟨sp n⟩⟩⟩
 
 end CategoryTheory.InjectiveResolution
+
+namespace CategoryTheory.InjectiveResolution
+
+open CategoryTheory CategoryTheory.Limits
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/-- Exactness makes the differential induced out of the cokernel monic. Its next
+composite is zero by cancellation of the epic quotient, and the quotient comparison
+transports the next exact pair. This is the single-column induction in PD-L10. -/
+private theorem column_successor
+    {X J K L : C} (e : X ⟶ J) [Mono e] (d : J ⟶ K) (d' : K ⟶ L)
+    (w : e ≫ d = 0) (h : (ShortComplex.mk e d w).Exact)
+    (wd : d ≫ d' = 0) (hd : (ShortComplex.mk d d' wd).Exact) :
+    ∃ w' : cokernel.desc e d w ≫ d' = 0,
+      Mono (cokernel.desc e d w) ∧
+      (ShortComplex.mk (cokernel.desc e d w) d' w').Exact := by
+  have w' : cokernel.desc e d w ≫ d' = 0 := by
+    apply (cancel_epi (cokernel.π e)).1
+    rw [← Category.assoc, cokernel.π_desc, wd, comp_zero]
+  refine ⟨w', h.mono_cokernelDesc, ?_⟩
+  let φ : ShortComplex.mk d d' wd ⟶
+      ShortComplex.mk (cokernel.desc e d w) d' w' :=
+    ShortComplex.homMk (cokernel.π e) (𝟙 K) (𝟙 L) (by simp) (by simp)
+  let : Epi φ.τ₁ := (inferInstance : Epi (cokernel.π e))
+  let : IsIso φ.τ₂ := (inferInstance : IsIso (𝟙 K))
+  let : Mono φ.τ₃ := (inferInstance : Mono (𝟙 L))
+  exact (ShortComplex.exact_iff_of_epi_of_isIso_of_mono φ).1 hd
+
+/-- Evaluate the supplied strict sequence in its original degree; no complex is replaced. -/
+private abbrev evaluatedRow {A B D : CochainComplex C ℕ}
+    (j : A ⟶ B) (q : B ⟶ D) (w : j ≫ q = 0) (n : ℕ) :=
+  (ShortComplex.mk j q w).map (HomologicalComplex.eval C (ComplexShape.up ℕ) n)
+
+/-- The original cochain commutation laws make the three differentials a map of rows. -/
+private def rowDifferential {A B D : CochainComplex C ℕ}
+    (j : A ⟶ B) (q : B ⟶ D) (w : j ≫ q = 0) (n : ℕ) :
+    evaluatedRow j q w n ⟶ evaluatedRow j q w (n + 1) :=
+  ShortComplex.homMk (A.d n (n + 1)) (B.d n (n + 1)) (D.d n (n + 1))
+    (j.comm n (n + 1)).symm (q.comm n (n + 1)).symm
+
+/-- The given augmentation squares, evaluated in degree zero, form the initial row map. -/
+private def initialEmbedding
+    (S : ShortComplex C) (IA : InjectiveResolution S.X₁)
+    (IB : InjectiveResolution S.X₂) (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (w : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι) :
+    S ⟶ evaluatedRow j q w 0 :=
+  ShortComplex.homMk (IA.ι.f 0) (IB.ι.f 0) (IC.ι.f 0)
+    (by
+      change IA.ι.f 0 ≫ j.f 0 = S.f ≫ IB.ι.f 0
+      simpa using HomologicalComplex.congr_hom ha 0)
+    (by
+      change IB.ι.f 0 ≫ q.f 0 = S.g ≫ IC.ι.f 0
+      simpa using HomologicalComplex.congr_hom hb 0)
+
+/-- After precomposition with the first epic quotient, the induced row composite
+is the original zero row composite followed by the last quotient. Cancel that epic map. -/
+private theorem quotientRow_zero {T E : ShortComplex C} (e : T ⟶ E) :
+    cokernel.map e.τ₁ e.τ₂ T.f E.f e.comm₁₂ ≫
+      cokernel.map e.τ₂ e.τ₃ T.g E.g e.comm₂₃ = 0 := by
+  have ha : cokernel.π e.τ₁ ≫ cokernel.map e.τ₁ e.τ₂ T.f E.f e.comm₁₂ =
+      E.f ≫ cokernel.π e.τ₂ := cokernel.π_desc _ _ _
+  have hb : cokernel.π e.τ₂ ≫ cokernel.map e.τ₂ e.τ₃ T.g E.g e.comm₂₃ =
+      E.g ≫ cokernel.π e.τ₃ := cokernel.π_desc _ _ _
+  apply (cancel_epi (cokernel.π e.τ₁)).1
+  rw [← Category.assoc, ha, Category.assoc, hb, ← Category.assoc,
+    E.zero, zero_comp, comp_zero]
+
+/-- The successor row uses the three actual component cokernels and their induced arrows. -/
+private def quotientRow {T E : ShortComplex C} (e : T ⟶ E) : ShortComplex C :=
+  ShortComplex.mk (cokernel.map e.τ₁ e.τ₂ T.f E.f e.comm₁₂)
+    (cokernel.map e.τ₂ e.τ₃ T.g E.g e.comm₂₃) (quotientRow_zero e)
+
+/-- The three canonical quotient maps form a row map by their universal properties. -/
+private def quotientMap {T E : ShortComplex C} (e : T ⟶ E) : E ⟶ quotientRow e :=
+  ShortComplex.homMk (cokernel.π e.τ₁) (cokernel.π e.τ₂) (cokernel.π e.τ₃)
+    (cokernel.π_desc _ _ _) (cokernel.π_desc _ _ _)
+
+/-- Apply the snake lemma to the two short exact rows and their componentwise
+monic map. It gives middle exactness; the zero kernel of the right monomorphism
+gives the initial zero arrow and hence the successor monomorphism. The original
+last epimorphism and quotient square give the successor epimorphism. -/
+private theorem quotientRow_shortExact {T E : ShortComplex C}
+    (hT : T.ShortExact) (hE : E.ShortExact)
+    (e : T ⟶ E) [Mono e.τ₁] [Mono e.τ₂] [Mono e.τ₃] :
+    (quotientRow e).ShortExact := by
+  let r := quotientMap e
+  have w : e ≫ r = 0 := by
+    apply ShortComplex.hom_ext
+    · exact cokernel.condition e.τ₁
+    · exact cokernel.condition e.τ₂
+    · exact cokernel.condition e.τ₃
+  have hc : IsColimit (CokernelCofork.ofπ r w) := by
+    apply ShortComplex.isColimitOfIsColimitπ
+    · exact (isColimitMapCoconeCoforkEquiv' ShortComplex.π₁ w).symm
+        (cokernelIsCokernel e.τ₁)
+    · exact (isColimitMapCoconeCoforkEquiv' ShortComplex.π₂ w).symm
+        (cokernelIsCokernel e.τ₂)
+    · exact (isColimitMapCoconeCoforkEquiv' ShortComplex.π₃ w).symm
+        (cokernelIsCokernel e.τ₃)
+  let D : ShortComplex.SnakeInput C :=
+    { L₀ := kernel e, L₁ := T, L₂ := E, L₃ := quotientRow e
+      v₀₁ := kernel.ι e, v₁₂ := e, v₂₃ := r
+      w₀₂ := kernel.condition e, w₁₃ := w
+      h₀ := kernelIsKernel e, h₃ := hc
+      L₁_exact := hT.exact, epi_L₁_g := hT.epi_g
+      L₂_exact := hE.exact, mono_L₂_f := hE.mono_f }
+  let : Mono D.v₁₂.τ₃ := (inferInstance : Mono e.τ₃)
+  have hz : IsZero D.L₀.X₃ := KernelFork.IsLimit.isZero_of_mono D.h₀τ₃
+  have hzero : D.L₂'.f = 0 := hz.eq_of_src _ _
+  have hm : Mono (quotientRow e).f := D.L₂'_exact.mono_g hzero
+  let : Epi E.g := hE.epi_g
+  let : Epi (E.g ≫ (quotientMap e).τ₃) :=
+    (inferInstance : Epi (E.g ≫ cokernel.π e.τ₃))
+  have hep : Epi (quotientRow e).g := epi_of_epi_fac (quotientMap e).comm₂₃
+  exact { exact := D.L₃_exact, mono_f := hm, epi_g := hep }
+
+/-- Precompose each desired descended square with its epic cokernel quotient.
+The quotient restrictions reduce it to the original differential square; epic
+cancellation gives both strict row squares. -/
+private theorem descended_squares {T E F : ShortComplex C}
+    (e : T ⟶ E) (d : E ⟶ F) (w : e ≫ d = 0) :
+    (cokernel.desc e.τ₁ d.τ₁ (congrArg (fun f : T ⟶ F => f.τ₁) w)) ≫ F.f =
+      (quotientRow e).f ≫
+        (cokernel.desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w)) ∧
+    (cokernel.desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w)) ≫ F.g =
+      (quotientRow e).g ≫
+        (cokernel.desc e.τ₃ d.τ₃ (congrArg (fun f : T ⟶ F => f.τ₃) w)) := by
+  constructor
+  · have hq : cokernel.π e.τ₁ ≫ cokernel.map e.τ₁ e.τ₂ T.f E.f e.comm₁₂ =
+        E.f ≫ cokernel.π e.τ₂ := cokernel.π_desc _ _ _
+    apply (cancel_epi (cokernel.π e.τ₁)).1
+    change cokernel.π e.τ₁ ≫
+      (cokernel.desc e.τ₁ d.τ₁ (congrArg (fun f : T ⟶ F => f.τ₁) w) ≫ F.f) =
+      cokernel.π e.τ₁ ≫ (cokernel.map e.τ₁ e.τ₂ T.f E.f e.comm₁₂ ≫
+        cokernel.desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w))
+    rw [← Category.assoc,
+      cokernel.π_desc e.τ₁ d.τ₁ (congrArg (fun f : T ⟶ F => f.τ₁) w),
+      ← Category.assoc, hq, Category.assoc,
+      cokernel.π_desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w)]
+    exact d.comm₁₂
+  · have hq : cokernel.π e.τ₂ ≫ cokernel.map e.τ₂ e.τ₃ T.g E.g e.comm₂₃ =
+        E.g ≫ cokernel.π e.τ₃ := cokernel.π_desc _ _ _
+    apply (cancel_epi (cokernel.π e.τ₂)).1
+    change cokernel.π e.τ₂ ≫
+      (cokernel.desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w) ≫ F.g) =
+      cokernel.π e.τ₂ ≫ (cokernel.map e.τ₂ e.τ₃ T.g E.g e.comm₂₃ ≫
+        cokernel.desc e.τ₃ d.τ₃ (congrArg (fun f : T ⟶ F => f.τ₃) w))
+    rw [← Category.assoc,
+      cokernel.π_desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w),
+      ← Category.assoc, hq, Category.assoc,
+      cokernel.π_desc e.τ₃ d.τ₃ (congrArg (fun f : T ⟶ F => f.τ₃) w)]
+    exact d.comm₂₃
+
+/-- Bundle the three induced differentials using the two descended strict squares. -/
+private def descendedEmbedding {T E F : ShortComplex C}
+    (e : T ⟶ E) (d : E ⟶ F) (w : e ≫ d = 0) : quotientRow e ⟶ F :=
+  ShortComplex.homMk
+    (cokernel.desc e.τ₁ d.τ₁ (congrArg (fun f : T ⟶ F => f.τ₁) w))
+    (cokernel.desc e.τ₂ d.τ₂ (congrArg (fun f : T ⟶ F => f.τ₂) w))
+    (cokernel.desc e.τ₃ d.τ₃ (congrArg (fun f : T ⟶ F => f.τ₃) w))
+    (descended_squares e d w).1 (descended_squares e d w).2
+
+/-- At each fixed original degree retain the short exact row, monic embedding
+and the three exact pairs needed to take the next cokernels. -/
+private structure PresentationState (E : ℕ → ShortComplex C)
+    (d : ∀ n, E n ⟶ E (n + 1)) (n : ℕ) where
+  T : ShortComplex C
+  exactRow : T.ShortExact
+  e : T ⟶ E n
+  monoA : Mono e.τ₁
+  monoB : Mono e.τ₂
+  monoC : Mono e.τ₃
+  zero : e ≫ d n = 0
+  exactA : (ShortComplex.mk e.τ₁ (d n).τ₁
+    (congrArg (fun f : T ⟶ E (n + 1) => f.τ₁) zero)).Exact
+  exactB : (ShortComplex.mk e.τ₂ (d n).τ₂
+    (congrArg (fun f : T ⟶ E (n + 1) => f.τ₂) zero)).Exact
+  exactC : (ShortComplex.mk e.τ₃ (d n).τ₃
+    (congrArg (fun f : T ⟶ E (n + 1) => f.τ₃) zero)).Exact
+
+
+/-- The original augmentations kill the first differentials. Each supplied
+resolution identifies its augmented object with the kernel of that differential,
+so the three initial column pairs are exact. -/
+private theorem initial_exact
+    (S : ShortComplex C) (IA : InjectiveResolution S.X₁)
+    (IB : InjectiveResolution S.X₂) (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (w : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι) :
+    let a := initialEmbedding S IA IB IC j q w ha hb
+    let d := rowDifferential j q w 0
+    ∃ wz : a ≫ d = 0,
+      (ShortComplex.mk a.τ₁ d.τ₁
+        (congrArg (fun f : S ⟶ evaluatedRow j q w 1 => f.τ₁) wz)).Exact ∧
+      (ShortComplex.mk a.τ₂ d.τ₂
+        (congrArg (fun f : S ⟶ evaluatedRow j q w 1 => f.τ₂) wz)).Exact ∧
+      (ShortComplex.mk a.τ₃ d.τ₃
+        (congrArg (fun f : S ⟶ evaluatedRow j q w 1 => f.τ₃) wz)).Exact := by
+  have wz : initialEmbedding S IA IB IC j q w ha hb ≫ rowDifferential j q w 0 = 0 := by
+    apply ShortComplex.hom_ext
+    · exact IA.ι_f_zero_comp_complex_d
+    · exact IB.ι_f_zero_comp_complex_d
+    · exact IC.ι_f_zero_comp_complex_d
+  exact ⟨wz, ShortComplex.exact_of_f_is_kernel _ IA.isLimitKernelFork,
+    ShortComplex.exact_of_f_is_kernel _ IB.isLimitKernelFork,
+    ShortComplex.exact_of_f_is_kernel _ IC.isLimitKernelFork⟩
+
+/-- The original short exact row and augmentations give the initial presentation state. -/
+private def initialState
+    (S : ShortComplex C) (hS : S.ShortExact)
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (w : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι) :
+    PresentationState (evaluatedRow j q w) (rowDifferential j q w) 0 := by
+  let wz := Classical.choose (initial_exact S IA IB IC j q w ha hb)
+  have hA := (Classical.choose_spec (initial_exact S IA IB IC j q w ha hb)).1
+  have hB := (Classical.choose_spec (initial_exact S IA IB IC j q w ha hb)).2.1
+  have hC := (Classical.choose_spec (initial_exact S IA IB IC j q w ha hb)).2.2
+  exact { T := S, exactRow := hS, e := initialEmbedding S IA IB IC j q w ha hb
+          monoA := (inferInstance : Mono (IA.ι.f 0))
+          monoB := (inferInstance : Mono (IB.ι.f 0))
+          monoC := (inferInstance : Mono (IC.ι.f 0))
+          zero := wz, exactA := hA, exactB := hB, exactC := hC }
+
+/-- Take the canonical cokernel row and descend the original differential.
+The three column successor receipts supply monicity and exactness, while the
+snake receipt supplies the successor short exact row. -/
+private def nextState
+    (E : ℕ → ShortComplex C) (d : ∀ n, E n ⟶ E (n + 1))
+    (n : ℕ) (s : PresentationState E d n) (hE : (E n).ShortExact)
+    (wd : d n ≫ d (n + 1) = 0)
+    (hdA : (ShortComplex.mk (d n).τ₁ (d (n + 1)).τ₁
+      (congrArg (fun f : E n ⟶ E (n + 2) => f.τ₁) wd)).Exact)
+    (hdB : (ShortComplex.mk (d n).τ₂ (d (n + 1)).τ₂
+      (congrArg (fun f : E n ⟶ E (n + 2) => f.τ₂) wd)).Exact)
+    (hdC : (ShortComplex.mk (d n).τ₃ (d (n + 1)).τ₃
+      (congrArg (fun f : E n ⟶ E (n + 2) => f.τ₃) wd)).Exact) :
+    PresentationState E d (n + 1) := by
+  let : Mono s.e.τ₁ := s.monoA
+  let : Mono s.e.τ₂ := s.monoB
+  let : Mono s.e.τ₃ := s.monoC
+  let hAall := column_successor s.e.τ₁ (d n).τ₁ (d (n + 1)).τ₁
+    _ s.exactA _ hdA
+  let wA := Classical.choose hAall
+  have mA := (Classical.choose_spec hAall).1
+  have hA := (Classical.choose_spec hAall).2
+  let hBall := column_successor s.e.τ₂ (d n).τ₂ (d (n + 1)).τ₂
+    _ s.exactB _ hdB
+  let wB := Classical.choose hBall
+  have mB := (Classical.choose_spec hBall).1
+  have hB := (Classical.choose_spec hBall).2
+  let hCall := column_successor s.e.τ₃ (d n).τ₃ (d (n + 1)).τ₃
+    _ s.exactC _ hdC
+  let wC := Classical.choose hCall
+  have mC := (Classical.choose_spec hCall).1
+  have hC := (Classical.choose_spec hCall).2
+  have wz : descendedEmbedding s.e (d n) s.zero ≫ d (n + 1) = 0 := by
+    apply ShortComplex.hom_ext
+    · exact wA
+    · exact wB
+    · exact wC
+  exact { T := quotientRow s.e, exactRow := quotientRow_shortExact s.exactRow hE s.e
+          e := descendedEmbedding s.e (d n) s.zero
+          monoA := mA, monoB := mB, monoC := mC
+          zero := wz, exactA := hA, exactB := hB, exactC := hC }
+
+/-- The original three differential-square identities form a zero row composite. -/
+private theorem originalDZero {A B D : CochainComplex C ℕ}
+    (j : A ⟶ B) (q : B ⟶ D) (w : j ≫ q = 0) (n : ℕ) :
+    rowDifferential j q w n ≫ rowDifferential j q w (n + 1) = 0 := by
+  apply ShortComplex.hom_ext
+  · exact A.d_comp_d n (n + 1) (n + 2)
+  · exact B.d_comp_d n (n + 1) (n + 2)
+  · exact D.d_comp_d n (n + 1) (n + 2)
+
+
+/-- Iterate the presentation successor over natural-number degrees while keeping
+the original degree rows and differentials fixed. -/
+private def presentationTower
+    (E : ℕ → ShortComplex C) (d : ∀ n, E n ⟶ E (n + 1))
+    (initial : PresentationState E d 0)
+    (next : ∀ n, PresentationState E d n → PresentationState E d (n + 1)) :
+    ∀ n, PresentationState E d n
+  | 0 => initial
+  | n + 1 => next n (presentationTower E d initial next n)
+
+
+/-- Every supplied compatible triple of nonnegative injective resolutions has
+recursive short exact presentations. Start with its given augmentations, take
+actual cokernels, and descend the original differentials. Degreewise injectivity
+splits each original row; these splittings need not commute with differentials.
+The same witnesses retain all quotient universal properties, strict row squares
+and differential factorizations (PD-L10, PD7–PD8). -/
+public theorem exists_presentations_of_compatible_resolutions
+    (S : ShortComplex C) (hS : S.ShortExact)
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (w : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι)
+    (he : ∀ n, ((ShortComplex.mk j q w).map
+      (HomologicalComplex.eval C (ComplexShape.up ℕ) n)).ShortExact) :
+    let E := fun n => (ShortComplex.mk j q w).map
+      (HomologicalComplex.eval C (ComplexShape.up ℕ) n)
+    (∀ n, Nonempty (E n).Splitting) ∧
+    ∃ (T : ℕ → ShortComplex C) (h0 : T 0 = S)
+      (e : ∀ n, T n ⟶ E n) (r : ∀ n, E n ⟶ T (n + 1)),
+      (∀ n, (T n).ShortExact) ∧
+      (e 0).τ₁ = eqToHom (congrArg (fun U : ShortComplex C => U.X₁) h0) ≫ IA.ι.f 0 ∧
+      (e 0).τ₂ = eqToHom (congrArg (fun U : ShortComplex C => U.X₂) h0) ≫ IB.ι.f 0 ∧
+      (e 0).τ₃ = eqToHom (congrArg (fun U : ShortComplex C => U.X₃) h0) ≫ IC.ι.f 0 ∧
+      (∀ n, ∃ wA : (e n).τ₁ ≫ (r n).τ₁ = 0,
+        (ShortComplex.mk (e n).τ₁ (r n).τ₁ wA).ShortExact ∧
+        Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₁ wA))) ∧
+      (∀ n, ∃ wB : (e n).τ₂ ≫ (r n).τ₂ = 0,
+        (ShortComplex.mk (e n).τ₂ (r n).τ₂ wB).ShortExact ∧
+        Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₂ wB))) ∧
+      (∀ n, ∃ wC : (e n).τ₃ ≫ (r n).τ₃ = 0,
+        (ShortComplex.mk (e n).τ₃ (r n).τ₃ wC).ShortExact ∧
+        Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₃ wC))) ∧
+      (∀ n, (r n).τ₁ ≫ (e (n + 1)).τ₁ = IA.cocomplex.d n (n + 1)) ∧
+      (∀ n, (r n).τ₂ ≫ (e (n + 1)).τ₂ = IB.cocomplex.d n (n + 1)) ∧
+      (∀ n, (r n).τ₃ ≫ (e (n + 1)).τ₃ = IC.cocomplex.d n (n + 1))
+ := by
+  let E := evaluatedRow j q w
+  let d := rowDifferential j q w
+  let next (n : ℕ) (s : PresentationState E d n) :=
+    nextState E d n s (he n) (originalDZero j q w n)
+      (IA.exact_succ n) (IB.exact_succ n) (IC.exact_succ n)
+  let t := presentationTower E d (initialState S hS IA IB IC j q w ha hb) next
+  refine ⟨?_, (fun n => (t n).T), rfl, (fun n => (t n).e),
+    (fun n => quotientMap (t n).e), (fun n => (t n).exactRow), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro n
+    let : Injective (E n).X₁ := IA.injective n
+    exact ⟨(he n).splittingOfInjective⟩
+  · change IA.ι.f 0 = (𝟙 _) ≫ IA.ι.f 0
+    exact (Category.id_comp _).symm
+  · change IB.ι.f 0 = (𝟙 _) ≫ IB.ι.f 0
+    exact (Category.id_comp _).symm
+  · change IC.ι.f 0 = (𝟙 _) ≫ IC.ι.f 0
+    exact (Category.id_comp _).symm
+  · intro n
+    let : Mono (t n).e.τ₁ := (t n).monoA
+    exact ⟨cokernel.condition _,
+      { exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _)
+        mono_f := inferInstance, epi_g := (inferInstance : Epi (cokernel.π (t n).e.τ₁)) }, ⟨cokernelIsCokernel _⟩⟩
+  · intro n
+    let : Mono (t n).e.τ₂ := (t n).monoB
+    exact ⟨cokernel.condition _,
+      { exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _)
+        mono_f := inferInstance, epi_g := (inferInstance : Epi (cokernel.π (t n).e.τ₂)) }, ⟨cokernelIsCokernel _⟩⟩
+  · intro n
+    let : Mono (t n).e.τ₃ := (t n).monoC
+    exact ⟨cokernel.condition _,
+      { exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _)
+        mono_f := inferInstance, epi_g := (inferInstance : Epi (cokernel.π (t n).e.τ₃)) }, ⟨cokernelIsCokernel _⟩⟩
+  · intro n
+    exact cokernel.π_desc _ _ _
+  · intro n
+    exact cokernel.π_desc _ _ _
+  · intro n
+    exact cokernel.π_desc _ _ _
+
+end CategoryTheory.InjectiveResolution
