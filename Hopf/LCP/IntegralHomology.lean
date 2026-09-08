@@ -63,6 +63,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.BoundaryTopology
+import Lib.Topology.Covering.DiagonalQuotient
 import S6Shortcuts
 
 set_option maxSynthPendingDepth 3
@@ -25891,7 +25892,6 @@ theorem ThreefoldHomology.FourthDegree.homologyFour_subsingleton :
     Subsingleton (SingularMayerVietoris.SingularHomology SpecialPeriods.Threefold.Space 4) :=
   ThreefoldHomology.ThirdDegree.homologyFour_subsingleton_iff_referenceFibreCoefficient_ne_zero.mpr
     ThreefoldHomology.ThirdDegree.referenceFibreCoefficient_isUnit.ne_zero
-
 
 end Mathoverflow1973
 
