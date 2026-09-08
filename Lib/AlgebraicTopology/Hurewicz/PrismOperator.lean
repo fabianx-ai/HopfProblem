@@ -4473,4 +4473,147 @@ def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace
   right_inv
     c := congrArg Multiplicative.ofAdd (hurewiczMap_hurewiczInverse x (Multiplicative.toAdd c))
 
+
+def ThirdHurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+    (H : C((unitInterval) × A, X)) :
+    ContinuousMap.Homotopy (SecondHurewicz.SimplyConnected.timeSlice H 0)
+      (SecondHurewicz.SimplyConnected.timeSlice H 1)
+    where
+  toContinuousMap := H
+  map_zero_left _ := rfl
+  map_one_left _ := rfl
+
+theorem ThirdHurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
+    [TopologicalSpace B] [TopologicalSpace X] {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁)
+    (G : f₁.Homotopy f₂) (f : C(B, A)) :
+    (F.trans G).toContinuousMap.comp ((ContinuousMap.id (unitInterval)).prodMap f) =
+      ((F.compContinuousMap f).trans (G.compContinuousMap f)).toContinuousMap := by
+  ext z
+  change (F.trans G) (z.1, f z.2) = ((F.compContinuousMap f).trans (G.compContinuousMap f)) z
+  simp only [ContinuousMap.Homotopy.trans_apply]
+  split_ifs <;> rfl
+
+theorem ThirdHurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+    {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (x : X)
+    (hF : F.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x)
+    (hG : G.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x) :
+    (F.trans G).toContinuousMap = ContinuousMap.const ((unitInterval) × A) x := by
+  ext z
+  change (F.trans G) z = x
+  rw [ContinuousMap.Homotopy.trans_apply]
+  split_ifs
+  · exact ContinuousMap.congr_fun hF _
+  · exact ContinuousMap.congr_fun hG _
+
+theorem ThirdHurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+    {f₀ f₁ f₂ g₀ g₁ g₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (F' : g₀.Homotopy g₁)
+    (G' : g₁.Homotopy g₂) (hF : F.toContinuousMap = F'.toContinuousMap)
+    (hG : G.toContinuousMap = G'.toContinuousMap) :
+    (F.trans G).toContinuousMap = (F'.trans G').toContinuousMap := by
+  ext z
+  change (F.trans G) z = (F'.trans G') z
+  simp only [ContinuousMap.Homotopy.trans_apply]
+  split_ifs
+  · exact ContinuousMap.congr_fun hF _
+  · exact ContinuousMap.congr_fun hG _
+
+def ThirdHurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (h₀ : ∀ smp s, H smp (0, s) = smp s) (smp : SingularChains.SingularSimplex X n) :
+    smp.Homotopy (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) :=
+  (cylinderHomotopy (H smp)).cast (by ext s; exact h₀ smp s) rfl
+
+def ThirdHurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
+    (smp : SingularChains.SingularSimplex X n) : C((unitInterval) × SingularChains.Simplex n, X) :=
+  ((simplexFamilyHomotopy H hH₀ smp).trans
+      (simplexFamilyHomotopy G hG₀
+        (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1))).toContinuousMap
+
+@[simp]
+theorem ThirdHurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
+    (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
+    composeSimplexHomotopies H G hH₀ hG₀ smp (0, s) = smp s :=
+  ContinuousMap.Homotopy.apply_zero _ s
+
+@[simp]
+theorem ThirdHurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
+    (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
+    composeSimplexHomotopies H G hH₀ hG₀ smp (1, s) =
+      G (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) (1, s) :=
+  ContinuousMap.Homotopy.apply_one _ s
+
+@[simp]
+theorem ThirdHurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
+    {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
+    (smp : SingularChains.SingularSimplex X n) :
+    SecondHurewicz.SimplyConnected.timeSlice (composeSimplexHomotopies H G hH₀ hG₀ smp) 1 =
+      SecondHurewicz.SimplyConnected.timeSlice
+        (G (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1)) 1 := by
+  ext s
+  exact composeSimplexHomotopies_one H G hH₀ hG₀ smp s
+
+theorem ThirdHurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (H' G' :
+      SingularChains.SingularSimplex X (n + 1) →
+        C((unitInterval) × SingularChains.Simplex (n + 1), X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
+    (hH'₀ : ∀ smp s, H' smp (0, s) = smp s) (hG'₀ : ∀ smp s, G' smp (0, s) = smp s)
+    (hH : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (hG : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n G G') :
+    SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n
+      (composeSimplexHomotopies H G hH₀ hG₀) (composeSimplexHomotopies H' G' hH'₀ hG'₀) := by
+  intro smp i
+  unfold composeSimplexHomotopies
+  rw [homotopyTrans_compContinuousMap]
+  apply homotopyTrans_congr
+  · change
+      (H' smp).comp ((ContinuousMap.id (unitInterval)).prodMap (SingularChains.simplexFace n i)) =
+        H (smp.comp (SingularChains.simplexFace n i))
+    exact hH smp i
+  · change
+      (G' (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1)).comp
+          ((ContinuousMap.id (unitInterval)).prodMap (SingularChains.simplexFace n i)) =
+        G
+          (SecondHurewicz.SimplyConnected.timeSlice (H (smp.comp (SingularChains.simplexFace n i)))
+            1)
+    rw [hG (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1) i,
+      SecondHurewicz.SimplyConnected.timeSlice_face hH smp i 1]
+
+theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s) (x : X)
+    (hH :
+      H (ContinuousMap.const (SingularChains.Simplex n) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
+    (hG :
+      G (ContinuousMap.const (SingularChains.Simplex n) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x) :
+    composeSimplexHomotopies H G hH₀ hG₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x := by
+  have h₁ :
+    SecondHurewicz.SimplyConnected.timeSlice (H (ContinuousMap.const (SingularChains.Simplex n) x))
+        1 =
+      ContinuousMap.const (SingularChains.Simplex n) x := by
+    rw [hH]
+    rfl
+  unfold composeSimplexHomotopies
+  apply homotopyTrans_const
+  · exact hH
+  · change
+      G
+          (SecondHurewicz.SimplyConnected.timeSlice
+            (H (ContinuousMap.const (SingularChains.Simplex n) x)) 1) =
+        _
+    rw [h₁]
+    exact hG
+
 end Mathoverflow1973
