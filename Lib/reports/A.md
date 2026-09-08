@@ -369,3 +369,39 @@ resume configs (cfg files in ~/s6-notes/hopf-lib-a/).**
   `SpecialPeriods.triangleGeometricAction` (project) and
   `BranchedQuotientAtlas.contDiffAt_transition_of_lift`
   (Hopf/LCP/Specialization.lean 14450, outside all lanes' ranges).
+
+---
+
+# Lane I, session 2 addendum (HomologyCover landed; Wang blocked)
+
+## Landed this session
+
+- `Lib/Topology/MappingTorus/HomologyCover.lean` (58, d92f3cf)
+- `Lib/AlgebraicTopology/SingularHomology/PathClass.lean` (58, 5e9a74e — pull-forward)
+- `Lib/AlgebraicTopology/SingularHomology/CrossInsert.lean` (3, 5e9a74e — pull-forward)
+
+## Wang (`MappingTorus/Wang.lean`, IH 7576–8688, 105 decls): BLOCKED
+
+Closure requires, besides landed material, the cross-product / circle-path cluster:
+- `PeriodTorusHigherHomology.crossProduct*` + `chainBilinear*`/`homologyDesc*`/
+  `homologyLinearMap*` in Hopf/Hurewicz.lean (~106 decls, dense `attribute
+  [local instance] integerTensorModule in` runs), and
+- `PeriodTorusHigherHomology.positiveCircleCross`, `CirclePaths.*`,
+  `twoChainSmallCycle*`, `connectingHomomorphism_twoChain`,
+  `crossProductEdge_path_boundary` in Hopf/LCP/CuspFilling.lean.
+
+First extraction attempt ended in a proof-script rewrite loop (rejection test 5).
+This cluster needs its own declaration-level Stage-4 cut (proposed target
+`Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean`) before Wang can move.
+The four `LinearMap.map_smul` proof sites that failed under the local
+`integerLinearMapModule` instance are the seam to re-derive first.
+
+## Tooling
+
+- `~/s6-notes/hopf-lib-a/dag.py` + `dag_gen.py` → `DAG.md`: computed import DAG
+  (dotted-name references over 721fc82 bytes, rename-mapped, family over-
+  approximation). Every future unit's import list is now precomputed.
+- extract.py still mangles one-line `attribute [local instance] X in` in two
+  ways (head stripped + indented). Post-extract normalizer used:
+  `re.sub(r'^\s*(?:attribute \[local instance\] )?((?:\w+\.)+integer(?:Tensor|LinearMap)Module) in\s*$', r'attribute [local instance] \1 in', ...)`.
+  Fix the hoister before the next unit.
