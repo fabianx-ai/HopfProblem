@@ -7230,3 +7230,9 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_T_obj
 #check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
+
+-- M00-D: injective effacement and universality of the same derived source.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal

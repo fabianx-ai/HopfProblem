@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 public import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Basic
+public import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 public import Lib.CategoryTheory.Abelian.RightDerived
 public import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 /-!
@@ -57,5 +58,25 @@ morphism, retaining its computation by every compatible resolution choice
 theorem ofRightDerived_δ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (ofRightDerived F).δ hS n = F.rightDerivedConnecting hS n := rfl
+
+/-- Positive derived degrees are effaceable: embed each object into its chosen
+injective object. The same derived degree of that target is zero, so the
+induced map is zero. This is the generic injective-effacement argument of
+M00-D (TEXTBOOK 1606–1607, before “Thus both”). -/
+theorem ofRightDerived_effaceable (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
+    (ofRightDerived F).Effaceable := by
+  intro n hn
+  rw [← Nat.sub_add_cancel hn]
+  intro A
+  refine ⟨Injective.under A, Injective.ι A, inferInstance, ?_⟩
+  exact (F.isZero_rightDerived_obj_injective_succ (n-1) (Injective.under A)).eq_of_tgt _ _
+
+/-- The same derived delta functor is universal as a source: apply the existing
+effaceability-implies-universality theorem to its injective effacements.
+This is M00-D's oriented CD05L consequence, without any sheaf or comparison
+assumptions and without a new universality proof. -/
+theorem ofRightDerived_isUniversal (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
+    (ofRightDerived F).IsUniversal :=
+  (ofRightDerived_effaceable F).isUniversal
 
 end CategoryTheory.CohomologicalDeltaFunctor
