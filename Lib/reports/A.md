@@ -405,3 +405,39 @@ The four `LinearMap.map_smul` proof sites that failed under the local
   ways (head stripped + indented). Post-extract normalizer used:
   `re.sub(r'^\s*(?:attribute \[local instance\] )?((?:\w+\.)+integer(?:Tensor|LinearMap)Module) in\s*$', r'attribute [local instance] \1 in', ...)`.
   Fix the hoister before the next unit.
+
+---
+
+# Lane E1 scoping (session 3; no lane-E1 commit landed)
+
+E1 is the largest lane: ~700 declarations over 22 families (census in
+~/s6-notes/hopf-lib-a/, cfgs cfg-tc/cfg-lcyl created). Dependency findings
+from the DAG closure scans (dag.py with HOPI mapping):
+
+- `Degree.FlowTimeChange` (55) is mid-stack: its closure needs
+  FlowSuspension native cylinders, FlowCancellation levelBasin,
+  LocalFunctionReplacement, and MorseCancel band normalization (23 refs).
+- `Degree.FlowSuspension` (91) is also mid-stack: 29 Hopf refs incl.
+  MorseCancel.Model and the cubic-cylinder cluster.
+- The true base layer is the **cubic model cluster**: MorseCancel.Model +
+  cubic descent/flow-cylinder + AxisCoordinates + Regular/Signed height
+  coordinates + Smale.PartialChart — closure of 197 declarations.
+
+**Proposed E1 unit order (resume here):**
+1. `Morse/Cubic.lean` (+`CubicFlow.lean`) — the 197-decl cluster (one
+   baseline commit; the plan's finer file split should follow the
+   declaration cut, not precede it)
+2. `Flow/LevelCylinder.lean` — FlowSuspension (91) [draft exists]
+3. `Morse/Cancellation-support` — FlowCancellation (71) +
+   LocalFunctionReplacement (14)
+4. `Flow/TimeChange.lean` — FlowTimeChange (55) [draft exists]
+5. `Flow/PhaseChart.lean` — TransverseGerms (32); `FieldChartGluing.lean` (13)
+6. `Morse/Rearrangement.lean` — MorseRearrangement (74) +
+   SupportedDiffeomorph (19) + PartialChart (2)
+7. `Morse/Cancellation.lean` — MorseCancel remainder (~124) + AdaptedWindows (13)
+8. Splits for IndexOrdering / SuperfluousMinima / Birth / Duality follow the
+   landed declaration cut.
+
+Drafts (red, unlanded) preserved under ~/s6-notes/hopf-lib-a/drafts/.
+Axiom probes pending: exists_morse_rearrangement_of_no_connection,
+cancel_of_transverse_level_isotopy, exists_excellent_indexed_morse_birth.
