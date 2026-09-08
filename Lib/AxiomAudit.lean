@@ -7377,3 +7377,9 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_comp_inv
 #check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
+
+-- Both independently source-normalized Čech/native Ext composite identities.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_comp_extToCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_comp_extToCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt

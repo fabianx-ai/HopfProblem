@@ -65,4 +65,53 @@ theorem extToCechCohomology_app_zero :
   exact (ofExt_isUniversal ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
       (AddCommGrpCat.of (ULift.{u} ℤ)))).extend_app_zero (cechCohomologyDeltaFunctor X) ((TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫ (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv)
 
+set_option backward.isDefEq.respectTransparency false in
+/-- The Čech-to-Ext morphism followed by the fixed Ext-to-Čech morphism is the
+identity delta morphism. In degree zero the path is χ, ε inverse, ε, χ inverse,
+so the two inverse cancellations give the identity on the whole Čech degree-zero
+functor. Uniqueness from the Čech source then gives the whole-Hom identity
+(textbook lines 1850–1858, 1860–1862), including every coefficient and connecting
+component. This argument does not assume the reverse composite identity. -/
+theorem cechCohomologyToExt_comp_extToCechCohomology :
+    Hom.comp (cechCohomologyToExt X) (extToCechCohomology X) = Hom.id (cechCohomologyDeltaFunctor X) := by
+  apply (cechCohomologyDeltaFunctor_effaceable X).isUniversal.hom_ext
+  calc
+    (Hom.comp (cechCohomologyToExt X) (extToCechCohomology X)).app 0 =
+        ((cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+          (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).inv) ≫
+        ((TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫
+          (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv) := by
+      rw [Hom.comp_app, cechCohomologyToExt_app_zero, extToCechCohomology_app_zero]
+    _ = 𝟙 ((cechCohomologyDeltaFunctor X).T 0).obj := by
+      simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id]
+    _ = (Hom.id (cechCohomologyDeltaFunctor X)).app 0 :=
+      (Hom.id_app (cechCohomologyDeltaFunctor X) 0).symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The fixed Ext-to-Čech morphism followed by the Čech-to-Ext morphism is the
+identity on the native Ext delta functor at the constant integer sheaf. Its whole
+degree-zero path is ε, χ inverse, χ, ε inverse, hence the identity after inverse
+cancellation. Independently, uniqueness from the native Ext source proves this
+whole-Hom identity (textbook lines 1850–1856, 1858–1862). Together the two identities
+make the original morphisms inverse, without replacing their normalization or models. -/
+theorem extToCechCohomology_comp_cechCohomologyToExt :
+    Hom.comp (extToCechCohomology X) (cechCohomologyToExt X) = Hom.id (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ)))) := by
+  apply (ofExt_isUniversal ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+    (AddCommGrpCat.of (ULift.{u} ℤ)))).hom_ext
+  calc
+    (Hom.comp (extToCechCohomology X) (cechCohomologyToExt X)).app 0 =
+        ((TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫
+          (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv) ≫
+        ((cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+          (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).inv) := by
+      rw [Hom.comp_app, extToCechCohomology_app_zero, cechCohomologyToExt_app_zero]
+    _ = 𝟙 ((ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ)))).T 0).obj := by
+      simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id, ofExt_T_obj]
+    _ = (Hom.id (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ))))).app 0 :=
+      (Hom.id_app (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ)))) 0).symm
+
 end TopologicalSpace.OpenCover.SetOpenCover
