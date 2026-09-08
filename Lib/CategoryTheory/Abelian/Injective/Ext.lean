@@ -688,3 +688,24 @@ theorem extFunctorObjZeroIsoCoyoneda_eq (P : C) :
   rfl
 
 end CategoryTheory.Abelian
+
+namespace CategoryTheory.Abelian
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
+
+/-- The native Ext boundary is the right-derived Hom boundary conjugated by the
+same canonical Ext-to-right-derived comparison in consecutive degrees. This is
+the defining composition in the textbook positive connecting-map construction
+(M04, C29b): on a compatible resolution the lift satisfies `j(a) = db`, with no
+additional sign. The equation retains that fixed comparison for both forward
+and inverse transport. -/
+theorem extConnecting_eq_rightDerived (P : C) {S : ShortComplex C}
+    (hS : S.ShortExact) (n : ℕ) :
+    extConnecting P hS n =
+      (extFunctorObjIsoRightDerived P n).hom.app S.X₃ ≫
+        (preadditiveCoyoneda.obj (op P)).rightDerivedConnecting hS n ≫
+        (extFunctorObjIsoRightDerived P (n + 1)).inv.app S.X₁ := by
+  unfold extConnecting
+  rfl
+
+end CategoryTheory.Abelian

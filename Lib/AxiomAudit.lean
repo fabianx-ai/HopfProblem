@@ -7383,3 +7383,7 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_comp_extToCechCohomology
 #check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt
+
+-- The fixed native Ext boundary's defining right-derived conjugation.
+#check CategoryTheory.Abelian.extConnecting_eq_rightDerived
+#print axioms CategoryTheory.Abelian.extConnecting_eq_rightDerived
