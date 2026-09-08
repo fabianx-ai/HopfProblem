@@ -8,6 +8,32 @@ import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.Collar
+/-!
+# Morse surgery windows and the chart-level cancellation toolbox
+
+The data structure for a Morse surgery: a `Smale.ManifoldMorse.MorseSurgeryData`
+records the two critical points to cancel, the separating and attaching levels,
+the chart in which the cancellation is performed, and the compact support of the
+modifying field. A `Smale.ManifoldMorse.SurgeryWindows` is the finitely many
+windows, pairwise disjoint in level, together with the adapted windows on which
+the cancellation acts (Milnor, *Lectures on the h-cobordism theorem*, §3-4;
+Milnor, *Morse Theory* §3).
+
+## Outline
+
+1. Coordinate primitives: hemispheres, doubled disks, disk framings, sphere
+   coordinates and their linear-isometry parametrisation.
+2. Perturbation machinery: chart map perturbations with compact support,
+   transversality germs, supported and fiberwise diffeomorphisms.
+3. The surgery window structures and their small-perturbation stability.
+4. Flow-level consequences: suspension fields of regular levels, the native
+   flow cylinders, and the `NoExotic` nonexistence statements.
+5. Collar heights and regular-level transport.
+
+Every declaration is a byte-verbatim pure move from the project's
+`Hopf/DifferentialTopology.lean` (see `Lib/reports/A.md` for provenance).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

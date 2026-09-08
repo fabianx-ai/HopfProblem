@@ -598,3 +598,16 @@ Thm 1.20's machinery is now in `Lib`.
   (`RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero` was
   lane H; B's probes are covered by the landed VanKampen family) and
   per-declaration docstrings.
+
+## SurgeryWindows rename analysis (D2 leftover, session 4)
+
+The lane's namespaces (`Smale.ManifoldMorse.MorseSurgeryData`,
+`Smale.ManifoldMorse.SurgeryWindows`, `Smale.Hemisphere.*`, `Smale.DiskDouble.*`,
+`NoExotic.*`, ...) keep their names this lane, consistent with the D1/D2
+precedent (HandleRetraction, Collar, RegularLevel all kept `Smale.*`).
+`Smale.` is a project-wide qualifier, not a theory name; the Mathlib-shaped
+rename (fold into `ManifoldMorse.*` / drop the person-name prefix file-set-wide)
+is a single mechanical pass over all D1/D2 files at once and belongs with the
+de-shim pass — renaming this file alone would split the family's namespace
+across the tree. Module docstring installed with the Milnor citations
+(h-cobordism §3-4; Morse Theory §3) per the owner's correction.
