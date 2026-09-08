@@ -97,9 +97,11 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-- The standard singular `n`-simplex: continuous maps from the model simplex to a space (Hatcher, Algebraic Topology, Section 2.1). -/
 abbrev SingularChains.Simplex (n : ℕ) :=
   stdSimplex ℝ (Fin (n + 1))
 
+/-- The `i`-th face inclusion of the model simplex: the affine embedding omitting vertex `i` (Hatcher, Algebraic Topology, Section 2.1). -/
 def SingularChains.simplexFace (n : ℕ) (i : Fin (n + 2)) : C(Simplex n, Simplex (n + 1)) :=
   ⟨stdSimplex.map (SimplexCategory.δ i).toOrderHom,
     stdSimplex.continuous_map (SimplexCategory.δ i).toOrderHom⟩
@@ -108,6 +110,7 @@ theorem SingularChains.simplexFace_apply (n : ℕ) (i : Fin (n + 2)) (s : Simple
     simplexFace n i s = stdSimplex.map i.succAbove s :=
   rfl
 
+/-- The `i`-th barycentric coordinate of the model simplex, as a continuous map into the unit interval. -/
 def SingularChains.simplexCoordinate (n : ℕ) (i : Fin (n + 1)) : C(Simplex n, unitInterval)
     where
   toFun s := ⟨s i, stdSimplex.zero_le s i, stdSimplex.le_one s i⟩
@@ -174,6 +177,7 @@ theorem SingularChains.simplexFace_zero_one (s : Simplex 0) :
   rw [simplexZero_eq_vertex s, simplexFace_apply, stdSimplex.map_vertex]
   rfl
 
+/-- The singular 1-simplex of a path: the affine parametrisation of `Path x y` as a simplex, the bridge between path theory and singular chains. -/
 def SingularChains.pathSimplex {X : Type*} [TopologicalSpace X] {x y : X} (p : Path x y) :
     C(Simplex 1, X) :=
   p.toContinuousMap.comp
@@ -209,6 +213,7 @@ theorem SingularChains.pathSimplex_face_one {X : Type*} [TopologicalSpace X] {x 
   change pathSimplex p (simplexFace 0 1 s) = x
   rw [simplexFace_zero_one, pathSimplex_vertex_zero]
 
+/-- The path underlying a singular 1-simplex: the inverse bridge from singular chains to path theory. -/
 def SingularChains.simplexPath {X : Type*} [TopologicalSpace X] (σ : C(Simplex 1, X)) :
     Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 2))) (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 2)))
     where
@@ -301,13 +306,16 @@ theorem SingularChains.concatSimplex_face_two {X : Type*} [TopologicalSpace X] {
   rw [show 2 * (s 1 / 2) = s 1 by ring]
   exact Path.extend_apply p (simplexCoordinate 1 1 s).property
 
+/-- The singular chain complex of a space: the chain complex with `n`-chains the free abelian group on singular `n`-simplices and the alternating boundary operator (Hatcher, Algebraic Topology, Section 2.1). -/
 abbrev SingularChains.singularComplex (X : Type) [TopologicalSpace X] :
     ChainComplex (ModuleCat ℤ) ℕ :=
   (TopCat.toSSet.obj (TopCat.of X)).chainComplex (ModuleCat.of ℤ ℤ)
 
+/-- The group of singular `n`-chains of a space: elements of the degree-`n` group of the singular chain complex, finite `Z`-combinations of singular `n`-simplices. -/
 abbrev SingularChains.Chains (X : Type) [TopologicalSpace X] (n : ℕ) :=
   (singularComplex X).X n
 
+/-- The first singular homology `H_1(X)` of a space, as the degree-1 homology of the singular chain complex (Hatcher, Algebraic Topology, Section 2.1). -/
 abbrev SingularChains.SingularH1 (X : Type) [TopologicalSpace X] :=
   (singularComplex X).homology 1
 
@@ -797,6 +805,7 @@ abbrev SingularChains.inducedHomology {X Y : Type} [TopologicalSpace X] [Topolog
     (f : C(X, Y)) : SingularH1 X →ₗ[ℤ] SingularH1 Y :=
   (HomologicalComplex.homologyMap (singularChainMap f) 1).hom
 
+/-- The induced chain map sends each simplex to its composition with `f` (covariance of the singular chain construction). -/
 @[simp]
 theorem SingularChains.inducedChain_simplex {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (n : ℕ) (σ : SingularSimplex X n) :
@@ -808,12 +817,14 @@ theorem SingularChains.inducedChain_simplex {X Y : Type} [TopologicalSpace X] [T
   change inducedChain f n (simplexChain X n σ) = simplexChain Y n (f.comp σ) at he
   exact he
 
+/-- The induced chain map commutes with the boundary operator (naturality of the singular chain complex in the space). -/
 theorem SingularChains.inducedChain_boundary {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (i j : ℕ) (c : Chains X i) :
     inducedChain f j (((singularComplex X).d i j).hom c) =
       ((singularComplex Y).d i j).hom (inducedChain f i c) :=
   congrArg (fun g : Chains X i ⟶ Chains Y j => g.hom c) ((singularChainMap f).comm i j).symm
 
+/-- The chain map induced by the identity is the identity (functoriality). -/
 @[simp]
 theorem SingularChains.inducedChain_id {X : Type} [TopologicalSpace X] (n : ℕ) :
     inducedChain (ContinuousMap.id X) n = LinearMap.id := by
@@ -822,6 +833,7 @@ theorem SingularChains.inducedChain_id {X : Type} [TopologicalSpace X] (n : ℕ)
   simp only [inducedChain_simplex, LinearMap.id_apply]
   rfl
 
+/-- The chain map induced by a composition is the composition of the induced chain maps (functoriality of singular chains). -/
 theorem SingularChains.inducedChain_comp {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) (n : ℕ) :
     inducedChain (g.comp f) n = (inducedChain g n).comp (inducedChain f n) := by
@@ -830,6 +842,7 @@ theorem SingularChains.inducedChain_comp {X Y Z : Type} [TopologicalSpace X] [To
   simp only [LinearMap.comp_apply, inducedChain_simplex]
   rfl
 
+/-- The homology map induced by the identity is the identity (functoriality on homology). -/
 @[simp]
 theorem SingularChains.inducedHomology_id {X : Type} [TopologicalSpace X] :
     inducedHomology (ContinuousMap.id X) = LinearMap.id := by
@@ -838,6 +851,7 @@ theorem SingularChains.inducedHomology_id {X : Type} [TopologicalSpace X] :
       (TopCat.of X)
   exact congrArg ModuleCat.Hom.hom h
 
+/-- The homology map induced by a composition is the composition of the induced homology maps (singular homology is a functor). -/
 theorem SingularChains.inducedHomology_comp {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) :
     inducedHomology (g.comp f) = (inducedHomology g).comp (inducedHomology f) := by

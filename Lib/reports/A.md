@@ -641,3 +641,10 @@ localValue, compatibility, pushout maps, pushoutEquiv). Running total: 235 /
 MayerVietoris.lean: 10 headline docstrings (small chains, smallComplex,
 liftToSmall, chainSequence shortExact, subdivision + boundary + homotopy,
 exact_at_ambient). Running total: 245 / 4,450 documented.
+
+## Docstring progress (session 4, batch 4)
+
+Chains.lean: 11 headline docstrings (simplex primitives, path-simplex bridges,
+induced chain/homology maps and functoriality). Running total: 256 / 4,450.
+Chains.lean follow-up: the three core abbreviations (singularComplex, Chains,
+SingularH1) documented. Running total: 259 / 4,450.
