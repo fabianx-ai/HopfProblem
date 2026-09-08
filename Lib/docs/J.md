@@ -1,7 +1,8 @@
 # Lane J — textbook, decomposition, placement, and typed ledger
 
 **Homology of tori, the Pontryagin product, and exterior-power coordinates** (Hatcher,
-*Algebraic Topology*: Example 2.48 adjacent, Corollary 3.28, §3.C), generalized from the
+*Algebraic Topology*: Example 2.48 adjacent; §3.B Künneth computations; Example 3.16 for the
+exterior-algebra form; §3.C Exercise 11 for the Pontryagin form), generalized from the
 rank-4-pinned formalization (`Lattice := Fin 4 → ℤ`) to arbitrary rank.
 
 Contents:
@@ -19,7 +20,7 @@ Contents:
 
 ## 1. The theorems
 
-**Theorem A (homology of the torus; Hatcher Cor. 3.28, homology form).**
+**Theorem A (homology of the torus; Hatcher §3.B and Example 3.16, homology form).**
 Let $T^r = (S^1)^r$ be the product $r$-torus. Then $H_n(T^r;\mathbb{Z})$ is free abelian of rank
 $\binom{r}{n}$, and the Pontryagin (exterior) map
 $$\wedge^n H_1(T^r;\mathbb{Z}) \longrightarrow H_n(T^r;\mathbb{Z}), \qquad
@@ -29,11 +30,15 @@ is an isomorphism for every $n \geq 0$.
 **Theorem B (the circle splitting; the trivial Wang sequence).**
 For every space $Y$ and every $n$ there is a natural short exact sequence, split by the cross
 product with the positive generator $[S^1] \in H_1(S^1)$,
-$$0 \longrightarrow H_{n+1}(Y) \xrightarrow{\;\mathrm{pr}_{2*}\;}
+$$0 \longrightarrow H_{n+1}(Y) \xrightarrow{\;\mathrm{incl}_{x_0*}\;}
 H_{n+1}(S^1 \times Y) \xrightarrow{\;\partial\;} H_n(Y) \longrightarrow 0,$$
-so $H_{n+1}(S^1 \times Y) \cong H_{n+1}(Y) \oplus H_n(Y)$, with the second summand embedded by
-$b \mapsto [S^1] \times b$. (This is the Wang sequence of the trivial fibration
-$S^1 \to S^1 \times Y \to Y$; Hatcher Ex. 2.48 treats the general mapping torus.)
+where $\mathrm{incl}_{x_0} \colon Y \to S^1 \times Y$, $y \mapsto (x_0, y)$ is a slice
+inclusion (a section of the projection $\mathrm{pr}_2$). Then
+$H_{n+1}(S^1 \times Y) \cong H_{n+1}(Y) \oplus H_n(Y)$, with the second summand embedded by
+$b \mapsto [S^1] \times b$. (This is the Wang sequence of the trivial mapping torus — the
+fibration $Y \to S^1 \times Y \to S^1$ with identity monodromy, i.e. Hatcher Ex. 2.48 with
+$f = \mathrm{id}$, where $1 - f_* = 0$; equivalently the Gysin sequence of the trivial circle
+bundle, $e = 0$.)
 
 **Theorem C (Pontryagin product; Hatcher §3.C).** For a topological abelian group $G$, singular
 homology $H_*(G;\mathbb{Z})$ carries an associative, unital, graded-commutative ring structure
@@ -68,7 +73,7 @@ material (`CrossProduct.lean`), cited by name. The circle $S^1$ is the additive 
 $\mathbb{R}/\mathbb{Z}$; $[S^1]$ is the class of the positively oriented fundamental cycle (the
 sum of two arcs; the code's `arcSumCycle`). The product torus is $T^r := (S^1)^r$, a
 topological abelian group under coordinatewise addition. Exterior powers $\wedge^n M$ are
-Matlib's (the quotient of $M^{\otimes n}$ by the alternating relations; universal alternating
+Mathlib's (the quotient of $M^{\otimes n}$ by the alternating relations; universal alternating
 map $\iota_n \colon M^n \to \wedge^n M$).
 
 ## 3. The circle splitting (proof of Theorem B)
@@ -76,18 +81,26 @@ map $\iota_n \colon M^n \to \wedge^n M$).
 Cover $S^1 = U \cup V$ by two open arcs with intersection two short arcs around the two
 "poles", so $U, V \simeq *$, $U \cap V \simeq S^0$, all pulled back to the cover
 $\{U \times Y, V \times Y\}$ of $S^1 \times Y$. Mayer–Vietoris for this cover gives
-$$\dots \to H_{n+1}(U \cap V) \otimes \textstyle H_{n+1}\text{-term} \;\to\;
-H_{n+1}(S^1 \times Y) \xrightarrow{\partial} H_n(U \cap V \times Y) \to H_n(U \times Y) \oplus
-H_n(V \times Y) \to \dots$$
+$$\dots \to H_{n+1}(U \times Y) \oplus H_{n+1}(V \times Y) \;\to\;
+H_{n+1}(S^1 \times Y) \xrightarrow{\partial} H_n((U \cap V) \times Y) \to
+H_n(U \times Y) \oplus H_n(V \times Y) \to \dots$$
 and the identifications $H_k(U \times Y) \oplus H_k(V \times Y) \cong H_k(Y)^2$,
 $H_k(U \cap V \times Y) \cong H_k(Y)^2$ turn the connecting homomorphism and the restriction
 map into
 $$\partial \colon H_{n+1}(S^1 \times Y) \to H_n(Y)^2, \qquad
 \mathrm{res} \colon H_n(Y)^2 \to H_n(Y)^2,\ (u, v) \mapsto (u + v,\ u + v)$$
 (the restrictions of a class on $U \times Y$ and $V \times Y$ to each intersection arc agree,
-both being the pullback along the inclusion). Exactness at the middle of
-$H_n(Y)^2 \to H_n(Y)^2$ reads: $\ker \mathrm{res} = \{(b, -b)\} \cong H_n(Y)$, and $\mathrm{res}$
-is surjective, so the long sequence breaks into the short exact sequence of Theorem B.
+both being the pullback along the inclusion; Hatcher's MV convention puts a minus on the
+$V$-summand, which conjugates the displayed map by the automorphism $(x, y) \mapsto (x, -y)$
+of $H_n(Y)^2$ — kernel and cokernel below are unchanged). The kernel of $\mathrm{res}$ is
+$\{(b, -b)\} \cong H_n(Y)$, and its image is the diagonal $\{(w, w)\}$, so
+$\mathrm{coker}\, \mathrm{res} \cong H_n(Y)$ via $(x, y) \mapsto x - y$ (in every degree).
+A long exact sequence $\dots \to A \to B \to C \to D \to E \to \dots$ always breaks into
+$0 \to \mathrm{coker} \to C \to \ker \to 0$; here that gives
+$$0 \longrightarrow \mathrm{coker}\, \mathrm{res}_{n+1} \cong H_{n+1}(Y)
+\longrightarrow H_{n+1}(S^1 \times Y)
+\longrightarrow \ker \mathrm{res}_n \cong H_n(Y) \longrightarrow 0,$$
+the short exact sequence of Theorem B.
 
 **The splitting.** The cross product with $[S^1]$ splits $\partial$: for $b \in H_n(Y)$,
 $$\partial\big([S^1] \times b\big) = \big(\pm b, \mp b\big),$$
@@ -126,8 +139,10 @@ $H_n(T^r)$ matching the binomial basis of §4 under the isomorphism constructed 
 
 *Proof.* Induction on $r$ following the splitting of §3. $r = 0$ and $n = 0$ are immediate. In
 the step $T^{r+1} = S^1 \times T^r$: the subsets of $\{1, \dots, r+1\}$ of size $n$ split into
-those not containing $1$ (giving $\tau_s = \mathrm{pr}_{2*}^{-1}\ldots$, i.e. the subtorus
-classes lying in the $T^r$ factor — the first summand) and those containing $1$ (giving
+those not containing $1$ (giving $\tau_s = \mathrm{incl}_{0*}(\tau^{(r)}_s)$, the pushforward
+of the inductively known class along the slice inclusion
+$\mathrm{incl}_0 \colon T^r \hookrightarrow S^1 \times T^r$ — the first-summand inclusion, a
+section of $\mathrm{pr}_{2*}$) and those containing $1$ (giving
 $\tau_{\{1\} \cup s'} = [S^1] \times \tau_{s'}$ — the cross product with the positive
 generator, which is the second summand inclusion by §3's splitting). So the family
 $(\tau_s)$ maps to the union of the two inductively known bases, which is a basis. $\square$
@@ -175,14 +190,14 @@ a_1 \cdot \ldots \cdot a_n,$$
 for every $n$ (the formalization carries $n = 2, 3$ today; the general-$n$ descent is the same
 two properties — adjacent-swap antisymmetry and diagonal vanishing — quantified over the
 adjacent-transposition generating set of $S_n$, and is this lane's new mathematics at general
-$n$; see ledger row J3).
+$n$; see ledger row J6).
 
 ## 6. The torus is an exterior algebra on $H_1$ (Theorem A, second half)
 
 Apply §5 to $G = T^r$ (all homology free, so no torsion hypothesis is needed).
 $H_1(T^r) \cong \mathbb{Z}^r$ with basis the coordinate loops $\ell_i$ ($i = 1, \dots, r$).
 
-**Theorem (Hatcher Cor. 3.28, homology form).** *The wedge map
+**Theorem (exterior form of Theorem A; Hatcher Example 3.16 and §3.C Exercise 11).** *The wedge map
 $\wedge^n H_1(T^r) \to H_n(T^r)$ is an isomorphism for all $n$; explicitly,
 $$\ell_{i_1} \wedge \dots \wedge \ell_{i_n} \longmapsto \pm\, \tau_{\{i_1, \dots, i_n\}},$$
 the coordinate-subtorus top classes of §4 (the sign is the shuffle orientation of the chosen
@@ -190,9 +205,13 @@ ordering; with the conventions of §4 the sign is $+1$).*
 
 *Proof.* The image claim is an induction on $r$ as in §4: the coordinate loop
 $\ell_1 \in H_1(T^{r+1})$ is $[S^1]$ in the first factor, and the Pontryagin product of $[S^1]$
-with a class of the $T^r$ factor is exactly the cross product $[S^1] \times \tau_{s'}$ (the
-addition map on the first coordinate acts trivially on classes supported in the factors), so
-the basis of §4 is the set of iterated products of coordinate loops. Hence the wedge map hits a
+with a class of the $T^r$ factor is exactly the cross product $[S^1] \times \tau_{s'}$:
+for the slice inclusions $\mathrm{incl}_1 \colon S^1 \to S^1 \times T^r$ and
+$\mathrm{incl}_2 \colon T^r \to S^1 \times T^r$ one has
+$\mu \circ (\mathrm{incl}_1 \times \mathrm{incl}_2) = \mathrm{id}$ on the nose, hence
+$\mu_*(\mathrm{incl}_{1*} a \times \mathrm{incl}_{2*} b)
+= (\mu \circ (\mathrm{incl}_1 \times \mathrm{incl}_2))_*(a \times b) = a \times b$.
+So the basis of §4 is the set of iterated products of coordinate loops. Hence the wedge map hits a
 basis: it is surjective. Both sides are free of rank $\binom{r}{n}$ (§4; Theorem D's basis
 count), and a surjective linear map between finite free modules of the same rank is an
 isomorphism (the Orzech property: a surjective endomorphism of a noetherian module is
@@ -394,4 +413,15 @@ the two `@[instance_reducible]` defs themselves land in lane C's `CrossProduct.l
    (Specialization 6438) is an exact alias of CuspFilling's `productTorusHomologyEquiv_succ_apply`.
 6. **Bib keys.** `hatcher02` exists in the pinned Mathlib bib. Hirsch/Milnor keys are not needed
    for this lane.
-7. **Review.** Stage-2 independent review of §§1–8: scheduled; report in `~/s6-notes/`.
+7. **Citation flag for the owner.** The task file names this lane "Hatcher Ex. 2.48,
+   Cor. 3.28, §3.C". Corollary 3.28 of Hatcher is the manifold-torsion corollary (torsion in
+   $H_{n-1}$ of a closed $n$-manifold), not the torus computation; the correct references for
+   this lane's content are Example 3.16 (the exterior-algebra ring computation) and §3.C
+   Exercise 11 ($H_*(T^n;\mathbb{Z}) \cong \Lambda_\mathbb{Z}[x_1,\dots,x_n]$, $|x_i| = 1$),
+   plus §3.B for the Künneth ranks and Ex. 2.48 for the Wang sequence. This document uses the
+   corrected citations; no content change.
+8. **Review.** Stage-2 independent review of §§1–8: done (`~/s6-notes/J-review.md`); the six
+   corrections and four remarks are incorporated in the current text. The review also verified:
+   the $\mathrm{res}$ kernel/cokernel computations, the splitting sign, the Pascal induction,
+   the graded-commutativity sign, the alternation descent, the Orzech step, the minor-formula
+   expansion, and the Ex. 2.48 / §3.C citations against Hatcher's text.
