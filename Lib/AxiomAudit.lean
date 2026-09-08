@@ -7250,3 +7250,15 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.derivedGlobalSectionsEffaceable
 #check TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
 #print axioms TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
+
+-- M02: native Ext and the actual injective-resolution Hom-cohomology model.
+#check CategoryTheory.InjectiveResolution.extHomologyIso
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso
+#check CategoryTheory.InjectiveResolution.extHomologyIso_hom_extMk
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso_hom_extMk
+#check CategoryTheory.InjectiveResolution.extHomologyIso_hom_naturality
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso_hom_naturality
+#check CategoryTheory.Abelian.extFunctorObjIsoRightDerived
+#print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived
+#check CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app
+#print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app

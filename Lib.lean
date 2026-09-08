@@ -416,6 +416,7 @@ import Lib.CategoryTheory.Abelian.Injective.CompatibleResolution
 import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
+import Lib.CategoryTheory.Abelian.Injective.Ext
 
 /-!
 # Reusable extracted library
