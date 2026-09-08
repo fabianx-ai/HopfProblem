@@ -7182,6 +7182,8 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
 #check CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
 #print axioms CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
+#check CategoryTheory.ShortComplex.ShortExact.exists_extension_to_split_injective
+#print axioms CategoryTheory.ShortComplex.ShortExact.exists_extension_to_split_injective
 
 -- PD-L07: the shared recursive presentations retain their actual injective resolutions.
 #check CategoryTheory.InjectiveResolution.exists_recursive_injective_presentations

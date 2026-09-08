@@ -161,4 +161,90 @@ theorem injective_biprod_cokernel_successor
   exact ⟨inferInstance, (ShortComplex.Splitting.ofHasBinaryBiproduct I K).shortExact,
     a, b, rfl, rfl, ha, hb, hab, hQ⟩
 
+section
+
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/-- The standard split target has inclusion and projection as its row arrows. -/
+private abbrev row (I K : C) : ShortComplex C :=
+  ShortComplex.mk (biprod.inl : I ⟶ I ⊞ K) (biprod.snd : I ⊞ K ⟶ K) biprod.inl_snd
+
+/-- Project the two strict squares: the right coordinate of the middle map is
+forced by the right endpoint, and the left endpoint is forced by its first coordinate. -/
+private theorem coordinates {T : ShortComplex C} {I K : C} (v : T ⟶ row I K) :
+  v.τ₂ = biprod.lift (v.τ₂ ≫ biprod.fst) (T.g ≫ v.τ₃) ∧
+  v.τ₁ = T.f ≫ (v.τ₂ ≫ biprod.fst) := by
+  constructor
+  · apply biprod.hom_ext
+    · simp
+    · simpa using v.comm₂₃
+  · have h := congrArg (fun f => f ≫ biprod.fst) v.comm₁₂
+    simpa [row, Category.assoc] using h
+
+/-- Extend the first middle coordinate and the right endpoint into their injective
+targets. The left component is then forced. The zero composite proves the left
+square; projection proves the right square and all three restrictions. Thus the
+extension is a single map of rows, not three unrelated extensions (PD-L11). -/
+private theorem coordinate_extension {T U : ShortComplex C}
+    (hT : T.ShortExact) (hU : U.ShortExact)
+    (m : T ⟶ U) [Mono m.τ₁] [Mono m.τ₂] [Mono m.τ₃]
+    {I K : C} [Injective I] [Injective K] (v : T ⟶ row I K) :
+    ∃ (w : U ⟶ row I K),
+      w.τ₁ = U.f ≫ Injective.factorThru (v.τ₂ ≫ biprod.fst) m.τ₂ ∧
+      w.τ₂ = biprod.lift (Injective.factorThru (v.τ₂ ≫ biprod.fst) m.τ₂)
+        (U.g ≫ Injective.factorThru v.τ₃ m.τ₃) ∧
+      w.τ₃ = Injective.factorThru v.τ₃ m.τ₃ ∧ m ≫ w = v := by
+  have _ := hT
+  have _ := hU
+  let x := Injective.factorThru (v.τ₂ ≫ biprod.fst) m.τ₂
+  let z := Injective.factorThru v.τ₃ m.τ₃
+  have hx : m.τ₂ ≫ x = v.τ₂ ≫ biprod.fst := Injective.comp_factorThru _ _
+  have hz : m.τ₃ ≫ z = v.τ₃ := Injective.comp_factorThru _ _
+  have hl : (U.f ≫ x) ≫ biprod.inl = U.f ≫ biprod.lift x (U.g ≫ z) := by
+    apply biprod.hom_ext
+    · simp
+    · simp only [Category.assoc, biprod.inl_snd, comp_zero, biprod.lift_snd]
+      rw [← Category.assoc, U.zero, zero_comp]
+  have hr : biprod.lift x (U.g ≫ z) ≫ biprod.snd = U.g ≫ z := biprod.lift_snd _ _
+  let w : U ⟶ row I K :=
+    ShortComplex.homMk (U.f ≫ x) (biprod.lift x (U.g ≫ z)) z hl hr
+  refine ⟨w, rfl, rfl, rfl, ?_⟩
+  apply ShortComplex.hom_ext
+  · change m.τ₁ ≫ (U.f ≫ x) = v.τ₁
+    rw [← Category.assoc, m.comm₁₂, Category.assoc, hx, ← (coordinates v).2]
+  · change m.τ₂ ≫ biprod.lift x (U.g ≫ z) = v.τ₂
+    apply biprod.hom_ext
+    · simpa only [Category.assoc, biprod.lift_fst] using hx
+    · simp only [Category.assoc, biprod.lift_snd]
+      rw [← Category.assoc, m.comm₂₃, Category.assoc, hz]
+      exact v.comm₂₃.symm
+  · exact hz
+
+/-- A specified splitting identifies the target with its endpoint biproduct row,
+using identity maps at both endpoints and the standard splitting isomorphism in the middle. -/
+private def splitIso (E : ShortComplex C) (s : E.Splitting) : E ≅ row E.X₁ E.X₃ :=
+  ShortComplex.isoMk (Iso.refl _) s.isoBinaryBiproduct (Iso.refl _)
+    (by
+      dsimp [row, ShortComplex.Splitting.isoBinaryBiproduct]
+      ext <;> simp [s.f_r, E.zero])
+    (by simp [row, ShortComplex.Splitting.isoBinaryBiproduct])
+
+end
+
+/-- A whole-row map extends across a componentwise monic map of short exact
+sequences into any specified split target with injective endpoints. Identify the
+target with its biproduct row, extend the two coordinates, and compose back with
+the inverse identification. This preserves both strict squares and every component
+restriction, including the arbitrary split-target clause of PD-L11. -/
+public theorem exists_extension_to_split_injective
+    {C : Type u} [Category.{v} C] [Abelian C]
+    {T U E : ShortComplex C} (hT : T.ShortExact) (hU : U.ShortExact)
+    (m : T ⟶ U) [Mono m.τ₁] [Mono m.τ₂] [Mono m.τ₃]
+    (s : E.Splitting) [Injective E.X₁] [Injective E.X₃] (v : T ⟶ E) :
+    ∃ w : U ⟶ E, m ≫ w = v := by
+  let q := splitIso E s
+  obtain ⟨w, _, _, _, hw⟩ := coordinate_extension hT hU m (v ≫ q.hom)
+  refine ⟨w ≫ q.inv, ?_⟩
+  rw [← Category.assoc, hw, Category.assoc, Iso.hom_inv_id, Category.comp_id]
+
 end CategoryTheory.ShortComplex.ShortExact
