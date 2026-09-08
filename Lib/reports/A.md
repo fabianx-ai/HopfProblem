@@ -648,3 +648,10 @@ Chains.lean: 11 headline docstrings (simplex primitives, path-simplex bridges,
 induced chain/homology maps and functoriality). Running total: 256 / 4,450.
 Chains.lean follow-up: the three core abbreviations (singularComplex, Chains,
 SingularH1) documented. Running total: 259 / 4,450.
+
+## Docstring progress (session 4, batch 5)
+
+RiemannMapping.lean: 8 headline docstrings (disc coordinate, puncture map,
+normalization homeomorph, properness + boundary escape, log half-strip,
+maximal normalized map, and the headline Riemann mapping theorem in
+normalized form). Running total: 267 / 4,450 documented.

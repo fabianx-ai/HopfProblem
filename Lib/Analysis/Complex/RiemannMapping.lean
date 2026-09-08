@@ -78,6 +78,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-- The disc coordinate: the affine identification of the triangle with the unit disc underlying the normalization of the Riemann mapping target (Ahlfors, Complex Analysis, Ch. 6). -/
 def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ℂ :=
   e x
@@ -95,6 +96,7 @@ theorem TriangleRiemannNormalization.discCoordinate_norm_le {K : Type*} [Topolog
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ‖discCoordinate e x‖ ≤ 1 := by
   simpa only [discCoordinate, Metric.mem_closedBall, dist_zero_right] using (e x).property
 
+/-- The puncture map: the homeomorphism from the punctured triangle to the punctured disc obtained by removing the basepoint direction. -/
 def TriangleRiemannNormalization.punctureMap {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (pinf : K) (x : {x : K | x ≠ pinf}) :
     RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
@@ -134,6 +136,7 @@ def TriangleRiemannNormalization.punctureHomeomorph {K : Type*} [TopologicalSpac
     {x : K | x ≠ pinf} ≃ₜ RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
   (punctureMap_isEmbedding e pinf).toHomeomorphOfSurjective (punctureMap_surjective e pinf)
 
+/-- The normalization homeomorphism: the final affine correction placing the mapping target in Riemann-mapping normal form (Ahlfors, Complex Analysis, Ch. 6, the normalization step). -/
 def TriangleRiemannNormalization.normalizationHomeomorph {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1) (h0inf : p0 ≠ pinf)
     (h1inf : p1 ≠ pinf) (h0 : ‖discCoordinate e p0‖ = 1) (h1 : ‖discCoordinate e p1‖ = 1)
@@ -205,6 +208,7 @@ theorem TriangleRiemannNormalization.normalization_orientation_ne_zero {K : Type
   RiemannSphere.MobiusCircle.orientation_ne_zero h0 h1 hinf (discCoordinate_ne e h01.symm)
     (discCoordinate_ne e h1inf) (discCoordinate_ne e h0inf)
 
+/-- Preimages of closed balls under the disc map are compact: properness of the Riemann mapping on the interior (Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {r : ℝ} (hr : r < 1) :
     IsCompact
@@ -216,6 +220,7 @@ theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ
     Topology.IsInducing.subtypeVal.isCompact_preimage' (ProperSpace.isCompact_closedBall _ _) ?_
   simpa only [Subtype.range_coe] using Metric.closedBall_subset_ball hr
 
+/-- The disc map escapes to the boundary: points outside the source domain have images of norm tending to 1 along the map (boundary behaviour, Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.tendsto_norm_discHomeomorph_of_notMem {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {α : Type*} {l : Filter α} {z : α → U} {a : ℂ} (ha : a ∉ U)
     (hz : Filter.Tendsto (fun i => (z i : ℂ)) l (𝓝 a)) :
@@ -285,6 +290,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop {D : Set ℂ}
   tendsto_norm_discHomeomorph_of_norm_atTop e he
     (Filter.tendsto_atTop_mono (fun i => Complex.im_le_norm (z i)) hz) hmem
 
+/-- The logarithm identifying a half-strip with a half-plane: the standard biholomorphism used to normalize boundary strips (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, 14.8-adjacent steps). -/
 def RiemannBoundary.logHalfStrip (a c : ℝ) (q : ℂ) : ℂ :=
   a - Complex.I * c * Complex.log q
 
@@ -569,6 +575,7 @@ theorem RiemannMapping.norm_deriv_continuousOn_closure {U : Set ℂ} (hUo : IsOp
       (TendstoLocallyUniformlyOn.deriv (evaluation_tendstoLocallyUniformlyOn hUo) ?_ hUo) hx₀
   exact eventually_mem_nhdsWithin.mono fun g hg => hg.2.2.1
 
+/-- Existence of a maximal normalized map: the extremal map maximizing the derivative at the base point, the heart of the Riemann mapping theorem (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, Theorem 14.8). -/
 theorem RiemannMapping.exists_maximal_normalizedMap {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) (hne : (normalizedClass U x₀).Nonempty) :
     ∃ f : FunctionSpace U,
@@ -625,6 +632,7 @@ theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     rw [hf₀]
     rfl
 
+/-- THE HEADLINE — the Riemann mapping theorem in normalized form: a simply connected proper domain admits a bijective holomorphic map onto the unit disc with nonvanishing derivative sending the base point to 0 (Rudin, Real and Complex Analysis, Theorem 14.8; Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set ℂ}
     (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ∃ f : ℂ → ℂ,
