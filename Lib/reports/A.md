@@ -667,3 +667,11 @@ quadratic chart, existence of Morse functions). Running total: 275 / 4,450.
 CellAttachment.lean: 4 headline docstrings (core collapse deformation, core
 map, handle-to-core retraction, the deformation retraction itself). Running
 total: 279 / 4,450 documented.
+
+## Docstring progress (session 5, batch 8)
+
+HandleAttachment.lean: 6 headline docstrings (attaching handle map with its
+embedding and sublevel characterization, attachment region, the two cover
+halves of the handle attachment). Pipeline fix recorded: docstrings must be
+inserted above `attribute ... in` lines, not between them and their
+declarations. Running total: 285 / 4,450 documented.
