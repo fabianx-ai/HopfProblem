@@ -71,6 +71,7 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.Topology.Homotopy.LoopSubdivision
+import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 
 set_option maxSynthPendingDepth 3
 

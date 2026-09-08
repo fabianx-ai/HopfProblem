@@ -26,7 +26,6 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-namespace Mathoverflow1973
 
 instance EuclideanSphere.instLocal1 {n : ℕ} :
     Nonempty ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :=

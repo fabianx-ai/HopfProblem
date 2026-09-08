@@ -25,7 +25,6 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-namespace Mathoverflow1973
 
 theorem _root_.PartialEquiv.image_source_minus_singleton_eq {α β : Type*} (e : PartialEquiv α β)
     {a : α} (h : a ∈ e.source) : e '' (e.source \ { a }) = e.target \ {e a} := by
