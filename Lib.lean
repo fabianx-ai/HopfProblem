@@ -294,6 +294,7 @@ import Lib.Topology.Sheaves.ConstantProductPositiveFibreIndependence
 import Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic
 import Lib.Topology.Sheaves.Cohomology.GodementResolution
 import Lib.Topology.Sheaves.Cohomology.Cech.Effacement
+import Lib.Topology.Sheaves.Cohomology.Cech.Ext
 import Lib.Topology.Sheaves.Cohomology.MayerVietorisProjectiveDimension
 import Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution

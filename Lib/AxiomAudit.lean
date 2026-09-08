@@ -7347,3 +7347,13 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_effaceable
 #check CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
 #print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
+
+-- Normalized Čech/native Ext arrows, each from its universal source.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
