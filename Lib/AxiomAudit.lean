@@ -7357,3 +7357,9 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero
 #check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
+
+-- Forward and inverse derived transport preserve the positive connecting map.
+#check CategoryTheory.NatIso.rightDerived_hom_connecting
+#print axioms CategoryTheory.NatIso.rightDerived_hom_connecting
+#check CategoryTheory.NatIso.rightDerived_inv_connecting
+#print axioms CategoryTheory.NatIso.rightDerived_inv_connecting

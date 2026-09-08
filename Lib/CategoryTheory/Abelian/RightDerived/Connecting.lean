@@ -502,3 +502,76 @@ theorem rightDerived_zero_injective (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
   exact (AddCommGrpCat.mono_iff_injective _).mp hmθ
 
 end CategoryTheory.Functor
+
+namespace CategoryTheory.NatIso
+
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+  {F G : C ⥤ AddCommGrpCat.{w}} [F.Additive] [G.Additive]
+
+/-- Deriving a natural isomorphism commutes with the positive connecting map.
+Apply both functors to the same compatible injective-resolution sequence and
+map its split rows. Naturality of the original isomorphism gives a map of the
+two short exact complex sequences. For a quotient cocycle lifted to `b`, with
+`j(a) = db`, its lift calculation is
+`d α(b) = α(db) = α(j(a)) = j α(a)`. Homology boundary naturality therefore
+has the ordinary commuting sign. Conjugating by the same original-resolution
+computation isomorphisms gives the square for the actual derived degree maps
+(TEXTBOOK M10, 1808–1824). -/
+theorem rightDerived_hom_connecting
+    [PreservesFiniteLimits F] [PreservesFiniteLimits G]
+    (α : F ≅ G) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    F.rightDerivedConnecting hS n ≫ (NatIso.rightDerived α (n + 1)).hom.app S.X₁ =
+      (NatIso.rightDerived α n).hom.app S.X₃ ≫ G.rightDerivedConnecting hS n := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hF := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  let hG := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (G.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map G).shortExact)
+  let φ : ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (.up ℕ))) ⟶
+      ((ShortComplex.mk j q z).map (G.mapHomologicalComplex (.up ℕ))) :=
+    { τ₁ := (NatTrans.mapHomologicalComplex α.hom (.up ℕ)).app IA.cocomplex
+      τ₂ := (NatTrans.mapHomologicalComplex α.hom (.up ℕ)).app IB.cocomplex
+      τ₃ := (NatTrans.mapHomologicalComplex α.hom (.up ℕ)).app IC.cocomplex
+      comm₁₂ := (NatTrans.mapHomologicalComplex_naturality α.hom j).symm
+      comm₂₃ := (NatTrans.mapHomologicalComplex_naturality α.hom q).symm }
+  have hδ := HomologicalComplex.HomologySequence.δ_naturality φ hF hG n (n + 1) rfl
+  simp only [NatIso.rightDerived_hom]
+  rw [F.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hF,
+    G.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hG,
+    IA.rightDerived_app_eq α.hom (n + 1), IC.rightDerived_app_eq α.hom n]
+  simp only [Category.assoc, Iso.inv_hom_id_assoc]
+  change (IC.isoRightDerivedObj F n).hom ≫ hF.δ n (n + 1) rfl ≫
+      HomologicalComplex.homologyMap φ.τ₁ (n + 1) ≫ (IA.isoRightDerivedObj G (n + 1)).inv =
+    (IC.isoRightDerivedObj F n).hom ≫ HomologicalComplex.homologyMap φ.τ₃ n ≫
+      hG.δ n (n + 1) rfl ≫ (IA.isoRightDerivedObj G (n + 1)).inv
+  rw [← Category.assoc (hF.δ n (n + 1) rfl), hδ, Category.assoc]
+
+/-- The inverse derived isomorphism commutes with the same positive boundary.
+Apply the forward square to the original inverse natural isomorphism on the
+same compatible resolutions. The inverse cochain maps satisfy the identical
+lift calculation `d α⁻¹(b) = α⁻¹(db) = α⁻¹(j(a)) = j α⁻¹(a)`, so the
+convention `j(a) = db` introduces no new sign. The derived maps here are the
+actual inverses of the original derived isomorphism (TEXTBOOK M10, 1819–1823). -/
+theorem rightDerived_inv_connecting
+    [PreservesFiniteLimits F] [PreservesFiniteLimits G]
+    (α : F ≅ G) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    G.rightDerivedConnecting hS n ≫ (NatIso.rightDerived α (n + 1)).inv.app S.X₁ =
+      (NatIso.rightDerived α n).inv.app S.X₃ ≫ F.rightDerivedConnecting hS n := by
+  have hsymm (i : ℕ) :
+      (NatIso.rightDerived α.symm i).hom = (NatIso.rightDerived α i).inv := by
+    rw [NatIso.rightDerived_hom, NatIso.rightDerived_inv]
+    rfl
+  simpa only [hsymm] using rightDerived_hom_connecting α.symm hS n
+
+end CategoryTheory.NatIso
