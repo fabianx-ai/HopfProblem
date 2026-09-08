@@ -5,6 +5,7 @@ public import Mathlib.CategoryTheory.Preadditive.Yoneda.Limits
 public import Mathlib.Algebra.Homology.Embedding.ExtendHomology
 public import Lib.CategoryTheory.Abelian.RightDerived
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
+public import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 public section
 noncomputable section
 universe u v
@@ -320,3 +321,62 @@ theorem extFunctorObjZeroIsoCoyoneda_hom_app_extMk (P : C) {A : C}
   exact hi.trans hci
 
 end CategoryTheory.InjectiveResolution
+
+namespace CategoryTheory.Abelian
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
+
+/-- The additive native Ext boundary is the fixed right-derived boundary of Hom(P,-)
+under the canonical native comparison. It is independent of resolution choices;
+its positive lift convention is computed by any compatible resolution below
+(cohomological-dimension/TEXTBOOK.md, lines 1674–1701, C29b/C29c). -/
+def extConnecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    (extFunctorObj P n).obj S.X₃ ⟶ (extFunctorObj P (n + 1)).obj S.X₁ :=
+  (extFunctorObjIsoRightDerived P n).hom.app S.X₃ ≫
+    (preadditiveCoyoneda.obj (op P)).rightDerivedConnecting hS n ≫
+    (extFunctorObjIsoRightDerived P (n + 1)).inv.app S.X₁
+
+/-- Compute the same native Ext boundary on any original compatible triple of
+injective resolutions. On the actual Hom complexes it sends the class of z to
+the class of a, with r(b)=z and j(a)=db. Canonical comparisons retain the sign,
+all lift/representative choices and degree zero (TEXTBOOK, lines 1674–1690). -/
+theorem extConnecting_eq (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ)
+    (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
+    (IC : InjectiveResolution S.X₃)
+    (j : IA.cocomplex ⟶ IB.cocomplex) (q : IB.cocomplex ⟶ IC.cocomplex)
+    (z : j ≫ q = 0)
+    (ha : IA.ι ≫ j = (CochainComplex.single₀ C).map S.f ≫ IB.ι)
+    (hb : IB.ι ≫ q = (CochainComplex.single₀ C).map S.g ≫ IC.ι)
+    (he : ∀ i, ((ShortComplex.mk j q z).map
+      (HomologicalComplex.eval C (.up ℕ) i)).ShortExact)
+    (hM : ((ShortComplex.mk j q z).map
+      ((preadditiveCoyoneda.obj (op P)).mapHomologicalComplex (.up ℕ))).ShortExact) :
+    extConnecting P hS n =
+      (InjectiveResolution.extHomologyIso P IC n).hom ≫ hM.δ n (n + 1) rfl ≫
+        (InjectiveResolution.extHomologyIso P IA (n + 1)).inv := by
+  have hA : ((extFunctorObjIsoRightDerived P (n + 1)).app S.X₁).inv =
+      (InjectiveResolution.extHomologyIso P IA (n + 1) ≪≫
+        (IA.isoRightDerivedObj (preadditiveCoyoneda.obj (op P)) (n + 1)).symm).inv :=
+    congrArg Iso.inv (Iso.ext (extFunctorObjIsoRightDerived_hom_app P IA (n + 1)))
+  change (extFunctorObjIsoRightDerived P (n + 1)).inv.app S.X₁ =
+    (IA.isoRightDerivedObj (preadditiveCoyoneda.obj (op P)) (n + 1)).hom ≫
+      (InjectiveResolution.extHomologyIso P IA (n + 1)).inv at hA
+  unfold extConnecting
+  rw [extFunctorObjIsoRightDerived_hom_app P IC n, hA,
+    Functor.rightDerivedConnecting_eq (preadditiveCoyoneda.obj (op P)) hS n
+      IA IB IC j q z ha hb he hM]
+  let F := preadditiveCoyoneda.obj (op P)
+  let HC := ((F.mapHomologicalComplex (.up ℕ)).obj IC.cocomplex).homology n
+  let HA := ((F.mapHomologicalComplex (.up ℕ)).obj IA.cocomplex).homology (n + 1)
+  let eC : (extFunctorObj P n).obj S.X₃ ≅ HC :=
+    InjectiveResolution.extHomologyIso P IC n
+  let eA : (extFunctorObj P (n + 1)).obj S.X₁ ≅ HA :=
+    InjectiveResolution.extHomologyIso P IA (n + 1)
+  let tC : (F.rightDerived n).obj S.X₃ ≅ HC := IC.isoRightDerivedObj F n
+  let tA : (F.rightDerived (n + 1)).obj S.X₁ ≅ HA := IA.isoRightDerivedObj F (n + 1)
+  let d : HC ⟶ HA := hM.δ n (n + 1) rfl
+  change (eC.hom ≫ tC.inv) ≫ (tC.hom ≫ d ≫ tA.inv) ≫ (tA.hom ≫ eA.inv) =
+    eC.hom ≫ d ≫ eA.inv
+  simp only [Category.assoc, Iso.inv_hom_id_assoc]
+
+end CategoryTheory.Abelian

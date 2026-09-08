@@ -7268,3 +7268,9 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda
 #check CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk
 #print axioms CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk
+
+-- M04: native Ext boundary and positive arbitrary-resolution computation.
+#check CategoryTheory.Abelian.extConnecting
+#print axioms CategoryTheory.Abelian.extConnecting
+#check CategoryTheory.Abelian.extConnecting_eq
+#print axioms CategoryTheory.Abelian.extConnecting_eq
