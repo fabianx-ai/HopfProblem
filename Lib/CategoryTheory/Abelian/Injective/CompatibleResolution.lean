@@ -928,3 +928,200 @@ public theorem exists_presentations_of_compatible_resolutions
     exact cokernel.π_desc _ _ _
 
 end CategoryTheory.InjectiveResolution
+
+namespace CategoryTheory.InjectiveResolution
+open CategoryTheory CategoryTheory.Limits
+variable {C : Type u} [Category.{v} C] [Abelian C]
+
+/-- Extend the current whole-row map along the monic embedding into the specified
+split injective target. This preserves both sequence squares at once (PD-L12, PD12). -/
+private theorem stage_extension {T E T' E' : ShortComplex C}
+    (hT : T.ShortExact) (hE : E.ShortExact) (e : T ⟶ E)
+    [Mono e.τ₁] [Mono e.τ₂] [Mono e.τ₃]
+    (e' : T' ⟶ E') (s : E'.Splitting)
+    [Injective E'.X₁] [Injective E'.X₃] (f : T ⟶ T') :
+    ∃ u : E ⟶ E', e ≫ u = f ≫ e' :=
+  ShortComplex.ShortExact.exists_extension_to_split_injective hT hE e s (f ≫ e')
+
+/-- Project the extension equation to each component and follow by the target
+quotient. Its composite with the target embedding is zero, so all three maps
+annihilate the source embedding and can descend to its cokernel. -/
+private theorem stage_kills {T E T' E' Q' : ShortComplex C}
+    (e : T ⟶ E) (e' : T' ⟶ E') (r' : E' ⟶ Q')
+    (z' : e' ≫ r' = 0) (f : T ⟶ T') (u : E ⟶ E')
+    (hu : e ≫ u = f ≫ e') :
+    e.τ₁ ≫ (u.τ₁ ≫ r'.τ₁) = 0 ∧
+    e.τ₂ ≫ (u.τ₂ ≫ r'.τ₂) = 0 ∧
+    e.τ₃ ≫ (u.τ₃ ≫ r'.τ₃) = 0 := by
+  have h₁ : e.τ₁ ≫ u.τ₁ = f.τ₁ ≫ e'.τ₁ :=
+    congrArg (fun t : T ⟶ E' => t.τ₁) hu
+  have z₁ : e'.τ₁ ≫ r'.τ₁ = 0 :=
+    congrArg (fun t : T' ⟶ Q' => t.τ₁) z'
+  have h₂ : e.τ₂ ≫ u.τ₂ = f.τ₂ ≫ e'.τ₂ :=
+    congrArg (fun t : T ⟶ E' => t.τ₂) hu
+  have z₂ : e'.τ₂ ≫ r'.τ₂ = 0 :=
+    congrArg (fun t : T' ⟶ Q' => t.τ₂) z'
+  have h₃ : e.τ₃ ≫ u.τ₃ = f.τ₃ ≫ e'.τ₃ :=
+    congrArg (fun t : T ⟶ E' => t.τ₃) hu
+  have z₃ : e'.τ₃ ≫ r'.τ₃ = 0 :=
+    congrArg (fun t : T' ⟶ Q' => t.τ₃) z'
+  refine ⟨?_, ?_, ?_⟩
+  · rw [← Category.assoc, h₁, Category.assoc, z₁, comp_zero]
+  · rw [← Category.assoc, h₂, Category.assoc, z₂, comp_zero]
+  · rw [← Category.assoc, h₃, Category.assoc, z₃, comp_zero]
+
+/-- Descend a map through the supplied actual cokernel universal property. -/
+private def actualDesc {A B Q Z : C} (e : A ⟶ B) (r : B ⟶ Q)
+    (z : e ≫ r = 0) (hr : IsColimit (CokernelCofork.ofπ r z))
+    (k : B ⟶ Z) (hk : e ≫ k = 0) : Q ⟶ Z :=
+  hr.desc (CokernelCofork.ofπ k hk)
+
+/-- The descended map retains its defining quotient equation (PD13 component). -/
+private theorem actualDesc_fac {A B Q Z : C} (e : A ⟶ B) (r : B ⟶ Q)
+    (z : e ≫ r = 0) (hr : IsColimit (CokernelCofork.ofπ r z))
+    (k : B ⟶ Z) (hk : e ≫ k = 0) :
+    r ≫ actualDesc e r z hr k hk = k := Cofork.IsColimit.π_desc hr
+
+/-- Precompose each proposed successor square with its epic quotient map.
+The restrictions and the three original row morphisms give equality there;
+epic cancellation proves both strict successor squares. -/
+private theorem comparisonDescendedSquares {E Q E' Q' : ShortComplex C}
+    (r : E ⟶ Q) (r' : E' ⟶ Q') (u : E ⟶ E')
+    [Epi r.τ₁] [Epi r.τ₂]
+    (a : Q.X₁ ⟶ Q'.X₁) (b : Q.X₂ ⟶ Q'.X₂) (c : Q.X₃ ⟶ Q'.X₃)
+    (ha : r.τ₁ ≫ a = u.τ₁ ≫ r'.τ₁)
+    (hb : r.τ₂ ≫ b = u.τ₂ ≫ r'.τ₂)
+    (hc : r.τ₃ ≫ c = u.τ₃ ≫ r'.τ₃) :
+    a ≫ Q'.f = Q.f ≫ b ∧ b ≫ Q'.g = Q.g ≫ c := by
+  constructor
+  · apply (cancel_epi r.τ₁).1
+    calc
+      r.τ₁ ≫ (a ≫ Q'.f) = (u.τ₁ ≫ r'.τ₁) ≫ Q'.f := by rw [← Category.assoc, ha]
+      _ = u.τ₁ ≫ (E'.f ≫ r'.τ₂) := by rw [Category.assoc, r'.comm₁₂]
+      _ = E.f ≫ (u.τ₂ ≫ r'.τ₂) := by rw [← Category.assoc, u.comm₁₂, Category.assoc]
+      _ = E.f ≫ (r.τ₂ ≫ b) := by rw [hb]
+      _ = r.τ₁ ≫ (Q.f ≫ b) := by rw [← Category.assoc, ← r.comm₁₂, Category.assoc]
+  · apply (cancel_epi r.τ₂).1
+    calc
+      r.τ₂ ≫ (b ≫ Q'.g) = (u.τ₂ ≫ r'.τ₂) ≫ Q'.g := by rw [← Category.assoc, hb]
+      _ = u.τ₂ ≫ (E'.g ≫ r'.τ₃) := by rw [Category.assoc, r'.comm₂₃]
+      _ = E.g ≫ (u.τ₃ ≫ r'.τ₃) := by rw [← Category.assoc, u.comm₂₃, Category.assoc]
+      _ = E.g ≫ (r.τ₃ ≫ c) := by rw [hc]
+      _ = r.τ₂ ≫ (Q.g ≫ c) := by rw [← Category.assoc, ← r.comm₂₃, Category.assoc]
+
+/-- The three descended components and their two squares form one row morphism. -/
+private def descendedRow {E Q E' Q' : ShortComplex C}
+    (r : E ⟶ Q) (r' : E' ⟶ Q') (u : E ⟶ E')
+    [Epi r.τ₁] [Epi r.τ₂]
+    (a : Q.X₁ ⟶ Q'.X₁) (b : Q.X₂ ⟶ Q'.X₂) (c : Q.X₃ ⟶ Q'.X₃)
+    (ha : r.τ₁ ≫ a = u.τ₁ ≫ r'.τ₁)
+    (hb : r.τ₂ ≫ b = u.τ₂ ≫ r'.τ₂)
+    (hc : r.τ₃ ≫ c = u.τ₃ ≫ r'.τ₃) : Q ⟶ Q' :=
+  ShortComplex.homMk a b c (comparisonDescendedSquares r r' u a b c ha hb hc).1
+    (comparisonDescendedSquares r r' u a b c ha hb hc).2
+
+/-- Bundle the three quotient restrictions into the whole-row equation PD13. -/
+private theorem descendedRow_fac {E Q E' Q' : ShortComplex C}
+    (r : E ⟶ Q) (r' : E' ⟶ Q') (u : E ⟶ E')
+    [Epi r.τ₁] [Epi r.τ₂]
+    (a : Q.X₁ ⟶ Q'.X₁) (b : Q.X₂ ⟶ Q'.X₂) (c : Q.X₃ ⟶ Q'.X₃)
+    (ha : r.τ₁ ≫ a = u.τ₁ ≫ r'.τ₁)
+    (hb : r.τ₂ ≫ b = u.τ₂ ≫ r'.τ₂)
+    (hc : r.τ₃ ≫ c = u.τ₃ ≫ r'.τ₃) :
+    r ≫ descendedRow r r' u a b c ha hb hc = u ≫ r' :=
+  ShortComplex.hom_ext _ _ ha hb hc
+
+/-- One recursive comparison stage retains the whole extension and its
+simultaneous successor, together with PD12 and PD13. -/
+private structure ComparisonStep {T E Q T' E' Q' : ShortComplex C}
+    (e : T ⟶ E) (r : E ⟶ Q) (e' : T' ⟶ E') (r' : E' ⟶ Q')
+    (f : T ⟶ T') where
+  u : E ⟶ E'
+  next : Q ⟶ Q'
+  extension : e ≫ u = f ≫ e'
+  descent : r ≫ next = u ≫ r'
+
+/-- Choose one whole-row extension, then descend its three components through
+the same supplied cokernels. Epic cancellation keeps the successor a row map. -/
+private def comparisonStep {T E Q T' E' Q' : ShortComplex C}
+    (hT : T.ShortExact) (hE : E.ShortExact)
+    (e : T ⟶ E) (r : E ⟶ Q) (e' : T' ⟶ E') (r' : E' ⟶ Q')
+    (hA : ∃ z : e.τ₁ ≫ r.τ₁ = 0,
+      (ShortComplex.mk e.τ₁ r.τ₁ z).ShortExact ∧ Nonempty (IsColimit (CokernelCofork.ofπ r.τ₁ z)))
+    (hB : ∃ z : e.τ₂ ≫ r.τ₂ = 0,
+      (ShortComplex.mk e.τ₂ r.τ₂ z).ShortExact ∧ Nonempty (IsColimit (CokernelCofork.ofπ r.τ₂ z)))
+    (hC : ∃ z : e.τ₃ ≫ r.τ₃ = 0,
+      (ShortComplex.mk e.τ₃ r.τ₃ z).ShortExact ∧ Nonempty (IsColimit (CokernelCofork.ofπ r.τ₃ z)))
+    (z' : e' ≫ r' = 0) (s : E'.Splitting)
+    [Injective E'.X₁] [Injective E'.X₃] (f : T ⟶ T') :
+    ComparisonStep e r e' r' f := by
+  let zA := hA.choose
+  let zB := hB.choose
+  let zC := hC.choose
+  let ca := hA.choose_spec.2.some
+  let cb := hB.choose_spec.2.some
+  let cc := hC.choose_spec.2.some
+  let : Mono e.τ₁ := hA.choose_spec.1.mono_f
+  let : Mono e.τ₂ := hB.choose_spec.1.mono_f
+  let : Mono e.τ₃ := hC.choose_spec.1.mono_f
+  let : Epi r.τ₁ := epi_of_isColimit_cofork ca
+  let : Epi r.τ₂ := epi_of_isColimit_cofork cb
+  let ex := stage_extension hT hE e e' s f
+  let u := ex.choose
+  have hu : e ≫ u = f ≫ e' := ex.choose_spec
+  have hz := stage_kills e e' r' z' f u hu
+  let a := actualDesc e.τ₁ r.τ₁ zA ca (u.τ₁ ≫ r'.τ₁) hz.1
+  let b := actualDesc e.τ₂ r.τ₂ zB cb (u.τ₂ ≫ r'.τ₂) hz.2.1
+  let c := actualDesc e.τ₃ r.τ₃ zC cc (u.τ₃ ≫ r'.τ₃) hz.2.2
+  have ha : r.τ₁ ≫ a = u.τ₁ ≫ r'.τ₁ := actualDesc_fac _ _ _ _ _ _
+  have hb : r.τ₂ ≫ b = u.τ₂ ≫ r'.τ₂ := actualDesc_fac _ _ _ _ _ _
+  have hc : r.τ₃ ≫ c = u.τ₃ ≫ r'.τ₃ := actualDesc_fac _ _ _ _ _ _
+  exact ⟨u, descendedRow r r' u a b c ha hb hc, hu,
+    descendedRow_fac r r' u a b c ha hb hc⟩
+
+/-- Iterate the successor operation on the unchanged supplied rows, starting
+with the given original morphism. -/
+private def comparisonTower (T T' : ℕ → ShortComplex C) (f0 : T 0 ⟶ T' 0)
+    (next : ∀ n, (T n ⟶ T' n) → (T (n + 1) ⟶ T' (n + 1))) :
+    ∀ n, T n ⟶ T' n
+  | 0 => f0
+  | n + 1 => next n (comparisonTower T T' f0 next n)
+
+/-- Any original sequence morphism admits recursive whole-row comparisons on
+the supplied compatible presentations. At each degree extend along the monic
+embedding into the split injective target and descend through the actual three
+cokernels. The same comparisons satisfy PD12 and PD13, with the given map in
+degree zero; no monicity or epicity is required of that map (PD-L12). -/
+public theorem exists_recursive_comparison
+    {S S' : ShortComplex C} (f : S ⟶ S')
+    (T E T' E' : ℕ → ShortComplex C) (h0 : T 0 = S) (h0' : T' 0 = S')
+    (e : ∀ n, T n ⟶ E n) (r : ∀ n, E n ⟶ T (n + 1))
+    (e' : ∀ n, T' n ⟶ E' n) (r' : ∀ n, E' n ⟶ T' (n + 1))
+    (hT : ∀ n, (T n).ShortExact) (hE : ∀ n, (E n).ShortExact)
+    (hA : ∀ n, ∃ z : (e n).τ₁ ≫ (r n).τ₁ = 0,
+      (ShortComplex.mk (e n).τ₁ (r n).τ₁ z).ShortExact ∧
+      Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₁ z)))
+    (hB : ∀ n, ∃ z : (e n).τ₂ ≫ (r n).τ₂ = 0,
+      (ShortComplex.mk (e n).τ₂ (r n).τ₂ z).ShortExact ∧
+      Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₂ z)))
+    (hC : ∀ n, ∃ z : (e n).τ₃ ≫ (r n).τ₃ = 0,
+      (ShortComplex.mk (e n).τ₃ (r n).τ₃ z).ShortExact ∧
+      Nonempty (IsColimit (CokernelCofork.ofπ (r n).τ₃ z)))
+    (z' : ∀ n, e' n ≫ r' n = 0) (s' : ∀ n, Nonempty (E' n).Splitting)
+    (hI : ∀ n, Injective (E' n).X₁) (hK : ∀ n, Injective (E' n).X₃) :
+    ∃ (fn : ∀ n, T n ⟶ T' n) (un : ∀ n, E n ⟶ E' n),
+      fn 0 = eqToHom h0 ≫ f ≫ eqToHom h0'.symm ∧
+      (∀ n, e n ≫ un n = fn n ≫ e' n) ∧
+      (∀ n, r n ≫ fn (n + 1) = un n ≫ r' n) := by
+  let step (n : ℕ) (f : T n ⟶ T' n) :
+      ComparisonStep (e n) (r n) (e' n) (r' n) f := by
+    let : Injective (E' n).X₁ := hI n
+    let : Injective (E' n).X₃ := hK n
+    exact comparisonStep (hT n) (hE n) (e n) (r n) (e' n) (r' n)
+      (hA n) (hB n) (hC n) (z' n) (s' n).some f
+  let next (n : ℕ) (f : T n ⟶ T' n) := (step n f).next
+  let fn := comparisonTower T T' (eqToHom h0 ≫ f ≫ eqToHom h0'.symm) next
+  exact ⟨fn, (fun n => (step n (fn n)).u), rfl,
+    (fun n => (step n (fn n)).extension), (fun n => (step n (fn n)).descent)⟩
+
+end CategoryTheory.InjectiveResolution

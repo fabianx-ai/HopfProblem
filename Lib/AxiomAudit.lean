@@ -7194,3 +7194,5 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.InjectiveResolution.strict_sequence_of_recursive_presentations
 #check CategoryTheory.InjectiveResolution.exists_presentations_of_compatible_resolutions
 #print axioms CategoryTheory.InjectiveResolution.exists_presentations_of_compatible_resolutions
+#check CategoryTheory.InjectiveResolution.exists_recursive_comparison
+#print axioms CategoryTheory.InjectiveResolution.exists_recursive_comparison
