@@ -655,3 +655,9 @@ RiemannMapping.lean: 8 headline docstrings (disc coordinate, puncture map,
 normalization homeomorph, properness + boundary escape, log half-strip,
 maximal normalized map, and the headline Riemann mapping theorem in
 normalized form). Running total: 267 / 4,450 documented.
+
+## Docstring progress (session 5, batch 6)
+
+MorseLemma.lean: 8 headline docstrings (IsMorseAt/IsMorseOn/IsMorse,
+critical-point set with discreteness and finiteness, the Morse lemma
+quadratic chart, existence of Morse functions). Running total: 275 / 4,450.
