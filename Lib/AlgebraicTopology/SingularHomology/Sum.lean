@@ -156,7 +156,7 @@ def SingularHomology.sumChainComplexMap (X Y : Type) [TopologicalSpace X]
   CategoryTheory.Limits.biprod.desc (SingularChains.singularChainMap (sumInlMap X Y))
     (SingularChains.singularChainMap (sumInrMap X Y))
 
-def SingularHomology.sumChainInverseDegree_mo1973_4506 (X Y : Type)
+def SingularHomology.sumChainInverseDegree (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains (X ⊕ Y) n →ₗ[ℤ]
       (SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).X n :=
@@ -176,33 +176,33 @@ def SingularHomology.sumChainInverseDegree_mo1973_4506 (X Y : Type)
           (SingularChains.simplexChain Y n τ))
       ((sumSimplexEquiv X Y n).symm σ)
 
-theorem SingularHomology.sumChainInverseDegree_inl_mo1973_4507 (X Y : Type)
+theorem SingularHomology.sumChainInverseDegree_inl (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X n) :
-    sumChainInverseDegree_mo1973_4506 X Y n
+    sumChainInverseDegree X Y n
         (SingularChains.simplexChain (X ⊕ Y) n ((sumInlMap X Y).comp σ)) =
       ((CategoryTheory.Limits.biprod.inl :
                 SingularChains.singularComplex X ⟶
                   SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).f
             n).hom
         (SingularChains.simplexChain X n σ) := by
-  simp only [sumChainInverseDegree_mo1973_4506, SingularChains.chainLift_simplex,
+  simp only [sumChainInverseDegree, SingularChains.chainLift_simplex,
     sumSimplexEquiv_symm_inl, Sum.elim_inl]
 
-theorem SingularHomology.sumChainInverseDegree_inr_mo1973_4508 (X Y : Type)
+theorem SingularHomology.sumChainInverseDegree_inr (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex Y n) :
-    sumChainInverseDegree_mo1973_4506 X Y n
+    sumChainInverseDegree X Y n
         (SingularChains.simplexChain (X ⊕ Y) n ((sumInrMap X Y).comp σ)) =
       ((CategoryTheory.Limits.biprod.inr :
                 SingularChains.singularComplex Y ⟶
                   SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).f
             n).hom
         (SingularChains.simplexChain Y n σ) := by
-  simp only [sumChainInverseDegree_mo1973_4506, SingularChains.chainLift_simplex,
+  simp only [sumChainInverseDegree, SingularChains.chainLift_simplex,
     sumSimplexEquiv_symm_inr, Sum.elim_inr]
 
-theorem SingularHomology.sumChainComplexMap_comp_inverse_mo1973_4509 (X Y : Type)
+theorem SingularHomology.sumChainComplexMap_comp_inverse (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
-    (sumChainComplexMap X Y).f n ≫ ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) =
+    (sumChainComplexMap X Y).f n ≫ ModuleCat.ofHom (sumChainInverseDegree X Y n) =
       𝟙 ((SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).X n) := by
   apply HomologicalComplex.biprodX_ext_from
   · calc
@@ -212,14 +212,14 @@ theorem SingularHomology.sumChainComplexMap_comp_inverse_mo1973_4509 (X Y : Type
                       SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).f
                 n ≫
               (sumChainComplexMap X Y).f n) ≫
-            ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) :=
+            ModuleCat.ofHom (sumChainInverseDegree X Y n) :=
         (CategoryTheory.Category.assoc _ _ _).symm
       _ =
           (SingularChains.singularChainMap (sumInlMap X Y)).f n ≫
-            ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) :=
+            ModuleCat.ofHom (sumChainInverseDegree X Y n) :=
         (congrArg
           (fun f : SingularChains.Chains X n ⟶ SingularChains.Chains (X ⊕ Y) n =>
-            f ≫ ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n))
+            f ≫ ModuleCat.ofHom (sumChainInverseDegree X Y n))
           (HomologicalComplex.biprod_inl_desc_f (SingularChains.singularChainMap (sumInlMap X Y))
             (SingularChains.singularChainMap (sumInrMap X Y)) n))
       _ = _ := by
@@ -227,10 +227,10 @@ theorem SingularHomology.sumChainComplexMap_comp_inverse_mo1973_4509 (X Y : Type
         apply SingularChains.chainMap_ext X n
         intro σ
         change
-          sumChainInverseDegree_mo1973_4506 X Y n
+          sumChainInverseDegree X Y n
               (SingularChains.inducedChain (sumInlMap X Y) n (SingularChains.simplexChain X n σ)) =
             _
-        rw [SingularChains.inducedChain_simplex, sumChainInverseDegree_inl_mo1973_4507,
+        rw [SingularChains.inducedChain_simplex, sumChainInverseDegree_inl,
           CategoryTheory.Category.comp_id]
   · calc
       _ =
@@ -239,14 +239,14 @@ theorem SingularHomology.sumChainComplexMap_comp_inverse_mo1973_4509 (X Y : Type
                       SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y).f
                 n ≫
               (sumChainComplexMap X Y).f n) ≫
-            ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) :=
+            ModuleCat.ofHom (sumChainInverseDegree X Y n) :=
         (CategoryTheory.Category.assoc _ _ _).symm
       _ =
           (SingularChains.singularChainMap (sumInrMap X Y)).f n ≫
-            ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) :=
+            ModuleCat.ofHom (sumChainInverseDegree X Y n) :=
         (congrArg
           (fun f : SingularChains.Chains Y n ⟶ SingularChains.Chains (X ⊕ Y) n =>
-            f ≫ ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n))
+            f ≫ ModuleCat.ofHom (sumChainInverseDegree X Y n))
           (HomologicalComplex.biprod_inr_desc_f (SingularChains.singularChainMap (sumInlMap X Y))
             (SingularChains.singularChainMap (sumInrMap X Y)) n))
       _ = _ := by
@@ -254,15 +254,15 @@ theorem SingularHomology.sumChainComplexMap_comp_inverse_mo1973_4509 (X Y : Type
         apply SingularChains.chainMap_ext Y n
         intro σ
         change
-          sumChainInverseDegree_mo1973_4506 X Y n
+          sumChainInverseDegree X Y n
               (SingularChains.inducedChain (sumInrMap X Y) n (SingularChains.simplexChain Y n σ)) =
             _
-        rw [SingularChains.inducedChain_simplex, sumChainInverseDegree_inr_mo1973_4508,
+        rw [SingularChains.inducedChain_simplex, sumChainInverseDegree_inr,
           CategoryTheory.Category.comp_id]
 
-theorem SingularHomology.sumChainInverse_comp_map_mo1973_4510 (X Y : Type)
+theorem SingularHomology.sumChainInverse_comp_map (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
-    ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n) ≫ (sumChainComplexMap X Y).f n =
+    ModuleCat.ofHom (sumChainInverseDegree X Y n) ≫ (sumChainComplexMap X Y).f n =
       𝟙 (SingularChains.Chains (X ⊕ Y) n) := by
   apply ModuleCat.hom_ext
   apply SingularChains.chainMap_ext (X ⊕ Y) n
@@ -270,10 +270,10 @@ theorem SingularHomology.sumChainInverse_comp_map_mo1973_4510 (X Y : Type)
   rcases singularSimplex_sum_split X Y n σ with ⟨τ, rfl⟩ | ⟨τ, rfl⟩
   · change
       ((sumChainComplexMap X Y).f n).hom
-          (sumChainInverseDegree_mo1973_4506 X Y n
+          (sumChainInverseDegree X Y n
             (SingularChains.simplexChain (X ⊕ Y) n ((sumInlMap X Y).comp τ))) =
         _
-    rw [sumChainInverseDegree_inl_mo1973_4507]
+    rw [sumChainInverseDegree_inl]
     exact
       (congrArg (fun f => f.hom (SingularChains.simplexChain X n τ))
             (HomologicalComplex.biprod_inl_desc_f (SingularChains.singularChainMap (sumInlMap X Y))
@@ -281,29 +281,29 @@ theorem SingularHomology.sumChainInverse_comp_map_mo1973_4510 (X Y : Type)
         (SingularChains.inducedChain_simplex (sumInlMap X Y) n τ)
   · change
       ((sumChainComplexMap X Y).f n).hom
-          (sumChainInverseDegree_mo1973_4506 X Y n
+          (sumChainInverseDegree X Y n
             (SingularChains.simplexChain (X ⊕ Y) n ((sumInrMap X Y).comp τ))) =
         _
-    rw [sumChainInverseDegree_inr_mo1973_4508]
+    rw [sumChainInverseDegree_inr]
     exact
       (congrArg (fun f => f.hom (SingularChains.simplexChain Y n τ))
             (HomologicalComplex.biprod_inr_desc_f (SingularChains.singularChainMap (sumInlMap X Y))
               (SingularChains.singularChainMap (sumInrMap X Y)) n)).trans
         (SingularChains.inducedChain_simplex (sumInrMap X Y) n τ)
 
-theorem SingularHomology.sumChainComplexMap_component_isIso_mo1973_4511
+theorem SingularHomology.sumChainComplexMap_component_isIso
     (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     CategoryTheory.IsIso ((sumChainComplexMap X Y).f n) :=
-  ⟨⟨ModuleCat.ofHom (sumChainInverseDegree_mo1973_4506 X Y n),
-      sumChainComplexMap_comp_inverse_mo1973_4509 X Y n,
-      sumChainInverse_comp_map_mo1973_4510 X Y n⟩⟩
+  ⟨⟨ModuleCat.ofHom (sumChainInverseDegree X Y n),
+      sumChainComplexMap_comp_inverse X Y n,
+      sumChainInverse_comp_map X Y n⟩⟩
 
 def SingularHomology.sumChainComplexIso (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
     SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y ≅
       SingularChains.singularComplex (X ⊕ Y) := by
   letI (n : ℕ) : CategoryTheory.IsIso ((sumChainComplexMap X Y).f n) :=
-    sumChainComplexMap_component_isIso_mo1973_4511 X Y n
+    sumChainComplexMap_component_isIso X Y n
   letI : CategoryTheory.IsIso (sumChainComplexMap X Y) :=
     HomologicalComplex.Hom.isIso_of_components (sumChainComplexMap X Y)
   exact CategoryTheory.asIso (sumChainComplexMap X Y)
@@ -351,7 +351,7 @@ theorem SingularHomology.sumHomologyEquiv_inr (X Y : Type) [TopologicalSpace X]
   apply (sumHomologyEquiv X Y n).symm.injective
   rw [LinearEquiv.symm_apply_apply, sumHomologyEquiv_symm_apply, map_zero, zero_add]
 
-theorem SingularHomology.sumElim_homology_inl_mo1973_4520 {X : Type} {Y : Type}
+theorem SingularHomology.sumElim_homology_inl {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     SingularMayerVietoris.singularHomologyMap (sumElimMap f g) n
@@ -362,7 +362,7 @@ theorem SingularHomology.sumElim_homology_inl_mo1973_4520 {X : Type} {Y : Type}
       (TopCat.ofHom (sumInlMap X Y)) (TopCat.ofHom (sumElimMap f g))
   exact (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) a).symm
 
-theorem SingularHomology.sumElim_homology_inr_mo1973_4521 {X : Type} {Y : Type}
+theorem SingularHomology.sumElim_homology_inr {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ) (a : SingularMayerVietoris.SingularHomology Y n) :
     SingularMayerVietoris.singularHomologyMap (sumElimMap f g) n
@@ -373,7 +373,7 @@ theorem SingularHomology.sumElim_homology_inr_mo1973_4521 {X : Type} {Y : Type}
       (TopCat.ofHom (sumInrMap X Y)) (TopCat.ofHom (sumElimMap f g))
   exact (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) a).symm
 
-theorem SingularHomology.disjointHomology_id_apply_mo1973_4522 {X : Type}
+theorem SingularHomology.disjointHomology_id_apply {X : Type}
     [TopologicalSpace X] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.id X) n a = a := by
   have h :=
@@ -390,8 +390,8 @@ theorem SingularHomology.sumHomologyEquiv_sumElim_symm {X : Type} {Y : Type}
         ((sumHomologyEquiv X Y n).symm a) =
       SingularMayerVietoris.singularHomologyMap f n a.1 +
         SingularMayerVietoris.singularHomologyMap g n a.2 := by
-  rw [sumHomologyEquiv_symm_apply, map_add, sumElim_homology_inl_mo1973_4520,
-    sumElim_homology_inr_mo1973_4521]
+  rw [sumHomologyEquiv_symm_apply, map_add, sumElim_homology_inl,
+    sumElim_homology_inr]
 
 theorem SingularHomology.sumHomologyEquiv_sumElim {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
@@ -407,6 +407,6 @@ theorem SingularHomology.sumHomologyEquiv_fold {X : Type} [TopologicalSpace X] (
     SingularMayerVietoris.singularHomologyMap
         (sumElimMap (ContinuousMap.id X) (ContinuousMap.id X)) n a =
       (sumHomologyEquiv X X n a).1 + (sumHomologyEquiv X X n a).2 := by
-  rw [sumHomologyEquiv_sumElim, disjointHomology_id_apply_mo1973_4522,
-    disjointHomology_id_apply_mo1973_4522]
+  rw [sumHomologyEquiv_sumElim, disjointHomology_id_apply,
+    disjointHomology_id_apply]
 end Mathoverflow1973

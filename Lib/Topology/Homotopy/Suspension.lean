@@ -211,7 +211,7 @@ theorem Suspension.Suspension.middleBand_isOpen {X : Type*} [TopologicalSpace X]
     IsOpen (middleBand X) :=
   northOpen_isOpen.inter southOpen_isOpen
 
-theorem Suspension.Suspension.middleCylinder_height_mo1973_4378 {X : Type*}
+theorem Suspension.Suspension.middleCylinder_height {X : Type*}
     (p : middleCylinder X) : (1 / 4 : ℝ) < (p.1.1 : ℝ) ∧ (p.1.1 : ℝ) < 3 / 4 :=
   ⟨p.2.2, p.2.1⟩
 
@@ -225,7 +225,7 @@ theorem Suspension.Suspension.middleBand_restrict_injective {X : Type*} :
       Suspension.Suspension.mk q.1.1 q.1.2 :=
     congrArg Subtype.val h
   obtain ⟨ht, hx⟩ := (mk_eq_mk_iff _ _ _ _).mp hmk
-  have hp := middleCylinder_height_mo1973_4378 p
+  have hp := middleCylinder_height p
   have hx' : p.1.2 = q.1.2 := by
     rcases hx with h0 | h1 | hx
     · have hz : (p.1.1 : ℝ) = 0 := congrArg Subtype.val h0
@@ -245,7 +245,7 @@ def Suspension.Suspension.middleBandQuotientHomeomorph {X : Type*} [TopologicalS
 def Suspension.Suspension.middleCylinderHomeomorph {X : Type*} [TopologicalSpace X] :
     middleCylinder X ≃ₜ (Set.Ioo (1 / 4 : ℝ) (3 / 4) × X)
     where
-  toFun p := (⟨p.1.1, middleCylinder_height_mo1973_4378 p⟩, p.1.2)
+  toFun p := (⟨p.1.1, middleCylinder_height p⟩, p.1.2)
   invFun p := ⟨(⟨p.1, by constructor <;> linarith [p.1.2.1, p.1.2.2]⟩, p.2), p.1.2.2, p.1.2.1⟩
   left_inv _ := rfl
   right_inv _ := rfl
@@ -297,53 +297,53 @@ instance Suspension.Suspension.suspension_pathConnectedSpace {X : Type*}
   nonempty := inferInstance
   joined p q := (joined_north p).symm.trans (joined_north q)
 
-def Suspension.Suspension.liftFromSurjection_mo1973_4391 {A B S Z : Type*}
+def Suspension.Suspension.liftFromSurjection {A B S Z : Type*}
     (q : A → B) (hq : Function.Surjective q) (F : S × A → Z) (p : S × B) : Z :=
   F (p.1, Function.surjInv hq p.2)
 
-theorem Suspension.Suspension.liftFromSurjection_comp_mo1973_4392
+theorem Suspension.Suspension.liftFromSurjection_comp
     {A B S Z : Type*} (q : A → B) (hq : Function.Surjective q) (F : S × A → Z)
     (hF : ∀ s a b, q a = q b → F (s, a) = F (s, b)) (s : S) (a : A) :
-    liftFromSurjection_mo1973_4391 q hq F (s, q a) = F (s, a) :=
+    liftFromSurjection q hq F (s, q a) = F (s, a) :=
   hF s _ _ (Function.surjInv_eq hq (q a))
 
-theorem Suspension.Suspension.liftFromSurjection_continuous_mo1973_4393
+theorem Suspension.Suspension.liftFromSurjection_continuous
     {A B S Z : Type*} [TopologicalSpace A] [TopologicalSpace B] [TopologicalSpace S]
     [TopologicalSpace Z] [LocallyCompactSpace S] (q : A → B) (hq : Topology.IsQuotientMap q)
     (F : S × A → Z) (hF : ∀ s a b, q a = q b → F (s, a) = F (s, b)) (hcont : Continuous F) :
-    Continuous (liftFromSurjection_mo1973_4391 q hq.surjective F) := by
+    Continuous (liftFromSurjection q hq.surjective F) := by
   apply hq.continuous_lift_prod_right
   convert hcont using 1
   funext p
-  exact liftFromSurjection_comp_mo1973_4392 q hq.surjective F hF p.1 p.2
+  exact liftFromSurjection_comp q hq.surjective F hF p.1 p.2
 
-abbrev Suspension.Suspension.NorthCylinder_mo1973_4394 (X : Type*)
+abbrev Suspension.Suspension.NorthCylinder (X : Type*)
     [TopologicalSpace X] :=
   (fun p : unitInterval × X => Suspension.Suspension.mk p.1 p.2) ⁻¹' northOpen
 
-def Suspension.Suspension.northProjection_mo1973_4395 {X : Type*}
+def Suspension.Suspension.northProjection {X : Type*}
     [TopologicalSpace X] :
-    NorthCylinder_mo1973_4394 X → (northOpen : Set (Suspension.Suspension X)) :=
+    NorthCylinder X → (northOpen : Set (Suspension.Suspension X)) :=
   northOpen.restrictPreimage
     (fun p : unitInterval × X => Suspension.Suspension.mk p.1 p.2)
 
-theorem Suspension.Suspension.northProjection_isQuotientMap_mo1973_4396
+theorem Suspension.Suspension.northProjection_isQuotientMap
     {X : Type*} [TopologicalSpace X] :
-    Topology.IsQuotientMap (northProjection_mo1973_4395 (X := X)) :=
+    Topology.IsQuotientMap (northProjection (X := X)) :=
   isQuotientMap_mk.restrictPreimage_isOpen northOpen_isOpen
 
-def Suspension.Suspension.northCylinderContraction_mo1973_4397 {X : Type*}
-    [TopologicalSpace X] (p : unitInterval × NorthCylinder_mo1973_4394 X) :
+def Suspension.Suspension.northCylinderContraction {X : Type*}
+    [TopologicalSpace X] (p : unitInterval × NorthCylinder X) :
     (northOpen : Set (Suspension.Suspension X)) :=
   ⟨Suspension.Suspension.mk (unitInterval.symm p.1 * p.2.1.1) p.2.1.2,
     by
     change ((unitInterval.symm p.1 * p.2.1.1 : unitInterval) : ℝ) < 3 / 4
     exact lt_of_le_of_lt unitInterval.mul_le_right p.2.2⟩
 
-theorem Suspension.Suspension.northCylinderContraction_respects_mo1973_4398
-    {X : Type*} [TopologicalSpace X] (s : unitInterval) (a b : NorthCylinder_mo1973_4394 X)
-    (h : northProjection_mo1973_4395 a = northProjection_mo1973_4395 b) :
-    northCylinderContraction_mo1973_4397 (s, a) = northCylinderContraction_mo1973_4397 (s, b) := by
+theorem Suspension.Suspension.northCylinderContraction_respects
+    {X : Type*} [TopologicalSpace X] (s : unitInterval) (a b : NorthCylinder X)
+    (h : northProjection a = northProjection b) :
+    northCylinderContraction (s, a) = northCylinderContraction (s, b) := by
   apply Subtype.ext
   have hab :
     Suspension.Suspension.mk a.1.1 a.1.2 =
@@ -362,12 +362,12 @@ theorem Suspension.Suspension.northCylinderContraction_respects_mo1973_4398
         Suspension.Suspension.mk (unitInterval.symm s * b.1.1) b.1.2
     rw [ht, hx]
 
-theorem Suspension.Suspension.northCylinderContraction_continuous_mo1973_4399
+theorem Suspension.Suspension.northCylinderContraction_continuous
     {X : Type*} [TopologicalSpace X] :
-    Continuous (northCylinderContraction_mo1973_4397 (X := X)) := by
+    Continuous (northCylinderContraction (X := X)) := by
   apply Continuous.subtype_mk
   apply
-    continuous_mk.comp (f := fun p : unitInterval × NorthCylinder_mo1973_4394 X =>
+    continuous_mk.comp (f := fun p : unitInterval × NorthCylinder X =>
       (unitInterval.symm p.1 * p.2.1.1, p.2.1.2))
   apply Continuous.prodMk
   · apply Continuous.subtype_mk
@@ -377,35 +377,35 @@ theorem Suspension.Suspension.northCylinderContraction_continuous_mo1973_4399
           (continuous_fst.comp (continuous_subtype_val.comp continuous_snd)))
   · exact continuous_snd.comp (continuous_subtype_val.comp continuous_snd)
 
-def Suspension.Suspension.northContract_mo1973_4400 {X : Type*}
+def Suspension.Suspension.northContract {X : Type*}
     [TopologicalSpace X] :
     unitInterval × (northOpen : Set (Suspension.Suspension X)) →
       (northOpen : Set (Suspension.Suspension X)) :=
-  liftFromSurjection_mo1973_4391 northProjection_mo1973_4395
-    northProjection_isQuotientMap_mo1973_4396.surjective northCylinderContraction_mo1973_4397
+  liftFromSurjection northProjection
+    northProjection_isQuotientMap.surjective northCylinderContraction
 
-theorem Suspension.Suspension.northContract_projection_mo1973_4401 {X : Type*}
-    [TopologicalSpace X] (s : unitInterval) (a : NorthCylinder_mo1973_4394 X) :
-    northContract_mo1973_4400 (s, northProjection_mo1973_4395 a) =
-      northCylinderContraction_mo1973_4397 (s, a) :=
-  liftFromSurjection_comp_mo1973_4392 _ _ _ northCylinderContraction_respects_mo1973_4398 s a
+theorem Suspension.Suspension.northContract_projection {X : Type*}
+    [TopologicalSpace X] (s : unitInterval) (a : NorthCylinder X) :
+    northContract (s, northProjection a) =
+      northCylinderContraction (s, a) :=
+  liftFromSurjection_comp _ _ _ northCylinderContraction_respects s a
 
-theorem Suspension.Suspension.northContract_continuous_mo1973_4402 {X : Type*}
-    [TopologicalSpace X] : Continuous (northContract_mo1973_4400 (X := X)) :=
-  liftFromSurjection_continuous_mo1973_4393 _ northProjection_isQuotientMap_mo1973_4396 _
-    northCylinderContraction_respects_mo1973_4398 northCylinderContraction_continuous_mo1973_4399
+theorem Suspension.Suspension.northContract_continuous {X : Type*}
+    [TopologicalSpace X] : Continuous (northContract (X := X)) :=
+  liftFromSurjection_continuous _ northProjection_isQuotientMap _
+    northCylinderContraction_respects northCylinderContraction_continuous
 
 def Suspension.Suspension.northContraction {X : Type*} [TopologicalSpace X]
     [Nonempty X] :
     ContinuousMap.Homotopy (ContinuousMap.id (northOpen : Set (Suspension.Suspension X)))
       (ContinuousMap.const _ ⟨north, north_mem_northOpen⟩)
     where
-  toFun := northContract_mo1973_4400
-  continuous_toFun := northContract_continuous_mo1973_4402
+  toFun := northContract
+  continuous_toFun := northContract_continuous
   map_zero_left
     q := by
-    obtain ⟨a, rfl⟩ := northProjection_isQuotientMap_mo1973_4396.surjective q
-    rw [northContract_projection_mo1973_4401]
+    obtain ⟨a, rfl⟩ := northProjection_isQuotientMap.surjective q
+    rw [northContract_projection]
     apply Subtype.ext
     change
       Suspension.Suspension.mk (unitInterval.symm 0 * a.1.1) a.1.2 =
@@ -413,8 +413,8 @@ def Suspension.Suspension.northContraction {X : Type*} [TopologicalSpace X]
     simp
   map_one_left
     q := by
-    obtain ⟨a, rfl⟩ := northProjection_isQuotientMap_mo1973_4396.surjective q
-    rw [northContract_projection_mo1973_4401]
+    obtain ⟨a, rfl⟩ := northProjection_isQuotientMap.surjective q
+    rw [northContract_projection]
     apply Subtype.ext
     change Suspension.Suspension.mk (unitInterval.symm 1 * a.1.1) a.1.2 = north
     simp
@@ -424,23 +424,23 @@ instance Suspension.Suspension.northOpen_contractibleSpace {X : Type*}
     ContractibleSpace (northOpen : Set (Suspension.Suspension X)) :=
   (contractible_iff_id_nullhomotopic _).mpr ⟨⟨north, north_mem_northOpen⟩, ⟨northContraction⟩⟩
 
-abbrev Suspension.Suspension.SouthCylinder_mo1973_4406 (X : Type*)
+abbrev Suspension.Suspension.SouthCylinder (X : Type*)
     [TopologicalSpace X] :=
   (fun p : unitInterval × X => Suspension.Suspension.mk p.1 p.2) ⁻¹' southOpen
 
-def Suspension.Suspension.southProjection_mo1973_4407 {X : Type*}
+def Suspension.Suspension.southProjection {X : Type*}
     [TopologicalSpace X] :
-    SouthCylinder_mo1973_4406 X → (southOpen : Set (Suspension.Suspension X)) :=
+    SouthCylinder X → (southOpen : Set (Suspension.Suspension X)) :=
   southOpen.restrictPreimage
     (fun p : unitInterval × X => Suspension.Suspension.mk p.1 p.2)
 
-theorem Suspension.Suspension.southProjection_isQuotientMap_mo1973_4408
+theorem Suspension.Suspension.southProjection_isQuotientMap
     {X : Type*} [TopologicalSpace X] :
-    Topology.IsQuotientMap (southProjection_mo1973_4407 (X := X)) :=
+    Topology.IsQuotientMap (southProjection (X := X)) :=
   isQuotientMap_mk.restrictPreimage_isOpen southOpen_isOpen
 
-def Suspension.Suspension.southCylinderContraction_mo1973_4409 {X : Type*}
-    [TopologicalSpace X] (p : unitInterval × SouthCylinder_mo1973_4406 X) :
+def Suspension.Suspension.southCylinderContraction {X : Type*}
+    [TopologicalSpace X] (p : unitInterval × SouthCylinder X) :
     (southOpen : Set (Suspension.Suspension X)) :=
   ⟨Suspension.Suspension.mk
       (unitInterval.symm (unitInterval.symm p.1 * unitInterval.symm p.2.1.1)) p.2.1.2,
@@ -456,10 +456,10 @@ def Suspension.Suspension.southCylinderContraction_mo1973_4409 {X : Type*}
       unitInterval.le_symm_comm.mpr hle
     exact lt_of_lt_of_le p.2.2 hbound⟩
 
-theorem Suspension.Suspension.southCylinderContraction_respects_mo1973_4410
-    {X : Type*} [TopologicalSpace X] (s : unitInterval) (a b : SouthCylinder_mo1973_4406 X)
-    (h : southProjection_mo1973_4407 a = southProjection_mo1973_4407 b) :
-    southCylinderContraction_mo1973_4409 (s, a) = southCylinderContraction_mo1973_4409 (s, b) := by
+theorem Suspension.Suspension.southCylinderContraction_respects
+    {X : Type*} [TopologicalSpace X] (s : unitInterval) (a b : SouthCylinder X)
+    (h : southProjection a = southProjection b) :
+    southCylinderContraction (s, a) = southCylinderContraction (s, b) := by
   apply Subtype.ext
   have hab :
     Suspension.Suspension.mk a.1.1 a.1.2 =
@@ -481,12 +481,12 @@ theorem Suspension.Suspension.southCylinderContraction_respects_mo1973_4410
           (unitInterval.symm (unitInterval.symm s * unitInterval.symm b.1.1)) b.1.2
     rw [ht, hx]
 
-theorem Suspension.Suspension.southCylinderContraction_continuous_mo1973_4411
+theorem Suspension.Suspension.southCylinderContraction_continuous
     {X : Type*} [TopologicalSpace X] :
-    Continuous (southCylinderContraction_mo1973_4409 (X := X)) := by
+    Continuous (southCylinderContraction (X := X)) := by
   apply Continuous.subtype_mk
   apply
-    continuous_mk.comp (f := fun p : unitInterval × SouthCylinder_mo1973_4406 X =>
+    continuous_mk.comp (f := fun p : unitInterval × SouthCylinder X =>
       (unitInterval.symm (unitInterval.symm p.1 * unitInterval.symm p.2.1.1), p.2.1.2))
   apply Continuous.prodMk
   · apply Continuous.subtype_mk
@@ -498,35 +498,35 @@ theorem Suspension.Suspension.southCylinderContraction_continuous_mo1973_4411
               (continuous_fst.comp (continuous_subtype_val.comp continuous_snd)))))
   · exact continuous_snd.comp (continuous_subtype_val.comp continuous_snd)
 
-def Suspension.Suspension.southContract_mo1973_4412 {X : Type*}
+def Suspension.Suspension.southContract {X : Type*}
     [TopologicalSpace X] :
     unitInterval × (southOpen : Set (Suspension.Suspension X)) →
       (southOpen : Set (Suspension.Suspension X)) :=
-  liftFromSurjection_mo1973_4391 southProjection_mo1973_4407
-    southProjection_isQuotientMap_mo1973_4408.surjective southCylinderContraction_mo1973_4409
+  liftFromSurjection southProjection
+    southProjection_isQuotientMap.surjective southCylinderContraction
 
-theorem Suspension.Suspension.southContract_projection_mo1973_4413 {X : Type*}
-    [TopologicalSpace X] (s : unitInterval) (a : SouthCylinder_mo1973_4406 X) :
-    southContract_mo1973_4412 (s, southProjection_mo1973_4407 a) =
-      southCylinderContraction_mo1973_4409 (s, a) :=
-  liftFromSurjection_comp_mo1973_4392 _ _ _ southCylinderContraction_respects_mo1973_4410 s a
+theorem Suspension.Suspension.southContract_projection {X : Type*}
+    [TopologicalSpace X] (s : unitInterval) (a : SouthCylinder X) :
+    southContract (s, southProjection a) =
+      southCylinderContraction (s, a) :=
+  liftFromSurjection_comp _ _ _ southCylinderContraction_respects s a
 
-theorem Suspension.Suspension.southContract_continuous_mo1973_4414 {X : Type*}
-    [TopologicalSpace X] : Continuous (southContract_mo1973_4412 (X := X)) :=
-  liftFromSurjection_continuous_mo1973_4393 _ southProjection_isQuotientMap_mo1973_4408 _
-    southCylinderContraction_respects_mo1973_4410 southCylinderContraction_continuous_mo1973_4411
+theorem Suspension.Suspension.southContract_continuous {X : Type*}
+    [TopologicalSpace X] : Continuous (southContract (X := X)) :=
+  liftFromSurjection_continuous _ southProjection_isQuotientMap _
+    southCylinderContraction_respects southCylinderContraction_continuous
 
 def Suspension.Suspension.southContraction {X : Type*} [TopologicalSpace X]
     [Nonempty X] :
     ContinuousMap.Homotopy (ContinuousMap.id (southOpen : Set (Suspension.Suspension X)))
       (ContinuousMap.const _ ⟨south, south_mem_southOpen⟩)
     where
-  toFun := southContract_mo1973_4412
-  continuous_toFun := southContract_continuous_mo1973_4414
+  toFun := southContract
+  continuous_toFun := southContract_continuous
   map_zero_left
     q := by
-    obtain ⟨a, rfl⟩ := southProjection_isQuotientMap_mo1973_4408.surjective q
-    rw [southContract_projection_mo1973_4413]
+    obtain ⟨a, rfl⟩ := southProjection_isQuotientMap.surjective q
+    rw [southContract_projection]
     apply Subtype.ext
     change
       Suspension.Suspension.mk
@@ -535,8 +535,8 @@ def Suspension.Suspension.southContraction {X : Type*} [TopologicalSpace X]
     simp
   map_one_left
     q := by
-    obtain ⟨a, rfl⟩ := southProjection_isQuotientMap_mo1973_4408.surjective q
-    rw [southContract_projection_mo1973_4413]
+    obtain ⟨a, rfl⟩ := southProjection_isQuotientMap.surjective q
+    rw [southContract_projection]
     apply Subtype.ext
     change
       Suspension.Suspension.mk

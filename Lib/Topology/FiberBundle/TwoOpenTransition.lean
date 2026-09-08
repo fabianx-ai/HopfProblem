@@ -272,7 +272,7 @@ theorem TwoOpenTransition.isQuotientCoveringMap {X G : Type*} [TopologicalSpace 
     ⟨D.isCoveringMap, fun x => ⟨D.pointU x 1, D.proj_pointU x 1⟩, inferInstance, inferInstance,
       D.proj_eq_iff_mem_orbit⟩
 
-private def TwoOpenTransition.chartPath_mo1973_23734 {E X F : Type*} [TopologicalSpace E]
+private def TwoOpenTransition.chartPath {E X F : Type*} [TopologicalSpace E]
     [TopologicalSpace X] [TopologicalSpace F] {p : E → X} (e : Bundle.Trivialization F p)
     {b c : X} (γ : Path b c) (hγ : ∀ s, γ s ∈ e.baseSet) (v : F) :
     Path (e.toOpenPartialHomeomorph.symm (b, v)) (e.toOpenPartialHomeomorph.symm (c, v))
@@ -282,13 +282,13 @@ private def TwoOpenTransition.chartPath_mo1973_23734 {E X F : Type*} [Topologica
   source' := by simp
   target' := by simp
 
-private theorem TwoOpenTransition.chartPath_monodromy_mo1973_23735 {E X F : Type*}
+private theorem TwoOpenTransition.chartPath_monodromy {E X F : Type*}
     [TopologicalSpace E] [TopologicalSpace X] [TopologicalSpace F] {p : E → X}
     (hp : IsCoveringMap p) (e : Bundle.Trivialization F p) {b c : X} (γ : Path b c)
     (hγ : ∀ s, γ s ∈ e.baseSet) (hb : b ∈ e.baseSet) (hc : c ∈ e.baseSet) (v : F) :
     hp.monodromy (.mk γ) ⟨e.toOpenPartialHomeomorph.symm (b, v), e.proj_symm_apply' hb⟩ =
       ⟨e.toOpenPartialHomeomorph.symm (c, v), e.proj_symm_apply' hc⟩ := by
-  apply hp.monodromy_eq_of_map_eq (.mk (chartPath_mo1973_23734 e γ hγ v))
+  apply hp.monodromy_eq_of_map_eq (.mk (chartPath e γ hγ v))
   apply congrArg Path.Homotopic.Quotient.mk
   ext s
   exact e.proj_symm_apply' (hγ s)
@@ -333,7 +333,7 @@ theorem TwoOpenTransition.monodromy_of_path_U {X G : Type*} [TopologicalSpace X]
     D.isCoveringMap.monodromy (.mk α) (D.fiberPointU b g) = D.fiberPointU c g := by
   have hbase : D.localTrivU.baseSet = D.U := rfl
   exact
-    chartPath_monodromy_mo1973_23735 D.isCoveringMap D.localTrivU α hα
+    chartPath_monodromy D.isCoveringMap D.localTrivU α hα
       (by simpa [hbase] using hα 0) (by simpa [hbase] using hα 1) g
 
 theorem TwoOpenTransition.monodromy_of_path_V {X G : Type*} [TopologicalSpace X]
@@ -342,7 +342,7 @@ theorem TwoOpenTransition.monodromy_of_path_V {X G : Type*} [TopologicalSpace X]
     D.isCoveringMap.monodromy (.mk β) (D.fiberPointV b g) = D.fiberPointV c g := by
   have hbase : D.localTrivV.baseSet = D.V := rfl
   exact
-    chartPath_monodromy_mo1973_23735 D.isCoveringMap D.localTrivV β hβ
+    chartPath_monodromy D.isCoveringMap D.localTrivV β hβ
       (by simpa [hbase] using hβ 0) (by simpa [hbase] using hβ 1) g
 
 theorem TwoOpenTransition.monodromy_trans_U_V {X G : Type*} [TopologicalSpace X]

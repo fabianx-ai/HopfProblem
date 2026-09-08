@@ -100,18 +100,18 @@ theorem EuclideanSphere.isPathConnected_compl_singleton_inter_neg {n : ℕ}
         (by rw [← Module.finrank_eq_rank, finrank_euclideanSpace_fin]; exact Nat.one_lt_ofNat) 0
   · exact ContinuousOn.mono proj.continuousOn_invFun Set.sdiff_subset
 
-private abbrev EuclideanSphere.c_mo1973_3470 {n : ℕ}
+private abbrev EuclideanSphere.c {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :
     Fin 2 → Set ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :=
   Fin.cases { v }ᶜ (fun _ ↦ {-v}ᶜ)
 
-private lemma EuclideanSphere.hc₁_mo1973_3471 {n : ℕ}
+private lemma EuclideanSphere.hc₁ {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :
-    ∀ i, IsOpen (c_mo1973_3470 v i) := by apply Fin.cases <;> simp
+    ∀ i, IsOpen (c v i) := by apply Fin.cases <;> simp
 
-private lemma EuclideanSphere.hc₂_mo1973_3472 {n : ℕ}
+private lemma EuclideanSphere.hc₂ {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :
-    Set.univ ⊆ ⋃ i, c_mo1973_3470 v i := by
+    Set.univ ⊆ ⋃ i, c v i := by
   intro s _
   rcases eq_or_ne s v with rfl | h
   · rw [Set.mem_iUnion]
@@ -127,9 +127,9 @@ private lemma EuclideanSphere.hc₂_mo1973_3472 {n : ℕ}
     use 0
     exact h
 
-private lemma EuclideanSphere.hc₃_mo1973_3473 {n : ℕ}
+private lemma EuclideanSphere.hc₃ {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 2)) :
-    ∀ i j, IsPathConnected (c_mo1973_3470 v i ∩ c_mo1973_3470 v j) := by
+    ∀ i j, IsPathConnected (c v i ∩ c v j) := by
   apply Fin.cases
   · apply Fin.cases
     · simp only [Fin.cases_zero, Set.inter_self]
@@ -145,9 +145,9 @@ private lemma EuclideanSphere.hc₃_mo1973_3473 {n : ℕ}
       simp only [Fin.cases_succ, Set.inter_self]
       exact isPathConnected_compl_singleton (-v)
 
-private lemma EuclideanSphere.hx_mo1973_3474 {n : ℕ}
+private lemma EuclideanSphere.hx {n : ℕ}
     (x : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 1)) :
-    ∃ v, ∀ i : Fin 2, x ∈ c_mo1973_3470 v i := by
+    ∃ v, ∀ i : Fin 2, x ∈ c v i := by
   have ⟨v, hv⟩ := Infinite.exists_notMem_finset {x, -x}
   use v
   apply Fin.cases
@@ -197,10 +197,10 @@ protected theorem EuclideanSphere.simplyConnectedSpace (n : ℕ) :
   constructor
   · infer_instance
   · intro x p
-    let ⟨v, hv⟩ := hx_mo1973_3474 x
+    let ⟨v, hv⟩ := hx x
     have ⟨m, D, hDh, hDr⟩ :=
-      Path.Homotopic.exists_loops_homotopic_concat_of_open_cover (hc₁_mo1973_3471 v)
-        (hc₂_mo1973_3472 v) (hc₃_mo1973_3473 v) hv p
+      Path.Homotopic.exists_loops_homotopic_concat_of_open_cover (hc₁ v)
+        (hc₂ v) (hc₃ v) hv p
     apply Path.Homotopic.trans hDh.symm
     rw [← Path.concat_refl]
     apply Path.Homotopic.concat_hcomp

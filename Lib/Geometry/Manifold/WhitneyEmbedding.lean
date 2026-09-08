@@ -634,7 +634,7 @@ theorem Smale.NativeEuclideanEmbedding.localDifferential_eq {E M : Type*} [Norme
     TangentBundle.continuousLinearMapAt_model_space]
   rfl
 
-private theorem Smale.NativeEuclideanEmbedding.localFiberMap_bijective_mo1973_860 {E M : Type*}
+private theorem Smale.NativeEuclideanEmbedding.localFiberMap_bijective {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (x₀ y : M) (hy : y ∈ (chartAt E x₀).source) :
     Function.Bijective ((FiberBundle.trivializationAt E (TangentSpace 𝓘(ℝ, E)) x₀).symmL ℝ y) := by
@@ -648,7 +648,7 @@ theorem Smale.NativeEuclideanEmbedding.localDifferential_injective {E M : Type*}
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x₀ y : M)
     (hy : y ∈ (chartAt E x₀).source) : Function.Injective (e.localDifferential x₀ y) := by
   rw [e.localDifferential_eq]
-  exact (e.injective_mvfderiv y).comp (localFiberMap_bijective_mo1973_860 x₀ y hy).1
+  exact (e.injective_mvfderiv y).comp (localFiberMap_bijective x₀ y hy).1
 
 theorem Smale.NativeEuclideanEmbedding.localDifferential_range {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -656,7 +656,7 @@ theorem Smale.NativeEuclideanEmbedding.localDifferential_range {E M : Type*}
     (hy : y ∈ (chartAt E x₀).source) : (e.localDifferential x₀ y).range = e.tangentImage y := by
   rw [e.localDifferential_eq]
   apply LinearMap.range_comp_of_range_eq_top
-  exact LinearMap.range_eq_top.mpr (localFiberMap_bijective_mo1973_860 x₀ y hy).2
+  exact LinearMap.range_eq_top.mpr (localFiberMap_bijective x₀ y hy).2
 
 def Smale.NativeEuclideanEmbedding.tangentProjection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]

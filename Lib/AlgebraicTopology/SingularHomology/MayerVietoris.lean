@@ -625,7 +625,7 @@ theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
         (connectingMap_lift_is_cycle hS n z₂ z₁ hz₁ _) :=
   hS.δ_apply (n + 1) n (by simp) z₃ hz₃ z₂ hz₂ z₁ hz₁ _ rfl
 
-theorem SingularMayerVietoris.homology_fst_inl_mo1973_2361
+theorem SingularMayerVietoris.homology_fst_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
@@ -637,7 +637,7 @@ theorem SingularMayerVietoris.homology_fst_inl_mo1973_2361
   rw [CategoryTheory.Limits.biprod.inl_fst, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
-theorem SingularMayerVietoris.homology_snd_inl_mo1973_2362
+theorem SingularMayerVietoris.homology_snd_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
@@ -649,7 +649,7 @@ theorem SingularMayerVietoris.homology_snd_inl_mo1973_2362
   rw [CategoryTheory.Limits.biprod.inl_snd, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
-theorem SingularMayerVietoris.homology_fst_inr_mo1973_2363
+theorem SingularMayerVietoris.homology_fst_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
@@ -661,7 +661,7 @@ theorem SingularMayerVietoris.homology_fst_inr_mo1973_2363
   rw [CategoryTheory.Limits.biprod.inr_fst, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
-theorem SingularMayerVietoris.homology_snd_inr_mo1973_2364
+theorem SingularMayerVietoris.homology_snd_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
@@ -673,7 +673,7 @@ theorem SingularMayerVietoris.homology_snd_inr_mo1973_2364
   rw [CategoryTheory.Limits.biprod.inr_snd, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
-theorem SingularMayerVietoris.homology_biprod_total_mo1973_2365
+theorem SingularMayerVietoris.homology_biprod_total
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (K ⊞ L).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
           ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
@@ -710,7 +710,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
               a.1 +
             (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
               a.2
-        left_inv := homology_biprod_total_mo1973_2365 K L n
+        left_inv := homology_biprod_total K L n
         right_inv
           a := by
           apply Prod.ext
@@ -724,7 +724,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
                           n).hom
                       a.2) =
                 a.1
-            rw [map_add, homology_fst_inl_mo1973_2361, homology_fst_inr_mo1973_2363, add_zero]
+            rw [map_add, homology_fst_inl, homology_fst_inr, add_zero]
           · change
               (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L)
                       n).hom
@@ -735,7 +735,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
                           n).hom
                       a.2) =
                 a.2
-            rw [map_add, homology_snd_inl_mo1973_2362, homology_snd_inr_mo1973_2364, zero_add]
+            rw [map_add, homology_snd_inl, homology_snd_inr, zero_add]
         map_add' a
           b := by
           change (_, _) = (_, _)

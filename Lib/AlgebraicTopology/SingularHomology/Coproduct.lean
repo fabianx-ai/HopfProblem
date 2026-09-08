@@ -154,7 +154,7 @@ theorem Coproduct.sigmaChainComplexMap_inclusion {ι : Type} (X : ι → Type)
   CategoryTheory.Limits.biproduct.ι_desc _ i
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
-def Coproduct.sigmaChainInverseDegree_mo1973_5500 {ι : Type}
+def Coproduct.sigmaChainInverseDegree {ι : Type}
     (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) :
     SingularChains.Chains (Σ i, X i) n →ₗ[ℤ]
       (⨁ fun i => SingularChains.singularComplex (X i)).X n :=
@@ -165,15 +165,15 @@ def Coproduct.sigmaChainInverseDegree_mo1973_5500 {ι : Type}
       (SingularChains.simplexChain (X τ.1) n τ.2)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
-theorem Coproduct.sigmaChainInverseDegree_inclusion_mo1973_5501
+theorem Coproduct.sigmaChainInverseDegree_inclusion
     {ι : Type} (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) (i : ι)
     (σ : SingularChains.SingularSimplex (X i) n) :
-    sigmaChainInverseDegree_mo1973_5500 X n
+    sigmaChainInverseDegree X n
         (SingularChains.simplexChain (Σ i, X i) n ((sigmaInclusion X i).comp σ)) =
       ((CategoryTheory.Limits.biproduct.ι (fun i => SingularChains.singularComplex (X i)) i).f
             n).hom
         (SingularChains.simplexChain (X i) n σ) := by
-  simpa only [sigmaChainInverseDegree_mo1973_5500, SingularChains.chainLift_simplex] using
+  simpa only [sigmaChainInverseDegree, SingularChains.chainLift_simplex] using
     congrArg
       (fun τ : Σ i, SingularChains.SingularSimplex (X i) n =>
         ((CategoryTheory.Limits.biproduct.ι (fun i => SingularChains.singularComplex (X i)) τ.1).f
@@ -182,27 +182,27 @@ theorem Coproduct.sigmaChainInverseDegree_inclusion_mo1973_5501
       (sigmaSimplexEquiv_symm_inclusion X n i σ)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
-theorem Coproduct.sigmaChainInverseDegree_comp_inclusion_mo1973_5502
+theorem Coproduct.sigmaChainInverseDegree_comp_inclusion
     {ι : Type} (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) (i : ι) :
     (SingularChains.singularChainMap (sigmaInclusion X i)).f n ≫
-        ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X n) =
+        ModuleCat.ofHom (sigmaChainInverseDegree X n) =
       (CategoryTheory.Limits.biproduct.ι (fun i => SingularChains.singularComplex (X i)) i).f n := by
   apply ModuleCat.hom_ext
   apply SingularChains.chainMap_ext (X i) n
   intro σ
   change
-    sigmaChainInverseDegree_mo1973_5500 X n
+    sigmaChainInverseDegree X n
         (SingularChains.inducedChain (sigmaInclusion X i) n
           (SingularChains.simplexChain (X i) n σ)) =
       _
-  rw [SingularChains.inducedChain_simplex, sigmaChainInverseDegree_inclusion_mo1973_5501]
+  rw [SingularChains.inducedChain_simplex, sigmaChainInverseDegree_inclusion]
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
 def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     SingularChains.singularComplex (Σ i, X i) ⟶ (⨁ fun i => SingularChains.singularComplex (X i))
     where
-  f n := ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X n)
+  f n := ModuleCat.ofHom (sigmaChainInverseDegree X n)
   comm' n m
     _ := by
     apply sigmaChains_hom_ext X n
@@ -210,7 +210,7 @@ def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
     calc
       _ =
           ((SingularChains.singularChainMap (sigmaInclusion X i)).f n ≫
-              ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X n)) ≫
+              ModuleCat.ofHom (sigmaChainInverseDegree X n)) ≫
             (⨁ fun i => SingularChains.singularComplex (X i)).d n m :=
         (CategoryTheory.Category.assoc _ _ _).symm
       _ =
@@ -222,7 +222,7 @@ def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
               SingularChains.Chains (X i) n ⟶
                 (⨁ fun i => SingularChains.singularComplex (X i)).X n =>
             f ≫ (⨁ fun i => SingularChains.singularComplex (X i)).d n m)
-          (sigmaChainInverseDegree_comp_inclusion_mo1973_5502 X n i))
+          (sigmaChainInverseDegree_comp_inclusion X n i))
       _ =
           (SingularChains.singularComplex (X i)).d n m ≫
             (CategoryTheory.Limits.biproduct.ι (fun i => SingularChains.singularComplex (X i)) i).f
@@ -232,25 +232,25 @@ def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
       _ =
           (SingularChains.singularComplex (X i)).d n m ≫
             ((SingularChains.singularChainMap (sigmaInclusion X i)).f m ≫
-              ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X m)) :=
+              ModuleCat.ofHom (sigmaChainInverseDegree X m)) :=
         (congrArg
             (fun f :
                 SingularChains.Chains (X i) m ⟶
                   (⨁ fun i => SingularChains.singularComplex (X i)).X m =>
               (SingularChains.singularComplex (X i)).d n m ≫ f)
-            (sigmaChainInverseDegree_comp_inclusion_mo1973_5502 X m i)).symm
+            (sigmaChainInverseDegree_comp_inclusion X m i)).symm
       _ =
           ((SingularChains.singularComplex (X i)).d n m ≫
               (SingularChains.singularChainMap (sigmaInclusion X i)).f m) ≫
-            ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X m) :=
+            ModuleCat.ofHom (sigmaChainInverseDegree X m) :=
         (CategoryTheory.Category.assoc _ _ _).symm
       _ =
           ((SingularChains.singularChainMap (sigmaInclusion X i)).f n ≫
               (SingularChains.singularComplex (Σ i, X i)).d n m) ≫
-            ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X m) :=
+            ModuleCat.ofHom (sigmaChainInverseDegree X m) :=
         (congrArg
           (fun f : SingularChains.Chains (X i) n ⟶ SingularChains.Chains (Σ i, X i) m =>
-            f ≫ ModuleCat.ofHom (sigmaChainInverseDegree_mo1973_5500 X m))
+            f ≫ ModuleCat.ofHom (sigmaChainInverseDegree X m))
           ((SingularChains.singularChainMap (sigmaInclusion X i)).comm n m).symm)
       _ = _ := CategoryTheory.Category.assoc _ _ _
 
@@ -262,7 +262,7 @@ theorem Coproduct.sigmaChainComplexInverse_inclusion {ι : Type}
       CategoryTheory.Limits.biproduct.ι (fun i => SingularChains.singularComplex (X i)) i := by
   apply HomologicalComplex.Hom.ext
   funext n
-  exact sigmaChainInverseDegree_comp_inclusion_mo1973_5502 X n i
+  exact sigmaChainInverseDegree_comp_inclusion X n i
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
 theorem Coproduct.sigmaChainComplexMap_comp_inverse {ι : Type} (X : ι → Type)
@@ -306,7 +306,7 @@ theorem Coproduct.homologyFiniteBiproducts :
   CategoryTheory.Limits.HasFiniteBiproducts.of_hasFiniteProducts
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
-theorem Coproduct.homology_π_ι_self_mo1973_5511 {ι : Type} [Finite ι]
+theorem Coproduct.homology_π_ι_self {ι : Type} [Finite ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (i : ι) (a : (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K i) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom a) =
@@ -318,7 +318,7 @@ theorem Coproduct.homology_π_ι_self_mo1973_5511 {ι : Type} [Finite ι]
   exact (congrArg (fun f => f.hom a) h).symm
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
-theorem Coproduct.homology_π_ι_ne_mo1973_5512 {ι : Type} [Finite ι]
+theorem Coproduct.homology_π_ι_ne {ι : Type} [Finite ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) {i j : ι} (hij : i ≠ j)
     (a : (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K j) n).hom
@@ -331,7 +331,7 @@ theorem Coproduct.homology_π_ι_ne_mo1973_5512 {ι : Type} [Finite ι]
   exact (congrArg (fun f => f.hom a) h).symm
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
-theorem Coproduct.homology_biproduct_total_mo1973_5513 {ι : Type}
+theorem Coproduct.homology_biproduct_total {ι : Type}
     [Fintype ι] (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (⨁ K).homology n) :
     ∑ i,
         (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom
@@ -368,7 +368,7 @@ def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
             a :=
             ∑ i,
               (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom (a i)
-          left_inv := homology_biproduct_total_mo1973_5513 K n
+          left_inv := homology_biproduct_total K n
           right_inv
             a := by
             funext i
@@ -379,9 +379,9 @@ def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
                       (a j)) =
                 a i
             rw [map_sum, Finset.sum_eq_single i]
-            · exact homology_π_ι_self_mo1973_5511 K n i (a i)
+            · exact homology_π_ι_self K n i (a i)
             · intro j _ hji
-              exact homology_π_ι_ne_mo1973_5512 K n hji (a j)
+              exact homology_π_ι_ne K n hji (a j)
             · simp
           map_add' a
             b := by

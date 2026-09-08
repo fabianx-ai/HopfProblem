@@ -104,7 +104,7 @@ theorem SingularHomology.CircleTopology.puncturedIntervalInr_isOpenMap :
     IsOpenMap puncturedIntervalInr :=
   (isOpen_Ioo.isOpenMap_subtype_val.subtype_mk _).subtype_mk _
 
-def SingularHomology.CircleTopology.puncturedIntervalSumEquiv_mo1973_4536 :
+def SingularHomology.CircleTopology.puncturedIntervalSumEquiv :
     (Set.Ioo (0 : ℝ) (1 / 2) ⊕ Set.Ioo (1 / 2 : ℝ) 1) ≃
       { t : Set.Ioo (0 : ℝ) 1 // (t : ℝ) ≠ 1 / 2 } :=
   Equiv.ofBijective (Sum.elim puncturedIntervalInl puncturedIntervalInr)
@@ -128,7 +128,7 @@ def SingularHomology.CircleTopology.puncturedIntervalSumEquiv_mo1973_4536 :
 def SingularHomology.CircleTopology.puncturedIntervalHomeomorph :
     { t : Set.Ioo (0 : ℝ) 1 // (t : ℝ) ≠ 1 / 2 } ≃ₜ
       (Set.Ioo (0 : ℝ) (1 / 2) ⊕ Set.Ioo (1 / 2 : ℝ) 1) :=
-  (puncturedIntervalSumEquiv_mo1973_4536.toHomeomorphOfContinuousOpen
+  (puncturedIntervalSumEquiv.toHomeomorphOfContinuousOpen
       (puncturedIntervalInl_continuous.sumElim puncturedIntervalInr_continuous)
       (puncturedIntervalInl_isOpenMap.sumElim puncturedIntervalInr_isOpenMap)).symm
 
@@ -987,17 +987,17 @@ theorem SingularHomology.singularHomologyMap_pointClass {X Y : Type} [Topologica
   rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass, mapCycles_pointCycle]
   rfl
 
-def SingularHomology.pointCycleLift_mo1973_4686 {X : Type} [TopologicalSpace X]
+def SingularHomology.pointCycleLift {X : Type} [TopologicalSpace X]
     (x : X) : ModuleCat.of ℤ ℤ ⟶ (SingularChains.singularComplex X).cycles 0 :=
   (SingularChains.singularComplex X).liftCycles
     ((TopCat.toSSet.obj (TopCat.of X)).ιChainComplex (R := ModuleCat.of ℤ ℤ)
       (SingularChains.simplexIndex X 0 (ContinuousMap.const (SingularChains.Simplex 0) x)))
     0 (by simp) (by simp)
 
-theorem SingularHomology.pointClass_eq_pointCycleLift_mo1973_4687 {X : Type}
+theorem SingularHomology.pointClass_eq_pointCycleLift {X : Type}
     [TopologicalSpace X] (x : X) :
     pointClass x =
-      (SingularChains.singularComplex X).homologyπ 0 ((pointCycleLift_mo1973_4686 x).hom 1) := by
+      (SingularChains.singularComplex X).homologyπ 0 ((pointCycleLift x).hom 1) := by
   rw [pointClass, SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle,
     SingularMayerVietoris.homologyClassOfCycle]
   apply congrArg ((SingularChains.singularComplex X).homologyπ 0).hom
@@ -1019,7 +1019,7 @@ theorem SingularHomology.pointClass_eq_pointCycleLift_mo1973_4687 {X : Type}
 @[simp]
 theorem SingularHomology.pointClass_augmentation {X : Type} [TopologicalSpace X]
     (x : X) : ((TopCat.of X).singularHomology₀ε (ModuleCat.of ℤ ℤ)).hom (pointClass x) = 1 := by
-  rw [pointClass_eq_pointCycleLift_mo1973_4687]
+  rw [pointClass_eq_pointCycleLift]
   exact
     congrArg (fun f => f.hom 1)
       ((TopCat.toSSet.obj (TopCat.of X)).liftCycles_ιChainComplex_homologyπ_homology₀ε
@@ -1058,7 +1058,7 @@ theorem SingularHomology.connectedHomologyZeroEquiv_natural {X Y : Type}
         connectedHomologyZeroEquiv_pointClass, zsmul_eq_mul, mul_one]
       simp
 
-def SingularHomology.trivialFirstEquiv_mo1973_4693 (A B : Type*) [AddCommGroup A]
+def SingularHomology.trivialFirstEquiv (A B : Type*) [AddCommGroup A]
     [AddCommGroup B] [Module ℤ B] [Subsingleton A] : (A × B) ≃ₗ[ℤ] B :=
   ({    toFun a := a.2
         invFun b := (0, b)
@@ -1076,7 +1076,7 @@ def SingularHomology.circleHomologyOneEquiv :
               (Homeomorph.prodUnique (SingularHomology.CircleTopology.Circle) Unit).symm
               1).trans
           (circleProductHomologyEquiv Unit 0)).trans
-      ((trivialFirstEquiv_mo1973_4693 (SingularMayerVietoris.SingularHomology Unit 1)
+      ((trivialFirstEquiv (SingularMayerVietoris.SingularHomology Unit 1)
             (SingularMayerVietoris.SingularHomology Unit 0)).trans
         pointHomologyZeroEquiv)
 

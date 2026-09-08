@@ -383,7 +383,7 @@ lemma _root_.Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero {U : Set ℂ} (h
 lemma _root_.Complex.UnitDisc.shift_den_ne_zero (z w : 𝔻) : 1 + conj (z : ℂ) * w ≠ 0 :=
   (Star.star z * w).one_add_coe_ne_zero
 
-theorem _root_.Complex.UnitDisc.norm_shiftFun_le_mo1973_19129 (z w : 𝔻) :
+theorem _root_.Complex.UnitDisc.norm_shiftFun_le (z w : 𝔻) :
     ‖(z + w : ℂ) / (1 + conj ↑z * w)‖ ≤ (‖(z : ℂ)‖ + ‖(w : ℂ)‖) / (1 + ‖(z : ℂ)‖ * ‖(w : ℂ)‖) := by
   have hz := z.sq_norm_lt_one
   have hw := w.sq_norm_lt_one
@@ -403,46 +403,46 @@ theorem _root_.Complex.UnitDisc.norm_shiftFun_le_mo1973_19129 (z w : 𝔻) :
   any_goals positivity
   simpa using Complex.UnitDisc.shift_den_ne_zero z w
 
-def _root_.Complex.UnitDisc.shiftFun_mo1973_19130 (z w : 𝔻) : 𝔻 :=
+def _root_.Complex.UnitDisc.shiftFun (z w : 𝔻) : 𝔻 :=
   Complex.UnitDisc.mk ((z + w : ℂ) / (1 + conj ↑z * w)) <|
     by
-    refine (Complex.UnitDisc.norm_shiftFun_le_mo1973_19129 _ _).trans_lt ?_
+    refine (Complex.UnitDisc.norm_shiftFun_le _ _).trans_lt ?_
     rw [div_lt_one (by positivity)]
     nlinarith only [z.norm_lt_one, w.norm_lt_one]
 
-theorem _root_.Complex.UnitDisc.coe_shiftFun_mo1973_19131 (z w : 𝔻) :
-    (Complex.UnitDisc.shiftFun_mo1973_19130 z w : ℂ) = (z + w) / (1 + conj ↑z * w) :=
+theorem _root_.Complex.UnitDisc.coe_shiftFun (z w : 𝔻) :
+    (Complex.UnitDisc.shiftFun z w : ℂ) = (z + w) / (1 + conj ↑z * w) :=
   rfl
 
-theorem _root_.Complex.UnitDisc.shiftFun_eq_iff_mo1973_19132 {z w u : 𝔻} :
-    Complex.UnitDisc.shiftFun_mo1973_19130 z w = u ↔ (z + w : ℂ) = u + u * conj ↑z * w := by
-  rw [← Complex.UnitDisc.coe_inj, Complex.UnitDisc.coe_shiftFun_mo1973_19131,
+theorem _root_.Complex.UnitDisc.shiftFun_eq_iff {z w u : 𝔻} :
+    Complex.UnitDisc.shiftFun z w = u ↔ (z + w : ℂ) = u + u * conj ↑z * w := by
+  rw [← Complex.UnitDisc.coe_inj, Complex.UnitDisc.coe_shiftFun,
     div_eq_iff (Complex.UnitDisc.shift_den_ne_zero _ _)]
   ring_nf
 
-theorem _root_.Complex.UnitDisc.shiftFun_neg_apply_shiftFun_mo1973_19133 (z w : 𝔻) :
-    Complex.UnitDisc.shiftFun_mo1973_19130 (-z) (Complex.UnitDisc.shiftFun_mo1973_19130 z w) =
+theorem _root_.Complex.UnitDisc.shiftFun_neg_apply_shiftFun (z w : 𝔻) :
+    Complex.UnitDisc.shiftFun (-z) (Complex.UnitDisc.shiftFun z w) =
       w := by
-  rw [Complex.UnitDisc.shiftFun_eq_iff_mo1973_19132, Complex.UnitDisc.coe_shiftFun_mo1973_19131,
+  rw [Complex.UnitDisc.shiftFun_eq_iff, Complex.UnitDisc.coe_shiftFun,
     add_div_eq_mul_add_div, ← mul_div_assoc, add_div_eq_mul_add_div]
   · simp; ring
   all_goals exact Complex.UnitDisc.shift_den_ne_zero z w
 
 def _root_.Complex.UnitDisc.shift (z : 𝔻) : 𝔻 ≃ 𝔻
     where
-  toFun := Complex.UnitDisc.shiftFun_mo1973_19130 z
-  invFun := Complex.UnitDisc.shiftFun_mo1973_19130 (-z)
-  left_inv := Complex.UnitDisc.shiftFun_neg_apply_shiftFun_mo1973_19133 _
+  toFun := Complex.UnitDisc.shiftFun z
+  invFun := Complex.UnitDisc.shiftFun (-z)
+  left_inv := Complex.UnitDisc.shiftFun_neg_apply_shiftFun _
   right_inv := by
     intro w
-    simpa using Complex.UnitDisc.shiftFun_neg_apply_shiftFun_mo1973_19133 (-z) w
+    simpa using Complex.UnitDisc.shiftFun_neg_apply_shiftFun (-z) w
 
 theorem _root_.Complex.UnitDisc.coe_shift (z w : 𝔻) :
     (Complex.UnitDisc.shift z w : ℂ) = (z + w) / (1 + conj ↑z * w) := by rfl
 
 theorem _root_.Complex.UnitDisc.shift_eq_iff {z w u : 𝔻} :
     Complex.UnitDisc.shift z w = u ↔ (z + w : ℂ) = u + u * conj ↑z * w :=
-  Complex.UnitDisc.shiftFun_eq_iff_mo1973_19132
+  Complex.UnitDisc.shiftFun_eq_iff
 
 theorem _root_.Complex.UnitDisc.symm_shift (z : 𝔻) :
     (Complex.UnitDisc.shift z).symm = Complex.UnitDisc.shift (-z) := by
