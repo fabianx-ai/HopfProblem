@@ -9,6 +9,8 @@ public import Lib.CategoryTheory.Abelian.Injective.CompatibleResolution
 public import Mathlib.CategoryTheory.Abelian.RightDerived
 public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 public import Mathlib.Algebra.Category.Grp.Abelian
+public import Lib.CategoryTheory.Abelian.RightDerived
+public import Mathlib.Algebra.Category.Grp.EpiMono
 public section
 noncomputable section
 universe u v w
@@ -292,5 +294,211 @@ theorem rightDerivedConnecting_naturality
   exact connecting_naturality_of_compatible S S' hS hS' f F n
     IA IB IC j q z haj haq he hM
     IA₂ IB₂ IC₂ j₂ q₂ z₂ haj₂ haq₂ he₂ hM₂
+
+/-- The degree-n coefficient map to the right term followed by the positive
+connecting map is zero. Compute on a compatible triple, use the q computation
+square and the complex boundary zero, and cancel theta at the next left term
+(PD-L23, TEXTBOOK 1580–1582, first PD21). -/
+theorem comp_rightDerivedConnecting (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    (F.rightDerived n).map S.g ≫ F.rightDerivedConnecting hS n = 0 := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  have hqθ : (F.rightDerived n).map S.g ≫ (IC.isoRightDerivedObj F n).hom =
+      (IB.isoRightDerivedObj F n).hom ≫
+        HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map q) n :=
+    InjectiveResolution.isoRightDerivedObj_hom_naturality S.g IB IC q
+      (by simpa using HomologicalComplex.congr_hom haq 0) F n
+  have hzero : HomologicalComplex.homologyMap
+      ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map q) n ≫ hM.δ n (n + 1) rfl = 0 :=
+    hM.comp_δ n (n + 1) rfl
+  apply (cancel_mono (IA.isoRightDerivedObj F (n + 1)).hom).mp
+  rw [Category.assoc, F.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hM]
+  simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id, zero_comp]
+  rw [← Category.assoc, hqθ, Category.assoc, hzero, comp_zero]
+
+/-- The positive connecting map followed by the next left coefficient map
+is zero. The j computation square identifies this with the complex boundary
+zero after postcomposition by theta at the next middle term
+(PD-L23, TEXTBOOK 1580–1582, second PD21). -/
+theorem rightDerivedConnecting_comp (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    F.rightDerivedConnecting hS n ≫ (F.rightDerived (n + 1)).map S.f = 0 := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  have hjθ : (F.rightDerived (n + 1)).map S.f ≫ (IB.isoRightDerivedObj F (n + 1)).hom =
+      (IA.isoRightDerivedObj F (n + 1)).hom ≫
+        HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) (n + 1) :=
+    InjectiveResolution.isoRightDerivedObj_hom_naturality S.f IA IB j
+      (by simpa using HomologicalComplex.congr_hom haj 0) F (n + 1)
+  have hzero : hM.δ n (n + 1) rfl ≫ HomologicalComplex.homologyMap
+      ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) (n + 1) = 0 :=
+    hM.δ_comp n (n + 1) rfl
+  apply (cancel_mono (IB.isoRightDerivedObj F (n + 1)).hom).mp
+  rw [Category.assoc, hjθ,
+    F.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hM]
+  simp only [Category.assoc, Iso.inv_hom_id_assoc, zero_comp]
+  rw [hzero, comp_zero]
+
+/-- The fixed derived coefficient sequence is exact at the middle object
+in every degree. All three theta maps identify the two coefficient arrows
+with the homology sequence; transport its image/kernel equality through that
+short-complex isomorphism (PD-L23, TEXTBOOK 1565–1579, first PD20).
+The ordinary within-degree zero is the additive functor's map of S.zero. -/
+theorem rightDerived_exact₁ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    (S.map (F.rightDerived n)).Exact := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  let e : (S.map (F.rightDerived n)) ≅
+      ShortComplex.mk
+        (HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) n)
+        (HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map q) n)
+        (by rw [← HomologicalComplex.homologyMap_comp, ← Functor.map_comp, z,
+          Functor.map_zero, HomologicalComplex.homologyMap_zero]) :=
+    ShortComplex.isoMk (IA.isoRightDerivedObj F n) (IB.isoRightDerivedObj F n)
+      (IC.isoRightDerivedObj F n)
+      (InjectiveResolution.isoRightDerivedObj_hom_naturality S.f IA IB j
+        (by simpa using HomologicalComplex.congr_hom haj 0) F n).symm
+      (InjectiveResolution.isoRightDerivedObj_hom_naturality S.g IB IC q
+        (by simpa using HomologicalComplex.congr_hom haq 0) F n).symm
+  exact (ShortComplex.exact_iff_of_iso e).mpr (hM.homology_exact₂ n)
+
+/-- The fixed derived sequence is exact at the right object before the
+connecting map. Theta at the middle, right and next left terms identifies
+both arrows with the corresponding complex homology pair; transport its
+image/kernel equality (PD-L23, TEXTBOOK 1565–1579, second PD20). -/
+theorem rightDerived_exact₂ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    (ShortComplex.mk ((F.rightDerived n).map S.g) (F.rightDerivedConnecting hS n)
+      (comp_rightDerivedConnecting F hS n)).Exact := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  let e : ShortComplex.mk ((F.rightDerived n).map S.g) (F.rightDerivedConnecting hS n)
+      (comp_rightDerivedConnecting F hS n) ≅
+      ShortComplex.mk
+        (HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map q) n)
+        (hM.δ n (n + 1) rfl) (hM.comp_δ n (n + 1) rfl) := by
+    refine ShortComplex.isoMk (IB.isoRightDerivedObj F n) (IC.isoRightDerivedObj F n)
+      (IA.isoRightDerivedObj F (n + 1)) ?_ ?_
+    · exact (InjectiveResolution.isoRightDerivedObj_hom_naturality S.g IB IC q
+        (by simpa using HomologicalComplex.congr_hom haq 0) F n).symm
+    · dsimp
+      rw [F.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hM]
+      simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+  exact (ShortComplex.exact_iff_of_iso e).mpr (hM.homology_exact₃ n (n + 1) rfl)
+
+/-- The fixed derived sequence is exact at the next left object after the
+connecting map. Theta at the right, next left and next middle terms identifies
+the positive boundary and coefficient arrow with the corresponding homology
+pair (PD-L23, TEXTBOOK 1565–1579, third PD20). -/
+theorem rightDerived_exact₃ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
+    (ShortComplex.mk (F.rightDerivedConnecting hS n) ((F.rightDerived (n + 1)).map S.f)
+      (rightDerivedConnecting_comp F hS n)).Exact := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  let e : ShortComplex.mk (F.rightDerivedConnecting hS n) ((F.rightDerived (n + 1)).map S.f)
+      (rightDerivedConnecting_comp F hS n) ≅
+      ShortComplex.mk (hM.δ n (n + 1) rfl)
+        (HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) (n + 1))
+        (hM.δ_comp n (n + 1) rfl) := by
+    refine ShortComplex.isoMk (IC.isoRightDerivedObj F n) (IA.isoRightDerivedObj F (n + 1))
+      (IB.isoRightDerivedObj F (n + 1)) ?_ ?_
+    · dsimp
+      rw [F.rightDerivedConnecting_eq hS n IA IB IC j q z haj haq he hM]
+      simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
+    · exact (InjectiveResolution.isoRightDerivedObj_hom_naturality S.f IA IB j
+        (by simpa using HomologicalComplex.congr_hom haj 0) F (n + 1)).symm
+  exact (ShortComplex.exact_iff_of_iso e).mpr (hM.homology_exact₁ n (n + 1) rfl)
+
+/-- The initial degree-zero coefficient map is injective. Nonnegative
+complexes have no incoming differential at zero, so the mapped component
+monomorphism induces a homology monomorphism. The degree-zero theta square
+transports it to the fixed family (PD-L23, TEXTBOOK 1586–1587).
+This initial injection is retained separately from delta-functor assembly. -/
+theorem rightDerived_zero_injective (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
+    {S : ShortComplex C} (hS : S.ShortExact) :
+    Function.Injective ((F.rightDerived 0).map S.f) := by
+  obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
+    sqA,sqB,sqC,IA,IB,IC,hIA,hIB,hIC,ha,hb,hc⟩ :=
+      InjectiveResolution.exists_recursive_injective_presentations S hS
+  obtain ⟨j,q,z,haj,haq,hj,hq,hse,hs⟩ :=
+    InjectiveResolution.strict_sequence_of_recursive_presentations S hS
+      T h0 L R eA eB eC rA rB rC hel her hrl hrr sqA sqB sqC
+      IA IB IC hIA hIB hIC ha hb hc
+  have he := fun i => (hs i).1
+  let sp i := Classical.choice ((InjectiveResolution.exists_presentations_of_compatible_resolutions
+    S hS IA IB IC j q z haj haq he).1 i)
+  let hM := HomologicalComplex.shortExact_of_degreewise_shortExact
+    ((ShortComplex.mk j q z).map (F.mapHomologicalComplex (ComplexShape.up ℕ)))
+    (fun i => ((sp i).map F).shortExact)
+  have hm := (HomologicalComplex.shortExact_iff_degreewise_shortExact _).mp hM 0
+  let : Mono (((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j).f 0) := hm.mono_f
+  let : Mono (HomologicalComplex.homologyMap
+      ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) 0) :=
+    HomologicalComplex.mono_homologyMap_of_mono_of_not_rel _ 0 (by simp)
+  have hjθ : (F.rightDerived 0).map S.f ≫ (IB.isoRightDerivedObj F 0).hom =
+      (IA.isoRightDerivedObj F 0).hom ≫
+        HomologicalComplex.homologyMap ((F.mapHomologicalComplex (ComplexShape.up ℕ)).map j) 0 :=
+    InjectiveResolution.isoRightDerivedObj_hom_naturality S.f IA IB j
+      (by simpa using HomologicalComplex.congr_hom haj 0) F 0
+  have hmθ : Mono ((F.rightDerived 0).map S.f) := mono_of_mono_fac hjθ
+  exact (AddCommGrpCat.mono_iff_injective _).mp hmθ
 
 end CategoryTheory.Functor

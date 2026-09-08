@@ -7208,3 +7208,17 @@ is an evidence command rather than library content.
 -- PD-L22: naturality of the fixed-derived connecting morphism.
 #check CategoryTheory.Functor.rightDerivedConnecting_naturality
 #print axioms CategoryTheory.Functor.rightDerivedConnecting_naturality
+
+-- PD-L23: all fixed-derived exactness positions, boundary zeros and initial injection.
+#check CategoryTheory.Functor.comp_rightDerivedConnecting
+#print axioms CategoryTheory.Functor.comp_rightDerivedConnecting
+#check CategoryTheory.Functor.rightDerivedConnecting_comp
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_comp
+#check CategoryTheory.Functor.rightDerived_exact₁
+#print axioms CategoryTheory.Functor.rightDerived_exact₁
+#check CategoryTheory.Functor.rightDerived_exact₂
+#print axioms CategoryTheory.Functor.rightDerived_exact₂
+#check CategoryTheory.Functor.rightDerived_exact₃
+#print axioms CategoryTheory.Functor.rightDerived_exact₃
+#check CategoryTheory.Functor.rightDerived_zero_injective
+#print axioms CategoryTheory.Functor.rightDerived_zero_injective
