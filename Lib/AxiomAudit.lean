@@ -7262,3 +7262,9 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived
 #check CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app
 #print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app
+
+-- M07-G: canonical native Ext degree zero and original augmentation normalization.
+#check CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda
+#print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda
+#check CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk
+#print axioms CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk

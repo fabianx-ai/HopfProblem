@@ -256,3 +256,67 @@ theorem extFunctorObjIsoRightDerived_hom_app (P : C) {A : C}
   exact congrArg (fun z => (extHomologyIso P J q).hom ≫ z) h₂
 
 end CategoryTheory.Abelian
+
+namespace CategoryTheory.Abelian
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
+
+/-- For fixed P, the canonical natural identification Ext⁰(P,-) ≅ Hom(P,-) is the
+native Ext/right-derived comparison followed by the canonical degree-zero comparison.
+It does not assert equality of separately chosen models
+(cohomological-dimension/TEXTBOOK.md, lines 1763–1766, 1768–1769 and 1773–1776). -/
+noncomputable def extFunctorObjZeroIsoCoyoneda (P : C) :
+    extFunctorObj P 0 ≅ preadditiveCoyoneda.obj (op P) :=
+  extFunctorObjIsoRightDerived P 0 ≪≫
+    (preadditiveCoyoneda.obj (op P)).rightDerivedZeroIsoSelf
+
+end CategoryTheory.Abelian
+
+namespace CategoryTheory.InjectiveResolution
+variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
+local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
+
+set_option backward.isDefEq.respectTransparency false in
+/-- In any injective resolution, the canonical Ext⁰-to-Hom identification sends a
+degree-zero cocycle to its factorization through the original augmentation. The
+augmentation is a kernel, so this factorization is unique
+(cohomological-dimension/TEXTBOOK.md, lines 1763–1766 and 1773–1776). -/
+theorem extFunctorObjZeroIsoCoyoneda_hom_app_extMk (P : C) {A : C}
+    (I : InjectiveResolution A) (f : P ⟶ I.cocomplex.X 0)
+    (hf : f ≫ I.cocomplex.d 0 1 = 0) :
+    (CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda P).hom.app A
+      (I.extMk f 1 rfl hf) ≫ I.ι.f 0 = f := by
+  let F := preadditiveCoyoneda.obj (op P)
+  let K := (F.mapHomologicalComplex (.up ℕ)).obj I.cocomplex
+  let e := extFunctorObjZeroIsoCoyoneda P
+  let α := I.extMk f 1 rfl hf
+  let x := e.hom.app A α
+  let c : K.cycles 0 := (K.sc 0).abCyclesIso.inv ⟨f, by
+    change f ≫ I.cocomplex.d 0 ((ComplexShape.up ℕ).next 0) = 0
+    rw [CochainComplex.next]
+    exact hf⟩
+  have he : e.hom.app A ≫ F.toRightDerivedZero.app A =
+      (extFunctorObjIsoRightDerived P 0).hom.app A := by
+    change ((extFunctorObjIsoRightDerived P 0).hom.app A ≫
+      F.rightDerivedZeroIsoSelf.hom.app A) ≫ F.toRightDerivedZero.app A = _
+    rw [Category.assoc, F.rightDerivedZeroIsoSelf_hom_inv_id_app, Category.comp_id]
+  rw [extFunctorObjIsoRightDerived_hom_app P I 0, I.toRightDerivedZero_eq F] at he
+  have h := ConcreteCategory.congr_hom he α
+  change (I.isoRightDerivedObj F 0).inv
+      (K.homologyπ 0 (I.toRightDerivedZero' F x)) =
+    (I.isoRightDerivedObj F 0).inv ((I.extHomologyIso P 0).hom α) at h
+  have hα : (I.extHomologyIso P 0).hom α = K.homologyπ 0 c :=
+    I.extHomologyIso_hom_extMk P 0 f hf
+  rw [hα] at h
+  have hπ : K.homologyπ 0 (I.toRightDerivedZero' F x) = K.homologyπ 0 c :=
+    (AddCommGrpCat.mono_iff_injective (I.isoRightDerivedObj F 0).inv).mp inferInstance h
+  have hc : I.toRightDerivedZero' F x = c :=
+    (AddCommGrpCat.mono_iff_injective (CochainComplex.isoHomologyπ₀ K).hom).mp
+      inferInstance hπ
+  have hi := congrArg (fun z => K.iCycles 0 z) hc
+  change (I.toRightDerivedZero' F ≫ K.iCycles 0) x = K.iCycles 0 c at hi
+  rw [I.toRightDerivedZero'_comp_iCycles F] at hi
+  have hci : K.iCycles 0 c = f := (K.sc 0).abCyclesIso_inv_apply_iCycles _
+  exact hi.trans hci
+
+end CategoryTheory.InjectiveResolution
