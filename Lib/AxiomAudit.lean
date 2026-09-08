@@ -2396,6 +2396,21 @@ is an evidence command rather than library content.
 #check TopCat.ConstantSheaf.pushforwardHom_isIso
 #print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
 
+/-! ## `Lib.Topology.Sheaves.ConstantSheaf.GlobalSections` -/
+
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_apply
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_apply
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_hom
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_hom
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unit_app
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unit_app
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unique
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unique
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
+
 /-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward` -/
 
 #check TopCat.FiniteClosedPushforward.fiber_mem_preimage
