@@ -196,12 +196,16 @@ deliverable.
    pinned `n = 6` in `Hopf/Recognition.lean`): needs C10's headline (the
    sphere-connectivity bootstrap `sphere_pi_subsingleton_of_lt` is the
    induction through the general `hurewiczLinearEquiv`); blocked until then.
-4. **C12 CellFilling** (`Degree.Sphere.exists_boundary_extension_of_pi`,
-   `Degree.CylinderFilling.exists_filling` in `Hopf/Recognition.lean`):
-   already general-`d`, but depends on the `Degree.DiskCone`/`CylinderBall`/
-   `CylinderBoundary` machinery (the disk-cylinder construction — lane F/D1
-   territory, not landed). Blocked on that dependency; the seam is recorded in
-   the ledger.
+4. **C12 CellFilling** — **LANDED** (`71632be`): `Lib/Topology/Homotopy/
+   CellFilling.lean` holds `Degree.Sphere.homotopic_const_discrete`,
+   `real_unitSphere_finite`, `homotopic_const_of_homeomorph`,
+   `boundary_homotopic_const_of_pi`, `exists_boundary_extension_of_pi`, and
+   `Degree.CylinderFilling.exists_filling`. The disk-cylinder dependencies
+   turned out to be already in `Lib/Topology/Homotopy/{HandleRetraction,
+   CylinderHEP}.lean` (lanes E1/D2) — my earlier "blocked on lane F/D1"
+   assessment was wrong. The pinned `n = 6` instances
+   (`Degree.Sphere.boundary_homotopic_const`, `exists_boundary_extension`) and
+   the `Degree.LowCellLifting.*` consumer stay in `Hopf/Recognition.lean`.
 5. **Rename + doc phase** (the protocol's separate commit): Mathlib-shaped
    names and per-declaration docstrings for all baseline-moved content; the
    `instance`-reduction refactor (the `integerLinearMapModule`/
