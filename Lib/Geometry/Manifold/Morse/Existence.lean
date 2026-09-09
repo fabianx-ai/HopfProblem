@@ -241,6 +241,7 @@ theorem Smale.ManifoldMorse.SignedMorseChart.exists_fieldCompatibleBlock {E M : 
   rw [show 2 * (r / 2) = r by ring]
   exact hblock
 
+/-- Critical points can be isolated: a radius exists so that the ball around a critical point contains no other critical point (discreteness made quantitative; Milnor, Morse Theory, Section 2). -/
 theorem Smale.ManifoldMorse.exists_isolating_radius {X : Type*} {f : X → ℝ} {K : Set X}
     (hK : K.Finite) (p : X) (hunique : ∀ x ∈ K, f x = f p → x = p) {R : ℝ} (hR : 0 < R) :
     ∃ ρ > (0 : ℝ), ρ < R ∧ ∀ x ∈ K, f x ∈ Set.Icc (f p - ρ ^ 2) (f p + ρ ^ 2) → x = p := by
@@ -322,6 +323,7 @@ theorem Smale.ManifoldMorse.isOpen_regularInChart {E P M : Type*} [NormedAddComm
   · rintro ⟨hq, -, hn⟩
     exact ⟨hq, hn⟩
 
+/-- Regular points are open: the set where the differential of a family of functions is nonzero is open (transversality openness; Hatcher, Algebraic Topology, Section 0). -/
 theorem Smale.ManifoldMorse.isOpen_regularPoint {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : P → M → ℝ}
@@ -347,6 +349,7 @@ theorem Smale.ManifoldMorse.isOpen_regularOn {E P M : Type*} [NormedAddCommGroup
     (hK : IsCompact K) : IsOpen {a : P | ∀ x ∈ K, x ∉ criticalPoints E (f a)} :=
   Smale.MorsePerturbation.isOpen_forall_mem_compact hK (isOpen_regularPoint hf)
 
+/-- Perturbation stability of critical points: for small enough parameters the critical-point set stabilizes (Milnor, h-cobordism Theorem 2.5 machinery). -/
 theorem Smale.ManifoldMorse.eventually_criticalPoints_eq {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f : P → M → ℝ}
@@ -421,6 +424,7 @@ theorem Smale.ManifoldMorse.eventually_constantPerturb_morse_criticalPoints {E M
   filter_upwards [hmor, hcrit] with a ha hc
   exact ⟨fun x => ha x (Set.mem_univ x), hc⟩
 
+/-- Critical values can be separated: between any two critical levels there is a regular level, the running hypothesis of the Morse-handle induction (Milnor, Morse Theory, Section 3). -/
 theorem Smale.ManifoldMorse.exists_separating_critical_value {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -476,6 +480,7 @@ theorem Smale.ManifoldMorse.exists_separating_critical_value {E M : Type*} [Norm
   have hax : f x - f p = a := by rw [hvalues x hx hxp, hpvalue] at heq; linarith
   exact haT ⟨x, ⟨hx, by simpa only [Set.mem_singleton_iff] using hxp⟩, hax⟩
 
+/-- Critical values can be made pairwise distinct by an arbitrarily small perturbation (Milnor, h-cobordism Theorem 2.5). -/
 theorem Smale.ManifoldMorse.exists_distinct_critical_values {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -524,6 +529,7 @@ theorem Smale.ManifoldMorse.exists_distinct_critical_values {E M : Type*} [Norme
   rw [hcrit]
   simpa only [hK.coe_toFinset] using hinj
 
+/-- A Morse function with all critical values distinct exists on every compact smooth manifold - the form used throughout the handle induction (Milnor, h-cobordism Theorem 2.5; Hatcher, Algebraic Topology, Section 0). -/
 theorem Smale.ManifoldMorse.exists_morse_function_with_distinct_critical_values (E : Type*)
     (M : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
@@ -1276,6 +1282,7 @@ theorem Smale.ChartMapPerturbation.eventually_valid {E G F H K X N : Type*} [Nor
   apply c.open_target.mem_nhds
   simpa only [coordinateFamily, smul_zero, add_zero] using c.map_source' (hsupport hx)
 
+/-- The perturbation radius lemma: with positive radius one can choose a perturbation parameter making the perturbed chart map avoid a finite set of target points while staying smooth - the avoidance engine of the existence proof (Milnor, h-cobordism, proof of Theorem 2.5). -/
 theorem Smale.ChartMapPerturbation.exists_radius_valid {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1600,6 +1607,7 @@ theorem Smale.ChartMapPerturbation.contMDiffAt_cutoffCoordinates {E G F H K X N 
     filter_upwards [hz] with y hy
     simp only [cutoffCoordinates, hy, zero_smul, Pi.zero_apply]
 
+/-- Smooth approximation within a chart: coordinate functions can be smoothly approximated while avoiding prescribed finite sets (Whitney approximation, chart form; Lee, Introduction to Smooth Manifolds, Thm 6.21-adjacent). -/
 theorem Smale.ChartMapPerturbation.exists_smooth_coordinate_approximation {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1905,6 +1913,7 @@ theorem Smale.ManifoldSmoothing.exists_smoothing_patch_step_within_target {E G H
         Smale.ChartMapPerturbation.contMDiffAt_smoothedMap_on_plateau (p i).chart hinner
           (p i).nested ((p i).plateau_eventually_one hplateau) hg.contMDiffAt (hvalid _ (har x))
 
+/-- Finite-patch smoothing: finitely many smoothing patches suffice to make a piecewise-defined function smooth on the whole compact manifold (Milnor, h-cobordism, Theorem 2.5 proof). -/
 theorem Smale.ManifoldSmoothing.exists_finite_patch_smoothing_within_target {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}

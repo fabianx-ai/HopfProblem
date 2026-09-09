@@ -681,3 +681,10 @@ declarations. Running total: 285 / 4,450 documented.
 CircleProduct.lean: 9 headline docstrings (the circle dictionary: Circle,
 two-arc cover, punctured-interval model, arc-product equivalence, section and
 projection, the Kunneth splitting). Running total: 288 / 4,450 documented.
+
+## Docstring progress (session 5, batch 10)
+
+Existence.lean: 9 headline docstrings (critical-point isolation, regular-point
+openness, perturbation stability, critical-value separation/distinctness, the
+perturbation-radius lemma, smooth approximation, finite-patch smoothing).
+Running total: 297 / 4,450 documented.
