@@ -7463,3 +7463,7 @@ is an evidence command rather than library content.
 -- Arbitrary abelian coefficients on a space homeomorphic to the standard two-sphere.
 #check TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
 #print axioms TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+
+-- The constant integer sheaf has native projective dimension strictly less than three.
+#check TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
+#print axioms TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
