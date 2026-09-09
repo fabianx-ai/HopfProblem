@@ -565,3 +565,24 @@ theorem HigherHurewicz.topNormalization_zero {X : Type} [TopologicalSpace X]
   | m + 3 =>
     show (ThirdHurewicz.composeSimplexHomotopies _ _ _ _ smp) (0, s) = smp s
     exact ThirdHurewicz.composeSimplexHomotopies_zero _ _ _ _ smp s
+
+/-- The class operator at degree `n`: the `ℤ`-linear map from singular `n`-chains to
+`Additive (π_ n X x)` reading off each simplex's normalized class. This is the general-`n`
+form of the per-degree `*SimplexClassOperator`. -/
+def HigherHurewicz.classOperator {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) (n : ℕ) [Nontrivial (Fin n)]
+    (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
+    SingularChains.Chains X n →ₗ[ℤ] Additive (π_ n X x) :=
+  SingularChains.chainLift X n fun smp =>
+    HigherHurewicz.SimplexGeometry.basedSimplexClass (HigherHurewicz.normalizedSimplex x n hpi smp)
+
+/-- The class operator on a single simplex is the class of its normalization. -/
+@[simp]
+theorem HigherHurewicz.classOperator_simplex {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) (n : ℕ) [Nontrivial (Fin n)]
+    (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x))
+    (smp : SingularChains.SingularSimplex X n) :
+    HigherHurewicz.classOperator x n hpi (SingularChains.simplexChain X n smp) =
+      HigherHurewicz.SimplexGeometry.basedSimplexClass
+        (HigherHurewicz.normalizedSimplex x n hpi smp) :=
+  SingularChains.chainLift_simplex X n _ smp
