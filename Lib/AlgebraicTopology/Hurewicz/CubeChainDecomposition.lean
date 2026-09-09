@@ -1131,7 +1131,7 @@ theorem HigherHurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
   have hsign1 : HigherHurewicz.CubeTriangulation.cubeOrientation (1 : Equiv.Perm (Fin 2)) = 1 := by
     simp [HigherHurewicz.CubeTriangulation.cubeOrientation]
   have hsign2 : HigherHurewicz.CubeTriangulation.cubeOrientation (Equiv.swap (0 : Fin 2) 1) = -1 := by
-    simp [HigherHurewicz.CubeTriangulation.cubeOrientation, Equiv.Perm.sign_swap]
+    simp [HigherHurewicz.CubeTriangulation.cubeOrientation]
   rw [hsign1, hsign2]
   simp only [one_zsmul, neg_one_zsmul, sub_eq_add_neg]
 

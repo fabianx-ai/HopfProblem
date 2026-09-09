@@ -4616,4 +4616,79 @@ theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpac
     rw [h₁]
     exact hG
 
+
+theorem ThirdHurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
+    (f : C(SingularChains.Simplex n, X))
+    (g : C((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
+    (h₀ : ∀ s, g (0, s) = f s.val) (x : X) (hf : ∀ s, f s = x) (hg : ∀ u, g u = x)
+    (u : ↥(SecondHurewicz.SimplyConnected.bottomOrSide n)) :
+    SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀ u = x := by
+  rcases u.property with hb | hs
+  · have hu : u = SecondHurewicz.SimplyConnected.bottomInclusion n u.val.2 := by
+      apply Subtype.ext
+      exact Prod.ext hb rfl
+    exact
+      (congrArg (SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀) hu).trans
+        ((SecondHurewicz.SimplyConnected.gluedBoundaryMap_bottomInclusion f g h₀ _).trans (hf _))
+  · have hu : u = SecondHurewicz.SimplyConnected.sideInclusion n (u.val.1, ⟨u.val.2, hs⟩) := by
+      apply Subtype.ext
+      rfl
+    exact
+      (congrArg (SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀) hu).trans
+        ((SecondHurewicz.SimplyConnected.gluedBoundaryMap_sideInclusion f g h₀ _).trans (hg _))
+
+theorem ThirdHurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (H' :
+      SingularChains.SingularSimplex X (n + 1) →
+        C((unitInterval) × SingularChains.Simplex (n + 1), X))
+    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
+    (hc :
+      H' (ContinuousMap.const (SingularChains.Simplex (n + 1)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (n + 1)) x) :
+    SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy H H' h
+        (ContinuousMap.const (SingularChains.Simplex (n + 2)) x) =
+      ContinuousMap.const
+        ((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary (n + 2)) x := by
+  unfold SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy
+  apply
+    (SecondHurewicz.SimplyConnected.glueFaceHomotopies_unique _ _ (ContinuousMap.const _ x)
+        ?_).symm
+  intro i r s
+  change x = H' (ContinuousMap.const (SingularChains.Simplex (n + 1)) x) (r, s)
+  rw [hc]
+  rfl
+
+theorem ThirdHurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+    (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
+    (H' :
+      SingularChains.SingularSimplex X (n + 1) →
+        C((unitInterval) × SingularChains.Simplex (n + 1), X))
+    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h₀ : ∀ smp s, H' smp (0, s) = smp s) (x : X)
+    (hc :
+      H' (ContinuousMap.const (SingularChains.Simplex (n + 1)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (n + 1)) x) :
+    SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy H H' h h₀
+        (ContinuousMap.const (SingularChains.Simplex (n + 2)) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex (n + 2)) x := by
+  unfold SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+  ext u
+  change
+    SecondHurewicz.SimplyConnected.gluedBoundaryMap
+        (ContinuousMap.const (SingularChains.Simplex (n + 2)) x)
+        (SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy H H' h
+          (ContinuousMap.const (SingularChains.Simplex (n + 2)) x))
+        (SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy_zero H H' h h₀
+          (ContinuousMap.const (SingularChains.Simplex (n + 2)) x))
+        (SecondHurewicz.SimplyConnected.cylinderRetraction (n + 2) u) =
+      x
+  apply gluedBoundaryMap_constant_value _ _ _ x (fun _ => rfl)
+  intro v
+  exact
+    congrArg
+      (fun F : C((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary (n + 2), X) =>
+        F v)
+      (coherentFaceBoundaryHomotopy_const H H' h x hc)
+
 end Mathoverflow1973
