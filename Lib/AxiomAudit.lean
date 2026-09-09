@@ -7387,3 +7387,9 @@ is an evidence command rather than library content.
 -- The fixed native Ext boundary's defining right-derived conjugation.
 #check CategoryTheory.Abelian.extConnecting_eq_rightDerived
 #print axioms CategoryTheory.Abelian.extConnecting_eq_rightDerived
+
+-- Both positive boundary squares for the fixed native Ext/global-sections comparison.
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_hom_connecting
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_hom_connecting
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting

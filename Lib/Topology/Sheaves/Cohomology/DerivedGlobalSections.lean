@@ -140,4 +140,91 @@ theorem extFunctorObjIsoDerivedGlobalSections_zero :
   ext A x
   exact (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app X A x).symm
 
+/-- The fixed native Ext comparison with derived global sections commutes with
+the positive connecting maps of every original short exact coefficient sequence
+(textbook M10, C29g). The same compatible resolution triple computes both
+boundaries: a lift satisfies `j(a) = db`, and evaluation sends it to
+`d α(b) = α(db) = α(j(a)) = j α(a)`. The native comparison followed by derived
+evaluation therefore gives the ordinary commuting square, with no new sign. -/
+theorem extFunctorObjIsoDerivedGlobalSections_hom_connecting
+    {S : ShortComplex (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})}
+    (hS : S.ShortExact) (n : ℕ) :
+    extConnecting ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ))) hS n ≫
+      (extFunctorObjIsoDerivedGlobalSections X (n + 1)).hom.app S.X₁ =
+    (extFunctorObjIsoDerivedGlobalSections X n).hom.app S.X₃ ≫
+      (derivedGlobalSectionsDeltaFunctor X).δ hS n := by
+  let P := (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+    (AddCommGrpCat.of (ULift.{u} ℤ))
+  let L := preadditiveCoyoneda.obj (op P)
+  let Γ := (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤)
+  let α : L ≅ Γ := NatIso.ofComponents
+    (fun A => (TopCat.ConstantSheaf.homGlobalSectionsAddEquiv X A).toAddCommGrpIso)
+    (by intro A B f; ext h
+        exact TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality X A h f)
+  have fixedPhi (i : ℕ) :
+      extFunctorObjIsoDerivedGlobalSections X i =
+        extFunctorObjIsoRightDerived P i ≪≫ NatIso.rightDerived α i :=
+    extFunctorObjIsoDerivedGlobalSections_eq X i
+  have factors (i : ℕ) := congrArg Iso.hom (fixedPhi i)
+  simp only [Iso.trans_hom] at factors
+  have native :
+      extConnecting P hS n ≫ (extFunctorObjIsoRightDerived P (n+1)).hom.app S.X₁ =
+        (extFunctorObjIsoRightDerived P n).hom.app S.X₃ ≫ L.rightDerivedConnecting hS n := by
+    dsimp only [L]
+    rw [extConnecting_eq_rightDerived]
+    simp only [Category.assoc, Iso.inv_hom_id_app, Category.comp_id]
+  have derived := NatIso.rightDerived_hom_connecting α hS n
+  rw [factors (n+1), factors n, NatTrans.comp_app, NatTrans.comp_app,
+    derivedGlobalSectionsBoundary]
+  change extConnecting P hS n ≫
+      ((extFunctorObjIsoRightDerived P (n+1)).hom.app S.X₁ ≫
+        (NatIso.rightDerived α (n+1)).hom.app S.X₁) =
+    ((extFunctorObjIsoRightDerived P n).hom.app S.X₃ ≫
+      (NatIso.rightDerived α n).hom.app S.X₃) ≫ Γ.rightDerivedConnecting hS n
+  rw [← Category.assoc, native, Category.assoc, derived, ← Category.assoc]
+
+/-- The inverse of the same fixed Ext/global-sections comparison also commutes
+with positive connecting maps (textbook M10, inverse C29g). Inverse evaluation
+and the inverse native comparison act in reverse order on the same original
+resolution triple. Their lift calculation still uses `j(a) = db`; hence this
+is the inverse ordinary-sign square, not a separately chosen comparison. -/
+theorem extFunctorObjIsoDerivedGlobalSections_inv_connecting
+    {S : ShortComplex (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})}
+    (hS : S.ShortExact) (n : ℕ) :
+    (derivedGlobalSectionsDeltaFunctor X).δ hS n ≫
+      (extFunctorObjIsoDerivedGlobalSections X (n + 1)).inv.app S.X₁ =
+    (extFunctorObjIsoDerivedGlobalSections X n).inv.app S.X₃ ≫
+      extConnecting ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ))) hS n := by
+  let P := (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+    (AddCommGrpCat.of (ULift.{u} ℤ))
+  let L := preadditiveCoyoneda.obj (op P)
+  let Γ := (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤)
+  let α : L ≅ Γ := NatIso.ofComponents
+    (fun A => (TopCat.ConstantSheaf.homGlobalSectionsAddEquiv X A).toAddCommGrpIso)
+    (by intro A B f; ext h
+        exact TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality X A h f)
+  have fixedPhi (i : ℕ) :
+      extFunctorObjIsoDerivedGlobalSections X i =
+        extFunctorObjIsoRightDerived P i ≪≫ NatIso.rightDerived α i :=
+    extFunctorObjIsoDerivedGlobalSections_eq X i
+  have factors (i : ℕ) := congrArg Iso.inv (fixedPhi i)
+  simp only [Iso.trans_inv] at factors
+  have native :
+      L.rightDerivedConnecting hS n ≫ (extFunctorObjIsoRightDerived P (n+1)).inv.app S.X₁ =
+        (extFunctorObjIsoRightDerived P n).inv.app S.X₃ ≫ extConnecting P hS n := by
+    dsimp only [L]
+    rw [extConnecting_eq_rightDerived]
+    simp only [Iso.inv_hom_id_app_assoc]
+  have derived := NatIso.rightDerived_inv_connecting α hS n
+  rw [factors (n+1), factors n, NatTrans.comp_app, NatTrans.comp_app,
+    derivedGlobalSectionsBoundary]
+  change Γ.rightDerivedConnecting hS n ≫
+      ((NatIso.rightDerived α (n+1)).inv.app S.X₁ ≫
+        (extFunctorObjIsoRightDerived P (n+1)).inv.app S.X₁) =
+    ((NatIso.rightDerived α n).inv.app S.X₃ ≫
+      (extFunctorObjIsoRightDerived P n).inv.app S.X₃) ≫ extConnecting P hS n
+  rw [← Category.assoc, derived, Category.assoc, native, ← Category.assoc]
+
 end TopCat.SheafCohomology
