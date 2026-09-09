@@ -181,15 +181,21 @@ deliverable.
      about a single boundary value, so no unification ever sees the whole tower
      term. The attempted direct version hit deterministic timeouts at
      `isDefEq`/`whnf` and was reverted; the design above is the corrected route.
-2. **C11 CubeSphere** (`SixSphereCube.*`, pinned `n = 6`, in
-   `Hopf/Recognition.lean`): the pin is shallow (`CubeInterior := CubeInteriorN 6`,
-   `cubeSphereMap := cubeInteriorSphereHomeomorph ∘ collapseMap`); the
-   general-`n` form needs the general sphere type and
-   `euclideanOnePointSphereHomeomorph` at general `n` — a representation-only
-   generalization, moderate size. Not started.
+2. **C11 CubeSphere** — **LANDED** (`f3d6ba6` baseline + `d597ac4`
+   generalize): `Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean` holds the
+   general-`n` cube-sphere quotient (the pre-existing `Degree.SphereCube.*`
+   block, moved) plus the general-`n` `quotientLoop`, `factorMap`,
+   `factorMap_quotient/_comp_quotient/_unique`, and
+   `factor_cubeChain/cubeCycle/cubeHomologyClass` (the last via the G1
+   `cubeChain` and the factor identity). The pinned `n = 6` content in
+   `Hopf/Recognition.lean` is re-derived as one-line instantiations
+   (`SixSphereCube.StandardSphere = SphereHomology.UnitSphere 6 =
+   Degree.SphereCube.Sphere 6` definitionally); statements unchanged,
+   consumers untouched.
 3. **C13 HopfDegree** (`Degree.sphere_homotopicRel_of_topClass_eq` etc.,
-   pinned `n = 6` in `Hopf/Recognition.lean`): needs C10's headline (for the
-   sphere connectivity bootstrap); blocked until then.
+   pinned `n = 6` in `Hopf/Recognition.lean`): needs C10's headline (the
+   sphere-connectivity bootstrap `sphere_pi_subsingleton_of_lt` is the
+   induction through the general `hurewiczLinearEquiv`); blocked until then.
 4. **C12 CellFilling** (`Degree.Sphere.exists_boundary_extension_of_pi`,
    `Degree.CylinderFilling.exists_filling` in `Hopf/Recognition.lean`):
    already general-`d`, but depends on the `Degree.DiskCone`/`CylinderBall`/
