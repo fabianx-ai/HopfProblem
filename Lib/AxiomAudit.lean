@@ -7453,3 +7453,9 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique
 #check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_eq_fixed
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_eq_fixed
+
+-- Covering dimension bounds actual derived global sections for arbitrary abelian sheaves.
+#check TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
+#print axioms TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
+#check TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
+#print axioms TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
