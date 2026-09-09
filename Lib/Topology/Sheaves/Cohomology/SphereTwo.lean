@@ -2,6 +2,7 @@ module
 public import Lib.Topology.Dimension.SphereTwo
 public import Lib.Topology.Sheaves.Cohomology.CoveringDimension
 public import Mathlib.CategoryTheory.Abelian.Projective.Dimension
+public import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 
 /-!
 # Arbitrary-coefficient cohomology vanishing on a two-sphere
@@ -24,6 +25,7 @@ public section
 noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian TopologicalSpace Opposite
 open TopCat.SheafCohomology
+open CategoryTheory.Sheaf.Leray
 
 variable {B : TopCat.{0}}
 local instance : ((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
@@ -107,5 +109,41 @@ theorem hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
   have nativeSmall : Subsingleton (Ext.{0} P F a) :=
     AddCommGrpCat.subsingleton_of_isZero actualExt
   exact nativeSmall.elim e 0
+
+/-- Higher direct images are abelian sheaves, so the sphere's uniform vanishing
+applies to every `R^b f_* F` in every degree `a > 2`. This is the coefficient
+substitution of Corollary 6.5, equation (11), also for arbitrary source sheaves.
+For the integral sheaf it says that the displayed Leray terms
+`H^a(B, R^b f_* ℤ)` have no columns above two. Here those terms are literal
+derived global sections; no spectral-sequence construction or identification
+with a different cohomology carrier is asserted. -/
+theorem higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+    {Y B : TopCat.{0}}
+    (g : B ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
+    (f : Y ⟶ B) (F : TopCat.Sheaf AddCommGrpCat.{0} Y)
+    (b : ℕ) {a : ℕ} (ha : 2 < a) :
+    IsZero ((((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
+      (op ⊤)).rightDerived a).obj (higherDirectImageSheaf f F b)) :=
+  TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+    g (higherDirectImageSheaf f F b) (Nat.succ_le_of_lt ha)
+
+/-- The degree-three and degree-four vanishings for the first higher direct
+image of the constant integer sheaf, Corollary 6.5, equation (10). Substitute
+the same integral sheaf and `b = 1` into the uniform result, first at three and
+then at four. This pair is the particular high-degree input required by the
+application; the all-degree, arbitrary-coefficient statement is stronger. No
+constancy or constructibility assumption on the higher direct image is needed. -/
+theorem higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
+    {Y B : TopCat.{0}}
+    (g : B ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
+    (f : Y ⟶ B) :
+    IsZero ((((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
+      (op ⊤)).rightDerived 3).obj (higherDirectImageSheaf f (integralSheaf Y) 1)) ∧
+    IsZero ((((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
+      (op ⊤)).rightDerived 4).obj (higherDirectImageSheaf f (integralSheaf Y) 1)) :=
+  ⟨higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+      g f (integralSheaf Y) 1 (by decide),
+    higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+      g f (integralSheaf Y) 1 (by decide)⟩
 
 end TopCat.Sheaf

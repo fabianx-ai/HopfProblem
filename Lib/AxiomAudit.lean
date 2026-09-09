@@ -7467,3 +7467,9 @@ is an evidence command rather than library content.
 -- The constant integer sheaf has native projective dimension strictly less than three.
 #check TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
 #print axioms TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
+
+-- Higher-direct-image coefficients: all high columns and the integral R1 degree-three/four pair.
+#check TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+#print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+#check TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
+#print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
