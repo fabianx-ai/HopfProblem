@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.Degree
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.Topology.OnePointCollapse
 
 set_option maxSynthPendingDepth 3
@@ -211,5 +212,96 @@ theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type
     change G (t, point n) = u (point n)
     rw [← quotient_boundary n 0 (zero_boundary hn), hG]
     exact H.eq_fst t (zero_boundary hn)
+
+/-- The quotient map from the cube to the sphere, as a based loop. -/
+def Degree.SphereCube.quotientLoop (n : ℕ) : GenLoop (Fin n) (Sphere n) (point n) :=
+  ⟨quotient n, quotient_boundary n⟩
+
+@[simp]
+theorem Degree.SphereCube.quotientLoop_val (n : ℕ) : (quotientLoop n).val = quotient n :=
+  rfl
+
+/-- The factor map of a based loop through the sphere quotient: the loop pushed to the sphere
+is the identity on the cube class. -/
+def Degree.SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin n) X x) : C(Sphere n, X) :=
+  (OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n)
+        ⟨0, zero_boundary hn⟩ p.val x (fun u hu => p.property u hu)).comp
+    ((compactification n).symm : C(Sphere n, OnePoint (SixSphereCube.CubeInteriorN n)))
+
+/-- The factor map on the quotient image of a cube point is the loop's value. -/
+@[simp]
+theorem Degree.SphereCube.factorMap_quotient {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x) (u : Fin n → (unitInterval)) :
+    factorMap hn p (quotient n u) = p u := by
+  change
+    OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n)
+        ⟨0, zero_boundary hn⟩ p.val x (fun v hv => p.property v hv)
+        ((compactification n).symm (compactification n (OnePointCollapse.collapse (Cube.boundary (Fin n)) u))) =
+      p u
+  rw [(compactification n).symm_apply_apply]
+  exact OnePointCollapse.collapseLift_apply (Cube.boundary (Fin n))
+    (SixSphereCube.isClosed_cubeBoundaryN n) ⟨0, zero_boundary hn⟩ p.val x
+    (fun v hv => p.property v hv) u
+
+/-- The factor map composed with the quotient is the loop. -/
+@[simp]
+theorem Degree.SphereCube.factorMap_comp_quotient {n : ℕ} (hn : 0 < n) {X : Type*}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x) :
+    (factorMap hn p).comp (quotient n) = p.val := by
+  ext u
+  exact factorMap_quotient hn p u
+
+/-- The factor map is the unique continuous map factoring the loop through the quotient. -/
+theorem Degree.SphereCube.factorMap_unique {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x) (f : C(Sphere n, X))
+    (hf : f.comp (quotient n) = p.val) : f = factorMap hn p := by
+  ext z
+  obtain ⟨u, rfl⟩ := quotient_surjective hn z
+  exact (ContinuousMap.congr_fun hf u).trans (factorMap_quotient hn p u).symm
+
+/-- The factor map on the cube chain: pushing the sphere's cube chain along the factor map
+recovers the loop's cube chain. -/
+theorem Degree.SphereCube.factor_cubeChain {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x) :
+    SingularChains.inducedChain (factorMap hn p) n
+        (HigherHurewicz.cubeChain (quotientLoop n)) =
+      HigherHurewicz.cubeChain p := by
+  simp only [HigherHurewicz.cubeChain]
+  rw [quotientLoop_val, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+    factorMap_comp_quotient]
+
+/-- The factor map on the cube cycle: the sphere's cube cycle maps to the loop's cube cycle. -/
+theorem Degree.SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x)
+    (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
+      SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)
+    (hp : HigherHurewicz.cubeChain p ∈
+      SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
+    SingularMayerVietoris.ModuleHomology.mapCycles
+        (SingularChains.singularChainMap (factorMap hn p)) n
+        ⟨HigherHurewicz.cubeChain (quotientLoop n), hσ⟩ =
+      ⟨HigherHurewicz.cubeChain p, hp⟩ := by
+  apply Subtype.ext
+  rw [SingularMayerVietoris.ModuleHomology.mapCycles_val]
+  exact factor_cubeChain hn p
+
+/-- The factor map on the cube homology class: the sphere's cube class maps to the loop's
+cube class. -/
+theorem Degree.SphereCube.factor_cubeHomologyClass {n : ℕ} (hn : 0 < n) {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x)
+    (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
+      SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)
+    (hp : HigherHurewicz.cubeChain p ∈
+      SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
+    SingularMayerVietoris.singularHomologyMap (factorMap hn p) n
+        (SingularMayerVietoris.ModuleHomology.cycleClass
+          (SingularChains.singularComplex (Sphere n)) n
+          ⟨HigherHurewicz.cubeChain (quotientLoop n), hσ⟩) =
+      SingularMayerVietoris.ModuleHomology.cycleClass
+        (SingularChains.singularComplex X) n ⟨HigherHurewicz.cubeChain p, hp⟩ := by
+  rw [SingularMayerVietoris.singularHomologyMap]
+  rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass]
+  exact congrArg _ (factor_cubeCycle hn p hσ hp)
 
 end Mathoverflow1973

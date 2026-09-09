@@ -1728,7 +1728,7 @@ theorem SixSphereCube.cubeBoundary_nonempty : (Cube.boundary (Fin 6)).Nonempty :
   ⟨0, zero_mem_cubeBoundary⟩
 
 def SixSphereCube.cubeInteriorSphereHomeomorph : OnePoint CubeInterior ≃ₜ StandardSphere :=
-  cubeInteriorHomeomorph.onePointCongr.trans euclideanOnePointSphereHomeomorph
+  Degree.SphereCube.compactification 6
 
 @[simp]
 theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
@@ -1736,8 +1736,7 @@ theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
   rfl
 
 def SixSphereCube.cubeSphereMap : C(Fin 6 → (unitInterval), StandardSphere) :=
-  (cubeInteriorSphereHomeomorph : C(OnePoint CubeInterior, StandardSphere)).comp
-    (collapseMap (Cube.boundary (Fin 6)) isClosed_cubeBoundary)
+  Degree.SphereCube.quotient 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
@@ -1745,24 +1744,19 @@ theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
   rfl
 
 theorem SixSphereCube.cubeSphereMap_boundary (u : Fin 6 → (unitInterval))
-    (hu : u ∈ Cube.boundary (Fin 6)) : cubeSphereMap u = sphereBasePoint := by
-  rw [cubeSphereMap_apply, SixSphereCube.collapse_of_mem _ hu, cubeInteriorSphereHomeomorph_infty]
+    (hu : u ∈ Cube.boundary (Fin 6)) : cubeSphereMap u = sphereBasePoint :=
+  Degree.SphereCube.quotient_boundary 6 u hu
 
 theorem SixSphereCube.cubeSphereMap_eq_iff (u v : Fin 6 → (unitInterval)) :
     cubeSphereMap u = cubeSphereMap v ↔
-      u = v ∨ u ∈ Cube.boundary (Fin 6) ∧ v ∈ Cube.boundary (Fin 6) := by
-  change
-    cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) u) =
-        cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) v) ↔
-      _
-  rw [cubeInteriorSphereHomeomorph.injective.eq_iff, collapse_eq_iff]
+      u = v ∨ u ∈ Cube.boundary (Fin 6) ∧ v ∈ Cube.boundary (Fin 6) :=
+  Degree.SphereCube.quotient_eq_iff 6 u v
 
 theorem SixSphereCube.cubeSphereMap_surjective : Function.Surjective cubeSphereMap :=
-  cubeInteriorSphereHomeomorph.surjective.comp
-    (collapse_surjective (Cube.boundary (Fin 6)) cubeBoundary_nonempty)
+  Degree.SphereCube.quotient_surjective (by decide)
 
 def SixSphereCube.cubeSphereLoop : GenLoop (Fin 6) StandardSphere sphereBasePoint :=
-  ⟨cubeSphereMap, cubeSphereMap_boundary⟩
+  Degree.SphereCube.quotientLoop 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
@@ -1770,37 +1764,24 @@ theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
 
 def SixSphereCube.factorMap {X : Type*} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 6) X x) :
     C(StandardSphere, X) :=
-  (collapseLift (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-        (fun u hu => p.property u hu)).comp
-    (cubeInteriorSphereHomeomorph.symm : C(StandardSphere, OnePoint CubeInterior))
+  Degree.SphereCube.factorMap (by decide) p
 
 @[simp]
 theorem SixSphereCube.factorMap_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (u : Fin 6 → (unitInterval)) :
-    factorMap p (cubeSphereMap u) = p u := by
-  change
-    collapseLift (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-        (fun v hv => p.property v hv)
-        (cubeInteriorSphereHomeomorph.symm
-          (cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) u))) =
-      p u
-  rw [cubeInteriorSphereHomeomorph.symm_apply_apply]
-  exact
-    collapseLift_apply (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-      (fun v hv => p.property v hv) u
+    factorMap p (cubeSphereMap u) = p u :=
+  Degree.SphereCube.factorMap_quotient (by decide) p u
 
 @[simp]
 theorem SixSphereCube.factorMap_comp_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : (factorMap p).comp cubeSphereMap = p.val := by
-  ext u
-  exact factorMap_cubeSphereMap p u
+    (p : GenLoop (Fin 6) X x) : (factorMap p).comp cubeSphereMap = p.val :=
+  Degree.SphereCube.factorMap_comp_quotient (by decide) p
 
 theorem SixSphereCube.factorMap_unique {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (f : C(StandardSphere, X)) (hf : f.comp cubeSphereMap = p.val) :
-    f = factorMap p := by
-  ext z
-  obtain ⟨u, rfl⟩ := cubeSphereMap_surjective z
-  exact (ContinuousMap.congr_fun hf u).trans (factorMap_cubeSphereMap p u).symm
+    f = factorMap p :=
+  Degree.SphereCube.factorMap_unique (by decide) p f hf
+
 
 theorem SixSphereCube.factor_cubeChain {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) :
