@@ -171,6 +171,16 @@ deliverable.
      blocks (`Second/Third/Fourth/Fifth/SixthHurewicz`, ~1,000 declarations
      remaining in `Hopf/Hurewicz.lean`) become one-line instantiations and are
      deleted.
+   - **Engineering note (learned the hard way):** the boundary-plumbing proofs
+     (`topNormalization_endpoint_face_boundary` and downstream) must NOT
+     rewrite into the composed tower expressions in place: the composed
+     homotopy terms are large enough that naive `rw`/`exact`-unification times
+     out at the default heartbeat count. Work instead through small named
+     intermediate lemmas (one per face-value step: `composeSimplexHomotopies_one`,
+     `faceCompatible_apply`, `timeSlice_face`, then the collapse), each stated
+     about a single boundary value, so no unification ever sees the whole tower
+     term. The attempted direct version hit deterministic timeouts at
+     `isDefEq`/`whnf` and was reverted; the design above is the corrected route.
 2. **C11 CubeSphere** (`SixSphereCube.*`, pinned `n = 6`, in
    `Hopf/Recognition.lean`): the pin is shallow (`CubeInterior := CubeInteriorN 6`,
    `cubeSphereMap := cubeInteriorSphereHomeomorph ∘ collapseMap`); the
