@@ -39,6 +39,7 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
 import Lib.Topology.Homotopy.CellAttachment
+import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube

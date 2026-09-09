@@ -64,6 +64,7 @@ Original source lines 237525--248758; see PROVENANCE.md.
 import Hopf.LibShims
 import Hopf.LCP.IntegralHomology
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
+import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.Geometry.Manifold.Morse.CellStructure
@@ -1950,96 +1951,6 @@ theorem Degree.Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
   · exact piFour_subsingleton x
   · exact piFive_subsingleton x
 
-theorem Degree.Sphere.homotopic_const_discrete {Z X : Type} [TopologicalSpace Z]
-    [DiscreteTopology Z] [TopologicalSpace X] [PathConnectedSpace X] (u : C(Z, X)) (x : X) :
-    u.Homotopic (ContinuousMap.const Z x) := by
-  refine
-    ⟨{  toFun := fun p => (PathConnectedSpace.somePath (u p.2) x) p.1
-        continuous_toFun :=
-          continuous_prod_of_discrete_right.mpr
-            (fun z => (PathConnectedSpace.somePath (u z) x).continuous)
-        map_zero_left := fun z => (PathConnectedSpace.somePath (u z) x).source
-        map_one_left := fun z => (PathConnectedSpace.somePath (u z) x).target }⟩
-
-theorem Degree.Sphere.real_unitSphere_finite : (Metric.sphere (0 : ℝ) 1).Finite := by
-  apply (Set.toFinite ({1, -1} : Set ℝ)).subset
-  intro x hx
-  have h : |x| = |(1 : ℝ)| := by simpa using mem_sphere_zero_iff_norm.mp hx
-  rcases abs_eq_abs.mp h with h | h <;> simp [h]
-
-theorem Degree.Sphere.homotopic_const_of_homeomorph {Z W X : Type} [TopologicalSpace Z]
-    [TopologicalSpace W] [TopologicalSpace X] (e : Z ≃ₜ W) (u : C(Z, X)) (x : X)
-    (h : (u.comp (e.symm : C(W, Z))).Homotopic (ContinuousMap.const W x)) :
-    u.Homotopic (ContinuousMap.const Z x) := by
-  have hh := h.comp (ContinuousMap.Homotopic.refl (e : C(Z, W)))
-  convert hh using 1
-  · apply ContinuousMap.ext
-    intro z
-    exact (congrArg u (e.symm_apply_apply z)).symm
-  · rfl
-
-theorem Degree.Sphere.boundary_homotopic_const_of_pi {V : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type} [TopologicalSpace X]
-    [PathConnectedSpace X] {d : ℕ} (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V ≤ d) (u : C(Degree.DiskCylinder.Sphere (E := V), X)) (x : X) :
-    u.Homotopic (ContinuousMap.const _ x) := by
-  classical
-    cases subsingleton_or_nontrivial V with
-  | inl
-    h =>
-    have hempty (s : Degree.DiskCylinder.Sphere (E := V)) : False :=
-      Degree.UnitSphereEquiv.vector_ne_zero s (Subsingleton.elim _ _)
-    have he : u = ContinuousMap.const _ x := ContinuousMap.ext (fun s => (hempty s).elim)
-    rw [he]
-  | inr h =>
-    by_cases hd1 : Module.finrank ℝ V = 1
-    · obtain ⟨L⟩ :=
-        FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-          (show Module.finrank ℝ V = Module.finrank ℝ ℝ by simpa using hd1)
-      let e := Degree.UnitSphereEquiv.homeomorph L
-      let : Finite (Degree.DiskCylinder.Sphere (E := ℝ)) := real_unitSphere_finite.to_subtype
-      let : Finite (Degree.DiskCylinder.Sphere (E := V)) := Finite.of_injective e e.injective
-      exact homotopic_const_discrete u x
-    · have hdpos : 0 < Module.finrank ℝ V := Module.finrank_pos
-      let n := Module.finrank ℝ V - 1
-      have hn : 0 < n := by dsimp [n]; omega
-      have hnd : n < d := by dsimp [n]; omega
-      obtain ⟨L⟩ :=
-        FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-          (show Module.finrank ℝ V = Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1)))
-            by
-            simp only [finrank_euclideanSpace, Fintype.card_fin]
-            dsimp [n]
-            omega)
-      let e := Degree.UnitSphereEquiv.homeomorph L
-      let v : C(Degree.SphereCube.Sphere n, X) := u.comp (e.symm : C(_, _))
-      let := hpi n hn hnd (v (Degree.SphereCube.point n))
-      obtain ⟨H⟩ := Degree.SphereCube.homotopicRel_const_of_subsingleton hn v
-      have hstart : v.Homotopic (ContinuousMap.const _ (v (Degree.SphereCube.point n))) :=
-        ⟨H.toHomotopy⟩
-      have hv : v.Homotopic (ContinuousMap.const _ x) :=
-        hstart.trans
-          ⟨(PathConnectedSpace.somePath (v (Degree.SphereCube.point n)) x).toHomotopyConst⟩
-      exact homotopic_const_of_homeomorph e u x hv
-
-theorem Degree.Sphere.exists_boundary_extension_of_pi {V : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type} [TopologicalSpace X]
-    [PathConnectedSpace X] {d : ℕ} (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V ≤ d) (u : C(Degree.DiskCylinder.Sphere (E := V), X)) (x : X) :
-    ∃ v : C(Degree.DiskCylinder.Disk (E := V), X),
-      (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x := by
-  classical
-    cases isEmpty_or_nonempty (Degree.DiskCylinder.Sphere (E := V)) with
-  | inl h => exact ⟨ContinuousMap.const _ x, fun s => isEmptyElim s, rfl⟩
-  | inr h =>
-    let s0 : Degree.DiskCylinder.Sphere (E := V) := Classical.choice h
-    obtain ⟨H⟩ := (boundary_homotopic_const_of_pi hpi hd u x).symm
-    let G := H.toContinuousMap
-    have h0 : ∀ s, G (0, s) = x := H.map_zero_left
-    refine ⟨Degree.DiskCone.extension s0 G x h0, ?_, Degree.DiskCone.extension_center s0 G x h0⟩
-    intro s
-    exact (Degree.DiskCone.extension_boundary s0 G x h0 s).trans (H.map_one_left s)
-
 theorem Degree.Sphere.boundary_homotopic_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (hd : Module.finrank ℝ V ≤ 6)
     (u : C(Degree.DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
@@ -2053,44 +1964,6 @@ theorem Degree.Sphere.exists_boundary_extension {V : Type} [NormedAddCommGroup V
     ∃ v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
       (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x :=
   exists_boundary_extension_of_pi (fun _ hn hn6 => pi_subsingleton hn hn6) hd u x
-
-theorem Degree.CylinderFilling.exists_filling {V X : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace X] [PathConnectedSpace X] {d : ℕ}
-    (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V + 1 ≤ d) (f g : C(Degree.DiskCylinder.Disk (E := V), X))
-    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
-    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
-    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) (x : X) :
-    ∃ G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), X),
-      (∀ z, G (0, z) = f z) ∧
-        (∀ z, G (1, z) = g z) ∧ ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s) := by
-  let b := Degree.CylinderBoundary.glued f g H h0 h1
-  let e := Degree.CylinderBall.boundaryHomeomorph (V := V)
-  let u :=
-    b.comp
-      (e.symm : C(Degree.DiskCylinder.Sphere (E := ℝ × V), Degree.CylinderBall.boundary (V := V)))
-  have hdim : Module.finrank ℝ (ℝ × V) ≤ d := by
-    simpa only [Module.finrank_prod, Module.finrank_self, Nat.add_comm] using hd
-  obtain ⟨v, hv, _⟩ := Degree.Sphere.exists_boundary_extension_of_pi hpi hdim u x
-  let G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), X) :=
-    v.comp (Degree.CylinderBall.homeomorph (V := V) : C(_, _))
-  have hb (p : Degree.CylinderBall.boundary (V := V)) : G p.val = b p := by
-    change v (Degree.DiskCylinder.boundaryToDisk (Degree.CylinderBall.boundaryHomeomorph p)) = b p
-    exact
-      (hv (Degree.CylinderBall.boundaryHomeomorph p)).trans
-        (congrArg b (Degree.CylinderBall.boundaryHomeomorph.symm_apply_apply p))
-  refine ⟨G, ?_, ?_, ?_⟩
-  · intro z
-    exact
-      (hb (Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z))).trans
-        (Degree.CylinderBoundary.glued_bottom f g H h0 h1 z)
-  · intro z
-    exact
-      (hb (Degree.CylinderBoundary.top z)).trans (Degree.CylinderBoundary.glued_top f g H h0 h1 z)
-  · intro t s
-    exact
-      (hb (Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (t, s)))).trans
-        (Degree.CylinderBoundary.glued_side f g H h0 h1 t s)
 
 theorem Degree.LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
     [PathConnectedSpace Y] (F : C(SixSphereCube.StandardSphere, Y))
