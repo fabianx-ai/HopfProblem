@@ -5,6 +5,7 @@ public import Mathlib.Topology.Sheaves.Abelian
 public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
 public import Lib.Topology.Sheaves.ConstantSheaf.GlobalSections
 public import Lib.CategoryTheory.Abelian.RightDerived
+public import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
 /-!
 # Derived global sections on an arbitrary space
 
@@ -226,5 +227,93 @@ theorem extFunctorObjIsoDerivedGlobalSections_inv_connecting
     ((NatIso.rightDerived α n).inv.app S.X₃ ≫
       (extFunctorObjIsoRightDerived P n).inv.app S.X₃) ≫ extConnecting P hS n
   rw [← Category.assoc, derived, Category.assoc, native, ← Category.assoc]
+
+/-- The fixed native Ext comparison is a morphism to the derived global-sections
+delta functor (textbook M10, C29g and its assembly). Its degree maps are the
+already constructed comparison, and its commutation field uses the positive
+boundary square for every original coefficient short exact sequence. -/
+def extDerivedGlobalSectionsHom : CohomologicalDeltaFunctor.Hom
+    (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ)))) (derivedGlobalSectionsDeltaFunctor X) where
+  app q := (extFunctorObjIsoDerivedGlobalSections X q).hom
+  comm h q := extFunctorObjIsoDerivedGlobalSections_hom_connecting X h q
+
+/-- The inverse fixed comparison is a delta morphism in the reverse direction
+(textbook M10). The same inverse degree maps and inverse positive boundary
+squares are used; no alternative comparison or degreewise sign is chosen. -/
+def extDerivedGlobalSectionsInv : CohomologicalDeltaFunctor.Hom
+    (derivedGlobalSectionsDeltaFunctor X)
+    (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ)))) where
+  app q := (extFunctorObjIsoDerivedGlobalSections X q).inv
+  comm h q := extFunctorObjIsoDerivedGlobalSections_inv_connecting X h q
+
+/-- Every whole degree natural transformation of the forward delta morphism is
+the fixed native Ext/global-sections comparison (textbook M10 assembly). -/
+theorem extDerivedGlobalSectionsHom_app (n : ℕ) :
+    (extDerivedGlobalSectionsHom X).app n =
+      (extFunctorObjIsoDerivedGlobalSections X n).hom := by
+  unfold extDerivedGlobalSectionsHom
+  rfl
+
+/-- Every whole degree natural transformation of the reverse delta morphism is
+the inverse of the same fixed comparison (textbook M10 assembly). -/
+theorem extDerivedGlobalSectionsInv_app (n : ℕ) :
+    (extDerivedGlobalSectionsInv X).app n =
+      (extFunctorObjIsoDerivedGlobalSections X n).inv := by
+  unfold extDerivedGlobalSectionsInv
+  rfl
+
+/-- Forward comparison followed by inverse comparison is the identity on the
+native Ext delta functor, as a whole delta morphism (textbook M10). -/
+theorem extDerivedGlobalSectionsHom_comp_inv :
+    CohomologicalDeltaFunctor.Hom.comp (extDerivedGlobalSectionsHom X) (extDerivedGlobalSectionsInv X) =
+      CohomologicalDeltaFunctor.Hom.id (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+        (AddCommGrpCat.of (ULift.{u} ℤ)))) := by
+  apply CohomologicalDeltaFunctor.Hom.ext
+  intro q
+  rw [CohomologicalDeltaFunctor.Hom.comp_app, CohomologicalDeltaFunctor.Hom.id_app, extDerivedGlobalSectionsHom_app,
+    extDerivedGlobalSectionsInv_app]
+  exact (extFunctorObjIsoDerivedGlobalSections X q).hom_inv_id
+
+/-- Inverse comparison followed by forward comparison is the identity on actual
+derived global sections, as a whole delta morphism (textbook M10). -/
+theorem extDerivedGlobalSectionsInv_comp_hom :
+    CohomologicalDeltaFunctor.Hom.comp (extDerivedGlobalSectionsInv X) (extDerivedGlobalSectionsHom X) =
+      CohomologicalDeltaFunctor.Hom.id (derivedGlobalSectionsDeltaFunctor X) := by
+  apply CohomologicalDeltaFunctor.Hom.ext
+  intro q
+  rw [CohomologicalDeltaFunctor.Hom.comp_app, CohomologicalDeltaFunctor.Hom.id_app, extDerivedGlobalSectionsInv_app,
+    extDerivedGlobalSectionsHom_app]
+  exact (extFunctorObjIsoDerivedGlobalSections X q).inv_hom_id
+
+/-- The forward delta morphism has the fixed degree-zero component: native
+evaluation followed by the inverse canonical derived normalization. This is
+the textbook `κ⁻¹ ε`, with the same evaluation and normalization as in M09. -/
+theorem extDerivedGlobalSectionsHom_app_zero :
+    (extDerivedGlobalSectionsHom X).app 0 =
+      (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫
+        (derivedGlobalSectionsDegreeZeroIso X).inv := by
+  rw [extDerivedGlobalSectionsHom_app]
+  apply (cancel_mono (derivedGlobalSectionsDegreeZeroIso X).hom).mp
+  simpa only [Category.assoc, Iso.inv_hom_id, Category.comp_id] using
+    extFunctorObjIsoDerivedGlobalSections_zero X
+
+/-- Any other native Ext to derived-global-sections delta morphism with the same
+degree-zero normalization equals the constructed comparison (textbook M10,
+final canonicity statement). Universality of the Ext SOURCE verifies uniqueness
+after construction; it neither defines the comparison nor replaces its boundary
+calculation. -/
+theorem extDerivedGlobalSectionsHom_unique
+    (η : CohomologicalDeltaFunctor.Hom (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ)))) (derivedGlobalSectionsDeltaFunctor X))
+    (hη : η.app 0 =
+      (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫
+        (derivedGlobalSectionsDegreeZeroIso X).inv) :
+    η = extDerivedGlobalSectionsHom X :=
+  (ofExt_isUniversal
+    ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ)))).hom_ext
+    (hη.trans (extDerivedGlobalSectionsHom_app_zero X).symm)
 
 end TopCat.SheafCohomology

@@ -7393,3 +7393,21 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_hom_connecting
 #check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting
 #print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting
+
+-- The fixed native Ext/derived-sections delta isomorphism and source-normalized canonicity.
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv_app
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv_app
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_comp_inv
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_comp_inv
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv_comp_hom
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv_comp_hom
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app_zero
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app_zero
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
