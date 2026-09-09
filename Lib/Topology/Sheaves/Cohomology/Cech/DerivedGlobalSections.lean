@@ -145,4 +145,139 @@ theorem cechDerivedGlobalSectionsHom_unique
   (cechCohomologyDeltaFunctor_effaceable X).isUniversal.hom_ext
     (hη.trans (cechDerivedGlobalSectionsHom_app_zero X).symm)
 
+/-!
+## The original two-source comparison
+
+Čech universality extends the fixed identification with literal global sections
+to the original forward comparison C30. Independently, universality of actual
+derived global sections extends the inverse degree-zero identification.
+Each composite extends its own source identity in degree zero; uniqueness from
+that source gives its whole delta-morphism identity. Thus every degree is a
+natural isomorphism, proving the textbook comparison statement (4). Both original
+morphisms retain all coefficient naturalities and original positive connecting
+squares. Any other normalized comparison equals the original forward morphism.
+Only afterward is this comparison identified with the earlier fixed Ext composite
+(textbook M14, lines 1880–1891 through “sections must be (C30).”).
+No Godement comparison is used in this construction or its canonicity.
+-/
+
+/-- The original forward comparison C30, selected by Čech-source universality
+from χ followed by κ inverse over the same literal global-sections functor. -/
+def cechToDerivedGlobalSections : CategoryTheory.CohomologicalDeltaFunctor.Hom
+    (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X) :=
+  (cechCohomologyDeltaFunctor_effaceable X).isUniversal.extend
+    (derivedGlobalSectionsDeltaFunctor X)
+    ((cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+      (derivedGlobalSectionsDegreeZeroIso X).inv)
+
+/-- The original reverse comparison, selected independently by derived-source
+universality from κ followed by χ inverse. -/
+def derivedGlobalSectionsToCech : CategoryTheory.CohomologicalDeltaFunctor.Hom
+    (derivedGlobalSectionsDeltaFunctor X) (cechCohomologyDeltaFunctor X) :=
+  (derivedGlobalSectionsIsUniversal X).extend (cechCohomologyDeltaFunctor X)
+    ((derivedGlobalSectionsDegreeZeroIso X).hom ≫
+      (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv)
+
+/-- The original forward comparison is the fixed identification with global
+sections in whole degree zero, not merely at individual coefficients. -/
+theorem cechToDerivedGlobalSections_app_zero :
+    (cechToDerivedGlobalSections X).app 0 =
+      (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+        (derivedGlobalSectionsDegreeZeroIso X).inv := by
+  unfold cechToDerivedGlobalSections
+  exact (cechCohomologyDeltaFunctor_effaceable X).isUniversal.extend_app_zero
+    (derivedGlobalSectionsDeltaFunctor X)
+    ((cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+      (derivedGlobalSectionsDegreeZeroIso X).inv)
+
+/-- The independently selected reverse comparison extends the inverse fixed
+identification with global sections in whole degree zero. -/
+theorem derivedGlobalSectionsToCech_app_zero :
+    (derivedGlobalSectionsToCech X).app 0 =
+      (derivedGlobalSectionsDegreeZeroIso X).hom ≫
+        (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv := by
+  unfold derivedGlobalSectionsToCech
+  exact (derivedGlobalSectionsIsUniversal X).extend_app_zero
+    (cechCohomologyDeltaFunctor X)
+    ((derivedGlobalSectionsDegreeZeroIso X).hom ≫
+      (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv)
+
+/-- Forward followed by reverse is the whole identity on Čech cohomology:
+cancel κ then χ in degree zero and apply Čech-source uniqueness. -/
+theorem cechToDerivedGlobalSections_comp_reverse :
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+      (cechToDerivedGlobalSections X) (derivedGlobalSectionsToCech X) =
+        CategoryTheory.CohomologicalDeltaFunctor.Hom.id (cechCohomologyDeltaFunctor X) := by
+  apply (cechCohomologyDeltaFunctor_effaceable X).isUniversal.hom_ext
+  erw [CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app,
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app,
+    cechToDerivedGlobalSections_app_zero, derivedGlobalSectionsToCech_app_zero]
+  erw [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id]
+
+/-- Reverse followed by forward is independently the whole identity on derived
+global sections: cancel χ then κ and apply derived-source uniqueness. -/
+theorem derivedGlobalSectionsToCech_comp_forward :
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+      (derivedGlobalSectionsToCech X) (cechToDerivedGlobalSections X) =
+        CategoryTheory.CohomologicalDeltaFunctor.Hom.id (derivedGlobalSectionsDeltaFunctor X) := by
+  apply (derivedGlobalSectionsIsUniversal X).hom_ext
+  erw [CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app,
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app,
+    derivedGlobalSectionsToCech_app_zero, cechToDerivedGlobalSections_app_zero]
+  erw [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id]
+
+/-- Every degree of C30 is a coefficient-natural isomorphism, with the original
+forward and reverse morphisms as its arrows. Both independently proved whole
+identities supply its inverse laws, proving the comparison statement (4). -/
+def cechCohomologyIsoDerivedGlobalSections (n : ℕ) :
+    ((cechCohomologyDeltaFunctor X).T n).obj ≅
+      ((derivedGlobalSectionsDeltaFunctor X).T n).obj := by
+  have cDegree := congrArg (fun θ => θ.app n) (cechToDerivedGlobalSections_comp_reverse X)
+  erw [CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app,
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app] at cDegree
+  have dDegree := congrArg (fun θ => θ.app n) (derivedGlobalSectionsToCech_comp_forward X)
+  erw [CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app,
+    CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app] at dDegree
+  exact
+    { hom := (cechToDerivedGlobalSections X).app n
+      inv := (derivedGlobalSectionsToCech X).app n
+      hom_inv_id := cDegree
+      inv_hom_id := dDegree }
+
+/-- The natural isomorphism's entire forward arrow is the original C30 map;
+its coefficient components require no unfolding of the selected comparison. -/
+theorem cechCohomologyIsoDerivedGlobalSections_hom (n : ℕ) :
+    (cechCohomologyIsoDerivedGlobalSections X n).hom =
+      (cechToDerivedGlobalSections X).app n := by
+  unfold cechCohomologyIsoDerivedGlobalSections
+  rfl
+
+/-- The natural isomorphism's entire inverse arrow is the independently selected
+derived-to-Čech map, also publicly available at every coefficient component. -/
+theorem cechCohomologyIsoDerivedGlobalSections_inv (n : ℕ) :
+    (cechCohomologyIsoDerivedGlobalSections X n).inv =
+      (derivedGlobalSectionsToCech X).app n := by
+  unfold cechCohomologyIsoDerivedGlobalSections
+  rfl
+
+/-- Canonicity: any other delta morphism equal to the fixed global-sections
+identification in degree zero is C30, by Čech-source uniqueness. -/
+theorem cechToDerivedGlobalSections_unique
+    (η : CategoryTheory.CohomologicalDeltaFunctor.Hom
+      (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X))
+    (hη : η.app 0 =
+      (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
+        (derivedGlobalSectionsDegreeZeroIso X).inv) :
+    η = cechToDerivedGlobalSections X :=
+  (cechCohomologyDeltaFunctor_effaceable X).isUniversal.hom_ext
+    (hη.trans (cechToDerivedGlobalSections_app_zero X).symm)
+
+/-- The original two-source comparison is the same normalized forward morphism
+as the earlier fixed Ext factorization. That factorization was not used to
+select these original maps or prove either original composite identity. -/
+theorem cechToDerivedGlobalSections_eq_fixed :
+    cechToDerivedGlobalSections X = cechDerivedGlobalSectionsHom X :=
+  cechDerivedGlobalSectionsHom_unique X (cechToDerivedGlobalSections X)
+    (cechToDerivedGlobalSections_app_zero X)
+
 end TopologicalSpace.OpenCover.SetOpenCover
