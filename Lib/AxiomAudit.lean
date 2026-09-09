@@ -7411,3 +7411,21 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app_zero
 #check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
 #print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
+
+-- The fixed normalized Čech comparison through Ext, with both inverse identities.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_app
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_app
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_comp_inv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_comp_inv
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_comp_hom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_comp_hom
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique
