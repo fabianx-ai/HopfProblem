@@ -387,3 +387,12 @@ theorem HigherHurewicz.normalizationHomotopy_endpoint {X : Type} [TopologicalSpa
   | n + 3 =>
     exact (HigherHurewicz.normalizationTower x n fun j hj hj' =>
       hpi j hj (by omega)).nxt_endpoint smp s hs
+
+/-- The normalized simplex: the endpoint of the normalization homotopy, as a based simplex
+`(Δⁿ, ∂Δⁿ) → (X, x)`. This is the general-`n` form of the per-degree `normalized*Simplex`
+constructions. -/
+def HigherHurewicz.normalizedSimplex {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) (n : ℕ) (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x))
+    (smp : SingularChains.SingularSimplex X n) : HigherHurewicz.SimplexGeometry.BasedSimplex n x :=
+  ⟨SecondHurewicz.SimplyConnected.timeSlice (HigherHurewicz.normalizationHomotopy x n hpi smp) 1,
+   fun s hs => HigherHurewicz.normalizationHomotopy_endpoint x n hpi smp s hs⟩
