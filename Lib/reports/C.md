@@ -123,7 +123,16 @@ deliverable.
 ## Open items (the exact seams)
 
 1. **C10 assembly (the headline `hurewiczLinearEquiv` at general `n`).** All
-   ingredients are landed; what remains is the assembly, designed in full:
+   ingredients are landed; what remains is the assembly, designed in full.
+   Landed in `20b50c5` (Straightening.lean): the class-level straightening
+   invariance (`basedSimplexClass_straightening`, with
+   `straightenedBasedSimplex` and the rel-boundary homotopy
+   `basedSimplexLoop_straighteningHomotopy`), the normalized simplex
+   (`normalizedSimplex`, the tower's endpoint as a based simplex), the top
+   storey (`topStorey`), the one-level-below state (`towerBelow`, with the
+   `n = 2` branch avoiding `π_1`/`π_2` input via the edge tower), and the
+   one-off top normalization (`topNormalization` + `topNormalization_zero`).
+   Still to assemble:
    - `normalizedSimplex (n) x hpi smp : SimplexGeometry.BasedSimplex n x` :=
      `⟨timeSlice (normalizationHomotopy x n hpi smp) 1,
      normalizationHomotopy_endpoint …⟩` (the `BasedSimplex` membership form is
