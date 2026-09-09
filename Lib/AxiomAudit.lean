@@ -7459,3 +7459,7 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
 #check TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
 #print axioms TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
+
+-- Arbitrary abelian coefficients on a space homeomorphic to the standard two-sphere.
+#check TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
+#print axioms TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo

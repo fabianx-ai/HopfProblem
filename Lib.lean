@@ -297,6 +297,7 @@ import Lib.Topology.Sheaves.Cohomology.Cech.Effacement
 import Lib.Topology.Sheaves.Cohomology.Cech.Ext
 import Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections
 import Lib.Topology.Sheaves.Cohomology.CoveringDimension
+import Lib.Topology.Sheaves.Cohomology.SphereTwo
 import Lib.Topology.Sheaves.Cohomology.MayerVietorisProjectiveDimension
 import Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution
