@@ -13,6 +13,20 @@ Recipe (validated): boundary-aware regex rename (`(?<![A-Za-z])NS\.` — the nai
 string replace glued compound namespaces like `LocalDegree`, repaired from the
 HEAD name map) -> `lake build Lib` -> full consumer chain -> commit with twin.
 
+## Landed (continued)
+
+| commit | rename | scope | Mathlib twin |
+|---|---|---|---|
+| ff89376 | `Smale.` prefix dropped | 11,687 refs, 168 families, 43 files | `Mathlib/Geometry/Manifold/Morse/*` (new), `Mathlib/Geometry/Manifold/Transversality/*` (new) |
+| ff89376 | Hopf disambiguations | Hopf DiskCone -> SphereCone (17+6 refs, distinct from HandleRetraction's DiskCone); Recognition SixSphere -> MetricSixSphere (33 refs, distinct from the SingularHomology SixSphere family) | — |
+
+Name confirmations (no rename needed; twins recorded): `SingularMayerVietoris`
+(twin `Mathlib/AlgebraicTopology/SingularMayerVietoris.lean`, new),
+`SphereHomology` (`Mathlib/AlgebraicTopology/SphereHomology.lean`, new),
+`RiemannMapping` (`Mathlib/Analysis/Complex/RiemannMapping.lean`, new),
+`HolomorphicCousin` (`Mathlib/Analysis/Complex/Cousin.lean`-adjacent, new),
+`MappingTorus*` (`Mathlib/Topology/MappingTorus/`, new).
+
 ## Wrapper removal (Mathoverflow1973): attempted, reverted, resumable
 
 WIP preserved: `~/s6-notes/hopf-lib-a/wrapper-removal-wip.diff` (4,084 lines)
