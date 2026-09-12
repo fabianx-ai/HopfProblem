@@ -14,7 +14,7 @@ public import Lib.AlgebraicTopology.SingularHomology.Suspension
 The singular chains of a disjoint union are the direct sum of the singular chains, and
 homology commutes with finite coproducts (Hatcher, Proposition 2.6):
 
-* `PeriodTorusHigherHomology.sumHomologyEquiv` — the homology of a finite disjoint union is
+* `SingularHomology.sumHomologyEquiv` — the homology of a finite disjoint union is
   the direct sum of the homologies, natural in the inclusions
   (`sumHomologyEquiv_inl`, `sumHomologyEquiv_inr`, `sumHomologyEquiv_symm_apply`).
 
@@ -37,8 +37,8 @@ an equality of homology functors on coproducts, not a mere abstract iso.
 
 ## Main definitions and results
 
-* `PeriodTorusHigherHomology.sumChainComplexIso` : `C(⊔ Xᵢ) ≅ ⊕ C(Xᵢ)` as chain complexes.
-* `PeriodTorusHigherHomology.sumHomologyEquiv` : `H_n(⊔ Xᵢ) ≅ ⊕ H_n(Xᵢ)` (Hatcher Prop 2.6).
+* `SingularHomology.sumChainComplexIso` : `C(⊔ Xᵢ) ≅ ⊕ C(Xᵢ)` as chain complexes.
+* `SingularHomology.sumHomologyEquiv` : `H_n(⊔ Xᵢ) ≅ ⊕ H_n(Xᵢ)` (Hatcher Prop 2.6).
 
 ## References
 

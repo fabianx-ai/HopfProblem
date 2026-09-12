@@ -15,13 +15,13 @@ public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 Homotopic maps of spaces induce the same map on singular homology, so a homotopy equivalence
 induces an isomorphism (Hatcher, Theorem 2.10):
 
-* `PeriodTorusHigherHomology.homotopic_homologyMap` — the headline statement: homotopic maps
+* `SingularHomology.homotopic_homologyMap` — the headline statement: homotopic maps
   induce equal maps on singular homology.
 
 Consequences: homotopy equivalences and homeomorphisms induce homology isomorphisms
 (`homotopyEquivHomologyEquiv`, `homeomorphHomologyEquiv`), and homology vanishes on totally
 disconnected, one-point, and contractible spaces, with the two null-homotopy lemmas
-`CuspCentralHomology.singularHomologyMap_const_eq_zero` and
+`Suspension.singularHomologyMap_const_eq_zero` and
 `singularHomologyMap_eq_zero_of_nullhomotopic`.
 
 ## Outline of the proof
@@ -36,16 +36,16 @@ disconnected, one-point, and contractible spaces, with the two null-homotopy lem
    `contractibleHomologyEquivPoint` and the subsingleton corollaries
    (`totallyDisconnected_homology_subsingleton`, `point_homology_subsingleton`,
    `contractible_homology_subsingleton`).
-4. *Null-homotopy.*  `CuspCentralHomology.singularHomologyMap_const_eq_zero` and
+4. *Null-homotopy.*  `Suspension.singularHomologyMap_const_eq_zero` and
    `singularHomologyMap_eq_zero_of_nullhomotopic`: a constant or null-homotopic map
    annihilates positive-degree homology maps.
 
 ## Main definitions and results
 
-* `PeriodTorusHigherHomology.homotopic_homologyMap` : homotopy invariance (Hatcher Thm 2.10).
-* `PeriodTorusHigherHomology.homotopyEquivHomologyEquiv`, `.homeomorphHomologyEquiv` :
+* `SingularHomology.homotopic_homologyMap` : homotopy invariance (Hatcher Thm 2.10).
+* `SingularHomology.homotopyEquivHomologyEquiv`, `.homeomorphHomologyEquiv` :
   homology equivalences from equivalences.
-* `CuspCentralHomology.singularHomologyMap_eq_zero_of_nullhomotopic` : null-homotopy kills
+* `Suspension.singularHomologyMap_eq_zero_of_nullhomotopic` : null-homotopy kills
   positive-degree homology maps.
 
 ## References

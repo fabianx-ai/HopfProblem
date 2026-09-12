@@ -13,7 +13,7 @@ public import Mathlib
 The unreduced suspension `Suspension X` of a nonempty topological space `X` is the quotient
 of `[0,1] × X` that collapses `0 × X` to the south pole and `1 × X` to the north pole:
 
-* `CuspCentralHomology.Suspension (X : Type*) [TopologicalSpace X] : Type*` — the suspension
+* `Suspension.Suspension (X : Type*) [TopologicalSpace X] : Type*` — the suspension
   topological space (a `TopologicalSpace` instance via the quotient topology), with
   `suspensionUnitSphereHomeomorph`-style presentations and the north/south pole API.
 
@@ -32,8 +32,8 @@ This file is pure topology: it is consumed by the suspension isomorphism in sing
 
 ## Main definitions and results
 
-* `CuspCentralHomology.Suspension` : the unreduced suspension, a topological space.
-* `CuspCentralHomology.Suspension.suspension_compactSpace` : compactness.
+* `Suspension.Suspension` : the unreduced suspension, a topological space.
+* `Suspension.Suspension.suspension_compactSpace` : compactness.
 
 ## References
 

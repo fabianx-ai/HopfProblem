@@ -23,7 +23,7 @@ cone}`:
 
 * `SphereHomology.suspensionHomologyHigherEquiv` — the suspension isomorphism in degrees
   `n ≥ 2` (Hatcher, Cor 2.14's engine: `H̃_n(ΣX) ≅ H̃_{n-1}(X)`);
-* `CuspCentralHomology.contractibleCoverHomologyOneEquivKernel` — the degree-one story: the
+* `Suspension.contractibleCoverHomologyOneEquivKernel` — the degree-one story: the
   connecting map of the contractible two-cone cover presents `H_1(ΣX)` as the cokernel of
   `H_0(X ∩ V) → H_0(X)`; `sphereCircleHomologyEquiv` specializes to `H_*(S¹)`.
 
@@ -46,7 +46,7 @@ cone}`:
 
 * `SphereHomology.suspensionSphereMap`, `SphereHomology.suspensionHomologyHigherEquiv` :
   the suspension isomorphism in higher degrees.
-* `CuspCentralHomology.contractibleCoverHomologyOneEquivKernel` : `H_1(ΣX)` from the
+* `Suspension.contractibleCoverHomologyOneEquivKernel` : `H_1(ΣX)` from the
   components of `X`.
 * `SphereHomology.sphereCircleHomologyEquiv` : `H_*(S¹)`.
 

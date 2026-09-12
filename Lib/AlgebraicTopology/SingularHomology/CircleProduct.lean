@@ -19,10 +19,10 @@ For the product of the circle with a space, the homology splits as
 content for one factor `S¹`). The engine is the two-open cover of `S¹` by contractible arcs,
 transported to the product:
 
-* `PeriodTorusHigherHomology.circleProductHomologyEquiv`-family — the splitting of
+* `SingularHomology.circleProductHomologyEquiv`-family — the splitting of
   `H_n(S¹ × X)`, with the circle section and projection lemmas
   (`circleSectionHomology`, `circleProjection_section`, `productArcHomologyEquiv`);
-* `PeriodTorusHigherHomology.circle_homology_subsingleton` — `H_k(S¹) = 0` for `k ≥ 2`
+* `SingularHomology.circle_homology_subsingleton` — `H_k(S¹) = 0` for `k ≥ 2`
   (Hatcher Cor 2.14's circle rows).
 
 ## Outline of the proof
@@ -42,8 +42,8 @@ transported to the product:
 
 ## Main definitions and results
 
-* `PeriodTorusHigherHomology.circleProductHomologyEquiv` : the Künneth splitting for `S¹ × X`.
-* `PeriodTorusHigherHomology.circle_homology_subsingleton` : higher homology of `S¹`
+* `SingularHomology.circleProductHomologyEquiv` : the Künneth splitting for `S¹ × X`.
+* `SingularHomology.circle_homology_subsingleton` : higher homology of `S¹`
   vanishes.
 
 ## References
