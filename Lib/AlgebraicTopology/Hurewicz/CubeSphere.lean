@@ -5,6 +5,7 @@ Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.Degree
 import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.Topology.OnePointCollapse
 
 set_option maxSynthPendingDepth 3
@@ -304,4 +305,70 @@ theorem Degree.SphereCube.factor_cubeHomologyClass {n : ℕ} (hn : 0 < n) {X : T
   rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass]
   exact congrArg _ (factor_cubeCycle hn p hσ hp)
 
+/-- The factor map on the cube homology class, using the general cube cycle. -/
+theorem Degree.SphereCube.factor_cubeHomologyClass_cycle {m : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin (m + 2)) X x) :
+    SingularMayerVietoris.singularHomologyMap (factorMap (Nat.succ_pos (m + 1)) p) (m + 2)
+        (HigherHurewicz.cubeHomologyClass (quotientLoop (m + 2))) =
+      HigherHurewicz.cubeHomologyClass p := by
+  unfold HigherHurewicz.cubeHomologyClass
+  rw [SingularMayerVietoris.singularHomologyMap,
+    SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass]
+  apply congrArg
+  apply Subtype.ext
+  rw [SingularMayerVietoris.ModuleHomology.mapCycles_val, HigherHurewicz.cubeCycle_val,
+    HigherHurewicz.cubeCycle_val]
+  exact factor_cubeChain (Nat.succ_pos (m + 1)) p
+
+/-- A homotopy of based cubes relative to the boundary descends to a homotopy of
+factor maps on the sphere. -/
+def Degree.SphereCube.factorMap_homotopy {n : ℕ} (hn : 0 < n) {X : Type*}
+    [TopologicalSpace X] {x : X} {p q : GenLoop (Fin n) X x}
+    (H : p.val.HomotopyRel q.val (Cube.boundary (Fin n))) :
+    (factorMap hn p).Homotopy (factorMap hn q) := by
+  have hfib : ∀ a b, cylinder n a = cylinder n b → H a = H b := by
+    rintro ⟨t, z⟩ ⟨s, w⟩ h
+    have ht : t = s := congrArg Prod.fst h
+    subst s
+    have hzw : quotient n z = quotient n w := congrArg Prod.snd h
+    rcases (quotient_eq_iff n z w).mp hzw with rfl | ⟨hz, hw⟩
+    · rfl
+    · exact
+        ((H.eq_fst t hz).trans (p.property z hz)).trans
+          ((H.eq_fst t hw).trans (p.property w hw)).symm
+  let G := (cylinder_isQuotientMap hn).lift H.toHomotopy.toContinuousMap hfib
+  have hG (t : (unitInterval)) (z : Fin n → (unitInterval)) :
+      G (t, quotient n z) = H (t, z) :=
+    ContinuousMap.congr_fun
+      ((cylinder_isQuotientMap hn).lift_comp H.toHomotopy.toContinuousMap hfib) (t, z)
+  refine
+    { toContinuousMap := G
+      map_zero_left := ?_
+      map_one_left := ?_ }
+  · intro z
+    obtain ⟨w, rfl⟩ := quotient_surjective hn z
+    exact (hG 0 w).trans ((H.apply_zero w).trans (factorMap_quotient hn p w).symm)
+  · intro z
+    obtain ⟨w, rfl⟩ := quotient_surjective hn z
+    exact (hG 1 w).trans ((H.apply_one w).trans (factorMap_quotient hn q w).symm)
+
+/-- Homotopic based cubes have the same cube homology class. -/
+theorem HigherHurewicz.cubeHomologyClass_homotopic {m : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} {p q : GenLoop (Fin (m + 2)) X x} (h : GenLoop.Homotopic p q) :
+    HigherHurewicz.cubeHomologyClass p = HigherHurewicz.cubeHomologyClass q := by
+  obtain ⟨H⟩ := h
+  have Hf : (Degree.SphereCube.factorMap (Nat.succ_pos (m + 1)) p).Homotopic
+      (Degree.SphereCube.factorMap (Nat.succ_pos (m + 1)) q) :=
+    ⟨Degree.SphereCube.factorMap_homotopy (Nat.succ_pos (m + 1)) H⟩
+  rw [← Degree.SphereCube.factor_cubeHomologyClass_cycle p,
+    ← Degree.SphereCube.factor_cubeHomologyClass_cycle q]
+  exact congrArg (fun F => F (HigherHurewicz.cubeHomologyClass
+      (Degree.SphereCube.quotientLoop (m + 2))))
+    (SingularHomology.homotopic_homologyMap Hf (m + 2))
+
+/-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
+def HigherHurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
+  Quotient.lift HigherHurewicz.cubeHomologyClass fun _ _ h =>
+    HigherHurewicz.cubeHomologyClass_homotopic h
 end Mathoverflow1973
