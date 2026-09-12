@@ -366,6 +366,25 @@ theorem HigherHurewicz.cubeHomologyClass_homotopic {m : ℕ} {X : Type} [Topolog
       (Degree.SphereCube.quotientLoop (m + 2))))
     (SingularHomology.homotopic_homologyMap Hf (m + 2))
 
+/-- In degree `2` the cube homology class is the square homology class. -/
+theorem HigherHurewicz.cubeHomologyClass_eq_squareHomologyClass {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
+    HigherHurewicz.cubeHomologyClass (m := 0) p = SecondHurewicz.squareHomologyClass p := by
+  unfold HigherHurewicz.cubeHomologyClass SecondHurewicz.squareHomologyClass
+  apply congrArg
+  apply Subtype.ext
+  change HigherHurewicz.cubeChain p = SecondHurewicz.squareChain p
+  exact HigherHurewicz.cubeChain_eq_squareChain p
+
+/-- Concatenation along the first coordinate adds cube classes in degree `2`. -/
+theorem HigherHurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpace X]
+    {x : X} (p q : GenLoop (Fin 2) X x) :
+    HigherHurewicz.cubeHomologyClass (m := 0) (GenLoop.transAt (0 : Fin 2) p q) =
+      HigherHurewicz.cubeHomologyClass (m := 0) p +
+        HigherHurewicz.cubeHomologyClass (m := 0) q := by
+  simpa only [HigherHurewicz.cubeHomologyClass_eq_squareHomologyClass] using
+    SecondHurewicz.squareHomologyClass_transAt p q
+
 /-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
 def HigherHurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
     π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
