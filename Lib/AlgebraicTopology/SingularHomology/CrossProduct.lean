@@ -3,10 +3,12 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.CrossInsert
-import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+module
+
+public import Lib.AlgebraicTopology.SingularHomology.Chains
+public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
+public import Lib.AlgebraicTopology.SingularHomology.CrossInsert
+public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 
 set_option maxSynthPendingDepth 3
 
@@ -84,7 +86,7 @@ singular homology, cross product, Künneth
 -/
 
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 

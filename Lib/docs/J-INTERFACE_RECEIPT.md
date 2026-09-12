@@ -194,6 +194,28 @@ boundary splits, `FirstHurewicz` shim aliases, degree-three completeness,
 GLM manifest count, J-E transports) remain open until each boundary gets its
 own probe.
 
+### J-A landing (Axis 6)
+
+`Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean` landed after the
+review-3 GO, with **all 15 manifest nodes and real proofs** — including
+`standardExterior_map_coefficient` (ported verbatim from Specialization:6641),
+`exteriorPowerMap_toMatrix` and `cauchyBinet_minors` (proved via the recorded
+recipes: `toMatrix_apply` + `basis_apply`/`map_apply_ιMulti_family`/
+`ιMultiDual_apply_ιMulti` + `det_transpose`; and `map_comp` + `mulVecLin_mul` +
+`toMatrix_comp` respectively). The source copies of `standardExteriorBasis`/
+`standardExterior_map_coefficient` were deleted from `Hopf/LCP/Specialization.lean`
+(which now imports the Lib module — same FQN, seamless reroute for
+`BoundaryTopology` consumers). The rank-4 `pairSubset`/`squareBasis`/etc.
+adapters remain in Hopf pending their order-theoretic compat proofs, per the
+review-3 amendment.
+
+M-C seam repair in the same change: `CrossProduct.lean`, `PathClass.lean` and
+`CrossInsert.lean` converted to `module` + `public import` +
+`@[expose] public noncomputable section`; `PathClass`'s stale `CylinderHEP`
+import dropped (unused — `CylinderHEP`'s legacy cone stays for the Morse lanes).
+`lake build Lib ... Hopf.LCP.Specialization Hopf.LCP.BoundaryTopology`:
+8811 jobs, green.
+
 ## Review-3 certification and repairs — devin-axis5-j
 
 **J-A: GO for the amended 15-node Mathlib-only packet. J-B..J-E: NOT GO.**

@@ -63,6 +63,7 @@ Original source lines 133802--148196; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.CuspFilling
+import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 
 set_option maxSynthPendingDepth 3
 
@@ -6633,31 +6634,6 @@ theorem PeriodTorusHigherHomology.coordinateTorusMapAlong_add {X : Type} [Topolo
       e.symm (coordinateTorusMap r n i x) + e.symm (coordinateTorusMap r n i y)
   rw [coordinateTorusMap_add]
   exact homeomorph_symm_add_of_add e he _ _
-
-def PeriodTorusHigherHomologyExterior.standardExteriorBasis (m n : ℕ) :
-    Module.Basis (Set.powersetCard (Fin m) n) ℤ (⋀[ℤ]^n (Fin m → ℤ)) :=
-  (Pi.basisFun ℤ (Fin m)).exteriorPower n
-
-theorem PeriodTorusHigherHomologyExterior.standardExterior_map_coefficient (m n : ℕ)
-    (A : Matrix (Fin m) (Fin m) ℤ) (s t : Set.powersetCard (Fin m) n) :
-    (standardExteriorBasis m n).repr
-        (exteriorPower.map n A.mulVecLin (standardExteriorBasis m n t)) s =
-      (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-          (Set.powersetCard.ofFinEmbEquiv.symm t)).det := by
-  unfold standardExteriorBasis
-  rw [exteriorPower.basis_repr_apply, exteriorPower.basis_apply, exteriorPower.ιMulti_family,
-    exteriorPower.map_apply_ιMulti, exteriorPower.ιMultiDual_apply_ιMulti]
-  have hmatrix :
-    (Matrix.of fun i j =>
-        (Pi.basisFun ℤ (Fin m)).coord (Set.powersetCard.ofFinEmbEquiv.symm s j)
-          ((A.mulVecLin ∘ ((Pi.basisFun ℤ (Fin m)) ∘ Set.powersetCard.ofFinEmbEquiv.symm t)) i)) =
-      (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-          (Set.powersetCard.ofFinEmbEquiv.symm t)).transpose := by
-    ext i j
-    simp only [Matrix.of_apply, Module.Basis.coord_apply, Pi.basisFun_repr, Function.comp_apply,
-      Pi.basisFun_apply, Matrix.mulVecLin_apply, Matrix.mulVec_single_one, Matrix.col_apply,
-      Matrix.transpose_apply, Matrix.submatrix_apply]
-  rw [hmatrix, Matrix.det_transpose]
 
 abbrev PeriodTorusHigherHomologyExterior.latticeExterior (n : ℕ) :=
   ⋀[ℤ]^n Lattice

@@ -64,6 +64,7 @@ import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
+import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 import Lib.GroupTheory.SplitExtension
 import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
