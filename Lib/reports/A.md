@@ -635,3 +635,22 @@ by the chunking up to run boundaries; prefixes interleaved in source order
 (MorseCancel spans 15 runs) make per-lane files impossible without forward
 references, which a pure move forbids. Kimi's E2 starts from
 `Transversality/Basic.lean` + `Immersion/Relative.lean`.
+
+### Item 0 receipts
+
+Axiom probes across the split files (all exact):
+
+```
+'Mathoverflow1973.MorseCancel.nativeMorseIndex_eq_chart' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.AdaptedWindows.flow_belt_passage' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Smale.ManifoldMorse.MorseSurgeryData' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+```
+
+Commits (this branch, off bda000e): 291857d (Cancellation), ca37998
+(Transversality/Basic), b91603c (Immersion/Relative), 44cf0ee (Rearrangement),
+eb294ff (module docstrings + report), ce0fba5 (Hopf re-route). Full chain
+`Lib Hopf.Final Solution S6Shortcuts Challenge` green at ce0fba5 (8,823
+jobs). Census drop 5170 → 3893 is from Kimi's merged lanes, not this branch.
