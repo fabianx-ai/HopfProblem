@@ -4,10 +4,15 @@ Branch: `lib/textbook-extraction` at 856e4762 (your C, E2, F, G, J are merged th
 GLM's A; builds green, 32/32 axiom probes exact, zero changed statements under `Hopf/`). Start
 every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 
-## Owner decisions you are waiting on (ask in the report if still open; do not guess)
+## Owner decisions (all settled 2026-09-12)
 
-- **E2 dimension condition:** `2k+1 ≤ n` versus `2k ≤ n` for the immersion/embedding rows.
-- **J product shape:** the `(p,q)` cross product versus the `(1,n)` instance only.
+- (Settled) **E2 dimension condition:** state the lane's theorem at `2k+1 ≤ n`, which is what
+  the tree's perturbation proof proves and covers every project instance (k = 2, n ≥ 5 and
+  k = 1, n ≥ 3). Record the classical `2k ≤ n` as a named follow-up requiring the
+  Stiefel-bundle argument. The task file's "2k ≤ n" wording is superseded.
+- (Settled) **J product shape:** state the Pontryagin product at `(1, n)` now, matching the
+  landed cross product; general `(p, q)` is a named follow-up once C's general cross product
+  lands.
 - (Settled) **SurgeryWindows** is GLM's: GLM splits it along the E1/E2/F target files; your
   E2 starts from the split files once they are on the branch.
 
