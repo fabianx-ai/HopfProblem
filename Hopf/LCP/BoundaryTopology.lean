@@ -446,7 +446,7 @@ theorem SpecialPeriods.Threefold.attachmentIntersection_isPathConnected (s : Fin
       (fun _ hx => regular_le_partialPatch (Insert.insert i s) hx.1)
 
 def SpecialPeriods.Threefold.attachmentCover (s : Finset Puncture) (i : Puncture) (hi : i ∉ s) :
-    FundamentalGroupVanKampen.TwoOpenCover (partialPatch (Insert.insert i s))
+    FundamentalGroup.VanKampen.TwoOpenCover (partialPatch (Insert.insert i s))
     where
   U := attachmentLeft s i
   V := attachmentRight s i
@@ -20191,7 +20191,7 @@ theorem SpecialPeriods.Triangle.outerLowerStart_mem_lower (R : ℝ) (hR : 2 ≤ 
   · intro s
     change (outerPositiveCircle R hR).subpath 0 outerQuarter s ∈ freeGroupCover.V
     apply
-      FundamentalGroupVanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
+      FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
         (show (0 : unitInterval) ≤ outerQuarter from bot_le) _ s
     intro u hu
     exact outerPositiveCircle_mem_lowerSlitPlane R hR u (Or.inl hu.2)
@@ -20200,7 +20200,7 @@ attribute [local instance] SpecialPeriods.Triangle.discreteFreeGroup in
 theorem SpecialPeriods.Triangle.outerUpperCross_mem_upper (R : ℝ) (hR : 2 ≤ R)
     (t : unitInterval) : outerUpperCross R hR t ∈ freeGroupCover.U := by
   apply
-    FundamentalGroupVanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
+    FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
       (show outerQuarter ≤ outerThreeQuarters by norm_num [outerQuarter, outerThreeQuarters]) _ t
   intro u hu
   exact outerPositiveCircle_mem_upperSlitPlane R hR u hu.1 hu.2
@@ -20212,7 +20212,7 @@ theorem SpecialPeriods.Triangle.outerLowerFinish_mem_lower (R : ℝ) (hR : 2 ≤
   · intro s
     change (outerPositiveCircle R hR).subpath outerThreeQuarters 1 s ∈ freeGroupCover.V
     apply
-      FundamentalGroupVanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
+      FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc (outerPositiveCircle R hR)
         (show outerThreeQuarters ≤ (1 : unitInterval) from le_top) _ s
     intro u hu
     exact outerPositiveCircle_mem_lowerSlitPlane R hR u (Or.inr hu.1)

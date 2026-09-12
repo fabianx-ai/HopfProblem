@@ -27,14 +27,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem FundamentalGroupVanKampen.subpath_mem_of_mem_Icc {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc {X : Type*} [TopologicalSpace X]
     {x y : X} (p : Path x y) {a b : (unitInterval)} (hab : a ≤ b) {s : Set X}
     (hp : ∀ t ∈ Set.Icc a b, p t ∈ s) : ∀ t, p.subpath a b t ∈ s := by
   apply Set.range_subset_iff.mp
   rw [p.range_subpath_of_le a b hab]
   exact Set.image_subset_iff.mpr hp
 
-structure FundamentalGroupVanKampen.LocalPathValue {X : Type*} [TopologicalSpace X] {ι : Type*}
+structure FundamentalGroup.VanKampen.LocalPathValue {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (G : Type*) [Group G] where
   value : ∀ i {x y : X} (p : Path x y), (∀ t, p t ∈ U i) → G
   refl : ∀ i (x : X) (hx : ∀ t, Path.refl x t ∈ U i), value i (Path.refl x) hx = 1
@@ -50,22 +50,22 @@ structure FundamentalGroupVanKampen.LocalPathValue {X : Type*} [TopologicalSpace
     ∀ i j {x y : X} (p : Path x y) (hi : ∀ t, p t ∈ U i) (hj : ∀ t, p t ∈ U j),
       value i p hi = value j p hj
 
-theorem FundamentalGroupVanKampen.LocalPathValue.value_cast {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.value_cast {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (i : ι) {x y x' y' : X} (p : Path x y)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (i : ι) {x y x' y' : X} (p : Path x y)
     (hx : x' = x) (hy : y' = y) (hp : ∀ t, p t ∈ U i) (hp' : ∀ t, p.cast hx hy t ∈ U i) :
     L.value i (p.cast hx hy) hp' = L.value i p hp := by
   cases hx
   cases hy
   rfl
 
-def FundamentalGroupVanKampen.LocalPathValue.HomotopyInvariant {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) : Prop :=
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) : Prop :=
   ∀ i {x y : X} (p q : Path x y) (hp : ∀ t, p t ∈ U i) (hq : ∀ t, q t ∈ U i)
     (H : Path.Homotopy p q), (∀ s, H s ∈ U i) → L.value i p hp = L.value i q hq
 
-structure FundamentalGroupVanKampen.PathValue (X : Type*) [TopologicalSpace X] (G : Type*)
+structure FundamentalGroup.VanKampen.PathValue (X : Type*) [TopologicalSpace X] (G : Type*)
     [Group G] where
   value : ∀ {x y : X}, Path x y → G
   refl : ∀ x, value (Path.refl x) = 1
@@ -74,29 +74,29 @@ structure FundamentalGroupVanKampen.PathValue (X : Type*) [TopologicalSpace X] (
     ∀ {x y : X} (p : Path x y) (a b c : (unitInterval)),
       a ≤ b → b ≤ c → value (p.subpath a c) = value (p.subpath a b) * value (p.subpath b c)
 
-theorem FundamentalGroupVanKampen.PathValue.value_cast {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) {x y x' y' : X}
+theorem FundamentalGroup.VanKampen.PathValue.value_cast {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G) {x y x' y' : X}
     (p : Path x y) (hx : x' = x) (hy : y' = y) : V.value (p.cast hx hy) = V.value p := by
   cases hx
   cases hy
   rfl
 
 @[simp]
-theorem FundamentalGroupVanKampen.PathValue.value_subpath_zero_one {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     {x y : X} (p : Path x y) : V.value (p.subpath 0 1) = V.value p := by
   rw [Path.subpath_zero_one, V.value_cast]
 
-def FundamentalGroupVanKampen.PathValue.Extends {X : Type*} [TopologicalSpace X] {ι : Type*}
-    {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) : Prop :=
+def FundamentalGroup.VanKampen.PathValue.Extends {X : Type*} [TopologicalSpace X] {ι : Type*}
+    {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G) {U : ι → Set X}
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) : Prop :=
   ∀ i {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ U i), V.value p = L.value i p hp
 
-def FundamentalGroupVanKampen.PathValue.HomotopyInvariant {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) : Prop :=
+def FundamentalGroup.VanKampen.PathValue.HomotopyInvariant {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G) : Prop :=
   ∀ {x y : X} (p q : Path x y), Path.Homotopic p q → V.value p = V.value q
 
-structure FundamentalGroupVanKampen.TwoOpenCover (X : Type*) [TopologicalSpace X] where
+structure FundamentalGroup.VanKampen.TwoOpenCover (X : Type*) [TopologicalSpace X] where
   U : TopologicalSpace.Opens X
   V : TopologicalSpace.Opens X
   cover : (U : Set X) ∪ V = Set.univ
@@ -107,23 +107,23 @@ structure FundamentalGroupVanKampen.TwoOpenCover (X : Type*) [TopologicalSpace X
   baseU : base ∈ U
   baseV : base ∈ V
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.chart {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : Bool → TopologicalSpace.Opens X
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.chart {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : Bool → TopologicalSpace.Opens X
   | false => D.U
   | true => D.V
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.base_mem_chart {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) : D.base ∈ D.chart i := by
+theorem FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) : D.base ∈ D.chart i := by
   cases i
   · exact D.baseU
   · exact D.baseV
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.chart_open {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) : IsOpen (D.chart i : Set X) :=
+theorem FundamentalGroup.VanKampen.TwoOpenCover.chart_open {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) : IsOpen (D.chart i : Set X) :=
   (D.chart i).isOpen
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.chart_cover {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : ⋃ i, (D.chart i : Set X) = Set.univ := by
+theorem FundamentalGroup.VanKampen.TwoOpenCover.chart_cover {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : ⋃ i, (D.chart i : Set X) = Set.univ := by
   apply subset_antisymm (Set.subset_univ _)
   intro x _
   have hx : x ∈ (D.U : Set X) ∪ D.V := by rw [D.cover]; trivial
@@ -131,13 +131,13 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.chart_cover {X : Type*} [Topologi
   · exact Set.mem_iUnion.mpr ⟨Bool.false, hx⟩
   · exact Set.mem_iUnion.mpr ⟨Bool.true, hx⟩
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.mem_U_or_V {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : X) : x ∈ D.U ∨ x ∈ D.V := by
+theorem FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : X) : x ∈ D.U ∨ x ∈ D.V := by
   have hx : x ∈ (D.U : Set X) ∪ D.V := by rw [D.cover]; trivial
   exact hx
 
-def FundamentalGroupVanKampen.TwoOpenCover.rawPathTo {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : X) : Path D.base x := by
+def FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : X) : Path D.base x := by
   classical
     exact
     if h : x ∈ (D.U : Set X) ∩ D.V then
@@ -147,8 +147,8 @@ def FundamentalGroupVanKampen.TwoOpenCover.rawPathTo {X : Type*} [TopologicalSpa
       else
         (D.pathConnectedV.joinedIn D.base D.baseV x ((D.mem_U_or_V x).resolve_left hU)).somePath
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.rawPathTo_mem {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (x : X) (hx : x ∈ D.chart i)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (x : X) (hx : x ∈ D.chart i)
     (t : (unitInterval)) : D.rawPathTo x t ∈ D.chart i := by
   classical
     cases i with
@@ -174,17 +174,17 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.rawPathTo_mem {X : Type*} [Topolo
       rw [dif_neg h, dif_neg hnU]
       exact JoinedIn.somePath_mem _ t
 
-def FundamentalGroupVanKampen.TwoOpenCover.pathTo {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : X) : Path D.base x := by
+def FundamentalGroup.VanKampen.TwoOpenCover.pathTo {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : X) : Path D.base x := by
   classical exact if h : x = D.base then (Path.refl D.base).cast rfl h else D.rawPathTo x
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.pathTo_base {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.pathTo D.base = Path.refl D.base := by
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.pathTo D.base = Path.refl D.base := by
   classical simp [pathTo]
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pathTo_mem {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (x : X) (hx : x ∈ D.chart i)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (x : X) (hx : x ∈ D.chart i)
     (t : (unitInterval)) : D.pathTo x t ∈ D.chart i := by
   classical
   unfold pathTo
@@ -192,72 +192,72 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.pathTo_mem {X : Type*} [Topologic
   · exact D.base_mem_chart i
   · exact D.rawPathTo_mem i x hx t
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.overlap {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : TopologicalSpace.Opens X :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.overlap {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : TopologicalSpace.Opens X :=
   D.U ⊓ D.V
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.baseUPoint {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.U :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.U :=
   ⟨D.base, D.baseU⟩
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.baseVPoint {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.V :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.V :=
   ⟨D.base, D.baseV⟩
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.baseOverlapPoint {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.overlap :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.overlap :=
   ⟨D.base, D.baseU, D.baseV⟩
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.baseChart {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) : D.chart i :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.baseChart {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) : D.chart i :=
   ⟨D.base, D.base_mem_chart i⟩
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.UGroup {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.UGroup {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) :=
   FundamentalGroup D.U D.baseUPoint
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.VGroup {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.VGroup {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) :=
   FundamentalGroup D.V D.baseVPoint
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.OverlapGroup {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) :=
   FundamentalGroup D.overlap D.baseOverlapPoint
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapToU {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : C(D.overlap, D.U) :=
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapToU {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : C(D.overlap, D.U) :=
   ⟨fun x => ⟨x.val, x.property.1⟩, continuous_subtype_val.subtype_mk _⟩
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapToV {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : C(D.overlap, D.V) :=
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapToV {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : C(D.overlap, D.V) :=
   ⟨fun x => ⟨x.val, x.property.2⟩, continuous_subtype_val.subtype_mk _⟩
 
-def FundamentalGroupVanKampen.TwoOpenCover.inclusionU {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : C(D.U, X) :=
+def FundamentalGroup.VanKampen.TwoOpenCover.inclusionU {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : C(D.U, X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-def FundamentalGroupVanKampen.TwoOpenCover.inclusionV {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : C(D.V, X) :=
+def FundamentalGroup.VanKampen.TwoOpenCover.inclusionV {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : C(D.V, X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapHomU {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.OverlapGroup →* D.UGroup :=
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.OverlapGroup →* D.UGroup :=
   FundamentalGroup.map D.overlapToU D.baseOverlapPoint
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapHomV {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.OverlapGroup →* D.VGroup :=
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.OverlapGroup →* D.VGroup :=
   FundamentalGroup.map D.overlapToV D.baseOverlapPoint
 
-def FundamentalGroupVanKampen.TwoOpenCover.inclusionHomU {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.UGroup →* FundamentalGroup X D.base :=
+def FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.UGroup →* FundamentalGroup X D.base :=
   FundamentalGroup.map D.inclusionU D.baseUPoint
 
-def FundamentalGroupVanKampen.TwoOpenCover.inclusionHomV {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.VGroup →* FundamentalGroup X D.base :=
+def FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.VGroup →* FundamentalGroup X D.base :=
   FundamentalGroup.map D.inclusionV D.baseVPoint
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.inclusionHom_compatible {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.inclusionHomU.comp D.overlapHomU = D.inclusionHomV.comp D.overlapHomV := by
   ext γ
   obtain ⟨p⟩ := γ
@@ -265,12 +265,12 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.inclusionHom_compatible {X : Type
   ext t
   rfl
 
-def FundamentalGroupVanKampen.TwoOpenCover.Compatible {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) {G : Type*} [Group G] (fU : D.UGroup →* G)
+def FundamentalGroup.VanKampen.TwoOpenCover.Compatible {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) {G : Type*} [Group G] (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) : Prop :=
   fU.comp D.overlapHomU = fV.comp D.overlapHomV
 
-def FundamentalGroupVanKampen.pathIn {X : Type*} [TopologicalSpace X] {S : Set X} {x y : X}
+def FundamentalGroup.VanKampen.pathIn {X : Type*} [TopologicalSpace X] {S : Set X} {x y : X}
     (p : Path x y) (hx : x ∈ S) (hy : y ∈ S) (hp : ∀ t, p t ∈ S) : Path (⟨x, hx⟩ : S) ⟨y, hy⟩
     where
   toFun t := ⟨p t, hp t⟩
@@ -279,27 +279,27 @@ def FundamentalGroupVanKampen.pathIn {X : Type*} [TopologicalSpace X] {S : Set X
   target' := Subtype.ext p.target
 
 @[simp]
-theorem FundamentalGroupVanKampen.pathIn_apply {X : Type*} [TopologicalSpace X] {S : Set X}
+theorem FundamentalGroup.VanKampen.pathIn_apply {X : Type*} [TopologicalSpace X] {S : Set X}
     {x y : X} (p : Path x y) (hx : x ∈ S) (hy : y ∈ S) (hp : ∀ t, p t ∈ S) (t : (unitInterval)) :
     (pathIn p hx hy hp t : X) = p t :=
   rfl
 
 @[simp]
-theorem FundamentalGroupVanKampen.pathIn_map {X : Type*} [TopologicalSpace X] {S : Set X}
+theorem FundamentalGroup.VanKampen.pathIn_map {X : Type*} [TopologicalSpace X] {S : Set X}
     {x y : X} (p : Path x y) (hx : x ∈ S) (hy : y ∈ S) (hp : ∀ t, p t ∈ S) :
     (pathIn p hx hy hp).map continuous_subtype_val = p := by
   ext t
   rfl
 
 @[simp]
-theorem FundamentalGroupVanKampen.pathIn_refl {X : Type*} [TopologicalSpace X] {S : Set X} {x : X}
+theorem FundamentalGroup.VanKampen.pathIn_refl {X : Type*} [TopologicalSpace X] {S : Set X} {x : X}
     (hx : x ∈ S) (hp : ∀ t, Path.refl x t ∈ S) :
     pathIn (Path.refl x) hx hx hp = Path.refl (⟨x, hx⟩ : S) := by
   ext t
   rfl
 
 @[simp]
-theorem FundamentalGroupVanKampen.pathIn_trans {X : Type*} [TopologicalSpace X] {S : Set X}
+theorem FundamentalGroup.VanKampen.pathIn_trans {X : Type*} [TopologicalSpace X] {S : Set X}
     {x y z : X} (p : Path x y) (q : Path y z) (hx : x ∈ S) (hy : y ∈ S) (hz : z ∈ S)
     (hp : ∀ t, p t ∈ S) (hq : ∀ t, q t ∈ S) (hpq : ∀ t, p.trans q t ∈ S) :
     pathIn (p.trans q) hx hz hpq = (pathIn p hx hy hp).trans (pathIn q hy hz hq) := by
@@ -307,7 +307,7 @@ theorem FundamentalGroupVanKampen.pathIn_trans {X : Type*} [TopologicalSpace X] 
   simp only [pathIn_apply, Path.trans_apply]
   split_ifs <;> rfl
 
-def FundamentalGroupVanKampen.homotopyIn {X : Type*} [TopologicalSpace X] {S : Set X} {x y : X}
+def FundamentalGroup.VanKampen.homotopyIn {X : Type*} [TopologicalSpace X] {S : Set X} {x y : X}
     (p q : Path x y) (hx : x ∈ S) (hy : y ∈ S) (hp : ∀ t, p t ∈ S) (hq : ∀ t, q t ∈ S)
     (H : Path.Homotopy p q) (hH : ∀ s, H s ∈ S) :
     Path.Homotopy (pathIn p hx hy hp) (pathIn q hx hy hq)
@@ -318,7 +318,7 @@ def FundamentalGroupVanKampen.homotopyIn {X : Type*} [TopologicalSpace X] {S : S
   map_one_left t := Subtype.ext (H.apply_one t)
   prop' s _t ht := Subtype.ext (H.eq_fst s ht)
 
-theorem FundamentalGroupVanKampen.homotopy_trans_mem {X : Type*} [TopologicalSpace X] {S : Set X}
+theorem FundamentalGroup.VanKampen.homotopy_trans_mem {X : Type*} [TopologicalSpace X] {S : Set X}
     {x y : X} {p q r : Path x y} (H : Path.Homotopy p q) (K : Path.Homotopy q r)
     (hH : ∀ s, H s ∈ S) (hK : ∀ s, K s ∈ S) : ∀ s, H.trans K s ∈ S := by
   intro s
@@ -327,13 +327,13 @@ theorem FundamentalGroupVanKampen.homotopy_trans_mem {X : Type*} [TopologicalSpa
   · exact hH _
   · exact hK _
 
-theorem FundamentalGroupVanKampen.homotopy_transRefl_mem {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.homotopy_transRefl_mem {X : Type*} [TopologicalSpace X]
     {S : Set X} {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ S) :
     ∀ s, Path.Homotopy.transRefl p s ∈ S := by
   intro s
   exact hp _
 
-theorem FundamentalGroupVanKampen.homotopy_subpathTransSubpathRefl_mem {X : Type*}
+theorem FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem {X : Type*}
     [TopologicalSpace X] {S : Set X} {x y : X} (p : Path x y) (a b c : (unitInterval))
     (hab : a ≤ b) (hbc : b ≤ c) (hp : ∀ t ∈ Set.Icc a c, p t ∈ S) :
     ∀ s, Path.Homotopy.subpathTransSubpathRefl p a b c s ∈ S := by
@@ -346,14 +346,14 @@ theorem FundamentalGroupVanKampen.homotopy_subpathTransSubpathRefl_mem {X : Type
   · exact subpath_mem_of_mem_Icc p ham (fun t ht => hp t ⟨ht.1, ht.2.trans hmc⟩)
   · exact subpath_mem_of_mem_Icc p hmc (fun t ht => hp t ⟨ham.trans ht.1, ht.2⟩)
 
-theorem FundamentalGroupVanKampen.homotopy_subpathTransSubpath_mem {X : Type*}
+theorem FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem {X : Type*}
     [TopologicalSpace X] {S : Set X} {x y : X} (p : Path x y) (a b c : (unitInterval))
     (hab : a ≤ b) (hbc : b ≤ c) (hp : ∀ t ∈ Set.Icc a c, p t ∈ S) :
     ∀ s, Path.Homotopy.subpathTransSubpath p a b c s ∈ S :=
   homotopy_trans_mem _ _ (homotopy_subpathTransSubpathRefl_mem p a b c hab hbc hp)
     (homotopy_transRefl_mem _ (subpath_mem_of_mem_Icc p (hab.trans hbc) hp))
 
-theorem FundamentalGroupVanKampen.mem_Icc_of_subpath_mem {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem {X : Type*} [TopologicalSpace X]
     {S : Set X} {x y : X} (p : Path x y) {a b : (unitInterval)} (hab : a ≤ b)
     (hp : ∀ t, p.subpath a b t ∈ S) : ∀ t ∈ Set.Icc a b, p t ∈ S := by
   have hr := Set.range_subset_iff.mpr hp
@@ -361,7 +361,7 @@ theorem FundamentalGroupVanKampen.mem_Icc_of_subpath_mem {X : Type*} [Topologica
   intro t ht
   exact hr ⟨t, ht, rfl⟩
 
-def FundamentalGroupVanKampen.subpathTransSubpathIn {X : Type*} [TopologicalSpace X] {S : Set X}
+def FundamentalGroup.VanKampen.subpathTransSubpathIn {X : Type*} [TopologicalSpace X] {S : Set X}
     {x y : X} (p : Path x y) (a b c : (unitInterval)) (hab : a ≤ b) (hbc : b ≤ c) (ha : p a ∈ S)
     (hb : p b ∈ S) (hc : p c ∈ S) (hpab : ∀ t, p.subpath a b t ∈ S)
     (hpbc : ∀ t, p.subpath b c t ∈ S) (hpac : ∀ t, p.subpath a c t ∈ S) :
@@ -373,8 +373,8 @@ def FundamentalGroupVanKampen.subpathTransSubpathIn {X : Type*} [TopologicalSpac
           (mem_Icc_of_subpath_mem p (hab.trans hbc) hpac))).cast
     (pathIn_trans _ _ ha hb hc hpab hpbc _) rfl
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.hom_ext {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.hom_ext {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (f g : FundamentalGroup X D.base →* G) (hU : f.comp D.inclusionHomU = g.comp D.inclusionHomU)
     (hV : f.comp D.inclusionHomV = g.comp D.inclusionHomV) : f = g := by
   let F (x : X) : Path.Homotopic.Quotient D.base x := Path.Homotopic.Quotient.mk (D.pathTo x)
@@ -392,7 +392,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.hom_ext {X : Type*} [TopologicalS
         (SimplyConnectedCover.trans_mem _ _ (D.pathTo_mem i x hx) hp)
         (fun t => D.pathTo_mem i y hy (unitInterval.symm t))
     let l' : Path (D.baseChart i) (D.baseChart i) :=
-      FundamentalGroupVanKampen.pathIn l (D.base_mem_chart i) (D.base_mem_chart i) hl
+      FundamentalGroup.VanKampen.pathIn l (D.base_mem_chart i) (D.base_mem_chart i) hl
     have hmap :
       (Path.Homotopic.Quotient.mk l').map
           (⟨Subtype.val, continuous_subtype_val⟩ : C(D.chart i, X)) =
@@ -401,7 +401,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.hom_ext {X : Type*} [TopologicalS
         Path.Homotopic.Quotient.mk (l'.map continuous_subtype_val) =
           TriangleRegularBaseFundamentalGroup.basedLoop F (Path.Homotopic.Quotient.mk p)
       rw [show l'.map continuous_subtype_val = l from
-          FundamentalGroupVanKampen.pathIn_map _ _ _ _]
+          FundamentalGroup.VanKampen.pathIn_map _ _ _ _]
       rfl
     cases i with
     | false =>
@@ -437,87 +437,87 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.hom_ext {X : Type*} [TopologicalS
   simpa only [TriangleRegularBaseFundamentalGroup.basedLoop, hbase,
     Path.Homotopic.Quotient.refl_trans, hsymm, Path.Homotopic.Quotient.trans_refl] using hall q
 
-def FundamentalGroupVanKampen.TwoOpenCover.chartPath {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
+def FundamentalGroup.VanKampen.TwoOpenCover.chartPath {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     Path (D.baseChart i) x :=
-  FundamentalGroupVanKampen.pathIn (D.pathTo x.val) (D.base_mem_chart i) x.property
+  FundamentalGroup.VanKampen.pathIn (D.pathTo x.val) (D.base_mem_chart i) x.property
     (D.pathTo_mem i x.val x.property)
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.chartPath_base {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) :
     D.chartPath i (D.baseChart i) = Path.refl (D.baseChart i) := by
-  simp only [chartPath, baseChart, D.pathTo_base, FundamentalGroupVanKampen.pathIn_refl]
+  simp only [chartPath, baseChart, D.pathTo_base, FundamentalGroup.VanKampen.pathIn_refl]
 
-def FundamentalGroupVanKampen.TwoOpenCover.chartPathClass {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
+def FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     Path.Homotopic.Quotient (D.baseChart i) x :=
   Path.Homotopic.Quotient.mk (D.chartPath i x)
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.chartPathClass_base {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) :
     D.chartPathClass i (D.baseChart i) = Path.Homotopic.Quotient.refl (D.baseChart i) := by
   simp only [chartPathClass, D.chartPath_base, Path.Homotopic.Quotient.mk_refl]
 
-def FundamentalGroupVanKampen.TwoOpenCover.closePath {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) {x y : D.chart i} (p : Path x y) :
+def FundamentalGroup.VanKampen.TwoOpenCover.closePath {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) {x y : D.chart i} (p : Path x y) :
     FundamentalGroup (D.chart i) (D.baseChart i) :=
   TriangleRegularBaseFundamentalGroup.basedLoop (D.chartPathClass i)
     (Path.Homotopic.Quotient.mk p)
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.closePath_refl {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     D.closePath i (Path.refl x) = 1 :=
   TriangleRegularBaseFundamentalGroup.basedLoop_refl _ _
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.closePath_trans {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) {x y z : D.chart i} (p : Path x y)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) {x y z : D.chart i} (p : Path x y)
     (q : Path y z) : D.closePath i (p.trans q) = D.closePath i q * D.closePath i p := by
   exact
     TriangleRegularBaseFundamentalGroup.basedLoop_trans (D.chartPathClass i)
       (Path.Homotopic.Quotient.mk p) (Path.Homotopic.Quotient.mk q)
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.closePath_homotopic {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool)
     {x y : D.chart i} {p q : Path x y} (hpq : Path.Homotopic p q) :
     D.closePath i p = D.closePath i q := by
   unfold closePath
   rw [Path.Homotopic.Quotient.eq.mpr hpq]
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.closePath_loop {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool)
     (p : Path (D.baseChart i) (D.baseChart i)) : D.closePath i p = Path.Homotopic.Quotient.mk p :=
   by
   simp only [closePath, TriangleRegularBaseFundamentalGroup.basedLoop, D.chartPathClass_base,
     Path.Homotopic.Quotient.refl_trans]
   exact Path.Homotopic.Quotient.trans_refl _
 
-def FundamentalGroupVanKampen.TwoOpenCover.chartHom {X : Type*} [TopologicalSpace X] {G : Type*}
-    [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+def FundamentalGroup.VanKampen.TwoOpenCover.chartHom {X : Type*} [TopologicalSpace X] {G : Type*}
+    [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) : FundamentalGroup (D.chart i) (D.baseChart i) →* G := by
   cases i
   · exact fU
   · exact fV
 
-def FundamentalGroupVanKampen.TwoOpenCover.localValue {X : Type*} [TopologicalSpace X] {G : Type*}
-    [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+def FundamentalGroup.VanKampen.TwoOpenCover.localValue {X : Type*} [TopologicalSpace X] {G : Type*}
+    [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ D.chart i) : G :=
   (D.chartHom fU fV i
       (D.closePath i
-        (FundamentalGroupVanKampen.pathIn (S := (D.chart i : Set X)) p (by simpa using hp 0)
+        (FundamentalGroup.VanKampen.pathIn (S := (D.chart i : Set X)) p (by simpa using hp 0)
           (by simpa using hp 1) hp)))⁻¹
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_refl {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) (x : X) (hx : ∀ t, Path.refl x t ∈ D.chart i) :
     D.localValue fU fV i (Path.refl x) hx = 1 := by
-  simp only [localValue, FundamentalGroupVanKampen.pathIn_refl, D.closePath_refl, map_one,
+  simp only [localValue, FundamentalGroup.VanKampen.pathIn_refl, D.closePath_refl, map_one,
     inv_one]
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_trans {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) {x y z : X} (p : Path x y) (q : Path y z)
     (hp : ∀ t, p t ∈ D.chart i) (hq : ∀ t, q t ∈ D.chart i) (hpq : ∀ t, p.trans q t ∈ D.chart i) :
     D.localValue fU fV i (p.trans q) hpq =
@@ -526,11 +526,11 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_trans {X : Type*} [Top
   have hy : y ∈ D.chart i := by simpa using hp 1
   have hz : z ∈ D.chart i := by simpa using hq 1
   unfold localValue
-  rw [FundamentalGroupVanKampen.pathIn_trans p q hx hy hz hp hq hpq, D.closePath_trans, map_mul,
+  rw [FundamentalGroup.VanKampen.pathIn_trans p q hx hy hz hp hq hpq, D.closePath_trans, map_mul,
     mul_inv_rev]
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_subpath_mul {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool) {x y : X} (p : Path x y)
     (a b c : (unitInterval)) (hab : a ≤ b) (hbc : b ≤ c) (hpab : ∀ t, p.subpath a b t ∈ D.chart i)
     (hpbc : ∀ t, p.subpath b c t ∈ D.chart i) (hpac : ∀ t, p.subpath a c t ∈ D.chart i) :
@@ -540,47 +540,47 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_subpath_mul {X : Type*
   have hb : p b ∈ D.chart i := by simpa using hpab 1
   have hc : p c ∈ D.chart i := by simpa using hpbc 1
   have H :=
-    FundamentalGroupVanKampen.subpathTransSubpathIn p a b c hab hbc ha hb hc hpab hpbc hpac
+    FundamentalGroup.VanKampen.subpathTransSubpathIn p a b c hab hbc ha hb hc hpab hpbc hpac
   unfold localValue
   rw [← D.closePath_homotopic i ⟨H⟩, D.closePath_trans, map_mul, mul_inv_rev]
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_homotopy {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool) {x y : X} (p q : Path x y)
     (hp : ∀ t, p t ∈ D.chart i) (hq : ∀ t, q t ∈ D.chart i) (H : Path.Homotopy p q)
     (hH : ∀ s, H s ∈ D.chart i) : D.localValue fU fV i p hp = D.localValue fU fV i q hq := by
   have hx : x ∈ D.chart i := by simpa using hp 0
   have hy : y ∈ D.chart i := by simpa using hp 1
   unfold localValue
-  rw [D.closePath_homotopic i ⟨FundamentalGroupVanKampen.homotopyIn p q hx hy hp hq H hH⟩]
+  rw [D.closePath_homotopic i ⟨FundamentalGroup.VanKampen.homotopyIn p q hx hy hp hq H hH⟩]
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapPath {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : D.overlap) : Path D.baseOverlapPoint x :=
-  FundamentalGroupVanKampen.pathIn (S := (D.overlap : Set X)) (D.pathTo x.val) ⟨D.baseU, D.baseV⟩
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapPath {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : D.overlap) : Path D.baseOverlapPoint x :=
+  FundamentalGroup.VanKampen.pathIn (S := (D.overlap : Set X)) (D.pathTo x.val) ⟨D.baseU, D.baseV⟩
     x.property
     (fun t =>
       ⟨D.pathTo_mem Bool.false x.val x.property.1 t, D.pathTo_mem Bool.true x.val x.property.2 t⟩)
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.overlapPath_map_U {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : D.overlap) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : D.overlap) :
     (D.overlapPath x).map D.overlapToU.continuous = D.chartPath Bool.false (D.overlapToU x) := by
   ext t
   rfl
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.overlapPath_map_V {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : D.overlap) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (x : D.overlap) :
     (D.overlapPath x).map D.overlapToV.continuous = D.chartPath Bool.true (D.overlapToV x) := by
   ext t
   rfl
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapClose {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapClose {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.OverlapGroup :=
   TriangleRegularBaseFundamentalGroup.basedLoop
     (fun x => Path.Homotopic.Quotient.mk (D.overlapPath x)) (Path.Homotopic.Quotient.mk p)
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.overlapHomU_close {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.overlapHomU (D.overlapClose p) = D.closePath Bool.false (p.map D.overlapToU.continuous) := by
   change
     Path.Homotopic.Quotient.mk
@@ -591,8 +591,8 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.overlapHomU_close {X : Type*} [To
   rw [Path.map_trans, Path.map_trans, ← Path.map_symm, D.overlapPath_map_U, D.overlapPath_map_U]
   rfl
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.overlapHomV_close {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.overlapHomV (D.overlapClose p) = D.closePath Bool.true (p.map D.overlapToV.continuous) := by
   change
     Path.Homotopic.Quotient.mk
@@ -603,8 +603,8 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.overlapHomV_close {X : Type*} [To
   rw [Path.map_trans, Path.map_trans, ← Path.map_symm, D.overlapPath_map_V, D.overlapPath_map_V]
   rfl
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible_UV {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) {x y : X} (p : Path x y)
     (hU : ∀ t, p t ∈ D.U) (hV : ∀ t, p t ∈ D.V) :
     D.localValue fU fV Bool.false p hU = D.localValue fU fV Bool.true p hV := by
@@ -613,12 +613,12 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible_UV {X : Typ
   have hyU : y ∈ D.U := by simpa using hU 1
   have hyV : y ∈ D.V := by simpa using hV 1
   let pI :=
-    FundamentalGroupVanKampen.pathIn (S := (D.overlap : Set X)) p ⟨hxU, hxV⟩ ⟨hyU, hyV⟩
+    FundamentalGroup.VanKampen.pathIn (S := (D.overlap : Set X)) p ⟨hxU, hxV⟩ ⟨hyU, hyV⟩
       (fun t => ⟨hU t, hV t⟩)
-  have hpU : pI.map D.overlapToU.continuous = FundamentalGroupVanKampen.pathIn p hxU hyU hU := by
+  have hpU : pI.map D.overlapToU.continuous = FundamentalGroup.VanKampen.pathIn p hxU hyU hU := by
     ext t
     rfl
-  have hpV : pI.map D.overlapToV.continuous = FundamentalGroupVanKampen.pathIn p hxV hyV hV := by
+  have hpV : pI.map D.overlapToV.continuous = FundamentalGroup.VanKampen.pathIn p hxV hyV hV := by
     ext t
     rfl
   have h := DFunLike.congr_fun hf (D.overlapClose pI)
@@ -627,8 +627,8 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible_UV {X : Typ
   have hV' := congrArg fV ((D.overlapHomV_close pI).trans (congrArg (D.closePath Bool.true) hpV))
   exact congrArg (fun a : G => a⁻¹) (hU'.symm.trans (h.trans hV'))
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) (i j : Bool) {x y : X}
     (p : Path x y) (hi : ∀ t, p t ∈ D.chart i) (hj : ∀ t, p t ∈ D.chart j) :
     D.localValue fU fV i p hi = D.localValue fU fV j p hj := by
@@ -638,10 +638,10 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible {X : Type*}
   · exact (D.localValue_compatible_UV fU fV hf p hj hi).symm
   · rfl
 
-def FundamentalGroupVanKampen.TwoOpenCover.localPathValue {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+def FundamentalGroup.VanKampen.TwoOpenCover.localPathValue {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
-    FundamentalGroupVanKampen.LocalPathValue (fun i => (D.chart i : Set X)) G
+    FundamentalGroup.VanKampen.LocalPathValue (fun i => (D.chart i : Set X)) G
     where
   value := D.localValue fU fV
   refl := D.localValue_refl fU fV
@@ -649,14 +649,14 @@ def FundamentalGroupVanKampen.TwoOpenCover.localPathValue {X : Type*} [Topologic
   subpath_mul := D.localValue_subpath_mul fU fV
   compatible := D.localValue_compatible fU fV hf
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localPathValue_homotopyInvariant {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.localPathValue fU fV hf).HomotopyInvariant :=
   D.localValue_homotopy fU fV
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_map_loop {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool)
     (p : Path (D.baseChart i) (D.baseChart i)) :
     D.localValue fU fV i (p.map continuous_subtype_val) (fun t => (p t).property) =
@@ -669,8 +669,8 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_map_loop {X : Type*}
   ext t
   rfl
 
-def FundamentalGroupVanKampen.PathValue.fundamentalGroupHom {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) (hV : V.HomotopyInvariant)
+def FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G) (hV : V.HomotopyInvariant)
     (o : X) : FundamentalGroup X o →* G
     where
   toFun :=
@@ -686,21 +686,21 @@ def FundamentalGroupVanKampen.PathValue.fundamentalGroupHom {X : Type*} [Topolog
     change (V.value (q.trans p))⁻¹ = (V.value p)⁻¹ * (V.value q)⁻¹
     rw [V.trans, mul_inv_rev]
 
-theorem FundamentalGroupVanKampen.mem_of_subpath_mem {X : Type*} [TopologicalSpace X] {x y : X}
+theorem FundamentalGroup.VanKampen.mem_of_subpath_mem {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) {a b : (unitInterval)} (hab : a ≤ b) {s : Set X}
     (hp : ∀ t, p.subpath a b t ∈ s) {t : (unitInterval)} (ht : t ∈ Set.Icc a b) : p t ∈ s := by
   have hsub : Set.range (p.subpath a b) ⊆ s := Set.range_subset_iff.mpr hp
   rw [p.range_subpath_of_le a b hab] at hsub
   exact hsub ⟨t, ht, rfl⟩
 
-theorem FundamentalGroupVanKampen.subpath_mem_mono {X : Type*} [TopologicalSpace X] {x y : X}
+theorem FundamentalGroup.VanKampen.subpath_mem_mono {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) {a b c d : (unitInterval)} (hab : a ≤ b) (hcd : c ≤ d) (hac : a ≤ c)
     (hdb : d ≤ b) {s : Set X} (hp : ∀ t, p.subpath a b t ∈ s) : ∀ t, p.subpath c d t ∈ s := by
   apply subpath_mem_of_mem_Icc p hcd
   intro t ht
   exact mem_of_subpath_mem p hab hp ⟨hac.trans ht.1, ht.2.trans hdb⟩
 
-theorem FundamentalGroupVanKampen.exists_path_subdivision {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.exists_path_subdivision {X : Type*} [TopologicalSpace X]
     {ι : Type*} {U : ι → Set X} (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ)
     {x y : X} (p : Path x y) :
     ∃ t : ℕ → (unitInterval),
@@ -715,23 +715,23 @@ theorem FundamentalGroupVanKampen.exists_path_subdivision {X : Type*} [Topologic
         exact Set.mem_iUnion.mpr ⟨i, hi⟩)
   exact ⟨t, ht0, hmono, ⟨n, hn n le_rfl⟩, fun n ↦ hsub n⟩
 
-def FundamentalGroupVanKampen.LocalPathValue.IsPrimitive {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
     (F : (unitInterval) → G) : Prop :=
   ∀ (a b : (unitInterval)),
     a ≤ b → ∀ i (h : ∀ t, p.subpath a b t ∈ U i), F b = F a * L.value i (p.subpath a b) h
 
-def FundamentalGroupVanKampen.LocalPathValue.IsPrimitiveUpTo {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
     (F : (unitInterval) → G) (r : (unitInterval)) : Prop :=
   ∀ (a b : (unitInterval)),
     a ≤ b → b ≤ r → ∀ i (h : ∀ t, p.subpath a b t ∈ U i), F b = F a * L.value i (p.subpath a b) h
 
-theorem FundamentalGroupVanKampen.LocalPathValue.isPrimitiveUpTo_zero {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) {x y : X} (p : Path x y) :
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) {x y : X} (p : Path x y) :
     L.IsPrimitiveUpTo p (fun _ ↦ 1) 0 := by
   intro a b hab hb i hi
   have ha0 : a = 0 := le_antisymm (hab.trans hb) bot_le
@@ -740,16 +740,16 @@ theorem FundamentalGroupVanKampen.LocalPathValue.isPrimitiveUpTo_zero {X : Type*
   subst b
   simp only [Path.subpath_self, L.refl, mul_one]
 
-theorem FundamentalGroupVanKampen.LocalPathValue.exists_primitiveUpTo_step {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
     {F : (unitInterval) → G} {a b : (unitInterval)} (_hab : a ≤ b) (i : ι)
     (hi : ∀ t ∈ Set.Icc a b, p t ∈ U i) (hF : L.IsPrimitiveUpTo p F a) :
     ∃ H : (unitInterval) → G, H 0 = F 0 ∧ L.IsPrimitiveUpTo p H b := by
   classical
   let memi (s t : (unitInterval)) (has : a ≤ s) (hst : s ≤ t) (htb : t ≤ b) :
     ∀ u, p.subpath s t u ∈ U i :=
-    FundamentalGroupVanKampen.subpath_mem_of_mem_Icc p hst
+    FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc p hst
       (fun u hu ↦ hi u ⟨has.trans hu.1, hu.2.trans htb⟩)
   let H (t : (unitInterval)) : G :=
     if hta : t ≤ a then F t
@@ -774,9 +774,9 @@ theorem FundamentalGroupVanKampen.LocalPathValue.exists_primitiveUpTo_step {X : 
   have hat : a ≤ t := le_of_not_ge hta
   by_cases hsa : s ≤ a
   · have hjsa : ∀ u, p.subpath s a u ∈ U j :=
-      FundamentalGroupVanKampen.subpath_mem_mono p hst hsa le_rfl hat hj
+      FundamentalGroup.VanKampen.subpath_mem_mono p hst hsa le_rfl hat hj
     have hjat : ∀ u, p.subpath a t u ∈ U j :=
-      FundamentalGroupVanKampen.subpath_mem_mono p hst hat hsa le_rfl hj
+      FundamentalGroup.VanKampen.subpath_mem_mono p hst hat hsa le_rfl hj
     calc
       H t = F a * L.value i (p.subpath a t) (memi a t le_rfl hat htb) := hright t hat htb
       _ = F a * L.value j (p.subpath a t) hjat := by rw [L.compatible i j (p.subpath a t) _ hjat]
@@ -792,13 +792,13 @@ theorem FundamentalGroupVanKampen.LocalPathValue.exists_primitiveUpTo_step {X : 
         (memi s t has hst htb) (memi a t le_rfl hat htb)]
     exact (mul_assoc _ _ _).symm
 
-theorem FundamentalGroupVanKampen.LocalPathValue.exists_primitive {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.exists_primitive {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) :
     ∃ F : (unitInterval) → G, F 0 = 1 ∧ L.IsPrimitive p F := by
   obtain ⟨t, ht0, hmono, ⟨n, hn⟩, hsub⟩ :=
-    FundamentalGroupVanKampen.exists_path_subdivision hopen hcover p
+    FundamentalGroup.VanKampen.exists_path_subdivision hopen hcover p
   have hprefix : ∀ m, ∃ F : (unitInterval) → G, F 0 = 1 ∧ L.IsPrimitiveUpTo p F (t m) := by
     intro m
     induction m with
@@ -816,13 +816,13 @@ theorem FundamentalGroupVanKampen.LocalPathValue.exists_primitive {X : Type*} [T
   intro a b hab i hi
   exact hF a b hab (by rw [hn]; exact le_top) i hi
 
-theorem FundamentalGroupVanKampen.LocalPathValue.primitive_unique {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.primitive_unique {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) {F H : (unitInterval) → G}
     (hF : L.IsPrimitive p F) (hH : L.IsPrimitive p H) (h0 : F 0 = H 0) : F = H := by
   obtain ⟨t, ht0, hmono, ⟨n, hn⟩, hsub⟩ :=
-    FundamentalGroupVanKampen.exists_path_subdivision hopen hcover p
+    FundamentalGroup.VanKampen.exists_path_subdivision hopen hcover p
   have hprefix : ∀ m, ∀ s ≤ t m, F s = H s := by
     intro m
     induction m with
@@ -837,13 +837,13 @@ theorem FundamentalGroupVanKampen.LocalPathValue.primitive_unique {X : Type*} [T
       have hts : t m ≤ s := le_of_not_ge hst
       obtain ⟨i, hi⟩ := hsub m
       have hlocal : ∀ u, p.subpath (t m) s u ∈ U i :=
-        FundamentalGroupVanKampen.subpath_mem_of_mem_Icc p hts
+        FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc p hts
           (fun u hu ↦ hi u ⟨hu.1, hu.2.trans hs⟩)
       rw [hF (t m) s hts i hlocal, hH (t m) s hts i hlocal, ih (t m) le_rfl]
   funext s
   exact hprefix n s (by rw [hn]; exact le_top)
 
-theorem FundamentalGroupVanKampen.convexComb_monotone {a b : (unitInterval)} (hab : a ≤ b) :
+theorem FundamentalGroup.VanKampen.convexComb_monotone {a b : (unitInterval)} (hab : a ≤ b) :
     Monotone (Set.Icc.convexComb a b) := by
   intro s t hst
   change (1 - (s : ℝ)) * a + s * b ≤ (1 - (t : ℝ)) * a + t * b
@@ -851,14 +851,14 @@ theorem FundamentalGroupVanKampen.convexComb_monotone {a b : (unitInterval)} (ha
   have hst' : (s : ℝ) ≤ t := hst
   nlinarith [mul_nonneg (sub_nonneg.mpr hab') (sub_nonneg.mpr hst')]
 
-theorem FundamentalGroupVanKampen.convexComb_comp (a b s t u : (unitInterval)) :
+theorem FundamentalGroup.VanKampen.convexComb_comp (a b s t u : (unitInterval)) :
     Set.Icc.convexComb a b (Set.Icc.convexComb s t u) =
       Set.Icc.convexComb (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) u := by
   apply Subtype.ext
   simp only [Set.Icc.coe_convexComb]
   ring
 
-theorem FundamentalGroupVanKampen.subpath_subpath {X : Type*} [TopologicalSpace X] {x y : X}
+theorem FundamentalGroup.VanKampen.subpath_subpath {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) (a b s t : (unitInterval)) :
     (p.subpath a b).subpath s t =
       p.subpath (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) := by
@@ -868,10 +868,10 @@ theorem FundamentalGroupVanKampen.subpath_subpath {X : Type*} [TopologicalSpace 
       p (Set.Icc.convexComb (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) u)
   rw [convexComb_comp]
 
-def FundamentalGroupVanKampen.intervalHalf : (unitInterval) :=
+def FundamentalGroup.VanKampen.intervalHalf : (unitInterval) :=
   ⟨1 / 2, by norm_num⟩
 
-theorem FundamentalGroupVanKampen.trans_convexComb_first_half {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.trans_convexComb_first_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) (t : (unitInterval)) :
     (p.trans q) (Set.Icc.convexComb 0 intervalHalf t) = p t := by
   have ht : (Set.Icc.convexComb 0 intervalHalf t : ℝ) ≤ 1 / 2 := by
@@ -883,7 +883,7 @@ theorem FundamentalGroupVanKampen.trans_convexComb_first_half {X : Type*} [Topol
     ring
   rw [heq, Path.extend_apply]
 
-theorem FundamentalGroupVanKampen.trans_convexComb_second_half {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.trans_convexComb_second_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) (t : (unitInterval)) :
     (p.trans q) (Set.Icc.convexComb intervalHalf 1 t) = q t := by
   have ht : 1 / 2 ≤ (Set.Icc.convexComb intervalHalf 1 t : ℝ) := by
@@ -896,38 +896,38 @@ theorem FundamentalGroupVanKampen.trans_convexComb_second_half {X : Type*} [Topo
   rw [heq, Path.extend_apply]
 
 @[simp]
-theorem FundamentalGroupVanKampen.trans_apply_intervalHalf {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.trans_apply_intervalHalf {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) : (p.trans q) intervalHalf = y := by
   simpa using trans_convexComb_first_half p q 1
 
-theorem FundamentalGroupVanKampen.trans_subpath_first_half {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.trans_subpath_first_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) :
     (p.trans q).subpath 0 intervalHalf =
       p.cast (p.trans q).source (trans_apply_intervalHalf p q) := by
   ext t
   exact trans_convexComb_first_half p q t
 
-theorem FundamentalGroupVanKampen.trans_subpath_second_half {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.trans_subpath_second_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) :
     (p.trans q).subpath intervalHalf 1 =
       q.cast (trans_apply_intervalHalf p q) (p.trans q).target := by
   ext t
   exact trans_convexComb_second_half p q t
 
-theorem FundamentalGroupVanKampen.LocalPathValue.value_eq_of_path_eq {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (i : ι) {x y : X} {p q : Path x y}
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (i : ι) {x y : X} {p q : Path x y}
     (h : p = q) (hp : ∀ t, p t ∈ U i) (hq : ∀ t, q t ∈ U i) : L.value i p hp = L.value i q hq := by
   cases h
   rfl
 
-theorem FundamentalGroupVanKampen.LocalPathValue.isPrimitive_subpath {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) {x y : X} (p : Path x y)
     {F : (unitInterval) → G} (hF : L.IsPrimitive p F) (a b : (unitInterval)) (hab : a ≤ b) :
     L.IsPrimitive (p.subpath a b) (fun t => (F a)⁻¹ * F (Set.Icc.convexComb a b t)) := by
   intro s t hst i hi
-  have heq := FundamentalGroupVanKampen.subpath_subpath p a b s t
+  have heq := FundamentalGroup.VanKampen.subpath_subpath p a b s t
   have hlocal : ∀ v, p.subpath (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) v ∈ U i := by
     intro v
     rw [← heq]
@@ -935,37 +935,37 @@ theorem FundamentalGroupVanKampen.LocalPathValue.isPrimitive_subpath {X : Type*}
   have hv := L.value_eq_of_path_eq i heq hi hlocal
   have hstep :=
     hF (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t)
-      (FundamentalGroupVanKampen.convexComb_monotone hab hst) i hlocal
+      (FundamentalGroup.VanKampen.convexComb_monotone hab hst) i hlocal
   change
     (F a)⁻¹ * F (Set.Icc.convexComb a b t) =
       ((F a)⁻¹ * F (Set.Icc.convexComb a b s)) * L.value i ((p.subpath a b).subpath s t) hi
   rw [hv, hstep, mul_assoc]
   rfl
 
-def FundamentalGroupVanKampen.LocalPathValue.transport {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.LocalPathValue.transport {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) : (unitInterval) → G :=
   (L.exists_primitive hopen hcover p).choose
 
 @[simp]
-theorem FundamentalGroupVanKampen.LocalPathValue.transport_zero {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.transport_zero {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) :
     L.transport hopen hcover p 0 = 1 :=
   (L.exists_primitive hopen hcover p).choose_spec.1
 
-theorem FundamentalGroupVanKampen.LocalPathValue.transport_isPrimitive {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) :
     L.IsPrimitive p (L.transport hopen hcover p) :=
   (L.exists_primitive hopen hcover p).choose_spec.2
 
-theorem FundamentalGroupVanKampen.LocalPathValue.transport_subpath {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.transport_subpath {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) (a b : (unitInterval)) (hab : a ≤ b)
     (t : (unitInterval)) :
     L.transport hopen hcover (p.subpath a b) t =
@@ -978,14 +978,14 @@ theorem FundamentalGroupVanKampen.LocalPathValue.transport_subpath {X : Type*}
       t
   simp only [transport_zero, Set.Icc.convexComb_zero, inv_mul_cancel]
 
-def FundamentalGroupVanKampen.LocalPathValue.rawValue {X : Type*} [TopologicalSpace X] {ι : Type*}
-    {G : Type*} [Group G] {U : ι → Set X} (L : FundamentalGroupVanKampen.LocalPathValue U G)
+def FundamentalGroup.VanKampen.LocalPathValue.rawValue {X : Type*} [TopologicalSpace X] {ι : Type*}
+    {G : Type*} [Group G] {U : ι → Set X} (L : FundamentalGroup.VanKampen.LocalPathValue U G)
     (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) : G :=
   L.transport hopen hcover p 1
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_cast {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y x' y' : X} (p : Path x y) (hx : x' = x) (hy : y' = y) :
     L.rawValue hopen hcover (p.cast hx hy) = L.rawValue hopen hcover p := by
   cases hx
@@ -993,25 +993,25 @@ theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_cast {X : Type*} [Topo
   rfl
 
 @[simp]
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_subpath_zero_one {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) :
     L.rawValue hopen hcover (p.subpath 0 1) = L.rawValue hopen hcover p := by
   rw [Path.subpath_zero_one, L.rawValue_cast]
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_subpath {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) (a b : (unitInterval))
     (hab : a ≤ b) :
     L.rawValue hopen hcover (p.subpath a b) =
       (L.transport hopen hcover p a)⁻¹ * L.transport hopen hcover p b := by
   simpa only [rawValue, Set.Icc.convexComb_one] using L.transport_subpath hopen hcover p a b hab 1
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_local {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_local {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) (i : ι) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ U i) :
     L.rawValue hopen hcover p = L.value i p hp := by
   have hs : ∀ t, p.subpath 0 1 t ∈ U i := fun t => hp _
@@ -1024,18 +1024,18 @@ theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_local {X : Type*} [Top
       ((L.value_eq_of_path_eq i (Path.subpath_zero_one p) hs hc).trans
         (L.value_cast i p p.source p.target hp hc))
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_refl {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) (x : X) : L.rawValue hopen hcover (Path.refl x) = 1 := by
   have hx : x ∈ ⋃ i, U i := by rw [hcover]; trivial
   obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx
   have hp : ∀ t, Path.refl x t ∈ U i := fun _ => hi
   rw [L.rawValue_local hopen hcover i (Path.refl x) hp, L.refl]
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_subpath_mul {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) (a b c : (unitInterval))
     (hab : a ≤ b) (hbc : b ≤ c) :
     L.rawValue hopen hcover (p.subpath a c) =
@@ -1044,9 +1044,9 @@ theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_subpath_mul {X : Type*
     L.rawValue_subpath hopen hcover p a b hab, L.rawValue_subpath hopen hcover p b c hbc,
     mul_assoc, mul_inv_cancel_left]
 
-theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_trans {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y z : X} (p : Path x y) (q : Path y z) :
     L.rawValue hopen hcover (p.trans q) = L.rawValue hopen hcover p * L.rawValue hopen hcover q :=
   by
@@ -1054,33 +1054,33 @@ theorem FundamentalGroupVanKampen.LocalPathValue.rawValue_trans {X : Type*} [Top
     L.rawValue hopen hcover (p.trans q) = L.rawValue hopen hcover ((p.trans q).subpath 0 1) :=
       (L.rawValue_subpath_zero_one hopen hcover (p.trans q)).symm
     _ =
-        L.rawValue hopen hcover ((p.trans q).subpath 0 FundamentalGroupVanKampen.intervalHalf) *
+        L.rawValue hopen hcover ((p.trans q).subpath 0 FundamentalGroup.VanKampen.intervalHalf) *
           L.rawValue hopen hcover
-            ((p.trans q).subpath FundamentalGroupVanKampen.intervalHalf 1) :=
-      (L.rawValue_subpath_mul hopen hcover (p.trans q) 0 FundamentalGroupVanKampen.intervalHalf 1
+            ((p.trans q).subpath FundamentalGroup.VanKampen.intervalHalf 1) :=
+      (L.rawValue_subpath_mul hopen hcover (p.trans q) 0 FundamentalGroup.VanKampen.intervalHalf 1
         unitInterval.nonneg' unitInterval.le_one')
     _ = L.rawValue hopen hcover p * L.rawValue hopen hcover q := by
-      rw [FundamentalGroupVanKampen.trans_subpath_first_half,
-        FundamentalGroupVanKampen.trans_subpath_second_half, L.rawValue_cast, L.rawValue_cast]
+      rw [FundamentalGroup.VanKampen.trans_subpath_first_half,
+        FundamentalGroup.VanKampen.trans_subpath_second_half, L.rawValue_cast, L.rawValue_cast]
 
-def FundamentalGroupVanKampen.LocalPathValue.extension {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.LocalPathValue.extension {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
-    (hcover : (⋃ i, U i) = Set.univ) : FundamentalGroupVanKampen.PathValue X G
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (hcover : (⋃ i, U i) = Set.univ) : FundamentalGroup.VanKampen.PathValue X G
     where
   value := L.rawValue hopen hcover
   refl := L.rawValue_refl hopen hcover
   trans := L.rawValue_trans hopen hcover
   subpath_mul := L.rawValue_subpath_mul hopen hcover
 
-theorem FundamentalGroupVanKampen.LocalPathValue.extension_extends {X : Type*}
+theorem FundamentalGroup.VanKampen.LocalPathValue.extension_extends {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) : (L.extension hopen hcover).Extends L := by
   intro i x y p hp
   exact L.rawValue_local hopen hcover i p hp
 
-def FundamentalGroupVanKampen.squareHorizontal {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.squareHorizontal {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s : (unitInterval)) : Path (F (s, 0)) (F (s, 1))
     where
   toFun t := F (s, t)
@@ -1088,7 +1088,7 @@ def FundamentalGroupVanKampen.squareHorizontal {X : Type*} [TopologicalSpace X]
   source' := rfl
   target' := rfl
 
-def FundamentalGroupVanKampen.squareVertical {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.squareVertical {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (t : (unitInterval)) : Path (F (0, t)) (F (1, t))
     where
   toFun s := F (s, t)
@@ -1096,7 +1096,7 @@ def FundamentalGroupVanKampen.squareVertical {X : Type*} [TopologicalSpace X]
   source' := rfl
   target' := rfl
 
-def FundamentalGroupVanKampen.squarePathHomotopy {x y : (unitInterval) × (unitInterval)}
+def FundamentalGroup.VanKampen.squarePathHomotopy {x y : (unitInterval) × (unitInterval)}
     (p q : Path x y) : Path.Homotopy p q
     where
   toFun
@@ -1115,7 +1115,7 @@ def FundamentalGroupVanKampen.squarePathHomotopy {x y : (unitInterval) × (unitI
   map_one_left u := by simp
   prop' r u hu := by rcases hu with rfl | rfl <;> simp
 
-theorem FundamentalGroupVanKampen.convexComb_mem_Icc {s t u v : (unitInterval)}
+theorem FundamentalGroup.VanKampen.convexComb_mem_Icc {s t u v : (unitInterval)}
     (hu : u ∈ Set.Icc s t) (hv : v ∈ Set.Icc s t) (r : (unitInterval)) :
     Set.Icc.convexComb u v r ∈ Set.Icc s t := by
   change (Set.Icc.convexComb u v r : ℝ) ∈ Set.Icc (s : ℝ) (t : ℝ)
@@ -1124,24 +1124,24 @@ theorem FundamentalGroupVanKampen.convexComb_mem_Icc {s t u v : (unitInterval)}
       (show (v : ℝ) ∈ Set.Icc (s : ℝ) (t : ℝ) from hv) (unitInterval.one_minus_nonneg r)
       (unitInterval.nonneg r) (sub_add_cancel _ _)
 
-theorem FundamentalGroupVanKampen.squarePathHomotopy_mem_rectangle
+theorem FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle
     {x y : (unitInterval) × (unitInterval)} (p q : Path x y) (s t a b : (unitInterval))
     (hp : ∀ u, p u ∈ Set.Icc s t ×ˢ Set.Icc a b) (hq : ∀ u, q u ∈ Set.Icc s t ×ˢ Set.Icc a b)
     (u : (unitInterval) × (unitInterval)) :
     squarePathHomotopy p q u ∈ Set.Icc s t ×ˢ Set.Icc a b :=
   ⟨convexComb_mem_Icc (hp u.2).1 (hq u.2).1 u.1, convexComb_mem_Icc (hp u.2).2 (hq u.2).2 u.1⟩
 
-def FundamentalGroupVanKampen.rectangleHorizontalVertical (s t a b : (unitInterval)) :
+def FundamentalGroup.VanKampen.rectangleHorizontalVertical (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) s).subpath a b).trans
     ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) b).subpath s t)
 
-def FundamentalGroupVanKampen.rectangleVerticalHorizontal (s t a b : (unitInterval)) :
+def FundamentalGroup.VanKampen.rectangleVerticalHorizontal (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) a).subpath s t).trans
     ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) t).subpath a b)
 
-theorem FundamentalGroupVanKampen.rectangleHorizontalVertical_map {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.rectangleHorizontalVertical_map {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     (rectangleHorizontalVertical s t a b).map F.continuous =
       ((squareHorizontal F s).subpath a b).trans ((squareVertical F b).subpath s t) := by
@@ -1151,7 +1151,7 @@ theorem FundamentalGroupVanKampen.rectangleHorizontalVertical_map {X : Type*} [T
       ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) b).subpath s t)
       F.continuous
 
-theorem FundamentalGroupVanKampen.rectangleVerticalHorizontal_map {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     (rectangleVerticalHorizontal s t a b).map F.continuous =
       ((squareVertical F a).subpath s t).trans ((squareHorizontal F t).subpath a b) := by
@@ -1161,7 +1161,7 @@ theorem FundamentalGroupVanKampen.rectangleVerticalHorizontal_map {X : Type*} [T
       ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) t).subpath a b)
       F.continuous
 
-theorem FundamentalGroupVanKampen.rectangleHorizontalVertical_mem (s t a b : (unitInterval))
+theorem FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem (s t a b : (unitInterval))
     (hst : s ≤ t) (hab : a ≤ b) :
     ∀ u, rectangleHorizontalVertical s t a b u ∈ Set.Icc s t ×ˢ Set.Icc a b := by
   apply SimplyConnectedCover.trans_mem
@@ -1170,7 +1170,7 @@ theorem FundamentalGroupVanKampen.rectangleHorizontalVertical_mem (s t a b : (un
   · intro u
     exact ⟨⟨Set.Icc.le_convexComb hst u, Set.Icc.convexComb_le hst u⟩, hab, le_rfl⟩
 
-theorem FundamentalGroupVanKampen.rectangleVerticalHorizontal_mem (s t a b : (unitInterval))
+theorem FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem (s t a b : (unitInterval))
     (hst : s ≤ t) (hab : a ≤ b) :
     ∀ u, rectangleVerticalHorizontal s t a b u ∈ Set.Icc s t ×ˢ Set.Icc a b := by
   apply SimplyConnectedCover.trans_mem
@@ -1179,7 +1179,7 @@ theorem FundamentalGroupVanKampen.rectangleVerticalHorizontal_mem (s t a b : (un
   · intro u
     exact ⟨⟨hst, le_rfl⟩, Set.Icc.le_convexComb hab u, Set.Icc.convexComb_le hab u⟩
 
-def FundamentalGroupVanKampen.rectangleBoundaryHomotopy {X : Type*} [TopologicalSpace X]
+def FundamentalGroup.VanKampen.rectangleBoundaryHomotopy {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     Path.Homotopy (((squareHorizontal F s).subpath a b).trans ((squareVertical F b).subpath s t))
       (((squareVertical F a).subpath s t).trans ((squareHorizontal F t).subpath a b)) :=
@@ -1188,7 +1188,7 @@ def FundamentalGroupVanKampen.rectangleBoundaryHomotopy {X : Type*} [Topological
         F).cast
     (rectangleHorizontalVertical_map F s t a b) (rectangleVerticalHorizontal_map F s t a b)
 
-theorem FundamentalGroupVanKampen.rectangleBoundaryHomotopy_apply {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval))
     (u : (unitInterval) × (unitInterval)) :
     rectangleBoundaryHomotopy F s t a b u =
@@ -1197,7 +1197,7 @@ theorem FundamentalGroupVanKampen.rectangleBoundaryHomotopy_apply {X : Type*} [T
           (rectangleVerticalHorizontal s t a b) u) :=
   rfl
 
-theorem FundamentalGroupVanKampen.rectangleBoundaryHomotopy_mem {X : Type*} [TopologicalSpace X]
+theorem FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) (hst : s ≤ t)
     (hab : a ≤ b) {A : Set X} (hcell : ∀ u ∈ Set.Icc s t ×ˢ Set.Icc a b, F u ∈ A)
     (u : (unitInterval) × (unitInterval)) : rectangleBoundaryHomotopy F s t a b u ∈ A := by
@@ -1208,50 +1208,50 @@ theorem FundamentalGroupVanKampen.rectangleBoundaryHomotopy_mem {X : Type*} [Top
         (rectangleHorizontalVertical_mem s t a b hst hab)
         (rectangleVerticalHorizontal_mem s t a b hst hab) u)
 
-theorem FundamentalGroupVanKampen.PathValue.square_cell_of_local {X : Type*} [TopologicalSpace X]
-    {ι G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) {U : ι → Set X}
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hExt : V.Extends L)
+theorem FundamentalGroup.VanKampen.PathValue.square_cell_of_local {X : Type*} [TopologicalSpace X]
+    {ι G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G) {U : ι → Set X}
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hExt : V.Extends L)
     (hL : L.HomotopyInvariant) (i : ι) (F : C((unitInterval) × (unitInterval), X))
     (s t a b : (unitInterval)) (hst : s ≤ t) (hab : a ≤ b)
     (hcell : ∀ u ∈ Set.Icc s t ×ˢ Set.Icc a b, F u ∈ U i) :
-    V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath a b) *
-        V.value ((FundamentalGroupVanKampen.squareVertical F b).subpath s t) =
-      V.value ((FundamentalGroupVanKampen.squareVertical F a).subpath s t) *
-        V.value ((FundamentalGroupVanKampen.squareHorizontal F t).subpath a b) := by
-  let H := FundamentalGroupVanKampen.rectangleBoundaryHomotopy F s t a b
+    V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath a b) *
+        V.value ((FundamentalGroup.VanKampen.squareVertical F b).subpath s t) =
+      V.value ((FundamentalGroup.VanKampen.squareVertical F a).subpath s t) *
+        V.value ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath a b) := by
+  let H := FundamentalGroup.VanKampen.rectangleBoundaryHomotopy F s t a b
   have hH : ∀ u, H u ∈ U i :=
-    FundamentalGroupVanKampen.rectangleBoundaryHomotopy_mem F s t a b hst hab hcell
+    FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem F s t a b hst hab hcell
   have hp :
     ∀ u,
-      ((FundamentalGroupVanKampen.squareHorizontal F s).subpath a b).trans
-          ((FundamentalGroupVanKampen.squareVertical F b).subpath s t) u ∈
+      ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath a b).trans
+          ((FundamentalGroup.VanKampen.squareVertical F b).subpath s t) u ∈
         U i := by
     intro u
     exact (congrArg (fun x => x ∈ U i) (H.map_zero_left u)).mp (hH (0, u))
   have hq :
     ∀ u,
-      ((FundamentalGroupVanKampen.squareVertical F a).subpath s t).trans
-          ((FundamentalGroupVanKampen.squareHorizontal F t).subpath a b) u ∈
+      ((FundamentalGroup.VanKampen.squareVertical F a).subpath s t).trans
+          ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath a b) u ∈
         U i := by
     intro u
     exact (congrArg (fun x => x ∈ U i) (H.map_one_left u)).mp (hH (1, u))
   calc
     _ =
         V.value
-          (((FundamentalGroupVanKampen.squareHorizontal F s).subpath a b).trans
-            ((FundamentalGroupVanKampen.squareVertical F b).subpath s t)) :=
+          (((FundamentalGroup.VanKampen.squareHorizontal F s).subpath a b).trans
+            ((FundamentalGroup.VanKampen.squareVertical F b).subpath s t)) :=
       (V.trans _ _).symm
     _ = L.value i _ hp := (hExt i _ hp)
     _ = L.value i _ hq := (hL i _ _ hp hq H hH)
     _ =
         V.value
-          (((FundamentalGroupVanKampen.squareVertical F a).subpath s t).trans
-            ((FundamentalGroupVanKampen.squareHorizontal F t).subpath a b)) :=
+          (((FundamentalGroup.VanKampen.squareVertical F a).subpath s t).trans
+            ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath a b)) :=
       (hExt i _ hq).symm
     _ = _ := V.trans _ _
 
-theorem FundamentalGroupVanKampen.PathValue.value_eq_one_of_constant {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     {x y : X} (p : Path x y) (hp : ∀ t, p t = x) : V.value p = 1 := by
   have hy : y = x := p.target.symm.trans (hp 1)
   subst y
@@ -1260,21 +1260,21 @@ theorem FundamentalGroupVanKampen.PathValue.value_eq_one_of_constant {X : Type*}
     exact hp t
   rw [heq, V.refl]
 
-theorem FundamentalGroupVanKampen.PathValue.square_strip {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.square_strip {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     (F : C((unitInterval) × (unitInterval), X)) (s t : (unitInterval)) (d : ℕ → (unitInterval))
     (hmono : Monotone d) (n : ℕ)
     (hcell :
       ∀ k < n,
-        V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d k) (d (k + 1))) *
-            V.value ((FundamentalGroupVanKampen.squareVertical F (d (k + 1))).subpath s t) =
-          V.value ((FundamentalGroupVanKampen.squareVertical F (d k)).subpath s t) *
+        V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d k) (d (k + 1))) *
+            V.value ((FundamentalGroup.VanKampen.squareVertical F (d (k + 1))).subpath s t) =
+          V.value ((FundamentalGroup.VanKampen.squareVertical F (d k)).subpath s t) *
             V.value
-              ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d k) (d (k + 1)))) :
-    V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
-        V.value ((FundamentalGroupVanKampen.squareVertical F (d n)).subpath s t) =
-      V.value ((FundamentalGroupVanKampen.squareVertical F (d 0)).subpath s t) *
-        V.value ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d 0) (d n)) := by
+              ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d k) (d (k + 1)))) :
+    V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
+        V.value ((FundamentalGroup.VanKampen.squareVertical F (d n)).subpath s t) =
+      V.value ((FundamentalGroup.VanKampen.squareVertical F (d 0)).subpath s t) *
+        V.value ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d 0) (d n)) := by
   induction n with
   | zero => simp only [Path.subpath_self, V.refl, one_mul, mul_one]
   | succ n ih =>
@@ -1283,65 +1283,65 @@ theorem FundamentalGroupVanKampen.PathValue.square_strip {X : Type*} [Topologica
       V.subpath_mul _ (d 0) (d n) (d (n + 1)) (hmono (Nat.zero_le n)) (hmono (Nat.le_succ n))]
     calc
       _ =
-          V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
+          V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
             (V.value
-                ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d n) (d (n + 1))) *
-              V.value ((FundamentalGroupVanKampen.squareVertical F (d (n + 1))).subpath s t)) :=
+                ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d n) (d (n + 1))) *
+              V.value ((FundamentalGroup.VanKampen.squareVertical F (d (n + 1))).subpath s t)) :=
         mul_assoc _ _ _
       _ =
-          V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
-            (V.value ((FundamentalGroupVanKampen.squareVertical F (d n)).subpath s t) *
+          V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
+            (V.value ((FundamentalGroup.VanKampen.squareVertical F (d n)).subpath s t) *
               V.value
-                ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d n) (d (n + 1)))) := by
+                ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d n) (d (n + 1)))) := by
         rw [hcell n (Nat.lt_succ_self n)]
       _ =
-          (V.value ((FundamentalGroupVanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
-              V.value ((FundamentalGroupVanKampen.squareVertical F (d n)).subpath s t)) *
+          (V.value ((FundamentalGroup.VanKampen.squareHorizontal F s).subpath (d 0) (d n)) *
+              V.value ((FundamentalGroup.VanKampen.squareVertical F (d n)).subpath s t)) *
             V.value
-              ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d n) (d (n + 1))) :=
+              ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d n) (d (n + 1))) :=
         (mul_assoc _ _ _).symm
       _ =
-          (V.value ((FundamentalGroupVanKampen.squareVertical F (d 0)).subpath s t) *
-              V.value ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d 0) (d n))) *
+          (V.value ((FundamentalGroup.VanKampen.squareVertical F (d 0)).subpath s t) *
+              V.value ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d 0) (d n))) *
             V.value
-              ((FundamentalGroupVanKampen.squareHorizontal F t).subpath (d n) (d (n + 1))) := by
+              ((FundamentalGroup.VanKampen.squareHorizontal F t).subpath (d n) (d (n + 1))) := by
         rw [hprev]
       _ = _ := mul_assoc _ _ _
 
-theorem FundamentalGroupVanKampen.PathValue.value_squareHorizontal_homotopy {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s : (unitInterval)) :
-    V.value (FundamentalGroupVanKampen.squareHorizontal H.toContinuousMap s) =
+    V.value (FundamentalGroup.VanKampen.squareHorizontal H.toContinuousMap s) =
       V.value (H.eval s) := by
   have heq :
-    FundamentalGroupVanKampen.squareHorizontal H.toContinuousMap s =
+    FundamentalGroup.VanKampen.squareHorizontal H.toContinuousMap s =
       (H.eval s).cast (H.source s) (H.target s) := by
     ext t
     rfl
   rw [heq, V.value_cast]
 
-theorem FundamentalGroupVanKampen.PathValue.value_squareVertical_homotopy_zero {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s t : (unitInterval)) :
-    V.value ((FundamentalGroupVanKampen.squareVertical H.toContinuousMap 0).subpath s t) = 1 := by
+    V.value ((FundamentalGroup.VanKampen.squareVertical H.toContinuousMap 0).subpath s t) = 1 := by
   apply V.value_eq_one_of_constant
   intro u
   change H (_, 0) = H (s, 0)
   simp only [Path.Homotopy.source]
 
-theorem FundamentalGroupVanKampen.PathValue.value_squareVertical_homotopy_one {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G)
+theorem FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s t : (unitInterval)) :
-    V.value ((FundamentalGroupVanKampen.squareVertical H.toContinuousMap 1).subpath s t) = 1 := by
+    V.value ((FundamentalGroup.VanKampen.squareVertical H.toContinuousMap 1).subpath s t) = 1 := by
   apply V.value_eq_one_of_constant
   intro u
   change H (_, 1) = H (s, 1)
   simp only [Path.Homotopy.target]
 
-theorem FundamentalGroupVanKampen.PathValue.value_eq_of_homotopy_of_open_cover {X : Type*}
+theorem FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (V : FundamentalGroupVanKampen.PathValue X G)
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (V : FundamentalGroup.VanKampen.PathValue X G)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : ⋃ i, U i = Set.univ) (hExt : V.Extends L) (hL : L.HomotopyInvariant) {x y : X}
     (p q : Path x y) (H : Path.Homotopy p q) : V.value p = V.value q := by
   have hpre : Set.univ ⊆ ⋃ i, H ⁻¹' U i := by
@@ -1369,50 +1369,50 @@ theorem FundamentalGroupVanKampen.PathValue.value_eq_of_homotopy_of_open_cover {
   have hfinish := hwalk n
   simpa only [hd0, hn n le_rfl, Path.Homotopy.eval_zero, Path.Homotopy.eval_one] using hfinish
 
-theorem FundamentalGroupVanKampen.PathValue.homotopyInvariant_of_open_cover {X : Type*}
+theorem FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
-    (V : FundamentalGroupVanKampen.PathValue X G)
-    (L : FundamentalGroupVanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
+    (V : FundamentalGroup.VanKampen.PathValue X G)
+    (L : FundamentalGroup.VanKampen.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : ⋃ i, U i = Set.univ) (hExt : V.Extends L) (hL : L.HomotopyInvariant) :
     V.HomotopyInvariant := by
   intro x y p q h
   obtain ⟨H⟩ := h
   exact V.value_eq_of_homotopy_of_open_cover L hopen hcover hExt hL p q H
 
-def FundamentalGroupVanKampen.TwoOpenCover.globalPathValue {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
-    (fV : D.VGroup →* G) (hf : D.Compatible fU fV) : FundamentalGroupVanKampen.PathValue X G :=
+def FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+    (fV : D.VGroup →* G) (hf : D.Compatible fU fV) : FundamentalGroup.VanKampen.PathValue X G :=
   (D.localPathValue fU fV hf).extension D.chart_open D.chart_cover
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.globalPathValue_extends {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.globalPathValue fU fV hf).Extends (D.localPathValue fU fV hf) :=
   (D.localPathValue fU fV hf).extension_extends D.chart_open D.chart_cover
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.globalPathValue_homotopyInvariant {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.globalPathValue fU fV hf).HomotopyInvariant :=
-  FundamentalGroupVanKampen.PathValue.homotopyInvariant_of_open_cover (D.globalPathValue fU fV hf)
+  FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover (D.globalPathValue fU fV hf)
     (D.localPathValue fU fV hf) D.chart_open D.chart_cover (D.globalPathValue_extends fU fV hf)
     (D.localPathValue_homotopyInvariant fU fV hf)
 
-def FundamentalGroupVanKampen.TwoOpenCover.lift {X : Type*} [TopologicalSpace X] {G : Type*}
-    [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+def FundamentalGroup.VanKampen.TwoOpenCover.lift {X : Type*} [TopologicalSpace X] {G : Type*}
+    [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) : FundamentalGroup X D.base →* G :=
   (D.globalPathValue fU fV hf).fundamentalGroupHom (D.globalPathValue_homotopyInvariant fU fV hf)
     D.base
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.lift_mk_of_mem {X : Type*} [TopologicalSpace X]
-    {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem {X : Type*} [TopologicalSpace X]
+    {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) (i : Bool) (p : Path D.base D.base)
     (hp : ∀ t, p t ∈ D.chart i) :
     D.lift fU fV hf (Path.Homotopic.Quotient.mk p) = (D.localValue fU fV i p hp)⁻¹ :=
   congrArg (fun a : G => a⁻¹) (D.globalPathValue_extends fU fV hf i p hp)
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.lift_comp_inclusionU {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.lift fU fV hf).comp D.inclusionHomU = fU := by
   ext γ
@@ -1422,8 +1422,8 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.lift_comp_inclusionU {X : Type*}
   rw [D.localValue_map_loop, inv_inv] at h
   exact h
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.lift_comp_inclusionV {X : Type*}
-    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV {X : Type*}
+    [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.lift fU fV hf).comp D.inclusionHomV = fV := by
   ext γ
@@ -1433,106 +1433,106 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.lift_comp_inclusionV {X : Type*}
   rw [D.localValue_map_loop, inv_inv] at h
   exact h
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.ChartGroup {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) :=
   FundamentalGroup (D.chart i) (D.baseChart i)
 
-def FundamentalGroupVanKampen.TwoOpenCover.overlapHom {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : (i : Bool) → D.OverlapGroup →* D.ChartGroup i
+def FundamentalGroup.VanKampen.TwoOpenCover.overlapHom {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : (i : Bool) → D.OverlapGroup →* D.ChartGroup i
   | false => D.overlapHomU
   | true => D.overlapHomV
 
-def FundamentalGroupVanKampen.TwoOpenCover.inclusionHom {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+def FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     (i : Bool) → D.ChartGroup i →* FundamentalGroup X D.base
   | false => D.inclusionHomU
   | true => D.inclusionHomV
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.inclusionHom_comp_overlapHom {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) :
     (D.inclusionHom i).comp (D.overlapHom i) = D.inclusionHomU.comp D.overlapHomU := by
   cases i
   · rfl
   · exact D.inclusionHom_compatible.symm
 
-abbrev FundamentalGroupVanKampen.TwoOpenCover.Pushout {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) :=
+abbrev FundamentalGroup.VanKampen.TwoOpenCover.Pushout {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) :=
   Monoid.PushoutI D.overlapHom
 
-def FundamentalGroupVanKampen.TwoOpenCover.pushoutOfU {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.UGroup →* D.Pushout :=
+def FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfU {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.UGroup →* D.Pushout :=
   Monoid.PushoutI.of (φ := D.overlapHom) Bool.false
 
-def FundamentalGroupVanKampen.TwoOpenCover.pushoutOfV {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.VGroup →* D.Pushout :=
+def FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfV {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.VGroup →* D.Pushout :=
   Monoid.PushoutI.of (φ := D.overlapHom) Bool.true
 
-def FundamentalGroupVanKampen.TwoOpenCover.pushoutBase {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.OverlapGroup →* D.Pushout :=
+def FundamentalGroup.VanKampen.TwoOpenCover.pushoutBase {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.OverlapGroup →* D.Pushout :=
   Monoid.PushoutI.base D.overlapHom
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutOfU_comp_overlapHomU {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfU_comp_overlapHomU {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.pushoutOfU.comp D.overlapHomU = D.pushoutBase :=
   Monoid.PushoutI.of_comp_eq_base (φ := D.overlapHom) Bool.false
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutOfV_comp_overlapHomV {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfV_comp_overlapHomV {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.pushoutOfV.comp D.overlapHomV = D.pushoutBase :=
   Monoid.PushoutI.of_comp_eq_base (φ := D.overlapHom) Bool.true
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutOf_compatible {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutOf_compatible {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.Compatible D.pushoutOfU D.pushoutOfV :=
   D.pushoutOfU_comp_overlapHomU.trans D.pushoutOfV_comp_overlapHomV.symm
 
-def FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+def FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.Pushout →* FundamentalGroup X D.base :=
   Monoid.PushoutI.lift D.inclusionHom (D.inclusionHomU.comp D.overlapHomU)
     D.inclusionHom_comp_overlapHom
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_of {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_of {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool)
     (g : D.ChartGroup i) :
     D.pushoutToFundamentalGroup (Monoid.PushoutI.of i g) = D.inclusionHom i g :=
   Monoid.PushoutI.lift_of _ _ _ g
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_of {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_of {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) :
     D.pushoutToFundamentalGroup.comp (Monoid.PushoutI.of i) = D.inclusionHom i := by
   ext g
   exact D.pushoutToFundamentalGroup_of i g
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofU {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofU {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.pushoutToFundamentalGroup.comp D.pushoutOfU = D.inclusionHomU :=
   D.pushoutToFundamentalGroup_comp_of Bool.false
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofV {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofV {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.pushoutToFundamentalGroup.comp D.pushoutOfV = D.inclusionHomV :=
   D.pushoutToFundamentalGroup_comp_of Bool.true
 
-def FundamentalGroupVanKampen.TwoOpenCover.fundamentalGroupToPushout {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+def FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     FundamentalGroup X D.base →* D.Pushout :=
   D.lift D.pushoutOfU D.pushoutOfV D.pushoutOf_compatible
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionU
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionU
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.fundamentalGroupToPushout.comp D.inclusionHomU = D.pushoutOfU :=
   D.lift_comp_inclusionU D.pushoutOfU D.pushoutOfV D.pushoutOf_compatible
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionV
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionV
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.fundamentalGroupToPushout.comp D.inclusionHomV = D.pushoutOfV :=
   D.lift_comp_inclusionV D.pushoutOfU D.pushoutOfV D.pushoutOf_compatible
 
 theorem
-  FundamentalGroupVanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_pushoutToFundamentalGroup
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+  FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_pushoutToFundamentalGroup
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.fundamentalGroupToPushout.comp D.pushoutToFundamentalGroup = MonoidHom.id D.Pushout := by
   apply Monoid.PushoutI.hom_ext_nonempty
   intro i
@@ -1549,8 +1549,8 @@ theorem
       D.fundamentalGroupToPushout_comp_inclusionV, MonoidHom.id_comp]
 
 theorem
-  FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_fundamentalGroupToPushout
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
+  FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_fundamentalGroupToPushout
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
     D.pushoutToFundamentalGroup.comp D.fundamentalGroupToPushout =
       MonoidHom.id (FundamentalGroup X D.base) := by
   apply D.hom_ext
@@ -1559,8 +1559,8 @@ theorem
   · rw [MonoidHom.comp_assoc, D.fundamentalGroupToPushout_comp_inclusionV,
       D.pushoutToFundamentalGroup_comp_ofV, MonoidHom.id_comp]
 
-def FundamentalGroupVanKampen.TwoOpenCover.pushoutEquiv {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.Pushout ≃* FundamentalGroup X D.base
+def FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : D.Pushout ≃* FundamentalGroup X D.base
     where
   toFun := D.pushoutToFundamentalGroup
   invFun := D.fundamentalGroupToPushout
@@ -1569,13 +1569,13 @@ def FundamentalGroupVanKampen.TwoOpenCover.pushoutEquiv {X : Type*} [Topological
   map_mul' := D.pushoutToFundamentalGroup.map_mul
 
 @[simp]
-theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutEquiv_of {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) (i : Bool) (g : D.ChartGroup i) :
+theorem FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) (i : Bool) (g : D.ChartGroup i) :
     D.pushoutEquiv (Monoid.PushoutI.of i g) = D.inclusionHom i g :=
   D.pushoutToFundamentalGroup_of i g
 
-theorem FundamentalGroupVanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
     (hV : Function.Surjective D.overlapHomV) : Function.Surjective D.inclusionHomU := by
   intro γ
   obtain ⟨q, rfl⟩ := D.pushoutEquiv.surjective γ

@@ -253,13 +253,13 @@ theorem simplyConnectedSpace_of_fundamentalGroup_eq_one {X : Type*} [Topological
   (simplyConnectedSpace_iff_fundamentalGroup_eq_one x).mpr hx
 
 theorem SphereHomology.twoOpenCover_pathConnectedSpace {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) : PathConnectedSpace X := by
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : PathConnectedSpace X := by
   apply pathConnectedSpace_iff_univ.mpr
   rw [← D.cover]
   exact D.pathConnectedU.union D.pathConnectedV ⟨D.base, D.baseU, D.baseV⟩
 
 theorem SphereHomology.twoOpenCover_fundamentalGroup_eq_one {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
     [SimplyConnectedSpace D.V] (g : FundamentalGroup X D.base) : g = 1 := by
   have h :
     MonoidHom.id (FundamentalGroup X D.base) =
@@ -276,7 +276,7 @@ theorem SphereHomology.twoOpenCover_fundamentalGroup_eq_one {X : Type*} [Topolog
   exact DFunLike.congr_fun h g
 
 theorem SphereHomology.twoOpenCover_simplyConnectedSpace {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroupVanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
     [SimplyConnectedSpace D.V] : SimplyConnectedSpace X := by
   let := twoOpenCover_pathConnectedSpace D
   exact
@@ -284,7 +284,7 @@ theorem SphereHomology.twoOpenCover_simplyConnectedSpace {X : Type*} [Topologica
       (twoOpenCover_fundamentalGroup_eq_one D)
 
 def SphereHomology.suspensionConeCover (X : Type) [TopologicalSpace X] [PathConnectedSpace X]
-    (x : X) : FundamentalGroupVanKampen.TwoOpenCover (Suspension.topSus X)
+    (x : X) : FundamentalGroup.VanKampen.TwoOpenCover (Suspension.topSus X)
     where
   U := ⟨Suspension.topSus.northOpen, Suspension.topSus.northOpen_isOpen⟩
   V := ⟨Suspension.topSus.southOpen, Suspension.topSus.southOpen_isOpen⟩
