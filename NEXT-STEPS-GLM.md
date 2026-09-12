@@ -42,9 +42,10 @@ below and comes before everything else, because E2 waits on it.
    from the three probe theorems still in `Hopf/` (`MorseCancel.cancel_of_transverse_level_isotopy`,
    `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
    `MorseCancel.exists_excellent_indexed_morse_birth`), after the SurgeryWindows decision.
-8. **Docstrings**, ongoing and largest: 24 files without a module docstring, 62 without section
-   headers, 4,245 public declarations without one. Model: `Lib/AlgebraicTopology/Hurewicz/Degree1.lean`
-   (module docstring) and `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` (per
+8. **Docstrings**, ongoing and largest. Module docstrings: done in 87da83ef (24 files), merged
+   at bba4df2, consumer build green. Remaining: 62 files without section headers, and the
+   per-declaration docstrings (4,245 public declarations at the last count, fewer after your
+   headline pass). Model: `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` (per
    declaration). Do this per file, one commit per file, "No proof term changed."
 9. **Rename commits** for the transitional namespaces (`Smale.*`, `NoExotic.*`, `Degree.*`,
    `MorseCancel.*`, `SingularMayerVietoris.*`, `SphereHomology.*`, `RiemannMapping.*`,
