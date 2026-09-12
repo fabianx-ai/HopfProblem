@@ -835,3 +835,25 @@ theorem HigherHurewicz.classOperator_boundary {X : Type} [TopologicalSpace X]
       HigherHurewicz.classOperator_simplex, LinearMap.zero_apply]
     exact HigherHurewicz.normalizedSimplex_boundary_relation x hpi smp
   exact LinearMap.congr_fun h b
+
+/-- The inverse Hurewicz map at degree `n ≥ 3`: the class operator descended to
+singular homology. General-`n` form of the per-degree `hurewiczInverse`. -/
+def HigherHurewicz.hurewiczInverse {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    SingularMayerVietoris.SingularHomology X (m + 3) →ₗ[ℤ] Additive (π_ (m + 3) X x) :=
+  HigherHurewicz.singularHomologyDesc (m + 3)
+    (HigherHurewicz.classOperator x (m + 3) hpi)
+    (HigherHurewicz.classOperator_boundary x hpi)
+
+/-- The inverse Hurewicz map on a cycle is the class operator on the underlying chain. -/
+@[simp]
+theorem HigherHurewicz.hurewiczInverse_cycleClass {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (m + 3)) :
+    HigherHurewicz.hurewiczInverse x hpi
+        (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X)
+          (m + 3) c) =
+      HigherHurewicz.classOperator x (m + 3) hpi c.1 :=
+  HigherHurewicz.singularHomologyDesc_cycleClass (m + 3) _ _ c
