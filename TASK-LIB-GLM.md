@@ -336,8 +336,8 @@ the Kimi task instead.
 
 ## Cross-model ordering
 - Kimi's lane C starts as soon as your lane A has landed on
-  `lib/textbook-extraction`; Kimi's F waits for your A, D1, D2, E1 (and its own
-  E2); Kimi's J waits for your A. Land A first and announce it in
+  `lib/textbook-extraction`; the F lane (Muse seat) waits for your A, D1, D2, E1 (and its own
+  E2); J (Muse seat) waits for your A. Land A first and announce it in
   `Lib/reports/A.md`.
 - While blocked (D2 waits for D1; E1 waits for D2; I's Wang part waits for A),
   take the next independent lane: order A → D1 → H → D2 → I → E1 → B.

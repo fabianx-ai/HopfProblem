@@ -1,7 +1,7 @@
 # Next steps — Kimi (after the integration review of 2026-09-12)
 
-Branch: `lib/textbook-extraction` at 856e4762 (your C, E2, F, G, J are merged there on top of
-GLM's A; builds green, 32/32 axiom probes exact, zero changed statements under `Hopf/`). Start
+Branch: `lib/textbook-extraction`, head 692e7f5f (your C, E2, F, G, J were merged at 856e4762 on top
+of GLM's A; builds green, 32/32 axiom probes exact, zero changed statements under `Hopf/`). Start
 every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 
 ## Owner decisions (all settled 2026-09-12)
@@ -13,8 +13,8 @@ every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 - (Settled) **J product shape:** state the Pontryagin product at `(1, n)` now, matching the
   landed cross product; general `(p, q)` is a named follow-up once C's general cross product
   lands.
-- (Settled) **SurgeryWindows** is GLM's: GLM splits it along the E1/E2/F target files; your
-  E2 starts from the split files once they are on the branch.
+- (Settled) **SurgeryWindows** is GLM's: GLM splits it along the E1/E2/F target files; the
+  E2 refactor (Muse seat) starts from the split files once they are on the branch.
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off 856e4762
 
@@ -49,33 +49,16 @@ every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 6. **Commit the Stage-2 review** that `f42b9e6` cites, with the reviewer named, under `Lib/docs/`.
 7. Close open item 7: the pinned Mathlib has root `GenLoop`, not `HomotopyGroup.GenLoop`.
 
-## The packets E2, F, G, J — none may start Lean until it is GO
+## The packets E2, F, G, J — reassigned (2026-09-12)
 
-Verdicts: J DRAFT (closest), E2 DRAFT, F DRAFT, G NOT GO. What GO requires, per
-`lean-protocol.md` Stage 5: a Stage-2 review artifact in the tree; every ledger row with an
-exact Lean signature (binders, instances, universes, result) and the full `ChallengeNode`
-fields; namespaces that resolve at 856e4762; a compiled producer probe and consumer probe with a
-durable `Lib/docs/<lane>-INTERFACE_RECEIPT.md`; and an independent Axis-5 review. In order:
+Lanes J, E2, F and G are now owned by the Muse seat (`TASK-LIB-MUSE.md`), which continues your
+packets in `Lib/docs/{J,E2,F,G}.md` as author. You keep lane C only. Do not edit those four
+packets or their target files from now on; if C10 produces something a packet needs (the
+general cross product for J's `(p, q)` follow-up, C's landed names for G), record it in
+`Lib/reports/C.md` and the Muse seat picks it up from there.
 
-8. **F first, two fixes then two landings.** Correct the two Milnor numbers: the Whitney lemma
-   is *Theorem 6.6* (6.4 is the Second Cancellation Theorem) and the Basis Theorem is
-   *Theorem 7.6* (7.8 is the middle-dimension product-cobordism theorem). The task file carried
-   the wrong numbers and has been corrected. Then land F0a and F0b now: they depend only on
-   Mathlib. Replace the `…` inside `primitive_row_has_unit_after_column_additions`; write F7/F11
-   as signatures; add the `Smale.` namespaces to `MorseSurgeryData.beltIntersectionSign` and
-   `RankThreeWhitneyModel.Space`.
-9. **J**: replace the `H₁ G →ₗ[ℤ] Hₙ G` / `⋀[ℤ]^n` notation rows with Lean signatures
-   (`exteriorPower` is not an identifier at the pin; the notation `⋀[ℤ]^n M` is); probe, receipt,
-   review in tree. Then J's Lean. The 42 coherence declarations in `Hopf/LCP/Specialization.lean`
-   (formerly your G-J3) are GLM's now; import them from `CrossProduct.lean` when they land.
-10. **E2**: exact signatures for the immersion/embedding rows with their
-    `Smale.ManifoldImmersion.` namespace; drop the "Milnor TDV §2 Lemma" pointer (TDV §2 is
-    Sard–Brown); probe, receipt, review in tree, `E2-review.md` committed; then the in-`Lib`
-    refactor starting from GLM's split of `SurgeryWindows.lean`.
-11. **G last**: write the Stage-2 review; bring the ledger body (`G-map.md` §1) into the packet;
-    add the `MorseCancel.` namespaces; probe, receipt. G waits on C10 and F by design.
-12. **Authorship:** all 33 of your commits carry the repository owner as author. Add a
-    co-author line if your contributions are to be attributable.
+8. **Authorship:** all 33 of your commits carry the repository owner as author. Set
+   `git config user.name` / `user.email` for your seat so your contributions are attributable.
 
 ## Rules that the review found broken; they hold from now on
 

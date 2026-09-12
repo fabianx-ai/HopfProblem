@@ -1,5 +1,9 @@
 # TASK LIB-KIMI — generalize-then-move lanes C, J, E2, F, G
 
+> **Reassignment (2026-09-12):** lanes J, E2, F, G are owned by the Muse seat, see
+> `TASK-LIB-MUSE.md`; Kimi keeps lane C. The lane specifications below remain the binding
+> reference for all five lanes. Current seat instructions: `NEXT-STEPS-KIMI.md`.
+
 **TruthSeed:** `lib-extraction:generalize-the-pinned-dimensions`
 **For:** Kimi, working on a fork of github.com/fabianx-ai/HopfProblem, branch
 `lib/textbook-extraction` (base commit 721fc82; toolchain

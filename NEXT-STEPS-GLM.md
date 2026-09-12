@@ -10,7 +10,7 @@ branch) and `Lib/reviews/INTEGRATION.md` (§ "For GLM").
 position and only 28 declarations are D2. Ownership was in doubt; the owner assigns it to you.
 Split it along the plan's E1/E2/F target files as a pure move of moves (one commit per target
 file, verbatim, `Lib.lean` updated, build green, "No proof term changed"), then give each
-resulting file its module docstring. Kimi's E2 starts from your split files. This is item 0
+resulting file its module docstring. The E2 lane (Muse seat, `TASK-LIB-MUSE.md`) starts from your split files. This is item 0
 below and comes before everything else, because E2 waits on it.
 
 ## In this order, one branch per item, each branch `lib/A-fix-<n>-<slug>` off 856e4762
