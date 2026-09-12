@@ -652,4 +652,162 @@ theorem HigherHurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace 
   rw [HigherHurewicz.cubeChain_eq_sum_simplices]
   simp only [map_sum, map_zsmul, HigherHurewicz.classOperator_simplex]
 
+namespace HigherHurewicz
+
+open SecondHurewicz.SimplyConnected
+
+theorem edgeTower_high_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    (edgeTower x k).high (ContinuousMap.const (SingularChains.Simplex (k + 1)) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 1)) x := by
+  induction k with
+  | zero => exact edgeStraighteningHomotopy_const x
+  | succ k ih =>
+    exact ThirdHurewicz.extendCoherentSimplexHomotopy_const _ _ _ (edgeTower x k).high_zero x ih
+
+theorem edgeTower_low_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    (edgeTower x k).low (ContinuousMap.const (SingularChains.Simplex k) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex k) x := by
+  cases k with
+  | zero => rfl
+  | succ k => exact edgeTower_high_const x k
+
+theorem vertexEdgeHomotopy_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    vertexEdgeHomotopy x k (ContinuousMap.const (SingularChains.Simplex k) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex k) x :=
+  ThirdHurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexStraighteningHomotopy_const x k)
+    (edgeTower_low_const x k)
+
+theorem normalizationTower_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) (hpi : ∀ j, 2 ≤ j → j ≤ k + 2 → Subsingleton (π_ j X x)) :
+    (normalizationTower x k hpi).aug (ContinuousMap.const (SingularChains.Simplex (k + 2)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 2)) x ∧
+      (normalizationTower x k hpi).nxt (ContinuousMap.const (SingularChains.Simplex (k + 3)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 3)) x := by
+  induction k with
+  | zero =>
+    letI := hpi 2 (by omega) (by omega)
+    constructor
+    · exact ThirdHurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexEdgeHomotopy_const x 2)
+        (simplexStraighteningHomotopy_const 2 x)
+    · exact ThirdHurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexEdgeHomotopy_const x 3)
+        (ThirdHurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x
+          (simplexStraighteningHomotopy_const 2 x))
+  | succ k ih =>
+    letI := hpi (k + 3) (by omega) (by omega)
+    have hc := ih fun j hj hjk => hpi j hj (by omega)
+    constructor
+    · exact ThirdHurewicz.composeSimplexHomotopies_const _ _ _ _ x hc.2
+        (simplexStraighteningHomotopy_const (k + 3) x)
+    · exact ThirdHurewicz.composeSimplexHomotopies_const _ _ _ _ x
+        (ThirdHurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x hc.2)
+        (ThirdHurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x
+          (simplexStraighteningHomotopy_const (k + 3) x))
+
+variable {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+
+def normalizedCube (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) : GenLoop (Fin (m + 3)) X x :=
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  CubeGluing.coherentCubeEndpoint S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 p
+
+theorem normalizedCube_cell (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
+    (normalizedCube x hpi p).val.comp (CubeTriangulation.cubeSimplex e) =
+      (normalizedSimplex x (m + 3) hpi (p.val.comp (CubeTriangulation.cubeSimplex e))).val := by
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  exact CubeGluing.coherentCubeEndpoint_cell S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 p e
+
+def normalizationCubeHomotopy (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    p.val.HomotopyRel (normalizedCube x hpi p).val (Cube.boundary (Fin (m + 3))) :=
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  CubeGluing.coherentCubeHomotopy S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 S.nxt_zero p
+
+theorem normalizedCube_internalBased (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    NativeSubdivision.NativeCubeInternalBased (normalizedCube x hpi p) := by
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  exact coherentCubeEndpoint_internalBased S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 S.aug_one p
+
+theorem normalizedCube_simplex (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
+    NativeSubdivision.nativeBasedCubeSimplex (normalizedCube x hpi p)
+      (normalizedCube_internalBased x hpi p) e =
+      normalizedSimplex x (m + 3) hpi (p.val.comp (CubeTriangulation.cubeSimplex e)) := by
+  apply Subtype.ext
+  exact normalizedCube_cell x hpi p e
+
+theorem classOperator_cubeChain (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    classOperator x (m + 3) hpi (cubeChain p) = Additive.ofMul (⟦p⟧ : π_ (m + 3) X x) := by
+  have h := (NativeSubdivision.nativeClass_homotopic
+    (p := p) (q := normalizedCube x hpi p) ⟨normalizationCubeHomotopy x hpi p⟩).trans
+    (NativeSubdivision.nativeCubeSubdivision_class (normalizedCube x hpi p)
+      (normalizedCube_internalBased x hpi p))
+  simp only [normalizedCube_simplex] at h
+  exact (classOperator_cubeChain_sum x hpi p).trans h.symm
+
+@[simp]
+theorem hurewiczInverse_hurewiczMap_mk (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    hurewiczInverse x hpi (hurewiczMap (m := m + 1) x (Additive.ofMul (⟦p⟧ : π_ (m + 3) X x))) =
+      Additive.ofMul (⟦p⟧ : π_ (m + 3) X x) := by
+  rw [hurewiczMap_representative]
+  change hurewiczInverse x hpi (SingularMayerVietoris.ModuleHomology.cycleClass
+    (SingularChains.singularComplex X) (m + 3) (cubeCycle p)) = _
+  rw [hurewiczInverse_cycleClass]
+  exact classOperator_cubeChain x hpi p
+
+@[simp]
+theorem hurewiczInverse_hurewiczMap (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (a : Additive (π_ (m + 3) X x)) :
+    hurewiczInverse x hpi (hurewiczMap (m := m + 1) x a) = a := by
+  change hurewiczInverse x hpi (hurewiczMap (m := m + 1) x
+    (Additive.ofMul (Additive.toMul a))) = Additive.ofMul (Additive.toMul a)
+  refine Quotient.inductionOn (Additive.toMul a) ?_
+  intro p
+  exact hurewiczInverse_hurewiczMap_mk x hpi p
+
+theorem hurewiczInverse_comp_hurewiczMap (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    (hurewiczInverse x hpi).comp (hurewiczMap (m := m + 1) x) = LinearMap.id := by
+  ext a
+  exact hurewiczInverse_hurewiczMap x hpi a
+
+def hurewiczLinearEquiv (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    Additive (π_ (m + 3) X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X (m + 3) :=
+  LinearEquiv.ofLinearMap (hurewiczMap (m := m + 1) x) (hurewiczInverse x hpi)
+    (hurewiczMap_comp_hurewiczInverse x hpi) (hurewiczInverse_comp_hurewiczMap x hpi)
+
+def hurewiczLinearEquivOfTwoLE (x : X) (n : ℕ) (hn : 2 ≤ n)
+    (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
+    letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+    Additive (π_ n X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X n := by
+  letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+  rcases n with _ | n'
+  · exact absurd hn (by omega)
+  rcases n' with _ | n''
+  · exact absurd hn (by omega)
+  rcases n'' with _ | m
+  · exact SecondHurewicz.SimplyConnected.hurewiczLinearEquiv x
+  · exact hurewiczLinearEquiv x hpi
+
+end HigherHurewicz
+
 end Mathoverflow1973
