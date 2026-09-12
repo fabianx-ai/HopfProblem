@@ -12,6 +12,40 @@ import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
+/-!
+# Rearrangement of Morse functions and the band-cancellation tail
+
+The rearrangement side of the Morse theory: reordering critical points by
+modifying the function in disjoint bands, the regular-height coordinate
+system, the band-cancellation tail of the toolbox, the smooth-time germs of
+the ODE layer, and the `Smale.NativeTransversality.Patch` structures
+(Milnor, *Lectures on the h-cobordism theorem*, Thm 4.1 and §5; the
+Rearrangement Theorem of the source text).
+
+## Outline
+
+1. `MorseCancel.linearTransverseChart` and the F-lane band tail: the
+   transverse-chart control used by the belt-cancellation step.
+2. `Degree.RegularHeightCoordinates` and `Degree.MorseRearrangement`: the
+   rearrangement theorem - critical points can be reordered by an isotopy
+   supported away from the attaching spheres.
+3. `AdaptedWindows` flow lemmas, `Degree.SmoothODE` time germs and
+   `Degree.FlowCancellation` smooth signed level time.
+4. `Smale.NativeTransversality.Patch` and the rearrangement stragglers.
+
+## Main definitions and results
+
+* `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection` -
+  the Rearrangement Theorem.
+
+## References
+
+* [milnor65] J. Milnor, *Lectures on the h-cobordism theorem*, Thm 4.1, §5.
+
+## Tags
+
+morse-theory, rearrangement, h-cobordism
+-/
 
 set_option maxSynthPendingDepth 3
 

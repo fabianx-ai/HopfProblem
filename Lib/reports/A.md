@@ -612,79 +612,26 @@ de-shim pass — renaming this file alone would split the family's namespace
 across the tree. Module docstring installed with the Milnor citations
 (h-cobordism §3-4; Morse Theory §3) per the owner's correction.
 
-## Per-decl docstring worklist (session 4 measurement)
+## Item 0: SurgeryWindows split (branch lib/A-surgerywindows-split, off bda000e)
 
-Coverage: **225 / 4,450 public declarations documented; 4,225 open.**
-Headline docstrings installed this session: exists_morse_function_of_haar,
-exists_morse_extension, exists_compact_plateau (MorseLemma),
-exists_path_subdivision (VanKampen),
-exists_tubularNeighborhood_in_open_of_embedded_closedBall (Collar).
+`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (17,556 lines, 882
+declarations) split by contiguous source-order chunks, zero line-order
+inversions against 721fc82, so every chunk is a pure move of moves and the
+import chain is acyclic by construction:
 
-Per-file open counts (top): SurgeryWindows 879, MayerVietoris 249,
-RiemannMapping 181, VanKampen 165, MorseLemma 157, Chains 153, Collar 137,
-CellAttachment 132, HandleAttachment 125, CircleProduct 118, Existence 117,
-HeightTranslating 106, Cousin 95, DiagonalQuotient 78, Handle 78; remainder
-~2,000 over 53 files.
+| File | Declarations | Content |
+|---|---|---|
+| `Morse/SurgeryWindows.lean` | 119 | chart primitives (hemispheres, doubled disks, surgery boundary pairs), NoExotic dimH cluster, D2 `MorseSurgeryData`/`SurgeryWindows`/`AdaptedWindows` structures |
+| `Morse/Cancellation.lean` | 301 | E1 cancellation core: MorseCancel toolbox, FlowCancellation/FlowSuspension, local replacements |
+| `Transversality/Basic.lean` | 133 | E2 transversality basics: NativeSubmersion, perturbation machinery, SupportedDiffeomorph, DiskShrinking |
+| `Immersion/Relative.lean` | 213 | E2 immersion chain: ManifoldImmersion, PlaneImmersion, CurveImmersion, tubular one-offs |
+| `Morse/Rearrangement.lean` | 116 | rearrangement theorem, band-cancellation tail, smooth-time germs, NativeTransversality.Patch |
 
-Pipeline (validated): curated name -> docstring map with escaped asterisks,
-inserted above the declaration by declmap span, build after each file.
-Full pass is a dedicated session (roughly 4,000 docstrings).
-
-## Docstring progress (session 4, batch 2)
-
-VanKampen.lean: 10 headline docstrings installed (structures, chartHom,
-localValue, compatibility, pushout maps, pushoutEquiv). Running total: 235 /
-4,450 documented.
-
-## Docstring progress (session 4, batch 3)
-
-MayerVietoris.lean: 10 headline docstrings (small chains, smallComplex,
-liftToSmall, chainSequence shortExact, subdivision + boundary + homotopy,
-exact_at_ambient). Running total: 245 / 4,450 documented.
-
-## Docstring progress (session 4, batch 4)
-
-Chains.lean: 11 headline docstrings (simplex primitives, path-simplex bridges,
-induced chain/homology maps and functoriality). Running total: 256 / 4,450.
-Chains.lean follow-up: the three core abbreviations (singularComplex, Chains,
-SingularH1) documented. Running total: 259 / 4,450.
-
-## Docstring progress (session 4, batch 5)
-
-RiemannMapping.lean: 8 headline docstrings (disc coordinate, puncture map,
-normalization homeomorph, properness + boundary escape, log half-strip,
-maximal normalized map, and the headline Riemann mapping theorem in
-normalized form). Running total: 267 / 4,450 documented.
-
-## Docstring progress (session 5, batch 6)
-
-MorseLemma.lean: 8 headline docstrings (IsMorseAt/IsMorseOn/IsMorse,
-critical-point set with discreteness and finiteness, the Morse lemma
-quadratic chart, existence of Morse functions). Running total: 275 / 4,450.
-
-## Docstring progress (session 5, batch 7)
-
-CellAttachment.lean: 4 headline docstrings (core collapse deformation, core
-map, handle-to-core retraction, the deformation retraction itself). Running
-total: 279 / 4,450 documented.
-
-## Docstring progress (session 5, batch 8)
-
-HandleAttachment.lean: 6 headline docstrings (attaching handle map with its
-embedding and sublevel characterization, attachment region, the two cover
-halves of the handle attachment). Pipeline fix recorded: docstrings must be
-inserted above `attribute ... in` lines, not between them and their
-declarations. Running total: 285 / 4,450 documented.
-
-## Docstring progress (session 5, batch 9)
-
-CircleProduct.lean: 9 headline docstrings (the circle dictionary: Circle,
-two-arc cover, punctured-interval model, arc-product equivalence, section and
-projection, the Kunneth splitting). Running total: 288 / 4,450 documented.
-
-## Docstring progress (session 5, batch 10)
-
-Existence.lean: 9 headline docstrings (critical-point isolation, regular-point
-openness, perturbation stability, critical-value separation/distinctness, the
-perturbation-radius lemma, smooth approximation, finite-patch smoothing).
-Running total: 297 / 4,450 documented.
+All five files carry module docstrings in the Degree1 shape. Declaration
+total preserved (119+301+133+213+116 = 882). Four split commits, `lake build
+Lib` green after each; module-docstring commit after. Note: the per-lane
+percentages in the owner decision (44% E2, 31% E1, 8% F, 28 D2) are preserved
+by the chunking up to run boundaries; prefixes interleaved in source order
+(MorseCancel spans 15 runs) make per-lane files impossible without forward
+references, which a pure move forbids. Kimi's E2 starts from
+`Transversality/Basic.lean` + `Immersion/Relative.lean`.

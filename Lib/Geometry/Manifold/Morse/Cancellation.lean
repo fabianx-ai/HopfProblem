@@ -9,6 +9,45 @@ import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
+/-!
+# The Morse cancellation toolbox
+
+The chart-level cancellation machinery: given two critical points of adjacent
+index connected across a regular level, the modifying fields, local
+replacements and flow manipulations that remove the pair without changing the
+sublevel homotopy type (Milnor, *Lectures on the h-cobordism theorem*, Thm
+4.1; Milnor, *Morse Theory* §3).
+
+## Outline
+
+1. `MorseCancel`: the native Morse index of a critical point, quadratic germs
+   and their classification, signed Morse charts, adapted surgeries and the
+   clock-normalized cubic endpoint control.
+2. `Degree.FlowCancellation` and `Degree.FlowSuspension`: strict flow descent
+   into sublevel sets, level basins, smooth time germs and the suspension of
+   isotopies to flows.
+3. `Degree.LocalFunctionReplacement` / `Degree.LocalFieldReplacement`: replacing
+   a function or gradient-like field on a compact support.
+4. `Smale.FiberwiseDiffeomorph` and the E1-positioned
+   `Smale.SupportedDiffeomorph` material: diffeomorphisms supported in a chart.
+
+## Main definitions and results
+
+* `MorseCancel.nativeMorseIndex` - the chart-independent Morse index.
+* `MorseCancel.equivalent_quadratic_germs_of_bijective_derivative` - germ
+  classification behind the Morse lemma.
+* `MorseCancel.adapted_surgeries_after_pair_removal` - the windows after a
+  cancellation.
+
+## References
+
+* [milnor65] J. Milnor, *Lectures on the h-cobordism theorem*, Thm 4.1.
+* [milnor63] J. Milnor, *Morse Theory*, §3.
+
+## Tags
+
+morse-theory, cancellation, h-cobordism, quadratic-germs
+-/
 
 set_option maxSynthPendingDepth 3
 
