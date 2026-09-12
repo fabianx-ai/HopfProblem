@@ -289,14 +289,16 @@ rank-general; the proofs are identical with `r` for `4`.
 2, 3; a second copy at rank 3 in BoundaryTopology): the §6 proof is the general one; the only
 genuinely new declaration is the $n$-fold wedge map of J6 and the count
 $\mathrm{rank}\ \wedge^n \mathbb{Z}^r = \binom{r}{n}$ (J8's basis).
-(G-J3) Move the cross-product swap/associator coherence suite (Specialization 3770–5970:
-`formalEdgeSwapDefect/Homotopy`, `crossProductSwapHomotopy`, `formalAssociatorDefect/Homotopy`,
-`crossProductAssociatorHomotopy`, `crossProductMixedSwapHomotopy`, and the homology-level
-laws) into lane C's `CrossProduct.lean` — they are stated for general spaces and belong to the
-cross-product API. This is a cross-lane row: the source lines are in J's range, the
-destination file is created in C; recorded here and in C's ledger as a landing-time
-coordination item. (Equally acceptable: land them in `Pontryagin.lean`; the owner decides at
-landing. Default: `CrossProduct.lean`.)
+(G-J3) **Settled 2026-09-12: this item is GLM's, not J's.** The 42 cross-product
+swap/associator coherence declarations (Specialization 3770–5970:
+`formalEdgeSwapDefect/Homotopy`, `crossProductSwapHomotopy`,
+`formalAssociatorDefect/Homotopy`, `crossProductAssociatorHomotopy`,
+`crossProductMixedSwapHomotopy`, and the homology-level laws `crossProductHomology_swap`,
+`crossProductHomology_pushforward_anticommute`, `crossProductHomology_associative`)
+are stated for general spaces and belong to the
+cross-product API; they move into `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean`
+by GLM. J imports them from `CrossProduct.lean` when they land and keeps them under
+`Hopf/` names until then.
 
 ---
 
@@ -325,48 +327,108 @@ stay and become thin), `Hopf.FiniteCore` (the `by decide` instantiations stay),
 
 # Axis 5 — typed ledger
 
-Headline rows; seams on lanes A and C named explicitly. The aggregate interface probes
-(`J_InterfaceCheck.lean` / consumer) run after lanes A and C land; commands in §12.
+Headline rows; seams on lanes A and C named explicitly. Lanes A and C are landed at head
+`f034c13`; the aggregate interface probes (`J_InterfaceCheck.lean` / consumer) run at the
+current head; commands in §12.
 
 **Row J-headline (the axiom probe).** Current:
 `PeriodTorusHigherHomology.productTorusHomologyEquiv : (r n : ℕ) →
 SingularMayerVietoris.SingularHomology (ProductTorus r) n ≃ₗ[ℤ] binomialModule r n`
-(CuspFilling 15901), by structural recursion on `(r, n)`. Target:
+(CuspFilling 15901 on `721fc82`, now `Hopf/LCP/CuspFilling.lean:14963`), by structural recursion on `(r, n)`. Target:
 `AlgebraicTopology.SingularHomology.productTorusHomologyEquiv (r n : ℕ) :
-SingularHomology (ProductTorus r) n ≃ₗ[ℤ] (Fin (r.choose n) → ℤ)` — the codomain
-`binomialModule r n` becomes the plain function space (its only role is the Pascal recursion;
-the `binomialModule` API — `binomialModuleSuccEquiv` etc. — is the proof of Pascal's rule for
-`Fin (r.choose n) → ℤ` and moves along as private/API material of `Torus.lean`).
-Seams: `SingularMayerVietoris.SingularHomology` (A), `circleProductHomologyEquiv` (A),
-`connectedHomologyZeroEquiv`, `totallyDisconnected_homology_subsingleton` (A).
+SingularMayerVietoris.SingularHomology (PeriodTorusHigherHomology.ProductTorus r) n ≃ₗ[ℤ]
+(Fin (r.choose n) → ℤ)` — the codomain `binomialModule r n` becomes the plain function space
+(its only role is the Pascal recursion; the `binomialModule` API — `binomialModuleSuccEquiv`
+etc. — is the proof of Pascal's rule for `Fin (r.choose n) → ℤ` and moves along as
+private/API material of `Torus.lean`; the homology type and `ProductTorus` keep today's names
+until the lane's rename commit).
+Seams (all landed at head `f034c13`): `SingularMayerVietoris.SingularHomology` — the abbrev
+at `Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean:853`;
+`SingularHomology.circleProductHomologyEquiv` —
+`Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean:798`;
+`SingularHomology.connectedHomologyZeroEquiv`,
+`SingularHomology.totallyDisconnected_homology_subsingleton`,
+`SingularHomology.homeomorphHomologyEquiv` —
+`Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean:223, 233, 164`.
 
-**Row J-pontryagin.** Current: `PeriodTorusHigherHomologyPontryagin.product (G : Type)
-[TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) : H₁ G →ₗ[ℤ] Hₙ G
-→ₗ[ℤ] H_{n+1} G` (Specialization 3189), with `product11_skew`, `product11_self` (needs
-`Module.IsTorsionFree ℤ (H₂ G)`), `tripleProduct`, the naturality suite, and the two wedge
-maps. Target: `SingularHomology.Pontryagin.product (G : Type*) [TopologicalSpace G]
-[AddCommGroup G] [IsTopologicalAddGroup G] : H_p G →ₗ[ℤ] H_q G →ₗ[ℤ] H_{p+q} G` — **note the
-generalization from $(1, n)$ to $(p, q)$**: the code's `product` is pinned at left degree 1
-because it is built on `crossProductHomology` at $(1, n)$; the graded-commutativity proof needs
-the general swap law anyway, so the general $(p, q)$ product is the natural statement and costs
-the general cross product (lane C's file records the cross product at general $(p, q)$ — the
-current `crossProductEdge`/`crossProductTriangle` are the $p = 1, 2$ cases; generalizing the
-cross product itself to all $p$ is recorded in C's ledger as the natural twin-shaped form).
-Decision recorded: J's Pontryagin file states the product at general $(p, q)$ *if* C's general
-cross product has landed; otherwise at $(1, n)$ as today, with a follow-up item. Flagged for
-the owner in §12.
+**Row J-pontryagin.** Current (verbatim, `Hopf/LCP/Specialization.lean:3190`):
+`def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G]
+[AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
+SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G n →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G (n + 1)`,
+built as `integerBilinearPostcompose (crossProductHomology G G n)
+(singularHomologyMap (additionMap G) (n + 1))`; with `product11 G := product G 1`,
+`product12 G := product G 2`,
+`def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpace G]
+[AddCommGroup G] [IsTopologicalAddGroup G] :
+SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G 3` (3231),
+`product11_skew` (4199, via the swap law `crossProductHomology_swap`, Specialization 4172 —
+part of the coherence suite moving to `CrossProduct.lean` under GLM's ownership per the
+settled G-J3 decision),
+`product11_self` (carries
+`[Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]`, 4207), and the
+naturality suite `product_natural`/`tripleProduct_natural`.
+Target (**owner decision 2026-09-12**: state at `(1, n)` now, matching the landed
+`PeriodTorusHigherHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
+[TopologicalSpace Y] (n : ℕ) : (SingularChains.singularComplex X).homology 1 →ₗ[ℤ]
+(SingularChains.singularComplex Y).homology n →ₗ[ℤ]
+(SingularChains.singularComplex (X × Y)).homology (n + 1)`
+at `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean:1689`; the general `(p, q)`
+product is a named follow-up once C's general cross product lands):
+`def AlgebraicTopology.SingularHomology.Pontryagin.product (G : Type*) [TopologicalSpace G]
+[AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
+SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G n →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G (n + 1)`
+— same type as today; only the `Type → Type*` binder and the destination change.
 
-**Row J-wedge.** Current: `homologyWedgeTwo`/`homologyWedgeThree` (4223/6064),
-`latticeWedgeTwo`/`latticeWedgeThree` (4242/6083) with the rank-4 `Lattice` pin, the
-`surjective_of_coordinateTorusClassAlong_mem_range` family (6554–6625, general-rank over any
-`G ≃ₜ ProductTorus r`), and the rank-4 equivs `coordinateTorusWedgeTwoEquiv/ThreeEquiv`
-(7068/7073), `coordinateTorusH2/H3ExteriorEquiv` (7078/7083).
-Target (G-J2): `SingularHomology.Pontryagin.exteriorMap : (⋀[ℤ]^n (H₁ G)) →ₗ[ℤ] Hₙ G` at
-general `n` (torsion-free hypothesis as needed), and
-`SingularHomology.productTorusExteriorEquiv (r n : ℕ) : (⋀[ℤ]^n (H₁ (ProductTorus r)))
-≃ₗ[ℤ] SingularHomology (ProductTorus r) n`.
-**New mathematics**: the general-$n$ descent (J6). The rank-3 re-run in BoundaryTopology is
-deleted and re-routed.
+**Row J-wedge.** Current (verbatim, Specialization):
+`def PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo (G : Type) [TopologicalSpace G]
+[AddCommGroup G] [IsTopologicalAddGroup G]
+[Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
+(⋀[ℤ]^2 (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G 2` (4224)
+with `homologyWedgeTwo_apply_ιMulti :
+homologyWedgeTwo G (exteriorPower.ιMulti ℤ 2 v) = product11 G (v 0) (v 1)` (4234);
+the degree-3 twin `homologyWedgeThree` (6065, same hypothesis bundle, result in degree 3);
+the lattice-pinned variants
+`def PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo (G : Type) [TopologicalSpace G]
+[AddCommGroup G] [IsTopologicalAddGroup G]
+[Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+(c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
+(⋀[ℤ]^2 Lattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 2` (4243)
+and `latticeWedgeThree` (6084) — `Lattice := Fin 4 → ℤ` is the rank-4 pin;
+the general-rank surjectivity family `coordinateTorusMapAlong/ClassAlong/BasisAlong`,
+`surjective_of_coordinateTorusClassAlong_mem_range` (6555–6626, over any
+`e : G ≃ₜ ProductTorus r`); and the rank-4 equivs `coordinateTorusWedgeTwoEquiv`/
+`coordinateTorusWedgeThreeEquiv` (7069/7074),
+`coordinateTorusH2ExteriorEquiv`/`coordinateTorusH3ExteriorEquiv` (7079/7084).
+Here `⋀[ℤ]^n M` is the pinned Mathlib's notation for `exteriorPower ℤ n M`
+(`Mathlib/LinearAlgebra/ExteriorAlgebra/Basic.lean:83`), and `exteriorPower.ιMulti`,
+`exteriorPower.map`, `exteriorPower.alternatingMapLinearEquiv` are the pinned API in
+`namespace exteriorPower` (`Mathlib/LinearAlgebra/ExteriorPower/Basic.lean:47`).
+Target (G-J2):
+`def AlgebraicTopology.SingularHomology.Pontryagin.exteriorMap (G : Type*)
+[TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+[Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] (n : ℕ) :
+(⋀[ℤ]^n (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
+SingularMayerVietoris.SingularHomology G n`
+— the general-$n$ descent of J6, via `exteriorPower.alternatingMapLinearEquiv` applied to the
+$n$-fold alternating product (adjacent-swap antisymmetry from the swap law, diagonal vanishing
+from `product11_self`); and
+`def AlgebraicTopology.SingularHomology.productTorusExteriorEquiv (r n : ℕ) :
+(⋀[ℤ]^n (SingularMayerVietoris.SingularHomology
+(PeriodTorusHigherHomology.ProductTorus r) 1)) ≃ₗ[ℤ]
+SingularMayerVietoris.SingularHomology (PeriodTorusHigherHomology.ProductTorus r) n`
+— torsion-freeness of $H_2(T^r)$ discharged internally by
+`productTorus_homology_torsionFree`; proof per §6: `exteriorMap` hits the
+coordinate-subtorus basis (`coordinateTorusBasis`), both sides free of rank `r.choose n`,
+Orzech. **New mathematics**: the general-$n$ descent (J6) — only $n = 2, 3$ exist today. The
+rank-3 re-run in BoundaryTopology is deleted and re-routed.
 
 **Row J-exterior.** Current: `PeriodTorusHigherHomologyExterior.standardExteriorBasis (m n : ℕ)
 : Module.Basis (Set.powersetCard (Fin m) n) ℤ (⋀[ℤ]^n (Fin m → ℤ))` (6636) and
@@ -392,17 +454,24 @@ the two `@[instance_reducible]` defs themselves land in lane C's `CrossProduct.l
 
 # Open items, seams, probes
 
-1. **Seams.** Lane A: the whole singular-homology API plus the $S^1 \times Y$ splitting
-   (`circleProductHomologyEquiv`, SphereTopology 2191, inside A's S¹×X block) and
-   `connectedHomologyZeroEquiv`, `totallyDisconnected_homology_subsingleton`,
-   `homeomorphHomologyEquiv`, `singularHomologyMap_*`. Lane C: the cross product file
-   (`crossProductHomology`, boundary laws, swap and associator coherences per G-J3). Probe
-   commands (after A and C land): `lake env lean
+1. **Seams — all landed at head `f034c13`.** Lane A's API is in
+   `Lib/AlgebraicTopology/SingularHomology/`: the abbrev
+   `SingularMayerVietoris.SingularHomology` (`MayerVietoris.lean:853`),
+   `SingularMayerVietoris.singularHomologyMap` (`MayerVietoris.lean:857`),
+   the $S^1 \times Y$ splitting `SingularHomology.circleProductHomologyEquiv`
+   (`CircleProduct.lean:798`, formerly SphereTopology 2191) with
+   `circleSectionHomology`/`circleProjectionHomology`/`circleBoundaryCoordinates`, and
+   `SingularHomology.{connectedHomologyZeroEquiv, totallyDisconnected_homology_subsingleton,
+   homeomorphHomologyEquiv}` (`HomotopyInvariance.lean:223, 233, 164`). Lane C: the cross
+   product `PeriodTorusHigherHomology.crossProductHomology` at `(1, n)`
+   (`CrossProduct.lean:1689`) plus boundary laws; the swap/associator coherence suite is
+   still under `Hopf/LCP/Specialization.lean` pending GLM's G-J3 move. Probe
+   commands (runnable now): `lake env lean
    Lib/AlgebraicTopology/SingularHomology/J_InterfaceCheck.lean`, likewise the consumer probe;
    receipt at `Lib/docs/J-INTERFACE_RECEIPT.md`.
-2. **General-$(p,q)$ Pontryagin product** (row J-pontryagin): depends on whether C's cross
-   product lands at general $(p,q)$; default is yes, fallback is the current $(1,n)$ shape.
-   Owner decision at landing.
+2. **Pontryagin product shape — settled 2026-09-12.** The lane states `product` at `(1, n)`
+   matching the landed cross product; general `(p, q)` is a named follow-up once C's general
+   cross product lands (row J-pontryagin).
 3. **Q4 note** (minor formula exists outside the tree): moved as-is; de-duplication is the
    owner's call.
 4. **`PeriodTorusHigherHomology.rightTranslation`** is defined in `Hopf/LCP/BoundaryTopology.lean`
@@ -420,8 +489,11 @@ the two `@[instance_reducible]` defs themselves land in lane C's `CrossProduct.l
    Exercise 11 ($H_*(T^n;\mathbb{Z}) \cong \Lambda_\mathbb{Z}[x_1,\dots,x_n]$, $|x_i| = 1$),
    plus §3.B for the Künneth ranks and Ex. 2.48 for the Wang sequence. This document uses the
    corrected citations; no content change.
-8. **Review.** Stage-2 independent review of §§1–8: done (`~/s6-notes/J-review.md`); the six
-   corrections and four remarks are incorporated in the current text. The review also verified:
+8. **Review.** Stage-2 independent review of §§1–8: done; the report (six corrections, four
+   remarks, all incorporated in the current text) is held off-tree (Kimi seat's
+   `~/s6-notes/J-review.md`; durable copy at the Muse seat's `~/s6-notes/kimi-notes/J-review.md`)
+   and is committed into the tree as `Lib/docs/J-review.md` with the reviewer named — pending
+   the owner confirming the reviewer's identity. The review also verified:
    the $\mathrm{res}$ kernel/cokernel computations, the splitting sign, the Pascal induction,
    the graded-commutativity sign, the alternation descent, the Orzech step, the minor-formula
    expansion, and the Ex. 2.48 / §3.C citations against Hatcher's text.
