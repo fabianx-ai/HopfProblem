@@ -1059,6 +1059,124 @@ theorem HigherHurewicz.fundamentalCubeChain_two :
     HigherHurewicz.cubeCoordinates_one_comp_eq_squareCoordinates]
   rfl
 
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The cube chain in degree `2` is the square chain. -/
+theorem HigherHurewicz.cubeChain_eq_squareChain {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin 2) X x) :
+    HigherHurewicz.cubeChain p = SecondHurewicz.squareChain p := by
+  unfold HigherHurewicz.cubeChain
+  rw [HigherHurewicz.fundamentalCubeChain_two, SecondHurewicz.squareChain,
+    SecondHurewicz.suspensionOne_toLoop, SecondHurewicz.fundamentalSquareChain,
+    ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+  rfl
+
+/-- Scale coordinate `i` of the cube onto the left half `[0, 1/2]`. -/
+def HigherHurewicz.cubeScaleLeft {n : ℕ} (i : Fin n) :
+    C(Fin n → (unitInterval), Fin n → (unitInterval)) where
+  toFun t := Function.update t i ⟨(t i : ℝ) / 2, by
+    constructor
+    · linarith [unitInterval.nonneg (t i)]
+    · have := unitInterval.le_one (t i)
+      linarith⟩
+  continuous_toFun := by fun_prop
+
+/-- Scale coordinate `i` of the cube onto the right half `[1/2, 1]`. -/
+def HigherHurewicz.cubeScaleRight {n : ℕ} (i : Fin n) :
+    C(Fin n → (unitInterval), Fin n → (unitInterval)) where
+  toFun t := Function.update t i ⟨((t i : ℝ) + 1) / 2, by
+    constructor
+    · have := unitInterval.nonneg (t i)
+      linarith
+    · have := unitInterval.le_one (t i)
+      linarith⟩
+  continuous_toFun := by fun_prop
+
+/-- Concatenation along `i` composed with left scaling recovers the first cube. -/
+theorem HigherHurewicz.transAt_comp_cubeScaleLeft {n : ℕ} [DecidableEq (Fin n)] {X : Type}
+    [TopologicalSpace X] {x : X} (i : Fin n) (p q : GenLoop (Fin n) X x) :
+    (GenLoop.transAt i p q).val.comp (HigherHurewicz.cubeScaleLeft i) = p.val := by
+  apply ContinuousMap.ext
+  intro t
+  have hle : ((HigherHurewicz.cubeScaleLeft i t) i : ℝ) ≤ 1 / 2 := by
+    simp [HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Function.update_self]
+    have := unitInterval.le_one (t i)
+    linarith
+  have ht :
+      (GenLoop.transAt i p q).val (HigherHurewicz.cubeScaleLeft i t) =
+        if ((HigherHurewicz.cubeScaleLeft i t) i : ℝ) ≤ 1 / 2 then
+          p (Function.update (HigherHurewicz.cubeScaleLeft i t) i
+            (Set.projIcc 0 1 zero_le_one (2 * ((HigherHurewicz.cubeScaleLeft i t) i : ℝ))))
+        else
+          q (Function.update (HigherHurewicz.cubeScaleLeft i t) i
+            (Set.projIcc 0 1 zero_le_one (2 * ((HigherHurewicz.cubeScaleLeft i t) i : ℝ) - 1))) :=
+    rfl
+  rw [ContinuousMap.comp_apply, ht, if_pos hle]
+  apply congrArg p
+  funext j
+  by_cases hj : j = i
+  · simp [hj, HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Function.update_self]
+    apply Subtype.ext
+    have hti := unitInterval.nonneg (t i)
+    have hti' := unitInterval.le_one (t i)
+    have hm : 2 * ((t i : ℝ) / 2) ∈ Set.Icc (0 : ℝ) 1 := by
+      have hx : 2 * ((t i : ℝ) / 2) = (t i : ℝ) := by ring
+      rw [hx]
+      exact ⟨hti, hti'⟩
+    rw [Set.projIcc_of_mem (hx := hm)]
+    ring
+  · simp [hj, HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Function.update_of_ne]
+
+/-- Concatenation along `i` composed with right scaling recovers the second cube. -/
+theorem HigherHurewicz.transAt_comp_cubeScaleRight {n : ℕ} [DecidableEq (Fin n)] {X : Type}
+    [TopologicalSpace X] {x : X} (i : Fin n) (p q : GenLoop (Fin n) X x) :
+    (GenLoop.transAt i p q).val.comp (HigherHurewicz.cubeScaleRight i) = q.val := by
+  apply ContinuousMap.ext
+  intro t
+  have hri : ((HigherHurewicz.cubeScaleRight i t) i : ℝ) = ((t i : ℝ) + 1) / 2 := by
+    simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self]
+  have ht :
+      (GenLoop.transAt i p q).val (HigherHurewicz.cubeScaleRight i t) =
+        if ((HigherHurewicz.cubeScaleRight i t) i : ℝ) ≤ 1 / 2 then
+          p (Function.update (HigherHurewicz.cubeScaleRight i t) i
+            (Set.projIcc 0 1 zero_le_one (2 * ((HigherHurewicz.cubeScaleRight i t) i : ℝ))))
+        else
+          q (Function.update (HigherHurewicz.cubeScaleRight i t) i
+            (Set.projIcc 0 1 zero_le_one
+              (2 * ((HigherHurewicz.cubeScaleRight i t) i : ℝ) - 1))) :=
+    rfl
+  by_cases hle : ((HigherHurewicz.cubeScaleRight i t) i : ℝ) ≤ 1 / 2
+  · have ht0 : (t i : ℝ) = 0 := by
+      have := unitInterval.nonneg (t i)
+      linarith
+    rw [ContinuousMap.comp_apply, ht, if_pos hle]
+    have hp : p (Function.update (HigherHurewicz.cubeScaleRight i t) i
+        (Set.projIcc 0 1 zero_le_one (2 * ((HigherHurewicz.cubeScaleRight i t) i : ℝ)))) = x := by
+      apply p.property
+      refine ⟨i, Or.inr ?_⟩
+      simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, hri, ht0]
+    have hq : q t = x := by
+      apply q.property
+      refine ⟨i, Or.inl ?_⟩
+      apply Subtype.ext
+      exact ht0
+    exact hp.trans hq.symm
+  · rw [ContinuousMap.comp_apply, ht, if_neg hle]
+    apply congrArg q
+    funext j
+    by_cases hj : j = i
+    · simp [hj, HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self]
+      apply Subtype.ext
+      have hti := unitInterval.nonneg (t i)
+      have hti' := unitInterval.le_one (t i)
+      have hm : 2 * (((t i : ℝ) + 1) / 2) - 1 ∈ Set.Icc (0 : ℝ) 1 := by
+        have hx : 2 * (((t i : ℝ) + 1) / 2) - 1 = (t i : ℝ) := by ring
+        rw [hx]
+        exact ⟨hti, hti'⟩
+      rw [Set.projIcc_of_mem (hx := hm)]
+      ring
+    · simp [hj, HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_of_ne]
+
 /-- The lower triangle of the square is the identity permutation simplex. -/
 theorem HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
     SecondHurewicz.SimplyConnected.lowerSquareTriangle =
