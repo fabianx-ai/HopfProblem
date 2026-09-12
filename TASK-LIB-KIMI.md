@@ -176,7 +176,7 @@ DO NOT COPY
 - Generalize: the immersion/embedding chain is pinned to a 2-dimensional source
   (`Smale.PlaneImmersion.Plane := ℝ × ℝ`, `finrank ℝ E = 2`, `5 ≤ finrank ℝ G`
   at DifferentialTopology 24665, 24879–25924) — restate for a k-manifold with
-  2k ≤ n; the 1-dimensional curve chain (`3 ≤ finrank ℝ G`) is the case k = 1.
+  2k+1 ≤ n (the bound the perturbation proof gives; the classical 2k ≤ n is a follow-up); the 1-dimensional curve chain (`3 ≤ finrank ℝ G`) is the case k = 1.
   Everything else in the lane is already at full generality (general
   `ModelWithCorners`, `[Boundaryless]`) and is a pure move.
 - Consumers: `Hopf.DifferentialTopology`, `Hopf.SingularHomology`,
