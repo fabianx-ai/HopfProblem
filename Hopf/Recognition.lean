@@ -7643,15 +7643,6 @@ theorem MorseCancel.native_middle_block_complete_and_cut {E M : Type} [NormedAdd
       (W.point_strictMono.monotone (show i ≤ ⟨r, by omega⟩ from hir)).trans_lt
         (W.value_lt_upper _)
 
-theorem Smale.HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
-  have h : e.symm 1 * e 1 = 1 := by
-    calc
-      e.symm 1 * e 1 = e (e.symm 1 • (1 : ℤ)) := by
-        rw [map_zsmul, zsmul_eq_mul]
-        simp
-      _ = 1 := by simp
-  exact Int.isUnit_iff_natAbs_eq.mp (IsUnit.of_mul_eq_one_right _ h)
-
 theorem Smale.SpherePoint.sourceCountMark_topClass_natAbs (n : ℕ) {N : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
@@ -9178,12 +9169,6 @@ theorem Smale.ManifoldMorse.SurgeryWindows.middleMatrix_bijective_of_complete_bl
     Function.Bijective (S.middleMatrix hf r c htwo hc hthree).mulVec :=
   ⟨S.middleMatrix_injective_of_complete_blocks hf hdim hM r c htwo hc hthree hcount,
     S.middleMatrix_surjective_of_complete_blocks hf hdim hM r c htwo hc hthree hcount⟩
-
-theorem Smale.HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
-    [Nontrivial R] [StrongRankCondition R] {r c : ℕ} (A : Matrix (Fin r) (Fin c) R)
-    (hA : Function.Bijective A.mulVec) : c = r := by
-  let e := LinearEquiv.ofBijective A.mulVecLin hA
-  simpa using e.finrank_eq
 
 theorem Smale.ManifoldMorse.SurgeryWindows.middle_counts_equal {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]

@@ -70,6 +70,7 @@ import Lib.AlgebraicTopology.SingularHomology.Sum
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
+import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.Topology.OnePointCollapse
 import Lib.AlgebraicTopology.SingularHomology.Naturality
@@ -13838,55 +13839,6 @@ theorem Smale.SpherePoint.countMark_of_connecting (n : ℕ) {N : Type} [NormedAd
   rw [map_zsmul, overlapCountMark_linear] at h'
   exact h'
 
-theorem Smale.HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing R]
-    {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
-    (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
-    (hk : LinearMap.ker p = LinearMap.range i) :
-    ∃ e : (A × R) ≃ₗ[R] B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
-  obtain ⟨b, hb⟩ := hp 1
-  let s : R →ₗ[R] B := LinearMap.toSpanSingleton R B b
-  have hs (z : R) : p (s z) = z := by
-    change p (z • b) = z
-    rw [map_smul, hb, smul_eq_mul, mul_one]
-  have hz (a : A) : p (i a) = 0 := by
-    have h : i a ∈ LinearMap.range i := ⟨a, rfl⟩
-    rw [← hk] at h
-    exact h
-  let F : (A × R) →ₗ[R] B := i.coprod s
-  have hF (z : A × R) : p (F z) = z.2 := by
-    change p (i z.1 + s z.2) = z.2
-    rw [map_add, hz, hs, zero_add]
-  have hinj : Function.Injective F := by
-    intro x y h
-    have h₂ : x.2 = y.2 := (hF x).symm.trans ((congrArg p h).trans (hF y))
-    apply Prod.ext _ h₂
-    apply hi
-    change i x.1 + s x.2 = i y.1 + s y.2 at h
-    rw [h₂] at h
-    exact add_right_cancel h
-  have hsurj : Function.Surjective F := by
-    intro v
-    have hv : v - s (p v) ∈ LinearMap.ker p := by
-      change p (v - s (p v)) = 0
-      rw [map_sub, hs, sub_self]
-    rw [hk] at hv
-    obtain ⟨a, ha⟩ := hv
-    refine ⟨(a, p v), ?_⟩
-    change i a + s (p v) = v
-    rw [ha, sub_add_cancel]
-  refine ⟨LinearEquiv.ofBijective F ⟨hinj, hsurj⟩, ?_, hF⟩
-  intro a
-  change i a + s 0 = i a
-  rw [map_zero, add_zero]
-
-theorem Smale.HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommRing R]
-    {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
-    (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
-    (hk : LinearMap.ker p = LinearMap.range i) :
-    ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
-  obtain ⟨e, he, hp⟩ := exists_split_rank_one_extension i p hi hp hk
-  exact ⟨e.toAddEquiv, he, hp⟩
-
 def Smale.ManifoldMorse.MorseSurgeryData.indexTwoNormalModel {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : Smale.ManifoldMorse.MorseSurgeryData E f p)
@@ -13964,18 +13916,6 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_indexTwoHomology_split {E M 
       (d.indexTwoCollapseCoordinate hf hindex) (d.lowerRealization_two_injective hf hindex)
       (d.indexTwoCoordinate_surjective hf hindex) (d.indexTwoCoordinate_kernel hf hindex)
   exact ⟨H.toIntLinearEquiv, hH, hcoord⟩
-
-def Smale.HomologyTransport.integerCoordinateSplit (n : ℕ) :
-    (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
-    where
-  toFun v := (fun i => v i.succ, v 0)
-  invFun v := Fin.cons v.2 v.1
-  left_inv
-    v := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  right_inv v := rfl
-  map_add' _ _ := rfl
 
 theorem Smale.ManifoldMorse.MorseSurgeryData.exists_indexTwoBasis_extension {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]

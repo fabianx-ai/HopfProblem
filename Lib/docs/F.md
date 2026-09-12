@@ -433,11 +433,13 @@ SphereTopology 14201+ pre-move; now in `Lib/Algebra/Module/IntegerPresentation.l
 `Smale.HomologyTransport.ker_comp_span_singleton` (SphereTopology 14171, pure
 `CommRing`-module algebra — used by `adjoin`). `HomologyTransport.exact_of_equivalences`
 is already Lib-landed (`Lib/Geometry/Manifold/Morse/SublevelSets.lean:88`). The remaining
-pure `HomologyTransport` decls (`exists_split_rank_one_extension` ST 13840,
-`exists_add_split_rank_one_extension` ST 13881, `integerCoordinateSplit` ST 13967,
-`integerEquiv_one_natAbs` Rec 7646, `matrix_sizes_eq_of_bijective` Rec 9182) are also
-pure algebra; they are **candidates for the same file** — flag to owner whether they
-belong in `IntegerPresentation.lean` or a separate `HomologyTransport` module.
+pure `HomologyTransport` decls (`exists_split_rank_one_extension` ST 13841,
+`exists_add_split_rank_one_extension` ST 13882, `integerCoordinateSplit` ST 13968,
+`integerEquiv_one_natAbs` Rec 7646, `matrix_sizes_eq_of_bijective` Rec 9182 — all
+pre-move positions) were pure algebra and **LANDED in the same file** alongside
+`ker_comp_span_singleton` (second F0b pass; consumers `exists_indexTwoHomology_split`,
+`exists_indexTwoBasis_extension`, `sourceCountMark_topClass_natAbs`, `middle_counts_equal`
+resolve by import).
 Target: `Algebra.Module.IntegerPresentation.*`. Pure move **with a boundary
 correction**: leave the two interleaved geometric gluers
 `MorseSurgeryData.indexThreePresentation` (14258) and `SurgeryWindows.middlePresentation`
