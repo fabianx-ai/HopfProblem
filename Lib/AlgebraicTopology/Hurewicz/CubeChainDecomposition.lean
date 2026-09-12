@@ -1092,6 +1092,170 @@ def HigherHurewicz.cubeScaleRight {n : ℕ} (i : Fin n) :
       linarith⟩
   continuous_toFun := by fun_prop
 
+/-- Scale the interval onto the left half `[0, 1/2]`. -/
+def HigherHurewicz.intervalScaleLeft : C((unitInterval), (unitInterval)) where
+  toFun t := ⟨(t : ℝ) / 2, by
+    constructor
+    · linarith [unitInterval.nonneg t]
+    · have := unitInterval.le_one t
+      linarith⟩
+  continuous_toFun := by fun_prop
+
+/-- Scale the interval onto the right half `[1/2, 1]`. -/
+def HigherHurewicz.intervalScaleRight : C((unitInterval), (unitInterval)) where
+  toFun t := ⟨((t : ℝ) + 1) / 2, by
+    constructor
+    · have := unitInterval.nonneg t
+      linarith
+    · have := unitInterval.le_one t
+      linarith⟩
+  continuous_toFun := by fun_prop
+
+/-- The path along `intervalScaleLeft`, from `0` to `1/2`. -/
+def HigherHurewicz.intervalPathLeft : Path (0 : (unitInterval)) ⟨(1 : ℝ) / 2, by constructor <;> norm_num⟩ where
+  toContinuousMap := HigherHurewicz.intervalScaleLeft
+  source' := by
+    apply Subtype.ext
+    change (0 : ℝ) / 2 = 0
+    norm_num
+  target' := by
+    apply Subtype.ext
+    change (1 : ℝ) / 2 = (1 : ℝ) / 2
+    rfl
+
+/-- The path along `intervalScaleRight`, from `1/2` to `1`. -/
+def HigherHurewicz.intervalPathRight :
+    Path ⟨(1 : ℝ) / 2, by constructor <;> norm_num⟩ (1 : (unitInterval)) where
+  toContinuousMap := HigherHurewicz.intervalScaleRight
+  source' := by
+    apply Subtype.ext
+    change ((0 : ℝ) + 1) / 2 = (1 : ℝ) / 2
+    norm_num
+  target' := by
+    apply Subtype.ext
+    change ((1 : ℝ) + 1) / 2 = 1
+    norm_num
+
+/-- Concatenating the two half-interval paths recovers the identity path. -/
+theorem HigherHurewicz.intervalPathLeft_trans_intervalPathRight :
+    HigherHurewicz.intervalPathLeft.trans HigherHurewicz.intervalPathRight = Path.id := by
+  ext t
+  rw [Path.trans_apply]
+  split_ifs with h
+  · change (2 * (t : ℝ)) / 2 = (t : ℝ)
+    ring
+  · change ((2 * (t : ℝ) - 1) + 1) / 2 = (t : ℝ)
+    ring
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The identity interval chain is the sum of the two half-interval chains, up to the
+boundary of the concatenation 2-simplex. -/
+theorem HigherHurewicz.intervalChain_split :
+    SingularChains.inducedChain HigherHurewicz.intervalScaleLeft 1 SecondHurewicz.intervalChain +
+        SingularChains.inducedChain HigherHurewicz.intervalScaleRight 1
+          SecondHurewicz.intervalChain -
+      SecondHurewicz.intervalChain =
+      ((SingularChains.singularComplex (unitInterval)).d 2 1).hom
+        (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+          HigherHurewicz.intervalPathRight) := by
+  have h :=
+    SingularChains.boundaryTwo_concatChain HigherHurewicz.intervalPathLeft
+      HigherHurewicz.intervalPathRight
+  rw [show ((SingularChains.singularComplex (unitInterval)).d 2 1).hom = SingularChains.boundaryTwo
+      (unitInterval) from rfl, h, HigherHurewicz.intervalPathLeft_trans_intervalPathRight,
+    ← SecondHurewicz.induced_intervalChain HigherHurewicz.intervalPathLeft,
+    ← SecondHurewicz.induced_intervalChain HigherHurewicz.intervalPathRight]
+  simp only [HigherHurewicz.intervalPathLeft, HigherHurewicz.intervalPathRight]
+  abel
+
+/-- Left scaling on coordinate `0` is left scaling of the interval factor. -/
+theorem HigherHurewicz.cubeScaleLeft_zero_comp_cubeCoordinates (n : ℕ) :
+    (HigherHurewicz.cubeScaleLeft (0 : Fin (n + 1))).comp
+        (HigherHurewicz.cubeCoordinates n) =
+      (HigherHurewicz.cubeCoordinates n).comp
+        (HigherHurewicz.intervalScaleLeft.prodMap (ContinuousMap.id _)) := by
+  apply ContinuousMap.ext
+  intro z
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simp [HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Function.update_self,
+      HigherHurewicz.cubeCoordinates_zero, HigherHurewicz.intervalScaleLeft]
+  · have hj : (j.succ : Fin (n + 1)) ≠ 0 := Fin.succ_ne_zero j
+    simp [HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Function.update_of_ne hj,
+      HigherHurewicz.cubeCoordinates_succ]
+
+/-- Right scaling on coordinate `0` is right scaling of the interval factor. -/
+theorem HigherHurewicz.cubeScaleRight_zero_comp_cubeCoordinates (n : ℕ) :
+    (HigherHurewicz.cubeScaleRight (0 : Fin (n + 1))).comp
+        (HigherHurewicz.cubeCoordinates n) =
+      (HigherHurewicz.cubeCoordinates n).comp
+        (HigherHurewicz.intervalScaleRight.prodMap (ContinuousMap.id _)) := by
+  apply ContinuousMap.ext
+  intro z
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self,
+      HigherHurewicz.cubeCoordinates_zero, HigherHurewicz.intervalScaleRight]
+  · have hj : (j.succ : Fin (n + 1)) ≠ 0 := Fin.succ_ne_zero j
+    simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_of_ne hj,
+      HigherHurewicz.cubeCoordinates_succ]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- Scaling the zeroth coordinate of the fundamental `(n+2)`-cube onto each half, then
+subtracting the unscaled cube, is the cross product of the interval-split 2-chain
+against the remaining fundamental cube. -/
+theorem HigherHurewicz.cubeScale_zero_sum_fundamentalCubeChain (n : ℕ) :
+    SingularChains.inducedChain (HigherHurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
+          (HigherHurewicz.fundamentalCubeChain (n + 2)) +
+        SingularChains.inducedChain (HigherHurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
+          (HigherHurewicz.fundamentalCubeChain (n + 2)) -
+      HigherHurewicz.fundamentalCubeChain (n + 2) =
+      SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+          (Fin (n + 1) → (unitInterval)) (n + 1)
+          (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight))
+          (HigherHurewicz.fundamentalCubeChain (n + 1))) := by
+  rw [HigherHurewicz.fundamentalCubeChain_succ]
+  have hL :
+      SingularChains.inducedChain (HigherHurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
+          (SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+              (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) =
+        SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+          (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (Fin (n + 1) → (unitInterval)) (n + 1)
+            (SingularChains.inducedChain HigherHurewicz.intervalScaleLeft 1
+              SecondHurewicz.intervalChain)
+            (HigherHurewicz.fundamentalCubeChain (n + 1))) := by
+    rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+      HigherHurewicz.cubeScaleLeft_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
+      LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+      SingularChains.inducedChain_id, LinearMap.id_apply]
+  have hR :
+      SingularChains.inducedChain (HigherHurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
+          (SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+              (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) =
+        SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+          (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (Fin (n + 1) → (unitInterval)) (n + 1)
+            (SingularChains.inducedChain HigherHurewicz.intervalScaleRight 1
+              SecondHurewicz.intervalChain)
+            (HigherHurewicz.fundamentalCubeChain (n + 1))) := by
+    rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+      HigherHurewicz.cubeScaleRight_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
+      LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+      SingularChains.inducedChain_id, LinearMap.id_apply]
+  rw [hL, hR, ← map_add, ← map_sub]
+  rw [← LinearMap.add_apply, ← LinearMap.sub_apply, ← map_add, ← map_sub,
+    HigherHurewicz.intervalChain_split]
+
 /-- Concatenation along `i` composed with left scaling recovers the first cube. -/
 theorem HigherHurewicz.transAt_comp_cubeScaleLeft {n : ℕ} [DecidableEq (Fin n)] {X : Type}
     [TopologicalSpace X] {x : X} (i : Fin n) (p q : GenLoop (Fin n) X x) :
@@ -1176,6 +1340,60 @@ theorem HigherHurewicz.transAt_comp_cubeScaleRight {n : ℕ} [DecidableEq (Fin n
       rw [Set.projIcc_of_mem (hx := hm)]
       ring
     · simp [hj, HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_of_ne]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The cube chains of `p`, `q`, and `transAt 0 p q` differ by the pushforward of the
+interval-split identity along the uncurrying of `transAt`. -/
+theorem HigherHurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (p q : GenLoop (Fin (n + 2)) X x) :
+    HigherHurewicz.cubeChain p + HigherHurewicz.cubeChain q -
+        HigherHurewicz.cubeChain (GenLoop.transAt (0 : Fin (n + 2)) p q) =
+      SingularChains.inducedChain
+          ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (HigherHurewicz.cubeCoordinates (n + 1))) (n + 2)
+        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+          (Fin (n + 1) → (unitInterval)) (n + 1)
+          (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight))
+          (HigherHurewicz.fundamentalCubeChain (n + 1))) := by
+  -- `Fin (n + 2)` already has `DecidableEq`.
+  have hp : HigherHurewicz.cubeChain p =
+      SingularChains.inducedChain (GenLoop.transAt (0 : Fin (n + 2)) p q).val (n + 2)
+        (SingularChains.inducedChain (HigherHurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
+          (HigherHurewicz.fundamentalCubeChain (n + 2))) := by
+    rw [HigherHurewicz.cubeChain, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+      HigherHurewicz.transAt_comp_cubeScaleLeft]
+  have hq : HigherHurewicz.cubeChain q =
+      SingularChains.inducedChain (GenLoop.transAt (0 : Fin (n + 2)) p q).val (n + 2)
+        (SingularChains.inducedChain (HigherHurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
+          (HigherHurewicz.fundamentalCubeChain (n + 2))) := by
+    rw [HigherHurewicz.cubeChain, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
+      HigherHurewicz.transAt_comp_cubeScaleRight]
+  calc
+    HigherHurewicz.cubeChain p + HigherHurewicz.cubeChain q -
+          HigherHurewicz.cubeChain (GenLoop.transAt (0 : Fin (n + 2)) p q) =
+        SingularChains.inducedChain (GenLoop.transAt (0 : Fin (n + 2)) p q).val (n + 2)
+            (SingularChains.inducedChain (HigherHurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
+                (HigherHurewicz.fundamentalCubeChain (n + 2)) +
+              SingularChains.inducedChain (HigherHurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
+                (HigherHurewicz.fundamentalCubeChain (n + 2)) -
+              HigherHurewicz.fundamentalCubeChain (n + 2)) := by
+      rw [hp, hq, HigherHurewicz.cubeChain]
+      simp only [map_add, map_sub]
+    _ = SingularChains.inducedChain (GenLoop.transAt (0 : Fin (n + 2)) p q).val (n + 2)
+          (SingularChains.inducedChain (HigherHurewicz.cubeCoordinates (n + 1)) (n + 2)
+            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+              (Fin (n + 1) → (unitInterval)) (n + 1)
+              (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
+                (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+                  HigherHurewicz.intervalPathRight))
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) := by
+      rw [HigherHurewicz.cubeScale_zero_sum_fundamentalCubeChain]
+    _ = _ := by
+      rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+
 
 /-- The lower triangle of the square is the identity permutation simplex. -/
 theorem HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
