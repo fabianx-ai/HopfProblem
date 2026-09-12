@@ -1,7 +1,7 @@
 # Lane F — textbook, decomposition, placement, and typed ledger
 
 **The Whitney trick, signed intersection numbers, handle slides, and integer-matrix
-reduction** (Milnor, *Lectures on the h-cobordism theorem*, §6–7: Thm. 6.4 and Thm. 7.8; Smale,
+reduction** (Milnor, *Lectures on the h-cobordism theorem*, §6–7: Thm. 6.6 and Thm. 7.6; Smale,
 *Generalized Poincaré's conjecture in dimensions greater than four*, §4–5; Hatcher Prop. 2.30),
 generalized from the six-dimensional, index-$(2,3)$ formalization to sheets of complementary
 dimensions in arbitrary codimension.
@@ -32,7 +32,7 @@ intersection points; §3). For maps between equidimensional manifolds this speci
 Hatcher's Prop. 2.30: *the degree of a map equals the sum of its local degrees at the preimages
 of a regular value* — the form the code's cell-filtration collapse uses.
 
-**(F2) The Whitney lemma (Milnor, h-cobordism Thm. 6.4).** Let $A^p, B^q \subseteq N^m$ be
+**(F2) The Whitney lemma (Milnor, h-cobordism Thm. 6.6).** Let $A^p, B^q \subseteq N^m$ be
 connected, compact, oriented, embedded submanifolds of a boundaryless $m$-manifold, $p + q = m
 \geq 5$, $p, q \geq 2$, meeting transversely, and let $x_0, x_1 \in A \cap B$ have opposite
 signs. Assume the loop formed by arcs from $x_0$ to $x_1$ in $A$ and in $B$ is nullhomotopic in
@@ -53,7 +53,7 @@ Sliding the $i$-th handle over the $j$-th handle ($i \neq j$) with multiplicity 
 other handles) and right-multiplies $M$ by the transvection $I + c\, E_{ji}$; and every
 sequence of elementary column operations is realized by a sequence of handle slides.
 
-**(F4) Integer reduction (Milnor Thm. 7.8's algebra).** (a) A surjective $1 \times n$ integer
+**(F4) Integer reduction (Milnor Thm. 7.6's algebra).** (a) A surjective $1 \times n$ integer
 matrix (a *unimodular row*) can be reduced by elementary column operations to a row containing
 $\pm 1$. (b) A presentation $\mathbb{Z}^c \to \mathbb{Z}^r \twoheadrightarrow G$ of the trivial
 group $G = 0$ has a surjective presentation matrix. Hence: a handle system whose middle matrix
@@ -298,7 +298,7 @@ converts to a geometric single intersection — here the standing hypothesis tha
 circles contract in the complement (simple connectivity of the level, *not* merely the homology
 vanishing) is load-bearing, and it is satisfied in the h-cobordism application — which lane
 E1's first cancellation theorem then turns
-into a pair cancellation. This chain is Milnor's proof of the basis theorem (Thm. 7.8)
+into a pair cancellation. This chain is Milnor's proof of the basis theorem (Thm. 7.6)
 specialized to the h-cobordism's middle levels.
 
 ## 10. What stays CHARGED
@@ -318,20 +318,20 @@ there.
 
 | # | Lemma (§) | Inputs | Output | Current `Hopf/` home |
 |---|---|---|---|---|
-| F0a | Transvection algebra (§9a–b) | Mathlib `Matrix.transvection` | surjectivity preservation; unimodular-row reduction | Recognition 6367–6385, 9042–9189 (pure) |
-| F0b | Integer presentations (§9c–d) | Mathlib linear algebra | `IntegerPresentation` structure + triviality criterion | SphereTopology 18429–18485, 18540–18588 (pure part) |
-| F1 | Signed intersection number (§3) | E2 (T10, crossing charts), A (local degree) | sign, count, invariance, local-degree identity | SingularHomology 16072–16317 (`SphereNormalCoordinates`, `beltIntersection*`) |
+| F0a | Transvection algebra (§9a–b) | Mathlib `Matrix.transvection` | surjectivity preservation; unimodular-row reduction | Recognition 3357–3366, 4737–4760, 7412–7558 (pure) |
+| F0b | Integer presentations (§9c–d) | Mathlib linear algebra | `IntegerPresentation` structure + triviality criterion | SphereTopology 14171–14257 + 14312–14360 (pure part; geometric gluers 14258–14311 stay for F10) |
+| F1 | Signed intersection number (§3) | E2 (T10, crossing charts), A (local degree) | sign, count, invariance, local-degree identity | SingularHomology 11385–11615 (`SphereNormalCoordinates`, `beltIntersection*`) |
 | F2 | Bigon model (§4) | analysis of one parabola | the model, corner sign computation | SingularHomology 17041–17244 (`WhitneyPairModel`) |
 | F3 | Strip/normal data (§5) | E2 charts | `StripNormalData`, sheet transitions, germ prescription | SingularHomology 16318–17040, 19783–20680 |
 | F4 | Framing bridge (§5) | F1, F3 | opposite signs ⇔ opposite corner determinants | SingularHomology 20780–22214 |
 | F5 | Bigon filling (§6 steps 1–2) | circle contractions (`hnull`), E2 | embedded clean bigon from opposite-sign pair | SingularHomology 18365–18488 (DiskCone), 18489–18730 (AnnularExtension), 19302–19591, 22316–23000 |
 | F6 | Graph motion (§6 step 4) | F2 | the explicit model isotopy | SingularHomology 25071–25818 (`GraphMotion*`, `RankThreeWhitneyModel`) |
-| F7 | The Whitney step (§6; **G-F1**) | F2–F6 + E2 isotopy extension + D2 tubular | the relative cancellation isotopy | SingularHomology 25819–28261 (headline 28000) |
-| F8 | Finite cancellation and single intersection (§7) | F7, F1 | pair removal iteration; single-intersection criterion | SphereTopology 9532–9878 (`FiniteSignedCancellation`, belt cancellation chain); Recognition 10129–10476 |
-| F9 | Arcs and tubes (§8 geometry) | E2 (arcs, isotopy) | sheet arc tubes; longitudinal tube motion | DifferentialTopology 27220–27329, 28344–28604, 28935–30219 |
-| F10 | Attaching classes and the middle matrix (§8) | A, E1, F1 | `middleSectionClass`, `classCoordinateMatrix`, `canonicalMiddleMatrix`, `middleMatrix`; matrix = boundary | Recognition 4078–5487, SphereTopology 18068–18588 (geometric part) |
-| F11 | Handle slides (§8) | F9, F10 | slide = transvection; every column op realized | Recognition 6367–9188 (geometry part) |
-| F12 | The pivot chain (§9d) | F0a, F0b, F11 | primitive unit from a surjective presentation | Recognition 9190–9470 |
+| F7 | The Whitney step (§6; **G-F1**) | F2–F6 + E2 isotopy extension + D2 tubular | the relative cancellation isotopy | SingularHomology ~20490–23150 (headline 22999) |
+| F8 | Finite cancellation and single intersection (§7) | F7, F1 | pair removal iteration; single-intersection criterion | SphereTopology 6364–6660 (`FiniteSignedCancellation`, belt cancellation chain); Recognition 8390–8680 |
+| F9 | Arcs and tubes (§8 geometry) | E2 (arcs, isotopy) | sheet arc tubes; longitudinal tube motion | SurgeryWindows 15078–15800 (`exists_sheet_arc_tube`, `longitudinalBlend*`/tube motion); Recognition 4756 |
+| F10 | Attaching classes and the middle matrix (§8) | A, E1, F1 | `middleSectionClass`, `classCoordinateMatrix`, `canonicalMiddleMatrix`, `middleMatrix`; matrix = boundary | Recognition 2800, 3357, 3387; SphereTopology 14258–14500 (geometric part incl. `middlePresentation`/`middleMatrix`) |
+| F11 | Handle slides (§8) | F9, F10 | slide = transvection; every column op realized | Recognition 6629–7330 (geometry part) |
+| F12 | The pivot chain (§9d) | F0a, F0b, F11 | primitive unit from a surjective presentation | Recognition 7560–7840, 9422–9440 |
 
 Dependency order is row order; F0a/F0b land first (no lane dependencies — pure algebra over
 Mathlib's matrix library; they are the one part of lane F executable before the GLM lanes
@@ -369,35 +369,110 @@ Seams: everything manifold-level depends on GLM's D1 (Morse data), D2 (tubular),
 land, the ledger rows are checked against the `Hopf/` names. F0a/F0b have no lane seams and can
 be built against the pinned Mathlib today.
 
-**Row F0a (lands first).** Current (byte-exact in the scout map):
-`MorseCancel.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ) (i j : Fin n)
-(hij : i ≠ j) (k : ℤ) (hA : Function.Surjective A.mulVec) : Function.Surjective
-(A * Matrix.transvection i j k).mulVec` (Recognition 6367);
-`MorseCancel.eq_mul_transvection_of_columns` (6377);
-`MorseCancel.mul_transvection_list_surjective` (9042);
-`MorseCancel.primitive_row_has_unit_after_column_additions {n : ℕ}
-(A : Matrix (Fin 1) (Fin n) ℤ) (hA : Function.Surjective A.mulVec) : ∃ ops : List (Fin n × Fin n
-× ℤ), (∀ op ∈ ops, op.1 ≠ op.2.1) ∧ ∃ i : Fin n, (A * (ops.map …).prod) 0 i = 1 ∨ … = -1`
-(9059); `functional_class_row_surjective` (9137); `transported_classes_of_matrix_product`
-(9160); `functional_rows_of_matrix_product` (9174); `classCoordinateMatrix` def (4987).
+**Row F0a (lands first).** Exact signatures (probed at head; the scout map's Recognition
+coordinates 6367+/9042+ are stale — sources are now at 3357/4737+/7412+):
+
+```lean
+def MorseCancel.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
+    (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) : Matrix (Fin r) (Fin n) ℤ
+  -- Recognition 3357; classCoordinateMatrix_mulVec at 3361 moves with it
+theorem MorseCancel.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
+    (i j : Fin n) (hij : i ≠ j) (k : ℤ) (hA : Function.Surjective A.mulVec) :
+    Function.Surjective (A * Matrix.transvection i j k).mulVec  -- Recognition 4737
+theorem MorseCancel.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Matrix (Fin r) (Fin n) ℤ)
+    (i j : Fin n) (k : ℤ) (hchanged : ∀ u, A' u j = A u j + k * A u i)
+    (hother : ∀ u v, v ≠ j → A' u v = A u v) : A' = A * Matrix.transvection i j k
+  -- Recognition 4747
+theorem MorseCancel.mul_transvection_list_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
+    (hA : Function.Surjective A.mulVec) (ops : List (Fin n × Fin n × ℤ))
+    (hvalid : ∀ op ∈ ops, op.1 ≠ op.2.1) :
+    Function.Surjective
+      (A * (ops.map (fun op => Matrix.transvection op.1 op.2.1 op.2.2)).prod).mulVec
+  -- Recognition 7412
+theorem MorseCancel.primitive_row_has_unit_after_column_additions {n : ℕ}
+    (A : Matrix (Fin 1) (Fin n) ℤ) (hA : Function.Surjective A.mulVec) :
+    ∃ ops : List (Fin n × Fin n × ℤ),
+      (∀ op ∈ ops, op.1 ≠ op.2.1) ∧
+        ∃ i : Fin n,
+          (A * (ops.map (fun op => Matrix.transvection op.1 op.2.1 op.2.2)).prod) 0 i = 1 ∨
+            (A * (ops.map (fun op => Matrix.transvection op.1 op.2.1 op.2.2)).prod) 0 i = -1
+  -- Recognition 7429
+theorem MorseCancel.functional_class_row_surjective {H : Type} [AddCommGroup H] [Module ℤ H]
+    {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (v : Fin n → H)
+    (hA : Function.Surjective (classCoordinateMatrix B v).mulVec) (L : H →ₗ[ℤ] ℤ)
+    (hL : Function.Surjective L) :
+    Function.Surjective (Matrix.of (fun (_ : Fin 1) (j : Fin n) => L (v j))).mulVec
+  -- Recognition 7507
+theorem MorseCancel.transported_classes_of_matrix_product {H K : Type} [AddCommGroup H]
+    [Module ℤ H] [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H)
+    (e : H ≃ₗ[ℤ] K) (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
+    (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P)
+    (j : Fin n) : e.symm (w j) = ∑ i, P i j • v i  -- Recognition 7530
+theorem MorseCancel.functional_rows_of_matrix_product {H K : Type} [AddCommGroup H]
+    [Module ℤ H] [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H)
+    (e : H ≃ₗ[ℤ] K) (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
+    (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P)
+    (L : H →ₗ[ℤ] ℤ) :
+    Matrix.of (fun (_ : Fin 1) (j : Fin n) => L (e.symm (w j))) =
+      Matrix.of (fun (_ : Fin 1) (j : Fin n) => L (v j)) * P  -- Recognition 7544
+```
+
 Target: `Matrix.TransvectionReduction.*` — same statements under the Mathlib namespace shape
 (`Matrix.mul_transvection_surjective`, `Matrix.primitive_row_has_unit_after_column_additions`
 etc.). Pure move; axiom probe target: `primitive_row_has_unit_after_column_additions`.
 
-**Row F0b.** Current: `Smale.IntegerPresentation` structure (SphereTopology 18429) with
-`map`, `columns`, `surjective`, `kernel_eq`, and `ofEquiv`, `transport`, `liftRelation`,
-`adjoin`, `matrix`, `columns_sum_eq_mulVec`, `mem_range_matrix_iff`, `matrix_image_eq_kernel`,
-`matrix_relation`, `columns_span_of_subsingleton`, `matrix_surjective_of_subsingleton`
-(18581). Target: `Algebra.Module.IntegerPresentation.*`. Pure move **with a boundary
+**Row F0b.** Current (scout coordinates 18429+/18540+ are stale — sources are now
+SphereTopology 14201+): `Smale.IntegerPresentation` structure (14201) with fields `map`,
+`columns`, `surjective`, `kernel_eq`, and API `ofEquiv` (14207), `transport` (14217),
+`liftRelation` (14235), `map_liftRelation` (14239 — the ledger previously omitted it),
+`adjoin` (14243), `matrix` (14312), `columns_sum_eq_mulVec` (14315), `mem_range_matrix_iff`
+(14321), `matrix_image_eq_kernel` (14331), `matrix_relation` (14338),
+`columns_span_of_subsingleton` (14345), `matrix_surjective_of_subsingleton` (14353).
+**Closure dependency that must move with the packet** (or land in the same target file):
+`Smale.HomologyTransport.ker_comp_span_singleton` (SphereTopology 14171, pure
+`CommRing`-module algebra — used by `adjoin`). `HomologyTransport.exact_of_equivalences`
+is already Lib-landed (`Lib/Geometry/Manifold/Morse/SublevelSets.lean:88`). The remaining
+pure `HomologyTransport` decls (`exists_split_rank_one_extension` ST 13840,
+`exists_add_split_rank_one_extension` ST 13881, `integerCoordinateSplit` ST 13967,
+`integerEquiv_one_natAbs` Rec 7841, `matrix_sizes_eq_of_bijective` Rec 9422) are also
+pure algebra; they are **candidates for the same file** — flag to owner whether they
+belong in `IntegerPresentation.lean` or a separate `HomologyTransport` module.
+Target: `Algebra.Module.IntegerPresentation.*`. Pure move **with a boundary
 correction**: leave the two interleaved geometric gluers
-`MorseSurgeryData.indexThreePresentation` (18486) and `SurgeryWindows.middlePresentation`
-(18519) in place (they move with F10); the extraction takes 18429–18485 + 18540–18588.
+`MorseSurgeryData.indexThreePresentation` (14258) and `SurgeryWindows.middlePresentation`
+(14291) in place (they move with F10); the extraction takes 14171–14257 + 14312–14360.
 
-**Row F7 (the headline generalization, G-F1).** Current:
-`Smale.TubularBigon.exists_rankThree_relative_cancellation` (SingularHomology 28000, verbatim
-in the scout map): sheets via `TubularBigon … h 3` (normal rank 3) over
-`RankThreeWhitneyModel.Space = (ℝ × ℝ) × (EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2))`,
-hypothesis `hsign` = opposite corner determinant signs, conclusion the compactly supported
+**Row F7 (the headline generalization, G-F1).** Current (verbatim; scout's SH 28000 is stale —
+source is now SingularHomology 22999):
+
+```lean
+theorem Smale.TubularBigon.exists_rankThree_relative_cancellation {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
+    {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
+    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    (d : Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3))
+      (E := E) S k.map)
+    (e : Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2))
+      (E := E) T l.map)
+    (hS : IsClosed S) (hT : IsClosed T)
+    (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
+    ∃ K : Set M,
+      IsCompact K ∧ K ⊆ tube.chart.target ∧
+        Disjoint K ((S ∩ T) \ {a 0, a 1}) ∧
+          ∃ A : ℝ × M → M,
+            ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, E)) 𝓘(ℝ, E) ∞ A ∧ (∀ y, A (0, y) = y) ∧
+              (∀ t, ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞, ∀ y, A (t, y) = D y) ∧
+                (∀ t y, y ∉ K → A (t, y) = y) ∧
+                  ((fun y => A (1, y)) '' S) ∩ T = (S ∩ T) \ {a 0, a 1}
+```
+
+Sheets via `TubularBigon … h 3` (normal rank 3; the structure's `n := 4` default at
+SH 14432 is instantiated to 3) over
+`Smale.RankThreeWhitneyModel.Space = (ℝ × ℝ) × (Lower × Upper)` with
+`Lower = EuclideanSpace ℝ (Fin 1)`, `Upper = EuclideanSpace ℝ (Fin 2)` (SH 20594–20600).
+Hypothesis `hsign` = opposite corner determinant signs; conclusion the compactly supported
 isotopy removing the two corners. Target:
 `Geometry.Manifold.Whitney.Trick.exists_relative_cancellation_of_opposite_signs`, parameterized
 by `(p q : ℕ)` with model `WhitneyModel.Space p q := (ℝ × ℝ) × (EuclideanSpace ℝ (Fin (p - 1))
@@ -414,29 +489,122 @@ the hypothesis bundle gets the explicit form "sheets of dims $p, q$ in a level o
 \geq 5$, with circle contractions in the complement", and (ii) the arc-avoidance counts, which
 need $p, q \geq 2$.
 
-**Row F1.** Current: `MorseSurgeryData.beltIntersectionJacobian/Sign/Points/Count`
-(SingularHomology 16186–16225, verbatim in the map), `finite_beltIntersectionPoints`,
-`collapse_homology_signed_count` (Recognition 10020). Target:
-`Geometry.Manifold.Whitney.IntersectionNumber.*` at general index: the Jacobian/sign/count
-take the sphere dimension `m` already (they do: `(m : ℕ)`); the pin is in the *consumers*
-(`… 2 …`). Move as-is; the generalization is only in how consumers instantiate.
+**Row F1.** Current (full `Smale.ManifoldMorse.MorseSurgeryData.` prefixes — the short
+`MorseSurgeryData.*` spellings in earlier drafts don't resolve at head):
+`Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian` (SH 11499),
+`.beltIntersectionSign` (11509, returns `SignType.sign (d.beltIntersectionJacobian m j g x)`),
+`.beltIntersectionPoints` (11516), `.beltIntersectionCount` (11532), plus
+`.beltIntersectionJacobian_ne_zero` (11541), `.beltIntersectionSign_unit` (11570),
+`.finite_beltIntersectionPoints` (11597); `SphereNormalCoordinates.*` supporting cluster
+(SH 11385+); `collapse_homology_signed_count` (Recognition 8390, stale map ref 10020).
+Target: `Geometry.Manifold.Whitney.IntersectionNumber.*` at general index: the
+Jacobian/sign/count take the sphere dimension `m` already (they do: `(m : ℕ)`); the pin is
+in the *consumers* (`… 2 …`). Move as-is; the generalization is only in how consumers
+instantiate.
 
-**Row F11 (handle slides, G-F2).** Current chain `exists_repeatable_column_slide` (8259) →
-`exists_iterated_column_slide` (8322) → `exists_integer_column_slide` (8410) →
-`exists_labelled_integer_slide` (8562) → `exists_arbitrary_column_addition` (8709) →
-`exists_arbitrary_column_sequence` (8878), all with `(hdim : Module.finrank ℝ E = 6)`, index-3
-upper handles, `Hemisphere.Sphere 2` attaching spheres, degree-2 homology. Target: index-$k$
-upper handles in an $n$-dimensional ambient with `3 ≤ k ≤ n - 3`-style hypotheses replaced by
-the explicit bundle the proofs use: the attaching spheres are `Hemisphere.Sphere (k - 1)`,
-homology in degree `k - 1`, levels simply connected enough (`hnull`-family hypotheses as in
-the code), and `hdim : Module.finrank ℝ E = n`. **New mathematics**: none beyond
-symbolic-index bookkeeping — the proofs use the dimensions only through the E2 counts that the
-hypothesis bundle packages. The 37 `finrank ℝ E = 6` sites in Recognition collapse to the
-parameter.
+**Row F11 (handle slides, G-F2).** Current chain (scout coords 8259+ are stale — sources are
+Recognition 6629+): `AdaptedWindows.exists_repeatable_column_slide` (6629) →
+`exists_iterated_column_slide` (6692) → `exists_integer_column_slide` (6780) →
+`MorseCancel.canonicalMiddleMatrix_single_class_addition` (6854, algebraic side) →
+`exists_labelled_integer_slide` (6932) → `exists_arbitrary_column_addition` (7079) →
+`exists_arbitrary_column_sequence` (7248). Headline signature (verbatim):
 
-**Row F8/F12.** `exists_single_belt_intersection_of_unit_count` (SphereTopology 9765),
-`exists_single_intersection_of_unit_coordinate` (Recognition 10304),
-`AdaptedWindows.exists_primitive_functional_unit` (Recognition 9190): same generalization
+```lean
+theorem AdaptedWindows.exists_arbitrary_column_sequence {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] [PathConnectedSpace M]
+    {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = 6)
+    (horder : ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → MorseCancel.nativeMorseIndex E f x ≤ MorseCancel.nativeMorseIndex E f y)
+    {a : ℝ} (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hcut : ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        MorseCancel.nativeMorseIndex E f z < 3 → f z < a)
+    {r n : ℕ} (p : Fin n → Smale.ManifoldMorse.criticalPoints E f)
+    (hp : ∀ j, MorseCancel.nativeMorseIndex E f (p j) = 3)
+    (hcomplete : ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        MorseCancel.nativeMorseIndex E f z = 3 → ∃ j, p j = z)
+    (hlower : ∀ j, a < S.toSurgeryWindows.lower (p j))
+    (B : (Fin r → ℤ) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2)
+    (γ : Fin n → C((Smale.Hemisphere.Sphere 2), { y : M // f y = a }))
+    (hγ : MorseCancel.IsNativeMiddleBasinFamily S hf ha p (fun j => γ j))
+    (hsurj : Function.Surjective (MorseCancel.canonicalMiddleMatrix B γ).mulVec)
+    (ops : List (Fin n × Fin n × ℤ)) (hvalid : ∀ op ∈ ops, op.1 ≠ op.2.1) :
+    ∃ g : M → ℝ, ∃ hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g,
+      Smale.ManifoldMorse.IsMorse E g ∧
+        ∃ hcrit : Smale.ManifoldMorse.criticalPoints E g =
+            Smale.ManifoldMorse.criticalPoints E f,
+          (∀ x y : Smale.ManifoldMorse.criticalPoints E g,
+              g x < g y →
+                MorseCancel.nativeMorseIndex E g x ≤ MorseCancel.nativeMorseIndex E g y) ∧
+            (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                MorseCancel.nativeMorseIndex E g z = MorseCancel.nativeMorseIndex E f z) ∧
+              (∀ d, MorseCancel.nativeMorseCount E g d = MorseCancel.nativeMorseCount E f d) ∧
+                (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                    (∀ j, z ≠ (p j).val) → g z = f z) ∧
+                  (∀ z : Smale.ManifoldMorse.criticalPoints E g,
+                      MorseCancel.nativeMorseIndex E g z < 3 → g z < a) ∧
+                    ∃ hsub : ∀ y, g y ≤ a ↔ f y ≤ a,
+                      ∃ hlevel : ∀ y, g y = a ↔ f y = a,
+                        ∃ hga : ∀ y, g y = a → y ∉ Smale.ManifoldMorse.criticalPoints E g,
+                          ∃ T : AdaptedWindows E g,
+                            (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                                ∀ᶠ y in 𝓝 z, T.field y = S.field y) ∧
+                              (∀ y, f y ≤ a → g =ᶠ[𝓝 y] f) ∧
+                                let p' : Fin n → Smale.ManifoldMorse.criticalPoints E g :=
+                                  fun j => ⟨(p j).val, hcrit.symm ▸ (p j).property⟩
+                                let B' := B.trans (MorseCancel.equalCutHomologyEquiv hsub)
+                                (∀ j, MorseCancel.nativeMorseIndex E g (p' j) = 3) ∧
+                                  (∀ z : Smale.ManifoldMorse.criticalPoints E g,
+                                      MorseCancel.nativeMorseIndex E g z = 3 → ∃ j, p' j = z) ∧
+                                    (∀ j, a < T.toSurgeryWindows.lower (p' j)) ∧
+                                      ∃ Γ : Fin n →
+                                            C((Smale.Hemisphere.Sphere 2), { y : M // g y = a }),
+                                        MorseCancel.IsNativeMiddleBasinFamily T hg hga p'
+                                            (fun j => Γ j) ∧
+                                          (∀ j, (∀ op ∈ ops, op.2.1 ≠ j) →
+                                              Γ j = MorseCancel.equalCutSection hlevel (γ j)) ∧
+                                            MorseCancel.canonicalMiddleMatrix B' Γ =
+                                              MorseCancel.canonicalMiddleMatrix B γ *
+                                                (ops.map (fun op =>
+                                                    Matrix.transvection op.1 op.2.1
+                                                      op.2.2)).prod ∧
+                                              Function.Surjective
+                                                  (MorseCancel.canonicalMiddleMatrix B'
+                                                      Γ).mulVec ∧
+                                                ∀ z : M, f z ≤ a →
+                                                  (∀ x, Filter.Tendsto (fun t => T.flow t x)
+                                                        Filter.atBot (𝓝 z) ↔
+                                                      Filter.Tendsto (fun t => S.flow t x)
+                                                        Filter.atBot (𝓝 z)) ∧
+                                                    (∀ x, Filter.Tendsto (fun t => S.flow t x)
+                                                          Filter.atBot (𝓝 z) →
+                                                        Set.range (fun t => T.flow t x) =
+                                                          Set.range (fun t => S.flow t x)) ∧
+                                                      ∀ v, Filter.Tendsto (fun t => T.flow t z)
+                                                            Filter.atTop (𝓝 v) ↔
+                                                          Filter.Tendsto (fun t => S.flow t z)
+                                                            Filter.atTop (𝓝 v)
+  -- Recognition 7248–7330 (signature ends at `:= by`); `exists_arbitrary_column_addition`
+  -- (7079) is the single-op specialisation with the same binder prefix and `(k : ℤ)` for
+  -- `transvection q i k`. The chain's first three links (6629/6692/6780) share this
+  -- binder shape at a single point q / single index j.
+```
+
+All six links carry `(hdim : Module.finrank ℝ E = 6)`, index-3 upper handles,
+`Hemisphere.Sphere 2` attaching spheres, degree-2 homology
+(`SingularMayerVietoris.SingularHomology … 2`). Target: index-$k$ upper handles in an
+$n$-dimensional ambient with `3 ≤ k ≤ n - 3`-style hypotheses replaced by the explicit
+bundle the proofs use: the attaching spheres are `Hemisphere.Sphere (k - 1)`, homology in
+degree `k - 1`, levels simply connected enough (`hnull`-family hypotheses as in the code),
+and `hdim : Module.finrank ℝ E = n`. **New mathematics**: none beyond symbolic-index
+bookkeeping — the proofs use the dimensions only through the E2 counts that the hypothesis
+bundle packages. The 37 `finrank ℝ E = 6` sites in Recognition collapse to the parameter.
+
+**Row F8/F12.** `exists_single_belt_intersection_of_unit_count` (SphereTopology 6597,
+stale ref 9765), `MorseCancel.exists_single_intersection_of_unit_coordinate` (Recognition
+8674, stale ref 10304), `AdaptedWindows.exists_primitive_functional_unit` (Recognition
+7560, stale ref 9190): same generalization
 pattern; the signed-cancellation algebra (`Smale.FiniteSignedCancellation.*`,
 SphereTopology 9532–9564) is already fully general and is a pure move.
 
@@ -455,14 +623,19 @@ SphereTopology 9532–9564) is already fully general and is a pure move.
    commands (after the seams land): `lake env lean
    Lib/Geometry/Manifold/Whitney/F_InterfaceCheck.lean` + consumer probe; receipt at
    `Lib/docs/F-INTERFACE_RECEIPT.md`.
-2. **F0a/F0b land first and now.** They depend only on Mathlib; the task orders them first in
-   the lane. They are the one executable part of F while the GLM lanes are pending.
+2. **F0a/F0b LANDED** (`Lib/LinearAlgebra/Matrix/TransvectionReduction.lean` — 10 decls;
+   `Lib/Algebra/Module/IntegerPresentation.lean` — `HomologyTransport.ker_comp_span_singleton`
+   + `IntegerPresentation` + 14 API decls incl. the four Recognition-side `adjoin_*` lemmas).
+   Verbatim moves under existing `MorseCancel.*`/`Smale.IntegerPresentation.*` FQNs — consumers
+   (`Recognition`, `SphereTopology`) unchanged except added imports. Receipt:
+   `Lib/docs/F-INTERFACE_RECEIPT.md`. The `Matrix.*`/root-namespace rename the Axis-5 targets
+   describe is deferred to the lane's rename commit.
 3. **Exact generality of the Whitney step.** The task's "sheets of dimensions $p + q = n$,
    $n \geq 5$, with $3 \leq k \leq n - 3$ or $\pi_1$-trivial levels" is matched by the
    code-shaped hypothesis bundle: sheets of dims $p, q \geq 2$ in a level of dimension
    $p + q \geq 5$, plus the explicit circle-contraction hypothesis (`hnull` in the code) that
    the codimension-2 case needs. The code's instance is $(p, q) = (2, 3)$ in a 5-level. The
-   strongest classical statement (Milnor's 6.4 as printed) will be re-checked against the
+   strongest classical statement (Milnor's 6.6 as printed) will be re-checked against the
    formalized hypothesis bundle at landing and the docstring will say exactly which form is
    proved. Flagged for the reviewer.
 4. **Pragma cargo.** The moved blocks carry `attribute [local instance 100]
@@ -472,4 +645,6 @@ SphereTopology 9532–9564) is already fully general and is a pure move.
    rename commit.
 5. **Bib keys.** Milnor's h-cobordism lectures and Smale 1961 are not in the pinned Mathlib
    bib; add `milnor65hcob`-style keys on upstreaming (open item, as in E2).
-6. **Review.** Stage-2 independent review of §§1–9: scheduled; report in `~/s6-notes/`.
+6. **Review.** Stage-2 independent review of §§1–10 committed in-tree as
+   `Lib/docs/F-stage2-review.md` (verdict: statements true and correctly shaped;
+   dependencies non-circular).

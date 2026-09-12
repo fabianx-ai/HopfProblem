@@ -44,6 +44,8 @@ import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
+import Lib.LinearAlgebra.Matrix.TransvectionReduction
+import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation

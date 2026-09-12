@@ -75,6 +75,7 @@ import Lib.Topology.OnePointCollapse
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
+import Lib.Algebra.Module.IntegerPresentation
 
 set_option maxSynthPendingDepth 3
 
@@ -14168,93 +14169,6 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.indexThree_lowerRealization_kernel 
       Submodule.span ℤ {d.indexThreeAttachingClass hindex} := by
   rw [← d.morse_exact_at_lower hf 2 (by norm_num), d.coreBoundary_two_range hindex]
 
-theorem Smale.HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
-    [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module R A] [Module R B] [Module R C]
-    (p : A →ₗ[R] B) (q : B →ₗ[R] C) (v : A) (hq : LinearMap.ker q = Submodule.span R {p v}) :
-    LinearMap.ker (q.comp p) = LinearMap.ker p ⊔ Submodule.span R { v } := by
-  apply le_antisymm
-  · intro a ha
-    have hpa : p a ∈ Submodule.span R {p v} := by
-      rw [← hq]
-      exact ha
-    obtain ⟨r, hr⟩ := Submodule.mem_span_singleton.mp hpa
-    have hk : a - r • v ∈ LinearMap.ker p := by
-      change p (a - r • v) = 0
-      rw [map_sub, map_smul, hr, sub_self]
-    exact
-      Submodule.mem_sup.mpr
-        ⟨a - r • v, hk, r • v, Submodule.smul_mem _ _ (Submodule.subset_span (by simp)),
-          sub_add_cancel _ _⟩
-  · apply sup_le
-    · intro a ha
-      change q (p a) = 0
-      change p a = 0 at ha
-      rw [ha, map_zero]
-    · apply Submodule.span_le.mpr
-      intro a ha
-      have ha' : a = v := Set.mem_singleton_iff.mp ha
-      subst a
-      change p v ∈ LinearMap.ker q
-      rw [hq]
-      exact Submodule.subset_span (by simp)
-
-structure Smale.IntegerPresentation (B : Type*) [AddCommGroup B] [Module ℤ B] (r c : ℕ) where
-  map : (Fin r → ℤ) →ₗ[ℤ] B
-  columns : Fin c → (Fin r → ℤ)
-  surjective : Function.Surjective map
-  kernel_eq : LinearMap.ker map = Submodule.span ℤ (Set.range columns)
-
-def Smale.IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B] {r : ℕ}
-    (e : (Fin r → ℤ) ≃ₗ[ℤ] B) : Smale.IntegerPresentation B r 0
-    where
-  map := e.toLinearMap
-  columns := Fin.elim0
-  surjective := e.surjective
-  kernel_eq := by
-    rw [LinearMap.ker_eq_bot.mpr e.injective]
-    simp
-
-def Smale.IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommGroup C]
-    [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c) (e : B ≃ₗ[ℤ] C) :
-    Smale.IntegerPresentation C r c
-    where
-  map := e.toLinearMap.comp P.map
-  columns := P.columns
-  surjective := e.surjective.comp P.surjective
-  kernel_eq := by
-    have h : LinearMap.ker (e.toLinearMap.comp P.map) = LinearMap.ker P.map := by
-      ext v
-      change e (P.map v) = 0 ↔ P.map v = 0
-      constructor
-      · intro hv
-        exact e.injective (hv.trans (map_zero e).symm)
-      · intro hv
-        rw [hv, map_zero]
-    exact h.trans P.kernel_eq
-
-def Smale.IntegerPresentation.liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
-    (P : Smale.IntegerPresentation B r c) (b : B) : Fin r → ℤ :=
-  Classical.choose (P.surjective b)
-
-theorem Smale.IntegerPresentation.map_liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (b : B) : P.map (P.liftRelation b) = b :=
-  Classical.choose_spec (P.surjective b)
-
-def Smale.IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [Module ℤ B]
-    [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
-    (hq : Function.Surjective q) (b : B) (hker : LinearMap.ker q = Submodule.span ℤ { b }) :
-    Smale.IntegerPresentation C r (c + 1)
-    where
-  map := q.comp P.map
-  columns := Fin.cons (P.liftRelation b) P.columns
-  surjective := hq.comp P.surjective
-  kernel_eq := by
-    have hk : LinearMap.ker q = Submodule.span ℤ {P.map (P.liftRelation b)} := by
-      rw [P.map_liftRelation]
-      exact hker
-    rw [Smale.HomologyTransport.ker_comp_span_singleton P.map q (P.liftRelation b) hk,
-      P.kernel_eq, Fin.range_cons, Submodule.span_insert, sup_comm]
-
 def Smale.ManifoldMorse.MorseSurgeryData.indexThreePresentation {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -14308,55 +14222,6 @@ def Smale.ManifoldMorse.SurgeryWindows.middlePresentation {E M : Type} [NormedAd
     let B := S.consecutiveBandData hf ⟨r + c, Nat.lt_of_succ_lt hc⟩ ⟨r + (c + 1), hc⟩ rfl
     (S.data (S.point ⟨r + (c + 1), hc⟩)).indexThreePresentation hf.continuous
       (S.indexThreeBlock_last r c hc hthree) (P.transport (B.homologyEquiv 2))
-
-def Smale.IntegerPresentation.matrix {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
-    (P : Smale.IntegerPresentation B r c) : Matrix (Fin r) (Fin c) ℤ := fun i j => P.columns j i
-
-theorem Smale.IntegerPresentation.columns_sum_eq_mulVec {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (z : Fin c → ℤ) :
-    (∑ j, z j • P.columns j) = P.matrix.mulVec z := by
-  funext i
-  simp [Smale.IntegerPresentation.matrix, Matrix.mulVec, dotProduct, mul_comm]
-
-theorem Smale.IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (v : Fin r → ℤ) :
-    v ∈ Set.range P.matrix.mulVec ↔ v ∈ Submodule.span ℤ (Set.range P.columns) := by
-  rw [Submodule.mem_span_range_iff_exists_fun ℤ]
-  constructor
-  · rintro ⟨z, hz⟩
-    exact ⟨z, (P.columns_sum_eq_mulVec z).trans hz⟩
-  · rintro ⟨z, hz⟩
-    exact ⟨z, (P.columns_sum_eq_mulVec z).symm.trans hz⟩
-
-theorem Smale.IntegerPresentation.matrix_image_eq_kernel {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) :
-    Set.range P.matrix.mulVec = (LinearMap.ker P.map : Set (Fin r → ℤ)) := by
-  ext v
-  rw [P.mem_range_matrix_iff, P.kernel_eq]
-  rfl
-
-theorem Smale.IntegerPresentation.matrix_relation {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (z : Fin c → ℤ) :
-    P.map (P.matrix.mulVec z) = 0 := by
-  have h : P.matrix.mulVec z ∈ Set.range P.matrix.mulVec := ⟨z, rfl⟩
-  rw [P.matrix_image_eq_kernel] at h
-  exact h
-
-theorem Smale.IntegerPresentation.columns_span_of_subsingleton {B : Type*} [AddCommGroup B]
-    [Module ℤ B] {r c : ℕ} (P : Smale.IntegerPresentation B r c) [Subsingleton B] :
-    Submodule.span ℤ (Set.range P.columns) = ⊤ := by
-  apply top_unique
-  intro v _
-  rw [← P.kernel_eq]
-  exact Subsingleton.elim _ _
-
-theorem Smale.IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} [AddCommGroup B]
-    [Module ℤ B] {r c : ℕ} (P : Smale.IntegerPresentation B r c) [Subsingleton B] :
-    Function.Surjective P.matrix.mulVec := by
-  intro v
-  apply (P.mem_range_matrix_iff v).mpr
-  rw [P.columns_span_of_subsingleton]
-  trivial
 
 theorem Smale.homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
     (h : M ≃ₕ Smale.SixSphere) (k : ℕ) (hk : k ≠ 0) (hktop : k ≠ 6) :
