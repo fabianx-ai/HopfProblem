@@ -65,6 +65,7 @@ import Hopf.LibShims
 import Hopf.LCP.LocalModels
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.PathClass
+import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
 
@@ -13100,9 +13101,6 @@ theorem PeriodDomain.singularH1Equiv_symm_apply (p : PeriodDomain) (c : Lattice)
   apply p.singularH1Equiv.injective
   rw [LinearEquiv.apply_symm_apply, p.singularH1Equiv_periodLoop]
 
-abbrev PeriodTorusHigherHomology.ProductTorus (n : ℕ) :=
-  Fin n → AddCircle (1 : ℝ)
-
 def PeriodTorusHigherHomology.coordinateProjection (n : ℕ) : (Fin n → ℝ) →+ ProductTorus n
     where
   toFun x i := (x i : AddCircle (1 : ℝ))
@@ -13143,35 +13141,6 @@ theorem PeriodTorusHigherHomology.coordinateProjection_surjective (n : ℕ) :
     exact QuotientAddGroup.mk_surjective (t i)
   choose x hx using h
   exact ⟨x, funext hx⟩
-
-def PeriodTorusHigherHomology.productTorusSuccHomeomorph (n : ℕ) :
-    ProductTorus (n + 1) ≃ₜ AddCircle (1 : ℝ) × ProductTorus n
-    where
-  toFun x := (x 0, fun i => x i.succ)
-  invFun x := Fin.cons x.1 x.2
-  left_inv x := Fin.cons_self_tail x
-  right_inv x := by simp
-  continuous_toFun := (continuous_apply 0).prodMk (continuous_pi fun i => continuous_apply i.succ)
-  continuous_invFun := by
-    apply continuous_pi
-    intro i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact continuous_fst
-    · exact (continuous_apply j).comp continuous_snd
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusSuccHomeomorph_apply (n : ℕ)
-    (x : ProductTorus (n + 1)) : productTorusSuccHomeomorph n x = (x 0, fun i => x i.succ) :=
-  rfl
-
-def PeriodTorusHigherHomology.productTorusZeroHomeomorph : ProductTorus 0 ≃ₜ PUnit
-    where
-  toFun _ := PUnit.unit
-  invFun _ := Fin.elim0
-  left_inv _ := Subsingleton.elim _ _
-  right_inv _ := Subsingleton.elim _ _
-  continuous_toFun := continuous_const
-  continuous_invFun := continuous_const
 
 def PeriodTorusHigherHomology.coordinatePeriodLoop (n : ℕ) (v : Fin n → ℤ) :
     Path (0 : ProductTorus n) 0 :=
@@ -14912,130 +14881,6 @@ def CuspCentralHomology.rightCircleProjectionKernelEquiv (X : Type) [Topological
           (SingularMayerVietoris.singularHomologyMap (ContinuousMap.fst : C(X × _root_.Circle, X))
             (n + 1)) ≃+
         SingularMayerVietoris.SingularHomology X n).toIntLinearEquiv
-
-abbrev PeriodTorusHigherHomology.binomialModule (r n : ℕ) :=
-  Fin (r.choose n) → ℤ
-
-def PeriodTorusHigherHomology.binomialPascalIndexEquiv (r n : ℕ) :
-    Fin ((r + 1).choose (n + 1)) ≃ Fin (r.choose (n + 1)) ⊕ Fin (r.choose n) :=
-  (finCongr ((Nat.choose_succ_succ' r n).trans (Nat.add_comm _ _))).trans finSumFinEquiv.symm
-
-def PeriodTorusHigherHomology.binomialModuleSuccEquiv (r n : ℕ) :
-    binomialModule (r + 1) (n + 1) ≃ₗ[ℤ] binomialModule r (n + 1) × binomialModule r n :=
-  (LinearEquiv.piCongrLeft' ℤ (fun _ => ℤ) (binomialPascalIndexEquiv r n)).trans
-    (LinearEquiv.sumArrowLequivProdArrow _ _ ℤ ℤ)
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_apply_fst (r n : ℕ)
-    (x : binomialModule (r + 1) (n + 1)) (i : Fin (r.choose (n + 1))) :
-    (binomialModuleSuccEquiv r n x).1 i = x ((binomialPascalIndexEquiv r n).symm (Sum.inl i)) :=
-  rfl
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_apply_snd (r n : ℕ)
-    (x : binomialModule (r + 1) (n + 1)) (i : Fin (r.choose n)) :
-    (binomialModuleSuccEquiv r n x).2 i = x ((binomialPascalIndexEquiv r n).symm (Sum.inr i)) :=
-  rfl
-
-def PeriodTorusHigherHomology.integerBinomialZeroEquiv (r : ℕ) : ℤ ≃ₗ[ℤ] binomialModule r 0 :=
-  (LinearEquiv.funUnique (Fin 1) ℤ ℤ).symm.trans
-    (LinearEquiv.piCongrLeft' ℤ (fun _ => ℤ) (finCongr (Nat.choose_zero_right r)).symm)
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModule_finrank (r n : ℕ) :
-    Module.finrank ℤ (binomialModule r n) = r.choose n :=
-  Module.finrank_fin_fun ℤ
-
-theorem PeriodTorusHigherHomology.binomialModule_subsingleton_of_lt {r n : ℕ} (h : r < n) :
-    Subsingleton (binomialModule r n) := by
-  change Subsingleton (Fin (r.choose n) → ℤ)
-  rw [Nat.choose_eq_zero_of_lt h]
-  infer_instance
-
-instance PeriodTorusHigherHomology.binomialModule_zero_succ_subsingleton (n : ℕ) :
-    Subsingleton (binomialModule 0 (n + 1)) :=
-  binomialModule_subsingleton_of_lt (Nat.zero_lt_succ n)
-
-theorem PeriodTorusHigherHomology.binomialModule_eq_zero_of_lt {r n : ℕ} (h : r < n)
-    (x : binomialModule r n) : x = 0 :=
-  @Subsingleton.elim (binomialModule r n) (binomialModule_subsingleton_of_lt h) x 0
-
-def PeriodTorusHigherHomology.productTorusHomologyEquiv :
-    (r n : ℕ) → SingularMayerVietoris.SingularHomology (ProductTorus r) n ≃ₗ[ℤ] binomialModule r n
-  | r, 0 => (connectedHomologyZeroEquiv (ProductTorus r)).trans (integerBinomialZeroEquiv r)
-  | 0, n + 1 =>
-    by
-    letI := totallyDisconnected_homology_subsingleton PUnit (n + 1) (Nat.succ_ne_zero n)
-    exact
-      (homeomorphHomologyEquiv productTorusZeroHomeomorph (n + 1)).trans
-        (LinearEquiv.ofSubsingleton (SingularMayerVietoris.SingularHomology PUnit (n + 1))
-          (binomialModule 0 (n + 1)))
-  | r + 1, n + 1 =>
-    ((homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1)).toAddEquiv.trans
-        ((circleProductHomologyEquiv (ProductTorus r) n).toAddEquiv.trans
-          (((productTorusHomologyEquiv r (n + 1)).toAddEquiv.prodCongr
-                (productTorusHomologyEquiv r n).toAddEquiv).trans
-            (binomialModuleSuccEquiv r n).symm.toAddEquiv))).toIntLinearEquiv
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_zero (r : ℕ) :
-    productTorusHomologyEquiv r 0 =
-      (connectedHomologyZeroEquiv (ProductTorus r)).trans (integerBinomialZeroEquiv r) := by
-  cases r <;> rfl
-
-theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ (r n : ℕ) :
-    productTorusHomologyEquiv (r + 1) (n + 1) =
-      ((homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1)).toAddEquiv.trans
-          ((circleProductHomologyEquiv (ProductTorus r) n).toAddEquiv.trans
-            (((productTorusHomologyEquiv r (n + 1)).toAddEquiv.prodCongr
-                  (productTorusHomologyEquiv r n).toAddEquiv).trans
-              (binomialModuleSuccEquiv r n).symm.toAddEquiv))).toIntLinearEquiv :=
-  rfl
-
-theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ_apply (r n : ℕ)
-    (a : SingularMayerVietoris.SingularHomology (ProductTorus (r + 1)) (n + 1)) :
-    binomialModuleSuccEquiv r n (productTorusHomologyEquiv (r + 1) (n + 1) a) =
-      (productTorusHomologyEquiv r (n + 1)
-          (circleProjectionHomology (ProductTorus r) (n + 1)
-            (homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1) a)),
-        productTorusHomologyEquiv r n
-          (circleBoundary (ProductTorus r) n
-            (homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1) a))) := by
-  rw [productTorusHomologyEquiv_succ]
-  change
-    binomialModuleSuccEquiv r n
-        ((binomialModuleSuccEquiv r n).symm
-          (((productTorusHomologyEquiv r (n + 1)).toAddEquiv.prodCongr
-              (productTorusHomologyEquiv r n).toAddEquiv)
-            (circleProductHomologyEquiv (ProductTorus r) n
-              (homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1) a)))) =
-      _
-  rw [LinearEquiv.apply_symm_apply, circleProductHomologyEquiv_apply]
-  rfl
-
-theorem PeriodTorusHigherHomology.productTorus_homology_free (r n : ℕ) :
-    Module.Free ℤ (SingularMayerVietoris.SingularHomology (ProductTorus r) n) :=
-  Module.Free.of_equiv (productTorusHomologyEquiv r n).symm
-
-theorem PeriodTorusHigherHomology.productTorus_homology_finite (r n : ℕ) :
-    Module.Finite ℤ (SingularMayerVietoris.SingularHomology (ProductTorus r) n) :=
-  Module.Finite.of_surjective (productTorusHomologyEquiv r n).symm.toLinearMap
-    (productTorusHomologyEquiv r n).symm.surjective
-
-theorem PeriodTorusHigherHomology.productTorus_homology_finrank (r n : ℕ) :
-    Module.finrank ℤ (SingularMayerVietoris.SingularHomology (ProductTorus r) n) = r.choose n := by
-  rw [(productTorusHomologyEquiv r n).finrank_eq]
-  exact binomialModule_finrank r n
-
-theorem PeriodTorusHigherHomology.productTorus_homology_torsionFree (r n : ℕ) :
-    Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology (ProductTorus r) n) := by
-  let := productTorus_homology_free r n
-  infer_instance
-
-theorem PeriodTorusHigherHomology.productTorus_homology_subsingleton_of_lt {r n : ℕ} (h : r < n) :
-    Subsingleton (SingularMayerVietoris.SingularHomology (ProductTorus r) n) := by
-  let := binomialModule_subsingleton_of_lt h
-  exact (productTorusHomologyEquiv r n).injective.subsingleton
 
 def CuspCentralHomology.compactFibreTorusHomologyEquiv (n : ℕ) :
     SingularMayerVietoris.SingularHomology ToricSpace.CompactFibreTorus n ≃ₗ[ℤ]

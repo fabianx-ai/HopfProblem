@@ -63,6 +63,7 @@ Original source lines 133802--148196; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.CuspFilling
+import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 
 set_option maxSynthPendingDepth 3
@@ -3346,97 +3347,6 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [T
             ((ContinuousMap.id G).prodMap (additionMap G)) (additionMap G) 3)
           (PeriodTorusHigherHomology.crossProductHomology G (G × G) 2 a
             (PeriodTorusHigherHomology.crossProductHomology G G 1 b c))).symm
-
-def PeriodTorusHigherHomology.binomialCoordinateBasis (r n : ℕ) :
-    Module.Basis (Fin (r.choose n)) ℤ (binomialModule r n) :=
-  Pi.basisFun ℤ (Fin (r.choose n))
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialCoordinateBasis_apply (r n : ℕ) (i : Fin (r.choose n)) :
-    binomialCoordinateBasis r n i = Pi.single i 1 :=
-  Pi.basisFun_apply ℤ (Fin (r.choose n)) i
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_single_inl (r n : ℕ)
-    (i : Fin (r.choose (n + 1))) :
-    binomialModuleSuccEquiv r n (Pi.single ((binomialPascalIndexEquiv r n).symm (Sum.inl i)) 1) =
-      (Pi.single i 1, 0) := by
-  apply Prod.ext
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_fst, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inl.injEq]
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_snd, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inr_ne_inl, if_false, Pi.zero_apply]
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_single_inr (r n : ℕ)
-    (i : Fin (r.choose n)) :
-    binomialModuleSuccEquiv r n (Pi.single ((binomialPascalIndexEquiv r n).symm (Sum.inr i)) 1) =
-      (0, Pi.single i 1) := by
-  apply Prod.ext
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_fst, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inl_ne_inr, if_false, Pi.zero_apply]
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_snd, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inr.injEq]
-
-theorem PeriodTorusHigherHomology.integerBinomialZeroEquiv_one_single (r : ℕ)
-    (i : Fin (r.choose 0)) : integerBinomialZeroEquiv r 1 = Pi.single i 1 := by
-  have hsingle : Subsingleton (Fin (r.choose 0)) := by
-    rw [Nat.choose_zero_right]
-    infer_instance
-  funext j
-  have hij : i = j := hsingle.elim i j
-  subst j
-  simp [integerBinomialZeroEquiv]
-
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_top (n : ℕ) :
-    binomialModuleSuccEquiv n n (fun _ => 1) = (0, fun _ => 1) := by
-  apply Prod.ext
-  · exact binomialModule_eq_zero_of_lt (Nat.lt_succ_self n) _
-  · rfl
-
-def PeriodTorusHigherHomology.productTorusTopClass (n : ℕ) :
-    SingularMayerVietoris.SingularHomology (ProductTorus n) n :=
-  (productTorusHomologyEquiv n n).symm (fun _ => (1 : ℤ))
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_topClass (n : ℕ) :
-    productTorusHomologyEquiv n n (productTorusTopClass n) = fun _ => (1 : ℤ) :=
-  (productTorusHomologyEquiv n n).apply_symm_apply _
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusTopClass_zero :
-    productTorusTopClass 0 = pointClass (0 : ProductTorus 0) := by
-  apply (productTorusHomologyEquiv 0 0).injective
-  rw [productTorusHomologyEquiv_topClass, productTorusHomologyEquiv_zero]
-  simp only [LinearEquiv.trans_apply, connectedHomologyZeroEquiv_pointClass]
-  rfl
-
-theorem PeriodTorusHigherHomology.productTorusTopClass_succ_coordinates (n : ℕ) :
-    circleProductHomologyEquiv (ProductTorus n) n
-        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) =
-      (0, productTorusTopClass n) := by
-  apply Prod.ext
-  · exact
-      @Subsingleton.elim (SingularMayerVietoris.SingularHomology (ProductTorus n) (n + 1))
-        (productTorus_homology_subsingleton_of_lt (Nat.lt_succ_self n)) _ _
-  · apply (productTorusHomologyEquiv n n).injective
-    have h :=
-      congrArg Prod.snd (productTorusHomologyEquiv_succ_apply n n (productTorusTopClass (n + 1)))
-    rw [productTorusHomologyEquiv_topClass, binomialModuleSuccEquiv_top] at h
-    exact h.symm.trans (productTorusHomologyEquiv_topClass n).symm
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusTopClass_succ_boundary (n : ℕ) :
-    circleBoundary (ProductTorus n) n
-        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) =
-      productTorusTopClass n :=
-  congrArg Prod.snd (productTorusTopClass_succ_coordinates n)
 
 @[simp]
 theorem PeriodTorusHigherHomology.flatTorusCircleHomeomorph_add (x y : RealTorus₄) :

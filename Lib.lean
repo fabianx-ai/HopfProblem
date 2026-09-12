@@ -7,6 +7,7 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sum
+import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology

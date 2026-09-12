@@ -216,6 +216,39 @@ import dropped (unused — `CylinderHEP`'s legacy cone stays for the Morse lanes
 `lake build Lib ... Hopf.LCP.Specialization Hopf.LCP.BoundaryTopology`:
 8811 jobs, green.
 
+### J-B1 landing (Axis 6)
+
+`Lib/AlgebraicTopology/SingularHomology/Torus.lean` landed with the complete
+J-B1 recursive-torus-core packet, verbatim moves with real proofs (no axiom
+shells): `ProductTorus`, `productTorusSuccHomeomorph`/`_apply`,
+`productTorusZeroHomeomorph`, the full binomial/Pascal block
+(`binomialModule`, `binomialPascalIndexEquiv`, `binomialModuleSuccEquiv` +
+`apply_fst`/`apply_snd`, `integerBinomialZeroEquiv`, `binomialModule_finrank`,
+`_subsingleton_of_lt`, `_zero_succ_subsingleton` instance, `_eq_zero_of_lt`),
+the Specialization helper block (`binomialCoordinateBasis`/`_apply`,
+`binomialModuleSuccEquiv_single_inl`/`_inr`,
+`integerBinomialZeroEquiv_one_single`, `binomialModuleSuccEquiv_top`),
+`productTorusHomologyEquiv` + `zero`/`succ`/`succ_apply`, the five
+`productTorus_homology_*` consequences, and the `productTorusTopClass` family
+(`productTorusHomologyEquiv_topClass`, `_zero`, `_succ_coordinates`,
+`_succ_boundary`). Imports exactly the ledger prescription: Mathlib +
+`MayerVietoris`, `CircleProduct`, `HomotopyInvariance`; unqualified
+`SingularHomology.*` helpers resolve via `open SingularHomology` inside
+`namespace Mathoverflow1973` (replacing the LibShims exports).
+
+Source copies deleted from `Hopf/LCP/CuspFilling.lean` (three disjoint spans:
+the `ProductTorus` abbrev; `productTorusSuccHomeomorph`/`_apply`/
+`productTorusZeroHomeomorph`; the binomial+homology-equiv+homology-properties
+block) and `Hopf/LCP/Specialization.lean` (the binomial-helper/topClass
+block); both files now `import Lib.AlgebraicTopology.SingularHomology.Torus`.
+`coordinateProjection`/`coordinatePeriodLoop` and everything J-B2 stays in
+Hopf. `Lib.lean` updated. `lake build Lib Hopf.LCP.{CuspFilling,
+Specialization, IntegralHomology, BoundaryTopology}`: 8814 jobs, green.
+Census ratchet 3891 → 3857.
+
+This lands J-B1 as implemented code; the boundary remains "candidate" status
+in the ledger until the J-B2a seams and aggregate consumer tests land with it.
+
 ## Review-3 certification and repairs — devin-axis5-j
 
 **J-A: GO for the amended 15-node Mathlib-only packet. J-B..J-E: NOT GO.**
