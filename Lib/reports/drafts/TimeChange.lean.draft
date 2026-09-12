@@ -1,0 +1,1621 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+import Mathlib
+
+
+set_option maxSynthPendingDepth 3
+
+open Set Function Filter Manifold Topology
+
+open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
+  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
+  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
+  UpperHalfPlane
+
+universe u v
+
+noncomputable section
+
+namespace Mathoverflow1973
+
+local infixr:80 " ≫ₚ " => Path.trans
+
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
+
+def Degree.RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
+  (F p, p.2)
+
+theorem Degree.RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (s : ℝ) (z : V) : L (s, z) = s * L (1, 0) + L (0, z) := by
+  have he : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
+  rw [he, map_add, map_smul]
+  rfl
+
+theorem Degree.RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
+    Function.Bijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)) := by
+  constructor
+  · rintro ⟨s, z⟩ ⟨t, w⟩ h
+    have hzw : z = w := congrArg Prod.snd h
+    subst w
+    have he : L (s, z) = L (t, z) := congrArg Prod.fst h
+    rw [linear_decomposition L s z, linear_decomposition L t z] at he
+    have hst : s = t := (mul_right_cancel₀ hL) (by linarith)
+    exact Prod.ext hst rfl
+  · rintro ⟨s, z⟩
+    refine ⟨((s - L (0, z)) / L (1, 0), z), ?_⟩
+    apply Prod.ext
+    · change L ((s - L (0, z)) / L (1, 0), z) = s
+      rw [linear_decomposition L, div_mul_cancel₀ _ hL]
+      ring
+    · rfl
+
+def Degree.RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
+    (ℝ × V) ≃L[ℝ] (ℝ × V) :=
+  (LinearEquiv.ofBijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)).toLinearMap
+      (triangular_bijective L hL)).toContinuousLinearEquiv
+
+theorem Degree.RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ (heightMap F) :=
+  hF.prodMk contDiff_snd
+
+theorem Degree.RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (p : ℝ × V) :
+    fderiv ℝ (heightMap F) p = (fderiv ℝ F p).prod (ContinuousLinearMap.snd ℝ ℝ V) :=
+  (((hF.differentiable (by simp) p).hasFDerivAt).prodMk
+      (ContinuousLinearMap.snd ℝ ℝ V).hasFDerivAt).fderiv
+
+theorem Degree.RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {F : ℝ × V → ℝ}
+    (hF : ContDiff ℝ ∞ F) {p : ℝ × V} (hreg : fderiv ℝ F p (1, 0) ≠ 0) :
+    IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ (heightMap F) p := by
+  have hinv : (fderiv ℝ (heightMap F) p).IsInvertible := by
+    refine ⟨triangularEquiv (fderiv ℝ F p) hreg, ?_⟩
+    rw [fderiv_heightMap hF]
+    rfl
+  obtain ⟨Φ, hp, _, hΦ⟩ :=
+    NoExotic.exists_partialDiffeomorph_of_contDiffOn isOpen_univ (Set.mem_univ p)
+      (contDiff_heightMap hF).contDiffOn hinv
+  exact ⟨Φ, hp, fun _ _ => congrFun hΦ.symm _⟩
+
+def Degree.RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
+  p.1 + u p
+
+theorem Degree.RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u) :
+    ContDiff ℝ ∞ (displacedHeight u) :=
+  contDiff_fst.add hu
+
+theorem Degree.RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (s : ℝ) (z : V) :
+    HasDerivAt (fun t : ℝ => F (t, z)) (fderiv ℝ F (s, z) (1, 0)) s :=
+  ((hF.differentiable (by simp) (s, z)).hasFDerivAt).comp_hasDerivAt s
+    ((hasDerivAt_id s).prodMk (hasDerivAt_const s z))
+
+theorem Degree.RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F)
+    (hpos : ∀ p, 0 < fderiv ℝ F p (1, 0)) : Function.Injective (heightMap F) := by
+  have hmono (z : V) : StrictMono (fun s : ℝ => F (s, z)) :=
+    strictMono_of_deriv_pos (fun s => by rw [(scalar_derivative hF s z).deriv]; exact hpos _)
+  rintro ⟨s, z⟩ ⟨t, w⟩ he
+  have hzw : z = w := congrArg Prod.snd he
+  subst w
+  have hst : s = t := (hmono z).injective (congrArg Prod.fst he)
+  exact Prod.ext hst rfl
+
+theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
+    [NormedAddCommGroup V] {u : ℝ × V → ℝ} (hu : Continuous u) (C : ℝ) (hC : 0 ≤ C)
+    (hbound : ∀ p, |u p| ≤ C) : Function.Surjective (heightMap (displacedHeight u)) := by
+  rintro ⟨r, z⟩
+  let a := r - (C + 1)
+  let b := r + (C + 1)
+  have hab : a ≤ b := by dsimp [a, b]; linarith
+  have hs : Continuous (fun s : ℝ => displacedHeight u (s, z)) :=
+    continuous_id.add (hu.comp (continuous_id.prodMk continuous_const))
+  have hlo : displacedHeight u (a, z) ≤ r := by
+    have h := (abs_le.mp (hbound (a, z))).2
+    dsimp [displacedHeight, a] at *
+    linarith
+  have hhi : r ≤ displacedHeight u (b, z) := by
+    have h := (abs_le.mp (hbound (b, z))).1
+    dsimp [displacedHeight, b] at *
+    linarith
+  obtain ⟨s, _, he⟩ := intermediate_value_Icc hab hs.continuousOn ⟨hlo, hhi⟩
+  exact ⟨(s, z), Prod.ext he rfl⟩
+
+theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
+    (hc : HasCompactSupport u) : Function.Surjective (heightMap (displacedHeight u)) := by
+  obtain ⟨C, hC⟩ := (hc.isCompact_range hu.continuous).isBounded.exists_norm_le
+  have hC0 : 0 ≤ C := (norm_nonneg (u 0)).trans (hC _ ⟨0, rfl⟩)
+  exact
+    heightMap_surjective_of_bounded hu.continuous C hC0
+      (fun p => by simpa only [Real.norm_eq_abs] using hC _ ⟨p, rfl⟩)
+
+def Degree.RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
+    (hc : HasCompactSupport u) (hpos : ∀ p, 0 < fderiv ℝ (displacedHeight u) p (1, 0)) :
+    (ℝ × V) ≃ₘ⟮𝓘(ℝ, ℝ × V), 𝓘(ℝ, ℝ × V)⟯ (ℝ × V) := by
+  have hs := contDiff_displacedHeight hu
+  have hloc : IsLocalDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ (heightMap (displacedHeight u)) :=
+    fun p => heightMap_localDiffeomorph hs (hpos p).ne'
+  exact
+    hloc.diffeomorphOfBijective
+      ⟨heightMap_injective_of_positive hs hpos, heightMap_surjective_of_compactSupport hu hc⟩
+
+theorem Degree.FlowTimeChange.local_affine_height_germ {γ : ℝ → ℝ} (hγ : Continuous γ) {U : Set ℝ}
+    (hU : IsOpen U) (hd : ∀ t, γ t ∈ U → HasDerivAt γ (-1) t) {t : ℝ} (ht : γ t ∈ U) :
+    ∀ᶠ s in 𝓝 t, γ s + s = γ t + t := by
+  obtain ⟨l, u, htu, hsub⟩ := mem_nhds_iff_exists_Ioo_subset.mp ((hU.preimage hγ).mem_nhds ht)
+  have hder (s : ℝ) (hs : s ∈ Set.Ioo l u) : HasDerivAt (fun r => γ r + r) 0 s := by
+    convert! (hd s (hsub hs)).add (hasDerivAt_id s) using 1
+    norm_num
+  filter_upwards [Ioo_mem_nhds htu.1 htu.2] with s hs
+  exact
+    isOpen_Ioo.is_const_of_deriv_eq_zero isPreconnected_Ioo
+      (fun r hr => (hder r hr).differentiableAt.differentiableWithinAt)
+      (fun r hr => (hder r hr).deriv) hs htu
+
+theorem Degree.FlowTimeChange.scalar_local_height_translation {γ : ℝ → ℝ} (hγ : Continuous γ)
+    {U : Set ℝ} (hU : IsOpen U) {a b c t : ℝ} (hIU : Set.Icc a b ⊆ U)
+    (hd : ∀ s, γ s ∈ U → HasDerivAt γ (-1) s) (hzero : γ 0 = c) (hc : c ∈ Set.Icc a b)
+    (ht : c - t ∈ Set.Icc a b) : γ t = c - t := by
+  let J := Set.Icc (c - b) (c - a)
+  let _ : PreconnectedSpace J := isPreconnected_iff_preconnectedSpace.mp isPreconnected_Icc
+  let P : J → Prop := fun s => γ s = c - s
+  have hloc : IsLocallyConstant P := by
+    apply (IsLocallyConstant.iff_eventually_eq P).mpr
+    intro s
+    by_cases hs : P s
+    · have hsU : γ s ∈ U := by
+        rw [show γ s = c - s from hs]
+        exact hIU ⟨by linarith [s.property.2], by linarith [s.property.1]⟩
+      have heq := local_affine_height_germ hγ hU hd hsU
+      filter_upwards [continuous_subtype_val.continuousAt heq] with r hr
+      apply propext
+      constructor
+      · intro _
+        exact hs
+      · intro _
+        change γ r = c - r
+        change γ s = c - s at hs
+        change γ r + r = γ s + s at hr
+        linarith
+    · have hn : (s : ℝ) ∈ {r : ℝ | γ r = c - r}ᶜ := hs
+      have hopen : IsOpen {r : ℝ | γ r = c - r}ᶜ :=
+        (isClosed_eq hγ ((continuous_const (y := c)).sub continuous_id)).isOpen_compl
+      filter_upwards [continuous_subtype_val.continuousAt (hopen.mem_nhds hn)] with r hr
+      exact propext ⟨fun h => (hr h).elim, fun h => (hs h).elim⟩
+  let s₀ : J := ⟨0, ⟨by linarith [hc.2], by linarith [hc.1]⟩⟩
+  let s₁ : J := ⟨t, ⟨by linarith [ht.2], by linarith [ht.1]⟩⟩
+  have hinit : P s₀ := by simpa only [P, s₀, sub_zero] using hzero
+  have heq : P s₀ = P s₁ := hloc.apply_eq_of_preconnectedSpace s₀ s₁
+  have hfinish : P s₁ := heq ▸ hinit
+  exact hfinish
+
+theorem Degree.FlowTimeChange.native_local_height_translation {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {U : Set ℝ} (hU : IsOpen U)
+    {a b : ℝ} (hIU : Set.Icc a b ⊆ U) (hspeed : ∀ x, f x ∈ U → mvfderiv 𝓘(ℝ, E) f x (V x) = -1)
+    (x : M) (t : ℝ) (hx : f x ∈ Set.Icc a b) (ht : f x - t ∈ Set.Icc a b) : f (F t x) = f x - t :=
+  by
+  apply
+    scalar_local_height_translation
+      (hf.continuous.comp (F.continuous continuous_id continuous_const)) hU hIU (γ := fun s =>
+      f (F s x)) ?_ (by rw [F.map_zero_apply]) hx ht
+  intro s hs
+  have hd := Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) s
+  rw [hspeed (F s x) hs] at hd
+  exact hd
+
+theorem Degree.FlowTimeChange.normalized_flow_level_image {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f : X → ℝ} {a b : ℝ} (hab : a ≤ b)
+    (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) :
+    F (a - b) '' {x : X | f x = a} = {x : X | f x = b} := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    change f x = a at hx
+    have hh :=
+      hshift x (a - b) (by rw [hx]; exact ⟨le_rfl, hab⟩) (by rw [hx]; constructor <;> linarith)
+    change f (F (a - b) x) = b
+    linarith
+  · intro hy
+    change f y = b at hy
+    have hh :=
+      hshift y (b - a) (by rw [hy]; exact ⟨hab, le_rfl⟩) (by rw [hy]; constructor <;> linarith)
+    refine ⟨F (b - a) y, ?_, ?_⟩
+    · change f (F (b - a) y) = a
+      linarith
+    · rw [← F.map_add, show a - b + (b - a) = 0 by ring, F.map_zero_apply]
+
+theorem Degree.FlowTimeChange.normalized_flow_sublevel_iff {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {a b : ℝ} (hab : a ≤ b)
+    (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) (x : X) :
+    f (F (a - b) x) ≤ b ↔ f x ≤ a := by
+  let γ : ℝ → ℝ := fun s => f (F (-s) x) - (a + s)
+  have hγ : Continuous γ :=
+    (hf.comp (F.continuous ContinuousNeg.continuous_neg continuous_const)).sub
+      (continuous_const.add continuous_id)
+  have hstart : γ 0 = f x - a := by simp only [γ, neg_zero, F.map_zero_apply, add_zero]
+  have hend : γ (b - a) = f (F (a - b) x) - b := by
+    dsimp [γ]
+    rw [neg_sub, show a + (b - a) = b by ring]
+  have hzero (s : ℝ) (hs : s ∈ Set.Icc 0 (b - a)) (hgs : γ s = 0) : f x = a := by
+    have hz : f (F (-s) x) = a + s := by dsimp [γ] at hgs; linarith
+    have hh :=
+      hshift (F (-s) x) s (by rw [hz]; constructor <;> linarith [hs.1, hs.2])
+        (by rw [hz]; constructor <;> linarith)
+    rw [← F.map_add, add_neg_cancel, F.map_zero_apply] at hh
+    linarith
+  have hzeroEnd (hx : f x = a) : γ (b - a) = 0 := by
+    have hh :=
+      hshift x (a - b) (by rw [hx]; exact ⟨le_rfl, hab⟩) (by rw [hx]; constructor <;> linarith)
+    rw [hend]
+    linarith
+  constructor
+  · intro hy
+    by_contra hx
+    have hx' : a < f x := lt_of_not_ge hx
+    obtain ⟨s, hs, hgs⟩ :=
+      intermediate_value_Icc' (sub_nonneg.mpr hab) hγ.continuousOn
+        (show (0 : ℝ) ∈ Set.Icc (γ (b - a)) (γ 0) by rw [hstart, hend]; constructor <;> linarith)
+    linarith [hzero s hs hgs]
+  · intro hx
+    by_contra hy
+    have hy' : b < f (F (a - b) x) := lt_of_not_ge hy
+    obtain ⟨s, hs, hgs⟩ :=
+      intermediate_value_Icc (sub_nonneg.mpr hab) hγ.continuousOn
+        (show (0 : ℝ) ∈ Set.Icc (γ 0) (γ (b - a)) by rw [hstart, hend]; constructor <;> linarith)
+    have hh := hzeroEnd (hzero s hs hgs)
+    rw [hend] at hh
+    linarith
+
+theorem Degree.FlowTimeChange.normalized_flow_sublevel_image {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {a b : ℝ} (hab : a ≤ b)
+    (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) :
+    F (a - b) '' {x : X | f x ≤ a} = {x : X | f x ≤ b} := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact (normalized_flow_sublevel_iff F hf hab hshift x).mpr hx
+  · intro hy
+    have hi : F (a - b) (F (b - a) y) = y := by
+      rw [← F.map_add, show a - b + (b - a) = 0 by ring, F.map_zero_apply]
+    refine ⟨F (b - a) y, ?_, hi⟩
+    apply (normalized_flow_sublevel_iff F hf hab hshift _).mp
+    rw [hi]
+    exact hy
+
+theorem Degree.FlowTimeChange.exists_positive_integral_clock {a : ℝ → ℝ} (ha : Continuous a)
+    {δ : ℝ} (hδ : 0 < δ) (hlower : ∀ t, δ ≤ a t) :
+    ∃ c : ℝ ≃o ℝ,
+      c 0 = 0 ∧
+        (∀ t, c t = ∫ s in (0 : ℝ)..t, a s) ∧
+          (∀ t, HasDerivAt c (a t) t) ∧ ∀ t, HasDerivAt c.symm (a (c.symm t))⁻¹ t := by
+  let g : ℝ → ℝ := fun t => ∫ s in (0 : ℝ)..t, a s
+  have hd (t : ℝ) : HasDerivAt g (a t) t :=
+    intervalIntegral.integral_hasDerivAt_right (ha.intervalIntegrable _ _)
+      ha.aestronglyMeasurable.stronglyMeasurableAtFilter ha.continuousAt
+  have hg : Differentiable ℝ g := fun t => (hd t).differentiableAt
+  have hzero : g 0 = 0 := by simp [g]
+  have hmono : StrictMono g := strictMono_of_hasDerivAt_pos hd (fun t => hδ.trans_le (hlower t))
+  have hbound {s t : ℝ} (hst : s ≤ t) : δ * (t - s) ≤ g t - g s :=
+    mul_sub_le_image_sub_of_le_deriv hg (fun t => by rw [(hd t).deriv]; exact hlower t) hst
+  have hsurj : Function.Surjective g := by
+    intro y
+    apply mem_range_of_exists_le_of_exists_ge hg.continuous
+    · refine ⟨Min.min 0 (y / δ), ?_⟩
+      have hh := hbound (min_le_left 0 (y / δ))
+      have hm : δ * Min.min 0 (y / δ) ≤ y := by
+        calc
+          δ * Min.min 0 (y / δ) ≤ δ * (y / δ) :=
+            mul_le_mul_of_nonneg_left (min_le_right _ _) hδ.le
+          _ = y := by field_simp
+      rw [hzero] at hh
+      linarith
+    · refine ⟨Max.max 0 (y / δ), ?_⟩
+      have hh := hbound (le_max_left 0 (y / δ))
+      have hm : y ≤ δ * Max.max 0 (y / δ) := by
+        calc
+          y = δ * (y / δ) := by field_simp
+          _ ≤ δ * Max.max 0 (y / δ) := mul_le_mul_of_nonneg_left (le_max_right _ _) hδ.le
+      rw [hzero] at hh
+      linarith
+  let c : ℝ ≃o ℝ := hmono.orderIsoOfSurjective g hsurj
+  refine ⟨c, hzero, fun _ => rfl, hd, ?_⟩
+  intro t
+  exact
+    HasDerivAt.of_local_left_inverse c.symm.continuous.continuousAt (hd (c.symm t))
+      (ne_of_gt (hδ.trans_le (hlower _))) (Filter.Eventually.of_forall c.apply_symm_apply)
+
+theorem Degree.FlowTimeChange.native_curve_positive_reparametrization {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {ρ : M → ℝ} {γ : ℝ → M} (hγ : IsMIntegralCurve γ V)
+    {c : ℝ → ℝ} (hc : ∀ t, HasDerivAt c (ρ (γ (c t))) t) :
+    IsMIntegralCurve (γ ∘ c) (fun x => ρ x • V x) := by
+  intro t
+  have hh := (hγ (c t)).comp t (hc t).hasFDerivAt.hasMFDerivAt
+  have he :
+    (1 : ℝ →L[ℝ] ℝ).smulRight (ρ (γ (c t)) • V (γ (c t))) =
+      ((1 : ℝ →L[ℝ] ℝ).smulRight (V (γ (c t)))).comp
+        (ContinuousLinearMap.toSpanSingleton ℝ (ρ (γ (c t)))) := by
+    ext
+    simp [smul_smul, mul_comm]
+  change
+    HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (γ ∘ c) t ((1 : ℝ →L[ℝ] ℝ).smulRight (ρ (γ (c t)) • V (γ (c t))))
+  rw [he]
+  exact hh
+
+theorem Degree.FlowTimeChange.exists_native_flow_time_change {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {ρ : M → ℝ} (hρ : Continuous ρ)
+    (hρpos : ∀ x, 0 < ρ x)
+    (hW :
+      ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F G : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hG : ∀ x, IsMIntegralCurve (fun t => G t x) (fun y => ρ y • V y)) (x : M) :
+    ∃ c : ℝ ≃o ℝ,
+      c 0 = 0 ∧
+        (∀ t, c t = ∫ s in (0 : ℝ)..t, (ρ (F s x))⁻¹) ∧
+          (∀ t, HasDerivAt c.symm (ρ (F (c.symm t) x)) t) ∧ ∀ t, G t x = F (c.symm t) x := by
+  obtain ⟨R, hR⟩ := (isCompact_univ.image hρ).bddAbove
+  have hbound (y : M) : ρ y ≤ R := hR ⟨y, Set.mem_univ _, rfl⟩
+  have hRpos : 0 < R := (hρpos x).trans_le (hbound x)
+  have ha : Continuous (fun t => (ρ (F t x))⁻¹) :=
+    (hρ.comp (F.continuous continuous_id continuous_const)).inv₀ (fun t => (hρpos _).ne')
+  have hlower (t : ℝ) : R⁻¹ ≤ (ρ (F t x))⁻¹ := by
+    simpa only [one_div] using one_div_le_one_div_of_le (hρpos (F t x)) (hbound (F t x))
+  obtain ⟨c, hc0, hcint, -, hcinv⟩ := exists_positive_integral_clock ha (inv_pos.mpr hRpos) hlower
+  have hcinv' (t : ℝ) : HasDerivAt c.symm (ρ (F (c.symm t) x)) t := by
+    simpa only [inv_inv] using hcinv t
+  have hcurve := native_curve_positive_reparametrization (hF x) hcinv'
+  have hc0' : c.symm 0 = 0 := by
+    apply c.injective
+    rw [c.apply_symm_apply]
+    exact hc0.symm
+  have heq :=
+    isMIntegralCurve_Ioo_eq_of_contMDiff_boundaryless hW (hG x) hcurve (t₀ := 0)
+      (by simp only [Function.comp_apply, hc0', F.map_zero_apply, G.map_zero_apply])
+  exact ⟨c, hc0, hcint, hcinv', fun t => congrFun heq t⟩
+
+theorem Degree.FlowTimeChange.native_flow_time_change_orbits {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {ρ : M → ℝ} (hρ : Continuous ρ)
+    (hρpos : ∀ x, 0 < ρ x)
+    (hW :
+      ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F G : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hG : ∀ x, IsMIntegralCurve (fun t => G t x) (fun y => ρ y • V y)) (x : M) :
+    Set.range (fun t => G t x) = Set.range (fun t => F t x) ∧
+      (∀ p,
+          Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p) ↔
+            Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) ∧
+        ∀ p,
+          Filter.Tendsto (fun t => G t x) Filter.atBot (𝓝 p) ↔
+            Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) := by
+  obtain ⟨c, -, -, -, heq⟩ := exists_native_flow_time_change hρ hρpos hW F G hF hG x
+  have heq' (t : ℝ) : F t x = G (c t) x := by rw [heq, c.symm_apply_apply]
+  refine ⟨?_, ?_, ?_⟩
+  · ext y
+    constructor
+    · rintro ⟨t, rfl⟩
+      exact ⟨c.symm t, (heq t).symm⟩
+    · rintro ⟨t, rfl⟩
+      exact ⟨c t, (heq' t).symm⟩
+  · intro p
+    constructor
+    · intro h
+      exact (h.comp c.tendsto_atTop).congr (fun t => (heq' t).symm)
+    · intro h
+      exact (h.comp c.symm.tendsto_atTop).congr (fun t => (heq t).symm)
+  · intro p
+    constructor
+    · intro h
+      exact (h.comp c.tendsto_atBot).congr (fun t => (heq' t).symm)
+    · intro h
+      exact (h.comp c.symm.tendsto_atBot).congr (fun t => (heq t).symm)
+
+theorem Degree.FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ}
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    ∃ (U : Set ℝ) (W : (x : M) → TangentSpace 𝓘(ℝ, E) x) (G : Flow ℝ M),
+      IsOpen U ∧
+        Set.Icc a b ⊆ U ∧
+          ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, W x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+            (∀ x, IsMIntegralCurve (fun t => G t x) W) ∧
+              (∀ x, W x = 0 ↔ V x = 0) ∧
+                (∀ x,
+                    x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (W x) < 0) ∧
+                  (∀ x, f x ∈ U → mvfderiv 𝓘(ℝ, E) f x (W x) = -1) ∧
+                    (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, W y = V y) ∧
+                      (∀ x, ∃ c : ℝ ≃o ℝ, c 0 = 0 ∧ ∀ t, G t x = F (c.symm t) x) ∧
+                        ∀ x,
+                          Set.range (fun t => G t x) = Set.range (fun t => F t x) ∧
+                            (∀ p,
+                                Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p) ↔
+                                  Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) ∧
+                              ∀ p,
+                                Filter.Tendsto (fun t => G t x) Filter.atBot (𝓝 p) ↔
+                                  Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) := by
+  obtain ⟨ρ, U, hU, hAU, hρ, hpos, hW, hzeros, hneg, hspeed, hgerm⟩ :=
+    MorseCancel.exists_positive_band_normalization hf hV hdesc hband
+  have hW₁ := hW.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
+  let W : (x : M) → TangentSpace 𝓘(ℝ, E) x := fun x => ρ x • V x
+  let G := Smale.FlowConstruction.compactFlow hW₁
+  have hG (x : M) : IsMIntegralCurve (fun t => G t x) W :=
+    Smale.FlowConstruction.isMIntegralCurve_compactFlow hW₁ x
+  refine ⟨U, W, G, hU, hAU, hW, hG, hzeros, hneg, hspeed, ?_, ?_, ?_⟩
+  · intro x hx
+    filter_upwards [hgerm x hx] with y hy
+    simp only [W, hy, one_smul]
+  · intro x
+    obtain ⟨c, hc0, -, -, heq⟩ :=
+      exists_native_flow_time_change hρ.continuous hpos hW₁ F G hF hG x
+    exact ⟨c, hc0, heq⟩
+  · exact native_flow_time_change_orbits hρ.continuous hpos hW₁ F G hF hG
+
+theorem Degree.FlowTimeChange.exists_orbit_preserving_ambient_band_bridge {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
+      D '' {x : M | f x = a} = {x : M | f x = b} ∧
+        D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧ ∀ x, ∃ t, F t x = D x := by
+  obtain ⟨U, W, G, hU, hIU, hW, hG, -, -, hspeed, -, -, hgeometry⟩ :=
+    exists_orbit_preserving_band_normalization hf hV hdesc F hF hband
+  have hshift := native_local_height_translation hf G hG hU hIU hspeed
+  let D := Degree.SmoothODE.nativeFlowTimeDiffeomorph_of_field hW G hG (a - b)
+  refine
+    ⟨D, normalized_flow_level_image G hab hshift,
+      normalized_flow_sublevel_image G hf.continuous hab hshift, ?_⟩
+  intro x
+  have hm : D x ∈ Set.range (fun t => G t x) := ⟨a - b, rfl⟩
+  rw [(hgeometry x).1] at hm
+  exact hm
+
+theorem Degree.FlowTimeChange.exists_orbit_preserving_native_band_bridge {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (ha : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    letI := Smale.RegularLevel.chartedSpace hf ha
+    letI := Smale.RegularLevel.chartedSpace hf hb
+    ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
+      ∃ e :
+        Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+          { x : M // f x = a } { x : M // f x = b } ∞,
+        D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧
+          (∀ x, (e x : M) = D x) ∧ ∀ x, ∃ t, F t x = D x := by
+  let _ := Smale.RegularLevel.chartedSpace hf ha
+  let _ := Smale.RegularLevel.chartedSpace hf hb
+  obtain ⟨D, hlevel, hsublevel, horbit⟩ :=
+    exists_orbit_preserving_ambient_band_bridge hf hV hdesc F hF hab hband
+  obtain ⟨e, he⟩ := Smale.RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
+  exact ⟨D, e, hsublevel, he, horbit⟩
+
+theorem Degree.FlowTimeChange.mfderiv_height_div_const {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) (r : ℝ) :
+    mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (fun y => f y / r) x = r⁻¹ • mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x := by
+  have heq : (fun y => f y / r) = r⁻¹ • f := by
+    ext y
+    simp only [Pi.smul_apply, smul_eq_mul, div_eq_mul_inv, mul_comm]
+  rw [heq]
+  exact (hf.hasMFDerivAt.const_smul r⁻¹).mfderiv
+
+theorem Degree.FlowTimeChange.mvfderiv_height_div_const {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) (r : ℝ) (v : TangentSpace 𝓘(ℝ, E) x) :
+    mvfderiv 𝓘(ℝ, E) (fun y => f y / r) x v = mvfderiv 𝓘(ℝ, E) f x v / r := by
+  have heq : (fun y => f y / r) = (fun y => r⁻¹ * f y) := by
+    ext y
+    simp only [div_eq_mul_inv, mul_comm]
+  rw [heq, mvfderiv_fun_mul mdifferentiableAt_const hf]
+  have hconst : mvfderiv 𝓘(ℝ, E) (fun _ : M => r⁻¹) x = 0 := by simp [mvfderiv, mfderiv_const]
+  simp [hconst, div_eq_mul_inv, mul_comm]
+
+theorem Degree.FlowTimeChange.criticalPoints_height_div_const {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {r : ℝ} (hr : r ≠ 0) :
+    Smale.ManifoldMorse.criticalPoints E (fun y => f y / r) =
+      Smale.ManifoldMorse.criticalPoints E f := by
+  ext x
+  change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (fun y => f y / r) x = 0 ↔ mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0
+  rw [mfderiv_height_div_const (hf.mdifferentiableAt (by simp))]
+  exact smul_eq_zero.trans (or_iff_right (inv_ne_zero hr))
+
+theorem Degree.FlowTimeChange.descending_height_div_const_iff {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) {r : ℝ} (hr : 0 < r)
+    (v : TangentSpace 𝓘(ℝ, E) x) :
+    mvfderiv 𝓘(ℝ, E) (fun y => f y / r) x v < 0 ↔ mvfderiv 𝓘(ℝ, E) f x v < 0 := by
+  rw [mvfderiv_height_div_const hf r]
+  rw [div_lt_iff₀ hr, MulZeroClass.zero_mul]
+
+theorem Degree.FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ y, f y = c → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (z : { y : M // f y = c }) :
+    letI := Smale.RegularLevel.chartedSpace hf hreg
+    ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (A :
+      PartialDiffeomorph (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
+        ({ y : M // f y = c } × ℝ) M ∞),
+      0 < r ∧
+        r < c - a ∧
+          ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+            (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
+              (∀ y, W y = 0 ↔ V y = 0) ∧
+                (∀ y,
+                    y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                  (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ x in 𝓝 y, W x = V x) ∧
+                    (∀ y,
+                        Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
+                          (∀ p,
+                              Filter.Tendsto (fun t => G t y) Filter.atTop (𝓝 p) ↔
+                                Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p)) ∧
+                            ∀ p,
+                              Filter.Tendsto (fun t => G t y) Filter.atBot (𝓝 p) ↔
+                                Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 p)) ∧
+                      A.source = Set.univ ∧
+                        A.target = Degree.FlowCancellation.levelBasin G f c ∧
+                          (∀ p, A p = G p.2 p.1) ∧
+                            (∀ p, p.2 ∈ Set.Icc (0 : ℝ) 1 → f (A p) = c - r * p.2) ∧
+                              ∀ y ∈ A.target,
+                                W y =
+                                  VectorField.mpullback 𝓘(ℝ, E)
+                                    (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) A.symm
+                                    Degree.FlowSuspension.nativeVerticalField y := by
+  let _ := Smale.RegularLevel.chartedSpace hf hreg
+  let _ := Smale.RegularLevel.isManifold hf hreg
+  let r : ℝ := (c - a) / 2
+  have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
+  have hrbound : r < c - a := by dsimp [r]; linarith
+  let g : M → ℝ := fun y => f y / r
+  have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
+  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+    criticalPoints_height_div_const hf hr.ne'
+  have hdescent :
+    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    intro y hy
+    rw [hcrit] at hy
+    exact
+      (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
+  have hregular :
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    intro y hy
+    rw [hcrit]
+    exact
+      hband y ⟨(div_le_div_iff_of_pos_right hr).mp hy.1, (div_le_div_iff_of_pos_right hr).mp hy.2⟩
+  obtain ⟨U, W, G, hU, hIU, hW, hG, hzero, hneg, hspeed, hgerm, -, hgeometry⟩ :=
+    exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
+  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
+    (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
+      (hneg y (hcrit ▸ hy))
+  obtain ⟨A, hsource, htarget, hformula, hfield⟩ :=
+    Degree.FlowSuspension.exists_native_level_flow_cylinder_with_field hf hreg hW G hG
+      (fun y hy => hnegf y (hreg y hy)) z
+  have hc : c / r ∈ Set.Icc (a / r) (b / r) :=
+    ⟨div_le_div_of_nonneg_right ha.le hr.le, div_le_div_of_nonneg_right hb.le hr.le⟩
+  refine
+    ⟨r, W, G, A, hr, hrbound, hW, hG, hzero, hnegf, (fun y hy => hgerm y (hcrit ▸ hy)), hgeometry,
+      hsource, htarget, hformula, ?_, hfield⟩
+  intro p ht
+  have hi : g p.1 = c / r := by change f p.1 / r = c / r; rw [p.1.property]
+  have he : c / r - p.2 = (c - r * p.2) / r := by field_simp
+  have hend : g p.1 - p.2 ∈ Set.Icc (a / r) (b / r) := by
+    rw [hi, he]
+    constructor
+    · apply div_le_div_of_nonneg_right _ hr.le
+      nlinarith [ht.2]
+    · apply div_le_div_of_nonneg_right _ hr.le
+      nlinarith [mul_nonneg hr.le ht.1]
+  have hh := native_local_height_translation hg G hG hU hIU hspeed p.1 p.2 (hi ▸ hc) hend
+  rw [hi, he] at hh
+  rw [hformula]
+  exact (div_left_inj' hr.ne').mp hh
+
+theorem Degree.FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = m + 1)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    {x : M} (hx : f x = c) :
+    ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (U : Set (Fin m → ℝ)) (Φ :
+      PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞),
+      0 < r ∧
+        ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+          (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
+            (∀ y, W y = 0 ↔ V y = 0) ∧
+              (∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+                  (∀ y,
+                      Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
+                        (∀ p,
+                            Filter.Tendsto (fun t => G t y) Filter.atTop (𝓝 p) ↔
+                              Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p)) ∧
+                          ∀ p,
+                            Filter.Tendsto (fun t => G t y) Filter.atBot (𝓝 p) ↔
+                              Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 p)) ∧
+                    IsOpen U ∧
+                      (0 : Fin m → ℝ) ∈ U ∧
+                        Φ.source = U ×ˢ Set.univ ∧
+                          (∀ t : ℝ, Φ (0, t) = G t x) ∧
+                            (∀ z ∈ Φ.source, z.2 ∈ Set.Icc (0 : ℝ) 1 → f (Φ z) = c - r * z.2) ∧
+                              ∀ y ∈ Φ.target,
+                                W y =
+                                  Smale.FlowConstruction.partialChartField Φ.symm
+                                    (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y := by
+  let r : ℝ := (c - a) / 2
+  have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
+  let g : M → ℝ := fun y => f y / r
+  have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
+  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+    criticalPoints_height_div_const hf hr.ne'
+  have hdescent :
+    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    intro y hy
+    rw [hcrit] at hy
+    exact
+      (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
+  have hregular :
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    intro y hy
+    rw [hcrit]
+    exact
+      hband y ⟨(div_le_div_iff_of_pos_right hr).mp hy.1, (div_le_div_iff_of_pos_right hr).mp hy.2⟩
+  obtain ⟨H, W, G, hH, hIH, hW, hG, hzero, hneg, hspeed, hgerms, _, hgeometry⟩ :=
+    exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
+  have hc : c / r ∈ Set.Icc (a / r) (b / r) :=
+    ⟨div_le_div_of_nonneg_right ha.le hr.le, div_le_div_of_nonneg_right hb.le hr.le⟩
+  have hreg (y : M) (hy : g y = c / r) : y ∉ Smale.ManifoldMorse.criticalPoints E g :=
+    hregular y (hy ▸ hc)
+  have hboundary (y : M) (hy : g y = c / r) : mvfderiv 𝓘(ℝ, E) g y (W y) < 0 := by
+    rw [hspeed y (hy ▸ hIH hc)]
+    norm_num
+  obtain ⟨O, ι, A, hO, h0O, hι0, hAsource, hlevel, hAmap, hAfield⟩ :=
+    Degree.FlowCancellation.exists_euclidean_level_flow_cylinder hg hreg hW G hG hboundary
+      (show g x = c / r by change f x / r = c / r; rw [hx])
+  let e : (Fin m → ℝ) ≃L[ℝ] Smale.RegularLevel.Model E :=
+    ContinuousLinearEquiv.ofFinrankEq (by simp [Smale.RegularLevel.Model, hdim])
+  let Q := Smale.PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
+  have hQtarget : Q.target = O := by
+    ext z
+    change (z ∈ (Set.univ : Set (Smale.RegularLevel.Model E)) ∧ z ∈ O) ↔ z ∈ O
+    simp only [Set.mem_univ, true_and]
+  have hQ0 : (0 : Fin m → ℝ) ∈ Q.source := by
+    change (0 : Fin m → ℝ) ∈ Set.univ ∧ e 0 ∈ O
+    rw [map_zero]
+    exact ⟨Set.mem_univ _, h0O⟩
+  obtain ⟨Φ, hΦsource, _, hΦmap, hΦfield⟩ :=
+    Degree.FlowSuspension.exists_native_phase_cylinder A hAsource Q hQtarget (fun _ => (0 : ℝ))
+      contDiff_const W hAfield
+  have hmap (z : (Fin m → ℝ) × ℝ) : Φ z = A (Q z.1, z.2) := by rw [hΦmap, add_zero]
+  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
+    (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
+      (hneg y (hcrit ▸ hy))
+  refine
+    ⟨r, W, G, Q.source, Φ, hr, hW, hG, hzero, hnegf, (fun y hy => hgerms y (hcrit ▸ hy)),
+      hgeometry, Q.open_source, hQ0, hΦsource, ?_, ?_, hΦfield⟩
+  · intro t
+    rw [hmap, hAmap]
+    change G t (ι (e 0)) = G t x
+    rw [map_zero, hι0]
+  · intro z hz ht
+    rw [hΦsource] at hz
+    have hQo : Q z.1 ∈ O := hQtarget ▸ Q.map_source' hz.1
+    have hi : g (ι (Q z.1)) = c / r := hlevel _ hQo
+    have he : c / r - z.2 = (c - r * z.2) / r := by field_simp
+    have hend : g (ι (Q z.1)) - z.2 ∈ Set.Icc (a / r) (b / r) := by
+      rw [hi, he]
+      constructor
+      · apply div_le_div_of_nonneg_right _ hr.le
+        dsimp [r]
+        nlinarith [ht.2]
+      · apply div_le_div_of_nonneg_right _ hr.le
+        nlinarith [mul_nonneg hr.le ht.1]
+    have hh :=
+      native_local_height_translation hg G hG hH hIH hspeed (ι (Q z.1)) z.2 (hi ▸ hc) hend
+    rw [hi, he] at hh
+    have hhf : f (G z.2 (ι (Q z.1))) = c - r * z.2 := (div_left_inj' hr.ne').mp hh
+    rw [hmap, hAmap]
+    exact hhf
+
+theorem Degree.FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hdim : Module.finrank ℝ E = m + 1)
+    (V : (y : M) → TangentSpace 𝓘(ℝ, E) y)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hzero : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, V y = 0)
+    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {p q x : M} (hpq : f p < f q)
+    {c d : ℝ} (hc : c < f p) (hd : f q < d)
+    (hpair : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
+    (hp : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
+    (hq : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q))
+    (hunique :
+      ∀ y,
+        Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 q) →
+          Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p) → ∃ t, F t x = y) :
+    ∃ (x₀ : M) (r b : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (U :
+      Set (Fin m → ℝ)) (A :
+      PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞),
+      x₀ ≠ p ∧
+        x₀ ≠ q ∧
+          0 < r ∧
+            ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞
+                (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+              (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
+                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0) ∧
+                  (∀ y,
+                      y ∉ Smale.ManifoldMorse.criticalPoints E f →
+                        mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                    (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+                      (∀ y, Antitone (fun t => f (G t y))) ∧
+                        Filter.Tendsto (fun t => G t x₀) Filter.atTop (𝓝 p) ∧
+                          Filter.Tendsto (fun t => G t x₀) Filter.atBot (𝓝 q) ∧
+                            (∀ y,
+                                Filter.Tendsto (fun t => G t y) Filter.atBot (𝓝 q) →
+                                  Filter.Tendsto (fun t => G t y) Filter.atTop (𝓝 p) →
+                                    ∃ t, G t x₀ = y) ∧
+                              IsOpen U ∧
+                                (0 : Fin m → ℝ) ∈ U ∧
+                                  A.source = U ×ˢ Set.univ ∧
+                                    (∀ t : ℝ, A (0, t) = G t x₀) ∧
+                                      (∀ z ∈ A.source,
+                                          z.2 ∈ Set.Icc (0 : ℝ) 1 → f (A z) = b - r * z.2) ∧
+                                        (∀ y ∈ A.target,
+                                            W y =
+                                              Smale.FlowConstruction.partialChartField A.symm
+                                                (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y) ∧
+                                          (∀ y,
+                                              Set.range (fun t => G t y) =
+                                                  Set.range (fun t => F t y) ∧
+                                                (∀ z,
+                                                    Filter.Tendsto (fun t => G t y) Filter.atTop
+                                                        (𝓝 z) ↔
+                                                      Filter.Tendsto (fun t => F t y) Filter.atTop
+                                                        (𝓝 z)) ∧
+                                                  ∀ z,
+                                                    Filter.Tendsto (fun t => G t y) Filter.atBot
+                                                        (𝓝 z) ↔
+                                                      Filter.Tendsto (fun t => F t y) Filter.atBot
+                                                        (𝓝 z)) ∧
+                                            ∃ t, F t x = x₀ := by
+  let b : ℝ := (f p + f q) / 2
+  let lo : ℝ := (f p + b) / 2
+  let hi : ℝ := (b + f q) / 2
+  have hpb : f p < b := by dsimp [b]; linarith
+  have hbq : b < f q := by dsimp [b]; linarith
+  have hplo : f p < lo := by dsimp [lo]; linarith
+  have hlob : lo < b := by dsimp [lo]; linarith
+  have hbhi : b < hi := by dsimp [hi]; linarith
+  have hhiq : hi < f q := by dsimp [hi]; linarith
+  have hband : ∀ y, f y ∈ Set.Icc lo hi → y ∉ Smale.ManifoldMorse.criticalPoints E f := by
+    intro y hy hcrit
+    have houter : f y ∈ Set.Icc c d := ⟨by linarith [hy.1], by linarith [hy.2]⟩
+    rcases hpair y hcrit houter with he | he
+    · rw [he] at hy
+      exact (not_le_of_gt hplo) hy.1
+    · rw [he] at hy
+      exact (not_le_of_gt hhiq) hy.2
+  obtain ⟨t₀, ht₀⟩ :=
+    Degree.FlowCancellation.exists_level_crossing_of_endpoint_limits F hf.continuous hq hp hbq hpb
+  let x₀ := F t₀ x
+  have hxp : x₀ ≠ p := by
+    intro hh
+    have hv : f p = b := hh ▸ ht₀
+    exact hpb.ne hv
+  have hxq : x₀ ≠ q := by
+    intro hh
+    have hv : f q = b := hh ▸ ht₀
+    exact hbq.ne hv.symm
+  have hp₀ : Filter.Tendsto (fun t => F t x₀) Filter.atTop (𝓝 p) :=
+    (MorseCancel.flow_time_atTop_limit_iff F t₀ x p).mpr hp
+  have hq₀ : Filter.Tendsto (fun t => F t x₀) Filter.atBot (𝓝 q) :=
+    (MorseCancel.flow_time_atBot_limit_iff F t₀ x q).mpr hq
+  have hunique₀ :
+    ∀ y,
+      Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 q) →
+        Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p) → ∃ t, F t x₀ = y := by
+    intro y hyq hyp
+    obtain ⟨t, ht⟩ := hunique y hyq hyp
+    refine ⟨t - t₀, ?_⟩
+    change F (t - t₀) (F t₀ x) = y
+    rw [← F.map_add, sub_add_cancel]
+    exact ht
+  obtain
+    ⟨r, W, G, U, A, hr, hW, hG, hWzero, hWdesc, hgerms, hgeometry, hU, h0U, hsource, haxis,
+      hheight, hfield⟩ :=
+    exists_arbitrary_gap_flow_cylinder hf hdim hV hdesc F hF hlob hbhi hband ht₀
+  have hzeros : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0 := fun y hy =>
+    (hWzero y).mpr (hzero y hy)
+  have huniqueG :
+    ∀ y,
+      Filter.Tendsto (fun t => G t y) Filter.atBot (𝓝 q) →
+        Filter.Tendsto (fun t => G t y) Filter.atTop (𝓝 p) → ∃ t, G t x₀ = y := by
+    intro y hyq hyp
+    have hh : y ∈ Set.range (fun t => F t x₀) :=
+      hunique₀ y ((hgeometry y).2.2 q |>.mp hyq) ((hgeometry y).2.1 p |>.mp hyp)
+    rw [← (hgeometry x₀).1] at hh
+    exact hh
+  exact
+    ⟨x₀, r, b, W, G, U, A, hxp, hxq, hr, hW, hG, hzeros, hWdesc, hgerms,
+      Smale.FlowConstruction.antitone_flow_height hf G hG hzeros hWdesc,
+      (hgeometry x₀).2.1 p |>.mpr hp₀, (hgeometry x₀).2.2 q |>.mpr hq₀, huniqueG, hU, h0U,
+      hsource, haxis, hheight, hfield, hgeometry, t₀, rfl⟩
+
+theorem Degree.SignedCoordinates.positive_of_not_negative {ι : Type*} {w : ι → ℝ}
+    (hw : ∀ i, w i = -1 ∨ w i = 1) {i : ι} (hi : w i ≠ -1) : w i = 1 :=
+  (hw i).resolve_left hi
+
+theorem Degree.SignedCoordinates.exists_equiv_of_negative_card_eq {ι κ : Type*} [Fintype ι]
+    [Fintype κ] (w₀ : ι → ℝ) (w₁ : κ → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1)
+    (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1) (hcard : Fintype.card ι = Fintype.card κ)
+    [Fintype { i // w₀ i = -1 }] [Fintype { i // w₁ i = -1 }]
+    (hneg : Fintype.card { i // w₀ i = -1 } = Fintype.card { i // w₁ i = -1 }) :
+    ∃ e : ι ≃ κ, ∀ i, w₁ (e i) = w₀ i := by
+  classical
+  let eN : { i // w₀ i = -1 } ≃ { i // w₁ i = -1 } := Fintype.equivOfCardEq hneg
+  have hpos : Fintype.card { i // ¬w₀ i = -1 } = Fintype.card { i // ¬w₁ i = -1 } := by
+    rw [Fintype.card_subtype_compl, Fintype.card_subtype_compl, hcard, hneg]
+  let eP : { i // ¬w₀ i = -1 } ≃ { i // ¬w₁ i = -1 } := Fintype.equivOfCardEq hpos
+  let e₀ := Equiv.sumCompl (fun i : ι => w₀ i = -1)
+  let e₁ := Equiv.sumCompl (fun i : κ => w₁ i = -1)
+  let e := e₀.symm.trans ((Equiv.sumCongr eN eP).trans e₁)
+  refine ⟨e, ?_⟩
+  intro i
+  obtain ⟨z, rfl⟩ := e₀.surjective i
+  simp only [e, Equiv.trans_apply, Equiv.symm_apply_apply]
+  cases z with
+  | inl x =>
+    change w₁ (eN x) = w₀ x
+    exact (eN x).property.trans x.property.symm
+  | inr x =>
+    change w₁ (eP x) = w₀ x
+    exact
+      (positive_of_not_negative h₁ (eP x).property).trans
+        (positive_of_not_negative h₀ x.property).symm
+
+attribute [local instance 100] Classical.propDecidable in
+theorem Degree.SignedCoordinates.negative_card_split {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n)
+    (w : Fin n → ℝ) :
+    Fintype.card { j // w j = -1 } =
+      (if w (ρ Option.none) = -1 then 1 else 0) +
+        Fintype.card { i : Fin m // w (ρ (Option.some i)) = -1 } := by
+  have he : { i : Option (Fin m) // w (ρ i) = -1 } ≃ { j : Fin n // w j = -1 } :=
+    ρ.subtypeEquiv (fun _ => Iff.rfl)
+  rw [← Fintype.card_congr he]
+  simp only [Fintype.card_subtype, Finset.card_eq_sum_ones, Finset.sum_filter, Fintype.sum_option]
+
+attribute [local instance 100] Classical.propDecidable in
+theorem Degree.SignedCoordinates.exists_adjacent_sign_enumerations {m : ℕ}
+    (w₀ w₁ : Fin (m + 1) → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1) (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1)
+    (hindex : Fintype.card { i // w₁ i = -1 } = Fintype.card { i // w₀ i = -1 } + 1) :
+    ∃ ρ₀ ρ₁ : Option (Fin m) ≃ Fin (m + 1),
+      w₀ (ρ₀ Option.none) = 1 ∧
+        w₁ (ρ₁ Option.none) = -1 ∧ ∀ i, w₀ (ρ₀ (Option.some i)) = w₁ (ρ₁ (Option.some i)) := by
+  have hbound := Fintype.card_subtype_le (fun i : Fin (m + 1) => w₁ i = -1)
+  have hNpos : 0 < Fintype.card { i // w₁ i = -1 } := by omega
+  have hPpos : 0 < Fintype.card { i // ¬w₀ i = -1 } := by
+    rw [Fintype.card_subtype_compl]
+    omega
+  let j₀ := Classical.choice (Fintype.card_pos_iff.mp hPpos)
+  let j₁ := Classical.choice (Fintype.card_pos_iff.mp hNpos)
+  obtain ⟨ρ₀, hρ₀⟩ := MorseCancel.exists_coordinate_enum rfl j₀.1
+  obtain ⟨ρ₁, hρ₁⟩ := MorseCancel.exists_coordinate_enum rfl j₁.1
+  have hfirst₀ : w₀ (ρ₀ Option.none) = 1 := by
+    rw [hρ₀]
+    exact positive_of_not_negative h₀ j₀.2
+  have hfirst₁ : w₁ (ρ₁ Option.none) = -1 := by
+    rw [hρ₁]
+    exact j₁.2
+  let σ₀ := fun i : Fin m => w₀ (ρ₀ (Option.some i))
+  let σ₁ := fun i : Fin m => w₁ (ρ₁ (Option.some i))
+  have hrest : Fintype.card { i // σ₀ i = -1 } = Fintype.card { i // σ₁ i = -1 } := by
+    have hcount₀ := negative_card_split ρ₀ w₀
+    have hcount₁ := negative_card_split ρ₁ w₁
+    rw [hfirst₀] at hcount₀
+    rw [hfirst₁] at hcount₁
+    norm_num at hcount₀ hcount₁
+    change
+      Fintype.card { i // w₀ (ρ₀ (Option.some i)) = -1 } =
+        Fintype.card { i // w₁ (ρ₁ (Option.some i)) = -1 }
+    omega
+  obtain ⟨η, hη⟩ :=
+    exists_equiv_of_negative_card_eq σ₀ σ₁ (fun i => h₀ _) (fun i => h₁ _) rfl hrest
+  refine ⟨ρ₀, (Equiv.optionCongr η).trans ρ₁, hfirst₀, ?_, ?_⟩
+  · simpa using hfirst₁
+  · intro i
+    exact (hη i).symm
+
+attribute [local instance 100] Classical.propDecidable in
+theorem Degree.SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension {m n : ℕ}
+    (hn : n = m + 1) (w₀ w₁ : Fin n → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1)
+    (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1)
+    (hindex : Fintype.card { i // w₁ i = -1 } = Fintype.card { i // w₀ i = -1 } + 1) :
+    ∃ ρ₀ ρ₁ : Option (Fin m) ≃ Fin n,
+      w₀ (ρ₀ Option.none) = 1 ∧
+        w₁ (ρ₁ Option.none) = -1 ∧ ∀ i, w₀ (ρ₀ (Option.some i)) = w₁ (ρ₁ (Option.some i)) := by
+  subst n
+  exact exists_adjacent_sign_enumerations w₀ w₁ h₀ h₁ hindex
+
+theorem Degree.FlowTimeChange.exists_small_supported_scalar_germ {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ}
+    (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0) {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) {ε : ℝ}
+    (hε : 0 < ε) :
+    ∃ (K : Set E) (g : E → ℝ),
+      IsCompact K ∧
+        K ⊆ U ∧ ContDiff ℝ ∞ g ∧ tsupport g ⊆ K ∧ g =ᶠ[𝓝 0] v ∧ g 0 = 0 ∧ ∀ x, |g x| < ε := by
+  have hnear : ∀ᶠ x in 𝓝 (0 : E), x ∈ U ∧ |v x| < ε := by
+    have hp : |v 0| < ε := by simpa only [hv0, abs_zero] using hε
+    have hmem : ∀ᶠ x in 𝓝 (0 : E), x ∈ U := hU.mem_nhds h0U
+    exact hmem.and (hv.continuous.abs.continuousAt (eventually_lt_nhds hp))
+  obtain ⟨r, hr, hrsub⟩ := Metric.eventually_nhds_iff.mp hnear
+  let β : ContDiffBump (0 : E) := ⟨r / 4, r / 2, by positivity, by linarith⟩
+  let K := Metric.closedBall (0 : E) β.rOut
+  let g (x : E) := β x * v x
+  have hKsmall {x : E} (hx : x ∈ K) : Dist.dist x 0 < r := by
+    have hh : Dist.dist x 0 ≤ r / 2 := hx
+    linarith
+  have hKU : K ⊆ U := fun _ hx => (hrsub (hKsmall hx)).1
+  have hsupp : tsupport g ⊆ K := by
+    have hh := tsupport_mul_subset_left (f := fun x : E => β x) (g := v)
+    rw [β.tsupport_eq] at hh
+    exact hh
+  have hgerm : g =ᶠ[𝓝 0] v := by
+    filter_upwards [Metric.ball_mem_nhds (0 : E) β.rIn_pos] with x hx
+    change β x * v x = v x
+    rw [β.one_of_mem_closedBall (Metric.ball_subset_closedBall hx), one_mul]
+  refine
+    ⟨K, g, ProperSpace.isCompact_closedBall _ _, hKU, β.contDiff.mul hv, hsupp, hgerm,
+      hgerm.eq_of_nhds.trans hv0, ?_⟩
+  intro x
+  by_cases hx : β x = 0
+  · simpa only [g, hx, MulZeroClass.zero_mul, abs_zero] using hε
+  · have hxin : x ∈ K := by
+      change x ∈ Metric.closedBall (0 : E) β.rOut
+      rw [← β.tsupport_eq]
+      exact subset_tsupport β hx
+    have hvx : |v x| < ε := (hrsub (hKsmall hxin)).2
+    change |β x * v x| < ε
+    rw [abs_mul, abs_of_nonneg β.nonneg]
+    exact (mul_le_of_le_one_left (abs_nonneg (v x)) β.le_one).trans_lt hvx
+
+theorem Degree.FlowTimeChange.exists_bounded_step_profile :
+    ∃ (τ : ℝ → ℝ) (L : ℝ),
+      ContDiff ℝ ∞ τ ∧
+        0 < L ∧
+          (∀ t, τ t ∈ Set.Icc (0 : ℝ) 1) ∧
+            (∀ t, t ≤ 1 / 3 → τ t = 0) ∧
+              (∀ t, 2 / 3 ≤ t → τ t = 1) ∧
+                (∀ t, t ∉ Set.Icc (1 / 3 : ℝ) (2 / 3) → deriv τ t = 0) ∧ ∀ t, |deriv τ t| ≤ L := by
+  let τ : ℝ → ℝ := fun t => Real.smoothTransition (3 * t - 1)
+  have hτ : ContDiff ℝ ∞ τ :=
+    Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
+  have hzero (t : ℝ) (ht : t ≤ 1 / 3) : τ t = 0 :=
+    Real.smoothTransition.zero_of_nonpos (by linarith)
+  have hone (t : ℝ) (ht : 2 / 3 ≤ t) : τ t = 1 :=
+    Real.smoothTransition.one_of_one_le (by linarith)
+  have hout (t : ℝ) (ht : t ∉ Set.Icc (1 / 3 : ℝ) (2 / 3)) : deriv τ t = 0 := by
+    by_cases hlo : t < 1 / 3
+    · have hg : τ =ᶠ[𝓝 t] (fun _ => (0 : ℝ)) := by
+        filter_upwards [eventually_lt_nhds hlo] with s hs
+        exact hzero s hs.le
+      rw [hg.deriv_eq]
+      exact deriv_const _ _
+    · have hhi : 2 / 3 < t := by
+        by_contra hn
+        exact ht ⟨le_of_not_gt hlo, le_of_not_gt hn⟩
+      have hg : τ =ᶠ[𝓝 t] (fun _ => (1 : ℝ)) := by
+        filter_upwards [eventually_gt_nhds hhi] with s hs
+        exact hone s hs.le
+      rw [hg.deriv_eq]
+      exact deriv_const _ _
+  have hcomp : HasCompactSupport (deriv τ) :=
+    HasCompactSupport.intro
+      (CompactIccSpace.isCompact_Icc : IsCompact (Set.Icc (1 / 3 : ℝ) (2 / 3))) hout
+  obtain ⟨C, hC⟩ := hcomp.exists_bound_of_continuous (hτ.continuous_deriv (by simp))
+  let L : ℝ := Max.max C 0 + 1
+  refine ⟨τ, L, hτ, by dsimp [L]; positivity, ?_, hzero, hone, hout, ?_⟩
+  · intro t
+    exact ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩
+  · intro t
+    have hh : |deriv τ t| ≤ C := by simpa only [Real.norm_eq_abs] using hC t
+    exact hh.trans (by dsimp [L]; linarith [le_max_left C 0])
+
+theorem Degree.FlowTimeChange.exists_supported_phase_clock {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ} (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0)
+    {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) :
+    ∃ (K : Set E) (g : E → ℝ) (τ : ℝ → ℝ) (D :
+      Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞),
+      IsCompact K ∧
+        K ⊆ U ∧
+          ContDiff ℝ ∞ g ∧
+            tsupport g ⊆ K ∧
+              g =ᶠ[𝓝 0] v ∧
+                g 0 = 0 ∧
+                  (∀ x, |g x| < 1 / 12) ∧
+                    ContDiff ℝ ∞ τ ∧
+                      (∀ t, τ t ∈ Set.Icc (0 : ℝ) 1) ∧
+                        (∀ p, D p = (p.1 + τ p.1 * g p.2, p.2)) ∧
+                          (∀ s, D (s, 0) = (s, 0)) ∧
+                            (∀ p, p.1 ≤ 1 / 3 → D p = p) ∧
+                              (∀ p, 2 / 3 ≤ p.1 → D p = (p.1 + g p.2, p.2)) ∧
+                                ∀ p, 1 / 2 < fderiv ℝ (fun q => (D q).1) p (1, 0) := by
+  obtain ⟨τ, L, hτ, hL, hrange, hleft, hright, -, hder⟩ := exists_bounded_step_profile
+  let ε : ℝ := Min.min (1 / 12) (1 / (2 * L))
+  have hε : 0 < ε := lt_min (by norm_num) (by positivity)
+  obtain ⟨K, g, hK, hKU, hg, hsupp, hgerm, hg0, hsmall⟩ :=
+    exists_small_supported_scalar_germ hv hv0 hU h0U hε
+  let u (p : ℝ × E) := τ p.1 * g p.2
+  have hu : ContDiff ℝ ∞ u := (hτ.comp contDiff_fst).mul (hg.comp contDiff_snd)
+  have hbound (p : ℝ × E) : |u p| ≤ ε := by
+    change |τ p.1 * g p.2| ≤ ε
+    rw [abs_mul, abs_of_nonneg (hrange p.1).1]
+    exact (mul_le_of_le_one_left (abs_nonneg (g p.2)) (hrange p.1).2).trans (hsmall p.2).le
+  have hrate (p : ℝ × E) :
+    fderiv ℝ (Degree.RegularHeightCoordinates.displacedHeight u) p (1, 0) =
+      1 + deriv τ p.1 * g p.2 := by
+    have ha :=
+      (Degree.RegularHeightCoordinates.scalar_derivative
+          (Degree.RegularHeightCoordinates.contDiff_displacedHeight hu) p.1 p.2).deriv
+    have hb :=
+      ((hasDerivAt_id p.1).add
+          ((hτ.differentiable (by simp) p.1).hasDerivAt.mul_const (g p.2))).deriv
+    exact ha.symm.trans hb
+  have hsmall' (p : ℝ × E) : |deriv τ p.1 * g p.2| < 1 / 2 := by
+    rw [abs_mul]
+    calc
+      |deriv τ p.1| * |g p.2| ≤ L * |g p.2| := mul_le_mul_of_nonneg_right (hder _) (abs_nonneg _)
+      _ < L * ε := (mul_lt_mul_of_pos_left (hsmall _) hL)
+      _ ≤ L * (1 / (2 * L)) := (mul_le_mul_of_nonneg_left (min_le_right _ _) hL.le)
+      _ = 1 / 2 := by field_simp
+  have hpositive (p : ℝ × E) :
+    1 / 2 < fderiv ℝ (Degree.RegularHeightCoordinates.displacedHeight u) p (1, 0) := by
+    rw [hrate]
+    linarith [(abs_lt.mp (hsmall' p)).1]
+  have hpos (p : ℝ × E) :
+    0 < fderiv ℝ (Degree.RegularHeightCoordinates.displacedHeight u) p (1, 0) :=
+    (by norm_num : (0 : ℝ) < 1 / 2).trans (hpositive p)
+  have hF := Degree.RegularHeightCoordinates.contDiff_displacedHeight hu
+  have hlocal :
+    IsLocalDiffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) ∞
+      (Degree.RegularHeightCoordinates.heightMap
+        (Degree.RegularHeightCoordinates.displacedHeight u)) :=
+    fun p => Degree.RegularHeightCoordinates.heightMap_localDiffeomorph hF (hpos p).ne'
+  let D :=
+    hlocal.diffeomorphOfBijective
+      ⟨Degree.RegularHeightCoordinates.heightMap_injective_of_positive hF hpos,
+        Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded hu.continuous ε hε.le
+          hbound⟩
+  have hD (p : ℝ × E) : D p = (p.1 + τ p.1 * g p.2, p.2) := rfl
+  refine
+    ⟨K, g, τ, D, hK, hKU, hg, hsupp, hgerm, hg0, fun x => (hsmall x).trans_le (min_le_left _ _),
+      hτ, hrange, hD, ?_, ?_, ?_, ?_⟩
+  · intro s
+    rw [hD, hg0, MulZeroClass.mul_zero, add_zero]
+  · intro p hp
+    rw [hD, hleft p.1 hp, MulZeroClass.zero_mul, add_zero]
+  · intro p hp
+    rw [hD, hright p.1 hp, one_mul]
+  · exact hpositive
+
+def Degree.FlowTimeChange.phaseConjugatingDiffeomorph {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) :
+    Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞ :=
+  ((ContinuousLinearEquiv.prodComm ℝ E ℝ).toDiffeomorph.trans D).trans
+    (ContinuousLinearEquiv.prodComm ℝ ℝ E).toDiffeomorph
+
+theorem Degree.FlowTimeChange.phaseClockFlow_base {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
+    (hbase : ∀ p, (D p).2 = p.2) (p : E × ℝ) (t : ℝ) :
+    (Degree.FlowSuspension.suspensionFlow (phaseConjugatingDiffeomorph D) t p).1 = p.1 := by
+  let Q := phaseConjugatingDiffeomorph D
+  let z := Q.symm p
+  have hh := congrArg (fun w : E × ℝ => w.1) (Q.apply_symm_apply p)
+  change (D (z.2, z.1)).2 = p.1 at hh
+  rw [hbase] at hh
+  change (D (z.2 + t, z.1)).2 = p.1
+  rw [hbase]
+  exact hh
+
+theorem Degree.FlowTimeChange.phaseClockField_base_zero {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
+    (hbase : ∀ p, (D p).2 = p.2) (p : E × ℝ) :
+    (Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p).1 = 0 := by
+  have hd :
+    HasDerivAt
+      (fun t => (Degree.FlowSuspension.suspensionFlow (phaseConjugatingDiffeomorph D) t p).1)
+      (Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p).1 0 :=
+    (Degree.FlowSuspension.hasDerivAt_suspensionFlow_zero (phaseConjugatingDiffeomorph D) p).fst
+  have heq :
+    (fun t => (Degree.FlowSuspension.suspensionFlow (phaseConjugatingDiffeomorph D) t p).1) =
+      (fun _ => p.1) :=
+    funext (phaseClockFlow_base D hbase p)
+  rw [heq] at hd
+  exact hd.unique (hasDerivAt_const 0 p.1)
+
+theorem Degree.FlowTimeChange.phaseClockField_time_derivative {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) (p : E × ℝ) :
+    (Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p).2 =
+      fderiv ℝ (fun q => (D q).1) ((phaseConjugatingDiffeomorph D).symm p).swap (1, 0) := by
+  let Q := phaseConjugatingDiffeomorph D
+  let z := Q.symm p
+  have hd :
+    HasDerivAt (fun t => (Degree.FlowSuspension.suspensionFlow Q t p).2)
+      (Degree.FlowSuspension.suspensionField Q p).2 0 :=
+    (Degree.FlowSuspension.hasDerivAt_suspensionFlow_zero Q p).snd
+  have hD : ContDiff ℝ ∞ (fun q : ℝ × E => (D q).1) := D.contMDiff.contDiff.fst
+  have hc : HasDerivAt (fun t : ℝ => (z.2 + t, z.1)) ((1 : ℝ), (0 : E)) 0 :=
+    ((hasDerivAt_id 0).const_add z.2).prodMk (hasDerivAt_const 0 z.1)
+  have hi := (hD.differentiable (by simp) (z.2 + 0, z.1)).hasFDerivAt.comp_hasDerivAt 0 hc
+  simp only [add_zero] at hi
+  change
+    HasDerivAt (fun t => (D (z.2 + t, z.1)).1) (Degree.FlowSuspension.suspensionField Q p).2
+      0 at hd
+  exact hd.unique hi
+
+theorem Degree.FlowTimeChange.phaseClockField_time_positive {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
+    (hpos : ∀ q, 1 / 2 < fderiv ℝ (fun p => (D p).1) q (1, 0)) (p : E × ℝ) :
+    1 / 2 < (Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p).2 := by
+  rw [phaseClockField_time_derivative]
+  exact hpos _
+
+theorem Degree.FlowTimeChange.phaseClockField_eq_vertical_of_translation_germ {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) (p : E × ℝ) {h : ℝ}
+    (hgerm :
+      ∀ᶠ s in 𝓝 ((phaseConjugatingDiffeomorph D).symm p).2,
+        D (s, ((phaseConjugatingDiffeomorph D).symm p).1) =
+          (s + h, ((phaseConjugatingDiffeomorph D).symm p).1)) :
+    Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p = (0, 1) := by
+  let Q := phaseConjugatingDiffeomorph D
+  let z := Q.symm p
+  have ht : Filter.Tendsto (fun t : ℝ => z.2 + t) (𝓝 0) (𝓝 z.2) := by
+    have hc : Continuous (fun t : ℝ => z.2 + t) := continuous_const.add continuous_id
+    simpa only [add_zero] using hc.tendsto (0 : ℝ)
+  have heq :
+    (fun t => Degree.FlowSuspension.suspensionFlow Q t p) =ᶠ[𝓝 0] (fun t => (z.1, z.2 + t + h)) :=
+    by
+    filter_upwards [ht.eventually hgerm] with t hts
+    change ((D (z.2 + t, z.1)).2, (D (z.2 + t, z.1)).1) = _
+    rw [hts]
+  have hd :=
+    (Degree.FlowSuspension.hasDerivAt_suspensionFlow_zero Q p).congr_of_eventuallyEq heq.symm
+  exact
+    hd.unique
+      ((hasDerivAt_const 0 z.1).prodMk (((hasDerivAt_id (0 : ℝ)).const_add z.2).add_const h))
+
+theorem Degree.FlowTimeChange.exists_compact_phase_field_support {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) {g : E → ℝ} {τ : ℝ → ℝ}
+    {K : Set E} (hK : IsCompact K) (hsupp : tsupport g ⊆ K) (hsmall : ∀ x, |g x| < 1 / 12)
+    (hrange : ∀ t, τ t ∈ Set.Icc (0 : ℝ) 1) (hD : ∀ p, D p = (p.1 + τ p.1 * g p.2, p.2))
+    (hleft : ∀ p, p.1 ≤ 1 / 3 → D p = p) (hright : ∀ p, 2 / 3 ≤ p.1 → D p = (p.1 + g p.2, p.2)) :
+    ∃ C : Set (E × ℝ),
+      IsCompact C ∧
+        C ⊆ K ×ˢ Set.Ioo (0 : ℝ) 1 ∧
+          ∀ p ∉ C,
+            Degree.FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p = (0, 1) := by
+  let Q := phaseConjugatingDiffeomorph D
+  let C := Q '' (K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3))
+  have hC : IsCompact C := (hK.prod CompactIccSpace.isCompact_Icc).image Q.continuous
+  have hsub : C ⊆ K ×ˢ Set.Ioo (0 : ℝ) 1 := by
+    rintro p ⟨⟨z, t⟩, ⟨hz, ht⟩, rfl⟩
+    change ((D (t, z)).2, (D (t, z)).1) ∈ K ×ˢ Set.Ioo (0 : ℝ) 1
+    rw [hD]
+    have hamp : |τ t * g z| < 1 / 12 := by
+      rw [abs_mul, abs_of_nonneg (hrange t).1]
+      exact (mul_le_of_le_one_left (abs_nonneg (g z)) (hrange t).2).trans_lt (hsmall z)
+    refine ⟨hz, ?_, ?_⟩ <;> linarith [(abs_lt.mp hamp).1, (abs_lt.mp hamp).2, ht.1, ht.2]
+  refine ⟨C, hC, hsub, ?_⟩
+  intro p hp
+  let z := Q.symm p
+  have hz : z ∉ K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3) := fun hh => hp ⟨z, hh, Q.apply_symm_apply p⟩
+  by_cases hbase : z.1 ∈ K
+  · have htime : z.2 ∉ Set.Icc (1 / 3 : ℝ) (2 / 3) := fun ht => hz ⟨hbase, ht⟩
+    by_cases hlo : z.2 < 1 / 3
+    · apply phaseClockField_eq_vertical_of_translation_germ D p (h := 0)
+      filter_upwards [eventually_lt_nhds hlo] with s hs
+      simpa only [add_zero] using hleft (s, z.1) hs.le
+    · have hhi : 2 / 3 < z.2 := by
+        by_contra hn
+        exact htime ⟨le_of_not_gt hlo, le_of_not_gt hn⟩
+      apply phaseClockField_eq_vertical_of_translation_germ D p (h := g z.1)
+      filter_upwards [eventually_gt_nhds hhi] with s hs
+      exact hright (s, z.1) hs.le
+  · have hg : g z.1 = 0 := image_eq_zero_of_notMem_tsupport (fun h => hbase (hsupp h))
+    apply phaseClockField_eq_vertical_of_translation_germ D p (h := 0)
+    apply Filter.Eventually.of_forall
+    intro s
+    rw [hD, hg, MulZeroClass.mul_zero]
+
+structure Degree.FlowTimeChange.PhaseFlowCoordinates {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (g : E → ℝ) (W : (E × ℝ) → E × ℝ) (F : Flow ℝ (E × ℝ)) where
+  chart : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞
+  field_eq : W = Degree.FlowSuspension.suspensionField chart
+  flow_eq : F = Degree.FlowSuspension.suspensionFlow chart
+  base : ∀ p, (chart p).1 = p.1
+  lower : ∀ p, p.2 ≤ 1 / 3 → chart p = p
+  upper : ∀ p, 2 / 3 ≤ p.2 → chart p = (p.1, p.2 + g p.1)
+  axis : ∀ t : ℝ, chart (0, t) = (0, t)
+
+theorem Degree.FlowTimeChange.exists_compact_phase_flow {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ} (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0)
+    {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) :
+    ∃ (K : Set E) (C : Set (E × ℝ)) (g : E → ℝ) (W : E × ℝ → E × ℝ) (F : Flow ℝ (E × ℝ)),
+      IsCompact K ∧
+        K ⊆ U ∧
+          IsCompact C ∧
+            C ⊆ K ×ˢ Set.Ioo (0 : ℝ) 1 ∧
+              ContDiff ℝ ∞ g ∧
+                tsupport g ⊆ K ∧
+                  g =ᶠ[𝓝 0] v ∧
+                    g 0 = 0 ∧
+                      ContDiff ℝ ∞ W ∧
+                        (∀ p, (W p).1 = 0) ∧
+                          (∀ p, 1 / 2 < (W p).2) ∧
+                            (∀ p ∉ C, W p = (0, 1)) ∧
+                              (∀ p t, HasDerivAt (fun s => F s p) (W (F t p)) t) ∧
+                                (∀ p t, (F t p).1 = p.1) ∧
+                                  (∀ z t, t ≤ 1 / 3 → F t (z, 0) = (z, t)) ∧
+                                    (∀ z t, 2 / 3 ≤ t → F t (z, 0) = (z, t + g z)) ∧
+                                      (∀ s t : ℝ, F t (0, s) = (0, s + t)) ∧
+                                        Nonempty (PhaseFlowCoordinates g W F) := by
+  obtain
+    ⟨K, g, τ, D, hK, hKU, hg, hsupp, hgerm, hg0, hsmall, hτ, hrange, hD, haxis, hleft, hright,
+      hpos⟩ :=
+    exists_supported_phase_clock hv hv0 hU h0U
+  let Q := phaseConjugatingDiffeomorph D
+  let W := Degree.FlowSuspension.suspensionField Q
+  let F := Degree.FlowSuspension.suspensionFlow Q
+  have hbase (p : ℝ × E) : (D p).2 = p.2 := by rw [hD]
+  obtain ⟨C, hC, hCsub, hoff⟩ :=
+    exists_compact_phase_field_support D hK hsupp hsmall hrange hD hleft hright
+  have hinitial (z : E) : Q (z, 0) = (z, 0) := by
+    change ((D (0, z)).2, (D (0, z)).1) = (z, 0)
+    rw [hleft (0, z) (by norm_num)]
+  have hinverse (z : E) : Q.symm (z, 0) = (z, 0) := by
+    have hh := Q.symm_apply_apply (z, 0)
+    rw [hinitial] at hh
+    exact hh
+  have hfromzero (z : E) (t : ℝ) : F t (z, 0) = ((D (t, z)).2, (D (t, z)).1) := by
+    change Q ((Q.symm (z, 0)).1, (Q.symm (z, 0)).2 + t) = _
+    rw [hinverse, zero_add]
+    rfl
+  have hcoords : PhaseFlowCoordinates g W F := by
+    refine ⟨Q, rfl, rfl, ?_, ?_, ?_, ?_⟩
+    · intro p
+      change (D (p.2, p.1)).2 = p.1
+      rw [hD]
+    · intro p hp
+      change ((D (p.2, p.1)).2, (D (p.2, p.1)).1) = p
+      rw [hleft (p.2, p.1) hp]
+    · intro p hp
+      change ((D (p.2, p.1)).2, (D (p.2, p.1)).1) = (p.1, p.2 + g p.1)
+      rw [hright (p.2, p.1) hp]
+    · intro t
+      change ((D (t, 0)).2, (D (t, 0)).1) = (0, t)
+      rw [haxis]
+  refine
+    ⟨K, C, g, W, F, hK, hKU, hC, hCsub, hg, hsupp, hgerm, hg0,
+      Degree.FlowSuspension.contDiff_suspensionField Q, phaseClockField_base_zero D hbase,
+      phaseClockField_time_positive D hpos, hoff,
+      Degree.FlowSuspension.hasDerivAt_suspensionFlow Q, phaseClockFlow_base D hbase, ?_, ?_, ?_,
+      ⟨hcoords⟩⟩
+  · intro z t ht
+    rw [hfromzero, hleft (t, z) ht]
+  · intro z t ht
+    rw [hfromzero, hright (t, z) ht]
+  · intro s t
+    have hQaxis (r : ℝ) : Q (0, r) = (0, r) := by
+      change ((D (r, 0)).2, (D (r, 0)).1) = (0, r)
+      rw [haxis]
+    have hiaxis : Q.symm (0, s) = (0, s) := by
+      have hh := Q.symm_apply_apply (0, s)
+      rw [hQaxis] at hh
+      exact hh
+    change Q ((Q.symm (0, s)).1, (Q.symm (0, s)).2 + t) = _
+    rw [hiaxis, hQaxis]
+
+theorem Degree.FlowTimeChange.partialChartField_vertical_factor {E B M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [TopologicalSpace M] [ChartedSpace B M]
+    (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞) (W : (E × ℝ) → E × ℝ)
+    (hbase : ∀ p, (W p).1 = 0) (x : M) :
+    Smale.FlowConstruction.partialChartField Φ.symm W x =
+      (W (Φ.symm x)).2 •
+        Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x := by
+  have hw (p : E × ℝ) : W p = (W p).2 • ((0 : E), (1 : ℝ)) := by
+    apply Prod.ext
+    · simpa only [Prod.smul_fst, smul_zero] using hbase p
+    · simp only [Prod.smul_snd, smul_eq_mul, mul_one]
+  unfold Smale.FlowConstruction.partialChartField
+  rw [VectorField.mpullback_apply, VectorField.mpullback_apply]
+  conv_lhs => rw [hw]
+  rw [map_smul, map_smul]
+
+theorem Degree.FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [TopologicalSpace M] [ChartedSpace B M] [T2Space M] [IsManifold 𝓘(ℝ, B) ∞ M]
+    (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
+    (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
+    (hmodel :
+      ∀ x ∈ Φ.target,
+        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+    (W : (E × ℝ) → E × ℝ) (hW : ContDiff ℝ ∞ W) (hbase : ∀ p, (W p).1 = 0)
+    (hpos : ∀ p, 0 < (W p).2) {C : Set (E × ℝ)} (hC : IsCompact C) (hCsource : C ⊆ Φ.source)
+    (hfix : ∀ p ∉ C, W p = (0, 1)) :
+    ∃ ρ : M → ℝ,
+      ContMDiff 𝓘(ℝ, B) 𝓘(ℝ, ℝ) ∞ ρ ∧
+        (∀ x, 0 < ρ x) ∧
+          ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞
+              (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
+            (∀ x ∈ Φ.target, ρ x • V x = Smale.FlowConstruction.partialChartField Φ.symm W x) ∧
+              (∀ x, ρ x • V x = 0 ↔ V x = 0) ∧
+                (∀ (f : M → ℝ) x,
+                    mvfderiv 𝓘(ℝ, B) f x (V x) < 0 → mvfderiv 𝓘(ℝ, B) f x (ρ x • V x) < 0) ∧
+                  ∀ x ∉ Φ '' C, ∀ᶠ y in 𝓝 x, ρ y = 1 := by
+  let w (p : E × ℝ) := (W p).2
+  let ρ := Degree.LocalFunctionReplacement.replace Φ (fun _ : M => 1) w
+  have hw : ContDiff ℝ ∞ w := hW.snd
+  have hwfix (p : E × ℝ) (hp : p ∉ C) : w p = 1 := by
+    change (W p).2 = 1
+    rw [hfix p hp]
+  have hρ : ContMDiff 𝓘(ℝ, B) 𝓘(ℝ, ℝ) ∞ ρ :=
+    Degree.LocalFunctionReplacement.contMDiff_replace Φ contMDiff_const hw hC hCsource
+      (fun _ _ => rfl) hwfix
+  have hρpos (x : M) : 0 < ρ x := by
+    change 0 < Degree.LocalFunctionReplacement.replace Φ (fun _ : M => 1) w x
+    by_cases hx : x ∈ Φ.target
+    · rw [Degree.LocalFunctionReplacement.replace_of_mem Φ (fun _ => 1) w hx]
+      exact hpos _
+    · rw [Degree.LocalFunctionReplacement.replace_of_notMem Φ (fun _ => 1) w hx]
+      exact zero_lt_one
+  refine ⟨ρ, hρ, hρpos, hρ.smul_section hV, ?_, ?_, ?_, ?_⟩
+  · intro x hx
+    change Degree.LocalFunctionReplacement.replace Φ (fun _ : M => 1) w x • V x = _
+    rw [Degree.LocalFunctionReplacement.replace_of_mem Φ (fun _ => 1) w hx, hmodel x hx,
+      partialChartField_vertical_factor Φ W hbase x]
+  · intro x
+    exact smul_eq_zero.trans (or_iff_right (hρpos x).ne')
+  · intro f x hx
+    rw [map_smul, smul_eq_mul]
+    exact mul_neg_of_pos_of_neg (hρpos x) hx
+  · intro x hx
+    exact
+      Degree.LocalFunctionReplacement.replace_germ_off_support Φ hC hCsource (fun _ _ => rfl)
+        hwfix hx
+
+theorem Degree.FlowTimeChange.exists_native_phase_realization {E B M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup B]
+    [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace M] [ChartedSpace B M]
+    [IsManifold 𝓘(ℝ, B) ∞ M] [T2Space M] [CompactSpace M]
+    (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞) {U : Set E} (hU : IsOpen U)
+    (h0U : (0 : E) ∈ U) (hsource : Φ.source = U ×ˢ Set.univ)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
+    (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
+    (hmodel :
+      ∀ x ∈ Φ.target,
+        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+    (H : Flow ℝ M) (hH : ∀ x, IsMIntegralCurve (fun t => H t x) V) {v : E → ℝ}
+    (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0) :
+    ∃ (N : Set M) (g : E → ℝ) (V' : (x : M) → TangentSpace 𝓘(ℝ, B) x) (G : Flow ℝ M),
+      IsCompact N ∧
+        N ⊆ Φ.target ∩ Φ '' (U ×ˢ Set.Ioo (0 : ℝ) 1) ∧
+          ContDiff ℝ ∞ g ∧
+            g =ᶠ[𝓝 0] v ∧
+              g 0 = 0 ∧
+                ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞
+                    (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
+                  (∀ x, IsMIntegralCurve (fun t => G t x) V') ∧
+                    (∀ x, V' x = 0 ↔ V x = 0) ∧
+                      (∀ (f : M → ℝ) x,
+                          mvfderiv 𝓘(ℝ, B) f x (V x) < 0 → mvfderiv 𝓘(ℝ, B) f x (V' x) < 0) ∧
+                        (∀ x ∉ N, ∀ᶠ y in 𝓝 x, V' y = V y) ∧
+                          (∀ x,
+                              Set.range (fun t => G t x) = Set.range (fun t => H t x) ∧
+                                (∀ p,
+                                    Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p) ↔
+                                      Filter.Tendsto (fun t => H t x) Filter.atTop (𝓝 p)) ∧
+                                  ∀ p,
+                                    Filter.Tendsto (fun t => G t x) Filter.atBot (𝓝 p) ↔
+                                      Filter.Tendsto (fun t => H t x) Filter.atBot (𝓝 p)) ∧
+                            (∀ z ∈ U, ∀ t : ℝ, t ≤ 1 / 3 → G t (Φ (z, 0)) = Φ (z, t)) ∧
+                              (∀ z ∈ U, ∀ t : ℝ, 2 / 3 ≤ t → G t (Φ (z, 0)) = Φ (z, t + g z)) ∧
+                                (∀ s t : ℝ, G t (Φ (0, s)) = Φ (0, s + t)) ∧
+                                  ∃ Ω : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞,
+                                    Ω.source = U ×ˢ Set.univ ∧
+                                      Ω.target = Φ.target ∧
+                                        (∀ y ∈ Ω.target,
+                                            V' y =
+                                              Smale.FlowConstruction.partialChartField Ω.symm
+                                                (fun _ : E × ℝ => (0, 1)) y) ∧
+                                          (∀ p, p.2 ≤ 1 / 3 → Ω p = Φ p) ∧
+                                            (∀ p, 2 / 3 ≤ p.2 → Ω p = Φ (p.1, p.2 + g p.1)) ∧
+                                              (∀ t : ℝ, Ω (0, t) = Φ (0, t)) ∧
+                                                ∀ z ∈ U, ∀ t : ℝ, Ω (z, t) = G t (Φ (z, 0)) := by
+  obtain
+    ⟨K, C, g, W, F, -, hKU, hC, hCsub, hg, -, hgerm, hg0, hW, hWbase, hWpos, hWfix, hF, hFbase,
+      hleft, hright, haxis, ⟨Cdata⟩⟩ :=
+    exists_compact_phase_flow hv hv0 hU h0U
+  have hCsource : C ⊆ Φ.source := by
+    rw [hsource]
+    exact fun p hp => ⟨hKU (hCsub hp).1, Set.mem_univ _⟩
+  obtain ⟨ρ, hρ, hρpos, hV', hnew, hzeros, hneg, hρgerm⟩ :=
+    exists_native_positive_cylinder_rescaling Φ V hV hmodel W hW hWbase
+      (fun p => (by norm_num : (0 : ℝ) < 1 / 2).trans (hWpos p)) hC hCsource hWfix
+  let V' : (x : M) → TangentSpace 𝓘(ℝ, B) x := fun x => ρ x • V x
+  let N := Φ '' C
+  have hN : IsCompact N :=
+    hC.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hCsource)
+  have hNsub : N ⊆ Φ.target ∩ Φ '' (U ×ˢ Set.Ioo (0 : ℝ) 1) := by
+    rintro x ⟨p, hp, rfl⟩
+    exact ⟨Φ.map_source' (hCsource hp), ⟨p, ⟨hKU (hCsub hp).1, (hCsub hp).2⟩, rfl⟩⟩
+  have hV'₁ := hV'.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
+  let G := Smale.FlowConstruction.compactFlow hV'₁
+  have hG (x : M) : IsMIntegralCurve (fun t => G t x) V' :=
+    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
+  have hstay (p : E × ℝ) (hp : p ∈ Φ.source) (t : ℝ) : F t p ∈ Φ.source := by
+    rw [hsource] at hp ⊢
+    exact ⟨(hFbase p t) ▸ hp.1, Set.mem_univ _⟩
+  have hfull (p : E × ℝ) (hp : p ∈ Φ.source) (t : ℝ) : G t (Φ p) = Φ (F t p) :=
+    Degree.FlowSuspension.native_chart_flow_all_time Φ hV'₁ G hG F W hF hnew (hstay p hp) t
+  have hnew' (y : M) (hy : y ∈ Φ.target) :
+    V' y =
+      Smale.FlowConstruction.partialChartField Φ.symm
+        (Degree.FlowSuspension.suspensionField Cdata.chart) y := by
+    exact
+      (hnew y hy).trans
+        (congrArg (fun w => Smale.FlowConstruction.partialChartField Φ.symm w y) Cdata.field_eq)
+  obtain ⟨Ω, hΩsource, hΩtarget, hΩmap, hΩfield⟩ :=
+    Degree.FlowSuspension.exists_native_cylinder_conjugacy Φ hsource Cdata.chart
+      (fun p => by rw [Cdata.base]) V' hnew'
+  have hΩlower (p : E × ℝ) (hp : p.2 ≤ 1 / 3) : Ω p = Φ p := by rw [hΩmap, Cdata.lower p hp]
+  have hΩupper (p : E × ℝ) (hp : 2 / 3 ≤ p.2) : Ω p = Φ (p.1, p.2 + g p.1) := by
+    rw [hΩmap, Cdata.upper p hp]
+  have hΩaxis (t : ℝ) : Ω (0, t) = Φ (0, t) := by rw [hΩmap, Cdata.axis]
+  have hΩflow (z : E) (hz : z ∈ U) (t : ℝ) : Ω (z, t) = G t (Φ (z, 0)) := by
+    have h0 : (z, (0 : ℝ)) ∈ Φ.source := by rw [hsource]; exact ⟨hz, Set.mem_univ _⟩
+    have hC0 : Cdata.chart (z, (0 : ℝ)) = (z, 0) := Cdata.lower _ (by norm_num)
+    have hFt : F t (z, 0) = Cdata.chart (z, t) := by
+      calc
+        F t (z, 0) = Degree.FlowSuspension.suspensionFlow Cdata.chart t (z, 0) :=
+          congrArg (fun A : Flow ℝ (E × ℝ) => A t (z, 0)) Cdata.flow_eq
+        _ = Degree.FlowSuspension.suspensionFlow Cdata.chart t (Cdata.chart (z, 0)) :=
+          (congrArg (Degree.FlowSuspension.suspensionFlow Cdata.chart t) hC0.symm)
+        _ = Cdata.chart (z, 0 + t) :=
+          (Degree.FlowSuspension.suspensionFlow_chart Cdata.chart t (z, 0))
+        _ = Cdata.chart (z, t) := by rw [zero_add]
+    rw [hΩmap]
+    exact ((hfull (z, 0) h0 t).trans (congrArg Φ hFt)).symm
+  refine
+    ⟨N, g, V', G, hN, hNsub, hg, hgerm, hg0, hV', hG, hzeros, hneg, ?_,
+      native_flow_time_change_orbits hρ.continuous hρpos hV'₁ H G hH hG, ?_, ?_, ?_, Ω, hΩsource,
+      hΩtarget, hΩfield, hΩlower, hΩupper, hΩaxis, hΩflow⟩
+  · intro x hx
+    filter_upwards [hρgerm x hx] with y hy
+    simp only [V', hy, one_smul]
+  · intro z hz t ht
+    have hp : (z, (0 : ℝ)) ∈ Φ.source := by rw [hsource]; exact ⟨hz, Set.mem_univ _⟩
+    rw [hfull _ hp, hleft z t ht]
+  · intro z hz t ht
+    have hp : (z, (0 : ℝ)) ∈ Φ.source := by rw [hsource]; exact ⟨hz, Set.mem_univ _⟩
+    rw [hfull _ hp, hright z t ht]
+  · intro s t
+    have hp : ((0 : E), s) ∈ Φ.source := by rw [hsource]; exact ⟨h0U, Set.mem_univ _⟩
+    rw [hfull _ hp, haxis]
+
+theorem Degree.FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup Z]
+    [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [FiniteDimensional ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) ∞ M]
+    [T2Space M] [CompactSpace M] (Φ Ω : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, B) (Z × ℝ) M ∞)
+    {U : Set Z} (hsource : Ω.source = U ×ˢ Set.univ)
+    (Q : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞) (hQtarget : Q.target = U)
+    (hQ0 : (0 : E) ∈ Q.source) (hQzero : Q 0 = 0) (P : E → Z) {v₀ v₁ : E → ℝ}
+    (hv₀ : ContDiff ℝ ∞ v₀) (hv₁ : ContDiff ℝ ∞ v₁) (hv₀zero : v₀ 0 = 0) (hv₁zero : v₁ 0 = 0)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
+    (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
+    (hmodel :
+      ∀ y ∈ Ω.target,
+        V y = Smale.FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hleft : ∀ p, p.2 ≤ 0 → Ω p = Φ p)
+    (hright : ∀ᶠ z in 𝓝 (0 : E), ∀ t : ℝ, 1 ≤ t → Ω (Q z, t) = Φ (P z, t)) :
+    ∃ (N : Set M) (W : (x : M) → TangentSpace 𝓘(ℝ, B) x) (G : Flow ℝ M) (Ξ :
+      PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞),
+      IsCompact N ∧
+        N ⊆ Ω.target ∧
+          ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, W x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
+            (∀ x, IsMIntegralCurve (fun t => G t x) W) ∧
+              (∀ x, W x = 0 ↔ V x = 0) ∧
+                (∀ (f : M → ℝ) x,
+                    mvfderiv 𝓘(ℝ, B) f x (V x) < 0 → mvfderiv 𝓘(ℝ, B) f x (W x) < 0) ∧
+                  (∀ x ∉ N, ∀ᶠ y in 𝓝 x, W y = V y) ∧
+                    (∀ x,
+                        Set.range (fun t => G t x) = Set.range (fun t => F t x) ∧
+                          (∀ p,
+                              Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p) ↔
+                                Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) ∧
+                            ∀ p,
+                              Filter.Tendsto (fun t => G t x) Filter.atBot (𝓝 p) ↔
+                                Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p)) ∧
+                      Ξ.source = Q.source ×ˢ Set.univ ∧
+                        Ξ.target = Ω.target ∧
+                          (∀ y ∈ Ξ.target,
+                              W y =
+                                Smale.FlowConstruction.partialChartField Ξ.symm
+                                  (fun _ : E × ℝ => (0, 1)) y) ∧
+                            (∀ t : ℝ, Ξ (0, t) = Ω (0, t)) ∧
+                              ∀ᶠ z in 𝓝 (0 : E),
+                                (∀ t : ℝ, t ≤ -1 → Ξ (z, t) = Φ (Q z, t + v₀ z)) ∧
+                                  (∀ t : ℝ, 2 ≤ t → Ξ (z, t) = Φ (P z, t + v₁ z)) := by
+  obtain ⟨Ψ, hΨsource, hΨtarget, hΨmap, hΨmodel⟩ :=
+    Degree.FlowSuspension.exists_native_phase_cylinder Ω hsource Q hQtarget v₀ hv₀ V hmodel
+  let v : E → ℝ := fun z => v₁ z - v₀ z
+  have hv : ContDiff ℝ ∞ v := hv₁.sub hv₀
+  have hvzero : v 0 = 0 := by simp only [v, hv₁zero, hv₀zero, sub_self]
+  obtain
+    ⟨N, g, W, G, hN, hNsub, _, hgerm, _, hW, hG, hzero, hdesc, hfield, hgeometry, _, _, _, Ξ,
+      hΞsource, hΞtarget, hΞmodel, hΞleft, hΞright, hΞaxis, _⟩ :=
+    exists_native_phase_realization Ψ Q.open_source hQ0 hΨsource V hV hΨmodel F hF hv hvzero
+  have hsmall₀ : ∀ᶠ z in 𝓝 (0 : E), v₀ z ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2) :=
+    hv₀.continuous.continuousAt.eventually
+      (isOpen_Ioo.mem_nhds (by rw [hv₀zero]; constructor <;> norm_num))
+  have hsmall₁ : ∀ᶠ z in 𝓝 (0 : E), v₁ z ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2) :=
+    hv₁.continuous.continuousAt.eventually
+      (isOpen_Ioo.mem_nhds (by rw [hv₁zero]; constructor <;> norm_num))
+  refine
+    ⟨N, W, G, Ξ, hN, fun x hx => hΨtarget ▸ (hNsub hx).1, hW, hG, hzero, hdesc, hfield, hgeometry,
+      hΞsource, hΞtarget.trans hΨtarget, hΞmodel, ?_, ?_⟩
+  · intro t
+    rw [hΞaxis, hΨmap, hQzero, hv₀zero, add_zero]
+  · filter_upwards [hgerm, hright, hsmall₀, hsmall₁] with z hg hr h₀ h₁
+    constructor
+    · intro t ht
+      rw [hΞleft (z, t) (by dsimp; linarith), hΨmap]
+      exact hleft (Q z, t + v₀ z) (by dsimp; linarith [h₀.2])
+    · intro t ht
+      have hclock : t + g z + v₀ z = t + v₁ z := by
+        change g z = v₁ z - v₀ z at hg
+        rw [hg]
+        ring
+      rw [hΞright (z, t) (by dsimp; linarith), hΨmap, hclock]
+      exact hr (t + v₁ z) (by linarith [h₁.1])
+end Mathoverflow1973
