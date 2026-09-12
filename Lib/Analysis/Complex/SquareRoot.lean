@@ -25,8 +25,9 @@ development (`AnalyticRootCover.*`, `AnalyticRootCoverContinuation.*`), with the
 * `AnalyticRootCover.exists_analytic_square_root`, `.exists_analytic_square_root_ball` :
   square roots of nonvanishing analytic functions on discs/simply connected sets.
 * `AnalyticRootCoverContinuation.*` : continuation of the root along cover refinements.
-* `SpecialPeriods.exists_analytic_unit_root` : the unit-root step (prefix kept from the
-  source; deviation recorded in Lib/reports/A.md).
+* `AnalyticRootCover.exists_analytic_unit_root` : the unit-root step - an analytic
+  `m`-th root of a nonvanishing analytic germ (renamed from the project prefix
+  `SpecialPeriods` per review A item 3; no external consumers).
 
 ## References
 
@@ -57,7 +58,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem SpecialPeriods.exists_analytic_unit_root {g : ℂ → ℂ} {a : ℂ} {m : ℕ}
+theorem AnalyticRootCover.exists_analytic_unit_root {g : ℂ → ℂ} {a : ℂ} {m : ℕ}
     (hg : AnalyticAt ℂ g a) (hga : g a ≠ 0) (hm : 0 < m) :
     ∃ r : ℂ → ℂ, AnalyticAt ℂ r a ∧ r a ≠ 0 ∧ ∀ᶠ w in 𝓝 a, r w ^ m = g w := by
   obtain ⟨b, hb⟩ := IsAlgClosed.exists_pow_nat_eq (g a) hm
@@ -281,7 +282,7 @@ theorem AnalyticRootCover.exists_analytic_square_root {F : ℂ → ℂ} {a : ℂ
     ∃ r : ℂ → ℂ, AnalyticAt ℂ r a ∧ (∀ᶠ z in 𝓝 a, r z ^ 2 = F z) ∧ analyticOrderAt r a = n := by
   obtain ⟨u, hu, hua, hFu⟩ := hF.analyticOrderAt_eq_natCast.mp horder
   obtain ⟨q, hq, hqa, hqpow⟩ :=
-    SpecialPeriods.exists_analytic_unit_root hu hua (by norm_num : 0 < (2 : ℕ))
+    AnalyticRootCover.exists_analytic_unit_root hu hua (by norm_num : 0 < (2 : ℕ))
   let r : ℂ → ℂ := fun z => (z - a) ^ n * q z
   have hr : AnalyticAt ℂ r a := ((analyticAt_id.sub analyticAt_const).pow n).mul hq
   refine ⟨r, hr, ?_, ?_⟩
