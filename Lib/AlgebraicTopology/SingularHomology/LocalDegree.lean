@@ -17,17 +17,17 @@ The topology behind local degree (Hatcher, Prop 2.30): the punctured normed spac
 balls with spheres, and maps that are near-linear at a point have well-defined boundary data
 on small spheres:
 
-* `Smale.PuncturedRadial.sphereHomotopyEquiv` — `S(E) ≃ₕ {x : E | x ≠ 0}` (radial
+* `PuncturedRadial.sphereHomotopyEquiv` — `S(E) ≃ₕ {x : E | x ≠ 0}` (radial
   deformation `deformation`);
-* `Smale.LocalDegree.exists_pos_remainder_bound` — the derivative approximation at `0`;
-* `Smale.LocalDegree.BoundaryData` — for `f` differentiable at `0` with `f 0 = 0`, the small
+* `LocalDegree.exists_pos_remainder_bound` — the derivative approximation at `0`;
+* `LocalDegree.BoundaryData` — for `f` differentiable at `0` with `f 0 = 0`, the small
   sphere on which `f` avoids `0`, with `homology_compare` (the boundary map and the linear
   map agree in homology — the definition of the local degree's sign datum);
 * `PassageHomology.*` — punctured spaces, the two-puncture extension, linking
   spheres, cylinder puncture/slice/link, and the punctured passage trace (the "linking
   relation" of a path with a sphere).
 
-The radial-cylinder chart family that needs `Smale.PartialChart`/diffeomorphic glue stays in
+The radial-cylinder chart family that needs `PartialChart`/diffeomorphic glue stays in
 `Hopf/` (see Lib/reports/A.md, obstruction 3).
 
 ## Outline of the proof
@@ -51,8 +51,8 @@ The radial-cylinder chart family that needs `Smale.PartialChart`/diffeomorphic g
 
 ## Main definitions and results
 
-* `Smale.PuncturedRadial.sphereHomotopyEquiv` : the radial homotopy equivalence.
-* `Smale.LocalDegree.BoundaryData` and `.homology_compare` : the local degree boundary datum.
+* `PuncturedRadial.sphereHomotopyEquiv` : the radial homotopy equivalence.
+* `LocalDegree.BoundaryData` and `.homology_compare` : the local degree boundary datum.
 * `PassageHomology.radial_sphere_homology_relation` : the linking relation.
 
 ## References
@@ -463,19 +463,19 @@ def PassageHomology.puncturedVectorSpace (E : Type) [NormedAddCommGroup E] :
     TopologicalSpace.Opens E :=
   ⟨({0}ᶜ : Set E), isOpen_compl_singleton⟩
 
-abbrev Smale.PuncturedRadial.Space (N : Type*) [Zero N] :=
+abbrev PuncturedRadial.Space (N : Type*) [Zero N] :=
   { u : N // u ≠ 0 }
 
-def Smale.PuncturedRadial.fromSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
+def PuncturedRadial.fromSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
     (hr : 0 < r) : C(Metric.sphere (0 : N) 1, Space N) :=
   ⟨fun u => ⟨r • (u : N), smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u)⟩,
     (continuous_const.smul continuous_subtype_val).subtype_mk _⟩
 
-def Smale.PuncturedRadial.blendVector {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
+def PuncturedRadial.blendVector {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
     (q : (unitInterval) × Space N) : N :=
   ((1 - (q.1 : ℝ)) + (q.1 : ℝ) * (r / ‖q.2.val‖)) • q.2.val
 
-theorem Smale.PuncturedRadial.continuous_blendVector {N : Type*} [NormedAddCommGroup N]
+theorem PuncturedRadial.continuous_blendVector {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) : Continuous (blendVector (N := N) r) := by
   have ht : Continuous (fun q : (unitInterval) × Space N => (q.1 : ℝ)) :=
     continuous_subtype_val.comp continuous_fst
@@ -487,7 +487,7 @@ theorem Smale.PuncturedRadial.continuous_blendVector {N : Type*} [NormedAddCommG
             (continuous_const.div hu.norm (fun q => norm_ne_zero_iff.mpr q.2.property)))).smul
       hu
 
-theorem Smale.PuncturedRadial.blendVector_ne_zero {N : Type*} [NormedAddCommGroup N]
+theorem PuncturedRadial.blendVector_ne_zero {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) (hr : 0 < r) (q : (unitInterval) × Space N) : blendVector r q ≠ 0 :=
   by
   have hu : 0 < ‖q.2.val‖ := norm_pos_iff.mpr q.2.property
@@ -498,7 +498,7 @@ theorem Smale.PuncturedRadial.blendVector_ne_zero {N : Type*} [NormedAddCommGrou
     simpa only [smul_eq_mul, mul_one, Set.mem_Ioi] using h
   exact smul_ne_zero hpos.ne' q.2.property
 
-theorem Smale.LocalDegree.exists_pos_remainder_bound {E F : Type*} [NormedAddCommGroup E]
+theorem LocalDegree.exists_pos_remainder_bound {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ Metric.ball (0 : E) ε, ‖f x - L x‖ ≤ (1 / 2 : ℝ) * ‖L x‖ := by
@@ -519,12 +519,12 @@ theorem Smale.LocalDegree.exists_pos_remainder_bound {E F : Type*} [NormedAddCom
     Metric.eventually_nhds_iff_ball.mp
       ((herr.trans_isBigO hbig).bound (by norm_num : (0 : ℝ) < 1 / 2))
 
-def Smale.LocalDegree.blend {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.blend {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (t : (unitInterval))
     (x : E) : F :=
   L x + (t : ℝ) • (f x - L x)
 
-theorem Smale.LocalDegree.blend_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem LocalDegree.blend_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F) (t : (unitInterval))
     {x : E} (hx : x ≠ 0) (hbound : ‖f x - L x‖ ≤ (1 / 2 : ℝ) * ‖L x‖) : blend f L t x ≠ 0 := by
   have hL : L x ≠ 0 := fun h => hx (L.injective (h.trans (map_zero L).symm))
@@ -542,35 +542,35 @@ theorem Smale.LocalDegree.blend_ne_zero {E F : Type*} [NormedAddCommGroup E] [No
   rw [heq, norm_neg] at hsmall
   exact (lt_irrefl _ hsmall)
 
-theorem Smale.LocalDegree.image_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem LocalDegree.image_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F) {x : E} (hx : x ≠ 0)
     (hbound : ‖f x - L x‖ ≤ (1 / 2 : ℝ) * ‖L x‖) : f x ≠ 0 := by
   have h := blend_ne_zero L (1 : (unitInterval)) hx hbound
   change L x + (1 : ℝ) • (f x - L x) ≠ 0 at h
   simpa using h
 
-def Smale.LocalDegree.linearSphereMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.linearSphereMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r) :
-    C(Metric.sphere (0 : E) 1, Smale.PuncturedRadial.Space F) :=
+    C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
   ⟨fun u =>
     ⟨L (r • (u : E)), fun h =>
       (smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u))
         (L.injective (h.trans (map_zero L).symm))⟩,
     (L.continuous.comp (continuous_const.smul continuous_subtype_val)).subtype_mk _⟩
 
-def Smale.LocalDegree.boundaryMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.boundaryMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r)
     (hc : Continuous (fun u : Metric.sphere (0 : E) 1 => f (r • (u : E))))
     (hb :
       ∀ u : Metric.sphere (0 : E) 1,
         ‖f (r • (u : E)) - L (r • (u : E))‖ ≤ (1 / 2 : ℝ) * ‖L (r • (u : E))‖) :
-    C(Metric.sphere (0 : E) 1, Smale.PuncturedRadial.Space F) :=
+    C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
   ⟨fun u =>
     ⟨f (r • (u : E)),
       image_ne_zero L (smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u)) (hb u)⟩,
     hc.subtype_mk _⟩
 
-def Smale.LocalDegree.boundaryHomotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.boundaryHomotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r)
     (hc : Continuous (fun u : Metric.sphere (0 : E) 1 => f (r • (u : E))))
     (hb :
@@ -598,7 +598,7 @@ def Smale.LocalDegree.boundaryHomotopy {E F : Type*} [NormedAddCommGroup E] [Nor
     apply Subtype.ext
     simp [blend, boundaryMap]
 
-structure Smale.LocalDegree.BoundaryData {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure LocalDegree.BoundaryData {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (s : Set E) where
   radius : ℝ
   radius_pos : 0 < radius
@@ -608,11 +608,11 @@ structure Smale.LocalDegree.BoundaryData {E F : Type*} [NormedAddCommGroup E] [N
     ∀ u : Metric.sphere (0 : E) 1,
       ‖f (radius • (u : E)) - L (radius • (u : E))‖ ≤ (1 / 2 : ℝ) * ‖L (radius • (u : E))‖
 
-theorem Smale.LocalDegree.norm_radius_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem LocalDegree.norm_radius_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (r : ℝ) (hr : 0 < r) (u : Metric.sphere (0 : E) 1) : ‖r • (u : E)‖ = r := by
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property, mul_one]
 
-theorem Smale.LocalDegree.nonempty_boundaryData {E F : Type*} [NormedAddCommGroup E]
+theorem LocalDegree.nonempty_boundaryData {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     {s : Set E} (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0)
     (hs : s ∈ 𝓝 (0 : E)) (hc : ContinuousOn f s) : Nonempty (BoundaryData f L s) := by
@@ -633,7 +633,7 @@ theorem Smale.LocalDegree.nonempty_boundaryData {E F : Type*} [NormedAddCommGrou
   rw [mem_ball_zero_iff, norm_radius_smul r hr u]
   exact hrε
 
-theorem Smale.LocalDegree.nonempty_boundaryData_of_contDiffAt {E F : Type*} [NormedAddCommGroup E]
+theorem LocalDegree.nonempty_boundaryData_of_contDiffAt {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     {s : Set E} (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0)
     (hs : s ∈ 𝓝 (0 : E)) (hc : ContDiffAt ℝ ∞ f 0) : Nonempty (BoundaryData f L s) := by
@@ -642,27 +642,27 @@ theorem Smale.LocalDegree.nonempty_boundaryData_of_contDiffAt {E F : Type*} [Nor
     nonempty_boundaryData L hf hzero (Filter.inter_mem hs ht) (htc.mono Set.inter_subset_right)
   exact ⟨{ b with ball_subset := b.ball_subset.trans Set.inter_subset_left }⟩
 
-def Smale.LocalDegree.BoundaryData.map {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.BoundaryData.map {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F} {s : Set E}
-    (b : Smale.LocalDegree.BoundaryData f L s) :
-    C(Metric.sphere (0 : E) 1, Smale.PuncturedRadial.Space F) :=
-  Smale.LocalDegree.boundaryMap f L b.radius b.radius_pos b.continuous b.remainder_bound
+    (b : LocalDegree.BoundaryData f L s) :
+    C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
+  LocalDegree.boundaryMap f L b.radius b.radius_pos b.continuous b.remainder_bound
 
-theorem Smale.LocalDegree.BoundaryData.map_coe {E F : Type*} [NormedAddCommGroup E]
+theorem LocalDegree.BoundaryData.map_coe {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
-    {s : Set E} (b : Smale.LocalDegree.BoundaryData f L s) (u : Metric.sphere (0 : E) 1) :
+    {s : Set E} (b : LocalDegree.BoundaryData f L s) (u : Metric.sphere (0 : E) 1) :
     (b.map u).val = f (b.radius • (u : E)) :=
   rfl
 
-def Smale.LocalDegree.BoundaryData.homotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.BoundaryData.homotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F} {s : Set E}
-    (b : Smale.LocalDegree.BoundaryData f L s) :
-    (Smale.LocalDegree.linearSphereMap L b.radius b.radius_pos).Homotopy b.map :=
-  Smale.LocalDegree.boundaryHomotopy f L b.radius b.radius_pos b.continuous b.remainder_bound
+    (b : LocalDegree.BoundaryData f L s) :
+    (LocalDegree.linearSphereMap L b.radius b.radius_pos).Homotopy b.map :=
+  LocalDegree.boundaryHomotopy f L b.radius b.radius_pos b.continuous b.remainder_bound
 
-def Smale.LocalDegree.puncturedLinearHomeomorph {E F : Type} [NormedAddCommGroup E]
+def LocalDegree.puncturedLinearHomeomorph {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) :
-    Smale.PuncturedRadial.Space E ≃ₜ Smale.PuncturedRadial.Space F :=
+    PuncturedRadial.Space E ≃ₜ PuncturedRadial.Space F :=
   L.toHomeomorph.subtype
     (fun x => by
       change x ≠ 0 ↔ L x ≠ 0
@@ -672,11 +672,11 @@ def Smale.LocalDegree.puncturedLinearHomeomorph {E F : Type} [NormedAddCommGroup
       · intro hx h
         exact hx (h ▸ map_zero L))
 
-theorem Smale.LocalDegree.BoundaryData.homology_compare {E F : Type} [NormedAddCommGroup E]
+theorem LocalDegree.BoundaryData.homology_compare {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
-    {s : Set E} (b : Smale.LocalDegree.BoundaryData f L s) (k : ℕ) :
+    {s : Set E} (b : LocalDegree.BoundaryData f L s) (k : ℕ) :
     SingularMayerVietoris.singularHomologyMap b.map k =
       SingularMayerVietoris.singularHomologyMap
-        (Smale.LocalDegree.linearSphereMap L b.radius b.radius_pos) k :=
+        (LocalDegree.linearSphereMap L b.radius b.radius_pos) k :=
   (SingularHomology.homotopy_homologyMap b.homotopy k).symm
 end Mathoverflow1973

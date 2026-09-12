@@ -60,9 +60,9 @@ namespace Mathoverflow1973.SixSphereCube
 export Mathoverflow1973.OnePointCollapse (collapse collapseMap collapse_coe collapse_eq_iff collapse_eq_infty_iff collapse_of_mem collapse_of_not_mem collapse_preimage_compl_of_mem collapse_preimage_of_not_mem collapse_surjective continuous_collapse isQuotientMap_collapse collapseLift collapseLift_comp collapseLift_apply)
 end Mathoverflow1973.SixSphereCube
 
-namespace Smale.HandleCoreAttachment
-export Mathoverflow1973.Smale.HandleCoreAttachment (core coreSpace coreInclusion)
-end Smale.HandleCoreAttachment
+namespace HandleCoreAttachment
+export Mathoverflow1973.HandleCoreAttachment (core coreSpace coreInclusion)
+end HandleCoreAttachment
 
 namespace Mathoverflow1973.PeriodTorusHigherHomology
 export Mathoverflow1973.SingularHomology (crossInsertLeft crossInsertLeft_natural inducedChain_crossInsertLeft)

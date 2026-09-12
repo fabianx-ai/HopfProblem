@@ -69,7 +69,7 @@ greater than four*, Ann. Math. 74 (1961).
 | **E1** | Morse theory II: rearrangement, cancellation, births — h-cobordism Thm 4.1, 4.8, 5.4, 8.1 | SingularHomology: 5859–15299 (field rescaling, time change, level flow cylinder, isotopy realization, phase charts, transverse germs, field-chart gluing, cubic model, band Lyapunov function, `remove_morse_band_pair`, `cancel_of_transverse_level_isotopy`), 28261–28353; DifferentialTopology: 14132–14773, 14992–18213 (cubic model and its flow, model cancellation, isotopy suspension), 20179–20983, 28637–28926 (interval translation); SphereTopology: 3008–3717, 5000–6556 (plateau weights, **Rearrangement Theorem**, index ordering, first cancellation), 8943–9512 (superfluous minima, minimal systems, duality f ↦ −f), 9887–9960, 10017–10431 (self-indexing, disc isotopy), 11026–11878 (Morse birth) | `Lib/Geometry/Manifold/Morse/{Cubic,CubicFlow,BandLyapunov,Cancellation,Rearrangement,IndexOrdering,SuperfluousMinima,Birth,Duality}.lean`, `Lib/Geometry/Manifold/Flow/{TimeChange,PhaseChart,LevelCylinder,FieldChartGluing}.lean`, `Lib/Analysis/Calculus/IntervalTranslation.lean` | pure move (all stated for general dimension m and general model space E) | ≈20,000 | D1, D2 | GLM | named in the lane report before the rename commit |
 | **E2** | Transversality, general position, isotopy extension, Whitney immersion/embedding — Hirsch Ch. 2–3, 8; Guillemin–Pollack Ch. 2; Milnor TDV §2–3 | DifferentialTopology: 9043–9396, 9974–10223, 17206–17544, 20996–22206, 22263–23890, 23903–27168 (immersion/embedding; generalize `Plane := ℝ × ℝ`, `5 ≤ finrank G`, `finrank E = 2`), 27462–28240, 30435–30589, 30616–30888; SingularHomology: 4359–5310, 15299–16000, 19058–19220, 23000–24933 | `Lib/Geometry/Manifold/Transversality/{Basic,Sard,Parametric,Ambient,GeneralPosition}.lean`, `Lib/Geometry/Manifold/Isotopy/{Supported,Germs,Linearization,DiskTheorem,Homogeneity}.lean`, `Lib/Geometry/Manifold/Immersion/{Relative,Arc,FrameChart}.lean`, `Lib/AlgebraicTopology/SphereMaps/Nullhomotopic.lean` | mostly pure move; generalize the 2-manifold-in-dimension-≥ 5 immersion chain to `2k ≤ n` | ≈12,000 | D1 | Kimi | named in the lane report before the rename commit |
 | **F** | Whitney trick, intersection numbers, handle slides, integer-matrix reduction — h-cobordism §6–7 (Thm 6.4, 7.8); Smale 1961 §4–5; Hatcher Prop 2.30 | SingularHomology: 16000–28261 (signed intersection numbers, strip/normal data, Whitney bigon model, framings, filling lemma, graph motion, rank-3 Whitney model, belt cancellation step); SphereTopology: 2680–2967, 9532–9878, 14839–15295, 18068–18588 (handle chain complex, `IntegerPresentation`); DifferentialTopology: 27220–27329, 28344–28604, 28935–30219 (arc tubes, `LongitudinalTubeMotion`); Recognition: 4078–10476 (attaching-sphere classes, sublevel exactness, intersection matrix, surgery cut transport, sheet passage / handle slides / transvection algebra, local degree = sum of signs, single intersection) | `Lib/Geometry/Manifold/Whitney/{IntersectionNumber,StripNormalData,BigonModel,Framing,Filling,GraphMotion,Trick,BeltCancellation,ArcTube,LongitudinalMotion}.lean`, `Lib/Geometry/Manifold/Morse/{AttachingClass,IntersectionMatrix,HandleSlide,SingleIntersection}.lean`, `Lib/LinearAlgebra/Matrix/TransvectionReduction.lean`, `Lib/Algebra/Module/IntegerPresentation.lean` | generalize-then-move: sheets of dimensions p + q = n (now 3 + 2 = 6), handle index k (now 2/3), `finrank E = 6` (37 sites in Recognition) → n ≥ 5 with 3 ≤ k ≤ n − 3 or π₁-trivial levels; the transvection / integer-presentation algebra is a pure move and lands first | ≈22,000 | A, D1, D2, E1, E2 | Kimi | named in the lane report before the rename commit |
-| **G** | Smale's recognition theorem (generalized Poincaré, smooth, compact) — Smale 1961 Thm A; h-cobordism Thm 9.1 | SphereTopology: 3778–4876, 8709–8882, 10489–13361 (embedded discs in a homotopy sphere, index-1/2 cancellation, handle trade, minimal ordered system without outer indices), 18589–18831; Recognition: 10477–11148, 11255–11317 (`homeomorphic_sixSphere_of_homotopySixSphere`); SingularHomology: 19048–19058, 19220–19302 | `Lib/Geometry/Manifold/Morse/{MiddleBlocks,HandleTrade,MinimalSystem}.lean`, `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | per decision Q1: keep n = 6, generalize only the model space (the theorem already takes an arbitrary `E` with `finrank ℝ E = 6`); move into `Lib/` with the six-sphere abbreviations consolidated on `Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1`; the relation to Mathlib's `proof_wanted ContinuousMap.HomotopyEquiv.nonempty_homeomorph_sphere` (topological, all n, Euclidean model) is recorded in the file docstring | ≈4,500 | C, D1, D2, E1, E2, F | Kimi | named in the lane report before the rename commit |
+| **G** | Smale's recognition theorem (generalized Poincaré, smooth, compact) — Smale 1961 Thm A; h-cobordism Thm 9.1 | SphereTopology: 3778–4876, 8709–8882, 10489–13361 (embedded discs in a homotopy sphere, index-1/2 cancellation, handle trade, minimal ordered system without outer indices), 18589–18831; Recognition: 10477–11148, 11255–11317 (`homeomorphic_sixSphere_of_homotopySixSphere`); SingularHomology: 19048–19058, 19220–19302 | `Lib/Geometry/Manifold/Morse/{MiddleBlocks,HandleTrade,MinimalSystem}.lean`, `Lib/Geometry/Manifold/PoincareConjecture/lean` | per decision Q1: keep n = 6, generalize only the model space (the theorem already takes an arbitrary `E` with `finrank ℝ E = 6`); move into `Lib/` with the six-sphere abbreviations consolidated on `Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1`; the relation to Mathlib's `proof_wanted ContinuousMap.HomotopyEquiv.nonempty_homeomorph_sphere` (topological, all n, Euclidean model) is recorded in the file docstring | ≈4,500 | C, D1, D2, E1, E2, F | Kimi | named in the lane report before the rename commit |
 | **H** | Complex analysis: Riemann mapping, Schwarz reflection, boundary extension, Möbius transformations, ∂̄ / Cousin problem, holomorphic square roots — Ahlfors Ch. 3–6; Rudin 13–14; Forster §5, §13–14; Hörmander Ch. I | LCP/AnalyticFillings: `RiemannMapping` core 4369–5578 with the 31 `_root_.Complex.*` steps 4711–5413 (the triangle part 5579–9750 stays), `RiemannBoundary` + `SchwarzReflection` (4409–9121, interleaved), `RiemannSphere` 3581–4019, `TriangleRiemannNormalization` 4149–4266, three generic lemmas of `TriangleUniformizationGluing` (`contMDiff_of_continuous_of_finite`, `contMDiff_symm_of_contMDiff`, `biholomorphOfHomeomorph`); LCP/PeriodConstruction: `HolomorphicCousin` 15593–17278, `AnalyticRootCover(+Continuation)` 12060–13206, `RiemannSphere` 8012–8082 | `Lib/Analysis/Complex/{RiemannMapping,RiemannMapping/Steps,SchwarzReflection,BoundaryExtension,Mobius,DBar,Cousin,SquareRoot}.lean`, `Lib/Geometry/Manifold/Instances/RiemannSphere.lean`, `Lib/Geometry/Manifold/Complex/Biholomorph.lean` | pure move (two of the 31 steps duplicate `private` lemmas of Mathlib's `Analysis/Complex/RiemannMapping.lean`; keep them until an upstream PR de-privatizes them — decision Q6) | ≈4,900 | — | GLM | named in the lane report before the rename commit |
 | **I** | Quotient manifolds, coverings, two-chart bundles, mapping torus and Wang sequence, split extensions — Forster §1–5; Hatcher §1.3, Ex 2.48; Bredon III.3 | LCP/PeriodConstruction: `LocalOrbitQuotient`, `OnePointAtlas`, `TwoAffineCharts`, `FreeActionLocus`, `BranchedQuotientAtlas`; LCP/LocalModels: `CoveringQuotient`, `DiscreteQuotient`, `MappingTorus` (6899–8395), `ThreefoldHomologyFinitenessRetraction` 8731–8924 (a generic sublevel retraction, misnamed); LCP/CuspFilling: `InvariantSubsetQuotient`, `CoveringOrthant`, `ProductRestriction`, `CuspRetraction.Patching` 490–631; LCP/AnalyticFillings + BoundaryTopology: `DiagonalQuotient`; LCP/BoundaryTopology: `TwoOpenTransition`, `SplitGroupExtension`, `MappingTorusHomology` 3988–4609, `TwistGroup`; LCP/IntegralHomology: `MappingTorusHomology` 7576–8688 | `Lib/Geometry/Manifold/Quotient/{LocalOrbit,Atlas,Covering,Lattice}.lean`, `Lib/Geometry/Manifold/{OnePoint,ProjectiveLine}.lean`, `Lib/Topology/Algebra/FreeActionLocus.lean`, `Lib/Topology/Covering/{Quotient,DiagonalQuotient}.lean`, `Lib/AlgebraicTopology/FundamentalGroup/DiagonalQuotient.lean`, `Lib/Topology/FiberBundle/TwoOpenTransition.lean`, `Lib/GroupTheory/{SplitExtension,PresentedGroup/CentralTwist}.lean`, `Lib/Topology/MappingTorus/{Basic,HomologyCover,WangAlgebra,Wang}.lean`, `Lib/Topology/Homotopy/{SublevelRetraction,LocalCollapse}.lean` | pure move (`TwistGroup`: exponents 3, 4 may stay pinned) | ≈5,700 | A (Wang sequence only) | GLM | named in the lane report before the rename commit |
 | **J** | Homology of tori, Pontryagin product, exterior-power coordinates — Hatcher Ex 2.48, Cor 3.28, §3.C | LCP/CuspFilling: `PeriodTorusHigherHomology` 13745–15977 (H_n(Tʳ) ≅ ℤ^{C(r,n)}); LCP/Specialization: `PeriodTorusHigherHomology` 2463–8499 (rank 4), `PeriodTorusHigherHomologyPontryagin` 3142–6154, `PeriodTorusHigherHomologyExterior` 6636–6882; FiniteCore 339–392 | `Lib/AlgebraicTopology/SingularHomology/{Torus,TorusExterior,Pontryagin}.lean`, `Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean` | pure move (torus, Pontryagin, exterior basis) + generalize rank 4 → r (`Lattice := Fin 4 → ℤ` is the only obstacle) | ≈5,600 | A; C (`CrossProduct.lean`) if the rank-4 block uses the cross product | Kimi | named in the lane report before the rename commit |
@@ -113,23 +113,23 @@ each model takes its next independent lane.
    Lib/AxiomAudit.lean` must show `[propext, Classical.choice, Quot.sound]` for each. Top
    theorems: A `SingularMayerVietoris.exact_at_ambient`,
    `SphereHomology.unitSphere_homology_subsingleton`,
-   `Smale.LinearSphereAction.homology_eq_sign_smul`; B `simplyConnectedSpace_of_open_cover`,
+   `LinearSphereAction.homology_eq_sign_smul`; B `simplyConnectedSpace_of_open_cover`,
    `FundamentalGroupVanKampen.TwoOpenCover.pushoutEquiv`; C the general
-   `hurewiczLinearEquiv` and its n = 6 instance; D1 `Smale.ManifoldMorse.exists_morse_function`,
+   `hurewiczLinearEquiv` and its n = 6 instance; D1 `ManifoldMorse.exists_morse_function`,
    `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn`,
-   `Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits`,
-   `Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`; D2
-   `Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood`,
+   `ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits`,
+   `ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`; D2
+   `NativeEuclideanEmbedding.exists_tubularNeighborhood`,
    `MorseCells.built_of_compact_smooth_manifold`; E1
    `MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
    `MorseCancel.cancel_of_transverse_level_isotopy`,
    `MorseCancel.exists_excellent_indexed_morse_birth`; E2
-   `Smale.NativeTransversality.exists_ambient_transverse_diffeomorph`,
-   `Smale.ManifoldImmersion.exists_compact_embedding_of_immersion`,
+   `NativeTransversality.exists_ambient_transverse_diffeomorph`,
+   `ManifoldImmersion.exists_compact_embedding_of_immersion`,
    `MorseCancel.exists_isotopic_pointMoving_of_path`; F
-   `Smale.TubularBigon.exists_rankThree_relative_cancellation` (generalized),
+   `TubularBigon.exists_rankThree_relative_cancellation` (generalized),
    `MorseCancel.primitive_row_has_unit_after_column_additions`; G
-   `Smale.homeomorphic_sixSphere_of_homotopySixSphere` (statement unchanged); H
+   `homeomorphic_sixSphere_of_homotopySixSphere` (statement unchanged); H
    `RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero`,
    `HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution`,
    `AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros`; I
@@ -137,7 +137,7 @@ each model takes its next independent lane.
    `PeriodTorusHigherHomology.productTorusHomologyEquiv`.
 4. The Comparator verdict is unchanged: `lake exe comparator comparator/config.json`. No lane
    changes the statement of any `Hopf/` declaration; lanes C and G change only the *proofs*
-   of `threefoldHomotopyEquiv` and `Smale.homeomorphic_sixSphere_of_homotopySixSphere`.
+   of `threefoldHomotopyEquiv` and `homeomorphic_sixSphere_of_homotopySixSphere`.
 5. Definition of done per lane: `Lib/README.md`.
 
 ## 4. Decisions (defaults; each is DEFAULT, flippable by the repository owner)
@@ -182,7 +182,7 @@ each model takes its next independent lane.
 - **Universe lift.** All singular-homology statements use `(X : Type)`; lifting to `Type u`
   is a separate pass after lane A.
 - **Sphere consolidation.** Five spellings of the same sphere (`SphereHomology.UnitSphere n`,
-  `Smale.Hemisphere.Sphere n`, `Smale.SixSphere`, `SixSphere`, `SixSphereCube.StandardSphere`)
+  `Hemisphere.Sphere n`, `SixSphere`, `SixSphere`, `SixSphereCube.StandardSphere`)
   and two circle models (`Circle` ⊂ ℂ, `AddCircle 1`) are unified in lane G.
 
 ## 6. Honest limits of the census
@@ -210,10 +210,10 @@ Hatcher's Thm 4.32 / 4.37 were verified; other Hatcher numbers are from the 2002
    `universe u v` and an unused `open scoped` list this way).
 3. Per-declaration `attribute [local instance …] … in` wrappers (about 150 per tail file;
    mostly `Classical.propDecidable` at priority 100, plus load-bearing
-   `@[instance_reducible]` definitions such as `Smale.RegularLevel.chartedSpace`,
+   `@[instance_reducible]` definitions such as `RegularLevel.chartedSpace`,
    `PeriodTorusHigherHomology.integerLinearMapModule/integerTensorModule`,
    `ThreefoldHomologyStarCoproduct.singularChainsFiniteBiproducts`). Many theorem statements
-   contain `letI := Smale.RegularLevel.chartedSpace hf hreg`.
+   contain `letI := RegularLevel.chartedSpace hf hreg`.
 4. Blocks interleave every few hundred lines (`AdaptedWindows`/`MorseCancel`/`Degree` in
    SphereTopology and Recognition); cut by declaration, not by line, and re-check boundaries
    with the regex in `scripts/lib_stock_census.py`.
@@ -221,5 +221,5 @@ Hatcher's Thm 4.32 / 4.37 were verified; other Hatcher numbers are from the 2002
    instances need real names in the rename commit.
 6. Consumers with hundreds of references (`SingularMayerVietoris.` ≈1,450 in IntegralHomology,
    ≈1,333 in Specialization; `PeriodTorusHigherHomology.` ≈1,657 in IntegralHomology;
-   `MappingTorus.` ≈653 in IntegralHomology; `Smale.` ≈3,000 in SphereTopology) are re-routed
+   `MappingTorus.` ≈653 in IntegralHomology; `` ≈3,000 in SphereTopology) are re-routed
    through `export` shims first (Q2).

@@ -140,7 +140,7 @@ sign-symmetric) kills index 4. $\square$
 
 The surviving minimal system has exactly two critical points: the unique minimum (index 0) and
 the unique maximum (index 6). By Reeb's theorem (lane D1:
-`Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`, via the two-disc
+`ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`, via the two-disc
 decomposition: sublevel discs from the signed Morse charts, glued along the boundary sphere),
 $M$ is homeomorphic to the sphere of dimension $\mathrm{finrank}\, E = 6$ — the unit sphere of
 $\mathbb{R}^7$ in the consolidated spelling. $\square$
@@ -154,7 +154,7 @@ no inner product is used anywhere in the chain), and the `Lib/` statement drops 
 `[SecondCountableTopology M]` of the current wrapper (Recognition.lean:11314 — the inner chain
 never uses it; a compact smooth Hausdorff manifold is second countable anyway, so the wrapper
 loses no content). The five spellings of $S^6$
-(`SphereHomology.UnitSphere 6`, `Smale.Hemisphere.Sphere 6`, `Smale.SixSphere`, `SixSphere`,
+(`SphereHomology.UnitSphere 6`, `Hemisphere.Sphere 6`, `SixSphere`, `SixSphere`,
 `SixSphereCube.StandardSphere`), all definitionally `Metric.sphere (0 : EuclideanSpace ℝ
 (Fin 7)) 1`, consolidate on that spelling in the `Lib/` file; the `Hopf/` consumer keeps its
 statement verbatim (the re-routing is definitional).
@@ -169,7 +169,7 @@ indices $= \{2, 3, 4\}$ and index 4 is index 2 of $-f$". Do not start it.
 
 | # | Lemma (§) | Inputs | Output | Current `Hopf/` home (names; lines on 721fc82) |
 |---|---|---|---|---|
-| G1 | Homotopy-sphere data (§1) | homotopy invariance (A), spheres (A/B) | path/simply connected, homology vanishing of $M$ | `Smale.simplyConnectedSpace_of_homotopySixSphere`, `pathConnectedSpace_of_homotopySixSphere` (SingularHomology 19048–19056); `homotopySixSphere_homology_subsingleton` (SphereTopology 18589) |
+| G1 | Homotopy-sphere data (§1) | homotopy invariance (A), spheres (A/B) | path/simply connected, homology vanishing of $M$ | `simplyConnectedSpace_of_homotopySixSphere`, `pathConnectedSpace_of_homotopySixSphere` (SingularHomology 19048–19056); `homotopySixSphere_homology_subsingleton` (SphereTopology 18589) |
 | G2 | Minimal ordered systems (§3) | D1 (Morse existence), E1 (rearrangement) | minimal excellent ordered system, one min, one max | `exists_minimal_excellent_morse_system`, `exists_index_ordered_morse_system_preserving_critical_points`, `minimal_excellent_morse_extreme_counts_one` (SphereTopology 9456/10109/10180); `exists_outer_index_minimal_ordered_morse_system` (13171) |
 | G3 | Handle trade (§4) | E1 (birth, cancellation), E2 (arcs), B ($\pi_1$) | index-1 → index-3 trade; outer counts vanish | `exists_excellent_indexed_morse_birth` (11803), `cancel_one_two_pair_at_unchanged_cut_of_unique_minimum` (12767), `exists_one_to_three_handle_trade*` (12962/13050/13143), `outer_index_minimal_index_one_count_zero` (13231), `outer_index_minimality_neg` (13279), `outer_index_minimal_outer_counts_zero` (13312) |
 | G4 | Middle blocks and the matrix (§5) | F10, F1 | the middle family; the middle matrix surjective | `exists_middle_index_blocks` (18749), `exists_ordered_middle_family` (18831), `exists_canonical_middle_family` (Rec 4316), `canonical_middle_matrix_surjective` (Rec 5023), `middleMatrix_surjective_of_homotopySphere/_of_complete_blocks` (18701/18723) |
@@ -177,7 +177,7 @@ indices $= \{2, 3, 4\}$ and index 4 is index 2 of $-f$". Do not start it.
 | G6 | Two critical points; Reeb (§6) | G2–G5, D1 (Reeb) | `Nonempty (M ≃ₜ S⁶)` | `critical_pair_of_surgery_count_two` (Rec 11255), `exists_two_critical_point_morse_of_homotopySixSphere` (Rec 11283), `nonempty_homeomorph_of_homotopySixSphere` (Rec 11301), headline (Rec 11312) |
 
 Dependency order is row order; G1–G3 live in `Morse/MinimalSystem.lean` + `Morse/HandleTrade.lean`,
-G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/Smale.lean`.
+G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/lean`.
 
 ---
 
@@ -188,7 +188,7 @@ G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/Smale.lean`.
 | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4 (block structure, middle matrix surjectivity) | none existing; shape after the reference example |
 | `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3 | none existing |
 | `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G2, G5's count theorems | none existing |
-| `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | G1, G6 (the headline) | `Mathlib/Geometry/Manifold/PoincareConjecture.lean` (the `proof_wanted` file — our file is its smooth compact n=6 realization; the docstring records the relation) |
+| `Lib/Geometry/Manifold/PoincareConjecture/lean` | G1, G6 (the headline) | `Mathlib/Geometry/Manifold/PoincareConjecture.lean` (the `proof_wanted` file — our file is its smooth compact n=6 realization; the docstring records the relation) |
 
 ---
 
@@ -200,14 +200,14 @@ simply-connected inputs). The consumers `Hopf/Final.lean` (through `
 threefoldHomotopyEquiv`, which lane C re-routes) keep their statements.
 
 **Row G-headline (the axiom probe).** Current (Recognition 11312, verbatim in the G map):
-`Smale.homeomorphic_sixSphere_of_homotopySixSphere (E : Type) [NormedAddCommGroup E]
+`homeomorphic_sixSphere_of_homotopySixSphere (E : Type) [NormedAddCommGroup E]
 [NormedSpace ℝ E] [FiniteDimensional ℝ E] (M : Type) [TopologicalSpace M] [T2Space M]
 [SecondCountableTopology M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
-(hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ Smale.SixSphere) : Nonempty (M ≃ₜ Smale.SixSphere)`.
-Target: same statement in `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` as
+(hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ SixSphere) : Nonempty (M ≃ₜ SixSphere)`.
+Target: same statement in `Lib/Geometry/Manifold/PoincareConjecture/lean` as
 `Geometry.Manifold.PoincareConjecture.homeomorphic_sphere_of_homotopyEquiv_sphere_six` (name
 fixed at the rename commit) **minus** the vestigial `[SecondCountableTopology M]`, with
-`Smale.SixSphere` replaced by the consolidated `Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1`.
+`SixSphere` replaced by the consolidated `Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1`.
 The `Hopf/` theorem keeps its current statement (instance included) and re-proves through the
 Lib theorem (a `letI`/infer-step adapter — the statement seen from `Hopf/` is unchanged, per
 the comparator gate).
@@ -234,7 +234,7 @@ consolidation (defeq, no consumer-visible change). The `Type` vs `Type*` note: t
    EuclideanSpace ℝ (Fin 7)) 1` spelling; the consumer-side abbrevs stay as local notation in
    `Hopf/` until the final cleanup; `Hopf/Final.lean`'s own `unitSphere` abbrev is a consumer
    detail, unchanged.
-4. **The Mathlib `proof_wanted` relation** goes into the `Smale.lean` module docstring verbatim
+4. **The Mathlib `proof_wanted` relation** goes into the `lean` module docstring verbatim
    as in §1 remark (c).
 5. **Review.** Stage-2 independent review of §§1–7: scheduled; report in `~/s6-notes/`.
 6. **GLM-lane overlap discovered after landing A–D2/H/I:** lane E2's source ranges were largely

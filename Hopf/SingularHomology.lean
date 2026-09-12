@@ -236,7 +236,7 @@ theorem MorseCancellation.exists_native_open_curve_with_germ {G H N : Type*} [No
     intro t ht
     have hvalAt := (ha.contMDiffAt (hU.mem_nhds ht.1)).congr_of_eventuallyEq (hval ht)
     exact ((ContMDiffAt.subtypeVal_comp_iff S A t).mp hvalAt).contMDiffWithinAt
-  obtain ⟨g, hg, heq⟩ := Smale.exists_smooth_curve_with_germ_at hA hV htV
+  obtain ⟨g, hg, heq⟩ := exists_smooth_curve_with_germ_at hA hV htV
   refine ⟨g, hg, ?_⟩
   filter_upwards [heq, hval htV] with t ht hta
   exact (congrArg Subtype.val ht).trans hta
@@ -283,7 +283,7 @@ theorem MorseCancellation.exists_embedded_native_open_arc_with_local_germs {G H 
     intro h
     exact hxy (heqa.eq_of_nhds.symm.trans ((congrArg Subtype.val h).trans heqb.eq_of_nhds))
   obtain ⟨g, hg, hga, hgb, hemb, hi, -⟩ :=
-    Smale.exists_embedded_arc_with_endpoint_germs a' b' ha' hb' hia' hib' (γ.cast hstart hend)
+    exists_embedded_arc_with_endpoint_germs a' b' ha' hb' hia' hib' (γ.cast hstart hend)
       hxy' hdim (S := ∅) Set.finite_empty
   refine ⟨g, hg, ?_, ?_, hemb, hi⟩
   · filter_upwards [hga, heqa] with t hta hta'
@@ -426,7 +426,7 @@ theorem MorseCancellation.exists_clean_return_endpoint_neighborhood {N : Type*} 
       have htlt : t < 1 := lt_of_le_of_ne ht.1.2 htne
       linarith [hs.1]
 
-theorem Smale.ManifoldImmersion.exists_relative_embedded_avoidance_in_open_of_isClosed_range
+theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open_of_isClosed_range
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -446,19 +446,19 @@ theorem Smale.ManifoldImmersion.exists_relative_embedded_avoidance_in_open_of_is
           Topology.IsClosedEmbedding (fun x : K => f' x) ∧
             (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
               ∀ x ∈ K \ B, (f' x : N) ∉ Set.range g := by
-  have hclean' : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Set.range (Smale.OpenObstacle.restrict g U) := by
+  have hclean' : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Set.range (OpenObstacle.restrict g U) := by
     intro x hx hxB hmem
-    exact hclean x hx hxB ((Smale.OpenObstacle.mem_range_restrict_iff g U (f x)).mp hmem)
+    exact hclean x hx hxB ((OpenObstacle.mem_range_restrict_iff g U (f x)).mp hmem)
   obtain ⟨f', hf', hhom, hemb, hderiv', havoid⟩ :=
     exists_relative_embedded_avoidance_of_clean_neighborhood_of_isClosed_range f
-      (Smale.OpenObstacle.restrict g U) hf (Smale.OpenObstacle.contMDiff_restrict g U hg)
-      (Smale.OpenObstacle.isClosed_range_restrict g U hclosed) hsourceDim hdim hobstacle hK hC hBC
+      (OpenObstacle.restrict g U) hf (OpenObstacle.contMDiff_restrict g U hg)
+      (OpenObstacle.isClosed_range_restrict g U hclosed) hsourceDim hdim hobstacle hK hC hBC
       hinj hderiv hclean'
   refine ⟨f', hf', hhom, hemb, hderiv', ?_⟩
   intro x hx hmem
-  exact havoid x hx ((Smale.OpenObstacle.mem_range_restrict_iff g U (f' x)).mpr hmem)
+  exact havoid x hx ((OpenObstacle.mem_range_restrict_iff g U (f' x)).mpr hmem)
 
-theorem Smale.ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open
+theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -479,23 +479,23 @@ theorem Smale.ManifoldImmersion.exists_embedded_image_avoidance_relative_neighbo
           Topology.IsClosedEmbedding (fun x : K => f' x) ∧
             (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
               Set.MapsTo f' K O ∧ ∀ x ∈ K \ B, (f' x : N) ∉ g '' A := by
-  let A' : Set (Smale.OpenObstacle.source g U) := Subtype.val ⁻¹' A
-  have hclean' : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Smale.OpenObstacle.restrict g U '' A' := by
+  let A' : Set (OpenObstacle.source g U) := Subtype.val ⁻¹' A
+  have hclean' : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ OpenObstacle.restrict g U '' A' := by
     intro x hx hxB hmem
-    rw [Smale.OpenObstacle.image_restrict] at hmem
+    rw [OpenObstacle.image_restrict] at hmem
     exact hclean x hx hxB hmem
   obtain ⟨f', hf', hhom, hemb, hd, hmaps', havoid⟩ :=
-    exists_embedded_image_avoidance_relative_neighborhood f (Smale.OpenObstacle.restrict g U) A'
-      hf (Smale.OpenObstacle.contMDiff_restrict g U hg)
-      (Smale.OpenObstacle.isClosed_image_restrict g U A hclosed) hself hobstacle hK hC hBC hinj
+    exists_embedded_image_avoidance_relative_neighborhood f (OpenObstacle.restrict g U) A'
+      hf (OpenObstacle.contMDiff_restrict g U hg)
+      (OpenObstacle.isClosed_image_restrict g U A hclosed) hself hobstacle hK hC hBC hinj
       hderiv hclean' hO hmaps
   refine ⟨f', hf', hhom, hemb, hd, hmaps', ?_⟩
   intro x hx hmem
   apply havoid x hx
-  rw [Smale.OpenObstacle.image_restrict]
+  rw [OpenObstacle.image_restrict]
   exact hmem
 
-theorem Smale.ManifoldImmersion.exists_relative_embedded_avoidance_in_open
+theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -579,7 +579,7 @@ theorem MorseCancellation.exists_disjoint_embedded_return_arc {G H N : Type*} [N
     rw [himage]
     exact hclean t ht htB
   obtain ⟨g, hg, hhom, hembg, hdg, -, havoid⟩ :=
-    Smale.ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open S β q A
+    ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open S β q A
       hβ hq hclosed hself hobstacle CompactIccSpace.isCompact_Icc hC hBC hβinj hβd hclean'
       isOpen_univ (fun _ _ => Set.mem_univ _)
   have h0C : C ∈ 𝓝 (0 : ℝ) := mem_interior_iff_mem_nhds.mp (hBC (Or.inl rfl))
@@ -906,7 +906,7 @@ theorem CircleGluing.circleExp_localDiffeomorph (t : ℝ) :
     (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := L.toLinearMap) (by simp)).mp
       hi
   apply
-    Smale.isLocalDiffeomorphAt_boundaryless isOpen_univ (Set.mem_univ t)
+    isLocalDiffeomorphAt_boundaryless isOpen_univ (Set.mem_univ t)
       (contMDiff_circleExp (m := ∞)).contMDiffOn
   exact ⟨(LinearEquiv.ofBijective L.toLinearMap ⟨hi, hs⟩).toContinuousLinearEquiv, rfl⟩
 
@@ -1034,7 +1034,7 @@ theorem CircleGluing.periodicCircle_derivative_injective {N : Type*} {T : ℝ} {
         exact hxy)
   exact hux.symm.trans ((congrArg (mfderiv 𝓘(ℝ, ℝ) (𝓡 1) Circle.exp t) huv).trans hvy)
 
-theorem Smale.NativeOpenSubmanifold.injective_mfderiv_subtype_val {E H M : Type*}
+theorem NativeOpenSubmanifold.injective_mfderiv_subtype_val {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [TopologicalSpace M] [ChartedSpace H M] (U : TopologicalSpace.Opens M) (p : U) :
     Function.Injective (mfderiv I I (Subtype.val : U → M) p) := by
@@ -1090,7 +1090,7 @@ theorem MorseCancellation.exists_embedded_circle_through_arc {G H N : Type*} [No
     rw [show β = Subtype.val ∘ b from rfl,
       mfderiv_comp t ((contMDiff_subtype_val (n := ∞)).mdifferentiableAt (by simp))
         (hb.mdifferentiableAt (by simp))]
-    exact (Smale.NativeOpenSubmanifold.injective_mfderiv_subtype_val S (b t)).comp (hbd t ht)
+    exact (NativeOpenSubmanifold.injective_mfderiv_subtype_val S (b t)).comp (hbd t ht)
   have h0 : β 0 = α r := by simpa only [zero_add] using hb0.eq_of_nhds
   have h1 : β 1 = α (-r) := by
     simpa only [show (1 : ℝ) + (-1 - r) = -r by ring] using hb1.eq_of_nhds
@@ -1146,16 +1146,16 @@ theorem AdaptedWindows.dense_regular_level_minimum_basins {E M : Type*} [NormedA
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
-    (hreg : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = a → x ∉ ManifoldMorse.criticalPoints E f) :
     Dense
       {x : { y : M // f y = a } |
-        ∃ p : Smale.ManifoldMorse.criticalPoints E f,
+        ∃ p : ManifoldMorse.criticalPoints E f,
           MorseCancellation.nativeMorseIndex E f p = 0 ∧
             Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} := by
   let L := { y : M // f y = a }
   rcases isEmpty_or_nonempty L with h | h
   · exact fun x => isEmptyElim x
-  · let _ := Smale.RegularLevel.chartedSpace hf hreg
+  · let _ := RegularLevel.chartedSpace hf hreg
     obtain ⟨A, hsource, -, hformula, -⟩ :=
       FlowCancellation.exists_native_level_flow_cylinder hf hreg S.smooth S.flow S.integral
         (fun x hx => S.descent x (hreg x hx)) (Classical.arbitrary L)
@@ -1243,8 +1243,8 @@ theorem MorseCancellation.exists_positive_band_normalization {E M : Type*} [Norm
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    {a b : ℝ} (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    {a b : ℝ} (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ (ρ : M → ℝ) (U : Set ℝ),
       IsOpen U ∧
         Set.Icc a b ⊆ U ∧
@@ -1254,13 +1254,13 @@ theorem MorseCancellation.exists_positive_band_normalization {E M : Type*} [Norm
                   (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
                 (∀ x, ρ x • V x = 0 ↔ V x = 0) ∧
                   (∀ x,
-                      x ∉ Smale.ManifoldMorse.criticalPoints E f →
+                      x ∉ ManifoldMorse.criticalPoints E f →
                         mvfderiv 𝓘(ℝ, E) f x (ρ x • V x) < 0) ∧
                     (∀ x, f x ∈ U → mvfderiv 𝓘(ℝ, E) f x (ρ x • V x) = -1) ∧
-                      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, ρ y = 1 := by
-  let B := f '' Smale.ManifoldMorse.criticalPoints E f
+                      ∀ x ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, ρ y = 1 := by
+  let B := f '' ManifoldMorse.criticalPoints E f
   have hB : IsClosed B :=
-    ((Smale.ManifoldMorse.criticalPoints_isClosed hf).isCompact.image hf.continuous).isClosed
+    ((ManifoldMorse.criticalPoints_isClosed hf).isCompact.image hf.continuous).isClosed
   have hAB : Set.Icc a b ⊆ Bᶜ := by
     rintro y hy ⟨x, hx, rfl⟩
     exact hband x hy hx
@@ -1269,7 +1269,7 @@ theorem MorseCancellation.exists_positive_band_normalization {E M : Type*} [Norm
   let χ := Real.smoothTransition ∘ φ ∘ f
   have hχ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ χ :=
     (Real.smoothTransition.contDiff.comp hφ).contMDiff.comp hf
-  have hχsupport : tsupport χ ⊆ (Smale.ManifoldMorse.criticalPoints E f)ᶜ := by
+  have hχsupport : tsupport χ ⊆ (ManifoldMorse.criticalPoints E f)ᶜ := by
     intro x hx hcrit
     have hp := tsupport_comp_subset Real.smoothTransition.zero (φ ∘ f) hx
     exact hsupp (tsupport_comp_subset_preimage φ hf.continuous hp) ⟨x, hcrit, rfl⟩
@@ -1346,7 +1346,7 @@ theorem FlowTimeChange.native_local_height_translation {E M : Type*} [NormedAddC
       (hf.continuous.comp (F.continuous continuous_id continuous_const)) hU hIU (γ := fun s =>
       f (F s x)) ?_ (by rw [F.map_zero_apply]) hx ht
   intro s hs
-  have hd := Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) s
+  have hd := FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) s
   rw [hspeed (F s x) hs] at hd
   exact hd
 
@@ -1563,9 +1563,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ}
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ (U : Set ℝ) (W : (x : M) → TangentSpace 𝓘(ℝ, E) x) (G : Flow ℝ M),
       IsOpen U ∧
         Set.Icc a b ⊆ U ∧
@@ -1573,9 +1573,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
             (∀ x, IsMIntegralCurve (fun t => G t x) W) ∧
               (∀ x, W x = 0 ↔ V x = 0) ∧
                 (∀ x,
-                    x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (W x) < 0) ∧
+                    x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (W x) < 0) ∧
                   (∀ x, f x ∈ U → mvfderiv 𝓘(ℝ, E) f x (W x) = -1) ∧
-                    (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, W y = V y) ∧
+                    (∀ x ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, W y = V y) ∧
                       (∀ x, ∃ c : ℝ ≃o ℝ, c 0 = 0 ∧ ∀ t, G t x = F (c.symm t) x) ∧
                         ∀ x,
                           Set.range (fun t => G t x) = Set.range (fun t => F t x) ∧
@@ -1589,9 +1589,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     MorseCancellation.exists_positive_band_normalization hf hV hdesc hband
   have hW₁ := hW.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
   let W : (x : M) → TangentSpace 𝓘(ℝ, E) x := fun x => ρ x • V x
-  let G := Smale.FlowConstruction.compactFlow hW₁
+  let G := FlowConstruction.compactFlow hW₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) W :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hW₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hW₁ x
   refine ⟨U, W, G, hU, hAU, hW, hG, hzeros, hneg, hspeed, ?_, ?_, ?_⟩
   · intro x hx
     filter_upwards [hgerm x hx] with y hy
@@ -1607,9 +1607,9 @@ theorem FlowTimeChange.exists_orbit_preserving_ambient_band_bridge {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       D '' {x : M | f x = a} = {x : M | f x = b} ∧
         D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧ ∀ x, ∃ t, F t x = D x := by
@@ -1630,38 +1630,38 @@ theorem FlowTimeChange.exists_orbit_preserving_native_band_bridge {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (ha : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hb : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
-    letI := Smale.RegularLevel.chartedSpace hf ha
-    letI := Smale.RegularLevel.chartedSpace hf hb
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f)
+    (ha : ∀ x, f x = a → x ∉ ManifoldMorse.criticalPoints E f)
+    (hb : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
+    letI := RegularLevel.chartedSpace hf ha
+    letI := RegularLevel.chartedSpace hf hb
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       ∃ e :
-        Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+        Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
           { x : M // f x = a } { x : M // f x = b } ∞,
         D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧
           (∀ x, (e x : M) = D x) ∧ ∀ x, ∃ t, F t x = D x := by
-  let _ := Smale.RegularLevel.chartedSpace hf ha
-  let _ := Smale.RegularLevel.chartedSpace hf hb
+  let _ := RegularLevel.chartedSpace hf ha
+  let _ := RegularLevel.chartedSpace hf hb
   obtain ⟨D, hlevel, hsublevel, horbit⟩ :=
     exists_orbit_preserving_ambient_band_bridge hf hV hdesc F hF hab hband
-  obtain ⟨e, he⟩ := Smale.RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
+  obtain ⟨e, he⟩ := RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
   exact ⟨D, e, hsublevel, he, horbit⟩
 
 attribute [local instance 100] Classical.propDecidable in
 theorem AdaptedWindows.exists_orbit_bandBridge {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p q : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p q : ManifoldMorse.criticalPoints E f)
     (hpq : f p < f q)
-    (hconsecutive : ∀ r : Smale.ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q)) :
-    letI := Smale.RegularLevel.chartedSpace hf (S.data p).upper_regular
-    letI := Smale.RegularLevel.chartedSpace hf (S.data q).lower_regular
+    (hconsecutive : ∀ r : ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q)) :
+    letI := RegularLevel.chartedSpace hf (S.data p).upper_regular
+    letI := RegularLevel.chartedSpace hf (S.data q).lower_regular
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       ∃ e :
-        Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+        Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
           (S.data p).UpperLevel (S.data q).LowerLevel ∞,
         D '' {x : M | f x ≤ f p + (S.data p).radius ^ 2} =
             {x : M | f x ≤ f q - (S.data q).radius ^ 2} ∧
@@ -1674,7 +1674,7 @@ attribute [local instance 100] Classical.propDecidable in
 theorem AdaptedWindows.transported_attaching_basin_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p q : Smale.ManifoldMorse.criticalPoints E f) (n : ℕ)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p q : ManifoldMorse.criticalPoints E f) (n : ℕ)
     [Fact (Module.finrank ℝ (S.data q).chart.NegativeCoordinates = n + 1)]
     (e : (S.data p).UpperLevel ≃ₜ (S.data q).LowerLevel)
     (horbit : ∀ x : (S.data p).UpperLevel, ∃ t, S.flow t x = (e x : M))
@@ -1772,17 +1772,17 @@ theorem FlowSuspension.native_chart_flow_all_time {B M : Type*} [NormedAddCommGr
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (G : Flow ℝ M) (hG : ∀ x, IsMIntegralCurve (fun t => G t x) V) (F : Flow ℝ E) (W : E → E)
     (hF : ∀ p t, HasDerivAt (fun s => F s p) (W (F t p)) t)
-    (hmodel : ∀ x ∈ Φ.target, V x = Smale.FlowConstruction.partialChartField Φ.symm W x) {p : E}
+    (hmodel : ∀ x ∈ Φ.target, V x = FlowConstruction.partialChartField Φ.symm W x) {p : E}
     (hstay : ∀ t, F t p ∈ Φ.source) : ∀ t, G t (Φ p) = Φ (F t p) := by
   let γ : ℝ → M := fun t => Φ (F t p)
   have hγ : IsMIntegralCurve γ V := by
     intro t
     have hd :=
-      Smale.FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm W (hF p t) (hstay t)
+      FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm W (hF p t) (hstay t)
     have hy := Φ.map_source' (hstay t)
     have hd' :
       HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, B) γ t
-        ((1 : ℝ →L[ℝ] ℝ).smulRight (Smale.FlowConstruction.partialChartField Φ.symm W (γ t))) :=
+        ((1 : ℝ →L[ℝ] ℝ).smulRight (FlowConstruction.partialChartField Φ.symm W (γ t))) :=
       hd
     rw [← hmodel (γ t) hy] at hd'
     exact hd'
@@ -1798,7 +1798,7 @@ theorem FlowSuspension.native_chart_target_invariant {B M : Type*} [NormedAddCom
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (G : Flow ℝ M) (hG : ∀ x, IsMIntegralCurve (fun t => G t x) V) (F : Flow ℝ E) (W : E → E)
     (hF : ∀ p t, HasDerivAt (fun s => F s p) (W (F t p)) t)
-    (hmodel : ∀ x ∈ Φ.target, V x = Smale.FlowConstruction.partialChartField Φ.symm W x)
+    (hmodel : ∀ x ∈ Φ.target, V x = FlowConstruction.partialChartField Φ.symm W x)
     (hstay : ∀ p ∈ Φ.source, ∀ t, F t p ∈ Φ.source) : ∀ x ∈ Φ.target, ∀ t, G t x ∈ Φ.target := by
   intro x hx t
   have hp := Φ.map_target' hx
@@ -1901,7 +1901,7 @@ theorem FlowSuspension.native_model_target_invariant {D E H X M : Type*}
 theorem FlowSuspension.exists_native_base_suspension {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N] (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) N N ∞) {K S : Set N}
-    (I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
+    (I : SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
     ∃ Ψ : Diffeomorph (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (N × ℝ) (N × ℝ) ∞,
       (∀ p, (Ψ p).2 = p.2) ∧
         (∀ p, p.2 ≤ 1 / 3 → Ψ p = p) ∧
@@ -1919,7 +1919,7 @@ theorem FlowSuspension.exists_native_base_suspension {Z N : Type*} [NormedAddCom
     I.smooth.comp ((hτ.contMDiff.comp contMDiff_snd).prodMk contMDiff_fst)
   have hslice : ∀ t, ∃ d : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) N N ∞, ∀ x, d x = A (x, t) := fun t =>
     I.slices (τ t)
-  let Ψ := Smale.FiberwiseDiffeomorph.diffeomorph hA hslice
+  let Ψ := FiberwiseDiffeomorph.diffeomorph hA hslice
   have hmap (p : N × ℝ) : Ψ p = (I.family (τ p.2, p.1), p.2) := rfl
   refine ⟨Ψ, fun _ => rfl, ?_, ?_, ?_, ?_⟩
   · intro p hp
@@ -2114,23 +2114,23 @@ theorem FlowSuspension.exists_native_level_flow_cylinder_with_field {E M : Type*
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {c : ℝ}
-    (hreg : ∀ x, f x = c → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = c → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (hboundary : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) (z : { x : M // f x = c }) :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∃ A :
-      PartialDiffeomorph (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
+      PartialDiffeomorph (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
         ({ x : M // f x = c } × ℝ) M ∞,
       A.source = Set.univ ∧
         A.target = FlowCancellation.levelBasin F f c ∧
           (∀ p, A p = F p.2 p.1) ∧
             ∀ x ∈ A.target,
               V x =
-                VectorField.mpullback 𝓘(ℝ, E) (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ))
+                VectorField.mpullback 𝓘(ℝ, E) (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ))
                   A.symm nativeVerticalField x := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   obtain ⟨A, hsource, htarget, hformula, -⟩ :=
     FlowCancellation.exists_native_level_flow_cylinder hf hreg hV F hcurve hboundary z
   exact
@@ -2161,8 +2161,8 @@ theorem FlowTimeChange.mvfderiv_height_div_const {E M : Type*} [NormedAddCommGro
 theorem FlowTimeChange.criticalPoints_height_div_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {r : ℝ} (hr : r ≠ 0) :
-    Smale.ManifoldMorse.criticalPoints E (fun y => f y / r) =
-      Smale.ManifoldMorse.criticalPoints E f := by
+    ManifoldMorse.criticalPoints E (fun y => f y / r) =
+      ManifoldMorse.criticalPoints E f := by
   ext x
   change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (fun y => f y / r) x = 0 ↔ mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0
   rw [mfderiv_height_div_const (hf.mdifferentiableAt (by simp))]
@@ -2181,14 +2181,14 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
-    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hreg : ∀ y, f y = c → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ y, f y = c → y ∉ ManifoldMorse.criticalPoints E f)
     (z : { y : M // f y = c }) :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (A :
-      PartialDiffeomorph (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
+      PartialDiffeomorph (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
         ({ y : M // f y = c } × ℝ) M ∞),
       0 < r ∧
         r < c - a ∧
@@ -2196,8 +2196,8 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
             (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
               (∀ y, W y = 0 ↔ V y = 0) ∧
                 (∀ y,
-                    y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                  (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ x in 𝓝 y, W x = V x) ∧
+                    y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                  (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ x in 𝓝 y, W x = V x) ∧
                     (∀ y,
                         Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
                           (∀ p,
@@ -2213,32 +2213,32 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
                               ∀ y ∈ A.target,
                                 W y =
                                   VectorField.mpullback 𝓘(ℝ, E)
-                                    (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) A.symm
+                                    (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) A.symm
                                     FlowSuspension.nativeVerticalField y := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   let r : ℝ := (c - a) / 2
   have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
   have hrbound : r < c - a := by dsimp [r]; linarith
   let g : M → ℝ := fun y => f y / r
   have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
-  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+  have hcrit : ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f :=
     criticalPoints_height_div_const hf hr.ne'
   have hdescent :
-    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    ∀ y, y ∉ ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
     intro y hy
     rw [hcrit] at hy
     exact
       (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
   have hregular :
-    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ ManifoldMorse.criticalPoints E g := by
     intro y hy
     rw [hcrit]
     exact
       hband y ⟨(div_le_div_iff_of_pos_right hr).mp hy.1, (div_le_div_iff_of_pos_right hr).mp hy.2⟩
   obtain ⟨U, W, G, hU, hIU, hW, hG, hzero, hneg, hspeed, hgerm, -, hgeometry⟩ :=
     exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
-  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+  have hnegf (y : M) (hy : y ∉ ManifoldMorse.criticalPoints E f) :
     mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
     (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
       (hneg y (hcrit ▸ hy))
@@ -2380,7 +2380,7 @@ theorem FlowSuspension.exists_compact_native_level_suspension {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N] [T2Space N]
     (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) N N ∞) {K S : Set N} (hK : IsCompact K)
-    (I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
+    (I : SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
     ∃ Ψ : Diffeomorph (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (N × ℝ) (N × ℝ) ∞,
       IsCompact (K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3)) ∧
         (∀ p, (Ψ p).2 = p.2) ∧
@@ -2499,7 +2499,7 @@ theorem FlowSuspension.exists_native_whole_level_holonomy {Z E N M : Type*}
         V x = VectorField.mpullback 𝓘(ℝ, E) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) A.symm nativeVerticalField x)
     (H : Flow ℝ M) (hH : ∀ x, IsMIntegralCurve (fun t => H t x) V)
     (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) N N ∞) {K S : Set N} (hK : IsCompact K)
-    (I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
+    (I : SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
     ∃ (C : Set M) (V' : (x : M) → TangentSpace 𝓘(ℝ, E) x) (G : Flow ℝ M) (Ψ :
       Diffeomorph (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (N × ℝ) (N × ℝ) ∞),
       IsCompact C ∧
@@ -2544,7 +2544,7 @@ theorem FlowSuspension.exists_native_whole_level_holonomy {Z E N M : Type*}
     rw [hheight p (hslab p hp)]
     constructor <;> nlinarith [(hslab p hp).1, (hslab p hp).2]
   let R :=
-    Smale.PartialChart.restrictSource A
+    PartialChart.restrictSource A
       (isOpen_univ.prod (isOpen_Ioo : IsOpen (Set.Ioo (0 : ℝ) 1)))
   have hRheight (p : N × ℝ) (hp : p ∈ R.source) : f (R p) = b - s * p.2 := hheight p hp.2.2
   have hnegC (x : M) (hx : x ∈ C) : mvfderiv 𝓘(ℝ, E) f x (V' x) = -s := by
@@ -2558,9 +2558,9 @@ theorem FlowSuspension.exists_native_whole_level_holonomy {Z E N M : Type*}
         -s
     rw [mvfderiv_native_level_height R hf hRheight _ (R.map_source' hpR), hWheight, mul_one]
   have hV'₁ := hV'.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let G := Smale.FlowConstruction.compactFlow hV'₁
+  let G := FlowConstruction.compactFlow hV'₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) V' :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
   have hstay (p : N × ℝ) (t : ℝ) : nativeSuspensionFlow Ψ t p ∈ A.source := by
     rw [hsource]
     exact Set.mem_univ _
@@ -2626,16 +2626,16 @@ theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Ty
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
-    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hreg : ∀ y, f y = c → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ y, f y = c → y ∉ ManifoldMorse.criticalPoints E f)
     (z : { y : M // f y = c }) :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∀ D :
-      Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+      Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
         { y : M // f y = c } { y : M // f y = c } ∞,
-      Smale.SupportedDiffeomorph.IsotopicToIdentity D →
+      SupportedDiffeomorph.IsotopicToIdentity D →
         ∃ (r : ℝ) (C : Set M) (W V' : (y : M) → TangentSpace 𝓘(ℝ, E) y) (H G : Flow ℝ M),
           0 < r ∧
             r < c - a ∧
@@ -2657,9 +2657,9 @@ theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Ty
                           (∀ y, IsMIntegralCurve (fun t => G t y) V') ∧
                             (∀ y, V' y = 0 ↔ V y = 0) ∧
                               (∀ y,
-                                  y ∉ Smale.ManifoldMorse.criticalPoints E f →
+                                  y ∉ ManifoldMorse.criticalPoints E f →
                                     mvfderiv 𝓘(ℝ, E) f y (V' y) < 0) ∧
-                                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f,
+                                (∀ y ∈ ManifoldMorse.criticalPoints E f,
                                     ∀ᶠ x in 𝓝 y, V' x = V x) ∧
                                   (∀ y ∉ C, ∀ᶠ x in 𝓝 y, V' x = W x) ∧
                                     (∀ x : { y : M // f y = c }, G 1 x = H 1 (D x)) ∧
@@ -2668,14 +2668,14 @@ theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Ty
                                             ∀ t : ℝ, t ≤ 0 → G t x = H t x) ∧
                                           ∀ x : { y : M // f y = c },
                                             ∀ t : ℝ, 0 ≤ t → G t (H 1 x) = H t (H 1 x) := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   let L := { y : M // f y = c }
   let _ : CompactSpace L :=
     isCompact_iff_compactSpace.mp (isClosed_eq hf.continuous continuous_const).isCompact
   intro D hD
   obtain ⟨B, hB, hBzero, hBone, hBslices⟩ := hD
-  let I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D Set.univ ∅ :=
+  let I : SupportedDiffeomorph.SupportedRelativeIsotopy D Set.univ ∅ :=
     { family := B
       smooth := hB
       zero := hBzero
@@ -2700,7 +2700,7 @@ theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Ty
     have hh := (hCsub hy).2
     change f y ∈ Set.Ioo (c - r) c at hh
     exact ⟨by linarith [hh.1], lt_trans hh.2 hb⟩
-  have hcritical (y : M) (hy : y ∈ Smale.ManifoldMorse.criticalPoints E f) :
+  have hcritical (y : M) (hy : y ∈ ManifoldMorse.criticalPoints E f) :
     ∀ᶠ x in 𝓝 y, V' x = V x := by
     have hout : y ∉ C := fun hc => hband y ⟨(hCband hc).1.le, (hCband hc).2.le⟩ hy
     filter_upwards [hgerm y hout, hWgerm y hy] with x hx hx'
@@ -2907,8 +2907,8 @@ theorem TransverseGerms.native_transversality_time_lifts {A B Z : Type*}
     [ChartedSpace HZ N] {f : X → N} {g : Y → N} {v : X → ℝ} {w : Y → ℝ} {x : X} {y : Y}
     (hf : MDifferentiableAt I J f x) (hg : MDifferentiableAt I' J g y)
     (hv : MDifferentiableAt I 𝓘(ℝ, ℝ) v x) (hw : MDifferentiableAt I' 𝓘(ℝ, ℝ) w y)
-    (hxy : g y = f x) (htrans : Smale.NativeTransversality.At I I' J f g x y) (s t : ℝ) :
-    Smale.NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ)) (J.prod 𝓘(ℝ, ℝ))
+    (hxy : g y = f x) (htrans : NativeTransversality.At I I' J f g x y) (s t : ℝ) :
+    NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ)) (J.prod 𝓘(ℝ, ℝ))
       (fun p : X × ℝ => (f p.1, p.2 + v p.1)) (fun p : Y × ℝ => (g p.1, p.2 + w p.1)) (x, s)
       (y, t) := by
   intro _
@@ -2926,9 +2926,9 @@ theorem TransverseGerms.native_transverse_sheets_of_level_maps
     (C : PartialDiffeomorph (J.prod 𝓘(ℝ, ℝ)) J' (N × ℝ) M ∞) {f : X → N} {g : Y → N} {v : X → ℝ}
     {w : Y → ℝ} {x : X} {y : Y} (hf : MDifferentiableAt I J f x) (hg : MDifferentiableAt I' J g y)
     (hv : MDifferentiableAt I 𝓘(ℝ, ℝ) v x) (hw : MDifferentiableAt I' 𝓘(ℝ, ℝ) w y)
-    (hxy : g y = f x) (htrans : Smale.NativeTransversality.At I I' J f g x y) {s t : ℝ}
+    (hxy : g y = f x) (htrans : NativeTransversality.At I I' J f g x y) {s t : ℝ}
     (hphase : t + w y = s + v x) (hsource : (f x, s + v x) ∈ C.source) :
-    Smale.NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ)) J'
+    NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ)) J'
       (fun p : X × ℝ => C (f p.1, p.2 + v p.1)) (fun p : Y × ℝ => C (g p.1, p.2 + w p.1)) (x, s)
       (y, t) := by
   let F : X × ℝ → N × ℝ := fun p => (f p.1, p.2 + v p.1)
@@ -2951,17 +2951,17 @@ theorem FlowSuspension.native_transverse_basin_tubes_of_level_maps {E M : Type*}
     [NormedSpace ℝ B] [TopologicalSpace HA] [TopologicalSpace HB] {I : ModelWithCorners ℝ A HA}
     {I' : ModelWithCorners ℝ B HB} [TopologicalSpace X] [ChartedSpace HA X] [TopologicalSpace Y]
     [ChartedSpace HB Y] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {c : ℝ}
-    (hreg : ∀ z, f z = c → z ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ z, f z = c → z ∉ ManifoldMorse.criticalPoints E f)
     {V : (z : M) → TangentSpace 𝓘(ℝ, E) z}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun z => (⟨z, V z⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hF : ∀ z, IsMIntegralCurve (fun t => F t z) V)
     (hboundary : ∀ z, f z = c → mvfderiv 𝓘(ℝ, E) f z (V z) < 0) {p q : M} :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∀ (α : X → { z : M // f z = c }) (β : Y → { z : M // f z = c }) (x : X) (y : Y),
-      MDifferentiableAt I 𝓘(ℝ, Smale.RegularLevel.Model E) α x →
-        MDifferentiableAt I' 𝓘(ℝ, Smale.RegularLevel.Model E) β y →
+      MDifferentiableAt I 𝓘(ℝ, RegularLevel.Model E) α x →
+        MDifferentiableAt I' 𝓘(ℝ, RegularLevel.Model E) β y →
           β y = α x →
-            Smale.NativeTransversality.At I I' 𝓘(ℝ, Smale.RegularLevel.Model E) α β x y →
+            NativeTransversality.At I I' 𝓘(ℝ, RegularLevel.Model E) α β x y →
               (∀ᶠ u in 𝓝 x, Filter.Tendsto (fun t => F t (α u)) Filter.atBot (𝓝 q)) →
                 (∀ᶠ u in 𝓝 y, Filter.Tendsto (fun t => F t (β u)) Filter.atTop (𝓝 p)) →
                   let S : X × ℝ → M := fun w => F w.2 (α w.1)
@@ -2974,10 +2974,10 @@ theorem FlowSuspension.native_transverse_basin_tubes_of_level_maps {E M : Type*}
                               Filter.Tendsto (fun t => F t (S u)) Filter.atBot (𝓝 q)) ∧
                             (∀ᶠ u in 𝓝 (y, (0 : ℝ)),
                                 Filter.Tendsto (fun t => F t (T u)) Filter.atTop (𝓝 p)) ∧
-                              Smale.NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ))
+                              NativeTransversality.At (I.prod 𝓘(ℝ, ℝ)) (I'.prod 𝓘(ℝ, ℝ))
                                 𝓘(ℝ, E) S T (x, 0) (y, 0) := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   intro α β x y hα hβ hcross htrans hαbasin hβbasin
   obtain ⟨C, hsource, -, hformula, -⟩ :=
     exists_native_level_flow_cylinder_with_field hf hreg hV F hF hboundary (α x)
@@ -3013,7 +3013,7 @@ theorem FlowSuspension.native_vertical_cylinder_flow {Z E M : Type*} [NormedAddC
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (z : Z) (hz : z ∈ U)
     (s t : ℝ) : F t (Φ (z, s)) = Φ (z, s + t) := by
   let γ : ℝ → M := fun t => Φ (z, s + t)
@@ -3023,12 +3023,12 @@ theorem FlowSuspension.native_vertical_cylinder_flow {Z E M : Type*} [NormedAddC
     have hcoord : HasDerivAt (fun r : ℝ => (z, s + r)) (0, 1) t :=
       (hasDerivAt_const t z).prodMk ((hasDerivAt_id t).const_add s)
     have hd :=
-      Smale.FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm (fun _ : Z × ℝ => (0, 1))
+      FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm (fun _ : Z × ℝ => (0, 1))
         hcoord hstay
     change
       HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) γ t
         ((1 : ℝ →L[ℝ] ℝ).smulRight
-          (Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) (γ t))) at hd
+          (FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) (γ t))) at hd
     rw [← hmodel (γ t) (Φ.map_source' hstay)] at hd
     exact hd
   have heq :=
@@ -3046,10 +3046,10 @@ theorem FlowSuspension.native_corrected_cylinder_tails {Z E M : Type*}
     (hW : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, W x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hΦmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
     (hΩmodel :
       ∀ x ∈ Ω.target,
-        W x = Smale.FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) x)
+        W x = FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) x)
     (F G : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (hG : ∀ x, IsMIntegralCurve (fun t => G t x) W) (D : Z → Z) (hDU : Set.MapsTo D U U)
     (hleft : ∀ p, p.2 ≤ 0 → Ω p = Φ p) (hright : ∀ p, 1 ≤ p.2 → Ω p = Φ (D p.1, p.2)) :
@@ -3274,7 +3274,7 @@ theorem FlowCancellation.native_flow_chart_vertical {D E M : Type*} [NormedAddCo
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × ℝ) 𝓘(ℝ, E) (D × ℝ) M ∞) (F : Flow ℝ M)
     (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) (ι : D → M)
     (hformula : ∀ p : D × ℝ, Φ p = F p.2 (ι p.1)) :
-    ∀ x ∈ Φ.target, V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ => (0, 1)) x := by
+    ∀ x ∈ Φ.target, V x = FlowConstruction.partialChartField Φ.symm (fun _ => (0, 1)) x := by
   intro x hx
   let p := Φ.symm x
   have hp : p ∈ Φ.source := Φ.map_target' hx
@@ -3282,14 +3282,14 @@ theorem FlowCancellation.native_flow_chart_vertical {D E M : Type*} [NormedAddCo
   have hα : HasDerivAt α ((0 : D), (1 : ℝ)) p.2 :=
     (hasDerivAt_const p.2 p.1).prodMk (hasDerivAt_id p.2)
   have hd :=
-    Smale.FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm (fun _ : D × ℝ => (0, 1)) hα
+    FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm (fun _ : D × ℝ => (0, 1)) hα
       hp
   have heq : Φ.symm.symm ∘ α = fun t => F t (ι p.1) := funext (fun t => hformula (p.1, t))
   rw [heq] at hd
   change
     HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (fun t => F t (ι p.1)) p.2
       ((1 : ℝ →L[ℝ] ℝ).smulRight
-        (Smale.FlowConstruction.partialChartField Φ.symm (fun _ : D × ℝ => (0, 1)) (Φ p))) at hd
+        (FlowConstruction.partialChartField Φ.symm (fun _ : D × ℝ => (0, 1)) (Φ p))) at hd
   rw [hformula p] at hd
   have hpF : F p.2 (ι p.1) = x := (hformula p).symm.trans (Φ.right_inv' hx)
   have hh := (hcurve (ι p.1) p.2).mfderiv.symm.trans hd.mfderiv
@@ -3297,7 +3297,7 @@ theorem FlowCancellation.native_flow_chart_vertical {D E M : Type*} [NormedAddCo
   simp only [ContinuousLinearMap.smulRight_apply, one_apply_eq_self, one_smul] at hv
   change
     V (F p.2 (ι p.1)) =
-      Smale.FlowConstruction.partialChartField Φ.symm (fun _ : D × ℝ => (0, 1))
+      FlowConstruction.partialChartField Φ.symm (fun _ : D × ℝ => (0, 1))
         (F p.2 (ι p.1)) at hv
   rw [hpF] at hv
   exact hv
@@ -3306,43 +3306,43 @@ theorem FlowCancellation.exists_euclidean_level_flow_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {c : ℝ}
-    (hreg : ∀ x, f x = c → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = c → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (hboundary : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M} (hx : f x = c) :
-    ∃ (U : Set (Smale.RegularLevel.Model E)) (ι : Smale.RegularLevel.Model E → M) (Φ :
-      PartialDiffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E × ℝ) 𝓘(ℝ, E)
-        (Smale.RegularLevel.Model E × ℝ) M ∞),
+    ∃ (U : Set (RegularLevel.Model E)) (ι : RegularLevel.Model E → M) (Φ :
+      PartialDiffeomorph 𝓘(ℝ, RegularLevel.Model E × ℝ) 𝓘(ℝ, E)
+        (RegularLevel.Model E × ℝ) M ∞),
       IsOpen U ∧
-        (0 : Smale.RegularLevel.Model E) ∈ U ∧
+        (0 : RegularLevel.Model E) ∈ U ∧
           ι 0 = x ∧
             Φ.source = U ×ˢ Set.univ ∧
               (∀ y ∈ U, f (ι y) = c) ∧
                 (∀ p, Φ p = F p.2 (ι p.1)) ∧
                   ∀ y ∈ Φ.target,
-                    V y = Smale.FlowConstruction.partialChartField Φ.symm (fun _ => (0, 1)) y := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+                    V y = FlowConstruction.partialChartField Φ.symm (fun _ => (0, 1)) y := by
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   let z : { x : M // f x = c } := ⟨x, hx⟩
   obtain ⟨C, hCsource, -, hCformula, -⟩ :=
     exists_native_level_flow_cylinder hf hreg hV F hcurve hboundary z
-  let Q := Smale.NativeParametrization.centered (D := Smale.RegularLevel.Model E) z
-  have hz : (0 : Smale.RegularLevel.Model E) ∈ Q.source :=
-    Smale.NativeParametrization.zero_mem_centered_source z
-  let A := Smale.PartialChart.prod Q (Diffeomorph.refl 𝓘(ℝ, ℝ) ℝ ∞).toPartialDiffeomorph
-  let P := (Smale.PartialChart.vectorProduct (Smale.RegularLevel.Model E) ℝ).toPartialDiffeomorph
+  let Q := NativeParametrization.centered (D := RegularLevel.Model E) z
+  have hz : (0 : RegularLevel.Model E) ∈ Q.source :=
+    NativeParametrization.zero_mem_centered_source z
+  let A := PartialChart.prod Q (Diffeomorph.refl 𝓘(ℝ, ℝ) ℝ ∞).toPartialDiffeomorph
+  let P := (PartialChart.vectorProduct (RegularLevel.Model E) ℝ).toPartialDiffeomorph
   let Φ := (P.trans A).trans C
-  let ι : Smale.RegularLevel.Model E → M := fun y => Q y
+  let ι : RegularLevel.Model E → M := fun y => Q y
   have hsource : Φ.source = Q.source ×ˢ Set.univ := by
     ext p
     change (p ∈ Set.univ ∧ (p.1 ∈ Q.source ∧ p.2 ∈ Set.univ)) ∧ A (P p) ∈ C.source ↔ _
     rw [hCsource]
     simp only [Set.mem_univ, true_and, and_true, Set.mem_prod]
-  have hformula (p : Smale.RegularLevel.Model E × ℝ) : Φ p = F p.2 (ι p.1) := hCformula (A (P p))
+  have hformula (p : RegularLevel.Model E × ℝ) : Φ p = F p.2 (ι p.1) := hCformula (A (P p))
   refine
     ⟨Q.source, ι, Φ, Q.open_source, hz, ?_, hsource, fun y _ => (Q y).property, hformula,
       native_flow_chart_vertical Φ F hcurve ι hformula⟩
-  exact congrArg Subtype.val (Smale.NativeParametrization.centered_zero z)
+  exact congrArg Subtype.val (NativeParametrization.centered_zero z)
 
 theorem FlowSuspension.exists_native_phase_cylinder {Z E B M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -3353,13 +3353,13 @@ theorem FlowSuspension.exists_native_phase_cylinder {Z E B M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
     (hmodel :
       ∀ y ∈ Φ.target,
-        V y = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) y) :
+        V y = FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) y) :
     ∃ Ψ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞,
       Ψ.source = Q.source ×ˢ Set.univ ∧
         Ψ.target = Φ.target ∧
           (∀ p, Ψ p = Φ (Q p.1, p.2 + v p.1)) ∧
             ∀ y ∈ Ψ.target,
-              V y = Smale.FlowConstruction.partialChartField Ψ.symm (fun _ : E × ℝ => (0, 1)) y :=
+              V y = FlowConstruction.partialChartField Ψ.symm (fun _ : E × ℝ => (0, 1)) y :=
   by
   let R := phaseCylinderChart Q v hv
   let Ψ := R.trans Φ
@@ -3390,9 +3390,9 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = m + 1)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
-    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ ManifoldMorse.criticalPoints E f)
     {x : M} (hx : f x = c) :
     ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (U : Set (Fin m → ℝ)) (Φ :
       PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞),
@@ -3400,8 +3400,8 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
         ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
           (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
             (∀ y, W y = 0 ↔ V y = 0) ∧
-              (∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+              (∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
                   (∀ y,
                       Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
                         (∀ p,
@@ -3417,22 +3417,22 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
                             (∀ z ∈ Φ.source, z.2 ∈ Set.Icc (0 : ℝ) 1 → f (Φ z) = c - r * z.2) ∧
                               ∀ y ∈ Φ.target,
                                 W y =
-                                  Smale.FlowConstruction.partialChartField Φ.symm
+                                  FlowConstruction.partialChartField Φ.symm
                                     (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y := by
   let r : ℝ := (c - a) / 2
   have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
   let g : M → ℝ := fun y => f y / r
   have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
-  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+  have hcrit : ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f :=
     criticalPoints_height_div_const hf hr.ne'
   have hdescent :
-    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    ∀ y, y ∉ ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
     intro y hy
     rw [hcrit] at hy
     exact
       (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
   have hregular :
-    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ ManifoldMorse.criticalPoints E g := by
     intro y hy
     rw [hcrit]
     exact
@@ -3441,7 +3441,7 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
   have hc : c / r ∈ Set.Icc (a / r) (b / r) :=
     ⟨div_le_div_of_nonneg_right ha.le hr.le, div_le_div_of_nonneg_right hb.le hr.le⟩
-  have hreg (y : M) (hy : g y = c / r) : y ∉ Smale.ManifoldMorse.criticalPoints E g :=
+  have hreg (y : M) (hy : g y = c / r) : y ∉ ManifoldMorse.criticalPoints E g :=
     hregular y (hy ▸ hc)
   have hboundary (y : M) (hy : g y = c / r) : mvfderiv 𝓘(ℝ, E) g y (W y) < 0 := by
     rw [hspeed y (hy ▸ hIH hc)]
@@ -3449,12 +3449,12 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
   obtain ⟨O, ι, A, hO, h0O, hι0, hAsource, hlevel, hAmap, hAfield⟩ :=
     FlowCancellation.exists_euclidean_level_flow_cylinder hg hreg hW G hG hboundary
       (show g x = c / r by change f x / r = c / r; rw [hx])
-  let e : (Fin m → ℝ) ≃L[ℝ] Smale.RegularLevel.Model E :=
-    ContinuousLinearEquiv.ofFinrankEq (by simp [Smale.RegularLevel.Model, hdim])
-  let Q := Smale.PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
+  let e : (Fin m → ℝ) ≃L[ℝ] RegularLevel.Model E :=
+    ContinuousLinearEquiv.ofFinrankEq (by simp [RegularLevel.Model, hdim])
+  let Q := PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
   have hQtarget : Q.target = O := by
     ext z
-    change (z ∈ (Set.univ : Set (Smale.RegularLevel.Model E)) ∧ z ∈ O) ↔ z ∈ O
+    change (z ∈ (Set.univ : Set (RegularLevel.Model E)) ∧ z ∈ O) ↔ z ∈ O
     simp only [Set.mem_univ, true_and]
   have hQ0 : (0 : Fin m → ℝ) ∈ Q.source := by
     change (0 : Fin m → ℝ) ∈ Set.univ ∧ e 0 ∈ O
@@ -3464,7 +3464,7 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     FlowSuspension.exists_native_phase_cylinder A hAsource Q hQtarget (fun _ => (0 : ℝ))
       contDiff_const W hAfield
   have hmap (z : (Fin m → ℝ) × ℝ) : Φ z = A (Q z.1, z.2) := by rw [hΦmap, add_zero]
-  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+  have hnegf (y : M) (hy : y ∉ ManifoldMorse.criticalPoints E f) :
     mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
     (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
       (hneg y (hcrit ▸ hy))
@@ -3501,11 +3501,11 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hdim : Module.finrank ℝ E = m + 1)
     (V : (y : M) → TangentSpace 𝓘(ℝ, E) y)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, V y = 0)
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hzero : ∀ y ∈ ManifoldMorse.criticalPoints E f, V y = 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {p q x : M} (hpq : f p < f q)
     {c d : ℝ} (hc : c < f p) (hd : f q < d)
-    (hpair : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
     (hp : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
     (hq : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q))
     (hunique :
@@ -3521,11 +3521,11 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
             ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞
                 (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
               (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
-                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0) ∧
+                (∀ y ∈ ManifoldMorse.criticalPoints E f, W y = 0) ∧
                   (∀ y,
-                      y ∉ Smale.ManifoldMorse.criticalPoints E f →
+                      y ∉ ManifoldMorse.criticalPoints E f →
                         mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                    (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+                    (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
                       (∀ y, Antitone (fun t => f (G t y))) ∧
                         Filter.Tendsto (fun t => G t x₀) Filter.atTop (𝓝 p) ∧
                           Filter.Tendsto (fun t => G t x₀) Filter.atBot (𝓝 q) ∧
@@ -3541,7 +3541,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
                                           z.2 ∈ Set.Icc (0 : ℝ) 1 → f (A z) = b - r * z.2) ∧
                                         (∀ y ∈ A.target,
                                             W y =
-                                              Smale.FlowConstruction.partialChartField A.symm
+                                              FlowConstruction.partialChartField A.symm
                                                 (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y) ∧
                                           (∀ y,
                                               Set.range (fun t => G t y) =
@@ -3566,7 +3566,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
   have hlob : lo < b := by dsimp [lo]; linarith
   have hbhi : b < hi := by dsimp [hi]; linarith
   have hhiq : hi < f q := by dsimp [hi]; linarith
-  have hband : ∀ y, f y ∈ Set.Icc lo hi → y ∉ Smale.ManifoldMorse.criticalPoints E f := by
+  have hband : ∀ y, f y ∈ Set.Icc lo hi → y ∉ ManifoldMorse.criticalPoints E f := by
     intro y hy hcrit
     have houter : f y ∈ Set.Icc c d := ⟨by linarith [hy.1], by linarith [hy.2]⟩
     rcases hpair y hcrit houter with he | he
@@ -3603,7 +3603,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     ⟨r, W, G, U, A, hr, hW, hG, hWzero, hWdesc, hgerms, hgeometry, hU, h0U, hsource, haxis,
       hheight, hfield⟩ :=
     exists_arbitrary_gap_flow_cylinder hf hdim hV hdesc F hF hlob hbhi hband ht₀
-  have hzeros : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0 := fun y hy =>
+  have hzeros : ∀ y ∈ ManifoldMorse.criticalPoints E f, W y = 0 := fun y hy =>
     (hWzero y).mpr (hzero y hy)
   have huniqueG :
     ∀ y,
@@ -3616,7 +3616,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     exact hh
   exact
     ⟨x₀, r, b, W, G, U, A, hxp, hxq, hr, hW, hG, hzeros, hWdesc, hgerms,
-      Smale.FlowConstruction.antitone_flow_height hf G hG hzeros hWdesc,
+      FlowConstruction.antitone_flow_height hf G hG hzeros hWdesc,
       (hgeometry x₀).2.1 p |>.mpr hp₀, (hgeometry x₀).2.2 q |>.mpr hq₀, huniqueG, hU, h0U,
       hsource, haxis, hheight, hfield, hgeometry, t₀, rfl⟩
 
@@ -3635,15 +3635,15 @@ theorem FlowSuspension.native_field_transition_pushforward {D B E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (A : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞) (C : PartialDiffeomorph 𝓘(ℝ, B) 𝓘(ℝ, E) B M ∞)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (WA : D → D) (WC : B → B)
-    (hA : ∀ x ∈ A.target, V x = Smale.FlowConstruction.partialChartField A.symm WA x)
-    (hC : ∀ x ∈ C.target, V x = Smale.FlowConstruction.partialChartField C.symm WC x) {p : D}
+    (hA : ∀ x ∈ A.target, V x = FlowConstruction.partialChartField A.symm WA x)
+    (hC : ∀ x ∈ C.target, V x = FlowConstruction.partialChartField C.symm WC x) {p : D}
     (hp : p ∈ (A.trans C.symm).source) : fderiv ℝ (C.symm ∘ A) p (WA p) = WC (C.symm (A p)) := by
   have hpA : p ∈ A.source := hp.1
   have hpC : A p ∈ C.target := hp.2
   have hpushA :
     mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) A p ((NormedSpace.fromTangentSpace p).symm (WA p)) = V (A p) := by
     have hh := hA (A p) (A.map_source' hpA)
-    rw [Smale.FlowConstruction.partialChartField_eq_mfderiv_symm A.symm WA
+    rw [FlowConstruction.partialChartField_eq_mfderiv_symm A.symm WA
         (A.map_source' hpA)] at hh
     have hi : A.symm (A p) = p := A.left_inv' hpA
     rw [hi] at hh
@@ -3655,7 +3655,7 @@ theorem FlowSuspension.native_field_transition_pushforward {D B E M : Type*}
     mfderiv 𝓘(ℝ, E) 𝓘(ℝ, B) C.symm (A p) (V (A p)) =
       (NormedSpace.fromTangentSpace (C.symm (A p))).symm (WC (C.symm (A p))) := by
     rw [hC (A p) hpC]
-    unfold Smale.FlowConstruction.partialChartField
+    unfold FlowConstruction.partialChartField
     rw [VectorField.mpullback_apply]
     exact hinv.self_apply_inverse _
   rw [← mfderiv_eq_fderiv,
@@ -3674,10 +3674,10 @@ theorem FlowSuspension.native_vertical_transition_derivative {E M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hA :
       ∀ x ∈ A.target,
-        V x = Smale.FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
     (hC :
       ∀ x ∈ C.target,
-        V x = Smale.FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
     {p : ℝ × Z} (hp : p ∈ (A.trans C.symm).source) : fderiv ℝ (C.symm ∘ A) p (1, 0) = (1, 0) :=
   native_field_transition_pushforward A C V (fun _ => (1, 0)) (fun _ => (1, 0)) hA hC hp
 
@@ -3801,10 +3801,10 @@ theorem FlowSuspension.exists_native_transition_phase {Z E M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hA :
       ∀ x ∈ A.target,
-        V x = Smale.FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
     (hC :
       ∀ x ∈ C.target,
-        V x = Smale.FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
     {t₀ : ℝ} (hpA : (t₀, (0 : Z)) ∈ A.source) (hpC : (t₀, (0 : Z)) ∈ C.source)
     (hpoint : A (t₀, 0) = C (t₀, 0)) :
     ∃ (ε : ℝ) (P : PartialDiffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) Z Z ∞) (v : Z → ℝ),
@@ -3849,10 +3849,10 @@ theorem FlowSuspension.exists_global_native_transition_phase {Z E M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hA :
       ∀ x ∈ A.target,
-        V x = Smale.FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField A.symm (fun _ : ℝ × Z => (1, 0)) x)
     (hC :
       ∀ x ∈ C.target,
-        V x = Smale.FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
+        V x = FlowConstruction.partialChartField C.symm (fun _ : ℝ × Z => (1, 0)) x)
     {t₀ : ℝ} (hpA : (t₀, (0 : Z)) ∈ A.source) (hpC : (t₀, (0 : Z)) ∈ C.source)
     (hpoint : A (t₀, 0) = C (t₀, 0)) :
     ∃ (ε : ℝ) (P : PartialDiffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) Z Z ∞) (v : Z → ℝ),
@@ -3871,7 +3871,7 @@ theorem FlowSuspension.exists_global_native_transition_phase {Z E M : Type*}
   obtain ⟨g, hg, W, hW, h0W, hWsub, heq⟩ :=
     LineBundleTransport.exists_smooth_extension_near_closed isClosed_singleton P.open_source hzero
       hv
-  let Q := Smale.PartialChart.restrictSource P hW
+  let Q := PartialChart.restrictSource P hW
   have hQ0 : (0 : Z) ∈ Q.source := ⟨hP0, h0W (Set.mem_singleton 0)⟩
   have hg0 : g 0 = 0 := (heq (h0W (Set.mem_singleton 0))).trans hv0
   refine ⟨ε, Q, g, hε, hQ0, hPzero, hg0, hg, ?_⟩
@@ -3888,10 +3888,10 @@ theorem FlowSuspension.exists_time_last_native_transition_phase {Z E M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hA :
       ∀ x ∈ A.target,
-        V x = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) x)
     (hC :
       ∀ x ∈ C.target,
-        V x = Smale.FlowConstruction.partialChartField C.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField C.symm (fun _ : Z × ℝ => (0, 1)) x)
     {T : ℝ} (hpA : ((0 : Z), T) ∈ A.source) (hpC : ((0 : Z), T) ∈ C.source)
     (hpoint : A (0, T) = C (0, T)) :
     ∃ (ε : ℝ) (P : PartialDiffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) Z Z ∞) (v : Z → ℝ),
@@ -3913,10 +3913,10 @@ theorem FlowSuspension.exists_time_last_native_transition_phase {Z E M : Type*}
   have hfield (B : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞)
     (hB :
       ∀ x ∈ B.target,
-        V x = Smale.FlowConstruction.partialChartField B.symm (fun _ : Z × ℝ => (0, 1)) x) :
+        V x = FlowConstruction.partialChartField B.symm (fun _ : Z × ℝ => (0, 1)) x) :
     ∀ x ∈ (D.trans B).target,
       V x =
-        Smale.FlowConstruction.partialChartField (D.trans B).symm (fun _ : ℝ × Z => (1, 0)) x := by
+        FlowConstruction.partialChartField (D.trans B).symm (fun _ : ℝ × Z => (1, 0)) x := by
     intro x hx
     exact
       (hB x hx.1).trans
@@ -3943,7 +3943,7 @@ theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
     (hA :
       ∀ y ∈ A.target,
         V y =
-          Smale.FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+          FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
     {c r δ T : ℝ} (hδ : 0 < δ) (hbox : Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Φ.source)
     (hslice :
       ∀ z : Fin m → ℝ,
@@ -3968,7 +3968,7 @@ theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
   have hBfield :
     ∀ y ∈ B.target,
       V y =
-        Smale.FlowConstruction.partialChartField B.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y := by
+        FlowConstruction.partialChartField B.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y := by
     intro y hy
     exact
       (hΦ y hy.1).trans
@@ -3981,7 +3981,7 @@ theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
   obtain ⟨ε, P, v, hε, hP0, hPfix, hv0, hv, hformula⟩ :=
     exists_time_last_native_transition_phase B A V hBfield hA hB0 hA0 hpoint
   let Q :=
-    Smale.PartialChart.restrictSource P
+    PartialChart.restrictSource P
       (Metric.isOpen_ball : IsOpen (Metric.ball (0 : Fin m → ℝ) δ))
   have hT : T ∈ Set.Ioo (T - ε) (T + ε) := ⟨by linarith, by linarith⟩
   have hQ0 : (0 : Fin m → ℝ) ∈ Q.source := ⟨hP0, Metric.mem_ball_self hδ⟩
@@ -4001,9 +4001,9 @@ theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
 
 def TransverseGerms.compose_supported_isotopies {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {D₁ D₂ : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞} {K₁ K₂ S : Set E}
-    (A : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D₁ K₁ S)
-    (B : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D₂ K₂ S) :
-    Smale.SupportedDiffeomorph.SupportedRelativeIsotopy (D₁.trans D₂) (K₁ ∪ K₂) S
+    (A : SupportedDiffeomorph.SupportedRelativeIsotopy D₁ K₁ S)
+    (B : SupportedDiffeomorph.SupportedRelativeIsotopy D₂ K₂ S) :
+    SupportedDiffeomorph.SupportedRelativeIsotopy (D₁.trans D₂) (K₁ ∪ K₂) S
     where
   family := fun p => B.family (p.1, A.family p)
   smooth := B.smooth.comp (contMDiff_fst.prodMk A.smooth)
@@ -4033,13 +4033,13 @@ theorem TransverseGerms.exists_transported_transition_correction {E : Type*}
     (hHt : H.target ⊆ P.source) (hdiagram : ∀ z ∈ H.source, P (H z) = Q z)
     (Dₛ Dₜ : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞) {Kₛ Kₜ Sₛ Sₜ : Set E} (hKₛ : IsCompact Kₛ)
     (hKₜ : IsCompact Kₜ) (hKs : Kₛ ⊆ H.source) (hKt : Kₜ ⊆ H.target) (hSₛ : (0 : E) ∈ Sₛ)
-    (hSₜ : (0 : E) ∈ Sₜ) (A : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ Sₛ)
-    (B : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ Sₜ) :
+    (hSₜ : (0 : E) ∈ Sₜ) (A : SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ Sₛ)
+    (B : SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ Sₜ) :
     ∃ (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) Z Z ∞) (K : Set Z),
       IsCompact K ∧
         K = Q '' Kₛ ∪ P '' Kₜ ∧
           K ⊆ Q.target ∩ P.target ∧
-            Nonempty (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)}) ∧
+            Nonempty (SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)}) ∧
               D 0 = 0 ∧ ∀ z ∈ H.source, D (Q z) = P (Dₜ (H (Dₛ z))) := by
   have hKQ : Kₛ ⊆ Q.source := hKs.trans hHs
   have hKP : Kₜ ⊆ P.source := hKt.trans hHt
@@ -4053,14 +4053,14 @@ theorem TransverseGerms.exists_transported_transition_correction {E : Type*}
     exact he.symm ▸ hSₜ
   let A' := A.extension Q hKₛ hKQ hfixedQ
   let B' := B.extension P hKₜ hKP hfixedP
-  let DQ := Smale.SupportedDiffeomorph.extension Q Dₛ hKₛ hKQ A.endpoint_fixed_outside
-  let DP := Smale.SupportedDiffeomorph.extension P Dₜ hKₜ hKP B.endpoint_fixed_outside
+  let DQ := SupportedDiffeomorph.extension Q Dₛ hKₛ hKQ A.endpoint_fixed_outside
+  let DP := SupportedDiffeomorph.extension P Dₜ hKₜ hKP B.endpoint_fixed_outside
   let D := DQ.trans DP
   let K := Q '' Kₛ ∪ P '' Kₜ
   have hK : IsCompact K :=
     (hKₛ.image_of_continuousOn (Q.contMDiffOn_toFun.continuousOn.mono hKQ)).union
       (hKₜ.image_of_continuousOn (P.contMDiffOn_toFun.continuousOn.mono hKP))
-  have I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)} :=
+  have I : SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)} :=
     compose_supported_isotopies A' B'
   have hKU : K ⊆ Q.target ∩ P.target := by
     rintro y (⟨z, hz, rfl⟩ | ⟨z, hz, rfl⟩)
@@ -4076,12 +4076,12 @@ theorem TransverseGerms.exists_transported_transition_correction {E : Type*}
   refine ⟨D, K, hK, rfl, hKU, ⟨I⟩, I.endpoint_fixed_on 0 rfl, ?_⟩
   intro z hz
   have hDz : Dₛ z ∈ H.source :=
-    Smale.SupportedDiffeomorph.mapsTo_source H Dₛ.toEquiv hKs A.endpoint_fixed_outside hz
+    SupportedDiffeomorph.mapsTo_source H Dₛ.toEquiv hKs A.endpoint_fixed_outside hz
   change DP (DQ (Q z)) = P (Dₜ (H (Dₛ z)))
-  rw [Smale.SupportedDiffeomorph.extension_chart Q Dₛ hKₛ hKQ A.endpoint_fixed_outside (hHs hz)]
+  rw [SupportedDiffeomorph.extension_chart Q Dₛ hKₛ hKQ A.endpoint_fixed_outside (hHs hz)]
   rw [← hdiagram (Dₛ z) hDz]
   exact
-    Smale.SupportedDiffeomorph.extension_chart P Dₜ hKₜ hKP B.endpoint_fixed_outside
+    SupportedDiffeomorph.extension_chart P Dₜ hKₜ hKP B.endpoint_fixed_outside
       (hHt (H.map_source' hDz))
 
 attribute [local instance 100] Classical.propDecidable in
@@ -4099,8 +4099,8 @@ theorem TransverseGerms.exists_common_transverse_range {E Z : Type*} [NormedAddC
               Q'.target = U ∧
                 P'.target = U ∧ U ⊆ Q.target ∩ P.target ∧ (∀ z, Q' z = Q z) ∧ (∀ z, P' z = P z) :=
   by
-  let Q' := Smale.PartialChart.restrictSource Q H.open_source
-  let P' := Smale.PartialChart.restrictSource P H.open_target
+  let Q' := PartialChart.restrictSource Q H.open_source
+  let P' := PartialChart.restrictSource P H.open_target
   have hQs : Q'.source = H.source := Set.inter_eq_right.mpr hHs
   have hPs : P'.source = H.target := Set.inter_eq_right.mpr hHt
   have hsame : Q'.target = P'.target := by
@@ -4203,7 +4203,7 @@ theorem TransverseGerms.exists_restricted_native_cylinder {Z E M : Type*}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hA :
       ∀ y ∈ A.target,
-        V y = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y) :
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y) :
     ∃ B : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞,
       B.source = O ×ˢ Set.univ ∧
         B.source ⊆ A.source ∧
@@ -4211,8 +4211,8 @@ theorem TransverseGerms.exists_restricted_native_cylinder {Z E M : Type*}
             (∀ z, B z = A z) ∧
               ∀ y ∈ B.target,
                 V y =
-                  Smale.FlowConstruction.partialChartField B.symm (fun _ : Z × ℝ => (0, 1)) y := by
-  let B := Smale.PartialChart.restrictSource A (hO.prod isOpen_univ)
+                  FlowConstruction.partialChartField B.symm (fun _ : Z × ℝ => (0, 1)) y := by
+  let B := PartialChart.restrictSource A (hO.prod isOpen_univ)
   have hsub : O ×ˢ (Set.univ : Set ℝ) ⊆ A.source := by
     rw [hsource]
     exact fun z hz => ⟨hOU hz.1, hz.2⟩
@@ -4222,10 +4222,10 @@ theorem TransverseGerms.exists_restricted_native_cylinder {Z E M : Type*}
 attribute [local instance 100] Classical.propDecidable in
 theorem TransverseGerms.splitCoordinates_negative_zero_iff {ι : Type*} [Fintype ι]
     (w : ι → ℝ) (z : ι → ℝ) :
-    (Smale.MorseHandle.splitCoordinates w z).1 = 0 ↔ ∀ i, w i = -1 → z i = 0 := by
+    (MorseHandle.splitCoordinates w z).1 = 0 ↔ ∀ i, w i = -1 → z i = 0 := by
   constructor
   · intro h i hi
-    have hh := congrArg (fun v : Smale.MorseHandle.NegativeSpace w => v ⟨i, hi⟩) h
+    have hh := congrArg (fun v : MorseHandle.NegativeSpace w => v ⟨i, hi⟩) h
     exact hh
   · intro h
     ext i
@@ -4234,11 +4234,11 @@ theorem TransverseGerms.splitCoordinates_negative_zero_iff {ι : Type*} [Fintype
 attribute [local instance 100] Classical.propDecidable in
 theorem TransverseGerms.splitCoordinates_positive_zero_iff {ι : Type*} [Fintype ι]
     (w : ι → ℝ) (hw : ∀ i, w i = -1 ∨ w i = 1) (z : ι → ℝ) :
-    (Smale.MorseHandle.splitCoordinates w z).2 = 0 ↔ ∀ i, w i = 1 → z i = 0 := by
+    (MorseHandle.splitCoordinates w z).2 = 0 ↔ ∀ i, w i = 1 → z i = 0 := by
   constructor
   · intro h i hi
     have hn : w i ≠ -1 := by rw [hi]; norm_num
-    have hh := congrArg (fun v : Smale.MorseHandle.PositiveSpace w => v ⟨i, hn⟩) h
+    have hh := congrArg (fun v : MorseHandle.PositiveSpace w => v ⟨i, hn⟩) h
     exact hh
   · intro h
     ext i
@@ -4254,18 +4254,18 @@ structure MorseCancellation.NativeEndpointSliceData {E M : Type*} [NormedAddComm
   zero_domain : (0 : Fin m → ℝ) ∈ labelDomain
   source : A.source = labelDomain ×ˢ Set.univ
   Q :
-    PartialDiffeomorph 𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, Fin m → ℝ) (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
       (Fin m → ℝ) ∞
   P :
-    PartialDiffeomorph 𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, Fin m → ℝ) (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
       (Fin m → ℝ) ∞
   H :
-    PartialDiffeomorph 𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-      (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-      (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) ∞
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) ∞
   zero_source : 0 ∈ H.source
   H_zero : H 0 = 0
   Q_zero : Q 0 = 0
@@ -4275,27 +4275,27 @@ structure MorseCancellation.NativeEndpointSliceData {E M : Type*} [NormedAddComm
   Q_target : Q.target = labelDomain
   P_target : P.target = labelDomain
   diagram : ∀ u ∈ H.source, P (H u) = Q u
-  phaseQ : (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) → ℝ
-  phaseP : (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) → ℝ
+  phaseQ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
+  phaseP : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
   smooth_phaseQ : ContDiff ℝ ∞ phaseQ
   smooth_phaseP : ContDiff ℝ ∞ phaseP
   zero_phaseQ : phaseQ 0 = 0
   zero_phaseP : phaseP 0 = 0
   sliceQ :
     ∀ u ∈ Q.source,
-      cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq) ∈
+      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
         Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq
   sliceP :
     ∀ u ∈ P.source,
-      cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp) ∈
+      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
         Metric.closedBall (a, (0 : Fin m → ℝ)) Rp
   formulaQ :
     ∀ u ∈ Q.source,
-      Φq (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq)) =
+      Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
         A (Q u, Tq + phaseQ u)
   formulaP :
     ∀ u ∈ P.source,
-      Φp (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp)) =
+      Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
         A (P u, Tp + phaseP u)
 
 attribute [local instance 100] Classical.propDecidable in
@@ -4310,7 +4310,7 @@ theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [Nor
     (hAfield :
       ∀ y ∈ A.target,
         V y =
-          Smale.FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+          FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
     {Rq Rp δq δp Tq Tp : ℝ} (hδq : 0 < δq) (hδp : 0 < δp)
     (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
     (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
@@ -4328,7 +4328,7 @@ theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [Nor
           (∀ z, B z = A z) ∧
             (∀ y ∈ B.target,
                 V y =
-                  Smale.FlowConstruction.partialChartField B.symm
+                  FlowConstruction.partialChartField B.symm
                     (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y) ∧
               Nonempty (NativeEndpointSliceData σ a Φq Φp B Rq Rp Tq Tp) := by
   obtain ⟨Q, v, hQ0, hQfix, hv0, hv, hQU, hQslice, hQphase⟩ :=
@@ -4337,7 +4337,7 @@ theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [Nor
   obtain ⟨P, w, hP0, hPfix, hw0, hw, hPU, hPslice, hPphase⟩ :=
     FlowSuspension.exists_native_endpoint_slice_phase σ ha Φp A hsource h0U V hpfield
       hAfield hδp hboxp hslicep hpointp
-  let e := Smale.MorseHandle.splitCoordinates σ
+  let e := MorseHandle.splitCoordinates σ
   obtain
     ⟨Q', P', H, O, hO, h0O, h0H, hH0, hQ'0, hP'0, hQ's, hP's, hQ't, hP't, hOsub, hQ'sub, hP'sub,
       hQ'map, hP'map, hdiagram, _⟩ :=
@@ -4383,10 +4383,10 @@ theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [Nor
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.incoming_linear_stable_plane {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
     (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ p, L (endpointLinearField σ (1 / 2) 1 p) = Smale.MorseHandle.descent (L p))
+    (hL : ∀ p, L (endpointLinearField σ (1 / 2) 1 p) = MorseHandle.descent (L p))
     (p : Model m) : (L p).1 = 0 ↔ ∀ i, σ i = -1 → p.2 i = 0 := by
   have heig : (L p).1 = 0 ↔ endpointLinearField σ (1 / 2) 1 p = -p := by
     constructor
@@ -4422,10 +4422,10 @@ theorem MorseCancellation.incoming_linear_stable_plane {E M : Type*} [NormedAddC
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.outgoing_linear_unstable_plane {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
     (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ p, L (endpointLinearField σ (1 / 2) (-1) p) = Smale.MorseHandle.descent (L p))
+    (hL : ∀ p, L (endpointLinearField σ (1 / 2) (-1) p) = MorseHandle.descent (L p))
     (p : Model m) : (L p).2 = 0 ↔ ∀ i, σ i = 1 → p.2 i = 0 := by
   have heig : (L p).2 = 0 ↔ endpointLinearField σ (1 / 2) (-1) p = p := by
     constructor
@@ -4478,10 +4478,10 @@ theorem MorseCancellation.endpoint_axis_tail_of_restriction {E M : Type*} [Norme
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_cubic_endpoint_basin_restriction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
+    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
     (hf : Continuous f) {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i = -1 ∨ σ i = 1) {e : ℝ}
     (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ z, L (endpointLinearField σ (1 / 2) e z) = Smale.MorseHandle.descent (L z))
+    (hL : ∀ z, L (endpointLinearField σ (1 / 2) e z) = MorseHandle.descent (L z))
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
@@ -4520,7 +4520,7 @@ theorem MorseCancellation.exists_cubic_endpoint_basin_restriction {E M : Type*} 
       hct.eventually hB] with y hy hby
     exact ⟨hy, mem_ball_zero_iff.mp hby.1, mem_ball_zero_iff.mp hby.2⟩
   obtain ⟨U, hUsub, hU, hpU⟩ := mem_nhds_iff.mp hnear
-  let Ψ := Smale.PartialChart.restrictTarget Φ hU
+  let Ψ := PartialChart.restrictTarget Φ hU
   have hsource : Ψ.source ⊆ Φ.source := fun _ hz => hz.1
   have hΨc : (e / 2, (0 : Fin m → ℝ)) ∈ Ψ.source := by
     change (e / 2, 0) ∈ Φ.source ∧ Φ (e / 2, 0) ∈ U
@@ -4545,7 +4545,7 @@ theorem MorseCancellation.exists_cubic_endpoint_basin_restriction {E M : Type*} 
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_actual_incoming_cubic_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
+    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
     (hf : Continuous f) {m : ℕ} (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E))
     (he : c.weights (ρ Option.none) = 1) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -4578,7 +4578,7 @@ theorem MorseCancellation.exists_actual_incoming_cubic_basin {E M : Type*} [Norm
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_actual_outgoing_cubic_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
+    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
     (hf : Continuous f) {m : ℕ} (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E))
     (he : c.weights (ρ Option.none) = -1) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -4715,8 +4715,8 @@ theorem SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension {m n : 
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_matched_connection_basin_endpoints {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p q : M} (cp : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
-    (cq : Smale.ManifoldMorse.SignedMorseChart (E := E) f q) (hf : Continuous f) {m : ℕ}
+    {f : M → ℝ} {p q : M} (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : Continuous f) {m : ℕ}
     (hdim : Module.finrank ℝ E = m + 1)
     (hindex :
       Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
@@ -4766,8 +4766,8 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_actual_connection_slice_data {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ} {p q x : M}
-    (cp : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
-    (cq : Smale.ManifoldMorse.SignedMorseChart (E := E) f q) (hf : Continuous f)
+    (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : Continuous f)
     (hdim : Module.finrank ℝ E = m + 1)
     (hindex :
       Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
@@ -4783,7 +4783,7 @@ theorem MorseCancellation.exists_actual_connection_slice_data {E M : Type*} [Nor
     (hAfield :
       ∀ y ∈ A.target,
         V y =
-          Smale.FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+          FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
     (hAaxis : ∀ t : ℝ, A (0, t) = F t x) :
     ∃ (σ : Fin m → ℝ) (Ψq Ψp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (B :
       PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞) (Rq Rp Tq Tp : ℝ),
@@ -4807,7 +4807,7 @@ theorem MorseCancellation.exists_actual_connection_slice_data {E M : Type*} [Nor
                                 (∀ z, B z = A z) ∧
                                   (∀ y ∈ B.target,
                                       V y =
-                                        Smale.FlowConstruction.partialChartField B.symm
+                                        FlowConstruction.partialChartField B.symm
                                           (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y) ∧
                                     Nonempty
                                       (NativeEndpointSliceData σ (1 / 2) Ψq Ψp B Rq Rp Tq Tp) := by
@@ -4903,7 +4903,7 @@ theorem TransverseGerms.exists_open_transverse_convex_blend {A B : Type*}
     change fderiv ℝ (H - id) 0 = 0
     simpa only [sub_self] using hh.fderiv
   obtain ⟨ρ, hρ, -, hlip⟩ :=
-    Smale.SmallPerturbation.exists_closedBall_small_lipschitz_of_fderiv_zero hS hSzero hu hdu
+    SmallPerturbation.exists_closedBall_small_lipschitz_of_fderiv_zero hS hSzero hu hdu
       (show (0 : ℝ≥0) < 1 / 2 by norm_num)
   let W := U ∩ Metric.ball (0 : A × B) ρ
   refine
@@ -4964,7 +4964,7 @@ theorem TransverseGerms.exists_supported_transverse_germ_linearization {A B : Ty
                           (fun x => H (1, Φ x)) =ᶠ[𝓝 (0 : A × B)] C := by
   have hΦ : ContDiffOn ℝ ∞ (Φ : (A × B) → A × B) Φ.source := Φ.contMDiffOn_toFun.contDiffOn
   have hbij : Function.Bijective (fderiv ℝ Φ 0) := by
-    have hh := Smale.PartialChart.bijective_mfderiv Φ hzero
+    have hh := PartialChart.bijective_mfderiv Φ hzero
     change Function.Bijective (mfderiv 𝓘(ℝ, A × B) 𝓘(ℝ, A × B) Φ 0 : (A × B) →L[ℝ] (A × B)) at hh
     rwa [mfderiv_eq_fderiv] at hh
   let C := (LinearEquiv.ofBijective (fderiv ℝ Φ 0).toLinearMap hbij).toContinuousLinearEquiv
@@ -5005,7 +5005,7 @@ theorem TransverseGerms.exists_supported_transverse_germ_linearization {A B : Ty
     have hh := C.toContinuousLinearMap.hasFDerivAt.comp (f := Φ.symm) (0 : A × B) hdi
     exact hh.fderiv.trans (by rw [hC]; exact hcancel)
   obtain ⟨H, K, hK, hKU, hH, hH0, hdiff, hfix, hscalar, hgerm⟩ :=
-    Smale.SmallPerturbation.exists_supported_tangent_identity_isotopy hU hUzero hG hGzero hdG
+    SmallPerturbation.exists_supported_tangent_identity_isotopy hU hUzero hG hGzero hdG
   have hHorigin (t : ℝ) : H (t, 0) = 0 := by
     obtain ⟨α, -, hα⟩ := hscalar t 0
     simpa only [hGzero, sub_self, smul_zero, add_zero] using hα
@@ -5133,7 +5133,7 @@ theorem TransverseGerms.exists_supported_lower_shear_isotopy {A B : Type*}
   have hU' : IsOpen U' := hU.preimage e.symm.continuous
   have hzero' : (0 : B × A) ∈ U' := by simpa only [U', Set.mem_preimage, map_zero] using hzero
   obtain ⟨J, K', hK', hK'U', hJ, hJ0, hdiff, hfix, hsecond, hcore, hgerm⟩ :=
-    Smale.SupportedDiffeomorph.exists_supported_shear_isotopy R hU' hzero'
+    SupportedDiffeomorph.exists_supported_shear_isotopy R hU' hzero'
   let H : ℝ × (A × B) → A × B := fun p => e.symm (J (p.1, e p.2))
   let K := e.symm '' K'
   have hK : IsCompact K := hK'.image e.symm.continuous
@@ -5185,10 +5185,10 @@ theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*
           IsCompact Kₜ ∧
             Kₜ ⊆ Φ.target ∧
               Nonempty
-                  (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ
+                  (SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ
                     {p : A × B | p.2 = 0}) ∧
                 Nonempty
-                    (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ {(0 : A × B)}) ∧
+                    (SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ {(0 : A × B)}) ∧
                   Set.MapsTo Dₛ Φ.source Φ.source ∧
                     Set.MapsTo Dₜ Φ.target Φ.target ∧
                       (∀ x : A, (x, (0 : B)) ∈ Φ.source → ((Dₜ (Φ (Dₛ (x, 0)))).1 = 0 ↔ x = 0)) ∧
@@ -5201,7 +5201,7 @@ theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*
     exact hP x
   obtain ⟨Q, R, S, hfactor⟩ := exists_transverse_block_factorization C P hCP
   obtain ⟨J, K₂, hK₂, hK₂source, hJ, hJ0, hJdiff, hJfix, -, hJcore, hJgerm⟩ :=
-    Smale.SupportedDiffeomorph.exists_supported_shear_isotopy (-Q) Φ.open_source hzero
+    SupportedDiffeomorph.exists_supported_shear_isotopy (-Q) Φ.open_source hzero
   have htzero : (0 : A × B) ∈ Φ.target := by
     have hh := Φ.map_source' hzero
     rwa [hΦzero] at hh
@@ -5214,13 +5214,13 @@ theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*
   let Kₜ := K₁ ∪ K₃
   have hKₜ : IsCompact Kₜ := hK₁.union hK₃
   have hKₜtarget : Kₜ ⊆ Φ.target := Set.union_subset hK₁target hK₃target
-  have hsrc : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ K₂ {p : A × B | p.2 = 0} := by
+  have hsrc : SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ K₂ {p : A × B | p.2 = 0} := by
     refine ⟨J, hJ, hJ0, fun p => (hDₛ p).symm, hJdiff, hJfix, ?_⟩
     rintro t ⟨x, y⟩ hy
     change y = 0 at hy
     subst y
     exact hJcore t x
-  have htgt : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ {(0 : A × B)} := by
+  have htgt : SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ {(0 : A × B)} := by
     let T : ℝ × (A × B) → A × B := fun p => L (p.1, H p)
     have hT : ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, A × B)) 𝓘(ℝ, A × B) ∞ T :=
       hL.comp (contMDiff_fst.prodMk hH)
@@ -5253,8 +5253,8 @@ theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*
     rwa [hsrczero] at hh
   refine
     ⟨S, Dₛ, Dₜ, K₂, Kₜ, hK₂, hK₂source, hKₜ, hKₜtarget, ⟨hsrc⟩, ⟨htgt⟩,
-      Smale.SupportedDiffeomorph.mapsTo_source Φ Dₛ.toEquiv hK₂source hsrc.endpoint_fixed_outside,
-      Smale.SupportedDiffeomorph.mapsTo_source Φ.symm Dₜ.toEquiv hKₜtarget
+      SupportedDiffeomorph.mapsTo_source Φ Dₛ.toEquiv hK₂source hsrc.endpoint_fixed_outside,
+      SupportedDiffeomorph.mapsTo_source Φ.symm Dₜ.toEquiv hKₜtarget
         htgt.endpoint_fixed_outside,
       ?_, ?_⟩
   · intro x hx
@@ -5286,7 +5286,7 @@ theorem TransverseGerms.exists_projected_equiv_of_native_transverse {A B : Type*
     (Φ : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, A × B) (A × B) (A × B) ∞)
     (hzero : (0 : A × B) ∈ Φ.source) (hΦzero : Φ 0 = 0)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => Φ (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => Φ (x, 0))
         (fun y : B => (0, y)) 0 0) :
     ∃ P : A ≃L[ℝ] A, ∀ x : A, (fderiv ℝ Φ 0 (x, 0)).1 = P x := by
   let D : A →L[ℝ] (A × B) := (fderiv ℝ Φ 0).comp (ContinuousLinearMap.inl ℝ A B)
@@ -5309,9 +5309,9 @@ theorem TransverseGerms.exists_projected_equiv_of_native_transverse {A B : Type*
     rfl
   have hN : Function.Surjective N := fun x => ⟨(x, 0), rfl⟩
   have hJD : Function.Surjective (J.coprod D) :=
-    Smale.TransverseCoordinates.surjective_coprod_swap D J ht
+    TransverseCoordinates.surjective_coprod_swap D J ht
   have hbij : Function.Bijective (N.comp D) :=
-    Smale.TransverseCoordinates.bijective_normal_comp N J D hN hJD hNJ rfl
+    TransverseCoordinates.bijective_normal_comp N J D hN hJD hNJ rfl
   let P := (LinearEquiv.ofBijective (N.comp D).toLinearMap hbij).toContinuousLinearEquiv
   exact ⟨P, fun _ => rfl⟩
 
@@ -5321,7 +5321,7 @@ theorem TransverseGerms.exists_block_reduction_of_native_transverse {A B : Type*
     (Φ : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, A × B) (A × B) (A × B) ∞)
     (hzero : (0 : A × B) ∈ Φ.source) (hΦzero : Φ 0 = 0)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => Φ (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => Φ (x, 0))
         (fun y : B => (0, y)) 0 0)
     (hunique : ∀ x : A, (x, (0 : B)) ∈ Φ.source → ((Φ (x, 0)).1 = 0 ↔ x = 0)) :
     ∃ P : A ≃L[ℝ] A,
@@ -5333,10 +5333,10 @@ theorem TransverseGerms.exists_block_reduction_of_native_transverse {A B : Type*
               IsCompact Kₜ ∧
                 Kₜ ⊆ Φ.target ∧
                   Nonempty
-                      (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ
+                      (SupportedDiffeomorph.SupportedRelativeIsotopy Dₛ Kₛ
                         {p : A × B | p.2 = 0}) ∧
                     Nonempty
-                        (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ
+                        (SupportedDiffeomorph.SupportedRelativeIsotopy Dₜ Kₜ
                           {(0 : A × B)}) ∧
                       Set.MapsTo Dₛ Φ.source Φ.source ∧
                         Set.MapsTo Dₜ Φ.target Φ.target ∧
@@ -5353,7 +5353,7 @@ theorem TransverseGerms.label_sheets_transverse_in_incoming_chart {A B Z : Type*
     (Q P : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, Z) (A × B) Z ∞) (hQsrc : (0 : A × B) ∈ Q.source)
     (hPsrc : (0 : A × B) ∈ P.source) (hQ0 : Q 0 = 0) (hP0 : P 0 = 0)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) (fun x : A => Q (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) (fun x : A => Q (x, 0))
         (fun y : B => P (0, y)) 0 0) :
     Function.Surjective
       ((mfderiv 𝓘(ℝ, A) 𝓘(ℝ, A × B) (fun x : A => P.symm (Q (x, 0))) 0).coprod
@@ -5376,7 +5376,7 @@ theorem TransverseGerms.label_sheets_transverse_in_incoming_chart {A B Z : Type*
   have hpdiff : MDifferentiableAt 𝓘(ℝ, B) 𝓘(ℝ, Z) (fun y : B => P (0, y)) 0 :=
     (P.mdifferentiableAt (by simp) hPsrc).comp (f := fun y : B => ((0 : A), y)) 0 hκ
   exact
-    Smale.ChartMapPerturbation.transverse_in_chart P.symm hqdiff hpdiff hcross htarget
+    ChartMapPerturbation.transverse_in_chart P.symm hqdiff hpdiff hcross htarget
       (htrans hcross)
 
 theorem TransverseGerms.relative_label_sheet_germs {A B Z : Type*} [NormedAddCommGroup A]
@@ -5409,9 +5409,9 @@ theorem TransverseGerms.relative_transverse_of_label_sheets {A B Z : Type*}
     (hHs : H.source ⊆ Q.source) (hHt : H.target ⊆ P.source)
     (hdiagram : ∀ u ∈ H.source, P (H u) = Q u)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) (fun x : A => Q (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) (fun x : A => Q (x, 0))
         (fun y : B => P (0, y)) 0 0) :
-    Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
+    NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
       (fun y : B => (0, y)) 0 0 := by
   have hPsrc : (0 : A × B) ∈ P.source := by
     have hh := hHt (H.map_source' h0)
@@ -5480,13 +5480,13 @@ theorem TransverseGerms.exists_cylinder_block_correction {A B Z : Type*}
     (hHs : H.source ⊆ Q.source) (hHt : H.target ⊆ P.source)
     (hdiagram : ∀ z ∈ H.source, P (H z) = Q z)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
         (fun y : B => (0, y)) 0 0)
     (hunique : ∀ x : A, (x, (0 : B)) ∈ H.source → ((H (x, 0)).1 = 0 ↔ x = 0)) :
     ∃ (L₁ : A ≃L[ℝ] A) (L₂ : B ≃L[ℝ] B) (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) Z Z ∞) (K : Set Z),
       IsCompact K ∧
         K ⊆ Q.target ∩ P.target ∧
-          Nonempty (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)}) ∧
+          Nonempty (SupportedDiffeomorph.SupportedRelativeIsotopy D K {(0 : Z)}) ∧
             D 0 = 0 ∧
               (∀ z ∈ H.source, D (Q z) ∈ P.target) ∧
                 (∀ x : A, (x, (0 : B)) ∈ H.source → ((P.symm (D (Q (x, 0)))).1 = 0 ↔ x = 0)) ∧
@@ -5535,14 +5535,14 @@ theorem FlowSuspension.exists_native_suspension_chart {E B M : Type*}
     (hsource : Φ.source = U ×ˢ Set.univ) {D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞} {K : Set E}
     (hKU : K ⊆ U) {W : (E × ℝ) → E × ℝ} {F : Flow ℝ (E × ℝ)} (C : SuspensionCoordinates D K W F)
     (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
-    (hmodel : ∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y) :
+    (hmodel : ∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y) :
     ∃ Ω : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞,
       Ω.source = Φ.source ∧
         Ω.target = Φ.target ∧
           (∀ p, Ω p = Φ (C.chart p)) ∧
             (∀ y ∈ Ω.target,
                 V y =
-                  Smale.FlowConstruction.partialChartField Ω.symm (fun _ : E × ℝ => (0, 1)) y) ∧
+                  FlowConstruction.partialChartField Ω.symm (fun _ : E × ℝ => (0, 1)) y) ∧
               (∀ p, p.2 ≤ 0 → Ω p = Φ p) ∧ (∀ p, 1 ≤ p.2 → Ω p = Φ (D p.1, p.2)) := by
   let Ω := C.chart.toPartialDiffeomorph.trans Φ
   have hΩsource : Ω.source = Φ.source := by
@@ -5586,10 +5586,10 @@ theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddC
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
     (H : Flow ℝ M) (hH : ∀ x, IsMIntegralCurve (fun t => H t x) V)
     (D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞) {K S : Set E} (hK : IsCompact K) (hKU : K ⊆ U)
-    (I : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
+    (I : SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
     ∃ (N : Set M) (V' : (x : M) → TangentSpace 𝓘(ℝ, B) x) (G : Flow ℝ M),
       IsCompact N ∧
         N ⊆ Φ.target ∩ f ⁻¹' Set.Ioo (c - 1) c ∧
@@ -5607,7 +5607,7 @@ theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddC
                                 Ω.target = Φ.target ∧
                                   (∀ y ∈ Ω.target,
                                       V' y =
-                                        Smale.FlowConstruction.partialChartField Ω.symm
+                                        FlowConstruction.partialChartField Ω.symm
                                           (fun _ : E × ℝ => (0, 1)) y) ∧
                                     (∀ p, p.2 ≤ 0 → Ω p = Φ p) ∧
                                       (∀ p, 1 ≤ p.2 → Ω p = Φ (D p.1, p.2)) ∧
@@ -5644,19 +5644,19 @@ theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddC
     rw [hheight p (hCsource hp) (hslab p hp)]
     constructor <;> linarith [(hslab p hp).1, (hslab p hp).2]
   let R :=
-    Smale.PartialChart.restrictSource Φ
+    PartialChart.restrictSource Φ
       (isOpen_univ.prod (isOpen_Ioo : IsOpen (Set.Ioo (0 : ℝ) 1)))
   have hRheight (p : E × ℝ) (hp : p ∈ R.source) : f (R p) = c - p.2 := hheight p hp.1 hp.2.2
   have hnegN (y : M) (hy : y ∈ N) : mvfderiv 𝓘(ℝ, B) f y (V' y) = -1 := by
     rcases hy with ⟨p, hp, rfl⟩
     have hpR : p ∈ R.source := ⟨hCsource hp, Set.mem_univ _, hslab p hp⟩
     rw [hnew (Φ p) (Φ.map_source' (hCsource hp))]
-    change mvfderiv 𝓘(ℝ, B) f (R p) (Smale.FlowConstruction.partialChartField R.symm W (R p)) = -1
+    change mvfderiv 𝓘(ℝ, B) f (R p) (FlowConstruction.partialChartField R.symm W (R p)) = -1
     rw [mvfderiv_native_height_field R hf hRheight W (R.map_source' hpR), hWheight]
   have hV'₁ := hV'.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let G := Smale.FlowConstruction.compactFlow hV'₁
+  let G := FlowConstruction.compactFlow hV'₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) V' :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
   have hstay (p : E × ℝ) (hp : p ∈ Φ.source) (t : ℝ) : F t p ∈ Φ.source := by
     rw [hsource] at hp ⊢
     exact ⟨flow_preserves_base_region F hKU hFoutside hp.1 t, Set.mem_univ _⟩
@@ -5680,7 +5680,7 @@ theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddC
     rw [hΩmap]
     exact ((hfull (z, 0) h0 t).trans (congrArg Φ hFt)).symm
   have hDU : Set.MapsTo D U U :=
-    Smale.SupportedDiffeomorph.mapsTo_of_fixed_outside D.toEquiv
+    SupportedDiffeomorph.mapsTo_of_fixed_outside D.toEquiv
       (fun z hz => I.endpoint_fixed_outside z (fun h => hz (hKU h)))
   have hΩsection (z : E) (hz : z ∈ U) : ∃ w ∈ U, Ω (z, 1) = Φ (w, 1) :=
     ⟨D z, hDU hz, hΩupper (z, 1) le_rfl⟩
@@ -5726,7 +5726,7 @@ theorem FlowSuspension.exists_native_block_holonomy {A B Z E M : Type*}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (Q P : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, Z) (A × B) Z ∞)
     (H : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, A × B) (A × B) (A × B) ∞)
@@ -5734,7 +5734,7 @@ theorem FlowSuspension.exists_native_block_holonomy {A B Z E M : Type*}
     (hHs : H.source ⊆ Q.source) (hHt : H.target ⊆ P.source) (hQU : Q.target ⊆ U)
     (hPU : P.target ⊆ U) (hdiagram : ∀ z ∈ H.source, P (H z) = Q z)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
         (fun y : B => (0, y)) 0 0)
     (hunique : ∀ x : A, (x, (0 : B)) ∈ H.source → ((H (x, 0)).1 = 0 ↔ x = 0)) :
     ∃ (L₁ : A ≃L[ℝ] A) (L₂ : B ≃L[ℝ] B) (N : Set M) (W : (x : M) → TangentSpace 𝓘(ℝ, E) x) (G :
@@ -5751,7 +5751,7 @@ theorem FlowSuspension.exists_native_block_holonomy {A B Z E M : Type*}
                         Ω.target = Φ.target ∧
                           (∀ y ∈ Ω.target,
                               W y =
-                                Smale.FlowConstruction.partialChartField Ω.symm
+                                FlowConstruction.partialChartField Ω.symm
                                   (fun _ : Z × ℝ => (0, 1)) y) ∧
                             (∀ z ∈ U, ∀ t : ℝ, Ω (z, t) = G t (Φ (z, 0))) ∧
                               (∀ p, p.2 ≤ 0 → Ω p = Φ p) ∧
@@ -6274,14 +6274,14 @@ theorem FlowTimeChange.partialChartField_vertical_factor {E B M : Type*}
     [TopologicalSpace M] [ChartedSpace B M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞) (W : (E × ℝ) → E × ℝ)
     (hbase : ∀ p, (W p).1 = 0) (x : M) :
-    Smale.FlowConstruction.partialChartField Φ.symm W x =
+    FlowConstruction.partialChartField Φ.symm W x =
       (W (Φ.symm x)).2 •
-        Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x := by
+        FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x := by
   have hw (p : E × ℝ) : W p = (W p).2 • ((0 : E), (1 : ℝ)) := by
     apply Prod.ext
     · simpa only [Prod.smul_fst, smul_zero] using hbase p
     · simp only [Prod.smul_snd, smul_eq_mul, mul_one]
-  unfold Smale.FlowConstruction.partialChartField
+  unfold FlowConstruction.partialChartField
   rw [VectorField.mpullback_apply, VectorField.mpullback_apply]
   conv_lhs => rw [hw]
   rw [map_smul, map_smul]
@@ -6294,7 +6294,7 @@ theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
     (W : (E × ℝ) → E × ℝ) (hW : ContDiff ℝ ∞ W) (hbase : ∀ p, (W p).1 = 0)
     (hpos : ∀ p, 0 < (W p).2) {C : Set (E × ℝ)} (hC : IsCompact C) (hCsource : C ⊆ Φ.source)
     (hfix : ∀ p ∉ C, W p = (0, 1)) :
@@ -6303,7 +6303,7 @@ theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
         (∀ x, 0 < ρ x) ∧
           ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞
               (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
-            (∀ x ∈ Φ.target, ρ x • V x = Smale.FlowConstruction.partialChartField Φ.symm W x) ∧
+            (∀ x ∈ Φ.target, ρ x • V x = FlowConstruction.partialChartField Φ.symm W x) ∧
               (∀ x, ρ x • V x = 0 ↔ V x = 0) ∧
                 (∀ (f : M → ℝ) x,
                     mvfderiv 𝓘(ℝ, B) f x (V x) < 0 → mvfderiv 𝓘(ℝ, B) f x (ρ x • V x) < 0) ∧
@@ -6348,13 +6348,13 @@ theorem FlowSuspension.exists_native_cylinder_conjugacy {Z E M : Type*}
     (hbase : ∀ p, (D p).1 ∈ U ↔ p.1 ∈ U) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hmodel :
       ∀ y ∈ Φ.target,
-        V y = Smale.FlowConstruction.partialChartField Φ.symm (suspensionField D) y) :
+        V y = FlowConstruction.partialChartField Φ.symm (suspensionField D) y) :
     ∃ Ω : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞,
       Ω.source = U ×ˢ Set.univ ∧
         Ω.target = Φ.target ∧
           (∀ p, Ω p = Φ (D p)) ∧
             ∀ y ∈ Ω.target,
-              V y = Smale.FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y :=
+              V y = FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y :=
   by
   let Ω := D.toPartialDiffeomorph.trans Φ
   have hΩsource : Ω.source = U ×ˢ Set.univ := by
@@ -6387,7 +6387,7 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
     (H : Flow ℝ M) (hH : ∀ x, IsMIntegralCurve (fun t => H t x) V) {v : E → ℝ}
     (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0) :
     ∃ (N : Set M) (g : E → ℝ) (V' : (x : M) → TangentSpace 𝓘(ℝ, B) x) (G : Flow ℝ M),
@@ -6419,7 +6419,7 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
                                       Ω.target = Φ.target ∧
                                         (∀ y ∈ Ω.target,
                                             V' y =
-                                              Smale.FlowConstruction.partialChartField Ω.symm
+                                              FlowConstruction.partialChartField Ω.symm
                                                 (fun _ : E × ℝ => (0, 1)) y) ∧
                                           (∀ p, p.2 ≤ 1 / 3 → Ω p = Φ p) ∧
                                             (∀ p, 2 / 3 ≤ p.2 → Ω p = Φ (p.1, p.2 + g p.1)) ∧
@@ -6443,9 +6443,9 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     rintro x ⟨p, hp, rfl⟩
     exact ⟨Φ.map_source' (hCsource hp), ⟨p, ⟨hKU (hCsub hp).1, (hCsub hp).2⟩, rfl⟩⟩
   have hV'₁ := hV'.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let G := Smale.FlowConstruction.compactFlow hV'₁
+  let G := FlowConstruction.compactFlow hV'₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) V' :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
   have hstay (p : E × ℝ) (hp : p ∈ Φ.source) (t : ℝ) : F t p ∈ Φ.source := by
     rw [hsource] at hp ⊢
     exact ⟨(hFbase p t) ▸ hp.1, Set.mem_univ _⟩
@@ -6453,11 +6453,11 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     FlowSuspension.native_chart_flow_all_time Φ hV'₁ G hG F W hF hnew (hstay p hp) t
   have hnew' (y : M) (hy : y ∈ Φ.target) :
     V' y =
-      Smale.FlowConstruction.partialChartField Φ.symm
+      FlowConstruction.partialChartField Φ.symm
         (FlowSuspension.suspensionField Cdata.chart) y := by
     exact
       (hnew y hy).trans
-        (congrArg (fun w => Smale.FlowConstruction.partialChartField Φ.symm w y) Cdata.field_eq)
+        (congrArg (fun w => FlowConstruction.partialChartField Φ.symm w y) Cdata.field_eq)
   obtain ⟨Ω, hΩsource, hΩtarget, hΩmap, hΩfield⟩ :=
     FlowSuspension.exists_native_cylinder_conjugacy Φ hsource Cdata.chart
       (fun p => by rw [Cdata.base]) V' hnew'
@@ -6509,7 +6509,7 @@ theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ y ∈ Ω.target,
-        V y = Smale.FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (hleft : ∀ p, p.2 ≤ 0 → Ω p = Φ p)
     (hright : ∀ᶠ z in 𝓝 (0 : E), ∀ t : ℝ, 1 ≤ t → Ω (Q z, t) = Φ (P z, t)) :
@@ -6535,7 +6535,7 @@ theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
                         Ξ.target = Ω.target ∧
                           (∀ y ∈ Ξ.target,
                               W y =
-                                Smale.FlowConstruction.partialChartField Ξ.symm
+                                FlowConstruction.partialChartField Ξ.symm
                                   (fun _ : E × ℝ => (0, 1)) y) ∧
                             (∀ t : ℝ, Ξ (0, t) = Ω (0, t)) ∧
                               ∀ᶠ z in 𝓝 (0 : E),
@@ -6586,7 +6586,7 @@ theorem FlowSuspension.exists_unique_phase_corrected_cylinder {A B Z E M : Type*
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : Z × ℝ => (0, 1)) x)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (Q P : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, Z) (A × B) Z ∞)
     (H : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, A × B) (A × B) (A × B) ∞)
@@ -6594,7 +6594,7 @@ theorem FlowSuspension.exists_unique_phase_corrected_cylinder {A B Z E M : Type*
     (hHs : H.source ⊆ Q.source) (hHt : H.target ⊆ P.source) (hQtarget : Q.target = U)
     (hPtarget : P.target = U) (hdiagram : ∀ z ∈ H.source, P (H z) = Q z)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
+      NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, A × B) (fun x : A => H (x, 0))
         (fun y : B => (0, y)) 0 0)
     {p q : M}
     (hleftBasin :
@@ -6624,7 +6624,7 @@ theorem FlowSuspension.exists_unique_phase_corrected_cylinder {A B Z E M : Type*
                       Ξ.target = Φ.target ∧
                         (∀ y ∈ Ξ.target,
                             W y =
-                              Smale.FlowConstruction.partialChartField Ξ.symm
+                              FlowConstruction.partialChartField Ξ.symm
                                 (fun _ : (A × B) × ℝ => (0, 1)) y) ∧
                           (∀ t : ℝ, Ξ (0, t) = Φ (0, t)) ∧
                             (∀ x,
@@ -6703,7 +6703,7 @@ theorem MorseCancellation.native_endpoint_phase_through_box {E Z M : Type*} [Nor
     (hΦmodel : ∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(a ^ 2)) y)
     (hAmodel :
       ∀ y ∈ A.target,
-        V y = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c r : ℝ}
     (hbox : Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Φ.source) (z : Fin m → ℝ) {q : Z}
     (hq : q ∈ U) {T v : ℝ}
@@ -6734,7 +6734,7 @@ theorem MorseCancellation.matched_cubic_time_formulas {E Z B M : Type*} [NormedA
     (hpfield : ∀ y ∈ Φp.target, V y = nativeCubicDescent σ Φp (-(a ^ 2)) y)
     (hAfield :
       ∀ y ∈ A.target,
-        V y = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (e : (Fin m → ℝ) ≃L[ℝ] E)
     (L : E ≃L[ℝ] E) (Q P : E → Z) (v₀ v₁ : E → ℝ) {Oq Op : Set E} (hOq : IsOpen Oq)
     (hOp : IsOpen Op) (h0q : (0 : E) ∈ Oq) (h0p : (0 : E) ∈ Op) (hQU : ∀ u ∈ Oq, Q u ∈ U)
@@ -6805,14 +6805,14 @@ theorem FieldChartGluing.partialChartField_eq_of_forward_germ {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
     (W : D → D) {p : D} (hpΦ : p ∈ Φ.source) (hpΨ : p ∈ Ψ.source) (heq : (Φ : D → M) =ᶠ[𝓝 p] Ψ) :
-    Smale.FlowConstruction.partialChartField Φ.symm W (Φ p) =
-      Smale.FlowConstruction.partialChartField Ψ.symm W (Φ p) := by
+    FlowConstruction.partialChartField Φ.symm W (Φ p) =
+      FlowConstruction.partialChartField Ψ.symm W (Φ p) := by
   have hval : Φ p = Ψ p := heq.eq_of_nhds
   have hyΨ : Φ p ∈ Ψ.target := hval.symm ▸ Ψ.map_source' hpΨ
   have hiΦ : Φ.symm (Φ p) = p := Φ.left_inv' hpΦ
   have hiΨ : Ψ.symm (Φ p) = p := by rw [hval]; exact Ψ.left_inv' hpΨ
-  rw [Smale.FlowConstruction.partialChartField_eq_mfderiv_symm Φ.symm W (Φ.map_source' hpΦ),
-    Smale.FlowConstruction.partialChartField_eq_mfderiv_symm Ψ.symm W hyΨ]
+  rw [FlowConstruction.partialChartField_eq_mfderiv_symm Φ.symm W (Φ.map_source' hpΦ),
+    FlowConstruction.partialChartField_eq_mfderiv_symm Ψ.symm W hyΨ]
   change
     mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) Φ (Φ.symm (Φ p))
         ((NormedSpace.fromTangentSpace (Φ.symm (Φ p))).symm (W (Φ.symm (Φ p)))) =
@@ -6827,7 +6827,7 @@ theorem FieldChartGluing.isLocalDiffeomorphAt_of_chart_germ {D E M : Type*}
     {f : D → M} {p : D} (hp : p ∈ Φ.source) (heq : f =ᶠ[𝓝 p] Φ) :
     IsLocalDiffeomorphAt 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f p := by
   obtain ⟨U, hUsub, hU, hpU⟩ := mem_nhds_iff.mp heq
-  let Ψ := Smale.PartialChart.restrictSource Φ hU
+  let Ψ := PartialChart.restrictSource Φ hU
   exact ⟨Ψ, ⟨hp, hpU⟩, fun x hx => hUsub hx.2⟩
 
 attribute [local instance 100] Classical.propDecidable in
@@ -6840,16 +6840,16 @@ theorem FieldChartGluing.exists_native_field_chart_near_compact {D E M : Type*}
         ∃ Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞,
           p ∈ Φ.source ∧
             f =ᶠ[𝓝 p] Φ ∧
-              ∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y) :
+              ∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞,
       K ⊆ Φ.source ∧
         (∀ p, Φ p = f p) ∧
-          ∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y := by
+          ∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y := by
   let U : Set D :=
     {p |
       ∃ Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞,
         p ∈ Φ.source ∧
-          f =ᶠ[𝓝 p] Φ ∧ ∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y}
+          f =ᶠ[𝓝 p] Φ ∧ ∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y}
   have hU : IsOpen U := by
     rw [isOpen_iff_mem_nhds]
     rintro p ⟨Ψ, hp, heq, hfield⟩
@@ -6859,7 +6859,7 @@ theorem FieldChartGluing.exists_native_field_chart_near_compact {D E M : Type*}
     obtain ⟨Ψ, hpΨ, heq, _⟩ := hlocal p hp
     exact isLocalDiffeomorphAt_of_chart_germ Ψ hpΨ heq
   obtain ⟨Φ, hKΦ, hΦU, hmap⟩ :=
-    Smale.exists_partialDiffeomorph_near_compact hK hinj hloc hU hlocal
+    exists_partialDiffeomorph_near_compact hK hinj hloc hU hlocal
   refine ⟨Φ, hKΦ, fun p => congrFun hmap p, ?_⟩
   intro y hy
   have hp : Φ.symm y ∈ Φ.source := Φ.map_target' hy
@@ -6876,7 +6876,7 @@ theorem FieldChartGluing.exists_controlled_field_germ_chart {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
     (W : D → D) (V V' : (x : M) → TangentSpace 𝓘(ℝ, E) x)
-    (hmodel : ∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y) {c : D}
+    (hmodel : ∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y) {c : D}
     (hc : c ∈ Φ.source) (hfield : ∀ᶠ y in 𝓝 (Φ c), V' y = V y) {O : Set D} (hO : IsOpen O)
     (hcO : c ∈ O) :
     ∃ (Ψ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞) (r : ℝ),
@@ -6885,10 +6885,10 @@ theorem FieldChartGluing.exists_controlled_field_germ_chart {D E M : Type*}
           Ψ.source ⊆ Φ.source ∩ O ∧
             Ψ.target ⊆ Φ.target ∧
               (∀ z, Ψ z = Φ z) ∧
-                ∀ y ∈ Ψ.target, V' y = Smale.FlowConstruction.partialChartField Ψ.symm W y := by
+                ∀ y ∈ Ψ.target, V' y = FlowConstruction.partialChartField Ψ.symm W y := by
   obtain ⟨U, hUsub, hU, hcenter⟩ := mem_nhds_iff.mp hfield
-  let R := Smale.PartialChart.restrictTarget Φ hU
-  let Ψ := Smale.PartialChart.restrictSource R hO
+  let R := PartialChart.restrictTarget Φ hU
+  let Ψ := PartialChart.restrictSource R hO
   have hcΨ : c ∈ Ψ.source := by
     change (c ∈ Φ.source ∧ Φ c ∈ U) ∧ c ∈ O
     exact ⟨⟨hc, hcenter⟩, hcO⟩
@@ -6900,9 +6900,9 @@ theorem FieldChartGluing.exists_controlled_field_germ_chart {D E M : Type*}
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.signed_split_transverse_rate {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1) (z : Fin m → ℝ) :
-    Smale.MorseHandle.splitCoordinates σ (fun i => σ i * z i) =
-      ((-1 : ℝ) • (Smale.MorseHandle.splitCoordinates σ z).1,
-        (1 : ℝ) • (Smale.MorseHandle.splitCoordinates σ z).2) := by
+    MorseHandle.splitCoordinates σ (fun i => σ i * z i) =
+      ((-1 : ℝ) • (MorseHandle.splitCoordinates σ z).1,
+        (1 : ℝ) • (MorseHandle.splitCoordinates σ z).2) := by
   apply Prod.ext
   · ext i
     change σ i.1 * z i.1 = (-1 : ℝ) * z i.1
@@ -6914,9 +6914,9 @@ theorem MorseCancellation.signed_split_transverse_rate {m : ℕ} (σ : Fin m →
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.signed_split_transverse_exponential {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1) (t : ℝ) (z : Fin m → ℝ) :
-    Smale.MorseHandle.splitCoordinates σ (fun i => Real.exp (-σ i * t) * z i) =
-      (Real.exp t • (Smale.MorseHandle.splitCoordinates σ z).1,
-        Real.exp (-t) • (Smale.MorseHandle.splitCoordinates σ z).2) := by
+    MorseHandle.splitCoordinates σ (fun i => Real.exp (-σ i * t) * z i) =
+      (Real.exp t • (MorseHandle.splitCoordinates σ z).1,
+        Real.exp (-t) • (MorseHandle.splitCoordinates σ z).2) := by
   apply Prod.ext
   · ext i
     change Real.exp (-σ i.1 * t) * z i.1 = Real.exp t * z i.1
@@ -6928,26 +6928,26 @@ theorem MorseCancellation.signed_split_transverse_exponential {m : ℕ} (σ : Fi
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.signed_block_change_cubic_cylinder {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
-    (P : Smale.MorseHandle.NegativeSpace σ ≃L[ℝ] Smale.MorseHandle.NegativeSpace σ)
-    (S : Smale.MorseHandle.PositiveSpace σ ≃L[ℝ] Smale.MorseHandle.PositiveSpace σ) (a t : ℝ)
+    (P : MorseHandle.NegativeSpace σ ≃L[ℝ] MorseHandle.NegativeSpace σ)
+    (S : MorseHandle.PositiveSpace σ ≃L[ℝ] MorseHandle.PositiveSpace σ) (a t : ℝ)
     (z : Fin m → ℝ) :
-    transverseFieldChange (splitTransverseChange (Smale.MorseHandle.splitCoordinates σ) P S)
+    transverseFieldChange (splitTransverseChange (MorseHandle.splitCoordinates σ) P S)
         (cubicFlowCylinder σ a (z, t)) =
       cubicFlowCylinder σ a
-        (splitTransverseChange (Smale.MorseHandle.splitCoordinates σ) P S z, t) := by
+        (splitTransverseChange (MorseHandle.splitCoordinates σ) P S z, t) := by
   apply Prod.ext
   · rfl
   · exact
       splitTransverseChange_commutes (fun i => Real.exp (-σ i * t))
-        (Smale.MorseHandle.splitCoordinates σ) (Real.exp t) (Real.exp (-t))
+        (MorseHandle.splitCoordinates σ) (Real.exp t) (Real.exp (-t))
         (signed_split_transverse_exponential σ hσ t) P S z
 
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (σ : Fin m → ℝ) (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
-    (P : Smale.MorseHandle.NegativeSpace σ ≃L[ℝ] Smale.MorseHandle.NegativeSpace σ)
-    (S : Smale.MorseHandle.PositiveSpace σ ≃L[ℝ] Smale.MorseHandle.PositiveSpace σ)
+    (P : MorseHandle.NegativeSpace σ ≃L[ℝ] MorseHandle.NegativeSpace σ)
+    (S : MorseHandle.PositiveSpace σ ≃L[ℝ] MorseHandle.PositiveSpace σ)
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (τ : ℝ)
     (hmodel : ∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ τ y) :
@@ -6957,12 +6957,12 @@ theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M
           (∀ s : ℝ, Ψ (s, 0) = Φ (s, 0)) ∧
             (∀ y ∈ Ψ.target, V y = nativeCubicDescent σ Ψ τ y) ∧
               ∀ (a t : ℝ)
-                (u : Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ),
-                Ψ (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, t)) =
+                (u : MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ),
+                Ψ (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, t)) =
                   Φ
                     (cubicFlowCylinder σ a
-                      ((Smale.MorseHandle.splitCoordinates σ).symm (P u.1, S u.2), t)) := by
-  let T := splitTransverseChange (Smale.MorseHandle.splitCoordinates σ) P S
+                      ((MorseHandle.splitCoordinates σ).symm (P u.1, S u.2), t)) := by
+  let T := splitTransverseChange (MorseHandle.splitCoordinates σ) P S
   let D := transverseFieldChange T
   let Ψ := D.toDiffeomorph.toPartialDiffeomorph.trans Φ
   have htarget : Ψ.target = Φ.target := by
@@ -6979,7 +6979,7 @@ theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M
     rw [D.fderiv]
     exact
       transverseFieldChange_cubicDescent σ T
-        (splitTransverseChange_commutes σ (Smale.MorseHandle.splitCoordinates σ) (-1) 1
+        (splitTransverseChange_commutes σ (MorseHandle.splitCoordinates σ) (-1) 1
           (signed_split_transverse_rate σ hσ) P S)
         τ p
   refine ⟨Ψ, htarget, ?_, ?_, ?_, ?_⟩
@@ -6996,14 +6996,14 @@ theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M
       (partialChartField_of_model_conjugacy D.toDiffeomorph.toPartialDiffeomorph Φ
           (cubicDescent σ τ) (cubicDescent σ τ) hpush hy).symm
   · intro a t u
-    change Φ (D (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, t))) = _
+    change Φ (D (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, t))) = _
     rw [signed_block_change_cubic_cylinder σ hσ P S]
     have hT :
-      T ((Smale.MorseHandle.splitCoordinates σ).symm u) =
-        (Smale.MorseHandle.splitCoordinates σ).symm (P u.1, S u.2) := by
+      T ((MorseHandle.splitCoordinates σ).symm u) =
+        (MorseHandle.splitCoordinates σ).symm (P u.1, S u.2) := by
       simp only [T, splitTransverseChange, ContinuousLinearEquiv.trans_apply,
         ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.prodCongr_apply]
-    change Φ (cubicFlowCylinder σ a (T ((Smale.MorseHandle.splitCoordinates σ).symm u), t)) = _
+    change Φ (cubicFlowCylinder σ a (T ((MorseHandle.splitCoordinates σ).symm u), t)) = _
     rw [hT]
 
 theorem MorseCancellation.exists_native_regular_cubic_field_chart {E M : Type*} [NormedAddCommGroup E]
@@ -7062,7 +7062,7 @@ theorem MorseCancellation.exists_native_regular_cubic_field_chart {E M : Type*} 
     have hα : HasDerivAt α (cubicDescent σ (-(a ^ 2)) (α p.2)) p.2 :=
       hasDerivAt_cubicFlowCylinder σ a p.1 p.2
     have hd :=
-      Smale.FlowConstruction.hasMFDerivAt_lift_partialChartCurve Ψ.symm
+      FlowConstruction.hasMFDerivAt_lift_partialChartCurve Ψ.symm
         (cubicDescent σ (-(a ^ 2))) hα hpC
     have hcurveeq : Ψ.symm.symm ∘ α = fun t => F t (ι p.1) := by
       funext t
@@ -7072,7 +7072,7 @@ theorem MorseCancellation.exists_native_regular_cubic_field_chart {E M : Type*} 
     change
       HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (fun t => F t (ι p.1)) p.2
         ((1 : ℝ →L[ℝ] ℝ).smulRight
-          (Smale.FlowConstruction.partialChartField Ψ.symm (cubicDescent σ (-(a ^ 2)))
+          (FlowConstruction.partialChartField Ψ.symm (cubicDescent σ (-(a ^ 2)))
             (Ψ (C p)))) at hd
     rw [hcompose p, hformula p hp] at hd
     have hh := (hF (ι p.1) p.2).mfderiv.symm.trans hd.mfderiv
@@ -7092,7 +7092,7 @@ theorem MorseCancellation.exists_regular_cubic_chart_of_native_vertical_field {E
     (hmodel :
       ∀ y ∈ Φ.target,
         V y =
-          Smale.FlowConstruction.partialChartField Φ.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+          FlowConstruction.partialChartField Φ.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) :
     ∃ Ψ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
       Ψ.target = Φ.target ∧
@@ -7159,9 +7159,9 @@ theorem FieldChartGluing.exists_glued_three_native_field_charts {Z E M : Type*}
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     (Φ₀ Φₘ Φ₁ : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, E) (ℝ × Z) M ∞) (W : (ℝ × Z) → ℝ × Z)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
-    (hfield₀ : ∀ y ∈ Φ₀.target, V y = Smale.FlowConstruction.partialChartField Φ₀.symm W y)
-    (hfieldₘ : ∀ y ∈ Φₘ.target, V y = Smale.FlowConstruction.partialChartField Φₘ.symm W y)
-    (hfield₁ : ∀ y ∈ Φ₁.target, V y = Smale.FlowConstruction.partialChartField Φ₁.symm W y)
+    (hfield₀ : ∀ y ∈ Φ₀.target, V y = FlowConstruction.partialChartField Φ₀.symm W y)
+    (hfieldₘ : ∀ y ∈ Φₘ.target, V y = FlowConstruction.partialChartField Φₘ.symm W y)
+    (hfield₁ : ∀ y ∈ Φ₁.target, V y = FlowConstruction.partialChartField Φ₁.symm W y)
     {l a b r : ℝ} (hla : l ≤ a) (hab : a < b) (hbr : b ≤ r)
     (hsource₀ : ∀ s ∈ Set.Icc l a, (s, (0 : Z)) ∈ Φ₀.source)
     (hsourceₘ : ∀ s ∈ Set.Ioo a b, (s, (0 : Z)) ∈ Φₘ.source)
@@ -7173,7 +7173,7 @@ theorem FieldChartGluing.exists_glued_three_native_field_charts {Z E M : Type*}
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, E) (ℝ × Z) M ∞,
       Set.Icc l r ×ˢ {(0 : Z)} ⊆ Φ.source ∧
         (∀ s ∈ Set.Icc l r, Φ (s, 0) = γ s) ∧
-          (∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y) ∧
+          (∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y) ∧
             ((Φ : (ℝ × Z) → M) =ᶠ[𝓝 (l, (0 : Z))] Φ₀) ∧
               ((Φ : (ℝ × Z) → M) =ᶠ[𝓝 (r, (0 : Z))] Φ₁) := by
   let f := threeChartMap Φ₀ Φₘ Φ₁ a b
@@ -7203,7 +7203,7 @@ theorem FieldChartGluing.exists_glued_three_native_field_charts {Z E M : Type*}
       ∃ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, E) (ℝ × Z) M ∞,
         p ∈ Ψ.source ∧
           f =ᶠ[𝓝 p] Ψ ∧
-            ∀ y ∈ Ψ.target, V y = Smale.FlowConstruction.partialChartField Ψ.symm W y := by
+            ∀ y ∈ Ψ.target, V y = FlowConstruction.partialChartField Ψ.symm W y := by
     rintro ⟨s, z⟩ ⟨hs, hz⟩
     have hz0 : z = 0 := hz
     subst z
@@ -7276,9 +7276,9 @@ theorem FieldChartGluing.exists_closed_axis_native_field_chart {Z E M : Type*}
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     (Φ₀ Φₘ Φ₁ : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, E) (ℝ × Z) M ∞) (W : (ℝ × Z) → ℝ × Z)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
-    (hfield₀ : ∀ y ∈ Φ₀.target, V y = Smale.FlowConstruction.partialChartField Φ₀.symm W y)
-    (hfieldₘ : ∀ y ∈ Φₘ.target, V y = Smale.FlowConstruction.partialChartField Φₘ.symm W y)
-    (hfield₁ : ∀ y ∈ Φ₁.target, V y = Smale.FlowConstruction.partialChartField Φ₁.symm W y)
+    (hfield₀ : ∀ y ∈ Φ₀.target, V y = FlowConstruction.partialChartField Φ₀.symm W y)
+    (hfieldₘ : ∀ y ∈ Φₘ.target, V y = FlowConstruction.partialChartField Φₘ.symm W y)
+    (hfield₁ : ∀ y ∈ Φ₁.target, V y = FlowConstruction.partialChartField Φ₁.symm W y)
     {l a b r : ℝ} (hla : l < a) (hab : a < b) (hbr : b < r)
     (hsource₀ : ∀ s ∈ Set.Icc l a, (s, (0 : Z)) ∈ Φ₀.source)
     (hsourceₘ : ∀ s ∈ Set.Ioo l r, (s, (0 : Z)) ∈ Φₘ.source)
@@ -7290,7 +7290,7 @@ theorem FieldChartGluing.exists_closed_axis_native_field_chart {Z E M : Type*}
     (hright : Φ₁ (r, 0) ∉ Φₘ.target) (hne : Φ₀ (l, 0) ≠ Φ₁ (r, 0)) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, E) (ℝ × Z) M ∞,
       Set.Icc l r ×ˢ {(0 : Z)} ⊆ Φ.source ∧
-        (∀ y ∈ Φ.target, V y = Smale.FlowConstruction.partialChartField Φ.symm W y) ∧
+        (∀ y ∈ Φ.target, V y = FlowConstruction.partialChartField Φ.symm W y) ∧
           Φ (l, 0) = Φ₀ (l, 0) ∧
             Φ (r, 0) = Φ₁ (r, 0) ∧
               (∀ s ∈ Set.Ioo l r, Φ (s, 0) = Φₘ (s, 0)) ∧
@@ -7552,63 +7552,63 @@ theorem MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder {Z E M
     (hpfield : ∀ y ∈ Φp.target, V y = nativeCubicDescent σ Φp (-(a ^ 2)) y)
     (hAfield :
       ∀ y ∈ A.target,
-        V y = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (L₁ : Smale.MorseHandle.NegativeSpace σ ≃L[ℝ] Smale.MorseHandle.NegativeSpace σ)
-    (L₂ : Smale.MorseHandle.PositiveSpace σ ≃L[ℝ] Smale.MorseHandle.PositiveSpace σ)
-    (Q P : (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) → Z)
-    (v₀ v₁ : (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) → ℝ)
-    {Oq Op : Set (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)}
+    (L₁ : MorseHandle.NegativeSpace σ ≃L[ℝ] MorseHandle.NegativeSpace σ)
+    (L₂ : MorseHandle.PositiveSpace σ ≃L[ℝ] MorseHandle.PositiveSpace σ)
+    (Q P : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → Z)
+    (v₀ v₁ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ)
+    {Oq Op : Set (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)}
     (hOq : IsOpen Oq) (hOp : IsOpen Op) (h0q : 0 ∈ Oq) (h0p : 0 ∈ Op) (hQU : ∀ u ∈ Oq, Q u ∈ U)
     (hPU : ∀ u ∈ Op, P u ∈ U) {Rq Rp Tq Tp : ℝ} (hRq : 0 < Rq) (hRp : 0 < Rp)
     (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
     (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
     (hsliceq :
       ∀ u ∈ Oq,
-        cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq) ∈
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
           Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq)
     (hslicep :
       ∀ u ∈ Op,
-        cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp) ∈
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
           Metric.closedBall (a, (0 : Fin m → ℝ)) Rp)
     (hphaseq :
       ∀ u ∈ Oq,
-        Φq (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq)) =
+        Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
           A (Q u, Tq + v₀ u))
     (hphasep :
       ∀ u ∈ Op,
-        Φp (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp)) =
+        Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
           A (P u, Tp + v₁ u))
     (Ξ :
       PartialDiffeomorph
-        𝓘(ℝ, (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) × ℝ) 𝓘(ℝ, E)
-        ((Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) × ℝ) M ∞)
-    {O : Set (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)}
+        𝓘(ℝ, (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) × ℝ) 𝓘(ℝ, E)
+        ((MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) × ℝ) M ∞)
+    {O : Set (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)}
     (hO : IsOpen O) (h0O : 0 ∈ O) (hΞsource : Ξ.source = O ×ˢ Set.univ)
     (hΞtarget : Ξ.target = A.target)
     (hW : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, W x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hΞfield :
       ∀ y ∈ Ξ.target,
         W y =
-          Smale.FlowConstruction.partialChartField Ξ.symm
+          FlowConstruction.partialChartField Ξ.symm
             (fun _ :
-                (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) × ℝ =>
+                (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) × ℝ =>
               (0, 1))
             y)
     (G : Flow ℝ M) (hG : ∀ x, IsMIntegralCurve (fun t => G t x) W)
     (hWq : ∀ᶠ y in 𝓝 (Φq (-a, 0)), W y = V y) (hWp : ∀ᶠ y in 𝓝 (Φp (a, 0)), W y = V y)
     (hne : Φq (-a, 0) ≠ Φp (a, 0))
     (hleft :
-      ∀ᶠ u in 𝓝 (0 : Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ),
+      ∀ᶠ u in 𝓝 (0 : MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ),
         ∀ t : ℝ, t ≤ -1 → Ξ (u, t) = A (Q u, t + v₀ u))
     (hright :
-      ∀ᶠ u in 𝓝 (0 : Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ),
+      ∀ᶠ u in 𝓝 (0 : MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ),
         ∀ t : ℝ, 2 ≤ t → Ξ (u, t) = A (P (L₁ u.1, L₂ u.2), t + v₁ (L₁ u.1, L₂ u.2))) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
       Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source ∧
         (∀ y ∈ Φ.target, W y = nativeCubicDescent σ Φ (-(a ^ 2)) y) ∧
           Φ (-a, 0) = Φq (-a, 0) ∧ Φ (a, 0) = Φp (a, 0) ∧ Φ (0, 0) = Ξ (0, 0) := by
-  let e := Smale.MorseHandle.splitCoordinates σ
+  let e := MorseHandle.splitCoordinates σ
   let L := L₁.prodCongr L₂
   let T := splitTransverseChange e L₁ L₂
   let D := transverseFieldChange T
@@ -7650,13 +7650,13 @@ theorem MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder {Z E M
       signed_block_change_cubic_cylinder σ hσ L₁ L₂ a t z
     rw [hc] at hb
     exact Metric.ball_subset_closedBall hb
-  let R := Smale.PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
+  let R := PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
   have hRtarget : R.target = O := by
     ext u
     change
       (u ∈
             (Set.univ :
-              Set (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)) ∧
+              Set (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)) ∧
           u ∈ O) ↔
         u ∈ O
     simp only [Set.mem_univ, true_and]
@@ -7796,22 +7796,22 @@ theorem MorseCancellation.incoming_cubic_slice_basin {m : ℕ} {E M : Type*} [No
     (hbasin :
       ∀ z ∈ Φ.source,
         Filter.Tendsto (fun t => F t (Φ z)) Filter.atTop (𝓝 p) ↔ ∀ i, σ i = -1 → z.2 i = 0)
-    (u : Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-    (hu : cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T) ∈ Φ.source) :
+    (u : MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+    (hu : cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T) ∈ Φ.source) :
     Filter.Tendsto
         (fun t =>
-          F t (Φ (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T))))
+          F t (Φ (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T))))
         Filter.atTop (𝓝 p) ↔
       u.1 = 0 := by
   rw [hbasin _ hu]
   have he :
     (∀ i,
         σ i = -1 →
-          (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T)).2 i = 0) ↔
-      ∀ i, σ i = -1 → (Smale.MorseHandle.splitCoordinates σ).symm u i = 0 := by
+          (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T)).2 i = 0) ↔
+      ∀ i, σ i = -1 → (MorseHandle.splitCoordinates σ).symm u i = 0 := by
     simp only [cubicFlowCylinder_transverse_zero_iff]
   rw [he, ← TransverseGerms.splitCoordinates_negative_zero_iff]
-  rw [(Smale.MorseHandle.splitCoordinates σ).apply_symm_apply]
+  rw [(MorseHandle.splitCoordinates σ).apply_symm_apply]
 
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.outgoing_cubic_slice_basin {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
@@ -7821,22 +7821,22 @@ theorem MorseCancellation.outgoing_cubic_slice_basin {m : ℕ} {E M : Type*} [No
     (hbasin :
       ∀ z ∈ Φ.source,
         Filter.Tendsto (fun t => F t (Φ z)) Filter.atBot (𝓝 q) ↔ ∀ i, σ i = 1 → z.2 i = 0)
-    (u : Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-    (hu : cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T) ∈ Φ.source) :
+    (u : MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+    (hu : cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T) ∈ Φ.source) :
     Filter.Tendsto
         (fun t =>
-          F t (Φ (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T))))
+          F t (Φ (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T))))
         Filter.atBot (𝓝 q) ↔
       u.2 = 0 := by
   rw [hbasin _ hu]
   have he :
     (∀ i,
         σ i = 1 →
-          (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, T)).2 i = 0) ↔
-      ∀ i, σ i = 1 → (Smale.MorseHandle.splitCoordinates σ).symm u i = 0 := by
+          (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, T)).2 i = 0) ↔
+      ∀ i, σ i = 1 → (MorseHandle.splitCoordinates σ).symm u i = 0 := by
     simp only [cubicFlowCylinder_transverse_zero_iff]
   rw [he, ← TransverseGerms.splitCoordinates_positive_zero_iff σ hσ]
-  rw [(Smale.MorseHandle.splitCoordinates σ).apply_symm_apply]
+  rw [(MorseHandle.splitCoordinates σ).apply_symm_apply]
 
 theorem FlowCancellation.exists_native_lyapunov_residence {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -7867,7 +7867,7 @@ theorem FlowCancellation.exists_native_lyapunov_residence {E M : Type*}
   intro γ hγ
   by_contra! hstay
   have hd (t : ℝ) : HasDerivAt (f ∘ γ) (mvfderiv 𝓘(ℝ, E) f (γ t) (V (γ t))) t :=
-    Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf hγ t
+    FlowConstruction.hasDerivAt_comp_integralCurve hf hγ t
   have hdiff : Differentiable ℝ (f ∘ γ) := fun t => (hd t).differentiableAt
   have h0 : (0 : ℝ) ∈ Set.Icc 0 T := ⟨le_rfl, hT.le⟩
   have hlast : T ∈ Set.Icc (0 : ℝ) T := ⟨hT.le, le_rfl⟩
@@ -8113,7 +8113,7 @@ theorem MorseCancellation.hasDerivAt_partialChart_integralCurve {D E M : Type*} 
     [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, D) M D ∞) (W : D → D)
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {γ : ℝ → M} (hγ : IsMIntegralCurve γ V) {t : ℝ}
-    (ht : γ t ∈ e.source) (hV : V (γ t) = Smale.FlowConstruction.partialChartField e W (γ t)) :
+    (ht : γ t ∈ e.source) (hV : V (γ t) = FlowConstruction.partialChartField e W (γ t)) :
     HasDerivAt (e ∘ γ) (W (e (γ t))) t := by
   let e' := e.toOpenPartialHomeomorph
   have he : e'.MDifferentiable 𝓘(ℝ, E) 𝓘(ℝ, D) :=
@@ -8130,7 +8130,7 @@ theorem MorseCancellation.hasDerivAt_partialChart_integralCurve {D E M : Type*} 
     mfderiv 𝓘(ℝ, E) 𝓘(ℝ, D) e (γ t) ((NormedSpace.fromTangentSpace t r) • V (γ t)) =
       (NormedSpace.fromTangentSpace t r) •
         (NormedSpace.fromTangentSpace (e (γ t))).symm (W (e (γ t)))
-  rw [map_smul, hV, Smale.FlowConstruction.partialChartField_eq_mfderiv_symm e W ht]
+  rw [map_smul, hV, FlowConstruction.partialChartField_eq_mfderiv_symm e W ht]
   have hv := congrArg (fun A : D →L[ℝ] D => A (W (e (γ t)))) hinv
   exact congrArg (fun v => (NormedSpace.fromTangentSpace t r) • v) hv
 
@@ -8140,7 +8140,7 @@ theorem MorseCancellation.exists_native_compact_lyapunov_residence {D E M : Type
     {L : D → ℝ} {W : D → D} (hL : ContDiff ℝ ∞ L) (hW : Continuous W) {C : Set D}
     (hC : IsCompact C) (hsource : C ⊆ Φ.source) (hneg : ∀ x ∈ C, fderiv ℝ L x (W x) < 0)
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ∀ x ∈ Φ '' C, V x = Smale.FlowConstruction.partialChartField Φ.symm W x) :
+    (hV : ∀ x ∈ Φ '' C, V x = FlowConstruction.partialChartField Φ.symm W x) :
     ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ Φ '' C := by
   obtain ⟨T, hT, hTbound⟩ := exists_compact_lyapunov_residence hL hW hC hneg
   refine ⟨T, hT, ?_⟩
@@ -8170,7 +8170,7 @@ theorem MorseCancellation.exists_native_cancelledDescent_residence_bound {E M : 
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV :
       ∀ x ∈ Φ '' C,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (cancelledDescent σ a φ) x) :
+        V x = FlowConstruction.partialChartField Φ.symm (cancelledDescent σ a φ) x) :
     ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ Φ '' C := by
   obtain ⟨k, -, hL, hneg⟩ := exists_compact_fieldLyapunov σ hσ ha hφ hφnonneg hone hC
   exact
@@ -8240,7 +8240,7 @@ theorem MorseCancellation.native_cubic_axis_flow {m : ℕ} {E M : Type*} [Normed
   have hΓ : IsMIntegralCurve (Φ ∘ cubicModelOrbit a) V := by
     intro s
     have hd :=
-      Smale.FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm
+      FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm
         (cubicDescent σ (-(a ^ 2))) (hasDerivAt_cubicModelOrbit σ a s) (hmem s)
     have he := hmodel (Φ (cubicModelOrbit a s)) (Φ.map_source' (hmem s))
     change
@@ -8345,7 +8345,7 @@ theorem FlowCancellation.continuousOn_band_entryTime {X : Type*} [TopologicalSpa
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
     (hlower : ∀ x, f x = c → D x < 0) (hupper : ∀ x, f x = d → D x < 0)
     (hres : ∃ T : ℝ, 0 < T ∧ ∀ x, ∃ t ∈ Set.Icc (0 : ℝ) T, f (F t x) ∉ Set.Icc c d) :
-    ContinuousOn (Smale.FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
+    ContinuousOn (FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
   obtain ⟨T, hT, hforward, -⟩ :=
     exists_uniform_directed_band_crossing F hf hD hder hlower hupper hres
   have hclosed : IsClosed {x | f x ≤ c} := isClosed_le hf continuous_const
@@ -8358,7 +8358,7 @@ theorem FlowCancellation.continuousOn_band_entryTime {X : Type*} [TopologicalSpa
           (interior_sublevel_eq_of_boundary F hf hder hlower))
         hh
   exact
-    Smale.FlowConstruction.continuousOn_entryTime F hclosed
+    FlowConstruction.continuousOn_entryTime F hclosed
       (forwardInvariant_sublevel_of_boundary F hf hD hder hlower) hentry
       (fun x hx => ⟨T, hT.le, (hforward x hx).le⟩)
 
@@ -8376,15 +8376,15 @@ theorem FlowCancellation.exists_native_flow_band_crossing {E M : Type*}
     ∃ F : Flow ℝ M,
       (∀ x, IsMIntegralCurve (fun t => F t x) V) ∧
         (∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x)) ∧
-          ContinuousOn (Smale.FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
+          ContinuousOn (FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
   have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let F := Smale.FlowConstruction.compactFlow hV₁
+  let F := FlowConstruction.compactFlow hV₁
   have hcurve (x : M) : IsMIntegralCurve (fun t => F t x) V :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hV₁ x
   let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
   have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
   have hder (x : M) (t : ℝ) : HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t :=
-    Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
   have hres' : ∃ T : ℝ, 0 < T ∧ ∀ x, ∃ t ∈ Set.Icc (0 : ℝ) T, f (F t x) ∉ Set.Icc c d := by
     obtain ⟨T, hT, hbound⟩ := hres
     exact ⟨T, hT, fun x => hbound (fun t => F t x) (hcurve x)⟩
@@ -8402,17 +8402,17 @@ theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
     (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hp : Φ (a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : Φ (-a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : Φ (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φ (-a, 0) ∈ ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
     {c d : ℝ} (hc : c < f (Φ (a, 0))) (hd : f (Φ (-a, 0)) < d)
     (hpair :
-      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
         f x ∈ Set.Icc c d → x = Φ (a, 0) ∨ x = Φ (-a, 0))
     (hunique :
-      ∀ x ∉ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∉ ManifoldMorse.criticalPoints E f,
         Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 (Φ (-a, 0))) →
           Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 (Φ (a, 0))) →
             ∃ t : ℝ, F t (Φ (0, 0)) = x) :
@@ -8431,12 +8431,12 @@ theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [
                       (∃ T : ℝ,
                           0 < T ∧
                             (∀ x, f x ≤ d → f (G T x) < c) ∧ ∀ x, c ≤ f x → d < f (G (-T) x)) ∧
-                        ContinuousOn (Smale.FlowConstruction.entryTime G {x | f x ≤ c})
+                        ContinuousOn (FlowConstruction.entryTime G {x | f x ≤ c})
                           {x | f x ≤ d} := by
   have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
   obtain ⟨hrange, htop, hbot⟩ := native_cubic_axis_orbit σ ha Φ haxis hV₁ hmodel F hcurve
   have hclosed := native_cubic_closed_axis σ ha Φ haxis hV₁ hmodel F hcurve
-  have hmono := Smale.FlowConstruction.antitone_flow_height hf F hcurve hzero hdesc (Φ (0, 0))
+  have hmono := FlowConstruction.antitone_flow_height hf F hcurve hzero hdesc (Φ (0, 0))
   have hztop := hf.continuous.continuousAt.tendsto.comp htop
   have hzbot := hf.continuous.continuousAt.tendsto.comp hbot
   have hzband (t : ℝ) : f (F t (Φ (0, 0))) ∈ Set.Icc (f (Φ (a, 0))) (f (Φ (-a, 0))) :=
@@ -8503,7 +8503,7 @@ theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [
       rcases hx with hx | hx <;> rw [hx] at hh
       · exact (lt_irrefl c) hh.1
       · exact (lt_irrefl d) hh.2
-    have hreg : x ∉ Smale.ManifoldMorse.criticalPoints E f := by
+    have hreg : x ∉ ManifoldMorse.criticalPoints E f := by
       intro hcrit
       have hxb : f x ∈ Set.Icc c d := by
         rcases hx with hx | hx <;> rw [hx]
@@ -8646,7 +8646,7 @@ theorem FlowCancellation.smooth_flowBandHeight {E M : Type*} [NormedAddCommGroup
   let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
   have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
   have hder (x : M) (t : ℝ) : HasDerivAt (fun s => f (F s x)) (D (F t x)) t :=
-    Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
   have hB : IsOpen (crossingBasin F f c d) := hBc.inter hBd
   have hpos (x : M) (hx : x ∈ crossingBasin F f c d) : 0 < crossingDuration F f c d x :=
     crossingDuration_pos F hf.continuous hD hder hc hcd hx
@@ -8716,7 +8716,7 @@ theorem FlowCancellation.exists_logarithmic_cutoff {ε δ : ℝ} (hε : 0 < ε) 
             (∀ t, ε ≤ |t| → χ t = 0) ∧
               (∀ t, χ t ∈ Set.Icc (0 : ℝ) 1) ∧ ∀ t, |t * deriv χ t| < δ := by
   obtain ⟨β, hβ, hcompact, hsupp, hone, hrange⟩ :=
-    Smale.exists_compact_smooth_cutoff (K := {(0 : ℝ)}) (U := Metric.ball 0 1) isCompact_singleton
+    exists_compact_smooth_cutoff (K := {(0 : ℝ)}) (U := Metric.ball 0 1) isCompact_singleton
       Metric.isOpen_ball (by simp)
   obtain ⟨C, hC⟩ := hcompact.deriv.exists_bound_of_continuous (hβ.continuous_deriv (by simp))
   let B : ℝ := Max.max C 0 + 1
@@ -8920,7 +8920,7 @@ theorem FlowCancellation.exists_flowTube_subset {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {S N : Set X} (hS : IsCompact S) (hN : IsOpen N) (hSN : S ⊆ N) :
     ∃ ε : ℝ, 0 < ε ∧ flowTube F S ε ⊆ N := by
   have hopen : IsOpen {t : ℝ | ∀ x ∈ S, F t x ∈ N} :=
-    Smale.MorsePerturbation.isOpen_forall_mem_compact hS
+    MorsePerturbation.isOpen_forall_mem_compact hS
       (hN.preimage (F.continuous continuous_fst continuous_snd))
   have hzero : (0 : ℝ) ∈ {t : ℝ | ∀ x ∈ S, F t x ∈ N} := by
     intro x hx
@@ -9076,7 +9076,7 @@ theorem FlowCancellation.exists_boundary_germ_correction {E M : Type*}
   have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
   exact
     signedLevelTime_eq_zero F hf.continuous hD
-      (fun y t => Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve y) t) hfc hx
+      (fun y t => FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve y) t) hfc hx
 
 theorem FlowCancellation.exists_signedTime_level_separation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
@@ -9168,7 +9168,7 @@ theorem FlowCancellation.exists_smooth_band_height_germs {E M : Type*}
   let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
   have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
   have hder (x : M) (t : ℝ) : HasDerivAt (fun s => f (F s x)) (D (F t x)) t :=
-    Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
   have hgc (x : M) (hx : f x = c) : g x = f x :=
     (flowBandHeight_lower F hf.continuous hD hder hc hx).trans hx.symm
   have hgd (x : M) (hx : f x = d) : g x = f x :=
@@ -9331,7 +9331,7 @@ theorem MorseCancellation.hessian_bijective {m : ℕ} (σ : Fin m → ℝ) (hσ 
         hi⟩
 
 theorem MorseCancellation.cubic_isMorse {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {t : ℝ}
-    (ht : t ≠ 0) : Smale.MorsePerturbation.IsMorse (cubic σ t) := by
+    (ht : t ≠ 0) : MorsePerturbation.IsMorse (cubic σ t) := by
   intro p hcrit
   rw [fderiv_cubic_hessian]
   apply hessian_bijective σ hσ
@@ -9361,8 +9361,8 @@ theorem NativeCubicCancellation.exists_cutoff {m : ℕ} {V : Set (MorseCancellat
 
 theorem MorseCancellationPreservation.isMorseAt_of_same_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
-    {x : M} (hf : Smale.ManifoldMorse.IsMorseAt E f x) (heq : g =ᶠ[𝓝 x] f) :
-    Smale.ManifoldMorse.IsMorseAt E g x := by
+    {x : M} (hf : ManifoldMorse.IsMorseAt E f x) (heq : g =ᶠ[𝓝 x] f) :
+    ManifoldMorse.IsMorseAt E g x := by
   obtain ⟨e, he, hx, hgood⟩ := hf
   refine ⟨e, he, hx, ?_⟩
   have ht : Filter.Tendsto e.symm (𝓝 (e x)) (𝓝 x) := by
@@ -9376,20 +9376,20 @@ theorem MorseCancellationPreservation.isMorseAt_of_same_germ {E M : Type*}
 theorem MorseCancellationPreservation.isMorseAt_of_regular {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {g : M → ℝ} (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g) {x : M}
-    (hreg : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x ≠ 0) : Smale.ManifoldMorse.IsMorseAt E g x := by
+    (hreg : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x ≠ 0) : ManifoldMorse.IsMorseAt E g x := by
   let e := chartAt E x
   have he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M := IsManifold.chart_mem_maximalAtlas x
   have hx : x ∈ e.source := mem_chart_source E x
   refine ⟨e, he, hx, Or.inl ?_⟩
   intro hc
-  exact hreg ((Smale.ManifoldMorse.mem_criticalPoints_iff hg he hx).mpr hc)
+  exact hreg ((ManifoldMorse.mem_criticalPoints_iff hg he hx).mpr hc)
 
 theorem MorseCancellationPreservation.isMorse_of_critical_germs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] {f g : M → ℝ} (hf : Smale.ManifoldMorse.IsMorse E f)
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f g : M → ℝ} (hf : ManifoldMorse.IsMorse E f)
     (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g)
     (hkeep : ∀ x, mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0 → g =ᶠ[𝓝 x] f) :
-    Smale.ManifoldMorse.IsMorse E g := by
+    ManifoldMorse.IsMorse E g := by
   intro x
   by_cases hx : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0
   · exact isMorseAt_of_same_germ (hf x) (hkeep x hx)
@@ -9398,7 +9398,7 @@ theorem MorseCancellationPreservation.isMorse_of_critical_germs {E M : Type*}
 theorem FlowCancellation.not_critical_of_directional_neg {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {g : M → ℝ} {x : M}
-    (hneg : mvfderiv 𝓘(ℝ, E) g x (V x) < 0) : x ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    (hneg : mvfderiv 𝓘(ℝ, E) g x (V x) < 0) : x ∉ ManifoldMorse.criticalPoints E g := by
   intro hx
   change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0 at hx
   unfold mvfderiv at hneg
@@ -9408,36 +9408,36 @@ theorem FlowCancellation.not_critical_of_directional_neg {E M : Type*}
 theorem FlowCancellation.remove_morse_band_pair {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c < d)
     (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (hd : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (hcross : ∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x))
-    {p q : M} (hpq : p ≠ q) (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpc : f p ∈ Set.Icc c d)
+    {p q : M} (hpq : p ≠ q) (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpc : f p ∈ Set.Icc c d)
     (hqc : f q ∈ Set.Icc c d)
-    (hpair : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q) :
+    (hpair : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ x,
-                x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
               ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
   obtain ⟨g, hg, hneg, hgerm⟩ := exists_global_band_lyapunov hf hV F hcurve hcd hc hd hcross
-  have hreg (x : M) (hx : f x ∈ Set.Icc c d) : x ∉ Smale.ManifoldMorse.criticalPoints E g :=
+  have hreg (x : M) (hx : f x ∈ Set.Icc c d) : x ∉ ManifoldMorse.criticalPoints E g :=
     not_critical_of_directional_neg (hneg x hx)
   have hnew (x : M) :
-    x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-      x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q := by
+    x ∈ ManifoldMorse.criticalPoints E g ↔
+      x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q := by
     constructor
     · intro hx
       have hout : f x ∉ Set.Icc c d := fun h => hreg x h hx
       have he := hgerm x (fun h => hout ⟨h.1.le, h.2.le⟩)
-      have hcrit : x ∈ Smale.ManifoldMorse.criticalPoints E f := by
+      have hcrit : x ∈ ManifoldMorse.criticalPoints E f := by
         change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0
         rw [← he.mfderiv_eq]
         exact hx
@@ -9447,24 +9447,24 @@ theorem FlowCancellation.remove_morse_band_pair {E M : Type*} [NormedAddCommGrou
       change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0
       rw [(hgerm x (fun h => hout ⟨h.1.le, h.2.le⟩)).mfderiv_eq]
       exact hx
-  have hmg : Smale.ManifoldMorse.IsMorse E g := by
+  have hmg : ManifoldMorse.IsMorse E g := by
     apply MorseCancellationPreservation.isMorse_of_critical_germs hm hg
     intro x hx
     apply hgerm x
     intro h
     exact hreg x ⟨h.1.le, h.2.le⟩ hx
   have heq :
-    Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f \ { p, q } := by
+    ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f \ { p, q } := by
     ext x
     simpa only [Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] using hnew x
-  have hsub : { p, q } ⊆ Smale.ManifoldMorse.criticalPoints E f := by
+  have hsub : { p, q } ⊆ ManifoldMorse.criticalPoints E f := by
     intro x hx
     rcases hx with rfl | hx
     · exact hp
     · exact Set.mem_singleton_iff.mp hx ▸ hq
   refine ⟨g, hg, hmg, ?_, hnew, hgerm⟩
   rw [heq, ← Set.ncard_pair hpq]
-  exact Set.ncard_sdiff_add_ncard_of_subset hsub (Smale.ManifoldMorse.finite_criticalPoints hf hm)
+  exact Set.ncard_sdiff_add_ncard_of_subset hsub (ManifoldMorse.finite_criticalPoints hf hm)
 
 theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -9472,33 +9472,33 @@ theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [N
     (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
     (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source) {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
     (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hp : Φ (a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : Φ (-a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : Φ (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φ (-a, 0) ∈ ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
     {c d : ℝ} (hc : c < f (Φ (a, 0))) (hd : f (Φ (-a, 0)) < d)
     (hpair :
-      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
         f x ∈ Set.Icc c d → x = Φ (a, 0) ∨ x = Φ (-a, 0))
     (hunique :
-      ∀ x ∉ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∉ ManifoldMorse.criticalPoints E f,
         Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 (Φ (-a, 0))) →
           Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 (Φ (a, 0))) →
             ∃ t : ℝ, F t (Φ (0, 0)) = x) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ x,
-                x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ Φ (a, 0) ∧ x ≠ Φ (-a, 0)) ∧
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φ (a, 0) ∧ x ≠ Φ (-a, 0)) ∧
               ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
   obtain ⟨K, V', -, hKsub, hV', -, hkeep, -, G, hGcurve, hcross, -⟩ :=
     exists_cubic_connection_finite_passage σ hσ ha Φ haxis hf V hV hmodel F hcurve hzero hdesc
@@ -9511,7 +9511,7 @@ theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [N
       rcases hx with hx | hx <;> rw [hx] at hh
       · exact (lt_irrefl c) hh.1
       · exact (lt_irrefl d) hh.2
-    have hreg : x ∉ Smale.ManifoldMorse.criticalPoints E f := by
+    have hreg : x ∉ ManifoldMorse.criticalPoints E f := by
       intro hcrit
       have hxb : f x ∈ Set.Icc c d := by
         rcases hx with hx | hx <;> rw [hx]
@@ -9541,7 +9541,7 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
     (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
     (A : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞) {U : Set Z}
     (hAsource : A.source = U ×ˢ Set.univ) {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hm : Smale.ManifoldMorse.IsMorse E f) {b s : ℝ} (hs : 0 < s)
+    (hm : ManifoldMorse.IsMorse E f) {b s : ℝ} (hs : 0 < s)
     (hheight : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) = b - s * z.2)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -9549,49 +9549,49 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
     (hpfield : ∀ y ∈ Φp.target, V y = nativeCubicDescent σ Φp (-(a ^ 2)) y)
     (hAfield :
       ∀ y ∈ A.target,
-        V y = Smale.FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
     (Q P :
       PartialDiffeomorph
-        𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) 𝓘(ℝ, Z)
-        (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) Z ∞)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) 𝓘(ℝ, Z)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) Z ∞)
     (H :
       PartialDiffeomorph
-        𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-        𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-        (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
-        (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) ∞)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) ∞)
     (h0 : 0 ∈ H.source) (hH0 : H 0 = 0) (hQ0 : Q 0 = 0) (hP0 : P 0 = 0)
     (hQsource : Q.source = H.source) (hPsource : P.source = H.target) (hQtarget : Q.target = U)
     (hPtarget : P.target = U) (hdiagram : ∀ u ∈ H.source, P (H u) = Q u)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ)
-        𝓘(ℝ, Smale.MorseHandle.PositiveSpace σ)
-        𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ)
+      NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace σ)
+        𝓘(ℝ, MorseHandle.PositiveSpace σ)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
         (fun x => H (x, 0)) (fun y => (0, y)) 0 0)
-    (v₀ v₁ : (Smale.MorseHandle.NegativeSpace σ × Smale.MorseHandle.PositiveSpace σ) → ℝ)
+    (v₀ v₁ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ)
     (hv₀ : ContDiff ℝ ∞ v₀) (hv₁ : ContDiff ℝ ∞ v₁) (hv₀zero : v₀ 0 = 0) (hv₁zero : v₁ 0 = 0)
     {Rq Rp Tq Tp : ℝ} (hRq : 0 < Rq) (hRp : 0 < Rp)
     (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
     (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
     (hsliceq :
       ∀ u ∈ Q.source,
-        cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq) ∈
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
           Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq)
     (hslicep :
       ∀ u ∈ P.source,
-        cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp) ∈
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
           Metric.closedBall (a, (0 : Fin m → ℝ)) Rp)
     (hphaseq :
       ∀ u ∈ Q.source,
-        Φq (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq)) =
+        Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
           A (Q u, Tq + v₀ u))
     (hphasep :
       ∀ u ∈ P.source,
-        Φp (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp)) =
+        Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
           A (P u, Tp + v₁ u))
     (hqbasin :
       ∀ z ∈ Φq.source,
@@ -9605,21 +9605,21 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
       ∀ x,
         Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 (Φq (-a, 0))) →
           Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 (Φp (a, 0))) → ∃ t, F t (A (0, 0)) = x)
-    (hp : Φp (a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : Φq (-a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
+    (hp : Φp (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φq (-a, 0) ∈ ManifoldMorse.criticalPoints E f)
     (hpq : f (Φp (a, 0)) < f (Φq (-a, 0))) {c d : ℝ} (hc : c < f (Φp (a, 0)))
     (hd : f (Φq (-a, 0)) < d)
     (hpair :
-      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
         f x ∈ Set.Icc c d → x = Φp (a, 0) ∨ x = Φq (-a, 0)) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ x,
-                x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
               ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
   have hV1 := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
   have hQU : Q.target ⊆ U := fun _ hz => hQtarget ▸ hz
@@ -9630,12 +9630,12 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
           t).symm
   have hleft :=
     FlowSuspension.cylinder_outgoing_basin_labels F A Q (fun z hz => hflow z (hQU hz))
-      (fun u => Φq (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tq)))
+      (fun u => Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)))
       (fun u => Tq + v₀ u) hphaseq
       (fun u hu => outgoing_cubic_slice_basin σ hσ a Tq Φq F hqbasin u (hboxq (hsliceq u hu)))
   have hright :=
     FlowSuspension.cylinder_incoming_basin_labels F A P (fun z hz => hflow z (hPU hz))
-      (fun u => Φp (cubicFlowCylinder σ a ((Smale.MorseHandle.splitCoordinates σ).symm u, Tp)))
+      (fun u => Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)))
       (fun u => Tp + v₁ u) hphasep
       (fun u hu => incoming_cubic_slice_basin σ a Tp Φp F hpbasin u (hboxp (hslicep u hu)))
   rw [hQtarget, hQsource] at hleft
@@ -9651,7 +9651,7 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
       hheightAux V hV hAfield F hF Q P H h0 hH0 hQ0 hP0 (fun _ hz => hQsource ▸ hz)
       (fun _ hz => hPsource ▸ hz) hQtarget hPtarget hdiagram htrans (fun z hz => hleft z hz 0)
       (fun z hz => hright z hz 1) hold hv₀ hv₁ hv₀zero hv₁zero
-  have hdescWf (x : M) (hx : x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+  have hdescWf (x : M) (hx : x ∉ ManifoldMorse.criticalPoints E f) :
     mvfderiv 𝓘(ℝ, E) f x (W x) < 0 :=
     (FlowTimeChange.descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hs
           (W x)).mp
@@ -9705,10 +9705,10 @@ theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [Norme
     (A : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞) {Rq Rp Tq Tp : ℝ}
     (D : NativeEndpointSliceData σ a Φq Φp A Rq Rp Tq Tp)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, Smale.MorseHandle.NegativeSpace σ)
-        𝓘(ℝ, Smale.MorseHandle.PositiveSpace σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.Q (x, 0))
+      NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace σ)
+        𝓘(ℝ, MorseHandle.PositiveSpace σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.Q (x, 0))
         (fun y => D.P (0, y)) 0 0)
-    {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
     {b s : ℝ} (hs : 0 < s)
     (hheight : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) = b - s * z.2)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
@@ -9718,11 +9718,11 @@ theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [Norme
     (hAfield :
       ∀ y ∈ A.target,
         V y =
-          Smale.FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+          FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f)) (hRq : 0 < Rq) (hRp : 0 < Rp)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) (hRq : 0 < Rq) (hRp : 0 < Rp)
     (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
     (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
     (hqbasin :
@@ -9737,21 +9737,21 @@ theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [Norme
       ∀ x,
         Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 (Φq (-a, 0))) →
           Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 (Φp (a, 0))) → ∃ t, F t (A (0, 0)) = x)
-    (hp : Φp (a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : Φq (-a, 0) ∈ Smale.ManifoldMorse.criticalPoints E f)
+    (hp : Φp (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φq (-a, 0) ∈ ManifoldMorse.criticalPoints E f)
     (hpq : f (Φp (a, 0)) < f (Φq (-a, 0))) {c d : ℝ} (hc : c < f (Φp (a, 0)))
     (hd : f (Φq (-a, 0)) < d)
     (hpair :
-      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
         f x ∈ Set.Icc c d → x = Φp (a, 0) ∨ x = Φq (-a, 0)) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ x,
-                x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
               ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
   have hrelative :=
     TransverseGerms.relative_transverse_of_label_sheets D.Q D.P D.H D.zero_source D.H_zero
@@ -9774,8 +9774,8 @@ structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [Norm
     ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, field y⟩ : TangentBundle 𝓘(ℝ, E) M))
   flow : Flow ℝ M
   integral : ∀ y, IsMIntegralCurve (fun t => flow t y) field
-  zero : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, field y = 0
-  descent : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (field y) < 0
+  zero : ∀ y ∈ ManifoldMorse.criticalPoints E f, field y = 0
+  descent : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (field y) < 0
   Φq : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞
   Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞
   endpointQ : Φq (-(1 / 2 : ℝ), 0) = q
@@ -9786,7 +9786,7 @@ structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [Norm
   vertical :
     ∀ y ∈ A.target,
       field y =
-        Smale.FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y
+        FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y
   speed : ℝ
   positive_speed : 0 < speed
   height : ℝ
@@ -9815,28 +9815,28 @@ def MorseCancellation.NativeConnectionCancellationData.Transverse {E M : Type*} 
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ}
     {f : M → ℝ} {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
     Prop :=
-  Smale.NativeTransversality.At 𝓘(ℝ, Smale.MorseHandle.NegativeSpace D.σ)
-    𝓘(ℝ, Smale.MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.slices.Q (x, 0))
+  NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace D.σ)
+    𝓘(ℝ, MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.slices.Q (x, 0))
     (fun y => D.slices.P (0, y)) 0 0
 
 theorem MorseCancellation.NativeConnectionCancellationData.cancel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ} {p q : M}
     (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) (htrans : D.Transverse)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
     (hd : f q < d)
-    (hpair : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q) :
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ y,
-                y ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  y ∈ Smale.ManifoldMorse.criticalPoints E f ∧ y ≠ p ∧ y ≠ q) ∧
+                y ∈ ManifoldMorse.criticalPoints E g ↔
+                  y ∈ ManifoldMorse.criticalPoints E f ∧ y ≠ p ∧ y ≠ q) ∧
               ∀ y, f y ∉ Set.Ioo c d → g =ᶠ[𝓝 y] f := by
   have hh :=
     MorseCancellation.cancel_native_endpoint_slice_data D.σ D.signs (by norm_num) D.Φq D.Φp D.A D.slices
@@ -9853,20 +9853,20 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_native_connection_cancellation_data {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
-    {p q x : M} (cp : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
-    (cq : Smale.ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    {p q x : M} (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = m + 1)
     (hindex :
       Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
     (V : (y : M) → TangentSpace 𝓘(ℝ, E) y)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, V y = 0)
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hzero : ∀ y ∈ ManifoldMorse.criticalPoints E f, V y = 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V)
-    (hpc : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hqc : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
     (hd : f q < d)
-    (hpair : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
     (hp : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
     (hq : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q))
     (hunique :
@@ -9875,7 +9875,7 @@ theorem MorseCancellation.exists_native_connection_cancellation_data {E M : Type
           Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p) → ∃ t, F t x = y)
     (heqp : ∀ᶠ y in 𝓝 p, V y = cp.descentField y) (heqq : ∀ᶠ y in 𝓝 q, V y = cq.descentField y) :
     ∃ D : NativeConnectionCancellationData (E := E) f p q m,
-      (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, D.field z = V z) ∧
+      (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, D.field z = V z) ∧
         (∀ y,
             Set.range (fun t => D.flow t y) = Set.range (fun t => F t y) ∧
               (∀ z,
@@ -9990,8 +9990,8 @@ theorem TransverseGerms.transverse_labels_of_native_flow_sheets {A B Z E M : Typ
     {f : A → Z} {g : B → Z} (hf : DifferentiableAt ℝ f 0) (hg : DifferentiableAt ℝ g 0)
     (hlabelF : (fun u : ℝ × A => (C.symm (F u)).1) =ᶠ[𝓝 0] (fun u : ℝ × A => f u.2))
     (hlabelG : (fun u : ℝ × B => (C.symm (G u)).1) =ᶠ[𝓝 0] (fun u : ℝ × B => g u.2))
-    (htrans : Smale.NativeTransversality.At 𝓘(ℝ, ℝ × A) 𝓘(ℝ, ℝ × B) 𝓘(ℝ, E) F G 0 0) :
-    Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) f g 0 0 := by
+    (htrans : NativeTransversality.At 𝓘(ℝ, ℝ × A) 𝓘(ℝ, ℝ × B) 𝓘(ℝ, E) F G 0 0) :
+    NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) f g 0 0 := by
   have hFt : F 0 ∈ C.target := hF0.symm ▸ C.map_source' hC0
   have hGt : G 0 ∈ C.target := hG0.symm ▸ C.map_source' hC0
   have hFb : MDifferentiableAt 𝓘(ℝ, ℝ × A) 𝓘(ℝ, Z × ℝ) (C.symm ∘ F) 0 :=
@@ -10000,7 +10000,7 @@ theorem TransverseGerms.transverse_labels_of_native_flow_sheets {A B Z E M : Typ
     (C.symm.mdifferentiableAt (by simp) hGt).comp (f := G) 0 hG
   have hcross : G 0 = F 0 := hG0.trans hF0.symm
   have ht :=
-    Smale.ChartMapPerturbation.transverse_in_chart C.symm hF hG hcross hFt (htrans hcross)
+    ChartMapPerturbation.transverse_in_chart C.symm hF hG hcross hFt (htrans hcross)
   rw [mfderiv_eq_fderiv, mfderiv_eq_fderiv] at ht
   have hl :=
     transverse_labels_of_time_independent_flow_sheets hFb.differentiableAt hGb.differentiableAt hf
@@ -10013,31 +10013,31 @@ def MorseCancellation.NativeConnectionCancellationData.outgoingSheet {E M : Type
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
     (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
-    (w : ℝ × Smale.MorseHandle.NegativeSpace D.σ) : M :=
+    (w : ℝ × MorseHandle.NegativeSpace D.σ) : M :=
   D.flow (w.1 - D.Tq)
     (D.Φq
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-        ((Smale.MorseHandle.splitCoordinates D.σ).symm (w.2, 0), D.Tq)))
+        ((MorseHandle.splitCoordinates D.σ).symm (w.2, 0), D.Tq)))
 
 def MorseCancellation.NativeConnectionCancellationData.incomingSheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
     (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
-    (w : ℝ × Smale.MorseHandle.PositiveSpace D.σ) : M :=
+    (w : ℝ × MorseHandle.PositiveSpace D.σ) : M :=
   D.flow (w.1 - D.Tp)
     (D.Φp
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-        ((Smale.MorseHandle.splitCoordinates D.σ).symm (0, w.2), D.Tp)))
+        ((MorseHandle.splitCoordinates D.σ).symm (0, w.2), D.Tp)))
 
 theorem MorseCancellation.NativeConnectionCancellationData.outgoingSheet_properties {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
     {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
-    ContMDiffAt 𝓘(ℝ, ℝ × Smale.MorseHandle.NegativeSpace D.σ) 𝓘(ℝ, E) ∞ D.outgoingSheet 0 ∧
+    ContMDiffAt 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ) 𝓘(ℝ, E) ∞ D.outgoingSheet 0 ∧
       D.outgoingSheet 0 = D.A 0 ∧
-        (fun w : ℝ × Smale.MorseHandle.NegativeSpace D.σ =>
+        (fun w : ℝ × MorseHandle.NegativeSpace D.σ =>
             (D.A.symm (D.outgoingSheet w)).1) =ᶠ[𝓝 0]
-          (fun w : ℝ × Smale.MorseHandle.NegativeSpace D.σ => D.slices.Q (w.2, 0)) := by
+          (fun w : ℝ × MorseHandle.NegativeSpace D.σ => D.slices.Q (w.2, 0)) := by
   have hflow :=
     FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
       (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
@@ -10049,10 +10049,10 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoingSheet_propert
       (fun u =>
         D.Φq
           (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-            ((Smale.MorseHandle.splitCoordinates D.σ).symm u, D.Tq)))
+            ((MorseHandle.splitCoordinates D.σ).symm u, D.Tq)))
       D.slices.phaseQ D.Tq D.slices.smooth_phaseQ D.slices.zero_phaseQ D.slices.formulaQ
-      (ContinuousLinearMap.inl ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-        (Smale.MorseHandle.PositiveSpace D.σ))
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
   unfold outgoingSheet
   simpa only [ContinuousLinearMap.inl_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
 
@@ -10060,11 +10060,11 @@ theorem MorseCancellation.NativeConnectionCancellationData.incomingSheet_propert
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
     {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
-    ContMDiffAt 𝓘(ℝ, ℝ × Smale.MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) ∞ D.incomingSheet 0 ∧
+    ContMDiffAt 𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) ∞ D.incomingSheet 0 ∧
       D.incomingSheet 0 = D.A 0 ∧
-        (fun w : ℝ × Smale.MorseHandle.PositiveSpace D.σ =>
+        (fun w : ℝ × MorseHandle.PositiveSpace D.σ =>
             (D.A.symm (D.incomingSheet w)).1) =ᶠ[𝓝 0]
-          (fun w : ℝ × Smale.MorseHandle.PositiveSpace D.σ => D.slices.P (0, w.2)) := by
+          (fun w : ℝ × MorseHandle.PositiveSpace D.σ => D.slices.P (0, w.2)) := by
   have hflow :=
     FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
       (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
@@ -10078,10 +10078,10 @@ theorem MorseCancellation.NativeConnectionCancellationData.incomingSheet_propert
       (fun u =>
         D.Φp
           (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-            ((Smale.MorseHandle.splitCoordinates D.σ).symm u, D.Tp)))
+            ((MorseHandle.splitCoordinates D.σ).symm u, D.Tp)))
       D.slices.phaseP D.Tp D.slices.smooth_phaseP D.slices.zero_phaseP D.slices.formulaP
-      (ContinuousLinearMap.inr ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-        (Smale.MorseHandle.PositiveSpace D.σ))
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
   unfold incomingSheet
   simpa only [ContinuousLinearMap.inr_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
 
@@ -10090,8 +10090,8 @@ theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
     {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
     (htrans :
-      Smale.NativeTransversality.At 𝓘(ℝ, ℝ × Smale.MorseHandle.NegativeSpace D.σ)
-        𝓘(ℝ, ℝ × Smale.MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) D.outgoingSheet D.incomingSheet 0
+      NativeTransversality.At 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ)
+        𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) D.outgoingSheet D.incomingSheet 0
         0) :
     D.Transverse := by
   obtain ⟨hout, hout0, houtlabel⟩ := D.outgoingSheet_properties
@@ -10109,15 +10109,15 @@ theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_
           (D.slices.P.open_source.mem_nhds hP0)).differentiableAt
       (by simp)
   have hq :
-    DifferentiableAt ℝ (fun x : Smale.MorseHandle.NegativeSpace D.σ => D.slices.Q (x, 0)) 0 :=
-    hQdiff.comp (f := fun x : Smale.MorseHandle.NegativeSpace D.σ => (x, 0)) 0
-      (ContinuousLinearMap.inl ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-          (Smale.MorseHandle.PositiveSpace D.σ)).differentiableAt
+    DifferentiableAt ℝ (fun x : MorseHandle.NegativeSpace D.σ => D.slices.Q (x, 0)) 0 :=
+    hQdiff.comp (f := fun x : MorseHandle.NegativeSpace D.σ => (x, 0)) 0
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+          (MorseHandle.PositiveSpace D.σ)).differentiableAt
   have hp :
-    DifferentiableAt ℝ (fun y : Smale.MorseHandle.PositiveSpace D.σ => D.slices.P (0, y)) 0 :=
-    hPdiff.comp (f := fun y : Smale.MorseHandle.PositiveSpace D.σ => (0, y)) 0
-      (ContinuousLinearMap.inr ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-          (Smale.MorseHandle.PositiveSpace D.σ)).differentiableAt
+    DifferentiableAt ℝ (fun y : MorseHandle.PositiveSpace D.σ => D.slices.P (0, y)) 0 :=
+    hPdiff.comp (f := fun y : MorseHandle.PositiveSpace D.σ => (0, y)) 0
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+          (MorseHandle.PositiveSpace D.σ)).differentiableAt
   have hA0 : (0 : (Fin m → ℝ) × ℝ) ∈ D.A.source := by
     rw [D.slices.source]
     exact ⟨D.slices.zero_domain, Set.mem_univ _⟩
@@ -10133,14 +10133,14 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart 
     {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
     ∃ P :
       PartialDiffeomorph
-        𝓘(ℝ, (Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ)
-        𝓘(ℝ, E) ((Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, E) ((MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
         M ∞,
-      (0 : (Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ) ∈
+      (0 : (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ) ∈
           P.source ∧
         P 0 = D.A 0 ∧
           D.outgoingSheet =ᶠ[𝓝 0]
-              (fun w : ℝ × Smale.MorseHandle.NegativeSpace D.σ => P ((w.2, 0), w.1)) ∧
+              (fun w : ℝ × MorseHandle.NegativeSpace D.σ => P ((w.2, 0), w.1)) ∧
             ∀ w ∈ P.source,
               Filter.Tendsto (fun t => D.flow t (P w)) Filter.atBot (𝓝 q) ↔ w.1.2 = 0 := by
   have hflow :=
@@ -10151,7 +10151,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart 
   let S := fun u =>
     D.Φq
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-        ((Smale.MorseHandle.splitCoordinates D.σ).symm u, D.Tq))
+        ((MorseHandle.splitCoordinates D.σ).symm u, D.Tq))
   have hbasin (u) (hu : u ∈ D.slices.Q.source) :
     Filter.Tendsto (fun t => D.flow t (S u)) Filter.atBot (𝓝 q) ↔ u.2 = 0 :=
     MorseCancellation.outgoing_cubic_slice_basin D.σ D.signs (1 / 2) D.Tq D.Φq D.flow D.basinQ u
@@ -10165,8 +10165,8 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart 
   have heq :=
     FlowSuspension.phase_flow_chart_subsheet_germ P D.slices.Q.open_source hQ0 D.flow S
       D.Tq hformula
-      (ContinuousLinearMap.inl ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-        (Smale.MorseHandle.PositiveSpace D.σ))
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
   refine ⟨P, h0P, hP0, ?_, hplane⟩
   unfold outgoingSheet
   simpa only [ContinuousLinearMap.inl_apply] using heq
@@ -10178,14 +10178,14 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart 
     {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
     ∃ P :
       PartialDiffeomorph
-        𝓘(ℝ, (Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ)
-        𝓘(ℝ, E) ((Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, E) ((MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
         M ∞,
-      (0 : (Smale.MorseHandle.NegativeSpace D.σ × Smale.MorseHandle.PositiveSpace D.σ) × ℝ) ∈
+      (0 : (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ) ∈
           P.source ∧
         P 0 = D.A 0 ∧
           D.incomingSheet =ᶠ[𝓝 0]
-              (fun w : ℝ × Smale.MorseHandle.PositiveSpace D.σ => P ((0, w.2), w.1)) ∧
+              (fun w : ℝ × MorseHandle.PositiveSpace D.σ => P ((0, w.2), w.1)) ∧
             ∀ w ∈ P.source,
               Filter.Tendsto (fun t => D.flow t (P w)) Filter.atTop (𝓝 p) ↔ w.1.1 = 0 := by
   have hflow :=
@@ -10198,7 +10198,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart 
   let S := fun u =>
     D.Φp
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
-        ((Smale.MorseHandle.splitCoordinates D.σ).symm u, D.Tp))
+        ((MorseHandle.splitCoordinates D.σ).symm u, D.Tp))
   have hbasin (u) (hu : u ∈ D.slices.P.source) :
     Filter.Tendsto (fun t => D.flow t (S u)) Filter.atTop (𝓝 p) ↔ u.1 = 0 :=
     MorseCancellation.incoming_cubic_slice_basin D.σ (1 / 2) D.Tp D.Φp D.flow D.basinP u
@@ -10212,8 +10212,8 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart 
   have heq :=
     FlowSuspension.phase_flow_chart_subsheet_germ P D.slices.P.open_source hP0 D.flow S
       D.Tp hformula
-      (ContinuousLinearMap.inr ℝ (Smale.MorseHandle.NegativeSpace D.σ)
-        (Smale.MorseHandle.PositiveSpace D.σ))
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
   refine ⟨P, h0P, hPzero, ?_, hplane⟩
   unfold incomingSheet
   simpa only [ContinuousLinearMap.inr_apply] using heq
@@ -10230,8 +10230,8 @@ theorem TransverseGerms.native_transversality_of_sheet_factorizations
     (hg : MDifferentiableAt 𝓘(ℝ, B) J g 0) (hu : MDifferentiableAt I 𝓘(ℝ, A) u x)
     (hv : MDifferentiableAt I' 𝓘(ℝ, B) v y) (hu0 : u x = 0) (hv0 : v y = 0)
     (hF : F =ᶠ[𝓝 x] (f ∘ u)) (hG : G =ᶠ[𝓝 y] (g ∘ v)) (hcross : G y = F x)
-    (htrans : Smale.NativeTransversality.At I I' J F G x y) :
-    Smale.NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) J f g 0 0 := by
+    (htrans : NativeTransversality.At I I' J F G x y) :
+    NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) J f g 0 0 := by
   have hfx : MDifferentiableAt 𝓘(ℝ, A) J f (u x) := hu0 ▸ hf
   have hgy : MDifferentiableAt 𝓘(ℝ, B) J g (v y) := hv0 ▸ hg
   have hFd :
@@ -10318,12 +10318,12 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_factor
     (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {x : X}
     (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hx : F x = D.A 0)
     (hbasin : ∀ᶠ y in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F y)) Filter.atBot (𝓝 q)) :
-    ∃ u : X → ℝ × Smale.MorseHandle.NegativeSpace D.σ,
-      MDifferentiableAt I 𝓘(ℝ, ℝ × Smale.MorseHandle.NegativeSpace D.σ) u x ∧
+    ∃ u : X → ℝ × MorseHandle.NegativeSpace D.σ,
+      MDifferentiableAt I 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ) u x ∧
         u x = 0 ∧ F =ᶠ[𝓝 x] (D.outgoingSheet ∘ u) := by
   obtain ⟨P, hP0, hzero, hmodel, hplane⟩ := D.outgoing_basin_chart
-  let A := Smale.MorseHandle.NegativeSpace D.σ
-  let B := Smale.MorseHandle.PositiveSpace D.σ
+  let A := MorseHandle.NegativeSpace D.σ
+  let B := MorseHandle.PositiveSpace D.σ
   let L : (ℝ × A) →L[ℝ] ((A × B) × ℝ) :=
     ((ContinuousLinearMap.inl ℝ A B).comp (ContinuousLinearMap.snd ℝ ℝ A)).prod
       (ContinuousLinearMap.fst ℝ ℝ A)
@@ -10350,12 +10350,12 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_factor
     (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {x : X}
     (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hx : F x = D.A 0)
     (hbasin : ∀ᶠ y in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F y)) Filter.atTop (𝓝 p)) :
-    ∃ u : X → ℝ × Smale.MorseHandle.PositiveSpace D.σ,
-      MDifferentiableAt I 𝓘(ℝ, ℝ × Smale.MorseHandle.PositiveSpace D.σ) u x ∧
+    ∃ u : X → ℝ × MorseHandle.PositiveSpace D.σ,
+      MDifferentiableAt I 𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) u x ∧
         u x = 0 ∧ F =ᶠ[𝓝 x] (D.incomingSheet ∘ u) := by
   obtain ⟨P, hP0, hzero, hmodel, hplane⟩ := D.incoming_basin_chart
-  let A := Smale.MorseHandle.NegativeSpace D.σ
-  let B := Smale.MorseHandle.PositiveSpace D.σ
+  let A := MorseHandle.NegativeSpace D.σ
+  let B := MorseHandle.PositiveSpace D.σ
   let L : (ℝ × B) →L[ℝ] ((A × B) × ℝ) :=
     ((ContinuousLinearMap.inr ℝ A B).comp (ContinuousLinearMap.snd ℝ ℝ B)).prod
       (ContinuousLinearMap.fst ℝ ℝ B)
@@ -10385,7 +10385,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_
     (hx : F x = D.A 0) (hy : G y = D.A 0)
     (hFbasin : ∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F z)) Filter.atBot (𝓝 q))
     (hGbasin : ∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => D.flow t (G z)) Filter.atTop (𝓝 p))
-    (htrans : Smale.NativeTransversality.At I I' 𝓘(ℝ, E) F G x y) : D.Transverse := by
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) F G x y) : D.Transverse := by
   obtain ⟨u, hu, hu0, hFu⟩ := D.outgoing_basin_factorization hF hx hFbasin
   obtain ⟨v, hv, hv0, hGv⟩ := D.incoming_basin_factorization hG hy hGbasin
   apply D.transverse_of_native_sheets
@@ -10407,21 +10407,21 @@ theorem MorseCancellation.NativeConnectionCancellationData.cancel_of_transverse_
     (hx : F x = D.A 0) (hy : G y = D.A 0)
     (hFbasin : ∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F z)) Filter.atBot (𝓝 q))
     (hGbasin : ∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => D.flow t (G z)) Filter.atTop (𝓝 p))
-    (htrans : Smale.NativeTransversality.At I I' 𝓘(ℝ, E) F G x y)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) F G x y)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
     (hd : f q < d)
-    (hpair : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc c d → z = p ∨ z = q) :
+    (hpair : ∀ z ∈ ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc c d → z = p ∨ z = q) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ z,
-                z ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q) ∧
+                z ∈ ManifoldMorse.criticalPoints E g ↔
+                  z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q) ∧
               ∀ z, f z ∉ Set.Ioo c d → g =ᶠ[𝓝 z] f :=
   D.cancel (D.transverse_of_native_basin_sheets hF hG hx hy hFbasin hGbasin htrans) hf hm hinj hp
     hq hpq hc hd hpair
@@ -10434,21 +10434,21 @@ theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E
     [NormedSpace ℝ B] [TopologicalSpace HA] [TopologicalSpace HB] {I : ModelWithCorners ℝ A HA}
     {I' : ModelWithCorners ℝ B HB} [TopologicalSpace X] [ChartedSpace HA X] [TopologicalSpace Y]
     [ChartedSpace HB Y] {f : M → ℝ} {p q z : M}
-    (cp : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
-    (cq : Smale.ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
+    (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
     (hindex :
       Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hpc : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hqc : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
     (hd : f q < d)
-    (hpair : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q)
+    (hpair : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q)
     (hp : Filter.Tendsto (fun t => F t z) Filter.atTop (𝓝 p))
     (hq : Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q))
     (hunique :
@@ -10460,15 +10460,15 @@ theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E
     (hT : MDifferentiableAt I' 𝓘(ℝ, E) T y) (hS0 : S x = z) (hT0 : T y = z)
     (hSbasin : ∀ᶠ u in 𝓝 x, Filter.Tendsto (fun t => F t (S u)) Filter.atBot (𝓝 q))
     (hTbasin : ∀ᶠ u in 𝓝 y, Filter.Tendsto (fun t => F t (T u)) Filter.atTop (𝓝 p))
-    (htrans : Smale.NativeTransversality.At I I' 𝓘(ℝ, E) S T x y) :
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) S T x y) :
     ∃ g : M → ℝ,
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-        Smale.ManifoldMorse.IsMorse E g ∧
-          (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
             (∀ x,
-                x ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                  x ∈ Smale.ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
               ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
   obtain ⟨D, -, hgeometry, t₀, ht₀⟩ :=
     exists_native_connection_cancellation_data cp cq hf hdim hindex V hV hzero hdesc F hF hpc hqc
@@ -10489,7 +10489,7 @@ theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E
     filter_upwards [hTbasin] with u hu
     apply ((hgeometry ((τ ∘ T) u)).2.1 p).mpr
     exact (flow_time_atTop_limit_iff F t₀ (T u) p).mpr hu
-  have ht : Smale.NativeTransversality.At I I' 𝓘(ℝ, E) (τ ∘ S) (τ ∘ T) x y :=
+  have ht : NativeTransversality.At I I' 𝓘(ℝ, E) (τ ∘ S) (τ ∘ T) x y :=
     (TransverseGerms.native_transversality_partial_diffeomorph_iff τ.toPartialDiffeomorph
           hS hT (hT0.trans hS0.symm) (Set.mem_univ _)).mp
       htrans
@@ -10505,53 +10505,53 @@ theorem MorseCancellation.cancel_of_transverse_level_isotopy {E M : Type*} [Norm
     [TopologicalSpace HA] [TopologicalSpace HB] {I : ModelWithCorners ℝ A HA}
     {I' : ModelWithCorners ℝ B HB} [TopologicalSpace X] [ChartedSpace HA X] [TopologicalSpace Y]
     [ChartedSpace HB Y] {f : M → ℝ} {p q : M}
-    (cp : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
-    (cq : Smale.ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
+    (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
     (hindex :
       Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
     (V : (z : M) → TangentSpace 𝓘(ℝ, E) z)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun z => (⟨z, V z⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E f, V z = 0)
-    (hdesc : ∀ z, z ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f z (V z) < 0)
+    (hzero : ∀ z ∈ ManifoldMorse.criticalPoints E f, V z = 0)
+    (hdesc : ∀ z, z ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f z (V z) < 0)
     (F : Flow ℝ M) (hF : ∀ z, IsMIntegralCurve (fun t => F t z) V)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f))
-    (hpc : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hqc : q ∈ Smale.ManifoldMorse.criticalPoints E f) {l u a b c : ℝ} (hl : l < f p)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) {l u a b c : ℝ} (hl : l < f p)
     (hu : f q < u)
-    (hpair : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc l u → z = p ∨ z = q)
+    (hpair : ∀ z ∈ ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc l u → z = p ∨ z = q)
     (ha : a < c) (hb : c < b) (hpc' : f p < c) (hqc' : c < f q)
-    (hband : ∀ z, f z ∈ Set.Icc a b → z ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hreg : ∀ z, f z = c → z ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hband : ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ z, f z = c → z ∉ ManifoldMorse.criticalPoints E f)
     (heqp : ∀ᶠ z in 𝓝 p, V z = cp.descentField z) (heqq : ∀ᶠ z in 𝓝 q, V z = cq.descentField z) :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∀ D :
-      Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+      Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
         { z : M // f z = c } { z : M // f z = c } ∞,
-      Smale.SupportedDiffeomorph.IsotopicToIdentity D →
+      SupportedDiffeomorph.IsotopicToIdentity D →
         {z : { w : M // f w = c } |
                 Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q) ∧
                   Filter.Tendsto (fun t => F t (D z)) Filter.atTop (𝓝 p)}.ncard =
             1 →
           ∀ (α : X → { z : M // f z = c }) (β : Y → { z : M // f z = c }) (x : X) (y : Y),
-            MDifferentiableAt I 𝓘(ℝ, Smale.RegularLevel.Model E) α x →
-              MDifferentiableAt I' 𝓘(ℝ, Smale.RegularLevel.Model E) β y →
+            MDifferentiableAt I 𝓘(ℝ, RegularLevel.Model E) α x →
+              MDifferentiableAt I' 𝓘(ℝ, RegularLevel.Model E) β y →
                 β y = α x →
-                  Smale.NativeTransversality.At I I' 𝓘(ℝ, Smale.RegularLevel.Model E) α β x y →
+                  NativeTransversality.At I I' 𝓘(ℝ, RegularLevel.Model E) α β x y →
                     (∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => F t (α z)) Filter.atBot (𝓝 q)) →
                       (∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => F t (D (β z))) Filter.atTop (𝓝 p)) →
                         ∃ g : M → ℝ,
                           ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
-                            Smale.ManifoldMorse.IsMorse E g ∧
-                              (Smale.ManifoldMorse.criticalPoints E g).ncard + 2 =
-                                  (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+                            ManifoldMorse.IsMorse E g ∧
+                              (ManifoldMorse.criticalPoints E g).ncard + 2 =
+                                  (ManifoldMorse.criticalPoints E f).ncard ∧
                                 (∀ z,
-                                    z ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-                                      z ∈ Smale.ManifoldMorse.criticalPoints E f ∧
+                                    z ∈ ManifoldMorse.criticalPoints E g ↔
+                                      z ∈ ManifoldMorse.criticalPoints E f ∧
                                         z ≠ p ∧ z ≠ q) ∧
                                   ∀ z, f z ∉ Set.Ioo l u → g =ᶠ[𝓝 z] f := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   intro D hD hcount α β x y hα hβ hcross htrans hαbasin hβbasin
   obtain
     ⟨r, C, W, V', H, G, -, -, -, -, -, -, hgeometry, hV', hG, hzeros, hneg, hgerms, -, hend, -,
@@ -10609,16 +10609,16 @@ theorem MorseCancellation.cancel_of_transverse_level_isotopy {E M : Type*} [Norm
       hpair hpG hqG huniqueG hgermp hgermq hS hT hS0 hT0 hSb hTb ht
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.surjective_beltNormal_derivative {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.surjective_beltNormal_derivative {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (v : Smale.PuncturedHandle.UnitSphere d.chart.PositiveCoordinates) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (v : PuncturedHandle.UnitSphere d.chart.PositiveCoordinates) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
     Function.Surjective
-      (mfderiv 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
+      (mfderiv 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
         (d.surgery.beltSphere v)) := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
   let w : d.chart.PositiveCoordinates := d.radius • (v : d.chart.PositiveCoordinates)
   let γ : d.chart.NegativeCoordinates → M := fun u => d.chart.splitChart.symm (u, w)
   let n : M → d.chart.NegativeCoordinates := fun x => (d.chart.splitChart x).1
@@ -10681,25 +10681,25 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.surjective_beltNormal_derivative {E
   have hBR : B.comp R = ContinuousLinearMap.id ℝ d.chart.NegativeCoordinates :=
     (congrArg (fun T : E →L[ℝ] d.chart.NegativeCoordinates => T.comp R) hBpoint).symm.trans hBR₀
   exact
-    Smale.RegularLevel.surjective_normal_derivative_of_tangent_lift hf d.upper_regular
+    RegularLevel.surjective_normal_derivative_of_tangent_lift hf d.upper_regular
       (d.surgery.beltSphere v) (hn.mdifferentiableAt (by simp)) R hLR hBR
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.range_belt_derivative_eq_normal_kernel {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.range_belt_derivative_eq_normal_kernel {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (n : ℕ)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (n : ℕ)
     [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)]
-    (v : Smale.PuncturedHandle.UnitSphere d.chart.PositiveCoordinates) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    (mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere v).range =
-      (mfderiv 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
+    (v : PuncturedHandle.UnitSphere d.chart.PositiveCoordinates) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    (mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere v).range =
+      (mfderiv 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
           (d.surgery.beltSphere v)).ker := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
-  let A : EuclideanSpace ℝ (Fin n) →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere v
-  let Q : Smale.RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
-    mfderiv 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
+  let A : EuclideanSpace ℝ (Fin n) →L[ℝ] RegularLevel.Model E :=
+    mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere v
+  let Q : RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
+    mfderiv 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
       (d.surgery.beltSphere v)
   change A.range = Q.ker
   have hQA : Q.comp A = 0 := d.beltNormal_derivative_comp_belt hf n v
@@ -10717,46 +10717,46 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.range_belt_derivative_eq_normal_ker
   have hdimQ := Q.toLinearMap.finrank_range_add_finrank_ker
   have hsplit := d.chart.finrank_negative_add_positive
   have hpos : Module.finrank ℝ d.chart.PositiveCoordinates = n + 1 := Fact.out
-  have hmodel : Module.finrank ℝ (Smale.RegularLevel.Model E) = Module.finrank ℝ E - 1 :=
+  have hmodel : Module.finrank ℝ (RegularLevel.Model E) = Module.finrank ℝ E - 1 :=
     finrank_euclideanSpace_fin
   apply Submodule.eq_of_le_of_finrank_eq hsub
   rw [hArank]
   omega
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.bijective_beltNormal_comp_of_transverse {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.bijective_beltNormal_comp_of_transverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (n m : ℕ) [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)]
     (hdim : Module.finrank ℝ d.chart.NegativeCoordinates = m)
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (x : Smale.Hemisphere.Sphere m)
-      (v : Smale.PuncturedHandle.UnitSphere d.chart.PositiveCoordinates),
+    (g : Hemisphere.Sphere m → d.UpperLevel) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (x : Hemisphere.Sphere m)
+      (v : PuncturedHandle.UnitSphere d.chart.PositiveCoordinates),
       d.surgery.beltSphere v = g x →
         Function.Surjective
-            ((mfderiv (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) g x :
-                  EuclideanSpace ℝ (Fin m) →L[ℝ] Smale.RegularLevel.Model E).coprod
-              (mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere v :
-                EuclideanSpace ℝ (Fin n) →L[ℝ] Smale.RegularLevel.Model E)) →
+            ((mfderiv (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) g x :
+                  EuclideanSpace ℝ (Fin m) →L[ℝ] RegularLevel.Model E).coprod
+              (mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere v :
+                EuclideanSpace ℝ (Fin n) →L[ℝ] RegularLevel.Model E)) →
           Function.Bijective
             (mfderiv (𝓡 m) 𝓘(ℝ, d.chart.NegativeCoordinates) (d.beltNormal ∘ g) x) := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
   intro hg x v hxy ht
-  let Q : Smale.RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
-    mfderiv 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
+  let Q : RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
+    mfderiv 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
       (d.surgery.beltSphere v)
-  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere v
-  let A : EuclideanSpace ℝ (Fin m) →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) g x
+  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] RegularLevel.Model E :=
+    mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere v
+  let A : EuclideanSpace ℝ (Fin m) →L[ℝ] RegularLevel.Model E :=
+    mfderiv (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) g x
   have hQ : Function.Surjective Q := d.surjective_beltNormal_derivative hf v
   have hQB : Q.comp B = 0 := d.beltNormal_derivative_comp_belt hf n v
   have hBA : Function.Surjective (B.coprod A) :=
-    Smale.TransverseCoordinates.surjective_coprod_swap A B ht
+    TransverseCoordinates.surjective_coprod_swap A B ht
   have hi : Function.Bijective (Q.comp A) :=
-    Smale.TransverseCoordinates.bijective_normal_comp Q B A hQ hBA hQB
+    TransverseCoordinates.bijective_normal_comp Q B A hQ hBA hQB
       (by simpa only [finrank_euclideanSpace_fin] using hdim.symm)
   have hx : g x ∈ d.beltNormalDomain := hxy ▸ d.belt_mem_normalDomain v
   have hnormal :=
@@ -10768,19 +10768,19 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.bijective_beltNormal_comp_of_transv
   rw [heq]
   exact hi
 
-def Smale.TransverseCoordinates.sumMap {D Z A : Type*} [NormedAddCommGroup D]
+def TransverseCoordinates.sumMap {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup A] (f : D → A) (g : Z → A) (q : D × Z) : A :=
   f q.1 + g q.2 - f 0
 
-theorem Smale.TransverseCoordinates.sumMap_left {D Z A : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.sumMap_left {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup Z] [NormedAddCommGroup A] (f : D → A) (g : Z → A) (hzero : g 0 = f 0)
     (x : D) : sumMap f g (x, 0) = f x := by simp [sumMap, hzero]
 
-theorem Smale.TransverseCoordinates.sumMap_right {D Z A : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.sumMap_right {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup A] (f : D → A) (g : Z → A) (z : Z) : sumMap f g (0, z) = g z := by
   simp [sumMap, add_sub_cancel_left]
 
-theorem Smale.TransverseCoordinates.contDiffOn_sumMap {D Z A : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.contDiffOn_sumMap {D Z A : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup A]
     [NormedSpace ℝ A] {f : D → A} {g : Z → A} {U : Set D} {V : Set Z} (hf : ContDiffOn ℝ ∞ f U)
     (hg : ContDiffOn ℝ ∞ g V) : ContDiffOn ℝ ∞ (sumMap f g) (U ×ˢ V) :=
@@ -10788,7 +10788,7 @@ theorem Smale.TransverseCoordinates.contDiffOn_sumMap {D Z A : Type*} [NormedAdd
         (hg.comp contDiff_snd.contDiffOn (fun _ hx => hx.2))).sub
     contDiffOn_const
 
-theorem Smale.TransverseCoordinates.hasFDerivAt_sumMap_zero {D Z A : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.hasFDerivAt_sumMap_zero {D Z A : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup A]
     [NormedSpace ℝ A] {f : D → A} {g : Z → A} (hf : DifferentiableAt ℝ f 0)
     (hg : DifferentiableAt ℝ g 0) :
@@ -10803,76 +10803,76 @@ theorem Smale.TransverseCoordinates.hasFDerivAt_sumMap_zero {D Z A : Type*} [Nor
   intro q
   simp [ContinuousLinearMap.coprod_apply]
 
-def Smale.NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates {E M D Z : Type*}
+def NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (f : D → M) (g : Z → M) : D × Z → M :=
-  r.toFun ∘ Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g)
+  r.toFun ∘ TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g)
 
-def Smale.NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinateDomain {E M D Z : Type*}
+def NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinateDomain {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (f : D → M) (g : Z → M) (U : Set D) (V : Set Z) : Set (D × Z) :=
-  (U ×ˢ V) ∩ Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) ⁻¹' r.domain
+  (U ×ˢ V) ∩ TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) ⁻¹' r.domain
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_left {E M D Z : Type*}
+theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_left {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] [NormedAddCommGroup Z] {e : Smale.NativeEuclideanEmbedding E M}
+    [NormedAddCommGroup D] [NormedAddCommGroup Z] {e : NativeEuclideanEmbedding E M}
     (r : e.SmoothRetraction) (f : D → M) (g : Z → M) (hzero : g 0 = f 0) (x : D) :
     r.sheetCoordinates f g (x, 0) = f x := by
   have hsum :=
-    Smale.TransverseCoordinates.sumMap_left (e.toFun ∘ f) (e.toFun ∘ g) (congrArg e.toFun hzero) x
-  change r.toFun (Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (x, 0)) = f x
+    TransverseCoordinates.sumMap_left (e.toFun ∘ f) (e.toFun ∘ g) (congrArg e.toFun hzero) x
+  change r.toFun (TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (x, 0)) = f x
   rw [hsum]
   exact r.retract (f x)
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_right {E M D Z : Type*}
+theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_right {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (f : D → M) (g : Z → M) (z : Z) : r.sheetCoordinates f g (0, z) = g z := by
-  rw [sheetCoordinates, Function.comp_apply, Smale.TransverseCoordinates.sumMap_right]
+  rw [sheetCoordinates, Function.comp_apply, TransverseCoordinates.sumMap_right]
   exact r.retract (g z)
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.zero_mem_sheetCoordinateDomain
+theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_sheetCoordinateDomain
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedAddCommGroup Z]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) (f : D → M) (g : Z → M)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) (f : D → M) (g : Z → M)
     {U : Set D} {V : Set Z} (hU : (0 : D) ∈ U) (hV : (0 : Z) ∈ V) :
     (0, 0) ∈ r.sheetCoordinateDomain f g U V := by
   refine ⟨⟨hU, hV⟩, ?_⟩
-  change Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0) ∈ r.domain
-  rw [Smale.TransverseCoordinates.sumMap_right]
+  change TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0) ∈ r.domain
+  rw [TransverseCoordinates.sumMap_right]
   exact r.contains ⟨g 0, rfl⟩
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isOpen_sheetCoordinateDomain
+theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_sheetCoordinateDomain
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
-    [NormedSpace ℝ Z] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedSpace ℝ Z] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     {f : D → M} {g : Z → M} {U : Set D} {V : Set Z} (hU : IsOpen U) (hV : IsOpen V)
     (hf : ContMDiffOn 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f U) (hg : ContMDiffOn 𝓘(ℝ, Z) 𝓘(ℝ, E) ∞ g V) :
     IsOpen (r.sheetCoordinateDomain f g U V) :=
-  (Smale.TransverseCoordinates.contDiffOn_sumMap (e.smooth.comp_contMDiffOn hf).contDiffOn
+  (TransverseCoordinates.contDiffOn_sumMap (e.smooth.comp_contMDiffOn hf).contDiffOn
         (e.smooth.comp_contMDiffOn hg).contDiffOn).continuousOn.isOpen_inter_preimage
     (hU.prod hV) r.open_domain
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_sheetCoordinates
+theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_sheetCoordinates
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
-    [NormedSpace ℝ Z] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedSpace ℝ Z] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     {f : D → M} {g : Z → M} {U : Set D} {V : Set Z} (hf : ContMDiffOn 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f U)
     (hg : ContMDiffOn 𝓘(ℝ, Z) 𝓘(ℝ, E) ∞ g V) :
     ContMDiffOn 𝓘(ℝ, D × Z) 𝓘(ℝ, E) ∞ (r.sheetCoordinates f g)
       (r.sheetCoordinateDomain f g U V) :=
   r.smooth.comp
-    ((Smale.TransverseCoordinates.contDiffOn_sumMap (e.smooth.comp_contMDiffOn hf).contDiffOn
+    ((TransverseCoordinates.contDiffOn_sumMap (e.smooth.comp_contMDiffOn hf).contDiffOn
           (e.smooth.comp_contMDiffOn hg).contDiffOn).contMDiffOn.mono
       Set.inter_subset_left)
     (fun _ hx => hx.2)
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates_zero
+theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates_zero
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
-    [NormedSpace ℝ Z] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [NormedSpace ℝ Z] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     {f : D → M} {g : Z → M} (hzero : g 0 = f 0) (hf : ContMDiffAt 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f 0)
     (hg : ContMDiffAt 𝓘(ℝ, Z) 𝓘(ℝ, E) ∞ g 0) :
     mfderiv 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (r.sheetCoordinates f g) (0, 0) =
@@ -10880,15 +10880,15 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates
   have heF := (e.smooth.contMDiffAt.comp 0 hf).contDiffAt
   have heG := (e.smooth.contMDiffAt.comp 0 hg).contDiffAt
   have hsum :=
-    Smale.TransverseCoordinates.hasFDerivAt_sumMap_zero (heF.differentiableAt (by simp))
+    TransverseCoordinates.hasFDerivAt_sumMap_zero (heF.differentiableAt (by simp))
       (heG.differentiableAt (by simp))
   have hbase :
-    Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0) = e.toFun (f 0) := by
-    rw [Smale.TransverseCoordinates.sumMap_right]
+    TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0) = e.toFun (f 0) := by
+    rw [TransverseCoordinates.sumMap_right]
     exact congrArg e.toFun hzero
   have hr :
     MDifferentiableAt (𝓡 e.ambientDimension) 𝓘(ℝ, E) r.toFun
-      (Smale.TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0)) := by
+      (TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) (0, 0)) := by
     rw [hbase]
     exact
       (r.smooth.contMDiffAt (r.open_domain.mem_nhds (r.contains ⟨f 0, rfl⟩))).mdifferentiableAt
@@ -10925,7 +10925,7 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates
   change R (T (G q.2)) = G q.2 at hright
   rw [map_add, hleft, hright]
 
-theorem Smale.TransverseCoordinates.isInvertible_coprod_of_surjective {D Z E : Type*}
+theorem TransverseCoordinates.isInvertible_coprod_of_surjective {D Z E : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
     [FiniteDimensional ℝ E] (F : D →L[ℝ] E) (G : Z →L[ℝ] E)
@@ -10938,7 +10938,7 @@ theorem Smale.TransverseCoordinates.isInvertible_coprod_of_surjective {D Z E : T
   let L := (LinearEquiv.ofBijective (F.coprod G).toLinearMap ⟨hi, ht⟩).toContinuousLinearEquiv
   exact ⟨L, rfl⟩
 
-theorem Smale.exists_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
+theorem exists_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -10996,7 +10996,7 @@ theorem Smale.exists_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGro
   · intro z hz
     exact (heq hz).symm.trans (r.sheetCoordinates_right f g z)
 
-theorem Smale.exists_clean_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
+theorem exists_clean_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -11084,7 +11084,7 @@ theorem Smale.exists_clean_simultaneous_sheetChart {E M D Z : Type*} [NormedAddC
         subst x
         exact ⟨z, (hsource hq.1).2, (hright z hq.1).symm⟩
 
-theorem Smale.exists_clean_crossingChart_of_parametrizations {E M D Z N P A B : Type*}
+theorem exists_clean_crossingChart_of_parametrizations {E M D Z N P A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -11188,7 +11188,7 @@ theorem Smale.exists_clean_crossingChart_of_parametrizations {E M D Z N P A B : 
       exact ⟨d v, hv⟩
   exact ⟨hrangeF.trans (himages q hq).1, hrangeG.trans (himages q hq).2⟩
 
-theorem Smale.exists_clean_crossingChart {E M D Z N P : Type*} [NormedAddCommGroup E]
+theorem exists_clean_crossingChart {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -11236,7 +11236,7 @@ theorem Smale.exists_clean_crossingChart {E M D Z N P : Type*} [NormedAddCommGro
   exact
     ⟨a, ha, Φ, hprod, hsource, htarget, hcenter.trans (congrArg F hcx), hleft, hright, himages⟩
 
-theorem Smale.exists_isolating_crossing_neighborhood {E M D Z N P : Type*} [NormedAddCommGroup E]
+theorem exists_isolating_crossing_neighborhood {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -11268,7 +11268,7 @@ theorem Smale.exists_isolating_crossing_neighborhood {E M D Z N P : Type*} [Norm
     rcases Set.mem_singleton_iff.mp hw with rfl
     exact ⟨hFx, ⟨x, rfl⟩, ⟨y, hxy⟩⟩
 
-theorem Smale.isDiscrete_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
+theorem isDiscrete_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -11289,7 +11289,7 @@ theorem Smale.isDiscrete_transverse_intersections {E M D Z N P : Type*} [NormedA
     exists_isolating_crossing_neighborhood hF hG hembF hembG x y hxy hdim (ht x y hxy)
   exact ⟨O, hO, heq⟩
 
-theorem Smale.finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
+theorem finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -11310,14 +11310,14 @@ theorem Smale.finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCo
     ((isCompact_range hF.continuous).inter_right (isCompact_range hG.continuous).isClosed).finite
       (isDiscrete_transverse_intersections hF hG hembF hembG hdim ht)
 
-def Smale.SphereBoundary.definingFunction {E : Type*} [NormedAddCommGroup E] (x : E) : ℝ :=
+def SphereBoundary.definingFunction {E : Type*} [NormedAddCommGroup E] (x : E) : ℝ :=
   ‖x‖ ^ 2 - 1
 
-theorem Smale.SphereBoundary.contDiff_definingFunction {E : Type*} [NormedAddCommGroup E]
+theorem SphereBoundary.contDiff_definingFunction {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] : ContDiff ℝ ∞ (definingFunction (E := E)) :=
   (contDiff_id.norm_sq (𝕜 := ℝ)).sub contDiff_const
 
-theorem Smale.SphereBoundary.definingFunction_eq_zero_iff {E : Type*} [NormedAddCommGroup E]
+theorem SphereBoundary.definingFunction_eq_zero_iff {E : Type*} [NormedAddCommGroup E]
     (x : E) : definingFunction x = 0 ↔ x ∈ Metric.sphere (0 : E) 1 := by
   simp only [definingFunction, Metric.mem_sphere, dist_zero_right]
   constructor
@@ -11327,11 +11327,11 @@ theorem Smale.SphereBoundary.definingFunction_eq_zero_iff {E : Type*} [NormedAdd
     rw [h]
     norm_num
 
-theorem Smale.SphereBoundary.fderiv_definingFunction {E : Type*} [NormedAddCommGroup E]
+theorem SphereBoundary.fderiv_definingFunction {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (x : E) : fderiv ℝ (definingFunction (E := E)) x = 2 • innerSL ℝ x :=
   ((hasStrictFDerivAt_norm_sq x).hasFDerivAt.sub_const 1).fderiv
 
-theorem Smale.SphereBoundary.fderiv_definingFunction_eq_zero_iff {E : Type*}
+theorem SphereBoundary.fderiv_definingFunction_eq_zero_iff {E : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (x v : E) :
     fderiv ℝ (definingFunction (E := E)) x v = 0 ↔ Inner.inner ℝ x v = 0 := by
   rw [fderiv_definingFunction]
@@ -11343,7 +11343,7 @@ theorem Smale.SphereBoundary.fderiv_definingFunction_eq_zero_iff {E : Type*}
   · intro h
     rw [h, add_zero]
 
-theorem Smale.SphereBoundary.common_kernel_of_immersive_sphere_extension {E : Type*}
+theorem SphereBoundary.common_kernel_of_immersive_sphere_extension {E : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] {n : ℕ} [Fact (Module.finrank ℝ E = n + 1)]
     {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N] {f : E → N}
@@ -11382,12 +11382,12 @@ theorem Smale.SphereBoundary.common_kernel_of_immersive_sphere_extension {E : Ty
   rw [hwzero, map_zero] at hw
   exact hw.symm
 
-def Smale.SphereNormalCoordinates.inclusionDerivative {V : Type*} [NormedAddCommGroup V]
+def SphereNormalCoordinates.inclusionDerivative {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (x : Metric.sphere (0 : V) 1) : EuclideanSpace ℝ (Fin n) →L[ℝ] V :=
   mvfderiv (𝓡 n) (Subtype.val : Metric.sphere (0 : V) 1 → V) x
 
-theorem Smale.SphereNormalCoordinates.inner_inclusionDerivative_zero {V : Type*}
+theorem SphereNormalCoordinates.inner_inclusionDerivative_zero {V : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (x : Metric.sphere (0 : V) 1) (u : EuclideanSpace ℝ (Fin n)) :
     Inner.inner ℝ (x : V) (inclusionDerivative x u) = 0 := by
@@ -11395,25 +11395,25 @@ theorem Smale.SphereNormalCoordinates.inner_inclusionDerivative_zero {V : Type*}
   rw [← range_mvfderiv_subtypeVal (n := n) x]
   exact ⟨u, rfl⟩
 
-theorem Smale.SphereNormalCoordinates.inner_self_eq_one {V : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.inner_self_eq_one {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] (x : Metric.sphere (0 : V) 1) : Inner.inner ℝ (x : V) x = 1 := by
   have hx : ‖(x : V)‖ = 1 := by simpa only [Metric.mem_sphere, dist_zero_right] using x.property
   rw [real_inner_self_eq_norm_sq, hx, one_pow]
 
-def Smale.SphereNormalCoordinates.normalFrame {V N : Type*} [NormedAddCommGroup V]
+def SphereNormalCoordinates.normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) : (ℝ × N) →L[ℝ] V :=
   ((ContinuousLinearMap.id ℝ ℝ).smulRight (x : V)).coprod ((inclusionDerivative x).comp A.inverse)
 
-theorem Smale.SphereNormalCoordinates.normalFrame_apply {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.normalFrame_apply {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (z : ℝ × N) :
     normalFrame x A z = z.1 • (x : V) + inclusionDerivative x (A.inverse z.2) :=
   rfl
 
-theorem Smale.SphereNormalCoordinates.inner_normalFrame {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.inner_normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (z : ℝ × N) :
@@ -11421,7 +11421,7 @@ theorem Smale.SphereNormalCoordinates.inner_normalFrame {V N : Type*} [NormedAdd
   rw [normalFrame_apply, inner_add_right, inner_smul_right, inner_self_eq_one,
     inner_inclusionDerivative_zero, mul_one, add_zero]
 
-theorem Smale.SphereNormalCoordinates.bijective_normalFrame {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.bijective_normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (hA : A.IsInvertible) :
@@ -11450,21 +11450,21 @@ theorem Smale.SphereNormalCoordinates.bijective_normalFrame {V N : Type*} [Norme
     rw [normalFrame_apply, hA.inverse_apply_self, hu]
     abel
 
-def Smale.SphereNormalCoordinates.normalJacobian {V N : Type*} [NormedAddCommGroup V]
+def SphereNormalCoordinates.normalJacobian {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (j : (ℝ × N) ≃L[ℝ] V) (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) : ℝ :=
   ((normalFrame x A).comp j.symm.toContinuousLinearMap).det
 
-theorem Smale.SphereNormalCoordinates.normalJacobian_ne_zero {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.normalJacobian_ne_zero {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] [FiniteDimensional ℝ V] (j : (ℝ × N) ≃L[ℝ] V)
     (x : Metric.sphere (0 : V) 1) (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (hA : A.IsInvertible) :
     normalJacobian j x A ≠ 0 := by
-  apply (Smale.RegularValues.bijective_iff_det_ne_zero _).mp
+  apply (RegularValues.bijective_iff_det_ne_zero _).mp
   exact (bijective_normalFrame x A hA).comp j.symm.bijective
 
-theorem Smale.SphereNormalCoordinates.normalJacobian_change_normal_model {V N : Type*}
+theorem SphereNormalCoordinates.normalJacobian_change_normal_model {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] {N' : Type*} [NormedAddCommGroup N']
     [NormedSpace ℝ N'] (r : (ℝ × N) ≃L[ℝ] V) (j : N' ≃L[ℝ] N) (x : Metric.sphere (0 : V) 1)
@@ -11489,73 +11489,73 @@ theorem Smale.SphereNormalCoordinates.normalJacobian_change_normal_model {V N : 
       (r.symm v).1 • (x : V) + inclusionDerivative x (A.inverse (r.symm v).2)
   rw [hinv]
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltNormalReference {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.beltNormalReference {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
     (hdim : Module.finrank ℝ d.chart.NegativeCoordinates = m) :
-    (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1) :=
+    (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1) :=
   ContinuousLinearEquiv.ofFinrankEq (by simp [Module.finrank_prod, hdim, Nat.add_comm])
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) (x : Smale.Hemisphere.Sphere m) : ℝ :=
-  letI : Fact (Module.finrank ℝ (Smale.Hemisphere.Ambient (m + 1)) = m + 1) :=
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel) (x : Hemisphere.Sphere m) : ℝ :=
+  letI : Fact (Module.finrank ℝ (Hemisphere.Ambient (m + 1)) = m + 1) :=
     ⟨finrank_euclideanSpace_fin⟩
-  Smale.SphereNormalCoordinates.normalJacobian j x
+  SphereNormalCoordinates.normalJacobian j x
     (mfderiv (𝓡 m) 𝓘(ℝ, d.chart.NegativeCoordinates) (d.beltNormal ∘ g) x)
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionSign {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.beltIntersectionSign {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) (x : Smale.Hemisphere.Sphere m) : SignType :=
+    (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel) (x : Hemisphere.Sphere m) : SignType :=
   SignType.sign (d.beltIntersectionJacobian m j g x)
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionPoints {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.beltIntersectionPoints {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) : Set (Smale.Hemisphere.Sphere m) :=
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (g : Hemisphere.Sphere m → d.UpperLevel) : Set (Hemisphere.Sphere m) :=
   g ⁻¹' Set.range d.surgery.beltSphere
 
-theorem Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionSigns_opposite_iff {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSigns_opposite_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) (x y : Smale.Hemisphere.Sphere m) :
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel) (x y : Hemisphere.Sphere m) :
     d.beltIntersectionSign m j g x * d.beltIntersectionSign m j g y = -1 ↔
       d.beltIntersectionJacobian m j g x * d.beltIntersectionJacobian m j g y < 0 := by
   unfold beltIntersectionSign
   rw [← sign_mul, sign_eq_neg_one_iff]
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionCount {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.beltIntersectionCount {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel)
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel)
     (hfin : (d.beltIntersectionPoints m g).Finite) : ℤ :=
   ∑ x ∈ hfin.toFinset, (d.beltIntersectionSign m j g x : ℤ)
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian_ne_zero {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian_ne_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (n m : ℕ) [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)]
     (hdim : Module.finrank ℝ d.chart.NegativeCoordinates = m)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) ∞ g)
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) g
             d.surgery.beltSphere x y)
-      (x : Smale.Hemisphere.Sphere m),
+      (x : Hemisphere.Sphere m),
       x ∈ d.beltIntersectionPoints m g → d.beltIntersectionJacobian m j g x ≠ 0 := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
-  let _ : Fact (Module.finrank ℝ (Smale.Hemisphere.Ambient (m + 1)) = m + 1) :=
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
+  let _ : Fact (Module.finrank ℝ (Hemisphere.Ambient (m + 1)) = m + 1) :=
     ⟨finrank_euclideanSpace_fin⟩
   intro hg ht x hx
   obtain ⟨v, hv⟩ := hx
@@ -11564,27 +11564,27 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian_ne_zero {E
     mfderiv (𝓡 m) 𝓘(ℝ, d.chart.NegativeCoordinates) (d.beltNormal ∘ g) x
   have hAi : A.IsInvertible :=
     ⟨(LinearEquiv.ofBijective A.toLinearMap hA).toContinuousLinearEquiv, rfl⟩
-  exact Smale.SphereNormalCoordinates.normalJacobian_ne_zero j x A hAi
+  exact SphereNormalCoordinates.normalJacobian_ne_zero j x A hAi
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionSign_unit {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSign_unit {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (n m : ℕ) [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)]
     (hdim : Module.finrank ℝ d.chart.NegativeCoordinates = m)
-    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient (m + 1))
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g)
+    (j : (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1))
+    (g : Hemisphere.Sphere m → d.UpperLevel) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) ∞ g)
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) g
             d.surgery.beltSphere x y)
-      (x : Smale.Hemisphere.Sphere m),
+      (x : Hemisphere.Sphere m),
       x ∈ d.beltIntersectionPoints m g →
         d.beltIntersectionSign m j g x = 1 ∨ d.beltIntersectionSign m j g x = -1 := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
   intro hg ht x hx
   have hn : d.beltIntersectionSign m j g x ≠ 0 :=
     sign_ne_zero.mpr (d.beltIntersectionJacobian_ne_zero hf n m hdim j g hg ht x hx)
@@ -11594,47 +11594,47 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.beltIntersectionSign_unit {E M : Ty
   · exact Or.inl h
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.finite_beltIntersectionPoints {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.finite_beltIntersectionPoints {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     [T2Space M] [CompactSpace M] (n m : ℕ)
     [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)]
     (hdim : Module.finrank ℝ d.chart.NegativeCoordinates = m)
-    (g : Smale.Hemisphere.Sphere m → d.UpperLevel) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
+    (g : Hemisphere.Sphere m → d.UpperLevel) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    ∀ (_hg : ContMDiff (𝓡 m) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 m) (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) g
             d.surgery.beltSphere x y),
       (d.beltIntersectionPoints m g).Finite := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
-  let _ := Smale.RegularLevel.isManifold hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.isManifold hf d.upper_regular
   let _ : CompactSpace d.UpperLevel :=
     isCompact_iff_compactSpace.mp (isClosed_eq hf.continuous continuous_const).isCompact
   intro hg hinj ht
   have hdim' :
     Module.finrank ℝ (EuclideanSpace ℝ (Fin m)) + Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) =
-      Module.finrank ℝ (Smale.RegularLevel.Model E) := by
-    simp only [Smale.RegularLevel.Model, finrank_euclideanSpace_fin]
+      Module.finrank ℝ (RegularLevel.Model E) := by
+    simp only [RegularLevel.Model, finrank_euclideanSpace_fin]
     have hp : Module.finrank ℝ d.chart.PositiveCoordinates = n + 1 := Fact.out
     have hs := d.chart.finrank_negative_add_positive
     omega
   have hfin :=
-    Smale.finite_transverse_intersections hg (d.belt_smooth hf n) hinj
+    finite_transverse_intersections hg (d.belt_smooth hf n) hinj
       d.belt_isClosedEmbedding.injective hdim' (fun x y hxy => ht x y hxy)
   have hpre : (g ⁻¹' (Set.range g ∩ Set.range d.surgery.beltSphere)).Finite :=
     hfin.preimage hinj.injOn
   exact hpre.subset (fun x hx => ⟨⟨x, rfl⟩, hx⟩)
 
-def Smale.TransverseCoordinates.normalCoordinate {D B E M : Type*} [NormedAddCommGroup D]
+def TransverseCoordinates.normalCoordinate {D B E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) : M → B :=
   Prod.snd ∘ Φ.symm
 
-theorem Smale.TransverseCoordinates.contMDiffOn_normalCoordinate {D B E M : Type*}
+theorem TransverseCoordinates.contMDiffOn_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) :
@@ -11642,7 +11642,7 @@ theorem Smale.TransverseCoordinates.contMDiffOn_normalCoordinate {D B E M : Type
   have hs : ContMDiff 𝓘(ℝ, D × B) 𝓘(ℝ, B) ∞ (Prod.snd : D × B → B) := contDiff_snd.contMDiff
   exact hs.comp_contMDiffOn Φ.contMDiffOn_invFun
 
-theorem Smale.TransverseCoordinates.mfderiv_normalCoordinate {D B E M : Type*}
+theorem TransverseCoordinates.mfderiv_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {p : M} (hp : p ∈ Φ.target) :
@@ -11658,7 +11658,7 @@ theorem Smale.TransverseCoordinates.mfderiv_normalCoordinate {D B E M : Type*}
     mfderiv_comp p (hs.mdifferentiableAt (by simp)) (Φ.symm.mdifferentiableAt (by simp) hp), hd]
   rfl
 
-theorem Smale.TransverseCoordinates.surjective_mfderiv_normalCoordinate {D B E M : Type*}
+theorem TransverseCoordinates.surjective_mfderiv_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {p : M} (hp : p ∈ Φ.target) :
@@ -11666,9 +11666,9 @@ theorem Smale.TransverseCoordinates.surjective_mfderiv_normalCoordinate {D B E M
   rw [mfderiv_normalCoordinate Φ hp]
   exact
     (show Function.Surjective (ContinuousLinearMap.snd ℝ D B) from fun w => ⟨(0, w), rfl⟩).comp
-      (Smale.PartialChart.bijective_mfderiv Φ.symm hp).2
+      (PartialChart.bijective_mfderiv Φ.symm hp).2
 
-theorem Smale.TransverseCoordinates.normalCoordinate_sheet_eventually_zero {D B E M : Type*}
+theorem TransverseCoordinates.normalCoordinate_sheet_eventually_zero {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {N : Type*} [TopologicalSpace N]
@@ -11678,7 +11678,7 @@ theorem Smale.TransverseCoordinates.normalCoordinate_sheet_eventually_zero {D B 
   have hq : Φ.invFun (F y) ∈ Φ.source := Φ.map_target' hy
   exact (hclean _ hq).mp ⟨y, (Φ.right_inv' hy).symm⟩
 
-theorem Smale.TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M : Type*}
+theorem TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {G N : Type*} [NormedAddCommGroup G]
@@ -11697,46 +11697,46 @@ theorem Smale.TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M
       (hF.mdifferentiableAt (by simp))] at hzero
   exact hzero
 
-theorem Smale.StripCoordinates.hasDerivAt_verticalSlice {E : Type*} [NormedAddCommGroup E]
+theorem StripCoordinates.hasDerivAt_verticalSlice {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {F : (ℝ × ℝ) → E} {t s : ℝ} (hF : DifferentiableAt ℝ F (t, s)) :
     HasDerivAt (fun u : ℝ => F (t, u)) (fderiv ℝ F (t, s) (0, 1)) s := by
   have hi : HasDerivAt (fun u : ℝ => (t, u)) (0, 1) s :=
     (hasDerivAt_const s t).prodMk (hasDerivAt_id s)
   exact hF.hasFDerivAt.comp_hasDerivAt s hi
 
-theorem Smale.StripCoordinates.hasDerivAt_horizontalSlice {E : Type*} [NormedAddCommGroup E]
+theorem StripCoordinates.hasDerivAt_horizontalSlice {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {F : (ℝ × ℝ) → E} {t s : ℝ} (hF : DifferentiableAt ℝ F (t, s)) :
     HasDerivAt (fun u : ℝ => F (u, s)) (fderiv ℝ F (t, s) (1, 0)) t := by
   have hi : HasDerivAt (fun u : ℝ => (u, s)) (1, 0) t :=
     (hasDerivAt_id t).prodMk (hasDerivAt_const t s)
   exact hF.hasFDerivAt.comp_hasDerivAt t hi
 
-abbrev Smale.StripCoordinates.Space (A B : Type*) :=
+abbrev StripCoordinates.Space (A B : Type*) :=
   (ℝ × A) × B
 
-def Smale.StripCoordinates.center {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
+def StripCoordinates.center {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
     (t : ℝ) : Space A B :=
   ((t, 0), 0)
 
-def Smale.StripCoordinates.model {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
+def StripCoordinates.model {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] (v : ℝ → B) (p : ℝ × ℝ) : Space A B :=
   ((p.1, 0), p.2 • v p.1)
 
-def Smale.StripCoordinates.normalDerivative {A B : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
+def StripCoordinates.normalDerivative {A B : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     (F : (ℝ × ℝ) → Space A B) (t : ℝ) : B :=
   fderiv ℝ (fun p => (F p).2) (t, 0) (0, 1)
 
-def Smale.StripCoordinates.blend {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+def StripCoordinates.blend {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (v : ℝ → B) (F₀ F₁ : (ℝ × ℝ) → Space A B)
     (β₀ β₁ : ℝ → ℝ) (p : ℝ × ℝ) : Space A B :=
   model v p + β₀ p.1 • (F₀ p - model v p) + β₁ p.1 • (F₁ p - model v p)
 
-theorem Smale.StripCoordinates.contDiff_model {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.contDiff_model {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B} (hv : ContDiff ℝ ∞ v) :
     ContDiff ℝ ∞ (model (A := A) v) :=
   (contDiff_fst.prodMk contDiff_const).prodMk (contDiff_snd.smul (hv.comp contDiff_fst))
 
-theorem Smale.StripCoordinates.contDiff_blend {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.contDiff_blend {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} (hv : ContDiff ℝ ∞ v) (hF₀ : ContDiff ℝ ∞ F₀)
     (hF₁ : ContDiff ℝ ∞ F₁) (hβ₀ : ContDiff ℝ ∞ β₀) (hβ₁ : ContDiff ℝ ∞ β₁) :
@@ -11744,16 +11744,16 @@ theorem Smale.StripCoordinates.contDiff_blend {A B : Type*} [NormedAddCommGroup 
   ((contDiff_model hv).add ((hβ₀.comp contDiff_fst).smul (hF₀.sub (contDiff_model hv)))).add
     ((hβ₁.comp contDiff_fst).smul (hF₁.sub (contDiff_model hv)))
 
-theorem Smale.StripCoordinates.model_zero {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.model_zero {A B : Type*} [NormedAddCommGroup A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (v : ℝ → B) (t : ℝ) :
-    model (A := A) v (t, 0) = Smale.StripCoordinates.center t := by
-  simp only [model, Smale.StripCoordinates.center, zero_smul]
+    model (A := A) v (t, 0) = StripCoordinates.center t := by
+  simp only [model, StripCoordinates.center, zero_smul]
 
-theorem Smale.StripCoordinates.blend_zero {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+theorem StripCoordinates.blend_zero {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B} {F₀ F₁ : (ℝ × ℝ) → Space A B}
-    {β₀ β₁ : ℝ → ℝ} (h₀ : ∀ t, β₀ t ≠ 0 → F₀ (t, 0) = Smale.StripCoordinates.center t)
-    (h₁ : ∀ t, β₁ t ≠ 0 → F₁ (t, 0) = Smale.StripCoordinates.center t) (t : ℝ) :
-    blend v F₀ F₁ β₀ β₁ (t, 0) = Smale.StripCoordinates.center t := by
+    {β₀ β₁ : ℝ → ℝ} (h₀ : ∀ t, β₀ t ≠ 0 → F₀ (t, 0) = StripCoordinates.center t)
+    (h₁ : ∀ t, β₁ t ≠ 0 → F₁ (t, 0) = StripCoordinates.center t) (t : ℝ) :
+    blend v F₀ F₁ β₀ β₁ (t, 0) = StripCoordinates.center t := by
   have hterm₀ : β₀ t • (F₀ (t, 0) - model v (t, 0)) = 0 := by
     by_cases h : β₀ t = 0
     · rw [h, zero_smul]
@@ -11764,24 +11764,24 @@ theorem Smale.StripCoordinates.blend_zero {A B : Type*} [NormedAddCommGroup A] [
     · rw [h₁ t h, model_zero, sub_self, smul_zero]
   change
     model v (t, 0) + β₀ t • (F₀ (t, 0) - model v (t, 0)) + β₁ t • (F₁ (t, 0) - model v (t, 0)) =
-      Smale.StripCoordinates.center t
+      StripCoordinates.center t
   rw [hterm₀, hterm₁, add_zero, add_zero, model_zero]
 
-theorem Smale.StripCoordinates.blend_eq_left {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.blend_eq_left {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} {p : ℝ × ℝ} (h₀ : β₀ p.1 = 1)
     (h₁ : β₁ p.1 = 0) : blend v F₀ F₁ β₀ β₁ p = F₀ p := by
   simp only [blend, h₀, h₁, one_smul, zero_smul, add_zero]
   rw [← add_sub_assoc, add_sub_cancel_left]
 
-theorem Smale.StripCoordinates.blend_eq_right {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.blend_eq_right {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} {p : ℝ × ℝ} (h₀ : β₀ p.1 = 0)
     (h₁ : β₁ p.1 = 1) : blend v F₀ F₁ β₀ β₁ p = F₁ p := by
   simp only [blend, h₀, h₁, one_smul, zero_smul, add_zero]
   rw [← add_sub_assoc, add_sub_cancel_left]
 
-theorem Smale.StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} (hv : ContDiff ℝ ∞ v) (hF₀ : ContDiff ℝ ∞ F₀)
     (hF₁ : ContDiff ℝ ∞ F₁) (hβ₀ : ContDiff ℝ ∞ β₀) (hβ₁ : ContDiff ℝ ∞ β₁)
@@ -11814,7 +11814,7 @@ theorem Smale.StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCo
           ((contDiff_blend hv hF₀ hF₁ hβ₀ hβ₁).snd.contDiffAt.differentiableAt (by simp))).unique
       hblend'
 
-structure Smale.StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpace ℝ A]
+structure StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (S : Set M) (k : (ℝ × ℝ) → M) where
   chart :
@@ -11826,53 +11826,53 @@ structure Smale.StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpac
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       fderiv ℝ (TransverseCoordinates.normalCoordinate chart ∘ k) (t, 0) (0, 1) ≠ 0
 
-theorem Smale.StripCoordinates.horizontal_derivative_of_center {A B : Type*}
+theorem StripCoordinates.horizontal_derivative_of_center {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {F : (ℝ × ℝ) → Space A B} {t : ℝ} (hF : DifferentiableAt ℝ F (t, 0))
-    (hc : ∀ s, F (s, 0) = Smale.StripCoordinates.center s) :
-    fderiv ℝ F (t, 0) (1, 0) = Smale.StripCoordinates.center 1 := by
+    (hc : ∀ s, F (s, 0) = StripCoordinates.center s) :
+    fderiv ℝ F (t, 0) (1, 0) = StripCoordinates.center 1 := by
   have hd := hasDerivAt_horizontalSlice hF
-  have heq : (fun s : ℝ => F (s, 0)) = Smale.StripCoordinates.center := funext hc
+  have heq : (fun s : ℝ => F (s, 0)) = StripCoordinates.center := funext hc
   rw [heq] at hd
   have hcenter :
-    HasDerivAt (Smale.StripCoordinates.center : ℝ → Space A B) (Smale.StripCoordinates.center 1)
+    HasDerivAt (StripCoordinates.center : ℝ → Space A B) (StripCoordinates.center 1)
       t :=
     ((hasDerivAt_id t).prodMk (hasDerivAt_const t (0 : A))).prodMk (hasDerivAt_const t (0 : B))
   exact hd.unique hcenter
 
-theorem Smale.StripCoordinates.horizontal_derivative_of_center_germ {A B : Type*}
+theorem StripCoordinates.horizontal_derivative_of_center_germ {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {F : (ℝ × ℝ) → Space A B} {t : ℝ} (hF : DifferentiableAt ℝ F (t, 0))
-    (hc : (fun s : ℝ => F (s, 0)) =ᶠ[𝓝 t] Smale.StripCoordinates.center) :
-    fderiv ℝ F (t, 0) (1, 0) = Smale.StripCoordinates.center 1 := by
+    (hc : (fun s : ℝ => F (s, 0)) =ᶠ[𝓝 t] StripCoordinates.center) :
+    fderiv ℝ F (t, 0) (1, 0) = StripCoordinates.center 1 := by
   have hd := hasDerivAt_horizontalSlice hF
   have hcenter :
-    HasDerivAt (Smale.StripCoordinates.center : ℝ → Space A B) (Smale.StripCoordinates.center 1)
+    HasDerivAt (StripCoordinates.center : ℝ → Space A B) (StripCoordinates.center 1)
       t :=
     ((hasDerivAt_id t).prodMk (hasDerivAt_const t (0 : A))).prodMk (hasDerivAt_const t (0 : B))
   exact hd.unique (hcenter.congr_of_eventuallyEq hc)
 
-theorem Smale.StripCoordinates.normalDerivative_eq_snd_fderiv {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.normalDerivative_eq_snd_fderiv {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {F : (ℝ × ℝ) → Space A B} {t : ℝ}
     (hF : DifferentiableAt ℝ F (t, 0)) : normalDerivative F t = (fderiv ℝ F (t, 0) (0, 1)).2 := by
   have hd := hF.hasFDerivAt.snd
   rw [normalDerivative, hd.fderiv]
   rfl
 
-theorem Smale.StripCoordinates.injective_of_horizontal_and_normal {A B : Type*}
+theorem StripCoordinates.injective_of_horizontal_and_normal {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    (L : (ℝ × ℝ) →L[ℝ] Space A B) (hh : L (1, 0) = Smale.StripCoordinates.center 1)
+    (L : (ℝ × ℝ) →L[ℝ] Space A B) (hh : L (1, 0) = StripCoordinates.center 1)
     (hn : (L (0, 1)).2 ≠ 0) : Function.Injective L := by
   have hker : ∀ p : ℝ × ℝ, L p = 0 → p = 0 := by
     rintro ⟨a, b⟩ hp
     have hsplit : (a, b) = a • ((1 : ℝ), 0) + b • (0, 1) := by ext <;> simp
     rw [hsplit, map_add, map_smul, map_smul, hh] at hp
     have hb0 : b • (L (0, 1)).2 = 0 := by
-      simpa [Smale.StripCoordinates.center] using congrArg Prod.snd hp
+      simpa [StripCoordinates.center] using congrArg Prod.snd hp
     have hb : b = 0 := (smul_eq_zero.mp hb0).resolve_right hn
     subst b
     have ha : a = 0 := by
-      simpa [Smale.StripCoordinates.center] using congrArg (fun q : Space A B => q.1.1) hp
+      simpa [StripCoordinates.center] using congrArg (fun q : Space A B => q.1.1) hp
     subst a
     rfl
   intro p q hpq
@@ -11880,53 +11880,53 @@ theorem Smale.StripCoordinates.injective_of_horizontal_and_normal {A B : Type*}
   apply hker
   rw [map_sub, hpq, sub_self]
 
-theorem Smale.StripCoordinates.injective_fderiv_at_center {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.injective_fderiv_at_center {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {F : (ℝ × ℝ) → Space A B} {t : ℝ}
-    (hF : DifferentiableAt ℝ F (t, 0)) (hc : ∀ s, F (s, 0) = Smale.StripCoordinates.center s)
+    (hF : DifferentiableAt ℝ F (t, 0)) (hc : ∀ s, F (s, 0) = StripCoordinates.center s)
     (hn : normalDerivative F t ≠ 0) : Function.Injective (fderiv ℝ F (t, 0)) := by
   apply
     injective_of_horizontal_and_normal (fderiv ℝ F (t, 0)) (horizontal_derivative_of_center hF hc)
   rwa [← normalDerivative_eq_snd_fderiv hF]
 
-def Smale.StripCoordinates.sheetTransverseInclusion {A B : Type*} [NormedAddCommGroup A]
+def StripCoordinates.sheetTransverseInclusion {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] : A →L[ℝ] Space A B :=
   (ContinuousLinearMap.inl ℝ (ℝ × A) B).comp (ContinuousLinearMap.inr ℝ ℝ A)
 
-theorem Smale.StripCoordinates.sheetTransverseInclusion_apply {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.sheetTransverseInclusion_apply {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (a : A) :
     (sheetTransverseInclusion : A →L[ℝ] Space A B) a = ((0, a), 0) :=
   rfl
 
-theorem Smale.StripCoordinates.sheetTransverse_eq_strip_iff {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.sheetTransverse_eq_strip_iff {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (L : (ℝ × ℝ) →L[ℝ] Space A B)
-    (hh : L (1, 0) = Smale.StripCoordinates.center 1) (hn : (L (0, 1)).2 ≠ 0) (a : A)
+    (hh : L (1, 0) = StripCoordinates.center 1) (hn : (L (0, 1)).2 ≠ 0) (a : A)
     (p : ℝ × ℝ) : sheetTransverseInclusion a = L p ↔ a = 0 ∧ p = 0 := by
   constructor
   · intro heq
     have hsplit : p = p.1 • ((1 : ℝ), 0) + p.2 • (0, 1) := by ext <;> simp
-    have hexp : L p = p.1 • Smale.StripCoordinates.center 1 + p.2 • L (0, 1) := by
+    have hexp : L p = p.1 • StripCoordinates.center 1 + p.2 • L (0, 1) := by
       conv_lhs => rw [hsplit]
       rw [map_add, map_smul, map_smul, hh]
     rw [hexp] at heq
     have hp2zero : p.2 • (L (0, 1)).2 = 0 := by
-      simpa [sheetTransverseInclusion_apply, Smale.StripCoordinates.center] using
+      simpa [sheetTransverseInclusion_apply, StripCoordinates.center] using
         (congrArg Prod.snd heq).symm
     have hp2 : p.2 = 0 := (smul_eq_zero.mp hp2zero).resolve_right hn
     rw [hp2, zero_smul, add_zero] at heq
     have hp1 : p.1 = 0 := by
-      simpa [sheetTransverseInclusion_apply, Smale.StripCoordinates.center] using
+      simpa [sheetTransverseInclusion_apply, StripCoordinates.center] using
         (congrArg (fun q : Space A B => q.1.1) heq).symm
     have ha : a = 0 := by
-      simpa [sheetTransverseInclusion_apply, Smale.StripCoordinates.center] using
+      simpa [sheetTransverseInclusion_apply, StripCoordinates.center] using
         congrArg (fun q : Space A B => q.1.2) heq
     exact ⟨ha, Prod.ext hp1 hp2⟩
   · rintro ⟨rfl, rfl⟩
     rw [map_zero, map_zero]
 
-theorem Smale.StripCoordinates.injective_sheetTransverse_normalQuotient {A B Z : Type*}
+theorem StripCoordinates.injective_sheetTransverse_normalQuotient {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] (L : (ℝ × ℝ) →L[ℝ] Space A B) (Q : Space A B →L[ℝ] Z)
-    (hh : L (1, 0) = Smale.StripCoordinates.center 1) (hn : (L (0, 1)).2 ≠ 0)
+    (hh : L (1, 0) = StripCoordinates.center 1) (hn : (L (0, 1)).2 ≠ 0)
     (hker : Q.ker = L.range) : Function.Injective (Q.comp sheetTransverseInclusion) := by
   have hz : ∀ a : A, Q (sheetTransverseInclusion a) = 0 → a = 0 := by
     intro a ha
@@ -11941,7 +11941,7 @@ theorem Smale.StripCoordinates.injective_sheetTransverse_normalQuotient {A B Z :
   change (Q.comp sheetTransverseInclusion) (a - b) = 0
   rw [map_sub, hab, sub_self]
 
-theorem Smale.StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
+theorem StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (T : Space A B →L[ℝ] V) (L : (ℝ × ℝ) →L[ℝ] Space A B) (Q : V →L[ℝ] Z)
@@ -11960,77 +11960,77 @@ theorem Smale.StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
       exact ⟨p, rfl⟩
     exact hmem
 
-def Smale.StripNormalData.coordinateMap {A B E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+def StripNormalData.coordinateMap {A B E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) : (ℝ × ℝ) → Smale.StripCoordinates.Space A B :=
+    (d : StripNormalData A B (E := E) S k) : (ℝ × ℝ) → StripCoordinates.Space A B :=
   d.chart.symm ∘ k
 
-theorem Smale.StripNormalData.center_mem_target {A B E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.center_mem_target {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     k (t, 0) ∈ d.chart.target := by
   rw [d.center t]
   exact d.chart.map_source' (d.line ht)
 
-theorem Smale.StripNormalData.coordinate_center_germ {A B E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.coordinate_center_germ {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (fun s : ℝ => d.coordinateMap (s, 0)) =ᶠ[𝓝 t] Smale.StripCoordinates.center := by
-  have hc : Continuous (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    (fun s : ℝ => d.coordinateMap (s, 0)) =ᶠ[𝓝 t] StripCoordinates.center := by
+  have hc : Continuous (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (continuous_id.prodMk continuous_const).prodMk continuous_const
   filter_upwards [hc.continuousAt.preimage_mem_nhds
       (d.chart.open_source.mem_nhds (d.line ht))] with
     s hs
-  change d.chart.invFun (k (s, 0)) = Smale.StripCoordinates.center s
+  change d.chart.invFun (k (s, 0)) = StripCoordinates.center s
   rw [d.center s, d.chart.left_inv' hs]
 
-theorem Smale.StripNormalData.coordinate_center {A B E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.coordinate_center {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    d.coordinateMap (t, 0) = Smale.StripCoordinates.center t :=
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    d.coordinateMap (t, 0) = StripCoordinates.center t :=
   (d.coordinate_center_germ ht).eq_of_nhds
 
-theorem Smale.StripNormalData.contDiffAt_coordinateMap {A B E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.contDiffAt_coordinateMap {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
     (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0)) : ContDiffAt ℝ ∞ d.coordinateMap (t, 0) :=
   ((d.chart.contMDiffOn_invFun.contMDiffAt
           (d.chart.open_target.mem_nhds (d.center_mem_target ht))).comp
       (t, 0) hk).contDiffAt
 
-theorem Smale.StripNormalData.horizontal_coordinateDerivative {A B E M : Type*}
+theorem StripNormalData.horizontal_coordinateDerivative {A B E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ}
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0)) :
-    fderiv ℝ d.coordinateMap (t, 0) (1, 0) = Smale.StripCoordinates.center 1 :=
-  Smale.StripCoordinates.horizontal_derivative_of_center_germ
+    fderiv ℝ d.coordinateMap (t, 0) (1, 0) = StripCoordinates.center 1 :=
+  StripCoordinates.horizontal_derivative_of_center_germ
     ((d.contDiffAt_coordinateMap ht hk).differentiableAt (by simp)) (d.coordinate_center_germ ht)
 
-theorem Smale.StripNormalData.normal_coordinateDerivative_nonzero {A B E M : Type*}
+theorem StripNormalData.normal_coordinateDerivative_nonzero {A B E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ}
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0)) :
     (fderiv ℝ d.coordinateMap (t, 0) (0, 1)).2 ≠ 0 := by
   rw [←
-    Smale.StripCoordinates.normalDerivative_eq_snd_fderiv
+    StripCoordinates.normalDerivative_eq_snd_fderiv
       ((d.contDiffAt_coordinateMap ht hk).differentiableAt (by simp))]
   exact d.normal_nonzero t ht
 
-theorem Smale.StripNormalData.native_derivative_factor {A B E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.native_derivative_factor {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
     (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0)) :
     mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) k (t, 0) =
-      (mfderiv 𝓘(ℝ, Smale.StripCoordinates.Space A B) 𝓘(ℝ, E) d.chart
-            (Smale.StripCoordinates.center t)).comp
+      (mfderiv 𝓘(ℝ, StripCoordinates.Space A B) 𝓘(ℝ, E) d.chart
+            (StripCoordinates.center t)).comp
         (fderiv ℝ d.coordinateMap (t, 0)) := by
   have hcoords := d.contDiffAt_coordinateMap ht hk
   have heq : (d.chart ∘ d.coordinateMap) =ᶠ[𝓝 (t, 0)] k := by
@@ -12048,7 +12048,7 @@ theorem Smale.StripNormalData.native_derivative_factor {A B E M : Type*} [Normed
     d.coordinate_center ht, mfderiv_eq_fderiv]
   rfl
 
-theorem Smale.TransverseCoordinates.mfderiv_zero_section {D B E M : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.mfderiv_zero_section {D B E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {f : D → M}
@@ -12062,7 +12062,7 @@ theorem Smale.TransverseCoordinates.mfderiv_zero_section {D B E M : Type*} [Norm
     mfderiv_eq_fderiv, (ContinuousLinearMap.inl ℝ D B).fderiv]
   rfl
 
-theorem Smale.TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {D B E M : Type*}
+theorem TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) {f : D → M}
@@ -12078,7 +12078,7 @@ theorem Smale.TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {
     change (R.comp L) q = q
     rw [hRL]
     rfl
-  have hsurj : Function.Surjective L := (Smale.PartialChart.bijective_mfderiv Φ hx).2
+  have hsurj : Function.Surjective L := (PartialChart.bijective_mfderiv Φ hx).2
   have hnormal :
     mfderiv 𝓘(ℝ, E) 𝓘(ℝ, B) (normalCoordinate Φ) (f x) = (ContinuousLinearMap.snd ℝ D B).comp R :=
     by
@@ -12099,78 +12099,78 @@ theorem Smale.TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {
     change (R (L (a, 0))).2 = 0
     rw [hRL_apply]
 
-def Smale.StripNormalData.normalFrame {A B Z E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+def StripNormalData.normalFrame {A B Z E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (t : ℝ) : A →L[ℝ] Z :=
-  (fderiv ℝ (Smale.TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
-        (Smale.StripCoordinates.center t)).comp
-    Smale.StripCoordinates.sheetTransverseInclusion
+  (fderiv ℝ (TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
+        (StripCoordinates.center t)).comp
+    StripCoordinates.sheetTransverseInclusion
 
-theorem Smale.StripNormalData.contDiffOn_normalFrame {A B Z E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.contDiffOn_normalFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.normalFrame Ψ)
       {t |
-        Smale.StripCoordinates.center t ∈ d.chart.source ∧
-          d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target} := by
+        StripCoordinates.center t ∈ d.chart.source ∧
+          d.chart (StripCoordinates.center t) ∈ Ψ.target} := by
   intro t ht
   have hnormal :=
-    (Smale.TransverseCoordinates.contMDiffOn_normalCoordinate Ψ).contMDiffAt
+    (TransverseCoordinates.contMDiffOn_normalCoordinate Ψ).contMDiffAt
       (Ψ.open_target.mem_nhds ht.2)
   have hchart := d.chart.contMDiffOn_toFun.contMDiffAt (d.chart.open_source.mem_nhds ht.1)
   have htransition :
-    ContDiffAt ℝ ∞ (Smale.TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
-      (Smale.StripCoordinates.center t) :=
-    (hnormal.comp (Smale.StripCoordinates.center t) hchart).contDiffAt
+    ContDiffAt ℝ ∞ (TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
+      (StripCoordinates.center t) :=
+    (hnormal.comp (StripCoordinates.center t) hchart).contDiffAt
   have hcenter :
-    ContDiff ℝ ∞ (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+    ContDiff ℝ ∞ (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (contDiff_id.prodMk contDiff_const).prodMk contDiff_const
   exact
     (((htransition.fderiv_right (by simp)).comp t hcenter.contDiffAt).clm_comp
         contDiffAt_const).contDiffWithinAt
 
-theorem Smale.StripNormalData.exists_open_normalFrame_domain {A B Z E M : Type*}
+theorem StripNormalData.exists_open_normalFrame_domain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞)
-    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     ∃ U : Set ℝ, IsOpen U ∧ Set.Icc (0 : ℝ) 1 ⊆ U ∧ ContDiffOn ℝ ∞ (d.normalFrame Ψ) U := by
   have hcenter :
-    Continuous (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+    Continuous (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (continuous_id.prodMk continuous_const).prodMk continuous_const
   have hW : IsOpen (d.chart.source ∩ d.chart ⁻¹' Ψ.target) :=
     d.chart.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage d.chart.open_source Ψ.open_target
   refine
-    ⟨Smale.StripCoordinates.center ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target),
+    ⟨StripCoordinates.center ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target),
       hW.preimage hcenter, fun t ht => ⟨d.line ht, htarget t ht⟩, ?_⟩
   exact d.contDiffOn_normalFrame Ψ
 
-theorem Smale.StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : Type*}
+theorem StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0))
     {f : (ℝ × ℝ) → M} (hzero : ∀ x, Ψ (x, 0) = f x) {p : ℝ × ℝ} (hp : (p, 0) ∈ Ψ.source)
     {c : (ℝ × ℝ) → (ℝ × ℝ)} (hc : ContDiffAt ℝ ∞ c p) (hcp : c p = (t, 0))
     (hcs : Function.Surjective (fderiv ℝ c p)) (hgerm : f =ᶠ[𝓝 p] k ∘ c) :
     Function.Injective (d.normalFrame Ψ t) := by
-  let T : Smale.StripCoordinates.Space A B →L[ℝ] E :=
-    mfderiv 𝓘(ℝ, Smale.StripCoordinates.Space A B) 𝓘(ℝ, E) d.chart
-      (Smale.StripCoordinates.center t)
-  let L : (ℝ × ℝ) →L[ℝ] Smale.StripCoordinates.Space A B := fderiv ℝ d.coordinateMap (t, 0)
+  let T : StripCoordinates.Space A B →L[ℝ] E :=
+    mfderiv 𝓘(ℝ, StripCoordinates.Space A B) 𝓘(ℝ, E) d.chart
+      (StripCoordinates.center t)
+  let L : (ℝ × ℝ) →L[ℝ] StripCoordinates.Space A B := fderiv ℝ d.coordinateMap (t, 0)
   let Q : E →L[ℝ] Z :=
-    mfderiv 𝓘(ℝ, E) 𝓘(ℝ, Z) (Smale.TransverseCoordinates.normalCoordinate Ψ) (f p)
+    mfderiv 𝓘(ℝ, E) 𝓘(ℝ, Z) (TransverseCoordinates.normalCoordinate Ψ) (f p)
   let J : (ℝ × ℝ) →L[ℝ] E := mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) f p
   let K : (ℝ × ℝ) →L[ℝ] E := mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) k (t, 0)
-  have hfp : f p = d.chart (Smale.StripCoordinates.center t) := by
+  have hfp : f p = d.chart (StripCoordinates.center t) := by
     have heq := hgerm.eq_of_nhds
     dsimp only [Function.comp_apply] at heq
     rw [hcp, d.center t] at heq
@@ -12191,7 +12191,7 @@ theorem Smale.StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : T
     rfl
   have hker : Q.ker = (T.comp L).range := by
     have h1 : Q.ker = J.range :=
-      Smale.TransverseCoordinates.ker_normalDerivative_eq_range_zero_section Ψ hzero hp
+      TransverseCoordinates.ker_normalDerivative_eq_range_zero_section Ψ hzero hp
     have h2 : J.range = K.range := by
       change (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) f p).range = K.range
       rw [hdf]
@@ -12201,88 +12201,88 @@ theorem Smale.StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : T
       rw [d.native_derivative_factor ht hk]
       rfl
     exact h1.trans (h2.trans h3)
-  have hT : Function.Injective T := (Smale.PartialChart.bijective_mfderiv d.chart (d.line ht)).1
+  have hT : Function.Injective T := (PartialChart.bijective_mfderiv d.chart (d.line ht)).1
   have hinj :
-    Function.Injective ((Q.comp T).comp Smale.StripCoordinates.sheetTransverseInclusion) :=
-    Smale.StripCoordinates.injective_sheetTransverse_normalQuotient L (Q.comp T)
+    Function.Injective ((Q.comp T).comp StripCoordinates.sheetTransverseInclusion) :=
+    StripCoordinates.injective_sheetTransverse_normalQuotient L (Q.comp T)
       (d.horizontal_coordinateDerivative ht hk) (d.normal_coordinateDerivative_nonzero ht hk)
-      (Smale.StripCoordinates.ker_comp_eq_range_of_injective T L Q hT hker)
+      (StripCoordinates.ker_comp_eq_range_of_injective T L Q hT hker)
   have hnormal :=
-    (Smale.TransverseCoordinates.contMDiffOn_normalCoordinate Ψ).contMDiffAt
+    (TransverseCoordinates.contMDiffOn_normalCoordinate Ψ).contMDiffAt
       (Ψ.open_target.mem_nhds htarget)
   have hnormal' :
-    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, Z) ∞ (Smale.TransverseCoordinates.normalCoordinate Ψ)
-      (d.chart (Smale.StripCoordinates.center t)) := by
+    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, Z) ∞ (TransverseCoordinates.normalCoordinate Ψ)
+      (d.chart (StripCoordinates.center t)) := by
     rw [← hfp]
     exact hnormal
   have htransition :
-    fderiv ℝ (Smale.TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
-        (Smale.StripCoordinates.center t) =
+    fderiv ℝ (TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
+        (StripCoordinates.center t) =
       Q.comp T := by
     rw [← mfderiv_eq_fderiv,
-      mfderiv_comp (Smale.StripCoordinates.center t) (hnormal'.mdifferentiableAt (by simp))
+      mfderiv_comp (StripCoordinates.center t) (hnormal'.mdifferentiableAt (by simp))
         (d.chart.mdifferentiableAt (by simp) (d.line ht))]
     rw [← hfp]
     rfl
   change
     Function.Injective
-      ((fderiv ℝ (Smale.TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
-            (Smale.StripCoordinates.center t)).comp
-        Smale.StripCoordinates.sheetTransverseInclusion)
+      ((fderiv ℝ (TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
+            (StripCoordinates.center t)).comp
+        StripCoordinates.sheetTransverseInclusion)
   rw [htransition]
   exact hinj
 
-def Smale.StripNormalData.sheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.sheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     (ℝ × A) → ((ℝ × ℝ) × Z) :=
   (Ψ.symm ∘ d.chart) ∘ (ContinuousLinearMap.inl ℝ (ℝ × A) B)
 
-def Smale.StripNormalData.sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (t : ℝ) :
     (ℝ × A) →L[ℝ] ((ℝ × ℝ) × Z) :=
   fderiv ℝ (d.sheetTransition Ψ) (t, 0)
 
-theorem Smale.StripNormalData.contDiffAt_tubularTransition {A B Z E M : Type*}
+theorem StripNormalData.contDiffAt_tubularTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
-    ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t) :=
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
+    ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (StripCoordinates.center t) :=
   ((Ψ.contMDiffOn_invFun.contMDiffAt (Ψ.open_target.mem_nhds htarget)).comp
-      (Smale.StripCoordinates.center t)
+      (StripCoordinates.center t)
       (d.chart.contMDiffOn_toFun.contMDiffAt
         (d.chart.open_source.mem_nhds (d.line ht)))).contDiffAt
 
-theorem Smale.StripNormalData.contDiffAt_sheetTransition {A B Z E M : Type*}
+theorem StripNormalData.contDiffAt_sheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     ContDiffAt ℝ ∞ (d.sheetTransition Ψ) (t, 0) :=
   (d.contDiffAt_tubularTransition Ψ ht htarget).comp (t, 0)
     (ContinuousLinearMap.inl ℝ (ℝ × A) B).contDiff.contDiffAt
 
-theorem Smale.StripNormalData.sheetDifferential_eq {A B Z E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.sheetDifferential_eq {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     d.sheetDifferential Ψ t =
-      (fderiv ℝ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t)).comp
+      (fderiv ℝ (Ψ.symm ∘ d.chart) (StripCoordinates.center t)).comp
         (ContinuousLinearMap.inl ℝ (ℝ × A) B) := by
   rw [sheetDifferential, sheetTransition,
     fderiv_comp (t, 0) ((d.contDiffAt_tubularTransition Ψ ht htarget).differentiableAt (by simp))
@@ -12290,24 +12290,24 @@ theorem Smale.StripNormalData.sheetDifferential_eq {A B Z E M : Type*} [NormedAd
     (ContinuousLinearMap.inl ℝ (ℝ × A) B).fderiv]
   rfl
 
-theorem Smale.StripNormalData.normal_sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.normal_sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     (ContinuousLinearMap.snd ℝ (ℝ × ℝ) Z).comp
         ((d.sheetDifferential Ψ t).comp (ContinuousLinearMap.inr ℝ ℝ A)) =
       d.normalFrame Ψ t := by
   have hn :
-    fderiv ℝ (Smale.TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
-        (Smale.StripCoordinates.center t) =
+    fderiv ℝ (TransverseCoordinates.normalCoordinate Ψ ∘ d.chart)
+        (StripCoordinates.center t) =
       (ContinuousLinearMap.snd ℝ (ℝ × ℝ) Z).comp
-        (fderiv ℝ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t)) := by
+        (fderiv ℝ (Ψ.symm ∘ d.chart) (StripCoordinates.center t)) := by
     change
       fderiv ℝ ((ContinuousLinearMap.snd ℝ (ℝ × ℝ) Z) ∘ (Ψ.symm ∘ d.chart))
-          (Smale.StripCoordinates.center t) =
+          (StripCoordinates.center t) =
         _
     rw [fderiv_comp _ (ContinuousLinearMap.snd ℝ (ℝ × ℝ) Z).differentiableAt
         ((d.contDiffAt_tubularTransition Ψ ht htarget).differentiableAt (by simp)),
@@ -12315,11 +12315,11 @@ theorem Smale.StripNormalData.normal_sheetDifferential {A B Z E M : Type*} [Norm
   rw [d.sheetDifferential_eq Ψ ht htarget, normalFrame, hn]
   rfl
 
-theorem Smale.StripNormalData.sheetTransition_center_germ {A B Z E M : Type*}
+theorem StripNormalData.sheetTransition_center_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {f : (ℝ × ℝ) → M}
     (hzero : ∀ p, Ψ (p, 0) = f p) {q : ℝ → (ℝ × ℝ)} {t : ℝ} (hq : ContinuousAt q t)
     (hp : (q t, 0) ∈ Ψ.source) {c : (ℝ × ℝ) → (ℝ × ℝ)} (hcq : ∀ s, c (q s) = (s, 0))
@@ -12329,17 +12329,17 @@ theorem Smale.StripNormalData.sheetTransition_center_germ {A B Z E M : Type*}
   filter_upwards [hs, hgerm.comp_tendsto hq.tendsto] with s hsource heq
   dsimp only [Function.comp_apply] at heq
   rw [hcq s] at heq
-  change Ψ.invFun (d.chart (Smale.StripCoordinates.center s)) = (q s, 0)
+  change Ψ.invFun (d.chart (StripCoordinates.center s)) = (q s, 0)
   rw [← d.center s, ← heq, ← hzero (q s)]
   exact Ψ.left_inv' hsource
 
-theorem Smale.StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
+theorem StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
-    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
     {q : ℝ → (ℝ × ℝ)} {v : ℝ × ℝ} (hq : HasDerivAt q v t)
     (hgerm : (fun s : ℝ => d.sheetTransition Ψ (s, 0)) =ᶠ[𝓝 t] fun s => (q s, 0)) :
     d.sheetDifferential Ψ t (1, 0) = (v, 0) := by
@@ -12351,35 +12351,35 @@ theorem Smale.StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
     hq.prodMk (hasDerivAt_const t (0 : Z))
   exact hd.unique (hq'.congr_of_eventuallyEq hgerm)
 
-abbrev Smale.WhitneyPairModel.Plane :=
+abbrev WhitneyPairModel.Plane :=
   EuclideanSpace ℝ (Fin 2)
 
-abbrev Smale.WhitneyPairModel.Space :=
+abbrev WhitneyPairModel.Space :=
   (ℝ × ℝ) × (Plane × Plane)
 
-abbrev Smale.WhitneyPairModel.Sheet :=
+abbrev WhitneyPairModel.Sheet :=
   ℝ × Plane
 
-def Smale.WhitneyPairModel.firstSheet (p : Sheet) : Space :=
+def WhitneyPairModel.firstSheet (p : Sheet) : Space :=
   ((p.1, 0), (p.2, 0))
 
-def Smale.WhitneyPairModel.secondSheet (h : ℝ) (p : Sheet) : Space :=
+def WhitneyPairModel.secondSheet (h : ℝ) (p : Sheet) : Space :=
   ((p.1, h * (1 - p.1 ^ 2)), (0, p.2))
 
-def Smale.WhitneyPairModel.bigon (h : ℝ) : Set (ℝ × ℝ) :=
+def WhitneyPairModel.bigon (h : ℝ) : Set (ℝ × ℝ) :=
   {p | 0 ≤ p.2 ∧ h * p.1 ^ 2 + p.2 ≤ h}
 
-def Smale.WhitneyPairModel.bigonEmbedding : (ℝ × ℝ) → Space := fun p => (p, (0, 0))
+def WhitneyPairModel.bigonEmbedding : (ℝ × ℝ) → Space := fun p => (p, (0, 0))
 
-theorem Smale.WhitneyPairModel.isClosed_bigon (h : ℝ) : IsClosed (bigon h) :=
+theorem WhitneyPairModel.isClosed_bigon (h : ℝ) : IsClosed (bigon h) :=
   (isClosed_le continuous_const continuous_snd).inter
     (isClosed_le (show Continuous (fun p : ℝ × ℝ => h * p.1 ^ 2 + p.2) by fun_prop)
       continuous_const)
 
-theorem Smale.WhitneyPairModel.zero_mem_bigon {h : ℝ} (hh : 0 ≤ h) : (0 : ℝ × ℝ) ∈ bigon h := by
+theorem WhitneyPairModel.zero_mem_bigon {h : ℝ} (hh : 0 ≤ h) : (0 : ℝ × ℝ) ∈ bigon h := by
   exact ⟨le_rfl, by simpa using hh⟩
 
-theorem Smale.WhitneyPairModel.bigon_subset_rectangle {h : ℝ} (hh : 0 < h) :
+theorem WhitneyPairModel.bigon_subset_rectangle {h : ℝ} (hh : 0 < h) :
     bigon h ⊆ Set.Icc (-1 : ℝ) 1 ×ˢ Set.Icc (0 : ℝ) h := by
   intro p hp
   rcases hp with ⟨ht, hupper⟩
@@ -12387,11 +12387,11 @@ theorem Smale.WhitneyPairModel.bigon_subset_rectangle {h : ℝ} (hh : 0 < h) :
   have hheight : p.2 ≤ h := by nlinarith [sq_nonneg p.1]
   exact ⟨⟨by nlinarith, by nlinarith⟩, ht, hheight⟩
 
-theorem Smale.WhitneyPairModel.isCompact_bigon {h : ℝ} (hh : 0 < h) : IsCompact (bigon h) :=
+theorem WhitneyPairModel.isCompact_bigon {h : ℝ} (hh : 0 < h) : IsCompact (bigon h) :=
   (CompactIccSpace.isCompact_Icc.prod CompactIccSpace.isCompact_Icc).of_isClosed_subset
     (isClosed_bigon h) (bigon_subset_rectangle hh)
 
-theorem Smale.WhitneyPairModel.mem_interior_bigon_iff (h : ℝ) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.mem_interior_bigon_iff (h : ℝ) (p : ℝ × ℝ) :
     p ∈ interior (bigon h) ↔ 0 < p.2 ∧ p.2 < h * (1 - p.1 ^ 2) := by
   constructor
   · intro hp
@@ -12421,7 +12421,7 @@ theorem Smale.WhitneyPairModel.mem_interior_bigon_iff (h : ℝ) (p : ℝ × ℝ)
       mem_interior_iff_mem_nhds.mpr
         (Filter.mem_of_superset (hU.mem_nhds hpU) (fun _ hq => ⟨hq.1.le, hq.2.le⟩))
 
-theorem Smale.WhitneyPairModel.mem_frontier_bigon_iff (h : ℝ) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.mem_frontier_bigon_iff (h : ℝ) (p : ℝ × ℝ) :
     p ∈ frontier (bigon h) ↔ p ∈ bigon h ∧ (p.2 = 0 ∨ p.2 = h * (1 - p.1 ^ 2)) := by
   rw [frontier, (isClosed_bigon h).closure_eq, Set.mem_sdiff, mem_interior_bigon_iff]
   constructor
@@ -12439,7 +12439,7 @@ theorem Smale.WhitneyPairModel.mem_frontier_bigon_iff (h : ℝ) (p : ℝ × ℝ)
     · exact ⟨hp, fun hstrict => hstrict.1.ne' ht⟩
     · exact ⟨hp, fun hstrict => hstrict.2.ne ht⟩
 
-theorem Smale.WhitneyPairModel.starConvex_bigon {h : ℝ} (hh : 0 ≤ h) :
+theorem WhitneyPairModel.starConvex_bigon {h : ℝ} (hh : 0 ≤ h) :
     StarConvex ℝ (0 : ℝ × ℝ) (bigon h) := by
   rw [starConvex_zero_iff]
   intro p hp a ha₀ ha₁
@@ -12455,7 +12455,7 @@ theorem Smale.WhitneyPairModel.starConvex_bigon {h : ℝ} (hh : 0 ≤ h) :
     _ ≤ a * h := (mul_le_mul_of_nonneg_left hupper ha₀)
     _ ≤ h := by nlinarith
 
-theorem Smale.WhitneyPairModel.lowerArc_mem_bigon {h s : ℝ} (hh : 0 ≤ h) (hs : |s| ≤ 1) :
+theorem WhitneyPairModel.lowerArc_mem_bigon {h s : ℝ} (hh : 0 ≤ h) (hs : |s| ≤ 1) :
     (s, 0) ∈ bigon h := by
   have habs := abs_le.mp hs
   refine ⟨le_rfl, ?_⟩
@@ -12463,14 +12463,14 @@ theorem Smale.WhitneyPairModel.lowerArc_mem_bigon {h s : ℝ} (hh : 0 ≤ h) (hs
   have hsq : s ^ 2 ≤ 1 := by nlinarith
   simpa only [mul_one, add_zero] using mul_le_mul_of_nonneg_left hsq hh
 
-theorem Smale.WhitneyPairModel.upperArc_mem_bigon {h s : ℝ} (hh : 0 ≤ h) (hs : |s| ≤ 1) :
+theorem WhitneyPairModel.upperArc_mem_bigon {h s : ℝ} (hh : 0 ≤ h) (hs : |s| ≤ 1) :
     (s, h * (1 - s ^ 2)) ∈ bigon h := by
   have habs := abs_le.mp hs
   refine ⟨mul_nonneg hh (by nlinarith), ?_⟩
   change h * s ^ 2 + h * (1 - s ^ 2) ≤ h
   nlinarith
 
-theorem Smale.WhitneyPairModel.exists_bigon_boundary_cover {h : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.exists_bigon_boundary_cover {h : ℝ} (hh : 0 < h)
     {D E O : Set (ℝ × ℝ)} (hD : IsOpen D) (hE : IsOpen E) (hO : IsOpen O) (hleft : (-1, 0) ∈ O)
     (hright : (1, 0) ∈ O) (hlower : Set.MapsTo (fun t : ℝ => (2 * t - 1, 0)) (Set.Icc 0 1) D)
     (hupper : Set.MapsTo (fun t : ℝ => (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))) (Set.Icc 0 1) E) :
@@ -12555,32 +12555,32 @@ theorem Smale.WhitneyPairModel.exists_bigon_boundary_cover {h : ℝ} (hh : 0 < h
       rw [heq]
       exact huppV ht
 
-def Smale.WhitneyPairModel.arcTime (p : ℝ × ℝ) : ℝ :=
+def WhitneyPairModel.arcTime (p : ℝ × ℝ) : ℝ :=
   (p.1 + 1) / 2
 
-def Smale.WhitneyPairModel.leftCornerCoordinates (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.leftCornerCoordinates (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
   (arcTime p - p.2 / (4 * h * (1 - arcTime p)), p.2 / (4 * h * (1 - arcTime p)))
 
-theorem Smale.WhitneyPairModel.contDiff_arcTime : ContDiff ℝ ∞ arcTime := by
+theorem WhitneyPairModel.contDiff_arcTime : ContDiff ℝ ∞ arcTime := by
   unfold arcTime
   fun_prop
 
-def Smale.WhitneyPairModel.bigonReflection : (ℝ × ℝ) ≃L[ℝ] (ℝ × ℝ) :=
+def WhitneyPairModel.bigonReflection : (ℝ × ℝ) ≃L[ℝ] (ℝ × ℝ) :=
   (ContinuousLinearEquiv.neg ℝ : ℝ ≃L[ℝ] ℝ).prodCongr (ContinuousLinearEquiv.refl ℝ ℝ)
 
-theorem Smale.WhitneyPairModel.bigonReflection_apply (p : ℝ × ℝ) :
+theorem WhitneyPairModel.bigonReflection_apply (p : ℝ × ℝ) :
     bigonReflection p = (-p.1, p.2) :=
   rfl
 
-theorem Smale.WhitneyPairModel.arcTime_bigonReflection (p : ℝ × ℝ) :
+theorem WhitneyPairModel.arcTime_bigonReflection (p : ℝ × ℝ) :
     arcTime (bigonReflection p) = 1 - arcTime p := by
   dsimp [arcTime, bigonReflection]
   ring
 
-def Smale.WhitneyPairModel.rightCornerCoordinates (h : ℝ) : (ℝ × ℝ) → ℝ × ℝ :=
+def WhitneyPairModel.rightCornerCoordinates (h : ℝ) : (ℝ × ℝ) → ℝ × ℝ :=
   leftCornerCoordinates h ∘ bigonReflection
 
-theorem Smale.WhitneyPairModel.leftCornerCoordinates_exchange {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
+theorem WhitneyPairModel.leftCornerCoordinates_exchange {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
     (hp : arcTime p ≠ 1) :
     leftCornerCoordinates h (p.1, h * (1 - p.1 ^ 2) - p.2) = (leftCornerCoordinates h p).swap := by
   have hd : 4 * h * (1 - arcTime p) ≠ 0 :=
@@ -12599,16 +12599,16 @@ theorem Smale.WhitneyPairModel.leftCornerCoordinates_exchange {h : ℝ} (hh : h 
     ring
   · exact hv
 
-def Smale.StripCoordinates.reverse (p : ℝ × ℝ) : ℝ × ℝ :=
+def StripCoordinates.reverse (p : ℝ × ℝ) : ℝ × ℝ :=
   (1 - p.1, p.2)
 
-theorem Smale.StripCoordinates.contDiff_reverse : ContDiff ℝ ∞ reverse :=
+theorem StripCoordinates.contDiff_reverse : ContDiff ℝ ∞ reverse :=
   (contDiff_const.sub contDiff_fst).prodMk contDiff_snd
 
-theorem Smale.StripCoordinates.reverse_one_zero : reverse (1, 0) = (0, 0) := by
+theorem StripCoordinates.reverse_one_zero : reverse (1, 0) = (0, 0) := by
   simp only [reverse, sub_self]
 
-theorem Smale.StripCoordinates.vertical_derivative_reverse {B : Type*} [NormedAddCommGroup B]
+theorem StripCoordinates.vertical_derivative_reverse {B : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] {H : (ℝ × ℝ) → B} (hH : DifferentiableAt ℝ H (0, 0)) :
     fderiv ℝ (H ∘ reverse) (1, 0) (0, 1) = fderiv ℝ H (0, 0) (0, 1) := by
   have houter : DifferentiableAt ℝ H (reverse (1, 0)) := by
@@ -12624,28 +12624,28 @@ theorem Smale.StripCoordinates.vertical_derivative_reverse {B : Type*} [NormedAd
   rw [heq] at hleft
   exact hleft.unique hright
 
-def Smale.WhitneyPairModel.cornerTransition (t : ℝ) : ℝ :=
+def WhitneyPairModel.cornerTransition (t : ℝ) : ℝ :=
   Real.smoothTransition (3 * t - 1)
 
-def Smale.WhitneyPairModel.cornerScale (t : ℝ) : ℝ :=
+def WhitneyPairModel.cornerScale (t : ℝ) : ℝ :=
   (1 - cornerTransition t) * (1 - t) + cornerTransition t * t
 
-def Smale.WhitneyPairModel.cornerSign (t : ℝ) : ℝ :=
+def WhitneyPairModel.cornerSign (t : ℝ) : ℝ :=
   2 * cornerTransition t - 1
 
-theorem Smale.WhitneyPairModel.contDiff_cornerTransition : ContDiff ℝ ∞ cornerTransition := by
+theorem WhitneyPairModel.contDiff_cornerTransition : ContDiff ℝ ∞ cornerTransition := by
   unfold cornerTransition
   exact Real.smoothTransition.contDiff.comp (by fun_prop)
 
-theorem Smale.WhitneyPairModel.cornerTransition_zero {t : ℝ} (ht : t ≤ 1 / 3) :
+theorem WhitneyPairModel.cornerTransition_zero {t : ℝ} (ht : t ≤ 1 / 3) :
     cornerTransition t = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
-theorem Smale.WhitneyPairModel.cornerTransition_one {t : ℝ} (ht : 2 / 3 ≤ t) :
+theorem WhitneyPairModel.cornerTransition_one {t : ℝ} (ht : 2 / 3 ≤ t) :
     cornerTransition t = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
-theorem Smale.WhitneyPairModel.cornerScale_pos (t : ℝ) : 0 < cornerScale t := by
+theorem WhitneyPairModel.cornerScale_pos (t : ℝ) : 0 < cornerScale t := by
   by_cases hlo : t ≤ 1 / 3
   · simp only [cornerScale, cornerTransition_zero hlo, sub_zero, one_mul, MulZeroClass.zero_mul,
       add_zero]
@@ -12665,62 +12665,62 @@ theorem Smale.WhitneyPairModel.cornerScale_pos (t : ℝ) : 0 < cornerScale t := 
       add_pos_of_nonneg_of_pos (mul_nonneg (sub_nonneg.mpr h1) ht1.le)
         (mul_pos (lt_of_le_of_ne h0 (Ne.symm hβ)) ht0)
 
-theorem Smale.WhitneyPairModel.contDiff_cornerScale : ContDiff ℝ ∞ cornerScale := by
+theorem WhitneyPairModel.contDiff_cornerScale : ContDiff ℝ ∞ cornerScale := by
   exact
     ((contDiff_const.sub contDiff_cornerTransition).mul (contDiff_const.sub contDiff_id)).add
       (contDiff_cornerTransition.mul contDiff_id)
 
-theorem Smale.WhitneyPairModel.contDiff_cornerSign : ContDiff ℝ ∞ cornerSign :=
+theorem WhitneyPairModel.contDiff_cornerSign : ContDiff ℝ ∞ cornerSign :=
   (contDiff_const.mul contDiff_cornerTransition).sub contDiff_const
 
-def Smale.WhitneyPairModel.exchangeEdges (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.exchangeEdges (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
   (p.1, h * (1 - p.1 ^ 2) - p.2)
 
-theorem Smale.WhitneyPairModel.contDiff_exchangeEdges (h : ℝ) : ContDiff ℝ ∞ (exchangeEdges h) := by
+theorem WhitneyPairModel.contDiff_exchangeEdges (h : ℝ) : ContDiff ℝ ∞ (exchangeEdges h) := by
   unfold exchangeEdges
   fun_prop
 
-theorem Smale.WhitneyPairModel.exchangeEdges_involutive (h : ℝ) :
+theorem WhitneyPairModel.exchangeEdges_involutive (h : ℝ) :
     Function.Involutive (exchangeEdges h) := by
   intro p
   apply Prod.ext <;> dsimp [exchangeEdges]
   ring
 
-def Smale.WhitneyPairModel.lowerStripCoordinates (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.lowerStripCoordinates (h : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
   (arcTime p + cornerSign (arcTime p) * (p.2 / (4 * h * cornerScale (arcTime p))),
     p.2 / (4 * h * cornerScale (arcTime p)))
 
-def Smale.WhitneyPairModel.upperStripCoordinates (h : ℝ) : (ℝ × ℝ) → ℝ × ℝ :=
+def WhitneyPairModel.upperStripCoordinates (h : ℝ) : (ℝ × ℝ) → ℝ × ℝ :=
   lowerStripCoordinates h ∘ exchangeEdges h
 
-theorem Smale.WhitneyPairModel.contDiff_lowerStripCoordinates {h : ℝ} (hh : h ≠ 0) :
+theorem WhitneyPairModel.contDiff_lowerStripCoordinates {h : ℝ} (hh : h ≠ 0) :
     ContDiff ℝ ∞ (lowerStripCoordinates h) := by
   have hd : ContDiff ℝ ∞ (fun p : ℝ × ℝ => p.2 / (4 * h * cornerScale (arcTime p))) :=
     contDiff_snd.div (contDiff_const.mul (contDiff_cornerScale.comp contDiff_arcTime))
       (fun p => mul_ne_zero (mul_ne_zero (by norm_num) hh) (cornerScale_pos _).ne')
   exact (contDiff_arcTime.add ((contDiff_cornerSign.comp contDiff_arcTime).mul hd)).prodMk hd
 
-theorem Smale.WhitneyPairModel.contDiff_upperStripCoordinates {h : ℝ} (hh : h ≠ 0) :
+theorem WhitneyPairModel.contDiff_upperStripCoordinates {h : ℝ} (hh : h ≠ 0) :
     ContDiff ℝ ∞ (upperStripCoordinates h) :=
   (contDiff_lowerStripCoordinates hh).comp (contDiff_exchangeEdges h)
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_lower (h t : ℝ) :
+theorem WhitneyPairModel.lowerStripCoordinates_lower (h t : ℝ) :
     lowerStripCoordinates h (2 * t - 1, 0) = (t, 0) := by
   simp only [lowerStripCoordinates, arcTime, zero_div, MulZeroClass.mul_zero, add_zero]
   congr 1
   ring
 
-theorem Smale.WhitneyPairModel.upperStripCoordinates_upper (h t : ℝ) :
+theorem WhitneyPairModel.upperStripCoordinates_upper (h t : ℝ) :
     upperStripCoordinates h (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) = (t, 0) := by
   simp only [upperStripCoordinates, Function.comp_apply, exchangeEdges, sub_self]
   exact lowerStripCoordinates_lower h t
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_left (h : ℝ) {p : ℝ × ℝ}
+theorem WhitneyPairModel.lowerStripCoordinates_left (h : ℝ) {p : ℝ × ℝ}
     (hp : arcTime p ≤ 1 / 3) : lowerStripCoordinates h p = leftCornerCoordinates h p := by
   simp [lowerStripCoordinates, cornerSign, cornerScale, cornerTransition_zero hp,
     leftCornerCoordinates, sub_eq_add_neg]
 
-theorem Smale.WhitneyPairModel.upperStripCoordinates_left {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
+theorem WhitneyPairModel.upperStripCoordinates_left {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
     (hp : arcTime p ≤ 1 / 3) : upperStripCoordinates h p = (leftCornerCoordinates h p).swap := by
   have htime : arcTime (exchangeEdges h p) = arcTime p := rfl
   have hp' : arcTime p ≠ 1 := by linarith
@@ -12728,9 +12728,9 @@ theorem Smale.WhitneyPairModel.upperStripCoordinates_left {h : ℝ} (hh : h ≠ 
   rw [lowerStripCoordinates_left h (htime ▸ hp)]
   exact leftCornerCoordinates_exchange hh hp'
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_right (h : ℝ) {p : ℝ × ℝ}
+theorem WhitneyPairModel.lowerStripCoordinates_right (h : ℝ) {p : ℝ × ℝ}
     (hp : 2 / 3 ≤ arcTime p) :
-    Smale.StripCoordinates.reverse (lowerStripCoordinates h p) = rightCornerCoordinates h p := by
+    StripCoordinates.reverse (lowerStripCoordinates h p) = rightCornerCoordinates h p := by
   have hden : 1 - arcTime (bigonReflection p) = arcTime p := by
     rw [arcTime_bigonReflection]
     ring
@@ -12748,12 +12748,12 @@ theorem Smale.WhitneyPairModel.lowerStripCoordinates_right (h : ℝ) {p : ℝ ×
     ring
   · rfl
 
-theorem Smale.WhitneyPairModel.upperStripCoordinates_right {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
+theorem WhitneyPairModel.upperStripCoordinates_right {h : ℝ} (hh : h ≠ 0) {p : ℝ × ℝ}
     (hp : 2 / 3 ≤ arcTime p) :
-    Smale.StripCoordinates.reverse (upperStripCoordinates h p) =
+    StripCoordinates.reverse (upperStripCoordinates h p) =
       (rightCornerCoordinates h p).swap := by
   have htime : arcTime (exchangeEdges h p) = arcTime p := rfl
-  change Smale.StripCoordinates.reverse (lowerStripCoordinates h (exchangeEdges h p)) = _
+  change StripCoordinates.reverse (lowerStripCoordinates h (exchangeEdges h p)) = _
   rw [lowerStripCoordinates_right h (htime ▸ hp)]
   have heq :
     bigonReflection (exchangeEdges h p) =
@@ -12765,17 +12765,17 @@ theorem Smale.WhitneyPairModel.upperStripCoordinates_right {h : ℝ} (hh : h ≠
   rw [arcTime_bigonReflection]
   linarith
 
-def Smale.TransverseCoordinates.cornerLinear {D Z : Type*} [NormedAddCommGroup D]
+def TransverseCoordinates.cornerLinear {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] (u : D) (v : Z) :
     (ℝ × ℝ) →L[ℝ] (D × Z) :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight u).prod ((ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight v)
 
-theorem Smale.TransverseCoordinates.cornerLinear_apply {D Z : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.cornerLinear_apply {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] (u : D) (v : Z) (p : ℝ × ℝ) :
     cornerLinear u v p = (p.1 • u, p.2 • v) :=
   rfl
 
-theorem Smale.TransverseCoordinates.injective_cornerLinear {D Z : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.injective_cornerLinear {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {u : D} {v : Z} (hu : u ≠ 0)
     (hv : v ≠ 0) : Function.Injective (cornerLinear u v) := by
   intro p q hpq
@@ -12783,20 +12783,20 @@ theorem Smale.TransverseCoordinates.injective_cornerLinear {D Z : Type*} [Normed
     Prod.ext ((smul_left_injective ℝ hu) (congrArg Prod.fst hpq))
       ((smul_left_injective ℝ hv) (congrArg Prod.snd hpq))
 
-def Smale.TransverseCoordinates.cornerMap {D Z : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def TransverseCoordinates.cornerMap {D Z : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (D × Z) M ∞) (u : D) (v : Z) : (ℝ × ℝ) → M :=
   Φ ∘ cornerLinear u v
 
-theorem Smale.TransverseCoordinates.contMDiffOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.contMDiffOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (D × Z) M ∞) (u : D) (v : Z) :
     ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ (cornerMap Φ u v) (cornerLinear u v ⁻¹' Φ.source) :=
   Φ.contMDiffOn_toFun.comp (cornerLinear u v).contDiff.contMDiff.contMDiffOn (fun _ hx => hx)
 
-theorem Smale.TransverseCoordinates.injOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.injOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (D × Z) M ∞) {u : D} {v : Z} (hu : u ≠ 0)
@@ -12804,7 +12804,7 @@ theorem Smale.TransverseCoordinates.injOn_cornerMap {D Z : Type*} [NormedAddComm
   intro p hp q hq heq
   exact injective_cornerLinear hu hv (Φ.toPartialEquiv.injOn hp hq heq)
 
-theorem Smale.TransverseCoordinates.injective_mfderiv_cornerMap {D Z : Type*}
+theorem TransverseCoordinates.injective_mfderiv_cornerMap {D Z : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (D × Z) M ∞) {u : D} {v : Z} (hu : u ≠ 0)
@@ -12815,9 +12815,9 @@ theorem Smale.TransverseCoordinates.injective_mfderiv_cornerMap {D Z : Type*}
   rw [cornerMap,
     mfderiv_comp p (Φ.mdifferentiableAt (by simp) hp) (hL.mdifferentiableAt (by simp)),
     mfderiv_eq_fderiv, (cornerLinear u v).fderiv]
-  exact (Smale.PartialChart.bijective_mfderiv Φ hp).1.comp (injective_cornerLinear hu hv)
+  exact (PartialChart.bijective_mfderiv Φ hp).1.comp (injective_cornerLinear hu hv)
 
-theorem Smale.exists_native_clean_corner_of_parametrizations {E M D Z N P A B : Type*}
+theorem exists_native_clean_corner_of_parametrizations {E M D Z N P A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -12883,7 +12883,7 @@ theorem Smale.exists_native_clean_corner_of_parametrizations {E M D Z N P A B : 
     simpa only [k, TransverseCoordinates.cornerMap, Function.comp_apply,
       TransverseCoordinates.cornerLinear_apply, zero_smul] using hright (t • v) haxis
 
-structure Smale.CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) where
   domain : Set (ℝ × ℝ)
   open_domain : IsOpen domain
@@ -12896,9 +12896,9 @@ structure Smale.CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpa
   axis_first : ∀ t, (t, 0) ∈ domain → map (t, 0) = a t
   axis_second : ∀ t, (0, t) ∈ domain → map (0, t) = b t
 
-def Smale.CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    (c : Smale.CleanCornerPatch (E := E) S T a b) : Smale.CleanCornerPatch (E := E) T S b a := by
+    (c : CleanCornerPatch (E := E) S T a b) : CleanCornerPatch (E := E) T S b a := by
   let e := ContinuousLinearEquiv.prodComm ℝ ℝ ℝ
   have he : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) ∞ (e : (ℝ × ℝ) → ℝ × ℝ) := e.contDiff.contMDiff
   refine
@@ -12922,10 +12922,10 @@ def Smale.CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpac
     rw [mfderiv_comp p (hc.mdifferentiableAt (by simp)) (he.mdifferentiableAt (by simp))]
     exact
       (c.derivative_injective (e p) hp).comp
-        (Smale.PartialChart.bijective_mfderiv e.toDiffeomorph.toPartialDiffeomorph
+        (PartialChart.bijective_mfderiv e.toDiffeomorph.toPartialDiffeomorph
             (Set.mem_univ p)).1
 
-structure Smale.CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a : ℝ → M) (k₀ k₁ : (ℝ × ℝ) → M) where
   width : ℝ
   width_pos : 0 < width
@@ -12944,7 +12944,7 @@ structure Smale.CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpac
   left_germ : map =ᶠ[𝓝 (0, 0)] k₀
   right_germ : map =ᶠ[𝓝 (1, 0)] k₁ ∘ StripCoordinates.reverse
 
-theorem Smale.bigon_strip_maps_left_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem bigon_strip_maps_left_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : h ≠ 0) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
     (c₁ : CleanCornerPatch (E := E) S T a₁ b₁) (k : CleanStripPatch (E := E) S T a c₀.map c₁.map)
@@ -12986,7 +12986,7 @@ theorem Smale.bigon_strip_maps_left_germ {E M : Type*} [NormedAddCommGroup E] [N
       c₀.map ((WhitneyPairModel.leftCornerCoordinates h p).swap.swap)
   rw [Prod.swap_swap]
 
-theorem Smale.bigon_strip_maps_right_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem bigon_strip_maps_right_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : h ≠ 0) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
     (c₁ : CleanCornerPatch (E := E) S T a₁ b₁) (k : CleanStripPatch (E := E) S T a c₀.map c₁.map)
@@ -13034,7 +13034,7 @@ theorem Smale.bigon_strip_maps_right_germ {E M : Type*} [NormedAddCommGroup E] [
   rw [WhitneyPairModel.lowerStripCoordinates_right h hp,
     WhitneyPairModel.upperStripCoordinates_right hh hp, Prod.swap_swap]
 
-theorem Smale.exists_smooth_open_gluing {E F X Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem exists_smooth_open_gluing {E F X Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace X] [ChartedSpace E X] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace Y] [ChartedSpace F Y] {f g : X → Y} {U V : Set X} (hU : IsOpen U)
     (hV : IsOpen V) (hf : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, F) ∞ f U)
@@ -13052,7 +13052,7 @@ theorem Smale.exists_smooth_open_gluing {E F X Y : Type*} [NormedAddCommGroup E]
     ⟨k, (hf.congr (fun _ hx => hkf hx)).union_of_isOpen (hg.congr (fun _ hx => hkg hx)) hU hV,
       hkf, hkg⟩
 
-theorem Smale.exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
+theorem exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
     (c₁ : CleanCornerPatch (E := E) S T a₁ b₁) (k : CleanStripPatch (E := E) S T a c₀.map c₁.map)
@@ -13129,36 +13129,36 @@ theorem Smale.exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAdd
     rw [WhitneyPairModel.upperStripCoordinates_upper]
     exact l.center t ht
 
-theorem Smale.StripCoordinates.injective_plane_of_horizontal_and_normal
+theorem StripCoordinates.injective_plane_of_horizontal_and_normal
     (L : (ℝ × ℝ) →L[ℝ] (ℝ × ℝ)) (hh : L (1, 0) = (1, 0)) (hn : (L (0, 1)).2 ≠ 0) :
     Function.Injective L := by
   let i : (ℝ × ℝ) →L[ℝ] Space ℝ ℝ :=
     ((ContinuousLinearMap.fst ℝ ℝ ℝ).prod 0).prod (ContinuousLinearMap.snd ℝ ℝ ℝ)
-  have hh' : (i.comp L) (1, 0) = Smale.StripCoordinates.center 1 := by
-    change i (L (1, 0)) = Smale.StripCoordinates.center 1
+  have hh' : (i.comp L) (1, 0) = StripCoordinates.center 1 := by
+    change i (L (1, 0)) = StripCoordinates.center 1
     rw [hh]
     rfl
   have hi := injective_of_horizontal_and_normal (i.comp L) hh' hn
   intro p q hpq
   exact hi (congrArg i hpq)
 
-def Smale.StripCoordinates.detector {A B : Type*} [NormedAddCommGroup B] [InnerProductSpace ℝ B]
+def StripCoordinates.detector {A B : Type*} [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     (v : ℝ → B) (F : (ℝ × ℝ) → Space A B) (p : ℝ × ℝ) : ℝ × ℝ :=
   (p.1, ⟪v p.1, (F p).2⟫_ℝ)
 
-theorem Smale.StripCoordinates.contDiff_detector {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.contDiff_detector {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B}
     {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F) :
     ContDiff ℝ ∞ (detector v F) :=
   contDiff_fst.prodMk ((hv.comp contDiff_fst).inner ℝ hF.snd)
 
-theorem Smale.StripCoordinates.detector_zero {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.detector_zero {A B : Type*} [NormedAddCommGroup A]
     [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B} {F : (ℝ × ℝ) → Space A B}
-    (hc : ∀ t, F (t, 0) = Smale.StripCoordinates.center t) (t : ℝ) :
+    (hc : ∀ t, F (t, 0) = StripCoordinates.center t) (t : ℝ) :
     detector v F (t, 0) = (t, 0) := by
-  simp only [detector, hc, Smale.StripCoordinates.center, inner_zero_right]
+  simp only [detector, hc, StripCoordinates.center, inner_zero_right]
 
-theorem Smale.StripCoordinates.detector_vertical_derivative {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.detector_vertical_derivative {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B}
     {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F)
     (hn : ∀ t, normalDerivative F t = v t) (t : ℝ) :
@@ -13177,10 +13177,10 @@ theorem Smale.StripCoordinates.detector_vertical_derivative {A B : Type*} [Norme
           ((contDiff_detector hv hF).contDiffAt.differentiableAt (by simp))).unique
       hslice
 
-theorem Smale.StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
+theorem StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     {v : ℝ → B} {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F)
-    (hc : ∀ t, F (t, 0) = Smale.StripCoordinates.center t) (hn : ∀ t, normalDerivative F t = v t)
+    (hc : ∀ t, F (t, 0) = StripCoordinates.center t) (hn : ∀ t, normalDerivative F t = v t)
     {t : ℝ} (ht : v t ≠ 0) : Function.Injective (fderiv ℝ (detector v F) (t, 0)) := by
   have hQ : DifferentiableAt ℝ (detector v F) (t, 0) :=
     (contDiff_detector hv hF).contDiffAt.differentiableAt (by simp)
@@ -13193,11 +13193,11 @@ theorem Smale.StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
   rw [detector_vertical_derivative hv hF hn t]
   exact inner_self_ne_zero.mpr ht
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_horizontal_derivative {h : ℝ} (hh : h ≠ 0)
+theorem WhitneyPairModel.lowerStripCoordinates_horizontal_derivative {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : fderiv ℝ (lowerStripCoordinates h) (s, 0) (1, 0) = (1 / 2, 0) := by
   have hf : DifferentiableAt ℝ (lowerStripCoordinates h) (s, 0) :=
     (contDiff_lowerStripCoordinates hh).contDiffAt.differentiableAt (by simp)
-  have hd := Smale.StripCoordinates.hasDerivAt_horizontalSlice hf
+  have hd := StripCoordinates.hasDerivAt_horizontalSlice hf
   have heq : (fun x : ℝ => lowerStripCoordinates h (x, 0)) = fun x => ((x + 1) / 2, 0) := by
     funext x
     simp [lowerStripCoordinates, arcTime]
@@ -13205,14 +13205,14 @@ theorem Smale.WhitneyPairModel.lowerStripCoordinates_horizontal_derivative {h : 
   exact
     hd.unique (((hasDerivAt_id s).add_const 1).div_const 2 |>.prodMk (hasDerivAt_const s (0 : ℝ)))
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_vertical_derivative {h : ℝ} (hh : h ≠ 0)
+theorem WhitneyPairModel.lowerStripCoordinates_vertical_derivative {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) :
     fderiv ℝ (lowerStripCoordinates h) (s, 0) (0, 1) =
       (cornerSign ((s + 1) / 2) * (1 / (4 * h * cornerScale ((s + 1) / 2))),
         1 / (4 * h * cornerScale ((s + 1) / 2))) := by
   have hf : DifferentiableAt ℝ (lowerStripCoordinates h) (s, 0) :=
     (contDiff_lowerStripCoordinates hh).contDiffAt.differentiableAt (by simp)
-  have hd := Smale.StripCoordinates.hasDerivAt_verticalSlice hf
+  have hd := StripCoordinates.hasDerivAt_verticalSlice hf
   have hdiv :
     HasDerivAt (fun u : ℝ => u / (4 * h * cornerScale ((s + 1) / 2)))
       (1 / (4 * h * cornerScale ((s + 1) / 2))) 0 :=
@@ -13220,7 +13220,7 @@ theorem Smale.WhitneyPairModel.lowerStripCoordinates_vertical_derivative {h : �
   have hfirst := (HasDerivAt.const_mul (cornerSign ((s + 1) / 2)) hdiv).const_add ((s + 1) / 2)
   exact hd.unique (hfirst.prodMk hdiv)
 
-theorem Smale.WhitneyPairModel.injective_fderiv_lowerStripCoordinates {h : ℝ} (hh : h ≠ 0)
+theorem WhitneyPairModel.injective_fderiv_lowerStripCoordinates {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : Function.Injective (fderiv ℝ (lowerStripCoordinates h) (s, 0)) := by
   let L := fderiv ℝ (lowerStripCoordinates h) (s, 0)
   have hhor : ((2 : ℝ) • L) (1, 0) = (1, 0) := by
@@ -13235,11 +13235,11 @@ theorem Smale.WhitneyPairModel.injective_fderiv_lowerStripCoordinates {h : ℝ} 
       mul_ne_zero (by norm_num)
         (one_div_ne_zero (mul_ne_zero (mul_ne_zero (by norm_num) hh) (cornerScale_pos _).ne'))
   have hi :=
-    Smale.StripCoordinates.injective_plane_of_horizontal_and_normal ((2 : ℝ) • L) hhor hnorm
+    StripCoordinates.injective_plane_of_horizontal_and_normal ((2 : ℝ) • L) hhor hnorm
   intro x y hxy
   exact hi (congrArg (fun z : ℝ × ℝ => (2 : ℝ) • z) hxy)
 
-theorem Smale.WhitneyPairModel.injective_fderiv_exchangeEdges (h : ℝ) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.injective_fderiv_exchangeEdges (h : ℝ) (p : ℝ × ℝ) :
     Function.Injective (fderiv ℝ (exchangeEdges h) p) := by
   have heq : exchangeEdges h ∘ exchangeEdges h = id := funext (exchangeEdges_involutive h)
   have hd :
@@ -13258,7 +13258,7 @@ theorem Smale.WhitneyPairModel.injective_fderiv_exchangeEdges (h : ℝ) (p : ℝ
   rw [hd] at he
   exact he
 
-theorem Smale.WhitneyPairModel.injective_fderiv_upperStripCoordinates {h : ℝ} (hh : h ≠ 0)
+theorem WhitneyPairModel.injective_fderiv_upperStripCoordinates {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : Function.Injective (fderiv ℝ (upperStripCoordinates h) (s, h * (1 - s ^ 2))) := by
   rw [upperStripCoordinates,
     fderiv_comp _ ((contDiff_lowerStripCoordinates hh).contDiffAt.differentiableAt (by simp))
@@ -13268,7 +13268,7 @@ theorem Smale.WhitneyPairModel.injective_fderiv_upperStripCoordinates {h : ℝ} 
   rw [heq]
   exact (injective_fderiv_lowerStripCoordinates hh s).comp (injective_fderiv_exchangeEdges h _)
 
-theorem Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time {h : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.mem_frontier_bigon_iff_exists_time {h : ℝ} (hh : 0 < h)
     (p : ℝ × ℝ) :
     p ∈ frontier (bigon h) ↔
       ∃ t ∈ Set.Icc (0 : ℝ) 1, p = (2 * t - 1, 0) ∨ p = (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) := by
@@ -13298,7 +13298,7 @@ theorem Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time {h : ℝ} (hh 
       rw [abs_le]
       constructor <;> linarith [ht.1, ht.2]
 
-theorem Smale.WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ} (hh : 0 < h)
     {f : (ℝ × ℝ) → M} {a b : ℝ → M} (ha : Set.InjOn a (Set.Icc (0 : ℝ) 1))
     (hb : Set.InjOn b (Set.Icc (0 : ℝ) 1))
     (hlower : ∀ t ∈ Set.Icc (0 : ℝ) 1, f (2 * t - 1, 0) = a t)
@@ -13323,9 +13323,9 @@ theorem Smale.WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ
   · rw [hupper t ht, hupper s hs] at heq
     rw [hb ht hs heq]
 
-theorem Smale.CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M} {k₀ k₁ : (ℝ × ℝ) → M}
-    (k : Smale.CleanStripPatch (E := E) S T a k₀ k₁) : Set.InjOn a (Set.Icc (0 : ℝ) 1) := by
+    (k : CleanStripPatch (E := E) S T a k₀ k₁) : Set.InjOn a (Set.Icc (0 : ℝ) 1) := by
   intro t ht s hs heq
   have h0 : (0 : ℝ) ∈ Set.Icc (-k.width) k.width :=
     ⟨neg_nonpos.mpr k.width_pos.le, k.width_pos.le⟩
@@ -13336,7 +13336,7 @@ theorem Smale.CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] 
     exact heq
   exact congrArg Prod.fst (k.injective htK hsK hmaps)
 
-theorem Smale.strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedAddCommGroup E]
+theorem strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
     (l : CleanStripPatch (E := E) T S b l₀ l₁)
@@ -13361,7 +13361,7 @@ theorem Smale.strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedA
     have hs' : 0 = 1 - s := congrArg Prod.snd hright
     constructor <;> linarith
 
-theorem Smale.injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddCommGroup E]
+theorem injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M}
     {k₀ k₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁) {r : (ℝ × ℝ) → ℝ × ℝ}
     (hr : ContDiff ℝ ∞ r) {f : (ℝ × ℝ) → M} {U : Set (ℝ × ℝ)} (hU : IsOpen U)
@@ -13377,7 +13377,7 @@ theorem Smale.injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddC
     exact hi
   exact (k.derivative_injective (r p) (hmap hp)).comp hri
 
-theorem Smale.injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGroup E]
+theorem injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
     (l : CleanStripPatch (E := E) T S b l₀ l₁) {f : (ℝ × ℝ) → M} {U V : Set (ℝ × ℝ)}
@@ -13401,7 +13401,7 @@ theorem Smale.injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAdd
         (WhitneyPairModel.contDiff_upperStripCoordinates hh.ne') hV hfhi hmapV (huppV ht)
         (WhitneyPairModel.injective_fderiv_upperStripCoordinates hh.ne' _)
 
-theorem Smale.exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
+theorem exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
@@ -13451,7 +13451,7 @@ theorem Smale.exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedA
     ManifoldImmersion.exists_open_embedded_immersive_neighborhood (hU.union hV) hf hcompact hfront
       hinj hi
 
-theorem Smale.WhitneyPairModel.interpolated_strip_time_mem_Ioo {h t β z J : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.interpolated_strip_time_mem_Ioo {h t β z J : ℝ} (hh : 0 < h)
     (ht : t ∈ Set.Ioo (0 : ℝ) 1) (hβ : β ∈ Set.Icc (0 : ℝ) 1) (hJ : 0 < J)
     (hJdef : J = (1 - β) * (1 - t) + β * t) (hz : 0 < z) (hzupper : z < 4 * h * t * (1 - t)) :
     t + (2 * β - 1) * (z / (4 * h * J)) ∈ Set.Ioo (0 : ℝ) 1 := by
@@ -13480,7 +13480,7 @@ theorem Smale.WhitneyPairModel.interpolated_strip_time_mem_Ioo {h t β z J : ℝ
         (mul_nonneg hθ0.le (sub_nonneg.mpr he1))
     nlinarith
 
-theorem Smale.WhitneyPairModel.lowerStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
+theorem WhitneyPairModel.lowerStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) :
     (lowerStripCoordinates h p).1 ∈ Set.Ioo (0 : ℝ) 1 ∧ 0 < (lowerStripCoordinates h p).2 := by
   obtain ⟨hp0, hphi⟩ := (mem_interior_bigon_iff h p).mp hp
@@ -13501,21 +13501,21 @@ theorem Smale.WhitneyPairModel.lowerStripCoordinates_interior {h : ℝ} (hh : 0 
   · exact interpolated_strip_time_mem_Ioo hh ht hβ (cornerScale_pos _) rfl hp0 hzupper
   · exact div_pos hp0 (mul_pos (mul_pos (by norm_num) hh) (cornerScale_pos _))
 
-theorem Smale.WhitneyPairModel.exchangeEdges_mem_interior {h : ℝ} {p : ℝ × ℝ}
+theorem WhitneyPairModel.exchangeEdges_mem_interior {h : ℝ} {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) : exchangeEdges h p ∈ interior (bigon h) := by
   obtain ⟨hp0, hphi⟩ := (mem_interior_bigon_iff h p).mp hp
   apply (mem_interior_bigon_iff h _).mpr
   change 0 < h * (1 - p.1 ^ 2) - p.2 ∧ h * (1 - p.1 ^ 2) - p.2 < h * (1 - p.1 ^ 2)
   constructor <;> linarith
 
-theorem Smale.WhitneyPairModel.upperStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
+theorem WhitneyPairModel.upperStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) :
     (upperStripCoordinates h p).1 ∈ Set.Ioo (0 : ℝ) 1 ∧ 0 < (upperStripCoordinates h p).2 :=
   lowerStripCoordinates_interior hh (exchangeEdges_mem_interior hp)
 
-theorem Smale.CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M} {k₀ k₁ : (ℝ × ℝ) → M}
-    (k : Smale.CleanStripPatch (E := E) S T a k₀ k₁) {p : ℝ × ℝ} (hp : p ∈ k.domain)
+    (k : CleanStripPatch (E := E) S T a k₀ k₁) {p : ℝ × ℝ} (hp : p ∈ k.domain)
     (ht : p.1 ∈ Set.Ioo (0 : ℝ) 1) (hn : p.2 ≠ 0) : k.map p ∉ S ∪ T := by
   rintro (hS | hT)
   · exact hn ((k.first_sheet p hp).mp hS)
@@ -13523,7 +13523,7 @@ theorem Smale.CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E]
     · exact ht.1.ne' h0
     · exact ht.2.ne h1
 
-theorem Smale.bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup E]
+theorem bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
     (l : CleanStripPatch (E := E) T S b l₀ l₁) {f : (ℝ × ℝ) → M} {U V : Set (ℝ × ℝ)}
@@ -13542,7 +13542,7 @@ theorem Smale.bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup
     rw [Set.union_comm]
     exact l.avoids_sheets (hmapV hpV) hc.1 hc.2.ne'
 
-structure Smale.CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
     (h : ℝ) where
   height_pos : 0 < h
@@ -13571,7 +13571,7 @@ structure Smale.CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedS
       map =ᶠ[𝓝 (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))]
         l ∘ WhitneyPairModel.upperStripCoordinates h
 
-theorem Smale.exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
+theorem exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
@@ -13638,7 +13638,7 @@ theorem Smale.exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddC
   · intro t ht
     exact Filter.mem_of_superset (hV.mem_nhds (huppV ht)) (fun _ hp => hfhi hp)
 
-theorem Smale.nonempty_cleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem nonempty_cleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M} {a b a₀ b₀ a₁ b₁ : ℝ → M}
     (c₀ : CleanCornerPatch (E := E) S T a₀ b₀) (c₁ : CleanCornerPatch (E := E) S T a₁ b₁)
@@ -13675,7 +13675,7 @@ theorem Smale.nonempty_cleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [
         lower_germ := hlowg
         upper_germ := huppg }⟩
 
-def Smale.DiskCone.point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SphereCone.point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p : unitInterval × Metric.sphere (0 : E) 1) : Metric.closedBall (0 : E) 1 :=
   ⟨(1 - (p.1 : ℝ)) • (p.2 : E),
     by
@@ -13683,20 +13683,20 @@ def Smale.DiskCone.point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
       abs_of_nonneg (sub_nonneg.mpr p.1.2.2), mem_sphere_zero_iff_norm.mp p.2.property, mul_one]
     linarith [p.1.2.1]⟩
 
-theorem Smale.DiskCone.norm_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.norm_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p : unitInterval × Metric.sphere (0 : E) 1) : ‖(point p : E)‖ = 1 - (p.1 : ℝ) := by
   change ‖(1 - (p.1 : ℝ)) • (p.2 : E)‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr p.1.2.2),
     mem_sphere_zero_iff_norm.mp p.2.property, mul_one]
 
-theorem Smale.DiskCone.continuous_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
+theorem SphereCone.continuous_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     Continuous (point (E := E)) := by
   apply Continuous.subtype_mk
   exact
     (continuous_const.sub (continuous_subtype_val.comp continuous_fst)).smul
       (continuous_subtype_val.comp continuous_snd)
 
-theorem Smale.DiskCone.point_fibers {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.point_fibers {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {p q : unitInterval × Metric.sphere (0 : E) 1} (hpq : point p = point q) :
     p = q ∨ (p.1 = 1 ∧ q.1 = 1) := by
   have hnorm := congrArg (fun x : Metric.closedBall (0 : E) 1 => ‖(x : E)‖) hpq
@@ -13714,7 +13714,7 @@ theorem Smale.DiskCone.point_fibers {E : Type*} [NormedAddCommGroup E] [NormedSp
     have hxy : x = y := Subtype.ext ((smul_right_injective E hnonzero) hvec)
     exact Or.inl (congrArg (fun z => (t, z)) hxy)
 
-theorem Smale.DiskCone.surjective_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.surjective_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [Nonempty (Metric.sphere (0 : E) 1)] : Function.Surjective (point (E := E)) := by
   intro x
   by_cases hx : (x : E) = 0
@@ -13725,19 +13725,19 @@ theorem Smale.DiskCone.surjective_point {E : Type*} [NormedAddCommGroup E] [Norm
   · have hxnorm : ‖(x : E)‖ ≤ 1 := mem_closedBall_zero_iff.mp x.property
     let t : unitInterval :=
       ⟨1 - ‖(x : E)‖, sub_nonneg.mpr hxnorm, by linarith [norm_nonneg (x : E)]⟩
-    refine ⟨(t, Smale.RadialExtension.direction (x : E) hx), ?_⟩
+    refine ⟨(t, RadialExtension.direction (x : E) hx), ?_⟩
     apply Subtype.ext
     change (1 - (1 - ‖(x : E)‖)) • (‖(x : E)‖⁻¹ • (x : E)) = (x : E)
     rw [sub_sub_cancel, smul_inv_smul₀ (norm_ne_zero_iff.mpr hx)]
 
-theorem Smale.DiskCone.isQuotientMap_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.isQuotientMap_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [Nonempty (Metric.sphere (0 : E) 1)] [FiniteDimensional ℝ E] :
     Topology.IsQuotientMap (point (E := E)) := by
   let : CompactSpace (Metric.sphere (0 : E) 1) :=
     isCompact_iff_compactSpace.mp (isCompact_sphere _ _)
   exact .of_surjective_continuous surjective_point continuous_point
 
-theorem Smale.DiskCone.homotopy_eq_of_point_eq {E M : Type*} [NormedAddCommGroup E]
+theorem SphereCone.homotopy_eq_of_point_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] (f : C(Metric.sphere (0 : E) 1, M)) (c : M)
     (H : f.Homotopy (ContinuousMap.const _ c)) {p q : unitInterval × Metric.sphere (0 : E) 1}
     (hpq : point p = point q) : H p = H q := by
@@ -13748,18 +13748,18 @@ theorem Smale.DiskCone.homotopy_eq_of_point_eq {E M : Type*} [NormedAddCommGroup
     rw [hp', hq', H.apply_one, H.apply_one]
     rfl
 
-def Smale.DiskCone.extensionFun {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SphereCone.extensionFun {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) (x : Metric.closedBall (0 : E) 1) : M :=
   H (Function.surjInv surjective_point x)
 
-theorem Smale.DiskCone.extensionFun_point {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.extensionFun_point {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c))
     (p : unitInterval × Metric.sphere (0 : E) 1) : extensionFun f c H (point p) = H p :=
   homotopy_eq_of_point_eq f c H (Function.surjInv_eq surjective_point (point p))
 
-def Smale.DiskCone.extension {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SphereCone.extension {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E] :
     C(Metric.closedBall (0 : E) 1, M)
@@ -13771,7 +13771,7 @@ def Smale.DiskCone.extension {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
     rw [heq]
     exact H.continuous
 
-theorem Smale.DiskCone.extension_boundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.extension_boundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E]
     (x : Metric.sphere (0 : E) 1) :
@@ -13785,7 +13785,7 @@ theorem Smale.DiskCone.extension_boundary {E M : Type*} [NormedAddCommGroup E] [
   change extensionFun f c H _ = f x
   rw [heq, extensionFun_point, H.apply_zero]
 
-theorem Smale.DiskCone.extension_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SphereCone.extension_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E] :
     extension f c H ⟨0, Metric.mem_closedBall_self zero_le_one⟩ = c := by
@@ -13799,52 +13799,52 @@ theorem Smale.DiskCone.extension_zero {E M : Type*} [NormedAddCommGroup E] [Norm
   rw [heq, extensionFun_point, H.apply_one]
   rfl
 
-def Smale.AnnularExtension.unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
+def AnnularExtension.unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
     (x : E) : E :=
   (Max.max a ‖x‖)⁻¹ • x
 
-theorem Smale.AnnularExtension.max_radius_pos {E : Type*} [NormedAddCommGroup E] {a : ℝ}
+theorem AnnularExtension.max_radius_pos {E : Type*} [NormedAddCommGroup E] {a : ℝ}
     (ha : 0 < a) (x : E) : 0 < Max.max a ‖x‖ :=
   ha.trans_le (le_max_left _ _)
 
-theorem Smale.AnnularExtension.continuous_unitClamp {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.continuous_unitClamp {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (unitClamp (E := E) a) :=
   ((continuous_const.max continuous_norm).inv₀ (fun x => (max_radius_pos ha x).ne')).smul
     continuous_id
 
-theorem Smale.AnnularExtension.norm_unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem AnnularExtension.norm_unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) (x : E) : ‖unitClamp a x‖ = ‖x‖ / Max.max a ‖x‖ := by
   rw [unitClamp, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr (max_radius_pos ha x)),
     div_eq_mul_inv, mul_comm]
 
-theorem Smale.AnnularExtension.norm_unitClamp_le {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.norm_unitClamp_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) (x : E) : ‖unitClamp a x‖ ≤ 1 := by
   rw [norm_unitClamp ha]
   exact (div_le_one (max_radius_pos ha x)).mpr (le_max_right _ _)
 
-def Smale.AnnularExtension.innerDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {a : ℝ}
+def AnnularExtension.innerDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {a : ℝ}
     (ha : 0 < a) : C(E, Metric.closedBall (0 : E) 1)
     where
   toFun x := ⟨unitClamp a x, mem_closedBall_zero_iff.mpr (norm_unitClamp_le ha x)⟩
   continuous_toFun := (continuous_unitClamp ha).subtype_mk _
 
-theorem Smale.AnnularExtension.unitClamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.unitClamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} {x : E} (hx : ‖x‖ ≤ a) : unitClamp a x = a⁻¹ • x := by
   rw [unitClamp, max_eq_left hx]
 
-def Smale.AnnularExtension.clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
+def AnnularExtension.clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
     (x : E) : E :=
   a • unitClamp a x
 
-theorem Smale.AnnularExtension.continuous_clamp {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.continuous_clamp {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (clamp (E := E) a) :=
   continuous_const.smul (continuous_unitClamp ha)
 
-theorem Smale.AnnularExtension.clamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.clamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : ‖x‖ ≤ a) : clamp a x = x := by
   rw [clamp, unitClamp_of_norm_le hx, smul_inv_smul₀ ha.ne']
 
-theorem Smale.AnnularExtension.norm_clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem AnnularExtension.norm_clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) (x : E) : ‖clamp a x‖ = Min.min a ‖x‖ := by
   by_cases hx : ‖x‖ ≤ a
   · rw [clamp_of_norm_le ha hx, min_eq_right hx]
@@ -13853,34 +13853,34 @@ theorem Smale.AnnularExtension.norm_clamp {E : Type*} [NormedAddCommGroup E] [No
     rw [clamp, norm_smul, Real.norm_eq_abs, abs_of_pos ha, norm_unitClamp ha, max_eq_right hx',
       div_self hnorm, mul_one, min_eq_left hx']
 
-theorem Smale.AnnularExtension.clamp_mem_annulus {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.clamp_mem_annulus {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a b : ℝ} (hb : 0 < b) (hab : a ≤ b) {x : E} (hx : a ≤ ‖x‖) :
     a ≤ ‖clamp b x‖ ∧ ‖clamp b x‖ ≤ b := by
   rw [norm_clamp hb]
   exact ⟨le_min hab hx, min_le_left _ _⟩
 
-def Smale.AnnularExtension.exteriorFactor {E : Type*} [NormedAddCommGroup E] (a : ℝ) (x : E) :
+def AnnularExtension.exteriorFactor {E : Type*} [NormedAddCommGroup E] (a : ℝ) (x : E) :
     ℝ :=
   Min.min 1 (Max.max 0 (2 - ‖x‖ / a))
 
-theorem Smale.AnnularExtension.exteriorFactor_nonneg {E : Type*} [NormedAddCommGroup E] (a : ℝ)
+theorem AnnularExtension.exteriorFactor_nonneg {E : Type*} [NormedAddCommGroup E] (a : ℝ)
     (x : E) : 0 ≤ exteriorFactor a x :=
   le_min zero_le_one (le_max_left _ _)
 
-theorem Smale.AnnularExtension.exteriorFactor_le_one {E : Type*} [NormedAddCommGroup E] (a : ℝ)
+theorem AnnularExtension.exteriorFactor_le_one {E : Type*} [NormedAddCommGroup E] (a : ℝ)
     (x : E) : exteriorFactor a x ≤ 1 :=
   min_le_left _ _
 
-def Smale.AnnularExtension.exteriorVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def AnnularExtension.exteriorVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (a : ℝ) (x : E) : E :=
   exteriorFactor a x • unitClamp a x
 
-theorem Smale.AnnularExtension.continuous_exteriorVector {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.continuous_exteriorVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (exteriorVector (E := E) a) := by
   have hf : Continuous (exteriorFactor (E := E) a) := by unfold exteriorFactor; fun_prop
   exact hf.smul (continuous_unitClamp ha)
 
-theorem Smale.AnnularExtension.norm_exteriorVector_le {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.norm_exteriorVector_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) (x : E) : ‖exteriorVector a x‖ ≤ 1 := by
   rw [exteriorVector, norm_smul, Real.norm_eq_abs, abs_of_nonneg (exteriorFactor_nonneg a x)]
   calc
@@ -13888,13 +13888,13 @@ theorem Smale.AnnularExtension.norm_exteriorVector_le {E : Type*} [NormedAddComm
       mul_le_mul (exteriorFactor_le_one a x) (norm_unitClamp_le ha x) (norm_nonneg _) zero_le_one
     _ = 1 := one_mul _
 
-def Smale.AnnularExtension.exteriorDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def AnnularExtension.exteriorDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) : C(E, Metric.closedBall (0 : E) 1)
     where
   toFun x := ⟨exteriorVector a x, mem_closedBall_zero_iff.mpr (norm_exteriorVector_le ha x)⟩
   continuous_toFun := (continuous_exteriorVector ha).subtype_mk _
 
-theorem Smale.AnnularExtension.exteriorVector_on_sphere {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.exteriorVector_on_sphere {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : ‖x‖ = a) :
     exteriorVector a x = unitClamp a x := by
   have hf : exteriorFactor a x = 1 := by
@@ -13903,7 +13903,7 @@ theorem Smale.AnnularExtension.exteriorVector_on_sphere {E : Type*} [NormedAddCo
     norm_num
   rw [exteriorVector, hf, one_smul]
 
-theorem Smale.AnnularExtension.exteriorVector_eq_zero {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.exteriorVector_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : 2 * a ≤ ‖x‖) : exteriorVector a x = 0 := by
   have hdiv : 2 ≤ ‖x‖ / a := (le_div_iff₀ ha).mpr hx
   have hf : exteriorFactor a x = 0 := by
@@ -13911,7 +13911,7 @@ theorem Smale.AnnularExtension.exteriorVector_eq_zero {E : Type*} [NormedAddComm
     rw [max_eq_left (by linarith : 2 - ‖x‖ / a ≤ 0), min_eq_right zero_le_one]
   rw [exteriorVector, hf, zero_smul]
 
-theorem Smale.AnnularExtension.disk_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.disk_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] {a : ℝ} (ha : 0 < a) {g : E → M}
     (F : C(Metric.closedBall (0 : E) 1, M))
     (hF :
@@ -13926,7 +13926,7 @@ theorem Smale.AnnularExtension.disk_extension_on_radius {E M : Type*} [NormedAdd
   change g (clamp a x) = g x
   rw [clamp_of_norm_le ha hx.le]
 
-theorem Smale.AnnularExtension.exterior_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.exterior_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] {a : ℝ} (ha : 0 < a) {g : E → M}
     (F : C(Metric.closedBall (0 : E) 1, M))
     (hF :
@@ -13937,7 +13937,7 @@ theorem Smale.AnnularExtension.exterior_extension_on_radius {E M : Type*} [Norme
   rw [heq]
   exact disk_extension_on_radius ha F hF hx
 
-theorem Smale.AnnularExtension.exists_continuous_annular_extension {E M : Type*}
+theorem AnnularExtension.exists_continuous_annular_extension {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] {a b : ℝ} (ha : 0 < a)
     (hab : a < b) {g : E → M} (hg : ContinuousOn g {x : E | a ≤ ‖x‖ ∧ ‖x‖ ≤ b})
     (F₀ F₁ : C(Metric.closedBall (0 : E) 1, M))
@@ -14006,9 +14006,9 @@ theorem Smale.AnnularExtension.exists_continuous_annular_extension {E M : Type*}
     apply congrArg F₁
     exact Subtype.ext (exteriorVector_eq_zero hb hx)
 
-theorem Smale.AnnularExtension.dist_direction {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {x : E} (hx : x ≠ 0) : Dist.dist x (Smale.RadialExtension.direction x hx : E) = |‖x‖ - 1| := by
-  let v := Smale.RadialExtension.direction x hx
+theorem AnnularExtension.dist_direction {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {x : E} (hx : x ≠ 0) : Dist.dist x (RadialExtension.direction x hx : E) = |‖x‖ - 1| := by
+  let v := RadialExtension.direction x hx
   have hvec : ‖x‖ • (v : E) = x := smul_inv_smul₀ (norm_ne_zero_iff.mpr hx) x
   have hn : ‖(v : E)‖ = 1 := mem_sphere_zero_iff_norm.mp v.property
   change Dist.dist x (v : E) = _
@@ -14016,7 +14016,7 @@ theorem Smale.AnnularExtension.dist_direction {E : Type*} [NormedAddCommGroup E]
     _ = ‖(‖x‖ - 1) • (v : E)‖ := by rw [dist_eq_norm, sub_smul, one_smul, hvec]
     _ = |‖x‖ - 1| := by rw [norm_smul, Real.norm_eq_abs, hn, mul_one]
 
-theorem Smale.AnnularExtension.exists_closed_annulus_subset {E : Type*} [NormedAddCommGroup E]
+theorem AnnularExtension.exists_closed_annulus_subset {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {W : Set E} (hW : IsOpen W)
     (hSW : Metric.sphere (0 : E) 1 ⊆ W) :
     ∃ a b : ℝ, 0 < a ∧ a < 1 ∧ 1 < b ∧ {x : E | a ≤ ‖x‖ ∧ ‖x‖ ≤ b} ⊆ W := by
@@ -14032,25 +14032,25 @@ theorem Smale.AnnularExtension.exists_closed_annulus_subset {E : Type*} [NormedA
     have hxlo := hx.1
     rw [heq, norm_zero] at hxlo
     linarith
-  have hdist : Dist.dist x (Smale.RadialExtension.direction x hx0 : E) ≤ δ := by
+  have hdist : Dist.dist x (RadialExtension.direction x hx0 : E) ≤ δ := by
     rw [dist_direction]
     apply le_trans (abs_le.mpr ?_) hεδ
     constructor <;> linarith [hx.1, hx.2]
   exact
     hδW
-      (Metric.mem_cthickening_of_dist_le x (Smale.RadialExtension.direction x hx0) δ
-        (Metric.sphere (0 : E) 1) (Smale.RadialExtension.direction x hx0).property hdist)
+      (Metric.mem_cthickening_of_dist_le x (RadialExtension.direction x hx0) δ
+        (Metric.sphere (0 : E) 1) (RadialExtension.direction x hx0).property hdist)
 
-abbrev Smale.SixSphere :=
+abbrev SixSphere :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1
 
-theorem Smale.simplyConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
-    (e : M ≃ₕ Smale.SixSphere) : SimplyConnectedSpace M := by
-  let : SimplyConnectedSpace Smale.SixSphere := EuclideanSphere.simplyConnectedSpace 4
+theorem simplyConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
+    (e : M ≃ₕ SixSphere) : SimplyConnectedSpace M := by
+  let : SimplyConnectedSpace SixSphere := EuclideanSphere.simplyConnectedSpace 4
   exact e.simplyConnectedSpace
 
-theorem Smale.pathConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
-    (e : M ≃ₕ Smale.SixSphere) : PathConnectedSpace M := by
+theorem pathConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
+    (e : M ≃ₕ SixSphere) : PathConnectedSpace M := by
   let : SimplyConnectedSpace M := simplyConnectedSpace_of_homotopySixSphere e
   infer_instance
 
@@ -14216,8 +14216,8 @@ theorem sphere_sphere_nullhomotopic {m n : ℕ} (hmn : m < n) (f : C(Sphere m, S
   sphereMap_nullhomotopic_of_dim_lt (I := 𝓡 m) n f
     (by simpa only [finrank_euclideanSpace_fin] using hmn)
 
-theorem Smale.nullhomotopic_of_homotopySixSphere_comp {X M : Type*} [TopologicalSpace X]
-    [TopologicalSpace M] (e : M ≃ₕ Smale.SixSphere) (g : C(X, M))
+theorem nullhomotopic_of_homotopySixSphere_comp {X M : Type*} [TopologicalSpace X]
+    [TopologicalSpace M] (e : M ≃ₕ SixSphere) (g : C(X, M))
     (h : ∃ c, (e.toFun.comp g).Homotopic (ContinuousMap.const X c)) :
     ∃ c, g.Homotopic (ContinuousMap.const X c) := by
   obtain ⟨c, hnull⟩ := h
@@ -14227,15 +14227,15 @@ theorem Smale.nullhomotopic_of_homotopySixSphere_comp {X M : Type*} [Topological
     (ContinuousMap.Homotopic.refl e.invFun).comp hnull
   exact ⟨e.invFun c, h₀.symm.trans h₁⟩
 
-theorem Smale.manifoldMap_nullhomotopic_of_homotopySixSphere {X M : Type*} [TopologicalSpace X]
+theorem manifoldMap_nullhomotopic_of_homotopySixSphere {X M : Type*} [TopologicalSpace X]
     [TopologicalSpace M] {B H : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] [TopologicalSpace H] (I : ModelWithCorners ℝ B H) [I.Boundaryless]
-    [ChartedSpace H X] [IsManifold I ∞ X] [CompactSpace X] [T2Space X] (e : M ≃ₕ Smale.SixSphere)
+    [ChartedSpace H X] [IsManifold I ∞ X] [CompactSpace X] [T2Space X] (e : M ≃ₕ SixSphere)
     (hdim : Module.finrank ℝ B < 6) (g : C(X, M)) : ∃ c, g.Homotopic (ContinuousMap.const _ c) :=
   nullhomotopic_of_homotopySixSphere_comp e g
     (sphereMap_nullhomotopic_of_dim_lt (I := I) 6 (e.toFun.comp g) hdim)
 
-theorem Smale.exists_circle_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
+theorem exists_circle_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
     [TopologicalSpace M]
     (hnull : ∀ f : C(Hemisphere.Sphere 1, M), ∃ c, f.Homotopic (ContinuousMap.const _ c))
     {g : Hemisphere.Ambient 2 → M} {W : Set (Hemisphere.Ambient 2)} (hW : IsOpen W)
@@ -14275,11 +14275,11 @@ theorem Smale.exists_circle_neighborhood_extension_of_circle_nullhomotopies {M :
   obtain ⟨v, hv⟩ : (Metric.sphere (0 : Hemisphere.Ambient 2) 1).Nonempty :=
     NormedSpace.sphere_nonempty.mpr zero_le_one
   let : Nonempty (Metric.sphere (0 : Hemisphere.Ambient 2) 1) := ⟨⟨v, hv⟩⟩
-  let F₀ := DiskCone.extension f₀ c₀ H₀
-  let F₁ := DiskCone.extension f₁ c₁ H₁
+  let F₀ := SphereCone.extension f₀ c₀ H₀
+  let F₁ := SphereCone.extension f₁ c₁ H₁
   obtain ⟨G, hGeq, hGconst⟩ :=
     AnnularExtension.exists_continuous_annular_extension ha hab hgA F₀ F₁
-      (DiskCone.extension_boundary f₀ c₀ H₀) (DiskCone.extension_boundary f₁ c₁ H₁)
+      (SphereCone.extension_boundary f₀ c₀ H₀) (SphereCone.extension_boundary f₁ c₁ H₁)
   let U : Set (Hemisphere.Ambient 2) := {x | a < ‖x‖ ∧ ‖x‖ < b}
   have hU : IsOpen U :=
     (isOpen_lt continuous_const continuous_norm).inter
@@ -14291,14 +14291,14 @@ theorem Smale.exists_circle_neighborhood_extension_of_circle_nullhomotopies {M :
   · intro x hx
     have hn : 2 * b < ‖x‖ := by simpa only [mem_closedBall_zero_iff, not_le] using hx
     rw [hGconst x hn.le]
-    exact DiskCone.extension_zero f₁ c₁ H₁
+    exact SphereCone.extension_zero f₁ c₁ H₁
   · intro x hx
     have hn : ‖x‖ = 1 := mem_sphere_zero_iff_norm.mp hx
     change a < ‖x‖ ∧ ‖x‖ < b
     rw [hn]
     exact ⟨ha1, h1b⟩
 
-theorem Smale.WhitneyPairModel.convex_bigon {h : ℝ} (hh : 0 ≤ h) : Convex ℝ (bigon h) := by
+theorem WhitneyPairModel.convex_bigon {h : ℝ} (hh : 0 ≤ h) : Convex ℝ (bigon h) := by
   intro x hx y hy a b ha hb hab
   change 0 ≤ a * x.2 + b * y.2 ∧ h * (a * x.1 + b * y.1) ^ 2 + (a * x.2 + b * y.2) ≤ h
   refine ⟨add_nonneg (mul_nonneg ha hx.1) (mul_nonneg hb hy.1), ?_⟩
@@ -14315,25 +14315,25 @@ theorem Smale.WhitneyPairModel.convex_bigon {h : ℝ} (hh : 0 ≤ h) : Convex �
       (add_le_add (mul_le_mul_of_nonneg_left hx.2 ha) (mul_le_mul_of_nonneg_left hy.2 hb))
     _ = h := by rw [← add_mul, hab, one_mul]
 
-theorem Smale.WhitneyPairModel.bigon_center_mem_interior {h : ℝ} (hh : 0 < h) :
+theorem WhitneyPairModel.bigon_center_mem_interior {h : ℝ} (hh : 0 < h) :
     (0, h / 2) ∈ interior (bigon h) := by
   apply (mem_interior_bigon_iff h _).mpr
   change 0 < h / 2 ∧ h / 2 < h * (1 - 0 ^ 2)
   norm_num only [zero_pow (by decide : 2 ≠ 0), sub_zero, mul_one]
   constructor <;> linarith
 
-theorem Smale.WhitneyPairModel.interior_bigon_nonempty {h : ℝ} (hh : 0 < h) :
+theorem WhitneyPairModel.interior_bigon_nonempty {h : ℝ} (hh : 0 < h) :
     (interior (bigon h)).Nonempty :=
   ⟨(0, h / 2), bigon_center_mem_interior hh⟩
 
-theorem Smale.WhitneyPairModel.exists_bigon_disk_homeomorph {h : ℝ} (hh : 0 < h) :
-    ∃ e : (ℝ × ℝ) ≃ₜ Smale.Hemisphere.Ambient 2,
+theorem WhitneyPairModel.exists_bigon_disk_homeomorph {h : ℝ} (hh : 0 < h) :
+    ∃ e : (ℝ × ℝ) ≃ₜ Hemisphere.Ambient 2,
       e '' bigon h = Metric.closedBall 0 1 ∧
         e '' interior (bigon h) = Metric.ball 0 1 ∧ e '' frontier (bigon h) = Metric.sphere 0 1 :=
   by
-  let L : (ℝ × ℝ) ≃L[ℝ] Smale.Hemisphere.Ambient 2 :=
-    ContinuousLinearEquiv.ofFinrankEq (by simp [Smale.Hemisphere.Ambient, Module.finrank_prod])
-  let K : Set (Smale.Hemisphere.Ambient 2) := L '' bigon h
+  let L : (ℝ × ℝ) ≃L[ℝ] Hemisphere.Ambient 2 :=
+    ContinuousLinearEquiv.ofFinrankEq (by simp [Hemisphere.Ambient, Module.finrank_prod])
+  let K : Set (Hemisphere.Ambient 2) := L '' bigon h
   have hK : IsCompact K := (isCompact_bigon hh).image L.continuous
   have hc : Convex ℝ K := (convex_bigon hh.le).linear_image L.toLinearEquiv.toLinearMap
   have hLint : L '' interior (bigon h) = interior K := L.toHomeomorph.image_interior (bigon h)
@@ -14356,7 +14356,7 @@ theorem Smale.WhitneyPairModel.exists_bigon_disk_homeomorph {h : ℝ} (hh : 0 < 
       _ = e '' (L '' frontier (bigon h)) := (Set.image_image e L (frontier (bigon h))).symm
       _ = Metric.sphere 0 1 := by rw [hLfront]; exact hefront
 
-theorem Smale.exists_bigon_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
+theorem exists_bigon_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
     [TopologicalSpace M]
     (hnull : ∀ f : C(Hemisphere.Sphere 1, M), ∃ c, f.Homotopic (ContinuousMap.const _ c)) {h : ℝ}
     (hh : 0 < h) {f : (ℝ × ℝ) → M} {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hf : ContinuousOn f W)
@@ -14402,7 +14402,7 @@ theorem Smale.exists_bigon_neighborhood_extension_of_circle_nullhomotopies {M : 
     change f (φ.symm (φ x)) = f x
     rw [φ.symm_apply_apply]
 
-theorem Smale.exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies {E M : Type*}
+theorem exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M]
     (hnull : ∀ f : C(Hemisphere.Sphere 1, M), ∃ c, f.Homotopic (ContinuousMap.const _ c)) {h : ℝ}
@@ -14429,7 +14429,7 @@ theorem Smale.exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopie
   intro x hx
   exact (hrel.fst_eq_snd (interior_subset hx)).symm.trans (hGeq (hCV (interior_subset hx)))
 
-structure Smale.TubularBigon {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure TubularBigon {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
     (h : ℝ) (n : ℕ := 4) where
   height_pos : 0 < h
@@ -14455,19 +14455,19 @@ structure Smale.TubularBigon {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
   source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = map p
 
-def Smale.WhitneyPairModel.lowerBoundaryArc (t : ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.lowerBoundaryArc (t : ℝ) : ℝ × ℝ :=
   (2 * t - 1, 0)
 
-def Smale.WhitneyPairModel.upperBoundaryArc (h t : ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.upperBoundaryArc (h t : ℝ) : ℝ × ℝ :=
   (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))
 
-theorem Smale.WhitneyPairModel.hasDerivAt_lowerBoundaryArc (t : ℝ) :
+theorem WhitneyPairModel.hasDerivAt_lowerBoundaryArc (t : ℝ) :
     HasDerivAt lowerBoundaryArc (2, 0) t := by
   have hs : HasDerivAt (fun s : ℝ => 2 * s - 1) 2 t := by
     simpa using ((hasDerivAt_id t).const_mul 2).sub_const 1
   exact hs.prodMk (hasDerivAt_const t (0 : ℝ))
 
-theorem Smale.WhitneyPairModel.hasDerivAt_upperBoundaryArc (h t : ℝ) :
+theorem WhitneyPairModel.hasDerivAt_upperBoundaryArc (h t : ℝ) :
     HasDerivAt (upperBoundaryArc h) (2, -4 * h * (2 * t - 1)) t := by
   have hs : HasDerivAt (fun s : ℝ => 2 * s - 1) 2 t := by
     simpa using ((hasDerivAt_id t).const_mul 2).sub_const 1
@@ -14478,117 +14478,117 @@ theorem Smale.WhitneyPairModel.hasDerivAt_upperBoundaryArc (h t : ℝ) :
       | ring
   exact hs.prodMk hy
 
-theorem Smale.TubularBigon.lowerBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lowerBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    Smale.WhitneyPairModel.lowerBoundaryArc t ∈ Smale.WhitneyPairModel.bigon h := by
+    WhitneyPairModel.lowerBoundaryArc t ∈ WhitneyPairModel.bigon h := by
   have hf :
-    Smale.WhitneyPairModel.lowerBoundaryArc t ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-    (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+    WhitneyPairModel.lowerBoundaryArc t ∈ frontier (WhitneyPairModel.bigon h) :=
+    (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
       ⟨t, ht, Or.inl rfl⟩
-  exact ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
+  exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
 
-theorem Smale.TubularBigon.upperBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upperBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    Smale.WhitneyPairModel.upperBoundaryArc h t ∈ Smale.WhitneyPairModel.bigon h := by
+    WhitneyPairModel.upperBoundaryArc h t ∈ WhitneyPairModel.bigon h := by
   have hf :
-    Smale.WhitneyPairModel.upperBoundaryArc h t ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-    (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+    WhitneyPairModel.upperBoundaryArc h t ∈ frontier (WhitneyPairModel.bigon h) :=
+    (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
       ⟨t, ht, Or.inr rfl⟩
-  exact ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
+  exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
 
-theorem Smale.TubularBigon.lowerBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lowerBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (Smale.WhitneyPairModel.lowerBoundaryArc t, 0) ∈ tube.chart.source :=
+    (WhitneyPairModel.lowerBoundaryArc t, 0) ∈ tube.chart.source :=
   tube.source_contains
     ⟨tube.lowerBoundaryArc_mem_bigon ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
 
-theorem Smale.TubularBigon.upperBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upperBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (Smale.WhitneyPairModel.upperBoundaryArc h t, 0) ∈ tube.chart.source :=
+    (WhitneyPairModel.upperBoundaryArc h t, 0) ∈ tube.chart.source :=
   tube.source_contains
     ⟨tube.upperBoundaryArc_mem_bigon ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
 
-theorem Smale.TubularBigon.lower_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lower_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    d.chart (Smale.StripCoordinates.center t) ∈ tube.chart.target := by
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    d.chart (StripCoordinates.center t) ∈ tube.chart.target := by
   have hg := (tube.lower_germ t ht).eq_of_nhds
   dsimp only [Function.comp_apply] at hg
-  rw [Smale.WhitneyPairModel.lowerStripCoordinates_lower, d.center t] at hg
+  rw [WhitneyPairModel.lowerStripCoordinates_lower, d.center t] at hg
   have hp := tube.chart.map_source' (tube.lowerBoundaryArc_zero_mem_source ht)
-  rw [tube.zero_section, Smale.WhitneyPairModel.lowerBoundaryArc, hg] at hp
+  rw [tube.zero_section, WhitneyPairModel.lowerBoundaryArc, hg] at hp
   exact hp
 
-theorem Smale.TubularBigon.upper_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upper_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    d.chart (Smale.StripCoordinates.center t) ∈ tube.chart.target := by
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    d.chart (StripCoordinates.center t) ∈ tube.chart.target := by
   have hg := (tube.upper_germ t ht).eq_of_nhds
   dsimp only [Function.comp_apply] at hg
-  rw [Smale.WhitneyPairModel.upperStripCoordinates_upper, d.center t] at hg
+  rw [WhitneyPairModel.upperStripCoordinates_upper, d.center t] at hg
   have hp := tube.chart.map_source' (tube.upperBoundaryArc_zero_mem_source ht)
-  rw [tube.zero_section, Smale.WhitneyPairModel.upperBoundaryArc, hg] at hp
+  rw [tube.zero_section, WhitneyPairModel.upperBoundaryArc, hg] at hp
   exact hp
 
-theorem Smale.TubularBigon.lower_sheetTransition_center_germ {E M A B : Type*}
+theorem TubularBigon.lower_sheetTransition_center_germ {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {S T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     (fun s : ℝ => d.sheetTransition tube.chart (s, 0)) =ᶠ[𝓝 t] fun s =>
-      (Smale.WhitneyPairModel.lowerBoundaryArc s, 0) :=
+      (WhitneyPairModel.lowerBoundaryArc s, 0) :=
   d.sheetTransition_center_germ tube.chart tube.zero_section
-    (Smale.WhitneyPairModel.hasDerivAt_lowerBoundaryArc t).continuousAt
+    (WhitneyPairModel.hasDerivAt_lowerBoundaryArc t).continuousAt
     (tube.lowerBoundaryArc_zero_mem_source ht)
-    (Smale.WhitneyPairModel.lowerStripCoordinates_lower h) (tube.lower_germ t ht)
+    (WhitneyPairModel.lowerStripCoordinates_lower h) (tube.lower_germ t ht)
 
-theorem Smale.TubularBigon.upper_sheetTransition_center_germ {E M A B : Type*}
+theorem TubularBigon.upper_sheetTransition_center_germ {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {S T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     (fun s : ℝ => d.sheetTransition tube.chart (s, 0)) =ᶠ[𝓝 t] fun s =>
-      (Smale.WhitneyPairModel.upperBoundaryArc h s, 0) :=
+      (WhitneyPairModel.upperBoundaryArc h s, 0) :=
   d.sheetTransition_center_germ tube.chart tube.zero_section
-    (Smale.WhitneyPairModel.hasDerivAt_upperBoundaryArc h t).continuousAt
+    (WhitneyPairModel.hasDerivAt_upperBoundaryArc h t).continuousAt
     (tube.upperBoundaryArc_zero_mem_source ht)
-    (Smale.WhitneyPairModel.upperStripCoordinates_upper h) (tube.upper_germ t ht)
+    (WhitneyPairModel.upperStripCoordinates_upper h) (tube.upper_germ t ht)
 
-theorem Smale.TubularBigon.lower_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lower_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     d.sheetDifferential tube.chart t (1, 0) = ((2, 0), 0) :=
   d.sheetDifferential_arc_of_germ tube.chart ht (tube.lower_chart_center_mem_target d ht)
-    (Smale.WhitneyPairModel.hasDerivAt_lowerBoundaryArc t)
+    (WhitneyPairModel.hasDerivAt_lowerBoundaryArc t)
     (tube.lower_sheetTransition_center_germ d ht)
 
-theorem Smale.TubularBigon.upper_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upper_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l h n)
-    (d : Smale.StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+    {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
+    (d : StripNormalData A B (E := E) T l) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     d.sheetDifferential tube.chart t (1, 0) = ((2, -4 * h * (2 * t - 1)), 0) :=
   d.sheetDifferential_arc_of_germ tube.chart ht (tube.upper_chart_center_mem_target d ht)
-    (Smale.WhitneyPairModel.hasDerivAt_upperBoundaryArc h t)
+    (WhitneyPairModel.hasDerivAt_upperBoundaryArc h t)
     (tube.upper_sheetTransition_center_germ d ht)
 
-theorem Smale.FrameField.det_of_zero_lower_left {D Z : Type*} [NormedAddCommGroup D]
+theorem FrameField.det_of_zero_lower_left {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] (T : (D × Z) →L[ℝ] (D × Z)) (hT : ∀ u : D, (T (u, 0)).2 = 0) :
     T.toLinearMap.det =
@@ -14610,7 +14610,7 @@ theorem Smale.FrameField.det_of_zero_lower_left {D Z : Type*} [NormedAddCommGrou
   rw [← LinearMap.det_toMatrix (bD.prod bZ), hmat, Matrix.det_fromBlocks_zero₂₁,
     LinearMap.det_toMatrix, LinearMap.det_toMatrix]
 
-theorem Smale.FrameField.det_of_fixed_first_factor {D Z : Type*} [NormedAddCommGroup D]
+theorem FrameField.det_of_fixed_first_factor {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] (T : (D × Z) →L[ℝ] (D × Z)) (hT : ∀ u : D, T (u, 0) = (u, 0)) :
     T.toLinearMap.det =
@@ -14630,7 +14630,7 @@ theorem Smale.FrameField.det_of_fixed_first_factor {D Z : Type*} [NormedAddCommG
   rw [← LinearMap.det_toMatrix (bD.prod bZ), hmat, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one,
     one_mul, LinearMap.det_toMatrix]
 
-theorem Smale.FrameField.det_frame_eq_det_split_mul_det_coefficient {D Z F : Type*}
+theorem FrameField.det_frame_eq_det_split_mul_det_coefficient {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (j : (D × Z) ≃L[ℝ] F) (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) :
@@ -14670,26 +14670,26 @@ theorem Smale.FrameField.det_frame_eq_det_split_mul_det_coefficient {D Z F : Typ
     map_mul LinearMap.det _ _
   rw [hmul, hdetA]
 
-def Smale.PlanarFrame.area (u v : Smale.PlaneImmersion.Plane) : ℝ :=
+def PlanarFrame.area (u v : PlaneImmersion.Plane) : ℝ :=
   u.1 * v.2 - u.2 * v.1
 
-def Smale.PlanarFrame.squareLength (u : Smale.PlaneImmersion.Plane) : ℝ :=
+def PlanarFrame.squareLength (u : PlaneImmersion.Plane) : ℝ :=
   u.1 ^ 2 + u.2 ^ 2
 
-def Smale.PlanarFrame.quarterTurn (u : Smale.PlaneImmersion.Plane) : Smale.PlaneImmersion.Plane :=
+def PlanarFrame.quarterTurn (u : PlaneImmersion.Plane) : PlaneImmersion.Plane :=
   (-u.2, u.1)
 
-def Smale.PlanarFrame.parallelCoeff (u v : Smale.PlaneImmersion.Plane) : ℝ :=
+def PlanarFrame.parallelCoeff (u v : PlaneImmersion.Plane) : ℝ :=
   (u.1 * v.1 + u.2 * v.2) / squareLength u
 
-def Smale.PlanarFrame.transverseCoeff (u v : Smale.PlaneImmersion.Plane) : ℝ :=
+def PlanarFrame.transverseCoeff (u v : PlaneImmersion.Plane) : ℝ :=
   area u v / squareLength u
 
-def Smale.PlanarFrame.determinant
-    (L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) : ℝ :=
+def PlanarFrame.determinant
+    (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) : ℝ :=
   area (L (1, 0)) (L (0, 1))
 
-theorem Smale.PlanarFrame.squareLength_pos {u : Smale.PlaneImmersion.Plane} (hu : u ≠ 0) :
+theorem PlanarFrame.squareLength_pos {u : PlaneImmersion.Plane} (hu : u ≠ 0) :
     0 < squareLength u := by
   have hsq₁ := sq_nonneg u.1
   have hsq₂ := sq_nonneg u.2
@@ -14699,8 +14699,8 @@ theorem Smale.PlanarFrame.squareLength_pos {u : Smale.PlaneImmersion.Plane} (hu 
   have hu₂ : u.2 = 0 := by nlinarith
   exact hu (Prod.ext hu₁ hu₂)
 
-theorem Smale.PlanarFrame.decompose_second_column {u : Smale.PlaneImmersion.Plane} (hu : u ≠ 0)
-    (v : Smale.PlaneImmersion.Plane) :
+theorem PlanarFrame.decompose_second_column {u : PlaneImmersion.Plane} (hu : u ≠ 0)
+    (v : PlaneImmersion.Plane) :
     parallelCoeff u v • u + transverseCoeff u v • quarterTurn u = v := by
   have hnorm := (squareLength_pos hu).ne'
   ext <;> dsimp [parallelCoeff, transverseCoeff, area, quarterTurn]
@@ -14711,39 +14711,39 @@ theorem Smale.PlanarFrame.decompose_second_column {u : Smale.PlaneImmersion.Plan
     simp only [squareLength]
     ring
 
-theorem Smale.PlanarFrame.area_transverse (u : Smale.PlaneImmersion.Plane) (a b : ℝ) :
+theorem PlanarFrame.area_transverse (u : PlaneImmersion.Plane) (a b : ℝ) :
     area u (a • u + b • quarterTurn u) = b * squareLength u := by
   dsimp [area, quarterTurn, squareLength]
   ring
 
-theorem Smale.PlanarFrame.linearMap_first (u v : Smale.PlaneImmersion.Plane) :
-    Smale.PlaneImmersion.linearMap (u, v) (1, 0) = u := by
-  simp [Smale.PlaneImmersion.linearMap_apply]
+theorem PlanarFrame.linearMap_first (u v : PlaneImmersion.Plane) :
+    PlaneImmersion.linearMap (u, v) (1, 0) = u := by
+  simp [PlaneImmersion.linearMap_apply]
 
-theorem Smale.PlanarFrame.linearMap_second (u v : Smale.PlaneImmersion.Plane) :
-    Smale.PlaneImmersion.linearMap (u, v) (0, 1) = v := by
-  simp [Smale.PlaneImmersion.linearMap_apply]
+theorem PlanarFrame.linearMap_second (u v : PlaneImmersion.Plane) :
+    PlaneImmersion.linearMap (u, v) (0, 1) = v := by
+  simp [PlaneImmersion.linearMap_apply]
 
-theorem Smale.PlanarFrame.linearMap_columns
-    (L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) :
-    Smale.PlaneImmersion.linearMap (L (1, 0), L (0, 1)) = L := by
+theorem PlanarFrame.linearMap_columns
+    (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :
+    PlaneImmersion.linearMap (L (1, 0), L (0, 1)) = L := by
   apply ContinuousLinearMap.ext
   intro p
   have hp : p = p.1 • ((1 : ℝ), 0) + p.2 • (0, 1) := by ext <;> simp
-  rw [Smale.PlaneImmersion.linearMap_apply, ← map_smul, ← map_smul, ← map_add, ← hp]
+  rw [PlaneImmersion.linearMap_apply, ← map_smul, ← map_smul, ← map_add, ← hp]
 
-theorem Smale.PlanarFrame.determinant_linearMap (u v : Smale.PlaneImmersion.Plane) :
-    determinant (Smale.PlaneImmersion.linearMap (u, v)) = area u v := by
+theorem PlanarFrame.determinant_linearMap (u v : PlaneImmersion.Plane) :
+    determinant (PlaneImmersion.linearMap (u, v)) = area u v := by
   rw [determinant, linearMap_first, linearMap_second]
 
-theorem Smale.PlanarFrame.determinant_eq_det
-    (L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) :
+theorem PlanarFrame.determinant_eq_det
+    (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :
     determinant L = L.toLinearMap.det := by
   rw [← LinearMap.det_toMatrix (Module.Basis.finTwoProd ℝ), Matrix.det_fin_two]
   simp [LinearMap.toMatrix_apply, Module.Basis.coe_finTwoProd_repr, determinant, area, mul_comm]
 
-theorem Smale.PlanarFrame.bijective_of_determinant_ne_zero
-    (L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (hL : determinant L ≠ 0) :
+theorem PlanarFrame.bijective_of_determinant_ne_zero
+    (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (hL : determinant L ≠ 0) :
     Function.Bijective L := by
   have hdet : L.toLinearMap.det ≠ 0 := by rwa [determinant_eq_det] at hL
   have hker : L.toLinearMap.ker = ⊥ := by
@@ -14752,82 +14752,82 @@ theorem Smale.PlanarFrame.bijective_of_determinant_ne_zero
   have hi : Function.Injective L := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
-theorem Smale.PlanarFrame.continuous_determinant : Continuous determinant := by
+theorem PlanarFrame.continuous_determinant : Continuous determinant := by
   have h₁ :
     Continuous
-      (fun L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane => L (1, 0)) :=
+      (fun L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane => L (1, 0)) :=
     continuous_id.clm_apply continuous_const
   have h₂ :
     Continuous
-      (fun L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane => L (0, 1)) :=
+      (fun L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane => L (0, 1)) :=
     continuous_id.clm_apply continuous_const
   exact (h₁.fst.mul h₂.snd).sub (h₁.snd.mul h₂.fst)
 
-theorem Smale.PlanarFrame.continuous_quarterTurn : Continuous quarterTurn :=
+theorem PlanarFrame.continuous_quarterTurn : Continuous quarterTurn :=
   continuous_snd.neg.prodMk continuous_fst
 
-theorem Smale.PlanarFrame.continuous_linearMap :
+theorem PlanarFrame.continuous_linearMap :
     Continuous
-      (Smale.PlaneImmersion.linearMap :
-        (Smale.PlaneImmersion.Plane × Smale.PlaneImmersion.Plane) →
-          (Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane)) := by
+      (PlaneImmersion.linearMap :
+        (PlaneImmersion.Plane × PlaneImmersion.Plane) →
+          (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane)) := by
   exact
-    ((ContinuousLinearMap.smulRightL ℝ Smale.PlaneImmersion.Plane Smale.PlaneImmersion.Plane
+    ((ContinuousLinearMap.smulRightL ℝ PlaneImmersion.Plane PlaneImmersion.Plane
               (ContinuousLinearMap.fst ℝ ℝ ℝ)).continuous.comp
           continuous_fst).add
-      ((ContinuousLinearMap.smulRightL ℝ Smale.PlaneImmersion.Plane Smale.PlaneImmersion.Plane
+      ((ContinuousLinearMap.smulRightL ℝ PlaneImmersion.Plane PlaneImmersion.Plane
             (ContinuousLinearMap.snd ℝ ℝ ℝ)).continuous.comp
         continuous_snd)
 
-def Smale.IntersectionCoordinates.jointBlock {A B F : Type*} [NormedAddCommGroup A]
+def IntersectionCoordinates.jointBlock {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (Smale.PlaneImmersion.Plane × F))
-    (Q : (ℝ × B) →L[ℝ] (Smale.PlaneImmersion.Plane × F)) :
-    (Smale.PlaneImmersion.Plane × (A × B)) →L[ℝ] (Smale.PlaneImmersion.Plane × (A × B)) :=
-  (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ Smale.PlaneImmersion.Plane)
+    [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
+    (Q : (ℝ × B) →L[ℝ] (PlaneImmersion.Plane × F)) :
+    (PlaneImmersion.Plane × (A × B)) →L[ℝ] (PlaneImmersion.Plane × (A × B)) :=
+  (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ PlaneImmersion.Plane)
         j.symm).toContinuousLinearMap.comp
     ((P.coprod Q).comp
       (ContinuousLinearEquiv.prodProdProdComm ℝ ℝ A ℝ B).symm.toContinuousLinearMap)
 
-theorem Smale.IntersectionCoordinates.jointBlock_apply {A B F : Type*} [NormedAddCommGroup A]
+theorem IntersectionCoordinates.jointBlock_apply {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (Smale.PlaneImmersion.Plane × F))
-    (Q : (ℝ × B) →L[ℝ] (Smale.PlaneImmersion.Plane × F))
-    (p : Smale.PlaneImmersion.Plane × (A × B)) :
+    [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
+    (Q : (ℝ × B) →L[ℝ] (PlaneImmersion.Plane × F))
+    (p : PlaneImmersion.Plane × (A × B)) :
     jointBlock j P Q p =
       ((P (p.1.1, p.2.1) + Q (p.1.2, p.2.2)).1,
         j.symm ((P (p.1.1, p.2.1) + Q (p.1.2, p.2.2)).2)) :=
   rfl
 
-theorem Smale.IntersectionCoordinates.map_first_axis {A F : Type*} [NormedAddCommGroup A]
+theorem IntersectionCoordinates.map_first_axis {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    (P : (ℝ × A) →L[ℝ] (Smale.PlaneImmersion.Plane × F)) (s : ℝ) : P (s, 0) = s • P (1, 0) := by
+    (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F)) (s : ℝ) : P (s, 0) = s • P (1, 0) := by
   have hs : (s, (0 : A)) = s • ((1 : ℝ), 0) := by ext <;> simp
   rw [hs, map_smul]
 
-theorem Smale.IntersectionCoordinates.det_jointBlock {A B F : Type*} [NormedAddCommGroup A]
+theorem IntersectionCoordinates.det_jointBlock {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ A] [FiniteDimensional ℝ B] (j : (A × B) ≃L[ℝ] F)
-    (P : (ℝ × A) →L[ℝ] (Smale.PlaneImmersion.Plane × F))
-    (Q : (ℝ × B) →L[ℝ] (Smale.PlaneImmersion.Plane × F)) {u v : Smale.PlaneImmersion.Plane}
+    (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
+    (Q : (ℝ × B) →L[ℝ] (PlaneImmersion.Plane × F)) {u v : PlaneImmersion.Plane}
     (hP : P (1, 0) = (u, 0)) (hQ : Q (1, 0) = (v, 0)) :
     (jointBlock j P Q).toLinearMap.det =
-      (Smale.PlaneImmersion.linearMap (u, v)).toLinearMap.det *
+      (PlaneImmersion.linearMap (u, v)).toLinearMap.det *
         (j.symm.toContinuousLinearMap.comp
-            (((ContinuousLinearMap.snd ℝ Smale.PlaneImmersion.Plane F).comp
+            (((ContinuousLinearMap.snd ℝ PlaneImmersion.Plane F).comp
                   (P.comp (ContinuousLinearMap.inr ℝ ℝ A))).coprod
-              ((ContinuousLinearMap.snd ℝ Smale.PlaneImmersion.Plane F).comp
+              ((ContinuousLinearMap.snd ℝ PlaneImmersion.Plane F).comp
                 (Q.comp (ContinuousLinearMap.inr ℝ ℝ B))))).toLinearMap.det := by
-  have hzero : ∀ w : Smale.PlaneImmersion.Plane, (jointBlock j P Q (w, 0)).2 = 0 := by
+  have hzero : ∀ w : PlaneImmersion.Plane, (jointBlock j P Q (w, 0)).2 = 0 := by
     intro w
     rw [jointBlock_apply]
     change j.symm ((P (w.1, 0) + Q (w.2, 0)).2) = 0
     rw [map_first_axis P w.1, map_first_axis Q w.2, hP, hQ]
     simp
   have hfirst :
-    (ContinuousLinearMap.fst ℝ Smale.PlaneImmersion.Plane (A × B)).comp
-        ((jointBlock j P Q).comp (ContinuousLinearMap.inl ℝ Smale.PlaneImmersion.Plane (A × B))) =
-      Smale.PlaneImmersion.linearMap (u, v) := by
+    (ContinuousLinearMap.fst ℝ PlaneImmersion.Plane (A × B)).comp
+        ((jointBlock j P Q).comp (ContinuousLinearMap.inl ℝ PlaneImmersion.Plane (A × B))) =
+      PlaneImmersion.linearMap (u, v) := by
     apply ContinuousLinearMap.ext
     intro w
     change (jointBlock j P Q (w, 0)).1 = w.1 • u + w.2 • v
@@ -14836,19 +14836,19 @@ theorem Smale.IntersectionCoordinates.det_jointBlock {A B F : Type*} [NormedAddC
     rw [map_first_axis P w.1, map_first_axis Q w.2, hP, hQ]
     rfl
   have hsecond :
-    (ContinuousLinearMap.snd ℝ Smale.PlaneImmersion.Plane (A × B)).comp
-        ((jointBlock j P Q).comp (ContinuousLinearMap.inr ℝ Smale.PlaneImmersion.Plane (A × B))) =
+    (ContinuousLinearMap.snd ℝ PlaneImmersion.Plane (A × B)).comp
+        ((jointBlock j P Q).comp (ContinuousLinearMap.inr ℝ PlaneImmersion.Plane (A × B))) =
       j.symm.toContinuousLinearMap.comp
-        (((ContinuousLinearMap.snd ℝ Smale.PlaneImmersion.Plane F).comp
+        (((ContinuousLinearMap.snd ℝ PlaneImmersion.Plane F).comp
               (P.comp (ContinuousLinearMap.inr ℝ ℝ A))).coprod
-          ((ContinuousLinearMap.snd ℝ Smale.PlaneImmersion.Plane F).comp
+          ((ContinuousLinearMap.snd ℝ PlaneImmersion.Plane F).comp
             (Q.comp (ContinuousLinearMap.inr ℝ ℝ B)))) := by
     apply ContinuousLinearMap.ext
     intro w
     rfl
-  rw [Smale.FrameField.det_of_zero_lower_left _ hzero, hfirst, hsecond]
+  rw [FrameField.det_of_zero_lower_left _ hzero, hfirst, hsecond]
 
-theorem Smale.FrameField.bijective_coprod_of_orthogonal_range {D Z F : Type*}
+theorem FrameField.bijective_coprod_of_orthogonal_range {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [InnerProductSpace ℝ F] (L : D →L[ℝ] F)
     (B : Z →L[ℝ] F) (hL : Function.Injective L) (hB : Function.Injective B)
@@ -14864,7 +14864,7 @@ theorem Smale.FrameField.bijective_coprod_of_orthogonal_range {D Z F : Type*}
     rw [← LinearMap.range_eq_top, LinearMap.range_coprod, hr]
     exact L.range.isCompl_orthogonal.sup_eq_top
 
-theorem Smale.FrameField.exists_smooth_complement_near_starConvex_on {E D F : Type*}
+theorem FrameField.exists_smooth_complement_near_starConvex_on {E D F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
     {L : E → (D →L[ℝ] F)} {O : Set E} (hO : IsOpen O) (hL : ContDiffOn ℝ ∞ L O) {K : Set E}
@@ -14905,7 +14905,7 @@ theorem Smale.FrameField.exists_smooth_complement_near_starConvex_on {E D F : Ty
     rw [hP x (hKU hx)]
     exact ((L x).rangeᗮ).isIdempotentElem_starProjection
   obtain ⟨W, hW, hKW, B₀, hB₀, hB₀i⟩ :=
-    Smale.DiskFraming.exists_smooth_frame_near_starConvex hK hstar hU hKU P hidem hsP
+    DiskFraming.exists_smooth_frame_near_starConvex hK hstar hU hKU P hidem hsP
   have hr (x : E) (hx : x ∈ K) : (P x).range = (L x).rangeᗮ := by
     rw [hP x (hKU hx), Submodule.range_starProjection]
   have hcenter : Module.finrank ℝ (P 0).range = n := by
@@ -14949,7 +14949,7 @@ theorem Smale.FrameField.exists_smooth_complement_near_starConvex_on {E D F : Ty
     exact hdim
   exact ⟨hx.2, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim').mp hx.2⟩
 
-theorem Smale.FrameField.exists_smooth_complement_near_starConvex {E D F : Type*}
+theorem FrameField.exists_smooth_complement_near_starConvex {E D F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
     {L : E → (D →L[ℝ] F)} (hL : ContDiff ℝ ∞ L) {K : Set E} (hK : IsCompact K)
@@ -14965,21 +14965,21 @@ theorem Smale.FrameField.exists_smooth_complement_near_starConvex {E D F : Type*
   exists_smooth_complement_near_starConvex_on isOpen_univ hL.contDiffOn hK hstar h0
     (Set.subset_univ K) hi n hdim
 
-theorem Smale.TubularBigon.lower_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lower_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : (ℝ × ℝ) → M} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k.map l h n)
-    (d : Smale.StripNormalData A B (E := E) S k.map) :
+    {k₀ k₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : (ℝ × ℝ) → M} {n : ℕ} (tube : TubularBigon (E := E) S T a b k.map l h n)
+    (d : StripNormalData A B (E := E) S k.map) :
     (∃ U : Set ℝ,
         IsOpen U ∧ Set.Icc (0 : ℝ) 1 ⊆ U ∧ ContDiffOn ℝ ∞ (d.normalFrame tube.chart) U) ∧
       ∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (d.normalFrame tube.chart t) := by
-  have hpoint : ∀ t ∈ Set.Icc (0 : ℝ) 1, (2 * t - 1, 0) ∈ Smale.WhitneyPairModel.bigon h := by
+  have hpoint : ∀ t ∈ Set.Icc (0 : ℝ) 1, (2 * t - 1, 0) ∈ WhitneyPairModel.bigon h := by
     intro t ht
-    have hf : (2 * t - 1, 0) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+    have hf : (2 * t - 1, 0) ∈ frontier (WhitneyPairModel.bigon h) :=
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
         ⟨t, ht, Or.inl rfl⟩
-    exact ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
+    exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
   have hsource : ∀ t ∈ Set.Icc (0 : ℝ) 1, ((2 * t - 1, 0), 0) ∈ tube.chart.source := fun t ht =>
     tube.source_contains ⟨hpoint t ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
   constructor
@@ -14994,34 +14994,34 @@ theorem Smale.TubularBigon.lower_sheetFrame {E M A B : Type*} [NormedAddCommGrou
       k.contains_strip ⟨ht, ⟨neg_nonpos.mpr k.width_pos.le, k.width_pos.le⟩⟩
     have hcs :
       Function.Surjective
-        (fderiv ℝ (Smale.WhitneyPairModel.lowerStripCoordinates h) (2 * t - 1, 0)) :=
+        (fderiv ℝ (WhitneyPairModel.lowerStripCoordinates h) (2 * t - 1, 0)) :=
       (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp
-        (Smale.WhitneyPairModel.injective_fderiv_lowerStripCoordinates tube.height_pos.ne'
+        (WhitneyPairModel.injective_fderiv_lowerStripCoordinates tube.height_pos.ne'
           (2 * t - 1))
     exact
       d.injective_normalFrame_of_strip_germ tube.chart ht
         (k.smooth.contMDiffAt (k.open_domain.mem_nhds hkt)) tube.zero_section (hsource t ht)
-        (Smale.WhitneyPairModel.contDiff_lowerStripCoordinates tube.height_pos.ne').contDiffAt
-        (Smale.WhitneyPairModel.lowerStripCoordinates_lower h t) hcs (tube.lower_germ t ht)
+        (WhitneyPairModel.contDiff_lowerStripCoordinates tube.height_pos.ne').contDiffAt
+        (WhitneyPairModel.lowerStripCoordinates_lower h t) hcs (tube.lower_germ t ht)
 
-theorem Smale.TubularBigon.upper_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upper_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ : (ℝ × ℝ) → M} {h : ℝ} {l : Smale.CleanStripPatch (E := E) T S b k₀ k₁}
-    {k : (ℝ × ℝ) → M} {n : ℕ} (tube : Smale.TubularBigon (E := E) S T a b k l.map h n)
-    (d : Smale.StripNormalData A B (E := E) T l.map) :
+    {k₀ k₁ : (ℝ × ℝ) → M} {h : ℝ} {l : CleanStripPatch (E := E) T S b k₀ k₁}
+    {k : (ℝ × ℝ) → M} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l.map h n)
+    (d : StripNormalData A B (E := E) T l.map) :
     (∃ U : Set ℝ,
         IsOpen U ∧ Set.Icc (0 : ℝ) 1 ⊆ U ∧ ContDiffOn ℝ ∞ (d.normalFrame tube.chart) U) ∧
       ∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (d.normalFrame tube.chart t) := by
   have hpoint :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
-      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ Smale.WhitneyPairModel.bigon h := by
+      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ WhitneyPairModel.bigon h := by
     intro t ht
     have hf :
-      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (WhitneyPairModel.bigon h) :=
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
         ⟨t, ht, Or.inr rfl⟩
-    exact ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
+    exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
   have hsource :
     ∀ t ∈ Set.Icc (0 : ℝ) 1, ((2 * t - 1, h * (1 - (2 * t - 1) ^ 2)), 0) ∈ tube.chart.source :=
     fun t ht => tube.source_contains ⟨hpoint t ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
@@ -15037,24 +15037,24 @@ theorem Smale.TubularBigon.upper_sheetFrame {E M A B : Type*} [NormedAddCommGrou
       l.contains_strip ⟨ht, ⟨neg_nonpos.mpr l.width_pos.le, l.width_pos.le⟩⟩
     have hcs :
       Function.Surjective
-        (fderiv ℝ (Smale.WhitneyPairModel.upperStripCoordinates h)
+        (fderiv ℝ (WhitneyPairModel.upperStripCoordinates h)
           (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))) :=
       (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp
-        (Smale.WhitneyPairModel.injective_fderiv_upperStripCoordinates tube.height_pos.ne'
+        (WhitneyPairModel.injective_fderiv_upperStripCoordinates tube.height_pos.ne'
           (2 * t - 1))
     exact
       d.injective_normalFrame_of_strip_germ tube.chart ht
         (l.smooth.contMDiffAt (l.open_domain.mem_nhds hlt)) tube.zero_section (hsource t ht)
-        (Smale.WhitneyPairModel.contDiff_upperStripCoordinates tube.height_pos.ne').contDiffAt
-        (Smale.WhitneyPairModel.upperStripCoordinates_upper h t) hcs (tube.upper_germ t ht)
+        (WhitneyPairModel.contDiff_upperStripCoordinates tube.height_pos.ne').contDiffAt
+        (WhitneyPairModel.upperStripCoordinates_upper h t) hcs (tube.upper_germ t ht)
 
-theorem Smale.TubularBigon.upper_sheetFrame_complement_of_finrank {E M A B : Type*}
+theorem TubularBigon.upper_sheetFrame_complement_of_finrank {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ : (ℝ × ℝ) → M} {h : ℝ} [FiniteDimensional ℝ A]
-    {l : Smale.CleanStripPatch (E := E) T S b k₀ k₁} {k : (ℝ × ℝ) → M} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k l.map h n)
-    (d : Smale.StripNormalData A B (E := E) T l.map) (m : ℕ) (hdim : Module.finrank ℝ A + m = n) :
+    {l : CleanStripPatch (E := E) T S b k₀ k₁} {k : (ℝ × ℝ) → M} {n : ℕ}
+    (tube : TubularBigon (E := E) S T a b k l.map h n)
+    (d : StripNormalData A B (E := E) T l.map) (m : ℕ) (hdim : Module.finrank ℝ A + m = n) :
     ∃ V : Set ℝ,
       IsOpen V ∧
         Set.Icc (0 : ℝ) 1 ⊆ V ∧
@@ -15069,17 +15069,17 @@ theorem Smale.TubularBigon.upper_sheetFrame_complement_of_finrank {E M A B : Typ
   have hdim' : Module.finrank ℝ A + m = Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) := by
     simpa only [finrank_euclideanSpace_fin] using hdim
   obtain ⟨W, hW, hIW, C, hC, hr, hc⟩ :=
-    Smale.FrameField.exists_smooth_complement_near_starConvex_on hU hs
+    FrameField.exists_smooth_complement_near_starConvex_on hU hs
       CompactIccSpace.isCompact_Icc hstar (by simp) hIU hi m hdim'
   exact
     ⟨W ∩ U, hW.inter hU, fun t ht => ⟨hIW ht, hIU ht⟩, hs.mono Set.inter_subset_right, C,
       hC.mono Set.inter_subset_left, hr, fun t ht => hc t ht.1⟩
 
-def Smale.DiskFraming.puncturedModel (B : Type*) [NormedAddCommGroup B] :
+def DiskFraming.puncturedModel (B : Type*) [NormedAddCommGroup B] :
     TopologicalSpace.Opens B :=
   ⟨{0}ᶜ, isClosed_singleton.isOpen_compl⟩
 
-theorem Smale.DiskFraming.exists_smooth_punctured_curve_with_germ {B : Type*}
+theorem DiskFraming.exists_smooth_punctured_curve_with_germ {B : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] {a : ℝ → B} {U : Set ℝ} {t₀ : ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hU : IsOpen U) (ht₀ : t₀ ∈ U) (ha0 : a t₀ ≠ 0) :
     ∃ f : C(ℝ, puncturedModel B),
@@ -15099,12 +15099,12 @@ theorem Smale.DiskFraming.exists_smooth_punctured_curve_with_germ {B : Type*}
       (ha.contDiffAt (hU.mem_nhds ht.1)).contMDiffAt
     have hvalAt := haAt.congr_of_eventuallyEq (hval ht)
     exact ((ContMDiffAt.subtypeVal_comp_iff (puncturedModel B) A t).mp hvalAt).contMDiffWithinAt
-  obtain ⟨f, hf, hfgerm⟩ := Smale.exists_smooth_curve_with_germ_at hA hV htV
+  obtain ⟨f, hf, hfgerm⟩ := exists_smooth_curve_with_germ_at hA hV htV
   refine ⟨f, hf, ?_⟩
   filter_upwards [hfgerm, hval htV] with t ht htval
   exact (congrArg Subtype.val ht).trans htval
 
-theorem Smale.DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : Type*}
+theorem DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B] {a b : ℝ → B} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
     (h0U : (0 : ℝ) ∈ U) (h1V : (1 : ℝ) ∈ V) (ha0 : a 0 ≠ 0) (hb1 : b 1 ≠ 0)
@@ -15119,7 +15119,7 @@ theorem Smale.DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : T
     isPathConnected_iff_pathConnectedSpace.mp
       (isPathConnected_compl_singleton_of_one_lt_rank hrank (0 : B))
   let γ := PathConnectedSpace.somePath (a' 0) (b' 1)
-  obtain ⟨f, hf, hfa, hfb⟩ := Smale.exists_smooth_curve_with_endpoint_germs a' b' ha' hb' γ
+  obtain ⟨f, hf, hfa, hfb⟩ := exists_smooth_curve_with_endpoint_germs a' b' ha' hb' γ
   let v : ℝ → B := fun t => (f t : B)
   have hv : ContDiff ℝ ∞ v :=
     ((contMDiff_subtype_val (I := 𝓘(ℝ, B)) (U := puncturedModel B)).comp hf).contDiff
@@ -15131,61 +15131,61 @@ theorem Smale.DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : T
     change 7 / 8 < t at ht
     exact (congrArg Subtype.val (hfb ht.le)).trans htb
 
-def Smale.PlanarFrame.determinantComponent (σ : ℝ) :
-    TopologicalSpace.Opens (Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) :=
+def PlanarFrame.determinantComponent (σ : ℝ) :
+    TopologicalSpace.Opens (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :=
   ⟨{L | 0 < σ * determinant L},
     isOpen_lt continuous_const (continuous_const.mul continuous_determinant)⟩
 
-theorem Smale.PlanarFrame.first_column_ne_zero {σ : ℝ} (L : determinantComponent σ) :
-    (L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0) ≠ 0 := by
+theorem PlanarFrame.first_column_ne_zero {σ : ℝ} (L : determinantComponent σ) :
+    (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0) ≠ 0 := by
   intro hz
   have h := L.property
   change
     0 <
       σ *
-        area ((L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-          ((L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1)) at h
+        area ((L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+          ((L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1)) at h
   rw [hz] at h
   simp [area] at h
 
-theorem Smale.PlanarFrame.signed_transverseCoeff_pos {σ : ℝ} (L : determinantComponent σ) :
+theorem PlanarFrame.signed_transverseCoeff_pos {σ : ℝ} (L : determinantComponent σ) :
     0 <
       σ *
-        transverseCoeff ((L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-          ((L : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1)) := by
+        transverseCoeff ((L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+          ((L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1)) := by
   rw [transverseCoeff, ← mul_div_assoc]
   exact div_pos L.property (squareLength_pos (first_column_ne_zero L))
 
-theorem Smale.PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
+theorem PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
     (a b : determinantComponent σ) : Nonempty (Path a b) := by
-  have hrank : 1 < Module.rank ℝ Smale.PlaneImmersion.Plane := by
+  have hrank : 1 < Module.rank ℝ PlaneImmersion.Plane := by
     rw [← Module.finrank_eq_rank]
-    norm_num [Smale.PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self]
-  let : PathConnectedSpace (Smale.DiskFraming.puncturedModel Smale.PlaneImmersion.Plane) :=
+    norm_num [PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self]
+  let : PathConnectedSpace (DiskFraming.puncturedModel PlaneImmersion.Plane) :=
     isPathConnected_iff_pathConnectedSpace.mp
-      (isPathConnected_compl_singleton_of_one_lt_rank hrank (0 : Smale.PlaneImmersion.Plane))
-  let a₁ : Smale.DiskFraming.puncturedModel Smale.PlaneImmersion.Plane :=
-    ⟨(a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0),
+      (isPathConnected_compl_singleton_of_one_lt_rank hrank (0 : PlaneImmersion.Plane))
+  let a₁ : DiskFraming.puncturedModel PlaneImmersion.Plane :=
+    ⟨(a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0),
       first_column_ne_zero a⟩
-  let b₁ : Smale.DiskFraming.puncturedModel Smale.PlaneImmersion.Plane :=
-    ⟨(b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0),
+  let b₁ : DiskFraming.puncturedModel PlaneImmersion.Plane :=
+    ⟨(b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0),
       first_column_ne_zero b⟩
   let γ := PathConnectedSpace.somePath a₁ b₁
-  let v : unitInterval → Smale.PlaneImmersion.Plane := fun t => (γ t : Smale.PlaneImmersion.Plane)
+  let v : unitInterval → PlaneImmersion.Plane := fun t => (γ t : PlaneImmersion.Plane)
   have hv : Continuous v := continuous_subtype_val.comp γ.continuous
   have hvne (t : unitInterval) : v t ≠ 0 := (γ t).property
   let α₀ :=
-    parallelCoeff ((a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-      ((a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1))
+    parallelCoeff ((a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+      ((a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1))
   let α₁ :=
-    parallelCoeff ((b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-      ((b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1))
+    parallelCoeff ((b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+      ((b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1))
   let β₀ :=
-    transverseCoeff ((a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-      ((a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1))
+    transverseCoeff ((a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+      ((a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1))
   let β₁ :=
-    transverseCoeff ((b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0))
-      ((b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (0, 1))
+    transverseCoeff ((b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0))
+      ((b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (0, 1))
   let α (t : unitInterval) : ℝ := (1 - (t : ℝ)) * α₀ + (t : ℝ) * α₁
   let β (t : unitInterval) : ℝ := (1 - (t : ℝ)) * β₀ + (t : ℝ) * β₁
   have hα : Continuous α :=
@@ -15202,8 +15202,8 @@ theorem Smale.PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
       dsimp only [β]
       ring
     rwa [heq]
-  let F (t : unitInterval) : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane :=
-    Smale.PlaneImmersion.linearMap (v t, α t • v t + β t • quarterTurn (v t))
+  let F (t : unitInterval) : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane :=
+    PlaneImmersion.linearMap (v t, α t • v t + β t • quarterTurn (v t))
   have hF : Continuous F :=
     continuous_linearMap.comp
       (hv.prodMk ((hα.smul hv).add (hβ.smul (continuous_quarterTurn.comp hv))))
@@ -15211,21 +15211,21 @@ theorem Smale.PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
     change
       0 <
         σ *
-          determinant (Smale.PlaneImmersion.linearMap (v t, α t • v t + β t • quarterTurn (v t)))
+          determinant (PlaneImmersion.linearMap (v t, α t • v t + β t • quarterTurn (v t)))
     rw [determinant_linearMap, area_transverse, ← mul_assoc]
     exact mul_pos (hβpos t) (squareLength_pos (hvne t))
-  have hv0 : v 0 = (a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0) :=
+  have hv0 : v 0 = (a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0) :=
     congrArg Subtype.val γ.source
-  have hv1 : v 1 = (b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) (1, 0) :=
+  have hv1 : v 1 = (b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0) :=
     congrArg Subtype.val γ.target
-  have hF0 : F 0 = (a : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) := by
-    change Smale.PlaneImmersion.linearMap (v 0, α 0 • v 0 + β 0 • quarterTurn (v 0)) = _
+  have hF0 : F 0 = (a : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) := by
+    change PlaneImmersion.linearMap (v 0, α 0 • v 0 + β 0 • quarterTurn (v 0)) = _
     have hα0 : α 0 = α₀ := by simp [α]
     have hβ0 : β 0 = β₀ := by simp [β]
     rw [hv0, hα0, hβ0, decompose_second_column (first_column_ne_zero a)]
     exact linearMap_columns a
-  have hF1 : F 1 = (b : Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane) := by
-    change Smale.PlaneImmersion.linearMap (v 1, α 1 • v 1 + β 1 • quarterTurn (v 1)) = _
+  have hF1 : F 1 = (b : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) := by
+    change PlaneImmersion.linearMap (v 1, α 1 • v 1 + β 1 • quarterTurn (v 1)) = _
     have hα1 : α 1 = α₁ := by simp [α]
     have hβ1 : β 1 = β₁ := by simp [β]
     rw [hv1, hα1, hβ1, decompose_second_column (first_column_ne_zero b)]
@@ -15236,12 +15236,12 @@ theorem Smale.PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
         source' := Subtype.ext hF0
         target' := Subtype.ext hF1 }⟩
 
-theorem Smale.PlanarFrame.exists_smooth_join_of_same_determinant_sign
-    {a b : ℝ → (Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane)} {U V : Set ℝ}
+theorem PlanarFrame.exists_smooth_join_of_same_determinant_sign
+    {a b : ℝ → (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane)} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
     (h0U : (0 : ℝ) ∈ U) (h1V : (1 : ℝ) ∈ V)
     (hsign : 0 < (a 0).toLinearMap.det * (b 1).toLinearMap.det) :
-    ∃ L : ℝ → (Smale.PlaneImmersion.Plane →L[ℝ] Smale.PlaneImmersion.Plane),
+    ∃ L : ℝ → (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane),
       ContDiff ℝ ∞ L ∧
         (∀ t, Function.Bijective (L t)) ∧
           (∀ t, 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det) ∧
@@ -15263,7 +15263,7 @@ theorem Smale.PlanarFrame.exists_smooth_join_of_same_determinant_sign
     nonempty_path_determinantComponent (⟨a 0, ha0⟩ : determinantComponent σ)
       (⟨b 1, hb1⟩ : determinantComponent σ)
   obtain ⟨L, hL, hmem, hleft, hright⟩ :=
-    Smale.exists_smooth_open_curve_with_endpoint_germs (determinantComponent σ) ha hb hU hV h0U
+    exists_smooth_open_curve_with_endpoint_germs (determinantComponent σ) ha hb hU hV h0U
       h1V ha0 hb1 γ
   have hpositive (t : ℝ) : 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det := by
     have h := hmem t
@@ -15278,7 +15278,7 @@ theorem Smale.PlanarFrame.exists_smooth_join_of_same_determinant_sign
   rw [hz, MulZeroClass.mul_zero] at h
   exact lt_irrefl _ h
 
-theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*}
+theorem FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     (hdim : Module.finrank ℝ D = 2) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
@@ -15289,9 +15289,9 @@ theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*
         (∀ t, Function.Bijective (L t)) ∧
           (∀ t, 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det) ∧
             (L =ᶠ[𝓝 (0 : ℝ)] a) ∧ (L =ᶠ[𝓝 (1 : ℝ)] b) := by
-  have hdim' : Module.finrank ℝ Smale.PlaneImmersion.Plane = Module.finrank ℝ D := by
-    simp [Smale.PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self, hdim]
-  let e : Smale.PlaneImmersion.Plane ≃L[ℝ] D := ContinuousLinearEquiv.ofFinrankEq hdim'
+  have hdim' : Module.finrank ℝ PlaneImmersion.Plane = Module.finrank ℝ D := by
+    simp [PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self, hdim]
+  let e : PlaneImmersion.Plane ≃L[ℝ] D := ContinuousLinearEquiv.ofFinrankEq hdim'
   let a' (t : ℝ) := e.symm.toContinuousLinearMap.comp ((a t).comp e.toContinuousLinearMap)
   let b' (t : ℝ) := e.symm.toContinuousLinearMap.comp ((b t).comp e.toContinuousLinearMap)
   have ha' : ContDiffOn ℝ ∞ a' U := contDiffOn_const.clm_comp (ha.clm_comp contDiffOn_const)
@@ -15304,7 +15304,7 @@ theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*
     rw [hadet, hbdet]
     exact hsign
   obtain ⟨L', hL', hi', hdet', hleft, hright⟩ :=
-    Smale.PlanarFrame.exists_smooth_join_of_same_determinant_sign ha' hb' hU hV h0U h1V hsign'
+    PlanarFrame.exists_smooth_join_of_same_determinant_sign ha' hb' hU hV h0U h1V hsign'
   let L (t : ℝ) := e.toContinuousLinearMap.comp ((L' t).comp e.symm.toContinuousLinearMap)
   have hL : ContDiff ℝ ∞ L := contDiff_const.clm_comp (hL'.clm_comp contDiff_const)
   have hi (t : ℝ) : Function.Bijective (L t) := e.bijective.comp ((hi' t).comp e.symm.bijective)
@@ -15329,16 +15329,16 @@ theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*
     change e (e.symm (b t (e (e.symm v)))) = b t v
     simp only [e.apply_symm_apply]
 
-theorem Smale.FrameField.exists_global_field_with_closed_germ {F : Type*} [NormedAddCommGroup F]
-    [NormedSpace ℝ F] {L : Smale.PlaneImmersion.Plane → F} {U C : Set Smale.PlaneImmersion.Plane}
+theorem FrameField.exists_global_field_with_closed_germ {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {L : PlaneImmersion.Plane → F} {U C : Set PlaneImmersion.Plane}
     (hU : IsOpen U) (hL : ContDiffOn ℝ ∞ L U) (hC : IsClosed C) (hCU : C ⊆ U) :
-    ∃ L₀ : Smale.PlaneImmersion.Plane → F, ContDiff ℝ ∞ L₀ ∧ L₀ =ᶠ[𝓝ˢ C] L := by
+    ∃ L₀ : PlaneImmersion.Plane → F, ContDiff ℝ ∞ L₀ ∧ L₀ =ᶠ[𝓝ˢ C] L := by
   have hdisj : Disjoint Uᶜ C := Set.disjoint_left.mpr (fun _ hxU hxC => hxU (hCU hxC))
   obtain ⟨β, hβ0, hβ1, _⟩ :=
-    exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, Smale.PlaneImmersion.Plane)
+    exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, PlaneImmersion.Plane)
       hU.isClosed_compl hC hdisj (n := ⊤)
-  let L₀ : Smale.PlaneImmersion.Plane → F := fun x => β x • L x
-  have hβ : ContDiff ℝ ∞ (β : Smale.PlaneImmersion.Plane → ℝ) := β.contMDiff.contDiff
+  let L₀ : PlaneImmersion.Plane → F := fun x => β x • L x
+  have hβ : ContDiff ℝ ∞ (β : PlaneImmersion.Plane → ℝ) := β.contMDiff.contDiff
   have hL₀ : ContDiff ℝ ∞ L₀ := by
     apply contDiff_iff_contDiffAt.mpr
     intro x
@@ -15346,7 +15346,7 @@ theorem Smale.FrameField.exists_global_field_with_closed_germ {F : Type*} [Norme
     · exact hβ.contDiffAt.smul (hL.contDiffAt (hU.mem_nhds hx))
     · apply
         (contDiffAt_const :
-            ContDiffAt ℝ ∞ (fun _ : Smale.PlaneImmersion.Plane => (0 : F))
+            ContDiffAt ℝ ∞ (fun _ : PlaneImmersion.Plane => (0 : F))
               x).congr_of_eventuallyEq
       have hβx : ∀ᶠ y in 𝓝 x, β y = 0 := hβ0.filter_mono (nhds_le_nhdsSet hx)
       filter_upwards [hβx] with y hy
@@ -15357,7 +15357,7 @@ theorem Smale.FrameField.exists_global_field_with_closed_germ {F : Type*} [Norme
   change β x • L x = L x
   rw [hx, one_smul]
 
-theorem Smale.FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAddCommGroup P]
+theorem FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ F] {v : P → F} (hv : ContDiff ℝ ∞ v)
     (hdim : Module.finrank ℝ P < Module.finrank ℝ F) {K C : Set P} (hK : IsCompact K)
@@ -15378,7 +15378,7 @@ theorem Smale.FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAd
   have hdim' : Module.finrank ℝ P + Module.finrank ℝ Z < Module.finrank ℝ F := by
     simpa only [Z, finrank_euclideanSpace_fin, add_zero] using hdim
   obtain ⟨a, -, ha⟩ :=
-    Smale.exists_small_localized_image_avoidance hv.contMDiff hg β.contMDiff hdim'
+    exists_small_localized_image_avoidance hv.contMDiff hg β.contMDiff hdim'
       (show (0 : ℝ) < 1 by norm_num)
   refine ⟨fun x => v x + β x • a, hv.add (β.contMDiff.contDiff.smul contDiff_const), ?_, ?_⟩
   · filter_upwards [hβ0] with x hx
@@ -15388,25 +15388,25 @@ theorem Smale.FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAd
     · simpa only [hβx, zero_smul, add_zero] using hfixed x hx hβx
     · exact ha x hβx (0 : Z)
 
-theorem Smale.FrameField.exists_nonzero_extension_of_local_field {F : Type*}
+theorem FrameField.exists_nonzero_extension_of_local_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
-    {v : Smale.PlaneImmersion.Plane → F} {U C K : Set Smale.PlaneImmersion.Plane} (hU : IsOpen U)
+    {v : PlaneImmersion.Plane → F} {U C K : Set PlaneImmersion.Plane} (hU : IsOpen U)
     (hv : ContDiffOn ℝ ∞ v U) (hC : IsClosed C) (hCU : C ⊆ U) (hK : IsCompact K)
     (hne : ∀ x ∈ K ∩ C, v x ≠ 0) (hdim : 3 ≤ Module.finrank ℝ F) :
-    ∃ v' : Smale.PlaneImmersion.Plane → F, ContDiff ℝ ∞ v' ∧ v' =ᶠ[𝓝ˢ C] v ∧ ∀ x ∈ K, v' x ≠ 0 := by
+    ∃ v' : PlaneImmersion.Plane → F, ContDiff ℝ ∞ v' ∧ v' =ᶠ[𝓝ˢ C] v ∧ ∀ x ∈ K, v' x ≠ 0 := by
   obtain ⟨v₀, hv₀, heq⟩ := exists_global_field_with_closed_germ hU hv hC hCU
   have hne₀ : ∀ x ∈ K ∩ C, v₀ x ≠ 0 := by
     intro x hx
     rw [heq.self_of_nhdsSet hx.2]
     exact hne x hx
-  have hdim' : Module.finrank ℝ Smale.PlaneImmersion.Plane < Module.finrank ℝ F := by
+  have hdim' : Module.finrank ℝ PlaneImmersion.Plane < Module.finrank ℝ F := by
     change Module.finrank ℝ (ℝ × ℝ) < Module.finrank ℝ F
     simp only [Module.finrank_prod, Module.finrank_self]
     omega
   obtain ⟨v', hv', hgerm, hne'⟩ := exists_nonzero_field_rel_closed hv₀ hdim' hK hC hne₀
   exact ⟨v', hv', hgerm.trans heq, hne'⟩
 
-theorem Smale.FrameField.injective_iff_ne_zero_of_finrank_one {A F : Type*} [NormedAddCommGroup A]
+theorem FrameField.injective_iff_ne_zero_of_finrank_one {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (hA : Module.finrank ℝ A = 1) (L : A →L[ℝ] F) : Function.Injective L ↔ L ≠ 0 := by
   constructor
@@ -15431,19 +15431,19 @@ theorem Smale.FrameField.injective_iff_ne_zero_of_finrank_one {A F : Type*} [Nor
       omega
     exact LinearMap.ker_eq_bot.mp (Submodule.finrank_eq_zero.mp hk)
 
-theorem Smale.FrameField.finrank_one_column {A F : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+theorem FrameField.finrank_one_column {A F : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [FiniteDimensional ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (hA : Module.finrank ℝ A = 1) : Module.finrank ℝ (A →L[ℝ] F) = Module.finrank ℝ F := by
   rw [← (LinearMap.toContinuousLinearMap : (A →ₗ[ℝ] F) ≃ₗ[ℝ] (A →L[ℝ] F)).finrank_eq,
     Module.finrank_linearMap, hA, one_mul]
 
-theorem Smale.FrameField.exists_one_column_extension_of_local_field {A F : Type*}
+theorem FrameField.exists_one_column_extension_of_local_field {A F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] (hA : Module.finrank ℝ A = 1)
-    {L : Smale.PlaneImmersion.Plane → (A →L[ℝ] F)} {U C K : Set Smale.PlaneImmersion.Plane}
+    {L : PlaneImmersion.Plane → (A →L[ℝ] F)} {U C K : Set PlaneImmersion.Plane}
     (hU : IsOpen U) (hL : ContDiffOn ℝ ∞ L U) (hC : IsClosed C) (hCU : C ⊆ U) (hK : IsCompact K)
     (hi : ∀ x ∈ K ∩ C, Function.Injective (L x)) (hdim : 3 ≤ Module.finrank ℝ F) :
-    ∃ L' : Smale.PlaneImmersion.Plane → (A →L[ℝ] F),
+    ∃ L' : PlaneImmersion.Plane → (A →L[ℝ] F),
       ContDiff ℝ ∞ L' ∧ L' =ᶠ[𝓝ˢ C] L ∧ ∀ x ∈ K, Function.Injective (L' x) := by
   have hne : ∀ x ∈ K ∩ C, L x ≠ 0 := fun x hx =>
     (injective_iff_ne_zero_of_finrank_one hA (L x)).mp (hi x hx)
@@ -15452,21 +15452,21 @@ theorem Smale.FrameField.exists_one_column_extension_of_local_field {A F : Type*
   exact
     ⟨L', hL', heq, fun x hx => (injective_iff_ne_zero_of_finrank_one hA (L' x)).mpr (hne' x hx)⟩
 
-theorem Smale.FrameField.exists_completed_one_column_frame {A F : Type*} [NormedAddCommGroup A]
+theorem FrameField.exists_completed_one_column_frame {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (hA : Module.finrank ℝ A = 1)
-    {L : Smale.PlaneImmersion.Plane → (A →L[ℝ] F)} {U C K : Set Smale.PlaneImmersion.Plane}
+    {L : PlaneImmersion.Plane → (A →L[ℝ] F)} {U C K : Set PlaneImmersion.Plane}
     (hU : IsOpen U) (hL : ContDiffOn ℝ ∞ L U) (hC : IsClosed C) (hCU : C ⊆ U) (hK : IsCompact K)
-    (hstar : StarConvex ℝ (0 : Smale.PlaneImmersion.Plane) K)
-    (h0 : (0 : Smale.PlaneImmersion.Plane) ∈ K) (hi : ∀ x ∈ K ∩ C, Function.Injective (L x))
+    (hstar : StarConvex ℝ (0 : PlaneImmersion.Plane) K)
+    (h0 : (0 : PlaneImmersion.Plane) ∈ K) (hi : ∀ x ∈ K ∩ C, Function.Injective (L x))
     (hdim : Module.finrank ℝ F = 3) :
-    ∃ L' : Smale.PlaneImmersion.Plane → (A →L[ℝ] F),
+    ∃ L' : PlaneImmersion.Plane → (A →L[ℝ] F),
       ContDiff ℝ ∞ L' ∧
         L' =ᶠ[𝓝ˢ C] L ∧
-          ∃ V : Set Smale.PlaneImmersion.Plane,
+          ∃ V : Set PlaneImmersion.Plane,
             IsOpen V ∧
               K ⊆ V ∧
-                ∃ B : Smale.PlaneImmersion.Plane → (EuclideanSpace ℝ (Fin 2) →L[ℝ] F),
+                ∃ B : PlaneImmersion.Plane → (EuclideanSpace ℝ (Fin 2) →L[ℝ] F),
                   ContDiffOn ℝ ∞ B V ∧
                     (∀ x ∈ K, (B x).range = (L' x).rangeᗮ) ∧
                       ∀ x ∈ V, Function.Bijective ((L' x).coprod (B x)) := by
@@ -15477,7 +15477,7 @@ theorem Smale.FrameField.exists_completed_one_column_frame {A F : Type*} [Normed
     exists_smooth_complement_near_starConvex hL' hK hstar h0 hi' 2 hcodim
   exact ⟨L', hL', heq, V, hV, hKV, B, hB, hr, hb⟩
 
-theorem Smale.FrameField.eq_det_smul_id_of_finrank_one {D : Type*} [NormedAddCommGroup D]
+theorem FrameField.eq_det_smul_id_of_finrank_one {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] (hdim : Module.finrank ℝ D = 1) (A : D →L[ℝ] D) :
     A.toLinearMap = A.toLinearMap.det • LinearMap.id := by
   obtain ⟨a, ha, -⟩ := A.toLinearMap.existsUnique_eq_smul_id_of_finrank_eq_one hdim
@@ -15486,7 +15486,7 @@ theorem Smale.FrameField.eq_det_smul_id_of_finrank_one {D : Type*} [NormedAddCom
   rw [hdet]
   exact ha
 
-theorem Smale.FrameField.det_smul_add_of_finrank_one {D : Type*} [NormedAddCommGroup D]
+theorem FrameField.det_smul_add_of_finrank_one {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] (hdim : Module.finrank ℝ D = 1) (A B : D →L[ℝ] D) (a b : ℝ) :
     (a • A + b • B).toLinearMap.det = a * A.toLinearMap.det + b * B.toLinearMap.det := by
   have hlin :
@@ -15499,7 +15499,7 @@ theorem Smale.FrameField.det_smul_add_of_finrank_one {D : Type*} [NormedAddCommG
       _ = _ := by rw [smul_smul, smul_smul, ← add_smul]
   rw [hlin, LinearMap.det_smul, hdim, pow_one, LinearMap.det_id, mul_one]
 
-theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*}
+theorem FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     (hdim : Module.finrank ℝ D = 1) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
@@ -15548,7 +15548,7 @@ theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*
         apply Subtype.ext
         simp }
   obtain ⟨L, hL, hmem, hleft, hright⟩ :=
-    Smale.exists_smooth_open_curve_with_endpoint_germs S ha hb hU hV h0U h1V ha0 hb1 γ
+    exists_smooth_open_curve_with_endpoint_germs S ha hb hU hV h0U h1V ha0 hb1 γ
   have hpositive (t : ℝ) : 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det := hmem t
   refine ⟨L, hL, ?_, hpositive, hleft, hright⟩
   intro t
@@ -15563,7 +15563,7 @@ theorem Smale.FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*
   have hi : Function.Injective (L t) := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
-theorem Smale.FrameField.mul_endpoints_pos_of_continuous_nonzero {f : ℝ → ℝ}
+theorem FrameField.mul_endpoints_pos_of_continuous_nonzero {f : ℝ → ℝ}
     (hf : ContinuousOn f (Set.Icc (0 : ℝ) 1)) (hne : ∀ t ∈ Set.Icc (0 : ℝ) 1, f t ≠ 0) :
     0 < f 0 * f 1 := by
   by_contra h
@@ -15573,7 +15573,7 @@ theorem Smale.FrameField.mul_endpoints_pos_of_continuous_nonzero {f : ℝ → �
   · obtain ⟨t, ht, hft⟩ := intermediate_value_Icc (show (0 : ℝ) ≤ 1 by norm_num) hf h
     exact hne t ht hft
 
-theorem Smale.FrameField.det_mul_endpoints_pos {E : Type*} [NormedAddCommGroup E]
+theorem FrameField.det_mul_endpoints_pos {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {T : ℝ → (E →L[ℝ] E)}
     (hT : ContinuousOn T (Set.Icc (0 : ℝ) 1))
     (hi : ∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Bijective (T t)) :
@@ -15585,7 +15585,7 @@ theorem Smale.FrameField.det_mul_endpoints_pos {E : Type*} [NormedAddCommGroup E
   have hker : (T t).toLinearMap.ker ≠ ⊥ := LinearMap.det_eq_zero_iff_ker_ne_bot.mp hz
   exact hker (LinearMap.ker_eq_bot.mpr (hi t ht).1)
 
-theorem Smale.FrameField.same_sign_frames_iff_coefficients {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.same_sign_frames_iff_coefficients {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] (j : (D × Z) ≃L[ℝ] F)
     {G : ℝ → (D →L[ℝ] F)} {C L : ℝ → (Z →L[ℝ] F)} (hG : ContDiffOn ℝ ∞ G (Set.Icc (0 : ℝ) 1))
@@ -15616,7 +15616,7 @@ theorem Smale.FrameField.same_sign_frames_iff_coefficients {D Z F : Type*} [Norm
   rw [heq]
   exact mul_pos_iff_of_pos_left hpositive
 
-theorem Smale.FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two
+theorem FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two
     {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (hdim : Module.finrank ℝ Z = 1 ∨ Module.finrank ℝ Z = 2)
@@ -15654,7 +15654,7 @@ theorem Smale.FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank
     rw [ht]
     exact correctedComplement_self (G t) (C t) (L t)
 
-theorem Smale.FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two
+theorem FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two
     {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (hdim : Module.finrank ℝ Z = 1 ∨ Module.finrank ℝ Z = 2)
@@ -15677,7 +15677,7 @@ theorem Smale.FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_fi
     exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two hdim hU (hIU (by simp))
       (hIU (by simp)) hG hC hL hi hcoeff
 
-theorem Smale.WhitneyPairModel.exists_smooth_bigon_boundary_field {F : Type*}
+theorem WhitneyPairModel.exists_smooth_bigon_boundary_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {h : ℝ} (hh : 0 < h) {L H : ℝ → F} {D : Set ℝ}
     (hD : IsOpen D) (hID : Set.Icc (0 : ℝ) 1 ⊆ D) (hL : ContDiffOn ℝ ∞ L D)
     (hH : ContDiffOn ℝ ∞ H D) (h0 : H =ᶠ[𝓝 (0 : ℝ)] L) (h1 : H =ᶠ[𝓝 (1 : ℝ)] L) :
@@ -15727,11 +15727,11 @@ theorem Smale.WhitneyPairModel.exists_smooth_bigon_boundary_field {F : Type*}
     · exact hO₀sub hp0
     · exact hO₁sub hp1
   obtain ⟨W, hW, hWL, hWH⟩ :=
-    Smale.exists_smooth_open_gluing hU hV (hLP.mono hUP).contMDiffOn (hHP.mono hVP).contMDiffOn
+    exists_smooth_open_gluing hU hV (hLP.mono hUP).contMDiffOn (hHP.mono hVP).contMDiffOn
       hLH
   exact ⟨U, V, hU, hV, hfront, hlowU, huppV, W, hW.contDiffOn, hWL, hWH⟩
 
-theorem Smale.WhitneyPairModel.exists_injective_bigon_boundary_field {F : Type*}
+theorem WhitneyPairModel.exists_injective_bigon_boundary_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {A : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     {h : ℝ} (hh : 0 < h) {L H : ℝ → (A →L[ℝ] F)} {D : Set ℝ} (hD : IsOpen D)
     (hID : Set.Icc (0 : ℝ) 1 ⊆ D) (hL : ContDiffOn ℝ ∞ L D) (hH : ContDiffOn ℝ ∞ H D)
@@ -15766,33 +15766,33 @@ theorem Smale.WhitneyPairModel.exists_injective_bigon_boundary_field {F : Type*}
       rw [htime]
       exact hiH t ht
 
-def Smale.FrameField.rankThreePairCoordinates :
+def FrameField.rankThreePairCoordinates :
     (EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] EuclideanSpace ℝ (Fin 3) :=
   ContinuousLinearEquiv.ofFinrankEq
     (by simp only [Module.finrank_prod, finrank_euclideanSpace_fin])
 
-def Smale.FrameField.rankThreePairDet
+def FrameField.rankThreePairDet
     (A : EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3))
     (B : EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)) : ℝ :=
   (rankThreePairCoordinates.symm.toContinuousLinearMap.comp (A.coprod B)).toLinearMap.det
 
-theorem Smale.TubularBigon.exists_rankThree_boundary_complement_of_normal_sign {E M : Type*}
+theorem TubularBigon.exists_rankThree_boundary_complement_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign :
       0 <
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
             (d.normalFrame tube.chart 0) *
-          Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
+          FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
             (d.normalFrame tube.chart 1)) :
     ∃ U : Set ℝ,
       IsOpen U ∧
@@ -15815,42 +15815,42 @@ theorem Smale.TubularBigon.exists_rankThree_boundary_complement_of_normal_sign {
   have hsplit : ∀ t ∈ U, Function.Bijective ((e.normalFrame tube.chart t).coprod (C t)) :=
     fun t ht => hRC t ht.2
   obtain ⟨H, hH, hiH, hleft, hright⟩ :=
-    Smale.FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two
-      (Or.inl finrank_euclideanSpace_fin) Smale.FrameField.rankThreePairCoordinates hU hIU hRU hCU
+    FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two
+      (Or.inl finrank_euclideanSpace_fin) FrameField.rankThreePairCoordinates hU hIU hRU hCU
       hLU hsplit hsign
   exact ⟨U, hU, hIU, hLU, H, hH, hiH, hleft, hright⟩
 
-theorem Smale.TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign {E M : Type*}
+theorem TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign :
       0 <
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
             (d.normalFrame tube.chart 0) *
-          Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
+          FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
             (d.normalFrame tube.chart 1)) :
     ∃ O : Set (ℝ × ℝ),
       IsOpen O ∧
-        frontier (Smale.WhitneyPairModel.bigon h) ⊆ O ∧
+        frontier (WhitneyPairModel.bigon h) ⊆ O ∧
           ∃ W : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
             ContDiffOn ℝ ∞ W O ∧
               (∀ t ∈ Set.Icc (0 : ℝ) 1,
                   W =ᶠ[𝓝 (2 * t - 1, 0)]
-                    (d.normalFrame tube.chart ∘ Smale.WhitneyPairModel.arcTime)) ∧
+                    (d.normalFrame tube.chart ∘ WhitneyPairModel.arcTime)) ∧
                 (∀ t ∈ Set.Icc (0 : ℝ) 1,
                     Function.Bijective
                       ((e.normalFrame tube.chart t).coprod
                         (W (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))))) ∧
-                  ∀ p ∈ frontier (Smale.WhitneyPairModel.bigon h), Function.Injective (W p) := by
+                  ∀ p ∈ frontier (WhitneyPairModel.bigon h), Function.Injective (W p) := by
   obtain ⟨D, hD, hID, hL, H, hH, hcomp, h0, h1⟩ :=
     tube.exists_rankThree_boundary_complement_of_normal_sign d e hsign
   have hHi : ∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (H t) := by
@@ -15861,77 +15861,77 @@ theorem Smale.TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign
       simpa only [ContinuousLinearMap.coprod_apply, map_zero, zero_add] using huv
     exact congrArg Prod.snd ((hcomp t (hID ht)).1 heq)
   obtain ⟨O, hO, hfront, W, hW, hlo, hhi, hinj⟩ :=
-    Smale.WhitneyPairModel.exists_injective_bigon_boundary_field tube.height_pos hD hID hL hH h0
+    WhitneyPairModel.exists_injective_bigon_boundary_field tube.height_pos hD hID hL hH h0
       h1 (tube.lower_sheetFrame d).2 hHi
   refine ⟨O, hO, hfront, W, hW, hlo, ?_, hinj⟩
   intro t ht
   rw [(hhi t ht).eq_of_nhds]
-  have htime : Smale.WhitneyPairModel.arcTime (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) = t := by
-    dsimp [Smale.WhitneyPairModel.arcTime]
+  have htime : WhitneyPairModel.arcTime (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) = t := by
+    dsimp [WhitneyPairModel.arcTime]
     ring
   change
     Function.Bijective
       ((e.normalFrame tube.chart t).coprod
-        (H (Smale.WhitneyPairModel.arcTime (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)))))
+        (H (WhitneyPairModel.arcTime (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)))))
   rw [htime]
   exact hcomp t (hID ht)
 
-theorem Smale.TubularBigon.exists_rankThree_planar_frame_of_normal_sign {E M : Type*}
+theorem TubularBigon.exists_rankThree_planar_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign :
       0 <
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
             (d.normalFrame tube.chart 0) *
-          Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
+          FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
             (d.normalFrame tube.chart 1)) :
     ∃ W : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
       ContDiff ℝ ∞ W ∧
         (∀ t ∈ Set.Icc (0 : ℝ) 1,
-            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ Smale.WhitneyPairModel.arcTime)) ∧
+            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ WhitneyPairModel.arcTime)) ∧
           (∀ t ∈ Set.Icc (0 : ℝ) 1,
               Function.Bijective
                 ((e.normalFrame tube.chart t).coprod
                   (W (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))))) ∧
             ∃ V : Set (ℝ × ℝ),
               IsOpen V ∧
-                Smale.WhitneyPairModel.bigon h ⊆ V ∧
+                WhitneyPairModel.bigon h ⊆ V ∧
                   ∃ B : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
                     ContDiffOn ℝ ∞ B V ∧
-                      (∀ p ∈ Smale.WhitneyPairModel.bigon h, (B p).range = (W p).rangeᗮ) ∧
+                      (∀ p ∈ WhitneyPairModel.bigon h, (B p).range = (W p).rangeᗮ) ∧
                         ∀ p ∈ V, Function.Bijective ((W p).coprod (B p)) := by
   obtain ⟨O, hO, hfront, W₀, hW₀, hlo, hhi, hinj⟩ :=
     tube.exists_rankThree_planar_boundary_frame_of_normal_sign d e hsign
   obtain ⟨W, hW, heq, V, hV, hKV, B, hB, hr, hb⟩ :=
-    Smale.FrameField.exists_completed_one_column_frame finrank_euclideanSpace_fin hO hW₀
-      isClosed_frontier hfront (Smale.WhitneyPairModel.isCompact_bigon tube.height_pos)
-      (Smale.WhitneyPairModel.starConvex_bigon tube.height_pos.le)
-      (Smale.WhitneyPairModel.zero_mem_bigon tube.height_pos.le) (fun p hp => hinj p hp.2)
+    FrameField.exists_completed_one_column_frame finrank_euclideanSpace_fin hO hW₀
+      isClosed_frontier hfront (WhitneyPairModel.isCompact_bigon tube.height_pos)
+      (WhitneyPairModel.starConvex_bigon tube.height_pos.le)
+      (WhitneyPairModel.zero_mem_bigon tube.height_pos.le) (fun p hp => hinj p hp.2)
       finrank_euclideanSpace_fin
   refine ⟨W, hW, ?_, ?_, V, hV, hKV, B, hB, hr, hb⟩
   · intro t ht
-    have hp : (2 * t - 1, 0) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+    have hp : (2 * t - 1, 0) ∈ frontier (WhitneyPairModel.bigon h) :=
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
         ⟨t, ht, Or.inl rfl⟩
     exact (heq.filter_mono (nhds_le_nhdsSet hp)).trans (hlo t ht)
   · intro t ht
     have hp :
-      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
+      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (WhitneyPairModel.bigon h) :=
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos _).mpr
         ⟨t, ht, Or.inr rfl⟩
     rw [heq.self_of_nhdsSet hp]
     exact hhi t ht
 
-theorem Smale.FrameField.bijective_coprod_comm {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.bijective_coprod_comm {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (H : Z →L[ℝ] F) (hi : Function.Bijective (H.coprod W)) :
     Function.Bijective (W.coprod H) := by
@@ -15945,12 +15945,12 @@ theorem Smale.FrameField.bijective_coprod_comm {D Z F : Type*} [NormedAddCommGro
   rw [heq]
   exact hi.comp (ContinuousLinearEquiv.prodComm ℝ D Z).bijective
 
-def Smale.FrameField.transportComplement {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def FrameField.transportComplement {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F) : Z →L[ℝ] F :=
   (W.coprod B).comp ((W₀.coprod B₀).inverse.comp H)
 
-theorem Smale.FrameField.transportComplement_self {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.transportComplement_self {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B H : Z →L[ℝ] F) (h : (W.coprod B).IsInvertible) :
     transportComplement W B W B H = H := by
@@ -15958,7 +15958,7 @@ theorem Smale.FrameField.transportComplement_self {D Z F : Type*} [NormedAddComm
   intro z
   exact h.self_apply_inverse (H z)
 
-theorem Smale.FrameField.coprod_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.coprod_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F)
     (h₀ : (W₀.coprod B₀).IsInvertible) :
@@ -15972,7 +15972,7 @@ theorem Smale.FrameField.coprod_transportComplement {D Z F : Type*} [NormedAddCo
   simp only [transportComplement, ContinuousLinearMap.comp_apply,
     ContinuousLinearMap.coprod_apply, map_add, hfirst, map_zero, add_zero]
 
-theorem Smale.FrameField.bijective_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.bijective_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F)
     (h : (W.coprod B).IsInvertible) (h₀ : (W₀.coprod B₀).IsInvertible)
@@ -15981,7 +15981,7 @@ theorem Smale.FrameField.bijective_transportComplement {D Z F : Type*} [NormedAd
   rw [coprod_transportComplement W B W₀ B₀ H h₀]
   exact (h.bijective.comp h₀.inverse.bijective).comp hH
 
-theorem Smale.FrameField.contDiffOn_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.contDiffOn_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ D]
     [FiniteDimensional ℝ Z] {W W₀ : X → (D →L[ℝ] F)} {B B₀ H : X → (Z →L[ℝ] F)} {U : Set X}
@@ -15996,105 +15996,105 @@ theorem Smale.FrameField.contDiffOn_transportComplement {D Z F : Type*} [NormedA
       ((hi x hx).contDiffAt_map_inverse.comp x (hT₀.contDiffAt (hU.mem_nhds hx))).contDiffWithinAt
   exact (contDiffOn_coprod hW hB).clm_comp (hInv.clm_comp hH)
 
-theorem Smale.TubularBigon.exists_rankThree_adapted_frame_of_normal_sign {E M : Type*}
+theorem TubularBigon.exists_rankThree_adapted_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign :
       0 <
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
             (d.normalFrame tube.chart 0) *
-          Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
+          FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
             (d.normalFrame tube.chart 1)) :
     ∃ W : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
       ContDiff ℝ ∞ W ∧
         (∀ t ∈ Set.Icc (0 : ℝ) 1,
-            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ Smale.WhitneyPairModel.arcTime)) ∧
+            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ WhitneyPairModel.arcTime)) ∧
           ∃ O : Set (ℝ × ℝ),
             IsOpen O ∧
-              Smale.WhitneyPairModel.bigon h ⊆ O ∧
+              WhitneyPairModel.bigon h ⊆ O ∧
                 ∃ C : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
                   ContDiffOn ℝ ∞ C O ∧
                     (∀ t ∈ Set.Icc (0 : ℝ) 1,
-                        C (Smale.WhitneyPairModel.upperBoundaryArc h t) =
+                        C (WhitneyPairModel.upperBoundaryArc h t) =
                           e.normalFrame tube.chart t) ∧
                       ∀ p ∈ O, Function.Bijective ((W p).coprod (C p)) := by
   obtain ⟨W, hW, hlo, hhi, V, hV, hKV, B, hB, -, hb⟩ :=
     tube.exists_rankThree_planar_frame_of_normal_sign d e hsign
   obtain ⟨⟨D, hD, hID, hG⟩, -⟩ := tube.upper_sheetFrame e
   let r : (ℝ × ℝ) → (ℝ × ℝ) :=
-    Smale.WhitneyPairModel.upperBoundaryArc h ∘ Smale.WhitneyPairModel.arcTime
-  have hq : ContDiff ℝ ∞ (Smale.WhitneyPairModel.upperBoundaryArc h) := by
-    unfold Smale.WhitneyPairModel.upperBoundaryArc; fun_prop
-  have hr : ContDiff ℝ ∞ r := hq.comp Smale.WhitneyPairModel.contDiff_arcTime
-  have htime (t y : ℝ) : Smale.WhitneyPairModel.arcTime (2 * t - 1, y) = t := by
-    dsimp [Smale.WhitneyPairModel.arcTime]; ring
+    WhitneyPairModel.upperBoundaryArc h ∘ WhitneyPairModel.arcTime
+  have hq : ContDiff ℝ ∞ (WhitneyPairModel.upperBoundaryArc h) := by
+    unfold WhitneyPairModel.upperBoundaryArc; fun_prop
+  have hr : ContDiff ℝ ∞ r := hq.comp WhitneyPairModel.contDiff_arcTime
+  have htime (t y : ℝ) : WhitneyPairModel.arcTime (2 * t - 1, y) = t := by
+    dsimp [WhitneyPairModel.arcTime]; ring
   have htq (t : ℝ) :
-    Smale.WhitneyPairModel.arcTime (Smale.WhitneyPairModel.upperBoundaryArc h t) = t := htime t _
+    WhitneyPairModel.arcTime (WhitneyPairModel.upperBoundaryArc h t) = t := htime t _
   have hrq (t : ℝ) :
-    r (Smale.WhitneyPairModel.upperBoundaryArc h t) =
-      Smale.WhitneyPairModel.upperBoundaryArc h t := by
+    r (WhitneyPairModel.upperBoundaryArc h t) =
+      WhitneyPairModel.upperBoundaryArc h t := by
     dsimp only [r, Function.comp_apply]
     rw [htq]
   have htimeK :
-    Set.MapsTo Smale.WhitneyPairModel.arcTime (Smale.WhitneyPairModel.bigon h)
+    Set.MapsTo WhitneyPairModel.arcTime (WhitneyPairModel.bigon h)
       (Set.Icc (0 : ℝ) 1) := by
     intro p hp
-    have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+    have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
     change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
     constructor <;> linarith [hpr.1.1, hpr.1.2]
-  have hrK : Set.MapsTo r (Smale.WhitneyPairModel.bigon h) (Smale.WhitneyPairModel.bigon h) :=
+  have hrK : Set.MapsTo r (WhitneyPairModel.bigon h) (WhitneyPairModel.bigon h) :=
     fun _ hp => tube.upperBoundaryArc_mem_bigon (htimeK hp)
-  let O₀ := V ∩ (r ⁻¹' V ∩ Smale.WhitneyPairModel.arcTime ⁻¹' D)
+  let O₀ := V ∩ (r ⁻¹' V ∩ WhitneyPairModel.arcTime ⁻¹' D)
   have hO₀ : IsOpen O₀ :=
     hV.inter
       ((hV.preimage hr.continuous).inter
-        (hD.preimage Smale.WhitneyPairModel.contDiff_arcTime.continuous))
-  have hKO₀ : Smale.WhitneyPairModel.bigon h ⊆ O₀ := fun p hp =>
+        (hD.preimage WhitneyPairModel.contDiff_arcTime.continuous))
+  have hKO₀ : WhitneyPairModel.bigon h ⊆ O₀ := fun p hp =>
     ⟨hKV hp, hKV (hrK hp), hID (htimeK hp)⟩
   let C : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3)) := fun p =>
-    Smale.FrameField.transportComplement (W p) (B p) (W (r p)) (B (r p))
-      (e.normalFrame tube.chart (Smale.WhitneyPairModel.arcTime p))
+    FrameField.transportComplement (W p) (B p) (W (r p)) (B (r p))
+      (e.normalFrame tube.chart (WhitneyPairModel.arcTime p))
   have hC : ContDiffOn ℝ ∞ C O₀ := by
     apply
-      Smale.FrameField.contDiffOn_transportComplement hO₀ hW.contDiffOn
+      FrameField.contDiffOn_transportComplement hO₀ hW.contDiffOn
         (hB.mono Set.inter_subset_left) (hW.comp hr).contDiffOn
         (hB.comp hr.contDiffOn (fun _ hp => hp.2.1))
-        (hG.comp Smale.WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.2))
+        (hG.comp WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.2))
     intro p hp
-    exact Smale.FrameField.isInvertible_coprod_of_bijective (W (r p)) (B (r p)) (hb _ hp.2.1)
-  have hcompK : ∀ p ∈ Smale.WhitneyPairModel.bigon h, Function.Bijective ((W p).coprod (C p)) := by
+    exact FrameField.isInvertible_coprod_of_bijective (W (r p)) (B (r p)) (hb _ hp.2.1)
+  have hcompK : ∀ p ∈ WhitneyPairModel.bigon h, Function.Bijective ((W p).coprod (C p)) := by
     intro p hp
     have ht := htimeK hp
     have hupper :
       Function.Bijective
-        ((W (r p)).coprod (e.normalFrame tube.chart (Smale.WhitneyPairModel.arcTime p))) :=
-      Smale.FrameField.bijective_coprod_comm _ _ (hhi (Smale.WhitneyPairModel.arcTime p) ht)
+        ((W (r p)).coprod (e.normalFrame tube.chart (WhitneyPairModel.arcTime p))) :=
+      FrameField.bijective_coprod_comm _ _ (hhi (WhitneyPairModel.arcTime p) ht)
     exact
-      Smale.FrameField.bijective_transportComplement (W p) (B p) (W (r p)) (B (r p)) _
-        (Smale.FrameField.isInvertible_coprod_of_bijective _ _ (hb p (hKV hp)))
-        (Smale.FrameField.isInvertible_coprod_of_bijective _ _ (hb _ (hKV (hrK hp)))) hupper
+      FrameField.bijective_transportComplement (W p) (B p) (W (r p)) (B (r p)) _
+        (FrameField.isInvertible_coprod_of_bijective _ _ (hb p (hKV hp)))
+        (FrameField.isInvertible_coprod_of_bijective _ _ (hb _ (hKV (hrK hp)))) hupper
   have hTC : ContDiffOn ℝ ∞ (fun p => (W p).coprod (C p)) O₀ :=
-    Smale.FrameField.contDiffOn_coprod hW.contDiffOn hC
+    FrameField.contDiffOn_coprod hW.contDiffOn hC
   let O := O₀ ∩ {p | Function.Injective ((W p).coprod (C p))}
   have hO : IsOpen O :=
     hTC.continuousOn.isOpen_inter_preimage hO₀ ContinuousLinearMap.isOpen_injective
-  have hKO : Smale.WhitneyPairModel.bigon h ⊆ O := fun p hp => ⟨hKO₀ hp, (hcompK p hp).1⟩
+  have hKO : WhitneyPairModel.bigon h ⊆ O := fun p hp => ⟨hKO₀ hp, (hcompK p hp).1⟩
   refine ⟨W, hW, hlo, O, hO, hKO, C, hC.mono Set.inter_subset_left, ?_, ?_⟩
   · intro t ht
     dsimp only [C]
     rw [hrq, htq]
     exact
-      Smale.FrameField.transportComplement_self _ _ _
-        (Smale.FrameField.isInvertible_coprod_of_bijective _ _
+      FrameField.transportComplement_self _ _ _
+        (FrameField.isInvertible_coprod_of_bijective _ _
           (hb _ (hKV (tube.upperBoundaryArc_mem_bigon ht))))
   · intro p hp
     have hdim :
@@ -16103,81 +16103,81 @@ theorem Smale.TubularBigon.exists_rankThree_adapted_frame_of_normal_sign {E M : 
       simp only [Module.finrank_prod, finrank_euclideanSpace_fin]
     exact ⟨hp.2, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hp.2⟩
 
-def Smale.TubularBigon.rankThreeSheetPairJacobian {E M : Type*} [NormedAddCommGroup E]
+def TubularBigon.rankThreeSheetPairJacobian {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
-    (e : Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    (e : StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
     (t : ℝ) :
     ((ℝ × ℝ) × (EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 1))) →L[ℝ]
       ((ℝ × ℝ) × (EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 1))) :=
-  Smale.IntersectionCoordinates.jointBlock Smale.FrameField.rankThreePairCoordinates
+  IntersectionCoordinates.jointBlock FrameField.rankThreePairCoordinates
     (e.sheetDifferential tube.chart t) (d.sheetDifferential tube.chart t)
 
-def Smale.TubularBigon.rankThreeSheetPairDet {E M : Type*} [NormedAddCommGroup E]
+def TubularBigon.rankThreeSheetPairDet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
-    (e : Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    (e : StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
     (t : ℝ) : ℝ :=
   (tube.rankThreeSheetPairJacobian d e t).toLinearMap.det
 
-theorem Smale.TubularBigon.rankThree_corner_sheet_charts_coincide {E M : Type*}
+theorem TubularBigon.rankThree_corner_sheet_charts_coincide {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
-    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
-    (e : Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
+    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    (e : StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
     {t : ℝ} (ht : t = 0 ∨ t = 1) :
-    d.chart (Smale.StripCoordinates.center t) = e.chart (Smale.StripCoordinates.center t) := by
+    d.chart (StripCoordinates.center t) = e.chart (StripCoordinates.center t) := by
   have htI : t ∈ Set.Icc (0 : ℝ) 1 := by rcases ht with rfl | rfl <;> simp
   have hheight : h * (1 - (2 * t - 1) ^ 2) = 0 := by rcases ht with rfl | rfl <;> ring
   have hd := (tube.lower_germ t htI).eq_of_nhds
   have he := (tube.upper_germ t htI).eq_of_nhds
   dsimp only [Function.comp_apply] at hd he
-  rw [Smale.WhitneyPairModel.lowerStripCoordinates_lower, d.center t] at hd
-  rw [Smale.WhitneyPairModel.upperStripCoordinates_upper, e.center t, hheight] at he
+  rw [WhitneyPairModel.lowerStripCoordinates_lower, d.center t] at hd
+  rw [WhitneyPairModel.upperStripCoordinates_upper, e.center t, hheight] at he
   exact hd.symm.trans he
 
-theorem Smale.TubularBigon.rankThreeSheetPairDet_eq {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.rankThreeSheetPairDet_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
-    (e : Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
+    {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    (e : StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     tube.rankThreeSheetPairDet d e t =
       (8 * h * (2 * t - 1)) *
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart t)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart t)
           (d.normalFrame tube.chart t) := by
   rw [rankThreeSheetPairDet, rankThreeSheetPairJacobian,
-    Smale.IntersectionCoordinates.det_jointBlock Smale.FrameField.rankThreePairCoordinates
+    IntersectionCoordinates.det_jointBlock FrameField.rankThreePairCoordinates
       (e.sheetDifferential tube.chart t) (d.sheetDifferential tube.chart t)
       (tube.upper_sheetDifferential_arc e ht) (tube.lower_sheetDifferential_arc d ht),
     e.normal_sheetDifferential tube.chart ht (tube.upper_chart_center_mem_target e ht),
     d.normal_sheetDifferential tube.chart ht (tube.lower_chart_center_mem_target d ht)]
   have hplane :
-    (Smale.PlaneImmersion.linearMap ((2, -4 * h * (2 * t - 1)), (2, 0))).toLinearMap.det =
+    (PlaneImmersion.linearMap ((2, -4 * h * (2 * t - 1)), (2, 0))).toLinearMap.det =
       8 * h * (2 * t - 1) := by
-    rw [← Smale.PlanarFrame.determinant_eq_det, Smale.PlanarFrame.determinant_linearMap]
-    dsimp [Smale.PlanarFrame.area]
+    rw [← PlanarFrame.determinant_eq_det, PlanarFrame.determinant_linearMap]
+    dsimp [PlanarFrame.area]
     ring
   rw [hplane]
   rfl
 
-theorem Smale.TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sign {E M : Type*}
+theorem TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
-    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l) :
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l) :
     (tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) ↔
       (0 <
-        Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
+        FrameField.rankThreePairDet (e.normalFrame tube.chart 0)
             (d.normalFrame tube.chart 0) *
-          Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
+          FrameField.rankThreePairDet (e.normalFrame tube.chart 1)
             (d.normalFrame tube.chart 1)) := by
   let n :=
-    Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 0) (d.normalFrame tube.chart 0) *
-      Smale.FrameField.rankThreePairDet (e.normalFrame tube.chart 1) (d.normalFrame tube.chart 1)
+    FrameField.rankThreePairDet (e.normalFrame tube.chart 0) (d.normalFrame tube.chart 0) *
+      FrameField.rankThreePairDet (e.normalFrame tube.chart 1) (d.normalFrame tube.chart 1)
   have hprod :
     tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 = -((8 * h) ^ 2 * n) := by
     rw [tube.rankThreeSheetPairDet_eq d e (t := 0) (by simp),
@@ -16195,47 +16195,47 @@ theorem Smale.TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sig
     have hp : 0 < (8 * h) ^ 2 * n := mul_pos hscale hn
     linarith
 
-theorem Smale.TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs {E M : Type*}
+theorem TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
     ∃ W : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
       ContDiff ℝ ∞ W ∧
         (∀ t ∈ Set.Icc (0 : ℝ) 1,
-            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ Smale.WhitneyPairModel.arcTime)) ∧
+            W =ᶠ[𝓝 (2 * t - 1, 0)] (d.normalFrame tube.chart ∘ WhitneyPairModel.arcTime)) ∧
           ∃ O : Set (ℝ × ℝ),
             IsOpen O ∧
-              Smale.WhitneyPairModel.bigon h ⊆ O ∧
+              WhitneyPairModel.bigon h ⊆ O ∧
                 ∃ C : (ℝ × ℝ) → (EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3)),
                   ContDiffOn ℝ ∞ C O ∧
                     (∀ t ∈ Set.Icc (0 : ℝ) 1,
-                        C (Smale.WhitneyPairModel.upperBoundaryArc h t) =
+                        C (WhitneyPairModel.upperBoundaryArc h t) =
                           e.normalFrame tube.chart t) ∧
                       ∀ p ∈ O, Function.Bijective ((W p).coprod (C p)) :=
   tube.exists_rankThree_adapted_frame_of_normal_sign d e
     ((tube.opposite_rankThree_corner_determinants_iff_normal_sign d e).mp hsign)
 
-def Smale.IntersectionCoordinates.pairCoordinates {A B F : Type*} [NormedAddCommGroup A]
+def IntersectionCoordinates.pairCoordinates {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) :
-    ((ℝ × A) × (ℝ × B)) ≃L[ℝ] (Smale.PlaneImmersion.Plane × F) :=
+    ((ℝ × A) × (ℝ × B)) ≃L[ℝ] (PlaneImmersion.Plane × F) :=
   (ContinuousLinearEquiv.prodProdProdComm ℝ ℝ A ℝ B).trans
-    (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ Smale.PlaneImmersion.Plane) j)
+    (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ PlaneImmersion.Plane) j)
 
-theorem Smale.IntersectionCoordinates.det_jointBlock_eq_tangentSum {A B F : Type*}
+theorem IntersectionCoordinates.det_jointBlock_eq_tangentSum {A B F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F)
-    (P : (ℝ × A) →L[ℝ] (Smale.PlaneImmersion.Plane × F))
-    (Q : (ℝ × B) →L[ℝ] (Smale.PlaneImmersion.Plane × F)) :
+    (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
+    (Q : (ℝ × B) →L[ℝ] (PlaneImmersion.Plane × F)) :
     (jointBlock j P Q).det =
       ((pairCoordinates j).symm.toContinuousLinearMap.comp (P.coprod Q)).det := by
   let k := ContinuousLinearEquiv.prodProdProdComm ℝ ℝ A ℝ B
@@ -16250,7 +16250,7 @@ theorem Smale.IntersectionCoordinates.det_jointBlock_eq_tangentSum {A B F : Type
   rw [heq]
   exact LinearMap.det_conj T.toLinearMap k.toLinearEquiv
 
-theorem Smale.FrameField.normalDetector_eq_comp_quotient {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.normalDetector_eq_comp_quotient {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (Q : F →L[ℝ] Z)
     (hi : (G.coprod C).IsInvertible) (hQG : Q.comp G = 0) :
@@ -16263,7 +16263,7 @@ theorem Smale.FrameField.normalDetector_eq_comp_quotient {D Z F : Type*} [Normed
   change Q v = Q (C w.2)
   rw [← hv, map_add, hzero, zero_add]
 
-theorem Smale.FrameField.det_intersection_mul_normalComplement {D Z F : Type*}
+theorem FrameField.det_intersection_mul_normalComplement {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
     (j : (D × Z) ≃L[ℝ] F) (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (Q : F →L[ℝ] Z)
@@ -16284,7 +16284,7 @@ theorem Smale.FrameField.det_intersection_mul_normalComplement {D Z F : Type*}
   rw [hframe, hdet]
   ring
 
-theorem Smale.FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
+theorem FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
     (j : (D × Z) ≃L[ℝ] F) (G : ℝ → (D →L[ℝ] F)) (C L : ℝ → (Z →L[ℝ] F)) (Q : ℝ → (F →L[ℝ] Z))
@@ -16307,7 +16307,7 @@ theorem Smale.FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
   have hKpos :=
     det_mul_endpoints_pos hK.continuousOn
       (fun t ht =>
-        Smale.TransverseCoordinates.bijective_normal_comp (Q t) (G t) (C t) (hQs t ht)
+        TransverseCoordinates.bijective_normal_comp (Q t) (G t) (C t) (hQs t ht)
           (hi t ht).surjective (hQG t ht) rfl)
   have h₀ :=
     det_intersection_mul_normalComplement j (G 0) (C 0) (L 0) (Q 0) (hi 0 (by simp))
@@ -16341,146 +16341,146 @@ theorem Smale.FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
     · exact (not_lt_of_gt hKpos hk).elim
     · exact ha
 
-def Smale.StripNormalData.sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (t : ℝ) :
     A →L[ℝ] (ℝ × ℝ) :=
   (ContinuousLinearMap.fst ℝ (ℝ × ℝ) Z).comp
     ((d.sheetDifferential Ψ t).comp (ContinuousLinearMap.inr ℝ ℝ A))
 
-theorem Smale.StripNormalData.contDiffOn_sheetDifferential {A B Z E M : Type*}
+theorem StripNormalData.contDiffOn_sheetDifferential {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.sheetDifferential Ψ)
       {t |
-        Smale.StripCoordinates.center t ∈ d.chart.source ∧
-          d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target} := by
+        StripCoordinates.center t ∈ d.chart.source ∧
+          d.chart (StripCoordinates.center t) ∈ Ψ.target} := by
   intro t ht
-  have htransition : ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t) :=
+  have htransition : ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (StripCoordinates.center t) :=
     ((Ψ.contMDiffOn_invFun.contMDiffAt (Ψ.open_target.mem_nhds ht.2)).comp
-        (Smale.StripCoordinates.center t)
+        (StripCoordinates.center t)
         (d.chart.contMDiffOn_toFun.contMDiffAt (d.chart.open_source.mem_nhds ht.1))).contDiffAt
   have hs : ContDiffAt ℝ ∞ (d.sheetTransition Ψ) (t, 0) :=
     htransition.comp (t, 0) (ContinuousLinearMap.inl ℝ (ℝ × A) B).contDiff.contDiffAt
   have hc : ContDiff ℝ ∞ (fun s : ℝ => (s, (0 : A))) := contDiff_id.prodMk contDiff_const
   exact ((hs.fderiv_right (by simp)).comp t hc.contDiffAt).contDiffWithinAt
 
-theorem Smale.StripNormalData.contDiffOn_sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.contDiffOn_sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.sheetBaseFrame Ψ)
       {t |
-        Smale.StripCoordinates.center t ∈ d.chart.source ∧
-          d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target} :=
+        StripCoordinates.center t ∈ d.chart.source ∧
+          d.chart (StripCoordinates.center t) ∈ Ψ.target} :=
   contDiffOn_const.clm_comp ((d.contDiffOn_sheetDifferential Ψ).clm_comp contDiffOn_const)
 
-theorem Smale.StripNormalData.exists_open_sheetBaseFrame_domain {A B Z E M : Type*}
+theorem StripNormalData.exists_open_sheetBaseFrame_domain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞)
-    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     ∃ U : Set ℝ, IsOpen U ∧ Set.Icc (0 : ℝ) 1 ⊆ U ∧ ContDiffOn ℝ ∞ (d.sheetBaseFrame Ψ) U := by
-  have hc : Continuous (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+  have hc : Continuous (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (continuous_id.prodMk continuous_const).prodMk continuous_const
   have hO : IsOpen (d.chart.source ∩ d.chart ⁻¹' Ψ.target) :=
     d.chart.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage d.chart.open_source Ψ.open_target
   exact
-    ⟨Smale.StripCoordinates.center ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target), hO.preimage hc,
+    ⟨StripCoordinates.center ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target), hO.preimage hc,
       fun t ht => ⟨d.line ht, htarget t ht⟩, d.contDiffOn_sheetBaseFrame Ψ⟩
 
-theorem Smale.StripNormalData.sheetDifferential_transverse_eq {A B Z E M : Type*}
+theorem StripNormalData.sheetDifferential_transverse_eq {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
-    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
     (u : A) : d.sheetDifferential Ψ t (0, u) = (d.sheetBaseFrame Ψ t u, d.normalFrame Ψ t u) := by
   apply Prod.ext
   · rfl
   · exact congrArg (fun L : A →L[ℝ] Z => L u) (d.normal_sheetDifferential Ψ ht htarget)
 
-def Smale.StripNormalData.tubularTransitionDerivative {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.tubularTransitionDerivative {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (t : ℝ) :
-    Smale.StripCoordinates.Space A B →L[ℝ] ((ℝ × ℝ) × Z) :=
-  fderiv ℝ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t)
+    StripCoordinates.Space A B →L[ℝ] ((ℝ × ℝ) × Z) :=
+  fderiv ℝ (Ψ.symm ∘ d.chart) (StripCoordinates.center t)
 
-def Smale.StripNormalData.sheetComplement {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.sheetComplement {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (t : ℝ) :
     B →L[ℝ] ((ℝ × ℝ) × Z) :=
   (d.tubularTransitionDerivative Ψ t).comp (ContinuousLinearMap.inr ℝ (ℝ × A) B)
 
-theorem Smale.StripNormalData.contDiffOn_tubularTransitionDerivative {A B Z E M : Type*}
+theorem StripNormalData.contDiffOn_tubularTransitionDerivative {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.tubularTransitionDerivative Ψ)
       {t |
-        Smale.StripCoordinates.center t ∈ d.chart.source ∧
-          d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target} := by
+        StripCoordinates.center t ∈ d.chart.source ∧
+          d.chart (StripCoordinates.center t) ∈ Ψ.target} := by
   intro t ht
-  have htransition : ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (Smale.StripCoordinates.center t) :=
+  have htransition : ContDiffAt ℝ ∞ (Ψ.symm ∘ d.chart) (StripCoordinates.center t) :=
     ((Ψ.contMDiffOn_invFun.contMDiffAt (Ψ.open_target.mem_nhds ht.2)).comp
-        (Smale.StripCoordinates.center t)
+        (StripCoordinates.center t)
         (d.chart.contMDiffOn_toFun.contMDiffAt (d.chart.open_source.mem_nhds ht.1))).contDiffAt
-  have hc : ContDiff ℝ ∞ (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+  have hc : ContDiff ℝ ∞ (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (contDiff_id.prodMk contDiff_const).prodMk contDiff_const
   exact ((htransition.fderiv_right (by simp)).comp t hc.contDiffAt).contDiffWithinAt
 
-theorem Smale.StripNormalData.contDiffOn_sheetComplement {A B Z E M : Type*}
+theorem StripNormalData.contDiffOn_sheetComplement {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.sheetComplement Ψ)
       {t |
-        Smale.StripCoordinates.center t ∈ d.chart.source ∧
-          d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target} :=
+        StripCoordinates.center t ∈ d.chart.source ∧
+          d.chart (StripCoordinates.center t) ∈ Ψ.target} :=
   (d.contDiffOn_tubularTransitionDerivative Ψ).clm_comp contDiffOn_const
 
-theorem Smale.StripNormalData.bijective_tubularTransitionDerivative {A B Z E M : Type*}
+theorem StripNormalData.bijective_tubularTransitionDerivative {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     Function.Bijective (d.tubularTransitionDerivative Ψ t) := by
   unfold tubularTransitionDerivative
   rw [← mfderiv_eq_fderiv,
-    mfderiv_comp (Smale.StripCoordinates.center t) (Ψ.symm.mdifferentiableAt (by simp) htarget)
+    mfderiv_comp (StripCoordinates.center t) (Ψ.symm.mdifferentiableAt (by simp) htarget)
       (d.chart.mdifferentiableAt (by simp) (d.line ht))]
   exact
-    (Smale.PartialChart.bijective_mfderiv Ψ.symm htarget).comp
-      (Smale.PartialChart.bijective_mfderiv d.chart (d.line ht))
+    (PartialChart.bijective_mfderiv Ψ.symm htarget).comp
+      (PartialChart.bijective_mfderiv d.chart (d.line ht))
 
-theorem Smale.StripNormalData.sheet_coprod_complement_eq {A B Z E M : Type*}
+theorem StripNormalData.sheet_coprod_complement_eq {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     (d.sheetDifferential Ψ t).coprod (d.sheetComplement Ψ t) =
       d.tubularTransitionDerivative Ψ t := by
   rw [d.sheetDifferential_eq Ψ ht htarget]
@@ -16492,119 +16492,119 @@ theorem Smale.StripNormalData.sheet_coprod_complement_eq {A B Z E M : Type*}
   rw [← map_add]
   simp
 
-theorem Smale.StripNormalData.isInvertible_sheet_coprod_complement {A B Z E M : Type*}
+theorem StripNormalData.isInvertible_sheet_coprod_complement {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) [FiniteDimensional ℝ A]
     [FiniteDimensional ℝ B] {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     ((d.sheetDifferential Ψ t).coprod (d.sheetComplement Ψ t)).IsInvertible := by
-  apply Smale.FrameField.isInvertible_coprod_of_bijective
+  apply FrameField.isInvertible_coprod_of_bijective
   rw [d.sheet_coprod_complement_eq Ψ ht htarget]
   exact d.bijective_tubularTransitionDerivative Ψ ht htarget
 
-def Smale.StripNormalData.normalDetector {A B Z E M N : Type*} [NormedAddCommGroup A]
+def StripNormalData.normalDetector {A B Z E M N : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) (t : ℝ) :
     ((ℝ × ℝ) × Z) →L[ℝ] N :=
-  fderiv ℝ (q ∘ Ψ) (Ψ.symm (d.chart (Smale.StripCoordinates.center t)))
+  fderiv ℝ (q ∘ Ψ) (Ψ.symm (d.chart (StripCoordinates.center t)))
 
-theorem Smale.StripNormalData.contDiffAt_normalMap_in_tube {A B Z E M N : Type*}
+theorem StripNormalData.contDiffAt_normalMap_in_tube {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {t : ℝ}
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (Smale.StripCoordinates.center t))) :
-    ContDiffAt ℝ ∞ (q ∘ Ψ) (Ψ.symm (d.chart (Smale.StripCoordinates.center t))) := by
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (StripCoordinates.center t))) :
+    ContDiffAt ℝ ∞ (q ∘ Ψ) (Ψ.symm (d.chart (StripCoordinates.center t))) := by
   have hinv :
-    Ψ (Ψ.symm (d.chart (Smale.StripCoordinates.center t))) =
-      d.chart (Smale.StripCoordinates.center t) :=
+    Ψ (Ψ.symm (d.chart (StripCoordinates.center t))) =
+      d.chart (StripCoordinates.center t) :=
     Ψ.right_inv' htarget
   have hq' :
-    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (Ψ (Ψ.symm (d.chart (Smale.StripCoordinates.center t)))) :=
+    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (Ψ (Ψ.symm (d.chart (StripCoordinates.center t)))) :=
     hinv.symm ▸ hq
   exact
     (hq'.comp _
         (Ψ.contMDiffOn_toFun.contMDiffAt
           (Ψ.open_source.mem_nhds (Ψ.map_target' htarget)))).contDiffAt
 
-theorem Smale.StripNormalData.contDiffOn_normalDetector {A B Z E M N : Type*}
+theorem StripNormalData.contDiffOn_normalDetector {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {O : Set M}
     (hO : IsOpen O) (hq : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q O)
-    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hcenter : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (Smale.StripCoordinates.center t) ∈ O) :
+    (htarget : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hcenter : ∀ t ∈ Set.Icc (0 : ℝ) 1, d.chart (StripCoordinates.center t) ∈ O) :
     ContDiffOn ℝ ∞ (d.normalDetector Ψ q) (Set.Icc (0 : ℝ) 1) := by
   intro t ht
   have hqΨ :=
     d.contDiffAt_normalMap_in_tube Ψ q (htarget t ht)
       (hq.contMDiffAt (hO.mem_nhds (hcenter t ht)))
-  have hc : ContDiff ℝ ∞ (Smale.StripCoordinates.center : ℝ → Smale.StripCoordinates.Space A B) :=
+  have hc : ContDiff ℝ ∞ (StripCoordinates.center : ℝ → StripCoordinates.Space A B) :=
     (contDiff_id.prodMk contDiff_const).prodMk contDiff_const
-  have hx : ContDiffAt ℝ ∞ (fun s => Ψ.symm (d.chart (Smale.StripCoordinates.center s))) t :=
+  have hx : ContDiffAt ℝ ∞ (fun s => Ψ.symm (d.chart (StripCoordinates.center s))) t :=
     (d.contDiffAt_tubularTransition Ψ ht (htarget t ht)).comp t hc.contDiffAt
   exact ((hqΨ.fderiv_right (by simp)).comp t hx).contDiffWithinAt
 
-theorem Smale.StripNormalData.normalDetector_eq_native {A B Z E M N : Type*}
+theorem StripNormalData.normalDetector_eq_native {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {t : ℝ}
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (Smale.StripCoordinates.center t))) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (StripCoordinates.center t))) :
     d.normalDetector Ψ q t =
-      (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, N) q (d.chart (Smale.StripCoordinates.center t)) : E →L[ℝ] N).comp
+      (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, N) q (d.chart (StripCoordinates.center t)) : E →L[ℝ] N).comp
         (mfderiv 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) Ψ
-            (Ψ.symm (d.chart (Smale.StripCoordinates.center t))) :
+            (Ψ.symm (d.chart (StripCoordinates.center t))) :
           ((ℝ × ℝ) × Z) →L[ℝ] E) := by
   have hinv :
-    Ψ (Ψ.symm (d.chart (Smale.StripCoordinates.center t))) =
-      d.chart (Smale.StripCoordinates.center t) :=
+    Ψ (Ψ.symm (d.chart (StripCoordinates.center t))) =
+      d.chart (StripCoordinates.center t) :=
     Ψ.right_inv' htarget
   have hq' :
     MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, N) q
-      (Ψ (Ψ.symm (d.chart (Smale.StripCoordinates.center t)))) :=
+      (Ψ (Ψ.symm (d.chart (StripCoordinates.center t)))) :=
     hinv.symm ▸ hq.mdifferentiableAt (by simp)
   unfold normalDetector
   rw [← mfderiv_eq_fderiv,
     mfderiv_comp _ hq' (Ψ.mdifferentiableAt (by simp) (Ψ.map_target' htarget)), hinv]
 
-theorem Smale.StripNormalData.surjective_normalDetector {A B Z E M N : Type*}
+theorem StripNormalData.surjective_normalDetector {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {t : ℝ}
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (Smale.StripCoordinates.center t)))
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (StripCoordinates.center t)))
     (hqs :
       Function.Surjective
-        (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, N) q (d.chart (Smale.StripCoordinates.center t)))) :
+        (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, N) q (d.chart (StripCoordinates.center t)))) :
     Function.Surjective (d.normalDetector Ψ q t) := by
   rw [d.normalDetector_eq_native Ψ q htarget hq]
-  exact hqs.comp (Smale.PartialChart.bijective_mfderiv Ψ (Ψ.map_target' htarget)).surjective
+  exact hqs.comp (PartialChart.bijective_mfderiv Ψ (Ψ.map_target' htarget)).surjective
 
-theorem Smale.StripNormalData.normalDetector_comp_sheet_eq_zero {A B Z E M N : Type*}
+theorem StripNormalData.normalDetector_comp_sheet_eq_zero {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {O : Set M}
     (hO : IsOpen O) (hq : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q O) (hzero : ∀ y ∈ S ∩ O, q y = 0)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hcenter : d.chart (Smale.StripCoordinates.center t) ∈ O) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hcenter : d.chart (StripCoordinates.center t) ∈ O) :
     (d.normalDetector Ψ q t).comp (d.sheetDifferential Ψ t) = 0 := by
   let i := ContinuousLinearMap.inl ℝ (ℝ × A) B
   have hi : ContinuousAt i (t, 0) := i.continuous.continuousAt
@@ -16630,14 +16630,14 @@ theorem Smale.StripNormalData.normalDetector_comp_sheet_eq_zero {A B Z E M N : T
     exact (hasFDerivAt_const (𝕜 := ℝ) (0 : N) (t, (0 : A))).fderiv
   exact hchain.symm.trans hder
 
-theorem Smale.StripNormalData.normalDetector_comp_sheet {A B Z E M N : Type*}
+theorem StripNormalData.normalDetector_comp_sheet {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
-    {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) (q : M → N) {t : ℝ}
-    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target)
-    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (Smale.StripCoordinates.center t))) :
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target)
+    (hq : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, N) ∞ q (d.chart (StripCoordinates.center t))) :
     (d.normalDetector Ψ q t).comp (d.sheetDifferential Ψ t) =
       fderiv ℝ (fun w : ℝ × A => q (d.chart (w, 0))) (t, 0) := by
   let i := ContinuousLinearMap.inl ℝ (ℝ × A) B
@@ -16657,33 +16657,33 @@ theorem Smale.StripNormalData.normalDetector_comp_sheet {A B Z E M N : Type*}
     fderiv_comp (t, (0 : A)) (hqΨ.differentiableAt (by simp)) (hsheet.differentiableAt (by simp))
   exact hchain.symm.trans heq.fderiv_eq
 
-theorem Smale.TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determinants {E M : Type*}
+theorem TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determinants {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
-    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : Smale.TubularBigon (E := E) S T a b k l h 3)
-    (d : Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
-    (e : Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
+    {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
+    (d : StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S k)
+    (e : StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T l)
     (q : M → (ℝ × EuclideanSpace ℝ (Fin 1))) {O : Set M} (hO : IsOpen O)
     (hq : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q O)
     (hzero : ∀ y ∈ T ∩ O, q y = 0)
-    (hcenter : ∀ t ∈ Set.Icc (0 : ℝ) 1, e.chart (Smale.StripCoordinates.center t) ∈ O)
+    (hcenter : ∀ t ∈ Set.Icc (0 : ℝ) 1, e.chart (StripCoordinates.center t) ∈ O)
     (hqs :
       ∀ t ∈ Set.Icc (0 : ℝ) 1,
         Function.Surjective
           (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) q
-            (e.chart (Smale.StripCoordinates.center t)))) :
+            (e.chart (StripCoordinates.center t)))) :
     (tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) ↔
       (fderiv ℝ (fun w : ℝ × EuclideanSpace ℝ (Fin 1) => q (d.chart (w, 0))) (0, 0)).det *
           (fderiv ℝ (fun w : ℝ × EuclideanSpace ℝ (Fin 1) => q (d.chart (w, 0))) (1, 0)).det <
         0 := by
   let i : (ℝ × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
     ContinuousLinearEquiv.ofFinrankEq (by simp [Module.finrank_prod])
-  let j := Smale.IntersectionCoordinates.pairCoordinates Smale.FrameField.rankThreePairCoordinates
+  let j := IntersectionCoordinates.pairCoordinates FrameField.rankThreePairCoordinates
   let G := e.sheetDifferential tube.chart
   let L := d.sheetDifferential tube.chart
   let C (t : ℝ) := (e.sheetComplement tube.chart t).comp i.toContinuousLinearMap
   let Q := e.normalDetector tube.chart q
   have htarget :
-    ∀ t ∈ Set.Icc (0 : ℝ) 1, e.chart (Smale.StripCoordinates.center t) ∈ tube.chart.target :=
+    ∀ t ∈ Set.Icc (0 : ℝ) 1, e.chart (StripCoordinates.center t) ∈ tube.chart.target :=
     fun _ ht => tube.upper_chart_center_mem_target e ht
   have hG : ContDiffOn ℝ ∞ G (Set.Icc (0 : ℝ) 1) :=
     (e.contDiffOn_sheetDifferential tube.chart).mono (fun t ht => ⟨e.line ht, htarget t ht⟩)
@@ -16705,7 +16705,7 @@ theorem Smale.TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determina
       apply ContinuousLinearMap.ext
       intro z
       rfl
-    apply Smale.FrameField.isInvertible_coprod_of_bijective
+    apply FrameField.isInvertible_coprod_of_bijective
     rw [heq]
     exact
       (e.isInvertible_sheet_coprod_complement tube.chart ht (htarget t ht)).bijective.comp
@@ -16716,12 +16716,12 @@ theorem Smale.TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determina
   have hQG : ∀ t ∈ Set.Icc (0 : ℝ) 1, (Q t).comp (G t) = 0 := fun t ht =>
     e.normalDetector_comp_sheet_eq_zero tube.chart q hO hq hzero ht (htarget t ht) (hcenter t ht)
   have hsign :=
-    Smale.FrameField.opposite_intersectionDet_iff_normalDet j G C L Q hG hC hQ hi hQs hQG
+    FrameField.opposite_intersectionDet_iff_normalDet j G C L Q hG hC hQ hi hQs hQG
   have hdet (t : ℝ) :
     tube.rankThreeSheetPairDet d e t =
       (j.symm.toContinuousLinearMap.comp ((G t).coprod (L t))).det :=
-    Smale.IntersectionCoordinates.det_jointBlock_eq_tangentSum
-      Smale.FrameField.rankThreePairCoordinates (G t) (L t)
+    IntersectionCoordinates.det_jointBlock_eq_tangentSum
+      FrameField.rankThreePairCoordinates (G t) (L t)
   have hcoeff (t : ℝ) (ht : t = 0 ∨ t = 1) :
     (Q t).comp (L t) =
       fderiv ℝ (fun w : ℝ × EuclideanSpace ℝ (Fin 1) => q (d.chart (w, 0))) (t, 0) := by
@@ -16729,11 +16729,11 @@ theorem Smale.TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determina
     have hpoint := tube.rankThree_corner_sheet_charts_coincide d e ht
     have hqD :
       ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q
-        (d.chart (Smale.StripCoordinates.center t)) :=
+        (d.chart (StripCoordinates.center t)) :=
       hpoint.symm ▸ hq.contMDiffAt (hO.mem_nhds (hcenter t htI))
     have hQeq : Q t = d.normalDetector tube.chart q t := by
       change e.normalDetector tube.chart q t = d.normalDetector tube.chart q t
-      unfold Smale.StripNormalData.normalDetector
+      unfold StripNormalData.normalDetector
       rw [hpoint]
     rw [hQeq]
     exact
@@ -16741,31 +16741,31 @@ theorem Smale.TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determina
   rw [hdet 0, hdet 1]
   exact hsign.trans (by rw [hcoeff 0 (Or.inl rfl), hcoeff 1 (Or.inr rfl)])
 
-def Smale.ManifoldMorse.MorseSurgeryData.beltSheetNormal {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.beltSheetNormal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p)
+    (D : ManifoldMorse.MorseSurgeryData E f p)
     (j : (ℝ × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] D.chart.NegativeCoordinates) :
     D.UpperLevel → (ℝ × EuclideanSpace ℝ (Fin 1)) :=
   j.symm ∘ D.beltNormal
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sheet_determinants
+theorem ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sheet_determinants
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (D : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (j : (ℝ × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] D.chart.NegativeCoordinates) {S : Set D.UpperLevel}
     {a b : ℝ → D.UpperLevel} {k l : (ℝ × ℝ) → D.UpperLevel} {h : ℝ} :
-    letI := Smale.RegularLevel.chartedSpace hf D.upper_regular
+    letI := RegularLevel.chartedSpace hf D.upper_regular
     ∀
       (tube :
-        Smale.TubularBigon (E := Smale.RegularLevel.Model E) S (Set.range D.surgery.beltSphere) a
+        TubularBigon (E := RegularLevel.Model E) S (Set.range D.surgery.beltSphere) a
           b k l h 3)
       (d :
-        Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E :=
-          Smale.RegularLevel.Model E) S k)
+        StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E :=
+          RegularLevel.Model E) S k)
       (e :
-        Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E :=
-          Smale.RegularLevel.Model E) (Set.range D.surgery.beltSphere) l),
+        StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E :=
+          RegularLevel.Model E) (Set.range D.surgery.beltSphere) l),
       (tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) ↔
         (fderiv ℝ (fun w : ℝ × EuclideanSpace ℝ (Fin 1) => D.beltSheetNormal j (d.chart (w, 0)))
                 (0, 0)).det *
@@ -16773,17 +16773,17 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sh
                 (fun w : ℝ × EuclideanSpace ℝ (Fin 1) => D.beltSheetNormal j (d.chart (w, 0)))
                 (1, 0)).det <
           0 := by
-  let _ := Smale.RegularLevel.chartedSpace hf D.upper_regular
+  let _ := RegularLevel.chartedSpace hf D.upper_regular
   intro tube d e
   have hq :
-    ContMDiffOn 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞
+    ContMDiffOn 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞
       (D.beltSheetNormal j) D.beltNormalDomain :=
     j.symm.contDiff.contMDiff.comp_contMDiffOn (D.contMDiffOn_beltNormal hf)
   have hcenter (t : ℝ) (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    e.chart (Smale.StripCoordinates.center t) ∈ Set.range D.surgery.beltSphere :=
+    e.chart (StripCoordinates.center t) ∈ Set.range D.surgery.beltSphere :=
     (e.sheet _ (e.line ht)).mpr rfl
   have hcenterO (t : ℝ) (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    e.chart (Smale.StripCoordinates.center t) ∈ D.beltNormalDomain := by
+    e.chart (StripCoordinates.center t) ∈ D.beltNormalDomain := by
     obtain ⟨v, hv⟩ := hcenter t ht
     exact hv ▸ D.belt_mem_normalDomain v
   apply
@@ -16813,13 +16813,13 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sh
       hJ]
     exact j.symm.surjective.comp (D.surjective_beltNormal_derivative hf v)
 
-def Smale.NativeSheetCoordinates.projection {D B E M N : Type*} [NormedAddCommGroup D]
+def NativeSheetCoordinates.projection {D B E M N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) (F : N → M) (x : N) : D :=
   (Φ.symm (F x)).1
 
-theorem Smale.NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
+theorem NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -16830,7 +16830,7 @@ theorem Smale.NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Typ
     Φ.contMDiffOn_invFun.comp hF.contMDiffOn (fun _ hx => hx)
   exact contDiff_fst.contMDiff.comp_contMDiffOn hcoord
 
-theorem Smale.NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Type*}
+theorem NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -16846,7 +16846,7 @@ theorem Smale.NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N
   have hTi : Function.Injective T := by
     change Function.Injective (mfderiv I 𝓘(ℝ, D × B) (Φ.symm ∘ F) x)
     rw [mfderiv_comp x (Φ.symm.mdifferentiableAt (by simp) hx) (hF.mdifferentiableAt (by simp))]
-    exact (Smale.PartialChart.bijective_mfderiv Φ.symm hx).injective.comp hiF
+    exact (PartialChart.bijective_mfderiv Φ.symm hx).injective.comp hiF
   have hfst :
     (mfderiv I 𝓘(ℝ, D) (projection Φ F) x : G →L[ℝ] D) = (ContinuousLinearMap.fst ℝ D B).comp T :=
     by
@@ -16883,7 +16883,7 @@ theorem Smale.NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N
   · have hz (w : G) : (T w).2 = 0 := congrArg (fun L : G →L[ℝ] B => L w) hsnd
     rw [hz u, hz v]
 
-theorem Smale.NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : Type*}
+theorem NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -16902,9 +16902,9 @@ theorem Smale.NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H 
     ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hi⟩
   have hA : A.IsInvertible :=
     ⟨(LinearEquiv.ofBijective A.toLinearMap hb).toContinuousLinearEquiv, rfl⟩
-  exact Smale.isLocalDiffeomorphAt_boundaryless hU x.2 (contMDiffOn_projection Φ F hF) hA
+  exact isLocalDiffeomorphAt_boundaryless hU x.2 (contMDiffOn_projection Φ F hF) hA
 
-theorem Smale.NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N : Type*}
+theorem NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {I : ModelWithCorners ℝ G H}
@@ -16929,7 +16929,7 @@ theorem Smale.NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N :
     apply hinjF
     exact (Φ.right_inv' hx).symm.trans ((congrArg Φ hc).trans (Φ.right_inv' hy))
   let p :=
-    Smale.partialDiffeomorphOfInjectiveLocal hU hinj
+    partialDiffeomorphOfInjectiveLocal hU hinj
       (isLocalDiffeomorphOn_projection Φ F hF hclean hdim hiF)
   have htarget : p.target = {u | (u, (0 : B)) ∈ Φ.source} := by
     change projection Φ F '' U = _
@@ -16957,13 +16957,13 @@ theorem Smale.NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N :
   have heq : Φ.symm (F (p.symm u)) = (u, (0 : B)) := Prod.ext hp (hzero (p.symm u) hx)
   exact (Φ.right_inv' hx).symm.trans (congrArg Φ heq)
 
-def Smale.SphereNormalCoordinates.radialFrame {V N : Type*} [NormedAddCommGroup V]
+def SphereNormalCoordinates.radialFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (C : N →L[ℝ] EuclideanSpace ℝ (Fin n)) : (ℝ × N) →L[ℝ] V :=
   ((ContinuousLinearMap.id ℝ ℝ).smulRight (x : V)).coprod ((inclusionDerivative x).comp C)
 
-theorem Smale.SphereNormalCoordinates.normalFrame_comp_normalDerivative {V N : Type*}
+theorem SphereNormalCoordinates.normalFrame_comp_normalDerivative {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (hA : A.IsInvertible)
@@ -16976,7 +16976,7 @@ theorem Smale.SphereNormalCoordinates.normalFrame_comp_normalDerivative {V N : T
       z.1 • (x : V) + inclusionDerivative x (C z.2)
   rw [hA.inverse_apply_self]
 
-theorem Smale.SphereNormalCoordinates.bijective_radialFrame {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.bijective_radialFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (C : N →L[ℝ] EuclideanSpace ℝ (Fin n)) (hC : C.IsInvertible) :
@@ -16991,7 +16991,7 @@ theorem Smale.SphereNormalCoordinates.bijective_radialFrame {V N : Type*} [Norme
   rw [heq]
   exact bijective_normalFrame x C.inverse hC.inverse
 
-theorem Smale.SphereNormalCoordinates.normalJacobian_mul_chartDet {V N : Type*}
+theorem SphereNormalCoordinates.normalJacobian_mul_chartDet {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] [FiniteDimensional ℝ N] (j : (ℝ × N) ≃L[ℝ] V)
     (x : Metric.sphere (0 : V) 1) (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) (hA : A.IsInvertible)
@@ -17020,14 +17020,14 @@ theorem Smale.SphereNormalCoordinates.normalJacobian_mul_chartDet {V N : Type*}
       exact (LinearMap.det_comp _ _).symm
     _ = _ := congrArg ContinuousLinearMap.det hfactor
 
-def Smale.SphereNormalCoordinates.chartRadialFrame {V N : Type*} [NormedAddCommGroup V]
+def SphereNormalCoordinates.chartRadialFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) (z : N) :
     (ℝ × N) →L[ℝ] V :=
   ((ContinuousLinearMap.id ℝ ℝ).smulRight (c z : V)).coprod (fderiv ℝ (fun w => (c w : V)) z)
 
-theorem Smale.SphereNormalCoordinates.chartRadialFrame_eq {V N : Type*} [NormedAddCommGroup V]
+theorem SphereNormalCoordinates.chartRadialFrame_eq {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) {z : N}
@@ -17048,7 +17048,7 @@ theorem Smale.SphereNormalCoordinates.chartRadialFrame_eq {V N : Type*} [NormedA
   rw [hchain]
   rfl
 
-theorem Smale.SphereNormalCoordinates.contDiffOn_chartRadialFrame {V N : Type*}
+theorem SphereNormalCoordinates.contDiffOn_chartRadialFrame {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) :
@@ -17056,10 +17056,10 @@ theorem Smale.SphereNormalCoordinates.contDiffOn_chartRadialFrame {V N : Type*}
   have hc : ContDiffOn ℝ ∞ (fun w => (c w : V)) c.source :=
     ((contMDiff_coe_sphere (m := (∞ : ℕ∞ω))).comp_contMDiffOn c.contMDiffOn_toFun).contDiffOn
   exact
-    Smale.FrameField.contDiffOn_coprod (contDiffOn_const.smulRight hc)
+    FrameField.contDiffOn_coprod (contDiffOn_const.smulRight hc)
       (hc.fderiv_of_isOpen c.open_source (m := ∞) (by simp))
 
-theorem Smale.SphereNormalCoordinates.bijective_chartRadialFrame {V N : Type*}
+theorem SphereNormalCoordinates.bijective_chartRadialFrame {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) [FiniteDimensional ℝ N]
@@ -17068,11 +17068,11 @@ theorem Smale.SphereNormalCoordinates.bijective_chartRadialFrame {V N : Type*}
   let C : N →L[ℝ] EuclideanSpace ℝ (Fin n) := mfderiv 𝓘(ℝ, N) (𝓡 n) c z
   have hC : C.IsInvertible :=
     ⟨(LinearEquiv.ofBijective C.toLinearMap
-          (Smale.PartialChart.bijective_mfderiv c hz)).toContinuousLinearEquiv,
+          (PartialChart.bijective_mfderiv c hz)).toContinuousLinearEquiv,
       rfl⟩
   exact bijective_radialFrame (c z) C hC
 
-theorem Smale.SphereNormalCoordinates.chartRadialFrame_det_mul_endpoints_pos {V N : Type*}
+theorem SphereNormalCoordinates.chartRadialFrame_det_mul_endpoints_pos {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) [FiniteDimensional ℝ N]
@@ -17083,10 +17083,10 @@ theorem Smale.SphereNormalCoordinates.chartRadialFrame_det_mul_endpoints_pos {V 
         ((chartRadialFrame c (a 1)).comp j.symm.toContinuousLinearMap).det := by
   have hF := (contDiffOn_chartRadialFrame c).continuousOn.comp ha haS
   exact
-    Smale.FrameField.det_mul_endpoints_pos (hF.clm_comp continuousOn_const)
+    FrameField.det_mul_endpoints_pos (hF.clm_comp continuousOn_const)
       (fun t ht => (bijective_chartRadialFrame c (haS ht)).comp j.symm.bijective)
 
-theorem Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_chartDet {V N : Type*}
+theorem SphereNormalCoordinates.opposite_normalJacobians_iff_chartDet {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (c : PartialDiffeomorph 𝓘(ℝ, N) (𝓡 n) N (Metric.sphere (0 : V) 1) ∞) [FiniteDimensional ℝ N]
@@ -17125,7 +17125,7 @@ theorem Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_chartDet {V N
   · exact iff_of_false (not_lt_of_gt hp) (not_lt_of_gt hq)
   · exact iff_of_true hp hq
 
-theorem Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_retained_sheet
+theorem SphereNormalCoordinates.opposite_normalJacobians_iff_retained_sheet
     {V A B E M : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -17149,7 +17149,7 @@ theorem Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_retained_shee
         0 := by
   let _ : Nonempty (Metric.sphere (0 : V) 1) := ⟨x₀⟩
   obtain ⟨c, hcS, _, hFc, _⟩ :=
-    Smale.NativeSheetCoordinates.exists_induced_sheet_chart Φ F hF hinjF hclean
+    NativeSheetCoordinates.exists_induced_sheet_chart Φ F hF hinjF hclean
       (by simpa only [finrank_euclideanSpace_fin] using hdim.symm) hiF
   let a : ℝ → (ℝ × A) := fun t => (t, 0)
   have ha : ContinuousOn a (Set.Icc (0 : ℝ) 1) :=
@@ -17202,41 +17202,41 @@ theorem Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_retained_shee
   exact hsign
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_Whitney_corners
+theorem ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_Whitney_corners
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (D : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = 6) (hindex : Module.finrank ℝ D.chart.NegativeCoordinates = 2)
-    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient 3)
-    (g : Smale.Hemisphere.Sphere 2 → D.UpperLevel) {a b : ℝ → D.UpperLevel}
+    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient 3)
+    (g : Hemisphere.Sphere 2 → D.UpperLevel) {a b : ℝ → D.UpperLevel}
     {k l : (ℝ × ℝ) → D.UpperLevel} {h : ℝ} :
-    letI := Smale.RegularLevel.chartedSpace hf D.upper_regular
+    letI := RegularLevel.chartedSpace hf D.upper_regular
     letI : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
       ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
-      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x))
+    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
+      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x))
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) g
             D.surgery.beltSphere x y)
       (tube :
-        Smale.TubularBigon (E := Smale.RegularLevel.Model E) (Set.range g)
+        TubularBigon (E := RegularLevel.Model E) (Set.range g)
           (Set.range D.surgery.beltSphere) a b k l h 3)
       (d :
-        Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E :=
-          Smale.RegularLevel.Model E) (Set.range g) k)
+        StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E :=
+          RegularLevel.Model E) (Set.range g) k)
       (e :
-        Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E :=
-          Smale.RegularLevel.Model E) (Set.range D.surgery.beltSphere) l)
-      (x₀ x₁ : Smale.Hemisphere.Sphere 2),
-      g x₀ = d.chart (Smale.StripCoordinates.center 0) →
-        g x₁ = d.chart (Smale.StripCoordinates.center 1) →
+        StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E :=
+          RegularLevel.Model E) (Set.range D.surgery.beltSphere) l)
+      (x₀ x₁ : Hemisphere.Sphere 2),
+      g x₀ = d.chart (StripCoordinates.center 0) →
+        g x₁ = d.chart (StripCoordinates.center 1) →
           ((D.beltIntersectionSign 2 r g x₀ * D.beltIntersectionSign 2 r g x₁ = -1) ↔
             tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) := by
-  let _ := Smale.RegularLevel.chartedSpace hf D.upper_regular
+  let _ := RegularLevel.chartedSpace hf D.upper_regular
   let _ : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
     ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-  let _ : Fact (Module.finrank ℝ (Smale.Hemisphere.Ambient 3) = 2 + 1) :=
+  let _ : Fact (Module.finrank ℝ (Hemisphere.Ambient 3) = 2 + 1) :=
     ⟨finrank_euclideanSpace_fin⟩
   intro hg hinj hi ht tube d e x₀ x₁ hx₀ hx₁
   let j : (ℝ × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] D.chart.NegativeCoordinates :=
@@ -17246,10 +17246,10 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_
   have hjSmooth :
     ContMDiff 𝓘(ℝ, D.chart.NegativeCoordinates) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ j.symm :=
     j.symm.contDiff.contMDiff
-  have hdata (x : Smale.Hemisphere.Sphere 2) (hx : g x ∈ Set.range D.surgery.beltSphere) :
-    ContMDiffAt 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q (g x) ∧
+  have hdata (x : Hemisphere.Sphere 2) (hx : g x ∈ Set.range D.surgery.beltSphere) :
+    ContMDiffAt 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q (g x) ∧
       (mfderiv (𝓡 2) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) (q ∘ g) x).IsInvertible ∧
-        Smale.SphereNormalCoordinates.normalJacobian r' x
+        SphereNormalCoordinates.normalJacobian r' x
             (mfderiv (𝓡 2) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) (q ∘ g) x) =
           D.beltIntersectionJacobian 2 r g x := by
     obtain ⟨v, hv⟩ := hx
@@ -17257,7 +17257,7 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_
     have hnormal :=
       (D.contMDiffOn_beltNormal hf).contMDiffAt (D.isOpen_beltNormalDomain.mem_nhds hxO)
     have hq :
-      ContMDiffAt 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q (g x) :=
+      ContMDiffAt 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, ℝ × EuclideanSpace ℝ (Fin 1)) ∞ q (g x) :=
       hjSmooth.contMDiffAt.comp _ hnormal
     let A : EuclideanSpace ℝ (Fin 2) →L[ℝ] D.chart.NegativeCoordinates :=
       mfderiv (𝓡 2) 𝓘(ℝ, D.chart.NegativeCoordinates) (D.beltNormal ∘ g) x
@@ -17292,12 +17292,12 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_
       rw [hBA]
       exact (show j.symm.toContinuousLinearMap.IsInvertible from ⟨j.symm, rfl⟩).comp hA
     · change
-        Smale.SphereNormalCoordinates.normalJacobian r' x B =
-          Smale.SphereNormalCoordinates.normalJacobian r x A
+        SphereNormalCoordinates.normalJacobian r' x B =
+          SphereNormalCoordinates.normalJacobian r x A
       rw [hBA]
-      exact Smale.SphereNormalCoordinates.normalJacobian_change_normal_model r j x A hA
-  have hcross (t : ℝ) (ht' : t = 0 ∨ t = 1) (x : Smale.Hemisphere.Sphere 2)
-    (hx : g x = d.chart (Smale.StripCoordinates.center t)) :
+      exact SphereNormalCoordinates.normalJacobian_change_normal_model r j x A hA
+  have hcross (t : ℝ) (ht' : t = 0 ∨ t = 1) (x : Hemisphere.Sphere 2)
+    (hx : g x = d.chart (StripCoordinates.center t)) :
     g x ∈ Set.range D.surgery.beltSphere := by
     have htI : t ∈ Set.Icc (0 : ℝ) 1 := by rcases ht' with rfl | rfl <;> simp
     rw [hx, tube.rankThree_corner_sheet_charts_coincide d e ht']
@@ -17305,25 +17305,25 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.opposite_beltIntersectionSigns_iff_
   obtain ⟨hq₀, hi₀, hJ₀⟩ := hdata x₀ (hcross 0 (Or.inl rfl) x₀ hx₀)
   obtain ⟨hq₁, hi₁, hJ₁⟩ := hdata x₁ (hcross 1 (Or.inr rfl) x₁ hx₁)
   have hsign :=
-    Smale.SphereNormalCoordinates.opposite_normalJacobians_iff_retained_sheet d.chart g hg hinj hi
+    SphereNormalCoordinates.opposite_normalJacobians_iff_retained_sheet d.chart g hg hinj hi
       d.sheet d.line (by simp [Module.finrank_prod]) q r' x₀ x₁ hx₀ hx₁ hq₀ hq₁ hi₀ hi₁
   rw [hJ₀, hJ₁] at hsign
   exact
     (D.beltIntersectionSigns_opposite_iff 2 r g x₀ x₁).trans
       (hsign.trans (D.opposite_belt_corners_iff_normal_sheet_determinants hf j tube d e).symm)
 
-def Smale.WhitneyPairModel.innerBigonMap (h r : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.innerBigonMap (h r : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
   (1 - r) • (0, h / 2) + r • p
 
-theorem Smale.WhitneyPairModel.innerBigonMap_one (h : ℝ) (p : ℝ × ℝ) : innerBigonMap h 1 p = p := by
+theorem WhitneyPairModel.innerBigonMap_one (h : ℝ) (p : ℝ × ℝ) : innerBigonMap h 1 p = p := by
   simp only [innerBigonMap, sub_self, zero_smul, one_smul, zero_add]
 
-theorem Smale.WhitneyPairModel.contDiff_innerBigonMap (h : ℝ) :
+theorem WhitneyPairModel.contDiff_innerBigonMap (h : ℝ) :
     ContDiff ℝ ∞ (fun z : ℝ × (ℝ × ℝ) => innerBigonMap h z.1 z.2) := by
   unfold innerBigonMap
   fun_prop
 
-def Smale.WhitneyPairModel.innerBigonDiffeomorph (h r : ℝ) (hr : r ≠ 0) :
+def WhitneyPairModel.innerBigonDiffeomorph (h r : ℝ) (hr : r ≠ 0) :
     Diffeomorph 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) (ℝ × ℝ) (ℝ × ℝ) ∞
     where
   toEquiv :=
@@ -17346,43 +17346,43 @@ def Smale.WhitneyPairModel.innerBigonDiffeomorph (h r : ℝ) (hr : r ≠ 0) :
     apply ContDiff.contMDiff
     fun_prop
 
-theorem Smale.WhitneyPairModel.bijective_mfderiv_innerBigonMap (h r : ℝ) (hr : r ≠ 0)
+theorem WhitneyPairModel.bijective_mfderiv_innerBigonMap (h r : ℝ) (hr : r ≠ 0)
     (p : ℝ × ℝ) : Function.Bijective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) (innerBigonMap h r) p) :=
-  Smale.PartialChart.bijective_mfderiv (innerBigonDiffeomorph h r hr).toPartialDiffeomorph
+  PartialChart.bijective_mfderiv (innerBigonDiffeomorph h r hr).toPartialDiffeomorph
     (Set.mem_univ p)
 
-theorem Smale.WhitneyPairModel.innerBigonMap_mem_interior {h r : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.innerBigonMap_mem_interior {h r : ℝ} (hh : 0 < h)
     (hr : r ∈ Set.Ioo (0 : ℝ) 1) {p : ℝ × ℝ} (hp : p ∈ bigon h) :
     innerBigonMap h r p ∈ interior (bigon h) :=
   (convex_bigon hh.le).combo_interior_self_mem_interior (bigon_center_mem_interior hh) hp
     (sub_pos.mpr hr.2) hr.1.le (by ring)
 
-def Smale.WhitneyPairModel.innerBigonCollar (h r : ℝ) : Set (ℝ × ℝ) :=
+def WhitneyPairModel.innerBigonCollar (h r : ℝ) : Set (ℝ × ℝ) :=
   bigon h \ innerBigonMap h r '' interior (bigon h)
 
-def Smale.WhitneyPairModel.inverseInnerBigonMap (h r : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
+def WhitneyPairModel.inverseInnerBigonMap (h r : ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
   r⁻¹ • (p - (1 - r) • (0, h / 2))
 
-theorem Smale.WhitneyPairModel.inverseInnerBigonMap_one (h : ℝ) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.inverseInnerBigonMap_one (h : ℝ) (p : ℝ × ℝ) :
     inverseInnerBigonMap h 1 p = p := by
   simp only [inverseInnerBigonMap, inv_one, sub_self, zero_smul, sub_zero, one_smul]
 
-theorem Smale.WhitneyPairModel.inner_inverseInnerBigonMap (h r : ℝ) (hr : r ≠ 0) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.inner_inverseInnerBigonMap (h r : ℝ) (hr : r ≠ 0) (p : ℝ × ℝ) :
     innerBigonMap h r (inverseInnerBigonMap h r p) = p :=
   (innerBigonDiffeomorph h r hr).apply_symm_apply p
 
-theorem Smale.WhitneyPairModel.continuousAt_inverseInnerBigonMap (h : ℝ) (p : ℝ × ℝ) :
+theorem WhitneyPairModel.continuousAt_inverseInnerBigonMap (h : ℝ) (p : ℝ × ℝ) :
     ContinuousAt (fun z : ℝ × (ℝ × ℝ) => inverseInnerBigonMap h z.1 z.2) (1, p) := by
   unfold inverseInnerBigonMap
   fun_prop (disch := norm_num)
 
-theorem Smale.WhitneyPairModel.isCompact_innerBigonCollar {h r : ℝ} (hh : 0 < h) (hr : r ≠ 0) :
+theorem WhitneyPairModel.isCompact_innerBigonCollar {h r : ℝ} (hh : 0 < h) (hr : r ≠ 0) :
     IsCompact (innerBigonCollar h r) := by
   have ho : IsOpen (innerBigonMap h r '' interior (bigon h)) :=
     (innerBigonDiffeomorph h r hr).toHomeomorph.isOpenMap _ isOpen_interior
   exact (isCompact_bigon hh).inter_right ho.isClosed_compl
 
-theorem Smale.WhitneyPairModel.innerBigonMap_mem_collar_iff {h r : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.innerBigonMap_mem_collar_iff {h r : ℝ} (hh : 0 < h)
     (hr : r ∈ Set.Ioo (0 : ℝ) 1) {p : ℝ × ℝ} (hp : p ∈ bigon h) :
     innerBigonMap h r p ∈ innerBigonCollar h r ↔ p ∈ frontier (bigon h) := by
   rw [frontier, (isClosed_bigon h).closure_eq]
@@ -17395,7 +17395,7 @@ theorem Smale.WhitneyPairModel.innerBigonMap_mem_collar_iff {h r : ℝ} (hh : 0 
     have hqp : q = p := (innerBigonDiffeomorph h r hr.1.ne').injective heq
     exact hx.2 (hqp ▸ hq)
 
-theorem Smale.WhitneyPairModel.exists_inner_bigon_collar_in_open {h : ℝ} (hh : 0 < h)
+theorem WhitneyPairModel.exists_inner_bigon_collar_in_open {h : ℝ} (hh : 0 < h)
     {U : Set (ℝ × ℝ)} (hU : IsOpen U) (hfrontU : frontier (bigon h) ⊆ U) :
     ∃ r : ℝ,
       r ∈ Set.Ioo (0 : ℝ) 1 ∧
@@ -17453,41 +17453,41 @@ theorem Smale.WhitneyPairModel.exists_inner_bigon_collar_in_open {h : ℝ} (hh :
           inner_inverseInnerBigonMap h (1 - δ) hr.1.ne' p⟩
   · exact innerBigonMap_mem_interior hh hr ((mem_frontier_bigon_iff h p).mp hp).1
 
-theorem Smale.CleanBigonBoundary.exists_inner_clean_neighborhood {E M : Type*}
+theorem CleanBigonBoundary.exists_inner_clean_neighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) S T a b k l h) :
+    (d : CleanBigonBoundary (E := E) S T a b k l h) :
     ∃ r : ℝ,
       r ∈ Set.Ioo (0 : ℝ) 1 ∧
-        Smale.WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
+        WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
           ∃ V : Set (ℝ × ℝ),
             IsOpen V ∧
-              frontier (Smale.WhitneyPairModel.bigon h) ⊆ V ∧
+              frontier (WhitneyPairModel.bigon h) ⊆ V ∧
                 ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞
-                    (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) V ∧
-                  Set.InjOn (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) V ∧
+                    (d.map ∘ WhitneyPairModel.innerBigonMap h r) V ∧
+                  Set.InjOn (d.map ∘ WhitneyPairModel.innerBigonMap h r) V ∧
                     (∀ p ∈ V,
                         Function.Injective
                           (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E)
-                            (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) p)) ∧
-                      Set.MapsTo (Smale.WhitneyPairModel.innerBigonMap h r) V
-                          (d.domain ∩ interior (Smale.WhitneyPairModel.bigon h)) ∧
-                        ∀ p ∈ V, d.map (Smale.WhitneyPairModel.innerBigonMap h r p) ∉ S ∪ T := by
-  have hfrontD : frontier (Smale.WhitneyPairModel.bigon h) ⊆ d.domain :=
+                            (d.map ∘ WhitneyPairModel.innerBigonMap h r) p)) ∧
+                      Set.MapsTo (WhitneyPairModel.innerBigonMap h r) V
+                          (d.domain ∩ interior (WhitneyPairModel.bigon h)) ∧
+                        ∀ p ∈ V, d.map (WhitneyPairModel.innerBigonMap h r p) ∉ S ∪ T := by
+  have hfrontD : frontier (WhitneyPairModel.bigon h) ⊆ d.domain :=
     d.boundary_covered.trans (interior_subset.trans d.neighborhood_subset)
   obtain ⟨r, hr, hcollar, hfront⟩ :=
-    Smale.WhitneyPairModel.exists_inner_bigon_collar_in_open d.height_pos d.open_domain hfrontD
-  let c := Smale.WhitneyPairModel.innerBigonDiffeomorph h r hr.1.ne'
+    WhitneyPairModel.exists_inner_bigon_collar_in_open d.height_pos d.open_domain hfrontD
+  let c := WhitneyPairModel.innerBigonDiffeomorph h r hr.1.ne'
   let V : Set (ℝ × ℝ) :=
-    Smale.WhitneyPairModel.innerBigonMap h r ⁻¹'
-      (d.domain ∩ interior (Smale.WhitneyPairModel.bigon h))
-  have hc : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) ∞ (Smale.WhitneyPairModel.innerBigonMap h r) :=
+    WhitneyPairModel.innerBigonMap h r ⁻¹'
+      (d.domain ∩ interior (WhitneyPairModel.bigon h))
+  have hc : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) ∞ (WhitneyPairModel.innerBigonMap h r) :=
     c.contMDiff
   have hV : IsOpen V := (d.open_domain.inter isOpen_interior).preimage hc.continuous
   have hsmooth :
-    ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) V :=
+    ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ (d.map ∘ WhitneyPairModel.innerBigonMap h r) V :=
     d.smooth.comp hc.contMDiffOn (fun _ hp => hp.1)
-  have hinj : Set.InjOn (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) V := by
+  have hinj : Set.InjOn (d.map ∘ WhitneyPairModel.innerBigonMap h r) V := by
     intro p hp q hq hpq
     exact c.injective (d.injective hp.1 hq.1 hpq)
   refine ⟨r, hr, hcollar, V, hV, hfront, hsmooth, hinj, ?_, fun _ hp => hp, ?_⟩
@@ -17496,25 +17496,25 @@ theorem Smale.CleanBigonBoundary.exists_inner_clean_neighborhood {E M : Type*}
     rw [mfderiv_comp p hdf (hc.mdifferentiableAt (by simp))]
     exact
       (d.derivative_injective _ hp.1).comp
-        (Smale.WhitneyPairModel.bijective_mfderiv_innerBigonMap h r hr.1.ne' p).injective
+        (WhitneyPairModel.bijective_mfderiv_innerBigonMap h r hr.1.ne' p).injective
   · intro p hp
     exact d.interior_avoids _ hp
 
-theorem Smale.CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Type*}
+theorem CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {S T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) S T a b k l h) (U : TopologicalSpace.Opens M)
+    (d : CleanBigonBoundary (E := E) S T a b k l h) (U : TopologicalSpace.Opens M)
     (hU : (S ∪ T)ᶜ ⊆ U)
-    (hnull : ∀ f : C(Smale.Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c)) :
+    (hnull : ∀ f : C(Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c)) :
     ∃ r : ℝ,
       r ∈ Set.Ioo (0 : ℝ) 1 ∧
-        Smale.WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
+        WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
           ∃ F : C(ℝ × ℝ, U),
             ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ F ∧
               ∃ W : Set (ℝ × ℝ),
                 IsOpen W ∧
-                  frontier (Smale.WhitneyPairModel.bigon h) ⊆ W ∧
-                    Set.EqOn (Subtype.val ∘ F) (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r)
+                  frontier (WhitneyPairModel.bigon h) ⊆ W ∧
+                    Set.EqOn (Subtype.val ∘ F) (d.map ∘ WhitneyPairModel.innerBigonMap h r)
                         W ∧
                       Set.InjOn F W ∧
                         (∀ p ∈ W, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F p)) ∧
@@ -17522,18 +17522,18 @@ theorem Smale.CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Ty
   classical
   obtain ⟨r, hr, hcollar, V, hV, hfrontV, hsmooth, hinj, hderiv, -, havoid⟩ :=
     d.exists_inner_clean_neighborhood
-  have hzero : (0 : ℝ × ℝ) ∈ frontier (Smale.WhitneyPairModel.bigon h) := by
-    rw [Smale.WhitneyPairModel.mem_frontier_bigon_iff]
+  have hzero : (0 : ℝ × ℝ) ∈ frontier (WhitneyPairModel.bigon h) := by
+    rw [WhitneyPairModel.mem_frontier_bigon_iff]
     refine ⟨?_, Or.inl rfl⟩
     change 0 ≤ (0 : ℝ) ∧ h * 0 ^ 2 + 0 ≤ h
     simpa only [zero_pow (by decide : 2 ≠ 0), MulZeroClass.mul_zero, add_zero] using
       And.intro le_rfl d.height_pos.le
-  let c : U := ⟨d.map (Smale.WhitneyPairModel.innerBigonMap h r 0), hU (havoid 0 (hfrontV hzero))⟩
+  let c : U := ⟨d.map (WhitneyPairModel.innerBigonMap h r 0), hU (havoid 0 (hfrontV hzero))⟩
   let f : (ℝ × ℝ) → U := fun p =>
-    if hp : p ∈ V then ⟨d.map (Smale.WhitneyPairModel.innerBigonMap h r p), hU (havoid p hp)⟩
+    if hp : p ∈ V then ⟨d.map (WhitneyPairModel.innerBigonMap h r p), hU (havoid p hp)⟩
     else c
   have hval (p : ℝ × ℝ) (hp : p ∈ V) :
-    (f p : M) = d.map (Smale.WhitneyPairModel.innerBigonMap h r p) := by
+    (f p : M) = d.map (WhitneyPairModel.innerBigonMap h r p) := by
     dsimp [f]
     rw [dif_pos hp]
   have hfval : ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ (Subtype.val ∘ f) V :=
@@ -17542,9 +17542,9 @@ theorem Smale.CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Ty
     intro p hp
     exact (ContMDiffWithinAt.subtypeVal_comp_iff U f V p).mp (hfval p hp)
   obtain ⟨F, hF, W, hW, hfrontW, hWV, hEq⟩ :=
-    Smale.exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies hnull d.height_pos
+    exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies hnull d.height_pos
       hV hf hfrontV
-  have hEqval : Set.EqOn (Subtype.val ∘ F) (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) W :=
+  have hEqval : Set.EqOn (Subtype.val ∘ F) (d.map ∘ WhitneyPairModel.innerBigonMap h r) W :=
     by
     intro p hp
     exact (congrArg Subtype.val (hEq hp)).trans (hval p (hWV hp))
@@ -17554,7 +17554,7 @@ theorem Smale.CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Ty
     exact (hEqval hp).symm.trans ((congrArg Subtype.val hpq).trans (hEqval hq))
   refine ⟨r, hr, hcollar, F, hF, W, hW, hfrontW, hEqval, hinjF, ?_, ?_⟩
   · intro p hp
-    have heq : (Subtype.val ∘ F) =ᶠ[𝓝 p] (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) :=
+    have heq : (Subtype.val ∘ F) =ᶠ[𝓝 p] (d.map ∘ WhitneyPairModel.innerBigonMap h r) :=
       Filter.mem_of_superset (hW.mem_nhds hp) (fun _ hq => hEqval hq)
     have hi : Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) (Subtype.val ∘ F) p) := by
       rw [heq.mfderiv_eq]
@@ -17569,50 +17569,50 @@ theorem Smale.CleanBigonBoundary.exists_smooth_inner_extension_in_open {E M : Ty
     rw [hEqval hp]
     exact havoid p (hWV hp)
 
-theorem Smale.CleanBigonBoundary.exists_embedded_inner_extension_in_open {E M : Type*}
+theorem CleanBigonBoundary.exists_embedded_inner_extension_in_open {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [FiniteDimensional ℝ E] [T2Space M] {D Y : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace Y]
     [ChartedSpace D Y] [IsManifold 𝓘(ℝ, D) ∞ Y] [CompactSpace Y] (g : C(Y, M))
     (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g) {T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) (Set.range g) T a b k l h)
+    (d : CleanBigonBoundary (E := E) (Set.range g) T a b k l h)
     (U : TopologicalSpace.Opens M) (hU : (Set.range g ∪ T)ᶜ ⊆ U)
-    (hnull : ∀ f : C(Smale.Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c))
+    (hnull : ∀ f : C(Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c))
     (hdim : 5 ≤ Module.finrank ℝ E) (hobstacle : 2 + Module.finrank ℝ D < Module.finrank ℝ E) :
     ∃ r : ℝ,
       r ∈ Set.Ioo (0 : ℝ) 1 ∧
-        Smale.WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
+        WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
           ∃ F : C(ℝ × ℝ, U),
             ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ F ∧
-              Topology.IsClosedEmbedding (fun p : Smale.WhitneyPairModel.bigon h => F p) ∧
-                (∀ p ∈ Smale.WhitneyPairModel.bigon h,
+              Topology.IsClosedEmbedding (fun p : WhitneyPairModel.bigon h => F p) ∧
+                (∀ p ∈ WhitneyPairModel.bigon h,
                     Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F p)) ∧
-                  (∀ p ∈ Smale.WhitneyPairModel.bigon h, (F p : M) ∉ Set.range g) ∧
+                  (∀ p ∈ WhitneyPairModel.bigon h, (F p : M) ∉ Set.range g) ∧
                     ∃ W : Set (ℝ × ℝ),
                       IsOpen W ∧
-                        frontier (Smale.WhitneyPairModel.bigon h) ⊆ W ∧
+                        frontier (WhitneyPairModel.bigon h) ⊆ W ∧
                           Set.EqOn (Subtype.val ∘ F)
-                            (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) W := by
+                            (d.map ∘ WhitneyPairModel.innerBigonMap h r) W := by
   obtain ⟨r, hr, hcollar, F, hF, V, hV, hfrontV, hEq, hinj, hderiv, havoid⟩ :=
     d.exists_smooth_inner_extension_in_open U hU hnull
-  have hcompact : IsCompact (frontier (Smale.WhitneyPairModel.bigon h)) :=
-    (Smale.WhitneyPairModel.isCompact_bigon d.height_pos).of_isClosed_subset isClosed_frontier
-      (fun p hp => ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1)
+  have hcompact : IsCompact (frontier (WhitneyPairModel.bigon h)) :=
+    (WhitneyPairModel.isCompact_bigon d.height_pos).of_isClosed_subset isClosed_frontier
+      (fun p hp => ((WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1)
   obtain ⟨C, -, hC, hfrontC, hCV⟩ := exists_compact_closed_between hcompact hV hfrontV
-  have hinjC : Set.InjOn F (Smale.WhitneyPairModel.bigon h ∩ C) :=
+  have hinjC : Set.InjOn F (WhitneyPairModel.bigon h ∩ C) :=
     hinj.mono (Set.inter_subset_right.trans hCV)
   have hiC :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h ∩ C,
+    ∀ p ∈ WhitneyPairModel.bigon h ∩ C,
       Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F p) :=
     fun p hp => hderiv p (hCV hp.2)
   have hclean :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h ∩ C, p ∉ (∅ : Set (ℝ × ℝ)) → (F p : M) ∉ Set.range g := by
+    ∀ p ∈ WhitneyPairModel.bigon h ∩ C, p ∉ (∅ : Set (ℝ × ℝ)) → (F p : M) ∉ Set.range g := by
     intro p hp _ hmem
     exact havoid p (hCV hp.2) (Or.inl hmem)
   obtain ⟨G, hG, hhom, hemb, hiG, havoidG⟩ :=
-    Smale.ManifoldImmersion.exists_relative_embedded_avoidance_in_open U F g hF hg
+    ManifoldImmersion.exists_relative_embedded_avoidance_in_open U F g hF hg
       (by simp [Module.finrank_prod]) hdim (by simpa [Module.finrank_prod] using hobstacle)
-      (Smale.WhitneyPairModel.isCompact_bigon d.height_pos) hC (Set.empty_subset _) hinjC hiC
+      (WhitneyPairModel.isCompact_bigon d.height_pos) hC (Set.empty_subset _) hinjC hiC
       hclean
   refine ⟨r, hr, hcollar, G, hG, hemb, hiG, ?_, interior C, isOpen_interior, hfrontC, ?_⟩
   · intro p hp
@@ -17621,32 +17621,32 @@ theorem Smale.CleanBigonBoundary.exists_embedded_inner_extension_in_open {E M : 
     have hpC : p ∈ C := interior_subset hp
     exact (congrArg Subtype.val (hhom.fst_eq_snd hpC)).symm.trans (hEq (hCV hpC))
 
-theorem Smale.CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open {E M D Y : Type*}
+theorem CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open {E M D Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace Y] [ChartedSpace D Y]
     [IsManifold 𝓘(ℝ, D) ∞ Y] [CompactSpace Y] (g : C(Y, M)) (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g)
     {T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) (Set.range g) T a b k l h)
+    (d : CleanBigonBoundary (E := E) (Set.range g) T a b k l h)
     (U : TopologicalSpace.Opens M) (hU : (Set.range g ∪ T)ᶜ ⊆ U)
-    (hnull : ∀ f : C(Smale.Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c))
+    (hnull : ∀ f : C(Hemisphere.Sphere 1, U), ∃ c, f.Homotopic (ContinuousMap.const _ c))
     (hdim : 5 ≤ Module.finrank ℝ E) (hobstacle : 2 + Module.finrank ℝ D < Module.finrank ℝ E) :
     ∃ r : ℝ,
       r ∈ Set.Ioo (0 : ℝ) 1 ∧
-        Smale.WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
+        WhitneyPairModel.innerBigonCollar h r ⊆ d.domain ∧
           ∃ F : C(ℝ × ℝ, U),
             ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ F ∧
-              Topology.IsClosedEmbedding (fun p : Smale.WhitneyPairModel.bigon h => F p) ∧
-                (∀ p ∈ Smale.WhitneyPairModel.bigon h,
+              Topology.IsClosedEmbedding (fun p : WhitneyPairModel.bigon h => F p) ∧
+                (∀ p ∈ WhitneyPairModel.bigon h,
                     Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F p)) ∧
-                  (∀ p ∈ Smale.WhitneyPairModel.bigon h, (F p : M) ∉ Set.range g) ∧
-                    (∀ p ∈ interior (Smale.WhitneyPairModel.bigon h),
-                        (F p : M) ∉ d.map '' Smale.WhitneyPairModel.innerBigonCollar h r) ∧
+                  (∀ p ∈ WhitneyPairModel.bigon h, (F p : M) ∉ Set.range g) ∧
+                    (∀ p ∈ interior (WhitneyPairModel.bigon h),
+                        (F p : M) ∉ d.map '' WhitneyPairModel.innerBigonCollar h r) ∧
                       ∃ W : Set (ℝ × ℝ),
                         IsOpen W ∧
-                          frontier (Smale.WhitneyPairModel.bigon h) ⊆ W ∧
+                          frontier (WhitneyPairModel.bigon h) ⊆ W ∧
                             Set.EqOn (Subtype.val ∘ F)
-                              (d.map ∘ Smale.WhitneyPairModel.innerBigonMap h r) W := by
+                              (d.map ∘ WhitneyPairModel.innerBigonMap h r) W := by
   obtain ⟨r, hr, hcollar, F, hF, hemb, hi, havoid, V, hV, hfrontV, hEq⟩ :=
     d.exists_embedded_inner_extension_in_open g hg U hU hnull hdim hobstacle
   let Q : TopologicalSpace.Opens (ℝ × ℝ) := ⟨d.domain, d.open_domain⟩
@@ -17656,8 +17656,8 @@ theorem Smale.CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open 
     intro p
     apply contMDiffAt_subtype_iff.mpr
     exact d.smooth.contMDiffAt (d.open_domain.mem_nhds p.property)
-  let A : Set Q := Subtype.val ⁻¹' Smale.WhitneyPairModel.innerBigonCollar h r
-  have himage : q '' A = d.map '' Smale.WhitneyPairModel.innerBigonCollar h r := by
+  let A : Set Q := Subtype.val ⁻¹' WhitneyPairModel.innerBigonCollar h r
+  have himage : q '' A = d.map '' WhitneyPairModel.innerBigonCollar h r := by
     ext z
     constructor
     · rintro ⟨p, hp, rfl⟩
@@ -17667,42 +17667,42 @@ theorem Smale.CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open 
   have hclosed : IsClosed (q '' A) := by
     rw [himage]
     exact
-      ((Smale.WhitneyPairModel.isCompact_innerBigonCollar d.height_pos
+      ((WhitneyPairModel.isCompact_innerBigonCollar d.height_pos
               hr.1.ne').image_of_continuousOn
           (d.smooth.continuousOn.mono hcollar)).isClosed
-  have hs : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) ∞ (Smale.WhitneyPairModel.innerBigonMap h r) :=
-    (Smale.WhitneyPairModel.innerBigonDiffeomorph h r hr.1.ne').contMDiff
-  let V' : Set (ℝ × ℝ) := V ∩ Smale.WhitneyPairModel.innerBigonMap h r ⁻¹' d.domain
+  have hs : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, ℝ × ℝ) ∞ (WhitneyPairModel.innerBigonMap h r) :=
+    (WhitneyPairModel.innerBigonDiffeomorph h r hr.1.ne').contMDiff
+  let V' : Set (ℝ × ℝ) := V ∩ WhitneyPairModel.innerBigonMap h r ⁻¹' d.domain
   have hV' : IsOpen V' := hV.inter (d.open_domain.preimage hs.continuous)
-  have hfrontV' : frontier (Smale.WhitneyPairModel.bigon h) ⊆ V' := by
+  have hfrontV' : frontier (WhitneyPairModel.bigon h) ⊆ V' := by
     intro p hp
     refine ⟨hfrontV hp, hcollar ?_⟩
     exact
-      (Smale.WhitneyPairModel.innerBigonMap_mem_collar_iff d.height_pos hr
-            ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1).mpr
+      (WhitneyPairModel.innerBigonMap_mem_collar_iff d.height_pos hr
+            ((WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1).mpr
         hp
-  have hfrontCompact : IsCompact (frontier (Smale.WhitneyPairModel.bigon h)) :=
-    (Smale.WhitneyPairModel.isCompact_bigon d.height_pos).of_isClosed_subset isClosed_frontier
-      (fun p hp => ((Smale.WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1)
+  have hfrontCompact : IsCompact (frontier (WhitneyPairModel.bigon h)) :=
+    (WhitneyPairModel.isCompact_bigon d.height_pos).of_isClosed_subset isClosed_frontier
+      (fun p hp => ((WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1)
   obtain ⟨C, -, hC, hfrontC, hCV⟩ := exists_compact_closed_between hfrontCompact hV' hfrontV'
-  have hinj : Set.InjOn F (Smale.WhitneyPairModel.bigon h) := by
+  have hinj : Set.InjOn F (WhitneyPairModel.bigon h) := by
     intro p hp z hz heq
     exact congrArg Subtype.val (hemb.injective (a₁ := ⟨p, hp⟩) (a₂ := ⟨z, hz⟩) heq)
   have hclean :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h ∩ C,
-      p ∉ frontier (Smale.WhitneyPairModel.bigon h) → (F p : M) ∉ q '' A := by
+    ∀ p ∈ WhitneyPairModel.bigon h ∩ C,
+      p ∉ frontier (WhitneyPairModel.bigon h) → (F p : M) ∉ q '' A := by
     intro p hp hpB hmem
     rw [himage] at hmem
     obtain ⟨z, hz, heq⟩ := hmem
-    have hzp : z = Smale.WhitneyPairModel.innerBigonMap h r p :=
+    have hzp : z = WhitneyPairModel.innerBigonMap h r p :=
       d.injective (hcollar hz) (hCV hp.2).2 (heq.trans (hEq (hCV hp.2).1))
     exact
       hpB
-        ((Smale.WhitneyPairModel.innerBigonMap_mem_collar_iff d.height_pos hr hp.1).mp (hzp ▸ hz))
+        ((WhitneyPairModel.innerBigonMap_mem_collar_iff d.height_pos hr hp.1).mp (hzp ▸ hz))
   let O : Set U := (Subtype.val : U → M) ⁻¹' (Set.range g)ᶜ
   have hO : IsOpen O :=
     (isCompact_range g.continuous).isClosed.isOpen_compl.preimage continuous_subtype_val
-  have hmaps : Set.MapsTo F (Smale.WhitneyPairModel.bigon h) O := fun p hp => havoid p hp
+  have hmaps : Set.MapsTo F (WhitneyPairModel.bigon h) O := fun p hp => havoid p hp
   have hdim' : 2 * Module.finrank ℝ (ℝ × ℝ) < Module.finrank ℝ E := by
     simp only [Module.finrank_prod, Module.finrank_self]
     omega
@@ -17710,12 +17710,12 @@ theorem Smale.CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open 
     simp only [Module.finrank_prod, Module.finrank_self]
     omega
   obtain ⟨G, hG, hhom, hembG, hiG, hmapsG, havoidG⟩ :=
-    Smale.ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open U F q A
-      hF hq hclosed hdim' hobstacle' (Smale.WhitneyPairModel.isCompact_bigon d.height_pos) hC
+    ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open U F q A
+      hF hq hclosed hdim' hobstacle' (WhitneyPairModel.isCompact_bigon d.height_pos) hC
       hfrontC hinj hi hclean hO hmaps
   refine ⟨r, hr, hcollar, G, hG, hembG, hiG, hmapsG, ?_, interior C, isOpen_interior, hfrontC, ?_⟩
   · intro p hp hmem
-    have hpB : p ∉ frontier (Smale.WhitneyPairModel.bigon h) := by
+    have hpB : p ∉ frontier (WhitneyPairModel.bigon h) := by
       intro hfront
       rw [frontier] at hfront
       exact hfront.2 hp
@@ -17724,7 +17724,7 @@ theorem Smale.CleanBigonBoundary.exists_collar_disjoint_inner_extension_in_open 
     have hpC : p ∈ C := interior_subset hp
     exact (congrArg Subtype.val (hhom.fst_eq_snd hpC)).symm.trans (hEq (hCV hpC).1)
 
-theorem Smale.exists_filled_clean_bigon_of_collar_disjoint_inner {E M : Type*}
+theorem exists_filled_clean_bigon_of_collar_disjoint_inner {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {S T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
     (d : CleanBigonBoundary (E := E) S T a b k l h) {r : ℝ} (hr : r ∈ Set.Ioo (0 : ℝ) 1)
@@ -17895,25 +17895,25 @@ theorem Smale.exists_filled_clean_bigon_of_collar_disjoint_inner {E M : Type*}
   · intro p hp
     exact (hfj hp.1).trans (hjd hp.2)
 
-theorem Smale.CleanBigonBoundary.exists_filled_bigon_of_complement_contractions {E M D Y : Type*}
+theorem CleanBigonBoundary.exists_filled_bigon_of_complement_contractions {E M D Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace Y] [ChartedSpace D Y]
     [IsManifold 𝓘(ℝ, D) ∞ Y] [CompactSpace Y] (g : C(Y, M)) (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g)
     {T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) (Set.range g) T a b k l h) (hT : IsClosed T)
+    (d : CleanBigonBoundary (E := E) (Set.range g) T a b k l h) (hT : IsClosed T)
     (hnull :
-      ∀ f : C(Smale.Hemisphere.Sphere 1, (⟨Tᶜ, hT.isOpen_compl⟩ : TopologicalSpace.Opens M)),
+      ∀ f : C(Hemisphere.Sphere 1, (⟨Tᶜ, hT.isOpen_compl⟩ : TopologicalSpace.Opens M)),
         ∃ c, f.Homotopic (ContinuousMap.const _ c))
     (hdim : 5 ≤ Module.finrank ℝ E) (hobstacle : 2 + Module.finrank ℝ D < Module.finrank ℝ E) :
     ∃ f : C(ℝ × ℝ, M),
       ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ f ∧
-        Topology.IsClosedEmbedding (fun p : Smale.WhitneyPairModel.bigon h => f p) ∧
-          (∀ p ∈ Smale.WhitneyPairModel.bigon h,
+        Topology.IsClosedEmbedding (fun p : WhitneyPairModel.bigon h => f p) ∧
+          (∀ p ∈ WhitneyPairModel.bigon h,
               Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) f p)) ∧
-            (∀ p ∈ interior (Smale.WhitneyPairModel.bigon h), f p ∉ Set.range g ∪ T) ∧
+            (∀ p ∈ interior (WhitneyPairModel.bigon h), f p ∉ Set.range g ∪ T) ∧
               ∃ V : Set (ℝ × ℝ),
-                IsOpen V ∧ frontier (Smale.WhitneyPairModel.bigon h) ⊆ V ∧ Set.EqOn f d.map V := by
+                IsOpen V ∧ frontier (WhitneyPairModel.bigon h) ⊆ V ∧ Set.EqOn f d.map V := by
   let U : TopologicalSpace.Opens M := ⟨Tᶜ, hT.isOpen_compl⟩
   have hU : (Set.range g ∪ T)ᶜ ⊆ U := fun _ hp ht => hp (Or.inr ht)
   obtain ⟨r, hr, hcollar, F, hF, hemb, hi, havoid, havoidCollar, W, hW, hfrontW, hEq⟩ :=
@@ -17921,63 +17921,63 @@ theorem Smale.CleanBigonBoundary.exists_filled_bigon_of_complement_contractions 
   let F' : C(ℝ × ℝ, M) := ⟨Subtype.val ∘ F, continuous_subtype_val.comp F.continuous⟩
   have hv : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (Subtype.val : U → M) := contMDiff_subtype_val
   have hF' : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ F' := hv.comp hF
-  have hinjF' : Set.InjOn F' (Smale.WhitneyPairModel.bigon h) := by
+  have hinjF' : Set.InjOn F' (WhitneyPairModel.bigon h) := by
     intro p hp z hz heq
     have hFval : F p = F z := Subtype.ext heq
     exact congrArg Subtype.val (hemb.injective (a₁ := ⟨p, hp⟩) (a₂ := ⟨z, hz⟩) hFval)
   have hiF' :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F' p) :=
+    ∀ p ∈ WhitneyPairModel.bigon h, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) F' p) :=
     by
     intro p hp
     change Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) (Subtype.val ∘ F) p)
     rw [mfderiv_comp p (hv.mdifferentiableAt (by simp)) (hF.mdifferentiableAt (by simp))]
-    exact (Smale.NativeOpenSubmanifold.injective_mfderiv_subtype_val U (F p)).comp (hi p hp)
-  have havoidF' : ∀ p ∈ Smale.WhitneyPairModel.bigon h, F' p ∉ Set.range g ∪ T := by
+    exact (NativeOpenSubmanifold.injective_mfderiv_subtype_val U (F p)).comp (hi p hp)
+  have havoidF' : ∀ p ∈ WhitneyPairModel.bigon h, F' p ∉ Set.range g ∪ T := by
     intro p hp hmem
     rcases hmem with hmem | hmem
     · exact havoid p hp hmem
     · exact (F p).property hmem
   exact
-    Smale.exists_filled_clean_bigon_of_collar_disjoint_inner d hr hcollar F' hF' hinjF' hiF'
+    exists_filled_clean_bigon_of_collar_disjoint_inner d hr hcollar F' hF' hinjF' hiF'
       havoidF' havoidCollar hW hfrontW hEq
 
-theorem Smale.CleanBigonBoundary.nonempty_tubularBigon_of_complement_contractions
+theorem CleanBigonBoundary.nonempty_tubularBigon_of_complement_contractions
     {E M D Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace Y]
     [ChartedSpace D Y] [IsManifold 𝓘(ℝ, D) ∞ Y] [CompactSpace Y] (g : C(Y, M))
     (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g) {T : Set M} {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ}
-    (d : Smale.CleanBigonBoundary (E := E) (Set.range g) T a b k l h) (hT : IsClosed T)
+    (d : CleanBigonBoundary (E := E) (Set.range g) T a b k l h) (hT : IsClosed T)
     (hnull :
-      ∀ f : C(Smale.Hemisphere.Sphere 1, (⟨Tᶜ, hT.isOpen_compl⟩ : TopologicalSpace.Opens M)),
+      ∀ f : C(Hemisphere.Sphere 1, (⟨Tᶜ, hT.isOpen_compl⟩ : TopologicalSpace.Opens M)),
         ∃ c, f.Homotopic (ContinuousMap.const _ c))
     (hdim : 5 ≤ Module.finrank ℝ E) (hobstacle : 2 + Module.finrank ℝ D < Module.finrank ℝ E)
     (n : ℕ) (hcodim : 2 + n = Module.finrank ℝ E) :
-    Nonempty (Smale.TubularBigon (E := E) (Set.range g) T a b k l h n) := by
+    Nonempty (TubularBigon (E := E) (Set.range g) T a b k l h n) := by
   obtain ⟨f, hf, hemb, hi, havoid, V, hV, hfrontV, hEq⟩ :=
     d.exists_filled_bigon_of_complement_contractions g hg hT hnull hdim hobstacle
-  have hinj : Set.InjOn f (Smale.WhitneyPairModel.bigon h) := by
+  have hinj : Set.InjOn f (WhitneyPairModel.bigon h) := by
     intro p hp z hz heq
     exact congrArg Subtype.val (hemb.injective (a₁ := ⟨p, hp⟩) (a₂ := ⟨z, hz⟩) heq)
   obtain ⟨ε, hε, Φ, hsource, hzero, -⟩ :=
-    Smale.exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero hf
-      (Smale.WhitneyPairModel.isCompact_bigon d.height_pos)
-      (Smale.WhitneyPairModel.zero_mem_bigon d.height_pos.le)
-      (Smale.WhitneyPairModel.starConvex_bigon d.height_pos.le) hinj hi n
+    exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero hf
+      (WhitneyPairModel.isCompact_bigon d.height_pos)
+      (WhitneyPairModel.zero_mem_bigon d.height_pos.le)
+      (WhitneyPairModel.starConvex_bigon d.height_pos.le) hinj hi n
       (by simpa only [Module.finrank_prod, Module.finrank_self] using hcodim) isOpen_univ
       (Set.mapsTo_univ _ _)
-  have hgerm : ∀ p ∈ frontier (Smale.WhitneyPairModel.bigon h), (f : (ℝ × ℝ) → M) =ᶠ[𝓝 p] d.map :=
+  have hgerm : ∀ p ∈ frontier (WhitneyPairModel.bigon h), (f : (ℝ × ℝ) → M) =ᶠ[𝓝 p] d.map :=
     fun _ hp => Filter.mem_of_superset (hV.mem_nhds (hfrontV hp)) (fun _ hx => hEq hx)
   have hlow :
-    ∀ t ∈ Set.Icc (0 : ℝ) 1, (2 * t - 1, 0) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
+    ∀ t ∈ Set.Icc (0 : ℝ) 1, (2 * t - 1, 0) ∈ frontier (WhitneyPairModel.bigon h) :=
     fun t ht =>
-    (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time d.height_pos _).mpr
+    (WhitneyPairModel.mem_frontier_bigon_iff_exists_time d.height_pos _).mpr
       ⟨t, ht, Or.inl rfl⟩
   have hupp :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
-      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (Smale.WhitneyPairModel.bigon h) :=
+      (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ frontier (WhitneyPairModel.bigon h) :=
     fun t ht =>
-    (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time d.height_pos _).mpr
+    (WhitneyPairModel.mem_frontier_bigon_iff_exists_time d.height_pos _).mpr
       ⟨t, ht, Or.inr rfl⟩
   exact
     ⟨{  height_pos := d.height_pos
@@ -17996,7 +17996,7 @@ theorem Smale.CleanBigonBoundary.nonempty_tubularBigon_of_complement_contraction
         source_contains := hsource
         zero_section := hzero }⟩
 
-theorem Smale.ManifoldImmersion.exists_weighted_immersive_patch_with_property
+theorem ManifoldImmersion.exists_weighted_immersive_patch_with_property
     {B E G F H H' X N : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
@@ -18010,59 +18010,59 @@ theorem Smale.ManifoldImmersion.exists_weighted_immersive_patch_with_property
     (hplateau : ∀ x ∈ S, b x ∈ interior {y | χ y = 1})
     (hcommon : ∀ x ∈ S, ∀ v, mfderiv 𝓘(ℝ, E) J f (b x) v = 0 → fderiv ℝ β (b x) v = 0 → v = 0)
     (hdim : Module.finrank ℝ B + Module.finrank ℝ E < Module.finrank ℝ F) (Q : (E → N) → Prop)
-    (hQ : ∀ᶠ a : F in 𝓝 0, Q (Smale.ChartMapPerturbation.perturb c f β a)) :
+    (hQ : ∀ᶠ a : F in 𝓝 0, Q (ChartMapPerturbation.perturb c f β a)) :
     ∃ g : C(E, N),
       ContMDiff 𝓘(ℝ, E) J ∞ g ∧
         Q g ∧
           f.HomotopicRel g {y | β y = 0} ∧
             ∀ x ∈ S, Function.Injective (mfderiv 𝓘(ℝ, E) J g (b x)) := by
-  let k := Smale.ChartMapPerturbation.cutoffCoordinates c f χ
+  let k := ChartMapPerturbation.cutoffCoordinates c f χ
   have hk : ContDiff ℝ ∞ k := by
     have hm : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, F) ∞ k := fun _ =>
-      Smale.ChartMapPerturbation.contMDiffAt_cutoffCoordinates c hχsupport hf.contMDiffAt
+      ChartMapPerturbation.contMDiffAt_cutoffCoordinates c hχsupport hf.contMDiffAt
         hχ.contMDiff.contMDiffAt
     exact hm.contDiff
   obtain ⟨ε, hε, hvalid⟩ :=
-    Smale.ChartMapPerturbation.exists_radius_valid c hf hβ.contMDiff hcompact hsupport
-  have hQmem : {a : F | Q (Smale.ChartMapPerturbation.perturb c f β a)} ∈ 𝓝 0 := hQ
+    ChartMapPerturbation.exists_radius_valid c hf hβ.contMDiff hcompact hsupport
+  have hQmem : {a : F | Q (ChartMapPerturbation.perturb c f β a)} ∈ 𝓝 0 := hQ
   obtain ⟨δ, hδ, hδkeep⟩ := Metric.mem_nhds_iff.mp hQmem
   obtain ⟨a, ha, -, hkernel⟩ :=
-    Smale.WeightedPerturbation.exists_small_parameter_with_common_kernel hb hk hβ hdim
+    WeightedPerturbation.exists_small_parameter_with_common_kernel hb hk hβ hdim
       (lt_min hε hδ)
   have haε : ‖a‖ < ε := (lt_min_iff.mp ha).1
   have haδ : ‖a‖ < δ := (lt_min_iff.mp ha).2
   have hv := hvalid a haε
-  have hsmooth := Smale.ChartMapPerturbation.contMDiff_perturb c hf hβ.contMDiff hsupport hv
-  let g : C(E, N) := ⟨Smale.ChartMapPerturbation.perturb c f β a, hsmooth.continuous⟩
+  have hsmooth := ChartMapPerturbation.contMDiff_perturb c hf hβ.contMDiff hsupport hv
+  let g : C(E, N) := ⟨ChartMapPerturbation.perturb c f β a, hsmooth.continuous⟩
   have hQg : Q g :=
     hδkeep (show a ∈ Metric.ball 0 δ by simpa only [Metric.mem_ball, dist_zero_right] using haδ)
   refine
     ⟨g, hsmooth, hQg,
-      ⟨Smale.ChartMapPerturbation.homotopyRel c hf hβ.contMDiff hsupport hvalid haε⟩, ?_⟩
+      ⟨ChartMapPerturbation.homotopyRel c hf hβ.contMDiff hsupport hvalid haε⟩, ?_⟩
   intro x hx
   have hxplateau := hplateau x hx
   have hsource (y : E) (hy : χ y = 1) : f y ∈ c.source :=
     hχsupport (subset_tsupport χ (by change χ y ≠ 0; rw [hy]; exact one_ne_zero))
   have hxone : χ (b x) = 1 := interior_subset (s := {y | χ y = 1}) hxplateau
   have hfx := hsource (b x) hxone
-  have hgx : g (b x) ∈ c.source := Smale.ChartMapPerturbation.perturb_mem_source c f β hv hfx
+  have hgx : g (b x) ∈ c.source := ChartMapPerturbation.perturb_mem_source c f β hv hfx
   have heqold : k =ᶠ[𝓝 (b x)] (c ∘ f) := by
     filter_upwards [isOpen_interior.mem_nhds hxplateau] with y hy
     exact
-      Smale.ChartMapPerturbation.cutoffCoordinates_eq_of_one c f χ
+      ChartMapPerturbation.cutoffCoordinates_eq_of_one c f χ
         (interior_subset (s := {y | χ y = 1}) hy)
-  have heqnew : (c ∘ g) =ᶠ[𝓝 (b x)] Smale.WeightedPerturbation.perturb k β a := by
+  have heqnew : (c ∘ g) =ᶠ[𝓝 (b x)] WeightedPerturbation.perturb k β a := by
     filter_upwards [isOpen_interior.mem_nhds hxplateau] with y hy
     have hyone : χ y = 1 := interior_subset (s := {y | χ y = 1}) hy
-    change c (Smale.ChartMapPerturbation.perturb c f β a y) = _
-    rw [Smale.ChartMapPerturbation.chart_perturb c f β hv (hsource y hyone)]
-    simp only [Smale.ChartMapPerturbation.coordinateFamily, Smale.WeightedPerturbation.perturb, k,
-      Smale.ChartMapPerturbation.cutoffCoordinates, hyone, one_smul]
+    change c (ChartMapPerturbation.perturb c f β a y) = _
+    rw [ChartMapPerturbation.chart_perturb c f β hv (hsource y hyone)]
+    simp only [ChartMapPerturbation.coordinateFamily, WeightedPerturbation.perturb, k,
+      ChartMapPerturbation.cutoffCoordinates, hyone, one_smul]
   apply (injective_fderiv_chart_iff c (hsmooth.mdifferentiableAt (by simp)) hgx).mp
   change Function.Injective (fderiv ℝ (c ∘ g) (b x))
   rw [heqnew.fderiv_eq]
   intro v w hvw
-  have hzero : fderiv ℝ (Smale.WeightedPerturbation.perturb k β a) (b x) (v - w) = 0 := by
+  have hzero : fderiv ℝ (WeightedPerturbation.perturb k β a) (b x) (v - w) = 0 := by
     rw [map_sub, hvw, sub_self]
   obtain ⟨hkzero, hβzero⟩ := (hkernel x (v - w)).mp hzero
   have hnative : mfderiv 𝓘(ℝ, E) J f (b x) (v - w) = 0 := by
@@ -18071,7 +18071,7 @@ theorem Smale.ManifoldImmersion.exists_weighted_immersive_patch_with_property
     exact hkzero
   exact sub_eq_zero.mp (hcommon x hx (v - w) hnative hβzero)
 
-theorem Smale.ChartMapPerturbation.derivative_eq_zero_iff_of_weight_derivative_eq_zero
+theorem ChartMapPerturbation.derivative_eq_zero_iff_of_weight_derivative_eq_zero
     {E G F H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -18097,9 +18097,9 @@ theorem Smale.ChartMapPerturbation.derivative_eq_zero_iff_of_weight_derivative_e
       fderiv ℝ (c ∘ perturb c f β a) x = fderiv ℝ (c ∘ f) x + (fderiv ℝ β x).smulRight a :=
       heq.fderiv_eq.trans hcd.fderiv
     rw [←
-      Smale.ManifoldImmersion.fderiv_chart_eq_zero_iff c (hsmooth.mdifferentiableAt (by simp)) hgx
+      ManifoldImmersion.fderiv_chart_eq_zero_iff c (hsmooth.mdifferentiableAt (by simp)) hgx
         v,
-      ← Smale.ManifoldImmersion.fderiv_chart_eq_zero_iff c (hf.mdifferentiableAt (by simp)) hx v,
+      ← ManifoldImmersion.fderiv_chart_eq_zero_iff c (hf.mdifferentiableAt (by simp)) hx v,
       hderiv]
     change fderiv ℝ (c ∘ f) x v + fderiv ℝ β x v • a = 0 ↔ fderiv ℝ (c ∘ f) x v = 0
     rw [hweight, zero_smul, add_zero]
@@ -18111,14 +18111,14 @@ theorem Smale.ChartMapPerturbation.derivative_eq_zero_iff_of_weight_derivative_e
     rw [heq.mfderiv_eq]
     rfl
 
-theorem Smale.ChartMapPerturbation.fderiv_cutoff_mul_eq_zero {E : Type*} [NormedAddCommGroup E]
+theorem ChartMapPerturbation.fderiv_cutoff_mul_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {ψ ρ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ) (hρ : ContDiff ℝ ∞ ρ) {x v : E}
     (hx : ρ x = 0) (hv : fderiv ℝ ρ x v = 0) : fderiv ℝ (fun y => ψ y * ρ y) x v = 0 := by
   rw [fderiv_fun_mul (hψ.differentiable (by simp) x) (hρ.differentiable (by simp) x)]
   simp only [add_apply, smul_apply, smul_eq_mul, hx, hv, MulZeroClass.mul_zero,
     MulZeroClass.zero_mul, add_zero]
 
-theorem Smale.ChartMapPerturbation.common_kernel_preserved_on_zero_set {E G F H N : Type*}
+theorem ChartMapPerturbation.common_kernel_preserved_on_zero_set {E G F H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : E → N}
@@ -18138,14 +18138,14 @@ theorem Smale.ChartMapPerturbation.common_kernel_preserved_on_zero_set {E G F H 
       hzero
   exact hcommon x hx v hold hv
 
-theorem Smale.ManifoldImmersion.exists_boundary_derivative_repair_step {B E G H H' X N : Type*}
+theorem ManifoldImmersion.exists_boundary_derivative_repair_step {B E G H H' X N : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     {I : ModelWithCorners ℝ B H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
     [TopologicalSpace X] [ChartedSpace H X] [IsManifold I ∞ X] [LindelofSpace (X × E)]
     [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] {ι : Type*} [Finite ι]
-    (p : ι → Smale.ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N)) (i : ι)
+    (p : ι → ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N)) (i : ι)
     (f : C(E, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hcompatible : ∀ j, (p j).Compatible f)
     {b : X → E} (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) {ρ : E → ℝ} (hρ : ContDiff ℝ ∞ ρ)
     (hzero : ∀ x, ρ (b x) = 0)
@@ -18166,28 +18166,28 @@ theorem Smale.ManifoldImmersion.exists_boundary_derivative_repair_step {B E G H 
     tsupport_mul_subset_left.trans ((p i).inner_compatible (hcompatible i))
   have hkeep :
     ∀ᶠ a in 𝓝 (0 : G),
-      ∀ j, (p j).Compatible (Smale.ChartMapPerturbation.perturb (p i).chart f β a) := by
+      ∀ j, (p j).Compatible (ChartMapPerturbation.perturb (p i).chart f β a) := by
     apply Filter.eventually_all.mpr
     intro j
     exact
-      Smale.ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf hβ.contMDiff
+      ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf hβ.contMDiff
         hsupport (p j).outer_compact.isCompact (p j).chart.open_source (hcompatible j)
   have hold :=
-    Smale.ChartMapPerturbation.eventually_perturb_injective_derivative (p i).chart hf hβ.contMDiff
+    ChartMapPerturbation.eventually_perturb_injective_derivative (p i).chart hf hβ.contMDiff
       hcompact hsupport hK hinj
   let Common (g : E → N) : Prop :=
     ∀ y, ρ y = 0 → ∀ v, mfderiv 𝓘(ℝ, E) J g y v = 0 → fderiv ℝ ρ y v = 0 → v = 0
   have hretain :
-    ∀ᶠ a in 𝓝 (0 : G), Common (Smale.ChartMapPerturbation.perturb (p i).chart f β a) := by
-    filter_upwards [Smale.ChartMapPerturbation.eventually_valid (p i).chart hf hβ.contMDiff
+    ∀ᶠ a in 𝓝 (0 : G), Common (ChartMapPerturbation.perturb (p i).chart f β a) := by
+    filter_upwards [ChartMapPerturbation.eventually_valid (p i).chart hf hβ.contMDiff
         hcompact hsupport] with
       a ha
     exact
-      Smale.ChartMapPerturbation.common_kernel_preserved_on_zero_set (p i).chart hf
+      ChartMapPerturbation.common_kernel_preserved_on_zero_set (p i).chart hf
         (p i).smooth.contDiff hρ hsupport ha hcommon
   let Q : (E → N) → Prop := fun g =>
     (∀ j, (p j).Compatible g) ∧ (∀ y ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g y)) ∧ Common g
-  have hQ : ∀ᶠ a in 𝓝 (0 : G), Q (Smale.ChartMapPerturbation.perturb (p i).chart f β a) :=
+  have hQ : ∀ᶠ a in 𝓝 (0 : G), Q (ChartMapPerturbation.perturb (p i).chart f β a) :=
     hkeep.and (hold.and hretain)
   have houter : (p i).plateau ⊆ interior {y | (p i).outer y = 1} := by
     apply isOpen_interior.subset_interior_iff.mpr
@@ -18223,14 +18223,14 @@ theorem Smale.ManifoldImmersion.exists_boundary_derivative_repair_step {B E G H 
     · obtain ⟨x, rfl⟩ := hLrange hy
       exact hnew x hy
 
-theorem Smale.ManifoldImmersion.exists_finite_boundary_derivative_repair {B E G H H' X N : Type*}
+theorem ManifoldImmersion.exists_finite_boundary_derivative_repair {B E G H H' X N : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     {I : ModelWithCorners ℝ B H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
     [TopologicalSpace X] [ChartedSpace H X] [IsManifold I ∞ X] [LindelofSpace (X × E)]
     [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] {ι : Type*} [Finite ι]
-    (p : ι → Smale.ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N))
+    (p : ι → ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N))
     (L : ι → Set E) (hL : ∀ i, IsCompact (L i)) (hLsub : ∀ i, L i ⊆ (p i).plateau) (f : C(E, N))
     (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hcompatible : ∀ i, (p i).Compatible f) {b : X → E}
     (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) (hLrange : ∀ i, L i ⊆ Set.range b) {ρ : E → ℝ}
@@ -18267,7 +18267,7 @@ theorem Smale.ManifoldImmersion.exists_finite_boundary_derivative_repair {B E G 
       · exact Or.inr hyj
       · exact Or.inl (Or.inr (Set.mem_iUnion₂.mpr ⟨j, hjs, hyj⟩))
 
-theorem Smale.ManifoldImmersion.exists_compact_boundary_derivative_repair {B E G H H' X N : Type*}
+theorem ManifoldImmersion.exists_compact_boundary_derivative_repair {B E G H H' X N : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -18285,10 +18285,10 @@ theorem Smale.ManifoldImmersion.exists_compact_boundary_derivative_repair {B E G
   classical
   have hboundary : IsCompact (Set.range b) := isCompact_range hb.continuous
   have hp (x : Set.range b) :
-    ∃ p : Smale.ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N),
+    ∃ p : ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N),
       ∃ D : Set E, p.Compatible f ∧ IsCompact D ∧ D ∈ 𝓝 x.1 ∧ D ⊆ p.plateau := by
     obtain ⟨p, hcompatible, hplateau⟩ :=
-      Smale.ManifoldSmoothing.exists_smoothing_patch_at (I := 𝓘(ℝ, E)) (J := J) f x.1
+      ManifoldSmoothing.exists_smoothing_patch_at (I := 𝓘(ℝ, E)) (J := J) f x.1
     obtain ⟨D, hDx, hDsub, hD⟩ := local_compact_nhds (isOpen_interior.mem_nhds hplateau)
     exact ⟨p, D, hcompatible, hD, hDx, hDsub⟩
   choose p D hcompatible hD hn hsub using hp
@@ -18312,19 +18312,19 @@ theorem Smale.ManifoldImmersion.exists_compact_boundary_derivative_repair {B E G
   apply hinj y
   exact Or.inr (Set.mem_iUnion₂.mpr ⟨⟨i, hi⟩, Finset.mem_univ _, hy, interior_subset hyD⟩)
 
-def Smale.CurveImmersion.endpointFunction (t : ℝ) : ℝ :=
+def CurveImmersion.endpointFunction (t : ℝ) : ℝ :=
   t * (1 - t)
 
-theorem Smale.CurveImmersion.contDiff_endpointFunction : ContDiff ℝ ∞ endpointFunction := by
+theorem CurveImmersion.contDiff_endpointFunction : ContDiff ℝ ∞ endpointFunction := by
   unfold endpointFunction
   fun_prop
 
-theorem Smale.CurveImmersion.endpointFunction_eq_zero_iff (t : ℝ) :
+theorem CurveImmersion.endpointFunction_eq_zero_iff (t : ℝ) :
     endpointFunction t = 0 ↔ t = 0 ∨ t = 1 := by
   rw [endpointFunction, mul_eq_zero, sub_eq_zero]
   exact or_congr Iff.rfl eq_comm
 
-theorem Smale.CurveImmersion.fderiv_endpointFunction (t v : ℝ) :
+theorem CurveImmersion.fderiv_endpointFunction (t v : ℝ) :
     fderiv ℝ endpointFunction t v = v * (1 - 2 * t) := by
   have hd : HasDerivAt endpointFunction (1 * (1 - t) + t * (0 - 1)) t :=
     (hasDerivAt_id t).mul ((hasDerivAt_const t (1 : ℝ)).sub (hasDerivAt_id t))
@@ -18333,7 +18333,7 @@ theorem Smale.CurveImmersion.fderiv_endpointFunction (t v : ℝ) :
   rw [hd.hasFDerivAt.fderiv]
   rfl
 
-theorem Smale.CurveImmersion.injective_endpointFunction_derivative {t : ℝ}
+theorem CurveImmersion.injective_endpointFunction_derivative {t : ℝ}
     (ht : endpointFunction t = 0) {v : ℝ} (hv : fderiv ℝ endpointFunction t v = 0) : v = 0 := by
   rw [fderiv_endpointFunction] at hv
   rcases (endpointFunction_eq_zero_iff t).mp ht with rfl | rfl
@@ -18341,7 +18341,7 @@ theorem Smale.CurveImmersion.injective_endpointFunction_derivative {t : ℝ}
   · norm_num at hv
     exact hv
 
-theorem Smale.ManifoldImmersion.exists_curve_endpoint_derivative_repair {G H N : Type*}
+theorem ManifoldImmersion.exists_curve_endpoint_derivative_repair {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
     [IsManifold J ∞ N] (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
@@ -18358,26 +18358,26 @@ theorem Smale.ManifoldImmersion.exists_curve_endpoint_derivative_repair {G H N :
   let b : X → ℝ := Subtype.val
   have hb : ContMDiff 𝓘(ℝ, Z) 𝓘(ℝ, ℝ) ∞ b := contMDiff_of_discreteTopology
   have hrange : Set.range b = ({0, 1} : Set ℝ) := by ext t; simp [b, X]
-  have hzero : ∀ x, Smale.CurveImmersion.endpointFunction (b x) = 0 := by
+  have hzero : ∀ x, CurveImmersion.endpointFunction (b x) = 0 := by
     intro x
-    apply (Smale.CurveImmersion.endpointFunction_eq_zero_iff _).mpr
+    apply (CurveImmersion.endpointFunction_eq_zero_iff _).mpr
     exact x.property
-  have hzset : {t | Smale.CurveImmersion.endpointFunction t = 0} = ({0, 1} : Set ℝ) := by
+  have hzset : {t | CurveImmersion.endpointFunction t = 0} = ({0, 1} : Set ℝ) := by
     ext t
-    simp only [Set.mem_ofPred_eq, Smale.CurveImmersion.endpointFunction_eq_zero_iff,
+    simp only [Set.mem_ofPred_eq, CurveImmersion.endpointFunction_eq_zero_iff,
       Set.mem_insert_iff, Set.mem_singleton_iff]
   have hd : Module.finrank ℝ Z + Module.finrank ℝ ℝ < Module.finrank ℝ G := by
     simp only [Z, finrank_euclideanSpace_fin, Module.finrank_self]
     omega
   obtain ⟨g, hg, hrel, hi⟩ :=
     exists_compact_boundary_derivative_repair f hf hb
-      Smale.CurveImmersion.contDiff_endpointFunction hzero hd
-      (fun _ ht _ _ hv => Smale.CurveImmersion.injective_endpointFunction_derivative ht hv)
+      CurveImmersion.contDiff_endpointFunction hzero hd
+      (fun _ ht _ _ hv => CurveImmersion.injective_endpointFunction_derivative ht hv)
   refine ⟨g, hg, ?_, ?_⟩
   · simpa only [hzset] using hrel
   · simpa only [hrange] using hi
 
-theorem Smale.exists_short_embedded_arc {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+theorem exists_short_embedded_arc {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
     [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
     [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] {U : Set N}
     (hU : IsOpen U) {x : N} (hx : x ∈ U) (hdim : 2 ≤ Module.finrank ℝ G) :
@@ -18438,7 +18438,7 @@ theorem Smale.exists_short_embedded_arc {G H N : Type*} [NormedAddCommGroup G] [
   · intro t ht
     exact (hLW t ht).2.2
 
-theorem Smale.exists_embedded_connecting_arc_avoiding_finite_dim_two {G H N : Type*}
+theorem exists_embedded_connecting_arc_avoiding_finite_dim_two {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
     [IsManifold J ∞ N] [T2Space N] {x y : N} (γ : Path x y) (hxy : x ≠ y)
@@ -18504,7 +18504,7 @@ theorem Smale.exists_embedded_connecting_arc_avoiding_finite_dim_two {G H N : Ty
         exact ht.1.ne' (hginj htI (by simp) (he.trans hg0.symm))
       exact havoid t htI ⟨hgtS, hgtx⟩
 
-theorem Smale.exists_tubular_connecting_arc_avoiding_finite_with_global_zero {G N : Type*}
+theorem exists_tubular_connecting_arc_avoiding_finite_with_global_zero {G N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace N]
     [ChartedSpace G N] [IsManifold 𝓘(ℝ, G) ∞ N] [T2Space N] [CompactSpace N] {x y : N}
     (γ : Path x y) (hxy : x ≠ y) (hdim : 2 ≤ Module.finrank ℝ G) (n : ℕ)
@@ -18549,7 +18549,7 @@ theorem Smale.exists_tubular_connecting_arc_avoiding_finite_with_global_zero {G 
       (by simpa only [Module.finrank_self] using hcodim) hO hfO
   exact ⟨f, hf, hf0, hf1, hemb, hi, havoid, ε, hε, Φ, hsource, hzero, htarget⟩
 
-theorem Smale.exists_clean_corner_of_tubular_arcs {E M D Z N P A B : Type*} [NormedAddCommGroup E]
+theorem exists_clean_corner_of_tubular_arcs {E M D Z N P A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup A] [NormedSpace ℝ A]
@@ -18622,7 +18622,7 @@ theorem Smale.exists_clean_corner_of_tubular_arcs {E M D Z N P A B : Type*} [Nor
     have he : t • (τ, (0 : B)) + (t₀, 0) = (t₀ + t * τ, 0) := by simp [smul_eq_mul, add_comm]
     rw [he, hd]
 
-theorem Smale.nonempty_cleanCornerPatch_of_tubular_arcs {E M D Z N P A B : Type*}
+theorem nonempty_cleanCornerPatch_of_tubular_arcs {E M D Z N P A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -18651,7 +18651,7 @@ theorem Smale.nonempty_cleanCornerPatch_of_tubular_arcs {E M D Z N P A B : Type*
         injective := hinj, derivative_injective := hi, sheets := hsheets, axis_first := hlo,
         axis_second := hhi }⟩
 
-theorem Smale.exists_clean_ambient_chart_along_embedded_arc {E M G N : Type*}
+theorem exists_clean_ambient_chart_along_embedded_arc {E M G N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace N]
@@ -18705,7 +18705,7 @@ theorem Smale.exists_clean_ambient_chart_along_embedded_arc {E M G N : Type*}
   · intro t ht
     exact (hΦzero (t, 0) ht).trans (congrArg F (hzero t))
 
-theorem Smale.TransverseCoordinates.bijective_normalDerivative_transverse_sheet
+theorem TransverseCoordinates.bijective_normalDerivative_transverse_sheet
     {D B E M A Z N P : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A] [NormedSpace ℝ A]
@@ -18734,7 +18734,7 @@ theorem Smale.TransverseCoordinates.bijective_normalDerivative_transverse_sheet
   rw [hderiv]
   exact hb
 
-theorem Smale.TransverseCoordinates.bijective_normalDerivative_transverse_parametrization
+theorem TransverseCoordinates.bijective_normalDerivative_transverse_parametrization
     {D B E M A Z N P : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A] [NormedSpace ℝ A]
@@ -18757,23 +18757,23 @@ theorem Smale.TransverseCoordinates.bijective_normalDerivative_transverse_parame
     hnormal.comp (c z) hG.contMDiffAt
   rw [← mfderiv_eq_fderiv,
     mfderiv_comp z (hg.mdifferentiableAt (by simp)) (c.mdifferentiableAt (by simp) hz)]
-  exact hb.comp (Smale.PartialChart.bijective_mfderiv c hz)
+  exact hb.comp (PartialChart.bijective_mfderiv c hz)
 
-def Smale.NativeParametrization.line {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def NativeParametrization.line {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     (u : D) : ℝ →L[ℝ] D :=
   (ContinuousLinearMap.id ℝ ℝ).smulRight u
 
-theorem Smale.NativeParametrization.line_apply {D : Type*} [NormedAddCommGroup D]
+theorem NativeParametrization.line_apply {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] (u : D) (t : ℝ) : line u t = t • u :=
   rfl
 
-theorem Smale.TransverseCoordinates.vertical_derivative_of_axis_germ {Z B : Type*}
+theorem TransverseCoordinates.vertical_derivative_of_axis_germ {Z B : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {H : (ℝ × ℝ) → B} {a : Z → B} (v : Z) (hH : DifferentiableAt ℝ H 0)
     (ha : DifferentiableAt ℝ a 0) (heq : (fun t : ℝ => H (0, t)) =ᶠ[𝓝 0] (fun t => a (t • v))) :
     fderiv ℝ H (0, 0) (0, 1) = fderiv ℝ a 0 v := by
   let S : ℝ →L[ℝ] (ℝ × ℝ) := ContinuousLinearMap.inr ℝ ℝ ℝ
-  let L : ℝ →L[ℝ] Z := Smale.NativeParametrization.line v
+  let L : ℝ →L[ℝ] Z := NativeParametrization.line v
   have hHS : fderiv ℝ (H ∘ S) 0 = (fderiv ℝ H 0).comp S := by
     rw [fderiv_comp 0 (by simpa only [map_zero] using hH) S.differentiableAt, map_zero, S.fderiv]
   have haL : fderiv ℝ (a ∘ L) 0 = (fderiv ℝ a 0).comp L := by
@@ -18783,10 +18783,10 @@ theorem Smale.TransverseCoordinates.vertical_derivative_of_axis_germ {Z B : Type
   rw [hHS, haL] at hd
   have hval := congrArg (fun T : ℝ →L[ℝ] B => T 1) hd
   change fderiv ℝ H (0 : ℝ × ℝ) (0, 1) = fderiv ℝ a 0 v
-  simpa only [ContinuousLinearMap.comp_apply, S, L, Smale.NativeParametrization.line_apply,
+  simpa only [ContinuousLinearMap.comp_apply, S, L, NativeParametrization.line_apply,
     one_smul, ContinuousLinearMap.inr_apply] using hval
 
-theorem Smale.TransverseCoordinates.eventually_vertical_derivative_ne_zero {B : Type*}
+theorem TransverseCoordinates.eventually_vertical_derivative_ne_zero {B : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] {H : (ℝ × ℝ) → B} {p : ℝ × ℝ}
     (hH : ContDiffAt ℝ ∞ H p) (hn : fderiv ℝ H p (0, 1) ≠ 0) :
     ∀ᶠ q in 𝓝 p, fderiv ℝ H q (0, 1) ≠ 0 := by
@@ -18794,7 +18794,7 @@ theorem Smale.TransverseCoordinates.eventually_vertical_derivative_ne_zero {B : 
   have hv : ContinuousAt (fun q => fderiv ℝ H q (0, 1)) p := hd.clm_apply continuousAt_const
   exact hv.preimage_mem_nhds (isClosed_singleton.isOpen_compl.mem_nhds hn)
 
-theorem Smale.TransverseCoordinates.corner_normalDerivative_ne_zero {D B E M A Z Z' N P : Type*}
+theorem TransverseCoordinates.corner_normalDerivative_ne_zero {D B E M A Z Z' N P : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z]
@@ -18843,25 +18843,25 @@ theorem Smale.TransverseCoordinates.corner_normalDerivative_ne_zero {D B E M A Z
     exact hv (hbij.1 (hz.trans (map_zero (fderiv ℝ a 0)).symm))
   exact ⟨hn, eventually_vertical_derivative_ne_zero hH hn⟩
 
-theorem Smale.StripCoordinates.exists_smooth_strip_matching_germs {A B : Type*}
+theorem StripCoordinates.exists_smooth_strip_matching_germs {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF₀ : ContDiff ℝ ∞ F₀)
-    (hF₁ : ContDiff ℝ ∞ F₁) (hc₀ : (fun t : ℝ => F₀ (t, 0)) =ᶠ[𝓝 0] Smale.StripCoordinates.center)
-    (hc₁ : (fun t : ℝ => F₁ (t, 0)) =ᶠ[𝓝 1] Smale.StripCoordinates.center)
+    (hF₁ : ContDiff ℝ ∞ F₁) (hc₀ : (fun t : ℝ => F₀ (t, 0)) =ᶠ[𝓝 0] StripCoordinates.center)
+    (hc₁ : (fun t : ℝ => F₁ (t, 0)) =ᶠ[𝓝 1] StripCoordinates.center)
     (hn₀ : normalDerivative F₀ =ᶠ[𝓝 (0 : ℝ)] v) (hn₁ : normalDerivative F₁ =ᶠ[𝓝 (1 : ℝ)] v) :
     ∃ F : (ℝ × ℝ) → Space A B,
       ContDiff ℝ ∞ F ∧
-        (∀ t, F (t, 0) = Smale.StripCoordinates.center t) ∧
+        (∀ t, F (t, 0) = StripCoordinates.center t) ∧
           (∀ t, normalDerivative F t = v t) ∧ (F =ᶠ[𝓝 (0, 0)] F₀) ∧ (F =ᶠ[𝓝 (1, 0)] F₁) := by
   have hgood₀ :
     {t : ℝ |
-        F₀ (t, 0) = Smale.StripCoordinates.center t ∧ normalDerivative F₀ t = v t ∧ t < 1 / 3} ∈
+        F₀ (t, 0) = StripCoordinates.center t ∧ normalDerivative F₀ t = v t ∧ t < 1 / 3} ∈
       𝓝 (0 : ℝ) := by
     filter_upwards [hc₀, hn₀, Iio_mem_nhds (show (0 : ℝ) < 1 / 3 by norm_num)] with t hc hn ht
     exact ⟨hc, hn, ht⟩
   have hgood₁ :
     {t : ℝ |
-        F₁ (t, 0) = Smale.StripCoordinates.center t ∧ normalDerivative F₁ t = v t ∧ 2 / 3 < t} ∈
+        F₁ (t, 0) = StripCoordinates.center t ∧ normalDerivative F₁ t = v t ∧ 2 / 3 < t} ∈
       𝓝 (1 : ℝ) := by
     filter_upwards [hc₁, hn₁, Ioi_mem_nhds (show (2 / 3 : ℝ) < 1 by norm_num)] with t hc hn ht
     exact ⟨hc, hn, ht⟩
@@ -18869,9 +18869,9 @@ theorem Smale.StripCoordinates.exists_smooth_strip_matching_germs {A B : Type*}
     (SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, ℝ)) (0 : ℝ)).mem_iff.mp hgood₀
   obtain ⟨β₁, _, hβ₁⟩ :=
     (SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, ℝ)) (1 : ℝ)).mem_iff.mp hgood₁
-  have hcβ₀ (t : ℝ) (ht : β₀ t ≠ 0) : F₀ (t, 0) = Smale.StripCoordinates.center t :=
+  have hcβ₀ (t : ℝ) (ht : β₀ t ≠ 0) : F₀ (t, 0) = StripCoordinates.center t :=
     (hβ₀ (subset_tsupport β₀ ht)).1
-  have hcβ₁ (t : ℝ) (ht : β₁ t ≠ 0) : F₁ (t, 0) = Smale.StripCoordinates.center t :=
+  have hcβ₁ (t : ℝ) (ht : β₁ t ≠ 0) : F₁ (t, 0) = StripCoordinates.center t :=
     (hβ₁ (subset_tsupport β₁ ht)).1
   have hnβ₀ (t : ℝ) (ht : β₀ t ≠ 0) : normalDerivative F₀ t = v t :=
     (hβ₀ (subset_tsupport β₀ ht)).2.1
@@ -18903,13 +18903,13 @@ theorem Smale.StripCoordinates.exists_smooth_strip_matching_germs {A B : Type*}
     filter_upwards [hp hβ₀zero, hp β₁.eventuallyEq_one] with p hp₀ hp₁
     exact blend_eq_right hp₀ hp₁
 
-theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
+theorem StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [InnerProductSpace ℝ B] [FiniteDimensional ℝ B] {v : ℝ → B} {F : (ℝ × ℝ) → Space A B}
     (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F)
-    (hc : ∀ t, F (t, 0) = Smale.StripCoordinates.center t) (hD : ∀ t, normalDerivative F t = v t)
+    (hc : ∀ t, F (t, 0) = StripCoordinates.center t) (hD : ∀ t, normalDerivative F t = v t)
     (hn : ∀ t ∈ Set.Icc (0 : ℝ) 1, v t ≠ 0) {O : Set (Space A B)} (hO : IsOpen O)
-    (hcenterO : Set.MapsTo Smale.StripCoordinates.center (Set.Icc (0 : ℝ) 1) O) :
+    (hcenterO : Set.MapsTo StripCoordinates.center (Set.Icc (0 : ℝ) 1) O) :
     ∃ ε : ℝ,
       0 < ε ∧
         ∃ W : Set (ℝ × ℝ),
@@ -18930,7 +18930,7 @@ theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     subst s
     subst r
     have htu : t = u := by
-      simpa only [hc, Smale.StripCoordinates.center] using
+      simpa only [hc, StripCoordinates.center] using
         congrArg (fun q : Space A B => q.1.1) heq
     exact Prod.ext htu rfl
   have hiF : ∀ p ∈ K, Function.Injective (fderiv ℝ F p) := by
@@ -18945,7 +18945,7 @@ theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     rw [mfderiv_eq_fderiv]
     exact hiF p hp
   obtain ⟨V, hV, hKV, hinjV⟩ :=
-    Smale.ManifoldImmersion.exists_open_injOn_near_compact hF.contMDiff hK hFK hiFM
+    ManifoldImmersion.exists_open_injOn_near_compact hF.contMDiff hK hFK hiFM
   let Q := detector v F
   have hQ : ContDiff ℝ ∞ Q := contDiff_detector hv hF
   have hQK : Set.InjOn Q K := by
@@ -18963,7 +18963,7 @@ theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     rw [mfderiv_eq_fderiv]
     exact injective_fderiv_detector_at_center hv hF hc hD (hn t ht)
   obtain ⟨T, hT, hKT, hinjT⟩ :=
-    Smale.ManifoldImmersion.exists_open_injOn_near_compact hQ.contMDiff hK hQK hiQ
+    ManifoldImmersion.exists_open_injOn_near_compact hQ.contMDiff hK hQK hiQ
   let I := {p : ℝ × ℝ | Function.Injective (fderiv ℝ F p)}
   have hI : IsOpen I :=
     ContinuousLinearMap.isOpen_injective.preimage (hF.continuous_fderiv (by simp))
@@ -18981,7 +18981,7 @@ theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     rw [hc]
     exact hcenterO ht
   obtain ⟨ε, hε, hprod⟩ :=
-    Smale.DiskFraming.exists_pos_prod_closedBall_subset CompactIccSpace.isCompact_Icc hW hKW
+    DiskFraming.exists_pos_prod_closedBall_subset CompactIccSpace.isCompact_Icc hW hKW
   have hrect : Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (-ε) ε ⊆ W := by
     rintro ⟨t, s⟩ ⟨ht, hs⟩
     apply hprod
@@ -19011,13 +19011,13 @@ theorem Smale.StripCoordinates.exists_clean_strip_neighborhood {A B : Type*}
     intro p q hpq
     exact Subtype.ext (hinjW (hrect p.property) (hrect q.property) hpq)
 
-theorem Smale.StripCoordinates.contDiff_normalDerivative {A B : Type*} [NormedAddCommGroup A]
+theorem StripCoordinates.contDiff_normalDerivative {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {F : (ℝ × ℝ) → Space A B}
     (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ (normalDerivative F) :=
   ((hF.snd.fderiv_right (by simp)).clm_apply contDiff_const).comp
     (contDiff_id.prodMk contDiff_const)
 
-theorem Smale.StripCoordinates.normalDerivative_congr_germ {A B : Type*} [NormedAddCommGroup B]
+theorem StripCoordinates.normalDerivative_congr_germ {A B : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] {F G : (ℝ × ℝ) → Space A B} {t : ℝ} (heq : F =ᶠ[𝓝 (t, 0)] G) :
     normalDerivative F t = normalDerivative G t := by
   have heq' : (fun p => (F p).2) =ᶠ[𝓝 (t, (0 : ℝ))] (fun p => (G p).2) := by
@@ -19027,19 +19027,19 @@ theorem Smale.StripCoordinates.normalDerivative_congr_germ {A B : Type*} [Normed
     heq'.fderiv_eq
   exact congrArg (fun L : (ℝ × ℝ) →L[ℝ] B => L (0, 1)) hd
 
-theorem Smale.StripCoordinates.exists_clean_strip_matching_local_germs {A B : Type*}
+theorem StripCoordinates.exists_clean_strip_matching_local_germs {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [InnerProductSpace ℝ B] [FiniteDimensional ℝ B] {F₀ F₁ : (ℝ × ℝ) → Space A B}
     {U₀ U₁ : Set (ℝ × ℝ)} (hF₀ : ContDiffOn ℝ ∞ F₀ U₀) (hF₁ : ContDiffOn ℝ ∞ F₁ U₁)
     (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁) (h0U₀ : (0, 0) ∈ U₀) (h1U₁ : (1, 0) ∈ U₁)
-    (hc₀ : (fun t : ℝ => F₀ (t, 0)) =ᶠ[𝓝 0] Smale.StripCoordinates.center)
-    (hc₁ : (fun t : ℝ => F₁ (t, 0)) =ᶠ[𝓝 1] Smale.StripCoordinates.center)
+    (hc₀ : (fun t : ℝ => F₀ (t, 0)) =ᶠ[𝓝 0] StripCoordinates.center)
+    (hc₁ : (fun t : ℝ => F₁ (t, 0)) =ᶠ[𝓝 1] StripCoordinates.center)
     (hn₀ : normalDerivative F₀ 0 ≠ 0) (hn₁ : normalDerivative F₁ 1 ≠ 0)
     (hdim : 2 ≤ Module.finrank ℝ B) {O : Set (Space A B)} (hO : IsOpen O)
-    (hcenterO : Set.MapsTo Smale.StripCoordinates.center (Set.Icc (0 : ℝ) 1) O) :
+    (hcenterO : Set.MapsTo StripCoordinates.center (Set.Icc (0 : ℝ) 1) O) :
     ∃ F : (ℝ × ℝ) → Space A B,
       ContDiff ℝ ∞ F ∧
-        (∀ t, F (t, 0) = Smale.StripCoordinates.center t) ∧
+        (∀ t, F (t, 0) = StripCoordinates.center t) ∧
           (F =ᶠ[𝓝 (0, 0)] F₀) ∧
             (F =ᶠ[𝓝 (1, 0)] F₁) ∧
               ∃ ε : ℝ,
@@ -19054,20 +19054,20 @@ theorem Smale.StripCoordinates.exists_clean_strip_matching_local_germs {A B : Ty
                                 Topology.IsClosedEmbedding
                                     (fun p : Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (-ε) ε => F p) ∧
                                   (∀ t, normalDerivative F t ≠ 0) := by
-  obtain ⟨G₀, hG₀, heq₀⟩ := Smale.exists_smooth_extension_near_point hF₀.contMDiffOn hU₀ h0U₀
-  obtain ⟨G₁, hG₁, heq₁⟩ := Smale.exists_smooth_extension_near_point hF₁.contMDiffOn hU₁ h1U₁
+  obtain ⟨G₀, hG₀, heq₀⟩ := exists_smooth_extension_near_point hF₀.contMDiffOn hU₀ h0U₀
+  obtain ⟨G₁, hG₁, heq₁⟩ := exists_smooth_extension_near_point hF₁.contMDiffOn hU₁ h1U₁
   have hnG₀ : normalDerivative G₀ 0 ≠ 0 := by rwa [normalDerivative_congr_germ heq₀]
   have hnG₁ : normalDerivative G₁ 1 ≠ 0 := by rwa [normalDerivative_congr_germ heq₁]
   obtain ⟨v, hv, hvne, hv₀, hv₁⟩ :=
-    Smale.DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs
+    DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs
       (contDiff_normalDerivative hG₀.contDiff).contDiffOn
       (contDiff_normalDerivative hG₁.contDiff).contDiffOn isOpen_univ isOpen_univ (Set.mem_univ _)
       (Set.mem_univ _) hnG₀ hnG₁ hdim
-  have hcG₀ : (fun t : ℝ => G₀ (t, 0)) =ᶠ[𝓝 0] Smale.StripCoordinates.center := by
+  have hcG₀ : (fun t : ℝ => G₀ (t, 0)) =ᶠ[𝓝 0] StripCoordinates.center := by
     have hi : Filter.Tendsto (fun t : ℝ => (t, (0 : ℝ))) (𝓝 0) (𝓝 (0, 0)) :=
       (continuous_id.prodMk continuous_const).continuousAt.tendsto
     exact (heq₀.comp_tendsto hi).trans hc₀
-  have hcG₁ : (fun t : ℝ => G₁ (t, 0)) =ᶠ[𝓝 1] Smale.StripCoordinates.center := by
+  have hcG₁ : (fun t : ℝ => G₁ (t, 0)) =ᶠ[𝓝 1] StripCoordinates.center := by
     have hi : Filter.Tendsto (fun t : ℝ => (t, (0 : ℝ))) (𝓝 1) (𝓝 (1, 0)) :=
       (continuous_id.prodMk continuous_const).continuousAt.tendsto
     exact (heq₁.comp_tendsto hi).trans hc₁
@@ -19079,7 +19079,7 @@ theorem Smale.StripCoordinates.exists_clean_strip_matching_local_germs {A B : Ty
     ⟨F, hF, hc, hFG₀.trans heq₀, hFG₁.trans heq₁, ε, hε, W, hW, hrect, hinj, hmap, hi, hclean,
       hemb, fun t => by rw [hD t]; exact hvne t⟩
 
-theorem Smale.exists_native_clean_strip_matching_germs {A B E M : Type*} [NormedAddCommGroup A]
+theorem exists_native_clean_strip_matching_germs {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [T2Space M]
@@ -19203,7 +19203,7 @@ theorem Smale.exists_native_clean_strip_matching_germs {A B E M : Type*} [Normed
     rw [heq.fderiv_eq]
     exact hnormalF t
 
-theorem Smale.exists_strip_neighborhood_with_exact_endpoint_contacts {E H M : Type*}
+theorem exists_strip_neighborhood_with_exact_endpoint_contacts {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [TopologicalSpace M] [ChartedSpace H M] {k : (ℝ × ℝ) → M} {W : Set (ℝ × ℝ)}
     (hk : ContMDiffOn 𝓘(ℝ, ℝ × ℝ) I ∞ k W) (hW : IsOpen W)
@@ -19280,7 +19280,7 @@ theorem Smale.exists_strip_neighborhood_with_exact_endpoint_contacts {E H M : Ty
         · exact (hti.1.ne' h0).elim
         · exact (hti.2.ne h1).elim
 
-theorem Smale.exists_strip_along_arc_matching_parametrized_corners {E M D Z Z₀ Z₁ N P : Type*}
+theorem exists_strip_along_arc_matching_parametrized_corners {E M D Z Z₀ Z₁ N P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
@@ -19453,7 +19453,7 @@ theorem Smale.exists_strip_along_arc_matching_parametrized_corners {E M D Z Z₀
           center := hkc
           normal_nonzero := hnormal }⟩⟩
 
-theorem Smale.exists_cleanStripPatch_of_tubular_arc_corners {E M D Z B N P : Type*}
+theorem exists_cleanStripPatch_of_tubular_arc_corners {E M D Z B N P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
@@ -19547,7 +19547,7 @@ theorem Smale.exists_cleanStripPatch_of_tubular_arc_corners {E M D Z B N P : Typ
       center := hcenter, left_germ := hleft, right_germ := hright }
   exact ⟨strip, hnormal, hmap⟩
 
-theorem Smale.exists_open_neighborhoods_with_coincidences_in {X Y M : Type*} [TopologicalSpace X]
+theorem exists_open_neighborhoods_with_coincidences_in {X Y M : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace M] [T2Space M] {K : Set X} {L : Set Y}
     (hK : IsCompact K) (hL : IsCompact L) {f : X → M} {g : Y → M} (hf : ∀ x ∈ K, ContinuousAt f x)
     (hg : ∀ y ∈ L, ContinuousAt g y) {O : Set (X × Y)} (hO : IsOpen O)
@@ -19570,7 +19570,7 @@ theorem Smale.exists_open_neighborhoods_with_coincidences_in {X Y M : Type*} [To
   intro x hx y hy hxy
   exact (interior_subset (hUV ⟨hx, hy⟩)).resolve_left (fun hne => hne hxy)
 
-theorem Smale.exists_open_corner_overlap {X Y D M : Type*} [TopologicalSpace X]
+theorem exists_open_corner_overlap {X Y D M : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace D] {k : X → M} {l : Y → M} {c : D → M} {a : X → D}
     {b : Y → D} {x₀ : X} {y₀ : Y} {W : Set D} (hW : IsOpen W) (hc : Set.InjOn c W)
     (ha : ContinuousAt a x₀) (hb : ContinuousAt b y₀) (haW : a x₀ ∈ W) (hbW : b y₀ ∈ W)
@@ -19587,7 +19587,7 @@ theorem Smale.exists_open_corner_overlap {X Y D M : Type*} [TopologicalSpace X]
   rw [hkx, hly]
   exact ⟨hc hax hby, congrArg c⟩
 
-theorem Smale.exists_clean_strip_pair_neighborhoods {E M : Type*} [NormedAddCommGroup E]
+theorem exists_clean_strip_pair_neighborhoods {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
     (c₁ : CleanCornerPatch (E := E) S T a₁ b₁) (k : CleanStripPatch (E := E) S T a c₀.map c₁.map)
@@ -19681,11 +19681,11 @@ theorem Smale.exists_clean_strip_pair_neighborhoods {E M : Type*} [NormedAddComm
   · exact Or.inl ((hover₀ p hleft.1 q hleft.2).mp heq)
   · exact Or.inr ((hover₁ p hright.1 q hright.2).mp heq)
 
-def Smale.CleanStripPatch.restrict {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def CleanStripPatch.restrict {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {S T : Set M} {a : ℝ → M}
-    {k₀ k₁ : (ℝ × ℝ) → M} (k : Smale.CleanStripPatch (E := E) S T a k₀ k₁) {ε : ℝ} (hε : 0 < ε)
+    {k₀ k₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁) {ε : ℝ} (hε : 0 < ε)
     {U : Set (ℝ × ℝ)} (hU : IsOpen U) (hrect : Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (-ε) ε ⊆ U)
-    (hUk : U ⊆ k.domain) : Smale.CleanStripPatch (E := E) S T a k₀ k₁ := by
+    (hUk : U ⊆ k.domain) : CleanStripPatch (E := E) S T a k₀ k₁ := by
   refine
     { width := ε
       width_pos := hε
@@ -19712,7 +19712,7 @@ def Smale.CleanStripPatch.restrict {E M : Type*} [NormedAddCommGroup E] [NormedS
   intro p q hpq
   exact Subtype.ext (k.injective (hUk (hrect p.property)) (hUk (hrect q.property)) hpq)
 
-theorem Smale.exists_native_shared_corner_strip_pair_dim_two {E M D Z N P : Type*}
+theorem exists_native_shared_corner_strip_pair_dim_two {E M D Z N P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
@@ -19929,25 +19929,25 @@ theorem Smale.exists_native_shared_corner_strip_pair_dim_two {E M D Z N P : Type
   exact nonempty_cleanBigonBoundary hh c₀ c₁ k' l' hoverlap'
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.nonempty_belt_tubularBigon {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.nonempty_belt_tubularBigon {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = 6) (hindex : Module.finrank ℝ d.chart.NegativeCoordinates = 2)
     (hnull :
-      ∀ g : C(Smale.Hemisphere.Sphere 1, d.LowerLevel),
+      ∀ g : C(Hemisphere.Sphere 1, d.LowerLevel),
         ∃ q, g.Homotopic (ContinuousMap.const _ q))
-    (g : C(Smale.Hemisphere.Sphere 2, d.UpperLevel)) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
-    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) {a b : ℝ → d.UpperLevel}
+    (g : C(Hemisphere.Sphere 2, d.UpperLevel)) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
+    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g) {a b : ℝ → d.UpperLevel}
       {k l : (ℝ × ℝ) → d.UpperLevel} {h : ℝ},
-      Smale.CleanBigonBoundary (E := Smale.RegularLevel.Model E) (Set.range g)
+      CleanBigonBoundary (E := RegularLevel.Model E) (Set.range g)
           (Set.range d.surgery.beltSphere) a b k l h →
         Nonempty
-          (Smale.TubularBigon (E := Smale.RegularLevel.Model E) (Set.range g)
+          (TubularBigon (E := RegularLevel.Model E) (Set.range g)
             (Set.range d.surgery.beltSphere) a b k l h 3) := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
-  let _ := Smale.RegularLevel.isManifold hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.isManifold hf d.upper_regular
   let _ : CompactSpace d.UpperLevel :=
     isCompact_iff_compactSpace.mp (isClosed_eq hf.continuous continuous_const).isCompact
   intro hg a b k l h B
@@ -19957,32 +19957,32 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.nonempty_belt_tubularBigon {E M : T
       d.lower_regular d.surgery d.oldPiece_eq hindex (by omega) hnull
   exact
     B.nonempty_tubularBigon_of_complement_contractions g hg hT hnullbelt
-      (by simp [Smale.RegularLevel.Model, hdim]) (by simp [Smale.RegularLevel.Model, hdim]) 3
-      (by simp [Smale.RegularLevel.Model, hdim])
+      (by simp [RegularLevel.Model, hdim]) (by simp [RegularLevel.Model, hdim]) 3
+      (by simp [RegularLevel.Model, hdim])
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = 6) (hindex : Module.finrank ℝ d.chart.NegativeCoordinates = 2)
     (hnull :
-      ∀ g : C(Smale.Hemisphere.Sphere 1, d.LowerLevel),
+      ∀ g : C(Hemisphere.Sphere 1, d.LowerLevel),
         ∃ q, g.Homotopic (ContinuousMap.const _ q))
-    (g : C(Smale.Hemisphere.Sphere 2, d.UpperLevel)) :
-    letI := Smale.RegularLevel.chartedSpace hf d.upper_regular
+    (g : C(Hemisphere.Sphere 2, d.UpperLevel)) :
+    letI := RegularLevel.chartedSpace hf d.upper_regular
     letI : Fact (Module.finrank ℝ d.chart.PositiveCoordinates = 3 + 1) :=
       ⟨by have hh := d.chart.finrank_negative_add_positive; omega⟩
-    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
-      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x))
+    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
+      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x))
       (_ht :
         ∀ x y,
           d.surgery.beltSphere y = g x →
             Function.Surjective
-              ((mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x).coprod
-                (mfderiv (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere y)))
-      (x₀ x₁ : Smale.Hemisphere.Sphere 2)
-      (y₀ y₁ : Smale.PuncturedHandle.UnitSphere d.chart.PositiveCoordinates),
+              ((mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x).coprod
+                (mfderiv (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere y)))
+      (x₀ x₁ : Hemisphere.Sphere 2)
+      (y₀ y₁ : PuncturedHandle.UnitSphere d.chart.PositiveCoordinates),
       d.surgery.beltSphere y₀ = g x₀ →
         d.surgery.beltSphere y₁ = g x₁ →
           x₀ ≠ x₁ →
@@ -19993,27 +19993,27 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M
                     b 1 = g x₁ ∧
                       ∃ k₀ k₁ l₀ l₁ : (ℝ × ℝ) → d.UpperLevel,
                         ∃ k :
-                          Smale.CleanStripPatch (E := Smale.RegularLevel.Model E) (Set.range g)
+                          CleanStripPatch (E := RegularLevel.Model E) (Set.range g)
                             (Set.range d.surgery.beltSphere) a k₀ k₁,
                           ∃ l :
-                            Smale.CleanStripPatch (E := Smale.RegularLevel.Model E)
+                            CleanStripPatch (E := RegularLevel.Model E)
                               (Set.range d.surgery.beltSphere) (Set.range g) b l₀ l₁,
                             Nonempty
-                                (Smale.StripNormalData (EuclideanSpace ℝ (Fin 1))
-                                  (EuclideanSpace ℝ (Fin 3)) (E := Smale.RegularLevel.Model E)
+                                (StripNormalData (EuclideanSpace ℝ (Fin 1))
+                                  (EuclideanSpace ℝ (Fin 3)) (E := RegularLevel.Model E)
                                   (Set.range g) k.map) ∧
                               Nonempty
-                                  (Smale.StripNormalData (EuclideanSpace ℝ (Fin 2))
-                                    (EuclideanSpace ℝ (Fin 2)) (E := Smale.RegularLevel.Model E)
+                                  (StripNormalData (EuclideanSpace ℝ (Fin 2))
+                                    (EuclideanSpace ℝ (Fin 2)) (E := RegularLevel.Model E)
                                     (Set.range d.surgery.beltSphere) l.map) ∧
                                 ∀ h : ℝ,
                                   0 < h →
                                     Nonempty
-                                      (Smale.TubularBigon (E := Smale.RegularLevel.Model E)
+                                      (TubularBigon (E := RegularLevel.Model E)
                                         (Set.range g) (Set.range d.surgery.beltSphere) a b k.map
                                         l.map h 3) := by
-  let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
-  let _ := Smale.RegularLevel.isManifold hf d.upper_regular
+  let _ := RegularLevel.chartedSpace hf d.upper_regular
+  let _ := RegularLevel.isManifold hf d.upper_regular
   let _ : CompactSpace d.UpperLevel :=
     isCompact_iff_compactSpace.mp (isClosed_eq hf.continuous continuous_const).isCompact
   have hpos : Module.finrank ℝ d.chart.PositiveCoordinates = 3 + 1 := by
@@ -20031,9 +20031,9 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M
   have hiG := d.belt_derivative_injective hf 3
   obtain
     ⟨α, β, -, -, hα₀, hα₁, hβ₀, hβ₁, -, -, -, -, -, -, -, c₀, c₁, k, l, hnK, hnL, -, hboundary⟩ :=
-    Smale.exists_native_shared_corner_strip_pair_dim_two hg hG hinj
+    exists_native_shared_corner_strip_pair_dim_two hg hG hinj
       d.belt_isClosedEmbedding.injective hi hiG (by simp) (by simp)
-      (by simp [Smale.RegularLevel.Model, hdim]) ht hcross₀ hcross₁ hxy γ η
+      (by simp [RegularLevel.Model, hdim]) ht hcross₀ hcross₁ hxy γ η
   refine
     ⟨g ∘ α, d.surgery.beltSphere ∘ β, ?_, ?_, ?_, ?_, c₀.map, c₁.map, c₀.swap.map, c₁.swap.map, k,
       l, ?_, ?_, ?_⟩
@@ -20048,8 +20048,8 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M
   · have transport (m n : ℕ) (hm : Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) - 1 = m)
       (hn : Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = n) :
       Nonempty
-        (Smale.StripNormalData (EuclideanSpace ℝ (Fin m)) (EuclideanSpace ℝ (Fin n)) (E :=
-          Smale.RegularLevel.Model E) (Set.range g) k.map) := by
+        (StripNormalData (EuclideanSpace ℝ (Fin m)) (EuclideanSpace ℝ (Fin n)) (E :=
+          RegularLevel.Model E) (Set.range g) k.map) := by
       subst m
       subst n
       exact hnK
@@ -20057,8 +20057,8 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M
   · have transport (m n : ℕ) (hm : Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) - 1 = m)
       (hn : Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) = n) :
       Nonempty
-        (Smale.StripNormalData (EuclideanSpace ℝ (Fin m)) (EuclideanSpace ℝ (Fin n)) (E :=
-          Smale.RegularLevel.Model E) (Set.range d.surgery.beltSphere) l.map) := by
+        (StripNormalData (EuclideanSpace ℝ (Fin m)) (EuclideanSpace ℝ (Fin n)) (E :=
+          RegularLevel.Model E) (Set.range d.surgery.beltSphere) l.map) := by
       subst m
       subst n
       exact hnL
@@ -20067,23 +20067,23 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M
     obtain ⟨B⟩ := hboundary h hh
     exact d.nonempty_belt_tubularBigon hf hdim hindex hnull g hg B
 
-def Smale.FiberRestriction.embed {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+def FiberRestriction.embed {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (i : U →L[ℝ] V) : (X × U) →L[ℝ] (X × V) :=
   (ContinuousLinearMap.id ℝ X).prodMap i
 
-def Smale.FiberRestriction.project {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+def FiberRestriction.project {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (r : V →L[ℝ] U) : (X × V) →L[ℝ] (X × U) :=
   (ContinuousLinearMap.id ℝ X).prodMap r
 
-theorem Smale.FiberRestriction.project_embed {X U V : Type*} [NormedAddCommGroup X]
+theorem FiberRestriction.project_embed {X U V : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V]
     [NormedSpace ℝ V] (i : U →L[ℝ] V) (r : V →L[ℝ] U) (hi : Function.LeftInverse r i)
     (z : X × U) : project r (embed i z) = z :=
   Prod.ext rfl (hi z.2)
 
-theorem Smale.FiberRestriction.embed_project_of_normal {X U V : Type*} [NormedAddCommGroup X]
+theorem FiberRestriction.embed_project_of_normal {X U V : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V]
     [NormedSpace ℝ V] (i : U →L[ℝ] V) (r : V →L[ℝ] U) (hi : Function.LeftInverse r i) {z : X × V}
     {w : X × U} (hz : z.2 = i w.2) : embed i (project r z) = z := by
@@ -20092,7 +20092,7 @@ theorem Smale.FiberRestriction.embed_project_of_normal {X U V : Type*} [NormedAd
   · change i (r z.2) = z.2
     rw [hz, hi]
 
-def Smale.FiberRestriction.restrict {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+def FiberRestriction.restrict {X U V : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (i : U →L[ℝ] V) (r : V →L[ℝ] U) (hi : Function.LeftInverse r i)
     (d : Diffeomorph 𝓘(ℝ, X × V) 𝓘(ℝ, X × V) (X × V) (X × V) ∞) (hnormal : ∀ z, (d z).2 = z.2) :
@@ -20122,7 +20122,7 @@ def Smale.FiberRestriction.restrict {X U V : Type*} [NormedAddCommGroup X] [Norm
     change ContMDiff 𝓘(ℝ, X × U) 𝓘(ℝ, X × U) ∞ (fun z => project r (d.symm (embed i z)))
     exact (project r).contDiff.contMDiff.comp (d.symm.contMDiff.comp (embed i).contDiff.contMDiff)
 
-theorem Smale.SmallPerturbation.lipschitzWith_slice {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.lipschitzWith_slice {E : Type*} [NormedAddCommGroup E]
     {β : ℝ × E → ℝ} {k : ℝ≥0} (hβ : LipschitzWith k β) (t : ℝ) :
     LipschitzWith k (fun x : E => β (t, x)) := by
   apply LipschitzWith.of_dist_le_mul
@@ -20132,7 +20132,7 @@ theorem Smale.SmallPerturbation.lipschitzWith_slice {E : Type*} [NormedAddCommGr
     _ = (k : ℝ) * Dist.dist x y := by
       rw [Prod.dist_eq, dist_self, max_eq_right (dist_nonneg : 0 ≤ Dist.dist x y)]
 
-theorem Smale.SmallPerturbation.exists_uniform_radius_bumpTranslation {E : Type*}
+theorem SmallPerturbation.exists_uniform_radius_bumpTranslation {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : ℝ × E → ℝ}
     (hs : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β) :
     ∃ ε : ℝ,
@@ -20162,24 +20162,24 @@ theorem Smale.SmallPerturbation.exists_uniform_radius_bumpTranslation {E : Type*
   by_contra hne
   exact hx (subset_tsupport (fun y : E => β (t, y)) hne)
 
-def Smale.SmallPerturbation.composeFamily {E : Type*} (B : ℕ → ℝ × E → E) : ℕ → ℝ × E → E
+def SmallPerturbation.composeFamily {E : Type*} (B : ℕ → ℝ × E → E) : ℕ → ℝ × E → E
   | 0, p => p.2
   | n + 1, p => B n (p.1, composeFamily B n p)
 
-theorem Smale.SmallPerturbation.contDiff_composeFamily {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.contDiff_composeFamily {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {B : ℕ → ℝ × E → E} (hB : ∀ i, ContDiff ℝ ∞ (B i)) (n : ℕ) :
     ContDiff ℝ ∞ (composeFamily B n) := by
   induction n with
   | zero => exact contDiff_snd
   | succ n ih => exact (hB n).comp (contDiff_fst.prodMk ih)
 
-theorem Smale.SmallPerturbation.composeFamily_zero {E : Type*} {B : ℕ → ℝ × E → E}
+theorem SmallPerturbation.composeFamily_zero {E : Type*} {B : ℕ → ℝ × E → E}
     (hB : ∀ i x, B i (0, x) = x) (n : ℕ) (x : E) : composeFamily B n (0, x) = x := by
   induction n with
   | zero => rfl
   | succ n ih => exact (hB n _).trans ih
 
-theorem Smale.SmallPerturbation.composeFamily_fixed {E : Type*} {B : ℕ → ℝ × E → E} {C : Set E}
+theorem SmallPerturbation.composeFamily_fixed {E : Type*} {B : ℕ → ℝ × E → E} {C : Set E}
     (hB : ∀ i t x, x ∉ C → B i (t, x) = x) (n : ℕ) (t : ℝ) {x : E} (hx : x ∉ C) :
     composeFamily B n (t, x) = x := by
   induction n with
@@ -20189,14 +20189,14 @@ theorem Smale.SmallPerturbation.composeFamily_fixed {E : Type*} {B : ℕ → ℝ
     rw [ih]
     exact hB n t x hx
 
-theorem Smale.SmallPerturbation.composeFamily_preserves {E : Type*} {F : Type*}
+theorem SmallPerturbation.composeFamily_preserves {E : Type*} {F : Type*}
     {B : ℕ → ℝ × E → E} {f : E → F} (hB : ∀ i t x, f (B i (t, x)) = f x) (n : ℕ) (t : ℝ) (x : E) :
     f (composeFamily B n (t, x)) = f x := by
   induction n with
   | zero => rfl
   | succ n ih => exact (hB n t _).trans ih
 
-theorem Smale.SmallPerturbation.exists_diffeomorph_composeFamily {E : Type*}
+theorem SmallPerturbation.exists_diffeomorph_composeFamily {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] {B : ℕ → ℝ × E → E}
     (hB : ∀ i t, ∃ d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞, ∀ x, d x = B i (t, x)) (n : ℕ) (t : ℝ) :
     ∃ d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞, ∀ x, d x = composeFamily B n (t, x) := by
@@ -20210,19 +20210,19 @@ theorem Smale.SmallPerturbation.exists_diffeomorph_composeFamily {E : Type*}
     change e (d x) = B n (t, composeFamily B n (t, x))
     rw [he, hd]
 
-def Smale.WhitneyPairModel.scaledBigonEmbedding (r : ℝ) (p : ℝ × ℝ) : Space :=
+def WhitneyPairModel.scaledBigonEmbedding (r : ℝ) (p : ℝ × ℝ) : Space :=
   bigonEmbedding (r * p.1, r ^ 2 * p.2)
 
-theorem Smale.WhitneyPairModel.scaledBigonEmbedding_one (p : ℝ × ℝ) :
+theorem WhitneyPairModel.scaledBigonEmbedding_one (p : ℝ × ℝ) :
     scaledBigonEmbedding 1 p = bigonEmbedding p := by
   simp only [scaledBigonEmbedding, one_mul, one_pow, Prod.eta]
 
-theorem Smale.WhitneyPairModel.continuous_scaledBigonEmbedding :
+theorem WhitneyPairModel.continuous_scaledBigonEmbedding :
     Continuous (fun z : ℝ × (ℝ × ℝ) => scaledBigonEmbedding z.1 z.2) := by
   unfold scaledBigonEmbedding bigonEmbedding
   fun_prop
 
-theorem Smale.WhitneyPairModel.exists_scaled_bigon_in_open {h : ℝ} (hh : 0 < h) {U : Set Space}
+theorem WhitneyPairModel.exists_scaled_bigon_in_open {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     ∃ r : ℝ, 1 < r ∧ Set.MapsTo (scaledBigonEmbedding r) (bigon h) U := by
   have hnear : ∀ᶠ r in 𝓝 (1 : ℝ), ∀ p ∈ bigon h, scaledBigonEmbedding r p ∈ U := by
@@ -20240,7 +20240,7 @@ theorem Smale.WhitneyPairModel.exists_scaled_bigon_in_open {h : ℝ} (hh : 0 < h
     exact half_lt_self hε
   exact ⟨1 + ε / 2, by linarith, fun p hp => hball hrball p hp⟩
 
-theorem Smale.WhitneyPairModel.enlarged_cap_parametrization {h r : ℝ} (hr : 0 < r) {p : ℝ × ℝ}
+theorem WhitneyPairModel.enlarged_cap_parametrization {h r : ℝ} (hr : 0 < r) {p : ℝ × ℝ}
     (hp : 0 ≤ p.2 ∧ h * p.1 ^ 2 + p.2 ≤ h * r ^ 2) :
     ∃ q ∈ bigon h, scaledBigonEmbedding r q = bigonEmbedding p := by
   let q : ℝ × ℝ := (p.1 / r, p.2 / r ^ 2)
@@ -20259,10 +20259,10 @@ theorem Smale.WhitneyPairModel.enlarged_cap_parametrization {h r : ℝ} (hr : 0 
   · change r ^ 2 * (p.2 / r ^ 2) = p.2
     field_simp
 
-def Smale.WhitneyPairModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
+def WhitneyPairModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
   ((s, t * B s), 0)
 
-theorem Smale.WhitneyPairModel.exists_supported_graph_height {h : ℝ} (hh : 0 < h) {U : Set Space}
+theorem WhitneyPairModel.exists_supported_graph_height {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     ∃ B : ℝ → ℝ,
       ContDiff ℝ ∞ B ∧
@@ -20333,16 +20333,16 @@ theorem Smale.WhitneyPairModel.exists_supported_graph_height {h : ℝ} (hh : 0 <
     rw [heq] at hmem
     exact hmem
 
-def Smale.WhitneyPairModel.graphTrace (B : ℝ → ℝ) : Set (ℝ × Space) :=
+def WhitneyPairModel.graphTrace (B : ℝ → ℝ) : Set (ℝ × Space) :=
   (fun p : ℝ × ℝ => (p.1, verticalGraph B p.1 p.2)) '' (Set.Icc (0 : ℝ) 1 ×ˢ tsupport B)
 
-theorem Smale.WhitneyPairModel.isCompact_graphTrace {B : ℝ → ℝ} (hB : Continuous B)
+theorem WhitneyPairModel.isCompact_graphTrace {B : ℝ → ℝ} (hB : Continuous B)
     (hcompact : HasCompactSupport B) : IsCompact (graphTrace B) := by
   apply (CompactIccSpace.isCompact_Icc.prod hcompact.isCompact).image
   unfold verticalGraph
   fun_prop
 
-theorem Smale.WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB : ContDiff ℝ ∞ B)
+theorem WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB : ContDiff ℝ ∞ B)
     (hcompact : HasCompactSupport B) (hnonneg : ∀ s, 0 ≤ B s) {U : Set Space} (hU : IsOpen U)
     (htrace : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ s ∈ tsupport B, verticalGraph B t s ∈ U) :
     ∃ β : ℝ × Space → ℝ,
@@ -20355,7 +20355,7 @@ theorem Smale.WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB 
     rintro _ ⟨p, hp, rfl⟩
     exact htrace p.1 hp.1 p.2 hp.2
   obtain ⟨η, hη, hηcompact, hηsupport, hηone, hηrange⟩ :=
-    Smale.exists_compact_smooth_cutoff (isCompact_graphTrace hB.continuous hcompact)
+    exists_compact_smooth_cutoff (isCompact_graphTrace hB.continuous hcompact)
       (hU.preimage continuous_snd) hCU
   let β : ℝ × Space → ℝ := fun p => η p * B p.2.1.1
   have hβ : ContDiff ℝ ∞ β := hη.mul (hB.comp (by fun_prop))
@@ -20378,7 +20378,7 @@ theorem Smale.WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB 
   change η (t, verticalGraph B t s) * B s = B s
   rw [hηpoint, one_mul]
 
-structure Smale.WhitneyPairModel.GraphMotionData (h : ℝ) (U : Set Space) where
+structure WhitneyPairModel.GraphMotionData (h : ℝ) (U : Set Space) where
   height : ℝ → ℝ
   smooth_height : ContDiff ℝ ∞ height
   compact_height : HasCompactSupport height
@@ -20392,7 +20392,7 @@ structure Smale.WhitneyPairModel.GraphMotionData (h : ℝ) (U : Set Space) where
   nonneg_cutoff : ∀ p, 0 ≤ cutoff p
   tracking : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ s, cutoff (t, verticalGraph height t s) = height s
 
-theorem Smale.WhitneyPairModel.nonempty_graphMotionData {h : ℝ} (hh : 0 < h) {U : Set Space}
+theorem WhitneyPairModel.nonempty_graphMotionData {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     Nonempty (GraphMotionData h U) := by
   obtain ⟨B, hB, hcompact, hnonneg, habove, htrace⟩ := exists_supported_graph_height hh hU hKU
@@ -20412,18 +20412,18 @@ theorem Smale.WhitneyPairModel.nonempty_graphMotionData {h : ℝ} (hh : 0 < h) {
         nonneg_cutoff := hβnonneg
         tracking := hβtrack }⟩
 
-def Smale.WhitneyPairModel.verticalVector (δ : ℝ) : Space :=
+def WhitneyPairModel.verticalVector (δ : ℝ) : Space :=
   ((0, δ), 0)
 
-theorem Smale.WhitneyPairModel.norm_verticalVector {δ : ℝ} (hδ : 0 ≤ δ) :
+theorem WhitneyPairModel.norm_verticalVector {δ : ℝ} (hδ : 0 ≤ δ) :
     ‖verticalVector δ‖ = δ := by
   simp [verticalVector, Prod.norm_def, Real.norm_eq_abs, abs_of_nonneg hδ, hδ]
 
-def Smale.WhitneyPairModel.graphStep (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (p : ℝ × Space) :
+def WhitneyPairModel.graphStep (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (p : ℝ × Space) :
     Space :=
   p.2 + β ((i : ℝ) * δ, p.2) • (Real.smoothTransition p.1 • verticalVector δ)
 
-theorem Smale.WhitneyPairModel.contDiff_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
+theorem WhitneyPairModel.contDiff_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
     (δ : ℝ) (i : ℕ) : ContDiff ℝ ∞ (graphStep β δ i) := by
   have hθ : ContDiff ℝ ∞ Real.smoothTransition := Real.smoothTransition.contDiff
   exact
@@ -20431,24 +20431,24 @@ theorem Smale.WhitneyPairModel.contDiff_graphStep {β : ℝ × Space → ℝ} (h
       ((hβ.comp (contDiff_const.prodMk contDiff_snd)).smul
         ((hθ.comp contDiff_fst).smul contDiff_const))
 
-theorem Smale.WhitneyPairModel.graphStep_zero (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (z : Space) :
+theorem WhitneyPairModel.graphStep_zero (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (z : Space) :
     graphStep β δ i (0, z) = z := by
   simp only [graphStep, Real.smoothTransition.zero, zero_smul, smul_zero, add_zero]
 
-theorem Smale.WhitneyPairModel.graphStep_horizontal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
+theorem WhitneyPairModel.graphStep_horizontal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     (z : Space) : (graphStep β δ i (t, z)).1.1 = z.1.1 := by simp [graphStep, verticalVector]
 
-theorem Smale.WhitneyPairModel.graphStep_normal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
+theorem WhitneyPairModel.graphStep_normal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     (z : Space) : (graphStep β δ i (t, z)).2 = z.2 := by simp [graphStep, verticalVector]
 
-theorem Smale.WhitneyPairModel.graphStep_fixed (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
+theorem WhitneyPairModel.graphStep_fixed (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     {z : Space} (hz : z ∉ Prod.snd '' tsupport β) : graphStep β δ i (t, z) = z := by
   have hzero : β ((i : ℝ) * δ, z) = 0 := by
     by_contra hne
     exact hz ⟨((i : ℝ) * δ, z), subset_tsupport β hne, rfl⟩
   simp only [graphStep, hzero, zero_smul, add_zero]
 
-theorem Smale.WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
+theorem WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
     (hcompact : HasCompactSupport β) :
     ∃ ε : ℝ,
       0 < ε ∧
@@ -20460,7 +20460,7 @@ theorem Smale.WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → �
                   ∃ d : Diffeomorph 𝓘(ℝ, Space) 𝓘(ℝ, Space) Space Space ∞,
                     ∀ z, d z = graphStep β δ i (t, z) := by
   obtain ⟨ε, hε, hsmall⟩ :=
-    Smale.SmallPerturbation.exists_uniform_radius_bumpTranslation hβ hcompact
+    SmallPerturbation.exists_uniform_radius_bumpTranslation hβ hcompact
   refine ⟨ε, hε, ?_⟩
   intro δ hδ hδε i t
   have hnorm : ‖Real.smoothTransition t • verticalVector δ‖ ≤ δ := by
@@ -20471,7 +20471,7 @@ theorem Smale.WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → �
     hsmall ((i : ℝ) * δ) (Real.smoothTransition t • verticalVector δ) (hnorm.trans_lt hδε)
   exact ⟨d, hd⟩
 
-theorem Smale.WhitneyPairModel.graphStep_tracking {h : ℝ} {U : Set Space}
+theorem WhitneyPairModel.graphStep_tracking {h : ℝ} {U : Set Space}
     (g : GraphMotionData h U) {δ : ℝ} {i : ℕ} (hi : (i : ℝ) * δ ∈ Set.Icc (0 : ℝ) 1) (s : ℝ) :
     graphStep g.cutoff δ i (1, verticalGraph g.height ((i : ℝ) * δ) s) =
       verticalGraph g.height (((i : ℝ) + 1) * δ) s := by
@@ -20479,7 +20479,7 @@ theorem Smale.WhitneyPairModel.graphStep_tracking {h : ℝ} {U : Set Space}
   ext <;> simp [verticalGraph, verticalVector, smul_eq_mul]
   ring
 
-structure Smale.WhitneyPairModel.GraphMotion {h : ℝ} {U : Set Space}
+structure WhitneyPairModel.GraphMotion {h : ℝ} {U : Set Space}
     (g : GraphMotionData h U) where
   support : Set Space
   compact_support : IsCompact support
@@ -20494,31 +20494,31 @@ structure Smale.WhitneyPairModel.GraphMotion {h : ℝ} {U : Set Space}
   normal : ∀ t z, (family (t, z)).2 = z.2
   tracking : ∀ s, family (1, firstSheet (s, 0)) = verticalGraph g.height 1 s
 
-theorem Smale.WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
-    {U : Set Smale.WhitneyPairModel.Space} (g : Smale.WhitneyPairModel.GraphMotionData h U) :
-    Nonempty (Smale.WhitneyPairModel.GraphMotion g) := by
+theorem WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
+    {U : Set WhitneyPairModel.Space} (g : WhitneyPairModel.GraphMotionData h U) :
+    Nonempty (WhitneyPairModel.GraphMotion g) := by
   obtain ⟨ε, hε, hsmall⟩ :=
-    Smale.WhitneyPairModel.exists_radius_graphStep g.smooth_cutoff g.compact_cutoff
+    WhitneyPairModel.exists_radius_graphStep g.smooth_cutoff g.compact_cutoff
   obtain ⟨N, hN, hNsmall⟩ := Real.exists_nat_pos_inv_lt hε
   let δ : ℝ := (N : ℝ)⁻¹
   have hNreal : 0 < (N : ℝ) := Nat.cast_pos.mpr hN
   have hδ : 0 ≤ δ := (inv_pos.mpr hNreal).le
   have htotal : (N : ℝ) * δ = 1 := mul_inv_cancel₀ hNreal.ne'
-  let B : ℕ → ℝ × Smale.WhitneyPairModel.Space → Smale.WhitneyPairModel.Space :=
-    Smale.WhitneyPairModel.graphStep g.cutoff δ
-  let A : ℝ × Smale.WhitneyPairModel.Space → Smale.WhitneyPairModel.Space :=
-    Smale.SmallPerturbation.composeFamily B N
+  let B : ℕ → ℝ × WhitneyPairModel.Space → WhitneyPairModel.Space :=
+    WhitneyPairModel.graphStep g.cutoff δ
+  let A : ℝ × WhitneyPairModel.Space → WhitneyPairModel.Space :=
+    SmallPerturbation.composeFamily B N
   have htrack :
     ∀ j ≤ N,
       ∀ s,
-        Smale.SmallPerturbation.composeFamily B j (1, Smale.WhitneyPairModel.firstSheet (s, 0)) =
-          Smale.WhitneyPairModel.verticalGraph g.height ((j : ℝ) * δ) s := by
+        SmallPerturbation.composeFamily B j (1, WhitneyPairModel.firstSheet (s, 0)) =
+          WhitneyPairModel.verticalGraph g.height ((j : ℝ) * δ) s := by
     intro j
     induction j with
     | zero =>
       intro _ s
-      simp [Smale.SmallPerturbation.composeFamily, Smale.WhitneyPairModel.firstSheet,
-        Smale.WhitneyPairModel.verticalGraph]
+      simp [SmallPerturbation.composeFamily, WhitneyPairModel.firstSheet,
+        WhitneyPairModel.verticalGraph]
     | succ j ih =>
       intro hj s
       have hjN : j ≤ N := Nat.le_of_succ_le hj
@@ -20528,12 +20528,12 @@ theorem Smale.WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
           (j : ℝ) * δ ≤ (N : ℝ) * δ := mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hjN) hδ
           _ = 1 := htotal
       change
-        Smale.WhitneyPairModel.graphStep g.cutoff δ j
+        WhitneyPairModel.graphStep g.cutoff δ j
             (1,
-              Smale.SmallPerturbation.composeFamily B j
-                (1, Smale.WhitneyPairModel.firstSheet (s, 0))) =
+              SmallPerturbation.composeFamily B j
+                (1, WhitneyPairModel.firstSheet (s, 0))) =
           _
-      rw [ih hjN s, Smale.WhitneyPairModel.graphStep_tracking g htime s, Nat.cast_add,
+      rw [ih hjN s, WhitneyPairModel.graphStep_tracking g htime s, Nat.cast_add,
         Nat.cast_one]
   refine
     ⟨{  support := Prod.snd '' tsupport g.cutoff
@@ -20541,107 +20541,107 @@ theorem Smale.WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
         support_subset := ?_
         family := A
         smooth :=
-          Smale.SmallPerturbation.contDiff_composeFamily
-            (fun i => Smale.WhitneyPairModel.contDiff_graphStep g.smooth_cutoff δ i) N
+          SmallPerturbation.contDiff_composeFamily
+            (fun i => WhitneyPairModel.contDiff_graphStep g.smooth_cutoff δ i) N
         initial :=
-          Smale.SmallPerturbation.composeFamily_zero
-            (Smale.WhitneyPairModel.graphStep_zero g.cutoff δ) N
+          SmallPerturbation.composeFamily_zero
+            (WhitneyPairModel.graphStep_zero g.cutoff δ) N
         diffeomorph :=
-          Smale.SmallPerturbation.exists_diffeomorph_composeFamily (hsmall δ hδ hNsmall) N
+          SmallPerturbation.exists_diffeomorph_composeFamily (hsmall δ hδ hNsmall) N
         fixed := fun t z hz =>
-          Smale.SmallPerturbation.composeFamily_fixed
-            (fun i t _ hz => Smale.WhitneyPairModel.graphStep_fixed g.cutoff δ i t hz) N t hz
+          SmallPerturbation.composeFamily_fixed
+            (fun i t _ hz => WhitneyPairModel.graphStep_fixed g.cutoff δ i t hz) N t hz
         horizontal := fun t z =>
-          Smale.SmallPerturbation.composeFamily_preserves (B := B) (f :=
-            fun z : Smale.WhitneyPairModel.Space => z.1.1)
-            (Smale.WhitneyPairModel.graphStep_horizontal g.cutoff δ) N t z
+          SmallPerturbation.composeFamily_preserves (B := B) (f :=
+            fun z : WhitneyPairModel.Space => z.1.1)
+            (WhitneyPairModel.graphStep_horizontal g.cutoff δ) N t z
         normal := fun t z =>
-          Smale.SmallPerturbation.composeFamily_preserves (B := B) (f :=
-            fun z : Smale.WhitneyPairModel.Space => z.2)
-            (Smale.WhitneyPairModel.graphStep_normal g.cutoff δ) N t z
+          SmallPerturbation.composeFamily_preserves (B := B) (f :=
+            fun z : WhitneyPairModel.Space => z.2)
+            (WhitneyPairModel.graphStep_normal g.cutoff δ) N t z
         tracking := ?_ }⟩
   · rintro _ ⟨p, hp, rfl⟩
     exact g.support_cutoff hp
   · intro s
     change
-      Smale.SmallPerturbation.composeFamily B N (1, Smale.WhitneyPairModel.firstSheet (s, 0)) = _
+      SmallPerturbation.composeFamily B N (1, WhitneyPairModel.firstSheet (s, 0)) = _
     rw [htrack N le_rfl s, htotal]
 
-theorem Smale.WhitneyPairModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
-    {U : Set Smale.WhitneyPairModel.Space} {g : Smale.WhitneyPairModel.GraphMotionData h U}
-    (a : Smale.WhitneyPairModel.GraphMotion g) (hh : 0 < h) (p q : Smale.WhitneyPairModel.Sheet) :
-    a.family (1, Smale.WhitneyPairModel.firstSheet p) ≠ Smale.WhitneyPairModel.secondSheet h q := by
+theorem WhitneyPairModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
+    {U : Set WhitneyPairModel.Space} {g : WhitneyPairModel.GraphMotionData h U}
+    (a : WhitneyPairModel.GraphMotion g) (hh : 0 < h) (p q : WhitneyPairModel.Sheet) :
+    a.family (1, WhitneyPairModel.firstSheet p) ≠ WhitneyPairModel.secondSheet h q := by
   intro heq
   have hst : p.1 = q.1 := by
-    have he := congrArg (fun z : Smale.WhitneyPairModel.Space => z.1.1) heq
+    have he := congrArg (fun z : WhitneyPairModel.Space => z.1.1) heq
     rw [a.horizontal] at he
     exact he
   have hu : p.2 = 0 := by
-    have he := congrArg (fun z : Smale.WhitneyPairModel.Space => z.2) heq
+    have he := congrArg (fun z : WhitneyPairModel.Space => z.2) heq
     rw [a.normal] at he
     exact congrArg Prod.fst he
   have hp : p = (q.1, 0) := Prod.ext hst hu
   rw [hp, a.tracking] at heq
   have ht : g.height q.1 = h * (1 - q.1 ^ 2) := by
-    simpa only [Smale.WhitneyPairModel.verticalGraph, Smale.WhitneyPairModel.secondSheet,
-      one_mul] using congrArg (fun z : Smale.WhitneyPairModel.Space => z.1.2) heq
+    simpa only [WhitneyPairModel.verticalGraph, WhitneyPairModel.secondSheet,
+      one_mul] using congrArg (fun z : WhitneyPairModel.Space => z.1.2) heq
   have hheight : 0 ≤ h * (1 - q.1 ^ 2) := ht ▸ g.nonneg_height q.1
   have hlevel : 0 ≤ 1 - q.1 ^ 2 := nonneg_of_mul_nonneg_right hheight hh
   have habs : |q.1| ≤ 1 :=
     abs_le.mpr ⟨by nlinarith [sq_nonneg (q.1 + 1)], by nlinarith [sq_nonneg (q.1 - 1)]⟩
   exact (g.above q.1 habs).ne ht.symm
 
-abbrev Smale.RankThreeWhitneyModel.Lower :=
+abbrev RankThreeWhitneyModel.Lower :=
   EuclideanSpace ℝ (Fin 1)
 
-abbrev Smale.RankThreeWhitneyModel.Upper :=
+abbrev RankThreeWhitneyModel.Upper :=
   EuclideanSpace ℝ (Fin 2)
 
-abbrev Smale.RankThreeWhitneyModel.Space :=
+abbrev RankThreeWhitneyModel.Space :=
   (ℝ × ℝ) × (Lower × Upper)
 
-abbrev Smale.RankThreeWhitneyModel.LowerSheet :=
+abbrev RankThreeWhitneyModel.LowerSheet :=
   ℝ × Lower
 
-abbrev Smale.RankThreeWhitneyModel.UpperSheet :=
+abbrev RankThreeWhitneyModel.UpperSheet :=
   ℝ × Upper
 
-def Smale.RankThreeWhitneyModel.firstSheet (p : LowerSheet) : Space :=
+def RankThreeWhitneyModel.firstSheet (p : LowerSheet) : Space :=
   ((p.1, 0), (p.2, 0))
 
-def Smale.RankThreeWhitneyModel.secondSheet (h : ℝ) (p : UpperSheet) : Space :=
+def RankThreeWhitneyModel.secondSheet (h : ℝ) (p : UpperSheet) : Space :=
   ((p.1, h * (1 - p.1 ^ 2)), (0, p.2))
 
-theorem Smale.RankThreeWhitneyModel.contDiff_firstSheet : ContDiff ℝ ∞ firstSheet := by
+theorem RankThreeWhitneyModel.contDiff_firstSheet : ContDiff ℝ ∞ firstSheet := by
   unfold firstSheet
   fun_prop
 
-theorem Smale.RankThreeWhitneyModel.contDiff_secondSheet (h : ℝ) : ContDiff ℝ ∞ (secondSheet h) :=
+theorem RankThreeWhitneyModel.contDiff_secondSheet (h : ℝ) : ContDiff ℝ ∞ (secondSheet h) :=
   by
   unfold secondSheet
   fun_prop
 
-def Smale.RankThreeWhitneyModel.firstSheetDerivative : LowerSheet →L[ℝ] Space :=
+def RankThreeWhitneyModel.firstSheetDerivative : LowerSheet →L[ℝ] Space :=
   ((ContinuousLinearMap.fst ℝ ℝ Lower).prod 0).prod ((ContinuousLinearMap.snd ℝ ℝ Lower).prod 0)
 
-def Smale.RankThreeWhitneyModel.secondSheetDerivative (h s : ℝ) : UpperSheet →L[ℝ] Space :=
+def RankThreeWhitneyModel.secondSheetDerivative (h s : ℝ) : UpperSheet →L[ℝ] Space :=
   ((ContinuousLinearMap.fst ℝ ℝ Upper).prod
         ((-2 * h * s) • ContinuousLinearMap.fst ℝ ℝ Upper)).prod
     ((0 : UpperSheet →L[ℝ] Lower).prod (ContinuousLinearMap.snd ℝ ℝ Upper))
 
-theorem Smale.RankThreeWhitneyModel.firstSheetDerivative_apply (p : LowerSheet) :
+theorem RankThreeWhitneyModel.firstSheetDerivative_apply (p : LowerSheet) :
     firstSheetDerivative p = ((p.1, 0), (p.2, 0)) :=
   rfl
 
-theorem Smale.RankThreeWhitneyModel.secondSheetDerivative_apply (h s : ℝ) (p : UpperSheet) :
+theorem RankThreeWhitneyModel.secondSheetDerivative_apply (h s : ℝ) (p : UpperSheet) :
     secondSheetDerivative h s p = ((p.1, (-2 * h * s) * p.1), (0, p.2)) :=
   rfl
 
-theorem Smale.RankThreeWhitneyModel.hasFDerivAt_firstSheet (p : LowerSheet) :
+theorem RankThreeWhitneyModel.hasFDerivAt_firstSheet (p : LowerSheet) :
     HasFDerivAt firstSheet firstSheetDerivative p :=
   firstSheetDerivative.hasFDerivAt
 
-theorem Smale.RankThreeWhitneyModel.hasFDerivAt_secondSheet (h : ℝ) (p : UpperSheet) :
+theorem RankThreeWhitneyModel.hasFDerivAt_secondSheet (h : ℝ) (p : UpperSheet) :
     HasFDerivAt (secondSheet h) (secondSheetDerivative h p.1) p := by
   have hs := (ContinuousLinearMap.fst ℝ ℝ Upper).hasFDerivAt (x := p)
   have hu := (ContinuousLinearMap.snd ℝ ℝ Upper).hasFDerivAt (x := p)
@@ -20656,56 +20656,56 @@ theorem Smale.RankThreeWhitneyModel.hasFDerivAt_secondSheet (h : ℝ) (p : Upper
   norm_num [two_smul]
   ring
 
-def Smale.RankThreeWhitneyModel.lowerSplit : (Lower × ℝ) ≃L[ℝ] Smale.WhitneyPairModel.Plane :=
+def RankThreeWhitneyModel.lowerSplit : (Lower × ℝ) ≃L[ℝ] WhitneyPairModel.Plane :=
   ContinuousLinearEquiv.ofFinrankEq
-    (by simp [Lower, Smale.WhitneyPairModel.Plane, Module.finrank_prod])
+    (by simp [Lower, WhitneyPairModel.Plane, Module.finrank_prod])
 
-def Smale.RankThreeWhitneyModel.lowerInclude : Lower →L[ℝ] Smale.WhitneyPairModel.Plane :=
+def RankThreeWhitneyModel.lowerInclude : Lower →L[ℝ] WhitneyPairModel.Plane :=
   lowerSplit.toContinuousLinearMap.comp (ContinuousLinearMap.inl ℝ Lower ℝ)
 
-def Smale.RankThreeWhitneyModel.lowerProject : Smale.WhitneyPairModel.Plane →L[ℝ] Lower :=
+def RankThreeWhitneyModel.lowerProject : WhitneyPairModel.Plane →L[ℝ] Lower :=
   (ContinuousLinearMap.fst ℝ Lower ℝ).comp lowerSplit.symm.toContinuousLinearMap
 
-theorem Smale.RankThreeWhitneyModel.lowerProject_include (u : Lower) :
+theorem RankThreeWhitneyModel.lowerProject_include (u : Lower) :
     lowerProject (lowerInclude u) = u := by
   change (lowerSplit.symm (lowerSplit (u, 0))).1 = u
   rw [lowerSplit.symm_apply_apply]
 
-def Smale.RankThreeWhitneyModel.normalInclude :
-    (Lower × Upper) →L[ℝ] (Smale.WhitneyPairModel.Plane × Smale.WhitneyPairModel.Plane) :=
+def RankThreeWhitneyModel.normalInclude :
+    (Lower × Upper) →L[ℝ] (WhitneyPairModel.Plane × WhitneyPairModel.Plane) :=
   lowerInclude.prodMap (ContinuousLinearMap.id ℝ Upper)
 
-def Smale.RankThreeWhitneyModel.normalProject :
-    (Smale.WhitneyPairModel.Plane × Smale.WhitneyPairModel.Plane) →L[ℝ] (Lower × Upper) :=
+def RankThreeWhitneyModel.normalProject :
+    (WhitneyPairModel.Plane × WhitneyPairModel.Plane) →L[ℝ] (Lower × Upper) :=
   lowerProject.prodMap (ContinuousLinearMap.id ℝ Upper)
 
-theorem Smale.RankThreeWhitneyModel.normalProject_include :
+theorem RankThreeWhitneyModel.normalProject_include :
     Function.LeftInverse normalProject normalInclude := fun z =>
   Prod.ext (lowerProject_include z.1) rfl
 
-def Smale.RankThreeWhitneyModel.expand : Space →L[ℝ] Smale.WhitneyPairModel.Space :=
-  Smale.FiberRestriction.embed normalInclude
+def RankThreeWhitneyModel.expand : Space →L[ℝ] WhitneyPairModel.Space :=
+  FiberRestriction.embed normalInclude
 
-def Smale.RankThreeWhitneyModel.collapse : Smale.WhitneyPairModel.Space →L[ℝ] Space :=
-  Smale.FiberRestriction.project normalProject
+def RankThreeWhitneyModel.collapse : WhitneyPairModel.Space →L[ℝ] Space :=
+  FiberRestriction.project normalProject
 
-theorem Smale.RankThreeWhitneyModel.collapse_expand (z : Space) : collapse (expand z) = z :=
-  Smale.FiberRestriction.project_embed normalInclude normalProject normalProject_include z
+theorem RankThreeWhitneyModel.collapse_expand (z : Space) : collapse (expand z) = z :=
+  FiberRestriction.project_embed normalInclude normalProject normalProject_include z
 
-theorem Smale.RankThreeWhitneyModel.expand_zero (p : ℝ × ℝ) : expand (p, 0) = (p, 0) :=
+theorem RankThreeWhitneyModel.expand_zero (p : ℝ × ℝ) : expand (p, 0) = (p, 0) :=
   Prod.ext rfl normalInclude.map_zero
 
-theorem Smale.RankThreeWhitneyModel.collapse_zero (p : ℝ × ℝ) : collapse (p, 0) = (p, 0) :=
+theorem RankThreeWhitneyModel.collapse_zero (p : ℝ × ℝ) : collapse (p, 0) = (p, 0) :=
   Prod.ext rfl normalProject.map_zero
 
-def Smale.RankThreeWhitneyModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
+def RankThreeWhitneyModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
   ((s, t * B s), 0)
 
-theorem Smale.RankThreeWhitneyModel.collapse_verticalGraph (B : ℝ → ℝ) (t s : ℝ) :
-    collapse (Smale.WhitneyPairModel.verticalGraph B t s) = verticalGraph B t s :=
+theorem RankThreeWhitneyModel.collapse_verticalGraph (B : ℝ → ℝ) (t s : ℝ) :
+    collapse (WhitneyPairModel.verticalGraph B t s) = verticalGraph B t s :=
   collapse_zero _
 
-structure Smale.RankThreeWhitneyModel.GraphMotion (h : ℝ) (U : Set Space) where
+structure RankThreeWhitneyModel.GraphMotion (h : ℝ) (U : Set Space) where
   height : ℝ → ℝ
   nonneg_height : ∀ s, 0 ≤ height s
   above : ∀ s, |s| ≤ 1 → h * (1 - s ^ 2) < height s
@@ -20722,18 +20722,18 @@ structure Smale.RankThreeWhitneyModel.GraphMotion (h : ℝ) (U : Set Space) wher
   normal : ∀ t z, (family (t, z)).2 = z.2
   tracking : ∀ s, family (1, firstSheet (s, 0)) = verticalGraph height 1 s
 
-theorem Smale.RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) {U : Set Space}
-    (hU : IsOpen U) (hKU : ∀ p ∈ Smale.WhitneyPairModel.bigon h, (p, (0 : Lower × Upper)) ∈ U) :
+theorem RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) {U : Set Space}
+    (hU : IsOpen U) (hKU : ∀ p ∈ WhitneyPairModel.bigon h, (p, (0 : Lower × Upper)) ∈ U) :
     Nonempty (GraphMotion h U) := by
-  let V : Set Smale.WhitneyPairModel.Space := collapse ⁻¹' U
+  let V : Set WhitneyPairModel.Space := collapse ⁻¹' U
   have hV : IsOpen V := hU.preimage collapse.continuous
   have hKV :
-    Set.MapsTo Smale.WhitneyPairModel.bigonEmbedding (Smale.WhitneyPairModel.bigon h) V := by
+    Set.MapsTo WhitneyPairModel.bigonEmbedding (WhitneyPairModel.bigon h) V := by
     intro p hp
     change collapse (p, 0) ∈ U
     rw [collapse_zero]
     exact hKU p hp
-  obtain ⟨g⟩ := Smale.WhitneyPairModel.nonempty_graphMotionData hh hV hKV
+  obtain ⟨g⟩ := WhitneyPairModel.nonempty_graphMotionData hh hV hKV
   obtain ⟨a⟩ := g.nonempty_graphMotion
   let A : ℝ × Space → Space := fun p => collapse (a.family (p.1, expand p.2))
   have hA : ContDiff ℝ ∞ A :=
@@ -20766,7 +20766,7 @@ theorem Smale.RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) 
       rw [hd]
       exact a.normal t z
     refine
-      ⟨Smale.FiberRestriction.restrict normalInclude normalProject normalProject_include d hn, ?_⟩
+      ⟨FiberRestriction.restrict normalInclude normalProject normalProject_include d hn, ?_⟩
     intro z
     change collapse (d (expand z)) = collapse (a.family (t, expand z))
     rw [hd]
@@ -20783,48 +20783,48 @@ theorem Smale.RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) 
     rw [a.normal]
     exact normalProject_include z.2
   · intro s
-    have he : expand (firstSheet (s, 0)) = Smale.WhitneyPairModel.firstSheet (s, 0) :=
+    have he : expand (firstSheet (s, 0)) = WhitneyPairModel.firstSheet (s, 0) :=
       expand_zero (s, 0)
     change collapse (a.family (1, expand (firstSheet (s, 0)))) = verticalGraph g.height 1 s
     rw [he, a.tracking, collapse_verticalGraph]
 
-theorem Smale.RankThreeWhitneyModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
-    {U : Set Smale.RankThreeWhitneyModel.Space} (a : Smale.RankThreeWhitneyModel.GraphMotion h U)
-    (hh : 0 < h) (p : Smale.RankThreeWhitneyModel.LowerSheet)
-    (q : Smale.RankThreeWhitneyModel.UpperSheet) :
-    a.family (1, Smale.RankThreeWhitneyModel.firstSheet p) ≠
-      Smale.RankThreeWhitneyModel.secondSheet h q := by
+theorem RankThreeWhitneyModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
+    {U : Set RankThreeWhitneyModel.Space} (a : RankThreeWhitneyModel.GraphMotion h U)
+    (hh : 0 < h) (p : RankThreeWhitneyModel.LowerSheet)
+    (q : RankThreeWhitneyModel.UpperSheet) :
+    a.family (1, RankThreeWhitneyModel.firstSheet p) ≠
+      RankThreeWhitneyModel.secondSheet h q := by
   intro heq
   have hst : p.1 = q.1 := by
-    have he := congrArg (fun z : Smale.RankThreeWhitneyModel.Space => z.1.1) heq
+    have he := congrArg (fun z : RankThreeWhitneyModel.Space => z.1.1) heq
     rw [a.horizontal] at he
     exact he
   have hu : p.2 = 0 := by
-    have he := congrArg (fun z : Smale.RankThreeWhitneyModel.Space => z.2) heq
+    have he := congrArg (fun z : RankThreeWhitneyModel.Space => z.2) heq
     rw [a.normal] at he
     exact congrArg Prod.fst he
   have hp : p = (q.1, 0) := Prod.ext hst hu
   rw [hp, a.tracking] at heq
   have ht : a.height q.1 = h * (1 - q.1 ^ 2) := by
-    simpa only [Smale.RankThreeWhitneyModel.verticalGraph,
-      Smale.RankThreeWhitneyModel.secondSheet, one_mul] using
-      congrArg (fun z : Smale.RankThreeWhitneyModel.Space => z.1.2) heq
+    simpa only [RankThreeWhitneyModel.verticalGraph,
+      RankThreeWhitneyModel.secondSheet, one_mul] using
+      congrArg (fun z : RankThreeWhitneyModel.Space => z.1.2) heq
   have hheight : 0 ≤ h * (1 - q.1 ^ 2) := ht ▸ a.nonneg_height q.1
   have hlevel : 0 ≤ 1 - q.1 ^ 2 := nonneg_of_mul_nonneg_right hheight hh
   have habs : |q.1| ≤ 1 :=
     abs_le.mpr ⟨by nlinarith [sq_nonneg (q.1 + 1)], by nlinarith [sq_nonneg (q.1 - 1)]⟩
   exact (a.above q.1 habs).ne ht.symm
 
-structure Smale.TubularBigon.RankThreeTangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
+structure TubularBigon.RankThreeTangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map) where
   base : (ℝ × ℝ) → ((EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2)) →L[ℝ] (ℝ × ℝ))
   normal :
@@ -20832,46 +20832,46 @@ structure Smale.TubularBigon.RankThreeTangentAdaptedChart {E M : Type*} [NormedA
       ((EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2)) →L[ℝ] EuclideanSpace ℝ (Fin 3))
   domain : Set (ℝ × ℝ)
   open_domain : IsOpen domain
-  contains : Smale.WhitneyPairModel.bigon h ⊆ domain
+  contains : WhitneyPairModel.bigon h ⊆ domain
   smooth_base : ContDiffOn ℝ ∞ base domain
   smooth_normal : ContDiffOn ℝ ∞ normal domain
   normal_invertible : ∀ p ∈ domain, (normal p).IsInvertible
   lower_transverse :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       ∀ u : EuclideanSpace ℝ (Fin 1),
-        Smale.FrameField.shearedBlock (base (2 * t - 1, 0)) (normal (2 * t - 1, 0)) (0, (u, 0)) =
+        FrameField.shearedBlock (base (2 * t - 1, 0)) (normal (2 * t - 1, 0)) (0, (u, 0)) =
           d.sheetDifferential tube.chart t (0, u)
   upper_transverse :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       ∀ v : EuclideanSpace ℝ (Fin 2),
-        Smale.FrameField.shearedBlock (base (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (normal (Smale.WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
+        FrameField.shearedBlock (base (WhitneyPairModel.upperBoundaryArc h t))
+            (normal (WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
           e.sheetDifferential tube.chart t (0, v)
   radius : ℝ
   radius_pos : 0 < radius
   chart :
-    PartialDiffeomorph 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
-      Smale.RankThreeWhitneyModel.Space M ∞
-  source_contains : Smale.WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
+    PartialDiffeomorph 𝓘(ℝ, RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
+      RankThreeWhitneyModel.Space M ∞
+  source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = tube.map p
-  coordinates : ∀ p, chart p = tube.chart (Smale.FrameField.shearedMap base normal p)
+  coordinates : ∀ p, chart p = tube.chart (FrameField.shearedMap base normal p)
   target_subset : chart.target ⊆ tube.chart.target
   transition_derivative :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h,
-      HasFDerivAt (tube.chart.symm ∘ chart) (Smale.FrameField.shearedBlock (base p) (normal p))
+    ∀ p ∈ WhitneyPairModel.bigon h,
+      HasFDerivAt (tube.chart.symm ∘ chart) (FrameField.shearedBlock (base p) (normal p))
         (p, 0)
 
-theorem Smale.TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs
+theorem TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData (EuclideanSpace ℝ (Fin 1)) (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
+      StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2)) (E := E) T
         l.map)
     (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
     Nonempty (RankThreeTangentAdaptedChart tube d e) := by
@@ -20883,42 +20883,42 @@ theorem Smale.TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_cor
   obtain ⟨Dhi, hDhi, hIDhi, hBhi⟩ :=
     e.exists_open_sheetBaseFrame_domain tube.chart
       (fun t ht => tube.upper_chart_center_mem_target e ht)
-  have htime (t y : ℝ) : Smale.WhitneyPairModel.arcTime (2 * t - 1, y) = t := by
-    dsimp [Smale.WhitneyPairModel.arcTime]; ring
+  have htime (t y : ℝ) : WhitneyPairModel.arcTime (2 * t - 1, y) = t := by
+    dsimp [WhitneyPairModel.arcTime]; ring
   have htq (t : ℝ) :
-    Smale.WhitneyPairModel.arcTime (Smale.WhitneyPairModel.upperBoundaryArc h t) = t := htime t _
+    WhitneyPairModel.arcTime (WhitneyPairModel.upperBoundaryArc h t) = t := htime t _
   have htimeK :
-    Set.MapsTo Smale.WhitneyPairModel.arcTime (Smale.WhitneyPairModel.bigon h)
+    Set.MapsTo WhitneyPairModel.arcTime (WhitneyPairModel.bigon h)
       (Set.Icc (0 : ℝ) 1) := by
     intro p hp
-    have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+    have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
     change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
     constructor <;> linarith [hpr.1.1, hpr.1.2]
-  let U := O ∩ Smale.WhitneyPairModel.arcTime ⁻¹' (Dlo ∩ Dhi)
+  let U := O ∩ WhitneyPairModel.arcTime ⁻¹' (Dlo ∩ Dhi)
   have hU : IsOpen U :=
-    hO.inter ((hDlo.inter hDhi).preimage Smale.WhitneyPairModel.contDiff_arcTime.continuous)
-  have hKU : Smale.WhitneyPairModel.bigon h ⊆ U := fun p hp =>
+    hO.inter ((hDlo.inter hDhi).preimage WhitneyPairModel.contDiff_arcTime.continuous)
+  have hKU : WhitneyPairModel.bigon h ⊆ U := fun p hp =>
     ⟨hKO hp, hIDlo (htimeK hp), hIDhi (htimeK hp)⟩
   let A : (ℝ × ℝ) → ((EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2)) →L[ℝ] (ℝ × ℝ)) :=
     fun p =>
-    (d.sheetBaseFrame tube.chart (Smale.WhitneyPairModel.arcTime p)).coprod
-      (e.sheetBaseFrame tube.chart (Smale.WhitneyPairModel.arcTime p))
+    (d.sheetBaseFrame tube.chart (WhitneyPairModel.arcTime p)).coprod
+      (e.sheetBaseFrame tube.chart (WhitneyPairModel.arcTime p))
   let N :
     (ℝ × ℝ) →
       ((EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2)) →L[ℝ] EuclideanSpace ℝ (Fin 3)) :=
     fun p => (W p).coprod (C p)
   have hA : ContDiffOn ℝ ∞ A U :=
-    Smale.FrameField.contDiffOn_coprod
-      (hBlo.comp Smale.WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.1))
-      (hBhi.comp Smale.WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.2))
+    FrameField.contDiffOn_coprod
+      (hBlo.comp WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.1))
+      (hBhi.comp WhitneyPairModel.contDiff_arcTime.contDiffOn (fun _ hp => hp.2.2))
   have hN : ContDiffOn ℝ ∞ N U :=
-    Smale.FrameField.contDiffOn_coprod hW.contDiffOn (hC.mono Set.inter_subset_left)
+    FrameField.contDiffOn_coprod hW.contDiffOn (hC.mono Set.inter_subset_left)
   have hiN : ∀ p ∈ U, (N p).IsInvertible := fun p hp =>
-    Smale.FrameField.isInvertible_coprod_of_bijective _ _ (hframe p hp.1)
+    FrameField.isInvertible_coprod_of_bijective _ _ (hframe p hp.1)
   have hlow :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       ∀ u : EuclideanSpace ℝ (Fin 1),
-        Smale.FrameField.shearedBlock (A (2 * t - 1, 0)) (N (2 * t - 1, 0)) (0, (u, 0)) =
+        FrameField.shearedBlock (A (2 * t - 1, 0)) (N (2 * t - 1, 0)) (0, (u, 0)) =
           d.sheetDifferential tube.chart t (0, u) := by
     intro t ht u
     have hWt : W (2 * t - 1, 0) = d.normalFrame tube.chart t := by
@@ -20926,27 +20926,27 @@ theorem Smale.TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_cor
       dsimp only [Function.comp_apply] at hg
       rwa [htime] at hg
     rw [d.sheetDifferential_transverse_eq tube.chart ht (tube.lower_chart_center_mem_target d ht),
-      Smale.FrameField.shearedBlock_apply]
+      FrameField.shearedBlock_apply]
     simp only [A, N, ContinuousLinearMap.coprod_apply, map_zero, add_zero, zero_add, htime, hWt]
   have hupp :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       ∀ v : EuclideanSpace ℝ (Fin 2),
-        Smale.FrameField.shearedBlock (A (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (N (Smale.WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
+        FrameField.shearedBlock (A (WhitneyPairModel.upperBoundaryArc h t))
+            (N (WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
           e.sheetDifferential tube.chart t (0, v) := by
     intro t ht v
     rw [e.sheetDifferential_transverse_eq tube.chart ht (tube.upper_chart_center_mem_target e ht),
-      Smale.FrameField.shearedBlock_apply]
+      FrameField.shearedBlock_apply]
     simp only [A, N, ContinuousLinearMap.coprod_apply, map_zero, zero_add, htq, hhi t ht]
   have hz :
-    Smale.WhitneyPairModel.bigon h ×ˢ {(0 : EuclideanSpace ℝ (Fin 3))} ⊆ tube.chart.source := by
+    WhitneyPairModel.bigon h ×ˢ {(0 : EuclideanSpace ℝ (Fin 3))} ⊆ tube.chart.source := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
     subst z
     exact tube.source_contains ⟨hp, Metric.mem_closedBall_self tube.radius_pos.le⟩
   obtain ⟨ε, hε, Φ, hsource, hformula, htarget, -, hderiv⟩ :=
-    Smale.FrameField.exists_sheared_tubular_chart tube.chart
-      (Smale.WhitneyPairModel.isCompact_bigon tube.height_pos) hU hKU hz hA hN
+    FrameField.exists_sheared_tubular_chart tube.chart
+      (WhitneyPairModel.isCompact_bigon tube.height_pos) hU hKU hz hA hN
       (fun p hp => hiN p (hKU hp))
   refine
     ⟨{  base := A
@@ -20968,70 +20968,70 @@ theorem Smale.TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_cor
         target_subset := htarget
         transition_derivative := hderiv }⟩
   intro p
-  rw [hformula, Smale.FrameField.shearedMap_zero, tube.zero_section]
+  rw [hformula, FrameField.shearedMap_zero, tube.zero_section]
 
-structure Smale.TubularBigon.TangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
+structure TubularBigon.TangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h)
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h)
     (d :
-      Smale.StripNormalData Smale.WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData Smale.WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) T
+      StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) T
         l.map) where
-  base : (ℝ × ℝ) → ((Smale.WhitneyPairModel.Plane × Smale.WhitneyPairModel.Plane) →L[ℝ] (ℝ × ℝ))
+  base : (ℝ × ℝ) → ((WhitneyPairModel.Plane × WhitneyPairModel.Plane) →L[ℝ] (ℝ × ℝ))
   normal :
     (ℝ × ℝ) →
-      ((Smale.WhitneyPairModel.Plane × Smale.WhitneyPairModel.Plane) →L[ℝ]
+      ((WhitneyPairModel.Plane × WhitneyPairModel.Plane) →L[ℝ]
         EuclideanSpace ℝ (Fin 4))
   domain : Set (ℝ × ℝ)
   open_domain : IsOpen domain
-  contains : Smale.WhitneyPairModel.bigon h ⊆ domain
+  contains : WhitneyPairModel.bigon h ⊆ domain
   smooth_base : ContDiffOn ℝ ∞ base domain
   smooth_normal : ContDiffOn ℝ ∞ normal domain
   normal_invertible : ∀ p ∈ domain, (normal p).IsInvertible
   lower_transverse :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
-      ∀ u : Smale.WhitneyPairModel.Plane,
-        Smale.FrameField.shearedBlock (base (2 * t - 1, 0)) (normal (2 * t - 1, 0)) (0, (u, 0)) =
+      ∀ u : WhitneyPairModel.Plane,
+        FrameField.shearedBlock (base (2 * t - 1, 0)) (normal (2 * t - 1, 0)) (0, (u, 0)) =
           d.sheetDifferential tube.chart t (0, u)
   upper_transverse :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
-      ∀ v : Smale.WhitneyPairModel.Plane,
-        Smale.FrameField.shearedBlock (base (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (normal (Smale.WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
+      ∀ v : WhitneyPairModel.Plane,
+        FrameField.shearedBlock (base (WhitneyPairModel.upperBoundaryArc h t))
+            (normal (WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v)) =
           e.sheetDifferential tube.chart t (0, v)
   radius : ℝ
   radius_pos : 0 < radius
   chart :
-    PartialDiffeomorph 𝓘(ℝ, Smale.WhitneyPairModel.Space) 𝓘(ℝ, E) Smale.WhitneyPairModel.Space M ∞
-  source_contains : Smale.WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
+    PartialDiffeomorph 𝓘(ℝ, WhitneyPairModel.Space) 𝓘(ℝ, E) WhitneyPairModel.Space M ∞
+  source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = tube.map p
-  coordinates : ∀ p, chart p = tube.chart (Smale.FrameField.shearedMap base normal p)
+  coordinates : ∀ p, chart p = tube.chart (FrameField.shearedMap base normal p)
   target_subset : chart.target ⊆ tube.chart.target
   transition_derivative :
-    ∀ p ∈ Smale.WhitneyPairModel.bigon h,
-      HasFDerivAt (tube.chart.symm ∘ chart) (Smale.FrameField.shearedBlock (base p) (normal p))
+    ∀ p ∈ WhitneyPairModel.bigon h,
+      HasFDerivAt (tube.chart.symm ∘ chart) (FrameField.shearedBlock (base p) (normal p))
         (p, 0)
 
-def Smale.WhitneyPairModel.halfTimeDerivative {A : Type*} [NormedAddCommGroup A]
+def WhitneyPairModel.halfTimeDerivative {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : (ℝ × A) →L[ℝ] (ℝ × A) :=
   (((1 / 2 : ℝ) • ContinuousLinearMap.fst ℝ ℝ A)).prod (ContinuousLinearMap.snd ℝ ℝ A)
 
-theorem Smale.WhitneyPairModel.halfTimeDerivative_apply {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.halfTimeDerivative_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (v : (ℝ × A)) : halfTimeDerivative v = (v.1 / 2, v.2) := by
   apply Prod.ext
   · change (1 / 2 : ℝ) * v.1 = v.1 / 2
     ring
   · rfl
 
-def Smale.WhitneyPairModel.sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
+def WhitneyPairModel.sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : (ℝ × A) :=
   halfTimeDerivative p + ((1 / 2 : ℝ), 0)
 
-theorem Smale.WhitneyPairModel.sheetTimeCoordinates_apply {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.sheetTimeCoordinates_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : sheetTimeCoordinates p = ((p.1 + 1) / 2, p.2) := by
   rw [sheetTimeCoordinates, halfTimeDerivative_apply]
   apply Prod.ext
@@ -21039,7 +21039,7 @@ theorem Smale.WhitneyPairModel.sheetTimeCoordinates_apply {A : Type*} [NormedAdd
     ring
   · exact add_zero _
 
-theorem Smale.WhitneyPairModel.sheetTimeCoordinates_center {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.sheetTimeCoordinates_center {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (t : ℝ) : sheetTimeCoordinates (2 * t - 1, (0 : A)) = (t, 0) := by
   rw [sheetTimeCoordinates_apply]
   apply Prod.ext
@@ -21047,37 +21047,37 @@ theorem Smale.WhitneyPairModel.sheetTimeCoordinates_center {A : Type*} [NormedAd
     ring
   · rfl
 
-theorem Smale.WhitneyPairModel.contDiff_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.contDiff_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : ContDiff ℝ ∞ (sheetTimeCoordinates (A := A)) :=
   (halfTimeDerivative (A := A)).contDiff.add contDiff_const
 
-theorem Smale.WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : HasFDerivAt sheetTimeCoordinates halfTimeDerivative p :=
   halfTimeDerivative.hasFDerivAt.add_const ((1 / 2 : ℝ), (0 : A))
 
-def Smale.StripNormalData.sheetTransitionDomain {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.sheetTransitionDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) : Set (ℝ × A) :=
   (ContinuousLinearMap.inl ℝ (ℝ × A) B) ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target)
 
-theorem Smale.StripNormalData.isOpen_sheetTransitionDomain {A B Z E M : Type*}
+theorem StripNormalData.isOpen_sheetTransitionDomain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     IsOpen (d.sheetTransitionDomain Ψ) := by
   have hO : IsOpen (d.chart.source ∩ d.chart ⁻¹' Ψ.target) :=
     d.chart.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage d.chart.open_source Ψ.open_target
   exact hO.preimage (ContinuousLinearMap.inl ℝ (ℝ × A) B).continuous
 
-theorem Smale.StripNormalData.contDiffOn_sheetTransition {A B Z E M : Type*}
+theorem StripNormalData.contDiffOn_sheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.sheetTransition Ψ) (d.sheetTransitionDomain Ψ) := by
   have hfull : ContDiffOn ℝ ∞ (Ψ.symm ∘ d.chart) (d.chart.source ∩ d.chart ⁻¹' Ψ.target) :=
@@ -21085,199 +21085,199 @@ theorem Smale.StripNormalData.contDiffOn_sheetTransition {A B Z E M : Type*}
         (fun _ hp => hp.2)).contDiffOn
   exact hfull.comp (ContinuousLinearMap.inl ℝ (ℝ × A) B).contDiff.contDiffOn (fun _ hp => hp)
 
-def Smale.StripNormalData.retimedSheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.retimedSheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     (ℝ × A) → ((ℝ × ℝ) × Z) :=
-  d.sheetTransition Ψ ∘ Smale.WhitneyPairModel.sheetTimeCoordinates
+  d.sheetTransition Ψ ∘ WhitneyPairModel.sheetTimeCoordinates
 
-def Smale.StripNormalData.retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
+def StripNormalData.retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) : Set (ℝ × A) :=
-  Smale.WhitneyPairModel.sheetTimeCoordinates ⁻¹' d.sheetTransitionDomain Ψ
+  WhitneyPairModel.sheetTimeCoordinates ⁻¹' d.sheetTransitionDomain Ψ
 
-theorem Smale.StripNormalData.isOpen_retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
+theorem StripNormalData.isOpen_retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : Smale.StripNormalData A B (E := E) S k)
+    [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     IsOpen (d.retimedDomain Ψ) :=
   (d.isOpen_sheetTransitionDomain Ψ).preimage
-    Smale.WhitneyPairModel.contDiff_sheetTimeCoordinates.continuous
+    WhitneyPairModel.contDiff_sheetTimeCoordinates.continuous
 
-theorem Smale.StripNormalData.contDiffOn_retimedSheetTransition {A B Z E M : Type*}
+theorem StripNormalData.contDiffOn_retimedSheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) :
     ContDiffOn ℝ ∞ (d.retimedSheetTransition Ψ) (d.retimedDomain Ψ) :=
   (d.contDiffOn_sheetTransition Ψ).comp
-    Smale.WhitneyPairModel.contDiff_sheetTimeCoordinates.contDiffOn (fun _ hp => hp)
+    WhitneyPairModel.contDiff_sheetTimeCoordinates.contDiffOn (fun _ hp => hp)
 
-theorem Smale.StripNormalData.retimedDomain_contains_center {A B Z E M : Type*}
+theorem StripNormalData.retimedDomain_contains_center {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     (2 * t - 1, (0 : A)) ∈ d.retimedDomain Ψ := by
-  change Smale.WhitneyPairModel.sheetTimeCoordinates (2 * t - 1, 0) ∈ d.sheetTransitionDomain Ψ
-  rw [Smale.WhitneyPairModel.sheetTimeCoordinates_center]
+  change WhitneyPairModel.sheetTimeCoordinates (2 * t - 1, 0) ∈ d.sheetTransitionDomain Ψ
+  rw [WhitneyPairModel.sheetTimeCoordinates_center]
   exact ⟨d.line ht, htarget⟩
 
-theorem Smale.StripNormalData.hasFDerivAt_retimedSheetTransition {A B Z E M : Type*}
+theorem StripNormalData.hasFDerivAt_retimedSheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : Smale.StripNormalData A B (E := E) S k)
+    (d : StripNormalData A B (E := E) S k)
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1)
-    (htarget : d.chart (Smale.StripCoordinates.center t) ∈ Ψ.target) :
+    (htarget : d.chart (StripCoordinates.center t) ∈ Ψ.target) :
     HasFDerivAt (d.retimedSheetTransition Ψ)
-      ((d.sheetDifferential Ψ t).comp Smale.WhitneyPairModel.halfTimeDerivative) (2 * t - 1, 0) :=
+      ((d.sheetDifferential Ψ t).comp WhitneyPairModel.halfTimeDerivative) (2 * t - 1, 0) :=
   by
   have hd :
     HasFDerivAt (d.sheetTransition Ψ) (d.sheetDifferential Ψ t)
-      (Smale.WhitneyPairModel.sheetTimeCoordinates (2 * t - 1, 0)) := by
-    rw [Smale.WhitneyPairModel.sheetTimeCoordinates_center]
+      (WhitneyPairModel.sheetTimeCoordinates (2 * t - 1, 0)) := by
+    rw [WhitneyPairModel.sheetTimeCoordinates_center]
     exact ((d.contDiffAt_sheetTransition Ψ ht htarget).differentiableAt (by simp)).hasFDerivAt
-  exact hd.comp (2 * t - 1, (0 : A)) (Smale.WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates _)
+  exact hd.comp (2 * t - 1, (0 : A)) (WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates _)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.lower_model_tangent {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.lower_model_tangent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (Smale.FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))).comp
-        Smale.RankThreeWhitneyModel.firstSheetDerivative =
-      (d.sheetDifferential tube.chart t).comp Smale.WhitneyPairModel.halfTimeDerivative := by
+    (FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))).comp
+        RankThreeWhitneyModel.firstSheetDerivative =
+      (d.sheetDifferential tube.chart t).comp WhitneyPairModel.halfTimeDerivative := by
   apply ContinuousLinearMap.ext
   intro v
   have harc : d.sheetDifferential tube.chart t (v.1 / 2, 0) = ((v.1, 0), 0) := by
-    rw [Smale.IntersectionCoordinates.map_first_axis _ (v.1 / 2),
+    rw [IntersectionCoordinates.map_first_axis _ (v.1 / 2),
       tube.lower_sheetDifferential_arc d ht]
     ext <;> simp [smul_eq_mul]
   change
-    Smale.FrameField.shearedBlock _ _ (Smale.RankThreeWhitneyModel.firstSheetDerivative v) =
-      d.sheetDifferential tube.chart t (Smale.WhitneyPairModel.halfTimeDerivative v)
-  rw [Smale.WhitneyPairModel.halfTimeDerivative_apply]
+    FrameField.shearedBlock _ _ (RankThreeWhitneyModel.firstSheetDerivative v) =
+      d.sheetDifferential tube.chart t (WhitneyPairModel.halfTimeDerivative v)
+  rw [WhitneyPairModel.halfTimeDerivative_apply]
   calc
-    Smale.FrameField.shearedBlock _ _ (Smale.RankThreeWhitneyModel.firstSheetDerivative v) =
-        Smale.FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))
+    FrameField.shearedBlock _ _ (RankThreeWhitneyModel.firstSheetDerivative v) =
+        FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))
             ((v.1, 0), 0) +
-          Smale.FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))
+          FrameField.shearedBlock (c.base (2 * t - 1, 0)) (c.normal (2 * t - 1, 0))
             (0, (v.2, 0)) := by
       rw [← map_add]
       congr 1
-      simp only [Smale.RankThreeWhitneyModel.firstSheetDerivative_apply, Prod.mk_add_mk, add_zero,
+      simp only [RankThreeWhitneyModel.firstSheetDerivative_apply, Prod.mk_add_mk, add_zero,
         zero_add]
     _ =
         d.sheetDifferential tube.chart t (v.1 / 2, 0) +
           d.sheetDifferential tube.chart t (0, v.2) := by
-      rw [Smale.FrameField.shearedBlock_horizontal, c.lower_transverse t ht, harc]
+      rw [FrameField.shearedBlock_horizontal, c.lower_transverse t ht, harc]
     _ = d.sheetDifferential tube.chart t (v.1 / 2, v.2) := by
       rw [← map_add]
       congr 1
       simp
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.upper_model_tangent {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.upper_model_tangent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (Smale.FrameField.shearedBlock (c.base (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (c.normal (Smale.WhitneyPairModel.upperBoundaryArc h t))).comp
-        (Smale.RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1)) =
-      (e.sheetDifferential tube.chart t).comp Smale.WhitneyPairModel.halfTimeDerivative := by
+    (FrameField.shearedBlock (c.base (WhitneyPairModel.upperBoundaryArc h t))
+            (c.normal (WhitneyPairModel.upperBoundaryArc h t))).comp
+        (RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1)) =
+      (e.sheetDifferential tube.chart t).comp WhitneyPairModel.halfTimeDerivative := by
   apply ContinuousLinearMap.ext
   intro v
   have harc :
     e.sheetDifferential tube.chart t (v.1 / 2, 0) = ((v.1, (-2 * h * (2 * t - 1)) * v.1), 0) := by
-    rw [Smale.IntersectionCoordinates.map_first_axis _ (v.1 / 2),
+    rw [IntersectionCoordinates.map_first_axis _ (v.1 / 2),
       tube.upper_sheetDifferential_arc e ht]
     ext <;> simp [smul_eq_mul]
     ring
   change
-    Smale.FrameField.shearedBlock _ _
-        (Smale.RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1) v) =
-      e.sheetDifferential tube.chart t (Smale.WhitneyPairModel.halfTimeDerivative v)
-  rw [Smale.WhitneyPairModel.halfTimeDerivative_apply]
+    FrameField.shearedBlock _ _
+        (RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1) v) =
+      e.sheetDifferential tube.chart t (WhitneyPairModel.halfTimeDerivative v)
+  rw [WhitneyPairModel.halfTimeDerivative_apply]
   calc
-    Smale.FrameField.shearedBlock _ _
-          (Smale.RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1) v) =
-        Smale.FrameField.shearedBlock (c.base (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (c.normal (Smale.WhitneyPairModel.upperBoundaryArc h t))
+    FrameField.shearedBlock _ _
+          (RankThreeWhitneyModel.secondSheetDerivative h (2 * t - 1) v) =
+        FrameField.shearedBlock (c.base (WhitneyPairModel.upperBoundaryArc h t))
+            (c.normal (WhitneyPairModel.upperBoundaryArc h t))
             ((v.1, (-2 * h * (2 * t - 1)) * v.1), 0) +
-          Smale.FrameField.shearedBlock (c.base (Smale.WhitneyPairModel.upperBoundaryArc h t))
-            (c.normal (Smale.WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v.2)) := by
+          FrameField.shearedBlock (c.base (WhitneyPairModel.upperBoundaryArc h t))
+            (c.normal (WhitneyPairModel.upperBoundaryArc h t)) (0, (0, v.2)) := by
       rw [← map_add]
       congr 1
-      simp only [Smale.RankThreeWhitneyModel.secondSheetDerivative_apply, Prod.mk_add_mk,
+      simp only [RankThreeWhitneyModel.secondSheetDerivative_apply, Prod.mk_add_mk,
         add_zero, zero_add]
     _ =
         e.sheetDifferential tube.chart t (v.1 / 2, 0) +
           e.sheetDifferential tube.chart t (0, v.2) := by
-      rw [Smale.FrameField.shearedBlock_horizontal, c.upper_transverse t ht, harc]
+      rw [FrameField.shearedBlock_horizontal, c.upper_transverse t ht, harc]
     _ = e.sheetDifferential tube.chart t (v.1 / 2, v.2) := by
       rw [← map_add]
       congr 1
       simp
 
-def Smale.SheetCorrection.centerProjection {A : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A] :
+def SheetCorrection.centerProjection {A : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A] :
     (ℝ × A) →L[ℝ] (ℝ × A) :=
   (ContinuousLinearMap.fst ℝ ℝ A).prod (0 : (ℝ × A) →L[ℝ] A)
 
-theorem Smale.SheetCorrection.centerProjection_apply {A : Type*} [NormedAddCommGroup A]
+theorem SheetCorrection.centerProjection_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : ℝ × A) : centerProjection p = (p.1, 0) :=
   rfl
 
-def Smale.SheetCorrection.centeredCorrection {A F : Type*} [NormedAddCommGroup A]
+def SheetCorrection.centeredCorrection {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] (R G : (ℝ × A) → F) (p : ℝ × A) : F :=
   (R p - G p) - (R (centerProjection p) - G (centerProjection p))
 
-theorem Smale.SheetCorrection.centeredCorrection_zero {A F : Type*} [NormedAddCommGroup A]
+theorem SheetCorrection.centeredCorrection_zero {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] (R G : (ℝ × A) → F) (s : ℝ) :
     centeredCorrection R G (s, 0) = 0 := by
   simp only [centeredCorrection, centerProjection_apply, sub_self]
 
-theorem Smale.SheetCorrection.centeredCorrection_eq_sub {A F : Type*} [NormedAddCommGroup A]
+theorem SheetCorrection.centeredCorrection_eq_sub {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] {R G : (ℝ × A) → F} {p : ℝ × A}
     (hcenter : R (p.1, 0) = G (p.1, 0)) : centeredCorrection R G p = R p - G p := by
   simp only [centeredCorrection, centerProjection_apply, hcenter, sub_self, sub_zero]
 
-theorem Smale.SheetCorrection.contDiffOn_centeredCorrection {A F : Type*} [NormedAddCommGroup A]
+theorem SheetCorrection.contDiffOn_centeredCorrection {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F] {R G : (ℝ × A) → F}
     {D : Set (ℝ × A)} (hR : ContDiffOn ℝ ∞ R D) (hG : ContDiffOn ℝ ∞ G D) :
     ContDiffOn ℝ ∞ (centeredCorrection R G) (D ∩ centerProjection ⁻¹' D) :=
   ((hR.sub hG).mono Set.inter_subset_left).sub
     ((hR.sub hG).comp (centerProjection (A := A)).contDiff.contDiffOn (fun _ hp => hp.2))
 
-theorem Smale.SheetCorrection.hasFDerivAt_centeredCorrection_zero {A F : Type*}
+theorem SheetCorrection.hasFDerivAt_centeredCorrection_zero {A F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {R G : (ℝ × A) → F} {L : (ℝ × A) →L[ℝ] F} {s : ℝ} (hR : HasFDerivAt R L (s, 0))
     (hG : HasFDerivAt G L (s, 0)) :
@@ -21293,69 +21293,69 @@ theorem Smale.SheetCorrection.hasFDerivAt_centeredCorrection_zero {A F : Type*}
     | rfl
     | simp only [ContinuousLinearMap.zero_comp, sub_self]
 
-def Smale.RankThreeWhitneyModel.lowerSheetCoordinates : Space →L[ℝ] LowerSheet :=
+def RankThreeWhitneyModel.lowerSheetCoordinates : Space →L[ℝ] LowerSheet :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).comp (ContinuousLinearMap.fst ℝ (ℝ × ℝ) (Lower × Upper))).prod
     ((ContinuousLinearMap.fst ℝ Lower Upper).comp
       (ContinuousLinearMap.snd ℝ (ℝ × ℝ) (Lower × Upper)))
 
-def Smale.RankThreeWhitneyModel.upperSheetCoordinates : Space →L[ℝ] UpperSheet :=
+def RankThreeWhitneyModel.upperSheetCoordinates : Space →L[ℝ] UpperSheet :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).comp (ContinuousLinearMap.fst ℝ (ℝ × ℝ) (Lower × Upper))).prod
     ((ContinuousLinearMap.snd ℝ Lower Upper).comp
       (ContinuousLinearMap.snd ℝ (ℝ × ℝ) (Lower × Upper)))
 
-def Smale.RankThreeWhitneyModel.correctedSheetMap {F : Type*} [NormedAddCommGroup F]
+def RankThreeWhitneyModel.correctedSheetMap {F : Type*} [NormedAddCommGroup F]
     (G : Space → F) (Rlo : LowerSheet → F) (Rhi : UpperSheet → F) (h : ℝ) (p : Space) : F :=
-  G p + Smale.SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) (lowerSheetCoordinates p) +
-    Smale.SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) (upperSheetCoordinates p)
+  G p + SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) (lowerSheetCoordinates p) +
+    SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) (upperSheetCoordinates p)
 
-theorem Smale.RankThreeWhitneyModel.correctedSheetMap_zero {F : Type*} [NormedAddCommGroup F]
+theorem RankThreeWhitneyModel.correctedSheetMap_zero {F : Type*} [NormedAddCommGroup F]
     (G : Space → F) (Rlo : LowerSheet → F) (Rhi : UpperSheet → F) (h : ℝ) (p : ℝ × ℝ) :
     correctedSheetMap G Rlo Rhi h (p, 0) = G (p, 0) := by
   change
-    G (p, 0) + Smale.SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) (p.1, 0) +
-        Smale.SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) (p.1, 0) =
+    G (p, 0) + SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) (p.1, 0) +
+        SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) (p.1, 0) =
       G (p, 0)
-  rw [Smale.SheetCorrection.centeredCorrection_zero,
-    Smale.SheetCorrection.centeredCorrection_zero, add_zero, add_zero]
+  rw [SheetCorrection.centeredCorrection_zero,
+    SheetCorrection.centeredCorrection_zero, add_zero, add_zero]
 
-theorem Smale.RankThreeWhitneyModel.correctedSheetMap_lower {F : Type*} [NormedAddCommGroup F]
+theorem RankThreeWhitneyModel.correctedSheetMap_lower {F : Type*} [NormedAddCommGroup F]
     {G : Space → F} {Rlo : LowerSheet → F} {Rhi : UpperSheet → F} {h : ℝ} (q : LowerSheet)
     (hcenter : Rlo (q.1, 0) = G (firstSheet (q.1, 0))) :
     correctedSheetMap G Rlo Rhi h (firstSheet q) = Rlo q := by
   have hlo : lowerSheetCoordinates (firstSheet q) = q := rfl
   have hhi : upperSheetCoordinates (firstSheet q) = (q.1, 0) := rfl
-  rw [correctedSheetMap, hlo, hhi, Smale.SheetCorrection.centeredCorrection_zero, add_zero,
-    Smale.SheetCorrection.centeredCorrection_eq_sub hcenter]
+  rw [correctedSheetMap, hlo, hhi, SheetCorrection.centeredCorrection_zero, add_zero,
+    SheetCorrection.centeredCorrection_eq_sub hcenter]
   dsimp only [Function.comp_apply]
   abel
 
-theorem Smale.RankThreeWhitneyModel.correctedSheetMap_upper {F : Type*} [NormedAddCommGroup F]
+theorem RankThreeWhitneyModel.correctedSheetMap_upper {F : Type*} [NormedAddCommGroup F]
     {G : Space → F} {Rlo : LowerSheet → F} {Rhi : UpperSheet → F} {h : ℝ} (q : UpperSheet)
     (hcenter : Rhi (q.1, 0) = G (secondSheet h (q.1, 0))) :
     correctedSheetMap G Rlo Rhi h (secondSheet h q) = Rhi q := by
   have hlo : lowerSheetCoordinates (secondSheet h q) = (q.1, 0) := rfl
   have hhi : upperSheetCoordinates (secondSheet h q) = q := rfl
-  rw [correctedSheetMap, hlo, hhi, Smale.SheetCorrection.centeredCorrection_zero, add_zero,
-    Smale.SheetCorrection.centeredCorrection_eq_sub hcenter]
+  rw [correctedSheetMap, hlo, hhi, SheetCorrection.centeredCorrection_zero, add_zero,
+    SheetCorrection.centeredCorrection_eq_sub hcenter]
   dsimp only [Function.comp_apply]
   abel
 
-def Smale.RankThreeWhitneyModel.correctionDomain (U : Set Space) (Dlo : Set LowerSheet)
+def RankThreeWhitneyModel.correctionDomain (U : Set Space) (Dlo : Set LowerSheet)
     (Dhi : Set UpperSheet) : Set Space :=
   U ∩
-    (lowerSheetCoordinates ⁻¹' (Dlo ∩ Smale.SheetCorrection.centerProjection ⁻¹' Dlo) ∩
-      upperSheetCoordinates ⁻¹' (Dhi ∩ Smale.SheetCorrection.centerProjection ⁻¹' Dhi))
+    (lowerSheetCoordinates ⁻¹' (Dlo ∩ SheetCorrection.centerProjection ⁻¹' Dlo) ∩
+      upperSheetCoordinates ⁻¹' (Dhi ∩ SheetCorrection.centerProjection ⁻¹' Dhi))
 
-theorem Smale.RankThreeWhitneyModel.isOpen_correctionDomain {U : Set Space} {Dlo : Set LowerSheet}
+theorem RankThreeWhitneyModel.isOpen_correctionDomain {U : Set Space} {Dlo : Set LowerSheet}
     {Dhi : Set UpperSheet} (hU : IsOpen U) (hDlo : IsOpen Dlo) (hDhi : IsOpen Dhi) :
     IsOpen (correctionDomain U Dlo Dhi) :=
   hU.inter
-    (((hDlo.inter (hDlo.preimage Smale.SheetCorrection.centerProjection.continuous)).preimage
+    (((hDlo.inter (hDlo.preimage SheetCorrection.centerProjection.continuous)).preimage
           lowerSheetCoordinates.continuous).inter
-      ((hDhi.inter (hDhi.preimage Smale.SheetCorrection.centerProjection.continuous)).preimage
+      ((hDhi.inter (hDhi.preimage SheetCorrection.centerProjection.continuous)).preimage
         upperSheetCoordinates.continuous))
 
-theorem Smale.RankThreeWhitneyModel.contDiffOn_correctedSheetMap {F : Type*}
+theorem RankThreeWhitneyModel.contDiffOn_correctedSheetMap {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {G : Space → F} {Rlo : LowerSheet → F}
     {Rhi : UpperSheet → F} {h : ℝ} {U : Set Space} {Dlo : Set LowerSheet} {Dhi : Set UpperSheet}
     (hG : ContDiffOn ℝ ∞ G U) (hRlo : ContDiffOn ℝ ∞ Rlo Dlo)
@@ -21363,12 +21363,12 @@ theorem Smale.RankThreeWhitneyModel.contDiffOn_correctedSheetMap {F : Type*}
     (hGhi : ContDiffOn ℝ ∞ (G ∘ secondSheet h) Dhi) :
     ContDiffOn ℝ ∞ (correctedSheetMap G Rlo Rhi h) (correctionDomain U Dlo Dhi) :=
   ((hG.mono Set.inter_subset_left).add
-        ((Smale.SheetCorrection.contDiffOn_centeredCorrection hRlo hGlo).comp
+        ((SheetCorrection.contDiffOn_centeredCorrection hRlo hGlo).comp
           lowerSheetCoordinates.contDiff.contDiffOn (fun _ hp => hp.2.1))).add
-    ((Smale.SheetCorrection.contDiffOn_centeredCorrection hRhi hGhi).comp
+    ((SheetCorrection.contDiffOn_centeredCorrection hRhi hGhi).comp
       upperSheetCoordinates.contDiff.contDiffOn (fun _ hp => hp.2.2))
 
-theorem Smale.RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type*}
+theorem RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {G : Space → F} {Rlo : LowerSheet → F}
     {Rhi : UpperSheet → F} {h : ℝ} {p : ℝ × ℝ} {L : Space →L[ℝ] F} {Llo : LowerSheet →L[ℝ] F}
     {Lhi : UpperSheet →L[ℝ] F} (hG : HasFDerivAt G L (p, 0)) (hRlo : HasFDerivAt Rlo Llo (p.1, 0))
@@ -21377,163 +21377,163 @@ theorem Smale.RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type
     HasFDerivAt (correctedSheetMap G Rlo Rhi h) L (p, 0) := by
   have hlo :
     HasFDerivAt
-      (Smale.SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) ∘ lowerSheetCoordinates)
+      (SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) ∘ lowerSheetCoordinates)
       (0 : Space →L[ℝ] F) (p, 0) := by
     simpa only [ContinuousLinearMap.zero_comp] using
-      (Smale.SheetCorrection.hasFDerivAt_centeredCorrection_zero hRlo hGlo).comp
+      (SheetCorrection.hasFDerivAt_centeredCorrection_zero hRlo hGlo).comp
         (p, (0 : Lower × Upper)) lowerSheetCoordinates.hasFDerivAt
   have hhi :
     HasFDerivAt
-      (Smale.SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) ∘ upperSheetCoordinates)
+      (SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) ∘ upperSheetCoordinates)
       (0 : Space →L[ℝ] F) (p, 0) := by
     simpa only [ContinuousLinearMap.zero_comp] using
-      (Smale.SheetCorrection.hasFDerivAt_centeredCorrection_zero hRhi hGhi).comp
+      (SheetCorrection.hasFDerivAt_centeredCorrection_zero hRhi hGhi).comp
         (p, (0 : Lower × Upper)) upperSheetCoordinates.hasFDerivAt
   convert (hG.add hlo).add hhi using 1 <;>
     first
     | rfl
     | simp only [add_zero]
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Smale.RankThreeWhitneyModel.Space → ((ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) :=
-  Smale.FrameField.shearedMap c.base c.normal
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    RankThreeWhitneyModel.Space → ((ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) :=
+  FrameField.shearedMap c.base c.normal
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Smale.RankThreeWhitneyModel.Space → ((ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) :=
-  Smale.RankThreeWhitneyModel.correctedSheetMap c.shearedCoordinates
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    RankThreeWhitneyModel.Space → ((ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) :=
+  RankThreeWhitneyModel.correctedSheetMap c.shearedCoordinates
     (d.retimedSheetTransition tube.chart) (e.retimedSheetTransition tube.chart) h
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_zero {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) (p : ℝ × ℝ) :
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) (p : ℝ × ℝ) :
     c.correctedCoordinates (p, 0) = (p, 0) := by
-  rw [correctedCoordinates, Smale.RankThreeWhitneyModel.correctedSheetMap_zero]
-  exact Smale.FrameField.shearedMap_zero c.base c.normal p
+  rw [correctedCoordinates, RankThreeWhitneyModel.correctedSheetMap_zero]
+  exact FrameField.shearedMap_zero c.base c.normal p
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_shearedCoordinates_zero
+theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_shearedCoordinates_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
-    (hp : p ∈ Smale.WhitneyPairModel.bigon h) :
-    HasFDerivAt c.shearedCoordinates (Smale.FrameField.shearedBlock (c.base p) (c.normal p))
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
+    (hp : p ∈ WhitneyPairModel.bigon h) :
+    HasFDerivAt c.shearedCoordinates (FrameField.shearedBlock (c.base p) (c.normal p))
       (p, 0) :=
-  Smale.FrameField.hasFDerivAt_shearedMap_zero
+  FrameField.hasFDerivAt_shearedMap_zero
     ((c.smooth_base.contDiffAt (c.open_domain.mem_nhds (c.contains hp))).differentiableAt
       (by simp))
     ((c.smooth_normal.contDiffAt (c.open_domain.mem_nhds (c.contains hp))).differentiableAt
       (by simp))
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_lower {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_lower {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    HasFDerivAt (c.shearedCoordinates ∘ Smale.RankThreeWhitneyModel.firstSheet)
-      ((d.sheetDifferential tube.chart t).comp Smale.WhitneyPairModel.halfTimeDerivative)
+    HasFDerivAt (c.shearedCoordinates ∘ RankThreeWhitneyModel.firstSheet)
+      ((d.sheetDifferential tube.chart t).comp WhitneyPairModel.halfTimeDerivative)
       (2 * t - 1, 0) := by
   have hd :=
     (c.hasFDerivAt_shearedCoordinates_zero (tube.lowerBoundaryArc_mem_bigon ht)).comp
-      (2 * t - 1, (0 : Smale.RankThreeWhitneyModel.Lower))
-      (Smale.RankThreeWhitneyModel.hasFDerivAt_firstSheet (2 * t - 1, 0))
-  rwa [Smale.WhitneyPairModel.lowerBoundaryArc, c.lower_model_tangent ht] at hd
+      (2 * t - 1, (0 : RankThreeWhitneyModel.Lower))
+      (RankThreeWhitneyModel.hasFDerivAt_firstSheet (2 * t - 1, 0))
+  rwa [WhitneyPairModel.lowerBoundaryArc, c.lower_model_tangent ht] at hd
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_upper {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_upper {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    HasFDerivAt (c.shearedCoordinates ∘ Smale.RankThreeWhitneyModel.secondSheet h)
-      ((e.sheetDifferential tube.chart t).comp Smale.WhitneyPairModel.halfTimeDerivative)
+    HasFDerivAt (c.shearedCoordinates ∘ RankThreeWhitneyModel.secondSheet h)
+      ((e.sheetDifferential tube.chart t).comp WhitneyPairModel.halfTimeDerivative)
       (2 * t - 1, 0) := by
   have hd :=
     (c.hasFDerivAt_shearedCoordinates_zero (tube.upperBoundaryArc_mem_bigon ht)).comp
-      (2 * t - 1, (0 : Smale.RankThreeWhitneyModel.Upper))
-      (Smale.RankThreeWhitneyModel.hasFDerivAt_secondSheet h (2 * t - 1, 0))
+      (2 * t - 1, (0 : RankThreeWhitneyModel.Upper))
+      (RankThreeWhitneyModel.hasFDerivAt_secondSheet h (2 * t - 1, 0))
   rwa [c.upper_model_tangent ht] at hd
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoordinates_zero
+theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoordinates_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
-    (hp : p ∈ Smale.WhitneyPairModel.bigon h) :
-    HasFDerivAt c.correctedCoordinates (Smale.FrameField.shearedBlock (c.base p) (c.normal p))
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
+    (hp : p ∈ WhitneyPairModel.bigon h) :
+    HasFDerivAt c.correctedCoordinates (FrameField.shearedBlock (c.base p) (c.normal p))
       (p, 0) := by
-  have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
-  have ht : Smale.WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
+  have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+  have ht : WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
     change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
     constructor <;> linarith [hpr.1.1, hpr.1.2]
-  have htime : 2 * Smale.WhitneyPairModel.arcTime p - 1 = p.1 := by
-    dsimp [Smale.WhitneyPairModel.arcTime]; ring
+  have htime : 2 * WhitneyPairModel.arcTime p - 1 = p.1 := by
+    dsimp [WhitneyPairModel.arcTime]; ring
   have hRlo :=
     d.hasFDerivAt_retimedSheetTransition tube.chart ht (tube.lower_chart_center_mem_target d ht)
   have hRhi :=
@@ -21542,386 +21542,386 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoo
   have hGhi := c.hasFDerivAt_sheared_upper ht
   rw [htime] at hRlo hRhi hGlo hGhi
   exact
-    Smale.RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero
+    RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero
       (c.hasFDerivAt_shearedCoordinates_zero hp) hRlo hGlo hRhi hGhi
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.retimed_lower_center_germ {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_lower_center_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     (fun s : ℝ => d.retimedSheetTransition tube.chart (s, 0)) =ᶠ[𝓝 (2 * t - 1)]
-      (fun s => c.shearedCoordinates (Smale.RankThreeWhitneyModel.firstSheet (s, 0))) := by
+      (fun s => c.shearedCoordinates (RankThreeWhitneyModel.firstSheet (s, 0))) := by
   have hct : ContinuousAt (fun s : ℝ => (s + 1) / 2) (2 * t - 1) := by fun_prop
   have heq : (2 * t - 1 + 1) / 2 = t := by ring
   have htime : Filter.Tendsto (fun s : ℝ => (s + 1) / 2) (𝓝 (2 * t - 1)) (𝓝 t) := by
     simpa only [heq] using hct.tendsto
   filter_upwards [(tube.lower_sheetTransition_center_germ d ht).comp_tendsto htime] with s hs
   change
-    d.sheetTransition tube.chart (Smale.WhitneyPairModel.sheetTimeCoordinates (s, 0)) =
-      Smale.FrameField.shearedMap c.base c.normal ((s, 0), 0)
-  rw [Smale.WhitneyPairModel.sheetTimeCoordinates_apply, Smale.FrameField.shearedMap_zero]
+    d.sheetTransition tube.chart (WhitneyPairModel.sheetTimeCoordinates (s, 0)) =
+      FrameField.shearedMap c.base c.normal ((s, 0), 0)
+  rw [WhitneyPairModel.sheetTimeCoordinates_apply, FrameField.shearedMap_zero]
   dsimp only [Function.comp_apply] at hs
   rw [hs]
   have hlin : 2 * ((s + 1) / 2) - 1 = s := by ring
-  simp only [Smale.WhitneyPairModel.lowerBoundaryArc, hlin]
+  simp only [WhitneyPairModel.lowerBoundaryArc, hlin]
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.retimed_upper_center_germ {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_upper_center_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     (fun s : ℝ => e.retimedSheetTransition tube.chart (s, 0)) =ᶠ[𝓝 (2 * t - 1)]
-      (fun s => c.shearedCoordinates (Smale.RankThreeWhitneyModel.secondSheet h (s, 0))) := by
+      (fun s => c.shearedCoordinates (RankThreeWhitneyModel.secondSheet h (s, 0))) := by
   have hct : ContinuousAt (fun s : ℝ => (s + 1) / 2) (2 * t - 1) := by fun_prop
   have heq : (2 * t - 1 + 1) / 2 = t := by ring
   have htime : Filter.Tendsto (fun s : ℝ => (s + 1) / 2) (𝓝 (2 * t - 1)) (𝓝 t) := by
     simpa only [heq] using hct.tendsto
   filter_upwards [(tube.upper_sheetTransition_center_germ e ht).comp_tendsto htime] with s hs
   change
-    e.sheetTransition tube.chart (Smale.WhitneyPairModel.sheetTimeCoordinates (s, 0)) =
-      Smale.FrameField.shearedMap c.base c.normal ((s, h * (1 - s ^ 2)), 0)
-  rw [Smale.WhitneyPairModel.sheetTimeCoordinates_apply, Smale.FrameField.shearedMap_zero]
+    e.sheetTransition tube.chart (WhitneyPairModel.sheetTimeCoordinates (s, 0)) =
+      FrameField.shearedMap c.base c.normal ((s, h * (1 - s ^ 2)), 0)
+  rw [WhitneyPairModel.sheetTimeCoordinates_apply, FrameField.shearedMap_zero]
   dsimp only [Function.comp_apply] at hs
   rw [hs]
   have hlin : 2 * ((s + 1) / 2) - 1 = s := by ring
-  simp only [Smale.WhitneyPairModel.upperBoundaryArc, hlin]
+  simp only [WhitneyPairModel.upperBoundaryArc, hlin]
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.shearedDomain {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.shearedDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Set Smale.RankThreeWhitneyModel.Space :=
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    Set RankThreeWhitneyModel.Space :=
   Prod.fst ⁻¹' c.domain
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Set Smale.RankThreeWhitneyModel.LowerSheet :=
-  d.retimedDomain tube.chart ∩ Smale.RankThreeWhitneyModel.firstSheet ⁻¹' c.shearedDomain
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    Set RankThreeWhitneyModel.LowerSheet :=
+  d.retimedDomain tube.chart ∩ RankThreeWhitneyModel.firstSheet ⁻¹' c.shearedDomain
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Set Smale.RankThreeWhitneyModel.UpperSheet :=
-  e.retimedDomain tube.chart ∩ Smale.RankThreeWhitneyModel.secondSheet h ⁻¹' c.shearedDomain
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    Set RankThreeWhitneyModel.UpperSheet :=
+  e.retimedDomain tube.chart ∩ RankThreeWhitneyModel.secondSheet h ⁻¹' c.shearedDomain
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) : Set ℝ :=
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) : Set ℝ :=
   interior
     {s |
       d.retimedSheetTransition tube.chart (s, 0) =
-          c.shearedCoordinates (Smale.RankThreeWhitneyModel.firstSheet (s, 0)) ∧
+          c.shearedCoordinates (RankThreeWhitneyModel.firstSheet (s, 0)) ∧
         e.retimedSheetTransition tube.chart (s, 0) =
-          c.shearedCoordinates (Smale.RankThreeWhitneyModel.secondSheet h (s, 0))}
+          c.shearedCoordinates (RankThreeWhitneyModel.secondSheet h (s, 0))}
 
-def Smale.TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain {E M : Type*}
+def TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Set Smale.RankThreeWhitneyModel.Space :=
-  Smale.RankThreeWhitneyModel.correctionDomain c.shearedDomain c.lowerCorrectionDomain
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    Set RankThreeWhitneyModel.Space :=
+  RankThreeWhitneyModel.correctionDomain c.shearedDomain c.lowerCorrectionDomain
       c.upperCorrectionDomain ∩
-    (fun p : Smale.RankThreeWhitneyModel.Space => p.1.1) ⁻¹' c.centerMatchingTimes
+    (fun p : RankThreeWhitneyModel.Space => p.1.1) ⁻¹' c.centerMatchingTimes
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.isOpen_shearedDomain {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_shearedDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) : IsOpen c.shearedDomain :=
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) : IsOpen c.shearedDomain :=
   c.open_domain.preimage continuous_fst
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.isOpen_lowerCorrectionDomain {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_lowerCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
     IsOpen c.lowerCorrectionDomain :=
   (d.isOpen_retimedDomain tube.chart).inter
-    (c.isOpen_shearedDomain.preimage Smale.RankThreeWhitneyModel.contDiff_firstSheet.continuous)
+    (c.isOpen_shearedDomain.preimage RankThreeWhitneyModel.contDiff_firstSheet.continuous)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.isOpen_upperCorrectionDomain {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_upperCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
     IsOpen c.upperCorrectionDomain :=
   (e.isOpen_retimedDomain tube.chart).inter
     (c.isOpen_shearedDomain.preimage
-      (Smale.RankThreeWhitneyModel.contDiff_secondSheet h).continuous)
+      (RankThreeWhitneyModel.contDiff_secondSheet h).continuous)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.isOpen_nonlinearDomain {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_nonlinearDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) : IsOpen c.nonlinearDomain :=
-  (Smale.RankThreeWhitneyModel.isOpen_correctionDomain c.isOpen_shearedDomain
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) : IsOpen c.nonlinearDomain :=
+  (RankThreeWhitneyModel.isOpen_correctionDomain c.isOpen_shearedDomain
         c.isOpen_lowerCorrectionDomain c.isOpen_upperCorrectionDomain).inter
     (isOpen_interior.preimage (by fun_prop))
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.contDiffOn_correctedCoordinates
+theorem TubularBigon.RankThreeTangentAdaptedChart.contDiffOn_correctedCoordinates
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
     ContDiffOn ℝ ∞ c.correctedCoordinates c.nonlinearDomain := by
   have hG : ContDiffOn ℝ ∞ c.shearedCoordinates c.shearedDomain :=
-    Smale.FrameField.contDiffOn_shearedMap c.smooth_base c.smooth_normal
+    FrameField.contDiffOn_shearedMap c.smooth_base c.smooth_normal
   exact
-    (Smale.RankThreeWhitneyModel.contDiffOn_correctedSheetMap hG
+    (RankThreeWhitneyModel.contDiffOn_correctedSheetMap hG
           ((d.contDiffOn_retimedSheetTransition tube.chart).mono Set.inter_subset_left)
-          (hG.comp Smale.RankThreeWhitneyModel.contDiff_firstSheet.contDiffOn (fun _ hp => hp.2))
+          (hG.comp RankThreeWhitneyModel.contDiff_firstSheet.contDiffOn (fun _ hp => hp.2))
           ((e.contDiffOn_retimedSheetTransition tube.chart).mono Set.inter_subset_left)
-          (hG.comp (Smale.RankThreeWhitneyModel.contDiff_secondSheet h).contDiffOn
+          (hG.comp (RankThreeWhitneyModel.contDiff_secondSheet h).contDiffOn
             (fun _ hp => hp.2))).mono
       Set.inter_subset_left
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes_contains {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes_contains {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) : 2 * t - 1 ∈ c.centerMatchingTimes :=
   mem_interior_iff_mem_nhds.mpr
     ((c.retimed_lower_center_germ ht).and (c.retimed_upper_center_germ ht))
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain_contains_center
+theorem TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain_contains_center
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (2 * t - 1, (0 : Smale.RankThreeWhitneyModel.Lower)) ∈ c.lowerCorrectionDomain := by
+    (2 * t - 1, (0 : RankThreeWhitneyModel.Lower)) ∈ c.lowerCorrectionDomain := by
   refine
     ⟨d.retimedDomain_contains_center tube.chart ht (tube.lower_chart_center_mem_target d ht), ?_⟩
   exact c.contains (tube.lowerBoundaryArc_mem_bigon ht)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain_contains_center
+theorem TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain_contains_center
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :
-    (2 * t - 1, (0 : Smale.RankThreeWhitneyModel.Upper)) ∈ c.upperCorrectionDomain := by
+    (2 * t - 1, (0 : RankThreeWhitneyModel.Upper)) ∈ c.upperCorrectionDomain := by
   refine
     ⟨e.retimedDomain_contains_center tube.chart ht (tube.upper_chart_center_mem_target e ht), ?_⟩
   exact c.contains (tube.upperBoundaryArc_mem_bigon ht)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain_contains_zero
+theorem TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain_contains_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
-    (hp : p ∈ Smale.WhitneyPairModel.bigon h) :
-    (p, (0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)) ∈
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) {p : ℝ × ℝ}
+    (hp : p ∈ WhitneyPairModel.bigon h) :
+    (p, (0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)) ∈
       c.nonlinearDomain := by
-  have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
-  have ht : Smale.WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
+  have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+  have ht : WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
     change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
     constructor <;> linarith [hpr.1.1, hpr.1.2]
-  have htime : 2 * Smale.WhitneyPairModel.arcTime p - 1 = p.1 := by
-    dsimp [Smale.WhitneyPairModel.arcTime]; ring
+  have htime : 2 * WhitneyPairModel.arcTime p - 1 = p.1 := by
+    dsimp [WhitneyPairModel.arcTime]; ring
   have hlo := c.lowerCorrectionDomain_contains_center ht
   have hhi := c.upperCorrectionDomain_contains_center ht
   have hmatch := c.centerMatchingTimes_contains ht
   rw [htime] at hlo hhi hmatch
   exact ⟨⟨c.contains hp, ⟨hlo, hlo⟩, ⟨hhi, hhi⟩⟩, hmatch⟩
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.lower_native_parameters {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.lower_native_parameters {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.LowerSheet}
-    (hq : Smale.RankThreeWhitneyModel.firstSheet q ∈ c.nonlinearDomain) :
-    (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e)
+    {q : RankThreeWhitneyModel.LowerSheet}
+    (hq : RankThreeWhitneyModel.firstSheet q ∈ c.nonlinearDomain) :
+    (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
         d.chart.source ∧
-      d.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
+      d.chart (WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
   hq.1.2.1.1.1
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.upper_native_parameters {E M : Type*}
+theorem TubularBigon.RankThreeTangentAdaptedChart.upper_native_parameters {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.UpperSheet}
-    (hq : Smale.RankThreeWhitneyModel.secondSheet h q ∈ c.nonlinearDomain) :
-    (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 2))) ∈
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e)
+    {q : RankThreeWhitneyModel.UpperSheet}
+    (hq : RankThreeWhitneyModel.secondSheet h q ∈ c.nonlinearDomain) :
+    (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 2))) ∈
         e.chart.source ∧
-      e.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
+      e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
   hq.1.2.2.1.1
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_lower_of_mem_domain
+theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_lower_of_mem_domain
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.LowerSheet}
-    (hq : Smale.RankThreeWhitneyModel.firstSheet q ∈ c.nonlinearDomain) :
-    c.correctedCoordinates (Smale.RankThreeWhitneyModel.firstSheet q) =
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e)
+    {q : RankThreeWhitneyModel.LowerSheet}
+    (hq : RankThreeWhitneyModel.firstSheet q ∈ c.nonlinearDomain) :
+    c.correctedCoordinates (RankThreeWhitneyModel.firstSheet q) =
       d.retimedSheetTransition tube.chart q := by
   have hJ : q.1 ∈ c.centerMatchingTimes := hq.2
   have hm :=
@@ -21929,29 +21929,29 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_low
         c.centerMatchingTimes ⊆
           {s : ℝ |
             d.retimedSheetTransition tube.chart (s, 0) =
-                c.shearedCoordinates (Smale.RankThreeWhitneyModel.firstSheet (s, 0)) ∧
+                c.shearedCoordinates (RankThreeWhitneyModel.firstSheet (s, 0)) ∧
               e.retimedSheetTransition tube.chart (s, 0) =
-                c.shearedCoordinates (Smale.RankThreeWhitneyModel.secondSheet h (s, 0))}
+                c.shearedCoordinates (RankThreeWhitneyModel.secondSheet h (s, 0))}
         from interior_subset)
       hJ
-  exact Smale.RankThreeWhitneyModel.correctedSheetMap_lower q hm.1
+  exact RankThreeWhitneyModel.correctedSheetMap_lower q hm.1
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upper_of_mem_domain
+theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upper_of_mem_domain
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.UpperSheet}
-    (hq : Smale.RankThreeWhitneyModel.secondSheet h q ∈ c.nonlinearDomain) :
-    c.correctedCoordinates (Smale.RankThreeWhitneyModel.secondSheet h q) =
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e)
+    {q : RankThreeWhitneyModel.UpperSheet}
+    (hq : RankThreeWhitneyModel.secondSheet h q ∈ c.nonlinearDomain) :
+    c.correctedCoordinates (RankThreeWhitneyModel.secondSheet h q) =
       e.retimedSheetTransition tube.chart q := by
   have hJ : q.1 ∈ c.centerMatchingTimes := hq.2
   have hm :=
@@ -21959,71 +21959,71 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upp
         c.centerMatchingTimes ⊆
           {s : ℝ |
             d.retimedSheetTransition tube.chart (s, 0) =
-                c.shearedCoordinates (Smale.RankThreeWhitneyModel.firstSheet (s, 0)) ∧
+                c.shearedCoordinates (RankThreeWhitneyModel.firstSheet (s, 0)) ∧
               e.retimedSheetTransition tube.chart (s, 0) =
-                c.shearedCoordinates (Smale.RankThreeWhitneyModel.secondSheet h (s, 0))}
+                c.shearedCoordinates (RankThreeWhitneyModel.secondSheet h (s, 0))}
         from interior_subset)
       hJ
-  exact Smale.RankThreeWhitneyModel.correctedSheetMap_upper q hm.2
+  exact RankThreeWhitneyModel.correctedSheetMap_upper q hm.2
 
-structure Smale.TubularBigon.RankThreeSheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
+structure TubularBigon.RankThreeSheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map)
     (e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map) where
   radius : ℝ
   radius_pos : 0 < radius
   chart :
-    PartialDiffeomorph 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
-      Smale.RankThreeWhitneyModel.Space M ∞
-  source_contains : Smale.WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
+    PartialDiffeomorph 𝓘(ℝ, RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
+      RankThreeWhitneyModel.Space M ∞
+  source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = tube.map p
   target_subset : chart.target ⊆ tube.chart.target
   lower_source :
-    ∀ q : Smale.RankThreeWhitneyModel.LowerSheet,
-      Smale.RankThreeWhitneyModel.firstSheet q ∈ chart.source →
-        (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
+    ∀ q : RankThreeWhitneyModel.LowerSheet,
+      RankThreeWhitneyModel.firstSheet q ∈ chart.source →
+        (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
           d.chart.source
   upper_source :
-    ∀ q : Smale.RankThreeWhitneyModel.UpperSheet,
-      Smale.RankThreeWhitneyModel.secondSheet h q ∈ chart.source →
-        (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 2))) ∈
+    ∀ q : RankThreeWhitneyModel.UpperSheet,
+      RankThreeWhitneyModel.secondSheet h q ∈ chart.source →
+        (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 2))) ∈
           e.chart.source
   lower :
-    ∀ q : Smale.RankThreeWhitneyModel.LowerSheet,
-      Smale.RankThreeWhitneyModel.firstSheet q ∈ chart.source →
-        chart (Smale.RankThreeWhitneyModel.firstSheet q) =
-          d.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0)
+    ∀ q : RankThreeWhitneyModel.LowerSheet,
+      RankThreeWhitneyModel.firstSheet q ∈ chart.source →
+        chart (RankThreeWhitneyModel.firstSheet q) =
+          d.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
   upper :
-    ∀ q : Smale.RankThreeWhitneyModel.UpperSheet,
-      Smale.RankThreeWhitneyModel.secondSheet h q ∈ chart.source →
-        chart (Smale.RankThreeWhitneyModel.secondSheet h q) =
-          e.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0)
+    ∀ q : RankThreeWhitneyModel.UpperSheet,
+      RankThreeWhitneyModel.secondSheet h q ∈ chart.source →
+        chart (RankThreeWhitneyModel.secondSheet h q) =
+          e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
 
-theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetParametrizedChart
+theorem TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetParametrizedChart
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeTangentAdaptedChart tube d e) :
-    Nonempty (Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e) := by
+    (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) :
+    Nonempty (TubularBigon.RankThreeSheetParametrizedChart tube d e) := by
   have hinj :
     Set.InjOn c.correctedCoordinates
-      (Smale.WhitneyPairModel.bigon h ×ˢ
-        {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)}) := by
+      (WhitneyPairModel.bigon h ×ˢ
+        {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)}) := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩ ⟨q, w⟩ ⟨hq, hw⟩ heq
     have hz0 : z = 0 := hz
     have hw0 : w = 0 := hw
@@ -22034,38 +22034,38 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetP
   have hlocal :
     ∀
       p ∈
-        Smale.WhitneyPairModel.bigon h ×ˢ
-          {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)},
-      IsLocalDiffeomorphAt 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space)
+        WhitneyPairModel.bigon h ×ˢ
+          {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)},
+      IsLocalDiffeomorphAt 𝓘(ℝ, RankThreeWhitneyModel.Space)
         𝓘(ℝ, (ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) ∞ c.correctedCoordinates p := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
     subst z
     apply
-      Smale.isLocalDiffeomorphAt_of_contMDiffOn (D := Smale.RankThreeWhitneyModel.Space) (E :=
+      isLocalDiffeomorphAt_of_contMDiffOn (D := RankThreeWhitneyModel.Space) (E :=
         (ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) (M := (ℝ × ℝ) × EuclideanSpace ℝ (Fin 3))
         c.isOpen_nonlinearDomain (c.nonlinearDomain_contains_zero hp)
         c.contDiffOn_correctedCoordinates.contMDiffOn
     rw [mfderiv_eq_fderiv, (c.hasFDerivAt_correctedCoordinates_zero hp).fderiv]
     exact
-      Smale.FrameField.isInvertible_shearedBlock (c.base p) (c.normal p)
+      FrameField.isInvertible_shearedBlock (c.base p) (c.normal p)
         (c.normal_invertible p (c.contains hp))
   have hzeroDomain :
-    Smale.WhitneyPairModel.bigon h ×ˢ
-        {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)} ⊆
+    WhitneyPairModel.bigon h ×ˢ
+        {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)} ⊆
       c.nonlinearDomain := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
     subst z
     exact c.nonlinearDomain_contains_zero hp
   obtain ⟨χ, hzeroχ, hχD, hχ⟩ :=
-    Smale.exists_partialDiffeomorph_near_compact
-      ((Smale.WhitneyPairModel.isCompact_bigon tube.height_pos).prod isCompact_singleton) hinj
+    exists_partialDiffeomorph_near_compact
+      ((WhitneyPairModel.isCompact_bigon tube.height_pos).prod isCompact_singleton) hinj
       hlocal c.isOpen_nonlinearDomain hzeroDomain
   let Φ := χ.trans tube.chart
   have hzeroΦ :
-    Smale.WhitneyPairModel.bigon h ×ˢ
-        {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)} ⊆
+    WhitneyPairModel.bigon h ×ˢ
+        {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)} ⊆
       Φ.source := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
@@ -22075,9 +22075,9 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetP
     rw [hχ, c.correctedCoordinates_zero]
     exact tube.source_contains ⟨hp, Metric.mem_closedBall_self tube.radius_pos.le⟩
   obtain ⟨ε, hε, hsource⟩ :=
-    Smale.DiskFraming.exists_pos_prod_closedBall_subset
-      (Smale.WhitneyPairModel.isCompact_bigon tube.height_pos) Φ.open_source hzeroΦ
-  have hformula (p : Smale.RankThreeWhitneyModel.Space) :
+    DiskFraming.exists_pos_prod_closedBall_subset
+      (WhitneyPairModel.isCompact_bigon tube.height_pos) Φ.open_source hzeroΦ
+  have hformula (p : RankThreeWhitneyModel.Space) :
     Φ p = tube.chart (c.correctedCoordinates p) := by
     change tube.chart (χ p) = tube.chart (c.correctedCoordinates p)
     rw [hχ]
@@ -22101,62 +22101,62 @@ theorem Smale.TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetP
     rw [hformula, c.correctedCoordinates_upper_of_mem_domain (hχD hq.1)]
     exact tube.chart.right_inv' (c.upper_native_parameters (hχD hq.1)).2
 
-theorem Smale.TubularBigon.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs
+theorem TubularBigon.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map)
     (e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map)
     (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
     Nonempty (RankThreeSheetParametrizedChart tube d e) := by
   obtain ⟨c⟩ := tube.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs d e hsign
   exact c.nonempty_rankThreeSheetParametrizedChart
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.lower_mem_sheet {E M : Type*}
+theorem TubularBigon.RankThreeSheetParametrizedChart.lower_mem_sheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.LowerSheet}
-    (hq : Smale.RankThreeWhitneyModel.firstSheet q ∈ c.chart.source) :
-    c.chart (Smale.RankThreeWhitneyModel.firstSheet q) ∈ S := by
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e)
+    {q : RankThreeWhitneyModel.LowerSheet}
+    (hq : RankThreeWhitneyModel.firstSheet q ∈ c.chart.source) :
+    c.chart (RankThreeWhitneyModel.firstSheet q) ∈ S := by
   rw [c.lower q hq]
   exact (d.sheet _ (c.lower_source q hq)).mpr rfl
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.upper_mem_sheet {E M : Type*}
+theorem TubularBigon.RankThreeSheetParametrizedChart.upper_mem_sheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.UpperSheet}
-    (hq : Smale.RankThreeWhitneyModel.secondSheet h q ∈ c.chart.source) :
-    c.chart (Smale.RankThreeWhitneyModel.secondSheet h q) ∈ T := by
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e)
+    {q : RankThreeWhitneyModel.UpperSheet}
+    (hq : RankThreeWhitneyModel.secondSheet h q ∈ c.chart.source) :
+    c.chart (RankThreeWhitneyModel.secondSheet h q) ∈ T := by
   rw [c.upper q hq]
   exact (e.sheet _ (c.upper_source q hq)).mpr rfl
 
-theorem Smale.SheetRecognition.eventually_mem_sheet_iff {W D B E M : Type*} [NormedAddCommGroup W]
+theorem SheetRecognition.eventually_mem_sheet_iff {W D B E M : Type*} [NormedAddCommGroup W]
     [NormedSpace ℝ W] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, W) 𝓘(ℝ, E) W M ∞)
@@ -22214,15 +22214,15 @@ theorem Smale.SheetRecognition.eventually_mem_sheet_iff {W D B E M : Type*} [Nor
     rw [← hqz, (hparam q hq).2]
     exact (hsheet _ (hparam q hq).1).mpr rfl
 
-def Smale.WhitneyPairModel.sheetTimeInverse {A : Type*} (q : (ℝ × A)) : (ℝ × A) :=
+def WhitneyPairModel.sheetTimeInverse {A : Type*} (q : (ℝ × A)) : (ℝ × A) :=
   (2 * q.1 - 1, q.2)
 
-theorem Smale.WhitneyPairModel.contDiff_sheetTimeInverse {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.contDiff_sheetTimeInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : ContDiff ℝ ∞ (sheetTimeInverse (A := A)) := by
   unfold sheetTimeInverse
   fun_prop
 
-theorem Smale.WhitneyPairModel.sheetTimeInverse_leftInverse {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.sheetTimeInverse_leftInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : Function.LeftInverse (sheetTimeInverse (A := A)) sheetTimeCoordinates := by
   intro q
   rw [sheetTimeCoordinates_apply]
@@ -22231,7 +22231,7 @@ theorem Smale.WhitneyPairModel.sheetTimeInverse_leftInverse {A : Type*} [NormedA
     ring
   · rfl
 
-theorem Smale.WhitneyPairModel.sheetTimeInverse_rightInverse {A : Type*} [NormedAddCommGroup A]
+theorem WhitneyPairModel.sheetTimeInverse_rightInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : Function.RightInverse (sheetTimeInverse (A := A)) sheetTimeCoordinates := by
   intro q
   rw [sheetTimeCoordinates_apply]
@@ -22240,100 +22240,100 @@ theorem Smale.WhitneyPairModel.sheetTimeInverse_rightInverse {A : Type*} [Normed
     ring
   · rfl
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.eventually_lower_mem_iff {E M : Type*}
+theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_lower_mem_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.LowerSheet}
-    (hq : Smale.RankThreeWhitneyModel.firstSheet q ∈ c.chart.source) :
-    ∀ᶠ z in 𝓝 (Smale.RankThreeWhitneyModel.firstSheet q),
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e)
+    {q : RankThreeWhitneyModel.LowerSheet}
+    (hq : RankThreeWhitneyModel.firstSheet q ∈ c.chart.source) :
+    ∀ᶠ z in 𝓝 (RankThreeWhitneyModel.firstSheet q),
       z ∈ c.chart.source ∧
-        (c.chart z ∈ S ↔ z ∈ Set.range Smale.RankThreeWhitneyModel.firstSheet) :=
-  Smale.SheetRecognition.eventually_mem_sheet_iff c.chart d.chart d.sheet
-    Smale.RankThreeWhitneyModel.contDiff_firstSheet.continuous
-    Smale.WhitneyPairModel.contDiff_sheetTimeInverse.continuous
-    Smale.WhitneyPairModel.sheetTimeInverse_leftInverse
-    Smale.WhitneyPairModel.sheetTimeInverse_rightInverse
+        (c.chart z ∈ S ↔ z ∈ Set.range RankThreeWhitneyModel.firstSheet) :=
+  SheetRecognition.eventually_mem_sheet_iff c.chart d.chart d.sheet
+    RankThreeWhitneyModel.contDiff_firstSheet.continuous
+    WhitneyPairModel.contDiff_sheetTimeInverse.continuous
+    WhitneyPairModel.sheetTimeInverse_leftInverse
+    WhitneyPairModel.sheetTimeInverse_rightInverse
     (fun q hq => ⟨c.lower_source q hq, c.lower q hq⟩) hq
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.eventually_upper_mem_iff {E M : Type*}
+theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_upper_mem_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e)
-    {q : Smale.RankThreeWhitneyModel.UpperSheet}
-    (hq : Smale.RankThreeWhitneyModel.secondSheet h q ∈ c.chart.source) :
-    ∀ᶠ z in 𝓝 (Smale.RankThreeWhitneyModel.secondSheet h q),
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e)
+    {q : RankThreeWhitneyModel.UpperSheet}
+    (hq : RankThreeWhitneyModel.secondSheet h q ∈ c.chart.source) :
+    ∀ᶠ z in 𝓝 (RankThreeWhitneyModel.secondSheet h q),
       z ∈ c.chart.source ∧
-        (c.chart z ∈ T ↔ z ∈ Set.range (Smale.RankThreeWhitneyModel.secondSheet h)) :=
-  Smale.SheetRecognition.eventually_mem_sheet_iff c.chart e.chart e.sheet
-    (Smale.RankThreeWhitneyModel.contDiff_secondSheet h).continuous
-    Smale.WhitneyPairModel.contDiff_sheetTimeInverse.continuous
-    Smale.WhitneyPairModel.sheetTimeInverse_leftInverse
-    Smale.WhitneyPairModel.sheetTimeInverse_rightInverse
+        (c.chart z ∈ T ↔ z ∈ Set.range (RankThreeWhitneyModel.secondSheet h)) :=
+  SheetRecognition.eventually_mem_sheet_iff c.chart e.chart e.sheet
+    (RankThreeWhitneyModel.contDiff_secondSheet h).continuous
+    WhitneyPairModel.contDiff_sheetTimeInverse.continuous
+    WhitneyPairModel.sheetTimeInverse_leftInverse
+    WhitneyPairModel.sheetTimeInverse_rightInverse
     (fun q hq => ⟨c.upper_source q hq, c.upper q hq⟩) hq
 
-structure Smale.TubularBigon.SheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
+structure TubularBigon.SheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h)
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h)
     (d :
-      Smale.StripNormalData Smale.WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
+      StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
     (e :
-      Smale.StripNormalData Smale.WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) T
+      StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) T
         l.map) where
   radius : ℝ
   radius_pos : 0 < radius
   chart :
-    PartialDiffeomorph 𝓘(ℝ, Smale.WhitneyPairModel.Space) 𝓘(ℝ, E) Smale.WhitneyPairModel.Space M ∞
-  source_contains : Smale.WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
+    PartialDiffeomorph 𝓘(ℝ, WhitneyPairModel.Space) 𝓘(ℝ, E) WhitneyPairModel.Space M ∞
+  source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = tube.map p
   target_subset : chart.target ⊆ tube.chart.target
   lower_source :
-    ∀ q : Smale.WhitneyPairModel.Sheet,
-      Smale.WhitneyPairModel.firstSheet q ∈ chart.source →
-        (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
+    ∀ q : WhitneyPairModel.Sheet,
+      WhitneyPairModel.firstSheet q ∈ chart.source →
+        (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
           d.chart.source
   upper_source :
-    ∀ q : Smale.WhitneyPairModel.Sheet,
-      Smale.WhitneyPairModel.secondSheet h q ∈ chart.source →
-        (Smale.WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
+    ∀ q : WhitneyPairModel.Sheet,
+      WhitneyPairModel.secondSheet h q ∈ chart.source →
+        (WhitneyPairModel.sheetTimeCoordinates q, (0 : EuclideanSpace ℝ (Fin 3))) ∈
           e.chart.source
   lower :
-    ∀ q : Smale.WhitneyPairModel.Sheet,
-      Smale.WhitneyPairModel.firstSheet q ∈ chart.source →
-        chart (Smale.WhitneyPairModel.firstSheet q) =
-          d.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0)
+    ∀ q : WhitneyPairModel.Sheet,
+      WhitneyPairModel.firstSheet q ∈ chart.source →
+        chart (WhitneyPairModel.firstSheet q) =
+          d.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
   upper :
-    ∀ q : Smale.WhitneyPairModel.Sheet,
-      Smale.WhitneyPairModel.secondSheet h q ∈ chart.source →
-        chart (Smale.WhitneyPairModel.secondSheet h q) =
-          e.chart (Smale.WhitneyPairModel.sheetTimeCoordinates q, 0)
+    ∀ q : WhitneyPairModel.Sheet,
+      WhitneyPairModel.secondSheet h q ∈ chart.source →
+        chart (WhitneyPairModel.secondSheet h q) =
+          e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
 
-theorem Smale.TubularBigon.lower_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.lower_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h n) {t : ℝ}
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h n) {t : ℝ}
     (ht : t ∈ Set.Icc (0 : ℝ) 1) : tube.map (2 * t - 1, 0) ∈ S := by
   rw [tube.lower t ht, ← k.center t ht]
   exact
@@ -22341,12 +22341,12 @@ theorem Smale.TubularBigon.lower_center_mem_sheet {E M : Type*} [NormedAddCommGr
           (k.contains_strip ⟨ht, neg_nonpos.mpr k.width_pos.le, k.width_pos.le⟩)).mpr
       rfl
 
-theorem Smale.TubularBigon.upper_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.upper_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h n) {t : ℝ}
-    (ht : t ∈ Set.Icc (0 : ℝ) 1) : tube.map (Smale.WhitneyPairModel.upperBoundaryArc h t) ∈ T := by
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h n) {t : ℝ}
+    (ht : t ∈ Set.Icc (0 : ℝ) 1) : tube.map (WhitneyPairModel.upperBoundaryArc h t) ∈ T := by
   change tube.map (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) ∈ T
   rw [tube.upper t ht, ← l.center t ht]
   exact
@@ -22354,19 +22354,19 @@ theorem Smale.TubularBigon.upper_center_mem_sheet {E M : Type*} [NormedAddCommGr
           (l.contains_strip ⟨ht, neg_nonpos.mpr l.width_pos.le, l.width_pos.le⟩)).mpr
       rfl
 
-theorem Smale.TubularBigon.map_mem_first_iff {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.map_mem_first_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h n) {p : ℝ × ℝ}
-    (hp : p ∈ Smale.WhitneyPairModel.bigon h) : tube.map p ∈ S ↔ p.2 = 0 := by
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h n) {p : ℝ × ℝ}
+    (hp : p ∈ WhitneyPairModel.bigon h) : tube.map p ∈ S ↔ p.2 = 0 := by
   constructor
   · intro hpS
-    have hfront : p ∈ frontier (Smale.WhitneyPairModel.bigon h) := by
-      rw [frontier, (Smale.WhitneyPairModel.isClosed_bigon h).closure_eq]
+    have hfront : p ∈ frontier (WhitneyPairModel.bigon h) := by
+      rw [frontier, (WhitneyPairModel.isClosed_bigon h).closure_eq]
       exact ⟨hp, fun hi => tube.interior_avoids p hi (Or.inl hpS)⟩
     obtain ⟨t, ht, rfl | rfl⟩ :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos p).mp hfront
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos p).mp hfront
     · rfl
     · have hlt : (t, (0 : ℝ)) ∈ l.domain :=
         l.contains_strip ⟨ht, neg_nonpos.mpr l.width_pos.le, l.width_pos.le⟩
@@ -22379,29 +22379,29 @@ theorem Smale.TubularBigon.map_mem_first_iff {E M : Type*} [NormedAddCommGroup E
         rw [ht1]
         norm_num
   · intro hpzero
-    have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
-    have ht : Smale.WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
+    have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+    have ht : WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
       change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
       constructor <;> linarith [hpr.1.1, hpr.1.2]
-    have hbase : p.1 = 2 * Smale.WhitneyPairModel.arcTime p - 1 := by
-      dsimp [Smale.WhitneyPairModel.arcTime]; ring
-    have heq : p = (2 * Smale.WhitneyPairModel.arcTime p - 1, 0) := Prod.ext hbase hpzero
+    have hbase : p.1 = 2 * WhitneyPairModel.arcTime p - 1 := by
+      dsimp [WhitneyPairModel.arcTime]; ring
+    have heq : p = (2 * WhitneyPairModel.arcTime p - 1, 0) := Prod.ext hbase hpzero
     rw [heq]
     exact tube.lower_center_mem_sheet ht
 
-theorem Smale.TubularBigon.map_mem_second_iff {E M : Type*} [NormedAddCommGroup E]
+theorem TubularBigon.map_mem_second_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h n) {p : ℝ × ℝ}
-    (hp : p ∈ Smale.WhitneyPairModel.bigon h) : tube.map p ∈ T ↔ p.2 = h * (1 - p.1 ^ 2) := by
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁} {n : ℕ}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h n) {p : ℝ × ℝ}
+    (hp : p ∈ WhitneyPairModel.bigon h) : tube.map p ∈ T ↔ p.2 = h * (1 - p.1 ^ 2) := by
   constructor
   · intro hpT
-    have hfront : p ∈ frontier (Smale.WhitneyPairModel.bigon h) := by
-      rw [frontier, (Smale.WhitneyPairModel.isClosed_bigon h).closure_eq]
+    have hfront : p ∈ frontier (WhitneyPairModel.bigon h) := by
+      rw [frontier, (WhitneyPairModel.isClosed_bigon h).closure_eq]
       exact ⟨hp, fun hi => tube.interior_avoids p hi (Or.inr hpT)⟩
     obtain ⟨t, ht, rfl | rfl⟩ :=
-      (Smale.WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos p).mp hfront
+      (WhitneyPairModel.mem_frontier_bigon_iff_exists_time tube.height_pos p).mp hfront
     · have hkt : (t, (0 : ℝ)) ∈ k.domain :=
         k.contains_strip ⟨ht, neg_nonpos.mpr k.width_pos.le, k.width_pos.le⟩
       rw [tube.lower t ht, ← k.center t ht] at hpT
@@ -22414,22 +22414,22 @@ theorem Smale.TubularBigon.map_mem_second_iff {E M : Type*} [NormedAddCommGroup 
         norm_num
     · rfl
   · intro hpupper
-    have hpr := Smale.WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
-    have ht : Smale.WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
+    have hpr := WhitneyPairModel.bigon_subset_rectangle tube.height_pos hp
+    have ht : WhitneyPairModel.arcTime p ∈ Set.Icc (0 : ℝ) 1 := by
       change 0 ≤ (p.1 + 1) / 2 ∧ (p.1 + 1) / 2 ≤ 1
       constructor <;> linarith [hpr.1.1, hpr.1.2]
-    have hbase : p.1 = 2 * Smale.WhitneyPairModel.arcTime p - 1 := by
-      dsimp [Smale.WhitneyPairModel.arcTime]; ring
-    have heq : p = Smale.WhitneyPairModel.upperBoundaryArc h (Smale.WhitneyPairModel.arcTime p) :=
+    have hbase : p.1 = 2 * WhitneyPairModel.arcTime p - 1 := by
+      dsimp [WhitneyPairModel.arcTime]; ring
+    have heq : p = WhitneyPairModel.upperBoundaryArc h (WhitneyPairModel.arcTime p) :=
       by
       apply Prod.ext hbase
-      change p.2 = h * (1 - (2 * Smale.WhitneyPairModel.arcTime p - 1) ^ 2)
+      change p.2 = h * (1 - (2 * WhitneyPairModel.arcTime p - 1) ^ 2)
       rw [← hbase]
       exact hpupper
     rw [heq]
     exact tube.upper_center_mem_sheet ht
 
-theorem Smale.SheetRecognition.exists_open_recognition_domain {W E M : Type*}
+theorem SheetRecognition.exists_open_recognition_domain {W E M : Type*}
     [NormedAddCommGroup W] [NormedSpace ℝ W] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, W) 𝓘(ℝ, E) W M ∞)
     {S : Set M} {A K : Set W} (hS : IsClosed S) (hK : K ⊆ Φ.source)
@@ -22453,7 +22453,7 @@ theorem Smale.SheetRecognition.exists_open_recognition_domain {W E M : Type*}
     ⟨U, isOpen_interior, fun z hz => mem_interior_iff_mem_nhds.mpr (hnear z hz), fun _ hz =>
       (hsub hz).1, fun _ hz => (hsub hz).2⟩
 
-theorem Smale.RankThreeWhitneyModel.zero_mem_firstSheet_iff (p : ℝ × ℝ) :
+theorem RankThreeWhitneyModel.zero_mem_firstSheet_iff (p : ℝ × ℝ) :
     (p, (0 : Lower × Upper)) ∈ Set.range firstSheet ↔ p.2 = 0 := by
   constructor
   · rintro ⟨q, hq⟩
@@ -22462,7 +22462,7 @@ theorem Smale.RankThreeWhitneyModel.zero_mem_firstSheet_iff (p : ℝ × ℝ) :
     refine ⟨(p.1, 0), ?_⟩
     exact Prod.ext (Prod.ext rfl hp.symm) rfl
 
-theorem Smale.RankThreeWhitneyModel.zero_mem_secondSheet_iff (h : ℝ) (p : ℝ × ℝ) :
+theorem RankThreeWhitneyModel.zero_mem_secondSheet_iff (h : ℝ) (p : ℝ × ℝ) :
     (p, (0 : Lower × Upper)) ∈ Set.range (secondSheet h) ↔ p.2 = h * (1 - p.1 ^ 2) := by
   constructor
   · rintro ⟨q, hq⟩
@@ -22474,32 +22474,32 @@ theorem Smale.RankThreeWhitneyModel.zero_mem_secondSheet_iff (h : ℝ) (p : ℝ 
     refine ⟨(p.1, 0), ?_⟩
     exact Prod.ext (Prod.ext rfl hp.symm) rfl
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_sheet_neighborhood
+theorem TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_sheet_neighborhood
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e) (hS : IsClosed S)
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e) (hS : IsClosed S)
     (hT : IsClosed T) :
-    ∃ U : Set Smale.RankThreeWhitneyModel.Space,
+    ∃ U : Set RankThreeWhitneyModel.Space,
       IsOpen U ∧
-        Smale.WhitneyPairModel.bigon h ×ˢ
-              {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)} ⊆
+        WhitneyPairModel.bigon h ×ˢ
+              {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)} ⊆
             U ∧
           U ⊆ c.chart.source ∧
-            (∀ z ∈ U, c.chart z ∈ S ↔ z ∈ Set.range Smale.RankThreeWhitneyModel.firstSheet) ∧
+            (∀ z ∈ U, c.chart z ∈ S ↔ z ∈ Set.range RankThreeWhitneyModel.firstSheet) ∧
               ∀ z ∈ U,
-                c.chart z ∈ T ↔ z ∈ Set.range (Smale.RankThreeWhitneyModel.secondSheet h) := by
+                c.chart z ∈ T ↔ z ∈ Set.range (RankThreeWhitneyModel.secondSheet h) := by
   have hzero :
-    Smale.WhitneyPairModel.bigon h ×ˢ
-        {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)} ⊆
+    WhitneyPairModel.bigon h ×ˢ
+        {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)} ⊆
       c.chart.source := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
@@ -22508,32 +22508,32 @@ theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_shee
   have hfirst :
     ∀
       z ∈
-        Smale.WhitneyPairModel.bigon h ×ˢ
-          {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)},
-      c.chart z ∈ S ↔ z ∈ Set.range Smale.RankThreeWhitneyModel.firstSheet := by
+        WhitneyPairModel.bigon h ×ˢ
+          {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)},
+      c.chart z ∈ S ↔ z ∈ Set.range RankThreeWhitneyModel.firstSheet := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
     subst z
     rw [c.zero_section]
     exact
       (tube.map_mem_first_iff hp).trans
-        (Smale.RankThreeWhitneyModel.zero_mem_firstSheet_iff p).symm
+        (RankThreeWhitneyModel.zero_mem_firstSheet_iff p).symm
   have hsecond :
     ∀
       z ∈
-        Smale.WhitneyPairModel.bigon h ×ˢ
-          {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)},
-      c.chart z ∈ T ↔ z ∈ Set.range (Smale.RankThreeWhitneyModel.secondSheet h) := by
+        WhitneyPairModel.bigon h ×ˢ
+          {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)},
+      c.chart z ∈ T ↔ z ∈ Set.range (RankThreeWhitneyModel.secondSheet h) := by
     rintro ⟨p, z⟩ ⟨hp, hz⟩
     have hz0 : z = 0 := hz
     subst z
     rw [c.zero_section]
     exact
       (tube.map_mem_second_iff hp).trans
-        (Smale.RankThreeWhitneyModel.zero_mem_secondSheet_iff h p).symm
+        (RankThreeWhitneyModel.zero_mem_secondSheet_iff h p).symm
   obtain ⟨U, hU, hKU, hUsource, hUS⟩ :=
-    Smale.SheetRecognition.exists_open_recognition_domain c.chart (A :=
-      Set.range Smale.RankThreeWhitneyModel.firstSheet) hS hzero
+    SheetRecognition.exists_open_recognition_domain c.chart (A :=
+      Set.range RankThreeWhitneyModel.firstSheet) hS hzero
       (fun z hz ⟨q, hq⟩ => by
         rw [← hq] at hz ⊢
         exact c.lower_mem_sheet hz)
@@ -22542,8 +22542,8 @@ theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_shee
         exact c.eventually_lower_mem_iff hz)
       hfirst
   obtain ⟨V, hV, hKV, -, hVT⟩ :=
-    Smale.SheetRecognition.exists_open_recognition_domain c.chart (A :=
-      Set.range (Smale.RankThreeWhitneyModel.secondSheet h)) hT hzero
+    SheetRecognition.exists_open_recognition_domain c.chart (A :=
+      Set.range (RankThreeWhitneyModel.secondSheet h)) hT hzero
       (fun z hz ⟨q, hq⟩ => by
         rw [← hq] at hz ⊢
         exact c.upper_mem_sheet hz)
@@ -22555,63 +22555,63 @@ theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_shee
     ⟨U ∩ V, hU.inter hV, fun z hz => ⟨hKU hz, hKV hz⟩, fun _ hz => hUsource hz.1, fun z hz =>
       hUS z hz.1, fun z hz => hVT z hz.2⟩
 
-def Smale.RankThreeWhitneyModel.nativeFirstSheet {F H M : Type*} [NormedAddCommGroup F]
+def RankThreeWhitneyModel.nativeFirstSheet {F H M : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
     [ChartedSpace H M] (Φ : PartialDiffeomorph 𝓘(ℝ, Space) J Space M ∞) : Set M :=
   Φ '' (Set.range firstSheet ∩ Φ.source)
 
-def Smale.RankThreeWhitneyModel.nativeSecondSheet {F H M : Type*} [NormedAddCommGroup F]
+def RankThreeWhitneyModel.nativeSecondSheet {F H M : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
     [ChartedSpace H M] (Φ : PartialDiffeomorph 𝓘(ℝ, Space) J Space M ∞) (h : ℝ) : Set M :=
   Φ '' (Set.range (secondSheet h) ∩ Φ.source)
 
-structure Smale.TubularBigon.RankThreeCompatibleChart {E M : Type*} [NormedAddCommGroup E]
+structure TubularBigon.RankThreeCompatibleChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
-    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3) where
+    {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3) where
   radius : ℝ
   radius_pos : 0 < radius
   chart :
-    PartialDiffeomorph 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
-      Smale.RankThreeWhitneyModel.Space M ∞
-  source_contains : Smale.WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
+    PartialDiffeomorph 𝓘(ℝ, RankThreeWhitneyModel.Space) 𝓘(ℝ, E)
+      RankThreeWhitneyModel.Space M ∞
+  source_contains : WhitneyPairModel.bigon h ×ˢ Metric.closedBall 0 radius ⊆ chart.source
   zero_section : ∀ p, chart (p, 0) = tube.map p
   target_subset : chart.target ⊆ tube.chart.target
   first_sheet :
-    ∀ z ∈ chart.source, chart z ∈ S ↔ z ∈ Set.range Smale.RankThreeWhitneyModel.firstSheet
+    ∀ z ∈ chart.source, chart z ∈ S ↔ z ∈ Set.range RankThreeWhitneyModel.firstSheet
   second_sheet :
-    ∀ z ∈ chart.source, chart z ∈ T ↔ z ∈ Set.range (Smale.RankThreeWhitneyModel.secondSheet h)
+    ∀ z ∈ chart.source, chart z ∈ T ↔ z ∈ Set.range (RankThreeWhitneyModel.secondSheet h)
 
-theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCompatibleChart
+theorem TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCompatibleChart
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
     {d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map}
     {e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map}
-    (c : Smale.TubularBigon.RankThreeSheetParametrizedChart tube d e) (hS : IsClosed S)
-    (hT : IsClosed T) : Nonempty (Smale.TubularBigon.RankThreeCompatibleChart tube) := by
+    (c : TubularBigon.RankThreeSheetParametrizedChart tube d e) (hS : IsClosed S)
+    (hT : IsClosed T) : Nonempty (TubularBigon.RankThreeCompatibleChart tube) := by
   obtain ⟨U, hU, hKU, hUsource, hfirst, hsecond⟩ := c.exists_open_full_sheet_neighborhood hS hT
   have hlocal :
-    IsLocalDiffeomorphOn 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) 𝓘(ℝ, E) ∞ c.chart U := fun z =>
+    IsLocalDiffeomorphOn 𝓘(ℝ, RankThreeWhitneyModel.Space) 𝓘(ℝ, E) ∞ c.chart U := fun z =>
     ⟨c.chart, hUsource z.property, fun _ _ => rfl⟩
   let Φ :=
-    Smale.partialDiffeomorphOfInjectiveLocal hU (c.chart.toPartialEquiv.injOn.mono hUsource)
+    partialDiffeomorphOfInjectiveLocal hU (c.chart.toPartialEquiv.injOn.mono hUsource)
       hlocal
   have hzero :
-    Smale.WhitneyPairModel.bigon h ×ˢ
-        {(0 : Smale.RankThreeWhitneyModel.Lower × Smale.RankThreeWhitneyModel.Upper)} ⊆
+    WhitneyPairModel.bigon h ×ˢ
+        {(0 : RankThreeWhitneyModel.Lower × RankThreeWhitneyModel.Upper)} ⊆
       Φ.source :=
     hKU
   obtain ⟨ε, hε, hsource⟩ :=
-    Smale.DiskFraming.exists_pos_prod_closedBall_subset
-      (Smale.WhitneyPairModel.isCompact_bigon tube.height_pos) Φ.open_source hzero
+    DiskFraming.exists_pos_prod_closedBall_subset
+      (WhitneyPairModel.isCompact_bigon tube.height_pos) Φ.open_source hzero
   refine
     ⟨{  radius := ε
         radius_pos := hε
@@ -22626,17 +22626,17 @@ theorem Smale.TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCom
   obtain ⟨z, hz, rfl⟩ := hy
   exact c.target_subset (c.chart.map_source' (hUsource hz))
 
-theorem Smale.TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_signs
+theorem TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map)
     (e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map)
     (hS : IsClosed S) (hT : IsClosed T)
     (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
@@ -22644,14 +22644,14 @@ theorem Smale.TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_
   obtain ⟨c⟩ := tube.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs d e hsign
   exact c.nonempty_rankThreeCompatibleChart hS hT
 
-theorem Smale.TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq {E M : Type*}
+theorem TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
-    (c : Smale.TubularBigon.RankThreeCompatibleChart tube) :
-    Smale.RankThreeWhitneyModel.nativeFirstSheet c.chart = S ∩ c.chart.target := by
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
+    (c : TubularBigon.RankThreeCompatibleChart tube) :
+    RankThreeWhitneyModel.nativeFirstSheet c.chart = S ∩ c.chart.target := by
   ext y
   constructor
   · rintro ⟨z, ⟨hzModel, hzSource⟩, rfl⟩
@@ -22665,14 +22665,14 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq {E M : T
     rw [hzy]
     exact hy.1
 
-theorem Smale.TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq {E M : Type*}
+theorem TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
-    (c : Smale.TubularBigon.RankThreeCompatibleChart tube) :
-    Smale.RankThreeWhitneyModel.nativeSecondSheet c.chart h = T ∩ c.chart.target := by
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
+    (c : TubularBigon.RankThreeCompatibleChart tube) :
+    RankThreeWhitneyModel.nativeSecondSheet c.chart h = T ∩ c.chart.target := by
   ext y
   constructor
   · rintro ⟨z, ⟨hzModel, hzSource⟩, rfl⟩
@@ -22686,13 +22686,13 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq {E M : 
     rw [hzy]
     exact hy.1
 
-theorem Smale.RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H M : Type*}
+theorem RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H M : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H}
     [TopologicalSpace M] [ChartedSpace H M] [T2Space M]
     (Φ :
-      PartialDiffeomorph 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) J
-        Smale.RankThreeWhitneyModel.Space M ∞)
-    {h : ℝ} (a : Smale.RankThreeWhitneyModel.GraphMotion h Φ.source) (hh : 0 < h) :
+      PartialDiffeomorph 𝓘(ℝ, RankThreeWhitneyModel.Space) J
+        RankThreeWhitneyModel.Space M ∞)
+    {h : ℝ} (a : RankThreeWhitneyModel.GraphMotion h Φ.source) (hh : 0 < h) :
     ∃ K : Set M,
       IsCompact K ∧
         K ⊆ Φ.target ∧
@@ -22702,8 +22702,8 @@ theorem Smale.RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H 
                 (∀ t, ∃ d : Diffeomorph J J M M ∞, ∀ y, A (t, y) = d y) ∧
                   (∀ t y, y ∉ K → A (t, y) = y) ∧
                     Disjoint
-                      ((fun y => A (1, y)) '' Smale.RankThreeWhitneyModel.nativeFirstSheet Φ)
-                      (Smale.RankThreeWhitneyModel.nativeSecondSheet Φ h) := by
+                      ((fun y => A (1, y)) '' RankThreeWhitneyModel.nativeFirstSheet Φ)
+                      (RankThreeWhitneyModel.nativeSecondSheet Φ h) := by
   have hsource : ∀ t, Set.MapsTo (fun z => a.family (t, z)) Φ.source Φ.source := by
     intro t
     obtain ⟨d, hd⟩ := a.diffeomorph t
@@ -22711,9 +22711,9 @@ theorem Smale.RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H 
     intro z hz
     change a.family (t, z) ∈ Φ.source
     rw [← hd z]
-    exact Smale.SupportedDiffeomorph.mapsTo_source Φ d.toEquiv a.support_subset hdfix hz
+    exact SupportedDiffeomorph.mapsTo_source Φ d.toEquiv a.support_subset hdfix hz
   let A : ℝ × M → M := fun p =>
-    Smale.SupportedDiffeomorph.extendMap Φ (fun z => a.family (p.1, z)) p.2
+    SupportedDiffeomorph.extendMap Φ (fun z => a.family (p.1, z)) p.2
   have hcompact : IsCompact (Φ '' a.support) :=
     a.compact_support.image_of_continuousOn
       (Φ.contMDiffOn_toFun.continuousOn.mono a.support_subset)
@@ -22721,34 +22721,34 @@ theorem Smale.RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H 
     rintro _ ⟨z, hz, rfl⟩
     exact Φ.map_source' (a.support_subset hz)
   have hfamily :
-    ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, Smale.RankThreeWhitneyModel.Space))
-      𝓘(ℝ, Smale.RankThreeWhitneyModel.Space) ∞ a.family := by
+    ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, RankThreeWhitneyModel.Space))
+      𝓘(ℝ, RankThreeWhitneyModel.Space) ∞ a.family := by
     exact a.smooth.contMDiff.comp (contMDiff_fst.prodMk_space contMDiff_snd)
   refine
     ⟨Φ '' a.support, hcompact, htarget, A,
-      Smale.SupportedDiffeomorph.contMDiff_extendFamily Φ hfamily a.compact_support
+      SupportedDiffeomorph.contMDiff_extendFamily Φ hfamily a.compact_support
         a.support_subset a.fixed hsource,
       ?_, ?_, ?_, ?_⟩
   · intro y
     have hzero : (fun z => a.family (0, z)) = id := funext a.initial
-    change Smale.SupportedDiffeomorph.extendMap Φ (fun z => a.family (0, z)) y = y
+    change SupportedDiffeomorph.extendMap Φ (fun z => a.family (0, z)) y = y
     rw [hzero]
-    exact Smale.SupportedDiffeomorph.extendMap_id Φ y
+    exact SupportedDiffeomorph.extendMap_id Φ y
   · intro t
     obtain ⟨d, hd⟩ := a.diffeomorph t
     have hdfix : ∀ z ∉ a.support, d z = z := fun z hz => (hd z).trans (a.fixed t z hz)
-    refine ⟨Smale.SupportedDiffeomorph.extension Φ d a.compact_support a.support_subset hdfix, ?_⟩
+    refine ⟨SupportedDiffeomorph.extension Φ d a.compact_support a.support_subset hdfix, ?_⟩
     intro y
     change
-      Smale.SupportedDiffeomorph.extendMap Φ (fun z => a.family (t, z)) y =
-        Smale.SupportedDiffeomorph.extendMap Φ d y
+      SupportedDiffeomorph.extendMap Φ (fun z => a.family (t, z)) y =
+        SupportedDiffeomorph.extendMap Φ d y
     exact
       congrArg
-        (fun f : Smale.RankThreeWhitneyModel.Space → Smale.RankThreeWhitneyModel.Space =>
-          Smale.SupportedDiffeomorph.extendMap Φ f y)
+        (fun f : RankThreeWhitneyModel.Space → RankThreeWhitneyModel.Space =>
+          SupportedDiffeomorph.extendMap Φ f y)
         (funext (fun z => (hd z).symm))
   · intro t y hy
-    exact Smale.SupportedDiffeomorph.extendMap_eq_of_notMem_image Φ (a.fixed t) hy
+    exact SupportedDiffeomorph.extendMap_eq_of_notMem_image Φ (a.fixed t) hy
   · rw [Set.disjoint_left]
     intro y hy₁ hy₂
     obtain ⟨x, hx, hxy⟩ := hy₁
@@ -22756,18 +22756,18 @@ theorem Smale.RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H 
     obtain ⟨w, ⟨⟨q, hq⟩, hw⟩, hwy⟩ := hy₂
     have hleft : A (1, Φ z) = y := by rw [hzx]; exact hxy
     have hcomm : A (1, Φ z) = Φ (a.family (1, z)) :=
-      Smale.SupportedDiffeomorph.extendMap_chart Φ (fun v => a.family (1, v)) hz
+      SupportedDiffeomorph.extendMap_chart Φ (fun v => a.family (1, v)) hz
     have heq : a.family (1, z) = w :=
       Φ.toPartialEquiv.injOn (hsource 1 hz) hw (hcomm.symm.trans (hleft.trans hwy.symm))
     apply a.firstSheet_ne_secondSheet hh p q
     rw [hp, hq]
     exact heq
 
-theorem Smale.RankThreeWhitneyModel.exists_supported_native_bigon_cancellation {F H M : Type*}
+theorem RankThreeWhitneyModel.exists_supported_native_bigon_cancellation {F H M : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H}
     [TopologicalSpace M] [ChartedSpace H M] [T2Space M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, Space) J Space M ∞) {h : ℝ} (hh : 0 < h)
-    (hsource : ∀ p ∈ Smale.WhitneyPairModel.bigon h, (p, (0 : Lower × Upper)) ∈ Φ.source) :
+    (hsource : ∀ p ∈ WhitneyPairModel.bigon h, (p, (0 : Lower × Upper)) ∈ Φ.source) :
     ∃ K : Set M,
       IsCompact K ∧
         K ⊆ Φ.target ∧
@@ -22781,7 +22781,7 @@ theorem Smale.RankThreeWhitneyModel.exists_supported_native_bigon_cancellation {
   obtain ⟨a⟩ := nonempty_graphMotion hh Φ.open_source hsource
   exact a.exists_native_cancellation Φ hh
 
-theorem Smale.SupportedDiffeomorph.image_inter_eq_diff {X : Type*} (d : X ≃ X) {S T U : Set X}
+theorem SupportedDiffeomorph.image_inter_eq_diff {X : Type*} (d : X ≃ X) {S T U : Set X}
     (hfix : ∀ x ∉ U, d x = x) (hdisjoint : Disjoint (d '' (S ∩ U)) (T ∩ U)) :
     (d '' S) ∩ T = (S ∩ T) \ U := by
   ext y
@@ -22799,7 +22799,7 @@ theorem Smale.SupportedDiffeomorph.image_inter_eq_diff {X : Type*} (d : X ≃ X)
   · rintro ⟨⟨hyS, hyT⟩, hyU⟩
     exact ⟨⟨y, hyS, hfix y hyU⟩, hyT⟩
 
-theorem Smale.SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal {X Y : Type*}
+theorem SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal {X Y : Type*}
     (d : X ≃ X) (F : Y → X) {T R : Set X} (hfix : ∀ y ∈ (Set.range F ∩ T) \ R, d y = y)
     (himage : (d '' Set.range F) ∩ T = (Set.range F ∩ T) \ R) :
     (d ∘ F) ⁻¹' T = (F ⁻¹' T) \ (F ⁻¹' R) := by
@@ -22818,14 +22818,14 @@ theorem Smale.SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal {
     rw [hfix _ hy]
     exact hx.1
 
-theorem Smale.SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed {X Y : Type*}
+theorem SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed {X Y : Type*}
     [TopologicalSpace X] [TopologicalSpace Y] {d : X → X} {F : Y → X} {K : Set X}
     (hK : IsClosed K) (hfix : ∀ y ∉ K, d y = y) (hF : Continuous F) {x : Y} (hx : F x ∉ K) :
     (d ∘ F) =ᶠ[𝓝 x] F := by
   filter_upwards [hF.continuousAt.preimage_mem_nhds (hK.isOpen_compl.mem_nhds hx)] with y hy
   exact hfix _ hy
 
-theorem Smale.RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff {h : ℝ} (hh : 0 < h)
+theorem RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff {h : ℝ} (hh : 0 < h)
     (p : LowerSheet) (q : UpperSheet) :
     firstSheet p = secondSheet h q ↔ p.1 = q.1 ∧ p.2 = 0 ∧ q.2 = 0 ∧ (q.1 = -1 ∨ q.1 = 1) := by
   rcases p with ⟨s, u⟩
@@ -22861,22 +22861,22 @@ theorem Smale.RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff {h : ℝ} (hh 
       subst t
       simp [firstSheet, secondSheet]
 
-theorem Smale.TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E M : Type*}
+theorem TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
-    (c : Smale.TubularBigon.RankThreeCompatibleChart tube) :
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
+    (c : TubularBigon.RankThreeCompatibleChart tube) :
     (S ∩ T) ∩ c.chart.target = {a 0, a 1} := by
-  have hc0 : c.chart (Smale.RankThreeWhitneyModel.firstSheet (-1, 0)) = a 0 := by
+  have hc0 : c.chart (RankThreeWhitneyModel.firstSheet (-1, 0)) = a 0 := by
     calc
-      c.chart (Smale.RankThreeWhitneyModel.firstSheet (-1, 0)) = tube.map (-1, 0) :=
+      c.chart (RankThreeWhitneyModel.firstSheet (-1, 0)) = tube.map (-1, 0) :=
         c.zero_section (-1, 0)
       _ = a 0 := by simpa using tube.lower 0 (by simp)
-  have hc1 : c.chart (Smale.RankThreeWhitneyModel.firstSheet (1, 0)) = a 1 := by
+  have hc1 : c.chart (RankThreeWhitneyModel.firstSheet (1, 0)) = a 1 := by
     calc
-      c.chart (Smale.RankThreeWhitneyModel.firstSheet (1, 0)) = tube.map (1, 0) :=
+      c.chart (RankThreeWhitneyModel.firstSheet (1, 0)) = tube.map (1, 0) :=
         c.zero_section (1, 0)
       _ = a 1 := by
         have he := tube.lower 1 (by simp)
@@ -22885,30 +22885,30 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E
   have hcorner :
     ∀ s : ℝ,
       s = -1 ∨ s = 1 →
-        c.chart (Smale.RankThreeWhitneyModel.firstSheet (s, 0)) ∈ (S ∩ T) ∩ c.chart.target := by
+        c.chart (RankThreeWhitneyModel.firstSheet (s, 0)) ∈ (S ∩ T) ∩ c.chart.target := by
     intro s hs
-    have hb : (s, (0 : ℝ)) ∈ Smale.WhitneyPairModel.bigon h := by
-      rcases hs with rfl | rfl <;> simp [Smale.WhitneyPairModel.bigon]
-    have hsource : Smale.RankThreeWhitneyModel.firstSheet (s, 0) ∈ c.chart.source :=
+    have hb : (s, (0 : ℝ)) ∈ WhitneyPairModel.bigon h := by
+      rcases hs with rfl | rfl <;> simp [WhitneyPairModel.bigon]
+    have hsource : RankThreeWhitneyModel.firstSheet (s, 0) ∈ c.chart.source :=
       c.source_contains ⟨hb, Metric.mem_closedBall_self c.radius_pos.le⟩
     refine
       ⟨⟨(c.first_sheet _ hsource).mpr ⟨(s, 0), rfl⟩, (c.second_sheet _ hsource).mpr ?_⟩,
         c.chart.map_source' hsource⟩
     refine ⟨(s, 0), ?_⟩
     rcases hs with rfl | rfl <;>
-      simp [Smale.RankThreeWhitneyModel.firstSheet, Smale.RankThreeWhitneyModel.secondSheet]
+      simp [RankThreeWhitneyModel.firstSheet, RankThreeWhitneyModel.secondSheet]
   ext y
   change y ∈ (S ∩ T) ∩ c.chart.target ↔ y = a 0 ∨ y = a 1
   constructor
   · intro hy
     have hz := c.chart.map_target' hy.2
     have hzy : c.chart (c.chart.symm y) = y := c.chart.right_inv' hy.2
-    have hlo : c.chart.symm y ∈ Set.range Smale.RankThreeWhitneyModel.firstSheet := by
+    have hlo : c.chart.symm y ∈ Set.range RankThreeWhitneyModel.firstSheet := by
       apply (c.first_sheet _ hz).mp
       change c.chart (c.chart.symm y) ∈ S
       rw [hzy]
       exact hy.1.1
-    have hhi : c.chart.symm y ∈ Set.range (Smale.RankThreeWhitneyModel.secondSheet h) := by
+    have hhi : c.chart.symm y ∈ Set.range (RankThreeWhitneyModel.secondSheet h) := by
       apply (c.second_sheet _ hz).mp
       change c.chart (c.chart.symm y) ∈ T
       rw [hzy]
@@ -22916,11 +22916,11 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E
     obtain ⟨p, hp⟩ := hlo
     obtain ⟨q, hq⟩ := hhi
     obtain ⟨hst, hu, _, hends⟩ :=
-      (Smale.RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff tube.height_pos p q).mp
+      (RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff tube.height_pos p q).mp
         (hp.trans hq.symm)
     have hpq : p = (q.1, 0) := Prod.ext hst hu
     rw [hpq] at hp
-    have hycorner : y = c.chart (Smale.RankThreeWhitneyModel.firstSheet (q.1, 0)) :=
+    have hycorner : y = c.chart (RankThreeWhitneyModel.firstSheet (q.1, 0)) :=
       hzy.symm.trans (congrArg c.chart hp.symm)
     rcases hends with hm | hp
     · left
@@ -22935,13 +22935,13 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E
     · rw [← hc1]
       exact hcorner 1 (Or.inr rfl)
 
-theorem Smale.TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : Type*}
+theorem TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
-    (c : Smale.TubularBigon.RankThreeCompatibleChart tube) [T2Space M] :
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
+    (c : TubularBigon.RankThreeCompatibleChart tube) [T2Space M] :
     ∃ K : Set M,
       IsCompact K ∧
         K ⊆ c.chart.target ∧
@@ -22952,7 +22952,7 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : T
                   (∀ t y, y ∉ K → A (t, y) = y) ∧
                     ((fun y => A (1, y)) '' S) ∩ T = (S ∩ T) \ {a 0, a 1} := by
   obtain ⟨K, hK, hKsource, A, hA, hzero, hdiff, hfix, hdisjoint⟩ :=
-    Smale.RankThreeWhitneyModel.exists_supported_native_bigon_cancellation c.chart tube.height_pos
+    RankThreeWhitneyModel.exists_supported_native_bigon_cancellation c.chart tube.height_pos
       (fun _ hp => c.source_contains ⟨hp, Metric.mem_closedBall_self c.radius_pos.le⟩)
   rw [c.nativeFirstSheet_eq, c.nativeSecondSheet_eq] at hdisjoint
   obtain ⟨d, hd⟩ := hdiff 1
@@ -22964,20 +22964,20 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : T
     rw [← hdeq]
     exact hdisjoint
   have hinter : (d '' S) ∩ T = (S ∩ T) \ c.chart.target :=
-    Smale.SupportedDiffeomorph.image_inter_eq_diff d.toEquiv hdfix hdisjoint'
+    SupportedDiffeomorph.image_inter_eq_diff d.toEquiv hdfix hdisjoint'
   refine ⟨K, hK, hKsource, A, hA, hzero, hdiff, hfix, ?_⟩
   rw [hdeq, hinter, ← c.intersection_in_target_eq]
   ext y
   simp only [Set.mem_sdiff, Set.mem_inter_iff]
   tauto
 
-theorem Smale.TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation {E M : Type*}
+theorem TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    {tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3}
-    (c : Smale.TubularBigon.RankThreeCompatibleChart tube) :
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    {tube : TubularBigon (E := E) S T a b k.map l.map h 3}
+    (c : TubularBigon.RankThreeCompatibleChart tube) :
     ∃ K : Set M,
       IsCompact K ∧
         K ⊆ c.chart.target ∧
@@ -22996,17 +22996,17 @@ theorem Smale.TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation
   rw [c.intersection_in_target_eq] at hc
   exact hy.2 hc
 
-theorem Smale.TubularBigon.exists_rankThree_relative_cancellation {E M : Type*}
+theorem TubularBigon.exists_rankThree_relative_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
-    {k : Smale.CleanStripPatch (E := E) S T a k₀ k₁}
-    {l : Smale.CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : Smale.TubularBigon (E := E) S T a b k.map l.map h 3)
+    {k : CleanStripPatch (E := E) S T a k₀ k₁}
+    {l : CleanStripPatch (E := E) T S b l₀ l₁}
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 3)
     (d :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Lower (EuclideanSpace ℝ (Fin 3)) (E := E)
         S k.map)
     (e :
-      Smale.StripNormalData Smale.RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
+      StripNormalData RankThreeWhitneyModel.Upper (EuclideanSpace ℝ (Fin 2)) (E := E)
         T l.map)
     (hS : IsClosed S) (hT : IsClosed T)
     (hsign : tube.rankThreeSheetPairDet d e 0 * tube.rankThreeSheetPairDet d e 1 < 0) :
@@ -23025,27 +23025,27 @@ theorem Smale.TubularBigon.exists_rankThree_relative_cancellation {E M : Type*}
   exact ⟨K, hK, hKt.trans c.target_subset, hd, A, hA⟩
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs
+theorem ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
-    {f : M → ℝ} {p : M} (D : Smale.ManifoldMorse.MorseSurgeryData E f p)
+    {f : M → ℝ} {p : M} (D : ManifoldMorse.MorseSurgeryData E f p)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hdim : Module.finrank ℝ E = 6)
     (hindex : Module.finrank ℝ D.chart.NegativeCoordinates = 2)
     (hnull :
-      ∀ γ : C(Smale.Hemisphere.Sphere 1, D.LowerLevel),
+      ∀ γ : C(Hemisphere.Sphere 1, D.LowerLevel),
         ∃ q, γ.Homotopic (ContinuousMap.const _ q))
-    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient 3)
-    (g : C(Smale.Hemisphere.Sphere 2, D.UpperLevel)) :
-    letI := Smale.RegularLevel.chartedSpace hf D.upper_regular
+    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient 3)
+    (g : C(Hemisphere.Sphere 2, D.UpperLevel)) :
+    letI := RegularLevel.chartedSpace hf D.upper_regular
     letI : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
       ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
-      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x))
+    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
+      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x))
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) g
             D.surgery.beltSphere x y)
-      (x₀ x₁ : Smale.Hemisphere.Sphere 2),
+      (x₀ x₁ : Hemisphere.Sphere 2),
       x₀ ∈ D.beltIntersectionPoints 2 g →
         x₁ ∈ D.beltIntersectionPoints 2 g →
           D.beltIntersectionSign 2 r g x₀ * D.beltIntersectionSign 2 r g x₁ = -1 →
@@ -23053,19 +23053,19 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of
               IsCompact K ∧
                 Disjoint K ((Set.range g ∩ Set.range D.surgery.beltSphere) \ {g x₀, g x₁}) ∧
                   ∃ A : ℝ × D.UpperLevel → D.UpperLevel,
-                    ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, Smale.RegularLevel.Model E))
-                        𝓘(ℝ, Smale.RegularLevel.Model E) ∞ A ∧
+                    ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, RegularLevel.Model E))
+                        𝓘(ℝ, RegularLevel.Model E) ∞ A ∧
                       (∀ y, A (0, y) = y) ∧
                         (∀ t,
                             ∃ e :
-                              Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E)
-                                𝓘(ℝ, Smale.RegularLevel.Model E) D.UpperLevel D.UpperLevel ∞,
+                              Diffeomorph 𝓘(ℝ, RegularLevel.Model E)
+                                𝓘(ℝ, RegularLevel.Model E) D.UpperLevel D.UpperLevel ∞,
                               ∀ y, A (t, y) = e y) ∧
                           (∀ t y, y ∉ K → A (t, y) = y) ∧
                             ((fun y => A (1, y)) '' Set.range g) ∩
                                 Set.range D.surgery.beltSphere =
                               (Set.range g ∩ Set.range D.surgery.beltSphere) \ {g x₀, g x₁} := by
-  let _ := Smale.RegularLevel.chartedSpace hf D.upper_regular
+  let _ := RegularLevel.chartedSpace hf D.upper_regular
   let _ : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
     ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
   intro hg hinj hi ht x₀ x₁ hx₀ hx₁ hsign
@@ -23080,9 +23080,9 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of
     D.exists_belt_tubular_strip_pair hf hdim hindex hnull g hg hinj hi (fun x y hxy => ht x y hxy)
       x₀ x₁ y₀ y₁ hy₀ hy₁ hne
   obtain ⟨tube⟩ := htube 1 (by norm_num)
-  have hcenter₀ : g x₀ = d.chart (Smale.StripCoordinates.center 0) :=
+  have hcenter₀ : g x₀ = d.chart (StripCoordinates.center 0) :=
     ha₀.symm.trans ((k.center 0 (by simp)).symm.trans (d.center 0))
-  have hcenter₁ : g x₁ = d.chart (Smale.StripCoordinates.center 1) :=
+  have hcenter₁ : g x₁ = d.chart (StripCoordinates.center 1) :=
     ha₁.symm.trans ((k.center 1 (by simp)).symm.trans (d.center 1))
   have hcorner :=
     (D.opposite_beltIntersectionSigns_iff_Whitney_corners hf hdim hindex r g hg hinj hi ht tube d
@@ -23095,70 +23095,70 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of
   exact ⟨K, hK, hdisjoint, A, hA, hA₀, hAt, hfix, hcancel⟩
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (D : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = 6) (hindex : Module.finrank ℝ D.chart.NegativeCoordinates = 2)
     (hnull :
-      ∀ γ : C(Smale.Hemisphere.Sphere 1, D.LowerLevel),
+      ∀ γ : C(Hemisphere.Sphere 1, D.LowerLevel),
         ∃ q, γ.Homotopic (ContinuousMap.const _ q))
-    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Smale.Hemisphere.Ambient 3)
-    (g : C(Smale.Hemisphere.Sphere 2, D.UpperLevel)) :
-    letI := Smale.RegularLevel.chartedSpace hf D.upper_regular
+    (r : (ℝ × D.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient 3)
+    (g : C(Hemisphere.Sphere 2, D.UpperLevel)) :
+    letI := RegularLevel.chartedSpace hf D.upper_regular
     letI : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
       ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
-      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x))
+    ∀ (_hg : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g) (_hinj : Function.Injective g)
+      (_hi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x))
       (_ht :
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) g
             D.surgery.beltSphere x y)
-      (x₀ x₁ : Smale.Hemisphere.Sphere 2),
+      (x₀ x₁ : Hemisphere.Sphere 2),
       x₀ ∈ D.beltIntersectionPoints 2 g →
         x₁ ∈ D.beltIntersectionPoints 2 g →
           D.beltIntersectionSign 2 r g x₀ * D.beltIntersectionSign 2 r g x₁ = -1 →
             ∃ e :
-              Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+              Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
                 D.UpperLevel D.UpperLevel ∞,
-              ∃ g' : C(Smale.Hemisphere.Sphere 2, D.UpperLevel),
-                Smale.SupportedDiffeomorph.IsotopicToIdentity e ∧
+              ∃ g' : C(Hemisphere.Sphere 2, D.UpperLevel),
+                SupportedDiffeomorph.IsotopicToIdentity e ∧
                   (∀ x, g' x = e (g x)) ∧
-                    ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g' ∧
+                    ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g' ∧
                       Function.Injective g' ∧
                         (∀ x,
                             Function.Injective
-                              (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g' x)) ∧
+                              (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g' x)) ∧
                           (∀ x y,
-                              Smale.NativeTransversality.At (𝓡 2) (𝓡 3)
-                                𝓘(ℝ, Smale.RegularLevel.Model E) g' D.surgery.beltSphere x y) ∧
+                              NativeTransversality.At (𝓡 2) (𝓡 3)
+                                𝓘(ℝ, RegularLevel.Model E) g' D.surgery.beltSphere x y) ∧
                             D.beltIntersectionPoints 2 g' =
                                 D.beltIntersectionPoints 2 g \ { x₀, x₁ } ∧
                               (∀ x ∈ D.beltIntersectionPoints 2 g',
-                                  (g' : Smale.Hemisphere.Sphere 2 → D.UpperLevel) =ᶠ[𝓝 x] g) ∧
+                                  (g' : Hemisphere.Sphere 2 → D.UpperLevel) =ᶠ[𝓝 x] g) ∧
                                 ∀ x ∈ D.beltIntersectionPoints 2 g',
                                   D.beltIntersectionSign 2 r g' x =
                                     D.beltIntersectionSign 2 r g x := by
-  let _ := Smale.RegularLevel.chartedSpace hf D.upper_regular
+  let _ := RegularLevel.chartedSpace hf D.upper_regular
   let _ : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
     ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-  let _ : Fact (Module.finrank ℝ (Smale.Hemisphere.Ambient 3) = 2 + 1) :=
+  let _ : Fact (Module.finrank ℝ (Hemisphere.Ambient 3) = 2 + 1) :=
     ⟨finrank_euclideanSpace_fin⟩
   intro hg hinj hi ht x₀ x₁ hx₀ hx₁ hsign
   obtain ⟨K, hK, hdis, A, hA, hA₀, hAt, hfix, hcancel⟩ :=
     D.exists_belt_whitney_cancellation_of_opposite_signs hf hdim hindex hnull r g hg hinj hi ht x₀
       x₁ hx₀ hx₁ hsign
   obtain ⟨e, he⟩ := hAt 1
-  have hisotopy : Smale.SupportedDiffeomorph.IsotopicToIdentity e := ⟨A, hA, hA₀, he, hAt⟩
+  have hisotopy : SupportedDiffeomorph.IsotopicToIdentity e := ⟨A, hA, hA₀, he, hAt⟩
   have hfixe : ∀ y ∉ K, e y = y := fun y hy => (he y).symm.trans (hfix 1 y hy)
   have hfun : (fun y => A (1, y)) = e := funext he
   rw [hfun] at hcancel
-  let g' : C(Smale.Hemisphere.Sphere 2, D.UpperLevel) := ⟨e ∘ g, e.continuous.comp g.continuous⟩
-  have hg' : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g' := e.contMDiff.comp hg
+  let g' : C(Hemisphere.Sphere 2, D.UpperLevel) := ⟨e ∘ g, e.continuous.comp g.continuous⟩
+  have hg' : ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g' := e.contMDiff.comp hg
   have hinj' : Function.Injective g' := e.injective.comp hinj
-  have hi' : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g' x) := by
+  have hi' : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g' x) := by
     intro x
-    change Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) (e ∘ g) x)
+    change Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) (e ∘ g) x)
     rw [mfderiv_comp x (e.mdifferentiable (by simp) _) (hg.mdifferentiableAt (by simp))]
     exact
       ((e.toOpenPartialHomeomorph_mdifferentiable (by simp)).mfderiv_injective (by trivial)).comp
@@ -23167,47 +23167,47 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_ste
     intro y hy
     exact hfixe y (fun hyK => Set.disjoint_left.mp hdis hyK hy)
   have hpre :=
-    Smale.SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal e.toEquiv
-      (g : Smale.Hemisphere.Sphere 2 → D.UpperLevel) hfixR hcancel
-  have hp : (g : Smale.Hemisphere.Sphere 2 → D.UpperLevel) ⁻¹' {g x₀, g x₁} = { x₀, x₁ } := by
+    SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal e.toEquiv
+      (g : Hemisphere.Sphere 2 → D.UpperLevel) hfixR hcancel
+  have hp : (g : Hemisphere.Sphere 2 → D.UpperLevel) ⁻¹' {g x₀, g x₁} = { x₀, x₁ } := by
     ext x
     change (g x = g x₀ ∨ g x = g x₁) ↔ (x = x₀ ∨ x = x₁)
     exact or_congr hinj.eq_iff hinj.eq_iff
   have hpoints : D.beltIntersectionPoints 2 g' = D.beltIntersectionPoints 2 g \ { x₀, x₁ } :=
     hpre.trans
-      (congrArg (fun s : Set (Smale.Hemisphere.Sphere 2) => D.beltIntersectionPoints 2 g \ s) hp)
+      (congrArg (fun s : Set (Hemisphere.Sphere 2) => D.beltIntersectionPoints 2 g \ s) hp)
   have hgerm :
     ∀ x ∈ D.beltIntersectionPoints 2 g',
-      (g' : Smale.Hemisphere.Sphere 2 → D.UpperLevel) =ᶠ[𝓝 x] g := by
+      (g' : Hemisphere.Sphere 2 → D.UpperLevel) =ᶠ[𝓝 x] g := by
     intro x hx
     have hxold : x ∈ D.beltIntersectionPoints 2 g \ { x₀, x₁ } := hpoints ▸ hx
     have hy : g x ∈ (Set.range g ∩ Set.range D.surgery.beltSphere) \ {g x₀, g x₁} := by
       refine ⟨⟨⟨x, rfl⟩, hxold.1⟩, ?_⟩
-      change x ∉ (g : Smale.Hemisphere.Sphere 2 → D.UpperLevel) ⁻¹' {g x₀, g x₁}
+      change x ∉ (g : Hemisphere.Sphere 2 → D.UpperLevel) ⁻¹' {g x₀, g x₁}
       rw [hp]
       exact hxold.2
     exact
-      Smale.SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed hK.isClosed hfixe
+      SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed hK.isClosed hfixe
         g.continuous (fun hyK => Set.disjoint_left.mp hdis hyK hy)
   have ht' :
     ∀ x y,
-      Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) g'
+      NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) g'
         D.surgery.beltSphere x y := by
     intro x y hxy
     have hx : x ∈ D.beltIntersectionPoints 2 g' := ⟨y, hxy⟩
     have hnear := hgerm x hx
     have hpoint : g' x = g x := hnear.eq_of_nhds
     have hder :
-      (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g' x :
-          EuclideanSpace ℝ (Fin 2) →L[ℝ] Smale.RegularLevel.Model E) =
-        mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x :=
+      (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g' x :
+          EuclideanSpace ℝ (Fin 2) →L[ℝ] RegularLevel.Model E) =
+        mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x :=
       hnear.mfderiv_eq
     change
       Function.Surjective
-        ((mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g' x :
-              EuclideanSpace ℝ (Fin 2) →L[ℝ] Smale.RegularLevel.Model E).coprod
-          (mfderiv (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) D.surgery.beltSphere y :
-            EuclideanSpace ℝ (Fin 3) →L[ℝ] Smale.RegularLevel.Model E))
+        ((mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g' x :
+              EuclideanSpace ℝ (Fin 2) →L[ℝ] RegularLevel.Model E).coprod
+          (mfderiv (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) D.surgery.beltSphere y :
+            EuclideanSpace ℝ (Fin 3) →L[ℝ] RegularLevel.Model E))
     rw [hder]
     exact ht x y (hxy.trans hpoint)
   refine ⟨e, g', hisotopy, fun _ => rfl, hg', hinj', hi', ht', hpoints, hgerm, ?_⟩
@@ -23223,35 +23223,35 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_ste
   have hjac : D.beltIntersectionJacobian 2 r g' x = D.beltIntersectionJacobian 2 r g x :=
     congrArg
       (fun L : EuclideanSpace ℝ (Fin 2) →L[ℝ] D.chart.NegativeCoordinates =>
-        Smale.SphereNormalCoordinates.normalJacobian r x L)
+        SphereNormalCoordinates.normalJacobian r x L)
       hder
   exact congrArg SignType.sign hjac
 
-def Smale.ManifoldMorse.MorseSurgeryData.IsTransverseBeltSphere {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.IsTransverseBeltSphere {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (D : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = 6) (hindex : Module.finrank ℝ D.chart.NegativeCoordinates = 2)
-    (g : C(Smale.Hemisphere.Sphere 2, D.UpperLevel)) : Prop :=
-  letI := Smale.RegularLevel.chartedSpace hf D.upper_regular
+    (g : C(Hemisphere.Sphere 2, D.UpperLevel)) : Prop :=
+  letI := RegularLevel.chartedSpace hf D.upper_regular
   letI : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
     ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
-  ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ g ∧
+  ContMDiff (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) ∞ g ∧
     Function.Injective g ∧
-      (∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) g x)) ∧
+      (∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, RegularLevel.Model E) g x)) ∧
         ∀ x y,
-          Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) g
+          NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) g
             D.surgery.beltSphere x y
 
-theorem Smale.ManifoldMorse.MorseSurgeryData.finite_points_of_isTransverseBeltSphere {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.finite_points_of_isTransverseBeltSphere {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
-    (D : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (D : ManifoldMorse.MorseSurgeryData E f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     [T2Space M] [CompactSpace M] (hdim : Module.finrank ℝ E = 6)
     (hindex : Module.finrank ℝ D.chart.NegativeCoordinates = 2)
-    {g : C(Smale.Hemisphere.Sphere 2, D.UpperLevel)}
+    {g : C(Hemisphere.Sphere 2, D.UpperLevel)}
     (hg : D.IsTransverseBeltSphere hf hdim hindex g) : (D.beltIntersectionPoints 2 g).Finite := by
-  let _ := Smale.RegularLevel.chartedSpace hf D.upper_regular
+  let _ := RegularLevel.chartedSpace hf D.upper_regular
   let _ : Fact (Module.finrank ℝ D.chart.PositiveCoordinates = 3 + 1) :=
     ⟨by have hh := D.chart.finrank_negative_add_positive; omega⟩
   obtain ⟨hs, hinj, _, ht⟩ := hg
@@ -23259,17 +23259,17 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.finite_points_of_isTransverseBeltSp
 
 def MorseCancellation.nativeMorseCount (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type*}
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (k : ℕ) : ℕ :=
-  {z : M | z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}.ncard
+  {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}.ncard
 
 theorem MorseCancellation.indexed_criticalPoints_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (hcrit :
       ∀ z,
-        z ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-          z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
-    (hkeep : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
-    {z : M | z ∈ Smale.ManifoldMorse.criticalPoints E g ∧ nativeMorseIndex E g z = k} =
-      {z : M | z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k} \
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
+    {z : M | z ∈ ManifoldMorse.criticalPoints E g ∧ nativeMorseIndex E g z = k} =
+      {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k} \
         { p, q } := by
   ext z
   simp only [Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or]
@@ -23285,18 +23285,18 @@ theorem MorseCancellation.indexed_criticalPoints_after_pair_removal {E M : Type*
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.nativeMorseCount_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
-    (hfinite : (Smale.ManifoldMorse.criticalPoints E f).Finite)
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
+    (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
     (hcrit :
       ∀ z,
-        z ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-          z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
-    (hkeep : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
     nativeMorseCount E g k + (if nativeMorseIndex E f p = k then 1 else 0) +
         (if nativeMorseIndex E f q = k then 1 else 0) =
       nativeMorseCount E f k := by
-  let K := {z : M | z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}
+  let K := {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}
   have hK : K.Finite := hfinite.subset (fun _ hz => hz.1)
   have hdiff : K \ (K ∩ { p, q }) = K \ { p, q } := by
     ext z
@@ -23330,14 +23330,14 @@ theorem MorseCancellation.nativeMorseCount_after_pair_removal {E M : Type*} [Nor
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
-    (hfinite : (Smale.ManifoldMorse.criticalPoints E f).Finite)
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ Smale.ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
+    (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
     (hcrit :
       ∀ z,
-        z ∈ Smale.ManifoldMorse.criticalPoints E g ↔
-          z ∈ Smale.ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
-    (hkeep : ∀ z ∈ Smale.ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) {k : ℕ}
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) {k : ℕ}
     (hip : nativeMorseIndex E f p = k) (hiq : nativeMorseIndex E f q = k + 1) :
     nativeMorseCount E g k + 1 = nativeMorseCount E f k ∧
       nativeMorseCount E g (k + 1) + 1 = nativeMorseCount E f (k + 1) ∧
@@ -23350,63 +23350,63 @@ theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAd
     simpa only [hip, hiq, if_neg (Ne.symm hj), if_neg (Ne.symm hj'), Nat.add_zero] using hc j
 
 attribute [local instance 100] Classical.propDecidable in
-abbrev Smale.ManifoldMorse.MorseSurgeryData.HandleDomain {E M : Type*} [NormedAddCommGroup E]
+abbrev ManifoldMorse.MorseSurgeryData.HandleDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) :=
-  Smale.MorseHandle.UnitDisk d.chart.NegativeCoordinates ×
-    Smale.MorseHandle.UnitDisk d.chart.PositiveCoordinates
+    (d : ManifoldMorse.MorseSurgeryData E f p) :=
+  MorseHandle.UnitDisk d.chart.NegativeCoordinates ×
+    MorseHandle.UnitDisk d.chart.PositiveCoordinates
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.handleMap {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.handleMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) : C(d.HandleDomain, M) :=
+    (d : ManifoldMorse.MorseSurgeryData E f p) : C(d.HandleDomain, M) :=
   d.chart.attachingHandleMap d.radius d.radius_pos d.block
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.handleFacePoint {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.handleFacePoint {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p)
-    (u : Smale.PuncturedHandle.UnitSphere d.chart.NegativeCoordinates)
-    (v : Smale.MorseHandle.UnitDisk d.chart.PositiveCoordinates) : d.HandleDomain :=
+    (d : ManifoldMorse.MorseSurgeryData E f p)
+    (u : PuncturedHandle.UnitSphere d.chart.NegativeCoordinates)
+    (v : MorseHandle.UnitDisk d.chart.PositiveCoordinates) : d.HandleDomain :=
   (⟨u, Metric.sphere_subset_closedBall u.property⟩, v)
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.handleMap_core {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.MorseSurgeryData.handleMap_core {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p)
-    (u : Smale.PuncturedHandle.UnitSphere d.chart.NegativeCoordinates) :
+    (d : ManifoldMorse.MorseSurgeryData E f p)
+    (u : PuncturedHandle.UnitSphere d.chart.NegativeCoordinates) :
     d.handleMap (d.handleFacePoint u ⟨0, by simp⟩) = (d.surgery.attachingSphere u : M) := by
   rw [d.attaching_eq]
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.coreMap {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.coreMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) :
-    C(Smale.MorseHandle.UnitDisk d.chart.NegativeCoordinates, M) :=
-  Smale.HandleCoreAttachment.core d.handleMap
+    (d : ManifoldMorse.MorseSurgeryData E f p) :
+    C(MorseHandle.UnitDisk d.chart.NegativeCoordinates, M) :=
+  HandleCoreAttachment.core d.handleMap
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.coreMap_boundary {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.MorseSurgeryData.coreMap_boundary {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p)
-    (u : Smale.PuncturedHandle.UnitSphere d.chart.NegativeCoordinates) :
+    (d : ManifoldMorse.MorseSurgeryData E f p)
+    (u : PuncturedHandle.UnitSphere d.chart.NegativeCoordinates) :
     d.coreMap ⟨u, Metric.sphere_subset_closedBall u.property⟩ =
       (d.surgery.attachingSphere u : M) :=
   d.handleMap_core u
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.coreMap_lower_iff {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.coreMap_lower_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p)
-    (u : Smale.MorseHandle.UnitDisk d.chart.NegativeCoordinates) :
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
+    (u : MorseHandle.UnitDisk d.chart.NegativeCoordinates) :
     f (d.coreMap u) ≤ f p - d.radius ^ 2 ↔ ‖(u : d.chart.NegativeCoordinates)‖ = 1 :=
   d.chart.attachingHandleMap_lower_iff d.radius d.radius_pos d.block (u, ⟨0, by simp⟩)
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.coreMap_isClosedEmbedding {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.coreMap_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) [T2Space M] :
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] :
     Topology.IsClosedEmbedding d.coreMap := by
   apply d.coreMap.continuous.isClosedEmbedding
   intro x y hxy
@@ -23415,30 +23415,30 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.coreMap_isClosedEmbedding {E M : Ty
   exact congrArg Prod.fst heq
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.coreUnionHomotopyEquiv {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.coreUnionHomotopyEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) [T2Space M] (hf : Continuous f) :
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] (hf : Continuous f) :
     ↥({y : M | f y ≤ f p - d.radius ^ 2} ∪ Set.range d.coreMap) ≃ₕ
       { y : M // f y ≤ f p + d.radius ^ 2 } :=
-  (Smale.ClosedHandleCore.unionHomotopyEquiv {y : M | f y ≤ f p - d.radius ^ 2} d.handleMap
+  (ClosedHandleCore.unionHomotopyEquiv {y : M | f y ≤ f p - d.radius ^ 2} d.handleMap
         (isClosed_le hf continuous_const)
         (d.chart.attachingHandleMap_isClosedEmbedding d.radius d.radius_pos d.block)
         (d.chart.attachingHandleMap_lower_iff d.radius d.radius_pos d.block)).trans
     d.attachmentHomeomorph.toHomotopyEquiv
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.coreCellPresentation {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.coreCellPresentation {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
-    Smale.EmbeddedCellAttachment d.chart.NegativeCoordinates
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
+    EmbeddedCellAttachment d.chart.NegativeCoordinates
       ↥({y : M | f y ≤ f p - d.radius ^ 2} ∪ Set.range d.coreMap) :=
-  Smale.EmbeddedCellAttachment.ofUnion _ d.coreMap (isClosed_le hf continuous_const)
+  EmbeddedCellAttachment.ofUnion _ d.coreMap (isClosed_le hf continuous_const)
     d.coreMap_isClosedEmbedding d.coreMap_lower_iff
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.cellOldHomeomorph {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.cellOldHomeomorph {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
+    (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
     { y : M // f y ≤ f p - d.radius ^ 2 } ≃ₜ (d.coreCellPresentation hf).old
     where
   toFun x := ⟨⟨x.val, Or.inl x.property⟩, x.property⟩
@@ -23449,18 +23449,18 @@ def Smale.ManifoldMorse.MorseSurgeryData.cellOldHomeomorph {E M : Type*} [Normed
   continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.coreBoundaryMap {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.MorseSurgeryData.coreBoundaryMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) :
+    (d : ManifoldMorse.MorseSurgeryData E f p) :
     C(Metric.sphere (0 : d.chart.NegativeCoordinates) 1, { y : M // f y ≤ f p - d.radius ^ 2 }) :=
   (⟨Set.inclusion (fun _ hx => hx.le), continuous_inclusion _⟩ :
         C(d.LowerLevel, { y : M // f y ≤ f p - d.radius ^ 2 })).comp
     d.surgery.attachingSphere
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.MorseSurgeryData.coreCell_attaching_eq {E M : Type*}
+theorem ManifoldMorse.MorseSurgeryData.coreCell_attaching_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
-    {f : M → ℝ} {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
+    {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
     (d.coreCellPresentation hf).attachingSphere =
       (d.cellOldHomeomorph hf).toHomotopyEquiv.toFun.comp d.coreBoundaryMap := by
   apply ContinuousMap.ext
@@ -23470,9 +23470,9 @@ theorem Smale.ManifoldMorse.MorseSurgeryData.coreCell_attaching_eq {E M : Type*}
   exact d.coreMap_boundary u
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.MorseSurgeryData.realizedLowerInclusion {E M : Type*}
+def ManifoldMorse.MorseSurgeryData.realizedLowerInclusion {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (d : Smale.ManifoldMorse.MorseSurgeryData E f p) :
+    {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) :
     C({ y : M // f y ≤ f p - d.radius ^ 2 }, { y : M // f y ≤ f p + d.radius ^ 2 }) :=
   ⟨fun x => d.attachmentHomeomorph ⟨x.val, Or.inl x.property⟩,
     d.attachmentHomeomorph.continuous.comp (continuous_inclusion (fun _ hx => Or.inl hx))⟩
@@ -23481,7 +23481,7 @@ theorem AdaptedWindows.forward_limit_below_regular_level {E M : Type*} [NormedAd
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
-    (hreg : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f) (x : { y : M // f y = a })
+    (hreg : ∀ x, f x = a → x ∉ ManifoldMorse.criticalPoints E f) (x : { y : M // f y = a })
     {p : M} (hlim : Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p)) : f p < a := by
   obtain ⟨r, hr, q, hq, -, hqLim, hheight⟩ :=
     FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
@@ -23495,15 +23495,15 @@ theorem AdaptedWindows.place_one_handle_in_distinct_minimum_basins {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (q : Smale.ManifoldMorse.criticalPoints E f) (hone : MorseCancellation.nativeMorseIndex E f q = 1)
+    (q : ManifoldMorse.criticalPoints E f) (hone : MorseCancellation.nativeMorseIndex E f q = 1)
     (u v : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (hnot : ¬Joined ((S.data q).coreBoundaryMap u) ((S.data q).coreBoundaryMap v)) :
-    letI := Smale.RegularLevel.chartedSpace hf (S.data q).lower_regular
+    letI := RegularLevel.chartedSpace hf (S.data q).lower_regular
     ∃ d :
-      Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+      Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
         (S.data q).LowerLevel (S.data q).LowerLevel ∞,
-      Smale.SupportedDiffeomorph.IsotopicToIdentity d ∧
-        ∃ p r : Smale.ManifoldMorse.criticalPoints E f,
+      SupportedDiffeomorph.IsotopicToIdentity d ∧
+        ∃ p r : ManifoldMorse.criticalPoints E f,
           MorseCancellation.nativeMorseIndex E f p = 0 ∧
             MorseCancellation.nativeMorseIndex E f r = 0 ∧
               p ≠ r ∧
@@ -23522,8 +23522,8 @@ theorem AdaptedWindows.place_one_handle_in_distinct_minimum_basins {E M : Type*}
                             Filter.Tendsto
                               (fun t => S.flow t (d ((S.data q).surgery.attachingSphere w)).val)
                               Filter.atTop (𝓝 r.val) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).lower_regular
-  let _ := Smale.RegularLevel.isManifold hf (S.data q).lower_regular
+  let _ := RegularLevel.chartedSpace hf (S.data q).lower_regular
+  let _ := RegularLevel.isManifold hf (S.data q).lower_regular
   let ι : C((S.data q).LowerLevel, { z : M // f z ≤ S.toSurgeryWindows.lower q }) :=
     ⟨fun x => ⟨x.val, x.property.le⟩, continuous_subtype_val.subtype_mk _⟩
   let α := (S.data q).surgery.attachingSphere
@@ -23532,7 +23532,7 @@ theorem AdaptedWindows.place_one_handle_in_distinct_minimum_basins {E M : Type*}
     have hh : (S.data q).coreBoundaryMap u = (S.data q).coreBoundaryMap v := congrArg ι h
     exact hnot (hh ▸ Joined.refl _)
   obtain ⟨d, hd, ⟨p, hp, hpu⟩, ⟨r, hr, hrv⟩⟩ :=
-    MorseCancellation.exists_isotopic_two_points_in_dense (J := 𝓘(ℝ, Smale.RegularLevel.Model E))
+    MorseCancellation.exists_isotopic_two_points_in_dense (J := 𝓘(ℝ, RegularLevel.Model E))
       (S.dense_regular_level_minimum_basins hf (S.data q).lower_regular) hxy
   have hpq := S.forward_limit_below_regular_level hf (S.data q).lower_regular (d (α u)) hpu
   have hrq := S.forward_limit_below_regular_level hf (S.data q).lower_regular (d (α v)) hrv
@@ -23542,7 +23542,7 @@ theorem AdaptedWindows.place_one_handle_in_distinct_minimum_basins {E M : Type*}
     let : LocallyPathConnectedSpace M := ChartedSpace.locallyPathConnectedSpace E M
     have hnew : Joined (ι (d (α u))) (ι (d (α v))) :=
       MorseCancellation.joined_sublevel_of_common_forward_limit S.flow hf.continuous
-        (Smale.FlowConstruction.antitone_flow_height hf S.flow S.integral S.zero S.descent)
+        (FlowConstruction.antitone_flow_height hf S.flow S.integral S.zero S.descent)
         (ι (d (α u))) (ι (d (α v))) hpq hpu hrv
     exact
       hnot
@@ -23592,7 +23592,7 @@ theorem MorseCancellation.injective_fderiv_beltPassage_upper {N P : Type*} [Norm
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.nativeBeltArc_derivative_injective {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
     Function.Injective (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (nativeBeltArc S q u v) s) := by
@@ -23614,13 +23614,13 @@ theorem MorseCancellation.nativeBeltArc_derivative_injective {E M : Type*} [Norm
         (by simp)),
     mfderiv_eq_fderiv]
   exact
-    (Smale.PartialChart.bijective_mfderiv (S.data q).chart.splitChart.symm ht).injective.comp
+    (PartialChart.bijective_mfderiv (S.data q).chart.splitChart.symm ht).injective.comp
       (injective_fderiv_beltPassage_upper (S.data q).radius_pos.ne' s hu v.val)
 
-theorem Smale.RegularLevel.contMDiffWithinAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiffWithinAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
     [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (S : Set X) (x : X) :
     letI := chartedSpace hf hreg
@@ -23629,7 +23629,7 @@ theorem Smale.RegularLevel.contMDiffWithinAt_iff_inclusion {E M : Type*} [Normed
   let _ := chartedSpace hf hreg
   constructor
   · intro hg
-    exact (Smale.RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt.comp_contMDiffWithinAt x hg
+    exact (RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt.comp_contMDiffWithinAt x hg
   · intro hg
     apply contMDiffWithinAt_iff_target.mpr
     refine ⟨Topology.IsInducing.subtypeVal.continuousWithinAt_iff.mpr hg.continuousWithinAt, ?_⟩
@@ -23641,10 +23641,10 @@ theorem Smale.RegularLevel.contMDiffWithinAt_iff_inclusion {E M : Type*} [Normed
     change ContMDiffWithinAt I 𝓘(ℝ, Model E) ∞ (fun y => (Φ (g y)).2) S x
     exact contDiff_snd.contMDiff.contMDiffAt.comp_contMDiffWithinAt x hcomp
 
-theorem Smale.RegularLevel.contMDiffOn_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiffOn_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
     [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (S : Set X) :
     letI := chartedSpace hf hreg
@@ -23657,7 +23657,7 @@ theorem Smale.RegularLevel.contMDiffOn_iff_inclusion {E M : Type*} [NormedAddCom
 attribute [local instance 100] Classical.propDecidable in
 def MorseCancellation.nativeBeltLevelArc {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : ℝ) :
     (S.data q).UpperLevel :=
@@ -23666,7 +23666,7 @@ def MorseCancellation.nativeBeltLevelArc {E M : Type*} [NormedAddCommGroup E] [N
 
 theorem MorseCancellation.nativeBeltLevelArc_coe {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
     (nativeBeltLevelArc S q u v s).val = nativeBeltArc S q u v s := by
@@ -23674,7 +23674,7 @@ theorem MorseCancellation.nativeBeltLevelArc_coe {E M : Type*} [NormedAddCommGro
 
 theorem MorseCancellation.nativeBeltLevelArc_coe_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ}
     (hs : s ∈ Set.Ioo (-1 : ℝ) 1) :
@@ -23685,15 +23685,15 @@ theorem MorseCancellation.nativeBeltLevelArc_coe_germ {E M : Type*} [NormedAddCo
 theorem MorseCancellation.nativeBeltLevelArc_contMDiffOn {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} [FiniteDimensional ℝ E] (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
-    ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ (nativeBeltLevelArc S q u v)
+    let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
+    ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, RegularLevel.Model E) ∞ (nativeBeltLevelArc S q u v)
       (Set.Ioo (-1 : ℝ) 1) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+  let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
   apply
-    (Smale.RegularLevel.contMDiffOn_iff_inclusion hf (S.data q).upper_regular 𝓘(ℝ, ℝ)
+    (RegularLevel.contMDiffOn_iff_inclusion hf (S.data q).upper_regular 𝓘(ℝ, ℝ)
         (nativeBeltLevelArc S q u v) (Set.Ioo (-1 : ℝ) 1)).mpr
   apply (nativeBeltArc_contMDiffOn S q u v).congr
   intro s hs
@@ -23702,17 +23702,17 @@ theorem MorseCancellation.nativeBeltLevelArc_contMDiffOn {E M : Type*} [NormedAd
 theorem MorseCancellation.nativeBeltLevelArc_derivative_injective {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} [FiniteDimensional ℝ E] (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ}
     (hs : s ∈ Set.Ioo (-1 : ℝ) 1) :
-    let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+    let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
     Function.Injective
-      (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Smale.RegularLevel.Model E) (nativeBeltLevelArc S q u v) s) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+      (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, RegularLevel.Model E) (nativeBeltLevelArc S q u v) s) := by
+  let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
   have hg := nativeBeltLevelArc_coe_germ S q u v hs
   apply
-    Smale.RegularLevel.injective_mfderiv_of_inclusion hf (S.data q).upper_regular 𝓘(ℝ, ℝ)
+    RegularLevel.injective_mfderiv_of_inclusion hf (S.data q).upper_regular 𝓘(ℝ, ℝ)
       (nativeBeltLevelArc S q u v) s
   · exact
       ((nativeBeltArc_contMDiffOn S q u v).contMDiffAt
@@ -23725,7 +23725,7 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.nativeBeltLevelArc_normal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (q : Smale.ManifoldMorse.criticalPoints E f)
+    (q : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
     (S.data q).beltNormal (nativeBeltLevelArc S q u v s) = ((S.data q).radius * s) • u.val := by
@@ -23739,17 +23739,17 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.nativeBeltLevelArc_transverse {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : ManifoldMorse.criticalPoints E f)
     (hq : nativeMorseIndex E f q = 1) (n : ℕ)
     [Fact (Module.finrank ℝ (S.data q).chart.PositiveCoordinates = n + 1)]
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+    let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
     Function.Surjective
-      ((mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Smale.RegularLevel.Model E) (nativeBeltLevelArc S q u v) 0 :
-            ℝ →L[ℝ] Smale.RegularLevel.Model E).coprod
-        (mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) (S.data q).surgery.beltSphere v)) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+      ((mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, RegularLevel.Model E) (nativeBeltLevelArc S q u v) 0 :
+            ℝ →L[ℝ] RegularLevel.Model E).coprod
+        (mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) (S.data q).surgery.beltSphere v)) := by
+  let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
   let d := S.data q
   let γ := nativeBeltLevelArc S q u v
   let L : ℝ →L[ℝ] d.chart.NegativeCoordinates :=
@@ -23773,15 +23773,15 @@ theorem MorseCancellation.nativeBeltLevelArc_transverse {E M : Type*} [NormedAdd
   have hnormal :=
     (d.contMDiffOn_beltNormal hf).contMDiffAt
       (d.isOpen_beltNormalDomain.mem_nhds (d.belt_mem_normalDomain v))
-  let A : ℝ →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Smale.RegularLevel.Model E) γ 0
-  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) d.surgery.beltSphere v
-  let Q : Smale.RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
-    mfderiv 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
+  let A : ℝ →L[ℝ] RegularLevel.Model E :=
+    mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, RegularLevel.Model E) γ 0
+  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] RegularLevel.Model E :=
+    mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) d.surgery.beltSphere v
+  let Q : RegularLevel.Model E →L[ℝ] d.chart.NegativeCoordinates :=
+    mfderiv 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates) d.beltNormal
       (d.surgery.beltSphere v)
   have hnγ :
-    MDifferentiableAt 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates)
+    MDifferentiableAt 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, d.chart.NegativeCoordinates)
       d.beltNormal (γ 0) := by
     rw [hpoint]
     exact hnormal.mdifferentiableAt (by simp)
@@ -23853,14 +23853,14 @@ theorem MorseCancellation.surjective_coprod_comp_left {A A' B G : Type*} [Normed
   exact hab
 
 def MorseCancellation.euclideanTail (n : ℕ) :
-    Smale.Hemisphere.Ambient (n + 1) →L[ℝ] Smale.Hemisphere.Ambient n :=
+    Hemisphere.Ambient (n + 1) →L[ℝ] Hemisphere.Ambient n :=
   ({    toFun := fun x => WithLp.toLp 2 (fun i : Fin n => x i.succ)
         map_add' := by intro x y; ext i; rfl
         map_smul' := by intro a x; ext i; rfl } :
-      Smale.Hemisphere.Ambient (n + 1) →ₗ[ℝ] Smale.Hemisphere.Ambient n).toContinuousLinearMap
+      Hemisphere.Ambient (n + 1) →ₗ[ℝ] Hemisphere.Ambient n).toContinuousLinearMap
 
-theorem MorseCancellation.euclideanTail_hemisphere {n : ℕ} (b : Bool) (x : Smale.Hemisphere.Ball n) :
-    euclideanTail n (Smale.Hemisphere.point b x).val = x.val := by
+theorem MorseCancellation.euclideanTail_hemisphere {n : ℕ} (b : Bool) (x : Hemisphere.Ball n) :
+    euclideanTail n (Hemisphere.point b x).val = x.val := by
   ext i
   rfl
 
@@ -23869,7 +23869,7 @@ theorem MorseCancellation.exists_belt_point_avoiding_smooth_image {E M D H Y : T
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace Y]
     [ChartedSpace H Y] [IsManifold I ∞ Y] [LindelofSpace Y] {f : M → ℝ} {p : M}
-    (d : Smale.ManifoldMorse.MorseSurgeryData E f p) (n : ℕ)
+    (d : ManifoldMorse.MorseSurgeryData E f p) (n : ℕ)
     [Fact (Module.finrank ℝ d.chart.PositiveCoordinates = n + 1)] (g : Y → M)
     (hg : ContMDiff I 𝓘(ℝ, E) ∞ g) (hdim : Module.finrank ℝ D < n) :
     ∃ v : Metric.sphere (0 : d.chart.PositiveCoordinates) 1,
@@ -23877,19 +23877,19 @@ theorem MorseCancellation.exists_belt_point_avoiding_smooth_image {E M D H Y : T
   let b :=
     (stdOrthonormalBasis ℝ d.chart.PositiveCoordinates).reindex
       (finCongr (Fact.out : Module.finrank ℝ d.chart.PositiveCoordinates = n + 1))
-  let L : d.chart.PositiveCoordinates ≃ₗᵢ[ℝ] Smale.Hemisphere.Ambient (n + 1) := b.repr
-  let P : M → Smale.Hemisphere.Ambient n := fun x =>
+  let L : d.chart.PositiveCoordinates ≃ₗᵢ[ℝ] Hemisphere.Ambient (n + 1) := b.repr
+  let P : M → Hemisphere.Ambient n := fun x =>
     euclideanTail n (d.radius⁻¹ • L (d.chart.splitChart x).2)
   let U : Set Y := g ⁻¹' d.chart.splitChart.source
   have hU : IsOpen U := d.chart.splitChart.open_source.preimage hg.continuous
-  have hPg : ContMDiffOn I 𝓘(ℝ, Smale.Hemisphere.Ambient n) ∞ (P ∘ g) U := by
+  have hPg : ContMDiffOn I 𝓘(ℝ, Hemisphere.Ambient n) ∞ (P ∘ g) U := by
     have hc :
       ContMDiffOn I 𝓘(ℝ, d.chart.NegativeCoordinates × d.chart.PositiveCoordinates) ∞
         (d.chart.splitChart ∘ g) U :=
       d.chart.splitChart.contMDiffOn_toFun.comp hg.contMDiffOn (fun _ hy => hy)
     let A :
       d.chart.NegativeCoordinates × d.chart.PositiveCoordinates →L[ℝ]
-        Smale.Hemisphere.Ambient n :=
+        Hemisphere.Ambient n :=
       (euclideanTail n).comp
         ((d.radius⁻¹ • L.toContinuousLinearEquiv.toContinuousLinearMap).comp
           (ContinuousLinearMap.snd ℝ d.chart.NegativeCoordinates d.chart.PositiveCoordinates))
@@ -23900,13 +23900,13 @@ theorem MorseCancellation.exists_belt_point_avoiding_smooth_image {E M D H Y : T
       A.contDiff
     exact hQ.contMDiff.comp_contMDiffOn hc
   have hdense :=
-    Smale.GeneralPosition.dense_compl_manifold_image hU hPg
-      (show Module.finrank ℝ D < Module.finrank ℝ (Smale.Hemisphere.Ambient n) by
-        simpa only [Smale.Hemisphere.Ambient, finrank_euclideanSpace_fin] using hdim)
+    GeneralPosition.dense_compl_manifold_image hU hPg
+      (show Module.finrank ℝ D < Module.finrank ℝ (Hemisphere.Ambient n) by
+        simpa only [Hemisphere.Ambient, finrank_euclideanSpace_fin] using hdim)
   obtain ⟨x, hxavoid, hxnorm⟩ := hdense.exists_dist_lt 0 (show (0 : ℝ) < 1 by norm_num)
   have hx : ‖x‖ < 1 := by simpa only [dist_zero_left] using hxnorm
-  let xB : Smale.Hemisphere.Ball n := ⟨x, mem_closedBall_zero_iff.mpr hx.le⟩
-  let w := Smale.Hemisphere.point Bool.true xB
+  let xB : Hemisphere.Ball n := ⟨x, mem_closedBall_zero_iff.mpr hx.le⟩
+  let w := Hemisphere.point Bool.true xB
   let v : Metric.sphere (0 : d.chart.PositiveCoordinates) 1 :=
     ⟨L.symm w.val, by
       rw [mem_sphere_zero_iff_norm, L.symm.norm_map]
@@ -23935,11 +23935,11 @@ theorem MorseCancellation.exists_belt_point_avoiding_smooth_image {E M D H Y : T
 theorem AdaptedWindows.exists_belt_point_reaching_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : Smale.ManifoldMorse.criticalPoints E f) (n : ℕ)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (q : ManifoldMorse.criticalPoints E f) (n : ℕ)
     [Fact (Module.finrank ℝ (S.data q).chart.PositiveCoordinates = n + 1)] {a : ℝ} (hqa : f q < a)
     {d : ℕ}
     (hlow :
-      ∀ p : Smale.ManifoldMorse.criticalPoints E f,
+      ∀ p : ManifoldMorse.criticalPoints E f,
         f p ≤ a → MorseCancellation.nativeMorseIndex E f p ≤ d)
     (hdim : d < n) :
     ∃ v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1,
@@ -23983,12 +23983,12 @@ theorem AdaptedWindows.joinedIn_level_minimum_basin_reaching_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p : Smale.ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
+    (p : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
     {a b : ℝ} (hpb : f p < b) (hba : b ≤ a)
-    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hb : ∀ y, f y = b → y ∉ Smale.ManifoldMorse.criticalPoints E f) {d : ℕ}
+    (ha : ∀ y, f y = a → y ∉ ManifoldMorse.criticalPoints E f)
+    (hb : ∀ y, f y = b → y ∉ ManifoldMorse.criticalPoints E f) {d : ℕ}
     (hlow :
-      ∀ q : Smale.ManifoldMorse.criticalPoints E f,
+      ∀ q : ManifoldMorse.criticalPoints E f,
         f q ≤ a → MorseCancellation.nativeMorseIndex E f q ≤ d)
     (hdim : 1 + d < Module.finrank ℝ E) {x y : M} (hxb : f x = b) (hyb : f y = b)
     (hx : Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val))
@@ -24051,7 +24051,7 @@ theorem AdaptedWindows.joinedIn_level_minimum_basin_reaching_level {E M : Type*}
     exact
       FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hback
         (η u).property (hca.trans_lt hqa) (hpb.trans_le hbc)
-  let _ := Smale.RegularLevel.chartedSpace hf hb
+  let _ := RegularLevel.chartedSpace hf hb
   let xL : { z : M // f z = b } := ⟨x, hxb⟩
   let yL : { z : M // f z = b } := ⟨y, hyb⟩
   obtain ⟨Φ, hsource, htarget, hformula, -⟩ :=
@@ -24092,7 +24092,7 @@ theorem AdaptedWindows.exists_belt_arc_closing_path_reaching_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : Smale.ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
+    (p q : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1)
     (hbranches :
@@ -24100,11 +24100,11 @@ theorem AdaptedWindows.exists_belt_arc_closing_path_reaching_level {E M : Type*}
         Filter.Tendsto (fun t => S.flow t ((S.data q).surgery.attachingSphere w).val) Filter.atTop
           (𝓝 p.val))
     {a : ℝ} (hba : S.toSurgeryWindows.upper q ≤ a)
-    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (ha : ∀ y, f y = a → y ∉ ManifoldMorse.criticalPoints E f)
     (hv : ((S.data q).surgery.beltSphere v).val ∈ FlowCancellation.levelBasin S.flow f a)
     {d : ℕ}
     (hlow :
-      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+      ∀ z : ManifoldMorse.criticalPoints E f,
         f z ≤ a → MorseCancellation.nativeMorseIndex E f z ≤ d)
     (hdim : 1 + d < Module.finrank ℝ E) :
     ∃ r : ℝ,
@@ -24175,7 +24175,7 @@ theorem MorseCancellation.single_belt_intersection_of_arc_and_minimum_range {E M
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : Smale.ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
+    (p q : ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {X : Type*}
     {γ : X → (S.data q).UpperLevel} (hγi : Function.Injective γ) {z₀ : X}
@@ -24208,7 +24208,7 @@ theorem AdaptedWindows.exists_single_belt_circle_in_open_with_image {E M : Type*
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : Smale.ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
+    (p q : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
     (hpq : p ≠ q) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1)
     (O : TopologicalSpace.Opens M) {r : ℝ} (hr : 0 < r) (hr1 : r < 1)
@@ -24220,11 +24220,11 @@ theorem AdaptedWindows.exists_single_belt_circle_in_open_with_image {E M : Type*
             Filter.Tendsto (fun t => S.flow t z) Filter.atTop (𝓝 p.val) ∧ z ∈ O}
         (MorseCancellation.nativeBeltArc S q u v r) (MorseCancellation.nativeBeltArc S q u v (-r)))
     (hdim : 4 ≤ Module.finrank ℝ E) :
-    let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+    let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
     ∃ γ : C(Circle, (S.data q).UpperLevel),
-      ContMDiff (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ γ ∧
+      ContMDiff (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) ∞ γ ∧
         Function.Injective γ ∧
-          (∀ z, Function.Injective (mfderiv (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) γ z)) ∧
+          (∀ z, Function.Injective (mfderiv (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) γ z)) ∧
             (∀ z, (γ z).val ∈ O) ∧
               (∀ s ∈ Set.Icc (-r) r,
                   γ (Circle.exp (2 * Real.pi / (2 * r + 1) * (s + r))) =
@@ -24235,8 +24235,8 @@ theorem AdaptedWindows.exists_single_belt_circle_in_open_with_image {E M : Type*
                   ∀ z,
                     γ z ∈ MorseCancellation.nativeBeltLevelArc S q u v '' Set.Icc (-r) r ∨
                       Filter.Tendsto (fun t => S.flow t (γ z).val) Filter.atTop (𝓝 p.val) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
-  let _ := Smale.RegularLevel.isManifold hf (S.data q).upper_regular
+  let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
+  let _ := RegularLevel.isManifold hf (S.data q).upper_regular
   let α := MorseCancellation.nativeBeltLevelArc S q u v
   let U : TopologicalSpace.Opens (S.data q).UpperLevel :=
     ⟨{z | Filter.Tendsto (fun t => S.flow t z.val) Filter.atTop (𝓝 p.val) ∧ z.val ∈ O},
@@ -24270,8 +24270,8 @@ theorem AdaptedWindows.exists_single_belt_circle_in_open_with_image {E M : Type*
     rw [MorseCancellation.nativeBeltLevelArc_coe S q u v (abs_le.mpr hx),
       MorseCancellation.nativeBeltLevelArc_coe S q u v (abs_le.mpr hy)] at hh
     exact hh
-  have hdimL : 3 ≤ Module.finrank ℝ (Smale.RegularLevel.Model E) := by
-    simp only [Smale.RegularLevel.Model, finrank_euclideanSpace_fin]
+  have hdimL : 3 ≤ Module.finrank ℝ (RegularLevel.Model E) := by
+    simp only [RegularLevel.Model, finrank_euclideanSpace_fin]
     omega
   obtain ⟨γ, hγ, hγi, hγd, hshort, himage⟩ :=
     MorseCancellation.exists_embedded_circle_through_arc U hr hr1
@@ -24312,7 +24312,7 @@ theorem AdaptedWindows.exists_transverse_belt_circle_reaching_level_with_endpoin
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : Smale.ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
+    (p q : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
     (hq : MorseCancellation.nativeMorseIndex E f q = 1) (n : ℕ)
     [Fact (Module.finrank ℝ (S.data q).chart.PositiveCoordinates = n + 1)]
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
@@ -24321,30 +24321,30 @@ theorem AdaptedWindows.exists_transverse_belt_circle_reaching_level_with_endpoin
         Filter.Tendsto (fun t => S.flow t ((S.data q).surgery.attachingSphere w).val) Filter.atTop
           (𝓝 p.val))
     {a : ℝ} (hba : S.toSurgeryWindows.upper q ≤ a)
-    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f) {d : ℕ}
+    (ha : ∀ y, f y = a → y ∉ ManifoldMorse.criticalPoints E f) {d : ℕ}
     (hlow :
-      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+      ∀ z : ManifoldMorse.criticalPoints E f,
         f z ≤ a → MorseCancellation.nativeMorseIndex E f z ≤ d)
     (hdn : d < n) (hcut : 1 + d < Module.finrank ℝ E) (hdim : 4 ≤ Module.finrank ℝ E) :
-    let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
+    let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
     ∃ v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1,
       ∃ γ : C(Circle, (S.data q).UpperLevel),
-        ContMDiff (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ γ ∧
+        ContMDiff (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) ∞ γ ∧
           Function.Injective γ ∧
-            (∀ z, Function.Injective (mfderiv (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) γ z)) ∧
+            (∀ z, Function.Injective (mfderiv (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) γ z)) ∧
               (∀ z, (γ z).val ∈ FlowCancellation.levelBasin S.flow f a) ∧
                 ∃ z₀ : Circle,
                   (∀ z w, γ z = (S.data q).surgery.beltSphere w ↔ z = z₀ ∧ v = w) ∧
                     (Function.Surjective
-                        ((mfderiv (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) γ z₀ :
-                              EuclideanSpace ℝ (Fin 1) →L[ℝ] Smale.RegularLevel.Model E).coprod
-                          (mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E)
+                        ((mfderiv (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) γ z₀ :
+                              EuclideanSpace ℝ (Fin 1) →L[ℝ] RegularLevel.Model E).coprod
+                          (mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E)
                             (S.data q).surgery.beltSphere v))) ∧
                       ∀ z,
                         Filter.Tendsto (fun t => S.flow t (γ z).val) Filter.atTop (𝓝 p.val) ∨
                           Filter.Tendsto (fun t => S.flow t (γ z).val) Filter.atTop (𝓝 q.val) := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data q).upper_regular
-  let _ := Smale.RegularLevel.isManifold hf (S.data q).upper_regular
+  let _ := RegularLevel.chartedSpace hf (S.data q).upper_regular
+  let _ := RegularLevel.isManifold hf (S.data q).upper_regular
   have hqa : f q < a := (S.toSurgeryWindows.value_lt_upper q).trans_le hba
   obtain ⟨v, hv⟩ := S.exists_belt_point_reaching_level hf q n hqa hlow hdn
   obtain ⟨r, hr, hr1, hreach, hmin, hpath⟩ :=
@@ -24388,22 +24388,22 @@ theorem AdaptedWindows.exists_transverse_belt_circle_reaching_level_with_endpoin
   refine
     ⟨v, γ, hγ, hγi, hγd, hγreach, Circle.exp (2 * Real.pi / (2 * r + 1) * r), hsingle, ?_,
       hendpoints⟩
-  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] Smale.RegularLevel.Model E :=
-    mfderiv (𝓡 n) 𝓘(ℝ, Smale.RegularLevel.Model E) (S.data q).surgery.beltSphere v
+  let B : EuclideanSpace ℝ (Fin n) →L[ℝ] RegularLevel.Model E :=
+    mfderiv (𝓡 n) 𝓘(ℝ, RegularLevel.Model E) (S.data q).surgery.beltSphere v
   have hαtrans :
     Function.Surjective
-      ((mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Smale.RegularLevel.Model E) (MorseCancellation.nativeBeltLevelArc S q u v)
+      ((mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, RegularLevel.Model E) (MorseCancellation.nativeBeltLevelArc S q u v)
               0 :
-            ℝ →L[ℝ] Smale.RegularLevel.Model E).coprod
+            ℝ →L[ℝ] RegularLevel.Model E).coprod
         B) :=
     MorseCancellation.nativeBeltLevelArc_transverse S hf q hq n u v
   have ht :
     Function.Surjective
-      ((mfderiv (𝓡 1) 𝓘(ℝ, Smale.RegularLevel.Model E) γ (ψ 0) :
-            EuclideanSpace ℝ (Fin 1) →L[ℝ] Smale.RegularLevel.Model E).coprod
+      ((mfderiv (𝓡 1) 𝓘(ℝ, RegularLevel.Model E) γ (ψ 0) :
+            EuclideanSpace ℝ (Fin 1) →L[ℝ] RegularLevel.Model E).coprod
         B) :=
     MorseCancellation.transverse_circle_of_arc_germ (D := EuclideanSpace ℝ (Fin n)) (J :=
-      𝓘(ℝ, Smale.RegularLevel.Model E)) (α := MorseCancellation.nativeBeltLevelArc S q u v) (γ := γ)
+      𝓘(ℝ, RegularLevel.Model E)) (α := MorseCancellation.nativeBeltLevelArc S q u v) (γ := γ)
       (ψ := ψ) hγ hψ heq B hαtrans
   have hp0 : ψ 0 = Circle.exp (2 * Real.pi / (2 * r + 1) * r) := by
     dsimp [ψ]
@@ -24415,21 +24415,21 @@ theorem AdaptedWindows.exists_native_level_basin_transport {E M : Type*} [Normed
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ}
-    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hb : ∀ y, f y = b → y ∉ Smale.ManifoldMorse.criticalPoints E f) (za : { x : M // f x = a })
+    (ha : ∀ y, f y = a → y ∉ ManifoldMorse.criticalPoints E f)
+    (hb : ∀ y, f y = b → y ∉ ManifoldMorse.criticalPoints E f) (za : { x : M // f x = a })
     (zb : { x : M // f x = b }) :
-    let _ := Smale.RegularLevel.chartedSpace hf ha
-    let _ := Smale.RegularLevel.chartedSpace hf hb
+    let _ := RegularLevel.chartedSpace hf ha
+    let _ := RegularLevel.chartedSpace hf hb
     ∃ D :
-      PartialDiffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+      PartialDiffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
         { x : M // f x = a } { x : M // f x = b } ∞,
       D.source = {x | x.val ∈ FlowCancellation.levelBasin S.flow f b} ∧
         D.target = {y | y.val ∈ FlowCancellation.levelBasin S.flow f a} ∧
           ∀ x ∈ D.source, ∃ t : ℝ, S.flow t x.val = (D x).val := by
-  let _ := Smale.RegularLevel.chartedSpace hf ha
-  let _ := Smale.RegularLevel.chartedSpace hf hb
-  let _ := Smale.RegularLevel.isManifold hf ha
-  let _ := Smale.RegularLevel.isManifold hf hb
+  let _ := RegularLevel.chartedSpace hf ha
+  let _ := RegularLevel.chartedSpace hf hb
+  let _ := RegularLevel.isManifold hf ha
+  let _ := RegularLevel.isManifold hf hb
   let A := { x : M // f x = a }
   let B := { x : M // f x = b }
   obtain ⟨Φa, hsa, hta, hfa, -⟩ :=
@@ -24495,19 +24495,19 @@ theorem AdaptedWindows.exists_native_level_basin_transport {E M : Type*} [Normed
     rw [horbQ y hy] at hh
     exact congrArg Prod.fst hh
   have hPs :
-    ContMDiffOn 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ P U := by
+    ContMDiffOn 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E) ∞ P U := by
     have hh :=
-      Φb.contMDiffOn_invFun.comp (Smale.RegularLevel.contMDiff_inclusion hf ha).contMDiffOn
+      Φb.contMDiffOn_invFun.comp (RegularLevel.contMDiff_inclusion hf ha).contMDiffOn
         (show Set.MapsTo (Subtype.val : A → M) U Φb.target from fun _ hx => htb.symm ▸ hx)
     exact contMDiff_fst.comp_contMDiffOn hh
   have hQs :
-    ContMDiffOn 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ Q V := by
+    ContMDiffOn 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E) ∞ Q V := by
     have hh :=
-      Φa.contMDiffOn_invFun.comp (Smale.RegularLevel.contMDiff_inclusion hf hb).contMDiffOn
+      Φa.contMDiffOn_invFun.comp (RegularLevel.contMDiff_inclusion hf hb).contMDiffOn
         (show Set.MapsTo (Subtype.val : B → M) V Φa.target from fun _ hy => hta.symm ▸ hy)
     exact contMDiff_fst.comp_contMDiffOn hh
   let D :
-    PartialDiffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E) A B ∞ :=
+    PartialDiffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E) A B ∞ :=
     { toFun := P
       invFun := Q
       source := U
@@ -24525,13 +24525,13 @@ theorem AdaptedWindows.exists_native_level_basin_transport {E M : Type*} [Normed
 theorem AdaptedWindows.belt_complement_reaches_lower_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
     (y : (S.data p).UpperLevel) (hy : y ∉ Set.range (S.data p).surgery.beltSphere) :
     y.val ∈ FlowCancellation.levelBasin S.flow f (S.toSurgeryWindows.lower p) := by
   obtain ⟨a, ha, b, hb, hback, hforward, hheights⟩ :=
     FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
       S.descent S.distinct y.val
-  have hyreg : y.val ∉ Smale.ManifoldMorse.criticalPoints E f :=
+  have hyreg : y.val ∉ ManifoldMorse.criticalPoints E f :=
     (S.data p).upper_regular y.val y.property
   have hbelow : f b < S.toSurgeryWindows.lower p := by
     rcases lt_trichotomy (f b) (f p) with h | h | h
@@ -24553,7 +24553,7 @@ theorem AdaptedWindows.belt_complement_reaches_lower_level {E M : Type*} [Normed
 theorem AdaptedWindows.exists_belt_complement_lower_transport {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data p).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data p).chart.PositiveCoordinates) 1) :
     ∃ D :
@@ -24561,8 +24561,8 @@ theorem AdaptedWindows.exists_belt_complement_lower_transport {E M : Type*} [Nor
         (S.data p).LowerLevel),
       (∀ x, ∃ t : ℝ, S.flow t x.val.val = (D x).val) ∧
         ∀ x (y : (S.data p).LowerLevel) (t : ℝ), S.flow t x.val.val = y.val → D x = y := by
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data p).upper_regular
-  let _ := Smale.RegularLevel.chartedSpace hf (S.data p).lower_regular
+  let _ := RegularLevel.chartedSpace hf (S.data p).upper_regular
+  let _ := RegularLevel.chartedSpace hf (S.data p).lower_regular
   obtain ⟨P, hsource, -, horbit⟩ :=
     S.exists_native_level_basin_transport hf (S.data p).upper_regular (S.data p).lower_regular
       ((S.data p).surgery.beltSphere v) ((S.data p).surgery.attachingSphere u)
@@ -24587,7 +24587,7 @@ theorem AdaptedWindows.exists_belt_complement_lower_transport {E M : Type*} [Nor
 
 def MorseCancellation.nativeUpperMeridianInComplement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (p : Smale.ManifoldMorse.criticalPoints E f)
+    {f : M → ℝ} (S : AdaptedWindows E f) (p : ManifoldMorse.criticalPoints E f)
     (v : Metric.sphere (0 : (S.data p).chart.PositiveCoordinates) 1) (s : unitInterval)
     (hs : 0 < (s : ℝ)) :
     C(Metric.sphere (0 : (S.data p).chart.NegativeCoordinates) 1,
@@ -24599,7 +24599,7 @@ def MorseCancellation.nativeUpperMeridianInComplement {E M : Type*} [NormedAddCo
 theorem MorseCancellation.lower_transport_upperMeridian_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (p : Smale.ManifoldMorse.criticalPoints E f)
+    (p : ManifoldMorse.criticalPoints E f)
     (D :
       C(((Set.range (S.data p).surgery.beltSphere)ᶜ : Set (S.data p).UpperLevel),
         (S.data p).LowerLevel))
@@ -24616,7 +24616,7 @@ theorem MorseCancellation.lower_transport_upperMeridian_eq {E M : Type*} [Normed
 theorem AdaptedWindows.exists_lower_transport_with_meridians {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data p).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data p).chart.PositiveCoordinates) 1) :
     ∃ D :
@@ -24637,14 +24637,14 @@ theorem AdaptedWindows.exists_lower_transport_with_meridians {E M : Type*} [Norm
 theorem AdaptedWindows.exists_lower_passage_homology_relation {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : Smale.ManifoldMorse.criticalPoints E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data p).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data p).chart.PositiveCoordinates) 1)
-    (H : C(ℝ × Smale.Hemisphere.Sphere 2, (S.data p).UpperLevel)) {τ : ℝ}
-    (hτ : τ ∈ Set.Ioo (0 : ℝ) 1) (x₀ : Smale.Hemisphere.Sphere 2)
+    (H : C(ℝ × Hemisphere.Sphere 2, (S.data p).UpperLevel)) {τ : ℝ}
+    (hτ : τ ∈ Set.Ioo (0 : ℝ) 1) (x₀ : Hemisphere.Sphere 2)
     (hcross :
       ∀ t ∈ Set.Icc (0 : ℝ) 1,
-        ∀ x : Smale.Hemisphere.Sphere 2,
+        ∀ x : Hemisphere.Sphere 2,
           H (t, x) ∈ Set.range (S.data p).surgery.beltSphere ↔ t = τ ∧ x = x₀) :
     ∃ D :
       C(((Set.range (S.data p).surgery.beltSphere)ᶜ : Set (S.data p).UpperLevel),
@@ -24659,7 +24659,7 @@ theorem AdaptedWindows.exists_lower_passage_homology_relation {E M : Type} [Norm
               D.comp
                 (PassageHomology.puncturedPassageTrace H
                   (Set.range (S.data p).surgery.beltSphere) hτ x₀ hcross)
-            (∀ z : ({(τ, x₀)}ᶜ : Set (ℝ × Smale.Hemisphere.Sphere 2)),
+            (∀ z : ({(τ, x₀)}ᶜ : Set (ℝ × Hemisphere.Sphere 2)),
                 z.val.1 ∈ Set.Icc (0 : ℝ) 1 → ∃ t : ℝ, S.flow t (H z.val).val = (G z).val) ∧
               ∀ (ε : ℝ) (hε : 0 < ε) (hεx : ε < Real.exp τ),
                 SingularMayerVietoris.singularHomologyMap
@@ -24686,7 +24686,7 @@ theorem AdaptedWindows.exists_lower_passage_homology_relation {E M : Type} [Norm
             (Set.range (S.data p).surgery.beltSphere) hτ x₀ hcross))
         2 (by decide)
 
-def Smale.PartialChart.openInclusion {E H X : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def PartialChart.openInclusion {E H X : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
     (U : TopologicalSpace.Opens X) [Nonempty U] : PartialDiffeomorph I I U X ∞ := by
   let h : OpenPartialHomeomorph U X := U.isOpen.isOpenEmbedding_subtypeVal.toOpenPartialHomeomorph
@@ -24702,7 +24702,7 @@ def Smale.PartialChart.openInclusion {E H X : Type*} [NormedAddCommGroup E] [Nor
   apply contMDiffWithinAt_id.congr_of_mem (fun y hy => ?_) hx
   exact h.right_inv hy
 
-theorem Smale.PartialChart.openInclusion_target {E H X : Type*} [NormedAddCommGroup E]
+theorem PartialChart.openInclusion_target {E H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X]
     [ChartedSpace H X] (U : TopologicalSpace.Opens X) [Nonempty U] :
     (openInclusion (I := I) U).target = U := by
@@ -24710,7 +24710,7 @@ theorem Smale.PartialChart.openInclusion_target {E H X : Type*} [NormedAddCommGr
   rw [Topology.IsOpenEmbedding.toOpenPartialHomeomorph_target]
   exact Subtype.range_coe
 
-theorem Smale.PartialChart.openInclusion_symm_coe {E H X : Type*} [NormedAddCommGroup E]
+theorem PartialChart.openInclusion_symm_coe {E H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X]
     [ChartedSpace H X] (U : TopologicalSpace.Opens X) [Nonempty U] {x : X} (hx : x ∈ U) :
     ((openInclusion (I := I) U).symm x).val = x := by
@@ -24793,7 +24793,7 @@ def PassageHomology.radialCylinderChart (E : Type) [NormedAddCommGroup E]
     ⟨⟨u.val, Metric.ne_of_mem_sphere u.property one_ne_zero⟩⟩
   exact
     (radialCylinderDiffeomorph E n).toPartialDiffeomorph.trans
-      (Smale.PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E))
+      (PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E))
 
 theorem PassageHomology.radialCylinderChart_mem_source (E : Type) [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (n : ℕ) [Fact (Module.finrank ℝ E = n + 1)]
@@ -24807,11 +24807,11 @@ theorem PassageHomology.radialCylinderChart_mem_target (E : Type) [NormedAddComm
   let _ : Nonempty (puncturedVectorSpace E) :=
     ⟨⟨u.val, Metric.ne_of_mem_sphere u.property one_ne_zero⟩⟩
   change
-    (z ∈ (Smale.PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).target ∧
-        (Smale.PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z ∈
+    (z ∈ (PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).target ∧
+        (PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z ∈
           Set.univ) ↔
       z ≠ 0
-  rw [Smale.PartialChart.openInclusion_target]
+  rw [PartialChart.openInclusion_target]
   exact ⟨fun h => h.1, fun h => ⟨h, Set.mem_univ _⟩⟩
 
 theorem PassageHomology.radialCylinderChart_symm_eq (E : Type) [NormedAddCommGroup E]
@@ -24822,24 +24822,24 @@ theorem PassageHomology.radialCylinderChart_symm_eq (E : Type) [NormedAddCommGro
     ⟨⟨u.val, Metric.ne_of_mem_sphere u.property one_ne_zero⟩⟩
   change
     (radialCylinderDiffeomorph E n).symm
-        ((Smale.PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z) =
+        ((PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z) =
       _
   have heq :
-    (Smale.PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z =
+    (PartialChart.openInclusion (I := 𝓘(ℝ, E)) (puncturedVectorSpace E)).symm z =
       (⟨z, hz⟩ : puncturedVectorSpace E) :=
     Subtype.ext
-      (Smale.PartialChart.openInclusion_symm_coe (I := 𝓘(ℝ, E)) (puncturedVectorSpace E) hz)
+      (PartialChart.openInclusion_symm_coe (I := 𝓘(ℝ, E)) (puncturedVectorSpace E) hz)
   rw [heq]
   rfl
 
-def Smale.PuncturedRadial.toSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
+def PuncturedRadial.toSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     C(Space N, Metric.sphere (0 : N) 1) :=
-  ⟨fun u => Smale.RadialExtension.direction u.val u.property,
+  ⟨fun u => RadialExtension.direction u.val u.property,
     ((continuous_subtype_val.norm.inv₀ (fun u => norm_ne_zero_iff.mpr u.property)).smul
           continuous_subtype_val).subtype_mk
       _⟩
 
-theorem Smale.PuncturedRadial.toSphere_fromSphere {N : Type*} [NormedAddCommGroup N]
+theorem PuncturedRadial.toSphere_fromSphere {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) (hr : 0 < r) (u : Metric.sphere (0 : N) 1) :
     toSphere (fromSphere r hr u) = u := by
   apply Subtype.ext
@@ -24847,7 +24847,7 @@ theorem Smale.PuncturedRadial.toSphere_fromSphere {N : Type*} [NormedAddCommGrou
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property, mul_one,
     inv_smul_smul₀ hr.ne']
 
-def Smale.PuncturedRadial.deformation {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
+def PuncturedRadial.deformation {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
     (hr : 0 < r) : (ContinuousMap.id (Space N)).Homotopy ((fromSphere r hr).comp toSphere)
     where
   toFun q := ⟨blendVector r q, blendVector_ne_zero r hr q⟩
@@ -24859,10 +24859,10 @@ def Smale.PuncturedRadial.deformation {N : Type*} [NormedAddCommGroup N] [Normed
   map_one_left
     u := by
     apply Subtype.ext
-    simp [blendVector, fromSphere, toSphere, Smale.RadialExtension.direction, div_eq_mul_inv,
+    simp [blendVector, fromSphere, toSphere, RadialExtension.direction, div_eq_mul_inv,
       smul_smul]
 
-def Smale.PuncturedRadial.sphereHomotopyEquiv {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def PuncturedRadial.sphereHomotopyEquiv {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     (r : ℝ) (hr : 0 < r) : Metric.sphere (0 : N) 1 ≃ₕ Space N
     where
   toFun := fromSphere r hr
@@ -24873,21 +24873,21 @@ def Smale.PuncturedRadial.sphereHomotopyEquiv {N : Type*} [NormedAddCommGroup N]
     rw [heq]
   right_inv := ⟨(deformation r hr).symm⟩
 
-def Smale.LocalDegree.linearSphereEquiv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def LocalDegree.linearSphereEquiv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r) :
-    Metric.sphere (0 : E) 1 ≃ₕ Smale.PuncturedRadial.Space F :=
-  (Smale.PuncturedRadial.sphereHomotopyEquiv r hr).trans
+    Metric.sphere (0 : E) 1 ≃ₕ PuncturedRadial.Space F :=
+  (PuncturedRadial.sphereHomotopyEquiv r hr).trans
     (puncturedLinearHomeomorph L).toHomotopyEquiv
 
-def Smale.LocalDegree.BoundaryData.normalizedMap {E F : Type} [NormedAddCommGroup E]
+def LocalDegree.BoundaryData.normalizedMap {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
-    {s : Set E} (b : Smale.LocalDegree.BoundaryData f L s) :
+    {s : Set E} (b : LocalDegree.BoundaryData f L s) :
     C(Metric.sphere (0 : E) 1, Metric.sphere (0 : F) 1) :=
-  Smale.PuncturedRadial.toSphere.comp b.map
+  PuncturedRadial.toSphere.comp b.map
 
-def MorseCancellation.radialParameterChart (τ : ℝ) (u : (Smale.Hemisphere.Sphere 2)) :
+def MorseCancellation.radialParameterChart (τ : ℝ) (u : (Hemisphere.Sphere 2)) :
     PartialDiffeomorph (𝓡 3) (𝓘(ℝ, ℝ).prod (𝓡 2)) (EuclideanSpace ℝ (Fin 3))
-      (ℝ × (Smale.Hemisphere.Sphere 2)) ∞ := by
+      (ℝ × (Hemisphere.Sphere 2)) ∞ := by
   let _ : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
   let b := PassageHomology.cylinderPuncture τ u
   let T : Diffeomorph (𝓡 3) (𝓡 3) (EuclideanSpace ℝ (Fin 3)) (EuclideanSpace ℝ (Fin 3)) ∞ :=
@@ -24903,7 +24903,7 @@ def MorseCancellation.radialParameterChart (τ : ℝ) (u : (Smale.Hemisphere.Sph
       (PassageHomology.radialCylinderChart (EuclideanSpace ℝ (Fin 3)) 2 u).symm
 
 theorem MorseCancellation.radialParameterChart_zero_mem_source (τ : ℝ)
-    (u : (Smale.Hemisphere.Sphere 2)) :
+    (u : (Hemisphere.Sphere 2)) :
     (0 : (EuclideanSpace ℝ (Fin 3))) ∈ (radialParameterChart τ u).source := by
   let _ : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
   change
@@ -24916,7 +24916,7 @@ theorem MorseCancellation.radialParameterChart_zero_mem_source (τ : ℝ)
       norm_pos_iff.mp
         (by rw [PassageHomology.norm_cylinderPuncture]; exact Real.exp_pos τ)⟩
 
-theorem MorseCancellation.radialParameterChart_zero (τ : ℝ) (u : (Smale.Hemisphere.Sphere 2)) :
+theorem MorseCancellation.radialParameterChart_zero (τ : ℝ) (u : (Hemisphere.Sphere 2)) :
     radialParameterChart τ u 0 = (τ, u) := by
   let _ : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
   change
@@ -24934,7 +24934,7 @@ theorem MorseCancellation.radialParameterChart_zero (τ : ℝ) (u : (Smale.Hemis
       (PassageHomology.radialCylinderChart_mem_source (EuclideanSpace ℝ (Fin 3)) 2 u
         (τ, u))
 
-theorem MorseCancellation.radialParameterChart_apply (τ : ℝ) (u : (Smale.Hemisphere.Sphere 2))
+theorem MorseCancellation.radialParameterChart_apply (τ : ℝ) (u : (Hemisphere.Sphere 2))
     (z : (EuclideanSpace ℝ (Fin 3))) (hz : PassageHomology.cylinderPuncture τ u + z ≠ 0) :
     radialParameterChart τ u z =
       (PassageHomology.radialCylinderHomeomorph (EuclideanSpace ℝ (Fin 3))).symm
@@ -24944,8 +24944,8 @@ theorem MorseCancellation.radialParameterChart_apply (τ : ℝ) (u : (Smale.Hemi
     PassageHomology.radialCylinderChart_symm_eq (EuclideanSpace ℝ (Fin 3)) 2 u
       (PassageHomology.cylinderPuncture τ u + z) hz
 
-theorem MorseCancellation.radialParameterChart_link (τ : ℝ) (u : (Smale.Hemisphere.Sphere 2)) (ε : ℝ)
-    (hε : 0 < ε) (hεu : ε < Real.exp τ) (w : (Smale.Hemisphere.Sphere 2)) :
+theorem MorseCancellation.radialParameterChart_link (τ : ℝ) (u : (Hemisphere.Sphere 2)) (ε : ℝ)
+    (hε : 0 < ε) (hεu : ε < Real.exp τ) (w : (Hemisphere.Sphere 2)) :
     radialParameterChart τ u (ε • w.val) =
       (PassageHomology.cylinderLink τ u ε hε hεu w).val := by
   have hz : PassageHomology.cylinderPuncture τ u + ε • w.val ≠ 0 :=

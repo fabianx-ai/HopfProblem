@@ -54,16 +54,16 @@ is an evidence command rather than library content.
 -- Lane A (singular homology core)
 #print axioms Mathoverflow1973.SingularMayerVietoris.exact_at_ambient
 #print axioms Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton
--- stayed in Hopf/ (obstruction: Smale.SphereReflection/MorseSurgeryData
+-- stayed in Hopf/ (obstruction: SphereReflection/MorseSurgeryData
 -- infrastructure, lanes D1/F/G); same statement, probed via Hopf import:
--- removed: Smale.LinearSphereAction.homology_eq_sign_smul still lives in
+-- removed: LinearSphereAction.homology_eq_sign_smul still lives in
 -- Hopf/SphereTopology.lean (lane G/D scope); the probe was premature.
 
 -- Lane D1 (Morse theory I)
-#print axioms Mathoverflow1973.Smale.ManifoldMorse.exists_morse_function
+#print axioms Mathoverflow1973.ManifoldMorse.exists_morse_function
 #print axioms Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
-#print axioms Mathoverflow1973.Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
--- The fourth probe, Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
+#print axioms Mathoverflow1973.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
+-- The fourth probe, ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
 -- (Reeb), moved to Lib in the lane-G merge; receipt in Lib/reports/A.md.
 
 -- Lane H (complex analysis)
@@ -73,7 +73,7 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_ball
 
 -- Lane D2 (Whitney embedding, projection bundle, collar, cells)
-#print axioms Mathoverflow1973.Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall
+#print axioms Mathoverflow1973.exists_tubularNeighborhood_in_open_of_embedded_closedBall
 
 -- Lane I (quotients, mapping torus, split extensions)
 #print axioms Mathoverflow1973.SplitGroupExtension.mulEquiv

@@ -14,10 +14,10 @@ trace flows through the handle, and the density of regular values.
 
 ## Main definitions and results
 
-* `Smale.MorseHandle.UnitDisk`, `Smale.MorseHandle.modelMap`, `Smale.MorseHandle.modelMap_injective` :
+* `MorseHandle.UnitDisk`, `MorseHandle.modelMap`, `MorseHandle.modelMap_injective` :
   the unit-disc model.
 * `BeltPassage.*` : belt-passage coordinates (`time`, `upper`, `lower`, `descentFlow`).
-* `Smale.RegularValues.dense_regularValues` : regular values are dense.
+* `RegularValues.dense_regularValues` : regular values are dense.
 
 ## References
 
@@ -50,14 +50,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-abbrev Smale.MorseHandle.UnitDisk (V : Type*) [NormedAddCommGroup V] :=
+abbrev MorseHandle.UnitDisk (V : Type*) [NormedAddCommGroup V] :=
   Metric.closedBall (0 : V) 1
 
-def Smale.MorseHandle.modelMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.modelMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : UnitDisk N × UnitDisk P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖(z.2 : P)‖ ^ 2)) • (z.1 : N), ρ • (z.2 : P))
 
-theorem Smale.MorseHandle.continuous_modelMap {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.continuous_modelMap {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) :
     Continuous (modelMap (N := N) (P := P) ρ) := by
   have hu : Continuous (fun z : UnitDisk N × UnitDisk P => (z.1 : N)) :=
@@ -70,12 +70,12 @@ theorem Smale.MorseHandle.continuous_modelMap {N P : Type*} [NormedAddCommGroup 
           hu).prodMk
       (continuous_const.smul hv)
 
-theorem Smale.MorseHandle.negative_scale_pos {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.negative_scale_pos {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     0 < ρ * Real.sqrt (1 + ‖(z.2 : P)‖ ^ 2) :=
   mul_pos hρ (Real.sqrt_pos.mpr (by positivity))
 
-theorem Smale.MorseHandle.modelMap_injective {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.modelMap_injective {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) :
     Function.Injective (modelMap (N := N) (P := P) ρ) := by
   rintro ⟨u, v⟩ ⟨u', v'⟩ h
@@ -90,7 +90,7 @@ theorem Smale.MorseHandle.modelMap_injective {N P : Type*} [NormedAddCommGroup N
       one_smul] using hh
   exact Prod.ext (Subtype.ext hu) rfl
 
-theorem Smale.MorseHandle.modelMap_mem_product {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.modelMap_mem_product {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (z : UnitDisk N × UnitDisk P) :
     modelMap ρ z ∈ Metric.closedBall (0 : N) (2 * ρ) ×ˢ Metric.closedBall (0 : P) (2 * ρ) := by
@@ -114,7 +114,7 @@ theorem Smale.MorseHandle.modelMap_mem_product {N P : Type*} [NormedAddCommGroup
     have hh := mul_le_mul_of_nonneg_left hv hρ.le
     linarith
 
-theorem Smale.MorseHandle.modelMap_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem MorseHandle.modelMap_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     -‖(modelMap ρ z).1‖ ^ 2 + ‖(modelMap ρ z).2‖ ^ 2 =
       ρ ^ 2 * ((1 + ‖(z.2 : P)‖ ^ 2) * (1 - ‖(z.1 : N)‖ ^ 2) - 1) := by
@@ -122,7 +122,7 @@ theorem Smale.MorseHandle.modelMap_height {N P : Type*} [NormedAddCommGroup N] [
     abs_of_pos hρ, mul_pow, Real.sq_sqrt (show 0 ≤ 1 + ‖(z.2 : P)‖ ^ 2 by positivity)]
   ring
 
-theorem Smale.MorseHandle.modelMap_lower_iff {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.modelMap_lower_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (z : UnitDisk N × UnitDisk P) :
     -‖(modelMap ρ z).1‖ ^ 2 + ‖(modelMap ρ z).2‖ ^ 2 ≤ -(ρ ^ 2) ↔ ‖(z.1 : N)‖ = 1 := by
@@ -142,7 +142,7 @@ theorem Smale.MorseHandle.modelMap_lower_iff {N P : Type*} [NormedAddCommGroup N
   · intro h
     simp only [h, one_pow, sub_self, MulZeroClass.mul_zero, zero_sub, mul_neg, mul_one, le_refl]
 
-theorem Smale.MorseHandle.modelMap_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem MorseHandle.modelMap_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     -‖(modelMap ρ z).1‖ ^ 2 + ‖(modelMap ρ z).2‖ ^ 2 ≤ ρ ^ 2 := by
   rw [modelMap_height hρ z]
@@ -154,54 +154,54 @@ theorem Smale.MorseHandle.modelMap_upper {N P : Type*} [NormedAddCommGroup N] [N
     nlinarith [mul_nonneg hfactor hu₂]
   simpa only [mul_one] using mul_le_mul_of_nonneg_left hsmall (sq_nonneg ρ)
 
-def Smale.MorseHandle.beltFaceScale (r : ℝ) : ℝ :=
+def MorseHandle.beltFaceScale (r : ℝ) : ℝ :=
   Real.sqrt (1 + r ^ 2) / Real.sqrt 2
 
-theorem Smale.MorseHandle.beltFaceScale_pos (r : ℝ) : 0 < beltFaceScale r :=
+theorem MorseHandle.beltFaceScale_pos (r : ℝ) : 0 < beltFaceScale r :=
   div_pos (Real.sqrt_pos.mpr (by positivity)) (Real.sqrt_pos.mpr (by norm_num))
 
-theorem Smale.MorseHandle.continuous_beltFaceScale : Continuous beltFaceScale :=
+theorem MorseHandle.continuous_beltFaceScale : Continuous beltFaceScale :=
   (Real.continuous_sqrt.comp (continuous_const.add (continuous_id.pow 2))).div_const _
 
-theorem Smale.MorseHandle.beltFaceScale_one : beltFaceScale 1 = 1 := by
+theorem MorseHandle.beltFaceScale_one : beltFaceScale 1 = 1 := by
   simp only [beltFaceScale, one_pow, one_add_one_eq_two]
   exact div_self (Real.sqrt_pos.mpr (by norm_num)).ne'
 
-theorem Smale.MorseHandle.beltFaceScale_monotone : MonotoneOn beltFaceScale (Set.Ici 0) := by
+theorem MorseHandle.beltFaceScale_monotone : MonotoneOn beltFaceScale (Set.Ici 0) := by
   intro r hr s hs hrs
   apply div_le_div_of_nonneg_right _ (Real.sqrt_nonneg 2)
   apply Real.sqrt_le_sqrt
   have hsq : r ^ 2 ≤ s ^ 2 := (sq_le_sq₀ hr hs).mpr hrs
   linarith
 
-theorem Smale.MorseHandle.beltFaceRadius_strictMono :
+theorem MorseHandle.beltFaceRadius_strictMono :
     StrictMonoOn (fun r => beltFaceScale r * r) (Set.Ici 0) := by
   intro r hr s hs hrs
   exact
     (mul_lt_mul_of_pos_left hrs (beltFaceScale_pos r)).trans_le
       (mul_le_mul_of_nonneg_right (beltFaceScale_monotone hr hs hrs.le) hs)
 
-def Smale.MorseHandle.beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (u : N) :
+def MorseHandle.beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (u : N) :
     N :=
   beltFaceScale ‖u‖ • u
 
-theorem Smale.MorseHandle.continuous_beltFaceMap {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.continuous_beltFaceMap {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Continuous (beltFaceMap (N := N)) :=
   (continuous_beltFaceScale.comp continuous_norm).smul continuous_id
 
-theorem Smale.MorseHandle.norm_beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem MorseHandle.norm_beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     (u : N) : ‖beltFaceMap u‖ = beltFaceScale ‖u‖ * ‖u‖ := by
   rw [beltFaceMap, norm_smul, Real.norm_eq_abs, abs_of_pos (beltFaceScale_pos _)]
 
-theorem Smale.MorseHandle.beltFaceMap_zero {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
+theorem MorseHandle.beltFaceMap_zero {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     beltFaceMap (0 : N) = 0 := by simp only [beltFaceMap, smul_zero]
 
-theorem Smale.MorseHandle.norm_beltFaceMap_lt_one_iff {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.norm_beltFaceMap_lt_one_iff {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (u : N) : ‖beltFaceMap u‖ < 1 ↔ ‖u‖ < 1 := by
   have hh := beltFaceRadius_strictMono.lt_iff_lt (norm_nonneg u) (show 0 ≤ (1 : ℝ) by norm_num)
   simpa only [beltFaceScale_one, mul_one, norm_beltFaceMap] using hh
 
-theorem Smale.MorseHandle.beltFaceMap_mem_disk {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.beltFaceMap_mem_disk {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] {u : N} (hu : ‖u‖ ≤ 1) : ‖beltFaceMap u‖ ≤ 1 := by
   rw [norm_beltFaceMap]
   have hs : beltFaceScale ‖u‖ ≤ 1 := by
@@ -209,7 +209,7 @@ theorem Smale.MorseHandle.beltFaceMap_mem_disk {N : Type*} [NormedAddCommGroup N
     exact beltFaceScale_monotone (norm_nonneg u) (by norm_num) hu
   exact (mul_le_mul_of_nonneg_right hs (norm_nonneg u)).trans (by simpa only [one_mul])
 
-theorem Smale.MorseHandle.beltFaceMap_injective {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.beltFaceMap_injective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Function.Injective (beltFaceMap (N := N)) := by
   intro u v huv
   have hn : ‖u‖ = ‖v‖ := by
@@ -219,7 +219,7 @@ theorem Smale.MorseHandle.beltFaceMap_injective {N : Type*} [NormedAddCommGroup 
   rw [hn] at huv
   exact (smul_right_injective N (beltFaceScale_pos ‖v‖).ne') huv
 
-theorem Smale.MorseHandle.beltFaceMap_surjOn_disk {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.beltFaceMap_surjOn_disk {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] :
     Set.SurjOn (beltFaceMap (N := N)) (Metric.closedBall 0 1) (Metric.closedBall 0 1) := by
   intro v hv
@@ -243,16 +243,16 @@ theorem Smale.MorseHandle.beltFaceMap_surjOn_disk {N : Type*} [NormedAddCommGrou
   change beltFaceScale ‖u‖ • ((r / ‖v‖) • v) = v
   rw [hnorm, smul_smul, ← mul_div_assoc, hrv, div_self hvpos.ne', one_smul]
 
-def Smale.MorseHandle.beltFaceDiskMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
+def MorseHandle.beltFaceDiskMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     UnitDisk N → UnitDisk N := fun u =>
   ⟨beltFaceMap u.val,
     mem_closedBall_zero_iff.mpr (beltFaceMap_mem_disk (mem_closedBall_zero_iff.mp u.property))⟩
 
-theorem Smale.MorseHandle.continuous_beltFaceDiskMap {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.continuous_beltFaceDiskMap {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Continuous (beltFaceDiskMap (N := N)) :=
   (continuous_beltFaceMap.comp continuous_subtype_val).subtype_mk _
 
-theorem Smale.MorseHandle.beltFaceDiskMap_bijective {N : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.beltFaceDiskMap_bijective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Function.Bijective (beltFaceDiskMap (N := N)) := by
   constructor
   · intro u v huv
@@ -261,20 +261,20 @@ theorem Smale.MorseHandle.beltFaceDiskMap_bijective {N : Type*} [NormedAddCommGr
     obtain ⟨u, hu, huv⟩ := beltFaceMap_surjOn_disk v.property
     exact ⟨⟨u, hu⟩, Subtype.ext huv⟩
 
-def Smale.MorseHandle.beltFaceDiskHomeomorph {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.beltFaceDiskHomeomorph {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] : UnitDisk N ≃ₜ UnitDisk N :=
   Continuous.homeoOfEquivCompactToT2 (f :=
     Equiv.ofBijective beltFaceDiskMap beltFaceDiskMap_bijective) continuous_beltFaceDiskMap
 
-def Smale.MorseHandle.ambientMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.ambientMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : N × P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖z.2‖ ^ 2)) • z.1, ρ • z.2)
 
-def Smale.MorseHandle.ambientInverse {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.ambientInverse {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : N × P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖ρ⁻¹ • z.2‖ ^ 2))⁻¹ • z.1, ρ⁻¹ • z.2)
 
-theorem Smale.MorseHandle.ambientInverse_ambientMap {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.ambientInverse_ambientMap {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     ambientInverse ρ (ambientMap ρ z) = z := by
   have hscale : 0 < ρ * Real.sqrt (1 + ‖z.2‖ ^ 2) :=
@@ -284,7 +284,7 @@ theorem Smale.MorseHandle.ambientInverse_ambientMap {N P : Type*} [NormedAddComm
       inv_mul_cancel₀ hscale.ne']
   · simp only [ambientInverse, ambientMap, smul_smul, inv_mul_cancel₀ hρ.ne', one_smul]
 
-theorem Smale.MorseHandle.ambientMap_ambientInverse {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.ambientMap_ambientInverse {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     ambientMap ρ (ambientInverse ρ z) = z := by
   have hscale : 0 < ρ * Real.sqrt (1 + ‖ρ⁻¹ • z.2‖ ^ 2) :=
@@ -293,7 +293,7 @@ theorem Smale.MorseHandle.ambientMap_ambientInverse {N P : Type*} [NormedAddComm
   · simp only [ambientInverse, ambientMap, smul_smul, mul_inv_cancel₀ hscale.ne', one_smul]
   · simp only [ambientInverse, ambientMap, smul_smul, mul_inv_cancel₀ hρ.ne', one_smul]
 
-def Smale.MorseHandle.ambientHomeomorph {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.ambientHomeomorph {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (hρ : 0 < ρ) : (N × P) ≃ₜ (N × P) := by
   have hscale (v : P) : 0 < ρ * Real.sqrt (1 + ‖v‖ ^ 2) :=
     mul_pos hρ (Real.sqrt_pos.mpr (by positivity))
@@ -316,13 +316,13 @@ def Smale.MorseHandle.ambientHomeomorph {N P : Type*} [NormedAddCommGroup N] [No
     exact ((hc.inv₀ (fun z => (hscale (ρ⁻¹ • z.2)).ne')).smul continuous_fst).prodMk hv
 
 @[simp]
-theorem Smale.MorseHandle.ambientHomeomorph_zero {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.ambientHomeomorph_zero {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (hρ : 0 < ρ) :
     ambientHomeomorph (N := N) (P := P) ρ hρ 0 = 0 := by
   change ambientMap ρ (0 : N × P) = 0
   simp only [ambientMap, Prod.fst_zero, Prod.snd_zero, smul_zero, Prod.mk_zero_zero]
 
-theorem Smale.MorseHandle.range_modelMap_mem_nhds_zero {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.range_modelMap_mem_nhds_zero {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) :
     Set.range (modelMap (N := N) (P := P) ρ) ∈ 𝓝 (0 : N × P) := by
   let e := ambientHomeomorph (N := N) (P := P) ρ hρ
@@ -338,13 +338,13 @@ theorem Smale.MorseHandle.range_modelMap_mem_nhds_zero {N P : Type*} [NormedAddC
         rfl⟩
   exact Filter.mem_of_superset (hO.mem_nhds hzero) hsub
 
-theorem Smale.MorseHandle.inverse_scale_sq {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
+theorem MorseHandle.inverse_scale_sq {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     {ρ : ℝ} (hρ : 0 < ρ) (v : P) : (ρ * Real.sqrt (1 + ‖ρ⁻¹ • v‖ ^ 2)) ^ 2 = ρ ^ 2 + ‖v‖ ^ 2 := by
   rw [mul_pow, Real.sq_sqrt (by positivity), norm_smul, Real.norm_eq_abs,
     abs_of_pos (inv_pos.mpr hρ)]
   field_simp
 
-theorem Smale.MorseHandle.mem_range_modelMap_iff {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.mem_range_modelMap_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     z ∈ Set.range (modelMap ρ) ↔ ‖z.2‖ ≤ ρ ∧ -(ρ ^ 2) ≤ -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2 := by
   let A := ρ * Real.sqrt (1 + ‖ρ⁻¹ • z.2‖ ^ 2)
@@ -373,19 +373,19 @@ theorem Smale.MorseHandle.mem_range_modelMap_iff {N P : Type*} [NormedAddCommGro
         ?_⟩
     exact ambientMap_ambientInverse hρ z
 
-def Smale.MorseHandle.quadratic {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
+def MorseHandle.quadratic {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
     (z : N × P) : ℝ :=
   -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2
 
-def Smale.MorseHandle.descent {N P : Type*} [NormedAddCommGroup P] (z : N × P) : N × P :=
+def MorseHandle.descent {N P : Type*} [NormedAddCommGroup P] (z : N × P) : N × P :=
   (z.1, -z.2)
 
-theorem Smale.MorseHandle.contDiff_descent {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.contDiff_descent {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] :
     ContDiff ℝ ∞ (descent (N := N) (P := P)) :=
   contDiff_fst.prodMk contDiff_snd.neg
 
-theorem Smale.MorseHandle.fderiv_quadratic_descent {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.fderiv_quadratic_descent {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] (z : N × P) :
     fderiv ℝ quadratic z (descent z) = -2 * (‖z.1‖ ^ 2 + ‖z.2‖ ^ 2) := by
   have hd :=
@@ -399,7 +399,7 @@ theorem Smale.MorseHandle.fderiv_quadratic_descent {N P : Type*} [NormedAddCommG
     inner_neg_right, real_inner_self_eq_norm_sq, two_smul]
   ring
 
-theorem Smale.MorseHandle.fderiv_quadratic_descent_neg {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.fderiv_quadratic_descent_neg {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] {z : N × P}
     (hz : z ≠ 0) : fderiv ℝ quadratic z (descent z) < 0 := by
   rw [fderiv_quadratic_descent]
@@ -410,7 +410,7 @@ theorem Smale.MorseHandle.fderiv_quadratic_descent_neg {N P : Type*} [NormedAddC
     exact hz (Prod.ext (norm_eq_zero.mp hu) (norm_eq_zero.mp hv))
   nlinarith
 
-def Smale.MorseHandle.descentFlow {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.descentFlow {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] : Flow ℝ (N × P)
     where
   toFun t z := (Real.exp t • z.1, Real.exp (-t) • z.2)
@@ -420,7 +420,7 @@ def Smale.MorseHandle.descentFlow {N P : Type*} [NormedAddCommGroup N] [NormedSp
   map_add' s t z := by simp only [Real.exp_add, neg_add, smul_smul]
   map_zero' z := by simp
 
-theorem Smale.MorseHandle.hasDerivAt_descentFlow {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.hasDerivAt_descentFlow {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (z : N × P) (t : ℝ) :
     HasDerivAt (fun s => descentFlow s z) (descent (descentFlow t z)) t := by
   have h₁ := (Real.hasDerivAt_exp t).smul_const z.1
@@ -428,31 +428,31 @@ theorem Smale.MorseHandle.hasDerivAt_descentFlow {N P : Type*} [NormedAddCommGro
   simpa only [descentFlow, descent, id_eq, Pi.neg_apply, mul_neg, mul_one, neg_smul] using
     h₁.prodMk h₂
 
-theorem Smale.MorseHandle.norm_descentFlow_fst {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.norm_descentFlow_fst {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (t : ℝ) (z : N × P) :
     ‖(descentFlow t z).1‖ = Real.exp t * ‖z.1‖ := by
   change ‖Real.exp t • z.1‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos t)]
 
-theorem Smale.MorseHandle.norm_descentFlow_snd {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.norm_descentFlow_snd {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (t : ℝ) (z : N × P) :
     ‖(descentFlow t z).2‖ = Real.exp (-t) * ‖z.2‖ := by
   change ‖Real.exp (-t) • z.2‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos (-t))]
 
-theorem Smale.MorseHandle.norm_fst_le_descentFlow {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.norm_fst_le_descentFlow {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {t : ℝ} (ht : 0 ≤ t) (z : N × P) :
     ‖z.1‖ ≤ ‖(descentFlow t z).1‖ := by
   rw [norm_descentFlow_fst]
   exact le_mul_of_one_le_left (norm_nonneg _) (Real.one_le_exp_iff.mpr ht)
 
-theorem Smale.MorseHandle.norm_snd_descentFlow_le {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.norm_snd_descentFlow_le {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {t : ℝ} (ht : 0 ≤ t) (z : N × P) :
     ‖(descentFlow t z).2‖ ≤ ‖z.2‖ := by
   rw [norm_descentFlow_snd]
   exact mul_le_of_le_one_left (norm_nonneg _) (Real.exp_le_one_iff.mpr (neg_nonpos.mpr ht))
 
-theorem Smale.MorseHandle.mem_lower_union_handle_iff {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.mem_lower_union_handle_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     z ∈ {w | quadratic w ≤ -(ρ ^ 2)} ∪ Set.range (modelMap ρ) ↔
       quadratic z ≤ -(ρ ^ 2) ∨ ‖z.2‖ ≤ ρ := by
@@ -468,21 +468,21 @@ theorem Smale.MorseHandle.mem_lower_union_handle_iff {N P : Type*} [NormedAddCom
       · exact Or.inl hq
       · exact Or.inr ⟨h, le_of_not_ge hq⟩
 
-def Smale.MorseHandle.beltFaceTime (r : ℝ) : ℝ :=
+def MorseHandle.beltFaceTime (r : ℝ) : ℝ :=
   Real.log (Real.sqrt (1 + r ^ 2))
 
-theorem Smale.MorseHandle.beltFaceTime_nonneg (r : ℝ) : 0 ≤ beltFaceTime r :=
+theorem MorseHandle.beltFaceTime_nonneg (r : ℝ) : 0 ≤ beltFaceTime r :=
   Real.log_nonneg (Real.one_le_sqrt.mpr (by nlinarith [sq_nonneg r]))
 
-theorem Smale.MorseHandle.exp_beltFaceTime (r : ℝ) :
+theorem MorseHandle.exp_beltFaceTime (r : ℝ) :
     Real.exp (beltFaceTime r) = Real.sqrt (1 + r ^ 2) :=
   Real.exp_log (Real.sqrt_pos.mpr (by positivity))
 
-def Smale.MorseHandle.beltLevelModel {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def MorseHandle.beltLevelModel {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) : N × P :=
   (ρ • u, (ρ * Real.sqrt (1 + ‖u‖ ^ 2)) • v)
 
-theorem Smale.MorseHandle.beltLevelModel_height {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.beltLevelModel_height {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (u : N)
     {v : P} (hv : ‖v‖ = 1) : quadratic (beltLevelModel ρ u v) = ρ ^ 2 := by
   have hs : 0 < Real.sqrt (1 + ‖u‖ ^ 2) := Real.sqrt_pos.mpr (by positivity)
@@ -491,7 +491,7 @@ theorem Smale.MorseHandle.beltLevelModel_height {N P : Type*} [NormedAddCommGrou
     Real.sq_sqrt (show 0 ≤ 1 + ‖u‖ ^ 2 by positivity)]
   ring
 
-theorem Smale.MorseHandle.descentFlow_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.descentFlow_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : UnitDisk N)
     (v : UnitDisk P) (hv : ‖v.val‖ = 1) :
     descentFlow (beltFaceTime ‖u.val‖) (beltLevelModel ρ u.val v.val) =
@@ -512,7 +512,7 @@ theorem Smale.MorseHandle.descentFlow_beltFaceTime {N P : Type*} [NormedAddCommG
     congr 1
     field_simp
 
-theorem Smale.MorseHandle.descentFlow_beltLevelModel_mem_block {N P : Type*}
+theorem MorseHandle.descentFlow_beltLevelModel_mem_block {N P : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ}
     (hρ : 0 < ρ) (u : UnitDisk N) {v : P} (hv : ‖v‖ = 1) {t : ℝ}
     (ht : t ∈ Set.Icc 0 (beltFaceTime ‖u.val‖)) :
@@ -542,7 +542,7 @@ theorem Smale.MorseHandle.descentFlow_beltLevelModel_mem_block {N P : Type*}
       _ ≤ ρ * 2 := (mul_le_mul_of_nonneg_left hs hρ.le)
       _ = 2 * ρ := mul_comm _ _
 
-theorem Smale.MorseHandle.descentFlow_neg_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.descentFlow_neg_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : UnitDisk N)
     (v : UnitDisk P) (hv : ‖v.val‖ = 1) :
     descentFlow (-beltFaceTime ‖u.val‖) (modelMap ρ (beltFaceDiskMap u, v)) =
@@ -550,7 +550,7 @@ theorem Smale.MorseHandle.descentFlow_neg_beltFaceTime {N P : Type*} [NormedAddC
   rw [← descentFlow_beltFaceTime ρ u v hv, ← descentFlow.map_add, neg_add_cancel,
     descentFlow.map_zero_apply]
 
-theorem Smale.MorseHandle.descentFlow_positiveFace_mem_block {N P : Type*} [NormedAddCommGroup N]
+theorem MorseHandle.descentFlow_positiveFace_mem_block {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (u : UnitDisk N) (v : UnitDisk P) (hv : ‖v.val‖ = 1) {t : ℝ}
     (ht : t ∈ Set.uIcc 0 (-beltFaceTime ‖u.val‖)) :
@@ -585,7 +585,7 @@ def BeltPassage.lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
 
 theorem BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) {s : ℝ} (hs : 0 < s) (u : N) (v : P) :
-    Smale.MorseHandle.descentFlow (time s) (BeltPassage.upper ρ s u v) =
+    MorseHandle.descentFlow (time s) (BeltPassage.upper ρ s u v) =
       BeltPassage.lower ρ s u v := by
   have hr : Real.sqrt (1 + s ^ 2) ≠ 0 := (Real.sqrt_pos.mpr (by positivity)).ne'
   apply Prod.ext
@@ -602,13 +602,13 @@ theorem BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ s : ℝ} (hρ : 0 < ρ) (hs : 0 < s)
     (hs₁ : s ≤ 1) {u : N} (hu : ‖u‖ = 1) {v : P} (hv : ‖v‖ = 1) {t : ℝ}
     (ht : t ∈ Set.Icc 0 (time s)) :
-    Smale.MorseHandle.descentFlow t (BeltPassage.upper ρ s u v) ∈
+    MorseHandle.descentFlow t (BeltPassage.upper ρ s u v) ∈
       Metric.closedBall (0 : N) (2 * ρ) ×ˢ Metric.closedBall (0 : P) (2 * ρ) := by
   have hrpos : 0 < Real.sqrt (1 + s ^ 2) := Real.sqrt_pos.mpr (by positivity)
   have hr : Real.sqrt (1 + s ^ 2) ≤ 2 := Real.sqrt_le_iff.mpr ⟨by norm_num, by nlinarith⟩
   have hpos : 0 ≤ ρ * s := (mul_pos hρ hs).le
   constructor
-  · rw [mem_closedBall_zero_iff, Smale.MorseHandle.norm_descentFlow_fst]
+  · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst]
     change Real.exp t * ‖(ρ * s) • u‖ ≤ 2 * ρ
     rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hpos, hu, mul_one]
     calc
@@ -617,7 +617,7 @@ theorem BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
       _ = ρ * Real.sqrt (1 + s ^ 2) := by rw [exp_time hs]; field_simp
       _ ≤ ρ * 2 := (mul_le_mul_of_nonneg_left hr hρ.le)
       _ = 2 * ρ := mul_comm _ _
-  · rw [mem_closedBall_zero_iff, Smale.MorseHandle.norm_descentFlow_snd]
+  · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_snd]
     change Real.exp (-t) * ‖(ρ * Real.sqrt (1 + s ^ 2)) • v‖ ≤ 2 * ρ
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (mul_pos hρ hrpos), hv, mul_one]
     calc
@@ -648,8 +648,8 @@ theorem BeltPassage.upper_neg {N P : Type*} [NormedAddCommGroup N] [NormedSpace 
 
 theorem BeltPassage.upper_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) {u : N} (hu : ‖u‖ = 1) {v : P}
-    (hv : ‖v‖ = 1) : Smale.MorseHandle.quadratic (BeltPassage.upper ρ s u v) = ρ ^ 2 := by
-  simp only [Smale.MorseHandle.quadratic, BeltPassage.upper, norm_smul, Real.norm_eq_abs,
+    (hv : ‖v‖ = 1) : MorseHandle.quadratic (BeltPassage.upper ρ s u v) = ρ ^ 2 := by
+  simp only [MorseHandle.quadratic, BeltPassage.upper, norm_smul, Real.norm_eq_abs,
     hu, hv, mul_one, sq_abs, mul_pow, Real.sq_sqrt (show 0 ≤ 1 + s ^ 2 by positivity)]
   ring
 
@@ -686,15 +686,15 @@ theorem BeltPassage.upper_mem_block {N P : Type*} [NormedAddCommGroup N] [Normed
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (mul_pos hρ hrpos), hv, mul_one]
     exact (mul_le_mul_of_nonneg_left hr hρ.le).trans_eq (mul_comm _ _)
 
-def Smale.RegularValues.singularPoints {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularValues.singularPoints {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : E → E) : Set E :=
   {x | (fderiv ℝ f x).det = 0}
 
-def Smale.RegularValues.regularValues {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularValues.regularValues {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : E → E) : Set E :=
   (f '' singularPoints f)ᶜ
 
-theorem Smale.RegularValues.mem_regularValues_iff {E : Type*} [NormedAddCommGroup E]
+theorem RegularValues.mem_regularValues_iff {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (f : E → E) (y : E) :
     y ∈ regularValues f ↔ ∀ x, f x = y → (fderiv ℝ f x).det ≠ 0 := by
   constructor
@@ -703,7 +703,7 @@ theorem Smale.RegularValues.mem_regularValues_iff {E : Type*} [NormedAddCommGrou
   · intro hy ⟨x, hx, hxy⟩
     exact hy x hxy hx
 
-theorem Smale.RegularValues.bijective_iff_det_ne_zero {E : Type*} [NormedAddCommGroup E]
+theorem RegularValues.bijective_iff_det_ne_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (A : E →L[ℝ] E) :
     Function.Bijective A ↔ A.det ≠ 0 := by
   constructor
@@ -716,20 +716,20 @@ theorem Smale.RegularValues.bijective_iff_det_ne_zero {E : Type*} [NormedAddComm
     have hi := LinearMap.ker_eq_bot.mp hker
     exact ⟨hi, LinearMap.injective_iff_surjective.mp hi⟩
 
-theorem Smale.RegularValues.bijective_fderiv_of_mem_regularValues {E : Type*}
+theorem RegularValues.bijective_fderiv_of_mem_regularValues {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → E} {y : E}
     (hy : y ∈ regularValues f) {x : E} (hx : f x = y) : Function.Bijective (fderiv ℝ f x) := by
   have hdet := (mem_regularValues_iff f y).mp hy x hx
   exact (bijective_iff_det_ne_zero _).mpr hdet
 
-theorem Smale.RegularValues.measure_singularValues_eq_zero {E : Type*} [NormedAddCommGroup E]
+theorem RegularValues.measure_singularValues_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] {f : E → E}
     (hf : Differentiable ℝ f) : μ (f '' singularPoints f) = 0 :=
   MeasureTheory.addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ
     (fun x _ => (hf x).hasFDerivAt.hasFDerivWithinAt) (fun _ hx => hx)
 
-theorem Smale.RegularValues.dense_regularValues {E : Type*} [NormedAddCommGroup E]
+theorem RegularValues.dense_regularValues {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] {f : E → E}
     (hf : Differentiable ℝ f) : Dense (regularValues f) := by

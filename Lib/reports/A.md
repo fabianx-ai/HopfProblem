@@ -86,35 +86,35 @@ Transitional shims: `Hopf/LibShims.lean` recreates the old dotted paths via `exp
 (541 names; **[corrected]** was 449, review A check 10.7; PeriodTorusHigherHomology ≈1,657 references in IntegralHomology alone), and every
 Hopf module gains one `import Hopf.LibShims` line. De-shim is the owner's follow-up.
 The other Lib namespaces (`SmallChainBiprod`, `SingularMayerVietoris`, `SphereHomology`,
-`PassageHomology`, `Smale.LocalDegree`, `Smale.PuncturedRadial`) keep their names this
+`PassageHomology`, `LocalDegree`, `PuncturedRadial`) keep their names this
 lane — none is in the mandated rename list; Mathlib-shaped renames for them belong with the
 de-duplication pass (Q4) and are an open item.
 
 ## Honest obstructions (declarations left in `Hopf/`, exact lists)
 
 1. **LinearSphereAction region (SphereTopology 16147–18066).** All of
-   `Smale.LinearSphereAction.*` minus nothing — together with `Smale.SphereReflection.*`,
-   `Smale.SpherePoint.*`, `Smale.ManifoldMorse.MorseSurgeryData.*`,
-   `Smale.SuspensionReflection.*`, `NoExotic.IntLinearAutomorphism.*` — is welded to
-   `Smale.MorseHandle` (DifferentialTopology, lane D1), `Smale.SphereReflection`,
+   `LinearSphereAction.*` minus nothing — together with `SphereReflection.*`,
+   `SpherePoint.*`, `ManifoldMorse.MorseSurgeryData.*`,
+   `SuspensionReflection.*`, `NoExotic.IntLinearAutomorphism.*` — is welded to
+   `MorseHandle` (DifferentialTopology, lane D1), `SphereReflection`,
    `LinearFramePaths` and the Morse-surgery structures (lanes F/G territory).
    Word-boundary dependency closure: only 3 of 140+ decls are movable in isolation — not
    worth a fragment file. Moves after D1/F/G land. Includes the probe theorem
-   `Smale.LinearSphereAction.homology_eq_sign_smul` (probed in place; same statement).
+   `LinearSphereAction.homology_eq_sign_smul` (probed in place; same statement).
 2. **LocalContributions leftovers (21 decls).** `MorseSurgeryData.attachingCollapse*`,
    `.collapseOverlapMap*`, `.upperLevelInclusion`, `.bandSublevelHomeomorph`,
    `.attachingHomology_subsingleton_of_index`, `.lowerHomology_subsingleton_of_upper_and_index`,
    `SurgeryWindows.BandData*`, `.consecutiveBandData`,
    `.lower_homologyOne_subsingleton_of_indices`, `SublevelDisk.contractibleSpace`,
    `.homology_subsingleton`, `CoverLocalContributions.localMap`, `.connecting_sum` —
-   reference `Smale.OnePointCover` (SphereTopology 11026–11878, lane E1) and
-   `Smale.SublevelDisk` (5000–6556, lane E1). Move after E1.
+   reference `OnePointCover` (SphereTopology 11026–11878, lane E1) and
+   `SublevelDisk` (5000–6556, lane E1). Move after E1.
 3. **LocalDegree radial family (17 decls).** `radialCylinderHomeomorph` (+2 symm lemmas),
    `radialCylinderDiffeomorph`, `radialCylinderChart` (+3), `puncturedCylinderHomeomorph`,
    `cylinderLink`, `punctured_cylinder_endpoint_relation`, `punctured_cylinder_trace_relation`,
    `PuncturedRadial.toSphere`, `.deformation`, `.sphereHomotopyEquiv`,
    `LocalDegree.linearSphereEquiv`, `BoundaryData.normalizedMap` — reference
-   `Smale.PartialChart.openInclusion`, `Smale.RadialExtension.direction`,
+   `PartialChart.openInclusion`, `RadialExtension.direction`,
    `homeomorphUnitSphereProd` (glue outside every lane's census range; Lib cannot import
    Hopf). Their E1/F consumers stay green against the Hopf copies.
 4. **Augmentation block (Hurewicz 15792–15994 + 23324–23422, 32 decls).** References
@@ -133,7 +133,7 @@ de-duplication pass (Q4) and are an open item.
     `[propext, Classical.choice, Quot.sound]`
   - `Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton`:
     `[propext, Classical.choice, Quot.sound]`
-  - `Mathoverflow1973.Smale.LinearSphereAction.homology_eq_sign_smul` (stayed in `Hopf/`;
+  - `Mathoverflow1973.LinearSphereAction.homology_eq_sign_smul` (stayed in `Hopf/`;
     probed by `lake env lean` on a scratch file with `import Hopf.SphereTopology`,
     receipt below):
     `[propext, Classical.choice, Quot.sound]`
@@ -166,7 +166,7 @@ de-duplication pass (Q4) and are an open item.
    the owner's de-shim pass deletes them.
 5. **Namespace renames for the non-mandated prefixes** (SmallChainBiprod,
    SingularMayerVietoris, SphereHomology, PassageHonology→LocalDegree-family,
-   Smale.LocalDegree, Smale.PuncturedRadial) to Mathlib-shaped names, with the Q4
+   LocalDegree, PuncturedRadial) to Mathlib-shaped names, with the Q4
    de-duplication review against Mathlib's `ShortComplex.ModuleCat` cycle API (the
    `ChainHomology`/`ModuleHomology` API substantially overlaps
    `Mathlib.Algebra.Homology.ShortComplex.ModuleCat`).

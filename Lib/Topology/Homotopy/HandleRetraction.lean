@@ -49,7 +49,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 abbrev Handle.Space {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :=
-  Smale.MorseHandle.UnitDisk N × Smale.MorseHandle.UnitDisk P
+  MorseHandle.UnitDisk N × MorseHandle.UnitDisk P
 
 def Handle.denominator {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
     (z : Space (N := N) (P := P)) : ℝ :=

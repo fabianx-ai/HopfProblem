@@ -69,7 +69,7 @@ abbrev Attachment.Union {K M : Type*} [TopologicalSpace K] [TopologicalSpace M] 
 
 def Attachment.sumQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (h : C(K, M)) : C(A ⊕ K, Attachment.Union A h) :=
-  ⟨Smale.ClosedAttachment.sumMap A h, Smale.ClosedAttachment.continuous_sumMap A h⟩
+  ⟨ClosedAttachment.sumMap A h, ClosedAttachment.continuous_sumMap A h⟩
 
 theorem Attachment.sumQuotient_surjective {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (h : C(K, M)) : Function.Surjective (sumQuotient A h) := by
@@ -389,27 +389,27 @@ def CoreAttachment.coreUnionHomotopyEquiv {N P M : Type*} [NormedAddCommGroup N]
 
 theorem MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) :
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
     Module.finrank ℝ c.NegativeCoordinates ≤ Module.finrank ℝ E := by
   classical
-  change Module.finrank ℝ (EuclideanSpace ℝ (Smale.MorseHandle.Negative c.weights)) ≤ _
+  change Module.finrank ℝ (EuclideanSpace ℝ (MorseHandle.Negative c.weights)) ≤ _
   rw [finrank_euclideanSpace]
   exact (Fintype.card_subtype_le (fun i => c.weights i = -1)).trans_eq (Fintype.card_fin _)
 
 def MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
         c.splitChart.target) :
-    C(Smale.MorseHandle.UnitDisk c.NegativeCoordinates, M) :=
+    C(MorseHandle.UnitDisk c.NegativeCoordinates, M) :=
   (c.attachingHandleMap ρ hρ hblock).comp
     ⟨fun u => (u, ⟨0, by simp⟩), continuous_id.prodMk continuous_const⟩
 
 theorem MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
@@ -420,18 +420,18 @@ theorem MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
 
 theorem MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
         c.splitChart.target)
-    (u : Smale.MorseHandle.UnitDisk c.NegativeCoordinates) :
+    (u : MorseHandle.UnitDisk c.NegativeCoordinates) :
     f (coreCellMap c ρ hρ hblock u) ≤ f p - ρ ^ 2 ↔ ‖(u : c.NegativeCoordinates)‖ = 1 :=
   c.attachingHandleMap_lower_iff ρ hρ hblock (u, ⟨0, by simp⟩)
 
 theorem MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
@@ -449,22 +449,22 @@ theorem MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace 
 
 def MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
         c.splitChart.target)
     [T2Space M] [CompactSpace M] (hf : Continuous f) :
-    Smale.ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
-        {u : Smale.MorseHandle.UnitDisk c.NegativeCoordinates | ‖(u : c.NegativeCoordinates)‖ = 1}
+    ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
+        {u : MorseHandle.UnitDisk c.NegativeCoordinates | ‖(u : c.NegativeCoordinates)‖ = 1}
         (coreCellMap c ρ hρ hblock) ≃ₕ
-      Smale.ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
+      ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
         {z | ‖(z.1 : c.NegativeCoordinates)‖ = 1} (c.attachingHandleMap ρ hρ hblock) := by
   let A := {x : M | f x ≤ f p - ρ ^ 2}
   have hA : IsCompact A := (isClosed_le hf continuous_const).isCompact
   letI : CompactSpace A := isCompact_iff_compactSpace.mp hA
   let cell :=
-    Smale.ClosedAttachment.unionHomeomorph A _ (coreCellMap c ρ hρ hblock) hA
+    ClosedAttachment.unionHomeomorph A _ (coreCellMap c ρ hρ hblock) hA
       (coreCellMap_injective c ρ hρ hblock) (coreCellMap_lower_iff c ρ hρ hblock)
   let core :=
     CoreAttachment.coreUnionHomotopyEquiv A (c.attachingHandleMap ρ hρ hblock)
@@ -482,17 +482,17 @@ inductive FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → 
     Built d Y
   |
   attach {V M : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
-    [TopologicalSpace M] (A : Set M) (h : C(Smale.MorseHandle.UnitDisk V, M))
-    (hboundary : ∀ u : Smale.MorseHandle.UnitDisk V, ‖(u : V)‖ = 1 → h u ∈ A)
+    [TopologicalSpace M] (A : Set M) (h : C(MorseHandle.UnitDisk V, M))
+    (hboundary : ∀ u : MorseHandle.UnitDisk V, ‖(u : V)‖ = 1 → h u ∈ A)
     (hdim : Module.finrank ℝ V ≤ d) (hA : Built d A) :
-    Built d (Smale.ClosedAttachment.Space A {u : Smale.MorseHandle.UnitDisk V | ‖(u : V)‖ = 1} h)
+    Built d (ClosedAttachment.Space A {u : MorseHandle.UnitDisk V | ‖(u : V)‖ = 1} h)
 
 def AttachmentMaps.oldInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
-    (A : Set M) (B : Set K) (h : C(K, M)) : C(A, Smale.ClosedAttachment.Space A B h) :=
+    (A : Set M) (B : Set K) (h : C(K, M)) : C(A, ClosedAttachment.Space A B h) :=
   ⟨fun a => Quot.mk _ (.inl a), continuous_quot_mk.comp continuous_inl⟩
 
 def AttachmentMaps.cellInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
-    (A : Set M) (B : Set K) (h : C(K, M)) : C(K, Smale.ClosedAttachment.Space A B h) :=
+    (A : Set M) (B : Set K) (h : C(K, M)) : C(K, ClosedAttachment.Space A B h) :=
   ⟨fun k => Quot.mk _ (.inr k), continuous_quot_mk.comp continuous_inr⟩
 
 theorem AttachmentMaps.boundary_eq {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
@@ -503,7 +503,7 @@ theorem AttachmentMaps.boundary_eq {K M : Type*} [TopologicalSpace K] [Topologic
 theorem AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
     [TopologicalSpace M] [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X))
     (g : C(K, X)) (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) (a b : A ⊕ K)
-    (hab : Smale.ClosedAttachment.Rel A B h a b) : Sum.elim f g a = Sum.elim f g b := by
+    (hab : ClosedAttachment.Rel A B h a b) : Sum.elim f g a = Sum.elim f g b := by
   cases a with
   | inl a =>
     cases b with
@@ -513,7 +513,7 @@ theorem AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
 
 def AttachmentMaps.glue {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X)) (g : C(K, X))
-    (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) : C(Smale.ClosedAttachment.Space A B h, X)
+    (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) : C(ClosedAttachment.Space A B h, X)
     where
   toFun := Quot.lift (Sum.elim f g) (sum_respects A B h f g hc)
   continuous_toFun := continuous_quot_lift _ (continuous_sum_dom.mpr ⟨f.continuous, g.continuous⟩)
@@ -529,7 +529,7 @@ def AttachmentMaps.familyCell {K X : Type*} [TopologicalSpace K] [TopologicalSpa
 def AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (F : C((unitInterval) × A, X))
     (G : C((unitInterval) × K, X)) (hFG : ∀ t a k, k ∈ B → a.val = h k → F (t, a) = G (t, k)) :
-    C((unitInterval) × Smale.ClosedAttachment.Space A B h, X)
+    C((unitInterval) × ClosedAttachment.Space A B h, X)
     where
   toFun p := glue A B h (familyOld A F p.1) (familyCell G p.1) (hFG p.1) p.2
   continuous_toFun := by
@@ -582,13 +582,13 @@ theorem FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [Topologica
 theorem FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) {d : ℕ} (hF : RelativeDiskLifting F d) {V M : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace M] (A : Set M)
-    (h : C(Smale.MorseHandle.UnitDisk V, M))
-    (hb : ∀ z : Smale.MorseHandle.UnitDisk V, ‖(z : V)‖ = 1 → h z ∈ A)
+    (h : C(MorseHandle.UnitDisk V, M))
+    (hb : ∀ z : MorseHandle.UnitDisk V, ‖(z : V)‖ = 1 → h z ∈ A)
     (hd : Module.finrank ℝ V ≤ d) (hA : MapsLift F A) :
     MapsLift F
-      (Smale.ClosedAttachment.Space A {z : Smale.MorseHandle.UnitDisk V | ‖(z : V)‖ = 1} h) := by
+      (ClosedAttachment.Space A {z : MorseHandle.UnitDisk V | ‖(z : V)‖ = 1} h) := by
   intro u
-  let B : Set (Smale.MorseHandle.UnitDisk V) := {z | ‖(z : V)‖ = 1}
+  let B : Set (MorseHandle.UnitDisk V) := {z | ‖(z : V)‖ = 1}
   let iA := AttachmentMaps.oldInclusion A B h
   let iD := AttachmentMaps.cellInclusion A B h
   obtain ⟨vA, ⟨HA⟩⟩ := hA (u.comp iA)
@@ -649,32 +649,32 @@ theorem FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
 theorem MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {p : M}
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hunique : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, f x = f p → x = p) {R : ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {p : M}
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hunique : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x = f p → x = p) {R : ℝ}
     (hR : 0 < R) :
     ∃ (ρ : ℝ) (hρ : 0 < ρ),
       ρ < R ∧
-        ∃ c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p,
+        ∃ c : ManifoldMorse.SignedMorseChart (E := E) f p,
           ∃ hblock :
             Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
                 Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
               c.splitChart.target,
-            (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+            (∀ x ∈ ManifoldMorse.criticalPoints E f,
                 f x ∈ Set.Icc (f p - ρ ^ 2) (f p + ρ ^ 2) → x = p) ∧
               Module.finrank ℝ c.NegativeCoordinates ≤ Module.finrank ℝ E ∧
                 Nonempty
-                  (Smale.ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
-                      {u : Smale.MorseHandle.UnitDisk c.NegativeCoordinates |
+                  (ClosedAttachment.Space {x : M | f x ≤ f p - ρ ^ 2}
+                      {u : MorseHandle.UnitDisk c.NegativeCoordinates |
                         ‖(u : c.NegativeCoordinates)‖ = 1}
                       (coreCellMap c ρ hρ hblock) ≃ₕ
                     { x : M // f x ≤ f p + ρ ^ 2 }) := by
   obtain ⟨V, F, hV, hcurve, hzero, hdesc, hcharts, _, _, _⟩ :=
-    Smale.FlowConstruction.exists_adaptedDescentFlow hf hm
+    FlowConstruction.exists_adaptedDescentFlow hf hm
   obtain ⟨c, heq⟩ := hcharts p hp
   obtain ⟨r, hr, W, hW, _, heqW, hblockr⟩ := c.exists_fieldCompatibleBlock V heq
   obtain ⟨ρ, hρ, hρmin, hband⟩ :=
-    Smale.ManifoldMorse.exists_isolating_radius (Smale.ManifoldMorse.finite_criticalPoints hf hm)
+    ManifoldMorse.exists_isolating_radius (ManifoldMorse.finite_criticalPoints hf hm)
       p hunique (lt_min hr hR)
   have hρr : ρ < r := hρmin.trans_le (min_le_left r R)
   have hρR : ρ < R := hρmin.trans_le (min_le_right r R)
@@ -697,7 +697,7 @@ theorem MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommG
     ∀ x ∈ Set.range (c.attachingHandleMap ρ hρ hblock), ∀ᶠ y in 𝓝 x, V y = c.descentField y := by
     rintro _ ⟨z, rfl⟩
     have hxW : c.attachingHandleMap ρ hρ hblock z ∈ W :=
-      (hblockW (Smale.MorseHandle.modelMap_mem_product hρ z)).2
+      (hblockW (MorseHandle.modelMap_mem_product hρ z)).2
     filter_upwards [hW.mem_nhds hxW] with y hy
     exact heqW y hy
   obtain ⟨e, _⟩ :=
@@ -711,18 +711,18 @@ structure MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (p : M) where
   radius : ℝ
   radius_pos : 0 < radius
-  chart : Smale.ManifoldMorse.SignedMorseChart (E := E) f p
+  chart : ManifoldMorse.SignedMorseChart (E := E) f p
   block :
     Metric.closedBall (0 : chart.NegativeCoordinates) (2 * radius) ×ˢ
         Metric.closedBall (0 : chart.PositiveCoordinates) (2 * radius) ⊆
       chart.splitChart.target
   isolated :
-    ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+    ∀ x ∈ ManifoldMorse.criticalPoints E f,
       f x ∈ Set.Icc (f p - radius ^ 2) (f p + radius ^ 2) → x = p
   dimension_le : Module.finrank ℝ chart.NegativeCoordinates ≤ Module.finrank ℝ E
   comparison :
-    Smale.ClosedAttachment.Space {x : M | f x ≤ f p - radius ^ 2}
-        {u : Smale.MorseHandle.UnitDisk chart.NegativeCoordinates |
+    ClosedAttachment.Space {x : M | f x ≤ f p - radius ^ 2}
+        {u : MorseHandle.UnitDisk chart.NegativeCoordinates |
           ‖(u : chart.NegativeCoordinates)‖ = 1}
         (coreCellMap chart radius radius_pos block) ≃ₕ
       { x : M // f x ≤ f p + radius ^ 2 }
@@ -735,9 +735,9 @@ def MorseCells.Cell.band {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
 theorem MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hm : Smale.ManifoldMorse.IsMorse E f) {p : M}
-    (hp : p ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (hunique : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, f x = f p → x = p) {R : ℝ}
+    (hm : ManifoldMorse.IsMorse E f) {p : M}
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hunique : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x = f p → x = p) {R : ℝ}
     (hR : 0 < R) : ∃ c : Cell (E := E) f p, c.radius < R := by
   obtain ⟨ρ, hρ, hlt, c, hb, hi, hd, ⟨e⟩⟩ := exists_morse_cell_attachment_lt hf hm hp hunique hR
   exact ⟨⟨ρ, hρ, c, hb, hi, hd, e⟩, hlt⟩
@@ -745,26 +745,26 @@ theorem MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSp
 theorem MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
-    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f)) :
-    ∃ c : (p : Smale.ManifoldMorse.criticalPoints E f) → Cell (E := E) f p.val,
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) :
+    ∃ c : (p : ManifoldMorse.criticalPoints E f) → Cell (E := E) f p.val,
       ∀ p q, p ≠ q → Disjoint (c p).band (c q).band := by
-  have hR (p : Smale.ManifoldMorse.criticalPoints E f) :
+  have hR (p : ManifoldMorse.criticalPoints E f) :
     ∃ R > (0 : ℝ),
-      ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f,
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
         f x ∈ Set.Icc (f p - R ^ 2) (f p + R ^ 2) → x = p := by
     obtain ⟨R, hR, _, hi⟩ :=
-      Smale.ManifoldMorse.exists_isolating_radius
-        (Smale.ManifoldMorse.finite_criticalPoints hf hm) p.val
+      ManifoldMorse.exists_isolating_radius
+        (ManifoldMorse.finite_criticalPoints hf hm) p.val
         (fun x hx heq => hinj hx p.property heq) zero_lt_one
     exact ⟨R, hR, hi⟩
   choose R hR hiso using hR
-  have hc (p : Smale.ManifoldMorse.criticalPoints E f) :
+  have hc (p : ManifoldMorse.criticalPoints E f) :
     ∃ c : Cell (E := E) f p.val, c.radius < R p / 2 :=
     exists_cell_lt hf hm p.property (fun x hx heq => hinj hx p.property heq) (half_pos (hR p))
   choose c hc using hc
   refine ⟨c, ?_⟩
-  have hordered (p q : Smale.ManifoldMorse.criticalPoints E f) (hpq : f p < f q) :
+  have hordered (p q : ManifoldMorse.criticalPoints E f) (hpq : f p < f q) :
     Disjoint (c p).band (c q).band := by
     have hne : (p : M) ≠ q := fun he => (ne_of_lt hpq) (congrArg f he)
     have hp : (R p) ^ 2 < f q - f p := by
@@ -814,13 +814,13 @@ theorem MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddCommGroup E
 theorem MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
-    (h : ∀ p ∈ Smale.ManifoldMorse.criticalPoints E f, ¬f p ≤ a) : IsEmpty { x : M // f x ≤ a } :=
+    (h : ∀ p ∈ ManifoldMorse.criticalPoints E f, ¬f p ≤ a) : IsEmpty { x : M // f x ≤ a } :=
   by
   refine ⟨fun x => ?_⟩
   obtain ⟨p, _, hmin⟩ :=
     isCompact_univ.exists_isMinOn ⟨x.val, Set.mem_univ _⟩ hf.continuous.continuousOn
-  have hp : p ∈ Smale.ManifoldMorse.criticalPoints E f :=
-    Smale.ManifoldMorse.mem_criticalPoints_of_localMin hf
+  have hp : p ∈ ManifoldMorse.criticalPoints E f :=
+    ManifoldMorse.mem_criticalPoints_of_localMin hf
       (Filter.Eventually.of_forall (fun y => hmin (Set.mem_univ y)))
   exact h p hp ((hmin (Set.mem_univ x.val)).trans x.property)
 end Mathoverflow1973

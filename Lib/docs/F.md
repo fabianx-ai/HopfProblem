@@ -384,7 +384,7 @@ Target: `Matrix.TransvectionReduction.*` — same statements under the Mathlib n
 (`Matrix.mul_transvection_surjective`, `Matrix.primitive_row_has_unit_after_column_additions`
 etc.). Pure move; axiom probe target: `primitive_row_has_unit_after_column_additions`.
 
-**Row F0b.** Current: `Smale.IntegerPresentation` structure (SphereTopology 18429) with
+**Row F0b.** Current: `IntegerPresentation` structure (SphereTopology 18429) with
 `map`, `columns`, `surjective`, `kernel_eq`, and `ofEquiv`, `transport`, `liftRelation`,
 `adjoin`, `matrix`, `columns_sum_eq_mulVec`, `mem_range_matrix_iff`, `matrix_image_eq_kernel`,
 `matrix_relation`, `columns_span_of_subsingleton`, `matrix_surjective_of_subsingleton`
@@ -394,7 +394,7 @@ correction**: leave the two interleaved geometric gluers
 (18519) in place (they move with F10); the extraction takes 18429–18485 + 18540–18588.
 
 **Row F7 (the headline generalization, G-F1).** Current:
-`Smale.TubularBigon.exists_rankThree_relative_cancellation` (SingularHomology 28000, verbatim
+`TubularBigon.exists_rankThree_relative_cancellation` (SingularHomology 28000, verbatim
 in the scout map): sheets via `TubularBigon … h 3` (normal rank 3) over
 `RankThreeWhitneyModel.Space = (ℝ × ℝ) × (EuclideanSpace ℝ (Fin 1) × EuclideanSpace ℝ (Fin 2))`,
 hypothesis `hsign` = opposite corner determinant signs, conclusion the compactly supported
@@ -437,7 +437,7 @@ parameter.
 **Row F8/F12.** `exists_single_belt_intersection_of_unit_count` (SphereTopology 9765),
 `exists_single_intersection_of_unit_coordinate` (Recognition 10304),
 `AdaptedWindows.exists_primitive_functional_unit` (Recognition 9190): same generalization
-pattern; the signed-cancellation algebra (`Smale.FiniteSignedCancellation.*`,
+pattern; the signed-cancellation algebra (`FiniteSignedCancellation.*`,
 SphereTopology 9532–9564) is already fully general and is a pure move.
 
 **Consumers.** `Hopf.SingularHomology` (the belt-cancellation chain), `Hopf.SphereTopology`
