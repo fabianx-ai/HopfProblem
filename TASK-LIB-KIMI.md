@@ -185,7 +185,7 @@ DO NOT COPY
   `Smale.ManifoldImmersion.exists_compact_embedding_of_immersion`,
   `MorseCancel.exists_isotopic_pointMoving_of_path`.
 
-### Lane F — the Whitney trick, intersection numbers, handle slides, integer-matrix reduction (Milnor h-cobordism §6–7, Thm 6.4 and 7.8; Smale 1961 §4–5; Hatcher Prop 2.30) — after A, D1, D2, E1, E2
+### Lane F — the Whitney trick, intersection numbers, handle slides, integer-matrix reduction (Milnor h-cobordism §6–7, Thm 6.6 and 7.6; Smale 1961 §4–5; Hatcher Prop 2.30) — after A, D1, D2, E1, E2
 - Source: `Hopf/SingularHomology.lean` 16000–28261; `Hopf/SphereTopology.lean`
   2680–2967, 9532–9878, 14839–15295, 18068–18588; `Hopf/DifferentialTopology.lean`
   27220–27329, 28344–28604, 28935–30219; `Hopf/Recognition.lean` 4078–10476.
@@ -199,11 +199,11 @@ DO NOT COPY
   complementary submanifolds and its expression as a sum of local degrees;
   Whitney's lemma: two intersection points of opposite sign joined by an
   embedded bigon in a manifold of dimension ≥ 5 are removed by a compactly
-  supported ambient isotopy (h-cobordism Thm 6.4); handle slides change the
+  supported ambient isotopy (h-cobordism Thm 6.6); handle slides change the
   intersection matrix by elementary column operations and every such operation
   is realized geometrically (§7); a unimodular row of integers is reduced to
   contain ±1 by column operations, and a finitely presented abelian group has a
-  presentation matrix that is surjective iff the group is trivial (Thm 7.8).
+  presentation matrix that is surjective iff the group is trivial (Thm 7.6).
 - Generalize: the Whitney trick is written only for sheets of dimensions 3 and 2
   inside a 6-manifold (`Smale.RankThreeWhitneyModel` with model space
   ℝ³ × ℝ², `Smale.WhitneyPairModel.Plane = EuclideanSpace ℝ (Fin 2)`,
