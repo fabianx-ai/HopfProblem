@@ -63,6 +63,8 @@ Original source lines 237525--248758; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.IntegralHomology
+import Lib.AlgebraicTopology.Hurewicz.CubeSphere
+import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.Geometry.Manifold.Morse.CellStructure
@@ -1709,110 +1711,6 @@ def SpecialPeriods.Threefold.SphereHomologyMap.homologyEquivOfTopClassPreimage
   LinearEquiv.ofBijective (SingularMayerVietoris.singularHomologyMap f n)
     (homologyMap_bijective_of_topClass_preimage f a ha n)
 
-def SixSphereCube.collapseLift {K X : Type*} [TopologicalSpace K] [CompactSpace K] [T2Space K]
-    [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty) (f : C(K, X)) (x : X)
-    (hf : ∀ a ∈ F, f a = x) : C(OnePoint ↥Fᶜ, X) :=
-  Topology.IsQuotientMap.lift (f := collapseMap F hF) (isQuotientMap_collapse F hF hne) f
-    (by
-      intro a b h
-      rcases (collapse_eq_iff F a b).mp h with rfl | ⟨ha, hb⟩
-      · rfl
-      · exact (hf a ha).trans (hf b hb).symm)
-
-@[simp]
-theorem SixSphereCube.collapseLift_comp {K X : Type*} [TopologicalSpace K] [CompactSpace K]
-    [T2Space K] [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty)
-    (f : C(K, X)) (x : X) (hf : ∀ a ∈ F, f a = x) :
-    (collapseLift F hF hne f x hf).comp (collapseMap F hF) = f :=
-  Topology.IsQuotientMap.lift_comp (f := collapseMap F hF) (isQuotientMap_collapse F hF hne) f _
-
-@[simp]
-theorem SixSphereCube.collapseLift_apply {K X : Type*} [TopologicalSpace K] [CompactSpace K]
-    [T2Space K] [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty)
-    (f : C(K, X)) (x : X) (hf : ∀ a ∈ F, f a = x) (a : K) :
-    collapseLift F hF hne f x hf (collapse F a) = f a :=
-  ContinuousMap.congr_fun (collapseLift_comp F hF hne f x hf) a
-
-abbrev SixSphereCube.OpenUnitInterval :=
-  Set.Ioo (0 : ℝ) 1
-
-def SixSphereCube.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o Set.Ioo (-1 : ℝ) 1
-    where
-  toFun t := ⟨2 * (t : ℝ) - 1, by constructor <;> linarith [t.property.1, t.property.2]⟩
-  invFun t := ⟨((t : ℝ) + 1) / 2, by constructor <;> linarith [t.property.1, t.property.2]⟩
-  left_inv
-    t := by
-    apply Subtype.ext
-    change (2 * (t : ℝ) - 1 + 1) / 2 = (t : ℝ)
-    ring
-  right_inv
-    t := by
-    apply Subtype.ext
-    change 2 * (((t : ℝ) + 1) / 2) - 1 = (t : ℝ)
-    ring
-  map_rel_iff' := by
-    intro t s
-    change 2 * (t : ℝ) - 1 ≤ 2 * (s : ℝ) - 1 ↔ (t : ℝ) ≤ (s : ℝ)
-    constructor <;> intro h <;> linarith
-
-def SixSphereCube.openUnitIntervalHomeomorph : OpenUnitInterval ≃ₜ ℝ :=
-  openUnitIntervalAffineOrderIso.toHomeomorph.trans (orderIsoIooNegOneOne ℝ).toHomeomorph.symm
-
-abbrev SixSphereCube.CubeInteriorN (n : ℕ) :=
-  { u : Fin n → (unitInterval) // u ∉ Cube.boundary (Fin n) }
-
-theorem SixSphereCube.not_mem_cubeBoundary_iff {n : ℕ} (u : Fin n → (unitInterval)) :
-    u ∉ Cube.boundary (Fin n) ↔ ∀ i, 0 < (u i : ℝ) ∧ (u i : ℝ) < 1 := by
-  simp only [Cube.boundary, Set.mem_ofPred_eq, not_exists, not_or, unitInterval.coe_pos,
-    unitInterval.coe_lt_one, unitInterval.pos_iff_ne_zero, unitInterval.lt_one_iff_ne_one]
-
-theorem SixSphereCube.cubeBoundary_eq_iUnion (n : ℕ) :
-    Cube.boundary (Fin n) =
-      ⋃ i : Fin n,
-        {u : Fin n → (unitInterval) | u i = 0} ∪ {u : Fin n → (unitInterval) | u i = 1} := by
-  ext u
-  simp only [Cube.boundary, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_union]
-
-theorem SixSphereCube.isClosed_cubeBoundaryN (n : ℕ) : IsClosed (Cube.boundary (Fin n)) := by
-  rw [cubeBoundary_eq_iUnion]
-  exact
-    isClosed_iUnion_of_finite fun i =>
-      (isClosed_eq (continuous_apply i) continuous_const).union
-        (isClosed_eq (continuous_apply i) continuous_const)
-
-def SixSphereCube.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃ₜ (Fin n → OpenUnitInterval)
-    where
-  toFun u i := ⟨(u.val i : ℝ), (not_mem_cubeBoundary_iff u.val).mp u.property i⟩
-  invFun
-    v :=
-    ⟨fun i => ⟨(v i : ℝ), ⟨(v i).property.1.le, (v i).property.2.le⟩⟩,
-      (not_mem_cubeBoundary_iff _).mpr fun i => (v i).property⟩
-  left_inv
-    u := by
-    apply Subtype.ext
-    funext i
-    exact Subtype.ext rfl
-  right_inv
-    v := by
-    funext i
-    exact Subtype.ext rfl
-  continuous_toFun := by
-    refine continuous_pi fun i => ?_
-    have hi : Continuous (fun u : CubeInteriorN n => u.val i) :=
-      (continuous_apply i).comp continuous_subtype_val
-    exact (continuous_subtype_val.comp hi).subtype_mk _
-  continuous_invFun := by
-    refine Continuous.subtype_mk ?_ _
-    refine continuous_pi fun i => ?_
-    have hi : Continuous (fun v : Fin n → OpenUnitInterval => v i) := continuous_apply i
-    exact (continuous_subtype_val.comp hi).subtype_mk _
-
-def SixSphereCube.cubeInteriorEuclideanHomeomorph (n : ℕ) :
-    CubeInteriorN n ≃ₜ EuclideanSpace ℝ (Fin n) :=
-  (cubeInteriorCoordinates n).trans
-    ((Homeomorph.piCongrRight fun _ : Fin n => openUnitIntervalHomeomorph).trans
-      (PiLp.homeomorph 2 (fun _ : Fin n => ℝ)).symm)
-
 abbrev SixSphereCube.CubeInterior :=
   CubeInteriorN 6
 
@@ -1831,7 +1729,7 @@ theorem SixSphereCube.cubeBoundary_nonempty : (Cube.boundary (Fin 6)).Nonempty :
   ⟨0, zero_mem_cubeBoundary⟩
 
 def SixSphereCube.cubeInteriorSphereHomeomorph : OnePoint CubeInterior ≃ₜ StandardSphere :=
-  cubeInteriorHomeomorph.onePointCongr.trans euclideanOnePointSphereHomeomorph
+  Degree.SphereCube.compactification 6
 
 @[simp]
 theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
@@ -1839,8 +1737,7 @@ theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
   rfl
 
 def SixSphereCube.cubeSphereMap : C(Fin 6 → (unitInterval), StandardSphere) :=
-  (cubeInteriorSphereHomeomorph : C(OnePoint CubeInterior, StandardSphere)).comp
-    (collapseMap (Cube.boundary (Fin 6)) isClosed_cubeBoundary)
+  Degree.SphereCube.quotient 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
@@ -1848,24 +1745,19 @@ theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
   rfl
 
 theorem SixSphereCube.cubeSphereMap_boundary (u : Fin 6 → (unitInterval))
-    (hu : u ∈ Cube.boundary (Fin 6)) : cubeSphereMap u = sphereBasePoint := by
-  rw [cubeSphereMap_apply, SixSphereCube.collapse_of_mem _ hu, cubeInteriorSphereHomeomorph_infty]
+    (hu : u ∈ Cube.boundary (Fin 6)) : cubeSphereMap u = sphereBasePoint :=
+  Degree.SphereCube.quotient_boundary 6 u hu
 
 theorem SixSphereCube.cubeSphereMap_eq_iff (u v : Fin 6 → (unitInterval)) :
     cubeSphereMap u = cubeSphereMap v ↔
-      u = v ∨ u ∈ Cube.boundary (Fin 6) ∧ v ∈ Cube.boundary (Fin 6) := by
-  change
-    cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) u) =
-        cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) v) ↔
-      _
-  rw [cubeInteriorSphereHomeomorph.injective.eq_iff, collapse_eq_iff]
+      u = v ∨ u ∈ Cube.boundary (Fin 6) ∧ v ∈ Cube.boundary (Fin 6) :=
+  Degree.SphereCube.quotient_eq_iff 6 u v
 
 theorem SixSphereCube.cubeSphereMap_surjective : Function.Surjective cubeSphereMap :=
-  cubeInteriorSphereHomeomorph.surjective.comp
-    (collapse_surjective (Cube.boundary (Fin 6)) cubeBoundary_nonempty)
+  Degree.SphereCube.quotient_surjective (by decide)
 
 def SixSphereCube.cubeSphereLoop : GenLoop (Fin 6) StandardSphere sphereBasePoint :=
-  ⟨cubeSphereMap, cubeSphereMap_boundary⟩
+  Degree.SphereCube.quotientLoop 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
@@ -1873,37 +1765,24 @@ theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
 
 def SixSphereCube.factorMap {X : Type*} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 6) X x) :
     C(StandardSphere, X) :=
-  (collapseLift (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-        (fun u hu => p.property u hu)).comp
-    (cubeInteriorSphereHomeomorph.symm : C(StandardSphere, OnePoint CubeInterior))
+  Degree.SphereCube.factorMap (by decide) p
 
 @[simp]
 theorem SixSphereCube.factorMap_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (u : Fin 6 → (unitInterval)) :
-    factorMap p (cubeSphereMap u) = p u := by
-  change
-    collapseLift (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-        (fun v hv => p.property v hv)
-        (cubeInteriorSphereHomeomorph.symm
-          (cubeInteriorSphereHomeomorph (collapse (Cube.boundary (Fin 6)) u))) =
-      p u
-  rw [cubeInteriorSphereHomeomorph.symm_apply_apply]
-  exact
-    collapseLift_apply (Cube.boundary (Fin 6)) isClosed_cubeBoundary cubeBoundary_nonempty p.val x
-      (fun v hv => p.property v hv) u
+    factorMap p (cubeSphereMap u) = p u :=
+  Degree.SphereCube.factorMap_quotient (by decide) p u
 
 @[simp]
 theorem SixSphereCube.factorMap_comp_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : (factorMap p).comp cubeSphereMap = p.val := by
-  ext u
-  exact factorMap_cubeSphereMap p u
+    (p : GenLoop (Fin 6) X x) : (factorMap p).comp cubeSphereMap = p.val :=
+  Degree.SphereCube.factorMap_comp_quotient (by decide) p
 
 theorem SixSphereCube.factorMap_unique {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (f : C(StandardSphere, X)) (hf : f.comp cubeSphereMap = p.val) :
-    f = factorMap p := by
-  ext z
-  obtain ⟨u, rfl⟩ := cubeSphereMap_surjective z
-  exact (ContinuousMap.congr_fun hf u).trans (factorMap_cubeSphereMap p u).symm
+    f = factorMap p :=
+  Degree.SphereCube.factorMap_unique (by decide) p f hf
+
 
 theorem SixSphereCube.factor_cubeChain {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) :
@@ -2062,100 +1941,6 @@ theorem Degree.BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCom
   · intro t z hz
     exact H.eq_fst t ((Degree.DiskCube.boundary_iff L z).mpr hz)
 
-abbrev Degree.SphereCube.Sphere (n : ℕ) :=
-  Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
-
-def Degree.SphereCube.compactification (n : ℕ) :
-    OnePoint (SixSphereCube.CubeInteriorN n) ≃ₜ Sphere n :=
-  (SixSphereCube.cubeInteriorEuclideanHomeomorph n).onePointCongr.trans
-    (onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin n)) (ι := Fin (n + 1)) (by simp))
-
-def Degree.SphereCube.point (n : ℕ) : Sphere n :=
-  compactification n (OnePoint.infty)
-
-def Degree.SphereCube.quotient (n : ℕ) : C(Fin n → (unitInterval), Sphere n) :=
-  (compactification n : C(OnePoint (SixSphereCube.CubeInteriorN n), Sphere n)).comp
-    (SixSphereCube.collapseMap (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n))
-
-theorem Degree.SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterval))
-    (hz : z ∈ Cube.boundary (Fin n)) : quotient n z = point n := by
-  change
-    compactification n (SixSphereCube.collapse (Cube.boundary (Fin n)) z) =
-      compactification n (OnePoint.infty)
-  rw [SixSphereCube.collapse_of_mem _ hz]
-
-theorem Degree.SphereCube.zero_boundary {n : ℕ} (hn : 0 < n) :
-    (0 : Fin n → (unitInterval)) ∈ Cube.boundary (Fin n) :=
-  ⟨⟨0, hn⟩, Or.inl rfl⟩
-
-theorem Degree.SphereCube.quotient_surjective {n : ℕ} (hn : 0 < n) :
-    Function.Surjective (quotient n) :=
-  (compactification n).surjective.comp
-    (SixSphereCube.collapse_surjective (Cube.boundary (Fin n)) ⟨0, zero_boundary hn⟩)
-
-theorem Degree.SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterval)) :
-    quotient n z = quotient n w ↔ z = w ∨ z ∈ Cube.boundary (Fin n) ∧ w ∈ Cube.boundary (Fin n) :=
-  by
-  change
-    compactification n (SixSphereCube.collapse (Cube.boundary (Fin n)) z) =
-        compactification n (SixSphereCube.collapse (Cube.boundary (Fin n)) w) ↔
-      _
-  rw [(compactification n).injective.eq_iff, SixSphereCube.collapse_eq_iff]
-
-def Degree.SphereCube.cylinder (n : ℕ) :
-    C((unitInterval) × (Fin n → (unitInterval)), (unitInterval) × Sphere n) :=
-  (ContinuousMap.id (unitInterval)).prodMap (quotient n)
-
-theorem Degree.SphereCube.cylinder_surjective {n : ℕ} (hn : 0 < n) :
-    Function.Surjective (cylinder n) := by
-  rintro ⟨t, z⟩
-  obtain ⟨w, rfl⟩ := quotient_surjective hn z
-  exact ⟨(t, w), rfl⟩
-
-theorem Degree.SphereCube.cylinder_isQuotientMap {n : ℕ} (hn : 0 < n) :
-    Topology.IsQuotientMap (cylinder n) :=
-  .of_surjective_continuous (cylinder_surjective hn) (cylinder n).continuous
-
-def Degree.SphereCube.basedCube {n : ℕ} {X : Type*} [TopologicalSpace X] (u : C(Sphere n, X)) :
-    GenLoop (Fin n) X (u (point n)) :=
-  ⟨u.comp (quotient n), fun z hz => congrArg u (quotient_boundary n z hz)⟩
-
-theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type*}
-    [TopologicalSpace X] (hn : 0 < n) (u : C(Sphere n, X)) [Subsingleton (π_ n X (u (point n)))] :
-    u.HomotopicRel (ContinuousMap.const (Sphere n) (u (point n))) {point n} := by
-  let H := HigherHurewicz.nativeCubeNullHomotopy (basedCube u)
-  have hfib : ∀ a b, cylinder n a = cylinder n b → H a = H b := by
-    rintro ⟨t, z⟩ ⟨s, w⟩ h
-    have ht : t = s := congrArg Prod.fst h
-    subst s
-    have hzw : quotient n z = quotient n w := congrArg Prod.snd h
-    rcases (quotient_eq_iff n z w).mp hzw with rfl | ⟨hz, hw⟩
-    · rfl
-    · exact
-        ((H.eq_fst t hz).trans ((basedCube u).property z hz)).trans
-          ((H.eq_fst t hw).trans ((basedCube u).property w hw)).symm
-  let G := (cylinder_isQuotientMap hn).lift H.toHomotopy.toContinuousMap hfib
-  have hG (t : (unitInterval)) (z : Fin n → (unitInterval)) : G (t, quotient n z) = H (t, z) :=
-    ContinuousMap.congr_fun
-      ((cylinder_isQuotientMap hn).lift_comp H.toHomotopy.toContinuousMap hfib) (t, z)
-  refine
-    ⟨{  toContinuousMap := G
-        map_zero_left := ?_
-        map_one_left := ?_
-        prop' := ?_ }⟩
-  · intro z
-    obtain ⟨w, rfl⟩ := quotient_surjective hn z
-    exact (hG 0 w).trans (H.apply_zero w)
-  · intro z
-    obtain ⟨w, rfl⟩ := quotient_surjective hn z
-    exact (hG 1 w).trans (H.apply_one w)
-  · intro t z hz
-    have hz' : z = point n := hz
-    subst z
-    change G (t, point n) = u (point n)
-    rw [← quotient_boundary n 0 (zero_boundary hn), hG]
-    exact H.eq_fst t (zero_boundary hn)
-
 theorem Degree.Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
     (x : SixSphereCube.StandardSphere) : Subsingleton (π_ n SixSphereCube.StandardSphere x) := by
   have hn5 : n ≤ 5 := by omega
@@ -2165,96 +1950,6 @@ theorem Degree.Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
   · exact piThree_subsingleton x
   · exact piFour_subsingleton x
   · exact piFive_subsingleton x
-
-theorem Degree.Sphere.homotopic_const_discrete {Z X : Type} [TopologicalSpace Z]
-    [DiscreteTopology Z] [TopologicalSpace X] [PathConnectedSpace X] (u : C(Z, X)) (x : X) :
-    u.Homotopic (ContinuousMap.const Z x) := by
-  refine
-    ⟨{  toFun := fun p => (PathConnectedSpace.somePath (u p.2) x) p.1
-        continuous_toFun :=
-          continuous_prod_of_discrete_right.mpr
-            (fun z => (PathConnectedSpace.somePath (u z) x).continuous)
-        map_zero_left := fun z => (PathConnectedSpace.somePath (u z) x).source
-        map_one_left := fun z => (PathConnectedSpace.somePath (u z) x).target }⟩
-
-theorem Degree.Sphere.real_unitSphere_finite : (Metric.sphere (0 : ℝ) 1).Finite := by
-  apply (Set.toFinite ({1, -1} : Set ℝ)).subset
-  intro x hx
-  have h : |x| = |(1 : ℝ)| := by simpa using mem_sphere_zero_iff_norm.mp hx
-  rcases abs_eq_abs.mp h with h | h <;> simp [h]
-
-theorem Degree.Sphere.homotopic_const_of_homeomorph {Z W X : Type} [TopologicalSpace Z]
-    [TopologicalSpace W] [TopologicalSpace X] (e : Z ≃ₜ W) (u : C(Z, X)) (x : X)
-    (h : (u.comp (e.symm : C(W, Z))).Homotopic (ContinuousMap.const W x)) :
-    u.Homotopic (ContinuousMap.const Z x) := by
-  have hh := h.comp (ContinuousMap.Homotopic.refl (e : C(Z, W)))
-  convert hh using 1
-  · apply ContinuousMap.ext
-    intro z
-    exact (congrArg u (e.symm_apply_apply z)).symm
-  · rfl
-
-theorem Degree.Sphere.boundary_homotopic_const_of_pi {V : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type} [TopologicalSpace X]
-    [PathConnectedSpace X] {d : ℕ} (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V ≤ d) (u : C(Degree.DiskCylinder.Sphere (E := V), X)) (x : X) :
-    u.Homotopic (ContinuousMap.const _ x) := by
-  classical
-    cases subsingleton_or_nontrivial V with
-  | inl
-    h =>
-    have hempty (s : Degree.DiskCylinder.Sphere (E := V)) : False :=
-      Degree.UnitSphereEquiv.vector_ne_zero s (Subsingleton.elim _ _)
-    have he : u = ContinuousMap.const _ x := ContinuousMap.ext (fun s => (hempty s).elim)
-    rw [he]
-  | inr h =>
-    by_cases hd1 : Module.finrank ℝ V = 1
-    · obtain ⟨L⟩ :=
-        FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-          (show Module.finrank ℝ V = Module.finrank ℝ ℝ by simpa using hd1)
-      let e := Degree.UnitSphereEquiv.homeomorph L
-      let : Finite (Degree.DiskCylinder.Sphere (E := ℝ)) := real_unitSphere_finite.to_subtype
-      let : Finite (Degree.DiskCylinder.Sphere (E := V)) := Finite.of_injective e e.injective
-      exact homotopic_const_discrete u x
-    · have hdpos : 0 < Module.finrank ℝ V := Module.finrank_pos
-      let n := Module.finrank ℝ V - 1
-      have hn : 0 < n := by dsimp [n]; omega
-      have hnd : n < d := by dsimp [n]; omega
-      obtain ⟨L⟩ :=
-        FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-          (show Module.finrank ℝ V = Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1)))
-            by
-            simp only [finrank_euclideanSpace, Fintype.card_fin]
-            dsimp [n]
-            omega)
-      let e := Degree.UnitSphereEquiv.homeomorph L
-      let v : C(Degree.SphereCube.Sphere n, X) := u.comp (e.symm : C(_, _))
-      let := hpi n hn hnd (v (Degree.SphereCube.point n))
-      obtain ⟨H⟩ := Degree.SphereCube.homotopicRel_const_of_subsingleton hn v
-      have hstart : v.Homotopic (ContinuousMap.const _ (v (Degree.SphereCube.point n))) :=
-        ⟨H.toHomotopy⟩
-      have hv : v.Homotopic (ContinuousMap.const _ x) :=
-        hstart.trans
-          ⟨(PathConnectedSpace.somePath (v (Degree.SphereCube.point n)) x).toHomotopyConst⟩
-      exact homotopic_const_of_homeomorph e u x hv
-
-theorem Degree.Sphere.exists_boundary_extension_of_pi {V : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type} [TopologicalSpace X]
-    [PathConnectedSpace X] {d : ℕ} (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V ≤ d) (u : C(Degree.DiskCylinder.Sphere (E := V), X)) (x : X) :
-    ∃ v : C(Degree.DiskCylinder.Disk (E := V), X),
-      (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x := by
-  classical
-    cases isEmpty_or_nonempty (Degree.DiskCylinder.Sphere (E := V)) with
-  | inl h => exact ⟨ContinuousMap.const _ x, fun s => isEmptyElim s, rfl⟩
-  | inr h =>
-    let s0 : Degree.DiskCylinder.Sphere (E := V) := Classical.choice h
-    obtain ⟨H⟩ := (boundary_homotopic_const_of_pi hpi hd u x).symm
-    let G := H.toContinuousMap
-    have h0 : ∀ s, G (0, s) = x := H.map_zero_left
-    refine ⟨Degree.DiskCone.extension s0 G x h0, ?_, Degree.DiskCone.extension_center s0 G x h0⟩
-    intro s
-    exact (Degree.DiskCone.extension_boundary s0 G x h0 s).trans (H.map_one_left s)
 
 theorem Degree.Sphere.boundary_homotopic_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (hd : Module.finrank ℝ V ≤ 6)
@@ -2269,44 +1964,6 @@ theorem Degree.Sphere.exists_boundary_extension {V : Type} [NormedAddCommGroup V
     ∃ v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
       (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x :=
   exists_boundary_extension_of_pi (fun _ hn hn6 => pi_subsingleton hn hn6) hd u x
-
-theorem Degree.CylinderFilling.exists_filling {V X : Type} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace X] [PathConnectedSpace X] {d : ℕ}
-    (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
-    (hd : Module.finrank ℝ V + 1 ≤ d) (f g : C(Degree.DiskCylinder.Disk (E := V), X))
-    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), X))
-    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
-    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) (x : X) :
-    ∃ G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), X),
-      (∀ z, G (0, z) = f z) ∧
-        (∀ z, G (1, z) = g z) ∧ ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s) := by
-  let b := Degree.CylinderBoundary.glued f g H h0 h1
-  let e := Degree.CylinderBall.boundaryHomeomorph (V := V)
-  let u :=
-    b.comp
-      (e.symm : C(Degree.DiskCylinder.Sphere (E := ℝ × V), Degree.CylinderBall.boundary (V := V)))
-  have hdim : Module.finrank ℝ (ℝ × V) ≤ d := by
-    simpa only [Module.finrank_prod, Module.finrank_self, Nat.add_comm] using hd
-  obtain ⟨v, hv, _⟩ := Degree.Sphere.exists_boundary_extension_of_pi hpi hdim u x
-  let G : C((unitInterval) × Degree.DiskCylinder.Disk (E := V), X) :=
-    v.comp (Degree.CylinderBall.homeomorph (V := V) : C(_, _))
-  have hb (p : Degree.CylinderBall.boundary (V := V)) : G p.val = b p := by
-    change v (Degree.DiskCylinder.boundaryToDisk (Degree.CylinderBall.boundaryHomeomorph p)) = b p
-    exact
-      (hv (Degree.CylinderBall.boundaryHomeomorph p)).trans
-        (congrArg b (Degree.CylinderBall.boundaryHomeomorph.symm_apply_apply p))
-  refine ⟨G, ?_, ?_, ?_⟩
-  · intro z
-    exact
-      (hb (Degree.CylinderBoundary.lower (Degree.DiskCylinder.bottomMap z))).trans
-        (Degree.CylinderBoundary.glued_bottom f g H h0 h1 z)
-  · intro z
-    exact
-      (hb (Degree.CylinderBoundary.top z)).trans (Degree.CylinderBoundary.glued_top f g H h0 h1 z)
-  · intro t s
-    exact
-      (hb (Degree.CylinderBoundary.lower (Degree.DiskCylinder.sideMap (t, s)))).trans
-        (Degree.CylinderBoundary.glued_side f g H h0 h1 t s)
 
 theorem Degree.LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
     [PathConnectedSpace Y] (F : C(SixSphereCube.StandardSphere, Y))

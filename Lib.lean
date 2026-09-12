@@ -39,8 +39,19 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
 import Lib.Topology.Homotopy.CellAttachment
+import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
+import Lib.AlgebraicTopology.Hurewicz.SimplexCube
+import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
+import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator
+import Lib.AlgebraicTopology.Hurewicz.Subdivision
+import Lib.AlgebraicTopology.Hurewicz.CubeGluing
+import Lib.AlgebraicTopology.Hurewicz.Degree
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+import Lib.AlgebraicTopology.Hurewicz.Straightening
+import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character
@@ -63,6 +74,7 @@ import Lib.Topology.Homotopy.SublevelRetraction
 import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
+import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.PathClass
 
 /-!
