@@ -249,6 +249,37 @@ Census ratchet 3891 → 3857.
 This lands J-B1 as implemented code; the boundary remains "candidate" status
 in the ledger until the J-B2a seams and aggregate consumer tests land with it.
 
+### J-C1 landing (Axis 6)
+
+`Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean` landed with the
+complete J-C1 coherence-free packet, verbatim moves with real proofs:
+`cyclicMap`, `additionMap`, `rightAdditionMap`, `rightAdditionMap_comp_cyclic`,
+`rightAddition_homology_cyclic`, `additionMap_natural`,
+`addition_homology_natural`, `product`/`product_apply`, `product11`,
+`product12`, `tripleProduct`/`tripleProduct_apply`, and the generic
+multilinear/alternating plumbing (`multilinearOfBilinear`,
+`alternatingOfBilinear`, `skewBilinear_diagonal_zero`,
+`multilinearOfTrilinear`, `alternatingOfTrilinear`). Imports per the ledger:
+Mathlib + `MayerVietoris` + `CrossProduct` (which transitively supplies
+`HomotopyInvariance`'s `singularHomologyMap_comp`).
+
+Resolution note: `PeriodTorusHigherHomology.singularHomologyMap_comp` in the
+source is a LibShims export alias (`LibShims.lean:43-45` re-exports the whole
+`SingularHomology` namespace under `PeriodTorusHigherHomology`); in the module
+file the proofs use the canonical `SingularHomology.singularHomologyMap_comp`
+via `open SingularHomology`. The `attribute [local instance]
+integerLinearMapModule/integerTensorModule in` prefixes move verbatim —
+`multilinearOfBilinear` needs it for instance consistency with
+`alternatingOfBilinear`.
+
+Source copies deleted from `Hopf/LCP/Specialization.lean` (two spans: the
+topological-group block cyclicMap–tripleProduct_apply; the multilinear block),
+which now imports `Pontryagin`. J-C2 (`product_natural`, `tripleProduct_*`,
+`tripleProduct_eq_cross`) stays in Hopf pending the S-cross seam; the
+`formalMap_*`/`formalEdgeSwap*` cluster stays too. `Lib.lean` updated.
+`lake build Lib Hopf.LCP.{Specialization, IntegralHomology, BoundaryTopology}`:
+8815 jobs, green. Census ratchet 3857 → 3839.
+
 ## Review-3 certification and repairs — devin-axis5-j
 
 **J-A: GO for the amended 15-node Mathlib-only packet. J-B..J-E: NOT GO.**

@@ -9,6 +9,7 @@ import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sum
 import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+import Lib.AlgebraicTopology.SingularHomology.Pontryagin
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
