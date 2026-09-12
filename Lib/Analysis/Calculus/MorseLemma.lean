@@ -682,7 +682,7 @@ theorem Smale.FlowConstruction.exists_gluedDescentField {E M : Type*} [NormedAdd
       (TangentSpace 𝓘(ℝ, E) (M := M)) C hC hlocal
   exact ⟨V, V.contMDiff, fun x => (hV x).1, fun i x hx => (hV x).2 i hx⟩
 
-theorem MorseCancel.exists_closed_patch_descent_field {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_closed_patch_descent_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [SigmaCompactSpace M] {f : M → ℝ}
     (V₀ : (x : M) → TangentSpace 𝓘(ℝ, E) x)
@@ -2171,7 +2171,7 @@ theorem Smale.ManifoldMorse.exists_adaptedDescentField {E M : Type*} [NormedAddC
     filter_upwards [hKnhds ⟨p, hp⟩] with x hx
     exact hmatch ⟨p, hp⟩ x hx
 
-theorem MorseCancel.morse_descentField_zero_at_critical {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.morse_descentField_zero_at_critical {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -2189,7 +2189,7 @@ theorem MorseCancel.morse_descentField_zero_at_critical {E M : Type*} [NormedAdd
     rw [hz] at hneg
     exact False.elim (lt_irrefl (0 : ℝ) hneg)
 
-theorem MorseCancel.exists_prescribed_morse_patch_field {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_prescribed_morse_patch_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}
@@ -2212,7 +2212,7 @@ theorem MorseCancel.exists_prescribed_morse_patch_field {E M : Type*} [NormedAdd
     exact (c i).mvfderiv_descentField_neg hf hx (fun h => hreg (h.symm ▸ hp i))
 
 attribute [local instance 100] Classical.propDecidable in
-def MorseCancel.morseClosedBlock {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorseCancellation.morseClosedBlock {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ) : Set M :=
   c.splitChart.symm ''
@@ -2220,7 +2220,7 @@ def MorseCancel.morseClosedBlock {E M : Type*} [NormedAddCommGroup E] [NormedSpa
       Metric.closedBall (0 : c.PositiveCoordinates) R)
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.morseClosedBlock_subset_source {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.morseClosedBlock_subset_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
@@ -2232,7 +2232,7 @@ theorem MorseCancel.morseClosedBlock_subset_source {E M : Type*} [NormedAddCommG
   exact c.splitChart.map_target' (hblock hz)
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.morseClosedBlock_height {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem MorseCancellation.morseClosedBlock_height {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
@@ -2250,7 +2250,7 @@ theorem MorseCancel.morseClosedBlock_height {E M : Type*} [NormedAddCommGroup E]
   constructor <;> nlinarith [sq_nonneg ‖z.1‖, sq_nonneg ‖z.2‖]
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.morseClosedBlock_mem_nhds {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.morseClosedBlock_mem_nhds {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
@@ -2277,7 +2277,7 @@ theorem MorseCancel.morseClosedBlock_mem_nhds {E M : Type*} [NormedAddCommGroup 
       c.splitChart.left_inv' hy⟩
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.isCompact_morseClosedBlock {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.isCompact_morseClosedBlock {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [FiniteDimensional ℝ E] (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
