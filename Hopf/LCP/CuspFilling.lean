@@ -9688,18 +9688,18 @@ theorem CuspCentralHomology.doubleCylinder_respects (C : ℂ → Matrix (Fin 2) 
   rcases hs with rfl | rfl | rfl <;> simp only [doubleCylinder_zero, doubleCylinder_one]
 
 def CuspCentralHomology.doubleSuspensionMap (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ)
-    (hε : 0 < ε) : Suspension ThreeCircles → CuspRetraction.QuotientCentralFibre C ε :=
+    (hε : 0 < ε) : Suspension.topSus ThreeCircles → CuspRetraction.QuotientCentralFibre C ε :=
   Quotient.lift (doubleCylinder C ε hε) (doubleCylinder_respects C ε hε)
 
 @[simp]
 theorem CuspCentralHomology.doubleSuspensionMap_mk (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ)
     (hε : 0 < ε) (t : unitInterval) (a : ThreeCircles) :
-    doubleSuspensionMap C ε hε (Suspension.mk t a) = doubleCylinder C ε hε (t, a) :=
+    doubleSuspensionMap C ε hε (Suspension.topSus.mk t a) = doubleCylinder C ε hε (t, a) :=
   rfl
 
 theorem CuspCentralHomology.doubleSuspensionMap_continuous (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ)
     (ε : ℝ) (hε : 0 < ε) : Continuous (doubleSuspensionMap C ε hε) :=
-  (Suspension.isQuotientMap_mk (X := ThreeCircles)).continuous_iff.mpr
+  (Suspension.topSus.isQuotientMap_mk (X := ThreeCircles)).continuous_iff.mpr
     (doubleCylinder_continuous C ε hε)
 
 theorem CuspCentralHomology.chartPoint_branchVertices_fst_zero (i : Fin 6)
@@ -10060,8 +10060,8 @@ theorem CuspCentralHomology.doubleCylinder_eq_iff (C : ℂ → Matrix (Fin 2) (F
 theorem CuspCentralHomology.doubleSuspensionMap_injective (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ)
     (ε : ℝ) (hε : 0 < ε) : Function.Injective (doubleSuspensionMap C ε hε) := by
   intro x y h
-  obtain ⟨⟨s, a⟩, rfl⟩ := Suspension.mk_surjective x
-  obtain ⟨⟨t, b⟩, rfl⟩ := Suspension.mk_surjective y
+  obtain ⟨⟨s, a⟩, rfl⟩ := Suspension.topSus.mk_surjective x
+  obtain ⟨⟨t, b⟩, rfl⟩ := Suspension.topSus.mk_surjective y
   exact Quotient.sound ((doubleCylinder_eq_iff C ε hε (s, a) (t, b)).mp h)
 
 theorem CuspCentralHomology.edgeArcPositive_opposite (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (k : Fin 6)
@@ -10172,10 +10172,10 @@ theorem CuspCentralHomology.range_doubleSuspensionMap (C : ℂ → Matrix (Fin 2
   ext q
   constructor
   · rintro ⟨p, rfl⟩
-    obtain ⟨⟨t, z⟩, rfl⟩ := Suspension.mk_surjective p
+    obtain ⟨⟨t, z⟩, rfl⟩ := Suspension.topSus.mk_surjective p
     exact ⟨(t, z), rfl⟩
   · rintro ⟨⟨t, z⟩, rfl⟩
-    exact ⟨Suspension.mk t z, rfl⟩
+    exact ⟨Suspension.topSus.mk t z, rfl⟩
 
 abbrev CuspCentralHomology.FundamentalCell :=
   ToricSpace.CompactFibreTorus × CuspHoneycombTiling.baseCell
@@ -10893,7 +10893,7 @@ def CuspCentralHomology.threeCirclesIntersectionKernelEquiv {X : Type} [Topologi
       sumCoordinatesKernelEquiv.toAddEquiv).toIntLinearEquiv
 
 abbrev CuspCentralHomology.ThreeCircleSuspension :=
-  Suspension ThreeCircles
+  Suspension.topSus ThreeCircles
 
 def CuspCentralHomology.threeCircleSuspensionHomologyZeroEquiv :
     SingularMayerVietoris.SingularHomology ThreeCircleSuspension 0 ≃ₗ[ℤ] ℤ :=
@@ -10902,26 +10902,26 @@ def CuspCentralHomology.threeCircleSuspensionHomologyZeroEquiv :
 def CuspCentralHomology.threeCircleSuspensionHomologyOneEquiv :
     SingularMayerVietoris.SingularHomology ThreeCircleSuspension 1 ≃ₗ[ℤ] (Fin 2 → ℤ) :=
   (contractibleCoverHomologyOneEquivKernel
-        ((CuspCentralHomology.Suspension.northOpen :
+        ((Suspension.topSus.northOpen :
           Set CuspCentralHomology.ThreeCircleSuspension))
-        ((CuspCentralHomology.Suspension.southOpen :
+        ((Suspension.topSus.southOpen :
           Set CuspCentralHomology.ThreeCircleSuspension))
-        Suspension.northOpen_isOpen Suspension.southOpen_isOpen Suspension.open_cover).trans
+        Suspension.topSus.northOpen_isOpen Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover).trans
     (threeCirclesIntersectionKernelEquiv
-      ((CuspCentralHomology.Suspension.northOpen : Set CuspCentralHomology.ThreeCircleSuspension))
-      ((CuspCentralHomology.Suspension.southOpen : Set CuspCentralHomology.ThreeCircleSuspension))
-      (Suspension.middleBandHomotopyEquiv (X := ThreeCircles)))
+      ((Suspension.topSus.northOpen : Set CuspCentralHomology.ThreeCircleSuspension))
+      ((Suspension.topSus.southOpen : Set CuspCentralHomology.ThreeCircleSuspension))
+      (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles)))
 
 def CuspCentralHomology.threeCircleSuspensionHomologyTwoEquiv :
     SingularMayerVietoris.SingularHomology ThreeCircleSuspension 2 ≃ₗ[ℤ] (Fin 3 → ℤ) :=
   (contractibleCoverHomologyHigherEquiv
-        ((CuspCentralHomology.Suspension.northOpen :
+        ((Suspension.topSus.northOpen :
           Set CuspCentralHomology.ThreeCircleSuspension))
-        ((CuspCentralHomology.Suspension.southOpen :
+        ((Suspension.topSus.southOpen :
           Set CuspCentralHomology.ThreeCircleSuspension))
-        Suspension.northOpen_isOpen Suspension.southOpen_isOpen Suspension.open_cover 0).trans
+        Suspension.topSus.northOpen_isOpen Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover 0).trans
     ((PeriodTorusHigherHomology.homotopyEquivHomologyEquiv
-          (Suspension.middleBandHomotopyEquiv (X := ThreeCircles)) 1).trans
+          (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles)) 1).trans
       threeCirclesHomologyOneEquiv)
 
 theorem CuspCentralHomology.threeCircleSuspension_homology_subsingleton (n : ℕ) :
@@ -10929,14 +10929,14 @@ theorem CuspCentralHomology.threeCircleSuspension_homology_subsingleton (n : ℕ
   let := threeCircles_homology_subsingleton n
   exact
     ((contractibleCoverHomologyHigherEquiv
-            ((CuspCentralHomology.Suspension.northOpen :
+            ((Suspension.topSus.northOpen :
               Set CuspCentralHomology.ThreeCircleSuspension))
-            ((CuspCentralHomology.Suspension.southOpen :
+            ((Suspension.topSus.southOpen :
               Set CuspCentralHomology.ThreeCircleSuspension))
-            Suspension.northOpen_isOpen Suspension.southOpen_isOpen Suspension.open_cover
+            Suspension.topSus.northOpen_isOpen Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover
             (n + 1)).trans
         (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv
-          (Suspension.middleBandHomotopyEquiv (X := ThreeCircles))
+          (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles))
           (n + 2))).injective.subsingleton
 
 def CuspCentralHomology.threeCircleSuspensionBetti : ℕ → ℕ

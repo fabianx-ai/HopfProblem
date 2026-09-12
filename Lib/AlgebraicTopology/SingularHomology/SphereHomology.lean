@@ -166,45 +166,45 @@ theorem SphereHomology.leftHomologyMap_zero_ker {X : Type} [TopologicalSpace X] 
   LinearMap.ker_eq_bot.mpr (leftHomologyMap_zero_injective U V)
 
 instance SphereHomology.suspension_middleBand_pathConnectedSpace (X : Type) [TopologicalSpace X]
-    [PathConnectedSpace X] : PathConnectedSpace (Suspension.Suspension.middleBand X) :=
-  (Suspension.Suspension.middleBandHomeomorph (X :=
+    [PathConnectedSpace X] : PathConnectedSpace (Suspension.topSus.middleBand X) :=
+  (Suspension.topSus.middleBandHomeomorph (X :=
         X)).symm.surjective.pathConnectedSpace
-    (Suspension.Suspension.middleBandHomeomorph (X := X)).symm.continuous
+    (Suspension.topSus.middleBandHomeomorph (X := X)).symm.continuous
 
 def SphereHomology.suspensionHomologyOneEquivKernel (X : Type) [TopologicalSpace X] [Nonempty X] :
-    SingularMayerVietoris.SingularHomology (Suspension.Suspension X) 1 ≃ₗ[ℤ]
+    SingularMayerVietoris.SingularHomology (Suspension.topSus X) 1 ≃ₗ[ℤ]
       LinearMap.ker
         (SingularMayerVietoris.leftHomologyMap
-          ((Suspension.Suspension.northOpen : Set (Suspension.Suspension X)))
-          ((Suspension.Suspension.southOpen : Set (Suspension.Suspension X)))
+          ((Suspension.topSus.northOpen : Set (Suspension.topSus X)))
+          ((Suspension.topSus.southOpen : Set (Suspension.topSus X)))
           0) :=
   Suspension.contractibleCoverHomologyOneEquivKernel
-    ((Suspension.Suspension.northOpen : Set (Suspension.Suspension X)))
-    ((Suspension.Suspension.southOpen : Set (Suspension.Suspension X)))
-    Suspension.Suspension.northOpen_isOpen
-    Suspension.Suspension.southOpen_isOpen Suspension.Suspension.open_cover
+    ((Suspension.topSus.northOpen : Set (Suspension.topSus X)))
+    ((Suspension.topSus.southOpen : Set (Suspension.topSus X)))
+    Suspension.topSus.northOpen_isOpen
+    Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover
 
 theorem SphereHomology.suspensionLeftHomologyMap_zero_ker (X : Type) [TopologicalSpace X]
     [PathConnectedSpace X] :
     LinearMap.ker
         (SingularMayerVietoris.leftHomologyMap
-          ((Suspension.Suspension.northOpen : Set (Suspension.Suspension X)))
-          ((Suspension.Suspension.southOpen : Set (Suspension.Suspension X)))
+          ((Suspension.topSus.northOpen : Set (Suspension.topSus X)))
+          ((Suspension.topSus.southOpen : Set (Suspension.topSus X)))
           0) =
       ⊥ :=
   leftHomologyMap_zero_ker
-    ((Suspension.Suspension.northOpen : Set (Suspension.Suspension X)))
-    ((Suspension.Suspension.southOpen : Set (Suspension.Suspension X)))
+    ((Suspension.topSus.northOpen : Set (Suspension.topSus X)))
+    ((Suspension.topSus.southOpen : Set (Suspension.topSus X)))
 
 theorem SphereHomology.suspension_homology_one_subsingleton (X : Type) [TopologicalSpace X]
     [PathConnectedSpace X] :
-    Subsingleton (SingularMayerVietoris.SingularHomology (Suspension.Suspension X) 1) := by
+    Subsingleton (SingularMayerVietoris.SingularHomology (Suspension.topSus X) 1) := by
   let :
     Subsingleton
       (LinearMap.ker
         (SingularMayerVietoris.leftHomologyMap
-          ((Suspension.Suspension.northOpen : Set (Suspension.Suspension X)))
-          ((Suspension.Suspension.southOpen : Set (Suspension.Suspension X)))
+          ((Suspension.topSus.northOpen : Set (Suspension.topSus X)))
+          ((Suspension.topSus.southOpen : Set (Suspension.topSus X)))
           0)) := by
     rw [suspensionLeftHomologyMap_zero_ker X]
     infer_instance

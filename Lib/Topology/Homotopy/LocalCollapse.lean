@@ -51,7 +51,7 @@ theorem LocalCollapse.exists_positive_sublevel_subset_open {X : Type*}
   apply hsub ⟨hab.1.trans_le (hf x), hfx⟩
   exact ⟨x, ⟨hx.trans (min_le_left r (b / 2)), hxu⟩, rfl⟩
 
-structure LocalCollapse.LocalCollapse {X : Type*} [TopologicalSpace X]
+structure LocalCollapse.Collapse {X : Type*} [TopologicalSpace X]
     (f : C(X, ℝ)) where
   homotopy : C(unitInterval × X, X)
   map_zero : ∀ x, homotopy (0, x) = x
@@ -61,8 +61,8 @@ structure LocalCollapse.LocalCollapse {X : Type*} [TopologicalSpace X]
   isOpen_collapseSet : IsOpen collapseSet
   map_one_zero : ∀ x ∈ collapseSet, f (homotopy (1, x)) = 0
 
-def LocalCollapse.LocalCollapse.identity {X : Type*} [TopologicalSpace X]
-    (f : C(X, ℝ)) : LocalCollapse.LocalCollapse f
+def LocalCollapse.Collapse.identity {X : Type*} [TopologicalSpace X]
+    (f : C(X, ℝ)) : LocalCollapse.Collapse f
     where
   homotopy := ⟨Prod.snd, continuous_snd⟩
   map_zero _ := rfl
@@ -72,8 +72,8 @@ def LocalCollapse.LocalCollapse.identity {X : Type*} [TopologicalSpace X]
   isOpen_collapseSet := isOpen_empty
   map_one_zero _ h := h.elim
 
-def LocalCollapse.LocalCollapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
-    (A B : LocalCollapse.LocalCollapse f) : LocalCollapse.LocalCollapse f
+def LocalCollapse.Collapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
+    (A B : LocalCollapse.Collapse f) : LocalCollapse.Collapse f
     where
   homotopy :=
     ⟨fun p => B.homotopy (p.1, A.homotopy p),
@@ -100,8 +100,8 @@ def LocalCollapse.LocalCollapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, 
       exact A.map_one_zero x hx
     · exact B.map_one_zero (A.homotopy (1, x)) hx
 
-theorem LocalCollapse.LocalCollapse.mem_comp_collapseSet_of_zero {X : Type*}
-    [TopologicalSpace X] {f : C(X, ℝ)} (A B : LocalCollapse.LocalCollapse f) {x : X}
+theorem LocalCollapse.Collapse.mem_comp_collapseSet_of_zero {X : Type*}
+    [TopologicalSpace X] {f : C(X, ℝ)} (A B : LocalCollapse.Collapse f) {x : X}
     (hx : f x = 0) (h : x ∈ A.collapseSet ∪ B.collapseSet) : x ∈ (A.comp B).collapseSet := by
   rcases h with h | h
   · exact Or.inl h
@@ -109,15 +109,15 @@ theorem LocalCollapse.LocalCollapse.mem_comp_collapseSet_of_zero {X : Type*}
     change A.homotopy (1, x) ∈ B.collapseSet
     rwa [A.fixes_zero 1 x hx]
 
-def LocalCollapse.LocalCollapse.combine {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
-    {ι : Type*} (A : ι → LocalCollapse.LocalCollapse f) :
-    List ι → LocalCollapse.LocalCollapse f
+def LocalCollapse.Collapse.combine {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
+    {ι : Type*} (A : ι → LocalCollapse.Collapse f) :
+    List ι → LocalCollapse.Collapse f
   | [] => identity f
   | i :: l => (A i).comp (combine A l)
 
-theorem LocalCollapse.LocalCollapse.mem_combine_collapseSet_of_zero {X : Type*}
+theorem LocalCollapse.Collapse.mem_combine_collapseSet_of_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*}
-    (A : ι → LocalCollapse.LocalCollapse f) (l : List ι) {x : X} (hx : f x = 0) {i : ι}
+    (A : ι → LocalCollapse.Collapse f) (l : List ι) {x : X} (hx : f x = 0) {i : ι}
     (hi : i ∈ l) (hxi : x ∈ (A i).collapseSet) : x ∈ (combine A l).collapseSet := by
   induction l with
   | nil => simp at hi
@@ -128,25 +128,25 @@ theorem LocalCollapse.LocalCollapse.mem_combine_collapseSet_of_zero {X : Type*}
     · exact mem_comp_collapseSet_of_zero (A a) (combine A l) hx (Or.inr (ih hi))
 
 theorem LocalCollapse.exists_localCollapse_covering_zero {X : Type*}
-    [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*} (A : ι → LocalCollapse f)
+    [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*} (A : ι → LocalCollapse.Collapse f)
     (hcompact : IsCompact {x : X | f x = 0})
     (hcover : {x : X | f x = 0} ⊆ ⋃ i, (A i).collapseSet) :
-    ∃ B : LocalCollapse f, {x : X | f x = 0} ⊆ B.collapseSet := by
+    ∃ B : LocalCollapse.Collapse f, {x : X | f x = 0} ⊆ B.collapseSet := by
   classical
   obtain ⟨s, hs⟩ :=
     hcompact.elim_finite_subcover (fun i => (A i).collapseSet) (fun i => (A i).isOpen_collapseSet)
       hcover
-  refine ⟨LocalCollapse.combine A s.toList, ?_⟩
+  refine ⟨LocalCollapse.Collapse.combine A s.toList, ?_⟩
   intro x hx
   obtain ⟨i, hi, hxi⟩ := Set.mem_iUnion₂.mp (hs hx)
   exact
-    LocalCollapse.mem_combine_collapseSet_of_zero A s.toList hx
+    LocalCollapse.Collapse.mem_combine_collapseSet_of_zero A s.toList hx
       (by simpa only [Finset.mem_toList] using hi) hxi
 
 theorem LocalCollapse.exists_localCollapse_covering_zero_of_local {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} (hcompact : IsCompact {x : X | f x = 0})
-    (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse f, x ∈ A.collapseSet) :
-    ∃ B : LocalCollapse f, {x : X | f x = 0} ⊆ B.collapseSet := by
+    (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse.Collapse f, x ∈ A.collapseSet) :
+    ∃ B : LocalCollapse.Collapse f, {x : X | f x = 0} ⊆ B.collapseSet := by
   classical
   choose A hA using fun x : { x : X // f x = 0 } => hlocal x x.2
   apply exists_localCollapse_covering_zero A hcompact
@@ -156,8 +156,8 @@ theorem LocalCollapse.exists_localCollapse_covering_zero_of_local {X : Type*}
 theorem LocalCollapse.exists_small_sublevel_localCollapse {X : Type*}
     [TopologicalSpace X] (f : C(X, ℝ)) (hf : ∀ x, 0 ≤ f x) {r : ℝ} (hr : 0 < r)
     (hc : IsCompact {x : X | f x ≤ r})
-    (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse f, x ∈ A.collapseSet) :
-    ∃ η : ℝ, 0 < η ∧ η ≤ r ∧ ∃ A : LocalCollapse f, {x : X | f x ≤ η} ⊆ A.collapseSet := by
+    (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse.Collapse f, x ∈ A.collapseSet) :
+    ∃ η : ℝ, 0 < η ∧ η ≤ r ∧ ∃ A : LocalCollapse.Collapse f, {x : X | f x ≤ η} ⊆ A.collapseSet := by
   obtain ⟨A, hA⟩ := exists_localCollapse_covering_zero_of_local (zeroSet_isCompact f hr hc) hlocal
   obtain ⟨η, hη, hηr, hηA⟩ :=
     exists_positive_sublevel_subset_open f hf hr hc A.isOpen_collapseSet hA
