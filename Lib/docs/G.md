@@ -196,7 +196,7 @@ G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/Smale.lean`.
 
 Seams: lanes D1 (Morse data, Reeb), E1 (rearrangement/birth/cancellation), E2 (transversality
 inputs to F's Whitney step), F (the whole Whitney/slide/integer engine), A/B (homology and
-simply-connected inputs). The consumers `Hopf/Final.lean` (through `Degree.
+simply-connected inputs). The consumers `Hopf/Final.lean` (through `
 threefoldHomotopyEquiv`, which lane C re-routes) keep their statements.
 
 **Row G-headline (the axiom probe).** Current (Recognition 11312, verbatim in the G map):

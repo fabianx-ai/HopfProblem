@@ -84,7 +84,7 @@ theorem Smale.RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedA
     change ContDiffOn ℝ ∞ (fun y => Classical.choose hk (y - x)) U
     exact (Classical.choose hk).contDiff.comp_contDiffOn (contDiffOn_id.sub contDiffOn_const)
   obtain ⟨Φ, hΦ, hΦU, hΦf⟩ :=
-    NoExotic.exists_partialDiffeomorph_of_contDiffOn hU hx hg φ.isInvertible_fderiv_prodFun
+    exists_partialDiffeomorph_of_contDiffOn hU hx hg φ.isInvertible_fderiv_prodFun
   refine ⟨Φ, hΦ, hΦU, ?_, ?_⟩
   · intro y
     rw [hΦf]

@@ -781,8 +781,8 @@ project vocabulary). Dependency order is row order; every dependency points back
 | L10 | Decomposition theorem + zero-sum relation (§9) | L1, L3, L7 (internally based input) | $[p] = \sum_\sigma \mathrm{sign}(\sigma)[p \circ A_\sigma]$; $\sum_i (-1)^i[\partial_i \tau] = 0$ | `CubeGluing` 19948–20581; `CubicalBoundary` 18323–19947; `nativeCubeSubdivision_class` 22073 (general $n$ — already done) |
 | L11 | The Hurewicz homomorphism (§11) | L5, L6, L9 | $h_n \colon \pi_n(X,x) \to H_n(X)$ well-defined, $\mathbb{Z}$-linear | per-degree `hurewiczMap`; recursive `cubeChain` def 17364/23152/Rec 1128 |
 | L12 | The class operator and the two round-trips (§12–13) | L7, L8, L10, L11 | $\bar\Psi \colon H_n(X) \to \pi_n(X,x)$; $h_n \circ \bar\Psi = \mathrm{id}$; $\bar\Psi \circ h_n = \mathrm{id}$ — **the theorem** | per-degree `hurewiczInverse`, `hurewiczLinearEquiv` (8285, 14984, 22152, 23611, Rec 1492) |
-| L13 | Cell filling; cube→sphere transport (§16) | L7's one-level lemma (already general), quotient topology | sphere/cylinder filling at rank $\leq d$; $I^n/\partial I^n \cong S^n$ factorization | `Degree.Sphere.exists_boundary_extension_of_pi` Rec 2510; `Degree.CylinderFilling.exists_filling` Rec 2542; `SixSphereCube` Rec 1737–1955 (pinned $n=6$) |
-| L14 | Hopf degree theorem (§15) | L12 (applied to $S^n$), sphere connectivity bootstrap (A/B) | $\deg \colon \pi_n(S^n) \cong \mathbb{Z}$; right-inverse-is-left-inverse | `Degree.Sphere.homotopic_id_of_topClass` Rec 4025 (pinned $n = 6$) |
+| L13 | Cell filling; cube→sphere transport (§16) | L7's one-level lemma (already general), quotient topology | sphere/cylinder filling at rank $\leq d$; $I^n/\partial I^n \cong S^n$ factorization | `Sphere.exists_boundary_extension_of_pi` Rec 2510; `CylinderFilling.exists_filling` Rec 2542; `SixSphereCube` Rec 1737–1955 (pinned $n=6$) |
+| L14 | Hopf degree theorem (§15) | L12 (applied to $S^n$), sphere connectivity bootstrap (A/B) | $\deg \colon \pi_n(S^n) \cong \mathbb{Z}$; right-inverse-is-left-inverse | `Sphere.homotopic_id_of_topClass` Rec 4025 (pinned $n = 6$) |
 
 **What is deleted.** The per-degree copies become instantiations: each `hurewiczPiNEquiv` is
 the general `hurewiczLinearEquiv` applied to the subsingleton instances accumulated by the
@@ -812,7 +812,7 @@ binder hoisting, `lemma`/`theorem` choice, attribute idioms.
 | `Lib/AlgebraicTopology/Hurewicz/Straightening.lean` | L7, L8 | shape after `Degree1.lean` (reference example) |
 | `Lib/AlgebraicTopology/Hurewicz/Subdivision.lean` | L9's subdivision half | `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (shape) |
 | `Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean` | L10 | none existing; shape after `SimplexPaths.lean` (reference example) |
-| `Lib/AlgebraicTopology/Hurewicz/Degree.lean` | L11, L12, §14 | `Lib/AlgebraicTopology/Hurewicz/Degree1.lean` (the in-tree reference example is the twin) |
+| `Lib/AlgebraicTopology/Hurewicz/lean` | L11, L12, §14 | `Lib/AlgebraicTopology/Hurewicz/Degree1.lean` (the in-tree reference example is the twin) |
 | `Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean` | L14 | none existing; shape after `Degree1.lean` |
 | `Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean` | L13 (transport half) | `Mathlib/Topology/OnePoint.lean` (shape) |
 
@@ -821,7 +821,7 @@ Build order (dependency-respecting): `SimplexCube`, `CellFilling`, `HomotopyExte
 `Straightening`, `Subdivision`, `CubeGluing`, `Degree`, `CubeSphere`, `HopfDegree`.
 
 The consumers `Hopf/Recognition.lean` (the `pi*_subsingleton` instances,
-`SpecialPeriods.Threefold.Homotopy*`, `Degree.threefoldHomotopyEquiv` — statement unchanged,
+`SpecialPeriods.Threefold.Homotopy*`, `threefoldHomotopyEquiv` — statement unchanged,
 proof re-routed) and `Hopf/LCP/IntegralHomology.lean` recover the original degrees by
 instantiation of the general `hurewiczLinearEquiv` at $n = 2, \dots, 6$.
 
@@ -933,7 +933,7 @@ Target: same, `Hurewicz.CubeGluing.*`; docstrings per the reference-example chec
 move (general-`n` already). Universe note: `cubicalBoundaryValue_eq_zero` keeps
 `Type u`/`Type v` and says so in its docstring.
 
-**Boundary C10 — `Degree.lean` (headline).**
+**Boundary C10 — `lean` (headline).**
 Target headline signature (the generalized theorem):
 
 ```lean
@@ -953,7 +953,7 @@ reference key `hatcher02`. Current evidence: the five pinned `hurewiczLinearEqui
 14984, 22152, 23611, Rec 1492). Seam: `SingularMayerVietoris.SingularHomology` (A).
 Consumers recover e.g. the degree-2 iso by `hurewiczLinearEquiv (n := 2) le_rfl x` with the
 vacuous family `(fun k h2 hk => by interval_cases k)`, and the sphere bootstrap
-`Degree.Sphere.piTwo..piFive_subsingleton` re-routes through the general theorem applied
+`Sphere.piTwo..piFive_subsingleton` re-routes through the general theorem applied
 inductively (section 15's bootstrap), statements unchanged.
 
 **Boundary C11 — `CubeSphere.lean`.**
@@ -965,17 +965,17 @@ Target: general-`n` `Hurewicz.CubeSphere.{cubeSphereMap, cubeSphereLoop, factorM
 declarations. Seam: none beyond A.
 
 **Boundary C12 — `CellFilling.lean`.**
-Current (already general): `Degree.Sphere.exists_boundary_extension_of_pi` (Rec 2510) and
-`Degree.CylinderFilling.exists_filling` (Rec 2542), both with
+Current (already general): `Sphere.exists_boundary_extension_of_pi` (Rec 2510) and
+`CylinderFilling.exists_filling` (Rec 2542), both with
 `(hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))` and
 `Module.finrank ℝ V ≤ d` / `+1 ≤ d`.
 Target: `Topology.Homotopy.CellFilling.{exists_boundary_extension_of_pi_subsingleton,
 exists_cylinderFilling}` over a general finite-dimensional real normed space. Pure move.
 
 **Boundary C13 — `HopfDegree.lean`.**
-Current (pinned): `Degree.sphere_homotopicRel_of_topClass_eq` (Rec 3988, $n = 6$ hypotheses
-spelled out), `Degree.Sphere.homotopic_id_of_topClass` (Rec 4025),
-`Degree.right_inverse_is_left_inverse` (Rec 4044).
+Current (pinned): `sphere_homotopicRel_of_topClass_eq` (Rec 3988, $n = 6$ hypotheses
+spelled out), `Sphere.homotopic_id_of_topClass` (Rec 4025),
+`right_inverse_is_left_inverse` (Rec 4044).
 Target: general-`n` forms over `Hurewicz.CubeSphere.StandardSphere n`, the connectivity
 hypotheses packaged as the subsingleton family; the $n = 6$ instance recovers today's
 statements unchanged. The sphere connectivity bootstrap (section 15) is included here as

@@ -720,7 +720,7 @@ theorem MorseCancel.native_same_level_orbit_points {E M : Type*} [NormedAddCommG
       _ = F (-t) (F t y) := (congrArg (F (-t)) hxy)
       _ = y := by rw [← F.map_add, neg_add_cancel, F.map_zero_apply]
   have htime :=
-    Degree.FlowCancellation.flow_level_time_unique F hf.continuous
+    FlowCancellation.flow_level_time_unique F hf.continuous
       (contMDiff_directionalDerivative hf hV).continuous
       (fun z u => Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hF z) u) hboundary x
       (hmove ▸ hy) (show f (F 0 x) = c by rw [F.map_zero_apply]; exact hx)
@@ -2646,7 +2646,7 @@ theorem MorseCancel.exists_native_cubic_field_cancellation_in {E M : Type*} [Nor
     intro hz
     exact hnonzero _ ((partialChartField_zero_iff Φ (cancelledDescent σ a φ) hx).mp hz)
   obtain ⟨V', hV', heq, hzero, hkeep⟩ :=
-    Degree.LocalFieldReplacement.exists_smooth_field_replacement Φ V W hV hW hc hsupp hfix hreg
+    LocalFieldReplacement.exists_smooth_field_replacement Φ V W hV hW hc hsupp hfix hreg
   have hp : (a, (0 : Fin m → ℝ)) ∈ Φ.source := haxis ⟨⟨by linarith, le_rfl⟩, rfl⟩
   have hq : (-a, (0 : Fin m → ℝ)) ∈ Φ.source := haxis ⟨⟨le_rfl, by linarith⟩, rfl⟩
   refine ⟨φ, hφ, hc, hsupp, hsuppN, hrange, hone, V', hV', heq, ?_, hkeep⟩
@@ -2700,7 +2700,7 @@ theorem MorseCancel.native_cubic_flow_between_box_points {E M : Type*} [NormedAd
         hd
       rw [← hmodel (γ w) (Φ.map_source' hp)] at hd'
       exact hd'.hasMFDerivWithinAt
-    exact Degree.FlowSuspension.native_flow_segment_endpoints hV F hF huv hcont hcurve
+    exact FlowSuspension.native_flow_segment_endpoints hV F hF huv hcont hcurve
   rcases lt_trichotomy s t with hst | hst | hts
   · exact hforward hst hs ht
   · subst t
@@ -2847,13 +2847,13 @@ theorem MorseCancel.exists_clock_normalized_cubic_endpoint {E M : Type*} [Normed
   obtain ⟨r, δ, T, τ, hr, hδ, hbox, hslice, hcenter⟩ :=
     exists_endpoint_slice_on_actual_orbit σ ha Φ hV₁ hmodel F hF hc hcΦ x hlim htail
   have hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t) := fun t =>
-    (Degree.SmoothODE.contMDiff_native_flow hV F hF).comp (contMDiff_id.prodMk contMDiff_const)
-  let Ψ := Φ.trans (Degree.SmoothODE.nativeFlowTimeDiffeomorph F hs (T - τ)).toPartialDiffeomorph
-  have hsource : Ψ.source = Φ.source := Degree.SmoothODE.flow_shifted_chart_source Φ F hs (T - τ)
+    (SmoothODE.contMDiff_native_flow hV F hF).comp (contMDiff_id.prodMk contMDiff_const)
+  let Ψ := Φ.trans (SmoothODE.nativeFlowTimeDiffeomorph F hs (T - τ)).toPartialDiffeomorph
+  have hsource : Ψ.source = Φ.source := SmoothODE.flow_shifted_chart_source Φ F hs (T - τ)
   have hΨmodel : ∀ y ∈ Ψ.target, V y = nativeCubicDescent σ Ψ (-(a ^ 2)) y := by
     intro y hy
     exact
-      Degree.SmoothODE.partialChartField_flow_shift Φ F hs hF (cubicDescent σ (-(a ^ 2))) hmodel
+      SmoothODE.partialChartField_flow_shift Φ F hs hF (cubicDescent σ (-(a ^ 2))) hmodel
         (T - τ) hy
   have hzero : V (Φ (c, 0)) = 0 := by
     rw [hmodel _ (Φ.map_source' hcΦ)]
@@ -3688,7 +3688,7 @@ def MorseCancel.nativeBeltArc {E M : Type*} [NormedAddCommGroup E] [NormedSpace 
     (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : ℝ) : M :=
-  (S.data q).chart.splitChart.symm (Degree.BeltPassage.upper (S.data q).radius s u.val v.val)
+  (S.data q).chart.splitChart.symm (BeltPassage.upper (S.data q).radius s u.val v.val)
 
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancel.nativeBeltArc_coordinates_mem_target {E M : Type*} [NormedAddCommGroup E]
@@ -3696,10 +3696,10 @@ theorem MorseCancel.nativeBeltArc_coordinates_mem_target {E M : Type*} [NormedAd
     {f : M → ℝ} (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
-    Degree.BeltPassage.upper (S.data q).radius s u.val v.val ∈
+    BeltPassage.upper (S.data q).radius s u.val v.val ∈
       (S.data q).chart.splitChart.target :=
   (S.data q).block
-    (Degree.BeltPassage.upper_mem_block (S.data q).radius_pos hs
+    (BeltPassage.upper_mem_block (S.data q).radius_pos hs
       (mem_sphere_zero_iff_norm.mp u.property) (mem_sphere_zero_iff_norm.mp v.property))
 
 attribute [local instance 100] Classical.propDecidable in
@@ -3713,11 +3713,11 @@ theorem MorseCancel.nativeBeltArc_height {E M : Type*} [NormedAddCommGroup E] [N
     (S.data q).chart.splitChart_inverse_equation
       (nativeBeltArc_coordinates_mem_target S q u v hs)]
   have hh :=
-    Degree.BeltPassage.upper_height (S.data q).radius s (mem_sphere_zero_iff_norm.mp u.property)
+    BeltPassage.upper_height (S.data q).radius s (mem_sphere_zero_iff_norm.mp u.property)
       (mem_sphere_zero_iff_norm.mp v.property)
   change
-    -‖(Degree.BeltPassage.upper (S.data q).radius s u.val v.val).1‖ ^ 2 +
-        ‖(Degree.BeltPassage.upper (S.data q).radius s u.val v.val).2‖ ^ 2 =
+    -‖(BeltPassage.upper (S.data q).radius s u.val v.val).1‖ ^ 2 +
+        ‖(BeltPassage.upper (S.data q).radius s u.val v.val).2‖ ^ 2 =
       (S.data q).radius ^ 2 at hh
   dsimp only [Smale.ManifoldMorse.SurgeryWindows.upper]
   linarith
@@ -3729,7 +3729,7 @@ theorem MorseCancel.nativeBeltArc_zero {E M : Type*} [NormedAddCommGroup E] [Nor
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
     nativeBeltArc S q u v 0 = ((S.data q).surgery.beltSphere v).val := by
-  rw [nativeBeltArc, Degree.BeltPassage.upper_zero, (S.data q).belt_eq,
+  rw [nativeBeltArc, BeltPassage.upper_zero, (S.data q).belt_eq,
     (S.data q).chart.beltCoreMap_coe]
 
 attribute [local instance 100] Classical.propDecidable in
@@ -3742,7 +3742,7 @@ theorem MorseCancel.nativeBeltArc_belt_eq_iff {E M : Type*} [NormedAddCommGroup 
   constructor
   · intro heq
     have hzero := nativeBeltArc_coordinates_mem_target S q u w (s := 0) (by simp)
-    rw [Degree.BeltPassage.upper_zero] at hzero
+    rw [BeltPassage.upper_zero] at hzero
     rw [nativeBeltArc, (S.data q).belt_eq, (S.data q).chart.beltCoreMap_coe] at heq
     have hcoords :=
       (S.data q).chart.splitChart.symm.toPartialEquiv.injOn
@@ -3757,7 +3757,7 @@ theorem MorseCancel.nativeBeltArc_belt_eq_iff {E M : Type*} [NormedAddCommGroup 
       have hz : (S.data q).radius * s = 0 := (smul_eq_zero.mp hfst).resolve_right hu
       exact (mul_eq_zero.mp hz).resolve_left (S.data q).radius_pos.ne'
     refine ⟨hs0, ?_⟩
-    rw [hs0, Degree.BeltPassage.upper_zero] at hcoords
+    rw [hs0, BeltPassage.upper_zero] at hcoords
     exact
       Subtype.ext (smul_right_injective _ (S.data q).radius_pos.ne' (congrArg Prod.snd hcoords))
   · rintro ⟨rfl, rfl⟩
@@ -3793,7 +3793,7 @@ theorem MorseCancel.nativeBeltArc_contMDiffOn {E M : Type*} [NormedAddCommGroup 
     ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, E) ∞ (nativeBeltArc S q u v) (Set.Ioo (-1 : ℝ) 1) := by
   apply
     (S.data q).chart.splitChart.contMDiffOn_invFun.comp
-      (Degree.BeltPassage.contDiff_upper (S.data q).radius u.val v.val).contMDiff.contMDiffOn
+      (BeltPassage.contDiff_upper (S.data q).radius u.val v.val).contMDiff.contMDiffOn
   intro s hs
   exact nativeBeltArc_coordinates_mem_target S q u v (abs_le.mpr ⟨hs.1.le, hs.2.le⟩)
 
@@ -3803,10 +3803,10 @@ theorem MorseCancel.nativeLowerMeridian_coordinates_mem_target {E M : Type*}
     (q : Smale.ManifoldMorse.criticalPoints E f)
     (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    Degree.BeltPassage.lower (S.data q).radius s u.val v.val ∈
+    BeltPassage.lower (S.data q).radius s u.val v.val ∈
       (S.data q).chart.splitChart.target := by
   have hh :=
-    Degree.BeltPassage.upper_mem_block (S.data q).radius_pos
+    BeltPassage.upper_mem_block (S.data q).radius_pos
       (show |(s : ℝ)| ≤ 1 by rw [abs_of_nonneg s.property.1]; exact s.property.2)
       (mem_sphere_zero_iff_norm.mp v.property) (mem_sphere_zero_iff_norm.mp u.property)
   exact (S.data q).block ⟨hh.2, hh.1⟩
@@ -3818,16 +3818,16 @@ theorem MorseCancel.nativeLowerMeridian_height {E M : Type*} [NormedAddCommGroup
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
     f
         ((S.data q).chart.splitChart.symm
-          (Degree.BeltPassage.lower (S.data q).radius s u.val v.val)) =
+          (BeltPassage.lower (S.data q).radius s u.val v.val)) =
       S.toSurgeryWindows.lower q := by
   rw [(S.data q).chart.splitChart_inverse_equation
       (nativeLowerMeridian_coordinates_mem_target S q u v s)]
   have hh :=
-    Degree.BeltPassage.upper_height (S.data q).radius (s : ℝ)
+    BeltPassage.upper_height (S.data q).radius (s : ℝ)
       (mem_sphere_zero_iff_norm.mp v.property) (mem_sphere_zero_iff_norm.mp u.property)
   change
-    -‖(Degree.BeltPassage.lower (S.data q).radius s u.val v.val).2‖ ^ 2 +
-        ‖(Degree.BeltPassage.lower (S.data q).radius s u.val v.val).1‖ ^ 2 =
+    -‖(BeltPassage.lower (S.data q).radius s u.val v.val).2‖ ^ 2 +
+        ‖(BeltPassage.lower (S.data q).radius s u.val v.val).1‖ ^ 2 =
       (S.data q).radius ^ 2 at hh
   dsimp only [Smale.ManifoldMorse.SurgeryWindows.lower]
   linarith
@@ -3842,7 +3842,7 @@ def MorseCancel.nativeLowerMeridianFamily {E M : Type*} [NormedAddCommGroup E] [
   toFun
     z :=
     ⟨(S.data q).chart.splitChart.symm
-        (Degree.BeltPassage.lower (S.data q).radius z.1 z.2.val v.val),
+        (BeltPassage.lower (S.data q).radius z.1 z.2.val v.val),
       nativeLowerMeridian_height S q z.2 v z.1⟩
   continuous_toFun := by
     have hsize :
@@ -3858,8 +3858,8 @@ def MorseCancel.nativeLowerMeridianFamily {E M : Type*} [NormedAddCommGroup E] [
     have hcoords :
       Continuous
         (fun z : unitInterval × Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          Degree.BeltPassage.lower (S.data q).radius (z.1 : ℝ) z.2.val v.val) := by
-      unfold Degree.BeltPassage.lower
+          BeltPassage.lower (S.data q).radius (z.1 : ℝ) z.2.val v.val) := by
+      unfold BeltPassage.lower
       exact
         ((continuous_const.mul
                   (Real.continuous_sqrt.comp (continuous_const.add (hsize.pow 2)))).smul
@@ -3891,8 +3891,8 @@ def MorseCancel.nativeUpperMeridian {E M : Type*} [NormedAddCommGroup E] [Normed
     have hcoords :
       Continuous
         (fun u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          Degree.BeltPassage.upper (S.data q).radius (s : ℝ) u.val v.val) := by
-      unfold Degree.BeltPassage.upper
+          BeltPassage.upper (S.data q).radius (s : ℝ) u.val v.val) := by
+      unfold BeltPassage.upper
       have hneg :
         Continuous
           (fun u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
@@ -3924,9 +3924,9 @@ theorem MorseCancel.nativeLowerMeridian_zero {E M : Type*} [NormedAddCommGroup E
   intro u
   apply Subtype.ext
   change
-    (S.data q).chart.splitChart.symm (Degree.BeltPassage.lower (S.data q).radius 0 u.val v.val) =
+    (S.data q).chart.splitChart.symm (BeltPassage.lower (S.data q).radius 0 u.val v.val) =
       _
-  rw [Degree.BeltPassage.lower_zero, (S.data q).attaching_eq,
+  rw [BeltPassage.lower_zero, (S.data q).attaching_eq,
     (S.data q).chart.attachingCoreMap_coe]
 
 theorem MorseCancel.nativeUpperMeridian_flow {E M : Type*} [NormedAddCommGroup E]
@@ -3934,7 +3934,7 @@ theorem MorseCancel.nativeUpperMeridian_flow {E M : Type*} [NormedAddCommGroup E
     {f : M → ℝ} (S : AdaptedWindows E f) (q : Smale.ManifoldMorse.criticalPoints E f)
     (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval)
     (hs : 0 < (s : ℝ)) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1) :
-    S.flow (Degree.BeltPassage.time s) ((nativeUpperMeridian S q v s) u).val =
+    S.flow (BeltPassage.time s) ((nativeUpperMeridian S q v s) u).val =
       ((nativeLowerMeridian S q v s) u).val :=
   S.flow_belt_passage q hs s.property.2 u v
 
@@ -4505,30 +4505,30 @@ theorem MorseCancel.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommG
       rw [ha1]
       exact Set.mem_range_self y
 
-def Degree.AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] ℝ :=
   (ContinuousLinearMap.fst ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
-def Degree.AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] V :=
   (ContinuousLinearMap.snd ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
-theorem Degree.AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (tangentShear (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
-theorem Degree.AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (transverseBlock (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
-theorem Degree.AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) (s : ℝ) (z : V) :
     L (s, z) = (s + tangentShear L z, transverseBlock L z) := by
   have hp : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
   rw [hp, map_add, map_smul, hL]
   apply Prod.ext <;> simp [tangentShear, transverseBlock]
 
-theorem Degree.AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) :
     L = Smale.FrameField.shearedBlock (tangentShear L) (transverseBlock L) := by
   apply ContinuousLinearMap.ext
@@ -4536,7 +4536,7 @@ theorem Degree.AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] 
   rw [Smale.FrameField.shearedBlock_apply]
   exact axis_block_apply L hL p.1 p.2
 
-theorem Degree.AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : Function.Bijective L) : Function.Bijective (transverseBlock L) := by
   constructor
@@ -4550,7 +4550,7 @@ theorem Degree.AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddC
     rw [axis_block_apply L hL] at hz
     exact ⟨z, congrArg (fun p : ℝ × V => p.2) hz⟩
 
-theorem Degree.AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : L.IsInvertible) : (transverseBlock L).IsInvertible := by
   let e :=
@@ -4558,7 +4558,7 @@ theorem Degree.AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedA
         (bijective_transverseBlock L hL hi.bijective)).toContinuousLinearEquiv
   exact ⟨e, rfl⟩
 
-theorem Degree.AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : (ℝ × V) → (ℝ × V)} {s : ℝ} (hF : ContDiffAt ℝ ∞ F (s, 0))
     (heq : (fun r : ℝ => F (r, 0)) =ᶠ[𝓝 s] (fun r => (r, (0 : V)))) :
     fderiv ℝ F (s, 0) (1, 0) = (1, 0) := by
@@ -4567,7 +4567,7 @@ theorem Degree.AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommG
   have hd := (hF.differentiableAt (by simp)).hasFDerivAt.comp_hasDerivAt s ha
   exact hd.deriv.symm.trans (heq.deriv_eq.trans ha.deriv)
 
-theorem Degree.AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
+theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞) {s₀ : ℝ}
@@ -4627,7 +4627,7 @@ theorem Degree.AxisCoordinates.exists_native_axis_transition_data {V E M : Type*
   · intro s hs
     exact axis_block_eq _ (hfix s hs)
 
-theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
+theorem AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)} {T₀ T₁ : ℝ → (V →L[ℝ] V)}
     {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀) (hA₁ : ContDiffOn ℝ ∞ A₁ U₁)
@@ -4652,14 +4652,14 @@ theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     Smale.exists_smooth_open_curve_with_endpoint_germs S hA₀ hA₁ hU₀ hU₁ h0 h1 (Set.mem_univ _)
       (Set.mem_univ _) γ
   obtain ⟨T, hT, hi, -, ht₀, ht₁⟩ :=
-    Degree.LinearFramePaths.exists_smooth_invertible_frame_join basis hT₀ hT₁ hU₀ hU₁ h0 h1 hsign
+    LinearFramePaths.exists_smooth_invertible_frame_join basis hT₀ hT₁ hU₀ hU₁ h0 h1 hsign
   have hTi (s : ℝ) : (T s).IsInvertible :=
     ⟨(LinearEquiv.ofBijective (T s).toLinearMap (hi s)).toContinuousLinearEquiv, rfl⟩
   exact
     ⟨A, T, hA, hT, hTi, fun s => Smale.FrameField.isInvertible_shearedBlock (A s) (T s) (hTi s),
       ha₀, ha₁, ht₀, ht₁⟩
 
-theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
+theorem AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {p q : ℝ} (hpq : p < q) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)}
     {T₀ T₁ : ℝ → (V →L[ℝ] V)} {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀)
@@ -4710,7 +4710,7 @@ theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*
   · filter_upwards [hζ1 ht₁] with s hs
     exact hs.trans (congrArg T₁ (hξζ s))
 
-theorem Degree.AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
+theorem AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R : E → F} {K U : Set E} {x : E} (hH : ContDiff ℝ ∞ H) (hR : ContDiffOn ℝ ∞ R U)
     (hU : IsOpen U) (hx : x ∈ U) (hvalue : ∀ y ∈ K ∩ U, R y = H y)
@@ -4757,7 +4757,7 @@ theorem Degree.AxisCoordinates.exists_flat_local_correction {E F : Type*} [Norme
       simpa only [add_zero, Pi.add_def, G] using (hh.hasFDerivAt.add hc).fderiv
     · exact (hoff y hb).fderiv_eq
 
-theorem Degree.AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R₀ R₁ : (ℝ × V) → F} {U₀ U₁ : Set (ℝ × V)} {p q : ℝ} (hpq : p < q) (hH : ContDiff ℝ ∞ H)
     (hR₀ : ContDiffOn ℝ ∞ R₀ U₀) (hR₁ : ContDiffOn ℝ ∞ R₁ U₁) (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁)
@@ -4814,7 +4814,7 @@ theorem Degree.AxisCoordinates.exists_axis_germ_correction {V F : Type*} [Normed
     have hs : (s, (0 : V)) ∈ K := ⟨Set.mem_univ s, rfl⟩
     exact (hdG hs).trans (hdG₀ hs)
 
-theorem Degree.AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
+theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (basis : Module.Basis ι ℝ V) (Ψ Φ₀ Φ₁ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
@@ -4940,9 +4940,9 @@ theorem MorseCancel.linearTransverseChart_axis_source {V E M : Type*} [NormedAdd
 
 theorem MorseCancel.transverseBlock_comp_linear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (C : V ≃L[ℝ] V) (L : (ℝ × V) →L[ℝ] (ℝ × V)) :
-    Degree.AxisCoordinates.transverseBlock
+    AxisCoordinates.transverseBlock
         (L.comp ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C).toContinuousLinearMap) =
-      (Degree.AxisCoordinates.transverseBlock L).comp C.toContinuousLinearMap := by
+      (AxisCoordinates.transverseBlock L).comp C.toContinuousLinearMap := by
   ext z
   rfl
 
@@ -4950,9 +4950,9 @@ theorem MorseCancel.det_transition_linearTransverseChart {V E M : Type*} [Normed
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (C : V ≃L[ℝ] V) (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
     {t : ℝ} (ht : (t, (0 : V)) ∈ (Φ.trans Ψ.symm).source) :
-    (Degree.AxisCoordinates.transverseBlock
+    (AxisCoordinates.transverseBlock
           (fderiv ℝ (Ψ.symm ∘ linearTransverseChart C Φ) (t, 0))).toLinearMap.det =
-      (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (t, 0))).toLinearMap.det *
+      (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (t, 0))).toLinearMap.det *
         C.toLinearMap.det := by
   let P := (ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C
   have hP (s : ℝ) : P (s, (0 : V)) = (s, 0) := by
@@ -4986,25 +4986,25 @@ theorem MorseCancel.exists_compatible_sheet_endpoint_orientation {A B E M ι : T
     (haxis₁ : (fun s : ℝ => Φ₁ (s, 0)) =ᶠ[𝓝 q] (fun s => Ψ (s, 0))) :
     ∃ R : B ≃L[ℝ] B,
       0 <
-        (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det *
-          (Degree.AxisCoordinates.transverseBlock
+        (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det *
+          (AxisCoordinates.transverseBlock
               (fderiv ℝ
                 (Ψ.symm ∘ linearTransverseChart ((ContinuousLinearEquiv.refl ℝ A).prodCongr R) Φ₁)
                 (q, 0))).toLinearMap.det := by
   classical
   let := Fintype.ofFinite ι
   obtain ⟨U₀, -, hp, -, -, -, -, hi₀, -⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_transition_data Φ₀ Ψ hΦ₀ hΨ₀ haxis₀
+    AxisCoordinates.exists_native_axis_transition_data Φ₀ Ψ hΦ₀ hΨ₀ haxis₀
   obtain ⟨U₁, -, hq, hs₁, -, -, -, hi₁, -⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_transition_data Φ₁ Ψ hΦ₁ hΨ₁ haxis₁
+    AxisCoordinates.exists_native_axis_transition_data Φ₁ Ψ hΦ₁ hΨ₁ haxis₁
   let d₀ :=
-    (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det
+    (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det
   let d₁ :=
-    (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₁) (q, 0))).toLinearMap.det
+    (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₁) (q, 0))).toLinearMap.det
   have h₀ : d₀ ≠ 0 := det_ne_zero_of_isInvertible _ (hi₀ p hp)
   have h₁ : d₁ ≠ 0 := det_ne_zero_of_isInvertible _ (hi₁ q hq)
   obtain ⟨R, hR⟩ :=
-    Degree.SupportedGerms.exists_linearEquiv_with_det basis i (inv_ne_zero (mul_ne_zero h₀ h₁))
+    SupportedGerms.exists_linearEquiv_with_det basis i (inv_ne_zero (mul_ne_zero h₀ h₁))
   refine ⟨R, ?_⟩
   rw [det_transition_linearTransverseChart _ Φ₁ Ψ (hs₁ q hq)]
   have hdet : ((ContinuousLinearEquiv.refl ℝ A).prodCongr R).toLinearMap.det = (d₀ * d₁)⁻¹ := by
@@ -5110,7 +5110,7 @@ theorem MorseCancel.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGroup E] [
         simp only [Module.finrank_prod, finrank_euclideanSpace_fin]
         norm_num)
   obtain ⟨ε, hε, Φ, hprod, htarget, haxis, hgl, hgr⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_chart_with_endpoint_germs
+    AxisCoordinates.exists_native_axis_chart_with_endpoint_germs
       (Module.finBasis ℝ ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) Ψ Φ₀ Φ₂
       zero_lt_one CompactIccSpace.isCompact_Icc hzero hΨ₀ hΨ₁ hΦ₀ hΦ₂ haxis₀ haxis₂ hsign
   exact
@@ -5211,16 +5211,16 @@ theorem MorseCancel.exists_tube_support_box {V E H M : Type*} [NormedAddCommGrou
       Φ.open_source hwideAxis
   exact ⟨-a, 1 + b, r, by linarith, by linarith, hr, hprod⟩
 
-def Degree.RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
+def RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
   (F p, p.2)
 
-theorem Degree.RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (s : ℝ) (z : V) : L (s, z) = s * L (1, 0) + L (0, z) := by
   have he : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
   rw [he, map_add, map_smul]
   rfl
 
-theorem Degree.RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     Function.Bijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)) := by
   constructor
@@ -5239,23 +5239,23 @@ theorem Degree.RegularHeightCoordinates.triangular_bijective {V : Type*} [Normed
       ring
     · rfl
 
-def Degree.RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
+def RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     (ℝ × V) ≃L[ℝ] (ℝ × V) :=
   (LinearEquiv.ofBijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)).toLinearMap
       (triangular_bijective L hL)).toContinuousLinearEquiv
 
-theorem Degree.RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ (heightMap F) :=
   hF.prodMk contDiff_snd
 
-theorem Degree.RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (p : ℝ × V) :
     fderiv ℝ (heightMap F) p = (fderiv ℝ F p).prod (ContinuousLinearMap.snd ℝ ℝ V) :=
   (((hF.differentiable (by simp) p).hasFDerivAt).prodMk
       (ContinuousLinearMap.snd ℝ ℝ V).hasFDerivAt).fderiv
 
-theorem Degree.RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
+theorem RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {F : ℝ × V → ℝ}
     (hF : ContDiff ℝ ∞ F) {p : ℝ × V} (hreg : fderiv ℝ F p (1, 0) ≠ 0) :
     IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ (heightMap F) p := by
@@ -5268,21 +5268,21 @@ theorem Degree.RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
       (contDiff_heightMap hF).contDiffOn hinv
   exact ⟨Φ, hp, fun _ _ => congrFun hΦ.symm _⟩
 
-def Degree.RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
+def RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
   p.1 + u p
 
-theorem Degree.RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
+theorem RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u) :
     ContDiff ℝ ∞ (displacedHeight u) :=
   contDiff_fst.add hu
 
-theorem Degree.RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (s : ℝ) (z : V) :
     HasDerivAt (fun t : ℝ => F (t, z)) (fderiv ℝ F (s, z) (1, 0)) s :=
   ((hF.differentiable (by simp) (s, z)).hasFDerivAt).comp_hasDerivAt s
     ((hasDerivAt_id s).prodMk (hasDerivAt_const s z))
 
-theorem Degree.RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
+theorem RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F)
     (hpos : ∀ p, 0 < fderiv ℝ F p (1, 0)) : Function.Injective (heightMap F) := by
   have hmono (z : V) : StrictMono (fun s : ℝ => F (s, z)) :=
@@ -5293,7 +5293,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_injective_of_positive {V : Typ
   have hst : s = t := (hmono z).injective (congrArg Prod.fst he)
   exact Prod.ext hst rfl
 
-theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
+theorem RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
     [NormedAddCommGroup V] {u : ℝ × V → ℝ} (hu : Continuous u) (C : ℝ) (hC : 0 ≤ C)
     (hbound : ∀ p, |u p| ≤ C) : Function.Surjective (heightMap (displacedHeight u)) := by
   rintro ⟨r, z⟩
@@ -5313,7 +5313,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Typ
   obtain ⟨s, _, he⟩ := intermediate_value_Icc hab hs.continuousOn ⟨hlo, hhi⟩
   exact ⟨(s, z), Prod.ext he rfl⟩
 
-theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
+theorem RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) : Function.Surjective (heightMap (displacedHeight u)) := by
   obtain ⟨C, hC⟩ := (hc.isCompact_range hu.continuous).isBounded.exists_norm_le
@@ -5322,7 +5322,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_compactSupport {
     heightMap_surjective_of_bounded hu.continuous C hC0
       (fun p => by simpa only [Real.norm_eq_abs] using hC _ ⟨p, rfl⟩)
 
-def Degree.RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
+def RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) (hpos : ∀ p, 0 < fderiv ℝ (displacedHeight u) p (1, 0)) :
     (ℝ × V) ≃ₘ⟮𝓘(ℝ, ℝ × V), 𝓘(ℝ, ℝ × V)⟯ (ℝ × V) := by
@@ -5390,19 +5390,19 @@ theorem MorseCancel.longitudinalBlend_derivative_positive {V : Type*} [NormedAdd
     (hηrange : ∀ t, η t ∈ Set.Icc (0 : ℝ) 1) (t : ℝ) (p : ℝ × V) :
     0 <
       fderiv ℝ
-        (Degree.RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
+        (RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
         p (1, 0) := by
   have hu := longitudinalBlendDisplacement_smooth η hD hβ t
   have hscalar :=
-    Degree.RegularHeightCoordinates.scalar_derivative
-      (Degree.RegularHeightCoordinates.contDiff_displacedHeight hu) p.1 p.2
+    RegularHeightCoordinates.scalar_derivative
+      (RegularHeightCoordinates.contDiff_displacedHeight hu) p.1 p.2
   have hd :=
     (hasDerivAt_id p.1).add
       (((hD.differentiable (by simp) p.1).hasDerivAt.sub (hasDerivAt_id p.1)).const_mul
         (η t * β p.2))
   have hrate :
     fderiv ℝ
-        (Degree.RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
+        (RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
         p (1, 0) =
       1 + (η t * β p.2) * (deriv D p.1 - 1) :=
     hscalar.deriv.symm.trans hd.deriv
@@ -5410,7 +5410,7 @@ theorem MorseCancel.longitudinalBlend_derivative_positive {V : Type*} [NormedAdd
   have hweight : η t * β p.2 ∈ Set.Icc (0 : ℝ) 1 :=
     ⟨mul_nonneg (hηrange t).1 (hβrange p.2).1,
       mul_le_one₀ (hηrange t).2 (hβrange p.2).1 (hβrange p.2).2⟩
-  have hpos := Degree.MorseRearrangement.positive_blended_slope hweight (hDpos p.1) zero_lt_one
+  have hpos := MorseRearrangement.positive_blended_slope hweight (hDpos p.1) zero_lt_one
   nlinarith
 
 theorem MorseCancel.longitudinalBlend_slices {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
@@ -5425,7 +5425,7 @@ theorem MorseCancel.longitudinalBlend_slices {V : Type*} [NormedAddCommGroup V] 
     HasCompactSupport.intro (CompactIccSpace.isCompact_Icc.prod hc.isCompact)
       (longitudinalBlendDisplacement_zero_outside η hfix t)
   exact
-    ⟨Degree.RegularHeightCoordinates.longitudinalDiffeomorph hu hcompact
+    ⟨RegularHeightCoordinates.longitudinalDiffeomorph hu hcompact
         (longitudinalBlend_derivative_positive hD hβ hDpos hβrange hηrange t),
       fun _ => rfl⟩
 
@@ -5538,7 +5538,7 @@ theorem MorseCancel.nonempty_longitudinalTubeMotion {V E H M : Type*} [NormedAdd
   have h0I : (0 : ℝ) ∈ Set.Ioo l u := ⟨hl, zero_lt_one.trans hu⟩
   have hcI : c ∈ Set.Ioo l u := ⟨hl.trans hcpos, hcu⟩
   obtain ⟨D, hDfix, hDgerm, hD0, -, hDpos⟩ :=
-    Degree.MorseRearrangement.exists_increasing_interval_translation h0I hcI
+    MorseRearrangement.exists_increasing_interval_translation h0I hcI
   let β : ContDiffBump (0 : V) :=
     { rIn := r / 2
       rOut := r
@@ -5863,7 +5863,7 @@ theorem MorseCancel.LongitudinalTubeMotion.whole_sheet_transverse {U V E HU HV H
   have hmodel : Smale.NativeTransversality.At (𝓘(ℝ, ℝ).prod I) I' 𝓘(ℝ, W) T B (A.time, x) y :=
     MorseCancel.native_coordinate_plane_trace_transverse hα hβ hαs hβs hη A.time_rate.ne'
   have hnative :=
-    (Degree.TransverseGerms.native_transversality_partial_diffeomorph_iff Φ hT hB
+    (TransverseGerms.native_transversality_partial_diffeomorph_iff Φ hT hB
           (hB0.trans hT0.symm) (hT0 ▸ h1)).mp
       hmodel
   have hq :

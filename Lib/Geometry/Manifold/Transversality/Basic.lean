@@ -30,15 +30,15 @@ Topology*, Ch. 2-3; Guillemin-Pollack, *Differential Topology*, Ch. 2).
    `Smale.SmallPerturbation`, `Smale.WeightedPerturbation` and the
    `Smale.GeneralPosition` avoidance lemmas with the `NoExotic` dimension
    cluster.
-4. `Smale.SupportedDiffeomorph`, `Degree.SupportedGerms`,
-   `Degree.DiskShrinking` and `Smale.SmoothRadial`: supported diffeomorphisms,
+4. `Smale.SupportedDiffeomorph`, `SupportedGerms`,
+   `DiskShrinking` and `Smale.SmoothRadial`: supported diffeomorphisms,
    germ control and the disc theorem.
 
 ## Main definitions and results
 
 * `Smale.NativeSubmersion.surjective_fderiv_sourceChart_iff`.
 * `Smale.NativeTransversality.Patch` - finite compatible transversality data.
-* `Degree.DiskShrinking` - the smooth shrinking of discs (disc theorem).
+* `DiskShrinking` - the smooth shrinking of discs (disc theorem).
 
 ## References
 
@@ -97,7 +97,7 @@ theorem Smale.NativeSubmersion.isOpen_surjective_nativeDerivative {E F H X : Typ
     IsOpen {q : P × X | q ∈ W ∧ Function.Surjective (mfderiv I 𝓘(ℝ, F) (f q.1) q.2)} := by
   rw [isOpen_iff_mem_nhds]
   rintro q ⟨hq, hqsurj⟩
-  let c := NoExotic.modelChartPartialDiffeomorph (I := I) q.2
+  let c := modelChartPartialDiffeomorph (I := I) q.2
   have hqc : q.2 ∈ c.source := mem_extChartAt_source q.2
   let Q : Set (P × E) := Set.univ ×ˢ c.target
   let C : P × E → P × X := fun r => (r.1, c.symm r.2)
@@ -234,7 +234,7 @@ theorem Smale.RegularValues.exists_null_exceptional_values_manifold {E F H X : T
     (hdim : Module.finrank ℝ E = Module.finrank ℝ F) :
     ∃ T : Set F, μ T = 0 ∧ ∀ x ∈ s, f x ∉ T → Function.Surjective (mfderiv I 𝓘(ℝ, F) f x) := by
   classical
-  let c (x : X) := NoExotic.modelChartPartialDiffeomorph (I := I) x
+  let c (x : X) := modelChartPartialDiffeomorph (I := I) x
   let U : X → Set X := fun x => (c x).source
   have hU : ∀ x, IsOpen (U x) := fun x => (c x).open_source
   have hcover : (Set.univ : Set X) ⊆ ⋃ x, U x := by
@@ -526,7 +526,7 @@ theorem Smale.NativeTransversality.isOpen_at_family {D Z G H H' K X Y N : Type*}
   rintro q ⟨hq, hqt⟩
   have hq₀ : q ∈ W₀ := ⟨hq, Set.mem_univ _⟩
   by_cases hcross : g q.2.2 = f q.1 q.2.1
-  · let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f q.1 q.2.1)
+  · let c := modelChartPartialDiffeomorph (I := J) (f q.1 q.2.1)
     have hqc : f q.1 q.2.1 ∈ c.source := mem_extChartAt_source _
     have hqgc : g q.2.2 ∈ c.source := hcross ▸ hqc
     let W : Set (P × (X × Y)) := (W₀ ∩ F ⁻¹' c.source) ∩ G' ⁻¹' c.source
@@ -597,7 +597,7 @@ theorem Smale.NativeTransversality.eventually_on_compact {D Z G H H' K X Y N : T
   filter_upwards [hn] with b hb z hz
   exact (hb z hz).2
 
-theorem Degree.TransverseGerms.native_transversality_partial_diffeomorph_iff
+theorem TransverseGerms.native_transversality_partial_diffeomorph_iff
     {A B Z E HA HB HZ HE X Y N M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace HA] [TopologicalSpace HB]
@@ -1018,13 +1018,13 @@ def Smale.NativeParametrization.translation {D : Type*} [NormedAddCommGroup D] [
 def Smale.NativeParametrization.centered {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N] (x : N) :
     PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, D) D N ∞ :=
-  let c := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
+  let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
   (translation (c x)).toPartialDiffeomorph.trans c.symm
 
 theorem Smale.NativeParametrization.zero_mem_centered_source {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
     (x : N) : (0 : D) ∈ (centered (D := D) x).source := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
+  let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
   refine ⟨Set.mem_univ _, ?_⟩
   change 0 + c x ∈ c.target
   rw [zero_add]
@@ -1033,7 +1033,7 @@ theorem Smale.NativeParametrization.zero_mem_centered_source {D : Type*} [Normed
 theorem Smale.NativeParametrization.centered_zero {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
     (x : N) : centered (D := D) x (0 : D) = x := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
+  let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
   change c.symm (0 + c x) = x
   rw [zero_add]
   exact c.left_inv' (mem_extChartAt_source x)
@@ -1332,7 +1332,7 @@ theorem Smale.SupportedDiffeomorph.exists_supported_shear_isotopy {E F : Type*}
   change A (1, p) = (p.1 - β p.1 • b p.2, p.2) at hh
   rwa [hp₁, one_smul, hp₂, sub_neg_eq_add] at hh
 
-def Degree.SupportedGerms.Realizes {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SupportedGerms.Realizes {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (U : Set E) (f : E → E) : Prop :=
   ∃ (d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞) (K : Set E),
     IsCompact K ∧
@@ -1340,9 +1340,9 @@ def Degree.SupportedGerms.Realizes {E : Type*} [NormedAddCommGroup E] [NormedSpa
         Nonempty (Smale.SupportedDiffeomorph.SupportedRelativeIsotopy d K {0}) ∧
           (d : E → E) =ᶠ[𝓝 (0 : E)] f
 
-theorem Degree.SupportedGerms.Realizes.comp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {U : Set E} {f g : E → E} (hf : Degree.SupportedGerms.Realizes U f)
-    (hg : Degree.SupportedGerms.Realizes U g) : Degree.SupportedGerms.Realizes U (f ∘ g) := by
+theorem SupportedGerms.Realizes.comp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {U : Set E} {f g : E → E} (hf : SupportedGerms.Realizes U f)
+    (hg : SupportedGerms.Realizes U g) : SupportedGerms.Realizes U (f ∘ g) := by
   obtain ⟨d, K, hK, hKU, ⟨A⟩, hd⟩ := hf
   obtain ⟨e, L, hL, hLU, ⟨B⟩, he⟩ := hg
   have he0 : e (0 : E) = 0 := B.endpoint_fixed_on 0 rfl
@@ -1374,10 +1374,10 @@ theorem Degree.SupportedGerms.Realizes.comp {E : Type*} [NormedAddCommGroup E] [
   change d (e x) = f (g x)
   exact hx.trans (congrArg f hy)
 
-theorem Degree.SupportedGerms.Realizes.conj {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SupportedGerms.Realizes.conj {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (c : E ≃L[ℝ] F) {U : Set E} {f : E → E}
-    (hf : Degree.SupportedGerms.Realizes U f) :
-    Degree.SupportedGerms.Realizes (c '' U) (fun y => c (f (c.symm y))) := by
+    (hf : SupportedGerms.Realizes U f) :
+    SupportedGerms.Realizes (c '' U) (fun y => c (f (c.symm y))) := by
   obtain ⟨d, K, hK, hKU, ⟨A⟩, hd⟩ := hf
   let D := (c.symm.toDiffeomorph.trans d).trans c.toDiffeomorph
   have B : Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D (c '' K) {0} := by
@@ -1411,7 +1411,7 @@ theorem Degree.SupportedGerms.Realizes.conj {E F : Type*} [NormedAddCommGroup E]
   filter_upwards [hd.comp_tendsto ht] with y hy
   exact congrArg c hy
 
-theorem Degree.SupportedGerms.realizes_shear {E F : Type*} [NormedAddCommGroup E]
+theorem SupportedGerms.realizes_shear {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ E]
     [FiniteDimensional ℝ F] (L : F →L[ℝ] E) {U : Set (E × F)} (hU : IsOpen U)
     (h0 : (0 : E × F) ∈ U) : Realizes U (fun p => (p.1 + L p.2, p.2)) := by
@@ -1428,7 +1428,7 @@ theorem Degree.SupportedGerms.realizes_shear {E F : Type*} [NormedAddCommGroup E
   filter_upwards [hgerm] with x hx
   exact (hd x).trans hx
 
-theorem Degree.LinearFramePaths.diag2n_decompose {ι : Type*} [Fintype ι] [DecidableEq ι] {i j : ι}
+theorem LinearFramePaths.diag2n_decompose {ι : Type*} [Fintype ι] [DecidableEq ι] {i j : ι}
     (hij : i ≠ j) (a : ℝ) (ha : a ≠ 0) :
     Matrix.SpecialLinearGroup.diag2n hij a ha =
       Matrix.SpecialLinearGroup.transvection hij a *
@@ -1451,7 +1451,7 @@ theorem Degree.LinearFramePaths.diag2n_decompose {ι : Type*} [Fintype ι] [Deci
       by_cases hlj : l = j <;>
     simp_all [Matrix.diagonal_apply, Matrix.one_apply, Matrix.single_apply, eq_comm]
 
-theorem Degree.LinearFramePaths.joined_one_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem LinearFramePaths.joined_one_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
     {i j : ι} (hij : i ≠ j) (a : ℝ) :
     Joined (1 : Matrix.SpecialLinearGroup ι ℝ) (Matrix.SpecialLinearGroup.transvection hij a) := by
   refine
@@ -1472,7 +1472,7 @@ theorem Degree.LinearFramePaths.joined_one_transvection {ι : Type*} [Fintype ι
   · simp only [h, ite_false]
     fun_prop
 
-theorem Degree.LinearFramePaths.joined_one_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem LinearFramePaths.joined_one_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] (A : Matrix.SpecialLinearGroup ι ℝ) :
     Joined (1 : Matrix.SpecialLinearGroup ι ℝ) A := by
   apply
@@ -1495,7 +1495,7 @@ theorem Degree.LinearFramePaths.joined_one_specialLinear {ι : Type*} [Fintype �
   · intro A B hA hB
     simpa only [one_mul] using hA.mul hB
 
-def Degree.SupportedGerms.coordinateSplit {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) :
+def SupportedGerms.coordinateSplit {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) :
     (ι → ℝ) ≃L[ℝ] ℝ × ({ j : ι // j ≠ i } → ℝ) :=
   LinearEquiv.toContinuousLinearEquiv
     { toFun := fun x => (x i, fun j => x j)
@@ -1513,7 +1513,7 @@ def Degree.SupportedGerms.coordinateSplit {ι : Type*} [Fintype ι] [DecidableEq
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
-theorem Degree.SupportedGerms.realizes_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem SupportedGerms.realizes_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
     {U : Set (ι → ℝ)} (hU : IsOpen U) (h0 : (0 : ι → ℝ) ∈ U) {i j : ι} (hij : i ≠ j) (a : ℝ) :
     Realizes U
       (Matrix.SpecialLinearGroup.toLin' (Matrix.SpecialLinearGroup.transvection hij a)) := by
@@ -1540,7 +1540,7 @@ theorem Degree.SupportedGerms.realizes_transvection {ι : Type*} [Fintype ι] [D
     simp [c, coordinateSplit, L]
   · simp [c, coordinateSplit, L, hk]
 
-theorem Degree.SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] {U : Set (ι → ℝ)} (hU : IsOpen U) (h0 : (0 : ι → ℝ) ∈ U)
     (A : Matrix.SpecialLinearGroup ι ℝ) : Realizes U (Matrix.SpecialLinearGroup.toLin' A) := by
   have hmul (A B : Matrix.SpecialLinearGroup ι ℝ)
@@ -1555,7 +1555,7 @@ theorem Degree.SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [
     Matrix.SpecialLinearGroup.diagonal_transvection_induction'
       (fun A => Realizes U (Matrix.SpecialLinearGroup.toLin' A)) A
   · intro i j hij a ha
-    rw [Degree.LinearFramePaths.diag2n_decompose hij a ha]
+    rw [LinearFramePaths.diag2n_decompose hij a ha]
     exact
       hmul _ _
         (hmul _ _
@@ -1570,7 +1570,7 @@ theorem Degree.SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [
   · exact fun i j hij a => realizes_transvection hU h0 hij a
   · exact hmul
 
-theorem Degree.SupportedGerms.realizes_det_one {ι : Type*} [Finite ι] [Nontrivial ι] {E : Type*}
+theorem SupportedGerms.realizes_det_one {ι : Type*} [Finite ι] [Nontrivial ι] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (b : Module.Basis ι ℝ E)
     (C : E ≃L[ℝ] E) (hdet : C.toLinearMap.det = 1) {U : Set E} (hU : IsOpen U)
     (h0 : (0 : E) ∈ U) : Realizes U C := by
@@ -1932,7 +1932,7 @@ theorem Smale.SmallPerturbation.exists_relative_germ_linearization_isotopy {E F 
   change A (1, x) = C.symm (f x) at hx
   rw [hx, C.apply_symm_apply]
 
-theorem Degree.SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommGroup E]
+theorem SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [Finite ι] [Nontrivial ι] (b : Module.Basis ι ℝ E)
     {f : E → E} {U : Set E} (hU : IsOpen U) (h0 : (0 : E) ∈ U) (hf : ContDiffOn ℝ ∞ f U)
     (hf0 : f 0 = 0) (hbij : Function.Bijective (fderiv ℝ f 0))
@@ -1961,24 +1961,24 @@ theorem Degree.SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommG
   obtain ⟨D, L, hL, hLU, hH, hDgerm⟩ := (realizes_det_one b C hCdet hU h0).comp hdreal
   exact ⟨D, L, hL, hLU, hH, hDgerm.trans hgerm.symm⟩
 
-def Degree.LinearFramePaths.scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) (a : ℝ) :
+def LinearFramePaths.scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) (a : ℝ) :
     Matrix ι ι ℝ :=
   Matrix.diagonal (fun k => if k = i then a else 1)
 
-theorem Degree.LinearFramePaths.det_scalarDiagonal {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
+theorem LinearFramePaths.det_scalarDiagonal {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
     (a : ℝ) : Matrix.det (scalarDiagonal i a) = a := by simp [scalarDiagonal, Matrix.det_diagonal]
 
-theorem Degree.LinearFramePaths.scalarDiagonal_mul {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
+theorem LinearFramePaths.scalarDiagonal_mul {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
     (a b : ℝ) : scalarDiagonal i a * scalarDiagonal i b = scalarDiagonal i (a * b) := by
   rw [scalarDiagonal, scalarDiagonal, Matrix.diagonal_mul_diagonal]
   congr 1
   funext k
   by_cases h : k = i <;> simp [h]
 
-theorem Degree.LinearFramePaths.scalarDiagonal_one {ι : Type*} [DecidableEq ι] (i : ι) :
+theorem LinearFramePaths.scalarDiagonal_one {ι : Type*} [DecidableEq ι] (i : ι) :
     scalarDiagonal i 1 = 1 := by simp [scalarDiagonal]
 
-theorem Degree.LinearFramePaths.continuous_scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) :
+theorem LinearFramePaths.continuous_scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) :
     Continuous (scalarDiagonal i) := by
   apply continuous_pi
   intro k
@@ -1995,12 +1995,12 @@ theorem Degree.LinearFramePaths.continuous_scalarDiagonal {ι : Type*} [Decidabl
   · simp only [hkl, ite_false]
     fun_prop
 
-def Degree.LinearFramePaths.determinantComponent {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : ℝ) :
+def LinearFramePaths.determinantComponent {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : ℝ) :
     TopologicalSpace.Opens (Matrix ι ι ℝ) :=
   ⟨{A | 0 < σ * Matrix.det A},
     isOpen_lt continuous_const (continuous_const.mul continuous_id.matrix_det)⟩
 
-def Degree.LinearFramePaths.diagonalPoint {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) {σ : ℝ}
+def LinearFramePaths.diagonalPoint {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) {σ : ℝ}
     (A : determinantComponent (ι := ι) σ) : determinantComponent (ι := ι) σ :=
   ⟨scalarDiagonal i (Matrix.det (A : Matrix ι ι ℝ)),
     by
@@ -2008,7 +2008,7 @@ def Degree.LinearFramePaths.diagonalPoint {ι : Type*} [Fintype ι] [DecidableEq
     rw [det_scalarDiagonal]
     exact A.property⟩
 
-theorem Degree.LinearFramePaths.joined_diagonal_to_matrix {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem LinearFramePaths.joined_diagonal_to_matrix {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] (i : ι) {σ : ℝ} (A : determinantComponent (ι := ι) σ) :
     Joined (diagonalPoint i A) A := by
   have ha : Matrix.det (A : Matrix ι ι ℝ) ≠ 0 := by
@@ -2041,7 +2041,7 @@ theorem Degree.LinearFramePaths.joined_diagonal_to_matrix {ι : Type*} [Fintype 
   have h := (joined_one_specialLinear N).map hψ
   rwa [h0, h1] at h
 
-theorem Degree.LinearFramePaths.joined_diagonal_points {ι : Type*} [Fintype ι] [DecidableEq ι]
+theorem LinearFramePaths.joined_diagonal_points {ι : Type*} [Fintype ι] [DecidableEq ι]
     (i : ι) {σ : ℝ} (A B : determinantComponent (ι := ι) σ) :
     Joined (diagonalPoint i A) (diagonalPoint i B) := by
   let g := fun t : unitInterval =>
@@ -2078,7 +2078,7 @@ theorem Degree.LinearFramePaths.joined_diagonal_points {ι : Type*} [Fintype ι]
   · apply Subtype.ext
     simp [g, diagonalPoint]
 
-theorem Degree.LinearFramePaths.joined_determinantComponent {ι : Type*} [Fintype ι]
+theorem LinearFramePaths.joined_determinantComponent {ι : Type*} [Fintype ι]
     [DecidableEq ι] [Nontrivial ι] {σ : ℝ} (A B : determinantComponent (ι := ι) σ) : Joined A B :=
   by
   let i := Classical.choice (inferInstance : Nonempty ι)
@@ -2086,21 +2086,21 @@ theorem Degree.LinearFramePaths.joined_determinantComponent {ι : Type*} [Fintyp
     (joined_diagonal_to_matrix i A).symm.trans
       ((joined_diagonal_points i A B).trans (joined_diagonal_to_matrix i B))
 
-theorem Degree.SupportedGerms.exists_linearEquiv_with_det {B ι : Type*} [NormedAddCommGroup B]
+theorem SupportedGerms.exists_linearEquiv_with_det {B ι : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [Finite ι] (b : Module.Basis ι ℝ B) (i : ι) {r : ℝ}
     (hr : r ≠ 0) : ∃ R : B ≃L[ℝ] B, R.toLinearMap.det = r := by
   classical
   let := Fintype.ofFinite ι
-  let L : B →ₗ[ℝ] B := Matrix.toLin b b (Degree.LinearFramePaths.scalarDiagonal i r)
+  let L : B →ₗ[ℝ] B := Matrix.toLin b b (LinearFramePaths.scalarDiagonal i r)
   have hdet : L.det = r := by
     rw [← LinearMap.det_toMatrix b L]
     change
       Matrix.det
           (LinearMap.toMatrix b b
-            (Matrix.toLin b b (Degree.LinearFramePaths.scalarDiagonal i r))) =
+            (Matrix.toLin b b (LinearFramePaths.scalarDiagonal i r))) =
         r
     rw [LinearMap.toMatrix_toLin]
-    exact Degree.LinearFramePaths.det_scalarDiagonal i r
+    exact LinearFramePaths.det_scalarDiagonal i r
   have hker : L.ker = ⊥ := by
     by_contra hk
     exact hr (hdet.symm.trans (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr hk))
@@ -2109,7 +2109,7 @@ theorem Degree.SupportedGerms.exists_linearEquiv_with_det {B ι : Type*} [Normed
     ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
   exact ⟨(LinearEquiv.ofBijective L hbij).toContinuousLinearEquiv, hdet⟩
 
-theorem Degree.SupportedGerms.exists_normal_det_correction {A B ι : Type*} [NormedAddCommGroup A]
+theorem SupportedGerms.exists_normal_det_correction {A B ι : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] [Finite ι] (b : Module.Basis ι ℝ B) (i : ι)
     (C : (A × B) ≃L[ℝ] (A × B)) :
@@ -2126,7 +2126,7 @@ theorem Degree.SupportedGerms.exists_normal_det_correction {A B ι : Type*} [Nor
   rw [LinearMap.det_comp, LinearMap.det_prodMap, LinearMap.det_id, one_mul, hR,
     inv_mul_cancel₀ hne]
 
-theorem Degree.SupportedGerms.exists_supported_disk_germ_alignment {A B ι κ : Type*}
+theorem SupportedGerms.exists_supported_disk_germ_alignment {A B ι κ : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [Finite ι] [Finite κ] [Nontrivial κ]
     (b : Module.Basis ι ℝ B) (i : ι) (basis : Module.Basis κ ℝ (A × B))
@@ -2186,7 +2186,7 @@ theorem Degree.SupportedGerms.exists_supported_disk_germ_alignment {A B ι κ : 
   rw [hinv]
   simp [T]
 
-theorem Degree.SupportedGerms.exists_native_disk_germ_alignment {A B E H M ι κ : Type*}
+theorem SupportedGerms.exists_native_disk_germ_alignment {A B E H M ι κ : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -2373,20 +2373,20 @@ theorem Smale.SmoothRadial.contDiff_shrinkTimeFactor (a : ℝ) :
     ContDiff ℝ ∞ (shrinkTimeFactor a) :=
   contDiff_const.add (contDiff_const.mul (Real.smoothTransition.contDiff (n := ⊤)))
 
-def Degree.DiskShrinking.scale (R a s : ℝ) : ℝ :=
+def DiskShrinking.scale (R a s : ℝ) : ℝ :=
   a + (1 - a) * Real.smoothTransition ((s - 1) / (R ^ 2 - 1))
 
-theorem Degree.DiskShrinking.contDiff_scale (R a : ℝ) : ContDiff ℝ ∞ (scale R a) :=
+theorem DiskShrinking.contDiff_scale (R a : ℝ) : ContDiff ℝ ∞ (scale R a) :=
   contDiff_const.add
     (contDiff_const.mul
       ((Real.smoothTransition.contDiff (n := ⊤)).comp
         ((contDiff_id.sub contDiff_const).div_const _)))
 
-theorem Degree.DiskShrinking.scale_pos {a : ℝ} (ha : 0 < a) (ha₁ : a ≤ 1) (R s : ℝ) :
+theorem DiskShrinking.scale_pos {a : ℝ} (ha : 0 < a) (ha₁ : a ≤ 1) (R s : ℝ) :
     0 < scale R a s :=
   add_pos_of_pos_of_nonneg ha (mul_nonneg (sub_nonneg.mpr ha₁) (Real.smoothTransition.nonneg _))
 
-theorem Degree.DiskShrinking.scale_monotone {R a : ℝ} (hR : 1 < R) (ha₁ : a ≤ 1) :
+theorem DiskShrinking.scale_monotone {R a : ℝ} (hR : 1 < R) (ha₁ : a ≤ 1) :
     Monotone (scale R a) := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
   intro s t hst
@@ -2398,7 +2398,7 @@ theorem Degree.DiskShrinking.scale_monotone {R a : ℝ} (hR : 1 < R) (ha₁ : a 
         (sub_nonneg.mpr ha₁))
       a
 
-theorem Degree.DiskShrinking.scale_inner {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : s ≤ 1) :
+theorem DiskShrinking.scale_inner {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : s ≤ 1) :
     scale R a s = a := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
   rw [scale,
@@ -2406,20 +2406,20 @@ theorem Degree.DiskShrinking.scale_inner {R : ℝ} (hR : 1 < R) (a : ℝ) {s : �
       (div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr hs) hden.le)]
   simp only [MulZeroClass.mul_zero, add_zero]
 
-theorem Degree.DiskShrinking.scale_outer {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : R ^ 2 ≤ s) :
+theorem DiskShrinking.scale_outer {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : R ^ 2 ≤ s) :
     scale R a s = 1 := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
   rw [scale, Real.smoothTransition.one_of_one_le ((le_div_iff₀ hden).mpr (by linarith))]
   ring
 
-theorem Degree.DiskShrinking.scale_one (R s : ℝ) : scale R 1 s = 1 := by
+theorem DiskShrinking.scale_one (R s : ℝ) : scale R 1 s = 1 := by
   simp only [scale, sub_self, MulZeroClass.zero_mul, add_zero]
 
-def Degree.DiskShrinking.family {N : Type*} [NormedAddCommGroup N] [InnerProductSpace ℝ N]
+def DiskShrinking.family {N : Type*} [NormedAddCommGroup N] [InnerProductSpace ℝ N]
     (R a : ℝ) (p : ℝ × N) : N :=
   Smale.SmoothRadial.radialMap (scale R (Smale.SmoothRadial.shrinkTimeFactor a p.1)) p.2
 
-theorem Degree.DiskShrinking.contMDiff_family {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.contMDiff_family {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a : ℝ) :
     ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, N)) 𝓘(ℝ, N) ∞ (family (N := N) R a) := by
   have ht :
@@ -2440,12 +2440,12 @@ theorem Degree.DiskShrinking.contMDiff_family {N : Type*} [NormedAddCommGroup N]
             ((Real.smoothTransition.contDiff (n := ⊤)).contMDiff.comp hz))).smul
       contMDiff_snd
 
-theorem Degree.DiskShrinking.family_zero {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.family_zero {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a : ℝ) (x : N) : family R a (0, x) = x := by
   simp only [family, Smale.SmoothRadial.shrinkTimeFactor_zero, Smale.SmoothRadial.radialMap,
     scale_one, one_smul]
 
-theorem Degree.DiskShrinking.family_slices {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.family_slices {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R a : ℝ} (hR : 1 < R) (ha : 0 < a)
     (ha₁ : a ≤ 1) (t : ℝ) :
     ∃ D : Diffeomorph 𝓘(ℝ, N) 𝓘(ℝ, N) N N ∞, ∀ x, D x = family R a (t, x) := by
@@ -2455,23 +2455,23 @@ theorem Degree.DiskShrinking.family_slices {N : Type*} [NormedAddCommGroup N]
         (scale_monotone hR ht.2) (zero_lt_one.trans hR) (fun _ hs => scale_outer hR _ hs),
       fun _ => rfl⟩
 
-theorem Degree.DiskShrinking.family_outer {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.family_outer {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R : ℝ} (hR : 1 < R) (a t : ℝ) {x : N}
     (hx : R ≤ ‖x‖) : family R a (t, x) = x := by
   rw [family, Smale.SmoothRadial.radialMap,
     scale_outer hR _ ((sq_le_sq₀ (zero_lt_one.trans hR).le (norm_nonneg x)).mpr hx), one_smul]
 
-theorem Degree.DiskShrinking.family_one_inner {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.family_one_inner {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R : ℝ} (hR : 1 < R) (a : ℝ) {x : N}
     (hx : ‖x‖ ≤ 1) : family R a (1, x) = a • x := by
   rw [family, Smale.SmoothRadial.radialMap, Smale.SmoothRadial.shrinkTimeFactor_one,
     scale_inner hR a (by nlinarith [norm_nonneg x])]
 
-theorem Degree.DiskShrinking.family_origin {N : Type*} [NormedAddCommGroup N]
+theorem DiskShrinking.family_origin {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a t : ℝ) : family R a (t, (0 : N)) = 0 := by
   simp only [family, Smale.SmoothRadial.radialMap, smul_zero]
 
-theorem Degree.DiskShrinking.exists_larger_closedBall_subset {D : Type*} [NormedAddCommGroup D]
+theorem DiskShrinking.exists_larger_closedBall_subset {D : Type*} [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {U : Set D} (hU : IsOpen U)
     (hunit : Metric.closedBall (0 : D) 1 ⊆ U) :
     ∃ R : ℝ, 1 < R ∧ Metric.closedBall (0 : D) R ⊆ U := by
@@ -2501,7 +2501,7 @@ theorem Degree.DiskShrinking.exists_larger_closedBall_subset {D : Type*} [Normed
   have hh := hRT (R⁻¹ • x) (mem_closedBall_zero_iff.mpr hnorm)
   simpa only [smul_inv_smul₀ hRpos.ne'] using hh
 
-theorem Degree.DiskShrinking.exists_disk_ellipsoid_in_open {D Z : Type*} [NormedAddCommGroup D]
+theorem DiskShrinking.exists_disk_ellipsoid_in_open {D Z : Type*} [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [InnerProductSpace ℝ Z]
     [FiniteDimensional ℝ Z] {U : Set (D × Z)} (hU : IsOpen U)
     (hzero : Metric.closedBall (0 : D) 1 ×ˢ {(0 : Z)} ⊆ U) :
@@ -2590,7 +2590,7 @@ theorem Smale.SupportedDiffeomorph.exists_supported_isotopy_extension {E F H H' 
   · intro t x hx
     exact extendMap_chart Φ (fun z => A (t, z)) hx
 
-theorem Degree.DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
+theorem DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [InnerProductSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -2669,7 +2669,7 @@ theorem Smale.SupportedDiffeomorph.IsotopicToIdentity.symm {F H M : Type*} [Norm
     change e.symm (A (1 - t, x)) = e.symm (d x)
     rw [hd]
 
-theorem Degree.SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*}
+theorem SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*}
     [NormedAddCommGroup A] [InnerProductSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [InnerProductSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -2691,8 +2691,8 @@ theorem Degree.SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*
   let a : ℝ := Min.min 1 ε
   have ha : 0 < a := lt_min zero_lt_one hε
   have ha1 : a ≤ 1 := min_le_left _ _
-  obtain ⟨KΦ, -, -, P, ⟨HP⟩, hP⟩ := Degree.DiskShrinking.exists_chart_disk_shrinking Φ hΦ ha ha1
-  obtain ⟨KΨ, -, -, Q, ⟨HQ⟩, hQ⟩ := Degree.DiskShrinking.exists_chart_disk_shrinking Ψ hΨ ha ha1
+  obtain ⟨KΦ, -, -, P, ⟨HP⟩, hP⟩ := DiskShrinking.exists_chart_disk_shrinking Φ hΦ ha ha1
+  obtain ⟨KΨ, -, -, Q, ⟨HQ⟩, hQ⟩ := DiskShrinking.exists_chart_disk_shrinking Ψ hΨ ha ha1
   refine
     ⟨(P.trans D).trans Q.symm,
       (HP.isotopicToIdentity.trans HD.isotopicToIdentity).trans HQ.isotopicToIdentity.symm, ?_⟩
@@ -2705,7 +2705,7 @@ theorem Degree.SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*
   change Q.symm (D (P (Φ (x, 0)))) = Ψ (x, 0)
   rw [hP x hn, heq, ← hQ x hn, Q.symm_apply_apply]
 
-theorem Degree.DiskShrinking.exists_embedded_disk_isotopy_of_same_center {D E M : Type*}
+theorem DiskShrinking.exists_embedded_disk_isotopy_of_same_center {D E M : Type*}
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f g : D → M}
@@ -2744,7 +2744,7 @@ theorem Degree.DiskShrinking.exists_embedded_disk_isotopy_of_same_center {D E M 
     simpa only [Module.finrank_prod, B, finrank_euclideanSpace_fin, hdim] using hE
   let _ : Nontrivial (Fin (Module.finrank ℝ (D × B))) := Fin.nontrivial_iff_two_le.mpr hDB
   obtain ⟨P, hP, hformula⟩ :=
-    Degree.SupportedGerms.exists_disk_chart_isotopy (Module.finBasis ℝ B) ⟨0, hB⟩
+    SupportedGerms.exists_disk_chart_isotopy (Module.finBasis ℝ B) ⟨0, hB⟩
       (Module.finBasis ℝ (D × B)) Φ Ψ hΦ hΨ hcenter'
   refine ⟨P, hP, ?_⟩
   intro x hx
@@ -2792,7 +2792,7 @@ theorem Smale.SupportedDiffeomorph.exists_open_pointMoving {E H M : Type*} [Norm
     ∃ V : Set M,
       IsOpen V ∧
         x ∈ V ∧ V ⊆ U ∧ ∀ y ∈ V, ∃ d : Diffeomorph J J M M ∞, d x = y ∧ ∀ z ∉ U, d z = z := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) x
+  let c := modelChartPartialDiffeomorph (I := J) x
   let Φ := Smale.PartialChart.restrictTarget c.symm hU
   have hxc : x ∈ c.source := mem_extChartAt_source x
   have hcx : c.symm (c x) = x := c.left_inv' hxc

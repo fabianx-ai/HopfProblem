@@ -116,7 +116,7 @@ theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddC
     filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hx] with y hy
     simp only [image_eq_zero_of_notMem_tsupport hy, zero_div]
 
-theorem Degree.FlowCancellation.exists_excursion_interval {X : Type*} [TopologicalSpace X]
+theorem FlowCancellation.exists_excursion_interval {X : Type*} [TopologicalSpace X]
     {γ : ℝ → X} (hγ : Continuous γ) {K N : Set X} (hK : IsClosed K) (hKN : K ⊆ N) {a b t : ℝ}
     (ht : t ∈ Set.Icc a b) (ha : γ a ∈ N) (hb : γ b ∈ N) (hout : γ t ∉ N) :
     ∃ s u : ℝ, a ≤ s ∧ s < t ∧ t < u ∧ u ≤ b ∧ γ s ∈ N ∧ γ u ∈ N ∧ ∀ r ∈ Set.Ioo s u, γ r ∉ K := by
@@ -154,7 +154,7 @@ theorem Degree.FlowCancellation.exists_excursion_interval {X : Type*} [Topologic
   · have hrB : r ∈ B := Or.inr ⟨⟨(lt_of_not_ge hrt).le, le_trans hr.2.le hub⟩, hrK⟩
     exact (not_le_of_gt hr.2) (hu.2 hrB)
 
-theorem Degree.FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : Type*}
+theorem FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -174,7 +174,7 @@ theorem Degree.FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : T
   rw [closure_Ioo (lt_trans hc.1 hc.2).ne] at heqclosed
   exact heqclosed
 
-theorem Degree.FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*}
+theorem FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V V' : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))

@@ -25,15 +25,15 @@ import Lib.Geometry.Manifold.ChartedSpace.Transport
 
 Every compact smooth manifold admits a Morse function and therefore has the homotopy type
 of a finite cell complex with one cell per critical point (Milnor, Morse Theory, Thm 3.5):
-`Degree.MorseCells.*`, `Degree.Attachment.*`, `Degree.CoreAttachment.*`,
-`Degree.AttachmentMaps.*`, `Degree.Handle.*`, `Degree.FiniteCells.*`.
+`MorseCells.*`, `Attachment.*`, `CoreAttachment.*`,
+`AttachmentMaps.*`, `Handle.*`, `FiniteCells.*`.
 
 ## Main definitions and results
 
-* `Degree.FiniteCells.Built` : the inductive description of the built-up cell complex.
-* `Degree.MorseCells.built_of_compact_smooth_manifold` : the theorem (in `Hopf/`, see
+* `FiniteCells.Built` : the inductive description of the built-up cell complex.
+* `MorseCells.built_of_compact_smooth_manifold` : the theorem (in `Hopf/`, see
   obstruction note in Lib/reports/A.md).
-* `Degree.FiniteCells.RelativeDiskLifting` : the relative lifting datum.
+* `FiniteCells.RelativeDiskLifting` : the relative lifting datum.
 
 ## References
 
@@ -63,41 +63,41 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-abbrev Degree.Attachment.Union {K M : Type*} [TopologicalSpace K] [TopologicalSpace M] (A : Set M)
+abbrev Attachment.Union {K M : Type*} [TopologicalSpace K] [TopologicalSpace M] (A : Set M)
     (h : C(K, M)) :=
   ↥(A ∪ Set.range h)
 
-def Degree.Attachment.sumQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
-    (A : Set M) (h : C(K, M)) : C(A ⊕ K, Degree.Attachment.Union A h) :=
+def Attachment.sumQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+    (A : Set M) (h : C(K, M)) : C(A ⊕ K, Attachment.Union A h) :=
   ⟨Smale.ClosedAttachment.sumMap A h, Smale.ClosedAttachment.continuous_sumMap A h⟩
 
-theorem Degree.Attachment.sumQuotient_surjective {K M : Type*} [TopologicalSpace K]
+theorem Attachment.sumQuotient_surjective {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (h : C(K, M)) : Function.Surjective (sumQuotient A h) := by
   rintro ⟨x, hx | ⟨k, rfl⟩⟩
   · exact ⟨.inl ⟨x, hx⟩, rfl⟩
   · exact ⟨.inr k, rfl⟩
 
-def Degree.Attachment.cylinderQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def Attachment.cylinderQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (h : C(K, M)) :
-    C((unitInterval) × (A ⊕ K), (unitInterval) × Degree.Attachment.Union A h) :=
+    C((unitInterval) × (A ⊕ K), (unitInterval) × Attachment.Union A h) :=
   (ContinuousMap.id (unitInterval)).prodMap (sumQuotient A h)
 
-theorem Degree.Attachment.cylinderQuotient_surjective {K M : Type*} [TopologicalSpace K]
+theorem Attachment.cylinderQuotient_surjective {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (h : C(K, M)) : Function.Surjective (cylinderQuotient A h) :=
   by
   rintro ⟨t, x⟩
   obtain ⟨z, rfl⟩ := sumQuotient_surjective A h x
   exact ⟨(t, z), rfl⟩
 
-theorem Degree.Attachment.cylinderQuotient_isQuotientMap {K M : Type*} [TopologicalSpace K]
+theorem Attachment.cylinderQuotient_isQuotientMap {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (h : C(K, M)) :
     Topology.IsQuotientMap (cylinderQuotient A h) :=
   .of_surjective_continuous (cylinderQuotient_surjective A h) (cylinderQuotient A h).continuous
 
-def Degree.Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) {r : C(K, K)}
     (H : (ContinuousMap.id K).HomotopyRel r B) :
-    C((unitInterval) × (A ⊕ K), Degree.Attachment.Union A h)
+    C((unitInterval) × (A ⊕ K), Attachment.Union A h)
     where
   toFun
     p :=
@@ -108,12 +108,12 @@ def Degree.Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [Topologica
     have ha :
       Continuous
         (fun p : (unitInterval) × A =>
-          (⟨p.2.val, Or.inl p.2.property⟩ : Degree.Attachment.Union A h)) :=
+          (⟨p.2.val, Or.inl p.2.property⟩ : Attachment.Union A h)) :=
       (continuous_subtype_val.comp continuous_snd).subtype_mk _
     have hk :
       Continuous
         (fun p : (unitInterval) × K =>
-          (⟨h (H p), Or.inr ⟨H p, rfl⟩⟩ : Degree.Attachment.Union A h)) :=
+          (⟨h (H p), Or.inr ⟨H p, rfl⟩⟩ : Attachment.Union A h)) :=
       (h.continuous.comp H.continuous).subtype_mk _
     convert
       (ha.sumElim hk).comp
@@ -122,7 +122,7 @@ def Degree.Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [Topologica
     funext p
     rcases p with ⟨t, a | k⟩ <;> rfl
 
-theorem Degree.Attachment.familyOnSum_constant_on_fibres {K M : Type*} [TopologicalSpace K]
+theorem Attachment.familyOnSum_constant_on_fibres {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (B : Set K) (h : C(K, M)) {r : C(K, K)}
     (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
     (hface : ∀ k, h k ∈ A ↔ k ∈ B) (p q : (unitInterval) × (A ⊕ K))
@@ -159,16 +159,16 @@ theorem Degree.Attachment.familyOnSum_constant_on_fibres {K M : Type*} [Topologi
       subst l
       rfl
 
-def Degree.Attachment.unionFamily {K M : Type*} [TopologicalSpace K] [CompactSpace K]
+def Attachment.unionFamily {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
     {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
     (hface : ∀ k, h k ∈ A ↔ k ∈ B) :
-    C((unitInterval) × Degree.Attachment.Union A h, Degree.Attachment.Union A h) :=
+    C((unitInterval) × Attachment.Union A h, Attachment.Union A h) :=
   (cylinderQuotient_isQuotientMap A h).lift (familyOnSum A B h H)
     (familyOnSum_constant_on_fibres A B h H hinj hface)
 
 @[simp]
-theorem Degree.Attachment.unionFamily_apply {K M : Type*} [TopologicalSpace K] [CompactSpace K]
+theorem Attachment.unionFamily_apply {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
     {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
     (hface : ∀ k, h k ∈ A ↔ k ∈ B) (t : (unitInterval)) (z : A ⊕ K) :
@@ -178,24 +178,24 @@ theorem Degree.Attachment.unionFamily_apply {K M : Type*} [TopologicalSpace K] [
       (familyOnSum_constant_on_fibres A B h H hinj hface))
     (t, z)
 
-theorem Degree.Attachment.unionFamily_fixed_lower {K M : Type*} [TopologicalSpace K]
+theorem Attachment.unionFamily_fixed_lower {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K)
     (h : C(K, M)) {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B)
     (hinj : Function.Injective h) (hface : ∀ k, h k ∈ A ↔ k ∈ B) (t : (unitInterval)) (a : A) :
     unionFamily A B h H hinj hface (t, ⟨a.val, Or.inl a.property⟩) = ⟨a.val, Or.inl a.property⟩ :=
   unionFamily_apply A B h H hinj hface t (.inl a)
 
-theorem Degree.Attachment.unionFamily_on_handle {K M : Type*} [TopologicalSpace K]
+theorem Attachment.unionFamily_on_handle {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K)
     (h : C(K, M)) {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B)
     (hinj : Function.Injective h) (hface : ∀ k, h k ∈ A ↔ k ∈ B) (t : (unitInterval)) (k : K) :
     (unionFamily A B h H hinj hface (t, ⟨h k, Or.inr ⟨k, rfl⟩⟩)).val = h (H (t, k)) :=
   congrArg Subtype.val (unionFamily_apply A B h H hinj hface t (.inr k))
 
-theorem Degree.Attachment.unionFamily_zero {K M : Type*} [TopologicalSpace K] [CompactSpace K]
+theorem Attachment.unionFamily_zero {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
     {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
-    (hface : ∀ k, h k ∈ A ↔ k ∈ B) (x : Degree.Attachment.Union A h) :
+    (hface : ∀ k, h k ∈ A ↔ k ∈ B) (x : Attachment.Union A h) :
     unionFamily A B h H hinj hface (0, x) = x := by
   obtain ⟨z, rfl⟩ := sumQuotient_surjective A h x
   rw [unionFamily_apply]
@@ -205,7 +205,7 @@ theorem Degree.Attachment.unionFamily_zero {K M : Type*} [TopologicalSpace K] [C
     apply Subtype.ext
     exact congrArg h (H.apply_zero k)
 
-def Degree.Handle.interpolate {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def Handle.interpolate {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (t : (unitInterval)) (z : Space (N := N) (P := P)) :
     Space (N := N) (P := P) :=
   (⟨(1 - (t : ℝ)) • (z.1 : N) + (t : ℝ) • ((retraction z).1 : N),
@@ -215,7 +215,7 @@ def Degree.Handle.interpolate {N P : Type*} [NormedAddCommGroup N] [NormedSpace 
       (convex_closedBall (0 : P) 1 : Convex ℝ _) z.2.property (retraction z).2.property
         (sub_nonneg.mpr t.property.2) t.property.1 (by ring)⟩)
 
-theorem Degree.Handle.continuous_interpolate {N P : Type*} [NormedAddCommGroup N]
+theorem Handle.continuous_interpolate {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] :
     Continuous (fun tz : (unitInterval) × Space (N := N) (P := P) => interpolate tz.1 tz.2) := by
   have ht : Continuous (fun tz : (unitInterval) × Space (N := N) (P := P) => (tz.1 : ℝ)) :=
@@ -235,23 +235,23 @@ theorem Degree.Handle.continuous_interpolate {N P : Type*} [NormedAddCommGroup N
         _)
 
 @[simp]
-theorem Degree.Handle.interpolate_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem Handle.interpolate_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (z : Space (N := N) (P := P)) :
     interpolate 0 z = z := by apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate]
 
 @[simp]
-theorem Degree.Handle.interpolate_one {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem Handle.interpolate_one {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (z : Space (N := N) (P := P)) :
     interpolate 1 z = retraction z := by
   apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate]
 
-theorem Degree.Handle.interpolate_fixed {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem Handle.interpolate_fixed {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (t : (unitInterval)) (z : Space (N := N) (P := P))
     (hz : z ∈ faceCore) : interpolate t z = z := by
   have hr := retraction_eq_self z hz
   apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate, hr, ← add_smul]
 
-def Degree.Handle.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def Handle.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
     (ContinuousMap.id (Space (N := N) (P := P))).HomotopyRel retraction faceCore
     where
@@ -261,133 +261,133 @@ def Degree.Handle.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace 
   map_one_left := interpolate_one
   prop' := interpolate_fixed
 
-abbrev Degree.CoreAttachment.Core {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
-    Set (Degree.Handle.Space (N := N) (P := P)) :=
+abbrev CoreAttachment.Core {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
+    Set (Handle.Space (N := N) (P := P)) :=
   {z | (z.2 : P) = 0}
 
-abbrev Degree.CoreAttachment.Face {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
-    Set (Degree.Handle.Space (N := N) (P := P)) :=
+abbrev CoreAttachment.Face {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
+    Set (Handle.Space (N := N) (P := P)) :=
   {z | ‖(z.1 : N)‖ = 1}
 
-def Degree.CoreAttachment.faceDeformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def CoreAttachment.faceDeformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
-    (ContinuousMap.id (Degree.Handle.Space (N := N) (P := P))).HomotopyRel
-      Degree.Handle.retraction Face
+    (ContinuousMap.id (Handle.Space (N := N) (P := P))).HomotopyRel
+      Handle.retraction Face
     where
-  __ := Degree.Handle.deformation.toHomotopy
-  prop' t z hz := Degree.Handle.interpolate_fixed t z (Or.inl hz)
+  __ := Handle.deformation.toHomotopy
+  prop' t z hz := Handle.interpolate_fixed t z (Or.inl hz)
 
-abbrev Degree.CoreAttachment.CoreUnion {N P M : Type*} [NormedAddCommGroup N]
+abbrev CoreAttachment.CoreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace M] (A : Set M)
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) :=
+    (h : C(Handle.Space (N := N) (P := P), M)) :=
   ↥(A ∪ h '' Core)
 
-def Degree.CoreAttachment.family {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def CoreAttachment.family {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
     (hface : ∀ z, h z ∈ A ↔ z ∈ Face) :
-    C((unitInterval) × Degree.Attachment.Union A h, Degree.Attachment.Union A h) :=
-  Degree.Attachment.unionFamily A Face h faceDeformation hinj hface
+    C((unitInterval) × Attachment.Union A h, Attachment.Union A h) :=
+  Attachment.unionFamily A Face h faceDeformation hinj hface
 
-theorem Degree.CoreAttachment.family_zero {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem CoreAttachment.family_zero {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
-    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (x : Degree.Attachment.Union A h) :
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (x : Attachment.Union A h) :
     family A h hinj hface (0, x) = x :=
-  Degree.Attachment.unionFamily_zero A Face h faceDeformation hinj hface x
+  Attachment.unionFamily_zero A Face h faceDeformation hinj hface x
 
-theorem Degree.CoreAttachment.family_fixed_lower {N P M : Type*} [NormedAddCommGroup N]
+theorem CoreAttachment.family_fixed_lower {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
     (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (t : (unitInterval)) (a : A) :
     family A h hinj hface (t, ⟨a.val, Or.inl a.property⟩) = ⟨a.val, Or.inl a.property⟩ :=
-  Degree.Attachment.unionFamily_fixed_lower A Face h faceDeformation hinj hface t a
+  Attachment.unionFamily_fixed_lower A Face h faceDeformation hinj hface t a
 
-theorem Degree.CoreAttachment.family_on_handle {N P M : Type*} [NormedAddCommGroup N]
+theorem CoreAttachment.family_on_handle {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
     (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (t : (unitInterval))
-    (z : Degree.Handle.Space (N := N) (P := P)) :
-    (family A h hinj hface (t, ⟨h z, Or.inr ⟨z, rfl⟩⟩)).val = h (Degree.Handle.interpolate t z) :=
-  Degree.Attachment.unionFamily_on_handle A Face h faceDeformation hinj hface t z
+    (z : Handle.Space (N := N) (P := P)) :
+    (family A h hinj hface (t, ⟨h z, Or.inr ⟨z, rfl⟩⟩)).val = h (Handle.interpolate t z) :=
+  Attachment.unionFamily_on_handle A Face h faceDeformation hinj hface t z
 
-theorem Degree.CoreAttachment.family_one_mem_coreUnion {N P M : Type*} [NormedAddCommGroup N]
+theorem CoreAttachment.family_one_mem_coreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
-    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (x : Degree.Attachment.Union A h) :
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (x : Attachment.Union A h) :
     (family A h hinj hface (1, x)).val ∈ A ∪ h '' Core := by
   rcases x with ⟨x, hx | ⟨z, rfl⟩⟩
   · have he := family_fixed_lower A h hinj hface 1 ⟨x, hx⟩
     exact Or.inl (congrArg Subtype.val he ▸ hx)
-  · rw [family_on_handle, Degree.Handle.interpolate_one]
-    rcases Degree.Handle.retraction_mem_faceCore z with hz | hz
-    · exact Or.inl ((hface (Degree.Handle.retraction z)).mpr hz)
-    · exact Or.inr ⟨Degree.Handle.retraction z, hz, rfl⟩
+  · rw [family_on_handle, Handle.interpolate_one]
+    rcases Handle.retraction_mem_faceCore z with hz | hz
+    · exact Or.inl ((hface (Handle.retraction z)).mpr hz)
+    · exact Or.inr ⟨Handle.retraction z, hz, rfl⟩
 
-def Degree.CoreAttachment.inclusion {N P M : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
-    [TopologicalSpace M] (A : Set M) (h : C(Degree.Handle.Space (N := N) (P := P), M)) :
-    C(CoreUnion A h, Degree.Attachment.Union A h) :=
+def CoreAttachment.inclusion {N P M : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
+    [TopologicalSpace M] (A : Set M) (h : C(Handle.Space (N := N) (P := P), M)) :
+    C(CoreUnion A h, Attachment.Union A h) :=
   ⟨fun x =>
     ⟨x.val,
       x.property.elim Or.inl (fun hx => Or.inr (by obtain ⟨z, _, hz⟩ := hx; exact ⟨z, hz⟩))⟩,
     continuous_subtype_val.subtype_mk _⟩
 
-def Degree.CoreAttachment.reduce {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def CoreAttachment.reduce {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
-    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) : C(Degree.Attachment.Union A h, CoreUnion A h) :=
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) : C(Attachment.Union A h, CoreUnion A h) :=
   ⟨fun x => ⟨(family A h hinj hface (1, x)).val, family_one_mem_coreUnion A h hinj hface x⟩,
     ((continuous_subtype_val.comp (family A h hinj hface).continuous).comp
           (continuous_const.prodMk continuous_id)).subtype_mk
       _⟩
 
-theorem Degree.CoreAttachment.family_fixed_coreUnion {N P M : Type*} [NormedAddCommGroup N]
+theorem CoreAttachment.family_fixed_coreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
     (hface : ∀ z, h z ∈ A ↔ z ∈ Face) (t : (unitInterval)) (x : CoreUnion A h) :
-    family A h hinj hface (t, Degree.CoreAttachment.inclusion A h x) =
-      Degree.CoreAttachment.inclusion A h x := by
+    family A h hinj hface (t, CoreAttachment.inclusion A h x) =
+      CoreAttachment.inclusion A h x := by
   rcases x with ⟨x, hx | ⟨z, hz, rfl⟩⟩
   · exact family_fixed_lower A h hinj hface t ⟨x, hx⟩
   · apply Subtype.ext
     change (family A h hinj hface (t, ⟨h z, Or.inr ⟨z, rfl⟩⟩)).val = h z
-    rw [family_on_handle, Degree.Handle.interpolate_fixed t z (Or.inr hz)]
+    rw [family_on_handle, Handle.interpolate_fixed t z (Or.inr hz)]
 
-def Degree.CoreAttachment.coreUnionHomotopyEquiv {N P M : Type*} [NormedAddCommGroup N]
+def CoreAttachment.coreUnionHomotopyEquiv {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
-    (h : C(Degree.Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
-    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) : CoreUnion A h ≃ₕ Degree.Attachment.Union A h
+    (h : C(Handle.Space (N := N) (P := P), M)) (hinj : Function.Injective h)
+    (hface : ∀ z, h z ∈ A ↔ z ∈ Face) : CoreUnion A h ≃ₕ Attachment.Union A h
     where
-  toFun := Degree.CoreAttachment.inclusion A h
+  toFun := CoreAttachment.inclusion A h
   invFun := reduce A h hinj hface
   left_inv := by
     have he :
-      (reduce A h hinj hface).comp (Degree.CoreAttachment.inclusion A h) =
+      (reduce A h hinj hface).comp (CoreAttachment.inclusion A h) =
         ContinuousMap.id (CoreUnion A h) := by
       apply ContinuousMap.ext
       intro x
       apply Subtype.ext
-      change (family A h hinj hface (1, Degree.CoreAttachment.inclusion A h x)).val = x.val
+      change (family A h hinj hface (1, CoreAttachment.inclusion A h x)).val = x.val
       exact congrArg Subtype.val (family_fixed_coreUnion A h hinj hface 1 x)
     rw [he]
   right_inv := by
     let H :
-      (ContinuousMap.id (Degree.Attachment.Union A h)).Homotopy
-        ((Degree.CoreAttachment.inclusion A h).comp (reduce A h hinj hface)) :=
+      (ContinuousMap.id (Attachment.Union A h)).Homotopy
+        ((CoreAttachment.inclusion A h).comp (reduce A h hinj hface)) :=
       { toContinuousMap := family A h hinj hface
         map_zero_left := family_zero A h hinj hface
         map_one_left := fun _ => rfl }
     exact ⟨H.symm⟩
 
-theorem Degree.MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) :
     Module.finrank ℝ c.NegativeCoordinates ≤ Module.finrank ℝ E := by
@@ -396,7 +396,7 @@ theorem Degree.MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E]
   rw [finrank_euclideanSpace]
   exact (Fintype.card_subtype_le (fun i => c.weights i = -1)).trans_eq (Fintype.card_fin _)
 
-def Degree.MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
@@ -407,7 +407,7 @@ def Degree.MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSp
   (c.attachingHandleMap ρ hρ hblock).comp
     ⟨fun u => (u, ⟨0, by simp⟩), continuous_id.prodMk continuous_const⟩
 
-theorem Degree.MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
@@ -418,7 +418,7 @@ theorem Degree.MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGrou
   intro u v h
   exact congrArg Prod.fst (c.attachingHandleMap_injective ρ hρ hblock h)
 
-theorem Degree.MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
@@ -429,14 +429,14 @@ theorem Degree.MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGrou
     f (coreCellMap c ρ hρ hblock u) ≤ f p - ρ ^ 2 ↔ ‖(u : c.NegativeCoordinates)‖ = 1 :=
   c.attachingHandleMap_lower_iff ρ hρ hblock (u, ⟨0, by simp⟩)
 
-theorem Degree.MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * ρ) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * ρ) ⊆
         c.splitChart.target) :
-    (c.attachingHandleMap ρ hρ hblock) '' Degree.CoreAttachment.Core =
+    (c.attachingHandleMap ρ hρ hblock) '' CoreAttachment.Core =
       Set.range (coreCellMap c ρ hρ hblock) := by
   ext x
   constructor
@@ -447,7 +447,7 @@ theorem Degree.MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [Norme
   · rintro ⟨u, rfl⟩
     exact ⟨(u, ⟨0, by simp⟩), rfl, rfl⟩
 
-def Degree.MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup E]
+def MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
     (hblock :
@@ -467,7 +467,7 @@ def Degree.MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup 
     Smale.ClosedAttachment.unionHomeomorph A _ (coreCellMap c ρ hρ hblock) hA
       (coreCellMap_injective c ρ hρ hblock) (coreCellMap_lower_iff c ρ hρ hblock)
   let core :=
-    Degree.CoreAttachment.coreUnionHomotopyEquiv A (c.attachingHandleMap ρ hρ hblock)
+    CoreAttachment.coreUnionHomotopyEquiv A (c.attachingHandleMap ρ hρ hblock)
       (c.attachingHandleMap_injective ρ hρ hblock) (c.attachingHandleMap_lower_iff ρ hρ hblock)
   let mark := Homeomorph.setCongr (congrArg (fun S : Set M => A ∪ S) (image_core c ρ hρ hblock))
   exact
@@ -475,7 +475,7 @@ def Degree.MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup 
       (mark.symm.toHomotopyEquiv.trans
         (core.trans (c.attachingHandleUnionHomeomorph hf ρ hρ hblock).symm.toHomotopyEquiv))
 
-inductive Degree.FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → Prop
+inductive FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → Prop
   | empty (X : Type) [TopologicalSpace X] [IsEmpty X] : Built d X
   |
   equiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (h : Built d X) :
@@ -487,20 +487,20 @@ inductive Degree.FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace 
     (hdim : Module.finrank ℝ V ≤ d) (hA : Built d A) :
     Built d (Smale.ClosedAttachment.Space A {u : Smale.MorseHandle.UnitDisk V | ‖(u : V)‖ = 1} h)
 
-def Degree.AttachmentMaps.oldInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def AttachmentMaps.oldInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) : C(A, Smale.ClosedAttachment.Space A B h) :=
   ⟨fun a => Quot.mk _ (.inl a), continuous_quot_mk.comp continuous_inl⟩
 
-def Degree.AttachmentMaps.cellInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def AttachmentMaps.cellInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) : C(K, Smale.ClosedAttachment.Space A B h) :=
   ⟨fun k => Quot.mk _ (.inr k), continuous_quot_mk.comp continuous_inr⟩
 
-theorem Degree.AttachmentMaps.boundary_eq {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
+theorem AttachmentMaps.boundary_eq {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) (a : A) (k : K) (hk : k ∈ B) (ha : a.val = h k) :
     oldInclusion A B h a = cellInclusion A B h k :=
   Quot.sound ⟨hk, ha⟩
 
-theorem Degree.AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
+theorem AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
     [TopologicalSpace M] [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X))
     (g : C(K, X)) (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) (a b : A ⊕ K)
     (hab : Smale.ClosedAttachment.Rel A B h a b) : Sum.elim f g a = Sum.elim f g b := by
@@ -511,22 +511,22 @@ theorem Degree.AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
     | inr k => exact hc a k hab.1 hab.2
   | inr k => cases b <;> exact hab.elim
 
-def Degree.AttachmentMaps.glue {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def AttachmentMaps.glue {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X)) (g : C(K, X))
     (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) : C(Smale.ClosedAttachment.Space A B h, X)
     where
   toFun := Quot.lift (Sum.elim f g) (sum_respects A B h f g hc)
   continuous_toFun := continuous_quot_lift _ (continuous_sum_dom.mpr ⟨f.continuous, g.continuous⟩)
 
-def Degree.AttachmentMaps.familyOld {M X : Type*} [TopologicalSpace M] [TopologicalSpace X]
+def AttachmentMaps.familyOld {M X : Type*} [TopologicalSpace M] [TopologicalSpace X]
     (A : Set M) (F : C((unitInterval) × A, X)) (t : (unitInterval)) : C(A, X) :=
   F.comp ⟨fun a => (t, a), continuous_const.prodMk continuous_id⟩
 
-def Degree.AttachmentMaps.familyCell {K X : Type*} [TopologicalSpace K] [TopologicalSpace X]
+def AttachmentMaps.familyCell {K X : Type*} [TopologicalSpace K] [TopologicalSpace X]
     (G : C((unitInterval) × K, X)) (t : (unitInterval)) : C(K, X) :=
   G.comp ⟨fun k => (t, k), continuous_const.prodMk continuous_id⟩
 
-def Degree.AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
+def AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (F : C((unitInterval) × A, X))
     (G : C((unitInterval) × K, X)) (hFG : ∀ t a k, k ∈ B → a.val = h k → F (t, a) = G (t, k)) :
     C((unitInterval) × Smale.ClosedAttachment.Space A B h, X)
@@ -541,27 +541,27 @@ def Degree.AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [Topol
     funext p
     rcases p with ⟨t, a | k⟩ <;> rfl
 
-def Degree.FiniteCells.RelativeDiskLifting {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+def FiniteCells.RelativeDiskLifting {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (d : ℕ) : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V],
     Module.finrank ℝ V ≤ d →
-      ∀ (a : C(Degree.DiskCylinder.Sphere (E := V), X))
-        (u : C(Degree.DiskCylinder.Disk (E := V), Y))
-        (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), Y)),
+      ∀ (a : C(DiskCylinder.Sphere (E := V), X))
+        (u : C(DiskCylinder.Disk (E := V), Y))
+        (H : C((unitInterval) × DiskCylinder.Sphere (E := V), Y)),
         (∀ s, H (0, s) = F (a s)) →
-          (∀ s, H (1, s) = u (Degree.DiskCylinder.boundaryToDisk s)) →
-            ∃ (v : C(Degree.DiskCylinder.Disk (E := V), X)) (G :
-              C((unitInterval) × Degree.DiskCylinder.Disk (E := V), Y)),
-              (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = a s) ∧
+          (∀ s, H (1, s) = u (DiskCylinder.boundaryToDisk s)) →
+            ∃ (v : C(DiskCylinder.Disk (E := V), X)) (G :
+              C((unitInterval) × DiskCylinder.Disk (E := V), Y)),
+              (∀ s, v (DiskCylinder.boundaryToDisk s) = a s) ∧
                 (∀ z, G (0, z) = F (v z)) ∧
                   (∀ z, G (1, z) = u z) ∧
-                    ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s)
+                    ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s)
 
-def Degree.FiniteCells.MapsLift {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+def FiniteCells.MapsLift {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (Z : Type) [TopologicalSpace Z] : Prop :=
   ∀ u : C(Z, Y), ∃ v : C(Z, X), (F.comp v).Homotopic u
 
-theorem Degree.FiniteCells.mapsLift_empty {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+theorem FiniteCells.mapsLift_empty {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (Z : Type) [TopologicalSpace Z] [IsEmpty Z] : MapsLift F Z := by
   intro u
   let v : C(Z, X) := ⟨isEmptyElim, continuous_iff_continuousAt.mpr (fun z => isEmptyElim z)⟩
@@ -569,7 +569,7 @@ theorem Degree.FiniteCells.mapsLift_empty {X Y : Type} [TopologicalSpace X] [Top
   have he : F.comp v = u := ContinuousMap.ext (fun z => isEmptyElim z)
   rw [he]
 
-theorem Degree.FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+theorem FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) {Z W : Type} [TopologicalSpace Z] [TopologicalSpace W] (e : Z ≃ₕ W)
     (h : MapsLift F Z) : MapsLift F W := by
   intro u
@@ -579,7 +579,7 @@ theorem Degree.FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [Top
   have h₂ := (ContinuousMap.Homotopic.refl u).comp e.right_inv
   simpa only [ContinuousMap.comp_assoc, ContinuousMap.comp_id] using h₁.trans h₂
 
-theorem Degree.FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+theorem FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) {d : ℕ} (hF : RelativeDiskLifting F d) {V M : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace M] (A : Set M)
     (h : C(Smale.MorseHandle.UnitDisk V, M))
@@ -589,40 +589,40 @@ theorem Degree.FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [To
       (Smale.ClosedAttachment.Space A {z : Smale.MorseHandle.UnitDisk V | ‖(z : V)‖ = 1} h) := by
   intro u
   let B : Set (Smale.MorseHandle.UnitDisk V) := {z | ‖(z : V)‖ = 1}
-  let iA := Degree.AttachmentMaps.oldInclusion A B h
-  let iD := Degree.AttachmentMaps.cellInclusion A B h
+  let iA := AttachmentMaps.oldInclusion A B h
+  let iD := AttachmentMaps.cellInclusion A B h
   obtain ⟨vA, ⟨HA⟩⟩ := hA (u.comp iA)
-  let b : C(Degree.DiskCylinder.Sphere (E := V), A) :=
+  let b : C(DiskCylinder.Sphere (E := V), A) :=
     ⟨fun s =>
-      ⟨h (Degree.DiskCylinder.boundaryToDisk s),
-        hb (Degree.DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)⟩,
-      (h.continuous.comp Degree.DiskCylinder.boundaryToDisk.continuous).subtype_mk _⟩
-  let H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), Y) :=
+      ⟨h (DiskCylinder.boundaryToDisk s),
+        hb (DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)⟩,
+      (h.continuous.comp DiskCylinder.boundaryToDisk.continuous).subtype_mk _⟩
+  let H : C((unitInterval) × DiskCylinder.Sphere (E := V), Y) :=
     HA.toContinuousMap.comp ((ContinuousMap.id (unitInterval)).prodMap b)
   have h0 : ∀ s, H (0, s) = F ((vA.comp b) s) := fun s => HA.map_zero_left (b s)
-  have h1 : ∀ s, H (1, s) = (u.comp iD) (Degree.DiskCylinder.boundaryToDisk s) := by
+  have h1 : ∀ s, H (1, s) = (u.comp iD) (DiskCylinder.boundaryToDisk s) := by
     intro s
-    change HA (1, b s) = u (iD (Degree.DiskCylinder.boundaryToDisk s))
+    change HA (1, b s) = u (iD (DiskCylinder.boundaryToDisk s))
     exact
       (HA.map_one_left (b s)).trans
         (congrArg u
-          (Degree.AttachmentMaps.boundary_eq A B h (b s) (Degree.DiskCylinder.boundaryToDisk s)
+          (AttachmentMaps.boundary_eq A B h (b s) (DiskCylinder.boundaryToDisk s)
             (mem_sphere_zero_iff_norm.mp s.property) rfl))
   obtain ⟨vD, GD, hvD, hGD0, hGD1, hGDside⟩ := hF V hd (vA.comp b) (u.comp iD) H h0 h1
   have hcompat : ∀ a z, z ∈ B → a.val = h z → vA a = vD z := by
     intro a z hz ha
-    let s : Degree.DiskCylinder.Sphere (E := V) := ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
+    let s : DiskCylinder.Sphere (E := V) := ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
     have hab : a = b s := Subtype.ext ha
     exact (congrArg vA hab).trans (hvD s).symm
-  let v := Degree.AttachmentMaps.glue A B h vA vD hcompat
+  let v := AttachmentMaps.glue A B h vA vD hcompat
   have hhom : ∀ t a z, z ∈ B → a.val = h z → HA (t, a) = GD (t, z) := by
     intro t a z hz ha
-    let s : Degree.DiskCylinder.Sphere (E := V) := ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
+    let s : DiskCylinder.Sphere (E := V) := ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
     have hab : a = b s := Subtype.ext ha
     exact (congrArg (fun a => HA (t, a)) hab).trans (hGDside t s).symm
   refine
     ⟨v, ⟨{
-          toContinuousMap := Degree.AttachmentMaps.glueFamily A B h HA.toContinuousMap GD hhom
+          toContinuousMap := AttachmentMaps.glueFamily A B h HA.toContinuousMap GD hhom
           map_zero_left := ?_
           map_one_left := ?_ }⟩⟩
   · intro z
@@ -638,7 +638,7 @@ theorem Degree.FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [To
       | inl a => exact HA.map_one_left a
       | inr z => exact hGD1 z
 
-theorem Degree.FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
+theorem FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (F : C(X, Y)) {d : ℕ} (hF : RelativeDiskLifting F d) {Z : Type}
     [TopologicalSpace Z] (hZ : Built d Z) : MapsLift F Z := by
   induction hZ with
@@ -646,7 +646,7 @@ theorem Degree.FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
   | equiv e _ ih => exact mapsLift_equiv F e ih
   | attach A h hb hd _ ih => exact mapsLift_attach F hF A h hb hd ih
 
-theorem Degree.MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {p : M}
@@ -707,7 +707,7 @@ theorem Degree.MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedA
     ⟨(cellHandleHomotopyEquiv c ρ hρ hblock hf.continuous).trans
         ((c.attachingHandleUnionHomeomorph hf.continuous ρ hρ hblock).toHomotopyEquiv.trans e)⟩
 
-structure Degree.MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+structure MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (p : M) where
   radius : ℝ
   radius_pos : 0 < radius
@@ -727,12 +727,12 @@ structure Degree.MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpa
         (coreCellMap chart radius radius_pos block) ≃ₕ
       { x : M // f x ≤ f p + radius ^ 2 }
 
-def Degree.MorseCells.Cell.band {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorseCells.Cell.band {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Degree.MorseCells.Cell (E := E) f p) : Set ℝ :=
+    (c : MorseCells.Cell (E := E) f p) : Set ℝ :=
   Set.Icc (f p - c.radius ^ 2) (f p + c.radius ^ 2)
 
-theorem Degree.MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : Smale.ManifoldMorse.IsMorse E f) {p : M}
@@ -742,7 +742,7 @@ theorem Degree.MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [N
   obtain ⟨ρ, hρ, hlt, c, hb, hi, hd, ⟨e⟩⟩ := exists_morse_cell_attachment_lt hf hm hp hunique hR
   exact ⟨⟨ρ, hρ, c, hb, hi, hd, e⟩, hlt⟩
 
-theorem Degree.MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
@@ -796,7 +796,7 @@ theorem Degree.MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGrou
   · exact (hpq (Subtype.ext (hinj p.property q.property h))).elim
   · exact (hordered q p h).symm
 
-theorem Degree.MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddCommGroup E]
+theorem MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p q : M}
     (c : Cell (E := E) f p) (d : Cell (E := E) f q) (h : Disjoint c.band d.band)
     (hpq : f p < f q) : f p + c.radius ^ 2 < f q - d.radius ^ 2 := by
@@ -811,7 +811,7 @@ theorem Degree.MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddComm
     · nlinarith [sq_nonneg d.radius]
   exact Set.disjoint_left.mp h hc hd
 
-theorem Degree.MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGroup E]
+theorem MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
     (h : ∀ p ∈ Smale.ManifoldMorse.criticalPoints E f, ¬f p ≤ a) : IsEmpty { x : M // f x ≤ a } :=

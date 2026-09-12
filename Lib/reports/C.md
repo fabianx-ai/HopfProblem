@@ -28,7 +28,7 @@ source range on the pre-move HEAD, byte count, and SHA-256 in the commit message
 | `b42417b` | `Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean` | 440 | `f6ef77a` |
 | `7633126` | `Lib/AlgebraicTopology/Hurewicz/Subdivision.lean` | 228 | `b42417b` |
 | `aa3f112` | `Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean` | 127 | `7633126` |
-| `2cb2ca5` | `Lib/AlgebraicTopology/Hurewicz/Degree.lean` | 53 | `aa3f112` |
+| `2cb2ca5` | `Lib/AlgebraicTopology/Hurewicz/lean` | 53 | `aa3f112` |
 | `75a473c` | `Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean` | 75 | `2cb2ca5` |
 | `8611afa` | (composition machinery into `PrismOperator.lean`) | 11 | `2cb2ca5`-era |
 
@@ -116,7 +116,7 @@ deliverable.
 | `PrismOperator.lean` | `Mathlib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean` (Mathlib's prism lives there) |
 | `Subdivision.lean` | shape after `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` |
 | `CubeGluing.lean` | none existing; shape after the reference example's `SimplexPaths.lean` |
-| `Degree.lean` | the headline's home; the reference example `Degree1.lean` is the degree-1 instance |
+| `lean` | the headline's home; the reference example `Degree1.lean` is the degree-1 instance |
 | `CubeChainDecomposition.lean` | none existing (the Kuhn decomposition) |
 | `Straightening.lean` | none existing (the normalization tower) |
 
@@ -183,29 +183,29 @@ deliverable.
      `isDefEq`/`whnf` and was reverted; the design above is the corrected route.
 2. **C11 CubeSphere** — **LANDED** (`f3d6ba6` baseline + `d597ac4`
    generalize): `Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean` holds the
-   general-`n` cube-sphere quotient (the pre-existing `Degree.SphereCube.*`
+   general-`n` cube-sphere quotient (the pre-existing `SphereCube.*`
    block, moved) plus the general-`n` `quotientLoop`, `factorMap`,
    `factorMap_quotient/_comp_quotient/_unique`, and
    `factor_cubeChain/cubeCycle/cubeHomologyClass` (the last via the G1
    `cubeChain` and the factor identity). The pinned `n = 6` content in
    `Hopf/Recognition.lean` is re-derived as one-line instantiations
    (`SixSphereCube.StandardSphere = SphereHomology.UnitSphere 6 =
-   Degree.SphereCube.Sphere 6` definitionally); statements unchanged,
+   SphereCube.Sphere 6` definitionally); statements unchanged,
    consumers untouched.
-3. **C13 HopfDegree** (`Degree.sphere_homotopicRel_of_topClass_eq` etc.,
+3. **C13 HopfDegree** (`sphere_homotopicRel_of_topClass_eq` etc.,
    pinned `n = 6` in `Hopf/Recognition.lean`): needs C10's headline (the
    sphere-connectivity bootstrap `sphere_pi_subsingleton_of_lt` is the
    induction through the general `hurewiczLinearEquiv`); blocked until then.
 4. **C12 CellFilling** — **LANDED** (`71632be`): `Lib/Topology/Homotopy/
-   CellFilling.lean` holds `Degree.Sphere.homotopic_const_discrete`,
+   CellFilling.lean` holds `Sphere.homotopic_const_discrete`,
    `real_unitSphere_finite`, `homotopic_const_of_homeomorph`,
    `boundary_homotopic_const_of_pi`, `exists_boundary_extension_of_pi`, and
-   `Degree.CylinderFilling.exists_filling`. The disk-cylinder dependencies
+   `CylinderFilling.exists_filling`. The disk-cylinder dependencies
    turned out to be already in `Lib/Topology/Homotopy/{HandleRetraction,
    CylinderHEP}.lean` (lanes E1/D2) — my earlier "blocked on lane F/D1"
    assessment was wrong. The pinned `n = 6` instances
-   (`Degree.Sphere.boundary_homotopic_const`, `exists_boundary_extension`) and
-   the `Degree.LowCellLifting.*` consumer stay in `Hopf/Recognition.lean`.
+   (`Sphere.boundary_homotopic_const`, `exists_boundary_extension`) and
+   the `LowCellLifting.*` consumer stay in `Hopf/Recognition.lean`.
 5. **Rename + doc phase** (the protocol's separate commit): Mathlib-shaped
    names and per-declaration docstrings for all baseline-moved content; the
    `instance`-reduction refactor (the `integerLinearMapModule`/

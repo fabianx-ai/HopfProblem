@@ -86,7 +86,7 @@ Transitional shims: `Hopf/LibShims.lean` recreates the old dotted paths via `exp
 (541 names; **[corrected]** was 449, review A check 10.7; PeriodTorusHigherHomology ≈1,657 references in IntegralHomology alone), and every
 Hopf module gains one `import Hopf.LibShims` line. De-shim is the owner's follow-up.
 The other Lib namespaces (`SmallChainBiprod`, `SingularMayerVietoris`, `SphereHomology`,
-`Degree.PassageHomology`, `Smale.LocalDegree`, `Smale.PuncturedRadial`) keep their names this
+`PassageHomology`, `Smale.LocalDegree`, `Smale.PuncturedRadial`) keep their names this
 lane — none is in the mandated rename list; Mathlib-shaped renames for them belong with the
 de-duplication pass (Q4) and are an open item.
 
@@ -97,7 +97,7 @@ de-duplication pass (Q4) and are an open item.
    `Smale.SpherePoint.*`, `Smale.ManifoldMorse.MorseSurgeryData.*`,
    `Smale.SuspensionReflection.*`, `NoExotic.IntLinearAutomorphism.*` — is welded to
    `Smale.MorseHandle` (DifferentialTopology, lane D1), `Smale.SphereReflection`,
-   `Degree.LinearFramePaths` and the Morse-surgery structures (lanes F/G territory).
+   `LinearFramePaths` and the Morse-surgery structures (lanes F/G territory).
    Word-boundary dependency closure: only 3 of 140+ decls are movable in isolation — not
    worth a fragment file. Moves after D1/F/G land. Includes the probe theorem
    `Smale.LinearSphereAction.homology_eq_sign_smul` (probed in place; same statement).
@@ -165,7 +165,7 @@ de-duplication pass (Q4) and are an open item.
 4. **De-shim.** `Hopf/LibShims.lean` + one import line per Hopf module are transitional (Q2);
    the owner's de-shim pass deletes them.
 5. **Namespace renames for the non-mandated prefixes** (SmallChainBiprod,
-   SingularMayerVietoris, SphereHomology, Degree.PassageHonology→LocalDegree-family,
+   SingularMayerVietoris, SphereHomology, PassageHonology→LocalDegree-family,
    Smale.LocalDegree, Smale.PuncturedRadial) to Mathlib-shaped names, with the Q4
    de-duplication review against Mathlib's `ShortComplex.ModuleCat` cycle API (the
    `ChainHomology`/`ModuleHomology` API substantially overlaps

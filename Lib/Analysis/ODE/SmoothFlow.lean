@@ -12,12 +12,12 @@ import Lib.Geometry.Manifold.Flow.HeightTranslating
 # Smooth dependence of flows
 
 For a `C^∞` vector field the flow depends `C^∞` on the initial point and on time
-(`Degree.SmoothODE.*`, Lee Thm 9.12's smoothness conclusion), with coordinate-field helpers
+(`SmoothODE.*`, Lee Thm 9.12's smoothness conclusion), with coordinate-field helpers
 (`MorseCancellation.coordinateField`).
 
 ## Main definitions and results
 
-* `Degree.SmoothODE.*` : smooth dependence of the flow.
+* `SmoothODE.*` : smooth dependence of the flow.
 
 ## References
 
@@ -49,7 +49,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem Degree.SmoothODE.exists_smooth_fixedPoint_germ {P E : Type*} [NormedAddCommGroup P]
+theorem SmoothODE.exists_smooth_fixedPoint_germ {P E : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [CompleteSpace P] [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {F : P × E → E} {p : P} {x : E} (hF : ContDiffAt ℝ ∞ F (p, x)) (hfix : F (p, x) = x)
     (hsmall : ‖(fderiv ℝ F (p, x)).comp (ContinuousLinearMap.inr ℝ P E)‖ < 1) :
@@ -84,7 +84,7 @@ theorem Degree.SmoothODE.exists_smooth_fixedPoint_germ {P E : Type*} [NormedAddC
     rw [hfix, sub_self, sub_eq_zero] at hv
     exact eq_comm.trans hv
 
-theorem Degree.SmoothODE.contDiffAt_of_continuous_fixedPoint {P E : Type*} [NormedAddCommGroup P]
+theorem SmoothODE.contDiffAt_of_continuous_fixedPoint {P E : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [CompleteSpace P] [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {F : P × E → E} {p : P} {x : E} (hF : ContDiffAt ℝ ∞ F (p, x)) (hfix : F (p, x) = x)
     (hsmall : ‖(fderiv ℝ F (p, x)).comp (ContinuousLinearMap.inr ℝ P E)‖ < 1) {g : P → E}
@@ -98,7 +98,7 @@ theorem Degree.SmoothODE.contDiffAt_of_continuous_fixedPoint {P E : Type*} [Norm
   filter_upwards [hgraph huniq, heq] with q hq hfixq
   exact ((hq.mp hfixq).symm)
 
-theorem Degree.SmoothODE.exists_smooth_fixedPoint_neighborhood {P E : Type*}
+theorem SmoothODE.exists_smooth_fixedPoint_neighborhood {P E : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [CompleteSpace P] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] {F : P × E → E} {p : P} {x : E} (hF : ContDiff ℝ ∞ F)
     (hfix : F (p, x) = x)
@@ -124,7 +124,7 @@ theorem Degree.SmoothODE.exists_smooth_fixedPoint_neighborhood {P E : Type*}
   filter_upwards [hU.mem_nhds hq] with r hr
   exact (hUsub hr).1.1
 
-def Degree.SmoothODE.pathOperator {K E F : Type*} [TopologicalSpace K] [CompactSpace K]
+def SmoothODE.pathOperator {K E F : Type*} [TopologicalSpace K] [CompactSpace K]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : C(K, E →L[ℝ] F)) : C(K, E) →L[ℝ] C(K, F) :=
   LinearMap.mkContinuous
@@ -140,7 +140,7 @@ def Degree.SmoothODE.pathOperator {K E F : Type*} [TopologicalSpace K] [CompactS
           (mul_le_mul (A.norm_coe_le_norm t) (u.norm_coe_le_norm t) (norm_nonneg _)
             (norm_nonneg _)))
 
-theorem Degree.SmoothODE.norm_pathOperator_le {K E F : Type*} [TopologicalSpace K]
+theorem SmoothODE.norm_pathOperator_le {K E F : Type*} [TopologicalSpace K]
     [CompactSpace K] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (A : C(K, E →L[ℝ] F)) : ‖pathOperator A‖ ≤ ‖A‖ := by
   apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg A)
@@ -151,7 +151,7 @@ theorem Degree.SmoothODE.norm_pathOperator_le {K E F : Type*} [TopologicalSpace 
     ((A t).le_opNorm (u t)).trans
       (mul_le_mul (A.norm_coe_le_norm t) (u.norm_coe_le_norm t) (norm_nonneg _) (norm_nonneg _))
 
-def Degree.SmoothODE.pathOperatorCLM {K E F : Type*} [TopologicalSpace K] [CompactSpace K]
+def SmoothODE.pathOperatorCLM {K E F : Type*} [TopologicalSpace K] [CompactSpace K]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] :
     C(K, E →L[ℝ] F) →L[ℝ] (C(K, E) →L[ℝ] C(K, F)) :=
   LinearMap.mkContinuous
@@ -164,7 +164,7 @@ def Degree.SmoothODE.pathOperatorCLM {K E F : Type*} [TopologicalSpace K] [Compa
       rw [one_mul]
       exact norm_pathOperator_le A)
 
-theorem Degree.SmoothODE.exists_quadratic_remainder_bound {E F : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.exists_quadratic_remainder_bound {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F}
     (hf : ContDiff ℝ ∞ f) (R : ℝ) :
     ∃ C : ℝ,
@@ -206,12 +206,12 @@ theorem Degree.SmoothODE.exists_quadratic_remainder_bound {E F : Type*} [NormedA
       (left_mem_segment ℝ x y) (right_mem_segment ℝ x y)
   simpa only [pow_two, mul_assoc] using hh
 
-def Degree.SmoothODE.pathDerivative {K E F : Type*} [TopologicalSpace K] [NormedAddCommGroup E]
+def SmoothODE.pathDerivative {K E F : Type*} [TopologicalSpace K] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (f : C(E, F)) (hf : ContDiff ℝ ∞ f)
     (u : C(K, E)) : C(K, E →L[ℝ] F) :=
   ⟨fun t => fderiv ℝ f (u t), (hf.continuous_fderiv (by simp)).comp u.continuous⟩
 
-theorem Degree.SmoothODE.hasFDerivAt_pathPostcomposition {K E F : Type*} [TopologicalSpace K]
+theorem SmoothODE.hasFDerivAt_pathPostcomposition {K E F : Type*} [TopologicalSpace K]
     [CompactSpace K] [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : C(E, F)) (hf : ContDiff ℝ ∞ f) (u : C(K, E)) :
     HasFDerivAt (fun v : C(K, E) => f.comp v) (pathOperator (pathDerivative f hf u)) u := by
@@ -244,13 +244,13 @@ theorem Degree.SmoothODE.hasFDerivAt_pathPostcomposition {K E F : Type*} [Topolo
       have hh' := mul_le_mul_of_nonneg_right hhε (norm_nonneg h)
       simpa only [pow_two, mul_assoc] using hh'
 
-theorem Degree.SmoothODE.fderiv_pathPostcomposition {K E F : Type*} [TopologicalSpace K]
+theorem SmoothODE.fderiv_pathPostcomposition {K E F : Type*} [TopologicalSpace K]
     [CompactSpace K] [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : C(E, F)) (hf : ContDiff ℝ ∞ f) (u : C(K, E)) :
     fderiv ℝ (fun v : C(K, E) => f.comp v) u = pathOperator (pathDerivative f hf u) :=
   (hasFDerivAt_pathPostcomposition f hf u).fderiv
 
-theorem Degree.SmoothODE.contDiff_pathPostcomposition_nat {K : Type v} [TopologicalSpace K]
+theorem SmoothODE.contDiff_pathPostcomposition_nat {K : Type v} [TopologicalSpace K]
     [CompactSpace K] {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (n : ℕ) :
     ∀ {F : Type u} [NormedAddCommGroup F] [NormedSpace ℝ F],
@@ -273,36 +273,36 @@ theorem Degree.SmoothODE.contDiff_pathPostcomposition_nat {K : Type v} [Topologi
     rw [heq]
     exact (pathOperatorCLM (K := K) (E := E) (F := F)).contDiff.comp hi
 
-theorem Degree.SmoothODE.contDiff_pathPostcomposition {K : Type v} [TopologicalSpace K]
+theorem SmoothODE.contDiff_pathPostcomposition {K : Type v} [TopologicalSpace K]
     [CompactSpace K] {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     {F : Type u} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : C(E, F)) (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (fun w : C(K, E) => f.comp w) :=
   contDiff_infty.mpr (fun n => contDiff_pathPostcomposition_nat n f hf)
 
-abbrev Degree.SmoothODE.PathTime :=
+abbrev SmoothODE.PathTime :=
   Set.Icc (-2 : ℝ) 2
 
-def Degree.SmoothODE.pathClamp : ℝ → PathTime :=
+def SmoothODE.pathClamp : ℝ → PathTime :=
   Set.projIcc (-2) 2 (by norm_num)
 
-theorem Degree.SmoothODE.continuous_pathClamp : Continuous pathClamp :=
+theorem SmoothODE.continuous_pathClamp : Continuous pathClamp :=
   continuous_projIcc
 
-def Degree.SmoothODE.pathExtend {E : Type*} [NormedAddCommGroup E] (u : C(PathTime, E)) : ℝ → E :=
+def SmoothODE.pathExtend {E : Type*} [NormedAddCommGroup E] (u : C(PathTime, E)) : ℝ → E :=
   u ∘ pathClamp
 
-theorem Degree.SmoothODE.continuous_pathExtend {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.continuous_pathExtend {E : Type*} [NormedAddCommGroup E]
     (u : C(PathTime, E)) : Continuous (pathExtend u) :=
   u.continuous.comp continuous_pathClamp
 
-def Degree.SmoothODE.pathPrimitive {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SmoothODE.pathPrimitive {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] (u : C(PathTime, E)) : C(PathTime, E) :=
   ⟨fun t => ∫ s in (0 : ℝ)..(t : ℝ), pathExtend u s,
     (intervalIntegral.differentiable_integral_of_continuous
           (continuous_pathExtend u)).continuous.comp
       continuous_subtype_val⟩
 
-theorem Degree.SmoothODE.norm_pathPrimitive_le {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.norm_pathPrimitive_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (u : C(PathTime, E)) : ‖pathPrimitive u‖ ≤ 2 * ‖u‖ := by
   apply (ContinuousMap.norm_le _ (mul_nonneg (by norm_num) (norm_nonneg u))).mpr
   intro t
@@ -314,7 +314,7 @@ theorem Degree.SmoothODE.norm_pathPrimitive_le {E : Type*} [NormedAddCommGroup E
   change ‖∫ s in (0 : ℝ)..(t : ℝ), pathExtend u s‖ ≤ 2 * ‖u‖
   simpa only [sub_zero, mul_comm] using hh.trans (mul_le_mul_of_nonneg_left ht (norm_nonneg u))
 
-def Degree.SmoothODE.pathPrimitiveCLM {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SmoothODE.pathPrimitiveCLM {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] : C(PathTime, E) →L[ℝ] C(PathTime, E) :=
   LinearMap.mkContinuous
     { toFun := pathPrimitive
@@ -336,18 +336,18 @@ def Degree.SmoothODE.pathPrimitiveCLM {E : Type*} [NormedAddCommGroup E] [Normed
         exact intervalIntegral.integral_smul r (pathExtend u) }
     2 (fun u => norm_pathPrimitive_le u)
 
-theorem Degree.SmoothODE.hasDerivAt_pathPrimitive {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.hasDerivAt_pathPrimitive {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (u : C(PathTime, E)) (t : ℝ) :
     HasDerivAt (fun r : ℝ => ∫ s in (0 : ℝ)..r, pathExtend u s) (pathExtend u t) t :=
   intervalIntegral.integral_hasDerivAt_right ((continuous_pathExtend u).intervalIntegrable _ _)
     (continuous_pathExtend u).aestronglyMeasurable.stronglyMeasurableAtFilter
     (continuous_pathExtend u).continuousAt
 
-def Degree.SmoothODE.picardPathMap {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SmoothODE.picardPathMap {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (v : C(E, E)) (q : (E × ℝ) × C(PathTime, E)) : C(PathTime, E) :=
   ContinuousMap.const PathTime q.1.1 + q.1.2 • pathPrimitiveCLM (v.comp q.2)
 
-theorem Degree.SmoothODE.contDiff_picardPathMap {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contDiff_picardPathMap {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) :
     ContDiff ℝ ∞ (picardPathMap v) := by
   exact
@@ -357,12 +357,12 @@ theorem Degree.SmoothODE.contDiff_picardPathMap {E : Type*} [NormedAddCommGroup 
         ((pathPrimitiveCLM (E := E)).contDiff.comp
           ((contDiff_pathPostcomposition v hv).comp contDiff_snd)))
 
-theorem Degree.SmoothODE.picardPathMap_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SmoothODE.picardPathMap_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (v : C(E, E)) (x : E) (u : C(PathTime, E)) :
     picardPathMap v ((x, 0), u) = ContinuousMap.const PathTime x := by
   simp only [picardPathMap, zero_smul, add_zero]
 
-theorem Degree.SmoothODE.picardPathMap_partial_zero {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.picardPathMap_partial_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) (x : E)
     (u : C(PathTime, E)) :
     (fderiv ℝ (picardPathMap v) ((x, 0), u)).comp
@@ -382,7 +382,7 @@ theorem Degree.SmoothODE.picardPathMap_partial_zero {E : Type*} [NormedAddCommGr
   rw [he] at hd
   exact hd.unique (hasFDerivAt_const (ContinuousMap.const PathTime x) u)
 
-theorem Degree.SmoothODE.exists_smooth_picard_paths {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.exists_smooth_picard_paths {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) (x : E) :
     ∃ (U : Set (E × ℝ)) (u : E × ℝ → C(PathTime, E)),
       IsOpen U ∧
@@ -406,20 +406,20 @@ theorem Degree.SmoothODE.exists_smooth_picard_paths {E : Type*} [NormedAddCommGr
   have hh := congrArg (fun w : C(PathTime, E) => w t) (hfix q hq)
   exact hh.symm
 
-def Degree.SmoothODE.picardCurve {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SmoothODE.picardCurve {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (v : C(E, E)) (p : E) (τ : ℝ) (u : C(PathTime, E)) (t : ℝ) : E :=
   p + τ • (∫ s in (0 : ℝ)..t, v (u (pathClamp s)))
 
-theorem Degree.SmoothODE.picardCurve_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SmoothODE.picardCurve_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (v : C(E, E)) (p : E) (τ : ℝ) (u : C(PathTime, E)) : picardCurve v p τ u 0 = p := by
   simp only [picardCurve, intervalIntegral.integral_same, smul_zero, add_zero]
 
-theorem Degree.SmoothODE.hasDerivAt_picardCurve {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.hasDerivAt_picardCurve {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (p : E) (τ : ℝ) (u : C(PathTime, E))
     (t : ℝ) : HasDerivAt (picardCurve v p τ u) (τ • v (u (pathClamp t))) t :=
   ((hasDerivAt_pathPrimitive (v.comp u) t).const_smul τ).const_add p
 
-theorem Degree.SmoothODE.picardCurve_eq_path {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem SmoothODE.picardCurve_eq_path {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (v : C(E, E)) {p : E} {τ : ℝ} {u : C(PathTime, E)}
     (heq : ∀ t : PathTime, u t = p + τ • (∫ s in (0 : ℝ)..(t : ℝ), v (u (pathClamp s)))) {t : ℝ}
     (ht : t ∈ Set.Icc (-2 : ℝ) 2) : picardCurve v p τ u t = u (pathClamp t) := by
@@ -427,7 +427,7 @@ theorem Degree.SmoothODE.picardCurve_eq_path {E : Type*} [NormedAddCommGroup E] 
   rw [hc]
   exact (heq ⟨t, ht⟩).symm
 
-theorem Degree.SmoothODE.hasDerivAt_picardCurve_of_fixedPoint {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.hasDerivAt_picardCurve_of_fixedPoint {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) {p : E} {τ : ℝ} {u : C(PathTime, E)}
     (heq : ∀ t : PathTime, u t = p + τ • (∫ s in (0 : ℝ)..(t : ℝ), v (u (pathClamp s)))) {t : ℝ}
     (ht : t ∈ Set.Icc (-2 : ℝ) 2) :
@@ -435,7 +435,7 @@ theorem Degree.SmoothODE.hasDerivAt_picardCurve_of_fixedPoint {E : Type*} [Norme
   rw [picardCurve_eq_path v heq ht]
   exact hasDerivAt_picardCurve v p τ u t
 
-theorem Degree.SmoothODE.exists_smooth_picard_endpoints {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.exists_smooth_picard_endpoints {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) (x : E) :
     ∃ (U : Set (E × ℝ)) (u : E × ℝ → C(PathTime, E)) (g : E × ℝ → E),
       IsOpen U ∧
@@ -465,7 +465,7 @@ theorem Degree.SmoothODE.exists_smooth_picard_endpoints {E : Type*} [NormedAddCo
   have hc : pathClamp 1 = (⟨1, by norm_num⟩ : PathTime) := Set.projIcc_of_mem _ (by norm_num)
   exact hh.trans (congrArg (u q) hc)
 
-theorem Degree.SmoothODE.ordinary_curve_eqOn_of_contDiff {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.ordinary_curve_eqOn_of_contDiff {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {v : E → E} (hv : ContDiff ℝ 1 v) {γ η : ℝ → E} {a b t₀ : ℝ}
     (ht₀ : t₀ ∈ Set.Ioo a b) (hγ : ∀ t ∈ Set.Ioo a b, HasDerivAt γ (v (γ t)) t)
     (hη : ∀ t ∈ Set.Ioo a b, HasDerivAt η (v (η t)) t) (heq : γ t₀ = η t₀) :
@@ -483,7 +483,7 @@ theorem Degree.SmoothODE.ordinary_curve_eqOn_of_contDiff {E : Type*} [NormedAddC
     exact (hη t ht).hasFDerivAt.hasMFDerivAt.hasMFDerivWithinAt
   exact isMIntegralCurveOn_Ioo_eqOn_of_contMDiff_boundaryless ht₀ hV hγM hηM heq
 
-theorem Degree.SmoothODE.picard_endpoint_eq_local_solution {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.picard_endpoint_eq_local_solution {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) {p : E} {τ ε : ℝ} (hτ : |τ| < ε / 2)
     {u : C(PathTime, E)} {g : E} (hzero : picardCurve v p τ u 0 = p)
     (hend : picardCurve v p τ u 1 = g)
@@ -511,7 +511,7 @@ theorem Degree.SmoothODE.picard_endpoint_eq_local_solution {E : Type*} [NormedAd
   have hh := heq (x := 1) (by norm_num)
   simpa only [hend, one_mul] using hh
 
-theorem Degree.SmoothODE.contDiffAt_ordinary_localFlow {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contDiffAt_ordinary_localFlow {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (v : C(E, E)) (hv : ContDiff ℝ ∞ v) {P : Set E}
     (hP : IsOpen P) {x : E} (hx : x ∈ P) {ε : ℝ} (hε : 0 < ε) {H : E × ℝ → E}
     (hinit : ∀ p ∈ P, H (p, 0) = p)
@@ -617,7 +617,7 @@ theorem Smale.exists_smooth_extension_near_point {D G H N : Type*} [NormedAddCom
   change g (x - x₀) = f x
   simpa only [Function.comp_apply, shift, sub_add_cancel] using heq hx
 
-theorem Degree.SmoothODE.contDiffAt_local_field_flow {E : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contDiffAt_local_field_flow {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → E} {O P : Set E} (hv : ContDiffOn ℝ ∞ v O)
     (hO : IsOpen O) {x : E} (hxO : x ∈ O) (hP : IsOpen P) (hxP : x ∈ P) {ε : ℝ} (hε : 0 < ε)
     {H : E × ℝ → E} (hc : ContinuousAt H (x, 0)) (hinit : ∀ p ∈ P, H (p, 0) = p)
@@ -708,13 +708,13 @@ theorem MorseCancellation.hasDerivAt_coordinate_integralCurve {E M : Type*} [Nor
   rw [map_smul, coordinateField_chart e ht]
   rfl
 
-theorem Degree.SmoothODE.contMDiffAt_native_flow_zero {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contMDiffAt_native_flow_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) (p : M) :
     ContMDiffAt (𝓘(ℝ, E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ∞ (fun q : M × ℝ => F q.2 q.1) (p, 0) := by
-  let e := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) p
+  let e := modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) p
   have hp : p ∈ e.source := mem_extChartAt_source p
   have hz : e p ∈ e.target := e.map_source' hp
   have he : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ e p :=
@@ -784,7 +784,7 @@ theorem Degree.SmoothODE.contMDiffAt_native_flow_zero {E M : Type*} [NormedAddCo
   rw [heq]
   exact (e.left_inv' hFq).symm
 
-theorem Degree.SmoothODE.exists_uniform_smalltime_contMDiff {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.exists_uniform_smalltime_contMDiff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (F : Flow ℝ M) (n : ℕ)
     (hzero :
@@ -812,7 +812,7 @@ theorem Degree.SmoothODE.exists_uniform_smalltime_contMDiff {E M : Type*} [Norme
   have hh := hj.comp p hι
   exact hh
 
-theorem Degree.SmoothODE.contMDiff_flow_time_of_zero {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contMDiff_flow_time_of_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (F : Flow ℝ M) (n : ℕ)
     (hzero :
@@ -851,7 +851,7 @@ theorem Degree.SmoothODE.contMDiff_flow_time_of_zero {E M : Type*} [NormedAddCom
   have ht : t ∈ S := by rw [hSuniv]; exact Set.mem_univ t
   exact ht
 
-theorem Degree.SmoothODE.contMDiff_joint_flow_of_zero {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contMDiff_joint_flow_of_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (F : Flow ℝ M) (n : ℕ)
     (hzero :
@@ -871,7 +871,7 @@ theorem Degree.SmoothODE.contMDiff_joint_flow_of_zero {E M : Type*} [NormedAddCo
     rw [← F.map_add, sub_add_cancel]
   exact heq ▸ hc
 
-theorem Degree.SmoothODE.contMDiff_native_flow {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.contMDiff_native_flow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] [FiniteDimensional ℝ E] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -882,7 +882,7 @@ theorem Degree.SmoothODE.contMDiff_native_flow {E M : Type*} [NormedAddCommGroup
       contMDiff_joint_flow_of_zero F n
         (fun p => contMDiffAt_infty.mp (contMDiffAt_native_flow_zero hV F hcurve p) n))
 
-def Degree.SmoothODE.nativeFlowTimeDiffeomorph {E M : Type*} [NormedAddCommGroup E]
+def SmoothODE.nativeFlowTimeDiffeomorph {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (F : Flow ℝ M)
     (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) (t : ℝ) : M ≃ₘ⟮𝓘(ℝ, E), 𝓘(ℝ, E)⟯ M
     where
@@ -893,7 +893,7 @@ def Degree.SmoothODE.nativeFlowTimeDiffeomorph {E M : Type*} [NormedAddCommGroup
   contMDiff_toFun := hs t
   contMDiff_invFun := hs (-t)
 
-theorem Degree.SmoothODE.mfderiv_flow_time_field {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.mfderiv_flow_time_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (F : Flow ℝ M)
     (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (t : ℝ) (x : M) :
@@ -918,7 +918,7 @@ theorem Degree.SmoothODE.mfderiv_flow_time_field {E M : Type*} [NormedAddCommGro
   change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) (F t) x ((1 : ℝ) • V x) = (1 : ℝ) • V (F t x) at hv
   simpa only [one_smul] using hv
 
-def Degree.SmoothODE.nativeFlowTimeDiffeomorph_of_field {E M : Type*} [NormedAddCommGroup E]
+def SmoothODE.nativeFlowTimeDiffeomorph_of_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -927,7 +927,7 @@ def Degree.SmoothODE.nativeFlowTimeDiffeomorph_of_field {E M : Type*} [NormedAdd
   nativeFlowTimeDiffeomorph F
     (fun _ => (contMDiff_native_flow hV F hF).comp (contMDiff_id.prodMk contMDiff_const)) t
 
-theorem Degree.SmoothODE.mpullback_flow_time {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.mpullback_flow_time {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (F : Flow ℝ M)
     (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (t : ℝ) (x : M) :
@@ -941,7 +941,7 @@ theorem Degree.SmoothODE.mpullback_flow_time {E M : Type*} [NormedAddCommGroup E
   rw [VectorField.mpullback_apply, ← mfderiv_flow_time_field F hs hF t x]
   exact hi.inverse_apply_self (V x)
 
-theorem Degree.SmoothODE.partialChartField_flow_shift {E M : Type*} [NormedAddCommGroup E]
+theorem SmoothODE.partialChartField_flow_shift {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {B : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] (Φ : PartialDiffeomorph 𝓘(ℝ, B) 𝓘(ℝ, E) B M ∞) (F : Flow ℝ M)
     (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}

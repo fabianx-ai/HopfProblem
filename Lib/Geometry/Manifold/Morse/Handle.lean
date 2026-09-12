@@ -16,7 +16,7 @@ trace flows through the handle, and the density of regular values.
 
 * `Smale.MorseHandle.UnitDisk`, `Smale.MorseHandle.modelMap`, `Smale.MorseHandle.modelMap_injective` :
   the unit-disc model.
-* `Degree.BeltPassage.*` : belt-passage coordinates (`time`, `upper`, `lower`, `descentFlow`).
+* `BeltPassage.*` : belt-passage coordinates (`time`, `upper`, `lower`, `descentFlow`).
 * `Smale.RegularValues.dense_regularValues` : regular values are dense.
 
 ## References
@@ -561,32 +561,32 @@ theorem Smale.MorseHandle.descentFlow_positiveFace_mem_block {N P : Type*} [Norm
   apply descentFlow_beltLevelModel_mem_block hρ u hv
   constructor <;> linarith [ht.1, ht.2]
 
-def Degree.BeltPassage.time (s : ℝ) : ℝ :=
+def BeltPassage.time (s : ℝ) : ℝ :=
   Real.log (Real.sqrt (1 + s ^ 2) / s)
 
-theorem Degree.BeltPassage.time_nonneg {s : ℝ} (hs : 0 < s) : 0 ≤ time s := by
+theorem BeltPassage.time_nonneg {s : ℝ} (hs : 0 < s) : 0 ≤ time s := by
   have hroot := Real.sqrt_nonneg (1 + s ^ 2)
   have hsquare := Real.sq_sqrt (show 0 ≤ 1 + s ^ 2 by positivity)
   apply Real.log_nonneg
   apply (le_div_iff₀ hs).mpr
   nlinarith
 
-theorem Degree.BeltPassage.exp_time {s : ℝ} (hs : 0 < s) :
+theorem BeltPassage.exp_time {s : ℝ} (hs : 0 < s) :
     Real.exp (time s) = Real.sqrt (1 + s ^ 2) / s :=
   Real.exp_log (div_pos (Real.sqrt_pos.mpr (by positivity)) hs)
 
-def Degree.BeltPassage.upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def BeltPassage.upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) : N × P :=
   ((ρ * s) • u, (ρ * Real.sqrt (1 + s ^ 2)) • v)
 
-def Degree.BeltPassage.lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+def BeltPassage.lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) : N × P :=
   ((ρ * Real.sqrt (1 + s ^ 2)) • u, (ρ * s) • v)
 
-theorem Degree.BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) {s : ℝ} (hs : 0 < s) (u : N) (v : P) :
-    Smale.MorseHandle.descentFlow (time s) (Degree.BeltPassage.upper ρ s u v) =
-      Degree.BeltPassage.lower ρ s u v := by
+    Smale.MorseHandle.descentFlow (time s) (BeltPassage.upper ρ s u v) =
+      BeltPassage.lower ρ s u v := by
   have hr : Real.sqrt (1 + s ^ 2) ≠ 0 := (Real.sqrt_pos.mpr (by positivity)).ne'
   apply Prod.ext
   · change Real.exp (time s) • ((ρ * s) • u) = (ρ * Real.sqrt (1 + s ^ 2)) • u
@@ -598,11 +598,11 @@ theorem Degree.BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N]
     congr 1
     field_simp
 
-theorem Degree.BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
+theorem BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ s : ℝ} (hρ : 0 < ρ) (hs : 0 < s)
     (hs₁ : s ≤ 1) {u : N} (hu : ‖u‖ = 1) {v : P} (hv : ‖v‖ = 1) {t : ℝ}
     (ht : t ∈ Set.Icc 0 (time s)) :
-    Smale.MorseHandle.descentFlow t (Degree.BeltPassage.upper ρ s u v) ∈
+    Smale.MorseHandle.descentFlow t (BeltPassage.upper ρ s u v) ∈
       Metric.closedBall (0 : N) (2 * ρ) ×ˢ Metric.closedBall (0 : P) (2 * ρ) := by
   have hrpos : 0 < Real.sqrt (1 + s ^ 2) := Real.sqrt_pos.mpr (by positivity)
   have hr : Real.sqrt (1 + s ^ 2) ≤ 2 := Real.sqrt_le_iff.mpr ⟨by norm_num, by nlinarith⟩
@@ -627,50 +627,50 @@ theorem Degree.BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGro
       _ ≤ ρ * 2 := (mul_le_mul_of_nonneg_left hr hρ.le)
       _ = 2 * ρ := mul_comm _ _
 
-theorem Degree.BeltPassage.contDiff_lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.contDiff_lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
-    ContDiff ℝ ∞ (fun s => Degree.BeltPassage.lower ρ s u v) :=
+    ContDiff ℝ ∞ (fun s => BeltPassage.lower ρ s u v) :=
   ((contDiff_const.mul
             ((contDiff_const.add (contDiff_id.pow 2)).sqrt (fun _ => by positivity))).smul
         contDiff_const).prodMk
     ((contDiff_const.mul contDiff_id).smul contDiff_const)
 
-theorem Degree.BeltPassage.lower_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.lower_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
-    Degree.BeltPassage.lower ρ 0 u v = (ρ • u, 0) := by
-  simp only [Degree.BeltPassage.lower, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
+    BeltPassage.lower ρ 0 u v = (ρ • u, 0) := by
+  simp only [BeltPassage.lower, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
     mul_one, MulZeroClass.mul_zero, zero_smul]
 
-theorem Degree.BeltPassage.upper_neg {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.upper_neg {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) :
-    Degree.BeltPassage.upper ρ (-s) u v = Degree.BeltPassage.upper ρ s (-u) v := by
-  simp only [Degree.BeltPassage.upper, neg_sq, mul_neg, neg_smul, smul_neg]
+    BeltPassage.upper ρ (-s) u v = BeltPassage.upper ρ s (-u) v := by
+  simp only [BeltPassage.upper, neg_sq, mul_neg, neg_smul, smul_neg]
 
-theorem Degree.BeltPassage.upper_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.upper_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) {u : N} (hu : ‖u‖ = 1) {v : P}
-    (hv : ‖v‖ = 1) : Smale.MorseHandle.quadratic (Degree.BeltPassage.upper ρ s u v) = ρ ^ 2 := by
-  simp only [Smale.MorseHandle.quadratic, Degree.BeltPassage.upper, norm_smul, Real.norm_eq_abs,
+    (hv : ‖v‖ = 1) : Smale.MorseHandle.quadratic (BeltPassage.upper ρ s u v) = ρ ^ 2 := by
+  simp only [Smale.MorseHandle.quadratic, BeltPassage.upper, norm_smul, Real.norm_eq_abs,
     hu, hv, mul_one, sq_abs, mul_pow, Real.sq_sqrt (show 0 ≤ 1 + s ^ 2 by positivity)]
   ring
 
-theorem Degree.BeltPassage.contDiff_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.contDiff_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
-    ContDiff ℝ ∞ (fun s => Degree.BeltPassage.upper ρ s u v) :=
+    ContDiff ℝ ∞ (fun s => BeltPassage.upper ρ s u v) :=
   ((contDiff_const.mul contDiff_id).smul contDiff_const).prodMk
     ((contDiff_const.mul
           ((contDiff_const.add (contDiff_id.pow 2)).sqrt (fun _ => by positivity))).smul
       contDiff_const)
 
-theorem Degree.BeltPassage.upper_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.upper_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
-    Degree.BeltPassage.upper ρ 0 u v = (0, ρ • v) := by
-  simp only [Degree.BeltPassage.upper, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
+    BeltPassage.upper ρ 0 u v = (0, ρ • v) := by
+  simp only [BeltPassage.upper, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
     mul_one, MulZeroClass.mul_zero, zero_smul]
 
-theorem Degree.BeltPassage.upper_mem_block {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+theorem BeltPassage.upper_mem_block {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ s : ℝ} (hρ : 0 < ρ) (hs : |s| ≤ 1) {u : N}
     (hu : ‖u‖ = 1) {v : P} (hv : ‖v‖ = 1) :
-    Degree.BeltPassage.upper ρ s u v ∈
+    BeltPassage.upper ρ s u v ∈
       Metric.closedBall (0 : N) (2 * ρ) ×ˢ Metric.closedBall (0 : P) (2 * ρ) := by
   have hrpos : 0 < Real.sqrt (1 + s ^ 2) := Real.sqrt_pos.mpr (by positivity)
   have hr : Real.sqrt (1 + s ^ 2) ≤ 2 :=

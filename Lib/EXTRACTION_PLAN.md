@@ -120,8 +120,8 @@ each model takes its next independent lane.
    `Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits`,
    `Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`; D2
    `Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood`,
-   `Degree.MorseCells.built_of_compact_smooth_manifold`; E1
-   `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
+   `MorseCells.built_of_compact_smooth_manifold`; E1
+   `MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
    `MorseCancel.cancel_of_transverse_level_isotopy`,
    `MorseCancel.exists_excellent_indexed_morse_birth`; E2
    `Smale.NativeTransversality.exists_ambient_transverse_diffeomorph`,
@@ -137,7 +137,7 @@ each model takes its next independent lane.
    `PeriodTorusHigherHomology.productTorusHomologyEquiv`.
 4. The Comparator verdict is unchanged: `lake exe comparator comparator/config.json`. No lane
    changes the statement of any `Hopf/` declaration; lanes C and G change only the *proofs*
-   of `Degree.threefoldHomotopyEquiv` and `Smale.homeomorphic_sixSphere_of_homotopySixSphere`.
+   of `threefoldHomotopyEquiv` and `Smale.homeomorphic_sixSphere_of_homotopySixSphere`.
 5. Definition of done per lane: `Lib/README.md`.
 
 ## 4. Decisions (defaults; each is DEFAULT, flippable by the repository owner)

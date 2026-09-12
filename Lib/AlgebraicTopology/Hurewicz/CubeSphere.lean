@@ -119,38 +119,38 @@ def SixSphereCube.cubeInteriorEuclideanHomeomorph (n : ℕ) :
     ((Homeomorph.piCongrRight fun _ : Fin n => openUnitIntervalHomeomorph).trans
       (PiLp.homeomorph 2 (fun _ : Fin n => ℝ)).symm)
 
-abbrev Degree.SphereCube.Sphere (n : ℕ) :=
+abbrev SphereCube.Sphere (n : ℕ) :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
 
-def Degree.SphereCube.compactification (n : ℕ) :
+def SphereCube.compactification (n : ℕ) :
     OnePoint (SixSphereCube.CubeInteriorN n) ≃ₜ Sphere n :=
   (SixSphereCube.cubeInteriorEuclideanHomeomorph n).onePointCongr.trans
     (onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin n)) (ι := Fin (n + 1)) (by simp))
 
-def Degree.SphereCube.point (n : ℕ) : Sphere n :=
+def SphereCube.point (n : ℕ) : Sphere n :=
   compactification n (OnePoint.infty)
 
-def Degree.SphereCube.quotient (n : ℕ) : C(Fin n → (unitInterval), Sphere n) :=
+def SphereCube.quotient (n : ℕ) : C(Fin n → (unitInterval), Sphere n) :=
   (compactification n : C(OnePoint (SixSphereCube.CubeInteriorN n), Sphere n)).comp
     (OnePointCollapse.collapseMap (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n))
 
-theorem Degree.SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterval))
+theorem SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterval))
     (hz : z ∈ Cube.boundary (Fin n)) : quotient n z = point n := by
   change
     compactification n (OnePointCollapse.collapse (Cube.boundary (Fin n)) z) =
       compactification n (OnePoint.infty)
   rw [OnePointCollapse.collapse_of_mem _ hz]
 
-theorem Degree.SphereCube.zero_boundary {n : ℕ} (hn : 0 < n) :
+theorem SphereCube.zero_boundary {n : ℕ} (hn : 0 < n) :
     (0 : Fin n → (unitInterval)) ∈ Cube.boundary (Fin n) :=
   ⟨⟨0, hn⟩, Or.inl rfl⟩
 
-theorem Degree.SphereCube.quotient_surjective {n : ℕ} (hn : 0 < n) :
+theorem SphereCube.quotient_surjective {n : ℕ} (hn : 0 < n) :
     Function.Surjective (quotient n) :=
   (compactification n).surjective.comp
     (OnePointCollapse.collapse_surjective (Cube.boundary (Fin n)) ⟨0, zero_boundary hn⟩)
 
-theorem Degree.SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterval)) :
+theorem SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterval)) :
     quotient n z = quotient n w ↔ z = w ∨ z ∈ Cube.boundary (Fin n) ∧ w ∈ Cube.boundary (Fin n) :=
   by
   change
@@ -159,25 +159,25 @@ theorem Degree.SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterv
       _
   rw [(compactification n).injective.eq_iff, OnePointCollapse.collapse_eq_iff]
 
-def Degree.SphereCube.cylinder (n : ℕ) :
+def SphereCube.cylinder (n : ℕ) :
     C((unitInterval) × (Fin n → (unitInterval)), (unitInterval) × Sphere n) :=
   (ContinuousMap.id (unitInterval)).prodMap (quotient n)
 
-theorem Degree.SphereCube.cylinder_surjective {n : ℕ} (hn : 0 < n) :
+theorem SphereCube.cylinder_surjective {n : ℕ} (hn : 0 < n) :
     Function.Surjective (cylinder n) := by
   rintro ⟨t, z⟩
   obtain ⟨w, rfl⟩ := quotient_surjective hn z
   exact ⟨(t, w), rfl⟩
 
-theorem Degree.SphereCube.cylinder_isQuotientMap {n : ℕ} (hn : 0 < n) :
+theorem SphereCube.cylinder_isQuotientMap {n : ℕ} (hn : 0 < n) :
     Topology.IsQuotientMap (cylinder n) :=
   .of_surjective_continuous (cylinder_surjective hn) (cylinder n).continuous
 
-def Degree.SphereCube.basedCube {n : ℕ} {X : Type*} [TopologicalSpace X] (u : C(Sphere n, X)) :
+def SphereCube.basedCube {n : ℕ} {X : Type*} [TopologicalSpace X] (u : C(Sphere n, X)) :
     GenLoop (Fin n) X (u (point n)) :=
   ⟨u.comp (quotient n), fun z hz => congrArg u (quotient_boundary n z hz)⟩
 
-theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type*}
+theorem SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type*}
     [TopologicalSpace X] (hn : 0 < n) (u : C(Sphere n, X)) [Subsingleton (π_ n X (u (point n)))] :
     u.HomotopicRel (ContinuousMap.const (Sphere n) (u (point n))) {point n} := by
   let H := HigherHurewicz.nativeCubeNullHomotopy (basedCube u)
@@ -214,16 +214,16 @@ theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type
     exact H.eq_fst t (zero_boundary hn)
 
 /-- The quotient map from the cube to the sphere, as a based loop. -/
-def Degree.SphereCube.quotientLoop (n : ℕ) : GenLoop (Fin n) (Sphere n) (point n) :=
+def SphereCube.quotientLoop (n : ℕ) : GenLoop (Fin n) (Sphere n) (point n) :=
   ⟨quotient n, quotient_boundary n⟩
 
 @[simp]
-theorem Degree.SphereCube.quotientLoop_val (n : ℕ) : (quotientLoop n).val = quotient n :=
+theorem SphereCube.quotientLoop_val (n : ℕ) : (quotientLoop n).val = quotient n :=
   rfl
 
 /-- The factor map of a based loop through the sphere quotient: the loop pushed to the sphere
 is the identity on the cube class. -/
-def Degree.SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X] {x : X}
+def SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin n) X x) : C(Sphere n, X) :=
   (OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n)
         ⟨0, zero_boundary hn⟩ p.val x (fun u hu => p.property u hu)).comp
@@ -231,7 +231,7 @@ def Degree.SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalS
 
 /-- The factor map on the quotient image of a cube point is the loop's value. -/
 @[simp]
-theorem Degree.SphereCube.factorMap_quotient {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
+theorem SphereCube.factorMap_quotient {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) (u : Fin n → (unitInterval)) :
     factorMap hn p (quotient n u) = p u := by
   change
@@ -246,14 +246,14 @@ theorem Degree.SphereCube.factorMap_quotient {n : ℕ} (hn : 0 < n) {X : Type*} 
 
 /-- The factor map composed with the quotient is the loop. -/
 @[simp]
-theorem Degree.SphereCube.factorMap_comp_quotient {n : ℕ} (hn : 0 < n) {X : Type*}
+theorem SphereCube.factorMap_comp_quotient {n : ℕ} (hn : 0 < n) {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x) :
     (factorMap hn p).comp (quotient n) = p.val := by
   ext u
   exact factorMap_quotient hn p u
 
 /-- The factor map is the unique continuous map factoring the loop through the quotient. -/
-theorem Degree.SphereCube.factorMap_unique {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
+theorem SphereCube.factorMap_unique {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) (f : C(Sphere n, X))
     (hf : f.comp (quotient n) = p.val) : f = factorMap hn p := by
   ext z
@@ -262,7 +262,7 @@ theorem Degree.SphereCube.factorMap_unique {n : ℕ} (hn : 0 < n) {X : Type*} [T
 
 /-- The factor map on the cube chain: pushing the sphere's cube chain along the factor map
 recovers the loop's cube chain. -/
-theorem Degree.SphereCube.factor_cubeChain {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
+theorem SphereCube.factor_cubeChain {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) :
     SingularChains.inducedChain (factorMap hn p) n
         (HigherHurewicz.cubeChain (quotientLoop n)) =
@@ -272,7 +272,7 @@ theorem Degree.SphereCube.factor_cubeChain {n : ℕ} (hn : 0 < n) {X : Type} [To
     factorMap_comp_quotient]
 
 /-- The factor map on the cube cycle: the sphere's cube cycle maps to the loop's cube cycle. -/
-theorem Degree.SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
+theorem SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x)
     (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)
@@ -288,7 +288,7 @@ theorem Degree.SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [To
 
 /-- The factor map on the cube homology class: the sphere's cube class maps to the loop's
 cube class. -/
-theorem Degree.SphereCube.factor_cubeHomologyClass {n : ℕ} (hn : 0 < n) {X : Type}
+theorem SphereCube.factor_cubeHomologyClass {n : ℕ} (hn : 0 < n) {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x)
     (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)

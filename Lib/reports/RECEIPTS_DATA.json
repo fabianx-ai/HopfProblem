@@ -361,7 +361,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15093,
    "end": 15249,
@@ -371,7 +371,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15602,
    "end": 15638,
@@ -381,7 +381,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15690,
    "end": 15758,
@@ -391,7 +391,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15792,
    "end": 15842,
@@ -401,7 +401,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15847,
    "end": 15896,
@@ -411,7 +411,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15901,
    "end": 15933,
@@ -421,7 +421,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 15956,
    "end": 16001,
@@ -431,7 +431,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 20493,
    "end": 20581,
@@ -441,7 +441,7 @@
    "lane": "?"
   },
   {
-   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "target": "Lib/AlgebraicTopology/Hurewicz/lean",
    "source": "Hopf/Hurewicz.lean",
    "start": 23324,
    "end": 23443,
@@ -2474,39 +2474,39 @@
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.quotientLoop"
+   "SphereCube.quotientLoop"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.quotientLoop_val"
+   "SphereCube.quotientLoop_val"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factorMap"
+   "SphereCube.factorMap"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factorMap_quotient"
+   "SphereCube.factorMap_quotient"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factorMap_comp_quotient"
+   "SphereCube.factorMap_comp_quotient"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factorMap_unique"
+   "SphereCube.factorMap_unique"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factor_cubeChain"
+   "SphereCube.factor_cubeChain"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factor_cubeCycle"
+   "SphereCube.factor_cubeCycle"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
-   "Degree.SphereCube.factor_cubeHomologyClass"
+   "SphereCube.factor_cubeHomologyClass"
   ],
   [
    "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",

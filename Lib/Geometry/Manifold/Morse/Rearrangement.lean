@@ -26,16 +26,16 @@ Rearrangement Theorem of the source text).
 
 1. `MorseCancellation.linearTransverseChart` and the F-lane band tail: the
    transverse-chart control used by the belt-cancellation step.
-2. `Degree.RegularHeightCoordinates` and `Degree.MorseRearrangement`: the
+2. `RegularHeightCoordinates` and `MorseRearrangement`: the
    rearrangement theorem - critical points can be reordered by an isotopy
    supported away from the attaching spheres.
-3. `AdaptedWindows` flow lemmas, `Degree.SmoothODE` time germs and
-   `Degree.FlowCancellation` smooth signed level time.
+3. `AdaptedWindows` flow lemmas, `SmoothODE` time germs and
+   `FlowCancellation` smooth signed level time.
 4. `Smale.NativeTransversality.Patch` and the rearrangement stragglers.
 
 ## Main definitions and results
 
-* `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection` -
+* `MorseRearrangement.exists_morse_rearrangement_of_no_connection` -
   the Rearrangement Theorem.
 
 ## References
@@ -84,9 +84,9 @@ theorem MorseCancellation.linearTransverseChart_axis_source {V E M : Type*} [Nor
 
 theorem MorseCancellation.transverseBlock_comp_linear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (C : V ≃L[ℝ] V) (L : (ℝ × V) →L[ℝ] (ℝ × V)) :
-    Degree.AxisCoordinates.transverseBlock
+    AxisCoordinates.transverseBlock
         (L.comp ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C).toContinuousLinearMap) =
-      (Degree.AxisCoordinates.transverseBlock L).comp C.toContinuousLinearMap := by
+      (AxisCoordinates.transverseBlock L).comp C.toContinuousLinearMap := by
   ext z
   rfl
 
@@ -94,9 +94,9 @@ theorem MorseCancellation.det_transition_linearTransverseChart {V E M : Type*} [
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (C : V ≃L[ℝ] V) (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
     {t : ℝ} (ht : (t, (0 : V)) ∈ (Φ.trans Ψ.symm).source) :
-    (Degree.AxisCoordinates.transverseBlock
+    (AxisCoordinates.transverseBlock
           (fderiv ℝ (Ψ.symm ∘ linearTransverseChart C Φ) (t, 0))).toLinearMap.det =
-      (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (t, 0))).toLinearMap.det *
+      (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (t, 0))).toLinearMap.det *
         C.toLinearMap.det := by
   let P := (ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C
   have hP (s : ℝ) : P (s, (0 : V)) = (s, 0) := by
@@ -130,25 +130,25 @@ theorem MorseCancellation.exists_compatible_sheet_endpoint_orientation {A B E M 
     (haxis₁ : (fun s : ℝ => Φ₁ (s, 0)) =ᶠ[𝓝 q] (fun s => Ψ (s, 0))) :
     ∃ R : B ≃L[ℝ] B,
       0 <
-        (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det *
-          (Degree.AxisCoordinates.transverseBlock
+        (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det *
+          (AxisCoordinates.transverseBlock
               (fderiv ℝ
                 (Ψ.symm ∘ linearTransverseChart ((ContinuousLinearEquiv.refl ℝ A).prodCongr R) Φ₁)
                 (q, 0))).toLinearMap.det := by
   classical
   let := Fintype.ofFinite ι
   obtain ⟨U₀, -, hp, -, -, -, -, hi₀, -⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_transition_data Φ₀ Ψ hΦ₀ hΨ₀ haxis₀
+    AxisCoordinates.exists_native_axis_transition_data Φ₀ Ψ hΦ₀ hΨ₀ haxis₀
   obtain ⟨U₁, -, hq, hs₁, -, -, -, hi₁, -⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_transition_data Φ₁ Ψ hΦ₁ hΨ₁ haxis₁
+    AxisCoordinates.exists_native_axis_transition_data Φ₁ Ψ hΦ₁ hΨ₁ haxis₁
   let d₀ :=
-    (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det
+    (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det
   let d₁ :=
-    (Degree.AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₁) (q, 0))).toLinearMap.det
+    (AxisCoordinates.transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₁) (q, 0))).toLinearMap.det
   have h₀ : d₀ ≠ 0 := det_ne_zero_of_isInvertible _ (hi₀ p hp)
   have h₁ : d₁ ≠ 0 := det_ne_zero_of_isInvertible _ (hi₁ q hq)
   obtain ⟨R, hR⟩ :=
-    Degree.SupportedGerms.exists_linearEquiv_with_det basis i (inv_ne_zero (mul_ne_zero h₀ h₁))
+    SupportedGerms.exists_linearEquiv_with_det basis i (inv_ne_zero (mul_ne_zero h₀ h₁))
   refine ⟨R, ?_⟩
   rw [det_transition_linearTransverseChart _ Φ₁ Ψ (hs₁ q hq)]
   have hdet : ((ContinuousLinearEquiv.refl ℝ A).prodCongr R).toLinearMap.det = (d₀ * d₁)⁻¹ := by
@@ -254,7 +254,7 @@ theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGrou
         simp only [Module.finrank_prod, finrank_euclideanSpace_fin]
         norm_num)
   obtain ⟨ε, hε, Φ, hprod, htarget, haxis, hgl, hgr⟩ :=
-    Degree.AxisCoordinates.exists_native_axis_chart_with_endpoint_germs
+    AxisCoordinates.exists_native_axis_chart_with_endpoint_germs
       (Module.finBasis ℝ ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) Ψ Φ₀ Φ₂
       zero_lt_one CompactIccSpace.isCompact_Icc hzero hΨ₀ hΨ₁ hΦ₀ hΦ₂ haxis₀ haxis₂ hsign
   exact
@@ -355,16 +355,16 @@ theorem MorseCancellation.exists_tube_support_box {V E H M : Type*} [NormedAddCo
       Φ.open_source hwideAxis
   exact ⟨-a, 1 + b, r, by linarith, by linarith, hr, hprod⟩
 
-def Degree.RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
+def RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
   (F p, p.2)
 
-theorem Degree.RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (s : ℝ) (z : V) : L (s, z) = s * L (1, 0) + L (0, z) := by
   have he : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
   rw [he, map_add, map_smul]
   rfl
 
-theorem Degree.RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     Function.Bijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)) := by
   constructor
@@ -383,23 +383,23 @@ theorem Degree.RegularHeightCoordinates.triangular_bijective {V : Type*} [Normed
       ring
     · rfl
 
-def Degree.RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
+def RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     (ℝ × V) ≃L[ℝ] (ℝ × V) :=
   (LinearEquiv.ofBijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)).toLinearMap
       (triangular_bijective L hL)).toContinuousLinearEquiv
 
-theorem Degree.RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ (heightMap F) :=
   hF.prodMk contDiff_snd
 
-theorem Degree.RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (p : ℝ × V) :
     fderiv ℝ (heightMap F) p = (fderiv ℝ F p).prod (ContinuousLinearMap.snd ℝ ℝ V) :=
   (((hF.differentiable (by simp) p).hasFDerivAt).prodMk
       (ContinuousLinearMap.snd ℝ ℝ V).hasFDerivAt).fderiv
 
-theorem Degree.RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
+theorem RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {F : ℝ × V → ℝ}
     (hF : ContDiff ℝ ∞ F) {p : ℝ × V} (hreg : fderiv ℝ F p (1, 0) ≠ 0) :
     IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ (heightMap F) p := by
@@ -408,25 +408,25 @@ theorem Degree.RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
     rw [fderiv_heightMap hF]
     rfl
   obtain ⟨Φ, hp, _, hΦ⟩ :=
-    NoExotic.exists_partialDiffeomorph_of_contDiffOn isOpen_univ (Set.mem_univ p)
+    exists_partialDiffeomorph_of_contDiffOn isOpen_univ (Set.mem_univ p)
       (contDiff_heightMap hF).contDiffOn hinv
   exact ⟨Φ, hp, fun _ _ => congrFun hΦ.symm _⟩
 
-def Degree.RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
+def RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
   p.1 + u p
 
-theorem Degree.RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
+theorem RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u) :
     ContDiff ℝ ∞ (displacedHeight u) :=
   contDiff_fst.add hu
 
-theorem Degree.RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
+theorem RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (s : ℝ) (z : V) :
     HasDerivAt (fun t : ℝ => F (t, z)) (fderiv ℝ F (s, z) (1, 0)) s :=
   ((hF.differentiable (by simp) (s, z)).hasFDerivAt).comp_hasDerivAt s
     ((hasDerivAt_id s).prodMk (hasDerivAt_const s z))
 
-theorem Degree.RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
+theorem RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F)
     (hpos : ∀ p, 0 < fderiv ℝ F p (1, 0)) : Function.Injective (heightMap F) := by
   have hmono (z : V) : StrictMono (fun s : ℝ => F (s, z)) :=
@@ -437,7 +437,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_injective_of_positive {V : Typ
   have hst : s = t := (hmono z).injective (congrArg Prod.fst he)
   exact Prod.ext hst rfl
 
-theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
+theorem RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
     [NormedAddCommGroup V] {u : ℝ × V → ℝ} (hu : Continuous u) (C : ℝ) (hC : 0 ≤ C)
     (hbound : ∀ p, |u p| ≤ C) : Function.Surjective (heightMap (displacedHeight u)) := by
   rintro ⟨r, z⟩
@@ -457,7 +457,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Typ
   obtain ⟨s, _, he⟩ := intermediate_value_Icc hab hs.continuousOn ⟨hlo, hhi⟩
   exact ⟨(s, z), Prod.ext he rfl⟩
 
-theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
+theorem RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) : Function.Surjective (heightMap (displacedHeight u)) := by
   obtain ⟨C, hC⟩ := (hc.isCompact_range hu.continuous).isBounded.exists_norm_le
@@ -466,7 +466,7 @@ theorem Degree.RegularHeightCoordinates.heightMap_surjective_of_compactSupport {
     heightMap_surjective_of_bounded hu.continuous C hC0
       (fun p => by simpa only [Real.norm_eq_abs] using hC _ ⟨p, rfl⟩)
 
-def Degree.RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
+def RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) (hpos : ∀ p, 0 < fderiv ℝ (displacedHeight u) p (1, 0)) :
     (ℝ × V) ≃ₘ⟮𝓘(ℝ, ℝ × V), 𝓘(ℝ, ℝ × V)⟯ (ℝ × V) := by
@@ -477,23 +477,23 @@ def Degree.RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedA
     hloc.diffeomorphOfBijective
       ⟨heightMap_injective_of_positive hs hpos, heightMap_surjective_of_compactSupport hu hc⟩
 
-def Degree.MorseRearrangement.IntervalTranslation (a b x y : ℝ) : Prop :=
+def MorseRearrangement.IntervalTranslation (a b x y : ℝ) : Prop :=
   ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
     (∀ z, z ∉ Set.Ioo a b → D z = z) ∧ D =ᶠ[𝓝 x] fun z => z + (y - x)
 
-theorem Degree.MorseRearrangement.translation_germ_apply (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞)
+theorem MorseRearrangement.translation_germ_apply (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞)
     {x y : ℝ} (hD : D =ᶠ[𝓝 x] fun z => z + (y - x)) : D x = y := by
   have h := hD.self_of_nhds
   linarith
 
-theorem Degree.MorseRearrangement.intervalTranslation_refl (a b x : ℝ) :
+theorem MorseRearrangement.intervalTranslation_refl (a b x : ℝ) :
     IntervalTranslation a b x x := by
   refine ⟨Diffeomorph.refl 𝓘(ℝ, ℝ) ℝ ∞, fun _ _ => rfl, Filter.Eventually.of_forall ?_⟩
   intro z
   change z = z + (x - x)
   ring
 
-theorem Degree.MorseRearrangement.intervalTranslation_symm {a b x y : ℝ}
+theorem MorseRearrangement.intervalTranslation_symm {a b x y : ℝ}
     (h : IntervalTranslation a b x y) : IntervalTranslation a b y x := by
   obtain ⟨D, hfix, hgerm⟩ := h
   have hxy := translation_germ_apply D hgerm
@@ -508,7 +508,7 @@ theorem Degree.MorseRearrangement.intervalTranslation_symm {a b x y : ℝ}
     rw [D.apply_symm_apply] at hz
     linarith
 
-theorem Degree.MorseRearrangement.intervalTranslation_trans {a b x y z : ℝ}
+theorem MorseRearrangement.intervalTranslation_trans {a b x y z : ℝ}
     (hxy : IntervalTranslation a b x y) (hyz : IntervalTranslation a b y z) :
     IntervalTranslation a b x z := by
   obtain ⟨D, hDfix, hD⟩ := hxy
@@ -525,7 +525,7 @@ theorem Degree.MorseRearrangement.intervalTranslation_trans {a b x y z : ℝ}
     rw [hwG, hwD]
     ring
 
-theorem Degree.MorseRearrangement.exists_local_interval_translation {a b x : ℝ}
+theorem MorseRearrangement.exists_local_interval_translation {a b x : ℝ}
     (hx : x ∈ Set.Ioo a b) : ∃ ε, 0 < ε ∧ ∀ y, Dist.dist y x < ε → IntervalTranslation a b x y := by
   obtain ⟨r, hr, hsub⟩ := Metric.mem_nhds_iff.mp (isOpen_Ioo.mem_nhds hx)
   let β : ContDiffBump x := ⟨r / 4, r / 2, by positivity, by linarith⟩
@@ -550,7 +550,7 @@ theorem Degree.MorseRearrangement.exists_local_interval_translation {a b x : ℝ
   filter_upwards [Metric.ball_mem_nhds x β.rIn_pos] with z hz
   rw [hD, β.one_of_mem_closedBall (Metric.ball_subset_closedBall hz), one_smul]
 
-theorem Degree.MorseRearrangement.exists_supported_interval_translation {a b x y : ℝ}
+theorem MorseRearrangement.exists_supported_interval_translation {a b x y : ℝ}
     (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) : IntervalTranslation a b x y := by
   let U := Set.Ioo a b
   let P : U → Prop := fun z => IntervalTranslation a b x z
@@ -570,7 +570,7 @@ theorem Degree.MorseRearrangement.exists_supported_interval_translation {a b x y
   have hfinish : P ⟨y, hy⟩ := heq ▸ hstart
   exact hfinish
 
-theorem Degree.MorseRearrangement.strictMono_of_fixed_exterior
+theorem MorseRearrangement.strictMono_of_fixed_exterior
     (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) {a b : ℝ} (hfix : ∀ z, z ∉ Set.Ioo a b → D z = z) :
     StrictMono D := by
   rcases D.continuous.strictMono_of_inj D.injective with hm | ha
@@ -579,7 +579,7 @@ theorem Degree.MorseRearrangement.strictMono_of_fixed_exterior
     rw [hfix b (fun h => (lt_irrefl b) h.2), hfix (b + 1) (fun h => by linarith [h.2])] at hanti
     linarith
 
-theorem Degree.MorseRearrangement.deriv_pos_of_strictMono_diffeomorph
+theorem MorseRearrangement.deriv_pos_of_strictMono_diffeomorph
     (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) (hm : StrictMono D) (x : ℝ) : 0 < deriv D x := by
   have hd := (D.mdifferentiable (by simp) x).differentiableAt.hasDerivAt
   have hi := (D.symm.mdifferentiable (by simp) (D x)).differentiableAt.hasDerivAt
@@ -593,7 +593,7 @@ theorem Degree.MorseRearrangement.deriv_pos_of_strictMono_diffeomorph
     norm_num at hh
   exact lt_of_le_of_ne hm.monotone.deriv_nonneg (Ne.symm hn)
 
-theorem Degree.MorseRearrangement.exists_increasing_interval_translation {a b x y : ℝ}
+theorem MorseRearrangement.exists_increasing_interval_translation {a b x y : ℝ}
     (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) :
     ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
       (∀ z, z ∉ Set.Ioo a b → D z = z) ∧
@@ -603,7 +603,7 @@ theorem Degree.MorseRearrangement.exists_increasing_interval_translation {a b x 
   exact
     ⟨D, hfix, hgerm, translation_germ_apply D hgerm, hm, deriv_pos_of_strictMono_diffeomorph D hm⟩
 
-theorem Degree.MorseRearrangement.exists_increasing_interval_translation_with_exterior_germs
+theorem MorseRearrangement.exists_increasing_interval_translation_with_exterior_germs
     {a b x y : ℝ} (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) :
     ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
       (∀ z, z ∉ Set.Ioo a b → D z = z) ∧
@@ -622,21 +622,21 @@ theorem Degree.MorseRearrangement.exists_increasing_interval_translation_with_ex
     exact hfix w (fun h => hw ⟨h.1.le, h.2.le⟩)
   exact ⟨D, fun z hz => (hout z hz).self_of_nhds, hgerm, hpoint, hmono, hderiv, hout⟩
 
-def Degree.MorseRearrangement.blendHeight (θ : ℝ) (P Q : ℝ → ℝ) (s : ℝ) : ℝ :=
+def MorseRearrangement.blendHeight (θ : ℝ) (P Q : ℝ → ℝ) (s : ℝ) : ℝ :=
   θ * P s + (1 - θ) * Q s
 
-theorem Degree.MorseRearrangement.blendHeight_zero (P Q : ℝ → ℝ) (s : ℝ) :
+theorem MorseRearrangement.blendHeight_zero (P Q : ℝ → ℝ) (s : ℝ) :
     blendHeight 0 P Q s = Q s := by simp [blendHeight]
 
-theorem Degree.MorseRearrangement.blendHeight_one (P Q : ℝ → ℝ) (s : ℝ) :
+theorem MorseRearrangement.blendHeight_one (P Q : ℝ → ℝ) (s : ℝ) :
     blendHeight 1 P Q s = P s := by simp [blendHeight]
 
-theorem Degree.MorseRearrangement.blendHeight_fixed {P Q : ℝ → ℝ} {s : ℝ} (hP : P s = s)
+theorem MorseRearrangement.blendHeight_fixed {P Q : ℝ → ℝ} {s : ℝ} (hP : P s = s)
     (hQ : Q s = s) (θ : ℝ) : blendHeight θ P Q s = s := by
   rw [blendHeight, hP, hQ]
   ring
 
-theorem Degree.MorseRearrangement.positive_blended_slope {θ a b : ℝ} (hθ : θ ∈ Set.Icc 0 1)
+theorem MorseRearrangement.positive_blended_slope {θ a b : ℝ} (hθ : θ ∈ Set.Icc 0 1)
     (ha : 0 < a) (hb : 0 < b) : 0 < θ * a + (1 - θ) * b := by
   by_cases hzero : θ = 0
   · simpa only [hzero, MulZeroClass.zero_mul, sub_zero, one_mul, zero_add] using hb
@@ -644,7 +644,7 @@ theorem Degree.MorseRearrangement.positive_blended_slope {θ a b : ℝ} (hθ : �
       add_pos_of_pos_of_nonneg (mul_pos (lt_of_le_of_ne hθ.1 (Ne.symm hzero)) ha)
         (mul_nonneg (sub_nonneg.mpr hθ.2) hb.le)
 
-theorem Degree.MorseRearrangement.hasDerivAt_blended_height {f θ P Q : ℝ → ℝ} {t f' p' q' : ℝ}
+theorem MorseRearrangement.hasDerivAt_blended_height {f θ P Q : ℝ → ℝ} {t f' p' q' : ℝ}
     (hf : HasDerivAt f f' t) (hθ : HasDerivAt θ 0 t) (hP : HasDerivAt P p' (f t))
     (hQ : HasDerivAt Q q' (f t)) :
     HasDerivAt (fun s => blendHeight (θ s) P Q (f s)) ((θ t * p' + (1 - θ t) * q') * f') t := by
@@ -710,19 +710,19 @@ theorem MorseCancellation.longitudinalBlend_derivative_positive {V : Type*} [Nor
     (hηrange : ∀ t, η t ∈ Set.Icc (0 : ℝ) 1) (t : ℝ) (p : ℝ × V) :
     0 <
       fderiv ℝ
-        (Degree.RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
+        (RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
         p (1, 0) := by
   have hu := longitudinalBlendDisplacement_smooth η hD hβ t
   have hscalar :=
-    Degree.RegularHeightCoordinates.scalar_derivative
-      (Degree.RegularHeightCoordinates.contDiff_displacedHeight hu) p.1 p.2
+    RegularHeightCoordinates.scalar_derivative
+      (RegularHeightCoordinates.contDiff_displacedHeight hu) p.1 p.2
   have hd :=
     (hasDerivAt_id p.1).add
       (((hD.differentiable (by simp) p.1).hasDerivAt.sub (hasDerivAt_id p.1)).const_mul
         (η t * β p.2))
   have hrate :
     fderiv ℝ
-        (Degree.RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
+        (RegularHeightCoordinates.displacedHeight (longitudinalBlendDisplacement D β η t))
         p (1, 0) =
       1 + (η t * β p.2) * (deriv D p.1 - 1) :=
     hscalar.deriv.symm.trans hd.deriv
@@ -730,7 +730,7 @@ theorem MorseCancellation.longitudinalBlend_derivative_positive {V : Type*} [Nor
   have hweight : η t * β p.2 ∈ Set.Icc (0 : ℝ) 1 :=
     ⟨mul_nonneg (hηrange t).1 (hβrange p.2).1,
       mul_le_one₀ (hηrange t).2 (hβrange p.2).1 (hβrange p.2).2⟩
-  have hpos := Degree.MorseRearrangement.positive_blended_slope hweight (hDpos p.1) zero_lt_one
+  have hpos := MorseRearrangement.positive_blended_slope hweight (hDpos p.1) zero_lt_one
   nlinarith
 
 theorem MorseCancellation.longitudinalBlend_slices {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
@@ -745,7 +745,7 @@ theorem MorseCancellation.longitudinalBlend_slices {V : Type*} [NormedAddCommGro
     HasCompactSupport.intro (CompactIccSpace.isCompact_Icc.prod hc.isCompact)
       (longitudinalBlendDisplacement_zero_outside η hfix t)
   exact
-    ⟨Degree.RegularHeightCoordinates.longitudinalDiffeomorph hu hcompact
+    ⟨RegularHeightCoordinates.longitudinalDiffeomorph hu hcompact
         (longitudinalBlend_derivative_positive hD hβ hDpos hβrange hηrange t),
       fun _ => rfl⟩
 
@@ -858,7 +858,7 @@ theorem MorseCancellation.nonempty_longitudinalTubeMotion {V E H M : Type*} [Nor
   have h0I : (0 : ℝ) ∈ Set.Ioo l u := ⟨hl, zero_lt_one.trans hu⟩
   have hcI : c ∈ Set.Ioo l u := ⟨hl.trans hcpos, hcu⟩
   obtain ⟨D, hDfix, hDgerm, hD0, -, hDpos⟩ :=
-    Degree.MorseRearrangement.exists_increasing_interval_translation h0I hcI
+    MorseRearrangement.exists_increasing_interval_translation h0I hcI
   let β : ContDiffBump (0 : V) :=
     { rIn := r / 2
       rOut := r
@@ -1183,7 +1183,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.whole_sheet_transverse {U V E H
   have hmodel : Smale.NativeTransversality.At (𝓘(ℝ, ℝ).prod I) I' 𝓘(ℝ, W) T B (A.time, x) y :=
     MorseCancellation.native_coordinate_plane_trace_transverse hα hβ hαs hβs hη A.time_rate.ne'
   have hnative :=
-    (Degree.TransverseGerms.native_transversality_partial_diffeomorph_iff Φ hT hB
+    (TransverseGerms.native_transversality_partial_diffeomorph_iff Φ hT hB
           (hB0.trans hT0.symm) (hT0 ▸ h1)).mp
       hmodel
   have hq :
@@ -1387,7 +1387,7 @@ theorem AdaptedWindows.exists_forward_basin_smooth_images {E M : Type*} [NormedA
   refine ⟨r / 2, half_pos hr, ?_, ?_⟩
   · intro n
     exact
-      (Degree.SmoothODE.nativeFlowTimeDiffeomorph_of_field S.smooth S.flow S.integral
+      (SmoothODE.nativeFlowTimeDiffeomorph_of_field S.smooth S.flow S.integral
             (-(n : ℝ))).contMDiff.comp_contMDiffOn
         hlocal
   · ext x
@@ -1459,7 +1459,7 @@ theorem AdaptedWindows.exists_backward_basin_smooth_images {E M : Type*} [Normed
   refine ⟨r / 2, half_pos hr, ?_, ?_⟩
   · intro n
     exact
-      (Degree.SmoothODE.nativeFlowTimeDiffeomorph_of_field S.smooth S.flow S.integral
+      (SmoothODE.nativeFlowTimeDiffeomorph_of_field S.smooth S.flow S.integral
             (n : ℝ)).contMDiff.comp_contMDiffOn
         hlocal
   · ext x
@@ -1540,7 +1540,7 @@ theorem MorseCancellation.exists_global_smooth_image_of_ball {V : Type*} [Normed
     exact (hf.contMDiffAt (Metric.isOpen_ball.mem_nhds hx)).comp x hψ.contMDiff.contMDiffAt
   · rw [Set.range_comp, hrange]
 
-theorem Degree.FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*}
+theorem FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V W : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -1557,11 +1557,11 @@ theorem Degree.FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*
       rw [hagrees s hs.1.le] at hd
       exact hd.hasMFDerivWithinAt
     have hh :=
-      Degree.FlowSuspension.native_flow_segment_endpoints hV F hF ht
+      FlowSuspension.native_flow_segment_endpoints hV F hF ht
         (hG x).continuous.continuousOn hc
     simpa only [sub_zero, G.map_zero_apply] using hh.symm
 
-theorem Degree.FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*}
+theorem FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V W : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -1576,7 +1576,7 @@ theorem Degree.FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*
       rw [hagrees s hs.2.le] at hd
       exact hd.hasMFDerivWithinAt
     have hh :=
-      Degree.FlowSuspension.native_flow_segment_endpoints hV F hF ht
+      FlowSuspension.native_flow_segment_endpoints hV F hF ht
         (hG x).continuous.continuousOn hc
     have he := congrArg (F t) hh
     simpa only [zero_sub, ← F.map_add, add_neg_cancel, F.map_zero_apply, G.map_zero_apply] using
@@ -1584,7 +1584,7 @@ theorem Degree.FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*
   · subst t
     rw [G.map_zero_apply, F.map_zero_apply]
 
-theorem Degree.FlowCancellation.exists_level_crossing_of_endpoint_limits {X : Type*}
+theorem FlowCancellation.exists_level_crossing_of_endpoint_limits {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {x p q : X}
     (hp : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p))
     (hq : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 q)) {c : ℝ} (hpc : c < f p)
@@ -1626,7 +1626,7 @@ theorem MorseCancellation.forwardHighBasins_eq_inter {E M : Type*} [NormedAddCom
     exact hp.trans (hmono.le_of_tendsto (hf.continuous.continuousAt.tendsto.comp hlim) t)
   · intro hbound
     obtain ⟨-, -, q, hq, -, hlim, -⟩ :=
-      Degree.FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
+      FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
         S.descent S.distinct x
     refine ⟨⟨q, hq⟩, ?_, hlim⟩
     exact
@@ -1646,7 +1646,7 @@ theorem MorseCancellation.backwardLowBasins_eq_inter {E M : Type*} [NormedAddCom
     exact (hmono.ge_of_tendsto (hf.continuous.continuousAt.tendsto.comp hlim) t).trans hp
   · intro hbound
     obtain ⟨p, hp, -, -, hlim, -, -⟩ :=
-      Degree.FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
+      FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
         S.descent S.distinct x
     refine ⟨⟨p, hp⟩, ?_, hlim⟩
     exact
@@ -1674,13 +1674,13 @@ theorem MorseCancellation.levelBasin_compl_eq_endpoint_obstruction {E M : Type*}
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     {a : ℝ} (hreg : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f) :
-    (Degree.FlowCancellation.levelBasin S.flow f a)ᶜ =
+    (FlowCancellation.levelBasin S.flow f a)ᶜ =
       forwardHighBasins S a ∪ backwardLowBasins S a := by
   ext x
   constructor
   · intro hx
     obtain ⟨p, hp, q, hq, hback, hforward, -⟩ :=
-      Degree.FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
+      FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
         S.descent S.distinct x
     by_cases hqa : a ≤ f q
     · exact Or.inl ⟨⟨q, hq⟩, hqa, hforward⟩
@@ -1689,7 +1689,7 @@ theorem MorseCancellation.levelBasin_compl_eq_endpoint_obstruction {E M : Type*}
     exact
       False.elim
         (hx
-          (Degree.FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous
+          (FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous
             hback hforward (lt_of_not_ge hpa) (lt_of_not_ge hqa)))
   · intro hx hcross
     obtain ⟨t, ht⟩ := hcross
@@ -1959,7 +1959,7 @@ theorem AdaptedWindows.joinedIn_minimum_basin {E M : Type*} [NormedAddCommGroup 
     (MorseCancellation.joinedIn_open_forward_basin S.flow p.val hopen hpp hx).trans
       (MorseCancellation.joinedIn_open_forward_basin S.flow p.val hopen hpp hy).symm
 
-theorem Degree.SmoothODE.scalar_partial_invertible {P : Type*} [NormedAddCommGroup P]
+theorem SmoothODE.scalar_partial_invertible {P : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] {F : P × ℝ → ℝ} {p : P} {t v : ℝ} (hF : ContDiffAt ℝ ∞ F (p, t))
     (htime : HasDerivAt (fun s : ℝ => F (p, s)) v t) (hv : v ≠ 0) :
     ((fderiv ℝ F (p, t)).comp (ContinuousLinearMap.inr ℝ P ℝ)).IsInvertible := by
@@ -1978,7 +1978,7 @@ theorem Degree.SmoothODE.scalar_partial_invertible {P : Type*} [NormedAddCommGro
   change v * r = r * v
   exact mul_comm v r
 
-theorem Degree.SmoothODE.exists_smooth_scalar_time_germ {P : Type*} [NormedAddCommGroup P]
+theorem SmoothODE.exists_smooth_scalar_time_germ {P : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [CompleteSpace P] {F : P × ℝ → ℝ} {p : P} {t c v : ℝ}
     (hF : ContDiffAt ℝ ∞ F (p, t)) (hlevel : F (p, t) = c)
     (htime : HasDerivAt (fun s : ℝ => F (p, s)) v t) (hv : v ≠ 0) :
@@ -1991,13 +1991,13 @@ theorem Degree.SmoothODE.exists_smooth_scalar_time_germ {P : Type*} [NormedAddCo
   filter_upwards [hF.eventually_apply_implicitFunction (by simp) hinv] with q hq
   exact hq.trans hlevel
 
-theorem Degree.FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
+theorem FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {H : M × ℝ → ℝ} {p : M} {t c v : ℝ}
     (hH : ContMDiffAt (𝓘(ℝ, E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, ℝ) ∞ H (p, t)) (hlevel : H (p, t) = c)
     (htime : HasDerivAt (fun s : ℝ => H (p, s)) v t) (hv : v ≠ 0) :
     ∃ θ : M → ℝ, θ p = t ∧ ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ θ p ∧ ∀ᶠ q in 𝓝 p, H (q, θ q) = c := by
-  let e := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) p
+  let e := modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) p
   have hp : p ∈ e.source := mem_extChartAt_source p
   have hz : e p ∈ e.target := e.map_source' hp
   have he : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ e p :=
@@ -2026,7 +2026,7 @@ theorem Degree.FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
     change H (B (e p, t)) = c
     rw [hB0]
     exact hlevel
-  obtain ⟨θ, hθ, hsmooth, hroot⟩ := Degree.SmoothODE.exists_smooth_scalar_time_germ hF hFc hFt hv
+  obtain ⟨θ, hθ, hsmooth, hroot⟩ := SmoothODE.exists_smooth_scalar_time_germ hF hFc hFt hv
   refine ⟨θ ∘ e, hθ, hsmooth.contMDiffAt.comp p he, ?_⟩
   filter_upwards [e.open_source.mem_nhds hp, he.continuousAt hroot] with q hq hrootq
   have hqleft : e.symm (e q) = q := e.left_inv' hq
@@ -2034,7 +2034,7 @@ theorem Degree.FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
   change H (q, θ (e q)) = c
   rwa [hqleft] at hrootq
 
-theorem Degree.FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAddCommGroup E]
+theorem FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -2050,7 +2050,7 @@ theorem Degree.FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAd
   have hder (x : M) (t : ℝ) : HasDerivAt (fun s => f (F s x)) (D (F t x)) t :=
     Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
   have hH : ContMDiff (𝓘(ℝ, E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, ℝ) ∞ (fun q : M × ℝ => f (F q.2 q.1)) :=
-    hf.comp (Degree.SmoothODE.contMDiff_native_flow hV F hcurve)
+    hf.comp (SmoothODE.contMDiff_native_flow hV F hcurve)
   have hgerm (p : M) (hp : p ∈ levelBasin F f c) :
     ∃ θ : M → ℝ, ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ θ p ∧ ∀ᶠ q in 𝓝 p, f (F (θ q) q) = c := by
     let t := signedLevelTime F f c p
@@ -2073,7 +2073,7 @@ theorem Degree.FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAd
   · intro x hx s
     exact signedLevelTime_flow F hf.continuous hD hder hboundary hx s
 
-theorem Degree.FlowCancellation.exists_native_level_flow_cylinder {E M : Type*}
+theorem FlowCancellation.exists_native_level_flow_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -2097,7 +2097,7 @@ theorem Degree.FlowCancellation.exists_native_level_flow_cylinder {E M : Type*}
   let r : M → L := fun x => if hx : x ∈ B then ⟨F (θ x) x, signedLevelTime_hits F f c hx⟩ else z
   let φ : L × ℝ → M := fun p => F p.2 p.1
   let ψ : M → L × ℝ := fun x => (r x, -θ x)
-  have hflow := Degree.SmoothODE.contMDiff_native_flow hV F hcurve
+  have hflow := SmoothODE.contMDiff_native_flow hV F hcurve
   have hφ : ContMDiff (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ∞ φ :=
     hflow.comp
       (((Smale.RegularLevel.contMDiff_inclusion hf hreg).comp contMDiff_fst).prodMk contMDiff_snd)
@@ -2178,7 +2178,7 @@ theorem AdaptedWindows.joinedIn_regular_level_of_endpoint_dimensions {E M : Type
   have hG : ContMDiff (𝓘(ℝ, Z).prod 𝓘(ℝ, V)) 𝓘(ℝ, E) ∞ (fun z : K × V => g z.1 z.2) :=
     MorseCancellation.contMDiff_discrete_family g hg
   let G : C(K × V, M) := ⟨fun z => g z.1 z.2, hG.continuous⟩
-  have hrange : Set.range G = (Degree.FlowCancellation.levelBasin S.flow f a)ᶜ := by
+  have hrange : Set.range G = (FlowCancellation.levelBasin S.flow f a)ᶜ := by
     rw [MorseCancellation.levelBasin_compl_eq_endpoint_obstruction S hf hreg, hcover]
     exact MorseCancellation.range_discrete_family g
   have hclosed : IsClosed (Set.range G) := by
@@ -2192,14 +2192,14 @@ theorem AdaptedWindows.joinedIn_regular_level_of_endpoint_dimensions {E M : Type
   obtain ⟨η, -, havoid⟩ :=
     MorseCancellation.exists_smooth_path_avoiding_closed_image γ G hG hclosed hdim' (hnot x hxa)
       (hnot y hya)
-  have hcross (t : unitInterval) : η t ∈ Degree.FlowCancellation.levelBasin S.flow f a := by
+  have hcross (t : unitInterval) : η t ∈ FlowCancellation.levelBasin S.flow f a := by
     have hh := havoid t
     simpa only [hrange, Set.mem_compl_iff, Classical.not_not] using hh
   let _ := Smale.RegularLevel.chartedSpace hf hreg
   let xL : { z : M // f z = a } := ⟨x, hxa⟩
   let yL : { z : M // f z = a } := ⟨y, hya⟩
   obtain ⟨Φ, hsource, htarget, hformula, -⟩ :=
-    Degree.FlowCancellation.exists_native_level_flow_cylinder hf hreg S.smooth S.flow S.integral
+    FlowCancellation.exists_native_level_flow_cylinder hf hreg S.smooth S.flow S.integral
       (fun z hz => S.descent z (hreg z hz)) xL
   have hcont : Continuous (fun t : unitInterval => Φ.symm (η t)) :=
     Φ.contMDiffOn_invFun.continuousOn.comp_continuous η.continuous
@@ -2278,7 +2278,7 @@ theorem AdaptedWindows.pathConnectedSpace_index_three_upper_level {E M : Type*}
       have hlow := S.toSurgeryWindows.lower_lt_value r
       exact ((not_lt_of_ge hr) (hsep.trans hlow)).elim
 
-theorem Degree.MorseRearrangement.native_transverse_dimension_bound {D Z G H H' K X Y N : Type*}
+theorem MorseRearrangement.native_transverse_dimension_bound {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     [TopologicalSpace K] {I : ModelWithCorners ℝ D H} {I' : ModelWithCorners ℝ Z H'}
@@ -2293,7 +2293,7 @@ theorem Degree.MorseRearrangement.native_transverse_dimension_bound {D Z G H H' 
   have hh := LinearMap.finrank_le_finrank_of_surjective (f := L.toLinearMap) hL
   simpa only [Module.finrank_prod] using hh
 
-theorem Degree.MorseRearrangement.disjoint_ranges_of_native_transverse_dimension
+theorem MorseRearrangement.disjoint_ranges_of_native_transverse_dimension
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace H'] [TopologicalSpace K] {I : ModelWithCorners ℝ D H}
@@ -2307,7 +2307,7 @@ theorem Degree.MorseRearrangement.disjoint_ranges_of_native_transverse_dimension
   rintro z ⟨x, hx⟩ ⟨y, hy⟩
   exact (not_le_of_gt hdim) (native_transverse_dimension_bound (ht x y) (hy.trans hx.symm))
 
-theorem Degree.MorseRearrangement.native_transverse_of_ignored_factor {D Z G H H' K X Y N : Type*}
+theorem MorseRearrangement.native_transverse_of_ignored_factor {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     [TopologicalSpace K] {I : ModelWithCorners ℝ D H} {I' : ModelWithCorners ℝ Z H'}
@@ -2438,7 +2438,7 @@ theorem Smale.NativeTransversality.exists_patch_at {G K N : Type*} [NormedAddCom
     [ChartedSpace K N] {X : Type*} [TopologicalSpace X] [FiniteDimensional ℝ G] [J.Boundaryless]
     [IsManifold J ∞ N] [CompactSpace X] [T2Space X] {f : X → N} (hf : Continuous f) (x : X) :
     ∃ p : Patch J X (N := N), p.Compatible f ∧ x ∈ interior p.core := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c := modelChartPartialDiffeomorph (I := J) (f x)
   have hcx : f x ∈ c.source := mem_extChartAt_source _
   obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.mp (c.open_target.mem_nhds (c.map_source' hcx))
   obtain ⟨β, hβ, hsupport, W, hW, hcenter, -, hone⟩ :=
@@ -2606,7 +2606,7 @@ theorem Smale.NativeTransversality.exists_ambient_transverse_diffeomorph
   obtain ⟨i, hi, hxi⟩ := Set.mem_iUnion₂.mp (hs (Set.mem_univ x))
   exact ht ⟨i, hi⟩ (Finset.mem_univ _) x (interior_subset hxi) y
 
-theorem Degree.MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension
+theorem MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
