@@ -834,6 +834,41 @@ theorem HigherHurewicz.cubeCoordinates_boundary_right (n : ℕ) (s : (unitInterv
   obtain ⟨i, hi⟩ := hu
   exact ⟨i.succ, by simpa using hi⟩
 
+
+/-- Inserting an endpoint of `I` as the zeroth cube coordinate lands on the cube boundary. -/
+theorem HigherHurewicz.cubeCoordinates_boundary_left (n : ℕ) (t : (unitInterval))
+    (u : Fin n → (unitInterval)) (ht : t = 0 ∨ t = 1) :
+    HigherHurewicz.cubeCoordinates n (t, u) ∈ Cube.boundary (Fin (n + 1)) :=
+  ⟨0, by simpa [HigherHurewicz.cubeCoordinates_zero] using ht⟩
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- A constant map pushes every `n`-chain to the corresponding multiple of the constant
+simplex. -/
+theorem SingularChains.inducedChain_const {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    (y : Y) (n : ℕ) (a : SingularChains.Chains X n) :
+    SingularChains.inducedChain (ContinuousMap.const X y) n a =
+      SecondHurewicz.SimplyConnected.chainAugmentation X n a •
+        SingularChains.simplexChain Y n (ContinuousMap.const (SingularChains.Simplex n) y) := by
+  let m : SingularChains.Chains Y n :=
+    SingularChains.simplexChain Y n (ContinuousMap.const (SingularChains.Simplex n) y)
+  have hf :
+      SingularChains.inducedChain (ContinuousMap.const X y) n =
+        SingularChains.chainLift X n (fun _ => m) := by
+    apply SingularChains.chainMap_ext X n
+    intro σ
+    simp [SingularChains.inducedChain_simplex, ContinuousMap.const_comp,
+      SingularChains.chainLift_simplex]
+    rfl
+  have hz : SingularChains.chainLift X n (fun _ : SingularChains.SingularSimplex X n =>
+      (0 : SingularChains.Chains Y n)) = 0 := by
+    apply SingularChains.chainMap_ext X n
+    intro σ
+    simp [SingularChains.chainLift_simplex]
+  have hsub := SecondHurewicz.SimplyConnected.chainLift_sub_constant X n
+    (fun _ => m) m a
+  rw [hf]
+  simpa [hz, sub_self] using (eq_sub_iff_add_eq.mp hsub).symm
 /-- A based `n + 1`-cube as a map from the product `I × (Fin n → I)`. -/
 def HigherHurewicz.cubeMap {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin (n + 1)) X x) : C((unitInterval) × (Fin n → (unitInterval)), X) :=
@@ -1522,6 +1557,188 @@ theorem HigherHurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [Topological
       Cube.boundary (Fin 1) := ⟨0, Or.inr (by simp [Homeomorph.funUnique])⟩
   simp only [map_sub, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
   rw [hx 1 h1, hx 0 h0, sub_self]
+
+/-- Pushforward along a map whose image lies in `V` lands in the `V`-supported chains. -/
+theorem SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (V : Set Y)
+    (hf : ∀ x, f x ∈ V) (n : ℕ) (a : SingularChains.Chains X n) :
+    SingularChains.inducedChain f n a ∈
+      SingularMayerVietoris.supportedChainSubmodule V n := by
+  have hle : (⊤ : Submodule ℤ (SingularChains.Chains X n)) ≤
+      (SingularMayerVietoris.supportedChainSubmodule V n).comap
+        (SingularChains.inducedChain f n) := by
+    rw [← SingularChains.simplexChain_span X n]
+    apply Submodule.span_le.mpr
+    rintro _ ⟨σ, rfl⟩
+    change SingularChains.inducedChain f n (SingularChains.simplexChain X n σ) ∈
+      SingularMayerVietoris.supportedChainSubmodule V n
+    rw [SingularChains.inducedChain_simplex]
+    apply SingularMayerVietoris.simplexChain_mem_supported
+    rintro y ⟨s, rfl⟩
+    exact hf (σ s)
+  exact hle (Submodule.mem_top)
+
+theorem PeriodTorusHigherHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
+    (x : X) :
+    PeriodTorusHigherHomology.zeroSimplexValue
+      (ContinuousMap.const (SingularChains.Simplex 0) x) = x :=
+  rfl
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+theorem PeriodTorusHigherHomology.crossProductZeroLeft_pointChain {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (x : X)
+    (b : SingularChains.Chains Y n) :
+    PeriodTorusHigherHomology.crossProductZeroLeft X Y n (SingularChains.pointChain x) b =
+      SingularChains.inducedChain (SingularHomology.crossInsertLeft x) n b := by
+  rw [SingularChains.pointChain, PeriodTorusHigherHomology.crossProductZeroLeft_simplex_left,
+    PeriodTorusHigherHomology.zeroSimplexValue_const]
+
+theorem SingularChains.inducedChain_pointChain {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
+    SingularChains.inducedChain f 0 (SingularChains.pointChain x) =
+      SingularChains.pointChain (f x) := by
+  simp [SingularChains.pointChain, SingularChains.inducedChain_simplex, ContinuousMap.const_comp]
+
+theorem SingularChains.pointChain_mem_supported {X : Type} [TopologicalSpace X]
+    (U : Set X) (x : X) (hx : x ∈ U) :
+    SingularChains.pointChain x ∈ SingularMayerVietoris.supportedChainSubmodule U 0 := by
+  apply SingularMayerVietoris.simplexChain_mem_supported
+  rintro y ⟨s, rfl⟩
+  simpa [ContinuousMap.const_apply] using hx
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The boundary of the fundamental `(n+1)`-cube is supported on the cube boundary. -/
+theorem HigherHurewicz.fundamentalCubeChain_boundary_supported :
+    ∀ n : ℕ,
+      ((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+          (HigherHurewicz.fundamentalCubeChain (n + 1)) ∈
+        SingularMayerVietoris.supportedChainSubmodule (Cube.boundary (Fin (n + 1))) n
+  | 0 => by
+    have hfun :
+        HigherHurewicz.fundamentalCubeChain 1 =
+          SingularChains.inducedChain
+            ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+              Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain :=
+      rfl
+    rw [hfun, ← SingularChains.inducedChain_boundary, SecondHurewicz.intervalChain_boundary,
+      map_sub, SingularChains.inducedChain_pointChain, SingularChains.inducedChain_pointChain]
+    apply Submodule.sub_mem
+    · apply SingularChains.pointChain_mem_supported
+      refine ⟨0, Or.inr ?_⟩
+      simp [Homeomorph.funUnique]
+    · apply SingularChains.pointChain_mem_supported
+      refine ⟨0, Or.inl ?_⟩
+      simp [Homeomorph.funUnique]
+  | n + 1 => by
+    have ih := HigherHurewicz.fundamentalCubeChain_boundary_supported n
+    rw [HigherHurewicz.fundamentalCubeChain_succ, ← SingularChains.inducedChain_boundary,
+      PeriodTorusHigherHomology.crossProductEdge_boundary n SecondHurewicz.intervalChain
+        (HigherHurewicz.fundamentalCubeChain (n + 1)), map_sub]
+    apply Submodule.sub_mem
+    · have hd : ((SingularChains.singularComplex (unitInterval)).d 1 0).hom
+          SecondHurewicz.intervalChain =
+        SingularChains.pointChain (1 : (unitInterval)) -
+          SingularChains.pointChain (0 : (unitInterval)) :=
+        SecondHurewicz.intervalChain_boundary
+      rw [hd, map_sub, LinearMap.sub_apply, PeriodTorusHigherHomology.crossProductZeroLeft_pointChain,
+        PeriodTorusHigherHomology.crossProductZeroLeft_pointChain, map_sub]
+      apply Submodule.sub_mem
+      · rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+        apply SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo
+        intro u
+        exact HigherHurewicz.cubeCoordinates_boundary_left (n + 1) 1 u (Or.inr rfl)
+      · rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+        apply SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo
+        intro u
+        exact HigherHurewicz.cubeCoordinates_boundary_left (n + 1) 0 u (Or.inl rfl)
+    · rw [← SingularMayerVietoris.subtypeInclusion_chain_range
+          (Cube.boundary (Fin (n + 1))) n] at ih
+      obtain ⟨c, hc⟩ := ih
+      rw [← hc]
+      have hinterval : SecondHurewicz.intervalChain =
+          SingularChains.inducedChain (ContinuousMap.id (unitInterval)) 1
+            SecondHurewicz.intervalChain := by
+        rw [SingularChains.inducedChain_id, LinearMap.id_apply]
+      rw [hinterval, ← PeriodTorusHigherHomology.crossProductEdge_natural
+          (ContinuousMap.id (unitInterval))
+          (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1)))) n
+          SecondHurewicz.intervalChain c, ← LinearMap.comp_apply,
+        ← SingularChains.inducedChain_comp]
+      apply SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo
+      intro z
+      exact HigherHurewicz.cubeCoordinates_boundary_right (n + 1) z.1 z.2.property
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The extra term of the `transAt 0` cube-chain difference is a multiple of the constant
+simplex: concatenation is based on the remaining boundary, and `d(fund)` is supported
+there. -/
+theorem HigherHurewicz.cubeChain_transAt_zero_extra_eq_smul {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 2)) X x) :
+    ∃ k : ℤ,
+      SingularChains.inducedChain
+          ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (HigherHurewicz.cubeCoordinates (n + 1))) (n + 2)
+        (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+          (Fin (n + 1) → (unitInterval)) n
+          (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+            HigherHurewicz.intervalPathRight)
+          (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+            (HigherHurewicz.fundamentalCubeChain (n + 1)))) =
+        k • SingularChains.simplexChain X (n + 2)
+          (ContinuousMap.const (SingularChains.Simplex (n + 2)) x) := by
+  have hsup := HigherHurewicz.fundamentalCubeChain_boundary_supported n
+  rw [← SingularMayerVietoris.subtypeInclusion_chain_range (Cube.boundary (Fin (n + 1))) n]
+    at hsup
+  obtain ⟨c, hc⟩ := hsup
+  have hconcat :
+      SingularChains.concatChain HigherHurewicz.intervalPathLeft
+          HigherHurewicz.intervalPathRight =
+        SingularChains.inducedChain (ContinuousMap.id (unitInterval)) 2
+          (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+            HigherHurewicz.intervalPathRight) := by
+    rw [SingularChains.inducedChain_id, LinearMap.id_apply]
+  have hconst :
+      ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (HigherHurewicz.cubeCoordinates (n + 1))).comp
+          ((ContinuousMap.id (unitInterval)).prodMap
+            (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1))))) =
+        ContinuousMap.const
+          ((unitInterval) × Cube.boundary (Fin (n + 1))) x := by
+    apply ContinuousMap.ext
+    intro z
+    exact HigherHurewicz.transAt_cubeCoordinates_of_mem_boundary p q z.1 z.2.property
+  refine ⟨SecondHurewicz.SimplyConnected.chainAugmentation
+      ((unitInterval) × Cube.boundary (Fin (n + 1))) (n + 2)
+      (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+        (Cube.boundary (Fin (n + 1))) n
+        (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+          HigherHurewicz.intervalPathRight) c), ?_⟩
+  rw [← hc, hconcat, ← PeriodTorusHigherHomology.crossProductTriangle_natural
+      (ContinuousMap.id (unitInterval))
+      (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1)))) n
+      (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+        HigherHurewicz.intervalPathRight) c, ← LinearMap.comp_apply,
+    ← SingularChains.inducedChain_comp, hconst, SingularChains.inducedChain_const, ← hconcat]
+
+theorem HigherHurewicz.boundary_const_simplex {X : Type} [TopologicalSpace X] (x : X)
+    (n : ℕ) :
+    ((SingularChains.singularComplex X).d (n + 1) n).hom
+        (SingularChains.simplexChain X (n + 1)
+          (ContinuousMap.const (SingularChains.Simplex (n + 1)) x)) =
+      (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) •
+        SingularChains.simplexChain X n
+          (ContinuousMap.const (SingularChains.Simplex n) x) := by
+  rw [SingularChains.boundary_simplex]
+  simp only [ContinuousMap.const_comp]
+  exact
+    (map_sum (zmultiplesHom (SingularChains.Chains X n)
+        (SingularChains.simplexChain X n
+          (ContinuousMap.const (SingularChains.Simplex n) x)))
+      (fun i : Fin (n + 2) => (-1 : ℤ) ^ i.val) Finset.univ).symm
+
 
 
 /-- The lower triangle of the square is the identity permutation simplex. -/

@@ -385,9 +385,10 @@ theorem HigherHurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpac
   simpa only [HigherHurewicz.cubeHomologyClass_eq_squareHomologyClass] using
     SecondHurewicz.squareHomologyClass_transAt p q
 
+
 /-- Concatenation along any coordinate adds cube classes in degree `2`. -/
-theorem HigherHurewicz.cubeHomologyClass_transAt {X : Type} [TopologicalSpace X] {x : X}
-    (i : Fin 2) (p q : GenLoop (Fin 2) X x) :
+theorem HigherHurewicz.cubeHomologyClass_transAt_two_coord {X : Type} [TopologicalSpace X]
+    {x : X} (i : Fin 2) (p q : GenLoop (Fin 2) X x) :
     HigherHurewicz.cubeHomologyClass (m := 0) (GenLoop.transAt i p q) =
       HigherHurewicz.cubeHomologyClass (m := 0) p +
         HigherHurewicz.cubeHomologyClass (m := 0) q := by
@@ -397,9 +398,155 @@ theorem HigherHurewicz.cubeHomologyClass_transAt {X : Type} [TopologicalSpace X]
   rw [HigherHurewicz.cubeHomologyClass_homotopic h]
   exact HigherHurewicz.cubeHomologyClass_transAt_two p q
 
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The extra term of the `transAt 0` cube-chain difference is a boundary at every
+degree. -/
+theorem HigherHurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 2)) X x) :
+    ∃ W : SingularChains.Chains X (n + 3),
+      ((SingularChains.singularComplex X).d (n + 3) (n + 2)).hom W =
+        SingularChains.inducedChain
+          ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (HigherHurewicz.cubeCoordinates (n + 1))) (n + 2)
+          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (Fin (n + 1) → (unitInterval)) n
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight)
+            (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) := by
+  obtain ⟨k, hk⟩ := HigherHurewicz.cubeChain_transAt_zero_extra_eq_smul p q
+  by_cases hEven : Even (n + 2)
+  · have hdiff := HigherHurewicz.cubeChain_transAt_zero_diff_boundary p q
+    have hp := HigherHurewicz.cubeChain_boundary p
+    have hq := HigherHurewicz.cubeChain_boundary q
+    have ht := HigherHurewicz.cubeChain_boundary (GenLoop.transAt (0 : Fin (n + 2)) p q)
+    have hdd :
+        ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
+            (((SingularChains.singularComplex X).d (n + 3) (n + 2)).hom
+              (SingularChains.inducedChain
+                ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+                  (HigherHurewicz.cubeCoordinates (n + 1))) (n + 3)
+                (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+                  (Fin (n + 1) → (unitInterval)) (n + 1)
+                  (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+                    HigherHurewicz.intervalPathRight)
+                  (HigherHurewicz.fundamentalCubeChain (n + 1))))) = 0 :=
+      congrArg (fun f : SingularChains.Chains X (n + 3) ⟶ SingularChains.Chains X (n + 1) =>
+          f.hom _) ((SingularChains.singularComplex X).d_comp_d (n + 3) (n + 2) (n + 1))
+    have hextra0 :
+        ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
+            (SingularChains.inducedChain
+              ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+                (HigherHurewicz.cubeCoordinates (n + 1))) (n + 2)
+              (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+                (Fin (n + 1) → (unitInterval)) n
+                (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+                  HigherHurewicz.intervalPathRight)
+                (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+                  (HigherHurewicz.fundamentalCubeChain (n + 1))))) = 0 := by
+      have h := congrArg ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom hdiff
+      simp only [map_sub, map_add, hp, hq, ht, hdd, add_zero, sub_zero, zero_sub] at h
+      exact neg_eq_zero.mp h.symm
+    have hk0 : k = 0 := by
+      have hbound := congrArg ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom hk
+      rw [hextra0, map_zsmul, HigherHurewicz.boundary_const_simplex, Fin.sum_neg_one_pow] at hbound
+      have hodd : ¬Even (n + 3) := Nat.not_even_iff_odd.mpr hEven.add_one
+      simp only [if_neg hodd, one_smul] at hbound
+      have haug :=
+        congrArg (SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1)) hbound
+      simpa [map_zero, map_zsmul, SecondHurewicz.SimplyConnected.chainAugmentation_simplex]
+        using haug.symm
+    refine ⟨0, ?_⟩
+    rw [hk, hk0, zero_smul, map_zero]
+  · refine ⟨k • SingularChains.simplexChain X (n + 3)
+        (ContinuousMap.const (SingularChains.Simplex (n + 3)) x), ?_⟩
+    rw [hk, map_zsmul, HigherHurewicz.boundary_const_simplex, Fin.sum_neg_one_pow]
+    have hodd : ¬Even (n + 4) := by
+      simpa [show n + 4 = n + 2 + 2 from rfl, Nat.even_add] using hEven
+    simp [if_neg hodd]
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- Concatenation along coordinate `0` adds cube homology classes at every degree `n ≥ 2`. -/
+theorem HigherHurewicz.cubeHomologyClass_transAt_zero {m : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (m + 2)) X x) :
+    HigherHurewicz.cubeHomologyClass (GenLoop.transAt (0 : Fin (m + 2)) p q) =
+      HigherHurewicz.cubeHomologyClass p + HigherHurewicz.cubeHomologyClass q := by
+  obtain ⟨Wextra, hWextra⟩ := HigherHurewicz.cubeChain_transAt_zero_extra_boundary p q
+  have hdiff := HigherHurewicz.cubeChain_transAt_zero_diff_boundary p q
+  unfold HigherHurewicz.cubeHomologyClass
+  rw [← map_add]
+  apply
+    (SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
+        (SingularChains.singularComplex X) (m + 2)
+        (HigherHurewicz.cubeCycle (GenLoop.transAt (0 : Fin (m + 2)) p q))
+        (HigherHurewicz.cubeCycle p + HigherHurewicz.cubeCycle q)).mpr
+  refine ⟨Wextra -
+      SingularChains.inducedChain
+        ((GenLoop.transAt (0 : Fin (m + 2)) p q).val.comp
+          (HigherHurewicz.cubeCoordinates (m + 1))) (m + 3)
+        (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+          (Fin (m + 1) → (unitInterval)) (m + 1)
+          (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+            HigherHurewicz.intervalPathRight)
+          (HigherHurewicz.fundamentalCubeChain (m + 1))), ?_⟩
+  simp only [Submodule.coe_add, Submodule.coe_sub, HigherHurewicz.cubeCycle_val, map_sub, hWextra]
+  rw [show HigherHurewicz.cubeChain (GenLoop.transAt (0 : Fin (m + 2)) p q) -
+        (HigherHurewicz.cubeChain p + HigherHurewicz.cubeChain q) =
+      - (HigherHurewicz.cubeChain p + HigherHurewicz.cubeChain q -
+          HigherHurewicz.cubeChain (GenLoop.transAt (0 : Fin (m + 2)) p q)) by abel,
+    hdiff]
+  abel
+
+/-- Concatenation along any coordinate adds cube homology classes at every degree `n ≥ 2`. -/
+theorem HigherHurewicz.cubeHomologyClass_transAt {m : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (i : Fin (m + 2)) (p q : GenLoop (Fin (m + 2)) X x) :
+    HigherHurewicz.cubeHomologyClass (GenLoop.transAt i p q) =
+      HigherHurewicz.cubeHomologyClass p + HigherHurewicz.cubeHomologyClass q := by
+  have h : GenLoop.Homotopic (GenLoop.transAt i p q)
+      (GenLoop.transAt (0 : Fin (m + 2)) p q) :=
+    Quotient.eq.mp (HomotopyGroup.transAt_indep (0 : Fin (m + 2)) p q)
+  rw [HigherHurewicz.cubeHomologyClass_homotopic h]
+  exact HigherHurewicz.cubeHomologyClass_transAt_zero p q
+
+
 /-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
 def HigherHurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
     π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
   Quotient.lift HigherHurewicz.cubeHomologyClass fun _ _ h =>
     HigherHurewicz.cubeHomologyClass_homotopic h
+
+/-- The Hurewicz function as a group homomorphism `π_n →+ (H_n, +)` written multiplicatively. -/
+def HigherHurewicz.hurewiczPi {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    π_ (m + 2) X x →* Multiplicative (SingularMayerVietoris.SingularHomology X (m + 2))
+    where
+  toFun a := Multiplicative.ofAdd (HigherHurewicz.hurewiczFunction x a)
+  map_one' := congrArg Multiplicative.ofAdd (HigherHurewicz.cubeHomologyClass_const (x := x))
+  map_mul' a b := by
+    refine Quotient.inductionOn₂ a b fun p q => ?_
+    refine
+      (congrArg (fun c : π_ (m + 2) X x =>
+            Multiplicative.ofAdd (HigherHurewicz.hurewiczFunction x c))
+          (HomotopyGroup.mul_spec (i := (0 : Fin (m + 2))) (p := p) (q := q))).trans
+        ?_
+    change
+      Multiplicative.ofAdd
+          (HigherHurewicz.cubeHomologyClass (GenLoop.transAt (0 : Fin (m + 2)) q p)) =
+        Multiplicative.ofAdd
+          (HigherHurewicz.cubeHomologyClass p + HigherHurewicz.cubeHomologyClass q)
+    apply congrArg Multiplicative.ofAdd
+    rw [HigherHurewicz.cubeHomologyClass_transAt_zero q p]
+    exact add_comm _ _
+
+/-- The Hurewicz map in degree `n ≥ 2`, as a `ℤ`-linear map on the additive homotopy group. -/
+def HigherHurewicz.hurewiczMap {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    Additive (π_ (m + 2) X x) →ₗ[ℤ] SingularMayerVietoris.SingularHomology X (m + 2)
+    where
+  toFun := (HigherHurewicz.hurewiczPi (m := m) x).toAdditiveLeft
+  map_add' := (HigherHurewicz.hurewiczPi (m := m) x).toAdditiveLeft.map_add
+  map_smul' n a := by
+    simpa using
+      map_intCast_smul (HigherHurewicz.hurewiczPi (m := m) x).toAdditiveLeft ℤ ℤ n a
+
 end Mathoverflow1973
