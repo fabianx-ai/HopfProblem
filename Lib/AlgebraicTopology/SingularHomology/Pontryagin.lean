@@ -87,19 +87,19 @@ theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
   rw [← singularHomologyMap_comp, additionMap_natural f hf,
     singularHomologyMap_comp]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G] [AddCommGroup G]
     [IsTopologicalAddGroup G] (n : ℕ) :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology G n →ₗ[ℤ]
         SingularMayerVietoris.SingularHomology G (n + 1) :=
-  PeriodTorusHigherHomology.integerBilinearPostcompose
-    (PeriodTorusHigherHomology.crossProductHomology G G n)
+  SingularHomology.integerBilinearPostcompose
+    (SingularHomology.crossProductHomology G G n)
     (SingularMayerVietoris.singularHomologyMap (additionMap G) (n + 1))
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ)
@@ -107,11 +107,11 @@ theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type) [Topologica
     (b : SingularMayerVietoris.SingularHomology G n) :
     product G n a b =
       SingularMayerVietoris.singularHomologyMap (additionMap G) (n + 1)
-        (PeriodTorusHigherHomology.crossProductHomology G G n a b) :=
+        (SingularHomology.crossProductHomology G G n a b) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -119,8 +119,8 @@ abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpac
         SingularMayerVietoris.SingularHomology G 2 :=
   product G 1
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -128,8 +128,8 @@ abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpac
         SingularMayerVietoris.SingularHomology G 3 :=
   product G 2
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -137,7 +137,7 @@ def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpa
         SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
           SingularMayerVietoris.SingularHomology G 3
     where
-  toFun a := PeriodTorusHigherHomology.integerBilinearPostcompose (product11 G) (product12 G a)
+  toFun a := SingularHomology.integerBilinearPostcompose (product11 G) (product12 G a)
   map_add' a
     b := by
     apply LinearMap.ext
@@ -165,8 +165,8 @@ def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpa
           f (product11 G c d))
         ((product12 G).map_smul r a)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -174,7 +174,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type) [Topo
     tripleProduct G a b c = product12 G a (product11 G b c) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
+attribute [local instance] SingularHomology.integerLinearMapModule in
 def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N) :
     MultilinearMap ℤ (fun _ : Fin 2 => M) N
@@ -191,7 +191,7 @@ def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*} [Add
     subst hDecEq
     fin_cases i <;> simp
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
+attribute [local instance] SingularHomology.integerLinearMapModule in
 def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N)
     (hdiag : ∀ x : M, β x x = 0) : AlternatingMap ℤ M N (Fin 2)
@@ -204,7 +204,7 @@ def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*} [Add
     rw [h]
     exact hdiag _
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
+attribute [local instance] SingularHomology.integerLinearMapModule in
 theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N] [Module.IsTorsionFree ℤ N]
     (β : M →ₗ[ℤ] M →ₗ[ℤ] N) (hskew : ∀ x y : M, β x y = -β y x) (x : M) : β x x = 0 := by
@@ -212,7 +212,7 @@ theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Ty
   rw [two_smul ℤ]
   exact add_eq_zero_iff_eq_neg.mpr (hskew x x)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
+attribute [local instance] SingularHomology.integerLinearMapModule in
 def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N) :
     MultilinearMap ℤ (fun _ : Fin 3 => M) N
@@ -229,7 +229,7 @@ def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*} [Ad
     subst hDecEq
     fin_cases i <;> simp
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
+attribute [local instance] SingularHomology.integerLinearMapModule in
 def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N)
     (h01 : ∀ x z : M, g x x z = 0) (h02 : ∀ x y : M, g x y x = 0) (h12 : ∀ x y : M, g x y y = 0) :

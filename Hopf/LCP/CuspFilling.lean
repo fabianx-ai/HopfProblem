@@ -68,6 +68,7 @@ import Lib.AlgebraicTopology.SingularHomology.PathClass
 import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
+import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 
 set_option maxSynthPendingDepth 3
 
