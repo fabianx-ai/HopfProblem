@@ -1,5 +1,6 @@
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
+import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
@@ -30,7 +31,13 @@ import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
+import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
+import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
+import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Topology.Homotopy.HandleRetraction
+import Lib.Topology.Homotopy.LoopSubdivision
+import Lib.Topology.MappingTorus.Basic
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
 import Lib.Analysis.Complex.Mobius
@@ -44,6 +51,9 @@ import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Morse.SurgeryWindows
+import Lib.Geometry.Manifold.Quotient.Atlas
+import Lib.Geometry.Manifold.Quotient.LocalOrbit
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
