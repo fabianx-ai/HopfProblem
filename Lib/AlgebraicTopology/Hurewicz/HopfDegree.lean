@@ -11,44 +11,44 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 # The Hopf degree theorem
 
 For a simply connected space whose integral homology vanishes in degrees `2 ≤ k < n`,
-`HigherHurewicz.pi_subsingleton_of_homology_vanishing` proves that its homotopy groups
-vanish in the same range. In particular, `HigherHurewicz.sphere_pi_subsingleton_of_lt`
+`Hurewicz.pi_subsingleton_of_homology_vanishing` proves that its homotopy groups
+vanish in the same range. In particular, `Hurewicz.sphere_pi_subsingleton_of_lt`
 proves `Subsingleton (π_ k (Degree.SphereCube.Sphere n) x)` for `2 ≤ k < n`.
 
 On the classification side, equality of the pushed-forward cube homology class of two
 based sphere maps already forces them to be homotopic relative to the basepoint:
-`HigherHurewicz.sphere_homotopicRel_of_topClass_eq` detects equality through the
+`Hurewicz.sphere_homotopicRel_of_topClass_eq` detects equality through the
 injective Hurewicz map and descends the resulting cube homotopy through the sphere
-quotient. `HigherHurewicz.sphere_homotopic_id_of_topClass` specializes this to
+quotient. `Hurewicz.sphere_homotopic_id_of_topClass` specializes this to
 self-maps of a sphere preserving the top class, and
-`HigherHurewicz.right_inverse_is_left_inverse` turns a homotopy right inverse of a sphere map
+`Hurewicz.right_inverse_is_left_inverse` turns a homotopy right inverse of a sphere map
 that is injective on top homology into a two-sided inverse.
 
 ## Outline of the proof
 
 1. Strong induction supplies all lower homotopy-group hypotheses to
-   `HigherHurewicz.hurewiczLinearEquivOfTwoLE`.
+   `Hurewicz.hurewiczLinearEquivOfTwoLE`.
 2. Injectivity transfers the assumed homology vanishing back to homotopy.
 3. `EuclideanSphere.simplyConnectedSpace` and
    `SphereHomology.unitSphere_homology_subsingleton` specialize the result to spheres.
 4. Free maps are adjusted at the basepoint by the homotopy extension property of the
-   simplex, transported to the cube via `HigherHurewicz.simplexCubeHomeomorph`, and the
+   simplex, transported to the cube via `Hurewicz.simplexCubeHomeomorph`, and the
    quotient cylinder lift descends the homotopy to the sphere
-   (`HigherHurewicz.exists_basepoint_adjustment`).
+   (`Hurewicz.exists_basepoint_adjustment`).
 5. Injectivity of the sphere map on top homology, followed by the sphere-map
    classification, turns its right inverse into a left inverse
-   (`HigherHurewicz.right_inverse_is_left_inverse`).
+   (`Hurewicz.right_inverse_is_left_inverse`).
 
 ## Main definitions and results
 
-* `HigherHurewicz.pi_subsingleton_of_homology_vanishing`: homology vanishing implies
+* `Hurewicz.pi_subsingleton_of_homology_vanishing`: homology vanishing implies
   homotopy vanishing below the first possible nonzero degree.
-* `HigherHurewicz.sphere_pi_subsingleton_of_lt`: the higher connectivity of spheres.
-* `HigherHurewicz.sphere_homotopicRel_of_topClass_eq`: based sphere maps with equal
+* `Hurewicz.sphere_pi_subsingleton_of_lt`: the higher connectivity of spheres.
+* `Hurewicz.sphere_homotopicRel_of_topClass_eq`: based sphere maps with equal
   pushed-forward cube classes are homotopic relative to the basepoint.
-* `HigherHurewicz.sphere_homotopic_id_of_topClass`: a self-map of a sphere fixing the
+* `Hurewicz.sphere_homotopic_id_of_topClass`: a self-map of a sphere fixing the
   top cube class is homotopic to the identity.
-* `HigherHurewicz.right_inverse_is_left_inverse`: a right inverse of a sphere map
+* `Hurewicz.right_inverse_is_left_inverse`: a right inverse of a sphere map
   that is injective on top homology is two-sided.
 
 Spaces are in `Type` because the integral singular-chain interface is universe zero.
@@ -69,7 +69,7 @@ open Topology
 
 noncomputable section
 
-namespace Mathoverflow1973.HigherHurewicz
+namespace Mathoverflow1973.Hurewicz
 
 /-! ### Homology vanishing and strong induction -/
 
@@ -127,7 +127,7 @@ theorem hurewiczMap_injective {X : Type} [TopologicalSpace X] [SimplyConnectedSp
   cases m with
   | zero =>
     rw [hurewiczMap_eq_second]
-    exact (SecondHurewicz.SimplyConnected.hurewiczLinearEquiv x).injective
+    exact (Hurewicz.degreeTwoLinearEquiv x).injective
   | succ m => exact (hurewiczLinearEquiv (m := m) x hpi).injective
 
 /-- The descended cylinder homotopy agrees with the given cube homotopy on quotient
@@ -301,4 +301,4 @@ theorem right_inverse_is_left_inverse {m : ℕ} {X : Type} [TopologicalSpace X]
   rw [SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply] at he
   exact he
 
-end Mathoverflow1973.HigherHurewicz
+end Mathoverflow1973.Hurewicz

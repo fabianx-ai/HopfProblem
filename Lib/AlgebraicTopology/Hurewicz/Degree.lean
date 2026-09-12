@@ -13,14 +13,14 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-def HigherHurewicz.nativeCubeNullHomotopy {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.nativeCubeNullHomotopy {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     [hπ : Subsingleton (π_ n X x)] (p : GenLoop (Fin n) X x) :
     p.val.HomotopyRel (ContinuousMap.const (Fin n → (unitInterval)) x) (Cube.boundary (Fin n)) :=
   Classical.choice
     (show GenLoop.Homotopic p GenLoop.const from
       Quotient.exact (@Subsingleton.elim (π_ n X x) hπ ⟦p⟧ ⟦GenLoop.const⟧))
 
-def HigherHurewicz.nativeCubeNullHomotopy_comp {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.nativeCubeNullHomotopy_comp {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     {A : Type*} [TopologicalSpace A] [Subsingleton (π_ n X x)] (p : GenLoop (Fin n) X x)
     (r : C(A, Fin n → (unitInterval))) (S : Set A) (hr : Set.MapsTo r S (Cube.boundary (Fin n))) :
     (p.val.comp r).HomotopyRel (ContinuousMap.const A x) S
@@ -33,12 +33,12 @@ def HigherHurewicz.nativeCubeNullHomotopy_comp {n : ℕ} {X : Type*} [Topologica
   map_one_left a := (nativeCubeNullHomotopy p).apply_one (r a)
   prop' t _ ha := (nativeCubeNullHomotopy p).eq_fst t (hr ha)
 
-def HigherHurewicz.basedSimplexNativeLoop {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+def Hurewicz.basedSimplexNativeLoop {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedSimplex n x) : GenLoop (Fin n) X x :=
   ⟨τ.val.comp ⟨(simplexCubeHomeomorph n).symm, (simplexCubeHomeomorph n).symm.continuous⟩,
     fun u hu => τ.property _ ((simplexCubeHomeomorph_symm_boundary_iff n u).mpr hu)⟩
 
-theorem HigherHurewicz.basedSimplexNativeLoop_comp_homeomorph {n : ℕ} {X : Type}
+theorem Hurewicz.basedSimplexNativeLoop_comp_homeomorph {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedSimplex n x) :
     (basedSimplexNativeLoop τ).val.comp
         ⟨simplexCubeHomeomorph n, (simplexCubeHomeomorph n).continuous⟩ =
@@ -48,7 +48,7 @@ theorem HigherHurewicz.basedSimplexNativeLoop_comp_homeomorph {n : ℕ} {X : Typ
   change τ.val ((simplexCubeHomeomorph n).symm (simplexCubeHomeomorph n s)) = τ.val s
   rw [Homeomorph.symm_apply_apply]
 
-def HigherHurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+def Hurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
       (SecondHurewicz.SimplyConnected.simplexBoundary n) :=
@@ -59,7 +59,7 @@ def HigherHurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [Topolog
       (fun s hs => (simplexCubeHomeomorph_boundary_iff n s).mpr hs))
     (basedSimplexNativeLoop_comp_homeomorph τ) rfl
 
-def HigherHurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+def Hurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
       (SecondHurewicz.SimplyConnected.simplexBoundary n) := by
@@ -73,19 +73,19 @@ def HigherHurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X]
     else simplexNullHomotopyUnnormalized τ
 
 @[simp]
-theorem HigherHurewicz.simplexNullHomotopy_zero {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+theorem Hurewicz.simplexNullHomotopy_zero {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) (s : SingularChains.Simplex n) :
     simplexNullHomotopy τ (0, s) = τ.val s :=
   (simplexNullHomotopy τ).apply_zero s
 
 @[simp]
-theorem HigherHurewicz.simplexNullHomotopy_one {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+theorem Hurewicz.simplexNullHomotopy_one {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) (s : SingularChains.Simplex n) :
     simplexNullHomotopy τ (1, s) = x :=
   (simplexNullHomotopy τ).apply_one s
 
 @[simp]
-theorem HigherHurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] :
     simplexNullHomotopy (constantBasedSimplex n x) =
       ContinuousMap.HomotopyRel.refl (ContinuousMap.const (SingularChains.Simplex n) x)
@@ -96,14 +96,14 @@ theorem HigherHurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace
   rfl
 
 @[simp]
-theorem HigherHurewicz.simplexNullHomotopy_constant_toContinuousMap {X : Type}
+theorem Hurewicz.simplexNullHomotopy_constant_toContinuousMap {X : Type}
     [TopologicalSpace X] (n : ℕ) (x : X) [Subsingleton (π_ n X x)] :
     (simplexNullHomotopy (constantBasedSimplex n x)).toContinuousMap =
       ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x := by
   rw [simplexNullHomotopy_constant]
   rfl
 
-def HigherHurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+def Hurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n) :
     C((unitInterval) × SingularChains.Simplex n, X) := by
   classical
@@ -113,7 +113,7 @@ def HigherHurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] 
     else SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n smp
 
 @[simp]
-theorem HigherHurewicz.simplexStraighteningHomotopy_zero {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.simplexStraighteningHomotopy_zero {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (s : SingularChains.Simplex n) : simplexStraighteningHomotopy n x smp (0, s) = smp s := by
   classical
@@ -123,7 +123,7 @@ theorem HigherHurewicz.simplexStraighteningHomotopy_zero {X : Type} [Topological
     exact simplexNullHomotopy_zero (⟨smp, h⟩ : BasedSimplex n x) s
   · rfl
 
-theorem HigherHurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (h : ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, smp s = x)
     (s : SingularChains.Simplex n) : simplexStraighteningHomotopy n x smp (1, s) = x := by
@@ -131,7 +131,7 @@ theorem HigherHurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalS
   rw [simplexStraighteningHomotopy, dif_pos h]
   exact simplexNullHomotopy_one (⟨smp, h⟩ : BasedSimplex n x) s
 
-theorem HigherHurewicz.simplexStraighteningHomotopy_boundary {X : Type} [TopologicalSpace X]
+theorem Hurewicz.simplexStraighteningHomotopy_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (r : (unitInterval)) (s : SingularChains.Simplex n)
     (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n) :
@@ -144,7 +144,7 @@ theorem HigherHurewicz.simplexStraighteningHomotopy_boundary {X : Type} [Topolog
   · rfl
 
 @[simp]
-theorem HigherHurewicz.simplexStraighteningHomotopy_const {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.simplexStraighteningHomotopy_const {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] :
     simplexStraighteningHomotopy n x (ContinuousMap.const (SingularChains.Simplex n) x) =
       ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x := by
@@ -156,7 +156,7 @@ theorem HigherHurewicz.simplexStraighteningHomotopy_const {X : Type} [Topologica
   rw [simplexStraighteningHomotopy, dif_pos h]
   exact simplexNullHomotopy_constant_toContinuousMap n x
 
-theorem HigherHurewicz.simplexStraighteningHomotopy_face {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.simplexStraighteningHomotopy_face {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ (n + 1) X x)] :
     SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n
       (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n)
@@ -170,7 +170,7 @@ theorem HigherHurewicz.simplexStraighteningHomotopy_face {X : Type} [Topological
     simplexStraighteningHomotopy_boundary (n + 1) x smp u.1 _
       ⟨i, SingularChains.simplexFace_apply_self n i u.2⟩
 
-theorem HigherHurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -185,7 +185,7 @@ theorem HigherHurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpac
       ContinuousMap.const (SingularChains.Simplex n) x :=
   (SecondHurewicz.SimplyConnected.timeSlice_face hface smp i 1).trans (hone _)
 
-theorem HigherHurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -207,7 +207,7 @@ theorem HigherHurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] 
     congrArg (fun f : C(SingularChains.Simplex n, X) => f t)
       (simplexEndpoint_face_constant H H' hface x hone smp i)
 
-def HigherHurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
+def Hurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -226,7 +226,7 @@ def HigherHurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
         SecondHurewicz.SimplyConnected.simplexEndpointOperator_boundary n H H' h, hc, map_zero])
 
 @[simp]
-theorem HigherHurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -237,7 +237,7 @@ theorem HigherHurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n 
       SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1 :=
   rfl
 
-theorem HigherHurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -257,7 +257,7 @@ theorem HigherHurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X
     sub_zero]
   rfl
 
-theorem HigherHurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -276,7 +276,7 @@ theorem HigherHurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (
     ⟨SecondHurewicz.SimplyConnected.simplexPrismOperator (n + 1) H' c.1,
       straightenedCycle_boundary n H H' h h₀ c⟩
 
-def HigherHurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
+def Hurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
     (hF :
       ∀ b : SingularChains.Chains X (n + 1),
@@ -288,7 +288,7 @@ def HigherHurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Typ
     (fun b => hF b)
 
 @[simp]
-theorem HigherHurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSpace X] {M : Type*}
+theorem Hurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
     (hF :
       ∀ b : SingularChains.Chains X (n + 1),
@@ -299,7 +299,7 @@ theorem HigherHurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSp
       F c.1 :=
   PeriodTorusHigherHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) n _ _ c
 
-theorem HigherHurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X] {M : Type*}
+theorem Hurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
     (hF :
       ∀ b : SingularChains.Chains X (n + 1),
@@ -315,19 +315,19 @@ theorem HigherHurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSp
   simpa only [LinearMap.comp_apply, singularHomologyDesc_cycleClass, LinearMap.id_apply] using
     hg c
 
-theorem HigherHurewicz.boundarySignSum_even (n : ℕ) (hn : Even (n + 1)) :
+theorem Hurewicz.boundarySignSum_even (n : ℕ) (hn : Even (n + 1)) :
     (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) = 1 := by
   rw [Fin.sum_neg_one_pow]
   have h : ¬Even (n + 2) := Nat.not_even_iff_odd.mpr hn.add_one
   exact if_neg h
 
-theorem HigherHurewicz.boundarySignSum_odd (n : ℕ) (hn : Odd (n + 1)) :
+theorem Hurewicz.boundarySignSum_odd (n : ℕ) (hn : Odd (n + 1)) :
     (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) = 0 := by
   rw [Fin.sum_neg_one_pow]
   have h : Even (n + 2) := hn.add_one
   exact if_pos h
 
-theorem HigherHurewicz.boundary_constantSimplexChain {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.boundary_constantSimplexChain {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) =
       (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) • constantSimplexChain n x := by
@@ -337,37 +337,37 @@ theorem HigherHurewicz.boundary_constantSimplexChain {X : Type} [TopologicalSpac
     (map_sum (zmultiplesHom (SingularChains.Chains X n) (constantSimplexChain n x))
         (fun i : Fin (n + 2) => (-1 : ℤ) ^ i.val) Finset.univ).symm
 
-theorem HigherHurewicz.boundary_constantSimplexChain_even {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.boundary_constantSimplexChain_even {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (hn : Even (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) =
       constantSimplexChain n x := by
   rw [boundary_constantSimplexChain, boundarySignSum_even n hn, one_smul]
 
-theorem HigherHurewicz.boundary_constantSimplexChain_odd {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.boundary_constantSimplexChain_odd {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (hn : Odd (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) = 0 := by
   rw [boundary_constantSimplexChain, boundarySignSum_odd n hn, zero_smul]
 
-theorem HigherHurewicz.constantSimplexChain_cycle_condition {X : Type} [TopologicalSpace X]
+theorem Hurewicz.constantSimplexChain_cycle_condition {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X) (hn : Odd n) :
     ((SingularChains.singularComplex X).d n (n - 1)).hom (constantSimplexChain n x) = 0 := by
   cases n with
   | zero => simp at hn
   | succ n => exact boundary_constantSimplexChain_odd n x hn
 
-def HigherHurewicz.constantSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+def Hurewicz.constantSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n :=
   SingularMayerVietoris.ModuleHomology.mkCycle (SingularChains.singularComplex X) n
     (constantSimplexChain n x) (constantSimplexChain_cycle_condition n x hn)
 
 @[simp]
-theorem HigherHurewicz.constantSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+theorem Hurewicz.constantSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) : (constantSimplexCycle n x hn).1 = constantSimplexChain n x :=
   rfl
 
 @[simp]
-theorem HigherHurewicz.constantSimplexCycle_class {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+theorem Hurewicz.constantSimplexCycle_class {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) :
     SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) n
         (constantSimplexCycle n x hn) =
@@ -377,7 +377,7 @@ theorem HigherHurewicz.constantSimplexCycle_class {X : Type} [TopologicalSpace X
         n _).mpr
   exact ⟨constantSimplexChain (n + 1) x, boundary_constantSimplexChain_even n x hn.add_one⟩
 
-theorem HigherHurewicz.correctedSimplexChain_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.correctedSimplexChain_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (smp : SingularChains.SingularSimplex X (n + 1))
     (hfaces :
       ∀ i : Fin (n + 2),
@@ -389,7 +389,7 @@ theorem HigherHurewicz.correctedSimplexChain_boundary {X : Type} [TopologicalSpa
     SingularChains.boundary_simplex]
   simp only [hfaces, ContinuousMap.const_comp, sub_self]
 
-def HigherHurewicz.correctedSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+def Hurewicz.correctedSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (smp : SingularChains.SingularSimplex X (n + 1))
     (hfaces :
       ∀ i : Fin (n + 2),
@@ -400,7 +400,7 @@ def HigherHurewicz.correctedSimplexCycle {X : Type} [TopologicalSpace X] (n : �
     (correctedSimplexChain (n + 1) x smp) (correctedSimplexChain_boundary n x smp hfaces)
 
 @[simp]
-theorem HigherHurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+theorem Hurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (smp : SingularChains.SingularSimplex X (n + 1))
     (hfaces :
       ∀ i : Fin (n + 2),
@@ -410,7 +410,7 @@ theorem HigherHurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X]
       SingularChains.simplexChain X (n + 1) smp - constantSimplexChain (n + 1) x :=
   rfl
 
-theorem HigherHurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
     (c : SingularChains.Chains X (n + 1)) :
     SecondHurewicz.SimplyConnected.chainAugmentation X n
         (((SingularChains.singularComplex X).d (n + 1) n).hom c) =
@@ -428,14 +428,14 @@ theorem HigherHurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X
       zsmul_eq_mul, mul_one, Int.cast_id]
   exact LinearMap.congr_fun h c
 
-theorem HigherHurewicz.chainAugmentation_boundary_even (X : Type) [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.chainAugmentation_boundary_even (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even (n + 1)) (c : SingularChains.Chains X (n + 1)) :
     SecondHurewicz.SimplyConnected.chainAugmentation X n
         (((SingularChains.singularComplex X).d (n + 1) n).hom c) =
       SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c := by
   rw [chainAugmentation_boundary, boundarySignSum_even n hn, one_smul]
 
-theorem HigherHurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even n) (hpos : 0 < n)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SecondHurewicz.SimplyConnected.chainAugmentation X n c.1 = 0 := by
@@ -448,7 +448,7 @@ theorem HigherHurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace 
         (n + 1) c
     rw [hc, map_zero]
 
-theorem HigherHurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalSpace X] {M : Type}
+theorem Hurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalSpace X] {M : Type}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (hn : Even n) (hpos : 0 < n)
     (f : SingularChains.SingularSimplex X n → M) (m : M)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -456,7 +456,7 @@ theorem HigherHurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalS
   rw [SecondHurewicz.SimplyConnected.chainLift_sub_constant,
     chainAugmentation_evenCycle X n hn hpos, zero_smul, sub_zero]
 
-theorem HigherHurewicz.simplex_coordinate_zero_of_tail_eq {n : ℕ} (s : SingularChains.Simplex n)
+theorem Hurewicz.simplex_coordinate_zero_of_tail_eq {n : ℕ} (s : SingularChains.Simplex n)
     {i j : Fin n} (hij : i < j)
     (h :
       (∑ k : Fin (n + 1), if i.val < k.val then s k else 0) =
@@ -483,7 +483,7 @@ theorem HigherHurewicz.simplex_coordinate_zero_of_tail_eq {n : ℕ} (s : Singula
         Finset.sum_le_sum_of_subset_of_nonneg hsub (fun k _ _ => stdSimplex.zero_le s k)
   exact le_antisymm (by linarith) (stdSimplex.zero_le s i.succ)
 
-theorem HigherHurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ}
+theorem Hurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ}
     (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s (e i) = CubeTriangulation.cubeSimplex e s (e j)) :
     s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
@@ -493,14 +493,14 @@ theorem HigherHurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ
   · exact ⟨i.succ, simplex_coordinate_zero_of_tail_eq s hlt hreal⟩
   · exact ⟨j.succ, simplex_coordinate_zero_of_tail_eq s hgt hreal.symm⟩
 
-theorem HigherHurewicz.cubeSimplex_coordinate_equality_boundary {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.cubeSimplex_coordinate_equality_boundary {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s i = CubeTriangulation.cubeSimplex e s j) :
     s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
   apply cubeSimplex_ordered_coordinate_equality_boundary e s (e.symm.injective.ne hij)
   simpa only [Equiv.apply_symm_apply] using h
 
-theorem HigherHurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -524,7 +524,7 @@ theorem HigherHurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [
       (CubeGluing.coherentCubeEndpoint_cell H H' hface hconst p e)
   exact he.trans (simplexEndpoint_boundary H H' hface x hone _ s hs)
 
-theorem HigherHurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -545,7 +545,7 @@ theorem HigherHurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [
     coherentCubeEndpoint_cell_boundary H H' hface hconst hone p e s
       (cubeSimplex_coordinate_equality_boundary e s hij hu)
 
-def HigherHurewicz.normalizedCycleAssignment {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
+def Hurewicz.normalizedCycleAssignment {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x) :
     SingularChains.Chains X (n + 1) →ₗ[ℤ]
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1) :=
@@ -553,14 +553,14 @@ def HigherHurewicz.normalizedCycleAssignment {X : Type} [TopologicalSpace X] (n 
     correctedSimplexCycle n x (f smp).val (SimplexGeometry.basedSimplex_face (f smp))
 
 @[simp]
-theorem HigherHurewicz.normalizedCycleAssignment_simplex {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.normalizedCycleAssignment_simplex {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (smp : SingularChains.SingularSimplex X (n + 1)) :
     normalizedCycleAssignment n x f (SingularChains.simplexChain X (n + 1) smp) =
       correctedSimplexCycle n x (f smp).val (SimplexGeometry.basedSimplex_face (f smp)) :=
   SingularChains.chainLift_simplex X (n + 1) _ smp
 
-theorem HigherHurewicz.normalizedCycleAssignment_val {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.normalizedCycleAssignment_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (c : SingularChains.Chains X (n + 1)) :
     (normalizedCycleAssignment n x f c).val =
@@ -581,7 +581,7 @@ theorem HigherHurewicz.normalizedCycleAssignment_val {X : Type} [TopologicalSpac
       correctedSimplexCycle_val, SingularChains.chainLift_simplex]
   exact LinearMap.congr_fun h c
 
-theorem HigherHurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [TopologicalSpace X]
+theorem Hurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X)
     (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H' :
@@ -604,7 +604,7 @@ theorem HigherHurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [Topolo
       SecondHurewicz.SimplyConnected.simplexEndpointOperator_simplex, hf]
   rw [hmap]
 
-theorem HigherHurewicz.normalizedCycleAssignment_evenCycle {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.normalizedCycleAssignment_evenCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -620,7 +620,7 @@ theorem HigherHurewicz.normalizedCycleAssignment_evenCycle {X : Type} [Topologic
     chainAugmentation_evenCycle X (n + 1) heven (Nat.zero_lt_succ n), zero_smul, sub_zero,
     straightenedCycle_val]
 
-theorem HigherHurewicz.normalizedCycleAssignment_oddCycle {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.normalizedCycleAssignment_oddCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -643,7 +643,7 @@ theorem HigherHurewicz.normalizedCycleAssignment_oddCycle {X : Type} [Topologica
   rw [normalizedCycleAssignment_val_endpoint n x f H' hf, straightenedCycle_val,
     constantSimplexCycle_val]
 
-theorem HigherHurewicz.normalizedCycleAssignment_class {X : Type} [TopologicalSpace X] (n : ℕ)
+theorem Hurewicz.normalizedCycleAssignment_class {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :

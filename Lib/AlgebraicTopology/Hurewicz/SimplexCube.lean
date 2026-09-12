@@ -47,42 +47,42 @@ def SecondHurewicz.SimplyConnected.sideInclusion (n : ℕ) :
   continuous_toFun :=
     (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)).subtype_mk _
 
-def HigherHurewicz.flatSimplexSet (n : ℕ) : Set (Fin n → ℝ) :=
+def Hurewicz.flatSimplexSet (n : ℕ) : Set (Fin n → ℝ) :=
   {v | (∀ i, 0 ≤ v i) ∧ ∑ i, v i ≤ 1}
 
-def HigherHurewicz.realCubeSet (n : ℕ) : Set (Fin n → ℝ) :=
+def Hurewicz.realCubeSet (n : ℕ) : Set (Fin n → ℝ) :=
   Set.Icc 0 1
 
-def HigherHurewicz.BasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :=
+def Hurewicz.BasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :=
   { τ : C(SingularChains.Simplex n, X) //
     ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, τ s = x }
 
-def HigherHurewicz.constantBasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :
+def Hurewicz.constantBasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :
     BasedSimplex n x :=
   ⟨ContinuousMap.const (SingularChains.Simplex n) x, fun _ _ => rfl⟩
 
-theorem HigherHurewicz.convex_realCubeSet (n : ℕ) : Convex ℝ (realCubeSet n) :=
+theorem Hurewicz.convex_realCubeSet (n : ℕ) : Convex ℝ (realCubeSet n) :=
   convex_Icc 0 1
 
-theorem HigherHurewicz.isClosed_realCubeSet (n : ℕ) : IsClosed (realCubeSet n) :=
+theorem Hurewicz.isClosed_realCubeSet (n : ℕ) : IsClosed (realCubeSet n) :=
   isClosed_Icc
 
-theorem HigherHurewicz.isCompact_realCubeSet (n : ℕ) : IsCompact (realCubeSet n) :=
+theorem Hurewicz.isCompact_realCubeSet (n : ℕ) : IsCompact (realCubeSet n) :=
   CompactIccSpace.isCompact_Icc
 
-theorem HigherHurewicz.mem_interior_realCubeSet (n : ℕ) (v : Fin n → ℝ) :
+theorem Hurewicz.mem_interior_realCubeSet (n : ℕ) (v : Fin n → ℝ) :
     v ∈ interior (realCubeSet n) ↔ ∀ i, 0 < v i ∧ v i < 1 := by
   rw [realCubeSet, ← Set.pi_univ_Icc, interior_pi_set (Set.finite_univ)]
   simp only [Set.mem_pi, Set.mem_univ, forall_const, interior_Icc, Pi.zero_apply, Pi.one_apply,
     Set.mem_Ioo]
 
-theorem HigherHurewicz.interior_realCubeSet_nonempty (n : ℕ) :
+theorem Hurewicz.interior_realCubeSet_nonempty (n : ℕ) :
     (interior (realCubeSet n)).Nonempty := by
   refine ⟨fun _ => 1 / 2, (mem_interior_realCubeSet n _).mpr ?_⟩
   intro i
   norm_num
 
-theorem HigherHurewicz.realCubeSet_mem_frontier_iff (n : ℕ) (v : ↥(realCubeSet n)) :
+theorem Hurewicz.realCubeSet_mem_frontier_iff (n : ℕ) (v : ↥(realCubeSet n)) :
     v.val ∈ frontier (realCubeSet n) ↔ ∃ i, v.val i = 0 ∨ v.val i = 1 := by
   classical
   rw [frontier, (isClosed_realCubeSet n).closure_eq]
@@ -101,7 +101,7 @@ theorem HigherHurewicz.realCubeSet_mem_frontier_iff (n : ℕ) (v : ↥(realCubeS
       rw [h] at h1
       exact lt_irrefl _ h1
 
-def HigherHurewicz.realCubeHomeomorph (n : ℕ) : ↥(realCubeSet n) ≃ₜ (Fin n → (unitInterval))
+def Hurewicz.realCubeHomeomorph (n : ℕ) : ↥(realCubeSet n) ≃ₜ (Fin n → (unitInterval))
     where
   toFun v i := ⟨v.val i, v.property.1 i, v.property.2 i⟩
   invFun u := ⟨fun i => (u i : ℝ), fun i => (u i).property.1, fun i => (u i).property.2⟩
@@ -119,7 +119,7 @@ def HigherHurewicz.realCubeHomeomorph (n : ℕ) : ↥(realCubeSet n) ≃ₜ (Fin
     apply Continuous.subtype_mk
     exact continuous_pi fun i => continuous_subtype_val.comp (continuous_apply i)
 
-theorem HigherHurewicz.realCubeHomeomorph_mem_boundary_iff (n : ℕ) (v : ↥(realCubeSet n)) :
+theorem Hurewicz.realCubeHomeomorph_mem_boundary_iff (n : ℕ) (v : ↥(realCubeSet n)) :
     realCubeHomeomorph n v ∈ Cube.boundary (Fin n) ↔ v.val ∈ frontier (realCubeSet n) := by
   rw [realCubeSet_mem_frontier_iff]
   constructor
@@ -130,7 +130,7 @@ theorem HigherHurewicz.realCubeHomeomorph_mem_boundary_iff (n : ℕ) (v : ↥(re
     · exact ⟨i, Or.inl (Subtype.ext hi)⟩
     · exact ⟨i, Or.inr (Subtype.ext hi)⟩
 
-def HigherHurewicz.simplexFlat (n : ℕ) (s : SingularChains.Simplex n) : ↥(flatSimplexSet n) :=
+def Hurewicz.simplexFlat (n : ℕ) (s : SingularChains.Simplex n) : ↥(flatSimplexSet n) :=
   ⟨fun i => s i.succ, by
     refine ⟨fun i => stdSimplex.zero_le s i.succ, ?_⟩
     have hs := stdSimplex.sum_eq_one s
@@ -138,7 +138,7 @@ def HigherHurewicz.simplexFlat (n : ℕ) (s : SingularChains.Simplex n) : ↥(fl
     have h0 := stdSimplex.zero_le s 0
     linarith⟩
 
-def HigherHurewicz.flatSimplex (n : ℕ) (v : ↥(flatSimplexSet n)) : SingularChains.Simplex n :=
+def Hurewicz.flatSimplex (n : ℕ) (v : ↥(flatSimplexSet n)) : SingularChains.Simplex n :=
   ⟨Fin.cons (1 - ∑ i, v.val i) v.val, by
     constructor
     · intro i
@@ -148,11 +148,11 @@ def HigherHurewicz.flatSimplex (n : ℕ) (v : ↥(flatSimplexSet n)) : SingularC
     · simp only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]
       exact sub_add_cancel 1 _⟩
 
-theorem HigherHurewicz.continuous_simplexFlat (n : ℕ) : Continuous (simplexFlat n) := by
+theorem Hurewicz.continuous_simplexFlat (n : ℕ) : Continuous (simplexFlat n) := by
   apply Continuous.subtype_mk
   exact continuous_pi fun i => (continuous_apply i.succ).comp continuous_subtype_val
 
-theorem HigherHurewicz.continuous_flatSimplex (n : ℕ) : Continuous (flatSimplex n) := by
+theorem Hurewicz.continuous_flatSimplex (n : ℕ) : Continuous (flatSimplex n) := by
   apply Continuous.subtype_mk
   apply continuous_pi
   intro i
@@ -163,7 +163,7 @@ theorem HigherHurewicz.continuous_flatSimplex (n : ℕ) : Continuous (flatSimple
   · exact (continuous_apply j).comp continuous_subtype_val
 
 @[simp]
-theorem HigherHurewicz.flatSimplex_simplexFlat (n : ℕ) (s : SingularChains.Simplex n) :
+theorem Hurewicz.flatSimplex_simplexFlat (n : ℕ) (s : SingularChains.Simplex n) :
     flatSimplex n (simplexFlat n s) = s := by
   apply Subtype.ext
   funext i
@@ -175,12 +175,12 @@ theorem HigherHurewicz.flatSimplex_simplexFlat (n : ℕ) (s : SingularChains.Sim
   · rfl
 
 @[simp]
-theorem HigherHurewicz.simplexFlat_flatSimplex (n : ℕ) (v : ↥(flatSimplexSet n)) :
+theorem Hurewicz.simplexFlat_flatSimplex (n : ℕ) (v : ↥(flatSimplexSet n)) :
     simplexFlat n (flatSimplex n v) = v := by
   apply Subtype.ext
   rfl
 
-def HigherHurewicz.simplexFlatHomeomorph (n : ℕ) : SingularChains.Simplex n ≃ₜ ↥(flatSimplexSet n)
+def Hurewicz.simplexFlatHomeomorph (n : ℕ) : SingularChains.Simplex n ≃ₜ ↥(flatSimplexSet n)
     where
   toFun := simplexFlat n
   invFun := flatSimplex n
@@ -189,7 +189,7 @@ def HigherHurewicz.simplexFlatHomeomorph (n : ℕ) : SingularChains.Simplex n �
   continuous_toFun := continuous_simplexFlat n
   continuous_invFun := continuous_flatSimplex n
 
-theorem HigherHurewicz.convex_flatSimplexSet (n : ℕ) : Convex ℝ (flatSimplexSet n) := by
+theorem Hurewicz.convex_flatSimplexSet (n : ℕ) : Convex ℝ (flatSimplexSet n) := by
   intro x hx y hy a b ha hb hab
   constructor
   · intro i
@@ -201,7 +201,7 @@ theorem HigherHurewicz.convex_flatSimplexSet (n : ℕ) : Convex ℝ (flatSimplex
         add_le_add (mul_le_mul_of_nonneg_left hx.2 ha) (mul_le_mul_of_nonneg_left hy.2 hb)
       _ = 1 := by simpa only [mul_one] using hab
 
-theorem HigherHurewicz.isClosed_flatSimplexSet (n : ℕ) : IsClosed (flatSimplexSet n) := by
+theorem Hurewicz.isClosed_flatSimplexSet (n : ℕ) : IsClosed (flatSimplexSet n) := by
   have he : flatSimplexSet n = (⋂ i : Fin n, {v : Fin n → ℝ | 0 ≤ v i}) ∩ {v | ∑ i, v i ≤ 1} := by
     ext v
     simp only [flatSimplexSet, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]
@@ -210,31 +210,31 @@ theorem HigherHurewicz.isClosed_flatSimplexSet (n : ℕ) : IsClosed (flatSimplex
     (isClosed_iInter fun i => isClosed_le continuous_const (continuous_apply i)).inter
       (isClosed_le (by fun_prop) continuous_const)
 
-theorem HigherHurewicz.flatSimplexSet_subset_Icc (n : ℕ) :
+theorem Hurewicz.flatSimplexSet_subset_Icc (n : ℕ) :
     flatSimplexSet n ⊆ Set.Icc (0 : Fin n → ℝ) 1 := by
   intro v hv
   refine ⟨hv.1, fun i => ?_⟩
   exact (Finset.single_le_sum (fun j _ => hv.1 j) (Finset.mem_univ i)).trans hv.2
 
-theorem HigherHurewicz.isCompact_flatSimplexSet (n : ℕ) : IsCompact (flatSimplexSet n) :=
+theorem Hurewicz.isCompact_flatSimplexSet (n : ℕ) : IsCompact (flatSimplexSet n) :=
   CompactIccSpace.isCompact_Icc.of_isClosed_subset (isClosed_flatSimplexSet n)
     (flatSimplexSet_subset_Icc n)
 
-private def HigherHurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) →L[ℝ] ℝ
+private def Hurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) →L[ℝ] ℝ
     where
   toFun v := ∑ i, v i
   map_add' v w := Finset.sum_add_distrib
   map_smul' a v := by simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, RingHom.id_apply]
   cont := by fun_prop
 
-private theorem HigherHurewicz.flatCoordinateSum_succ_ne_zero_mo1973_5885 (n : ℕ) :
+private theorem Hurewicz.flatCoordinateSum_succ_ne_zero_mo1973_5885 (n : ℕ) :
     flatCoordinateSum_mo1973_5884 (n + 1) ≠ 0 := by
   intro h
   have he := congrArg (fun f : (Fin (n + 1) → ℝ) →L[ℝ] ℝ => f 1) h
   have hn : (n : ℝ) + 1 = 0 := by simpa [flatCoordinateSum_mo1973_5884] using he
   exact (ne_of_gt (Nat.cast_add_one_pos n)) hn
 
-private theorem HigherHurewicz.isOpen_flatSimplexStrict_mo1973_5886 (n : ℕ) :
+private theorem Hurewicz.isOpen_flatSimplexStrict_mo1973_5886 (n : ℕ) :
     IsOpen {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} := by
   have he :
     {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} =
@@ -246,7 +246,7 @@ private theorem HigherHurewicz.isOpen_flatSimplexStrict_mo1973_5886 (n : ℕ) :
     (isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_apply i)).inter
       (isOpen_lt (by fun_prop) continuous_const)
 
-theorem HigherHurewicz.interior_flatSimplexSet (n : ℕ) :
+theorem Hurewicz.interior_flatSimplexSet (n : ℕ) :
     interior (flatSimplexSet n) = {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} := by
   apply Set.Subset.antisymm
   · intro v hv
@@ -273,7 +273,7 @@ theorem HigherHurewicz.interior_flatSimplexSet (n : ℕ) :
       (isOpen_flatSimplexStrict_mo1973_5886 n).subset_interior_iff.mpr
         (fun _ hv => ⟨fun i => (hv.1 i).le, hv.2.le⟩)
 
-theorem HigherHurewicz.interior_flatSimplexSet_nonempty (n : ℕ) :
+theorem Hurewicz.interior_flatSimplexSet_nonempty (n : ℕ) :
     (interior (flatSimplexSet n)).Nonempty := by
   rw [interior_flatSimplexSet]
   have hn : 0 < (n : ℝ) + 1 := Nat.cast_add_one_pos n
@@ -281,7 +281,7 @@ theorem HigherHurewicz.interior_flatSimplexSet_nonempty (n : ℕ) :
   simpa only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
     mul_one_div] using (div_lt_one hn).mpr (lt_add_one (n : ℝ))
 
-theorem HigherHurewicz.simplexFlatHomeomorph_mem_interior_iff (n : ℕ)
+theorem Hurewicz.simplexFlatHomeomorph_mem_interior_iff (n : ℕ)
     (s : SingularChains.Simplex n) :
     (simplexFlatHomeomorph n s).val ∈ interior (flatSimplexSet n) ↔ ∀ i, 0 < s i := by
   rw [interior_flatSimplexSet]
@@ -295,7 +295,7 @@ theorem HigherHurewicz.simplexFlatHomeomorph_mem_interior_iff (n : ℕ)
   · intro hpos
     exact ⟨fun i => hpos i.succ, by linarith [hpos 0]⟩
 
-theorem HigherHurewicz.simplexFlatHomeomorph_mem_frontier_iff (n : ℕ)
+theorem Hurewicz.simplexFlatHomeomorph_mem_frontier_iff (n : ℕ)
     (s : SingularChains.Simplex n) :
     (simplexFlatHomeomorph n s).val ∈ frontier (flatSimplexSet n) ↔
       s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
@@ -315,7 +315,7 @@ theorem HigherHurewicz.simplexFlatHomeomorph_mem_frontier_iff (n : ℕ)
     rw [hi] at this
     exact (lt_irrefl 0) this
 
-theorem HigherHurewicz.exists_ambientSimplexCubeHomeomorph (n : ℕ) :
+theorem Hurewicz.exists_ambientSimplexCubeHomeomorph (n : ℕ) :
     ∃ e : (Fin n → ℝ) ≃ₜ (Fin n → ℝ),
       e '' flatSimplexSet n = realCubeSet n ∧
         e '' frontier (flatSimplexSet n) = frontier (realCubeSet n) := by
@@ -327,18 +327,18 @@ theorem HigherHurewicz.exists_ambientSimplexCubeHomeomorph (n : ℕ) :
   simpa only [(isClosed_flatSimplexSet n).closure_eq, (isClosed_realCubeSet n).closure_eq] using
     hclosed
 
-def HigherHurewicz.ambientSimplexCubeHomeomorph (n : ℕ) : (Fin n → ℝ) ≃ₜ (Fin n → ℝ) :=
+def Hurewicz.ambientSimplexCubeHomeomorph (n : ℕ) : (Fin n → ℝ) ≃ₜ (Fin n → ℝ) :=
   Classical.choose (exists_ambientSimplexCubeHomeomorph n)
 
-theorem HigherHurewicz.ambientSimplexCubeHomeomorph_image (n : ℕ) :
+theorem Hurewicz.ambientSimplexCubeHomeomorph_image (n : ℕ) :
     ambientSimplexCubeHomeomorph n '' flatSimplexSet n = realCubeSet n :=
   (Classical.choose_spec (exists_ambientSimplexCubeHomeomorph n)).1
 
-theorem HigherHurewicz.ambientSimplexCubeHomeomorph_image_frontier (n : ℕ) :
+theorem Hurewicz.ambientSimplexCubeHomeomorph_image_frontier (n : ℕ) :
     ambientSimplexCubeHomeomorph n '' frontier (flatSimplexSet n) = frontier (realCubeSet n) :=
   (Classical.choose_spec (exists_ambientSimplexCubeHomeomorph n)).2
 
-theorem HigherHurewicz.ambientSimplexCubeHomeomorph_mem_iff (n : ℕ) (v : Fin n → ℝ) :
+theorem Hurewicz.ambientSimplexCubeHomeomorph_mem_iff (n : ℕ) (v : Fin n → ℝ) :
     v ∈ flatSimplexSet n ↔ ambientSimplexCubeHomeomorph n v ∈ realCubeSet n := by
   constructor
   · intro hv
@@ -349,7 +349,7 @@ theorem HigherHurewicz.ambientSimplexCubeHomeomorph_mem_iff (n : ℕ) (v : Fin n
     obtain ⟨w, hw, he⟩ := hv
     exact (ambientSimplexCubeHomeomorph n).injective he ▸ hw
 
-theorem HigherHurewicz.ambientSimplexCubeHomeomorph_mem_frontier_iff (n : ℕ) (v : Fin n → ℝ) :
+theorem Hurewicz.ambientSimplexCubeHomeomorph_mem_frontier_iff (n : ℕ) (v : Fin n → ℝ) :
     v ∈ frontier (flatSimplexSet n) ↔
       ambientSimplexCubeHomeomorph n v ∈ frontier (realCubeSet n) := by
   constructor
@@ -361,14 +361,14 @@ theorem HigherHurewicz.ambientSimplexCubeHomeomorph_mem_frontier_iff (n : ℕ) (
     obtain ⟨w, hw, he⟩ := hv
     exact (ambientSimplexCubeHomeomorph n).injective he ▸ hw
 
-def HigherHurewicz.flatCubeHomeomorph (n : ℕ) : ↥(flatSimplexSet n) ≃ₜ ↥(realCubeSet n) :=
+def Hurewicz.flatCubeHomeomorph (n : ℕ) : ↥(flatSimplexSet n) ≃ₜ ↥(realCubeSet n) :=
   (ambientSimplexCubeHomeomorph n).subtype (ambientSimplexCubeHomeomorph_mem_iff n)
 
-def HigherHurewicz.simplexCubeHomeomorph (n : ℕ) :
+def Hurewicz.simplexCubeHomeomorph (n : ℕ) :
     SingularChains.Simplex n ≃ₜ (Fin n → (unitInterval)) :=
   (simplexFlatHomeomorph n).trans ((flatCubeHomeomorph n).trans (realCubeHomeomorph n))
 
-theorem HigherHurewicz.simplexCubeHomeomorph_boundary_iff (n : ℕ) (s : SingularChains.Simplex n) :
+theorem Hurewicz.simplexCubeHomeomorph_boundary_iff (n : ℕ) (s : SingularChains.Simplex n) :
     simplexCubeHomeomorph n s ∈ Cube.boundary (Fin n) ↔
       s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
   change
@@ -380,7 +380,7 @@ theorem HigherHurewicz.simplexCubeHomeomorph_boundary_iff (n : ℕ) (s : Singula
     ambientSimplexCubeHomeomorph n (simplexFlatHomeomorph n s).val ∈ frontier (realCubeSet n) ↔ _
   rw [← ambientSimplexCubeHomeomorph_mem_frontier_iff, simplexFlatHomeomorph_mem_frontier_iff]
 
-theorem HigherHurewicz.simplexCubeHomeomorph_symm_boundary_iff (n : ℕ)
+theorem Hurewicz.simplexCubeHomeomorph_symm_boundary_iff (n : ℕ)
     (u : Fin n → (unitInterval)) :
     (simplexCubeHomeomorph n).symm u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n ↔
       u ∈ Cube.boundary (Fin n) := by

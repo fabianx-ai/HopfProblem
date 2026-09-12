@@ -14,7 +14,7 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-def HigherHurewicz.CubicalBoundary.cubeFacet (n : ℕ) (i : Fin (n + 1)) (ε : (unitInterval)) :
+def Hurewicz.CubicalBoundary.cubeFacet (n : ℕ) (i : Fin (n + 1)) (ε : (unitInterval)) :
     C(Fin n → (unitInterval), Fin (n + 1) → (unitInterval))
     where
   toFun u := Fin.insertNth (α := fun _ => (unitInterval)) i ε u
@@ -28,35 +28,35 @@ def HigherHurewicz.CubicalBoundary.cubeFacet (n : ℕ) (i : Fin (n + 1)) (ε : (
         (continuous_apply k : Continuous fun u : Fin n → (unitInterval) => u k)
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.cubeFacet_apply_self (n : ℕ) (i : Fin (n + 1))
+theorem Hurewicz.CubicalBoundary.cubeFacet_apply_self (n : ℕ) (i : Fin (n + 1))
     (ε : (unitInterval)) (u : Fin n → (unitInterval)) : cubeFacet n i ε u i = ε :=
   Fin.insertNth_apply_same (α := fun _ => (unitInterval)) i ε u
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.cubeFacet_apply_succAbove (n : ℕ) (i : Fin (n + 1))
+theorem Hurewicz.CubicalBoundary.cubeFacet_apply_succAbove (n : ℕ) (i : Fin (n + 1))
     (ε : (unitInterval)) (u : Fin n → (unitInterval)) (j : Fin n) :
     cubeFacet n i ε u (i.succAbove j) = u j :=
   Fin.insertNth_apply_succAbove (α := fun _ => (unitInterval)) i ε u j
 
-theorem HigherHurewicz.SimplexGeometry.simplexQuotient_bottom_not_last_twoBoundary (n : ℕ)
+theorem Hurewicz.SimplexGeometry.simplexQuotient_bottom_not_last_twoBoundary (n : ℕ)
     (i : Fin (n + 1)) (hi : i ≠ Fin.last n) (u : Fin n → (unitInterval)) :
-    simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n i 0 u) ∈
+    simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n i 0 u) ∈
       simplexTwoBoundary (n + 1) := by
   have hil : i < Fin.last n := lt_of_le_of_ne (Fin.le_last i) hi
   exact
     ⟨(Fin.last n).castSucc, Fin.last (n + 1), Fin.castSucc_ne_last _,
       simplexQuotient_castSucc_eq_zero_of_earlier_zero
-        (HigherHurewicz.CubicalBoundary.cubeFacet n i 0 u) i (Fin.last n) hil
-        (HigherHurewicz.CubicalBoundary.cubeFacet_apply_self n i 0 u),
-      simplexQuotient_last_eq_zero_of_zero (HigherHurewicz.CubicalBoundary.cubeFacet n i 0 u) i
-        (HigherHurewicz.CubicalBoundary.cubeFacet_apply_self n i 0 u)⟩
+        (Hurewicz.CubicalBoundary.cubeFacet n i 0 u) i (Fin.last n) hil
+        (Hurewicz.CubicalBoundary.cubeFacet_apply_self n i 0 u),
+      simplexQuotient_last_eq_zero_of_zero (Hurewicz.CubicalBoundary.cubeFacet n i 0 u) i
+        (Hurewicz.CubicalBoundary.cubeFacet_apply_self n i 0 u)⟩
 
-def HigherHurewicz.CubicalBoundary.BasedCubicalCell (n : ℕ) {X : Type*} [TopologicalSpace X]
+def Hurewicz.CubicalBoundary.BasedCubicalCell (n : ℕ) {X : Type*} [TopologicalSpace X]
     (x : X) :=
   { F : C(Fin n → (unitInterval), X) //
     ∀ u i j, i ≠ j → (u i = 0 ∨ u i = 1) → (u j = 0 ∨ u j = 1) → F u = x }
 
-def HigherHurewicz.CubicalBoundary.cubicalFace {X : Type*} [TopologicalSpace X] {x : X} {n : ℕ}
+def Hurewicz.CubicalBoundary.cubicalFace {X : Type*} [TopologicalSpace X] {x : X} {n : ℕ}
     (F : BasedCubicalCell (n + 1) x) (i : Fin (n + 1)) (ε : (unitInterval)) (hε : ε = 0 ∨ ε = 1) :
     GenLoop (Fin n) X x :=
   ⟨F.val.comp (cubeFacet n i ε), fun u ⟨j, hj⟩ =>
@@ -66,21 +66,21 @@ def HigherHurewicz.CubicalBoundary.cubicalFace {X : Type*} [TopologicalSpace X] 
     · simpa only [cubeFacet_apply_succAbove] using hj⟩
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.cubicalFace_apply {X : Type*} [TopologicalSpace X] {x : X}
+theorem Hurewicz.CubicalBoundary.cubicalFace_apply {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (F : BasedCubicalCell (n + 1) x) (i : Fin (n + 1)) (ε : (unitInterval))
     (hε : ε = 0 ∨ ε = 1) (u : Fin n → (unitInterval)) :
     cubicalFace F i ε hε u = F.val (cubeFacet n i ε u) :=
   rfl
 
-abbrev HigherHurewicz.CubicalBoundary.cubicalLowerFace {X : Type*} [TopologicalSpace X] {x : X}
+abbrev Hurewicz.CubicalBoundary.cubicalLowerFace {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (F : BasedCubicalCell (n + 1) x) (i : Fin (n + 1)) : GenLoop (Fin n) X x :=
   cubicalFace F i 0 (Or.inl rfl)
 
-abbrev HigherHurewicz.CubicalBoundary.cubicalUpperFace {X : Type*} [TopologicalSpace X] {x : X}
+abbrev Hurewicz.CubicalBoundary.cubicalUpperFace {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (F : BasedCubicalCell (n + 1) x) (i : Fin (n + 1)) : GenLoop (Fin n) X x :=
   cubicalFace F i 1 (Or.inr rfl)
 
-structure HigherHurewicz.CubicalBoundary.CubicalEvaluator {X : Type*} [TopologicalSpace X] (n : ℕ)
+structure Hurewicz.CubicalBoundary.CubicalEvaluator {X : Type*} [TopologicalSpace X] (n : ℕ)
     (x : X) (A : Type*) [AddCommGroup A] where
   evaluate : GenLoop (Fin n) X x → A
   map_const : evaluate GenLoop.const = 0
@@ -90,60 +90,60 @@ structure HigherHurewicz.CubicalBoundary.CubicalEvaluator {X : Type*} [Topologic
   map_swap :
     ∀ p i j,
       i ≠ j →
-        evaluate (HigherHurewicz.NativeSubdivision.permuteCubeLoop p (Equiv.swap i j)) =
+        evaluate (Hurewicz.NativeSubdivision.permuteCubeLoop p (Equiv.swap i j)) =
           -evaluate p
 
-instance HigherHurewicz.CubicalBoundary.instCoeFun1 {X : Type*} [TopologicalSpace X] {n : ℕ}
+instance Hurewicz.CubicalBoundary.instCoeFun1 {X : Type*} [TopologicalSpace X] {n : ℕ}
     {x : X} {A : Type*} [AddCommGroup A] :
     CoeFun (CubicalEvaluator n x A) (fun _ => GenLoop (Fin n) X x → A) :=
   ⟨CubicalEvaluator.evaluate⟩
 
-theorem HigherHurewicz.CubicalBoundary.CubicalEvaluator.map_permutation {X : Type*}
+theorem Hurewicz.CubicalBoundary.CubicalEvaluator.map_permutation {X : Type*}
     [TopologicalSpace X] {n : ℕ} {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator n x A) (p : GenLoop (Fin n) X x)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator n x A) (p : GenLoop (Fin n) X x)
     (e : Equiv.Perm (Fin n)) :
-    E (HigherHurewicz.NativeSubdivision.permuteCubeLoop p e) =
+    E (Hurewicz.NativeSubdivision.permuteCubeLoop p e) =
       ((Equiv.Perm.sign e : ℤˣ) : ℤ) • E p := by
   induction e using Equiv.Perm.swap_induction_on with
   | one => simp
   | swap_mul e i j hij
     ih =>
-    rw [HigherHurewicz.NativeSubdivision.permuteCubeLoop_mul, E.map_swap _ i j hij, ih]
+    rw [Hurewicz.NativeSubdivision.permuteCubeLoop_mul, E.map_swap _ i j hij, ih]
     simp [Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hij]
 
-theorem HigherHurewicz.CubicalBoundary.CubicalEvaluator.map_finRotate {X : Type*}
+theorem Hurewicz.CubicalBoundary.CubicalEvaluator.map_finRotate {X : Type*}
     [TopologicalSpace X] {n : ℕ} {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator n x A) (p : GenLoop (Fin n) X x) :
-    E (HigherHurewicz.NativeSubdivision.permuteCubeLoop p (finRotate n)) =
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator n x A) (p : GenLoop (Fin n) X x) :
+    E (Hurewicz.NativeSubdivision.permuteCubeLoop p (finRotate n)) =
       (-1 : ℤ) ^ (n - 1) • E p := by
   rw [E.map_permutation, sign_finRotate]
   simp
 
-def HigherHurewicz.CubicalBoundary.cubicalBoundaryValue {X : Type*} [TopologicalSpace X] {n : ℕ}
+def Hurewicz.CubicalBoundary.cubicalBoundaryValue {X : Type*} [TopologicalSpace X] {n : ℕ}
     {x : X} {A : Type*} [AddCommGroup A] (E : CubicalEvaluator n x A)
     (F : BasedCubicalCell (n + 1) x) : A :=
   ∑ i : Fin (n + 1), (-1 : ℤ) ^ i.val • (E (cubicalUpperFace F i) - E (cubicalLowerFace F i))
 
-def HigherHurewicz.CubicalBoundary.nativeCubicalEvaluator {X : Type*} [TopologicalSpace X] (n : ℕ)
+def Hurewicz.CubicalBoundary.nativeCubicalEvaluator {X : Type*} [TopologicalSpace X] (n : ℕ)
     (x : X) : CubicalEvaluator (n + 2) x (Additive (π_ (n + 2) X x))
     where
-  evaluate := HigherHurewicz.NativeSubdivision.nativeClass
-  map_const := HigherHurewicz.NativeSubdivision.nativeClass_const
-  map_homotopic := HigherHurewicz.NativeSubdivision.nativeClass_homotopic
-  map_transAt := HigherHurewicz.NativeSubdivision.nativeClass_transAt
-  map_symmAt := HigherHurewicz.NativeSubdivision.nativeClass_symmAt
-  map_swap := HigherHurewicz.NativeSubdivision.permuteCubeLoop_swap_additiveClass
+  evaluate := Hurewicz.NativeSubdivision.nativeClass
+  map_const := Hurewicz.NativeSubdivision.nativeClass_const
+  map_homotopic := Hurewicz.NativeSubdivision.nativeClass_homotopic
+  map_transAt := Hurewicz.NativeSubdivision.nativeClass_transAt
+  map_symmAt := Hurewicz.NativeSubdivision.nativeClass_symmAt
+  map_swap := Hurewicz.NativeSubdivision.permuteCubeLoop_swap_additiveClass
 
-theorem HigherHurewicz.SimplexGeometry.extendedMinimum_cubeFacet_one_le {n : ℕ} (i : Fin (n + 1))
+theorem Hurewicz.SimplexGeometry.extendedMinimum_cubeFacet_one_le {n : ℕ} (i : Fin (n + 1))
     (u : Fin n → (unitInterval)) (k : ℕ) (hk : k ≤ i.val) :
-    extendedMinimum (HigherHurewicz.CubicalBoundary.cubeFacet n i 1 u) k = extendedMinimum u k := by
+    extendedMinimum (Hurewicz.CubicalBoundary.cubeFacet n i 1 u) k = extendedMinimum u k := by
   have hkn : k ≤ n := hk.trans (Nat.le_of_lt_succ i.isLt)
   rw [extendedMinimum_of_le _ k (hkn.trans (Nat.le_succ n)), extendedMinimum_of_le u k hkn]
   exact prefixMinimum_insertNth_one_le i u k hk
 
-theorem HigherHurewicz.SimplexGeometry.extendedMinimum_cubeFacet_one_succ {n : ℕ}
+theorem Hurewicz.SimplexGeometry.extendedMinimum_cubeFacet_one_succ {n : ℕ}
     (i : Fin (n + 1)) (u : Fin n → (unitInterval)) (k : ℕ) (hk : i.val ≤ k) :
-    extendedMinimum (HigherHurewicz.CubicalBoundary.cubeFacet n i 1 u) (k + 1) =
+    extendedMinimum (Hurewicz.CubicalBoundary.cubeFacet n i 1 u) (k + 1) =
       extendedMinimum u k := by
   by_cases hkn : k ≤ n
   · rw [extendedMinimum_of_le _ (k + 1) (Nat.succ_le_succ hkn), extendedMinimum_of_le u k hkn]
@@ -151,9 +151,9 @@ theorem HigherHurewicz.SimplexGeometry.extendedMinimum_cubeFacet_one_succ {n : �
   · simp only [extendedMinimum, if_neg hkn,
       if_neg (show ¬k + 1 ≤ n + 1 from fun h => hkn (Nat.succ_le_succ_iff.mp h))]
 
-theorem HigherHurewicz.SimplexGeometry.extendedMinimum_cubeFacet_last_zero {n : ℕ}
+theorem Hurewicz.SimplexGeometry.extendedMinimum_cubeFacet_last_zero {n : ℕ}
     (u : Fin n → (unitInterval)) (k : ℕ) :
-    extendedMinimum (HigherHurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) k =
+    extendedMinimum (Hurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) k =
       extendedMinimum u k := by
   by_cases hkn : k ≤ n
   · rw [extendedMinimum_of_le _ k (hkn.trans (Nat.le_succ n)), extendedMinimum_of_le u k hkn]
@@ -167,20 +167,20 @@ theorem HigherHurewicz.SimplexGeometry.extendedMinimum_cubeFacet_last_zero {n : 
       exact min_eq_left (show (0 : (unitInterval)) ≤ prefixMinimum u n from bot_le)
     · simp only [extendedMinimum, if_neg hkn, if_neg hks]
 
-theorem HigherHurewicz.SimplexGeometry.simplexQuotient_cubeFacet_one_apply (n : ℕ)
+theorem Hurewicz.SimplexGeometry.simplexQuotient_cubeFacet_one_apply (n : ℕ)
     (i : Fin (n + 1)) (u : Fin n → (unitInterval)) :
-    simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n i 1 u) =
+    simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n i 1 u) =
       SingularChains.simplexFace n i.castSucc (simplexQuotient n u) := by
   apply Subtype.ext
   funext k
   change
-    simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n i 1 u) k =
+    simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n i 1 u) k =
       SingularChains.simplexFace n i.castSucc (simplexQuotient n u) k
   refine Fin.succAboveCases i.castSucc ?_ (fun j => ?_) k
   · rw [SingularChains.simplexFace_apply_self]
     exact
       simplexQuotient_castSucc_eq_zero_of_one _ i
-        (HigherHurewicz.CubicalBoundary.cubeFacet_apply_self n i 1 u)
+        (Hurewicz.CubicalBoundary.cubeFacet_apply_self n i 1 u)
   · rw [SingularChains.simplexFace_apply_succAbove]
     by_cases hji : j < i
     · rw [Fin.succAbove_of_castSucc_lt i.castSucc j (show j.castSucc < i.castSucc from hji)]
@@ -194,89 +194,89 @@ theorem HigherHurewicz.SimplexGeometry.simplexQuotient_cubeFacet_one_apply (n : 
         extendedMinimum_cubeFacet_one_succ i u (j.val + 1)
           ((show i.val ≤ j.val from le_of_not_gt hji).trans (Nat.le_succ j.val))]
 
-theorem HigherHurewicz.SimplexGeometry.simplexQuotient_cubeFacet_last_zero_apply (n : ℕ)
+theorem Hurewicz.SimplexGeometry.simplexQuotient_cubeFacet_last_zero_apply (n : ℕ)
     (u : Fin n → (unitInterval)) :
-    simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) =
+    simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) =
       SingularChains.simplexFace n (Fin.last (n + 1)) (simplexQuotient n u) := by
   apply Subtype.ext
   funext k
   change
-    simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) k =
+    simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u) k =
       SingularChains.simplexFace n (Fin.last (n + 1)) (simplexQuotient n u) k
   refine Fin.lastCases ?_ (fun j => ?_) k
   · rw [SingularChains.simplexFace_apply_self]
     exact
       simplexQuotient_last_eq_zero_of_zero _ (Fin.last n)
-        (HigherHurewicz.CubicalBoundary.cubeFacet_apply_self n (Fin.last n) 0 u)
+        (Hurewicz.CubicalBoundary.cubeFacet_apply_self n (Fin.last n) 0 u)
   · rw [show j.castSucc = (Fin.last (n + 1)).succAbove j by simp,
       SingularChains.simplexFace_apply_succAbove]
     simp only [Fin.succAbove_last, simplexQuotient_apply, Fin.val_castSucc,
       extendedMinimum_cubeFacet_last_zero]
 
-def HigherHurewicz.SimplexGeometry.simplexBoundaryCube {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.SimplexGeometry.simplexBoundaryCube {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (τ : BasedSimplexBoundary n x) :
-    HigherHurewicz.CubicalBoundary.BasedCubicalCell n x :=
+    Hurewicz.CubicalBoundary.BasedCubicalCell n x :=
   ⟨τ.val.comp (simplexQuotient n), fun u i j hij hi hj =>
     τ.property _ (simplexQuotient_codimTwo u ⟨i, j, hij, hi, hj⟩)⟩
 
-theorem HigherHurewicz.SimplexGeometry.simplexBoundaryCube_upper {X : Type*} [TopologicalSpace X]
+theorem Hurewicz.SimplexGeometry.simplexBoundaryCube_upper {X : Type*} [TopologicalSpace X]
     {x : X} {n : ℕ} (τ : BasedSimplexBoundary (n + 1) x) (i : Fin (n + 1)) :
-    HigherHurewicz.CubicalBoundary.cubicalUpperFace (simplexBoundaryCube τ) i =
+    Hurewicz.CubicalBoundary.cubicalUpperFace (simplexBoundaryCube τ) i =
       basedSimplexLoop (basedSimplexBoundaryFace τ i.castSucc) := by
   apply GenLoop.ext
   intro u
   change
-    τ.val (simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n i 1 u)) =
+    τ.val (simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n i 1 u)) =
       τ.val (SingularChains.simplexFace n i.castSucc (simplexQuotient n u))
   rw [simplexQuotient_cubeFacet_one_apply]
 
-theorem HigherHurewicz.SimplexGeometry.simplexBoundaryCube_lower_last {X : Type*}
+theorem Hurewicz.SimplexGeometry.simplexBoundaryCube_lower_last {X : Type*}
     [TopologicalSpace X] {x : X} {n : ℕ} (τ : BasedSimplexBoundary (n + 1) x) :
-    HigherHurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) (Fin.last n) =
+    Hurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) (Fin.last n) =
       basedSimplexLoop (basedSimplexBoundaryFace τ (Fin.last (n + 1))) := by
   apply GenLoop.ext
   intro u
   change
     τ.val
-        (simplexQuotient (n + 1) (HigherHurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u)) =
+        (simplexQuotient (n + 1) (Hurewicz.CubicalBoundary.cubeFacet n (Fin.last n) 0 u)) =
       τ.val (SingularChains.simplexFace n (Fin.last (n + 1)) (simplexQuotient n u))
   rw [simplexQuotient_cubeFacet_last_zero_apply]
 
-theorem HigherHurewicz.SimplexGeometry.simplexBoundaryCube_lower_constant {X : Type*}
+theorem Hurewicz.SimplexGeometry.simplexBoundaryCube_lower_constant {X : Type*}
     [TopologicalSpace X] {x : X} {n : ℕ} (τ : BasedSimplexBoundary (n + 1) x) (i : Fin (n + 1))
     (hi : i ≠ Fin.last n) :
-    HigherHurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i = GenLoop.const := by
+    Hurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i = GenLoop.const := by
   apply GenLoop.ext
   intro u
   exact τ.property _ (simplexQuotient_bottom_not_last_twoBoundary n i hi u)
 
-theorem HigherHurewicz.SimplexGeometry.simplexBoundaryCube_boundaryValue {X : Type*}
+theorem Hurewicz.SimplexGeometry.simplexBoundaryCube_boundaryValue {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] {n : ℕ}
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator n x A)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator n x A)
     (τ : BasedSimplexBoundary (n + 1) x) :
-    HigherHurewicz.CubicalBoundary.cubicalBoundaryValue E (simplexBoundaryCube τ) =
+    Hurewicz.CubicalBoundary.cubicalBoundaryValue E (simplexBoundaryCube τ) =
       ∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val • E (basedSimplexLoop (basedSimplexBoundaryFace τ i)) :=
   by
   have hzero (i : Fin n) :
-    E (HigherHurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i.castSucc) = 0 := by
+    E (Hurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i.castSucc) = 0 := by
     rw [simplexBoundaryCube_lower_constant τ i.castSucc (Fin.castSucc_ne_last i)]
     exact E.map_const
   have hlower :
     (∑ i : Fin (n + 1),
         (-1 : ℤ) ^ i.val •
-          E (HigherHurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i)) =
+          E (Hurewicz.CubicalBoundary.cubicalLowerFace (simplexBoundaryCube τ) i)) =
       (-1 : ℤ) ^ n • E (basedSimplexLoop (basedSimplexBoundaryFace τ (Fin.last (n + 1)))) := by
     rw [Fin.sum_univ_castSucc]
     simp only [hzero, smul_zero, Finset.sum_const_zero, zero_add, Fin.val_last,
       simplexBoundaryCube_lower_last]
-  unfold HigherHurewicz.CubicalBoundary.cubicalBoundaryValue
+  unfold Hurewicz.CubicalBoundary.cubicalBoundaryValue
   simp_rw [simplexBoundaryCube_upper, smul_sub]
   rw [Finset.sum_sub_distrib, hlower]
   conv_rhs => rw [Fin.sum_univ_castSucc]
   simp only [Fin.val_castSucc, Fin.val_last, pow_succ', neg_mul, one_mul, neg_smul,
     sub_eq_add_neg]
 
-def HigherHurewicz.CubicalBoundary.whiskerStartTrack :
+def Hurewicz.CubicalBoundary.whiskerStartTrack :
     Path ((0 : (unitInterval)), (0 : (unitInterval))) ((0 : (unitInterval)), (1 : (unitInterval)))
     where
   toFun s := (0, s)
@@ -284,7 +284,7 @@ def HigherHurewicz.CubicalBoundary.whiskerStartTrack :
   source' := rfl
   target' := rfl
 
-def HigherHurewicz.CubicalBoundary.whiskerMiddleTrack :
+def Hurewicz.CubicalBoundary.whiskerMiddleTrack :
     Path ((0 : (unitInterval)), (1 : (unitInterval))) ((1 : (unitInterval)), (1 : (unitInterval)))
     where
   toFun s := (s, 1)
@@ -292,7 +292,7 @@ def HigherHurewicz.CubicalBoundary.whiskerMiddleTrack :
   source' := rfl
   target' := rfl
 
-def HigherHurewicz.CubicalBoundary.whiskerFinishTrack :
+def Hurewicz.CubicalBoundary.whiskerFinishTrack :
     Path ((1 : (unitInterval)), (0 : (unitInterval))) ((1 : (unitInterval)), (1 : (unitInterval)))
     where
   toFun s := (1, s)
@@ -300,12 +300,12 @@ def HigherHurewicz.CubicalBoundary.whiskerFinishTrack :
   source' := rfl
   target' := rfl
 
-def HigherHurewicz.CubicalBoundary.whiskerTrack :
+def Hurewicz.CubicalBoundary.whiskerTrack :
     Path ((0 : (unitInterval)), (0 : (unitInterval)))
       ((1 : (unitInterval)), (0 : (unitInterval))) :=
   whiskerStartTrack.trans (whiskerMiddleTrack.trans whiskerFinishTrack.symm)
 
-theorem HigherHurewicz.CubicalBoundary.whiskerTrack_boundary (s : (unitInterval)) :
+theorem Hurewicz.CubicalBoundary.whiskerTrack_boundary (s : (unitInterval)) :
     ((whiskerTrack s).1 = 0 ∨ (whiskerTrack s).1 = 1) ∨ (whiskerTrack s).2 = 1 := by
   unfold whiskerTrack
   rw [Path.trans_apply]
@@ -316,7 +316,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerTrack_boundary (s : (unitInterval)
     · exact Or.inr rfl
     · exact Or.inl (Or.inr rfl)
 
-def HigherHurewicz.CubicalBoundary.whiskerMap (n : ℕ) :
+def Hurewicz.CubicalBoundary.whiskerMap (n : ℕ) :
     C((Fin (n + 1) → (unitInterval)) × (unitInterval), Fin (n + 2) → (unitInterval))
     where
   toFun
@@ -336,43 +336,43 @@ def HigherHurewicz.CubicalBoundary.whiskerMap (n : ℕ) :
             (continuous_subtype_val.comp ((continuous_apply (Fin.last n)).comp continuous_fst))
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_apply (n : ℕ) (u : Fin (n + 1) → (unitInterval))
+theorem Hurewicz.CubicalBoundary.whiskerMap_apply (n : ℕ) (u : Fin (n + 1) → (unitInterval))
     (s : (unitInterval)) :
     whiskerMap n (u, s) =
       Fin.cons (whiskerTrack s).1 (Fin.snoc (Fin.init u) ((whiskerTrack s).2 * u (Fin.last n))) :=
   rfl
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_first (n : ℕ) (u : Fin (n + 1) → (unitInterval))
+theorem Hurewicz.CubicalBoundary.whiskerMap_first (n : ℕ) (u : Fin (n + 1) → (unitInterval))
     (s : (unitInterval)) : whiskerMap n (u, s) 0 = (whiskerTrack s).1 := by simp
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_middle (n : ℕ)
+theorem Hurewicz.CubicalBoundary.whiskerMap_middle (n : ℕ)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) (i : Fin n) :
     whiskerMap n (u, s) i.castSucc.succ = u i.castSucc := by simp [Fin.init]
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_start (n : ℕ)
+theorem Hurewicz.CubicalBoundary.whiskerMap_start (n : ℕ)
     (u : Fin (n + 1) → (unitInterval)) :
     whiskerMap n (u, 0) = Fin.cons 0 (Fin.snoc (Fin.init u) 0) := by simp
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_finish (n : ℕ)
+theorem Hurewicz.CubicalBoundary.whiskerMap_finish (n : ℕ)
     (u : Fin (n + 1) → (unitInterval)) :
     whiskerMap n (u, 1) = Fin.cons 1 (Fin.snoc (Fin.init u) 0) := by simp
 
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_last_zero (n : ℕ)
+theorem Hurewicz.CubicalBoundary.whiskerMap_last_zero (n : ℕ)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) (hu : u (Fin.last n) = 0) :
     whiskerMap n (u, s) (Fin.last n).succ = 0 := by simp [hu]
 
-theorem HigherHurewicz.CubicalBoundary.whiskerCorner_based {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerCorner_based {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) (ε : (unitInterval))
     (hε : ε = 0 ∨ ε = 1) (v : Fin n → (unitInterval)) : F.val (Fin.cons ε (Fin.snoc v 0)) = x := by
   apply F.property _ 0 (Fin.last n).succ (by simp)
   · simpa only [Fin.cons_zero] using hε
   · exact Or.inl (by simp)
 
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_based_of_two_prefix {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerMap_based_of_two_prefix {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) (i j : Fin n) (hij : i ≠ j)
     (hi : u i.castSucc = 0 ∨ u i.castSucc = 1) (hj : u j.castSucc = 0 ∨ u j.castSucc = 1) :
@@ -381,7 +381,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerMap_based_of_two_prefix {n : ℕ} 
   · simpa only [whiskerMap_middle] using hi
   · simpa only [whiskerMap_middle] using hj
 
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_based_of_prefix_last {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerMap_based_of_prefix_last {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) (i : Fin n)
     (hi : u i.castSucc = 0 ∨ u i.castSucc = 1) (hz : u (Fin.last n) = 0 ∨ u (Fin.last n) = 1) :
@@ -398,7 +398,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerMap_based_of_prefix_last {n : ℕ}
       · simpa only [whiskerMap_middle] using hi
       · exact Or.inr (by simp [hr, hz])
 
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_codimTwo_based {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerMap_codimTwo_based {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) (i j : Fin (n + 1)) (hij : i ≠ j)
     (hi : u i = 0 ∨ u i = 1) (hj : u j = 0 ∨ u j = 1) : F.val (whiskerMap n (u, s)) = x := by
@@ -412,12 +412,12 @@ theorem HigherHurewicz.CubicalBoundary.whiskerMap_codimTwo_based {n : ℕ} {X : 
     | last => exact whiskerMap_based_of_prefix_last F u s i hi hj
     | cast j => exact whiskerMap_based_of_two_prefix F u s i j (by simpa using hij) hi hj
 
-theorem HigherHurewicz.CubicalBoundary.cubeFacet_succ_cons (n : ℕ) (i : Fin (n + 1))
+theorem Hurewicz.CubicalBoundary.cubeFacet_succ_cons (n : ℕ) (i : Fin (n + 1))
     (ε s : (unitInterval)) (u : Fin n → (unitInterval)) :
     cubeFacet (n + 1) i.succ ε (Fin.cons s u) = Fin.cons s (cubeFacet n i ε u) :=
   Fin.insertNth_succ_cons i ε s u
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacetNormal_arm_based {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacetNormal_arm_based {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) (i : Fin (n + 1))
     (ε : (unitInterval)) (hε : ε = 0 ∨ ε = 1) (h : i ≠ Fin.last n ∨ ε = 0)
     (u : Fin n → (unitInterval)) (a : (unitInterval)) (ha : a = 0 ∨ a = 1) (r : (unitInterval)) :
@@ -437,7 +437,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerFacetNormal_arm_based {n : ℕ} {X
     · simpa only [Fin.cons_zero] using ha
     · simpa [Fin.init] using hε
 
-def HigherHurewicz.CubicalBoundary.whiskeredLoop {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.CubicalBoundary.whiskeredLoop {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     (F : BasedCubicalCell (n + 2) x) (u : Fin (n + 1) → (unitInterval)) : GenLoop (Fin 1) X x :=
   ⟨⟨fun q => F.val (whiskerMap n (u, q 0)), by fun_prop⟩,
     by
@@ -453,7 +453,7 @@ def HigherHurewicz.CubicalBoundary.whiskeredLoop {n : ℕ} {X : Type*} [Topologi
       rw [hi, whiskerMap_finish]
       exact whiskerCorner_based F 1 (Or.inr rfl) (Fin.init u)⟩
 
-def HigherHurewicz.CubicalBoundary.whiskeredLoopMap {n : ℕ} {X : Type*} [TopologicalSpace X]
+def Hurewicz.CubicalBoundary.whiskeredLoopMap {n : ℕ} {X : Type*} [TopologicalSpace X]
     {x : X} (F : BasedCubicalCell (n + 2) x) :
     C(Fin (n + 1) → (unitInterval), GenLoop (Fin 1) X x)
     where
@@ -467,7 +467,7 @@ def HigherHurewicz.CubicalBoundary.whiskeredLoopMap {n : ℕ} {X : Type*} [Topol
           F.val (whiskerMap n (z.1, z.2 0)))
     exact F.val.continuous.comp ((whiskerMap n).continuous.comp (by fun_prop))
 
-def HigherHurewicz.CubicalBoundary.whiskeredCell {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.CubicalBoundary.whiskeredCell {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     (F : BasedCubicalCell (n + 2) x) :
     BasedCubicalCell (n + 1) (GenLoop.const : GenLoop (Fin 1) X x) :=
   ⟨whiskeredLoopMap F, by
@@ -477,13 +477,13 @@ def HigherHurewicz.CubicalBoundary.whiskeredCell {n : ℕ} {X : Type*} [Topologi
     exact whiskerMap_codimTwo_based F u (q 0) i j hij hi hj⟩
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) (q : Fin 1 → (unitInterval)) :
     (whiskeredCell F).val u q = F.val (whiskerMap n (u, q 0)) :=
   rfl
 
-theorem HigherHurewicz.CubicalBoundary.whiskerTrack_concat (s : (unitInterval)) :
+theorem Hurewicz.CubicalBoundary.whiskerTrack_concat (s : (unitInterval)) :
     whiskerTrack s =
       if (s : ℝ) ≤ 1 / 2 then (0, Set.projIcc 0 1 zero_le_one (2 * (s : ℝ)))
       else
@@ -492,7 +492,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerTrack_concat (s : (unitInterval)) 
         else (1, (unitInterval.symm) (Set.projIcc 0 1 zero_le_one (2 * (t : ℝ) - 1))) :=
   rfl
 
-theorem HigherHurewicz.CubicalBoundary.whiskerMap_concat (n : ℕ)
+theorem Hurewicz.CubicalBoundary.whiskerMap_concat (n : ℕ)
     (u : Fin (n + 1) → (unitInterval)) (s : (unitInterval)) :
     whiskerMap n (u, s) =
       if (s : ℝ) ≤ 1 / 2 then
@@ -513,7 +513,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerMap_concat (n : ℕ)
   · simp only [one_mul, Fin.snoc_init_self]
   · rfl
 
-def HigherHurewicz.CubicalBoundary.uncurryLoop {X : Type*} [TopologicalSpace X] {x : X} {n : ℕ}
+def Hurewicz.CubicalBoundary.uncurryLoop {X : Type*} [TopologicalSpace X] {x : X} {n : ℕ}
     (p : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) : GenLoop (Fin (n + 1)) X x :=
   ⟨⟨fun u => p (fun i => u i.succ) (fun _ => u 0), by fun_prop⟩,
     by
@@ -527,13 +527,13 @@ def HigherHurewicz.CubicalBoundary.uncurryLoop {X : Type*} [TopologicalSpace X] 
       rfl⟩
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_apply {X : Type*} [TopologicalSpace X] {x : X}
+theorem Hurewicz.CubicalBoundary.uncurryLoop_apply {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (p : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const)
     (u : Fin (n + 1) → (unitInterval)) : uncurryLoop p u = p (fun i => u i.succ) (fun _ => u 0) :=
   rfl
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_const {X : Type*} [TopologicalSpace X] {x : X}
+theorem Hurewicz.CubicalBoundary.uncurryLoop_const {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} :
     uncurryLoop (GenLoop.const : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) =
       (GenLoop.const : GenLoop (Fin (n + 1)) X x) := by
@@ -541,7 +541,7 @@ theorem HigherHurewicz.CubicalBoundary.uncurryLoop_const {X : Type*} [Topologica
   intro u
   rfl
 
-def HigherHurewicz.CubicalBoundary.uncurryLoopHomotopy {X : Type*} [TopologicalSpace X] {x : X}
+def Hurewicz.CubicalBoundary.uncurryLoopHomotopy {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} {p q : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const}
     (H : p.val.HomotopyRel q.val (Cube.boundary (Fin n))) :
     (uncurryLoop p).val.HomotopyRel (uncurryLoop q).val (Cube.boundary (Fin (n + 1)))
@@ -571,13 +571,13 @@ def HigherHurewicz.CubicalBoundary.uncurryLoopHomotopy {X : Type*} [TopologicalS
       rw [GenLoop.boundary p _ ⟨j, hi⟩]
       rfl
 
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_homotopic {X : Type*} [TopologicalSpace X]
+theorem Hurewicz.CubicalBoundary.uncurryLoop_homotopic {X : Type*} [TopologicalSpace X]
     {x : X} {n : ℕ} {p q : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const}
     (h : GenLoop.Homotopic p q) : GenLoop.Homotopic (uncurryLoop p) (uncurryLoop q) := by
   obtain ⟨H⟩ := h
   exact ⟨uncurryLoopHomotopy H⟩
 
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_face_normal {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_face_normal {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) (i : Fin (n + 1))
     (ε : (unitInterval)) (hε : ε = 0 ∨ ε = 1) (h : i ≠ Fin.last n ∨ ε = 0) :
     uncurryLoop (cubicalFace (whiskeredCell F) i ε hε) =
@@ -602,36 +602,36 @@ theorem HigherHurewicz.CubicalBoundary.whiskeredCell_face_normal {n : ℕ} {X : 
   · rw [cubicalFace_apply, hcons, cubeFacet_succ_cons]
   · exact whiskerFacetNormal_arm_based F i ε hε h _ 1 (Or.inr rfl) _
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_rotate_coordinates {n : ℕ}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_rotate_coordinates {n : ℕ}
     (u : Fin (n + 1) → (unitInterval)) :
     (fun i => u (finRotate (n + 1) i)) = Fin.snoc (Fin.tail u) (u 0) := by
   simpa only [Fin.cons_self_tail] using (Fin.snoc_eq_cons_rotate (Fin.tail u) (u 0)).symm
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_zero_coordinates {n : ℕ} (ε : (unitInterval))
+theorem Hurewicz.CubicalBoundary.whiskerFacet_zero_coordinates {n : ℕ} (ε : (unitInterval))
     (u : Fin (n + 1) → (unitInterval)) : cubeFacet (n + 1) 0 ε u = Fin.cons ε u :=
   Fin.insertNth_zero' ε u
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_last_coordinates {n : ℕ} (ε : (unitInterval))
+theorem Hurewicz.CubicalBoundary.whiskerFacet_last_coordinates {n : ℕ} (ε : (unitInterval))
     (u : Fin n → (unitInterval)) : cubeFacet n (Fin.last n) ε u = Fin.snoc u ε :=
   Fin.insertNth_last' ε u
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_rotated_face_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_rotated_face_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) (ε : (unitInterval))
     (hε : ε = 0 ∨ ε = 1) (u : Fin (n + 1) → (unitInterval)) :
-    HigherHurewicz.NativeSubdivision.permuteCubeLoop (cubicalFace F 0 ε hε) (finRotate (n + 1))
+    Hurewicz.NativeSubdivision.permuteCubeLoop (cubicalFace F 0 ε hε) (finRotate (n + 1))
         u =
       F.val (Fin.cons ε (Fin.snoc (Fin.tail u) (u 0))) := by
-  rw [HigherHurewicz.NativeSubdivision.permuteCubeLoop_apply, cubicalFace_apply,
+  rw [Hurewicz.NativeSubdivision.permuteCubeLoop_apply, cubicalFace_apply,
     whiskerFacet_zero_coordinates, whiskerFacet_rotate_coordinates]
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_last_upper_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_last_upper_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) :
     cubicalUpperFace F (Fin.last (n + 1)) u = F.val (Fin.cons (u 0) (Fin.snoc (Fin.tail u) 1)) := by
   rw [cubicalFace_apply, whiskerFacet_last_coordinates, Fin.cons_snoc_eq_snoc_cons,
     Fin.cons_self_tail]
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_symmAt_zero_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_symmAt_zero_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin (n + 1)) X x)
     (u : Fin (n + 1) → (unitInterval)) :
     GenLoop.symmAt 0 p u = p (Function.update u 0 ((unitInterval.symm) (u 0))) := by
@@ -640,18 +640,18 @@ theorem HigherHurewicz.CubicalBoundary.whiskerFacet_symmAt_zero_apply {n : ℕ} 
   funext j
   simp only [Function.update_apply]
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_reflected_rotated_face_apply {n : ℕ}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_reflected_rotated_face_apply {n : ℕ}
     {X : Type*} [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) (ε : (unitInterval))
     (hε : ε = 0 ∨ ε = 1) (u : Fin (n + 1) → (unitInterval)) :
     GenLoop.symmAt 0
-        (HigherHurewicz.NativeSubdivision.permuteCubeLoop (cubicalFace F 0 ε hε)
+        (Hurewicz.NativeSubdivision.permuteCubeLoop (cubicalFace F 0 ε hε)
           (finRotate (n + 1)))
         u =
       F.val (Fin.cons ε (Fin.snoc (Fin.tail u) ((unitInterval.symm) (u 0)))) := by
   rw [whiskerFacet_symmAt_zero_apply, whiskerFacet_rotated_face_apply]
   simp only [Fin.tail_update_zero, Function.update_self]
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_last_upper_uncurry_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_last_upper_uncurry_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x)
     (u : Fin (n + 1) → (unitInterval)) :
     uncurryLoop (cubicalUpperFace (whiskeredCell F) (Fin.last n)) u =
@@ -661,7 +661,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskerFacet_last_upper_uncurry_apply {n 
   simp only [Fin.init_snoc, Fin.snoc_last, mul_one]
   rfl
 
-theorem HigherHurewicz.CubicalBoundary.whiskerFacet_transAt_zero_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskerFacet_transAt_zero_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 1)) X x)
     (u : Fin (n + 1) → (unitInterval)) :
     GenLoop.transAt 0 p q u =
@@ -670,15 +670,15 @@ theorem HigherHurewicz.CubicalBoundary.whiskerFacet_transAt_zero_apply {n : ℕ}
       else q (Function.update u 0 (Set.projIcc 0 1 zero_le_one (2 * (u 0 : ℝ) - 1))) :=
   rfl
 
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_face_last_upper {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_face_last_upper {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell (n + 2) x) :
     uncurryLoop (cubicalUpperFace (whiskeredCell F) (Fin.last n)) =
       GenLoop.transAt 0
-        (HigherHurewicz.NativeSubdivision.permuteCubeLoop (cubicalLowerFace F 0)
+        (Hurewicz.NativeSubdivision.permuteCubeLoop (cubicalLowerFace F 0)
           (finRotate (n + 1)))
         (GenLoop.transAt 0 (cubicalUpperFace F (Fin.last (n + 1)))
           (GenLoop.symmAt 0
-            (HigherHurewicz.NativeSubdivision.permuteCubeLoop (cubicalUpperFace F 0)
+            (Hurewicz.NativeSubdivision.permuteCubeLoop (cubicalUpperFace F 0)
               (finRotate (n + 1))))) := by
   apply GenLoop.ext
   intro u
@@ -695,7 +695,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskeredCell_face_last_upper {n : ℕ} {
     · rw [whiskerFacet_reflected_rotated_face_apply]
       simp only [Fin.tail_update_zero, Function.update_self]
 
-theorem HigherHurewicz.CubicalBoundary.uncurryTail_update_succ {n : ℕ}
+theorem Hurewicz.CubicalBoundary.uncurryTail_update_succ {n : ℕ}
     (u : Fin (n + 1) → (unitInterval)) (i : Fin n) (t : (unitInterval)) :
     (fun j : Fin n => Function.update u i.succ t j.succ) =
       Function.update (fun j : Fin n => u j.succ) i t := by
@@ -703,12 +703,12 @@ theorem HigherHurewicz.CubicalBoundary.uncurryTail_update_succ {n : ℕ}
   simp only [Function.update_apply, Fin.succ_inj]
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.uncurryHead_update_succ {n : ℕ}
+theorem Hurewicz.CubicalBoundary.uncurryHead_update_succ {n : ℕ}
     (u : Fin (n + 1) → (unitInterval)) (i : Fin n) (t : (unitInterval)) :
     Function.update u i.succ t 0 = u 0 := by
   simp only [Function.update_apply, (Fin.succ_ne_zero i).symm, if_false]
 
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_transAt {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.uncurryLoop_transAt {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} (i : Fin n)
     (p q : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) :
     uncurryLoop (GenLoop.transAt i p q) =
@@ -720,7 +720,7 @@ theorem HigherHurewicz.CubicalBoundary.uncurryLoop_transAt {n : ℕ} {X : Type*}
       if (u i.succ : ℝ) ≤ 1 / 2 then _ else _
   split_ifs <;> simp only [uncurryLoop_apply, uncurryTail_update_succ, uncurryHead_update_succ]
 
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_symmAt {n : ℕ} {X : Type*} [TopologicalSpace X]
+theorem Hurewicz.CubicalBoundary.uncurryLoop_symmAt {n : ℕ} {X : Type*} [TopologicalSpace X]
     {x : X} (i : Fin n) (p : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) :
     uncurryLoop (GenLoop.symmAt i p) = GenLoop.symmAt i.succ (uncurryLoop p) := by
   apply GenLoop.ext
@@ -731,10 +731,10 @@ theorem HigherHurewicz.CubicalBoundary.uncurryLoop_symmAt {n : ℕ} {X : Type*} 
         (fun _ => if (0 : Fin (n + 1)) = i.succ then (unitInterval.symm) (u i.succ) else u 0)
   simp only [Fin.succ_inj, (Fin.succ_ne_zero i).symm, if_false]
 
-theorem HigherHurewicz.CubicalBoundary.uncurryLoop_swap {X : Type*} [TopologicalSpace X] {x : X}
+theorem Hurewicz.CubicalBoundary.uncurryLoop_swap {X : Type*} [TopologicalSpace X] {x : X}
     {n : ℕ} (p : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) (i j : Fin n) :
-    uncurryLoop (HigherHurewicz.NativeSubdivision.permuteCubeLoop p (Equiv.swap i j)) =
-      HigherHurewicz.NativeSubdivision.permuteCubeLoop (uncurryLoop p)
+    uncurryLoop (Hurewicz.NativeSubdivision.permuteCubeLoop p (Equiv.swap i j)) =
+      Hurewicz.NativeSubdivision.permuteCubeLoop (uncurryLoop p)
         (Equiv.swap i.succ j.succ) := by
   have hzero : Equiv.swap i.succ j.succ (0 : Fin (n + 1)) = 0 :=
     Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero i).symm (Fin.succ_ne_zero j).symm
@@ -755,63 +755,63 @@ theorem HigherHurewicz.CubicalBoundary.uncurryLoop_swap {X : Type*} [Topological
       p (fun k => u (Equiv.swap i.succ j.succ k.succ)) (fun _ => u (Equiv.swap i.succ j.succ 0))
   simp only [hsucc, hzero]
 
-def HigherHurewicz.CubicalBoundary.CubicalEvaluator.uncurry {n : ℕ} {X : Type*}
+def Hurewicz.CubicalBoundary.CubicalEvaluator.uncurry {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A) :
-    HigherHurewicz.CubicalBoundary.CubicalEvaluator n (GenLoop.const : GenLoop (Fin 1) X x) A
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A) :
+    Hurewicz.CubicalBoundary.CubicalEvaluator n (GenLoop.const : GenLoop (Fin 1) X x) A
     where
-  evaluate p := E (HigherHurewicz.CubicalBoundary.uncurryLoop p)
-  map_const := by rw [HigherHurewicz.CubicalBoundary.uncurryLoop_const]; exact E.map_const
-  map_homotopic h := E.map_homotopic (HigherHurewicz.CubicalBoundary.uncurryLoop_homotopic h)
+  evaluate p := E (Hurewicz.CubicalBoundary.uncurryLoop p)
+  map_const := by rw [Hurewicz.CubicalBoundary.uncurryLoop_const]; exact E.map_const
+  map_homotopic h := E.map_homotopic (Hurewicz.CubicalBoundary.uncurryLoop_homotopic h)
   map_transAt i p
     q := by
-    rw [HigherHurewicz.CubicalBoundary.uncurryLoop_transAt]
+    rw [Hurewicz.CubicalBoundary.uncurryLoop_transAt]
     exact E.map_transAt i.succ _ _
   map_symmAt i
     p := by
-    rw [HigherHurewicz.CubicalBoundary.uncurryLoop_symmAt]
+    rw [Hurewicz.CubicalBoundary.uncurryLoop_symmAt]
     exact E.map_symmAt i.succ _
   map_swap p i j
     hij := by
-    rw [HigherHurewicz.CubicalBoundary.uncurryLoop_swap]
+    rw [Hurewicz.CubicalBoundary.uncurryLoop_swap]
     exact E.map_swap _ i.succ j.succ (fun h => hij (Fin.succ_inj.mp h))
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.CubicalEvaluator.uncurry_apply {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.CubicalEvaluator.uncurry_apply {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
     (p : GenLoop (Fin n) (GenLoop (Fin 1) X x) GenLoop.const) :
-    E.uncurry p = E (HigherHurewicz.CubicalBoundary.uncurryLoop p) :=
+    E.uncurry p = E (Hurewicz.CubicalBoundary.uncurryLoop p) :=
   rfl
 
-theorem HigherHurewicz.CubicalBoundary.CubicalEvaluator.map_constantClosingPaths {n : ℕ}
+theorem Hurewicz.CubicalBoundary.CubicalEvaluator.map_constantClosingPaths {n : ℕ}
     {X : Type*} [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
     (p : GenLoop (Fin (n + 1)) X x) :
     E (GenLoop.transAt 0 GenLoop.const (GenLoop.transAt 0 p GenLoop.const)) = E p := by
   rw [E.map_transAt, E.map_transAt, E.map_const, zero_add, add_zero]
 
-theorem HigherHurewicz.CubicalBoundary.CubicalEvaluator.map_cyclicClosingPaths {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.CubicalEvaluator.map_cyclicClosingPaths {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A]
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
     (l p r : GenLoop (Fin (n + 1)) X x) :
     E
         (GenLoop.transAt 0
-          (HigherHurewicz.NativeSubdivision.permuteCubeLoop l (finRotate (n + 1)))
+          (Hurewicz.NativeSubdivision.permuteCubeLoop l (finRotate (n + 1)))
           (GenLoop.transAt 0 p
             (GenLoop.symmAt 0
-              (HigherHurewicz.NativeSubdivision.permuteCubeLoop r (finRotate (n + 1)))))) =
+              (Hurewicz.NativeSubdivision.permuteCubeLoop r (finRotate (n + 1)))))) =
       E p - (-1 : ℤ) ^ n • (E r - E l) := by
   rw [E.map_transAt, E.map_transAt, E.map_symmAt, E.map_finRotate, E.map_finRotate]
   simp only [Nat.add_sub_cancel, smul_sub]
   abel
 
-theorem HigherHurewicz.CubicalBoundary.alternatingSign_smul_involution {A : Type*}
+theorem Hurewicz.CubicalBoundary.alternatingSign_smul_involution {A : Type*}
     [AddCommGroup A] (n : ℕ) (a : A) : (-1 : ℤ) ^ n • ((-1 : ℤ) ^ n • a) = a := by
   rw [smul_smul, ← mul_pow]
   simp
 
-theorem HigherHurewicz.CubicalBoundary.alternatingSum_head {A : Type*} [AddCommGroup A] (n : ℕ)
+theorem Hurewicz.CubicalBoundary.alternatingSum_head {A : Type*} [AddCommGroup A] (n : ℕ)
     (a : Fin (n + 2) → A) :
     (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val • a i) =
       a 0 - ∑ i : Fin (n + 1), (-1 : ℤ) ^ i.val • a i.succ := by
@@ -819,7 +819,7 @@ theorem HigherHurewicz.CubicalBoundary.alternatingSum_head {A : Type*} [AddCommG
   simp only [Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ', neg_mul, one_mul,
     neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]
 
-theorem HigherHurewicz.CubicalBoundary.alternatingSum_dimension_reduction {A : Type*}
+theorem Hurewicz.CubicalBoundary.alternatingSum_dimension_reduction {A : Type*}
     [AddCommGroup A] (n : ℕ) (a : Fin (n + 2) → A) (b : Fin (n + 1) → A)
     (hmid : ∀ i : Fin n, b i.castSucc = a i.castSucc.succ)
     (hlast : b (Fin.last n) = a (Fin.last (n + 1)) - (-1 : ℤ) ^ n • a 0) :
@@ -834,14 +834,14 @@ theorem HigherHurewicz.CubicalBoundary.alternatingSum_dimension_reduction {A : T
   rw [alternatingSum_head, htail]
   abel
 
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_lower_value {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_lower_value {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] (E : CubicalEvaluator (n + 1) x A)
     (F : BasedCubicalCell (n + 2) x) (i : Fin (n + 1)) :
     E.uncurry (cubicalLowerFace (whiskeredCell F) i) = E (cubicalLowerFace F i.succ) := by
   rw [CubicalEvaluator.uncurry_apply, whiskeredCell_face_normal F i 0 (Or.inl rfl) (Or.inr rfl)]
   exact E.map_constantClosingPaths _
 
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_upper_value {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_upper_value {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] (E : CubicalEvaluator (n + 1) x A)
     (F : BasedCubicalCell (n + 2) x) (i : Fin n) :
     E.uncurry (cubicalUpperFace (whiskeredCell F) i.castSucc) =
@@ -850,7 +850,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskeredCell_upper_value {n : ℕ} {X : 
     whiskeredCell_face_normal F i.castSucc 1 (Or.inr rfl) (Or.inl (Fin.castSucc_ne_last i))]
   exact E.map_constantClosingPaths _
 
-theorem HigherHurewicz.CubicalBoundary.whiskeredCell_last_upper_value {n : ℕ} {X : Type*}
+theorem Hurewicz.CubicalBoundary.whiskeredCell_last_upper_value {n : ℕ} {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] (E : CubicalEvaluator (n + 1) x A)
     (F : BasedCubicalCell (n + 2) x) :
     E.uncurry (cubicalUpperFace (whiskeredCell F) (Fin.last n)) =
@@ -859,7 +859,7 @@ theorem HigherHurewicz.CubicalBoundary.whiskeredCell_last_upper_value {n : ℕ} 
   rw [CubicalEvaluator.uncurry_apply, whiskeredCell_face_last_upper]
   exact E.map_cyclicClosingPaths _ _ _
 
-theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_dimension_reduction {n : ℕ}
+theorem Hurewicz.CubicalBoundary.cubicalBoundaryValue_dimension_reduction {n : ℕ}
     {X : Type*} [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A]
     (E : CubicalEvaluator (n + 1) x A) (F : BasedCubicalCell (n + 2) x) :
     cubicalBoundaryValue E F = -cubicalBoundaryValue E.uncurry (whiskeredCell F) := by
@@ -870,7 +870,7 @@ theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_dimension_reduction 
   · rw [whiskeredCell_last_upper_value, whiskeredCell_lower_value, Fin.succ_last]
     abel
 
-def HigherHurewicz.CubicalBoundary.squareLowerRoute :
+def Hurewicz.CubicalBoundary.squareLowerRoute :
     C(Fin 1 → (unitInterval), Fin 2 → (unitInterval))
     where
   toFun
@@ -884,7 +884,7 @@ def HigherHurewicz.CubicalBoundary.squareLowerRoute :
     · exact continuous_projIcc.comp (by fun_prop)
     · exact continuous_projIcc.comp (by fun_prop)
 
-def HigherHurewicz.CubicalBoundary.squareUpperRoute :
+def Hurewicz.CubicalBoundary.squareUpperRoute :
     C(Fin 1 → (unitInterval), Fin 2 → (unitInterval))
     where
   toFun
@@ -899,30 +899,30 @@ def HigherHurewicz.CubicalBoundary.squareUpperRoute :
     · exact continuous_projIcc.comp (by fun_prop)
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_zero (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareLowerRoute_zero (u : Fin 1 → (unitInterval))
     (hu : u 0 = 0) : squareLowerRoute u = fun _ => 0 := by
   funext i
   fin_cases i <;> apply Subtype.ext <;> norm_num [squareLowerRoute, hu, Set.projIcc]
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_one (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareLowerRoute_one (u : Fin 1 → (unitInterval))
     (hu : u 0 = 1) : squareLowerRoute u = fun _ => 1 := by
   funext i
   fin_cases i <;> apply Subtype.ext <;> norm_num [squareLowerRoute, hu, Set.projIcc]
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_zero (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareUpperRoute_zero (u : Fin 1 → (unitInterval))
     (hu : u 0 = 0) : squareUpperRoute u = fun _ => 0 := by
   funext i
   fin_cases i <;> apply Subtype.ext <;> norm_num [squareUpperRoute, hu, Set.projIcc]
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_one (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareUpperRoute_one (u : Fin 1 → (unitInterval))
     (hu : u 0 = 1) : squareUpperRoute u = fun _ => 1 := by
   funext i
   fin_cases i <;> apply Subtype.ext <;> norm_num [squareUpperRoute, hu, Set.projIcc]
 
-theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_of_le (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareLowerRoute_of_le (u : Fin 1 → (unitInterval))
     (hu : (u 0 : ℝ) ≤ 1 / 2) :
     squareLowerRoute u = ![Set.projIcc 0 1 zero_le_one (2 * (u 0 : ℝ)), 0] := by
   funext i
@@ -930,7 +930,7 @@ theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_of_le (u : Fin 1 → (un
   · rfl
   · exact Set.projIcc_of_le_left zero_le_one (by linarith)
 
-theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_of_not_le (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareLowerRoute_of_not_le (u : Fin 1 → (unitInterval))
     (hu : ¬(u 0 : ℝ) ≤ 1 / 2) :
     squareLowerRoute u = ![1, Set.projIcc 0 1 zero_le_one (2 * (u 0 : ℝ) - 1)] := by
   funext i
@@ -938,7 +938,7 @@ theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_of_not_le (u : Fin 1 →
   · exact Set.projIcc_of_right_le zero_le_one (by linarith)
   · rfl
 
-theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_of_le (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareUpperRoute_of_le (u : Fin 1 → (unitInterval))
     (hu : (u 0 : ℝ) ≤ 1 / 2) :
     squareUpperRoute u = ![0, Set.projIcc 0 1 zero_le_one (2 * (u 0 : ℝ))] := by
   funext i
@@ -946,7 +946,7 @@ theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_of_le (u : Fin 1 → (un
   · exact Set.projIcc_of_le_left zero_le_one (by linarith)
   · rfl
 
-theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_of_not_le (u : Fin 1 → (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareUpperRoute_of_not_le (u : Fin 1 → (unitInterval))
     (hu : ¬(u 0 : ℝ) ≤ 1 / 2) :
     squareUpperRoute u = ![Set.projIcc 0 1 zero_le_one (2 * (u 0 : ℝ) - 1), 1] := by
   funext i
@@ -954,12 +954,12 @@ theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_of_not_le (u : Fin 1 →
   · rfl
   · exact Set.projIcc_of_right_le zero_le_one (by linarith)
 
-def HigherHurewicz.CubicalBoundary.squareRoutesBlend :
+def Hurewicz.CubicalBoundary.squareRoutesBlend :
     C((unitInterval) × (Fin 1 → (unitInterval)), Fin 2 → (unitInterval))
     where
   toFun
     u :=
-    HigherHurewicz.NativeSubdivision.nativeCubeBlend u.1 (squareLowerRoute u.2)
+    Hurewicz.NativeSubdivision.nativeCubeBlend u.1 (squareLowerRoute u.2)
       (squareUpperRoute u.2)
   continuous_toFun := by
     apply continuous_pi
@@ -971,28 +971,28 @@ def HigherHurewicz.CubicalBoundary.squareRoutesBlend :
             continuous_fst))
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareRoutesBlend_zero (u : Fin 1 → (unitInterval)) :
+theorem Hurewicz.CubicalBoundary.squareRoutesBlend_zero (u : Fin 1 → (unitInterval)) :
     squareRoutesBlend (0, u) = squareLowerRoute u :=
-  HigherHurewicz.NativeSubdivision.nativeCubeBlend_zero _ _
+  Hurewicz.NativeSubdivision.nativeCubeBlend_zero _ _
 
 @[simp]
-theorem HigherHurewicz.CubicalBoundary.squareRoutesBlend_one (u : Fin 1 → (unitInterval)) :
+theorem Hurewicz.CubicalBoundary.squareRoutesBlend_one (u : Fin 1 → (unitInterval)) :
     squareRoutesBlend (1, u) = squareUpperRoute u :=
-  HigherHurewicz.NativeSubdivision.nativeCubeBlend_one _ _
+  Hurewicz.NativeSubdivision.nativeCubeBlend_one _ _
 
-theorem HigherHurewicz.CubicalBoundary.squareRoutesBlend_endpoint_zero (t : (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareRoutesBlend_endpoint_zero (t : (unitInterval))
     (u : Fin 1 → (unitInterval)) (hu : u 0 = 0) : squareRoutesBlend (t, u) = fun _ => 0 := by
   funext i
-  simp [squareRoutesBlend, HigherHurewicz.NativeSubdivision.nativeCubeBlend,
+  simp [squareRoutesBlend, Hurewicz.NativeSubdivision.nativeCubeBlend,
     squareLowerRoute_zero u hu, squareUpperRoute_zero u hu]
 
-theorem HigherHurewicz.CubicalBoundary.squareRoutesBlend_endpoint_one (t : (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareRoutesBlend_endpoint_one (t : (unitInterval))
     (u : Fin 1 → (unitInterval)) (hu : u 0 = 1) : squareRoutesBlend (t, u) = fun _ => 1 := by
   funext i
-  simp [squareRoutesBlend, HigherHurewicz.NativeSubdivision.nativeCubeBlend,
+  simp [squareRoutesBlend, Hurewicz.NativeSubdivision.nativeCubeBlend,
     squareLowerRoute_one u hu, squareUpperRoute_one u hu]
 
-theorem HigherHurewicz.CubicalBoundary.squareFacet_zero (ε : (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareFacet_zero (ε : (unitInterval))
     (u : Fin 1 → (unitInterval)) : cubeFacet 1 0 ε u = ![ε, u 0] := by
   funext i
   fin_cases i
@@ -1000,7 +1000,7 @@ theorem HigherHurewicz.CubicalBoundary.squareFacet_zero (ε : (unitInterval))
   · change cubeFacet 1 0 ε u ((0 : Fin 2).succAbove 0) = u 0
     exact cubeFacet_apply_succAbove 1 0 ε u 0
 
-theorem HigherHurewicz.CubicalBoundary.squareFacet_one (ε : (unitInterval))
+theorem Hurewicz.CubicalBoundary.squareFacet_one (ε : (unitInterval))
     (u : Fin 1 → (unitInterval)) : cubeFacet 1 1 ε u = ![u 0, ε] := by
   funext i
   fin_cases i
@@ -1008,7 +1008,7 @@ theorem HigherHurewicz.CubicalBoundary.squareFacet_one (ε : (unitInterval))
     exact cubeFacet_apply_succAbove 1 1 ε u 0
   · exact cubeFacet_apply_self 1 1 ε u
 
-theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_transAt_apply {X : Type*}
+theorem Hurewicz.CubicalBoundary.squareLowerRoute_transAt_apply {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell 2 x) (u : Fin 1 → (unitInterval)) :
     GenLoop.transAt 0 (cubicalLowerFace F 1) (cubicalUpperFace F 0) u =
       F.val (squareLowerRoute u) := by
@@ -1027,7 +1027,7 @@ theorem HigherHurewicz.CubicalBoundary.squareLowerRoute_transAt_apply {X : Type*
   · rw [if_neg hu, squareLowerRoute_of_not_le u hu]
     simp only [squareFacet_zero, Function.update_self]
 
-theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_transAt_apply {X : Type*}
+theorem Hurewicz.CubicalBoundary.squareUpperRoute_transAt_apply {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell 2 x) (u : Fin 1 → (unitInterval)) :
     GenLoop.transAt 0 (cubicalLowerFace F 0) (cubicalUpperFace F 1) u =
       F.val (squareUpperRoute u) := by
@@ -1046,7 +1046,7 @@ theorem HigherHurewicz.CubicalBoundary.squareUpperRoute_transAt_apply {X : Type*
   · rw [if_neg hu, squareUpperRoute_of_not_le u hu]
     simp only [squareFacet_one, Function.update_self]
 
-def HigherHurewicz.CubicalBoundary.squareCubicalFacesHomotopy {X : Type*} [TopologicalSpace X]
+def Hurewicz.CubicalBoundary.squareCubicalFacesHomotopy {X : Type*} [TopologicalSpace X]
     {x : X} (F : BasedCubicalCell 2 x) :
     (GenLoop.transAt 0 (cubicalLowerFace F 1) (cubicalUpperFace F 0)).val.HomotopyRel
       (GenLoop.transAt 0 (cubicalLowerFace F 0) (cubicalUpperFace F 1)).val
@@ -1080,13 +1080,13 @@ def HigherHurewicz.CubicalBoundary.squareCubicalFacesHomotopy {X : Type*} [Topol
         (congrArg F.val (squareRoutesBlend_endpoint_one t u hi0)).trans
           (F.property (fun _ => 1) 0 1 (by decide) (Or.inr rfl) (Or.inr rfl))
 
-theorem HigherHurewicz.CubicalBoundary.squareCubicalFaces_homotopic {X : Type*}
+theorem Hurewicz.CubicalBoundary.squareCubicalFaces_homotopic {X : Type*}
     [TopologicalSpace X] {x : X} (F : BasedCubicalCell 2 x) :
     GenLoop.Homotopic (GenLoop.transAt 0 (cubicalLowerFace F 1) (cubicalUpperFace F 0))
       (GenLoop.transAt 0 (cubicalLowerFace F 0) (cubicalUpperFace F 1)) :=
   ⟨squareCubicalFacesHomotopy F⟩
 
-theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_square {X : Type*}
+theorem Hurewicz.CubicalBoundary.cubicalBoundaryValue_square {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] (E : CubicalEvaluator 1 x A)
     (F : BasedCubicalCell 2 x) : cubicalBoundaryValue E F = 0 := by
   have h := E.map_homotopic (squareCubicalFaces_homotopic F)
@@ -1102,7 +1102,7 @@ theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_square {X : Type*}
   apply sub_eq_sub_iff_add_eq_add.mpr
   simpa only [add_comm] using h
 
-theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_eq_zero (n : ℕ) :
+theorem Hurewicz.CubicalBoundary.cubicalBoundaryValue_eq_zero (n : ℕ) :
     ∀ {X : Type u} [TopologicalSpace X] {x : X} {A : Type v} [AddCommGroup A]
       (E : CubicalEvaluator (n + 1) x A) (F : BasedCubicalCell (n + 2) x),
       cubicalBoundaryValue E F = 0 := by
@@ -1114,143 +1114,143 @@ theorem HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_eq_zero (n : ℕ) :
     intro X _ x A _ E F
     rw [cubicalBoundaryValue_dimension_reduction, ih E.uncurry (whiskeredCell F), neg_zero]
 
-theorem HigherHurewicz.SimplexGeometry.basedSimplexBoundary_evaluation {X : Type*}
+theorem Hurewicz.SimplexGeometry.basedSimplexBoundary_evaluation {X : Type*}
     [TopologicalSpace X] {x : X} {A : Type*} [AddCommGroup A] {n : ℕ}
-    (E : HigherHurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
+    (E : Hurewicz.CubicalBoundary.CubicalEvaluator (n + 1) x A)
     (τ : BasedSimplexBoundary (n + 2) x) :
     (∑ i : Fin (n + 3), (-1 : ℤ) ^ i.val • E (basedSimplexLoop (basedSimplexBoundaryFace τ i))) =
       0 := by
   rw [← simplexBoundaryCube_boundaryValue]
-  exact HigherHurewicz.CubicalBoundary.cubicalBoundaryValue_eq_zero n E (simplexBoundaryCube τ)
+  exact Hurewicz.CubicalBoundary.cubicalBoundaryValue_eq_zero n E (simplexBoundaryCube τ)
 
-theorem HigherHurewicz.SimplexGeometry.basedSimplexBoundary_signed_relation {X : Type*}
+theorem Hurewicz.SimplexGeometry.basedSimplexBoundary_signed_relation {X : Type*}
     [TopologicalSpace X] {x : X} {n : ℕ} (τ : BasedSimplexBoundary (n + 3) x) :
     (∑ i : Fin (n + 4), (-1 : ℤ) ^ i.val • basedSimplexClass (basedSimplexBoundaryFace τ i)) =
       0 :=
-  basedSimplexBoundary_evaluation (HigherHurewicz.CubicalBoundary.nativeCubicalEvaluator n x) τ
+  basedSimplexBoundary_evaluation (Hurewicz.CubicalBoundary.nativeCubicalEvaluator n x) τ
 
-def HigherHurewicz.CubeGluing.CubeCompatible {n : ℕ} {X : Type} [TopologicalSpace X]
+def Hurewicz.CubeGluing.CubeCompatible {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X)) : Prop :=
   ∀ (e f : Equiv.Perm (Fin n)) (s t : SingularChains.Simplex n),
-    HigherHurewicz.CubeTriangulation.cubeSimplex e s =
-        HigherHurewicz.CubeTriangulation.cubeSimplex f t →
+    Hurewicz.CubeTriangulation.cubeSimplex e s =
+        Hurewicz.CubeTriangulation.cubeSimplex f t →
       ∀ r : (unitInterval), F e (r, s) = F f (r, t)
 
-def HigherHurewicz.CubeGluing.cubeFamilyMap {n : ℕ} {X : Type} [TopologicalSpace X]
+def Hurewicz.CubeGluing.cubeFamilyMap {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X)) :
     C((Σ _e : Equiv.Perm (Fin n), (unitInterval) × SingularChains.Simplex n), X)
     where
   toFun a := F a.fst a.snd
   continuous_toFun := continuous_sigma fun e => (F e).continuous
 
-theorem HigherHurewicz.CubeGluing.cubeFamilyMap_factorsThrough {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.cubeFamilyMap_factorsThrough {n : ℕ} {X : Type}
     [TopologicalSpace X] (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X))
     (hF : CubeCompatible F) :
     Function.FactorsThrough (cubeFamilyMap F)
-      (HigherHurewicz.CubeTriangulation.cubeCylinderCover n) := by
+      (Hurewicz.CubeTriangulation.cubeCylinderCover n) := by
   rintro ⟨e, r, s⟩ ⟨f, q, t⟩ h
   have hr : r = q := congrArg Prod.fst h
   have hs :
-    HigherHurewicz.CubeTriangulation.cubeSimplex e s =
-      HigherHurewicz.CubeTriangulation.cubeSimplex f t :=
+    Hurewicz.CubeTriangulation.cubeSimplex e s =
+      Hurewicz.CubeTriangulation.cubeSimplex f t :=
     congrArg Prod.snd h
   subst q
   exact hF e f s t hs r
 
-def HigherHurewicz.CubeGluing.glueCubeHomotopies {n : ℕ} {X : Type} [TopologicalSpace X]
+def Hurewicz.CubeGluing.glueCubeHomotopies {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X))
-    (hF : CubeCompatible F) : C((unitInterval) × HigherHurewicz.CubeTriangulation.CubeN n, X) :=
-  (HigherHurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap n).lift (cubeFamilyMap F)
+    (hF : CubeCompatible F) : C((unitInterval) × Hurewicz.CubeTriangulation.CubeN n, X) :=
+  (Hurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap n).lift (cubeFamilyMap F)
     (cubeFamilyMap_factorsThrough F hF)
 
 @[simp]
-theorem HigherHurewicz.CubeGluing.glueCubeHomotopies_cell {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.glueCubeHomotopies_cell {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X))
     (hF : CubeCompatible F) (e : Equiv.Perm (Fin n)) (r : (unitInterval))
     (s : SingularChains.Simplex n) :
-    glueCubeHomotopies F hF (r, HigherHurewicz.CubeTriangulation.cubeSimplex e s) = F e (r, s) :=
+    glueCubeHomotopies F hF (r, Hurewicz.CubeTriangulation.cubeSimplex e s) = F e (r, s) :=
   DFunLike.congr_fun
-    ((HigherHurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap n).lift_comp
+    ((Hurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap n).lift_comp
       (cubeFamilyMap F) (cubeFamilyMap_factorsThrough F hF))
     ⟨e, (r, s)⟩
 
-theorem HigherHurewicz.CubeGluing.glueCubeHomotopies_time {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.glueCubeHomotopies_time {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X))
     (hF : CubeCompatible F) (r : (unitInterval))
-    (g : HigherHurewicz.CubeTriangulation.CubeN n → X)
+    (g : Hurewicz.CubeTriangulation.CubeN n → X)
     (h :
       ∀ (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n),
-        F e (r, s) = g (HigherHurewicz.CubeTriangulation.cubeSimplex e s))
-    (u : HigherHurewicz.CubeTriangulation.CubeN n) : glueCubeHomotopies F hF (r, u) = g u := by
-  obtain ⟨e, s, rfl⟩ := HigherHurewicz.CubeTriangulation.exists_cubeSimplex u
+        F e (r, s) = g (Hurewicz.CubeTriangulation.cubeSimplex e s))
+    (u : Hurewicz.CubeTriangulation.CubeN n) : glueCubeHomotopies F hF (r, u) = g u := by
+  obtain ⟨e, s, rfl⟩ := Hurewicz.CubeTriangulation.exists_cubeSimplex u
   exact (glueCubeHomotopies_cell F hF e r s).trans (h e s)
 
-theorem HigherHurewicz.CubeGluing.glueCubeHomotopies_zero {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.glueCubeHomotopies_zero {n : ℕ} {X : Type} [TopologicalSpace X]
     (F : Equiv.Perm (Fin n) → C((unitInterval) × SingularChains.Simplex n, X))
-    (hF : CubeCompatible F) (g : C(HigherHurewicz.CubeTriangulation.CubeN n, X))
+    (hF : CubeCompatible F) (g : C(Hurewicz.CubeTriangulation.CubeN n, X))
     (h :
       ∀ (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n),
-        F e (0, s) = g (HigherHurewicz.CubeTriangulation.cubeSimplex e s))
-    (u : HigherHurewicz.CubeTriangulation.CubeN n) : glueCubeHomotopies F hF (0, u) = g u :=
+        F e (0, s) = g (Hurewicz.CubeTriangulation.cubeSimplex e s))
+    (u : Hurewicz.CubeTriangulation.CubeN n) : glueCubeHomotopies F hF (0, u) = g u :=
   glueCubeHomotopies_time F hF 0 g h u
 
-theorem HigherHurewicz.CubeGluing.cubeOriginal_face_zero {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.cubeOriginal_face_zero {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) :
-    (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)).comp
+    (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)).comp
         (SingularChains.simplexFace n 0) =
       ContinuousMap.const (SingularChains.Simplex n) x := by
   ext s
-  exact GenLoop.boundary p _ (HigherHurewicz.CubeTriangulation.cubeSimplex_face_zero_boundary e s)
+  exact GenLoop.boundary p _ (Hurewicz.CubeTriangulation.cubeSimplex_face_zero_boundary e s)
 
-theorem HigherHurewicz.CubeGluing.cubeOriginal_face_last {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.cubeOriginal_face_last {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) :
-    (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)).comp
+    (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)).comp
         (SingularChains.simplexFace n (Fin.last (n + 1))) =
       ContinuousMap.const (SingularChains.Simplex n) x := by
   ext s
-  exact GenLoop.boundary p _ (HigherHurewicz.CubeTriangulation.cubeSimplex_face_last_boundary e s)
+  exact GenLoop.boundary p _ (Hurewicz.CubeTriangulation.cubeSimplex_face_last_boundary e s)
 
-theorem HigherHurewicz.CubeGluing.cubeOriginal_face_swap {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.cubeOriginal_face_swap {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (i : Fin n) :
-    (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)).comp
+    (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)).comp
         (SingularChains.simplexFace n i.succ.castSucc) =
       (p.val.comp
-            (HigherHurewicz.CubeTriangulation.cubeSimplex
+            (Hurewicz.CubeTriangulation.cubeSimplex
               ((Equiv.swap i.castSucc i.succ).trans e))).comp
         (SingularChains.simplexFace n i.succ.castSucc) := by
   simpa only [ContinuousMap.comp_assoc] using
     congrArg
-      (fun f : C(SingularChains.Simplex n, HigherHurewicz.CubeTriangulation.CubeN (n + 1)) =>
+      (fun f : C(SingularChains.Simplex n, Hurewicz.CubeTriangulation.CubeN (n + 1)) =>
         p.val.comp f)
-      (HigherHurewicz.CubeTriangulation.cubeSimplex_face_swap e i)
+      (Hurewicz.CubeTriangulation.cubeSimplex_face_swap e i)
 
-theorem HigherHurewicz.CubeGluing.coherentCubeCell_face {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.coherentCubeCell_face {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (i : Fin (n + 2))
     (r : (unitInterval)) (s : SingularChains.Simplex n) :
-    H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e))
+    H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))
         (r, SingularChains.simplexFace n i s) =
       H₀
-        ((p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)).comp
+        ((p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)).comp
           (SingularChains.simplexFace n i))
         (r, s) :=
-  DFunLike.congr_fun (hface (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) i)
+  DFunLike.congr_fun (hface (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) i)
     (r, s)
 
-theorem HigherHurewicz.CubeGluing.coherentCubeCell_swap {n : ℕ} {X : Type} [TopologicalSpace X]
+theorem Hurewicz.CubeGluing.coherentCubeCell_swap {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (i : Fin n)
     (r : (unitInterval)) (s : SingularChains.Simplex (n + 1)) (hs : s i.succ.castSucc = 0) :
-    H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) (r, s) =
+    H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) (r, s) =
       H₁
         (p.val.comp
-          (HigherHurewicz.CubeTriangulation.cubeSimplex ((Equiv.swap i.castSucc i.succ).trans e)))
+          (Hurewicz.CubeTriangulation.cubeSimplex ((Equiv.swap i.castSucc i.succ).trans e)))
         (r, s) := by
   let t := SecondHurewicz.SimplyConnected.simplexFaceInverse n i.succ.castSucc ⟨s, hs⟩
   have ht : SingularChains.simplexFace n i.succ.castSucc t = s :=
@@ -1258,7 +1258,7 @@ theorem HigherHurewicz.CubeGluing.coherentCubeCell_swap {n : ℕ} {X : Type} [To
   rw [← ht, coherentCubeCell_face H₀ H₁ hface, coherentCubeCell_face H₀ H₁ hface,
     cubeOriginal_face_swap]
 
-theorem HigherHurewicz.CubeGluing.coherentCubeCell_boundary {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeCell_boundary {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
@@ -1269,9 +1269,9 @@ theorem HigherHurewicz.CubeGluing.coherentCubeCell_boundary {n : ℕ} {X : Type}
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (r : (unitInterval))
     (s : SingularChains.Simplex (n + 1))
-    (hs : HigherHurewicz.CubeTriangulation.cubeSimplex e s ∈ Cube.boundary (Fin (n + 1))) :
-    H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) (r, s) = x := by
-  rcases (HigherHurewicz.CubeTriangulation.cubeSimplex_mem_boundary_iff e s).mp hs with hs | hs
+    (hs : Hurewicz.CubeTriangulation.cubeSimplex e s ∈ Cube.boundary (Fin (n + 1))) :
+    H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) (r, s) = x := by
+  rcases (Hurewicz.CubeTriangulation.cubeSimplex_mem_boundary_iff e s).mp hs with hs | hs
   · let t := SecondHurewicz.SimplyConnected.simplexFaceInverse n 0 ⟨s, hs⟩
     have ht : SingularChains.simplexFace n 0 t = s :=
       SecondHurewicz.SimplyConnected.simplexFace_inverse n 0 ⟨s, hs⟩
@@ -1283,44 +1283,44 @@ theorem HigherHurewicz.CubeGluing.coherentCubeCell_boundary {n : ℕ} {X : Type}
     rw [← ht, coherentCubeCell_face H₀ H₁ hface, cubeOriginal_face_last, hconst]
     rfl
 
-theorem HigherHurewicz.CubeGluing.coherentCubeFamily_compatible {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeFamily_compatible {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) :
-    CubeCompatible (fun e => H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e))) := by
+    CubeCompatible (fun e => H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))) := by
   intro e f s t h r
-  have hst := HigherHurewicz.CubeTriangulation.cubeSimplex_overlap_preimage e f s t h
+  have hst := Hurewicz.CubeTriangulation.cubeSimplex_overlap_preimage e f s t h
   subst t
   have hf :
-    HigherHurewicz.CubeTriangulation.SortedCoordinates
-      (HigherHurewicz.CubeTriangulation.cubeSimplex e s) f := by
+    Hurewicz.CubeTriangulation.SortedCoordinates
+      (Hurewicz.CubeTriangulation.cubeSimplex e s) f := by
     rw [h]
-    exact HigherHurewicz.CubeTriangulation.cubeSimplex_sorted f s
+    exact Hurewicz.CubeTriangulation.cubeSimplex_sorted f s
   apply
-    HigherHurewicz.CubeTriangulation.eq_of_sorted_adjacent
-      (HigherHurewicz.CubeTriangulation.cubeSimplex e s)
-      (fun g => H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex g)) (r, s)) ?_
-      (HigherHurewicz.CubeTriangulation.cubeSimplex_sorted e s) hf
+    Hurewicz.CubeTriangulation.eq_of_sorted_adjacent
+      (Hurewicz.CubeTriangulation.cubeSimplex e s)
+      (fun g => H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex g)) (r, s)) ?_
+      (Hurewicz.CubeTriangulation.cubeSimplex_sorted e s) hf
   intro g hg i ht
   apply coherentCubeCell_swap H₀ H₁ hface p g i r s
-  apply HigherHurewicz.CubeTriangulation.cubeSimplex_tie g s i
-  simpa only [HigherHurewicz.CubeTriangulation.cubeSimplex_eq_of_sorted e g s hg] using ht
+  apply Hurewicz.CubeTriangulation.cubeSimplex_tie g s i
+  simpa only [Hurewicz.CubeTriangulation.cubeSimplex_eq_of_sorted e g s hg] using ht
 
-def HigherHurewicz.CubeGluing.coherentCubeHomotopyMap {n : ℕ} {X : Type} [TopologicalSpace X]
+def Hurewicz.CubeGluing.coherentCubeHomotopyMap {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) :
-    C((unitInterval) × HigherHurewicz.CubeTriangulation.CubeN (n + 1), X) :=
-  glueCubeHomotopies (fun e => H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)))
+    C((unitInterval) × Hurewicz.CubeTriangulation.CubeN (n + 1), X) :=
+  glueCubeHomotopies (fun e => H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)))
     (coherentCubeFamily_compatible H₀ H₁ hface p)
 
 @[simp]
-theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_cell {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_cell {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
@@ -1328,11 +1328,11 @@ theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_cell {n : ℕ} {X : Ty
     (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (r : (unitInterval))
     (s : SingularChains.Simplex (n + 1)) :
-    coherentCubeHomotopyMap H₀ H₁ hface p (r, HigherHurewicz.CubeTriangulation.cubeSimplex e s) =
-      H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) (r, s) :=
+    coherentCubeHomotopyMap H₀ H₁ hface p (r, Hurewicz.CubeTriangulation.cubeSimplex e s) =
+      H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) (r, s) :=
   glueCubeHomotopies_cell _ _ e r s
 
-theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_zero {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_zero {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
@@ -1341,12 +1341,12 @@ theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_zero {n : ℕ} {X : Ty
     (hzero :
       ∀ (smp : C(SingularChains.Simplex (n + 1), X)) (s : SingularChains.Simplex (n + 1)),
         H₁ smp (0, s) = smp s)
-    (p : GenLoop (Fin (n + 1)) X x) (u : HigherHurewicz.CubeTriangulation.CubeN (n + 1)) :
+    (p : GenLoop (Fin (n + 1)) X x) (u : Hurewicz.CubeTriangulation.CubeN (n + 1)) :
     coherentCubeHomotopyMap H₀ H₁ hface p (0, u) = p u :=
   glueCubeHomotopies_zero _ _ p.val
-    (fun e s => hzero (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e)) s) u
+    (fun e s => hzero (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) s) u
 
-theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_boundary {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_boundary {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
@@ -1356,13 +1356,13 @@ theorem HigherHurewicz.CubeGluing.coherentCubeHomotopyMap_boundary {n : ℕ} {X 
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (r : (unitInterval))
-    (u : HigherHurewicz.CubeTriangulation.CubeN (n + 1)) (hu : u ∈ Cube.boundary (Fin (n + 1))) :
+    (u : Hurewicz.CubeTriangulation.CubeN (n + 1)) (hu : u ∈ Cube.boundary (Fin (n + 1))) :
     coherentCubeHomotopyMap H₀ H₁ hface p (r, u) = x := by
-  obtain ⟨e, s, rfl⟩ := HigherHurewicz.CubeTriangulation.exists_cubeSimplex u
+  obtain ⟨e, s, rfl⟩ := Hurewicz.CubeTriangulation.exists_cubeSimplex u
   rw [coherentCubeHomotopyMap_cell]
   exact coherentCubeCell_boundary H₀ H₁ hface hconst p e r s hu
 
-def HigherHurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+def Hurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
@@ -1374,7 +1374,7 @@ def HigherHurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [Topolog
   ⟨SecondHurewicz.SimplyConnected.timeSlice (coherentCubeHomotopyMap H₀ H₁ hface p) 1, fun u hu =>
     coherentCubeHomotopyMap_boundary H₀ H₁ hface hconst p 1 u hu⟩
 
-theorem HigherHurewicz.CubeGluing.coherentCubeEndpoint_cell {n : ℕ} {X : Type}
+theorem Hurewicz.CubeGluing.coherentCubeEndpoint_cell {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
@@ -1385,13 +1385,13 @@ theorem HigherHurewicz.CubeGluing.coherentCubeEndpoint_cell {n : ℕ} {X : Type}
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) :
     (coherentCubeEndpoint H₀ H₁ hface hconst p).val.comp
-        (HigherHurewicz.CubeTriangulation.cubeSimplex e) =
+        (Hurewicz.CubeTriangulation.cubeSimplex e) =
       SecondHurewicz.SimplyConnected.timeSlice
-        (H₁ (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e))) 1 := by
+        (H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))) 1 := by
   ext s
   exact coherentCubeHomotopyMap_cell H₀ H₁ hface p e 1 s
 
-def HigherHurewicz.CubeGluing.coherentCubeHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+def Hurewicz.CubeGluing.coherentCubeHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))

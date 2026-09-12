@@ -262,7 +262,7 @@ theorem SecondHurewicz.SimplyConnected.glueFaceHomotopies_unique {X : Type} [Top
   obtain ⟨i, s, rfl⟩ := simplexBoundary_exists_face n b
   exact (hG i r s).trans (glueFaceHomotopies_face F hF i r s).symm
 
-theorem PeriodTorusLineBundle.ChernCocycle.simplexFace_comp {n : ℕ} {i j : Fin (n + 2)}
+theorem SingularChains.simplexFace_comp {n : ℕ} {i j : Fin (n + 2)}
     (h : i ≤ j) :
     (SingularChains.simplexFace (n + 1) j.succ).comp (SingularChains.simplexFace n i) =
       (SingularChains.simplexFace (n + 1) i.castSucc).comp (SingularChains.simplexFace n j) := by
@@ -287,7 +287,7 @@ theorem PeriodTorusLineBundle.ChernCocycle.simplexFace_comp {n : ℕ} {i j : Fin
       (SimplexCategory.toTop₀.map_comp (SimplexCategory.δ j) (SimplexCategory.δ i.castSucc))
   exact hl.symm.trans (hf.trans hr)
 
-theorem PeriodTorusLineBundle.ChernCocycle.singularSimplex_face_face {X : Type*}
+theorem SingularChains.singularSimplex_face_face {X : Type*}
     [TopologicalSpace X] {n : ℕ} (σ : C(SingularChains.Simplex (n + 2), X)) {i j : Fin (n + 2)}
     (h : i ≤ j) :
     (σ.comp (SingularChains.simplexFace (n + 1) j.succ)).comp (SingularChains.simplexFace n i) =
@@ -320,7 +320,7 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_intersection {n : ℕ} {i j :
     SingularChains.simplexFace (n + 1) i.castSucc (SingularChains.simplexFace n j u) =
         SingularChains.simplexFace (n + 1) j.succ (SingularChains.simplexFace n i u) :=
       (congrArg (fun f : C(SingularChains.Simplex n, SingularChains.Simplex (n + 2)) => f u)
-          (PeriodTorusLineBundle.ChernCocycle.simplexFace_comp hij)).symm
+          (SingularChains.simplexFace_comp hij)).symm
     _ = SingularChains.simplexFace (n + 1) j.succ s :=
       (congrArg (SingularChains.simplexFace (n + 1) j.succ) hu)
     _ = SingularChains.simplexFace (n + 1) i.castSucc t := h

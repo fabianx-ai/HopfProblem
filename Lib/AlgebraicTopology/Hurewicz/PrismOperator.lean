@@ -938,7 +938,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_faceCompatible {X : Ty
   apply faceCompatible_of_cofaceCompatible
   intro i j hij r u
   rw [vertexStepHomotopy_face_apply, vertexStepHomotopy_face_apply,
-    PeriodTorusLineBundle.ChernCocycle.singularSimplex_face_face smp hij]
+    SingularChains.singularSimplex_face_face smp hij]
 
 def SecondHurewicz.SimplyConnected.VertexHomotopyData.next {X : Type} [TopologicalSpace X] {x : X}
     {n : ℕ} (D : SecondHurewicz.SimplyConnected.VertexHomotopyData x n) :
@@ -1275,7 +1275,7 @@ theorem SecondHurewicz.SimplyConnected.nextFaceHomotopies_compatible {X : Type}
         (smp.comp
           ((SingularChains.simplexFace (n + 1) i.castSucc).comp (SingularChains.simplexFace n j)))
         (t, s)
-  rw [PeriodTorusLineBundle.ChernCocycle.simplexFace_comp hij]
+  rw [SingularChains.simplexFace_comp hij]
 
 def SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy {X : Type} [TopologicalSpace X]
     {n : ℕ}
@@ -4457,11 +4457,13 @@ theorem SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap {X : Typ
   ext a
   exact hurewiczInverse_hurewiczMap x a
 
-def SecondHurewicz.SimplyConnected.hurewiczLinearEquiv {X : Type} [TopologicalSpace X]
+def Hurewicz.degreeTwoLinearEquiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     Additive (π_ 2 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 2 :=
-  LinearEquiv.ofLinearMap (SecondHurewicz.hurewiczMap x) (hurewiczInverse x)
-    (hurewiczMap_comp_hurewiczInverse x) (hurewiczInverse_comp_hurewiczMap x)
+  LinearEquiv.ofLinearMap (SecondHurewicz.hurewiczMap x)
+    (SecondHurewicz.SimplyConnected.hurewiczInverse x)
+    (SecondHurewicz.SimplyConnected.hurewiczMap_comp_hurewiczInverse x)
+    (SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap x)
 
 def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
@@ -4474,7 +4476,7 @@ def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace
     c := congrArg Multiplicative.ofAdd (hurewiczMap_hurewiczInverse x (Multiplicative.toAdd c))
 
 
-def ThirdHurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     (H : C((unitInterval) × A, X)) :
     ContinuousMap.Homotopy (SecondHurewicz.SimplyConnected.timeSlice H 0)
       (SecondHurewicz.SimplyConnected.timeSlice H 1)
@@ -4483,7 +4485,7 @@ def ThirdHurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [Topologica
   map_zero_left _ := rfl
   map_one_left _ := rfl
 
-theorem ThirdHurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
+theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁)
     (G : f₁.Homotopy f₂) (f : C(B, A)) :
     (F.trans G).toContinuousMap.comp ((ContinuousMap.id (unitInterval)).prodMap f) =
@@ -4493,7 +4495,7 @@ theorem ThirdHurewicz.homotopyTrans_compContinuousMap {A B X : Type} [Topologica
   simp only [ContinuousMap.Homotopy.trans_apply]
   split_ifs <;> rfl
 
-theorem ThirdHurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (x : X)
     (hF : F.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x)
     (hG : G.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x) :
@@ -4505,7 +4507,7 @@ theorem ThirdHurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [Top
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
-theorem ThirdHurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ g₀ g₁ g₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (F' : g₀.Homotopy g₁)
     (G' : g₁.Homotopy g₂) (hF : F.toContinuousMap = F'.toContinuousMap)
     (hG : G.toContinuousMap = G'.toContinuousMap) :
@@ -4517,13 +4519,13 @@ theorem ThirdHurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [Top
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
-def ThirdHurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
+def Hurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (h₀ : ∀ smp s, H smp (0, s) = smp s) (smp : SingularChains.SingularSimplex X n) :
     smp.Homotopy (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) :=
   (cylinderHomotopy (H smp)).cast (by ext s; exact h₀ smp s) rfl
 
-def ThirdHurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
+def Hurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) : C((unitInterval) × SingularChains.Simplex n, X) :=
@@ -4532,7 +4534,7 @@ def ThirdHurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : 
         (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1))).toContinuousMap
 
 @[simp]
-theorem ThirdHurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
@@ -4540,7 +4542,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace
   ContinuousMap.Homotopy.apply_zero _ s
 
 @[simp]
-theorem ThirdHurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
@@ -4549,7 +4551,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace 
   ContinuousMap.Homotopy.apply_one _ s
 
 @[simp]
-theorem ThirdHurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
+theorem Hurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
     {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
@@ -4560,7 +4562,7 @@ theorem ThirdHurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [Topolog
   ext s
   exact composeSimplexHomotopies_one H G hH₀ hG₀ smp s
 
-theorem ThirdHurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' G' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -4588,7 +4590,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace
     rw [hG (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1) i,
       SecondHurewicz.SimplyConnected.timeSlice_face hH smp i 1]
 
-theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s) (x : X)
     (hH :
@@ -4617,7 +4619,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpac
     exact hG
 
 
-theorem ThirdHurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
     (f : C(SingularChains.Simplex n, X))
     (g : C((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
     (h₀ : ∀ s, g (0, s) = f s.val) (x : X) (hf : ∀ s, f s = x) (hg : ∀ u, g u = x)
@@ -4637,7 +4639,7 @@ theorem ThirdHurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpa
       (congrArg (SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀) hu).trans
         ((SecondHurewicz.SimplyConnected.gluedBoundaryMap_sideInclusion f g h₀ _).trans (hg _))
 
-theorem ThirdHurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -4659,7 +4661,7 @@ theorem ThirdHurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [Topological
   rw [hc]
   rfl
 
-theorem ThirdHurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
