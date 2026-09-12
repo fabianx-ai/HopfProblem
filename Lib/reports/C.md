@@ -139,8 +139,10 @@ deliverable.
      for `n ≥ 2`.
    Still to assemble:
    - Additivity `cubeHomologyClass (GenLoop.transAt i p q) = cubeHomologyClass p +
-     cubeHomologyClass q` (the pinch/`pathCubeClass_trans` content), so
-     `hurewiczFunction` upgrades to a `ℤ`-linear `hurewiczMap`.
+     cubeHomologyClass q` at degree `≥ 3` (degree 2 is `82ba4ba`, via
+     `cubeHomologyClass_eq_squareHomologyClass`; half-cube scalings
+     `cubeScaleLeft/Right` with `transAt_comp_cubeScale*` are `c00bb61`).
+     Then `hurewiczFunction` upgrades to a `ℤ`-linear `hurewiczMap`.
    - Round trips: `hurewiczMap ∘ classOperator = id` via the landed
      `comp_singularHomologyDesc_eq_id` + the pointwise
      `hurewiczMap_classOperator_cycle`; the other direction via the
