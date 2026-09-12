@@ -327,11 +327,11 @@ there.
 | F5 | Bigon filling (§6 steps 1–2) | circle contractions (`hnull`), E2 | embedded clean bigon from opposite-sign pair | SingularHomology 18365–18488 (DiskCone), 18489–18730 (AnnularExtension), 19302–19591, 22316–23000 |
 | F6 | Graph motion (§6 step 4) | F2 | the explicit model isotopy | SingularHomology 25071–25818 (`GraphMotion*`, `RankThreeWhitneyModel`) |
 | F7 | The Whitney step (§6; **G-F1**) | F2–F6 + E2 isotopy extension + D2 tubular | the relative cancellation isotopy | SingularHomology ~20490–23150 (headline 22999) |
-| F8 | Finite cancellation and single intersection (§7) | F7, F1 | pair removal iteration; single-intersection criterion | SphereTopology 6364–6660 (`FiniteSignedCancellation`, belt cancellation chain); Recognition 8390–8680 |
-| F9 | Arcs and tubes (§8 geometry) | E2 (arcs, isotopy) | sheet arc tubes; longitudinal tube motion | SurgeryWindows 15078–15800 (`exists_sheet_arc_tube`, `longitudinalBlend*`/tube motion); Recognition 4756 |
-| F10 | Attaching classes and the middle matrix (§8) | A, E1, F1 | `middleSectionClass`, `classCoordinateMatrix`, `canonicalMiddleMatrix`, `middleMatrix`; matrix = boundary | Recognition 2800, 3357, 3387; SphereTopology 14258–14500 (geometric part incl. `middlePresentation`/`middleMatrix`) |
-| F11 | Handle slides (§8) | F9, F10 | slide = transvection; every column op realized | Recognition 6629–7330 (geometry part) |
-| F12 | The pivot chain (§9d) | F0a, F0b, F11 | primitive unit from a surjective presentation | Recognition 7560–7840, 9422–9440 |
+| F8 | Finite cancellation and single intersection (§7) | F7, F1 | pair removal iteration; single-intersection criterion | SphereTopology 6364–6660 (`FiniteSignedCancellation`, belt cancellation chain); Recognition 8195–8479 |
+| F9 | Arcs and tubes (§8 geometry) | E2 (arcs, isotopy) | sheet arc tubes; longitudinal tube motion | SurgeryWindows 15078–15800 (`exists_sheet_arc_tube`, `longitudinalBlend*`/tube motion); Recognition 4709 |
+| F10 | Attaching classes and the middle matrix (§8) | A, E1, F1 | `middleSectionClass`, `classCoordinateMatrix` (F0a-landed), `canonicalMiddleMatrix`, `middleMatrix`; matrix = boundary | Recognition 2800, 3359; SphereTopology 14258–14500 (geometric part incl. `middlePresentation`/`middleMatrix`) |
+| F11 | Handle slides (§8) | F9, F10 | slide = transvection; every column op realized | Recognition 6582–7283 (geometry part) |
+| F12 | The pivot chain (§9d) | F0a, F0b, F11 | primitive unit from a surjective presentation | Recognition 7365–7645, 9182–9200 |
 
 Dependency order is row order; F0a/F0b land first (no lane dependencies — pure algebra over
 Mathlib's matrix library; they are the one part of lane F executable before the GLM lanes
@@ -369,8 +369,9 @@ Seams: everything manifold-level depends on GLM's D1 (Morse data), D2 (tubular),
 land, the ledger rows are checked against the `Hopf/` names. F0a/F0b have no lane seams and can
 be built against the pinned Mathlib today.
 
-**Row F0a (lands first).** Exact signatures (probed at head; the scout map's Recognition
-coordinates 6367+/9042+ are stale — sources are now at 3357/4737+/7412+):
+**Row F0a (LANDED).** Exact signatures (the scout map's Recognition coordinates
+6367+/9042+ were stale; the decls moved out of Recognition 3357/4737+/7412+ pre-move
+positions into `Lib/LinearAlgebra/Matrix/TransvectionReduction.lean`):
 
 ```lean
 def MorseCancel.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
@@ -421,8 +422,8 @@ Target: `Matrix.TransvectionReduction.*` — same statements under the Mathlib n
 (`Matrix.mul_transvection_surjective`, `Matrix.primitive_row_has_unit_after_column_additions`
 etc.). Pure move; axiom probe target: `primitive_row_has_unit_after_column_additions`.
 
-**Row F0b.** Current (scout coordinates 18429+/18540+ are stale — sources are now
-SphereTopology 14201+): `Smale.IntegerPresentation` structure (14201) with fields `map`,
+**Row F0b (LANDED).** The scout coordinates 18429+/18540+ were stale — sources were
+SphereTopology 14201+ pre-move; now in `Lib/Algebra/Module/IntegerPresentation.lean`: `Smale.IntegerPresentation` structure (14201) with fields `map`,
 `columns`, `surjective`, `kernel_eq`, and API `ofEquiv` (14207), `transport` (14217),
 `liftRelation` (14235), `map_liftRelation` (14239 — the ledger previously omitted it),
 `adjoin` (14243), `matrix` (14312), `columns_sum_eq_mulVec` (14315), `mem_range_matrix_iff`
@@ -434,7 +435,7 @@ SphereTopology 14201+): `Smale.IntegerPresentation` structure (14201) with field
 is already Lib-landed (`Lib/Geometry/Manifold/Morse/SublevelSets.lean:88`). The remaining
 pure `HomologyTransport` decls (`exists_split_rank_one_extension` ST 13840,
 `exists_add_split_rank_one_extension` ST 13881, `integerCoordinateSplit` ST 13967,
-`integerEquiv_one_natAbs` Rec 7841, `matrix_sizes_eq_of_bijective` Rec 9422) are also
+`integerEquiv_one_natAbs` Rec 7646, `matrix_sizes_eq_of_bijective` Rec 9182) are also
 pure algebra; they are **candidates for the same file** — flag to owner whether they
 belong in `IntegerPresentation.lean` or a separate `HomologyTransport` module.
 Target: `Algebra.Module.IntegerPresentation.*`. Pure move **with a boundary
@@ -496,18 +497,18 @@ need $p, q \geq 2$.
 `.beltIntersectionPoints` (11516), `.beltIntersectionCount` (11532), plus
 `.beltIntersectionJacobian_ne_zero` (11541), `.beltIntersectionSign_unit` (11570),
 `.finite_beltIntersectionPoints` (11597); `SphereNormalCoordinates.*` supporting cluster
-(SH 11385+); `collapse_homology_signed_count` (Recognition 8390, stale map ref 10020).
+(SH 11385+); `collapse_homology_signed_count` (Recognition 8195, stale map ref 10020).
 Target: `Geometry.Manifold.Whitney.IntersectionNumber.*` at general index: the
 Jacobian/sign/count take the sphere dimension `m` already (they do: `(m : ℕ)`); the pin is
 in the *consumers* (`… 2 …`). Move as-is; the generalization is only in how consumers
 instantiate.
 
 **Row F11 (handle slides, G-F2).** Current chain (scout coords 8259+ are stale — sources are
-Recognition 6629+): `AdaptedWindows.exists_repeatable_column_slide` (6629) →
-`exists_iterated_column_slide` (6692) → `exists_integer_column_slide` (6780) →
-`MorseCancel.canonicalMiddleMatrix_single_class_addition` (6854, algebraic side) →
-`exists_labelled_integer_slide` (6932) → `exists_arbitrary_column_addition` (7079) →
-`exists_arbitrary_column_sequence` (7248). Headline signature (verbatim):
+Recognition 6582+): `AdaptedWindows.exists_repeatable_column_slide` (6582) →
+`exists_iterated_column_slide` (6645) → `exists_integer_column_slide` (6733) →
+`MorseCancel.canonicalMiddleMatrix_single_class_addition` (6807, algebraic side) →
+`exists_labelled_integer_slide` (6885) → `exists_arbitrary_column_addition` (7032) →
+`exists_arbitrary_column_sequence` (7201). Headline signature (verbatim):
 
 ```lean
 theorem AdaptedWindows.exists_arbitrary_column_sequence {E M : Type} [NormedAddCommGroup E]
@@ -585,9 +586,9 @@ theorem AdaptedWindows.exists_arbitrary_column_sequence {E M : Type} [NormedAddC
                                                             Filter.atTop (𝓝 v) ↔
                                                           Filter.Tendsto (fun t => S.flow t z)
                                                             Filter.atTop (𝓝 v)
-  -- Recognition 7248–7330 (signature ends at `:= by`); `exists_arbitrary_column_addition`
-  -- (7079) is the single-op specialisation with the same binder prefix and `(k : ℤ)` for
-  -- `transvection q i k`. The chain's first three links (6629/6692/6780) share this
+  -- Recognition 7201–7283 (signature ends at `:= by`); `exists_arbitrary_column_addition`
+  -- (7032) is the single-op specialisation with the same binder prefix and `(k : ℤ)` for
+  -- `transvection q i k`. The chain's first three links (6582/6645/6733) share this
   -- binder shape at a single point q / single index j.
 ```
 
@@ -601,12 +602,12 @@ and `hdim : Module.finrank ℝ E = n`. **New mathematics**: none beyond symbolic
 bookkeeping — the proofs use the dimensions only through the E2 counts that the hypothesis
 bundle packages. The 37 `finrank ℝ E = 6` sites in Recognition collapse to the parameter.
 
-**Row F8/F12.** `exists_single_belt_intersection_of_unit_count` (SphereTopology 6597,
+**Row F8/F12.** `exists_single_belt_intersection_of_unit_count` (SphereTopology 6598,
 stale ref 9765), `MorseCancel.exists_single_intersection_of_unit_coordinate` (Recognition
-8674, stale ref 10304), `AdaptedWindows.exists_primitive_functional_unit` (Recognition
-7560, stale ref 9190): same generalization
+8479, stale ref 10304), `AdaptedWindows.exists_primitive_functional_unit` (Recognition
+7365, stale ref 9190): same generalization
 pattern; the signed-cancellation algebra (`Smale.FiniteSignedCancellation.*`,
-SphereTopology 9532–9564) is already fully general and is a pure move.
+SphereTopology 6364–6400) is already fully general and is a pure move.
 
 **Consumers.** `Hopf.SingularHomology` (the belt-cancellation chain), `Hopf.SphereTopology`
 (the finite cancellation iteration, the homology-transport matrix lemmas),
