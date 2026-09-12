@@ -389,86 +389,163 @@ text is held in `~/s6-notes/J-review-devin-axis5-j.md`, to be committed as
 
 ```text
 commit_boundary   J-A — independently green; imports Mathlib only; lands first.
-imports           Mathlib (module file: `module` + `public import Mathlib`)
+imports           Mathlib (module file: `module` + `public import`)
 visibility        `module` file; every promised output `public` inside
                   `namespace Mathoverflow1973`
-source            Theorem D (§7 of this document)
+source            Theorem D (§7); Specialization.lean 6637–6882
 destination       Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean
 focused_check     `lake build Lib.LinearAlgebra.ExteriorPower.MinorCoordinates`
 return_seam       Axis 3 if a promised output turns out not to be rank-general
 ```
 
-Public outputs (landing names verbatim under `Mathoverflow1973.PeriodTorusHigherHomologyExterior`
-for moved decls; new generalized decls named below; post-rename prefix
-`AlgebraicTopology.LinearAlgebra.ExteriorPower.MinorCoordinates`):
+Probed 2026 (production `module`/`public` file, Mathlib-only imports): every
+signature below elaborates; `exteriorPower_finrank_choose` and
+`powersetCardFinEquiv_lt_iff` are already *proved* in the probe. Receipt:
+`Lib/docs/J-INTERFACE_RECEIPT.md` §J-A.
+
+Two corrections vs. the second-pass ledger (devin-axis5-j re-review findings 1–2):
+the reindex direction is now `(…).reindex (powersetCardFinEquiv m n)` — `reindex`
+takes `ι ≃ ι'` where the basis is indexed by `ι` — and the coordinate map uses
+`.equivFun` (codomain `Fin _ → ℤ`), not `.repr` (codomain `Fin _ →₀ ℤ`).
+
+### The enumeration (reviewer finding 1)
+
+`Set.powersetCard (Fin m) n` already carries the *subset* `PartialOrder`, so a
+lex order cannot be added as an instance on it directly; the lex order lives on
+a `Lex` synonym (`Lex α` carries no order passthrough instance):
+
+```lean
+public abbrev SortedSubset (m n : ℕ) := Lex (Set.powersetCard (Fin m) n)
+
+public instance (m n : ℕ) : Fintype (SortedSubset m n) -- inferInstanceAs
+public instance (m n : ℕ) : LinearOrder (SortedSubset m n)
+  -- LinearOrder.lift' (fun s ↦ (ofLex s).1.sort (· ≤ ·)) inj
+  -- inj via List.toFinset_sort + Subtype.ext + ofLex.injective
+
+public theorem sortedSubset_card (m n : ℕ) :
+    Fintype.card (SortedSubset m n) = m.choose n
+  -- Finset.card_univ + Set.powersetCard.card + Fintype.card_fin
+
+/-- The lexicographic enumeration of `n`-subsets of `Fin m`. -/
+public def powersetCardFinEquiv (m n : ℕ) :
+    Set.powersetCard (Fin m) n ≃ Fin (m.choose n)
+  -- body (PROBED): toLex.trans ((Equiv.subtypeUnivEquiv mem_univ).symm.trans
+  --   ((Finset.orderIsoOfFin univ sortedSubset_card).symm.toEquiv))
+
+/-- The enumeration is pinned by its characterization — `e` is the order-iso
+for lex-on-sorted-tuples: -/
+public theorem powersetCardFinEquiv_lt_iff {m n : ℕ}
+    (s t : Set.powersetCard (Fin m) n) :
+    powersetCardFinEquiv m n s < powersetCardFinEquiv m n t ↔
+      List.Lex (· < ·) ((s : Finset (Fin m)).sort (· ≤ ·))
+        ((t : Finset (Fin m)).sort (· ≤ ·))
+```
+
+**Rank-4 compatibility** (reviewer demand — the enumeration must agree with
+`pairSubsetEquiv`/`tripleSubsetEquiv`, which stay Hopf-side as charged adapters):
+the compatibility equation
+
+```lean
+∀ i : Fin 6, powersetCardFinEquiv 4 2
+  (PeriodTorusHigherHomologyExterior.pairSubset i) = i
+```
+
+is *not* stated in `MinorCoordinates.lean` (it references the charged
+`pairSubset`).  It is proved in the Hopf adapter from
+`powersetCardFinEquiv_lt_iff` + `pairSubset_ordered` (the sorted tuple of
+`pairSubset i` is `pairIndices i`, and `pairIndices` enumerates in lex order —
+a `decide`-able check on `Fin 6` literal vectors) + the fact that a strictly
+monotone map `Fin k → Fin k` is the identity (`StrictMono` on `Fin` is
+uniqueness-forced).  Note: `powersetCardFinEquiv` itself does **not** reduce
+under kernel `decide` (probed — `orderIsoOfFin`'s inverse threads through
+`List.Sorted.getIso`/`Equiv` machinery that stalls evaluation), so the compat
+route is order-theoretic, not computational.
+
+### Basis, coordinates, rank
 
 ```lean
 -- verbatim move (Specialization 6637):
-def standardExteriorBasis (m n : ℕ) :
+public noncomputable def standardExteriorBasis (m n : ℕ) :
     Module.Basis (Set.powersetCard (Fin m) n) ℤ (⋀[ℤ]^n (Fin m → ℤ))
+  -- body: (Pi.basisFun ℤ (Fin m)).exteriorPower n   (Mathlib
+  --   `Module.Basis.exteriorPower`, ExteriorPower/Basis.lean)
 
 -- verbatim move (Specialization 6641):
-theorem standardExterior_map_coefficient (m n : ℕ) (A : Matrix (Fin m) (Fin m) ℤ)
-    (s t : Set.powersetCard (Fin m) n) :
+public theorem standardExterior_map_coefficient (m n : ℕ)
+    (A : Matrix (Fin m) (Fin m) ℤ) (s t : Set.powersetCard (Fin m) n) :
     (standardExteriorBasis m n).repr
         (exteriorPower.map n A.mulVecLin (standardExteriorBasis m n t)) s =
       (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
           (Set.powersetCard.ofFinEmbEquiv.symm t)).det
 
--- verbatim move, generalized from the rank-4 `exteriorMap` (Specialization 6826):
-def exteriorPowerMap (m n : ℕ) (A : Matrix (Fin m) (Fin m) ℤ) :
-    (⋀[ℤ]^n (Fin m → ℤ)) →ₗ[ℤ] (⋀[ℤ]^n (Fin m → ℤ))  -- body: exteriorPower.map n A.mulVecLin
-
--- NEW — generalizes pairSubsetEquiv (6736)/tripleSubsetEquiv (6739), which exist
--- only at rank 4; construction via a linear order on `Set.powersetCard` + the
--- `Finset.orderIsoOfFin`-style cardinality equiv:
-def powersetCardFinEquiv (m n : ℕ) : Set.powersetCard (Fin m) n ≃ Fin (m.choose n)
-
--- NEW — the reindexed basis (generalizes `squareBasis`/`cubeBasis`, 6742/6745):
-def standardExteriorBasisFin (m n : ℕ) :
+-- NEW — generalized `squareBasis`/`cubeBasis` (6742/6745).  Direction matches
+-- the source `(latticeExteriorBasis 2).reindex pairSubsetEquiv.symm` where
+-- `pairSubsetEquiv.symm : powersetCard → Fin 6`; here the equiv already runs
+-- `powersetCard → Fin (m.choose n)`, so no `.symm`:
+public noncomputable def standardExteriorBasisFin (m n : ℕ) :
     Module.Basis (Fin (m.choose n)) ℤ (⋀[ℤ]^n (Fin m → ℤ))
-  -- body: (standardExteriorBasis m n).reindex (powersetCardFinEquiv m n).symm
+  -- body: (standardExteriorBasis m n).reindex (powersetCardFinEquiv m n)
 
--- NEW — generalized `squareCoordinates`/`cubeCoordinates` (6764/6767):
-def standardExteriorCoordinates (m n : ℕ) :
+-- NEW — generalized `squareCoordinates`/`cubeCoordinates` (6764/6767);
+-- `.equivFun` gives the plain function space (source uses `.equivFun` too):
+public noncomputable def standardExteriorCoordinates (m n : ℕ) :
     (⋀[ℤ]^n (Fin m → ℤ)) ≃ₗ[ℤ] (Fin (m.choose n) → ℤ)
-  -- body: (standardExteriorBasisFin m n).repr
+  -- body: (standardExteriorBasisFin m n).equivFun
 
--- NEW — the minor matrix in the `Fin (m.choose n)` coordinate system; replaces
--- `LocalSystemMatrices.exteriorSquare`/`exteriorCube` (FiniteCore 331/336):
-def exteriorMinorMatrix (m n : ℕ) (A : Matrix (Fin m) (Fin m) ℤ) :
-    Matrix (Fin (m.choose n)) (Fin (m.choose n)) ℤ
-  -- body: LinearMap.toMatrix (standardExteriorBasisFin m n) (standardExteriorBasisFin m n)
-  --   (exteriorPowerMap m n A)  — so `exteriorPowerMap_toMatrix` below is `rfl`, and
-  --   `exteriorSquare A = exteriorMinorMatrix 4 2 A` holds by `squareMap_toMatrix`
-
--- NEW — the rank count J7's Orzech step consumes:
-theorem exteriorPower_finrank_choose (m n : ℕ) :
+-- NEW — the rank count J7's Orzech step consumes; direct corollary of Mathlib's
+-- `exteriorPower.finrank_eq` (already in pinned Mathlib — not new math):
+public theorem exteriorPower_finrank_choose (m n : ℕ) :
     Module.finrank ℤ (⋀[ℤ]^n (Fin m → ℤ)) = m.choose n
-  -- proof: Module.finrank_eq_card_basis (standardExteriorBasisFin m n) +
-  --   Fintype.card (Fin (m.choose n))
+  -- body (PROBED): rw [exteriorPower.finrank_eq,
+  --   Module.finrank_fintype_fun_eq_card, Fintype.card_fin]
+```
 
--- NEW — generalized `squareMap_toMatrix`/`cubeMap_toMatrix` (6854/6861):
-theorem exteriorPowerMap_toMatrix (m n : ℕ) (A : Matrix (Fin m) (Fin m) ℤ) :
-    LinearMap.toMatrix (standardExteriorBasisFin m n) (standardExteriorBasisFin m n)
-        (exteriorPowerMap m n A) =
-      Matrix.of fun i j =>
-        (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm
-          ((powersetCardFinEquiv m n).symm i))
-          (Set.powersetCard.ofFinEmbEquiv.symm
-            ((powersetCardFinEquiv m n).symm j))).det
+### Minor matrix, induced map, Cauchy–Binet
 
--- NEW — the Cauchy–Binet corollary promised by §7:
-theorem cauchyBinet_minors (m n : ℕ) (A B : Matrix (Fin m) (Fin m) ℤ)
-    (s t : Set.powersetCard (Fin m) n) :
-    ((A * B).submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-        (Set.powersetCard.ofFinEmbEquiv.symm t)).det =
-      ∑ u : Set.powersetCard (Fin m) n,
-        (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-            (Set.powersetCard.ofFinEmbEquiv.symm u)).det *
-        (B.submatrix (Set.powersetCard.ofFinEmbEquiv.symm u)
-            (Set.powersetCard.ofFinEmbEquiv.symm t)).det
-  -- proof: `exteriorPower.map_comp` + `standardExterior_map_coefficient` + repr linearity
+`exteriorMinorMatrix` is made *rectangular* (row-set ⊆ `Fin p`, column-set ⊆
+`Fin m`) rather than square-only — the source `exteriorSquare`/`exteriorCube`
+are the `p = m = 4` specializations, and Cauchy–Binet is genuinely rectangular:
+
+```lean
+/-- Entry (s,t) = the n×n minor of T on row-set s, column-set t. -/
+public def exteriorMinorMatrix (p m n : ℕ) (T : Matrix (Fin p) (Fin m) ℤ) :
+    Matrix (Fin (p.choose n)) (Fin (m.choose n)) ℤ
+  -- body (PROBED): fun s t ↦ (T.submatrix
+  --   ((Set.powersetCard.ofFinEmbEquiv.symm
+  --       ((powersetCardFinEquiv p n).symm s) : Fin n → Fin p))
+  --   ((Set.powersetCard.ofFinEmbEquiv.symm
+  --       ((powersetCardFinEquiv m n).symm t) : Fin n → Fin m))).det
+
+-- generalized `exteriorMap` (6826), rectangular:
+public noncomputable def exteriorPowerMap (p m n : ℕ)
+    (A : Matrix (Fin p) (Fin m) ℤ) :
+    (⋀[ℤ]^n (Fin m → ℤ)) →ₗ[ℤ] (⋀[ℤ]^n (Fin p → ℤ))
+  -- body: exteriorPower.map n A.mulVecLin
+
+-- generalized `squareMap_toMatrix`/`cubeMap_toMatrix` (6854/6861):
+public theorem exteriorPowerMap_toMatrix (p m n : ℕ)
+    (A : Matrix (Fin p) (Fin m) ℤ) :
+    LinearMap.toMatrix (standardExteriorBasisFin m n)
+        (standardExteriorBasisFin p n) (exteriorPowerMap p m n A) =
+      exteriorMinorMatrix p m n A
+  -- recipe: `LinearMap.toMatrix_apply` + `exteriorPower.basis_apply` +
+  --   `exteriorPower.map_comp_ιMulti_family` + `exteriorPower.basis_repr_apply` +
+  --   `exteriorPower.ιMultiDual_apply_ιMulti` gives det of the coord submatrix
+  --   = minor of `toMatrix (Pi.basisFun) (Pi.basisFun) A.mulVecLin` (= `A`,
+  --   since `A.mulVecLin` is `Matrix.toLin' A` up to basis identification and
+  --   `LinearMap.toMatrix'_toLin'`/`Pi.basisFun` lemmas apply); `Matrix.det`
+  --   transpose-invariance kills the transpose in the submatrix orientation.
+
+-- NEW — the Cauchy–Binet corollary promised by §7 (matrix form; the
+-- powersetCard-sum entrywise form follows by `Matrix.mul_apply` + reindexing
+-- the sum by `powersetCardFinEquiv`):
+public theorem cauchyBinet_minors (p q m n : ℕ)
+    (A : Matrix (Fin p) (Fin q) ℤ) (B : Matrix (Fin q) (Fin m) ℤ) :
+    exteriorMinorMatrix p m n (A * B) =
+      exteriorMinorMatrix p q n A * exteriorMinorMatrix q m n B
+  -- recipe: `exteriorPowerMap_toMatrix` thrice + `Matrix.mulVecLin_mul`
+  --   (ToLin.lean:334) + `exteriorPower.map_comp` + `toMatrix` of `comp`
+  --   equals product.
 ```
 
 Subsumed rank-4 decls (Specialization 6662–6881) — **deleted at landing**, consumers
@@ -484,13 +561,22 @@ re-routed to the general versions above (exact list, none renamed silently):
 `cubeCoordinates` (6767), `squareCoordinates_apply` (6771), `cubeCoordinates_apply` (6776),
 `latticeExterior_finrank` (6780), `exteriorMap` (6826, → `exteriorPowerMap`),
 `squareMap_coefficient` (6830, → `standardExterior_map_coefficient` +
-`powersetCardFinEquiv`), `cubeMap_coefficient` (6843), `squareMap_toMatrix` (6854),
-`cubeMap_toMatrix` (6861), `squareCoordinates_map` (6868), `cubeCoordinates_map` (6876).
+`powersetCardFinEquiv` via the compat equation), `cubeMap_coefficient` (6843),
+`squareMap_toMatrix` (6854), `cubeMap_toMatrix` (6861), `squareCoordinates_map` (6868),
+`cubeCoordinates_map` (6876).
+
+Compat detail: `pairSubsetEquiv : Fin 6 ≃ Set.powersetCard (Fin 4) 2` runs the
+*opposite* direction to `powersetCardFinEquiv`; the adapter proves
+`powersetCardFinEquiv 4 2 ∘ pairSubsetEquiv = id` (equivalently
+`squareBasis = standardExteriorBasisFin 4 2`) from
+`powersetCardFinEquiv_lt_iff` as described above — same for
+`tripleSubsetEquiv` at `n = 3`.
 
 Owner-flagged (not moved by J without owner sign-off): `LocalSystemMatrices.{pairIndices,
 exteriorSquare, tripleIndices, exteriorCube}` (`FiniteCore.lean:327–337`) — generic
 minor-matrix API at rank 4; recommend moving into `MinorCoordinates.lean` as the
-lexicographic instances of `exteriorPowerMap_toMatrix`.
+lexicographic instances of `exteriorPowerMap_toMatrix`, or replacing by
+`exteriorMinorMatrix 4 4 n` outright.
 
 ## Boundary J-B — `Lib/AlgebraicTopology/SingularHomology/Torus.lean`
 

@@ -126,6 +126,70 @@ addressed by the second-pass `J.md` ledger:
    signatures (binders, instances, universes, codomains); internal movers are
    name+line manifests.
 
-This receipt documents the **first-pass** probes only; a second-pass probe against
-the revised ledger (production `module`/`public` context, destination namespaces) is
-part of each boundary's landing work.
+**Second Axis-5 review — NO-GO** (same seat, report at
+`~/s6-notes/J-review2-devin-axis5-j.md`, committed as
+`Lib/docs/J-axis5-review2.md` alongside the first). Eleven findings; the J-A-relevant ones were: wrong
+`reindex` direction, `.repr`/function-space mismatch, and no second-pass
+aggregate receipt. Both de-pinned wedge constructors passed the reviewer's own
+probes.
+
+This receipt documents the **first-pass** probes only for boundaries
+J-B…J-E; J-A now has its own second-pass certification below.
+
+## Second-pass certification — Boundary J-A (J-A only)
+
+Probe: temporary file `/tmp/JA_Probe.lean` (deleted after this receipt —
+do not commit). Production context: `module` header, `public` visibility on
+every promised output, Mathlib imports only:
+
+```lean
+public import Mathlib.LinearAlgebra.ExteriorPower.Basis
+public import Mathlib.Order.Hom.PowersetCard
+public import Mathlib.Data.List.Lex
+public import Mathlib.LinearAlgebra.Matrix.ToLin
+public import Mathlib.Data.Fintype.Pi
+```
+
+Probe namespace `HopfLib.JA` (signatures are namespace-independent; the ledger
+lands them under `Mathoverflow1973.PeriodTorusHigherHomologyExterior`).
+
+Command: `lake env lean /tmp/JA_Probe.lean` → **0 errors**, 2 warnings
+(the two remaining `sorry` bodies `exteriorPowerMap_toMatrix` and
+`cauchyBinet_minors`, which are Axis-6 proof obligations with stated recipes —
+their *statements* elaborate).
+
+**Compiled, fully proved (no `sorry`):**
+
+- `SortedSubset`, its `Fintype` and `LinearOrder` instances (lex-on-sorted-
+  tuple order via `LinearOrder.lift'` to `List`'s computable lex order);
+- `sortedSubset_card` (`Fintype.card = m.choose n`);
+- `powersetCardFinEquiv` — concrete construction `toLex.trans
+  ((subtypeUnivEquiv mem_univ).symm.trans (orderIsoOfFin univ h).symm.toEquiv)`;
+- `powersetCardFinEquiv_lt_iff` — the pinning characterization
+  `e s < e t ↔ List.Lex (sorted s) (sorted t)`, **proved**;
+- `standardExteriorBasis`, `standardExteriorBasisFin` (correct reindex
+  direction: `.reindex (powersetCardFinEquiv m n)`, no `.symm`),
+  `standardExteriorCoordinates` (`.equivFun`, not `.repr`);
+- `exteriorPower_finrank_choose` — **proved** via Mathlib's
+  `exteriorPower.finrank_eq` + `Module.finrank_fintype_fun_eq_card`;
+- `exteriorMinorMatrix` (rectangular `p m n`), `exteriorPowerMap`,
+  statements of `exteriorPowerMap_toMatrix` and `cauchyBinet_minors`.
+
+**Failed checks (recorded honestly):**
+
+- `by decide` does **not** evaluate `powersetCardFinEquiv` (the
+  `orderIsoOfFin` inverse threads through `List.Sorted.getIso`/`Equiv`
+  machinery the kernel cannot reduce); `native_decide` is blocked because
+  `Set.powersetCard.ofFinEmbEquiv` is not `meta`-accessible in module context.
+  Consequence written into the ledger: the `pairSubset`/`tripleSubset`
+  compatibility equation is proved *order-theoretically* — via
+  `powersetCardFinEquiv_lt_iff`, `pairSubset_ordered`, and strict-mono
+  uniqueness on `Fin k` — not by `decide`.
+- `Decidable (s ∈ Set.powersetCard (Fin m) n)` is not an instance; test
+  terms use `Set.powersetCard.ofCard`/`mem_iff.mpr`.
+
+**Scope:** certifies J-A's interface only. J-B, J-C, J-D, J-E are **not**
+certified by this probe — the reviewer's findings there (proof-dependency
+boundary splits, `FirstHurewicz` shim aliases, degree-three completeness,
+GLM manifest count, J-E transports) remain open until each boundary gets its
+own probe.
