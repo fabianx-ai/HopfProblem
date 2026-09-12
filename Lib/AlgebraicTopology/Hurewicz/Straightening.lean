@@ -586,3 +586,252 @@ theorem HigherHurewicz.classOperator_simplex {X : Type} [TopologicalSpace X]
       HigherHurewicz.SimplexGeometry.basedSimplexClass
         (HigherHurewicz.normalizedSimplex x n hpi smp) :=
   SingularChains.chainLift_simplex X n _ smp
+
+/-- The top storey is a homotopy relative to the boundary: on a boundary-based simplex its
+value on the boundary is constant (it acts there as the straightening of the constant
+faces). -/
+theorem HigherHurewicz.topStorey_relBoundary {X : Type} [TopologicalSpace X] {x : X} {m : ℕ}
+    [Subsingleton (π_ (m + 2) X x)] (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (m + 3) x)
+    (r : (unitInterval)) (s : SingularChains.Simplex (m + 3))
+    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (m + 3)) :
+    HigherHurewicz.topStorey x (m + 1) τ.val (r, s) = τ.val s := by
+  obtain ⟨j, t, ht⟩ :=
+    SecondHurewicz.SimplyConnected.simplexBoundary_exists_face (m + 2)
+      (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary (m + 3))
+  have he : SingularChains.simplexFace (m + 2) j t = s := congrArg Subtype.val ht
+  rw [← he]
+  have hf := HigherHurewicz.topStorey_face x (m + 1) τ.val j
+  have hv :=
+    congrArg (fun F : C((unitInterval) × SingularChains.Simplex (m + 2), X) => F (r, t)) hf
+  show HigherHurewicz.topStorey x (m + 1) τ.val
+      (r, SingularChains.simplexFace (m + 2) j t) =
+    τ.val (SingularChains.simplexFace (m + 2) j t)
+  rw [show HigherHurewicz.topStorey x (m + 1) τ.val
+        (r, SingularChains.simplexFace (m + 2) j t) =
+        HigherHurewicz.simplexStraighteningHomotopy (m + 2) x
+          (τ.val.comp (SingularChains.simplexFace (m + 2) j)) (r, t) from hv,
+    HigherHurewicz.SimplexGeometry.basedSimplex_face τ j,
+    HigherHurewicz.simplexStraighteningHomotopy_const]
+  exact (τ.property _ ⟨j, SingularChains.simplexFace_apply_self (m + 2) j t⟩).symm
+
+/-- The top-storey endpoint of a based simplex, as a based simplex: the endpoint is
+boundary-based because the top storey is boundary-stationary. -/
+def HigherHurewicz.SimplexGeometry.topStoreySimplex {X : Type} [TopologicalSpace X] {x : X}
+    {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
+    (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (m + 3) x) :
+    HigherHurewicz.SimplexGeometry.BasedSimplex (m + 3) x :=
+  ⟨SecondHurewicz.SimplyConnected.timeSlice (HigherHurewicz.topStorey x (m + 1) τ.val) 1, by
+    intro s hs
+    show HigherHurewicz.topStorey x (m + 1) τ.val (1, s) = x
+    exact (HigherHurewicz.topStorey_relBoundary τ 1 s hs).trans (τ.property s hs)⟩
+
+/-- The top storey, viewed as a homotopy of based loops from a based simplex to its
+top-storey endpoint, relative to the boundary. -/
+def HigherHurewicz.SimplexGeometry.basedSimplexLoop_topStoreyHomotopy {X : Type}
+    [TopologicalSpace X] {x : X} {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
+    (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (m + 3) x) :
+    (HigherHurewicz.SimplexGeometry.basedSimplexLoop τ).val.HomotopyRel
+      (HigherHurewicz.SimplexGeometry.basedSimplexLoop
+        (HigherHurewicz.SimplexGeometry.topStoreySimplex τ)).val
+      (Cube.boundary (Fin (m + 3))) where
+  toFun z :=
+    HigherHurewicz.topStorey x (m + 1) τ.val
+      (z.1, HigherHurewicz.SimplexGeometry.simplexQuotient (m + 3) z.2)
+  continuous_toFun :=
+    (HigherHurewicz.topStorey x (m + 1) τ.val).continuous.comp
+      ((ContinuousMap.id _).prodMap
+        (HigherHurewicz.SimplexGeometry.simplexQuotient (m + 3))).continuous
+  map_zero_left u := by
+    show HigherHurewicz.topStorey x (m + 1) τ.val
+        (0, HigherHurewicz.SimplexGeometry.simplexQuotient (m + 3) u) = _
+    rw [HigherHurewicz.topStorey_zero]
+    rfl
+  map_one_left u := rfl
+  prop' t u hu := by
+    show HigherHurewicz.topStorey x (m + 1) τ.val
+        (t, HigherHurewicz.SimplexGeometry.simplexQuotient (m + 3) u) = _
+    rw [HigherHurewicz.topStorey_relBoundary τ t _
+      (HigherHurewicz.SimplexGeometry.simplexQuotient_boundary u hu)]
+    rfl
+
+/-- The class of the top-storey endpoint equals the class of the original based simplex: the
+top storey is a homotopy relative to the boundary. -/
+theorem HigherHurewicz.SimplexGeometry.basedSimplexClass_topStorey {X : Type}
+    [TopologicalSpace X] {x : X} {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
+    (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (m + 3) x) :
+    HigherHurewicz.SimplexGeometry.basedSimplexClass
+        (HigherHurewicz.SimplexGeometry.topStoreySimplex τ) =
+      HigherHurewicz.SimplexGeometry.basedSimplexClass τ := by
+  unfold HigherHurewicz.SimplexGeometry.basedSimplexClass
+  congr 1
+  apply Quotient.sound
+  exact ⟨(HigherHurewicz.SimplexGeometry.basedSimplexLoop_topStoreyHomotopy τ).symm⟩
+
+/-- The normalization one level below the top of the tower is the degree-`n` normalization:
+both are the `n`-th normalization tower's next family (the hypotheses differ only by a
+proof). -/
+theorem HigherHurewicz.towerBelow_nxt_eq {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ} (hn : 2 ≤ m + 3)
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    (HigherHurewicz.towerBelow x hn hpi).nxt =
+      HigherHurewicz.normalizationHomotopy x (m + 3) hpi := by
+  show (HigherHurewicz.normalizationTower x m _).nxt =
+    (HigherHurewicz.normalizationTower x m _).nxt
+  congr 1
+
+/-- The endpoint of the one-off top normalization: the top storey applied to the endpoint of
+the boundary normalization (the composition law for composed simplex homotopies). -/
+theorem HigherHurewicz.topNormalization_endpoint {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
+    (hn : 2 ≤ m + 3) (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (σ : SingularChains.SingularSimplex X (m + 4)) :
+    SecondHurewicz.SimplyConnected.timeSlice
+        (HigherHurewicz.topNormalization x (m + 3) hn hpi σ) 1 =
+      SecondHurewicz.SimplyConnected.timeSlice
+        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+          (HigherHurewicz.simplexStraighteningHomotopy (m + 2) x)
+          (HigherHurewicz.topStorey x (m + 1))
+          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+          (HigherHurewicz.topStorey_zero x (m + 1))
+          (SecondHurewicz.SimplyConnected.timeSlice
+            (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+              (HigherHurewicz.towerBelow x hn hpi).aug
+              (HigherHurewicz.towerBelow x hn hpi).nxt
+              (HigherHurewicz.towerBelow x hn hpi).compat
+              (HigherHurewicz.towerBelow x hn hpi).nxt_zero σ) 1)) 1 := by
+  show SecondHurewicz.SimplyConnected.timeSlice
+      (ThirdHurewicz.composeSimplexHomotopies _ _ _ _ σ) 1 = _
+  exact ThirdHurewicz.timeSlice_composeSimplexHomotopies_one _ _ _ _ σ
+
+/-- The face relation for the one-off top normalization at the map level: the `i`-th face of
+its endpoint is the top storey of the degree-`n` normalization of the `i`-th face. At the
+level of based-simplex classes the extra top storey disappears
+(`basedSimplexClass_topStorey`). -/
+theorem HigherHurewicz.topNormalization_endpoint_face {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
+    (hn : 2 ≤ m + 3) (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (σ : SingularChains.SingularSimplex X (m + 4)) (i : Fin (m + 5)) :
+    (SecondHurewicz.SimplyConnected.timeSlice
+        (HigherHurewicz.topNormalization x (m + 3) hn hpi σ) 1).comp
+        (SingularChains.simplexFace (m + 3) i) =
+      SecondHurewicz.SimplyConnected.timeSlice
+        (HigherHurewicz.topStorey x (m + 1)
+          (SecondHurewicz.SimplyConnected.timeSlice
+            (HigherHurewicz.normalizationHomotopy x (m + 3) hpi
+              (σ.comp (SingularChains.simplexFace (m + 3) i))) 1)) 1 := by
+  rw [HigherHurewicz.topNormalization_endpoint]
+  rw [SecondHurewicz.SimplyConnected.timeSlice_face
+    (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face
+      (HigherHurewicz.simplexStraighteningHomotopy (m + 2) x)
+      (HigherHurewicz.topStorey x (m + 1))
+      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+      (HigherHurewicz.topStorey_zero x (m + 1)))
+    _ i 1]
+  rw [SecondHurewicz.SimplyConnected.timeSlice_face
+    (show SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies (m + 3)
+        (HigherHurewicz.towerBelow x hn hpi).nxt
+        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+          (HigherHurewicz.towerBelow x hn hpi).aug
+          (HigherHurewicz.towerBelow x hn hpi).nxt
+          (HigherHurewicz.towerBelow x hn hpi).compat
+          (HigherHurewicz.towerBelow x hn hpi).nxt_zero) from
+      SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+    σ i 1]
+  rw [HigherHurewicz.towerBelow_nxt_eq]
+
+/-- The normalized top simplex: the endpoint of the one-off top normalization of an
+`(n + 1)`-simplex, as a simplex based on the two-skeleton. Each face restriction is
+boundary-collapsed: on the boundary it is the top-storey endpoint of a boundary-based
+simplex. This is the general-`n` form of the per-degree `normalized*Simplex` (one degree up)
+constructions. -/
+def HigherHurewicz.normalizedTopSimplex {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (σ : SingularChains.SingularSimplex X (m + 4)) :
+    HigherHurewicz.SimplexGeometry.BasedSimplexBoundary (m + 4) x :=
+  HigherHurewicz.SimplexGeometry.BasedSimplexBoundary.ofFaces
+    (SecondHurewicz.SimplyConnected.timeSlice
+      (HigherHurewicz.topNormalization x (m + 3) (by omega) hpi σ) 1)
+    (fun i s hs => by
+      haveI := hpi (m + 2) (by omega) (by omega)
+      show (SecondHurewicz.SimplyConnected.timeSlice
+          (HigherHurewicz.topNormalization x (m + 3) _ hpi σ) 1).comp
+            (SingularChains.simplexFace (m + 3) i) s = x
+      rw [HigherHurewicz.topNormalization_endpoint_face]
+      obtain ⟨j, t, ht⟩ :=
+        SecondHurewicz.SimplyConnected.simplexBoundary_exists_face (m + 2)
+          (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary (m + 3))
+      have he : SingularChains.simplexFace (m + 2) j t = s := congrArg Subtype.val ht
+      rw [← he, ← ContinuousMap.comp_apply,
+        SecondHurewicz.SimplyConnected.timeSlice_face
+          (HigherHurewicz.topStorey_face x (m + 1)) _ j 1,
+        show (SecondHurewicz.SimplyConnected.timeSlice
+              (HigherHurewicz.normalizationHomotopy x (m + 3) hpi
+                (σ.comp (SingularChains.simplexFace (m + 3) i))) 1).comp
+            (SingularChains.simplexFace (m + 2) j) =
+          ContinuousMap.const (SingularChains.Simplex (m + 2)) x from
+          HigherHurewicz.SimplexGeometry.basedSimplex_face
+            (HigherHurewicz.normalizedSimplex x (m + 3) hpi
+              (σ.comp (SingularChains.simplexFace (m + 3) i))) j,
+        HigherHurewicz.simplexStraighteningHomotopy_const]
+      rfl)
+
+/-- The class-level face relation for the normalized top simplex: the class of its `i`-th
+face is the class of the degree-`n` normalization of the `i`-th face of the original
+simplex. -/
+theorem HigherHurewicz.normalizedTopSimplex_class_face {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (σ : SingularChains.SingularSimplex X (m + 4)) (i : Fin (m + 5)) :
+    HigherHurewicz.SimplexGeometry.basedSimplexClass
+        (HigherHurewicz.SimplexGeometry.basedSimplexBoundaryFace
+          (HigherHurewicz.normalizedTopSimplex x hpi σ) i) =
+      HigherHurewicz.SimplexGeometry.basedSimplexClass
+        (HigherHurewicz.normalizedSimplex x (m + 3) hpi
+          (σ.comp (SingularChains.simplexFace (m + 3) i))) := by
+  haveI := hpi (m + 2) (by omega) (by omega)
+  rw [show HigherHurewicz.SimplexGeometry.basedSimplexBoundaryFace
+        (HigherHurewicz.normalizedTopSimplex x hpi σ) i =
+      HigherHurewicz.SimplexGeometry.topStoreySimplex
+        (HigherHurewicz.normalizedSimplex x (m + 3) hpi
+          (σ.comp (SingularChains.simplexFace (m + 3) i))) from
+    Subtype.ext (HigherHurewicz.topNormalization_endpoint_face x (by omega) hpi σ i)]
+  exact HigherHurewicz.SimplexGeometry.basedSimplexClass_topStorey _
+
+/-- The boundary relation for the normalized simplex: the signed sum of the classes of the
+normalized faces of an `(n + 1)`-simplex vanishes. This is the general-`n` form of the
+per-degree `normalized*Simplex_boundary_relation`. -/
+theorem HigherHurewicz.normalizedSimplex_boundary_relation {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (σ : SingularChains.SingularSimplex X (m + 4)) :
+    ∑ i : Fin (m + 5),
+        (-1 : ℤ) ^ i.val •
+          HigherHurewicz.SimplexGeometry.basedSimplexClass
+            (HigherHurewicz.normalizedSimplex x (m + 3) hpi
+              (σ.comp (SingularChains.simplexFace (m + 3) i))) =
+      0 := by
+  have h :=
+    HigherHurewicz.SimplexGeometry.basedSimplexBoundary_signed_relation (n := m + 1)
+      (HigherHurewicz.normalizedTopSimplex x hpi σ)
+  simpa only [HigherHurewicz.normalizedTopSimplex_class_face] using h
+
+/-- The class operator vanishes on boundaries: it descends to singular homology. This is the
+general-`n` form of the per-degree `*SimplexClassOperator_boundary`. -/
+theorem HigherHurewicz.classOperator_boundary {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (b : SingularChains.Chains X (m + 4)) :
+    HigherHurewicz.classOperator x (m + 3) hpi
+        (((SingularChains.singularComplex X).d (m + 4) (m + 3)).hom b) =
+      0 := by
+  have h :
+    (HigherHurewicz.classOperator x (m + 3) hpi).comp
+        (((SingularChains.singularComplex X).d (m + 4) (m + 3)).hom) =
+      0 := by
+    apply SingularChains.chainMap_ext X (m + 4)
+    intro smp
+    simp only [LinearMap.comp_apply, SingularChains.boundary_simplex, map_sum, map_zsmul,
+      HigherHurewicz.classOperator_simplex, LinearMap.zero_apply]
+    exact HigherHurewicz.normalizedSimplex_boundary_relation x hpi smp
+  exact LinearMap.congr_fun h b
