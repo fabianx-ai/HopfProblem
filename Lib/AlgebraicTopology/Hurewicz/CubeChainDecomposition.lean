@@ -1449,6 +1449,80 @@ theorem HigherHurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
     abel
   rw [h', map_sub, SingularChains.inducedChain_boundary]
 
+/-- Concatenation along coordinate `0` is based on every remaining-coordinate slice that
+lies on the remaining cube's boundary. -/
+theorem HigherHurewicz.transAt_cubeCoordinates_of_mem_boundary {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 2)) X x) (s : (unitInterval))
+    {u : Fin (n + 1) → (unitInterval)} (hu : u ∈ Cube.boundary (Fin (n + 1))) :
+    (GenLoop.transAt (0 : Fin (n + 2)) p q).val
+        (HigherHurewicz.cubeCoordinates (n + 1) (s, u)) = x :=
+  (GenLoop.transAt (0 : Fin (n + 2)) p q).property _
+    (HigherHurewicz.cubeCoordinates_boundary_right (n + 1) s hu)
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The extra term vanishes in degree `2`: the remaining cube is an interval, whose
+boundary is two points, and concatenation is based at both. -/
+theorem HigherHurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace X]
+    {x : X} (p q : GenLoop (Fin 2) X x) :
+    SingularChains.inducedChain
+        ((GenLoop.transAt (0 : Fin 2) p q).val.comp (HigherHurewicz.cubeCoordinates 1)) 2
+      (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+        (Fin 1 → (unitInterval)) 0
+        (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+          HigherHurewicz.intervalPathRight)
+        (((SingularChains.singularComplex (Fin 1 → (unitInterval))).d 1 0).hom
+          (HigherHurewicz.fundamentalCubeChain 1))) = 0 := by
+  have hfun :
+      (HigherHurewicz.fundamentalCubeChain 1) =
+        SingularChains.inducedChain
+          ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+            Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain :=
+    rfl
+  rw [hfun, ← SingularChains.inducedChain_boundary, SecondHurewicz.intervalChain_boundary, map_sub]
+  have hnat (c : SingularChains.Chains (unitInterval) 0) :
+      PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (Fin 1 → (unitInterval)) 0
+          (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+            HigherHurewicz.intervalPathRight)
+          (SingularChains.inducedChain
+            ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+              Fin 1 → (unitInterval))) 0 c) =
+        SingularChains.inducedChain
+          ((ContinuousMap.id (unitInterval)).prodMap
+            ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+              Fin 1 → (unitInterval)))) 2
+          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval) (unitInterval) 0
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight) c) := by
+    have h := PeriodTorusHigherHomology.crossProductTriangle_natural
+      (ContinuousMap.id (unitInterval))
+      ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+        Fin 1 → (unitInterval))) 0
+      (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+        HigherHurewicz.intervalPathRight) c
+    simpa [SingularChains.inducedChain_id] using h.symm
+  rw [map_sub, hnat (SingularChains.pointChain 1), hnat (SingularChains.pointChain 0),
+    ← map_sub]
+  simp only [SecondHurewicz.crossProductTriangle_point_right]
+  have hx (y : (unitInterval))
+      (hy : ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm y) ∈ Cube.boundary (Fin 1)) :
+      ((GenLoop.transAt (0 : Fin 2) p q).val.comp (HigherHurewicz.cubeCoordinates 1)).comp
+          (((ContinuousMap.id (unitInterval)).prodMap
+            ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
+              Fin 1 → (unitInterval)))).comp
+            (PeriodTorusHigherHomology.crossInsertRight y)) =
+        ContinuousMap.const (unitInterval) x := by
+    apply ContinuousMap.ext
+    intro s
+    exact HigherHurewicz.transAt_cubeCoordinates_of_mem_boundary p q s hy
+  have h0 : ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm (0 : (unitInterval))) ∈
+      Cube.boundary (Fin 1) := ⟨0, Or.inl (by simp [Homeomorph.funUnique])⟩
+  have h1 : ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm (1 : (unitInterval))) ∈
+      Cube.boundary (Fin 1) := ⟨0, Or.inr (by simp [Homeomorph.funUnique])⟩
+  simp only [map_sub, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
+  rw [hx 1 h1, hx 0 h0, sub_self]
+
 
 /-- The lower triangle of the square is the identity permutation simplex. -/
 theorem HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
