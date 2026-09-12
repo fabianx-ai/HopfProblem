@@ -635,4 +635,21 @@ theorem HigherHurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace 
     HigherHurewicz.hurewiczMap (m := m + 1) x (HigherHurewicz.hurewiczInverse x hpi c) = c :=
   LinearMap.congr_fun (HigherHurewicz.hurewiczMap_comp_hurewiczInverse x hpi) c
 
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The class operator on a cube chain is the signed sum of normalized cell classes. -/
+theorem HigherHurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    HigherHurewicz.classOperator x (m + 3) hpi (HigherHurewicz.cubeChain p) =
+      ∑ e : Equiv.Perm (Fin (m + 3)),
+        HigherHurewicz.CubeTriangulation.cubeOrientation e •
+          HigherHurewicz.SimplexGeometry.basedSimplexClass
+            (HigherHurewicz.normalizedSimplex x (m + 3) hpi
+              (p.val.comp (HigherHurewicz.CubeTriangulation.cubeSimplex e))) := by
+  rw [HigherHurewicz.cubeChain_eq_sum_simplices]
+  simp only [map_sum, map_zsmul, HigherHurewicz.classOperator_simplex]
+
 end Mathoverflow1973
