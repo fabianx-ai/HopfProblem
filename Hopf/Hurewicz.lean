@@ -285,25 +285,25 @@ theorem SphereHomology.twoOpenCover_simplyConnectedSpace {X : Type*} [Topologica
       (twoOpenCover_fundamentalGroup_eq_one D)
 
 def SphereHomology.suspensionConeCover (X : Type) [TopologicalSpace X] [PathConnectedSpace X]
-    (x : X) : FundamentalGroupVanKampen.TwoOpenCover (CuspCentralHomology.Suspension X)
+    (x : X) : FundamentalGroupVanKampen.TwoOpenCover (Suspension.topSus X)
     where
-  U := ⟨CuspCentralHomology.Suspension.northOpen, CuspCentralHomology.Suspension.northOpen_isOpen⟩
-  V := ⟨CuspCentralHomology.Suspension.southOpen, CuspCentralHomology.Suspension.southOpen_isOpen⟩
-  cover := CuspCentralHomology.Suspension.open_cover
+  U := ⟨Suspension.topSus.northOpen, Suspension.topSus.northOpen_isOpen⟩
+  V := ⟨Suspension.topSus.southOpen, Suspension.topSus.southOpen_isOpen⟩
+  cover := Suspension.topSus.open_cover
   pathConnectedU := by
     change
       IsPathConnected
-        (CuspCentralHomology.Suspension.northOpen : Set (CuspCentralHomology.Suspension X))
+        (Suspension.topSus.northOpen : Set (Suspension.topSus X))
     exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   pathConnectedV := by
     change
       IsPathConnected
-        (CuspCentralHomology.Suspension.southOpen : Set (CuspCentralHomology.Suspension X))
+        (Suspension.topSus.southOpen : Set (Suspension.topSus X))
     exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   pathConnectedIntersection := by
-    change IsPathConnected (CuspCentralHomology.Suspension.middleBand X)
+    change IsPathConnected (Suspension.topSus.middleBand X)
     exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
-  base := CuspCentralHomology.Suspension.mk ⟨1 / 2, by norm_num⟩ x
+  base := Suspension.topSus.mk ⟨1 / 2, by norm_num⟩ x
   baseU := by
     change (1 / 2 : ℝ) < 3 / 4
     norm_num
@@ -312,17 +312,17 @@ def SphereHomology.suspensionConeCover (X : Type) [TopologicalSpace X] [PathConn
     norm_num
 
 instance SphereHomology.suspension_simplyConnectedSpace (X : Type) [TopologicalSpace X]
-    [PathConnectedSpace X] : SimplyConnectedSpace (CuspCentralHomology.Suspension X) := by
+    [PathConnectedSpace X] : SimplyConnectedSpace (Suspension.topSus X) := by
   let D := suspensionConeCover X (Classical.choice (inferInstance : Nonempty X))
   let : SimplyConnectedSpace D.U := by
     change
       SimplyConnectedSpace
-        (CuspCentralHomology.Suspension.northOpen : Set (CuspCentralHomology.Suspension X))
+        (Suspension.topSus.northOpen : Set (Suspension.topSus X))
     infer_instance
   let : SimplyConnectedSpace D.V := by
     change
       SimplyConnectedSpace
-        (CuspCentralHomology.Suspension.southOpen : Set (CuspCentralHomology.Suspension X))
+        (Suspension.topSus.southOpen : Set (Suspension.topSus X))
     infer_instance
   exact twoOpenCover_simplyConnectedSpace D
 

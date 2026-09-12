@@ -9333,7 +9333,7 @@ theorem SpecialPeriods.exists_analytic_power_coordinate {F : ℂ → ℂ} {a : �
     (hF : AnalyticAt ℂ F a) (horder : analyticOrderAt F a = m) (hm : 0 < m) :
     ∃ h : ℂ → ℂ, AnalyticAt ℂ h a ∧ h a = 0 ∧ deriv h a ≠ 0 ∧ ∀ᶠ w in 𝓝 a, F w = h w ^ m := by
   obtain ⟨g, hg, hga, hFg⟩ := hF.analyticOrderAt_eq_natCast.mp horder
-  obtain ⟨r, hr, hra, hrpow⟩ := exists_analytic_unit_root hg hga hm
+  obtain ⟨r, hr, hra, hrpow⟩ := AnalyticRootCover.exists_analytic_unit_root hg hga hm
   let h : ℂ → ℂ := fun w => (w - a) * r w
   have hh : AnalyticAt ℂ h a := (analyticAt_id.sub analyticAt_const).mul hr
   have hderiv : deriv h a = r a := by
@@ -16108,7 +16108,7 @@ theorem SpecialPeriods.MuGenerator.exists_analytic_sqrt_germ_one {h : ℂ → �
     (hh : AnalyticAt ℂ h 0) (h0 : h 0 = 1) :
     ∃ b : ℂ → ℂ, AnalyticAt ℂ b 0 ∧ b 0 = 1 ∧ ∀ᶠ t in 𝓝 0, b t ^ 2 = h t := by
   obtain ⟨r, hr, hr0, hrpow⟩ :=
-    SpecialPeriods.exists_analytic_unit_root hh (by simp [h0]) (by norm_num : 0 < (2 : ℕ))
+    AnalyticRootCover.exists_analytic_unit_root hh (by simp [h0]) (by norm_num : 0 < (2 : ℕ))
   have hr02 : r 0 ^ 2 = 1 := by simpa only [h0] using hrpow.self_of_nhds
   refine ⟨fun t => r t / r 0, hr.div analyticAt_const hr0, div_self hr0, ?_⟩
   filter_upwards [hrpow] with t ht

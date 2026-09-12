@@ -12334,82 +12334,82 @@ theorem Smale.SpherePoint.positiveTransport_det (n : ℕ)
   (Classical.choose_spec (exists_positive_transport n v w)).2
 
 def Smale.SuspensionReflection.reflect {X : Type} [TopologicalSpace X] :
-    C(CuspCentralHomology.Suspension X, CuspCentralHomology.Suspension X)
+    C(Suspension.topSus X, Suspension.topSus X)
     where
   toFun :=
-    Quotient.lift (fun q => CuspCentralHomology.Suspension.mk (unitInterval.symm q.1) q.2)
+    Quotient.lift (fun q => Suspension.topSus.mk (unitInterval.symm q.1) q.2)
       (by
         rintro a b ⟨ht, h0 | h1 | hx⟩
-        · apply (CuspCentralHomology.Suspension.mk_eq_mk_iff _ _ _ _).mpr
+        · apply (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
           refine ⟨congrArg unitInterval.symm ht, Or.inr (Or.inl ?_)⟩
           simp [h0]
-        · apply (CuspCentralHomology.Suspension.mk_eq_mk_iff _ _ _ _).mpr
+        · apply (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
           refine ⟨congrArg unitInterval.symm ht, Or.inl ?_⟩
           simp [h1]
         · exact
-            (CuspCentralHomology.Suspension.mk_eq_mk_iff _ _ _ _).mpr
+            (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
               ⟨congrArg unitInterval.symm ht, Or.inr (Or.inr hx)⟩)
   continuous_toFun :=
-    CuspCentralHomology.Suspension.isQuotientMap_mk.continuous_iff.mpr
-      (CuspCentralHomology.Suspension.continuous_mk.comp
+    Suspension.topSus.isQuotientMap_mk.continuous_iff.mpr
+      (Suspension.topSus.continuous_mk.comp
         ((unitInterval.continuous_symm.comp continuous_fst).prodMk continuous_snd))
 
 theorem Smale.SuspensionReflection.reflect_mk {X : Type} [TopologicalSpace X] (t : (unitInterval))
     (x : X) :
-    reflect (CuspCentralHomology.Suspension.mk t x) =
-      CuspCentralHomology.Suspension.mk (unitInterval.symm t) x :=
+    reflect (Suspension.topSus.mk t x) =
+      Suspension.topSus.mk (unitInterval.symm t) x :=
   rfl
 
 theorem Smale.SuspensionReflection.reflect_height {X : Type} [TopologicalSpace X]
-    (x : CuspCentralHomology.Suspension X) :
-    CuspCentralHomology.Suspension.height (reflect x) =
-      unitInterval.symm (CuspCentralHomology.Suspension.height x) := by
-  obtain ⟨⟨t, u⟩, rfl⟩ := CuspCentralHomology.Suspension.mk_surjective x
+    (x : Suspension.topSus X) :
+    Suspension.topSus.height (reflect x) =
+      unitInterval.symm (Suspension.topSus.height x) := by
+  obtain ⟨⟨t, u⟩, rfl⟩ := Suspension.topSus.mk_surjective x
   rfl
 
 theorem Smale.SuspensionReflection.reflect_north {X : Type} [TopologicalSpace X] :
-    Set.MapsTo (reflect (X := X)) CuspCentralHomology.Suspension.northOpen
-      CuspCentralHomology.Suspension.southOpen := by
+    Set.MapsTo (reflect (X := X)) Suspension.topSus.northOpen
+      Suspension.topSus.southOpen := by
   intro x hx
-  change (CuspCentralHomology.Suspension.height x : ℝ) < 3 / 4 at hx
-  change 1 / 4 < (CuspCentralHomology.Suspension.height (reflect x) : ℝ)
+  change (Suspension.topSus.height x : ℝ) < 3 / 4 at hx
+  change 1 / 4 < (Suspension.topSus.height (reflect x) : ℝ)
   rw [reflect_height, unitInterval.coe_symm_eq]
   linarith
 
 theorem Smale.SuspensionReflection.reflect_south {X : Type} [TopologicalSpace X] :
-    Set.MapsTo (reflect (X := X)) CuspCentralHomology.Suspension.southOpen
-      CuspCentralHomology.Suspension.northOpen := by
+    Set.MapsTo (reflect (X := X)) Suspension.topSus.southOpen
+      Suspension.topSus.northOpen := by
   intro x hx
-  change 1 / 4 < (CuspCentralHomology.Suspension.height x : ℝ) at hx
-  change (CuspCentralHomology.Suspension.height (reflect x) : ℝ) < 3 / 4
+  change 1 / 4 < (Suspension.topSus.height x : ℝ) at hx
+  change (Suspension.topSus.height (reflect x) : ℝ) < 3 / 4
   rw [reflect_height, unitInterval.coe_symm_eq]
   linarith
 
 def Smale.SuspensionReflection.middleMap {X : Type} [TopologicalSpace X] :
-    C(CuspCentralHomology.Suspension.middleBand X, CuspCentralHomology.Suspension.middleBand X) :=
+    C(Suspension.topSus.middleBand X, Suspension.topSus.middleBand X) :=
   Smale.CoverNaturality.reversingIntersectionMap _ _ _ _ reflect reflect_north reflect_south
 
 theorem Smale.SuspensionReflection.middle_projection {X : Type} [TopologicalSpace X]
-    (x : CuspCentralHomology.Suspension.middleBand X) :
-    CuspCentralHomology.Suspension.middleBandHomotopyEquiv (middleMap x) =
-      CuspCentralHomology.Suspension.middleBandHomotopyEquiv x := by
-  obtain ⟨⟨t, u⟩, rfl⟩ := CuspCentralHomology.Suspension.middleBandHomeomorph.symm.surjective x
+    (x : Suspension.topSus.middleBand X) :
+    Suspension.topSus.middleBandHomotopyEquiv (middleMap x) =
+      Suspension.topSus.middleBandHomotopyEquiv x := by
+  obtain ⟨⟨t, u⟩, rfl⟩ := Suspension.topSus.middleBandHomeomorph.symm.surjective x
   let q : Set.Ioo (1 / 4 : ℝ) (3 / 4) × X :=
     (⟨1 - (t : ℝ), by constructor <;> linarith [t.property.1, t.property.2]⟩, u)
   have hpoint :
-    middleMap (CuspCentralHomology.Suspension.middleBandHomeomorph.symm (t, u)) =
-      CuspCentralHomology.Suspension.middleBandHomeomorph.symm q := by
+    middleMap (Suspension.topSus.middleBandHomeomorph.symm (t, u)) =
+      Suspension.topSus.middleBandHomeomorph.symm q := by
     apply Subtype.ext
-    change reflect (CuspCentralHomology.Suspension.mk _ u) = CuspCentralHomology.Suspension.mk _ u
+    change reflect (Suspension.topSus.mk _ u) = Suspension.topSus.mk _ u
     rw [reflect_mk]
     congr 1
-  rw [hpoint, CuspCentralHomology.Suspension.middleBandHomotopyEquiv_apply,
-    CuspCentralHomology.Suspension.middleBandHomotopyEquiv_apply, Homeomorph.apply_symm_apply,
+  rw [hpoint, Suspension.topSus.middleBandHomotopyEquiv_apply,
+    Suspension.topSus.middleBandHomotopyEquiv_apply, Homeomorph.apply_symm_apply,
     Homeomorph.apply_symm_apply]
 
 theorem Smale.SuspensionReflection.middle_projection_comp {X : Type} [TopologicalSpace X] :
-    (CuspCentralHomology.Suspension.middleBandHomotopyEquiv (X := X)).toFun.comp middleMap =
-      (CuspCentralHomology.Suspension.middleBandHomotopyEquiv (X := X)).toFun :=
+    (Suspension.topSus.middleBandHomotopyEquiv (X := X)).toFun.comp middleMap =
+      (Suspension.topSus.middleBandHomotopyEquiv (X := X)).toFun :=
   ContinuousMap.ext middle_projection
 
 noncomputable def NoExotic.hyperplaneReflectionOperator {E : Type*} [NormedAddCommGroup E]
@@ -12501,10 +12501,10 @@ theorem Smale.SphereReflection.sphereMap_latitude (n : ℕ) (t : (unitInterval))
       SphereHomology.Latitude.vector_succ, radius_symm]
 
 theorem Smale.SphereReflection.sphereMap_suspension (n : ℕ)
-    (x : CuspCentralHomology.Suspension (SphereHomology.UnitSphere n)) :
+    (x : Suspension.topSus (SphereHomology.UnitSphere n)) :
     sphereMap n (SphereHomology.suspensionSphereHomeomorph n x) =
       SphereHomology.suspensionSphereHomeomorph n (Smale.SuspensionReflection.reflect x) := by
-  obtain ⟨⟨t, u⟩, rfl⟩ := CuspCentralHomology.Suspension.mk_surjective x
+  obtain ⟨⟨t, u⟩, rfl⟩ := Suspension.topSus.mk_surjective x
   rw [SphereHomology.suspensionSphereHomeomorph_mk, sphereMap_latitude,
     Smale.SuspensionReflection.reflect_mk, SphereHomology.suspensionSphereHomeomorph_mk]
 
@@ -12515,36 +12515,36 @@ theorem Smale.SphereReflection.sphereMap_comp_suspension (n : ℕ) :
   ContinuousMap.ext (sphereMap_suspension n)
 
 theorem Smale.SuspensionReflection.middle_homology {X : Type} [TopologicalSpace X] (k : ℕ)
-    (a : SingularMayerVietoris.SingularHomology (CuspCentralHomology.Suspension.middleBand X) k) :
+    (a : SingularMayerVietoris.SingularHomology (Suspension.topSus.middleBand X) k) :
     SingularMayerVietoris.singularHomologyMap middleMap k a = a := by
   apply
     (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv
-        CuspCentralHomology.Suspension.middleBandHomotopyEquiv k).injective
+        Suspension.topSus.middleBandHomotopyEquiv k).injective
   change
     SingularMayerVietoris.singularHomologyMap
-        CuspCentralHomology.Suspension.middleBandHomotopyEquiv.toFun k
+        Suspension.topSus.middleBandHomotopyEquiv.toFun k
         (SingularMayerVietoris.singularHomologyMap middleMap k a) =
       SingularMayerVietoris.singularHomologyMap
-        CuspCentralHomology.Suspension.middleBandHomotopyEquiv.toFun k a
+        Suspension.topSus.middleBandHomotopyEquiv.toFun k a
   rw [← LinearMap.comp_apply, ← PeriodTorusHigherHomology.singularHomologyMap_comp,
     middle_projection_comp]
 
 theorem Smale.SuspensionReflection.reflect_homology {X : Type} [TopologicalSpace X] [Nonempty X]
     (n : ℕ)
-    (a : SingularMayerVietoris.SingularHomology (CuspCentralHomology.Suspension X) (n + 1)) :
+    (a : SingularMayerVietoris.SingularHomology (Suspension.topSus X) (n + 1)) :
     SingularMayerVietoris.singularHomologyMap reflect (n + 1) a = -a := by
   apply
     CuspCentralHomology.contractibleCoverConnecting_injective
-      CuspCentralHomology.Suspension.northOpen CuspCentralHomology.Suspension.southOpen
-      CuspCentralHomology.Suspension.northOpen_isOpen
-      CuspCentralHomology.Suspension.southOpen_isOpen CuspCentralHomology.Suspension.open_cover n
+      Suspension.topSus.northOpen Suspension.topSus.southOpen
+      Suspension.topSus.northOpen_isOpen
+      Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover n
   rw [Smale.CoverNaturality.connecting_reversing_naturality
-      CuspCentralHomology.Suspension.northOpen CuspCentralHomology.Suspension.southOpen
-      CuspCentralHomology.Suspension.northOpen CuspCentralHomology.Suspension.southOpen reflect
-      reflect_north reflect_south CuspCentralHomology.Suspension.northOpen_isOpen
-      CuspCentralHomology.Suspension.southOpen_isOpen CuspCentralHomology.Suspension.open_cover
-      CuspCentralHomology.Suspension.northOpen_isOpen
-      CuspCentralHomology.Suspension.southOpen_isOpen CuspCentralHomology.Suspension.open_cover n
+      Suspension.topSus.northOpen Suspension.topSus.southOpen
+      Suspension.topSus.northOpen Suspension.topSus.southOpen reflect
+      reflect_north reflect_south Suspension.topSus.northOpen_isOpen
+      Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover
+      Suspension.topSus.northOpen_isOpen
+      Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover n
       a]
   change
     -SingularMayerVietoris.singularHomologyMap middleMap n

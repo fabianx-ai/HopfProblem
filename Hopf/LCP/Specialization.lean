@@ -7043,7 +7043,7 @@ theorem CuspCentralHomology.baseTorusProjection_section (C : ℂ → Matrix (Fin
   baseTorusProjection_productCollapse C r hr (1, t)
 
 abbrev CuspCentralHomology.Theta :=
-  Suspension (Fin 3)
+  Suspension.topSus (Fin 3)
 
 def CuspCentralHomology.thetaEdgeIndex (j : Fin 3) : Fin 6 :=
   j.castLE (by decide)
@@ -7069,9 +7069,9 @@ def CuspCentralHomology.thetaCharacterMap : C(ToricSpace.CompactFibreTorus × Fi
 private def CuspCentralHomology.thetaCharacterCollapseFun_mo1973_14386
     (p : ToricSpace.CompactFibreTorus × Theta) : ThreeCircleSuspension :=
   Quotient.lift (s := suspensionSetoid (Fin 3))
-    (fun q => Suspension.mk q.1 (thetaCharacterMap (p.1, q.2)))
+    (fun q => Suspension.topSus.mk q.1 (thetaCharacterMap (p.1, q.2)))
     (fun a b hab => by
-      apply (Suspension.mk_eq_mk_iff _ _ _ _).mpr
+      apply (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
       rcases hab with ⟨ht, hzero | hone | hj⟩
       · exact ⟨ht, Or.inl hzero⟩
       · exact ⟨ht, Or.inr (Or.inl hone)⟩
@@ -7080,13 +7080,13 @@ private def CuspCentralHomology.thetaCharacterCollapseFun_mo1973_14386
 
 private theorem CuspCentralHomology.thetaCharacterCollapseFun_continuous_mo1973_14387 :
     Continuous thetaCharacterCollapseFun_mo1973_14386 := by
-  apply (Suspension.isQuotientMap_mk (X := Fin 3)).continuous_lift_prod_right
+  apply (Suspension.topSus.isQuotientMap_mk (X := Fin 3)).continuous_lift_prod_right
   change
     Continuous
       (fun p : ToricSpace.CompactFibreTorus × (unitInterval × Fin 3) =>
-        Suspension.mk p.2.1 (thetaCharacterMap (p.1, p.2.2)))
+        Suspension.topSus.mk p.2.1 (thetaCharacterMap (p.1, p.2.2)))
   exact
-    Suspension.continuous_mk.comp
+    Suspension.topSus.continuous_mk.comp
       ((continuous_fst.comp continuous_snd).prodMk
         (thetaCharacterMap.continuous.comp
           (continuous_fst.prodMk (continuous_snd.comp continuous_snd))))
@@ -7098,63 +7098,63 @@ def CuspCentralHomology.thetaCharacterCollapse :
 @[simp]
 theorem CuspCentralHomology.thetaCharacterCollapse_mk (u : ToricSpace.CompactFibreTorus)
     (t : unitInterval) (j : Fin 3) :
-    thetaCharacterCollapse (u, Suspension.mk t j) =
-      Suspension.mk t (thetaCircleInclusion j (hexagonCharacter (thetaEdgeIndex j) u)) :=
+    thetaCharacterCollapse (u, Suspension.topSus.mk t j) =
+      Suspension.topSus.mk t (thetaCircleInclusion j (hexagonCharacter (thetaEdgeIndex j) u)) :=
   rfl
 
 @[simp]
 theorem CuspCentralHomology.thetaCharacterCollapse_height
     (p : ToricSpace.CompactFibreTorus × Theta) :
-    Suspension.height (thetaCharacterCollapse p) = Suspension.height p.2 := by
+    Suspension.topSus.height (thetaCharacterCollapse p) = Suspension.topSus.height p.2 := by
   rcases p with ⟨u, q⟩
-  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rfl
 
 def CuspCentralHomology.thetaNorth : Set (ToricSpace.CompactFibreTorus × Theta) :=
-  Prod.snd ⁻¹' Suspension.northOpen
+  Prod.snd ⁻¹' Suspension.topSus.northOpen
 
 def CuspCentralHomology.thetaSouth : Set (ToricSpace.CompactFibreTorus × Theta) :=
-  Prod.snd ⁻¹' Suspension.southOpen
+  Prod.snd ⁻¹' Suspension.topSus.southOpen
 
 @[simp]
 theorem CuspCentralHomology.mem_thetaNorth (p : ToricSpace.CompactFibreTorus × Theta) :
-    p ∈ thetaNorth ↔ (Suspension.height p.2 : ℝ) < 3 / 4 :=
+    p ∈ thetaNorth ↔ (Suspension.topSus.height p.2 : ℝ) < 3 / 4 :=
   Iff.rfl
 
 @[simp]
 theorem CuspCentralHomology.mem_thetaSouth (p : ToricSpace.CompactFibreTorus × Theta) :
-    p ∈ thetaSouth ↔ 1 / 4 < (Suspension.height p.2 : ℝ) :=
+    p ∈ thetaSouth ↔ 1 / 4 < (Suspension.topSus.height p.2 : ℝ) :=
   Iff.rfl
 
 theorem CuspCentralHomology.thetaNorth_isOpen : IsOpen thetaNorth :=
-  Suspension.northOpen_isOpen.preimage continuous_snd
+  Suspension.topSus.northOpen_isOpen.preimage continuous_snd
 
 theorem CuspCentralHomology.thetaSouth_isOpen : IsOpen thetaSouth :=
-  Suspension.southOpen_isOpen.preimage continuous_snd
+  Suspension.topSus.southOpen_isOpen.preimage continuous_snd
 
 theorem CuspCentralHomology.theta_open_cover : thetaNorth ∪ thetaSouth = Set.univ := by
-  rw [thetaNorth, thetaSouth, ← Set.preimage_union, Suspension.open_cover, Set.preimage_univ]
+  rw [thetaNorth, thetaSouth, ← Set.preimage_union, Suspension.topSus.open_cover, Set.preimage_univ]
 
 theorem CuspCentralHomology.thetaCharacterCollapse_preimage_north :
-    thetaCharacterCollapse ⁻¹' Suspension.northOpen = thetaNorth := by
+    thetaCharacterCollapse ⁻¹' Suspension.topSus.northOpen = thetaNorth := by
   ext p
-  simp only [Set.mem_preimage, Suspension.mem_northOpen, mem_thetaNorth,
+  simp only [Set.mem_preimage, Suspension.topSus.mem_northOpen, mem_thetaNorth,
     thetaCharacterCollapse_height]
 
 theorem CuspCentralHomology.thetaCharacterCollapse_preimage_south :
-    thetaCharacterCollapse ⁻¹' Suspension.southOpen = thetaSouth := by
+    thetaCharacterCollapse ⁻¹' Suspension.topSus.southOpen = thetaSouth := by
   ext p
-  simp only [Set.mem_preimage, Suspension.mem_southOpen, mem_thetaSouth,
+  simp only [Set.mem_preimage, Suspension.topSus.mem_southOpen, mem_thetaSouth,
     thetaCharacterCollapse_height]
 
 theorem CuspCentralHomology.thetaCharacterCollapse_mapsTo_north :
-    Set.MapsTo thetaCharacterCollapse thetaNorth Suspension.northOpen := by
+    Set.MapsTo thetaCharacterCollapse thetaNorth Suspension.topSus.northOpen := by
   intro p hp
   rw [← thetaCharacterCollapse_preimage_north] at hp
   exact hp
 
 theorem CuspCentralHomology.thetaCharacterCollapse_mapsTo_south :
-    Set.MapsTo thetaCharacterCollapse thetaSouth Suspension.southOpen := by
+    Set.MapsTo thetaCharacterCollapse thetaSouth Suspension.topSus.southOpen := by
   intro p hp
   rw [← thetaCharacterCollapse_preimage_south] at hp
   exact hp
@@ -7186,9 +7186,9 @@ theorem CuspCentralHomology.thetaCircleLabel_inclusion (j : Fin 3) (z : _root_.C
 private def CuspCentralHomology.thetaForgetCircleFun_mo1973_14410 :
     ThreeCircleSuspension → Theta :=
   Quotient.lift (s := suspensionSetoid ThreeCircles)
-    (fun p => Suspension.mk p.1 (thetaCircleLabel p.2))
+    (fun p => Suspension.topSus.mk p.1 (thetaCircleLabel p.2))
     (fun a b hab => by
-      apply (Suspension.mk_eq_mk_iff _ _ _ _).mpr
+      apply (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
       rcases hab with ⟨ht, hzero | hone | hz⟩
       · exact ⟨ht, Or.inl hzero⟩
       · exact ⟨ht, Or.inr (Or.inl hone)⟩
@@ -7196,11 +7196,11 @@ private def CuspCentralHomology.thetaForgetCircleFun_mo1973_14410 :
 
 private theorem CuspCentralHomology.thetaForgetCircleFun_continuous_mo1973_14411 :
     Continuous thetaForgetCircleFun_mo1973_14410 := by
-  apply (Suspension.isQuotientMap_mk (X := ThreeCircles)).continuous_iff.mpr
+  apply (Suspension.topSus.isQuotientMap_mk (X := ThreeCircles)).continuous_iff.mpr
   change
-    Continuous (fun p : unitInterval × ThreeCircles => Suspension.mk p.1 (thetaCircleLabel p.2))
+    Continuous (fun p : unitInterval × ThreeCircles => Suspension.topSus.mk p.1 (thetaCircleLabel p.2))
   exact
-    Suspension.continuous_mk.comp
+    Suspension.topSus.continuous_mk.comp
       (continuous_fst.prodMk (thetaCircleLabel.continuous.comp continuous_snd))
 
 def CuspCentralHomology.thetaForgetCircle : C(ThreeCircleSuspension, Theta) :=
@@ -7208,19 +7208,19 @@ def CuspCentralHomology.thetaForgetCircle : C(ThreeCircleSuspension, Theta) :=
 
 @[simp]
 theorem CuspCentralHomology.thetaForgetCircle_mk (t : unitInterval) (z : ThreeCircles) :
-    thetaForgetCircle (Suspension.mk t z) = Suspension.mk t (thetaCircleLabel z) :=
+    thetaForgetCircle (Suspension.topSus.mk t z) = Suspension.topSus.mk t (thetaCircleLabel z) :=
   rfl
 
 @[simp]
 theorem CuspCentralHomology.thetaForgetCircle_circle (t : unitInterval) (j : Fin 3)
     (z : _root_.Circle) :
-    thetaForgetCircle (Suspension.mk t (thetaCircleInclusion j z)) = Suspension.mk t j := by
+    thetaForgetCircle (Suspension.topSus.mk t (thetaCircleInclusion j z)) = Suspension.topSus.mk t j := by
   rw [thetaForgetCircle_mk, thetaCircleLabel_inclusion]
 
 @[simp]
 theorem CuspCentralHomology.thetaForgetCircle_collapse (u : ToricSpace.CompactFibreTorus)
     (q : Theta) : thetaForgetCircle (thetaCharacterCollapse (u, q)) = q := by
-  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [thetaCharacterCollapse_mk, thetaForgetCircle_circle]
 
 theorem CuspCentralHomology.threePoint_homology_subsingleton (n : ℕ) (hn : n ≠ 0) :
@@ -7231,10 +7231,10 @@ theorem CuspCentralHomology.theta_homology_subsingleton (n : ℕ) :
     Subsingleton (SingularMayerVietoris.SingularHomology Theta (n + 2)) := by
   let := threePoint_homology_subsingleton (n + 1) (Nat.succ_ne_zero n)
   exact
-    ((contractibleCoverHomologyHigherEquiv (Suspension.northOpen : Set Theta) Suspension.southOpen
-            Suspension.northOpen_isOpen Suspension.southOpen_isOpen Suspension.open_cover n).trans
+    ((contractibleCoverHomologyHigherEquiv (Suspension.topSus.northOpen : Set Theta) Suspension.topSus.southOpen
+            Suspension.topSus.northOpen_isOpen Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover n).trans
         (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv
-          (Suspension.middleBandHomotopyEquiv (X := Fin 3)) (n + 1))).injective.subsingleton
+          (Suspension.topSus.middleBandHomotopyEquiv (X := Fin 3)) (n + 1))).injective.subsingleton
 
 def CuspCentralHomology.dualSidePoint (k : Fin 6) (t : unitInterval) :
     (CuspHoneycombTiling.Plane) :=
@@ -7348,35 +7348,35 @@ private def CuspCentralHomology.thetaBaseMapFun_mo1973_14442 :
 
 private theorem CuspCentralHomology.thetaBaseMapFun_continuous_mo1973_14443 :
     Continuous thetaBaseMapFun_mo1973_14442 :=
-  (Suspension.isQuotientMap_mk (X := Fin 3)).continuous_iff.mpr thetaBaseCylinder_continuous
+  (Suspension.topSus.isQuotientMap_mk (X := Fin 3)).continuous_iff.mpr thetaBaseCylinder_continuous
 
 def CuspCentralHomology.thetaBaseMap : C(Theta, PeriodTorusHigherHomology.ProductTorus 2) :=
   ⟨thetaBaseMapFun_mo1973_14442, thetaBaseMapFun_continuous_mo1973_14443⟩
 
 @[simp]
 theorem CuspCentralHomology.thetaBaseMap_mk (t : unitInterval) (j : Fin 3) :
-    thetaBaseMap (Suspension.mk t j) = thetaBaseCylinder (t, j) :=
+    thetaBaseMap (Suspension.topSus.mk t j) = thetaBaseCylinder (t, j) :=
   rfl
 
 theorem CuspCentralHomology.thetaBaseMap_mk_point (t : unitInterval) (j : Fin 3) :
-    thetaBaseMap (Suspension.mk t j) =
+    thetaBaseMap (Suspension.topSus.mk t j) =
       baseTorusPoint
         (dualSidePoint (thetaEdgeIndex j) (if j = 1 then unitInterval.symm t else t)) :=
   rfl
 
 @[simp]
 theorem CuspCentralHomology.thetaBaseMap_mk_zero (t : unitInterval) :
-    thetaBaseMap (Suspension.mk t 0) = baseTorusPoint (dualSidePoint 0 t) := by
+    thetaBaseMap (Suspension.topSus.mk t 0) = baseTorusPoint (dualSidePoint 0 t) := by
   simp only [thetaBaseMap_mk, thetaBaseCylinder_apply, orientedEdgeBasePoint_zero]
 
 @[simp]
 theorem CuspCentralHomology.thetaBaseMap_mk_one (t : unitInterval) :
-    thetaBaseMap (Suspension.mk t 1) = baseTorusPoint (dualSidePoint 1 (unitInterval.symm t)) := by
+    thetaBaseMap (Suspension.topSus.mk t 1) = baseTorusPoint (dualSidePoint 1 (unitInterval.symm t)) := by
   simp only [thetaBaseMap_mk, thetaBaseCylinder_apply, orientedEdgeBasePoint_one]
 
 @[simp]
 theorem CuspCentralHomology.thetaBaseMap_mk_two (t : unitInterval) :
-    thetaBaseMap (Suspension.mk t 2) = baseTorusPoint (dualSidePoint 2 t) := by
+    thetaBaseMap (Suspension.topSus.mk t 2) = baseTorusPoint (dualSidePoint 2 t) := by
   simp only [thetaBaseMap_mk, thetaBaseCylinder_apply, orientedEdgeBasePoint_two]
 
 theorem CuspCentralHomology.thetaBaseMap_homology_eq_zero (n : ℕ) :
@@ -7388,7 +7388,7 @@ theorem CuspCentralHomology.baseTorusProjection_doubleSuspensionMap
     (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ) (r : ℝ) (hr : 0 < r) (q : ThreeCircleSuspension) :
     baseTorusProjection C r hr (doubleSuspensionMap C r hr q) =
       thetaBaseMap (thetaForgetCircle q) := by
-  obtain ⟨⟨t, a⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, a⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [doubleSuspensionMap_mk, baseTorusProjection_doubleCylinder, thetaForgetCircle_mk,
     thetaBaseMap_mk]
 
@@ -7658,12 +7658,12 @@ def CuspCentralHomology.thetaProductMap :
 @[simp]
 theorem CuspCentralHomology.thetaProductMap_mk (u : ToricSpace.CompactFibreTorus)
     (t : unitInterval) (j : Fin 3) :
-    thetaProductMap (u, Suspension.mk t j) = (u, baseTorusPoint (orientedEdgeBasePoint t j)) :=
+    thetaProductMap (u, Suspension.topSus.mk t j) = (u, baseTorusPoint (orientedEdgeBasePoint t j)) :=
   rfl
 
 theorem CuspCentralHomology.productCollapse_thetaProductMap_mk (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ)
     (ε : ℝ) (hε : 0 < ε) (u : ToricSpace.CompactFibreTorus) (t : unitInterval) (j : Fin 3) :
-    CuspSpecialization.productCollapse C ε hε (thetaProductMap (u, Suspension.mk t j)) =
+    CuspSpecialization.productCollapse C ε hε (thetaProductMap (u, Suspension.topSus.mk t j)) =
       CuspHoneycomb.honeycombCollapseMap C ε hε
         (u * CuspSpecialization.sourcePhaseCharacter (C 0) (orientedEdgeBasePoint t j),
           orientedEdgeBasePoint t j) := by
@@ -7676,7 +7676,7 @@ theorem CuspCentralHomology.productCollapse_thetaProductMap_mem_centralBoundary
     (p : ToricSpace.CompactFibreTorus × Theta) :
     CuspSpecialization.productCollapse C ε hε (thetaProductMap p) ∈ centralBoundary C ε hε := by
   rcases p with ⟨u, q⟩
-  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [productCollapse_thetaProductMap_mk, centralBoundary_eq_image]
   exact
     ⟨(u * CuspSpecialization.sourcePhaseCharacter (C 0) (orientedEdgeBasePoint t j),
@@ -7704,7 +7704,7 @@ theorem CuspCentralHomology.centralBoundaryInclusion_comp_boundaryLift
 @[simp]
 theorem CuspCentralHomology.boundaryLift_mk_coe (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ)
     (hε : 0 < ε) (u : ToricSpace.CompactFibreTorus) (t : unitInterval) (j : Fin 3) :
-    (boundaryLift C ε hε (u, Suspension.mk t j) : CuspRetraction.QuotientCentralFibre C ε) =
+    (boundaryLift C ε hε (u, Suspension.topSus.mk t j) : CuspRetraction.QuotientCentralFibre C ε) =
       CuspHoneycomb.honeycombCollapseMap C ε hε
         (u * CuspSpecialization.sourcePhaseCharacter (C 0) (orientedEdgeBasePoint t j),
           orientedEdgeBasePoint t j) :=
@@ -7726,7 +7726,7 @@ theorem CuspCentralHomology.doubleSuspensionMap_character_orientedEdge
     (C : ℂ → Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ) (hε : 0 < ε) (u : ToricSpace.CompactFibreTorus)
     (t : unitInterval) (j : Fin 3) :
     doubleSuspensionMap C ε hε
-        (Suspension.mk t (thetaCircleInclusion j (hexagonCharacter (thetaEdgeIndex j) u))) =
+        (Suspension.topSus.mk t (thetaCircleInclusion j (hexagonCharacter (thetaEdgeIndex j) u))) =
       CuspHoneycomb.honeycombCollapseMap C ε hε (u, orientedEdgeBasePoint t j) := by
   fin_cases j
   · exact centralProject_edgeCylinder_character_dualSide C ε hε 0 t u
@@ -7735,7 +7735,7 @@ theorem CuspCentralHomology.doubleSuspensionMap_character_orientedEdge
 
 def CuspCentralHomology.thetaShearCylinder (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (s : unitInterval)
     (u : ToricSpace.CompactFibreTorus) (t : unitInterval) (j : Fin 3) : ThreeCircleSuspension :=
-  Suspension.mk t
+  Suspension.topSus.mk t
     (thetaCircleInclusion j
       (hexagonCharacter (thetaEdgeIndex j)
         (u * CuspSpecialization.sourcePhaseCharacter C₀ ((s : ℝ) • orientedEdgeBasePoint t j))))
@@ -7744,7 +7744,7 @@ theorem CuspCentralHomology.thetaShearCylinder_respects (C₀ : Matrix (Fin 2) (
     (s : unitInterval) (u : ToricSpace.CompactFibreTorus) (p q : unitInterval × Fin 3)
     (hpq : (suspensionSetoid (Fin 3)).r p q) :
     thetaShearCylinder C₀ s u p.1 p.2 = thetaShearCylinder C₀ s u q.1 q.2 := by
-  apply (Suspension.mk_eq_mk_iff _ _ _ _).mpr
+  apply (Suspension.topSus.mk_eq_mk_iff _ _ _ _).mpr
   rcases hpq with ⟨ht, hzero | hone | hj⟩
   · exact ⟨ht, Or.inl hzero⟩
   · exact ⟨ht, Or.inr (Or.inl hone)⟩
@@ -7764,7 +7764,7 @@ theorem CuspCentralHomology.thetaShearCylinder_continuous (C₀ : Matrix (Fin 2)
   have h :
     Continuous
       (fun p : ((unitInterval × ToricSpace.CompactFibreTorus) × unitInterval) × Fin 3 =>
-        Suspension.mk p.1.2
+        Suspension.topSus.mk p.1.2
           (thetaCircleInclusion p.2
             (hexagonCharacter (thetaEdgeIndex p.2)
               (p.1.1.2 *
@@ -7773,7 +7773,7 @@ theorem CuspCentralHomology.thetaShearCylinder_continuous (C₀ : Matrix (Fin 2)
     apply continuous_prod_of_discrete_right.mpr
     intro j
     exact
-      Suspension.continuous_mk.comp
+      Suspension.topSus.continuous_mk.comp
         (continuous_snd.prodMk
           ((thetaCircleInclusion_continuous j).comp
             ((edgeCharacter_continuous (ToricComponent.hexagonRay (thetaEdgeIndex j))).comp
@@ -7788,7 +7788,7 @@ theorem CuspCentralHomology.thetaShearCylinder_continuous (C₀ : Matrix (Fin 2)
 
 private theorem CuspCentralHomology.thetaShearLiftFun_continuous_mo1973_14557
     (C₀ : Matrix (Fin 2) (Fin 2) ℂ) : Continuous (thetaShearLiftFun_mo1973_14554 C₀) := by
-  apply (Suspension.isQuotientMap_mk (X := Fin 3)).continuous_lift_prod_right
+  apply (Suspension.topSus.isQuotientMap_mk (X := Fin 3)).continuous_lift_prod_right
   change
     Continuous
       (fun p : (unitInterval × ToricSpace.CompactFibreTorus) × (unitInterval × Fin 3) =>
@@ -7807,7 +7807,7 @@ def CuspCentralHomology.thetaShearMap (C₀ : Matrix (Fin 2) (Fin 2) ℂ) :
 @[simp]
 theorem CuspCentralHomology.thetaShearMap_mk (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (s : unitInterval)
     (u : ToricSpace.CompactFibreTorus) (t : unitInterval) (j : Fin 3) :
-    thetaShearMap C₀ (s, (u, Suspension.mk t j)) = thetaShearCylinder C₀ s u t j :=
+    thetaShearMap C₀ (s, (u, Suspension.topSus.mk t j)) = thetaShearCylinder C₀ s u t j :=
   rfl
 
 @[simp]
@@ -7815,7 +7815,7 @@ theorem CuspCentralHomology.thetaShearMap_zero (C₀ : Matrix (Fin 2) (Fin 2) �
     (p : ToricSpace.CompactFibreTorus × Theta) :
     thetaShearMap C₀ (0, p) = thetaCharacterCollapse p := by
   rcases p with ⟨u, q⟩
-  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [thetaShearMap_mk]
   simp [thetaShearCylinder]
 
@@ -7826,13 +7826,13 @@ def CuspCentralHomology.shearedThetaCollapse (C₀ : Matrix (Fin 2) (Fin 2) ℂ)
 @[simp]
 theorem CuspCentralHomology.shearedThetaCollapse_mk (C₀ : Matrix (Fin 2) (Fin 2) ℂ)
     (u : ToricSpace.CompactFibreTorus) (t : unitInterval) (j : Fin 3) :
-    shearedThetaCollapse C₀ (u, Suspension.mk t j) =
-      Suspension.mk t
+    shearedThetaCollapse C₀ (u, Suspension.topSus.mk t j) =
+      Suspension.topSus.mk t
         (thetaCircleInclusion j
           (hexagonCharacter (thetaEdgeIndex j)
             (u * CuspSpecialization.sourcePhaseCharacter C₀ (orientedEdgeBasePoint t j)))) := by
   change
-    Suspension.mk t
+    Suspension.topSus.mk t
         (thetaCircleInclusion j
           (hexagonCharacter (thetaEdgeIndex j)
             (u *
@@ -7881,27 +7881,27 @@ theorem CuspCentralHomology.rightPreimageProjection_homology_injective (X Y : Ty
       (rightPreimageContractibleHomotopyEquiv X Y S) n).injective
 
 def CuspCentralHomology.suspensionMiddleSection (Y : Type) [TopologicalSpace Y] :
-    C(Y, Suspension.middleBand Y) :=
-  ⟨fun y => Suspension.middleBandHomeomorph.symm (⟨1 / 2, by norm_num⟩, y),
-    Suspension.middleBandHomeomorph.symm.continuous.comp (continuous_const.prodMk continuous_id)⟩
+    C(Y, Suspension.topSus.middleBand Y) :=
+  ⟨fun y => Suspension.topSus.middleBandHomeomorph.symm (⟨1 / 2, by norm_num⟩, y),
+    Suspension.topSus.middleBandHomeomorph.symm.continuous.comp (continuous_const.prodMk continuous_id)⟩
 
 @[simp]
 theorem CuspCentralHomology.suspensionMiddleSection_coe (Y : Type) [TopologicalSpace Y] (y : Y) :
-    (suspensionMiddleSection Y y : Suspension Y) = Suspension.mk ⟨1 / 2, by norm_num⟩ y :=
+    (suspensionMiddleSection Y y : Suspension.topSus Y) = Suspension.topSus.mk ⟨1 / 2, by norm_num⟩ y :=
   rfl
 
 @[simp]
 theorem CuspCentralHomology.suspensionMiddleSection_label (Y : Type) [TopologicalSpace Y]
-    (y : Y) : Suspension.middleBandHomotopyEquiv (suspensionMiddleSection Y y) = y := by
+    (y : Y) : Suspension.topSus.middleBandHomotopyEquiv (suspensionMiddleSection Y y) = y := by
   change
-    (Suspension.middleBandHomeomorph
-          (Suspension.middleBandHomeomorph.symm (⟨1 / 2, by norm_num⟩, y))).2 =
+    (Suspension.topSus.middleBandHomeomorph
+          (Suspension.topSus.middleBandHomeomorph.symm (⟨1 / 2, by norm_num⟩, y))).2 =
       y
   rw [Homeomorph.apply_symm_apply]
 
 def CuspCentralHomology.suspensionProductMiddleSection (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (y : Y) :
-    C(X, (Prod.snd ⁻¹' Suspension.middleBand Y : Set (X × Suspension Y))) :=
+    C(X, (Prod.snd ⁻¹' Suspension.topSus.middleBand Y : Set (X × Suspension.topSus Y))) :=
   ⟨fun x => ⟨(x, suspensionMiddleSection Y y), (suspensionMiddleSection Y y).2⟩,
     (continuous_id.prodMk continuous_const).subtype_mk _⟩
 
@@ -7943,11 +7943,11 @@ def CuspCentralHomology.thetaBeltSection (j : Fin 3) :
 @[simp]
 theorem CuspCentralHomology.thetaBeltSection_coe (j : Fin 3) (u : ToricSpace.CompactFibreTorus) :
     (thetaBeltSection j u : ToricSpace.CompactFibreTorus × Theta) =
-      (u, Suspension.mk ⟨1 / 2, by norm_num⟩ j) :=
+      (u, Suspension.topSus.mk ⟨1 / 2, by norm_num⟩ j) :=
   rfl
 
 def CuspCentralHomology.thetaBeltProjection : C(ThetaBelt, ToricSpace.CompactFibreTorus) :=
-  rightPreimageProjection ToricSpace.CompactFibreTorus Theta (Suspension.middleBand (Fin 3))
+  rightPreimageProjection ToricSpace.CompactFibreTorus Theta (Suspension.topSus.middleBand (Fin 3))
 
 @[simp]
 theorem CuspCentralHomology.thetaBeltProjection_comp_section (j : Fin 3) :
@@ -7985,11 +7985,11 @@ theorem CuspCentralHomology.thetaBelt_mem_ker_of_projection_eq_zero (n : ℕ)
         (ContinuousMap.inclusion (Set.inter_subset_left : ThetaBelt ⊆ thetaNorth)) n a =
       0 := by
     let proj : C(thetaNorth, ToricSpace.CompactFibreTorus) :=
-      rightPreimageProjection ToricSpace.CompactFibreTorus Theta Suspension.northOpen
+      rightPreimageProjection ToricSpace.CompactFibreTorus Theta Suspension.topSus.northOpen
     apply
       (show Function.Injective (SingularMayerVietoris.singularHomologyMap proj n) from
         rightPreimageProjection_homology_injective ToricSpace.CompactFibreTorus Theta
-          Suspension.northOpen n)
+          Suspension.topSus.northOpen n)
     rw [map_zero, ← LinearMap.comp_apply, ← PeriodTorusHigherHomology.singularHomologyMap_comp]
     exact ha
   have hright :
@@ -7997,11 +7997,11 @@ theorem CuspCentralHomology.thetaBelt_mem_ker_of_projection_eq_zero (n : ℕ)
         (ContinuousMap.inclusion (Set.inter_subset_right : ThetaBelt ⊆ thetaSouth)) n a =
       0 := by
     let proj : C(thetaSouth, ToricSpace.CompactFibreTorus) :=
-      rightPreimageProjection ToricSpace.CompactFibreTorus Theta Suspension.southOpen
+      rightPreimageProjection ToricSpace.CompactFibreTorus Theta Suspension.topSus.southOpen
     apply
       (show Function.Injective (SingularMayerVietoris.singularHomologyMap proj n) from
         rightPreimageProjection_homology_injective ToricSpace.CompactFibreTorus Theta
-          Suspension.southOpen n)
+          Suspension.topSus.southOpen n)
     rw [map_zero, ← LinearMap.comp_apply, ← PeriodTorusHigherHomology.singularHomologyMap_comp]
     exact ha
   rw [SingularMayerVietoris.leftHomologyMap_apply, hleft, hright, neg_zero]
@@ -8072,10 +8072,10 @@ theorem CuspCentralHomology.thetaCircleMap_homologyOne (j : Fin 3)
   fin_cases j <;> funext k <;> fin_cases k <;> simp
 
 noncomputable def CuspCentralHomology.thetaTargetBeltHomologyEquiv :
-    SingularMayerVietoris.SingularHomology (Suspension.middleBand ThreeCircles) 1 ≃ₗ[ℤ]
+    SingularMayerVietoris.SingularHomology (Suspension.topSus.middleBand ThreeCircles) 1 ≃ₗ[ℤ]
       (Fin 3 → ℤ) :=
   (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv
-        (Suspension.middleBandHomotopyEquiv (X := ThreeCircles)) 1).trans
+        (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles)) 1).trans
     threeCirclesHomologyOneEquiv
 
 theorem CuspCentralHomology.thetaTargetBeltHomologyEquiv_middleSection
@@ -8084,7 +8084,7 @@ theorem CuspCentralHomology.thetaTargetBeltHomologyEquiv_middleSection
         (SingularMayerVietoris.singularHomologyMap (suspensionMiddleSection ThreeCircles) 1 a) =
       threeCirclesHomologyOneEquiv a := by
   have hsection :
-    (Suspension.middleBandHomotopyEquiv (X := ThreeCircles)).toFun.comp
+    (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles)).toFun.comp
         (suspensionMiddleSection ThreeCircles) =
       ContinuousMap.id ThreeCircles := by
     apply ContinuousMap.ext
@@ -8092,7 +8092,7 @@ theorem CuspCentralHomology.thetaTargetBeltHomologyEquiv_middleSection
   change
     threeCirclesHomologyOneEquiv
         (((SingularMayerVietoris.singularHomologyMap
-                (Suspension.middleBandHomotopyEquiv (X := ThreeCircles)).toFun 1).comp
+                (Suspension.topSus.middleBandHomotopyEquiv (X := ThreeCircles)).toFun 1).comp
             (SingularMayerVietoris.singularHomologyMap (suspensionMiddleSection ThreeCircles) 1))
           a) =
       _
@@ -8105,9 +8105,9 @@ def CuspCentralHomology.thetaEdgeCharacterMap (j : Fin 3) :
   ⟨hexagonCharacter (thetaEdgeIndex j),
     edgeCharacter_continuous (ToricComponent.hexagonRay (thetaEdgeIndex j))⟩
 
-def CuspCentralHomology.thetaBeltMap : C(ThetaBelt, Suspension.middleBand ThreeCircles) :=
+def CuspCentralHomology.thetaBeltMap : C(ThetaBelt, Suspension.topSus.middleBand ThreeCircles) :=
   SingularMayerVietoris.intersectionRestriction thetaCharacterCollapse thetaNorth thetaSouth
-    Suspension.northOpen Suspension.southOpen thetaCharacterCollapse_mapsTo_north
+    Suspension.topSus.northOpen Suspension.topSus.southOpen thetaCharacterCollapse_mapsTo_north
     thetaCharacterCollapse_mapsTo_south
 
 theorem CuspCentralHomology.thetaBeltMap_comp_section (j : Fin 3) :
@@ -8589,7 +8589,7 @@ theorem CuspCentralHomology.thetaBeltLift_image (z : Fin 3 → ℤ) :
   rw [thetaBeltPhaseClasses_character, thetaPhaseTripleCharacters_section]
 
 theorem CuspCentralHomology.thetaBelt_kernel_lifts
-    (b : SingularMayerVietoris.SingularHomology (Suspension.middleBand ThreeCircles) 1) :
+    (b : SingularMayerVietoris.SingularHomology (Suspension.topSus.middleBand ThreeCircles) 1) :
     ∃ c : SingularMayerVietoris.SingularHomology ThetaBelt 1,
       SingularMayerVietoris.leftHomologyMap thetaNorth thetaSouth 1 c = 0 ∧
         SingularMayerVietoris.singularHomologyMap thetaBeltMap 1 c = b := by
@@ -8600,9 +8600,9 @@ theorem CuspCentralHomology.thetaBelt_kernel_lifts
 theorem CuspCentralHomology.thetaCharacterCollapse_homologyTwo_surjective :
     Function.Surjective (SingularMayerVietoris.singularHomologyMap thetaCharacterCollapse 2) :=
   contractibleTargetCoverMap_homology_surjective (ToricSpace.CompactFibreTorus × Theta)
-    ThreeCircleSuspension thetaCharacterCollapse thetaNorth thetaSouth Suspension.northOpen
-    Suspension.southOpen thetaNorth_isOpen thetaSouth_isOpen theta_open_cover
-    Suspension.northOpen_isOpen Suspension.southOpen_isOpen Suspension.open_cover
+    ThreeCircleSuspension thetaCharacterCollapse thetaNorth thetaSouth Suspension.topSus.northOpen
+    Suspension.topSus.southOpen thetaNorth_isOpen thetaSouth_isOpen theta_open_cover
+    Suspension.topSus.northOpen_isOpen Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover
     thetaCharacterCollapse_mapsTo_north thetaCharacterCollapse_mapsTo_south 1
     thetaBelt_kernel_lifts
 
@@ -8616,7 +8616,7 @@ theorem CuspCentralHomology.boundaryLift_coe_eq_doubleSuspensionMap
     (boundaryLift C ε hε p : CuspRetraction.QuotientCentralFibre C ε) =
       doubleSuspensionMap C ε hε (shearedThetaCollapse (C 0) p) := by
   rcases p with ⟨u, q⟩
-  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [boundaryLift_mk_coe, shearedThetaCollapse_mk, doubleSuspensionMap_character_orientedEdge]
 
 theorem CuspCentralHomology.boundaryLift_eq_doubleSuspensionBoundaryMap_comp
@@ -9320,7 +9320,7 @@ theorem CuspCentralHomology.BaseCover.basePoint_dualSidePoint_opposite (k : Fin 
 
 theorem CuspCentralHomology.BaseCover.thetaBaseMap_mem_boundary (q : CuspCentralHomology.Theta) :
     CuspCentralHomology.thetaBaseMap q ∈ boundary := by
-  obtain ⟨⟨t, j⟩, rfl⟩ := CuspCentralHomology.Suspension.mk_surjective q
+  obtain ⟨⟨t, j⟩, rfl⟩ := Suspension.topSus.mk_surjective q
   rw [CuspCentralHomology.thetaBaseMap_mk_point]
   let y :=
     CuspCentralHomology.dualSidePoint (CuspCentralHomology.thetaEdgeIndex j)
@@ -9336,24 +9336,24 @@ theorem CuspCentralHomology.BaseCover.dualSidePoint_basePoint_mem_range (k : Fin
       Set.range CuspCentralHomology.thetaBaseMap := by
   fin_cases k
   · exact
-      ⟨CuspCentralHomology.Suspension.mk t (0 : Fin 3),
+      ⟨Suspension.topSus.mk t (0 : Fin 3),
         CuspCentralHomology.thetaBaseMap_mk_zero t⟩
-  · refine ⟨CuspCentralHomology.Suspension.mk (unitInterval.symm t) (1 : Fin 3), ?_⟩
+  · refine ⟨Suspension.topSus.mk (unitInterval.symm t) (1 : Fin 3), ?_⟩
     rw [CuspCentralHomology.thetaBaseMap_mk_one, unitInterval.symm_symm]
     rfl
   · exact
-      ⟨CuspCentralHomology.Suspension.mk t (2 : Fin 3), CuspCentralHomology.thetaBaseMap_mk_two t⟩
-  · refine ⟨CuspCentralHomology.Suspension.mk (unitInterval.symm t) (0 : Fin 3), ?_⟩
+      ⟨Suspension.topSus.mk t (2 : Fin 3), CuspCentralHomology.thetaBaseMap_mk_two t⟩
+  · refine ⟨Suspension.topSus.mk (unitInterval.symm t) (0 : Fin 3), ?_⟩
     rw [CuspCentralHomology.thetaBaseMap_mk_zero]
     have hi : (0 : Fin 6) + 3 = ⟨3, by decide⟩ := by decide
     simpa only [unitInterval.symm_symm, hi] using
       (basePoint_dualSidePoint_opposite 0 (unitInterval.symm t)).symm
-  · refine ⟨CuspCentralHomology.Suspension.mk t (1 : Fin 3), ?_⟩
+  · refine ⟨Suspension.topSus.mk t (1 : Fin 3), ?_⟩
     rw [CuspCentralHomology.thetaBaseMap_mk_one]
     have hi : (1 : Fin 6) + 3 = ⟨4, by decide⟩ := by decide
     simpa only [unitInterval.symm_symm, hi] using
       (basePoint_dualSidePoint_opposite 1 (unitInterval.symm t)).symm
-  · refine ⟨CuspCentralHomology.Suspension.mk (unitInterval.symm t) (2 : Fin 3), ?_⟩
+  · refine ⟨Suspension.topSus.mk (unitInterval.symm t) (2 : Fin 3), ?_⟩
     rw [CuspCentralHomology.thetaBaseMap_mk_two]
     have hi : (2 : Fin 6) + 3 = ⟨5, by decide⟩ := by decide
     simpa only [unitInterval.symm_symm, hi] using
@@ -9469,8 +9469,8 @@ theorem CuspCentralHomology.BaseCover.thetaBaseCylinder_eq_iff (p q : unitInterv
 theorem CuspCentralHomology.BaseCover.thetaBaseMap_injective :
     Function.Injective CuspCentralHomology.thetaBaseMap := by
   intro x y h
-  obtain ⟨⟨s, j⟩, rfl⟩ := CuspCentralHomology.Suspension.mk_surjective x
-  obtain ⟨⟨t, k⟩, rfl⟩ := CuspCentralHomology.Suspension.mk_surjective y
+  obtain ⟨⟨s, j⟩, rfl⟩ := Suspension.topSus.mk_surjective x
+  obtain ⟨⟨t, k⟩, rfl⟩ := Suspension.topSus.mk_surjective y
   exact Quotient.sound ((thetaBaseCylinder_eq_iff (s, j) (t, k)).mp h)
 
 theorem CuspCentralHomology.BaseCover.thetaBoundaryMap_injective :

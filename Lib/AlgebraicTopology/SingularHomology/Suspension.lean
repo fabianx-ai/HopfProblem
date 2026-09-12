@@ -82,14 +82,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 def SphereHomology.suspensionSphereMap (n : ℕ) :
-    Suspension.Suspension (UnitSphere n) → UnitSphere (n + 1) :=
+    Suspension.topSus (UnitSphere n) → UnitSphere (n + 1) :=
   Quotient.lift (fun p => Latitude.point n p.1 p.2)
     (fun p q h => (Latitude.point_eq_iff n p.1 q.1 p.2 q.2).mpr h)
 
 @[continuity, fun_prop]
 theorem SphereHomology.suspensionSphereMap_continuous (n : ℕ) :
     Continuous (suspensionSphereMap n) :=
-  Suspension.Suspension.isQuotientMap_mk.continuous_iff.mpr (Latitude.point_continuous n)
+  Suspension.topSus.isQuotientMap_mk.continuous_iff.mpr (Latitude.point_continuous n)
 
 theorem SphereHomology.suspensionSphereMap_injective (n : ℕ) :
     Function.Injective (suspensionSphereMap n) := by
@@ -105,10 +105,10 @@ theorem SphereHomology.suspensionSphereMap_surjective (n : ℕ) :
     Function.Surjective (suspensionSphereMap n) := by
   intro y
   obtain ⟨⟨t, x⟩, h⟩ := Latitude.point_surjective n y
-  exact ⟨Suspension.Suspension.mk t x, h⟩
+  exact ⟨Suspension.topSus.mk t x, h⟩
 
 def SphereHomology.suspensionSphereHomeomorph (n : ℕ) :
-    Suspension.Suspension (UnitSphere n) ≃ₜ UnitSphere (n + 1) :=
+    Suspension.topSus (UnitSphere n) ≃ₜ UnitSphere (n + 1) :=
   Continuous.homeoOfEquivCompactToT2 (f :=
     Equiv.ofBijective (suspensionSphereMap n)
       ⟨suspensionSphereMap_injective n, suspensionSphereMap_surjective n⟩)
@@ -117,7 +117,7 @@ def SphereHomology.suspensionSphereHomeomorph (n : ℕ) :
 @[simp]
 theorem SphereHomology.suspensionSphereHomeomorph_mk (n : ℕ) (t : unitInterval)
     (x : UnitSphere n) :
-    suspensionSphereHomeomorph n (Suspension.Suspension.mk t x) = Latitude.point n t x :=
+    suspensionSphereHomeomorph n (Suspension.topSus.mk t x) = Latitude.point n t x :=
   rfl
 
 instance SphereHomology.unitSphere_pathConnectedSpace (n : ℕ) :
@@ -360,15 +360,15 @@ def Suspension.contractibleCoverHomologyOneEquivKernel {X : Type} [TopologicalSp
 
 def SphereHomology.suspensionHomologyHigherEquiv (X : Type) [TopologicalSpace X] [Nonempty X]
     (k : ℕ) :
-    SingularMayerVietoris.SingularHomology (Suspension.Suspension X) (k + 2) ≃ₗ[ℤ]
+    SingularMayerVietoris.SingularHomology (Suspension.topSus X) (k + 2) ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology X (k + 1) :=
   (Suspension.contractibleCoverHomologyHigherEquiv
-        Suspension.Suspension.northOpen Suspension.Suspension.southOpen
-        Suspension.Suspension.northOpen_isOpen
-        Suspension.Suspension.southOpen_isOpen Suspension.Suspension.open_cover
+        Suspension.topSus.northOpen Suspension.topSus.southOpen
+        Suspension.topSus.northOpen_isOpen
+        Suspension.topSus.southOpen_isOpen Suspension.topSus.open_cover
         k).trans
     (SingularHomology.homotopyEquivHomologyEquiv
-      Suspension.Suspension.middleBandHomotopyEquiv (k + 1))
+      Suspension.topSus.middleBandHomotopyEquiv (k + 1))
 
 def SphereHomology.unitSphereHomologySuspensionEquiv (n k : ℕ) :
     SingularMayerVietoris.SingularHomology (UnitSphere (n + 1)) (k + 2) ≃ₗ[ℤ]
