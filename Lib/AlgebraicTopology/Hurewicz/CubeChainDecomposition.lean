@@ -181,7 +181,7 @@ def Hurewicz.CubeSubdivision.prismCubeMap {n : ℕ} (e : Equiv.Perm (Fin n)) :
 theorem Hurewicz.CubeSubdivision.prismCubeMap_affine {m n : ℕ} (e : Equiv.Perm (Fin n))
     (v : Fin (m + 1) → Fin 2 × Fin (n + 1)) :
     (prismCubeMap e).comp
-        (PeriodTorusHigherHomology.productAffineSimplex
+        (SingularHomology.productAffineSimplex
           (fun j =>
             (SingularMayerVietoris.stdVertices 1 (v j).1,
               SingularMayerVietoris.stdVertices n (v j).2))) =
@@ -206,14 +206,14 @@ theorem Hurewicz.CubeSubdivision.prismCubeMap_affine {m n : ℕ} (e : Equiv.Perm
     rw [cubeAffineSimplex_comp_selectedVertices]
     rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem Hurewicz.CubeSubdivision.prismCubeRealization_eq_induced {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
     (e : Equiv.Perm (Fin n)) (m : ℕ) :
     prismCubeRealization p e m =
       (SingularChains.inducedChain (p.comp (prismCubeMap e)) m).comp
-        ((PeriodTorusHigherHomology.productAffineChainMap 1 n m).comp
+        ((SingularHomology.productAffineChainMap 1 n m).comp
           (SingularMayerVietoris.formalMap
             (Prod.map (SingularMayerVietoris.stdVertices 1) (SingularMayerVietoris.stdVertices n))
             (m + 1))) := by
@@ -221,35 +221,35 @@ theorem Hurewicz.CubeSubdivision.prismCubeRealization_eq_induced {X : Type}
   intro v
   simp only [prismCubeRealization_simplex, LinearMap.comp_apply,
     SingularMayerVietoris.formalMap_simplex,
-    PeriodTorusHigherHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex]
+    SingularHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex]
   apply congrArg (SingularChains.simplexChain X m)
   change
     p.comp (prismCubeSimplex e v) =
       p.comp
         ((prismCubeMap e).comp
-          (PeriodTorusHigherHomology.productAffineSimplex
+          (SingularHomology.productAffineSimplex
             (fun j =>
               (SingularMayerVietoris.stdVertices 1 (v j).1,
                 SingularMayerVietoris.stdVertices n (v j).2))))
   rw [prismCubeMap_affine]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
     (e : Equiv.Perm (Fin n)) :
     prismCubeRealization p e (n + 1)
-        (PeriodTorusHigherHomology.formalEdgeCrossProduct n
+        (SingularHomology.formalEdgeCrossProduct n
           (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
           (SingularMayerVietoris.formalSimplex (fun j : Fin (n + 1) => j))) =
       SingularChains.inducedChain (p.comp (prismCubeMap e)) (n + 1)
-        (PeriodTorusHigherHomology.productAffineChainMap 1 n (n + 1)
-          (PeriodTorusHigherHomology.formalEdgeCrossProduct n
+        (SingularHomology.productAffineChainMap 1 n (n + 1)
+          (SingularHomology.formalEdgeCrossProduct n
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n)))) := by
   rw [prismCubeRealization_eq_induced]
   simp only [LinearMap.comp_apply]
-  rw [PeriodTorusHigherHomology.formalMap_edgeCrossProduct]
+  rw [SingularHomology.formalMap_edgeCrossProduct]
   simp only [SingularMayerVietoris.formalMap_simplex, Function.comp_def]
 
 def Hurewicz.CubeSubdivision.badPrism (q m : ℕ) :
@@ -332,13 +332,13 @@ theorem Hurewicz.CubeSubdivision.formalEdgeCrossProduct_mem_badPrism_of_omit {q 
     (i : Fin (q + 1)) (hi : i ≠ 0) (c : SingularMayerVietoris.FormalChains (Fin 2) 2)
     {d : SingularMayerVietoris.FormalChains (Fin (q + 1)) (r + 1)}
     (hd : d ∈ SingularMayerVietoris.formalChainsSupported {j | j ≠ i} (r + 1)) :
-    PeriodTorusHigherHomology.formalEdgeCrossProduct r c d ∈ badPrism q (r + 2) := by
+    SingularHomology.formalEdgeCrossProduct r c d ∈ badPrism q (r + 2) := by
   apply mem_badPrism_of_omit i hi
   apply
     SingularMayerVietoris.formalChainsSupported_mono (S :=
       (Set.univ : Set (Fin 2)) ×ˢ {j : Fin (q + 1) | j ≠ i}) (fun _ hz => hz.2)
   exact
-    PeriodTorusHigherHomology.formalEdgeCrossProduct_mem_supported r (S := Set.univ) (by simp) hd
+    SingularHomology.formalEdgeCrossProduct_mem_supported r (S := Set.univ) (by simp) hd
 
 def Hurewicz.CubeSubdivision.retainedFirstBoundary {W : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains W (q + 2) →ₗ[ℤ]
@@ -441,7 +441,7 @@ theorem Hurewicz.CubeSubdivision.formalMap_standardPrism {V W V' W' : Type*} (f 
 
 def Hurewicz.CubeSubdivision.prismDiscrepancy {V W : Type*} (q : ℕ) (v : Fin 2 → V)
     (w : Fin (q + 1) → W) : SingularMayerVietoris.FormalChains (V × W) (q + 2) :=
-  PeriodTorusHigherHomology.formalEdgeCrossProduct q (SingularMayerVietoris.formalSimplex v)
+  SingularHomology.formalEdgeCrossProduct q (SingularMayerVietoris.formalSimplex v)
       (SingularMayerVietoris.formalSimplex w) -
     standardPrism q v w
 
@@ -449,14 +449,14 @@ def Hurewicz.CubeSubdivision.prismDiscrepancy {V W : Type*} (q : ℕ) (v : Fin 2
 theorem Hurewicz.CubeSubdivision.prismDiscrepancy_zero {V W : Type*} (v : Fin 2 → V)
     (w : Fin 1 → W) : prismDiscrepancy 0 v w = 0 := by
   simp only [prismDiscrepancy,
-    PeriodTorusHigherHomology.formalEdgeCrossProduct_zero_simplex_right,
+    SingularHomology.formalEdgeCrossProduct_zero_simplex_right,
     SingularMayerVietoris.formalMap_simplex, standardPrism_zero, Function.comp_def, sub_self]
 
 theorem Hurewicz.CubeSubdivision.formalMap_prismDiscrepancy {V W V' W' : Type*} (f : V → V')
     (g : W → W') (q : ℕ) (v : Fin 2 → V) (w : Fin (q + 1) → W) :
     SingularMayerVietoris.formalMap (Prod.map f g) (q + 2) (prismDiscrepancy q v w) =
       prismDiscrepancy q (f ∘ v) (g ∘ w) := by
-  simp only [prismDiscrepancy, map_sub, PeriodTorusHigherHomology.formalMap_edgeCrossProduct,
+  simp only [prismDiscrepancy, map_sub, SingularHomology.formalMap_edgeCrossProduct,
     formalMap_standardPrism, SingularMayerVietoris.formalMap_simplex]
 
 def Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy (q : ℕ) :
@@ -481,13 +481,13 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ {V W : Type*} (q : ℕ) (
       SingularMayerVietoris.formalCone (v 0, w 0) (q + 2)
         (-SingularMayerVietoris.formalMap (fun z => (v 0, z)) (q + 2)
                 (SingularMayerVietoris.formalSimplex w) -
-            PeriodTorusHigherHomology.formalEdgeCrossProduct q
+            SingularHomology.formalEdgeCrossProduct q
               (SingularMayerVietoris.formalSimplex v)
               (SingularMayerVietoris.formalBoundary (q + 1)
                 (SingularMayerVietoris.formalSimplex w)) +
           standardPrism q v (Fin.tail w)) := by
-  rw [prismDiscrepancy, PeriodTorusHigherHomology.formalEdgeCrossProduct_simplex_succ,
-    PeriodTorusHigherHomology.formalPointCrossProduct_edge_boundary, standardPrism_succ]
+  rw [prismDiscrepancy, SingularHomology.formalEdgeCrossProduct_simplex_succ,
+    SingularHomology.formalPointCrossProduct_edge_boundary, standardPrism_succ]
   simp only [map_sub, map_add, map_neg]
   abel
 
@@ -498,7 +498,7 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ_retained {V W : Type*} (q
         (-SingularMayerVietoris.formalMap (fun z => (v 0, z)) (q + 2)
                 (SingularMayerVietoris.formalSimplex w) -
             prismDiscrepancy q v (Fin.tail w) -
-          PeriodTorusHigherHomology.formalEdgeCrossProduct q
+          SingularHomology.formalEdgeCrossProduct q
             (SingularMayerVietoris.formalSimplex v)
             (retainedFirstBoundary q (SingularMayerVietoris.formalSimplex w))) := by
   rw [prismDiscrepancy_succ, formalBoundary_firstFace_split_simplex, map_add, prismDiscrepancy]
@@ -513,7 +513,7 @@ theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_succ (q : ℕ) :
               (canonicalPrismDiscrepancy q) -
           ∑ i : Fin (q + 1),
             (-1 : ℤ) ^ (i.val + 1) •
-              PeriodTorusHigherHomology.formalEdgeCrossProduct q
+              SingularHomology.formalEdgeCrossProduct q
                 (SingularMayerVietoris.formalSimplex (fun j : Fin 2 => j))
                 (SingularMayerVietoris.formalSimplex i.succ.succAbove)) := by
   change prismDiscrepancy (q + 1) (fun i : Fin 2 => i) (fun j : Fin (q + 2) => j) = _
@@ -623,7 +623,7 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_canonicalPrismDiscrepa
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (p : GenLoop (Fin (n + 3)) X x) :
     orientedPrismRealization p.val (n + 3)
-        (PeriodTorusHigherHomology.formalEdgeCrossProduct (n + 2)
+        (SingularHomology.formalEdgeCrossProduct (n + 2)
           (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
           (SingularMayerVietoris.formalSimplex (fun j : Fin (n + 3) => j))) =
       orientedPrismRealization p.val (n + 3)
@@ -841,8 +841,8 @@ theorem Hurewicz.cubeCoordinates_boundary_left (n : ℕ) (t : (unitInterval))
     Hurewicz.cubeCoordinates n (t, u) ∈ Cube.boundary (Fin (n + 1)) :=
   ⟨0, by simpa [Hurewicz.cubeCoordinates_zero] using ht⟩
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- A constant map pushes every `n`-chain to the corresponding multiple of the constant
 simplex. -/
 theorem SingularChains.inducedChain_const {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
@@ -893,8 +893,8 @@ theorem Hurewicz.evalLeft_comp_curryLoop {n : ℕ} {X : Type} [TopologicalSpace 
   ext z
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The fundamental singular chain of the topological `n`-cube `Fin n → I`, defined
 recursively: the `0`-cube is the point chain, the `1`-cube is the interval chain transported
 along `(Fin 1 → I) ≃ₜ I`, and the `n + 2`-cube is the cross product of the interval chain with
@@ -907,7 +907,7 @@ def Hurewicz.fundamentalCubeChain :
         (unitInterval))) 1 SecondHurewicz.intervalChain
   | n + 2 =>
     SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-      (PeriodTorusHigherHomology.crossProductEdge (unitInterval) (Fin (n + 1) → (unitInterval))
+      (SingularHomology.crossProductEdge (unitInterval) (Fin (n + 1) → (unitInterval))
         (n + 1) SecondHurewicz.intervalChain (Hurewicz.fundamentalCubeChain (n + 1)))
 
 /-- The cube chain of a based `n`-cube: the image of the fundamental chain. -/
@@ -918,20 +918,20 @@ def Hurewicz.cubeChain {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
 theorem Hurewicz.fundamentalCubeChain_succ (n : ℕ) :
     Hurewicz.fundamentalCubeChain (n + 2) =
       SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+        (SingularHomology.crossProductEdge (unitInterval)
           (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
           (Hurewicz.fundamentalCubeChain (n + 1))) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The recursion for the cube chain: the `n + 2`-cube chain is the evaluation of the cross
 product of the interval chain with the curried `n + 1`-cube chain. -/
 theorem Hurewicz.cubeChain_succ {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin (n + 2)) X x) :
     Hurewicz.cubeChain p =
       (SingularChains.inducedChain (Hurewicz.CubeSubdivision.evalLeft X) ((n + 1) + 1))
-        ((PeriodTorusHigherHomology.crossProductEdge (unitInterval) C((unitInterval), X)
+        ((SingularHomology.crossProductEdge (unitInterval) C((unitInterval), X)
             (n + 1)) SecondHurewicz.intervalChain
           (Hurewicz.cubeChain (Hurewicz.curryLoop p))) := by
   unfold Hurewicz.cubeChain
@@ -941,7 +941,7 @@ theorem Hurewicz.cubeChain_succ {n : ℕ} {X : Type} [TopologicalSpace X] {x : X
     ← SingularChains.inducedChain_comp,
     show p.val.comp (Hurewicz.cubeCoordinates (n + 1)) = Hurewicz.cubeMap p from rfl,
     ← Hurewicz.evalLeft_comp_curryLoop p, SingularChains.inducedChain_comp,
-    LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+    LinearMap.comp_apply, SingularHomology.crossProductEdge_natural,
     SingularChains.inducedChain_id, LinearMap.id_apply]
 
 /-- The prism cube map factors through the uncurrying map: inserting the path simplex and the
@@ -961,8 +961,8 @@ theorem Hurewicz.cubeCoordinates_comp_prismCubeMap {n : ℕ} (e : Equiv.Perm (Fi
     rw [Hurewicz.cubeCoordinates_succ]
     rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The key term identification of the induction step: the cross product of the interval chain
 with the `e`-th simplex chain of the curried cube evaluates to the `e`-th prism realization.
 General-`n` form of
@@ -970,17 +970,17 @@ General-`n` form of
 theorem Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin n)) :
     (SingularChains.inducedChain (Hurewicz.CubeSubdivision.evalLeft X) (n + 1))
-        ((PeriodTorusHigherHomology.crossProductEdge (unitInterval) C((unitInterval), X) n)
+        ((SingularHomology.crossProductEdge (unitInterval) C((unitInterval), X) n)
           SecondHurewicz.intervalChain
           (SingularChains.simplexChain C((unitInterval), X) n
             ((Hurewicz.curryLoop p).val.comp
               (Hurewicz.CubeTriangulation.cubeSimplex e)))) =
       Hurewicz.CubeSubdivision.prismCubeRealization p.val e (n + 1)
-        ((PeriodTorusHigherHomology.formalEdgeCrossProduct n)
+        ((SingularHomology.formalEdgeCrossProduct n)
           (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
           (SingularMayerVietoris.formalSimplex (fun j : Fin (n + 1) => j))) := by
   rw [SecondHurewicz.intervalChain, SingularChains.pathChain,
-    PeriodTorusHigherHomology.crossProductEdge_simplex,
+    SingularHomology.crossProductEdge_simplex,
     Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct]
   rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
   have h : (Hurewicz.CubeSubdivision.evalLeft X).comp
@@ -1019,8 +1019,8 @@ theorem Hurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one :
     Hurewicz.CubeTriangulation.cubeAffineSimplex_coordinate]
   simp [Hurewicz.CubeTriangulation.cubeVertex, Fin.sum_univ_two]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The cube chain in degree `1` is the single permutation simplex: the base case of the Kuhn
 decomposition. -/
 theorem Hurewicz.cubeChain_one {X : Type} [TopologicalSpace X] {x : X}
@@ -1068,12 +1068,12 @@ theorem Hurewicz.cubeCoordinates_one_comp_eq_squareCoordinates :
     rw [Hurewicz.cubeCoordinates_succ, SecondHurewicz.squareCoordinates_one]
     rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The fundamental chain of the `2`-cube is the fundamental square chain. -/
 theorem Hurewicz.fundamentalCubeChain_two :
     Hurewicz.fundamentalCubeChain 2 = SecondHurewicz.fundamentalSquareChain := by
-  have key : (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+  have key : (SingularHomology.crossProductEdge (unitInterval)
         (Fin 1 → (unitInterval)) 1) SecondHurewicz.intervalChain
         ((SingularChains.inducedChain
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
@@ -1083,7 +1083,7 @@ theorem Hurewicz.fundamentalCubeChain_two :
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
             Fin 1 → (unitInterval)))) 2) SecondHurewicz.productSquareChain := by
     rw [SecondHurewicz.productSquareChain,
-      PeriodTorusHigherHomology.crossProductEdge_natural, SingularChains.inducedChain_id,
+      SingularHomology.crossProductEdge_natural, SingularChains.inducedChain_id,
       LinearMap.id_apply]
   rw [Hurewicz.fundamentalCubeChain_succ 0,
     show Hurewicz.fundamentalCubeChain (0 + 1) =
@@ -1094,8 +1094,8 @@ theorem Hurewicz.fundamentalCubeChain_two :
     Hurewicz.cubeCoordinates_one_comp_eq_squareCoordinates]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The cube chain in degree `2` is the square chain. -/
 theorem Hurewicz.cubeChain_eq_squareChain {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) :
@@ -1182,8 +1182,8 @@ theorem Hurewicz.intervalPathLeft_trans_intervalPathRight :
   · change ((2 * (t : ℝ) - 1) + 1) / 2 = (t : ℝ)
     ring
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The identity interval chain is the sum of the two half-interval chains, up to the
 boundary of the concatenation 2-simplex. -/
 theorem Hurewicz.intervalChain_split :
@@ -1236,8 +1236,8 @@ theorem Hurewicz.cubeScaleRight_zero_comp_cubeCoordinates (n : ℕ) :
     simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_of_ne hj,
       Hurewicz.cubeCoordinates_succ]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- Scaling the zeroth coordinate of the fundamental `(n+2)`-cube onto each half, then
 subtracting the unscaled cube, is the cross product of the interval-split 2-chain
 against the remaining fundamental cube. -/
@@ -1248,7 +1248,7 @@ theorem Hurewicz.cubeScale_zero_sum_fundamentalCubeChain (n : ℕ) :
           (Hurewicz.fundamentalCubeChain (n + 2)) -
       Hurewicz.fundamentalCubeChain (n + 2) =
       SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+        (SingularHomology.crossProductEdge (unitInterval)
           (Fin (n + 1) → (unitInterval)) (n + 1)
           (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
             (SingularChains.concatChain Hurewicz.intervalPathLeft
@@ -1258,34 +1258,34 @@ theorem Hurewicz.cubeScale_zero_sum_fundamentalCubeChain (n : ℕ) :
   have hL :
       SingularChains.inducedChain (Hurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
           (SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (SingularHomology.crossProductEdge (unitInterval)
               (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
               (Hurewicz.fundamentalCubeChain (n + 1)))) =
         SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-          (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+          (SingularHomology.crossProductEdge (unitInterval)
             (Fin (n + 1) → (unitInterval)) (n + 1)
             (SingularChains.inducedChain Hurewicz.intervalScaleLeft 1
               SecondHurewicz.intervalChain)
             (Hurewicz.fundamentalCubeChain (n + 1))) := by
     rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
       Hurewicz.cubeScaleLeft_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
-      LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+      LinearMap.comp_apply, SingularHomology.crossProductEdge_natural,
       SingularChains.inducedChain_id, LinearMap.id_apply]
   have hR :
       SingularChains.inducedChain (Hurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
           (SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (SingularHomology.crossProductEdge (unitInterval)
               (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
               (Hurewicz.fundamentalCubeChain (n + 1)))) =
         SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-          (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+          (SingularHomology.crossProductEdge (unitInterval)
             (Fin (n + 1) → (unitInterval)) (n + 1)
             (SingularChains.inducedChain Hurewicz.intervalScaleRight 1
               SecondHurewicz.intervalChain)
             (Hurewicz.fundamentalCubeChain (n + 1))) := by
     rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
       Hurewicz.cubeScaleRight_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
-      LinearMap.comp_apply, PeriodTorusHigherHomology.crossProductEdge_natural,
+      LinearMap.comp_apply, SingularHomology.crossProductEdge_natural,
       SingularChains.inducedChain_id, LinearMap.id_apply]
   rw [hL, hR, ← map_add, ← map_sub]
   rw [← LinearMap.add_apply, ← LinearMap.sub_apply, ← map_add, ← map_sub,
@@ -1376,8 +1376,8 @@ theorem Hurewicz.transAt_comp_cubeScaleRight {n : ℕ} [DecidableEq (Fin n)] {X 
       ring
     · simp [hj, Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_of_ne]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The cube chains of `p`, `q`, and `transAt 0 p q` differ by the pushforward of the
 interval-split identity along the uncurrying of `transAt`. -/
 theorem Hurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [TopologicalSpace X]
@@ -1387,7 +1387,7 @@ theorem Hurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [TopologicalSp
       SingularChains.inducedChain
           ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
             (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
-        (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+        (SingularHomology.crossProductEdge (unitInterval)
           (Fin (n + 1) → (unitInterval)) (n + 1)
           (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
             (SingularChains.concatChain Hurewicz.intervalPathLeft
@@ -1419,7 +1419,7 @@ theorem Hurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [TopologicalSp
       simp only [map_add, map_sub]
     _ = SingularChains.inducedChain (GenLoop.transAt (0 : Fin (n + 2)) p q).val (n + 2)
           (SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
-            (PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (SingularHomology.crossProductEdge (unitInterval)
               (Fin (n + 1) → (unitInterval)) (n + 1)
               (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
                 (SingularChains.concatChain Hurewicz.intervalPathLeft
@@ -1429,8 +1429,8 @@ theorem Hurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [TopologicalSp
     _ = _ := by
       rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The `transAt 0` cube-chain difference is a boundary minus the extra term coming from
 the remaining cube's own boundary. -/
 theorem Hurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
@@ -1441,7 +1441,7 @@ theorem Hurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
           (SingularChains.inducedChain
             ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
               (Hurewicz.cubeCoordinates (n + 1))) (n + 3)
-            (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (SingularHomology.crossProductTriangle (unitInterval)
               (Fin (n + 1) → (unitInterval)) (n + 1)
               (SingularChains.concatChain Hurewicz.intervalPathLeft
                 Hurewicz.intervalPathRight)
@@ -1449,19 +1449,19 @@ theorem Hurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
         SingularChains.inducedChain
           ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
             (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
-          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+          (SingularHomology.crossProductTriangle (unitInterval)
             (Fin (n + 1) → (unitInterval)) n
             (SingularChains.concatChain Hurewicz.intervalPathLeft
               Hurewicz.intervalPathRight)
             (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
               (Hurewicz.fundamentalCubeChain (n + 1)))) := by
   rw [Hurewicz.cubeChain_transAt_zero_diff]
-  have h := PeriodTorusHigherHomology.crossProductTriangle_boundary n
+  have h := SingularHomology.crossProductTriangle_boundary n
     (SingularChains.concatChain Hurewicz.intervalPathLeft
       Hurewicz.intervalPathRight)
     (Hurewicz.fundamentalCubeChain (n + 1))
   have h' :
-      PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+      SingularHomology.crossProductEdge (unitInterval)
             (Fin (n + 1) → (unitInterval)) (n + 1)
           (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
             (SingularChains.concatChain Hurewicz.intervalPathLeft
@@ -1469,12 +1469,12 @@ theorem Hurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
           (Hurewicz.fundamentalCubeChain (n + 1)) =
         ((SingularChains.singularComplex
               (unitInterval × (Fin (n + 1) → (unitInterval)))).d (n + 3) (n + 2)).hom
-            (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (SingularHomology.crossProductTriangle (unitInterval)
               (Fin (n + 1) → (unitInterval)) (n + 1)
               (SingularChains.concatChain Hurewicz.intervalPathLeft
                 Hurewicz.intervalPathRight)
               (Hurewicz.fundamentalCubeChain (n + 1))) -
-          PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+          SingularHomology.crossProductTriangle (unitInterval)
             (Fin (n + 1) → (unitInterval)) n
             (SingularChains.concatChain Hurewicz.intervalPathLeft
               Hurewicz.intervalPathRight)
@@ -1494,15 +1494,15 @@ theorem Hurewicz.transAt_cubeCoordinates_of_mem_boundary {n : ℕ} {X : Type}
   (GenLoop.transAt (0 : Fin (n + 2)) p q).property _
     (Hurewicz.cubeCoordinates_boundary_right (n + 1) s hu)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The extra term vanishes in degree `2`: the remaining cube is an interval, whose
 boundary is two points, and concatenation is based at both. -/
 theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace X]
     {x : X} (p q : GenLoop (Fin 2) X x) :
     SingularChains.inducedChain
         ((GenLoop.transAt (0 : Fin 2) p q).val.comp (Hurewicz.cubeCoordinates 1)) 2
-      (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+      (SingularHomology.crossProductTriangle (unitInterval)
         (Fin 1 → (unitInterval)) 0
         (SingularChains.concatChain Hurewicz.intervalPathLeft
           Hurewicz.intervalPathRight)
@@ -1516,7 +1516,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
     rfl
   rw [hfun, ← SingularChains.inducedChain_boundary, SecondHurewicz.intervalChain_boundary, map_sub]
   have hnat (c : SingularChains.Chains (unitInterval) 0) :
-      PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+      SingularHomology.crossProductTriangle (unitInterval)
             (Fin 1 → (unitInterval)) 0
           (SingularChains.concatChain Hurewicz.intervalPathLeft
             Hurewicz.intervalPathRight)
@@ -1527,10 +1527,10 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
           ((ContinuousMap.id (unitInterval)).prodMap
             ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
               Fin 1 → (unitInterval)))) 2
-          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval) (unitInterval) 0
+          (SingularHomology.crossProductTriangle (unitInterval) (unitInterval) 0
             (SingularChains.concatChain Hurewicz.intervalPathLeft
               Hurewicz.intervalPathRight) c) := by
-    have h := PeriodTorusHigherHomology.crossProductTriangle_natural
+    have h := SingularHomology.crossProductTriangle_natural
       (ContinuousMap.id (unitInterval))
       ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
         Fin 1 → (unitInterval))) 0
@@ -1546,7 +1546,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
           (((ContinuousMap.id (unitInterval)).prodMap
             ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
               Fin 1 → (unitInterval)))).comp
-            (PeriodTorusHigherHomology.crossInsertRight y)) =
+            (SingularHomology.crossInsertRight y)) =
         ContinuousMap.const (unitInterval) x := by
     apply ContinuousMap.ext
     intro s
@@ -1578,21 +1578,21 @@ theorem SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo {X Y : Type}
     exact hf (σ s)
   exact hle (Submodule.mem_top)
 
-theorem PeriodTorusHigherHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
+theorem SingularHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
     (x : X) :
-    PeriodTorusHigherHomology.zeroSimplexValue
+    SingularHomology.zeroSimplexValue
       (ContinuousMap.const (SingularChains.Simplex 0) x) = x :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-theorem PeriodTorusHigherHomology.crossProductZeroLeft_pointChain {X Y : Type}
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem SingularHomology.crossProductZeroLeft_pointChain {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (x : X)
     (b : SingularChains.Chains Y n) :
-    PeriodTorusHigherHomology.crossProductZeroLeft X Y n (SingularChains.pointChain x) b =
+    SingularHomology.crossProductZeroLeft X Y n (SingularChains.pointChain x) b =
       SingularChains.inducedChain (SingularHomology.crossInsertLeft x) n b := by
-  rw [SingularChains.pointChain, PeriodTorusHigherHomology.crossProductZeroLeft_simplex_left,
-    PeriodTorusHigherHomology.zeroSimplexValue_const]
+  rw [SingularChains.pointChain, SingularHomology.crossProductZeroLeft_simplex_left,
+    SingularHomology.zeroSimplexValue_const]
 
 theorem SingularChains.inducedChain_pointChain {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
@@ -1607,8 +1607,8 @@ theorem SingularChains.pointChain_mem_supported {X : Type} [TopologicalSpace X]
   rintro y ⟨s, rfl⟩
   simpa [ContinuousMap.const_apply] using hx
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The boundary of the fundamental `(n+1)`-cube is supported on the cube boundary. -/
 theorem Hurewicz.fundamentalCubeChain_boundary_supported :
     ∀ n : ℕ,
@@ -1634,7 +1634,7 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
   | n + 1 => by
     have ih := Hurewicz.fundamentalCubeChain_boundary_supported n
     rw [Hurewicz.fundamentalCubeChain_succ, ← SingularChains.inducedChain_boundary,
-      PeriodTorusHigherHomology.crossProductEdge_boundary n SecondHurewicz.intervalChain
+      SingularHomology.crossProductEdge_boundary n SecondHurewicz.intervalChain
         (Hurewicz.fundamentalCubeChain (n + 1)), map_sub]
     apply Submodule.sub_mem
     · have hd : ((SingularChains.singularComplex (unitInterval)).d 1 0).hom
@@ -1642,8 +1642,8 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
         SingularChains.pointChain (1 : (unitInterval)) -
           SingularChains.pointChain (0 : (unitInterval)) :=
         SecondHurewicz.intervalChain_boundary
-      rw [hd, map_sub, LinearMap.sub_apply, PeriodTorusHigherHomology.crossProductZeroLeft_pointChain,
-        PeriodTorusHigherHomology.crossProductZeroLeft_pointChain, map_sub]
+      rw [hd, map_sub, LinearMap.sub_apply, SingularHomology.crossProductZeroLeft_pointChain,
+        SingularHomology.crossProductZeroLeft_pointChain, map_sub]
       apply Submodule.sub_mem
       · rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
         apply SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo
@@ -1661,7 +1661,7 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
           SingularChains.inducedChain (ContinuousMap.id (unitInterval)) 1
             SecondHurewicz.intervalChain := by
         rw [SingularChains.inducedChain_id, LinearMap.id_apply]
-      rw [hinterval, ← PeriodTorusHigherHomology.crossProductEdge_natural
+      rw [hinterval, ← SingularHomology.crossProductEdge_natural
           (ContinuousMap.id (unitInterval))
           (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1)))) n
           SecondHurewicz.intervalChain c, ← LinearMap.comp_apply,
@@ -1670,8 +1670,8 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
       intro z
       exact Hurewicz.cubeCoordinates_boundary_right (n + 1) z.1 z.2.property
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The extra term of the `transAt 0` cube-chain difference is a multiple of the constant
 simplex: concatenation is based on the remaining boundary, and `d(fund)` is supported
 there. -/
@@ -1681,7 +1681,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_eq_smul {n : ℕ} {X : Type}
       SingularChains.inducedChain
           ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
             (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
-        (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+        (SingularHomology.crossProductTriangle (unitInterval)
           (Fin (n + 1) → (unitInterval)) n
           (SingularChains.concatChain Hurewicz.intervalPathLeft
             Hurewicz.intervalPathRight)
@@ -1712,11 +1712,11 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_eq_smul {n : ℕ} {X : Type}
     exact Hurewicz.transAt_cubeCoordinates_of_mem_boundary p q z.1 z.2.property
   refine ⟨SecondHurewicz.SimplyConnected.chainAugmentation
       ((unitInterval) × Cube.boundary (Fin (n + 1))) (n + 2)
-      (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+      (SingularHomology.crossProductTriangle (unitInterval)
         (Cube.boundary (Fin (n + 1))) n
         (SingularChains.concatChain Hurewicz.intervalPathLeft
           Hurewicz.intervalPathRight) c), ?_⟩
-  rw [← hc, hconcat, ← PeriodTorusHigherHomology.crossProductTriangle_natural
+  rw [← hc, hconcat, ← SingularHomology.crossProductTriangle_natural
       (ContinuousMap.id (unitInterval))
       (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1)))) n
       (SingularChains.concatChain Hurewicz.intervalPathLeft
@@ -1789,8 +1789,8 @@ theorem Hurewicz.upperSquareTriangle_eq_cubeSimplex_swap :
       Hurewicz.CubeTriangulation.cubeSimplex_coordinate]
     simp [Fin.sum_univ_three]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The cube chain in degree `2` is the alternating sum of the two permutation simplices: the
 second base case of the Kuhn decomposition. -/
 theorem Hurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
@@ -1817,8 +1817,8 @@ theorem Hurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
   rw [hsign1, hsign2]
   simp only [one_zsmul, neg_one_zsmul, sub_eq_add_neg]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The induction step of the Kuhn decomposition: from the decomposition in degree `k + 2` to
 degree `k + 3`, through the prism realization (textbook §10.3). -/
 theorem Hurewicz.cubeChain_eq_sum_simplices_step {k : ℕ} {X : Type} [TopologicalSpace X]
@@ -1838,7 +1838,7 @@ theorem Hurewicz.cubeChain_eq_sum_simplices_step {k : ℕ} {X : Type} [Topologic
     Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex]
   rw [← Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum]
   show Hurewicz.CubeSubdivision.orientedPrismRealization p.val (k + 3)
-      (PeriodTorusHigherHomology.formalEdgeCrossProduct (k + 2)
+      (SingularHomology.formalEdgeCrossProduct (k + 2)
         (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
         (SingularMayerVietoris.formalSimplex (fun j : Fin (k + 3) => j))) = _
   rw [Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard]
@@ -1851,8 +1851,8 @@ theorem Hurewicz.cubeChain_eq_sum_simplices_step {k : ℕ} {X : Type} [Topologic
           (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))
   rw [Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The Kuhn decomposition of the cube chain in every degree: the chain of a based `n`-cube is
 the alternating sum of its `n!` permutation simplices. This is the chain identity
 `[Π n] = Σ_σ sign(σ)·σ_e` of the lane's textbook (§9, L5), proved by induction through the

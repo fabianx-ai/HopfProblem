@@ -282,7 +282,7 @@ def Hurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
       ∀ b : SingularChains.Chains X (n + 1),
         F (((SingularChains.singularComplex X).d (n + 1) n).hom b) = 0) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ] M :=
-  PeriodTorusHigherHomology.homologyDesc (SingularChains.singularComplex X) n
+  SingularHomology.homologyDesc (SingularChains.singularComplex X) n
     (F.comp
       (SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n).subtype)
     (fun b => hF b)
@@ -297,7 +297,7 @@ theorem Hurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSpace X]
     singularHomologyDesc n F hF
         (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) n c) =
       F c.1 :=
-  PeriodTorusHigherHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) n _ _ c
+  SingularHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) n _ _ c
 
 theorem Hurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
@@ -310,7 +310,7 @@ theorem Hurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X]
         g (F c.1) =
           SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) n c) :
     g.comp (singularHomologyDesc n F hF) = LinearMap.id := by
-  apply PeriodTorusHigherHomology.homologyLinearMap_ext (SingularChains.singularComplex X) n
+  apply SingularHomology.homologyLinearMap_ext (SingularChains.singularComplex X) n
   intro c
   simpa only [LinearMap.comp_apply, singularHomologyDesc_cycleClass, LinearMap.id_apply] using
     hg c

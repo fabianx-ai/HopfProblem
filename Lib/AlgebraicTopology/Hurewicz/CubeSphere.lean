@@ -398,8 +398,8 @@ theorem Hurewicz.cubeHomologyClass_transAt_two_coord {X : Type} [TopologicalSpac
   rw [Hurewicz.cubeHomologyClass_homotopic h]
   exact Hurewicz.cubeHomologyClass_transAt_two p q
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The extra term of the `transAt 0` cube-chain difference is a boundary at every
 degree. -/
 theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
@@ -409,7 +409,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
         SingularChains.inducedChain
           ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
             (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
-          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+          (SingularHomology.crossProductTriangle (unitInterval)
             (Fin (n + 1) → (unitInterval)) n
             (SingularChains.concatChain Hurewicz.intervalPathLeft
               Hurewicz.intervalPathRight)
@@ -427,7 +427,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
               (SingularChains.inducedChain
                 ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
                   (Hurewicz.cubeCoordinates (n + 1))) (n + 3)
-                (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+                (SingularHomology.crossProductTriangle (unitInterval)
                   (Fin (n + 1) → (unitInterval)) (n + 1)
                   (SingularChains.concatChain Hurewicz.intervalPathLeft
                     Hurewicz.intervalPathRight)
@@ -439,7 +439,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
             (SingularChains.inducedChain
               ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
                 (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
-              (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+              (SingularHomology.crossProductTriangle (unitInterval)
                 (Fin (n + 1) → (unitInterval)) n
                 (SingularChains.concatChain Hurewicz.intervalPathLeft
                   Hurewicz.intervalPathRight)
@@ -466,8 +466,8 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
       simpa [show n + 4 = n + 2 + 2 from rfl, Nat.even_add] using hEven
     simp [if_neg hodd]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- Concatenation along coordinate `0` adds cube homology classes at every degree `n ≥ 2`. -/
 theorem Hurewicz.cubeHomologyClass_transAt_zero {m : ℕ} {X : Type}
     [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (m + 2)) X x) :
@@ -486,7 +486,7 @@ theorem Hurewicz.cubeHomologyClass_transAt_zero {m : ℕ} {X : Type}
       SingularChains.inducedChain
         ((GenLoop.transAt (0 : Fin (m + 2)) p q).val.comp
           (Hurewicz.cubeCoordinates (m + 1))) (m + 3)
-        (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+        (SingularHomology.crossProductTriangle (unitInterval)
           (Fin (m + 1) → (unitInterval)) (m + 1)
           (SingularChains.concatChain Hurewicz.intervalPathLeft
             Hurewicz.intervalPathRight)
@@ -581,8 +581,8 @@ theorem Hurewicz.hurewicz_basedSimplexClass {n : ℕ} {X : Type} [TopologicalSpa
   apply Subtype.ext
   exact Hurewicz.cubeChain_basedSimplexLoop τ
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- On a cycle, the Hurewicz map of the class operator recovers the cycle class. -/
 theorem Hurewicz.hurewiczMap_classOperator_cycle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ}
@@ -636,8 +636,8 @@ theorem Hurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
   LinearMap.congr_fun (Hurewicz.hurewiczMap_comp_hurewiczInverse x hpi) c
 
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 /-- The class operator on a cube chain is the signed sum of normalized cell classes. -/
 theorem Hurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ}
