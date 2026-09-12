@@ -14,13 +14,18 @@ every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off 856e4762
 
-1. **Land C10 or stop it honestly.** `hurewiczLinearEquiv` at general `n` does not exist;
-   `ThirdHurewicz` (633), `FourthHurewicz` (150), `FifthHurewicz` (135) are still in
-   `Hopf/Hurewicz.lean` and `SixthHurewicz` (140) in `Hopf/Recognition.lean`. Either land the
-   assembly your report designs (class-operator boundary relation, `hurewiczMap`/`hurewiczInverse`,
-   both round trips, then delete the per-degree blocks) or write the obstruction in
-   `Lib/reports/C.md` under the heading the task file requires. The report must not read as
-   landed until it is.
+1. **Finish C10 along the route the report already documents.** `Lib/reports/C.md` §"Open
+   items (the exact seams)" records the seam honestly: the inverse side is landed and green
+   (`normalizedSimplex`, the class-invariance bridge, `topNormalization`, `towerBelow`,
+   `classOperator`), and what remains is the boundary relation, the `hurewiczMap`/`hurewiczInverse`
+   round trips, the equivalence, and then the per-degree deletion (`ThirdHurewicz` 633,
+   `FourthHurewicz` 150, `FifthHurewicz` 135 in `Hopf/Hurewicz.lean`; `SixthHurewicz` 140 in
+   `Hopf/Recognition.lean`). Take the report's own elaboration lesson as the plan: the composed
+   tower terms time out under naive unification, so the boundary relation is proved as small
+   named lemmas, one per face-value step, each its own commit. C13 follows from C10 and needs
+   nothing else. The only correction to the record: the task-level summary and `Lib/docs/C.md`
+   §19 must not name C10 among landed results until the equivalence exists.
+
 2. **Interface receipt.** Compile `C_InterfaceCheck.lean` and `C_InterfaceConsumerCheck.lean`
    at 856e4762 and write `Lib/docs/C-INTERFACE_RECEIPT.md`. Rewrite `Lib/docs/C.md` §19 with the
    names that actually landed and put the remaining C10/C13 nodes in the `ChallengeNode` form
