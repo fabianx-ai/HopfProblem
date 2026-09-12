@@ -92,6 +92,40 @@ exit 0 — 0 errors, 0 warnings.
 ## Axis-5 review
 
 Stage-2 review of `Lib/docs/J.md` exists off-tree at `~/s6-notes/J-review.md`
-(origin: kimi's review of the pre-revision ledger). Independent Axis-5 review of the
-revised ledger is **requested**; reviewer identity to be filled in by the owner before
-the review artifact is committed as `Lib/docs/J-review.md`.
+(origin: kimi's review of the pre-revision ledger).
+
+**First Axis-5 review — NO-GO** (seat `devin-axis5-j`, GPT-6 Astra, report at
+`~/s6-notes/J-review-devin-axis5-j.md`, to be committed as
+`Lib/docs/J-axis5-review.md`). Nine findings, all confirmed against the sources and
+addressed by the second-pass `J.md` ledger:
+
+1. The two proposed signatures used `G : Type*` against the universe-0
+   `SingularMayerVietoris.SingularHomology`/`crossProductHomology` API → both now
+   `G : Type`, and the ledger records the convention explicitly.
+2. Namespace/elaboration context missing → new "Context and elaboration conventions"
+   block records `namespace Mathoverflow1973`, the `ExteriorAlgebra` notation, the
+   `integerLinearMapModule`/`integerTensorModule` local-instance requirement, the
+   universe-0 convention, and the CHARGED-abbreviation exclusion.
+3. ChallengeNode fields missing → every boundary J-A…J-E now carries
+   `commit_boundary`/`imports`/`visibility`/`source`/`destination`/`focused_check`/
+   `return_seam`.
+4. General-`n` wedge descent lacked a typed dependency interface → narrowed to
+   deferred boundary J-E with the missing inputs (`crossProductHomology'` at `(p,q)`,
+   general-degree `swap'`/`associative'`) written out exactly.
+5. The receipt did not certify `exteriorMap`/production `public` visibility → J-E
+   carries the `exteriorMap` signature; `visibility` fields now state `module` +
+   `public` per boundary; second-pass probes in the production context are landing
+   work per boundary.
+6. Ownership wording ("J appends G-J3") and the "42" count → corrected; ~90-decl
+   exclusion manifest is now exact and includes the `integerTrilinear*`/
+   `chainTrilinearLift` cluster (used only by the associator machinery).
+7. Dependency order → J8 before J7; build order updated.
+8. Source coordinates → off-by-ones fixed (singularHomologyMap :856, rightTranslation
+   BoundaryTopology:14298, `formalMap_comp` 3771, `succ_pair` 6439, etc.).
+9. Literal `…`s in promised signatures → all public outputs now carry complete
+   signatures (binders, instances, universes, codomains); internal movers are
+   name+line manifests.
+
+This receipt documents the **first-pass** probes only; a second-pass probe against
+the revised ledger (production `module`/`public` context, destination namespaces) is
+part of each boundary's landing work.
