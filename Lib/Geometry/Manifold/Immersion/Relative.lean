@@ -11,6 +11,40 @@ import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
+/-!
+# The immersion chain: plane, curve and manifold immersions in charts
+
+Immersion existence and extension in the chart-native setting: the plane
+immersion chain (generalize `Plane := ℝ x ℝ`), curve immersions, the manifold
+immersion relation with its tubular-neighborhood one-offs, and the perturbation
+machinery feeding the relative immersion theorem (Hirsch, *Differential
+Topology*, Ch. 8; the weak Whitney immersion theorem).
+
+## Outline
+
+1. `Smale.ManifoldImmersion`: the immersion relation for charted manifolds,
+   its local criteria and its stability under perturbation.
+2. `Smale.PlaneImmersion`: the two-dimensional model chain, stated for a
+   general `Plane` (representation-only generality dictated by the twin file).
+3. `Smale.CurveImmersion` and the arc/germ existence one-offs.
+4. Support machinery: `Smale.OpenObstacle`, `Smale.ManifoldSmoothing`,
+   `Smale.FrameField` with `Degree.AxisCoordinates`, and the tubular
+   neighborhood existence one-offs.
+
+## Main definitions and results
+
+* `Smale.ManifoldImmersion` - the immersion relation used downstream.
+* The `exists_*_tubularNeighborhood_of_embedded_starConvex` family.
+
+## References
+
+* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 8.
+* [whitney36] H. Whitney, *Differentiable manifolds*, Thm 5.
+
+## Tags
+
+immersion, whitney, tubular-neighborhood, relative-form
+-/
 
 set_option maxSynthPendingDepth 3
 

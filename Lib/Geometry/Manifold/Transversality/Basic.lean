@@ -10,6 +10,45 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.Cancellation
+/-!
+# Transversality basics: submersions, regular values, and supported perturbations
+
+The elementary transversality toolkit: native submersions and their
+derivatives, regular values, transverse coordinates, the
+`Smale.NativeTransversality` relation, chart-map perturbations with compact
+support, small perturbations, supported germs, supported diffeomorphisms,
+smooth radial deformations and disk shrinking (Hirsch, *Differential
+Topology*, Ch. 2-3; Guillemin-Pollack, *Differential Topology*, Ch. 2).
+
+## Outline
+
+1. `Smale.NativeSubmersion` and `Smale.RegularValues`: the surjectivity
+   criterion and the regular-value open condition.
+2. `Smale.TransverseCoordinates` and `Smale.NativeTransversality`: the
+   transversality relation for charts, with its `Patch` structure.
+3. Perturbation machinery: `Smale.ChartMapPerturbation`,
+   `Smale.SmallPerturbation`, `Smale.WeightedPerturbation` and the
+   `Smale.GeneralPosition` avoidance lemmas with the `NoExotic` dimension
+   cluster.
+4. `Smale.SupportedDiffeomorph`, `Degree.SupportedGerms`,
+   `Degree.DiskShrinking` and `Smale.SmoothRadial`: supported diffeomorphisms,
+   germ control and the disc theorem.
+
+## Main definitions and results
+
+* `Smale.NativeSubmersion.surjective_fderiv_sourceChart_iff`.
+* `Smale.NativeTransversality.Patch` - finite compatible transversality data.
+* `Degree.DiskShrinking` - the smooth shrinking of discs (disc theorem).
+
+## References
+
+* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 2-3.
+* [gp74] V. Guillemin, A. Pollack, *Differential Topology*, Ch. 2.
+
+## Tags
+
+transversality, general-position, perturbation, disc-theorem
+-/
 
 set_option maxSynthPendingDepth 3
 

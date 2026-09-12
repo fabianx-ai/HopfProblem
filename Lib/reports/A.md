@@ -611,3 +611,27 @@ is a single mechanical pass over all D1/D2 files at once and belongs with the
 de-shim pass — renaming this file alone would split the family's namespace
 across the tree. Module docstring installed with the Milnor citations
 (h-cobordism §3-4; Morse Theory §3) per the owner's correction.
+
+## Item 0: SurgeryWindows split (branch lib/A-surgerywindows-split, off bda000e)
+
+`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (17,556 lines, 882
+declarations) split by contiguous source-order chunks, zero line-order
+inversions against 721fc82, so every chunk is a pure move of moves and the
+import chain is acyclic by construction:
+
+| File | Declarations | Content |
+|---|---|---|
+| `Morse/SurgeryWindows.lean` | 119 | chart primitives (hemispheres, doubled disks, surgery boundary pairs), NoExotic dimH cluster, D2 `MorseSurgeryData`/`SurgeryWindows`/`AdaptedWindows` structures |
+| `Morse/Cancellation.lean` | 301 | E1 cancellation core: MorseCancel toolbox, FlowCancellation/FlowSuspension, local replacements |
+| `Transversality/Basic.lean` | 133 | E2 transversality basics: NativeSubmersion, perturbation machinery, SupportedDiffeomorph, DiskShrinking |
+| `Immersion/Relative.lean` | 213 | E2 immersion chain: ManifoldImmersion, PlaneImmersion, CurveImmersion, tubular one-offs |
+| `Morse/Rearrangement.lean` | 116 | rearrangement theorem, band-cancellation tail, smooth-time germs, NativeTransversality.Patch |
+
+All five files carry module docstrings in the Degree1 shape. Declaration
+total preserved (119+301+133+213+116 = 882). Four split commits, `lake build
+Lib` green after each; module-docstring commit after. Note: the per-lane
+percentages in the owner decision (44% E2, 31% E1, 8% F, 28 D2) are preserved
+by the chunking up to run boundaries; prefixes interleaved in source order
+(MorseCancel spans 15 runs) make per-lane files impossible without forward
+references, which a pure move forbids. Kimi's E2 starts from
+`Transversality/Basic.lean` + `Immersion/Relative.lean`.
