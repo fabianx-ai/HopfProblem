@@ -8,9 +8,8 @@ every new branch from this head. Review: `Lib/reviews/INTEGRATION.md`.
 
 - **E2 dimension condition:** `2k+1 ≤ n` versus `2k ≤ n` for the immersion/embedding rows.
 - **J product shape:** the `(p,q)` cross product versus the `(1,n)` instance only.
-- **SurgeryWindows ownership:** whether the E2/F declarations already inside
-  `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` are split out by GLM or handed to you as E2's
-  starting file.
+- (Settled) **SurgeryWindows** is GLM's: GLM splits it along the E1/E2/F target files; your
+  E2 starts from the split files once they are on the branch.
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off 856e4762
 
@@ -62,12 +61,12 @@ durable `Lib/docs/<lane>-INTERFACE_RECEIPT.md`; and an independent Axis-5 review
    `RankThreeWhitneyModel.Space`.
 9. **J**: replace the `H₁ G →ₗ[ℤ] Hₙ G` / `⋀[ℤ]^n` notation rows with Lean signatures
    (`exteriorPower` is not an identifier at the pin; the notation `⋀[ℤ]^n M` is); probe, receipt,
-   review in tree. Then J's Lean, including the 42 coherence declarations in
-   `Hopf/LCP/Specialization.lean` (your G-J3), which GLM will not touch.
+   review in tree. Then J's Lean. The 42 coherence declarations in `Hopf/LCP/Specialization.lean`
+   (formerly your G-J3) are GLM's now; import them from `CrossProduct.lean` when they land.
 10. **E2**: exact signatures for the immersion/embedding rows with their
     `Smale.ManifoldImmersion.` namespace; drop the "Milnor TDV §2 Lemma" pointer (TDV §2 is
     Sard–Brown); probe, receipt, review in tree, `E2-review.md` committed; then the in-`Lib`
-    refactor of `SurgeryWindows.lean` once the owner has decided its ownership.
+    refactor starting from GLM's split of `SurgeryWindows.lean`.
 11. **G last**: write the Stage-2 review; bring the ledger body (`G-map.md` §1) into the packet;
     add the `MorseCancel.` namespaces; probe, receipt. G waits on C10 and F by design.
 12. **Authorship:** all 33 of your commits carry the repository owner as author. Add a
