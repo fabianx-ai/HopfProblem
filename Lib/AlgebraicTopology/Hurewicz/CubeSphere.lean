@@ -385,6 +385,18 @@ theorem HigherHurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpac
   simpa only [HigherHurewicz.cubeHomologyClass_eq_squareHomologyClass] using
     SecondHurewicz.squareHomologyClass_transAt p q
 
+/-- Concatenation along any coordinate adds cube classes in degree `2`. -/
+theorem HigherHurewicz.cubeHomologyClass_transAt {X : Type} [TopologicalSpace X] {x : X}
+    (i : Fin 2) (p q : GenLoop (Fin 2) X x) :
+    HigherHurewicz.cubeHomologyClass (m := 0) (GenLoop.transAt i p q) =
+      HigherHurewicz.cubeHomologyClass (m := 0) p +
+        HigherHurewicz.cubeHomologyClass (m := 0) q := by
+  have h : GenLoop.Homotopic (GenLoop.transAt i p q)
+      (GenLoop.transAt (0 : Fin 2) p q) :=
+    Quotient.eq.mp (HomotopyGroup.transAt_indep (0 : Fin 2) p q)
+  rw [HigherHurewicz.cubeHomologyClass_homotopic h]
+  exact HigherHurewicz.cubeHomologyClass_transAt_two p q
+
 /-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
 def HigherHurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
     π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
