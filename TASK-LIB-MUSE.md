@@ -6,6 +6,7 @@
 the branch (692e7f5f or later); toolchain leanprover/lean4:v4.33.0; Mathlib pinned in
 lake-manifest.json. Never `lake update`, never `lake exe cache get` on the shared box: the
 `.lake` seed is provided by the owner.
+**Environment:** Seat setup on the shared box: `SEAT-SETUP.md` (repository root).
 **Nature:** GENERIC library extraction, upstream-shaped, *generalize-then-move*. The full
 seven-axis cycle applies. Read, in this order, before anything else:
 

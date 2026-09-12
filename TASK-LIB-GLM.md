@@ -4,6 +4,7 @@
 **For:** GLM-5.3-Flash, working on a fork of github.com/fabianx-ai/HopfProblem,
 branch `lib/textbook-extraction` (base commit 721fc82; toolchain
 leanprover/lean4:v4.33.0; Mathlib pinned in lake-manifest.json).
+**Environment:** Seat setup on the shared box: `SEAT-SETUP.md` (repository root).
 **Nature:** GENERIC library extraction, upstream-shaped. Mathematics for the
 commons: Mathlib-shaped paths and names, a docstring on every public
 declaration, no project vocabulary inside `Lib/`. Read `lean-protocol.md`
