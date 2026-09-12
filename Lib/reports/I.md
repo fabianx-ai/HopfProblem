@@ -76,3 +76,27 @@ The four `LinearMap.map_smul` proof sites that failed under the local
 
 ---
 
+
+---
+
+# Wang obstruction (2026-09-12, NEXT-STEPS item 6)
+
+The cross-product coherence web (114 declarations) landed in
+`Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` (276c58b) — that
+half of item 6 is done. Landing `Lib/Topology/MappingTorus/Wang.lean`
+(`MappingTorusHomology.*`, IH 7576–8684, 105 declarations, contiguous,
+zero interleaved) is still obstructed, but now only by three named clusters
+outside the block:
+
+1. `Elliptic.HigherHomology.MappingTorusQuotient.*` (Specialization, lane C) —
+   `Circle`, `mappingTorusHomeomorph`, `mappingTorusHomeomorph_project`,
+   `project`, plus their own dependency cone (~30 declarations).
+2. `PeriodTorusHigherHomology.{CirclePaths.positiveLoop, positiveCircleCross,
+   connectingHomomorphism_twoChain, crossProductEdge_path_boundary,
+   twoChainSmallCycle}` (CuspFilling, lane C/J) — ~8 declarations.
+3. `CuspRetraction.Patching`-adjacent short helpers surfaced by the same cone.
+
+Moving these means pure-moving lane-C/J material (the first move attempt
+dragged 28 Specialization declarations before this was stopped and reverted).
+They are next after the C/J owner lands those clusters in Lib, or with the
+owner's blessing to move them as part of lane I.
