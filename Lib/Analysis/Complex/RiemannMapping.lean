@@ -625,6 +625,7 @@ theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     rw [hf₀]
     rfl
 
+/-- The Riemann mapping theorem in normalized form: a simply connected proper open set admits a conformal bijection onto the unit disc with nonzero derivative sending a prescribed point to zero (Rudin, Real and Complex Analysis, Thm 14.8; Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set ℂ}
     (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ∃ f : ℂ → ℂ,
