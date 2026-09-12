@@ -85,3 +85,7 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.HigherHurewicz.hurewiczLinearEquivOfTwoLE
 #print axioms Mathoverflow1973.HigherHurewicz.pi_subsingleton_of_homology_vanishing
 #print axioms Mathoverflow1973.HigherHurewicz.sphere_pi_subsingleton_of_lt
+#print axioms Mathoverflow1973.HigherHurewicz.sphere_homotopicRel_of_topClass_eq
+#print axioms Mathoverflow1973.HigherHurewicz.sphere_homotopic_id_of_topClass
+#print axioms Mathoverflow1973.HigherHurewicz.right_inverse_is_left_inverse
+#print axioms Mathoverflow1973.HigherHurewicz.exists_basepoint_adjustment

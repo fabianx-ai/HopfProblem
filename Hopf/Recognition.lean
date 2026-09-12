@@ -939,36 +939,8 @@ theorem Degree.cubeHomotopyLift_apply {X : Type*} [TopologicalSpace X] {x : X}
 def Degree.factorHomotopy {X : Type*} [TopologicalSpace X] {x : X} {p q : GenLoop (Fin 6) X x}
     (H : p.val.HomotopyRel q.val (Cube.boundary (Fin 6))) :
     (SixSphereCube.factorMap p).HomotopyRel (SixSphereCube.factorMap q)
-      { SixSphereCube.sphereBasePoint }
-    where
-  toContinuousMap := cubeHomotopyLift H
-  map_zero_left
-    z := by
-    obtain ⟨u, rfl⟩ := SixSphereCube.cubeSphereMap_surjective z
-    change
-      cubeHomotopyLift H (0, SixSphereCube.cubeSphereMap u) =
-        SixSphereCube.factorMap p (SixSphereCube.cubeSphereMap u)
-    rw [cubeHomotopyLift_apply, H.apply_zero, SixSphereCube.factorMap_cubeSphereMap]
-    rfl
-  map_one_left
-    z := by
-    obtain ⟨u, rfl⟩ := SixSphereCube.cubeSphereMap_surjective z
-    change
-      cubeHomotopyLift H (1, SixSphereCube.cubeSphereMap u) =
-        SixSphereCube.factorMap q (SixSphereCube.cubeSphereMap u)
-    rw [cubeHomotopyLift_apply, H.apply_one, SixSphereCube.factorMap_cubeSphereMap]
-    rfl
-  prop' t z
-    hz := by
-    have hz' : z = SixSphereCube.sphereBasePoint := hz
-    subst z
-    change
-      cubeHomotopyLift H (t, SixSphereCube.sphereBasePoint) =
-        SixSphereCube.factorMap p SixSphereCube.sphereBasePoint
-    rw [← SixSphereCube.cubeSphereMap_boundary 0 SixSphereCube.zero_mem_cubeBoundary,
-      cubeHomotopyLift_apply]
-    rw [H.eq_fst t SixSphereCube.zero_mem_cubeBoundary, SixSphereCube.factorMap_cubeSphereMap]
-    rfl
+      { SixSphereCube.sphereBasePoint } :=
+  HigherHurewicz.factorMap_homotopyRel (by decide) H
 
 theorem Degree.factorMap_homotopicRel {X : Type*} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (h : GenLoop.Homotopic p q) :
@@ -980,82 +952,26 @@ theorem Degree.factorMap_homotopicRel {X : Type*} [TopologicalSpace X] {x : X}
 theorem Degree.SphereBasepoint.exists_adjustment {Y : Type*} [TopologicalSpace Y] {y : Y}
     (u : C(SixSphereCube.StandardSphere, Y)) (P : Path (u SixSphereCube.sphereBasePoint) y) :
     ∃ v : C(SixSphereCube.StandardSphere, Y),
-      v SixSphereCube.sphereBasePoint = y ∧ u.Homotopic v := by
-  let V := Fin 6 → ℝ
-  let L : V ≃L[ℝ] V := ContinuousLinearEquiv.refl ℝ V
-  let e := Degree.DiskCube.homeomorph L
-  let f : C(Degree.DiskCylinder.Disk (E := V), Y) :=
-    u.comp (SixSphereCube.cubeSphereMap.comp (e : C(_, _)))
-  let side : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), Y) :=
-    P.toContinuousMap.comp ContinuousMap.fst
-  have h0 : ∀ s, side (0, s) = f (Degree.DiskCylinder.boundaryToDisk s) := by
-    intro s
-    have hs :=
-      (Degree.DiskCube.boundary_iff L (Degree.DiskCylinder.boundaryToDisk s)).mpr
-        (mem_sphere_zero_iff_norm.mp s.property)
-    exact P.source.trans (congrArg u (SixSphereCube.cubeSphereMap_boundary _ hs)).symm
-  let W := Degree.DiskCylinder.extend f side h0
-  let C : C((unitInterval) × (Fin 6 → (unitInterval)), Y) :=
-    W.comp ((ContinuousMap.id (unitInterval)).prodMap (e.symm : C(_, _)))
-  have hCboundary (t : (unitInterval)) (z : Fin 6 → (unitInterval))
-    (hz : z ∈ Cube.boundary (Fin 6)) : C (t, z) = P t := by
-    let s : Degree.DiskCylinder.Sphere (E := V) :=
-      ⟨(e.symm z).val,
-        mem_sphere_zero_iff_norm.mpr ((Degree.DiskCube.symm_boundary_iff L z).mpr hz)⟩
-    exact Degree.DiskCylinder.extend_side f side h0 t s
-  have hfib : ∀ a b, Degree.cylinderQuotient a = Degree.cylinderQuotient b → C a = C b := by
-    rintro ⟨t, z⟩ ⟨s, w⟩ h
-    have ht : t = s := congrArg Prod.fst h
-    subst s
-    have hzw : SixSphereCube.cubeSphereMap z = SixSphereCube.cubeSphereMap w :=
-      congrArg Prod.snd h
-    rcases (SixSphereCube.cubeSphereMap_eq_iff z w).mp hzw with rfl | ⟨hz, hw⟩
-    · rfl
-    · exact (hCboundary t z hz).trans (hCboundary t w hw).symm
-  let G := Degree.cylinderQuotient_isQuotientMap.lift C hfib
-  have hG (t : (unitInterval)) (z : Fin 6 → (unitInterval)) :
-    G (t, SixSphereCube.cubeSphereMap z) = C (t, z) :=
-    ContinuousMap.congr_fun (Degree.cylinderQuotient_isQuotientMap.lift_comp C hfib) (t, z)
-  let v : C(SixSphereCube.StandardSphere, Y) :=
-    G.comp ⟨fun z => (1, z), continuous_const.prodMk continuous_id⟩
-  refine
-    ⟨v, ?_,
-      ⟨{  toContinuousMap := G
-          map_zero_left := ?_
-          map_one_left := fun _ => rfl }⟩⟩
-  · change G (1, SixSphereCube.sphereBasePoint) = y
-    rw [← SixSphereCube.cubeSphereMap_boundary 0 SixSphereCube.zero_mem_cubeBoundary, hG]
-    exact (hCboundary 1 0 SixSphereCube.zero_mem_cubeBoundary).trans P.target
-  · intro z
-    obtain ⟨w, rfl⟩ := SixSphereCube.cubeSphereMap_surjective z
-    exact
-      (hG 0 w).trans
-        ((Degree.DiskCylinder.extend_bottom f side h0 (e.symm w)).trans
-          (congrArg (fun q => u (SixSphereCube.cubeSphereMap q)) (e.apply_symm_apply w)))
+      v SixSphereCube.sphereBasePoint = y ∧ u.Homotopic v :=
+  HigherHurewicz.exists_basepoint_adjustment (by decide) u P
 
 def Degree.basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
     GenLoop (Fin 6) X x :=
-  ⟨f.comp SixSphereCube.cubeSphereMap, by
-    intro u hu
-    change f (SixSphereCube.cubeSphereMap u) = x
-    rw [SixSphereCube.cubeSphereMap_boundary u hu]
-    exact hf⟩
+  HigherHurewicz.basedSphereCube f hf
 
 @[simp]
 theorem Degree.factorMap_basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
-    SixSphereCube.factorMap (basedSphereCube f hf) = f := by
-  symm
-  apply SixSphereCube.factorMap_unique
-  rfl
+    SixSphereCube.factorMap (basedSphereCube f hf) = f :=
+  HigherHurewicz.factorMap_basedSphereCube (by decide) f hf
 
 theorem Degree.basedSphereCube_homologyClass {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
     SixthHurewicz.cubeHomologyClass (basedSphereCube f hf) =
       SingularMayerVietoris.singularHomologyMap f 6
-        (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) := by
-  rw [← SixSphereCube.factor_cubeHomologyClass, factorMap_basedSphereCube]
+        (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) :=
+  HigherHurewicz.basedSphereCube_homologyClass f hf
 
 theorem Degree.sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X] {x : X}
     [SimplyConnectedSpace X] [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)]
@@ -1066,15 +982,9 @@ theorem Degree.sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) =
         SingularMayerVietoris.singularHomologyMap g 6
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop)) :
-    f.HomotopicRel g { SixSphereCube.sphereBasePoint } := by
-  have he : (⟦basedSphereCube f hf⟧ : π_ 6 X x) = ⟦basedSphereCube g hg⟧ := by
-    apply (SixthHurewicz.hurewiczPi6Equiv x).injective
-    change
-      Multiplicative.ofAdd (SixthHurewicz.cubeHomologyClass (basedSphereCube f hf)) =
-        Multiplicative.ofAdd (SixthHurewicz.cubeHomologyClass (basedSphereCube g hg))
-    rw [basedSphereCube_homologyClass, basedSphereCube_homologyClass, h]
-  have hh := factorMap_homotopicRel (Quotient.exact he)
-  simpa only [factorMap_basedSphereCube] using hh
+    f.HomotopicRel g { SixSphereCube.sphereBasePoint } :=
+  HigherHurewicz.sphere_homotopicRel_of_topClass_eq
+    (by intro j hj hjn; interval_cases j <;> infer_instance) f g hf hg h
 
 theorem Degree.Sphere.based_homotopicRel_id_of_topClass
     (g : C(SixSphereCube.StandardSphere, SixSphereCube.StandardSphere))
@@ -1100,19 +1010,8 @@ theorem Degree.Sphere.homotopic_id_of_topClass
       SingularMayerVietoris.singularHomologyMap g 6
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) =
         SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) :
-    g.Homotopic (ContinuousMap.id SixSphereCube.StandardSphere) := by
-  obtain ⟨v, hv, hgv⟩ :=
-    Degree.SphereBasepoint.exists_adjustment g
-      (PathConnectedSpace.somePath (g SixSphereCube.sphereBasePoint)
-        SixSphereCube.sphereBasePoint)
-  have hmap := PeriodTorusHigherHomology.homotopic_homologyMap hgv 6
-  have hvd :
-    SingularMayerVietoris.singularHomologyMap v 6
-        (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) =
-      SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop :=
-    (LinearMap.congr_fun hmap _).symm.trans hd
-  obtain ⟨H⟩ := based_homotopicRel_id_of_topClass v hv hvd
-  exact hgv.trans ⟨H.toHomotopy⟩
+    g.Homotopic (ContinuousMap.id SixSphereCube.StandardSphere) :=
+  HigherHurewicz.sphere_homotopic_id_of_topClass g hd
 
 theorem Degree.right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space)
     (g : C(SpecialPeriods.Threefold.Space, SixSphereCube.StandardSphere))
@@ -1120,18 +1019,10 @@ theorem Degree.right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space
       ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp g).Homotopic
         (ContinuousMap.id SpecialPeriods.Threefold.Space)) :
     (g.comp (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)).Homotopic
-      (ContinuousMap.id SixSphereCube.StandardSphere) := by
-  let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  have hh : (F.comp (g.comp F)).Homotopic F := by
-    simpa only [ContinuousMap.comp_assoc, ContinuousMap.id_comp] using
-      hfg.comp (ContinuousMap.Homotopic.refl F)
-  apply Sphere.homotopic_id_of_topClass
-  apply (SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective x 6).1
-  have he :=
-    LinearMap.congr_fun (PeriodTorusHigherHomology.homotopic_homologyMap hh 6)
-      (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop)
-  rw [PeriodTorusHigherHomology.singularHomologyMap_comp, LinearMap.comp_apply] at he
-  exact he
+      (ContinuousMap.id SixSphereCube.StandardSphere) :=
+  HigherHurewicz.right_inverse_is_left_inverse
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) g
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective x 6).1 hfg
 
 def Degree.sphereHomotopyEquiv (x : SpecialPeriods.Threefold.Space) :
     SixSphereCube.StandardSphere ≃ₕ SpecialPeriods.Threefold.Space := by
