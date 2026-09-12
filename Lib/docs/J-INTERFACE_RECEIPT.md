@@ -193,3 +193,161 @@ certified by this probe — the reviewer's findings there (proof-dependency
 boundary splits, `FirstHurewicz` shim aliases, degree-three completeness,
 GLM manifest count, J-E transports) remain open until each boundary gets its
 own probe.
+
+## Review-3 certification and repairs — devin-axis5-j
+
+**J-A: GO for the amended 15-node Mathlib-only packet. J-B..J-E: NOT GO.**
+The earlier historical claims that every boundary was fully aligned, or that
+certification could wait until landing, are superseded by this section.
+
+Base HEAD: `15bd5f7a6f482881fc47e6d5e933409cae101690`, branch
+`lib/textbook-extraction`. This receipt covers **uncommitted reviewer amendments**
+to J.md, not the original file at that commit. Reviewed ledger SHA-256:
+`d4b3724ec6d2edece110470e091ef8124be0581bd959bb6e89eea722b0ba646a`.
+Toolchain: Lean 4.33.0, commit `d8b18978322de05a8f3dba51ef03cf5461676c17`;
+Mathlib: `db584cd6d46c92f209a44c0f1c829460d327499d`.
+
+All commands used:
+
+```sh
+export PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH
+export GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0='*'
+```
+
+### J-A aggregate provider and consumer
+
+Provider `/tmp/J3A.lean`: real `module`, `public import Mathlib`, public declarations
+in **Mathoverflow1973.PeriodTorusHigherHomologyExterior**, noncomputable section.
+It reconstructs the concrete SortedSubset/Lex order, cardinality equivalence, its
+strict-order characterization, basis reindexing, equivFun coordinates, finrank,
+rectangular minor matrix and exterior map. It has **15 nodes / 15 public outputs**,
+including named `sortedSubsetFintype` and `sortedSubsetLinearOrder` instances.
+The three substantive theorem interfaces (`standardExterior_map_coefficient`,
+`exteriorPowerMap_toMatrix`, `cauchyBinet_minors`) use temporary **axiom shells**;
+no proof of those results is claimed by the interface probe. All other constructors
+and the order/finrank representation results have actual terms. **37 external API
+#checks** resolved. The consumer imports only J3A and checks **all 15 outputs by
+fully qualified name**, including the instance outputs.
+
+```sh
+lake env lean /tmp/J3A.lean
+# final construction check: exit 0
+lake env lean -R /tmp -o /tmp/J3A.olean /tmp/J3A.lean
+# final aggregate provider: exit 0
+LEAN_PATH=/tmp lake env lean /tmp/J3AConsumer.lean
+# separate module consumer: exit 0; 15/15 public names import-visible
+```
+
+The last provider/consumer pair was rerun together after the final API census;
+both exited 0. `LEAN_PATH=/tmp` is a process-local addition; `lake env` adds the
+project/package paths. All emitted artifacts were under /tmp, not package directories.
+
+Provider SHA-256: `6ed3ba129a664fbe8383cb3a44e51b3871c255ef7f69b7e6726a296a9f4659a9`.
+Consumer SHA-256: `35c9cea9a8a6cccd7b67c5edbf2a67c6532c5a273c5c79a1d9fdd02c9bbfcaa5`.
+Boundary list: **J-A only**. Node/dependency/consumer metadata is now in J.md's
+J-A ChallengeNode manifest. The two instances have explicit landing names.
+The old rank-four subset/coordinate adapters are retained in Hopf until their
+order-theoretic compatibility proofs and consumer reroutes land; they are not
+part of this Mathlib-only output packet. No kernel evaluation of the enumeration
+or native_decide was used in review 3.
+
+Failed reconstruction attempts, not hidden: the first provider attempt exited 1
+because a direct simp did not identify Fintype.card across Lex, and the attempted
+`change` left orderIsoOfFin cardinality proofs unresolved. The successful construction
+uses `Fintype.card_congr toLex.symm` and unfolds powersetCardFinEquiv before applying
+OrderIso.lt_iff_lt. Those concrete recipes are reflected in J.md. These were probe
+construction errors, not counterexamples to the pinned enumeration.
+
+### J-B/J-C/J-D/J-E changed-signature checks
+
+`/tmp/J3Interfaces.lean` initially tried the advertised production imports, including
+CrossProduct, and **exited 1**: `cannot import non-module
+Lib.AlgebraicTopology.SingularHomology.CrossProduct from module`.
+Source inspection confirmed `CrossProduct.lean:6–9` has no module header;
+PathClass is also legacy. This is the new **M-C** seam, not a stale-olean diagnosis.
+No rebuild, package update, cache fetch or clean was attempted.
+
+The final **provisional** module instead imports Mathlib, MayerVietoris,
+CircleProduct, HomotopyInvariance and Hurewicz.Degree1. It uses the real public
+SingularChains/SingularHomology/AlgebraicTopology APIs, reproduces the two
+instance-reducible module definitions in an isolated support namespace, and uses
+**46 temporary axiom signatures** for proposed/unlanded prerequisites and outputs.
+This is explicitly **not** certification of those production providers.
+
+```sh
+lake env lean /tmp/J3Interfaces.lean
+# final provisional module check: exit 0
+```
+
+It checks **21 real external API names with Lib imports alone**, and proves by rfl
+that AlgebraicTopology.SingularH1 and its map agree with the chosen degree-one
+SingularMayerVietoris type/map. Changed/new signature shapes checked together:
+
+- J-B2: canonical H1 definition/basis/single/apply/basis-hit/surjective/natural/
+  bijective/equiv types; public torusMatrixMap, coordinatePeriodLoop, torusTailMap/add,
+  coordinateTorusMapAlong_add (only `[Add G]`, preserving the source's generality),
+  canonical matrix-on-loop and top-class-one types; chain-complex references in
+  positiveCircleCross_arcSum_cycleClass use SingularChains, not a shim alias.
+- J-C3: complete de-pinned wedgeThreeAlong_natural; the product-valued successor
+  top-class signature now assigned to Pontryagin rather than Torus.
+- J-D: all eleven formerly prose-only degree-three declarations; the corrected
+  degree-two coordinate matrix signature uses exteriorMinorMatrix **r r 2**, and
+  degree three uses **r r 3**. No rank-four PeriodDomain input is introduced.
+- J-E: actual homologyDegreeCast term and reflexive rfl law; corrected homeomorphism
+  coercion, swapped-degree transport and associator-degree transport. The two
+  general coherence propositions elaborate over an abstract general cross product.
+
+An intermediate run after adding homologyDegreeCast exited 1 because the definition
+needed `noncomputable`; adding that qualifier produced the final exit 0. The
+substantive H1 basis-hit/apply proofs and general coherence proofs were not built.
+Provisional-probe SHA-256:
+`5ca04adc645c75cd40d8b0d48ae2b7dfc2a0f6d02f51d47f68ba19235bf09fbd`.
+
+| Boundary | Certification status |
+|---|---|
+| J-A | GO, amended 15-node provider/consumer packet at the ledger hash above |
+| J-B1 | NOT GO: source proof-closure census repaired; complete helper/node census and aggregate core consumer still needed |
+| J-B2a | NOT GO: coordinate/circle signature repairs checked provisionally; S-path, S-nat, S-cross and M-C not public/green |
+| J-B2b | NOT GO: canonical H1 signatures checked; basis-hit, arbitrary-vector loop identity and old/public loop-class alignment remain mathematical/representation seams |
+| J-C1/J-C2 | NOT GO: M-C/S-cross; source APIs exist, but not in the advertised production module context |
+| J-C3 | NOT GO: new wedge/top-class signatures checked provisionally; G-J3, J-B2a and public provider dependencies remain |
+| J-D | NOT GO: new degree-three and rectangular-matrix signatures checked provisionally; depends on J-B2b/J-C3 |
+| J-E | Deferred NOT GO: corrected transport signatures checked; general cross product, unit/recursion, alternation and basis-image inputs remain unimplemented |
+
+### Source census and working-tree receipt
+
+The GLM census was scripted rather than inferred from prose families:
+
+```sh
+git show 15bd5f7:Hopf/LCP/Specialization.lean | python3 -c 'import sys,re; rows=[(i,re.match(r"^(?:noncomputable )?(?:theorem|def|lemma|instance|abbrev) (PeriodTorusHigherHomology\.[^\s({:]+)",s)) for i,s in enumerate(sys.stdin,1) if 3771<=i<=5987]; rows=[(i,m.group(1)) for i,m in rows if m]; print("count",len(rows)); print("\n".join(f"{i} {n}" for i,n in rows))'
+```
+
+Exit 0: **110 declarations**, including chainTrilinearMap_ext:4434. The manifest's
+postcompose/precompose apply locations are 4314/4350. Source proof reads and searches
+also established the wider circle naturality closure 14325–14505 and path closure
+13348–13698, the torusMatrixMap definition at 2488, and the product-type dependency
+at Specialization 3646. Every J-B1 output was reclassified against its source proof
+closure; coordinate/loop work no longer rides on the recursive core's green claim.
+
+All requested known source-coordinate errors were corrected. `git diff --check`
+passed. Only J.md and this receipt are intended tracked edits; pre-existing untracked
+AGENTS.md is untouched. No Lean implementation, committed axiom/sorry, package write,
+commit or push is part of this work. The working tree is intentionally **not clean**:
+Muse requested uncommitted documentation repairs.
+
+Closeout command:
+
+```sh
+rm /tmp/J3A.lean /tmp/J3AConsumer.lean /tmp/J3Interfaces.lean /tmp/J3A.olean \
+  /tmp/J3A.olean.private /tmp/J3A.olean.server /tmp/J3A.ir /tmp/J3A.ir.sig
+git diff --check
+git status --short
+git rev-parse HEAD
+sha256sum Lib/docs/J.md
+```
+
+Exit 0: all reviewer-created probes and emitted provider artifacts removed; HEAD
+unchanged at 15bd5f7. Tracked edits are only J.md and this receipt; the pre-existing
+untracked AGENTS.md remains. The final ledger hash is the one recorded above.
+The final change after the last producer/consumer compile only clarified J-D's
+rank-four compatibility comment; it did not alter any signature or J-A packet.
