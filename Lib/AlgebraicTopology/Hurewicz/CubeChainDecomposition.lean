@@ -1394,6 +1394,61 @@ theorem HigherHurewicz.cubeChain_transAt_zero_diff {n : ℕ} {X : Type} [Topolog
     _ = _ := by
       rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
 
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- The `transAt 0` cube-chain difference is a boundary minus the extra term coming from
+the remaining cube's own boundary. -/
+theorem HigherHurewicz.cubeChain_transAt_zero_diff_boundary {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 2)) X x) :
+    HigherHurewicz.cubeChain p + HigherHurewicz.cubeChain q -
+        HigherHurewicz.cubeChain (GenLoop.transAt (0 : Fin (n + 2)) p q) =
+      ((SingularChains.singularComplex X).d (n + 3) (n + 2)).hom
+          (SingularChains.inducedChain
+            ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+              (HigherHurewicz.cubeCoordinates (n + 1))) (n + 3)
+            (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+              (Fin (n + 1) → (unitInterval)) (n + 1)
+              (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+                HigherHurewicz.intervalPathRight)
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) -
+        SingularChains.inducedChain
+          ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (HigherHurewicz.cubeCoordinates (n + 1))) (n + 2)
+          (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (Fin (n + 1) → (unitInterval)) n
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight)
+            (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+              (HigherHurewicz.fundamentalCubeChain (n + 1)))) := by
+  rw [HigherHurewicz.cubeChain_transAt_zero_diff]
+  have h := PeriodTorusHigherHomology.crossProductTriangle_boundary n
+    (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+      HigherHurewicz.intervalPathRight)
+    (HigherHurewicz.fundamentalCubeChain (n + 1))
+  have h' :
+      PeriodTorusHigherHomology.crossProductEdge (unitInterval)
+            (Fin (n + 1) → (unitInterval)) (n + 1)
+          (((SingularChains.singularComplex (unitInterval)).d 2 1).hom
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight))
+          (HigherHurewicz.fundamentalCubeChain (n + 1)) =
+        ((SingularChains.singularComplex
+              (unitInterval × (Fin (n + 1) → (unitInterval)))).d (n + 3) (n + 2)).hom
+            (PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+              (Fin (n + 1) → (unitInterval)) (n + 1)
+              (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+                HigherHurewicz.intervalPathRight)
+              (HigherHurewicz.fundamentalCubeChain (n + 1))) -
+          PeriodTorusHigherHomology.crossProductTriangle (unitInterval)
+            (Fin (n + 1) → (unitInterval)) n
+            (SingularChains.concatChain HigherHurewicz.intervalPathLeft
+              HigherHurewicz.intervalPathRight)
+            (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+              (HigherHurewicz.fundamentalCubeChain (n + 1))) := by
+    rw [h]
+    abel
+  rw [h', map_sub, SingularChains.inducedChain_boundary]
+
 
 /-- The lower triangle of the square is the identity permutation simplex. -/
 theorem HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
