@@ -4,15 +4,18 @@ Branch: `lib/textbook-extraction` at 856e4762 (your lane A plus Kimi's C, E2, F,
 there; builds green). Start every new lane from this head. Reviews: `Lib/reviews/A.md` (your
 branch) and `Lib/reviews/INTEGRATION.md` (§ "For GLM").
 
-## Owner decisions you are waiting on (do not guess; ask in the report if still open)
+## Owner decision (settled): SurgeryWindows is yours
 
-- **SurgeryWindows.** `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` is 44 % lane E2, 31 % E1,
-  8 % F by source position and only 28 declarations are D2. Owner picks: (a) split along the
-  plan's E1/E2/F targets as a pure move of moves, or (b) record the composition in the docstring
-  and hand the file to Kimi's E2 as its starting point. Until decided, do not touch the file
-  beyond its docstring.
+`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` is 44 % lane E2, 31 % E1, 8 % F by source
+position and only 28 declarations are D2. Ownership was in doubt; the owner assigns it to you.
+Split it along the plan's E1/E2/F target files as a pure move of moves (one commit per target
+file, verbatim, `Lib.lean` updated, build green, "No proof term changed"), then give each
+resulting file its module docstring. Kimi's E2 starts from your split files. This is item 0
+below and comes before everything else, because E2 waits on it.
 
 ## In this order, one branch per item, each branch `lib/A-fix-<n>-<slug>` off 856e4762
+
+0. **Split SurgeryWindows** as described above.
 
 1. **Register the ten unrooted modules in `Lib.lean`** (review A, item 2). One commit, builds
    `Lib`, ratchet unchanged.
@@ -31,8 +34,10 @@ branch) and `Lib/reviews/INTEGRATION.md` (§ "For GLM").
 6. **Lane I, Wang sequence** — now unblocked: import
    `Lib.AlgebraicTopology.SingularHomology.CrossProduct` from
    `Hopf/LCP/{CuspFilling,IntegralHomology}.lean` and land `Lib/Topology/MappingTorus/Wang.lean`.
-   The 42 coherence declarations in `Hopf/LCP/Specialization.lean` are Kimi's J item; leave them.
-7. **Lane E1**: first commit your `Cubic`/`TimeChange`/`LevelCylinder` drafts to the fork (a
+   The 42 cross-product coherence declarations in `Hopf/LCP/Specialization.lean` are yours too
+   (ownership was in doubt; the owner assigns them to you): append them to `CrossProduct.lean`
+   as a pure move in the same lane-I branch.
+7. **Lane E1** (after item 0, which lands its 278 declarations in their own file): first commit your `Cubic`/`TimeChange`/`LevelCylinder` drafts to the fork (a
    `drafts/` directory under `Lib/reports/` is fine) so they exist off your machine; then resume
    from the three probe theorems still in `Hopf/` (`MorseCancel.cancel_of_transverse_level_isotopy`,
    `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
