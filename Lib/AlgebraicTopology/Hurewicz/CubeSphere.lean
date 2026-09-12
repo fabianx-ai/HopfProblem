@@ -6,8 +6,8 @@ Authors: Fabian Franz
 import Lib.AlgebraicTopology.Hurewicz.Degree
 import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.OnePointCollapse
-
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -548,5 +548,91 @@ def HigherHurewicz.hurewiczMap {m : ℕ} {X : Type} [TopologicalSpace X] (x : X)
   map_smul' n a := by
     simpa using
       map_intCast_smul (HigherHurewicz.hurewiczPi (m := m) x).toAdditiveLeft ℤ ℤ n a
+
+/-- The cube chain of a based simplex loop is the corrected simplex chain (the identity
+permutation cell is the simplex itself; every other Kuhn cell is constant, and the total
+orientation of the constants vanishes). -/
+theorem HigherHurewicz.cubeChain_basedSimplexLoop {n : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (n + 2) x) :
+    HigherHurewicz.cubeChain (HigherHurewicz.SimplexGeometry.basedSimplexLoop τ) =
+      HigherHurewicz.correctedSimplexChain (n + 2) x τ.val := by
+  rw [HigherHurewicz.cubeChain_eq_sum_simplices]
+  exact HigherHurewicz.SimplexGeometry.basedSimplex_simplexChain_sum τ
+
+/-- The Hurewicz map on a representative is the cube homology class. -/
+theorem HigherHurewicz.hurewiczMap_representative {m : ℕ} {X : Type} [TopologicalSpace X]
+    (x : X) (p : GenLoop (Fin (m + 2)) X x) :
+    HigherHurewicz.hurewiczMap (m := m) x (Additive.ofMul (⟦p⟧ : π_ (m + 2) X x)) =
+      HigherHurewicz.cubeHomologyClass p :=
+  rfl
+
+/-- The Hurewicz image of a based simplex class is the class of its corrected simplex cycle. -/
+theorem HigherHurewicz.hurewicz_basedSimplexClass {n : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (τ : HigherHurewicz.SimplexGeometry.BasedSimplex (n + 2) x) :
+    HigherHurewicz.hurewiczMap (m := n) x
+        (HigherHurewicz.SimplexGeometry.basedSimplexClass τ) =
+      SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) (n + 2)
+        (HigherHurewicz.correctedSimplexCycle (n + 1) x τ.val
+          (HigherHurewicz.SimplexGeometry.basedSimplex_face (n := n + 1) τ)) := by
+  rw [HigherHurewicz.SimplexGeometry.basedSimplexClass,
+    HigherHurewicz.hurewiczMap_representative]
+  unfold HigherHurewicz.cubeHomologyClass
+  congr 1
+  apply Subtype.ext
+  exact HigherHurewicz.cubeChain_basedSimplexLoop τ
+
+attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
+    PeriodTorusHigherHomology.integerTensorModule in
+/-- On a cycle, the Hurewicz map of the class operator recovers the cycle class. -/
+theorem HigherHurewicz.hurewiczMap_classOperator_cycle {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (m + 3)) :
+    HigherHurewicz.hurewiczMap (m := m + 1) x
+        (HigherHurewicz.classOperator x (m + 3) hpi c.1) =
+      SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X)
+        (m + 3) c := by
+  let S := HigherHurewicz.normalizationTower x m fun j hj hj' => hpi j hj (by omega)
+  let f := HigherHurewicz.normalizedSimplex x (m + 3) hpi
+  have hcomp :
+      (HigherHurewicz.hurewiczMap (m := m + 1) x).comp
+          (HigherHurewicz.classOperator x (m + 3) hpi) =
+        (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X)
+            (m + 3)).comp
+          (HigherHurewicz.normalizedCycleAssignment (m + 2) x f) := by
+    apply SingularChains.chainMap_ext X (m + 3)
+    intro smp
+    simp only [LinearMap.comp_apply, HigherHurewicz.classOperator_simplex,
+      HigherHurewicz.normalizedCycleAssignment_simplex]
+    exact HigherHurewicz.hurewicz_basedSimplexClass (f smp)
+  have h := LinearMap.congr_fun hcomp c.1
+  simp only [LinearMap.comp_apply] at h
+  rw [h]
+  exact HigherHurewicz.normalizedCycleAssignment_class (m + 2) x f S.aug S.nxt S.compat
+    (fun smp => by
+      apply ContinuousMap.ext
+      intro s
+      exact S.nxt_zero smp s)
+    (fun smp => rfl) c
+
+/-- `hurewiczMap ∘ hurewiczInverse = id` at degree `n ≥ 3`. -/
+theorem HigherHurewicz.hurewiczMap_comp_hurewiczInverse {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    (HigherHurewicz.hurewiczMap (m := m + 1) x).comp (HigherHurewicz.hurewiczInverse x hpi) =
+      LinearMap.id :=
+  HigherHurewicz.comp_singularHomologyDesc_eq_id (m + 3)
+    (HigherHurewicz.classOperator x (m + 3) hpi)
+    (HigherHurewicz.classOperator_boundary x hpi)
+    (HigherHurewicz.hurewiczMap (m := m + 1) x)
+    (HigherHurewicz.hurewiczMap_classOperator_cycle x hpi)
+
+@[simp]
+theorem HigherHurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (c : SingularMayerVietoris.SingularHomology X (m + 3)) :
+    HigherHurewicz.hurewiczMap (m := m + 1) x (HigherHurewicz.hurewiczInverse x hpi c) = c :=
+  LinearMap.congr_fun (HigherHurewicz.hurewiczMap_comp_hurewiczInverse x hpi) c
 
 end Mathoverflow1973
