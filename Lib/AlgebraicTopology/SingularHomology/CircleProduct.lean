@@ -125,6 +125,7 @@ def SingularHomology.CircleTopology.puncturedIntervalSumEquiv_mo1973_4536 :
         · exact ⟨Sum.inl ⟨t.val, t.val.property.1, ht⟩, rfl⟩
         · exact ⟨Sum.inr ⟨t.val, ht, t.val.property.2⟩, rfl⟩)
 
+/-- The punctured interval model of the circle: the interval with the half point removed is homeomorphic to the circle minus a point. -/
 def SingularHomology.CircleTopology.puncturedIntervalHomeomorph :
     { t : Set.Ioo (0 : ℝ) 1 // (t : ℝ) ≠ 1 / 2 } ≃ₜ
       (Set.Ioo (0 : ℝ) (1 / 2) ⊕ Set.Ioo (1 / 2 : ℝ) 1) :=
@@ -132,6 +133,7 @@ def SingularHomology.CircleTopology.puncturedIntervalHomeomorph :
       (puncturedIntervalInl_continuous.sumElim puncturedIntervalInr_continuous)
       (puncturedIntervalInl_isOpenMap.sumElim puncturedIntervalInr_isOpenMap)).symm
 
+/-- The circle as `R / Z`: the quotient group model used throughout the circle dictionary, with its base point and half point. -/
 abbrev SingularHomology.CircleTopology.Circle :=
   AddCircle (1 : ℝ)
 
@@ -145,10 +147,12 @@ theorem SingularHomology.CircleTopology.halfPoint_ne_zero : halfPoint ≠ 0 := b
     (AddCircle.coe_eq_zero_iff_of_mem_Ico (p := (1 : ℝ)) (a := (1 / 2 : ℝ)) (by norm_num)).mp h
   norm_num at he
 
+/-- The open arc `U` of the two-arc cover of the circle: the complement of the antipodal point, contractible (Hatcher, Algebraic Topology, the cover used for `H_*(S^1)`). -/
 def SingularHomology.CircleTopology.arcU :
     Set SingularHomology.CircleTopology.Circle :=
   ({0} : Set SingularHomology.CircleTopology.Circle)ᶜ
 
+/-- The open arc `V` of the two-arc cover: the complementary contractible arc, giving the Mayer-Vietoris cover of the circle. -/
 def SingularHomology.CircleTopology.arcV :
     Set SingularHomology.CircleTopology.Circle :=
   ({ halfPoint } : Set SingularHomology.CircleTopology.Circle)ᶜ
@@ -521,6 +525,7 @@ def SingularHomology.CircleTopology.productVInclusionHomotopy (X : Type*)
   circleProductLiftContraction (productVInclusion X) (productVCoordinate X)
     (productVCoordinate_coe X)
 
+/-- The arc-product homology equivalence: homology of the product with an arc is the homology of the other factor, the first rung of the Kuenneth splitting for `S^1 x X` (Hatcher, Algebraic Topology, Corollary 2.11 content). -/
 def SingularHomology.productArcHomologyEquiv (X : Type) [TopologicalSpace X] (n : ℕ) :
     (SingularMayerVietoris.SingularHomology (CircleTopology.productU X) n ×
         SingularMayerVietoris.SingularHomology (CircleTopology.productV X) n) ≃ₗ[ℤ]
@@ -553,12 +558,14 @@ theorem SingularHomology.productIntersectionHomologyEquiv_apply (X : Type)
           (CircleTopology.productIntersectionHomotopyEquiv X).toFun n a) :=
   rfl
 
+/-- The circle section in homology: the map induced by the inclusion of the circle factor, a right inverse of the projection on homology. -/
 abbrev SingularHomology.circleSectionHomology (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology
         ((SingularHomology.CircleTopology.Circle) × X) n :=
   SingularMayerVietoris.singularHomologyMap (CircleTopology.productSection X) n
 
+/-- The circle projection in homology: the map induced by projecting the product to the circle factor. -/
 abbrev SingularHomology.circleProjectionHomology (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
@@ -566,6 +573,7 @@ abbrev SingularHomology.circleProjectionHomology (X : Type) [TopologicalSpace X]
       SingularMayerVietoris.SingularHomology X n :=
   SingularMayerVietoris.singularHomologyMap (CircleTopology.productProjection X) n
 
+/-- The projection-section relation in homology: projecting after including the circle factor is the identity - the splitting datum for the Kuenneth decomposition of `H_n(S^1 x X)`. -/
 @[simp]
 theorem SingularHomology.circleProjection_section (X : Type) [TopologicalSpace X]
     (n : ℕ) : (circleProjectionHomology X n).comp (circleSectionHomology X n) = LinearMap.id := by
@@ -786,6 +794,7 @@ theorem SingularHomology.circleBoundary_exact (X : Type) [TopologicalSpace X] (n
     (circleBoundary_negativeFirst_ker (circleBoundaryCoordinates X n)
         (circleBoundaryCoordinates_range X n)).symm
 
+/-- The Kuenneth splitting for the circle: `H_n(S^1 x X) is H_n(X) + H_{n-1}(X)` naturally in `X` (Hatcher, Algebraic Topology, Corollary 2.11 content for one factor `S^1`). -/
 def SingularHomology.circleProductHomologyEquiv (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
         (n + 1) ≃ₗ[ℤ]
