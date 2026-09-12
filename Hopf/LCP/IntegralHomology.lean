@@ -64,6 +64,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 import Hopf.LibShims
 import Hopf.LCP.BoundaryTopology
 import Lib.Topology.Covering.DiagonalQuotient
+import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import S6Shortcuts
 
 set_option maxSynthPendingDepth 3
