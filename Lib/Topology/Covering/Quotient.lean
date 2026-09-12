@@ -4,6 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Covering and discrete quotients
+
+  Quotient covers: the quotient of a space by a properly discontinuous group of
+  local homeomorphisms is a covering map, the discreteness of the fiber
+  difference set, and the induced smooth structure (Forster, Lectures on Riemann
+  Surfaces, Sections 1-3).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

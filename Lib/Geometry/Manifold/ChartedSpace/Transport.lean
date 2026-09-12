@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Transporting charted space structures along homeomorphisms
+
+  Transporting charted space structures along homeomorphisms: if `M` carries a
+  `C^k` charted-space structure and `e : M ~= N` a homeomorphism, then `N` inherits
+  one; plus the criteria for two transported structures to coincide.
+-/
+
 
 
 set_option maxSynthPendingDepth 3

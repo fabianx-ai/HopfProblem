@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Deformation retraction onto a sublevel set
+
+  Deformation retraction of a compact smooth manifold with boundary onto a
+  sublevel set below a regular value (Hatcher, Algebraic Topology, proof of
+  Corollary 3.15).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

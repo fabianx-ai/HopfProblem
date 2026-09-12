@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Loop subdivision along an open cover
+
+  Loop subdivision: every loop is homotopic to a product of loops each lying in a
+  member of an open cover, via a partition of the unit interval subordinate to
+  the cover (Hatcher, Algebraic Topology, proof of Theorem 1.20).
+-/
+
 
 
 set_option maxSynthPendingDepth 3
@@ -68,7 +76,7 @@ theorem _root_.Path.exists_path_range_of_isPathConnected_inter {X : Type u} [Top
   use γ
   exact Set.range_subset_iff.mpr hγ
 
-private lemma _root_.Path.Homotopic.cancel_junction_mo1973_3458 {X : Type u} [TopologicalSpace X]
+private lemma _root_.Path.Homotopic.cancel_junction {X : Type u} [TopologicalSpace X]
     {a b c d e f : X} (p : Path a b) (q : Path b c) (r : Path d c) (s : Path c e) (t : Path e f) :
     ((p ≫ₚ q ≫ₚ r.symm) ≫ₚ (r ≫ₚ s ≫ₚ t)).Homotopic (p ≫ₚ (q ≫ₚ s) ≫ₚ t) := by
   apply Path.Homotopic.Quotient.exact
@@ -95,11 +103,11 @@ lemma _root_.Path.Homotopic.concat_trans_trans_symm {X : Type u} [TopologicalSpa
     rw [Path.concat_succ q, Path.concat_succ p]
     exact
       (ih.hcomp (Path.Homotopic.refl _)).trans
-        (Path.Homotopic.cancel_junction_mo1973_3458 (G 0)
+        (Path.Homotopic.cancel_junction (G 0)
           (Path.concat (p ∘ Fin.castSucc) (fun k ↦ F k.castSucc)) (G (Fin.last n).castSucc)
           (F (Fin.last n)) (G (Fin.last (n + 1))).symm)
 
-private lemma _root_.Path.Homotopic.cast_trans_trans_homotopic_of_homotopic_cast_mo1973_3460
+private lemma _root_.Path.Homotopic.cast_trans_trans_homotopic_of_homotopic_cast
     {X : Type u} [TopologicalSpace X] {x x₀ x₁ : X} {h₀ : x₀ = x} {h₁ : x₁ = x} {p : Path x₀ x₁}
     {q : Path x x} (h : p.Homotopic (q.cast h₀ h₁)) :
     (((Path.refl x).cast rfl h₀) ≫ₚ p ≫ₚ ((Path.refl x).cast h₁ rfl)).Homotopic q := by
@@ -152,7 +160,7 @@ theorem _root_.Path.Homotopic.exists_loops_homotopic_concat_of_open_cover {X : T
   · apply Path.Homotopic.trans (Path.Homotopic.concat_trans_trans_symm _ _ _ _)
     rw [hG'₀, hG'₁, ← Path.cast_symm, Path.refl_symm]
     refine
-      Path.Homotopic.cast_trans_trans_homotopic_of_homotopic_cast_mo1973_3460
+      Path.Homotopic.cast_trans_trans_homotopic_of_homotopic_cast
         (Path.Homotopic.trans (Path.Homotopic.concat_subpath _ _) ?_)
     rw! (castMode := .all) [ht₀, ht₁, Path.subpath_zero_one]
     rfl

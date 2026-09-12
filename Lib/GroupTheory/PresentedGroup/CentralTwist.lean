@@ -5,6 +5,15 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.GroupTheory.SplitExtension
+/-!
+# The central twist presented group
+
+  The presented group `TwistGroup a b d := <c, x, y | relators>` associated with
+  the central twist data of an exceptional gluing, its quotient lemmas, and its
+  realizations into arbitrary groups (presentation taken from the project's
+  gluing data).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

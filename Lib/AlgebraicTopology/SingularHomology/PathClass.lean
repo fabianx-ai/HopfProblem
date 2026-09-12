@@ -16,6 +16,14 @@ import Lib.AlgebraicTopology.SingularHomology.Sum
 import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.Topology.Homotopy.Suspension
+/-!
+# Path classes in one-chains and the loop-homology class
+
+  Chain-level path classes: the class of a path in one-chains modulo boundaries,
+  its homotopy invariance, additivity under concatenation, and the induced class
+  of loops (Hatcher, Algebraic Topology, proof of Theorem 2A.1).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

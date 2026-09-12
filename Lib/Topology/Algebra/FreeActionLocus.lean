@@ -6,6 +6,14 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
+/-!
+# The free-action locus of a group action
+
+  The free-action locus: the largest invariant open subset on which a group acts
+  freely, closed under restriction, with the induced quotient map properties
+  (Forster, Lectures on Riemann Surfaces, Section 1).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

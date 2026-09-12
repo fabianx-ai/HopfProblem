@@ -6,6 +6,16 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
+/-!
+# The Seifert-van Kampen theorem for a two-open cover
+
+  The Seifert-van Kampen theorem for a two-open cover in pushout form: the
+  fundamental group of `U cup V` (both open, `U cap V` path connected, common
+  base point) is the amalgamated free product of `pi_1 U` and `pi_1 V` over
+  `pi_1 (U cap V)`, including the uniqueness half (Hatcher, Algebraic Topology,
+  Theorem 1.20).
+-/
+
 
 
 set_option maxSynthPendingDepth 3
@@ -34,6 +44,7 @@ theorem FundamentalGroupVanKampen.subpath_mem_of_mem_Icc {X : Type*} [Topologica
   rw [p.range_subpath_of_le a b hab]
   exact Set.image_subset_iff.mpr hp
 
+/-- A path value: a family of paths indexed by a type ι, together with the data that each lies in a designated open set — the local half of a van Kampen decomposition. -/
 structure FundamentalGroupVanKampen.LocalPathValue {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (G : Type*) [Group G] where
   value : ∀ i {x y : X} (p : Path x y), (∀ t, p t ∈ U i) → G
@@ -65,6 +76,7 @@ def FundamentalGroupVanKampen.LocalPathValue.HomotopyInvariant {X : Type*} [Topo
   ∀ i {x y : X} (p q : Path x y) (hp : ∀ t, p t ∈ U i) (hq : ∀ t, q t ∈ U i)
     (H : Path.Homotopy p q), (∀ s, H s ∈ U i) → L.value i p hp = L.value i q hq
 
+/-- A path value into a group: a path in `X` together with the requirement that homotopic paths take the same value in `G` — the lemma-bearing wrapper for the van Kampen amalgamation. -/
 structure FundamentalGroupVanKampen.PathValue (X : Type*) [TopologicalSpace X] (G : Type*)
     [Group G] where
   value : ∀ {x y : X}, Path x y → G
@@ -96,6 +108,7 @@ def FundamentalGroupVanKampen.PathValue.HomotopyInvariant {X : Type*} [Topologic
     {G : Type*} [Group G] (V : FundamentalGroupVanKampen.PathValue X G) : Prop :=
   ∀ {x y : X} (p q : Path x y), Path.Homotopic p q → V.value p = V.value q
 
+/-- A two-open van Kampen cover: open sets `U`, `V` covering `X`, all three of `U`, `V`, `U ∩ V` path connected, with a common base point lying in both (Hatcher, Algebraic Topology, Theorem 1.20 setup). -/
 structure FundamentalGroupVanKampen.TwoOpenCover (X : Type*) [TopologicalSpace X] where
   U : TopologicalSpace.Opens X
   V : TopologicalSpace.Opens X
@@ -494,6 +507,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.closePath_loop {X : Type*} [Topol
     Path.Homotopic.Quotient.refl_trans]
   exact Path.Homotopic.Quotient.trans_refl _
 
+/-- The homomorphism from the fundamental group of chart `i` to `G` induced by the chosen group element `fU`/`fV` on that side. -/
 def FundamentalGroupVanKampen.TwoOpenCover.chartHom {X : Type*} [TopologicalSpace X] {G : Type*}
     [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) : FundamentalGroup (D.chart i) (D.baseChart i) →* G := by
@@ -501,6 +515,7 @@ def FundamentalGroupVanKampen.TwoOpenCover.chartHom {X : Type*} [TopologicalSpac
   · exact fU
   · exact fV
 
+/-- The value in `G` that chart `i` assigns to a path `p` staying inside chart `i`: the image of `p` under the chart homomorphism. -/
 def FundamentalGroupVanKampen.TwoOpenCover.localValue {X : Type*} [TopologicalSpace X] {G : Type*}
     [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ D.chart i) : G :=
@@ -554,6 +569,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_homotopy {X : Type*}
   unfold localValue
   rw [D.closePath_homotopic i ⟨FundamentalGroupVanKampen.homotopyIn p q hx hy hp hq H hH⟩]
 
+/-- The overlap path: the path through `U ∩ V` witnessing compatibility of the two local values along the cover. -/
 def FundamentalGroupVanKampen.TwoOpenCover.overlapPath {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroupVanKampen.TwoOpenCover X) (x : D.overlap) : Path D.baseOverlapPoint x :=
   FundamentalGroupVanKampen.pathIn (S := (D.overlap : Set X)) (D.pathTo x.val) ⟨D.baseU, D.baseV⟩
@@ -627,6 +643,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible_UV {X : Typ
   have hV' := congrArg fV ((D.overlapHomV_close pI).trans (congrArg (D.closePath Bool.true) hpV))
   exact congrArg (fun a : G => a⁻¹) (hU'.symm.trans (h.trans hV'))
 
+/-- Compatibility of the two local values: when the induced homomorphisms agree on the overlap, the local values assemble to a well-defined value on the whole loop (the glueing condition of van Kampen). -/
 theorem FundamentalGroupVanKampen.TwoOpenCover.localValue_compatible {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroupVanKampen.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) (i j : Bool) {x y : X}
@@ -700,6 +717,9 @@ theorem FundamentalGroupVanKampen.subpath_mem_mono {X : Type*} [TopologicalSpace
   intro t ht
   exact mem_of_subpath_mem p hab hp ⟨hac.trans ht.1, ht.2.trans hdb⟩
 
+/-- Every loop in a space covered by open sets through a common point is homotopic to a
+concatenation of loops each of which lies in a single member of the cover: the
+subdivision half of the Seifert-van Kampen theorem (Hatcher, Theorem 1.20). -/
 theorem FundamentalGroupVanKampen.exists_path_subdivision {X : Type*} [TopologicalSpace X]
     {ι : Type*} {U : ι → Set X} (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ)
     {x y : X} (p : Path x y) :
@@ -1486,6 +1506,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutOf_compatible {X : Type*}
     D.Compatible D.pushoutOfU D.pushoutOfV :=
   D.pushoutOfU_comp_overlapHomU.trans D.pushoutOfV_comp_overlapHomV.symm
 
+/-- The map from the pushout of `pi_1 U` and `pi_1 V` over `pi_1 (U ∩ V)` to `pi_1 (U ∪ V)` induced by the inclusions (Hatcher, Algebraic Topology, Theorem 1.20). -/
 def FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup {X : Type*}
     [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
     D.Pushout →* FundamentalGroup X D.base :=
@@ -1515,6 +1536,7 @@ theorem FundamentalGroupVanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_of
     D.pushoutToFundamentalGroup.comp D.pushoutOfV = D.inclusionHomV :=
   D.pushoutToFundamentalGroup_comp_of Bool.true
 
+/-- The map from `pi_1 (U ∪ V)` to the pushout induced by sending a loop to its subdivided product of local loops (the uniqueness half of van Kampen). -/
 def FundamentalGroupVanKampen.TwoOpenCover.fundamentalGroupToPushout {X : Type*}
     [TopologicalSpace X] (D : FundamentalGroupVanKampen.TwoOpenCover X) :
     FundamentalGroup X D.base →* D.Pushout :=
@@ -1559,6 +1581,7 @@ theorem
   · rw [MonoidHom.comp_assoc, D.fundamentalGroupToPushout_comp_inclusionV,
       D.pushoutToFundamentalGroup_comp_ofV, MonoidHom.id_comp]
 
+/-- The Seifert-van Kampen isomorphism: the fundamental group of `U ∪ V` is the pushout of `pi_1 U` and `pi_1 V` over `pi_1 (U ∩ V)` (Hatcher, Algebraic Topology, Theorem 1.20). -/
 def FundamentalGroupVanKampen.TwoOpenCover.pushoutEquiv {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroupVanKampen.TwoOpenCover X) : D.Pushout ≃* FundamentalGroup X D.base
     where

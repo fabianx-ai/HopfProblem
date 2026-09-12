@@ -16,6 +16,14 @@ import Lib.Topology.Homotopy.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+/-!
+# Homology of the mapping torus via the two-open cover
+
+  Homology of the mapping torus computed from its two-open cover: the
+  Mayer-Vietoris assembly, the monodromy action on the fiber homology, and the
+  resulting exact sequence (Hatcher, Algebraic Topology, Example 2.48).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

@@ -78,6 +78,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-- The disc coordinate: the affine identification of the triangle with the unit disc underlying the normalization of the Riemann mapping target (Ahlfors, Complex Analysis, Ch. 6). -/
 def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ℂ :=
   e x
@@ -95,6 +96,7 @@ theorem TriangleRiemannNormalization.discCoordinate_norm_le {K : Type*} [Topolog
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ‖discCoordinate e x‖ ≤ 1 := by
   simpa only [discCoordinate, Metric.mem_closedBall, dist_zero_right] using (e x).property
 
+/-- The puncture map: the homeomorphism from the punctured triangle to the punctured disc obtained by removing the basepoint direction. -/
 def TriangleRiemannNormalization.punctureMap {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (pinf : K) (x : {x : K | x ≠ pinf}) :
     RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
@@ -134,6 +136,7 @@ def TriangleRiemannNormalization.punctureHomeomorph {K : Type*} [TopologicalSpac
     {x : K | x ≠ pinf} ≃ₜ RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
   (punctureMap_isEmbedding e pinf).toHomeomorphOfSurjective (punctureMap_surjective e pinf)
 
+/-- The normalization homeomorphism: the final affine correction placing the mapping target in Riemann-mapping normal form (Ahlfors, Complex Analysis, Ch. 6, the normalization step). -/
 def TriangleRiemannNormalization.normalizationHomeomorph {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1) (h0inf : p0 ≠ pinf)
     (h1inf : p1 ≠ pinf) (h0 : ‖discCoordinate e p0‖ = 1) (h1 : ‖discCoordinate e p1‖ = 1)
@@ -205,6 +208,7 @@ theorem TriangleRiemannNormalization.normalization_orientation_ne_zero {K : Type
   RiemannSphere.MobiusCircle.orientation_ne_zero h0 h1 hinf (discCoordinate_ne e h01.symm)
     (discCoordinate_ne e h1inf) (discCoordinate_ne e h0inf)
 
+/-- Preimages of closed balls under the disc map are compact: properness of the Riemann mapping on the interior (Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {r : ℝ} (hr : r < 1) :
     IsCompact
@@ -216,6 +220,7 @@ theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ
     Topology.IsInducing.subtypeVal.isCompact_preimage' (ProperSpace.isCompact_closedBall _ _) ?_
   simpa only [Subtype.range_coe] using Metric.closedBall_subset_ball hr
 
+/-- The disc map escapes to the boundary: points outside the source domain have images of norm tending to 1 along the map (boundary behaviour, Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.tendsto_norm_discHomeomorph_of_notMem {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {α : Type*} {l : Filter α} {z : α → U} {a : ℂ} (ha : a ∉ U)
     (hz : Filter.Tendsto (fun i => (z i : ℂ)) l (𝓝 a)) :
@@ -285,6 +290,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop {D : Set ℂ}
   tendsto_norm_discHomeomorph_of_norm_atTop e he
     (Filter.tendsto_atTop_mono (fun i => Complex.im_le_norm (z i)) hz) hmem
 
+/-- The logarithm identifying a half-strip with a half-plane: the standard biholomorphism used to normalize boundary strips (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, 14.8-adjacent steps). -/
 def RiemannBoundary.logHalfStrip (a c : ℝ) (q : ℂ) : ℂ :=
   a - Complex.I * c * Complex.log q
 
@@ -569,6 +575,7 @@ theorem RiemannMapping.norm_deriv_continuousOn_closure {U : Set ℂ} (hUo : IsOp
       (TendstoLocallyUniformlyOn.deriv (evaluation_tendstoLocallyUniformlyOn hUo) ?_ hUo) hx₀
   exact eventually_mem_nhdsWithin.mono fun g hg => hg.2.2.1
 
+/-- Existence of a maximal normalized map: the extremal map maximizing the derivative at the base point, the heart of the Riemann mapping theorem (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, Theorem 14.8). -/
 theorem RiemannMapping.exists_maximal_normalizedMap {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) (hne : (normalizedClass U x₀).Nonempty) :
     ∃ f : FunctionSpace U,
@@ -625,6 +632,7 @@ theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     rw [hf₀]
     rfl
 
+/-- THE HEADLINE — the Riemann mapping theorem in normalized form: a simply connected proper domain admits a bijective holomorphic map onto the unit disc with nonvanishing derivative sending the base point to 0 (Rudin, Real and Complex Analysis, Theorem 14.8; Ahlfors, Complex Analysis, Ch. 6). -/
 theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set ℂ}
     (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ∃ f : ℂ → ℂ,
@@ -754,14 +762,14 @@ theorem RiemannBoundary.rectangle_subset_openRectangle {a b c d : ℝ} {z w : �
   Complex.Convex.rectangle_subset (convex_openRectangle a b c d) hz hw
     (mixed_mem_openRectangle hz hw) (mixed_mem_openRectangle hw hz)
 
-theorem RiemannBoundary.horizontal_segment_subset_mo1973_19308 {a b c d : ℝ} {x₁ x₂ y : ℝ}
+theorem RiemannBoundary.horizontal_segment_subset {a b c d : ℝ} {x₁ x₂ y : ℝ}
     (h₁ : (x₁ : ℂ) + y * Complex.I ∈ openRectangle a b c d)
     (h₂ : (x₂ : ℂ) + y * Complex.I ∈ openRectangle a b c d) :
     (fun x : ℝ => (x : ℂ) + y * Complex.I) '' [[x₁, x₂]] ⊆ openRectangle a b c d := by
   convert rectangle_subset_openRectangle h₁ h₂ using 1
   simp [Complex.horizontalSegment_eq x₁ x₂ y, Complex.Rectangle]
 
-theorem RiemannBoundary.vertical_segment_subset_mo1973_19309 {a b c d : ℝ} {x y₁ y₂ : ℝ}
+theorem RiemannBoundary.vertical_segment_subset {a b c d : ℝ} {x y₁ y₂ : ℝ}
     (h₁ : (x : ℂ) + y₁ * Complex.I ∈ openRectangle a b c d)
     (h₂ : (x : ℂ) + y₂ * Complex.I ∈ openRectangle a b c d) :
     (fun y : ℝ => (x : ℂ) + y * Complex.I) '' [[y₁, y₂]] ⊆ openRectangle a b c d := by
@@ -778,13 +786,13 @@ theorem RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle {a b c d :
     (h₂ : (x₂ : ℂ) + y * Complex.I ∈ openRectangle a b c d) :
     IntervalIntegrable (fun x : ℝ => f (x + y * Complex.I)) MeasureTheory.MeasureSpace.volume x₁
       x₂ :=
-    ((hc.mono (horizontal_segment_subset_mo1973_19308 h₁ h₂)).comp (by fun_prop)
+    ((hc.mono (horizontal_segment_subset h₁ h₂)).comp (by fun_prop)
         (Set.mapsTo_image _ _)).intervalIntegrable
   have integrableVert (x y₁ y₂ : ℝ) (h₁ : (x : ℂ) + y₁ * Complex.I ∈ openRectangle a b c d)
     (h₂ : (x : ℂ) + y₂ * Complex.I ∈ openRectangle a b c d) :
     IntervalIntegrable (fun y : ℝ => f (x + y * Complex.I)) MeasureTheory.MeasureSpace.volume y₁
       y₂ :=
-    ((hc.mono (vertical_segment_subset_mo1973_19309 h₁ h₂)).comp (by fun_prop)
+    ((hc.mono (vertical_segment_subset h₁ h₂)).comp (by fun_prop)
         (Set.mapsTo_image _ _)).intervalIntegrable
   have hHoriz :
     (∫ x in p.re..w.re, f (x + p.im * Complex.I)) =
@@ -1234,7 +1242,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart {D U : Set
     filter_upwards [hnear, self_mem_nhdsWithin] with z hz hu
     exact hside ⟨hz, hu⟩
 
-theorem RiemannMapping.im_mul_exp_real_mo1973_19358 (c : ℂ) (θ : ℝ) :
+theorem RiemannMapping.im_mul_exp_real (c : ℂ) (θ : ℝ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I)).im = ‖c‖ * Real.sin (c.arg + θ) := by
   calc
     (c * Complex.exp ((θ : ℂ) * Complex.I)).im =
@@ -1248,14 +1256,14 @@ theorem RiemannMapping.im_mul_exp_real_mo1973_19358 (c : ℂ) (θ : ℝ) :
       ring
     _ = ‖c‖ * Real.sin (c.arg + θ) := by rw [Complex.im_ofReal_mul, Complex.exp_ofReal_mul_I_im]
 
-theorem RiemannMapping.im_mul_exp_real_pow_mo1973_19359 (c : ℂ) (θ : ℝ) (n : ℕ) :
+theorem RiemannMapping.im_mul_exp_real_pow (c : ℂ) (θ : ℝ) (n : ℕ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I) ^ n).im = ‖c‖ * Real.sin (c.arg + (n : ℝ) * θ) := by
   rw [← Complex.exp_nat_mul]
   have h : (n : ℂ) * ((θ : ℂ) * Complex.I) = (((n : ℝ) * θ : ℝ) : ℂ) * Complex.I := by
     push_cast
     ring
   rw [h]
-  exact im_mul_exp_real_mo1973_19358 c ((n : ℝ) * θ)
+  exact im_mul_exp_real c ((n : ℝ) * θ)
 
 theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c ≠ 0) {n : ℕ}
     (hn : 2 ≤ n) : ∃ v : ℂ, ‖v‖ = 1 ∧ 0 < v.im ∧ (c * v ^ n).im < 0 := by
@@ -1279,7 +1287,7 @@ theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c �
     refine ⟨Complex.exp ((θ : ℂ) * Complex.I), Complex.norm_exp_ofReal_mul_I θ, ?_, ?_⟩
     · rw [Complex.exp_ofReal_mul_I_im]
       exact Real.sin_pos_of_pos_of_lt_pi hθ₀ hθπ
-    · rw [im_mul_exp_real_pow_mo1973_19359, hphase]
+    · rw [im_mul_exp_real_pow, hphase]
       rw [show 3 * Real.pi / 2 = Real.pi / 2 + Real.pi by ring, Real.sin_add_pi,
         Real.sin_pi_div_two]
       linarith
@@ -1296,7 +1304,7 @@ theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c �
     refine ⟨Complex.exp ((θ : ℂ) * Complex.I), Complex.norm_exp_ofReal_mul_I θ, ?_, ?_⟩
     · rw [Complex.exp_ofReal_mul_I_im]
       exact Real.sin_pos_of_pos_of_lt_pi hθ₀ hθπ
-    · rw [im_mul_exp_real_pow_mo1973_19359, hphase]
+    · rw [im_mul_exp_real_pow, hphase]
       exact
         mul_neg_of_pos_of_neg hc₀ (Real.sin_neg_of_neg_of_neg_pi_lt (by linarith) (by linarith))
 
@@ -1469,7 +1477,7 @@ theorem RiemannBoundary.norm_principalRoot (n : ℕ) (z : ℂ) :
     ‖principalRoot n z‖ = ‖z‖ ^ ((n : ℝ)⁻¹) :=
   Complex.norm_cpow_inv_nat z n
 
-theorem RiemannBoundary.principalRoot_exponent_re_pos_mo1973_19407 {n : ℕ} (hn : 0 < n) :
+theorem RiemannBoundary.principalRoot_exponent_re_pos {n : ℕ} (hn : 0 < n) :
     0 < ((n : ℂ)⁻¹).re := by
   simpa only [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re] using
     inv_pos.mpr (Nat.cast_pos.mpr hn : (0 : ℝ) < n)
@@ -1477,7 +1485,7 @@ theorem RiemannBoundary.principalRoot_exponent_re_pos_mo1973_19407 {n : ℕ} (hn
 theorem RiemannBoundary.continuousAt_principalRoot_zero {n : ℕ} (hn : 0 < n) :
     ContinuousAt (principalRoot n) 0 :=
   Complex.continuousAt_cpow_const_of_re_pos (Or.inl (by simp))
-    (principalRoot_exponent_re_pos_mo1973_19407 hn)
+    (principalRoot_exponent_re_pos hn)
 
 theorem RiemannBoundary.continuousOn_principalRoot_closedUpper {n : ℕ} (hn : 0 < n) :
     ContinuousOn (principalRoot n) {z : ℂ | 0 ≤ z.im} := by
@@ -1486,7 +1494,7 @@ theorem RiemannBoundary.continuousOn_principalRoot_closedUpper {n : ℕ} (hn : 0
   by_cases h : 0 ≤ z.re ∨ z.im ≠ 0
   · exact
       (Complex.continuousAt_cpow_const_of_re_pos h
-          (principalRoot_exponent_re_pos_mo1973_19407 hn)).continuousWithinAt
+          (principalRoot_exponent_re_pos hn)).continuousWithinAt
   push Not at h
   have hz0 : z ≠ 0 := fun hz => by simpa only [hz, Complex.zero_re, lt_self_iff_false] using h.1
   have hc :
@@ -1527,7 +1535,7 @@ theorem RiemannBoundary.principalRoot_ofReal_nonpos (n : ℕ) {x : ℝ} (hx : x 
   simp only [div_eq_mul_inv, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast]
   ring
 
-theorem RiemannBoundary.arg_div_nat_mem_Ioc_mo1973_19416 {n : ℕ} (hn : 0 < n) (z : ℂ) :
+theorem RiemannBoundary.arg_div_nat_mem_Ioc {n : ℕ} (hn : 0 < n) (z : ℂ) :
     z.arg / (n : ℝ) ∈ Set.Ioc (-Real.pi) Real.pi := by
   have hnR : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -1552,7 +1560,7 @@ theorem RiemannBoundary.arg_principalRoot {n : ℕ} (hn : 0 < n) (z : ℂ) :
   rw [hpolar]
   simpa only [Complex.ofReal_cos, Complex.ofReal_sin] using
     Complex.arg_mul_cos_add_sin_mul_I (Real.rpow_pos_of_pos (norm_pos_iff.mpr hz) ((n : ℝ)⁻¹))
-      (arg_div_nat_mem_Ioc_mo1973_19416 hn z)
+      (arg_div_nat_mem_Ioc hn z)
 
 theorem RiemannBoundary.principalRoot_arg_mem_Ioo {n : ℕ} (hn : 0 < n) {z : ℂ} (hz : 0 < z.im) :
     Complex.arg (principalRoot n z) ∈ Set.Ioo 0 (Real.pi / (n : ℝ)) := by
@@ -1569,7 +1577,7 @@ theorem RiemannBoundary.principalRoot_pow_of_sector {n : ℕ} (hn : 0 < n) {z : 
   apply Complex.pow_cpow_nat_inv hn.ne' _ hz.2
   exact (neg_neg_of_pos (div_pos Real.pi_pos (Nat.cast_pos.mpr hn))).trans_le hz.1
 
-theorem RiemannBoundary.cubic_sector_slack_mo1973_19421 (w : ℂ) :
+theorem RiemannBoundary.cubic_sector_slack (w : ℂ) :
     3 * w.re - Real.sqrt 3 * w.im = (2 * Real.sqrt 3 * ‖w‖) * Real.sin (Real.pi / 3 - w.arg) := by
   rw [Real.sin_sub, Real.sin_pi_div_three, Real.cos_pi_div_three]
   rw [← Complex.norm_mul_cos_arg w, ← Complex.norm_mul_sin_arg w]
@@ -1580,7 +1588,7 @@ theorem RiemannBoundary.cubic_sector_slack_mo1973_19421 (w : ℂ) :
       ring
     _ = _ := by ring
 
-theorem RiemannBoundary.quartic_sector_slack_mo1973_19422 (w : ℂ) :
+theorem RiemannBoundary.quartic_sector_slack (w : ℂ) :
     w.re - w.im = (Real.sqrt 2 * ‖w‖) * Real.sin (Real.pi / 4 - w.arg) := by
   rw [Real.sin_sub, Real.sin_pi_div_four, Real.cos_pi_div_four]
   rw [← Complex.norm_mul_cos_arg w, ← Complex.norm_mul_sin_arg w]
@@ -1607,7 +1615,7 @@ theorem RiemannBoundary.principalRoot_three_upper {z : ℂ} (hz : 0 < z.im) :
       mul_pos (norm_pos_iff.mpr hw)
         (Real.sin_pos_of_pos_of_lt_pi ha.1 (by linarith [Real.pi_pos, ha.2]))
   · apply sub_pos.mp
-    rw [cubic_sector_slack_mo1973_19421]
+    rw [cubic_sector_slack]
     exact
       mul_pos
         (mul_pos (mul_pos (by norm_num) (Real.sqrt_pos.mpr (by norm_num))) (norm_pos_iff.mpr hw))
@@ -1724,7 +1732,7 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_upper {z : ℂ} (hz : 0 < z.im)
         (Real.sin_pos_of_pos_of_lt_pi ha.1 (by linarith [Real.pi_pos, ha.2]))
   have hri : (principalRoot 4 z).im < (principalRoot 4 z).re := by
     apply sub_pos.mp
-    rw [quartic_sector_slack_mo1973_19422]
+    rw [quartic_sector_slack]
     exact
       mul_pos (mul_pos (Real.sqrt_pos.mpr (by norm_num)) (norm_pos_iff.mpr hw))
         (Real.sin_pos_of_pos_of_lt_pi (by linarith [ha.2]) (by linarith [Real.pi_pos, ha.1]))

@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Invariant subset quotients and product restriction
+
+  Quotients by actions restricted to invariant subsets, and the restriction of
+  quotient maps to products (Forster, Lectures on Riemann Surfaces, Sections
+  1-2).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

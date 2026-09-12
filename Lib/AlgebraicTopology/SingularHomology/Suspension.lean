@@ -125,7 +125,7 @@ instance SphereHomology.unitSphere_pathConnectedSpace (n : ℕ) :
   (suspensionSphereHomeomorph n).surjective.pathConnectedSpace
     (suspensionSphereHomeomorph n).continuous
 
-theorem SingularHomology.splitExactPair_injective_mo1973_4431 {A B C : Type*}
+theorem SingularHomology.splitExactPair_injective {A B C : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (i : A →ₗ[ℤ] B) (p : B →ₗ[ℤ] A) (d : B →ₗ[ℤ] C) (hpi : p.comp i = LinearMap.id)
     (hex : LinearMap.range i = LinearMap.ker d) : Function.Injective (p.prod d) := by
@@ -146,7 +146,7 @@ theorem SingularHomology.splitExactPair_injective_mo1973_4431 {A B C : Type*}
   have hdiff : b - b' = 0 := by rw [← ha, ha0, map_zero]
   exact sub_eq_zero.mp hdiff
 
-theorem SingularHomology.splitExactPair_surjective_mo1973_4432 {A B C : Type*}
+theorem SingularHomology.splitExactPair_surjective {A B C : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (i : A →ₗ[ℤ] B) (p : B →ₗ[ℤ] A) (d : B →ₗ[ℤ] C) (hpi : p.comp i = LinearMap.id)
     (hex : LinearMap.range i = LinearMap.ker d) (hsurj : Function.Surjective d) :
@@ -170,8 +170,8 @@ def SingularHomology.splitExactEquiv {A B C : Type*} [AddCommGroup A] [AddCommGr
     (hsurj : Function.Surjective d) : B ≃ₗ[ℤ] (A × C) :=
   ({
         Equiv.ofBijective (fun b : B => (p b, d b))
-          ⟨splitExactPair_injective_mo1973_4431 i p d hpi hex,
-            splitExactPair_surjective_mo1973_4432 i p d hpi hex hsurj⟩ with
+          ⟨splitExactPair_injective i p d hpi hex,
+            splitExactPair_surjective i p d hpi hex hsurj⟩ with
         map_add' b b' := Prod.ext (map_add p b b') (map_add d b b') } :
       B ≃+ (A × C)).toIntLinearEquiv
 

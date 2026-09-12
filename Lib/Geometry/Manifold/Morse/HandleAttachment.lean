@@ -57,6 +57,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching handle map of a signed Morse chart: the piecewise quadratic map that inserts the handle of the chart along the descending and ascending coordinates across a regular level (Milnor, Morse Theory, Section 3; Hatcher, Algebraic Topology, the index-lambda handle). -/
 def Smale.ManifoldMorse.SignedMorseChart.attachingHandleMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) (ρ : ℝ) (hρ : 0 < ρ)
@@ -91,6 +92,7 @@ theorem Smale.ManifoldMorse.SignedMorseChart.attachingHandleMap_injective {E M :
       (hblock (Smale.MorseHandle.modelMap_mem_product hρ w)) h
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching handle map is a closed embedding: the inserted handle sits cleanly in the manifold, the geometric core of the handle-attachment theorem (Milnor, Morse Theory, Section 3). -/
 theorem Smale.ManifoldMorse.SignedMorseChart.attachingHandleMap_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) [T2Space M] (ρ : ℝ)
@@ -122,6 +124,7 @@ theorem Smale.ManifoldMorse.SignedMorseChart.attachingHandleMap_quadratic {E M :
   ring
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Membership characterization: the image of the attaching handle map is exactly the set where the Morse function has dropped below the level - the sublevel-set change caused by passing the critical point. -/
 theorem Smale.ManifoldMorse.SignedMorseChart.attachingHandleMap_lower_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) (ρ : ℝ) (hρ : 0 < ρ)
@@ -275,6 +278,7 @@ theorem Smale.ManifoldMorse.SignedMorseChart.mem_interior_attachingUnion_of_mode
   intro z hz
   exact (c.mem_attachingUnion_iff_model ρ hρ hblock hz.1).mpr hz.2
 
+/-- The attachment region of a Morse handle: the annular part of the boundary where the handle is glued, complementary to the disk data. -/
 def Smale.MorseHandle.attachmentRegion {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) : Set (N × P) :=
   {z | quadratic z ≤ -(ρ ^ 2)} ∪ Set.range (modelMap ρ)
@@ -1424,6 +1428,7 @@ theorem Smale.AttachmentBoundaryData.newPiece_closed {N P M : Type*} [NormedAddC
   apply Smale.ClosedCover.isClosedEmbedding_codRestrict
   exact d.handle_closed.comp (Topology.IsClosedEmbedding.id.prodMap sphereToBall_closed)
 
+/-- The old-exterior piece covers its part of the attachment boundary: the first half of the two-set Mayer-Vietoris cover for the attached handle (Hatcher, Algebraic Topology, the handle-attachment cover). -/
 theorem Smale.AttachmentBoundaryData.old_cover {N P M : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
     (d : Smale.AttachmentBoundaryData N P M f a) :
@@ -1452,6 +1457,7 @@ theorem Smale.AttachmentBoundaryData.old_cover {N P M : Type*} [NormedAddCommGro
       exact hy.1.resolve_right hy.2
     exact Or.inl ⟨⟨x, x.property, hfront⟩, rfl⟩
 
+/-- The new-piece cover half: together with `old_cover` this realizes the handle attachment as a two-open cover, feeding the homology rows. -/
 theorem Smale.AttachmentBoundaryData.new_cover {N P M : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
     (d : Smale.AttachmentBoundaryData N P M f a) :

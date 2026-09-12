@@ -15,6 +15,15 @@ import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sum
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+/-!
+# The mapping torus of a homeomorphism
+
+  The mapping torus of a homeomorphism `f : X ~= X`: the quotient of `I x X` by
+  `(1, x) ~ (0, f x)`, its base and fiber projections, the two-open cover by the
+  cylinder halves, and the H_1 presentation (Hatcher, Algebraic Topology,
+  Example 2.48).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

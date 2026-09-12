@@ -165,6 +165,7 @@ theorem Smale.HandleCoreDeformation.continuous_positive {N P : Type*} [NormedAdd
           (continuous_subtype_val.comp continuous_snd))).subtype_mk
     _
 
+/-- The core deformation: the radial collapse of the handle onto its core, the deformation retraction realizing "attaching a handle is attaching a cell up to homotopy" (Hatcher, Algebraic Topology, Prop 0.16 consequence). -/
 def Smale.HandleCoreDeformation.collapse {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
     C(Smale.MorseHandle.UnitDisk N × Smale.MorseHandle.UnitDisk P,
@@ -333,6 +334,7 @@ theorem Smale.ClosedCover.mapOfClosedPieces_right {R P X Y : Type*} [Topological
     (glue_right hcover _ _ hagree' ⟨p x, Set.mem_range_self x⟩).trans
       (congrArg g (b.symm_apply_apply x))
 
+/-- The core map of the attached handle: the restriction of the characteristic map to the core disk, with its boundary behaviour on the attaching region. -/
 def Smale.HandleCoreAttachment.core {N P X : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
     [TopologicalSpace X] (h : C(Smale.MorseHandle.UnitDisk N × Smale.MorseHandle.UnitDisk P, X)) :
     C(Smale.MorseHandle.UnitDisk N, X) :=
@@ -362,6 +364,7 @@ def Smale.HandleCoreAttachment.oldToCore {N P R X : Type*} [NormedAddCommGroup N
     (hr : Topology.IsClosedEmbedding r) : C(R, coreSpace r h) :=
   ⟨fun a => ⟨r a, Or.inl (Set.mem_range_self a)⟩, hr.continuous.subtype_mk _⟩
 
+/-- The retraction of the whole handle onto its core, built from the old-space and core maps agreeing on the overlap (Hatcher, Algebraic Topology, proof of Prop 0.16). -/
 def Smale.HandleCoreAttachment.handleToCore {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace X] (r : R → X)
     (h : C(Smale.MorseHandle.UnitDisk N × Smale.MorseHandle.UnitDisk P, X))
@@ -383,6 +386,7 @@ theorem Smale.HandleCoreAttachment.coreMaps_agree {N P R X : Type*} [NormedAddCo
   rw [Smale.HandleCoreDeformation.collapse_face z hz]
   exact haz
 
+/-- The deformation retraction `r : M -> M` with image the core: fixed on the core, identity on the old space, and handle-collapsing in between. -/
 def Smale.HandleCoreAttachment.retraction {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)

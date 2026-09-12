@@ -4,6 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Patching of local collapses
+
+  Patching of local collapses: collapses performed in overlapping coordinate
+  patches glue to a homotopy equivalence of the whole space (Hatcher, Algebraic
+  Topology, Proposition 0.17-style glueing).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

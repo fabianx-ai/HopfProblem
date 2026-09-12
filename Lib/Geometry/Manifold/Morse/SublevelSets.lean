@@ -11,6 +11,15 @@ import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.Sphere
+/-!
+# Sublevel sets of Morse functions
+
+  Sublevel sets of Morse functions: the topology of `{x | f x <= c}` changes only
+  when `c` crosses a critical value, and then by attachment of a handle of the
+  critical point index (Hatcher, Algebraic Topology, Corollary 3.15 / Morse
+  Theory, Section 3).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

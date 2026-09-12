@@ -55,7 +55,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 theorem
-  TriangleUniformizationGluing.openPartialHomeomorph_symm_tendsto_punctured_mo1973_19946
+  TriangleUniformizationGluing.openPartialHomeomorph_symm_tendsto_punctured
     {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (e : OpenPartialHomeomorph X Y)
     {x : X} (hx : x ∈ e.source) : Filter.Tendsto e.symm (𝓝[≠] (e x)) (𝓝[≠] x) := by
   refine tendsto_nhdsWithin_iff.mpr ⟨(e.tendsto_symm hx).mono_left nhdsWithin_le_nhds, ?_⟩
@@ -79,7 +79,7 @@ theorem TriangleUniformizationGluing.contMDiffAt_of_continuousAt_of_punctured {M
   have htarget : ∀ᶠ z in 𝓝 (e x), f (e.symm z) ∈ e'.source :=
     (hf.tendsto.comp (e.tendsto_symm hxe)).eventually (e'.open_source.mem_nhds hye)
   have hdiff : ∀ᶠ z in 𝓝[≠] (e x), DifferentiableAt ℂ F z := by
-    filter_upwards [(openPartialHomeomorph_symm_tendsto_punctured_mo1973_19946 e hxe).eventually
+    filter_upwards [(openPartialHomeomorph_symm_tendsto_punctured e hxe).eventually
         hd,
       eventually_nhdsWithin_of_eventually_nhds hdomain,
       eventually_nhdsWithin_of_eventually_nhds htarget] with z hz hzDomain hzTarget

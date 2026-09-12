@@ -96,11 +96,13 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-- The submodule of singular chains supported on a set `U`: chains whose simplices all have image inside `U` (the carrier set underlying the Mayer-Vietoris small-chain argument). -/
 def SingularMayerVietoris.supportedChainSubmodule {X : Type} [TopologicalSpace X] (U : Set X)
     (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
   Submodule.span ℤ
     (SingularChains.simplexChain X n '' {σ : SingularChains.SingularSimplex X n | Set.range σ ⊆ U})
 
+/-- The submodule of `(U, V)`-small chains: chains whose simplices each lie in `U` or in `V` (Hatcher, Algebraic Topology, proof of Theorem 2.20). -/
 def SingularMayerVietoris.smallChainSubmodule {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
   supportedChainSubmodule U n ⊔ supportedChainSubmodule V n
@@ -178,6 +180,7 @@ def SingularMayerVietoris.smallDifferential {X : Type} [TopologicalSpace X] (U V
         (smallChainSubmodule U V i).subtype).codRestrict
     _ (fun c => boundary_mem_small U V i j c.1 c.2)
 
+/-- The chain complex of `(U, V)`-small chains: the subcomplex of the singular chain complex spanned by simplices lying in `U` or in `V`. -/
 def SingularMayerVietoris.smallComplex {X : Type} [TopologicalSpace X] (U V : Set X) :
     ChainComplex (ModuleCat ℤ) ℕ
     where
@@ -222,6 +225,7 @@ instance SingularMayerVietoris.smallInclusion_mono {X : Type} [TopologicalSpace 
   HomologicalComplex.mono_of_mono_f _
     (fun n => (ModuleCat.mono_iff_injective _).mpr (smallInclusion_f_injective U V n))
 
+/-- The subdivision lift: every chain of the ambient complex is sent, after enough barycentric subdivision, to the small subcomplex (the division lemma of the Mayer-Vietoris proof, Hatcher, Algebraic Topology, Theorem 2.20). -/
 def SingularMayerVietoris.liftToSmall {X : Type} [TopologicalSpace X] (U V : Set X)
     {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ SingularChains.singularComplex X)
     (hf : ∀ n (c : K.X n), (f.f n).hom c ∈ smallChainSubmodule U V n) : K ⟶ smallComplex U V
@@ -541,10 +545,12 @@ theorem SingularMayerVietoris.leftMap_rightMap {X : Type} [TopologicalSpace X] (
   rw [CategoryTheory.Limits.biprod.lift_desc, CategoryTheory.Preadditive.neg_comp,
     intersection_toSmall_comm, add_neg_cancel]
 
+/-- The short exact sequence of chain complexes `0 -> C(U cap V) -> C(U) +" C(V) -> C^{U,V}(X) -> 0` underlying the Mayer-Vietoris long exact sequence. -/
 def SingularMayerVietoris.chainSequence {X : Type} [TopologicalSpace X] (U V : Set X) :
     CategoryTheory.ShortComplex (ChainComplex (ModuleCat ℤ) ℕ) :=
   CategoryTheory.ShortComplex.mk (leftMap U V) (rightMap U V) (leftMap_rightMap U V)
 
+/-- The chain sequence of a two-open cover is short exact: injectivity on the intersection, kernel = image at the sum, and surjectivity onto the small chains (Hatcher, Algebraic Topology, Theorem 2.20). -/
 theorem SingularMayerVietoris.chainSequence_shortExact {X : Type} [TopologicalSpace X]
     (U V : Set X) : (chainSequence U V).ShortExact :=
   SmallChainBiprod.shortExactOfComplexes (intersectionToLeft U V) (intersectionToRight U V)
@@ -625,7 +631,7 @@ theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
         (connectingMap_lift_is_cycle hS n z₂ z₁ hz₁ _) :=
   hS.δ_apply (n + 1) n (by simp) z₃ hz₃ z₂ hz₂ z₁ hz₁ _ rfl
 
-theorem SingularMayerVietoris.homology_fst_inl_mo1973_2361
+theorem SingularMayerVietoris.homology_fst_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
@@ -637,7 +643,7 @@ theorem SingularMayerVietoris.homology_fst_inl_mo1973_2361
   rw [CategoryTheory.Limits.biprod.inl_fst, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
-theorem SingularMayerVietoris.homology_snd_inl_mo1973_2362
+theorem SingularMayerVietoris.homology_snd_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
@@ -649,7 +655,7 @@ theorem SingularMayerVietoris.homology_snd_inl_mo1973_2362
   rw [CategoryTheory.Limits.biprod.inl_snd, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
-theorem SingularMayerVietoris.homology_fst_inr_mo1973_2363
+theorem SingularMayerVietoris.homology_fst_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
@@ -661,7 +667,7 @@ theorem SingularMayerVietoris.homology_fst_inr_mo1973_2363
   rw [CategoryTheory.Limits.biprod.inr_fst, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
-theorem SingularMayerVietoris.homology_snd_inr_mo1973_2364
+theorem SingularMayerVietoris.homology_snd_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
@@ -673,7 +679,7 @@ theorem SingularMayerVietoris.homology_snd_inr_mo1973_2364
   rw [CategoryTheory.Limits.biprod.inr_snd, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
-theorem SingularMayerVietoris.homology_biprod_total_mo1973_2365
+theorem SingularMayerVietoris.homology_biprod_total
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (K ⊞ L).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
           ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
@@ -710,7 +716,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
               a.1 +
             (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
               a.2
-        left_inv := homology_biprod_total_mo1973_2365 K L n
+        left_inv := homology_biprod_total K L n
         right_inv
           a := by
           apply Prod.ext
@@ -724,7 +730,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
                           n).hom
                       a.2) =
                 a.1
-            rw [map_add, homology_fst_inl_mo1973_2361, homology_fst_inr_mo1973_2363, add_zero]
+            rw [map_add, homology_fst_inl, homology_fst_inr, add_zero]
           · change
               (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L)
                       n).hom
@@ -735,7 +741,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
                           n).hom
                       a.2) =
                 a.2
-            rw [map_add, homology_snd_inl_mo1973_2362, homology_snd_inr_mo1973_2364, zero_add]
+            rw [map_add, homology_snd_inl, homology_snd_inr, zero_add]
         map_add' a
           b := by
           change (_, _) = (_, _)
@@ -1586,6 +1592,7 @@ theorem SingularMayerVietoris.formalMap_subdivisionIteratedHomotopy {V W : Type*
   rw [formalMap_subdivisionHomotopy center center' f hf,
     formalMap_subdivision_iterate center center' f hf]
 
+/-- Barycentric subdivision as an iterated chain map: the `k`-fold subdivision of an `n`-chain (Hatcher, Algebraic Topology, barycentric subdivision operator `Sd_k`). -/
 def SingularMayerVietoris.subdivision (X : Type) [TopologicalSpace X] (k n : ℕ) :
     SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n :=
   SingularChains.chainLift X n fun σ =>
@@ -1638,6 +1645,7 @@ theorem SingularMayerVietoris.subdivision_affineChainMap (p k n : ℕ)
       formalMap_simplex, affineSimplex_comp_stdVertices]
   simpa only [LinearMap.comp_apply, Module.End.pow_apply] using LinearMap.congr_fun h c
 
+/-- Subdivision commutes with the boundary operator: `bd (Sd_k c) = Sd_k (bd c)` (Hatcher, Algebraic Topology, the chain-map property of subdivision). -/
 theorem SingularMayerVietoris.subdivision_boundary {X : Type} [TopologicalSpace X] (k n : ℕ)
     (c : SingularChains.Chains X (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (subdivision X k (n + 1) c) =
@@ -1658,6 +1666,7 @@ theorem SingularMayerVietoris.subdivision_boundary {X : Type} [TopologicalSpace 
     rfl
   exact LinearMap.congr_fun h c
 
+/-- The chain homotopy between a chain and its subdivision: `Sd_k` is chain homotopic to the identity, the key to smallness after subdivision (Hatcher, Algebraic Topology, proof of Theorem 2.20). -/
 def SingularMayerVietoris.subdivisionHomotopy (X : Type) [TopologicalSpace X] (k n : ℕ) :
     SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
   SingularChains.chainLift X n fun σ =>
@@ -2550,6 +2559,7 @@ theorem SingularMayerVietoris.exact_at_pair {X : Type} [TopologicalSpace X] (U V
   rw [rightHomologyMap_eq_transport U V hU hV hcover, rightTransport_second_ker]
   exact small_exact_at_pair U V n
 
+/-- The Mayer-Vietoris exactness statement: for open `U`, `V` covering `X`, the long exact sequence assembled from the short exact chain sequence is exact at the ambient homology - the connecting homomorphism `H_n(U cap V) -> H_{n-1}(U + V)` makes the braid exact (Hatcher, Algebraic Topology, Theorem 2.20). -/
 theorem SingularMayerVietoris.exact_at_ambient {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     LinearMap.range (rightHomologyMap U V (n + 1)) =

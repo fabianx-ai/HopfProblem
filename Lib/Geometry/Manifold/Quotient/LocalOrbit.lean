@@ -6,6 +6,15 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Geometry.Manifold.Instances.RiemannSphere
+/-!
+# The local orbit quotient of a group action
+
+  The local orbit quotient: for a properly discontinuous group action, the
+  quotient of a small neighborhood of a point by the stabilizer-free action of
+  the group elements mapping it into itself, is modeled on the quotient by a
+  finite group (Forster, Lectures on Riemann Surfaces, Section 1).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

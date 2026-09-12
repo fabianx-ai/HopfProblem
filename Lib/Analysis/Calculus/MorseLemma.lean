@@ -267,6 +267,7 @@ theorem Smale.ManifoldPerturbation.perturb_zero {E M : Type*} [NormedAddCommGrou
   funext x
   simp [perturb]
 
+/-- Being Morse at a point: the point is a nondegenerate critical point of `f` - the Hessian there is a nondegenerate quadratic form (Milnor, Morse Theory, Section 2). -/
 def Smale.ManifoldMorse.IsMorseAt (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (x : M) : Prop :=
   ∃ e : OpenPartialHomeomorph M E,
@@ -275,10 +276,12 @@ def Smale.ManifoldMorse.IsMorseAt (E : Type*) {M : Type*} [NormedAddCommGroup E]
         (fderiv ℝ (f ∘ e.symm) (e x) ≠ 0 ∨
           Function.Bijective (fderiv ℝ (fderiv ℝ (f ∘ e.symm)) (e x)))
 
+/-- Being Morse on a set: `f` is Morse at every point of the set (all critical points in the set are nondegenerate). -/
 def Smale.ManifoldMorse.IsMorseOn (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (K : Set M) : Prop :=
   ∀ x ∈ K, IsMorseAt E f x
 
+/-- Being a Morse function: `f` is smooth and all its critical points are nondegenerate (Milnor, Morse Theory, Section 2). -/
 def Smale.ManifoldMorse.IsMorse (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) : Prop :=
   ∀ x, IsMorseAt E f x
@@ -389,6 +392,7 @@ theorem Smale.MorsePerturbation.hessianEquiv_toContinuousLinearMap {E : Type*}
   ext v w
   rfl
 
+/-- The critical-point set of a Morse function: the set of points where the differential vanishes (Milnor, Morse Theory, Section 2). -/
 def Smale.ManifoldMorse.criticalPoints {M : Type*} [TopologicalSpace M] (E : Type*)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [ChartedSpace E M] (f : M → ℝ) : Set M :=
   {x | mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0}
@@ -444,6 +448,7 @@ theorem Smale.ManifoldMorse.criticalPoints_isClosed {E M : Type*} [NormedAddComm
   intro y hy hc
   exact hy.2.2 ((mem_criticalPoints_iff hf he hy.1).mp hc)
 
+/-- The critical points of a Morse function form a discrete set: nondegeneracy forces the Hessian to be invertible there (Milnor, Morse Theory, Section 2). -/
 theorem Smale.ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) : IsDiscrete (criticalPoints E f) := by
@@ -476,6 +481,7 @@ theorem Smale.ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCo
       rcases Set.mem_singleton_iff.mp hy with rfl
       exact ⟨⟨hxS, hd⟩, hx⟩
 
+/-- A Morse function on a compact manifold has finitely many critical points: discrete plus compact equals finite - the counting tool behind the surgery windows (Milnor, Morse Theory, Section 2). -/
 theorem Smale.ManifoldMorse.finite_criticalPoints {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -935,6 +941,8 @@ theorem LineBundleTransport.exists_interval_cutoff (a b : ℝ) :
     (ProperSpace.isCompact_closedBall (0 : ℝ) R).of_isClosed_subset (isClosed_tsupport χ)
       (hχU.trans Metric.ball_subset_closedBall)
 
+/-- A smooth function with a prescribed compact plateau exists on any smooth manifold:
+the tool for making perturbations constant off a compact set. -/
 theorem Smale.ManifoldMorse.exists_compact_plateau {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] (p : M) :
     ∃ (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (U L : Set M),
@@ -976,6 +984,8 @@ theorem Smale.ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAd
   simpa only [extChartAt_coe, Function.comp_apply, modelWithCornersSelf_coe, id_eq] using
     e.right_inv hyt
 
+/-- A smooth function prescribed on a closed subset of a smooth manifold extends to a
+Morse function on the whole manifold (Milnor, \*Morse Theory\* Section 1). -/
 theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
@@ -1016,6 +1026,9 @@ theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommG
     exact
       perturb_inChart_eventuallyEq φ hU hUs hφ hV hGV a (hLU hx) (hLV (Set.mem_image_of_mem e hx))
 
+/-- Every smooth function on a compact smooth manifold can be uniformly approximated by
+a Morse function; in particular a compact smooth manifold admits a Morse function
+(Milnor, \*Morse Theory\* Section 1). -/
 theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [MeasurableSpace E] [BorelSpace E]
@@ -1057,6 +1070,7 @@ theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedA
   rw [hs]
   exact Set.mem_univ x
 
+/-- Every compact smooth manifold admits a Morse function (Milnor, Morse Theory, Section 1; Hatcher, Algebraic Topology, Section 0). -/
 theorem Smale.ManifoldMorse.exists_morse_function (E : Type*) (M : Type*) [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] :
@@ -1349,6 +1363,7 @@ theorem SmoothMorseLemma.exists_partialDiffeomorph_of_contDiff {E F : Type*}
     exists_partialDiffeomorph_of_contDiffOn isOpen_univ hf.contDiffOn a (Set.mem_univ a) f' hderiv
   exact ⟨e, ha, he⟩
 
+/-- The Morse lemma: near a nondegenerate critical point there are coordinates in which the function is a purely quadratic form of the critical value - `f = f(p) - x_1^2 - ... - x_i^2 + x_{i+1}^2 + ...` (Morse Lemma; Milnor, Morse Theory, Lemma 2.2). -/
 theorem SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] (f : E → ℝ)
     (A : E → SymmetricForm E) (hA : ContDiff ℝ ∞ A) (H : SymmetricForm E) (hA0 : A 0 = H)

@@ -10,6 +10,15 @@ import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+/-!
+# The index of a nondegenerate critical point
+
+  The index of a nondegenerate critical point: the number of negative eigenvalues
+  of the Hessian. Local coordinates bring the function to the quadratic model
+  `f = f(p) - x_1^2 - ... - x_i^2 + x_{i+1}^2 + ... ` (Milnor, Morse Theory,
+  Lemma 2.2; the index is a local homotopy invariant).
+-/
+
 
 
 set_option maxSynthPendingDepth 3

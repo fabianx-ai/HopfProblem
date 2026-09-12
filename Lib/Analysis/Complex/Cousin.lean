@@ -542,7 +542,7 @@ theorem HolomorphicCousin.exists_green_support_radius {φ : ℂ → ℂ} (hφ : 
     exact not_lt_of_ge hz hlt
   exact ⟨image_eq_zero_of_notMem_tsupport hn, fderiv_of_notMem_tsupport ℝ hn⟩
 
-theorem HolomorphicCousin.integrableOn_polarRectangle_mo1973_17804 {G : ℝ × ℝ → ℂ} {R : ℝ}
+theorem HolomorphicCousin.integrableOn_polarRectangle {G : ℝ × ℝ → ℂ} {R : ℝ}
     (hG : ContinuousOn G (Set.Icc 0 R ×ˢ Set.Icc (-Real.pi) Real.pi)) :
     MeasureTheory.IntegrableOn G (Set.Ioc 0 R ×ˢ Set.Ioo (-Real.pi) Real.pi) := by
   apply
@@ -555,7 +555,7 @@ theorem HolomorphicCousin.integrableOn_polarTarget_of_radial_support {G : ℝ ×
     (hG : ContinuousOn G (Set.Icc 0 R ×ˢ Set.Icc (-Real.pi) Real.pi))
     (hzero : ∀ p, R < p.1 → G p = 0) : MeasureTheory.IntegrableOn G polarCoord.target := by
   apply
-    (integrableOn_polarRectangle_mo1973_17804 hG).of_forall_sdiff_eq_zero
+    (integrableOn_polarRectangle hG).of_forall_sdiff_eq_zero
       polarCoord.open_target.measurableSet
   rintro ⟨r, θ⟩ ⟨hp, hnot⟩
   apply hzero
@@ -584,7 +584,7 @@ theorem HolomorphicCousin.integral_polarTarget_eq_radius_angle {G : ℝ × ℝ �
   rw [MeasureTheory.setIntegral_prod G
       (by
         simpa only [MeasureTheory.Measure.volume_eq_prod] using
-          integrableOn_polarRectangle_mo1973_17804 hG)]
+          integrableOn_polarRectangle hG)]
   simp_rw [intervalIntegral.integral_of_le hR,
     intervalIntegral.integral_of_le (neg_le_self Real.pi_pos.le),
     MeasureTheory.integral_Ioc_eq_integral_Ioo]
@@ -599,7 +599,7 @@ theorem HolomorphicCousin.integral_polarTarget_eq_angle_radius {G : ℝ × ℝ �
       (by
         simpa only [MeasureTheory.IntegrableOn, MeasureTheory.Measure.prod_restrict,
           ← MeasureTheory.Measure.volume_eq_prod] using
-          integrableOn_polarRectangle_mo1973_17804 hG)]
+          integrableOn_polarRectangle hG)]
   simp_rw [intervalIntegral.integral_of_le hR,
     intervalIntegral.integral_of_le (neg_le_self Real.pi_pos.le),
     MeasureTheory.integral_Ioc_eq_integral_Ioo]
@@ -613,7 +613,7 @@ theorem HolomorphicCousin.green_polar_integrand (φ : ℂ → ℂ) (p : ℝ × �
   rw [polar_realLinear_identity, Complex.star_def, ← Complex.inv_eq_conj (norm_greenUnit p.2)]
   field_simp
 
-theorem HolomorphicCousin.greenRadial_radius_vanish_mo1973_17810 {φ : ℂ → ℂ} {R : ℝ}
+theorem HolomorphicCousin.greenRadial_radius_vanish {φ : ℂ → ℂ} {R : ℝ}
     (hR : 0 < R) (hz : ∀ z : ℂ, R ≤ ‖z‖ → fderiv ℝ φ z = 0) :
     ∀ p : ℝ × ℝ, R < p.1 → greenRadial φ p = 0 := by
   intro p hp
@@ -622,7 +622,7 @@ theorem HolomorphicCousin.greenRadial_radius_vanish_mo1973_17810 {φ : ℂ → �
       abs_of_pos (hR.trans hp)] using hp.le
   simp only [greenRadial, hz _ hn, zero_apply]
 
-theorem HolomorphicCousin.greenAngular_radius_vanish_mo1973_17811 {φ : ℂ → ℂ} {R : ℝ}
+theorem HolomorphicCousin.greenAngular_radius_vanish {φ : ℂ → ℂ} {R : ℝ}
     (hR : 0 < R) (hz : ∀ z : ℂ, R ≤ ‖z‖ → fderiv ℝ φ z = 0) :
     ∀ p : ℝ × ℝ, R < p.1 → greenAngular φ p = 0 := by
   intro p hp
@@ -636,21 +636,21 @@ theorem HolomorphicCousin.integrableOn_greenRadial {φ : ℂ → ℂ} (hφ : Con
   obtain ⟨R, hR, hz⟩ := exists_green_support_radius hc
   exact
     integrableOn_polarTarget_of_radial_support (continuous_greenRadial hφ).continuousOn
-      (greenRadial_radius_vanish_mo1973_17810 hR (fun z h => (hz z h).2))
+      (greenRadial_radius_vanish hR (fun z h => (hz z h).2))
 
 theorem HolomorphicCousin.integrableOn_greenAngular {φ : ℂ → ℂ} (hφ : ContDiff ℝ 1 φ)
     (hc : HasCompactSupport φ) : MeasureTheory.IntegrableOn (greenAngular φ) polarCoord.target := by
   obtain ⟨R, hR, hz⟩ := exists_green_support_radius hc
   exact
     integrableOn_polarTarget_of_radial_support (continuous_greenAngular hφ).continuousOn
-      (greenAngular_radius_vanish_mo1973_17811 hR (fun z h => (hz z h).2))
+      (greenAngular_radius_vanish hR (fun z h => (hz z h).2))
 
 theorem HolomorphicCousin.integral_greenRadial_polarTarget {φ : ℂ → ℂ} (hφ : ContDiff ℝ 1 φ)
     (hc : HasCompactSupport φ) :
     (∫ p in polarCoord.target, greenRadial φ p) = -(2 * (Real.pi : ℂ)) * φ 0 := by
   obtain ⟨R, hR, hz⟩ := exists_green_support_radius hc
   rw [integral_polarTarget_eq_angle_radius hR.le (continuous_greenRadial hφ).continuousOn
-      (greenRadial_radius_vanish_mo1973_17810 hR (fun z h => (hz z h).2))]
+      (greenRadial_radius_vanish hR (fun z h => (hz z h).2))]
   have hend (θ : ℝ) : φ ((R : ℂ) * greenUnit θ) = 0 := by
     apply (hz _ _).1
     simp [abs_of_pos hR]
@@ -663,7 +663,7 @@ theorem HolomorphicCousin.integral_greenAngular_polarTarget {φ : ℂ → ℂ} (
     (hc : HasCompactSupport φ) : (∫ p in polarCoord.target, greenAngular φ p) = 0 := by
   obtain ⟨R, hR, hz⟩ := exists_green_support_radius hc
   rw [integral_polarTarget_eq_radius_angle hR.le (continuous_greenAngular hφ).continuousOn
-      (greenAngular_radius_vanish_mo1973_17811 hR (fun z h => (hz z h).2))]
+      (greenAngular_radius_vanish hR (fun z h => (hz z h).2))]
   apply intervalIntegral.integral_zero_ae
   filter_upwards with r hr
   have hr' : r ∈ Set.Ioc 0 R := by simpa only [Set.uIoc_of_le hR.le] using hr
@@ -724,7 +724,7 @@ def HolomorphicCousin.cauchyGreenInfinity (f : ℂ → ℂ) (u : ℂ) : ℂ :=
 theorem HolomorphicCousin.cauchyGreenInfinity_zero (f : ℂ → ℂ) : cauchyGreenInfinity f 0 = 0 := by
   simp [cauchyGreenInfinity]
 
-theorem HolomorphicCousin.area_denominator_ne_zero_mo1973_17824 {R : ℝ} (hR : 0 < R)
+theorem HolomorphicCousin.area_denominator_ne_zero {R : ℝ} (hR : 0 < R)
     {u w : ℂ} (hu : u ∈ Metric.ball 0 R⁻¹) (hw : ‖w‖ ≤ R) : 1 - w * u ≠ 0 := by
   have hu' : ‖u‖ < R⁻¹ := by simpa using hu
   have hmul : ‖w * u‖ < 1 := by
@@ -737,7 +737,7 @@ theorem HolomorphicCousin.area_denominator_ne_zero_mo1973_17824 {R : ℝ} (hR : 
   have hwu : w * u = 1 := (sub_eq_zero.mp heq).symm
   simp [hwu] at hmul
 
-theorem HolomorphicCousin.area_denominator_lower_bound_mo1973_17825 {R r : ℝ} (hR : 0 < R)
+theorem HolomorphicCousin.area_denominator_lower_bound {R r : ℝ} (hR : 0 < R)
     {x w : ℂ} (hx : x ∈ Metric.ball 0 r) (hw : ‖w‖ ≤ R) : 1 - R * r ≤ ‖1 - w * x‖ := by
   have hx' : ‖x‖ ≤ r := le_of_lt (by simpa using hx)
   have hmul : ‖w * x‖ ≤ R * r := by
@@ -748,7 +748,7 @@ theorem HolomorphicCousin.area_denominator_lower_bound_mo1973_17825 {R r : ℝ} 
     _ = ‖(1 : ℂ)‖ - ‖w * x‖ := by rw [NormOneClass.norm_one]
     _ ≤ ‖1 - w * x‖ := norm_sub_norm_le _ _
 
-theorem HolomorphicCousin.area_reciprocal_kernel_hasDerivAt_mo1973_17826 {w x : ℂ}
+theorem HolomorphicCousin.area_reciprocal_kernel_hasDerivAt {w x : ℂ}
     (hne : 1 - w * x ≠ 0) : HasDerivAt (fun y : ℂ => y * (1 - w * y)⁻¹) (1 / (1 - w * x) ^ 2) x :=
   by
   have hn : HasDerivAt (fun y : ℂ => y) 1 x := hasDerivAt_id x
@@ -785,7 +785,7 @@ theorem HolomorphicCousin.hasDerivAt_cauchyGreenInfinity {f : ℂ → ℂ} {R : 
     · have hwb := hbound w hw
       simp only [norm_mul, norm_inv]
       gcongr
-      exact area_denominator_lower_bound_mo1973_17825 hR humem hwb
+      exact area_denominator_lower_bound hR humem hwb
   change HasDerivAt (fun x => cauchyGreenInfinity f x) _ u
   simp only [cauchyGreenInfinity]
   apply HasDerivAt.const_mul
@@ -802,14 +802,14 @@ theorem HolomorphicCousin.hasDerivAt_cauchyGreenInfinity {f : ℂ → ℂ} {R : 
     · have hwb := hbound w hw
       simp only [norm_mul, norm_inv, norm_pow, one_div]
       gcongr
-      exact area_denominator_lower_bound_mo1973_17825 hR hx hwb
+      exact area_denominator_lower_bound hR hx hwb
   · exact hf.norm.const_mul _
   · filter_upwards with w x hx
     by_cases hw : f w = 0
     · simpa only [hw, MulZeroClass.mul_zero] using hasDerivAt_const x (0 : ℂ)
     · exact
-        (area_reciprocal_kernel_hasDerivAt_mo1973_17826
-              (area_denominator_ne_zero_mo1973_17824 hR (hsub hx) (hbound w hw))).mul_const
+        (area_reciprocal_kernel_hasDerivAt
+              (area_denominator_ne_zero hR (hsub hx) (hbound w hw))).mul_const
           (f w)
 
 theorem HolomorphicCousin.analyticOnNhd_cauchyGreenInfinity_of_integrable {f : ℂ → ℂ} {R : ℝ}

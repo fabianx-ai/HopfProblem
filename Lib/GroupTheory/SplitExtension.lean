@@ -4,6 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+/-!
+# Split extensions of groups
+
+  Split extensions of groups: a short exact sequence 1 -> N -> E -> H -> 1 that
+  splits is equivalent to a semidirect product `N semidirect[phi] H`, via the
+  map induced by a section `s : H ->* E` conjugating `N` (Weibel, An
+  Introduction to Homological Algebra, Exercise 6.1; Robinson, A Course in the
+  Theory of Groups, 10.1).
+-/
+
 
 
 set_option maxSynthPendingDepth 3
