@@ -79,3 +79,9 @@ is an evidence command rather than library content.
 -- Lane I (quotients, mapping torus, split extensions)
 #print axioms Mathoverflow1973.SplitGroupExtension.mulEquiv
 #print axioms Mathoverflow1973.MappingTorusHomology.monodromyHomologyMap
+
+-- Lane C (Hurewicz theorem, higher degrees and sphere connectivity)
+#print axioms Mathoverflow1973.HigherHurewicz.hurewiczLinearEquiv
+#print axioms Mathoverflow1973.HigherHurewicz.hurewiczLinearEquivOfTwoLE
+#print axioms Mathoverflow1973.HigherHurewicz.pi_subsingleton_of_homology_vanishing
+#print axioms Mathoverflow1973.HigherHurewicz.sphere_pi_subsingleton_of_lt
