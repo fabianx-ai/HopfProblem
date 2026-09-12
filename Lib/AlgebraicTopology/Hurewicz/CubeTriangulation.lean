@@ -112,6 +112,22 @@ theorem HigherHurewicz.CubeTriangulation.cubeOrientation_swap {n : ℕ} (e : Equ
     {i j : Fin n} (h : i ≠ j) : cubeOrientation ((Equiv.swap i j).trans e) = -cubeOrientation e :=
   by simp [cubeOrientation, Equiv.Perm.sign_trans, Equiv.Perm.sign_swap h]
 
+/-- The chamber orientations sum to zero: transposing a fixed pair of coordinates reverses
+the sign, so the permutation signs cancel in pairs. -/
+theorem HigherHurewicz.CubeTriangulation.cubeOrientation_sum (n : ℕ) :
+    ∑ e : Equiv.Perm (Fin (n + 2)), HigherHurewicz.CubeTriangulation.cubeOrientation e = 0 := by
+  have hij : (0 : Fin (n + 2)) ≠ 1 := Fin.zero_ne_one
+  have h :=
+    Equiv.sum_comp (Equiv.mulRight (Equiv.swap (0 : Fin (n + 2)) 1))
+      (HigherHurewicz.CubeTriangulation.cubeOrientation (n := n + 2))
+  change
+    (∑ e : Equiv.Perm (Fin (n + 2)),
+        HigherHurewicz.CubeTriangulation.cubeOrientation ((Equiv.swap 0 1).trans e)) =
+      ∑ e : Equiv.Perm (Fin (n + 2)), HigherHurewicz.CubeTriangulation.cubeOrientation e at h
+  simp_rw [HigherHurewicz.CubeTriangulation.cubeOrientation_swap _ hij] at h
+  rw [Finset.sum_neg_distrib] at h
+  omega
+
 abbrev HigherHurewicz.CubeTriangulation.SortedCoordinates {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin n → α) (e : Equiv.Perm (Fin n)) : Prop :=
   Antitone (fun i => u (e i))

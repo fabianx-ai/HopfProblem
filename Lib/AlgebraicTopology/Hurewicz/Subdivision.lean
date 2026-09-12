@@ -278,20 +278,6 @@ theorem HigherHurewicz.SimplexGeometry.basedSimplexLoop_cubeSimplex_other {X : T
   intro s
   exact τ.property _ (simplexQuotient_cubeSimplex_boundary e he s)
 
-theorem HigherHurewicz.SimplexGeometry.cubeOrientation_sum (n : ℕ) :
-    ∑ e : Equiv.Perm (Fin (n + 2)), HigherHurewicz.CubeTriangulation.cubeOrientation e = 0 := by
-  have hij : (0 : Fin (n + 2)) ≠ 1 := Fin.zero_ne_one
-  have h :=
-    Equiv.sum_comp (Equiv.mulRight (Equiv.swap (0 : Fin (n + 2)) 1))
-      (HigherHurewicz.CubeTriangulation.cubeOrientation (n := n + 2))
-  change
-    (∑ e : Equiv.Perm (Fin (n + 2)),
-        HigherHurewicz.CubeTriangulation.cubeOrientation ((Equiv.swap 0 1).trans e)) =
-      ∑ e : Equiv.Perm (Fin (n + 2)), HigherHurewicz.CubeTriangulation.cubeOrientation e at h
-  simp_rw [HigherHurewicz.CubeTriangulation.cubeOrientation_swap _ hij] at h
-  rw [Finset.sum_neg_distrib] at h
-  omega
-
 theorem HigherHurewicz.SimplexGeometry.basedSimplex_simplexChain_sum {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (τ : BasedSimplex (n + 2) x) :
     (∑ e : Equiv.Perm (Fin (n + 2)),
@@ -343,7 +329,7 @@ theorem HigherHurewicz.SimplexGeometry.basedSimplex_simplexChain_sum {X : Type}
       rw [← hc]
       simp
     _ = HigherHurewicz.correctedSimplexChain (n + 2) x τ.val := by
-      rw [cubeOrientation_sum n, zero_smul, add_zero]
+      rw [HigherHurewicz.CubeTriangulation.cubeOrientation_sum n, zero_smul, add_zero]
 
 def HigherHurewicz.SimplexGeometry.simplexTwoBoundary (n : ℕ) : Set (SingularChains.Simplex n) :=
   {s | ∃ i j : Fin (n + 1), i ≠ j ∧ s i = 0 ∧ s j = 0}
