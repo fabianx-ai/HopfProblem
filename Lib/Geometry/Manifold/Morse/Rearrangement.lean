@@ -14,7 +14,8 @@ public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.Cancellation
 public import Lib.Geometry.Manifold.Transversality.Basic
 public import Lib.Geometry.Manifold.Immersion.Relative
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Lib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Rearrangement of Morse functions and the band-cancellation tail
 
@@ -70,7 +71,7 @@ def MorseCancellation.linearTransverseChart {V E M : Type*} [NormedAddCommGroup 
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (C : V ≃L[ℝ] V) (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞) :
     PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞ :=
-  ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C).toDiffeomorph.toPartialDiffeomorph.trans Φ
+  ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C).toDiffeomorph.toPartialDiffeomorph'.trans Φ
 
 /-- The linear transverse chart fixes the axis. -/
 theorem MorseCancellation.linearTransverseChart_axis {V E M : Type*} [NormedAddCommGroup V]
@@ -219,7 +220,7 @@ theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGrou
     ContinuousLinearEquiv.ofFinrankEq
       (by simp only [Module.finrank_prod, finrank_euclideanSpace_fin])
   let P := ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr L).toDiffeomorph
-  let Ψ := P.toPartialDiffeomorph.trans Ξ
+  let Ψ := P.toPartialDiffeomorph'.trans Ξ
   have hΨaxis (t : ℝ) : Ψ (t, 0) = a t := by
     change Ξ (t, L 0) = a t
     rw [map_zero, hΞaxis]
@@ -433,7 +434,7 @@ theorem RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
   obtain ⟨Φ, hp, _, hΦ⟩ :=
     exists_partialDiffeomorph_of_contDiffOn isOpen_univ (Set.mem_univ p)
       (contDiff_heightMap hF).contDiffOn hinv
-  exact ⟨Φ, hp, fun _ _ => congrFun hΦ.symm _⟩
+  exact IsLocalDiffeomorphAt.of_eqOn Φ hp (fun _ _ => congrFun hΦ.symm _)
 
 /-- The height with a longitudinal displacement added. -/
 def RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
@@ -504,7 +505,7 @@ def RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommG
   have hloc : IsLocalDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ (heightMap (displacedHeight u)) :=
     fun p => heightMap_localDiffeomorph hs (hpos p).ne'
   exact
-    hloc.diffeomorphOfBijective
+    hloc.diffeomorph'
       ⟨heightMap_injective_of_positive hs hpos, heightMap_surjective_of_compactSupport hu hc⟩
 
 /-! ### Interval translations -/
