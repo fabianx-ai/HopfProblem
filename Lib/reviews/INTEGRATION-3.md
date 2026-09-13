@@ -135,15 +135,13 @@ Unchanged from review 2 (`scripts/lib_stock_prefixes.txt`); the drop 2,663 -> 2,
 
 **GO.** The merged head builds through the full chain, no `Hopf/` statement changed, every deleted declaration exists in `Lib/` under its name with its statement, every probe has exact standard axioms, the census fell by the moved count. The open items are records and reviews (§3), not mathematics; the Comparator is the one gate not run here.
 
-Owner decisions (asked in chat, recorded here once answered):
+Owner decisions (asked and answered in chat, 2026-09-13):
 
-1. **Lane C gates.** (a) Accept the recorded exception: the C14–C16 interface probes were
-   written after the implementation; the post-implementation review and the full chain build
-   stand in for the Stage-2 order this once. (b) Comparator: install `landrun`
-   (Go, `github.com/Zouuup/landrun`) on this machine and run
-   `lake exe comparator comparator/config.json` once at the integrated head, or run it with the
-   package's `scripts/fake-landrun.sh` (kernel check real, sandbox skipped) and record that.
-2. **`Suspension.topSus -> Suspension`**: confirm the name; otherwise name the replacement and
-   the GLM seat renames again with the same receipt.
-3. **`module` + `import all`**: accept the conversion as the house style for `Lib/` (Mathlib is
-   moving the same way) and treat the ten `import all` lines as a follow-up for the file owners.
+1. **Lane C gates.** (a) The Stage-2 order exception is **accepted**: the C14–C16 interface
+   probes were written after the implementation; the independent review and the full chain
+   build stand in for the order this once. (b) The Comparator gate is **deferred entirely**:
+   no run now, the gate stays open in the tree until publication (`landrun` is not installed).
+2. **`Suspension.topSus -> Suspension`**: **confirmed**. The alias in `Hopf/LibShims.lean` is
+   retired with the wrapper removal.
+3. **`module` + `import all`**: the conversion is **accepted** as the house style for `Lib/`;
+   the ten `import all` lines are cleaned up when convenient by the file owners (no new ones).

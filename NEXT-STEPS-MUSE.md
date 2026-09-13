@@ -28,7 +28,7 @@ Review: `INTEGRATION-3.md` §3 "Muse seat".
    Axis-5 reviews the same way. Until then E2 and G stay DRAFT, as their ledgers say.
 4. **Module docstrings** for `Morse/MinimalSystem.lean` and `Whitney/BigonModel.lean`; the
    twin named. One commit.
-5. **`import all`**: none added from now on; in your own files (`Transversality/Basic.lean`,
+5. **`import all`** (owner: the `module` conversion is accepted; clean up when convenient): none added from now on; in your own files (`Transversality/Basic.lean`,
    `Immersion/Relative.lean`) replace the two lines by the public Mathlib API or a `Lib` lemma.
    The other eight lines are in GLM-owned files and are on that seat's list.
 6. **J**: the circle-path/section cluster and the higher coordinate/exterior boundaries

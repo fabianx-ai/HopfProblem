@@ -19,9 +19,10 @@ Old items 1–6 are closed (`C.md` §"NEXT-STEPS item disposition"). Old item 7 
    paths. Rewrite the `file://` links to repository-relative paths (say at the top that the
    archive's links were rewritten, nothing else); bring the cited logs in under
    `Lib/docs/logs/C/` or drop the citation. Rule: every report cites only what is in the tree.
-3. **Owner gates**: the archived review counts as independent (fresh-context session). Its two conditions (Stage-2 order exception,
-   Comparator) are the owner's; the answers will be recorded in `INTEGRATION-3.md` §5. Once
-   answered, close them in `C.md` in one commit; do not run the Comparator yourself.
+3. **Owner gates — answered** (`INTEGRATION-3.md` §5): the Stage-2 order exception is
+   accepted; the Comparator is deferred until publication. Close both in `C.md` in one
+   commit ("owner-approved exception", "Comparator deferred by owner"); do not run the
+   Comparator yourself.
 4. **`Hopf/Hurewicz.lean` leftovers**: the 23 declarations still there; classify each FREE or
    CHARGED, move the FREE ones with the usual receipt, record the CHARGED ones.
 5. **Docstrings**: module docstring for `Hurewicz/Straightening.lean`; per-declaration

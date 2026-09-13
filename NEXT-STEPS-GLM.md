@@ -13,9 +13,8 @@ the model in the report. This seat does not author E2, F, G or J; the Muse seat 
 review E1, H or I.
 
 Settled by review 3: E1 done (old item 2); record fixes done (old item 1); name confirmations
-done (old item 5); documentation wave merged (old item 6, first pass). The `topSus` rename is
-taken pending the owner's confirmation (`INTEGRATION-3.md` §5.2); if the owner names a
-different name, rename again with the same receipt.
+done (old item 5); documentation wave merged (old item 6, first pass). The `Suspension` name is
+confirmed by the owner (`INTEGRATION-3.md` §5.2).
 
 ## In this order, branches `lib/A-<n>-<slug>` off the head above
 
@@ -33,7 +32,7 @@ different name, rename again with the same receipt.
 3. **`Mathoverflow1973` wrapper removal** after item 2, one commit, full chain green, with
    the `Hopf/LibShims.lean` aliases for `topSus` and `Hurewicz.DegreeTwo` retired in the same
    commit only if every Hopf consumer is re-routed (else keep them and say so).
-4. **`import all`** in the files you own (`MorseLemma`, `SmoothFlow`, `Collar`, `Flow/Compact`,
+4. **`import all`** (owner: clean up when convenient) in the files you own (`MorseLemma`, `SmoothFlow`, `Collar`, `Flow/Compact`,
    `Morse/Cancellation`, `Morse/Rearrangement`, `RegularLevel`): replace each by the public
    Mathlib API or by a `Lib` lemma that proves the needed fact; one commit per file, no
    statement changed. Do not add new `import all` lines.
