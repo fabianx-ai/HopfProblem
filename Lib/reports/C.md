@@ -270,7 +270,42 @@ namespaces, and converting the entire import graph to `module` are not claimed h
 The historical prospectus's separately named general naturality and positive-degree
 homology-vanishing wrappers are not among the thirteen validated public outputs; the existing
 degree-six naturality consumer remains in `Hopf/Recognition.lean`. The remaining generic
-`Degree.DiskCube` and lane-B leftovers in `Hopf/Hurewicz.lean` have not been silently counted as
+`DiskCube` and lane-B leftovers in `Hopf/Hurewicz.lean` have not been silently counted as
 extracted. These are explicit remaining upstream-packaging/API items, not C10/C13 proof blockers.
+
+## Verification checkpoint `32982cb` (integrated)
+
+Commits recorded here: `12245ae` (refreshed aggregate interface receipt at `37fc1de8` with
+current names) and `32982cb` (C13 adapter-body records — the two `Hurewicz.` re-points in
+`Hopf/Recognition.lean` plus the integrated C13 receipt). Gates below were run at `32982cb`,
+after both commits:
+
+| Command | Result | Log |
+|---|---|---|
+| `lake build Lib` | exit 0; 8,805 jobs | `C-integrated-final-lib.log` |
+| `lake env lean Lib/AxiomAudit.lean` | exit 0; `[propext, Classical.choice, Quot.sound]` only | `C-integrated-final-axioms.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 2663 ≤ baseline 2663 | `C-integrated-final-census.log` |
+| `lake exe comparator comparator/config.json` | **environment-blocked**, exit 1; `could not execute external process 'landrun'` | `C-integrated-final-comparator.log` |
+
+The comparator blocker is unchanged: `landrun` is not on `PATH`; no sandbox bypass,
+configuration change, or inaccessible other-user binary was used. These census checks were
+performed after `12245ae`/`32982cb`, not before.
+
+### NEXT-STEPS item disposition
+
+1. Refreshed aggregate interface receipt at `37fc1de8` — done via `12245ae`
+   (`C-INTERFACE_RECEIPT.md`, `C-interface-integrated-*.log`).
+2. C13 existing instantiations on current names — done via `32982cb`; builds and the consumer
+   axiom probe logged under `C13-integrated-*.log`.
+3. (Closed above by the refreshed receipt.)
+4. Generic renames — already merged per `RENAMES` and this report.
+5. Twelve documented lane-C files — already merged per the `INTEGRATION-2` addendum.
+6. Report/`GenLoop` naming — closed except original Stage-2 reviewer attribution, which remains
+   unknown (the recovered review is not an independent new review).
+7. Acting model recorded above; no git configuration was changed.
+
+Broader packaging limitations stand separately: the transitional `Mathoverflow1973`/
+`SecondHurewicz` namespaces, remaining `Hopf` leftovers, and full Mathlib-root module
+conversion are not claimed here.
 
 No push has been performed. Attribution was not changed through git configuration.
