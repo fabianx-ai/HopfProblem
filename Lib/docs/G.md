@@ -2,7 +2,7 @@
 
 **Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
 
-**Stage-2 status: re-review corrections applied, pending independent acceptance.**
+**Stage-2 status: accepted — closing GO + Axis-5 GO (see review chain below).**
 Reviews: `Lib/docs/G-stage2-astra-review.md` (NO-GO), `Lib/docs/G-stage2-astra-review2.md`
 (re-review at `bd9c393`), `Lib/docs/G-fresh-subagent-review.md` (GO on the §§3–5
 mathematics and the G2a→G3→G2b ordering; NO-GO on the typed ledger's then-stale
@@ -14,12 +14,17 @@ residual truncation — `exists_primitive_functional_unit` still stopped mid-exp
 plus four minor repairs; all findings applied), with re-confirmation in
 `Lib/docs/G-closing-reconfirm-subagent-review.md` — **closing verdict GO at `66d04dc`**:
 all 35 signatures verbatim at live coordinates, all mechanism/ordering claims confirmed.
+The Axis-5 typed-ledger pass `Lib/docs/G-axis5-subagent-review.md` is **GO at `84d9450`**:
+35/35 entries verbatim at live coordinates under current names
+(`SixSphere`/`MetricSixSphere` each used where the source has it; no pre-rename
+spellings, no off-tree citations; two cosmetic nits repaired at `e03a056`).
 Landed repairs: the trade cut, elimination order, and Whitney codimension-two input in
 §§4–5 carry the source's actual mechanisms; §3's unique-minimum argument carries the
 (0,1)-cancellation mechanism; every ledger signature is verbatim at live coordinates
 (no compression); G2 is split G2a/G2b with the file placement resolved. Muse's earlier
-`G-stage2-review.md` is self-review, superseded. Helper dependency census and
-production-module certification remain open — this is not a frozen Axis-5 packet.
+`G-stage2-review.md` is self-review, superseded. The typed ledger itself is accepted
+(closing + Axis-5 GO); helper dependency census and production-module certification
+remain open — the extractions are not yet landed.
 
 **Smale's recognition theorem** (Smale, *Generalized Poincaré's conjecture in dimensions
 greater than four*, Ann. Math. 74 (1961), Theorem A; Milnor, *Lectures on the h-cobordism
