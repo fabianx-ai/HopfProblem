@@ -1,14 +1,14 @@
 # Lane G — textbook, decomposition, placement, and typed ledger
 
-**Independent Stage-2 review at `699d1a4` (astra): NO-GO — repairs applied, pending
-re-review.** Astra's numbered findings are in `Lib/docs/G-stage2-astra-review.md`
-(in-tree copy of `~/s6-notes/G-stage2-astra-review.md`). Repairs landed: the trade cut,
-elimination order, and Whitney codimension-two input in §§4–5 are rewritten with the
-source's actual mechanisms; the unique-minimum argument in §3 is expanded with the
-(0,1)-cancellation mechanism; every ledger signature is now verbatim at live coordinates
-(no compression); G2 is split G2a/G2b with the file placement resolved. Muse's earlier
-`G-stage2-review.md` is **self-review, superseded** — the astra review governs; a
-successful re-review is required before Axis-6.
+**Stage-2 status: re-review corrections applied, pending independent acceptance.**
+The initial astra review is `Lib/docs/G-stage2-astra-review.md`; the re-review of
+`bd9c393` is `~/s6-notes/G-stage2-astra-review2.md`. The present uncommitted amendments
+restore the base trade signature, distinguish input-cut preservation from final
+cancellation, recover relative disk avoidance and surgery-complement transport, and
+reconcile the source table with G2a/G2b. The ledger contains 35 theorem signatures;
+its helper dependency census and production-module certification remain open.
+Muse's earlier `G-stage2-review.md` is self-review, superseded. These repairs do not
+constitute an independently frozen Axis-5 packet or authorization for Axis-6.
 
 **Smale's recognition theorem** (Smale, *Generalized Poincaré's conjecture in dimensions
 greater than four*, Ann. Math. 74 (1961), Theorem A; Milnor, *Lectures on the h-cobordism
@@ -96,20 +96,25 @@ element attained by some $f$ (the code's `exists_minimal_excellent_morse_system`
 this `Nat.find`; the comparison class is *every* smooth Morse $g$ with distinct critical
 values, ordered or not). Then order $f$ by the rearrangement above — ordering preserves the
 count, so minimality is retained — and subject to the minimal count choose $f$
-*outer-index-minimal*: the index-$1$ + index-$(n-1)$ count is least among minimal ordered
-systems (a second well-ordering; the code's
-`exists_outer_index_minimal_ordered_morse_system`).
+*outer-index-minimal*: at $n=6$, minimize the index-$1$ + index-$5$ count among **all
+excellent Morse functions with the minimum total count**, whether ordered or not. Order
+the chosen function afterward; rearrangement preserves both the total and each index
+count, so both minimality properties survive (`exists_outer_index_minimal_ordered_morse_system`).
+This comparison class includes the excellent, not necessarily ordered, output of the trade.
 
-**Unique minimum.** Suppose a minimal excellent system has at least two index-0 points.
-The descending basin of each minimum is open, and the flow from a generic point ends at a
-critical point; because $M$ is connected, the basin boundaries must be joined by 1-handles —
-concretely, there is an index-1 point $q$ whose two attaching ends (the two points of its
-$S^0$ attaching sphere) descend to minima in *different* basins (the code's
-`exists_native_one_handle_joining_components`). Realizing the two descending branches
-geometrically (`realize_one_handle_minimum_branches`) produces a gradient-like field along
-which $q$ is joined to two minima $p, r$; the higher of the two then forms a cancelling
-$(0,1)$-pair with $q$, and the first cancellation theorem removes both
-(`cancel_realized_higher_minimum`). The result is an excellent Morse function with exactly
+**Unique minimum.** Compactness and nonemptiness give a global minimum, whose Morse
+index is zero. If there is more than one index-0 point, the component bookkeeping for
+the handle decomposition of the connected manifold supplies an index-1 point $q$ whose
+two attaching ends lie in different path components of its lower sublevel
+(`exists_native_one_handle_joining_components`). This is a statement about attaching
+components, not yet about the endpoints of the given flow. Realizing the branches
+(`realize_one_handle_minimum_branches`) produces a compatible gradient-like field whose
+two ends descend to distinct minima $p,r$, with no other critical endpoints from $q$.
+Their values are distinct. Choose the higher minimum; the branch data gives its unique
+connecting orbit from $q$. A flow-preserving rearrangement makes this pair consecutive
+in critical value, retaining the critical set, indices and excellent Morse data.
+The isolated $(0,1)$ cancellation then removes the pair; surviving critical germs retain
+distinct critical values (`cancel_realized_higher_minimum`). The result is an excellent Morse function with exactly
 two fewer critical points (`exists_excellent_morse_reduction_of_multiple_minima`),
 contradicting minimality (`minimal_excellent_morse_forbids_pair_removal`). Hence
 `nativeMorseCount E f 0 = 1` (`minimal_excellent_morse_minimum_count_one`); applied to $-f$,
@@ -140,7 +145,9 @@ basepoint `x`. The trade proceeds in two steps:
   (`cancel_one_two_pair_at_unchanged_cut_of_unique_minimum`): the born 2-handle's attaching
   circle is placed, in the preserved level $f^{-1}(a)$, to meet the belt sphere of the
   1-handle $q$ transversely in a single point, and the first cancellation theorem removes
-  the $(1,2)$-pair $(q, b_2)$ *without disturbing the cut*. The placement is the
+  the $(1,2)$-pair $(q, b_2)$ using this preserved cut as input. The final cancellation
+  may change the function at the cut; its output promises pair removal and surviving
+  indices, not equality of the final level with the original one. The placement is the
   substantive geometric content: the source realizes the two branches of the unique
   minimum's 1-handle (`realize_unique_minimum_one_handle_branches`), produces flow windows
   avoiding the level (`exists_same_flow_windows_avoiding_level`), identifies the attaching
@@ -187,33 +194,51 @@ Whitney loop and orientation hypotheses. The required input is supplied by the h
 structure as follows — this is the mechanism the code implements, replacing ambient
 simple connectivity with a *lower-level* one.
 
-* **The lower level of an index-2 point is simply connected for circles.**
-  `lower_circle_nullhomotopies_of_ordered_native_indices` (SphereTopology:5821): in an
-  ordered system with one minimum and no index-1 points, every circle in the lower level
-  of an index-$2$ point is nullhomotopic. The proof is an induction up the ordered window
-  sequence (`lower_circle_nullhomotopies_of_middle_indices`, SphereTopology:5716): the
-  first sublevel is a disk (its level is a $5$-sphere, circles contract), and each
-  subsequent handle before the index-$2$ block has index $2$ or $3$ — attaching such a
-  handle preserves "all circles in the level contract," because a circle in the new level
-  can be isotoped off the belt sphere $S^{5-k}$ (for $k \in \{2,3\}$ the sum
-  $1 + (5-k) < 5$ puts the circle disjoint from the belt generically) and then contracts
-  in the previous level.
-* **Transport to the belt complement.** The belt $S^3$ of the chosen index-$2$ handle is
-  the boundary of its descending disk; flowing the level minus a tubular neighbourhood of
-  the belt downwards lands in the lower level of that handle, so a circle in the
-  complement is homotopic into the lower level, where it contracts. The code's
-  `exists_native_belt_cut_family` (Recognition:8331) performs this transport: it returns
-  the lower-level circle nullhomotopies (from `last_index_two_collapse_is_primitive`,
-  Recognition:8295) *together with* the transported attaching family at the new belt cut,
-  the preserved matrix equality, and surjectivity — i.e. it moves the whole middle-block
-  data to the cut where the cancellation is performed.
-* **The cancellation input.** `cancel_from_preserved_unit_belt_cut` (Recognition:8680)
-  and `cancel_from_complete_middle_family` (Recognition:8834) consume the nullhomotopy as
-  the hypothesis `hnull : ∀ δ : C(S¹, LowerLevel p), ∃ z, δ ~ const z`, alongside the unit
-  coordinate `natAbs (indexTwoCollapseCoordinate … (middleSectionClass γ)) = 1` — the
-  single transverse intersection needed for first cancellation. In the textbook
-  presentation the `hnull` hypothesis is exactly the codimension-two complement
-  condition transported to the level where the Whitney disk must be embedded.
+* **Lower-level circle contractions.** In an ordered system with one minimum and no
+  index-1 points, the noninitial handles preceding the chosen index-2 point have index
+  2. Start with the first sublevel disk, whose boundary is $S^5$, and induct through
+  those handles and the intervening regular intervals. The more general induction
+  allows indices 2 and 3 (`lower_circle_nullhomotopies_of_middle_indices`,
+  SphereTopology:5716); its specialization is
+  `lower_circle_nullhomotopies_of_ordered_native_indices` (SphereTopology:5821).
+  The induction step uses the complement argument below, then moves an arbitrary
+  upper-level circle off the belt and contracts it in that complement.
+* **Contract the disk in the old complement, then transport it.** For an index-$k$
+  handle, the old complement is the lower level minus the attaching $S^{k-1}$; the
+  new complement is the upper level minus the belt $S^{5-k}$. The surgery supplies
+  a homeomorphism between these complements. A circle in the old complement contracts
+  in the lower level. Relative general position moves the entire contracting disk
+  off the attaching sphere while fixing its boundary: the required inequality is
+  $2+(k-1)<5$, which holds for $k=2,3$. Transport this nullhomotopy through the
+  complement homeomorphism to obtain a contraction in the new complement. To prove
+  contractions for arbitrary circles in the upper level, first move the circle off
+  its belt using $1+(5-k)<5$. Circle avoidance and disk avoidance are distinct steps.
+  The source implements disk avoidance in `Smale.ImageComplement.circle_nullhomotopies`
+  (SurgeryWindows:691), complement transport in
+  `Smale.SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimension`
+  (705), and the upper-boundary step in `newBoundary_circle_nullhomotopies` (1357).
+  For the chosen index-2 handle, the attaching sphere is $S^1$ and $2+1<5$; the belt
+  is $S^3$, the boundary of the four-dimensional **cocore**, not of the descending
+  two-dimensional core disk.
+* **Keep regular-cut transport separate.** `exists_native_belt_cut_family`
+  (Recognition:8331) collects the lower-level contractions from
+  `last_index_two_collapse_is_primitive` (8295) and moves the attaching family and
+  its matrix through a critical-free band between two cuts **above** the chosen
+  critical value. It preserves the matrix and surjectivity. This is not the
+  old/new complement homeomorphism across the handle.
+* **Feed the Whitney disk construction.** The lower-level hypothesis
+  `hnull : ∀ δ : C(S¹, LowerLevel p), ∃ z, δ ~ const z` is sufficient input, not
+  literally the complement injectivity proposition. The signed-chart theorem
+  `surgery_beltComplement_circle_nullhomotopies` (SurgeryWindows:798) converts it
+  to contractions of all circles in the belt complement by the preceding argument.
+  `MorseSurgeryData.nonempty_belt_tubularBigon` (SingularHomology:19932, calls at
+  19956–19959) passes those contractions to the relative tubular-bigon construction.
+  With the smooth embedded attaching sphere, transverse data and a unit signed
+  intersection count, the Whitney cancellation removes opposite-sign pairs until
+  a single transverse intersection remains. `cancel_from_complete_middle_family`
+  (Recognition:8834) obtains the unit by slides and places the selected index-3 point
+  first; `cancel_from_preserved_unit_belt_cut` (8680) uses the retained lower-level
+  input, transported unit and flow data to perform the final pair cancellation.
 
 Once this input is in place, the unit gives one transverse geometric intersection and
 the first cancellation theorem removes the $(2,3)$ pair. This lowers the total critical
@@ -257,14 +282,19 @@ indices $= \{2, 3, 4\}$ and index 4 is index 2 of $-f$". Do not start it.
 
 # Axes 2–3 — additive decomposition, in dependency order
 
-| # | Lemma (§) | Inputs | Output | Current `Hopf/` home (names; lines on `1cc1784`) |
+Coordinates below are declaration starts at `bd9c393`; the relevant Lean sources are
+unchanged from `699d1a4`. ST = `Hopf/SphereTopology.lean`, Rec = `Hopf/Recognition.lean`,
+SH = `Hopf/SingularHomology.lean`. Exact names and signatures follow in Axis 5.
+
+| # | Lemma (§) | Inputs | Output | Source declaration starts (in ledger order) |
 |---|---|---|---|---|
-| G1 | Homotopy-sphere data (§1) | homotopy invariance (A), spheres (A/B) | path/simply connected, homology vanishing of $M$ | `Smale.simplyConnectedSpace_of_homotopySixSphere` (SingularHomology 14047), `Smale.pathConnectedSpace_of_homotopySixSphere` (SingularHomology 14052); `Smale.homotopySixSphere_homology_subsingleton` (SphereTopology 14226) |
-| G2 | Minimal ordered systems (§3) | D1 (Morse existence), E1 (rearrangement) | minimal excellent ordered system, one min, one max | `MorseCancel.exists_minimal_excellent_morse_system` (SphereTopology 6289), `MorseCancel.exists_index_ordered_morse_system_preserving_critical_points` (6942), `MorseCancel.minimal_excellent_morse_extreme_counts_one` (7013), `MorseCancel.exists_outer_index_minimal_ordered_morse_system` (10004), `MorseCancel.exists_minimal_ordered_morse_system_without_outer_indices` (10194) |
-| G3 | Handle trade (§4) | E1 (birth, cancellation), E2 (arcs), B ($\pi_1$) | index-1 → index-3 trade; outer counts vanish | `MorseCancel.exists_excellent_indexed_morse_birth` (8636), `MorseCancel.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum` (9600), `MorseCancel.exists_one_to_three_handle_trade` (9795), `MorseCancel.exists_one_to_three_handle_trade_at_cut` (9883), `MorseCancel.exists_one_to_three_handle_trade_of_ordered_indices` (9976), `MorseCancel.outer_index_minimal_index_one_count_zero` (10064), `MorseCancel.outer_index_minimality_neg` (10112), `MorseCancel.outer_index_minimal_outer_counts_zero` (10145) |
-| G4 | Middle blocks and the matrix (§5) | F10, F1 | the middle family; the middle matrix surjective | `MorseCancel.exists_middle_index_blocks` (SphereTopology 14386), `AdaptedWindows.exists_ordered_middle_family` (14468), `AdaptedWindows.exists_canonical_middle_family` (Rec 2688), `MorseCancel.canonical_middle_matrix_surjective` (Rec 3365), `Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_homotopySphere` / `..._of_complete_blocks` (SphereTopology 14338/14360) |
-| G5 | The pivot and the cancellation (§5) | F (slides, integer reduction, Whitney, single intersection) | a cancelled pair; middle counts zero; count two | `AdaptedWindows.exists_primitive_functional_unit` (Rec 7365), `AdaptedWindows.exists_first_middle_pivot` (Rec 3847), `MorseCancel.exists_native_belt_cut_family` (Rec 8340), `MorseCancel.cancel_from_preserved_unit_belt_cut` (Rec 8689), `MorseCancel.cancel_from_complete_middle_family` (Rec 8843), `MorseCancel.minimal_ordered_index_two_count_zero` / `..._four_count_zero` (Rec 8966/9026), `MorseCancel.ordered_no_middle_indices_count_two` (Rec 9258) |
-| G6 | Two critical points; Reeb (§6) | G2–G5, D1 (Reeb) | `Nonempty (M ≃ₜ S⁶)` | `MorseCancel.critical_pair_of_surgery_count_two` (Rec 9385), `MorseCancel.exists_two_critical_point_morse_of_homotopySixSphere` (Rec 9413), `MorseCancel.nonempty_homeomorph_of_homotopySixSphere` (Rec 9431), `Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points` (Rec 9344), headline `Smale.homeomorphic_sixSphere_of_homotopySixSphere` (Rec 9442) |
+| G1 | Homotopy-sphere data (§1) | A/B homotopy invariance and spheres | path/simple connectivity, homology vanishing | SH 14047, 14052; ST 14166 |
+| G2a | Preliminary minimal systems (§3) | D1 existence; E1 rearrangement and (0,1) cancellation | minimal excellent/ordered/outer-minimal systems, unique extrema | ST 6290, 6943, 7014, 10005 |
+| G3 | Handle trade (§4) | G1, G2a; E1 birth/cancellation; E2/F placement | index-1 → index-3 trade and outer-count vanishing | ST 8637, 9601, 9796, 9884, 9977, 10065, 10113, 10146 |
+| G2b | Post-trade assembly (§4) | G2a, G3 | minimal ordered system without outer indices | ST 10195 |
+| G4 | Middle blocks and matrix (§5) | F10, F1; ordered system and homotopy-sphere data | middle family and matrix surjectivity | ST 14278, 14300, 14326, 14408; Rec 2688, 3365 |
+| G5 | Pivot and cancellation (§5) | G4; F slides, integer reduction and Whitney; E1 cancellation | middle-count vanishing, total count two | Rec 7365, 3847, 8331, 8680, 8834, 8957, 9017, 9243 |
+| G6 | Two critical points; Reeb (§6) | G2b, G5, D1 Reeb | homeomorphism to S⁶ | Rec 9370, 9329, 9398, 9416, 9427 |
 
 These rows were originally thematic groups; the true dependency order requires splitting
 G2: `exists_minimal_ordered_morse_system_without_outer_indices` (G2b) consumes G3's
@@ -334,8 +364,10 @@ Pure lemmas (no manifold content) — these are the hypothesis-generation half o
 `PoincareConjecture/HomotopyData` section. The `≃ₕ Smale.SixSphere` spelling consolidates to
 `≃ₕ Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1` (defeq — `Smale.SixSphere` is that sphere).
 
-**Row G2a (preliminary minimal ordered systems).** Pure existence/minimality tower —
-no surgical content; complete verbatim signatures:
+**Row G2a (preliminary minimal ordered systems).** Existence/minimality tower;
+the extreme-count proof uses the reviewed (0,1)-cancellation seam. Its surgical helpers
+must be supplied by the dependency census rather than treated as absent. Complete
+source signatures:
 
 ```lean
 theorem MorseCancel.exists_minimal_excellent_morse_system (E : Type*) (M : Type*)
@@ -484,6 +516,30 @@ theorem MorseCancel.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum {E M 
                     w ∈ Smale.ManifoldMorse.criticalPoints E g ∧ w ≠ q.val ∧ w ≠ r.val) ∧
                 ∀ w ∈ Smale.ManifoldMorse.criticalPoints E h,
                   nativeMorseIndex E h w = nativeMorseIndex E g w := by  -- SphereTopology.lean:9601
+
+theorem MorseCancel.exists_one_to_three_handle_trade {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
+    (hdim : Module.finrank ℝ E = 6) (m q : Smale.ManifoldMorse.criticalPoints E f)
+    (hm0 : nativeMorseIndex E f m = 0) (hq1 : nativeMorseIndex E f q = 1)
+    (hminimum : ∀ z : Smale.ManifoldMorse.criticalPoints E f, nativeMorseIndex E f z = 0 → z = m)
+    {a l u : ℝ} (hreg : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hhigh : ∀ z : Smale.ManifoldMorse.criticalPoints E f, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
+    (hlow : ∀ z : Smale.ManifoldMorse.criticalPoints E f, f z ≤ a → nativeMorseIndex E f z ≤ 2)
+    (hqa : f q < a) (hal : a < l)
+    (hband : ∀ y, f y ∈ Set.Ioo a u → y ∉ Smale.ManifoldMorse.criticalPoints E f) {x : M}
+    (hx : f x ∈ Set.Ioo l u) :
+    ∃ h : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ h ∧
+        Smale.ManifoldMorse.IsMorse E h ∧
+          Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
+            (Smale.ManifoldMorse.criticalPoints E h).ncard =
+                (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+              nativeMorseCount E h 1 + 1 = nativeMorseCount E f 1 ∧
+                nativeMorseCount E h 3 = nativeMorseCount E f 3 + 1 ∧
+                  ∀ j, j ≠ 1 → j ≠ 3 → nativeMorseCount E h j = nativeMorseCount E f j := by  -- SphereTopology.lean:9796
 
 theorem MorseCancel.exists_one_to_three_handle_trade_at_cut {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -728,31 +784,16 @@ theorem MorseCancel.canonical_middle_matrix_surjective {E M : Type} [NormedAddCo
               (nativeIndexThreeAttachingSphere T (nativeMiddleBlockPoint S r n hrc j) (hp j)
                   x).val =
             (γ j x).val) :
-    Function.Surjective (canonicalMiddleMatrix B γ).mulVec :=
-  classCoordinateMatrix_surjective B _
-    (middle_section_classes_span S T hf hdim e horder hzero hone r n hr hn hrc hp hbefore γ
-      horbit)
-
-theorem AdaptedWindows.no_connection_above_canonical_cut {E M : Type} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p q : Smale.ManifoldMorse.criticalPoints E f)
-    (hpq : f p < f q) (hq : MorseCancel.nativeMorseIndex E f q = 3) {a : ℝ} (hap : a < f p)
-    (γ : C((Smale.Hemisphere.Sphere 2), { y : M // f y = a }))
-    (horbit :
-      ∀ x,
-        ∃ t : ℝ,
-          S.flow t (MorseCancel.nativeIndexThreeAttachingSphere S q hq x).val = (γ x).val) :
-    ∀ x,
-      ¬(Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 q.val) ∧
-          Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)) := by  -- Recognition.lean:3365
+    Function.Surjective (canonicalMiddleMatrix B γ).mulVec  -- Recognition.lean:3365
 ```
 
-`exists_canonical_middle_family` is G4's working interface (universal at-belt-cuts
-unit-column property, holding for every γ on the ordered family) and
-`canonical_middle_matrix_surjective` the matrix-level consequence
-(`indexThreePresentation_matrix_surjective` is a local `let`-bound presentation used
-inside the proof, not an extraction target — the lane's G6′ list).
+`exists_canonical_middle_family` supplies a family with the same ranges and a pointwise
+flow-orbit parametrization of the native attaching spheres; it does not supply a unit
+column. `canonical_middle_matrix_surjective` derives matrix surjectivity from the span
+of the middle-section classes. The later `exists_primitive_functional_unit` supplies
+the unit after handle slides. The adjacent source helper
+`AdaptedWindows.no_connection_above_canonical_cut` (Recognition:3397) is not an additional
+promised G4 output; its dependency ownership remains part of the helper census.
 
 **Row G5 (pivot and cancellation).** Verbatim:
 
@@ -1102,11 +1143,13 @@ theorem MorseCancel.ordered_no_middle_indices_count_two {E M : Type} [NormedAddC
 `exists_primitive_functional_unit` is the surjectivity→integral-primitive step (F11's
 slide machinery consumed), `exists_first_middle_pivot` the position-zero pivot, the
 `exists_native_belt_cut_family`/`cancel_from_preserved_unit_belt_cut` pair the
-transport-to-lower-level cancellation engine (§5), and
+regular-cut transport and cancellation interfaces (§5), and
 `cancel_from_complete_middle_family` the complete-block blocker. The three count
 theorems are the elimination conclusions in source order: index 2, index 4 (dual
 function −f), then index 3 via H₃ = 0 with the middle chain groups already zeroed —
-ordered_no_middle_indices_count_two's `3 < k` hypothesis excludes index 3 on purpose.
+`ordered_no_middle_indices_count_two` takes the vanishing counts at indices 1, 2, 4
+and 5, and uses complete blocks and equal middle-matrix sizes to conclude the index-3
+count is zero and the total count is two.
 
 
 **Row G6 (two critical points; Reeb).** Verbatim:
@@ -1198,11 +1241,12 @@ twoDiskDecompositionOfSublevels` (Rec 9274), `Smale.homeomorphSphereOfSublevelDi
    detail, unchanged.
 4. **The Mathlib `proof_wanted` relation** goes into the `Smale.lean` module docstring verbatim
    as in §1 remark (c).
-5. **Review.** Stage-2 independent review of §§1–7: astra's NO-GO review is in-tree at
-   `Lib/docs/G-stage2-astra-review.md` (Muse's earlier pass at `G-stage2-review.md` is
-   self-review and does not satisfy the independence condition). Remaining obligations
-   per that review: expand the unique-minimum reduction, the relative handle-trade
-   placement, and the codimension-two Whitney complement argument; then re-review.
+5. **Review.** The initial independent review is `Lib/docs/G-stage2-astra-review.md`;
+   the `bd9c393` re-review is `~/s6-notes/G-stage2-astra-review2.md`. Its identified
+   narrative and ledger corrections are applied here, awaiting independent acceptance.
+   The G2a/G2b split was accepted in that re-review. The helper dependency census and
+   production provider/consumer certification remain separate obligations. Muse's
+   `G-stage2-review.md` is self-review, not independent certification.
 6. **GLM-lane overlap discovered after landing A–D2/H/I:** lane E2's source ranges were largely
    swept into GLM's `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (17,556 lines; the D2
    baseline blob contains e.g. `exists_compact_embedding_of_immersion` at its line 12352 and
