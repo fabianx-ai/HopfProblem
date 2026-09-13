@@ -73,6 +73,7 @@ import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.Topology.OnePointCollapse
+import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
@@ -14162,13 +14163,6 @@ def ManifoldMorse.SurgeryWindows.middlePresentation {E M : Type} [NormedAddCommG
     let B := S.consecutiveBandData hf ⟨r + c, Nat.lt_of_succ_lt hc⟩ ⟨r + (c + 1), hc⟩ rfl
     (S.data (S.point ⟨r + (c + 1), hc⟩)).indexThreePresentation hf.continuous
       (S.indexThreeBlock_last r c hc hthree) (P.transport (B.homologyEquiv 2))
-
-theorem homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
-    (h : M ≃ₕ SixSphere) (k : ℕ) (hk : k ≠ 0) (hktop : k ≠ 6) :
-    Subsingleton (SingularMayerVietoris.SingularHomology M k) := by
-  let : Subsingleton (SingularMayerVietoris.SingularHomology SixSphere k) :=
-    SphereHomology.unitSphere_homology_subsingleton 5 k hk hktop
-  exact (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv h k).injective.subsingleton
 
 def ManifoldMorse.SurgeryWindows.lastUpperHomeomorph {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
