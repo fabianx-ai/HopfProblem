@@ -1,62 +1,43 @@
-# Next steps — GLM (after the reviews of 2026-09-08 and 2026-09-12)
+# Next steps — GLM (after integration review 2, 2026-09-13)
 
-Branch: `lib/textbook-extraction` at 856e4762 (your lane A plus Kimi's C, E2, F, G, J are merged
-there; builds green). Start every new lane from this head. Reviews: `Lib/reviews/A.md` (your
-branch) and `Lib/reviews/INTEGRATION.md` (§ "For GLM").
+Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
+branch (`git log -1`). Your `lib/A-surgerywindows-split` is in: the SurgeryWindows split, the
+receipts, the FREE-rule fix, the dupNamespace fix, the per-lane reports, the coherence web,
+the E1 drafts and scoping, the Wang findings, and the four renames (re-derived by regex on
+the integrated tree, byte-identical to yours on every comparable file). Kimi's C10 and
+Devin's J/F landings are in the same head; full chain green. Review:
+`Lib/reviews/INTEGRATION-2.md` §3 "GLM". Start every new branch from this head, not from an
+older fork state (§3 GLM 1).
 
-## Owner decision (settled): SurgeryWindows is yours
+Settled: SurgeryWindows is split (old item 0 done). The coherence declarations are in
+`CrossProduct.lean` (old item 6 done, minus the two Pontryagin declarations that are lane
+J's). Renames landed for `Smale`, `NoExotic`, `Degree`, `MorseCancel`,
+`FundamentalGroupVanKampen` (old item 9, partly). Census baseline is 2,663 with the prefix
+list carried through your rename map (`scripts/lib_stock_prefixes.txt`; new `=Name` entries
+for former leaf declarations). Old items 1–5 are landed.
 
-`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` is 44 % lane E2, 31 % E1, 8 % F by source
-position and only 28 declarations are D2. Ownership was in doubt; the owner assigns it to you.
-Split it along the plan's E1/E2/F target files as a pure move of moves (one commit per target
-file, verbatim, `Lib.lean` updated, build green, "No proof term changed"), then give each
-resulting file its module docstring. The E2 lane (Muse seat, `TASK-LIB-MUSE.md`) starts from your split files. This is item 0
-below and comes before everything else, because E2 waits on it.
+## In this order, branches `lib/A-<n>-<slug>` off the head above
 
-## In this order, one branch per item, each branch `lib/A-fix-<n>-<slug>` off 856e4762
+1. **Record fixes** (one commit): (a) replace the seven `~/s6-notes/hopf-lib-a/` citations in
+   `Lib/reports/{RENAMES,I,E1,B}.md` by files under `Lib/reports/drafts/` or delete them;
+   (b) never rewrite another seat's ledger or `Lib/reviews/*` in a rename commit (your regex
+   turned `Smale.*` into `*` in three files; not taken); (c) add to `RENAMES.md` the open item
+   `Suspension.topSus`: choose the name against the Mathlib twin and rename again; a type
+   is not called `topSus`.
+2. **Lane E1** from `Lib/Geometry/Manifold/Morse/Cancellation.lean` and your drafts: the
+   197-declaration cubic cluster first, as one baseline commit, per `Lib/reports/E1.md`.
+   Land only green units; drafts stay drafts.
+3. **Lane I**: land `MappingTorus/Wang.lean` before any wrapper removal, per your resume
+   recipe in `RENAMES.md`; then the remaining units in `I.md` order.
+4. **`Mathoverflow1973` wrapper removal** only after item 3, as one commit, full chain green.
+5. **Remaining renames** from old item 9 (`SingularMayerVietoris.*`, `SphereHomology.*`,
+   `RiemannMapping.*`, `HolomorphicCousin.*`, `MappingTorus*`): confirm or rename against the
+   twin, one commit each, prefix list carried along (`scripts/lib_stock_prefixes.txt`, count
+   unchanged before and after is the receipt).
+6. **Docstrings**: section headers (62 files) and per-declaration docstrings, one commit per
+   file, "No proof term changed." Do not re-derive a docstring wave that is already merged;
+   check `git log` of the fork first.
 
-0. **Split SurgeryWindows** as described above.
-
-1. **Register the ten unrooted modules in `Lib.lean`** (review A, item 2). One commit, builds
-   `Lib`, ratchet unchanged.
-2. **Provenance receipts** (review A, item 1): a table `721fc82 file:range → SHA-256 of that exact
-   range → target file` for the 27 baseline commits without one and the eleven lane-A files
-   inside `44c11efc`, ranges cut at declaration boundaries so the hashes reproduce. Goes into the
-   per-lane reports (item 5). No history rewrite.
-3. **FREE rule inside `Lib/`** (review A, item 3): rename `SpecialPeriods.exists_analytic_unit_root`
-   with a shim; replace the 20 stale pre-rename names in docstrings listed under check 6; drop
-   the `Hopf.Recognition` mention in `Lib/AxiomAudit.lean`.
-4. **The 78 `dupNamespace` warnings** (review A, item 4): one rename commit, no proof-term
-   change, shim updated, `lake build Lib` with zero warnings as the receipt.
-5. **Split the report** into `Lib/reports/{A,D1,D2,H,I,B,E1}.md` with the corrections in review A
-   check 10, items 1–9. Lane B is not complete while `simplyConnectedSpace_of_open_cover` is in
-   `Hopf/Hurewicz.lean`; say so and finish it or record the obstruction.
-6. **Lane I, Wang sequence** — now unblocked: import
-   `Lib.AlgebraicTopology.SingularHomology.CrossProduct` from
-   `Hopf/LCP/{CuspFilling,IntegralHomology}.lean` and land `Lib/Topology/MappingTorus/Wang.lean`.
-   The 42 cross-product coherence declarations in `Hopf/LCP/Specialization.lean` are yours too
-   (ownership was in doubt; the owner assigns them to you): append them to `CrossProduct.lean`
-   as a pure move in the same lane-I branch.
-7. **Lane E1** (after item 0, which lands its 278 declarations in their own file): first commit your `Cubic`/`TimeChange`/`LevelCylinder` drafts to the fork (a
-   `drafts/` directory under `Lib/reports/` is fine) so they exist off your machine; then resume
-   from the three probe theorems still in `Hopf/` (`MorseCancel.cancel_of_transverse_level_isotopy`,
-   `Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection`,
-   `MorseCancel.exists_excellent_indexed_morse_birth`), after the SurgeryWindows decision.
-8. **Docstrings**, ongoing and largest. Module docstrings: done in 87da83ef (24 files), merged
-   at bba4df2, consumer build green. Remaining: 62 files without section headers, and the
-   per-declaration docstrings (4,245 public declarations at the last count, fewer after your
-   headline pass). Model: `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` (per
-   declaration). Do this per file, one commit per file, "No proof term changed."
-9. **Rename commits** for the transitional namespaces (`Smale.*`, `NoExotic.*`, `Degree.*`,
-   `MorseCancel.*`, `SingularMayerVietoris.*`, `SphereHomology.*`, `RiemannMapping.*`,
-   `HolomorphicCousin.*`, `MappingTorus*`, `FundamentalGroupVanKampen.*`, `Mathoverflow1973`),
-   naming the Mathlib twin file in each commit message. A lane is done only when its rename has
-   landed.
-
-## Rules that the review found broken; they hold from now on
-
-- One branch per lane, one report per lane, commit messages that name commits that exist.
-- Every baseline commit carries the reproducible SHA-256 of the exact range moved.
-- The shared Lean environment at the path the owner gave you is at the pinned Mathlib and
-  toolchain; do not fetch a cache into it and do not report it stale.
-- Nothing is "COMPLETE" while its probe theorem is still under `Hopf/`.
+Rules unchanged: `ps` before `lake build`; never `lake update`/`cache get`; never push; every
+report cites only what is in the tree; a lane is done when its rename has landed and its
+report matches the head; nothing is "COMPLETE" while its probe theorem is still under `Hopf/`.
