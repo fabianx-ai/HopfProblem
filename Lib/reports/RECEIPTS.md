@@ -201,3 +201,39 @@ Verified Git blob IDs for selected outputs (before this documentation-only addit
 ### Still open
 
 G2a–G6 and the remaining F geometric/Whitney/slide blocks are not moved by this batch. J's circle-path/section cluster and higher coordinate/exterior boundaries remain unfinished; G-J3 was already public in CrossProduct before this batch, not newly moved here. E2's remaining Hopf-side outputs and proposed general-k implementation are not covered by provider conversion. Exact remaining helper packets, complete textbook module documentation, current ledgers/coordinates, independent acceptance and lane-level receipts still need completion. A green conversion batch is not a whole-lane Axis-5/6 certification.
+
+## Integration-3 seat receipts (Muse/Devin), head `84d9450`
+
+Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
+`NEXT-STEPS-MUSE.md` and `Lib/reviews/INTEGRATION-3.md` §3.
+
+- **Lake build**: `lake build` (SEAT-SETUP recipe, `GIT_CONFIG_*` set) completed
+  8854 jobs over the post-`import all`-cleanup code (`840aef4`; subsequent
+  commits are doc-only). `Solution.lean` reports the standard axiom set
+  `[propext, Classical.choice, Quot.sound]` only.
+- **Census ratchet**: `scripts/lib_stock_census.py` → `ratchet OK: 1648 <= baseline 1648`.
+- **Off-tree citations** (`0ab4a4a`): review-file `/home/ox-alpha/...` paths
+  repointed to in-tree copies (with a disclosure line per file); RECEIPTS
+  `/tmp/sidekick-modconv-batch3-*/` evidence copied to
+  `Lib/docs/logs/devin/modconv-batch3/` (`*.lean` → `*.lean.txt`); J ledger
+  `~/s6-notes/J-review*.md` citations repointed to the in-tree
+  `Lib/docs/J-axis5-review*.md`/`J-stage2-review.md`.
+- **Module docstrings** (`1ebcb45`): `Morse/MinimalSystem.lean`,
+  `Whitney/BigonModel.lean`.
+- **`import all` removal** (`840aef4`): `Transversality/Basic.lean` and
+  `Immersion/Relative.lean` now use `public import` only. Because module
+  importers cannot unfold Mathlib's non-`@[expose]` bodies, Basic adds two
+  transparent Lib replacements (`Diffeomorph.toPartialDiffeomorph'`,
+  `IsLocalDiffeomorph.diffeomorph'`, both outside `namespace
+  Mathoverflow1973`) built on `PartialEquiv` literals, `Equiv.ofBijective`,
+  and the public `localInverse` API; Relative uses the public constructor
+  `PartialDiffeomorph.isLocalDiffeomorphAt` at the two literal-existential
+  sites. The remaining `import all` lines sit in GLM-owned files.
+- **E2 closing review**: `Lib/docs/E2-closing-subagent-review.md` — GO at
+  `840aef4` (22/22 signatures verbatim; coordinate drift corrected).
+- **G closing review**: `Lib/docs/G-closing-subagent-review.md` — NO-GO (one
+  residual truncation + four minors), all repaired; re-confirmation chain in
+  `Lib/docs/G-closing-reconfirm-subagent-review.md` — GO at `66d04dc`.
+- **Ledger refresh** (`2cb2117`, `6a8e4a8`): E2/G signature blocks regenerated
+  verbatim against post-proof-split, post-rename sources; all coordinate
+  comments re-verified.
