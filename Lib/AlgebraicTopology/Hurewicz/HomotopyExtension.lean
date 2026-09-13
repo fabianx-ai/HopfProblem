@@ -435,6 +435,9 @@ def Hurewicz.DegreeTwo.SimplyConnected.CofaceCompatible {X : Type} [TopologicalS
         F j.succ (r, SingularChains.simplexFace n i u) =
           F i.castSucc (r, SingularChains.simplexFace n j u)
 
+/-- For a coface-compatible family `F`, if the `a`-face of `s` equals the `b`-face of `t`
+(with `a < b`), then `F` already agrees on the two cylinders: face compatibility is a
+consequence of coface compatibility. -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.faceCompatible_of_cofaceCompatible_lt_mo1973_6084
     {X : Type} [TopologicalSpace X] {n : ℕ}
     (F : Fin (n + 3) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
@@ -785,16 +788,21 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.cylinderRetraction_side (n : ℕ) (t 
     (s : SimplexBoundary n) : cylinderRetraction n (t, s.val) = sideInclusion n (t, s) :=
   cylinderRetraction_fix (sideInclusion n (t, s))
 
+/-- The function on the bottom-or-side part of the cylinder boundary: `f` on the bottom
+face (`u.val.1 = 0`) and `h` on the side faces. -/
 private def Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_mo1973_6129 {n : ℕ} {X : Type*}
     [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (u : ↥(bottomOrSide n)) : X :=
   if hu : u.val.1 = 0 then f u.val.2 else h (u.val.1, ⟨u.val.2, u.property.resolve_left hu⟩)
 
+/-- On the bottom face the glued function is `f`. -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom_mo1973_6130 {n : ℕ}
     {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (u : ↥(bottomOrSide n)) (hu : u.val.1 = 0) :
     gluedBoundaryFunction_mo1973_6129 f h u = f u.val.2 := by classical exact dif_pos hu
 
+/-- On the side faces the glued function is `h` (the seam case `u.val.1 = 0` reduces to
+`h0`). -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side_mo1973_6131 {n : ℕ}
     {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val)
@@ -806,6 +814,8 @@ private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side_mo
     simpa only [ht] using (h0 ⟨u.val.2, hu⟩).symm
   · exact dif_neg ht
 
+/-- The glued bottom-or-side function is continuous: the two closed pieces agree on their
+intersection by `h0`. -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction_mo1973_6132
     {n : ℕ} {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val) :

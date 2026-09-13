@@ -753,12 +753,16 @@ theorem Hurewicz.CubeTriangulation.sortedCoordinates_swap_of_tie {n : ℕ} {α :
   intro i j hij
   simpa only [coordinate_swap_of_tie hab] using he hij
 
+/-- Conjugating `swap a b` by `swap b c` gives `swap a c`. -/
 private theorem Hurewicz.CubeTriangulation.swap_trans_swap_trans_swap_mo1973_8327 {n : ℕ}
     {a b c : Fin n} (hab : a ≠ b) (hac : a ≠ c) :
     ((Equiv.swap b c).trans (Equiv.swap a b)).trans (Equiv.swap b c) = Equiv.swap a c := by
   simpa only [Equiv.symm_swap, Equiv.swap_apply_of_ne_of_ne hab hac, Equiv.swap_apply_left] using
     Equiv.symm_trans_swap_trans a b (Equiv.swap b c)
 
+/-- If `F` is invariant under swapping adjacent sorted positions with equal `u`-labels,
+then it is invariant under swapping any tied pair `a < b`: bubble `b` down through
+adjacent ties (induction on `b`). -/
 private theorem Hurewicz.CubeTriangulation.eq_swap_of_sorted_tie_of_lt_mo1973_8328 {n : ℕ}
     {α : Type*} [LinearOrder α] (u : Fin (n + 1) → α) {A : Type*}
     (F : Equiv.Perm (Fin (n + 1)) → A)
@@ -820,6 +824,7 @@ theorem Hurewicz.CubeTriangulation.eq_swap_of_sorted_tie {n : ℕ} {α : Type*} 
   · simpa only [Equiv.swap_comm b a] using
       eq_swap_of_sorted_tie_of_lt_mo1973_8328 u F hswap a b e hgt he hab.symm
 
+/-- Swapping two indices with equal labels does not change the value of `v`. -/
 private theorem Hurewicz.CubeTriangulation.label_swap_apply_mo1973_8330 {ι β : Type*}
     [DecidableEq ι] (v : ι → β) {a b : ι} (hab : v a = v b) (z : ι) :
     v (Equiv.swap a b z) = v z := by

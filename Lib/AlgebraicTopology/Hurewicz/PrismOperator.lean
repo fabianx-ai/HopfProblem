@@ -4402,6 +4402,8 @@ def Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy {X : Type} [Topolog
           ht).trans
       (GenLoop.boundary p t ht).symm
 
+/-- Two based triangles agree on the diagonal edge (the `s 1 = 0` face where both are
+constantly the basepoint). -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.basedTriangles_diagonal_mo1973_6743 {X : Type}
     [TopologicalSpace X] {x : X} (τ υ : BasedTriangle x) (s : SingularChains.Simplex 2)
     (hs : s 1 = 0) : τ.val s = υ.val s :=
@@ -4453,6 +4455,8 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_lower {X : Type} [
     τ.val (triangleQuotient ((lowerProductTriangle s).1, (lowerProductTriangle s).2)) = τ.val s
   exact congrArg τ.val (ContinuousMap.congr_fun triangleQuotient_lowerProductTriangle s)
 
+/-- The triangle quotient of the swapped upper-square-triangle pair returns the original
+simplex: the upper triangle of the square covers the standard triangle. -/
 private theorem Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_swapped_upper_mo1973_6748
     (s : SingularChains.Simplex 2) :
     triangleQuotient (upperSquareTriangle s 1, upperSquareTriangle s 0) = s := by

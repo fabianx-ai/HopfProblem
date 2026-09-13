@@ -13,6 +13,7 @@ import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.Pontryagin
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.AlgebraicTopology.SingularHomology.Naturality

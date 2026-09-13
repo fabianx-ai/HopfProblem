@@ -1795,4 +1795,35 @@ theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_over
     obtain ⟨a, ha⟩ := hx
     obtain ⟨b, hb⟩ := hy
     exact ⟨a * b, by rw [map_mul, ha, hb, map_mul]⟩
+
+/-! ### Two-open cover corollaries -/
+
+/-- A space covered by two path-connected opens (meeting in a common base point, per
+`FundamentalGroup.VanKampen.TwoOpenCover`) is path connected. -/
+theorem SphereHomology.twoOpenCover_pathConnectedSpace {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : PathConnectedSpace X := by
+  apply pathConnectedSpace_iff_univ.mpr
+  rw [← D.cover]
+  exact D.pathConnectedU.union D.pathConnectedV ⟨D.base, D.baseU, D.baseV⟩
+
+/-- Van Kampen for a two-open cover: if both opens are simply connected, the
+fundamental group of the covered space at the cover base point is trivial
+(Hatcher, Algebraic Topology, Theorem 1.20). -/
+theorem SphereHomology.twoOpenCover_fundamentalGroup_eq_one {X : Type*} [TopologicalSpace X]
+    (D : FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
+    [SimplyConnectedSpace D.V] (g : FundamentalGroup X D.base) : g = 1 := by
+  have h :
+    MonoidHom.id (FundamentalGroup X D.base) =
+      (1 : FundamentalGroup X D.base →* FundamentalGroup X D.base) := by
+    apply D.hom_ext
+    · ext a
+      have ha : a = 1 := Subsingleton.elim _ _
+      change D.inclusionHomU a = 1
+      rw [ha, map_one]
+    · ext a
+      have ha : a = 1 := Subsingleton.elim _ _
+      change D.inclusionHomV a = 1
+      rw [ha, map_one]
+  exact DFunLike.congr_fun h g
+
 end Mathoverflow1973

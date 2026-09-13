@@ -159,6 +159,8 @@ classes equal, it suffices to compare representatives modulo boundaries. -/
 lemma homologyToChainClass_injective : Function.Injective (homologyToChainClass K) :=
   (ModuleCat.mono_iff_injective (K.sc 1).homologyι).mp inferInstance
 
+/-- The `moduleCatHomologyIso` inverse intertwines the two presentations of a homology
+class: `π ≫ iso.inv ≫ homologyι = i ≫ pOpcycles`. -/
 private lemma pi_homologyIso_inv_homologyi (S : ShortComplex (ModuleCat.{v} R)) :
     S.moduleCatLeftHomologyData.π ≫ S.moduleCatHomologyIso.inv ≫ S.homologyι =
       S.moduleCatLeftHomologyData.i ≫ S.pOpcycles := by
@@ -253,6 +255,7 @@ lemma mapCycles_val (c : Cycle1 K) : (mapCycles F c).1 = (F.f 1).hom c.1 :=
   congr($(ShortComplex.cyclesMap'_i (shortMap F) (K.sc 1).moduleCatLeftHomologyData
     (L.sc 1).moduleCatLeftHomologyData) c)
 
+/-- Naturality of `π ≫ moduleCatHomologyIso.inv` across a short-complex map. -/
 private lemma pi_homologyIso_inv_naturality {S₁ S₂ : ShortComplex (ModuleCat.{v} R)}
     (φ : S₁ ⟶ S₂) :
     (S₁.moduleCatLeftHomologyData.π ≫ S₁.moduleCatHomologyIso.inv) ≫

@@ -5,14 +5,6 @@ Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.Degree
 
-set_option maxSynthPendingDepth 3
-
-open Set Function Filter Manifold Topology
-
-noncomputable section
-
-namespace Mathoverflow1973
-
 /-!
 # Straightening singular simplices
 
@@ -60,6 +52,14 @@ basepoint and face compatibilities), since the extension step consumes those pro
 
 Hurewicz theorem, straightening, normalization tower, simplex
 -/
+
+set_option maxSynthPendingDepth 3
+
+open Set Function Filter Manifold Topology
+
+noncomputable section
+
+namespace Mathoverflow1973
 
 /-! ### The tower storeys -/
 

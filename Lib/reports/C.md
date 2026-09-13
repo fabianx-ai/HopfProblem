@@ -367,3 +367,54 @@ reviewer remains unknown (recovered review only).
 No push has been performed. Seat identity is set repo-locally to
 `kimi <kimi@users.noreply.github.com>` per `NEXT-STEPS-KIMI.md` item 1; earlier
 commits through `cfcd2d8` carry the owner's identity with a Devin trailer.
+
+## Verification checkpoint — C19 Hurewicz leftovers (`lib/C-19-hurewicz-leftovers`)
+
+Working tree over upstream `27f8e7f5`; committed on the named branch. Classification
+ledger: `Lib/docs/C19-LEFTOVERS.md` — 9 FREE declarations moved
+(`SphereHomology.twoOpenCover_*` and `suspensionConeCover` to
+`VanKampen.lean`/`SuspensionCover.lean`; the six `Third/Fourth/FifthHurewicz` wrappers
+to `CubeSphere.lean`), 7 CHARGED declarations retained in `Hopf/Hurewicz.lean`
+(`SixSphereCube` data + pinned `Sphere.piN_subsingleton` theorems).
+
+| Command | Result | Log |
+|---|---|---|
+| pre-move interface provider + consumer probes | exit 0 | `C19-interface-pre-{provider,consumer}.log` |
+| `lake build Lib` | exit 0 (8815 jobs) | `C19-lib-build.log` |
+| `lake build Hopf.Proof.Final Solution` | exit 0 (8839 jobs); `mathoverflow_1973` axioms `[propext, Classical.choice, Quot.sound]` | `C19-consumer-build2.log` |
+| post-move interface provider + consumer probes | exit 0 | `C19-interface-post-{provider,consumer}.log` |
+| `C19_AxiomProbe` (`#print axioms` on the 9 moved decls) | `[propext, Classical.choice, Quot.sound]` only | `C19-axiom-probe.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 1639 ≤ 1648 | `C19-census.log` |
+| `git diff --check` | clean | — |
+
+An earlier `lake build Hopf.Hurewicz Hopf.LibShims Hopf.Final Solution` attempt exited 1
+because `Hopf.Final` no longer exists post-split (renamed `Hopf.Proof.Final`); every
+listed real target built, and the corrected target set above passes
+(`C19-consumer-build.log` retains the failed attempt). Probe sources live as `.lean.txt`
+under `Lib/docs/logs/C/` — the census import guard scans every `.lean` file under `Lib/`,
+so evidence files importing `Hopf.*` must not carry a `.lean` extension there.
+
+The Comparator remains owner-deferred (`landrun` unavailable); not run, not claimed.
+Shim retirement and global `Mathoverflow1973` removal remain GLM's lane.
+
+## Verification checkpoint — C20 docstrings (`lib/C-20-docstrings`)
+
+Working tree over C19 (`eb79090`); one commit per file as instructed. The module
+docstring for `Hurewicz/Straightening.lean` moved above the imports (it was a section
+doc inside the namespace — `INTEGRATION-3.md` §3.6 flagged the missing module doc).
+Per-declaration docstrings closed the remaining gap: 34 undocumented `private`
+helpers across 8 files (all public declarations were already covered by the merged
+documentation wave). No statement or proof changed; commits are comments-only.
+
+| Command | Result | Log |
+|---|---|---|
+| `lake build` (the 8 touched Hurewicz modules) | exit 0 | `C20-docstrings-build.log` |
+| `lake build Lib Hopf.Proof.Final Solution` | exit 0 (8846 jobs); `mathoverflow_1973` axioms standard | `C20-final-build.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 1639 ≤ 1648 | — |
+| `git diff --check` | clean | — |
+
+Commits: `80e8a1d` (Straightening module doc), `5c74c20`, `3963b3e`, `878a2cd`,
+`dc4572d`, `30b2449`, `55a633f`, `b522548`, `98f371a` (per-file private-docstring
+sweep). Note: the seat file said 23 declarations remained in `Hopf/Hurewicz.lean`;
+at `27f8e7f5` the file held 16 top-level declarations (the earlier count predates
+the merged extractions). All 16 are classified in `Lib/docs/C19-LEFTOVERS.md`.

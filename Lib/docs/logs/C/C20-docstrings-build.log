@@ -1,0 +1,39 @@
+CMD: lake build (8 docstring files)
+✔ [8721/8728] Built Lib.AlgebraicTopology.Hurewicz.CycleClasses (3.7s)
+✔ [8722/8728] Built Lib.AlgebraicTopology.Hurewicz.SimplexCube (8.0s)
+✔ [8723/8728] Built Lib.AlgebraicTopology.Hurewicz.Degree1 (7.6s)
+✔ [8724/8728] Built Lib.AlgebraicTopology.Hurewicz.CubeTriangulation (8.4s)
+✔ [8725/8728] Built Lib.AlgebraicTopology.Hurewicz.HomotopyExtension (12s)
+✔ [8726/8728] Built Lib.AlgebraicTopology.Hurewicz.PrismOperator (63s)
+⚠ [8727/8728] Built Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition (23s)
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1400:56: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1416:57: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1536:81: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1785:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+✔ [8728/8728] Built Lib.AlgebraicTopology.Hurewicz.Subdivision (30s)
+Build completed successfully (8728 jobs).
+exit 0

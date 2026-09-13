@@ -305,6 +305,8 @@ theorem Hurewicz.isCompact_flatSimplexSet (n : ℕ) : IsCompact (flatSimplexSet 
   CompactIccSpace.isCompact_Icc.of_isClosed_subset (isClosed_flatSimplexSet n)
     (flatSimplexSet_subset_Icc n)
 
+/-- The coordinate-sum functional `v ↦ ∑ i, v i` on `Fin n → ℝ`, as a continuous linear
+map. -/
 private def Hurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) →L[ℝ] ℝ
     where
   toFun v := ∑ i, v i
@@ -312,6 +314,8 @@ private def Hurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) �
   map_smul' a v := by simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, RingHom.id_apply]
   cont := by fun_prop
 
+/-- The coordinate-sum functional is nonzero in dimension `n + 1` (it maps the constant-`1`
+vector to `n + 1`). -/
 private theorem Hurewicz.flatCoordinateSum_succ_ne_zero_mo1973_5885 (n : ℕ) :
     flatCoordinateSum_mo1973_5884 (n + 1) ≠ 0 := by
   intro h
@@ -319,6 +323,7 @@ private theorem Hurewicz.flatCoordinateSum_succ_ne_zero_mo1973_5885 (n : ℕ) :
   have hn : (n : ℝ) + 1 = 0 := by simpa [flatCoordinateSum_mo1973_5884] using he
   exact (ne_of_gt (Nat.cast_add_one_pos n)) hn
 
+/-- The strict flat simplex (positive coordinates, sum `< 1`) is open in `Fin n → ℝ`. -/
 private theorem Hurewicz.isOpen_flatSimplexStrict_mo1973_5886 (n : ℕ) :
     IsOpen {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} := by
   have he :
