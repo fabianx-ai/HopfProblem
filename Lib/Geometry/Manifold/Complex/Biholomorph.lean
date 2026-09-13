@@ -54,6 +54,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Removability of smoothness at punctured points -/
+
+/-- The inverse of a chart tends to `x` on the punctured neighborhood of `e x`. -/
 theorem
   TriangleUniformizationGluing.openPartialHomeomorph_symm_tendsto_punctured
     {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (e : OpenPartialHomeomorph X Y)
@@ -62,6 +65,7 @@ theorem
   simpa only [Set.mem_compl_iff, Set.mem_singleton_iff, e.left_inv hx] using
     e.symm.eventually_ne_nhdsWithin (e.map_source hx)
 
+/-- A continuous map smooth on a punctured neighborhood is smooth at the point. -/
 theorem TriangleUniformizationGluing.contMDiffAt_of_continuousAt_of_punctured {M N : Type*}
     [TopologicalSpace M] [ChartedSpace ℂ M] [IsManifold 𝓘(ℂ) ω M] [TopologicalSpace N]
     [ChartedSpace ℂ N] [IsManifold 𝓘(ℂ) ω N] {f : M → N} {x : M} (hf : ContinuousAt f x)
@@ -97,6 +101,7 @@ theorem TriangleUniformizationGluing.contMDiffAt_of_continuousAt_of_punctured {M
   have hsm : ContDiffAt ℂ ω F (e x) := ha.contDiffAt
   simpa only [e, e', F, mfld_simps] using hsm.contDiffWithinAt (s := Set.univ)
 
+/-- A continuous map smooth off a finite set is smooth everywhere. -/
 theorem TriangleUniformizationGluing.contMDiff_of_continuous_of_finite {M N : Type*}
     [TopologicalSpace M] [ChartedSpace ℂ M] [IsManifold 𝓘(ℂ) ω M] [TopologicalSpace N]
     [ChartedSpace ℂ N] [IsManifold 𝓘(ℂ) ω N] {f : M → N} {S : Set M} (hf : Continuous f)
@@ -110,6 +115,7 @@ theorem TriangleUniformizationGluing.contMDiff_of_continuous_of_finite {M N : Ty
     hzx
   exact hd z (fun hzS => hz ⟨hzS, hzx⟩)
 
+/-- The derivative of a differentiable chart is nonzero on a punctured neighborhood. -/
 theorem TriangleUniformizationGluing.eventually_deriv_ne_zero_of_differentiableOn
     (e : OpenPartialHomeomorph ℂ ℂ) (he : DifferentiableOn ℂ e e.source) {a : ℂ}
     (ha : a ∈ e.source) : ∀ᶠ z in 𝓝[≠] a, deriv e z ≠ 0 := by
@@ -134,6 +140,7 @@ theorem TriangleUniformizationGluing.eventually_deriv_ne_zero_of_differentiableO
     exact hza (e.injOn (hballSource hz) ha (hconstant z hz))
   · exact hnonzero
 
+/-- The inverse of a differentiable chart is differentiable on its target. -/
 theorem TriangleUniformizationGluing.differentiableOn_symm_of_differentiableOn
     (e : OpenPartialHomeomorph ℂ ℂ) (he : DifferentiableOn ℂ e e.source) :
     DifferentiableOn ℂ e.symm e.target := by
@@ -152,6 +159,7 @@ theorem TriangleUniformizationGluing.differentiableOn_symm_of_differentiableOn
           (he.hasDerivAt (e.open_source.mem_nhds (e.map_target hz)))).differentiableAt
   · exact e.continuousAt_symm hw
 
+/-- The inverse of a smooth homeomorphism of complex manifolds is smooth. -/
 theorem TriangleUniformizationGluing.contMDiff_symm_of_contMDiff {M N : Type*}
     [TopologicalSpace M] [TopologicalSpace N] [ChartedSpace ℂ M] [ChartedSpace ℂ N]
     [IsManifold 𝓘(ℂ) ω M] [IsManifold 𝓘(ℂ) ω N] (e : M ≃ₜ N) (he : ContMDiff 𝓘(ℂ) 𝓘(ℂ) ω e) :
@@ -189,6 +197,9 @@ theorem TriangleUniformizationGluing.contMDiff_symm_of_contMDiff {M N : Type*}
     modelWithCornersSelf_coe_symm, Function.id_comp, Function.comp_id, Set.range_id,
     contDiffWithinAt_univ] using hinv
 
+/-! ### Promoting a homeomorphism to a biholomorphism -/
+
+/-- A homeomorphism smooth in both directions upgraded to a diffeomorphism of complex manifolds. -/
 def TriangleUniformizationGluing.biholomorphOfHomeomorph {M N : Type*} [TopologicalSpace M]
     [TopologicalSpace N] [ChartedSpace ℂ M] [ChartedSpace ℂ N] [IsManifold 𝓘(ℂ) ω M]
     [IsManifold 𝓘(ℂ) ω N] (e : M ≃ₜ N) (he : ContMDiff 𝓘(ℂ) 𝓘(ℂ) ω e) :
@@ -197,6 +208,7 @@ def TriangleUniformizationGluing.biholomorphOfHomeomorph {M N : Type*} [Topologi
   contMDiff_toFun := he
   contMDiff_invFun := contMDiff_symm_of_contMDiff e he
 
+/-- The underlying homeomorphism of the upgraded biholomorphism is the original one. -/
 @[simp]
 theorem TriangleUniformizationGluing.biholomorphOfHomeomorph_toHomeomorph {M N : Type*}
     [TopologicalSpace M] [TopologicalSpace N] [ChartedSpace ℂ M] [ChartedSpace ℂ N]
