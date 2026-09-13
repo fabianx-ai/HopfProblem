@@ -69,6 +69,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Normalizing linear maps -/
+
+/-- Normalize a nonzero vector to obtain a continuous map from the punctured space to its unit sphere. -/
 def PuncturedRadial.toSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     C(Space N, Metric.sphere (0 : N) 1) :=
   ⟨fun u => RadialExtension.direction u.val u.property,
@@ -77,6 +80,7 @@ def PuncturedRadial.toSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ
       _⟩
 
 
+/-- An injective continuous linear map sends the unit sphere into the punctured target space. -/
 def LinearSphereAction.puncturedMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (A : E →L[ℝ] F) (hi : Function.Injective A) :
     C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
@@ -84,12 +88,14 @@ def LinearSphereAction.puncturedMap {E F : Type*} [NormedAddCommGroup E] [Normed
     (A.continuous.comp continuous_subtype_val).subtype_mk _⟩
 
 
+/-- The map of unit spheres obtained by applying an injective continuous linear map and normalizing its output. -/
 def LinearSphereAction.sphereMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (A : E →L[ℝ] F) (hi : Function.Injective A) :
     C(Metric.sphere (0 : E) 1, Metric.sphere (0 : F) 1) :=
   PuncturedRadial.toSphere.comp (puncturedMap A hi)
 
 
+/-- Normalizing the identity linear map gives the identity map of the unit sphere. -/
 theorem LinearSphereAction.sphereMap_id {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] :
     sphereMap (ContinuousLinearMap.id ℝ E) Function.injective_id =
@@ -99,6 +105,7 @@ theorem LinearSphereAction.sphereMap_id {E : Type*} [NormedAddCommGroup E]
   rw [mem_sphere_zero_iff_norm.mp x.property, inv_one, one_smul]
 
 
+/-- An operator in a prescribed nonzero determinant-sign component is injective. -/
 theorem LinearSphereAction.component_injective {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {signWeight : ℝ}
     (A : LinearFramePaths.operatorComponent (D := E) signWeight) :
@@ -113,6 +120,7 @@ theorem LinearSphereAction.component_injective {E : Type*} [NormedAddCommGroup E
   exact hd (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr hk)
 
 
+/-- A path in a determinant-sign component induces a homotopy between the associated normalized sphere maps. -/
 def LinearSphereAction.componentHomotopy {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {signWeight : ℝ}
     {A B : LinearFramePaths.operatorComponent (D := E) signWeight} (γ : Path A B) :
@@ -135,6 +143,7 @@ def LinearSphereAction.componentHomotopy {E : Type*} [NormedAddCommGroup E]
     rw [γ.target]
 
 
+/-- In a finite-dimensional real space with a basis of at least two vectors, automorphisms with determinants of the same sign induce homotopic normalized sphere maps. -/
 theorem LinearSphereAction.homotopic_of_det_mul_pos {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {ι : Type*} [Finite ι] [Nontrivial ι]
     (b : Module.Basis ι ℝ E) (A B : E ≃L[ℝ] E)
@@ -152,6 +161,9 @@ theorem LinearSphereAction.homotopic_of_det_mul_pos {E : Type*} [NormedAddCommGr
   exact ⟨componentHomotopy (LinearFramePaths.joined_operatorComponent b A' B').somePath⟩
 
 
+/-! ### Reflection of a suspension -/
+
+/-- Reflect the suspension by reversing its interval coordinate and retaining the base point. -/
 def SuspensionReflection.reflect {X : Type} [TopologicalSpace X] :
     C(Suspension X, Suspension X)
     where
@@ -174,6 +186,7 @@ def SuspensionReflection.reflect {X : Type} [TopologicalSpace X] :
         ((unitInterval.continuous_symm.comp continuous_fst).prodMk continuous_snd))
 
 
+/-- Suspension reflection sends the class of `(t, x)` to the class of `(1 - t, x)`. -/
 theorem SuspensionReflection.reflect_mk {X : Type} [TopologicalSpace X] (t : (unitInterval))
     (x : X) :
     reflect (Suspension.mk t x) =
@@ -181,6 +194,7 @@ theorem SuspensionReflection.reflect_mk {X : Type} [TopologicalSpace X] (t : (un
   rfl
 
 
+/-- Suspension reflection reverses the interval-valued height. -/
 theorem SuspensionReflection.reflect_height {X : Type} [TopologicalSpace X]
     (x : Suspension X) :
     Suspension.height (reflect x) =
@@ -189,6 +203,7 @@ theorem SuspensionReflection.reflect_height {X : Type} [TopologicalSpace X]
   rfl
 
 
+/-- Reflection sends the northern open part of the suspension into its southern open part. -/
 theorem SuspensionReflection.reflect_north {X : Type} [TopologicalSpace X] :
     Set.MapsTo (reflect (X := X)) Suspension.northOpen
       Suspension.southOpen := by
@@ -199,6 +214,7 @@ theorem SuspensionReflection.reflect_north {X : Type} [TopologicalSpace X] :
   linarith
 
 
+/-- Reflection sends the southern open part of the suspension into its northern open part. -/
 theorem SuspensionReflection.reflect_south {X : Type} [TopologicalSpace X] :
     Set.MapsTo (reflect (X := X)) Suspension.southOpen
       Suspension.northOpen := by
@@ -209,11 +225,13 @@ theorem SuspensionReflection.reflect_south {X : Type} [TopologicalSpace X] :
   linarith
 
 
+/-- The self-map of the overlap band induced by suspension reflection. -/
 def SuspensionReflection.middleMap {X : Type} [TopologicalSpace X] :
     C(Suspension.middleBand X, Suspension.middleBand X) :=
   CoverNaturality.reversingIntersectionMap _ _ _ _ reflect reflect_north reflect_south
 
 
+/-- Reflection on the overlap band leaves its projected base point unchanged. -/
 theorem SuspensionReflection.middle_projection {X : Type} [TopologicalSpace X]
     (x : Suspension.middleBand X) :
     Suspension.middleBandHomotopyEquiv (middleMap x) =
@@ -233,17 +251,22 @@ theorem SuspensionReflection.middle_projection {X : Type} [TopologicalSpace X]
     Homeomorph.apply_symm_apply]
 
 
+/-- The projection from the overlap band to the base is unchanged by precomposition with reflection. -/
 theorem SuspensionReflection.middle_projection_comp {X : Type} [TopologicalSpace X] :
     (Suspension.middleBandHomotopyEquiv (X := X)).toFun.comp middleMap =
       (Suspension.middleBandHomotopyEquiv (X := X)).toFun :=
   ContinuousMap.ext middle_projection
 
 
+/-! ### Euclidean coordinate reflection -/
+
+/-- The continuous linear reflection in the orthogonal complement of the span of `v`. -/
 noncomputable def hyperplaneReflectionOperator {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (v : E) : E →L[ℝ] E :=
   ((ℝ ∙ v)ᗮ.reflection).toContinuousLinearEquiv.toContinuousLinearMap
 
 
+/-- Reflection orthogonal to `v` subtracts twice the component of the vector in the direction of `v`. -/
 theorem hyperplaneReflectionOperator_apply {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (v w : E) :
     hyperplaneReflectionOperator v w = w - (2 * (‖v‖ ^ 2)⁻¹ * Inner.inner ℝ v w) • v := by
@@ -256,11 +279,13 @@ theorem hyperplaneReflectionOperator_apply {E : Type*} [NormedAddCommGroup E]
   ring
 
 
+/-- The Euclidean linear isometry reflecting the first coordinate and fixing the others. -/
 def SphereReflection.linearReflection (n : ℕ) :
     EuclideanSpace ℝ (Fin (n + 2)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (n + 2)) :=
   (ℝ ∙ EuclideanSpace.single (0 : Fin (n + 2)) (1 : ℝ))ᗮ.reflection
 
 
+/-- The coordinate reflection subtracts twice the first coordinate times the first basis vector. -/
 theorem SphereReflection.linearReflection_apply (n : ℕ)
     (y : EuclideanSpace ℝ (Fin (n + 2))) :
     linearReflection n y = y - (2 * y 0) • EuclideanSpace.single 0 (1 : ℝ) := by
@@ -270,6 +295,7 @@ theorem SphereReflection.linearReflection_apply (n : ℕ)
     EuclideanSpace.inner_single_left, map_one, one_mul]
 
 
+/-- The first coordinate changes sign under the coordinate reflection. -/
 theorem SphereReflection.linearReflection_zero (n : ℕ)
     (y : EuclideanSpace ℝ (Fin (n + 2))) : linearReflection n y 0 = -y 0 := by
   rw [linearReflection_apply]
@@ -278,6 +304,7 @@ theorem SphereReflection.linearReflection_zero (n : ℕ)
   ring
 
 
+/-- Every coordinate after the first is fixed by the coordinate reflection. -/
 theorem SphereReflection.linearReflection_succ (n : ℕ) (y : EuclideanSpace ℝ (Fin (n + 2)))
     (i : Fin (n + 1)) : linearReflection n y i.succ = y i.succ := by
   rw [linearReflection_apply]
@@ -285,6 +312,7 @@ theorem SphereReflection.linearReflection_succ (n : ℕ) (y : EuclideanSpace ℝ
   simp
 
 
+/-- The determinant of the first-coordinate reflection is `-1`. -/
 theorem SphereReflection.linearReflection_det (n : ℕ) :
     (linearReflection n).toLinearMap.det = -1 := by
   have hv : (EuclideanSpace.single (0 : Fin (n + 2)) (1 : ℝ)) ≠ 0 := by simp
@@ -296,6 +324,7 @@ theorem SphereReflection.linearReflection_det (n : ℕ) :
     pow_one]
 
 
+/-- Restrict the first-coordinate reflection to the Euclidean unit sphere. -/
 def SphereReflection.sphereMap (n : ℕ) :
     C(SphereHomology.UnitSphere (n + 1), SphereHomology.UnitSphere (n + 1))
     where
@@ -307,17 +336,20 @@ def SphereReflection.sphereMap (n : ℕ) :
   continuous_toFun := ((linearReflection n).continuous.comp continuous_subtype_val).subtype_mk _
 
 
+/-- Reversing the latitude parameter negates the signed height. -/
 theorem SphereReflection.height_symm (t : (unitInterval)) :
     SphereHomology.Latitude.height (unitInterval.symm t) = -SphereHomology.Latitude.height t := by
   simp only [SphereHomology.Latitude.height, unitInterval.coe_symm_eq]
   ring
 
 
+/-- Reversing the latitude parameter preserves the transverse radius. -/
 theorem SphereReflection.radius_symm (t : (unitInterval)) :
     SphereHomology.Latitude.radius (unitInterval.symm t) = SphereHomology.Latitude.radius t := by
   simp only [SphereHomology.Latitude.radius, height_symm, neg_sq]
 
 
+/-- Coordinate reflection reverses the latitude parameter while preserving the point of the lower-dimensional sphere. -/
 theorem SphereReflection.sphereMap_latitude (n : ℕ) (t : (unitInterval))
     (x : SphereHomology.UnitSphere n) :
     sphereMap n (SphereHomology.Latitude.point n t x) =
@@ -338,6 +370,7 @@ theorem SphereReflection.sphereMap_latitude (n : ℕ) (t : (unitInterval))
       SphereHomology.Latitude.vector_succ, radius_symm]
 
 
+/-- The suspension-to-sphere homeomorphism intertwines interval reflection with first-coordinate reflection. -/
 theorem SphereReflection.sphereMap_suspension (n : ℕ)
     (x : Suspension (SphereHomology.UnitSphere n)) :
     sphereMap n (SphereHomology.suspensionSphereHomeomorph n x) =
@@ -347,6 +380,7 @@ theorem SphereReflection.sphereMap_suspension (n : ℕ)
     SuspensionReflection.reflect_mk, SphereHomology.suspensionSphereHomeomorph_mk]
 
 
+/-- The suspension homeomorphism commutes with reflection in the corresponding square of continuous maps. -/
 theorem SphereReflection.sphereMap_comp_suspension (n : ℕ) :
     (sphereMap n).comp (SphereHomology.suspensionSphereHomeomorph n).toHomotopyEquiv.toFun =
       (SphereHomology.suspensionSphereHomeomorph n).toHomotopyEquiv.toFun.comp
@@ -354,6 +388,9 @@ theorem SphereReflection.sphereMap_comp_suspension (n : ℕ) :
   ContinuousMap.ext (sphereMap_suspension n)
 
 
+/-! ### The induced homology action -/
+
+/-- Reflection on the overlap band induces the identity on its singular homology. -/
 theorem SuspensionReflection.middle_homology {X : Type} [TopologicalSpace X] (k : ℕ)
     (a : SingularMayerVietoris.SingularHomology (Suspension.middleBand X) k) :
     SingularMayerVietoris.singularHomologyMap middleMap k a = a := by
@@ -370,6 +407,7 @@ theorem SuspensionReflection.middle_homology {X : Type} [TopologicalSpace X] (k 
     middle_projection_comp]
 
 
+/-- Interval reflection acts by negation on positive-degree homology of the suspension of a nonempty space. -/
 theorem SuspensionReflection.reflect_homology {X : Type} [TopologicalSpace X] [Nonempty X]
     (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology (Suspension X) (n + 1)) :
@@ -394,6 +432,7 @@ theorem SuspensionReflection.reflect_homology {X : Type} [TopologicalSpace X] [N
   rw [middle_homology, map_neg]
 
 
+/-- First-coordinate reflection acts by negation on positive-degree homology of the Euclidean sphere. -/
 theorem SphereReflection.sphereMap_homology (n k : ℕ)
     (a : SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 1)) (k + 1)) :
     SingularMayerVietoris.singularHomologyMap (sphereMap n) (k + 1) a = -a := by
@@ -412,6 +451,7 @@ theorem SphereReflection.sphereMap_homology (n k : ℕ)
   rfl
 
 
+/-- Normalizing the coordinate-reflection isometry gives its direct restriction to the unit sphere. -/
 theorem LinearSphereAction.sphereMap_reflection (n : ℕ) :
     sphereMap
         (SphereReflection.linearReflection n).toContinuousLinearEquiv.toContinuousLinearMap
@@ -427,6 +467,7 @@ theorem LinearSphereAction.sphereMap_reflection (n : ℕ) :
   rw [LinearIsometryEquiv.norm_map, SphereHomology.unitSphere_norm, inv_one, one_smul]
 
 
+/-- A real linear automorphism with positive determinant induces the identity on homology through its normalized sphere map. -/
 theorem LinearSphereAction.homology_of_det_pos (n : ℕ)
     (A : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 2)))
     (h : 0 < A.toLinearEquiv.toLinearMap.det) (k : ℕ)
@@ -449,6 +490,7 @@ theorem LinearSphereAction.homology_of_det_pos (n : ℕ)
   rfl
 
 
+/-- A real linear automorphism with negative determinant acts by negation on positive-degree sphere homology. -/
 theorem LinearSphereAction.homology_of_det_neg (n : ℕ)
     (A : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 2)))
     (h : A.toLinearEquiv.toLinearMap.det < 0) (k : ℕ)
@@ -470,6 +512,7 @@ theorem LinearSphereAction.homology_of_det_neg (n : ℕ)
     SphereReflection.sphereMap_homology]
 
 
+/-- On positive-degree sphere homology, the normalized map of a real linear automorphism acts by the sign of its determinant. -/
 theorem LinearSphereAction.homology_eq_sign_smul (n : ℕ)
     (A : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 2))) (k : ℕ)
     (a : SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 1)) (k + 1)) :
