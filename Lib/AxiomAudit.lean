@@ -63,8 +63,7 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.ManifoldMorse.exists_morse_function
 #print axioms Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
 #print axioms Mathoverflow1973.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
--- The fourth probe, ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
--- (Reeb), moved to Lib in the lane-G merge; receipt in Lib/reports/A.md.
+#print axioms Mathoverflow1973.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
 
 -- Lane H (complex analysis)
 #print axioms Mathoverflow1973.RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
@@ -92,3 +91,6 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.MorseCancellation.cancel_of_transverse_level_isotopy
 #print axioms Mathoverflow1973.MorseRearrangement.exists_morse_rearrangement_of_no_connection
 #print axioms Mathoverflow1973.MorseCancellation.exists_excellent_indexed_morse_birth
+#print axioms Mathoverflow1973.simplyConnectedSpace_of_open_cover
+#print axioms Mathoverflow1973.MorseCells.built_of_compact_smooth_manifold
+#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros

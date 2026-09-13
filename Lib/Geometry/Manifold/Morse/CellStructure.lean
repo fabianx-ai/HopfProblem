@@ -8,6 +8,7 @@ Authors: Fabian Franz
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
+import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Topology.Homotopy.CellAttachment
@@ -901,4 +902,105 @@ theorem MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGr
     ManifoldMorse.mem_criticalPoints_of_localMin hf
       (Filter.Eventually.of_forall (fun y => hmin (Set.mem_univ y)))
   exact h p hp ((hmin (Set.mem_univ x.val)).trans x.property)
+
+theorem FlowConstruction.exists_regularSublevelHomotopyEquiv {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ} (hab : a ≤ b)
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
+    ∃ e : { x : M // f x ≤ a } ≃ₕ { x : M // f x ≤ b }, ∀ x, (e x).1 = x.1 := by
+  obtain ⟨F, hF⟩ := exists_heightTranslatingFlow hf hband
+  exact ⟨regularSublevelHomotopyEquivOfFlow F hF hf.continuous hab, fun _ => rfl⟩
+
+theorem MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (c : (p : ManifoldMorse.criticalPoints E f) → Cell (E := E) f p.val)
+    (hdis : ∀ p q, p ≠ q → Disjoint (c p).band (c q).band)
+    (p : ManifoldMorse.criticalPoints E f) :
+    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
+  classical
+  let K := ManifoldMorse.criticalPoints E f
+  let : Fintype K := (ManifoldMorse.finite_criticalPoints hf hm).fintype
+  let : LinearOrder K :=
+    LinearOrder.lift' (fun p : K => f p.val)
+      (fun p q h => Subtype.ext (hinj p.property q.property h))
+  have hstep (p : K) :
+    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
+    induction p using WellFoundedLT.induction with
+    | ind p
+      ih =>
+      have hlower :
+        FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
+        by
+        by_cases hex : ∃ q : K, q < p
+        · let s : Finset K := Finset.univ.filter (fun q => q < p)
+          have hs : s.Nonempty := by
+            obtain ⟨q, hq⟩ := hex
+            exact ⟨q, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hq⟩⟩
+          let q := s.max' hs
+          have hqp : q < p := (Finset.mem_filter.mp (s.max'_mem hs)).2
+          have hgap : f q + (c q).radius ^ 2 < f p - (c p).radius ^ 2 :=
+            upper_lt_lower_of_disjoint (c q) (c p) (hdis q p (ne_of_lt hqp)) hqp
+          obtain ⟨e, _⟩ :=
+            FlowConstruction.exists_regularSublevelHomotopyEquiv hf hgap.le
+              (by
+                intro x hx hcrit
+                let r : K := ⟨x, hcrit⟩
+                have hrp : r < p := by
+                  change f x < f p
+                  nlinarith [sq_pos_of_pos (c p).radius_pos, hx.2]
+                have hrq : r ≤ q := s.le_max' r (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrp⟩)
+                change f x ≤ f q at hrq
+                nlinarith [sq_pos_of_pos (c q).radius_pos, hx.1])
+          exact FiniteCells.Built.equiv e (ih q hqp)
+        · let : IsEmpty { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
+            isEmpty_sublevel_of_no_critical hf
+              (by
+                intro x hx hle
+                apply hex
+                refine ⟨⟨x, hx⟩, ?_⟩
+                change f x < f p
+                nlinarith [sq_pos_of_pos (c p).radius_pos])
+          exact FiniteCells.Built.empty _
+      apply FiniteCells.Built.equiv (c p).comparison
+      exact
+        FiniteCells.Built.attach _
+          (coreCellMap (c p).chart (c p).radius (c p).radius_pos (c p).block)
+          (fun u hu =>
+            (coreCellMap_lower_iff (c p).chart (c p).radius (c p).radius_pos (c p).block u).mpr
+              hu)
+          (c p).dimension_le hlower
+  exact hstep p
+
+theorem MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
+    FiniteCells.Built (Module.finrank ℝ E) M := by
+  classical
+    cases isEmpty_or_nonempty M with
+  | inl h => exact FiniteCells.Built.empty _
+  | inr
+    h =>
+    obtain ⟨f, hf, hm, _, hinj⟩ :=
+      ManifoldMorse.exists_morse_function_with_distinct_critical_values E M
+    obtain ⟨c, hdis⟩ := exists_disjoint_cells hf hm hinj
+    obtain ⟨p, _, hmax⟩ :=
+      isCompact_univ.exists_isMaxOn (Set.univ_nonempty) hf.continuous.continuousOn
+    have hp : p ∈ ManifoldMorse.criticalPoints E f :=
+      ManifoldMorse.mem_criticalPoints_of_localMax hf
+        (Filter.Eventually.of_forall (fun y => hmax (Set.mem_univ y)))
+    let q : ManifoldMorse.criticalPoints E f := ⟨p, hp⟩
+    have hb := built_upper_sublevels hf hm hinj c hdis q
+    have hfull : {x : M | f x ≤ f q + (c q).radius ^ 2} = Set.univ := by
+      apply Set.eq_univ_of_forall
+      intro x
+      change f x ≤ f p + (c q).radius ^ 2
+      exact (hmax (Set.mem_univ x)).trans (le_add_of_nonneg_right (sq_nonneg (c q).radius))
+    exact
+      FiniteCells.Built.equiv
+        ((Homeomorph.setCongr hfull).trans (Homeomorph.Set.univ M)).toHomotopyEquiv hb
+
 end Mathoverflow1973

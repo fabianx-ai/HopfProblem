@@ -60,6 +60,7 @@ import Lib.Geometry.Manifold.Quotient.LocalOrbit
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
+import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Algebra.Group.Filtration
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation

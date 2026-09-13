@@ -176,4 +176,47 @@ theorem SimplyConnectedCover.section_trans_of_open_cover {X : Type*} [Topologica
   have h := hwalk n
   rw [hn n le_rfl] at h
   exact section_subpath_zero_one F p h
+
+theorem simplyConnectedSpace_of_open_cover {X ι : Type*} [TopologicalSpace X] (U : ι → Set X)
+    (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ)
+    (hsimply : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i)
+    (hinter : ∀ i j, IsPathConnected (U i ∩ U j)) : SimplyConnectedSpace X := by
+  classical
+  have hcov : ∀ x : X, ∃ i, x ∈ U i := by
+    intro x
+    apply Set.mem_iUnion.mp
+    rw [hcover]
+    trivial
+  let idx (x : X) : ι := (hcov x).choose
+  have hidx (x : X) : x ∈ U (idx x) := (hcov x).choose_spec
+  let c (x : X) : Path o x := SimplyConnectedCover.chartPath U hsimply o ho (idx x) x (hidx x)
+  let F (x : X) : Path.Homotopic.Quotient o x := Path.Homotopic.Quotient.mk (c x)
+  have hFi (i : ι) (x : X) (hx : x ∈ U i) :
+    F x = Path.Homotopic.Quotient.mk (SimplyConnectedCover.chartPath U hsimply o ho i x hx) := by
+    apply Path.Homotopic.Quotient.eq.mpr
+    exact SimplyConnectedCover.chartPath_homotopic U hsimply o ho hinter (idx x) i x (hidx x) hx
+  have hF (i : ι) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ U i) :
+    (F x).trans (Path.Homotopic.Quotient.mk p) = F y := by
+    have hx : x ∈ U i := by simpa using hp 0
+    have hy : y ∈ U i := by simpa using hp 1
+    rw [hFi i x hx, hFi i y hy, ← Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.eq]
+    exact
+      SimplyConnectedCover.homotopic_of_mem (hsimply i) _ _
+        (SimplyConnectedCover.trans_mem _ _
+          (SimplyConnectedCover.chartPath_mem U hsimply o ho i x hx) hp)
+        (SimplyConnectedCover.chartPath_mem U hsimply o ho i y hy)
+  have hpc : PathConnectedSpace X :=
+    { nonempty := ⟨o⟩
+      joined := fun x y => ⟨(c x).symm.trans (c y)⟩ }
+  apply simply_connected_iff_paths_homotopic'.mpr
+  refine ⟨hpc, ?_⟩
+  intro x y p q
+  have hp := SimplyConnectedCover.section_trans_of_open_cover U hopen hcover o F hF p
+  have hq := SimplyConnectedCover.section_trans_of_open_cover U hopen hcover o F hF q
+  apply Path.Homotopic.Quotient.eq.mp
+  have h :=
+    congrArg (fun r : Path.Homotopic.Quotient o y => (F x).symm.trans r) (hp.trans hq.symm)
+  simpa only [← Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
+    Path.Homotopic.Quotient.refl_trans] using h
+
 end Mathoverflow1973
