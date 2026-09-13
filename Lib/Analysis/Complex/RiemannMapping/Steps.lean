@@ -54,6 +54,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Normal-family and Hurwitz inputs -/
+
+/-- An analytic function factors as a product over its zeros times a nonvanishing factor. -/
 theorem _root_.AnalyticOnNhd.exists_finset_eq_prod_smul_nonzero {𝕜 E : Type*}
     [NontriviallyNormedField 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E] {f : 𝕜 → E} {s : Set 𝕜}
     (hfs : AnalyticOnNhd 𝕜 f s) (hs_comp : IsCompact s) (hs_conn : IsPreconnected s)
@@ -138,6 +141,7 @@ theorem _root_.AnalyticOnNhd.exists_finset_eq_prod_smul_nonzero {𝕜 E : Type*}
     · fun_prop
     · exact hga _ <| ((hts _).mp <| .inr hx).1
 
+/-- The logarithmic-derivative circle integral counts zeros. -/
 theorem _root_.Complex.circleIntegral_logDeriv_eq_finsum_analyticOrderNatAdd {f : ℂ → ℂ} {c : ℂ}
     {R : ℝ} (hf : AnalyticOnNhd ℂ f (Metric.closedBall c R))
     (hf₀ : ∀ z ∈ Metric.sphere c R, f z ≠ 0) (hR : 0 ≤ R) :
@@ -209,6 +213,7 @@ theorem _root_.Complex.circleIntegral_logDeriv_eq_finsum_analyticOrderNatAdd {f 
     exact (sub_eq_zero.mp (eq_zero_of_pow_eq_zero hzw)).symm ▸ hwt
   · exact ht_sub
 
+/-- On a preconnected open complex domain, a locally uniform limit of eventually nonvanishing holomorphic functions is identically zero or nowhere zero. -/
 theorem _root_.Complex.eqOn_zero_or_forall_ne_zero_of_tendstoLocallyUniformlyOn {ι : Type*}
     {U : Set ℂ} {l : Filter ι} [l.NeBot] [l.IsCountablyGenerated] {F : ι → ℂ → ℂ} {f : ℂ → ℂ}
     (hUo : IsOpen U) (hUc : IsPreconnected U) (hF : ∀ᶠ i in l, ∀ x ∈ U, F i x ≠ 0)
@@ -279,6 +284,7 @@ theorem _root_.Complex.eqOn_zero_or_forall_ne_zero_of_tendstoLocallyUniformlyOn 
     · exact hfR
     · exact hR₀.le
 
+/-- On a preconnected open complex domain, a locally uniform limit of eventually injective holomorphic functions is constant or injective. -/
 theorem _root_.Complex.eqOn_const_or_injOn_of_tendstoLocallyUniformlyOn {ι : Type*} {U : Set ℂ}
     {l : Filter ι} [l.NeBot] [l.IsCountablyGenerated] {F : ι → ℂ → ℂ} {f : ℂ → ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) (hF : ∀ᶠ i in l, Set.InjOn (F i) U)
@@ -311,6 +317,7 @@ theorem _root_.Complex.eqOn_const_or_injOn_of_tendstoLocallyUniformlyOn {ι : Ty
     exact
       heq.eventuallyEq_of_mem (Metric.ball_mem_nhds _ hr₀) |>.mono fun z hz => sub_eq_zero.mp hz
 
+/-- A proper simply connected open subset of the complex plane admits an injective map with non-dense image and nonzero derivative on the domain. -/
 theorem _root_.Complex.exists_injective_not_dense_image_deriv_ne_zero {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) :
     ∃ f : ℂ → ℂ, Function.Injective f ∧ ¬Dense (f '' U) ∧ ∀ z ∈ U, deriv f z ≠ 0 := by
@@ -356,6 +363,7 @@ theorem _root_.Complex.exists_injective_not_dense_image_deriv_ne_zero {U : Set �
     linear_combination hab / 2
   · simpa [(hdf z hz).hasDerivAt.deriv] using hf₀ z hz
 
+/-- A proper simply connected open complex domain admits an injective map into the unit ball with nonzero derivative throughout the domain. -/
 lemma _root_.Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) :
     ∃ f : ℂ → ℂ, Set.MapsTo f U (Metric.ball 0 1) ∧ Set.InjOn f U ∧ ∀ z ∈ U, deriv f z ≠ 0 := by
@@ -380,9 +388,13 @@ lemma _root_.Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero {U : Set ℂ} (h
     rw [(hasDerivAt_const _ _).fun_div (hdz.hasDerivAt.sub_const _) _ |>.deriv] <;>
       simp [*, ne_of_gt, sub_eq_zero]
 
+/-! ### The unit-disc shift -/
+
+/-- The disc-shift denominator is nonzero. -/
 lemma _root_.Complex.UnitDisc.shift_den_ne_zero (z w : 𝔻) : 1 + conj (z : ℂ) * w ≠ 0 :=
   (Star.star z * w).one_add_coe_ne_zero
 
+/-- The disc-shift function stays in the disc. -/
 theorem _root_.Complex.UnitDisc.norm_shiftFun_le (z w : 𝔻) :
     ‖(z + w : ℂ) / (1 + conj ↑z * w)‖ ≤ (‖(z : ℂ)‖ + ‖(w : ℂ)‖) / (1 + ‖(z : ℂ)‖ * ‖(w : ℂ)‖) := by
   have hz := z.sq_norm_lt_one
@@ -403,6 +415,7 @@ theorem _root_.Complex.UnitDisc.norm_shiftFun_le (z w : 𝔻) :
   any_goals positivity
   simpa using Complex.UnitDisc.shift_den_ne_zero z w
 
+/-- The unit-disc shift sends `w` to `(z + w) / (1 + conj z * w)`. -/
 def _root_.Complex.UnitDisc.shiftFun (z w : 𝔻) : 𝔻 :=
   Complex.UnitDisc.mk ((z + w : ℂ) / (1 + conj ↑z * w)) <|
     by
@@ -410,16 +423,19 @@ def _root_.Complex.UnitDisc.shiftFun (z w : 𝔻) : 𝔻 :=
     rw [div_lt_one (by positivity)]
     nlinarith only [z.norm_lt_one, w.norm_lt_one]
 
+/-- The shift function computes the Möbius quotient. -/
 theorem _root_.Complex.UnitDisc.coe_shiftFun (z w : 𝔻) :
     (Complex.UnitDisc.shiftFun z w : ℂ) = (z + w) / (1 + conj ↑z * w) :=
   rfl
 
+/-- Equality under the shift function. -/
 theorem _root_.Complex.UnitDisc.shiftFun_eq_iff {z w u : 𝔻} :
     Complex.UnitDisc.shiftFun z w = u ↔ (z + w : ℂ) = u + u * conj ↑z * w := by
   rw [← Complex.UnitDisc.coe_inj, Complex.UnitDisc.coe_shiftFun,
     div_eq_iff (Complex.UnitDisc.shift_den_ne_zero _ _)]
   ring_nf
 
+/-- The shift at `−a` undoes the shift at `a`. -/
 theorem _root_.Complex.UnitDisc.shiftFun_neg_apply_shiftFun (z w : 𝔻) :
     Complex.UnitDisc.shiftFun (-z) (Complex.UnitDisc.shiftFun z w) =
       w := by
@@ -428,6 +444,7 @@ theorem _root_.Complex.UnitDisc.shiftFun_neg_apply_shiftFun (z w : 𝔻) :
   · simp; ring
   all_goals exact Complex.UnitDisc.shift_den_ne_zero z w
 
+/-- The disc shift as a self-map of the unit disc. -/
 def _root_.Complex.UnitDisc.shift (z : 𝔻) : 𝔻 ≃ 𝔻
     where
   toFun := Complex.UnitDisc.shiftFun z
@@ -437,36 +454,44 @@ def _root_.Complex.UnitDisc.shift (z : 𝔻) : 𝔻 ≃ 𝔻
     intro w
     simpa using Complex.UnitDisc.shiftFun_neg_apply_shiftFun (-z) w
 
+/-- The shift computes the Möbius quotient. -/
 theorem _root_.Complex.UnitDisc.coe_shift (z w : 𝔻) :
     (Complex.UnitDisc.shift z w : ℂ) = (z + w) / (1 + conj ↑z * w) := by rfl
 
+/-- Equality under the disc shift. -/
 theorem _root_.Complex.UnitDisc.shift_eq_iff {z w u : 𝔻} :
     Complex.UnitDisc.shift z w = u ↔ (z + w : ℂ) = u + u * conj ↑z * w :=
   Complex.UnitDisc.shiftFun_eq_iff
 
+/-- The inverse shift is the shift at `−a`. -/
 theorem _root_.Complex.UnitDisc.symm_shift (z : 𝔻) :
     (Complex.UnitDisc.shift z).symm = Complex.UnitDisc.shift (-z) := by
   ext1
   rfl
 
+/-- The disc shift with parameter `z` sends `0` to `z`. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.shift_apply_zero (z : 𝔻) : Complex.UnitDisc.shift z 0 = z := by
   simp [Complex.UnitDisc.shift_eq_iff]
 
+/-- The disc shift with parameter `z` vanishes exactly at `-z`. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.shift_eq_zero_iff {z w : 𝔻} :
     Complex.UnitDisc.shift z w = 0 ↔ w = -z := by
   rw [← Equiv.eq_symm_apply, Complex.UnitDisc.symm_shift, Complex.UnitDisc.shift_apply_zero]
 
+/-- The disc shift with parameter `-z` sends `z` to `0`. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.shift_neg_apply_self (z : 𝔻) :
     Complex.UnitDisc.shift (-z) z = 0 := by simp
 
+/-- Shifting by `-z` after shifting by `z` recovers the original disc point. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.shift_neg_apply_shift (z w : 𝔻) :
     Complex.UnitDisc.shift (-z) (Complex.UnitDisc.shift z w) = w := by
   rw [← Complex.UnitDisc.symm_shift, Equiv.symm_apply_apply]
 
+/-- The disc shift is continuous. -/
 @[fun_prop]
 theorem _root_.Complex.UnitDisc.continuous_shift (z : 𝔻) :
     Continuous (Complex.UnitDisc.shift z) := by
@@ -478,6 +503,7 @@ theorem _root_.Complex.UnitDisc.continuous_shift (z : 𝔻) :
       (continuous_const.add (continuous_const.mul Complex.UnitDisc.continuous_coe))
       (Complex.UnitDisc.shift_den_ne_zero z)
 
+/-- The derivative of the composed shift within a set. -/
 theorem _root_.Complex.UnitDisc.hasDerivWithinAt_shift_comp {f : ℂ → Complex.UnitDisc} {z f' : ℂ}
     {s : Set ℂ} (w : Complex.UnitDisc) (hf : HasDerivWithinAt (fun x ↦ ↑(f x)) f' s z) :
     HasDerivWithinAt (fun x ↦ w.shift (f x) : ℂ → ℂ)
@@ -490,12 +516,14 @@ theorem _root_.Complex.UnitDisc.hasDerivWithinAt_shift_comp {f : ℂ → Complex
   rw [← Complex.mul_conj']
   ring
 
+/-- The derivative of the composed shift. -/
 theorem _root_.Complex.UnitDisc.hasDerivAt_shift_comp {f : ℂ → Complex.UnitDisc} {z f' : ℂ}
     (w : Complex.UnitDisc) (hf : HasDerivAt (fun x ↦ ↑(f x)) f' z) :
     HasDerivAt (fun x ↦ w.shift (f x) : ℂ → ℂ)
       ((1 - ‖(w : ℂ)‖ ^ 2) / (1 + conj ↑w * f z) ^ 2 * f') z :=
   (Complex.UnitDisc.hasDerivWithinAt_shift_comp w hf.hasDerivWithinAt).hasDerivAt Filter.univ_mem
 
+/-- Differentiability is invariant under the shift. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.differentiableWithinAt_shift_comp_iff {f : ℂ → Complex.UnitDisc}
     {z : ℂ} {s : Set ℂ} (w : Complex.UnitDisc) :
@@ -507,12 +535,14 @@ theorem _root_.Complex.UnitDisc.differentiableWithinAt_shift_comp_iff {f : ℂ �
   simpa using
     (Complex.UnitDisc.hasDerivWithinAt_shift_comp (-w) h.hasDerivWithinAt).differentiableWithinAt
 
+/-- Differentiability on a set is invariant under the shift. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.differentiableOn_shift_comp_iff {f : ℂ → Complex.UnitDisc}
     {s : Set ℂ} (w : Complex.UnitDisc) :
     DifferentiableOn ℂ (fun x ↦ w.shift (f x) : ℂ → ℂ) s ↔ DifferentiableOn ℂ (f · : ℂ → ℂ) s := by
   simp [DifferentiableOn]
 
+/-- Pointwise differentiability is invariant under the shift. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.differentiableAt_shift_comp_iff {f : ℂ → Complex.UnitDisc} {z : ℂ}
     (w : Complex.UnitDisc) :
@@ -521,6 +551,7 @@ theorem _root_.Complex.UnitDisc.differentiableAt_shift_comp_iff {f : ℂ → Com
     ⟨fun h ↦ ?_, fun h ↦ (Complex.UnitDisc.hasDerivAt_shift_comp w h.hasDerivAt).differentiableAt⟩
   simpa using (Complex.UnitDisc.hasDerivAt_shift_comp (-w) h.hasDerivAt).differentiableAt
 
+/-- The derivative of the composed shift. -/
 @[simp]
 theorem _root_.Complex.UnitDisc.deriv_shift_comp (f : ℂ → Complex.UnitDisc) (z : ℂ)
     (w : Complex.UnitDisc) :
@@ -532,6 +563,7 @@ theorem _root_.Complex.UnitDisc.deriv_shift_comp (f : ℂ → Complex.UnitDisc) 
       MulZeroClass.mul_zero]
     simpa using hfd
 
+/-- The composed-shift derivative vanishes exactly when the derivative does. -/
 theorem _root_.Complex.UnitDisc.deriv_shift_comp_eq_zero (f : ℂ → Complex.UnitDisc) (z : ℂ)
     (w : Complex.UnitDisc) :
     deriv (fun x ↦ w.shift (f x) : ℂ → ℂ) z = 0 ↔ deriv (f · : ℂ → ℂ) z = 0 := by
@@ -540,6 +572,9 @@ theorem _root_.Complex.UnitDisc.deriv_shift_comp_eq_zero (f : ℂ → Complex.Un
   apply or_iff_right
   exact mod_cast sub_ne_zero.mpr w.sq_norm_lt_one.ne'
 
+/-! ### The disc mapping step -/
+
+/-- A proper simply connected open complex domain admits an injective disc-valued map normalized to zero at the prescribed point, with nonzero derivative on the domain. -/
 theorem _root_.Complex.exists_map_unitDisc_injOn_deriv_ne_zero₀ {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x : ℂ} (_hx : x ∈ U) :
     ∃ f : ℂ → Complex.UnitDisc,
@@ -563,6 +598,7 @@ theorem _root_.Complex.exists_map_unitDisc_injOn_deriv_ne_zero₀ {U : Set ℂ} 
   · simp
   · simpa only [Function.comp_def, ne_eq, Complex.UnitDisc.deriv_shift_comp_eq_zero]
 
+/-- An injective disc map exists with derivative norm bounded below, preserving nonvanishing. -/
 theorem _root_.Complex.exist_map_unitDisc_injOn_norm_deriv_gt_preserves_nonzero
     {U : Set ℂ} (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ)
     {x : ℂ} (hx : x ∈ U) {f : ℂ → Complex.UnitDisc}
@@ -648,6 +684,7 @@ theorem _root_.Complex.exist_map_unitDisc_injOn_norm_deriv_gt_preserves_nonzero
             Complex.UnitDisc.shift_den_ne_zero (-c) (f z)
     · exact hnonzero z hz
 
+/-- An injective disc map exists with nonvanishing derivative and a norm bound. -/
 theorem _root_.Complex.exist_map_unitDisc_injOn_deriv_ne_zero_norm_deriv_gt {U : Set ℂ}
     (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x : ℂ} (hx : x ∈ U)
     {f : ℂ → Complex.UnitDisc} (hdf : DifferentiableOn ℂ (Complex.UnitDisc.coe ∘ f) U)
