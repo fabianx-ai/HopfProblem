@@ -21,7 +21,8 @@ public import Lib.Geometry.Manifold.Morse.SublevelSets
 public import Lib.Geometry.Manifold.Morse.Index
 public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Lib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Collars of regular levels and level transport
@@ -413,14 +414,14 @@ theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero {E
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       e.normalDisplacement (Bundle.zeroSection e.NormalModel e.NormalSpace x) := by
-  obtain ⟨d, hd, heq⟩ := e.isLocalDiffeomorphAt_localNormalDisplacement x
+  obtain ⟨d, hd, heq⟩ := (e.isLocalDiffeomorphAt_localNormalDisplacement x).exists_partialDiffeomorph
   let c := e.normalChartPartialDiffeomorph x
   have hc : Bundle.zeroSection e.NormalModel e.NormalSpace x ∈ c.source :=
     e.normalChart_source_zero x
   have hcd : c (Bundle.zeroSection e.NormalModel e.NormalSpace x) ∈ d.source := by
     rw [e.normalChartPartialDiffeomorph_zero]
     exact hd
-  refine ⟨c.trans d, ⟨hc, hcd⟩, ?_⟩
+  refine IsLocalDiffeomorphAt.of_eqOn (c.trans d) ⟨hc, hcd⟩ ?_
   intro v hv
   exact (e.localNormalDisplacement_chart_apply x v hv.1).symm.trans (heq hv.2)
 
@@ -440,8 +441,10 @@ theorem NativeEuclideanEmbedding.isOpen_regularNormalLocus {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
     IsOpen e.regularNormalLocus := by
   rw [isOpen_iff_mem_nhds]
-  rintro v ⟨φ, hv, heq⟩
-  exact Filter.mem_of_superset (φ.open_source.mem_nhds hv) (fun w hw ↦ ⟨φ, hw, heq⟩)
+  intro v hv'
+  obtain ⟨φ, hv, heq⟩ := IsLocalDiffeomorphAt.exists_partialDiffeomorph hv'
+  exact Filter.mem_of_superset (φ.open_source.mem_nhds hv)
+    (fun w hw ↦ IsLocalDiffeomorphAt.of_eqOn φ hw heq)
 
 /-- The normal displacement is injective near the zero section. -/
 theorem NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M : Type*}
@@ -460,7 +463,7 @@ theorem NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero {E M 
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     ∃ U ∈ 𝓝 (Bundle.zeroSection e.NormalModel e.NormalSpace x),
       Set.InjOn e.normalDisplacement U := by
-  obtain ⟨φ, hx, heq⟩ := e.isLocalDiffeomorphAt_normalDisplacement_zero x
+  obtain ⟨φ, hx, heq⟩ := (e.isLocalDiffeomorphAt_normalDisplacement_zero x).exists_partialDiffeomorph
   exact ⟨φ.source, φ.open_source.mem_nhds hx, heq.injOn_iff.mpr φ.toPartialEquiv.injOn⟩
 
 /-- An injective normal neighborhood of the zero section exists. -/
@@ -535,7 +538,7 @@ theorem NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E M : T
       (e.normalNeighborhoodEquiv hinj).symm y := by
   let p := e.normalNeighborhoodEquiv hinj
   have hx : p.symm y ∈ U := p.map_target hy
-  obtain ⟨φ, hφx, heq⟩ := hloc ⟨p.symm y, hx⟩
+  obtain ⟨φ, hφx, heq⟩ := (hloc ⟨p.symm y, hx⟩).exists_partialDiffeomorph
   have hφxy : φ (p.symm y) = y := (heq hφx).symm.trans (p.right_inv hy)
   have hφy : y ∈ φ.target := hφxy ▸ φ.map_source' hφx
   have hφyx : φ.symm y = p.symm y := by
@@ -1658,7 +1661,7 @@ theorem exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D : Type*
   let W := Φ.source ∩ Φ ⁻¹' O
   have hW : IsOpen W := Φ.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage Φ.open_source hO
   have hWloc : IsLocalDiffeomorphOn 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ Φ W := fun p =>
-    ⟨Φ, p.property.1, fun _ _ => rfl⟩
+    Φ.isLocalDiffeomorphAt _ _ _ p.property.1
   let Ψ :=
     partialDiffeomorphOfInjectiveLocal hW (Φ.toPartialEquiv.injOn.mono Set.inter_subset_left)
       hWloc
@@ -1921,7 +1924,7 @@ def SmallPerturbation.diffeomorphIdAdd {E : Type*} [NormedAddCommGroup E] [Compl
         (contDiff_id.add hs).contMDiff.contMDiffOn
     rw [mfderiv_eq_fderiv]
     exact isInvertible_fderiv_id_add hs hu hk x
-  exact hloc.diffeomorphOfBijective (bijective_id_add hu hk)
+  exact hloc.diffeomorphOfBijective' (bijective_id_add hu hk)
 
 /-- A scaled constant is Lipschitz. -/
 theorem SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddCommGroup E]
