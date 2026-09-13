@@ -226,11 +226,15 @@ theorem SixSphereComplexAtlas.exists_complex_atlas :
   let := h
   infer_instance
 
+namespace Mathoverflow1973
+
 theorem mathoverflow_1973 :
     ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
       letI := atlas
       IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
   exact SixSphereComplexAtlas.exists_complex_atlas
 
+
+end Mathoverflow1973
 
 end

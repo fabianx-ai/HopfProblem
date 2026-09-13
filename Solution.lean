@@ -58,5 +58,5 @@ Copyright 2025 The Formal Conjectures Authors.
 
 import Hopf.Proof.Final
 
-#print axioms mathoverflow_1973
--- 'mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+#print axioms Mathoverflow1973.mathoverflow_1973
+-- 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
