@@ -76,34 +76,44 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The two-arc cover of the circle -/
+
+/-- An open interval is contractible. -/
 theorem SingularHomology.CircleTopology.intervalContractible (a b : ℝ) (hab : a < b) :
     ContractibleSpace (Set.Ioo a b) :=
   (convex_Ioo a b).contractibleSpace ⟨(a + b) / 2, by constructor <;> linarith⟩
 
+/-- The lower half-interval into the punctured interval. -/
 def SingularHomology.CircleTopology.puncturedIntervalInl (t : Set.Ioo (0 : ℝ) (1 / 2)) :
     { s : Set.Ioo (0 : ℝ) 1 // (s : ℝ) ≠ 1 / 2 } :=
   ⟨⟨t, t.property.1, t.property.2.trans (by norm_num)⟩, ne_of_lt t.property.2⟩
 
+/-- The upper half-interval into the punctured interval. -/
 def SingularHomology.CircleTopology.puncturedIntervalInr (t : Set.Ioo (1 / 2 : ℝ) 1) :
     { s : Set.Ioo (0 : ℝ) 1 // (s : ℝ) ≠ 1 / 2 } :=
   ⟨⟨t, (by norm_num : (0 : ℝ) < 1 / 2).trans t.property.1, t.property.2⟩, ne_of_gt t.property.1⟩
 
+/-- The lower inclusion is continuous. -/
 theorem SingularHomology.CircleTopology.puncturedIntervalInl_continuous :
     Continuous puncturedIntervalInl :=
   (continuous_subtype_val.subtype_mk _).subtype_mk _
 
+/-- The upper inclusion is continuous. -/
 theorem SingularHomology.CircleTopology.puncturedIntervalInr_continuous :
     Continuous puncturedIntervalInr :=
   (continuous_subtype_val.subtype_mk _).subtype_mk _
 
+/-- The lower inclusion is an open map. -/
 theorem SingularHomology.CircleTopology.puncturedIntervalInl_isOpenMap :
     IsOpenMap puncturedIntervalInl :=
   (isOpen_Ioo.isOpenMap_subtype_val.subtype_mk _).subtype_mk _
 
+/-- The upper inclusion is an open map. -/
 theorem SingularHomology.CircleTopology.puncturedIntervalInr_isOpenMap :
     IsOpenMap puncturedIntervalInr :=
   (isOpen_Ioo.isOpenMap_subtype_val.subtype_mk _).subtype_mk _
 
+/-- The punctured interval is the sum of its two halves. -/
 def SingularHomology.CircleTopology.puncturedIntervalSumEquiv :
     (Set.Ioo (0 : ℝ) (1 / 2) ⊕ Set.Ioo (1 / 2 : ℝ) 1) ≃
       { t : Set.Ioo (0 : ℝ) 1 // (t : ℝ) ≠ 1 / 2 } :=
@@ -137,10 +147,12 @@ def SingularHomology.CircleTopology.puncturedIntervalHomeomorph :
 abbrev SingularHomology.CircleTopology.Circle :=
   AddCircle (1 : ℝ)
 
+/-- The half point of the circle. -/
 def SingularHomology.CircleTopology.halfPoint :
     SingularHomology.CircleTopology.Circle :=
   ((1 / 2 : ℝ) : SingularHomology.CircleTopology.Circle)
 
+/-- The half point is not zero. -/
 theorem SingularHomology.CircleTopology.halfPoint_ne_zero : halfPoint ≠ 0 := by
   intro h
   have he :=
@@ -157,22 +169,27 @@ def SingularHomology.CircleTopology.arcV :
     Set SingularHomology.CircleTopology.Circle :=
   ({ halfPoint } : Set SingularHomology.CircleTopology.Circle)ᶜ
 
+/-- `arcU` is the complement of zero. -/
 @[simp]
 theorem SingularHomology.CircleTopology.mem_arcU
     (x : SingularHomology.CircleTopology.Circle) : x ∈ arcU ↔ x ≠ 0 :=
   Iff.rfl
 
+/-- `arcV` is the complement of the half point. -/
 @[simp]
 theorem SingularHomology.CircleTopology.mem_arcV
     (x : SingularHomology.CircleTopology.Circle) : x ∈ arcV ↔ x ≠ halfPoint :=
   Iff.rfl
 
+/-- `arcU` is open. -/
 theorem SingularHomology.CircleTopology.arcU_open : IsOpen arcU :=
   isOpen_compl_singleton
 
+/-- `arcV` is open. -/
 theorem SingularHomology.CircleTopology.arcV_open : IsOpen arcV :=
   isOpen_compl_singleton
 
+/-- The two arcs cover the circle. -/
 theorem SingularHomology.CircleTopology.arc_cover : arcU ∪ arcV = Set.univ := by
   ext x
   simp only [Set.mem_union, mem_arcU, mem_arcV, Set.mem_univ, iff_true]
@@ -182,19 +199,23 @@ theorem SingularHomology.CircleTopology.arc_cover : arcU ∪ arcV = Set.univ := 
     exact Ne.symm halfPoint_ne_zero
   · exact Or.inl hx
 
+/-- The punctured circle is homeomorphic to an open interval. -/
 def SingularHomology.CircleTopology.puncturedCircleHomeomorph (a : ℝ) :
     ({(a : SingularHomology.CircleTopology.Circle)}ᶜ :
         Set SingularHomology.CircleTopology.Circle) ≃ₜ
       Set.Ioo a (a + 1) :=
   (AddCircle.openPartialHomeomorphCoe (1 : ℝ) a).toHomeomorphSourceTarget.symm
 
+/-- `arcU` is homeomorphic to `(0,1)`. -/
 def SingularHomology.CircleTopology.arcUHomeomorph : arcU ≃ₜ Set.Ioo (0 : ℝ) 1 :=
   (puncturedCircleHomeomorph 0).trans (Homeomorph.setCongr (by simp))
 
+/-- `arcV` is homeomorphic to `(1/2,3/2)`. -/
 def SingularHomology.CircleTopology.arcVHomeomorph :
     arcV ≃ₜ Set.Ioo (1 / 2 : ℝ) (3 / 2) :=
   (puncturedCircleHomeomorph (1 / 2)).trans (Homeomorph.setCongr (by norm_num))
 
+/-- The `arcU` chart coerces back to the point. -/
 @[simp]
 theorem SingularHomology.CircleTopology.arcUHomeomorph_coe (x : arcU) :
     (((arcUHomeomorph x : Set.Ioo (0 : ℝ) 1) : ℝ) :
@@ -202,6 +223,7 @@ theorem SingularHomology.CircleTopology.arcUHomeomorph_coe (x : arcU) :
       (x : SingularHomology.CircleTopology.Circle) :=
   congrArg Subtype.val (arcUHomeomorph.symm_apply_apply x)
 
+/-- The `arcV` chart coerces back to the point. -/
 @[simp]
 theorem SingularHomology.CircleTopology.arcVHomeomorph_coe (x : arcV) :
     (((arcVHomeomorph x : Set.Ioo (1 / 2 : ℝ) (3 / 2)) : ℝ) :
@@ -209,23 +231,28 @@ theorem SingularHomology.CircleTopology.arcVHomeomorph_coe (x : arcV) :
       (x : SingularHomology.CircleTopology.Circle) :=
   congrArg Subtype.val (arcVHomeomorph.symm_apply_apply x)
 
+/-- `arcU` is contractible. -/
 instance SingularHomology.CircleTopology.arcUContractible : ContractibleSpace arcU := by
   let : ContractibleSpace (Set.Ioo (0 : ℝ) 1) := intervalContractible 0 1 zero_lt_one
   exact arcUHomeomorph.contractibleSpace
 
+/-- `arcV` is contractible. -/
 instance SingularHomology.CircleTopology.arcVContractible : ContractibleSpace arcV := by
   let : ContractibleSpace (Set.Ioo (1 / 2 : ℝ) (3 / 2)) :=
     intervalContractible (1 / 2) (3 / 2) (by norm_num)
   exact arcVHomeomorph.contractibleSpace
 
+/-- The lower half-interval is contractible. -/
 instance SingularHomology.CircleTopology.leftIntervalContractible :
     ContractibleSpace (Set.Ioo (0 : ℝ) (1 / 2)) :=
   intervalContractible 0 (1 / 2) (by norm_num)
 
+/-- The upper half-interval is contractible. -/
 instance SingularHomology.CircleTopology.rightIntervalContractible :
     ContractibleSpace (Set.Ioo (1 / 2 : ℝ) 1) :=
   intervalContractible (1 / 2) 1 (by norm_num)
 
+/-- The intersection subtype is a subspace of `U`. -/
 def SingularHomology.CircleTopology.intersectionSubtypeHomeomorph {T : Type*}
     [TopologicalSpace T] (U V : Set T) : ↥(U ∩ V) ≃ₜ { x : U // (x : T) ∈ V }
     where
@@ -236,6 +263,7 @@ def SingularHomology.CircleTopology.intersectionSubtypeHomeomorph {T : Type*}
   continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
   continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
+/-- An `arcU` point lies in `arcV` exactly off the midpoint. -/
 theorem SingularHomology.CircleTopology.arcU_mem_arcV_iff (x : arcU) :
     (x : SingularHomology.CircleTopology.Circle) ∈ arcV ↔
       (arcUHomeomorph x : ℝ) ≠ 1 / 2 := by
@@ -255,23 +283,30 @@ theorem SingularHomology.CircleTopology.arcU_mem_arcV_iff (x : arcU) :
     change (arcUHomeomorph x : ℝ) = (m : ℝ)
     rw [hx', Homeomorph.apply_symm_apply]
 
+/-- The arc intersection is the punctured interval. -/
 def SingularHomology.CircleTopology.intersectionPuncturedHomeomorph :
     ↥(arcU ∩ arcV) ≃ₜ { t : Set.Ioo (0 : ℝ) 1 // (t : ℝ) ≠ 1 / 2 } :=
   (intersectionSubtypeHomeomorph arcU arcV).trans (arcUHomeomorph.subtype arcU_mem_arcV_iff)
 
+/-- The arc intersection is two open intervals. -/
 def SingularHomology.CircleTopology.intersectionHomeomorph :
     ↥(arcU ∩ arcV) ≃ₜ (Set.Ioo (0 : ℝ) (1 / 2) ⊕ Set.Ioo (1 / 2 : ℝ) 1) :=
   intersectionPuncturedHomeomorph.trans puncturedIntervalHomeomorph
 
+/-! ### Contractibility and lifts -/
+
+/-- A chosen contraction center of a contractible space. -/
 def SingularHomology.CircleTopology.contractionPoint (S : Type*) [TopologicalSpace S]
     [ContractibleSpace S] : S :=
   Classical.choose (id_nullhomotopic S)
 
+/-- The constant contraction map is homotopic to the identity. -/
 theorem SingularHomology.CircleTopology.contractionPoint_homotopic (S : Type*)
     [TopologicalSpace S] [ContractibleSpace S] :
     (ContinuousMap.const S (contractionPoint S)).Homotopic (ContinuousMap.id S) :=
   (Classical.choose_spec (id_nullhomotopic S)).symm
 
+/-- A contractible factor can be collapsed: `S × X ≃ₕ X`. -/
 def SingularHomology.CircleTopology.contractibleProdHomotopyEquiv (S X : Type*)
     [TopologicalSpace S] [TopologicalSpace X] [ContractibleSpace S] : (S × X) ≃ₕ X
     where
@@ -280,11 +315,13 @@ def SingularHomology.CircleTopology.contractibleProdHomotopyEquiv (S X : Type*)
   left_inv := (contractionPoint_homotopic S).prodMap (.refl (ContinuousMap.id X))
   right_inv := .refl (ContinuousMap.id X)
 
+/-- The sum of two continuous maps. -/
 def SingularHomology.CircleTopology.sumContinuousMap {A A' B B' : Type*}
     [TopologicalSpace A] [TopologicalSpace A'] [TopologicalSpace B] [TopologicalSpace B']
     (f : C(A, A')) (g : C(B, B')) : C(A ⊕ B, A' ⊕ B') :=
   ⟨Sum.map f g, f.continuous.sumMap g.continuous⟩
 
+/-- The sum of two homotopies. -/
 def SingularHomology.CircleTopology.sumHomotopy {A A' B B' : Type*} [TopologicalSpace A]
     [TopologicalSpace A'] [TopologicalSpace B] [TopologicalSpace B'] {f₀ f₁ : C(A, A')}
     {g₀ g₁ : C(B, B')} (F : f₀.Homotopy f₁) (G : g₀.Homotopy g₁) :
@@ -305,6 +342,7 @@ def SingularHomology.CircleTopology.sumHomotopy {A A' B B' : Type*} [Topological
     | inl a => exact congrArg Sum.inl (F.map_one_left a)
     | inr b => exact congrArg Sum.inr (G.map_one_left b)
 
+/-- The sum of two homotopy equivalences. -/
 def SingularHomology.CircleTopology.sumHomotopyEquiv {A A' B B' : Type*}
     [TopologicalSpace A] [TopologicalSpace A'] [TopologicalSpace B] [TopologicalSpace B']
     (eA : A ≃ₕ A') (eB : B ≃ₕ B') : (A ⊕ B) ≃ₕ (A' ⊕ B')
@@ -328,6 +366,7 @@ def SingularHomology.CircleTopology.sumHomotopyEquiv {A A' B B' : Type*}
     · ext x
       cases x <;> rfl
 
+/-- A map lifting to `ℝ` contracts to the constant map. -/
 def SingularHomology.CircleTopology.circleLiftContraction {S : Type*}
     [TopologicalSpace S] (f : C(S, AddCircle (1 : ℝ))) (l : C(S, ℝ))
     (hlift : ∀ s, (l s : AddCircle (1 : ℝ)) = f s) : f.Homotopy (ContinuousMap.const S 0)
@@ -340,6 +379,7 @@ def SingularHomology.CircleTopology.circleLiftContraction {S : Type*}
   map_zero_left s := by simpa using hlift s
   map_one_left s := by simp
 
+/-- A product map with a lifted circle coordinate contracts onto the `X` factor. -/
 def SingularHomology.CircleTopology.circleProductLiftContraction {S X : Type*}
     [TopologicalSpace S] [TopologicalSpace X] (f : C(S, AddCircle (1 : ℝ) × X)) (l : C(S, ℝ))
     (hlift : ∀ s, (l s : AddCircle (1 : ℝ)) = (f s).1) :
@@ -358,22 +398,29 @@ def SingularHomology.CircleTopology.circleProductLiftContraction {S X : Type*}
     · rfl
   map_one_left s := by simp
 
+/-! ### The product cover -/
+
+/-- The product cover element `arcU × X`. -/
 def SingularHomology.CircleTopology.productU (X : Type*) :
     Set (SingularHomology.CircleTopology.Circle × X) :=
   Prod.fst ⁻¹' arcU
 
+/-- The product cover element `arcV × X`. -/
 def SingularHomology.CircleTopology.productV (X : Type*) :
     Set (SingularHomology.CircleTopology.Circle × X) :=
   Prod.fst ⁻¹' arcV
 
+/-- The product `U` is open. -/
 theorem SingularHomology.CircleTopology.productU_open (X : Type*) [TopologicalSpace X] :
     IsOpen (productU X) :=
   arcU_open.preimage continuous_fst
 
+/-- The product `V` is open. -/
 theorem SingularHomology.CircleTopology.productV_open (X : Type*) [TopologicalSpace X] :
     IsOpen (productV X) :=
   arcV_open.preimage continuous_fst
 
+/-- The product arcs cover `Circle × X`. -/
 theorem SingularHomology.CircleTopology.product_cover (X : Type*) :
     productU X ∪ productV X = Set.univ := by
   change
@@ -381,40 +428,49 @@ theorem SingularHomology.CircleTopology.product_cover (X : Type*) :
       (Set.univ : Set (SingularHomology.CircleTopology.Circle × X))
   rw [← Set.preimage_union, arc_cover, Set.preimage_univ]
 
+/-- The projection of the product onto `X`. -/
 def SingularHomology.CircleTopology.productProjection (X : Type*) [TopologicalSpace X] :
     C(SingularHomology.CircleTopology.Circle × X, X) :=
   ContinuousMap.snd
 
+/-- The zero-section inclusion of `X` into the product. -/
 def SingularHomology.CircleTopology.productSection (X : Type*) [TopologicalSpace X] :
     C(X, SingularHomology.CircleTopology.Circle × X) :=
   (ContinuousMap.const X (0 : SingularHomology.CircleTopology.Circle)).prodMk
     (ContinuousMap.id X)
 
+/-- The projection splits the section. -/
 @[simp]
 theorem SingularHomology.CircleTopology.productProjection_comp_productSection (X : Type*)
     [TopologicalSpace X] : (productProjection X).comp (productSection X) = ContinuousMap.id X :=
   rfl
 
+/-- The inclusion of the product `U`. -/
 def SingularHomology.CircleTopology.productUInclusion (X : Type*) [TopologicalSpace X] :
     C(productU X, SingularHomology.CircleTopology.Circle × X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- The inclusion of the product `V`. -/
 def SingularHomology.CircleTopology.productVInclusion (X : Type*) [TopologicalSpace X] :
     C(productV X, SingularHomology.CircleTopology.Circle × X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- The intersection inclusion into `U`. -/
 def SingularHomology.CircleTopology.productIntersectionToU (X : Type*)
     [TopologicalSpace X] : C(↥(productU X ∩ productV X), productU X) :=
   ⟨fun z => ⟨z.val, z.property.1⟩, continuous_subtype_val.subtype_mk _⟩
 
+/-- The intersection inclusion into `V`. -/
 def SingularHomology.CircleTopology.productIntersectionToV (X : Type*)
     [TopologicalSpace X] : C(↥(productU X ∩ productV X), productV X) :=
   ⟨fun z => ⟨z.val, z.property.2⟩, continuous_subtype_val.subtype_mk _⟩
 
+/-- The fold `X ⊕ X → X`. -/
 def SingularHomology.CircleTopology.foldMap (X : Type*) [TopologicalSpace X] :
     C(X ⊕ X, X) :=
   ⟨Sum.elim id id, continuous_id.sumElim continuous_id⟩
 
+/-- The preimage of a circle subset is `S × X`. -/
 def SingularHomology.CircleTopology.productArcHomeomorph (X : Type*) [TopologicalSpace X]
     (S : Set SingularHomology.CircleTopology.Circle) :
     ↥(Prod.fst ⁻¹' S : Set (SingularHomology.CircleTopology.Circle × X)) ≃ₜ S × X
@@ -427,18 +483,22 @@ def SingularHomology.CircleTopology.productArcHomeomorph (X : Type*) [Topologica
   continuous_invFun :=
     ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd).subtype_mk _
 
+/-- The product `U` is `arcU × X`. -/
 def SingularHomology.CircleTopology.productUHomeomorph (X : Type*) [TopologicalSpace X] :
     productU X ≃ₜ arcU × X :=
   productArcHomeomorph X arcU
 
+/-- The product `V` is `arcV × X`. -/
 def SingularHomology.CircleTopology.productVHomeomorph (X : Type*) [TopologicalSpace X] :
     productV X ≃ₜ arcV × X :=
   productArcHomeomorph X arcV
 
+/-- The product intersection is `(arcU ∩ arcV) × X`. -/
 def SingularHomology.CircleTopology.productIntersectionArcHomeomorph (X : Type*)
     [TopologicalSpace X] : ↥(productU X ∩ productV X) ≃ₜ ↥(arcU ∩ arcV) × X :=
   productArcHomeomorph X (arcU ∩ arcV)
 
+/-- The product intersection is two interval products. -/
 def SingularHomology.CircleTopology.productIntersectionHomeomorph (X : Type*)
     [TopologicalSpace X] :
     ↥(productU X ∩ productV X) ≃ₜ (Set.Ioo (0 : ℝ) (1 / 2) × X) ⊕ (Set.Ioo (1 / 2 : ℝ) 1 × X) :=
@@ -446,20 +506,24 @@ def SingularHomology.CircleTopology.productIntersectionHomeomorph (X : Type*)
         (intersectionHomeomorph.prodCongr (Homeomorph.refl X))).trans
     Homeomorph.sumProdDistrib
 
+/-- The product `U` is homotopy equivalent to `X`. -/
 def SingularHomology.CircleTopology.productUHomotopyEquiv (X : Type*)
     [TopologicalSpace X] : productU X ≃ₕ X :=
   (productUHomeomorph X).toHomotopyEquiv.trans (contractibleProdHomotopyEquiv arcU X)
 
+/-- The product `V` is homotopy equivalent to `X`. -/
 def SingularHomology.CircleTopology.productVHomotopyEquiv (X : Type*)
     [TopologicalSpace X] : productV X ≃ₕ X :=
   (productVHomeomorph X).toHomotopyEquiv.trans (contractibleProdHomotopyEquiv arcV X)
 
+/-- The product intersection is homotopy equivalent to `X ⊕ X`. -/
 def SingularHomology.CircleTopology.productIntersectionHomotopyEquiv (X : Type*)
     [TopologicalSpace X] : ↥(productU X ∩ productV X) ≃ₕ X ⊕ X :=
   (productIntersectionHomeomorph X).toHomotopyEquiv.trans
     (sumHomotopyEquiv (contractibleProdHomotopyEquiv (Set.Ioo (0 : ℝ) (1 / 2)) X)
       (contractibleProdHomotopyEquiv (Set.Ioo (1 / 2 : ℝ) 1) X))
 
+/-- The fold of the intersection equivalence is the `X` coordinate. -/
 @[simp]
 theorem SingularHomology.CircleTopology.productIntersectionHomotopyEquiv_fold (X : Type*)
     [TopologicalSpace X] (z : ↥(productU X ∩ productV X)) :
@@ -473,6 +537,7 @@ theorem SingularHomology.CircleTopology.productIntersectionHomotopyEquiv_fold (X
       z.val.2
   cases h : intersectionHomeomorph c <;> rfl
 
+/-- The `U` intersection map is the fold. -/
 theorem SingularHomology.CircleTopology.productIntersectionToU_fold (X : Type*)
     [TopologicalSpace X] :
     (productUHomotopyEquiv X).toFun.comp (productIntersectionToU X) =
@@ -481,6 +546,7 @@ theorem SingularHomology.CircleTopology.productIntersectionToU_fold (X : Type*)
   intro z
   exact (productIntersectionHomotopyEquiv_fold X z).symm
 
+/-- The `V` intersection map is the fold. -/
 theorem SingularHomology.CircleTopology.productIntersectionToV_fold (X : Type*)
     [TopologicalSpace X] :
     (productVHomotopyEquiv X).toFun.comp (productIntersectionToV X) =
@@ -489,36 +555,42 @@ theorem SingularHomology.CircleTopology.productIntersectionToV_fold (X : Type*)
   intro z
   exact (productIntersectionHomotopyEquiv_fold X z).symm
 
+/-- The real coordinate of a product `U` point. -/
 def SingularHomology.CircleTopology.productUCoordinate (X : Type*) [TopologicalSpace X] :
     C(productU X, ℝ) :=
   ⟨fun z => (arcUHomeomorph ((productUHomeomorph X z).1) : ℝ),
     continuous_subtype_val.comp
       (arcUHomeomorph.continuous.comp (productUHomeomorph X).continuous.fst)⟩
 
+/-- The real coordinate of a product `V` point. -/
 def SingularHomology.CircleTopology.productVCoordinate (X : Type*) [TopologicalSpace X] :
     C(productV X, ℝ) :=
   ⟨fun z => (arcVHomeomorph ((productVHomeomorph X z).1) : ℝ),
     continuous_subtype_val.comp
       (arcVHomeomorph.continuous.comp (productVHomeomorph X).continuous.fst)⟩
 
+/-- The `U` coordinate coerces back to the circle component. -/
 @[simp]
 theorem SingularHomology.CircleTopology.productUCoordinate_coe (X : Type*)
     [TopologicalSpace X] (z : productU X) :
     ((productUCoordinate X z : ℝ) : SingularHomology.CircleTopology.Circle) = z.val.1 :=
   arcUHomeomorph_coe _
 
+/-- The `V` coordinate coerces back to the circle component. -/
 @[simp]
 theorem SingularHomology.CircleTopology.productVCoordinate_coe (X : Type*)
     [TopologicalSpace X] (z : productV X) :
     ((productVCoordinate X z : ℝ) : SingularHomology.CircleTopology.Circle) = z.val.1 :=
   arcVHomeomorph_coe _
 
+/-- The `U` inclusion is homotopic to the section factorization. -/
 def SingularHomology.CircleTopology.productUInclusionHomotopy (X : Type*)
     [TopologicalSpace X] :
     (productUInclusion X).Homotopy ((productSection X).comp (productUHomotopyEquiv X).toFun) :=
   circleProductLiftContraction (productUInclusion X) (productUCoordinate X)
     (productUCoordinate_coe X)
 
+/-- The `V` inclusion is homotopic to the section factorization. -/
 def SingularHomology.CircleTopology.productVInclusionHomotopy (X : Type*)
     [TopologicalSpace X] :
     (productVInclusion X).Homotopy ((productSection X).comp (productVHomotopyEquiv X).toFun) :=
@@ -534,6 +606,9 @@ def SingularHomology.productArcHomologyEquiv (X : Type) [TopologicalSpace X] (n 
       (homotopyEquivHomologyEquiv (CircleTopology.productVHomotopyEquiv X)
           n).toAddEquiv).toIntLinearEquiv
 
+/-! ### Homology of the product cover -/
+
+/-- The product-intersection homology is two copies of `H_n(X)`. -/
 def SingularHomology.productIntersectionHomologyEquiv (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology
@@ -544,6 +619,7 @@ def SingularHomology.productIntersectionHomologyEquiv (X : Type) [TopologicalSpa
   (homotopyEquivHomologyEquiv (CircleTopology.productIntersectionHomotopyEquiv X) n).trans
     (sumHomologyEquiv X X n)
 
+/-- The equivalence computes through the homotopy equivalence. -/
 @[simp]
 theorem SingularHomology.productIntersectionHomologyEquiv_apply (X : Type)
     [TopologicalSpace X] (n : ℕ)
@@ -580,6 +656,7 @@ theorem SingularHomology.circleProjection_section (X : Type) [TopologicalSpace X
   rw [← singularHomologyMap_comp, CircleTopology.productProjection_comp_productSection,
     singularHomologyMap_id]
 
+/-- The `U` inclusion on homology factors through the section. -/
 theorem SingularHomology.productUInclusion_homology (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (CircleTopology.productUInclusion X) n =
@@ -589,6 +666,7 @@ theorem SingularHomology.productUInclusion_homology (X : Type) [TopologicalSpace
     singularHomologyMap_comp]
   rfl
 
+/-- The `V` inclusion on homology factors through the section. -/
 theorem SingularHomology.productVInclusion_homology (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (CircleTopology.productVInclusion X) n =
@@ -598,12 +676,14 @@ theorem SingularHomology.productVInclusion_homology (X : Type) [TopologicalSpace
     singularHomologyMap_comp]
   rfl
 
+/-- The fold on homology sums the two coordinates. -/
 theorem SingularHomology.productFold_homology (X : Type) [TopologicalSpace X] (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology (X ⊕ X) n) :
     SingularMayerVietoris.singularHomologyMap (CircleTopology.foldMap X) n a =
       (sumHomologyEquiv X X n a).1 + (sumHomologyEquiv X X n a).2 :=
   sumHomologyEquiv_fold n a
 
+/-- The `U` intersection map on homology is the fold. -/
 theorem SingularHomology.productIntersectionToU_homology (X : Type) [TopologicalSpace X]
     (n : ℕ)
     (a :
@@ -624,6 +704,7 @@ theorem SingularHomology.productIntersectionToU_homology (X : Type) [Topological
     CircleTopology.productIntersectionToU_fold, singularHomologyMap_comp]
   exact productFold_homology X n _
 
+/-- The `V` intersection map on homology is the fold. -/
 theorem SingularHomology.productIntersectionToV_homology (X : Type) [TopologicalSpace X]
     (n : ℕ)
     (a :
@@ -644,6 +725,7 @@ theorem SingularHomology.productIntersectionToV_homology (X : Type) [Topological
     CircleTopology.productIntersectionToV_fold, singularHomologyMap_comp]
   exact productFold_homology X n _
 
+/-- The left Mayer–Vietoris map in product coordinates. -/
 theorem SingularHomology.circleProductLeftHomologyMap_apply (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (a :
@@ -668,6 +750,7 @@ theorem SingularHomology.circleProductLeftHomologyMap_apply (X : Type)
       _
   rw [map_neg, productIntersectionToU_homology, productIntersectionToV_homology]
 
+/-- The right Mayer–Vietoris map in product coordinates. -/
 theorem SingularHomology.circleProductRightHomologyMap_apply (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (a :
@@ -685,6 +768,7 @@ theorem SingularHomology.circleProductRightHomologyMap_apply (X : Type)
   rw [productUInclusion_homology, productVInclusion_homology]
   exact (map_add (circleSectionHomology X n) _ _).symm
 
+/-- The Mayer–Vietoris connecting map of the circle product. -/
 abbrev SingularHomology.circleMayerVietorisConnecting (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
@@ -697,12 +781,14 @@ abbrev SingularHomology.circleMayerVietorisConnecting (X : Type) [TopologicalSpa
     (CircleTopology.productV X) (CircleTopology.productU_open X) (CircleTopology.productV_open X)
     (CircleTopology.product_cover X) n
 
+/-- The connecting map in `X × X` coordinates. -/
 def SingularHomology.circleBoundaryCoordinates (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
         (n + 1) →ₗ[ℤ]
       (SingularMayerVietoris.SingularHomology X n × SingularMayerVietoris.SingularHomology X n) :=
   (productIntersectionHomologyEquiv X n).toLinearMap.comp (circleMayerVietorisConnecting X n)
 
+/-- The boundary coordinates have range the fold kernel. -/
 theorem SingularHomology.circleBoundaryCoordinates_range (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     LinearMap.range (circleBoundaryCoordinates X n) =
@@ -740,6 +826,7 @@ theorem SingularHomology.circleBoundaryCoordinates_range (X : Type) [Topological
     change productIntersectionHomologyEquiv X n (circleMayerVietorisConnecting X n b) = a
     rw [hb, LinearEquiv.apply_symm_apply]
 
+/-- The right map has range the section image. -/
 theorem SingularHomology.circleProductRightHomologyMap_range (X : Type)
     [TopologicalSpace X] (n : ℕ) :
     LinearMap.range
@@ -757,6 +844,7 @@ theorem SingularHomology.circleProductRightHomologyMap_range (X : Type)
     rw [circleProductRightHomologyMap_apply, LinearEquiv.apply_symm_apply]
     exact congrArg (circleSectionHomology X n) (add_zero a)
 
+/-- The section image is the boundary-coordinates kernel. -/
 theorem SingularHomology.circleBoundaryCoordinates_ker (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     LinearMap.range (circleSectionHomology X (n + 1)) =
@@ -768,6 +856,7 @@ theorem SingularHomology.circleBoundaryCoordinates_ker (X : Type) [TopologicalSp
       (CircleTopology.product_cover X)]
   exact (circleProductRightHomologyMap_range X (n + 1)).symm
 
+/-- The circle-product boundary `H_{n+1}(S¹ × X) → H_n(X)`. -/
 def SingularHomology.circleBoundary (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
         (n + 1) →ₗ[ℤ]
@@ -775,6 +864,7 @@ def SingularHomology.circleBoundary (X : Type) [TopologicalSpace X] (n : ℕ) :
   (negativeFirstMap (SingularMayerVietoris.SingularHomology X n)).comp
     (circleBoundaryCoordinates X n)
 
+/-- The circle boundary is the negated first coordinate. -/
 @[simp]
 theorem SingularHomology.circleBoundary_apply (X : Type) [TopologicalSpace X] (n : ℕ)
     (a :
@@ -783,11 +873,13 @@ theorem SingularHomology.circleBoundary_apply (X : Type) [TopologicalSpace X] (n
     circleBoundary X n a = -(circleBoundaryCoordinates X n a).1 :=
   rfl
 
+/-- The circle boundary is surjective. -/
 theorem SingularHomology.circleBoundary_surjective (X : Type) [TopologicalSpace X]
     (n : ℕ) : Function.Surjective (circleBoundary X n) :=
   circleBoundary_negativeFirst_surjective (circleBoundaryCoordinates X n)
     (circleBoundaryCoordinates_range X n)
 
+/-- The section image is the boundary kernel. -/
 theorem SingularHomology.circleBoundary_exact (X : Type) [TopologicalSpace X] (n : ℕ) :
     LinearMap.range (circleSectionHomology X (n + 1)) = LinearMap.ker (circleBoundary X n) :=
   (circleBoundaryCoordinates_ker X n).trans
@@ -804,6 +896,7 @@ def SingularHomology.circleProductHomologyEquiv (X : Type) [TopologicalSpace X] 
     (circleBoundaryCoordinates X n) (circleProjection_section X (n + 1))
     (circleBoundaryCoordinates_ker X n) (circleBoundaryCoordinates_range X n)
 
+/-- The product homology equivalence computes the boundary pair. -/
 @[simp]
 theorem SingularHomology.circleProductHomologyEquiv_apply (X : Type) [TopologicalSpace X]
     (n : ℕ)
@@ -814,12 +907,14 @@ theorem SingularHomology.circleProductHomologyEquiv_apply (X : Type) [Topologica
       (circleProjectionHomology X (n + 1) a, circleBoundary X n a) :=
   rfl
 
+/-- A section class maps to `(a, 0)`. -/
 @[simp]
 theorem SingularHomology.circleProductHomologyEquiv_section (X : Type)
     [TopologicalSpace X] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X (n + 1)) :
     circleProductHomologyEquiv X n (circleSectionHomology X (n + 1) a) = (a, 0) :=
   circleSplitExactEquiv_apply_inclusion _ _ _ _ _ _ a
 
+/-- The degree-zero section map is surjective. -/
 theorem SingularHomology.circleSectionHomology_zero_surjective (X : Type)
     [TopologicalSpace X] : Function.Surjective (circleSectionHomology X 0) := by
   intro b
@@ -831,6 +926,7 @@ theorem SingularHomology.circleSectionHomology_zero_surjective (X : Type)
     ⟨(productArcHomologyEquiv X 0 a).1 + (productArcHomologyEquiv X 0 a).2,
       (circleProductRightHomologyMap_apply X 0 a).symm.trans ha⟩
 
+/-- The degree-zero homology of `S¹ × X` is `H_0(X)`. -/
 def SingularHomology.circleProductHomologyZeroEquiv (X : Type) [TopologicalSpace X] :
     SingularMayerVietoris.SingularHomology ((SingularHomology.CircleTopology.Circle) × X)
         0 ≃ₗ[ℤ]
@@ -845,6 +941,9 @@ def SingularHomology.circleProductHomologyZeroEquiv (X : Type) [TopologicalSpace
       congrArg (circleSectionHomology X 0) (LinearMap.congr_fun (circleProjection_section X 0) a)
   right_inv a := LinearMap.congr_fun (circleProjection_section X 0) a
 
+/-! ### Connecting maps and point classes -/
+
+/-- The categorical cycle constructor agrees with the cycle subtype. -/
 theorem SingularMayerVietoris.ModuleHomology.cyclesMk_eq_moduleCatCyclesIso_inv
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) (j : ℕ)
@@ -855,6 +954,7 @@ theorem SingularMayerVietoris.ModuleHomology.cyclesMk_eq_moduleCatCyclesIso_inv
   have h₂ := congrArg (fun f => f.hom c) ((K.sc n).moduleCatCyclesIso_inv_iCycles)
   exact h₁.trans h₂.symm
 
+/-- The cycle class is the homology class of the cycle. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle_of_next
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) (j : ℕ)
@@ -863,6 +963,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle_
   rw [SingularMayerVietoris.homologyClassOfCycle, cyclesMk_eq_moduleCatCyclesIso_inv]
   exact (congrArg (fun f => f.hom c) ((K.sc n).moduleCatCyclesIso_inv_π)).symm
 
+/-- The cycle class equals the homology class at the next index. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) :
@@ -871,6 +972,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle
         (cycle_condition K n c) :=
   cycleClass_eq_homologyClassOfCycle_of_next K n c (n - 1) (next_nat n) (cycle_condition K n c)
 
+/-- The connecting map of a short exact sequence on cycle classes. -/
 theorem SingularHomology.connectingMap_cycleClass
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (c : SingularMayerVietoris.ModuleHomology.Cycle S.X₃ (n + 1)) (z₂ : S.X₂.X (n + 1))
@@ -894,6 +996,7 @@ theorem SingularHomology.connectingMap_cycleClass
       (SingularMayerVietoris.connectingMap_lift_is_cycle hS n z₂ z₁.1 hz₁ _)
   exact (congrArg (SingularMayerVietoris.connectingMap hS n) h₃).trans (hδ.trans h₁.symm)
 
+/-- The Mayer–Vietoris connecting map on small-complex cycle classes. -/
 theorem SingularHomology.smallConnectingMap_cycleClass {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ)
     (c :
@@ -913,6 +1016,7 @@ theorem SingularHomology.smallConnectingMap_cycleClass {X : Type} [TopologicalSp
         (SingularChains.singularComplex (U ∩ V : Set X)) n z₁ :=
   connectingMap_cycleClass (SingularMayerVietoris.chainSequence_shortExact U V) n c z₂ hz₂ z₁ hz₁
 
+/-- The connecting homomorphism on cycle classes. -/
 theorem SingularHomology.connectingHomomorphism_cycleClass {X : Type}
     [TopologicalSpace X] (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     (n : ℕ)
@@ -942,6 +1046,7 @@ theorem SingularHomology.connectingHomomorphism_cycleClass {X : Type}
   rw [SingularMayerVietoris.connectingHomomorphism_comparison]
   exact smallConnectingMap_cycleClass U V n c z₂ hz₂ z₁ hz₁
 
+/-- The zero-cycle of a point. -/
 def SingularHomology.pointCycle {X : Type} [TopologicalSpace X] (x : X) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 0 :=
   SingularMayerVietoris.ModuleHomology.mkCycle (SingularChains.singularComplex X) 0
@@ -955,17 +1060,20 @@ def SingularHomology.pointCycle {X : Type} [TopologicalSpace X] (x : X) :
               (SingularChains.simplexChain X 0 (ContinuousMap.const (SingularChains.Simplex 0) x)))
           h)
 
+/-- The point cycle is the constant 0-simplex chain. -/
 @[simp]
 theorem SingularHomology.pointCycle_val {X : Type} [TopologicalSpace X] (x : X) :
     (pointCycle x).1 =
       SingularChains.simplexChain X 0 (ContinuousMap.const (SingularChains.Simplex 0) x) :=
   rfl
 
+/-- The homology class of a point. -/
 def SingularHomology.pointClass {X : Type} [TopologicalSpace X] (x : X) :
     SingularMayerVietoris.SingularHomology X 0 :=
   SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 0
     (pointCycle x)
 
+/-- Mapping a point cycle gives the image point cycle. -/
 @[simp]
 theorem SingularHomology.mapCycles_pointCycle {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
@@ -984,6 +1092,7 @@ theorem SingularHomology.mapCycles_pointCycle {X Y : Type} [TopologicalSpace X]
   intro t
   rfl
 
+/-- The induced map sends a point class to the image point class. -/
 @[simp]
 theorem SingularHomology.singularHomologyMap_pointClass {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
@@ -996,6 +1105,7 @@ theorem SingularHomology.singularHomologyMap_pointClass {X Y : Type} [Topologica
   rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass, mapCycles_pointCycle]
   rfl
 
+/-- The point cycle as a map from `ℤ` into the cycles. -/
 def SingularHomology.pointCycleLift {X : Type} [TopologicalSpace X]
     (x : X) : ModuleCat.of ℤ ℤ ⟶ (SingularChains.singularComplex X).cycles 0 :=
   (SingularChains.singularComplex X).liftCycles
@@ -1003,6 +1113,7 @@ def SingularHomology.pointCycleLift {X : Type} [TopologicalSpace X]
       (SingularChains.simplexIndex X 0 (ContinuousMap.const (SingularChains.Simplex 0) x)))
     0 (by simp) (by simp)
 
+/-- The point class is the homology image of the cycle lift. -/
 theorem SingularHomology.pointClass_eq_pointCycleLift {X : Type}
     [TopologicalSpace X] (x : X) :
     pointClass x =
@@ -1025,6 +1136,7 @@ theorem SingularHomology.pointClass_eq_pointCycleLift {X : Type}
         0 (by simp) (by simp))
   exact h₁.trans h₂.symm
 
+/-- The augmentation of a point class is `1`. -/
 @[simp]
 theorem SingularHomology.pointClass_augmentation {X : Type} [TopologicalSpace X]
     (x : X) : ((TopCat.of X).singularHomology₀ε (ModuleCat.of ℤ ℤ)).hom (pointClass x) = 1 := by
@@ -1035,12 +1147,14 @@ theorem SingularHomology.pointClass_augmentation {X : Type} [TopologicalSpace X]
         (ModuleCat.of ℤ ℤ)
         (SingularChains.simplexIndex X 0 (ContinuousMap.const (SingularChains.Simplex 0) x)))
 
+/-- The degree-zero equivalence sends a point class to `1`. -/
 @[simp]
 theorem SingularHomology.connectedHomologyZeroEquiv_pointClass {X : Type}
     [TopologicalSpace X] [PathConnectedSpace X] (x : X) :
     connectedHomologyZeroEquiv X (pointClass x) = 1 :=
   pointClass_augmentation x
 
+/-- In a path-connected space every degree-zero class is a multiple of a point class. -/
 theorem SingularHomology.eq_zsmul_pointClass {X : Type} [TopologicalSpace X]
     [PathConnectedSpace X] (x : X) (a : SingularMayerVietoris.SingularHomology X 0) :
     a = connectedHomologyZeroEquiv X a • pointClass x := by
@@ -1048,6 +1162,7 @@ theorem SingularHomology.eq_zsmul_pointClass {X : Type} [TopologicalSpace X]
   rw [map_zsmul, connectedHomologyZeroEquiv_pointClass, zsmul_eq_mul, mul_one]
   simp
 
+/-- The degree-zero equivalence is natural. -/
 theorem SingularHomology.connectedHomologyZeroEquiv_natural {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [PathConnectedSpace X] [PathConnectedSpace Y]
     (f : C(X, Y)) (a : SingularMayerVietoris.SingularHomology X 0) :
@@ -1067,6 +1182,9 @@ theorem SingularHomology.connectedHomologyZeroEquiv_natural {X Y : Type}
         connectedHomologyZeroEquiv_pointClass, zsmul_eq_mul, mul_one]
       simp
 
+/-! ### Circle homology in low degrees -/
+
+/-- The first homology of a contractible-type space is trivial. -/
 def SingularHomology.trivialFirstEquiv (A B : Type*) [AddCommGroup A]
     [AddCommGroup B] [Module ℤ B] [Subsingleton A] : (A × B) ≃ₗ[ℤ] B :=
   ({    toFun a := a.2
@@ -1075,6 +1193,7 @@ def SingularHomology.trivialFirstEquiv (A B : Type*) [AddCommGroup A]
         right_inv _ := rfl
         map_add' _ _ := rfl } : (A × B) ≃+ B).toIntLinearEquiv
 
+/-- The first homology of the circle is `ℤ`. -/
 def SingularHomology.circleHomologyOneEquiv :
     SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle)
         1 ≃ₗ[ℤ]
@@ -1089,6 +1208,7 @@ def SingularHomology.circleHomologyOneEquiv :
             (SingularMayerVietoris.SingularHomology Unit 0)).trans
         pointHomologyZeroEquiv)
 
+/-- The circle `H₁` equivalence computes the class. -/
 theorem SingularHomology.circleHomologyOneEquiv_apply
     (a :
       SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle)
@@ -1101,6 +1221,7 @@ theorem SingularHomology.circleHomologyOneEquiv_apply
             a)) :=
   rfl
 
+/-- The higher homology of the circle is trivial. -/
 theorem SingularHomology.circle_homology_subsingleton (n : ℕ) :
     Subsingleton
       (SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle)
