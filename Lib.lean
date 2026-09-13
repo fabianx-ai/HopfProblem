@@ -75,6 +75,7 @@ import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.CutTransport
+import Lib.Geometry.Manifold.Morse.MiddleBlocks
 import Lib.Algebra.Group.Filtration
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
