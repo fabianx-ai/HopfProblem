@@ -1660,7 +1660,7 @@ theorem SingularHomology.crossProductCycleClasses_boundary_left {X Y : Type}
   apply
     (SingularMayerVietoris.ModuleHomology.cycleClass_eq_zero_iff
         (SingularChains.singularComplex (X × Y)) (n + 1) _).mpr
-  refine ⟨PeriodTorusHigherHomology.crossProductTriangle X Y n a b.1, ?_⟩
+  refine ⟨SingularHomology.crossProductTriangle X Y n a b.1, ?_⟩
   exact
     SingularHomology.crossProductTriangle_boundary_of_right_cycle n a b.1
       (SingularMayerVietoris.ModuleHomology.cycle_condition (SingularChains.singularComplex Y) n b)
