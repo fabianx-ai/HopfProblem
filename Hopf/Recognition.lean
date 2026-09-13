@@ -162,6 +162,8 @@ import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
+import Lib.AlgebraicTopology.Hurewicz.DegreeSix
+import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 
 set_option maxSynthPendingDepth 3
 
@@ -175,129 +177,6 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 universe u v
 
 noncomputable section
-
-def SixthHurewicz.fundamentalCubeChain : FirstHurewicz.Chains (Fin 6 → (unitInterval)) 6 :=
-  HigherHurewicz.fundamentalCubeChain 6
-
-def SixthHurewicz.cubeChain {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 6) X x) :
-    FirstHurewicz.Chains X 6 :=
-  HigherHurewicz.cubeChain p
-
-theorem SixthHurewicz.cubeChain_eq_induced {X : Type} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) :
-    cubeChain p = FirstHurewicz.inducedChain p.val 6 fundamentalCubeChain :=
-  rfl
-
-def SixthHurewicz.cubeCycle {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 6) X x) :
-    SingularMayerVietoris.ModuleHomology.Cycle (FirstHurewicz.singularComplex X) 6 :=
-  HigherHurewicz.cubeCycle p
-
-@[simp]
-theorem SixthHurewicz.cubeCycle_val {X : Type} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : (cubeCycle p).1 = cubeChain p :=
-  rfl
-
-def SixthHurewicz.cubeHomologyClass {X : Type} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : SingularMayerVietoris.SingularHomology X 6 :=
-  HigherHurewicz.cubeHomologyClass p
-
-theorem SixthHurewicz.cubeHomologyClass_homotopic {X : Type} [TopologicalSpace X] {x : X}
-    {p q : GenLoop (Fin 6) X x} (h : GenLoop.Homotopic p q) :
-    cubeHomologyClass p = cubeHomologyClass q :=
-  HigherHurewicz.cubeHomologyClass_homotopic h
-
-def SixthHurewicz.homotopyMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
-    (x : X) : π_ 6 X x →* π_ 6 Y (f x) :=
-  Hurewicz.homotopyMap f x
-
-def SixthHurewicz.hurewiczFunction {X : Type} [TopologicalSpace X] (x : X) :
-    π_ 6 X x → SingularMayerVietoris.SingularHomology X 6 :=
-  HigherHurewicz.hurewiczFunction (m := 4) x
-
-def SixthHurewicz.hurewiczPi6 {X : Type} [TopologicalSpace X] (x : X) :
-    π_ 6 X x →* Multiplicative (SingularMayerVietoris.SingularHomology X 6) :=
-  HigherHurewicz.hurewiczPi (m := 4) x
-
-def SixthHurewicz.hurewiczMap {X : Type} [TopologicalSpace X] (x : X) :
-    Additive (π_ 6 X x) →ₗ[ℤ] SingularMayerVietoris.SingularHomology X 6 :=
-  HigherHurewicz.hurewiczMap (m := 4) x
-
-theorem SixthHurewicz.hurewiczMap_representative {X : Type} [TopologicalSpace X] (x : X)
-    (p : GenLoop (Fin 6) X x) :
-    hurewiczMap x (Additive.ofMul (⟦p⟧ : π_ 6 X x)) =
-      SingularMayerVietoris.ModuleHomology.cycleClass (FirstHurewicz.singularComplex X) 6
-        (cubeCycle p) :=
-  rfl
-
-def SixthHurewicz.hurewiczInverse {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
-    [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] :
-    SingularMayerVietoris.SingularHomology X 6 →ₗ[ℤ] Additive (π_ 6 X x) :=
-  HigherHurewicz.hurewiczInverse (m := 3) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def SixthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] :
-    Additive (π_ 6 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 6 :=
-  HigherHurewicz.hurewiczLinearEquiv (m := 3) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def SixthHurewicz.hurewiczPi6Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] :
-    π_ 6 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 6)
-    where
-  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
-  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
-  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
-  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
-  map_mul' a b := by
-    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
-    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
-
-theorem SixthHurewicz.cubeChain_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
-    FirstHurewicz.inducedChain f 6 (cubeChain p) = cubeChain (SecondHurewicz.mapGenLoop f x p) :=
-  Hurewicz.cubeChain_natural f x p
-
-theorem SixthHurewicz.cubeCycle_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
-    SingularMayerVietoris.ModuleHomology.mapCycles (FirstHurewicz.singularChainMap f) 6
-        (cubeCycle p) =
-      cubeCycle (SecondHurewicz.mapGenLoop f x p) :=
-  Hurewicz.cubeCycle_natural f x p
-
-theorem SixthHurewicz.cubeHomologyClass_natural {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
-    SingularMayerVietoris.singularHomologyMap f 6 (cubeHomologyClass p) =
-      cubeHomologyClass (SecondHurewicz.mapGenLoop f x p) :=
-  Hurewicz.cubeHomologyClass_natural f x p
-
-theorem SixthHurewicz.hurewiczFunction_natural {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : π_ 6 X x) :
-    SingularMayerVietoris.singularHomologyMap f 6 (hurewiczFunction x a) =
-      hurewiczFunction (f x) (homotopyMap f x a) :=
-  Hurewicz.hurewiczFunction_natural f x a
-
-theorem SixthHurewicz.hurewiczMap_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (f : C(X, Y)) (x : X) (a : Additive (π_ 6 X x)) :
-    SingularMayerVietoris.singularHomologyMap f 6 (hurewiczMap x a) =
-      hurewiczMap (f x) ((homotopyMap f x).toAdditive a) :=
-  Hurewicz.hurewiczMap_natural f x a
-
-theorem SixthHurewicz.hurewiczLinearEquiv_natural {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y] (f : C(X, Y)) (x : X)
-    [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] [Subsingleton (π_ 2 Y (f x))] [Subsingleton (π_ 3 Y (f x))]
-    [Subsingleton (π_ 4 Y (f x))] [Subsingleton (π_ 5 Y (f x))] (a : Additive (π_ 6 X x)) :
-    SingularMayerVietoris.singularHomologyMap f 6 (hurewiczLinearEquiv x a) =
-      hurewiczLinearEquiv (f x) ((homotopyMap f x).toAdditive a) :=
-  Hurewicz.hurewiczLinearEquiv_natural f x
-    (by intro j hj hjn; interval_cases j <;> infer_instance)
-    (by intro j hj hjn; interval_cases j <;> infer_instance) a
 
 
 abbrev SixSphereCube.CubeInterior :=
@@ -5720,121 +5599,6 @@ theorem ManifoldMorse.MorseSurgeryData.collapseSphereConnecting_sum {E M : Type}
   rw [← LinearMap.comp_apply, ← PeriodTorusHigherHomology.singularHomologyMap_comp]
   rfl
 
-theorem CoverOverlapHomology.homologyEquiv_symm_single {X : Type} [TopologicalSpace X]
-    {ι : Type} [Fintype ι] [DecidableEq ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
-    (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (k : ℕ) (i : ι)
-    (a : SingularMayerVietoris.SingularHomology (↥(U ∩ V i)) k) :
-    (homologyEquiv U V hU hV hd k).symm (Pi.single i a) =
-      SingularMayerVietoris.singularHomologyMap (componentInclusion U V i) k a := by
-  rw [homologyEquiv_symm_apply, Finset.sum_eq_single i]
-  · rw [Pi.single_eq_same]
-  · intro j _ hji
-    rw [Pi.single_eq_of_ne hji, map_zero]
-  · simp
-
-theorem CoverOverlapHomology.homologyEquiv_inclusion {X : Type} [TopologicalSpace X]
-    {ι : Type} [Fintype ι] [DecidableEq ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
-    (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (k : ℕ) (i : ι)
-    (a : SingularMayerVietoris.SingularHomology (↥(U ∩ V i)) k) :
-    homologyEquiv U V hU hV hd k
-        (SingularMayerVietoris.singularHomologyMap (componentInclusion U V i) k a) =
-      Pi.single i a := by
-  apply (homologyEquiv U V hU hV hd k).symm.injective
-  rw [LinearEquiv.symm_apply_apply, homologyEquiv_symm_single]
-
-def CoverOverlapHomology.componentMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
-    (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) (i : ι) :
-    C(↥(U ∩ V i), ↥(U' ∩ V' i)) :=
-  CoverNaturality.mapOn f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
-
-def CoverOverlapHomology.overlapMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
-    (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) :
-    C(↥(U ∩ ⋃ i, V i), ↥(U' ∩ ⋃ i, V' i)) :=
-  CoverNaturality.mapOn f _ _
-    (by
-      intro x hx
-      obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx.2
-      exact ⟨hfU hx.1, Set.mem_iUnion.mpr ⟨i, hfV i hi⟩⟩)
-
-theorem CoverOverlapHomology.overlapMap_component {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y)
-    (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) (i : ι) :
-    (overlapMap U V U' V' f hfU hfV).comp (componentInclusion U V i) =
-      (componentInclusion U' V' i).comp (componentMap U V U' V' f hfU hfV i) :=
-  rfl
-
-theorem CoverOverlapHomology.homologyEquiv_map {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y)
-    (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) [Fintype ι]
-    (hU : IsOpen U) (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (hU' : IsOpen U')
-    (hV' : ∀ i, IsOpen (V' i)) (hd' : Pairwise (Disjoint on V')) (k : ℕ)
-    (a : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) k) :
-    homologyEquiv U' V' hU' hV' hd' k
-        (SingularMayerVietoris.singularHomologyMap (overlapMap U V U' V' f hfU hfV) k a) =
-      fun i =>
-      SingularMayerVietoris.singularHomologyMap (componentMap U V U' V' f hfU hfV i) k
-        (homologyEquiv U V hU hV hd k a i) := by
-  apply (homologyEquiv U' V' hU' hV' hd' k).symm.injective
-  rw [LinearEquiv.symm_apply_apply, homologyEquiv_symm_apply, homology_map_out U V hU hV hd]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [overlapMap_component, PeriodTorusHigherHomology.singularHomologyMap_comp,
-    LinearMap.comp_apply]
-
-theorem CoverLocalContributions.componentConnecting_enlarge {X : Type} [TopologicalSpace X]
-    {ι : Type} [Fintype ι] (U U' : Set X) (V : ι → Set X) (hU : IsOpen U) (hU' : IsOpen U')
-    (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
-    (hsub : U ⊆ U') (i : ι) (hci : U' ∪ V i = Set.univ) (k : ℕ)
-    (a : SingularMayerVietoris.SingularHomology X (k + 1)) :
-    SingularMayerVietoris.singularHomologyMap
-        (CoverOverlapHomology.componentMap U V U' V (ContinuousMap.id X) hsub
-          (fun _ _ hx => hx) i)
-        k (componentConnecting U V hU hV hd hc k a i) =
-      SingularMayerVietoris.connectingHomomorphism U' (V i) hU' (hV i) hci k a := by
-  classical
-  have hc' : U' ∪ (⋃ j, V j) = Set.univ := by
-    apply Set.eq_univ_of_forall
-    intro x
-    have hx : x ∈ U ∪ (⋃ j, V j) := hc.symm ▸ Set.mem_univ x
-    exact hx.elim (fun hu => Or.inl (hsub hu)) Or.inr
-  have hbig :=
-    CoverNaturality.connecting_naturality_apply U (⋃ j, V j) U' (⋃ j, V j)
-      (ContinuousMap.id X) hsub (fun _ hx => hx) hU (isOpen_iUnion hV) hc hU' (isOpen_iUnion hV)
-      hc' k a
-  rw [PeriodTorusHigherHomology.singularHomologyMap_id, LinearMap.id_apply] at hbig
-  change
-    SingularMayerVietoris.singularHomologyMap
-        (CoverOverlapHomology.overlapMap U V U' V (ContinuousMap.id X) hsub
-          (fun _ _ hx => hx))
-        k
-        (SingularMayerVietoris.connectingHomomorphism U (⋃ j, V j) hU (isOpen_iUnion hV) hc k a) =
-      SingularMayerVietoris.connectingHomomorphism U' (⋃ j, V j) hU' (isOpen_iUnion hV) hc' k
-        a at hbig
-  have hcoord :=
-    congrArg (fun b => CoverOverlapHomology.homologyEquiv U' V hU' hV hd k b i) hbig
-  have hnat :=
-    congrFun
-      (CoverOverlapHomology.homologyEquiv_map U V U' V (ContinuousMap.id X) hsub
-        (fun _ _ hx => hx) hU hV hd hU' hV hd k
-        (SingularMayerVietoris.connectingHomomorphism U (⋃ j, V j) hU (isOpen_iUnion hV) hc k a))
-      i
-  rw [hnat] at hcoord
-  have hsmall :=
-    CoverNaturality.connecting_naturality_apply U' (V i) U' (⋃ j, V j) (ContinuousMap.id X)
-      (fun _ hx => hx) (Set.subset_iUnion V i) hU' (hV i) hci hU' (isOpen_iUnion hV) hc' k a
-  rw [PeriodTorusHigherHomology.singularHomologyMap_id, LinearMap.id_apply] at hsmall
-  change
-    SingularMayerVietoris.singularHomologyMap
-        (CoverOverlapHomology.componentInclusion U' V i) k
-        (SingularMayerVietoris.connectingHomomorphism U' (V i) hU' (hV i) hci k a) =
-      SingularMayerVietoris.connectingHomomorphism U' (⋃ j, V j) hU' (isOpen_iUnion hV) hc' k
-        a at hsmall
-  have hsingle :=
-    congrArg (fun b => CoverOverlapHomology.homologyEquiv U' V hU' hV hd k b i) hsmall
-  rw [CoverOverlapHomology.homologyEquiv_inclusion, Pi.single_eq_same] at hsingle
-  exact hcoord.trans hsingle.symm
 
 def LocalDegree.SeparatedNeighborhoods.pointComplementInclusion {E F M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -7076,7 +6840,6 @@ theorem MorseCancellation.critical_pair_of_surgery_count_two {E M : Type} [Norme
     rcases Set.mem_insert_iff.mp hz with hp | hq
     · exact hp ▸ p.property
     · exact (Set.mem_singleton_iff.mp hq) ▸ q.property
-
 
 
 end

@@ -80,6 +80,7 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Lib.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
@@ -108,6 +109,7 @@ import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.PathClass
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
+import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 
 /-!
 # Reusable V10 Section 6 library
