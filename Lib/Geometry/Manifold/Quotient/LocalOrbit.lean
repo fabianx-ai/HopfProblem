@@ -177,3 +177,13 @@ theorem LocalOrbitQuotient.localToImage_injective {G X : Type*} [Group G] [Topol
   obtain ⟨g, hg⟩ := Quotient.exact hxy
   have hgH : g ∈ H := hreturn g ⟨x, ⟨y, y.property, hg⟩, x.property⟩
   exact (localProjection_eq_iff H U hU x y).mpr ⟨⟨g, hgH⟩, hg⟩
+
+def LocalOrbitQuotient.localHomeomorph {G X : Type*} [Group G] [TopologicalSpace X]
+    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
+    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X]
+    (hreturn : ∀ g : G, (((g • ·) '' (U : Set X)) ∩ U).Nonempty → g ∈ H) :
+    LocalQuotient H U hU ≃ₜ imageOpen (G := G) U :=
+  Equiv.toHomeomorphOfContinuousOpen
+    (Equiv.ofBijective (localToImage H U hU)
+      ⟨localToImage_injective H U hU hreturn, localToImage_surjective H U hU⟩)
+    (localToImage_continuous H U hU) (localToImage_isOpenMap H U hU)

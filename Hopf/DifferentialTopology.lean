@@ -100,21 +100,4 @@ attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    (p q : ManifoldMorse.criticalPoints E f)
-    (hconsecutive : ∀ r : ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))
-    {a b : ℝ} (ha : f p < a) (hb : b < f q) :
-    ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f := by
-  intro z hz hcrit
-  exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
-
-theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
-    (C : Z →L[ℝ] F) (h : Function.Bijective (G.coprod C)) : (G.coprod C).IsInvertible := by
-  let e := (LinearEquiv.ofBijective (G.coprod C).toLinearMap h).toContinuousLinearEquiv
-  exact ⟨e, rfl⟩
-
-
 end

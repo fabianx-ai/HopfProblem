@@ -246,3 +246,189 @@ def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [Ad
     · rw [h]
       exact h12 _ _
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [TopologicalSpace G]
+    [TopologicalSpace H] [AddCommGroup G] [AddCommGroup H] [IsTopologicalAddGroup G]
+    [IsTopologicalAddGroup H] (f : C(G, H)) (hf : ∀ x y, f (x + y) = f x + f y) (n : ℕ)
+    (a : SingularMayerVietoris.SingularHomology G 1)
+    (b : SingularMayerVietoris.SingularHomology G n) :
+    SingularMayerVietoris.singularHomologyMap f (n + 1) (product G n a b) =
+      product H n (SingularMayerVietoris.singularHomologyMap f 1 a)
+        (SingularMayerVietoris.singularHomologyMap f n b) :=
+  (LinearMap.congr_fun (addition_homology_natural f hf (n + 1))
+        (SingularHomology.crossProductHomology G G n a b)).trans
+    (congrArg (SingularMayerVietoris.singularHomologyMap (additionMap H) (n + 1))
+      (PeriodTorusHigherHomology.crossProductHomology_natural f f n a b))
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_natural {G H : Type}
+    [TopologicalSpace G] [TopologicalSpace H] [AddCommGroup G] [AddCommGroup H]
+    [IsTopologicalAddGroup G] [IsTopologicalAddGroup H] (f : C(G, H))
+    (hf : ∀ x y, f (x + y) = f x + f y) (a b c : SingularMayerVietoris.SingularHomology G 1) :
+    SingularMayerVietoris.singularHomologyMap f 3 (tripleProduct G a b c) =
+      tripleProduct H (SingularMayerVietoris.singularHomologyMap f 1 a)
+        (SingularMayerVietoris.singularHomologyMap f 1 b)
+        (SingularMayerVietoris.singularHomologyMap f 1 c) := by
+  change
+    SingularMayerVietoris.singularHomologyMap f 3 (product G 2 a (product G 1 b c)) =
+      product H 2 (SingularMayerVietoris.singularHomologyMap f 1 a)
+        (product H 1 (SingularMayerVietoris.singularHomologyMap f 1 b)
+          (SingularMayerVietoris.singularHomologyMap f 1 c))
+  rw [product_natural f hf 2, product_natural f hf 1]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    (a b c : SingularMayerVietoris.SingularHomology G 1) :
+    tripleProduct G a b c =
+      SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) 3
+        (SingularHomology.crossProductHomology G (G × G) 2 a
+          (SingularHomology.crossProductHomology G G 1 b c)) := by
+  have h :=
+    PeriodTorusHigherHomology.crossProductHomology_natural (ContinuousMap.id G) (additionMap G) 2
+      a (SingularHomology.crossProductHomology G G 1 b c)
+  change
+    SingularMayerVietoris.singularHomologyMap ((ContinuousMap.id G).prodMap (additionMap G)) 3
+        (SingularHomology.crossProductHomology G (G × G) 2 a
+          (SingularHomology.crossProductHomology G G 1 b c)) =
+      SingularHomology.crossProductHomology G G 2
+        (SingularMayerVietoris.singularHomologyMap (ContinuousMap.id G) 1 a)
+        (SingularMayerVietoris.singularHomologyMap (additionMap G) 2
+          (SingularHomology.crossProductHomology G G 1 b c)) at h
+  rw [SingularHomology.singularHomologyMap_id, LinearMap.id_apply] at h
+  calc
+    tripleProduct G a b c =
+        SingularMayerVietoris.singularHomologyMap (additionMap G) 3
+          (SingularHomology.crossProductHomology G G 2 a
+            (SingularMayerVietoris.singularHomologyMap (additionMap G) 2
+              (SingularHomology.crossProductHomology G G 1 b c))) :=
+      rfl
+    _ =
+        SingularMayerVietoris.singularHomologyMap (additionMap G) 3
+          (SingularMayerVietoris.singularHomologyMap
+            ((ContinuousMap.id G).prodMap (additionMap G)) 3
+            (SingularHomology.crossProductHomology G (G × G) 2 a
+              (SingularHomology.crossProductHomology G G 1 b c))) :=
+      (congrArg (SingularMayerVietoris.singularHomologyMap (additionMap G) 3) h.symm)
+    _ = _ :=
+      (LinearMap.congr_fun
+          (SingularHomology.singularHomologyMap_comp
+            ((ContinuousMap.id G).prodMap (additionMap G)) (additionMap G) 3)
+          (SingularHomology.crossProductHomology G (G × G) 2 a
+            (SingularHomology.crossProductHomology G G 1 b c))).symm
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.product11_skew (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    (a b : SingularMayerVietoris.SingularHomology G 1) : product11 G a b = -product11 G b a :=
+  PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute (additionMap G)
+    (by ext p; exact add_comm p.2 p.1) a b
+
+theorem PeriodTorusHigherHomologyPontryagin.product11_self (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (a : SingularMayerVietoris.SingularHomology G 1) : product11 G a a = 0 :=
+  skewBilinear_diagonal_zero (product11 G) (product11_skew G) a
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+def PeriodTorusHigherHomologyPontryagin.homologyAlternatingTwo (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
+    AlternatingMap ℤ (SingularMayerVietoris.SingularHomology G 1)
+      (SingularMayerVietoris.SingularHomology G 2) (Fin 2) :=
+  alternatingOfBilinear (product11 G) (product11_self G)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+def PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
+    (⋀[ℤ]^2 (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology G 2 :=
+  exteriorPower.alternatingMapLinearEquiv (homologyAlternatingTwo G)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+@[simp]
+theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo_apply_ιMulti (G : Type)
+    [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (v : Fin 2 → SingularMayerVietoris.SingularHomology G 1) :
+    homologyWedgeTwo G (exteriorPower.ιMulti ℤ 2 v) = product11 G (v 0) (v 1) :=
+  exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_cyclic (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    (a b c : SingularMayerVietoris.SingularHomology G 1) :
+    tripleProduct G a b c = tripleProduct G b c a := by
+  rw [tripleProduct_eq_cross G a b c, tripleProduct_eq_cross G b c a,
+    PeriodTorusHigherHomology.crossProductHomology_cyclic]
+  have he : PeriodTorusHigherHomology.crossProductCyclicMap G G G = cyclicMap G G G := by
+    apply ContinuousMap.ext
+    intro p
+    rfl
+  rw [he]
+  exact
+    LinearMap.congr_fun (rightAddition_homology_cyclic G 3)
+      (SingularHomology.crossProductHomology G (G × G) 2 b
+        (SingularHomology.crossProductHomology G G 1 c a))
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self12 (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (a b : SingularMayerVietoris.SingularHomology G 1) : tripleProduct G a b b = 0 := by
+  rw [tripleProduct_apply, product11_self, map_zero]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self02 (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (a b : SingularMayerVietoris.SingularHomology G 1) : tripleProduct G a b a = 0 :=
+  (tripleProduct_cyclic G a b a).trans (tripleProduct_self12 G b a)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self01 (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (a b : SingularMayerVietoris.SingularHomology G 1) : tripleProduct G a a b = 0 :=
+  (tripleProduct_cyclic G a a b).trans (tripleProduct_self02 G a b)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+def PeriodTorusHigherHomologyPontryagin.homologyAlternatingThree (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
+    AlternatingMap ℤ (SingularMayerVietoris.SingularHomology G 1)
+      (SingularMayerVietoris.SingularHomology G 3) (Fin 3) :=
+  alternatingOfTrilinear (tripleProduct G) (tripleProduct_self01 G) (tripleProduct_self02 G)
+    (tripleProduct_self12 G)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+def PeriodTorusHigherHomologyPontryagin.homologyWedgeThree (G : Type) [TopologicalSpace G]
+    [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
+    (⋀[ℤ]^3 (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology G 3 :=
+  exteriorPower.alternatingMapLinearEquiv (homologyAlternatingThree G)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+@[simp]
+theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeThree_apply_ιMulti (G : Type)
+    [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+    [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
+    (v : Fin 3 → SingularMayerVietoris.SingularHomology G 1) :
+    homologyWedgeThree G (exteriorPower.ιMulti ℤ 3 v) = tripleProduct G (v 0) (v 1) (v 2) :=
+  exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _

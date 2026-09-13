@@ -134,6 +134,8 @@ import Lib.Topology.Covering.InvariantSubset
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.Topology.Covering.Quotient
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
+import Lib.AlgebraicTopology.SingularHomology.FirstHurewicz
+import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
 
 set_option maxSynthPendingDepth 3
 
@@ -148,174 +150,13 @@ universe u v
 
 noncomputable section
 
-theorem FirstHurewicz.basedLoopClass_triangleFacePath {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) (i : Fin 3) :
-    basedLoopClass r (triangleFacePath σ i) =
-      basedLoopClass r (simplexPath (σ.comp (simplexFace 1 i))) :=
-  basedLoopClass_cast r (simplexPath (σ.comp (simplexFace 1 i))) _ _
-
-theorem FirstHurewicz.edgeLoopCochain_boundaryTwo_simplex {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) :
-    edgeLoopCochain r (boundaryTwo X (simplexChain X 2 σ)) = 0 := by
-  simp only [boundaryTwo_simplex, map_add, map_sub, edgeLoopCochain_simplex]
-  change
-    basedLoopClass r (simplexPath (σ.comp (simplexFace 1 0))) -
-          basedLoopClass r (simplexPath (σ.comp (simplexFace 1 1))) +
-        basedLoopClass r (simplexPath (σ.comp (simplexFace 1 2))) =
-      0
-  have he :=
-    congrArg₂ (fun a c : AbelianPi1 X b => a + c)
-      (congrArg₂ (fun a c : AbelianPi1 X b => a - c) (basedLoopClass_triangleFacePath r σ 0)
-        (basedLoopClass_triangleFacePath r σ 1))
-      (basedLoopClass_triangleFacePath r σ 2)
-  exact
-    he.symm.trans
-      (basedLoopClass_triangle_boundary r (triangleEdge01 σ) (triangleEdge12 σ) (triangleEdge02 σ)
-        (triangleEdges_homotopic σ))
-
-theorem FirstHurewicz.edgeLoopCochain_comp_boundaryTwo {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) : (edgeLoopCochain r).comp (boundaryTwo X) = 0 := by
-  apply chainMap_ext X 2
-  intro σ
-  exact edgeLoopCochain_boundaryTwo_simplex r σ
-
-theorem FirstHurewicz.edgeLoopCochain_boundaryTwo {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (c : Chains X 2) : edgeLoopCochain r (boundaryTwo X c) = 0 :=
-  LinearMap.congr_fun (edgeLoopCochain_comp_boundaryTwo r) c
-
-def FirstHurewicz.inverseHurewiczMap {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) : SingularH1 X →ₗ[ℤ] AbelianPi1 X b :=
-  homologyDescOfChain X (edgeLoopCochain r) (edgeLoopCochain_boundaryTwo r)
-
-@[simp]
-theorem FirstHurewicz.inverseHurewiczMap_cycleClass {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (c : Cycles1 X) :
-    inverseHurewiczMap r (cycleClass X c) = edgeLoopCochain r c.1 :=
-  homologyDescOfChain_cycleClass X (edgeLoopCochain r) (edgeLoopCochain_boundaryTwo r) c
-
-@[simp]
-theorem FirstHurewicz.inverseHurewiczMap_loopHomologyClass {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (p : Path b b) :
-    inverseHurewiczMap r (loopHomologyClass p) = loopClass p := by
-  rw [loopHomologyClass, inverseHurewiczMap_cycleClass, loopCycle_val]
-  exact edgeLoopCochain_loopSimplex r p
-
-theorem FirstHurewicz.inverseHurewiczMap_hurewiczMap {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (a : AbelianPi1 X b) : inverseHurewiczMap r (hurewiczMap b a) = a := by
-  obtain ⟨p, rfl⟩ := loopClass_surjective a
-  rw [hurewiczMap_loopClass, inverseHurewiczMap_loopHomologyClass]
-
-theorem FirstHurewicz.hurewiczMap_inverseHurewiczMap {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) (a : SingularH1 X) : hurewiczMap b (inverseHurewiczMap r a) = a := by
-  obtain ⟨c, rfl⟩ := cycleClass_surjective X a
-  apply homologyToChainClass_injective X
-  rw [inverseHurewiczMap_cycleClass, homologyToChainClass_cycleClass]
-  exact edgeClosure_cycle r c
-
-def FirstHurewicz.firstHurewiczEquivOfPaths {X : Type} [TopologicalSpace X] {b : X}
-    (r : ∀ x : X, Path b x) : AbelianPi1 X b ≃ₗ[ℤ] SingularH1 X
-    where
-  toLinearMap := hurewiczMap b
-  invFun := inverseHurewiczMap r
-  left_inv := inverseHurewiczMap_hurewiczMap r
-  right_inv := hurewiczMap_inverseHurewiczMap r
-
-def FirstHurewicz.firstHurewiczEquiv {X : Type} [TopologicalSpace X] (b : X)
-    [PathConnectedSpace X] : AbelianPi1 X b ≃ₗ[ℤ] SingularH1 X :=
-  firstHurewiczEquivOfPaths (PathConnectedSpace.somePath b)
-
-@[simp]
-theorem FirstHurewicz.firstHurewiczEquiv_loopClass {X : Type} [TopologicalSpace X] (b : X)
-    [PathConnectedSpace X] (p : Path b b) :
-    firstHurewiczEquiv b (loopClass p) = loopHomologyClass p :=
-  hurewiczMap_loopClass b p
-
-theorem FirstHurewicz.loopHomologyClass_surjective {X : Type} [TopologicalSpace X] (b : X)
-    [PathConnectedSpace X] : Function.Surjective (loopHomologyClass (x := b)) := by
-  intro a
-  obtain ⟨c, hc⟩ := (firstHurewiczEquiv b).surjective a
-  obtain ⟨p, hp⟩ := loopClass_surjective c
-  refine ⟨p, ?_⟩
-  rw [← firstHurewiczEquiv_loopClass, hp, hc]
-
-def FirstHurewicz.singularH1EquivOfPi1 {X : Type} [TopologicalSpace X] (b : X) {A : Type*}
-    [AddCommGroup A] [Module ℤ A] [PathConnectedSpace X]
-    (e : FundamentalGroup X b ≃* Multiplicative A) : SingularH1 X ≃ₗ[ℤ] A :=
-  (firstHurewiczEquiv b).symm.trans (abelianPi1EquivOfPi1 b e)
-
-@[simp]
-theorem FirstHurewicz.singularH1EquivOfPi1_hurewiczFunction {X : Type} [TopologicalSpace X]
-    (b : X) {A : Type*} [AddCommGroup A] [Module ℤ A] [PathConnectedSpace X]
-    (e : FundamentalGroup X b ≃* Multiplicative A) (g : FundamentalGroup X b) :
-    singularH1EquivOfPi1 b e (hurewiczFunction b g) = (e g).toAdd := by
-  change
-    abelianPi1EquivOfPi1 b e
-        ((firstHurewiczEquiv b).symm
-          (firstHurewiczEquiv b (Additive.ofMul (Abelianization.of g)))) =
-      _
-  rw [LinearEquiv.symm_apply_apply, abelianPi1EquivOfPi1_of]
-
-@[simp]
-theorem FirstHurewicz.singularH1EquivOfPi1_loopHomologyClass {X : Type} [TopologicalSpace X]
-    (b : X) {A : Type*} [AddCommGroup A] [Module ℤ A] [PathConnectedSpace X]
-    (e : FundamentalGroup X b ≃* Multiplicative A) (p : Path b b) :
-    singularH1EquivOfPi1 b e (loopHomologyClass p) = (e (loopQuotient p)).toAdd :=
-  singularH1EquivOfPi1_hurewiczFunction b e (loopQuotient p)
-
-def PeriodTorusHigherHomology.coordinateProjection (n : ℕ) : (Fin n → ℝ) →+ ProductTorus n
-    where
-  toFun x i := (x i : AddCircle (1 : ℝ))
-  map_zero' := by ext i; rfl
-  map_add' x y := by ext i; exact AddCircle.coe_add (1 : ℝ) (x i) (y i)
-
-@[simp]
-theorem PeriodTorusHigherHomology.coordinateProjection_apply (n : ℕ) (x : Fin n → ℝ) (i : Fin n) :
-    coordinateProjection n x i = (x i : AddCircle (1 : ℝ)) :=
-  rfl
-
-theorem PeriodTorusHigherHomology.coordinateProjection_continuous (n : ℕ) :
-    Continuous (coordinateProjection n) := by
-  exact continuous_pi (fun i => (AddCircle.continuous_mk' (1 : ℝ)).comp (continuous_apply i))
-
-theorem PeriodTorusHigherHomology.coordinateProjection_eq_zero_iff (n : ℕ) (x : Fin n → ℝ) :
-    coordinateProjection n x = 0 ↔ ∃ v : Fin n → ℤ, x = fun i => (v i : ℝ) := by
-  constructor
-  · intro h
-    have hi : ∀ i, ∃ k : ℤ, (k : ℝ) = x i := by
-      intro i
-      have hz := congrFun h i
-      change (x i : AddCircle (1 : ℝ)) = 0 at hz
-      simpa only [zsmul_eq_mul, mul_one] using (AddCircle.coe_eq_zero_iff (1 : ℝ)).mp hz
-    choose v hv using hi
-    exact ⟨v, funext fun i => (hv i).symm⟩
-  · rintro ⟨v, rfl⟩
-    ext i
-    change ((v i : ℝ) : AddCircle (1 : ℝ)) = 0
-    apply (AddCircle.coe_eq_zero_iff (1 : ℝ)).mpr
-    exact ⟨v i, by simp⟩
-
-theorem PeriodTorusHigherHomology.coordinateProjection_surjective (n : ℕ) :
-    Function.Surjective (coordinateProjection n) := by
-  intro t
-  have h : ∀ i, ∃ x : ℝ, (x : AddCircle (1 : ℝ)) = t i := by
-    intro i
-    exact QuotientAddGroup.mk_surjective (t i)
-  choose x hx using h
-  exact ⟨x, funext hx⟩
-
-def PeriodTorusHigherHomology.coordinatePeriodLoop (n : ℕ) (v : Fin n → ℤ) :
-    Path (0 : ProductTorus n) 0 :=
-  ((Path.segment (0 : Fin n → ℝ) (fun i => (v i : ℝ))).map
-        (coordinateProjection_continuous n)).cast
-    (map_zero (coordinateProjection n)).symm
-    ((coordinateProjection_eq_zero_iff n _).mpr ⟨v, rfl⟩).symm
-
-@[simp]
-theorem PeriodTorusHigherHomology.coordinatePeriodLoop_apply (n : ℕ) (v : Fin n → ℤ)
-    (t : unitInterval) (i : Fin n) :
-    coordinatePeriodLoop n v t i = ((t : ℝ) * (v i : ℝ) : AddCircle (1 : ℝ)) := by
-  simp only [coordinatePeriodLoop, Path.cast_coe, Path.map_coe, Function.comp_apply,
-    Path.segment_apply, AffineMap.lineMap_apply_module, smul_zero, zero_add,
-    coordinateProjection_apply, Pi.smul_apply, smul_eq_mul]
+namespace FirstHurewicz
+export SingularChains (basedLoopClass_triangleFacePath edgeLoopCochain_boundaryTwo_simplex
+  edgeLoopCochain_comp_boundaryTwo edgeLoopCochain_boundaryTwo inverseHurewiczMap
+  inverseHurewiczMap_cycleClass inverseHurewiczMap_loopHomologyClass inverseHurewiczMap_hurewiczMap
+  hurewiczMap_inverseHurewiczMap firstHurewiczEquivOfPaths firstHurewiczEquiv
+  firstHurewiczEquiv_loopClass loopHomologyClass_surjective singularH1EquivOfPi1
+  singularH1EquivOfPi1_hurewiczFunction singularH1EquivOfPi1_loopHomologyClass)
+end FirstHurewicz
 
 end

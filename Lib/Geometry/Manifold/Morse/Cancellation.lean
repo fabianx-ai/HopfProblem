@@ -6357,3 +6357,11 @@ structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [Norm
         Filter.Tendsto (fun t => flow t y) Filter.atTop (𝓝 p) → ∃ t, flow t (A (0, 0)) = y
   slices : NativeEndpointSliceData σ (1 / 2) Φq Φp A Rq Rp Tq Tp
 
+theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
+    (p q : ManifoldMorse.criticalPoints E f)
+    (hconsecutive : ∀ r : ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))
+    {a b : ℝ} (ha : f p < a) (hb : b < f q) :
+    ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f := by
+  intro z hz hcrit
+  exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
