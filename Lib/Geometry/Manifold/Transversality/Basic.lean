@@ -3,13 +3,16 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Geometry.Manifold.Morse.Existence
-import Lib.Geometry.Manifold.RegularLevel
-import Lib.Geometry.Manifold.WhitneyEmbedding
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
+module
+
+public import Mathlib
+public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.RegularLevel
+public import Lib.Geometry.Manifold.WhitneyEmbedding
+public import Lib.Geometry.Manifold.Collar
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.Cancellation
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Transversality basics: submersions, regular values, and supported perturbations
 
@@ -61,7 +64,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 

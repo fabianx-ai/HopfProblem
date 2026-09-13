@@ -3,8 +3,11 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Geometry.Manifold.Morse.Handle
+module
+
+public import Mathlib
+public import Lib.Geometry.Manifold.Morse.Handle
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # The Morse lemma and the signed Morse chart
@@ -60,7 +63,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 
@@ -1679,10 +1682,22 @@ def SmoothMorseLemma.translationToZero {E : Type*} [NormedAddCommGroup E] [Norme
   contMDiff_invFun :=
     (show ContDiff ℝ ∞ (fun x : E => a + x) from contDiff_const.add contDiff_id).contMDiff
 
+def SmoothMorseLemma.diffeomorphToPartialDiffeomorph {E F H H' X Y : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
+    [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
+    (h : Diffeomorph I J X Y ∞) : PartialDiffeomorph I J X Y ∞ where
+  toPartialEquiv := h.toHomeomorph.toPartialEquiv
+  open_source := isOpen_univ
+  open_target := isOpen_univ
+  contMDiffOn_toFun x _ := h.contMDiff_toFun x
+  contMDiffOn_invFun _ _ := h.symm.contMDiffWithinAt
+
 def SmoothMorseLemma.translateChart {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (a : E)
     (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) E F ∞) : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) E F ∞ :=
-  (translationToZero a).toPartialDiffeomorph.trans e
+  (diffeomorphToPartialDiffeomorph (translationToZero a)).trans e
 
 @[simp]
 theorem SmoothMorseLemma.translateChart_apply {E F : Type*} [NormedAddCommGroup E]

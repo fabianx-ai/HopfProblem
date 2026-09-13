@@ -3,9 +3,12 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Handle
+module
+
+public import Mathlib
+public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Geometry.Manifold.Morse.Handle
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Flows of smooth vector fields on compact manifolds
@@ -42,7 +45,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 

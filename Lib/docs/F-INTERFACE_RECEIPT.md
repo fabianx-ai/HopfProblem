@@ -1,5 +1,7 @@
 # Lane F — interface receipt
 
+**Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
+
 Seat: muse. Branch `lib/textbook-extraction`. Toolchain leanprover/lean4:v4.33.0 at
 `/tmp/shared-lean-copy/toolchain-v4.33.0/bin`.
 

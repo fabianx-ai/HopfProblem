@@ -49,6 +49,7 @@ import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.Geometry.Manifold.WhitneyEmbedding
+import Lib.Geometry.Manifold.Whitney.BigonModel
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
@@ -57,6 +58,7 @@ import Lib.Geometry.Manifold.Quotient.LocalOrbit
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
+import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Algebra.Group.Filtration
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation

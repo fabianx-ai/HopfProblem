@@ -169,3 +169,35 @@ Verified: 8/8 random sample rows reproduce (2026-09-12).
 | `Hopf/LCP/LocalModels.lean:6899-7036` | `660516c5346ec90c68cb2e3867ca18149d7efccfb49868bb2252606c04a8668f` | `Lib/Topology/MappingTorus/Basic.lean` | 22 | 79211df I |
 | `Hopf/LCP/LocalModels.lean:7984-8395` | `6d95645f1de1fa92b32d6838388bd216b50a0481fd55ef0ccfac27a2d550b243` | `Lib/Topology/MappingTorus/Basic.lean` | 54 | 79211df I |
 | `Hopf/LCP/BoundaryTopology.lean:3988-4609` | `4e0ed08f80cc446cf4a09c0082d0f2800315f965b7e55ee68589f502f58e9aca` | `Lib/Topology/MappingTorus/HomologyCover.lean` | 58 | d92f3cf I |
+
+## Public-module conversion and first G/E2/F/J moves after `bbf1dd2`
+
+Seat: Devin. Batch based on `bbf1dd2`, split into provider-conversion, J-naturality, G/F-extraction and documentation commits. This addendum supersedes older legacy-provider claims only for the scope below; it does not certify the remaining lane packets.
+
+- The geometric provider cone through `Morse/Rearrangement.lean` is now `module`/`public`: Handle, MorseLemma, ChartedSpace/Transport, Flow/Compact, RegularLevel, HandleAttachment, HeightTranslating, Existence, SmoothFlow, HandleRetraction, SublevelSets, Index, CylinderHEP, WhitneyEmbedding, ProjectionBundle, Collar, SurgeryWindows, Cancellation, Transversality/Basic, Immersion/Relative, Rearrangement. LoopSubdivision and SimplyConnectedSphere were also converted. All original theorem statements and FQNs are retained.
+- Module-opacity adaptations: private `import all` access to the defining Mathlib modules where needed; an exposed field-for-field diffeomorphism-to-partial-diffeomorphism constructor used by `translateChart`; a literal-existential helper theorem used by `partialDiffeomorphOfInjectiveLocal`; and an inner proof binding in `bumpTranslation_apply`. Ordinary importing consumers do not need `import all`. No Mathlib package or theorem statement was changed.
+- J S-nat: `CuspFilling.lean` at `bbf1dd2`, lines 14295–14475, moved to `CircleProduct.lean`; S-cross: lines 14477–14546 moved to `CrossProduct.lean`. Public output names remain `PeriodTorusHigherHomology.*`; references to existing shim aliases were replaced by their actual Lib providers. The source declarations were removed and CuspFilling imports the public providers.
+- F2 initial model: `SingularHomology.lean` at `bbf1dd2`, lines 11700–11705 and 12354–12766, moved verbatim to `Lib/Geometry/Manifold/Whitney/BigonModel.lean`. This is the explicit bigon/strip-coordinate model, not all of F2 or the Whitney cancellation campaign.
+- G1: `SingularHomology.lean` at `bbf1dd2`, lines 14044–14055, and `SphereTopology.lean:14166–14171` moved to `Lib/Geometry/Manifold/Morse/MinimalSystem.lean`. The latter proof now names the actual `SingularHomology.homotopyEquivHomologyEquiv` provider. This supplies `SixSphere` and the three G1 facts, not G2a–G6. Both new files are registered in `Lib.lean`; SH/ST import them instead of defining duplicates.
+
+### Verification and evidence
+
+All five default roots (`Lib.lean`, `Solution.lean`, `S6Shortcuts.lean`, `S6.lean`, `Challenge.lean`) compiled successfully using direct Lean 4.33.0 with local output artifacts. The only recorded warning was the existing `Challenge.lean:42` use of `sorry`; Challenge was not modified. The full source-consumer chain, including Recognition and Final, compiled. An ordinary module aggregate importing Rearrangement, BigonModel, MinimalSystem, CircleProduct and CrossProduct passed its 21 API checks; the separate J consumer checked all 18 moved outputs. The current recognition and signed-Morse-chart theorems report only `[propext, Classical.choice, Quot.sound]`, not `sorryAx`. No pre-change axiom comparison is claimed.
+
+Evidence directory: `/tmp/sidekick-modconv-batch3-1789272770/`. `gate/build.sh` records the direct-build recipe; `gate/driver.log` and `gate/driver2.log` record the initial stale-artifact failure and successful continuation after fixing dependency traversal; `gate/ProbeAggregate.lean`/`.log` and `gate/ProbeAxioms.lean`/`.log` record the probes. `cone/ProbeJ.log`, `cone/CuspFilling-final.log` and `fg/` hold focused consumer and move-preservation evidence. These temporary paths are local evidence, not durable CI storage.
+
+Lake commands were stopped after the resolver attempted to delete/re-clone shared Mathlib on a URL-mismatch diagnostic; permission prevented it. Direct Lean was used instead. The environment owner still needs to resolve that issue; do not run package-update/cache/clean commands or modify the shared checkout to reproduce this batch.
+
+Verified Git blob IDs for selected outputs (before this documentation-only addition):
+
+| File | Git blob |
+|---|---|
+| `Lib/Geometry/Manifold/Whitney/BigonModel.lean` | `f02a3cb92ca8012e56e486f314d268b8e980efab` |
+| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | `d2f15ef98cfb4b387ddfcc8fd89cf489f058354a` |
+| `Lib/Geometry/Manifold/Morse/Rearrangement.lean` | `accfb2948a10a05b282f7e3da96c5c26471089f8` |
+| `Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean` | `c7c7a05e4a2744e7c44afa979658d7f5015e6c6d` |
+| `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` | `00579852caff6ddb2be104bca436f41e67ea5e98` |
+
+### Still open
+
+G2a–G6 and the remaining F geometric/Whitney/slide blocks are not moved by this batch. J's circle-path/section cluster and higher coordinate/exterior boundaries remain unfinished; G-J3 was already public in CrossProduct before this batch, not newly moved here. E2's remaining Hopf-side outputs and proposed general-k implementation are not covered by provider conversion. Exact remaining helper packets, complete textbook module documentation, current ledgers/coordinates, independent acceptance and lane-level receipts still need completion. A green conversion batch is not a whole-lane Axis-5/6 certification.

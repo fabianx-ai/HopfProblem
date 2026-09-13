@@ -3,22 +3,25 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Geometry.Manifold.Flow.Compact
-import Lib.Geometry.Manifold.RegularLevel
-import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
-import Lib.Analysis.ODE.SmoothFlow
-import Lib.Geometry.Manifold.ChartedSpace.Transport
-import Lib.Topology.Homotopy.CylinderHEP
-import Lib.Topology.Homotopy.HandleRetraction
-import Lib.Geometry.Manifold.Morse.SublevelSets
-import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.WhitneyEmbedding
-import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+module
+
+public import Mathlib
+public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Geometry.Manifold.Morse.Handle
+public import Lib.Geometry.Manifold.Flow.Compact
+public import Lib.Geometry.Manifold.RegularLevel
+public import Lib.Geometry.Manifold.Morse.HandleAttachment
+public import Lib.Geometry.Manifold.Flow.HeightTranslating
+public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Analysis.ODE.SmoothFlow
+public import Lib.Geometry.Manifold.ChartedSpace.Transport
+public import Lib.Topology.Homotopy.CylinderHEP
+public import Lib.Topology.Homotopy.HandleRetraction
+public import Lib.Geometry.Manifold.Morse.SublevelSets
+public import Lib.Geometry.Manifold.Morse.Index
+public import Lib.Geometry.Manifold.WhitneyEmbedding
+public import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Collars of regular levels and level transport
@@ -63,7 +66,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 
@@ -1809,8 +1812,9 @@ def SmallPerturbation.bumpTranslation {E : Type*} [NormedAddCommGroup E] [Normed
 theorem SmallPerturbation.bumpTranslation_apply {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)
     (hβ : LipschitzWith k β) (a : E) (ha : k * ‖a‖₊ < 1) (x : E) :
-    bumpTranslation hs hβ a ha x = x + β x • a :=
-  rfl
+    bumpTranslation hs hβ a ha x = x + β x • a := by
+  have h : bumpTranslation hs hβ a ha x = x + β x • a := rfl
+  exact h
 
 theorem SmallPerturbation.bumpTranslation_eq_of_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)

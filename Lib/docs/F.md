@@ -1,5 +1,7 @@
 # Lane F — textbook, decomposition, placement, and typed ledger
 
+**Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
+
 **The Whitney trick, signed intersection numbers, handle slides, and integer-matrix
 reduction** (Milnor, *Lectures on the h-cobordism theorem*, §6–7: Thm. 6.6 and Thm. 7.6; Smale,
 *Generalized Poincaré's conjecture in dimensions greater than four*, §4–5; Hatcher Prop. 2.30),

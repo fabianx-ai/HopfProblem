@@ -1,8 +1,18 @@
-# Lane E2 — interface receipt (Axis-5 probes, first pass)
+# Lane E2 — interface receipt (Axis-5 probes, first pass — historical)
+
+**Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
 
 Seat: muse. Base: branch `lib/textbook-extraction`, probe run on top of
 `0c48e7b` (post J-C1 landing). Toolchain: leanprover/lean4:v4.33.0 at
 `/tmp/shared-lean-copy/toolchain-v4.33.0/bin`; shared package cache.
+
+**Status: historical.** The probes below were recorded against the pre-rename,
+pre-split tree; the `#check` list and coordinates are verbatim from that run.
+Post-integration (`7e98c58`) name map per `Lib/reports/RENAMES.md`: the `Smale.`,
+`NoExotic.` and `Degree.` prefixes are dropped and `MorseCancel.` →
+`MorseCancellation.`; the providers moved to the split files listed under
+"Post-integration provider locations" below. A re-probe at the new head is
+required before certification — stale `.olean`s may still resolve old names.
 
 ## What was probed
 
@@ -68,7 +78,8 @@ File `/tmp/E2GenProbe.lean` (removed after use), same imports plus the standard
 this is an interface check, not a proof claim).
 
 Specialization check: `Module.finrank ℝ Smale.PlaneImmersion.Plane = 2`
-(`Smale.PlaneImmersion.Plane` is `abbrev ... := ℝ × ℝ` at SW 11318;
+(`Smale.PlaneImmersion.Plane` is `abbrev ... := ℝ × ℝ` (SW 11318 at probe time;
+now `PlaneImmersion.Plane` at `Immersion/Relative.lean:980`);
 proof `by rw [Smale.PlaneImmersion.Plane]` fails because `abbrev` equation
 lemmas don't fire by `rw` — the working proof is
 `by show Module.finrank ℝ (ℝ × ℝ) = 2; rw [Module.finrank_prod]; simp`,
@@ -79,18 +90,28 @@ probed). So the general bound `2k+1 ≤ n` recovers `5 ≤ n` at `k = 2` and
 
 The ledger's old `DT nnnnn` coordinates referred to the pre-split
 `Hopf/DifferentialTopology.lean` (now a 234-line documentation umbrella).
-Current coordinates, verified by direct reads:
+The SW numbers in the recorded probe were verified by direct reads against the
+then-monolithic `SurgeryWindows.lean` (~17.5k lines) at `0c48e7b` — they are
+historical. Post-integration provider locations (`7e98c58`, all still legacy
+non-`module` Lib files):
 
-- `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (legacy, **not** a `module`
-  file — plain `import`s, `namespace Mathoverflow1973` at line 52):
-  SW 361, 395 (GeneralPosition), 5128/5195/5206/5216/5223/8642/10128
-  (SupportedDiffeomorph + isotopy extension), 7739/7754/7808 (RegularValues),
-  7885/7935 (TransverseCoordinates), 10289 (DiskShrinking disc theorem),
-  10334/10369/10647/10667 (SupportedDiffeomorph pointMoving),
-  10402/10520/10543 (MorseCancel isotopic pointMoving), 10720
-  (`exists_pointMoving_fixing_finite`), 11318 (`PlaneImmersion.Plane`),
-  11970/12308/12352/12370/12433 (ManifoldImmersion E10/E11),
-  17495 (NativeTransversality ambient), 17530 (disjunction corollary).
+- `Lib/Geometry/Manifold/Transversality/Basic.lean`: 158/173/227 (RegularValues
+  Sard), 304/354 (TransverseCoordinates), 1061 (SupportedRelativeIsotopy.extension),
+  2547 (supported isotopy extension), 2593/2672 (chart disk shrinking, disk-chart
+  isotopy), 2708 (same-center disc theorem), 2753/2788 (SupportedDiffeomorph
+  pointMoving).
+- `Lib/Geometry/Manifold/Morse/Cancellation.lean`: 3374 (IsotopicToIdentity),
+  3441 (SupportedRelativeIsotopy, fields at 3452/3462/3469).
+- `Lib/Geometry/Manifold/Morse/Rearrangement.lean`: 2581 (NativeTransversality
+  ambient), 2609 (disjunction corollary).
+- `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (reduced to 1,838 lines):
+  378/412 (GeneralPosition), 708+ (ImageComplement).
+- `Lib/Geometry/Manifold/Immersion/Relative.lean`: 64/182/205
+  (MorseCancellation isotopic pointMoving), 309/329 (SupportedDiffeomorph
+  pointMoving), 340/382 (finite-avoiding path, finite-fixing point motion),
+  980 (`PlaneImmersion.Plane`), 1192 (plane rank/collision engine),
+  1490 (immersion patch step), 1632 (E10 headline), 1970/2014/2032/2095
+  (E11 embedding family), 2698 (curve affine helper), 2927/2970 (curve wrappers).
 - `Hopf/SingularHomology.lean`: SH 11271/11292 (E13 intersections),
   SH 14199/14214 (E12 sphere maps), SH 18380/18441 (E14 arcs).
 
@@ -104,8 +125,9 @@ Current coordinates, verified by direct reads:
   transition (LibShims export aliases).
 - E13 has no destination file in §14 — provisionally
   `Transversality/Intersections.lean`, flagged for the owner.
-- The `MorseCancel.` prefix on the homogeneity family is preserved verbatim
-  (consumers use the FQN); renaming is a separate commit.
+- The `MorseCancel.` prefix on the homogeneity family was preserved verbatim at
+  probe time; post-integration it is `MorseCancellation.` (the rename already
+  landed — consumers' FQNs were updated in-tree).
 - D1/D2 seams (`exists_contMDiff_approx` / `exists_tubularNeighborhood_*`)
   remain unlanded-provider dependencies for E8/E12 proofs — the moved files
   will import `Hopf.DifferentialTopology` during transition, as today.

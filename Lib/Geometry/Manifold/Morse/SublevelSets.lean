@@ -3,14 +3,16 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Geometry.Manifold.Flow.Compact
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.AlgebraicTopology.SingularHomology.LocalDegree
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
-import Lib.AlgebraicTopology.SingularHomology.Sphere
+module
+
+public import Mathlib
+public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Geometry.Manifold.Morse.Handle
+public import Lib.Geometry.Manifold.Flow.Compact
+public import Lib.Geometry.Manifold.Flow.HeightTranslating
+public import Lib.AlgebraicTopology.SingularHomology.LocalDegree
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.Sphere
 /-!
 # Sublevel sets of Morse functions
 
@@ -33,7 +35,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 
