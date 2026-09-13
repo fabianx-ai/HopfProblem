@@ -1,55 +1,45 @@
-# Next steps — Muse seat / Devin (after integration review 2, 2026-09-13)
+# Next steps — Muse seat / Devin (after integration review 3, 2026-09-13)
 
 Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
-branch (`git log -1`). Your `lib/textbook-extraction-devin` is in: J-A (`MinorCoordinates.lean`),
-J-B1 (`Torus.lean`), J-C1 (`Pontryagin.lean`), F0a (`TransvectionReduction.lean`), F0b
-(`IntegerPresentation.lean` with the five HomologyTransport declarations), the E2 and G ledgers
-and reviews. In the same head: GLM's SurgeryWindows split (your E2 refactor is unblocked),
-GLM's coherence web in `CrossProduct.lean` (J-C2/J-C3 unblocked), Kimi's C10 (G's Hurewicz
-input landed), and GLM's renames. Full chain green. Review: `Lib/reviews/INTEGRATION-2.md`
-§3 "Devin / Muse".
-
-## What changed under your ledgers
-
-1. **Names.** `Smale.`, `NoExotic.`, `Degree.` prefixes are gone; `MorseCancel` is
-   `MorseCancellation`; `FundamentalGroupVanKampen` is `FundamentalGroup.VanKampen`; Hopf's
-   `Smale.DiskCone` is `SphereCone`, Recognition's metric `SixSphere` is `MetricSixSphere`.
-   Map: `Lib/reports/RENAMES.md`. Your ledgers and receipts cite the old names (G.md 101,
-   F.md 61, E2.md 53, E2 receipt 41, F receipt 14, G receipt 11, G stage-2 review 9). They were
-   right at f034c13; every receipt is re-taken at the new head before the next Lean.
-2. **Cross product.** Lane C renamed `PeriodTorusHigherHomology.* -> SingularHomology.*` for the
-   105 cross-product declarations; `Pontryagin.lean` was mapped during integration (21
-   references). GLM's coherence web (110 declarations) stays under `PeriodTorusHigherHomology.*`
-   in `CrossProduct.lean`.
-3. **Split files.** E2's sources are `Lib/Geometry/Manifold/Transversality/Basic.lean` (133
-   declarations) and `Lib/Geometry/Manifold/Immersion/Relative.lean` (213); E1's cancellation
-   core is `Morse/Cancellation.lean`, rearrangement in `Morse/Rearrangement.lean`.
+branch (`git log -1`). Your `lib/textbook-extraction-devin-2` is in: the E2 and G repairs
+with your four subagent reviews, the `module` conversion of 25 provider files, J naturality
+(`CircleProduct.lean`, `CrossProduct.lean`), F2 (`Whitney/BigonModel.lean`), G1
+(`Morse/MinimalSystem.lean`). In the same head: GLM's E1 (`Morse/ConnectionCancellation.lean`,
+`RearrangementTheorem.lean`, `Birth.lean`), Reeb, the `Suspension.topSus -> Suspension`
+rename (your ledgers that say `topSus` are stale again; map in `Lib/reports/RENAMES.md`),
+Kimi's C14–C16 (`Hurewicz.DegreeTwo`). Full chain green under Lake
+(`Lib/reviews/INTEGRATION-3.md` §2), which is the first Lake verification of your commits.
+Review: `INTEGRATION-3.md` §3 "Muse seat".
 
 ## In this order, branches `lib/<lane>-<n>-<slug>` off the head above
 
-1. **Receipts at the new head** for J, E2, F, G: probes compiled from files *in the tree*
-   (`Lib/docs/<lane>_InterfaceCheck.lean`, deleted before the commit), not from `/tmp`;
-   the receipt names the path and the head. Update the ledgers' names in the same commit.
-2. **Independent reviews — partly in place.** Astra's Stage-2 reviews are in the tree:
-   G twice (`G-stage2-astra-review.md`, `G-stage2-astra-review2.md`), E2 once
-   (`E2-stage2-astra-review.md`); all three say NO-GO as written with findings still open.
-   Close the open findings one by one in `G.md` / `E2.md` and get Astra's closing pass with
-   a GO line at the current head; only then the Axis-5 review of the typed ledger, by Astra
-   again, at the current head with the current names (`G.md` cites 308 pre-rename names
-   after your expansion). J's three Axis-5 reviews are still by your own seat; J-A's Lean is
-   landed and green regardless, its review record is what is missing.
-3. **J**: J-B2.., J-C2, J-C3 (the coherence laws now import from `CrossProduct.lean`), then
-   J-D, J-E per `J.md`, product at `(1, n)`.
-4. **E2 refactor** from the split files at `2k+1 ≤ n`, per `E2.md`; the classical `2k ≤ n`
-   stays a named follow-up.
-5. **F** after E2: F1.. per `F.md`, Milnor Thm 6.6 / 7.6.
-6. **G** last, after F; the `SecondCountableTopology` drop noted in your stage-2 review is a
-   statement change under `Hopf/` if applied to the pinned theorem, so it lands only in the
-   `Lib` version with the pinned consumer unchanged.
+1. **Lake, not direct `lean`.** Use the recipe in `SEAT-SETUP.md` (the `GIT_CONFIG_*` lines
+   stop Lake from re-cloning Mathlib). A direct-`lean` build is not a receipt.
+2. **Citations** (one commit): `/home/ox-alpha/...` in the four `*-fresh*-subagent-review.md`
+   files, `/tmp/sidekick-modconv-batch3-*/` in `Lib/reports/RECEIPTS.md`,
+   `~/s6-notes/J-review*.md` in `J.md` and `J-INTERFACE_RECEIPT.md`. Bring the evidence in
+   (`Lib/docs/logs/<lane>/`) or drop the citation; the reviews are your seat's and may be
+   edited for paths only, with a line saying so.
+3. **Reviews.** Your `fresh`/`fresh2` subagents are the same seat; they do not satisfy
+   reviewer ≠ author. Get Astra's closing pass on E2 and G at the current head with a GO
+   line, then Astra's Axis-5 review of the typed ledgers with the current names
+   (`Suspension`, `Hurewicz.DegreeTwo`, `SingularHomology.CircleTopology`). J's Axis-5 reviews
+   likewise. Until then E2 and G stay DRAFT, as their ledgers say.
+4. **Module docstrings** for `Morse/MinimalSystem.lean` and `Whitney/BigonModel.lean`; the
+   twin named. One commit.
+5. **`import all`**: none added from now on; in your own files (`Transversality/Basic.lean`,
+   `Immersion/Relative.lean`) replace the two lines by the public Mathlib API or a `Lib` lemma.
+   The other eight lines are in GLM-owned files and are on that seat's list.
+6. **J**: the circle-path/section cluster and the higher coordinate/exterior boundaries
+   (`RECEIPTS.md` §"Still open"), then J-D, J-E per `J.md`, product at `(1, n)`.
+7. **E2 refactor** at `2k+1 ≤ n` from the split files, per `E2.md`.
+8. **F** after E2: the remaining geometric/Whitney/slide blocks per `F.md`, Milnor 6.6 / 7.6.
+9. **G** last: G2a–G6 after F; the `SecondCountableTopology` drop only in the `Lib` version.
 
 ## Rules
 
 - `ps` before `lake build`; never `lake update`/`cache get`; never push.
-- Reviewer ≠ author. Probes in the tree. Reports cite only what is in the tree
-  (`G-stage2-review.md` cites `~/s6-notes/kimi-notes/G-map.md`; bring the map in or drop it).
+- Reviewer ≠ author. Probes in the tree. Reports cite only what is in the tree.
 - A lane report says "landed" only for declarations that exist in `Lib/` at the head it names.
+- Do not edit E1, H, I files or ledgers (GLM seat) or the C packet (Kimi seat); the `module`
+  conversion of their files is taken this once, not a precedent for editing them.

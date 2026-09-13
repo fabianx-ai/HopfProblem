@@ -1,50 +1,40 @@
-# Next steps — Kimi seat (after integration review 2, 2026-09-13)
+# Next steps — Kimi seat (after integration review 3, 2026-09-13)
 
 Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
-branch (`git log -1`). Your `lib/C-10-boundary` is in: the boundary relation, both round
-trips, `hurewiczLinearEquiv` at general `n ≥ 2` (`Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean`),
-the adapters that replaced the degree-3..6 towers (`Hopf/Hurewicz.lean` 9,631 -> 423 lines),
-`HopfDegree.lean`, and the cross-product rename with shims. GLM's renames landed in the same
-head (`Smale.`, `NoExotic.`, `Degree.` prefixes dropped; `MorseCancel` -> `MorseCancellation`);
-the map is `Lib/reports/RENAMES.md`. Full chain green; no `Hopf/` statement changed.
-Review: `Lib/reviews/INTEGRATION-2.md` §3 "Kimi seat + Devin".
+branch (`git log -1`). Your `lib/C-14-integrated-receipt` is in: the refreshed receipt, C13
+(ten Recognition proofs are now instantiations, statements unchanged), C14
+`Hurewicz/Naturality.lean`, C15 `Topology/Homeomorph/DiskCube.lean`, C16
+`SecondHurewicz -> Hurewicz.DegreeTwo` with shims, the archived independent review. Full chain
+green at the integrated head (`Lib/reviews/INTEGRATION-3.md` §2), which covers the gates you
+could only run on the working tree. Review: `INTEGRATION-3.md` §3 "Kimi seat".
 
-Old items 1 (C10) is landed. Old items 2–7 stand. New first:
+Old items 1–6 are closed (`C.md` §"NEXT-STEPS item disposition"). Old item 7 is not.
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off the head above
 
-1. **Bring the record to the code — done in 88bdcc73, one remainder.** `Lib/reports/C.md`
-   now says C10 and C13 are landed and the hand-off is historical; the twelve documented files
-   are merged (docstrings only, code identical). Remainder: the record still cites pre-rename
-   names (`Lib/docs/C.md` 28, `Lib/reports/C.md` 7, `C-INTERFACE_RECEIPT.md` 4; the map is
-   `Lib/reports/RENAMES.md`), and the receipt was taken at your branch head `1a313843`, not
-   at the integrated head. Re-take it at the head above with the current names, and name the
-   reviewer of `C-STAGE2-REVIEW.md` if it can be established, otherwise leave it marked
-   recovered.
-2. **C13**: the general `sphere_homotopicRel_of_topClass_eq` is in `HopfDegree.lean`; the
-   pinned `n = 6` versions are still declared in `Hopf/Recognition.lean` (lines ~978, ~1009).
-   Re-derive them as one-line instantiations, delete the pinned proofs, statements unchanged,
-   `lake build Hopf.Recognition` then the consumers; record the receipt in
-   `Lib/docs/C13-CLASSIFICATION.md` §"Production verification receipt".
-3. **Interface receipt** (old item 2), taken at the current head with the current names.
-4. **FREE rule in `Lib/`** (old item 3): the renames listed there, and the
-   `HigherHurewicz -> Hurewicz` twin-naming commits.
-5. **Docstrings** (old item 4), one commit per file.
-6. **Report corrections** (old item 5) and the committed Stage-2 review (old item 6), old
-   item 7 (`GenLoop`).
-7. **Authorship**: set `git config user.name` / `user.email` for the seat before the next
-   commit; say in the report which model ran the seat for which commits.
+1. **Seat identity before the next commit** (old item 7): `git config user.name`/`user.email`
+   for the seat in this clone; the seven merged commits carry the owner's name and address.
+2. **Citations** (one commit): `Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md` has 24
+   `file:///home/kimi/...` links and `C-INTERFACE_RECEIPT.md` two `/home/kimi/s6-notes/` log
+   paths. Rewrite the `file://` links to repository-relative paths (say at the top that the
+   archive's links were rewritten, nothing else); bring the cited logs in under
+   `Lib/docs/logs/C/` or drop the citation. Rule: every report cites only what is in the tree.
+3. **Owner gates**: the two conditions of the independent review (Stage-2 order exception,
+   Comparator) are the owner's; the answers will be recorded in `INTEGRATION-3.md` §5. Once
+   answered, close them in `C.md` in one commit; do not run the Comparator yourself.
+4. **`Hopf/Hurewicz.lean` leftovers**: the 23 declarations still there; classify each FREE or
+   CHARGED, move the FREE ones with the usual receipt, record the CHARGED ones.
+5. **Docstrings**: module docstring for `Hurewicz/Straightening.lean`; per-declaration
+   docstrings in the C files, one commit per file.
+6. **Shim retirement** for `Hurewicz.DegreeTwo` and the cross-product exports is part of the
+   GLM seat's wrapper removal (`NEXT-STEPS-GLM.md` item 3); leave `Hopf/LibShims.lean` alone.
 
-## The packets E2, F, G, J — Muse seat
+## The packets E2, F, G, J — Muse seat; E1, H, I — GLM seat
 
-Unchanged: lanes J, E2, F, G are the Muse seat's (`TASK-LIB-MUSE.md`, `NEXT-STEPS-MUSE.md`).
-Do not edit those packets or their target files. The general cross product for J's `(p, q)`
-follow-up is now landed; nothing else is owed from C to a packet.
+Do not edit those packets or their target files.
 
-## Rules that the reviews found broken; they hold from now on
+## Rules
 
-- Gate for a change that deletes `Hopf/` declarations is the full consumer chain, not one
-  module.
-- A lane report says "landed" only for declarations that exist in `Lib/` at the head it names,
-  and says "not landed" only for ones that do not.
-- Citations are checked against the reference, by theorem number, before they enter a ledger.
+- Gate for a change that deletes `Hopf/` declarations is the full consumer chain.
+- A lane report says "landed" only for declarations that exist in `Lib/` at the head it names.
+- Citations are checked against the reference before they enter a ledger; no off-tree paths.
