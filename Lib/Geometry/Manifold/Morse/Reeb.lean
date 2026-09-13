@@ -59,7 +59,10 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Disk sublevels near a Morse minimum -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- At a local minimum, every vector in the negative Morse-coordinate space is zero. -/
 theorem ManifoldMorse.SignedMorseChart.negative_eq_zero_of_localMin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p)
@@ -83,6 +86,7 @@ theorem ManifoldMorse.SignedMorseChart.negative_eq_zero_of_localMin {E M : Type*
   nlinarith [sq_pos_of_pos hr]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative Morse-coordinate space at a local minimum is a subsingleton. -/
 theorem ManifoldMorse.SignedMorseChart.subsingleton_negative_of_localMin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p) :
@@ -91,6 +95,7 @@ theorem ManifoldMorse.SignedMorseChart.subsingleton_negative_of_localMin {E M : 
     (c.negative_eq_zero_of_localMin hmin u).trans (c.negative_eq_zero_of_localMin hmin v).symm⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Near a unique minimum on a compact Hausdorff space, a sufficiently small global sublevel is a disk in the positive Morse coordinates, with an explicit quadratic height formula. -/
 theorem ManifoldMorse.SignedMorseChart.exists_minimum_disk_sublevel_with_height
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
@@ -180,6 +185,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_minimum_disk_sublevel_with_height
     norm_smul, Real.norm_eq_abs, abs_of_pos hρ, mul_pow]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- At a local minimum, the positive Morse-coordinate space has the same real dimension as the manifold model. -/
 theorem ManifoldMorse.SignedMorseChart.finrank_positive_of_localMin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p) :
@@ -192,6 +198,7 @@ theorem ManifoldMorse.SignedMorseChart.finrank_positive_of_localMin {E M : Type*
   simpa using e.finrank_eq.symm
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Identify the positive coordinates at a Morse minimum isometrically with the standard Euclidean space of the manifold dimension. -/
 def ManifoldMorse.SignedMorseChart.minimumPositiveIsometry {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p) :
@@ -200,6 +207,7 @@ def ManifoldMorse.SignedMorseChart.minimumPositiveIsometry {E M : Type*}
     (LinearIsometryEquiv.piLpCongrLeft 2 ℝ ℝ (finCongr (c.finrank_positive_of_localMin hmin)))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The positive-coordinate unit disk at a Morse minimum is homeomorphic to the standard closed unit ball. -/
 def ManifoldMorse.SignedMorseChart.minimumDiskHomeomorph {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p) :
@@ -212,6 +220,7 @@ def ManifoldMorse.SignedMorseChart.minimumDiskHomeomorph {E M : Type*}
         LinearIsometryEquiv.norm_map])
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse identification of the minimum disk preserves the Euclidean norm. -/
 theorem ManifoldMorse.SignedMorseChart.norm_minimumDiskHomeomorph_symm {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hmin : IsLocalMin f p)
@@ -223,9 +232,13 @@ theorem ManifoldMorse.SignedMorseChart.norm_minimumDiskHomeomorph_symm {E M : Ty
       _
   exact (c.minimumPositiveIsometry hmin).symm.norm_map _
 
+/-! ### Hemisphere coordinates -/
+
+/-- The vector of all coordinates of a sphere point except its first coordinate. -/
 def Hemisphere.tail {n : ℕ} (y : Sphere n) : Ambient n :=
   WithLp.toLp 2 (fun i => (y : Ambient (n + 1)) i.succ)
 
+/-- The squared first coordinate plus the squared norm of the remaining coordinates of a unit-sphere point is one. -/
 theorem Hemisphere.head_sq_add_tail_norm_sq {n : ℕ} (y : Sphere n) :
     (y : Ambient (n + 1)) 0 ^ 2 + ‖tail y‖ ^ 2 = 1 := by
   have hy : ‖(y : Ambient (n + 1))‖ ^ 2 = 1 := by
@@ -235,15 +248,18 @@ theorem Hemisphere.head_sq_add_tail_norm_sq {n : ℕ} (y : Sphere n) :
   rw [EuclideanSpace.real_norm_sq_eq]
   exact hy
 
+/-- The remaining coordinates of a unit-sphere point lie in the closed unit ball. -/
 theorem Hemisphere.tail_mem_ball {n : ℕ} (y : Sphere n) :
     tail y ∈ Metric.closedBall (0 : Ambient n) 1 := by
   rw [mem_closedBall_zero_iff]
   have hy := head_sq_add_tail_norm_sq y
   nlinarith [sq_nonneg ((y : Ambient (n + 1)) 0), norm_nonneg (tail y)]
 
+/-- Project a sphere point to the closed unit ball by dropping its first coordinate. -/
 def Hemisphere.disk {n : ℕ} (y : Sphere n) : Ball n :=
   ⟨tail y, tail_mem_ball y⟩
 
+/-- The missing hemisphere height of the projected disk point is the absolute value of the original first coordinate. -/
 theorem Hemisphere.radius_disk {n : ℕ} (y : Sphere n) :
     radius (disk y) = |(y : Ambient (n + 1)) 0| := by
   have hy := head_sq_add_tail_norm_sq y
@@ -251,6 +267,7 @@ theorem Hemisphere.radius_disk {n : ℕ} (y : Sphere n) :
   change Real.sqrt (1 - ‖tail y‖ ^ 2) = _
   rw [hs, Real.sqrt_sq_eq_abs]
 
+/-- A sphere point with nonnegative first coordinate is recovered by the positive-hemisphere parametrization of its disk projection. -/
 theorem Hemisphere.point_disk_of_nonneg {n : ℕ} (y : Sphere n)
     (hy : 0 ≤ (y : Ambient (n + 1)) 0) : point Bool.true (disk y) = y := by
   apply Subtype.ext
@@ -259,6 +276,7 @@ theorem Hemisphere.point_disk_of_nonneg {n : ℕ} (y : Sphere n)
   · simp [radius_disk, abs_of_nonneg hy]
   · rfl
 
+/-- A sphere point with nonpositive first coordinate is recovered by the negative-hemisphere parametrization of its disk projection. -/
 theorem Hemisphere.point_disk_of_nonpos {n : ℕ} (y : Sphere n)
     (hy : (y : Ambient (n + 1)) 0 ≤ 0) : point Bool.false (disk y) = y := by
   apply Subtype.ext
@@ -267,20 +285,26 @@ theorem Hemisphere.point_disk_of_nonpos {n : ℕ} (y : Sphere n)
   · simp [radius_disk, abs_of_nonpos hy]
   · rfl
 
+/-- The positive and negative hemisphere parametrizations jointly cover the sphere. -/
 theorem Hemisphere.point_jointly_surjective {n : ℕ} (y : Sphere n) : ∃ b x, point b x = y :=
   by
   rcases le_total 0 ((y : Ambient (n + 1)) 0) with hy | hy
   · exact ⟨Bool.true, disk y, point_disk_of_nonneg y hy⟩
   · exact ⟨Bool.false, disk y, point_disk_of_nonpos y hy⟩
 
+/-! ### The double of a disk -/
+
+/-- Map the two copies of the closed disk to the negative and positive hemispheres. -/
 def DiskDouble.hemisphereMap (n : ℕ) :
     Hemisphere.Ball n ⊕ Hemisphere.Ball n → Hemisphere.Sphere n :=
   Sum.elim (Hemisphere.point Bool.false) (Hemisphere.point Bool.true)
 
+/-- The map from the disjoint union of the two disks to their hemispheres is continuous. -/
 theorem DiskDouble.continuous_hemisphereMap (n : ℕ) : Continuous (hemisphereMap n) :=
   continuous_sum_dom.mpr
     ⟨Hemisphere.continuous_point Bool.false, Hemisphere.continuous_point Bool.true⟩
 
+/-- The two hemisphere maps agree along the identity identification of their boundary spheres. -/
 theorem DiskDouble.hemisphereMap_respects (n : ℕ)
     (x y : Hemisphere.Ball n ⊕ Hemisphere.Ball n)
     (h : DiskDouble.Rel (Homeomorph.refl (Boundary (Hemisphere.Ambient n))) x y) :
@@ -294,13 +318,16 @@ theorem DiskDouble.hemisphereMap_respects (n : ℕ)
       exact Hemisphere.point_boundary z
   | inr x => cases y <;> exact h.elim
 
+/-- Descend the hemisphere maps to the disk double glued by the identity boundary map. -/
 def DiskDouble.sphereMap (n : ℕ) :
     Space (Homeomorph.refl (Boundary (Hemisphere.Ambient n))) → Hemisphere.Sphere n :=
   Quot.lift (hemisphereMap n) (hemisphereMap_respects n)
 
+/-- The descended map from the untwisted disk double to the sphere is continuous. -/
 theorem DiskDouble.continuous_sphereMap (n : ℕ) : Continuous (sphereMap n) :=
   continuous_quot_lift (hemisphereMap_respects n) (continuous_hemisphereMap n)
 
+/-- The descended hemisphere map identifies no points beyond those already glued in the disk double. -/
 theorem DiskDouble.sphereMap_injective (n : ℕ) : Function.Injective (sphereMap n) := by
   intro a b
   induction a using Quot.inductionOn with
@@ -325,6 +352,7 @@ theorem DiskDouble.sphereMap_injective (n : ℕ) : Function.Injective (sphereMap
           subst y
           rfl
 
+/-- Every sphere point is represented by a point of the untwisted disk double. -/
 theorem DiskDouble.sphereMap_surjective (n : ℕ) : Function.Surjective (sphereMap n) := by
   intro y
   obtain ⟨b, x, hx⟩ := Hemisphere.point_jointly_surjective y
@@ -332,6 +360,7 @@ theorem DiskDouble.sphereMap_surjective (n : ℕ) : Function.Surjective (sphereM
   · exact ⟨Quot.mk _ (.inl x), hx⟩
   · exact ⟨Quot.mk _ (.inr x), hx⟩
 
+/-- The disk double glued by the identity on the boundary is homeomorphic to the sphere. -/
 def DiskDouble.homeomorphSphere (n : ℕ) :
     Space (Homeomorph.refl (Boundary (Hemisphere.Ambient n))) ≃ₜ
       Hemisphere.Sphere n :=
@@ -339,11 +368,15 @@ def DiskDouble.homeomorphSphere (n : ℕ) :
     Equiv.ofBijective (sphereMap n) ⟨sphereMap_injective n, sphereMap_surjective n⟩)
     (continuous_sphereMap n)
 
+/-- Gluing the two disks by any boundary homeomorphism produces a space homeomorphic to the sphere. -/
 def DiskDouble.twistedHomeomorphSphere (n : ℕ)
     (e : Boundary (Hemisphere.Ambient n) ≃ₜ Boundary (Hemisphere.Ambient n)) :
     Space e ≃ₜ Hemisphere.Sphere n :=
   (homeomorphUntwisted e).trans (homeomorphSphere n)
 
+/-! ### Spaces covered by two disks -/
+
+/-- Two injective continuous disk parametrizations covering a space, with their overlap exactly specified by a boundary homeomorphism. -/
 structure TwoDiskDecomposition (n : ℕ) (M : Type*) [TopologicalSpace M] where
   boundaryEquiv :
     DiskDouble.Boundary (Hemisphere.Ambient n) ≃ₜ DiskDouble.Boundary (Hemisphere.Ambient n)
@@ -359,15 +392,18 @@ structure TwoDiskDecomposition (n : ℕ) (M : Type*) [TopologicalSpace M] where
           x = DiskDouble.boundary (Hemisphere.Ambient n) z ∧
             y = DiskDouble.boundary (Hemisphere.Ambient n) (boundaryEquiv z)
 
+/-- Combine the two disk parametrizations into a map from their disjoint union. -/
 def TwoDiskDecomposition.sumMap {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) :
     Hemisphere.Ball n ⊕ Hemisphere.Ball n → M :=
   Sum.elim d.left d.right
 
+/-- The combined map from the two disks is continuous. -/
 theorem TwoDiskDecomposition.continuous_sumMap {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) : Continuous d.sumMap :=
   continuous_sum_dom.mpr ⟨d.left.continuous, d.right.continuous⟩
 
+/-- The combined disk map respects the boundary identification recorded by the decomposition. -/
 theorem TwoDiskDecomposition.sumMap_respects {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) (x y : Hemisphere.Ball n ⊕ Hemisphere.Ball n)
     (h : DiskDouble.Rel d.boundaryEquiv x y) : d.sumMap x = d.sumMap y := by
@@ -378,14 +414,17 @@ theorem TwoDiskDecomposition.sumMap_respects {n : ℕ} {M : Type*} [TopologicalS
     | inr y => exact (d.overlap x y).mpr h
   | inr x => cases y <;> exact h.elim
 
+/-- The disk-double quotient maps to the space described by the two-disk decomposition. -/
 def TwoDiskDecomposition.quotientMap {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) : DiskDouble.Space d.boundaryEquiv → M :=
   Quot.lift d.sumMap d.sumMap_respects
 
+/-- The quotient map associated with a two-disk decomposition is continuous. -/
 theorem TwoDiskDecomposition.continuous_quotientMap {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) : Continuous d.quotientMap :=
   continuous_quot_lift d.sumMap_respects d.continuous_sumMap
 
+/-- The overlap condition makes the quotient map of a two-disk decomposition injective. -/
 theorem TwoDiskDecomposition.quotientMap_injective {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) : Function.Injective d.quotientMap := by
   intro a b
@@ -410,6 +449,7 @@ theorem TwoDiskDecomposition.quotientMap_injective {n : ℕ} {M : Type*} [Topolo
           subst y
           rfl
 
+/-- The covering condition makes the quotient map of a two-disk decomposition surjective. -/
 theorem TwoDiskDecomposition.quotientMap_surjective {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) : Function.Surjective d.quotientMap := by
   intro p
@@ -417,6 +457,7 @@ theorem TwoDiskDecomposition.quotientMap_surjective {n : ℕ} {M : Type*} [Topol
   · exact ⟨Quot.mk _ (.inl x), hx⟩
   · exact ⟨Quot.mk _ (.inr y), hy⟩
 
+/-- A two-disk decomposition of a Hausdorff space identifies that space homeomorphically with its disk double. -/
 def TwoDiskDecomposition.quotientHomeomorph {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) [T2Space M] :
     DiskDouble.Space d.boundaryEquiv ≃ₜ M :=
@@ -424,25 +465,32 @@ def TwoDiskDecomposition.quotientHomeomorph {n : ℕ} {M : Type*} [TopologicalSp
     Equiv.ofBijective d.quotientMap ⟨d.quotientMap_injective, d.quotientMap_surjective⟩)
     d.continuous_quotientMap
 
+/-- A Hausdorff space with a two-disk decomposition is homeomorphic to the corresponding sphere. -/
 def TwoDiskDecomposition.homeomorphSphere {n : ℕ} {M : Type*} [TopologicalSpace M]
     (d : TwoDiskDecomposition n M) [T2Space M] : M ≃ₜ Hemisphere.Sphere n :=
   d.quotientHomeomorph.symm.trans (DiskDouble.twistedHomeomorphSphere n d.boundaryEquiv)
 
+/-! ### Boundary-controlled sublevel disks -/
+
+/-- A disk presentation of a closed sublevel set whose boundary sphere corresponds exactly to the boundary level. -/
 structure SublevelDisk (n : ℕ) {M : Type*} [TopologicalSpace M] (f : M → ℝ) (a : ℝ) where
   homeomorph : Hemisphere.Ball n ≃ₜ { x : M // f x ≤ a }
   boundary_iff : ∀ v, f (homeomorph v).1 = a ↔ ‖(v : Hemisphere.Ambient n)‖ = 1
 
+/-- The continuous map from the model disk into the ambient space underlying a sublevel-disk presentation. -/
 def SublevelDisk.map {n : ℕ} {M : Type*} [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
     (d : SublevelDisk n f a) : C(Hemisphere.Ball n, M)
     where
   toFun v := (d.homeomorph v).1
   continuous_toFun := continuous_subtype_val.comp d.homeomorph.continuous
 
+/-- The ambient map of a sublevel-disk presentation is injective. -/
 theorem SublevelDisk.map_injective {n : ℕ} {M : Type*} [TopologicalSpace M] {f : M → ℝ}
     {a : ℝ} (d : SublevelDisk n f a) : Function.Injective d.map := by
   intro v w h
   exact d.homeomorph.injective (Subtype.ext h)
 
+/-- Restrict a sublevel-disk presentation to a continuous map from its boundary sphere to the boundary level set. -/
 def SublevelDisk.boundaryMap {n : ℕ} {M : Type*} [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
     (d : SublevelDisk n f a) :
     C(DiskDouble.Boundary (Hemisphere.Ambient n), { x : M // f x = a })
@@ -458,6 +506,7 @@ def SublevelDisk.boundaryMap {n : ℕ} {M : Type*} [TopologicalSpace M] {f : M �
             (fun z => Metric.sphere_subset_closedBall z.2))).subtype_mk
       _
 
+/-- The boundary map of a sublevel-disk presentation is injective. -/
 theorem SublevelDisk.boundaryMap_injective {n : ℕ} {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a : ℝ} (d : SublevelDisk n f a) : Function.Injective d.boundaryMap := by
   intro z w h
@@ -467,6 +516,7 @@ theorem SublevelDisk.boundaryMap_injective {n : ℕ} {M : Type*} [TopologicalSpa
   apply Subtype.ext
   exact congrArg (fun v : Hemisphere.Ball n => (v : Hemisphere.Ambient n)) h'
 
+/-- Every point of the boundary level is represented by the boundary sphere of the sublevel disk. -/
 theorem SublevelDisk.boundaryMap_surjective {n : ℕ} {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a : ℝ} (d : SublevelDisk n f a) : Function.Surjective d.boundaryMap := by
   intro y
@@ -480,6 +530,7 @@ theorem SublevelDisk.boundaryMap_surjective {n : ℕ} {M : Type*} [TopologicalSp
   refine ⟨z, Subtype.ext ?_⟩
   exact hv
 
+/-- In a Hausdorff ambient space, the boundary sphere of a sublevel disk is homeomorphic to its boundary level set. -/
 def SublevelDisk.boundaryHomeomorph {n : ℕ} {M : Type*} [TopologicalSpace M] {f : M → ℝ}
     {a : ℝ} (d : SublevelDisk n f a) [T2Space M] :
     DiskDouble.Boundary (Hemisphere.Ambient n) ≃ₜ { x : M // f x = a } :=
@@ -487,7 +538,10 @@ def SublevelDisk.boundaryHomeomorph {n : ℕ} {M : Type*} [TopologicalSpace M] {
     Equiv.ofBijective d.boundaryMap ⟨d.boundaryMap_injective, d.boundaryMap_surjective⟩)
     d.boundaryMap.continuous
 
+/-! ### Extending a minimum disk through regular bands -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- A unique Morse minimum on a compact Hausdorff space has a disk sublevel at some level below any prescribed higher bound. -/
 theorem ManifoldMorse.SignedMorseChart.exists_minimumSublevelDisk {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -517,6 +571,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_minimumSublevelDisk {E M : Type*}
   · intro h
     rw [h, one_pow, mul_one]
 
+/-- On a compact smooth manifold, a common regular band gives a homeomorphism between two sublevels that identifies their boundary levels. -/
 theorem FlowConstruction.exists_regularSublevelHomeomorph_with_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -532,6 +587,7 @@ theorem FlowConstruction.exists_regularSublevelHomeomorph_with_level {E M : Type
     regularSublevelHomeomorphOfFlow_level_iff F hF hf.continuous hca hcb (le_max_left a b)
       (le_max_right a b)
 
+/-- Transport a disk presentation along a sublevel homeomorphism that matches the boundary levels. -/
 def SublevelDisk.transport {M : Type*} [TopologicalSpace M] {n : ℕ} {f : M → ℝ} {a b : ℝ}
     (d : SublevelDisk n f a) (e : { x : M // f x ≤ a } ≃ₜ { x : M // f x ≤ b })
     (he : ∀ x, f (e x).1 = b ↔ f x.1 = a) : SublevelDisk n f b
@@ -539,6 +595,7 @@ def SublevelDisk.transport {M : Type*} [TopologicalSpace M] {n : ℕ} {f : M →
   homeomorph := d.homeomorph.trans e
   boundary_iff v := (he (d.homeomorph v)).trans (d.boundary_iff v)
 
+/-- A disk presentation of one sublevel transports to another across the specified regular band on a compact smooth manifold. -/
 theorem FlowConstruction.nonempty_regularSublevelDisk {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {n : ℕ} {f : M → ℝ}
@@ -548,6 +605,7 @@ theorem FlowConstruction.nonempty_regularSublevelDisk {E M : Type*} [NormedAddCo
   obtain ⟨e, he⟩ := exists_regularSublevelHomeomorph_with_level hf hca hcb hband
   exact ⟨d.transport e he⟩
 
+/-- The sublevel above a unique Morse minimum remains a disk as long as no further critical point is encountered. -/
 theorem ManifoldMorse.SignedMorseChart.nonempty_sublevelDisk_before_next_critical
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -562,6 +620,9 @@ theorem ManifoldMorse.SignedMorseChart.nonempty_sublevelDisk_before_next_critica
   apply hregular x (hpl.trans_le hx.1)
   exact hx.2.trans (max_le ha.2.le le_rfl)
 
+/-! ### Assembling the two-critical-point sphere -/
+
+/-- Identify the level `-f = -a` with the level `f = a` by retaining the underlying point. -/
 def negLevelHomeomorph {M : Type*} [TopologicalSpace M] (f : M → ℝ) (a : ℝ) :
     { x : M // -f x = -a } ≃ₜ { x : M // f x = a }
     where
@@ -572,6 +633,7 @@ def negLevelHomeomorph {M : Type*} [TopologicalSpace M] (f : M → ℝ) (a : ℝ
   continuous_toFun := continuous_subtype_val.subtype_mk _
   continuous_invFun := continuous_subtype_val.subtype_mk _
 
+/-- Disk presentations of the lower and upper sublevels at a common level assemble into a two-disk decomposition of a Hausdorff space. -/
 def twoDiskDecompositionOfSublevels {M : Type*} [TopologicalSpace M] [T2Space M] {n : ℕ}
     {f : M → ℝ} {a : ℝ} (L : SublevelDisk n f a) (R : SublevelDisk n (fun x => -f x) (-a)) :
     TwoDiskDecomposition n M := by
@@ -622,11 +684,13 @@ def twoDiskDecompositionOfSublevels {M : Type*} [TopologicalSpace M] [T2Space M]
       have heq := congrArg Subtype.val (C.apply_symm_apply (B z))
       exact heq.symm
 
+/-- Matching lower and upper disk sublevels identify a Hausdorff space with a sphere. -/
 def homeomorphSphereOfSublevelDisks {M : Type*} [TopologicalSpace M] [T2Space M] {n : ℕ}
     {f : M → ℝ} {a : ℝ} (L : SublevelDisk n f a) (R : SublevelDisk n (fun x => -f x) (-a)) :
     M ≃ₜ Hemisphere.Sphere n :=
   (twoDiskDecompositionOfSublevels L R).homeomorphSphere
 
+/-- Reeb's theorem: a compact finite-dimensional smooth manifold with a Morse function having exactly two critical points of distinct values is homeomorphic to the sphere of its dimension. -/
 theorem ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
