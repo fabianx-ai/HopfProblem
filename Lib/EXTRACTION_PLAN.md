@@ -8,7 +8,9 @@ Measured on commit `721fc82ddbb6cb4d2221bacec0c030636a276f3e` (branch
 
 The sixteen `Hopf/*.lean` modules are exact byte slices of one 248,818-line `Solution.lean`
 (see `PROVENANCE.md`, `SPLIT_MANIFEST.json`). They carry no `section`/`namespace` structure,
-no docstrings and no `variable` blocks; every file is one `namespace Mathoverflow1973`. The
+no docstrings and no `variable` blocks; at the baseline every file was one
+`namespace Mathoverflow1973` block (the wrapper was removed tree-wide in `686b598e`,
+integration 4; only the final theorem in `Hopf/Proof/Final.lean` keeps it). The
 only block marker is the dotted prefix of each declaration name, so the census works with
 *runs of consecutive declarations sharing a top-level name prefix*. Namespace names are
 systematically misleading: `PeriodTorusHigherHomology` is generic singular-homology API
@@ -145,8 +147,10 @@ each model takes its next independent lane.
 - **Q1 — DEFAULT, flippable.** Lane G keeps n = 6 and generalizes only the model space.
   Generalization to n ≥ 5 (Smale) or n ≥ 6 (Milnor Thm 8.1 as written) is the follow-up lane
   G′.
-- **Q2 — DEFAULT, flippable.** Transitional `namespace Mathoverflow1973` with `export` shims
-  is allowed on first landing; the rename is a second commit per lane.
+- **Q2 — DEFAULT, flippable.** Transitional `export` shims are allowed on first landing; the
+  rename is a second commit per lane. (The transitional `namespace Mathoverflow1973` this
+  default also allowed is gone tree-wide since `686b598e`, integration 4; only the final
+  theorem in `Hopf/Proof/Final.lean` keeps it, and no new landing carries it.)
 - **Q3 — DEFAULT, flippable.** The subdivision / small-chains part of lane A
   (SingularHomology 2088–3466) is moved as-is.
 - **Q4 — DEFAULT, flippable.** Lanes B, I, J are full moves from the public tail. An

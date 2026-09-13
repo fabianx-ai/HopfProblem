@@ -183,9 +183,11 @@ Lanes are defined in `Lib/EXTRACTION_PLAN.md`. A lane is done when all of the fo
   (`move`, `rename`, `doc`, `style`, one `refactor`) and states whether any proof term or
   statement changed ("No proof term changed."); a commit that changes proof terms names the
   reason and the twin file it follows.
-- **Transitional namespace rule.** On first landing a moved file may keep
-  `namespace Mathoverflow1973` and the original declaration names, with `export`/`alias`
-  shims left in `Hopf/` so that consumers with hundreds of references stay green. The rename
+- **Transitional namespace rule.** On first landing a moved file may keep the original
+  declaration names, with `export`/`alias` shims left in `Hopf/` so that consumers with
+  hundreds of references stay green. The `namespace Mathoverflow1973` wrapper that earlier
+  landings kept is gone tree-wide since `686b598e` (integration 4); only the final theorem in
+  `Hopf/Proof/Final.lean` keeps it (`47940380`), and no new landing carries it. The rename
   to Mathlib-style names and namespaces is a separate second commit in the same lane
   (`lib(<lane>): rename …`), and the lane is not done until it has landed.
 - Statements of moved theorems do not change in a pure-move lane as seen from `Hopf/` (only
