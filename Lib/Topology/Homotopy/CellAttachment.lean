@@ -59,14 +59,19 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Radial shrinking of the disk -/
+
+/-- The radial map shrinking a vector's norm by `a`. -/
 def RadialCoreShrink.shrink {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
     (y : E) : E :=
   (Max.max (‖y‖ - Max.max a 0) 0 / ‖y‖) • y
 
+/-- The shrink fixes the origin. -/
 @[simp]
 theorem RadialCoreShrink.shrink_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (a : ℝ) : shrink a (0 : E) = 0 := by simp [shrink]
 
+/-- The shrink reduces the norm by `a` clamped at zero. -/
 theorem RadialCoreShrink.norm_shrink {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (a : ℝ) (y : E) : ‖shrink a y‖ = Max.max (‖y‖ - Max.max a 0) 0 := by
   by_cases hy : y = 0
@@ -77,11 +82,13 @@ theorem RadialCoreShrink.norm_shrink {E : Type*} [NormedAddCommGroup E] [NormedS
     abs_of_nonneg (div_nonneg (le_max_right _ _) (norm_nonneg y)),
     div_mul_cancel₀ _ (norm_ne_zero_iff.mpr hy)]
 
+/-- The shrink never increases the norm. -/
 theorem RadialCoreShrink.norm_shrink_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (a : ℝ) (y : E) : ‖shrink a y‖ ≤ ‖y‖ := by
   rw [norm_shrink]
   exact max_le (sub_le_self _ (le_max_right a 0)) (norm_nonneg y)
 
+/-- Shrinking by zero is the identity. -/
 @[simp]
 theorem RadialCoreShrink.shrink_zero_parameter {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (y : E) : shrink 0 y = y := by
@@ -91,10 +98,12 @@ theorem RadialCoreShrink.shrink_zero_parameter {E : Type*} [NormedAddCommGroup E
   rw [shrink, max_self, sub_zero, max_eq_left (norm_nonneg y), div_self (norm_ne_zero_iff.mpr hy),
     one_smul]
 
+/-- Vectors inside radius `a` shrink to the origin. -/
 theorem RadialCoreShrink.shrink_eq_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} {y : E} (hy : ‖y‖ ≤ a) : shrink a y = 0 := by
   rw [shrink, max_eq_right (sub_nonpos.mpr (hy.trans (le_max_left a 0))), zero_div, zero_smul]
 
+/-- The shrink is continuous in parameter and vector. -/
 theorem RadialCoreShrink.continuous_shrink {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] : Continuous (fun z : ℝ × E => shrink z.1 z.2) := by
   rw [continuous_iff_continuousAt]
@@ -112,11 +121,15 @@ theorem RadialCoreShrink.continuous_shrink {E : Type*} [NormedAddCommGroup E]
           continuous_snd.norm.continuousAt (norm_ne_zero_iff.mpr hy)).smul
       continuous_snd.continuousAt
 
+/-! ### The handle core collapse -/
+
+/-- The normalizing factor of the handle core collapse. -/
 def HandleCoreDeformation.denominator {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :
     ℝ :=
   Max.max ‖(z.1 : N)‖ (1 - ‖(z.2 : P)‖ / 2)
 
+/-- The collapse denominator is positive. -/
 theorem HandleCoreDeformation.denominator_pos {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :
     0 < denominator z := by
@@ -125,11 +138,13 @@ theorem HandleCoreDeformation.denominator_pos {N P : Type*} [NormedAddCommGroup 
   dsimp [denominator]
   linarith
 
+/-- The collapse denominator is continuous. -/
 theorem HandleCoreDeformation.continuous_denominator {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] : Continuous (denominator (N := N) (P := P)) :=
   (continuous_subtype_val.comp continuous_fst).norm.max
     (continuous_const.sub ((continuous_subtype_val.comp continuous_snd).norm.div_const 2))
 
+/-- The negative component of the collapse. -/
 def HandleCoreDeformation.negative {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :
     MorseHandle.UnitDisk N :=
@@ -142,6 +157,7 @@ def HandleCoreDeformation.negative {N P : Type*} [NormedAddCommGroup N] [NormedS
         mul_le_mul_of_nonneg_left (le_max_left _ _) (inv_pos.mpr (denominator_pos z)).le
       _ = 1 := inv_mul_cancel₀ (denominator_pos z).ne'⟩
 
+/-- The positive component of the collapse. -/
 def HandleCoreDeformation.positive {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [NormedSpace ℝ P]
     (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :
@@ -151,12 +167,14 @@ def HandleCoreDeformation.positive {N P : Type*} [NormedAddCommGroup N]
       ((RadialCoreShrink.norm_shrink_le _ _).trans
         (mem_closedBall_zero_iff.mp z.2.property))⟩
 
+/-- The negative component is continuous. -/
 theorem HandleCoreDeformation.continuous_negative {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] : Continuous (negative (N := N) (P := P)) :=
   ((continuous_denominator.inv₀ (fun z => (denominator_pos z).ne')).smul
         (continuous_subtype_val.comp continuous_fst)).subtype_mk
     _
 
+/-- The positive component is continuous. -/
 theorem HandleCoreDeformation.continuous_positive {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] : Continuous (positive (N := N) (P := P)) :=
   (RadialCoreShrink.continuous_shrink.comp
@@ -172,10 +190,12 @@ def HandleCoreDeformation.collapse {N P : Type*} [NormedAddCommGroup N] [NormedS
       MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :=
   ⟨fun z => (negative z, positive z), continuous_negative.prodMk continuous_positive⟩
 
+/-- The union of the boundary face and the core disk of the handle. -/
 def HandleCoreDeformation.faceCore {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] : Set (MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) :=
   {z | ‖(z.1 : N)‖ = 1 ∨ (z.2 : P) = 0}
 
+/-- The collapse lands in the face-core union. -/
 theorem HandleCoreDeformation.collapse_mem {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P]
     (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) : collapse z ∈ faceCore := by
@@ -191,6 +211,7 @@ theorem HandleCoreDeformation.collapse_mem {N P : Type*} [NormedAddCommGroup N]
     apply RadialCoreShrink.shrink_eq_zero
     linarith
 
+/-- The collapse fixes the boundary face. -/
 theorem HandleCoreDeformation.collapse_face {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P]
     (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) (hz : ‖(z.1 : N)‖ = 1) :
@@ -206,6 +227,7 @@ theorem HandleCoreDeformation.collapse_face {N P : Type*} [NormedAddCommGroup N]
     change RadialCoreShrink.shrink (2 * (1 - ‖(z.1 : N)‖)) (z.2 : P) = (z.2 : P)
     rw [hz, sub_self, MulZeroClass.mul_zero, RadialCoreShrink.shrink_zero_parameter]
 
+/-- The collapse fixes the core disk. -/
 theorem HandleCoreDeformation.collapse_core {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P]
     (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) (hz : (z.2 : P) = 0) :
@@ -221,18 +243,21 @@ theorem HandleCoreDeformation.collapse_core {N P : Type*} [NormedAddCommGroup N]
     change RadialCoreShrink.shrink (2 * (1 - ‖(z.1 : N)‖)) (z.2 : P) = (z.2 : P)
     rw [hz, RadialCoreShrink.shrink_zero]
 
+/-- The collapse fixes the face-core union. -/
 theorem HandleCoreDeformation.collapse_fixed {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P]
     (z : MorseHandle.UnitDisk N × MorseHandle.UnitDisk P) (hz : z ∈ faceCore) :
     collapse z = z :=
   hz.elim (collapse_face z) (collapse_core z)
 
+/-- The convex blend between two disk points. -/
 def HandleCoreDeformation.diskBlend {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (t : (unitInterval)) (x y : MorseHandle.UnitDisk V) : MorseHandle.UnitDisk V :=
   ⟨(1 - (t : ℝ)) • (x : V) + (t : ℝ) • (y : V),
     (convex_closedBall (0 : V) 1) x.property y.property (sub_nonneg.mpr t.property.2) t.property.1
       (sub_add_cancel 1 (t : ℝ))⟩
 
+/-- The disk blend is continuous. -/
 theorem HandleCoreDeformation.continuous_diskBlend {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] :
     Continuous
@@ -244,18 +269,21 @@ theorem HandleCoreDeformation.continuous_diskBlend {V : Type*} [NormedAddCommGro
           (continuous_subtype_val.comp continuous_snd.snd))).subtype_mk
     _
 
+/-- At time zero the blend is the first point. -/
 @[simp]
 theorem HandleCoreDeformation.diskBlend_zero {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (x y : MorseHandle.UnitDisk V) : diskBlend 0 x y = x := by
   apply Subtype.ext
   simp [diskBlend]
 
+/-- At time one the blend is the second point. -/
 @[simp]
 theorem HandleCoreDeformation.diskBlend_one {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (x y : MorseHandle.UnitDisk V) : diskBlend 1 x y = y := by
   apply Subtype.ext
   simp [diskBlend]
 
+/-- Blending a point with itself is constant. -/
 @[simp]
 theorem HandleCoreDeformation.diskBlend_self {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (t : (unitInterval)) (x : MorseHandle.UnitDisk V) :
@@ -264,6 +292,7 @@ theorem HandleCoreDeformation.diskBlend_self {V : Type*} [NormedAddCommGroup V]
   change (1 - (t : ℝ)) • (x : V) + (t : ℝ) • (x : V) = (x : V)
   rw [← add_smul, sub_add_cancel, one_smul]
 
+/-- The deformation retracting the handle onto its face-core union. -/
 def HandleCoreDeformation.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
     (ContinuousMap.id (MorseHandle.UnitDisk N × MorseHandle.UnitDisk P)).HomotopyRel
@@ -285,6 +314,9 @@ def HandleCoreDeformation.deformation {N P : Type*} [NormedAddCommGroup N] [Norm
     rw [collapse_fixed z hz]
     simp
 
+/-! ### Gluing on a closed cover -/
+
+/-- A map glued from two closed embeddings covering the target. -/
 def ClosedCover.mapOfClosedPieces {R P X Y : Type*} [TopologicalSpace R]
     [TopologicalSpace P] [TopologicalSpace X] [TopologicalSpace Y] (r : R → X) (p : P → X)
     (hr : Topology.IsClosedEmbedding r) (hp : Topology.IsClosedEmbedding p)
@@ -302,6 +334,7 @@ def ClosedCover.mapOfClosedPieces {R P X Y : Type*} [TopologicalSpace R]
     (congrArg Subtype.val (a.apply_symm_apply x)).trans
       (hxy.trans (congrArg Subtype.val (b.apply_symm_apply y)).symm)
 
+/-- The glued map agrees with the left piece. -/
 theorem ClosedCover.mapOfClosedPieces_left {R P X Y : Type*} [TopologicalSpace R]
     [TopologicalSpace P] [TopologicalSpace X] [TopologicalSpace Y] (r : R → X) (p : P → X)
     (hr : Topology.IsClosedEmbedding r) (hp : Topology.IsClosedEmbedding p)
@@ -314,6 +347,7 @@ theorem ClosedCover.mapOfClosedPieces_left {R P X Y : Type*} [TopologicalSpace R
   exact
     (glue_left hcover _ _ ⟨r x, Set.mem_range_self x⟩).trans (congrArg f (a.symm_apply_apply x))
 
+/-- The glued map agrees with the right piece. -/
 theorem ClosedCover.mapOfClosedPieces_right {R P X Y : Type*} [TopologicalSpace R]
     [TopologicalSpace P] [TopologicalSpace X] [TopologicalSpace Y] (r : R → X) (p : P → X)
     (hr : Topology.IsClosedEmbedding r) (hp : Topology.IsClosedEmbedding p)
@@ -340,11 +374,15 @@ def HandleCoreAttachment.core {N P X : Type*} [NormedAddCommGroup N] [NormedAddC
     C(MorseHandle.UnitDisk N, X) :=
   ⟨fun x => h (x, ⟨0, by simp⟩), h.continuous.comp (continuous_id.prodMk continuous_const)⟩
 
+/-! ### Retraction of a handle attachment -/
+
+/-- The union of the old space and the handle core inside `X`. -/
 def HandleCoreAttachment.coreSpace {N P R X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) : Set X :=
   Set.range r ∪ Set.range (core h)
 
+/-- The handle collapse lands in the core space. -/
 theorem HandleCoreAttachment.collapse_lands {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -358,6 +396,7 @@ theorem HandleCoreAttachment.collapse_lands {N P R X : Type*} [NormedAddCommGrou
     apply congrArg h
     exact Prod.ext rfl (Subtype.ext hz.symm)
 
+/-- The map sending an old point to the core space. -/
 def HandleCoreAttachment.oldToCore {N P R X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -373,6 +412,7 @@ def HandleCoreAttachment.handleToCore {N P R X : Type*} [NormedAddCommGroup N]
   ⟨fun z => ⟨h (HandleCoreDeformation.collapse z), collapse_lands r h hface z⟩,
     (h.continuous.comp HandleCoreDeformation.collapse.continuous).subtype_mk _⟩
 
+/-- The old and handle retractions agree on the attachment overlap. -/
 theorem HandleCoreAttachment.coreMaps_agree {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -397,6 +437,7 @@ def HandleCoreAttachment.retraction {N P R X : Type*} [NormedAddCommGroup N]
   ClosedCover.mapOfClosedPieces r h hr hh hcover (oldToCore r h hr) (handleToCore r h hface)
     (coreMaps_agree r h hr hface)
 
+/-- The retraction computes the identity on old points. -/
 theorem HandleCoreAttachment.retraction_old {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -409,6 +450,7 @@ theorem HandleCoreAttachment.retraction_old {N P R X : Type*} [NormedAddCommGrou
     (ClosedCover.mapOfClosedPieces_left r h hr hh hcover (oldToCore r h hr)
       (handleToCore r h hface) (coreMaps_agree r h hr hface) a)
 
+/-- The retraction computes the collapse on handle points. -/
 theorem HandleCoreAttachment.retraction_handle {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -422,6 +464,7 @@ theorem HandleCoreAttachment.retraction_handle {N P R X : Type*} [NormedAddCommG
     (ClosedCover.mapOfClosedPieces_right r h hr hh hcover (oldToCore r h hr)
       (handleToCore r h hface) (coreMaps_agree r h hr hface) z)
 
+/-- The retraction fixes the core space. -/
 theorem HandleCoreAttachment.retraction_fixed {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -435,6 +478,7 @@ theorem HandleCoreAttachment.retraction_fixed {N P R X : Type*} [NormedAddCommGr
   · change (retraction r h hr hh hcover hface (h (z, ⟨0, by simp⟩)) : X) = h (z, ⟨0, by simp⟩)
     rw [retraction_handle, HandleCoreDeformation.collapse_core _ rfl]
 
+/-- The two piece-maps cover the cylinder over the union. -/
 theorem HandleCoreAttachment.time_cover {N P R X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -449,16 +493,19 @@ theorem HandleCoreAttachment.time_cover {N P R X : Type*} [NormedAddCommGroup N]
   · exact Or.inl ⟨(t, a), rfl⟩
   · exact Or.inr ⟨(t, z), rfl⟩
 
+/-- The stationary motion on the old part. -/
 def HandleCoreAttachment.oldMotion {R X : Type*} [TopologicalSpace R] [TopologicalSpace X]
     (r : R → X) (hr : Topology.IsClosedEmbedding r) : C((unitInterval) × R, X) :=
   ⟨fun q => r q.2, hr.continuous.comp continuous_snd⟩
 
+/-- The collapse motion on the handle part. -/
 def HandleCoreAttachment.handleMotion {N P X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace X]
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
     C((unitInterval) × (MorseHandle.UnitDisk N × MorseHandle.UnitDisk P), X) :=
   h.comp HandleCoreDeformation.deformation.toHomotopy.toContinuousMap
 
+/-- The two motions agree on the overlap. -/
 theorem HandleCoreAttachment.motions_agree {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -473,6 +520,7 @@ theorem HandleCoreAttachment.motions_agree {N P R X : Type*} [NormedAddCommGroup
   rw [HandleCoreDeformation.deformation.eq_fst z.1 hz]
   exact ha
 
+/-- The glued deformation of the union onto the core space. -/
 def HandleCoreAttachment.motion {N P R X : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -483,6 +531,7 @@ def HandleCoreAttachment.motion {N P R X : Type*} [NormedAddCommGroup N] [Normed
     (Topology.IsClosedEmbedding.id.prodMap hr) (Topology.IsClosedEmbedding.id.prodMap hh)
     (time_cover r h hcover) (oldMotion r hr) (handleMotion h) (motions_agree r h hr hface)
 
+/-- The motion is stationary on the old part. -/
 theorem HandleCoreAttachment.motion_old {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -495,6 +544,7 @@ theorem HandleCoreAttachment.motion_old {N P R X : Type*} [NormedAddCommGroup N]
     (Topology.IsClosedEmbedding.id.prodMap hr) (Topology.IsClosedEmbedding.id.prodMap hh)
     (time_cover r h hcover) (oldMotion r hr) (handleMotion h) (motions_agree r h hr hface) (t, a)
 
+/-- The motion computes the collapse on the handle part. -/
 theorem HandleCoreAttachment.motion_handle {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -508,12 +558,14 @@ theorem HandleCoreAttachment.motion_handle {N P R X : Type*} [NormedAddCommGroup
     (Topology.IsClosedEmbedding.id.prodMap hr) (Topology.IsClosedEmbedding.id.prodMap hh)
     (time_cover r h hcover) (oldMotion r hr) (handleMotion h) (motions_agree r h hr hface) (t, z)
 
+/-- The inclusion of the core space into the union. -/
 def HandleCoreAttachment.coreInclusion {N P R X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (r : R → X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
     C(coreSpace r h, X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- The deformation retraction of the attachment onto its core. -/
 def HandleCoreAttachment.deformation {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -550,6 +602,7 @@ def HandleCoreAttachment.deformation {N P R X : Type*} [NormedAddCommGroup N]
       rw [motion_handle]
       exact congrArg h (HandleCoreDeformation.deformation.eq_fst t (Or.inr rfl))
 
+/-- The core space is homotopy equivalent to the attachment union. -/
 def HandleCoreAttachment.homotopyEquiv {N P R X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace R]
     [TopologicalSpace X] (r : R → X)
@@ -570,18 +623,23 @@ def HandleCoreAttachment.homotopyEquiv {N P R X : Type*} [NormedAddCommGroup N]
     rw [heq]
   right_inv := ⟨(deformation r h hr hh hcover hface).toHomotopy.symm⟩
 
+/-! ### The closed two-piece cover -/
+
+/-- The inclusion of the old set into the union. -/
 def ClosedHandleCore.oldInclusion {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
     C(A, ↥(A ∪ Set.range h)) :=
   ⟨Set.inclusion (fun _ hx => Or.inl hx), continuous_inclusion _⟩
 
+/-- The handle map into the union. -/
 def ClosedHandleCore.handleInclusion {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
     C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, ↥(A ∪ Set.range h)) :=
   ⟨fun z => ⟨h z, Or.inr (Set.mem_range_self z)⟩, h.continuous.subtype_mk _⟩
 
+/-- The old piece is closed in the union. -/
 theorem ClosedHandleCore.old_closed {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) (hA : IsClosed A) :
@@ -589,12 +647,14 @@ theorem ClosedHandleCore.old_closed {N P X : Type*} [NormedAddCommGroup N]
   ClosedCover.isClosedEmbedding_codRestrict hA.isClosedEmbedding_subtypeVal
     (fun x => Or.inl x.property)
 
+/-- The handle piece is closed in the union. -/
 theorem ClosedHandleCore.handle_closed {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
     (hh : Topology.IsClosedEmbedding h) : Topology.IsClosedEmbedding (handleInclusion A h) :=
   ClosedCover.isClosedEmbedding_codRestrict hh (fun z => Or.inr (Set.mem_range_self z))
 
+/-- The old and handle pieces cover the union. -/
 theorem ClosedHandleCore.pieces_cover {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
@@ -604,6 +664,7 @@ theorem ClosedHandleCore.pieces_cover {N P X : Type*} [NormedAddCommGroup N]
   · exact Or.inl ⟨⟨x, hx⟩, rfl⟩
   · exact Or.inr ⟨z, rfl⟩
 
+/-- A handle point lies in the old piece exactly on the boundary face. -/
 theorem ClosedHandleCore.handle_mem_old_iff {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -616,6 +677,7 @@ theorem ClosedHandleCore.handle_mem_old_iff {N P X : Type*} [NormedAddCommGroup 
   · intro hz
     exact ⟨⟨h z, hz⟩, rfl⟩
 
+/-- The core space sits inside the union. -/
 theorem ClosedHandleCore.core_subset {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
@@ -624,6 +686,7 @@ theorem ClosedHandleCore.core_subset {N P X : Type*} [NormedAddCommGroup N]
   · exact Or.inl hx
   · exact Or.inr ⟨(z, ⟨0, by simp⟩), rfl⟩
 
+/-- Membership in the core space characterized on the two pieces. -/
 theorem ClosedHandleCore.coreSpace_iff {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X))
@@ -641,6 +704,7 @@ theorem ClosedHandleCore.coreSpace_iff {N P X : Type*} [NormedAddCommGroup N]
     · exact Or.inl ⟨⟨x.val, hx⟩, Subtype.ext rfl⟩
     · exact Or.inr ⟨z, Subtype.ext hz⟩
 
+/-- The union is homeomorphic to the glued core space. -/
 def ClosedHandleCore.coreUnionHomeomorph {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) :
@@ -654,6 +718,7 @@ def ClosedHandleCore.coreUnionHomeomorph {N P X : Type*} [NormedAddCommGroup N]
   continuous_toFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
   continuous_invFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
+/-- The union is homotopy equivalent to the old set. -/
 def ClosedHandleCore.unionHomotopyEquiv {N P X : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace X] (A : Set X)
     (h : C(MorseHandle.UnitDisk N × MorseHandle.UnitDisk P, X)) [NormedSpace ℝ N]
@@ -665,6 +730,9 @@ def ClosedHandleCore.unionHomotopyEquiv {N P X : Type*} [NormedAddCommGroup N]
       (old_closed A h hA) (handle_closed A h hh) (pieces_cover A h)
       (fun z => (handle_mem_old_iff A h z).trans (hface z)))
 
+/-! ### Embedded cell attachments -/
+
+/-- An embedded cell attachment: the old closed set, the cell map, and the face condition. -/
 structure EmbeddedCellAttachment (N X : Type*) [NormedAddCommGroup N]
     [TopologicalSpace X] where
   old : Set X
@@ -674,6 +742,7 @@ structure EmbeddedCellAttachment (N X : Type*) [NormedAddCommGroup N]
   cover : old ∪ Set.range cell = Set.univ
   boundary : ∀ z, cell z ∈ old ↔ ‖(z : N)‖ = 1
 
+/-- The attachment data assembled from a closed union with a cell. -/
 def EmbeddedCellAttachment.ofUnion {N X : Type*} [NormedAddCommGroup N] [TopologicalSpace X]
     (A : Set X) (e : C(MorseHandle.UnitDisk N, X)) (hA : IsClosed A)
     (he : Topology.IsClosedEmbedding e) (hface : ∀ z, e z ∈ A ↔ ‖(z : N)‖ = 1) :
@@ -691,23 +760,28 @@ def EmbeddedCellAttachment.ofUnion {N X : Type*} [NormedAddCommGroup N] [Topolog
     · exact Or.inr ⟨z, rfl⟩
   boundary := hface
 
+/-- The old set union the outer half of the cell. -/
 def EmbeddedCellAttachment.oldNeighborhood {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : Set X :=
   (D.cell '' {z : MorseHandle.UnitDisk N | ‖(z : N)‖ ≤ 1 / 2})ᶜ
 
+/-- The open inner part of the cell. -/
 def EmbeddedCellAttachment.diskPatch {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : Set X :=
   D.oldᶜ
 
+/-- The old neighbourhood is open. -/
 theorem EmbeddedCellAttachment.isOpen_oldNeighborhood {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : IsOpen D.oldNeighborhood :=
   (D.cell_closed.isClosedMap _
       (isClosed_le continuous_subtype_val.norm continuous_const)).isOpen_compl
 
+/-- The disk patch is open. -/
 theorem EmbeddedCellAttachment.isOpen_diskPatch {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : IsOpen D.diskPatch :=
   D.old_closed.isOpen_compl
 
+/-- A cell point lies in the old neighbourhood in the outer half. -/
 theorem EmbeddedCellAttachment.cell_mem_oldNeighborhood_iff {N X : Type*}
     [NormedAddCommGroup N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (z : MorseHandle.UnitDisk N) : D.cell z ∈ D.oldNeighborhood ↔ 1 / 2 < ‖(z : N)‖ := by
@@ -720,6 +794,7 @@ theorem EmbeddedCellAttachment.cell_mem_oldNeighborhood_iff {N X : Type*}
     subst w
     exact (not_le_of_gt hnorm) hw
 
+/-- A cell point lies in the disk patch in the open interior. -/
 theorem EmbeddedCellAttachment.cell_mem_diskPatch_iff {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (z : MorseHandle.UnitDisk N) : D.cell z ∈ D.diskPatch ↔ ‖(z : N)‖ < 1 := by
@@ -731,6 +806,7 @@ theorem EmbeddedCellAttachment.cell_mem_diskPatch_iff {N X : Type*} [NormedAddCo
     exact lt_of_le_of_ne hz h
   · exact ne_of_lt
 
+/-- The old set sits inside its neighbourhood. -/
 theorem EmbeddedCellAttachment.old_subset_neighborhood {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : D.old ⊆ D.oldNeighborhood := by
   rintro x hx ⟨z, hz, rfl⟩
@@ -738,6 +814,7 @@ theorem EmbeddedCellAttachment.old_subset_neighborhood {N X : Type*} [NormedAddC
   change ‖(z : N)‖ ≤ 1 / 2 at hz
   linarith
 
+/-- The old neighbourhood and disk patch cover the union. -/
 theorem EmbeddedCellAttachment.open_cover {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     D.oldNeighborhood ∪ D.diskPatch = Set.univ := by
@@ -747,6 +824,7 @@ theorem EmbeddedCellAttachment.open_cover {N X : Type*} [NormedAddCommGroup N]
   · exact Or.inl (D.old_subset_neighborhood hx)
   · exact Or.inr hx
 
+/-- The disk patch lies in the cell image. -/
 theorem EmbeddedCellAttachment.diskPatch_subset_range {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     D.diskPatch ⊆ Set.range D.cell := by
@@ -754,11 +832,13 @@ theorem EmbeddedCellAttachment.diskPatch_subset_range {N X : Type*} [NormedAddCo
   have hcover : x ∈ D.old ∪ Set.range D.cell := by rw [D.cover]; trivial
   exact hcover.resolve_left hx
 
+/-- The overlap lies in the cell image. -/
 theorem EmbeddedCellAttachment.overlap_subset_range {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     D.oldNeighborhood ∩ D.diskPatch ⊆ Set.range D.cell :=
   Set.inter_subset_right.trans D.diskPatch_subset_range
 
+/-- The disk patch is homeomorphic to the open unit disk. -/
 def EmbeddedCellAttachment.diskHomeomorph {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     { z : MorseHandle.UnitDisk N // ‖(z : N)‖ < 1 } ≃ₜ D.diskPatch :=
@@ -768,6 +848,7 @@ def EmbeddedCellAttachment.diskHomeomorph {N X : Type*} [NormedAddCommGroup N]
           exact (D.cell_mem_diskPatch_iff z).symm)).trans
     (D.cell_closed.isEmbedding.homeomorphOfSubsetRange D.diskPatch_subset_range)
 
+/-- The overlap is homeomorphic to the annulus `1/2 < ‖z‖ < 1`. -/
 def EmbeddedCellAttachment.overlapHomeomorph {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     { z : MorseHandle.UnitDisk N // 1 / 2 < ‖(z : N)‖ ∧ ‖(z : N)‖ < 1 } ≃ₜ
@@ -780,26 +861,34 @@ def EmbeddedCellAttachment.overlapHomeomorph {N X : Type*} [NormedAddCommGroup N
                 (D.cell_mem_diskPatch_iff z)).symm)).trans
     (D.cell_closed.isEmbedding.homeomorphOfSubsetRange D.overlap_subset_range)
 
+/-! ### The outer annulus -/
+
+/-- The closed annulus `1/2 ≤ ‖z‖ ≤ 1`. -/
 abbrev OuterDisk.Space (E : Type*) [NormedAddCommGroup E] :=
   { z : MorseHandle.UnitDisk E // 1 / 2 < ‖(z : E)‖ }
 
+/-- Outer-disk points are nonzero. -/
 theorem OuterDisk.norm_pos {E : Type*} [NormedAddCommGroup E] (z : Space E) :
     0 < ‖(z.val : E)‖ := by linarith [z.property]
 
+/-- The unit sphere viewed in the unit disk. -/
 def OuterDisk.sphereDisk {E : Type*} [NormedAddCommGroup E] :
     C(Metric.sphere (0 : E) 1, MorseHandle.UnitDisk E) :=
   ⟨Set.inclusion Metric.sphere_subset_closedBall, continuous_inclusion _⟩
 
+/-- The sphere points lie in the outer annulus. -/
 theorem OuterDisk.sphereDisk_mem {E : Type*} [NormedAddCommGroup E]
     (u : Metric.sphere (0 : E) 1) : 1 / 2 < ‖(sphereDisk u : E)‖ := by
   change 1 / 2 < ‖(u : E)‖
   rw [mem_sphere_zero_iff_norm.mp u.property]
   norm_num
 
+/-- The sphere included into the outer annulus. -/
 def OuterDisk.fromSphere {E : Type*} [NormedAddCommGroup E] :
     C(Metric.sphere (0 : E) 1, Space E) :=
   ⟨fun u => ⟨sphereDisk u, sphereDisk_mem u⟩, sphereDisk.continuous.subtype_mk _⟩
 
+/-- The radial projection of the outer annulus onto the sphere. -/
 def OuterDisk.toSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     C(Space E, Metric.sphere (0 : E) 1) :=
   ⟨fun z => RadialExtension.direction (z.val : E) (norm_ne_zero_iff.mp (norm_pos z).ne'),
@@ -808,6 +897,7 @@ def OuterDisk.toSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
           (continuous_subtype_val.comp continuous_subtype_val)).subtype_mk
       _⟩
 
+/-- Radial projection followed by inclusion fixes the boundary. -/
 theorem OuterDisk.fromSphere_toSphere_boundary {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (z : Space E) (hz : ‖(z.val : E)‖ = 1) : fromSphere (toSphere z) = z := by
   apply Subtype.ext
@@ -815,10 +905,12 @@ theorem OuterDisk.fromSphere_toSphere_boundary {E : Type*} [NormedAddCommGroup E
   change ‖(z.val : E)‖⁻¹ • (z.val : E) = (z.val : E)
   rw [hz, inv_one, one_smul]
 
+/-- The radial blend deforming an annulus point toward the sphere. -/
 def OuterDisk.blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (q : (unitInterval) × Space E) : E :=
   ((1 - (q.1 : ℝ)) + (q.1 : ℝ) / ‖(q.2.val : E)‖) • (q.2.val : E)
 
+/-- The annulus blend is continuous. -/
 theorem OuterDisk.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] : Continuous (blendVector (E := E)) := by
   have ht : Continuous (fun q : (unitInterval) × Space E => (q.1 : ℝ)) :=
@@ -827,6 +919,7 @@ theorem OuterDisk.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
     continuous_subtype_val.comp (continuous_subtype_val.comp continuous_snd)
   exact ((continuous_const.sub ht).add (ht.div hz.norm (fun q => (norm_pos q.2).ne'))).smul hz
 
+/-- The blend norm interpolates to the unit sphere. -/
 theorem OuterDisk.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (t : (unitInterval)) (z : Space E) :
     ‖blendVector (t, z)‖ = (1 - (t : ℝ)) * ‖(z.val : E)‖ + (t : ℝ) := by
@@ -835,6 +928,7 @@ theorem OuterDisk.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpa
   rw [blendVector, norm_smul, Real.norm_eq_abs, abs_of_nonneg hscale, add_mul,
     div_mul_cancel₀ _ (norm_pos z).ne']
 
+/-- The blend stays in the outer annulus. -/
 theorem OuterDisk.norm_blendVector_mem {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (t : (unitInterval)) (z : Space E) :
     1 / 2 < ‖blendVector (t, z)‖ ∧ ‖blendVector (t, z)‖ ≤ 1 := by
@@ -846,15 +940,18 @@ theorem OuterDisk.norm_blendVector_mem {E : Type*} [NormedAddCommGroup E] [Norme
       (sub_nonneg.mpr t.property.2) t.property.1 (sub_add_cancel 1 (t : ℝ))
   simpa only [Set.mem_Ioc, smul_eq_mul, mul_one] using h
 
+/-- The deformation of the outer annulus onto its boundary sphere. -/
 def OuterDisk.blend {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (q : (unitInterval) × Space E) : Space E :=
   ⟨⟨blendVector q, mem_closedBall_zero_iff.mpr (norm_blendVector_mem q.1 q.2).2⟩,
     (norm_blendVector_mem q.1 q.2).1⟩
 
+/-- The annulus deformation is continuous. -/
 theorem OuterDisk.continuous_blend {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     Continuous (blend (E := E)) :=
   (continuous_blendVector.subtype_mk _).subtype_mk _
 
+/-- The deformation retraction of the outer annulus onto the sphere. -/
 def OuterDisk.deformation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     (ContinuousMap.id (Space E)).HomotopyRel (fromSphere.comp toSphere) {z | ‖(z.val : E)‖ = 1}
     where
@@ -877,33 +974,39 @@ def OuterDisk.deformation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     change ((1 - (t : ℝ)) + (t : ℝ) / ‖(z.val : E)‖) • (z.val : E) = (z.val : E)
     rw [hz, div_one, sub_add_cancel, one_smul]
 
+/-- The inclusion of the old set into its neighbourhood. -/
 def EmbeddedCellAttachment.oldInclusion {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) : C(D.old, D.oldNeighborhood) :=
   ⟨Set.inclusion D.old_subset_neighborhood, continuous_inclusion _⟩
 
+/-- The old neighbourhood's cell part parametrized by the outer annulus. -/
 def EmbeddedCellAttachment.outerParameterHomeomorph {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     OuterDisk.Space N ≃ₜ (D.cell ⁻¹' D.oldNeighborhood) :=
   Homeomorph.setCongr (by ext z; exact (D.cell_mem_oldNeighborhood_iff z).symm)
 
+/-- The outer annulus mapped into the old neighbourhood. -/
 def EmbeddedCellAttachment.outerInclusion {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C(OuterDisk.Space N, D.oldNeighborhood) :=
   ⟨fun z => ⟨D.cell z.val, (D.cell_mem_oldNeighborhood_iff z.val).mpr z.property⟩,
     (D.cell.continuous.comp continuous_subtype_val).subtype_mk _⟩
 
+/-- The old inclusion is a closed embedding. -/
 theorem EmbeddedCellAttachment.oldInclusion_closed {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     Topology.IsClosedEmbedding D.oldInclusion :=
   ClosedCover.isClosedEmbedding_codRestrict D.old_closed.isClosedEmbedding_subtypeVal
     (fun x => D.old_subset_neighborhood x.property)
 
+/-- The outer inclusion is a closed embedding. -/
 theorem EmbeddedCellAttachment.outerInclusion_closed {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     Topology.IsClosedEmbedding D.outerInclusion :=
   (D.oldNeighborhood.restrictPreimage_isClosedEmbedding D.cell_closed).comp
     D.outerParameterHomeomorph.isClosedEmbedding
 
+/-- The old and outer pieces cover the neighbourhood. -/
 theorem EmbeddedCellAttachment.oldNeighborhood_cover {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     Set.range D.oldInclusion ∪ Set.range D.outerInclusion = Set.univ := by
@@ -914,17 +1017,20 @@ theorem EmbeddedCellAttachment.oldNeighborhood_cover {N X : Type*} [NormedAddCom
   · exact Or.inl ⟨⟨x, hA⟩, rfl⟩
   · exact Or.inr ⟨⟨z, (D.cell_mem_oldNeighborhood_iff z).mp hx⟩, rfl⟩
 
+/-- The attaching sphere lands in the old set. -/
 theorem EmbeddedCellAttachment.sphere_attaches {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (u : Metric.sphere (0 : N) 1) :
     D.cell (OuterDisk.sphereDisk u) ∈ D.old :=
   (D.boundary _).mpr (mem_sphere_zero_iff_norm.mp u.property)
 
+/-- The attaching map of the cell's boundary sphere. -/
 def EmbeddedCellAttachment.attachingSphere {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C(Metric.sphere (0 : N) 1, D.old) :=
   ⟨fun u => ⟨D.cell (OuterDisk.sphereDisk u), D.sphere_attaches u⟩,
     (D.cell.continuous.comp OuterDisk.sphereDisk.continuous).subtype_mk _⟩
 
+/-- The old and outer retractions agree on the overlap. -/
 theorem EmbeddedCellAttachment.retractionMaps_agree {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) [NormedSpace ℝ N] (a : D.old)
     (z : OuterDisk.Space N) (haz : D.oldInclusion a = D.outerInclusion z) :
@@ -938,6 +1044,7 @@ theorem EmbeddedCellAttachment.retractionMaps_agree {N X : Type*} [NormedAddComm
   rw [hs]
   exact heq
 
+/-- The retraction of the old neighbourhood onto the old set. -/
 def EmbeddedCellAttachment.oldRetraction {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) [NormedSpace ℝ N] :
     C(D.oldNeighborhood, D.old) :=
@@ -945,6 +1052,7 @@ def EmbeddedCellAttachment.oldRetraction {N X : Type*} [NormedAddCommGroup N]
     D.outerInclusion_closed D.oldNeighborhood_cover (ContinuousMap.id D.old)
     (D.attachingSphere.comp OuterDisk.toSphere) D.retractionMaps_agree
 
+/-- The retraction fixes the old set. -/
 theorem EmbeddedCellAttachment.oldRetraction_old {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) [NormedSpace ℝ N] (a : D.old) :
     D.oldRetraction (D.oldInclusion a) = a :=
@@ -952,6 +1060,7 @@ theorem EmbeddedCellAttachment.oldRetraction_old {N X : Type*} [NormedAddCommGro
     D.outerInclusion_closed D.oldNeighborhood_cover (ContinuousMap.id D.old)
     (D.attachingSphere.comp OuterDisk.toSphere) D.retractionMaps_agree a
 
+/-- The retraction maps outer points to the attaching sphere. -/
 theorem EmbeddedCellAttachment.oldRetraction_outer {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) [NormedSpace ℝ N]
     (z : OuterDisk.Space N) :
@@ -960,6 +1069,7 @@ theorem EmbeddedCellAttachment.oldRetraction_outer {N X : Type*} [NormedAddCommG
     D.outerInclusion_closed D.oldNeighborhood_cover (ContinuousMap.id D.old)
     (D.attachingSphere.comp OuterDisk.toSphere) D.retractionMaps_agree z
 
+/-- The two pieces cover the cylinder over the neighbourhood. -/
 theorem EmbeddedCellAttachment.neighborhood_time_cover {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     Set.range (Prod.map (id : (unitInterval) → (unitInterval)) D.oldInclusion) ∪
@@ -974,16 +1084,19 @@ theorem EmbeddedCellAttachment.neighborhood_time_cover {N X : Type*} [NormedAddC
   · exact Or.inl ⟨(t, a), rfl⟩
   · exact Or.inr ⟨(t, z), rfl⟩
 
+/-- The stationary motion on the old part. -/
 def EmbeddedCellAttachment.stationaryOld {N X : Type*} [NormedAddCommGroup N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C((unitInterval) × D.old, D.oldNeighborhood) :=
   D.oldInclusion.comp ContinuousMap.snd
 
+/-- The annulus deformation on the outer part. -/
 def EmbeddedCellAttachment.movingOuter {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C((unitInterval) × OuterDisk.Space N, D.oldNeighborhood) :=
   D.outerInclusion.comp OuterDisk.deformation.toHomotopy.toContinuousMap
 
+/-- The two motions agree on the overlap. -/
 theorem EmbeddedCellAttachment.neighborhoodMotions_agree {N X : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
     (D : EmbeddedCellAttachment N X) (a : (unitInterval) × D.old)
@@ -997,6 +1110,7 @@ theorem EmbeddedCellAttachment.neighborhoodMotions_agree {N X : Type*}
   rw [OuterDisk.deformation.eq_fst z.1 hn]
   exact ha
 
+/-- The glued deformation of the old neighbourhood. -/
 def EmbeddedCellAttachment.neighborhoodMotion {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C((unitInterval) × D.oldNeighborhood, D.oldNeighborhood) :=
@@ -1005,6 +1119,7 @@ def EmbeddedCellAttachment.neighborhoodMotion {N X : Type*} [NormedAddCommGroup 
     (Topology.IsClosedEmbedding.id.prodMap D.outerInclusion_closed) D.neighborhood_time_cover
     D.stationaryOld D.movingOuter D.neighborhoodMotions_agree
 
+/-- The motion is stationary on the old part. -/
 theorem EmbeddedCellAttachment.neighborhoodMotion_old {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (t : (unitInterval)) (a : D.old) :
@@ -1014,6 +1129,7 @@ theorem EmbeddedCellAttachment.neighborhoodMotion_old {N X : Type*} [NormedAddCo
     (Topology.IsClosedEmbedding.id.prodMap D.outerInclusion_closed) D.neighborhood_time_cover
     D.stationaryOld D.movingOuter D.neighborhoodMotions_agree (t, a)
 
+/-- The motion computes the annulus deformation. -/
 theorem EmbeddedCellAttachment.neighborhoodMotion_outer {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (t : (unitInterval)) (z : OuterDisk.Space N) :
@@ -1024,6 +1140,7 @@ theorem EmbeddedCellAttachment.neighborhoodMotion_outer {N X : Type*} [NormedAdd
     (Topology.IsClosedEmbedding.id.prodMap D.outerInclusion_closed) D.neighborhood_time_cover
     D.stationaryOld D.movingOuter D.neighborhoodMotions_agree (t, z)
 
+/-- The deformation retraction of the neighbourhood onto the old set. -/
 def EmbeddedCellAttachment.oldDeformation {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     (ContinuousMap.id D.oldNeighborhood).HomotopyRel (D.oldInclusion.comp D.oldRetraction)
@@ -1055,6 +1172,7 @@ def EmbeddedCellAttachment.oldDeformation {N X : Type*} [NormedAddCommGroup N]
     obtain ⟨a, rfl⟩ := hx
     exact D.neighborhoodMotion_old t a
 
+/-- The old set is homotopy equivalent to its neighbourhood. -/
 def EmbeddedCellAttachment.oldHomotopyEquiv {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     D.old ≃ₕ D.oldNeighborhood where
@@ -1066,15 +1184,21 @@ def EmbeddedCellAttachment.oldHomotopyEquiv {N X : Type*} [NormedAddCommGroup N]
     rw [heq]
   right_inv := ⟨D.oldDeformation.toHomotopy.symm⟩
 
+/-! ### The disk annulus -/
+
+/-- The open unit disk of `E`. -/
 abbrev DiskAnnulus.OpenDisk (E : Type*) [NormedAddCommGroup E] :=
   { z : MorseHandle.UnitDisk E // ‖(z : E)‖ < 1 }
 
+/-- The annulus `1/2 < ‖z‖ < 1` of `E`. -/
 abbrev DiskAnnulus.Annulus (E : Type*) [NormedAddCommGroup E] :=
   { z : MorseHandle.UnitDisk E // 1 / 2 < ‖(z : E)‖ ∧ ‖(z : E)‖ < 1 }
 
+/-- Annulus points are nonzero. -/
 theorem DiskAnnulus.norm_pos {E : Type*} [NormedAddCommGroup E] (z : Annulus E) :
     0 < ‖(z.val : E)‖ := by linarith [z.property.1]
 
+/-- The open unit disk is homeomorphic to the metric ball. -/
 def DiskAnnulus.openDiskHomeomorph {E : Type*} [NormedAddCommGroup E] :
     OpenDisk E ≃ₜ Metric.ball (0 : E) 1
     where
@@ -1088,12 +1212,14 @@ def DiskAnnulus.openDiskHomeomorph {E : Type*} [NormedAddCommGroup E] :
   continuous_toFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := (continuous_subtype_val.subtype_mk _).subtype_mk _
 
+/-- The open unit disk is contractible. -/
 theorem DiskAnnulus.openDisk_contractible {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] : ContractibleSpace (OpenDisk E) := by
   let : ContractibleSpace (Metric.ball (0 : E) 1) :=
     (convex_ball (0 : E) 1).contractibleSpace ⟨0, by simp⟩
   exact openDiskHomeomorph.contractibleSpace
 
+/-- The radial projection of the annulus onto the sphere. -/
 def DiskAnnulus.toSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     C(Annulus E, Metric.sphere (0 : E) 1) :=
   ⟨fun z => RadialExtension.direction (z.val : E) (norm_ne_zero_iff.mp (norm_pos z).ne'),
@@ -1102,38 +1228,45 @@ def DiskAnnulus.toSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
           (continuous_subtype_val.comp continuous_subtype_val)).subtype_mk
       _⟩
 
+/-- Scaling a unit vector by `3/4` has norm `3/4`. -/
 theorem DiskAnnulus.norm_middle {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (u : Metric.sphere (0 : E) 1) : ‖(3 / 4 : ℝ) • (u : E)‖ = 3 / 4 := by
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 3 / 4),
     mem_sphere_zero_iff_norm.mp u.property, mul_one]
 
+/-- The radius-`3/4` sphere point inside the unit disk. -/
 def DiskAnnulus.middleDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (u : Metric.sphere (0 : E) 1) : MorseHandle.UnitDisk E :=
   ⟨(3 / 4 : ℝ) • (u : E), by
     rw [mem_closedBall_zero_iff, norm_middle]
     norm_num⟩
 
+/-- The middle sphere point lies in the annulus. -/
 theorem DiskAnnulus.middleDisk_mem {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (u : Metric.sphere (0 : E) 1) : 1 / 2 < ‖(middleDisk u : E)‖ ∧ ‖(middleDisk u : E)‖ < 1 := by
   change 1 / 2 < ‖(3 / 4 : ℝ) • (u : E)‖ ∧ ‖(3 / 4 : ℝ) • (u : E)‖ < 1
   rw [norm_middle]
   norm_num
 
+/-- The middle sphere included into the annulus. -/
 def DiskAnnulus.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     C(Metric.sphere (0 : E) 1, Annulus E) :=
   ⟨fun u => ⟨middleDisk u, middleDisk_mem u⟩,
     ((continuous_const.smul continuous_subtype_val).subtype_mk _).subtype_mk _⟩
 
+/-- Radial projection of the middle sphere is the identity. -/
 theorem DiskAnnulus.toSphere_fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (u : Metric.sphere (0 : E) 1) : toSphere (fromSphere u) = u := by
   apply Subtype.ext
   change ‖(3 / 4 : ℝ) • (u : E)‖⁻¹ • ((3 / 4 : ℝ) • (u : E)) = (u : E)
   rw [norm_middle, inv_smul_smul₀ (by norm_num : (3 / 4 : ℝ) ≠ 0)]
 
+/-- The radial blend deforming an annulus point toward the middle sphere. -/
 def DiskAnnulus.blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (q : (unitInterval) × Annulus E) : E :=
   ((1 - (q.1 : ℝ)) + (q.1 : ℝ) * ((3 / 4 : ℝ) / ‖(q.2.val : E)‖)) • (q.2.val : E)
 
+/-- The annulus blend is continuous. -/
 theorem DiskAnnulus.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] : Continuous (blendVector (E := E)) := by
   have ht : Continuous (fun q : (unitInterval) × Annulus E => (q.1 : ℝ)) :=
@@ -1145,6 +1278,7 @@ theorem DiskAnnulus.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
           (ht.mul (continuous_const.div hz.norm (fun q => (norm_pos q.2).ne')))).smul
       hz
 
+/-- The blend norm interpolates to `3/4`. -/
 theorem DiskAnnulus.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (t : (unitInterval)) (z : Annulus E) :
     ‖blendVector (t, z)‖ = (1 - (t : ℝ)) * ‖(z.val : E)‖ + (t : ℝ) * (3 / 4) := by
@@ -1154,6 +1288,7 @@ theorem DiskAnnulus.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedS
   rw [blendVector, norm_smul, Real.norm_eq_abs, abs_of_nonneg hscale, add_mul, mul_assoc,
     div_mul_cancel₀ _ (norm_pos z).ne']
 
+/-- The blend stays in the annulus. -/
 theorem DiskAnnulus.norm_blendVector_mem {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (t : (unitInterval)) (z : Annulus E) :
     1 / 2 < ‖blendVector (t, z)‖ ∧ ‖blendVector (t, z)‖ < 1 := by
@@ -1163,15 +1298,18 @@ theorem DiskAnnulus.norm_blendVector_mem {E : Type*} [NormedAddCommGroup E]
       (sub_nonneg.mpr t.property.2) t.property.1 (sub_add_cancel 1 (t : ℝ))
   exact h
 
+/-- The deformation of the annulus toward the middle sphere. -/
 def DiskAnnulus.blend {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (q : (unitInterval) × Annulus E) : Annulus E :=
   ⟨⟨blendVector q, mem_closedBall_zero_iff.mpr (norm_blendVector_mem q.1 q.2).2.le⟩,
     norm_blendVector_mem q.1 q.2⟩
 
+/-- The annulus deformation is continuous. -/
 theorem DiskAnnulus.continuous_blend {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     Continuous (blend (E := E)) :=
   (continuous_blendVector.subtype_mk _).subtype_mk _
 
+/-- The deformation retraction of the annulus onto the middle sphere. -/
 def DiskAnnulus.deformation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     (ContinuousMap.id (Annulus E)).Homotopy (fromSphere.comp toSphere)
     where
@@ -1189,6 +1327,7 @@ def DiskAnnulus.deformation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
     simp [blend, blendVector, fromSphere, middleDisk, toSphere, RadialExtension.direction,
       div_eq_mul_inv, smul_smul]
 
+/-- The annulus is homotopy equivalent to the sphere. -/
 def DiskAnnulus.sphereHomotopyEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     Metric.sphere (0 : E) 1 ≃ₕ Annulus E
     where
@@ -1200,6 +1339,7 @@ def DiskAnnulus.sphereHomotopyEquiv {E : Type*} [NormedAddCommGroup E] [NormedSp
     rw [heq]
   right_inv := ⟨deformation.symm⟩
 
+/-- The disk patch is contractible. -/
 theorem EmbeddedCellAttachment.diskPatch_contractible {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     ContractibleSpace D.diskPatch := by
@@ -1207,16 +1347,19 @@ theorem EmbeddedCellAttachment.diskPatch_contractible {N X : Type*} [NormedAddCo
     DiskAnnulus.openDisk_contractible
   exact D.diskHomeomorph.symm.contractibleSpace
 
+/-- The overlap is homotopy equivalent to the sphere. -/
 def EmbeddedCellAttachment.overlapSphereEquiv {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     Metric.sphere (0 : N) 1 ≃ₕ ↥(D.oldNeighborhood ∩ D.diskPatch) :=
   DiskAnnulus.sphereHomotopyEquiv.trans D.overlapHomeomorph.toHomotopyEquiv
 
+/-- The map from the overlap to the old set through the retraction. -/
 def EmbeddedCellAttachment.overlapOldMap {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C(↥(D.oldNeighborhood ∩ D.diskPatch), D.old) :=
   D.oldRetraction.comp (ContinuousMap.inclusion Set.inter_subset_left)
 
+/-- The overlap map computes the attaching sphere. -/
 theorem EmbeddedCellAttachment.overlapOldMap_sphere {N X : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (u : Metric.sphere (0 : N) 1) :
@@ -1228,6 +1371,7 @@ theorem EmbeddedCellAttachment.overlapOldMap_sphere {N X : Type*} [NormedAddComm
   apply congrArg D.attachingSphere
   exact DiskAnnulus.toSphere_fromSphere u
 
+/-- The overlap map composed with the sphere equivalence is the attaching map. -/
 theorem EmbeddedCellAttachment.overlapOldMap_comp_sphere {N X : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
     (D : EmbeddedCellAttachment N X) :
