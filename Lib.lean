@@ -7,7 +7,9 @@ import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sum
+import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+import Lib.AlgebraicTopology.SingularHomology.Pontryagin
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
@@ -42,6 +44,8 @@ import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Algebra.Group.Filtration
+import Lib.LinearAlgebra.Matrix.TransvectionReduction
+import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
@@ -65,6 +69,7 @@ import Lib.LinearAlgebra.CyclicAverage
 import Lib.LinearAlgebra.FreeModule.Finite.CardQuotient
 import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
+import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 import Lib.GroupTheory.SplitExtension
 import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition

@@ -63,6 +63,9 @@ Original source lines 133802--148196; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.CuspFilling
+import Lib.AlgebraicTopology.SingularHomology.Pontryagin
+import Lib.AlgebraicTopology.SingularHomology.Torus
+import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 
 set_option maxSynthPendingDepth 3
 
@@ -3140,138 +3143,6 @@ theorem CuspCoinvariants.mem_range_iff_of_intertwines {M N : Type*} [AddCommGrou
     refine ⟨e.symm z, e.injective ?_⟩
     rw [h, LinearEquiv.apply_symm_apply, hz]
 
-def PeriodTorusHigherHomologyPontryagin.cyclicMap (X Y Z : Type) [TopologicalSpace X]
-    [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z)) :=
-  ⟨fun p => (p.2.2, (p.1, p.2.1)), by fun_prop⟩
-
-def PeriodTorusHigherHomologyPontryagin.additionMap (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × G, G) :=
-  ⟨fun p => p.1 + p.2, continuous_fst.add continuous_snd⟩
-
-def PeriodTorusHigherHomologyPontryagin.rightAdditionMap (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × (G × G), G) :=
-  (additionMap G).comp ((ContinuousMap.id G).prodMap (additionMap G))
-
-@[simp]
-theorem PeriodTorusHigherHomologyPontryagin.rightAdditionMap_comp_cyclic (G : Type)
-    [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] :
-    (rightAdditionMap G).comp (cyclicMap G G G) = rightAdditionMap G := by
-  ext p
-  change p.2.2 + (p.1 + p.2.1) = p.1 + (p.2.1 + p.2.2)
-  abel
-
-theorem PeriodTorusHigherHomologyPontryagin.rightAddition_homology_cyclic (G : Type)
-    [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
-    (SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n).comp
-        (SingularMayerVietoris.singularHomologyMap (cyclicMap G G G) n) =
-      SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n := by
-  rw [← PeriodTorusHigherHomology.singularHomologyMap_comp, rightAdditionMap_comp_cyclic]
-
-theorem PeriodTorusHigherHomologyPontryagin.additionMap_natural {G : Type} [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type} [TopologicalSpace H] [AddCommGroup H]
-    [IsTopologicalAddGroup H] (f : C(G, H)) (hf : ∀ x y, f (x + y) = f x + f y) :
-    f.comp (additionMap G) = (additionMap H).comp (f.prodMap f) := by
-  ext p
-  exact hf p.1 p.2
-
-theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
-    [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type}
-    [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H] (f : C(G, H))
-    (hf : ∀ x y, f (x + y) = f x + f y) (n : ℕ) :
-    (SingularMayerVietoris.singularHomologyMap f n).comp
-        (SingularMayerVietoris.singularHomologyMap (additionMap G) n) =
-      (SingularMayerVietoris.singularHomologyMap (additionMap H) n).comp
-        (SingularMayerVietoris.singularHomologyMap (f.prodMap f) n) := by
-  rw [← PeriodTorusHigherHomology.singularHomologyMap_comp, additionMap_natural f hf,
-    PeriodTorusHigherHomology.singularHomologyMap_comp]
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G] [AddCommGroup G]
-    [IsTopologicalAddGroup G] (n : ℕ) :
-    SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G n →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G (n + 1) :=
-  PeriodTorusHigherHomology.integerBilinearPostcompose
-    (PeriodTorusHigherHomology.crossProductHomology G G n)
-    (SingularMayerVietoris.singularHomologyMap (additionMap G) (n + 1))
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-@[simp]
-theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ)
-    (a : SingularMayerVietoris.SingularHomology G 1)
-    (b : SingularMayerVietoris.SingularHomology G n) :
-    product G n a b =
-      SingularMayerVietoris.singularHomologyMap (additionMap G) (n + 1)
-        (PeriodTorusHigherHomology.crossProductHomology G G n a b) :=
-  rfl
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] :
-    SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G 2 :=
-  product G 1
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] :
-    SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G 2 →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G 3 :=
-  product G 2
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] :
-    SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-          SingularMayerVietoris.SingularHomology G 3
-    where
-  toFun a := PeriodTorusHigherHomology.integerBilinearPostcompose (product11 G) (product12 G a)
-  map_add' a
-    b := by
-    apply LinearMap.ext
-    intro c
-    apply LinearMap.ext
-    intro d
-    exact
-      congrArg
-        (fun f :
-            SingularMayerVietoris.SingularHomology G 2 →ₗ[ℤ]
-              SingularMayerVietoris.SingularHomology G 3 =>
-          f (product11 G c d))
-        ((product12 G).map_add a b)
-  map_smul' r
-    a := by
-    apply LinearMap.ext
-    intro c
-    apply LinearMap.ext
-    intro d
-    exact
-      congrArg
-        (fun f :
-            SingularMayerVietoris.SingularHomology G 2 →ₗ[ℤ]
-              SingularMayerVietoris.SingularHomology G 3 =>
-          f (product11 G c d))
-        ((product12 G).map_smul r a)
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
-@[simp]
-theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G]
-    (a b c : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a b c = product12 G a (product11 G b c) :=
-  rfl
-
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [TopologicalSpace G]
@@ -3345,97 +3216,6 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [T
             ((ContinuousMap.id G).prodMap (additionMap G)) (additionMap G) 3)
           (PeriodTorusHigherHomology.crossProductHomology G (G × G) 2 a
             (PeriodTorusHigherHomology.crossProductHomology G G 1 b c))).symm
-
-def PeriodTorusHigherHomology.binomialCoordinateBasis (r n : ℕ) :
-    Module.Basis (Fin (r.choose n)) ℤ (binomialModule r n) :=
-  Pi.basisFun ℤ (Fin (r.choose n))
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialCoordinateBasis_apply (r n : ℕ) (i : Fin (r.choose n)) :
-    binomialCoordinateBasis r n i = Pi.single i 1 :=
-  Pi.basisFun_apply ℤ (Fin (r.choose n)) i
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_single_inl (r n : ℕ)
-    (i : Fin (r.choose (n + 1))) :
-    binomialModuleSuccEquiv r n (Pi.single ((binomialPascalIndexEquiv r n).symm (Sum.inl i)) 1) =
-      (Pi.single i 1, 0) := by
-  apply Prod.ext
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_fst, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inl.injEq]
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_snd, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inr_ne_inl, if_false, Pi.zero_apply]
-
-@[simp]
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_single_inr (r n : ℕ)
-    (i : Fin (r.choose n)) :
-    binomialModuleSuccEquiv r n (Pi.single ((binomialPascalIndexEquiv r n).symm (Sum.inr i)) 1) =
-      (0, Pi.single i 1) := by
-  apply Prod.ext
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_fst, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inl_ne_inr, if_false, Pi.zero_apply]
-  · funext j
-    simp only [binomialModuleSuccEquiv_apply_snd, Pi.single_apply, Equiv.apply_eq_iff_eq,
-      Sum.inr.injEq]
-
-theorem PeriodTorusHigherHomology.integerBinomialZeroEquiv_one_single (r : ℕ)
-    (i : Fin (r.choose 0)) : integerBinomialZeroEquiv r 1 = Pi.single i 1 := by
-  have hsingle : Subsingleton (Fin (r.choose 0)) := by
-    rw [Nat.choose_zero_right]
-    infer_instance
-  funext j
-  have hij : i = j := hsingle.elim i j
-  subst j
-  simp [integerBinomialZeroEquiv]
-
-theorem PeriodTorusHigherHomology.binomialModuleSuccEquiv_top (n : ℕ) :
-    binomialModuleSuccEquiv n n (fun _ => 1) = (0, fun _ => 1) := by
-  apply Prod.ext
-  · exact binomialModule_eq_zero_of_lt (Nat.lt_succ_self n) _
-  · rfl
-
-def PeriodTorusHigherHomology.productTorusTopClass (n : ℕ) :
-    SingularMayerVietoris.SingularHomology (ProductTorus n) n :=
-  (productTorusHomologyEquiv n n).symm (fun _ => (1 : ℤ))
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_topClass (n : ℕ) :
-    productTorusHomologyEquiv n n (productTorusTopClass n) = fun _ => (1 : ℤ) :=
-  (productTorusHomologyEquiv n n).apply_symm_apply _
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusTopClass_zero :
-    productTorusTopClass 0 = pointClass (0 : ProductTorus 0) := by
-  apply (productTorusHomologyEquiv 0 0).injective
-  rw [productTorusHomologyEquiv_topClass, productTorusHomologyEquiv_zero]
-  simp only [LinearEquiv.trans_apply, connectedHomologyZeroEquiv_pointClass]
-  rfl
-
-theorem PeriodTorusHigherHomology.productTorusTopClass_succ_coordinates (n : ℕ) :
-    circleProductHomologyEquiv (ProductTorus n) n
-        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) =
-      (0, productTorusTopClass n) := by
-  apply Prod.ext
-  · exact
-      @Subsingleton.elim (SingularMayerVietoris.SingularHomology (ProductTorus n) (n + 1))
-        (productTorus_homology_subsingleton_of_lt (Nat.lt_succ_self n)) _ _
-  · apply (productTorusHomologyEquiv n n).injective
-    have h :=
-      congrArg Prod.snd (productTorusHomologyEquiv_succ_apply n n (productTorusTopClass (n + 1)))
-    rw [productTorusHomologyEquiv_topClass, binomialModuleSuccEquiv_top] at h
-    exact h.symm.trans (productTorusHomologyEquiv_topClass n).symm
-
-@[simp]
-theorem PeriodTorusHigherHomology.productTorusTopClass_succ_boundary (n : ℕ) :
-    circleBoundary (ProductTorus n) n
-        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) =
-      productTorusTopClass n :=
-  congrArg Prod.snd (productTorusTopClass_succ_coordinates n)
 
 @[simp]
 theorem PeriodTorusHigherHomology.flatTorusCircleHomeomorph_add (x y : RealTorus₄) :
@@ -3693,80 +3473,6 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_three :
   have h₂ : Fin.cons 0 (Pi.single 1 1 : Fin 2 → ℤ) = (Pi.single 2 1 : Fin 3 → ℤ) := by decide
   rw [h₁, h₂]
   rfl
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
-def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*} [AddCommGroup M]
-    [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N) :
-    MultilinearMap ℤ (fun _ : Fin 2 => M) N
-    where
-  toFun v := β (v 0) (v 1)
-  map_update_add' {hDecEq} v i x
-    y := by
-    have heq : hDecEq = instDecidableEqFin 2 := Subsingleton.elim _ _
-    subst hDecEq
-    fin_cases i <;> simp
-  map_update_smul' {hDecEq} v i r
-    x := by
-    have heq : hDecEq = instDecidableEqFin 2 := Subsingleton.elim _ _
-    subst hDecEq
-    fin_cases i <;> simp
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
-def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*} [AddCommGroup M]
-    [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N)
-    (hdiag : ∀ x : M, β x x = 0) : AlternatingMap ℤ M N (Fin 2)
-    where
-  toMultilinearMap := multilinearOfBilinear β
-  map_eq_zero_of_eq' v i j hij
-    hne := by
-    have h : v 0 = v 1 := by fin_cases i <;> fin_cases j <;> simp_all
-    change β (v 0) (v 1) = 0
-    rw [h]
-    exact hdiag _
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
-theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Type*}
-    [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N] [Module.IsTorsionFree ℤ N]
-    (β : M →ₗ[ℤ] M →ₗ[ℤ] N) (hskew : ∀ x y : M, β x y = -β y x) (x : M) : β x x = 0 := by
-  apply (smul_eq_zero_iff_right (show (2 : ℤ) ≠ 0 by decide)).mp
-  rw [two_smul ℤ]
-  exact add_eq_zero_iff_eq_neg.mpr (hskew x x)
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
-def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*} [AddCommGroup M]
-    [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N) :
-    MultilinearMap ℤ (fun _ : Fin 3 => M) N
-    where
-  toFun v := g (v 0) (v 1) (v 2)
-  map_update_add' {hDecEq} v i x
-    y := by
-    have heq : hDecEq = instDecidableEqFin 3 := Subsingleton.elim _ _
-    subst hDecEq
-    fin_cases i <;> simp
-  map_update_smul' {hDecEq} v i r
-    x := by
-    have heq : hDecEq = instDecidableEqFin 3 := Subsingleton.elim _ _
-    subst hDecEq
-    fin_cases i <;> simp
-
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule in
-def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [AddCommGroup M]
-    [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N)
-    (h01 : ∀ x z : M, g x x z = 0) (h02 : ∀ x y : M, g x y x = 0) (h12 : ∀ x y : M, g x y y = 0) :
-    AlternatingMap ℤ M N (Fin 3)
-    where
-  toMultilinearMap := multilinearOfTrilinear g
-  map_eq_zero_of_eq' v i j hij
-    hne := by
-    have h : v 0 = v 1 ∨ v 0 = v 2 ∨ v 1 = v 2 := by fin_cases i <;> fin_cases j <;> simp_all
-    change g (v 0) (v 1) (v 2) = 0
-    rcases h with h | h | h
-    · rw [h]
-      exact h01 _ _
-    · rw [h]
-      exact h02 _ _
-    · rw [h]
-      exact h12 _ _
 
 theorem PeriodTorusHigherHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (g : V → W) (n : ℕ)
     (c : SingularMayerVietoris.FormalChains V n) :
@@ -6633,31 +6339,6 @@ theorem PeriodTorusHigherHomology.coordinateTorusMapAlong_add {X : Type} [Topolo
       e.symm (coordinateTorusMap r n i x) + e.symm (coordinateTorusMap r n i y)
   rw [coordinateTorusMap_add]
   exact homeomorph_symm_add_of_add e he _ _
-
-def PeriodTorusHigherHomologyExterior.standardExteriorBasis (m n : ℕ) :
-    Module.Basis (Set.powersetCard (Fin m) n) ℤ (⋀[ℤ]^n (Fin m → ℤ)) :=
-  (Pi.basisFun ℤ (Fin m)).exteriorPower n
-
-theorem PeriodTorusHigherHomologyExterior.standardExterior_map_coefficient (m n : ℕ)
-    (A : Matrix (Fin m) (Fin m) ℤ) (s t : Set.powersetCard (Fin m) n) :
-    (standardExteriorBasis m n).repr
-        (exteriorPower.map n A.mulVecLin (standardExteriorBasis m n t)) s =
-      (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-          (Set.powersetCard.ofFinEmbEquiv.symm t)).det := by
-  unfold standardExteriorBasis
-  rw [exteriorPower.basis_repr_apply, exteriorPower.basis_apply, exteriorPower.ιMulti_family,
-    exteriorPower.map_apply_ιMulti, exteriorPower.ιMultiDual_apply_ιMulti]
-  have hmatrix :
-    (Matrix.of fun i j =>
-        (Pi.basisFun ℤ (Fin m)).coord (Set.powersetCard.ofFinEmbEquiv.symm s j)
-          ((A.mulVecLin ∘ ((Pi.basisFun ℤ (Fin m)) ∘ Set.powersetCard.ofFinEmbEquiv.symm t)) i)) =
-      (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
-          (Set.powersetCard.ofFinEmbEquiv.symm t)).transpose := by
-    ext i j
-    simp only [Matrix.of_apply, Module.Basis.coord_apply, Pi.basisFun_repr, Function.comp_apply,
-      Pi.basisFun_apply, Matrix.mulVecLin_apply, Matrix.mulVec_single_one, Matrix.col_apply,
-      Matrix.transpose_apply, Matrix.submatrix_apply]
-  rw [hmatrix, Matrix.det_transpose]
 
 abbrev PeriodTorusHigherHomologyExterior.latticeExterior (n : ℕ) :=
   ⋀[ℤ]^n Lattice
