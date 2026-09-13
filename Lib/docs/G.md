@@ -8,7 +8,12 @@ Reviews: `Lib/docs/G-stage2-astra-review.md` (NO-GO), `Lib/docs/G-stage2-astra-r
 mathematics and the G2a→G3→G2b ordering; NO-GO on the typed ledger's then-stale
 namespaces/coordinates — refreshed to post-rename names at this head below),
 `Lib/docs/G-fresh2-subagent-review.md` (scoped GO on the mathematics and ordering;
-the two truncated G5 result types it flagged are restored verbatim below).
+the two truncated G5 result types it flagged are restored verbatim below), and the
+fresh-context closing review `Lib/docs/G-closing-subagent-review.md` (NO-GO on one
+residual truncation — `exists_primitive_functional_unit` still stopped mid-expression —
+plus four minor repairs; **all findings applied in this revision**: the signature now
+runs verbatim through Recognition.lean:5433, and the attribution/coordinate corrections
+are landed). Closing-review acceptance is pending re-confirmation.
 Landed repairs: the trade cut, elimination order, and Whitney codimension-two input in
 §§4–5 carry the source's actual mechanisms; §3's unique-minimum argument carries the
 (0,1)-cancellation mechanism; every ledger signature is verbatim at live coordinates
@@ -144,8 +149,9 @@ basepoint `x`. The trade proceeds in two steps:
 
 * **Birth above the cut** (`exists_excellent_indexed_morse_birth` at $k = 2$): inside the
   band, birth an excellent cancelling $(2,3)$-pair $b_2, b_3$. The birth changes nothing at
-  or below the cut: the level $f = a$ is preserved verbatim (`heq`, `hsub`, `hlevel` in the
-  code), the cut stays regular for the new function (`hgr`), the unique minimum survives
+  or below the cut: the level $f = a$ is preserved verbatim (`heq : ∀ y, g y = a ↔ f y = a`,
+  supplied by `birth_preserves_lower_levels` at Recognition:6401; the `hsub`/`hlevel`
+  hypotheses belong to `cancel_from_preserved_unit_belt_cut`, Recognition:6646–6647), the cut stays regular for the new function (`hgr`), the unique minimum survives
   (`birth_preserves_unique_index_zero`), and there is a value gap below $b_2$ (`hgap`).
 * **Cancellation at the unchanged cut**
   (`cancel_one_two_pair_at_unchanged_cut_of_unique_minimum`): the born 2-handle's attaching
@@ -197,8 +203,9 @@ integer row. Concretely, the source takes the primitive functional supplied by t
 **last index-two handle's collapse coordinate** — `last_index_two_collapse_is_primitive`
 (Recognition:6247–6282) produces it together with the retained lower-level contractions —
 and makes the selected index-three point first via
-`consecutive_last_two_first_three` (Recognition:6743, applied inside
-`cancel_from_preserved_unit_belt_cut`), which is what makes the cancelling pair consecutive. Elementary column
+`consecutive_last_two_first_three` (Recognition:6743, applied at
+Recognition:6874 inside `cancel_from_complete_middle_family`, whose output
+`hconsecutive` is passed to `cancel_from_preserved_unit_belt_cut` at :6900), which is what makes the cancelling pair consecutive. Elementary column
 operations produce a unit in that row and are realized geometrically by slides of the
 3-handles.
 
@@ -289,7 +296,7 @@ no inner product is used anywhere in the chain), and the `Lib/` statement drops 
 `[SecondCountableTopology M]` of the current wrapper (Proof/Recognition.lean:1011 — the inner chain
 never uses it; a compact smooth Hausdorff manifold is second countable anyway, so the wrapper
 loses no content). The five spellings of $S^6$
-(`SphereHomology.UnitSphere 6`, `Hemisphere.Sphere 6`, `SixSphere` (SingularHomology),
+(`SphereHomology.UnitSphere 6`, `Hemisphere.Sphere 6`, `SixSphere` (MinimalSystem.lean:60),
 `MetricSixSphere` (Recognition), `SixSphereCube.StandardSphere`), all definitionally `Metric.sphere (0 : EuclideanSpace ℝ
 (Fin 7)) 1`, consolidate on that spelling in the `Lib/` file; the `Hopf/` consumer keeps its
 statement verbatim (the re-routing is definitional).
@@ -308,7 +315,7 @@ SH = `Hopf/SingularHomology.lean`. Exact names and signatures follow in Axis 5.
 
 | # | Lemma (§) | Inputs | Output | Source declaration starts (in ledger order) |
 |---|---|---|---|---|
-| G1 | Homotopy-sphere data (§1) | A/B homotopy invariance and spheres | path/simple connectivity, homology vanishing | Morse/MinimalSystem.lean:24, 29, 34 (**landed**) |
+| G1 | Homotopy-sphere data (§1) | A/B homotopy invariance and spheres | path/simple connectivity, homology vanishing | Morse/MinimalSystem.lean:63, 68, 73 (**landed**) |
 | G2a | Preliminary minimal systems (§3) | D1 existence; E1 rearrangement and (0,1) cancellation | minimal excellent/ordered/outer-minimal systems, unique extrema | SphereTopology 4802, 5455, 5526, 7664 |
 | G3 | Handle trade (§4) | G1, G2a; E1 birth/cancellation; E2/F placement | index-1 → index-3 trade and outer-count vanishing | Morse/Birth.lean:883 (**landed**); SphereTopology 7260, 7455, 7543, 7636, 7724, 7772, 7805 |
 | G2b | Post-trade assembly (§4) | G2a, G3 | minimal ordered system without outer indices | SphereTopology 7854 |
@@ -369,18 +376,18 @@ outer_indices` (G2b) consumes G3's `outer_index_minimal_outer_counts_zero`.
 
 ```lean
 theorem simplyConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
-    (e : M ≃ₕ SixSphere) : SimplyConnectedSpace M := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:24
+    (e : M ≃ₕ SixSphere) : SimplyConnectedSpace M := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:63
 
 theorem pathConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSpace M]
-    (e : M ≃ₕ SixSphere) : PathConnectedSpace M := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:29
+    (e : M ≃ₕ SixSphere) : PathConnectedSpace M := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:68
 
 theorem homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
     (h : M ≃ₕ SixSphere) (k : ℕ) (hk : k ≠ 0) (hktop : k ≠ 6) :
-    Subsingleton (SingularMayerVietoris.SingularHomology M k) := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:34
+    Subsingleton (SingularMayerVietoris.SingularHomology M k) := by  -- Lib/Geometry/Manifold/Morse/MinimalSystem.lean:73
 ```
 
 Pure lemmas (no manifold content) — these are the hypothesis-generation half of the headline's
-`(e : M ≃ₕ S⁶)` input; **landed** at `Morse/MinimalSystem.lean:24/29/34` (the
+`(e : M ≃ₕ S⁶)` input; **landed** at `Morse/MinimalSystem.lean:63/68/73` (the
 `SecondCountableTopology`-free forms as shown). The `≃ₕ SixSphere` spelling consolidates to
 `≃ₕ Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1` (defeq — `SixSphere` is that sphere).
 
@@ -886,7 +893,55 @@ theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddC
                                                       Γ j =
                                                         MorseCancellation.equalCutSection hlevel
                                                           (γ j)) ∧
-                                                  MorseCancellation.canonicalMiddleMatrix (M := M) (f :=  -- Hopf/Recognition.lean:5317
+                                                  MorseCancellation.canonicalMiddleMatrix (M := M) (f :=
+                                                        g) (a := a) (r := r) (n := n) B' Γ =
+                                                      MorseCancellation.canonicalMiddleMatrix (M := M)
+                                                          (f := f) (a := a) (r := r) (n := n) B
+                                                          γ *
+                                                        (ops.map
+                                                            (fun op =>
+                                                              Matrix.transvection op.1 op.2.1
+                                                                op.2.2)).prod ∧
+                                                    Function.Surjective
+                                                        (MorseCancellation.canonicalMiddleMatrix B'
+                                                            Γ).mulVec ∧
+                                                      (∃ i : Fin n,
+                                                          L
+                                                                ((MorseCancellation.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancellation.middleSectionClass
+                                                                    (Γ i))) =
+                                                              1 ∨
+                                                            L
+                                                                ((MorseCancellation.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancellation.middleSectionClass
+                                                                    (Γ i))) =
+                                                              -1) ∧
+                                                        ∀ z : M,
+                                                          f z ≤ a →
+                                                            (∀ x,
+                                                                Filter.Tendsto
+                                                                    (fun t => T.flow t x)
+                                                                    Filter.atBot (𝓝 z) ↔
+                                                                  Filter.Tendsto
+                                                                    (fun t => S.flow t x)
+                                                                    Filter.atBot (𝓝 z)) ∧
+                                                              (∀ x,
+                                                                  Filter.Tendsto
+                                                                      (fun t => S.flow t x)
+                                                                      Filter.atBot (𝓝 z) →
+                                                                    Set.range
+                                                                        (fun t => T.flow t x) =
+                                                                      Set.range
+                                                                        (fun t => S.flow t x)) ∧
+                                                                ∀ v,
+                                                                  Filter.Tendsto
+                                                                      (fun t => T.flow t z)
+                                                                      Filter.atTop (𝓝 v) ↔
+                                                                    Filter.Tendsto
+                                                                      (fun t => S.flow t z)
+                                                                      Filter.atTop (𝓝 v) := by  -- Hopf/Recognition.lean:5317
 
 theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1220,9 +1275,10 @@ Two-Disk decomposition deps for Reeb (lane D1 structures, outside this lane): `t
    production provider/consumer certification remain separate obligations. Muse's
    `G-stage2-review.md` is self-review, not independent certification.
 6. **GLM-lane overlap discovered after landing A–D2/H/I:** lane E2's source ranges were largely
-   swept into GLM's `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (17,556 lines; the D2
-   baseline blob contains e.g. `exists_compact_embedding_of_immersion` at its line 12352 and
-   `exists_ambient_transverse_diffeomorph` at 17495). Lane E2's Lean work is therefore a
+   swept into GLM's `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (now 1,983 lines after
+   the post-integration split; the two cited declarations moved to
+   `Lib/Geometry/Manifold/Immersion/Relative.lean:2017` and
+   `Lib/Geometry/Manifold/Morse/Rearrangement.lean:2723` respectively). Lane E2's Lean work is therefore a
    Lib-internal *split* of that file (plus the generalization G-E2), not a Hopf→Lib move;
    lane F's sources remain in `Hopf/` (verified: `TubularBigon`, `primitive_row_*` unmoved).
    This affects E2/F placement timing, not this lane's content.
