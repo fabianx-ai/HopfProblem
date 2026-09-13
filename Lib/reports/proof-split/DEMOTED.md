@@ -6,6 +6,10 @@ The column "binds to" names one direct dependency outside the stock set (a proof
 demoted one). These 475 declarations live under `Hopf/Proof/` and are not counted by the census (it skips `Hopf/Proof/`);
 each needs a generalisation, not a move, before it can enter `Lib/`.
 
+**Correction (integration 4, 2026-09-14):** 175 of these rows were listed only because of an edge through
+another declaration's `_proof_n` auxiliary constant, which Lean shares within a module; they are pure moves.
+See `FREED.md`. The corrected demoted count is 300. This file is kept as the record of the applied split.
+
 ## PeriodTorusHigherHomology (163)
 
 | module | declaration | binds to | via |

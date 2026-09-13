@@ -1,51 +1,46 @@
-# Next steps — Muse seat / Devin (after integration review 3, 2026-09-13)
+# Next steps — Muse seat (after integration review 4, 2026-09-14)
 
-Layout note (2026-09-13, commit `20f69036` and after): `Hopf/<path>.lean` now holds only the stock
-still to be moved into `Lib/`; every proof-specific declaration is under `Hopf/Proof/<path>.lean`
-(same names and namespaces). The census counts only outside `Hopf/Proof/` (baseline 1648). Line
-numbers cited in older reports refer to the unsplit files. Receipts: `Lib/reports/proof-split/`.
+Only lanes J and E2 are open on this seat (owner, 2026-09-13); F and G are closed as they stand.
 
-Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
-branch (`git log -1`). Your `lib/textbook-extraction-devin-2` is in: the E2 and G repairs
-with your four subagent reviews, the `module` conversion of 25 provider files, J naturality
-(`CircleProduct.lean`, `CrossProduct.lean`), F2 (`Whitney/BigonModel.lean`), G1
-(`Morse/MinimalSystem.lean`). In the same head: GLM's E1 (`Morse/ConnectionCancellation.lean`,
-`RearrangementTheorem.lean`, `Birth.lean`), Reeb, the `Suspension.topSus -> Suspension`
-rename (your ledgers that say `topSus` are stale again; map in `Lib/reports/RENAMES.md`),
-Kimi's C14–C16 (`Hurewicz.DegreeTwo`). Full chain green under Lake
-(`Lib/reviews/INTEGRATION-3.md` §2), which is the first Lake verification of your commits.
-Review: `INTEGRATION-3.md` §3 "Muse seat".
+Layout note: `Hopf/<path>.lean` holds only the stock still to be moved into `Lib/`; proof-specific
+declarations are under `Hopf/Proof/<path>.lean` (same names, same namespaces). The
+`Mathoverflow1973` wrapper is gone from the tree (GLM's `686b598e`); your ledgers that still spell
+`Mathoverflow1973.` are stale by that prefix only. The census counts only outside `Hopf/Proof/`
+(baseline 1648, now 1586). The split's demoted list was corrected: `Lib/reports/proof-split/FREED.md`
+— 175 of the 475 rows were demoted by a spurious edge and are pure moves; your S-path landing moved
+62 of them, and 40 more `PeriodTorusHigherHomology` rows under `Hopf/Proof/LCP/CuspFilling.lean`
+are yours.
+
+Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the branch
+(`git log -1`). Your `lib/textbook-extraction-muse-i3` is in: citations repointed, module
+docstrings, the `import all` removal in `Transversality/Basic.lean` and `Immersion/Relative.lean`
+with the two transparent variants, the E2/G/J Axis-5 reviews, the S-path landing
+(`CirclePaths.lean`, 88 declarations). GLM's Wang landing had moved 23 of the same rows into
+`Wang.lean`; the integration kept yours and made `Wang.lean` import `CirclePaths`. Review:
+`Lib/reviews/INTEGRATION-4.md` §4 "Muse seat": GO, record items below. Commit identity: `muse`.
 
 ## In this order, branches `lib/<lane>-<n>-<slug>` off the head above
 
-1. **Lake, not direct `lean`.** Use the recipe in `SEAT-SETUP.md` (the `GIT_CONFIG_*` lines
-   stop Lake from re-cloning Mathlib). A direct-`lean` build is not a receipt.
-2. **Citations** (one commit): `/home/ox-alpha/...` in the four `*-fresh*-subagent-review.md`
-   files, `/tmp/sidekick-modconv-batch3-*/` in `Lib/reports/RECEIPTS.md`,
-   `~/s6-notes/J-review*.md` in `J.md` and `J-INTERFACE_RECEIPT.md`. Bring the evidence in
-   (`Lib/docs/logs/<lane>/`) or drop the citation; the reviews are your seat's and may be
-   edited for paths only, with a line saying so.
-3. **Reviews.** Fresh-context subagents count as independent reviewers (owner, 2026-09-13);
-   your `fresh`/`fresh2` reviews stand. Missing: the closing pass on E2 and G at the current
-   head with a GO line, by a fresh reviewer (zero context, not the authoring session), then
-   the Axis-5 review of the typed ledgers with the current names (`Suspension`,
-   `Hurewicz.DegreeTwo`, `SingularHomology.CircleTopology`), again by a fresh reviewer. J's
-   Axis-5 reviews the same way. Until then E2 and G stay DRAFT, as their ledgers say.
-4. **Module docstrings** for `Morse/MinimalSystem.lean` and `Whitney/BigonModel.lean`; the
-   twin named. One commit.
-5. **`import all`** (owner: the `module` conversion is accepted; clean up when convenient): none added from now on; in your own files (`Transversality/Basic.lean`,
-   `Immersion/Relative.lean`) replace the two lines by the public Mathlib API or a `Lib` lemma.
-   The other eight lines are in GLM-owned files and are on that seat's list.
-6. **J**: the circle-path/section cluster and the higher coordinate/exterior boundaries
-   (`RECEIPTS.md` §"Still open"), then J-D, J-E per `J.md`, product at `(1, n)`.
-7. **E2 refactor** at `2k+1 ≤ n` from the split files, per `E2.md`.
-8. **F** after E2: the remaining geometric/Whitney/slide blocks per `F.md`, Milnor 6.6 / 7.6.
-9. **G** last: G2a–G6 after F; the `SecondCountableTopology` drop only in the `Lib` version.
+1. **Record fixes** (one commit, docs only): (a) `Lib/reports/RECEIPTS.md` — the S-path bullet
+   must say that 62 of the 88 rows came from `Hopf/Proof/` (rows listed in `DEMOTED.md`, now
+   `FREED.md`), carry the commit hash `6211eadc` and its job count, and the section header
+   "head `84d9450`" is stale; (b) `Lib/docs/E2-fresh2-subagent-review.md` — the path rewrite
+   produced `git -C the repository root rev-parse HEAD` and "relative to `the repository root`";
+   restore the command with the path elided in brackets; (c) `J.md` was edited after the Axis-5
+   stamp at `90cd3d9` — say so in the receipt.
+2. **J, the freed rows**: the 40 `PeriodTorusHigherHomology` declarations in `FREED.md` under
+   `Hopf/Proof/LCP/CuspFilling.lean` are pure moves; land them in `CirclePaths.lean` or the
+   `Lib` module their subject names, statements verbatim modulo the disclosed retargets, Lake
+   build, one green unit per commit, receipts as for the S-path.
+3. **J-B/J-C/J-D/J-E** certification per `J.md` (they are uncertified; the S-path gate is
+   discharged), then the product at `(1, n)`.
+4. **E2 refactor** at `2k+1 ≤ n` from the split files, per `E2.md`.
 
 ## Rules
 
-- `ps` before `lake build`; never `lake update`/`cache get`; never push.
-- Reviewer ≠ author; a fresh-context subagent is a reviewer. Probes in the tree. Reports cite only what is in the tree.
+- `ps` before `lake build`; never `lake update`/`cache get`; never push; Lake, not direct `lean`.
+- Reviewer ≠ author; a fresh-context subagent is a reviewer. Probes in the tree. Reports cite only
+  what is in the tree (no `/tmp`, `~`, `/home`).
 - A lane report says "landed" only for declarations that exist in `Lib/` at the head it names.
-- Do not edit E1, H, I files or ledgers (GLM seat) or the C packet (Kimi seat); the `module`
-  conversion of their files is taken this once, not a precedent for editing them.
+- Do not edit E1, H, I files or ledgers (GLM seat), the C packet (Kimi seat), `Hopf/LibShims.lean`,
+  or the F and G packets (closed).

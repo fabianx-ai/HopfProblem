@@ -1,46 +1,36 @@
-# Next steps — Kimi seat (after integration review 3, 2026-09-13)
+# Next steps — Kimi seat (after integration review 4, 2026-09-14)
 
-Layout note (2026-09-13, commit `20f69036` and after): `Hopf/<path>.lean` now holds only the stock
-still to be moved into `Lib/`; every proof-specific declaration is under `Hopf/Proof/<path>.lean`
-(same names and namespaces). The census counts only outside `Hopf/Proof/` (baseline 1648). Line
-numbers cited in older reports refer to the unsplit files. Receipts: `Lib/reports/proof-split/`.
+Layout note: `Hopf/<path>.lean` holds only the stock still to be moved into `Lib/`; proof-specific
+declarations are under `Hopf/Proof/<path>.lean` (same names, same namespaces). The
+`Mathoverflow1973` wrapper is gone from the tree (GLM's `686b598e`); only the final theorem keeps
+it. The census counts only outside `Hopf/Proof/` (baseline 1648, now 1586).
 
-Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
-branch (`git log -1`). Your `lib/C-14-integrated-receipt` is in: the refreshed receipt, C13
-(ten Recognition proofs are now instantiations, statements unchanged), C14
-`Hurewicz/Naturality.lean`, C15 `Topology/Homeomorph/DiskCube.lean`, C16
-`SecondHurewicz -> Hurewicz.DegreeTwo` with shims, the archived independent review. Full chain
-green at the integrated head (`Lib/reviews/INTEGRATION-3.md` §2), which covers the gates you
-could only run on the working tree. Review: `INTEGRATION-3.md` §3 "Kimi seat".
-
-Old items 1–6 are closed (`C.md` §"NEXT-STEPS item disposition"). Old item 7 is not.
+Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the branch
+(`git log -1`). Your C-17, C-18, C-19 and C-20 are in (citations in-tree, owner gates closed, nine
+Hurewicz leftovers moved, 35 private helpers documented). Review: `Lib/reviews/INTEGRATION-4.md`
+§4 "Kimi seat": GO, three record items below. Commit identity: `kimi`, as set.
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off the head above
 
-1. **Seat identity before the next commit** (old item 7): `git config user.name`/`user.email`
-   for the seat in this clone; the seven merged commits carry the owner's name and address.
-2. **Citations** (one commit): `Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md` has 24
-   `file:///home/kimi/...` links and `C-INTERFACE_RECEIPT.md` two `/home/kimi/s6-notes/` log
-   paths. Rewrite the `file://` links to repository-relative paths (say at the top that the
-   archive's links were rewritten, nothing else); bring the cited logs in under
-   `Lib/docs/logs/C/` or drop the citation. Rule: every report cites only what is in the tree.
-3. **Owner gates — answered** (`INTEGRATION-3.md` §5): the Stage-2 order exception is
-   accepted; the Comparator is deferred until publication. Close both in `C.md` in one
-   commit ("owner-approved exception", "Comparator deferred by owner"); do not run the
-   Comparator yourself.
-4. **`Hopf/Hurewicz.lean` leftovers**: the 23 declarations still there; classify each FREE or
-   CHARGED, move the FREE ones with the usual receipt, record the CHARGED ones.
-5. **Docstrings**: module docstring for `Hurewicz/Straightening.lean`; per-declaration
-   docstrings in the C files, one commit per file.
-6. **Shim retirement** for `Hurewicz.DegreeTwo` and the cross-product exports is part of the
-   GLM seat's wrapper removal (`NEXT-STEPS-GLM.md` item 3); leave `Hopf/LibShims.lean` alone.
+1. **Record fixes** (one commit, docs only): (a) `Lib/docs/C19-LEFTOVERS.md` and the C19
+   checkpoint in `Lib/reports/C.md` say statements are unchanged; two retargets were made and must
+   be named: `Suspension.topSus.* -> Suspension.*` in `suspensionConeCover` (owner-confirmed rename)
+   and `HigherHurewicz.hurewiczLinearEquiv -> Hurewicz.hurewiczLinearEquiv` in the six wrappers
+   (shim unwind); (b) C20 documented 35 private helpers, not 34; (c)
+   `Lib/docs/C-STAGE2-REVIEW.md:5` still cites `~/s6-notes/review/C.md`; point it at `Lib/docs/C.md`.
+2. **The seven CHARGED leftovers** in `Hopf/Hurewicz.lean` (`SixSphereCube` data and the pinned
+   `Sphere.piN_subsingleton` theorems) are proof-specific by your own classification, so under the
+   layout rule they belong in `Hopf/Proof/Hurewicz.lean`, not in the stock file. Move them there
+   (same names; `Hopf/Proof/Hurewicz.lean` imports `Hopf.Hurewicz`), full chain green, census
+   falls by the moved count; one commit. After that `Hopf/Hurewicz.lean` should hold nothing or
+   only stock still to be moved — say which.
+3. Then lane C is closed; report it in `C.md` with the head. The Comparator stays owner-deferred.
 
-## The packets E2, F, G, J — Muse seat; E1, H, I — GLM seat
-
-Do not edit those packets or their target files.
+Do not edit the packets of the other seats (E2, J — Muse; A, B, D, E1, H, I — GLM) or
+`Hopf/LibShims.lean` (GLM's de-shim pass).
 
 ## Rules
 
-- Gate for a change that deletes `Hopf/` declarations is the full consumer chain.
+- Gate for a change that deletes or moves `Hopf/` declarations is the full consumer chain.
 - A lane report says "landed" only for declarations that exist in `Lib/` at the head it names.
 - Citations are checked against the reference before they enter a ledger; no off-tree paths.

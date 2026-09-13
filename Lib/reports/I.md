@@ -255,3 +255,21 @@ full-dotted AND bare-last-component reference harvest, simp-order pins,
 trailing-attribute strip). The deletion used a line mask; overlapping ranges
 with sequential deletion swallow neighbour declarations (two over-deletions
 caught by the per-declaration-name audit and redone).
+
+## Integration-4 note (coordinator, 2026-09-14)
+
+Of the 50 rows landed in `Wang.lean`, 23 (the `CirclePaths.circleTranslation*`/`positiveLoop`
+rows, `positiveCircleCross`, `crossProductEdge_*`, `twoChain*`, `connectingHomomorphism_twoChain`
+and the five `biprod*_mo1973_*` helpers) were also moved by the Muse seat's S-path landing into
+`Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`, whose other 65 declarations depend on
+them. The integration kept them in `CirclePaths.lean` and removed them from `Wang.lean`, which now
+imports `CirclePaths`; `Wang.lean` keeps its 27 mapping-torus rows (integration commit `80cb7a5e`).
+Two corrections to the text above: the six auto-named helpers were not de-privatized on this
+branch (all six were still `private` at `dd120451`; the five in `CirclePaths.lean` are public by
+the Muse seat's move, `Covering.sum_range_shift_of_endpoints_mo1973_27356` stays private in
+`Wang.lean`), and `biprodElement_desc_mo1973_12803` had become `private def` in `Wang.lean` (a
+`theorem` at base) — moot after the deduplication, `CirclePaths.lean` keeps `theorem`. The
+`/tmp/wang_extract.py`, `/tmp/wang_gen.py` tooling note cites files outside the tree; they are not
+evidence for anything above and should be brought under `Lib/docs/logs/glm/` or the sentence dropped.
+A further 73 `MappingTorusHomology` rows of the 189 you left under `Hopf/Proof/` are pure moves after
+all: `Lib/reports/proof-split/FREED.md`.

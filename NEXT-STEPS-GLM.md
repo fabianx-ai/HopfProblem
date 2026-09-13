@@ -1,56 +1,55 @@
-# Next steps — GLM seat (after integration review 3, 2026-09-13)
+# Next steps — GLM seat (after integration review 4, 2026-09-14)
 
-Layout note (2026-09-13, commit `20f69036` and after): `Hopf/<path>.lean` now holds only the stock
-still to be moved into `Lib/`; every proof-specific declaration is under `Hopf/Proof/<path>.lean`
-(same names and namespaces). The census counts only outside `Hopf/Proof/` (baseline 1648). Line
-numbers cited in older reports refer to the unsplit files. Receipts: `Lib/reports/proof-split/`.
+Layout note: `Hopf/<path>.lean` holds only the stock still to be moved into `Lib/`; proof-specific
+declarations are under `Hopf/Proof/<path>.lean` (same names, same namespaces). The
+`Mathoverflow1973` wrapper is gone from the tree since your `686b598e`; only the final theorem
+`Mathoverflow1973.mathoverflow_1973` keeps the namespace, because `comparator/config.json` and
+`Challenge.lean` name it so (restored by the integration). The census counts only outside
+`Hopf/Proof/` (baseline 1648, now 1586). Receipts of the split: `Lib/reports/proof-split/`; the
+demoted list was corrected there (`FREED.md`: 175 of the 475 rows are pure moves; 73 of them
+are `MappingTorusHomology` rows in your lane).
 
-Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
-branch (`git log -1`). Your `lib/A-7-linear-sphere` is in: E1 (probe closure landed, three
-probes in `Lib/` with exact axioms), the B, D1 and D2 probes, the lane I quotient charts,
-`LinearSphereAction.lean` Lib-only, the `Suspension.topSus -> Suspension` rename, the five
-name confirmations, the 70-file documentation wave, the record fixes. Kimi's C13–C16 and
-Devin's module conversion, J naturality, F2 and G1 landed in the same head; full chain green.
-Review: `Lib/reviews/INTEGRATION-3.md` §3 "GLM seat". Start every new branch from this head.
-
-Seat note (2026-09-13, evening): GLM runs this seat again; Devin/Astra ran it for
-`lib/A-7-linear-sphere` and the reports say so where it matters. Ownership of the lanes is
-unchanged (A, B, D, E1, H, I); E2, F, G, J stay with the Muse seat and C with the Kimi seat. GLM
-needs explicit instructions: each item below names the files, the gate and the receipt; do not
-add steps, do not rewrite another seat's ledger, and start every branch from the head above.
-
-Settled by review 3: E1 done (old item 2); record fixes done (old item 1); name confirmations
-done (old item 5); documentation wave merged (old item 6, first pass). The `Suspension` name is
-confirmed by the owner (`INTEGRATION-3.md` §5.2).
+Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the branch
+(`git log -1`). Your `lib/A-10-layout` is in: Wang closure (50 rows, of which 23 now live in the
+Muse seat's `CirclePaths.lean`, see the integration note at the end of `Lib/reports/I.md`), the
+wrapper removal with `Lattice -> PeriodLattice`, the `import all` revert with its reason, the E1
+scoping note, H and CrossProduct docstrings, the B status. Review: `Lib/reviews/INTEGRATION-4.md`
+§4 "GLM seat". Start every new branch from this head. Commit identity: the seat's own (`glm`).
 
 ## In this order, branches `lib/A-<n>-<slug>` off the head above
 
-1. **`B.md` status** (one commit): put a current-status paragraph at the top, as `E1.md` has;
-   the "[corrected] NOT complete" line is history now that
-   `simplyConnectedSpace_of_open_cover` is in `SimplyConnectedCover.lean`.
-2. **Lane I: Wang.** The circle cross-product prerequisites you read as C/J-owned are in
-   `Lib/` (`CircleProduct.lean`, `CrossProduct.lean`); nothing is owed to you by C or J. Move
-   the Hopf-side closure recorded in `Lib/reports/I-wang-dependencies.json` (232 rows) into
-   `Lib/Topology/MappingTorus/Wang.lean` in dependency order, one green unit per commit,
-   receipts as for E1. The FREE/CHARGED rule decides per row: `SpecialPeriods`, `Threefold*`
-   and `Cusp*` vocabulary is CHARGED and is not moved; stop at the first CHARGED row on a
-   path, record it in `I.md`, and continue with the rows that do not need it. Then the
-   remaining I units in `I.md` order.
-3. **`Mathoverflow1973` wrapper removal** after item 2, one commit, full chain green, with
-   the `Hopf/LibShims.lean` aliases for `topSus` and `Hurewicz.DegreeTwo` retired in the same
-   commit only if every Hopf consumer is re-routed (else keep them and say so).
-4. **`import all`** (owner: clean up when convenient) in the files you own (`MorseLemma`, `SmoothFlow`, `Collar`, `Flow/Compact`,
-   `Morse/Cancellation`, `Morse/Rearrangement`, `RegularLevel`): replace each by the public
-   Mathlib API or by a `Lib` lemma that proves the needed fact; one commit per file, no
-   statement changed. Do not add new `import all` lines.
-5. **Layout** (after items 2–4): `ConnectionCancellation.lean` (9,600 lines) and
-   `Cancellation.lean` split along the Milnor h-cobordism sections (`Cubic`, `CubicFlow`,
-   `Connection`, `Cancellation`); in-`Lib` moves, statements unchanged, one commit per file.
-6. **Docstrings**: module docstring for `SingularHomology/CrossProduct.lean` (yours: the
-   coherence web lives there), per-declaration docstrings where missing, one commit per file,
-   "No proof term changed."
-7. **Lane H** per `H.md` (114 `RiemannMapping` declarations remain under `Hopf/`).
+1. **Record fixes** (one commit, docs only): (a) `Lib/reports/I.md` — the "Tooling note" cites
+   `/tmp/wang_extract.py` and `/tmp/wang_gen.py`; bring both scripts in under
+   `Lib/docs/logs/glm/` and cite those paths, or delete the two sentences; (b) the same file says
+   the six auto-named helpers were "de-privatized" — they were not (see the integration note);
+   correct the sentence; (c) `Lib/README.md:187` and `Lib/EXTRACTION_PLAN.md:11,148` still say every
+   file is wrapped in `namespace Mathoverflow1973`; update.
+2. **De-shim pass, part 1** (one commit, full chain green): in `Hopf/LibShims.lean` the block
+   `namespace HandleCoreAttachment / export ... / end` became a root-level
+   `export HandleCoreAttachment (core coreSpace coreInclusion)` in `686b598e`, which creates the root
+   names `core`, `coreSpace`, `coreInclusion`; delete the line (nothing under `Hopf/` uses the bare
+   names) or restore the scope. Then retire the `topSus` and `Hurewicz.DegreeTwo` aliases by
+   re-spelling their `Hopf/Proof/` consumers, if the full chain stays green; say in the commit which
+   aliases remain and why.
+3. **Lane I, continued.** `Lib/reports/proof-split/FREED.md` lists 73 `MappingTorusHomology`
+   declarations under `Hopf/Proof/LCP/IntegralHomology.lean` and neighbours that are pure moves
+   (they were demoted by a spurious edge). Move them into `Lib/Topology/MappingTorus/Wang.lean` (or
+   a second Wang file if it passes 3,000 lines) in dependency order, receipts as before, one green
+   unit per commit; the FREE/CHARGED rule still decides per row. Give
+   `MappingTorusHomology.Covering.sum_range_shift_of_endpoints_mo1973_27356` a real name in the same
+   pass (hazard §7 of `I.md`).
+4. **Layout, E1** (after item 3): your scoping note says the family cut of
+   `ConnectionCancellation.lean`/`Cancellation.lean` is cyclic and a per-declaration DAG placement
+   is needed. Do it with the mover machinery from item 1(a), in-tree: four modules `Cubic`,
+   `CubicFlow`, `Connection`, `Cancellation`, statements unchanged, one commit per module, the
+   edge counts and the placement table in `E1.md`.
+5. **`import all`** stays as you left it (owner: clean up when convenient); the per-file proof
+   restructuring you scoped is not urgent. Do not add new `import all` lines.
+6. **Lane H** per `H.md`: the 115 `RiemannMapping` declarations are under `Hopf/Proof/` and still
+   listed in `DEMOTED.md` after the correction (they bind to `SpecialPeriods.Triangle` through real
+   edges); generalisation work, last.
 
 Rules unchanged: `ps` before `lake build`; never `lake update`/`cache get`; never push; every
-report cites only what is in the tree; nothing is "COMPLETE" while its probe theorem is still
-under `Hopf/`; never rewrite another seat's ledger, review or draft.
+report cites only what is in the tree (no `/tmp`, no `~`); nothing is "COMPLETE" while its probe
+theorem is still under `Hopf/`; never rewrite another seat's ledger, review or draft; do not
+touch `Hopf/Proof/Final.lean`'s namespace or `Solution.lean`'s probe.

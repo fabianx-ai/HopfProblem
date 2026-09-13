@@ -17,6 +17,9 @@ import lib_stock_census as C
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOOL = '/home/goblin/lean-agent-ide/tools/split_module.py'
 ap = argparse.ArgumentParser(); ap.add_argument('--dump', required=True); ap.add_argument('--apply', action='store_true')
+# Lean reuses an identical abstracted proof (`Y._proof_n`) across declarations of a module, so a use of
+# `Y._proof_n` is not a use of `Y`. The applied split (20f69036) counted such edges; see FREED.md.
+ap.add_argument('--skip-proof-aux-edges', action='store_true', help='drop dependency edges through another declaration\'s _proof_n constants')
 a = ap.parse_args()
 prefixes = C.load_prefixes(os.path.join(ROOT, 'scripts/lib_stock_prefixes.txt'))
 rows = {r['name']: r for r in map(json.loads, open(a.dump))}
@@ -42,6 +45,7 @@ for n, r in hopf.items():
     if p is None: continue
     for u in r['uses']:
         if u in hopf:
+            if a.skip_proof_aux_edges and re.search(r'\._proof_\d+$', u): continue
             q = parent(u)
             if q and q != p: deps[p].add(q)
 keep = set(stock); changed = True
