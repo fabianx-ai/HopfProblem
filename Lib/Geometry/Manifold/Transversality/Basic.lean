@@ -11,7 +11,7 @@ public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Collar
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-public import Lib.Geometry.Manifold.Morse.Cancellation
+public import Lib.Geometry.Manifold.Morse.CubicFlow
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Transversality basics: submersions, regular values, and supported perturbations

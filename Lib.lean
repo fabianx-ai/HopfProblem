@@ -24,11 +24,13 @@ import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Morse.Cubic
+import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Flow.HeightTranslating

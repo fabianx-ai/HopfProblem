@@ -8,7 +8,7 @@ Authors: Fabian Franz
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Topology.Homotopy.CellAttachment

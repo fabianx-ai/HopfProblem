@@ -3,53 +3,40 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-module
+import Mathlib
+import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.Connection
 
-public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
-public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Collar
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
-# The Morse cancellation toolbox
+# Cancellation along a transverse connection
 
-The chart-level cancellation machinery: given two critical points of adjacent
-index connected across a regular level, the modifying fields, local
-replacements and flow manipulations that remove the pair without changing the
-sublevel homotopy type (Milnor, *Lectures on the h-cobordism theorem*, Thm
-4.1; Milnor, *Morse Theory* §3).
-
-## Outline
-
-1. `MorseCancellation`: the native Morse index of a critical point, quadratic germs
-   and their classification, signed Morse charts, adapted surgeries and the
-   clock-normalized cubic endpoint control.
-2. `FlowCancellation` and `FlowSuspension`: strict flow descent
-   into sublevel sets, level basins, smooth time germs and the suspension of
-   isotopies to flows.
-3. `LocalFunctionReplacement` / `LocalFieldReplacement`: replacing
-   a function or gradient-like field on a compact support.
-4. `FiberwiseDiffeomorph` and the E1-positioned
-   `SupportedDiffeomorph` material: diffeomorphisms supported in a chart.
+The cancellation theorems. `MorseCancellation.cancel_of_transverse_level_isotopy`
+starts with an excellent Morse function on a compact finite-dimensional smooth
+manifold, a pair of critical points of adjacent index, and an isotopy of a
+regular level giving one transverse connecting orbit, and produces a smooth
+Morse function whose critical set is the old set minus the pair, with the
+germ unchanged outside the isolating band. The module holds the surviving
+critical-point control (nowhere-dense critical pieces, quadratic germs, the
+native Morse index, the native cancellation data), the band Lyapunov
+function (`FlowCancellation.exists_global_band_lyapunov`), the native cubic
+cancellation `MorseCancellation.NativeConnectionCancellationData.cancel`,
+the transversality of the cancellation data, basin sheets and the Morse
+count after pair removal. The connection machinery is imported from
+`Morse.Connection`.
 
 ## Main definitions and results
 
-* `MorseCancellation.nativeMorseIndex` - the chart-independent Morse index.
-* `MorseCancellation.equivalent_quadratic_germs_of_bijective_derivative` - germ
-  classification behind the Morse lemma.
-* `MorseCancellation.adapted_surgeries_after_pair_removal` - the windows after a
-  cancellation.
+* `MorseCancellation.NativeConnectionCancellationData.Transverse`.
+* `MorseCancellation.NativeConnectionCancellationData.cancel`.
+* `MorseCancellation.cancel_of_transverse_level_isotopy`.
 
 ## References
 
-* [milnor65] J. Milnor, *Lectures on the h-cobordism theorem*, Thm 4.1.
-* [milnor63] J. Milnor, *Morse Theory*, §3.
+* [milnor65] J. Milnor, *Lectures on the h-cobordism theorem*, Theorem 5.4.
 
 ## Tags
 
-morse-theory, cancellation, h-cobordism, quadratic-germs
+morse-theory, cancellation, gradient-like-flow, h-cobordism
 -/
 
 set_option maxSynthPendingDepth 3
@@ -63,3871 +50,11 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-@[expose] public noncomputable section
+noncomputable section
 
-/-! ### Adapted surgery windows and basin blocks -/
+local infixr:80 " ≫ₚ " => Path.trans
 
-attribute [local instance 100] Classical.propDecidable in
-/-- Adapted surgery windows exist around a critical point. -/
-theorem MorseCancellation.nonempty_adaptedSurgeryWindows {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
-    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) :
-    Nonempty (AdaptedWindows E f) := by
-  have hfinite := ManifoldMorse.finite_criticalPoints hf hm
-  let : Finite (ManifoldMorse.criticalPoints E f) := hfinite.to_subtype
-  obtain ⟨r, hr, hgap⟩ := ManifoldMorse.exists_separated_value_radii hfinite hinj
-  have hex :
-    ∀ p : ManifoldMorse.criticalPoints E f,
-      ∃ d : ManifoldMorse.MorseSurgeryData E f p.val,
-        d.radius < r p / 3 ∧
-          ∀ x ∈ ManifoldMorse.criticalPoints E f,
-            f x ∈ Set.Icc (f p - d.radius ^ 2) (f p + d.radius ^ 2) → x = p.val := by
-    intro p
-    exact
-      ManifoldMorse.exists_morseSurgeryData_lt hf hm p.property
-        (fun x hx hfx => hinj hx p.property hfx) (div_pos (hr p) (by norm_num))
-  choose d hd hisolated using hex
-  have hsq (p : ManifoldMorse.criticalPoints E f) : 9 * (d p).radius ^ 2 < (r p) ^ 2 := by
-    have hsmall : 3 * (d p).radius < r p := by linarith [hd p]
-    have hsum : 0 < r p + 3 * (d p).radius :=
-      add_pos (hr p) (mul_pos (by norm_num) (d p).radius_pos)
-    nlinarith [mul_pos (sub_pos.mpr hsmall) hsum]
-  have hwide (p q : ManifoldMorse.criticalPoints E f) (hpq : f p < f q) :
-    f p + 9 * (d p).radius ^ 2 < f q - 9 * (d q).radius ^ 2 := by
-    linarith [hgap p q hpq, hsq p, hsq q]
-  have hintervals :
-    Pairwise
-      (fun p q : ManifoldMorse.criticalPoints E f =>
-        Disjoint (Set.Icc (f p - 9 * (d p).radius ^ 2) (f p + 9 * (d p).radius ^ 2))
-          (Set.Icc (f q - 9 * (d q).radius ^ 2) (f q + 9 * (d q).radius ^ 2))) := by
-    intro p q hpq
-    have hne : f p ≠ f q := fun h => hpq (Subtype.ext (hinj p.property q.property h))
-    apply Set.disjoint_left.mpr
-    intro x hx hy
-    rcases lt_or_gt_of_ne hne with hlt | hgt
-    · linarith [hwide p q hlt, hx.2, hy.1]
-    · linarith [hwide q p hgt, hy.2, hx.1]
-  obtain ⟨V, F, hV, hF, hzero, hdesc, hmodel⟩ :=
-    exists_disjoint_surgery_block_field hf hm
-      (fun p : ManifoldMorse.criticalPoints E f => p.val) (fun p => p.property)
-      (fun p => (d p).chart) (fun p => (d p).radius) (fun p => (d p).radius_pos)
-      (fun p => (d p).block) hintervals
-  refine
-    ⟨{  finite := hfinite
-        distinct := hinj
-        data := d
-        isolated := hisolated
-        separated := ?_
-        field := V
-        flow := F
-        smooth := hV
-        integral := hF
-        zero := hzero
-        descent := hdesc
-        model_germ := hmodel }⟩
-  intro p q hpq
-  nlinarith [hwide p q hpq, sq_nonneg (d p).radius, sq_nonneg (d q).radius]
-
-/-- The forward flow exits a Morse model block. -/
-theorem MorseCancellation.exists_forward_morse_model_exit {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {r : ℝ} (hr : 0 < r) {z : N × P}
-    (hzn : ‖z.1‖ < r) (hzp : ‖z.2‖ < r) (hne : z.1 ≠ 0) :
-    ∃ T : ℝ,
-      0 < T ∧
-        (∀ t ∈ Set.Icc (0 : ℝ) T,
-            MorseHandle.descentFlow t z ∈
-              Metric.closedBall (0 : N) r ×ˢ Metric.closedBall (0 : P) r) ∧
-          MorseHandle.quadratic (MorseHandle.descentFlow T z) < 0 := by
-  let T := Real.log (r / ‖z.1‖)
-  have hn : 0 < ‖z.1‖ := norm_pos_iff.mpr hne
-  have hratio : 1 < r / ‖z.1‖ := (one_lt_div hn).mpr hzn
-  have hT : 0 < T := Real.log_pos hratio
-  have hexp : Real.exp T = r / ‖z.1‖ := Real.exp_log (div_pos hr hn)
-  have hnorm : ‖(MorseHandle.descentFlow T z).1‖ = r := by
-    rw [MorseHandle.norm_descentFlow_fst, hexp]
-    exact div_mul_cancel₀ r hn.ne'
-  have hsmall : ‖(MorseHandle.descentFlow T z).2‖ < r :=
-    (MorseHandle.norm_snd_descentFlow_le hT.le z).trans_lt hzp
-  refine ⟨T, hT, ?_, ?_⟩
-  · intro t ht
-    constructor
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst]
-      calc
-        Real.exp t * ‖z.1‖ ≤ Real.exp T * ‖z.1‖ :=
-          mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr ht.2) (norm_nonneg _)
-        _ = r := by rw [hexp, div_mul_cancel₀ r hn.ne']
-    · exact
-        mem_closedBall_zero_iff.mpr
-          ((MorseHandle.norm_snd_descentFlow_le ht.1 z).trans hzp.le)
-  · change
-      -‖(MorseHandle.descentFlow T z).1‖ ^ 2 + ‖(MorseHandle.descentFlow T z).2‖ ^ 2 <
-        0
-    rw [hnorm]
-    have hs := (sq_lt_sq₀ (norm_nonneg _) hr.le).mpr hsmall
-    linarith
-
-/-- The backward flow exits a Morse model block. -/
-theorem MorseCancellation.exists_backward_morse_model_exit {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {r : ℝ} (hr : 0 < r) {z : N × P}
-    (hzn : ‖z.1‖ < r) (hzp : ‖z.2‖ < r) (hne : z.2 ≠ 0) :
-    ∃ T : ℝ,
-      T < 0 ∧
-        (∀ t ∈ Set.Icc T (0 : ℝ),
-            MorseHandle.descentFlow t z ∈
-              Metric.closedBall (0 : N) r ×ˢ Metric.closedBall (0 : P) r) ∧
-          0 < MorseHandle.quadratic (MorseHandle.descentFlow T z) := by
-  let T := -Real.log (r / ‖z.2‖)
-  have hn : 0 < ‖z.2‖ := norm_pos_iff.mpr hne
-  have hratio : 1 < r / ‖z.2‖ := (one_lt_div hn).mpr hzp
-  have hT : T < 0 := neg_neg_of_pos (Real.log_pos hratio)
-  have hexp : Real.exp (-T) = r / ‖z.2‖ := by
-    dsimp [T]
-    rw [neg_neg, Real.exp_log (div_pos hr hn)]
-  have hnorm : ‖(MorseHandle.descentFlow T z).2‖ = r := by
-    rw [MorseHandle.norm_descentFlow_snd, hexp]
-    exact div_mul_cancel₀ r hn.ne'
-  have hsmall (t : ℝ) (ht : t ≤ 0) : ‖(MorseHandle.descentFlow t z).1‖ < r := by
-    rw [MorseHandle.norm_descentFlow_fst]
-    exact (mul_le_of_le_one_left (norm_nonneg _) (Real.exp_le_one_iff.mpr ht)).trans_lt hzn
-  refine ⟨T, hT, ?_, ?_⟩
-  · intro t ht
-    constructor
-    · exact mem_closedBall_zero_iff.mpr (hsmall t ht.2).le
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_snd]
-      calc
-        Real.exp (-t) * ‖z.2‖ ≤ Real.exp (-T) * ‖z.2‖ :=
-          mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (neg_le_neg ht.1)) (norm_nonneg _)
-        _ = r := by rw [hexp, div_mul_cancel₀ r hn.ne']
-  · change
-      0 <
-        -‖(MorseHandle.descentFlow T z).1‖ ^ 2 + ‖(MorseHandle.descentFlow T z).2‖ ^ 2
-    rw [hnorm]
-    have hs := (sq_lt_sq₀ (norm_nonneg _) hr.le).mpr (hsmall T hT.le)
-    linarith
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A native Morse field block exists. -/
-theorem MorseCancellation.exists_native_morse_field_block {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    ∃ r : ℝ,
-      0 < r ∧
-        Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-              Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-            c.splitChart.target ∧
-          ∀
-            z ∈
-              Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-                Metric.closedBall (0 : c.PositiveCoordinates) r,
-            ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y := by
-  have h0 : (0 : c.NegativeCoordinates × c.PositiveCoordinates) ∈ c.splitChart.target := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.map_source' c.splitChart_mem_source
-  have hcenter : c.splitChart.symm 0 = p := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have hcont :
-    Filter.Tendsto c.splitChart.symm (𝓝 (0 : c.NegativeCoordinates × c.PositiveCoordinates))
-      (𝓝 p) := by
-    have hh :
-      Filter.Tendsto c.splitChart.symm (𝓝 (0 : c.NegativeCoordinates × c.PositiveCoordinates))
-        (𝓝 (c.splitChart.symm 0)) :=
-      c.splitChart.toOpenPartialHomeomorph.symm.continuousAt h0
-    rwa [hcenter] at hh
-  have htarget :
-    ∀ᶠ z in 𝓝 (0 : c.NegativeCoordinates × c.PositiveCoordinates), z ∈ c.splitChart.target :=
-    c.splitChart.open_target.mem_nhds h0
-  have hgerm : ∀ᶠ y in 𝓝 p, ∀ᶠ x in 𝓝 y, V x = c.descentField x :=
-    eventually_eventually_nhds.mpr heq
-  obtain ⟨r, hr, hsub⟩ :=
-    Metric.nhds_basis_closedBall.mem_iff.mp (htarget.and (hcont.eventually hgerm))
-  have hblock (z)
-    (hz :
-      z ∈
-        Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) r) :=
-    hsub
-      (by
-        rw [closedBall_prod_same] at hz
-        convert! hz using 1)
-  exact ⟨r, hr, fun z hz => (hblock z hz).1, fun z hz => (hblock z hz).2⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native forward flow exits the Morse block. -/
-theorem MorseCancellation.exists_native_forward_morse_exit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {r : ℝ} (hr : 0 < r)
-    (hbox :
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-        c.splitChart.target)
-    (heq :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) r,
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    {x : M} (hx : x ∈ c.splitChart.source) (hn : ‖(c.splitChart x).1‖ < r)
-    (hp : ‖(c.splitChart x).2‖ < r) (hne : (c.splitChart x).1 ≠ 0) :
-    ∃ T : ℝ, 0 < T ∧ f (F T x) < f p := by
-  obtain ⟨T, hT, hstay, hheight⟩ := exists_forward_morse_model_exit hr hn hp hne
-  have hdomain (s : ℝ) (hs : s ∈ Set.uIcc (0 : ℝ) T) :
-    MorseHandle.descentFlow s (c.splitChart x) ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) r :=
-    hstay s (by simpa only [Set.uIcc_of_le hT.le] using hs)
-  have hflow :=
-    c.flow_eq_descentModel_of_mem_uIcc hV F hF hx (fun s hs => hbox (hdomain s hs))
-      (fun s hs => heq _ (hdomain s hs))
-  refine ⟨T, hT, ?_⟩
-  rw [hflow, c.splitChart_inverse_equation (hbox (hstay T ⟨hT.le, le_rfl⟩))]
-  change
-    -‖(MorseHandle.descentFlow T (c.splitChart x)).1‖ ^ 2 +
-        ‖(MorseHandle.descentFlow T (c.splitChart x)).2‖ ^ 2 <
-      0 at hheight
-  linarith
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native backward flow exits the Morse block. -/
-theorem MorseCancellation.exists_native_backward_morse_exit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {r : ℝ} (hr : 0 < r)
-    (hbox :
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-        c.splitChart.target)
-    (heq :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) r,
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    {x : M} (hx : x ∈ c.splitChart.source) (hn : ‖(c.splitChart x).1‖ < r)
-    (hp : ‖(c.splitChart x).2‖ < r) (hne : (c.splitChart x).2 ≠ 0) :
-    ∃ T : ℝ, T < 0 ∧ f p < f (F T x) := by
-  obtain ⟨T, hT, hstay, hheight⟩ := exists_backward_morse_model_exit hr hn hp hne
-  have hdomain (s : ℝ) (hs : s ∈ Set.uIcc (0 : ℝ) T) :
-    MorseHandle.descentFlow s (c.splitChart x) ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) r :=
-    hstay s (by simpa only [Set.uIcc_of_ge hT.le] using hs)
-  have hflow :=
-    c.flow_eq_descentModel_of_mem_uIcc hV F hF hx (fun s hs => hbox (hdomain s hs))
-      (fun s hs => heq _ (hdomain s hs))
-  refine ⟨T, hT, ?_⟩
-  rw [hflow, c.splitChart_inverse_equation (hbox (hstay T ⟨le_rfl, hT.le⟩))]
-  change
-    0 <
-      -‖(MorseHandle.descentFlow T (c.splitChart x)).1‖ ^ 2 +
-        ‖(MorseHandle.descentFlow T (c.splitChart x)).2‖ ^ 2 at hheight
-  linarith
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native flow's forward limit lies on the positive plane. -/
-theorem MorseCancellation.native_morse_positive_plane_limit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {r : ℝ} (hr : 0 < r)
-    (hbox :
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-        c.splitChart.target)
-    (heq :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) r,
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    {x : M} (hx : x ∈ c.splitChart.source) (hp : ‖(c.splitChart x).2‖ < r)
-    (hzero : (c.splitChart x).1 = 0) : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) := by
-  have hstay (t : ℝ) (ht : t ∈ Set.Ici (0 : ℝ)) :
-    MorseHandle.descentFlow t (c.splitChart x) ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) r := by
-    constructor
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst, hzero, norm_zero,
-        MulZeroClass.mul_zero]
-      exact hr.le
-    · exact
-        mem_closedBall_zero_iff.mpr
-          ((MorseHandle.norm_snd_descentFlow_le ht (c.splitChart x)).trans hp.le)
-  have hflow :=
-    c.flow_eqOn_descentModel hV F hF hx isPreconnected_Ici (le_refl (0 : ℝ))
-      (fun t ht => hbox (hstay t ht)) (fun t ht => heq _ (hstay t ht))
-  have hfirst :
-    Filter.Tendsto (fun t : ℝ => Real.exp t • (c.splitChart x).1) Filter.atTop
-      (𝓝 (0 : c.NegativeCoordinates)) := by
-    simp only [hzero, smul_zero]
-    exact tendsto_const_nhds
-  have hsecond :
-    Filter.Tendsto (fun t : ℝ => Real.exp (-t) • (c.splitChart x).2) Filter.atTop
-      (𝓝 (0 : c.PositiveCoordinates)) := by
-    simpa only [Function.comp_def, zero_smul] using
-      (Real.tendsto_exp_atBot.comp Filter.tendsto_neg_atTop_atBot).smul_const (c.splitChart x).2
-  have hlim :
-    Filter.Tendsto (fun t => MorseHandle.descentFlow t (c.splitChart x)) Filter.atTop
-      (𝓝 (0 : c.NegativeCoordinates × c.PositiveCoordinates)) :=
-    hfirst.prodMk_nhds hsecond
-  have h0 : (0 : c.NegativeCoordinates × c.PositiveCoordinates) ∈ c.splitChart.target :=
-    hbox ⟨Metric.mem_closedBall_self hr.le, Metric.mem_closedBall_self hr.le⟩
-  have hcenter : c.splitChart.symm 0 = p := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have hn :
-    Filter.Tendsto (fun t => c.splitChart.symm (MorseHandle.descentFlow t (c.splitChart x)))
-      Filter.atTop (𝓝 (c.splitChart.symm 0)) :=
-    c.splitChart.toOpenPartialHomeomorph.symm.continuousAt h0 |>.tendsto.comp hlim
-  rw [hcenter] at hn
-  apply hn.congr'
-  filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with t ht
-  exact (hflow ht).symm
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native flow's backward limit lies on the negative plane. -/
-theorem MorseCancellation.native_morse_negative_plane_limit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {r : ℝ} (hr : 0 < r)
-    (hbox :
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-        c.splitChart.target)
-    (heq :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) r,
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    {x : M} (hx : x ∈ c.splitChart.source) (hn : ‖(c.splitChart x).1‖ < r)
-    (hzero : (c.splitChart x).2 = 0) : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) := by
-  have hstay (t : ℝ) (ht : t ∈ Set.Iic (0 : ℝ)) :
-    MorseHandle.descentFlow t (c.splitChart x) ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) r := by
-    constructor
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst]
-      exact (mul_le_of_le_one_left (norm_nonneg _) (Real.exp_le_one_iff.mpr ht)).trans hn.le
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_snd, hzero, norm_zero,
-        MulZeroClass.mul_zero]
-      exact hr.le
-  have hflow :=
-    c.flow_eqOn_descentModel hV F hF hx isPreconnected_Iic (le_refl (0 : ℝ))
-      (fun t ht => hbox (hstay t ht)) (fun t ht => heq _ (hstay t ht))
-  have hfirst :
-    Filter.Tendsto (fun t : ℝ => Real.exp t • (c.splitChart x).1) Filter.atBot
-      (𝓝 (0 : c.NegativeCoordinates)) := by
-    simpa only [zero_smul] using Real.tendsto_exp_atBot.smul_const (c.splitChart x).1
-  have hsecond :
-    Filter.Tendsto (fun t : ℝ => Real.exp (-t) • (c.splitChart x).2) Filter.atBot
-      (𝓝 (0 : c.PositiveCoordinates)) := by
-    simp only [hzero, smul_zero]
-    exact tendsto_const_nhds
-  have hlim :
-    Filter.Tendsto (fun t => MorseHandle.descentFlow t (c.splitChart x)) Filter.atBot
-      (𝓝 (0 : c.NegativeCoordinates × c.PositiveCoordinates)) :=
-    hfirst.prodMk_nhds hsecond
-  have h0 : (0 : c.NegativeCoordinates × c.PositiveCoordinates) ∈ c.splitChart.target :=
-    hbox ⟨Metric.mem_closedBall_self hr.le, Metric.mem_closedBall_self hr.le⟩
-  have hcenter : c.splitChart.symm 0 = p := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have hh :
-    Filter.Tendsto (fun t => c.splitChart.symm (MorseHandle.descentFlow t (c.splitChart x)))
-      Filter.atBot (𝓝 (c.splitChart.symm 0)) :=
-    c.splitChart.toOpenPartialHomeomorph.symm.continuousAt h0 |>.tendsto.comp hlim
-  rw [hcenter] at hh
-  apply hh.congr'
-  filter_upwards [Filter.eventually_le_atBot (0 : ℝ)] with t ht
-  exact (hflow ht).symm
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A native Morse basin block exists. -/
-theorem MorseCancellation.exists_native_morse_basin_block {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hf : Continuous f) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hmono : ∀ x, Antitone (fun t => f (F t x))) (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    ∃ r : ℝ,
-      0 < r ∧
-        Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-              Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-            c.splitChart.target ∧
-          ∀ x ∈ c.splitChart.source,
-            ‖(c.splitChart x).1‖ < r →
-              ‖(c.splitChart x).2‖ < r →
-                (Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) ↔ (c.splitChart x).1 = 0) ∧
-                  (Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) ↔ (c.splitChart x).2 = 0) :=
-  by
-  obtain ⟨r, hr, hbox, hfield⟩ := exists_native_morse_field_block c heq
-  refine ⟨r, hr, hbox, ?_⟩
-  intro x hx hn hp
-  constructor
-  · constructor
-    · intro hlim
-      by_contra hne
-      obtain ⟨T, hT, hexit⟩ :=
-        exists_native_forward_morse_exit c hV F hF hr hbox hfield hx hn hp hne
-      have hheight : Filter.Tendsto (fun t => f (F t x)) Filter.atTop (𝓝 (f p)) :=
-        hf.continuousAt.tendsto.comp hlim
-      exact (not_lt_of_ge ((hmono x).le_of_tendsto hheight T)) hexit
-    · exact native_morse_positive_plane_limit c hV F hF hr hbox hfield hx hp
-  · constructor
-    · intro hlim
-      by_contra hne
-      obtain ⟨T, hT, hexit⟩ :=
-        exists_native_backward_morse_exit c hV F hF hr hbox hfield hx hn hp hne
-      have hheight : Filter.Tendsto (fun t => f (F t x)) Filter.atBot (𝓝 (f p)) :=
-        hf.continuousAt.tendsto.comp hlim
-      exact (not_lt_of_ge ((hmono x).ge_of_tendsto hheight T)) hexit
-    · exact native_morse_negative_plane_limit c hV F hF hr hbox hfield hx hn
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A descending Morse basin block exists. -/
-theorem MorseCancellation.exists_descending_morse_basin_block {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    ∃ r : ℝ,
-      0 < r ∧
-        Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
-              Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-            c.splitChart.target ∧
-          ∀ x ∈ c.splitChart.source,
-            ‖(c.splitChart x).1‖ < r →
-              ‖(c.splitChart x).2‖ < r →
-                (Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) ↔ (c.splitChart x).1 = 0) ∧
-                  (Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) ↔ (c.splitChart x).2 = 0) :=
-  exists_native_morse_basin_block c hf.continuous hV F hF
-    (FlowConstruction.antitone_flow_height hf F hF hzero hdesc) heq
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The attaching core's backward limit is the critical point. -/
-theorem MorseCancellation.native_attaching_core_backward_limit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (u : PuncturedHandle.UnitSphere c.NegativeCoordinates) :
-    Filter.Tendsto (fun t => F t (c.attachingCoreMap r hr hblock u)) Filter.atBot (𝓝 p) := by
-  have hu : ‖(u : c.NegativeCoordinates)‖ = 1 := mem_sphere_zero_iff_norm.mp u.property
-  have hn : ‖r • (u : c.NegativeCoordinates)‖ = r := by
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, hu, mul_one]
-  have hcoords :
-    (r • (u : c.NegativeCoordinates), (0 : c.PositiveCoordinates)) ∈ c.splitChart.target := by
-    apply hblock
-    constructor
-    · rw [mem_closedBall_zero_iff, hn]
-      linarith
-    · rw [mem_closedBall_zero_iff, norm_zero]
-      positivity
-  have hcoord :
-    c.splitChart
-        (c.splitChart.symm (r • (u : c.NegativeCoordinates), (0 : c.PositiveCoordinates))) =
-      (r • (u : c.NegativeCoordinates), 0) :=
-    c.splitChart.right_inv' hcoords
-  have hh :=
-    native_morse_negative_plane_limit c hV F hF (x :=
-      c.splitChart.symm (r • (u : c.NegativeCoordinates), (0 : c.PositiveCoordinates)))
-      (show 0 < 2 * r by positivity) hblock hfield (c.splitChart.map_target' hcoords)
-      (by rw [hcoord]; change ‖r • (u : c.NegativeCoordinates)‖ < 2 * r; rw [hn]; linarith)
-      (by rw [hcoord])
-  simpa only [c.attachingCoreMap_coe] using hh
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt core's forward limit is the critical point. -/
-theorem MorseCancellation.native_belt_core_forward_limit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (v : PuncturedHandle.UnitSphere c.PositiveCoordinates) :
-    Filter.Tendsto (fun t => F t (c.beltCoreMap r hr hblock v)) Filter.atTop (𝓝 p) := by
-  have hv : ‖(v : c.PositiveCoordinates)‖ = 1 := mem_sphere_zero_iff_norm.mp v.property
-  have hn : ‖r • (v : c.PositiveCoordinates)‖ = r := by
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, hv, mul_one]
-  have hcoords :
-    ((0 : c.NegativeCoordinates), r • (v : c.PositiveCoordinates)) ∈ c.splitChart.target := by
-    apply hblock
-    constructor
-    · rw [mem_closedBall_zero_iff, norm_zero]
-      positivity
-    · rw [mem_closedBall_zero_iff, hn]
-      linarith
-  have hcoord :
-    c.splitChart
-        (c.splitChart.symm ((0 : c.NegativeCoordinates), r • (v : c.PositiveCoordinates))) =
-      (0, r • (v : c.PositiveCoordinates)) :=
-    c.splitChart.right_inv' hcoords
-  have hh :=
-    native_morse_positive_plane_limit c hV F hF (x :=
-      c.splitChart.symm ((0 : c.NegativeCoordinates), r • (v : c.PositiveCoordinates)))
-      (show 0 < 2 * r by positivity) hblock hfield (c.splitChart.map_target' hcoords)
-      (by rw [hcoord]; change ‖r • (v : c.PositiveCoordinates)‖ < 2 * r; rw [hn]; linarith)
-      (by rw [hcoord])
-  simpa only [c.beltCoreMap_coe] using hh
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The attaching core is flowed by the native field. -/
-theorem MorseCancellation.native_attaching_core_flow {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (u : PuncturedHandle.UnitSphere c.NegativeCoordinates) {t : ℝ} (ht : t ≤ 0) :
-    F t (c.attachingCoreMap r hr hblock u) =
-      c.splitChart.symm (MorseHandle.descentFlow t (r • (u : c.NegativeCoordinates), 0)) := by
-  let z : c.NegativeCoordinates × c.PositiveCoordinates := (r • (u : c.NegativeCoordinates), 0)
-  have hn : ‖z.1‖ = r := by
-    change ‖r • (u : c.NegativeCoordinates)‖ = r
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property,
-      mul_one]
-  have hstay (s : ℝ) (hs : s ≤ 0) :
-    MorseHandle.descentFlow s z ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) := by
-    constructor
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst, hn]
-      have hh := mul_le_mul_of_nonneg_right (Real.exp_le_one_iff.mpr hs) hr.le
-      nlinarith
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_snd]
-      change Real.exp (-s) * ‖(0 : c.PositiveCoordinates)‖ ≤ 2 * r
-      simp only [norm_zero, MulZeroClass.mul_zero]
-      positivity
-  have hz : z ∈ c.splitChart.target := by
-    have hh := hblock (hstay 0 le_rfl)
-    simpa only [Flow.map_zero_apply] using hh
-  have hcoord : c.splitChart (c.splitChart.symm z) = z := c.splitChart.right_inv' hz
-  have hflow :=
-    c.flow_eqOn_descentModel hV F hF (x := c.splitChart.symm z) (c.splitChart.map_target' hz)
-      isPreconnected_Iic (le_refl (0 : ℝ)) (fun s hs => by rw [hcoord]; exact hblock (hstay s hs))
-      (fun s hs => by rw [hcoord]; exact hfield _ (hstay s hs))
-  have hh := hflow ht
-  rw [hcoord] at hh
-  simpa only [c.attachingCoreMap_coe] using hh
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt core is flowed by the native field. -/
-theorem MorseCancellation.native_belt_core_flow {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (v : PuncturedHandle.UnitSphere c.PositiveCoordinates) {t : ℝ} (ht : 0 ≤ t) :
-    F t (c.beltCoreMap r hr hblock v) =
-      c.splitChart.symm (MorseHandle.descentFlow t (0, r • (v : c.PositiveCoordinates))) := by
-  let z : c.NegativeCoordinates × c.PositiveCoordinates := (0, r • (v : c.PositiveCoordinates))
-  have hn : ‖z.2‖ = r := by
-    change ‖r • (v : c.PositiveCoordinates)‖ = r
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp v.property,
-      mul_one]
-  have hstay (s : ℝ) (hs : 0 ≤ s) :
-    MorseHandle.descentFlow s z ∈
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-        Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) := by
-    constructor
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_fst]
-      change Real.exp s * ‖(0 : c.NegativeCoordinates)‖ ≤ 2 * r
-      simp only [norm_zero, MulZeroClass.mul_zero]
-      positivity
-    · rw [mem_closedBall_zero_iff, MorseHandle.norm_descentFlow_snd, hn]
-      have hh := mul_le_mul_of_nonneg_right (Real.exp_le_one_iff.mpr (neg_nonpos.mpr hs)) hr.le
-      nlinarith
-  have hz : z ∈ c.splitChart.target := by
-    have hh := hblock (hstay 0 le_rfl)
-    simpa only [Flow.map_zero_apply] using hh
-  have hcoord : c.splitChart (c.splitChart.symm z) = z := c.splitChart.right_inv' hz
-  have hflow :=
-    c.flow_eqOn_descentModel hV F hF (x := c.splitChart.symm z) (c.splitChart.map_target' hz)
-      isPreconnected_Ici (le_refl (0 : ℝ)) (fun s hs => by rw [hcoord]; exact hblock (hstay s hs))
-      (fun s hs => by rw [hcoord]; exact hfield _ (hstay s hs))
-  have hh := hflow ht
-  rw [hcoord] at hh
-  simpa only [c.beltCoreMap_coe] using hh
-
-/-- A negative core ray parameter exists. -/
-theorem MorseCancellation.exists_negative_core_ray_parameter {A : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] {r : ℝ} (hr : 0 < r) {z : A} (hz : z ≠ 0) (hzr : ‖z‖ < r) :
-    ∃ (u : PuncturedHandle.UnitSphere A) (t : ℝ), t < 0 ∧ Real.exp t • (r • (u : A)) = z := by
-  have hn : 0 < ‖z‖ := norm_pos_iff.mpr hz
-  let u : PuncturedHandle.UnitSphere A :=
-    ⟨‖z‖⁻¹ • z, mem_sphere_zero_iff_norm.mpr (norm_smul_inv_norm hz)⟩
-  have hratio : 0 < ‖z‖ / r := div_pos hn hr
-  have hratio1 : ‖z‖ / r < 1 := (div_lt_one hr).mpr hzr
-  have hcoef : Real.exp (Real.log (‖z‖ / r)) * r * ‖z‖⁻¹ = 1 := by
-    rw [Real.exp_log hratio]
-    field_simp
-  refine ⟨u, Real.log (‖z‖ / r), Real.log_neg hratio hratio1, ?_⟩
-  change Real.exp (Real.log (‖z‖ / r)) • (r • (‖z‖⁻¹ • z)) = z
-  rw [smul_smul, smul_smul, hcoef, one_smul]
-
-/-- A positive core ray parameter exists. -/
-theorem MorseCancellation.exists_positive_core_ray_parameter {A : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] {r : ℝ} (hr : 0 < r) {z : A} (hz : z ≠ 0) (hzr : ‖z‖ < r) :
-    ∃ (u : PuncturedHandle.UnitSphere A) (t : ℝ),
-      0 < t ∧ Real.exp (-t) • (r • (u : A)) = z := by
-  obtain ⟨u, t, ht, heq⟩ := exists_negative_core_ray_parameter hr hz hzr
-  exact ⟨u, -t, neg_pos.mpr ht, by simpa only [neg_neg] using heq⟩
-
-/-! ### Strict descent and level basins -/
-
-/-- A locally strict descent flow exists. -/
-theorem FlowCancellation.exists_local_strict_flow_descent {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {x : X} (hx : D x < 0) :
-    ∃ ε : ℝ, 0 < ε ∧ StrictAntiOn (fun t : ℝ => f (F t x)) (Set.Icc (-ε) ε) := by
-  have hcont : Continuous (fun t : ℝ => D (F t x)) :=
-    hD.comp (F.continuous continuous_id continuous_const)
-  have he : ∀ᶠ t : ℝ in 𝓝 0, D (F t x) < 0 := by
-    have hx0 : D (F 0 x) < 0 := by simpa only [F.map_zero_apply] using hx
-    exact hcont.continuousAt (eventually_lt_nhds hx0)
-  obtain ⟨r, hr, hball⟩ := Metric.eventually_nhds_iff.mp he
-  refine ⟨r / 2, half_pos hr, ?_⟩
-  have hfc : Continuous (fun t : ℝ => f (F t x)) :=
-    hf.comp (F.continuous continuous_id continuous_const)
-  apply strictAntiOn_of_deriv_neg (convex_Icc _ _) hfc.continuousOn
-  intro t ht
-  rw [(hder x t).deriv]
-  apply hball
-  rw [Real.dist_eq, sub_zero, abs_lt]
-  have ht' := interior_subset ht
-  constructor <;> linarith [ht'.1, ht'.2]
-
-/-- The flow strictly enters a sublevel locally. -/
-theorem FlowCancellation.exists_local_strict_sublevel_entry {X : Type*}
-    [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) {x : X} (hx : f x ≤ c) :
-    ∃ ε : ℝ, 0 < ε ∧ ∀ t ∈ Set.Ioc (0 : ℝ) ε, f (F t x) < c := by
-  rcases hx.lt_or_eq with hx | hx
-  · have he : ∀ᶠ t : ℝ in 𝓝 0, f (F t x) < c := by
-      have hfc : Continuous (fun t : ℝ => f (F t x)) :=
-        hf.comp (F.continuous continuous_id continuous_const)
-      have hx0 : f (F 0 x) < c := by simpa only [F.map_zero_apply] using hx
-      exact hfc.continuousAt (eventually_lt_nhds hx0)
-    obtain ⟨r, hr, hball⟩ := Metric.eventually_nhds_iff.mp he
-    refine ⟨r / 2, half_pos hr, ?_⟩
-    intro t ht
-    apply hball
-    rw [Real.dist_eq, sub_zero, abs_of_pos ht.1]
-    linarith [ht.2]
-  · obtain ⟨ε, hε, hanti⟩ := exists_local_strict_flow_descent F hf hD hder (hboundary x hx)
-    refine ⟨ε, hε, ?_⟩
-    intro t ht
-    have hh :=
-      hanti (show (0 : ℝ) ∈ Set.Icc (-ε) ε from ⟨by linarith, hε.le⟩)
-        (show t ∈ Set.Icc (-ε) ε from ⟨by linarith [ht.1], ht.2⟩) ht.1
-    simpa only [F.map_zero_apply, hx] using hh
-
-/-- A sublevel with forward-invariant boundary is forward invariant. -/
-theorem FlowCancellation.forwardInvariant_sublevel_of_boundary {X : Type*}
-    [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) : ∀ x, f x ≤ c → ∀ t : ℝ, 0 ≤ t → f (F t x) ≤ c := by
-  apply FlowConstruction.forwardInvariant_of_local F (isClosed_le hf continuous_const)
-  intro x hx
-  obtain ⟨ε, hε, hentry⟩ := exists_local_strict_sublevel_entry F hf hD hder hboundary hx
-  refine ⟨ε, hε, ?_⟩
-  intro t ht
-  rcases ht.1.eq_or_lt with ht0 | htpos
-  · simpa only [← ht0, F.map_zero_apply] using hx
-  · exact (hentry t ⟨htpos, ht.2⟩).le
-
-/-- The sublevel interior is determined by the boundary. -/
-theorem FlowCancellation.interior_sublevel_eq_of_boundary {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) : interior {x | f x ≤ c} = {x | f x < c} := by
-  apply Set.Subset.antisymm
-  · intro x hx
-    have hle : f x ≤ c := (interior_subset : interior {y | f y ≤ c} ⊆ {y | f y ≤ c}) hx
-    apply lt_of_le_of_ne hle
-    intro heq
-    have hnhds : ∀ᶠ t : ℝ in 𝓝 0, F t x ∈ interior {y | f y ≤ c} := by
-      have hfc : Continuous (fun t : ℝ => F t x) := F.continuous continuous_id continuous_const
-      have hx0 : F 0 x ∈ interior {y | f y ≤ c} := by simpa only [F.map_zero_apply] using hx
-      exact hfc.continuousAt (isOpen_interior.mem_nhds hx0)
-    have hmax : IsLocalMax (fun t : ℝ => f (F t x)) 0 := by
-      filter_upwards [hnhds] with t ht
-      change f (F t x) ≤ f (F 0 x)
-      rw [F.map_zero_apply, heq]
-      exact (interior_subset : interior {y | f y ≤ c} ⊆ {y | f y ≤ c}) ht
-    have hz := hmax.hasDerivAt_eq_zero (hder x 0)
-    rw [F.map_zero_apply] at hz
-    exact (hboundary x heq).ne hz
-  · exact interior_maximal (fun _ (hx : f _ < c) => hx.le) (isOpen_lt hf continuous_const)
-
-/-- The flow strictly enters the sublevel across the boundary. -/
-theorem FlowCancellation.strict_sublevel_entry_of_boundary {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) : ∀ x, f x ≤ c → ∀ t : ℝ, 0 < t → f (F t x) < c := by
-  have hforward := forwardInvariant_sublevel_of_boundary F hf hD hder hboundary
-  have hlocal :
-    ∀ x ∈ {y | f y ≤ c}, ∃ ε > (0 : ℝ), ∀ t ∈ Set.Ioc 0 ε, F t x ∈ interior {y | f y ≤ c} := by
-    intro x hx
-    obtain ⟨ε, hε, hentry⟩ := exists_local_strict_sublevel_entry F hf hD hder hboundary hx
-    refine ⟨ε, hε, ?_⟩
-    intro t ht
-    rw [interior_sublevel_eq_of_boundary F hf hder hboundary]
-    exact hentry t ht
-  intro x hx t ht
-  have hi := FlowConstruction.interior_entry_of_local F hforward hlocal x hx t ht
-  have hi' : F t x ∈ interior {y | f y ≤ c} := hi
-  exact
-    Eq.mp
-      (congrArg (fun S : Set X => F t x ∈ S)
-        (interior_sublevel_eq_of_boundary F hf hder hboundary))
-      hi'
-
-/-- The basin of a level set under the flow. -/
-def FlowCancellation.levelBasin {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (f : X → ℝ)
-    (c : ℝ) : Set X :=
-  {x | ∃ t : ℝ, f (F t x) = c}
-
-/-! ### The signed level time -/
-
-/-- The signed time at which the flow crosses the level. -/
-def FlowCancellation.signedLevelTime {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
-    (f : X → ℝ) (c : ℝ) (x : X) : ℝ := by
-  classical exact if h : x ∈ levelBasin F f c then h.choose else 0
-
-/-- The signed level time hits the level. -/
-theorem FlowCancellation.signedLevelTime_hits {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) (f : X → ℝ) (c : ℝ) {x : X} (hx : x ∈ levelBasin F f c) :
-    f (F (signedLevelTime F f c x) x) = c := by
-  rw [signedLevelTime, dif_pos hx]
-  exact hx.choose_spec
-
-/-- Basin membership is characterized by hitting the level. -/
-theorem FlowCancellation.levelBasin_flow_iff {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) (f : X → ℝ) (c s : ℝ) (x : X) :
-    F s x ∈ levelBasin F f c ↔ x ∈ levelBasin F f c := by
-  constructor
-  · rintro ⟨t, ht⟩
-    exact ⟨t + s, by simpa only [F.map_add] using ht⟩
-  · rintro ⟨t, ht⟩
-    refine ⟨t - s, ?_⟩
-    simpa only [← F.map_add, sub_add_cancel] using ht
-
-/-- The level hitting time is unique. -/
-theorem FlowCancellation.flow_level_time_unique {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) (x : X) {s t : ℝ} (hs : f (F s x) = c)
-    (ht : f (F t x) = c) : s = t := by
-  have hnot {a b : ℝ} (ha : f (F a x) = c) (hb : f (F b x) = c) : ¬a < b := by
-    intro hab
-    have hh :=
-      strict_sublevel_entry_of_boundary F hf hD hder hboundary (F a x) ha.le (b - a)
-        (sub_pos.mpr hab)
-    rw [← F.map_add, sub_add_cancel, hb] at hh
-    exact lt_irrefl _ hh
-  exact le_antisymm (le_of_not_gt (hnot ht hs)) (le_of_not_gt (hnot hs ht))
-
-/-- The signed level time of a level point. -/
-theorem FlowCancellation.signedLevelTime_eq_of_level {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) {x : X} {t : ℝ} (ht : f (F t x) = c) :
-    signedLevelTime F f c x = t :=
-  flow_level_time_unique F hf hD hder hboundary x (signedLevelTime_hits F f c ⟨t, ht⟩) ht
-
-/-- The signed level time on the level is zero. -/
-theorem FlowCancellation.signedLevelTime_eq_zero {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) {x : X} (hx : f x = c) : signedLevelTime F f c x = 0 :=
-  signedLevelTime_eq_of_level F hf hD hder hboundary (by simpa only [F.map_zero_apply] using hx)
-
-/-- The signed level time shifts under the flow. -/
-theorem FlowCancellation.signedLevelTime_flow {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
-    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
-    (hboundary : ∀ x, f x = c → D x < 0) {x : X} (hx : x ∈ levelBasin F f c) (s : ℝ) :
-    signedLevelTime F f c (F s x) = signedLevelTime F f c x - s := by
-  apply signedLevelTime_eq_of_level F hf hD hder hboundary
-  rw [← F.map_add, sub_add_cancel]
-  exact signedLevelTime_hits F f c hx
-
-/-! ### Height-translating flows -/
-
-/-- An enlarged interval containing a compact interval exists. -/
-theorem FlowConstruction.exists_enlarged_interval {a b : ℝ} (hab : a ≤ b) {W : Set ℝ}
-    (hW : IsOpen W) (hIW : Set.Icc a b ⊆ W) : ∃ l u : ℝ, l < a ∧ b < u ∧ Set.Ioo l u ⊆ W := by
-  obtain ⟨l, r, hla, hL⟩ := mem_nhds_iff_exists_Ioo_subset.mp (hW.mem_nhds (hIW ⟨le_rfl, hab⟩))
-  obtain ⟨s, u, hbu, hR⟩ := mem_nhds_iff_exists_Ioo_subset.mp (hW.mem_nhds (hIW ⟨hab, le_rfl⟩))
-  refine ⟨l, u, hla.1, hbu.2, ?_⟩
-  intro y hy
-  by_cases hya : y < a
-  · exact hL ⟨hy.1, hya.trans hla.2⟩
-  by_cases hby : b < y
-  · exact hR ⟨hbu.1.trans hby, hy.2⟩
-  exact hIW ⟨le_of_not_gt hya, le_of_not_gt hby⟩
-
-/-- The scalar height translation of a product field. -/
-theorem FlowConstruction.scalar_height_translation {φ γ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ)
-    {W : Set ℝ} (hW : IsOpen W) {a b c t : ℝ} (hIW : Set.Icc a b ⊆ W)
-    (hφW : Set.EqOn φ (fun _ => 1) W) (hγ : ∀ s, HasDerivAt γ (φ (γ s)) s) (hγ₀ : γ 0 = c)
-    (hc : c ∈ Set.Icc a b) (ht : c + t ∈ Set.Icc a b) : γ t = c + t := by
-  obtain ⟨l, u, hl, hu, hlu⟩ := exists_enlarged_interval (hc.1.trans hc.2) hW hIW
-  let V : (x : ℝ) → TangentSpace 𝓘(ℝ, ℝ) x := fun x => (NormedSpace.fromTangentSpace x).symm (φ x)
-  have hV :
-    ContMDiff 𝓘(ℝ, ℝ) (𝓘(ℝ, ℝ).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, ℝ) ℝ)) :=
-    contMDiff_vectorSpace_iff_contDiff.mpr (hφ.of_le (by simp))
-  have hactual : IsMIntegralCurveOn γ V (Set.Ioo (l - c) (u - c)) := by
-    intro s hs
-    exact (hγ s).hasFDerivAt.hasMFDerivAt.hasMFDerivWithinAt
-  have hlinear : IsMIntegralCurveOn (fun s => c + s) V (Set.Ioo (l - c) (u - c)) := by
-    intro s hs
-    have hcs : c + s ∈ W := hlu ⟨by linarith [hs.1], by linarith [hs.2]⟩
-    have hd : HasDerivAt (fun r => c + r) (φ (c + s)) s := by
-      rw [hφW hcs]
-      exact (hasDerivAt_id s).const_add c
-    exact hd.hasFDerivAt.hasMFDerivAt.hasMFDerivWithinAt
-  have hzero : (0 : ℝ) ∈ Set.Ioo (l - c) (u - c) := ⟨by linarith [hc.1], by linarith [hc.2]⟩
-  have htime : t ∈ Set.Ioo (l - c) (u - c) := ⟨by linarith [ht.1], by linarith [ht.2]⟩
-  exact
-    isMIntegralCurveOn_Ioo_eqOn_of_contMDiff_boundaryless hzero hV hactual hlinear
-      (by simpa only [add_zero] using hγ₀) htime
-
-/-- A global flow satisfies `f (F t x) = f x + t` whenever both `f x` and `f x + t` lie in the given regular band. -/
-theorem FlowConstruction.exists_heightTranslatingFlow {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ}
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
-    ∃ F : Flow ℝ M, ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t := by
-  obtain ⟨φ, W, F, hφ, hW, hIW, hφW, hF⟩ := exists_regularBandFlow hf hband
-  refine ⟨F, ?_⟩
-  intro x t hx ht
-  exact scalar_height_translation hφ hW hIW hφW (hF x) (by simp only [Flow.map_zero_apply]) hx ht
-
-/-- The directional derivative of a smooth function is smooth. -/
-theorem MorseCancellation.contMDiff_directionalDerivative {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
-    ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun x => mvfderiv 𝓘(ℝ, E) f x (V x)) := by
-  have ht := (hf.contMDiff_tangentMap (m := ∞) (by simp)).comp hV
-  exact (contMDiff_snd_tangentBundle_modelSpace ℝ 𝓘(ℝ, ℝ)).comp ht
-
-/-- Two points on the same orbit at the same level are equal. -/
-theorem MorseCancellation.native_same_level_orbit_points {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ}
-    (hboundary : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x y : M} {s t : ℝ} (hx : f x = c)
-    (hy : f y = c) (hxy : F s x = F t y) : x = y := by
-  have hmove : F (s - t) x = y := by
-    calc
-      F (s - t) x = F (-t) (F s x) := by
-        rw [← F.map_add]
-        congr 1
-        ring
-      _ = F (-t) (F t y) := (congrArg (F (-t)) hxy)
-      _ = y := by rw [← F.map_add, neg_add_cancel, F.map_zero_apply]
-  have htime :=
-    FlowCancellation.flow_level_time_unique F hf.continuous
-      (contMDiff_directionalDerivative hf hV).continuous
-      (fun z u => FlowConstruction.hasDerivAt_comp_integralCurve hf (hF z) u) hboundary x
-      (hmove ▸ hy) (show f (F 0 x) = c by rw [F.map_zero_apply]; exact hx)
-  simpa only [htime, F.map_zero_apply] using hmove
-
-/-! ### The cubic birth–death model -/
-
-/-- The cubic birth–death model `x³ + tx` with transverse directions. -/
-abbrev MorseCancellation.Model (m : ℕ) :=
-  ℝ × (Fin m → ℝ)
-
-/-- The cubic family `x³ + tx` in one variable. -/
-def MorseCancellation.cubic {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) : ℝ :=
-  p.1 ^ 3 / 3 + t * p.1 + ∑ i, σ i * (p.2 i) ^ 2
-
-/-- The differential of the model. -/
-def MorseCancellation.differential {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) : Model m →L[ℝ] ℝ :=
-  (p.1 ^ 2 + t) • ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ) +
-    ∑ i,
-      (2 * σ i * p.2 i) •
-        ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ)))
-
-/-- The differential computes the partial derivatives. -/
-theorem MorseCancellation.differential_apply {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p v : Model m) :
-    differential σ t p v = (p.1 ^ 2 + t) * v.1 + ∑ i, 2 * σ i * p.2 i * v.2 i := by
-  simp [differential]
-
-/-- The cubic family is smooth. -/
-theorem MorseCancellation.contDiff_cubic_family {m : ℕ} (σ : Fin m → ℝ) :
-    ContDiff ℝ ∞ (fun p : ℝ × Model m => cubic σ p.1 p.2) := by
-  unfold cubic
-  fun_prop
-
-/-- The cubic is smooth. -/
-theorem MorseCancellation.contDiff_cubic {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) : ContDiff ℝ ∞ (cubic σ t) :=
-  (contDiff_cubic_family σ).comp (contDiff_const.prodMk contDiff_id)
-
-/-- The cubic is differentiable. -/
-theorem MorseCancellation.hasFDerivAt_cubic {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
-    HasFDerivAt (cubic σ t) (differential σ t p) p := by
-  have hx := (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).hasFDerivAt (x := p)
-  have hy (i : Fin m) :=
-    ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))).hasFDerivAt
-      (x := p)
-  have hq := HasFDerivAt.fun_sum (u := Finset.univ) (fun i _ => ((hy i).pow 2).const_mul (σ i))
-  convert! (((hx.pow 3).mul_const (1 / 3)).add (hx.const_mul t)).add hq using 1
-  · funext q
-    simp [cubic, div_eq_mul_inv]
-  · apply ContinuousLinearMap.ext
-    intro v
-    simp [differential]
-    ring_nf
-
-/-- The derivative of the cubic. -/
-theorem MorseCancellation.fderiv_cubic {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
-    fderiv ℝ (cubic σ t) p = differential σ t p :=
-  (hasFDerivAt_cubic σ t p).fderiv
-
-/-- The critical points of the cubic satisfy `3x² + t = 0`. -/
-theorem MorseCancellation.critical_iff {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) (t : ℝ)
-    (p : Model m) : fderiv ℝ (cubic σ t) p = 0 ↔ p.1 ^ 2 + t = 0 ∧ p.2 = 0 := by
-  rw [fderiv_cubic]
-  constructor
-  · intro h
-    have hx := congrArg (fun L : Model m →L[ℝ] ℝ => L (1, 0)) h
-    have hx' : p.1 ^ 2 + t = 0 := by simpa [differential_apply] using hx
-    refine ⟨hx', ?_⟩
-    funext i
-    have hy := congrArg (fun L : Model m →L[ℝ] ℝ => L (0, Pi.single i 1)) h
-    have hy' : 2 * σ i * p.2 i = 0 := by simpa [differential_apply, Pi.single_apply] using hy
-    exact (mul_eq_zero.mp hy').resolve_left (mul_ne_zero (by norm_num) (hσ i))
-  · rintro ⟨hx, hy⟩
-    apply ContinuousLinearMap.ext
-    intro v
-    simp [differential_apply, hx, hy]
-
-/-- At parameter zero the only critical point is the origin. -/
-theorem MorseCancellation.cubic_zero_unique_critical {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
-    (p : Model m) : fderiv ℝ (cubic σ 0) p = 0 ↔ p = 0 := by
-  rw [critical_iff σ hσ]
-  constructor
-  · rintro ⟨hx, hy⟩
-    have hx' : p.1 = 0 := by nlinarith [sq_nonneg p.1]
-    exact Prod.ext hx' hy
-  · rintro rfl
-    simp
-
-/-- For positive parameter the cubic has no critical points. -/
-theorem MorseCancellation.positive_parameter_no_critical {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
-    {t : ℝ} (ht : 0 < t) (p : Model m) : fderiv ℝ (cubic σ t) p ≠ 0 := by
-  intro h
-  have hx := ((critical_iff σ hσ t p).mp h).1
-  nlinarith [sq_nonneg p.1]
-
-/-- For negative parameter the critical points are `±√(−t/3)`. -/
-theorem MorseCancellation.negative_parameter_critical_iff {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
-    (a : ℝ) (p : Model m) : fderiv ℝ (cubic σ (-(a ^ 2))) p = 0 ↔ p = (a, 0) ∨ p = (-a, 0) := by
-  rw [critical_iff σ hσ]
-  constructor
-  · rintro ⟨hx, hy⟩
-    have hs : p.1 = a ∨ p.1 = -a := by
-      have he : (p.1 - a) * (p.1 + a) = 0 := by nlinarith
-      rcases mul_eq_zero.mp he with h | h
-      · exact Or.inl (by linarith)
-      · exact Or.inr (by linarith)
-    exact hs.elim (fun h => Or.inl (Prod.ext h hy)) (fun h => Or.inr (Prod.ext h hy))
-  · rintro (rfl | rfl) <;> simp
-
-/-- The critical values of the cubic at negative parameter. -/
-theorem MorseCancellation.cubic_critical_values {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) :
-    cubic σ (-(a ^ 2)) (a, 0) = -(2 * a ^ 3 / 3) ∧ cubic σ (-(a ^ 2)) (-a, 0) = 2 * a ^ 3 / 3 := by
-  constructor <;> simp [cubic] <;> ring
-
-/-! ### Endpoint charts -/
-
-/-- The endpoint coordinate of a cubic chart. -/
-def MorseCancellation.endpointCoordinate (a e s : ℝ) : ℝ :=
-  (s - e * a) * Real.sqrt (a + e * (s - e * a) / 3)
-
-/-- The domain of the endpoint coordinate. -/
-def MorseCancellation.endpointDomain (a e : ℝ) : Set ℝ :=
-  {s | 0 < a + e * (s - e * a) / 3}
-
-/-- The endpoint domain is open. -/
-theorem MorseCancellation.endpointDomain_open (a e : ℝ) : IsOpen (endpointDomain a e) := by
-  apply isOpen_lt continuous_const
-  fun_prop
-
-/-- The endpoint lies in the domain. -/
-theorem MorseCancellation.endpoint_mem_domain {a : ℝ} (ha : 0 < a) (e : ℝ) :
-    e * a ∈ endpointDomain a e := by simpa [endpointDomain] using ha
-
-/-- The endpoint coordinate at the center. -/
-theorem MorseCancellation.endpointCoordinate_center (a e : ℝ) : endpointCoordinate a e (e * a) = 0 := by
-  simp [endpointCoordinate]
-
-/-- The endpoint coordinate is smooth. -/
-theorem MorseCancellation.contDiffOn_endpointCoordinate (a e : ℝ) :
-    ContDiffOn ℝ ∞ (endpointCoordinate a e) (endpointDomain a e) := by
-  intro s hs
-  have hlin : ContDiffAt ℝ ∞ (fun t : ℝ => t - e * a) s := contDiffAt_id.sub contDiffAt_const
-  exact
-    (hlin.mul
-        ((contDiffAt_const.add ((contDiffAt_const.mul hlin).div_const 3)).sqrt
-          (ne_of_gt hs))).contDiffWithinAt
-
-/-- The endpoint coordinate is differentiable. -/
-theorem MorseCancellation.hasDerivAt_endpointCoordinate {a : ℝ} (ha : 0 < a) (e : ℝ) :
-    HasDerivAt (endpointCoordinate a e) (Real.sqrt a) (e * a) := by
-  have hd :=
-    ((hasDerivAt_id (e * a)).sub_const (e * a)).mul
-      ((((hasDerivAt_id (e * a)).sub_const (e * a)).const_mul e).div_const 3 |>.const_add
-          a |>.sqrt
-        (by simpa using ha.ne'))
-  convert! hd using 1; simp []
-
-/-- The cubic on the endpoint square. -/
-theorem MorseCancellation.cubic_endpoint_square {m : ℕ} (σ : Fin m → ℝ) (a e : ℝ) (he : e ^ 2 = 1)
-    {p : Model m} (hp : p.1 ∈ endpointDomain a e) :
-    cubic σ (-(a ^ 2)) p =
-      cubic σ (-(a ^ 2)) (e * a, 0) + e * endpointCoordinate a e p.1 ^ 2 + ∑ i, σ i * p.2 i ^ 2 :=
-  by
-  simp only [cubic, endpointCoordinate, Pi.zero_apply, zero_pow (by decide : 2 ≠ 0),
-    MulZeroClass.mul_zero, Finset.sum_const_zero, add_zero, mul_pow, Real.sq_sqrt (le_of_lt hp)]
-  rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
-
-/-- An endpoint scalar chart exists. -/
-theorem MorseCancellation.exists_endpoint_scalar_chart {a : ℝ} (ha : 0 < a) (e : ℝ) :
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
-      e * a ∈ Φ.source ∧
-        Φ.source ⊆ endpointDomain a e ∧ (Φ : ℝ → ℝ) = endpointCoordinate a e ∧ Φ (e * a) = 0 := by
-  have hd := (hasDerivAt_endpointCoordinate ha e).hasFDerivAt
-  have hi : Function.Injective (fderiv ℝ (endpointCoordinate a e) (e * a)) := by
-    rw [hd.fderiv]
-    intro x y hxy
-    change x * Real.sqrt a = y * Real.sqrt a at hxy
-    exact mul_right_cancel₀ (Real.sqrt_pos.mpr ha).ne' hxy
-  let A : ℝ ≃L[ℝ] ℝ :=
-    (LinearEquiv.ofInjectiveEndo (fderiv ℝ (endpointCoordinate a e) (e * a)).toLinearMap
-        hi).toContinuousLinearEquiv
-  obtain ⟨Φ, hp, hsub, hΦ⟩ :=
-    exists_partialDiffeomorph_of_contDiffOn (endpointDomain_open a e)
-      (endpoint_mem_domain ha e) (contDiffOn_endpointCoordinate a e) ⟨A, rfl⟩
-  exact ⟨Φ, hp, hsub, hΦ, by rw [hΦ, endpointCoordinate_center]⟩
-
-/-- The scalar product chart at an endpoint. -/
-def MorseCancellation.scalarProductChart {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) :
-    PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) (ℝ × V) (ℝ × V) ∞
-    where
-  toPartialEquiv := (Φ.toOpenPartialHomeomorph.prod (OpenPartialHomeomorph.refl V)).toPartialEquiv
-  open_source := Φ.open_source.prod isOpen_univ
-  open_target := Φ.open_target.prod isOpen_univ
-  contMDiffOn_toFun := by
-    have h : ContDiffOn ℝ ∞ (fun p : ℝ × V => (Φ p.1, p.2)) (Φ.source ×ˢ Set.univ) :=
-      (Φ.contMDiffOn_toFun.contDiffOn.comp contDiff_fst.contDiffOn (fun _ hp => hp.1)).prodMk
-        contDiff_snd.contDiffOn
-    exact h.contMDiffOn
-  contMDiffOn_invFun := by
-    have h : ContDiffOn ℝ ∞ (fun p : ℝ × V => (Φ.symm p.1, p.2)) (Φ.target ×ˢ Set.univ) :=
-      (Φ.contMDiffOn_invFun.contDiffOn.comp contDiff_fst.contDiffOn (fun _ hp => hp.1)).prodMk
-        contDiff_snd.contDiffOn
-    exact h.contMDiffOn
-
-/-- An endpoint product chart exists. -/
-theorem MorseCancellation.exists_endpoint_product_chart {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (e : ℝ) (he : e ^ 2 = 1) :
-    ∃ P : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, Model m) (Model m) (Model m) ∞,
-      (e * a, (0 : Fin m → ℝ)) ∈ P.source ∧
-        P (e * a, 0) = 0 ∧
-          (∀ p, (P p).2 = p.2) ∧
-            (∀ p ∈ P.source,
-              cubic σ (-(a ^ 2)) p =
-                cubic σ (-(a ^ 2)) (e * a, 0) + e * (P p).1 ^ 2 + ∑ i, σ i * (P p).2 i ^ 2) := by
-  obtain ⟨Φ, hp, hsource, hΦ, hcenter⟩ := exists_endpoint_scalar_chart ha e
-  let P := scalarProductChart (V := Fin m → ℝ) Φ
-  have hP (p : Model m) : P p = (endpointCoordinate a e p.1, p.2) :=
-    Prod.ext (congrFun hΦ p.1) rfl
-  refine ⟨P, ⟨hp, Set.mem_univ _⟩, ?_, fun _ => rfl, ?_⟩
-  · rw [hP, endpointCoordinate_center]
-    rfl
-  · intro p hp
-    rw [hP]
-    exact cubic_endpoint_square σ a e he (hsource hp.1)
-
-/-! ### Local function replacement -/
-
-/-- A function replaced by a model on a chart. -/
-def LocalFunctionReplacement.replace {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) (y : M) : ℝ := by
-  classical exact if y ∈ Φ.target then b (Φ.symm y) else f y
-
-/-- The replacement computes the model inside the chart. -/
-theorem LocalFunctionReplacement.replace_of_mem {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {y : M} (hy : y ∈ Φ.target) :
-    replace Φ f b y = b (Φ.symm y) := by simp [replace, hy]
-
-/-- The replacement is the original off the chart. -/
-theorem LocalFunctionReplacement.replace_of_notMem {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {y : M} (hy : y ∉ Φ.target) :
-    replace Φ f b y = f y := by simp [replace, hy]
-
-/-- The replacement computes in the chart. -/
-theorem LocalFunctionReplacement.replace_chart {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {x : E} (hx : x ∈ Φ.source) :
-    replace Φ f b (Φ x) = b x := by
-  rw [replace_of_mem Φ f b (Φ.map_source' hx)]
-  exact congrArg b (Φ.left_inv' hx)
-
-/-- The replacement's germ inside the chart. -/
-theorem LocalFunctionReplacement.replace_germ_chart {E B H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {y : M} (hy : y ∈ Φ.target) :
-    replace Φ f b =ᶠ[𝓝 y] b ∘ Φ.symm := by
-  filter_upwards [Φ.open_target.mem_nhds hy] with z hz
-  exact replace_of_mem Φ f b hz
-
-/-- Replacing by the original is the identity. -/
-theorem LocalFunctionReplacement.replace_self {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) {f : M → ℝ} {b : E → ℝ}
-    (hmodel : ∀ x ∈ Φ.source, f (Φ x) = b x) : replace Φ f b = f := by
-  funext y
-  by_cases hy : y ∈ Φ.target
-  · rw [replace_of_mem Φ f b hy]
-    exact (hmodel (Φ.symm y) (Φ.map_target' hy)).symm.trans (congrArg f (Φ.right_inv' hy))
-  · exact replace_of_notMem Φ f b hy
-
-/-- The replacement agrees with the original off the support. -/
-theorem LocalFunctionReplacement.replace_eq_off_support {E B H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) {f : M → ℝ} {b₀ b₁ : E → ℝ} {K : Set E}
-    (hmodel : ∀ x ∈ Φ.source, f (Φ x) = b₀ x) (hfix : ∀ x ∉ K, b₁ x = b₀ x) {y : M}
-    (hy : y ∉ Φ '' K) : replace Φ f b₁ y = f y := by
-  by_cases hyt : y ∈ Φ.target
-  · have hx : Φ.symm y ∉ K := fun h => hy ⟨Φ.symm y, h, Φ.right_inv' hyt⟩
-    rw [replace_of_mem Φ f b₁ hyt, hfix _ hx]
-    exact (hmodel (Φ.symm y) (Φ.map_target' hyt)).symm.trans (congrArg f (Φ.right_inv' hyt))
-  · exact replace_of_notMem Φ f b₁ hyt
-
-/-- The replacement's germ off the support is the original's. -/
-theorem LocalFunctionReplacement.replace_germ_off_support {E B H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) [T2Space M] {f : M → ℝ} {b₀ b₁ : E → ℝ} {K : Set E}
-    (hK : IsCompact K) (hKΦ : K ⊆ Φ.source) (hmodel : ∀ x ∈ Φ.source, f (Φ x) = b₀ x)
-    (hfix : ∀ x ∉ K, b₁ x = b₀ x) {y : M} (hy : y ∉ Φ '' K) : replace Φ f b₁ =ᶠ[𝓝 y] f := by
-  have hc : IsClosed (Φ '' K) :=
-    (hK.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hKΦ)).isClosed
-  filter_upwards [hc.isOpen_compl.mem_nhds hy] with z hz
-  exact replace_eq_off_support Φ hmodel hfix hz
-
-/-- The replacement is smooth. -/
-theorem LocalFunctionReplacement.contMDiff_replace {E B H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) [T2Space M] {f : M → ℝ} {b₀ b₁ : E → ℝ} {K : Set E}
-    (hf : ContMDiff I 𝓘(ℝ, ℝ) ∞ f) (hb : ContDiff ℝ ∞ b₁) (hK : IsCompact K) (hKΦ : K ⊆ Φ.source)
-    (hmodel : ∀ x ∈ Φ.source, f (Φ x) = b₀ x) (hfix : ∀ x ∉ K, b₁ x = b₀ x) :
-    ContMDiff I 𝓘(ℝ, ℝ) ∞ (replace Φ f b₁) := by
-  intro y
-  by_cases hy : y ∈ Φ.target
-  · have hs :=
-      hb.contMDiff.contMDiffAt.comp y
-        (Φ.contMDiffOn_invFun.contMDiffAt (Φ.open_target.mem_nhds hy))
-    exact hs.congr_of_eventuallyEq (replace_germ_chart Φ f b₁ hy)
-  · have hnot : y ∉ Φ '' K := by
-      rintro ⟨x, hx, rfl⟩
-      exact hy (Φ.map_source' (hKΦ hx))
-    exact
-      hf.contMDiffAt.congr_of_eventuallyEq (replace_germ_off_support Φ hK hKΦ hmodel hfix hnot)
-
-/-- The critical points of the replacement on the chart. -/
-theorem LocalFunctionReplacement.replace_critical_iff {E B H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) {b : E → ℝ} (hb : ContDiff ℝ ∞ b) {y : M}
-    (hy : y ∈ Φ.target) : mfderiv I 𝓘(ℝ, ℝ) (replace Φ f b) y = 0 ↔ fderiv ℝ b (Φ.symm y) = 0 := by
-  have hΦ : IsLocalDiffeomorphAt I 𝓘(ℝ, E) ∞ Φ.symm y := ⟨Φ.symm, hy, fun _ _ => rfl⟩
-  have hsurj := (hΦ.mfderivToContinuousLinearEquiv (by simp)).surjective
-  rw [(replace_germ_chart Φ f b hy).mfderiv_eq,
-    mfderiv_comp y (hb.contMDiff.mdifferentiableAt (by simp))
-      (Φ.symm.mdifferentiableAt (by simp) hy),
-    mfderiv_eq_fderiv]
-  constructor
-  · intro h
-    apply ContinuousLinearMap.ext
-    intro v
-    obtain ⟨w, hw⟩ := hsurj v
-    have he := congrArg (fun L : TangentSpace I y →L[ℝ] ℝ => L w) h
-    change fderiv ℝ b (Φ.symm y) (mfderiv I 𝓘(ℝ, E) Φ.symm y w) = 0 at he
-    change mfderiv I 𝓘(ℝ, E) Φ.symm y w = v at hw
-    simpa only [hw, zero_apply] using he
-  · intro h
-    rw [h]
-    rfl
-
-/-! ### The cubic descent field -/
-
-/-- The cubic descent field. -/
-def MorseCancellation.cubicDescent {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) : Model m :=
-  (-(p.1 ^ 2 + t), fun i => -σ i * p.2 i)
-
-/-- The differential of the cubic descent. -/
-theorem MorseCancellation.differential_cubicDescent {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
-    differential σ t p (cubicDescent σ t p) = -(p.1 ^ 2 + t) ^ 2 - 2 * ∑ i, (σ i * p.2 i) ^ 2 := by
-  rw [differential_apply]
-  simp only [cubicDescent]
-  have hs : (∑ i, 2 * σ i * p.2 i * (-σ i * p.2 i)) = -2 * ∑ i, (σ i * p.2 i) ^ 2 := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    ring
-  rw [hs]
-  ring
-
-/-- The cubic descent is strict off the critical point. -/
-theorem MorseCancellation.cubicDescent_strict {m : ℕ} (σ : Fin m → ℝ) {t : ℝ} {p : Model m}
-    (hp : fderiv ℝ (cubic σ t) p ≠ 0) : fderiv ℝ (cubic σ t) p (cubicDescent σ t p) < 0 := by
-  rw [fderiv_cubic, differential_cubicDescent]
-  by_contra hh
-  have hsum : 0 ≤ ∑ i, (σ i * p.2 i) ^ 2 := Finset.sum_nonneg (fun _ _ => sq_nonneg _)
-  have hx : p.1 ^ 2 + t = 0 := by nlinarith [sq_nonneg (p.1 ^ 2 + t)]
-  have hz : (∑ i, (σ i * p.2 i) ^ 2) = 0 := by
-    have hle := le_of_not_gt hh
-    rw [hx] at hle
-    linarith
-  have hy (i : Fin m) : σ i * p.2 i = 0 := by
-    have hi :=
-      (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg (σ i * p.2 i))).mp hz i
-        (Finset.mem_univ i)
-    exact sq_eq_zero_iff.mp hi
-  apply hp
-  rw [fderiv_cubic]
-  apply ContinuousLinearMap.ext
-  intro v
-  rw [differential_apply, hx]
-  simp only [MulZeroClass.zero_mul, zero_add, zero_apply]
-  apply Finset.sum_eq_zero
-  intro i _
-  calc
-    2 * σ i * p.2 i * v.2 i = 2 * (σ i * p.2 i) * v.2 i := by ring
-    _ = 0 := by rw [hy, MulZeroClass.mul_zero, MulZeroClass.zero_mul]
-
-/-- The cubic descent vanishes at the critical point. -/
-theorem MorseCancellation.cubicDescent_zero_of_critical {m : ℕ} (σ : Fin m → ℝ) {t : ℝ} {p : Model m}
-    (hp : fderiv ℝ (cubic σ t) p = 0) : cubicDescent σ t p = 0 := by
-  rw [fderiv_cubic] at hp
-  have hx := congrArg (fun L : Model m →L[ℝ] ℝ => L (1, 0)) hp
-  have hx' : p.1 ^ 2 + t = 0 := by simpa [differential_apply] using hx
-  apply Prod.ext
-  · simpa only [cubicDescent, Prod.fst_zero, neg_eq_zero] using hx'
-  · funext i
-    have hi := congrArg (fun L : Model m →L[ℝ] ℝ => L (0, Pi.single i 1)) hp
-    have hi' : 2 * σ i * p.2 i = 0 := by simpa [differential_apply, Pi.single_apply] using hi
-    change -σ i * p.2 i = 0
-    nlinarith
-
-/-- The native cubic descent field. -/
-def MorseCancellation.nativeCubicDescent {m : ℕ} (σ : Fin m → ℝ) {B M : Type*} [NormedAddCommGroup B]
-    [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, B) (Model m) M ∞) (t : ℝ) :
-    (x : M) → TangentSpace 𝓘(ℝ, B) x :=
-  FlowConstruction.partialChartField Φ.symm (cubicDescent σ t)
-
-/-- The field coordinate at a cubic endpoint. -/
-def MorseCancellation.endpointFieldCoordinate (a e s : ℝ) : ℝ :=
-  (s - e * a) / (a + e * s)
-
-/-- The domain of the endpoint field coordinate. -/
-def MorseCancellation.endpointFieldDomain (a e : ℝ) : Set ℝ :=
-  {s | 0 < a + e * s}
-
-/-- The endpoint field domain is open. -/
-theorem MorseCancellation.endpointFieldDomain_open (a e : ℝ) : IsOpen (endpointFieldDomain a e) := by
-  apply isOpen_lt continuous_const
-  fun_prop
-
-/-- The endpoint lies in the field domain. -/
-theorem MorseCancellation.endpointField_mem_domain {a : ℝ} (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1) :
-    e * a ∈ endpointFieldDomain a e := by
-  change 0 < a + e * (e * a)
-  have h : e * (e * a) = a := by rw [← mul_assoc, ← pow_two, he, one_mul]
-  rw [h]
-  linarith
-
-/-- The endpoint field coordinate at the center. -/
-theorem MorseCancellation.endpointFieldCoordinate_center (a e : ℝ) :
-    endpointFieldCoordinate a e (e * a) = 0 := by simp [endpointFieldCoordinate]
-
-/-- The endpoint field coordinate is smooth. -/
-theorem MorseCancellation.contDiffOn_endpointFieldCoordinate (a e : ℝ) :
-    ContDiffOn ℝ ∞ (endpointFieldCoordinate a e) (endpointFieldDomain a e) := by
-  intro s hs
-  exact
-    ((contDiffAt_id.sub contDiffAt_const).div
-        (contDiffAt_const.add (contDiffAt_const.mul contDiffAt_id))
-        (ne_of_gt hs)).contDiffWithinAt
-
-/-- The endpoint field coordinate is differentiable. -/
-theorem MorseCancellation.hasDerivAt_endpointFieldCoordinate (a : ℝ) {e : ℝ} (he : e ^ 2 = 1) {s : ℝ}
-    (hs : s ∈ endpointFieldDomain a e) :
-    HasDerivAt (endpointFieldCoordinate a e) (2 * a / (a + e * s) ^ 2) s := by
-  have hd :=
-    ((hasDerivAt_id s).sub_const (e * a)).div (((hasDerivAt_id s).const_mul e).const_add a)
-      (ne_of_gt hs)
-  convert! hd using 1
-  congr 1
-  rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
-
-/-- The endpoint field coordinate computes the pushforward. -/
-theorem MorseCancellation.endpointFieldCoordinate_pushforward (a : ℝ) {e : ℝ} (he : e ^ 2 = 1) {s : ℝ}
-    (hs : s ∈ endpointFieldDomain a e) :
-    deriv (endpointFieldCoordinate a e) s * (a ^ 2 - s ^ 2) =
-      (-2 * e * a) * endpointFieldCoordinate a e s := by
-  rw [(hasDerivAt_endpointFieldCoordinate a he hs).deriv]
-  unfold endpointFieldCoordinate
-  have hn : a + e * s ≠ 0 := ne_of_gt hs
-  field_simp
-  rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
-
-/-- An endpoint field scalar chart exists. -/
-theorem MorseCancellation.exists_endpoint_field_scalar_chart {a : ℝ} (ha : 0 < a) {e : ℝ}
-    (he : e ^ 2 = 1) :
-    ∃ P : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
-      e * a ∈ P.source ∧
-        P.source ⊆ endpointFieldDomain a e ∧
-          (P : ℝ → ℝ) = endpointFieldCoordinate a e ∧ P (e * a) = 0 := by
-  have hm := endpointField_mem_domain ha he
-  have hd := (hasDerivAt_endpointFieldCoordinate a he hm).hasFDerivAt
-  have hn : 2 * a / (a + e * (e * a)) ^ 2 ≠ 0 :=
-    div_ne_zero (mul_ne_zero (by norm_num) ha.ne') (pow_ne_zero _ (ne_of_gt hm))
-  have hi : Function.Injective (fderiv ℝ (endpointFieldCoordinate a e) (e * a)) := by
-    rw [hd.fderiv]
-    intro x y hxy
-    change x * (2 * a / (a + e * (e * a)) ^ 2) = y * (2 * a / (a + e * (e * a)) ^ 2) at hxy
-    exact mul_right_cancel₀ hn hxy
-  let A : ℝ ≃L[ℝ] ℝ :=
-    (LinearEquiv.ofInjectiveEndo (fderiv ℝ (endpointFieldCoordinate a e) (e * a)).toLinearMap
-        hi).toContinuousLinearEquiv
-  obtain ⟨P, hp, hsub, hP⟩ :=
-    exists_partialDiffeomorph_of_contDiffOn (endpointFieldDomain_open a e) hm
-      (contDiffOn_endpointFieldCoordinate a e) ⟨A, rfl⟩
-  exact ⟨P, hp, hsub, hP, by rw [hP, endpointFieldCoordinate_center]⟩
-
-/-- The linear field at a cubic endpoint. -/
-def MorseCancellation.endpointLinearField {m : ℕ} (σ : Fin m → ℝ) (a e : ℝ) (p : Model m) : Model m :=
-  ((-2 * e * a) * p.1, fun i => -σ i * p.2 i)
-
-/-- The product field at a cubic endpoint. -/
-def MorseCancellation.endpointFieldProduct {m : ℕ} (a e : ℝ) (p : Model m) : Model m :=
-  (endpointFieldCoordinate a e p.1, p.2)
-
-/-- The endpoint product field's derivative on the cubic. -/
-theorem MorseCancellation.fderiv_endpointFieldProduct_cubic {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) {e : ℝ}
-    (he : e ^ 2 = 1) {p : Model m} (hp : p.1 ∈ endpointFieldDomain a e) :
-    fderiv ℝ (endpointFieldProduct a e) p (cubicDescent σ (-(a ^ 2)) p) =
-      endpointLinearField σ a e (endpointFieldProduct a e p) := by
-  have hd :=
-    ((hasDerivAt_endpointFieldCoordinate a he hp).comp_hasFDerivAt p
-          (hasFDerivAt_fst (𝕜 := ℝ) (p := p))).prodMk
-      (hasFDerivAt_snd (𝕜 := ℝ) (p := p))
-  change HasFDerivAt (endpointFieldProduct a e) _ p at hd
-  rw [hd.fderiv]
-  apply Prod.ext
-  · change
-      (2 * a / (a + e * p.1) ^ 2) * (-(p.1 ^ 2 + -(a ^ 2))) =
-        (-2 * e * a) * endpointFieldCoordinate a e p.1
-    have hh := endpointFieldCoordinate_pushforward a he hp
-    rw [(hasDerivAt_endpointFieldCoordinate a he hp).deriv] at hh
-    convert! hh using 1; ring
-  · rfl
-
-/-- An endpoint field product chart exists. -/
-theorem MorseCancellation.exists_endpoint_field_product_chart {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
-    (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1) :
-    ∃ P : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, Model m) (Model m) (Model m) ∞,
-      (e * a, (0 : Fin m → ℝ)) ∈ P.source ∧
-        P (e * a, 0) = 0 ∧
-          (P : Model m → Model m) = endpointFieldProduct a e ∧
-            ∀ p ∈ P.source,
-              fderiv ℝ P p (cubicDescent σ (-(a ^ 2)) p) = endpointLinearField σ a e (P p) := by
-  obtain ⟨Q, hq, hsub, hQ, hzero⟩ := exists_endpoint_field_scalar_chart ha he
-  let P := scalarProductChart (V := Fin m → ℝ) Q
-  have hP : (P : Model m → Model m) = endpointFieldProduct a e := by
-    funext p
-    exact Prod.ext (congrFun hQ p.1) rfl
-  refine ⟨P, ⟨hq, Set.mem_univ _⟩, ?_, hP, ?_⟩
-  · rw [hP]
-    simp [endpointFieldProduct, endpointFieldCoordinate_center]
-  · intro p hp
-    rw [hP]
-    exact fderiv_endpointFieldProduct_cubic σ a he (hsub hp.1)
-
-/-- A model-conjugate partial chart field. -/
-theorem MorseCancellation.partialChartField_of_model_conjugacy {D F E M : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (P : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, F) D F ∞) (Q : PartialDiffeomorph 𝓘(ℝ, F) 𝓘(ℝ, E) F M ∞)
-    (W : D → D) (U : F → F) (hpush : ∀ p ∈ P.source, fderiv ℝ P p (W p) = U (P p)) {x : M}
-    (hx : x ∈ (P.trans Q).target) :
-    FlowConstruction.partialChartField (P.trans Q).symm W x =
-      FlowConstruction.partialChartField Q.symm U x := by
-  have hxQ : x ∈ Q.target := hx.1
-  have hxP : Q.symm x ∈ P.target := hx.2
-  have hdiff : P.symm.toOpenPartialHomeomorph.MDifferentiable 𝓘(ℝ, F) 𝓘(ℝ, D) :=
-    ⟨P.symm.mdifferentiableOn (by simp), P.mdifferentiableOn (by simp)⟩
-  have hinv : (mfderivWithin 𝓘(ℝ, F) 𝓘(ℝ, D) P.symm Set.univ (Q.symm x)).IsInvertible := by
-    rw [mfderivWithin_univ]
-    exact ⟨hdiff.mfderiv hxP, rfl⟩
-  have hh :=
-    VectorField.mpullbackWithin_comp_of_left (I := 𝓘(ℝ, E)) (I' := 𝓘(ℝ, F)) (I'' := 𝓘(ℝ, D)) (f :=
-      (Q.symm : M → F)) (g := (P.symm : F → D)) (V := fun y =>
-      (NormedSpace.fromTangentSpace y).symm (W y)) (s := Set.univ) (t := Set.univ)
-      (Q.symm.mdifferentiableAt (by simp) hxQ).mdifferentiableWithinAt (Set.mapsTo_univ _ _)
-      (uniqueMDiffWithinAt_univ 𝓘(ℝ, E)) hinv
-  simp only [VectorField.mpullbackWithin_univ] at hh
-  have hv :
-    VectorField.mpullback 𝓘(ℝ, F) 𝓘(ℝ, D) P.symm
-        (fun y => (NormedSpace.fromTangentSpace y).symm (W y)) (Q.symm x) =
-      (NormedSpace.fromTangentSpace (Q.symm x)).symm (U (Q.symm x)) := by
-    change FlowConstruction.partialChartField P.symm W (Q.symm x) = _
-    rw [FlowConstruction.partialChartField_eq_mfderiv_symm P.symm W hxP]
-    rw [mfderiv_eq_fderiv]
-    change fderiv ℝ P (P.symm (Q.symm x)) (W (P.symm (Q.symm x))) = U (Q.symm x)
-    have hp : P.symm (Q.symm x) ∈ P.source := P.map_target' hxP
-    rw [hpush (P.symm (Q.symm x)) hp]
-    exact congrArg U (P.right_inv' hxP)
-  change
-    VectorField.mpullback 𝓘(ℝ, E) 𝓘(ℝ, D) (P.symm ∘ Q.symm)
-        (fun y => (NormedSpace.fromTangentSpace y).symm (W y)) x =
-      _
-  rw [hh, VectorField.mpullback_apply, hv]
-  rfl
-
-/-- A native cubic field endpoint chart exists. -/
-theorem MorseCancellation.exists_native_cubic_field_endpoint {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
-    (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1)
-    (Q : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (h0 : (0 : Model m) ∈ Q.source)
-    (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
-    (hmodel :
-      ∀ x ∈ Q.target,
-        V x = FlowConstruction.partialChartField Q.symm (endpointLinearField σ a e) x) :
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (e * a, (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (e * a, 0) = Q 0 ∧
-          Φ.target ⊆ Q.target ∧
-            (∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) ∧
-              (Φ : Model m → M) = Q ∘ endpointFieldProduct a e := by
-  obtain ⟨P, hp, hcenter, hP, hpush⟩ := exists_endpoint_field_product_chart σ ha he
-  let Φ := P.trans Q
-  have hsource : (e * a, (0 : Fin m → ℝ)) ∈ Φ.source := by
-    change (e * a, (0 : Fin m → ℝ)) ∈ P.source ∧ P (e * a, 0) ∈ Q.source
-    exact ⟨hp, hcenter.symm ▸ h0⟩
-  refine ⟨Φ, hsource, ?_, fun _ hx => hx.1, ?_, ?_⟩
-  · change Q (P (e * a, 0)) = Q 0
-    rw [hcenter]
-  · intro x hx
-    rw [hmodel x hx.1]
-    exact
-      (partialChartField_of_model_conjugacy P Q (cubicDescent σ (-(a ^ 2)))
-          (endpointLinearField σ a e) hpush hx).symm
-  · change Q ∘ P = Q ∘ endpointFieldProduct a e
-    rw [hP]
-
-/-! ### Split coordinates and field alignment -/
-
-/-- The linear splitting into the axis and transverse directions. -/
-def MorseCancellation.splitLinear {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) : Model m ≃ₗ[ℝ] (Fin n → ℝ)
-    where
-  toFun p j := (ρ.symm j).elim p.1 p.2
-  invFun f := (f (ρ Option.none), fun i => f (ρ (Option.some i)))
-  left_inv
-    p := by
-    apply Prod.ext
-    · simp
-    · funext i
-      simp
-  right_inv
-    f := by
-    funext j
-    have hj := ρ.apply_symm_apply j
-    cases h : ρ.symm j with
-    | none => simpa only [h, Option.elim_none] using congrArg f hj
-    | some i => simpa only [h, Option.elim_some] using congrArg f hj
-  map_add' p
-    q := by
-    funext j
-    cases h : ρ.symm j <;> simp [h]
-  map_smul' t
-    p := by
-    funext j
-    cases h : ρ.symm j <;> simp [h]
-
-/-- The split equivalence of the model space. -/
-def MorseCancellation.splitEquiv {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) : Model m ≃L[ℝ] (Fin n → ℝ) :=
-  (splitLinear ρ).toContinuousLinearEquiv
-
-/-- The split equivalence on the axis component. -/
-theorem MorseCancellation.splitEquiv_apply_none {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) (p : Model m) :
-    splitEquiv ρ p (ρ Option.none) = p.1 := by
-  change (ρ.symm (ρ Option.none)).elim p.1 p.2 = p.1
-  simp
-
-/-- The split equivalence on the transverse component. -/
-theorem MorseCancellation.splitEquiv_apply_some {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) (p : Model m)
-    (i : Fin m) : splitEquiv ρ p (ρ (Option.some i)) = p.2 i := by
-  change (ρ.symm (ρ (Option.some i))).elim p.1 p.2 = p.2 i
-  simp
-
-/-- The signed sum in split coordinates. -/
-theorem MorseCancellation.split_signed_sum {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) (w : Fin n → ℝ)
-    (p : Model m) :
-    (∑ j, w j * splitEquiv ρ p j ^ 2) =
-      w (ρ Option.none) * p.1 ^ 2 + ∑ i, w (ρ (Option.some i)) * p.2 i ^ 2 := by
-  rw [← ρ.sum_comp]
-  simp only [Fintype.sum_option, splitEquiv_apply_none, splitEquiv_apply_some]
-
-/-- The endpoint field in split coordinates. -/
-theorem MorseCancellation.splitEquiv_endpoint_field {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n)
-    (w : Fin n → ℝ) (p : Model m) :
-    splitEquiv ρ
-        (endpointLinearField (fun i => w (ρ (Option.some i))) (1 / 2) (w (ρ Option.none)) p) =
-      fun j => -w j * splitEquiv ρ p j := by
-  funext j
-  obtain ⟨k, rfl⟩ := ρ.surjective j
-  cases k with
-  | none =>
-    rw [splitEquiv_apply_none, splitEquiv_apply_none]
-    change (-2 * w (ρ Option.none) * (1 / 2)) * p.1 = -w (ρ Option.none) * p.1
-    ring
-  | some i =>
-    rw [splitEquiv_apply_some, splitEquiv_apply_some]
-    rfl
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The signed descent in split coordinates. -/
-theorem MorseCancellation.splitCoordinates_signed_descent {ι : Type*} [Fintype ι] (w : ι → ℝ)
-    (hw : ∀ i, w i = -1 ∨ w i = 1) (z : ι → ℝ) :
-    MorseHandle.splitCoordinates w (fun i => -w i * z i) =
-      MorseHandle.descent (MorseHandle.splitCoordinates w z) := by
-  apply Prod.ext
-  · ext i
-    change -w i.1 * z i.1 = z i.1
-    rw [i.2]
-    ring
-  · ext i
-    change -w i.1 * z i.1 = -z i.1
-    rw [(hw i.1).resolve_left i.2]
-    ring
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The linear equivalence aligning the selected Morse field. -/
-def MorseCancellation.selectedMorseFieldEquiv {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) :
-    Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates) :=
-  (splitEquiv ρ).trans (MorseHandle.splitCoordinates c.weights)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The selected Morse field equivalence preserves descent. -/
-theorem MorseCancellation.selectedMorseFieldEquiv_descent {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (p : Model m) :
-    selectedMorseFieldEquiv c ρ
-        (endpointLinearField (fun i => c.weights (ρ (Option.some i))) (1 / 2)
-          (c.weights (ρ Option.none)) p) =
-      MorseHandle.descent (selectedMorseFieldEquiv c ρ p) := by
-  change
-    MorseHandle.splitCoordinates c.weights (splitEquiv ρ _) =
-      MorseHandle.descent (MorseHandle.splitCoordinates c.weights (splitEquiv ρ p))
-  rw [splitEquiv_endpoint_field]
-  exact splitCoordinates_signed_descent c.weights c.signs (splitEquiv ρ p)
-
-/-- The transverse change of field. -/
-def MorseCancellation.transverseFieldChange {m : ℕ} (T : (Fin m → ℝ) ≃L[ℝ] (Fin m → ℝ)) :
-    Model m ≃L[ℝ] Model m :=
-  (ContinuousLinearEquiv.refl ℝ ℝ).prodCongr T
-
-/-- The transverse change preserves cubic descent. -/
-theorem MorseCancellation.transverseFieldChange_cubicDescent {m : ℕ} (σ : Fin m → ℝ)
-    (T : (Fin m → ℝ) ≃L[ℝ] (Fin m → ℝ))
-    (hcomm : ∀ z, T (fun i => σ i * z i) = fun i => σ i * T z i) (t : ℝ) (p : Model m) :
-    transverseFieldChange T (cubicDescent σ t p) = cubicDescent σ t (transverseFieldChange T p) :=
-  by
-  apply Prod.ext
-  · rfl
-  · change T (fun i => -σ i * p.2 i) = fun i => -σ i * T p.2 i
-    have hleft : (fun i => -σ i * p.2 i) = -(fun i => σ i * p.2 i) := by
-      funext i
-      simp only [Pi.neg_apply, neg_mul]
-    rw [hleft, map_neg, hcomm]
-    funext i
-    simp only [Pi.neg_apply, neg_mul]
-
-/-- The transverse change in split coordinates. -/
-def MorseCancellation.splitTransverseChange {m : ℕ} {A B : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (e : (Fin m → ℝ) ≃L[ℝ] (A × B))
-    (P : A ≃L[ℝ] A) (S : B ≃L[ℝ] B) : (Fin m → ℝ) ≃L[ℝ] (Fin m → ℝ) :=
-  (e.trans (P.prodCongr S)).trans e.symm
-
-/-- The split transverse change commutes with the splitting. -/
-theorem MorseCancellation.splitTransverseChange_commutes {m : ℕ} {A B : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (σ : Fin m → ℝ)
-    (e : (Fin m → ℝ) ≃L[ℝ] (A × B)) (α β : ℝ)
-    (he : ∀ z, e (fun i => σ i * z i) = (α • (e z).1, β • (e z).2)) (P : A ≃L[ℝ] A)
-    (S : B ≃L[ℝ] B) (z : Fin m → ℝ) :
-    splitTransverseChange e P S (fun i => σ i * z i) = fun i =>
-      σ i * splitTransverseChange e P S z i := by
-  apply e.injective
-  simp only [splitTransverseChange, ContinuousLinearEquiv.trans_apply, e.apply_symm_apply, he,
-    ContinuousLinearEquiv.prodCongr_apply, map_smul]
-
-/-- The Morse block change preserves descent. -/
-theorem MorseCancellation.morse_block_change_descent {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (A : N ≃L[ℝ] N) (B : P ≃L[ℝ] P)
-    (z : N × P) :
-    (A.prodCongr B) (MorseHandle.descent z) =
-      MorseHandle.descent ((A.prodCongr B) z) := by
-  apply Prod.ext
-  · rfl
-  · change B (-z.2) = -B z.2
-    exact B.map_neg _
-
-/-- A positive ray alignment of the field exists. -/
-theorem MorseCancellation.exists_positive_ray_alignment {D : Type*} [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] {u v : D} (hu : u ≠ 0) (hv : v ≠ 0) :
-    ∃ (r : ℝ) (A : D ≃ₗᵢ[ℝ] D), 0 < r ∧ A (r • u) = v ∧ ∀ s : ℝ, A ((s * r) • u) = s • v := by
-  let r := ‖v‖ / ‖u‖
-  have hr : 0 < r := div_pos (norm_pos_iff.mpr hv) (norm_pos_iff.mpr hu)
-  have hnorm : ‖r • u‖ = ‖v‖ := by
-    rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr]
-    exact div_mul_cancel₀ ‖v‖ (norm_ne_zero_iff.mpr hu)
-  let A : D ≃ₗᵢ[ℝ] D := (ℝ ∙ (r • u - v))ᗮ.reflection
-  have hA : A (r • u) = v := Submodule.reflection_sub hnorm
-  refine ⟨r, A, hr, hA, ?_⟩
-  intro s
-  rw [← smul_smul, A.map_smul, hA]
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The selected field's axis component is nonzero. -/
-theorem MorseCancellation.selectedMorseFieldEquiv_axis_ne_zero {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) :
-    selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ)) ≠ 0 := by
-  intro h
-  have hh :=
-    (selectedMorseFieldEquiv c ρ).injective
-      (h.trans (map_zero (selectedMorseFieldEquiv c ρ)).symm)
-  have h1 := congrArg Prod.fst hh
-  norm_num at h1
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The selected field's negative axis. -/
-theorem MorseCancellation.selectedMorseFieldEquiv_negative_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = -1) :
-    (selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))).2 = 0 ∧
-      (selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))).1 ≠ 0 := by
-  let z := selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))
-  have hw :
-    endpointLinearField (fun i => c.weights (ρ (Option.some i))) (1 / 2)
-        (c.weights (ρ Option.none)) (1, (0 : Fin m → ℝ)) =
-      (1, 0) := by ext i <;> simp [endpointLinearField, he]
-  have hh := selectedMorseFieldEquiv_descent c ρ (1, (0 : Fin m → ℝ))
-  rw [hw] at hh
-  have h2 : z.2 = -z.2 := congrArg Prod.snd hh
-  have hs : (2 : ℝ) • z.2 = 0 := by
-    rw [two_smul]
-    exact (congrArg (fun v => v + z.2) h2).trans (neg_add_cancel z.2)
-  have hz : z.2 = 0 := (smul_eq_zero.mp hs).resolve_left (by norm_num)
-  refine ⟨hz, ?_⟩
-  intro h1
-  exact selectedMorseFieldEquiv_axis_ne_zero c ρ (Prod.ext h1 hz)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The selected field's positive axis. -/
-theorem MorseCancellation.selectedMorseFieldEquiv_positive_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = 1) :
-    (selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))).1 = 0 ∧
-      (selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))).2 ≠ 0 := by
-  let z := selectedMorseFieldEquiv c ρ (1, (0 : Fin m → ℝ))
-  have hw :
-    endpointLinearField (fun i => c.weights (ρ (Option.some i))) (1 / 2)
-        (c.weights (ρ Option.none)) (1, (0 : Fin m → ℝ)) =
-      -(1, 0) := by ext i <;> simp [endpointLinearField, he]
-  have hh := selectedMorseFieldEquiv_descent c ρ (1, (0 : Fin m → ℝ))
-  rw [hw, map_neg] at hh
-  have h1 : z.1 = -z.1 := (congrArg Prod.fst hh).symm
-  have hs : (2 : ℝ) • z.1 = 0 := by
-    rw [two_smul]
-    exact (congrArg (fun v => v + z.1) h1).trans (neg_add_cancel z.1)
-  have hz : z.1 = 0 := (smul_eq_zero.mp hs).resolve_left (by norm_num)
-  refine ⟨hz, ?_⟩
-  intro h2
-  exact selectedMorseFieldEquiv_axis_ne_zero c ρ (Prod.ext hz h2)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A selected outgoing axis exists. -/
-theorem MorseCancellation.exists_selected_outgoing_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = -1)
-    {v : c.NegativeCoordinates} (hv : v ≠ 0) :
-    ∃ (r : ℝ) (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates)),
-      0 < r ∧
-        L (r, 0) = (v, 0) ∧
-          ∀ p,
-            L
-                (endpointLinearField (fun i => c.weights (ρ (Option.some i))) (1 / 2)
-                  (c.weights (ρ Option.none)) p) =
-              MorseHandle.descent (L p) := by
-  let L₀ := selectedMorseFieldEquiv c ρ
-  obtain ⟨hz, hn⟩ := selectedMorseFieldEquiv_negative_axis c ρ he
-  obtain ⟨r, A, hr, hA, _⟩ := exists_positive_ray_alignment hn hv
-  let B :=
-    A.toContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ c.PositiveCoordinates)
-  let L := L₀.trans B
-  refine ⟨r, L, hr, ?_, ?_⟩
-  · have hp : (r, (0 : Fin m → ℝ)) = r • (1, 0) := by simp
-    rw [hp, L.map_smul]
-    apply Prod.ext
-    · change r • A ((L₀ (1, 0)).1) = v
-      rw [← A.map_smul]
-      exact hA
-    · change r • (L₀ (1, 0)).2 = 0
-      rw [hz, smul_zero]
-  · intro p
-    change B (L₀ _) = MorseHandle.descent (B (L₀ p))
-    rw [selectedMorseFieldEquiv_descent]
-    exact morse_block_change_descent _ _ _
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A selected incoming axis exists. -/
-theorem MorseCancellation.exists_selected_incoming_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = 1)
-    {v : c.PositiveCoordinates} (hv : v ≠ 0) :
-    ∃ (r : ℝ) (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates)),
-      0 < r ∧
-        L (-r, 0) = (0, v) ∧
-          ∀ p,
-            L
-                (endpointLinearField (fun i => c.weights (ρ (Option.some i))) (1 / 2)
-                  (c.weights (ρ Option.none)) p) =
-              MorseHandle.descent (L p) := by
-  let L₀ := selectedMorseFieldEquiv c ρ
-  obtain ⟨hz, hn⟩ := selectedMorseFieldEquiv_positive_axis c ρ he
-  obtain ⟨r, A, hr, hA, _⟩ := exists_positive_ray_alignment hn (neg_ne_zero.mpr hv)
-  let B :=
-    (ContinuousLinearEquiv.refl ℝ c.NegativeCoordinates).prodCongr A.toContinuousLinearEquiv
-  let L := L₀.trans B
-  refine ⟨r, L, hr, ?_, ?_⟩
-  · have hp : (-r, (0 : Fin m → ℝ)) = (-r) • (1, 0) := by simp
-    rw [hp, L.map_smul]
-    apply Prod.ext
-    · change (-r) • (L₀ (1, 0)).1 = 0
-      rw [hz, smul_zero]
-    · change (-r) • A ((L₀ (1, 0)).2) = v
-      rw [neg_smul, ← A.map_smul, hA, neg_neg]
-  · intro p
-    change B (L₀ _) = MorseHandle.descent (B (L₀ p))
-    rw [selectedMorseFieldEquiv_descent]
-    exact morse_block_change_descent _ _ _
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A cubic field endpoint with ray alignment exists. -/
-theorem MorseCancellation.exists_cubic_field_endpoint_with_alignment {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
-    {e : ℝ} (he : e ^ 2 = 1) (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ p, L (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (L p)) :
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (e / 2, (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (e / 2, 0) = x ∧
-          Φ.target ⊆ c.splitChart.source ∧
-            (∀ y ∈ Φ.target, c.descentField y = nativeCubicDescent σ Φ (-(1 / 2 : ℝ) ^ 2) y) ∧
-              (Φ : Model m → M) = c.splitChart.symm ∘ L ∘ endpointFieldProduct (1 / 2) e := by
-  let P := L.toDiffeomorph.toPartialDiffeomorph
-  let Q := P.trans c.splitChart.symm
-  have h0 : (0 : Model m) ∈ Q.source := by
-    change (0 : Model m) ∈ Set.univ ∧ L 0 ∈ c.splitChart.target
-    rw [map_zero, ← c.splitChart_center]
-    exact ⟨Set.mem_univ _, c.splitChart.map_source' c.splitChart_mem_source⟩
-  have hQzero : Q 0 = x := by
-    change c.splitChart.symm (L 0) = x
-    rw [map_zero, ← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have hmodel :
-    ∀ y ∈ Q.target,
-      c.descentField y =
-        FlowConstruction.partialChartField Q.symm (endpointLinearField σ (1 / 2) e) y := by
-    intro y hy
-    have hpush (p : Model m) (_ : p ∈ P.source) :
-      fderiv ℝ P p (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (P p) := by
-      change fderiv ℝ L p (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (L p)
-      rw [L.fderiv]
-      exact hL p
-    exact
-      (partialChartField_of_model_conjugacy P c.splitChart.symm (endpointLinearField σ (1 / 2) e)
-          MorseHandle.descent hpush hy).symm
-  obtain ⟨Φ, hp, hc, hsub, hf, hmap⟩ :=
-    exists_native_cubic_field_endpoint σ (by norm_num : 0 < (1 / 2 : ℝ)) he Q h0 c.descentField
-      hmodel
-  refine ⟨Φ, ?_, ?_, fun y hy => (hsub hy).1, hf, hmap⟩
-  · simpa only [mul_one_div] using hp
-  · simpa only [mul_one_div, hQzero] using hc
-
-attribute [local instance 100] Classical.propDecidable in
-/-- An original field endpoint with ray alignment exists. -/
-theorem MorseCancellation.exists_original_field_endpoint_with_alignment {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
-    {e : ℝ} (he : e ^ 2 = 1) (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ p, L (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (L p))
-    (V : (y : M) → TangentSpace 𝓘(ℝ, E) y) (heq : ∀ᶠ y in 𝓝 x, V y = c.descentField y) :
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (e / 2, (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (e / 2, 0) = x ∧
-          Φ.target ⊆ c.splitChart.source ∧
-            (∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(1 / 2 : ℝ) ^ 2) y) ∧
-              (Φ : Model m → M) = c.splitChart.symm ∘ L ∘ endpointFieldProduct (1 / 2) e := by
-  obtain ⟨Φ, hp, hc, hsub, hf, hmap⟩ := exists_cubic_field_endpoint_with_alignment c σ he L hL
-  obtain ⟨U, hUsub, hU, hxU⟩ := mem_nhds_iff.mp heq
-  let Ψ := PartialChart.restrictTarget Φ hU
-  have hpΨ : (e / 2, (0 : Fin m → ℝ)) ∈ Ψ.source := by
-    change (e / 2, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (e / 2, 0) ∈ U
-    exact ⟨hp, hc.symm ▸ hxU⟩
-  refine ⟨Ψ, hpΨ, hc, fun y hy => hsub hy.1, ?_, hmap⟩
-  intro y hy
-  exact (hUsub hy.2).trans (hf y hy.1)
-
-/-- The endpoint field coordinate on the open axis. -/
-theorem MorseCancellation.endpointFieldCoordinate_mem_open_axis {a : ℝ} {e : ℝ} (he : e ^ 2 = 1) {s : ℝ}
-    (hs : s ∈ endpointFieldDomain a e) (hdir : 0 < -e * endpointFieldCoordinate a e s) :
-    s ∈ Set.Ioo (-a) a := by
-  rcases sq_eq_one_iff.mp he with h | h
-  · subst e
-    have hd : 0 < a + s := by simpa [endpointFieldDomain] using hs
-    have hy : (s - a) / (a + s) < 0 := by simpa [endpointFieldCoordinate] using hdir
-    have hn : s - a < 0 := by simpa using (div_lt_iff₀ hd).mp hy
-    exact ⟨by linarith, by linarith⟩
-  · subst e
-    have hd : 0 < a - s := by simpa [endpointFieldDomain] using hs
-    have hy : 0 < (s + a) / (a - s) := by
-      simpa [endpointFieldCoordinate, sub_eq_add_neg] using hdir
-    have hn : 0 < s + a := by simpa using (lt_div_iff₀ hd).mp hy
-    exact ⟨by linarith, by linarith⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A controlled Morse field endpoint exists. -/
-theorem MorseCancellation.exists_controlled_morse_field_endpoint {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ) {e : ℝ}
-    (he : e ^ 2 = 1) (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hL : ∀ p, L (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (L p))
-    (V : (y : M) → TangentSpace 𝓘(ℝ, E) y) (heq : ∀ᶠ y in 𝓝 x, V y = c.descentField y) :
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (e / 2, (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (e / 2, 0) = x ∧
-          Φ.target ⊆ c.splitChart.source ∧
-            (∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(1 / 2 : ℝ) ^ 2) y) ∧
-              ∀ p ∈ Φ.source,
-                p.1 ∈ endpointFieldDomain (1 / 2) e ∧
-                  c.splitChart (Φ p) = L (endpointFieldProduct (1 / 2) e p) := by
-  obtain ⟨Φ, hp, hc, hsub, hf, hmap⟩ :=
-    exists_original_field_endpoint_with_alignment c σ he L hL V heq
-  let q : Model m := (e / 2, 0)
-  have hq : q.1 ∈ endpointFieldDomain (1 / 2) e := by
-    simpa only [q, mul_one_div] using endpointField_mem_domain (by norm_num : 0 < (1 / 2 : ℝ)) he
-  have hd : ContinuousAt (endpointFieldCoordinate (1 / 2) e) q.1 :=
-    ((contDiffOn_endpointFieldCoordinate (1 / 2) e).contDiffAt
-        ((endpointFieldDomain_open (1 / 2) e).mem_nhds hq)).continuousAt
-  have hprod : ContinuousAt (endpointFieldProduct (m := m) (1 / 2) e) q :=
-    (hd.comp continuousAt_fst).prodMk continuousAt_snd
-  have hzero : L (endpointFieldProduct (1 / 2) e q) = 0 := by
-    have hq' : q = (e * (1 / 2), (0 : Fin m → ℝ)) := by
-      apply Prod.ext
-      · dsimp [q]
-        ring
-      · rfl
-    rw [hq']
-    simp [endpointFieldProduct, endpointFieldCoordinate_center]
-  have hct : ContinuousAt (fun p : Model m => L (endpointFieldProduct (1 / 2) e p)) q :=
-    L.continuous.continuousAt.comp hprod
-  have htarget0 : (0 : c.NegativeCoordinates × c.PositiveCoordinates) ∈ c.splitChart.target := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.map_source' c.splitChart_mem_source
-  have htarget : ∀ᶠ p in 𝓝 q, L (endpointFieldProduct (1 / 2) e p) ∈ c.splitChart.target := by
-    have hn : ∀ᶠ z in 𝓝 (L (endpointFieldProduct (1 / 2) e q)), z ∈ c.splitChart.target :=
-      c.splitChart.open_target.mem_nhds (hzero.symm ▸ htarget0)
-    exact hct.eventually hn
-  have hdomain : ∀ᶠ p in 𝓝 q, p.1 ∈ endpointFieldDomain (1 / 2) e :=
-    continuousAt_fst.eventually ((endpointFieldDomain_open (1 / 2) e).mem_nhds hq)
-  obtain ⟨U, hUsub, hU, hqU⟩ := mem_nhds_iff.mp (hdomain.and htarget)
-  let Ψ := PartialChart.restrictSource Φ hU
-  have hpΨ : q ∈ Ψ.source := ⟨hp, hqU⟩
-  refine ⟨Ψ, hpΨ, hc, fun y hy => hsub hy.1, ?_, ?_⟩
-  · intro y hy
-    exact hf y hy.1
-  · intro p hp
-    obtain ⟨hpd, hpt⟩ := hUsub hp.2
-    refine ⟨hpd, ?_⟩
-    change c.splitChart (Φ p) = L (endpointFieldProduct (1 / 2) e p)
-    rw [hmap]
-    exact c.splitChart.right_inv' hpt
-
-/-! ### Aligned rays and cubic endpoints -/
-
-/-- The descent flow of an outgoing aligned ray. -/
-theorem MorseCancellation.descentFlow_outgoing_aligned_ray {m : ℕ} {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (L : Model m ≃L[ℝ] (N × P)) {r : ℝ}
-    {v : N} (hL : L (r, 0) = (v, 0)) (t : ℝ) :
-    MorseHandle.descentFlow t (L (r, 0)) = L (r * Real.exp t, 0) := by
-  have he : (r * Real.exp t, (0 : Fin m → ℝ)) = Real.exp t • (r, 0) := by
-    apply Prod.ext
-    · change r * Real.exp t = Real.exp t * r
-      ring
-    · simp
-  rw [he, L.map_smul, hL]
-  change (Real.exp t • v, Real.exp (-t) • (0 : P)) = (Real.exp t • v, Real.exp t • (0 : P))
-  simp
-
-/-- The descent flow of an incoming aligned ray. -/
-theorem MorseCancellation.descentFlow_incoming_aligned_ray {m : ℕ} {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (L : Model m ≃L[ℝ] (N × P)) {r : ℝ}
-    {v : P} (hL : L (-r, 0) = (0, v)) (t : ℝ) :
-    MorseHandle.descentFlow t (L (-r, 0)) = L (-r * Real.exp (-t), 0) := by
-  have he : (-r * Real.exp (-t), (0 : Fin m → ℝ)) = Real.exp (-t) • (-r, 0) := by
-    apply Prod.ext
-    · change -r * Real.exp (-t) = Real.exp (-t) * -r
-      ring
-    · simp
-  rw [he, L.map_smul, hL]
-  change (Real.exp t • (0 : N), Real.exp (-t) • v) = (Real.exp (-t) • (0 : N), Real.exp (-t) • v)
-  simp
-
-/-- An aligned Morse ray lies on the cubic axis. -/
-theorem MorseCancellation.cubic_axis_of_aligned_morse_ray {m : ℕ} {N P : Type*} [NormedAddCommGroup N]
-    [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (C : M → N × P)
-    (L : Model m ≃L[ℝ] (N × P)) {a : ℝ} {e : ℝ} (he : e ^ 2 = 1)
-    (hcoord :
-      ∀ p ∈ Φ.source, p.1 ∈ endpointFieldDomain a e ∧ C (Φ p) = L (endpointFieldProduct a e p))
-    {x : M} (hx : x ∈ Φ.target) {r : ℝ} (hr : 0 < -e * r) (hCx : C x = L (r, 0)) :
-    ∃ s ∈ Set.Ioo (-a) a,
-      (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = x ∧ endpointFieldCoordinate a e s = r := by
-  let p := Φ.symm x
-  have hp : p ∈ Φ.source := Φ.map_target' hx
-  have hpx : Φ p = x := Φ.right_inv' hx
-  obtain ⟨hdom, hCp⟩ := hcoord p hp
-  rw [hpx, hCx] at hCp
-  have hlin : endpointFieldProduct a e p = (r, 0) := L.injective hCp.symm
-  have hscalar : endpointFieldCoordinate a e p.1 = r := congrArg Prod.fst hlin
-  have hzero : p.2 = 0 := congrArg Prod.snd hlin
-  have haxis : p = (p.1, 0) := Prod.ext rfl hzero
-  have hdir : 0 < -e * endpointFieldCoordinate a e p.1 := hscalar.symm ▸ hr
-  refine ⟨p.1, endpointFieldCoordinate_mem_open_axis he hdom hdir, ?_, ?_, hscalar⟩
-  · exact haxis ▸ hp
-  · exact (congrArg Φ haxis).symm.trans hpx
-
-/-- The flow formula from local shifts. -/
-theorem MorseCancellation.flow_formula_of_local_shifts {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
-    (γ : ℝ → X) {S : Set ℝ} (hS : IsPreconnected S)
-    (hlocal : ∀ t ∈ S, ∀ᶠ s in 𝓝 t, γ s = F (s - t) (γ t)) {t₀ t : ℝ} (h₀ : t₀ ∈ S) (ht : t ∈ S) :
-    γ t = F (t - t₀) (γ t₀) := by
-  let β : S → X := fun u => F (-u.1) (γ u.1)
-  have hc : IsLocallyConstant β := by
-    apply (IsLocallyConstant.iff_eventually_eq β).mpr
-    intro u
-    filter_upwards [continuousAt_subtype_val.eventually (hlocal u.1 u.2)] with v hv
-    change F (-v.1) (γ v.1) = F (-u.1) (γ u.1)
-    rw [hv, ← F.map_add]
-    congr 1
-    ring
-  let : PreconnectedSpace S := Subtype.preconnectedSpace hS
-  have hb : β ⟨t, ht⟩ = β ⟨t₀, h₀⟩ :=
-    hc.apply_eq_of_isPreconnected PreconnectedSpace.isPreconnected_univ (Set.mem_univ _)
-      (Set.mem_univ _)
-  have hh := congrArg (F t) hb
-  change F t (F (-t) (γ t)) = F t (F (-t₀) (γ t₀)) at hh
-  simpa only [← F.map_add, add_neg_cancel, F.map_zero_apply, ← sub_eq_add_neg] using hh
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The flow eventually follows the Morse coordinate formula. -/
-theorem MorseCancellation.eventually_morse_coordinate_flow {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (x : M) (t : ℝ)
-    (ht : F t x ∈ c.splitChart.source) (heq : ∀ᶠ y in 𝓝 (F t x), V y = c.descentField y) :
-    ∀ᶠ s in 𝓝 t,
-      c.splitChart (F s x) = MorseHandle.descentFlow (s - t) (c.splitChart (F t x)) := by
-  have hlocal :
-    ∀ᶠ u in 𝓝 (0 : ℝ),
-      F u (F t x) = c.splitChart.symm (MorseHandle.descentFlow u (c.splitChart (F t x))) :=
-    c.eventually_flow_eq_descentModel hV F hF ht heq
-  have htime : Filter.Tendsto (fun s : ℝ => s - t) (𝓝 t) (𝓝 0) := by
-    have hc : Continuous (fun s : ℝ => s - t) := continuous_id.sub continuous_const
-    simpa only [sub_self] using hc.tendsto t
-  have hmodel :
-    Continuous (fun u : ℝ => MorseHandle.descentFlow u (c.splitChart (F t x))) :=
-    MorseHandle.descentFlow.continuous continuous_id continuous_const
-  have htarget :
-    ∀ᶠ u in 𝓝 (0 : ℝ),
-      MorseHandle.descentFlow u (c.splitChart (F t x)) ∈ c.splitChart.target := by
-    have hnhds : ∀ᶠ y in 𝓝 (c.splitChart (F t x)), y ∈ c.splitChart.target :=
-      c.splitChart.open_target.mem_nhds (c.splitChart.map_source' ht)
-    have hm0 :
-      Filter.Tendsto (fun u : ℝ => MorseHandle.descentFlow u (c.splitChart (F t x))) (𝓝 0)
-        (𝓝 (c.splitChart (F t x))) := by simpa only [Flow.map_zero_apply] using hmodel.tendsto 0
-    exact hm0.eventually hnhds
-  filter_upwards [htime.eventually hlocal, htime.eventually htarget] with s hs hst
-  rw [← F.map_add, sub_add_cancel] at hs
-  have hh := congrArg c.splitChart hs
-  exact hh.trans (c.splitChart.right_inv' hst)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The Morse coordinates of an actual trajectory. -/
-theorem MorseCancellation.morse_coordinates_of_actual_trajectory {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (x : M) {S : Set ℝ}
-    (hS : IsPreconnected S) (htarget : ∀ t ∈ S, F t x ∈ c.splitChart.source)
-    (heq : ∀ t ∈ S, ∀ᶠ y in 𝓝 (F t x), V y = c.descentField y) {t₀ t : ℝ} (h₀ : t₀ ∈ S)
-    (ht : t ∈ S) :
-    c.splitChart (F t x) = MorseHandle.descentFlow (t - t₀) (c.splitChart (F t₀ x)) :=
-  flow_formula_of_local_shifts MorseHandle.descentFlow (fun s => c.splitChart (F s x)) hS
-    (fun s hs => eventually_morse_coordinate_flow c hV F hF x s (htarget s hs) (heq s hs)) h₀ ht
-
-attribute [local instance 100] Classical.propDecidable in
-/-- Tail data of a Morse endpoint orbit. -/
-theorem MorseCancellation.morse_endpoint_tail_data {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (F : Flow ℝ M) (x : M) {l : Filter ℝ}
-    (hlim : Filter.Tendsto (fun t => F t x) l (𝓝 p)) (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    Filter.Tendsto (fun t => c.splitChart (F t x)) l (𝓝 0) ∧
-      ∀ᶠ t in l, F t x ∈ c.splitChart.source ∧ ∀ᶠ y in 𝓝 (F t x), V y = c.descentField y := by
-  have hc := c.splitChart.toOpenPartialHomeomorph.continuousAt c.splitChart_mem_source
-  have hcoord : Filter.Tendsto (fun t => c.splitChart (F t x)) l (𝓝 0) := by
-    have hh : Filter.Tendsto (fun t => c.splitChart (F t x)) l (𝓝 (c.splitChart p)) :=
-      hc.tendsto.comp hlim
-    simpa only [c.splitChart_center] using hh
-  have hsource : ∀ᶠ y in 𝓝 p, y ∈ c.splitChart.source :=
-    c.splitChart.open_source.mem_nhds c.splitChart_mem_source
-  have hgerm : ∀ᶠ y in 𝓝 p, ∀ᶠ z in 𝓝 y, V z = c.descentField z :=
-    eventually_eventually_nhds.mpr heq
-  exact ⟨hcoord, hlim.eventually (hsource.and hgerm)⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- An incoming Morse tail exists. -/
-theorem MorseCancellation.exists_incoming_morse_tail {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (x : M)
-    (hlim : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    ∃ T : ℝ,
-      (∀ t ≥ T, F t x ∈ c.splitChart.source) ∧
-        (∀ t ≥ T, (c.splitChart (F t x)).1 = 0) ∧
-          ∀ t ≥ T,
-            ∀ s ≥ T,
-              c.splitChart (F s x) =
-                MorseHandle.descentFlow (s - t) (c.splitChart (F t x)) := by
-  obtain ⟨hcoord, htail⟩ := morse_endpoint_tail_data c F x hlim heq
-  obtain ⟨T, hT⟩ := Filter.eventually_atTop.mp htail
-  have hformula (t : ℝ) (ht : T ≤ t) (s : ℝ) (hs : T ≤ s) :
-    c.splitChart (F s x) = MorseHandle.descentFlow (s - t) (c.splitChart (F t x)) :=
-    morse_coordinates_of_actual_trajectory c hV F hF x isPreconnected_Ici
-      (fun u hu => (hT u hu).1) (fun u hu => (hT u hu).2) ht hs
-  refine ⟨T, fun t ht => (hT t ht).1, ?_, hformula⟩
-  intro t ht
-  have hnorm : Filter.Tendsto (fun s => ‖(c.splitChart (F s x)).1‖) Filter.atTop (𝓝 0) := by
-    simpa only [Function.comp_def, Prod.fst_zero, norm_zero] using
-      (continuous_fst.norm.tendsto (0 : c.NegativeCoordinates × c.PositiveCoordinates)).comp
-        hcoord
-  have hbound : ∀ᶠ s in Filter.atTop, ‖(c.splitChart (F t x)).1‖ ≤ ‖(c.splitChart (F s x)).1‖ := by
-    filter_upwards [Filter.eventually_ge_atTop T, Filter.eventually_ge_atTop t] with s hs hst
-    rw [hformula t ht s hs]
-    exact MorseHandle.norm_fst_le_descentFlow (sub_nonneg.mpr hst) _
-  exact norm_eq_zero.mp (le_antisymm (ge_of_tendsto hnorm hbound) (norm_nonneg _))
-
-attribute [local instance 100] Classical.propDecidable in
-/-- An outgoing Morse tail exists. -/
-theorem MorseCancellation.exists_outgoing_morse_tail {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (x : M)
-    (hlim : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p))
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    ∃ T : ℝ,
-      (∀ t ≤ T, F t x ∈ c.splitChart.source) ∧
-        (∀ t ≤ T, (c.splitChart (F t x)).2 = 0) ∧
-          ∀ t ≤ T,
-            ∀ s ≤ T,
-              c.splitChart (F s x) =
-                MorseHandle.descentFlow (s - t) (c.splitChart (F t x)) := by
-  obtain ⟨hcoord, htail⟩ := morse_endpoint_tail_data c F x hlim heq
-  obtain ⟨T, hT⟩ := Filter.eventually_atBot.mp htail
-  have hformula (t : ℝ) (ht : t ≤ T) (s : ℝ) (hs : s ≤ T) :
-    c.splitChart (F s x) = MorseHandle.descentFlow (s - t) (c.splitChart (F t x)) :=
-    morse_coordinates_of_actual_trajectory c hV F hF x isPreconnected_Iic
-      (fun u hu => (hT u hu).1) (fun u hu => (hT u hu).2) ht hs
-  refine ⟨T, fun t ht => (hT t ht).1, ?_, hformula⟩
-  intro t ht
-  have hnorm : Filter.Tendsto (fun s => ‖(c.splitChart (F s x)).2‖) Filter.atBot (𝓝 0) := by
-    simpa only [Function.comp_def, Prod.snd_zero, norm_zero] using
-      (continuous_snd.norm.tendsto (0 : c.NegativeCoordinates × c.PositiveCoordinates)).comp
-        hcoord
-  have hbound : ∀ᶠ s in Filter.atBot, ‖(c.splitChart (F t x)).2‖ ≤ ‖(c.splitChart (F s x)).2‖ := by
-    filter_upwards [Filter.eventually_le_atBot T, Filter.eventually_le_atBot t] with s hs hst
-    rw [hformula t ht s hs, MorseHandle.norm_descentFlow_snd]
-    exact le_mul_of_one_le_left (norm_nonneg _) (Real.one_le_exp_iff.mpr (by linarith))
-  exact norm_eq_zero.mp (le_antisymm (ge_of_tendsto hnorm hbound) (norm_nonneg _))
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The incoming tail lies on the cubic axis. -/
-theorem MorseCancellation.incoming_tail_on_cubic_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) {m : ℕ}
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hcenter : (1 / 2, (0 : Fin m → ℝ)) ∈ Φ.source) (hvalue : Φ (1 / 2, 0) = p)
-    (hcoord :
-      ∀ q ∈ Φ.source,
-        q.1 ∈ endpointFieldDomain (1 / 2) 1 ∧
-          c.splitChart (Φ q) = L (endpointFieldProduct (1 / 2) 1 q))
-    (F : Flow ℝ M) (x : M) (hlim : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) {T r : ℝ}
-    (hr : 0 < r) {v : c.PositiveCoordinates} (hL : L (-r, 0) = (0, v))
-    (hbase : c.splitChart (F T x) = (0, v))
-    (hmodel :
-      ∀ t ≥ T,
-        c.splitChart (F t x) = MorseHandle.descentFlow (t - T) (c.splitChart (F T x))) :
-    ∀ᶠ t in Filter.atTop,
-      ∃ s ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2), (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x := by
-  have hp : p ∈ Φ.target := hvalue ▸ Φ.map_source' hcenter
-  have htarget : ∀ᶠ t in Filter.atTop, F t x ∈ Φ.target :=
-    hlim.eventually (Φ.open_target.mem_nhds hp)
-  filter_upwards [htarget, Filter.eventually_ge_atTop T] with t ht hT
-  have hline : c.splitChart (F t x) = L (-r * Real.exp (-(t - T)), 0) := by
-    rw [hmodel t hT, hbase, ← hL]
-    exact descentFlow_incoming_aligned_ray L hL (t - T)
-  have hdir : 0 < -(1 : ℝ) * (-r * Real.exp (-(t - T))) := by nlinarith [Real.exp_pos (-(t - T))]
-  obtain ⟨s, hs, hsource, hpoint, _⟩ :=
-    cubic_axis_of_aligned_morse_ray Φ c.splitChart L (by norm_num : (1 : ℝ) ^ 2 = 1) hcoord ht
-      hdir hline
-  exact ⟨s, hs, hsource, hpoint⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The outgoing tail lies on the cubic axis. -/
-theorem MorseCancellation.outgoing_tail_on_cubic_axis {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) {m : ℕ}
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates))
-    (hcenter : (-(1 / 2 : ℝ), (0 : Fin m → ℝ)) ∈ Φ.source) (hvalue : Φ (-(1 / 2 : ℝ), 0) = p)
-    (hcoord :
-      ∀ q ∈ Φ.source,
-        q.1 ∈ endpointFieldDomain (1 / 2) (-1) ∧
-          c.splitChart (Φ q) = L (endpointFieldProduct (1 / 2) (-1) q))
-    (F : Flow ℝ M) (x : M) (hlim : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p)) {T r : ℝ}
-    (hr : 0 < r) {v : c.NegativeCoordinates} (hL : L (r, 0) = (v, 0))
-    (hbase : c.splitChart (F T x) = (v, 0))
-    (hmodel :
-      ∀ t ≤ T,
-        c.splitChart (F t x) = MorseHandle.descentFlow (t - T) (c.splitChart (F T x))) :
-    ∀ᶠ t in Filter.atBot,
-      ∃ s ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2), (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x := by
-  have hp : p ∈ Φ.target := hvalue ▸ Φ.map_source' hcenter
-  have htarget : ∀ᶠ t in Filter.atBot, F t x ∈ Φ.target :=
-    hlim.eventually (Φ.open_target.mem_nhds hp)
-  filter_upwards [htarget, Filter.eventually_le_atBot T] with t ht hT
-  have hline : c.splitChart (F t x) = L (r * Real.exp (t - T), 0) := by
-    rw [hmodel t hT, hbase, ← hL]
-    exact descentFlow_outgoing_aligned_ray L hL (t - T)
-  have hdir : 0 < -(-1 : ℝ) * (r * Real.exp (t - T)) := by
-    simpa using mul_pos hr (Real.exp_pos (t - T))
-  obtain ⟨s, hs, hsource, hpoint, _⟩ :=
-    cubic_axis_of_aligned_morse_ray Φ c.splitChart L (by norm_num : (-1 : ℝ) ^ 2 = 1) hcoord ht
-      hdir hline
-  exact ⟨s, hs, hsource, hpoint⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The Morse coordinates are nonzero on a nonstationary orbit. -/
-theorem MorseCancellation.morse_coordinates_nonzero_on_nonstationary_orbit {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {x : M} (hxp : x ≠ p)
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) {t : ℝ} (ht : F t x ∈ c.splitChart.source) :
-    c.splitChart (F t x) ≠ 0 := by
-  have heqp : V p = c.descentField p :=
-    mem_of_mem_nhds (x := p) (s := {y : M | V y = c.descentField y}) heq
-  have hVp : V p = 0 := heqp.trans c.descentField_center
-  have hfixed := FlowConstruction.flow_fixed_of_zero hV F hF hVp
-  intro hz
-  have hpoint : F t x = p :=
-    c.splitChart.toOpenPartialHomeomorph.injOn ht c.splitChart_mem_source
-      (hz.trans c.splitChart_center.symm)
-  have hh := congrArg (F (-t)) hpoint
-  rw [← F.map_add, neg_add_cancel, F.map_zero_apply, hfixed] at hh
-  exact hxp hh
-
-attribute [local instance 100] Classical.propDecidable in
-/-- An actual incoming cubic endpoint exists. -/
-theorem MorseCancellation.exists_actual_incoming_cubic_endpoint {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = 1)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {x : M} (hxp : x ≠ p)
-    (hlim : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    let σ := fun i : Fin m => c.weights (ρ (Option.some i))
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (1 / 2, (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (1 / 2, 0) = p ∧
-          Φ.target ⊆ c.splitChart.source ∧
-            (∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(1 / 2 : ℝ) ^ 2) y) ∧
-              (∀ᶠ t in Filter.atTop,
-                  ∃ s ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2),
-                    (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x) ∧
-                ∃ L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates),
-                  (∀ z, L (endpointLinearField σ (1 / 2) 1 z) = MorseHandle.descent (L z)) ∧
-                    ∀ z ∈ Φ.source, c.splitChart (Φ z) = L (endpointFieldProduct (1 / 2) 1 z) := by
-  let σ := fun i : Fin m => c.weights (ρ (Option.some i))
-  obtain ⟨T, hsource, hzero, hformula⟩ := exists_incoming_morse_tail c hV F hF x hlim heq
-  let v := (c.splitChart (F T x)).2
-  have hbase : c.splitChart (F T x) = (0, v) := Prod.ext (hzero T le_rfl) rfl
-  have hv : v ≠ 0 := by
-    intro hv
-    exact
-      morse_coordinates_nonzero_on_nonstationary_orbit c hV F hF hxp heq (hsource T le_rfl)
-        (hbase.trans (Prod.ext rfl hv))
-  obtain ⟨r, L, hr, hLray, hL⟩ := exists_selected_incoming_axis c ρ he hv
-  have hL' : ∀ q, L (endpointLinearField σ (1 / 2) 1 q) = MorseHandle.descent (L q) := by
-    simpa only [he] using hL
-  obtain ⟨Φ, hc, hval, hsub, hfield, hcoord⟩ :=
-    exists_controlled_morse_field_endpoint c σ (by norm_num : (1 : ℝ) ^ 2 = 1) L hL' V heq
-  refine ⟨Φ, hc, hval, hsub, hfield, ?_, L, hL', ?_⟩
-  · exact
-      incoming_tail_on_cubic_axis c Φ L hc hval hcoord F x hlim hr hLray hbase (hformula T le_rfl)
-  · exact fun z hz => (hcoord z hz).2
-
-attribute [local instance 100] Classical.propDecidable in
-/-- An actual outgoing cubic endpoint exists. -/
-theorem MorseCancellation.exists_actual_outgoing_cubic_endpoint {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) {m : ℕ}
-    (ρ : Option (Fin m) ≃ Fin (Module.finrank ℝ E)) (he : c.weights (ρ Option.none) = -1)
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {x : M} (hxp : x ≠ p)
-    (hlim : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p))
-    (heq : ∀ᶠ y in 𝓝 p, V y = c.descentField y) :
-    let σ := fun i : Fin m => c.weights (ρ (Option.some i))
-    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞,
-      (-(1 / 2 : ℝ), (0 : Fin m → ℝ)) ∈ Φ.source ∧
-        Φ (-(1 / 2 : ℝ), 0) = p ∧
-          Φ.target ⊆ c.splitChart.source ∧
-            (∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(1 / 2 : ℝ) ^ 2) y) ∧
-              (∀ᶠ t in Filter.atBot,
-                  ∃ s ∈ Set.Ioo (-(1 / 2 : ℝ)) (1 / 2),
-                    (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x) ∧
-                ∃ L : Model m ≃L[ℝ] (c.NegativeCoordinates × c.PositiveCoordinates),
-                  (∀ z,
-                      L (endpointLinearField σ (1 / 2) (-1) z) =
-                        MorseHandle.descent (L z)) ∧
-                    ∀ z ∈ Φ.source,
-                      c.splitChart (Φ z) = L (endpointFieldProduct (1 / 2) (-1) z) := by
-  let σ := fun i : Fin m => c.weights (ρ (Option.some i))
-  obtain ⟨T, hsource, hzero, hformula⟩ := exists_outgoing_morse_tail c hV F hF x hlim heq
-  let v := (c.splitChart (F T x)).1
-  have hbase : c.splitChart (F T x) = (v, 0) := Prod.ext rfl (hzero T le_rfl)
-  have hv : v ≠ 0 := by
-    intro hv
-    exact
-      morse_coordinates_nonzero_on_nonstationary_orbit c hV F hF hxp heq (hsource T le_rfl)
-        (hbase.trans (Prod.ext hv rfl))
-  obtain ⟨r, L, hr, hLray, hL⟩ := exists_selected_outgoing_axis c ρ he hv
-  have hL' : ∀ q, L (endpointLinearField σ (1 / 2) (-1) q) = MorseHandle.descent (L q) := by
-    simpa only [he] using hL
-  obtain ⟨Φ, hc, hval, hsub, hfield, hcoord⟩ :=
-    exists_controlled_morse_field_endpoint c σ (by norm_num : (-1 : ℝ) ^ 2 = 1) L hL' V heq
-  have hc' : (-(1 / 2 : ℝ), (0 : Fin m → ℝ)) ∈ Φ.source := by convert! hc using 1; norm_num
-  have hval' : Φ (-(1 / 2 : ℝ), 0) = p := by convert! hval using 1; norm_num
-  refine ⟨Φ, hc', hval', hsub, hfield, ?_, L, hL', ?_⟩
-  · exact
-      outgoing_tail_on_cubic_axis c Φ L hc' hval' hcoord F x hlim hr hLray hbase
-        (hformula T le_rfl)
-  · exact fun z hz => (hcoord z hz).2
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The backward basin meets the attaching core. -/
-theorem MorseCancellation.native_backward_basin_mem_attaching_core {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (hboundary : ∀ x, f x = f p - r ^ 2 → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M}
-    (hlevel : f x = f p - r ^ 2) (hlim : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p)) :
-    ∃ u : PuncturedHandle.UnitSphere c.NegativeCoordinates,
-      (c.attachingCoreMap r hr hblock u : M) = x := by
-  have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  have hcenter : c.splitChart.symm (0 : c.NegativeCoordinates × c.PositiveCoordinates) = p := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have heq :=
-    hfield (0 : c.NegativeCoordinates × c.PositiveCoordinates)
-      ⟨Metric.mem_closedBall_self (by positivity), Metric.mem_closedBall_self (by positivity)⟩
-  rw [hcenter] at heq
-  obtain ⟨T, hsource, hplane, -⟩ := exists_outgoing_morse_tail c hV₁ F hF x hlim heq
-  obtain ⟨hcoord, -⟩ := morse_endpoint_tail_data c F x hlim heq
-  have hnorm : Filter.Tendsto (fun t => ‖(c.splitChart (F t x)).1‖) Filter.atBot (𝓝 (0 : ℝ)) := by
-    simpa only [Function.comp_def, Prod.fst_zero, norm_zero] using
-      (continuous_fst.norm.tendsto (0 : c.NegativeCoordinates × c.PositiveCoordinates)).comp
-        hcoord
-  obtain ⟨s, hsmall, hs⟩ :=
-    ((hnorm.eventually (eventually_lt_nhds hr)).and (Filter.eventually_le_atBot T)).exists
-  have hxp : x ≠ p := by
-    intro hh
-    rw [hh] at hlevel
-    nlinarith [sq_pos_of_pos hr]
-  have hnonzero :=
-    morse_coordinates_nonzero_on_nonstationary_orbit c hV₁ F hF hxp heq (hsource s hs)
-  have hn : (c.splitChart (F s x)).1 ≠ 0 := fun hz => hnonzero (Prod.ext hz (hplane s hs))
-  obtain ⟨u, t, ht, hu⟩ := exists_negative_core_ray_parameter hr hn hsmall
-  have hmodel :
-    MorseHandle.descentFlow t
-        (r • (u : c.NegativeCoordinates), (0 : c.PositiveCoordinates)) =
-      c.splitChart (F s x) := by
-    apply Prod.ext
-    · exact hu
-    · change Real.exp (-t) • (0 : c.PositiveCoordinates) = (c.splitChart (F s x)).2
-      rw [smul_zero, hplane s hs]
-  have hcore := native_attaching_core_flow c hV₁ F hF r hr hblock hfield u ht.le
-  rw [hmodel] at hcore
-  have hsame : F t (c.attachingCoreMap r hr hblock u) = F s x :=
-    hcore.trans (c.splitChart.left_inv' (hsource s hs))
-  exact
-    ⟨u,
-      native_same_level_orbit_points hf hV F hF hboundary
-        (c.attachingCoreMap r hr hblock u).property hlevel hsame⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The attaching core is the backward basin. -/
-theorem MorseCancellation.native_attaching_core_basin_iff {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (hboundary : ∀ x, f x = f p - r ^ 2 → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M}
-    (hlevel : f x = f p - r ^ 2) :
-    Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) ↔
-      ∃ u : PuncturedHandle.UnitSphere c.NegativeCoordinates,
-        (c.attachingCoreMap r hr hblock u : M) = x := by
-  constructor
-  · exact
-      native_backward_basin_mem_attaching_core c hf hV F hF r hr hblock hfield hboundary hlevel
-  · rintro ⟨u, rfl⟩
-    exact native_attaching_core_backward_limit c (hV.of_le (by simp)) F hF r hr hblock hfield u
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The forward basin meets the belt core. -/
-theorem MorseCancellation.native_forward_basin_mem_belt_core {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (hboundary : ∀ x, f x = f p + r ^ 2 → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M}
-    (hlevel : f x = f p + r ^ 2) (hlim : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) :
-    ∃ u : PuncturedHandle.UnitSphere c.PositiveCoordinates,
-      (c.beltCoreMap r hr hblock u : M) = x := by
-  have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  have hcenter : c.splitChart.symm (0 : c.NegativeCoordinates × c.PositiveCoordinates) = p := by
-    rw [← c.splitChart_center]
-    exact c.splitChart.left_inv' c.splitChart_mem_source
-  have heq :=
-    hfield (0 : c.NegativeCoordinates × c.PositiveCoordinates)
-      ⟨Metric.mem_closedBall_self (by positivity), Metric.mem_closedBall_self (by positivity)⟩
-  rw [hcenter] at heq
-  obtain ⟨T, hsource, hplane, -⟩ := exists_incoming_morse_tail c hV₁ F hF x hlim heq
-  obtain ⟨hcoord, -⟩ := morse_endpoint_tail_data c F x hlim heq
-  have hnorm : Filter.Tendsto (fun t => ‖(c.splitChart (F t x)).2‖) Filter.atTop (𝓝 (0 : ℝ)) := by
-    simpa only [Function.comp_def, Prod.snd_zero, norm_zero] using
-      (continuous_snd.norm.tendsto (0 : c.NegativeCoordinates × c.PositiveCoordinates)).comp
-        hcoord
-  obtain ⟨s, hsmall, hs⟩ :=
-    ((hnorm.eventually (eventually_lt_nhds hr)).and (Filter.eventually_ge_atTop T)).exists
-  have hxp : x ≠ p := by
-    intro hh
-    rw [hh] at hlevel
-    nlinarith [sq_pos_of_pos hr]
-  have hnonzero :=
-    morse_coordinates_nonzero_on_nonstationary_orbit c hV₁ F hF hxp heq (hsource s hs)
-  have hn : (c.splitChart (F s x)).2 ≠ 0 := fun hz => hnonzero (Prod.ext (hplane s hs) hz)
-  obtain ⟨u, t, ht, hu⟩ := exists_positive_core_ray_parameter hr hn hsmall
-  have hmodel :
-    MorseHandle.descentFlow t
-        ((0 : c.NegativeCoordinates), r • (u : c.PositiveCoordinates)) =
-      c.splitChart (F s x) := by
-    apply Prod.ext
-    · change Real.exp t • (0 : c.NegativeCoordinates) = (c.splitChart (F s x)).1
-      rw [smul_zero, hplane s hs]
-    · exact hu
-  have hcore := native_belt_core_flow c hV₁ F hF r hr hblock hfield u ht.le
-  rw [hmodel] at hcore
-  have hsame : F t (c.beltCoreMap r hr hblock u) = F s x :=
-    hcore.trans (c.splitChart.left_inv' (hsource s hs))
-  exact
-    ⟨u,
-      native_same_level_orbit_points hf hV F hF hboundary (c.beltCoreMap r hr hblock u).property
-        hlevel hsame⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt core is the forward basin. -/
-theorem MorseCancellation.native_belt_core_basin_iff {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (r : ℝ) (hr : 0 < r)
-    (hblock :
-      Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-          Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
-        c.splitChart.target)
-    (hfield :
-      ∀
-        z ∈
-          Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
-            Metric.closedBall (0 : c.PositiveCoordinates) (2 * r),
-        ∀ᶠ y in 𝓝 (c.splitChart.symm z), V y = c.descentField y)
-    (hboundary : ∀ x, f x = f p + r ^ 2 → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M}
-    (hlevel : f x = f p + r ^ 2) :
-    Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) ↔
-      ∃ u : PuncturedHandle.UnitSphere c.PositiveCoordinates,
-        (c.beltCoreMap r hr hblock u : M) = x := by
-  constructor
-  · exact native_forward_basin_mem_belt_core c hf hV F hF r hr hblock hfield hboundary hlevel
-  · rintro ⟨u, rfl⟩
-    exact native_belt_core_forward_limit c (hV.of_le (by simp)) F hF r hr hblock hfield u
-
-/-! ### Basins of the adapted windows -/
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The attaching basin of the adapted windows. -/
-theorem AdaptedWindows.attaching_basin_iff {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p : ManifoldMorse.criticalPoints E f) (x : (S.data p).LowerLevel) :
-    Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 p.val) ↔
-      x ∈ Set.range (S.data p).surgery.attachingSphere := by
-  let d := S.data p
-  have hh :=
-    MorseCancellation.native_attaching_core_basin_iff d.chart hf S.smooth S.flow S.integral d.radius
-      d.radius_pos d.block (S.model_germ p) (fun y hy => S.descent y (d.lower_regular y hy))
-      x.property
-  rw [d.attaching_eq]
-  exact hh.trans ⟨fun ⟨u, hu⟩ => ⟨u, Subtype.ext hu⟩, fun ⟨u, hu⟩ => ⟨u, congrArg Subtype.val hu⟩⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt basin of the adapted windows. -/
-theorem AdaptedWindows.belt_basin_iff {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p : ManifoldMorse.criticalPoints E f) (x : (S.data p).UpperLevel) :
-    Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val) ↔
-      x ∈ Set.range (S.data p).surgery.beltSphere := by
-  let d := S.data p
-  have hh :=
-    MorseCancellation.native_belt_core_basin_iff d.chart hf S.smooth S.flow S.integral d.radius
-      d.radius_pos d.block (S.model_germ p) (fun y hy => S.descent y (d.upper_regular y hy))
-      x.property
-  rw [d.belt_eq]
-  exact hh.trans ⟨fun ⟨u, hu⟩ => ⟨u, Subtype.ext hu⟩, fun ⟨u, hu⟩ => ⟨u, congrArg Subtype.val hu⟩⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The model germ at the critical point. -/
-theorem AdaptedWindows.critical_model_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (p : ManifoldMorse.criticalPoints E f) :
-    ∀ᶠ y in 𝓝 p.val, S.field y = (S.data p).chart.descentField y := by
-  let d := S.data p
-  have hcenter :
-    d.chart.splitChart.symm (0 : d.chart.NegativeCoordinates × d.chart.PositiveCoordinates) =
-      p.val := by
-    rw [← d.chart.splitChart_center]
-    exact d.chart.splitChart.left_inv' d.chart.splitChart_mem_source
-  have hg :=
-    S.model_germ p (0 : d.chart.NegativeCoordinates × d.chart.PositiveCoordinates)
-      ⟨Metric.mem_closedBall_self (le_of_lt (mul_pos (by norm_num) d.radius_pos)),
-        Metric.mem_closedBall_self (le_of_lt (mul_pos (by norm_num) d.radius_pos))⟩
-  rw [hcenter] at hg
-  exact hg
-
-/-! ### The cubic axis parameter -/
-
-/-- `tanh` differentiates to `sech²`. -/
-theorem MorseCancellation.hasDerivAt_tanh (t : ℝ) : HasDerivAt Real.tanh (1 - Real.tanh t ^ 2) t := by
-  have h := (Real.hasDerivAt_sinh t).div (Real.hasDerivAt_cosh t) (Real.cosh_pos t).ne'
-  have hf : (fun x => Real.sinh x / Real.cosh x) = Real.tanh :=
-    funext (fun x => (Real.tanh_eq_sinh_div_cosh x).symm)
-  change HasDerivAt (fun x => Real.sinh x / Real.cosh x) _ t at h
-  rw [hf] at h
-  convert h using 1
-  rw [Real.tanh_eq_sinh_div_cosh]
-  field_simp
-
-/-- `tanh` is strictly monotone. -/
-theorem MorseCancellation.strictMono_tanh : StrictMono Real.tanh :=
-  strictMono_of_hasDerivAt_pos hasDerivAt_tanh (fun t => sub_pos.mpr (Real.tanh_sq_lt_one t))
-
-/-- `tanh` has range `(−1, 1)`. -/
-theorem MorseCancellation.range_tanh : Set.range Real.tanh = Set.Ioo (-1 : ℝ) 1 := by
-  ext s
-  constructor
-  · rintro ⟨t, rfl⟩
-    exact ⟨Real.neg_one_lt_tanh t, Real.tanh_lt_one t⟩
-  · intro hs
-    obtain ⟨t, -, ht⟩ := Real.tanh_surjOn hs
-    exact ⟨t, ht⟩
-
-/-- `tanh` tends to `1` at infinity. -/
-theorem MorseCancellation.tendsto_tanh_atTop : Filter.Tendsto Real.tanh Filter.atTop (𝓝 (1 : ℝ)) := by
-  apply tendsto_atTop_isLUB strictMono_tanh.monotone
-  rw [range_tanh]
-  exact isLUB_Ioo (by norm_num)
-
-/-- `tanh` tends to `−1` at negative infinity. -/
-theorem MorseCancellation.tendsto_tanh_atBot : Filter.Tendsto Real.tanh Filter.atBot (𝓝 (-1 : ℝ)) := by
-  apply tendsto_atBot_isGLB strictMono_tanh.monotone
-  rw [range_tanh]
-  exact isGLB_Ioo (by norm_num)
-
-/-- The time parameter along the cubic axis. -/
-def MorseCancellation.cubicAxisParameter (a t : ℝ) : ℝ :=
-  a * Real.tanh (a * t)
-
-/-- The cubic axis parameter is differentiable. -/
-theorem MorseCancellation.hasDerivAt_cubicAxisParameter (a t : ℝ) :
-    HasDerivAt (cubicAxisParameter a) (a ^ 2 - cubicAxisParameter a t ^ 2) t := by
-  have h := ((hasDerivAt_tanh (a * t)).comp t ((hasDerivAt_id t).const_mul a)).const_mul a
-  change HasDerivAt (cubicAxisParameter a) (a * ((1 - Real.tanh (a * t) ^ 2) * (a * 1))) t at h
-  convert h using 1
-  dsimp [cubicAxisParameter]
-  ring
-
-/-- The cubic axis parameter lies in the axis. -/
-theorem MorseCancellation.cubicAxisParameter_mem {a : ℝ} (ha : 0 < a) (t : ℝ) :
-    cubicAxisParameter a t ∈ Set.Ioo (-a) a := by
-  have hlo := mul_lt_mul_of_pos_left (Real.neg_one_lt_tanh (a * t)) ha
-  have hhi := mul_lt_mul_of_pos_left (Real.tanh_lt_one (a * t)) ha
-  constructor
-  · simpa only [cubicAxisParameter, mul_neg, mul_one] using hlo
-  · simpa only [cubicAxisParameter, mul_one] using hhi
-
-/-- The cubic axis parameter's range. -/
-theorem MorseCancellation.range_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
-    Set.range (cubicAxisParameter a) = Set.Ioo (-a) a := by
-  ext s
-  constructor
-  · rintro ⟨t, rfl⟩
-    exact cubicAxisParameter_mem ha t
-  · intro hs
-    have hs' : s / a ∈ Set.Ioo (-1 : ℝ) 1 := by
-      constructor
-      · apply (lt_div_iff₀ ha).mpr
-        simpa only [neg_one_mul] using hs.1
-      · apply (div_lt_iff₀ ha).mpr
-        simpa only [one_mul] using hs.2
-    refine ⟨Real.artanh (s / a) / a, ?_⟩
-    simp only [cubicAxisParameter, mul_div_cancel₀ _ ha.ne', Real.tanh_artanh hs']
-
-/-- The axis parameter tends to the positive endpoint. -/
-theorem MorseCancellation.tendsto_cubicAxisParameter_atTop {a : ℝ} (ha : 0 < a) :
-    Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 a) := by
-  have h := (tendsto_tanh_atTop.comp (Filter.tendsto_id.const_mul_atTop ha)).const_mul a
-  change Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 (a * 1)) at h
-  simpa only [mul_one] using h
-
-/-- The axis parameter tends to the negative endpoint. -/
-theorem MorseCancellation.tendsto_cubicAxisParameter_atBot {a : ℝ} (ha : 0 < a) :
-    Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (-a)) := by
-  have h := (tendsto_tanh_atBot.comp (Filter.tendsto_id.const_mul_atBot ha)).const_mul a
-  change Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (a * -1)) at h
-  simpa only [mul_neg, mul_one] using h
-
-/-! ### The cubic model orbit -/
-
-/-- The orbit of the cubic model. -/
-def MorseCancellation.cubicModelOrbit {m : ℕ} (a t : ℝ) : Model m :=
-  (cubicAxisParameter a t, 0)
-
-/-- The cubic model orbit at time zero. -/
-theorem MorseCancellation.cubicModelOrbit_zero {m : ℕ} (a : ℝ) : cubicModelOrbit (m := m) a 0 = 0 := by
-  simp [cubicModelOrbit, cubicAxisParameter, Real.tanh_zero]
-
-/-- The cubic model orbit solves the field. -/
-theorem MorseCancellation.hasDerivAt_cubicModelOrbit {m : ℕ} (σ : Fin m → ℝ) (a t : ℝ) :
-    HasDerivAt (cubicModelOrbit a) (cubicDescent σ (-(a ^ 2)) (cubicModelOrbit a t)) t := by
-  have h := (hasDerivAt_cubicAxisParameter a t).prodMk (hasDerivAt_const t (0 : Fin m → ℝ))
-  change HasDerivAt (cubicModelOrbit a) (a ^ 2 - cubicAxisParameter a t ^ 2, 0) t at h
-  convert h using 1
-  apply Prod.ext
-  · change -(cubicAxisParameter a t ^ 2 + -(a ^ 2)) = a ^ 2 - cubicAxisParameter a t ^ 2
-    ring
-  · funext i
-    simp only [cubicDescent, cubicModelOrbit, Pi.zero_apply, MulZeroClass.mul_zero]
-
-/-- The cubic model orbit's range. -/
-theorem MorseCancellation.range_cubicModelOrbit {m : ℕ} {a : ℝ} (ha : 0 < a) :
-    Set.range (cubicModelOrbit (m := m) a) = Set.Ioo (-a) a ×ˢ {(0 : Fin m → ℝ)} := by
-  ext p
-  constructor
-  · rintro ⟨t, rfl⟩
-    exact ⟨cubicAxisParameter_mem ha t, rfl⟩
-  · rintro ⟨hs, hz⟩
-    obtain ⟨t, ht⟩ := (range_cubicAxisParameter ha).symm ▸ hs
-    refine ⟨t, ?_⟩
-    exact Prod.ext ht (show (0 : Fin m → ℝ) = p.2 from hz.symm)
-
-/-- The model orbit tends to the positive end. -/
-theorem MorseCancellation.tendsto_cubicModelOrbit_atTop {m : ℕ} {a : ℝ} (ha : 0 < a) :
-    Filter.Tendsto (cubicModelOrbit (m := m) a) Filter.atTop (𝓝 (a, 0)) :=
-  (tendsto_cubicAxisParameter_atTop ha).prodMk_nhds tendsto_const_nhds
-
-/-- The model orbit tends to the negative end. -/
-theorem MorseCancellation.tendsto_cubicModelOrbit_atBot {m : ℕ} {a : ℝ} (ha : 0 < a) :
-    Filter.Tendsto (cubicModelOrbit (m := m) a) Filter.atBot (𝓝 (-a, 0)) :=
-  (tendsto_cubicAxisParameter_atBot ha).prodMk_nhds tendsto_const_nhds
-
-/-- `artanh` is smooth on `(−1,1)`. -/
-theorem MorseCancellation.contDiffAt_artanh {x : ℝ} (hx : x ∈ Set.Ioo (-1 : ℝ) 1) :
-    ContDiffAt ℝ ∞ Real.artanh x := by
-  have hp : 0 < (1 + x) / (1 - x) := div_pos (by linarith [hx.1]) (by linarith [hx.2])
-  have hr : ContDiffAt ℝ ∞ (fun y : ℝ => (1 + y) / (1 - y)) x :=
-    (contDiffAt_const.add contDiffAt_id).div (contDiffAt_const.sub contDiffAt_id)
-      (by linarith [hx.2])
-  exact (hr.sqrt hp.ne').log (Real.sqrt_pos.mpr hp).ne'
-
-/-- The cubic axis parameter is smooth. -/
-theorem MorseCancellation.contDiff_cubicAxisParameter (a : ℝ) : ContDiff ℝ ∞ (cubicAxisParameter a) := by
-  have ht : ContDiff ℝ ∞ Real.tanh := by
-    have hh : ContDiff ℝ ∞ (fun t => Real.sinh t / Real.cosh t) :=
-      Real.contDiff_sinh.div Real.contDiff_cosh (fun t => (Real.cosh_pos t).ne')
-    have he : (fun t => Real.sinh t / Real.cosh t) = Real.tanh :=
-      funext (fun t => (Real.tanh_eq_sinh_div_cosh t).symm)
-    rw [he] at hh
-    exact hh
-  change ContDiff ℝ ∞ (fun t => a * Real.tanh (a * t))
-  exact contDiff_const.mul (ht.comp (contDiff_const.mul contDiff_id))
-
-/-- The clock function inverse to the axis parameter. -/
-def MorseCancellation.cubicAxisClock (a s : ℝ) : ℝ :=
-  Real.artanh (s / a) / a
-
-/-- The clock inverts the axis parameter. -/
-theorem MorseCancellation.cubicAxisClock_parameter {a : ℝ} (ha : 0 < a) (t : ℝ) :
-    cubicAxisClock a (cubicAxisParameter a t) = t := by
-  simp only [cubicAxisClock, cubicAxisParameter, mul_div_cancel_left₀ _ ha.ne', Real.artanh_tanh]
-
-/-- The axis parameter inverts the clock. -/
-theorem MorseCancellation.cubicAxisParameter_clock {a s : ℝ} (ha : 0 < a) (hs : s ∈ Set.Ioo (-a) a) :
-    cubicAxisParameter a (cubicAxisClock a s) = s := by
-  have hs' : s / a ∈ Set.Ioo (-1 : ℝ) 1 := by
-    constructor
-    · exact (lt_div_iff₀ ha).mpr (by simpa only [neg_one_mul] using hs.1)
-    · exact (div_lt_iff₀ ha).mpr (by simpa only [one_mul] using hs.2)
-  simp only [cubicAxisClock, cubicAxisParameter, mul_div_cancel₀ _ ha.ne', Real.tanh_artanh hs']
-
-/-- The cubic axis clock is smooth. -/
-theorem MorseCancellation.contDiffOn_cubicAxisClock {a : ℝ} (ha : 0 < a) :
-    ContDiffOn ℝ ∞ (cubicAxisClock a) (Set.Ioo (-a) a) := by
-  intro s hs
-  have hs' : s / a ∈ Set.Ioo (-1 : ℝ) 1 := by
-    constructor
-    · exact (lt_div_iff₀ ha).mpr (by simpa only [neg_one_mul] using hs.1)
-    · exact (div_lt_iff₀ ha).mpr (by simpa only [one_mul] using hs.2)
-  exact
-    (((contDiffAt_artanh hs').comp s (contDiffAt_id.div_const a)).div_const a).contDiffWithinAt
-
-/-! ### The cubic flow cylinder -/
-
-/-- The flow cylinder coordinates of the cubic model. -/
-def MorseCancellation.cubicFlowCylinder {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) (p : (Fin m → ℝ) × ℝ) :
-    Model m :=
-  (cubicAxisParameter a p.2, fun i => Real.exp (-σ i * p.2) * p.1 i)
-
-/-- The inverse of the cubic flow cylinder. -/
-def MorseCancellation.cubicFlowCylinderInverse {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) (p : Model m) :
-    (Fin m → ℝ) × ℝ :=
-  (fun i => Real.exp (σ i * cubicAxisClock a p.1) * p.2 i, cubicAxisClock a p.1)
-
-/-- The cylinder inverse left-inverts the cylinder. -/
-theorem MorseCancellation.cubicFlowCylinder_left_inv {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (p : (Fin m → ℝ) × ℝ) : cubicFlowCylinderInverse σ a (cubicFlowCylinder σ a p) = p := by
-  apply Prod.ext
-  · funext i
-    change
-      Real.exp (σ i * cubicAxisClock a (cubicAxisParameter a p.2)) *
-          (Real.exp (-σ i * p.2) * p.1 i) =
-        p.1 i
-    rw [cubicAxisClock_parameter ha, ← mul_assoc, ← Real.exp_add, neg_mul, add_neg_cancel,
-      Real.exp_zero, one_mul]
-  · exact cubicAxisClock_parameter ha p.2
-
-/-- The cylinder inverse right-inverts the cylinder. -/
-theorem MorseCancellation.cubicFlowCylinder_right_inv {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    {p : Model m} (hp : p.1 ∈ Set.Ioo (-a) a) :
-    cubicFlowCylinder σ a (cubicFlowCylinderInverse σ a p) = p := by
-  apply Prod.ext
-  · exact cubicAxisParameter_clock ha hp
-  · funext i
-    change
-      Real.exp (-σ i * cubicAxisClock a p.1) * (Real.exp (σ i * cubicAxisClock a p.1) * p.2 i) =
-        p.2 i
-    rw [← mul_assoc, ← Real.exp_add, neg_mul, neg_add_cancel, Real.exp_zero, one_mul]
-
-/-- The cubic flow cylinder is smooth. -/
-theorem MorseCancellation.contDiff_cubicFlowCylinder {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) :
-    ContDiff ℝ ∞ (cubicFlowCylinder σ a) := by
-  apply ((contDiff_cubicAxisParameter a).comp contDiff_snd).prodMk
-  apply contDiff_pi.mpr
-  intro i
-  fun_prop
-
-/-- The cylinder inverse is smooth. -/
-theorem MorseCancellation.contDiffOn_cubicFlowCylinderInverse {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
-    (ha : 0 < a) : ContDiffOn ℝ ∞ (cubicFlowCylinderInverse σ a) (Set.Ioo (-a) a ×ˢ Set.univ) := by
-  have ht :
-    ContDiffOn ℝ ∞ (fun p : Model m => cubicAxisClock a p.1) (Set.Ioo (-a) a ×ˢ Set.univ) :=
-    (contDiffOn_cubicAxisClock ha).comp contDiffOn_fst (fun _ hp => hp.1)
-  apply ContDiffOn.prodMk ?_ ht
-  apply contDiffOn_pi.mpr
-  intro i
-  exact
-    (Real.contDiff_exp.comp_contDiffOn (contDiffOn_const.mul ht)).mul
-      (((contDiff_apply ℝ ℝ i).comp contDiff_snd).contDiffOn)
-
-/-- The flow cylinder as a chart. -/
-def MorseCancellation.cubicFlowCylinderChart {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a) :
-    PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, Model m) ((Fin m → ℝ) × ℝ) (Model m) ∞
-    where
-  toFun := cubicFlowCylinder σ a
-  invFun := cubicFlowCylinderInverse σ a
-  source := Set.univ
-  target := Set.Ioo (-a) a ×ˢ Set.univ
-  map_source' p _ := ⟨cubicAxisParameter_mem ha p.2, Set.mem_univ _⟩
-  map_target' _ _ := Set.mem_univ _
-  left_inv' p _ := cubicFlowCylinder_left_inv σ ha p
-  right_inv' _ hp := cubicFlowCylinder_right_inv σ ha hp.1
-  open_source := isOpen_univ
-  open_target := isOpen_Ioo.prod isOpen_univ
-  contMDiffOn_toFun := (contDiff_cubicFlowCylinder σ a).contMDiff.contMDiffOn
-  contMDiffOn_invFun := (contDiffOn_cubicFlowCylinderInverse σ ha).contMDiffOn
-
-/-- The cylinder's time derivative is the field. -/
-theorem MorseCancellation.hasDerivAt_cubicFlowCylinder {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) (z : Fin m → ℝ)
-    (t : ℝ) :
-    HasDerivAt (fun s => cubicFlowCylinder σ a (z, s))
-      (cubicDescent σ (-(a ^ 2)) (cubicFlowCylinder σ a (z, t))) t := by
-  have hz :
-    HasDerivAt (fun s => fun i => Real.exp (-σ i * s) * z i)
-      (fun i => -σ i * (Real.exp (-σ i * t) * z i)) t := by
-    apply hasDerivAt_pi.mpr
-    intro i
-    have hd :=
-      ((Real.hasDerivAt_exp (-σ i * t)).comp t ((hasDerivAt_id t).const_mul (-σ i))).mul_const
-        (z i)
-    convert! hd using 1
-    first
-    | rfl
-    | ring
-  have hd := (hasDerivAt_cubicAxisParameter a t).prodMk hz
-  have he :
-    cubicDescent σ (-(a ^ 2)) (cubicFlowCylinder σ a (z, t)) =
-      (a ^ 2 - cubicAxisParameter a t ^ 2, fun i => -σ i * (Real.exp (-σ i * t) * z i)) := by
-    apply Prod.ext
-    · change -(cubicAxisParameter a t ^ 2 + -(a ^ 2)) = a ^ 2 - cubicAxisParameter a t ^ 2
-      ring
-    · rfl
-  rw [he]
-  exact hd
-
-/-- The cylinder on the axis. -/
-theorem MorseCancellation.cubicFlowCylinder_axis {m : ℕ} (σ : Fin m → ℝ) (a t : ℝ) :
-    cubicFlowCylinder σ a (0, t) = cubicModelOrbit a t := by
-  simp only [cubicFlowCylinder, cubicModelOrbit, Pi.zero_apply, MulZeroClass.mul_zero]
-  rfl
-
-/-- The cylinder at time zero. -/
-theorem MorseCancellation.cubicFlowCylinder_zero_time {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) (z : Fin m → ℝ) :
-    cubicFlowCylinder σ a (z, 0) = (0, z) := by
-  simp only [cubicFlowCylinder, cubicAxisParameter, MulZeroClass.mul_zero, Real.tanh_zero,
-    Real.exp_zero, one_mul]
-
-/-- The cubic axis parameter is monotone. -/
-theorem MorseCancellation.monotone_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
-    Monotone (cubicAxisParameter a) := by
-  intro s t hst
-  exact
-    mul_le_mul_of_nonneg_left (strictMono_tanh.monotone (mul_le_mul_of_nonneg_left hst ha.le))
-      ha.le
-
-/-- The cylinder's transverse norm is bounded by the maximum. -/
-theorem MorseCancellation.cubicFlowCylinder_transverse_norm_le_max {m : ℕ} (σ : Fin m → ℝ) (a : ℝ)
-    (z : Fin m → ℝ) {s t u : ℝ} (ht : t ∈ Set.Icc s u) :
-    ‖(cubicFlowCylinder σ a (z, t)).2‖ ≤
-      Max.max ‖(cubicFlowCylinder σ a (z, s)).2‖ ‖(cubicFlowCylinder σ a (z, u)).2‖ := by
-  let Z (r : ℝ) : Fin m → ℝ := (cubicFlowCylinder σ a (z, r)).2
-  have hcoord (r : ℝ) (i : Fin m) : ‖Z r i‖ = Real.exp (-σ i * r) * ‖z i‖ := by
-    change ‖Real.exp (-σ i * r) * z i‖ = _
-    rw [norm_mul, Real.norm_of_nonneg (Real.exp_pos _).le]
-  apply (pi_norm_le_iff_of_nonneg (le_max_of_le_left (norm_nonneg (Z s)))).mpr
-  intro i
-  change ‖Z t i‖ ≤ Max.max ‖Z s‖ ‖Z u‖
-  by_cases hi : 0 ≤ σ i
-  · calc
-      ‖Z t i‖ = Real.exp (-σ i * t) * ‖z i‖ := hcoord t i
-      _ ≤ Real.exp (-σ i * s) * ‖z i‖ :=
-        (mul_le_mul_of_nonneg_right
-          (Real.exp_le_exp.mpr (mul_le_mul_of_nonpos_left ht.1 (neg_nonpos.mpr hi)))
-          (norm_nonneg _))
-      _ = ‖Z s i‖ := (hcoord s i).symm
-      _ ≤ ‖Z s‖ := (norm_le_pi_norm (Z s) i)
-      _ ≤ Max.max ‖Z s‖ ‖Z u‖ := le_max_left _ _
-  · calc
-      ‖Z t i‖ = Real.exp (-σ i * t) * ‖z i‖ := hcoord t i
-      _ ≤ Real.exp (-σ i * u) * ‖z i‖ :=
-        (mul_le_mul_of_nonneg_right
-          (Real.exp_le_exp.mpr
-            (mul_le_mul_of_nonneg_left ht.2 (neg_nonneg.mpr (le_of_not_ge hi))))
-          (norm_nonneg _))
-      _ = ‖Z u i‖ := (hcoord u i).symm
-      _ ≤ ‖Z u‖ := (norm_le_pi_norm (Z u) i)
-      _ ≤ Max.max ‖Z s‖ ‖Z u‖ := le_max_right _ _
-
-/-- The cylinder stays in the axis ball. -/
-theorem MorseCancellation.cubicFlowCylinder_stays_axis_ball {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (z : Fin m → ℝ) {s t u c r : ℝ} (ht : t ∈ Set.Icc s u)
-    (hs : cubicFlowCylinder σ a (z, s) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r)
-    (hu : cubicFlowCylinder σ a (z, u) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r) :
-    cubicFlowCylinder σ a (z, t) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r := by
-  have hs' : |cubicAxisParameter a s - c| ≤ r ∧ ‖(cubicFlowCylinder σ a (z, s)).2‖ ≤ r := by
-    simpa only [Metric.mem_closedBall, Prod.dist_eq, max_le_iff, Real.dist_eq, dist_zero_right,
-      cubicFlowCylinder] using hs
-  have hu' : |cubicAxisParameter a u - c| ≤ r ∧ ‖(cubicFlowCylinder σ a (z, u)).2‖ ≤ r := by
-    simpa only [Metric.mem_closedBall, Prod.dist_eq, max_le_iff, Real.dist_eq, dist_zero_right,
-      cubicFlowCylinder] using hu
-  rw [Metric.mem_closedBall, Prod.dist_eq, max_le_iff, Real.dist_eq, dist_zero_right]
-  constructor
-  · change |cubicAxisParameter a t - c| ≤ r
-    apply abs_le.mpr
-    have hst := monotone_cubicAxisParameter ha ht.1
-    have htu := monotone_cubicAxisParameter ha ht.2
-    constructor <;> linarith [(abs_le.mp hs'.1).1, (abs_le.mp hu'.1).2]
-  · exact (cubicFlowCylinder_transverse_norm_le_max σ a z ht).trans (max_le hs'.2 hu'.2)
-
-/-! ### Fiberwise diffeomorphisms -/
-
-/-- A fiberwise diffeomorphism retaining the parameter. -/
-def FiberwiseDiffeomorph.retainParameter {X P : Type*} (F : X × P → X) (p : X × P) :
-    X × P :=
-  (F p, p.2)
-
-/-- The parameter-retaining map is smooth. -/
-theorem FiberwiseDiffeomorph.contMDiff_retainParameter {D H X P : Type*}
-    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup P] [NormedSpace ℝ P]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X] [ChartedSpace H X]
-    {F : X × P → X} (hF : ContMDiff (I.prod 𝓘(ℝ, P)) I ∞ F) :
-    ContMDiff (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) ∞ (retainParameter F) :=
-  hF.prodMk contMDiff_snd
-
-/-- The parameter-retaining map is bijective. -/
-theorem FiberwiseDiffeomorph.bijective_retainParameter {X P : Type*} {F : X × P → X}
-    (hF : ∀ s, Function.Bijective (fun x => F (x, s))) : Function.Bijective (retainParameter F) :=
-  by
-  constructor
-  · rintro ⟨x, s⟩ ⟨y, t⟩ heq
-    have hst : s = t := congrArg Prod.snd heq
-    subst t
-    exact Prod.ext ((hF s).1 (congrArg Prod.fst heq)) rfl
-  · rintro ⟨y, s⟩
-    obtain ⟨x, hx⟩ := (hF s).2 y
-    exact ⟨(x, s), Prod.ext hx rfl⟩
-
-/-- The retaining map's derivative. -/
-theorem FiberwiseDiffeomorph.mfderiv_retainParameter_apply {D H X P : Type*}
-    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup P] [NormedSpace ℝ P]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X] [ChartedSpace H X]
-    {F : X × P → X} (hF : ContMDiff (I.prod 𝓘(ℝ, P)) I ∞ F) (p : X × P) (v : D × P) :
-    mfderiv (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) (retainParameter F) p v =
-      (mfderiv I I (fun x => F (x, p.2)) p.1 v.1 +
-          mfderiv 𝓘(ℝ, P) I (fun s => F (p.1, s)) p.2 v.2,
-        v.2) := by
-  change mfderiv (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) (fun z => (F z, z.2)) p v = _
-  rw [mfderiv_prodMk (hF.mdifferentiable (by simp) p) mdifferentiableAt_snd, mfderiv_snd]
-  change ((mfderiv (I.prod 𝓘(ℝ, P)) I F p) v, v.2) = _
-  exact Prod.ext (mfderiv_prod_eq_add_apply (v := v) (hF.mdifferentiable (by simp) p)) rfl
-
-/-- The retaining map's derivative is invertible. -/
-theorem FiberwiseDiffeomorph.isInvertible_mfderiv_retainParameter {D H X P : Type*}
-    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup P] [NormedSpace ℝ P]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X] [ChartedSpace H X]
-    [FiniteDimensional ℝ D] [FiniteDimensional ℝ P] {F : X × P → X}
-    (hF : ContMDiff (I.prod 𝓘(ℝ, P)) I ∞ F)
-    (hslice : ∀ s, ∃ d : Diffeomorph I I X X ∞, ∀ x, d x = F (x, s)) (p : X × P) :
-    (mfderiv (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) (retainParameter F) p).IsInvertible := by
-  let A : D →L[ℝ] D := mfderiv I I (fun x => F (x, p.2)) p.1
-  let B : P →L[ℝ] D := mfderiv 𝓘(ℝ, P) I (fun s => F (p.1, s)) p.2
-  have hA : Function.Bijective A := by
-    obtain ⟨d, hd⟩ := hslice p.2
-    have heq : (fun x => F (x, p.2)) = d := funext (fun x => (hd x).symm)
-    change Function.Bijective (mfderiv I I (fun x => F (x, p.2)) p.1)
-    rw [heq]
-    exact (d.mfderivToContinuousLinearEquiv (by simp) p.1).bijective
-  let L : (D × P) →L[ℝ] (D × P) := mfderiv (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) (retainParameter F) p
-  have hL (v : D × P) : L v = (A v.1 + B v.2, v.2) := mfderiv_retainParameter_apply hF p v
-  have hbij : Function.Bijective L := by
-    constructor
-    · intro u v huv
-      have hs : u.2 = v.2 := by simpa only [hL] using congrArg Prod.snd huv
-      have hx : A u.1 + B u.2 = A v.1 + B v.2 := by simpa only [hL] using congrArg Prod.fst huv
-      rw [hs] at hx
-      exact Prod.ext (hA.1 (add_right_cancel hx)) hs
-    · intro v
-      obtain ⟨x, hx⟩ := hA.2 (v.1 - B v.2)
-      refine ⟨(x, v.2), ?_⟩
-      rw [hL, hx, sub_add_cancel]
-  exact ⟨(LinearEquiv.ofBijective L.toLinearMap hbij).toContinuousLinearEquiv, rfl⟩
-
-/-- The fiberwise diffeomorphism. -/
-def FiberwiseDiffeomorph.diffeomorph {D H X P : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ D H} [TopologicalSpace X] [ChartedSpace H X] [FiniteDimensional ℝ D]
-    [FiniteDimensional ℝ P] [I.Boundaryless] [IsManifold I ∞ X] {F : X × P → X}
-    (hF : ContMDiff (I.prod 𝓘(ℝ, P)) I ∞ F)
-    (hslice : ∀ s, ∃ d : Diffeomorph I I X X ∞, ∀ x, d x = F (x, s)) :
-    Diffeomorph (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) (X × P) (X × P) ∞ := by
-  have hlocal : IsLocalDiffeomorph (I.prod 𝓘(ℝ, P)) (I.prod 𝓘(ℝ, P)) ∞ (retainParameter F) := by
-    intro p
-    exact
-      isLocalDiffeomorphAt_boundaryless isOpen_univ (Set.mem_univ p)
-        (contMDiff_retainParameter hF).contMDiffOn
-        (isInvertible_mfderiv_retainParameter hF hslice p)
-  apply hlocal.diffeomorphOfBijective
-  apply bijective_retainParameter
-  intro s
-  obtain ⟨d, hd⟩ := hslice s
-  have heq : (fun x => F (x, s)) = d := funext (fun x => (hd x).symm)
-  rw [heq]
-  exact d.bijective
-
-/-- The product of a partial chart with a vector direction. -/
-def PartialChart.vectorProduct (E F : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [NormedAddCommGroup F] [NormedSpace ℝ F] :
-    Diffeomorph 𝓘(ℝ, E × F) (𝓘(ℝ, E).prod 𝓘(ℝ, F)) (E × F) (E × F) ∞
-    where
-  toEquiv := Equiv.refl (E × F)
-  contMDiff_toFun := contDiff_fst.contMDiff.prodMk contDiff_snd.contMDiff
-  contMDiff_invFun := contMDiff_fst.prodMk_space contMDiff_snd
-
-/-- The product of two partial charts. -/
-def PartialChart.prod {E₁ E₂ F₁ F₂ H₁ H₂ G₁ G₂ X₁ X₂ Y₁ Y₂ : Type*} [NormedAddCommGroup E₁]
-    [NormedSpace ℝ E₁] [NormedAddCommGroup E₂] [NormedSpace ℝ E₂] [NormedAddCommGroup F₁]
-    [NormedSpace ℝ F₁] [NormedAddCommGroup F₂] [NormedSpace ℝ F₂] [TopologicalSpace H₁]
-    [TopologicalSpace H₂] [TopologicalSpace G₁] [TopologicalSpace G₂]
-    {I₁ : ModelWithCorners ℝ E₁ H₁} {I₂ : ModelWithCorners ℝ E₂ H₂}
-    {J₁ : ModelWithCorners ℝ F₁ G₁} {J₂ : ModelWithCorners ℝ F₂ G₂} [TopologicalSpace X₁]
-    [ChartedSpace H₁ X₁] [TopologicalSpace X₂] [ChartedSpace H₂ X₂] [TopologicalSpace Y₁]
-    [ChartedSpace G₁ Y₁] [TopologicalSpace Y₂] [ChartedSpace G₂ Y₂]
-    (Φ : PartialDiffeomorph I₁ J₁ X₁ Y₁ ∞) (Ψ : PartialDiffeomorph I₂ J₂ X₂ Y₂ ∞) :
-    PartialDiffeomorph (I₁.prod I₂) (J₁.prod J₂) (X₁ × X₂) (Y₁ × Y₂) ∞
-    where
-  __ := Φ.toOpenPartialHomeomorph.prod Ψ.toOpenPartialHomeomorph
-  contMDiffOn_toFun := Φ.contMDiffOn_toFun.prodMap Ψ.contMDiffOn_toFun
-  contMDiffOn_invFun := Φ.contMDiffOn_invFun.prodMap Ψ.contMDiffOn_invFun
-
-/-! ### The suspended flow -/
-
-/-- An isotopy suspends to a diffeomorphism. -/
-theorem FlowSuspension.exists_isotopy_suspension_diffeomorph {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {A : ℝ × E → E}
-    (hA : ContDiff ℝ ∞ A)
-    (hslice : ∀ t, ∃ d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞, ∀ x, d x = A (t, x)) :
-    ∃ Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞, ∀ p, Ψ p = (A (p.2, p.1), p.2) :=
-  by
-  have hF : ContMDiff (𝓘(ℝ, E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ∞ (fun p : E × ℝ => A (p.2, p.1)) :=
-    hA.contMDiff.comp (contMDiff_snd.prodMk_space contMDiff_fst)
-  let D := FiberwiseDiffeomorph.diffeomorph hF hslice
-  let V := PartialChart.vectorProduct E ℝ
-  exact ⟨(V.trans D).trans V.symm, fun p => rfl⟩
-
-/-- The suspended flow on the product cylinder. -/
-def FlowSuspension.suspensionFlow {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) : Flow ℝ (E × ℝ)
-    where
-  toFun t p := Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + t)
-  cont' := by
-    apply Ψ.continuous.comp
-    exact
-      (Ψ.symm.continuous.comp continuous_snd).fst.prodMk
-        ((Ψ.symm.continuous.comp continuous_snd).snd.add continuous_fst)
-  map_zero' p := by simp only [add_zero, Prod.mk.eta, Ψ.apply_symm_apply]
-  map_add' s t
-    p := by
-    simp only [Ψ.symm_apply_apply]
-    congr 1
-    apply Prod.ext
-    · rfl
-    · ring
-
-/-- The suspended flow computes in the chart. -/
-theorem FlowSuspension.suspensionFlow_chart {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) (t : ℝ)
-    (p : E × ℝ) : suspensionFlow Ψ t (Ψ p) = Ψ (p.1, p.2 + t) := by
-  change Ψ ((Ψ.symm (Ψ p)).1, (Ψ.symm (Ψ p)).2 + t) = _
-  rw [Ψ.symm_apply_apply]
-
-/-- The suspended flow's height component. -/
-theorem FlowSuspension.suspensionFlow_height {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hheight : ∀ p, (Ψ p).2 = p.2) (t : ℝ) (p : E × ℝ) : (suspensionFlow Ψ t p).2 = p.2 + t := by
-  have hinv : (Ψ.symm p).2 = p.2 := by
-    have hh := hheight (Ψ.symm p)
-    rw [Ψ.apply_symm_apply] at hh
-    exact hh.symm
-  change (Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + t)).2 = _
-  rw [hheight, hinv]
-
-/-- The suspended flow's endpoint. -/
-theorem FlowSuspension.suspensionFlow_endpoint {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] {A : ℝ × E → E} (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hΨ : ∀ p, Ψ p = (A (p.2, p.1), p.2)) (hA0 : ∀ x, A (0, x) = x) (x : E) :
-    suspensionFlow Ψ 1 (x, 0) = (A (1, x), 1) := by
-  have hstart : Ψ (x, (0 : ℝ)) = (x, 0) := by rw [hΨ, hA0]
-  rw [← hstart, suspensionFlow_chart, zero_add, hΨ]
-
-/-- The suspended vector field. -/
-def FlowSuspension.suspensionField {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) (p : E × ℝ) : E × ℝ :=
-  fderiv ℝ Ψ (Ψ.symm p) (0, 1)
-
-/-- The suspended field is smooth. -/
-theorem FlowSuspension.contDiff_suspensionField {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) :
-    ContDiff ℝ ∞ (suspensionField Ψ) := by
-  have hΨ : ContDiff ℝ ∞ (Ψ : (E × ℝ) → E × ℝ) := Ψ.contMDiff.contDiff
-  have hΨinv : ContDiff ℝ ∞ (Ψ.symm : (E × ℝ) → E × ℝ) := Ψ.symm.contMDiff.contDiff
-  exact ((hΨ.fderiv_right (by simp)).comp hΨinv).clm_apply contDiff_const
-
-/-- The suspended flow solves the suspended field. -/
-theorem FlowSuspension.hasDerivAt_suspensionFlow {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) (p : E × ℝ)
-    (t : ℝ) :
-    HasDerivAt (fun s => suspensionFlow Ψ s p) (suspensionField Ψ (suspensionFlow Ψ t p)) t := by
-  have hb : HasDerivAt (fun s : ℝ => ((Ψ.symm p).1, (Ψ.symm p).2 + s)) (0, 1) t :=
-    (hasDerivAt_const t (Ψ.symm p).1).prodMk ((hasDerivAt_id t).const_add (Ψ.symm p).2)
-  have hd :=
-    (Ψ.contMDiff.contDiff.differentiable (by simp)
-          ((Ψ.symm p).1, (Ψ.symm p).2 + t)).hasFDerivAt.comp_hasDerivAt
-      t hb
-  change
-    HasDerivAt (fun s => Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + s))
-      (fderiv ℝ Ψ (Ψ.symm (Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + t))) (0, 1)) t
-  rw [Ψ.symm_apply_apply]
-  exact hd
-
-/-- The suspended flow's derivative at zero. -/
-theorem FlowSuspension.hasDerivAt_suspensionFlow_zero {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞) (p : E × ℝ) :
-    HasDerivAt (fun s => suspensionFlow Ψ s p) (suspensionField Ψ p) 0 := by
-  simpa only [(suspensionFlow Ψ).map_zero_apply] using hasDerivAt_suspensionFlow Ψ p 0
-
-/-- The suspended field's height component is one. -/
-theorem FlowSuspension.suspensionField_height {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hheight : ∀ p, (Ψ p).2 = p.2) (p : E × ℝ) : (suspensionField Ψ p).2 = 1 := by
-  have hd : HasDerivAt (fun t => (suspensionFlow Ψ t p).2) (suspensionField Ψ p).2 0 :=
-    (hasDerivAt_suspensionFlow_zero Ψ p).snd
-  have heq : (fun t => (suspensionFlow Ψ t p).2) = fun t => p.2 + t :=
-    funext (fun t => suspensionFlow_height Ψ hheight t p)
-  rw [heq] at hd
-  exact hd.unique ((hasDerivAt_id (0 : ℝ)).const_add p.2)
-
-/-- The suspended field is vertical where the isotopy is stationary. -/
-theorem FlowSuspension.suspensionField_eq_vertical_of_stationary {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] {A : ℝ × E → E}
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hΨ : ∀ p, Ψ p = (A (p.2, p.1), p.2)) (p : E × ℝ)
-    (hstationary : ∀ᶠ s in 𝓝 p.2, ∀ x, A (s, x) = A (p.2, x)) : suspensionField Ψ p = (0, 1) := by
-  let q := Ψ.symm p
-  have hq : Ψ q = p := Ψ.apply_symm_apply p
-  have hqheight : q.2 = p.2 := by
-    have hh := congrArg Prod.snd hq
-    rw [hΨ] at hh
-    exact hh
-  have hqfirst : A (p.2, q.1) = p.1 := by
-    have hh := congrArg Prod.fst hq
-    rw [hΨ] at hh
-    change A (q.2, q.1) = p.1 at hh
-    rwa [hqheight] at hh
-  have ht : Filter.Tendsto (fun t : ℝ => p.2 + t) (𝓝 0) (𝓝 p.2) := by
-    have hc : Continuous (fun t : ℝ => p.2 + t) := continuous_const.add continuous_id
-    simpa only [add_zero] using hc.tendsto (0 : ℝ)
-  have heq : (fun t => suspensionFlow Ψ t p) =ᶠ[𝓝 0] (fun t => (p.1, p.2 + t)) := by
-    filter_upwards [ht.eventually hstationary] with t hts
-    change Ψ (q.1, q.2 + t) = (p.1, p.2 + t)
-    rw [hΨ, hqheight, hts q.1, hqfirst]
-  have hv : HasDerivAt (fun t : ℝ => (p.1, p.2 + t)) (0, 1) 0 :=
-    (hasDerivAt_const 0 p.1).prodMk ((hasDerivAt_id (0 : ℝ)).const_add p.2)
-  exact ((hasDerivAt_suspensionFlow_zero Ψ p).congr_of_eventuallyEq heq.symm).unique hv
-
-/-- The suspended flow is vertical off the support. -/
-theorem FlowSuspension.suspensionFlow_vertical_off_support {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] {A : ℝ × E → E}
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hΨ : ∀ p, Ψ p = (A (p.2, p.1), p.2)) {K : Set E} (hfix : ∀ t x, x ∉ K → A (t, x) = x)
-    {p : E × ℝ} (hp : p.1 ∉ K) (t : ℝ) : suspensionFlow Ψ t p = (p.1, p.2 + t) := by
-  have hΨp : Ψ p = p := by rw [hΨ, hfix _ _ hp]
-  have hinv : Ψ.symm p = p := by
-    have hh := Ψ.symm_apply_apply p
-    rwa [hΨp] at hh
-  change Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + t) = _
-  rw [hinv, hΨ, hfix _ _ hp]
-
-/-- The suspended field is vertical off the support. -/
-theorem FlowSuspension.suspensionField_eq_vertical_off_support {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] {A : ℝ × E → E}
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hΨ : ∀ p, Ψ p = (A (p.2, p.1), p.2)) {K : Set E} (hfix : ∀ t x, x ∉ K → A (t, x) = x)
-    {p : E × ℝ} (hp : p.1 ∉ K) : suspensionField Ψ p = (0, 1) := by
-  have heq : (fun t => suspensionFlow Ψ t p) = fun t => (p.1, p.2 + t) :=
-    funext (fun t => suspensionFlow_vertical_off_support Ψ hΨ hfix hp t)
-  have hd := hasDerivAt_suspensionFlow_zero Ψ p
-  rw [heq] at hd
-  exact hd.unique ((hasDerivAt_const 0 p.1).prodMk ((hasDerivAt_id (0 : ℝ)).const_add p.2))
-
-/-- The suspended field minus the vertical field has compact support. -/
-theorem FlowSuspension.hasCompactSupport_suspensionField_sub_vertical {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] {A : ℝ × E → E}
-    (Ψ : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞)
-    (hΨ : ∀ p, Ψ p = (A (p.2, p.1), p.2)) {K : Set E} (hK : IsCompact K)
-    (hfix : ∀ t x, x ∉ K → A (t, x) = x) {a b : ℝ}
-    (hstationary : ∀ s ∉ Set.Icc a b, ∀ᶠ r in 𝓝 s, ∀ x, A (r, x) = A (s, x)) :
-    HasCompactSupport (fun p => suspensionField Ψ p - (0, 1)) := by
-  apply
-    HasCompactSupport.intro (hK.prod (CompactIccSpace.isCompact_Icc : IsCompact (Set.Icc a b)))
-  intro p hp
-  have hv : suspensionField Ψ p = (0, 1) := by
-    by_cases hx : p.1 ∈ K
-    · have ht : p.2 ∉ Set.Icc a b := fun h => hp ⟨hx, h⟩
-      exact suspensionField_eq_vertical_of_stationary Ψ hΨ p (hstationary _ ht)
-    · exact suspensionField_eq_vertical_off_support Ψ hΨ hfix hx
-  rw [hv, sub_self]
-
-/-! ### Supported isotopies -/
-
-/-- The extended family of diffeomorphisms is smooth. -/
-theorem SupportedDiffeomorph.contMDiff_extendFamily {E F H H' X Y : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
-    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
-    [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] [T2Space Y]
-    (Φ : PartialDiffeomorph I J X Y ∞) {A : ℝ × X → X} (hA : ContMDiff (𝓘(ℝ, ℝ).prod I) I ∞ A)
-    {K : Set X} (hK : IsCompact K) (hKΦ : K ⊆ Φ.source) (hfix : ∀ t x, x ∉ K → A (t, x) = x)
-    (hsource : ∀ t, Set.MapsTo (fun x => A (t, x)) Φ.source Φ.source) :
-    ContMDiff (𝓘(ℝ, ℝ).prod J) J ∞ (fun p : ℝ × Y => extendMap Φ (fun x => A (p.1, x)) p.2) := by
-  intro p
-  by_cases hp : p.2 ∈ Φ.target
-  · have hback :=
-      (Φ.contMDiffOn_invFun.contMDiffAt (Φ.open_target.mem_nhds hp)).comp p
-        (contMDiffAt_snd : ContMDiffAt (𝓘(ℝ, ℝ).prod J) J ∞ Prod.snd p)
-    have hpair := contMDiffAt_fst.prodMk hback
-    have hchange := hA.contMDiffAt.comp p hpair
-    have hforward :=
-      Φ.contMDiffOn_toFun.contMDiffAt (Φ.open_source.mem_nhds (hsource p.1 (Φ.map_target' hp)))
-    apply (hforward.comp p hchange).congr_of_eventuallyEq
-    have hn : ∀ᶠ q : ℝ × Y in 𝓝 p, q.2 ∈ Φ.target :=
-      continuous_snd.continuousAt.preimage_mem_nhds (Φ.open_target.mem_nhds hp)
-    filter_upwards [hn] with q hq
-    exact extendMap_of_mem Φ (fun x => A (q.1, x)) hq
-  · have hc : IsClosed (Φ '' K) :=
-      (hK.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hKΦ)).isClosed
-    have hnot : p.2 ∉ Φ '' K := by
-      rintro ⟨x, hx, hxp⟩
-      exact hp (hxp ▸ Φ.map_source' (hKΦ hx))
-    have hsnd : ContMDiffAt (𝓘(ℝ, ℝ).prod J) J ∞ Prod.snd p := contMDiffAt_snd
-    apply hsnd.congr_of_eventuallyEq
-    have hn : ∀ᶠ q : ℝ × Y in 𝓝 p, q.2 ∉ Φ '' K :=
-      continuous_snd.continuousAt.preimage_mem_nhds (hc.isOpen_compl.mem_nhds hnot)
-    filter_upwards [hn] with q hq
-    exact extendMap_eq_of_notMem_image Φ (hfix q.1) hq
-
-/-- The extended family is smooth at a point. -/
-theorem SupportedDiffeomorph.contMDiffAt_extendFamily {E F H H' X Y : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
-    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
-    [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] [T2Space Y]
-    (Φ : PartialDiffeomorph I J X Y ∞) {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
-    {A : P × X → X} (hA : ContMDiff (𝓘(ℝ, P).prod I) I ∞ A) {K : Set X} (hK : IsCompact K)
-    (hKΦ : K ⊆ Φ.source) (hfix : ∀ t x, x ∉ K → A (t, x) = x) {p : P × Y}
-    (hsource : Set.MapsTo (fun x => A (p.1, x)) Φ.source Φ.source) :
-    ContMDiffAt (𝓘(ℝ, P).prod J) J ∞ (fun q : P × Y => extendMap Φ (fun x => A (q.1, x)) q.2) p :=
-  by
-  by_cases hp : p.2 ∈ Φ.target
-  · have hback :=
-      (Φ.contMDiffOn_invFun.contMDiffAt (Φ.open_target.mem_nhds hp)).comp p
-        (contMDiffAt_snd : ContMDiffAt (𝓘(ℝ, P).prod J) J ∞ Prod.snd p)
-    have hpair := contMDiffAt_fst.prodMk hback
-    have hchange := hA.contMDiffAt.comp p hpair
-    have hforward :=
-      Φ.contMDiffOn_toFun.contMDiffAt (Φ.open_source.mem_nhds (hsource (Φ.map_target' hp)))
-    apply (hforward.comp p hchange).congr_of_eventuallyEq
-    have hn : ∀ᶠ q : P × Y in 𝓝 p, q.2 ∈ Φ.target :=
-      continuous_snd.continuousAt.preimage_mem_nhds (Φ.open_target.mem_nhds hp)
-    filter_upwards [hn] with q hq
-    exact extendMap_of_mem Φ (fun x => A (q.1, x)) hq
-  · have hc : IsClosed (Φ '' K) :=
-      (hK.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hKΦ)).isClosed
-    have hnot : p.2 ∉ Φ '' K := by
-      rintro ⟨x, hx, hxp⟩
-      exact hp (hxp ▸ Φ.map_source' (hKΦ hx))
-    have hsnd : ContMDiffAt (𝓘(ℝ, P).prod J) J ∞ Prod.snd p := contMDiffAt_snd
-    apply hsnd.congr_of_eventuallyEq
-    have hn : ∀ᶠ q : P × Y in 𝓝 p, q.2 ∉ Φ '' K :=
-      continuous_snd.continuousAt.preimage_mem_nhds (hc.isOpen_compl.mem_nhds hnot)
-    filter_upwards [hn] with q hq
-    exact extendMap_eq_of_notMem_image Φ (hfix q.1) hq
-
-/-- The bump family of supported diffeomorphisms. -/
-def SupportedDiffeomorph.bumpFamily {E F H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
-    {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (p : E × M) : M :=
-  extendMap Φ (fun x => x + β x • p.1) p.2
-
-/-- The bump family at parameter zero is the identity. -/
-theorem SupportedDiffeomorph.bumpFamily_zero {E F H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
-    {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (y : M) : bumpFamily Φ β (0, y) = y := by
-  have heq : (fun x : E => x + β x • (0 : E)) = id := by funext x; simp
-  change extendMap Φ (fun x => x + β x • (0 : E)) y = y
-  rw [heq]
-  exact extendMap_id Φ y
-
-/-- The bump family computes in the chart. -/
-theorem SupportedDiffeomorph.bumpFamily_chart {E F H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
-    {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (a : E) {x : E} (hx : x ∈ Φ.source) :
-    bumpFamily Φ β (a, Φ x) = Φ (x + β x • a) :=
-  extendMap_chart Φ _ hx
-
-/-- The bump family lands in the target. -/
-theorem SupportedDiffeomorph.bumpFamily_mem_target {E F H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
-    {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (a : E)
-    (hsource : Set.MapsTo (fun x => x + β x • a) Φ.source Φ.source) {y : M} (hy : y ∈ Φ.target) :
-    bumpFamily Φ β (a, y) ∈ Φ.target :=
-  extendMap_mem_target Φ hsource hy
-
-/-- The bump family in coordinates. -/
-theorem SupportedDiffeomorph.bumpFamily_coordinates {E F H M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
-    {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (a : E)
-    (hsource : Set.MapsTo (fun x => x + β x • a) Φ.source Φ.source) {y : M} (hy : y ∈ Φ.target) :
-    Φ.symm (bumpFamily Φ β (a, y)) = Φ.symm y + β (Φ.symm y) • a := by
-  change Φ.symm (extendMap Φ (fun x => x + β x • a) y) = _
-  rw [extendMap_of_mem Φ _ hy]
-  exact Φ.left_inv' (hsource (Φ.map_target' hy))
-
-/-- The bump family is fixed outside the support. -/
-theorem SupportedDiffeomorph.bumpFamily_fixed_outside {E F H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (a : E) {y : M}
-    (hy : y ∉ Φ '' tsupport β) : bumpFamily Φ β (a, y) = y := by
-  apply extendMap_eq_of_notMem_image Φ (K := tsupport β) _ hy
-  intro x hx
-  have hzero : β x = 0 := by
-    by_contra hn
-    exact hx (subset_tsupport β hn)
-  simp only [hzero, zero_smul, add_zero]
-
-/-- A radius for the ambient bump family exists. -/
-theorem SupportedDiffeomorph.exists_radius_ambient_bumpFamily {E F H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) [FiniteDimensional ℝ E] [T2Space M] {β : E → ℝ}
-    (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β) (hsupport : tsupport β ⊆ Φ.source) :
-    ∃ ε : ℝ,
-      0 < ε ∧
-        (∀ a : E, ‖a‖ < ε → ∃ D : Diffeomorph J J M M ∞, ∀ y, D y = bumpFamily Φ β (a, y)) ∧
-          (∀ p : E × M, ‖p.1‖ < ε → ContMDiffAt (𝓘(ℝ, E).prod J) J ∞ (bumpFamily Φ β) p) ∧
-            ∀ a : E, ‖a‖ < ε → Set.MapsTo (fun x => x + β x • a) Φ.source Φ.source := by
-  obtain ⟨ε, hε, hsmall⟩ := SmallPerturbation.exists_radius_bumpTranslation hβ hcompact
-  let A : E × E → E := fun p => p.2 + β p.2 • p.1
-  have hA : ContMDiff (𝓘(ℝ, E).prod 𝓘(ℝ, E)) 𝓘(ℝ, E) ∞ A :=
-    contMDiff_snd.add ((hβ.contMDiff.comp contMDiff_snd).smul contMDiff_fst)
-  have hfix : ∀ a x, x ∉ tsupport β → A (a, x) = x := by
-    intro a x hx
-    have hzero : β x = 0 := by
-      by_contra hn
-      exact hx (subset_tsupport β hn)
-    simp only [A, hzero, zero_smul, add_zero]
-  have hsource (a : E) (ha : ‖a‖ < ε) : Set.MapsTo (fun x => A (a, x)) Φ.source Φ.source := by
-    obtain ⟨d, hd, hdfix⟩ := hsmall a ha
-    have heq : (fun x => A (a, x)) = d := funext (fun x => (hd x).symm)
-    rw [heq]
-    exact mapsTo_source Φ d.toEquiv hsupport hdfix
-  refine ⟨ε, hε, ?_, ?_, hsource⟩
-  · intro a ha
-    obtain ⟨d, hd, hdfix⟩ := hsmall a ha
-    refine ⟨extension Φ d hcompact.isCompact hsupport hdfix, ?_⟩
-    intro y
-    change extendMap Φ d y = extendMap Φ (fun x => x + β x • a) y
-    exact congrArg (fun f : E → E => extendMap Φ f y) (funext hd)
-  · intro p hp
-    exact contMDiffAt_extendFamily Φ hA hcompact.isCompact hsupport hfix (hsource p.1 hp)
-
-/-- The bump family eventually maps a compact set into an open set. -/
-theorem SupportedDiffeomorph.eventually_bumpFamily_maps_compact_into_open {E F H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
-    (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) [FiniteDimensional ℝ E] [T2Space M] {X : Type*}
-    [TopologicalSpace X] {β : E → ℝ} (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β)
-    (hsupport : tsupport β ⊆ Φ.source) {f : X → M} (hf : Continuous f) {C : Set X}
-    (hC : IsCompact C) {O : Set M} (hO : IsOpen O) (hmap : Set.MapsTo f C O) :
-    ∀ᶠ a in 𝓝 (0 : E), Set.MapsTo (fun x => bumpFamily Φ β (a, f x)) C O := by
-  obtain ⟨δ, hδ, -, hsmooth, -⟩ := exists_radius_ambient_bumpFamily Φ hβ hcompact hsupport
-  apply hC.eventually_forall_of_forall_eventually
-  intro x hx
-  have hpair : ContinuousAt (fun p : E × X => (p.1, f p.2)) (0, x) :=
-    (continuous_fst.prodMk (hf.comp continuous_snd)).continuousAt
-  have hbase : ContinuousAt (bumpFamily Φ β) (0, f x) :=
-    (hsmooth (0, f x) (by simpa only [norm_zero] using hδ)).continuousAt
-  have hfamily : ContinuousAt (fun p : E × X => bumpFamily Φ β (p.1, f p.2)) (0, x) :=
-    ContinuousAt.comp (g := bumpFamily Φ β) (f := fun p : E × X => (p.1, f p.2)) hbase hpair
-  apply hfamily.preimage_mem_nhds
-  apply hO.mem_nhds
-  rw [bumpFamily_zero]
-  exact hmap hx
-
-/-- A small supported bump isotopy exists. -/
-theorem SupportedDiffeomorph.exists_small_supported_bump_isotopy {E F H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
-    [ChartedSpace H M] [T2Space M] (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) {β : E → ℝ}
-    (hs : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β) (hsupport : tsupport β ⊆ Φ.source) :
-    ∃ ε : ℝ,
-      0 < ε ∧
-        ∀ a : E,
-          ‖a‖ < ε →
-            ∃ A : ℝ × M → M,
-              ContMDiff (𝓘(ℝ, ℝ).prod J) J ∞ A ∧
-                (∀ y, A (0, y) = y) ∧
-                  (∀ t, ∃ d : Diffeomorph J J M M ∞, ∀ y, A (t, y) = d y) ∧
-                    (∀ t y, y ∉ Φ '' tsupport β → A (t, y) = y) ∧
-                      ∀ x ∈ Φ.source, A (1, Φ x) = Φ (x + β x • a) := by
-  obtain ⟨ε, hε, hsmall⟩ := SmallPerturbation.exists_radius_bumpTranslation hs hcompact
-  refine ⟨ε, hε, ?_⟩
-  intro a ha
-  let B : ℝ × E → E := fun p => p.2 + β p.2 • (Real.smoothTransition p.1 • a)
-  have hθ : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ∞ Real.smoothTransition :=
-    (Real.smoothTransition.contDiff (n := ⊤)).contMDiff
-  have hB : ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, E)) 𝓘(ℝ, E) ∞ B :=
-    contMDiff_snd.add
-      ((hs.contMDiff.comp contMDiff_snd).smul ((hθ.comp contMDiff_fst).smul contMDiff_const))
-  have hmodel :
-    ∀ t : ℝ,
-      ∃ d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞,
-        (∀ x, d x = B (t, x)) ∧ ∀ x ∉ tsupport β, d x = x := by
-    intro t
-    have hnorm : ‖Real.smoothTransition t • a‖ ≤ ‖a‖ := by
-      rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (Real.smoothTransition.nonneg t)]
-      exact mul_le_of_le_one_left (norm_nonneg a) (Real.smoothTransition.le_one t)
-    exact hsmall (Real.smoothTransition t • a) (hnorm.trans_lt ha)
-  have hfix : ∀ t x, x ∉ tsupport β → B (t, x) = x := by
-    intro t x hx
-    obtain ⟨d, hd, hdfix⟩ := hmodel t
-    exact (hd x).symm.trans (hdfix x hx)
-  have hsource : ∀ t, Set.MapsTo (fun x => B (t, x)) Φ.source Φ.source := by
-    intro t
-    obtain ⟨d, hd, hdfix⟩ := hmodel t
-    have heq : (fun x => B (t, x)) = d := funext (fun x => (hd x).symm)
-    rw [heq]
-    exact mapsTo_source Φ d.toEquiv hsupport hdfix
-  let A : ℝ × M → M := fun p => extendMap Φ (fun x => B (p.1, x)) p.2
-  refine ⟨A, contMDiff_extendFamily Φ hB hcompact.isCompact hsupport hfix hsource, ?_, ?_, ?_, ?_⟩
-  · intro y
-    have hzero : (fun x => B (0, x)) = id := by
-      funext x
-      simp only [B, Real.smoothTransition.zero, zero_smul, smul_zero, add_zero, id_eq]
-    change extendMap Φ (fun x => B (0, x)) y = y
-    rw [hzero]
-    exact extendMap_id Φ y
-  · intro t
-    obtain ⟨d, hd, hdfix⟩ := hmodel t
-    refine ⟨extension Φ d hcompact.isCompact hsupport hdfix, ?_⟩
-    intro y
-    change extendMap Φ (fun x => B (t, x)) y = extendMap Φ d y
-    exact congrArg (fun f : E → E => extendMap Φ f y) (funext (fun x => (hd x).symm))
-  · intro t y hy
-    exact extendMap_eq_of_notMem_image Φ (hfix t) hy
-  · intro x hx
-    change extendMap Φ (fun y => B (1, y)) (Φ x) = _
-    rw [extendMap_chart Φ (fun y => B (1, y)) hx]
-    simp only [B, Real.smoothTransition.one, one_smul]
-
-/-- A diffeomorphism isotopic to the identity through supported diffeomorphisms. -/
-def SupportedDiffeomorph.IsotopicToIdentity {F H M : Type*} [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
-    [ChartedSpace H M] (e : Diffeomorph J J M M ∞) : Prop :=
-  ∃ A : ℝ × M → M,
-    ContMDiff (𝓘(ℝ, ℝ).prod J) J ∞ A ∧
-      (∀ y, A (0, y) = y) ∧
-        (∀ y, A (1, y) = e y) ∧ ∀ t, ∃ d : Diffeomorph J J M M ∞, ∀ y, A (t, y) = d y
-
-/-- The identity is isotopic to itself. -/
-theorem SupportedDiffeomorph.isotopicToIdentity_refl {F H M : Type*} [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
-    [ChartedSpace H M] : IsotopicToIdentity (Diffeomorph.refl J M ∞) := by
-  refine ⟨Prod.snd, contMDiff_snd, fun _ => rfl, fun _ => rfl, ?_⟩
-  exact fun _ => ⟨Diffeomorph.refl J M ∞, fun _ => rfl⟩
-
-/-- Isotopy to the identity is transitive. -/
-theorem SupportedDiffeomorph.IsotopicToIdentity.trans {F H M : Type*} [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
-    [ChartedSpace H M] {e d : Diffeomorph J J M M ∞}
-    (he : SupportedDiffeomorph.IsotopicToIdentity e)
-    (hd : SupportedDiffeomorph.IsotopicToIdentity d) :
-    SupportedDiffeomorph.IsotopicToIdentity (e.trans d) := by
-  obtain ⟨A, hA, hA₀, hA₁, hAd⟩ := he
-  obtain ⟨B, hB, hB₀, hB₁, hBd⟩ := hd
-  refine ⟨fun p => B (p.1, A p), hB.comp (contMDiff_fst.prodMk hA), ?_, ?_, ?_⟩
-  · intro y
-    change B (0, A (0, y)) = y
-    rw [hA₀, hB₀]
-  · intro y
-    change B (1, A (1, y)) = d (e y)
-    rw [hA₁, hB₁]
-  · intro t
-    obtain ⟨e', he'⟩ := hAd t
-    obtain ⟨d', hd'⟩ := hBd t
-    refine ⟨e'.trans d', ?_⟩
-    intro y
-    change B (t, A (t, y)) = d' (e' y)
-    rw [he', hd']
-
-/-- A radius on which the bump family is an isotopy exists. -/
-theorem SupportedDiffeomorph.exists_radius_bumpFamily_isotopy {F H M : Type*}
-    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H}
-    [TopologicalSpace M] [ChartedSpace H M] {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [FiniteDimensional ℝ E] [T2Space M] (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) {β : E → ℝ}
-    (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β) (hsupport : tsupport β ⊆ Φ.source) :
-    ∃ ε : ℝ,
-      0 < ε ∧
-        ∀ a : E,
-          ‖a‖ < ε →
-            ∀ e : Diffeomorph J J M M ∞,
-              (∀ y, e y = bumpFamily Φ β (a, y)) → IsotopicToIdentity e := by
-  obtain ⟨ε, hε, hsmall⟩ := exists_small_supported_bump_isotopy Φ hβ hcompact hsupport
-  refine ⟨ε, hε, ?_⟩
-  intro a ha e he
-  obtain ⟨A, hA, hzero, hdiff, hfix, hterminal⟩ := hsmall a ha
-  refine ⟨A, hA, hzero, ?_, hdiff⟩
-  intro y
-  rw [he]
-  by_cases hy : y ∈ Φ.target
-  · have hh := hterminal (Φ.symm y) (Φ.map_target' hy)
-    have hpoint : Φ (Φ.symm y) = y := Φ.right_inv' hy
-    rw [hpoint] at hh
-    change A (1, y) = extendMap Φ (fun x => x + β x • a) y
-    rw [extendMap_of_mem Φ _ hy]
-    exact hh
-  · have hnot : y ∉ Φ '' tsupport β := by
-      rintro ⟨x, hx, rfl⟩
-      exact hy (Φ.map_source' (hsupport hx))
-    rw [hfix 1 y hnot, bumpFamily_fixed_outside Φ β a hnot]
-
-/-- A supported isotopy fixed on a prescribed set. -/
-structure SupportedDiffeomorph.SupportedRelativeIsotopy {E H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
-    [TopologicalSpace M] [ChartedSpace H M] (e : Diffeomorph J J M M ∞) (K S : Set M) where
-  family : ℝ × M → M
-  smooth : ContMDiff (𝓘(ℝ, ℝ).prod J) J ∞ family
-  zero : ∀ x, family (0, x) = x
-  one : ∀ x, family (1, x) = e x
-  slices : ∀ t, ∃ d : Diffeomorph J J M M ∞, ∀ x, d x = family (t, x)
-  fixedOutside : ∀ t x, x ∉ K → family (t, x) = x
-  fixedOn : ∀ t x, x ∈ S → family (t, x) = x
-
-/-- A supported relative isotopy's endpoint is isotopic to the identity. -/
-theorem SupportedDiffeomorph.SupportedRelativeIsotopy.isotopicToIdentity {E H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
-    [TopologicalSpace M] [ChartedSpace H M] {e : Diffeomorph J J M M ∞} {K S : Set M}
-    (A : SupportedDiffeomorph.SupportedRelativeIsotopy e K S) :
-    SupportedDiffeomorph.IsotopicToIdentity e := by
-  refine ⟨A.family, A.smooth, A.zero, A.one, ?_⟩
-  intro t
-  obtain ⟨d, hd⟩ := A.slices t
-  exact ⟨d, fun x => (hd x).symm⟩
-
-/-- The isotopy endpoint is fixed outside the support. -/
-theorem SupportedDiffeomorph.SupportedRelativeIsotopy.endpoint_fixed_outside {E H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
-    [TopologicalSpace M] [ChartedSpace H M] {e : Diffeomorph J J M M ∞} {K S : Set M}
-    (A : SupportedDiffeomorph.SupportedRelativeIsotopy e K S) (x : M) (hx : x ∉ K) :
-    e x = x :=
-  (A.one x).symm.trans (A.fixedOutside 1 x hx)
-
-/-- The isotopy endpoint is fixed on the prescribed set. -/
-theorem SupportedDiffeomorph.SupportedRelativeIsotopy.endpoint_fixed_on {E H M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
-    [TopologicalSpace M] [ChartedSpace H M] {e : Diffeomorph J J M M ∞} {K S : Set M}
-    (A : SupportedDiffeomorph.SupportedRelativeIsotopy e K S) (x : M) (hx : x ∈ S) :
-    e x = x :=
-  (A.one x).symm.trans (A.fixedOn 1 x hx)
-
-/-! ### Suspension coordinates -/
-
-/-- Coordinates for the suspended flow. -/
-structure FlowSuspension.SuspensionCoordinates {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞) (K : Set E) (W : (E × ℝ) → E × ℝ)
-    (F : Flow ℝ (E × ℝ)) where
-  chart : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞
-  field_eq : W = suspensionField chart
-  flow_eq : F = suspensionFlow chart
-  height : ∀ p, (chart p).2 = p.2
-  base_iff : ∀ U : Set E, K ⊆ U → ∀ p, (chart p).1 ∈ U ↔ p.1 ∈ U
-  lower : ∀ p, p.2 ≤ 0 → chart p = p
-  upper : ∀ p, 1 ≤ p.2 → chart p = (D p.1, p.2)
-
-/-- A compactly supported isotopy suspends. -/
-theorem FlowSuspension.exists_compact_isotopy_suspension {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] (D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞)
-    {K S : Set E} (hK : IsCompact K)
-    (I : SupportedDiffeomorph.SupportedRelativeIsotopy D K S) :
-    ∃ (W : (E × ℝ) → E × ℝ) (F : Flow ℝ (E × ℝ)),
-      ContDiff ℝ ∞ W ∧
-        (∀ p, (W p).2 = 1) ∧
-          HasCompactSupport (fun p => W p - (0, 1)) ∧
-            tsupport (fun p => W p - (0, 1)) ⊆ K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3) ∧
-              (∀ p t, HasDerivAt (fun s => F s p) (W (F t p)) t) ∧
-                (∀ x, F 1 (x, 0) = (D x, 1)) ∧
-                  (∀ t p, (F t p).2 = p.2 + t) ∧
-                    (∀ x ∉ K, ∀ s t : ℝ, F t (x, s) = (x, s + t)) ∧
-                      (∀ x ∈ S, ∀ s t : ℝ, F t (x, s) = (x, s + t)) ∧
-                        Nonempty (SuspensionCoordinates D K W F) := by
-  let τ : ℝ → ℝ := fun s => Real.smoothTransition (3 * s - 1)
-  have hτ : ContDiff ℝ ∞ τ :=
-    Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
-  have hτlower (s : ℝ) (hs : s ≤ 1 / 3) : τ s = 0 :=
-    Real.smoothTransition.zero_of_nonpos (by linarith)
-  have hτupper (s : ℝ) (hs : 2 / 3 ≤ s) : τ s = 1 :=
-    Real.smoothTransition.one_of_one_le (by linarith)
-  let A : ℝ × E → E := fun p => I.family (τ p.1, p.2)
-  have hInorm : ContDiff ℝ ∞ I.family :=
-    (I.smooth.comp (PartialChart.vectorProduct ℝ E).contMDiff).contDiff
-  have hA : ContDiff ℝ ∞ A := hInorm.comp ((hτ.comp contDiff_fst).prodMk contDiff_snd)
-  have hslice (s : ℝ) : ∃ d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞, ∀ x, d x = A (s, x) :=
-    I.slices (τ s)
-  have hA0 (x : E) : A (0, x) = x := by
-    change I.family (τ 0, x) = x
-    rw [hτlower 0 (by norm_num)]
-    exact I.zero x
-  have hA1 (x : E) : A (1, x) = D x := by
-    change I.family (τ 1, x) = D x
-    rw [hτupper 1 (by norm_num)]
-    exact I.one x
-  have hfix (s : ℝ) (x : E) (hx : x ∉ K) : A (s, x) = x := I.fixedOutside (τ s) x hx
-  have hstationary (s : ℝ) (hs : s ∉ Set.Icc (1 / 3 : ℝ) (2 / 3)) :
-    ∀ᶠ r in 𝓝 s, ∀ x, A (r, x) = A (s, x) := by
-    by_cases hlo : s < 1 / 3
-    · filter_upwards [eventually_lt_nhds hlo] with r hr
-      intro x
-      change I.family (τ r, x) = I.family (τ s, x)
-      rw [hτlower r hr.le, hτlower s hlo.le]
-    · have hhi : 2 / 3 < s := lt_of_not_ge (fun h => hs ⟨le_of_not_gt hlo, h⟩)
-      filter_upwards [eventually_gt_nhds hhi] with r hr
-      intro x
-      change I.family (τ r, x) = I.family (τ s, x)
-      rw [hτupper r hr.le, hτupper s hhi.le]
-  obtain ⟨Ψ, hΨ⟩ := exists_isotopy_suspension_diffeomorph hA hslice
-  let W := suspensionField Ψ
-  let F := suspensionFlow Ψ
-  have hvertical (p : E × ℝ) (hp : p ∉ K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3)) : W p = (0, 1) := by
-    by_cases hx : p.1 ∈ K
-    · exact
-        suspensionField_eq_vertical_of_stationary Ψ hΨ p (hstationary p.2 (fun h => hp ⟨hx, h⟩))
-    · exact suspensionField_eq_vertical_off_support Ψ hΨ hfix hx
-  have hsupp : tsupport (fun p => W p - (0, 1)) ⊆ K ×ˢ Set.Icc (1 / 3 : ℝ) (2 / 3) := by
-    apply closure_minimal _ (hK.isClosed.prod isClosed_Icc)
-    intro p hp
-    by_contra hout
-    apply hp
-    change W p - (0, 1) = 0
-    rw [hvertical p hout, sub_self]
-  have hcoords : SuspensionCoordinates D K W F := by
-    refine ⟨Ψ, rfl, rfl, fun p => by rw [hΨ], ?_, ?_, ?_⟩
-    · intro U hKU p
-      have hfixU (z : E × ℝ) (hz : z ∉ U ×ˢ Set.univ) : Ψ z = z := by
-        have hn : z.1 ∉ K := fun h => hz ⟨hKU h, Set.mem_univ _⟩
-        rw [hΨ, hfix z.2 z.1 hn]
-      have hmaps := SupportedDiffeomorph.mapsTo_of_fixed_outside Ψ.toEquiv hfixU
-      have hmapsInv :=
-        SupportedDiffeomorph.mapsTo_of_fixed_outside Ψ.symm.toEquiv
-          (SupportedDiffeomorph.inverse_fixed_outside Ψ.toEquiv hfixU)
-      constructor
-      · intro hp
-        have hh := hmapsInv ⟨hp, Set.mem_univ (Ψ p).2⟩
-        have hh' : (Ψ.symm (Ψ p)).1 ∈ U := hh.1
-        simpa only [Ψ.symm_apply_apply] using hh'
-      · intro hp
-        exact (hmaps ⟨hp, Set.mem_univ p.2⟩).1
-    · intro p hp
-      rw [hΨ]
-      change (I.family (τ p.2, p.1), p.2) = p
-      rw [hτlower p.2 (by linarith), I.zero]
-    · intro p hp
-      rw [hΨ]
-      change (I.family (τ p.2, p.1), p.2) = (D p.1, p.2)
-      rw [hτupper p.2 (by linarith), I.one]
-  refine
-    ⟨W, F, contDiff_suspensionField Ψ, suspensionField_height Ψ (fun p => by rw [hΨ]),
-      hasCompactSupport_suspensionField_sub_vertical Ψ hΨ hK hfix hstationary, hsupp,
-      hasDerivAt_suspensionFlow Ψ, ?_, suspensionFlow_height Ψ (fun p => by rw [hΨ]), ?_, ?_,
-      ⟨hcoords⟩⟩
-  · intro x
-    exact
-      (suspensionFlow_endpoint Ψ hΨ hA0 x).trans (congrArg (fun y : E => (y, (1 : ℝ))) (hA1 x))
-  · intro x hx s t
-    exact suspensionFlow_vertical_off_support Ψ hΨ hfix (p := (x, s)) hx t
-  · intro x hx s t
-    have hΨfix (r : ℝ) : Ψ (x, r) = (x, r) := by
-      rw [hΨ]
-      change (I.family (τ r, x), r) = (x, r)
-      rw [I.fixedOn (τ r) x hx]
-    change suspensionFlow Ψ t (x, s) = (x, s + t)
-    rw [← hΨfix s, suspensionFlow_chart, hΨfix]
-
-/-! ### Local field replacement -/
-
-/-- A vector field replaced by a model on a chart. -/
-def LocalFieldReplacement.replace {D E H X M : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
-    [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H} [TopologicalSpace M]
-    [ChartedSpace E M] (Φ : PartialDiffeomorph I 𝓘(ℝ, E) X M ∞)
-    (V W : (x : M) → TangentSpace 𝓘(ℝ, E) x) (x : M) : TangentSpace 𝓘(ℝ, E) x := by
-  classical exact if x ∈ Φ.target then W x else V x
-
-/-- The field replacement computes the model inside the chart. -/
-theorem LocalFieldReplacement.replace_of_mem {D E H X M : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
-    [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H} [TopologicalSpace M]
-    [ChartedSpace E M] (Φ : PartialDiffeomorph I 𝓘(ℝ, E) X M ∞)
-    (V W : (x : M) → TangentSpace 𝓘(ℝ, E) x) {x : M} (hx : x ∈ Φ.target) :
-    replace Φ V W x = W x := by simp [replace, hx]
-
-/-- The field replacement is the original off the chart. -/
-theorem LocalFieldReplacement.replace_of_notMem {D E H X M : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
-    [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H} [TopologicalSpace M]
-    [ChartedSpace E M] (Φ : PartialDiffeomorph I 𝓘(ℝ, E) X M ∞)
-    (V W : (x : M) → TangentSpace 𝓘(ℝ, E) x) {x : M} (hx : x ∉ Φ.target) :
-    replace Φ V W x = V x := by simp [replace, hx]
-
-/-- A smooth field replacement exists. -/
-theorem LocalFieldReplacement.exists_smooth_field_replacement {D E H X M : Type*}
-    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
-    [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph I 𝓘(ℝ, E) X M ∞) [T2Space M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] (V W : (x : M) → TangentSpace 𝓘(ℝ, E) x)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hW :
-      ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, W x⟩ : TangentBundle 𝓘(ℝ, E) M))
-        Φ.target)
-    {K : Set X} (hK : IsCompact K) (hKΦ : K ⊆ Φ.source)
-    (hfix : ∀ x ∈ Φ.target, x ∉ Φ '' K → W x = V x) (hreg : ∀ x ∈ Φ.target, W x ≠ 0) :
-    ∃ V' : (x : M) → TangentSpace 𝓘(ℝ, E) x,
-      ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
-        (∀ x ∈ Φ.target, V' x = W x) ∧
-          (∀ x, V' x = 0 ↔ V x = 0 ∧ x ∉ Φ.target) ∧ ∀ x ∉ Φ '' K, ∀ᶠ y in 𝓝 x, V' y = V y := by
-  let V' := replace Φ V W
-  have hclosed : IsClosed (Φ '' K) :=
-    (hK.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hKΦ)).isClosed
-  have hoff (x : M) (hx : x ∉ Φ '' K) : ∀ᶠ y in 𝓝 x, V' y = V y := by
-    filter_upwards [hclosed.isOpen_compl.mem_nhds hx] with y hy
-    by_cases hyt : y ∈ Φ.target
-    · exact (replace_of_mem Φ V W hyt).trans (hfix y hyt hy)
-    · exact replace_of_notMem Φ V W hyt
-  have hsmooth :
-    ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, E) M)) := by
-    intro x
-    by_cases hx : x ∈ Φ.target
-    · apply (hW.contMDiffAt (Φ.open_target.mem_nhds hx)).congr_of_eventuallyEq
-      filter_upwards [Φ.open_target.mem_nhds hx] with y hy
-      exact congrArg (fun v => (⟨y, v⟩ : TangentBundle 𝓘(ℝ, E) M)) (replace_of_mem Φ V W hy)
-    · have hnot : x ∉ Φ '' K := by
-        rintro ⟨p, hp, rfl⟩
-        exact hx (Φ.map_source' (hKΦ hp))
-      apply hV.contMDiffAt.congr_of_eventuallyEq
-      filter_upwards [hoff x hnot] with y hy
-      exact congrArg (fun v => (⟨y, v⟩ : TangentBundle 𝓘(ℝ, E) M)) hy
-  refine ⟨V', hsmooth, fun x hx => replace_of_mem Φ V W hx, ?_, hoff⟩
-  intro x
-  by_cases hx : x ∈ Φ.target
-  · rw [show V' x = W x from replace_of_mem Φ V W hx]
-    simp only [hreg x hx, hx, not_true_eq_false, and_false]
-  · rw [show V' x = V x from replace_of_notMem Φ V W hx]
-    simp only [hx, not_false_eq_true, and_true]
-
-/-- A compactly supported smooth cutoff exists. -/
-theorem exists_compact_smooth_cutoff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [FiniteDimensional ℝ E] {K U : Set E} (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
-    ∃ η : E → ℝ,
-      ContDiff ℝ ∞ η ∧
-        HasCompactSupport η ∧
-          tsupport η ⊆ U ∧ (∀ᶠ x in 𝓝ˢ K, η x = 1) ∧ ∀ x, η x ∈ Set.Icc (0 : ℝ) 1 := by
-  obtain ⟨L, hL, hKL, hLU⟩ := exists_compact_between hK hU hKU
-  obtain ⟨η, hηone, hηzero, hηrange⟩ :=
-    exists_contMDiffMap_one_nhds_of_subset_interior 𝓘(ℝ, E) hK.isClosed hKL (n := ⊤)
-  have hsupp : tsupport (η : E → ℝ) ⊆ L := by
-    apply closure_minimal _ hL.isClosed
-    intro x hx
-    by_contra hxL
-    exact hx (hηzero x hxL)
-  exact
-    ⟨η, η.contMDiff.contDiff, HasCompactSupport.intro hL hηzero, hsupp.trans hLU, hηone, hηrange⟩
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 /-! ### The cancelled descent field -/
 
@@ -4009,26 +136,6 @@ theorem MorseCancellation.exists_cubic_field_cancellation {m : ℕ} (σ : Fin m 
     ⟨φ, hφ, hc, hsupp, hrange, hone', contDiff_cancelledDescent σ a hφ,
       cancelledDescent_ne_zero σ hσ ha (fun p => (hrange p).1) hone', fun p hp =>
       cancelledDescent_germ_off_support σ a hp⟩
-
-/-- The partial chart field vanishes exactly at the critical point. -/
-theorem MorseCancellation.partialChartField_zero_iff {D E M : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞) (W : D → D) {x : M}
-    (hx : x ∈ Φ.target) :
-    FlowConstruction.partialChartField Φ.symm W x = 0 ↔ W (Φ.symm x) = 0 := by
-  rw [FlowConstruction.partialChartField_eq_mfderiv_symm Φ.symm W hx]
-  have hl : IsLocalDiffeomorphAt 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ Φ (Φ.symm x) :=
-    ⟨Φ, Φ.map_target' hx, fun _ _ => rfl⟩
-  let A := hl.mfderivToContinuousLinearEquiv (by simp)
-  let B : D ≃L[ℝ] TangentSpace 𝓘(ℝ, D) (Φ.symm x) :=
-    (NormedSpace.fromTangentSpace (Φ.symm x)).symm
-  change A (B (W (Φ.symm x))) = 0 ↔ W (Φ.symm x) = 0
-  constructor
-  · intro h
-    have hb : B (W (Φ.symm x)) = 0 := A.injective (h.trans (map_zero A).symm)
-    exact B.injective (hb.trans (map_zero B).symm)
-  · intro h
-    rw [h, map_zero, map_zero]
 
 /-- The cubic descent vanishes exactly at the critical point. -/
 theorem MorseCancellation.cubicDescent_zero_iff {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) (a : ℝ)
@@ -4114,511 +221,7 @@ theorem MorseCancellation.exists_native_cubic_field_cancellation_in {E M : Type*
     · exact hxp ((Φ.right_inv' hxt).symm.trans (congrArg Φ hh))
     · exact hxq ((Φ.right_inv' hxt).symm.trans (congrArg Φ hh))
 
-/-- A native vertical field replacement exists. -/
-theorem FlowSuspension.exists_native_vertical_field_replacement {E B M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    [FiniteDimensional ℝ B] [TopologicalSpace M] [ChartedSpace B M] [T2Space M]
-    [IsManifold 𝓘(ℝ, B) ∞ M] (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞)
-    (V : (x : M) → TangentSpace 𝓘(ℝ, B) x)
-    (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
-    (hmodel :
-      ∀ x ∈ Φ.target,
-        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
-    {W : (E × ℝ) → E × ℝ} (hW : ContDiff ℝ ∞ W) (hWheight : ∀ p, (W p).2 = 1) {K : Set (E × ℝ)}
-    (hK : IsCompact K) (hKΦ : K ⊆ Φ.source) (hfix : ∀ p ∉ K, W p = (0, 1)) :
-    ∃ V' : (x : M) → TangentSpace 𝓘(ℝ, B) x,
-      ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
-        (∀ x ∈ Φ.target, V' x = FlowConstruction.partialChartField Φ.symm W x) ∧
-          (∀ x, V' x = 0 ↔ V x = 0) ∧ ∀ x ∉ Φ '' K, ∀ᶠ y in 𝓝 x, V' y = V y := by
-  let Wn := FlowConstruction.partialChartField Φ.symm W
-  have hWn :
-    ContMDiffOn 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, Wn x⟩ : TangentBundle 𝓘(ℝ, B) M))
-      Φ.target :=
-    FlowConstruction.contMDiffOn_partialChartField Φ.symm hW
-  have hreg (x : M) (hx : x ∈ Φ.target) : Wn x ≠ 0 := by
-    intro hz
-    have hWzero := (MorseCancellation.partialChartField_zero_iff Φ W hx).mp hz
-    have hh := congrArg Prod.snd hWzero
-    rw [hWheight] at hh
-    exact one_ne_zero hh
-  have hregV (x : M) (hx : x ∈ Φ.target) : V x ≠ 0 := by
-    rw [hmodel x hx]
-    intro hz
-    have hh := (MorseCancellation.partialChartField_zero_iff Φ (fun _ : E × ℝ => (0, 1)) hx).mp hz
-    exact one_ne_zero (congrArg Prod.snd hh)
-  have hkeep (x : M) (hx : x ∈ Φ.target) (hnot : x ∉ Φ '' K) : Wn x = V x := by
-    have hz : Φ.symm x ∉ K := fun h => hnot ⟨Φ.symm x, h, Φ.right_inv' hx⟩
-    rw [hmodel x hx]
-    change FlowConstruction.partialChartField Φ.symm W x = _
-    unfold FlowConstruction.partialChartField
-    rw [VectorField.mpullback_apply, VectorField.mpullback_apply, hfix _ hz]
-  obtain ⟨V', hV', hnew, hzeros, hgerm⟩ :=
-    LocalFieldReplacement.exists_smooth_field_replacement Φ V Wn hV hWn hK hKΦ hkeep hreg
-  refine ⟨V', hV', hnew, ?_, hgerm⟩
-  intro x
-  exact (hzeros x).trans ⟨And.left, fun hx => ⟨hx, fun ht => hregV x ht hx⟩⟩
-
-/-- The native height field's derivative. -/
-theorem FlowSuspension.mvfderiv_native_height_field {E B M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace M]
-    [ChartedSpace B M] (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞) {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, B) 𝓘(ℝ, ℝ) ∞ f) {b : ℝ} (hheight : ∀ p ∈ Φ.source, f (Φ p) = b - p.2)
-    (W : (E × ℝ) → E × ℝ) {x : M} (hx : x ∈ Φ.target) :
-    mvfderiv 𝓘(ℝ, B) f x (FlowConstruction.partialChartField Φ.symm W x) =
-      -(W (Φ.symm x)).2 := by
-  let q := Φ.symm x
-  have hq : q ∈ Φ.source := Φ.map_target' hx
-  have heq : (f ∘ Φ) =ᶠ[𝓝 q] (fun p : E × ℝ => b - p.2) := by
-    filter_upwards [Φ.open_source.mem_nhds hq] with p hp
-    exact hheight p hp
-  have hd : fderiv ℝ (f ∘ Φ) q = fderiv ℝ (fun p : E × ℝ => b - p.2) q := heq.fderiv_eq
-  rw [FlowConstruction.mvfderiv_partialChartField hf Φ.symm W hx]
-  change fderiv ℝ (f ∘ Φ) q (W q) = -(W q).2
-  rw [hd]
-  have hh := (hasFDerivAt_const (𝕜 := ℝ) b q).sub (ContinuousLinearMap.snd ℝ E ℝ).hasFDerivAt
-  have hh' :
-    fderiv ℝ (fun p : E × ℝ => b - p.2) q =
-      (0 : (E × ℝ) →L[ℝ] ℝ) - ContinuousLinearMap.snd ℝ E ℝ :=
-    hh.fderiv
-  rw [hh']
-  simp
-
-/-- The native flow's segment endpoints. -/
-theorem FlowSuspension.native_flow_segment_endpoints {B M : Type*} [NormedAddCommGroup B]
-    [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) 1 M] [T2Space M]
-    {V : (x : M) → TangentSpace 𝓘(ℝ, B) x}
-    (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
-    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {γ : ℝ → M} {a b : ℝ}
-    (hab : a < b) (hγcont : ContinuousOn γ (Set.Icc a b))
-    (hγ : IsMIntegralCurveOn γ V (Set.Ioo a b)) : F (b - a) (γ a) = γ b := by
-  let c := (a + b) / 2
-  have hc : c ∈ Set.Ioo a b := by constructor <;> dsimp [c] <;> linarith
-  have hη : IsMIntegralCurve (fun t => F (t - c) (γ c)) V := by
-    have hh := (hcurve (γ c)).comp_add (-c)
-    simpa only [sub_eq_add_neg, Function.comp_def] using hh
-  have heq : Set.EqOn γ (fun t => F (t - c) (γ c)) (Set.Ioo a b) :=
-    isMIntegralCurveOn_Ioo_eqOn_of_contMDiff_boundaryless hc hV hγ (hη.isMIntegralCurveOn _)
-      (by simp)
-  have heqclosed : Set.EqOn γ (fun t => F (t - c) (γ c)) (Set.Icc a b) :=
-    heq.of_subset_closure hγcont hη.continuous.continuousOn Set.Ioo_subset_Icc_self
-      (by rw [closure_Ioo hab.ne])
-  have ha := heqclosed (show a ∈ Set.Icc a b from ⟨le_rfl, hab.le⟩)
-  have hb := heqclosed (show b ∈ Set.Icc a b from ⟨hab.le, le_rfl⟩)
-  change γ a = F (a - c) (γ c) at ha
-  change γ b = F (b - c) (γ c) at hb
-  rw [ha, ← F.map_add, show b - a + (a - c) = b - c by ring, ← hb]
-
-/-! ### Endpoint slices on actual orbits -/
-
-/-- The native cubic flow between two box points. -/
-theorem MorseCancellation.native_cubic_flow_between_box_points {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
-    {m : ℕ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
-    (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c r : ℝ}
-    (hbox : Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Φ.source) (z : Fin m → ℝ) {s t : ℝ}
-    (hs : cubicFlowCylinder σ a (z, s) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r)
-    (ht : cubicFlowCylinder σ a (z, t) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r) :
-    F (t - s) (Φ (cubicFlowCylinder σ a (z, s))) = Φ (cubicFlowCylinder σ a (z, t)) := by
-  let γ : ℝ → M := fun u => Φ (cubicFlowCylinder σ a (z, u))
-  have hforward {u v : ℝ} (huv : u < v)
-    (hu : cubicFlowCylinder σ a (z, u) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r)
-    (hv : cubicFlowCylinder σ a (z, v) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r) :
-    F (v - u) (γ u) = γ v := by
-    have hstay (w : ℝ) (hw : w ∈ Set.Icc u v) : cubicFlowCylinder σ a (z, w) ∈ Φ.source :=
-      hbox (cubicFlowCylinder_stays_axis_ball σ ha z hw hu hv)
-    have hcont : ContinuousOn γ (Set.Icc u v) :=
-      Φ.contMDiffOn_toFun.continuousOn.comp
-        (((contDiff_cubicFlowCylinder σ a).continuous.comp
-            (continuous_const.prodMk continuous_id)).continuousOn)
-        hstay
-    have hcurve : IsMIntegralCurveOn γ V (Set.Ioo u v) := by
-      intro w hw
-      have hp := hstay w ⟨hw.1.le, hw.2.le⟩
-      have hd :=
-        FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm
-          (cubicDescent σ (-(a ^ 2))) (hasDerivAt_cubicFlowCylinder σ a z w) hp
-      have hd' :
-        HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) γ w
-          ((1 : ℝ →L[ℝ] ℝ).smulRight (nativeCubicDescent σ Φ (-(a ^ 2)) (γ w))) :=
-        hd
-      rw [← hmodel (γ w) (Φ.map_source' hp)] at hd'
-      exact hd'.hasMFDerivWithinAt
-    exact FlowSuspension.native_flow_segment_endpoints hV F hF huv hcont hcurve
-  rcases lt_trichotomy s t with hst | hst | hts
-  · exact hforward hst hs ht
-  · subst t
-    rw [sub_self, F.map_zero_apply]
-  · have hh := congrArg (F (t - s)) (hforward hts ht hs)
-    rw [← F.map_add, show t - s + (s - t) = 0 by ring, F.map_zero_apply] at hh
-    exact hh.symm
-
-/-- A cubic slice inside the axis ball exists. -/
-theorem MorseCancellation.exists_cubic_slice_in_axis_ball {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    {c r : ℝ} (hc : c ∈ Set.Icc (-a) a) (hr : 0 < r) :
-    ∃ (T δ : ℝ),
-      0 < δ ∧
-        ∀ z : Fin m → ℝ,
-          ‖z‖ ≤ δ → cubicFlowCylinder σ a (z, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r := by
-  have hcl : c ∈ closure (Set.Ioo (-a) a) := by
-    rw [closure_Ioo (by linarith : -a ≠ a)]
-    exact hc
-  obtain ⟨s, hs, hdist⟩ := Metric.mem_closure_iff.mp hcl r hr
-  let T := cubicAxisClock a s
-  have hpoint : cubicFlowCylinder σ a (0, T) = (s, (0 : Fin m → ℝ)) := by
-    rw [cubicFlowCylinder_axis]
-    change (cubicAxisParameter a (cubicAxisClock a s), 0) = (s, 0)
-    rw [cubicAxisParameter_clock ha hs]
-  have hnear : cubicFlowCylinder σ a (0, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r := by
-    rw [hpoint, Metric.mem_ball, Prod.dist_eq, dist_self,
-      max_eq_left (dist_nonneg : 0 ≤ Dist.dist s c)]
-    simpa only [dist_comm] using hdist
-  have hcont : Continuous (fun z : Fin m → ℝ => cubicFlowCylinder σ a (z, T)) :=
-    (contDiff_cubicFlowCylinder σ a).continuous.comp (continuous_id.prodMk continuous_const)
-  obtain ⟨δ, hδ, hδsub⟩ :=
-    Metric.nhds_basis_closedBall.mem_iff.mp
-      (hcont.continuousAt (Metric.isOpen_ball.mem_nhds hnear))
-  refine ⟨T, δ, hδ, ?_⟩
-  intro z hz
-  exact hδsub (mem_closedBall_zero_iff.mpr hz)
-
-/-- Native cubic endpoint flow coordinates exist. -/
-theorem MorseCancellation.exists_native_cubic_endpoint_flow_coordinates {m : ℕ} {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (σ : Fin m → ℝ)
-    {a : ℝ} (ha : 0 < a) (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
-    (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ} (hc : c ∈ Set.Icc (-a) a)
-    (hcΦ : (c, (0 : Fin m → ℝ)) ∈ Φ.source) :
-    ∃ (r δ T : ℝ),
-      0 < r ∧
-        0 < δ ∧
-          Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Φ.source ∧
-            (∀ z : Fin m → ℝ,
-                ‖z‖ ≤ δ → cubicFlowCylinder σ a (z, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r) ∧
-              ∀ p ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r,
-                p.1 ∈ Set.Ioo (-a) a →
-                  ‖(cubicFlowCylinderInverse σ a p).1‖ ≤ δ →
-                    Φ p =
-                      F (cubicAxisClock a p.1 - T)
-                        (Φ (cubicFlowCylinder σ a ((cubicFlowCylinderInverse σ a p).1, T))) := by
-  obtain ⟨r, hr, hbox⟩ := Metric.nhds_basis_closedBall.mem_iff.mp (Φ.open_source.mem_nhds hcΦ)
-  obtain ⟨T, δ, hδ, hslice⟩ := exists_cubic_slice_in_axis_ball σ ha hc hr
-  refine ⟨r, δ, T, hr, hδ, hbox, hslice, ?_⟩
-  intro p hp hpa hpδ
-  let z := (cubicFlowCylinderInverse σ a p).1
-  have hinit := Metric.ball_subset_closedBall (hslice z hpδ)
-  have hpoint : cubicFlowCylinder σ a (z, cubicAxisClock a p.1) = p :=
-    cubicFlowCylinder_right_inv σ ha hpa
-  have hfinish :
-    cubicFlowCylinder σ a (z, cubicAxisClock a p.1) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r :=
-    hpoint.symm ▸ hp
-  have hh := native_cubic_flow_between_box_points σ ha Φ hV hmodel F hF hbox z hinit hfinish
-  rw [hpoint] at hh
-  exact hh.symm
-
-/-- An endpoint slice on the actual orbit exists. -/
-theorem MorseCancellation.exists_endpoint_slice_on_actual_orbit {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
-    {m : ℕ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hmodel : ∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(a ^ 2)) y) (F : Flow ℝ M)
-    (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ} (hc : c ∈ Set.Icc (-a) a)
-    (hcΦ : (c, (0 : Fin m → ℝ)) ∈ Φ.source) (x : M) {l : Filter ℝ} [Filter.NeBot l]
-    (hlim : Filter.Tendsto (fun t => F t x) l (𝓝 (Φ (c, 0))))
-    (htail :
-      ∀ᶠ t in l, ∃ s ∈ Set.Ioo (-a) a, (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x) :
-    ∃ (r δ T τ : ℝ),
-      0 < r ∧
-        0 < δ ∧
-          Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Φ.source ∧
-            (∀ z : Fin m → ℝ,
-                ‖z‖ ≤ δ → cubicFlowCylinder σ a (z, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r) ∧
-              Φ (cubicFlowCylinder σ a (0, T)) = F τ x := by
-  obtain ⟨r, δ, T, hr, hδ, hbox, hslice, _⟩ :=
-    exists_native_cubic_endpoint_flow_coordinates σ ha Φ hV hmodel F hF hc hcΦ
-  have hcont := Φ.toOpenPartialHomeomorph.symm.continuousAt (Φ.map_source' hcΦ)
-  have hcoord : Filter.Tendsto (fun t => Φ.symm (F t x)) l (𝓝 (c, (0 : Fin m → ℝ))) := by
-    have hh : Filter.Tendsto (fun t => Φ.symm (F t x)) l (𝓝 (Φ.symm (Φ (c, 0)))) :=
-      hcont.tendsto.comp hlim
-    have hinv : Φ.symm (Φ (c, (0 : Fin m → ℝ))) = (c, 0) := Φ.left_inv' hcΦ
-    rwa [hinv] at hh
-  have hnear : ∀ᶠ t in l, Φ.symm (F t x) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r :=
-    hcoord.eventually (Metric.ball_mem_nhds _ hr)
-  obtain ⟨t, htnear, s, hs, hsΦ, hsorbit⟩ := (hnear.and htail).exists
-  have hinv : Φ.symm (F t x) = (s, (0 : Fin m → ℝ)) := by
-    rw [← hsorbit]
-    exact Φ.left_inv' hsΦ
-  rw [hinv] at htnear
-  have hpoint : cubicFlowCylinder σ a (0, cubicAxisClock a s) = (s, (0 : Fin m → ℝ)) := by
-    rw [cubicFlowCylinder_axis]
-    change (cubicAxisParameter a (cubicAxisClock a s), 0) = (s, 0)
-    rw [cubicAxisParameter_clock ha hs]
-  have hstart :
-    cubicFlowCylinder σ a (0, cubicAxisClock a s) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r :=
-    hpoint.symm ▸ Metric.ball_subset_closedBall htnear
-  have hfinish : cubicFlowCylinder σ a (0, T) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r :=
-    Metric.ball_subset_closedBall (hslice 0 (by simpa using hδ.le))
-  have hflow := native_cubic_flow_between_box_points σ ha Φ hV hmodel F hF hbox 0 hstart hfinish
-  rw [hpoint, hsorbit, ← F.map_add] at hflow
-  exact ⟨r, δ, T, T - cubicAxisClock a s + t, hr, hδ, hbox, hslice, hflow.symm⟩
-
-/-- The flow-shifted chart source. -/
-theorem SmoothODE.flow_shifted_chart_source {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {B : Type*} [NormedAddCommGroup B]
-    [NormedSpace ℝ B] (Φ : PartialDiffeomorph 𝓘(ℝ, B) 𝓘(ℝ, E) B M ∞) (F : Flow ℝ M)
-    (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) (t : ℝ) :
-    (Φ.trans (nativeFlowTimeDiffeomorph F hs t).toPartialDiffeomorph).source = Φ.source := by
-  ext p
-  change p ∈ Φ.source ∧ Φ p ∈ Set.univ ↔ p ∈ Φ.source
-  simp
-
-/-- A clock-normalized cubic endpoint exists. -/
-theorem MorseCancellation.exists_clock_normalized_cubic_endpoint {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hmodel : ∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(a ^ 2)) y) (F : Flow ℝ M)
-    (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ} (hc : c ∈ Set.Icc (-a) a)
-    (hcrit : c ^ 2 = a ^ 2) (hcΦ : (c, (0 : Fin m → ℝ)) ∈ Φ.source) (x : M) {l : Filter ℝ}
-    [Filter.NeBot l] (hlim : Filter.Tendsto (fun t => F t x) l (𝓝 (Φ (c, 0))))
-    (htail :
-      ∀ᶠ t in l, ∃ s ∈ Set.Ioo (-a) a, (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x) :
-    ∃ (Ψ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (r δ T : ℝ),
-      Ψ.source = Φ.source ∧
-        Ψ (c, 0) = Φ (c, 0) ∧
-          0 < r ∧
-            0 < δ ∧
-              Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Ψ.source ∧
-                (∀ z : Fin m → ℝ,
-                    ‖z‖ ≤ δ → cubicFlowCylinder σ a (z, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r) ∧
-                  (∀ y ∈ Ψ.target, V y = nativeCubicDescent σ Ψ (-(a ^ 2)) y) ∧
-                    (∀ t : ℝ,
-                        cubicFlowCylinder σ a (0, t) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r →
-                          Ψ (cubicFlowCylinder σ a (0, t)) = F t x) ∧
-                      ∃ d : ℝ, ∀ z : Model m, Ψ z = F d (Φ z) := by
-  have hV₁ := hV.of_le (by simp : (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω))
-  obtain ⟨r, δ, T, τ, hr, hδ, hbox, hslice, hcenter⟩ :=
-    exists_endpoint_slice_on_actual_orbit σ ha Φ hV₁ hmodel F hF hc hcΦ x hlim htail
-  have hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t) := fun t =>
-    (SmoothODE.contMDiff_native_flow hV F hF).comp (contMDiff_id.prodMk contMDiff_const)
-  let Ψ := Φ.trans (SmoothODE.nativeFlowTimeDiffeomorph F hs (T - τ)).toPartialDiffeomorph
-  have hsource : Ψ.source = Φ.source := SmoothODE.flow_shifted_chart_source Φ F hs (T - τ)
-  have hΨmodel : ∀ y ∈ Ψ.target, V y = nativeCubicDescent σ Ψ (-(a ^ 2)) y := by
-    intro y hy
-    exact
-      SmoothODE.partialChartField_flow_shift Φ F hs hF (cubicDescent σ (-(a ^ 2))) hmodel
-        (T - τ) hy
-  have hzero : V (Φ (c, 0)) = 0 := by
-    rw [hmodel _ (Φ.map_source' hcΦ)]
-    have hinv : Φ.symm (Φ (c, (0 : Fin m → ℝ))) = (c, 0) := Φ.left_inv' hcΦ
-    have hw : cubicDescent σ (-(a ^ 2)) (Φ.symm (Φ (c, 0))) = 0 := by
-      rw [hinv]
-      ext i <;> simp [cubicDescent, hcrit]
-    unfold nativeCubicDescent FlowConstruction.partialChartField
-    rw [VectorField.mpullback_apply, hw, map_zero, map_zero]
-  have hvalue : Ψ (c, 0) = Φ (c, 0) :=
-    FlowConstruction.flow_fixed_of_zero hV₁ F hF hzero (T - τ)
-  have hΨbox : Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Ψ.source := hsource.symm ▸ hbox
-  have hbase : Ψ (cubicFlowCylinder σ a (0, T)) = F T x := by
-    change F (T - τ) (Φ (cubicFlowCylinder σ a (0, T))) = F T x
-    rw [hcenter, ← F.map_add, sub_add_cancel]
-  refine ⟨Ψ, r, δ, T, hsource, hvalue, hr, hδ, hΨbox, hslice, hΨmodel, ?_, T - τ, fun _ => rfl⟩
-  intro t ht
-  have hstart : cubicFlowCylinder σ a (0, T) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r :=
-    Metric.ball_subset_closedBall (hslice 0 (by simpa using hδ.le))
-  have hh := native_cubic_flow_between_box_points σ ha Ψ hV₁ hΨmodel F hF hΨbox 0 hstart ht
-  rw [hbase, ← F.map_add, sub_add_cancel] at hh
-  exact hh.symm
-
-/-! ### Basin-preserving endpoint clocks -/
-
-/-- The forward flow-time limit characterization. -/
-theorem MorseCancellation.flow_time_atTop_limit_iff {M : Type*} [TopologicalSpace M] (F : Flow ℝ M)
-    (d : ℝ) (x p : M) :
-    Filter.Tendsto (fun t => F t (F d x)) Filter.atTop (𝓝 p) ↔
-      Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) := by
-  have hshift {x p : M} (d : ℝ) (h : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)) :
-    Filter.Tendsto (fun t => F t (F d x)) Filter.atTop (𝓝 p) := by
-    simpa only [Function.comp_def, id_eq, F.map_add] using
-      h.comp (Filter.tendsto_atTop_add_const_right Filter.atTop d Filter.tendsto_id)
-  constructor
-  · intro h
-    simpa only [← F.map_add, neg_add_cancel, F.map_zero_apply] using hshift (-d) h
-  · exact hshift d
-
-/-- The backward flow-time limit characterization. -/
-theorem MorseCancellation.flow_time_atBot_limit_iff {M : Type*} [TopologicalSpace M] (F : Flow ℝ M)
-    (d : ℝ) (x p : M) :
-    Filter.Tendsto (fun t => F t (F d x)) Filter.atBot (𝓝 p) ↔
-      Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p) := by
-  have hshift {x p : M} (d : ℝ) (h : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p)) :
-    Filter.Tendsto (fun t => F t (F d x)) Filter.atBot (𝓝 p) := by
-    simpa only [Function.comp_def, id_eq, F.map_add] using
-      h.comp (Filter.tendsto_atBot_add_const_right Filter.atBot d Filter.tendsto_id)
-  constructor
-  · intro h
-    simpa only [← F.map_add, neg_add_cancel, F.map_zero_apply] using hshift (-d) h
-  · exact hshift d
-
-/-- A basin-preserving endpoint clock exists. -/
-theorem MorseCancellation.exists_basin_preserving_endpoint_clock {M : Type*} [TopologicalSpace M]
-    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
-    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hmodel : ∀ y ∈ Φ.target, V y = nativeCubicDescent σ Φ (-(a ^ 2)) y) (F : Flow ℝ M)
-    (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ} (hc : c ∈ Set.Icc (-a) a)
-    (hcrit : c ^ 2 = a ^ 2) (hcΦ : (c, (0 : Fin m → ℝ)) ∈ Φ.source) (x : M) {l : Filter ℝ}
-    [Filter.NeBot l] (hlim : Filter.Tendsto (fun t => F t x) l (𝓝 (Φ (c, 0))))
-    (htail :
-      ∀ᶠ t in l, ∃ s ∈ Set.Ioo (-a) a, (s, (0 : Fin m → ℝ)) ∈ Φ.source ∧ Φ (s, 0) = F t x) :
-    ∃ (Ψ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (r δ T : ℝ),
-      Ψ.source = Φ.source ∧
-        Ψ (c, 0) = Φ (c, 0) ∧
-          0 < r ∧
-            0 < δ ∧
-              Metric.closedBall (c, (0 : Fin m → ℝ)) r ⊆ Ψ.source ∧
-                (∀ z : Fin m → ℝ,
-                    ‖z‖ ≤ δ → cubicFlowCylinder σ a (z, T) ∈ Metric.ball (c, (0 : Fin m → ℝ)) r) ∧
-                  (∀ y ∈ Ψ.target, V y = nativeCubicDescent σ Ψ (-(a ^ 2)) y) ∧
-                    (∀ t : ℝ,
-                        cubicFlowCylinder σ a (0, t) ∈ Metric.closedBall (c, (0 : Fin m → ℝ)) r →
-                          Ψ (cubicFlowCylinder σ a (0, t)) = F t x) ∧
-                      ∀ z : Model m,
-                        ∀ p : M,
-                          (Filter.Tendsto (fun t => F t (Ψ z)) Filter.atTop (𝓝 p) ↔
-                              Filter.Tendsto (fun t => F t (Φ z)) Filter.atTop (𝓝 p)) ∧
-                            (Filter.Tendsto (fun t => F t (Ψ z)) Filter.atBot (𝓝 p) ↔
-                              Filter.Tendsto (fun t => F t (Φ z)) Filter.atBot (𝓝 p)) := by
-  obtain ⟨Ψ, r, δ, T, hsource, hcenter, hr, hδ, hbox, hslice, hfield, haxis, d, hmap⟩ :=
-    exists_clock_normalized_cubic_endpoint σ ha Φ hV hmodel F hF hc hcrit hcΦ x hlim htail
-  refine ⟨Ψ, r, δ, T, hsource, hcenter, hr, hδ, hbox, hslice, hfield, haxis, ?_⟩
-  intro z p
-  rw [hmap]
-  exact ⟨flow_time_atTop_limit_iff F d (Φ z) p, flow_time_atBot_limit_iff F d (Φ z) p⟩
-
-/-! ### Belt passage -/
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The flow belt passage through the adapted windows. -/
-theorem AdaptedWindows.flow_belt_passage {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f) {s : ℝ} (hs : 0 < s)
-    (hs₁ : s ≤ 1) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    S.flow (BeltPassage.time s)
-        ((S.data q).chart.splitChart.symm
-          (BeltPassage.upper (S.data q).radius s u.val v.val)) =
-      (S.data q).chart.splitChart.symm
-        (BeltPassage.lower (S.data q).radius s u.val v.val) := by
-  let d := S.data q
-  let z := BeltPassage.upper d.radius s u.val v.val
-  have htime := BeltPassage.time_nonneg hs
-  have hstay (t : ℝ) (ht : t ∈ Set.uIcc 0 (BeltPassage.time s)) :
-    MorseHandle.descentFlow t z ∈
-      Metric.closedBall (0 : d.chart.NegativeCoordinates) (2 * d.radius) ×ˢ
-        Metric.closedBall (0 : d.chart.PositiveCoordinates) (2 * d.radius) := by
-    rw [Set.uIcc_of_le htime] at ht
-    exact
-      BeltPassage.descentFlow_mem_block d.radius_pos hs hs₁
-        (mem_sphere_zero_iff_norm.mp u.property) (mem_sphere_zero_iff_norm.mp v.property) ht
-  have hz : z ∈ d.chart.splitChart.target := by
-    have hh := d.block (hstay 0 Set.left_mem_uIcc)
-    simpa only [MorseHandle.descentFlow.map_zero_apply] using hh
-  have hcoords : d.chart.splitChart (d.chart.splitChart.symm z) = z :=
-    d.chart.splitChart.right_inv' hz
-  have hflow :=
-    d.chart.flow_eq_descentModel_of_mem_uIcc (S.smooth.of_le (by simp)) S.flow S.integral (x :=
-      d.chart.splitChart.symm z) (d.chart.splitChart.map_target' hz) (t :=
-      BeltPassage.time s) (fun t ht => by rw [hcoords]; exact d.block (hstay t ht))
-      (fun t ht => by rw [hcoords]; exact S.model_germ q _ (hstay t ht))
-  change
-    S.flow (BeltPassage.time s) (d.chart.splitChart.symm z) =
-      d.chart.splitChart.symm
-        (MorseHandle.descentFlow (BeltPassage.time s)
-          (d.chart.splitChart (d.chart.splitChart.symm z))) at hflow
-  rw [hcoords, BeltPassage.descentFlow_time d.radius hs u.val v.val] at hflow
-  exact hflow
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt passage's forward limit characterization. -/
-theorem AdaptedWindows.belt_passage_forward_limit_iff {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f) {s : ℝ}
-    (hs : 0 < s) (hs₁ : s ≤ 1) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (p : M) :
-    Filter.Tendsto
-        (fun t =>
-          S.flow t
-            ((S.data q).chart.splitChart.symm
-              (BeltPassage.upper (S.data q).radius s u.val v.val)))
-        Filter.atTop (𝓝 p) ↔
-      Filter.Tendsto
-        (fun t =>
-          S.flow t
-            ((S.data q).chart.splitChart.symm
-              (BeltPassage.lower (S.data q).radius s u.val v.val)))
-        Filter.atTop (𝓝 p) := by
-  rw [← S.flow_belt_passage q hs hs₁ u v]
-  exact (MorseCancellation.flow_time_atTop_limit_iff S.flow (BeltPassage.time s) _ p).symm
-
 /-! ### Nowhere-dense critical pieces -/
-
-/-- A compact partial chart image is nowhere dense. -/
-theorem MorseCancellation.compact_partial_chart_image_nowhereDense {A X : Type*} [TopologicalSpace A]
-    [TopologicalSpace X] [T2Space X] (e : OpenPartialHomeomorph X A) {K : Set A}
-    (hK : IsCompact K) (hKt : K ⊆ e.target) (hKi : interior K = ∅) :
-    IsNowhereDense (e.symm '' K) := by
-  have hclosed : IsClosed (e.symm '' K) :=
-    (hK.image_of_continuousOn (e.symm.continuousOn.mono hKt)).isClosed
-  apply hclosed.isNowhereDense_iff.mpr
-  have hsource : e.symm '' K ⊆ e.source := by
-    rintro x ⟨z, hz, rfl⟩
-    exact e.map_target (hKt hz)
-  have hopen : IsOpen (e '' interior (e.symm '' K)) :=
-    e.isOpen_image_of_subset_source isOpen_interior (interior_subset.trans hsource)
-  have hsub : e '' interior (e.symm '' K) ⊆ K := by
-    rintro y ⟨x, hx, rfl⟩
-    obtain ⟨z, hz, hzx⟩ := interior_subset hx
-    rw [← hzx, e.right_inv (hKt hz)]
-    exact hz
-  have hinto : e '' interior (e.symm '' K) ⊆ interior K := hopen.subset_interior_iff.mpr hsub
-  apply Set.eq_empty_iff_forall_notMem.mpr
-  intro x hx
-  have hh := hinto (Set.mem_image_of_mem e hx)
-  exact (Set.eq_empty_iff_forall_notMem.mp hKi) _ hh
-
-/-- A zero-dimensional product has empty interior. -/
-theorem MorseCancellation.interior_zero_product_empty {A B : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] [Nontrivial A] [TopologicalSpace B] (s : Set B) :
-    interior (({0} : Set A) ×ˢ s) = ∅ := by
-  rw [interior_prod_eq, interior_singleton, Set.empty_prod]
-
-/-- The native positive plane piece is nowhere dense. -/
-theorem MorseCancellation.native_positive_plane_piece_nowhereDense {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p)
-    (hindex : 0 < Module.finrank ℝ c.NegativeCoordinates) {r : ℝ}
-    (hblock :
-      ({0} : Set c.NegativeCoordinates) ×ˢ Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
-        c.splitChart.target) :
-    IsNowhereDense
-      (c.splitChart.symm ''
-        (({0} : Set c.NegativeCoordinates) ×ˢ Metric.closedBall (0 : c.PositiveCoordinates) r)) :=
-  by
-  let : Nontrivial c.NegativeCoordinates := Module.nontrivial_of_finrank_pos hindex
-  exact
-    compact_partial_chart_image_nowhereDense c.splitChart.toOpenPartialHomeomorph
-      (isCompact_singleton.prod (ProperSpace.isCompact_closedBall _ _)) hblock
-      (interior_zero_product_empty _)
 
 /-- The backward flow exits at a quadratic level. -/
 theorem MorseCancellation.exists_backward_morse_quadratic_level_exit {N P : Type*}
@@ -4983,23 +586,6 @@ theorem MorseCancellation.exists_native_forward_morse_level_exit {E M : Type*} [
     exact hstay T ⟨hT.le, le_rfl⟩
 
 attribute [local instance 100] Classical.propDecidable in
-/-- A Morse coordinate neighborhood. -/
-theorem MorseCancellation.morse_coordinate_neighborhood {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
-    ∀ᶠ x in 𝓝 p, x ∈ c.splitChart.source ∧ ‖(c.splitChart x).1‖ < a ∧ ‖(c.splitChart x).2‖ < b := by
-  have hc := c.splitChart.toOpenPartialHomeomorph.continuousAt c.splitChart_mem_source
-  have hn : ‖(c.splitChart p).1‖ < a := by
-    simpa only [c.splitChart_center, Prod.fst_zero, norm_zero] using ha
-  have hp : ‖(c.splitChart p).2‖ < b := by
-    simpa only [c.splitChart_center, Prod.snd_zero, norm_zero] using hb
-  have hs : ∀ᶠ x in 𝓝 p, x ∈ c.splitChart.source :=
-    c.splitChart.open_source.mem_nhds c.splitChart_mem_source
-  have hna : ∀ᶠ x in 𝓝 p, ‖(c.splitChart x).1‖ < a := hc.fst.norm (eventually_lt_nhds hn)
-  have hpb : ∀ᶠ x in 𝓝 p, ‖(c.splitChart x).2‖ < b := hc.snd.norm (eventually_lt_nhds hp)
-  exact hs.and (hna.and hpb)
-
-attribute [local instance 100] Classical.propDecidable in
 /-- The backward exit eventually lies in the belt neighborhood. -/
 theorem MorseCancellation.eventually_backward_exit_in_belt_neighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
@@ -5078,41 +664,6 @@ theorem MorseCancellation.eventually_forward_exit_in_attaching_neighborhood {E M
   exact ⟨T, hT, hlevel, hh⟩
 
 /-! ### Quadratic germs and surviving critical points -/
-
-/-- The derivative of a quadratic germ. -/
-theorem MorseCancellation.quadratic_germ_derivative {A B : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (Q : QuadraticForm ℝ A)
-    (R : QuadraticForm ℝ B) (hR : Continuous R) {F : A → B} {L : A →L[ℝ] B}
-    (hF : HasFDerivAt F L 0) (hF0 : F 0 = 0) (hquad : (fun x => R (F x)) =ᶠ[𝓝 0] Q) (v : A) :
-    R (L v) = Q v := by
-  have hline : HasDerivAt (fun t : ℝ => t • v) v 0 := by
-    simpa only [id_eq, one_smul] using (hasDerivAt_id (0 : ℝ)).smul_const v
-  have hcurve : HasDerivAt (fun t : ℝ => F (t • v)) (L v) 0 :=
-    hF.comp_hasDerivAt_of_eq 0 hline (by simp)
-  have hslope : Filter.Tendsto (fun t : ℝ => t⁻¹ • F (t • v)) (𝓝[≠] 0) (𝓝 (L v)) := by
-    simpa only [zero_add, zero_smul, hF0, sub_zero] using hcurve.tendsto_slope_zero
-  have hpath : Filter.Tendsto (fun t : ℝ => t • v) (𝓝[≠] 0) (𝓝 (0 : A)) := by
-    have hc : Continuous (fun t : ℝ => t • v) := continuous_id.smul continuous_const
-    simpa only [zero_smul] using (hc.tendsto (0 : ℝ)).mono_left nhdsWithin_le_nhds
-  have heq : (fun t : ℝ => R (t⁻¹ • F (t • v))) =ᶠ[𝓝[≠] 0] fun _ => Q v := by
-    filter_upwards [hquad.comp_tendsto hpath, self_mem_nhdsWithin] with t ht hne
-    have ht0 : t ≠ 0 := hne
-    change R (F (t • v)) = Q (t • v) at ht
-    rw [R.map_smul, ht, Q.map_smul]
-    simp only [smul_eq_mul]
-    field_simp
-  exact
-    tendsto_nhds_unique (hR.continuousAt.tendsto.comp hslope)
-      ((Filter.tendsto_congr' heq).mpr tendsto_const_nhds)
-
-/-- Bijective derivative gives equivalent quadratic germs. -/
-theorem MorseCancellation.equivalent_quadratic_germs_of_bijective_derivative {A B : Type*}
-    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
-    (Q : QuadraticForm ℝ A) (R : QuadraticForm ℝ B) (hR : Continuous R) {F : A → B}
-    {L : A →L[ℝ] B} (hF : HasFDerivAt F L 0) (hF0 : F 0 = 0) (hL : Function.Bijective L)
-    (hquad : (fun x => R (F x)) =ᶠ[𝓝 0] Q) : Q.Equivalent R := by
-  let e := LinearEquiv.ofBijective L.toLinearMap hL
-  exact ⟨{ e with map_app' := quadratic_germ_derivative Q R hR hF hF0 hquad }⟩
 
 /-- A surgery pair's band isolation. -/
 theorem MorseCancellation.surgery_pair_band_isolation {E M : Type*} [NormedAddCommGroup E]
@@ -5209,84 +760,6 @@ theorem MorseCancellation.adapted_surgeries_after_pair_removal {E M : Type*} [No
     distinct_critical_values_of_surviving_germs S.distinct (fun z hz => ((hcrit z).mp hz).1) hkeep
   exact ⟨hkeep, hinj, nonempty_adaptedSurgeryWindows hg hmg hinj⟩
 
-/-- Signed Morse charts of equivalent germs are equivalent. -/
-theorem MorseCancellation.signed_morse_chart_quadratic_equivalent {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c d : ManifoldMorse.SignedMorseChart (E := E) f p) :
-    (QuadraticMap.weightedSumSquares ℝ c.weights).Equivalent
-      (QuadraticMap.weightedSumSquares ℝ d.weights) := by
-  let Z := Fin (Module.finrank ℝ E) → ℝ
-  let Q : QuadraticForm ℝ Z := QuadraticMap.weightedSumSquares ℝ c.weights
-  let R : QuadraticForm ℝ Z := QuadraticMap.weightedSumSquares ℝ d.weights
-  have hQ (z : Z) : Q z = ∑ i, c.weights i * (z i) ^ 2 := by
-    simpa only [smul_eq_mul, pow_two] using
-      (QuadraticMap.weightedSumSquares_apply (R := ℝ) c.weights z)
-  have hR (z : Z) : R z = ∑ i, d.weights i * (z i) ^ 2 := by
-    simpa only [smul_eq_mul, pow_two] using
-      (QuadraticMap.weightedSumSquares_apply (R := ℝ) d.weights z)
-  have hRcont : Continuous R := by
-    change Continuous (fun z : Z => R z)
-    simp_rw [hR]
-    fun_prop
-  let P := c.chart.symm.trans d.chart
-  have hc0 : c.chart.symm (0 : Z) = p := by
-    rw [← c.center]
-    exact c.chart.left_inv' c.mem_source
-  have h0 : (0 : Z) ∈ P.source := by
-    refine ⟨?_, ?_⟩
-    · rw [← c.center]
-      exact c.chart.map_source' c.mem_source
-    · change c.chart.symm (0 : Z) ∈ d.chart.source
-      rw [hc0]
-      exact d.mem_source
-  have hP0 : P (0 : Z) = 0 := by
-    change d.chart (c.chart.symm (0 : Z)) = 0
-    rw [hc0, d.center]
-  have hdiff := (P.mdifferentiableAt (by simp) h0).differentiableAt
-  have hbij : Function.Bijective (fderiv ℝ P (0 : Z)) := by
-    have hh := PartialChart.bijective_mfderiv P h0
-    rw [mfderiv_eq_fderiv] at hh
-    exact hh
-  have hquad : (fun z => R (P z)) =ᶠ[𝓝 (0 : Z)] Q := by
-    filter_upwards [P.open_source.mem_nhds h0] with z hz
-    have hzs : z ∈ c.chart.target ∧ c.chart.symm z ∈ d.chart.source := hz
-    rw [hR, hQ]
-    change (∑ i, d.weights i * (d.chart (c.chart.symm z) i) ^ 2) = ∑ i, c.weights i * (z i) ^ 2
-    linarith [c.inverse_equation z hzs.1, d.equation (c.chart.symm z) hzs.2]
-  exact
-    equivalent_quadratic_germs_of_bijective_derivative Q R hRcont hdiff.hasFDerivAt hP0 hbij hquad
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The negative cardinality is chart independent. -/
-theorem MorseCancellation.signed_morse_chart_negative_card_eq {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c d : ManifoldMorse.SignedMorseChart (E := E) f p) :
-    Fintype.card { i // c.weights i = -1 } = Fintype.card { i // d.weights i = -1 } := by
-  have hs := (signed_morse_chart_quadratic_equivalent c d).sigNeg_eq
-  rw [QuadraticForm.sigNeg_weightedSumSquares, QuadraticForm.sigNeg_weightedSumSquares] at hs
-  have hc : {i | c.weights i < 0} = {i | c.weights i = -1} := by
-    ext i
-    rcases c.signs i with h | h <;> norm_num [h]
-  have hd : {i | d.weights i < 0} = {i | d.weights i = -1} := by
-    ext i
-    rcases d.signs i with h | h <;> norm_num [h]
-  rw [hc, hd] at hs
-  calc
-    Fintype.card { i // c.weights i = -1 } = {i | c.weights i = -1}.ncard :=
-      Set.fintypeCard_eq_ncard _
-    _ = {i | d.weights i = -1}.ncard := hs
-    _ = Fintype.card { i // d.weights i = -1 } := (Set.fintypeCard_eq_ncard _).symm
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The negative rank is chart independent. -/
-theorem MorseCancellation.signed_morse_chart_negative_finrank_eq {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c d : ManifoldMorse.SignedMorseChart (E := E) f p) :
-    Module.finrank ℝ c.NegativeCoordinates = Module.finrank ℝ d.NegativeCoordinates := by
-  simpa only [ManifoldMorse.SignedMorseChart.NegativeCoordinates,
-    MorseHandle.NegativeSpace, finrank_euclideanSpace] using
-    signed_morse_chart_negative_card_eq c d
-
 attribute [local instance 100] Classical.propDecidable in
 /-- The negative rank depends only on the germ. -/
 theorem MorseCancellation.signed_morse_chart_negative_finrank_eq_of_germ {E M : Type*}
@@ -5301,24 +774,6 @@ theorem MorseCancellation.signed_morse_chart_negative_finrank_eq_of_germ {E M : 
     MorseHandle.NegativeSpace, finrank_euclideanSpace] using heq
 
 /-! ### The native Morse index -/
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native Morse index of a critical point. -/
-def MorseCancellation.nativeMorseIndex (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type*}
-    [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (p : M) : ℕ :=
-  if h : Nonempty (ManifoldMorse.SignedMorseChart (E := E) f p) then
-    Module.finrank ℝ (Classical.choice h).NegativeCoordinates
-  else 0
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The native index equals the chart's negative rank. -/
-theorem MorseCancellation.nativeMorseIndex_eq_chart {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
-    nativeMorseIndex E f p = Module.finrank ℝ c.NegativeCoordinates := by
-  unfold nativeMorseIndex
-  rw [dif_pos ⟨c⟩]
-  exact signed_morse_chart_negative_finrank_eq _ c
 
 /-- The native index depends only on the germ. -/
 theorem MorseCancellation.nativeMorseIndex_congr_germ {E M : Type*} [NormedAddCommGroup E]
@@ -5348,966 +803,7 @@ theorem MorseCancellation.nativeMorseIndex_le {E M : Type*} [NormedAddCommGroup 
     omega
   · simp only [nativeMorseIndex, dif_neg h, Nat.zero_le]
 
-/-- The non-minimum forward basin is meagre. -/
-theorem AdaptedWindows.nonminimum_forward_basin_meagre {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
-    (hindex : 0 < MorseCancellation.nativeMorseIndex E f p) :
-    IsMeagre {x : M | Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} := by
-  let c := (S.data p).chart
-  obtain ⟨r, hr, hblock, hbasin⟩ :=
-    MorseCancellation.exists_descending_morse_basin_block c hf (S.smooth.of_le (by simp)) S.flow
-      S.integral S.zero S.descent (S.critical_model_germ p)
-  let K :=
-    c.splitChart.symm ''
-      (({0} : Set c.NegativeCoordinates) ×ˢ Metric.closedBall (0 : c.PositiveCoordinates) (r / 2))
-  have hKt :
-    ({0} : Set c.NegativeCoordinates) ×ˢ Metric.closedBall (0 : c.PositiveCoordinates) (r / 2) ⊆
-      c.splitChart.target := by
-    rintro ⟨a, b⟩ ⟨ha, hb⟩
-    have ha0 : a = 0 := ha
-    subst a
-    exact
-      hblock
-        ⟨Metric.mem_closedBall_self hr.le,
-          Metric.closedBall_subset_closedBall (by linarith : r / 2 ≤ r) hb⟩
-  have hi : 0 < Module.finrank ℝ c.NegativeCoordinates := by
-    rwa [MorseCancellation.nativeMorseIndex_eq_chart c] at hindex
-  have hK : IsNowhereDense K := MorseCancellation.native_positive_plane_piece_nowhereDense c hi hKt
-  have hcover :
-    {x : M | Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} ⊆
-      ⋃ n : ℕ, S.flow (-(n : ℝ)) '' K := by
-    intro x hx
-    have hlim : Filter.Tendsto (fun n : ℕ => S.flow (n : ℝ) x) Filter.atTop (𝓝 p.val) :=
-      hx.comp tendsto_natCast_atTop_atTop
-    obtain ⟨n, hs, hn, hp⟩ :=
-      (hlim.eventually
-          (MorseCancellation.morse_coordinate_neighborhood c (half_pos hr) (half_pos hr))).exists
-    have hnew : Filter.Tendsto (fun t => S.flow t (S.flow (n : ℝ) x)) Filter.atTop (𝓝 p.val) :=
-      (MorseCancellation.flow_time_atTop_limit_iff S.flow (n : ℝ) x p.val).mpr hx
-    have hz : (c.splitChart (S.flow (n : ℝ) x)).1 = 0 :=
-      ((hbasin _ hs (hn.trans (half_lt_self hr)) (hp.trans (half_lt_self hr))).1).mp hnew
-    have hmem : S.flow (n : ℝ) x ∈ K := by
-      refine ⟨c.splitChart (S.flow (n : ℝ) x), ?_, c.splitChart.left_inv' hs⟩
-      exact ⟨Set.mem_singleton_iff.mpr hz, mem_closedBall_zero_iff.mpr hp.le⟩
-    exact
-      Set.mem_iUnion.mpr
-        ⟨n, S.flow (n : ℝ) x, hmem, (S.flow.toHomeomorph (n : ℝ)).symm_apply_apply x⟩
-  apply IsMeagre.mono hcover
-  apply isMeagre_iUnion
-  intro n
-  exact ((S.flow.toHomeomorph (-(n : ℝ))).isInducing.isNowhereDense_image hK).isMeagre
-
-/-! ### Omega limits and connections -/
-
-/-- Points in the omega limit have equal height. -/
-theorem FlowCancellation.height_eq_of_mem_omegaLimit {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {κ : Filter ℝ} {x : X} {l : ℝ}
-    (hlim : Filter.Tendsto (fun t : ℝ => f (F t x)) κ (𝓝 l)) {y : X}
-    (hy : y ∈ omegaLimit κ F { x }) : f y = l := by
-  have hc : MapClusterPt y κ (fun t => F t x) :=
-    (mem_omegaLimit_singleton_iff_mapClusterPt κ F x y).mp hy
-  have hh := hc.continuousAt_comp hf.continuousAt
-  have hl : Filter.map (f ∘ (fun t => F t x)) κ ≤ 𝓝 l := hlim
-  exact eq_of_nhds_neBot (hh.clusterPt.mono hl)
-
-/-- The omega limit lies below a strict height bound. -/
-theorem FlowCancellation.omegaLimit_subset_of_strict_height {X : Type*}
-    [TopologicalSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {κ : Filter ℝ}
-    (hshift : ∀ t : ℝ, Filter.Tendsto (t + ·) κ κ) {S : Set X}
-    (hstrict : ∀ y ∉ S, f (F 1 y) < f y) {x : X} {l : ℝ}
-    (hlim : Filter.Tendsto (fun t : ℝ => f (F t x)) κ (𝓝 l)) : omegaLimit κ F { x } ⊆ S := by
-  intro y hy
-  by_contra hnot
-  have hy' : F 1 y ∈ omegaLimit κ F { x } := (F.isInvariant_omegaLimit κ { x } hshift) 1 hy
-  have h0 := height_eq_of_mem_omegaLimit F hf hlim hy
-  have h1 := height_eq_of_mem_omegaLimit F hf hlim hy'
-  have hs := hstrict y hnot
-  rw [h0, h1] at hs
-  exact lt_irrefl _ hs
-
-/-- A flow limit exists given injective exceptional height. -/
-theorem FlowCancellation.exists_flow_limit_of_injective_exceptional_height {X : Type*}
-    [TopologicalSpace X] [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
-    {κ : Filter ℝ} [Filter.NeBot κ] (hshift : ∀ t : ℝ, Filter.Tendsto (t + ·) κ κ) {S : Set X}
-    (hstrict : ∀ y ∉ S, f (F 1 y) < f y) (hinj : Set.InjOn f S) {x : X} {l : ℝ}
-    (hlim : Filter.Tendsto (fun t : ℝ => f (F t x)) κ (𝓝 l)) :
-    ∃ p ∈ S, f p = l ∧ Filter.Tendsto (fun t : ℝ => F t x) κ (𝓝 p) := by
-  have hsub := omegaLimit_subset_of_strict_height F hf hshift hstrict hlim
-  obtain ⟨p, hp⟩ := nonempty_omegaLimit κ F { x } (Set.singleton_nonempty x)
-  have hpl := height_eq_of_mem_omegaLimit F hf hlim hp
-  have hsingle : omegaLimit κ F { x } ⊆ { p } := by
-    intro y hy
-    exact hinj (hsub hy) (hsub hp) ((height_eq_of_mem_omegaLimit F hf hlim hy).trans hpl.symm)
-  refine ⟨p, hsub hp, hpl, ?_⟩
-  rw [Filter.tendsto_def]
-  intro U hU
-  obtain ⟨V, hVU, hV, hpV⟩ := mem_nhds_iff.mp hU
-  have hωV : omegaLimit κ F { x } ⊆ V := hsingle.trans (Set.singleton_subset_iff.mpr hpV)
-  have hEv := eventually_mapsTo_of_isOpen_of_omegaLimit_subset κ F { x } hV hωV
-  filter_upwards [hEv] with t ht
-  exact hVU (ht (Set.mem_singleton x))
-
-/-- A strict descent flow has critical endpoints. -/
-theorem FlowCancellation.exists_strict_descent_flow_endpoints {X : Type*}
-    [TopologicalSpace X] [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
-    {S : Set X} (hinj : Set.InjOn f S) (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x)))
-    (hstrict : ∀ x ∉ S, StrictAnti (fun t : ℝ => f (F t x))) (x : X) :
-    ∃ p ∈ S,
-      ∃ q ∈ S,
-        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 p) ∧
-          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 q) ∧
-            (x ∉ S → f q < f x ∧ f x < f p) := by
-  have hrange : Set.range (fun t : ℝ => f (F t x)) ⊆ Set.range f := by
-    rintro y ⟨t, rfl⟩
-    exact ⟨F t x, rfl⟩
-  have hbelow : BddBelow (Set.range (fun t : ℝ => f (F t x))) :=
-    (isCompact_range hf).bddBelow.mono hrange
-  have habove : BddAbove (Set.range (fun t : ℝ => f (F t x))) :=
-    (isCompact_range hf).bddAbove.mono hrange
-  have htop := tendsto_atTop_ciInf (hmono x) hbelow
-  have hbot := tendsto_atBot_ciSup (hmono x) habove
-  have hshiftTop (t : ℝ) : Filter.Tendsto (t + ·) Filter.atTop Filter.atTop := by
-    apply Filter.tendsto_atTop.mpr
-    intro b
-    filter_upwards [Filter.eventually_ge_atTop (b - t)] with s hs
-    linarith
-  have hshiftBot (t : ℝ) : Filter.Tendsto (t + ·) Filter.atBot Filter.atBot := by
-    apply Filter.tendsto_atBot.mpr
-    intro b
-    filter_upwards [Filter.eventually_le_atBot (b - t)] with s hs
-    linarith
-  have hstep (y : X) (hy : y ∉ S) : f (F 1 y) < f y := by
-    have hh := hstrict y hy (show (0 : ℝ) < 1 by norm_num)
-    simpa only [F.map_zero_apply] using hh
-  obtain ⟨p, hp, hfp, hplim⟩ :=
-    exists_flow_limit_of_injective_exceptional_height F hf hshiftBot hstep hinj hbot
-  obtain ⟨q, hq, hfq, hqlim⟩ :=
-    exists_flow_limit_of_injective_exceptional_height F hf hshiftTop hstep hinj htop
-  refine ⟨p, hp, q, hq, hplim, hqlim, ?_⟩
-  intro hx
-  have hlow : f q ≤ f (F 1 x) := by
-    rw [hfq]
-    exact ciInf_le hbelow 1
-  have hhigh : f (F (-1) x) ≤ f p := by
-    rw [hfp]
-    exact le_ciSup habove (-1)
-  have hdec : f (F 1 x) < f x := hstep x hx
-  have hinc : f x < f (F (-1) x) := by
-    have hh := hstrict x hx (show (-1 : ℝ) < 0 by norm_num)
-    simpa only [F.map_zero_apply] using hh
-  exact ⟨hlow.trans_lt hdec, hinc.trans_le hhigh⟩
-
-/-- A uniform flow escape time exists. -/
-theorem FlowCancellation.exists_uniform_flow_escape {X : Type*} [TopologicalSpace X]
-    (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {C : Set X} (hC : IsCompact C) {c d : ℝ}
-    (hescape : ∀ x ∈ C, ∃ t : ℝ, f (F t x) ∉ Set.Icc c d) :
-    ∃ T : ℝ,
-      0 < T ∧
-        ∃ δ : ℝ, 0 < δ ∧ ∀ x ∈ C, ∃ t ∈ Set.Icc (-T) T, f (F t x) < c - δ ∨ d + δ < f (F t x) := by
-  classical
-  by_cases hne : C.Nonempty
-  swap
-  · exact ⟨1, by norm_num, 1, by norm_num, fun x hx => False.elim (hne ⟨x, hx⟩)⟩
-  let J := { p : ℝ × ℝ // 0 < p.2 }
-  let O : J → Set X := fun p =>
-    {x | f (F p.val.1 x) < c - p.val.2 ∨ d + p.val.2 < f (F p.val.1 x)}
-  have hO (p : J) : IsOpen (O p) :=
-    (isOpen_lt (hf.comp (F.continuous_toFun p.val.1)) continuous_const).union
-      (isOpen_lt continuous_const (hf.comp (F.continuous_toFun p.val.1)))
-  have hcover : C ⊆ ⋃ p, O p := by
-    intro x hx
-    obtain ⟨t, ht⟩ := hescape x hx
-    by_cases hl : c ≤ f (F t x)
-    · have hr : d < f (F t x) := lt_of_not_ge (fun h => ht ⟨hl, h⟩)
-      have hδ : 0 < (f (F t x) - d) / 2 := by linarith
-      apply Set.mem_iUnion.mpr
-      refine ⟨⟨(t, (f (F t x) - d) / 2), hδ⟩, Or.inr ?_⟩
-      change d + (f (F t x) - d) / 2 < f (F t x)
-      linarith
-    · have hl' : f (F t x) < c := lt_of_not_ge hl
-      have hδ : 0 < (c - f (F t x)) / 2 := by linarith
-      apply Set.mem_iUnion.mpr
-      refine ⟨⟨(t, (c - f (F t x)) / 2), hδ⟩, Or.inl ?_⟩
-      change f (F t x) < c - (c - f (F t x)) / 2
-      linarith
-  obtain ⟨S, hScover⟩ := hC.elim_finite_subcover O hO hcover
-  have hS : S.Nonempty := by
-    obtain ⟨x, hx⟩ := hne
-    obtain ⟨p, hp, -⟩ := Set.mem_iUnion₂.mp (hScover hx)
-    exact ⟨p, hp⟩
-  let T := S.sup' hS (fun p => |p.val.1|) + 1
-  let δ := S.inf' hS (fun p => p.val.2) / 2
-  have hmin : 0 < S.inf' hS (fun p => p.val.2) :=
-    (Finset.lt_inf'_iff hS).mpr (fun p _ => p.property)
-  have hT : 0 < T := by
-    obtain ⟨p, hp⟩ := hS
-    have hh := Finset.le_sup' (fun p : J => |p.val.1|) hp
-    have habs := abs_nonneg p.val.1
-    dsimp [T]
-    linarith
-  have hδ : 0 < δ := div_pos hmin (by norm_num)
-  refine ⟨T, hT, δ, hδ, ?_⟩
-  intro x hx
-  obtain ⟨p, hp, hpx⟩ := Set.mem_iUnion₂.mp (hScover hx)
-  have ht : |p.val.1| ≤ T := by
-    have hh := Finset.le_sup' (fun p : J => |p.val.1|) hp
-    dsimp [T]
-    linarith
-  have hd : δ ≤ p.val.2 := by
-    have hh := Finset.inf'_le (fun p : J => p.val.2) hp
-    dsimp [δ]
-    linarith
-  refine ⟨p.val.1, abs_le.mp ht, ?_⟩
-  rcases hpx with h | h
-  · exact Or.inl (by linarith)
-  · exact Or.inr (by linarith)
-
-/-- A no-return neighborhood of an orbit exists. -/
-theorem FlowCancellation.exists_flow_no_return_neighborhood {X : Type*}
-    [TopologicalSpace X] [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
-    (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x))) {c d : ℝ} {K U : Set X} (hU : IsOpen U)
-    (hKU : K ⊆ U) (hband : ∀ x ∈ K, f x ∈ Set.Icc c d) (hinvariant : ∀ t x, x ∈ K → F t x ∈ K)
-    (hmaximal : ∀ x, (∀ t : ℝ, f (F t x) ∈ Set.Icc c d) → x ∈ K) :
-    ∃ N : Set X,
-      IsOpen N ∧
-        K ⊆ N ∧
-          N ⊆ U ∧ ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U := by
-  have hescape : ∀ x ∈ Uᶜ, ∃ t : ℝ, f (F t x) ∉ Set.Icc c d := by
-    intro x hx
-    by_contra hh
-    apply hx
-    apply hKU
-    apply hmaximal x
-    intro t
-    by_contra ht
-    exact hh ⟨t, ht⟩
-  obtain ⟨T, hT, δ, hδ, hEsc⟩ :=
-    exists_uniform_flow_escape F hf hU.isClosed_compl.isCompact hescape
-  let N : Set X := {x | ∀ s ∈ Set.Icc (-T) T, F s x ∈ U} ∩ f ⁻¹' Set.Ioo (c - δ) (d + δ)
-  have hN : IsOpen N :=
-    (MorsePerturbation.isOpen_forall_mem_compact CompactIccSpace.isCompact_Icc
-          (hU.preimage (F.continuous continuous_snd continuous_fst))).inter
-      (isOpen_Ioo.preimage hf)
-  have hKN : K ⊆ N := by
-    intro x hx
-    refine ⟨fun s _ => hKU (hinvariant s x hx), ?_⟩
-    have hh := hband x hx
-    constructor <;> linarith [hh.1, hh.2]
-  have hNU : N ⊆ U := by
-    intro x hx
-    have hh := hx.1 0 (show (0 : ℝ) ∈ Set.Icc (-T) T from ⟨by linarith, hT.le⟩)
-    simpa only [F.map_zero_apply] using hh
-  refine ⟨N, hN, hKN, hNU, ?_⟩
-  intro x hx t ht htx s hs
-  by_cases hshort : s ≤ T
-  · exact hx.1 s ⟨by linarith [hs.1], hshort⟩
-  have hTs : T < s := lt_of_not_ge hshort
-  by_cases hshort' : t - s ≤ T
-  · have hh := htx.1 (s - t) (show s - t ∈ Set.Icc (-T) T from ⟨by linarith, by linarith [hs.2]⟩)
-    rw [← F.map_add, sub_add_cancel] at hh
-    exact hh
-  have hTs' : T < t - s := lt_of_not_ge hshort'
-  by_contra hout
-  obtain ⟨v, hv, hleave⟩ := hEsc (F s x) hout
-  have htime : s + v ∈ Set.Icc (0 : ℝ) t := ⟨by linarith [hv.1], by linarith [hv.2]⟩
-  have hlo := hmono x htime.1
-  have hhi := hmono x htime.2
-  change f (F (s + v) x) ≤ f (F 0 x) at hlo
-  change f (F t x) ≤ f (F (s + v) x) at hhi
-  rw [F.map_zero_apply] at hlo
-  rw [← F.map_add, add_comm v s] at hleave
-  have hxheight : f x ∈ Set.Ioo (c - δ) (d + δ) := hx.2
-  have htheight : f (F t x) ∈ Set.Ioo (c - δ) (d + δ) := htx.2
-  rcases hleave with h | h
-  · linarith [htheight.1]
-  · linarith [hxheight.2]
-
-/-- An invariant band lies in the connection. -/
-theorem FlowCancellation.invariant_band_subset_connection {X : Type*} [TopologicalSpace X]
-    [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {S : Set X}
-    (hinj : Set.InjOn f S) (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x)))
-    (hstrict : ∀ x ∉ S, StrictAnti (fun t : ℝ => f (F t x))) {p q z : X}
-    (hpair : ∀ x ∈ S, f x ∈ Set.Icc (f p) (f q) → x = p ∨ x = q)
-    (hunique :
-      ∀ x ∉ S,
-        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 q) →
-          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 p) → ∃ t : ℝ, F t z = x)
-    {x : X} (hstay : ∀ t : ℝ, f (F t x) ∈ Set.Icc (f p) (f q)) :
-    x ∈ ({ p, q } : Set X) ∪ Set.range (fun t : ℝ => F t z) := by
-  have hxband : f x ∈ Set.Icc (f p) (f q) := by simpa only [F.map_zero_apply] using hstay 0
-  by_cases hxS : x ∈ S
-  · rcases hpair x hxS hxband with rfl | rfl <;> exact Or.inl (by simp)
-  obtain ⟨r, hr, s, hs, hrlim, hslim, hsep⟩ :=
-    exists_strict_descent_flow_endpoints F hf hinj hmono hstrict x
-  have hrband : f r ∈ Set.Icc (f p) (f q) :=
-    isClosed_Icc.mem_of_tendsto (hf.continuousAt.tendsto.comp hrlim)
-      (Filter.Eventually.of_forall hstay)
-  have hsband : f s ∈ Set.Icc (f p) (f q) :=
-    isClosed_Icc.mem_of_tendsto (hf.continuousAt.tendsto.comp hslim)
-      (Filter.Eventually.of_forall hstay)
-  have hsep' := hsep hxS
-  have hrq : r = q :=
-    (hpair r hr hrband).resolve_left
-      (by
-        intro he
-        rw [he] at hsep'
-        linarith [hxband.1])
-  have hsp : s = p :=
-    (hpair s hs hsband).resolve_right
-      (by
-        intro he
-        rw [he] at hsep'
-        linarith [hxband.2])
-  obtain ⟨t, ht⟩ :=
-    hunique x hxS (by simpa only [hrq] using hrlim) (by simpa only [hsp] using hslim)
-  exact Or.inr ⟨t, ht⟩
-
-/-- An isolated connection has a no-return neighborhood. -/
-theorem FlowCancellation.exists_isolated_connection_no_return {X : Type*}
-    [TopologicalSpace X] [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
-    {S : Set X} (hinj : Set.InjOn f S) (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x)))
-    (hstrict : ∀ x ∉ S, StrictAnti (fun t : ℝ => f (F t x)))
-    (hfixed : ∀ x ∈ S, ∀ t : ℝ, F t x = x) {p q z : X} (hp : p ∈ S) (hq : q ∈ S) (hpq : f p < f q)
-    (hpair : ∀ x ∈ S, f x ∈ Set.Icc (f p) (f q) → x = p ∨ x = q)
-    (hzband : ∀ t : ℝ, f (F t z) ∈ Set.Icc (f p) (f q))
-    (hunique :
-      ∀ x ∉ S,
-        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 q) →
-          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 p) → ∃ t : ℝ, F t z = x)
-    {U : Set X} (hU : IsOpen U) (hpU : p ∈ U) (hqU : q ∈ U) (hzU : ∀ t : ℝ, F t z ∈ U) :
-    ∃ N : Set X,
-      IsOpen N ∧
-        N ⊆ U ∧
-          p ∈ N ∧
-            q ∈ N ∧
-              (∀ t : ℝ, F t z ∈ N) ∧
-                ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U := by
-  let K : Set X := {x | ∀ t : ℝ, f (F t x) ∈ Set.Icc (f p) (f q)}
-  have hKU : K ⊆ U := by
-    intro x hx
-    rcases invariant_band_subset_connection F hf hinj hmono hstrict hpair hunique hx with h |
-      ⟨t, rfl⟩
-    · rcases h with h | h
-      · exact h ▸ hpU
-      · exact (show x = q from h) ▸ hqU
-    · exact hzU t
-  have hKband (x : X) (hx : x ∈ K) : f x ∈ Set.Icc (f p) (f q) := by
-    simpa only [F.map_zero_apply] using hx 0
-  have hKi (t : ℝ) (x : X) (hx : x ∈ K) : F t x ∈ K := by
-    intro s
-    rw [← F.map_add]
-    exact hx (s + t)
-  obtain ⟨N, hN, hKN, hNU, hreturn⟩ :=
-    exists_flow_no_return_neighborhood F hf hmono hU hKU hKband hKi (fun _ h => h)
-  have hpK : p ∈ K := by
-    intro t
-    rw [hfixed p hp t]
-    exact ⟨le_rfl, hpq.le⟩
-  have hqK : q ∈ K := by
-    intro t
-    rw [hfixed q hq t]
-    exact ⟨hpq.le, le_rfl⟩
-  exact ⟨N, hN, hNU, hKN hpK, hKN hqK, fun t => hKN (hKi t z hzband), hreturn⟩
-
-/-- A native descent trajectory has critical endpoints. -/
-theorem FlowCancellation.exists_native_descent_endpoints {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) (x : M) :
-    ∃ p ∈ ManifoldMorse.criticalPoints E f,
-      ∃ q ∈ ManifoldMorse.criticalPoints E f,
-        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 p) ∧
-          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 q) ∧
-            (x ∉ ManifoldMorse.criticalPoints E f → f q < f x ∧ f x < f p) := by
-  exact
-    exists_strict_descent_flow_endpoints F hf.continuous hinj
-      (FlowConstruction.antitone_flow_height hf F hcurve hzero hdesc)
-      (fun x hx =>
-        FlowConstruction.strictAnti_flow_height hf (hV.of_le (by simp)) F hcurve hzero hdesc
-          hx)
-      x
-
-/-- A native connection has a no-return neighborhood. -/
-theorem FlowCancellation.exists_native_connection_no_return {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
-    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
-    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
-    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) {p q z : M}
-    (hp : p ∈ ManifoldMorse.criticalPoints E f)
-    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q)
-    (hpair :
-      ∀ x ∈ ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc (f p) (f q) → x = p ∨ x = q)
-    (hzband : ∀ t : ℝ, f (F t z) ∈ Set.Icc (f p) (f q))
-    (hunique :
-      ∀ x ∉ ManifoldMorse.criticalPoints E f,
-        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 q) →
-          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 p) → ∃ t : ℝ, F t z = x)
-    {U : Set M} (hU : IsOpen U) (hpU : p ∈ U) (hqU : q ∈ U) (hzU : ∀ t : ℝ, F t z ∈ U) :
-    ∃ N : Set M,
-      IsOpen N ∧
-        N ⊆ U ∧
-          p ∈ N ∧
-            q ∈ N ∧
-              (∀ t : ℝ, F t z ∈ N) ∧
-                ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U := by
-  have hV₁ :
-    ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) :=
-    hV.of_le (by simp)
-  exact
-    exists_isolated_connection_no_return F hf.continuous hinj
-      (FlowConstruction.antitone_flow_height hf F hcurve hzero hdesc)
-      (fun x hx => FlowConstruction.strictAnti_flow_height hf hV₁ F hcurve hzero hdesc hx)
-      (fun x hx t => FlowConstruction.flow_fixed_of_zero hV₁ F hcurve (hzero x hx) t) hp hq
-      hpq hpair hzband hunique hU hpU hqU hzU
-
-/-! ### Minimum basins -/
-
-/-- The minimum forward basin is open. -/
-theorem AdaptedWindows.isOpen_minimum_forward_basin {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
-    (hindex : MorseCancellation.nativeMorseIndex E f p = 0) :
-    IsOpen {x : M | Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} := by
-  let c := (S.data p).chart
-  have hi : Module.finrank ℝ c.NegativeCoordinates = 0 :=
-    (MorseCancellation.nativeMorseIndex_eq_chart c).symm.trans hindex
-  let : Subsingleton c.NegativeCoordinates :=
-    (Module.finrank_eq_zero_iff_of_free ℝ c.NegativeCoordinates).mp hi
-  obtain ⟨r, hr, -, hbasin⟩ :=
-    MorseCancellation.exists_descending_morse_basin_block c hf (S.smooth.of_le (by simp)) S.flow
-      S.integral S.zero S.descent (S.critical_model_germ p)
-  have hnear : ∀ᶠ y in 𝓝 p.val, Filter.Tendsto (fun t => S.flow t y) Filter.atTop (𝓝 p.val) := by
-    filter_upwards [MorseCancellation.morse_coordinate_neighborhood c hr hr] with y hy
-    exact ((hbasin y hy.1 hy.2.1 hy.2.2).1).mpr (Subsingleton.elim _ _)
-  apply isOpen_iff_mem_nhds.mpr
-  intro x hx
-  obtain ⟨t, ht⟩ := (hx.eventually (eventually_eventually_nhds.mpr hnear)).exists
-  have hc : Continuous (fun y => S.flow t y) := S.flow.continuous continuous_const continuous_id
-  filter_upwards [hc.continuousAt.tendsto.eventually ht] with y hy
-  exact (MorseCancellation.flow_time_atTop_limit_iff S.flow t y p.val).mp hy
-
-/-- The minimum forward basins are dense. -/
-theorem AdaptedWindows.dense_minimum_forward_basins {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) :
-    Dense
-      {x : M |
-        ∃ p : ManifoldMorse.criticalPoints E f,
-          MorseCancellation.nativeMorseIndex E f p = 0 ∧
-            Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} := by
-  let : Finite (ManifoldMorse.criticalPoints E f) := S.finite.to_subtype
-  let I :=
-    { p : ManifoldMorse.criticalPoints E f // 0 < MorseCancellation.nativeMorseIndex E f p }
-  let B := ⋃ p : I, {x : M | Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val.val)}
-  have hm : IsMeagre B :=
-    isMeagre_iUnion (fun p : I => S.nonminimum_forward_basin_meagre hf p.val p.property)
-  have hd : Dense Bᶜ := dense_of_mem_residual hm
-  apply hd.mono
-  intro x hx
-  obtain ⟨r, hr, p, hp, -, hlim, -⟩ :=
-    FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
-      S.descent S.distinct x
-  have hi : MorseCancellation.nativeMorseIndex E f p = 0 := by
-    by_contra hi
-    apply hx
-    exact Set.mem_iUnion.mpr ⟨(⟨⟨p, hp⟩, Nat.pos_of_ne_zero hi⟩ : I), hlim⟩
-  exact ⟨⟨p, hp⟩, hi, hlim⟩
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A positive belt branch in the minimum basin exists. -/
-theorem AdaptedWindows.exists_positive_belt_branch_in_minimum_basin {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1)
-    (hbranch :
-      Filter.Tendsto (fun t => S.flow t ((S.data q).surgery.attachingSphere u).val) Filter.atTop
-        (𝓝 p.val)) :
-    ∃ ε : ℝ,
-      0 < ε ∧
-        ε ≤ 1 ∧
-          ∀ s : ℝ,
-            0 < s →
-              s < ε →
-                Filter.Tendsto
-                  (fun t =>
-                    S.flow t
-                      ((S.data q).chart.splitChart.symm
-                        (BeltPassage.upper (S.data q).radius s u.val v.val)))
-                  Filter.atTop (𝓝 p.val) := by
-  let d := S.data q
-  have h0target : BeltPassage.lower d.radius 0 u.val v.val ∈ d.chart.splitChart.target := by
-    rw [BeltPassage.lower_zero]
-    apply d.block
-    constructor
-    · rw [mem_closedBall_zero_iff, norm_smul, Real.norm_eq_abs, abs_of_pos d.radius_pos,
-        mem_sphere_zero_iff_norm.mp u.property, mul_one]
-      linarith [d.radius_pos]
-    · exact Metric.mem_closedBall_self (by linarith [d.radius_pos])
-  have h0value :
-    d.chart.splitChart.symm (BeltPassage.lower d.radius 0 u.val v.val) =
-      (d.surgery.attachingSphere u).val := by
-    rw [BeltPassage.lower_zero, d.attaching_eq, d.chart.attachingCoreMap_coe]
-  have hc :
-    ContinuousAt
-      (fun s : ℝ => d.chart.splitChart.symm (BeltPassage.lower d.radius s u.val v.val))
-      0 :=
-    (d.chart.splitChart.contMDiffOn_invFun.continuousOn.continuousAt
-          (d.chart.splitChart.open_target.mem_nhds h0target)).comp
-      (f := fun s : ℝ => BeltPassage.lower d.radius s u.val v.val)
-      (BeltPassage.contDiff_lower d.radius u.val v.val).continuous.continuousAt
-  have hbasin :
-    d.chart.splitChart.symm (BeltPassage.lower d.radius 0 u.val v.val) ∈
-      {x : M | Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)} := by
-    rw [h0value]
-    exact hbranch
-  have hnear := hc.tendsto.eventually ((S.isOpen_minimum_forward_basin hf p hp).mem_nhds hbasin)
-  obtain ⟨δ, hδ, hδsub⟩ := Metric.mem_nhds_iff.mp hnear
-  refine ⟨Min.min δ 1, lt_min hδ zero_lt_one, min_le_right _ _, ?_⟩
-  intro s hs hsε
-  have hs₁ : s ≤ 1 := (hsε.trans_le (min_le_right _ _)).le
-  apply (S.belt_passage_forward_limit_iff q hs hs₁ u v p.val).mpr
-  apply hδsub
-  rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hs]
-  exact hsε.trans_le (min_le_left _ _)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- A two-sided belt branch in the minimum basin exists. -/
-theorem AdaptedWindows.exists_two_sided_belt_branch_in_minimum_basin {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (p q : ManifoldMorse.criticalPoints E f) (hp : MorseCancellation.nativeMorseIndex E f p = 0)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1)
-    (hbranches :
-      ∀ w : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1,
-        Filter.Tendsto (fun t => S.flow t ((S.data q).surgery.attachingSphere w).val) Filter.atTop
-          (𝓝 p.val)) :
-    ∃ ε : ℝ,
-      0 < ε ∧
-        ε ≤ 1 ∧
-          ∀ s : ℝ,
-            0 < |s| →
-              |s| < ε →
-                Filter.Tendsto
-                  (fun t =>
-                    S.flow t
-                      ((S.data q).chart.splitChart.symm
-                        (BeltPassage.upper (S.data q).radius s u.val v.val)))
-                  Filter.atTop (𝓝 p.val) := by
-  let u' : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 :=
-    ⟨-u.val,
-      mem_sphere_zero_iff_norm.mpr
-        (by rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp u.property)⟩
-  obtain ⟨εp, hεp, hεp1, hplus⟩ :=
-    S.exists_positive_belt_branch_in_minimum_basin hf p q hp u v (hbranches u)
-  obtain ⟨εn, hεn, -, hminus⟩ :=
-    S.exists_positive_belt_branch_in_minimum_basin hf p q hp u' v (hbranches u')
-  refine ⟨Min.min εp εn, lt_min hεp hεn, (min_le_left _ _).trans hεp1, ?_⟩
-  intro s hs hsmall
-  by_cases hpos : 0 < s
-  · apply hplus s hpos
-    rw [abs_of_pos hpos] at hsmall
-    exact hsmall.trans_le (min_le_left _ _)
-  · have hneg : s < 0 := lt_of_le_of_ne (le_of_not_gt hpos) (abs_pos.mp hs)
-    have heq :
-      BeltPassage.upper (S.data q).radius s u.val v.val =
-        BeltPassage.upper (S.data q).radius (-s) u'.val v.val := by
-      simpa only [neg_neg] using BeltPassage.upper_neg (S.data q).radius (-s) u.val v.val
-    rw [heq]
-    apply hminus (-s) (neg_pos.mpr hneg)
-    rw [abs_of_neg hneg] at hsmall
-    exact hsmall.trans_le (min_le_right _ _)
-
-/-! ### The belt arc and meridians -/
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc through the native belt point. -/
-def MorseCancellation.nativeBeltArc {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : ℝ) : M :=
-  (S.data q).chart.splitChart.symm (BeltPassage.upper (S.data q).radius s u.val v.val)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc coordinates land in the target. -/
-theorem MorseCancellation.nativeBeltArc_coordinates_mem_target {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
-    BeltPassage.upper (S.data q).radius s u.val v.val ∈
-      (S.data q).chart.splitChart.target :=
-  (S.data q).block
-    (BeltPassage.upper_mem_block (S.data q).radius_pos hs
-      (mem_sphere_zero_iff_norm.mp u.property) (mem_sphere_zero_iff_norm.mp v.property))
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc's height. -/
-theorem MorseCancellation.nativeBeltArc_height {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
-    f (nativeBeltArc S q u v s) = S.toSurgeryWindows.upper q := by
-  rw [nativeBeltArc,
-    (S.data q).chart.splitChart_inverse_equation
-      (nativeBeltArc_coordinates_mem_target S q u v hs)]
-  have hh :=
-    BeltPassage.upper_height (S.data q).radius s (mem_sphere_zero_iff_norm.mp u.property)
-      (mem_sphere_zero_iff_norm.mp v.property)
-  change
-    -‖(BeltPassage.upper (S.data q).radius s u.val v.val).1‖ ^ 2 +
-        ‖(BeltPassage.upper (S.data q).radius s u.val v.val).2‖ ^ 2 =
-      (S.data q).radius ^ 2 at hh
-  dsimp only [ManifoldMorse.SurgeryWindows.upper]
-  linarith
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc at zero. -/
-theorem MorseCancellation.nativeBeltArc_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    nativeBeltArc S q u v 0 = ((S.data q).surgery.beltSphere v).val := by
-  rw [nativeBeltArc, BeltPassage.upper_zero, (S.data q).belt_eq,
-    (S.data q).chart.beltCoreMap_coe]
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc hits the belt sphere exactly at zero. -/
-theorem MorseCancellation.nativeBeltArc_belt_eq_iff {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v w : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) {s : ℝ} (hs : |s| ≤ 1) :
-    nativeBeltArc S q u v s = ((S.data q).surgery.beltSphere w).val ↔ s = 0 ∧ v = w := by
-  constructor
-  · intro heq
-    have hzero := nativeBeltArc_coordinates_mem_target S q u w (s := 0) (by simp)
-    rw [BeltPassage.upper_zero] at hzero
-    rw [nativeBeltArc, (S.data q).belt_eq, (S.data q).chart.beltCoreMap_coe] at heq
-    have hcoords :=
-      (S.data q).chart.splitChart.symm.toPartialEquiv.injOn
-        (nativeBeltArc_coordinates_mem_target S q u v hs) hzero heq
-    have hu : u.val ≠ 0 := by
-      intro h
-      have hn := mem_sphere_zero_iff_norm.mp u.property
-      rw [h, norm_zero] at hn
-      exact zero_ne_one hn
-    have hs0 : s = 0 := by
-      have hfst : ((S.data q).radius * s) • u.val = 0 := congrArg Prod.fst hcoords
-      have hz : (S.data q).radius * s = 0 := (smul_eq_zero.mp hfst).resolve_right hu
-      exact (mul_eq_zero.mp hz).resolve_left (S.data q).radius_pos.ne'
-    refine ⟨hs0, ?_⟩
-    rw [hs0, BeltPassage.upper_zero] at hcoords
-    exact
-      Subtype.ext (smul_right_injective _ (S.data q).radius_pos.ne' (congrArg Prod.snd hcoords))
-  · rintro ⟨rfl, rfl⟩
-    exact nativeBeltArc_zero S q u v
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc is injective. -/
-theorem MorseCancellation.nativeBeltArc_injOn {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    Set.InjOn (nativeBeltArc S q u v) (Set.Icc (-1 : ℝ) 1) := by
-  intro s hs t ht hst
-  have hcoords :=
-    (S.data q).chart.splitChart.symm.toPartialEquiv.injOn
-      (nativeBeltArc_coordinates_mem_target S q u v (abs_le.mpr hs))
-      (nativeBeltArc_coordinates_mem_target S q u v (abs_le.mpr ht)) hst
-  have hu : u.val ≠ 0 := by
-    intro h
-    have hn := mem_sphere_zero_iff_norm.mp u.property
-    rw [h, norm_zero] at hn
-    exact zero_ne_one hn
-  have hfst : ((S.data q).radius * s) • u.val = ((S.data q).radius * t) • u.val :=
-    congrArg Prod.fst hcoords
-  exact mul_left_cancel₀ (S.data q).radius_pos.ne' (smul_left_injective ℝ hu hfst)
-
-attribute [local instance 100] Classical.propDecidable in
-/-- The belt arc is smooth. -/
-theorem MorseCancellation.nativeBeltArc_contMDiffOn {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, E) ∞ (nativeBeltArc S q u v) (Set.Ioo (-1 : ℝ) 1) := by
-  apply
-    (S.data q).chart.splitChart.contMDiffOn_invFun.comp
-      (BeltPassage.contDiff_upper (S.data q).radius u.val v.val).contMDiff.contMDiffOn
-  intro s hs
-  exact nativeBeltArc_coordinates_mem_target S q u v (abs_le.mpr ⟨hs.1.le, hs.2.le⟩)
-
-/-- The lower meridian's coordinates land in the target. -/
-theorem MorseCancellation.nativeLowerMeridian_coordinates_mem_target {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} (S : AdaptedWindows E f)
-    (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    BeltPassage.lower (S.data q).radius s u.val v.val ∈
-      (S.data q).chart.splitChart.target := by
-  have hh :=
-    BeltPassage.upper_mem_block (S.data q).radius_pos
-      (show |(s : ℝ)| ≤ 1 by rw [abs_of_nonneg s.property.1]; exact s.property.2)
-      (mem_sphere_zero_iff_norm.mp v.property) (mem_sphere_zero_iff_norm.mp u.property)
-  exact (S.data q).block ⟨hh.2, hh.1⟩
-
-/-- The lower meridian's height. -/
-theorem MorseCancellation.nativeLowerMeridian_height {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    f
-        ((S.data q).chart.splitChart.symm
-          (BeltPassage.lower (S.data q).radius s u.val v.val)) =
-      S.toSurgeryWindows.lower q := by
-  rw [(S.data q).chart.splitChart_inverse_equation
-      (nativeLowerMeridian_coordinates_mem_target S q u v s)]
-  have hh :=
-    BeltPassage.upper_height (S.data q).radius (s : ℝ)
-      (mem_sphere_zero_iff_norm.mp v.property) (mem_sphere_zero_iff_norm.mp u.property)
-  change
-    -‖(BeltPassage.lower (S.data q).radius s u.val v.val).2‖ ^ 2 +
-        ‖(BeltPassage.lower (S.data q).radius s u.val v.val).1‖ ^ 2 =
-      (S.data q).radius ^ 2 at hh
-  dsimp only [ManifoldMorse.SurgeryWindows.lower]
-  linarith
-
-/-- The lower meridian family under the flow. -/
-def MorseCancellation.nativeLowerMeridianFamily {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    C(unitInterval × Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1,
-      (S.data q).LowerLevel)
-    where
-  toFun
-    z :=
-    ⟨(S.data q).chart.splitChart.symm
-        (BeltPassage.lower (S.data q).radius z.1 z.2.val v.val),
-      nativeLowerMeridian_height S q z.2 v z.1⟩
-  continuous_toFun := by
-    have hsize :
-      Continuous
-        (fun z : unitInterval × Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          (z.1 : ℝ)) :=
-      continuous_subtype_val.comp continuous_fst
-    have hdir :
-      Continuous
-        (fun z : unitInterval × Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          z.2.val) :=
-      continuous_subtype_val.comp continuous_snd
-    have hcoords :
-      Continuous
-        (fun z : unitInterval × Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          BeltPassage.lower (S.data q).radius (z.1 : ℝ) z.2.val v.val) := by
-      unfold BeltPassage.lower
-      exact
-        ((continuous_const.mul
-                  (Real.continuous_sqrt.comp (continuous_const.add (hsize.pow 2)))).smul
-              hdir).prodMk
-          ((continuous_const.mul hsize).smul continuous_const)
-    exact
-      ((S.data q).chart.splitChart.contMDiffOn_invFun.continuousOn.comp_continuous hcoords
-            (fun z => nativeLowerMeridian_coordinates_mem_target S q z.2 v z.1)).subtype_mk
-        _
-
-/-- The lower meridian of the native handle. -/
-def MorseCancellation.nativeLowerMeridian {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    C(Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1, (S.data q).LowerLevel) :=
-  (nativeLowerMeridianFamily S q v).comp ((ContinuousMap.const _ s).prodMk (ContinuousMap.id _))
-
-/-- The upper meridian of the native handle. -/
-def MorseCancellation.nativeUpperMeridian {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ}
-    (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    C(Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1, (S.data q).UpperLevel)
-    where
-  toFun
-    u :=
-    ⟨nativeBeltArc S q u v s,
-      nativeBeltArc_height S q u v (by rw [abs_of_nonneg s.property.1]; exact s.property.2)⟩
-  continuous_toFun := by
-    have hcoords :
-      Continuous
-        (fun u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-          BeltPassage.upper (S.data q).radius (s : ℝ) u.val v.val) := by
-      unfold BeltPassage.upper
-      have hneg :
-        Continuous
-          (fun u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-            ((S.data q).radius * (s : ℝ)) • u.val) :=
-        (continuous_subtype_val :
-              Continuous
-                (fun u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-                  u.val)).const_smul
-          ((S.data q).radius * (s : ℝ))
-      have hpos :
-        Continuous
-          (fun _ : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1 =>
-            ((S.data q).radius * Real.sqrt (1 + (s : ℝ) ^ 2)) • v.val) :=
-        continuous_const
-      exact hneg.prodMk hpos
-    exact
-      ((S.data q).chart.splitChart.contMDiffOn_invFun.continuousOn.comp_continuous hcoords
-            (fun u =>
-              nativeBeltArc_coordinates_mem_target S q u v
-                (by rw [abs_of_nonneg s.property.1]; exact s.property.2))).subtype_mk
-        _
-
-/-- The lower meridian at zero. -/
-theorem MorseCancellation.nativeLowerMeridian_zero {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) :
-    nativeLowerMeridian S q v 0 = (S.data q).surgery.attachingSphere := by
-  apply ContinuousMap.ext
-  intro u
-  apply Subtype.ext
-  change
-    (S.data q).chart.splitChart.symm (BeltPassage.lower (S.data q).radius 0 u.val v.val) =
-      _
-  rw [BeltPassage.lower_zero, (S.data q).attaching_eq,
-    (S.data q).chart.attachingCoreMap_coe]
-
-/-- The upper meridian is the flow of the lower meridian. -/
-theorem MorseCancellation.nativeUpperMeridian_flow {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval)
-    (hs : 0 < (s : ℝ)) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1) :
-    S.flow (BeltPassage.time s) ((nativeUpperMeridian S q v s) u).val =
-      ((nativeLowerMeridian S q v s) u).val :=
-  S.flow_belt_passage q hs s.property.2 u v
-
-/-- The lower meridian is homotopic to the attaching sphere. -/
-theorem MorseCancellation.nativeLowerMeridian_homotopic_attaching {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval) :
-    (nativeLowerMeridian S q v s).Homotopic (S.data q).surgery.attachingSphere := by
-  let shrink : C(unitInterval, unitInterval) :=
-    ⟨fun t => unitInterval.symm t * s, unitInterval.continuous_symm.mul continuous_const⟩
-  have h0 : shrink 0 = s := by simp [shrink]
-  have h1 : shrink 1 = 0 := by simp [shrink]
-  let H : (nativeLowerMeridian S q v s).Homotopy (S.data q).surgery.attachingSphere :=
-    { toFun := fun z => nativeLowerMeridianFamily S q v (shrink z.1, z.2)
-      continuous_toFun :=
-        (nativeLowerMeridianFamily S q v).continuous.comp
-          ((shrink.continuous.comp continuous_fst).prodMk continuous_snd)
-      map_zero_left := by
-        intro u
-        rw [h0]
-        rfl
-      map_one_left := by
-        intro u
-        rw [h1]
-        exact
-          congrArg
-            (fun g :
-                C(Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1,
-                  (S.data q).LowerLevel) =>
-              g u)
-            (nativeLowerMeridian_zero S q v) }
-  exact ⟨H⟩
-
-/-- The upper meridian avoids the belt sphere. -/
-theorem MorseCancellation.nativeUpperMeridian_avoids_belt {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    {f : M → ℝ} (S : AdaptedWindows E f) (q : ManifoldMorse.criticalPoints E f)
-    (v : Metric.sphere (0 : (S.data q).chart.PositiveCoordinates) 1) (s : unitInterval)
-    (hs : 0 < (s : ℝ)) (u : Metric.sphere (0 : (S.data q).chart.NegativeCoordinates) 1) :
-    nativeUpperMeridian S q v s u ∉ Set.range (S.data q).surgery.beltSphere := by
-  rintro ⟨w, hw⟩
-  have he :=
-    (nativeBeltArc_belt_eq_iff S q u v w
-          (show |(s : ℝ)| ≤ 1 by rw [abs_of_nonneg s.property.1]; exact s.property.2)).mp
-      (congrArg Subtype.val hw.symm)
-  exact hs.ne' he.1
-
 /-! ### Native cancellation data -/
-
-/-- Endpoint slice charts and phase data identifying the two cubic ends with a common flow cylinder. -/
-structure MorseCancellation.NativeEndpointSliceData {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) (a : ℝ)
-    (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
-    (A : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞)
-    (Rq Rp Tq Tp : ℝ) where
-  labelDomain : Set (Fin m → ℝ)
-  open_domain : IsOpen labelDomain
-  zero_domain : (0 : Fin m → ℝ) ∈ labelDomain
-  source : A.source = labelDomain ×ˢ Set.univ
-  Q :
-    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      (Fin m → ℝ) ∞
-  P :
-    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      (Fin m → ℝ) ∞
-  H :
-    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
-      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) ∞
-  zero_source : 0 ∈ H.source
-  H_zero : H 0 = 0
-  Q_zero : Q 0 = 0
-  P_zero : P 0 = 0
-  Q_source : Q.source = H.source
-  P_source : P.source = H.target
-  Q_target : Q.target = labelDomain
-  P_target : P.target = labelDomain
-  diagram : ∀ u ∈ H.source, P (H u) = Q u
-  phaseQ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
-  phaseP : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
-  smooth_phaseQ : ContDiff ℝ ∞ phaseQ
-  smooth_phaseP : ContDiff ℝ ∞ phaseP
-  zero_phaseQ : phaseQ 0 = 0
-  zero_phaseP : phaseP 0 = 0
-  sliceQ :
-    ∀ u ∈ Q.source,
-      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
-        Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq
-  sliceP :
-    ∀ u ∈ P.source,
-      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
-        Metric.closedBall (a, (0 : Fin m → ℝ)) Rp
-  formulaQ :
-    ∀ u ∈ Q.source,
-      Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
-        A (Q u, Tq + phaseQ u)
-  formulaP :
-    ∀ u ∈ P.source,
-      Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
-        A (P u, Tp + phaseP u)
 
 /-- A unique descending connection equipped with cubic endpoint charts, a vertical cylinder, and matching slice data. -/
 structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [NormedAddCommGroup E]
@@ -6356,6 +852,2957 @@ structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [Norm
       Filter.Tendsto (fun t => flow t y) Filter.atBot (𝓝 q) →
         Filter.Tendsto (fun t => flow t y) Filter.atTop (𝓝 p) → ∃ t, flow t (A (0, 0)) = y
   slices : NativeEndpointSliceData σ (1 / 2) Φq Φp A Rq Rp Tq Tp
+
+/-! ### Lyapunov residence bounds -/
+
+/-- A native Lyapunov residence bound exists. -/
+theorem FlowCancellation.exists_native_lyapunov_residence {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    {C : Set M} (hC : IsCompact C) (hneg : ∀ x ∈ C, mvfderiv 𝓘(ℝ, E) f x (V x) < 0) :
+    ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ C := by
+  by_cases hne : C.Nonempty
+  swap
+  · exact ⟨1, zero_lt_one, fun γ _ => ⟨0, ⟨le_rfl, zero_le_one⟩, fun h => hne ⟨γ 0, h⟩⟩⟩
+  have hspeed := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  obtain ⟨v, hv, hmaxspeed⟩ := hC.exists_isMaxOn hne hspeed.continuousOn
+  let δ := -mvfderiv 𝓘(ℝ, E) f v (V v)
+  have hδ : 0 < δ := neg_pos.mpr (hneg v hv)
+  have hbound (x : M) (hx : x ∈ C) : mvfderiv 𝓘(ℝ, E) f x (V x) ≤ -δ := by
+    have hh : mvfderiv 𝓘(ℝ, E) f x (V x) ≤ mvfderiv 𝓘(ℝ, E) f v (V v) := hmaxspeed hx
+    simpa only [δ, neg_neg] using hh
+  obtain ⟨p, hp, hmin⟩ := hC.exists_isMinOn hne hf.continuous.continuousOn
+  obtain ⟨q, hq, hmax⟩ := hC.exists_isMaxOn hne hf.continuous.continuousOn
+  let T := (f q - f p + 1) / δ
+  have hpq : f p ≤ f q := hmax hp
+  have hT : 0 < T := div_pos (by linarith) hδ
+  have hδT : δ * T = f q - f p + 1 := by
+    dsimp [T]
+    field_simp [hδ.ne']
+  refine ⟨T, hT, ?_⟩
+  intro γ hγ
+  by_contra! hstay
+  have hd (t : ℝ) : HasDerivAt (f ∘ γ) (mvfderiv 𝓘(ℝ, E) f (γ t) (V (γ t))) t :=
+    FlowConstruction.hasDerivAt_comp_integralCurve hf hγ t
+  have hdiff : Differentiable ℝ (f ∘ γ) := fun t => (hd t).differentiableAt
+  have h0 : (0 : ℝ) ∈ Set.Icc 0 T := ⟨le_rfl, hT.le⟩
+  have hlast : T ∈ Set.Icc (0 : ℝ) T := ⟨hT.le, le_rfl⟩
+  have hdrop :=
+    (convex_Icc (0 : ℝ) T).image_sub_le_mul_sub_of_deriv_le hdiff.continuous.continuousOn
+      hdiff.differentiableOn
+      (fun t ht => by
+        rw [(hd t).deriv]
+        exact hbound (γ t) (hstay t (interior_subset ht)))
+      0 h0 T hlast hT.le
+  simp only [Function.comp_apply, sub_zero, neg_mul] at hdrop
+  rw [hδT] at hdrop
+  have hlo : f p ≤ f (γ T) := hmin (hstay T hlast)
+  have hhi : f (γ 0) ≤ f q := hmax (hstay 0 h0)
+  linarith
+
+/-- Native residence bounds combine. -/
+theorem FlowCancellation.combine_native_residence_bounds {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {B N U : Set M}
+    (houter :
+      ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ B \ N)
+    (hinner :
+      ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ U)
+    (hnoreturn :
+      ∀ γ : ℝ → M,
+        IsMIntegralCurve γ V → ∀ a b : ℝ, γ a ∈ N → γ b ∈ N → ∀ t ∈ Set.Icc a b, γ t ∈ U) :
+    ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ B := by
+  obtain ⟨T₀, hT₀, hout⟩ := houter
+  obtain ⟨T₁, hT₁, hin⟩ := hinner
+  refine ⟨2 * T₀ + T₁, by linarith, ?_⟩
+  intro γ hγ
+  by_contra! hstay
+  obtain ⟨a, ha, haout⟩ := hout γ hγ
+  have haN : γ a ∈ N := by
+    by_contra haN
+    exact haout ⟨hstay a ⟨ha.1, by linarith [ha.2]⟩, haN⟩
+  obtain ⟨b, hb, hbout⟩ := hout (γ ∘ (· + (T₀ + T₁))) (hγ.comp_add (T₀ + T₁))
+  have hbN : γ (b + (T₀ + T₁)) ∈ N := by
+    by_contra hbN
+    exact hbout ⟨hstay (b + (T₀ + T₁)) ⟨by linarith [hb.1], by linarith [hb.2]⟩, hbN⟩
+  obtain ⟨t, ht, htout⟩ := hin (γ ∘ (· + T₀)) (hγ.comp_add T₀)
+  exact
+    htout
+      (hnoreturn γ hγ a (b + (T₀ + T₁)) haN hbN (t + T₀)
+        ⟨by linarith [ha.2, ht.1], by linarith [hb.1, ht.2]⟩)
+
+/-- A perturbed band residence bound exists. -/
+theorem FlowCancellation.exists_perturbed_band_residence {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [T2Space M]
+    {V' : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hV' : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} {K N U : Set M}
+    (hK : IsClosed K) (hN : IsOpen N) (hKN : K ⊆ N) (hNU : N ⊆ U) (hoff : ∀ x ∉ K, V' x = V x)
+    (hneg : ∀ x, f x ∈ Set.Icc c d → x ∉ N → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hnoreturn : ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U)
+    (hinner :
+      ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V' → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ U) :
+    ∃ T : ℝ,
+      0 < T ∧
+        ∀ γ : ℝ → M, IsMIntegralCurve γ V' → ∃ t ∈ Set.Icc (0 : ℝ) T, f (γ t) ∉ Set.Icc c d := by
+  have hcompact : IsCompact (f ⁻¹' Set.Icc c d \ N) :=
+    ((isClosed_Icc.preimage hf.continuous).inter hN.isClosed_compl).isCompact
+  have houter :=
+    exists_native_lyapunov_residence hf hV' hcompact
+      (by
+        intro x hx
+        rw [hoff x (fun h => hx.2 (hKN h))]
+        exact hneg x hx.1 hx.2)
+  exact
+    combine_native_residence_bounds houter hinner
+      (fun γ hγ a b ha hb =>
+        native_no_return_of_supported_perturbation (hV.of_le (by simp)) F hcurve hK hKN hNU hoff
+          hnoreturn hγ ha hb)
+
+/-! ### The transverse energy Lyapunov function -/
+
+/-- The transverse energy Lyapunov function. -/
+def MorseCancellation.transverseEnergy {m : ℕ} (σ : Fin m → ℝ) (p : Model m) : ℝ :=
+  ∑ i, (σ i * p.2 i) ^ 2
+
+/-- The transverse energy is nonnegative. -/
+theorem MorseCancellation.transverseEnergy_nonneg {m : ℕ} (σ : Fin m → ℝ) (p : Model m) :
+    0 ≤ transverseEnergy σ p :=
+  Finset.sum_nonneg (fun _ _ => sq_nonneg _)
+
+/-- The transverse energy vanishes exactly on the axis. -/
+theorem MorseCancellation.transverseEnergy_zero_iff {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
+    (p : Model m) : transverseEnergy σ p = 0 ↔ p.2 = 0 := by
+  constructor
+  · intro h
+    funext i
+    have hh :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg (σ i * p.2 i))).mp h i
+        (Finset.mem_univ i)
+    exact (mul_eq_zero.mp (sq_eq_zero_iff.mp hh)).resolve_left (hσ i)
+  · intro h
+    simp [transverseEnergy, h]
+
+/-- The field Lyapunov function. -/
+def MorseCancellation.fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) (p : Model m) : ℝ :=
+  p.1 + k * ∑ i, σ i * p.2 i ^ 2
+
+/-- The field Lyapunov function is smooth. -/
+theorem MorseCancellation.contDiff_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) :
+    ContDiff ℝ ∞ (fieldLyapunov σ k) := by
+  unfold fieldLyapunov
+  fun_prop
+
+/-- The field Lyapunov function is differentiable. -/
+theorem MorseCancellation.hasFDerivAt_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) (p : Model m) :
+    HasFDerivAt (fieldLyapunov σ k)
+      (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ) +
+        k •
+          ∑ i,
+            (2 * σ i * p.2 i) •
+              ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))))
+      p := by
+  have hx := (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).hasFDerivAt (x := p)
+  have hy (i : Fin m) :=
+    ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))).hasFDerivAt
+      (x := p)
+  have hq := HasFDerivAt.fun_sum (u := Finset.univ) (fun i _ => ((hy i).pow 2).const_mul (σ i))
+  convert! hx.add (hq.const_mul k) using 1
+  apply ContinuousLinearMap.ext
+  intro v
+  simp [mul_assoc, mul_comm]
+
+/-- The Lyapunov decay speed of the field. -/
+theorem MorseCancellation.fieldLyapunov_speed {m : ℕ} (σ : Fin m → ℝ) (k a : ℝ) (φ : Model m → ℝ)
+    (p : Model m) :
+    fderiv ℝ (fieldLyapunov σ k) p (cancelledDescent σ a φ p) =
+      (cancelledDescent σ a φ p).1 - 2 * k * transverseEnergy σ p := by
+  rw [(hasFDerivAt_fieldLyapunov σ k p).fderiv]
+  simp only [add_apply, smul_apply, smul_eq_mul, sum_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.proj_apply]
+  change
+    (cancelledDescent σ a φ p).1 + k * (∑ i, 2 * σ i * p.2 i * (cancelledDescent σ a φ p).2 i) = _
+  have hsum :
+    (∑ i, 2 * σ i * p.2 i * (cancelledDescent σ a φ p).2 i) = -2 * transverseEnergy σ p := by
+    rw [transverseEnergy, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    change 2 * σ i * p.2 i * (-σ i * p.2 i) = _
+    ring
+  rw [hsum]
+  ring
+
+/-- A compact field Lyapunov bound exists. -/
+theorem MorseCancellation.exists_compact_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
+    {a : ℝ} (ha : 0 < a) {φ : Model m → ℝ} (hφ : ContDiff ℝ ∞ φ) (hφnonneg : ∀ p, 0 ≤ φ p)
+    (hone : ∀ s ∈ Set.Icc (-a) a, φ (s, 0) = 1) {C : Set (Model m)} (hC : IsCompact C) :
+    ∃ k : ℝ,
+      0 ≤ k ∧
+        ContDiff ℝ ∞ (fieldLyapunov σ k) ∧
+          ∀ p ∈ C, fderiv ℝ (fieldLyapunov σ k) p (cancelledDescent σ a φ p) < 0 := by
+  let O : ℕ → Set (Model m) := fun n =>
+    {p | (cancelledDescent σ a φ p).1 - 2 * (n : ℝ) * transverseEnergy σ p < 0}
+  have henergy : Continuous (transverseEnergy σ) := by
+    unfold transverseEnergy
+    fun_prop
+  have hO (n : ℕ) : IsOpen (O n) :=
+    isOpen_lt
+      ((contDiff_cancelledDescent σ a hφ).continuous.fst.sub (continuous_const.mul henergy))
+      continuous_const
+  have hcover : C ⊆ ⋃ n, O n := by
+    intro p hp
+    by_cases hz : p.2 = 0
+    · apply Set.mem_iUnion.mpr
+      refine ⟨0, ?_⟩
+      have he : p = (p.1, (0 : Fin m → ℝ)) := Prod.ext rfl hz
+      have hh := cancelledDescent_axis_negative σ ha hφnonneg hone p.1
+      have hneg : (cancelledDescent σ a φ p).1 < 0 :=
+        (congrArg (fun q : Model m => (cancelledDescent σ a φ q).1) he).trans_lt hh
+      simpa only [O, Set.mem_ofPred_eq, Nat.cast_zero, MulZeroClass.mul_zero,
+        MulZeroClass.zero_mul, sub_zero] using hneg
+    · have hpos : 0 < transverseEnergy σ p :=
+        lt_of_le_of_ne (transverseEnergy_nonneg σ p)
+          (Ne.symm (fun he => hz ((transverseEnergy_zero_iff σ hσ p).mp he)))
+      obtain ⟨n, hn⟩ := exists_nat_gt ((cancelledDescent σ a φ p).1 / (2 * transverseEnergy σ p))
+      have hh := (div_lt_iff₀ (mul_pos (by norm_num) hpos)).mp hn
+      apply Set.mem_iUnion.mpr
+      refine ⟨n, ?_⟩
+      change (cancelledDescent σ a φ p).1 - 2 * (n : ℝ) * transverseEnergy σ p < 0
+      nlinarith
+  have hmono : Monotone O := by
+    intro i j hij p hp
+    have hij' : (i : ℝ) ≤ (j : ℝ) := by exact_mod_cast hij
+    have he := transverseEnergy_nonneg σ p
+    change (cancelledDescent σ a φ p).1 - 2 * (i : ℝ) * transverseEnergy σ p < 0 at hp
+    change (cancelledDescent σ a φ p).1 - 2 * (j : ℝ) * transverseEnergy σ p < 0
+    nlinarith
+  obtain ⟨n, hn⟩ :=
+    hC.elim_directed_cover O hO hcover
+      (fun i j => ⟨Max.max i j, hmono (le_max_left i j), hmono (le_max_right i j)⟩)
+  refine ⟨n, by positivity, contDiff_fieldLyapunov σ n, ?_⟩
+  intro p hp
+  rw [fieldLyapunov_speed]
+  exact hn hp
+
+/-- A compact Lyapunov residence bound exists. -/
+theorem MorseCancellation.exists_compact_lyapunov_residence {D : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] {L : D → ℝ} {W : D → D} (hL : ContDiff ℝ ∞ L) (hW : Continuous W)
+    {C : Set D} (hC : IsCompact C) (hneg : ∀ x ∈ C, fderiv ℝ L x (W x) < 0) :
+    ∃ T : ℝ,
+      0 < T ∧
+        ∀ γ : ℝ → D,
+          (∀ t ∈ Set.Icc (0 : ℝ) T, γ t ∈ C → HasDerivAt γ (W (γ t)) t) →
+            ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ C := by
+  by_cases hne : C.Nonempty
+  swap
+  · exact ⟨1, zero_lt_one, fun γ _ => ⟨0, ⟨le_rfl, zero_le_one⟩, fun h => hne ⟨γ 0, h⟩⟩⟩
+  have hspeed : Continuous (fun x => fderiv ℝ L x (W x)) :=
+    (hL.continuous_fderiv_apply (by simp)).comp (continuous_id.prodMk hW)
+  obtain ⟨v, hv, hmaxspeed⟩ := hC.exists_isMaxOn hne hspeed.continuousOn
+  let δ := -fderiv ℝ L v (W v)
+  have hδ : 0 < δ := neg_pos.mpr (hneg v hv)
+  have hbound (x : D) (hx : x ∈ C) : fderiv ℝ L x (W x) ≤ -δ := by
+    have hh : fderiv ℝ L x (W x) ≤ fderiv ℝ L v (W v) := hmaxspeed hx
+    simpa only [δ, neg_neg] using hh
+  obtain ⟨p, hp, hmin⟩ := hC.exists_isMinOn hne hL.continuous.continuousOn
+  obtain ⟨q, hq, hmax⟩ := hC.exists_isMaxOn hne hL.continuous.continuousOn
+  let T := (L q - L p + 1) / δ
+  have hpq : L p ≤ L q := hmax hp
+  have hT : 0 < T := div_pos (by linarith) hδ
+  have hδT : δ * T = L q - L p + 1 := by
+    dsimp [T]
+    field_simp [hδ.ne']
+  refine ⟨T, hT, ?_⟩
+  intro γ hγ
+  by_contra! hstay
+  have hd (t : ℝ) (ht : t ∈ Set.Icc (0 : ℝ) T) :
+    HasDerivAt (fun u => L (γ u)) (fderiv ℝ L (γ t) (W (γ t))) t :=
+    (hL.differentiable (by simp) (γ t)).hasFDerivAt.comp_hasDerivAt t (hγ t ht (hstay t ht))
+  have hcont : ContinuousOn (fun t => L (γ t)) (Set.Icc (0 : ℝ) T) := fun t ht =>
+    (hd t ht).continuousAt.continuousWithinAt
+  have hdiff : DifferentiableOn ℝ (fun t => L (γ t)) (Set.Icc (0 : ℝ) T) := fun t ht =>
+    (hd t ht).differentiableAt.differentiableWithinAt
+  have h0 : (0 : ℝ) ∈ Set.Icc 0 T := ⟨le_rfl, hT.le⟩
+  have hlast : T ∈ Set.Icc (0 : ℝ) T := ⟨hT.le, le_rfl⟩
+  have hdrop :=
+    (convex_Icc (0 : ℝ) T).image_sub_le_mul_sub_of_deriv_le hcont (hdiff.mono interior_subset)
+      (fun t ht => by
+        rw [(hd t (interior_subset ht)).deriv]
+        exact hbound (γ t) (hstay t (interior_subset ht)))
+      0 h0 T hlast hT.le
+  simp only [sub_zero, neg_mul] at hdrop
+  rw [hδT] at hdrop
+  have hlo : L p ≤ L (γ T) := hmin (hstay T hlast)
+  have hhi : L (γ 0) ≤ L q := hmax (hstay 0 h0)
+  linarith
+
+/-- A partial chart integral curve's derivative. -/
+theorem MorseCancellation.hasDerivAt_partialChart_integralCurve {D E M : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, D) M D ∞) (W : D → D)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {γ : ℝ → M} (hγ : IsMIntegralCurve γ V) {t : ℝ}
+    (ht : γ t ∈ e.source) (hV : V (γ t) = FlowConstruction.partialChartField e W (γ t)) :
+    HasDerivAt (e ∘ γ) (W (e (γ t))) t := by
+  let e' := e.toOpenPartialHomeomorph
+  have he : e'.MDifferentiable 𝓘(ℝ, E) 𝓘(ℝ, D) :=
+    ⟨e.contMDiffOn.mdifferentiableOn (by simp), e.symm.contMDiffOn.mdifferentiableOn (by simp)⟩
+  have hinv := he.comp_symm_deriv (e'.map_source ht)
+  rw [e'.left_inv ht] at hinv
+  have hd := (he.mdifferentiableAt ht).hasMFDerivAt.comp t (hγ t)
+  rw [hasDerivAt_iff_hasFDerivAt]
+  apply hasMFDerivAt_iff_hasFDerivAt.mp
+  apply hd.congr_mfderiv
+  apply ContinuousLinearMap.ext
+  intro r
+  change
+    mfderiv 𝓘(ℝ, E) 𝓘(ℝ, D) e (γ t) ((NormedSpace.fromTangentSpace t r) • V (γ t)) =
+      (NormedSpace.fromTangentSpace t r) •
+        (NormedSpace.fromTangentSpace (e (γ t))).symm (W (e (γ t)))
+  rw [map_smul, hV, FlowConstruction.partialChartField_eq_mfderiv_symm e W ht]
+  have hv := congrArg (fun A : D →L[ℝ] D => A (W (e (γ t)))) hinv
+  exact congrArg (fun v => (NormedSpace.fromTangentSpace t r) • v) hv
+
+/-- A native compact Lyapunov residence bound exists. -/
+theorem MorseCancellation.exists_native_compact_lyapunov_residence {D E M : Type*}
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
+    {L : D → ℝ} {W : D → D} (hL : ContDiff ℝ ∞ L) (hW : Continuous W) {C : Set D}
+    (hC : IsCompact C) (hsource : C ⊆ Φ.source) (hneg : ∀ x ∈ C, fderiv ℝ L x (W x) < 0)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hV : ∀ x ∈ Φ '' C, V x = FlowConstruction.partialChartField Φ.symm W x) :
+    ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ Φ '' C := by
+  obtain ⟨T, hT, hTbound⟩ := exists_compact_lyapunov_residence hL hW hC hneg
+  refine ⟨T, hT, ?_⟩
+  intro γ hγ
+  by_contra! hstay
+  have hcoords (t : ℝ) (ht : t ∈ Set.Icc (0 : ℝ) T) : Φ.symm (γ t) ∈ C := by
+    obtain ⟨z, hz, he⟩ := hstay t ht
+    have hh : Φ.symm (Φ z) = z := Φ.left_inv' (hsource hz)
+    rw [← he, hh]
+    exact hz
+  obtain ⟨t, ht, hout⟩ :=
+    hTbound (Φ.symm ∘ γ)
+      (fun t ht _ =>
+        hasDerivAt_partialChart_integralCurve Φ.symm W hγ
+          (by
+            obtain ⟨z, hz, he⟩ := hstay t ht
+            exact he ▸ Φ.map_source' (hsource hz))
+          (hV (γ t) (hstay t ht)))
+  exact hout (hcoords t ht)
+
+/-- A cancelled-descent residence bound exists. -/
+theorem MorseCancellation.exists_native_cancelledDescent_residence_bound {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ}
+    (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) {φ : Model m → ℝ}
+    (hφ : ContDiff ℝ ∞ φ) (hφnonneg : ∀ p, 0 ≤ φ p) (hone : ∀ s ∈ Set.Icc (-a) a, φ (s, 0) = 1)
+    {C : Set (Model m)} (hC : IsCompact C) (hsource : C ⊆ Φ.source)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hV :
+      ∀ x ∈ Φ '' C,
+        V x = FlowConstruction.partialChartField Φ.symm (cancelledDescent σ a φ) x) :
+    ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ Φ '' C := by
+  obtain ⟨k, -, hL, hneg⟩ := exists_compact_fieldLyapunov σ hσ ha hφ hφnonneg hone hC
+  exact
+    exists_native_compact_lyapunov_residence Φ hL (contDiff_cancelledDescent σ a hφ).continuous hC
+      hsource hneg hV
+
+/-- A native cubic field has finite passage time. -/
+theorem MorseCancellation.exists_native_cubic_field_finite_passage {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
+    (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source) {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} {N U : Set M} (hN : IsOpen N)
+    (hNU : N ⊆ U) (haxisN : ∀ s ∈ Set.Icc (-a) a, Φ (s, 0) ∈ N) {C : Set (Model m)}
+    (hC : IsCompact C) (hCΦ : C ⊆ Φ.source) (hUC : U ⊆ Φ '' C)
+    (hneg : ∀ x, f x ∈ Set.Icc c d → x ∉ N → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hnoreturn : ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U) :
+    ∃ (K : Set M) (V' : (x : M) → TangentSpace 𝓘(ℝ, E) x),
+      IsCompact K ∧
+        K ⊆ N ∧
+          ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+            (∀ x, V' x = 0 ↔ V x = 0 ∧ x ≠ Φ (a, 0) ∧ x ≠ Φ (-a, 0)) ∧
+              (∀ x ∉ K, ∀ᶠ y in 𝓝 x, V' y = V y) ∧
+                ∃ T : ℝ,
+                  0 < T ∧
+                    ∀ γ : ℝ → M,
+                      IsMIntegralCurve γ V' → ∃ t ∈ Set.Icc (0 : ℝ) T, f (γ t) ∉ Set.Icc c d := by
+  obtain ⟨φ, hφ, hc, hsupp, hsuppN, hrange, hone, V', hV', heq, hzero, hkeep⟩ :=
+    exists_native_cubic_field_cancellation_in σ hσ ha Φ haxis V hV hmodel hN haxisN
+  have hK : IsCompact (Φ '' tsupport φ) :=
+    hc.image_of_continuousOn (Φ.contMDiffOn_toFun.continuousOn.mono hsupp)
+  obtain ⟨T₀, hT₀, hres⟩ :=
+    exists_native_cancelledDescent_residence_bound σ hσ ha Φ hφ (fun p => (hrange p).1) hone hC
+      hCΦ
+      (fun x hx =>
+        heq x
+          (by
+            obtain ⟨z, hz, rfl⟩ := hx
+            exact Φ.map_source' (hCΦ hz)))
+  have hinner :
+    ∃ T : ℝ, 0 < T ∧ ∀ γ : ℝ → M, IsMIntegralCurve γ V' → ∃ t ∈ Set.Icc (0 : ℝ) T, γ t ∉ U := by
+    refine ⟨T₀, hT₀, ?_⟩
+    intro γ hγ
+    obtain ⟨t, ht, hout⟩ := hres γ hγ
+    exact ⟨t, ht, fun h => hout (hUC h)⟩
+  refine ⟨Φ '' tsupport φ, V', hK, hsuppN, hV', hzero, hkeep, ?_⟩
+  exact
+    FlowCancellation.exists_perturbed_band_residence hf hV hV' F hcurve hK.isClosed hN
+      hsuppN hNU (fun x hx => (hkeep x hx).self_of_nhds) hneg hnoreturn hinner
+
+/-! ### The cubic axis flow -/
+
+/-- The native cubic axis flow. -/
+theorem MorseCancellation.native_cubic_axis_flow {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
+    (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) (t : ℝ) :
+    F t (Φ (0, 0)) = Φ (cubicModelOrbit a t) := by
+  have hmem (s : ℝ) : cubicModelOrbit a s ∈ Φ.source := by
+    have hs := cubicAxisParameter_mem ha s
+    exact haxis ⟨⟨hs.1.le, hs.2.le⟩, rfl⟩
+  have hΓ : IsMIntegralCurve (Φ ∘ cubicModelOrbit a) V := by
+    intro s
+    have hd :=
+      FlowConstruction.hasMFDerivAt_lift_partialChartCurve Φ.symm
+        (cubicDescent σ (-(a ^ 2))) (hasDerivAt_cubicModelOrbit σ a s) (hmem s)
+    have he := hmodel (Φ (cubicModelOrbit a s)) (Φ.map_source' (hmem s))
+    change
+      HasMFDerivAt 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (Φ ∘ cubicModelOrbit a) s
+        ((1 : ℝ →L[ℝ] ℝ).smulRight
+          (nativeCubicDescent σ Φ (-(a ^ 2)) (Φ (cubicModelOrbit a s)))) at hd
+    rw [← he] at hd
+    exact hd
+  have hinit : F 0 (Φ (0, 0)) = (Φ ∘ cubicModelOrbit a) 0 := by
+    simp only [F.map_zero_apply, Function.comp_apply, cubicModelOrbit_zero]
+    rfl
+  have heq := isMIntegralCurve_Ioo_eq_of_contMDiff_boundaryless hV (hcurve (Φ (0, 0))) hΓ hinit
+  exact congrFun heq t
+
+/-- The native cubic axis orbit. -/
+theorem MorseCancellation.native_cubic_axis_orbit {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
+    (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) :
+    Set.range (fun t : ℝ => F t (Φ (0, 0))) = Φ '' (Set.Ioo (-a) a ×ˢ {(0 : Fin m → ℝ)}) ∧
+      Filter.Tendsto (fun t : ℝ => F t (Φ (0, 0))) Filter.atTop (𝓝 (Φ (a, 0))) ∧
+        Filter.Tendsto (fun t : ℝ => F t (Φ (0, 0))) Filter.atBot (𝓝 (Φ (-a, 0))) := by
+  have heq : (fun t : ℝ => F t (Φ (0, 0))) = Φ ∘ cubicModelOrbit a :=
+    funext (native_cubic_axis_flow σ ha Φ haxis hV hmodel F hcurve)
+  have hp : (a, (0 : Fin m → ℝ)) ∈ Φ.source := haxis ⟨⟨by linarith, le_rfl⟩, rfl⟩
+  have hq : (-a, (0 : Fin m → ℝ)) ∈ Φ.source := haxis ⟨⟨le_rfl, by linarith⟩, rfl⟩
+  rw [heq]
+  refine ⟨?_, ?_, ?_⟩
+  · rw [Set.range_comp, range_cubicModelOrbit ha]
+  · exact
+      (Φ.mdifferentiableAt (by simp) hp).continuousAt.tendsto.comp
+        (tendsto_cubicModelOrbit_atTop ha)
+  · exact
+      (Φ.mdifferentiableAt (by simp) hq).continuousAt.tendsto.comp
+        (tendsto_cubicModelOrbit_atBot ha)
+
+/-- The native cubic closed axis. -/
+theorem MorseCancellation.native_cubic_closed_axis {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
+    (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source)
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) :
+    Φ '' (Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)}) =
+      Insert.insert (Φ (a, 0))
+        (Insert.insert (Φ (-a, 0)) (Set.range (fun t : ℝ => F t (Φ (0, 0))))) := by
+  rw [(native_cubic_axis_orbit σ ha Φ haxis hV hmodel F hcurve).1]
+  ext x
+  constructor
+  · rintro ⟨⟨s, z⟩, ⟨hs, hz⟩, rfl⟩
+    have hz0 : z = 0 := hz
+    subst z
+    by_cases hsright : s = a
+    · exact Or.inl (congrArg (fun r => Φ (r, 0)) hsright)
+    by_cases hsleft : s = -a
+    · exact Or.inr (Or.inl (congrArg (fun r => Φ (r, 0)) hsleft))
+    · exact
+        Or.inr
+          (Or.inr
+            ⟨(s, 0), ⟨⟨lt_of_le_of_ne hs.1 (Ne.symm hsleft), lt_of_le_of_ne hs.2 hsright⟩, rfl⟩,
+              rfl⟩)
+  · rintro (hx | hx | hx)
+    · exact ⟨(a, 0), ⟨⟨by linarith, le_rfl⟩, rfl⟩, hx.symm⟩
+    · exact ⟨(-a, 0), ⟨⟨le_rfl, by linarith⟩, rfl⟩, hx.symm⟩
+    · obtain ⟨⟨s, z⟩, ⟨hs, hz⟩, he⟩ := hx
+      exact ⟨(s, z), ⟨⟨hs.1.le, hs.2.le⟩, hz⟩, he⟩
+
+/-! ### Band crossings -/
+
+/-- A uniform directed band crossing exists. -/
+theorem FlowCancellation.exists_uniform_directed_band_crossing {X : Type*}
+    [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hlower : ∀ x, f x = c → D x < 0) (hupper : ∀ x, f x = d → D x < 0)
+    (hres : ∃ T : ℝ, 0 < T ∧ ∀ x, ∃ t ∈ Set.Icc (0 : ℝ) T, f (F t x) ∉ Set.Icc c d) :
+    ∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x) := by
+  obtain ⟨T, hT, hexit⟩ := hres
+  have hforward : ∀ x, f x ≤ d → f (F T x) < c := by
+    intro x hx
+    obtain ⟨t, ht, hout⟩ := hexit x
+    have hhi := forwardInvariant_sublevel_of_boundary F hf hD hder hupper x hx t ht.1
+    have hlo : f (F t x) < c := lt_of_not_ge (fun h => hout ⟨h, hhi⟩)
+    rcases ht.2.eq_or_lt with he | he
+    · simpa only [he] using hlo
+    · have hh :=
+        strict_sublevel_entry_of_boundary F hf hD hder hlower (F t x) hlo.le (T - t)
+          (sub_pos.mpr he)
+      simpa only [← F.map_add, sub_add_cancel] using hh
+  refine ⟨T, hT, hforward, ?_⟩
+  intro x hx
+  apply lt_of_not_ge
+  intro hback
+  have hh := hforward (F (-T) x) hback
+  rw [← F.map_add, add_neg_cancel, F.map_zero_apply] at hh
+  exact (not_lt_of_ge hx) hh
+
+/-- The band entry time is continuous. -/
+theorem FlowCancellation.continuousOn_band_entryTime {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hlower : ∀ x, f x = c → D x < 0) (hupper : ∀ x, f x = d → D x < 0)
+    (hres : ∃ T : ℝ, 0 < T ∧ ∀ x, ∃ t ∈ Set.Icc (0 : ℝ) T, f (F t x) ∉ Set.Icc c d) :
+    ContinuousOn (FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
+  obtain ⟨T, hT, hforward, -⟩ :=
+    exists_uniform_directed_band_crossing F hf hD hder hlower hupper hres
+  have hclosed : IsClosed {x | f x ≤ c} := isClosed_le hf continuous_const
+  have hentry : ∀ x ∈ {y | f y ≤ c}, ∀ t : ℝ, 0 < t → F t x ∈ interior {y | f y ≤ c} := by
+    intro x hx t ht
+    have hh := strict_sublevel_entry_of_boundary F hf hD hder hlower x hx t ht
+    exact
+      Eq.mpr
+        (congrArg (fun S : Set X => F t x ∈ S)
+          (interior_sublevel_eq_of_boundary F hf hder hlower))
+        hh
+  exact
+    FlowConstruction.continuousOn_entryTime F hclosed
+      (forwardInvariant_sublevel_of_boundary F hf hD hder hlower) hentry
+      (fun x hx => ⟨T, hT.le, (hforward x hx).le⟩)
+
+/-- A native flow band crossing exists. -/
+theorem FlowCancellation.exists_native_flow_band_crossing {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    {c d : ℝ} (hlower : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hupper : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hres :
+      ∃ T : ℝ,
+        0 < T ∧
+          ∀ γ : ℝ → M, IsMIntegralCurve γ V → ∃ t ∈ Set.Icc (0 : ℝ) T, f (γ t) ∉ Set.Icc c d) :
+    ∃ F : Flow ℝ M,
+      (∀ x, IsMIntegralCurve (fun t => F t x) V) ∧
+        (∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x)) ∧
+          ContinuousOn (FlowConstruction.entryTime F {x | f x ≤ c}) {x | f x ≤ d} := by
+  have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
+  let F := FlowConstruction.compactFlow hV₁
+  have hcurve (x : M) : IsMIntegralCurve (fun t => F t x) V :=
+    FlowConstruction.isMIntegralCurve_compactFlow hV₁ x
+  let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
+  have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  have hder (x : M) (t : ℝ) : HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t :=
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+  have hres' : ∃ T : ℝ, 0 < T ∧ ∀ x, ∃ t ∈ Set.Icc (0 : ℝ) T, f (F t x) ∉ Set.Icc c d := by
+    obtain ⟨T, hT, hbound⟩ := hres
+    exact ⟨T, hT, fun x => hbound (fun t => F t x) (hcurve x)⟩
+  exact
+    ⟨F, hcurve, exists_uniform_directed_band_crossing F hf.continuous hD hder hlower hupper hres',
+      continuousOn_band_entryTime F hf.continuous hD hder hlower hupper hres'⟩
+
+/-- A cubic connection has finite passage. -/
+theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
+    (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source) {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : Φ (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φ (-a, 0) ∈ ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
+    {c d : ℝ} (hc : c < f (Φ (a, 0))) (hd : f (Φ (-a, 0)) < d)
+    (hpair :
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
+        f x ∈ Set.Icc c d → x = Φ (a, 0) ∨ x = Φ (-a, 0))
+    (hunique :
+      ∀ x ∉ ManifoldMorse.criticalPoints E f,
+        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 (Φ (-a, 0))) →
+          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 (Φ (a, 0))) →
+            ∃ t : ℝ, F t (Φ (0, 0)) = x) :
+    ∃ (K : Set M) (V' : (x : M) → TangentSpace 𝓘(ℝ, E) x),
+      IsCompact K ∧
+        K ⊆ Φ.target ∩ f ⁻¹' Set.Ioo c d ∧
+          ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V' x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
+            (∀ x, V' x = 0 ↔ V x = 0 ∧ x ≠ Φ (a, 0) ∧ x ≠ Φ (-a, 0)) ∧
+              (∀ x ∉ K, ∀ᶠ y in 𝓝 x, V' y = V y) ∧
+                (∃ T : ℝ,
+                    0 < T ∧
+                      ∀ γ : ℝ → M,
+                        IsMIntegralCurve γ V' → ∃ t ∈ Set.Icc (0 : ℝ) T, f (γ t) ∉ Set.Icc c d) ∧
+                  ∃ G : Flow ℝ M,
+                    (∀ x, IsMIntegralCurve (fun t => G t x) V') ∧
+                      (∃ T : ℝ,
+                          0 < T ∧
+                            (∀ x, f x ≤ d → f (G T x) < c) ∧ ∀ x, c ≤ f x → d < f (G (-T) x)) ∧
+                        ContinuousOn (FlowConstruction.entryTime G {x | f x ≤ c})
+                          {x | f x ≤ d} := by
+  have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
+  obtain ⟨hrange, htop, hbot⟩ := native_cubic_axis_orbit σ ha Φ haxis hV₁ hmodel F hcurve
+  have hclosed := native_cubic_closed_axis σ ha Φ haxis hV₁ hmodel F hcurve
+  have hmono := FlowConstruction.antitone_flow_height hf F hcurve hzero hdesc (Φ (0, 0))
+  have hztop := hf.continuous.continuousAt.tendsto.comp htop
+  have hzbot := hf.continuous.continuousAt.tendsto.comp hbot
+  have hzband (t : ℝ) : f (F t (Φ (0, 0))) ∈ Set.Icc (f (Φ (a, 0))) (f (Φ (-a, 0))) :=
+    ⟨hmono.le_of_tendsto hztop t, hmono.ge_of_tendsto hzbot t⟩
+  let A := Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)}
+  have hAband : Φ '' A ⊆ f ⁻¹' Set.Ioo c d := by
+    intro x hx
+    rw [hclosed] at hx
+    rcases hx with hx | hx | ⟨t, ht⟩
+    · rw [hx]
+      exact ⟨hc, lt_trans hpq hd⟩
+    · rw [hx]
+      exact ⟨lt_trans hc hpq, hd⟩
+    · rw [← ht]
+      exact ⟨lt_of_lt_of_le hc (hzband t).1, lt_of_le_of_lt (hzband t).2 hd⟩
+  have hopen : IsOpen (Φ.source ∩ Φ ⁻¹' (f ⁻¹' Set.Ioo c d)) :=
+    Φ.toOpenPartialHomeomorph.isOpen_inter_preimage (isOpen_Ioo.preimage hf.continuous)
+  have hAsub : A ⊆ Φ.source ∩ Φ ⁻¹' (f ⁻¹' Set.Ioo c d) := fun x hx =>
+    ⟨haxis hx, hAband ⟨x, hx, rfl⟩⟩
+  obtain ⟨C, hC, hAC, hCsub⟩ :=
+    exists_compact_between
+      (show IsCompact A from CompactIccSpace.isCompact_Icc.prod isCompact_singleton) hopen hAsub
+  have hCΦ : C ⊆ Φ.source := fun x hx => (hCsub hx).1
+  let U := Φ '' interior C
+  have hU : IsOpen U :=
+    Φ.toOpenPartialHomeomorph.isOpen_image_of_subset_source isOpen_interior
+      (fun x hx => hCΦ (interior_subset hx))
+  have hAU : Φ '' A ⊆ U := Set.image_mono hAC
+  have hpU : Φ (a, (0 : Fin m → ℝ)) ∈ U := hAU ⟨(a, 0), ⟨⟨by linarith, le_rfl⟩, rfl⟩, rfl⟩
+  have hqU : Φ (-a, (0 : Fin m → ℝ)) ∈ U := hAU ⟨(-a, 0), ⟨⟨le_rfl, by linarith⟩, rfl⟩, rfl⟩
+  have hzU (t : ℝ) : F t (Φ (0, 0)) ∈ U := by
+    apply hAU
+    rw [hclosed]
+    exact Or.inr (Or.inr ⟨t, rfl⟩)
+  obtain ⟨N, hN, hNU, hpN, hqN, hzN, hnoreturn⟩ :=
+    FlowCancellation.exists_native_connection_no_return hf hV F hcurve hzero hdesc hinj hp
+      hq hpq (fun x hx hh => hpair x hx ⟨le_trans hc.le hh.1, le_trans hh.2 hd.le⟩) hzband hunique
+      hU hpU hqU hzU
+  have haxisN (s : ℝ) (hs : s ∈ Set.Icc (-a) a) : Φ (s, (0 : Fin m → ℝ)) ∈ N := by
+    have hh : Φ (s, (0 : Fin m → ℝ)) ∈ Φ '' A := ⟨(s, 0), ⟨hs, rfl⟩, rfl⟩
+    rw [hclosed] at hh
+    rcases hh with hh | hh | ⟨t, ht⟩
+    · exact hh ▸ hpN
+    · exact hh ▸ hqN
+    · exact ht ▸ hzN t
+  have hneg (x : M) (hx : f x ∈ Set.Icc c d) (hout : x ∉ N) : mvfderiv 𝓘(ℝ, E) f x (V x) < 0 := by
+    apply hdesc x
+    intro hcrit
+    rcases hpair x hcrit hx with he | he
+    · exact hout (he ▸ hpN)
+    · exact hout (he ▸ hqN)
+  obtain ⟨K, V', hK, hKN, hV', hzeros, hkeep, hpass⟩ :=
+    exists_native_cubic_field_finite_passage σ hσ ha Φ haxis hf V hV hmodel F hcurve hN hNU haxisN
+      hC hCΦ (Set.image_mono interior_subset) hneg hnoreturn
+  have hKsub : K ⊆ Φ.target ∩ f ⁻¹' Set.Ioo c d := by
+    intro x hx
+    obtain ⟨z, hz, rfl⟩ := hNU (hKN hx)
+    exact ⟨Φ.map_source' (hCΦ (interior_subset hz)), (hCsub (interior_subset hz)).2⟩
+  have hcd : c ≤ d := by linarith
+  have hboundary (x : M) (hx : f x = c ∨ f x = d) : mvfderiv 𝓘(ℝ, E) f x (V' x) < 0 := by
+    have hxK : x ∉ K := by
+      intro hxK
+      have hh : f x ∈ Set.Ioo c d := (hKsub hxK).2
+      rcases hx with hx | hx <;> rw [hx] at hh
+      · exact (lt_irrefl c) hh.1
+      · exact (lt_irrefl d) hh.2
+    have hreg : x ∉ ManifoldMorse.criticalPoints E f := by
+      intro hcrit
+      have hxb : f x ∈ Set.Icc c d := by
+        rcases hx with hx | hx <;> rw [hx]
+        · exact ⟨le_rfl, hcd⟩
+        · exact ⟨hcd, le_rfl⟩
+      rcases hpair x hcrit hxb with he | he
+      · rw [he] at hx
+        rcases hx with hx | hx <;> linarith
+      · rw [he] at hx
+        rcases hx with hx | hx <;> linarith
+    rw [(hkeep x hxK).self_of_nhds]
+    exact hdesc x hreg
+  refine ⟨K, V', hK, hKsub, hV', hzeros, hkeep, hpass, ?_⟩
+  exact
+    FlowCancellation.exists_native_flow_band_crossing hf hV'
+      (fun x hx => hboundary x (Or.inl hx)) (fun x hx => hboundary x (Or.inr hx)) hpass
+
+/-- A function along a native integral curve differentiates at a point. -/
+theorem FlowCancellation.hasDerivAt_comp_native_integralCurve_at {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {γ : ℝ → M} {t : ℝ}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f (γ t)) (hγ : IsMIntegralCurve γ V) :
+    HasDerivAt (f ∘ γ) (mvfderiv 𝓘(ℝ, E) f (γ t) (V (γ t))) t := by
+  have hd := hf.hasMFDerivAt.comp t (hγ t)
+  rw [hasDerivAt_iff_hasFDerivAt]
+  apply hasMFDerivAt_iff_hasFDerivAt.mp
+  apply hd.congr_mfderiv
+  apply ContinuousLinearMap.ext
+  intro r
+  change
+    (mvfderiv 𝓘(ℝ, E) f (γ t)) ((NormedSpace.fromTangentSpace t r) • V (γ t)) =
+      (NormedSpace.fromTangentSpace t r) • (mvfderiv 𝓘(ℝ, E) f (γ t)) (V (γ t))
+  exact map_smul _ _ _
+
+/-- The manifold derivative of the signed level time. -/
+theorem FlowCancellation.mvfderiv_signedLevelTime {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ}
+    (hboundary : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) {x : M}
+    (hx : x ∈ levelBasin F f c) : mvfderiv 𝓘(ℝ, E) (signedLevelTime F f c) x (V x) = -1 := by
+  obtain ⟨hB, hsmooth, hshift⟩ := smooth_signed_level_time hf hV F hcurve hboundary
+  have hlocal := (hsmooth x hx).contMDiffAt (hB.mem_nhds hx)
+  have hlocal0 : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (signedLevelTime F f c) (F 0 x) := by
+    rw [F.map_zero_apply]
+    exact hlocal.mdifferentiableAt (by simp)
+  have hd := hasDerivAt_comp_native_integralCurve_at hlocal0 (hcurve x)
+  have heq :
+    (signedLevelTime F f c ∘ (fun t => F t x)) = fun t : ℝ => signedLevelTime F f c x - t :=
+    funext (hshift x hx)
+  rw [heq] at hd
+  have hh := hd.unique ((hasDerivAt_id (0 : ℝ)).const_sub (signedLevelTime F f c x))
+  have he :=
+    congrArg (fun y : M => mvfderiv 𝓘(ℝ, E) (signedLevelTime F f c) y (V y)) (F.map_zero_apply x)
+  exact he.symm.trans hh
+
+/-- The basin of a band crossing. -/
+def FlowCancellation.crossingBasin {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
+    (f : X → ℝ) (c d : ℝ) : Set X :=
+  levelBasin F f c ∩ levelBasin F f d
+
+/-- The duration of a band crossing. -/
+def FlowCancellation.crossingDuration {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
+    (f : X → ℝ) (c d : ℝ) (x : X) : ℝ :=
+  signedLevelTime F f c x - signedLevelTime F f d x
+
+/-- The height of the flow band. -/
+def FlowCancellation.flowBandHeight {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
+    (f : X → ℝ) (c d : ℝ) (x : X) : ℝ :=
+  c + (d - c) * signedLevelTime F f c x / crossingDuration F f c d x
+
+/-- The crossing duration is positive. -/
+theorem FlowCancellation.crossingDuration_pos {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hc : ∀ x, f x = c → D x < 0) (hcd : c < d) {x : X} (hx : x ∈ crossingBasin F f c d) :
+    0 < crossingDuration F f c d x := by
+  apply sub_pos.mpr
+  by_contra h
+  have hle := le_of_not_gt h
+  have hh :=
+    forwardInvariant_sublevel_of_boundary F hf hD hder hc (F (signedLevelTime F f c x) x)
+      (signedLevelTime_hits F f c hx.1).le (signedLevelTime F f d x - signedLevelTime F f c x)
+      (sub_nonneg.mpr hle)
+  rw [← F.map_add, sub_add_cancel, signedLevelTime_hits F f d hx.2] at hh
+  exact (not_le_of_gt hcd) hh
+
+/-- The crossing duration under the flow. -/
+theorem FlowCancellation.crossingDuration_flow {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hc : ∀ x, f x = c → D x < 0) (hd : ∀ x, f x = d → D x < 0) {x : X}
+    (hx : x ∈ crossingBasin F f c d) (s : ℝ) :
+    crossingDuration F f c d (F s x) = crossingDuration F f c d x := by
+  simp only [crossingDuration, signedLevelTime_flow F hf hD hder hc hx.1 s,
+    signedLevelTime_flow F hf hD hder hd hx.2 s]
+  ring
+
+/-- The band height under the flow. -/
+theorem FlowCancellation.flowBandHeight_flow {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hc : ∀ x, f x = c → D x < 0) (hd : ∀ x, f x = d → D x < 0) {x : X}
+    (hx : x ∈ crossingBasin F f c d) (s : ℝ) :
+    flowBandHeight F f c d (F s x) =
+      flowBandHeight F f c d x - ((d - c) / crossingDuration F f c d x) * s := by
+  simp only [flowBandHeight, crossingDuration_flow F hf hD hder hc hd hx s,
+    signedLevelTime_flow F hf hD hder hc hx.1 s]
+  ring
+
+/-- The band height's lower bound. -/
+theorem FlowCancellation.flowBandHeight_lower {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hc : ∀ x, f x = c → D x < 0) {x : X} (hx : f x = c) : flowBandHeight F f c d x = c := by
+  simp only [flowBandHeight, signedLevelTime_eq_zero F hf hD hder hc hx, MulZeroClass.mul_zero,
+    zero_div, add_zero]
+
+/-- The band height's upper bound. -/
+theorem FlowCancellation.flowBandHeight_upper {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
+    (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
+    (hc : ∀ x, f x = c → D x < 0) (hd : ∀ x, f x = d → D x < 0) (hcd : c < d) {x : X}
+    (hx : x ∈ crossingBasin F f c d) (hfx : f x = d) : flowBandHeight F f c d x = d := by
+  have hz := signedLevelTime_eq_zero F hf hD hder hd hfx
+  have hpos := crossingDuration_pos F hf hD hder hc hcd hx
+  have heq : signedLevelTime F f c x = crossingDuration F f c d x := by
+    simp only [crossingDuration, hz, sub_zero]
+  rw [flowBandHeight, heq, mul_div_cancel_right₀ _ hpos.ne']
+  ring
+
+/-- The band height is smooth. -/
+theorem FlowCancellation.smooth_flowBandHeight {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c < d)
+    (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hd : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) :
+    IsOpen (crossingBasin F f c d) ∧
+      ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (flowBandHeight F f c d) (crossingBasin F f c d) ∧
+        ∀ x ∈ crossingBasin F f c d,
+          mvfderiv 𝓘(ℝ, E) (flowBandHeight F f c d) x (V x) =
+              -((d - c) / crossingDuration F f c d x) ∧
+            mvfderiv 𝓘(ℝ, E) (flowBandHeight F f c d) x (V x) < 0 := by
+  obtain ⟨hBc, htc, -⟩ := smooth_signed_level_time hf hV F hcurve hc
+  obtain ⟨hBd, htd, -⟩ := smooth_signed_level_time hf hV F hcurve hd
+  let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
+  have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  have hder (x : M) (t : ℝ) : HasDerivAt (fun s => f (F s x)) (D (F t x)) t :=
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+  have hB : IsOpen (crossingBasin F f c d) := hBc.inter hBd
+  have hpos (x : M) (hx : x ∈ crossingBasin F f c d) : 0 < crossingDuration F f c d x :=
+    crossingDuration_pos F hf.continuous hD hder hc hcd hx
+  have hsc := htc.mono (Set.inter_subset_left : crossingBasin F f c d ⊆ levelBasin F f c)
+  have hsd := htd.mono (Set.inter_subset_right : crossingBasin F f c d ⊆ levelBasin F f d)
+  have hA : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (crossingDuration F f c d) (crossingBasin F f c d) :=
+    hsc.sub hsd
+  have hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (flowBandHeight F f c d) (crossingBasin F f c d) :=
+    contMDiffOn_const.add ((contMDiffOn_const.mul hsc).div₀ hA (fun x hx => (hpos x hx).ne'))
+  refine ⟨hB, hg, ?_⟩
+  intro x hx
+  have hlocal : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (flowBandHeight F f c d) (F 0 x) := by
+    rw [F.map_zero_apply]
+    exact ((hg x hx).contMDiffAt (hB.mem_nhds hx)).mdifferentiableAt (by simp)
+  have hchain := hasDerivAt_comp_native_integralCurve_at hlocal (hcurve x)
+  have heq :
+    (flowBandHeight F f c d ∘ (fun t => F t x)) = fun t =>
+      flowBandHeight F f c d x - ((d - c) / crossingDuration F f c d x) * t :=
+    funext (fun t => flowBandHeight_flow F hf.continuous hD hder hc hd hx t)
+  rw [heq] at hchain
+  have hline :=
+    ((hasDerivAt_id (0 : ℝ)).const_mul ((d - c) / crossingDuration F f c d x)).const_sub
+      (flowBandHeight F f c d x)
+  have hnative :
+    mvfderiv 𝓘(ℝ, E) (flowBandHeight F f c d) x (V x) = -((d - c) / crossingDuration F f c d x) :=
+    by
+    have he :=
+      congrArg (fun y : M => mvfderiv 𝓘(ℝ, E) (flowBandHeight F f c d) y (V y))
+        (F.map_zero_apply x)
+    exact he.symm.trans (by simpa using hchain.unique hline)
+  exact ⟨hnative, hnative ▸ neg_neg_of_pos (div_pos (sub_pos.mpr hcd) (hpos x hx))⟩
+
+/-! ### The logarithmic coordinate -/
+
+/-- The logarithmic coordinate of a positive height. -/
+def FlowCancellation.logarithmicCoordinate (η L t : ℝ) : ℝ :=
+  Real.log (1 + (t / η) ^ 2) / L
+
+/-- The logarithmic coordinate is smooth. -/
+theorem FlowCancellation.contDiff_logarithmicCoordinate (η L : ℝ) :
+    ContDiff ℝ ∞ (logarithmicCoordinate η L) := by
+  apply ContDiff.div_const
+  apply ContDiff.log
+  · exact contDiff_const.add ((contDiff_id.div_const η).pow 2)
+  · intro t
+    positivity
+
+/-- The logarithmic coordinate's derivative. -/
+theorem FlowCancellation.hasDerivAt_logarithmicCoordinate {η L : ℝ} (hη : 0 < η)
+    (hL : 0 < L) (t : ℝ) :
+    HasDerivAt (logarithmicCoordinate η L) (2 * t / (L * (η ^ 2 + t ^ 2))) t := by
+  have hp : 1 + (t / η) ^ 2 ≠ 0 := by positivity
+  have hh := (((((hasDerivAt_id t).div_const η).pow 2).const_add 1).log hp).div_const L
+  convert hh using 1 <;> try rfl
+  simp only [Pi.pow_apply, id_eq, Nat.cast_ofNat, Nat.reduceSub, pow_one]
+  field_simp
+
+/-- The weighted derivative bound of the logarithmic coordinate. -/
+theorem FlowCancellation.logarithmicCoordinate_weighted_deriv_bound {η L : ℝ} (hη : 0 < η)
+    (hL : 0 < L) (t : ℝ) : |t * deriv (logarithmicCoordinate η L) t| ≤ 2 / L := by
+  rw [(hasDerivAt_logarithmicCoordinate hη hL t).deriv]
+  have hden : 0 < η ^ 2 + t ^ 2 := add_pos_of_pos_of_nonneg (sq_pos_of_pos hη) (sq_nonneg t)
+  have heq : t * (2 * t / (L * (η ^ 2 + t ^ 2))) = (2 / L) * (t ^ 2 / (η ^ 2 + t ^ 2)) := by
+    field_simp
+  rw [heq, abs_of_nonneg (by positivity)]
+  exact mul_le_of_le_one_right (by positivity) ((div_le_one hden).mpr (by nlinarith))
+
+/-- A logarithmic cutoff exists. -/
+theorem FlowCancellation.exists_logarithmic_cutoff {ε δ : ℝ} (hε : 0 < ε) (hδ : 0 < δ) :
+    ∃ χ : ℝ → ℝ,
+      ContDiff ℝ ∞ χ ∧
+        HasCompactSupport χ ∧
+          (∀ᶠ t in 𝓝 0, χ t = 1) ∧
+            (∀ t, ε ≤ |t| → χ t = 0) ∧
+              (∀ t, χ t ∈ Set.Icc (0 : ℝ) 1) ∧ ∀ t, |t * deriv χ t| < δ := by
+  obtain ⟨β, hβ, hcompact, hsupp, hone, hrange⟩ :=
+    exists_compact_smooth_cutoff (K := {(0 : ℝ)}) (U := Metric.ball 0 1) isCompact_singleton
+      Metric.isOpen_ball (by simp)
+  obtain ⟨C, hC⟩ := hcompact.deriv.exists_bound_of_continuous (hβ.continuous_deriv (by simp))
+  let B : ℝ := Max.max C 0 + 1
+  have hB : 0 < B := by dsimp [B]; positivity
+  have hbound (t : ℝ) : |deriv β t| ≤ B := by
+    have hh := hC t
+    rw [Real.norm_eq_abs] at hh
+    exact hh.trans (by dsimp [B]; linarith [le_max_left C 0])
+  let L : ℝ := 2 * B / δ + 1
+  have hL : 0 < L := by dsimp [L]; positivity
+  have hsmall : B * (2 / L) < δ := by
+    rw [← mul_div_assoc]
+    apply (div_lt_iff₀ hL).mpr
+    dsimp [L]
+    have hd : δ * (2 * B / δ) = 2 * B := by field_simp
+    nlinarith
+  let η : ℝ := ε / Real.exp L
+  have hη : 0 < η := div_pos hε (Real.exp_pos L)
+  let q := logarithmicCoordinate η L
+  have hq : ContDiff ℝ ∞ q := contDiff_logarithmicCoordinate η L
+  have hqzero : q 0 = 0 := by simp [q, logarithmicCoordinate]
+  let χ : ℝ → ℝ := β ∘ q
+  have hχ : ContDiff ℝ ∞ χ := hβ.comp hq
+  have hout (t : ℝ) (ht : ε ≤ |t|) : χ t = 0 := by
+    have hratio : Real.exp L ≤ |t / η| := by
+      rw [abs_div, abs_of_pos hη, le_div_iff₀ hη]
+      have he : Real.exp L * η = ε := by dsimp [η]; field_simp
+      simpa only [he] using ht
+    have heone : 1 ≤ Real.exp L := Real.one_le_exp_iff.mpr hL.le
+    have hlower : L ≤ Real.log (1 + (t / η) ^ 2) := by
+      apply (Real.le_log_iff_exp_le (by positivity)).mpr
+      nlinarith [sq_abs (t / η)]
+    have honeq : 1 ≤ q t := (le_div_iff₀ hL).mpr (by simpa using hlower)
+    have hnotsupp : q t ∉ tsupport β := by
+      intro hh
+      have hball := hsupp hh
+      rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_lt] at hball
+      linarith [hball.2]
+    change β (q t) = 0
+    exact image_eq_zero_of_notMem_tsupport hnotsupp
+  have hcompactχ : HasCompactSupport χ := by
+    apply HasCompactSupport.intro (CompactIccSpace.isCompact_Icc : IsCompact (Set.Icc (-ε) ε))
+    intro t ht
+    apply hout
+    by_contra h
+    have hh := abs_lt.mp (lt_of_not_ge h)
+    exact ht ⟨hh.1.le, hh.2.le⟩
+  have hnear : ∀ᶠ t in 𝓝 0, χ t = 1 := by
+    have hb : ∀ᶠ r in 𝓝 (0 : ℝ), β r = 1 := by simpa only [nhdsSet_singleton] using hone
+    have ht : Filter.Tendsto q (𝓝 0) (𝓝 0) := by
+      have hh : Filter.Tendsto q (𝓝 0) (𝓝 (q 0)) := hq.continuous.continuousAt
+      simpa only [hqzero] using hh
+    exact ht.eventually hb
+  refine ⟨χ, hχ, hcompactχ, hnear, hout, fun t => hrange (q t), ?_⟩
+  intro t
+  have hder : deriv χ t = deriv β (q t) * deriv q t :=
+    ((hβ.differentiable (by simp)).differentiableAt.hasDerivAt.comp t
+        (hq.differentiable (by simp)).differentiableAt.hasDerivAt).deriv
+  rw [hder]
+  have he : |t * (deriv β (q t) * deriv q t)| = |deriv β (q t)| * |t * deriv q t| := by
+    rw [← abs_mul]; congr 1; ring
+  rw [he]
+  exact
+    lt_of_le_of_lt
+      (mul_le_mul (hbound _) (logarithmicCoordinate_weighted_deriv_bound hη hL t) (abs_nonneg _)
+        hB.le)
+      hsmall
+
+/-- A nonnegative function vanishing at a point has zero derivative. -/
+theorem FlowCancellation.deriv_eq_zero_of_nonneg_zero {χ : ℝ → ℝ} (hχ : Differentiable ℝ χ)
+    (hnonneg : ∀ t, 0 ≤ χ t) {t : ℝ} (ht : χ t = 0) : deriv χ t = 0 := by
+  have hm : IsLocalMin χ t :=
+    Filter.Eventually.of_forall
+      (fun s => by
+        change χ t ≤ χ s
+        rw [ht]
+        exact hnonneg s)
+  exact hm.hasDerivAt_eq_zero (hχ t).hasDerivAt
+
+/-- The weighted blend is negative. -/
+theorem FlowCancellation.weighted_blend_neg {α a b r s z μ C δ : ℝ}
+    (hα : α ∈ Set.Icc (0 : ℝ) 1) (ha : a ≤ -μ) (hb : b ≤ -μ) (hC : 0 ≤ C) (hr : |r| ≤ C * |s|)
+    (hz : |s * z| ≤ δ) (hsmall : C * δ < μ) : b + α * (a - b) - z * r < 0 := by
+  have hbase : b + α * (a - b) ≤ -μ := by
+    nlinarith [mul_nonneg hα.1 (sub_nonneg.mpr ha),
+      mul_nonneg (sub_nonneg.mpr hα.2) (sub_nonneg.mpr hb)]
+  have herr : |z * r| ≤ C * δ :=
+    calc
+      |z * r| = |z| * |r| := abs_mul _ _
+      _ ≤ |z| * (C * |s|) := (mul_le_mul_of_nonneg_left hr (abs_nonneg _))
+      _ = C * |s * z| := by rw [abs_mul]; ring
+      _ ≤ C * δ := mul_le_mul_of_nonneg_left hz hC
+  linarith [neg_abs_le (z * r)]
+
+/-- The flow height's derivative at a critical point is zero. -/
+theorem FlowCancellation.hasDerivAt_flow_height_zero {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) (F : Flow ℝ M)
+    (hcurve : IsMIntegralCurve (fun t => F t x) V) :
+    HasDerivAt (fun t => f (F t x)) (mvfderiv 𝓘(ℝ, E) f x (V x)) 0 := by
+  have hf0 : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f (F 0 x) := by
+    rw [F.map_zero_apply]
+    exact hf
+  have hh := hasDerivAt_comp_native_integralCurve_at hf0 hcurve
+  have he := congrArg (fun y : M => mvfderiv 𝓘(ℝ, E) f y (V y)) (F.map_zero_apply x)
+  exact he ▸ hh
+
+/-! ### The descent blend -/
+
+/-- The descent blend of two Lyapunov functions. -/
+def FlowCancellation.descentBlend {M : Type*} (χ : ℝ → ℝ) (θ f g : M → ℝ) (x : M) : ℝ :=
+  g x + χ (θ x) * (f x - g x)
+
+/-- The descent blend's manifold derivative. -/
+theorem FlowCancellation.mvfderiv_descentBlend {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {χ : ℝ → ℝ} {θ f g : M → ℝ} {x : M}
+    (hχ : ContDiff ℝ ∞ χ) (hθ : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ θ x)
+    (hf : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f x) (hg : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g x)
+    (F : Flow ℝ M) (hcurve : IsMIntegralCurve (fun t => F t x) V)
+    (htime : mvfderiv 𝓘(ℝ, E) θ x (V x) = -1) :
+    mvfderiv 𝓘(ℝ, E) (descentBlend χ θ f g) x (V x) =
+      mvfderiv 𝓘(ℝ, E) g x (V x) +
+          χ (θ x) * (mvfderiv 𝓘(ℝ, E) f x (V x) - mvfderiv 𝓘(ℝ, E) g x (V x)) -
+        deriv χ (θ x) * (f x - g x) := by
+  have dθ := hasDerivAt_flow_height_zero (hθ.mdifferentiableAt (by simp)) F hcurve
+  have df := hasDerivAt_flow_height_zero (hf.mdifferentiableAt (by simp)) F hcurve
+  have dg := hasDerivAt_flow_height_zero (hg.mdifferentiableAt (by simp)) F hcurve
+  rw [htime] at dθ
+  have dχ := ((hχ.differentiable (by simp)) (θ (F 0 x))).hasDerivAt.comp 0 dθ
+  have db := dg.add (dχ.mul (df.sub dg))
+  have hb : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (descentBlend χ θ f g) x :=
+    hg.add ((hχ.contMDiff.contMDiffAt.comp x hθ).mul (hf.sub hg))
+  have dn := hasDerivAt_flow_height_zero (hb.mdifferentiableAt (by simp)) F hcurve
+  have he := dn.unique db
+  simp only [Pi.sub_apply, Function.comp_apply, F.map_zero_apply] at he
+  exact he.trans (by ring)
+
+/-- A native descent blend exists. -/
+theorem FlowCancellation.exists_native_descent_blend {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U) {θ f g : M → ℝ}
+    (hθ : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ θ U) (hf : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f U)
+    (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (htime : ∀ x ∈ U, mvfderiv 𝓘(ℝ, E) θ x (V x) = -1)
+    (hgneg : ∀ x ∈ U, mvfderiv 𝓘(ℝ, E) g x (V x) < 0) {ε μ C : ℝ} (hε : 0 < ε) (hμ : 0 < μ)
+    (hC : 0 ≤ C)
+    (hcollar :
+      ∀ x ∈ U,
+        |θ x| < ε →
+          mvfderiv 𝓘(ℝ, E) f x (V x) ≤ -μ ∧
+            mvfderiv 𝓘(ℝ, E) g x (V x) ≤ -μ ∧ |f x - g x| ≤ C * |θ x|) :
+    ∃ b : M → ℝ,
+      ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ b U ∧
+        (∀ x ∈ U, mvfderiv 𝓘(ℝ, E) b x (V x) < 0) ∧
+          (∀ x ∈ U, θ x = 0 → b =ᶠ[𝓝 x] f) ∧
+            (∀ x, ε ≤ |θ x| → b x = g x) ∧ ∀ x ∈ U, ε < |θ x| → b =ᶠ[𝓝 x] g := by
+  let δ := μ / (C + 1)
+  have hδ : 0 < δ := div_pos hμ (by positivity)
+  have hsmall : C * δ < μ := by
+    dsimp [δ]
+    rw [← mul_div_assoc, div_lt_iff₀ (by positivity : 0 < C + 1)]
+    nlinarith
+  obtain ⟨χ, hχ, -, hone, hzero, hrange, hweight⟩ := exists_logarithmic_cutoff hε hδ
+  let b := descentBlend χ θ f g
+  have hb : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ b U :=
+    hg.add ((hχ.contMDiff.comp_contMDiffOn hθ).mul (hf.sub hg))
+  have hout (x : M) (hx : ε ≤ |θ x|) : b x = g x := by
+    simp only [b, descentBlend, hzero _ hx, MulZeroClass.zero_mul, add_zero]
+  refine ⟨b, hb, ?_, ?_, hout, ?_⟩
+  · intro x hx
+    have hder :=
+      mvfderiv_descentBlend hχ ((hθ x hx).contMDiffAt (hU.mem_nhds hx))
+        ((hf x hx).contMDiffAt (hU.mem_nhds hx)) ((hg x hx).contMDiffAt (hU.mem_nhds hx)) F
+        (hcurve x) (htime x hx)
+    change mvfderiv 𝓘(ℝ, E) (descentBlend χ θ f g) x (V x) < 0
+    rw [hder]
+    by_cases hnear : |θ x| < ε
+    · obtain ⟨hdf, hdg, hdiff⟩ := hcollar x hx hnear
+      exact weighted_blend_neg (hrange _) hdf hdg hC hdiff (hweight _).le hsmall
+    · have hz := hzero (θ x) (le_of_not_gt hnear)
+      have hdχ :=
+        deriv_eq_zero_of_nonneg_zero (hχ.differentiable (by simp)) (fun t => (hrange t).1) hz
+      simpa only [hz, hdχ, MulZeroClass.zero_mul, add_zero, sub_zero] using hgneg x hx
+  · intro x hx hxzero
+    have ht : ContinuousAt θ x := (hθ x hx).continuousWithinAt.continuousAt (hU.mem_nhds hx)
+    have hone' : ∀ᶠ t in 𝓝 (θ x), χ t = 1 := by simpa only [hxzero] using hone
+    filter_upwards [ht.eventually hone'] with y hy
+    change g y + χ (θ y) * (f y - g y) = f y
+    rw [hy]
+    ring
+  · intro x hx hxout
+    have ht : ContinuousAt (fun y => |θ y|) x :=
+      ((hθ x hx).continuousWithinAt.continuousAt (hU.mem_nhds hx)).abs
+    filter_upwards [ht (eventually_gt_nhds hxout)] with y hy
+    exact hout y hy.le
+
+/-! ### Flow tubes -/
+
+/-- The flow tube of a compact set. -/
+def FlowCancellation.flowTube {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (S : Set X)
+    (ε : ℝ) : Set X :=
+  (fun q : ℝ × X => F q.1 q.2) '' (Set.Icc (-ε) ε ×ˢ S)
+
+/-- The flow tube is compact. -/
+theorem FlowCancellation.isCompact_flowTube {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
+    {S : Set X} (hS : IsCompact S) (ε : ℝ) : IsCompact (flowTube F S ε) :=
+  (CompactIccSpace.isCompact_Icc.prod hS).image (F.continuous continuous_fst continuous_snd)
+
+/-- A flow tube inside an open set exists. -/
+theorem FlowCancellation.exists_flowTube_subset {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {S N : Set X} (hS : IsCompact S) (hN : IsOpen N) (hSN : S ⊆ N) :
+    ∃ ε : ℝ, 0 < ε ∧ flowTube F S ε ⊆ N := by
+  have hopen : IsOpen {t : ℝ | ∀ x ∈ S, F t x ∈ N} :=
+    MorsePerturbation.isOpen_forall_mem_compact hS
+      (hN.preimage (F.continuous continuous_fst continuous_snd))
+  have hzero : (0 : ℝ) ∈ {t : ℝ | ∀ x ∈ S, F t x ∈ N} := by
+    intro x hx
+    simpa only [F.map_zero_apply] using hSN hx
+  obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.mp (hopen.mem_nhds hzero)
+  refine ⟨r / 2, half_pos hr, ?_⟩
+  rintro y ⟨⟨t, x⟩, ⟨ht, hx⟩, rfl⟩
+  apply hball ?_ x hx
+  rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_lt]
+  constructor <;> linarith [ht.1, ht.2]
+
+/-- Signed-time membership in the flow tube. -/
+theorem FlowCancellation.mem_flowTube_of_signedTime {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) (f : X → ℝ) (c : ℝ) {ε : ℝ} {x : X} (hx : x ∈ levelBasin F f c)
+    (ht : |signedLevelTime F f c x| ≤ ε) : x ∈ flowTube F {y | f y = c} ε := by
+  refine
+    ⟨(-signedLevelTime F f c x, F (signedLevelTime F f c x) x),
+      ⟨?_, signedLevelTime_hits F f c hx⟩, ?_⟩
+  · constructor <;> linarith [(abs_le.mp ht).1, (abs_le.mp ht).2]
+  · simp only [← F.map_add, neg_add_cancel, F.map_zero_apply]
+
+/-- A compact negative margin exists. -/
+theorem FlowCancellation.exists_compact_negative_margin {X : Type*} [TopologicalSpace X]
+    {S : Set X} (hS : IsCompact S) {D : X → ℝ} (hD : ContinuousOn D S) (hneg : ∀ x ∈ S, D x < 0) :
+    ∃ μ : ℝ, 0 < μ ∧ ∀ x ∈ S, D x < -μ := by
+  by_cases hne : S.Nonempty
+  · obtain ⟨p, hp, hmax⟩ := hS.exists_isMaxOn hne hD
+    refine ⟨-D p / 2, by linarith [hneg p hp], ?_⟩
+    intro x hx
+    have hle : D x ≤ D p := hmax hx
+    linarith [hneg p hp]
+  · exact ⟨1, zero_lt_one, fun x hx => (hne ⟨x, hx⟩).elim⟩
+
+/-- The directional derivative is smooth on a set. -/
+theorem FlowCancellation.contMDiffOn_directionalDerivative {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U)
+    {g : M → ℝ} (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
+    ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun x => mvfderiv 𝓘(ℝ, E) g x (V x)) U := by
+  have ht :=
+    (hg.contMDiffOn_tangentMapWithin (m := ∞) (by simp) hU.uniqueMDiffOn).comp hV.contMDiffOn
+      (fun x hx => hx)
+  have hh := (contMDiff_snd_tangentBundle_modelSpace ℝ 𝓘(ℝ, ℝ)).comp_contMDiffOn ht
+  apply hh.congr
+  intro x hx
+  change
+    (NormedSpace.fromTangentSpace (g x)) (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x (V x)) =
+      (NormedSpace.fromTangentSpace (g x)) (mfderivWithin 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g U x (V x))
+  rw [mfderivWithin_of_isOpen hU hx]
+
+/-- Native time collar bounds exist. -/
+theorem FlowCancellation.exists_native_time_collar_bounds {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {U : Set M}
+    (hU : IsOpen U) {f g : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ}
+    (hlevel : {x | f x = c} ⊆ U) (hbasin : U ⊆ levelBasin F f c) (heq : ∀ x, f x = c → g x = f x)
+    (hfc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hgc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) g x (V x) < 0) :
+    ∃ ε μ C : ℝ,
+      0 < ε ∧
+        0 < μ ∧
+          0 ≤ C ∧
+            ∀ x ∈ U,
+              |signedLevelTime F f c x| < ε →
+                mvfderiv 𝓘(ℝ, E) f x (V x) ≤ -μ ∧
+                  mvfderiv 𝓘(ℝ, E) g x (V x) ≤ -μ ∧ |f x - g x| ≤ C * |signedLevelTime F f c x| :=
+  by
+  let S : Set M := {x | f x = c}
+  have hS : IsCompact S := (isClosed_eq hf.continuous continuous_const).isCompact
+  let Df (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
+  let Dg (x : M) := mvfderiv 𝓘(ℝ, E) g x (V x)
+  have hDf : Continuous Df := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  have hDg : ContinuousOn Dg U := (contMDiffOn_directionalDerivative hU hg hV).continuousOn
+  have hmax : ContinuousOn (fun x => Max.max (Df x) (Dg x)) U :=
+    continuous_max.comp_continuousOn (hDf.continuousOn.prodMk hDg)
+  obtain ⟨μ, hμ, hmargin⟩ :=
+    exists_compact_negative_margin hS (hmax.mono hlevel)
+      (fun x hx => max_lt (hfc x hx) (hgc x hx))
+  let N : Set M := U ∩ (fun x => Max.max (Df x) (Dg x)) ⁻¹' Set.Iio (-μ)
+  have hN : IsOpen N := hmax.isOpen_inter_preimage hU isOpen_Iio
+  have hSN : S ⊆ N := fun x hx => ⟨hlevel hx, hmargin x hx⟩
+  obtain ⟨ε, hε, htube⟩ := exists_flowTube_subset F hS hN hSN
+  let K := flowTube F S ε
+  have hK : IsCompact K := isCompact_flowTube F hS ε
+  have hKU : K ⊆ U := fun x hx => (htube hx).1
+  obtain ⟨C₀, hC₀⟩ := hK.exists_bound_of_continuousOn (hDf.continuousOn.sub (hDg.mono hKU))
+  let C : ℝ := Max.max C₀ 0
+  have hC : 0 ≤ C := le_max_right _ _
+  have hbound (x : M) (hx : x ∈ K) : ‖Df x - Dg x‖ ≤ C := (hC₀ x hx).trans (le_max_left _ _)
+  refine ⟨ε, μ, C, hε, hμ, hC, ?_⟩
+  intro x hx hxε
+  have hxK : x ∈ K := mem_flowTube_of_signedTime F f c (hbasin hx) hxε.le
+  have hxN := htube hxK
+  have hneg : Max.max (Df x) (Dg x) < -μ := hxN.2
+  refine
+    ⟨(lt_of_le_of_lt (le_max_left _ _) hneg).le, (lt_of_le_of_lt (le_max_right _ _) hneg).le, ?_⟩
+  let θ := signedLevelTime F f c x
+  let y := F θ x
+  have hy : f y = c := signedLevelTime_hits F f c (hbasin hx)
+  have hpoint (t : ℝ) (ht : t ∈ Set.Icc (-ε) ε) : F t y ∈ K := ⟨(t, y), ⟨ht, hy⟩, rfl⟩
+  let ℓ (t : ℝ) := f (F t y) - g (F t y)
+  have hd (t : ℝ) (ht : t ∈ Set.Icc (-ε) ε) : HasDerivAt ℓ (Df (F t y) - Dg (F t y)) t := by
+    have hgpoint :=
+      ((hg (F t y) (hKU (hpoint t ht))).contMDiffAt
+            (hU.mem_nhds (hKU (hpoint t ht)))).mdifferentiableAt
+        (by simp)
+    exact
+      (hasDerivAt_comp_native_integralCurve_at (hf.mdifferentiableAt (by simp)) (hcurve y)).sub
+        (hasDerivAt_comp_native_integralCurve_at hgpoint (hcurve y))
+  have h0 : (0 : ℝ) ∈ Set.Icc (-ε) ε := ⟨by linarith, hε.le⟩
+  have hθ : -θ ∈ Set.Icc (-ε) ε := by
+    constructor <;> linarith [(abs_lt.mp hxε).1, (abs_lt.mp hxε).2]
+  have hmvt :=
+    (convex_Icc (-ε) ε).norm_image_sub_le_of_norm_deriv_le
+      (fun t ht => (hd t ht).differentiableAt)
+      (fun t ht => by rw [(hd t ht).deriv]; exact hbound _ (hpoint t ht)) h0 hθ
+  have hreturn : F (-θ) y = x := by
+    dsimp [y]
+    rw [← F.map_add, neg_add_cancel, F.map_zero_apply]
+  simpa only [ℓ, F.map_zero_apply, hreturn, heq y hy, sub_self, sub_zero, Real.norm_eq_abs,
+    abs_neg] using hmvt
+
+/-- A boundary germ correction exists. -/
+theorem FlowCancellation.exists_boundary_germ_correction {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U) {f g : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c : ℝ}
+    (hlevel : {x | f x = c} ⊆ U) (hbasin : U ⊆ levelBasin F f c) (heq : ∀ x, f x = c → g x = f x)
+    (hfc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hgneg : ∀ x ∈ U, mvfderiv 𝓘(ℝ, E) g x (V x) < 0) {r : ℝ} (hr : 0 < r) :
+    ∃ b : M → ℝ,
+      ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ b U ∧
+        (∀ x ∈ U, mvfderiv 𝓘(ℝ, E) b x (V x) < 0) ∧
+          (∀ x, f x = c → b =ᶠ[𝓝 x] f) ∧ ∀ x ∈ U, r ≤ |signedLevelTime F f c x| → b =ᶠ[𝓝 x] g := by
+  obtain ⟨ε₀, μ, C, hε₀, hμ, hC, hbounds⟩ :=
+    exists_native_time_collar_bounds hU hf hg hV F hcurve hlevel hbasin heq hfc
+      (fun x hx => hgneg x (hlevel hx))
+  let ε := Min.min ε₀ (r / 2)
+  have hε : 0 < ε := lt_min hε₀ (half_pos hr)
+  have hεr : ε < r := lt_of_le_of_lt (min_le_right _ _) (by linarith)
+  obtain ⟨-, hθ, -⟩ := smooth_signed_level_time hf hV F hcurve hfc
+  have htime (x : M) (hx : x ∈ U) : mvfderiv 𝓘(ℝ, E) (signedLevelTime F f c) x (V x) = -1 :=
+    mvfderiv_signedLevelTime hf hV F hcurve hfc (hbasin hx)
+  obtain ⟨b, hb, hbneg, hbone, -, hboff⟩ :=
+    exists_native_descent_blend hU (hθ.mono hbasin) hf.contMDiffOn hg F hcurve htime hgneg hε hμ
+      hC (fun x hx ht => hbounds x hx (lt_of_lt_of_le ht (min_le_left _ _)))
+  refine ⟨b, hb, hbneg, ?_, fun x hx ht => hboff x hx (hεr.trans_le ht)⟩
+  intro x hx
+  apply hbone x (hlevel hx)
+  let D (y : M) := mvfderiv 𝓘(ℝ, E) f y (V y)
+  have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  exact
+    signedLevelTime_eq_zero F hf.continuous hD
+      (fun y t => FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve y) t) hfc hx
+
+/-- A signed-time level separation exists. -/
+theorem FlowCancellation.exists_signedTime_level_separation {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c ≠ d)
+    (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hlevel : {x | f x = d} ⊆ levelBasin F f c) :
+    ∃ r : ℝ, 0 < r ∧ ∀ x, f x = d → r < |signedLevelTime F f c x| := by
+  obtain ⟨-, hθ, -⟩ := smooth_signed_level_time hf hV F hcurve hc
+  have hS : IsCompact {x | f x = d} := (isClosed_eq hf.continuous continuous_const).isCompact
+  obtain ⟨r, hr, hmargin⟩ :=
+    exists_compact_negative_margin hS ((hθ.continuousOn.mono hlevel).abs.neg)
+      (fun x hx => by
+        apply neg_neg_of_pos
+        apply abs_pos.mpr
+        intro hz
+        have hhit := signedLevelTime_hits F f c (hlevel hx)
+        rw [hz, F.map_zero_apply] at hhit
+        exact hcd (hhit.symm.trans hx))
+  refine ⟨r, hr, fun x hx => ?_⟩
+  have hh : -|signedLevelTime F f c x| < -r := hmargin x hx
+  linarith
+
+/-- A level-preserving boundary correction exists. -/
+theorem FlowCancellation.exists_boundary_correction_preserving_level {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U) {f g : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c ≠ d)
+    (hcU : {x | f x = c} ⊆ U) (hdU : {x | f x = d} ⊆ U) (hbasin : U ⊆ levelBasin F f c)
+    (heq : ∀ x, f x = c → g x = f x) (hfc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hgneg : ∀ x ∈ U, mvfderiv 𝓘(ℝ, E) g x (V x) < 0) :
+    ∃ b : M → ℝ,
+      ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ b U ∧
+        (∀ x ∈ U, mvfderiv 𝓘(ℝ, E) b x (V x) < 0) ∧
+          (∀ x, f x = c → b =ᶠ[𝓝 x] f) ∧ ∀ x, f x = d → b =ᶠ[𝓝 x] g := by
+  obtain ⟨r, hr, hsep⟩ :=
+    exists_signedTime_level_separation hf hV F hcurve hcd hfc (hdU.trans hbasin)
+  obtain ⟨b, hb, hbneg, hbc, hboff⟩ :=
+    exists_boundary_germ_correction hU hf hg hV F hcurve hcU hbasin heq hfc hgneg hr
+  exact ⟨b, hb, hbneg, hbc, fun x hx => hboff x (hdU hx) (hsep x hx).le⟩
+
+/-- The band lies in the crossing basin. -/
+theorem FlowCancellation.band_subset_crossingBasin {X : Type*} [TopologicalSpace X]
+    (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {c d T : ℝ} (hT : 0 < T)
+    (hforward : ∀ x, f x ≤ d → f (F T x) < c) (hbackward : ∀ x, c ≤ f x → d < f (F (-T) x)) :
+    f ⁻¹' Set.Icc c d ⊆ crossingBasin F f c d := by
+  intro x hx
+  have hcont : Continuous (fun t : ℝ => f (F t x)) :=
+    hf.comp (F.continuous continuous_id continuous_const)
+  constructor
+  · obtain ⟨t, -, ht⟩ :=
+      intermediate_value_Icc' hT.le hcont.continuousOn
+        (show c ∈ Set.Icc (f (F T x)) (f (F 0 x)) from
+          ⟨(hforward x hx.2).le, by simpa only [F.map_zero_apply] using hx.1⟩)
+    exact ⟨t, ht⟩
+  · obtain ⟨t, -, ht⟩ :=
+      intermediate_value_Icc' (show -T ≤ (0 : ℝ) by linarith) hcont.continuousOn
+        (show d ∈ Set.Icc (f (F 0 x)) (f (F (-T) x)) from
+          ⟨by simpa only [F.map_zero_apply] using hx.2, (hbackward x hx.1).le⟩)
+    exact ⟨t, ht⟩
+
+/-- Smooth band height germs exist. -/
+theorem FlowCancellation.exists_smooth_band_height_germs {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c < d)
+    (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hd : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hcross : ∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x)) :
+    ∃ (U : Set M) (g : M → ℝ),
+      IsOpen U ∧
+        f ⁻¹' Set.Icc c d ⊆ U ∧
+          ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U ∧
+            (∀ x ∈ U, mvfderiv 𝓘(ℝ, E) g x (V x) < 0) ∧ ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f := by
+  let U := crossingBasin F f c d
+  let g := flowBandHeight F f c d
+  obtain ⟨hU, hg, hgder⟩ := smooth_flowBandHeight hf hV F hcurve hcd hc hd
+  obtain ⟨T, hT, hforward, hbackward⟩ := hcross
+  have hband : f ⁻¹' Set.Icc c d ⊆ U :=
+    band_subset_crossingBasin F hf.continuous hT hforward hbackward
+  have hcU : {x | f x = c} ⊆ U := fun x hx =>
+    hband (show f x ∈ Set.Icc c d from ⟨by rw [hx], by rw [hx]; exact hcd.le⟩)
+  have hdU : {x | f x = d} ⊆ U := fun x hx =>
+    hband (show f x ∈ Set.Icc c d from ⟨by rw [hx]; exact hcd.le, by rw [hx]⟩)
+  let D (x : M) := mvfderiv 𝓘(ℝ, E) f x (V x)
+  have hD : Continuous D := (MorseCancellation.contMDiff_directionalDerivative hf hV).continuous
+  have hder (x : M) (t : ℝ) : HasDerivAt (fun s => f (F s x)) (D (F t x)) t :=
+    FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) t
+  have hgc (x : M) (hx : f x = c) : g x = f x :=
+    (flowBandHeight_lower F hf.continuous hD hder hc hx).trans hx.symm
+  have hgd (x : M) (hx : f x = d) : g x = f x :=
+    (flowBandHeight_upper F hf.continuous hD hder hc hd hcd (hdU hx) hx).trans hx.symm
+  obtain ⟨b, hb, hbneg, hbc, hbd⟩ :=
+    exists_boundary_correction_preserving_level hU hf hg hV F hcurve hcd.ne hcU hdU
+      Set.inter_subset_left hgc hc (fun x hx => (hgder x hx).2)
+  have hbdval (x : M) (hx : f x = d) : b x = f x := (hbd x hx).eq_of_nhds.trans (hgd x hx)
+  obtain ⟨k, hk, hkneg, hkd, hkc⟩ :=
+    exists_boundary_correction_preserving_level hU hf hb hV F hcurve hcd.ne' hdU hcU
+      Set.inter_subset_right hbdval hd hbneg
+  refine ⟨U, k, hU, hband, hk, hkneg, ?_⟩
+  intro x hx
+  rcases hx with hx | hx
+  · exact (hkc x hx).trans (hbc x hx)
+  · exact hkd x hx
+
+/-! ### Band replacement -/
+
+/-- The band replacement of a function. -/
+def FlowCancellation.bandReplacement {X : Type*} (f g : X → ℝ) (c d : ℝ) (x : X) : ℝ := by
+  classical exact if f x ∈ Set.Ioo c d then g x else f x
+
+/-- The band replacement's germ on the boundary. -/
+theorem FlowCancellation.bandReplacement_germ_boundary {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} {c d : ℝ} {x : X} (heq : g =ᶠ[𝓝 x] f) :
+    bandReplacement f g c d =ᶠ[𝓝 x] f ∧ bandReplacement f g c d =ᶠ[𝓝 x] g := by
+  have hh : bandReplacement f g c d =ᶠ[𝓝 x] f := by
+    filter_upwards [heq] with y hy
+    simp only [bandReplacement, hy, ite_self]
+  exact ⟨hh, hh.trans heq.symm⟩
+
+/-- The band replacement's germ in the interior. -/
+theorem FlowCancellation.bandReplacement_germ_interior {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) {x : X} (hx : f x ∈ Set.Ioo c d) :
+    bandReplacement f g c d =ᶠ[𝓝 x] g := by
+  filter_upwards [(isOpen_Ioo.preimage hf).mem_nhds hx] with y hy
+  exact if_pos hy
+
+/-- The band replacement's germ in the exterior. -/
+theorem FlowCancellation.bandReplacement_germ_exterior {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) {x : X} (hx : f x ∉ Set.Icc c d) :
+    bandReplacement f g c d =ᶠ[𝓝 x] f := by
+  filter_upwards [((isClosed_Icc.preimage hf).isOpen_compl).mem_nhds hx] with y hy
+  exact if_neg (fun h => hy ⟨h.1.le, h.2.le⟩)
+
+/-- The band replacement's germ on a closed set. -/
+theorem FlowCancellation.bandReplacement_germ_on_closed {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) (hboundary : ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f)
+    {x : X} (hx : f x ∈ Set.Icc c d) : bandReplacement f g c d =ᶠ[𝓝 x] g := by
+  by_cases hc : f x = c
+  · exact (bandReplacement_germ_boundary (hboundary x (Or.inl hc))).2
+  by_cases hd : f x = d
+  · exact (bandReplacement_germ_boundary (hboundary x (Or.inr hd))).2
+  exact
+    bandReplacement_germ_interior hf ⟨lt_of_le_of_ne hx.1 (Ne.symm hc), lt_of_le_of_ne hx.2 hd⟩
+
+/-- The band replacement's germ off an open set. -/
+theorem FlowCancellation.bandReplacement_germ_off_open {X : Type*} [TopologicalSpace X]
+    {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) (hboundary : ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f)
+    {x : X} (hx : f x ∉ Set.Ioo c d) : bandReplacement f g c d =ᶠ[𝓝 x] f := by
+  by_cases hc : f x = c
+  · exact (bandReplacement_germ_boundary (hboundary x (Or.inl hc))).1
+  by_cases hd : f x = d
+  · exact (bandReplacement_germ_boundary (hboundary x (Or.inr hd))).1
+  apply bandReplacement_germ_exterior hf
+  intro h
+  exact hx ⟨lt_of_le_of_ne h.1 (Ne.symm hc), lt_of_le_of_ne h.2 hd⟩
+
+/-- The band replacement is smooth. -/
+theorem FlowCancellation.contMDiff_bandReplacement {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {c d : ℝ} {U : Set M}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U) (hU : IsOpen U)
+    (hband : f ⁻¹' Set.Icc c d ⊆ U) (hboundary : ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f) :
+    ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (bandReplacement f g c d) := by
+  intro x
+  by_cases hx : f x ∈ Set.Icc c d
+  · exact
+      ((hg x (hband hx)).contMDiffAt (hU.mem_nhds (hband hx))).congr_of_eventuallyEq
+        (bandReplacement_germ_on_closed hf.continuous hboundary hx)
+  · exact hf.contMDiffAt.congr_of_eventuallyEq (bandReplacement_germ_exterior hf.continuous hx)
+
+/-- Equal germs give equal manifold derivatives. -/
+theorem FlowCancellation.mvfderiv_eq_of_germ {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f g : M → ℝ} {x : M} (heq : f =ᶠ[𝓝 x] g) :
+    mvfderiv 𝓘(ℝ, E) f x (V x) = mvfderiv 𝓘(ℝ, E) g x (V x) := by
+  unfold mvfderiv
+  rw [heq.mfderiv_eq, heq.eq_of_nhds]
+
+/-- A global band Lyapunov function exists. -/
+theorem FlowCancellation.exists_global_band_lyapunov {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
+    [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c < d)
+    (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hd : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hcross : ∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x)) :
+    ∃ b : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ b ∧
+        (∀ x, f x ∈ Set.Icc c d → mvfderiv 𝓘(ℝ, E) b x (V x) < 0) ∧
+          ∀ x, f x ∉ Set.Ioo c d → b =ᶠ[𝓝 x] f := by
+  obtain ⟨U, g, hU, hband, hg, hgneg, hgerm⟩ :=
+    exists_smooth_band_height_germs hf hV F hcurve hcd hc hd hcross
+  refine ⟨bandReplacement f g c d, contMDiff_bandReplacement hf hg hU hband hgerm, ?_, ?_⟩
+  · intro x hx
+    rw [mvfderiv_eq_of_germ (V := V) (bandReplacement_germ_on_closed hf.continuous hgerm hx)]
+    exact hgneg x (hband hx)
+  · intro x hx
+    exact bandReplacement_germ_off_open hf.continuous hgerm hx
+
+/-! ### The cubic Hessian -/
+
+/-- The Hessian of the cubic model. -/
+def MorseCancellation.hessian {m : ℕ} (σ : Fin m → ℝ) (p : Model m) : Model m →L[ℝ] Model m →L[ℝ] ℝ :=
+  (2 * p.1) •
+      (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).smulRight
+        (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)) +
+    ∑ i,
+      (2 * σ i) •
+        (((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))).smulRight
+          ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))))
+
+/-- The Hessian computes the second derivative. -/
+theorem MorseCancellation.hessian_apply {m : ℕ} (σ : Fin m → ℝ) (p v w : Model m) :
+    hessian σ p v w = 2 * p.1 * v.1 * w.1 + ∑ i, 2 * σ i * v.2 i * w.2 i := by
+  simp [hessian, mul_assoc]
+
+/-- The differential is differentiable. -/
+theorem MorseCancellation.hasFDerivAt_differential {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
+    HasFDerivAt (differential σ t) (hessian σ p) p := by
+  have hx := (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).hasFDerivAt (x := p)
+  let L (i : Fin m) : Model m →L[ℝ] ℝ :=
+    (ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))
+  have hq :=
+    HasFDerivAt.fun_sum (u := Finset.univ)
+      (fun i _ => (((L i).hasFDerivAt (x := p)).const_mul (2 * σ i)).smul_const (L i))
+  convert
+      (((hx.pow 2).add_const t).smul_const (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ))).add hq using
+      1 <;>
+    first
+    | rfl
+    | ( apply ContinuousLinearMap.ext; intro v
+        apply ContinuousLinearMap.ext; intro w
+        simp [hessian, L, mul_assoc])
+
+/-- The cubic's Hessian derivative. -/
+theorem MorseCancellation.fderiv_cubic_hessian {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
+    fderiv ℝ (fderiv ℝ (cubic σ t)) p = hessian σ p := by
+  rw [show fderiv ℝ (cubic σ t) = differential σ t from funext (fderiv_cubic σ t)]
+  exact (hasFDerivAt_differential σ t p).fderiv
+
+/-- The cubic Hessian is bijective at the critical point. -/
+theorem MorseCancellation.hessian_bijective {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {p : Model m}
+    (hp : p.1 ≠ 0) : Function.Bijective (hessian σ p) := by
+  have hi : Function.Injective (hessian σ p) := by
+    apply (injective_iff_map_eq_zero (hessian σ p)).mpr
+    intro v hv
+    have hx := congrArg (fun L : Model m →L[ℝ] ℝ => L (1, 0)) hv
+    have hx' : 2 * p.1 * v.1 = 0 := by simpa [hessian_apply] using hx
+    have hvx : v.1 = 0 := (mul_eq_zero.mp hx').resolve_left (mul_ne_zero (by norm_num) hp)
+    apply Prod.ext hvx
+    funext i
+    have hy := congrArg (fun L : Model m →L[ℝ] ℝ => L (0, Pi.single i 1)) hv
+    have hy' : 2 * σ i * v.2 i = 0 := by simpa [hessian_apply, Pi.single_apply] using hy
+    exact (mul_eq_zero.mp hy').resolve_left (mul_ne_zero (by norm_num) (hσ i))
+  have hd : Module.finrank ℝ (Model m) = Module.finrank ℝ (Model m →L[ℝ] ℝ) := by
+    calc
+      _ = Module.finrank ℝ (Model m →ₗ[ℝ] ℝ) := Subspace.dual_finrank_eq.symm
+      _ = _ :=
+        (LinearMap.toContinuousLinearMap : (Model m →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (Model m →L[ℝ] ℝ)).finrank_eq
+  exact
+    ⟨hi,
+      (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (hessian σ p).toLinearMap)
+            hd).mp
+        hi⟩
+
+/-- The cubic critical point is Morse. -/
+theorem MorseCancellation.cubic_isMorse {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {t : ℝ}
+    (ht : t ≠ 0) : MorsePerturbation.IsMorse (cubic σ t) := by
+  intro p hcrit
+  rw [fderiv_cubic_hessian]
+  apply hessian_bijective σ hσ
+  intro hp
+  have h := ((critical_iff σ hσ t p).mp hcrit).1
+  exact ht (by simpa [hp] using h)
+
+/-! ### Native cubic cancellation -/
+
+/-- A cutoff for the native cubic cancellation exists. -/
+theorem NativeCubicCancellation.exists_cutoff {m : ℕ} {V : Set (MorseCancellation.Model m)}
+    (hV : IsOpen V) (h0 : (0 : MorseCancellation.Model m) ∈ V) :
+    ∃ φ : MorseCancellation.Model m → ℝ,
+      ContDiff ℝ ∞ φ ∧
+        HasCompactSupport φ ∧
+          tsupport φ ⊆ V ∧
+            ∃ U : Set (MorseCancellation.Model m),
+              IsOpen U ∧ (0 : MorseCancellation.Model m) ∈ U ∧ Set.EqOn φ (fun _ => 1) U := by
+  obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.mp (hV.mem_nhds h0)
+  let φ : ContDiffBump (0 : MorseCancellation.Model m) := ⟨r / 4, r / 2, by positivity, by linarith⟩
+  refine
+    ⟨φ, φ.contDiff, φ.hasCompactSupport, ?_, Metric.ball 0 (r / 4), Metric.isOpen_ball,
+      Metric.mem_ball_self (by positivity), ?_⟩
+  · rw [φ.tsupport_eq]
+    intro p hp
+    apply hball
+    exact lt_of_le_of_lt hp (by change r / 2 < r; linarith)
+  · intro p hp
+    exact φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hp)
+
+/-- The Morse property transfers across equal germs. -/
+theorem MorseCancellationPreservation.isMorseAt_of_same_germ {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
+    {x : M} (hf : ManifoldMorse.IsMorseAt E f x) (heq : g =ᶠ[𝓝 x] f) :
+    ManifoldMorse.IsMorseAt E g x := by
+  obtain ⟨e, he, hx, hgood⟩ := hf
+  refine ⟨e, he, hx, ?_⟩
+  have ht : Filter.Tendsto e.symm (𝓝 (e x)) (𝓝 x) := by
+    have h := e.symm.continuousAt (e.map_source hx)
+    rw [ContinuousAt, e.left_inv hx] at h
+    exact h
+  have hc : g ∘ e.symm =ᶠ[𝓝 (e x)] f ∘ e.symm := heq.comp_tendsto ht
+  rw [hc.fderiv_eq, (hc.fderiv (𝕜 := ℝ)).fderiv_eq]
+  exact hgood
+
+/-- A regular point of the replacement is Morse. -/
+theorem MorseCancellationPreservation.isMorseAt_of_regular {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {g : M → ℝ} (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g) {x : M}
+    (hreg : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x ≠ 0) : ManifoldMorse.IsMorseAt E g x := by
+  let e := chartAt E x
+  have he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M := IsManifold.chart_mem_maximalAtlas x
+  have hx : x ∈ e.source := mem_chart_source E x
+  refine ⟨e, he, hx, Or.inl ?_⟩
+  intro hc
+  exact hreg ((ManifoldMorse.mem_criticalPoints_iff hg he hx).mpr hc)
+
+/-- A function whose critical germs are Morse is Morse. -/
+theorem MorseCancellationPreservation.isMorse_of_critical_germs {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f g : M → ℝ} (hf : ManifoldMorse.IsMorse E f)
+    (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g)
+    (hkeep : ∀ x, mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0 → g =ᶠ[𝓝 x] f) :
+    ManifoldMorse.IsMorse E g := by
+  intro x
+  by_cases hx : mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0
+  · exact isMorseAt_of_same_germ (hf x) (hkeep x hx)
+  · exact isMorseAt_of_regular hg hx
+
+/-- A negative directional derivative excludes criticality. -/
+theorem FlowCancellation.not_critical_of_directional_neg {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {g : M → ℝ} {x : M}
+    (hneg : mvfderiv 𝓘(ℝ, E) g x (V x) < 0) : x ∉ ManifoldMorse.criticalPoints E g := by
+  intro hx
+  change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0 at hx
+  unfold mvfderiv at hneg
+  rw [hx] at hneg
+  simp at hneg
+
+/-- The band replacement removes the Morse pair. -/
+theorem FlowCancellation.remove_morse_band_pair {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {c d : ℝ} (hcd : c < d)
+    (hc : ∀ x, f x = c → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hd : ∀ x, f x = d → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hcross : ∃ T : ℝ, 0 < T ∧ (∀ x, f x ≤ d → f (F T x) < c) ∧ ∀ x, c ≤ f x → d < f (F (-T) x))
+    {p q : M} (hpq : p ≠ q) (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpc : f p ∈ Set.Icc c d)
+    (hqc : f q ∈ Set.Icc c d)
+    (hpair : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ x,
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
+              ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
+  obtain ⟨g, hg, hneg, hgerm⟩ := exists_global_band_lyapunov hf hV F hcurve hcd hc hd hcross
+  have hreg (x : M) (hx : f x ∈ Set.Icc c d) : x ∉ ManifoldMorse.criticalPoints E g :=
+    not_critical_of_directional_neg (hneg x hx)
+  have hnew (x : M) :
+    x ∈ ManifoldMorse.criticalPoints E g ↔
+      x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q := by
+    constructor
+    · intro hx
+      have hout : f x ∉ Set.Icc c d := fun h => hreg x h hx
+      have he := hgerm x (fun h => hout ⟨h.1.le, h.2.le⟩)
+      have hcrit : x ∈ ManifoldMorse.criticalPoints E f := by
+        change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0
+        rw [← he.mfderiv_eq]
+        exact hx
+      exact ⟨hcrit, fun h => hout (h ▸ hpc), fun h => hout (h ▸ hqc)⟩
+    · rintro ⟨hx, hxp, hxq⟩
+      have hout : f x ∉ Set.Icc c d := fun h => (hpair x hx h).elim hxp hxq
+      change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g x = 0
+      rw [(hgerm x (fun h => hout ⟨h.1.le, h.2.le⟩)).mfderiv_eq]
+      exact hx
+  have hmg : ManifoldMorse.IsMorse E g := by
+    apply MorseCancellationPreservation.isMorse_of_critical_germs hm hg
+    intro x hx
+    apply hgerm x
+    intro h
+    exact hreg x ⟨h.1.le, h.2.le⟩ hx
+  have heq :
+    ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f \ { p, q } := by
+    ext x
+    simpa only [Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or] using hnew x
+  have hsub : { p, q } ⊆ ManifoldMorse.criticalPoints E f := by
+    intro x hx
+    rcases hx with rfl | hx
+    · exact hp
+    · exact Set.mem_singleton_iff.mp hx ▸ hq
+  refine ⟨g, hg, hmg, ?_, hnew, hgerm⟩
+  rw [heq, ← Set.ncard_pair hpq]
+  exact Set.ncard_sdiff_add_ncard_of_subset hsub (ManifoldMorse.finite_criticalPoints hf hm)
+
+/-- A unique native cubic connection can be cancelled. -/
+theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
+    (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
+    (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (haxis : Set.Icc (-a) a ×ˢ {(0 : Fin m → ℝ)} ⊆ Φ.source) {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hmodel : ∀ x ∈ Φ.target, V x = nativeCubicDescent σ Φ (-(a ^ 2)) x) (F : Flow ℝ M)
+    (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : Φ (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φ (-a, 0) ∈ ManifoldMorse.criticalPoints E f) (hpq : f (Φ (a, 0)) < f (Φ (-a, 0)))
+    {c d : ℝ} (hc : c < f (Φ (a, 0))) (hd : f (Φ (-a, 0)) < d)
+    (hpair :
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
+        f x ∈ Set.Icc c d → x = Φ (a, 0) ∨ x = Φ (-a, 0))
+    (hunique :
+      ∀ x ∉ ManifoldMorse.criticalPoints E f,
+        Filter.Tendsto (fun t : ℝ => F t x) Filter.atBot (𝓝 (Φ (-a, 0))) →
+          Filter.Tendsto (fun t : ℝ => F t x) Filter.atTop (𝓝 (Φ (a, 0))) →
+            ∃ t : ℝ, F t (Φ (0, 0)) = x) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ x,
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φ (a, 0) ∧ x ≠ Φ (-a, 0)) ∧
+              ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
+  obtain ⟨K, V', -, hKsub, hV', -, hkeep, -, G, hGcurve, hcross, -⟩ :=
+    exists_cubic_connection_finite_passage σ hσ ha Φ haxis hf V hV hmodel F hcurve hzero hdesc
+      hinj hp hq hpq hc hd hpair hunique
+  have hcd : c < d := lt_trans hc (lt_trans hpq hd)
+  have hboundary (x : M) (hx : f x = c ∨ f x = d) : mvfderiv 𝓘(ℝ, E) f x (V' x) < 0 := by
+    have hxK : x ∉ K := by
+      intro hxK
+      have hh : f x ∈ Set.Ioo c d := (hKsub hxK).2
+      rcases hx with hx | hx <;> rw [hx] at hh
+      · exact (lt_irrefl c) hh.1
+      · exact (lt_irrefl d) hh.2
+    have hreg : x ∉ ManifoldMorse.criticalPoints E f := by
+      intro hcrit
+      have hxb : f x ∈ Set.Icc c d := by
+        rcases hx with hx | hx <;> rw [hx]
+        · exact ⟨le_rfl, hcd.le⟩
+        · exact ⟨hcd.le, le_rfl⟩
+      rcases hpair x hcrit hxb with he | he
+      · rw [he] at hx
+        rcases hx with hx | hx <;> linarith
+      · rw [he] at hx
+        rcases hx with hx | hx <;> linarith
+    rw [(hkeep x hxK).self_of_nhds]
+    exact hdesc x hreg
+  have hneq : Φ (a, (0 : Fin m → ℝ)) ≠ Φ (-a, 0) := by
+    intro h
+    exact hpq.ne (congrArg f h)
+  exact
+    FlowCancellation.remove_morse_band_pair hf hm hV' G hGcurve hcd
+      (fun x hx => hboundary x (Or.inl hx)) (fun x hx => hboundary x (Or.inr hx)) hcross hneq hp
+      hq ⟨hc.le, (hpq.trans hd).le⟩ ⟨(hc.trans hpq).le, hd.le⟩ hpair
+
+attribute [local instance 100] Classical.propDecidable in
+/-- A unique native transverse connection can be cancelled. -/
+theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Type*}
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
+    (hσ : ∀ i, σ i = -1 ∨ σ i = 1) {a : ℝ} (ha : 0 < a)
+    (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (A : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞) {U : Set Z}
+    (hAsource : A.source = U ×ˢ Set.univ) {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f) {b s : ℝ} (hs : 0 < s)
+    (hheight : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) = b - s * z.2)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hqfield : ∀ y ∈ Φq.target, V y = nativeCubicDescent σ Φq (-(a ^ 2)) y)
+    (hpfield : ∀ y ∈ Φp.target, V y = nativeCubicDescent σ Φp (-(a ^ 2)) y)
+    (hAfield :
+      ∀ y ∈ A.target,
+        V y = FlowConstruction.partialChartField A.symm (fun _ : Z × ℝ => (0, 1)) y)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (Q P :
+      PartialDiffeomorph
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) 𝓘(ℝ, Z)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) Z ∞)
+    (H :
+      PartialDiffeomorph
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) ∞)
+    (h0 : 0 ∈ H.source) (hH0 : H 0 = 0) (hQ0 : Q 0 = 0) (hP0 : P 0 = 0)
+    (hQsource : Q.source = H.source) (hPsource : P.source = H.target) (hQtarget : Q.target = U)
+    (hPtarget : P.target = U) (hdiagram : ∀ u ∈ H.source, P (H u) = Q u)
+    (htrans :
+      NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace σ)
+        𝓘(ℝ, MorseHandle.PositiveSpace σ)
+        𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+        (fun x => H (x, 0)) (fun y => (0, y)) 0 0)
+    (v₀ v₁ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ)
+    (hv₀ : ContDiff ℝ ∞ v₀) (hv₁ : ContDiff ℝ ∞ v₁) (hv₀zero : v₀ 0 = 0) (hv₁zero : v₁ 0 = 0)
+    {Rq Rp Tq Tp : ℝ} (hRq : 0 < Rq) (hRp : 0 < Rp)
+    (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
+    (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
+    (hsliceq :
+      ∀ u ∈ Q.source,
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
+          Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq)
+    (hslicep :
+      ∀ u ∈ P.source,
+        cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
+          Metric.closedBall (a, (0 : Fin m → ℝ)) Rp)
+    (hphaseq :
+      ∀ u ∈ Q.source,
+        Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
+          A (Q u, Tq + v₀ u))
+    (hphasep :
+      ∀ u ∈ P.source,
+        Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
+          A (P u, Tp + v₁ u))
+    (hqbasin :
+      ∀ z ∈ Φq.source,
+        Filter.Tendsto (fun t => F t (Φq z)) Filter.atBot (𝓝 (Φq (-a, 0))) ↔
+          ∀ i, σ i = 1 → z.2 i = 0)
+    (hpbasin :
+      ∀ z ∈ Φp.source,
+        Filter.Tendsto (fun t => F t (Φp z)) Filter.atTop (𝓝 (Φp (a, 0))) ↔
+          ∀ i, σ i = -1 → z.2 i = 0)
+    (hold :
+      ∀ x,
+        Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 (Φq (-a, 0))) →
+          Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 (Φp (a, 0))) → ∃ t, F t (A (0, 0)) = x)
+    (hp : Φp (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φq (-a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hpq : f (Φp (a, 0)) < f (Φq (-a, 0))) {c d : ℝ} (hc : c < f (Φp (a, 0)))
+    (hd : f (Φq (-a, 0)) < d)
+    (hpair :
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
+        f x ∈ Set.Icc c d → x = Φp (a, 0) ∨ x = Φq (-a, 0)) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ x,
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
+              ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
+  have hV1 := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
+  have hQU : Q.target ⊆ U := fun _ hz => hQtarget ▸ hz
+  have hPU : P.target ⊆ U := fun _ hz => hPtarget ▸ hz
+  have hflow (z : Z) (hz : z ∈ U) (t : ℝ) : A (z, t) = F t (A (z, 0)) := by
+    simpa only [zero_add] using
+      (FlowSuspension.native_vertical_cylinder_flow A hAsource hV1 hAfield F hF z hz 0
+          t).symm
+  have hleft :=
+    FlowSuspension.cylinder_outgoing_basin_labels F A Q (fun z hz => hflow z (hQU hz))
+      (fun u => Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)))
+      (fun u => Tq + v₀ u) hphaseq
+      (fun u hu => outgoing_cubic_slice_basin σ hσ a Tq Φq F hqbasin u (hboxq (hsliceq u hu)))
+  have hright :=
+    FlowSuspension.cylinder_incoming_basin_labels F A P (fun z hz => hflow z (hPU hz))
+      (fun u => Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)))
+      (fun u => Tp + v₁ u) hphasep
+      (fun u hu => incoming_cubic_slice_basin σ a Tp Φp F hpbasin u (hboxp (hslicep u hu)))
+  rw [hQtarget, hQsource] at hleft
+  rw [hPtarget, hPsource] at hright
+  have hheightAux : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) / s = b / s - z.2 := by
+    intro z hz ht
+    rw [hheight z hz ht]
+    field_simp
+  obtain
+    ⟨L₁, L₂, N, W, G, Ξ, _, hNsub, hW, hG, hzeroW, hdescW, hgerm, hΞsource, hΞtarget, hΞfield,
+      hΞaxis, hunique, hmatch⟩ :=
+    FlowSuspension.exists_unique_phase_corrected_cylinder A hAsource (hf.div_const s)
+      hheightAux V hV hAfield F hF Q P H h0 hH0 hQ0 hP0 (fun _ hz => hQsource ▸ hz)
+      (fun _ hz => hPsource ▸ hz) hQtarget hPtarget hdiagram htrans (fun z hz => hleft z hz 0)
+      (fun z hz => hright z hz 1) hold hv₀ hv₁ hv₀zero hv₁zero
+  have hdescWf (x : M) (hx : x ∉ ManifoldMorse.criticalPoints E f) :
+    mvfderiv 𝓘(ℝ, E) f x (W x) < 0 :=
+    (FlowTimeChange.descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hs
+          (W x)).mp
+      (hdescW x
+        ((FlowTimeChange.descending_height_div_const_iff (hf.mdifferentiableAt (by simp))
+              hs (V x)).mpr
+          (hdesc x hx)))
+  have hAregular (x : M) (hx : x ∈ A.target) : V x ≠ 0 := by
+    intro hz
+    rw [hAfield x hx] at hz
+    have hh := (partialChartField_zero_iff A (fun _ : Z × ℝ => (0, 1)) hx).mp hz
+    exact one_ne_zero (congrArg Prod.snd hh)
+  have hqN : Φq (-a, 0) ∉ N := fun hx => hAregular _ (hNsub hx) (hzero _ hq)
+  have hpN : Φp (a, 0) ∉ N := fun hx => hAregular _ (hNsub hx) (hzero _ hp)
+  have hQ0source : 0 ∈ Q.source := hQsource ▸ h0
+  have hP0source : 0 ∈ P.source := by
+    rw [hPsource, ← hH0]
+    exact H.map_source' h0
+  have hne : Φq (-a, 0) ≠ Φp (a, 0) := by
+    intro h
+    exact hpq.ne (congrArg f h.symm)
+  obtain ⟨Γ, hΓaxis, hΓfield, hΓq, hΓp, hΓcenter⟩ :=
+    exists_full_cubic_chart_from_corrected_cylinder σ hσ ha Φq Φp A hAsource hV1 hqfield hpfield
+      hAfield F hF L₁ L₂ Q P v₀ v₁ Q.open_source P.open_source hQ0source hP0source
+      (fun u hu => hQU (Q.map_source' hu)) (fun u hu => hPU (P.map_source' hu)) hRq hRp hboxq
+      hboxp hsliceq hslicep hphaseq hphasep Ξ Q.open_source hQ0source hΞsource hΞtarget
+      (hW.of_le (by simp)) hΞfield G hG (hgerm _ hqN) (hgerm _ hpN) hne
+      (hmatch.mono fun _ h => h.1) (hmatch.mono fun _ h => h.2)
+  have hΓ0 : Γ (0, 0) = A (0, 0) := hΓcenter.trans (hΞaxis 0)
+  have hσne : ∀ i, σ i ≠ 0 := by
+    intro i
+    rcases hσ i with hi | hi <;> rw [hi] <;> norm_num
+  have hcancel :=
+    cancel_unique_native_cubic_connection σ hσne ha Γ hΓaxis hf hm W hW hΓfield G hG
+      (fun x hx => (hzeroW x).mpr (hzero x hx)) hdescWf hinj (by rw [hΓp]; exact hp)
+      (by rw [hΓq]; exact hq) (by rw [hΓp, hΓq]; exact hpq) (by rw [hΓp]; exact hc)
+      (by rw [hΓq]; exact hd) (by simpa only [hΓp, hΓq] using hpair)
+      (by
+        intro x _ hbot htop
+        rw [hΓq] at hbot
+        rw [hΓp] at htop
+        rw [hΓ0]
+        exact hunique x hbot htop)
+  simpa only [hΓp, hΓq] using hcancel
+
+/-- Native endpoint slice data can be cancelled. -/
+theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
+    (hσ : ∀ i, σ i = -1 ∨ σ i = 1) {a : ℝ} (ha : 0 < a)
+    (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (A : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞) {Rq Rp Tq Tp : ℝ}
+    (D : NativeEndpointSliceData σ a Φq Φp A Rq Rp Tq Tp)
+    (htrans :
+      NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace σ)
+        𝓘(ℝ, MorseHandle.PositiveSpace σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.Q (x, 0))
+        (fun y => D.P (0, y)) 0 0)
+    {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    {b s : ℝ} (hs : 0 < s)
+    (hheight : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) = b - s * z.2)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hqfield : ∀ y ∈ Φq.target, V y = nativeCubicDescent σ Φq (-(a ^ 2)) y)
+    (hpfield : ∀ y ∈ Φp.target, V y = nativeCubicDescent σ Φp (-(a ^ 2)) y)
+    (hAfield :
+      ∀ y ∈ A.target,
+        V y =
+          FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) (hRq : 0 < Rq) (hRp : 0 < Rp)
+    (hboxq : Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq ⊆ Φq.source)
+    (hboxp : Metric.closedBall (a, (0 : Fin m → ℝ)) Rp ⊆ Φp.source)
+    (hqbasin :
+      ∀ z ∈ Φq.source,
+        Filter.Tendsto (fun t => F t (Φq z)) Filter.atBot (𝓝 (Φq (-a, 0))) ↔
+          ∀ i, σ i = 1 → z.2 i = 0)
+    (hpbasin :
+      ∀ z ∈ Φp.source,
+        Filter.Tendsto (fun t => F t (Φp z)) Filter.atTop (𝓝 (Φp (a, 0))) ↔
+          ∀ i, σ i = -1 → z.2 i = 0)
+    (hold :
+      ∀ x,
+        Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 (Φq (-a, 0))) →
+          Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 (Φp (a, 0))) → ∃ t, F t (A (0, 0)) = x)
+    (hp : Φp (a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hq : Φq (-a, 0) ∈ ManifoldMorse.criticalPoints E f)
+    (hpq : f (Φp (a, 0)) < f (Φq (-a, 0))) {c d : ℝ} (hc : c < f (Φp (a, 0)))
+    (hd : f (Φq (-a, 0)) < d)
+    (hpair :
+      ∀ x ∈ ManifoldMorse.criticalPoints E f,
+        f x ∈ Set.Icc c d → x = Φp (a, 0) ∨ x = Φq (-a, 0)) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ x,
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ Φp (a, 0) ∧ x ≠ Φq (-a, 0)) ∧
+              ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
+  have hrelative :=
+    TransverseGerms.relative_transverse_of_label_sheets D.Q D.P D.H D.zero_source D.H_zero
+      D.Q_zero D.P_zero (fun _ hz => D.Q_source ▸ hz) (fun _ hz => D.P_source ▸ hz) D.diagram
+      htrans
+  exact
+    cancel_unique_native_transverse_connection σ hσ ha Φq Φp A D.source hf hm hs hheight V hV
+      hqfield hpfield hAfield F hF hzero hdesc hinj D.Q D.P D.H D.zero_source D.H_zero D.Q_zero
+      D.P_zero D.Q_source D.P_source D.Q_target D.P_target D.diagram hrelative D.phaseQ D.phaseP
+      D.smooth_phaseQ D.smooth_phaseP D.zero_phaseQ D.zero_phaseP hRq hRp hboxq hboxp D.sliceQ
+      D.sliceP D.formulaQ D.formulaP hqbasin hpbasin hold hp hq hpq hc hd hpair
+
+/-! ### Transversality of the cancellation data -/
+
+/-- The cancellation data's sheets are transverse. -/
+def MorseCancellation.NativeConnectionCancellationData.Transverse {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ}
+    {f : M → ℝ} {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
+    Prop :=
+  NativeTransversality.At 𝓘(ℝ, MorseHandle.NegativeSpace D.σ)
+    𝓘(ℝ, MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.slices.Q (x, 0))
+    (fun y => D.slices.P (0, y)) 0 0
+
+/-- The cancellation of a native connection datum. -/
+theorem MorseCancellation.NativeConnectionCancellationData.cancel {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ} {p q : M}
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) (htrans : D.Transverse)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hd : f q < d)
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ y,
+                y ∈ ManifoldMorse.criticalPoints E g ↔
+                  y ∈ ManifoldMorse.criticalPoints E f ∧ y ≠ p ∧ y ≠ q) ∧
+              ∀ y, f y ∉ Set.Ioo c d → g =ᶠ[𝓝 y] f := by
+  have hh :=
+    MorseCancellation.cancel_native_endpoint_slice_data D.σ D.signs (by norm_num) D.Φq D.Φp D.A D.slices
+      htrans hf hm D.positive_speed D.height_formula D.field D.smooth_field D.fieldQ D.fieldP
+      D.vertical D.flow D.integral D.zero D.descent hinj D.positive_Rq D.positive_Rp D.boxQ D.boxP
+      (by simpa only [D.endpointQ] using D.basinQ) (by simpa only [D.endpointP] using D.basinP)
+      (by simpa only [D.endpointQ, D.endpointP] using D.unique) (by rw [D.endpointP]; exact hp)
+      (by rw [D.endpointQ]; exact hq) (by rw [D.endpointP, D.endpointQ]; exact hpq)
+      (by rw [D.endpointP]; exact hc) (by rw [D.endpointQ]; exact hd)
+      (by simpa only [D.endpointP, D.endpointQ] using hpair)
+  simpa only [D.endpointP, D.endpointQ] using hh
+
+attribute [local instance 100] Classical.propDecidable in
+/-- Native connection cancellation data exists. -/
+theorem MorseCancellation.exists_native_connection_cancellation_data {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q x : M} (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = m + 1)
+    (hindex :
+      Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
+    (V : (y : M) → TangentSpace 𝓘(ℝ, E) y)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hzero : ∀ y ∈ ManifoldMorse.criticalPoints E f, V y = 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V)
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hd : f q < d)
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
+    (hp : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
+    (hq : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q))
+    (hunique :
+      ∀ y,
+        Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 q) →
+          Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 p) → ∃ t, F t x = y)
+    (heqp : ∀ᶠ y in 𝓝 p, V y = cp.descentField y) (heqq : ∀ᶠ y in 𝓝 q, V y = cq.descentField y) :
+    ∃ D : NativeConnectionCancellationData (E := E) f p q m,
+      (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, D.field z = V z) ∧
+        (∀ y,
+            Set.range (fun t => D.flow t y) = Set.range (fun t => F t y) ∧
+              (∀ z,
+                  Filter.Tendsto (fun t => D.flow t y) Filter.atTop (𝓝 z) ↔
+                    Filter.Tendsto (fun t => F t y) Filter.atTop (𝓝 z)) ∧
+                ∀ z,
+                  Filter.Tendsto (fun t => D.flow t y) Filter.atBot (𝓝 z) ↔
+                    Filter.Tendsto (fun t => F t y) Filter.atBot (𝓝 z)) ∧
+          ∃ t, F t x = D.A 0 := by
+  obtain
+    ⟨x₀, r, b, W, G, U, A, hxp, hxq, hr, hW, hG, hzeros, hneg, hgerms, hmono, hp₀, hq₀, hunique₀,
+      _, h0U, hAsource, hAaxis, hheight, hAfield, hgeometry, hreference⟩ :=
+    FlowTimeChange.exists_normalized_connection_cylinder hf hdim V hV hzero hdesc F hF hpq
+      hc hd hpair hp hq hunique
+  have hgp : ∀ᶠ y in 𝓝 p, W y = cp.descentField y := by
+    filter_upwards [hgerms p hpc, heqp] with y h₁ h₂
+    exact h₁.trans h₂
+  have hgq : ∀ᶠ y in 𝓝 q, W y = cq.descentField y := by
+    filter_upwards [hgerms q hqc, heqq] with y h₁ h₂
+    exact h₁.trans h₂
+  obtain
+    ⟨σ, Ψq, Ψp, B, Rq, Rp, Tq, Tp, hσ, hRq, hRp, hqval, hpval, hqbox, hpbox, hqfield, hpfield,
+      hqbasin, hpbasin, hBsub, _, hBmap, hBfield, ⟨D⟩⟩ :=
+    exists_actual_connection_slice_data cp cq hf.continuous hdim hindex hW G hG hmono hxp hxq hp₀
+      hq₀ hgp hgq A hAsource h0U hAfield hAaxis
+  have hB0 : B (0, 0) = x₀ := by rw [hBmap, hAaxis, G.map_zero_apply]
+  refine
+    ⟨{  σ := σ
+        signs := hσ
+        field := W
+        smooth_field := hW
+        flow := G
+        integral := hG
+        zero := hzeros
+        descent := hneg
+        Φq := Ψq
+        Φp := Ψp
+        endpointQ := hqval
+        endpointP := hpval
+        fieldQ := hqfield
+        fieldP := hpfield
+        A := B
+        vertical := hBfield
+        speed := r
+        positive_speed := hr
+        height := b
+        height_formula := ?_
+        Rq := Rq
+        Rp := Rp
+        Tq := Tq
+        Tp := Tp
+        positive_Rq := hRq
+        positive_Rp := hRp
+        boxQ := hqbox
+        boxP := hpbox
+        basinQ := hqbasin
+        basinP := hpbasin
+        unique := ?_
+        slices := D }, hgerms, hgeometry, ?_⟩
+  · intro z hz ht
+    rw [hBmap]
+    exact hheight z (hBsub hz) ⟨ht.1.le, ht.2.le⟩
+  · intro y hyq hyp
+    rw [hB0]
+    exact hunique₀ y hyq hyp
+  · change ∃ t, F t x = B (0, 0)
+    rw [hB0]
+    exact hreference
+
+/-- The first derivative of a time-independent label. -/
+theorem TransverseGerms.derivative_first_of_time_independent_label {A Z : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    {F : ℝ × A → Z × ℝ} {f : A → Z} (hF : DifferentiableAt ℝ F 0) (hf : DifferentiableAt ℝ f 0)
+    (hlabel : (fun u : ℝ × A => (F u).1) =ᶠ[𝓝 0] (fun u : ℝ × A => f u.2)) :
+    ∀ u : ℝ × A, (fderiv ℝ F 0 u).1 = fderiv ℝ f 0 u.2 := by
+  have hsnd : HasFDerivAt (fun u : ℝ × A => u.2) (ContinuousLinearMap.snd ℝ ℝ A) 0 :=
+    (ContinuousLinearMap.snd ℝ ℝ A).hasFDerivAt
+  have hd :
+    HasFDerivAt (fun u : ℝ × A => f u.2) ((fderiv ℝ f 0).comp (ContinuousLinearMap.snd ℝ ℝ A))
+      0 :=
+    hf.hasFDerivAt.comp (f := fun u : ℝ × A => u.2) 0 hsnd
+  have heq : fderiv ℝ (fun u : ℝ × A => (F u).1) 0 = fderiv ℝ (fun u : ℝ × A => f u.2) 0 :=
+    hlabel.fderiv_eq
+  rw [hF.hasFDerivAt.fst.fderiv, hd.fderiv] at heq
+  intro u
+  exact congrArg (fun L : (ℝ × A) →L[ℝ] Z => L u) heq
+
+/-- Transverse labels of time-independent flow sheets. -/
+theorem TransverseGerms.transverse_labels_of_time_independent_flow_sheets {A B Z : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] {F : ℝ × A → Z × ℝ} {G : ℝ × B → Z × ℝ} {f : A → Z}
+    {g : B → Z} (hF : DifferentiableAt ℝ F 0) (hG : DifferentiableAt ℝ G 0)
+    (hf : DifferentiableAt ℝ f 0) (hg : DifferentiableAt ℝ g 0)
+    (hlabelF : (fun u : ℝ × A => (F u).1) =ᶠ[𝓝 0] (fun u : ℝ × A => f u.2))
+    (hlabelG : (fun u : ℝ × B => (G u).1) =ᶠ[𝓝 0] (fun u : ℝ × B => g u.2))
+    (htrans : Function.Surjective ((fderiv ℝ F 0).coprod (fderiv ℝ G 0))) :
+    Function.Surjective ((fderiv ℝ f 0).coprod (fderiv ℝ g 0)) := by
+  have hfirstF := derivative_first_of_time_independent_label hF hf hlabelF
+  have hfirstG := derivative_first_of_time_independent_label hG hg hlabelG
+  intro z
+  obtain ⟨⟨u, v⟩, huv⟩ := htrans (z, 0)
+  refine ⟨(u.2, v.2), ?_⟩
+  change fderiv ℝ f 0 u.2 + fderiv ℝ g 0 v.2 = z
+  rw [← hfirstF u, ← hfirstG v]
+  exact congrArg Prod.fst huv
+
+/-- Transverse labels of native flow sheets. -/
+theorem TransverseGerms.transverse_labels_of_native_flow_sheets {A B Z E M : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M]
+    (C : PartialDiffeomorph 𝓘(ℝ, Z × ℝ) 𝓘(ℝ, E) (Z × ℝ) M ∞) (hC0 : (0 : Z × ℝ) ∈ C.source)
+    (F : ℝ × A → M) (G : ℝ × B → M) (hF : MDifferentiableAt 𝓘(ℝ, ℝ × A) 𝓘(ℝ, E) F 0)
+    (hG : MDifferentiableAt 𝓘(ℝ, ℝ × B) 𝓘(ℝ, E) G 0) (hF0 : F 0 = C 0) (hG0 : G 0 = C 0)
+    {f : A → Z} {g : B → Z} (hf : DifferentiableAt ℝ f 0) (hg : DifferentiableAt ℝ g 0)
+    (hlabelF : (fun u : ℝ × A => (C.symm (F u)).1) =ᶠ[𝓝 0] (fun u : ℝ × A => f u.2))
+    (hlabelG : (fun u : ℝ × B => (C.symm (G u)).1) =ᶠ[𝓝 0] (fun u : ℝ × B => g u.2))
+    (htrans : NativeTransversality.At 𝓘(ℝ, ℝ × A) 𝓘(ℝ, ℝ × B) 𝓘(ℝ, E) F G 0 0) :
+    NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) 𝓘(ℝ, Z) f g 0 0 := by
+  have hFt : F 0 ∈ C.target := hF0.symm ▸ C.map_source' hC0
+  have hGt : G 0 ∈ C.target := hG0.symm ▸ C.map_source' hC0
+  have hFb : MDifferentiableAt 𝓘(ℝ, ℝ × A) 𝓘(ℝ, Z × ℝ) (C.symm ∘ F) 0 :=
+    (C.symm.mdifferentiableAt (by simp) hFt).comp (f := F) 0 hF
+  have hGb : MDifferentiableAt 𝓘(ℝ, ℝ × B) 𝓘(ℝ, Z × ℝ) (C.symm ∘ G) 0 :=
+    (C.symm.mdifferentiableAt (by simp) hGt).comp (f := G) 0 hG
+  have hcross : G 0 = F 0 := hG0.trans hF0.symm
+  have ht :=
+    ChartMapPerturbation.transverse_in_chart C.symm hF hG hcross hFt (htrans hcross)
+  rw [mfderiv_eq_fderiv, mfderiv_eq_fderiv] at ht
+  have hl :=
+    transverse_labels_of_time_independent_flow_sheets hFb.differentiableAt hGb.differentiableAt hf
+      hg hlabelF hlabelG ht
+  intro _
+  rw [mfderiv_eq_fderiv, mfderiv_eq_fderiv]
+  exact hl
+
+/-! ### Basin sheets and factorizations -/
+
+/-- The outgoing basin sheet of the cancellation data. -/
+def MorseCancellation.NativeConnectionCancellationData.outgoingSheet {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
+    (w : ℝ × MorseHandle.NegativeSpace D.σ) : M :=
+  D.flow (w.1 - D.Tq)
+    (D.Φq
+      (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+        ((MorseHandle.splitCoordinates D.σ).symm (w.2, 0), D.Tq)))
+
+/-- The incoming basin sheet of the cancellation data. -/
+def MorseCancellation.NativeConnectionCancellationData.incomingSheet {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
+    (w : ℝ × MorseHandle.PositiveSpace D.σ) : M :=
+  D.flow (w.1 - D.Tp)
+    (D.Φp
+      (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+        ((MorseHandle.splitCoordinates D.σ).symm (0, w.2), D.Tp)))
+
+/-- The outgoing sheet's properties. -/
+theorem MorseCancellation.NativeConnectionCancellationData.outgoingSheet_properties {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
+    ContMDiffAt 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ) 𝓘(ℝ, E) ∞ D.outgoingSheet 0 ∧
+      D.outgoingSheet 0 = D.A 0 ∧
+        (fun w : ℝ × MorseHandle.NegativeSpace D.σ =>
+            (D.A.symm (D.outgoingSheet w)).1) =ᶠ[𝓝 0]
+          (fun w : ℝ × MorseHandle.NegativeSpace D.σ => D.slices.Q (w.2, 0)) := by
+  have hflow :=
+    FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
+      (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
+  have hQU : D.slices.Q.target ⊆ D.slices.labelDomain := fun _ hz => D.slices.Q_target ▸ hz
+  have hQ0 : 0 ∈ D.slices.Q.source := D.slices.Q_source ▸ D.slices.zero_source
+  have hh :=
+    FlowSuspension.phase_flow_subsheet_properties D.A D.slices.source D.flow hflow
+      D.slices.Q hQU hQ0 D.slices.Q_zero
+      (fun u =>
+        D.Φq
+          (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+            ((MorseHandle.splitCoordinates D.σ).symm u, D.Tq)))
+      D.slices.phaseQ D.Tq D.slices.smooth_phaseQ D.slices.zero_phaseQ D.slices.formulaQ
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
+  unfold outgoingSheet
+  simpa only [ContinuousLinearMap.inl_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
+
+/-- The incoming sheet's properties. -/
+theorem MorseCancellation.NativeConnectionCancellationData.incomingSheet_properties {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
+    ContMDiffAt 𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) ∞ D.incomingSheet 0 ∧
+      D.incomingSheet 0 = D.A 0 ∧
+        (fun w : ℝ × MorseHandle.PositiveSpace D.σ =>
+            (D.A.symm (D.incomingSheet w)).1) =ᶠ[𝓝 0]
+          (fun w : ℝ × MorseHandle.PositiveSpace D.σ => D.slices.P (0, w.2)) := by
+  have hflow :=
+    FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
+      (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
+  have hPU : D.slices.P.target ⊆ D.slices.labelDomain := fun _ hz => D.slices.P_target ▸ hz
+  have hP0 : 0 ∈ D.slices.P.source := by
+    rw [D.slices.P_source, ← D.slices.H_zero]
+    exact D.slices.H.map_source' D.slices.zero_source
+  have hh :=
+    FlowSuspension.phase_flow_subsheet_properties D.A D.slices.source D.flow hflow
+      D.slices.P hPU hP0 D.slices.P_zero
+      (fun u =>
+        D.Φp
+          (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+            ((MorseHandle.splitCoordinates D.σ).symm u, D.Tp)))
+      D.slices.phaseP D.Tp D.slices.smooth_phaseP D.slices.zero_phaseP D.slices.formulaP
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
+  unfold incomingSheet
+  simpa only [ContinuousLinearMap.inr_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
+
+/-- The native sheets are transverse. -/
+theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_sheets {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m)
+    (htrans :
+      NativeTransversality.At 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ)
+        𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, E) D.outgoingSheet D.incomingSheet 0
+        0) :
+    D.Transverse := by
+  obtain ⟨hout, hout0, houtlabel⟩ := D.outgoingSheet_properties
+  obtain ⟨hin, hin0, hinlabel⟩ := D.incomingSheet_properties
+  have hQ0 : 0 ∈ D.slices.Q.source := D.slices.Q_source ▸ D.slices.zero_source
+  have hP0 : 0 ∈ D.slices.P.source := by
+    rw [D.slices.P_source, ← D.slices.H_zero]
+    exact D.slices.H.map_source' D.slices.zero_source
+  have hQdiff :=
+    (D.slices.Q.contMDiffOn_toFun.contDiffOn.contDiffAt
+          (D.slices.Q.open_source.mem_nhds hQ0)).differentiableAt
+      (by simp)
+  have hPdiff :=
+    (D.slices.P.contMDiffOn_toFun.contDiffOn.contDiffAt
+          (D.slices.P.open_source.mem_nhds hP0)).differentiableAt
+      (by simp)
+  have hq :
+    DifferentiableAt ℝ (fun x : MorseHandle.NegativeSpace D.σ => D.slices.Q (x, 0)) 0 :=
+    hQdiff.comp (f := fun x : MorseHandle.NegativeSpace D.σ => (x, 0)) 0
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+          (MorseHandle.PositiveSpace D.σ)).differentiableAt
+  have hp :
+    DifferentiableAt ℝ (fun y : MorseHandle.PositiveSpace D.σ => D.slices.P (0, y)) 0 :=
+    hPdiff.comp (f := fun y : MorseHandle.PositiveSpace D.σ => (0, y)) 0
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+          (MorseHandle.PositiveSpace D.σ)).differentiableAt
+  have hA0 : (0 : (Fin m → ℝ) × ℝ) ∈ D.A.source := by
+    rw [D.slices.source]
+    exact ⟨D.slices.zero_domain, Set.mem_univ _⟩
+  exact
+    TransverseGerms.transverse_labels_of_native_flow_sheets D.A hA0 D.outgoingSheet
+      D.incomingSheet (hout.mdifferentiableAt (by simp)) (hin.mdifferentiableAt (by simp)) hout0
+      hin0 hq hp houtlabel hinlabel htrans
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing basin chart of the cancellation data. -/
+theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
+    ∃ P :
+      PartialDiffeomorph
+        𝓘(ℝ, (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, E) ((MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        M ∞,
+      (0 : (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ) ∈
+          P.source ∧
+        P 0 = D.A 0 ∧
+          D.outgoingSheet =ᶠ[𝓝 0]
+              (fun w : ℝ × MorseHandle.NegativeSpace D.σ => P ((w.2, 0), w.1)) ∧
+            ∀ w ∈ P.source,
+              Filter.Tendsto (fun t => D.flow t (P w)) Filter.atBot (𝓝 q) ↔ w.1.2 = 0 := by
+  have hflow :=
+    FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
+      (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
+  have hQU : D.slices.Q.target ⊆ D.slices.labelDomain := fun _ hz => D.slices.Q_target ▸ hz
+  have hQ0 : 0 ∈ D.slices.Q.source := D.slices.Q_source ▸ D.slices.zero_source
+  let S := fun u =>
+    D.Φq
+      (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+        ((MorseHandle.splitCoordinates D.σ).symm u, D.Tq))
+  have hbasin (u) (hu : u ∈ D.slices.Q.source) :
+    Filter.Tendsto (fun t => D.flow t (S u)) Filter.atBot (𝓝 q) ↔ u.2 = 0 :=
+    MorseCancellation.outgoing_cubic_slice_basin D.σ D.signs (1 / 2) D.Tq D.Φq D.flow D.basinQ u
+      (D.boxQ (D.slices.sliceQ u hu))
+  obtain ⟨P, -, h0P, hP0, hformula, hplane⟩ :=
+    FlowSuspension.exists_phase_flow_basin_chart D.A D.slices.source D.flow hflow
+      D.slices.Q hQU hQ0 D.slices.Q_zero S D.slices.phaseQ D.Tq D.slices.smooth_phaseQ
+      D.slices.zero_phaseQ D.slices.formulaQ
+      (fun y => Filter.Tendsto (fun t => D.flow t y) Filter.atBot (𝓝 q))
+      (fun t y => MorseCancellation.flow_time_atBot_limit_iff D.flow t y q) (fun u => u.2 = 0) hbasin
+  have heq :=
+    FlowSuspension.phase_flow_chart_subsheet_germ P D.slices.Q.open_source hQ0 D.flow S
+      D.Tq hformula
+      (ContinuousLinearMap.inl ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
+  refine ⟨P, h0P, hP0, ?_, hplane⟩
+  unfold outgoingSheet
+  simpa only [ContinuousLinearMap.inl_apply] using heq
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The incoming basin chart of the cancellation data. -/
+theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
+    ∃ P :
+      PartialDiffeomorph
+        𝓘(ℝ, (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        𝓘(ℝ, E) ((MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ)
+        M ∞,
+      (0 : (MorseHandle.NegativeSpace D.σ × MorseHandle.PositiveSpace D.σ) × ℝ) ∈
+          P.source ∧
+        P 0 = D.A 0 ∧
+          D.incomingSheet =ᶠ[𝓝 0]
+              (fun w : ℝ × MorseHandle.PositiveSpace D.σ => P ((0, w.2), w.1)) ∧
+            ∀ w ∈ P.source,
+              Filter.Tendsto (fun t => D.flow t (P w)) Filter.atTop (𝓝 p) ↔ w.1.1 = 0 := by
+  have hflow :=
+    FlowSuspension.native_vertical_cylinder_flow D.A D.slices.source
+      (D.smooth_field.of_le (by simp)) D.vertical D.flow D.integral
+  have hPU : D.slices.P.target ⊆ D.slices.labelDomain := fun _ hz => D.slices.P_target ▸ hz
+  have hP0 : 0 ∈ D.slices.P.source := by
+    rw [D.slices.P_source, ← D.slices.H_zero]
+    exact D.slices.H.map_source' D.slices.zero_source
+  let S := fun u =>
+    D.Φp
+      (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
+        ((MorseHandle.splitCoordinates D.σ).symm u, D.Tp))
+  have hbasin (u) (hu : u ∈ D.slices.P.source) :
+    Filter.Tendsto (fun t => D.flow t (S u)) Filter.atTop (𝓝 p) ↔ u.1 = 0 :=
+    MorseCancellation.incoming_cubic_slice_basin D.σ (1 / 2) D.Tp D.Φp D.flow D.basinP u
+      (D.boxP (D.slices.sliceP u hu))
+  obtain ⟨P, -, h0P, hPzero, hformula, hplane⟩ :=
+    FlowSuspension.exists_phase_flow_basin_chart D.A D.slices.source D.flow hflow
+      D.slices.P hPU hP0 D.slices.P_zero S D.slices.phaseP D.Tp D.slices.smooth_phaseP
+      D.slices.zero_phaseP D.slices.formulaP
+      (fun y => Filter.Tendsto (fun t => D.flow t y) Filter.atTop (𝓝 p))
+      (fun t y => MorseCancellation.flow_time_atTop_limit_iff D.flow t y p) (fun u => u.1 = 0) hbasin
+  have heq :=
+    FlowSuspension.phase_flow_chart_subsheet_germ P D.slices.P.open_source hP0 D.flow S
+      D.Tp hformula
+      (ContinuousLinearMap.inr ℝ (MorseHandle.NegativeSpace D.σ)
+        (MorseHandle.PositiveSpace D.σ))
+  refine ⟨P, h0P, hPzero, ?_, hplane⟩
+  unfold incomingSheet
+  simpa only [ContinuousLinearMap.inr_apply] using heq
+
+/-- Native transversality from sheet factorizations. -/
+theorem TransverseGerms.native_transversality_of_sheet_factorizations
+    {A B U V E HU HV HE X Y M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
+    [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup U] [NormedSpace ℝ U]
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace HU] [TopologicalSpace HV] [TopologicalSpace HE]
+    {I : ModelWithCorners ℝ U HU} {I' : ModelWithCorners ℝ V HV} {J : ModelWithCorners ℝ E HE}
+    [TopologicalSpace X] [ChartedSpace HU X] [TopologicalSpace Y] [ChartedSpace HV Y]
+    [TopologicalSpace M] [ChartedSpace HE M] {F : X → M} {G : Y → M} {f : A → M} {g : B → M}
+    {u : X → A} {v : Y → B} {x : X} {y : Y} (hf : MDifferentiableAt 𝓘(ℝ, A) J f 0)
+    (hg : MDifferentiableAt 𝓘(ℝ, B) J g 0) (hu : MDifferentiableAt I 𝓘(ℝ, A) u x)
+    (hv : MDifferentiableAt I' 𝓘(ℝ, B) v y) (hu0 : u x = 0) (hv0 : v y = 0)
+    (hF : F =ᶠ[𝓝 x] (f ∘ u)) (hG : G =ᶠ[𝓝 y] (g ∘ v)) (hcross : G y = F x)
+    (htrans : NativeTransversality.At I I' J F G x y) :
+    NativeTransversality.At 𝓘(ℝ, A) 𝓘(ℝ, B) J f g 0 0 := by
+  have hfx : MDifferentiableAt 𝓘(ℝ, A) J f (u x) := hu0 ▸ hf
+  have hgy : MDifferentiableAt 𝓘(ℝ, B) J g (v y) := hv0 ▸ hg
+  have hFd :
+    (mfderiv I J F x : U →L[ℝ] E) =
+      (mfderiv 𝓘(ℝ, A) J f 0 : A →L[ℝ] E).comp (mfderiv I 𝓘(ℝ, A) u x) := by
+    have heq : (mfderiv I J F x : U →L[ℝ] E) = mfderiv I J (f ∘ u) x := hF.mfderiv_eq
+    rw [heq, mfderiv_comp x hfx hu, hu0]
+  have hGd :
+    (mfderiv I' J G y : V →L[ℝ] E) =
+      (mfderiv 𝓘(ℝ, B) J g 0 : B →L[ℝ] E).comp (mfderiv I' 𝓘(ℝ, B) v y) := by
+    have heq : (mfderiv I' J G y : V →L[ℝ] E) = mfderiv I' J (g ∘ v) y := hG.mfderiv_eq
+    rw [heq, mfderiv_comp y hgy hv, hv0]
+  intro _ z
+  obtain ⟨⟨a, b⟩, hab⟩ := htrans hcross z
+  refine ⟨(mfderiv I 𝓘(ℝ, A) u x a, mfderiv I' 𝓘(ℝ, B) v y b), ?_⟩
+  rw [hFd, hGd] at hab
+  exact hab
+
+/-- A native plane factorization exists. -/
+theorem TransverseGerms.exists_native_plane_factorization {A Z U E HU HE X M : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace HU] [TopologicalSpace HE] {I : ModelWithCorners ℝ U HU}
+    {J : ModelWithCorners ℝ E HE} [TopologicalSpace X] [ChartedSpace HU X] [TopologicalSpace M]
+    [ChartedSpace HE M] (P : PartialDiffeomorph 𝓘(ℝ, Z) J Z M ∞) (hP0 : (0 : Z) ∈ P.source)
+    (L : A →L[ℝ] Z) (R : Z →L[ℝ] A) (hRL : ∀ a, R (L a) = a) {F : X → M} {x : X}
+    (hF : MDifferentiableAt I J F x) (hx : F x = P 0)
+    (hplane : ∀ᶠ y in 𝓝 x, ∃ a, P.symm (F y) = L a) :
+    ∃ u : X → A, MDifferentiableAt I 𝓘(ℝ, A) u x ∧ u x = 0 ∧ F =ᶠ[𝓝 x] (fun y => P (L (u y))) := by
+  let u : X → A := fun y => R (P.symm (F y))
+  have hxt : F x ∈ P.target := hx.symm ▸ P.map_source' hP0
+  have hi := (P.symm.mdifferentiableAt (by simp) hxt).comp x hF
+  have hu : MDifferentiableAt I 𝓘(ℝ, A) u x := R.differentiableAt.mdifferentiableAt.comp x hi
+  have hu0 : u x = 0 := by
+    change R (P.symm (F x)) = 0
+    have hi0 : P.symm (P 0) = 0 := P.left_inv' hP0
+    rw [hx, hi0, map_zero]
+  refine ⟨u, hu, hu0, ?_⟩
+  filter_upwards [hF.continuousAt (P.open_target.mem_nhds hxt), hplane] with y hy hplaneY
+  obtain ⟨a, ha⟩ := hplaneY
+  change F y = P (L (R (P.symm (F y))))
+  rw [ha, hRL]
+  exact (P.right_inv' hy).symm.trans (congrArg P ha)
+
+/-- A native plane sheet factorization exists. -/
+theorem TransverseGerms.exists_native_plane_sheet_factorization {A Z U E HU HE X M : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace HU] [TopologicalSpace HE] {I : ModelWithCorners ℝ U HU}
+    {J : ModelWithCorners ℝ E HE} [TopologicalSpace X] [ChartedSpace HU X] [TopologicalSpace M]
+    [ChartedSpace HE M] (P : PartialDiffeomorph 𝓘(ℝ, Z) J Z M ∞) (hP0 : (0 : Z) ∈ P.source)
+    (L : A →L[ℝ] Z) (R : Z →L[ℝ] A) (hRL : ∀ a, R (L a) = a) {F : X → M} {x : X}
+    (hF : MDifferentiableAt I J F x) (hx : F x = P 0)
+    (hplane : ∀ᶠ y in 𝓝 x, ∃ a, P.symm (F y) = L a) {f : A → M}
+    (hmodel : f =ᶠ[𝓝 0] (fun a => P (L a))) :
+    ∃ u : X → A, MDifferentiableAt I 𝓘(ℝ, A) u x ∧ u x = 0 ∧ F =ᶠ[𝓝 x] (f ∘ u) := by
+  obtain ⟨u, hu, hu0, hfactor⟩ := exists_native_plane_factorization P hP0 L R hRL hF hx hplane
+  have hut : Filter.Tendsto u (𝓝 x) (𝓝 (0 : A)) := hu0 ▸ hu.continuousAt
+  have hcomp := hmodel.comp_tendsto hut
+  exact ⟨u, hu, hu0, hfactor.trans hcomp.symm⟩
+
+/-- A native basin sheet factorization exists. -/
+theorem TransverseGerms.exists_native_basin_sheet_factorization {A Z U E HU HE X M : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace HU] [TopologicalSpace HE] {I : ModelWithCorners ℝ U HU}
+    {J : ModelWithCorners ℝ E HE} [TopologicalSpace X] [ChartedSpace HU X] [TopologicalSpace M]
+    [ChartedSpace HE M] (P : PartialDiffeomorph 𝓘(ℝ, Z) J Z M ∞) (hP0 : (0 : Z) ∈ P.source)
+    (L : A →L[ℝ] Z) (R : Z →L[ℝ] A) (hRL : ∀ a, R (L a) = a) {F : X → M} {x : X}
+    (hF : MDifferentiableAt I J F x) (hx : F x = P 0) (Basin : M → Prop)
+    (hbasin : ∀ z ∈ P.source, Basin (P z) → ∃ a, z = L a) (hFbasin : ∀ᶠ y in 𝓝 x, Basin (F y))
+    {f : A → M} (hmodel : f =ᶠ[𝓝 0] (fun a => P (L a))) :
+    ∃ u : X → A, MDifferentiableAt I 𝓘(ℝ, A) u x ∧ u x = 0 ∧ F =ᶠ[𝓝 x] (f ∘ u) := by
+  have hxt : F x ∈ P.target := hx.symm ▸ P.map_source' hP0
+  have hplane : ∀ᶠ y in 𝓝 x, ∃ a, P.symm (F y) = L a := by
+    filter_upwards [hF.continuousAt (P.open_target.mem_nhds hxt), hFbasin] with y hy hby
+    have hb : Basin (P (P.symm (F y))) := (P.right_inv' hy).symm ▸ hby
+    exact hbasin (P.symm (F y)) (P.map_target' hy) hb
+  exact exists_native_plane_sheet_factorization P hP0 L R hRL hF hx hplane hmodel
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing basin factorization. -/
+theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_factorization {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} {U H X : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [TopologicalSpace H]
+    {I : ModelWithCorners ℝ U H} [TopologicalSpace X] [ChartedSpace H X]
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {x : X}
+    (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hx : F x = D.A 0)
+    (hbasin : ∀ᶠ y in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F y)) Filter.atBot (𝓝 q)) :
+    ∃ u : X → ℝ × MorseHandle.NegativeSpace D.σ,
+      MDifferentiableAt I 𝓘(ℝ, ℝ × MorseHandle.NegativeSpace D.σ) u x ∧
+        u x = 0 ∧ F =ᶠ[𝓝 x] (D.outgoingSheet ∘ u) := by
+  obtain ⟨P, hP0, hzero, hmodel, hplane⟩ := D.outgoing_basin_chart
+  let A := MorseHandle.NegativeSpace D.σ
+  let B := MorseHandle.PositiveSpace D.σ
+  let L : (ℝ × A) →L[ℝ] ((A × B) × ℝ) :=
+    ((ContinuousLinearMap.inl ℝ A B).comp (ContinuousLinearMap.snd ℝ ℝ A)).prod
+      (ContinuousLinearMap.fst ℝ ℝ A)
+  let R : ((A × B) × ℝ) →L[ℝ] (ℝ × A) :=
+    (ContinuousLinearMap.snd ℝ (A × B) ℝ).prod
+      ((ContinuousLinearMap.fst ℝ A B).comp (ContinuousLinearMap.fst ℝ (A × B) ℝ))
+  have hRL (a : ℝ × A) : R (L a) = a := rfl
+  have hp (w) (hw : w ∈ P.source)
+    (hb : Filter.Tendsto (fun t => D.flow t (P w)) Filter.atBot (𝓝 q)) : ∃ a, w = L a := by
+    have hz := (hplane w hw).mp hb
+    refine ⟨(w.2, w.1.1), ?_⟩
+    exact Prod.ext (Prod.ext rfl hz) rfl
+  exact
+    TransverseGerms.exists_native_basin_sheet_factorization P hP0 L R hRL hF
+      (hx.trans hzero.symm) (fun y => Filter.Tendsto (fun t => D.flow t y) Filter.atBot (𝓝 q)) hp
+      hbasin hmodel
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The incoming basin factorization. -/
+theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_factorization {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
+    {p q : M} {U H X : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [TopologicalSpace H]
+    {I : ModelWithCorners ℝ U H} [TopologicalSpace X] [ChartedSpace H X]
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {x : X}
+    (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hx : F x = D.A 0)
+    (hbasin : ∀ᶠ y in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F y)) Filter.atTop (𝓝 p)) :
+    ∃ u : X → ℝ × MorseHandle.PositiveSpace D.σ,
+      MDifferentiableAt I 𝓘(ℝ, ℝ × MorseHandle.PositiveSpace D.σ) u x ∧
+        u x = 0 ∧ F =ᶠ[𝓝 x] (D.incomingSheet ∘ u) := by
+  obtain ⟨P, hP0, hzero, hmodel, hplane⟩ := D.incoming_basin_chart
+  let A := MorseHandle.NegativeSpace D.σ
+  let B := MorseHandle.PositiveSpace D.σ
+  let L : (ℝ × B) →L[ℝ] ((A × B) × ℝ) :=
+    ((ContinuousLinearMap.inr ℝ A B).comp (ContinuousLinearMap.snd ℝ ℝ B)).prod
+      (ContinuousLinearMap.fst ℝ ℝ B)
+  let R : ((A × B) × ℝ) →L[ℝ] (ℝ × B) :=
+    (ContinuousLinearMap.snd ℝ (A × B) ℝ).prod
+      ((ContinuousLinearMap.snd ℝ A B).comp (ContinuousLinearMap.fst ℝ (A × B) ℝ))
+  have hRL (a : ℝ × B) : R (L a) = a := rfl
+  have hp (w) (hw : w ∈ P.source)
+    (hb : Filter.Tendsto (fun t => D.flow t (P w)) Filter.atTop (𝓝 p)) : ∃ a, w = L a := by
+    have hz := (hplane w hw).mp hb
+    refine ⟨(w.2, w.1.2), ?_⟩
+    exact Prod.ext (Prod.ext hz rfl) rfl
+  exact
+    TransverseGerms.exists_native_basin_sheet_factorization P hP0 L R hRL hF
+      (hx.trans hzero.symm) (fun y => Filter.Tendsto (fun t => D.flow t y) Filter.atTop (𝓝 p)) hp
+      hbasin hmodel
+
+/-- The native basin sheets are transverse. -/
+theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_basin_sheets
+    {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {m : ℕ} {f : M → ℝ} {p q : M} {U V H H' X Y : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U]
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ U H} {I' : ModelWithCorners ℝ V H'} [TopologicalSpace X]
+    [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {G : Y → M}
+    {x : X} {y : Y} (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hG : MDifferentiableAt I' 𝓘(ℝ, E) G y)
+    (hx : F x = D.A 0) (hy : G y = D.A 0)
+    (hFbasin : ∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F z)) Filter.atBot (𝓝 q))
+    (hGbasin : ∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => D.flow t (G z)) Filter.atTop (𝓝 p))
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) F G x y) : D.Transverse := by
+  obtain ⟨u, hu, hu0, hFu⟩ := D.outgoing_basin_factorization hF hx hFbasin
+  obtain ⟨v, hv, hv0, hGv⟩ := D.incoming_basin_factorization hG hy hGbasin
+  apply D.transverse_of_native_sheets
+  exact
+    TransverseGerms.native_transversality_of_sheet_factorizations
+      (D.outgoingSheet_properties.1.mdifferentiableAt (by simp))
+      (D.incomingSheet_properties.1.mdifferentiableAt (by simp)) hu hv hu0 hv0 hFu hGv
+      (hy.trans hx.symm) htrans
+
+/-- Transverse basin sheets give a cancellation. -/
+theorem MorseCancellation.NativeConnectionCancellationData.cancel_of_transverse_basin_sheets
+    {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    {m : ℕ} {f : M → ℝ} {p q : M} {U V H H' X Y : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U]
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ U H} {I' : ModelWithCorners ℝ V H'} [TopologicalSpace X]
+    [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
+    (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) {F : X → M} {G : Y → M}
+    {x : X} {y : Y} (hF : MDifferentiableAt I 𝓘(ℝ, E) F x) (hG : MDifferentiableAt I' 𝓘(ℝ, E) G y)
+    (hx : F x = D.A 0) (hy : G y = D.A 0)
+    (hFbasin : ∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => D.flow t (F z)) Filter.atBot (𝓝 q))
+    (hGbasin : ∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => D.flow t (G z)) Filter.atTop (𝓝 p))
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) F G x y)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hd : f q < d)
+    (hpair : ∀ z ∈ ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc c d → z = p ∨ z = q) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ z,
+                z ∈ ManifoldMorse.criticalPoints E g ↔
+                  z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q) ∧
+              ∀ z, f z ∉ Set.Ioo c d → g =ᶠ[𝓝 z] f :=
+  D.cancel (D.transverse_of_native_basin_sheets hF hG hx hy hFbasin hGbasin htrans) hf hm hinj hp
+    hq hpq hc hd hpair
+
+attribute [local instance 100] Classical.propDecidable in
+/-- A unique connection with transverse basin sheets cancels. -/
+theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
+    {A B HA HB X Y : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B]
+    [NormedSpace ℝ B] [TopologicalSpace HA] [TopologicalSpace HB] {I : ModelWithCorners ℝ A HA}
+    {I' : ModelWithCorners ℝ B HB} [TopologicalSpace X] [ChartedSpace HA X] [TopologicalSpace Y]
+    [ChartedSpace HB Y] {f : M → ℝ} {p q z : M}
+    (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
+    (hindex :
+      Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
+    (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hzero : ∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) (hpq : f p < f q) {c d : ℝ} (hc : c < f p)
+    (hd : f q < d)
+    (hpair : ∀ x ∈ ManifoldMorse.criticalPoints E f, f x ∈ Set.Icc c d → x = p ∨ x = q)
+    (hp : Filter.Tendsto (fun t => F t z) Filter.atTop (𝓝 p))
+    (hq : Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q))
+    (hunique :
+      ∀ x,
+        Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q) →
+          Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p) → ∃ t, F t z = x)
+    (heqp : ∀ᶠ x in 𝓝 p, V x = cp.descentField x) (heqq : ∀ᶠ x in 𝓝 q, V x = cq.descentField x)
+    {S : X → M} {T : Y → M} {x : X} {y : Y} (hS : MDifferentiableAt I 𝓘(ℝ, E) S x)
+    (hT : MDifferentiableAt I' 𝓘(ℝ, E) T y) (hS0 : S x = z) (hT0 : T y = z)
+    (hSbasin : ∀ᶠ u in 𝓝 x, Filter.Tendsto (fun t => F t (S u)) Filter.atBot (𝓝 q))
+    (hTbasin : ∀ᶠ u in 𝓝 y, Filter.Tendsto (fun t => F t (T u)) Filter.atTop (𝓝 p))
+    (htrans : NativeTransversality.At I I' 𝓘(ℝ, E) S T x y) :
+    ∃ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        ManifoldMorse.IsMorse E g ∧
+          (ManifoldMorse.criticalPoints E g).ncard + 2 =
+              (ManifoldMorse.criticalPoints E f).ncard ∧
+            (∀ x,
+                x ∈ ManifoldMorse.criticalPoints E g ↔
+                  x ∈ ManifoldMorse.criticalPoints E f ∧ x ≠ p ∧ x ≠ q) ∧
+              ∀ x, f x ∉ Set.Ioo c d → g =ᶠ[𝓝 x] f := by
+  obtain ⟨D, -, hgeometry, t₀, ht₀⟩ :=
+    exists_native_connection_cancellation_data cp cq hf hdim hindex V hV hzero hdesc F hF hpc hqc
+      hpq hc hd hpair hp hq hunique heqp heqq
+  let τ := SmoothODE.nativeFlowTimeDiffeomorph_of_field hV F hF t₀
+  have hτ (u : M) : τ u = F t₀ u := rfl
+  have hS' : MDifferentiableAt I 𝓘(ℝ, E) (τ ∘ S) x :=
+    (τ.contMDiff.mdifferentiableAt (by simp)).comp x hS
+  have hT' : MDifferentiableAt I' 𝓘(ℝ, E) (τ ∘ T) y :=
+    (τ.contMDiff.mdifferentiableAt (by simp)).comp y hT
+  have hS0' : (τ ∘ S) x = D.A 0 := by rw [Function.comp_apply, hτ, hS0, ht₀]
+  have hT0' : (τ ∘ T) y = D.A 0 := by rw [Function.comp_apply, hτ, hT0, ht₀]
+  have hSb : ∀ᶠ u in 𝓝 x, Filter.Tendsto (fun t => D.flow t ((τ ∘ S) u)) Filter.atBot (𝓝 q) := by
+    filter_upwards [hSbasin] with u hu
+    apply ((hgeometry ((τ ∘ S) u)).2.2 q).mpr
+    exact (flow_time_atBot_limit_iff F t₀ (S u) q).mpr hu
+  have hTb : ∀ᶠ u in 𝓝 y, Filter.Tendsto (fun t => D.flow t ((τ ∘ T) u)) Filter.atTop (𝓝 p) := by
+    filter_upwards [hTbasin] with u hu
+    apply ((hgeometry ((τ ∘ T) u)).2.1 p).mpr
+    exact (flow_time_atTop_limit_iff F t₀ (T u) p).mpr hu
+  have ht : NativeTransversality.At I I' 𝓘(ℝ, E) (τ ∘ S) (τ ∘ T) x y :=
+    (TransverseGerms.native_transversality_partial_diffeomorph_iff τ.toPartialDiffeomorph
+          hS hT (hT0.trans hS0.symm) (Set.mem_univ _)).mp
+      htrans
+  exact
+    D.cancel_of_transverse_basin_sheets hS' hT' hS0' hT0' hSb hTb ht hf hm hinj hpc hqc hpq hc hd
+      hpair
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The cancellation theorem: a unique transverse connection can be cancelled by a level isotopy. -/
+theorem MorseCancellation.cancel_of_transverse_level_isotopy {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {A B HA HB X Y : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [TopologicalSpace HA] [TopologicalSpace HB] {I : ModelWithCorners ℝ A HA}
+    {I' : ModelWithCorners ℝ B HB} [TopologicalSpace X] [ChartedSpace HA X] [TopologicalSpace Y]
+    [ChartedSpace HB Y] {f : M → ℝ} {p q : M}
+    (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
+    (cq : ManifoldMorse.SignedMorseChart (E := E) f q) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = m + 1)
+    (hindex :
+      Fintype.card { i // cq.weights i = -1 } = Fintype.card { i // cp.weights i = -1 } + 1)
+    (V : (z : M) → TangentSpace 𝓘(ℝ, E) z)
+    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun z => (⟨z, V z⟩ : TangentBundle 𝓘(ℝ, E) M)))
+    (hzero : ∀ z ∈ ManifoldMorse.criticalPoints E f, V z = 0)
+    (hdesc : ∀ z, z ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f z (V z) < 0)
+    (F : Flow ℝ M) (hF : ∀ z, IsMIntegralCurve (fun t => F t z) V)
+    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
+    (hpc : p ∈ ManifoldMorse.criticalPoints E f)
+    (hqc : q ∈ ManifoldMorse.criticalPoints E f) {l u a b c : ℝ} (hl : l < f p)
+    (hu : f q < u)
+    (hpair : ∀ z ∈ ManifoldMorse.criticalPoints E f, f z ∈ Set.Icc l u → z = p ∨ z = q)
+    (ha : a < c) (hb : c < b) (hpc' : f p < c) (hqc' : c < f q)
+    (hband : ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ z, f z = c → z ∉ ManifoldMorse.criticalPoints E f)
+    (heqp : ∀ᶠ z in 𝓝 p, V z = cp.descentField z) (heqq : ∀ᶠ z in 𝓝 q, V z = cq.descentField z) :
+    letI := RegularLevel.chartedSpace hf hreg
+    ∀ D :
+      Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
+        { z : M // f z = c } { z : M // f z = c } ∞,
+      SupportedDiffeomorph.IsotopicToIdentity D →
+        {z : { w : M // f w = c } |
+                Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q) ∧
+                  Filter.Tendsto (fun t => F t (D z)) Filter.atTop (𝓝 p)}.ncard =
+            1 →
+          ∀ (α : X → { z : M // f z = c }) (β : Y → { z : M // f z = c }) (x : X) (y : Y),
+            MDifferentiableAt I 𝓘(ℝ, RegularLevel.Model E) α x →
+              MDifferentiableAt I' 𝓘(ℝ, RegularLevel.Model E) β y →
+                β y = α x →
+                  NativeTransversality.At I I' 𝓘(ℝ, RegularLevel.Model E) α β x y →
+                    (∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => F t (α z)) Filter.atBot (𝓝 q)) →
+                      (∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => F t (D (β z))) Filter.atTop (𝓝 p)) →
+                        ∃ g : M → ℝ,
+                          ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+                            ManifoldMorse.IsMorse E g ∧
+                              (ManifoldMorse.criticalPoints E g).ncard + 2 =
+                                  (ManifoldMorse.criticalPoints E f).ncard ∧
+                                (∀ z,
+                                    z ∈ ManifoldMorse.criticalPoints E g ↔
+                                      z ∈ ManifoldMorse.criticalPoints E f ∧
+                                        z ≠ p ∧ z ≠ q) ∧
+                                  ∀ z, f z ∉ Set.Ioo l u → g =ᶠ[𝓝 z] f := by
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
+  intro D hD hcount α β x y hα hβ hcross htrans hαbasin hβbasin
+  obtain
+    ⟨r, C, W, V', H, G, -, -, -, -, -, -, hgeometry, hV', hG, hzeros, hneg, hgerms, -, hend, -,
+      hleft, hright⟩ :=
+    FlowSuspension.exists_native_regular_level_isotopy_realization hf hV hdesc F hF ha hb
+      hband hreg (α x) D hD
+  obtain ⟨hback, hforward⟩ :=
+    FlowSuspension.whole_level_basins_of_holonomy F H G Subtype.val D
+      (fun z => (hgeometry z).2.1) (fun z => (hgeometry z).2.2) hend hleft hright
+  have hαb : ∀ᶠ z in 𝓝 x, Filter.Tendsto (fun t => G t (α z)) Filter.atBot (𝓝 q) := by
+    filter_upwards [hαbasin] with z hz
+    exact (hback (α z) q).mpr hz
+  have hβb : ∀ᶠ z in 𝓝 y, Filter.Tendsto (fun t => G t (β z)) Filter.atTop (𝓝 p) := by
+    filter_upwards [hβbasin] with z hz
+    exact (hforward (β z) p).mpr hz
+  obtain ⟨z₀, hz₀⟩ := Set.ncard_eq_one.mp hcount
+  have hαq : Filter.Tendsto (fun t => F t (α x)) Filter.atBot (𝓝 q) := hαbasin.self_of_nhds
+  have hαp : Filter.Tendsto (fun t => F t (D (α x))) Filter.atTop (𝓝 p) := by
+    rw [← hcross]
+    exact hβbasin.self_of_nhds
+  have hαeq : α x = z₀ := by
+    have hh :
+      α x ∈
+        {z : { w : M // f w = c } |
+          Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q) ∧
+            Filter.Tendsto (fun t => F t (D z)) Filter.atTop (𝓝 p)} :=
+      ⟨hαq, hαp⟩
+    rw [hz₀] at hh
+    exact Set.mem_singleton_iff.mp hh
+  have huniq (z : { w : M // f w = c }) (hzq : Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q))
+    (hzp : Filter.Tendsto (fun t => F t (D z)) Filter.atTop (𝓝 p)) : z = α x := by
+    have hh :
+      z ∈
+        {z : { w : M // f w = c } |
+          Filter.Tendsto (fun t => F t z) Filter.atBot (𝓝 q) ∧
+            Filter.Tendsto (fun t => F t (D z)) Filter.atTop (𝓝 p)} :=
+      ⟨hzq, hzp⟩
+    rw [hz₀] at hh
+    exact (Set.mem_singleton_iff.mp hh).trans hαeq.symm
+  obtain ⟨hqG, hpG, huniqueG⟩ :=
+    FlowSuspension.unique_connection_of_level_basin_intersection F G hf.continuous hqc'
+      hpc' D (fun z => hback z q) (fun z => hforward z p) (α x) hαq hαp huniq
+  obtain ⟨hS, hT, hS0, hT0, hSb, hTb, ht⟩ :=
+    FlowSuspension.native_transverse_basin_tubes_of_level_maps hf hreg hV' G hG
+      (fun z hz => hneg z (hreg z hz)) α β x y hα hβ hcross htrans hαb hβb
+  have hgermp : ∀ᶠ z in 𝓝 p, V' z = cp.descentField z := by
+    filter_upwards [hgerms p hpc, heqp] with z hz hz'
+    exact hz.trans hz'
+  have hgermq : ∀ᶠ z in 𝓝 q, V' z = cq.descentField z := by
+    filter_upwards [hgerms q hqc, heqq] with z hz hz'
+    exact hz.trans hz'
+  exact
+    cancel_unique_connection_of_transverse_basin_sheets cp cq hf hm hdim hindex V' hV'
+      (fun z hz => (hzeros z).mpr (hzero z hz)) hneg G hG hinj hpc hqc (hpc'.trans hqc') hl hu
+      hpair hpG hqG huniqueG hgermp hgermq hS hT hS0 hT0 hSb hTb ht
+
+/-! ### The Morse count after pair removal -/
+
+/-- The number of Morse critical points. -/
+def MorseCancellation.nativeMorseCount (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type*}
+    [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (k : ℕ) : ℕ :=
+  {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}.ncard
+
+/-- The indexed critical points after removing a pair. -/
+theorem MorseCancellation.indexed_criticalPoints_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
+    (hcrit :
+      ∀ z,
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
+    {z : M | z ∈ ManifoldMorse.criticalPoints E g ∧ nativeMorseIndex E g z = k} =
+      {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k} \
+        { p, q } := by
+  ext z
+  simp only [Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff, not_or]
+  constructor
+  · rintro ⟨hzg, hindex⟩
+    obtain ⟨hzf, hzp, hzq⟩ := (hcrit z).mp hzg
+    rw [nativeMorseIndex_congr_germ (hkeep z hzg)] at hindex
+    exact ⟨⟨hzf, hindex⟩, hzp, hzq⟩
+  · rintro ⟨⟨hzf, hindex⟩, hzp, hzq⟩
+    have hzg := (hcrit z).mpr ⟨hzf, hzp, hzq⟩
+    exact ⟨hzg, (nativeMorseIndex_congr_germ (hkeep z hzg)).trans hindex⟩
+
+attribute [local instance 100] Classical.propDecidable in
+/-- The index-`k` Morse count of the new function plus the removed pair's index-`k` contributions equals that of the old. -/
+theorem MorseCancellation.nativeMorseCount_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
+    (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
+    (hcrit :
+      ∀ z,
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) (k : ℕ) :
+    nativeMorseCount E g k + (if nativeMorseIndex E f p = k then 1 else 0) +
+        (if nativeMorseIndex E f q = k then 1 else 0) =
+      nativeMorseCount E f k := by
+  let K := {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}
+  have hK : K.Finite := hfinite.subset (fun _ hz => hz.1)
+  have hdiff : K \ (K ∩ { p, q }) = K \ { p, q } := by
+    ext z
+    simp only [Set.mem_sdiff, Set.mem_inter_iff]
+    tauto
+  have hrem :
+    (K ∩ { p, q }).ncard =
+      (if nativeMorseIndex E f p = k then 1 else 0) +
+        (if nativeMorseIndex E f q = k then 1 else 0) := by
+    by_cases hip : nativeMorseIndex E f p = k
+    · have hpK : p ∈ K := ⟨hp, hip⟩
+      rw [Set.inter_insert_of_mem hpK, if_pos hip]
+      by_cases hiq : nativeMorseIndex E f q = k
+      · rw [Set.inter_singleton_of_mem (show q ∈ K from ⟨hq, hiq⟩), if_pos hiq,
+          Set.ncard_pair hpq]
+      · rw [Set.inter_singleton_of_notMem (show q ∉ K from fun h => hiq h.2), if_neg hiq]
+        simp
+    · have hpK : p ∉ K := fun h => hip h.2
+      rw [Set.inter_insert_of_notMem hpK, if_neg hip]
+      by_cases hiq : nativeMorseIndex E f q = k
+      · rw [Set.inter_singleton_of_mem (show q ∈ K from ⟨hq, hiq⟩), if_pos hiq]
+        simp
+      · rw [Set.inter_singleton_of_notMem (show q ∉ K from fun h => hiq h.2), if_neg hiq]
+        simp
+  have hc := Set.ncard_sdiff_add_ncard_of_subset (Set.inter_subset_left : K ∩ { p, q } ⊆ K) hK
+  rw [hdiff, hrem] at hc
+  unfold nativeMorseCount
+  rw [indexed_criticalPoints_after_pair_removal hcrit hkeep k]
+  exact (Nat.add_assoc _ _ _).trans hc
+
+attribute [local instance 100] Classical.propDecidable in
+/-- Removing an adjacent-index pair lowers the counts at the two indices by one each and fixes the others. -/
+theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
+    (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
+    (hp : p ∈ ManifoldMorse.criticalPoints E f)
+    (hq : q ∈ ManifoldMorse.criticalPoints E f) (hpq : p ≠ q)
+    (hcrit :
+      ∀ z,
+        z ∈ ManifoldMorse.criticalPoints E g ↔
+          z ∈ ManifoldMorse.criticalPoints E f ∧ z ≠ p ∧ z ≠ q)
+    (hkeep : ∀ z ∈ ManifoldMorse.criticalPoints E g, g =ᶠ[𝓝 z] f) {k : ℕ}
+    (hip : nativeMorseIndex E f p = k) (hiq : nativeMorseIndex E f q = k + 1) :
+    nativeMorseCount E g k + 1 = nativeMorseCount E f k ∧
+      nativeMorseCount E g (k + 1) + 1 = nativeMorseCount E f (k + 1) ∧
+        ∀ j, j ≠ k → j ≠ k + 1 → nativeMorseCount E g j = nativeMorseCount E f j := by
+  have hc := nativeMorseCount_after_pair_removal hfinite hp hq hpq hcrit hkeep
+  refine ⟨?_, ?_, ?_⟩
+  · simpa [hip, hiq] using hc k
+  · simpa [hip, hiq, show k ≠ k + 1 by omega] using hc (k + 1)
+  · intro j hj hj'
+    simpa only [hip, hiq, if_neg (Ne.symm hj), if_neg (Ne.symm hj'), Nat.add_zero] using hc j
+
+end
 
 theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
