@@ -29,9 +29,20 @@ for former leaf declarations). Old items 1–5 are landed.
    turned `Smale.*` into `*` in three files; not taken); (c) add to `RENAMES.md` the open item
    `Suspension.topSus`: choose the name against the Mathlib twin and rename again; a type
    is not called `topSus`.
-2. **Lane E1** from `Lib/Geometry/Manifold/Morse/Cancellation.lean` and your drafts: the
-   197-declaration cubic cluster first, as one baseline commit, per `Lib/reports/E1.md`.
-   Land only green units; drafts stay drafts.
+2. **Lane E1: what is still in `Hopf/`, not the landed cubic core.** The "197-declaration
+   cubic cluster" of `E1.md` was measured before the split; its content (`Model`, the cubic
+   critical-point analysis, descent field, flow cylinder) is already in
+   `Lib/Geometry/Manifold/Morse/Cancellation.lean` (301 declarations). Do not re-extract it and
+   do not copy the drafts (`Lib/reports/drafts/*.draft`, 291 declarations, partly landed
+   already); they are evidence only. The boundary is the dependency closure, inside `Hopf/`,
+   of the three probe theorems still there: `MorseCancellation.cancel_of_transverse_level_isotopy`
+   (SingularHomology.lean:10501), `MorseRearrangement.exists_morse_rearrangement_of_no_connection`
+   (SphereTopology.lean:3510), `MorseCancellation.exists_excellent_indexed_morse_birth`
+   (SphereTopology.lean:8637). Take the closure with the current tree (`E1.md` §"resume"
+   names the `NativeConnectionCancellationData` cluster first), move it in dependency order,
+   one green unit per commit, receipts as for the split. Splitting `Cancellation.lean` into
+   `Cubic`/`CubicFlow` is an in-`Lib` layout change for later, after the moves. E1 is done
+   when the three probe theorems are in `Lib/` with their axioms exact.
 3. **Lane I**: land `MappingTorus/Wang.lean` before any wrapper removal, per your resume
    recipe in `RENAMES.md`; then the remaining units in `I.md` order.
 4. **`Mathoverflow1973` wrapper removal** only after item 3, as one commit, full chain green.
