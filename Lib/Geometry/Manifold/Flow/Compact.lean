@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.Handle
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Flows of smooth vector fields on compact manifolds
