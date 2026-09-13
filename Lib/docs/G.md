@@ -150,7 +150,7 @@ basepoint `x`. The trade proceeds in two steps:
 * **Birth above the cut** (`exists_excellent_indexed_morse_birth` at $k = 2$): inside the
   band, birth an excellent cancelling $(2,3)$-pair $b_2, b_3$. The birth changes nothing at
   or below the cut: the level $f = a$ is preserved verbatim (`heq : ∀ y, g y = a ↔ f y = a`,
-  supplied by `birth_preserves_lower_levels` at Recognition:6401; the `hsub`/`hlevel`
+  supplied by `birth_preserves_lower_levels` at SphereTopology:6391 (conclusion :6401); the `hsub`/`hlevel`
   hypotheses belong to `cancel_from_preserved_unit_belt_cut`, Recognition:6646–6647), the cut stays regular for the new function (`hgr`), the unique minimum survives
   (`birth_preserves_unique_index_zero`), and there is a value gap below $b_2$ (`hgap`).
 * **Cancellation at the unchanged cut**
@@ -336,7 +336,7 @@ G5 → G6, and the file split follows it (see Axis 4): `MinimalSystem.lean` = G1
 
 | File | Rows | Mathlib twin |
 |---|---|---|
-| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G1 (homotopy-sphere data — **landed** at lines 24/29/34), G2a (minimal excellent/ordered/outer-minimal systems — still to land) | none existing |
+| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G1 (homotopy-sphere data — **landed** at lines 63/68/73), G2a (minimal excellent/ordered/outer-minimal systems — still to land) | none existing |
 | `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3 (birth, trade, outer-count kills), G2b (`without_outer_indices` assembly) | none existing |
 | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4 (block structure, middle matrix surjectivity), G5 (pivot, cancellation, count conclusions) | none existing; shape after the reference example |
 | `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | G6 (Reeb assembly, the headline) | `Mathlib/Geometry/Manifold/PoincareConjecture.lean` (the `proof_wanted` file — our file is its smooth compact n=6 realization; the docstring records the relation) |
