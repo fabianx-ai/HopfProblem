@@ -1,0 +1,700 @@
+{
+  "seat": "GLM",
+  "model": "Devin/Astra with SWE-2 implementation",
+  "baseline": "aa5288ae354cf1c70592a4bc2c66201e0f211f3f",
+  "documentation_head": "53c0d47ab30b4cd0ed2d2f17b1746768d50a87f4",
+  "ownership_exclusions": [
+    "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+    "Lib/Geometry/Manifold/Immersion/Relative.lean",
+    "Lib/Geometry/Manifold/Transversality/Basic.lean"
+  ],
+  "verification": [
+    "non-comment tokens unchanged in all 68 files",
+    "existing comments retained except four explicit Suspension overview corrections",
+    "lake build Lib: exit 0",
+    "git diff --check: clean"
+  ],
+  "independent_textbook_review_claimed": false,
+  "files": [
+    {
+      "path": "Lib/Algebra/Homology/MayerVietorisShortExact.lean",
+      "commit": "580f4d8a29b5686d181276a03b47126524d59c67",
+      "public_declarations": 19,
+      "missing_docstrings_before": 18,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 3,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean",
+      "commit": "1a6ed9168e98f3bcff91d46e588a82d457356c25",
+      "public_declarations": 9,
+      "missing_docstrings_before": 9,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/FundamentalGroup/TwoSimplyConnectedCover.lean",
+      "commit": "7527396ecb6cf8068c658be938789038fe1e1ed4",
+      "public_declarations": 30,
+      "missing_docstrings_before": 30,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean",
+      "commit": "332a107cc98dd326b8a3f4257abc7a64de4a304f",
+      "public_declarations": 165,
+      "missing_docstrings_before": 154,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 10,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/FundamentalGroupoid/SimplyConnectedSphere.lean",
+      "commit": "5cf3fdf3143bd452cc16eb05e71f9cd682c688a2",
+      "public_declarations": 9,
+      "missing_docstrings_before": 9,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+      "commit": "ebea371f65de8cdcc391d64699390f1b91c45ae7",
+      "public_declarations": 153,
+      "missing_docstrings_before": 139,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 11,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean",
+      "commit": "03ef2dd1bfc2f2e9c07129cdf9cc9105b991d761",
+      "public_declarations": 118,
+      "missing_docstrings_before": 109,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 6,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Coproduct.lean",
+      "commit": "a520bdf13423b89865ffefcffddcc7bf24c2b2b9",
+      "public_declarations": 29,
+      "missing_docstrings_before": 29,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/CrossInsert.lean",
+      "commit": "363105e049f05a5952580765f8948be3675384e1",
+      "public_declarations": 3,
+      "missing_docstrings_before": 3,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean",
+      "commit": "6cb72c965ac276c41f130a717237f09d47e23100",
+      "public_declarations": 26,
+      "missing_docstrings_before": 26,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/LocalContributions.lean",
+      "commit": "8110f612bd0452fcf432c3e3f5ea17613555a0a2",
+      "public_declarations": 13,
+      "missing_docstrings_before": 13,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+      "commit": "ab55779bfc0747acb05d4885d25ec7e25ead5eef",
+      "public_declarations": 47,
+      "missing_docstrings_before": 47,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean",
+      "commit": "4c991745c2e1637c5eacba1ec228622f12ee0c49",
+      "public_declarations": 249,
+      "missing_docstrings_before": 239,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 14,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/ModuleHomology.lean",
+      "commit": "b1d4f96a9a4738cafacc21777a512b08ef22dc20",
+      "public_declarations": 20,
+      "missing_docstrings_before": 20,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Naturality.lean",
+      "commit": "3f57fdf48a70137c1c2ce11b3995789d8b254ae2",
+      "public_declarations": 48,
+      "missing_docstrings_before": 48,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+      "commit": "83c402f4719fa8dccc605486e769703a85cb3b92",
+      "public_declarations": 58,
+      "missing_docstrings_before": 58,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 6,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Sphere.lean",
+      "commit": "dd074f8cb8a6412cf098c1250fee85893aef4228",
+      "public_declarations": 37,
+      "missing_docstrings_before": 37,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean",
+      "commit": "38a3edc10aacf35270abe70f2130f7da98a42964",
+      "public_declarations": 22,
+      "missing_docstrings_before": 22,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Sum.lean",
+      "commit": "3c4fffa6fb550b34a08dd561eb500bb73fb4f062",
+      "public_declarations": 28,
+      "missing_docstrings_before": 28,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/AlgebraicTopology/SingularHomology/Suspension.lean",
+      "commit": "b4b3381d3d45a53b88a127b4b660bff0ad5dc98f",
+      "public_declarations": 33,
+      "missing_docstrings_before": 33,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Calculus/MorseLemma.lean",
+      "commit": "3552ed9f5693988e4f7ed42ee5c5de22f8edfe11",
+      "public_declarations": 157,
+      "missing_docstrings_before": 146,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 11,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/Cousin.lean",
+      "commit": "e272279d6fa3f4a83bf8c26f39d646bc17d095a4",
+      "public_declarations": 95,
+      "missing_docstrings_before": 95,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 8,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/Mobius.lean",
+      "commit": "5b1ae94d4e456f57039f1a883d0e21b8d7275ed5",
+      "public_declarations": 54,
+      "missing_docstrings_before": 54,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/RiemannMapping.lean",
+      "commit": "2400bbc7d15786b4c62ceba52a2491851fb264ef",
+      "public_declarations": 181,
+      "missing_docstrings_before": 173,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 12,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/RiemannMapping/Steps.lean",
+      "commit": "02706d58cc5c5477a88a751dc9163e3833d96a9b",
+      "public_declarations": 31,
+      "missing_docstrings_before": 31,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/SchwarzReflection.lean",
+      "commit": "a25bb2bd58ce8ce0eb583c3cad2359749b0404b4",
+      "public_declarations": 16,
+      "missing_docstrings_before": 16,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/Complex/SquareRoot.lean",
+      "commit": "3d90701db22fc0191b79c3f2ffb0572e4ceda900",
+      "public_declarations": 62,
+      "missing_docstrings_before": 62,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 7,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Analysis/ODE/SmoothFlow.lean",
+      "commit": "30606e7ad7e11df64576e02c26f6532e708a144a",
+      "public_declarations": 54,
+      "missing_docstrings_before": 54,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 6,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/ChartedSpace/Transport.lean",
+      "commit": "a58d54b7484b0c878cdbd3c345fb033fd212b422",
+      "public_declarations": 3,
+      "missing_docstrings_before": 3,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Collar.lean",
+      "commit": "8f8b8c26032033416938489113b9b60178d637af",
+      "public_declarations": 147,
+      "missing_docstrings_before": 147,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 13,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Complex/Biholomorph.lean",
+      "commit": "de7961047d8b33909cb6c4e000b59e02eaec1a18",
+      "public_declarations": 8,
+      "missing_docstrings_before": 8,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Flow/Compact.lean",
+      "commit": "85069ed2c63bfae5198bccb2fa636901abc52bd1",
+      "public_declarations": 28,
+      "missing_docstrings_before": 28,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Flow/HeightTranslating.lean",
+      "commit": "ed5c0e248f74c24e0698f1ebefa40c0925511578",
+      "public_declarations": 106,
+      "missing_docstrings_before": 106,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 11,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Instances/RiemannSphere.lean",
+      "commit": "cffcb1655864224dc402fe1c12c3387058127601",
+      "public_declarations": 37,
+      "missing_docstrings_before": 37,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Birth.lean",
+      "commit": "42080f45097b97208a9f1c9b3cc314c255aded80",
+      "public_declarations": 26,
+      "missing_docstrings_before": 26,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+      "commit": "e1b77b3fd4503d0dbe004ee5921df7cbb10dc637",
+      "public_declarations": 303,
+      "missing_docstrings_before": 303,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 30,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/CellStructure.lean",
+      "commit": "3bc4f52f7fe95e35a975754aefa4152009401fa2",
+      "public_declarations": 60,
+      "missing_docstrings_before": 60,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 9,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean",
+      "commit": "10cc8e3e242b6222b47eb70bf7c42bf7d2725f1a",
+      "public_declarations": 298,
+      "missing_docstrings_before": 298,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 34,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Existence.lean",
+      "commit": "918d141fd10b6fe9a7b0497b5bfaa6390979e3d0",
+      "public_declarations": 117,
+      "missing_docstrings_before": 108,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 12,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Handle.lean",
+      "commit": "9abb520753ca5eda8abe8917237fb93cd250bf9d",
+      "public_declarations": 78,
+      "missing_docstrings_before": 78,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 7,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/HandleAttachment.lean",
+      "commit": "9cf7c5008a01ca836ee472af92bae8b2878f6e1b",
+      "public_declarations": 125,
+      "missing_docstrings_before": 119,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 9,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Index.lean",
+      "commit": "68c2b6d2447d9ba5c989660683afb62705cb538e",
+      "public_declarations": 26,
+      "missing_docstrings_before": 26,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/Rearrangement.lean",
+      "commit": "aa610eb84aae1176514873795a54fe6d1ff1447f",
+      "public_declarations": 116,
+      "missing_docstrings_before": 116,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 12,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean",
+      "commit": "60b7955908ee6f2c6d991a4550b69da60cdab799",
+      "public_declarations": 44,
+      "missing_docstrings_before": 44,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 6,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+      "commit": "1ed1fe21c07aeebc63caa9d6a3550571ba2ae126",
+      "public_declarations": 12,
+      "missing_docstrings_before": 12,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Morse/SurgeryWindows.lean",
+      "commit": "27691b1d89b108c21ded2f9ae02db426e0630713",
+      "public_declarations": 119,
+      "missing_docstrings_before": 119,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 12,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Quotient/Atlas.lean",
+      "commit": "35390d61ce9f22c7d912ed4b1fd6e97b9cf0c2c8",
+      "public_declarations": 22,
+      "missing_docstrings_before": 22,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/Quotient/LocalOrbit.lean",
+      "commit": "fdd41adb0d49f69e8650209ef71677a1d43f1af0",
+      "public_declarations": 17,
+      "missing_docstrings_before": 17,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/RegularLevel.lean",
+      "commit": "abae559d19ba4b097dadac98461e991a5fd9d6f8",
+      "public_declarations": 20,
+      "missing_docstrings_before": 20,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean",
+      "commit": "ebc567b1c52d0db71b453482f287e4820b413faa",
+      "public_declarations": 31,
+      "missing_docstrings_before": 31,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Geometry/Manifold/WhitneyEmbedding.lean",
+      "commit": "d1ca6caa9e3031cd227704bc7d8a9c358383bbea",
+      "public_declarations": 50,
+      "missing_docstrings_before": 50,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/GroupTheory/PresentedGroup/CentralTwist.lean",
+      "commit": "92e5d919eecfb6dd7d12033b87e3eec1dc86a497",
+      "public_declarations": 20,
+      "missing_docstrings_before": 20,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/GroupTheory/SplitExtension.lean",
+      "commit": "363d492a4dff254e3bd1a3f26e3739633b2e94c6",
+      "public_declarations": 13,
+      "missing_docstrings_before": 13,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Algebra/FreeActionLocus.lean",
+      "commit": "dd0dbb030460de6a223f2924903e2b5af6689df4",
+      "public_declarations": 13,
+      "missing_docstrings_before": 13,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Covering/DiagonalQuotient.lean",
+      "commit": "a9fd01c4852f7f09ff283583faeaddbc6ab4e57c",
+      "public_declarations": 78,
+      "missing_docstrings_before": 78,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 6,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Covering/InvariantSubset.lean",
+      "commit": "d50a9f02463d2f912890b8a451a9b2b5dfc939c7",
+      "public_declarations": 19,
+      "missing_docstrings_before": 19,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Covering/Quotient.lean",
+      "commit": "fd2fc9fa2de5818445196a5e8524c8218f78c519",
+      "public_declarations": 38,
+      "missing_docstrings_before": 38,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/FiberBundle/TwoOpenTransition.lean",
+      "commit": "3c224972ed127ea1fdc73782a327bd2e9a9ce1d4",
+      "public_declarations": 44,
+      "missing_docstrings_before": 44,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/CellAttachment.lean",
+      "commit": "5e7bcfe366d2744d8459d3c6cf03d71b887e85e5",
+      "public_declarations": 132,
+      "missing_docstrings_before": 128,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 8,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/CylinderHEP.lean",
+      "commit": "2fd55a4636073aae2f7530fe97243df8f68d5a89",
+      "public_declarations": 40,
+      "missing_docstrings_before": 40,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 7,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/HandleRetraction.lean",
+      "commit": "f892787de82c4696793069ad7f4afa7cbc523014",
+      "public_declarations": 68,
+      "missing_docstrings_before": 68,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/LocalCollapse.lean",
+      "commit": "ea134c06b55a86c361bbedccf52b1239be24a6e9",
+      "public_declarations": 11,
+      "missing_docstrings_before": 11,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 3,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/LoopSubdivision.lean",
+      "commit": "c06c75604bb239b2065e8940f5b297764981a99e",
+      "public_declarations": 6,
+      "missing_docstrings_before": 6,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/SublevelRetraction.lean",
+      "commit": "a2d175c5c1b2a2009a58875141af183969f93701",
+      "public_declarations": 22,
+      "missing_docstrings_before": 22,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 2,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/Homotopy/Suspension.lean",
+      "commit": "187937227786ca8dacaff14a5f6f78d745c62d3e",
+      "public_declarations": 66,
+      "missing_docstrings_before": 66,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/MappingTorus/Basic.lean",
+      "commit": "548f5243355fdbbd2100bc2e418608212e470790",
+      "public_declarations": 76,
+      "missing_docstrings_before": 76,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/MappingTorus/HomologyCover.lean",
+      "commit": "9f12cb896ede7c55eed2096004b88e3e4f1b1d90",
+      "public_declarations": 58,
+      "missing_docstrings_before": 58,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 5,
+      "non_comment_tokens_unchanged": true
+    },
+    {
+      "path": "Lib/Topology/OnePointCollapse.lean",
+      "commit": "53c0d47ab30b4cd0ed2d2f17b1746768d50a87f4",
+      "public_declarations": 12,
+      "missing_docstrings_before": 12,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 1,
+      "non_comment_tokens_unchanged": true
+    }
+  ]
+}
