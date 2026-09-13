@@ -102,6 +102,7 @@ import Lib.Topology.Covering.InvariantSubset
 import Lib.Topology.Homotopy.SublevelRetraction
 import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.MappingTorus.HomologyCover
+import Lib.Topology.MappingTorus.Wang
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.PathClass
