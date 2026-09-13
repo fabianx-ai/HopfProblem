@@ -2,7 +2,7 @@
 
 **Head:** `1cc1784` (post-F0a/F0b) for the recorded probes — **historical**; names and
 provider locations below carry a post-integration map at `7e98c58`. **Status:**
-DRAFT — ledger certified in legacy context at the old head under old names; the
+DRAFT — historical FQN checks passed in legacy context under old names; the
 probe must be re-run at the new head (stale `.olean`s still resolve pre-rename
 names — fresh-subagent finding 2); module extraction seam-gated (below).
 
@@ -23,17 +23,22 @@ Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points : ∀ {E M 
     Nonempty (M ≃ₜ Smale.Hemisphere.Sphere (Module.finrank ℝ E))
 ```
 
-`MorseCancellation.nonempty_homeomorph_of_homotopySixSphere` (the inner chain the Lib
-theorem wraps) resolves **without** `[SecondCountableTopology M]` — the drop is
-confirmed real, not just unused-by-proof.
+The historical probe checked the inner homeomorphism chain without
+`[SecondCountableTopology M]`. Current source names it
+`MorseCancellation.nonempty_homeomorph_of_homotopySixSphere` and retains that
+instance-free signature; this source comparison is not a current-artifact probe.
 
 *Name map after the post-integration renames (`ff89376`, `05b5d14` — see
 `Lib/reports/RENAMES.md`): the probe's `Smale.` prefix is dropped
 (`Smale.homeomorphic_sixSphere_of_homotopySixSphere` →
 `homeomorphic_sixSphere_of_homotopySixSphere`, Rec 8020); `MorseCancel.` →
 `MorseCancellation.`; Recognition's `SixSphere` → `MetricSixSphere`;
-`Smale.SixSphere` → `SixSphere`; `Smale.Hemisphere` → `Hemisphere`. All ledger
-signatures in `G.md` are re-extracted verbatim at `7e98c58` under the new names.*
+`Smale.SixSphere` → `SixSphere`; `Smale.Hemisphere` → `Hemisphere`. The fresh2
+review (`Lib/docs/G-fresh2-subagent-review.md`, at `fdd2143`) confirmed all 35
+current names and declaration starts but found
+two G5 result types truncated at internal lets. The subsequent repair restores
+Recognition:6008–6074 and 2481–2493 through their outer proof delimiters. These are
+source-text repairs, not a new machine-elaboration or production certificate.*
 
 ## Seam gate — why no producer probe yet
 
@@ -77,6 +82,9 @@ through the Lib theorem; `Hopf/Final.lean` statement unchanged.
 
 ## Verdict
 
-Ledger surface certified (names + coordinates + design mutations verified);
-extraction **deferred pending lanes C/D1/E1/F** — recorded here so the gate is
-auditable rather than implicit.
+**DRAFT / not currently certified.** Historical legacy checks, the current
+source name/start census, and the repaired signature text are distinct evidence.
+The current ledger still requires source-matched elaboration and aggregate
+production provider/separate importing-consumer checks against its reviewed hash.
+Extraction remains **deferred pending lanes C/D1/E1/F**, helper closure and those
+checks; neither the historical probe nor the source-text repairs authorize Axis-6.

@@ -4,7 +4,9 @@
 Reviews: `Lib/docs/G-stage2-astra-review.md` (NO-GO), `Lib/docs/G-stage2-astra-review2.md`
 (re-review at `bd9c393`), `Lib/docs/G-fresh-subagent-review.md` (GO on the §§3–5
 mathematics and the G2a→G3→G2b ordering; NO-GO on the typed ledger's then-stale
-namespaces/coordinates — refreshed to post-rename names at this head below).
+namespaces/coordinates — refreshed to post-rename names at this head below),
+`Lib/docs/G-fresh2-subagent-review.md` (scoped GO on the mathematics and ordering;
+the two truncated G5 result types it flagged are restored verbatim below).
 Landed repairs: the trade cut, elimination order, and Whitney codimension-two input in
 §§4–5 carry the source's actual mechanisms; §3's unique-minimum argument carries the
 (0,1)-cancellation mechanism; every ledger signature is verbatim at live coordinates
@@ -27,7 +29,7 @@ generalization to $n \geq 5$ is the follow-up lane G′ and is **not** started h
 
 Contents:
 
-* **Axis 1** (§§1–7): the complete textbook proof, ordinary mathematics, no Lean names.
+* **Axis 1** (§§1–7): recovered textbook mathematics annotated with Lean source correspondence.
 * **Axes 2–3** (§8): additive decomposition in dependency order.
 * **Axis 4** (§9): placement with twins.
 * **Axis 5** (§10): typed ledger with seams.
@@ -865,7 +867,74 @@ theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddC
                                   (∀ z ∈ ManifoldMorse.criticalPoints E f,
                                       ∀ᶠ y in 𝓝 z, T.field y = S.field y) ∧
                                     (∀ y, f y ≤ a → g =ᶠ[𝓝 y] f) ∧
-                                      let p' : Fin n → ManifoldMorse.criticalPoints E g :=  -- Recognition.lean:5958
+                                      let p' : Fin n → ManifoldMorse.criticalPoints E g :=
+                                        fun j => ⟨(p j).val, hcrit.symm ▸ (p j).property⟩
+                                      let B' := B.trans (MorseCancellation.equalCutHomologyEquiv hsub)
+                                      (∀ j, MorseCancellation.nativeMorseIndex E g (p' j) = 3) ∧
+                                        (∀ z : ManifoldMorse.criticalPoints E g,
+                                            MorseCancellation.nativeMorseIndex E g z = 3 →
+                                              ∃ j, p' j = z) ∧
+                                          (∀ j, a < T.toSurgeryWindows.lower (p' j)) ∧
+                                            ∃ Γ :
+                                              Fin n →
+                                                C((Hemisphere.Sphere 2),
+                                                  { y : M // g y = a }),
+                                              MorseCancellation.IsNativeMiddleBasinFamily T hg hga p'
+                                                  (fun j => Γ j) ∧
+                                                (∀ j,
+                                                    (∀ op ∈ ops, op.2.1 ≠ j) →
+                                                      Γ j =
+                                                        MorseCancellation.equalCutSection hlevel
+                                                          (γ j)) ∧
+                                                  MorseCancellation.canonicalMiddleMatrix (M := M) (f :=
+                                                        g) (a := a) (r := r) (n := n) B' Γ =
+                                                      MorseCancellation.canonicalMiddleMatrix (M := M)
+                                                          (f := f) (a := a) (r := r) (n := n) B
+                                                          γ *
+                                                        (ops.map
+                                                            (fun op =>
+                                                              Matrix.transvection op.1 op.2.1
+                                                                op.2.2)).prod ∧
+                                                    Function.Surjective
+                                                        (MorseCancellation.canonicalMiddleMatrix B'
+                                                            Γ).mulVec ∧
+                                                      (∃ i : Fin n,
+                                                          L
+                                                                ((MorseCancellation.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancellation.middleSectionClass
+                                                                    (Γ i))) =
+                                                              1 ∨
+                                                            L
+                                                                ((MorseCancellation.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancellation.middleSectionClass
+                                                                    (Γ i))) =
+                                                              -1) ∧
+                                                        ∀ z : M,
+                                                          f z ≤ a →
+                                                            (∀ x,
+                                                                Filter.Tendsto
+                                                                    (fun t => T.flow t x)
+                                                                    Filter.atBot (𝓝 z) ↔
+                                                                  Filter.Tendsto
+                                                                    (fun t => S.flow t x)
+                                                                    Filter.atBot (𝓝 z)) ∧
+                                                              (∀ x,
+                                                                  Filter.Tendsto
+                                                                      (fun t => S.flow t x)
+                                                                      Filter.atBot (𝓝 z) →
+                                                                    Set.range
+                                                                        (fun t => T.flow t x) =
+                                                                      Set.range
+                                                                        (fun t => S.flow t x)) ∧
+                                                                ∀ v,
+                                                                  Filter.Tendsto
+                                                                      (fun t => T.flow t z)
+                                                                      Filter.atTop (𝓝 v) ↔
+                                                                    Filter.Tendsto
+                                                                      (fun t => S.flow t z)
+                                                                      Filter.atTop (𝓝 v) := by  -- Recognition.lean:5958
 
 theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -907,7 +976,20 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
                               T.field = S₀.field ∧
                                 T.flow = S₀.flow ∧
                                   (∀ y, f y ≤ a → g =ᶠ[𝓝 y] f) ∧
-                                    let p' : Fin n → ManifoldMorse.criticalPoints E g :=  -- Recognition.lean:2440
+                                    let p' : Fin n → ManifoldMorse.criticalPoints E g :=
+                                      fun j => ⟨(p j).val, hcrit.symm ▸ (p j).property⟩
+                                    let B' := B.trans (MorseCancellation.equalCutHomologyEquiv hsub)
+                                    let γ' := fun j => MorseCancellation.equalCutSection hlevel (γ j)
+                                    (∀ j, MorseCancellation.nativeMorseIndex E g (p' j) = 3) ∧
+                                      (∀ j, a < T.toSurgeryWindows.lower (p' j)) ∧
+                                        MorseCancellation.IsNativeMiddleBasinFamily T hg hga p'
+                                            (fun j => γ' j) ∧
+                                          (∀ j x, (γ' j x).val = (γ j x).val) ∧
+                                            MorseCancellation.canonicalMiddleMatrix B' γ' =
+                                                MorseCancellation.canonicalMiddleMatrix B γ ∧
+                                              Function.Surjective
+                                                (MorseCancellation.canonicalMiddleMatrix B'
+                                                    γ').mulVec := by  -- Recognition.lean:2440
 
 theorem MorseCancellation.exists_native_belt_cut_family {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
