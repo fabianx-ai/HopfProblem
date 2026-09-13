@@ -674,3 +674,304 @@ error lines: 0
 ```
 
 Census: `ratchet PASS: 1255 <= baseline 1648`
+
+## Second pass (base `b78cfee8`)
+
+Source lines refer to `git show b78cfee8:Hopf/SphereTopology.lean` (the worktree file was identical to base before the move). After the `Hopf/SingularHomology.lean` moves (`singhom-moves.md`) every external blocker of the first pass lives in `Lib/` (`Lib/Geometry/Manifold/Morse/BeltCancellation.lean`, `Lib/Geometry/Manifold/Whitney/{CleanStrips,AnnularExtension,EmbeddedArcs}.lean`, `Lib/Geometry/Manifold/Morse/CircleGluing.lean`). Dependencies were taken from `lake env lean-agent-ide dump Hopf.SphereTopology --modules Hopf,Lib` (`uses` per constant, generated constants folded into their parent block; the oleans predated the SingularHomology moves, so each used constant was re-located in the current sources) and closed under in-file references; a row is FREE when it mentions neither `SixSphere` nor `homotopySixSphere` and every use is in `Lib/` or in a FREE row of this file. All 231 FREE rows went, in source order, into one new module so that the in-file order (and hence every in-file dependency) is preserved:
+
+- `Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean` — 231 rows: `ManifoldMorse.MorseSurgeryData` 63, `MorseCancellation` 29, `SpherePoint` 26, `EmbeddedCellAttachment` 24, `AdaptedWindows` 20, `LocalDegree` 18, `OnePointCover` 14, `DiskOnePointCollapse` 8, `ManifoldMorse.SurgeryWindows` 7, `SphereNormalCoordinates` 6, `ClosedHandleCore` 4, `LinearSphereAction` 4, `PuncturedBall` 3, `RadialFilling` 2, `SublevelDisk` 1, `SphereBoundary` 1, `=exists_embedded_disk_extension_of_smooth_extension` 1. Imports: `Mathlib`, the `Lib.*` imports of `Hopf/SphereTopology.lean`, and `Lib.Geometry.Manifold.Morse.BeltCancellation` (which carries the Whitney chain and `CircleGluing`). Registered in `Lib.lean` after `AdaptedWindows`; `Hopf/SphereTopology.lean` imports it.
+
+### Disclosed changes (no statement changed)
+
+- Qualifier retarget `SixSphereCube.X` -> `OnePointCollapse.X` (the `SixSphereCube` namespace of `Hopf/LibShims.lean` is an `export OnePointCollapse (...)` alias family; the constants are the same) in four rows the first pass had classified CHARGED on the token `SixSphere`:
+  - `DiskOnePointCollapse.collapse`: `SixSphereCube.collapse` -> `OnePointCollapse.collapse`
+  - `DiskOnePointCollapse.collapse`: `SixSphereCube.continuous_collapse` -> `OnePointCollapse.continuous_collapse`
+  - `DiskOnePointCollapse.collapse_boundary`: `SixSphereCube.collapse` -> `OnePointCollapse.collapse`
+  - `DiskOnePointCollapse.collapse_boundary`: `SixSphereCube.collapse_of_mem` -> `OnePointCollapse.collapse_of_mem`
+  - `DiskOnePointCollapse.collapse_interior`: `SixSphereCube.collapse` -> `OnePointCollapse.collapse`
+  - `DiskOnePointCollapse.collapse_interior`: `SixSphereCube.collapse_of_not_mem` -> `OnePointCollapse.collapse_of_not_mem`
+  - `DiskOnePointCollapse.collapse_eq_iff`: `SixSphereCube.collapse` -> `OnePointCollapse.collapse`
+  - `DiskOnePointCollapse.collapse_eq_iff`: `SixSphereCube.collapse_eq_iff` -> `OnePointCollapse.collapse_eq_iff`
+- Qualifier retargets through the `Hopf/LibShims.lean` export families `PeriodTorusHigherHomology.X` -> `SingularHomology.X` and `CuspCentralHomology.X` -> `Suspension.X` (same constants; the `export`s are not visible from `Lib/`), 34 occurrences in 23 rows: `CuspCentralHomology.contractibleCoverConnecting_injective` 1, `CuspCentralHomology.contractibleCoverHomologyHigherEquiv` 2, `PeriodTorusHigherHomology.homeomorphHomologyEquiv` 4, `PeriodTorusHigherHomology.homotopyEquivHomologyEquiv` 6, `PeriodTorusHigherHomology.pointClass` 2, `PeriodTorusHigherHomology.singularHomologyMap_comp` 14, `PeriodTorusHigherHomology.singularHomologyMap_id` 2, `PeriodTorusHigherHomology.singularHomologyMap_pointClass` 3. Rows: `EmbeddedCellAttachment.overlapHomologyEquiv`, `EmbeddedCellAttachment.coverLeft_old`, `EmbeddedCellAttachment.cellConnecting_zero_apply`, `MorseCancellation.cell_oldHomologyMap_zero_injective`, `MorseCancellation.cell_oldHomologyMap_zero_surjective`, `ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv`, `ManifoldMorse.MorseSurgeryData.cellTotalHomologyEquiv`, `ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare`, `ManifoldMorse.MorseSurgeryData.cellOldHomology_compare`, `MorseCancellation.cell_oldHomologyMap_zero_iff`, `MorseCancellation.cell_oldHomologyMap_injective_of_attaching_component`, `OnePointCover.overlapHomologyEquiv`, `OnePointCover.sphereConnecting_injective`, `OnePointCover.sphereHomologyEquiv`, `EmbeddedCellAttachment.collapse_overlapHomology_compare`, `ManifoldMorse.MorseSurgeryData.upperCollapseHomology_coreCell`, `ManifoldMorse.SurgeryWindows.BandData.homologyEquiv`, `ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices`, `LinearSphereAction.homologyEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting`, `LocalDegree.NativeNeighborhood.sphereHomologyEquiv`, `LocalDegree.BoundaryData.normalized_homology_compare`, `LocalDegree.NativeNeighborhood.sphereConnecting_restrictRadius`.
+- `private def OnePointCover.spherePunctureHomeomorph_mo1973_5327` stays `private`; its only user (`OnePointCover.punctureHomeomorph`) moved to the same module.
+- No other text changed; the multiset of non-blank lines of (new module body + remaining file body) equals the base file body after undoing the retarget.
+
+### Moved declarations (source lines at `b78cfee8` -> `SurgeryCollapse.lean` line)
+
+- `PuncturedBall.toSphere_fromSphere` (135-139) -> 95
+- `PuncturedBall.deformation` (140-158) -> 100
+- `PuncturedBall.sphereHomotopyEquiv` (159-171) -> 119
+- `MorseCancellation.nativeBeltTube_homotopic_meridian` (172-196) -> 132
+- `MorseCancellation.nativeBeltTubeMeridian_eq` (197-216) -> 157
+- `MorseCancellation.beltBallBoundary_homotopic_meridian` (217-233) -> 177
+- `MorseCancellation.normal_boundary_homotopic_native_meridian` (234-277) -> 194
+- `AdaptedWindows.exists_embedded_level_transport` (278-338) -> 238
+- `MorseCancellation.transverse_comp_standardCircle` (339-361) -> 299
+- `AdaptedWindows.exists_attaching_circle_lower_transport` (362-424) -> 322
+- `AdaptedWindows.realize_one_handle_minimum_branches` (425-522) -> 385
+- `AdaptedWindows.exists_native_family_level_transport` (523-580) -> 483
+- `AdaptedWindows.exists_middle_family_descent` (581-664) -> 541
+- `AdaptedWindows.exists_native_attaching_lower_cut` (665-717) -> 625
+- `AdaptedWindows.exists_middle_family_step` (718-836) -> 678
+- `AdaptedWindows.exists_regular_band_family_transport` (837-879) -> 797
+- `AdaptedWindows.exists_regular_band_middle_basin_family` (880-900) -> 840
+- `AdaptedWindows.exists_middle_basin_family_step` (901-930) -> 861
+- `AdaptedWindows.exists_middle_block_realization` (931-1054) -> 891
+- `MorseCancellation.unique_connection_of_distinct_minimum_branches` (1055-1104) -> 1015
+- `EmbeddedCellAttachment.overlapHomologyEquiv` (1105-1110) -> 1065
+- `EmbeddedCellAttachment.cellConnectingMap` (1111-1118) -> 1071
+- `EmbeddedCellAttachment.coverLeft_old` (1119-1139) -> 1079
+- `EmbeddedCellAttachment.coverLeft_formula` (1140-1150) -> 1100
+- `EmbeddedCellAttachment.cellConnecting_eq_zero_iff` (1151-1165) -> 1111
+- `EmbeddedCellAttachment.cell_exact_at_old` (1166-1214) -> 1126
+- `EmbeddedCellAttachment.cell_exact_at_ambient` (1215-1223) -> 1175
+- `EmbeddedCellAttachment.mem_range_cellConnecting` (1224-1241) -> 1184
+- `EmbeddedCellAttachment.coverLeft_eq_zero_iff` (1242-1263) -> 1202
+- `EmbeddedCellAttachment.cell_exact_at_sphere` (1264-1273) -> 1224
+- `EmbeddedCellAttachment.cellConnecting_zero_apply` (1274-1299) -> 1234
+- `MorseCancellation.cell_oldHomologyMap_zero_injective` (1300-1341) -> 1260
+- `MorseCancellation.cell_oldHomologyMap_zero_surjective` (1342-1387) -> 1302
+- `MorseCancellation.cell_oldHomologyMap_zero_bijective` (1388-1392) -> 1348
+- `ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv` (1393-1400) -> 1353
+- `ManifoldMorse.MorseSurgeryData.cellTotalHomologyEquiv` (1401-1410) -> 1361
+- `ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap` (1411-1419) -> 1371
+- `ManifoldMorse.MorseSurgeryData.lowerRealizationHomologyMap` (1420-1427) -> 1380
+- `ManifoldMorse.MorseSurgeryData.morseConnectingMap` (1428-1437) -> 1388
+- `ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare` (1438-1454) -> 1398
+- `ManifoldMorse.MorseSurgeryData.cellOldHomology_compare` (1455-1473) -> 1415
+- `ManifoldMorse.MorseSurgeryData.morseConnecting_compare` (1474-1489) -> 1434
+- `ManifoldMorse.MorseSurgeryData.morse_exact_at_lower` (1490-1512) -> 1450
+- `ManifoldMorse.MorseSurgeryData.morse_exact_at_upper` (1513-1531) -> 1473
+- `ManifoldMorse.MorseSurgeryData.morse_exact_at_attachingSphere` (1532-1550) -> 1492
+- `ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_sphere` (1551-1574) -> 1511
+- `ManifoldMorse.MorseSurgeryData.morseConnecting_zero_apply` (1575-1583) -> 1535
+- `ManifoldMorse.MorseSurgeryData.lowerRealization_one_surjective` (1584-1594) -> 1544
+- `ManifoldMorse.MorseSurgeryData.upperHomologyOne_subsingleton` (1595-1604) -> 1555
+- `MorseCancellation.native_lowerRealization_zero_bijective` (1605-1623) -> 1565
+- `MorseCancellation.native_lower_pathConnected_of_upper` (1624-1636) -> 1584
+- `MorseCancellation.native_zero_handle_lower_isEmpty` (1637-1656) -> 1597
+- `SublevelDisk.circle_nullhomotopies` (1657-1673) -> 1617
+- `ManifoldMorse.SurgeryWindows.lower_circle_nullhomotopies_of_middle_indices` (1674-1735) -> 1634
+- `MorseCancellation.lower_circle_nullhomotopies_of_ordered_native_indices` (1736-1778) -> 1696
+- `MorseCancellation.cellDiskBoundaryHomologyMap` (1779-1785) -> 1739
+- `MorseCancellation.cell_oldHomologyMap_zero_iff` (1786-1843) -> 1746
+- `MorseCancellation.cell_oldHomologyMap_injective_of_attaching_component` (1844-1869) -> 1804
+- `MorseCancellation.cell_old_pathConnected_of_attaching_component` (1870-1878) -> 1830
+- `MorseCancellation.native_lower_pathConnected_of_attaching_component` (1879-1894) -> 1839
+- `MorseCancellation.native_attaching_component_of_pairwise_joined` (1895-1905) -> 1855
+- `MorseCancellation.native_minimum_count_one_of_one_handle_components` (1906-1973) -> 1866
+- `MorseCancellation.exists_native_one_handle_joining_components` (1974-1994) -> 1934
+- `MorseCancellation.cancel_realized_higher_minimum` (1995-2062) -> 1955
+- `MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima` (2063-2095) -> 2023
+- `ManifoldMorse.MorseSurgeryData.exists_finite_belt_cancellation_step` (2096-2146) -> 2056
+- `ManifoldMorse.MorseSurgeryData.exists_finite_belt_reduction` (2147-2210) -> 2107
+- `ManifoldMorse.MorseSurgeryData.exists_minimal_signed_belt_sphere` (2211-2276) -> 2171
+- `ManifoldMorse.MorseSurgeryData.exists_single_belt_intersection_of_unit_count` (2277-2316) -> 2237
+- `AdaptedWindows.remove_connections_of_index_le` (2317-2390) -> 2277
+- `AdaptedWindows.remove_connections_of_nonincreasing_indices` (2391-2423) -> 2351
+- `AdaptedWindows.exchange_nonincreasing_native_indices` (2424-2479) -> 2384
+- `MorseCancellation.exists_index_ordered_morse_system_preserving_critical_points` (2480-2532) -> 2440
+- `MorseCancellation.minimal_excellent_morse_minimum_count_one` (2533-2550) -> 2493
+- `MorseCancellation.minimal_excellent_morse_extreme_counts_one` (2551-2574) -> 2511
+- `AdaptedWindows.exists_transverse_middle_belt_loop` (2575-2723) -> 2535
+- `SphereBoundary.exists_extension_immersive_on_sphere` (2724-2753) -> 2684
+- `exists_embedded_disk_extension_of_smooth_extension` (2754-2792) -> 2714
+- `RadialFilling.contMDiffAt_direction` (2793-2815) -> 2753
+- `RadialFilling.contMDiff_filling` (2816-2845) -> 2776
+- `MorseCancellation.circle_nullhomotopy_of_disk` (2981-3009) -> 2806
+- `MorseCancellation.exists_smooth_embedded_disk_of_continuous_filling` (3010-3034) -> 2835
+- `AdaptedWindows.realize_unit_level_isotopy` (3378-3444) -> 2860
+- `AdaptedWindows.realize_unit_transverse_level_isotopy` (3445-3555) -> 2927
+- `AdaptedWindows.place_one_handle_in_unique_minimum_basin` (3633-3671) -> 3038
+- `AdaptedWindows.realize_unique_minimum_one_handle_branches` (3672-3776) -> 3077
+- `MorseCancellation.exists_outer_index_minimal_ordered_morse_system` (3989-4048) -> 3182
+- `DiskOnePointCollapse.collapse` (4173-4178) -> 3242
+- `DiskOnePointCollapse.collapse_boundary` (4179-4185) -> 3248
+- `DiskOnePointCollapse.collapse_interior` (4186-4192) -> 3255
+- `DiskOnePointCollapse.collapse_eq_iff` (4193-4202) -> 3262
+- `DiskOnePointCollapse.collapse_compress` (4203-4209) -> 3272
+- `DiskOnePointCollapse.collapse_eq_coe_iff` (4210-4219) -> 3279
+- `DiskOnePointCollapse.collapse_eq_zero_iff` (4220-4229) -> 3289
+- `DiskOnePointCollapse.collapse_eq_infty_iff` (4230-4238) -> 3299
+- `ClosedHandleCore.collapseMaps_agree` (4239-4249) -> 3308
+- `ClosedHandleCore.collapseMap` (4250-4258) -> 3319
+- `ClosedHandleCore.collapseMap_old` (4259-4268) -> 3328
+- `ClosedHandleCore.collapseMap_handle` (4269-4280) -> 3338
+- `EmbeddedCellAttachment.collapseMaps_agree` (4281-4286) -> 3350
+- `EmbeddedCellAttachment.collapseMap` (4287-4293) -> 3356
+- `EmbeddedCellAttachment.collapseMap_old` (4294-4301) -> 3363
+- `EmbeddedCellAttachment.collapseMap_cell` (4302-4310) -> 3371
+- `EmbeddedCellAttachment.collapseMap_infty_iff` (4311-4318) -> 3380
+- `OnePointCover.instLocal1` (4319-4322) -> 3388
+- `OnePointCover.spherePunctureHomeomorph_mo1973_5327` (4323-4331) -> 3392
+- `OnePointCover.punctureHomeomorph` (4332-4344) -> 3401
+- `OnePointCover.oldPatch_contractible` (4345-4349) -> 3414
+- `OnePointCover.finitePatch_contractible` (4350-4354) -> 3419
+- `OnePointCover.overlap_subset_range` (4355-4362) -> 3424
+- `OnePointCover.overlap_preimage` (4363-4373) -> 3432
+- `OnePointCover.overlapHomeomorph` (4374-4379) -> 3443
+- `OnePointCover.overlapHomeomorph_apply` (4380-4384) -> 3449
+- `OnePointCover.overlapSphereEquiv` (4385-4389) -> 3454
+- `EmbeddedCellAttachment.collapseMap_eq_zero_iff` (4390-4408) -> 3459
+- `EmbeddedCellAttachment.collapseMaps_oldNeighborhood` (4409-4419) -> 3478
+- `EmbeddedCellAttachment.collapseMaps_diskPatch` (4420-4426) -> 3489
+- `EmbeddedCellAttachment.collapseOverlapMap` (4427-4434) -> 3496
+- `EmbeddedCellAttachment.collapseOverlap_sphere` (4435-4453) -> 3504
+- `EmbeddedCellAttachment.collapseOverlap_comp_sphere` (4454-4461) -> 3523
+- `OnePointCover.overlapHomologyEquiv` (4462-4467) -> 3531
+- `OnePointCover.sphereConnecting` (4468-4475) -> 3537
+- `OnePointCover.sphereConnecting_injective` (4476-4488) -> 3545
+- `OnePointCover.sphereHomologyEquiv` (4489-4499) -> 3558
+- `EmbeddedCellAttachment.collapse_overlapHomology_compare` (4500-4514) -> 3569
+- `EmbeddedCellAttachment.collapse_connecting_compare` (4515-4538) -> 3584
+- `ManifoldMorse.MorseSurgeryData.attachmentCollapseMap` (4539-4548) -> 3608
+- `ManifoldMorse.MorseSurgeryData.upperCollapseMap` (4549-4555) -> 3618
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_realization` (4556-4564) -> 3625
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_old` (4565-4577) -> 3634
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_handle` (4578-4589) -> 3647
+- `ManifoldMorse.MorseSurgeryData.levelCollapseMap` (4590-4596) -> 3659
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_realized` (4597-4609) -> 3666
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_newExterior` (4610-4617) -> 3679
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_newPiece` (4618-4632) -> 3687
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_zero_iff` (4633-4649) -> 3702
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_coreCell` (4650-4666) -> 3719
+- `ManifoldMorse.MorseSurgeryData.upperCollapseHomology_coreCell` (4667-4684) -> 3736
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_connecting_compare` (4685-4698) -> 3754
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_homology_equiv_compare` (4699-4710) -> 3768
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel` (4711-4732) -> 3780
+- `ManifoldMorse.MorseSurgeryData.morseConnecting_surjective_of_lower` (4733-4745) -> 3802
+- `ManifoldMorse.MorseSurgeryData.upperCollapse_surjective_of_lower` (4746-4762) -> 3815
+- `LocalDegree.NativeNeighborhood.overlapSphereEquiv` (4763-4777) -> 3832
+- `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv` (4778-4785) -> 3847
+- `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv_apply` (4786-4794) -> 3855
+- `LocalDegree.SeparatedNeighborhoods.overlapMap_sphereEquiv` (4795-4806) -> 3864
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_beltClosedDiskMap` (4807-4820) -> 3876
+- `ManifoldMorse.MorseSurgeryData.levelCollapse_eq_coe_collapseNormal` (4821-4837) -> 3890
+- `SphereNormalCoordinates.normalJacobian_smul_mul_pow` (4838-4859) -> 3907
+- `SphereNormalCoordinates.sign_normalJacobian_smul_pos` (4860-4869) -> 3929
+- `ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign` (4870-4890) -> 3939
+- `ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign_of_transverse` (4891-4925) -> 3960
+- `ManifoldMorse.MorseSurgeryData.isInvertible_collapseNormal_comp_of_transverse` (4926-4956) -> 3995
+- `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods` (4957-4964) -> 4026
+- `ManifoldMorse.MorseSurgeryData.nonempty_collapseNeighborhoods` (4965-4996) -> 4034
+- `ManifoldMorse.MorseSurgeryData.attachingCollapse` (4997-5004) -> 4066
+- `ManifoldMorse.MorseSurgeryData.attachingCollapse_zero_iff` (5005-5013) -> 4074
+- `ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_old` (5014-5023) -> 4083
+- `ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_neighborhood` (5024-5036) -> 4093
+- `ManifoldMorse.MorseSurgeryData.collapseOverlapMap` (5037-5050) -> 4106
+- `ManifoldMorse.MorseSurgeryData.collapseOverlapMap_eq` (5051-5068) -> 4120
+- `ManifoldMorse.MorseSurgeryData.collapseOverlapMap_sphereEquiv` (5069-5079) -> 4138
+- `ManifoldMorse.SurgeryWindows.BandData.homologyEquiv` (5080-5087) -> 4149
+- `ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices` (5088-5147) -> 4157
+- `ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_index` (5148-5160) -> 4217
+- `LinearSphereAction.sphereHomotopyEquiv` (5161-5166) -> 4230
+- `LinearSphereAction.sphereHomotopyEquiv_toFun` (5167-5171) -> 4236
+- `LinearSphereAction.homologyEquiv` (5172-5177) -> 4241
+- `LinearSphereAction.homologyEquiv_apply` (5178-5186) -> 4247
+- `LocalDegree.NativeNeighborhood.sphereConnecting` (5187-5201) -> 4256
+- `LocalDegree.NativeNeighborhood.sphereHomologyEquiv` (5202-5217) -> 4271
+- `SpherePoint.chart_radial_frame_comp` (5218-5252) -> 4287
+- `LocalDegree.BoundaryData.normalized_homology_compare` (5253-5264) -> 4322
+- `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul` (5265-5277) -> 4334
+- `SphereNormalCoordinates.chartJacobian` (5278-5288) -> 4347
+- `SphereNormalCoordinates.chartJacobian_ne_zero` (5289-5301) -> 4358
+- `SphereNormalCoordinates.chartJacobian_factor` (5302-5333) -> 4371
+- `SphereNormalCoordinates.chartJacobian_sign_factor` (5334-5352) -> 4403
+- `SpherePoint.chart_radial_frame_det` (5353-5404) -> 4422
+- `SpherePoint.chartJacobian_transport` (5405-5418) -> 4474
+- `SpherePoint.chartJacobian_transport_sign` (5419-5436) -> 4488
+- `LocalDegree.PointTransition.coordinateMap` (5437-5460) -> 4506
+- `LocalDegree.PointTransition.coordinateMap_coe` (5461-5489) -> 4530
+- `LocalDegree.PointTransition.connecting_naturality` (5490-5522) -> 4559
+- `LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius` (5523-5556) -> 4592
+- `LocalDegree.NativeNeighborhood.sphereConnecting_restrictRadius` (5557-5578) -> 4626
+- `LocalDegree.NativeNeighborhood.sphereConnecting_eq` (5579-5600) -> 4648
+- `LocalDegree.PointTransition.coordinateMap_eq_boundary` (5601-5622) -> 4670
+- `LocalDegree.PointTransition.coordinateMap_homology` (5623-5648) -> 4692
+- `LocalDegree.PointTransition.connecting_derivative_naturality` (5649-5684) -> 4718
+- `LocalDegree.pointConnecting_diffeomorph` (5685-5721) -> 4754
+- `SpherePoint.instLocal1` (5722-5725) -> 4791
+- `SpherePoint.pointDiffeomorph` (5726-5731) -> 4795
+- `SpherePoint.pointDiffeomorph_apply` (5732-5736) -> 4801
+- `SpherePoint.pointChartLinear` (5737-5741) -> 4806
+- `SpherePoint.pointClass_sign_compare` (5742-5773) -> 4811
+- `SpherePoint.punctureHomeomorph` (5774-5780) -> 4843
+- `SpherePoint.puncture_contractible` (5781-5785) -> 4850
+- `SpherePoint.connectingHomologyEquiv` (5786-5803) -> 4855
+- `SpherePoint.outwardPointClass` (5804-5823) -> 4873
+- `SpherePoint.outwardPointClass_eq` (5824-5864) -> 4893
+- `SpherePoint.chartSign_mul_self` (5865-5892) -> 4934
+- `SpherePoint.connecting_eq_sign_outward` (5893-5924) -> 4962
+- `SpherePoint.outwardPointClassEquiv` (5925-5954) -> 4994
+- `SpherePoint.outwardClass` (5955-5962) -> 5024
+- `SpherePoint.outwardClassEquiv` (5963-5970) -> 5032
+- `SpherePoint.outwardPointClass_eq_global` (5971-5984) -> 5040
+- `SpherePoint.pointConnecting_eq_outward` (5985-6005) -> 5054
+- `SpherePoint.sourceCountMark` (6006-6011) -> 5075
+- `SpherePoint.overlapCountMark` (6012-6017) -> 5081
+- `SpherePoint.targetCountMark` (6018-6022) -> 5087
+- `SpherePoint.overlapCountMark_linear` (6023-6037) -> 5092
+- `SpherePoint.countMark_of_connecting` (6038-6054) -> 5107
+- `ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate` (6055-6062) -> 5124
+- `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_surjective` (6063-6072) -> 5132
+- `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_kernel` (6073-6090) -> 5142
+- `ManifoldMorse.MorseSurgeryData.lowerRealization_two_injective` (6091-6108) -> 5160
+- `ManifoldMorse.MorseSurgeryData.exists_indexTwoHomology_split` (6109-6125) -> 5178
+- `ManifoldMorse.MorseSurgeryData.exists_indexTwoBasis_extension` (6126-6150) -> 5195
+- `ManifoldMorse.SurgeryWindows.indexTwoBasis_step` (6151-6185) -> 5220
+- `ManifoldMorse.SurgeryWindows.indexTwoBasis` (6186-6209) -> 5255
+- `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass` (6210-6216) -> 5279
+- `ManifoldMorse.MorseSurgeryData.coreBoundary_two_eq_smul` (6217-6229) -> 5286
+- `ManifoldMorse.MorseSurgeryData.coreBoundary_two_range` (6230-6257) -> 5299
+- `ManifoldMorse.MorseSurgeryData.indexThree_lowerRealization_surjective` (6258-6272) -> 5327
+- `ManifoldMorse.MorseSurgeryData.indexThree_lowerRealization_kernel` (6273-6280) -> 5342
+- `ManifoldMorse.MorseSurgeryData.indexThreePresentation` (6281-6293) -> 5350
+- `ManifoldMorse.SurgeryWindows.middlePresentation` (6294-6314) -> 5363
+- `ManifoldMorse.SurgeryWindows.middleMatrix` (6405-6412) -> 5384
+- `AdaptedWindows.exists_ordered_middle_family` (6447-6492) -> 5392
+
+### Rows that stay (23, all CHARGED: statement or proof mentions `SixSphere`/`homotopySixSphere`)
+
+- `exists_smooth_nullhomotopy_of_homotopySixSphere` (2846-2861)
+- `exists_smooth_disk_extension_of_homotopySixSphere` (2862-2878)
+- `exists_embedded_disk_of_homotopySixSphere` (2879-2894)
+- `MorseCancellation.exists_disk_in_level_basin_of_index_cut` (2895-2941)
+- `MorseCancellation.exists_actual_regular_level_disk_of_index_cut` (2942-2980)
+- `MorseCancellation.exists_embedded_regular_level_disk_of_index_cut` (3035-3077)
+- `MorseCancellation.exists_native_middle_level_circle_disk` (3078-3122)
+- `MorseCancellation.exists_native_middle_level_circle_isotopy` (3123-3180)
+- `MorseCancellation.exists_equal_level_circle_isotopy` (3181-3239)
+- `MorseCancellation.exists_new_attaching_circle_placement` (3240-3301)
+- `MorseCancellation.exists_handle_trade_transverse_level_data` (3302-3377)
+- `MorseCancellation.cancel_one_two_pair_at_preserved_middle_cut` (3556-3632)
+- `MorseCancellation.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum` (3777-3820)
+- `MorseCancellation.exists_one_to_three_handle_trade` (3821-3909)
+- `MorseCancellation.exists_one_to_three_handle_trade_at_cut` (3910-3960)
+- `MorseCancellation.exists_one_to_three_handle_trade_of_ordered_indices` (3961-3988)
+- `MorseCancellation.outer_index_minimal_index_one_count_zero` (4049-4096)
+- `MorseCancellation.outer_index_minimal_outer_counts_zero` (4097-4145)
+- `MorseCancellation.exists_minimal_ordered_morse_system_without_outer_indices` (4146-4172)
+- `ManifoldMorse.SurgeryWindows.lastLower_homology_subsingleton` (6315-6346)
+- `ManifoldMorse.SurgeryWindows.upper_homology_subsingleton_of_later_indices` (6347-6404)
+- `ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_homotopySphere` (6413-6434)
+- `ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_complete_blocks` (6435-6446)
+
+No FREE row is blocked any more: the 55 rows the dependency closure had tied to `DiskOnePointCollapse.collapse` moved with it.
+
+### Build (worktree `/home/goblin/hopf-wt-spheretop2`, full chain, commit `079b628c`)
+
+First attempt failed only on the `Hopf/LibShims.lean` export aliases (`Unknown identifier
+`PeriodTorusHigherHomology.singularHomologyMap_comp`` and friends, plus cascaded `change`/type
+mismatch errors in rows unfolding those definitions); after the qualifier retargets above:
+
+```
+lake build Lib
+Build completed successfully (8839 jobs).
+lake build Solution S6Shortcuts S6 Challenge
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (8878 jobs).
+python3 scripts/lib_stock_census.py --check
+ratchet PASS: 154 <= baseline 1648
+python3 scripts/lib_stock_census.py --by-file | grep SphereTopology
+Hopf/SphereTopology.lean                     23  MorseCancellation:16, ManifoldMorse:4, =exists_smooth_nullhomotopy_of_homotopySixSphere:1, =exists_smooth_disk_extension_of_homotopySixSphere:1, =exists_embedded_disk_of_homotopySixSphere:1
+```
