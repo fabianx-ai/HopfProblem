@@ -100,3 +100,41 @@ Moving these means pure-moving lane-C/J material (the first move attempt
 dragged 28 Specialization declarations before this was stopped and reverted).
 They are next after the C/J owner lands those clusters in Lib, or with the
 owner's blessing to move them as part of lane I.
+
+## Wang landing attempt 2 (2026-09-13, post-rename): reverted; CHARGED boundary reached
+
+Second full attempt to land `Lib/Topology/MappingTorus/Wang.lean`, this time
+keeping the `Mathoverflow1973` wrapper (pure move, no concurrent shim or
+wrapper surgery). Tooling: family-closure mover driven by build errors, plus
+HEAD-order topological re-sort of the target file (needed: per-round appending
+inverts declaration order and Lean resolves bare names through the current
+declaration's own namespace path, so order is load-bearing).
+
+What was proven before the revert:
+
+- The seed families move cleanly: 115 `PassageHomology.*`/`MappingTorusHomology.*`
+  declarations from `Hopf/SingularHomology.lean` and `Hopf/LCP/IntegralHomology.lean`.
+- The closure then pulls, in order: `PartialChart`, `Elliptic.HigherHomology.
+  MappingTorusQuotient`, `Elliptic.CyclicAction`, `Elliptic.FiniteQuotient`
+  (wrapping `Elliptic.HigherHomology` wholesale, 402 + 280 declarations),
+  then the period-structure universe from `Hopf/LCP/LocalModels.lean` and
+  `Hopf/FiniteCore.lean`: `PeriodPoint`, `PeriodDomain`, `Lattice`,
+  `LatticeMatrix`, `T₁`/`T₂`/`A₁`/`A₂`, `standardLattice`, `ComplexPlane₂`,
+  `columnLattice`, and finally `SpecialPeriods.*`.
+
+That last step is the wall. `SpecialPeriods.Threefold.*` is project vocabulary
+(CHARGED per `lean-protocol.md`); a Wang `Lib/` file cannot contain it, and the
+Wang sequence code as written references it. The obstruction is therefore not
+mechanical but classificatory: landing Wang as a pure move requires first
+splitting the period-structure cluster into a FREE core (abstract lattice with
+automorphisms, the `T₁`/`T₂`/`A₁`/`A₂` gluing data, `PeriodPoint` Mobius
+steps) and a CHARGED shell (`SpecialPeriods.Threefold` instantiations). That
+split is a generalize-then-move item needing the textbook file, not a pure
+move, and belongs to the owner's sequencing.
+
+Also recorded for whoever retries: alias spellings (`FirstHurewicz.X` for
+`SingularChains.X`, `PeriodTorusHigherHomology.X` for `SingularHomology.X`)
+are shim artifacts and must be rewritten to true names at the move boundary;
+standalone `@[...]` attribute lines must travel with their declaration (the
+mover's doc-comment/`attribute ... in` upward walk misses them; 398 lines had
+to be re-anchored in the attempt).
