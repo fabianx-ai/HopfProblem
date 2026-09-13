@@ -13,11 +13,14 @@ Old items 1 (C10) is landed. Old items 2–7 stand. New first:
 
 ## Lane C — in this order, branches `lib/C-<n>-<slug>` off the head above
 
-1. **Bring the record to the code.** `Lib/reports/C.md` §"Open items" and
-   `Lib/reports/C-handoff.md` still say the round trips and the equivalence are not landed;
-   ten commits after `63ef708` landed them. Rewrite both to the head: what landed (with the
-   names as they are now), what remains, which seat (Kimi seat models or Devin) did which
-   commits. A report that lags its code is the defect the protocol exists to prevent.
+1. **Bring the record to the code — done in 88bdcc73, one remainder.** `Lib/reports/C.md`
+   now says C10 and C13 are landed and the hand-off is historical; the twelve documented files
+   are merged (docstrings only, code identical). Remainder: the record still cites pre-rename
+   names (`Lib/docs/C.md` 28, `Lib/reports/C.md` 7, `C-INTERFACE_RECEIPT.md` 4; the map is
+   `Lib/reports/RENAMES.md`), and the receipt was taken at your branch head `1a313843`, not
+   at the integrated head. Re-take it at the head above with the current names, and name the
+   reviewer of `C-STAGE2-REVIEW.md` if it can be established, otherwise leave it marked
+   recovered.
 2. **C13**: the general `sphere_homotopicRel_of_topClass_eq` is in `HopfDegree.lean`; the
    pinned `n = 6` versions are still declared in `Hopf/Recognition.lean` (lines ~978, ~1009).
    Re-derive them as one-line instantiations, delete the pinned proofs, statements unchanged,

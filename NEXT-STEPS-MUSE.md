@@ -30,10 +30,14 @@ input landed), and GLM's renames. Full chain green. Review: `Lib/reviews/INTEGRA
 1. **Receipts at the new head** for J, E2, F, G: probes compiled from files *in the tree*
    (`Lib/docs/<lane>_InterfaceCheck.lean`, deleted before the commit), not from `/tmp`;
    the receipt names the path and the head. Update the ledgers' names in the same commit.
-2. **Independent reviews.** `G-stage2-review.md` is a self-review and the three J Axis-5
-   reviews are by your own seat; the protocol needs a different seat. The owner assigns the
-   reviewer; until then a packet is DRAFT, not GO. J-A's Lean is landed and green regardless;
-   its review record is what is missing.
+2. **Independent reviews — partly in place.** Astra's Stage-2 reviews are in the tree:
+   G twice (`G-stage2-astra-review.md`, `G-stage2-astra-review2.md`), E2 once
+   (`E2-stage2-astra-review.md`); all three say NO-GO as written with findings still open.
+   Close the open findings one by one in `G.md` / `E2.md` and get Astra's closing pass with
+   a GO line at the current head; only then the Axis-5 review of the typed ledger, by Astra
+   again, at the current head with the current names (`G.md` cites 308 pre-rename names
+   after your expansion). J's three Axis-5 reviews are still by your own seat; J-A's Lean is
+   landed and green regardless, its review record is what is missing.
 3. **J**: J-B2.., J-C2, J-C3 (the coherence laws now import from `CrossProduct.lean`), then
    J-D, J-E per `J.md`, product at `(1, n)`.
 4. **E2 refactor** from the split files at `2k+1 ≤ n`, per `E2.md`; the classical `2k ≤ n`

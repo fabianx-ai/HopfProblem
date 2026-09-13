@@ -154,3 +154,24 @@ Devin's), and whether `Suspension.topSus` is renamed now or with the wrapper rem
 
 Numbers the seats' reports must carry forward: `Hopf/Hurewicz.lean` 423 lines; `Hopf/`
 13,860 declarations (1,229 fewer than the base); `Lib/` 98 modules; census 2,663.
+
+## 6. Addendum, same day: second pass (Kimi docstrings and C record, Devin's Astra reviews)
+
+Integrated on top of bd21441d:
+
+- `lib/C-10-boundary` 2bde1149..88bdcc73 (13 commits, Kimi seat, based on the pre-rename
+  head): docstrings, section headers and module overviews in twelve `Lib` files, plus
+  `Lib/docs/C.md`, `C-INTERFACE_RECEIPT.md`, `C-STAGE2-REVIEW.md`, `Lib/reports/C.md`,
+  `C-handoff.md`. The twelve Lean files were taken from the branch and the rename map
+  replayed on them (99 references); comment-stripped text is identical to bd21441d in every
+  file, so no proof term or statement changed. The C record now says C10 and C13 are landed
+  and marks the hand-off historical (§3 Kimi 1 closed). Open: the receipt was taken at the
+  branch head `1a313843` with pre-rename names (4 citations; `C.md` 28, `reports/C.md` 7);
+  the Stage-2 review is a recovered artifact whose reviewer is not recorded; the receipt's
+  "coordinating reviewer" is Devin, the same seat as the last ten C commits.
+- `lib/textbook-extraction-devin` 699d1a4a..8e4a8510 (5 commits, documentation only):
+  Astra's Stage-2 reviews of G (two passes, at 699d1a4a and bd9c3936) and E2 (at 6bcd99d1),
+  each "NO-GO as written" with repairs applied by Muse between passes and findings still open;
+  `G.md` expanded by about 1,100 lines. Reviewer named as "astra (Devin)", stated independent
+  of Muse. E2 and G stay DRAFT. `G.md` now cites 308 pre-rename names.
+- Build of the result (10dfe126): `lake build Lib` exit 0, consumers exit 0, 8,834 jobs, 03:35–03:48 on 2026-09-13; census 2,663 unchanged; no placeholder. Verdict unchanged: GO for the head; E2 and G remain DRAFT until Astra's closing pass.

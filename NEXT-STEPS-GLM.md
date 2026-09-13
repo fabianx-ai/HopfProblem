@@ -9,6 +9,11 @@ Devin's J/F landings are in the same head; full chain green. Review:
 `Lib/reviews/INTEGRATION-2.md` §3 "GLM". Start every new branch from this head, not from an
 older fork state (§3 GLM 1).
 
+Seat note (2026-09-13): this seat is run by Devin/Astra while GLM is paused. Ownership of the
+lanes is unchanged; commit as the seat and name the model in the report. Because Astra also
+reviews the Muse packets (E2, F, G, J), this seat does not author any of those four lanes, and
+the Muse seat does not review E1, I or H.
+
 Settled: SurgeryWindows is split (old item 0 done). The coherence declarations are in
 `CrossProduct.lean` (old item 6 done, minus the two Pontryagin declarations that are lane
 J's). Renames landed for `Smale`, `NoExotic`, `Degree`, `MorseCancel`,
