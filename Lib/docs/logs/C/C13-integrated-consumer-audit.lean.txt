@@ -1,0 +1,5 @@
+import Solution
+#print axioms Mathoverflow1973.sphere_homotopicRel_of_topClass_eq
+#print axioms Mathoverflow1973.Sphere.homotopic_id_of_topClass
+#print axioms Mathoverflow1973.threefoldHomotopyEquiv
+#print axioms Mathoverflow1973.mathoverflow_1973

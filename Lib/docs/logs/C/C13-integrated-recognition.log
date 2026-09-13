@@ -1,0 +1,153 @@
+CMD: PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake build Hopf.Recognition
+start 04:02:04 epoch 1789264924
+⚠ [8731/8813] Replayed Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1399:56: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1415:57: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1535:81: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1784:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [8732/8813] Replayed Lib.AlgebraicTopology.Hurewicz.Straightening
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:799:6: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:835:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8734/8813] Replayed Lib.AlgebraicTopology.Hurewicz.CubeSphere
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:583:32: This simp argument is unused:
+  Submodule.coe_sub
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Submodule.coe_add, Hurewicz.cubeCycle_val, map_sub, hWextra]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:790:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:798:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8738/8813] Replayed Lib.AlgebraicTopology.Hurewicz.HopfDegree
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:85:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+✔ [8772/8813] Built Lib.LinearAlgebra.ExteriorPower.MinorCoordinates (1.9s)
+✔ [8773/8813] Built Lib.AlgebraicTopology.SingularHomology.LocalContributions (5.0s)
+✔ [8774/8813] Built Lib.LinearAlgebra.Matrix.TransvectionReduction (8.4s)
+✔ [8775/8813] Built Lib.Topology.Homotopy.LocalCollapse (8.5s)
+✔ [8776/8813] Built Lib.AlgebraicTopology.SingularHomology.Torus (8.7s)
+✔ [8777/8813] Built Lib.AlgebraicTopology.SingularHomology.Pontryagin (8.9s)
+✔ [8778/8813] Built Lib.AlgebraicTopology.SingularHomology.Naturality (9.9s)
+✔ [8779/8813] Built Lib.Algebra.Module.IntegerPresentation (9.0s)
+✔ [8780/8813] Built Lib.Topology.MappingTorus.Basic (11s)
+✔ [8781/8813] Built Lib.Analysis.Complex.SquareRoot (11s)
+✔ [8782/8813] Built Lib.AlgebraicTopology.SingularHomology.PathClass (11s)
+✔ [8783/8813] Built Lib.AlgebraicTopology.FundamentalGroup.VanKampen (13s)
+✔ [8784/8813] Built Lib.Analysis.Complex.Cousin (15s)
+✔ [8785/8813] Built Lib.Analysis.ODE.SmoothFlow (17s)
+✔ [8786/8813] Built Lib.Topology.MappingTorus.HomologyCover (6.7s)
+✔ [8787/8813] Built Lib.Geometry.Manifold.Morse.Existence (20s)
+✔ [8788/8813] Built Lib.Geometry.Manifold.WhitneyEmbedding (11s)
+✔ [8789/8813] Built Lib.Geometry.Manifold.VectorBundle.ProjectionBundle (6.0s)
+✔ [8790/8813] Built Lib.Geometry.Manifold.Collar (19s)
+✔ [8791/8813] Built Lib.Topology.Homotopy.CellAttachment (8.7s)
+✔ [8792/8813] Built Hopf.LibShims (3.4s)
+✔ [8793/8813] Built Lib.Geometry.Manifold.Morse.CellStructure (7.2s)
+✔ [8794/8813] Built Lib.Geometry.Manifold.Morse.SurgeryWindows (16s)
+✔ [8795/8813] Built Lib.Geometry.Manifold.Morse.Cancellation (29s)
+✔ [8796/8813] Built Lib.Geometry.Manifold.Transversality.Basic (15s)
+✔ [8797/8813] Built Lib.Geometry.Manifold.Immersion.Relative (27s)
+✔ [8798/8813] Built Lib.Geometry.Manifold.Morse.Rearrangement (17s)
+✔ [8799/8813] Built Hopf.DifferentialTopology (3.9s)
+✔ [8800/8813] Built Hopf.SingularHomology (134s)
+✔ [8801/8813] Built Hopf.SphereTopology (86s)
+⚠ [8802/8813] Built Hopf.Hurewicz (4.4s)
+warning: Hopf/Hurewicz.lean:343:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+✔ [8803/8813] Built Hopf.FiniteCore (5.5s)
+✔ [8804/8813] Built Hopf.Shortcuts (3.0s)
+✔ [8805/8813] Built Hopf.LCP.LocalModels (36s)
+✔ [8806/8813] Built Hopf.LCP.CuspFilling (47s)
+✔ [8807/8813] Built Hopf.LCP.Specialization (37s)
+✔ [8808/8813] Built Hopf.LCP.PeriodConstruction (54s)
+✔ [8809/8813] Built Hopf.LCP.AnalyticFillings (33s)
+✔ [8810/8813] Built Hopf.LCP.GlobalAssembly (25s)
+✔ [8811/8813] Built Hopf.LCP.BoundaryTopology (70s)
+✔ [8812/8813] Built Hopf.LCP.IntegralHomology (82s)
+✔ [8813/8813] Built Hopf.Recognition (46s)
+Build completed successfully (8813 jobs).
+exit 0
+end 04:16:05 epoch 1789265765

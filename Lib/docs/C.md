@@ -1243,7 +1243,7 @@ signatures are in the current Axis-5 section above and `Lib/reports/C.md`.
    reviewer checks it is wanted at that generality.
 7. **`GenLoop` naming.** The code uses un-namespaced `GenLoop (Fin n) X x`; confirm against
    pinned Mathlib (`HomotopyGroup.GenLoop`) at the rename commit.
-8. **Review.** Stage-2 independent review of sections 1–16: done (`~/s6-notes/C-review.md`);
+8. **Review.** Stage-2 independent review of sections 1–16: done (`logs/C/C-review.md`);
    one blocker (the false `π_{n-1}(S^{n-2}) = 0` citation — repaired by the constancy
    argument) and six corrections (the two-ball cut lemma at its natural generality with the
    boundary-preserving isotopy; the wedge-of-cubes homology slip repaired by the pair

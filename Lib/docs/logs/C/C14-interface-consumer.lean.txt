@@ -1,0 +1,56 @@
+import C14_InterfaceCheck
+noncomputable section
+open Mathoverflow1973 Topology
+#check @C14_InterfaceCheck.homotopyMap
+#check @C14_InterfaceCheck.cubeChain_natural
+#check @C14_InterfaceCheck.cubeCycle_natural
+#check @C14_InterfaceCheck.cubeHomologyClass_natural
+#check @C14_InterfaceCheck.hurewiczFunction_natural
+#check @C14_InterfaceCheck.hurewiczMap_natural
+#check @C14_InterfaceCheck.hurewiczLinearEquiv_natural
+#check @C14_InterfaceCheck.hurewiczLinearEquivOfTwoLE_natural
+#check @C14_InterfaceCheck.singularHomology_one_subsingleton
+#check @C14_InterfaceCheck.subsingleton_singularHomology_of_lt
+
+example {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    [SimplyConnectedSpace X] [SimplyConnectedSpace Y] (f : C(X, Y)) (x : X) :
+    letI : Nontrivial (Fin 2) := Fin.nontrivial_iff_two_le.mpr (by decide)
+    ∀ a : Additive (π_ 2 X x),
+      SingularMayerVietoris.singularHomologyMap f 2
+          (Hurewicz.hurewiczLinearEquivOfTwoLE x 2 (by decide)
+            (by intro j hj hjn; omega) a) =
+        Hurewicz.hurewiczLinearEquivOfTwoLE (f x) 2 (by decide)
+          (by intro j hj hjn; omega)
+          ((Hurewicz.homotopyMap f x).toAdditive a) :=
+  C14_InterfaceCheck.hurewiczLinearEquivOfTwoLE_natural f x 2 (by decide)
+    (by intro j hj hjn; omega) (by intro j hj hjn; omega)
+
+example {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    [SimplyConnectedSpace X] [SimplyConnectedSpace Y] (f : C(X, Y)) (x : X)
+    [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)]
+    [Subsingleton (π_ 4 X x)] [Subsingleton (π_ 5 X x)]
+    [Subsingleton (π_ 2 Y (f x))] [Subsingleton (π_ 3 Y (f x))]
+    [Subsingleton (π_ 4 Y (f x))] [Subsingleton (π_ 5 Y (f x))] :
+    letI : Nontrivial (Fin 6) := Fin.nontrivial_iff_two_le.mpr (by decide)
+    ∀ a : Additive (π_ 6 X x),
+      SingularMayerVietoris.singularHomologyMap f 6
+          (Hurewicz.hurewiczLinearEquivOfTwoLE x 6 (by decide)
+            (by intro j hj hjn; interval_cases j <;> infer_instance) a) =
+        Hurewicz.hurewiczLinearEquivOfTwoLE (f x) 6 (by decide)
+          (by intro j hj hjn; interval_cases j <;> infer_instance)
+          ((Hurewicz.homotopyMap f x).toAdditive a) :=
+  C14_InterfaceCheck.hurewiczLinearEquivOfTwoLE_natural f x 6 (by decide)
+    (by intro j hj hjn; interval_cases j <;> infer_instance)
+    (by intro j hj hjn; interval_cases j <;> infer_instance)
+
+example {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    [Subsingleton (π_ 2 X x)] :
+    Subsingleton (SingularMayerVietoris.SingularHomology X 1) :=
+  C14_InterfaceCheck.subsingleton_singularHomology_of_lt x 3
+    (by intro j hj hjn; interval_cases j <;> infer_instance) 1 (by decide) (by decide)
+
+example {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    [Subsingleton (π_ 2 X x)] :
+    Subsingleton (SingularMayerVietoris.SingularHomology X 2) :=
+  C14_InterfaceCheck.subsingleton_singularHomology_of_lt x 3
+    (by intro j hj hjn; interval_cases j <;> infer_instance) 2 (by decide) (by decide)

@@ -1,0 +1,7 @@
+import Lib.AlgebraicTopology.Hurewicz.Naturality
+open Lean in
+run_cmd do
+  let env ← getEnv
+  for (name, _) in env.constants.toList do
+    if (`Mathoverflow1973.SecondHurewicz).isPrefixOf name && !name.isInternal then
+      logInfo m!"{name}"

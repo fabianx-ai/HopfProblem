@@ -50,7 +50,7 @@ PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean -o C_Interf
 ```
 
 Exit **0**. Wall time **5 seconds**, epoch `1789264797` to `1789264802`.
-Actual output: `/home/kimi/s6-notes/C-interface-integrated-provider.log`.
+Actual output: `logs/C/C-interface-integrated-provider.log`.
 
 ## Importing consumer
 
@@ -78,7 +78,7 @@ Exit **0**. Successful run wall time **4 seconds**, epoch `1789264808` to `17892
 (Historical: in the `1a31384` receipt an initial consumer attempt omitted
 `noncomputable section`; the corrected source shown above was already in place for this run.)
 Actual printed types and exit status:
-`/home/kimi/s6-notes/C-interface-integrated-consumer.log`.
+`logs/C/C-interface-integrated-consumer.log`.
 
 ## Durable consumers and cleanup
 
@@ -89,8 +89,8 @@ Actual printed types and exit status:
 - `lake build Hopf.Recognition` passed after the mathematical changes and after both rename
   units. These are actual downstream import-boundary checks, not same-file `#check`s.
 - Both disposable probe sources and the generated local provider `.olean` were removed
-  after full copies were preserved as `/home/kimi/s6-notes/C-interface-integrated-provider.lean`
-  and `/home/kimi/s6-notes/C-interface-integrated-consumer.lean`.
+  after full copies were preserved as `logs/C/C-interface-integrated-provider.lean.txt`
+  and `logs/C/C-interface-integrated-consumer.lean.txt`.
   No temporary `axiom`, `sorry`, or challenge declaration was used in these probes.
 - After cleanup the only untracked file was the repository-level `AGENTS.md` provided by the
   environment; there were no Lean source changes or probe artifacts.

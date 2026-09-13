@@ -1,0 +1,6 @@
+CMD: lake env lean C_FinalConsumerAudit.lean
+start 03:14:50 epoch 1789262090
+'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit 0
+end 03:14:53 epoch 1789262093

@@ -1,0 +1,8 @@
+CMD: lake env lean ProbeC13Consumer.lean
+START: 1789253887 Sun Sep 13 00:58:07 CEST 2026
+'Mathoverflow1973.Degree.sphere_homotopicRel_of_topClass_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.Sphere.homotopic_id_of_topClass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.right_inverse_is_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+END: 1789253890 Sun Sep 13 00:58:10 CEST 2026
+EXIT: 0

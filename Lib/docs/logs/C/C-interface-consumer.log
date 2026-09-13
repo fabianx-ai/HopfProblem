@@ -1,0 +1,88 @@
+CMD: LEAN_PATH=.:$LEAN_PATH lake env lean C_InterfaceConsumerCheck.lean
+start 02:57:38 epoch 1789261058
+C_InterfaceCheck.C1 : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↑(HomologicalComplex.homology (SingularChains.singularComplex X) 1) →ₗ[ℤ]
+          ↑(HomologicalComplex.homology (SingularChains.singularComplex Y) n) →ₗ[ℤ]
+            ↑(HomologicalComplex.homology (SingularChains.singularComplex (X × Y)) (n + 1))
+@C_InterfaceCheck.C2 : {n : ℕ} → Equiv.Perm (Fin n) → C(↑(SingularChains.Simplex n), Hurewicz.CubeTriangulation.CubeN n)
+C_InterfaceCheck.C3 : (n : ℕ) → ↑(SingularChains.Simplex n) ≃ₜ (Fin n → ↑unitInterval)
+@C_InterfaceCheck.C4 : {n : ℕ} →
+  {X : Type u_1} →
+    [inst : TopologicalSpace X] →
+      (f : C(↑(SingularChains.Simplex n), X)) →
+        (h : C(↑unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X)) →
+          (∀ (s : SecondHurewicz.SimplyConnected.SimplexBoundary n), h (0, s) = f ↑s) →
+            C(↑unitInterval × ↑(SingularChains.Simplex n), X)
+@C_InterfaceCheck.C5 : {X : Type} →
+  [inst : TopologicalSpace X] →
+    (n : ℕ) →
+      (SingularChains.SingularSimplex X n → C(↑unitInterval × ↑(SingularChains.Simplex n), X)) →
+        ↑(SingularChains.Chains X n) →ₗ[ℤ] ↑(SingularChains.Chains X (n + 1))
+C_InterfaceCheck.C6 : ∀ (n : ℕ) {X : Type} [inst : TopologicalSpace X] {x : X} (p : ↑(GenLoop (Fin n) X x)),
+  Hurewicz.cubeChain p =
+    ∑ e,
+      Hurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X n ((↑p).comp (Hurewicz.CubeTriangulation.cubeSimplex e))
+@C_InterfaceCheck.C7 : {X : Type} →
+  [inst : TopologicalSpace X] →
+    [SimplyConnectedSpace X] →
+      (x : X) →
+        (n : ℕ) →
+          (∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j X x)) →
+            SingularChains.SingularSimplex X n → C(↑unitInterval × ↑(SingularChains.Simplex n), X)
+@C_InterfaceCheck.C8 : ∀ {n : ℕ} [inst : Nontrivial (Fin n)] {X : Type u_1} [inst_1 : TopologicalSpace X] {x : X}
+  (p : ↑(GenLoop (Fin n) X x)) (hp : Hurewicz.NativeSubdivision.NativeCubeInternalBased p),
+  Additive.ofMul ⟦p⟧ =
+    ∑ e,
+      Hurewicz.CubeTriangulation.cubeOrientation e •
+        Hurewicz.SimplexGeometry.basedSimplexClass (Hurewicz.NativeSubdivision.nativeBasedCubeSimplex p hp e)
+@C_InterfaceCheck.C9 : {n : ℕ} →
+  {X : Type} →
+    [inst : TopologicalSpace X] →
+      {x : X} →
+        (H₀ : C(↑(SingularChains.Simplex n), X) → C(↑unitInterval × ↑(SingularChains.Simplex n), X)) →
+          (H₁ : C(↑(SingularChains.Simplex (n + 1)), X) → C(↑unitInterval × ↑(SingularChains.Simplex (n + 1)), X)) →
+            SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁ →
+              H₀ (ContinuousMap.const (↑(SingularChains.Simplex n)) x) =
+                  ContinuousMap.const (↑unitInterval × ↑(SingularChains.Simplex n)) x →
+                ↑(GenLoop (Fin (n + 1)) X x) → ↑(GenLoop (Fin (n + 1)) X x)
+@C_InterfaceCheck.C10 : {X : Type} →
+  [inst : TopologicalSpace X] →
+    [SimplyConnectedSpace X] →
+      (x : X) →
+        (n : ℕ) →
+          (hn : 2 ≤ n) →
+            (∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j X x)) →
+              Additive (π_ n X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X n)
+@C_InterfaceCheck.C11 : {n : ℕ} →
+  0 < n →
+    {X : Type u_1} →
+      [inst : TopologicalSpace X] → {x : X} → ↑(GenLoop (Fin n) X x) → C(↑(Degree.SphereCube.Sphere n), X)
+@C_InterfaceCheck.C12 : ∀ {V X : Type} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V] [FiniteDimensional ℝ V]
+  [inst_3 : TopologicalSpace X] [PathConnectedSpace X] {d : ℕ},
+  (∀ (n : ℕ), 0 < n → n < d → ∀ (x : X), Subsingleton (π_ n X x)) →
+    Module.finrank ℝ V + 1 ≤ d →
+      ∀ (f g : C(↑Degree.DiskCylinder.Disk, X)) (H : C(↑unitInterval × ↑Degree.DiskCylinder.Sphere, X)),
+        (∀ (s : ↑Degree.DiskCylinder.Sphere), H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s)) →
+          (∀ (s : ↑Degree.DiskCylinder.Sphere), H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) →
+            ∀ (x : X),
+              ∃ G,
+                (∀ (z : ↑Degree.DiskCylinder.Disk), G (0, z) = f z) ∧
+                  (∀ (z : ↑Degree.DiskCylinder.Disk), G (1, z) = g z) ∧
+                    ∀ (t : ↑unitInterval) (s : ↑Degree.DiskCylinder.Sphere),
+                      G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s)
+@C_InterfaceCheck.C13 : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X] [SimplyConnectedSpace X] {x : X},
+  (∀ (j : ℕ), 2 ≤ j → j < m + 2 → Subsingleton (π_ j X x)) →
+    ∀ (f g : C(↑(Degree.SphereCube.Sphere (m + 2)), X)),
+      f (Degree.SphereCube.point (m + 2)) = x →
+        g (Degree.SphereCube.point (m + 2)) = x →
+          (SingularMayerVietoris.singularHomologyMap f (m + 2))
+                (Hurewicz.cubeHomologyClass (Degree.SphereCube.quotientLoop (m + 2))) =
+              (SingularMayerVietoris.singularHomologyMap g (m + 2))
+                (Hurewicz.cubeHomologyClass (Degree.SphereCube.quotientLoop (m + 2))) →
+            f.HomotopicRel g {Degree.SphereCube.point (m + 2)}
+exit 0
+end 02:57:41 epoch 1789261061
