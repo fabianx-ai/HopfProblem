@@ -63,3 +63,26 @@ root-name collisions across 79 files — the hard part works):
   Historical names remain in the record; this ledger carries the rename map.
 
 Record fixes: GLM seat, run by Devin/Astra, based on upstream `37fc1de8`.
+
+## Current-tree name confirmations (2026-09-13, GLM seat run by Devin/Astra)
+
+Checked against pinned Mathlib `db584cd6d46c92f209a44c0f1c829460d327499d`.
+The earlier entries labelled `new` describe proposed destinations, not proof
+that those files exist in Mathlib. Each confirmation below records the actual
+existing reference and leaves representation/API generalization separate.
+
+### SingularMayerVietoris — retain the family name
+
+Existing reference: `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean`,
+which defines `AlgebraicTopology.singularChainComplexFunctor` and
+`singularHomologyFunctor`. The local extension is
+`Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean`: its two-open-cover
+sequence and exactness API are specifically singular Mayer–Vietoris, so the
+family name remains informative. The proposed upstream destination is
+`Mathlib/AlgebraicTopology/SingularHomology/MayerVietoris.lean`, not an
+already-existing file. No replacement theorem in the reference is asserted.
+
+Decision: confirm `SingularMayerVietoris`; no rename, statement or proof change.
+Receipt: census **2,287 → 2,287**, prefix list unchanged; this commit changes
+only this ledger. Module/public-section and coefficient generalization are
+separate upstream-alignment work, not implied by name confirmation.
