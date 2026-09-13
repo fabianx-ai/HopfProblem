@@ -7,7 +7,7 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # The Morse lemma and the signed Morse chart
