@@ -21,7 +21,7 @@ public import Lib.Geometry.Manifold.Morse.SublevelSets
 public import Lib.Geometry.Manifold.Morse.Index
 public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Collars of regular levels and level transport
