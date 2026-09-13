@@ -53,6 +53,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Handle ball coordinates -/
+
+/-- The unit ball homeomorphism of a handle chart. -/
 def MorseHandle.unitBallHomeomorph (N : Type*) [NormedAddCommGroup N] :
     PuncturedHandle.UnitBall N ≃ₜ UnitDisk N
     where
@@ -64,6 +67,7 @@ def MorseHandle.unitBallHomeomorph (N : Type*) [NormedAddCommGroup N] :
   continuous_invFun := continuous_subtype_val.subtype_mk _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The ball coordinates of a signed Morse chart's handle. -/
 def ManifoldMorse.SignedMorseChart.handleBallCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
@@ -75,6 +79,7 @@ def ManifoldMorse.SignedMorseChart.handleBallCoordinates {E M : Type*}
     (MorseHandle.unitBallHomeomorph c.PositiveCoordinates)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The handle map of a signed chart in norm coordinates. -/
 def ManifoldMorse.SignedMorseChart.normHandleMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -89,6 +94,7 @@ def ManifoldMorse.SignedMorseChart.normHandleMap {E M : Type*} [NormedAddCommGro
     (c.attachingHandleMap ρ hρ hblock).continuous.comp c.handleBallCoordinates.continuous⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The norm handle map's range. -/
 theorem ManifoldMorse.SignedMorseChart.range_normHandleMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -109,7 +115,10 @@ theorem ManifoldMorse.SignedMorseChart.range_normHandleMap {E M : Type*}
         _
     rw [c.handleBallCoordinates.apply_symm_apply]
 
+/-! ### Attaching maps -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The boundary data of the handle attachment. -/
 def ManifoldMorse.SignedMorseChart.attachmentBoundaryData {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [T2Space M]
@@ -138,6 +147,7 @@ def ManifoldMorse.SignedMorseChart.attachmentBoundaryData {E M : Type*}
     exact c.attachingHandleMap_mem_frontier_iff hf ρ hρ hblock (c.handleBallCoordinates z)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map of the signed chart. -/
 def ManifoldMorse.SignedMorseChart.attachingCoreMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -150,6 +160,7 @@ def ManifoldMorse.SignedMorseChart.attachingCoreMap {E M : Type*} [NormedAddComm
     ⟨fun u => (u, ⟨0, by simp⟩), continuous_id.prodMk continuous_const⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map computes the attaching point. -/
 theorem ManifoldMorse.SignedMorseChart.attachingCoreMap_coe {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -168,6 +179,7 @@ theorem ManifoldMorse.SignedMorseChart.attachingCoreMap_coe {E M : Type*}
   simp
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map is smooth into the ambient manifold. -/
 theorem ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap_ambient {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (n : ℕ)
@@ -212,6 +224,7 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap_ambient {E M :
   simpa [MorseHandle.modelMap] using hh
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map is smooth. -/
 theorem ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [FiniteDimensional ℝ E]
@@ -230,6 +243,9 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap {E M : Type*}
           (c.attachingCoreMap ρ hρ hblock)).mpr
       (c.contMDiff_attachingCoreMap_ambient n ρ hρ hblock)
 
+/-! ### The descent model -/
+
+/-- The quadratic descent flow decreases the height. -/
 theorem MorseHandle.quadratic_descentFlow_lt {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {t : ℝ} (ht : 0 < t) {z : N × P}
     (hz : z ≠ 0) : quadratic (descentFlow t z) < quadratic z := by
@@ -253,6 +269,7 @@ theorem MorseHandle.quadratic_descentFlow_lt {N P : Type*} [NormedAddCommGroup N
     have hu₂ := (sq_lt_sq₀ (norm_nonneg z.1) (norm_nonneg (descentFlow t z).1)).mpr hunorm
     exact add_lt_add_of_lt_of_le (neg_lt_neg hu₂) h₂
 
+/-- The descent flow enters the lower union's interior. -/
 theorem MorseHandle.descentFlow_mem_interior_lower_union_handle {N P : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ t : ℝ}
     (hρ : 0 < ρ) (ht : 0 < t) {z : N × P}
@@ -282,6 +299,7 @@ theorem MorseHandle.descentFlow_mem_interior_lower_union_handle {N P : Type*}
     intro w hw
     exact (mem_lower_union_handle_iff hρ w).mpr (Or.inr hw.le)
 
+/-- The partial chart field is the inverse derivative of the direction. -/
 theorem FlowConstruction.partialChartField_eq_mfderiv_symm {E F M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace M] [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) M F ∞)
@@ -304,6 +322,7 @@ theorem FlowConstruction.partialChartField_eq_mfderiv_symm {E F M : Type*}
   rw [hi]
   rfl
 
+/-- A partial chart curve lifts to a manifold curve. -/
 theorem FlowConstruction.hasMFDerivAt_lift_partialChartCurve {E F M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace M] [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) M F ∞)
@@ -328,6 +347,7 @@ theorem FlowConstruction.hasMFDerivAt_lift_partialChartCurve {E F M : Type*}
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow eventually agrees with the descent model. -/
 theorem ManifoldMorse.SignedMorseChart.eventually_flow_eq_descentModel {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -365,6 +385,7 @@ theorem ManifoldMorse.SignedMorseChart.eventually_flow_eq_descentModel {E M : Ty
       ((hcurve x).isMIntegralCurveAt 0) hγ h₀
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow equals the descent model on the block. -/
 theorem ManifoldMorse.SignedMorseChart.flow_eqOn_descentModel {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -424,6 +445,7 @@ theorem ManifoldMorse.SignedMorseChart.flow_eqOn_descentModel {E M : Type*}
   exact hmem
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow equals the descent model while in the interval. -/
 theorem ManifoldMorse.SignedMorseChart.flow_eq_descentModel_of_mem_uIcc {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -442,6 +464,9 @@ theorem ManifoldMorse.SignedMorseChart.flow_eq_descentModel_of_mem_uIcc {E M : T
   c.flow_eqOn_descentModel hV F hcurve hx isPreconnected_uIcc Set.left_mem_uIcc htarget heq
     Set.right_mem_uIcc
 
+/-! ### Forward invariance and entry -/
+
+/-- A locally forward-invariant set is forward invariant. -/
 theorem FlowConstruction.forwardInvariant_of_local {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hlocal : ∀ x ∈ A, ∃ ε > (0 : ℝ), ∀ t ∈ Set.Icc 0 ε, F t x ∈ A) :
@@ -464,6 +489,7 @@ theorem FlowConstruction.forwardInvariant_of_local {X : Type*} [TopologicalSpace
   rw [add_comm s δ, F.map_add]
   exact hstay δ ⟨hδ.le, hδε⟩
 
+/-- The interior of a forward-invariant set is forward invariant. -/
 theorem FlowConstruction.forwardInvariant_interior {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A) {x : X}
     (hx : x ∈ interior A) {t : ℝ} (ht : 0 ≤ t) : F t x ∈ interior A := by
@@ -473,6 +499,7 @@ theorem FlowConstruction.forwardInvariant_interior {X : Type*} [TopologicalSpace
     exact hforward y (interior_subset hy) t ht
   · exact ⟨x, hx, rfl⟩
 
+/-- The flow enters the interior of a locally absorbing set. -/
 theorem FlowConstruction.interior_entry_of_local {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hlocal : ∀ x ∈ A, ∃ ε > (0 : ℝ), ∀ t ∈ Set.Ioc 0 ε, F t x ∈ interior A) :
@@ -488,6 +515,7 @@ theorem FlowConstruction.interior_entry_of_local {X : Type*} [TopologicalSpace X
   exact hi
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow enters the attaching union locally. -/
 theorem ManifoldMorse.SignedMorseChart.exists_local_attachingUnion_entry {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -535,6 +563,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_local_attachingUnion_entry {E M : 
   exact MorseHandle.descentFlow_mem_interior_lower_union_handle hρ ht.1 hmodel
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching union is forward invariant. -/
 theorem ManifoldMorse.SignedMorseChart.forwardInvariant_attachingUnion {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -579,6 +608,7 @@ theorem ManifoldMorse.SignedMorseChart.forwardInvariant_attachingUnion {E M : Ty
     · exact interior_subset (hentry t ⟨hpos, ht.2⟩)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow enters the attaching union's interior. -/
 theorem ManifoldMorse.SignedMorseChart.interior_entry_attachingUnion {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -625,18 +655,24 @@ theorem ManifoldMorse.SignedMorseChart.interior_entry_attachingUnion {E M : Type
       c.exists_local_attachingUnion_entry hV F hcurve ρ hρ hblock hxsource (hagreement x hx)
         (Or.inr hx)
 
+/-! ### The entry time -/
+
+/-- The entry time of a point into a set under the flow. -/
 def FlowConstruction.entryTime {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (A : Set X)
     (x : X) : ℝ :=
   InfSet.sInf {t : ℝ | 0 ≤ t ∧ F t x ∈ A}
 
+/-- The entry time is nonnegative. -/
 theorem FlowConstruction.entryTime_nonneg {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) : 0 ≤ entryTime F A x :=
   le_csInf hx (fun _ ht => ht.1)
 
+/-- The entry time is bounded by any hitting time. -/
 theorem FlowConstruction.entryTime_le_of_mem {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} {t : ℝ} (ht : 0 ≤ t) (hx : F t x ∈ A) : entryTime F A x ≤ t :=
   csInf_le ⟨0, fun _ hs => hs.1⟩ ⟨ht, hx⟩
 
+/-- The flow at the entry time lies in the closure. -/
 theorem FlowConstruction.flow_entryTime_mem {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} (hA : IsClosed A) {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) :
     F (entryTime F A x) x ∈ A := by
@@ -644,11 +680,13 @@ theorem FlowConstruction.flow_entryTime_mem {X : Type*} [TopologicalSpace X] (F 
     isClosed_Ici.inter (hA.preimage (F.continuous continuous_id continuous_const))
   exact (hclosed.csInf_mem hx ⟨0, fun _ hs => hs.1⟩).2
 
+/-- The entry time is zero exactly on the set. -/
 theorem FlowConstruction.entryTime_eq_zero {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} (hx : x ∈ A) : entryTime F A x = 0 := by
   have hhit : F 0 x ∈ A := by simpa only [F.map_zero_apply] using hx
   exact le_antisymm (entryTime_le_of_mem F le_rfl hhit) (entryTime_nonneg F ⟨0, le_rfl, hhit⟩)
 
+/-- The entry time bound characterizes hitting the set. -/
 theorem FlowConstruction.entryTime_le_iff {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A) {x : X}
     (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ} (ht : 0 ≤ t) : entryTime F A x ≤ t ↔ F t x ∈ A := by
@@ -659,6 +697,7 @@ theorem FlowConstruction.entryTime_le_iff {X : Type*} [TopologicalSpace X] (F : 
     exact hh
   · exact entryTime_le_of_mem F ht
 
+/-- Past the entry time the flow lies in the interior. -/
 theorem FlowConstruction.flow_mem_interior_of_entryTime_lt {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {x : X}
@@ -667,6 +706,7 @@ theorem FlowConstruction.flow_mem_interior_of_entryTime_lt {X : Type*} [Topologi
   rw [← F.map_add, sub_add_cancel] at hh
   exact hh
 
+/-- The entry time of a frontier hit. -/
 theorem FlowConstruction.entryTime_eq_of_flow_mem_frontier {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {x : X} {t : ℝ} (ht : 0 ≤ t)
@@ -677,6 +717,7 @@ theorem FlowConstruction.entryTime_eq_of_flow_mem_frontier {X : Type*} [Topologi
   intro hlt
   exact hfront.2 (flow_mem_interior_of_entryTime_lt F hA hentry ⟨t, ht, hmem⟩ hlt)
 
+/-- The entry time is continuous. -/
 theorem FlowConstruction.continuousOn_entryTime {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {B : Set X}
@@ -708,6 +749,9 @@ theorem FlowConstruction.continuousOn_entryTime {X : Type*} [TopologicalSpace X]
     filter_upwards [eventually_nhdsWithin_of_eventually_nhds hevent] with y hy
     exact (entryTime_le_of_mem F ht₀ (interior_subset hy)).trans_lt htb
 
+/-! ### The entry retraction -/
+
+/-- The retraction sending a point to its entry point. -/
 def FlowConstruction.entryRetraction {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -721,6 +765,7 @@ def FlowConstruction.entryRetraction {X : Type*} [TopologicalSpace X] (F : Flow 
           continuous_subtype_val).subtype_mk
       _
 
+/-- The entry retraction followed by inclusion is the flow to entry. -/
 theorem FlowConstruction.entryRetraction_inclusion {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A B : Set X} (hA : IsClosed A)
     (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
@@ -731,6 +776,7 @@ theorem FlowConstruction.entryRetraction_inclusion {X : Type*} [TopologicalSpace
   change F (entryTime F A x.1) x.1 = x.1
   rw [entryTime_eq_zero F x.2, F.map_zero_apply]
 
+/-- The deformation retract along the flow to the entry set. -/
 def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -769,6 +815,7 @@ def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow
     rw [entryTime_eq_zero F (A := A) (show x.1 ∈ A from hx), MulZeroClass.mul_zero,
       F.map_zero_apply]
 
+/-- The entry set is a deformation retract of the domain. -/
 def FlowConstruction.entryHomotopyEquiv {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -787,6 +834,9 @@ def FlowConstruction.entryHomotopyEquiv {X : Type*} [TopologicalSpace X] (F : Fl
     rw [heq]
   right_inv := ⟨(entryDeformation F hA hforward hentry hhit hsub hregion).toHomotopy.symm⟩
 
+/-! ### Regular band flows -/
+
+/-- A function along an integral curve differentiates to the field derivative. -/
 theorem FlowConstruction.hasDerivAt_comp_integralCurve {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {v : (x : M) → TangentSpace 𝓘(ℝ, E) x} {γ : ℝ → M}
@@ -803,6 +853,7 @@ theorem FlowConstruction.hasDerivAt_comp_integralCurve {E M : Type*} [NormedAddC
       (NormedSpace.fromTangentSpace t r) • (mvfderiv 𝓘(ℝ, E) f (γ t)) (v (γ t))
   exact map_smul _ _ _
 
+/-- A regular band field exists between two regular levels. -/
 theorem FlowConstruction.exists_regularBandField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -834,6 +885,7 @@ theorem FlowConstruction.exists_regularBandField {E M : Type*} [NormedAddCommGro
   obtain ⟨V, hV, hVφ⟩ := exists_prescribedDerivativeField hf hχ hsupp
   exact ⟨φ, W, hφ, hW, hAW, hφW, V, hV, hVφ⟩
 
+/-- A regular band flow exists between two regular levels. -/
 theorem FlowConstruction.exists_regularBandFlow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -855,6 +907,7 @@ theorem FlowConstruction.exists_regularBandFlow {E M : Type*} [NormedAddCommGrou
   rw [hVφ] at hd
   exact hd
 
+/-- The flow fixes points where the field vanishes. -/
 theorem FlowConstruction.flow_fixed_of_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -866,6 +919,7 @@ theorem FlowConstruction.flow_fixed_of_zero {E M : Type*} [NormedAddCommGroup E]
       (t₀ := 0) (F.map_zero_apply x)
   exact congrFun heq t
 
+/-- The flow preserves the regular locus. -/
 theorem FlowConstruction.flow_preserves_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
@@ -880,6 +934,7 @@ theorem FlowConstruction.flow_preserves_regular {E M : Type*} [NormedAddCommGrou
   have hxy : x = F t x := hinv.symm.trans hfix
   exact hx (hxy.symm ▸ hy)
 
+/-- The height is antitone along the descent flow. -/
 theorem FlowConstruction.antitone_flow_height {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -894,6 +949,7 @@ theorem FlowConstruction.antitone_flow_height {E M : Type*} [NormedAddCommGroup 
   · rw [hzero (F t x) ht, map_zero]
   · exact (hdesc (F t x) ht).le
 
+/-- The height is strictly antitone along a nonvanishing descent flow. -/
 theorem FlowConstruction.strictAnti_flow_height {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -905,6 +961,7 @@ theorem FlowConstruction.strictAnti_flow_height {E M : Type*} [NormedAddCommGrou
   strictAnti_of_hasDerivAt_neg (fun t => hasDerivAt_comp_integralCurve hf (hcurve x) t)
     (fun t => hdesc (F t x) (flow_preserves_regular hV F hcurve hzero hx t))
 
+/-- An adapted descent flow exists on a regular region. -/
 theorem FlowConstruction.exists_adaptedDescentFlow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [FiniteDimensional ℝ E] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -934,6 +991,7 @@ theorem FlowConstruction.exists_adaptedDescentFlow {E M : Type*} [NormedAddCommG
       strictAnti_flow_height hf hV₁ F hcurve hzero hdesc hx, fun x =>
       antitone_flow_height hf F hcurve hzero hdesc x⟩
 
+/-- The field derivative of the height is continuous. -/
 theorem FlowConstruction.continuous_mvfderiv_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -944,6 +1002,9 @@ theorem FlowConstruction.continuous_mvfderiv_field {E M : Type*} [NormedAddCommG
   convert hp.snd using 1
   rfl
 
+/-! ### Uniform absorption -/
+
+/-- A uniform negative descent speed exists on a compact regular set. -/
 theorem FlowConstruction.exists_uniform_negative_speed {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -959,6 +1020,7 @@ theorem FlowConstruction.exists_uniform_negative_speed {E M : Type*} [NormedAddC
     simpa only [neg_neg] using hle
   · exact ⟨1, zero_lt_one, fun x hx => False.elim (hne ⟨x, hx⟩)⟩
 
+/-- A uniform residence bound in a regular band exists. -/
 theorem FlowConstruction.exists_uniform_residence_bound {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1001,6 +1063,7 @@ theorem FlowConstruction.exists_uniform_residence_bound {E M : Type*} [NormedAdd
     intro γ _
     exact ⟨0, ⟨le_rfl, zero_le_one⟩, fun h => hne ⟨γ 0, h⟩⟩
 
+/-- A uniform entry time into critical neighborhoods exists. -/
 theorem FlowConstruction.exists_uniform_criticalNeighborhood_entry {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M]
@@ -1031,6 +1094,7 @@ theorem FlowConstruction.exists_uniform_criticalNeighborhood_entry {E M : Type*}
     by_contra hnot
     exact hout ⟨⟨le_of_not_gt hlow, hupper⟩, hnot⟩
 
+/-- A uniform entry time into an absorbing set exists. -/
 theorem FlowConstruction.exists_uniform_absorbing_entry {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] {f : M → ℝ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -1050,6 +1114,7 @@ theorem FlowConstruction.exists_uniform_absorbing_entry {E M : Type*} [NormedAdd
   · exact ⟨t, ht, hlower (show f (F t x) ≤ a from le_of_lt hlow)⟩
   · exact ⟨t, ht, interior_subset hint⟩
 
+/-- An absorbing sublevel is a deformation retract. -/
 theorem FlowConstruction.exists_absorbingSublevelHomotopyEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f : M → ℝ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -1075,6 +1140,7 @@ theorem FlowConstruction.exists_absorbingSublevelHomotopyEquiv {E M : Type*}
   exact ⟨entryHomotopyEquiv F hA hforward hentry hfinite hupper hregion, fun _ => rfl⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching union is a deformation retract of the sublevel. -/
 theorem ManifoldMorse.SignedMorseChart.exists_attachingUnionHomotopyEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
@@ -1126,6 +1192,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_attachingUnionHomotopyEquiv {E M :
       c.interior_entry_attachingUnion hf.continuous hV₁ F hcurve hmono ρ hρ hblock hagreement
         hbottom
 
+/-- The entry time of a flowed point shifts by the flow time. -/
 theorem FlowConstruction.entryTime_flow_of_le {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ}
     (ht : 0 ≤ t) (hle : t ≤ entryTime F A x) : entryTime F A (F t x) = entryTime F A x - t := by
@@ -1139,6 +1206,7 @@ theorem FlowConstruction.entryTime_flow_of_le {X : Type*} [TopologicalSpace X]
   have hb := entryTime_le_of_mem F (add_nonneg (entryTime_nonneg F hy) ht) hh
   linarith
 
+/-- An interior hit bounds the entry time. -/
 theorem FlowConstruction.entryTime_lt_of_flow_mem_interior {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} {x : X} {t : ℝ} (ht : 0 < t) (hx : F t x ∈ interior A) :
     entryTime F A x < t := by
@@ -1149,6 +1217,7 @@ theorem FlowConstruction.entryTime_lt_of_flow_mem_interior {X : Type*} [Topologi
   obtain ⟨s, hst, hs⟩ := he.exists_lt
   exact (entryTime_le_of_mem F hs.1.le (interior_subset hs.2)).trans_lt hst
 
+/-- The entry time adds under a positive flow. -/
 theorem FlowConstruction.entryTime_eq_add_of_flow_pos {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ} (ht : 0 ≤ t)
@@ -1161,6 +1230,9 @@ theorem FlowConstruction.entryTime_eq_add_of_flow_pos {X : Type*} [TopologicalSp
   rw [entryTime_flow_of_le F hA hx ht hle]
   ring
 
+/-! ### Flow collar data -/
+
+/-- Data for a flow collar: a core, an inner set, and timing bounds. -/
 structure FlowConstruction.FlowCollarData {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (A B : Set X) where
   time : ℝ
@@ -1174,15 +1246,18 @@ structure FlowConstruction.FlowCollarData {X : Type*} [TopologicalSpace X] (F : 
   strict_inner : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A
   core_inside : ∀ x ∈ B, F time x ∈ interior A
 
+/-- The core of the flow collar. -/
 def FlowConstruction.FlowCollarData.core {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : Set X :=
   (F (-d.time)) ⁻¹' B
 
+/-- The collar core is closed. -/
 theorem FlowConstruction.FlowCollarData.closed_core {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     IsClosed d.core :=
   d.closed_outer.preimage (F.continuous continuous_const continuous_id)
 
+/-- The collar core is forward invariant. -/
 theorem FlowConstruction.FlowCollarData.forward_core {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     ∀ x ∈ d.core, ∀ t : ℝ, 0 ≤ t → F t x ∈ d.core := by
@@ -1191,6 +1266,7 @@ theorem FlowConstruction.FlowCollarData.forward_core {X : Type*} [TopologicalSpa
   rw [← F.map_add, add_comm, F.map_add]
   exact d.forward_outer _ hx t ht
 
+/-- The collar core is strictly absorbing. -/
 theorem FlowConstruction.FlowCollarData.strict_core {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     ∀ x ∈ d.core, ∀ t : ℝ, 0 < t → F t x ∈ interior d.core := by
@@ -1200,36 +1276,43 @@ theorem FlowConstruction.FlowCollarData.strict_core {X : Type*} [TopologicalSpac
   rw [← F.map_add, add_comm, F.map_add]
   exact d.strict_outer _ hx t ht
 
+/-- The flow at the duration lands in the core. -/
 theorem FlowConstruction.FlowCollarData.flow_time_mem_core {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) {x : X}
     (hx : x ∈ B) : F d.time x ∈ d.core := by
   change F (-d.time) (F d.time x) ∈ B
   simpa only [← F.map_add, neg_add_cancel, F.map_zero_apply] using hx
 
+/-- Every point's flow hits the core. -/
 theorem FlowConstruction.FlowCollarData.hits_core {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) {x : X}
     (hx : x ∈ B) : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ d.core :=
   ⟨d.time, d.time_pos.le, d.flow_time_mem_core hx⟩
 
+/-- Every point's flow hits the inner set. -/
 theorem FlowConstruction.FlowCollarData.hits_inner {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) {x : X}
     (hx : x ∈ B) : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A :=
   ⟨d.time, d.time_pos.le, interior_subset (d.core_inside x hx)⟩
 
+/-- The collar duration: the entry time into the inner set. -/
 def FlowConstruction.FlowCollarData.duration {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   FlowConstruction.entryTime F d.core x.1
 
+/-- The collar duration is nonnegative. -/
 theorem FlowConstruction.FlowCollarData.duration_nonneg {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     0 ≤ d.duration x :=
   FlowConstruction.entryTime_nonneg F (d.hits_core x.2)
 
+/-- The collar duration is bounded. -/
 theorem FlowConstruction.FlowCollarData.duration_le {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.duration x ≤ d.time :=
   FlowConstruction.entryTime_le_of_mem F d.time_pos.le (d.flow_time_mem_core x.2)
 
+/-- The collar duration is continuous. -/
 theorem FlowConstruction.FlowCollarData.continuous_duration {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Continuous d.duration :=
@@ -1237,6 +1320,7 @@ theorem FlowConstruction.FlowCollarData.continuous_duration {X : Type*} [Topolog
     (FlowConstruction.continuousOn_entryTime F d.closed_core d.forward_core d.strict_core
       (fun _ hx => d.hits_core hx))
 
+/-- The collar origin: the entry point in the inner set. -/
 def FlowConstruction.FlowCollarData.origin {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : B :=
   ⟨F (d.duration x - d.time) x.1,
@@ -1245,32 +1329,38 @@ def FlowConstruction.FlowCollarData.origin {X : Type*} [TopologicalSpace X] {F :
     change F (-d.time) (F (d.duration x) x.1) ∈ B at h
     simpa only [← F.map_add, sub_eq_add_neg, add_comm] using h⟩
 
+/-- The collar origin is continuous. -/
 theorem FlowConstruction.FlowCollarData.continuous_origin {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Continuous d.origin :=
   (F.continuous (d.continuous_duration.sub continuous_const) continuous_subtype_val).subtype_mk _
 
+/-- A point is the flow of its origin for its duration. -/
 theorem FlowConstruction.FlowCollarData.origin_reconstruct {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     F (d.time - d.duration x) (d.origin x).1 = x.1 := by
   change F (d.time - d.duration x) (F (d.duration x - d.time) x.1) = x.1
   rw [← F.map_add, sub_add_sub_cancel, sub_self, F.map_zero_apply]
 
+/-- The collar delay before reaching the core. -/
 def FlowConstruction.FlowCollarData.delay {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   FlowConstruction.entryTime F A (d.origin x).1
 
+/-- The collar delay is nonnegative. -/
 theorem FlowConstruction.FlowCollarData.delay_nonneg {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     0 ≤ d.delay x :=
   FlowConstruction.entryTime_nonneg F (d.hits_inner (d.origin x).2)
 
+/-- The collar delay is bounded. -/
 theorem FlowConstruction.FlowCollarData.delay_lt {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.delay x < d.time :=
   FlowConstruction.entryTime_lt_of_flow_mem_interior F d.time_pos
     (d.core_inside _ (d.origin x).2)
 
+/-- The collar delay is continuous. -/
 theorem FlowConstruction.FlowCollarData.continuous_delay {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Continuous d.delay :=
@@ -1279,32 +1369,38 @@ theorem FlowConstruction.FlowCollarData.continuous_delay {X : Type*} [Topologica
           d.strict_inner (fun _ hx => d.hits_inner hx))).comp
     d.continuous_origin
 
+/-- The rescaling factor of the collar time. -/
 def FlowConstruction.FlowCollarData.factor {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   (d.time - d.delay x) / d.time
 
+/-- The rescaling factor is positive. -/
 theorem FlowConstruction.FlowCollarData.factor_pos {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     0 < d.factor x :=
   div_pos (sub_pos.mpr (d.delay_lt x)) d.time_pos
 
+/-- The rescaling factor is at most one. -/
 theorem FlowConstruction.FlowCollarData.factor_le_one {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.factor x ≤ 1 := by
   apply (div_le_one d.time_pos).mpr
   linarith [d.delay_nonneg x]
 
+/-- The rescaled time factor identity. -/
 theorem FlowConstruction.FlowCollarData.time_mul_factor {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.time * d.factor x = d.time - d.delay x := by
   dsimp [factor]
   field_simp [d.time_pos.ne']
 
+/-- The rescaling factor is continuous. -/
 theorem FlowConstruction.FlowCollarData.continuous_factor {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Continuous d.factor :=
   (continuous_const.sub d.continuous_delay).div_const _
 
+/-- The duration is bounded by the retained time. -/
 theorem FlowConstruction.FlowCollarData.duration_le_retained {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) (hx : x.1 ∈ A) :
@@ -1315,32 +1411,40 @@ theorem FlowConstruction.FlowCollarData.duration_le_retained {X : Type*}
   rw [d.time_mul_factor]
   linarith
 
+/-- The collar shift of a point. -/
 def FlowConstruction.FlowCollarData.shift {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   d.duration x * (1 - d.factor x)
 
+/-- The collar shift is nonnegative. -/
 theorem FlowConstruction.FlowCollarData.shift_nonneg {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     0 ≤ d.shift x :=
   mul_nonneg (d.duration_nonneg x) (sub_nonneg.mpr (d.factor_le_one x))
 
+/-- The collar shift is bounded by the duration. -/
 theorem FlowConstruction.FlowCollarData.shift_le_duration {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.shift x ≤ d.duration x := by
   dsimp [shift]
   nlinarith [mul_nonneg (d.duration_nonneg x) (d.factor_pos x).le]
 
+/-- The collar shift is continuous. -/
 theorem FlowConstruction.FlowCollarData.continuous_shift {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Continuous d.shift :=
   d.continuous_duration.mul (continuous_const.sub d.continuous_factor)
 
+/-! ### The collar rescaling -/
+
+/-- The rescaling homeomorphism candidate of the collar. -/
 def FlowConstruction.FlowCollarData.rescale {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : C(B, B)
     where
   toFun x := ⟨F (d.shift x) x.1, d.forward_outer x.1 x.2 _ (d.shift_nonneg x)⟩
   continuous_toFun := (F.continuous d.continuous_shift continuous_subtype_val).subtype_mk _
 
+/-- The rescaling computes from the origin. -/
 theorem FlowConstruction.FlowCollarData.rescale_from_origin {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     (d.rescale x).1 = F (d.time - d.duration x * d.factor x) (d.origin x).1 := by
@@ -1351,6 +1455,7 @@ theorem FlowConstruction.FlowCollarData.rescale_from_origin {X : Type*} [Topolog
   dsimp [shift]
   ring
 
+/-- The rescaling lands in the inner set. -/
 theorem FlowConstruction.FlowCollarData.rescale_mem_inner {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     (d.rescale x).1 ∈ A := by
@@ -1364,6 +1469,7 @@ theorem FlowConstruction.FlowCollarData.rescale_mem_inner {X : Type*} [Topologic
           (d.hits_inner (d.origin x).2) ((d.delay_nonneg x).trans hh)).mp
       hh
 
+/-- The duration of a rescaled point. -/
 theorem FlowConstruction.FlowCollarData.duration_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.duration (d.rescale x) = d.duration x * d.factor x := by
@@ -1374,6 +1480,7 @@ theorem FlowConstruction.FlowCollarData.duration_rescale {X : Type*} [Topologica
   dsimp [shift]
   ring
 
+/-- The origin of a rescaled point. -/
 theorem FlowConstruction.FlowCollarData.origin_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.origin (d.rescale x) = d.origin x := by
@@ -1384,12 +1491,14 @@ theorem FlowConstruction.FlowCollarData.origin_rescale {X : Type*} [TopologicalS
   dsimp [shift]
   ring
 
+/-- The factor of a rescaled point. -/
 theorem FlowConstruction.FlowCollarData.factor_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.factor (d.rescale x) = d.factor x := by
   unfold factor delay
   rw [d.origin_rescale]
 
+/-- The rescaling is injective. -/
 theorem FlowConstruction.FlowCollarData.rescale_injective {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Function.Injective d.rescale := by
@@ -1403,6 +1512,7 @@ theorem FlowConstruction.FlowCollarData.rescale_injective {X : Type*} [Topologic
   apply Subtype.ext
   rw [← d.origin_reconstruct x, ← d.origin_reconstruct y, hdur, horigin]
 
+/-- A zero-duration point is fixed by the rescaling. -/
 theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_duration_eq_zero {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) (hx : d.duration x = 0) :
@@ -1411,6 +1521,7 @@ theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_duration_eq_zero {X :
   change F (d.shift x) x.1 = x.1
   simp only [shift, hx, MulZeroClass.zero_mul, F.map_zero_apply]
 
+/-- Every point is a rescale of a core point. -/
 theorem FlowConstruction.FlowCollarData.exists_rescale_eq {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (y : B)
     (hy : y.1 ∈ A) : ∃ x : B, d.rescale x = y := by
@@ -1450,12 +1561,16 @@ theorem FlowConstruction.FlowCollarData.exists_rescale_eq {X : Type*} [Topologic
   refine ⟨x, Subtype.ext ?_⟩
   rw [d.rescale_from_origin, hdx, hfx, hox, hr, d.origin_reconstruct]
 
+/-! ### The collar homeomorphism -/
+
+/-- The inner map of the collar homeomorphism. -/
 def FlowConstruction.FlowCollarData.innerMap {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : C(B, A)
     where
   toFun x := ⟨(d.rescale x).1, d.rescale_mem_inner x⟩
   continuous_toFun := (continuous_subtype_val.comp d.rescale.continuous).subtype_mk _
 
+/-- The inner map is bijective. -/
 theorem FlowConstruction.FlowCollarData.innerMap_bijective {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) :
     Function.Bijective d.innerMap := by
@@ -1467,12 +1582,14 @@ theorem FlowConstruction.FlowCollarData.innerMap_bijective {X : Type*} [Topologi
     obtain ⟨x, hx⟩ := d.exists_rescale_eq ⟨y.1, d.inner_subset y.2⟩ y.2
     exact ⟨x, Subtype.ext (congrArg (fun z : B => (z : X)) hx)⟩
 
+/-- The flow collar homeomorphism. -/
 def FlowConstruction.FlowCollarData.homeomorph {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) [T2Space X]
     [CompactSpace B] : B ≃ₜ A :=
   Continuous.homeoOfEquivCompactToT2 (f := Equiv.ofBijective d.innerMap d.innerMap_bijective)
     d.innerMap.continuous
 
+/-- The interior is characterized by the duration-time inequality. -/
 theorem FlowConstruction.FlowCollarData.duration_lt_time_iff_interior {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -1491,6 +1608,7 @@ theorem FlowConstruction.FlowCollarData.duration_lt_time_iff_interior {X : Type*
       simpa only [← F.map_add, neg_add_cancel, F.map_zero_apply] using hi
     exact FlowConstruction.entryTime_lt_of_flow_mem_interior F d.time_pos hcore
 
+/-- The frontier is characterized by the duration-time equality. -/
 theorem FlowConstruction.FlowCollarData.duration_eq_time_iff_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -1506,6 +1624,7 @@ theorem FlowConstruction.FlowCollarData.duration_eq_time_iff_frontier {X : Type*
     apply le_antisymm (d.duration_le x)
     exact le_of_not_gt (fun hlt => hx.2 ((d.duration_lt_time_iff_interior x).mp hlt))
 
+/-- The rescaling preserves the interior. -/
 theorem FlowConstruction.FlowCollarData.rescale_mem_interior_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -1538,6 +1657,7 @@ theorem FlowConstruction.FlowCollarData.rescale_mem_interior_iff {X : Type*}
       FlowConstruction.flow_mem_interior_of_entryTime_lt F d.closed_inner d.strict_inner
         (d.hits_inner (d.origin x).property) hdelay
 
+/-- The inner map preserves the frontier. -/
 theorem FlowConstruction.FlowCollarData.innerMap_mem_frontier_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -1550,12 +1670,14 @@ theorem FlowConstruction.FlowCollarData.innerMap_mem_frontier_iff {X : Type*}
   · intro hx
     exact ⟨d.rescale_mem_inner x, fun hi => hx.2 ((d.rescale_mem_interior_iff x).mp hi)⟩
 
+/-- The collar homeomorphism preserves the frontier. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_mem_frontier_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B) :
     (d.homeomorph x).val ∈ frontier A ↔ x.val ∈ frontier B :=
   d.innerMap_mem_frontier_iff x
 
+/-- The collar homeomorphism computes the flow to the entry time. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_entryTime {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
@@ -1570,6 +1692,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_entryTime {X : Type*}
   change F (FlowConstruction.entryTime F A (d.origin x).val) (d.origin x).val = _
   rw [ho]
 
+/-- The collar homeomorphism on the frontier is the flow. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_of_mem_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
@@ -1579,6 +1702,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_of_mem_frontier {X : 
     FlowConstruction.entryTime_eq_of_flow_mem_frontier F d.closed_inner d.strict_inner ht
       hfront]
 
+/-- The collar homeomorphism inverse on the frontier is the flow. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_symm_eq_flow_of_mem_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (y : A)
@@ -1597,6 +1721,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_symm_eq_flow_of_mem_frontier 
   rw [d.homeomorph.symm_apply_apply] at hinv
   exact congrArg (fun z : B => z.val) hinv.symm
 
+/-- The rescaling fixes the inner frontier. -/
 theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_mem_inner_frontier_outer
     {X : Type*} [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) (hxA : x.val ∈ A)
@@ -1609,12 +1734,14 @@ theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_mem_inner_frontier_ou
   change F (d.shift x) x.val = x.val
   simp only [shift, hfac, sub_self, MulZeroClass.mul_zero, F.map_zero_apply]
 
+/-- The collar homeomorphism fixes the common frontier. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_fixed_on_common_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
     (hxA : x.val ∈ A) (hxB : x.val ∈ frontier B) : (d.homeomorph x).val = x.val :=
   congrArg (fun y : B => y.val) (d.rescale_eq_self_of_mem_inner_frontier_outer x hxA hxB)
 
+/-- An absorbing sublevel homeomorphism with boundary orbit control exists. -/
 theorem FlowConstruction.exists_absorbingSublevelHomeomorph_with_boundary_orbits
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [T2Space M] {f : M → ℝ}
@@ -1673,6 +1800,7 @@ theorem FlowConstruction.exists_absorbingSublevelHomeomorph_with_boundary_orbits
     ⟨d.homeomorph, d.homeomorph_mem_frontier_iff, d.homeomorph_fixed_on_common_frontier,
       fun y hy _ ht hfront => d.homeomorph_symm_eq_flow_of_mem_frontier y hy ht hfront⟩
 
+/-- The frontier of a strict-flow sublevel is the level set. -/
 theorem FlowConstruction.frontier_sublevel_eq_of_strict_flow {X : Type*}
     [TopologicalSpace X] {f : X → ℝ} (hf : Continuous f) (F : Flow ℝ X)
     (hmono : ∀ x, Antitone (fun t => f (F t x))) {b : ℝ}
