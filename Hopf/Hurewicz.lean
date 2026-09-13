@@ -94,7 +94,7 @@ import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact

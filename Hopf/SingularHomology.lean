@@ -94,7 +94,7 @@ import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
 import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Geometry.Manifold.Morse.Cancellation
-import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Topology.MappingTorus.Wang
 
 set_option maxSynthPendingDepth 3
