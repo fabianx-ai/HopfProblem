@@ -56,4 +56,4 @@ file imports its own stock file and the previous proof file. No stock file impor
 
 - Decided: `Hopf/LCP/` is included; the 475 demoted declarations (`DEMOTED.md`) keep their names
   under `Hopf/Proof/` and are no longer counted by the census; each needs a generalisation before
-  it can move to `Lib/`.
+  it can move to `Lib/`. Owner, 2026-09-13: these are done last, after the stock lanes.
