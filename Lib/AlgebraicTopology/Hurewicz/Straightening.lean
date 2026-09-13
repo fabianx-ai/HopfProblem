@@ -14,7 +14,13 @@ noncomputable section
 namespace Mathoverflow1973
 
 /-!
-## The normalization tower (textbook §8)
+# Straightening singular simplices
+
+`Hurewicz.normalizationHomotopy x n hpi` is a coherent family of homotopies of singular
+`n`-simplices in a simply connected space `X` with basepoint `x` (where `hpi` records
+`Subsingleton (π_ k X x)` in the needed range): at time `0` it is the identity
+(`Hurewicz.normalizationHomotopy_zero`) and at time `1` it lands in the based simplices
+(`Hurewicz.normalizationHomotopy_endpoint`, `Hurewicz.normalizedSimplex`).
 
 The straightening/normalization tower at general degree: for a simply connected space `X`
 with basepoint `x`, a coherent family of homotopies `H k` straightening singular
@@ -25,7 +31,37 @@ basepoint (`Hurewicz.simplexStraighteningHomotopy`, using `Subsingleton (π_ k X
 
 The recursion is bundled in `Hurewicz.TowerPair` (two consecutive storeys with their
 basepoint and face compatibilities), since the extension step consumes those properties.
+
+## Outline of the construction
+
+1. The edge tower `Hurewicz.edgeTower` and the vertex-then-edge composite
+   `Hurewicz.vertexEdgeHomotopy` straighten the low storeys.
+2. `Hurewicz.NormalizationState` packages the inductive data, and
+   `Hurewicz.normalizationStep`/`Hurewicz.normalizationTower` iterate it.
+3. `Hurewicz.normalizedSimplex` and `Hurewicz.normalizedTopSimplex` are the time-`1`
+   normalized (based) simplices.
+4. `Hurewicz.normalizedSimplex_boundary_relation` and `Hurewicz.classOperator_boundary`
+   relate the normalized simplex boundary to the class operator.
+5. `Hurewicz.hurewiczInverse` uses the normalization to build the inverse Hurewicz map.
+
+## Main definitions and results
+
+* `Hurewicz.TowerPair`, `Hurewicz.NormalizationState`: the recursion data.
+* `Hurewicz.normalizationHomotopy`: the coherent straightening family.
+* `Hurewicz.normalizedSimplex`, `Hurewicz.hurewiczInverse`: the normalized simplex and
+  the induced inverse on homology classes.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorem 4.32; the argument is
+  recorded in `Lib/docs/C.md`, §§8 and 12.
+
+## Tags
+
+Hurewicz theorem, straightening, normalization tower, simplex
 -/
+
+/-! ### The tower storeys -/
 
 /-- Two consecutive storeys of a coherent simplex-homotopy tower, with the basepoint and face
 compatibilities the extension step consumes. -/
@@ -78,6 +114,7 @@ def Hurewicz.vertexEdgeHomotopy {X : Type} [TopologicalSpace X] [SimplyConnected
     (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero x k)
     (Hurewicz.edgeTower x k).low_zero
 
+/-- At time `0` the vertex-then-edge normalization homotopy is the simplex itself. -/
 theorem Hurewicz.vertexEdgeHomotopy_zero {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (k : ℕ) (smp : SingularChains.SingularSimplex X k)
     (s : SingularChains.Simplex k) : Hurewicz.vertexEdgeHomotopy x k smp (0, s) = smp s :=
@@ -126,11 +163,14 @@ theorem Hurewicz.vertexEdgeHomotopy_endpoint_boundary {X : Type} [TopologicalSpa
     (Hurewicz.vertexEdgeHomotopy x (k + 1)) (Hurewicz.vertexEdgeHomotopy_face x k) x
     hone smp s hs
 
+/-! ### The normalization recursion -/
+
 /-- The state of the normalization tower at level `k`: the augmented storey-`k` family (the
 normalization composed with the dimension-`k` straightening) and the normalization at storey
 `k + 1`, with their basepoint and face compatibilities and the endpoint properties (the
 augmented family collapses every simplex to the basepoint at `t = 1`; the next normalization's
 endpoint is based at `x` on the boundary). -/
+
 structure Hurewicz.NormalizationState {X : Type} [TopologicalSpace X] (x : X) (k : ℕ) where
   /-- The augmented storey-`k` family. -/
   aug : SingularChains.SingularSimplex X k → C((unitInterval) × SingularChains.Simplex k, X)
@@ -459,8 +499,11 @@ theorem Hurewicz.SimplexGeometry.basedSimplexClass_straightening {X : Type}
   apply Quotient.sound
   exact ⟨(Hurewicz.SimplexGeometry.basedSimplexLoop_straighteningHomotopy τ).symm⟩
 
+/-! ### The top storey and the class operator -/
+
 /-- The top-storey straightening at dimension `n`: the coherent extension of the
 dimension-`n−1` straightening by the stationary family. -/
+
 def Hurewicz.topStorey {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     [Subsingleton (π_ (n + 1) X x)] :
     SingularChains.SingularSimplex X (n + 2) → C((unitInterval) × SingularChains.Simplex (n + 2), X) :=
@@ -798,9 +841,12 @@ theorem Hurewicz.normalizedTopSimplex_class_face {X : Type} [TopologicalSpace X]
     Subtype.ext (Hurewicz.topNormalization_endpoint_face x (by omega) hpi σ i)]
   exact Hurewicz.SimplexGeometry.basedSimplexClass_topStorey _
 
+/-! ### Boundary relation and the inverse map -/
+
 /-- The boundary relation for the normalized simplex: the signed sum of the classes of the
 normalized faces of an `(n + 1)`-simplex vanishes. This is the general-`n` form of the
 per-degree `normalized*Simplex_boundary_relation`. -/
+
 theorem Hurewicz.normalizedSimplex_boundary_relation {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
