@@ -34,6 +34,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Paths in simply connected charts -/
+
+/-- Two paths contained in a simply connected subset are homotopic. -/
 theorem SimplyConnectedCover.homotopic_of_mem {X : Type*} [TopologicalSpace X] {s : Set X}
     (hs : IsSimplyConnected s) {x y : X} (p q : Path x y) (hp : ∀ t, p t ∈ s)
     (hq : ∀ t, q t ∈ s) : Path.Homotopic p q := by
@@ -57,6 +60,7 @@ theorem SimplyConnectedCover.homotopic_of_mem {X : Type*} [TopologicalSpace X] {
   have hq' : q'.map continuous_subtype_val = q := by ext t; rfl
   exact hp' ▸ hq' ▸ h
 
+/-- The concatenation of two paths contained in a set stays in the set. -/
 theorem SimplyConnectedCover.trans_mem {X : Type*} [TopologicalSpace X] {s : Set X} {x y z : X}
     (p : Path x y) (q : Path y z) (hp : ∀ t, p t ∈ s) (hq : ∀ t, q t ∈ s) :
     ∀ t, p.trans q t ∈ s := by
@@ -64,16 +68,19 @@ theorem SimplyConnectedCover.trans_mem {X : Type*} [TopologicalSpace X] {s : Set
   rw [Path.trans_range]
   exact Set.union_subset (Set.range_subset_iff.mpr hp) (Set.range_subset_iff.mpr hq)
 
+/-- A chosen path from the basepoint to `x` inside the simply connected chart `U i`. -/
 def SimplyConnectedCover.chartPath {X : Type*} [TopologicalSpace X] {ι : Type*} (U : ι → Set X)
     (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i) (i : ι) (x : X)
     (hx : x ∈ U i) : Path o x :=
   ((hs i).isPathConnected.joinedIn o (ho i) x hx).somePath
 
+/-- The chosen chart path stays inside its chart. -/
 theorem SimplyConnectedCover.chartPath_mem {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i) (i : ι)
     (x : X) (hx : x ∈ U i) (t : (unitInterval)) : chartPath U hs o ho i x hx t ∈ U i :=
   JoinedIn.somePath_mem _ t
 
+/-- Chart paths to the same point through different charts agree up to homotopy when intersections are path connected. -/
 theorem SimplyConnectedCover.chartPath_homotopic {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i)
     (hinter : ∀ i j, IsPathConnected (U i ∩ U j)) (i j : ι) (x : X) (hi : x ∈ U i)
@@ -85,6 +92,7 @@ theorem SimplyConnectedCover.chartPath_homotopic {X : Type*} [TopologicalSpace X
       (homotopic_of_mem (hs j) h.somePath _ (fun t => (h.somePath_mem t).2)
         (chartPath_mem U hs o ho j x hj))
 
+/-- Casting a transitivity of path-homotopy classes along endpoint equalities splits into the transitivity of the casts. -/
 theorem SimplyConnectedCover.quotient_cast_trans {X : Type*} [TopologicalSpace X]
     {o x y o' x' y' : X} (p : Path.Homotopic.Quotient o x) (q : Path.Homotopic.Quotient x y)
     (ho : o' = o) (hx : x' = x) (hy : y' = y) :
@@ -94,11 +102,13 @@ theorem SimplyConnectedCover.quotient_cast_trans {X : Type*} [TopologicalSpace X
   cases hy
   simp
 
+/-- A section of path-homotopy classes commutes with casting along an equality of endpoints. -/
 theorem SimplyConnectedCover.quotient_cast_section {X : Type*} [TopologicalSpace X] {o : X}
     (F : ∀ z, Path.Homotopic.Quotient o z) {x y : X} (h : x = y) : (F y).cast rfl h = F x := by
   cases h
   simp
 
+/-- Section transitivity along a full path follows from the hypothesis on the unit subpath. -/
 theorem SimplyConnectedCover.section_subpath_zero_one {X : Type*} [TopologicalSpace X] {o x y : X}
     (F : ∀ z, Path.Homotopic.Quotient o z) (p : Path x y)
     (h :
@@ -115,6 +125,7 @@ theorem SimplyConnectedCover.section_subpath_zero_one {X : Type*} [TopologicalSp
     quotient_cast_section F p.source.symm, hp, quotient_cast_section F p.target.symm] at h'
   exact h'
 
+/-- Path-homotopy-class sections that are transitive inside each chart of a simply connected open cover are transitive along all paths. -/
 theorem SimplyConnectedCover.section_trans_of_open_cover {X : Type*} [TopologicalSpace X]
     {ι : Type*} (U : ι → Set X) (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ) (o : X)
     (F : ∀ x, Path.Homotopic.Quotient o x)
