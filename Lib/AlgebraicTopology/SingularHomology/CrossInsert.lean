@@ -38,15 +38,20 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Inserting a basepoint into a product factor -/
+
+/-- The map `Y → X × Y` inserting the point `x` in the first factor. -/
 def SingularHomology.crossInsertLeft {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (x : X) : C(Y, X × Y) :=
   ⟨fun y => (x, y), continuous_const.prodMk continuous_id⟩
 
+/-- Point insertion commutes with the product of two continuous maps. -/
 theorem SingularHomology.crossInsertLeft_natural {X Y X' Y' : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y'))
     (x : X) : (f.prodMap g).comp (crossInsertLeft x) = (crossInsertLeft (f x)).comp g :=
   rfl
 
+/-- Chains induced by a product map through a point insertion equal insertion into the induced chains. -/
 theorem SingularHomology.inducedChain_crossInsertLeft {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (x : X) (n : ℕ) (c : SingularChains.Chains Y n) :
