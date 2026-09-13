@@ -151,20 +151,4 @@ def SixSphereCube.euclideanOnePointSphereHomeomorph :
 def SixSphereCube.sphereBasePoint : StandardSphere :=
   euclideanOnePointSphereHomeomorph (OnePoint.infty)
 
-theorem Sphere.piTwo_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 2 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 2 (by decide) (by decide) x
-
-theorem Sphere.piThree_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 3 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 3 (by decide) (by decide) x
-
-theorem Sphere.piFour_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 4 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 4 (by decide) (by decide) x
-
-theorem Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 5 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 5 (by decide) (by decide) x
-
 end
