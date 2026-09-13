@@ -9,8 +9,8 @@ public import Mathlib
 public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Flow.Compact
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
-import all Mathlib.Analysis.Calculus.Implicit
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Analysis.Calculus.Implicit
 
 /-!
 # Regular levels are manifolds
