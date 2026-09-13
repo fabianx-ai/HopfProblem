@@ -71,8 +71,6 @@ namespace SixSphereCube
 export OnePointCollapse (collapse collapseMap collapse_coe collapse_eq_iff collapse_eq_infty_iff collapse_of_mem collapse_of_not_mem collapse_preimage_compl_of_mem collapse_preimage_of_not_mem collapse_surjective continuous_collapse isQuotientMap_collapse collapseLift collapseLift_comp collapseLift_apply)
 end SixSphereCube
 
-export HandleCoreAttachment (core coreSpace coreInclusion)
-
 namespace PeriodTorusHigherHomology
 export SingularHomology (crossInsertLeft crossInsertLeft_natural inducedChain_crossInsertLeft)
 end PeriodTorusHigherHomology
