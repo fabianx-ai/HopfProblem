@@ -28,8 +28,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -975,4 +973,3 @@ theorem DiagonalQuotient.fibreFundamentalGroupHom_baseChange {G B F : Type*} [Gr
       fibreFundamentalGroupHom (G := G) b₁ c v :=
   fundamentalGroup_basepointChange_of_homotopy _ _ (fibreBasepointHomotopy (G := G) (F := F) p) c
     v
-end Mathoverflow1973

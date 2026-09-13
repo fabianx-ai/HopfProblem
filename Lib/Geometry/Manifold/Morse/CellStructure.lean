@@ -58,8 +58,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1006,4 +1004,3 @@ theorem MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommG
       FiniteCells.Built.equiv
         ((Homeomorph.setCongr hfull).trans (Homeomorph.Set.univ M)).toHomotopyEquiv hb
 
-end Mathoverflow1973

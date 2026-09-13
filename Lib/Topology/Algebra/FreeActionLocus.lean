@@ -29,8 +29,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -148,4 +146,3 @@ theorem FreeActionLocus.smul_contMDiff (G X E : Type*) [Group G] [TopologicalSpa
     ChartedSpace.liftPropWithinAt_subtypeVal_comp_iff (U := opens G X)
       (fun y : Space G X => g • y) Set.univ x
   exact he.mp (((hG g).comp (contMDiff_subtype_val (U := opens G X))) x)
-end Mathoverflow1973

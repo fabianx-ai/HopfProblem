@@ -27,8 +27,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -187,4 +185,3 @@ theorem LocalCollapse.exists_small_sublevel_localCollapse {X : Type*}
   obtain ⟨η, hη, hηr, hηA⟩ :=
     exists_positive_sublevel_subset_open f hf hr hc A.isOpen_collapseSet hA
   exact ⟨η, hη, hηr, A, hηA⟩
-end Mathoverflow1973

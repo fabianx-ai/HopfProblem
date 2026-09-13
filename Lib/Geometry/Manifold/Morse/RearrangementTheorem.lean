@@ -54,8 +54,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1124,6 +1122,5 @@ theorem MorseRearrangement.exists_morse_rearrangement_of_no_connection {E M : Ty
     exact MorseCancellation.nativeMorseIndex_of_add_const_germ cq hqgerm
   exact MorseCancellation.nativeMorseIndex_congr_germ (hothers x hx hxp hxq)
 
-end Mathoverflow1973
 
 end

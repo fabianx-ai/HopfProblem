@@ -30,8 +30,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -259,4 +257,3 @@ def OnePointAtlas.data {Q : Type*} [TopologicalSpace Q] [Nonempty Q] [ChartedSpa
     cases i with
     | none => exact hlocal x hsource
     | some q => exact oldChart_pullback_localDiffeomorph q x hsource
-end Mathoverflow1973

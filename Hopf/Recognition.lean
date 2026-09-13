@@ -176,9 +176,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 def SixthHurewicz.fundamentalCubeChain : FirstHurewicz.Chains (Fin 6 → (unitInterval)) 6 :=
   HigherHurewicz.fundamentalCubeChain 6
 
@@ -7081,6 +7078,5 @@ theorem MorseCancellation.critical_pair_of_surgery_count_two {E M : Type} [Norme
     · exact (Set.mem_singleton_iff.mp hq) ▸ q.property
 
 
-end Mathoverflow1973
 
 end

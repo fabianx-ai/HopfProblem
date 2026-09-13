@@ -67,8 +67,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -264,4 +262,3 @@ theorem SphereHomology.unitSphere_homology_subsingleton (n k : ℕ) (hk : k ≠ 
       | succ k =>
         let := ih (k + 1) (Nat.succ_ne_zero _) (by omega)
         exact (unitSphereHomologySuspensionEquiv (n + 1) k).injective.subsingleton
-end Mathoverflow1973

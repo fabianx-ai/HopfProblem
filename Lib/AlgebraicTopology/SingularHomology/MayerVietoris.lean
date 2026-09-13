@@ -90,8 +90,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2856,4 +2854,3 @@ theorem SingularMayerVietoris.connectingHomomorphism_comp_left {X : Type} [Topol
     ⟨a, rfl⟩
   rw [exact_at_intersection] at ha
   exact ha
-end Mathoverflow1973

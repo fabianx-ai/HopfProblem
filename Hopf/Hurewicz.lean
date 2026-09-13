@@ -140,9 +140,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 theorem SphereHomology.twoOpenCover_pathConnectedSpace {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.TwoOpenCover X) : PathConnectedSpace X := by
   apply pathConnectedSpace_iff_univ.mpr
@@ -278,6 +275,5 @@ theorem Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 5 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 5 (by decide) (by decide) x
 
-end Mathoverflow1973
 
 end

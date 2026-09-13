@@ -31,8 +31,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1795,4 +1793,3 @@ theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_over
     obtain ⟨a, ha⟩ := hx
     obtain ⟨b, hb⟩ := hy
     exact ⟨a * b, by rw [map_mul, ha, hb, map_mul]⟩
-end Mathoverflow1973

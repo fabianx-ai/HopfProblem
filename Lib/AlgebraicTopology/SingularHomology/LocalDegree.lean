@@ -80,8 +80,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -736,4 +734,3 @@ theorem LocalDegree.BoundaryData.homology_compare {E F : Type} [NormedAddCommGro
       SingularMayerVietoris.singularHomologyMap
         (LocalDegree.linearSphereMap L b.radius b.radius_pos) k :=
   (SingularHomology.homotopy_homologyMap b.homotopy k).symm
-end Mathoverflow1973

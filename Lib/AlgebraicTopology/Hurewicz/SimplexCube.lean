@@ -51,8 +51,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Simplex boundaries -/
 
 /-- The boundary of the standard `n`-simplex: the set of points where at least one
@@ -503,4 +501,3 @@ theorem Hurewicz.simplexCubeHomeomorph_symm_boundary_iff (n : ℕ)
   rw [← simplexCubeHomeomorph_boundary_iff, Homeomorph.apply_symm_apply]
 
 
-end Mathoverflow1973

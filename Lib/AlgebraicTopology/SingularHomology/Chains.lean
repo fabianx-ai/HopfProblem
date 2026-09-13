@@ -91,8 +91,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1383,4 +1381,3 @@ theorem SingularChains.boundaryTwo_loopHomotopy {X : Type} [TopologicalSpace X] 
     boundaryTwo X (homotopyChain H) = pathChain p - pathChain q := by
   rw [boundaryTwo_homotopyChain]
   abel
-end Mathoverflow1973

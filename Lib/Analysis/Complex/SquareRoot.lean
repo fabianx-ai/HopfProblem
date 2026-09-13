@@ -52,8 +52,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -785,4 +783,3 @@ theorem AnalyticRootCover.exists_holomorphic_square_root_upperHalfPlane (f : ℍ
       filter_upwards [UpperHalfPlane.eventuallyEq_coe_comp_ofComplex a.im_pos] with z hz
       exact congrArg g hz
     exact (analyticOrderAt_congr he).trans (hgorder a a.im_pos n hn)
-end Mathoverflow1973

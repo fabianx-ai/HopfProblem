@@ -31,8 +31,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -223,4 +221,3 @@ theorem simplyConnectedSpace_of_open_cover {X ι : Type*} [TopologicalSpace X] (
   simpa only [← Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.refl_trans] using h
 
-end Mathoverflow1973

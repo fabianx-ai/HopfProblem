@@ -29,8 +29,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -170,4 +168,3 @@ theorem TwistGroup.realizationHom_y {G : Type*} [Group G] (a b d : ℤ) (c₀ x�
     (hcx : Commute c₀ x₀) (hcy : Commute c₀ y₀) (hxy : x₀ * y₀ = c₀ ^ a) (hx : x₀ ^ 3 = c₀ ^ b)
     (hy : y₀ ^ 4 = c₀ ^ d) : realizationHom a b d c₀ x₀ y₀ hcx hcy hxy hx hy (y a b d) = y₀ :=
   PresentedGroup.toGroup.of (realizationImages_relators a b d c₀ x₀ y₀ hcx hcy hxy hx hy)
-end Mathoverflow1973

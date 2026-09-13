@@ -59,8 +59,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -218,4 +216,3 @@ theorem CoverLocalContributions.map_union {X Y : Type} [TopologicalSpace X]
   intro x hx
   obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx
   exact hfV i hi
-end Mathoverflow1973

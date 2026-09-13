@@ -148,8 +148,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 theorem FirstHurewicz.basedLoopClass_triangleFacePath {X : Type} [TopologicalSpace X] {b : X}
     (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) (i : Fin 3) :
     basedLoopClass r (triangleFacePath σ i) =
@@ -333,6 +331,5 @@ theorem PeriodTorusHigherHomology.circleProjection_positiveCircleCross (X : Type
     circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0 :=
   crossProductHomology_snd n (FirstHurewicz.loopHomologyClass CirclePaths.positiveLoop) b
 
-end Mathoverflow1973
 
 end

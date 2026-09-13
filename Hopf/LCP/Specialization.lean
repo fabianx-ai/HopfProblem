@@ -150,8 +150,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [TopologicalSpace G]
@@ -788,6 +786,5 @@ theorem BranchedQuotientAtlas.contDiffAt_transition_of_lift {E M Q : Type*} [Nor
   change f (e.symm w) = f (q (hf.localInverse w))
   exact congrArg f hw.symm
 
-end Mathoverflow1973
 
 end

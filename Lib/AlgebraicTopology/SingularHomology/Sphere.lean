@@ -52,8 +52,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -345,4 +343,3 @@ theorem SphereHomology.Latitude.point_surjective (n : ℕ) :
     · exact height_parameter n y
     · change radius t * ((radius t)⁻¹ * tail n y j) = y.val j.succ
       rw [← mul_assoc, mul_inv_cancel₀ hzero, one_mul, tail_apply]
-end Mathoverflow1973

@@ -75,8 +75,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -439,4 +437,3 @@ def SphereHomology.sphereCircleHomologyEquiv (n : ℕ) :
         n ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology _root_.Circle n :=
   SingularHomology.homeomorphHomologyEquiv sphereCircleHomeomorph n
-end Mathoverflow1973

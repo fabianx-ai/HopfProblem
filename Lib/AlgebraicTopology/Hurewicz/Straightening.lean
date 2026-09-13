@@ -11,8 +11,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-!
 # Straightening singular simplices
 

@@ -36,8 +36,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -367,4 +365,3 @@ def FlowConstruction.regularSublevelHomotopyEquivOfFlow {M : Type*} [Topological
       exact sublevelRetraction_inclusion F hF hf hab x
     rw [heq]
   right_inv := ⟨(sublevelDeformation F hF hf hab).toHomotopy.symm⟩
-end Mathoverflow1973

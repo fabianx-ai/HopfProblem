@@ -59,8 +59,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1062,4 +1060,3 @@ theorem HolomorphicCousin.exists_negativeOne_holomorphic_cocycle_solution {ι : 
     Nonempty (NegativeOneCocycleSolution U h i₀ R) := by
   obtain ⟨s⟩ := exists_normalized_holomorphic_cocycle_solution hU hcover hh hc i₀ hR hRU
   exact ⟨s.negativeOne hR⟩
-end Mathoverflow1973

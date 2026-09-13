@@ -61,8 +61,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -775,4 +773,3 @@ theorem SingularMayerVietoris.connectingHomomorphism_naturality_apply {X Y : Typ
       connectingHomomorphism U' V' hU' hV' hcover' n (singularHomologyMap f (n + 1) a) :=
   LinearMap.congr_fun
     (connectingHomomorphism_naturality f U V U' V' hfU hfV hU hV hcover hU' hV' hcover' n) a
-end Mathoverflow1973

@@ -72,8 +72,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -311,4 +309,3 @@ theorem Suspension.singularHomologyMap_eq_zero_of_nullhomotopic {X Y : Type}
   obtain ⟨y, hy⟩ := hf
   rw [SingularHomology.homotopic_homologyMap hy n]
   exact singularHomologyMap_const_eq_zero X y n hn
-end Mathoverflow1973

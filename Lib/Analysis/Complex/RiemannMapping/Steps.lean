@@ -48,8 +48,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -700,4 +698,3 @@ theorem _root_.Complex.exist_map_unitDisc_injOn_deriv_ne_zero_norm_deriv_gt {U :
     Complex.exist_map_unitDisc_injOn_norm_deriv_gt_preserves_nonzero hUo hUc hU hx hdf hf₀ hf_inj
       hsurj
   exact ⟨g, hg₀, hgi, hgd, hpres hnonzero, hgt⟩
-end Mathoverflow1973

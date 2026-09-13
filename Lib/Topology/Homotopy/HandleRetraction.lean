@@ -44,8 +44,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -676,4 +674,3 @@ def UnitSphereEquiv.homeomorph {E F : Type*} [NormedAddCommGroup E] [NormedSpace
   right_inv := map_inverse L.symm
   continuous_toFun := (UnitSphereEquiv.map L).continuous
   continuous_invFun := (UnitSphereEquiv.map L.symm).continuous
-end Mathoverflow1973

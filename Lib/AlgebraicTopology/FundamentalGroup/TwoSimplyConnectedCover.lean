@@ -28,8 +28,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -412,4 +410,3 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_
       (SimplyConnectedCover.homotopic_of_mem D.simplyV _ _ (D.pathV_mem x hxV) hq)
   simp only [switchClass, hU, hV, FundamentalGroup.fromPath, FundamentalGroup.fromArrow,
     Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.mk_symm]
-end Mathoverflow1973

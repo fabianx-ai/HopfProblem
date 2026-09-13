@@ -53,8 +53,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1377,4 +1375,3 @@ theorem EmbeddedCellAttachment.overlapOldMap_comp_sphere {N X : Type*}
     (D : EmbeddedCellAttachment N X) :
     D.overlapOldMap.comp D.overlapSphereEquiv.toFun = D.attachingSphere :=
   ContinuousMap.ext D.overlapOldMap_sphere
-end Mathoverflow1973

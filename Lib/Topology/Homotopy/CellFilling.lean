@@ -55,8 +55,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Sphere models -/
 
 /-- A map out of a discrete space into a path-connected space is homotopic to the
@@ -206,4 +204,3 @@ theorem CylinderFilling.exists_filling {V X : Type} [NormedAddCommGroup V]
       (hb (CylinderBoundary.lower (DiskCylinder.sideMap (t, s)))).trans
         (CylinderBoundary.glued_side f g H h0 h1 t s)
 
-end Mathoverflow1973

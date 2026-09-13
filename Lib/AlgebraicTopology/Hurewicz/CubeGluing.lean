@@ -57,8 +57,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Cubical faces and cells -/
 
 /-- The `(i, ε)`-th facet inclusion of the `n`-cube into the `(n+1)`-cube: inserts
@@ -1688,4 +1686,3 @@ def Hurewicz.CubeGluing.coherentCubeHomotopy {n : ℕ} {X : Type} [TopologicalSp
     (coherentCubeHomotopyMap_boundary H₀ H₁ hface hconst p r u hu).trans
       (GenLoop.boundary p u hu).symm
 
-end Mathoverflow1973

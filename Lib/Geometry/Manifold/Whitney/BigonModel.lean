@@ -14,8 +14,6 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 theorem StripCoordinates.hasDerivAt_verticalSlice {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {F : (ℝ × ℝ) → E} {t s : ℝ} (hF : DifferentiableAt ℝ F (t, s)) :
     HasDerivAt (fun u : ℝ => F (t, u)) (fderiv ℝ F (t, s) (0, 1)) s := by
@@ -437,4 +435,3 @@ theorem WhitneyPairModel.upperStripCoordinates_right {h : ℝ} (hh : h ≠ 0) {p
   rw [arcTime_bigonReflection]
   linarith
 
-end Mathoverflow1973

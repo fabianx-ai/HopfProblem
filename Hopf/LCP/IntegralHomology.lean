@@ -169,11 +169,9 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
 theorem MappingTorusHomology.Covering.inverseMonodromy_period_mo1973_27385 {X : Type}
     [TopologicalSpace X] (m : ℕ) (B : X ≃ₜ X) (h : B ^ m = 1) : B.symm ^ m = 1 := by
   rw [homeomorph_symm_pow_eq m B h m le_rfl, Nat.sub_self, pow_zero]
 
-end Mathoverflow1973
 
 end

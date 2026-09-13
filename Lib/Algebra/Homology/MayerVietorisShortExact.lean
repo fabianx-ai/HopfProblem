@@ -80,8 +80,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -321,4 +319,3 @@ theorem SmallChainBiprod.shortExactOfComplexes {K L J T : ChainComplex (ModuleCa
       (shortComplexOfComplexesEvalIso a b u v w n).symm
       (shortExact (a.f n) (b.f n) (u.f n) (v.f n) (square_f a b u v w n) (ha n) (hjoint n)
         (hoverlap n))
-end Mathoverflow1973

@@ -126,9 +126,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 theorem IntLinearAutomorphism.apply_eq_mul (e : ℤ ≃ₗ[ℤ] ℤ) (k : ℤ) : e k = e 1 * k := by
   simpa only [smul_eq_mul, mul_one, mul_comm] using e.map_smul k 1
 
@@ -11729,6 +11726,5 @@ theorem AdaptedWindows.exists_ordered_middle_family {E M : Type} [NormedAddCommG
     S.exists_middle_block_realization hf hm hdim n (S.data q).upper_regular p hp horder habove
       hblock ε hε
 
-end Mathoverflow1973
 
 end

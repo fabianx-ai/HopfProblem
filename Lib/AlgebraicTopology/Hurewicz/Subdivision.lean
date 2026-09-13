@@ -50,8 +50,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Coordinate minima and the simplex quotient -/
 
 /-- The minimum of the first `k` coordinates of a cube point `u` (the infimum over
@@ -2579,4 +2577,3 @@ theorem Hurewicz.NativeSubdivision.nativeCubeSubdivision_class {n : ℕ} [Nontri
           Hurewicz.SimplexGeometry.basedSimplexClass (nativeBasedCubeSimplex p hp e) :=
   nativeClass_eq_sum_simplices p hp
 
-end Mathoverflow1973

@@ -72,7 +72,7 @@ open Topology
 
 noncomputable section
 
-namespace Mathoverflow1973.Hurewicz
+namespace Hurewicz
 
 /-! ### The induced map on homotopy groups -/
 
@@ -236,4 +236,4 @@ theorem subsingleton_singularHomology_of_lt {X : Type} [TopologicalSpace X]
     subst k
     exact singularHomology_one_subsingleton x
 
-end Mathoverflow1973.Hurewicz
+end Hurewicz

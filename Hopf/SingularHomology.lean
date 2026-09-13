@@ -110,7 +110,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
 theorem MorseCancellation.exists_native_open_curve_with_germ {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] (S : TopologicalSpace.Opens N) {a : ℝ → N} {U : Set ℝ} {t₀ : ℝ}
@@ -14854,6 +14853,5 @@ theorem MorseCancellation.radialParameterChart_link (τ : ℝ) (u : (Hemisphere.
           (by rwa [PassageHomology.norm_cylinderPuncture]) w).property.1
   exact radialParameterChart_apply τ u (ε • w.val) hz
 
-end Mathoverflow1973
 
 end

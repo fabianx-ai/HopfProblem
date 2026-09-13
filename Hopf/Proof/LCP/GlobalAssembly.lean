@@ -161,8 +161,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2549,19 +2547,19 @@ theorem Elliptic.LogGauge.project_surjective (P : HolomorphicPeriodMap ℂ Speci
     exact x.2
   exact ⟨⟨y, hy0⟩, Subtype.ext hy⟩
 
-def Elliptic.LogGauge.periodVector (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice)
+def Elliptic.LogGauge.periodVector (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice)
     (z : SpecialPeriods.Disc) : ComplexPlane₂ :=
   P.periodEquiv z (Elliptic.realCast v)
 
 @[simp]
 theorem Elliptic.LogGauge.periodVector_neg (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (z : SpecialPeriods.Disc) : periodVector P (-v) z = -periodVector P v z := by
+    (v : PeriodLattice) (z : SpecialPeriods.Disc) : periodVector P (-v) z = -periodVector P v z := by
   change P.periodEquiv z (Elliptic.realCast (-v)) = -P.periodEquiv z (Elliptic.realCast v)
   rw [show Elliptic.realCast (-v) = -Elliptic.realCast v by ext i; simp [Elliptic.realCast],
     map_neg]
 
 theorem Elliptic.LogGauge.periodVector_mem_lattice
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) (z : SpecialPeriods.Disc) :
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) (z : SpecialPeriods.Disc) :
     periodVector P v z ∈ (P.point z).lattice := by
   rw [← P.periodEquiv_map_lattice z]
   exact
@@ -2569,13 +2567,13 @@ theorem Elliptic.LogGauge.periodVector_mem_lattice
       ⟨Elliptic.realCast v, (Elliptic.standardLattice_mem_iff _).mpr ⟨v, rfl⟩, rfl⟩
 
 theorem Elliptic.LogGauge.periodVector_holomorphic
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) :
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ComplexPlane₂) ω
       (periodVector P v) :=
   P.holomorphic_periodEquiv_const (Elliptic.realCast v)
 
 theorem Elliptic.LogGauge.quotientMap_integer_period
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) (z : SpecialPeriods.Disc)
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) (z : SpecialPeriods.Disc)
     (u : ComplexPlane₂) (a : ℂ) (n : ℤ) :
     P.quotientMap (z, u + (a + n) • periodVector P v z) =
       P.quotientMap (z, u + a • periodVector P v z) := by
@@ -2588,7 +2586,7 @@ theorem Elliptic.LogGauge.quotientMap_integer_period
   abel
 
 theorem Elliptic.LogGauge.quotientMap_eq_of_scalar_int
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) (z : SpecialPeriods.Disc)
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) (z : SpecialPeriods.Disc)
     (u : ComplexPlane₂) {a b : ℂ} (hab : ∃ n : ℤ, a = b + n) :
     P.quotientMap (z, u + a • periodVector P v z) =
       P.quotientMap (z, u + b • periodVector P v z) := by
@@ -2596,43 +2594,43 @@ theorem Elliptic.LogGauge.quotientMap_eq_of_scalar_int
   exact quotientMap_integer_period P v z u b n
 
 def Elliptic.LogGauge.sectionCoordinate (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (z : SpecialPeriods.Disc) : RealTorus₄ :=
+    (v : PeriodLattice) (z : SpecialPeriods.Disc) : RealTorus₄ :=
   standardLattice.mkQ
     ((P.periodEquiv z).symm (CuspUniformization.logarithm z • periodVector P v z))
 
 @[simp]
 theorem Elliptic.LogGauge.sectionCoordinate_neg (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (z : SpecialPeriods.Disc) :
+    (v : PeriodLattice) (z : SpecialPeriods.Disc) :
     sectionCoordinate P (-v) z = -sectionCoordinate P v z := by
   simp only [sectionCoordinate, periodVector_neg, smul_neg, map_neg]
 
-def Elliptic.LogGauge.gaugeMap (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice)
+def Elliptic.LogGauge.gaugeMap (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice)
     (x : FamilyStar P) : FamilyStar P :=
   ⟨(x.1.1, x.1.2 + sectionCoordinate P v x.1.1), x.2⟩
 
 @[simp]
 theorem Elliptic.LogGauge.gaugeMap_neg_gaugeMap (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (x : FamilyStar P) : gaugeMap P (-v) (gaugeMap P v x) = x := by
+    (v : PeriodLattice) (x : FamilyStar P) : gaugeMap P (-v) (gaugeMap P v x) = x := by
   apply Subtype.ext
   apply Prod.ext
   · rfl
   · change (x.1.2 + sectionCoordinate P v x.1.1) + sectionCoordinate P (-v) x.1.1 = x.1.2
     rw [sectionCoordinate_neg, add_neg_cancel_right]
 
-def Elliptic.LogGauge.gaugeEquiv (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) :
+def Elliptic.LogGauge.gaugeEquiv (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) :
     Equiv.Perm (FamilyStar P) where
   toFun := gaugeMap P v
   invFun := gaugeMap P (-v)
   left_inv := gaugeMap_neg_gaugeMap P v
   right_inv x := by simpa only [neg_neg] using gaugeMap_neg_gaugeMap P (-v) x
 
-def Elliptic.LogGauge.gaugeLift (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice)
+def Elliptic.LogGauge.gaugeLift (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice)
     (a : ℂ → ℂ) (x : CoverStar) : CoverStar :=
   ⟨(x.1.1, x.1.2 + a x.1.1 • periodVector P v x.1.1), x.2⟩
 
 @[simp]
 theorem Elliptic.LogGauge.gaugeMap_project (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (x : CoverStar) :
+    (v : PeriodLattice) (x : CoverStar) :
     gaugeMap P v (project P x) = project P (gaugeLift P v CuspUniformization.logarithm x) := by
   apply Subtype.ext
   apply Prod.ext
@@ -2648,7 +2646,7 @@ theorem Elliptic.LogGauge.gaugeMap_project (P : HolomorphicPeriodMap ℂ Special
   rw [map_add, map_add]
 
 theorem Elliptic.LogGauge.gaugeMap_project_localLog
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) {z₀ : ℂ} (hz₀ : z₀ ≠ 0)
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) {z₀ : ℂ} (hz₀ : z₀ ≠ 0)
     (x : CoverStar) :
     gaugeMap P v (project P x) = project P (gaugeLift P v (CuspUniformization.localLog z₀) x) := by
   rw [gaugeMap_project]
@@ -2661,12 +2659,12 @@ def Elliptic.LogGauge.zeroSection (P : HolomorphicPeriodMap ℂ SpecialPeriods.D
     (z : BaseStar) : FamilyStar P :=
   ⟨(z.1, 0), z.2⟩
 
-def Elliptic.LogGauge.sectionMap (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) :
+def Elliptic.LogGauge.sectionMap (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) :
     BaseStar → FamilyStar P :=
   gaugeMap P v ∘ zeroSection P
 
 theorem Elliptic.LogGauge.sectionMap_formula (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) (z : BaseStar) :
+    (v : PeriodLattice) (z : BaseStar) :
     (sectionMap P v z : P.TotalSpace) =
       P.quotientMap (z.1, CuspUniformization.logarithm z.1 • periodVector P v z.1) := by
   apply Prod.ext
@@ -2965,7 +2963,7 @@ theorem SpecialPeriods.EllipticFilling.regularBasePatch_mem_iff_compactifiedChar
   rfl
 
 def Elliptic.LogGauge.starPermutation {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) : Equiv.Perm (FamilyStar D.periods) :=
+    (v : PeriodLattice) : Equiv.Perm (FamilyStar D.periods) :=
   (D.permutation v).subtypeEquiv
     (fun x => by
       change (x.1 : ℂ) ≠ 0 ↔ (Elliptic.familyRotation j x.1 : ℂ) ≠ 0
@@ -2974,23 +2972,23 @@ def Elliptic.LogGauge.starPermutation {j : Elliptic.Kind} (D : Elliptic.Equivari
 
 @[simp]
 theorem Elliptic.LogGauge.starPermutation_coe {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (x : FamilyStar D.periods) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (x : FamilyStar D.periods) :
     (starPermutation D v x : D.TotalSpace) = D.permutation v x :=
   rfl
 
-def Elliptic.LogGauge.starLift {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j) (v : Lattice)
+def Elliptic.LogGauge.starLift {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j) (v : PeriodLattice)
     (x : CoverStar) : CoverStar :=
   ⟨D.complexLift v x, familyRotation_ne_zero j x.1.1 x.2⟩
 
 @[simp]
 theorem Elliptic.LogGauge.starPermutation_project {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (x : CoverStar) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (x : CoverStar) :
     starPermutation D v (project D.periods x) = project D.periods (starLift D v x) := by
   apply Subtype.ext
   exact (D.complexLift_quotientMap v x).symm
 
 theorem Elliptic.LogGauge.periodVector_covariance {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (z : SpecialPeriods.Disc) :
     Elliptic.linearMatrix j (D.periods.point z) *ᵥ periodVector D.periods v z =
       periodVector D.periods v (Elliptic.familyRotation j z) := by
@@ -2999,7 +2997,7 @@ theorem Elliptic.LogGauge.periodVector_covariance {j : Elliptic.Kind}
   exact h.symm
 
 theorem Elliptic.LogGauge.complexLift_translation {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (z : SpecialPeriods.Disc) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (z : SpecialPeriods.Disc) :
     D.periods.periodEquiv z ((1 / (j.order : ℝ)) • Elliptic.realCast v) =
       (1 / (j.order : ℂ)) • periodVector D.periods v z := by
   rw [map_smul]
@@ -3008,7 +3006,7 @@ theorem Elliptic.LogGauge.complexLift_translation {j : Elliptic.Kind}
     Complex.ofReal_one, Complex.ofReal_natCast, smul_eq_mul]
 
 theorem Elliptic.LogGauge.complexLift_formula {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (z : SpecialPeriods.Disc)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (z : SpecialPeriods.Disc)
     (u : ComplexPlane₂) :
     D.complexLift v (z, u) =
       (Elliptic.familyRotation j z,
@@ -3023,7 +3021,7 @@ theorem Elliptic.LogGauge.periodVector_zero {j : Elliptic.Kind} (D : Elliptic.Eq
   rw [show Elliptic.realCast 0 = 0 by ext i; simp [Elliptic.realCast], map_zero]
 
 theorem Elliptic.LogGauge.gaugeLift_starLift_project {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) (x : CoverStar) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) (x : CoverStar) :
     project D.periods (gaugeLift D.periods v CuspUniformization.logarithm (starLift D v x)) =
       project D.periods (starLift D 0 (gaugeLift D.periods v CuspUniformization.logarithm x)) := by
   apply Subtype.ext
@@ -3048,7 +3046,7 @@ theorem Elliptic.LogGauge.gaugeLift_starLift_project {j : Elliptic.Kind}
   exact ⟨n, by rw [hn]; ring⟩
 
 theorem Elliptic.LogGauge.gaugeMap_intertwines {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (x : FamilyStar D.periods) :
     gaugeMap D.periods v (starPermutation D v x) = starPermutation D 0 (gaugeMap D.periods v x) :=
   by
@@ -3057,7 +3055,7 @@ theorem Elliptic.LogGauge.gaugeMap_intertwines {j : Elliptic.Kind}
   exact gaugeLift_starLift_project D v hv y
 
 theorem Elliptic.LogGauge.starPermutation_iterate_coe {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (r : ℕ) (x : FamilyStar D.periods) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (r : ℕ) (x : FamilyStar D.periods) :
     ((starPermutation D v)^[r] x : D.TotalSpace) = (D.permutation v)^[r] x := by
   induction r with
   | zero => rfl
@@ -3065,7 +3063,7 @@ theorem Elliptic.LogGauge.starPermutation_iterate_coe {j : Elliptic.Kind}
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', starPermutation_coe, ih]
 
 theorem Elliptic.LogGauge.starPermutation_pow_order {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     starPermutation D v ^ j.order = 1 := by
   apply Equiv.ext
   intro x
@@ -3077,12 +3075,12 @@ theorem Elliptic.LogGauge.starPermutation_pow_order {j : Elliptic.Kind}
 
 @[instance_reducible]
 def Elliptic.LogGauge.starAction {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     MulAction (Elliptic.CyclicGroup j) (FamilyStar D.periods) :=
   Elliptic.CyclicAction.action (starPermutation D v) (starPermutation_pow_order D v hv)
 
 theorem Elliptic.LogGauge.starAction_coe {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) (g : Elliptic.CyclicGroup j)
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) (g : Elliptic.CyclicGroup j)
     (x : FamilyStar D.periods) :
     letI := D.action v hv
     letI := starAction D v hv
@@ -3095,7 +3093,7 @@ theorem Elliptic.LogGauge.starAction_coe {j : Elliptic.Kind} (D : Elliptic.Equiv
   rw [Equiv.Perm.coe_pow, starPermutation_iterate_coe, Equiv.Perm.coe_pow]
 
 theorem Elliptic.LogGauge.gaugeMap_starAction {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : FamilyStar D.periods) :
     gaugeMap D.periods v (@SMul.smul _ _ (starAction D v hv).toSMul g x) =
       @SMul.smul _ _ (starAction D 0 (by simp)).toSMul g (gaugeMap D.periods v x) := by
@@ -3108,7 +3106,7 @@ theorem Elliptic.LogGauge.gaugeMap_starAction {j : Elliptic.Kind}
   exact h.iterate_right g.toAdd.val x
 
 theorem Elliptic.LogGauge.starAction_free {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := starAction D v hv
     IsCancelSMul (Elliptic.CyclicGroup j) (FamilyStar D.periods) := by
   let := starAction D v hv
@@ -3130,7 +3128,7 @@ theorem Elliptic.LogGauge.starAction_free {j : Elliptic.Kind} (D : Elliptic.Equi
   exact (ZMod.val_eq_zero _).mp hg
 
 theorem Elliptic.LogGauge.starAction_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) :
     letI := D.periods.totalChartedSpace
     letI := starAction D v hv
@@ -3157,7 +3155,7 @@ theorem Elliptic.LogGauge.starAction_holomorphic {j : Elliptic.Kind}
   simpa only [starAction_coe] using h x
 
 theorem Elliptic.LogGauge.starAction_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := starAction D v hv
     ContinuousConstSMul (Elliptic.CyclicGroup j) (FamilyStar D.periods) := by
   let := D.periods.totalChartedSpace
@@ -3207,7 +3205,7 @@ theorem Elliptic.LogGauge.project_holomorphic (P : HolomorphicPeriodMap ℂ Spec
 attribute [local instance] Elliptic.LogGauge.gaugeCoveringChartedSpace
     Elliptic.LogGauge.gaugeCoveringManifold in
 theorem Elliptic.LogGauge.gaugeLift_holomorphicAt (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) {a : ℂ → ℂ} {x : CoverStar} (ha : ContDiffAt ℂ ω a (x.1.1 : ℂ)) :
+    (v : PeriodLattice) {a : ℂ → ℂ} {x : CoverStar} (ha : ContDiffAt ℂ ω a (x.1.1 : ℂ)) :
     ContMDiffAt (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (gaugeLift P v a) x := by
   have hb :
@@ -3262,7 +3260,7 @@ theorem Elliptic.LogGauge.gaugeLift_holomorphicAt (P : HolomorphicPeriodMap ℂ 
 attribute [local instance] Elliptic.LogGauge.gaugeCoveringChartedSpace
     Elliptic.LogGauge.gaugeCoveringManifold in
 theorem Elliptic.LogGauge.gaugeMap_comp_project_holomorphic
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) :
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) :
     letI := P.totalChartedSpace
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (gaugeMap P v ∘ project P) := by
@@ -3276,7 +3274,7 @@ theorem Elliptic.LogGauge.gaugeMap_comp_project_holomorphic
 attribute [local instance] Elliptic.LogGauge.gaugeCoveringChartedSpace
     Elliptic.LogGauge.gaugeCoveringManifold in
 theorem Elliptic.LogGauge.gaugeMap_holomorphic (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) :
+    (v : PeriodLattice) :
     letI := P.totalChartedSpace
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (gaugeMap P v) := by
@@ -3290,7 +3288,7 @@ theorem Elliptic.LogGauge.gaugeMap_holomorphic (P : HolomorphicPeriodMap ℂ Spe
 attribute [local instance] Elliptic.LogGauge.gaugeCoveringChartedSpace
     Elliptic.LogGauge.gaugeCoveringManifold in
 theorem Elliptic.LogGauge.gaugeMap_continuous (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc)
-    (v : Lattice) : Continuous (gaugeMap P v) := by
+    (v : PeriodLattice) : Continuous (gaugeMap P v) := by
   let := P.totalChartedSpace
   exact (gaugeMap_holomorphic P v).continuous
 
@@ -3496,14 +3494,14 @@ theorem Elliptic.LogGauge.familyStarLocallyCompact : LocallyCompactSpace familyO
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.StarQuotient {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : Type :=
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : Type :=
   @Elliptic.FiniteQuotient.Space (Elliptic.CyclicGroup j) (FamilyStar D.periods) _
     (starAction D v hv)
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 instance Elliptic.LogGauge.starTopology {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : TopologicalSpace (StarQuotient D v hv) :=
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : TopologicalSpace (StarQuotient D v hv) :=
   inferInstanceAs
     (TopologicalSpace
       (@Elliptic.FiniteQuotient.Space (Elliptic.CyclicGroup j) (FamilyStar D.periods) _
@@ -3512,21 +3510,21 @@ instance Elliptic.LogGauge.starTopology {j : Elliptic.Kind} (D : Elliptic.Equiva
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.starProject {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : FamilyStar D.periods → StarQuotient D v hv :=
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : FamilyStar D.periods → StarQuotient D v hv :=
   @Elliptic.FiniteQuotient.project (Elliptic.CyclicGroup j) (FamilyStar D.periods) _
     (starAction D v hv)
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.starProject_surjective {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     Function.Surjective (starProject D v hv) :=
   Quotient.mk_surjective
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.starCoveringMap {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := starAction D v hv
     IsQuotientCoveringMap (starProject D v hv) (Elliptic.CyclicGroup j) := by
   let := starAction D v hv
@@ -3540,7 +3538,7 @@ attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 @[instance_reducible]
 def Elliptic.LogGauge.starChartedSpace {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     ChartedSpace Elliptic.FamilyModel (StarQuotient D v hv) := by
   let := D.periods.totalChartedSpace
   let := starAction D v hv
@@ -3549,7 +3547,7 @@ def Elliptic.LogGauge.starChartedSpace {j : Elliptic.Kind} (D : Elliptic.Equivar
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.starProject_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := D.periods.totalChartedSpace
     letI := starChartedSpace D v hv
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
@@ -3568,7 +3566,7 @@ abbrev Elliptic.LogGauge.TautologicalStar {j : Elliptic.Kind} (D : Elliptic.Equi
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.gaugeQuotientEquiv {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : StarQuotient D v hv ≃ TautologicalStar D :=
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : StarQuotient D v hv ≃ TautologicalStar D :=
   @quotientEquiv (Elliptic.CyclicGroup j) _ (FamilyStar D.periods) (FamilyStar D.periods)
     (starAction D v hv) (starAction D 0 (Matrix.mulVec_zero j.matrix)) (gaugeEquiv D.periods v)
     (gaugeMap_starAction D v hv)
@@ -3576,7 +3574,7 @@ def Elliptic.LogGauge.gaugeQuotientEquiv {j : Elliptic.Kind} (D : Elliptic.Equiv
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.gaugeQuotientBiholomorph {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := starChartedSpace D v hv
     letI := starChartedSpace D 0 (Matrix.mulVec_zero j.matrix)
     Diffeomorph (modelWithCornersSelf ℂ Elliptic.FamilyModel)
@@ -3615,7 +3613,7 @@ def Elliptic.LogGauge.starUpstairsProjection {j : Elliptic.Kind} (D : Elliptic.E
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.starUpstairsProjection_invariant {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : FamilyStar D.periods) :
     letI := starAction D v hv
     starUpstairsProjection D (g • x) = starUpstairsProjection D x := by
@@ -3631,7 +3629,7 @@ theorem Elliptic.LogGauge.starUpstairsProjection_invariant {j : Elliptic.Kind}
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.starProjection {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : StarQuotient D v hv → BaseStar := by
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : StarQuotient D v hv → BaseStar := by
   let := starAction D v hv
   exact
     Elliptic.FiniteQuotient.descend (starUpstairsProjection D)
@@ -3640,21 +3638,21 @@ def Elliptic.LogGauge.starProjection {j : Elliptic.Kind} (D : Elliptic.Equivaria
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.fillingOpen {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) : TopologicalSpace.Opens (D.Space v hv) :=
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) : TopologicalSpace.Opens (D.Space v hv) :=
   ⟨{x | (D.projection v hv x : ℂ) ≠ 0},
     isOpen_ne_fun (continuous_subtype_val.comp (D.projection_continuous v hv)) continuous_const⟩
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 abbrev Elliptic.LogGauge.FillingStar {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :=
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :=
   fillingOpen D v hv
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 @[simp]
 theorem Elliptic.LogGauge.quotient_preimage_fillingOpen {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     (D.quotient v hv) ⁻¹' (fillingOpen D v hv : Set (D.Space v hv)) =
       (familyOpen : Set D.TotalSpace) := by
   ext x
@@ -3665,7 +3663,7 @@ theorem Elliptic.LogGauge.quotient_preimage_fillingOpen {j : Elliptic.Kind}
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.fillingStarProject {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (x : FamilyStar D.periods) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (x : FamilyStar D.periods) :
     FillingStar D v hv :=
   ⟨D.quotient v hv x, by
     change (D.projection v hv (D.quotient v hv x) : ℂ) ≠ 0
@@ -3675,7 +3673,7 @@ def Elliptic.LogGauge.fillingStarProject {j : Elliptic.Kind} (D : Elliptic.Equiv
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.fillingStarProject_surjective {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Function.Surjective (fillingStarProject D v hv) := by
   let := D.action v hv.1
   exact
@@ -3685,13 +3683,13 @@ theorem Elliptic.LogGauge.fillingStarProject_surjective {j : Elliptic.Kind}
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.fillingStarProjection {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (x : FillingStar D v hv) : BaseStar :=
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (x : FillingStar D v hv) : BaseStar :=
   ⟨D.projection v hv x, x.2⟩
 
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.fillingOpenComparison {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := starChartedSpace D v hv.1
     letI := D.chartedSpace v hv
     Diffeomorph (modelWithCornersSelf ℂ Elliptic.FamilyModel)
@@ -3711,7 +3709,7 @@ def Elliptic.LogGauge.fillingOpenComparison {j : Elliptic.Kind} (D : Elliptic.Eq
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 def Elliptic.LogGauge.fillingToTautologicalBiholomorph {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := D.chartedSpace v hv
     letI := starChartedSpace D 0 (Matrix.mulVec_zero j.matrix)
     Diffeomorph (modelWithCornersSelf ℂ Elliptic.FamilyModel)
@@ -3726,7 +3724,7 @@ attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 @[simp]
 theorem Elliptic.LogGauge.fillingToTautologicalBiholomorph_project {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : FamilyStar D.periods) :
     fillingToTautologicalBiholomorph D v hv (fillingStarProject D v hv x) =
       starProject D 0 (Matrix.mulVec_zero j.matrix) (gaugeMap D.periods v x) :=
@@ -3735,7 +3733,7 @@ theorem Elliptic.LogGauge.fillingToTautologicalBiholomorph_project {j : Elliptic
 attribute [local instance] Elliptic.LogGauge.discLocallyCompact
     Elliptic.LogGauge.familyStarLocallyCompact in
 theorem Elliptic.LogGauge.fillingToTautologicalBiholomorph_base {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : FillingStar D v hv) :
     starProjection D 0 (Matrix.mulVec_zero j.matrix) (fillingToTautologicalBiholomorph D v hv x) =
       fillingStarProjection D v hv x := by
@@ -3766,7 +3764,7 @@ theorem SpecialPeriods.EllipticFilling.ellipticGenerator_torus_eq (j : Elliptic.
   intro x
   obtain ⟨u, rfl⟩ := standardLattice.mkQ_surjective x
   rw [ellipticGenerator_torus_mkQ, Elliptic.flatTorusAffine_mkQ]
-  have hz : Elliptic.realCast (0 : Lattice) = 0 := by
+  have hz : Elliptic.realCast (0 : PeriodLattice) = 0 := by
     ext i
     simp [Elliptic.realCast]
   rw [Elliptic.flatAffine, hz, smul_zero, add_zero]
@@ -4100,7 +4098,7 @@ theorem SpecialPeriods.EllipticFilling.tautologicalToOverlap_bijective
   ⟨tautologicalToOverlap_injective P j h₁ h₂, tautologicalToOverlap_surjective P j h₁ h₂⟩
 
 theorem Elliptic.LogGauge.sectionMap_formula_of_exponential
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) (z : BaseStar) (s : ℂ)
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) (z : BaseStar) (s : ℂ)
     (hs : CuspUniformization.exponential s = (z.1 : ℂ)) :
     (sectionMap P v z : P.TotalSpace) = P.quotientMap (z.1, s • periodVector P v z.1) := by
   rw [sectionMap_formula]
@@ -4110,7 +4108,7 @@ theorem Elliptic.LogGauge.sectionMap_formula_of_exponential
   simpa only [zero_add] using quotientMap_eq_of_scalar_int P v z.1 0 hlogs
 
 theorem Elliptic.LogGauge.gaugeMap_project_of_exponential
-    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : Lattice) (x : CoverStar) (s : ℂ)
+    (P : HolomorphicPeriodMap ℂ SpecialPeriods.Disc) (v : PeriodLattice) (x : CoverStar) (s : ℂ)
     (hs : CuspUniformization.exponential s = (x.1.1 : ℂ)) :
     (gaugeMap P v (project P x) : P.TotalSpace) =
       P.quotientMap (x.1.1, x.1.2 + s • periodVector P v x.1.1) := by
@@ -5114,7 +5112,7 @@ theorem Elliptic.familyRadial_fixed (j : Kind) (t : unitInterval) (x : Family j)
     (hx : x.1 = discZero) : familyRadial j t x = x := by
   exact Prod.ext (by change discRadial t x.1 = x.1; rw [hx, discRadial_discZero]) rfl
 
-theorem Elliptic.familyRadial_equivariant (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.familyRadial_equivariant (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : CyclicGroup j) (t : unitInterval) (x : Family j) :
     letI := familyAction j v hv
     familyRadial j t (g • x) = g • familyRadial j t x := by
@@ -5122,7 +5120,7 @@ theorem Elliptic.familyRadial_equivariant (j : Kind) (v : Lattice) (hv : j.matri
   rw [familyAction_apply, familyAction_apply]
   exact Prod.ext (discRadial_familyRotation_iterate j t g.toAdd.val x.1) rfl
 
-def Elliptic.fillingRadial (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+def Elliptic.fillingRadial (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (t : unitInterval) : Filling j v hv → Filling j v hv := by
   letI := familyAction j v hv.1
   exact
@@ -5132,32 +5130,32 @@ def Elliptic.fillingRadial (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
         exact FiniteQuotient.project_smul (CyclicGroup j) (Family j) g _)
 
 @[simp]
-theorem Elliptic.fillingRadial_fillingQuotient (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_fillingQuotient (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (t : unitInterval) (x : Family j) :
     fillingRadial j v hv t (fillingQuotient j v hv x) =
       fillingQuotient j v hv (familyRadial j t x) :=
   rfl
 
-theorem Elliptic.fillingRadial_continuous (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.fillingRadial_continuous (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     Continuous (fun p : unitInterval × Filling j v hv => fillingRadial j v hv p.1 p.2) := by
   have hq : Topology.IsQuotientMap (fillingQuotient j v hv) := isQuotientMap_quotient_mk'
   apply hq.continuous_lift_prod_right
   exact (fillingQuotient_continuous j v hv).comp (familyRadial_continuous j)
 
 @[simp]
-theorem Elliptic.fillingRadial_zero (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_zero (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (x : Filling j v hv) : fillingRadial j v hv 0 x = x := by
   obtain ⟨y, rfl⟩ := fillingQuotient_surjective j v hv x
   rw [fillingRadial_fillingQuotient, familyRadial_zero]
 
-theorem Elliptic.fillingRadial_one_mem_central (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_one_mem_central (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (x : Filling j v hv) : fillingRadial j v hv 1 x ∈ fillingProjection j v hv ⁻¹' { discZero } :=
   by
   obtain ⟨y, rfl⟩ := fillingQuotient_surjective j v hv x
   rw [fillingRadial_fillingQuotient, familyRadial_one]
   exact (discPower_eq_zero_iff j.order j.order_pos discZero).mpr rfl
 
-theorem Elliptic.fillingRadial_fixed (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_fixed (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (t : unitInterval) (x : Filling j v hv) (hx : fillingProjection j v hv x = discZero) :
     fillingRadial j v hv t x = x := by
   obtain ⟨y, rfl⟩ := fillingQuotient_surjective j v hv x
@@ -5165,37 +5163,37 @@ theorem Elliptic.fillingRadial_fixed (j : Kind) (v : Lattice) (hv : AdmissibleTw
   rw [fillingRadial_fillingQuotient,
     familyRadial_fixed j t y ((discPower_eq_zero_iff j.order j.order_pos y.1).mp hx)]
 
-def Elliptic.fillingCentralSubtypeInclusion (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+def Elliptic.fillingCentralSubtypeInclusion (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     ContinuousMap (fillingProjection j v hv ⁻¹' { discZero }) (Filling j v hv) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-def Elliptic.fillingCentralRetraction (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+def Elliptic.fillingCentralRetraction (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     ContinuousMap (Filling j v hv) (fillingProjection j v hv ⁻¹' { discZero }) :=
   ⟨fun x => ⟨fillingRadial j v hv 1 x, fillingRadial_one_mem_central j v hv x⟩,
     ((fillingRadial_continuous j v hv).comp (continuous_const.prodMk continuous_id)).subtype_mk _⟩
 
-def Elliptic.torusFibreMap (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+def Elliptic.torusFibreMap (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (z : SpecialPeriods.Disc) : ((familyPeriods j).point z).Torus → Filling j v hv :=
   fillingQuotient j v hv ∘ (familyPeriods j).fibreInclusion z
 
-theorem Elliptic.torusFibreMap_holomorphic (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.torusFibreMap_holomorphic (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (z : SpecialPeriods.Disc) :
     ContMDiff (modelWithCornersSelf ℂ ComplexPlane₂) (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       ω (torusFibreMap j v hv z) := by
   let := (familyPeriods j).totalChartedSpace
   exact (fillingQuotient_holomorphic j v hv).comp ((familyPeriods j).fibreInclusion_holomorphic z)
 
-theorem Elliptic.torusFibreMap_continuous (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.torusFibreMap_continuous (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (z : SpecialPeriods.Disc) : Continuous (torusFibreMap j v hv z) :=
   (torusFibreMap_holomorphic j v hv z).continuous
 
 @[simp]
-theorem Elliptic.fillingProjection_torusFibreMap (j : Kind) (v : Lattice)
+theorem Elliptic.fillingProjection_torusFibreMap (j : Kind) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (z : SpecialPeriods.Disc) (x : ((familyPeriods j).point z).Torus) :
     fillingProjection j v hv (torusFibreMap j v hv z x) = discPower j.order j.order_pos z :=
   rfl
 
-theorem Elliptic.range_torusFibreMap (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.range_torusFibreMap (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (z : SpecialPeriods.Disc) :
     Set.range (torusFibreMap j v hv z) =
       fillingProjection j v hv ⁻¹' {discPower j.order j.order_pos z} := by
@@ -5222,7 +5220,7 @@ theorem Elliptic.range_torusFibreMap (j : Kind) (v : Lattice) (hv : AdmissibleTw
     rw [hy]
     exact FiniteQuotient.project_smul (CyclicGroup j) (Family j) g x
 
-theorem Elliptic.fillingProjection_fibre_connected (j : Kind) (v : Lattice)
+theorem Elliptic.fillingProjection_fibre_connected (j : Kind) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (b : SpecialPeriods.Disc) :
     IsConnected (fillingProjection j v hv ⁻¹' { b }) := by
   obtain ⟨z, rfl⟩ := discPower_surjective j.order j.order_pos b
@@ -5230,52 +5228,52 @@ theorem Elliptic.fillingProjection_fibre_connected (j : Kind) (v : Lattice)
   exact isConnected_range (torusFibreMap_continuous j v hv z)
 
 def Elliptic.Equivariant.Data.fillingHomeomorph {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     D.Space v hv ≃ₜ Elliptic.Filling j v hv :=
   Homeomorph.refl _
 
 theorem Elliptic.Equivariant.Data.projection_fibre_isConnected {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (b : SpecialPeriods.Disc) : IsConnected (D.projection v hv ⁻¹' { b }) :=
   Elliptic.fillingProjection_fibre_connected j v hv b
 
 def Elliptic.Equivariant.Data.fillingRadial {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (t : unitInterval) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (t : unitInterval) :
     D.Space v hv → D.Space v hv :=
   Elliptic.fillingRadial j v hv t
 
 @[simp]
 theorem Elliptic.Equivariant.Data.fillingRadial_quotient {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (t : unitInterval) (x : D.TotalSpace) :
     D.fillingRadial v hv t (D.quotient v hv x) =
       D.quotient v hv (Elliptic.discRadial t x.1, x.2) :=
   rfl
 
 theorem Elliptic.Equivariant.Data.fillingRadial_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Continuous (fun p : unitInterval × D.Space v hv => D.fillingRadial v hv p.1 p.2) :=
   Elliptic.fillingRadial_continuous j v hv
 
 @[simp]
 theorem Elliptic.Equivariant.Data.fillingRadial_zero {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : D.Space v hv) : D.fillingRadial v hv 0 x = x :=
   Elliptic.fillingRadial_zero j v hv x
 
 theorem Elliptic.Equivariant.Data.fillingRadial_fixed {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (t : unitInterval) (x : D.Space v hv) (hx : D.projection v hv x = Elliptic.discZero) :
     D.fillingRadial v hv t x = x :=
   Elliptic.fillingRadial_fixed j v hv t x hx
 
 def Elliptic.Equivariant.Data.fillingCentralSubtypeInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     ContinuousMap (D.projection v hv ⁻¹' { Elliptic.discZero }) (D.Space v hv) :=
   Elliptic.fillingCentralSubtypeInclusion j v hv
 
 def Elliptic.Equivariant.Data.fillingCentralRetraction {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     ContinuousMap (D.Space v hv) (D.projection v hv ⁻¹' { Elliptic.discZero }) :=
   Elliptic.fillingCentralRetraction j v hv
 
@@ -5496,6 +5494,5 @@ theorem SpecialPeriods.Threefold.space_connected : ConnectedSpace Space :=
     gluingData_localProjection_fibre_isConnected
 
 
-end Mathoverflow1973
 
 end

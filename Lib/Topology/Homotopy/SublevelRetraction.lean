@@ -27,8 +27,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -252,4 +250,3 @@ def SublevelRetraction.sublevelHomotopyEquiv {X : Type*} [TopologicalSpace X]
   invFun := sublevelInclusion ρ δ
   left_inv := ⟨(extendedHomotopy ρ H η hη hfix hzero δ hηδ hone).toHomotopy.symm⟩
   right_inv := ⟨(restrictedHomotopy ρ H η hη hfix hzero hmono δ hηδ hone).toHomotopy.symm⟩
-end Mathoverflow1973

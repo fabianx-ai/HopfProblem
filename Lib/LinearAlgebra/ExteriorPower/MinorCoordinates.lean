@@ -33,7 +33,7 @@ rank-4 `squareBasis`/`squareCoordinates`/`exteriorSquare` constructions of
 open scoped Matrix
 open Set
 
-namespace Mathoverflow1973.PeriodTorusHigherHomologyExterior
+namespace PeriodTorusHigherHomologyExterior
 
 @[expose] public noncomputable section
 
@@ -194,4 +194,4 @@ theorem cauchyBinet_minors (p q m n : ℕ)
 
 end
 
-end Mathoverflow1973.PeriodTorusHigherHomologyExterior
+end PeriodTorusHigherHomologyExterior

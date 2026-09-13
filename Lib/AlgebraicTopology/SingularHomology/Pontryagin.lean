@@ -38,8 +38,6 @@ Hatcher, *Algebraic Topology*, §3.C (Pontryagin products).
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 open SingularHomology
 
 def PeriodTorusHigherHomologyPontryagin.cyclicMap (X Y Z : Type) [TopologicalSpace X]
@@ -248,4 +246,3 @@ def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [Ad
     · rw [h]
       exact h12 _ _
 
-end Mathoverflow1973

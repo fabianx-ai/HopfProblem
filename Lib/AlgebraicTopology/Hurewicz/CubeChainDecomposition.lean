@@ -50,8 +50,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Permutation sign sums -/
 
 /-- A signed sum over permutations vanishes if the summand is invariant under the
@@ -2267,4 +2265,3 @@ theorem Hurewicz.cubeHomologyClass_const {m : ℕ} {X : Type} [TopologicalSpace 
   exact map_zero _
 
 
-end Mathoverflow1973

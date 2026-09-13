@@ -58,7 +58,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
 /-! ### Collapsing the boundary: the cube–sphere quotient -/
 
 
@@ -930,4 +929,3 @@ def hurewiczLinearEquivOfTwoLE (x : X) (n : ℕ) (hn : 2 ≤ n)
 
 end Hurewicz
 
-end Mathoverflow1973

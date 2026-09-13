@@ -14,7 +14,7 @@ matrix) — Milnor, *Lectures on the h-cobordism theorem*, §7, Thm. 7.6's algeb
 ## Provenance
 
 Moved verbatim from `Hopf/SphereTopology.lean` (lane F0b). The declarations keep their
-`Mathoverflow1973.*` names so existing consumers re-point through unchanged fully
+`*` names so existing consumers re-point through unchanged fully
 qualified names; the upstream-shaped rename is a separate commit. The interleaved
 geometric gluers `MorseSurgeryData.indexThreePresentation` and
 `SurgeryWindows.middlePresentation` stay in `Hopf/SphereTopology.lean` and move with
@@ -22,8 +22,6 @@ lane F10.
 -/
 
 @[expose] public noncomputable section
-
-namespace Mathoverflow1973
 
 theorem HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module R A] [Module R B] [Module R C]
@@ -281,4 +279,3 @@ theorem HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
   let e := LinearEquiv.ofBijective A.mulVecLin hA
   simpa using e.finrank_eq
 
-end Mathoverflow1973

@@ -72,8 +72,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2411,4 +2409,3 @@ theorem RiemannBoundary.halfStripExp_im_pos (a : ℝ) {c : ℝ} (hc : 0 < c) {z 
       one_mul, zero_add]
     rw [div_lt_iff₀ hc]
     linarith [hz.2]
-end Mathoverflow1973

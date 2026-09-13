@@ -46,8 +46,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -835,4 +833,3 @@ theorem RegularValues.dense_regularValues {E : Type*} [NormedAddCommGroup E]
     rw [hs]
     exact measure_singularValues_eq_zero μ hf
   exact μ.dense_of_ae he
-end Mathoverflow1973

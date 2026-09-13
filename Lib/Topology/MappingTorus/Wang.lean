@@ -51,10 +51,6 @@ universe u v w
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
-
 def PeriodTorusHigherHomology.CirclePaths.circleTranslation (a : ℝ) :
     C((SingularHomology.CircleTopology.Circle),
       (SingularHomology.CircleTopology.Circle)) :=
@@ -837,4 +833,3 @@ theorem MappingTorusHomology.Covering.translatedPositiveLoop_class (a : ℝ) :
   exact
     hc.trans (PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTranslation a _)
 
-end Mathoverflow1973

@@ -89,8 +89,6 @@ singular homology, cross product, Künneth
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### ℤ-module instances on linear maps and tensor products -/
 
 /-- The `ℤ`-module structure on `A →ₗ[ℤ] B` used in this file, pinning the elaboration
@@ -4360,4 +4358,3 @@ theorem PeriodTorusHigherHomology.crossProductHomology_snd {X Y : Type} [Topolog
 
 end
 
-end Mathoverflow1973

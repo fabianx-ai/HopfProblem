@@ -52,8 +52,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-- The unit `n`-cube `Fin n → unitInterval`. -/
 abbrev Hurewicz.CubeTriangulation.CubeN (n : ℕ) :=
   Fin n → (unitInterval)
@@ -940,4 +938,3 @@ theorem Hurewicz.CubeTriangulation.cubeSimplex_simplexBoundary {n : ℕ}
       · apply (cubeSimplex_tie_iff e s i).mpr
         simpa only [Fin.castSucc_succ] using hk
 
-end Mathoverflow1973

@@ -39,8 +39,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -678,4 +676,3 @@ theorem MappingTorus.HomologyCover.intersectionToV_twistedFold {X : Type} [Topol
           (intersectionHomotopyEquiv f _)
     rw [intersectionHomotopyEquiv_inr, chartV_intersection_inr]
     rfl
-end Mathoverflow1973

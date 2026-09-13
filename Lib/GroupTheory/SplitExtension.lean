@@ -29,8 +29,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -152,4 +150,3 @@ theorem SplitGroupExtension.mulEquiv_symm_section {N E H : Type*} [Group N] [Gro
     (mulEquiv i p s φ hi hs hex hconj).symm (s h) = SemidirectProduct.inr h := by
   apply (mulEquiv i p s φ hi hs hex hconj).injective
   rw [MulEquiv.apply_symm_apply, mulEquiv_inr]
-end Mathoverflow1973

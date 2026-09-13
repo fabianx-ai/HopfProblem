@@ -66,8 +66,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 theorem NativeSubmersion.surjective_fderiv_sourceChart_iff {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -2821,4 +2819,3 @@ theorem SupportedDiffeomorph.exists_open_pointMoving {E H M : Type*} [NormedAddC
     · intro z hz
       exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
 
-end Mathoverflow1973
