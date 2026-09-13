@@ -76,6 +76,7 @@ import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
+import Lib.Topology.Homeomorph.DiskCube
 import Hopf.SphereTopology
 
 set_option maxSynthPendingDepth 3
@@ -97,92 +98,6 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-def DiskCube.target {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
-    (L : V ≃L[ℝ] (Fin n → ℝ)) : Set V :=
-  L ⁻¹' HigherHurewicz.realCubeSet n
-
-theorem DiskCube.target_compact {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : IsCompact (target L) :=
-  L.toHomeomorph.isCompact_preimage.mpr (HigherHurewicz.isCompact_realCubeSet n)
-
-theorem DiskCube.target_convex {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
-    (L : V ≃L[ℝ] (Fin n → ℝ)) : Convex ℝ (target L) :=
-  (HigherHurewicz.convex_realCubeSet n).linear_preimage L.toLinearMap
-
-theorem DiskCube.target_interior_nonempty {V : Type*} [NormedAddCommGroup V]
-    [NormedSpace ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : (interior (target L)).Nonempty := by
-  obtain ⟨v, hv⟩ := HigherHurewicz.interior_realCubeSet_nonempty n
-  refine ⟨L.symm v, ?_⟩
-  change L.symm v ∈ interior (L.toHomeomorph ⁻¹' HigherHurewicz.realCubeSet n)
-  rw [← L.toHomeomorph.preimage_interior]
-  change L (L.symm v) ∈ interior (HigherHurewicz.realCubeSet n)
-  rwa [L.apply_symm_apply]
-
-theorem DiskCube.exists_ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
-    ∃ e : V ≃ₜ V,
-      e '' Metric.closedBall (0 : V) 1 = target L ∧
-        e '' frontier (Metric.closedBall (0 : V) 1) = frontier (target L) := by
-  obtain ⟨e, _, he, hb⟩ :=
-    exists_homeomorph_image_eq (convex_closedBall (0 : V) 1)
-      (show (interior (Metric.closedBall (0 : V) 1)).Nonempty from
-        ⟨0, Metric.ball_subset_interior_closedBall (by simp)⟩)
-      ((ProperSpace.isCompact_closedBall (0 : V) 1).isVonNBounded ℝ) (target_convex L)
-      (target_interior_nonempty L) ((target_compact L).isVonNBounded ℝ)
-  exact
-    ⟨e, by
-      simpa only [Metric.isClosed_closedBall.closure_eq,
-        (target_compact L).isClosed.closure_eq] using he,
-      hb⟩
-
-def DiskCube.ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : V ≃ₜ V :=
-  Classical.choose (exists_ambient L)
-
-theorem DiskCube.ambient_image {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
-    ambient L '' Metric.closedBall (0 : V) 1 = target L :=
-  (Classical.choose_spec (exists_ambient L)).1
-
-theorem DiskCube.ambient_frontier {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
-    ambient L '' frontier (Metric.closedBall (0 : V) 1) = frontier (target L) :=
-  (Classical.choose_spec (exists_ambient L)).2
-
-theorem DiskCube.ambient_mem_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) (v : V) :
-    v ∈ Metric.closedBall (0 : V) 1 ↔ L (ambient L v) ∈ HigherHurewicz.realCubeSet n := by
-  change v ∈ Metric.closedBall (0 : V) 1 ↔ ambient L v ∈ target L
-  rw [← ambient_image]
-  exact ((ambient L).injective.mem_set_image).symm
-
-def DiskCube.homeomorph {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
-    DiskCylinder.Disk (E := V) ≃ₜ (Fin n → (unitInterval)) :=
-  (((ambient L).trans L.toHomeomorph).subtype (ambient_mem_iff L)).trans
-    (HigherHurewicz.realCubeHomeomorph n)
-
-theorem DiskCube.boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ))
-    (z : DiskCylinder.Disk (E := V)) :
-    homeomorph L z ∈ Cube.boundary (Fin n) ↔ ‖(z : V)‖ = 1 := by
-  change HigherHurewicz.realCubeHomeomorph n _ ∈ Cube.boundary (Fin n) ↔ _
-  rw [HigherHurewicz.realCubeHomeomorph_mem_boundary_iff]
-  change L (ambient L z.val) ∈ frontier (HigherHurewicz.realCubeSet n) ↔ _
-  have hpre :
-    L (ambient L z.val) ∈ frontier (HigherHurewicz.realCubeSet n) ↔
-      ambient L z.val ∈ frontier (target L) := by
-    change ambient L z.val ∈ L.toHomeomorph ⁻¹' frontier (HigherHurewicz.realCubeSet n) ↔ _
-    rw [L.toHomeomorph.preimage_frontier]
-    rfl
-  rw [hpre, ← ambient_frontier]
-  rw [(ambient L).injective.mem_set_image]
-  rw [frontier_closedBall (0 : V) (one_ne_zero), mem_sphere_zero_iff_norm]
-
-theorem DiskCube.symm_boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) (z : Fin n → (unitInterval)) :
-    ‖((homeomorph L).symm z : V)‖ = 1 ↔ z ∈ Cube.boundary (Fin n) := by
-  rw [← boundary_iff, Homeomorph.apply_symm_apply]
 
 theorem simplyConnectedSpace_of_open_cover {X ι : Type*} [TopologicalSpace X] (U : ι → Set X)
     (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ)

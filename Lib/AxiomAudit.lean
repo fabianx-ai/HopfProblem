@@ -90,3 +90,5 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.Hurewicz.exists_basepoint_adjustment
 #print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural
 #print axioms Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt
+#print axioms Mathoverflow1973.DiskCube.homeomorph
+#print axioms Mathoverflow1973.DiskCube.boundary_iff
