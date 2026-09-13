@@ -5,6 +5,8 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 
 # Lane I report — quotient manifolds, mapping torus, split extensions
 
+**Current status:** see the current-tree audit and Wang ownership handoff below; earlier remaining-unit lists are historical.
+
 **Status: 4 of ~14 units landed (green); the remainder is enumerated below.**
 
 ## Landed
@@ -134,3 +136,63 @@ are shim artifacts and must be rewritten to true names at the move boundary;
 standalone `@[...]` attribute lines must travel with their declaration (the
 mover's doc-comment/`attribute ... in` upward walk misses them; 398 lines had
 to be re-anchored in the attempt).
+
+## Current-tree audit (2026-09-13, GLM seat run by Devin/Astra)
+
+The historical remaining-unit list is not the current state. `HomologyCover`,
+`SplitExtension`, `CentralTwist`, `TwoOpenTransition`, `Covering/Quotient`,
+`Covering/DiagonalQuotient`, `Homotopy/SublevelRetraction`,
+`Homotopy/LocalCollapse`, and `Covering/InvariantSubset` already exist in Lib.
+The corresponding generic namespace blocks are no longer in Hopf; they are
+not re-extracted. The six `CoveringOrthant` local-chart declarations are the
+independent quotient-covering remainder moved by this unit. They compose a
+local inverse of a quotient covering with a source chart and verify the
+source, inverse, target and coordinate formulas (Forster, *Lectures on Riemann
+Surfaces*, §§1–3, quotient charts).
+
+`TwistGroup.c_twistOrder` and the two `TwistGroup.main_*` consequences remain
+in Hopf: their `twistOrder` uses `S6.TwoExceptionalGluing.gluingDefect 3 4`.
+This is not a pure generic extraction. The local-orbit/atlas obstructions
+recorded earlier are also not claimed resolved by this unit.
+
+### Wang ownership handoff — do not broaden the family cut
+
+At source revision `e5a00e9`, the exact Hopf type-and-value dependency graph
+for the remaining `MappingTorusHomology` and `PassageHomology` families maps
+to 232 explicit source declarations: CuspFilling 71, IntegralHomology 103,
+Specialization 43, SingularHomology 15. Generated kernel helper names are
+not treated as reasons to move their containing source families. This
+Hopf-only closure does not reach `SpecialPeriods`; the earlier wholesale
+family expansion does not establish a CHARGED obstruction for this cut.
+
+The owner explicitly kept the C/J-owned circle cross-product prerequisites
+with C/J. They are not moved by this seat. **Wang and Mathoverflow1973 wrapper
+removal remain pending on that ownership handoff**, not silently abandoned.
+The exact candidate source names/ranges/hashes are in
+`Lib/reports/I-wang-dependencies.json`; this is dependency evidence, not an
+authorization to move every row. No historical draft is copied.
+
+`MappingTorusHomology.wang_exact_at_fibre` and
+`MappingTorusHomology.wang_exact_at_mappingTorus` already live in
+`Lib/Topology/MappingTorus/HomologyCover.lean`. The outstanding Wang block
+contains finite-cover transfer and norm formulas, not the first proof of
+Wang exactness. `Lib/Topology/MappingTorus/Wang.lean` is not landed yet.
+
+### Quotient-chart remainder receipt
+
+Six declarations moved verbatim from `Hopf/LCP/CuspFilling.lean:1358–1400`
+at `e5a00e9` into `Lib/Topology/Covering/Quotient.lean`; individual ranges,
+attribute wrappers and SHA-256 hashes are recorded in
+`Lib/reports/I-quotient-chart-provenance.json`. No proof term or statement
+changed. The sole consumer edit is the explicit Quotient module import;
+the target was already registered in `Lib.lean`.
+
+`lake build Lib.Topology.Covering.Quotient Hopf.LCP.CuspFilling` passed with
+pinned Lean 4.33.0. Temporary `I_QuotientCheck.lean`, importing only the Lib
+module, checked `CoveringOrthant.localChart_symm_apply` and printed exactly
+`[propext, Classical.choice, Quot.sound]` for
+`CoveringOrthant.localChart_coordinate_identity`. Source/target byte checks
+passed for all six declarations, and `git diff --check` was clean.
+Census: **2,293 → 2,287**, prefix list unchanged. The next consolidated
+consumer-chain gate will include this move; it is not claimed rerun here.
+Wang and wrapper removal remain pending with the C/J owner as stated above.

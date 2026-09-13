@@ -68,6 +68,7 @@ import Lib.AlgebraicTopology.SingularHomology.PathClass
 import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
+import Lib.Topology.Covering.Quotient
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 
 set_option maxSynthPendingDepth 3
@@ -1354,50 +1355,6 @@ theorem CuspPositive.height_continuous (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (ε :
 theorem CuspPositive.height_nonneg (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ)
     (x : QuotientSpace C₀ ε) : 0 ≤ height C₀ ε x :=
   norm_nonneg _
-
-def CoveringOrthant.localChart {G M Q H : Type*} [Group G] [TopologicalSpace M]
-    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
-    OpenPartialHomeomorph Q H :=
-  (hq.isCoveringMap.isLocalHomeomorph.localInverseAt a).trans e
-
-theorem CoveringOrthant.self_mem_localChart_source {G M Q H : Type*} [Group G]
-    [TopologicalSpace M] [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) (ha : a ∈ e.source) :
-    q a ∈ (localChart hq e a).source := by
-  change
-    q a ∈ (hq.isCoveringMap.isLocalHomeomorph.localInverseAt a).source ∧
-      hq.isCoveringMap.isLocalHomeomorph.localInverseAt a (q a) ∈ e.source
-  exact
-    ⟨hq.isCoveringMap.isLocalHomeomorph.apply_self_mem_localInverseAt_source, by
-      simpa only [IsLocalHomeomorph.localInverseAt_apply_self] using ha⟩
-
-theorem CoveringOrthant.localChart_symm {G M Q H : Type*} [Group G] [TopologicalSpace M]
-    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
-    ((localChart hq e a).symm : H → Q) = q ∘ e.symm := by
-  simp only [localChart, OpenPartialHomeomorph.coe_trans_symm,
-    IsLocalHomeomorph.localInverseAt_symm]
-
-@[simp]
-theorem CoveringOrthant.localChart_symm_apply {G M Q H : Type*} [Group G] [TopologicalSpace M]
-    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) (z : H) :
-    (localChart hq e a).symm z = q (e.symm z) := by rw [localChart_symm, Function.comp_apply]
-
-theorem CoveringOrthant.localChart_target_subset {G M Q H : Type*} [Group G] [TopologicalSpace M]
-    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
-    (localChart hq e a).target ⊆ e.target := fun _ hz => hz.1
-
-theorem CoveringOrthant.localChart_coordinate_identity {G M Q H : Type*} [Group G]
-    [TopologicalSpace M] [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
-    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) {R : Type*}
-    (f : Q → R) (F : H → R) (he : ∀ x ∈ e.source, f (q x) = F (e x)) :
-    ∀ z ∈ (localChart hq e a).target, f ((localChart hq e a).symm z) = F z := by
-  intro z hz
-  have hze := localChart_target_subset hq e a hz
-  rw [localChart_symm_apply, he (e.symm z) (e.map_target hze), e.right_inv hze]
 
 def CuspPositive.positiveImage (C₀ : Matrix (Fin 2) (Fin 2) ℂ) (ε : ℝ) :
     Set (CuspQuotient.QuotientSpace (positiveTwist C₀) ε) :=
