@@ -78,6 +78,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Functoriality and homotopy invariance -/
+
+/-- The identity map induces the identity on singular homology. -/
 @[simp]
 theorem SingularHomology.singularHomologyMap_id (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.id X) n = LinearMap.id := by
@@ -86,6 +89,7 @@ theorem SingularHomology.singularHomologyMap_id (X : Type) [TopologicalSpace X] 
       (TopCat.of X)
   exact congrArg ModuleCat.Hom.hom h
 
+/-- Singular homology is functorial in continuous maps. -/
 theorem SingularHomology.singularHomologyMap_comp {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (g.comp f) n =
@@ -96,18 +100,21 @@ theorem SingularHomology.singularHomologyMap_comp {X Y Z : Type} [TopologicalSpa
       (TopCat.ofHom f) (TopCat.ofHom g)
   exact congrArg ModuleCat.Hom.hom h
 
+/-- A homotopy of maps induces a chain homotopy of singular chain maps. -/
 def SingularHomology.singularChainHomotopy {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (H : f.Homotopy g) :
     _root_.Homotopy (SingularChains.singularChainMap f) (SingularChains.singularChainMap g) :=
   TopCat.Homotopy.singularChainComplexFunctorObjMap (f := TopCat.ofHom f) (g := TopCat.ofHom g) H
     (ModuleCat.of ℤ ℤ)
 
+/-- Homotopic maps induce the same map on singular homology. -/
 theorem SingularHomology.homotopy_homologyMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (H : f.Homotopy g) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap f n =
       SingularMayerVietoris.singularHomologyMap g n :=
   congrArg ModuleCat.Hom.hom ((singularChainHomotopy H).homologyMap_eq n)
 
+/-- Maps related by a homotopy induce equal homology maps. -/
 theorem SingularHomology.homotopic_homologyMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (h : f.Homotopic g) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap f n =
@@ -115,6 +122,9 @@ theorem SingularHomology.homotopic_homologyMap {X Y : Type} [TopologicalSpace X]
   obtain ⟨H⟩ := h
   exact homotopy_homologyMap H n
 
+/-! ### Homology equivalences -/
+
+/-- A homotopy inverse pair induces a linear equivalence of singular homology groups. -/
 def SingularHomology.homotopyInverseHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (g : C(Y, X))
     (hgf : (g.comp f).Homotopic (ContinuousMap.id X))
@@ -134,11 +144,13 @@ def SingularHomology.homotopyInverseHomologyEquiv {X Y : Type} [TopologicalSpace
     rw [singularHomologyMap_comp, singularHomologyMap_id] at h
     exact LinearMap.congr_fun h a
 
+/-- A homotopy equivalence induces a linear equivalence of singular homology groups. -/
 def SingularHomology.homotopyEquivHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology Y n :=
   homotopyInverseHomologyEquiv e.toFun e.invFun e.left_inv e.right_inv n
 
+/-- The homology equivalence of a homotopy equivalence is the induced homology map. -/
 @[simp]
 theorem SingularHomology.homotopyEquivHomologyEquiv_toLinearMap {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ) :
@@ -146,6 +158,7 @@ theorem SingularHomology.homotopyEquivHomologyEquiv_toLinearMap {X Y : Type}
       SingularMayerVietoris.singularHomologyMap e.toFun n :=
   rfl
 
+/-- The homology equivalence applies the induced homology map. -/
 @[simp]
 theorem SingularHomology.homotopyEquivHomologyEquiv_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ)
@@ -153,6 +166,7 @@ theorem SingularHomology.homotopyEquivHomologyEquiv_apply {X Y : Type}
     homotopyEquivHomologyEquiv e n a = SingularMayerVietoris.singularHomologyMap e.toFun n a :=
   rfl
 
+/-- The inverse homology equivalence applies the inverse map's induced map. -/
 @[simp]
 theorem SingularHomology.homotopyEquivHomologyEquiv_symm_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ)
@@ -161,11 +175,13 @@ theorem SingularHomology.homotopyEquivHomologyEquiv_symm_apply {X Y : Type}
       SingularMayerVietoris.singularHomologyMap e.symm.toFun n a :=
   rfl
 
+/-- A homeomorphism induces a linear equivalence of singular homology groups. -/
 def SingularHomology.homeomorphHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology Y n :=
   homotopyEquivHomologyEquiv e.toHomotopyEquiv n
 
+/-- The homology equivalence of a homeomorphism is its induced homology map. -/
 @[simp]
 theorem SingularHomology.homeomorphHomologyEquiv_toLinearMap {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
@@ -173,12 +189,14 @@ theorem SingularHomology.homeomorphHomologyEquiv_toLinearMap {X Y : Type}
       SingularMayerVietoris.singularHomologyMap (e : C(X, Y)) n :=
   rfl
 
+/-- The homeomorphism-induced equivalence applies the induced homology map. -/
 @[simp]
 theorem SingularHomology.homeomorphHomologyEquiv_apply {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     homeomorphHomologyEquiv e n a = SingularMayerVietoris.singularHomologyMap (e : C(X, Y)) n a :=
   rfl
 
+/-- The inverse homeomorphism-induced equivalence applies the inverse's induced map. -/
 @[simp]
 theorem SingularHomology.homeomorphHomologyEquiv_symm_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ)
@@ -187,6 +205,7 @@ theorem SingularHomology.homeomorphHomologyEquiv_symm_apply {X Y : Type}
       SingularMayerVietoris.singularHomologyMap (e.symm : C(Y, X)) n a :=
   rfl
 
+/-- The inverse of the induced equivalence is the equivalence of the inverse. -/
 @[simp]
 theorem SingularHomology.homeomorphHomologyEquiv_symm {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) (n : ℕ) :
@@ -195,6 +214,7 @@ theorem SingularHomology.homeomorphHomologyEquiv_symm {X Y : Type} [TopologicalS
   intro a
   rfl
 
+/-- The identity homeomorphism induces the identity equivalence on homology. -/
 @[simp]
 theorem SingularHomology.homeomorphHomologyEquiv_refl (X : Type) [TopologicalSpace X]
     (n : ℕ) :
@@ -206,6 +226,7 @@ theorem SingularHomology.homeomorphHomologyEquiv_refl (X : Type) [TopologicalSpa
   rw [singularHomologyMap_id]
   rfl
 
+/-- Induced homology equivalences compose with homeomorphism composition. -/
 theorem SingularHomology.homeomorphHomologyEquiv_trans {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (e : X ≃ₜ Y) (f : Y ≃ₜ Z)
     (n : ℕ) :
@@ -220,41 +241,51 @@ theorem SingularHomology.homeomorphHomologyEquiv_trans {X Y Z : Type}
   rw [singularHomologyMap_comp]
   rfl
 
+/-! ### Elementary homology computations -/
+
+/-- The zeroth singular homology of a path-connected space is `ℤ`. -/
 def SingularHomology.connectedHomologyZeroEquiv (X : Type) [TopologicalSpace X]
     [PathConnectedSpace X] : SingularMayerVietoris.SingularHomology X 0 ≃ₗ[ℤ] ℤ :=
   (CategoryTheory.asIso ((TopCat.of X).singularHomology₀ε (ModuleCat.of ℤ ℤ))).toLinearEquiv
 
+/-- Positive-degree singular homology of a totally disconnected space vanishes. -/
 theorem SingularHomology.totallyDisconnected_homology_isZero (X : Type)
     [TopologicalSpace X] [TotallyDisconnectedSpace X] (n : ℕ) (hn : n ≠ 0) :
     CategoryTheory.Limits.IsZero (SingularMayerVietoris.SingularHomology X n) :=
   AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace (ModuleCat ℤ) n
     (ModuleCat.of ℤ ℤ) (TopCat.of X) hn
 
+/-- Positive-degree singular homology of a totally disconnected space is a subsingleton. -/
 theorem SingularHomology.totallyDisconnected_homology_subsingleton (X : Type)
     [TopologicalSpace X] [TotallyDisconnectedSpace X] (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology X n) :=
   ModuleCat.subsingleton_of_isZero (totallyDisconnected_homology_isZero X n hn)
 
+/-- The zeroth singular homology of a point is `ℤ`. -/
 abbrev SingularHomology.pointHomologyZeroEquiv :
     SingularMayerVietoris.SingularHomology Unit 0 ≃ₗ[ℤ] ℤ :=
   connectedHomologyZeroEquiv Unit
 
+/-- Positive-degree singular homology of a point is a subsingleton. -/
 theorem SingularHomology.point_homology_subsingleton (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology Unit n) :=
   totallyDisconnected_homology_subsingleton Unit n hn
 
+/-- A contractible space has the singular homology of a point. -/
 def SingularHomology.contractibleHomologyEquivPoint (X : Type) [TopologicalSpace X]
     [ContractibleSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology Unit n :=
   homotopyEquivHomologyEquiv (Classical.choice (ContractibleSpace.hequiv_unit X)) n
 
+/-- Positive-degree singular homology of a contractible space is a subsingleton. -/
 theorem SingularHomology.contractible_homology_subsingleton (X : Type)
     [TopologicalSpace X] [ContractibleSpace X] (n : ℕ) (hn : n ≠ 0) :
     Subsingleton (SingularMayerVietoris.SingularHomology X n) := by
   let := point_homology_subsingleton n hn
   exact (contractibleHomologyEquivPoint X n).injective.subsingleton
 
+/-- A constant map induces zero on positive-degree singular homology. -/
 theorem Suspension.singularHomologyMap_const_eq_zero {Y : Type} [TopologicalSpace Y]
     (X : Type) [TopologicalSpace X] (y : Y) (n : ℕ) (hn : n ≠ 0) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.const X y) n = 0 := by
@@ -273,6 +304,7 @@ theorem Suspension.singularHomologyMap_const_eq_zero {Y : Type} [TopologicalSpac
       (0 : SingularMayerVietoris.SingularHomology Unit n),
     map_zero]
 
+/-- A nullhomotopic map induces zero on positive-degree singular homology. -/
 theorem Suspension.singularHomologyMap_eq_zero_of_nullhomotopic {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (hf : f.Nullhomotopic) (n : ℕ)
     (hn : n ≠ 0) : SingularMayerVietoris.singularHomologyMap f n = 0 := by
