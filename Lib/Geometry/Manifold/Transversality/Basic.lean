@@ -12,7 +12,7 @@ public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Collar
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.Cancellation
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Transversality basics: submersions, regular values, and supported perturbations
 
@@ -65,6 +65,64 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 universe u v
 
 @[expose] public noncomputable section
+
+/-- Transparent variant of `Diffeomorph.toPartialDiffeomorph`: Mathlib's version is not
+`@[expose]`d, so under the module system its fields do not unfold for importers. This
+version keeps `source = target = univ` and `⇑_ = h`/`⇑_.symm = h.symm` definitional. -/
+def Diffeomorph.toPartialDiffeomorph' {E F H H' M N : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ F H'}
+    [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] [TopologicalSpace N]
+    [ChartedSpace H' N] [IsManifold J ∞ N] (h : Diffeomorph I J M N ∞) :
+    PartialDiffeomorph I J M N ∞ where
+  toPartialEquiv :=
+    { toFun := h
+      invFun := h.symm
+      source := Set.univ
+      target := Set.univ
+      map_source' := fun _ _ => Set.mem_univ _
+      map_target' := fun _ _ => Set.mem_univ _
+      left_inv' := fun _ _ => h.symm_apply_apply _
+      right_inv' := fun _ _ => h.apply_symm_apply _ }
+  open_source := isOpen_univ
+  open_target := isOpen_univ
+  contMDiffOn_toFun := fun x _ => h.contMDiff_toFun x
+  contMDiffOn_invFun := fun x _ => h.symm.contMDiff_toFun x
+
+/-- Transparent variant of `IsLocalDiffeomorph.diffeomorphOfBijective`: Mathlib's version is
+not `@[expose]`d, so its function values do not unfold for module-mode importers. Built on
+`Equiv.ofBijective`, hence `⇑(hf.diffeomorph' hf') = f` is definitional. The inverse is
+smooth because near each `y` it agrees with the local inverse at `g y`. -/
+def IsLocalDiffeomorph.diffeomorph' {E F H H' M N : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ F H'}
+    [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
+    [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] {f : M → N}
+    (hf : IsLocalDiffeomorph I J ∞ f) (hf' : Function.Bijective f) :
+    Diffeomorph I J M N ∞ where
+  toEquiv := Equiv.ofBijective f hf'
+  contMDiff_toFun := hf.contMDiff
+  contMDiff_invFun := by
+    intro y
+    have hfgy : f ((Equiv.ofBijective f hf').symm y) = y :=
+      (Equiv.ofBijective f hf').right_inv y
+    have hmem : y ∈ (hf ((Equiv.ofBijective f hf').symm y)).localInverse.source := by
+      have h := (hf ((Equiv.ofBijective f hf').symm y)).localInverse_mem_source
+      rwa [hfgy] at h
+    have heq :
+      EqOn (Equiv.ofBijective f hf').symm
+        (hf ((Equiv.ofBijective f hf').symm y)).localInverse
+        (hf ((Equiv.ofBijective f hf').symm y)).localInverse.source := by
+      intro y' hy'
+      apply hf'.1
+      trans y'
+      · exact (Equiv.ofBijective f hf').right_inv y'
+      · exact ((hf ((Equiv.ofBijective f hf').symm y)).localInverse_right_inv hy').symm
+    exact ((hf ((Equiv.ofBijective f hf').symm y)).localInverse_contMDiffOn.congr
+        heq).contMDiffAt
+      ((hf ((Equiv.ofBijective f hf').symm y)).localInverse_open_source.mem_nhds hmem)
 
 namespace Mathoverflow1973
 
@@ -1022,7 +1080,7 @@ def NativeParametrization.centered {D : Type*} [NormedAddCommGroup D] [NormedSpa
     {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N] (x : N) :
     PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, D) D N ∞ :=
   let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
-  (translation (c x)).toPartialDiffeomorph.trans c.symm
+  (translation (c x)).toPartialDiffeomorph'.trans c.symm
 
 theorem NativeParametrization.zero_mem_centered_source {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
@@ -1219,7 +1277,22 @@ theorem SupportedDiffeomorph.exists_radius_normalBumpFamily {E F H M P : Type*}
         ∃ D : Diffeomorph J J M M ∞,
           ∀ x, D x = bumpFamily Φ β (-(Real.smoothTransition t • b u), x) :=
       fun u => hdiff _ (hsmall t u)
-    exact ⟨FiberwiseDiffeomorph.diffeomorph ht hslices, fun _ => rfl⟩
+    have hlocal :
+      IsLocalDiffeomorph (J.prod 𝓘(ℝ, P)) (J.prod 𝓘(ℝ, P)) ∞
+        (FiberwiseDiffeomorph.retainParameter fun z : M × P =>
+          bumpFamily Φ β (-(Real.smoothTransition t • b z.2), z.1)) := by
+      intro p
+      exact
+        isLocalDiffeomorphAt_boundaryless isOpen_univ (Set.mem_univ p)
+          (FiberwiseDiffeomorph.contMDiff_retainParameter ht).contMDiffOn
+          (FiberwiseDiffeomorph.isInvertible_mfderiv_retainParameter ht hslices p)
+    refine ⟨IsLocalDiffeomorph.diffeomorph' hlocal ?_, fun _ => rfl⟩
+    apply FiberwiseDiffeomorph.bijective_retainParameter
+    intro s
+    obtain ⟨d, hd⟩ := hslices s
+    rw [show (fun x => bumpFamily Φ β (-(Real.smoothTransition t • b s), x)) = d from
+      funext fun x => (hd x).symm]
+    exact d.bijective
   · exact
       (hcompact.isCompact.image_of_continuousOn
             (Φ.contMDiffOn_toFun.continuousOn.mono hsupport)).prod
@@ -1298,7 +1371,7 @@ theorem SupportedDiffeomorph.exists_supported_shear_isotopy {E F : Type*}
   obtain ⟨β, hβ, hβcompact, hβsupport, hβone, -⟩ :=
     exists_compact_smooth_cutoff (K := {(0 : E)}) isCompact_singleton Metric.isOpen_ball
       (Set.singleton_subset_iff.mpr (Metric.mem_ball_self hρ))
-  let Φ := (Diffeomorph.refl 𝓘(ℝ, E) E ∞).toPartialDiffeomorph
+  let Φ := (Diffeomorph.refl 𝓘(ℝ, E) E ∞).toPartialDiffeomorph'
   obtain ⟨ε, hε, hfamily⟩ :=
     exists_radius_normalBumpFamily (P := F) Φ hβ hβcompact
       (show tsupport β ⊆ Φ.source from Set.subset_univ _)
@@ -1801,7 +1874,17 @@ theorem SmallPerturbation.exists_supported_tangent_identity_isotopy {E : Type*}
       calc
         _ ≤ 1 * (1 / 2 : ℝ≥0) := mul_le_mul_of_nonneg_right hθnorm (by positivity)
         _ < 1 := by norm_num
-    exact ⟨diffeomorphIdAdd hs hlip hsmall, fun _ => rfl⟩
+    have hloc :
+      IsLocalDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) ∞
+        (fun x => x + Real.smoothTransition t • w x) := by
+      intro x
+      apply
+        isLocalDiffeomorphAt_of_contMDiffOn isOpen_univ (Set.mem_univ x)
+          ((contDiff_id.add hs).contMDiff.contMDiffOn)
+      rw [mfderiv_eq_fderiv]
+      exact isInvertible_fderiv_id_add hs hlip hsmall x
+    exact
+      ⟨IsLocalDiffeomorph.diffeomorph' hloc (bijective_id_add hlip hsmall), fun _ => rfl⟩
   · intro t x hx
     have hz : w x = 0 := by
       by_contra hne
@@ -2352,7 +2435,7 @@ def SmoothRadial.diffeomorph {N : Type*} [NormedAddCommGroup N] [InnerProductSpa
     rw [mfderiv_eq_fderiv]
     exact isInvertible_fderiv_radialMap hφ hpos hmono x
   exact
-    hlocal.diffeomorphOfBijective
+    IsLocalDiffeomorph.diffeomorph' hlocal
       ⟨radialMap_injective hpos hmono, radialMap_surjective hφ.continuous hR hout⟩
 
 def SmoothRadial.shrinkTimeFactor (a t : ℝ) : ℝ :=
@@ -2607,7 +2690,7 @@ theorem DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
             Nonempty (SupportedDiffeomorph.SupportedRelativeIsotopy P K {Φ (0, 0)}) ∧
               ∀ x : D, ‖x‖ ≤ 1 → P (Φ (x, 0)) = Φ (a • x, 0) := by
   obtain ⟨R, hR, L, hLzero, hLsource⟩ := exists_disk_ellipsoid_in_open Φ.open_source hzero
-  let Ψ := L.toDiffeomorph.toPartialDiffeomorph.trans Φ
+  let Ψ := L.toDiffeomorph.toPartialDiffeomorph'.trans Φ
   have hsource : Metric.closedBall (0 : WithLp 2 (D × Z)) R ⊆ Ψ.source := by
     intro z hz
     exact ⟨Set.mem_univ z, hLsource hz⟩
