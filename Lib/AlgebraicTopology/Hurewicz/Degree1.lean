@@ -131,6 +131,8 @@ abbrev boundaryOne : Chains X 1 →ₗ[ℤ] Chains X 0 :=
 abbrev boundaryTwo : Chains X 2 →ₗ[ℤ] Chains X 1 :=
   (singularComplex X).d 2 1 |>.hom
 
+/-- The `i`-th face of the index simplex of `σ` is the index simplex of `σ`'s `i`-th
+face. -/
 private theorem simplexIndex_face (n : ℕ) (σ : SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
     (TopCat.toSSet.obj (TopCat.of X)).δ i (simplexIndex X (n + 1) σ) =
       simplexIndex X n (σ.comp (simplexFace n i)) := by rfl
@@ -541,11 +543,13 @@ theorem loopClass_surjective {X : Type*} [TopologicalSpace X] {b : X} :
   rw [loopClass, hp', hg]
   rfl
 
+/-- `FundamentalGroup.fromPath` sends concatenation to the reversed product. -/
 private theorem mk_trans {X : Type*} [TopologicalSpace X] {b : X} (p q : Path b b) :
     FundamentalGroup.fromPath ⟦p.trans q⟧ =
       FundamentalGroup.fromPath ⟦q⟧ * FundamentalGroup.fromPath ⟦p⟧ :=
   rfl
 
+/-- `FundamentalGroup.fromPath` sends path reversal to the group inverse. -/
 private theorem mk_symm {X : Type*} [TopologicalSpace X] {b : X} (p : Path b b) :
     FundamentalGroup.fromPath ⟦p.symm⟧ = (FundamentalGroup.fromPath ⟦p⟧)⁻¹ :=
   rfl
@@ -616,6 +620,8 @@ theorem basedLoopClass_homotopic {X : Type*} [TopologicalSpace X] {b x y : X}
   congrArg (fun P ↦ Additive.ofMul (Abelianization.of (basedLoopQuotient r P)))
     (Path.Homotopic.Quotient.eq.mpr h)
 
+/-- Closing up a composite path class multiplies the closed-up classes in reverse
+order. -/
 private theorem basedLoopQuotient_trans {X : Type*} [TopologicalSpace X] {b x y z : X}
     (r : ∀ x : X, Path b x) (P : Path.Homotopic.Quotient x y)
     (Q : Path.Homotopic.Quotient y z) :
@@ -705,6 +711,7 @@ theorem pathClass_symm {x y : X} (p : Path x y) : pathClass p.symm = -pathClass 
   rw [pathClass_trans, pathClass_refl] at h
   exact eq_neg_of_add_eq_zero_right h
 
+/-- Casting a path's endpoints does not change its chain class. -/
 @[simp]
 private theorem pathClass_cast {x y : X} (p : Path x y)
     {x' y' : X} (hx : x' = x) (hy : y' = y) : pathClass (p.cast hx hy) = pathClass p :=
@@ -799,11 +806,14 @@ theorem hurewiczHom_loopClass (b : X)
     (p : Path b b) : hurewiczHom b (loopClass p) = loopHomologyClass p :=
   rfl
 
+/-- The inverse Hurewicz map on a loop's abelianized class returns the loop's path
+class. -/
 private theorem homologyToChainClass_hurewiczHom_loopClass
     (b : X) (p : Path b b) :
     homologyToChainClass X (hurewiczHom b (loopClass p)) = pathClass p := by
   rw [hurewiczHom_loopClass, homologyToChainClass_loopHomologyClass]
 
+/-- The Hurewicz image of a closed-up path is `r x + p - r y` in chain classes. -/
 private theorem hurewiczHom_basedLoopClass {x y : X}
     (b : X) (r : ∀ a : X, Path b a) (p : Path x y) :
     homologyToChainClass X (hurewiczHom b (basedLoopClass r p)) =
@@ -827,6 +837,8 @@ private theorem basedLoopClass_cast {b x y : X}
   cases hy
   rfl
 
+/-- The path extracted from `pathSimplex p` is `p` cast along the endpoint
+identifications. -/
 private theorem simplexPath_pathSimplex_cast {x y : X} (p : Path x y) :
     simplexPath (pathSimplex p) =
       p.cast (pathSimplex_vertex_zero p) (pathSimplex_vertex_one p) := by
@@ -835,12 +847,16 @@ private theorem simplexPath_pathSimplex_cast {x y : X} (p : Path x y) :
   change p (stdSimplexHomeomorphUnitInterval (stdSimplexHomeomorphUnitInterval.symm t)) = p t
   rw [Homeomorph.apply_symm_apply]
 
+/-- Closing up the round-trip `p ↦ pathSimplex ↦ simplexPath` gives `p`'s closed-up
+class. -/
 @[simp]
 private theorem basedLoopClass_simplexPath_pathSimplex
     {b x y : X} (r : ∀ x : X, Path b x) (p : Path x y) :
     basedLoopClass r (simplexPath (pathSimplex p)) = basedLoopClass r p := by
   rw [simplexPath_pathSimplex_cast, basedLoopClass_cast]
 
+/-- The closed-up `i`-th face path of a triangle equals the closed-up path of the
+corresponding face simplex. -/
 private theorem basedLoopClass_triangleFacePath {b : X}
     (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) (i : Fin 3) :
     basedLoopClass r (triangleFacePath σ i) =
@@ -870,6 +886,8 @@ theorem edgeLoopCochain_loopSimplex {b : X} (r : ∀ x : X, Path b x) (p : Path 
     edgeLoopCochain r (simplexChain X 1 (pathSimplex p)) = loopClass p := by
   rw [edgeLoopCochain_pathSimplex, basedLoopClass_loop]
 
+/-- The edge-loop cochain vanishes on the boundary of a singular 2-simplex: its three
+edges close up to a null-homotopic loop. -/
 private theorem edgeLoopCochain_boundaryTwo_simplex {b : X}
     (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) :
     edgeLoopCochain r (boundaryTwo X (simplexChain X 2 σ)) = 0 := by
@@ -879,6 +897,7 @@ private theorem edgeLoopCochain_boundaryTwo_simplex {b : X}
   exact basedLoopClass_triangle_boundary r (triangleEdge01 σ) (triangleEdge12 σ)
     (triangleEdge02 σ) (triangleEdges_homotopic σ)
 
+/-- The edge-loop cochain is a cocycle: `edgeLoopCochain ∘ boundaryTwo = 0`. -/
 private theorem edgeLoopCochain_comp_boundaryTwo {b : X}
     (r : ∀ x : X, Path b x) : (edgeLoopCochain r).comp (boundaryTwo X) = 0 := by
   apply chainMap_ext X 2
@@ -902,14 +921,19 @@ theorem inverseHurewiczHom_cycleClass {b : X} (r : ∀ x : X, Path b x) (c : Cyc
     inverseHurewiczHom r (cycleClass X c) = edgeLoopCochain r c.1 :=
   homologyDescOfChain_cycleClass X (edgeLoopCochain r) (edgeLoopCochain_boundaryTwo r) c
 
+/-- The base-path correction chain map: a 0-simplex at `x` is sent to the chain of the
+chosen path `r x` from the basepoint. -/
 private def basePathChain {b : X} (r : ∀ x : X, Path b x) : Chains X 0 →ₗ[ℤ] Chains X 1 :=
   chainLift X 0 (fun σ => pathChain (r (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 1)))))
 
+/-- On a point chain, `basePathChain` returns the chain of the chosen base path. -/
 @[simp]
 private theorem basePathChain_pointChain {b : X}
     (r : ∀ x : X, Path b x) (x : X) : basePathChain r (pointChain x) = pathChain (r x) :=
   chainLift_simplex X 0 _ (ContinuousMap.const (Simplex 0) x)
 
+/-- The edge-closure identity on a single path: `inv ∘ Hur ∘ edge` recovers `p`'s class
+minus the base-path correction on `∂p`. -/
 private theorem edgeClosure_pathChain {b x y : X} (r : ∀ x : X, Path b x) (p : Path x y) :
     homologyToChainClass X (hurewiczHom b (edgeLoopCochain r (pathChain p))) =
       chainClass X (pathChain p) -
@@ -923,6 +947,8 @@ private theorem edgeClosure_pathChain {b x y : X} (r : ∀ x : X, Path b x) (p :
       pathClass p - (pathClass (r y) - pathClass (r x))
   abel
 
+/-- The edge-closure identity as an equation of 1-chain maps:
+`inv ∘ Hur ∘ edge = chainClass − chainClass ∘ basePath ∘ ∂₁`. -/
 private theorem edgeClosure_chain_identity {b : X} (r : ∀ x : X, Path b x) :
     (homologyToChainClass X).comp ((hurewiczHom b).comp (edgeLoopCochain r)) =
       chainClass X - (chainClass X).comp ((basePathChain r).comp (boundaryOne X)) := by
@@ -932,6 +958,7 @@ private theorem edgeClosure_chain_identity {b : X} (r : ∀ x : X, Path b x) :
   simpa only [pathChain, pathSimplex_simplexPath, LinearMap.comp_apply, LinearMap.sub_apply] using
     h
 
+/-- On a 1-cycle the correction term vanishes: `inv (Hur (edge c)) = chainClass c`. -/
 private theorem edgeClosure_cycle {b : X} (r : ∀ x : X, Path b x) (c : Cycles1 X) :
     homologyToChainClass X (hurewiczHom b (edgeLoopCochain r c.1)) = chainClass X c.1 := by
   have h := LinearMap.congr_fun (edgeClosure_chain_identity r) c.1
