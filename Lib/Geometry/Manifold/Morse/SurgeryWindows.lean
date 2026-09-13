@@ -72,6 +72,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Hausdorff dimension of smooth images -/
+
+/-- A chart image has Hausdorff dimension at most the domain's. -/
 theorem GeneralPosition.dimH_image_chart_le {E F H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -112,6 +115,7 @@ theorem GeneralPosition.dimH_image_chart_le {E F H X : Type*} [NormedAddCommGrou
   rw [himage]
   exact hdim.trans ((dimH_mono (Set.subset_univ V)).trans_eq (Real.dimH_univ_eq_finrank E))
 
+/-- A smooth image of a manifold has Hausdorff dimension at most the domain's. -/
 theorem GeneralPosition.dimH_image_manifold_le {E F H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -131,6 +135,7 @@ theorem GeneralPosition.dimH_image_manifold_le {E F H X : Type*} [NormedAddCommG
   rw [dimH_bUnion htcount]
   exact iSup_le (fun x => iSup_le (fun _ => dimH_image_chart_le hs hf x))
 
+/-- The complement of a lower-dimensional smooth image is dense. -/
 theorem GeneralPosition.dense_compl_manifold_image {E F H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -139,6 +144,7 @@ theorem GeneralPosition.dense_compl_manifold_image {E F H X : Type*} [NormedAddC
     (hd : Module.finrank ℝ E < Module.finrank ℝ F) : Dense (f '' s)ᶜ :=
   dense_compl_of_dimH_lt_finrank ((dimH_image_manifold_le hs hf).trans_lt (Nat.cast_lt.mpr hd))
 
+/-- A localized small parameter makes the image avoid a lower-dimensional set. -/
 theorem exists_small_localized_image_avoidance {E E' F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -167,6 +173,7 @@ theorem exists_small_localized_image_avoidance {E E' F H H' X Y : Type*}
     change (β x)⁻¹ • (g y - f x) = a
     rw [← hxy, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hx, one_smul]
 
+/-- A small chart-map parameter avoids the target set. -/
 theorem ChartMapPerturbation.exists_small_avoiding_parameter {E E' G F H H' K X Y N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -220,6 +227,9 @@ theorem ChartMapPerturbation.exists_small_avoiding_parameter {E E' G F H H' K X 
   change (β x)⁻¹ • (c (g y) - c (f x)) = a
   rw [← heq, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hx, one_smul]
 
+/-! ### Avoidance patches -/
+
+/-- A chart patch in which a map can be perturbed to avoid a set on a compact core. -/
 structure GeneralPosition.MapAvoidancePatch {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] (I : ModelWithCorners ℝ E H) (J : ModelWithCorners ℝ G K)
@@ -231,6 +241,7 @@ structure GeneralPosition.MapAvoidancePatch {E G H K X N : Type*} [NormedAddComm
   compact : HasCompactSupport cutoff
   fixed : ∀ x ∈ C, cutoff x = 0
 
+/-- A patch is compatible with a map when the chart covers the image of the core. -/
 def GeneralPosition.MapAvoidancePatch.Compatible {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -239,6 +250,7 @@ def GeneralPosition.MapAvoidancePatch.Compatible {E G H K X N : Type*}
     (f : X → N) : Prop :=
   Set.MapsTo f (tsupport p.cutoff) p.chart.source
 
+/-- One avoidance step inside a patch. -/
 theorem GeneralPosition.exists_patch_step {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K}
@@ -288,6 +300,7 @@ theorem GeneralPosition.exists_patch_step {E G H K X N : Type*} [NormedAddCommGr
     · rintro ⟨y, hy⟩
       exact havoid x hzero y hy.symm
 
+/-- Finitely many patches give a global small avoidance perturbation. -/
 theorem GeneralPosition.exists_finite_patch_avoidance {E E' G H H' K X Y N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -322,6 +335,7 @@ theorem GeneralPosition.exists_finite_patch_avoidance {E E' G H H' K X Y N : Typ
       · exact Or.inr hnonzero
       · exact Or.inl (havoid₁ x (Or.inr ⟨j, hjs, hnonzero⟩))
 
+/-- A finite patch cover yields a map avoiding the target. -/
 theorem GeneralPosition.exists_avoidance_of_finite_patches {E E' G H H' K X Y N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -348,6 +362,7 @@ theorem GeneralPosition.exists_avoidance_of_finite_patches {E E' G H H' K X Y N 
     exact Or.inr ⟨i, Finset.mem_univ i, hi⟩
   · exact Or.inl hx
 
+/-- Every point admits an avoidance patch around it. -/
 theorem GeneralPosition.exists_avoidance_patch_at {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -375,6 +390,7 @@ theorem GeneralPosition.exists_avoidance_patch_at {E G H K X N : Type*}
     rw [φ.eq_one]
     exact one_ne_zero
 
+/-- A smooth map can be perturbed rel a closed range to be disjoint from a lower-dimensional set. -/
 theorem GeneralPosition.exists_disjoint_smooth_map_homotopicRel_of_isClosed_range
     {E G H K X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -409,6 +425,7 @@ theorem GeneralPosition.exists_disjoint_smooth_map_homotopicRel_of_isClosed_rang
   obtain ⟨i, hi, hix⟩ := Set.mem_iUnion₂.mp (hs hx)
   exact ⟨⟨i, hi⟩, hix⟩
 
+/-- A smooth map can be perturbed rel a closed set to be disjoint from a lower-dimensional set. -/
 theorem GeneralPosition.exists_disjoint_smooth_map_homotopicRel {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace K]
@@ -426,14 +443,19 @@ theorem GeneralPosition.exists_disjoint_smooth_map_homotopicRel {E G H K X N : T
   exists_disjoint_smooth_map_homotopicRel_of_isClosed_range f g hf hg
     (isCompact_range g.continuous).isClosed hdim hC hfixed
 
+/-! ### Maps into the image complement -/
+
+/-- The open complement of a compact image. -/
 def ImageComplement.domain {Y N : Type*} [TopologicalSpace Y] [CompactSpace Y]
     [TopologicalSpace N] [T2Space N] (g : C(Y, N)) : TopologicalSpace.Opens N :=
   ⟨(Set.range g)ᶜ, (isCompact_range g.continuous).isClosed.isOpen_compl⟩
 
+/-- The inclusion of the image complement. -/
 def ImageComplement.inclusion {Y N : Type*} [TopologicalSpace Y] [CompactSpace Y]
     [TopologicalSpace N] [T2Space N] (g : C(Y, N)) : C(domain g, N) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- An ambient homotopy off the image gives a smooth homotopy in the complement. -/
 theorem ImageComplement.exists_smooth_homotopy_of_ambient_homotopic {Y N : Type*}
     [TopologicalSpace Y] [CompactSpace Y] [TopologicalSpace N] [T2Space N]
     {E E' G H H' K X : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
@@ -494,6 +516,7 @@ theorem ImageComplement.exists_smooth_homotopy_of_ambient_homotopic {Y N : Type*
         map_zero_left := fun x => hAlo 0 x (by norm_num)
         map_one_left := fun x => hAhi 1 x (by norm_num) }, hA, hAlo, hAhi⟩
 
+/-- Maps ambiently homotopic off the image are homotopic in the complement. -/
 theorem ImageComplement.homotopic_of_ambient_homotopic {Y N : Type*} [TopologicalSpace Y]
     [CompactSpace Y] [TopologicalSpace N] [T2Space N] {E E' G H H' K X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
@@ -520,27 +543,36 @@ theorem ImageComplement.homotopic_of_ambient_homotopic {Y N : Type*} [Topologica
       (ha₀.symm.trans (hambient.trans ha₁))
   exact h₀.trans ((show f₀'.Homotopic f₁' from ⟨H⟩).trans h₁.symm)
 
+/-! ### The disk double -/
+
+/-- The closed unit disk. -/
 abbrev DiskDouble.Disk (E : Type*) [NormedAddCommGroup E] :=
   Metric.closedBall (0 : E) 1
 
+/-- The boundary sphere of the disk. -/
 abbrev DiskDouble.Boundary (E : Type*) [NormedAddCommGroup E] :=
   Metric.sphere (0 : E) 1
 
+/-- A boundary point included into the disk. -/
 def DiskDouble.boundary (E : Type*) [NormedAddCommGroup E] (x : Boundary E) : Disk E :=
   ⟨x, Metric.sphere_subset_closedBall x.property⟩
 
+/-- The relation gluing two disks along a boundary homeomorphism. -/
 def DiskDouble.Rel {E : Type*} [NormedAddCommGroup E] (e : Boundary E ≃ₜ Boundary E) :
     Disk E ⊕ Disk E → Disk E ⊕ Disk E → Prop
   | .inl x, .inr y => ∃ z : Boundary E, x = boundary E z ∧ y = boundary E (e z)
   | _, _ => False
 
+/-- The double of a disk along a boundary homeomorphism. -/
 abbrev DiskDouble.Space {E : Type*} [NormedAddCommGroup E] (e : Boundary E ≃ₜ Boundary E) :=
   Quot (DiskDouble.Rel e)
 
+/-- The twist moved onto the second disk. -/
 def DiskDouble.untwist {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (e : Boundary E ≃ₜ Boundary E) : Disk E ⊕ Disk E ≃ₜ Disk E ⊕ Disk E :=
   (Homeomorph.refl (Disk E)).sumCongr (RadialExtension.closedBallHomeomorph e.symm)
 
+/-- The twisted relation is the untwisted identity relation. -/
 theorem DiskDouble.rel_untwist_iff {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (e : Boundary E ≃ₜ Boundary E) (x y : Disk E ⊕ Disk E) :
     DiskDouble.Rel e x y ↔
@@ -566,62 +598,78 @@ theorem DiskDouble.rel_untwist_iff {E : Type*} [NormedAddCommGroup E] [NormedSpa
         simp [boundary]
   | inr x => cases y <;> rfl
 
+/-- A twisted double is homeomorphic to the untwisted double. -/
 def DiskDouble.homeomorphUntwisted {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (e : Boundary E ≃ₜ Boundary E) : Space e ≃ₜ Space (Homeomorph.refl (Boundary E)) :=
   Homeomorph.Quot.congr (untwist e) (rel_untwist_iff e)
 
+/-! ### Hemisphere coordinates on the sphere -/
+
+/-- The ambient Euclidean space of dimension `n`. -/
 abbrev Hemisphere.Ambient (n : ℕ) :=
   EuclideanSpace ℝ (Fin n)
 
+/-- The closed unit ball in `n` dimensions. -/
 abbrev Hemisphere.Ball (n : ℕ) :=
   DiskDouble.Disk (Ambient n)
 
+/-- The unit sphere in `n + 1` dimensions. -/
 abbrev Hemisphere.Sphere (n : ℕ) :=
   Metric.sphere (0 : Ambient (n + 1)) 1
 
+/-- The hemisphere height `√(1 − ‖x‖²)`. -/
 def Hemisphere.radius {n : ℕ} (x : Ball n) : ℝ :=
   Real.sqrt (1 - ‖(x : Ambient n)‖ ^ 2)
 
+/-- The radius squared is `1 − ‖x‖²`. -/
 theorem Hemisphere.radius_sq {n : ℕ} (x : Ball n) :
     radius x ^ 2 = 1 - ‖(x : Ambient n)‖ ^ 2 := by
   apply Real.sq_sqrt
   have hx : ‖(x : Ambient n)‖ ≤ 1 := mem_closedBall_zero_iff.mp x.property
   nlinarith [norm_nonneg (x : Ambient n)]
 
+/-- The hemisphere point above or below a ball point. -/
 def Hemisphere.vector {n : ℕ} (b : Bool) (x : Ball n) : Ambient (n + 1) :=
   WithLp.toLp 2 (Fin.cons (if b then radius x else -radius x) (x : Ambient n))
 
+/-- The zeroth hemisphere vector. -/
 @[simp]
 theorem Hemisphere.vector_zero {n : ℕ} (b : Bool) (x : Ball n) :
     vector b x 0 = if b then radius x else -radius x :=
   rfl
 
+/-- The successor hemisphere vector. -/
 @[simp]
 theorem Hemisphere.vector_succ {n : ℕ} (b : Bool) (x : Ball n) (i : Fin n) :
     vector b x i.succ = (x : Ambient n) i :=
   rfl
 
+/-- The hemisphere vector has norm one. -/
 theorem Hemisphere.vector_norm_sq {n : ℕ} (b : Bool) (x : Ball n) : ‖vector b x‖ ^ 2 = 1 := by
   rw [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_succ]
   simp only [vector_zero, vector_succ]
   rw [← EuclideanSpace.real_norm_sq_eq]
   cases b <;> simp only [Bool.false_eq_true, ↓reduceIte, neg_sq] <;> rw [radius_sq] <;> ring
 
+/-- A hemisphere point of the sphere. -/
 def Hemisphere.point {n : ℕ} (b : Bool) (x : Ball n) : Sphere n :=
   ⟨vector b x, by
     rw [mem_sphere_zero_iff_norm]
     have h := vector_norm_sq b x
     nlinarith [norm_nonneg (vector b x)]⟩
 
+/-- The hemisphere point at zero. -/
 @[simp]
 theorem Hemisphere.point_zero {n : ℕ} (b : Bool) (x : Ball n) :
     (point b x : Ambient (n + 1)) 0 = if b then radius x else -radius x :=
   rfl
 
+/-- The hemisphere radius is continuous. -/
 theorem Hemisphere.continuous_radius {n : ℕ} : Continuous (radius (n := n)) := by
   unfold radius
   fun_prop
 
+/-- The hemisphere vector is continuous. -/
 theorem Hemisphere.continuous_vector {n : ℕ} (b : Bool) : Continuous (vector (n := n) b) := by
   apply (PiLp.continuous_toLp 2 (fun _ : Fin (n + 1) => ℝ)).comp
   apply continuous_pi
@@ -632,9 +680,11 @@ theorem Hemisphere.continuous_vector {n : ℕ} (b : Bool) : Continuous (vector (
     · exact continuous_radius
   · exact (PiLp.continuous_apply 2 (fun _ : Fin n => ℝ) j).comp continuous_subtype_val
 
+/-- The hemisphere point map is continuous. -/
 theorem Hemisphere.continuous_point {n : ℕ} (b : Bool) : Continuous (point (n := n) b) :=
   (continuous_vector b).subtype_mk _
 
+/-- Each hemisphere parametrization is injective. -/
 theorem Hemisphere.point_injective {n : ℕ} (b : Bool) :
     Function.Injective (point (n := n) b) := by
   intro x y h
@@ -642,12 +692,14 @@ theorem Hemisphere.point_injective {n : ℕ} (b : Bool) :
   ext i
   exact congrArg (fun z : Sphere n => (z : Ambient (n + 1)) i.succ) h
 
+/-- The hemisphere radius on the boundary. -/
 @[simp]
 theorem Hemisphere.radius_boundary {n : ℕ} (x : DiskDouble.Boundary (Ambient n)) :
     radius (DiskDouble.boundary (Ambient n) x) = 0 := by
   have hx : ‖(x : Ambient n)‖ = 1 := mem_sphere_zero_iff_norm.mp x.property
   simp [radius, DiskDouble.boundary, hx]
 
+/-- The two hemispheres agree on the boundary. -/
 theorem Hemisphere.point_boundary {n : ℕ} (x : DiskDouble.Boundary (Ambient n)) :
     point Bool.false (DiskDouble.boundary (Ambient n) x) =
       point Bool.true (DiskDouble.boundary (Ambient n) x) := by
@@ -657,6 +709,7 @@ theorem Hemisphere.point_boundary {n : ℕ} (x : DiskDouble.Boundary (Ambient n)
   · simp
   · rfl
 
+/-- Hemisphere points coincide exactly at boundary points. -/
 theorem Hemisphere.point_false_eq_true_iff {n : ℕ} (x y : Ball n) :
     point Bool.false x = point Bool.true y ↔
       ∃ z : DiskDouble.Boundary (Ambient n),
@@ -681,6 +734,9 @@ theorem Hemisphere.point_false_eq_true_iff {n : ℕ} (x y : Ball n) :
   · rintro ⟨z, rfl, rfl⟩
     exact point_boundary z
 
+/-! ### Nullhomotopies in the belt complement -/
+
+/-- An ambiently nullhomotopic map missing the image is nullhomotopic in the complement. -/
 theorem ImageComplement.nullhomotopic_of_ambient_nullhomotopic {E E' G H H' K X Y N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -705,6 +761,7 @@ theorem ImageComplement.nullhomotopic_of_ambient_nullhomotopic {E E' G H H' K X 
     ⟨f x₀, homotopic_of_ambient_homotopic (I := I) g hg hdim f (ContinuousMap.const X (f x₀)) ?_⟩
   exact hc.trans hconst.symm
 
+/-- Loops in the image complement are nullhomotopic in the target. -/
 theorem ImageComplement.circle_nullhomotopies {E' G H' K Y N : Type*}
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H'] [TopologicalSpace K]
@@ -719,6 +776,7 @@ theorem ImageComplement.circle_nullhomotopies {E' G H' K Y N : Type*}
   apply nullhomotopic_of_ambient_nullhomotopic (I := 𝓡 1) g hg _ f (hnull _)
   simpa only [finrank_euclideanSpace_fin] using hdim
 
+/-- Belt-complement loops are nullhomotopic in sphere dimension. -/
 theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimension
     {F R X Y G H : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -749,6 +807,7 @@ theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimen
     (ContinuousMap.Homotopic.refl forward).comp hc
   exact ⟨e c, heq ▸ hout⟩
 
+/-- Belt-complement loops are nullhomotopic in rank two. -/
 theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_finrank_two
     {F R X Y G H : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -763,6 +822,7 @@ theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_finrank_two
   d.beltComplement_circle_nullhomotopies_of_sphere_dimension 1 hattach hdim hnull
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching sphere is the attaching core map's image. -/
 theorem ManifoldMorse.SignedMorseChart.attachingSphere_eq_attachingCoreMap {E M R Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [TopologicalSpace R] [TopologicalSpace Y] {f : M → ℝ} {p : M}
@@ -787,6 +847,7 @@ theorem ManifoldMorse.SignedMorseChart.attachingSphere_eq_attachingCoreMap {E M 
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The surgery attaching sphere map is smooth. -/
 theorem ManifoldMorse.SignedMorseChart.contMDiff_surgeryAttachingSphere {E M R Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [TopologicalSpace R] [TopologicalSpace Y] {f : M → ℝ} {p : M}
@@ -812,6 +873,7 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_surgeryAttachingSphere {E M R Y
   exact c.contMDiff_attachingCoreMap n hf ρ hρ hblock hreg
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Loops in the surgery belt complement are nullhomotopic. -/
 theorem ManifoldMorse.SignedMorseChart.surgery_beltComplement_circle_nullhomotopies
     {E M R Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [TopologicalSpace R] [TopologicalSpace Y] {f : M → ℝ} {p : M}
@@ -843,19 +905,25 @@ theorem ManifoldMorse.SignedMorseChart.surgery_beltComplement_circle_nullhomotop
   rw [finrank_euclideanSpace_fin]
   omega
 
+/-! ### The new interior -/
+
+/-- The open unit ball of a normed space. -/
 abbrev PuncturedHandle.OpenUnitBall (N : Type*) [NormedAddCommGroup N] :=
   { x : N // ‖x‖ < 1 }
 
+/-- The new level's interior: the complement plus the open new piece. -/
 abbrev SurgeryBoundaryPair.NewInterior {N P R X Y : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     (d : SurgeryBoundaryPair N P R X Y) : Set Y :=
   (Set.range d.newExterior)ᶜ
 
+/-- The new interior is open. -/
 theorem SurgeryBoundaryPair.isOpen_newInterior {N P R X Y : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     (d : SurgeryBoundaryPair N P R X Y) : IsOpen d.NewInterior :=
   d.newExterior_closed.isClosed_range.isOpen_compl
 
+/-- A new piece lies in the exterior exactly off the belt. -/
 theorem SurgeryBoundaryPair.newPiece_mem_exterior_iff {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -870,6 +938,7 @@ theorem SurgeryBoundaryPair.newPiece_mem_exterior_iff {N P R X Y : Type*}
       (⟨p.1, mem_sphere_zero_iff_norm.mpr hp⟩, p.2)
     exact ⟨d.boundary q, (d.new_overlap _ _).mpr ⟨q, rfl, rfl⟩⟩
 
+/-- Every new piece lies in the new interior. -/
 theorem SurgeryBoundaryPair.newPiece_mem_newInterior_iff {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -884,6 +953,7 @@ theorem SurgeryBoundaryPair.newPiece_mem_newInterior_iff {N P R X Y : Type*}
     · exact (hp h).elim
   · exact fun h => h.ne
 
+/-- The new interior lies in the union of the exterior and new piece. -/
 theorem SurgeryBoundaryPair.newInterior_subset_range {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y) :
@@ -892,6 +962,7 @@ theorem SurgeryBoundaryPair.newInterior_subset_range {N P R X Y : Type*}
   have hc : y ∈ Set.range d.newExterior ∪ Set.range d.newPiece := by rw [d.new_cover]; trivial
   exact hc.resolve_left hy
 
+/-- The parametrization of the new interior by the open handle. -/
 def SurgeryBoundaryPair.newInteriorParameter {N P R X Y : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     (d : SurgeryBoundaryPair N P R X Y) :
@@ -905,6 +976,7 @@ def SurgeryBoundaryPair.newInteriorParameter {N P R X Y : Type*} [NormedAddCommG
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
+/-- The open new handle is homeomorphic to the new interior. -/
 def SurgeryBoundaryPair.newInteriorHomeomorph {N P R X Y : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     (d : SurgeryBoundaryPair N P R X Y) :
@@ -913,6 +985,7 @@ def SurgeryBoundaryPair.newInteriorHomeomorph {N P R X Y : Type*} [NormedAddComm
   d.newInteriorParameter.trans
     (d.newPiece_closed.isEmbedding.homeomorphOfSubsetRange d.newInterior_subset_range)
 
+/-- Belt-sphere points lie in the new interior. -/
 theorem SurgeryBoundaryPair.beltSphere_mem_newInterior {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -920,6 +993,7 @@ theorem SurgeryBoundaryPair.beltSphere_mem_newInterior {N P R X Y : Type*}
   apply (d.newPiece_mem_newInterior_iff (PuncturedHandle.ballZero, v)).mpr
   simp [PuncturedHandle.ballZero]
 
+/-- A new-interior point lies on the belt exactly at the core. -/
 theorem SurgeryBoundaryPair.newInteriorHomeomorph_mem_belt_iff {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -927,22 +1001,28 @@ theorem SurgeryBoundaryPair.newInteriorHomeomorph_mem_belt_iff {N P R X Y : Type
     (d.newInteriorHomeomorph p : Y) ∈ Set.range d.beltSphere ↔ (p.1 : N) = 0 :=
   d.newPiece_mem_belt_iff (⟨p.1, p.1.property.le⟩, p.2)
 
+/-! ### Extending homotopies off a closed set -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- A function extended by another on an open set. -/
 def OpenHomotopyExtension.extendFunction {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) : X → Y := fun x =>
   if hx : x ∈ U then g ⟨x, hx⟩ else f x
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The homotopy extension computes inside the open set. -/
 theorem OpenHomotopyExtension.extendFunction_of_mem {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) (x : U) :
     extendFunction U f g x = g x := by simp only [extendFunction, dif_pos x.property]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The homotopy extension is the original off the open set. -/
 theorem OpenHomotopyExtension.extendFunction_of_not_mem {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) {x : X} (hx : x ∉ U) :
     extendFunction U f g x = f x := by simp only [extendFunction, dif_neg hx]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The homotopy extension is continuous. -/
 theorem OpenHomotopyExtension.continuous_extendFunction {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y)
     (hf : Continuous f) (hg : Continuous g) {K : Set X} (hK : IsClosed K) (hKU : K ⊆ U)
@@ -970,6 +1050,7 @@ theorem OpenHomotopyExtension.continuous_extendFunction {X Y : Type*} [Topologic
   rw [← hcover]
   exact hU.union_of_isOpen haway U.isOpen hK.isOpen_compl
 
+/-- A homotopy on `U` fixed off a closed set extends to the whole space. -/
 theorem OpenHomotopyExtension.exists_extended_homotopy {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] (U : TopologicalSpace.Opens X) (f : C(X, Y)) (H : C(unitInterval × U, Y))
     {K : Set X} (hK : IsClosed K) (hKU : K ⊆ U) (hzero : ∀ x : U, H (0, x) = f x)
@@ -1003,6 +1084,7 @@ theorem OpenHomotopyExtension.exists_extended_homotopy {X Y : Type*} [Topologica
   · exact (hlocal 0 ⟨x, hx⟩).trans (hzero ⟨x, hx⟩)
   · exact houtside 0 x (fun h => hx (hKU h))
 
+/-- A `C¹` image has Hausdorff dimension at most the domain's. -/
 theorem dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F}
     {s : Set E} (hs : IsOpen s) (hf : ContDiffOn ℝ 1 f s) : dimH (f '' s) ≤ dimH s := by
@@ -1011,6 +1093,7 @@ theorem dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddCommGroup E]
   obtain ⟨C, U, hU, hL⟩ := (hf.contDiffAt (hs.mem_nhds hx)).exists_lipschitzOnWith
   exact ⟨C, U, mem_nhdsWithin_of_mem_nhds hU, hL⟩
 
+/-- A chart image has Hausdorff dimension at most the domain's. -/
 theorem dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
@@ -1039,6 +1122,7 @@ theorem dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace �
     (dimH_image_le_of_contDiffOn_isOpen hV (hfc.of_le (by simp))).trans
       ((dimH_mono (Set.subset_univ V)).trans_eq (Real.dimH_univ_eq_finrank E))
 
+/-- A smooth image of a manifold has Hausdorff dimension at most the domain's. -/
 theorem dimH_image_manifold_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
@@ -1058,6 +1142,7 @@ theorem dimH_image_manifold_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace
   rw [dimH_bUnion htcount]
   exact iSup_le (fun x ↦ iSup_le (fun _ ↦ dimH_image_chart_le hs hf x))
 
+/-- The complement of a lower-dimensional smooth image is dense. -/
 theorem dense_compl_manifold_image {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
@@ -1066,6 +1151,7 @@ theorem dense_compl_manifold_image {E F : Type*} [NormedAddCommGroup E] [NormedS
     (hd : Module.finrank ℝ E < Module.finrank ℝ F) : Dense (f '' s)ᶜ :=
   dense_compl_of_dimH_lt_finrank ((dimH_image_manifold_le hs hf).trans_lt (Nat.cast_lt.mpr hd))
 
+/-- A smooth map from a lower-dimensional manifold is not surjective. -/
 theorem not_surjective_contMDiff_of_dim_lt {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H M : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless]
@@ -1103,6 +1189,7 @@ theorem not_surjective_contMDiff_of_dim_lt {E F : Type*} [NormedAddCommGroup E]
   exact
     (not_le_of_gt (Nat.cast_lt.mpr hd : (Module.finrank ℝ E : ℝ≥0∞) < Module.finrank ℝ F)) hdim
 
+/-- A continuous map into a higher-dimensional space has a smooth nonvanishing approximation. -/
 theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
@@ -1134,13 +1221,18 @@ theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     have hhx : ‖h x - f x‖ < ε / 2 := by simpa only [dist_eq_norm] using hh x
     linarith
 
+/-! ### The zero-avoidance cutoff -/
+
+/-- The cutoff progress between levels `l` and `u`. -/
 noncomputable def RealIntervalProgress.progress (l u t : ℝ) : ℝ :=
   Set.projIcc (0 : ℝ) 1 zero_le_one ((t - l) / (u - l))
 
+/-- The progress cutoff is continuous. -/
 theorem RealIntervalProgress.continuous_progress (l u : ℝ) : Continuous (progress l u) :=
   continuous_subtype_val.comp
     (continuous_projIcc.comp ((continuous_id.sub continuous_const).div_const _))
 
+/-- The progress is zero below `l`. -/
 theorem RealIntervalProgress.progress_before {l u t : ℝ} (hlu : l ≤ u) (ht : t ≤ l) :
     progress l u t = 0 := by
   have h :=
@@ -1148,6 +1240,7 @@ theorem RealIntervalProgress.progress_before {l u t : ℝ} (hlu : l ≤ u) (ht :
       (div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr ht) (sub_nonneg.mpr hlu))
   exact congrArg Subtype.val h
 
+/-- The progress is one above `u`. -/
 theorem RealIntervalProgress.progress_after {l u t : ℝ} (hlu : l < u) (ht : u ≤ t) :
     progress l u t = 1 := by
   have hr : 1 ≤ (t - l) / (u - l) := by
@@ -1155,12 +1248,14 @@ theorem RealIntervalProgress.progress_after {l u t : ℝ} (hlu : l < u) (ht : u 
     simpa only [one_mul] using sub_le_sub_right ht l
   exact congrArg Subtype.val (Set.projIcc_of_right_le zero_le_one hr)
 
+/-- The blend weight keeping a perturbed map nonzero. -/
 noncomputable def ZeroAvoidanceCutoff.weight {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) : C(X, ℝ) :=
   ⟨fun x ↦ 1 - RealIntervalProgress.progress ε (2 * ε) ‖f x‖,
     continuous_const.sub
       ((RealIntervalProgress.continuous_progress ε (2 * ε)).comp f.continuous.norm)⟩
 
+/-- The weight lies in `[0, 1]`. -/
 theorem ZeroAvoidanceCutoff.weight_bounds {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (x : X) : 0 ≤ weight f ε x ∧ weight f ε x ≤ 1 := by
   have hp : RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ∈ Set.Icc (0 : ℝ) 1 :=
@@ -1170,23 +1265,27 @@ theorem ZeroAvoidanceCutoff.weight_bounds {X F : Type*} [TopologicalSpace X]
       1 - RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ≤ 1
   constructor <;> linarith [hp.1, hp.2]
 
+/-- The weight is one where the original map is small. -/
 theorem ZeroAvoidanceCutoff.weight_small {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X} (hx : ‖f x‖ ≤ ε) :
     weight f ε x = 1 := by
   simp only [weight, ContinuousMap.coe_mk,
     RealIntervalProgress.progress_before (by linarith : ε ≤ 2 * ε) hx, sub_zero]
 
+/-- The weight is zero where the original map is large. -/
 theorem ZeroAvoidanceCutoff.weight_large {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X} (hx : 2 * ε ≤ ‖f x‖) :
     weight f ε x = 0 := by
   simp only [weight, ContinuousMap.coe_mk,
     RealIntervalProgress.progress_after (by linarith : ε < 2 * ε) hx, sub_self]
 
+/-- The blend of the original and perturbed maps. -/
 noncomputable def ZeroAvoidanceCutoff.blend {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) : C(X, F) :=
   ⟨fun x ↦ f x + weight f ε x • (g x - f x),
     f.continuous.add ((weight f ε).continuous.smul (g.continuous.sub f.continuous))⟩
 
+/-- Where the original is small the blend is the original. -/
 theorem ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : ‖f x‖ ≤ ε) : blend f g ε x = g x := by
@@ -1194,12 +1293,14 @@ theorem ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
   rw [weight_small f ε hε hx, one_smul]
   abel
 
+/-- Where the original is large the blend is the perturbation. -/
 theorem ZeroAvoidanceCutoff.blend_large {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : 2 * ε ≤ ‖f x‖) : blend f g ε x = f x := by
   change f x + weight f ε x • (g x - f x) = f x
   rw [weight_large f ε hε hx, zero_smul, add_zero]
 
+/-- The blend stays within the perturbation distance. -/
 theorem ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (x : X) :
     Dist.dist (blend f g ε x) (f x) ≤ Dist.dist (g x) (f x) := by
@@ -1208,6 +1309,7 @@ theorem ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpace X]
   rw [add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg (weight_bounds f ε x).1]
   exact mul_le_of_le_one_left (norm_nonneg _) (weight_bounds f ε x).2
 
+/-- The blend is nonzero. -/
 theorem ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hg : ∀ x, g x ≠ 0) (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (x : X) : blend f g ε x ≠ 0 := by
@@ -1219,6 +1321,7 @@ theorem ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
     rw [hz, dist_zero_left] at hh
     exact hx hh.le
 
+/-- The blend as a homotopy between the two maps. -/
 noncomputable def ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) :
     ContinuousMap.HomotopyRel f (blend f g ε) {x | 2 * ε ≤ ‖f x‖}
@@ -1239,6 +1342,7 @@ noncomputable def ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X
     change f x + (t : ℝ) • (blend f g ε x - f x) = f x
     rw [blend_large f g ε hε hx, sub_self, smul_zero, add_zero]
 
+/-- The homotopy stays within the perturbation distance. -/
 theorem ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (t : (unitInterval)) (x : X) :
@@ -1252,6 +1356,7 @@ theorem ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
     _ ≤ Dist.dist (g x) (f x) := by simpa only [dist_eq_norm] using dist_blend_le f g ε x
     _ < ε := hclose x
 
+/-- A map into higher dimensions is homotopic to a nearby nonvanishing map. -/
 theorem exists_nonzero_homotopy_small {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
@@ -1268,6 +1373,9 @@ theorem exists_nonzero_homotopy_small {B H M F : Type*} [NormedAddCommGroup B]
       ZeroAvoidanceCutoff.homotopy f h ε hε, ?_⟩
   exact ZeroAvoidanceCutoff.homotopy_dist_lt f h ε hε hclose
 
+/-! ### Belt-avoiding circles and nullhomotopies -/
+
+/-- A circle in the new interior can be homotoped off the belt. -/
 theorem SurgeryBoundaryPair.exists_belt_avoiding_circle {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup P]
     [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
@@ -1353,6 +1461,7 @@ theorem SurgeryBoundaryPair.exists_belt_avoiding_circle {N P R X Y : Type*}
     rw [← hv]
     exact d.beltSphere_mem_newInterior v
 
+/-- Loops avoiding the belt are nullhomotopic. -/
 theorem SurgeryBoundaryPair.circle_nullhomotopies_of_beltComplement {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup P]
     [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
@@ -1371,6 +1480,7 @@ theorem SurgeryBoundaryPair.circle_nullhomotopies_of_beltComplement {N P R X Y :
     (ContinuousMap.Homotopic.refl inc).comp hq
   exact ⟨q, hgg'.trans hh⟩
 
+/-- Loops in the new boundary are nullhomotopic. -/
 theorem SurgeryBoundaryPair.newBoundary_circle_nullhomotopies {N F R X Y G H : Type*}
     [NormedAddCommGroup N] [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
@@ -1389,6 +1499,7 @@ theorem SurgeryBoundaryPair.newBoundary_circle_nullhomotopies {N F R X Y G H : T
       (d.beltComplement_circle_nullhomotopies_of_sphere_dimension n hattach hdim hnull)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Loops in the surgery new boundary are nullhomotopic. -/
 theorem ManifoldMorse.SignedMorseChart.surgery_newBoundary_circle_nullhomotopies
     {E M R Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
@@ -1420,7 +1531,10 @@ theorem ManifoldMorse.SignedMorseChart.surgery_newBoundary_circle_nullhomotopies
   rw [finrank_euclideanSpace_fin]
   omega
 
+/-! ### Morse surgery data -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The surgery data of a signed Morse chart: attaching and belt spheres with levels. -/
 structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
     [NormedSpace ℝ E] {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ)
     (p : M) where
@@ -1474,17 +1588,20 @@ structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
   lower_regular : ∀ x, f x = f p - radius ^ 2 → x ∉ criticalPoints E f
   upper_regular : ∀ x, f x = f p + radius ^ 2 → x ∉ criticalPoints E f
 
+/-- The lower level of the surgery data. -/
 abbrev ManifoldMorse.MorseSurgeryData.LowerLevel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :=
   { x : M // f x = f p - d.radius ^ 2 }
 
+/-- The upper level of the surgery data. -/
 abbrev ManifoldMorse.MorseSurgeryData.UpperLevel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :=
   { x : M // f x = f p + d.radius ^ 2 }
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching map computes the sphere inclusion. -/
 theorem ManifoldMorse.MorseSurgeryData.attaching_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :
@@ -1493,6 +1610,7 @@ theorem ManifoldMorse.MorseSurgeryData.attaching_eq {E M : Type*} [NormedAddComm
     d.oldPiece_eq
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching sphere map is a closed embedding. -/
 theorem ManifoldMorse.MorseSurgeryData.attaching_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] :
@@ -1501,6 +1619,7 @@ theorem ManifoldMorse.MorseSurgeryData.attaching_isClosedEmbedding {E M : Type*}
   exact d.chart.attachingCoreMap_isClosedEmbedding d.radius d.radius_pos d.block
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt sphere map is a closed embedding. -/
 theorem ManifoldMorse.MorseSurgeryData.belt_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] :
@@ -1509,6 +1628,7 @@ theorem ManifoldMorse.MorseSurgeryData.belt_isClosedEmbedding {E M : Type*}
   exact d.chart.beltCoreMap_isClosedEmbedding d.radius d.radius_pos d.block
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching map is smooth. -/
 theorem ManifoldMorse.MorseSurgeryData.attaching_smooth {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1521,6 +1641,7 @@ theorem ManifoldMorse.MorseSurgeryData.attaching_smooth {E M : Type*} [NormedAdd
   exact d.chart.contMDiff_attachingCoreMap n hf d.radius d.radius_pos d.block d.lower_regular
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt map is smooth. -/
 theorem ManifoldMorse.MorseSurgeryData.belt_smooth {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1533,6 +1654,7 @@ theorem ManifoldMorse.MorseSurgeryData.belt_smooth {E M : Type*} [NormedAddCommG
   exact d.chart.contMDiff_beltCoreMap n hf d.radius d.radius_pos d.block d.upper_regular
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching map's derivative is injective. -/
 theorem ManifoldMorse.MorseSurgeryData.attaching_derivative_injective {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1549,6 +1671,7 @@ theorem ManifoldMorse.MorseSurgeryData.attaching_derivative_injective {E M : Typ
       u
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt map's derivative is injective. -/
 theorem ManifoldMorse.MorseSurgeryData.belt_derivative_injective {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1562,6 +1685,7 @@ theorem ManifoldMorse.MorseSurgeryData.belt_derivative_injective {E M : Type*}
   exact d.chart.injective_mfderiv_beltCoreMap n hf d.radius d.radius_pos d.block d.upper_regular v
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Loops in the upper level are nullhomotopic. -/
 theorem ManifoldMorse.MorseSurgeryData.upper_circle_nullhomotopies {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1577,6 +1701,7 @@ theorem ManifoldMorse.MorseSurgeryData.upper_circle_nullhomotopies {E M : Type*}
     d.lower_regular d.surgery d.oldPiece_eq hdim hnull
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Morse surgery data exists below a level. -/
 theorem ManifoldMorse.exists_morseSurgeryData_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -1606,6 +1731,9 @@ theorem ManifoldMorse.exists_morseSurgeryData_lt {E M : Type*} [NormedAddCommGro
         lower_regular := hlower
         upper_regular := hupper }, hρε, hband⟩
 
+/-! ### Surgery windows -/
+
+/-- The standard sphere parametrization by hemisphere coordinates. -/
 def SphereCoordinates.standardParametrization (N : Type*) [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] (n : ℕ) [Fact (Module.finrank ℝ N = n + 1)] [FiniteDimensional ℝ N] :
     Diffeomorph (𝓡 n) (𝓡 n) (Hemisphere.Sphere n) (Metric.sphere (0 : N) 1) ∞ := by
@@ -1615,6 +1743,7 @@ def SphereCoordinates.standardParametrization (N : Type*) [NormedAddCommGroup N]
   exact SphereCoordinates.ofLinearIsometry b.repr.symm
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching sphere transported by the flow. -/
 def ManifoldMorse.MorseSurgeryData.transportedAttachingSphere {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -1631,6 +1760,7 @@ def ManifoldMorse.MorseSurgeryData.transportedAttachingSphere {E M : Type*}
             n).continuous)⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The transported attaching sphere computes the flow. -/
 theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_apply {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -1643,6 +1773,7 @@ theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_apply {E M : T
   e.apply_symm_apply _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The range of the transported attaching sphere. -/
 theorem ManifoldMorse.MorseSurgeryData.range_transportedAttachingSphere {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -1663,6 +1794,7 @@ theorem ManifoldMorse.MorseSurgeryData.range_transportedAttachingSphere {E M : T
     exact (congrArg d'.surgery.attachingSphere hx).trans hz
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The transported attaching sphere is smooth. -/
 theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_smooth {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -1685,6 +1817,7 @@ theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_smooth {E M : 
         (SphereCoordinates.standardParametrization d'.chart.NegativeCoordinates
             n).contMDiff)
 
+/-- A smooth band bridge of the surgery data exists. -/
 theorem ManifoldMorse.MorseSurgeryData.exists_smoothBandBridge {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -1713,6 +1846,7 @@ theorem ManifoldMorse.MorseSurgeryData.exists_smoothBandBridge {E M : Type*}
   exact ⟨D, e, hsublevel, he⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A pair of surgery windows around a critical point, with lower and upper levels. -/
 structure ManifoldMorse.SurgeryWindows (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) where
   finite : (criticalPoints E f).Finite
@@ -1725,18 +1859,21 @@ structure ManifoldMorse.SurgeryWindows (E : Type*) [NormedAddCommGroup E] [Norme
   separated :
     ∀ p q : criticalPoints E f, f p < f q → f p + (data p).radius ^ 2 < f q - (data q).radius ^ 2
 
+/-- The lower level of the surgery windows. -/
 def ManifoldMorse.SurgeryWindows.lower {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
     ℝ :=
   f p - (S.data p).radius ^ 2
 
+/-- The upper level of the surgery windows. -/
 def ManifoldMorse.SurgeryWindows.upper {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
     ℝ :=
   f p + (S.data p).radius ^ 2
 
+/-- The lower level lies below the critical value. -/
 theorem ManifoldMorse.SurgeryWindows.lower_lt_value {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
@@ -1744,6 +1881,7 @@ theorem ManifoldMorse.SurgeryWindows.lower_lt_value {E M : Type*} [NormedAddComm
   dsimp [ManifoldMorse.SurgeryWindows.lower]
   nlinarith [(S.data p).radius_pos]
 
+/-- The critical value lies below the upper level. -/
 theorem ManifoldMorse.SurgeryWindows.value_lt_upper {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
@@ -1751,12 +1889,14 @@ theorem ManifoldMorse.SurgeryWindows.value_lt_upper {E M : Type*} [NormedAddComm
   dsimp [ManifoldMorse.SurgeryWindows.upper]
   nlinarith [(S.data p).radius_pos]
 
+/-- The upper window lies below the lower bound. -/
 theorem ManifoldMorse.SurgeryWindows.upper_lt_lower {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p q : ManifoldMorse.criticalPoints E f)
     (hpq : f p < f q) : S.upper p < S.lower q :=
   S.separated p q hpq
 
+/-- The band between the levels is regular. -/
 theorem ManifoldMorse.SurgeryWindows.regular_between {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p q : ManifoldMorse.criticalPoints E f)
@@ -1768,6 +1908,7 @@ theorem ManifoldMorse.SurgeryWindows.regular_between {E M : Type*} [NormedAddCom
       ⟨(S.value_lt_upper p).trans_le hx.1, hx.2.trans_lt (S.lower_lt_value q)⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A band bridge between the windows exists. -/
 theorem ManifoldMorse.SurgeryWindows.exists_bandBridge {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -1786,6 +1927,7 @@ theorem ManifoldMorse.SurgeryWindows.exists_bandBridge {E M : Type*} [NormedAddC
     (S.regular_between p q hconsecutive)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Surgery windows exist around a Morse critical point. -/
 theorem ManifoldMorse.nonempty_surgeryWindows {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1818,6 +1960,7 @@ theorem ManifoldMorse.nonempty_surgeryWindows {E M : Type*} [NormedAddCommGroup 
   linarith [hgap p q hpq]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Surgery windows adapted to a descent field. -/
 structure AdaptedWindows (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type*}
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (f : M → ℝ) extends
     ManifoldMorse.SurgeryWindows E f where
