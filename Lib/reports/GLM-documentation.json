@@ -15,6 +15,44 @@
     "git diff --check: clean"
   ],
   "independent_textbook_review_claimed": false,
+  "probe_tail_round": {
+    "extraction_commits": ["b564b8a", "50aa007"],
+    "documentation_commits": {
+      "Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean": "8ba77e9",
+      "Lib/Geometry/Manifold/Morse/CellStructure.lean": "8864613",
+      "Lib/Geometry/Manifold/Morse/Cancellation.lean": "2f74f5a",
+      "Lib/Geometry/Manifold/Morse/Reeb.lean": "9d7a52c",
+      "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean": "9d7a5b6"
+    },
+    "linear_sphere": {
+      "baseline_commit": "50aa007",
+      "public_declarations": 35,
+      "missing_docstrings_before": 35,
+      "missing_docstrings_after": 0,
+      "section_headers_before": 0,
+      "section_headers_after": 4,
+      "non_comment_tokens_unchanged": true
+    },
+    "final_coverage": {
+      "scope": "The original 68 files below, plus Morse/Reeb.lean and SingularHomology/LinearSphereAction.lean; original ownership exclusions unchanged",
+      "files": 70,
+      "missing_adjacent_public_declaration_documentation": 0,
+      "files_without_section_headers": 0
+    },
+    "verification": [
+      "lake build Lib Solution S6Shortcuts S6 Challenge: exit 0, 8840 jobs",
+      "lake env lean Lib/AxiomAudit.lean: exit 0; all audited axioms are subsets of propext, Classical.choice, Quot.sound",
+      "Lib-only linear-sphere probe: exactly propext, Classical.choice, Quot.sound",
+      "35 source and normalized-target hashes checked; exact-once target blocks and source-removal conservation verified",
+      "stock census lowered from 2234 to 2199; ratchet and Lib import guard pass",
+      "git diff --check: clean"
+    ],
+    "blocked": [
+      "Wang transfer formulas await C/J-owned prerequisites; see Lib/reports/I.md",
+      "Mathoverflow1973 wrapper removal awaits Wang and Lane I prerequisites"
+    ],
+    "scope_limit": "Closes this GLM-owned probe-tail commit round, not every historical extraction follow-up; no independent textbook-reference review is claimed"
+  },
   "files": [
     {
       "path": "Lib/Algebra/Homology/MayerVietorisShortExact.lean",

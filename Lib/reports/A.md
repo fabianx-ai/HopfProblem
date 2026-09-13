@@ -221,3 +221,9 @@ This closes the remaining A probe extraction in this round, not every
 historical A follow-up. Wang transfer formulas and wrapper removal remain
 blocked on C/J-owned prerequisites, as recorded in `Lib/reports/I.md`.
 
+Landing: `50aa007` (extraction baseline), followed by `9d7a5b6`
+(documentation only: 35 declaration docstrings and four section headers,
+with unchanged non-comment tokens). The final 70-file GLM documentation
+coverage receipt and round reconciliation are in
+`Lib/reports/GLM-documentation.json` under `probe_tail_round`.
+
