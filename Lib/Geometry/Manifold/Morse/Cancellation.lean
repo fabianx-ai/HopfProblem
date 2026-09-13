@@ -5892,4 +5892,105 @@ theorem MorseCancellation.nativeUpperMeridian_avoids_belt {E M : Type*} [NormedA
       (congrArg Subtype.val hw.symm)
   exact hs.ne' he.1
 
+structure MorseCancellation.NativeEndpointSliceData {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) (a : ℝ)
+    (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
+    (A : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞)
+    (Rq Rp Tq Tp : ℝ) where
+  labelDomain : Set (Fin m → ℝ)
+  open_domain : IsOpen labelDomain
+  zero_domain : (0 : Fin m → ℝ) ∈ labelDomain
+  source : A.source = labelDomain ×ˢ Set.univ
+  Q :
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (Fin m → ℝ) ∞
+  P :
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, Fin m → ℝ) (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (Fin m → ℝ) ∞
+  H :
+    PartialDiffeomorph 𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      𝓘(ℝ, MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ)
+      (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) ∞
+  zero_source : 0 ∈ H.source
+  H_zero : H 0 = 0
+  Q_zero : Q 0 = 0
+  P_zero : P 0 = 0
+  Q_source : Q.source = H.source
+  P_source : P.source = H.target
+  Q_target : Q.target = labelDomain
+  P_target : P.target = labelDomain
+  diagram : ∀ u ∈ H.source, P (H u) = Q u
+  phaseQ : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
+  phaseP : (MorseHandle.NegativeSpace σ × MorseHandle.PositiveSpace σ) → ℝ
+  smooth_phaseQ : ContDiff ℝ ∞ phaseQ
+  smooth_phaseP : ContDiff ℝ ∞ phaseP
+  zero_phaseQ : phaseQ 0 = 0
+  zero_phaseP : phaseP 0 = 0
+  sliceQ :
+    ∀ u ∈ Q.source,
+      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq) ∈
+        Metric.closedBall (-a, (0 : Fin m → ℝ)) Rq
+  sliceP :
+    ∀ u ∈ P.source,
+      cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp) ∈
+        Metric.closedBall (a, (0 : Fin m → ℝ)) Rp
+  formulaQ :
+    ∀ u ∈ Q.source,
+      Φq (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tq)) =
+        A (Q u, Tq + phaseQ u)
+  formulaP :
+    ∀ u ∈ P.source,
+      Φp (cubicFlowCylinder σ a ((MorseHandle.splitCoordinates σ).symm u, Tp)) =
+        A (P u, Tp + phaseP u)
+
+structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (f : M → ℝ)
+    (p q : M) (m : ℕ) where
+  σ : Fin m → ℝ
+  signs : ∀ i, σ i = -1 ∨ σ i = 1
+  field : (y : M) → TangentSpace 𝓘(ℝ, E) y
+  smooth_field :
+    ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, field y⟩ : TangentBundle 𝓘(ℝ, E) M))
+  flow : Flow ℝ M
+  integral : ∀ y, IsMIntegralCurve (fun t => flow t y) field
+  zero : ∀ y ∈ ManifoldMorse.criticalPoints E f, field y = 0
+  descent : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (field y) < 0
+  Φq : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞
+  Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞
+  endpointQ : Φq (-(1 / 2 : ℝ), 0) = q
+  endpointP : Φp (1 / 2, 0) = p
+  fieldQ : ∀ y ∈ Φq.target, field y = nativeCubicDescent σ Φq (-(1 / 2 : ℝ) ^ 2) y
+  fieldP : ∀ y ∈ Φp.target, field y = nativeCubicDescent σ Φp (-(1 / 2 : ℝ) ^ 2) y
+  A : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞
+  vertical :
+    ∀ y ∈ A.target,
+      field y =
+        FlowConstruction.partialChartField A.symm (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y
+  speed : ℝ
+  positive_speed : 0 < speed
+  height : ℝ
+  height_formula : ∀ z ∈ A.source, z.2 ∈ Set.Ioo (0 : ℝ) 1 → f (A z) = height - speed * z.2
+  Rq : ℝ
+  Rp : ℝ
+  Tq : ℝ
+  Tp : ℝ
+  positive_Rq : 0 < Rq
+  positive_Rp : 0 < Rp
+  boxQ : Metric.closedBall (-(1 / 2 : ℝ), (0 : Fin m → ℝ)) Rq ⊆ Φq.source
+  boxP : Metric.closedBall (1 / 2, (0 : Fin m → ℝ)) Rp ⊆ Φp.source
+  basinQ :
+    ∀ z ∈ Φq.source,
+      Filter.Tendsto (fun t => flow t (Φq z)) Filter.atBot (𝓝 q) ↔ ∀ i, σ i = 1 → z.2 i = 0
+  basinP :
+    ∀ z ∈ Φp.source,
+      Filter.Tendsto (fun t => flow t (Φp z)) Filter.atTop (𝓝 p) ↔ ∀ i, σ i = -1 → z.2 i = 0
+  unique :
+    ∀ y,
+      Filter.Tendsto (fun t => flow t y) Filter.atBot (𝓝 q) →
+        Filter.Tendsto (fun t => flow t y) Filter.atTop (𝓝 p) → ∃ t, flow t (A (0, 0)) = y
+  slices : NativeEndpointSliceData σ (1 / 2) Φq Φp A Rq Rp Tq Tp
+
 end Mathoverflow1973
