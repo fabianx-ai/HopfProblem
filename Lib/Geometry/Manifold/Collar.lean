@@ -71,21 +71,27 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The normal bundle of an embedding -/
+
+/-- The normal space of the embedding at a point. -/
 abbrev NativeEuclideanEmbedding.NormalSpace {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :=
   ↥(e.normalProjection x).range
 
+/-- The normal bundle's model space. -/
 abbrev NativeEuclideanEmbedding.NormalModel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) :=
   EuclideanSpace ℝ (Fin (e.ambientDimension - Module.finrank ℝ E))
 
+/-- The normal space is equivalent to the model. -/
 noncomputable def NativeEuclideanEmbedding.normalSpaceEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.normalFiber x :=
   ContinuousLinearEquiv.ofEq _ _ (e.range_normalProjection x)
 
+/-- The normal space's finite rank. -/
 theorem NativeEuclideanEmbedding.finrank_normalSpace {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -94,6 +100,7 @@ theorem NativeEuclideanEmbedding.finrank_normalSpace {E M : Type*} [NormedAddCom
   rw [(e.normalSpaceEquiv x).toLinearEquiv.finrank_eq]
   omega
 
+/-- The normal model equivalence. -/
 noncomputable def NativeEuclideanEmbedding.normalModelEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.NormalModel :=
@@ -102,6 +109,7 @@ noncomputable def NativeEuclideanEmbedding.normalModelEquiv {E M : Type*}
         rw [e.finrank_normalSpace x]
         exact finrank_euclideanSpace_fin.symm)).toContinuousLinearEquiv
 
+/-- The normal bundle's prebundle structure. -/
 noncomputable def NativeEuclideanEmbedding.normalPrebundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
@@ -109,6 +117,7 @@ noncomputable def NativeEuclideanEmbedding.normalPrebundle {E M : Type*}
   ProjectionBundle.vectorPrebundle e.normalProjection e.normalProjection_idempotent
     e.normalModelEquiv e.contMDiff_normalProjection
 
+/-- The normal prebundle is smooth. -/
 instance NativeEuclideanEmbedding.normalPrebundle_isContMDiff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
@@ -116,41 +125,50 @@ instance NativeEuclideanEmbedding.normalPrebundle_isContMDiff {E M : Type*}
   ProjectionBundle.vectorPrebundle_isContMDiff e.normalProjection
     e.normalProjection_idempotent e.normalModelEquiv e.contMDiff_normalProjection
 
+/-- The normal bundle of the embedding. -/
 abbrev NativeEuclideanEmbedding.NormalBundle {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) :=
   Bundle.TotalSpace e.NormalModel e.NormalSpace
 
+/-- The normal bundle's topology. -/
 noncomputable instance NativeEuclideanEmbedding.normalBundleTopology {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     TopologicalSpace e.NormalBundle :=
   e.normalPrebundle.totalSpaceTopology
 
+/-- The normal bundle as a fiber bundle. -/
 noncomputable instance NativeEuclideanEmbedding.normalFiberBundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     FiberBundle e.NormalModel e.NormalSpace :=
   e.normalPrebundle.toFiberBundle
 
+/-- The normal bundle as a vector bundle. -/
 instance NativeEuclideanEmbedding.normalVectorBundle {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     VectorBundle ℝ e.NormalModel e.NormalSpace :=
   e.normalPrebundle.toVectorBundle
 
+/-- The normal bundle is a smooth vector bundle. -/
 instance NativeEuclideanEmbedding.normalContMDiffVectorBundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     ContMDiffVectorBundle ∞ e.NormalModel e.NormalSpace 𝓘(ℝ, E) :=
   e.normalPrebundle.contMDiffVectorBundle 𝓘(ℝ, E)
 
+/-! ### Normal displacement -/
+
+/-- A normal vector at a base point. -/
 def NativeEuclideanEmbedding.normalVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   v.2
 
+/-- The normal vector field is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
@@ -197,12 +215,14 @@ theorem NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [NormedAdd
             e.normalProjection_idempotent e.normalModelEquiv z.1 v.1 hv v.2)).symm
   exact heq.contMDiffAt_iff.mpr hf
 
+/-- The ambient displacement along a normal vector. -/
 def NativeEuclideanEmbedding.normalDisplacement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun v.proj + e.normalVector v
 
+/-- The normal displacement is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_normalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
@@ -210,12 +230,14 @@ theorem NativeEuclideanEmbedding.contMDiff_normalDisplacement {E M : Type*}
       e.normalDisplacement :=
   (e.smooth.comp (Bundle.contMDiff_proj e.NormalSpace)).add e.contMDiff_normalVector
 
+/-- The normal displacement of the zero vector is the base point. -/
 theorem NativeEuclideanEmbedding.normalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     e.normalDisplacement (Bundle.zeroSection e.NormalModel e.NormalSpace x) = e.toFun x := by
   simp [normalDisplacement, normalVector, Bundle.zeroSection]
 
+/-- The normal displacement in a local chart. -/
 noncomputable def NativeEuclideanEmbedding.localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
@@ -224,6 +246,7 @@ noncomputable def NativeEuclideanEmbedding.localNormalDisplacement {E M : Type*}
     ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
       p.2
 
+/-- The local normal displacement is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -236,11 +259,13 @@ theorem NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : Type*}
           contMDiff_fst).clm_apply
       contMDiff_snd)
 
+/-- The local normal displacement at zero. -/
 theorem NativeEuclideanEmbedding.localNormalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x₀ x : M) :
     e.localNormalDisplacement x₀ (x, 0) = e.toFun x := by simp [localNormalDisplacement]
 
+/-- The ambient normal coordinates at the base point. -/
 theorem NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) (v : e.NormalModel) :
@@ -254,6 +279,7 @@ theorem NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type*}
   rw [projectionIntertwiner_self _ (e.normalProjection_idempotent x)]
   exact projection_apply_range (e.normalProjection x) (e.normalProjection_idempotent x) _
 
+/-- The tangent space splits into tangent and normal parts. -/
 noncomputable def NativeEuclideanEmbedding.normalLinearSplitting {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -262,6 +288,7 @@ noncomputable def NativeEuclideanEmbedding.normalLinearSplitting {E M : Type*}
         ((e.normalModelEquiv x).symm.trans (e.normalSpaceEquiv x))).trans
     (e.tangentNormalEquiv x)
 
+/-- The derivative of the local normal displacement at zero. -/
 theorem NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -293,6 +320,7 @@ theorem NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero {E M : Ty
   rw [hprod, hleft, hright, hC]
   rfl
 
+/-- The local normal displacement's derivative is invertible at zero. -/
 theorem NativeEuclideanEmbedding.localNormalDisplacement_derivative_isInvertible
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -301,6 +329,7 @@ theorem NativeEuclideanEmbedding.localNormalDisplacement_derivative_isInvertible
         (x, 0)).IsInvertible :=
   ⟨e.normalLinearSplitting x, (e.mvfderiv_localNormalDisplacement_zero x).symm⟩
 
+/-- The local normal displacement computes the displacement. -/
 theorem NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
@@ -311,6 +340,7 @@ theorem NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
             p.2⟩ :=
   rfl
 
+/-- The local normal displacement is a local diffeomorphism at zero. -/
 theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -320,6 +350,7 @@ theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacement {E
     isLocalDiffeomorphAt_of_invertible_mvfderiv (e.contMDiff_localNormalDisplacement x)
       (e.localNormalDisplacement_derivative_isInvertible x)
 
+/-- The normal chart as a partial diffeomorphism. -/
 noncomputable def NativeEuclideanEmbedding.normalChartPartialDiffeomorph {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -335,6 +366,7 @@ noncomputable def NativeEuclideanEmbedding.normalChartPartialDiffeomorph {E M : 
   contMDiffOn_invFun :=
     (FiberBundle.trivializationAt e.NormalModel e.NormalSpace x).contMDiffOn_symm
 
+/-- The normal chart diffeomorphism at zero. -/
 theorem NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -345,6 +377,7 @@ theorem NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M : Type*
       (x, 0)
   rw [map_zero]
 
+/-- Zero lies in the normal chart's source. -/
 theorem NativeEuclideanEmbedding.normalChart_source_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -353,6 +386,7 @@ theorem NativeEuclideanEmbedding.normalChart_source_zero {E M : Type*}
   change x ∈ projectionTransportDomain e.normalProjection x
   exact mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent x
 
+/-- The local normal displacement computes in the chart. -/
 theorem NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M)
@@ -372,6 +406,7 @@ theorem NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M : Type
       _
   rw [hback]
 
+/-- The normal displacement is a local diffeomorphism at the zero section. -/
 theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -388,6 +423,9 @@ theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero {E
   intro v hv
   exact (e.localNormalDisplacement_chart_apply x v hv.1).symm.trans (heq hv.2)
 
+/-! ### The tubular neighborhood -/
+
+/-- The locus where the normal displacement is a local diffeomorphism. -/
 def NativeEuclideanEmbedding.regularNormalLocus {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) : Set e.NormalBundle :=
@@ -395,6 +433,7 @@ def NativeEuclideanEmbedding.regularNormalLocus {E M : Type*} [NormedAddCommGrou
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       e.normalDisplacement v}
 
+/-- The regular normal locus is open. -/
 theorem NativeEuclideanEmbedding.isOpen_regularNormalLocus {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
@@ -403,6 +442,7 @@ theorem NativeEuclideanEmbedding.isOpen_regularNormalLocus {E M : Type*}
   rintro v ⟨φ, hv, heq⟩
   exact Filter.mem_of_superset (φ.open_source.mem_nhds hv) (fun w hw ↦ ⟨φ, hw, heq⟩)
 
+/-- The normal displacement is injective near the zero section. -/
 theorem NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) :
@@ -413,6 +453,7 @@ theorem NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M : Typ
   exact
     congrArg (Bundle.zeroSection e.NormalModel e.NormalSpace) (e.closedEmbedding.injective hxy)
 
+/-- The normal displacement is locally injective at zero. -/
 theorem NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -421,6 +462,7 @@ theorem NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero {E M 
   obtain ⟨φ, hx, heq⟩ := e.isLocalDiffeomorphAt_normalDisplacement_zero x
   exact ⟨φ.source, φ.open_source.mem_nhds hx, heq.injOn_iff.mpr φ.toPartialEquiv.injOn⟩
 
+/-- An injective normal neighborhood of the zero section exists. -/
 theorem NativeEuclideanEmbedding.exists_injective_normalNeighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -447,6 +489,7 @@ theorem NativeEuclideanEmbedding.exists_injective_normalNeighborhood {E M : Type
   · intro v
     exact v.property.2
 
+/-- The normal neighborhood's image is open. -/
 theorem NativeEuclideanEmbedding.isOpen_normalNeighborhood_image {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -460,12 +503,14 @@ theorem NativeEuclideanEmbedding.isOpen_normalNeighborhood_image {E M : Type*}
   rw [← hloc.isLocalHomeomorphOn.map_nhds_eq hv]
   exact Filter.image_mem_map (hU.mem_nhds hv)
 
+/-- The normal bundle is nonempty. -/
 theorem NativeEuclideanEmbedding.normalBundle_nonempty {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [Nonempty M] : Nonempty e.NormalBundle :=
   ⟨Bundle.zeroSection e.NormalModel e.NormalSpace (Classical.choice ‹Nonempty M›)⟩
 
 attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+/-- The normal neighborhood is equivalent to its image. -/
 noncomputable def NativeEuclideanEmbedding.normalNeighborhoodEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [Nonempty M] {U : Set e.NormalBundle}
@@ -474,6 +519,7 @@ noncomputable def NativeEuclideanEmbedding.normalNeighborhoodEquiv {E M : Type*}
   hinj.toPartialEquiv e.normalDisplacement U
 
 attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+/-- The normal neighborhood inverse is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -508,6 +554,7 @@ theorem NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E M : T
   exact hfg.contMDiffAt_iff.mpr hg
 
 attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+/-- The normal neighborhood as a partial diffeomorphism. -/
 noncomputable def NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeomorph
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -527,6 +574,7 @@ noncomputable def NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeomorph
     (e.contMDiffAt_normalNeighborhood_inverse hU hinj hloc hy).contMDiffWithinAt
 
 attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+/-- A tubular neighborhood of the embedding exists. -/
 theorem NativeEuclideanEmbedding.exists_tubularNeighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -546,6 +594,7 @@ theorem NativeEuclideanEmbedding.exists_tubularNeighborhood {E M : Type*}
   simpa only [Φ, normalNeighborhoodPartialDiffeomorph, normalNeighborhoodEquiv,
     Set.InjOn.toPartialEquiv, Set.BijOn.toPartialEquiv, e.normalDisplacement_zero] using hy
 
+/-- A smooth retraction onto the embedded submanifold. -/
 structure NativeEuclideanEmbedding.SmoothRetraction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) where
@@ -556,6 +605,7 @@ structure NativeEuclideanEmbedding.SmoothRetraction {E M : Type*} [NormedAddComm
   smooth : ContMDiffOn (𝓡 e.ambientDimension) 𝓘(ℝ, E) ∞ toFun domain
   retract : ∀ x, toFun (e.toFun x) = x
 
+/-- A smooth retraction exists. -/
 theorem NativeEuclideanEmbedding.nonempty_smoothRetraction {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -572,6 +622,7 @@ theorem NativeEuclideanEmbedding.nonempty_smoothRetraction {E M : Type*}
   rw [heq] at hinv
   exact congrArg Bundle.TotalSpace.proj hinv
 
+/-- The retraction's derivative composed with the embedding is the identity. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) (x : M) :
@@ -587,6 +638,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp {E M : Ty
   rw [hr, mfderiv_id] at hd
   exact hd.symm
 
+/-- The retraction differentiates the embedding to the identity. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_retract {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {x : M}
@@ -598,6 +650,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_retract {
   have h := congrArg (fun A => A w) (r.mfderiv_retract_comp x)
   exact congrArg (mvfderiv 𝓘(ℝ, E) e.toFun x) h
 
+/-- An embedded field is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_embeddedField {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
@@ -610,24 +663,30 @@ theorem NativeEuclideanEmbedding.contMDiff_embeddedField {E M : Type*}
   rw [← modelWithCornersSelf_prod] at hp
   convert contDiff_snd.contMDiff.comp hp using 1 <;> rfl
 
+/-! ### Transverse level coordinates -/
+
+/-- The displacement of a regular level set along the flow. -/
 def RegularLevel.levelDisplacement {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
     {e : NativeEuclideanEmbedding E M} (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (z : { x : M // f x = b } × ℝ) : EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun z.1 + z.2 • mvfderiv 𝓘(ℝ, E) e.toFun z.1 (V z.1)
 
+/-- The domain of transverse level coordinates. -/
 def RegularLevel.transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) : Set ({ x : M // f x = b } × ℝ) :=
   levelDisplacement V ⁻¹' r.domain
 
+/-- The transverse coordinates of a regular level set. -/
 def RegularLevel.transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) : ({ x : M // f x = b } × ℝ) → M :=
   r.toFun ∘ levelDisplacement V
 
+/-- The transverse coordinates at time zero. -/
 theorem RegularLevel.transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
@@ -636,6 +695,7 @@ theorem RegularLevel.transverseCoordinates_zero {E M : Type*} [NormedAddCommGrou
   simp only [transverseCoordinates, Function.comp_apply, levelDisplacement, zero_smul, add_zero]
   exact r.retract x
 
+/-- Zero lies in the transverse coordinate domain. -/
 theorem RegularLevel.zero_mem_transverseCoordinateDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {b : ℝ} {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
@@ -645,6 +705,7 @@ theorem RegularLevel.zero_mem_transverseCoordinateDomain {E M : Type*}
   simp only [zero_smul, add_zero]
   exact r.contains ⟨x, rfl⟩
 
+/-- The level displacement is smooth. -/
 theorem RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
@@ -666,6 +727,7 @@ theorem RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddCommGro
     contMDiff_snd
   exact hfirst.add (htime.smul hfield)
 
+/-- The transverse coordinate domain is open. -/
 theorem RegularLevel.isOpen_transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
@@ -677,6 +739,7 @@ theorem RegularLevel.isOpen_transverseCoordinateDomain {E M : Type*} [NormedAddC
   let _ := chartedSpace hf hreg
   exact r.open_domain.preimage (contMDiff_levelDisplacement (e := e) V hf hreg hV).continuous
 
+/-- The transverse coordinates are smooth on their domain. -/
 theorem RegularLevel.contMDiffOn_transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
@@ -691,6 +754,7 @@ theorem RegularLevel.contMDiffOn_transverseCoordinates {E M : Type*} [NormedAddC
   exact
     r.smooth.comp (contMDiff_levelDisplacement (e := e) V hf hreg hV).contMDiffOn (fun _ hz => hz)
 
+/-- The transverse coordinates' derivative in time at zero. -/
 theorem RegularLevel.mfderiv_transverseCoordinates_time_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {b : ℝ} {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
@@ -720,6 +784,7 @@ theorem RegularLevel.mfderiv_transverseCoordinates_time_zero {E M : Type*}
   congr 1
   exact congrArg (fun L => L (V x)) (r.mfderiv_retract_comp (x : M))
 
+/-- The transverse coordinates' derivative at zero. -/
 theorem RegularLevel.mfderiv_transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
@@ -744,6 +809,7 @@ theorem RegularLevel.mfderiv_transverseCoordinates_zero {E M : Type*} [NormedAdd
     mfderiv_transverseCoordinates_time_zero r V x]
   rfl
 
+/-- The transverse coordinates are a local diffeomorphism at zero. -/
 theorem RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ}
@@ -772,6 +838,7 @@ theorem RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero {E M : Type
       (isOpen_transverseCoordinateDomain r V hf hreg hV)
       (zero_mem_transverseCoordinateDomain r V x) hs hi
 
+/-- The height along the transverse coordinates differentiates to one. -/
 theorem RegularLevel.hasDerivAt_height_transverseCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ}
@@ -811,6 +878,7 @@ theorem RegularLevel.hasDerivAt_height_transverseCoordinates_zero {E M : Type*}
     (congrArg (fun T : E →L[ℝ] ℝ => T (t • (V x : E))) hd).trans
       ((L.map_smul t (V x)).trans (congrArg (fun a : ℝ => t • a) hunit))
 
+/-- The star projection onto the orthogonal complement. -/
 theorem DiskFraming.starProjection_orthogonal_inf_eq_sub {F : Type*} [NormedAddCommGroup F]
     [InnerProductSpace ℝ F] [FiniteDimensional ℝ F] {U V : Submodule ℝ F} (h : U ≤ V) :
     (Uᗮ ⊓ V).starProjection = V.starProjection - U.starProjection := by
@@ -832,18 +900,23 @@ theorem DiskFraming.starProjection_orthogonal_inf_eq_sub {F : Type*} [NormedAddC
     convert (Uᗮ ⊓ V)ᗮ.add_mem h₁ h₂ using 1
     abel
 
+/-! ### The disk normal bundle -/
+
+/-- The tangent image of a disk under the embedding derivative. -/
 def NativeEuclideanEmbedding.diskTangentImage {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (fderiv ℝ (e.toFun ∘ f) x).range
 
+/-- The normal space of the disk embedding. -/
 def NativeEuclideanEmbedding.diskNormalSpace {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (e.diskTangentImage f x)ᗮ ⊓ e.tangentImage (f x)
 
+/-- The derivative of the composed embedding. -/
 theorem NativeEuclideanEmbedding.fderiv_comp_eq {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
@@ -854,6 +927,7 @@ theorem NativeEuclideanEmbedding.fderiv_comp_eq {E M D : Type*} [NormedAddCommGr
     mfderiv_comp x (e.smooth.mdifferentiableAt (by simp)) (hf.mdifferentiableAt (by simp))]
   rfl
 
+/-- The disk tangent image is contained in the tangent space. -/
 theorem NativeEuclideanEmbedding.diskTangentImage_le {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
@@ -862,6 +936,7 @@ theorem NativeEuclideanEmbedding.diskTangentImage_le {E M D : Type*} [NormedAddC
   rw [diskTangentImage, e.fderiv_comp_eq hf x]
   exact LinearMap.range_comp_le_range _ _
 
+/-- The composed derivative is injective. -/
 theorem NativeEuclideanEmbedding.injective_fderiv_comp {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M)
@@ -871,6 +946,7 @@ theorem NativeEuclideanEmbedding.injective_fderiv_comp {E M D : Type*}
   rw [e.fderiv_comp_eq hf x]
   exact (e.injective_mvfderiv (f x)).comp hi
 
+/-- The disk tangent and normal ranks sum to the dimension. -/
 theorem NativeEuclideanEmbedding.finrank_diskTangent_add_normal {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M)
@@ -887,6 +963,7 @@ theorem NativeEuclideanEmbedding.finrank_diskTangent_add_normal {E M D : Type*}
       (Submodule.finrank_add_inf_finrank_orthogonal (e.diskTangentImage_le hf x))
     _ = Module.finrank ℝ E := e.finrank_tangentImage (f x)
 
+/-- The projection onto the disk normal space. -/
 def NativeEuclideanEmbedding.diskNormalProjection {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M)
@@ -894,6 +971,7 @@ def NativeEuclideanEmbedding.diskNormalProjection {E M D : Type*} [NormedAddComm
     EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.tangentProjection (f x) - gramProjection (fderiv ℝ (e.toFun ∘ f) x)
 
+/-- The disk normal projection computes the orthogonal component. -/
 theorem NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D]
@@ -903,6 +981,7 @@ theorem NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
   rw [diskNormalProjection, gramProjection_eq_starProjection _ hi]
   exact (DiskFraming.starProjection_orthogonal_inf_eq_sub (e.diskTangentImage_le hf x)).symm
 
+/-- The disk normal projection is smooth. -/
 theorem NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -919,6 +998,7 @@ theorem NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : Type*}
     hT.contDiffAt.sub (contMDiffAt_gramProjection hd.contMDiff.contMDiffAt hx).contDiffAt
   exact hp.contDiffWithinAt
 
+/-- An open domain for the disk normal projection exists. -/
 theorem NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -938,6 +1018,9 @@ theorem NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D : Type*
       e.injective_fderiv_comp hf (hi x hx), e.contDiffOn_diskNormalProjection hf, ?_⟩
   exact fun _ hx => e.diskNormalProjection_eq hf hx
 
+/-! ### Smooth range transport -/
+
+/-- Two disks admit a smooth transport of ranges on a set. -/
 structure DiskFraming.SmoothRangeTransportOn {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (K : Set E)
     (P Q : E → F →L[ℝ] F) where
@@ -949,6 +1032,7 @@ structure DiskFraming.SmoothRangeTransportOn {E F : Type*} [NormedAddCommGroup E
   invertible : ∀ x ∈ K, (toFun x).IsInvertible
   intertwines : ∀ x ∈ K, Q x * toFun x = toFun x * P x
 
+/-- Range transport is reflexive. -/
 def DiskFraming.SmoothRangeTransportOn.refl {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (K : Set E) (P : E → F →L[ℝ] F) :
     DiskFraming.SmoothRangeTransportOn K P P
@@ -961,6 +1045,7 @@ def DiskFraming.SmoothRangeTransportOn.refl {E F : Type*} [NormedAddCommGroup E]
   invertible _ _ := ⟨ContinuousLinearEquiv.refl ℝ F, rfl⟩
   intertwines _ _ := by rw [mul_one, one_mul]
 
+/-- Range transport is transitive. -/
 def DiskFraming.SmoothRangeTransportOn.trans {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q R : E → F →L[ℝ] F}
     (a : DiskFraming.SmoothRangeTransportOn K P Q)
@@ -982,6 +1067,7 @@ def DiskFraming.SmoothRangeTransportOn.trans {E F : Type*} [NormedAddCommGroup E
       _ = b.toFun x * (a.toFun x * P x) := by rw [a.intertwines x hx]
       _ = (b.toFun x * a.toFun x) * P x := (mul_assoc _ _ _).symm
 
+/-- Range transport is symmetric. -/
 def DiskFraming.SmoothRangeTransportOn.symm {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
     [CompleteSpace F] (a : DiskFraming.SmoothRangeTransportOn K P Q) :
@@ -1010,6 +1096,7 @@ def DiskFraming.SmoothRangeTransportOn.symm {E F : Type*} [NormedAddCommGroup E]
     rw [(a.invertible x hx).self_apply_inverse] at h
     exact h.symm
 
+/-- Range transport maps the range. -/
 theorem DiskFraming.SmoothRangeTransportOn.map_range {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
     (a : DiskFraming.SmoothRangeTransportOn K P Q) (x : E) (hx : x ∈ K) :
@@ -1024,6 +1111,7 @@ theorem DiskFraming.SmoothRangeTransportOn.map_range {E F : Type*} [NormedAddCom
     LinearMap.range_comp_of_range_eq_top _
       (LinearMap.range_eq_top.mpr (a.invertible x hx).surjective)
 
+/-- Projections give a range transport. -/
 def DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
     (hP : ∀ x ∈ K, IsIdempotentElem (P x)) (hQ : ∀ x ∈ K, IsIdempotentElem (Q x)) {U V : Set E}
@@ -1043,6 +1131,7 @@ def DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [NormedAddCom
   invertible := hinv
   intertwines x hx := projectionIntertwiner_intertwines (P x) (Q x) (hP x hx) (hQ x hx)
 
+/-- An open property on a compact set holds on a neighborhood. -/
 theorem isOpen_forall_compact {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [CompactSpace Y] {R : X → Y → Prop} (ho : IsOpen {p : X × Y | R p.1 p.2}) :
     IsOpen {x | ∀ y, R x y} := by
@@ -1060,10 +1149,12 @@ theorem isOpen_forall_compact {X Y : Type*} [TopologicalSpace X] [TopologicalSpa
   rw [heq]
   exact hclosed.isOpen_compl
 
+/-- The domain where a homotopy transports the range. -/
 def homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {M : Type*} {T : Type*} (P : T → M → F →L[ℝ] F) (s : T) : Set T :=
   {t | ∀ x, (projectionIntertwiner (P s x) (P t x)).IsInvertible}
 
+/-- Membership in the homotopy transport domain. -/
 theorem mem_homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {M : Type*} {T : Type*} (P : T → M → F →L[ℝ] F) (hP : ∀ t x, IsIdempotentElem (P t x))
     (s : T) : s ∈ homotopyTransportDomain P s := by
@@ -1071,6 +1162,7 @@ theorem mem_homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSp
   rw [projectionIntertwiner_self _ (hP s x)]
   exact ⟨ContinuousLinearEquiv.refl ℝ F, rfl⟩
 
+/-- The homotopy transport domain is open. -/
 theorem isOpen_continuousHomotopyTransportDomain {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [CompleteSpace F] {M T : Type*} [TopologicalSpace M] [CompactSpace M]
     [TopologicalSpace T] (P : T → M → F →L[ℝ] F) (hc : Continuous (fun p : T × M ↦ P p.1 p.2))
@@ -1082,6 +1174,7 @@ theorem isOpen_continuousHomotopyTransportDomain {F : Type*} [NormedAddCommGroup
   have hi : IsOpen {A : F →L[ℝ] F | A.IsInvertible} := ContinuousLinearEquiv.isOpen
   exact isOpen_forall_compact (hi.preimage hr)
 
+/-- The transport-on class is open. -/
 theorem DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]
     [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
@@ -1105,6 +1198,7 @@ theorem DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddCommGroup 
         (SmoothRangeTransportOn.ofProjections (hP t) (hP u) hUt hUu hKt hKu hst hsu
           (fun x hx => hu ⟨x, hx⟩))⟩
 
+/-- The complement of the transport class is open. -/
 theorem DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]
     [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
@@ -1129,6 +1223,7 @@ theorem DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedAddComm
           (SmoothRangeTransportOn.ofProjections (hP t) (hP u) hUt hUu hKt hKu hst hsu
               (fun x hx => hu ⟨x, hx⟩)).symm⟩
 
+/-- A homotopy gives a smooth range transport. -/
 theorem DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy {E F T : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [CompleteSpace F] [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
@@ -1145,6 +1240,7 @@ theorem DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy {E F T : Type*}
   have ht : t ∈ C := by rw [hall]; exact Set.mem_univ t
   exact ht
 
+/-- A range transport exists on a star-convex set. -/
 theorem DiskFraming.nonempty_transportOn_starConvex {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {K U : Set E}
     (hK : IsCompact K) (hstar : StarConvex ℝ (0 : E) K) (hU : IsOpen U) (hKU : K ⊆ U)
@@ -1175,6 +1271,7 @@ theorem DiskFraming.nonempty_transportOn_starConvex {E F : Type*} [NormedAddComm
   simpa only [hstart, hend] using
     nonempty_smoothRangeTransportOn_of_homotopy hK Q hQ hc hslice 0 1
 
+/-- A smooth frame exists near a star-convex set. -/
 theorem DiskFraming.exists_smooth_frame_near_starConvex {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {K U : Set E}
     (hK : IsCompact K) (hstar : StarConvex ℝ (0 : E) K) (hU : IsOpen U) (hKU : K ⊆ U)
@@ -1194,6 +1291,7 @@ theorem DiskFraming.exists_smooth_frame_near_starConvex {E F : Type*} [NormedAdd
   rw [LinearMap.range_comp, Submodule.range_subtype]
   exact a.map_range x hx
 
+/-- A smooth frame exists on a neighborhood of a closed ball. -/
 theorem DiskFraming.exists_smooth_frame_on_neighborhood_closedBall {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [CompleteSpace F] {U : Set E} (hU : IsOpen U)
@@ -1224,6 +1322,7 @@ theorem DiskFraming.exists_smooth_frame_on_neighborhood_closedBall {E F : Type*}
   · exact fun _ hx => hbU (Metric.ball_subset_closedBall hx.2)
   · exact fun x hx => hArange x (Metric.ball_subset_closedBall hx.2)
 
+/-- A smooth normal frame exists near a closed ball. -/
 theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -1268,6 +1367,9 @@ theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall {E M 
     _ = (e.diskNormalProjection f x).range := (hAi x hx).2
     _ = e.diskNormalSpace f x := by rw [hP x (hVU hx), Submodule.range_starProjection]
 
+/-! ### Disk framings and displacement -/
+
+/-- The splitting of the ambient space into range and normal parts. -/
 def DiskFraming.normalSplitEquiv {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
     [NormedAddCommGroup F] [InnerProductSpace ℝ F] (L : D →L[ℝ] F) (A : Z →L[ℝ] F)
@@ -1292,6 +1394,7 @@ def DiskFraming.normalSplitEquiv {D Z F : Type*} [NormedAddCommGroup D] [NormedS
     exact ⟨q, Subtype.ext hq⟩
   exact (LinearEquiv.ofBijective b ⟨hbi, hbs⟩).toContinuousLinearEquiv
 
+/-- The tangent-plus-normal splitting of the disk embedding. -/
 def NativeEuclideanEmbedding.diskTangentNormalEquiv {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M)
@@ -1303,14 +1406,17 @@ def NativeEuclideanEmbedding.diskTangentNormalEquiv {E M D : Type*} [NormedAddCo
   DiskFraming.normalSplitEquiv (fderiv ℝ (e.toFun ∘ f) x) A (e.injective_fderiv_comp hf hi)
     hA (e.diskTangentImage_le hf x) hAr
 
+/-- The displacement of a framed disk along the normal frame. -/
 def DiskFraming.displacement {D Z F : Type*} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (H : D → F) (A : D → Z →L[ℝ] F) (p : D × Z) : F :=
   H p.1 + A p.1 p.2
 
+/-- The displacement at zero is the disk point. -/
 theorem DiskFraming.displacement_zero {D Z F : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] (H : D → F) (A : D → Z →L[ℝ] F)
     (x : D) : displacement H A (x, 0) = H x := by simp [displacement]
 
+/-- The displacement is smooth. -/
 theorem DiskFraming.contDiffOn_displacement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {H : D → F} {A : D → Z →L[ℝ] F} {V : Set D} (hH : ContDiff ℝ ∞ H)
@@ -1318,6 +1424,7 @@ theorem DiskFraming.contDiffOn_displacement {D Z F : Type*} [NormedAddCommGroup 
   (hH.comp contDiff_fst).contDiffOn.add
     ((hA.comp contDiffOn_fst (fun _ hp => hp.1)).clm_apply contDiffOn_snd)
 
+/-- The displacement's derivative at zero. -/
 theorem DiskFraming.hasFDerivAt_displacement_zero {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {H : D → F} {A : D → Z →L[ℝ] F} {x : D} (hH : ContDiffAt ℝ ∞ H x)
@@ -1342,6 +1449,9 @@ theorem DiskFraming.hasFDerivAt_displacement_zero {D Z F : Type*} [NormedAddComm
   change fderiv ℝ H x q.1 + (A x q.2 + (fderiv ℝ A x q.1) 0) = fderiv ℝ H x q.1 + A x q.2
   rw [map_zero, add_zero]
 
+/-! ### Disk coordinates of a retraction -/
+
+/-- Disk coordinates of a smooth retraction. -/
 def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
@@ -1349,6 +1459,7 @@ def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates {E M D : Type*}
     D × EuclideanSpace ℝ (Fin n) → M :=
   r.toFun ∘ DiskFraming.displacement (e.toFun ∘ f) A
 
+/-- The domain of the disk coordinates. -/
 def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinateDomain {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
@@ -1356,6 +1467,7 @@ def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinateDomain {E M D : Type
     (V : Set D) : Set (D × EuclideanSpace ℝ (Fin n)) :=
   (V ×ˢ Set.univ) ∩ DiskFraming.displacement (e.toFun ∘ f) A ⁻¹' r.domain
 
+/-- The disk coordinates at zero. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates_zero {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
@@ -1364,6 +1476,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates_zero {E M D : 
   rw [diskCoordinates, Function.comp_apply, DiskFraming.displacement_zero]
   exact r.retract (f x)
 
+/-- The disk coordinate domain is open. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_diskCoordinateDomain
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -1375,6 +1488,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_diskCoordinateDomain
     (DiskFraming.contDiffOn_displacement (e.smooth.comp hf).contDiff hA).continuousOn
   exact hc.isOpen_inter_preimage (hV.prod isOpen_univ) r.open_domain
 
+/-- Zero lies in the disk coordinate domain. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_diskCoordinateDomain
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ}
@@ -1385,6 +1499,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_diskCoordinateDomain
   rw [DiskFraming.displacement_zero]
   exact r.contains ⟨f x, rfl⟩
 
+/-- The disk coordinates are smooth. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_diskCoordinates
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -1399,6 +1514,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_diskCoordinates
       Set.inter_subset_left)
     (fun _ hp => hp.2)
 
+/-- The disk coordinates' derivative at zero. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -1422,6 +1538,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_zero
     mfderiv_eq_fderiv, hd.fderiv, DiskFraming.displacement_zero]
   rfl
 
+/-- The disk coordinates' derivative is invertible at zero. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -1442,6 +1559,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_diskCoord
   have hleft := congrArg Subtype.val ((e.tangentImageEquiv (f x)).apply_symm_apply (L q))
   exact hleft.trans (r.embedding_derivative_retract (L q).property).symm
 
+/-- The disk coordinates are a local diffeomorphism at zero. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D]
@@ -1457,6 +1575,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_diskCoord
     (r.zero_mem_diskCoordinateDomain f A hx) (r.contMDiffOn_diskCoordinates hf hA)
     (r.isInvertible_mfderiv_diskCoordinates_zero hf (hA.contDiffAt (hV.mem_nhds hx)) hi hAi hAr)
 
+/-- A positive product of closed balls inside an open set exists. -/
 theorem DiskFraming.exists_pos_prod_closedBall_subset {D Z : Type*} [TopologicalSpace D]
     [NormedAddCommGroup Z] {K : Set D} {U : Set (D × Z)} (hK : IsCompact K) (hU : IsOpen U)
     (hKU : K ×ˢ {(0 : Z)} ⊆ U) : ∃ ε : ℝ, 0 < ε ∧ K ×ˢ Metric.closedBall (0 : Z) ε ⊆ U := by
@@ -1468,6 +1587,7 @@ theorem DiskFraming.exists_pos_prod_closedBall_subset {D Z : Type*} [Topological
   rintro ⟨x, z⟩ ⟨hx, hz⟩
   exact hAB ⟨hKA hx, hball hz⟩
 
+/-- A disk tubular neighborhood exists. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighborhood
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
@@ -1511,6 +1631,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighborhood
   subst v
   exact r.zero_mem_diskCoordinateDomain f A (hKV hx)
 
+/-- A tubular neighborhood of an embedded closed ball exists. -/
 theorem exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -1559,6 +1680,9 @@ theorem exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D : Type*
     rintro _ ⟨p, hp, rfl⟩
     exact hp.2
 
+/-! ### The height collar -/
+
+/-- A unit-height field exists near a regular level. -/
 theorem RegularLevel.exists_unitHeightField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -1575,6 +1699,7 @@ theorem RegularLevel.exists_unitHeightField {E M : Type*} [NormedAddCommGroup E]
   intro x
   exact (hheight x).trans (hφ (hW (by rw [x.property]; exact ⟨le_rfl, le_rfl⟩)))
 
+/-- A transverse collar of a regular level exists. -/
 theorem RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -1634,6 +1759,7 @@ theorem RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommGroup E
     rw [hh]
     exact hasDerivAt_height_transverseCoordinates_zero r V hf hreg hV x (hunit x)
 
+/-- A height band inside an open set exists. -/
 theorem RegularLevel.exists_heightBand_subset_open {X : Type*} [TopologicalSpace X]
     [CompactSpace X] {g : X → ℝ} (hg : Continuous g) {a : ℝ} {U : Set X} (hU : IsOpen U)
     (hlevel : ∀ x, g x = a → x ∈ U) : ∃ δ : ℝ, 0 < δ ∧ g ⁻¹' Metric.ball a δ ⊆ U := by
@@ -1647,6 +1773,7 @@ theorem RegularLevel.exists_heightBand_subset_open {X : Type*} [TopologicalSpace
   by_contra hnot
   exact hball hx ⟨x, hnot, rfl⟩
 
+/-- A height collar of a regular level exists. -/
 theorem RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -1709,6 +1836,7 @@ theorem RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup E]
     change f (Φ (χ.symm z)) - b = z.2 at hheight
     linarith
 
+/-- A height collar with a prescribed band exists. -/
 theorem RegularLevel.exists_heightCollar_with_band {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -1737,10 +1865,14 @@ theorem RegularLevel.exists_heightCollar_with_band {E M : Type*} [NormedAddCommG
   · exact fun z hz => hsource ⟨hz.1, Metric.closedBall_subset_closedBall (min_le_left ε δ) hz.2⟩
   · exact fun x hx => hband (Metric.ball_subset_ball (min_le_right ε δ) hx)
 
+/-! ### Small perturbations of the identity -/
+
+/-- The identity plus a small map is injective. -/
 theorem SmallPerturbation.injective_id_add {E : Type*} [NormedAddCommGroup E] {u : E → E}
     {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) : Function.Injective (fun x => x + u x) :=
   (AntilipschitzWith.id.add_lipschitzWith hu (by simpa only [inv_one] using hk)).injective
 
+/-- The identity plus a small map is surjective. -/
 theorem SmallPerturbation.surjective_id_add {E : Type*} [NormedAddCommGroup E]
     [CompleteSpace E] {u : E → E} {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) :
     Function.Surjective (fun x => x + u x) := by
@@ -1753,11 +1885,13 @@ theorem SmallPerturbation.surjective_id_add {E : Type*} [NormedAddCommGroup E]
   have hx : y - u x = x := hc.fixedPoint_isFixedPt.eq
   exact eq_sub_iff_add_eq.mp hx.symm
 
+/-- The identity plus a small map is bijective. -/
 theorem SmallPerturbation.bijective_id_add {E : Type*} [NormedAddCommGroup E]
     [CompleteSpace E] {u : E → E} {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) :
     Function.Bijective (fun x => x + u x) :=
   ⟨injective_id_add hu hk, surjective_id_add hu hk⟩
 
+/-- The identity plus a small map has invertible derivative. -/
 theorem SmallPerturbation.isInvertible_fderiv_id_add {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {u : E → E} {k : ℝ≥0} (hs : ContDiff ℝ ∞ u)
     (hu : LipschitzWith k u) (hk : k < 1) (x : E) :
@@ -1775,6 +1909,7 @@ theorem SmallPerturbation.isInvertible_fderiv_id_add {E : Type*} [NormedAddCommG
         hi).toContinuousLinearEquiv
   exact ⟨L, by ext v; rfl⟩
 
+/-- The identity plus a small map is a diffeomorphism. -/
 def SmallPerturbation.diffeomorphIdAdd {E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {u : E → E} {k : ℝ≥0} (hs : ContDiff ℝ ∞ u)
     (hu : LipschitzWith k u) (hk : k < 1) : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞ := by
@@ -1787,6 +1922,7 @@ def SmallPerturbation.diffeomorphIdAdd {E : Type*} [NormedAddCommGroup E] [Compl
     exact isInvertible_fderiv_id_add hs hu hk x
   exact hloc.diffeomorphOfBijective (bijective_id_add hu hk)
 
+/-- A scaled constant is Lipschitz. -/
 theorem SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {β : E → ℝ} {k : ℝ≥0} (hβ : LipschitzWith k β) (a : E) :
     LipschitzWith (k * ‖a‖₊) (fun x => β x • a) := by
@@ -1801,22 +1937,26 @@ theorem SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddCommGro
       simp only [NNReal.coe_mul, coe_nnnorm]
       ring
 
+/-- The bump translation diffeomorphism. -/
 def SmallPerturbation.bumpTranslation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β) (hβ : LipschitzWith k β)
     (a : E) (ha : k * ‖a‖₊ < 1) : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞ :=
   diffeomorphIdAdd (hs.smul contDiff_const) (lipschitzWith_smul_const hβ a) ha
 
+/-- The bump translation computes the shifted point. -/
 theorem SmallPerturbation.bumpTranslation_apply {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)
     (hβ : LipschitzWith k β) (a : E) (ha : k * ‖a‖₊ < 1) (x : E) :
     bumpTranslation hs hβ a ha x = x + β x • a :=
   rfl
 
+/-- The bump translation is the identity where the bump vanishes. -/
 theorem SmallPerturbation.bumpTranslation_eq_of_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)
     (hβ : LipschitzWith k β) (a : E) (ha : k * ‖a‖₊ < 1) {x : E} (hx : β x = 0) :
     bumpTranslation hs hβ a ha x = x := by rw [bumpTranslation_apply, hx, zero_smul, add_zero]
 
+/-- A radius for which the bump translation exists. -/
 theorem SmallPerturbation.exists_radius_bumpTranslation {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} (hs : ContDiff ℝ ∞ β)
     (hcompact : HasCompactSupport β) :
@@ -1843,6 +1983,9 @@ theorem SmallPerturbation.exists_radius_bumpTranslation {E : Type*} [NormedAddCo
   by_contra hne
   exact hx (subset_tsupport β hne)
 
+/-! ### Supported diffeomorphisms -/
+
+/-- A diffeomorphism fixed outside a set maps it to itself. -/
 theorem SupportedDiffeomorph.mapsTo_of_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
     (hfix : ∀ x ∉ S, d x = x) : Set.MapsTo d S S := by
   intro x hx
@@ -1850,18 +1993,21 @@ theorem SupportedDiffeomorph.mapsTo_of_fixed_outside {X : Type*} (d : X ≃ X) {
   have heq : d x = x := d.injective (hfix (d x) hdx)
   exact hdx (heq.symm ▸ hx)
 
+/-- The inverse is fixed outside the support. -/
 theorem SupportedDiffeomorph.inverse_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
     (hfix : ∀ x ∉ S, d x = x) : ∀ x ∉ S, d.symm x = x := by
   intro x hx
   apply d.injective
   rw [d.apply_symm_apply, hfix x hx]
 
+/-- The extension of a chart-supported diffeomorphism to the manifold. -/
 def SupportedDiffeomorph.extendMap {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
     (f : X → X) (y : Y) : Y := by classical exact if y ∈ Φ.target then Φ (f (Φ.symm y)) else y
 
+/-- The extension computes the chart diffeomorphism inside the chart. -/
 theorem SupportedDiffeomorph.extendMap_of_mem {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1869,6 +2015,7 @@ theorem SupportedDiffeomorph.extendMap_of_mem {E F H H' X Y : Type*} [NormedAddC
     (f : X → X) {y : Y} (hy : y ∈ Φ.target) : extendMap Φ f y = Φ (f (Φ.symm y)) := by
   simp only [extendMap, hy, if_pos]
 
+/-- The extension is the identity outside the chart. -/
 theorem SupportedDiffeomorph.extendMap_of_notMem {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1876,6 +2023,7 @@ theorem SupportedDiffeomorph.extendMap_of_notMem {E F H H' X Y : Type*}
     (Φ : PartialDiffeomorph I J X Y ∞) (f : X → X) {y : Y} (hy : y ∉ Φ.target) :
     extendMap Φ f y = y := by simp only [extendMap, hy, if_false]
 
+/-- The extension of the identity is the identity. -/
 theorem SupportedDiffeomorph.extendMap_id {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1886,6 +2034,7 @@ theorem SupportedDiffeomorph.extendMap_id {E F H H' X Y : Type*} [NormedAddCommG
     exact Φ.right_inv' hy
   · exact extendMap_of_notMem Φ id hy
 
+/-- The extension computes in the chart. -/
 theorem SupportedDiffeomorph.extendMap_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1894,6 +2043,7 @@ theorem SupportedDiffeomorph.extendMap_chart {E F H H' X Y : Type*} [NormedAddCo
   rw [extendMap_of_mem Φ f (Φ.map_source' hx)]
   exact congrArg (fun z => Φ (f z)) (Φ.left_inv' hx)
 
+/-- The extension lands in the target. -/
 theorem SupportedDiffeomorph.extendMap_mem_target {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1903,6 +2053,7 @@ theorem SupportedDiffeomorph.extendMap_mem_target {E F H H' X Y : Type*}
   rw [extendMap_of_mem Φ f hy]
   exact Φ.map_source' (hf (Φ.map_target' hy))
 
+/-- The extension left-inverts on the source. -/
 theorem SupportedDiffeomorph.extendMap_leftInverse {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1917,6 +2068,7 @@ theorem SupportedDiffeomorph.extendMap_leftInverse {E F H H' X Y : Type*}
     exact Φ.right_inv' hy
   · rw [extendMap_of_notMem Φ d hy, extendMap_of_notMem Φ d.symm hy]
 
+/-- The extension is the identity off the image. -/
 theorem SupportedDiffeomorph.extendMap_eq_of_notMem_image {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1929,6 +2081,7 @@ theorem SupportedDiffeomorph.extendMap_eq_of_notMem_image {E F H H' X Y : Type*}
     exact Φ.right_inv' hyt
   · exact extendMap_of_notMem Φ f hyt
 
+/-- The extension maps the source to the target. -/
 theorem SupportedDiffeomorph.mapsTo_source {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1937,6 +2090,7 @@ theorem SupportedDiffeomorph.mapsTo_source {E F H H' X Y : Type*} [NormedAddComm
     Set.MapsTo d Φ.source Φ.source :=
   mapsTo_of_fixed_outside d (fun x hx => hfix x (fun hk => hx (hKΦ hk)))
 
+/-- The extension is smooth. -/
 theorem SupportedDiffeomorph.contMDiff_extendMap {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1962,6 +2116,7 @@ theorem SupportedDiffeomorph.contMDiff_extendMap {E F H H' X Y : Type*}
     filter_upwards [hc.isOpen_compl.mem_nhds hnot] with z hz
     exact extendMap_eq_of_notMem_image Φ hfix hz
 
+/-- The extension as a diffeomorphism. -/
 def SupportedDiffeomorph.extension {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1979,6 +2134,7 @@ def SupportedDiffeomorph.extension {E F H H' X Y : Type*} [NormedAddCommGroup E]
       contMDiff_toFun := contMDiff_extendMap Φ d.contMDiff hK hKΦ hfix hdS
       contMDiff_invFun := contMDiff_extendMap Φ d.symm.contMDiff hK hKΦ hdi hdiS }
 
+/-- The extension computes in the chart. -/
 theorem SupportedDiffeomorph.extension_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -1988,6 +2144,7 @@ theorem SupportedDiffeomorph.extension_chart {E F H H' X Y : Type*} [NormedAddCo
     extension Φ d hK hKΦ hfix (Φ x) = Φ (d x) :=
   extendMap_chart Φ d hx
 
+/-- The extension is the identity off the image. -/
 theorem SupportedDiffeomorph.extension_eq_of_notMem_image {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1997,6 +2154,7 @@ theorem SupportedDiffeomorph.extension_eq_of_notMem_image {E F H H' X Y : Type*}
     extension Φ d hK hKΦ hfix y = y :=
   extendMap_eq_of_notMem_image Φ hfix hy
 
+/-- The extension is the identity off the target. -/
 theorem SupportedDiffeomorph.extension_eq_of_notMem_target {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -2006,6 +2164,9 @@ theorem SupportedDiffeomorph.extension_eq_of_notMem_target {E F H H' X Y : Type*
     (hy : y ∉ Φ.target) : extension Φ d hK hKΦ hfix y = y :=
   extendMap_of_notMem Φ d hy
 
+/-! ### Ambient transport of level sets -/
+
+/-- A large height difference gives the shift inequality. -/
 theorem RegularLevel.le_shift_iff_of_abs_sub_ge {u b t ε : ℝ} (ht : |t| < ε)
     (hu : ε ≤ |u - b|) : u ≤ b + t ↔ u ≤ b := by
   by_cases hbelow : u ≤ b
@@ -2015,6 +2176,7 @@ theorem RegularLevel.le_shift_iff_of_abs_sub_ge {u b t ε : ℝ} (ht : |t| < ε)
     rw [abs_of_nonneg (sub_nonneg.mpr habove)] at hu
     constructor <;> intro hh <;> exfalso <;> linarith [(abs_lt.mp ht).2]
 
+/-- A height collar gives an ambient transport between levels. -/
 theorem RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -2173,6 +2335,7 @@ theorem RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
       obtain ⟨x, rfl⟩ := D.surjective y
       exact ⟨x, (hsublevel x).mp hy, rfl⟩
 
+/-- Nearby ambient levels are diffeomorphic when nonempty. -/
 theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -2198,6 +2361,7 @@ theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty {E M :
   obtain ⟨D, hfix, -, hlevel, hsublevel⟩ := htransport t ht
   exact ⟨D, hfix, hlevel, hsublevel⟩
 
+/-- Nearby ambient levels are diffeomorphic. -/
 theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
@@ -2244,16 +2408,21 @@ theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs {E M : Type*}
         simpa only [Real.dist_eq] using hh
       exact (le_shift_iff_of_abs_sub_ge ht hfar).symm
 
+/-! ### Ambient equivalence of levels -/
+
+/-- Two levels are ambiently equivalent if a transport diffeomorphism exists. -/
 def RegularLevel.AmbientEquivalent {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (a b : ℝ) : Prop :=
   ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
     D '' {x : M | f x = a} = {x : M | f x = b} ∧ D '' {x : M | f x ≤ a} = {x : M | f x ≤ b}
 
+/-- Ambient equivalence is reflexive. -/
 theorem RegularLevel.ambientEquivalent_refl {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (a : ℝ) :
     AmbientEquivalent (E := E) f a a := by
   refine ⟨Diffeomorph.refl 𝓘(ℝ, E) M ∞, ?_, ?_⟩ <;> exact Set.image_id _
 
+/-- Ambient equivalence is symmetric. -/
 theorem RegularLevel.ambientEquivalent_symm {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {a b : ℝ}
     (h : AmbientEquivalent (E := E) f a b) : AmbientEquivalent (E := E) f b a := by
@@ -2264,6 +2433,7 @@ theorem RegularLevel.ambientEquivalent_symm {E M : Type*} [NormedAddCommGroup E]
     rw [heq, Set.image_id]
   exact ⟨D.symm, hreverse _ _ hlevel, hreverse _ _ hsublevel⟩
 
+/-- Ambient equivalence is transitive. -/
 theorem RegularLevel.ambientEquivalent_trans {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {a b c : ℝ}
     (hab : AmbientEquivalent (E := E) f a b) (hbc : AmbientEquivalent (E := E) f b c) :
@@ -2276,6 +2446,7 @@ theorem RegularLevel.ambientEquivalent_trans {E M : Type*} [NormedAddCommGroup E
   · change (fun x => d (e x)) '' {x : M | f x ≤ a} = {x : M | f x ≤ c}
     rw [← Set.image_image, he', hd']
 
+/-- An ambient transport across a regular band exists. -/
 theorem RegularLevel.exists_ambient_regularBand_transport {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -2316,6 +2487,7 @@ theorem RegularLevel.exists_ambient_regularBand_transport {E M : Type*}
   have hright : P right := hconstant ▸ hleft
   exact hright
 
+/-- Ambiently equivalent levels are diffeomorphic. -/
 theorem RegularLevel.exists_levelDiffeomorph_of_ambient {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ}
@@ -2351,6 +2523,7 @@ theorem RegularLevel.exists_levelDiffeomorph_of_ambient {E M : Type*} [NormedAdd
       contMDiff_invFun := hei }
   exact ⟨F, fun _ => rfl⟩
 
+/-- Sphere coordinates induced by a linear isometry. -/
 def SphereCoordinates.ofLinearIsometry {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] {n : ℕ}
     [Fact (Module.finrank ℝ N = n + 1)] [Fact (Module.finrank ℝ P = n + 1)] (L : N ≃ₗᵢ[ℝ] P) :
