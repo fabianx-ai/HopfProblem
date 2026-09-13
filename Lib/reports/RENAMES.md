@@ -86,3 +86,18 @@ Decision: confirm `SingularMayerVietoris`; no rename, statement or proof change.
 Receipt: census **2,287 → 2,287**, prefix list unchanged; this commit changes
 only this ledger. Module/public-section and coefficient generalization are
 separate upstream-alignment work, not implied by name confirmation.
+
+### SphereHomology — retain the family name
+
+Existing references: `Mathlib/Topology/Category/TopCat/Sphere.lean` provides
+`TopCat.sphere`, while
+`Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` supplies the homology
+functor. Neither reference is claimed to contain the local sphere-homology
+calculation. The local `SphereHomology` family distinguishes that calculation
+and its top classes from the underlying sphere type. Aligning its sphere
+representation with `TopCat.sphere` is not a namespace substitution.
+
+Decision: confirm `SphereHomology`; retain
+`Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean`. No rename,
+statement or proof change. Receipt: census **2,287 → 2,287**, prefix list
+unchanged; this commit changes only this ledger.
