@@ -67,16 +67,21 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Singular chains of a disjoint union -/
+
+/-- Chain complexes of `ℤ`-modules have finite biproducts. -/
 theorem Coproduct.singularChainsFiniteBiproducts :
     CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
   CategoryTheory.Limits.HasFiniteBiproducts.of_hasFiniteProducts
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inclusion of a summand into the sigma type. -/
 def Coproduct.sigmaInclusion {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (i : ι) : C(X i, Σ i, X i) :=
   ⟨Sigma.mk i, continuous_sigmaMk⟩
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- Every simplex of the sigma type factors through a summand. -/
 theorem Coproduct.singularSimplex_sigma_split {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) (σ : SingularChains.SingularSimplex (Σ i, X i) n) :
     ∃ (i : ι) (τ : SingularChains.SingularSimplex (X i) n), σ = (sigmaInclusion X i).comp τ := by
@@ -84,12 +89,14 @@ theorem Coproduct.singularSimplex_sigma_split {ι : Type} (X : ι → Type)
   exact ⟨i, ⟨g, hg⟩, ContinuousMap.ext (congrFun heq)⟩
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The map from summand simplices to sigma simplices. -/
 def Coproduct.sigmaSimplexMap {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) :
     (Σ i, SingularChains.SingularSimplex (X i) n) → SingularChains.SingularSimplex (Σ i, X i) n :=
   fun σ => (sigmaInclusion X σ.1).comp σ.2
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The sigma simplex map is injective. -/
 theorem Coproduct.sigmaSimplexMap_injective {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) : Function.Injective (sigmaSimplexMap X n) := by
   classical
@@ -101,6 +108,7 @@ theorem Coproduct.sigmaSimplexMap_injective {ι : Type} (X : ι → Type)
   exact ContinuousMap.ext fun t => sigma_mk_injective (congrArg (fun f => f t) h)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The sigma simplex map is surjective. -/
 theorem Coproduct.sigmaSimplexMap_surjective {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) : Function.Surjective (sigmaSimplexMap X n) := by
   intro σ
@@ -108,6 +116,7 @@ theorem Coproduct.sigmaSimplexMap_surjective {ι : Type} (X : ι → Type)
   exact ⟨⟨i, τ⟩, hτ.symm⟩
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- Sigma simplices are equivalent to the sum of summand simplices. -/
 def Coproduct.sigmaSimplexEquiv {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) :
     (Σ i, SingularChains.SingularSimplex (X i) n) ≃ SingularChains.SingularSimplex (Σ i, X i) n :=
@@ -115,6 +124,7 @@ def Coproduct.sigmaSimplexEquiv {ι : Type} (X : ι → Type)
     ⟨sigmaSimplexMap_injective X n, sigmaSimplexMap_surjective X n⟩
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The equivalence inverse on an included simplex. -/
 @[simp]
 theorem Coproduct.sigmaSimplexEquiv_symm_inclusion {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) (i : ι) (σ : SingularChains.SingularSimplex (X i) n) :
@@ -122,6 +132,7 @@ theorem Coproduct.sigmaSimplexEquiv_symm_inclusion {ι : Type} (X : ι → Type)
   (sigmaSimplexEquiv X n).symm_apply_apply ⟨i, σ⟩
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- Chain maps out of the sigma chains are determined on summands. -/
 theorem Coproduct.sigmaChains_hom_ext {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) {M : ModuleCat ℤ}
     (f g : SingularChains.Chains (Σ i, X i) n ⟶ M)
@@ -137,7 +148,10 @@ theorem Coproduct.sigmaChains_hom_ext {ι : Type} (X : ι → Type)
   simpa only [ModuleCat.hom_comp, LinearMap.comp_apply, SingularChains.inducedChain_simplex] using
     congrArg (fun k => k.hom (SingularChains.simplexChain (X i) n τ)) (h i)
 
+/-! ### The biproduct of singular complexes -/
+
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The chain map from the biproduct of summand complexes to the complex of the union. -/
 def Coproduct.sigmaChainComplexMap {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     (⨁ fun i => SingularChains.singularComplex (X i)) ⟶ SingularChains.singularComplex (Σ i, X i) :=
@@ -145,6 +159,7 @@ def Coproduct.sigmaChainComplexMap {ι : Type} (X : ι → Type)
     SingularChains.singularChainMap (sigmaInclusion X i)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The biproduct map on a summand is the inclusion's chain map. -/
 @[simp]
 theorem Coproduct.sigmaChainComplexMap_inclusion {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] (i : ι) :
@@ -154,6 +169,7 @@ theorem Coproduct.sigmaChainComplexMap_inclusion {ι : Type} (X : ι → Type)
   CategoryTheory.Limits.biproduct.ι_desc _ i
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The degree-`n` inverse chain map to the biproduct. -/
 def Coproduct.sigmaChainInverseDegree {ι : Type}
     (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) :
     SingularChains.Chains (Σ i, X i) n →ₗ[ℤ]
@@ -165,6 +181,7 @@ def Coproduct.sigmaChainInverseDegree {ι : Type}
       (SingularChains.simplexChain (X τ.1) n τ.2)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inverse degree map on an included simplex. -/
 theorem Coproduct.sigmaChainInverseDegree_inclusion
     {ι : Type} (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) (i : ι)
     (σ : SingularChains.SingularSimplex (X i) n) :
@@ -182,6 +199,7 @@ theorem Coproduct.sigmaChainInverseDegree_inclusion
       (sigmaSimplexEquiv_symm_inclusion X n i σ)
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inverse composed with a summand inclusion. -/
 theorem Coproduct.sigmaChainInverseDegree_comp_inclusion
     {ι : Type} (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (n : ℕ) (i : ι) :
     (SingularChains.singularChainMap (sigmaInclusion X i)).f n ≫
@@ -198,6 +216,7 @@ theorem Coproduct.sigmaChainInverseDegree_comp_inclusion
   rw [SingularChains.inducedChain_simplex, sigmaChainInverseDegree_inclusion]
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inverse chain map from sigma chains to the biproduct. -/
 def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     SingularChains.singularComplex (Σ i, X i) ⟶ (⨁ fun i => SingularChains.singularComplex (X i))
@@ -255,6 +274,7 @@ def Coproduct.sigmaChainComplexInverse {ι : Type} (X : ι → Type)
       _ = _ := CategoryTheory.Category.assoc _ _ _
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inverse composed with a summand chain map. -/
 @[simp]
 theorem Coproduct.sigmaChainComplexInverse_inclusion {ι : Type}
     (X : ι → Type) [∀ i, TopologicalSpace (X i)] [Fintype ι] (i : ι) :
@@ -265,6 +285,7 @@ theorem Coproduct.sigmaChainComplexInverse_inclusion {ι : Type}
   exact sigmaChainInverseDegree_comp_inclusion X n i
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The biproduct map followed by the inverse is the identity. -/
 theorem Coproduct.sigmaChainComplexMap_comp_inverse {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     sigmaChainComplexMap X ≫ sigmaChainComplexInverse X =
@@ -275,6 +296,7 @@ theorem Coproduct.sigmaChainComplexMap_comp_inverse {ι : Type} (X : ι → Type
     sigmaChainComplexInverse_inclusion, CategoryTheory.Category.comp_id]
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The inverse followed by the biproduct map is the identity. -/
 theorem Coproduct.sigmaChainComplexInverse_comp_map {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     sigmaChainComplexInverse X ≫ sigmaChainComplexMap X =
@@ -292,6 +314,7 @@ theorem Coproduct.sigmaChainComplexInverse_comp_map {ι : Type} (X : ι → Type
   exact (congrArg (fun f => f.f n) h).trans (CategoryTheory.Category.comp_id _).symm
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
+/-- The singular chains of a finite sigma type are the biproduct of the summand complexes. -/
 def Coproduct.sigmaChainComplexIso {ι : Type} (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] [Fintype ι] :
     (⨁ fun i => SingularChains.singularComplex (X i)) ≅ SingularChains.singularComplex (Σ i, X i)
@@ -301,11 +324,13 @@ def Coproduct.sigmaChainComplexIso {ι : Type} (X : ι → Type)
   hom_inv_id := sigmaChainComplexMap_comp_inverse X
   inv_hom_id := sigmaChainComplexInverse_comp_map X
 
+/-- Homology chain complexes admit finite biproducts. -/
 theorem Coproduct.homologyFiniteBiproducts :
     CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
   CategoryTheory.Limits.HasFiniteBiproducts.of_hasFiniteProducts
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- The projection of an inclusion is the identity on homology. -/
 theorem Coproduct.homology_π_ι_self {ι : Type} [Finite ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (i : ι) (a : (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K i) n).hom
@@ -318,6 +343,7 @@ theorem Coproduct.homology_π_ι_self {ι : Type} [Finite ι]
   exact (congrArg (fun f => f.hom a) h).symm
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- Distinct biproduct homology components are orthogonal. -/
 theorem Coproduct.homology_π_ι_ne {ι : Type} [Finite ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) {i j : ι} (hij : i ≠ j)
     (a : (K i).homology n) :
@@ -330,7 +356,10 @@ theorem Coproduct.homology_π_ι_ne {ι : Type} [Finite ι]
   rw [CategoryTheory.Limits.biproduct.ι_π_ne K hij, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
+/-! ### Homology of biproducts -/
+
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- Every biproduct homology class decomposes. -/
 theorem Coproduct.homology_biproduct_total {ι : Type}
     [Fintype ι] (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (⨁ K).homology n) :
     ∑ i,
@@ -357,6 +386,7 @@ theorem Coproduct.homology_biproduct_total {ι : Type}
     congrArg (fun f => f.hom a) h
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- Homology of a biproduct is the product of homologies. -/
 def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) :
     (⨁ K).homology n ≃ₗ[ℤ] (∀ i, (K i).homology n) := by
@@ -393,6 +423,7 @@ def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
         (⨁ K).homology n ≃+ (∀ i, (K i).homology n)).toIntLinearEquiv
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- The inverse equivalence sums the inclusion images. -/
 theorem Coproduct.homologyBiproductEquiv_symm_apply {ι : Type} [Fintype ι]
     (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : ∀ i, (K i).homology n) :
     (homologyBiproductEquiv K n).symm a =
@@ -400,6 +431,7 @@ theorem Coproduct.homologyBiproductEquiv_symm_apply {ι : Type} [Fintype ι]
   rfl
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
+/-- The equivalence descends a family of chain maps. -/
 theorem Coproduct.homologyBiproductEquiv_desc {ι : Type} [Fintype ι]
     {K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ} (n : ℕ) {L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : ∀ i, K i ⟶ L) (a : ∀ i, (K i).homology n) :
@@ -415,6 +447,7 @@ theorem Coproduct.homologyBiproductEquiv_desc {ι : Type} [Fintype ι]
   rw [CategoryTheory.Limits.biproduct.ι_desc] at h
   exact (congrArg (fun k => k.hom (a i)) h).symm
 
+/-- Singular homology of a finite disjoint union is the product of the summand homologies. -/
 def Coproduct.sigmaHomologyEquiv {ι : Type} [Fintype ι] (X : ι → Type)
     [∀ i, TopologicalSpace (X i)] (n : ℕ) :
     SingularMayerVietoris.SingularHomology (Σ i, X i) n ≃ₗ[ℤ]
@@ -423,6 +456,7 @@ def Coproduct.sigmaHomologyEquiv {ι : Type} [Fintype ι] (X : ι → Type)
         (sigmaChainComplexIso X)).symm.toLinearEquiv.trans
     (homologyBiproductEquiv (fun i => SingularChains.singularComplex (X i)) n)
 
+/-- The inverse equivalence maps a tuple of classes to the sum of their included classes. -/
 theorem Coproduct.sigmaHomologyEquiv_symm_apply {ι : Type} [Fintype ι]
     (X : ι → Type) [∀ i, TopologicalSpace (X i)] (n : ℕ)
     (a : ∀ i, SingularMayerVietoris.SingularHomology (X i) n) :
@@ -435,6 +469,7 @@ theorem Coproduct.sigmaHomologyEquiv_symm_apply {ι : Type} [Fintype ι]
   exact
     homologyBiproductEquiv_desc n (fun i => SingularChains.singularChainMap (sigmaInclusion X i)) a
 
+/-- The homology equivalence inverse on a single component. -/
 @[simp]
 theorem Coproduct.sigmaHomologyEquiv_symm_single {ι : Type} [Fintype ι]
     (X : ι → Type) [∀ i, TopologicalSpace (X i)] [DecidableEq ι] (n : ℕ) (i : ι)
