@@ -1,5 +1,10 @@
 # C10 handoff — `hurewiczLinearEquiv` at general `n`
 
+> **Closed by the continuation:** C10's equivalence landed at `0a3b870`, the per-degree
+> consumer replacement at `26a4708`, and C13 at `c2059b6`. Names were subsequently renamed
+> under `Mathoverflow1973.Hurewicz`. This file is historical; use `Lib/reports/C.md` and
+> `Lib/docs/C-INTERFACE_RECEIPT.md` for the current status and checked interface.
+
 **Branch:** `lib/C-10-boundary` (not pushed). **HEAD:** `63ef708`.
 **Toolchain:** `leanprover/lean4:v4.33.0`. Gate used throughout: `lake build Lib.AlgebraicTopology.Hurewicz.CubeSphere`.
 **Do not push.** Attribution is the owner's.

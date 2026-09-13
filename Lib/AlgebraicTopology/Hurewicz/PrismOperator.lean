@@ -7,6 +7,58 @@ import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
+/-!
+# Simplex homotopies and the degree-two Hurewicz theorem
+
+The file builds the prism operator on singular chains —
+`SecondHurewicz.SimplyConnected.simplexPrismOperator n H` takes a simplex-indexed
+family `H : SingularSimplex X n → C(I × Simplex n, X)` and sends an `n`-chain to an
+`(n+1)`-chain by `chainLift` of `simplexPrism n (H smp)`. For face-compatible families
+in consecutive degrees, its boundary is the difference of the endpoint operators minus
+the lower-degree prism applied to the boundary. The ordinary `prismOperator` gives
+`∂(prism c) = H₁# c - H₀# c - prism(∂c)` for a single homotopy `H`.
+The file then proves the degree-two Hurewicz theorem: `Hurewicz.degreeTwoLinearEquiv x` is a `ℤ`-linear equivalence
+`Additive (π_ 2 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 2` whenever `X`
+is `SimplyConnectedSpace`.
+
+## Outline of the construction
+
+1. The evaluation map `SecondHurewicz.evaluation` and the square chain
+   `squareChain`/`squareHomologyClass` assign a homology class to a based square;
+   `hurewiczMap` is the resulting `ℤ`-linear map `π_2 → H_2`.
+2. `timeSlice`, `prismOperator`, and `simplexPrismOperator` implement the prism
+   construction and its boundary identity.
+3. Coherent vertex/edge normalization (`VertexHomotopyData`,
+   `edgeStraighteningHomotopy`, `extendCoherentSimplexHomotopy`) straightens
+   simplices relative to their boundaries.
+4. The based-triangle class `basedTriangleClass` and the square subdivision
+   (`subdivision_class`, `squareNormalization_homotopic`) compare the square class
+   with sums of triangle classes.
+5. `secondHomologyDesc`, `triangleClassOperator`, and `hurewiczInverse` construct
+   the inverse map, and `hurewiczInverse_comp_hurewiczMap` /
+   `hurewiczMap_comp_hurewiczInverse` give the round trips.
+6. `Hurewicz.composeSimplexHomotopies` and the `Hurewicz.*_const` lemmas compose
+   coherent homotopy families for the general straightening construction.
+
+## Main definitions and results
+
+* `SecondHurewicz.hurewiczMap`: the degree-two Hurewicz map `π_2 → H_2`.
+* `SecondHurewicz.SimplyConnected.simplexPrismOperator_boundary`: the prism
+  boundary identity.
+* `SecondHurewicz.SimplyConnected.hurewiczInverse`, `hurewiczPi2Equiv`: the inverse.
+* `Hurewicz.degreeTwoLinearEquiv`: the degree-two Hurewicz equivalence for
+  simply connected `X`.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorems 2.10 and 4.32;
+  recorded in `Lib/docs/C.md`, §§6, 8, 12–13.
+
+## Tags
+
+Hurewicz, prism operator, simplex, homotopy, simply connected
+-/
+
 
 set_option maxSynthPendingDepth 3
 
@@ -18,6 +70,8 @@ namespace Mathoverflow1973
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Evaluating `crossProductTriangle` at the degenerate zero simplex on the left
+equals the right-component chain. -/
 theorem SecondHurewicz.crossProductTriangle_zero_eq_zeroRight (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
     SingularHomology.crossProductTriangle X Y 0 =
@@ -44,6 +98,8 @@ theorem SecondHurewicz.crossProductTriangle_zero_eq_zeroRight (X Y : Type) [Topo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triangle cross product of a point chain on the left is the induced chain of
+the left insertion. -/
 theorem SecondHurewicz.crossProductTriangle_point_right (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularChains.Chains X 2) (y : Y) :
     SingularHomology.crossProductTriangle X Y 0 a (SingularChains.pointChain y) =
@@ -54,6 +110,8 @@ theorem SecondHurewicz.crossProductTriangle_point_right (X Y : Type) [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The edge cross product of a point chain on the left is the induced chain of the
+left insertion. -/
 theorem SecondHurewicz.crossProductEdge_point_right (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularChains.Chains X 1) (y : Y) :
     SingularHomology.crossProductEdge X Y 0 a (SingularChains.pointChain y) =
@@ -61,28 +119,38 @@ theorem SecondHurewicz.crossProductEdge_point_right (X Y : Type) [TopologicalSpa
   rw [SingularChains.pointChain, SingularHomology.crossProductEdge_zero_simplex_right]
   rfl
 
+/-- The remaining vertices index type (a subtype of `Fin` used for vertex iteration). -/
 abbrev SecondHurewicz.Remaining :=
   { j : Fin 2 // j ≠ 0 }
 
+/-- The based loop space of `X` at `x`: `GenLoop (Fin 1) X x`. -/
 abbrev SecondHurewicz.BasedLoopSpace {X : Type} [TopologicalSpace X] (x : X) :=
   GenLoop Remaining X x
 
+/-! ### The square chain of a based square -/
+
+/-- The evaluation map `C(BasedLoopSpace x × I, X)` sending `(p, t)` to `p` at the
+constant cube `t`. -/
 def SecondHurewicz.evaluation {X : Type} [TopologicalSpace X] (x : X) :
     C(BasedLoopSpace x × (unitInterval), X)
     where
   toFun z := z.1 (fun _ => z.2)
   continuous_toFun := by fun_prop
 
+/-- Evaluation at `t = 0` sends every loop to the basepoint `x`. -/
 @[simp]
 theorem SecondHurewicz.evaluation_zero {X : Type} [TopologicalSpace X] (x : X)
     (p : BasedLoopSpace x) : evaluation x (p, 0) = x :=
   GenLoop.boundary p _ ⟨⟨1, by decide⟩, Or.inl rfl⟩
 
+/-- Evaluation at `t = 1` sends every loop to the basepoint `x`. -/
 @[simp]
 theorem SecondHurewicz.evaluation_one {X : Type} [TopologicalSpace X] (x : X)
     (p : BasedLoopSpace x) : evaluation x (p, 1) = x :=
   GenLoop.boundary p _ ⟨⟨1, by decide⟩, Or.inr rfl⟩
 
+/-- `evaluation x` composed with the `0`-insertion on the right is the constant map
+to `x`. -/
 @[simp]
 theorem SecondHurewicz.evaluation_comp_right_zero {X : Type} [TopologicalSpace X] (x : X) :
     (evaluation x).comp (SingularHomology.crossInsertRight (0 : (unitInterval))) =
@@ -90,6 +158,8 @@ theorem SecondHurewicz.evaluation_comp_right_zero {X : Type} [TopologicalSpace X
   ext p
   exact evaluation_zero x p
 
+/-- `evaluation x` composed with the `1`-insertion on the right is the constant map
+to `x`. -/
 @[simp]
 theorem SecondHurewicz.evaluation_comp_right_one {X : Type} [TopologicalSpace X] (x : X) :
     (evaluation x).comp (SingularHomology.crossInsertRight (1 : (unitInterval))) =
@@ -97,25 +167,33 @@ theorem SecondHurewicz.evaluation_comp_right_one {X : Type} [TopologicalSpace X]
   ext p
   exact evaluation_one x p
 
+/-- The identification `I × I → Fin 2 → I` of the square with the `2`-cube. -/
 def SecondHurewicz.squareCoordinates : C((unitInterval) × (unitInterval), Fin 2 → (unitInterval))
     where
   toFun z := Cube.insertAt (0 : Fin 2) (z.1, fun _ => z.2)
   continuous_toFun := by fun_prop
 
+/-- On the `0`-boundary of the square, `squareCoordinates` lands on the cube
+boundary. -/
 @[simp]
 theorem SecondHurewicz.squareCoordinates_zero (z : (unitInterval) × (unitInterval)) :
     squareCoordinates z 0 = z.1 := by
   simp [squareCoordinates, Cube.insertAt, Homeomorph.funSplitAt_symm_apply]
 
+/-- On the `1`-boundary of the square, `squareCoordinates` lands on the cube
+boundary. -/
 @[simp]
 theorem SecondHurewicz.squareCoordinates_one (z : (unitInterval) × (unitInterval)) :
     squareCoordinates z 1 = z.2 := by
   simp [squareCoordinates, Cube.insertAt, Homeomorph.funSplitAt_symm_apply]
 
+/-- The map `I × I → X` of a based square `p`, precomposed with
+`squareCoordinates`. -/
 def SecondHurewicz.squareMap {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     C((unitInterval) × (unitInterval), X) :=
   p.val.comp squareCoordinates
 
+/-- `evaluation x ∘ (toLoop p × id)` is the square map of `p`. -/
 theorem SecondHurewicz.evaluation_comp_toLoop {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) :
     (evaluation x).comp
@@ -127,11 +205,13 @@ theorem SecondHurewicz.evaluation_comp_toLoop {X : Type} [TopologicalSpace X] {x
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The fundamental `1`-chain of the interval: the identity simplex on `I`. -/
 def SecondHurewicz.intervalChain : SingularChains.Chains (unitInterval) 1 :=
   SingularChains.pathChain Path.id
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `intervalChain` is `point 1 - point 0`. -/
 theorem SecondHurewicz.intervalChain_boundary :
     SingularChains.boundaryOne (unitInterval) intervalChain =
       SingularChains.pointChain (1 : (unitInterval)) -
@@ -140,6 +220,8 @@ theorem SecondHurewicz.intervalChain_boundary :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The `evaluation x`-pushforward of a chain crossed with the `0`-point chain is
+the constant-simplex chain. -/
 theorem SecondHurewicz.evaluation_right_zero_chain {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     (a : SingularChains.Chains (BasedLoopSpace x) n) :
     SingularChains.inducedChain (evaluation x) n
@@ -156,6 +238,8 @@ theorem SecondHurewicz.evaluation_right_zero_chain {X : Type} [TopologicalSpace 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The `evaluation x`-pushforward of a chain crossed with the `1`-point chain is
+the constant-simplex chain. -/
 theorem SecondHurewicz.evaluation_right_one_chain {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     (a : SingularChains.Chains (BasedLoopSpace x) n) :
     SingularChains.inducedChain (evaluation x) n
@@ -172,6 +256,7 @@ theorem SecondHurewicz.evaluation_right_one_chain {X : Type} [TopologicalSpace X
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- In the evaluated edge chain, the endpoint contributions of a `1`-cycle cancel. -/
 theorem SecondHurewicz.evaluated_edge_endpoint_cancel {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1) :
     SingularChains.inducedChain (evaluation x) 1
@@ -183,6 +268,8 @@ theorem SecondHurewicz.evaluated_edge_endpoint_cancel {X : Type} [TopologicalSpa
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- In the evaluated triangle chain, the endpoint contributions of a `2`-cycle
+cancel. -/
 theorem SecondHurewicz.evaluated_triangle_endpoint_cancel {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
     SingularChains.inducedChain (evaluation x) 2
@@ -194,6 +281,8 @@ theorem SecondHurewicz.evaluated_triangle_endpoint_cancel {X : Type} [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The first suspension operator: `Chains (BasedLoopSpace x) 1 →ₗ[ℤ] Chains X 2`,
+`evaluation`-pushforward of the edge cross product with `intervalChain`. -/
 def SecondHurewicz.suspensionOne {X : Type} [TopologicalSpace X] (x : X) :
     SingularChains.Chains (BasedLoopSpace x) 1 →ₗ[ℤ] SingularChains.Chains X 2 :=
   (SingularChains.inducedChain (evaluation x) 2).comp
@@ -204,6 +293,7 @@ def SecondHurewicz.suspensionOne {X : Type} [TopologicalSpace X] (x : X) :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `suspensionOne x c` is the `evaluation x`-pushforward of `c × intervalChain`. -/
 @[simp]
 theorem SecondHurewicz.suspensionOne_apply {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1) :
@@ -215,6 +305,8 @@ theorem SecondHurewicz.suspensionOne_apply {X : Type} [TopologicalSpace X] (x : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The second suspension operator: `Chains (BasedLoopSpace x) 2 →ₗ[ℤ] Chains X 3`,
+`evaluation`-pushforward of the triangle cross product with `intervalChain`. -/
 def SecondHurewicz.suspensionTwo {X : Type} [TopologicalSpace X] (x : X) :
     SingularChains.Chains (BasedLoopSpace x) 2 →ₗ[ℤ] SingularChains.Chains X 3 :=
   (SingularChains.inducedChain (evaluation x) 3).comp
@@ -225,6 +317,7 @@ def SecondHurewicz.suspensionTwo {X : Type} [TopologicalSpace X] (x : X) :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `suspensionTwo x c` is the `evaluation x`-pushforward of `c × intervalChain`. -/
 @[simp]
 theorem SecondHurewicz.suspensionTwo_apply {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
@@ -236,6 +329,8 @@ theorem SecondHurewicz.suspensionTwo_apply {X : Type} [TopologicalSpace X] (x : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- For a `1`-cycle `c` of based loops, `∂ (suspensionOne x c) = 0`: the suspension
+of a cycle is a cycle. -/
 theorem SecondHurewicz.boundaryTwo_suspensionOne_of_cycle {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1)
     (ha : SingularChains.boundaryOne (BasedLoopSpace x) a = 0) :
@@ -255,6 +350,8 @@ theorem SecondHurewicz.boundaryTwo_suspensionOne_of_cycle {X : Type} [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `suspensionTwo x c` relates to `suspensionOne x (∂ c)` with
+endpoint terms cancelling. -/
 theorem SecondHurewicz.boundaryThree_suspensionTwo {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
     ((SingularChains.singularComplex X).d 3 2).hom (suspensionTwo x a) =
@@ -271,6 +368,8 @@ theorem SecondHurewicz.boundaryThree_suspensionTwo {X : Type} [TopologicalSpace 
   rw [map_add, evaluated_triangle_endpoint_cancel, add_zero]
   rfl
 
+/-- The `2`-cycle of `X` obtained by suspending the path chain of a path of based
+loops. -/
 def SecondHurewicz.pathSquareCycle {X : Type} [TopologicalSpace X] (x : X)
     (p : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2 :=
@@ -279,18 +378,21 @@ def SecondHurewicz.pathSquareCycle {X : Type} [TopologicalSpace X] (x : X)
     (boundaryTwo_suspensionOne_of_cycle x (SingularChains.pathChain p)
       (SingularChains.boundaryOne_loop p))
 
+/-- The underlying chain of `pathSquareCycle p` is `suspensionOne x (pathChain p)`. -/
 @[simp]
 theorem SecondHurewicz.pathSquareCycle_val {X : Type} [TopologicalSpace X] (x : X)
     (p : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const) :
     (pathSquareCycle x p).1 = suspensionOne x (SingularChains.pathChain p) :=
   rfl
 
+/-- The homology class of `pathSquareCycle p`. -/
 def SecondHurewicz.pathSquareClass {X : Type} [TopologicalSpace X] (x : X)
     (p : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const) :
     SingularMayerVietoris.SingularHomology X 2 :=
   SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 2
     (pathSquareCycle x p)
 
+/-- The square chain of a homotopy of paths of loops has controlled boundary. -/
 theorem SecondHurewicz.pathSquare_homotopy_boundary {X : Type} [TopologicalSpace X] (x : X)
     {p q : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const} (H : p.Homotopy q) :
     ((SingularChains.singularComplex X).d 3 2).hom
@@ -299,6 +401,7 @@ theorem SecondHurewicz.pathSquare_homotopy_boundary {X : Type} [TopologicalSpace
   rw [boundaryThree_suspensionTwo, SingularChains.boundaryTwo_loopHomotopy, map_sub]
   rfl
 
+/-- `pathSquareClass` is invariant under homotopy of the path of loops. -/
 theorem SecondHurewicz.pathSquareClass_homotopy {X : Type} [TopologicalSpace X] (x : X)
     {p q : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const} (H : p.Homotopy q) :
     pathSquareClass x p = pathSquareClass x q :=
@@ -306,12 +409,14 @@ theorem SecondHurewicz.pathSquareClass_homotopy {X : Type} [TopologicalSpace X] 
         _).mpr
     ⟨suspensionTwo x (SingularChains.homotopyChain H), pathSquare_homotopy_boundary x H⟩
 
+/-- Homotopic paths of based loops give equal `pathSquareClass`. -/
 theorem SecondHurewicz.pathSquareClass_homotopic {X : Type} [TopologicalSpace X] (x : X)
     {p q : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const} (h : p.Homotopic q) :
     pathSquareClass x p = pathSquareClass x q := by
   obtain ⟨H⟩ := h
   exact pathSquareClass_homotopy x H
 
+/-- `pathSquareClass` of the constant path is `0`. -/
 @[simp]
 theorem SecondHurewicz.pathSquareClass_refl {X : Type} [TopologicalSpace X] (x : X) :
     pathSquareClass x (Path.refl (GenLoop.const : BasedLoopSpace x)) = 0 := by
@@ -323,6 +428,7 @@ theorem SecondHurewicz.pathSquareClass_refl {X : Type} [TopologicalSpace X] (x :
   rw [boundaryThree_suspensionTwo, SingularChains.boundaryTwo_constantTriangleChain]
   rfl
 
+/-- The boundary computation for a concatenation of paths of loops. -/
 theorem SecondHurewicz.pathSquare_concat_boundary {X : Type} [TopologicalSpace X] (x : X)
     (p q : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const) :
     ((SingularChains.singularComplex X).d 3 2).hom
@@ -333,6 +439,7 @@ theorem SecondHurewicz.pathSquare_concat_boundary {X : Type} [TopologicalSpace X
   simp only [pathSquareCycle_val]
   abel
 
+/-- `pathSquareClass` is additive under path concatenation. -/
 theorem SecondHurewicz.pathSquareClass_trans {X : Type} [TopologicalSpace X] (x : X)
     (p q : Path (GenLoop.const : BasedLoopSpace x) GenLoop.const) :
     pathSquareClass x (p.trans q) = pathSquareClass x p + pathSquareClass x q := by
@@ -345,6 +452,7 @@ theorem SecondHurewicz.pathSquareClass_trans {X : Type} [TopologicalSpace X] (x 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The product `2`-chain `intervalChain × intervalChain` on `I × I`. -/
 def SecondHurewicz.productSquareChain :
     SingularChains.Chains ((unitInterval) × (unitInterval)) 2 :=
   SingularHomology.crossProductEdge (unitInterval) (unitInterval) 1 intervalChain
@@ -352,6 +460,7 @@ def SecondHurewicz.productSquareChain :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `productSquareChain` is the signed sum of its four edge chains. -/
 theorem SecondHurewicz.productSquareChain_boundary :
     SingularChains.boundaryTwo ((unitInterval) × (unitInterval)) productSquareChain =
       SingularChains.inducedChain (SingularHomology.crossInsertLeft (1 : (unitInterval)))
@@ -381,11 +490,15 @@ theorem SecondHurewicz.productSquareChain_boundary :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The fundamental `2`-chain of the `2`-cube: the `squareCoordinates`-pushforward
+of `productSquareChain`. -/
 def SecondHurewicz.fundamentalSquareChain : SingularChains.Chains (Fin 2 → (unitInterval)) 2 :=
   SingularChains.inducedChain squareCoordinates 2 productSquareChain
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The `1`-chain on `X` induced by a path `a → b` (the pushforward of
+`intervalChain`). -/
 theorem SecondHurewicz.induced_intervalChain {X : Type} [TopologicalSpace X] {a b : X}
     (p : Path a b) :
     SingularChains.inducedChain p.toContinuousMap 1 intervalChain = SingularChains.pathChain p := by
@@ -396,6 +509,8 @@ theorem SecondHurewicz.induced_intervalChain {X : Type} [TopologicalSpace X] {a 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `suspensionOne` of the `toLoop` path chain relates the square chain of `p` to
+endpoint terms. -/
 theorem SecondHurewicz.suspensionOne_toLoop {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) :
     suspensionOne x (SingularChains.pathChain (GenLoop.toLoop (0 : Fin 2) p)) =
@@ -418,24 +533,30 @@ theorem SecondHurewicz.suspensionOne_toLoop {X : Type} [TopologicalSpace X] {x :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The singular `2`-chain of a based square `p`: the `squareMap`-pushforward of
+`productSquareChain`. -/
 def SecondHurewicz.squareChain {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     SingularChains.Chains X 2 :=
   suspensionOne x (SingularChains.pathChain (GenLoop.toLoop (0 : Fin 2) p))
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `squareChain p` is the signed sum of the four side loop chains. -/
 theorem SecondHurewicz.squareChain_boundary {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : SingularChains.boundaryTwo X (squareChain p) = 0 :=
   boundaryTwo_suspensionOne_of_cycle x _ (SingularChains.boundaryOne_loop (GenLoop.toLoop 0 p))
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The `2`-cycle of `X` built from a based square `p`. -/
 def SecondHurewicz.squareCycle {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2 :=
   pathSquareCycle x (GenLoop.toLoop (0 : Fin 2) p)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The homology class `⟦squareCycle p⟧` of a based square: the Hurewicz image of
+`p`. -/
 def SecondHurewicz.squareHomologyClass {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : SingularMayerVietoris.SingularHomology X 2 :=
   SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 2
@@ -443,6 +564,8 @@ def SecondHurewicz.squareHomologyClass {X : Type} [TopologicalSpace X] {x : X}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The square class equals the path-square class of the corresponding path of
+loops. -/
 theorem SecondHurewicz.squareHomologyClass_eq_pathSquareClass {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     squareHomologyClass p = pathSquareClass x (GenLoop.toLoop (0 : Fin 2) p) :=
@@ -450,6 +573,7 @@ theorem SecondHurewicz.squareHomologyClass_eq_pathSquareClass {X : Type} [Topolo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Homotopic based squares have equal square homology classes. -/
 theorem SecondHurewicz.squareHomologyClass_homotopic {X : Type} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 2) X x} (h : GenLoop.Homotopic p q) :
     squareHomologyClass p = squareHomologyClass q :=
@@ -457,6 +581,7 @@ theorem SecondHurewicz.squareHomologyClass_homotopic {X : Type} [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `toLoop` of the constant square is the constant loop of loops. -/
 theorem SecondHurewicz.toLoop_const {X : Type} [TopologicalSpace X] {x : X} :
     GenLoop.toLoop (0 : Fin 2) (GenLoop.const : GenLoop (Fin 2) X x) =
       Path.refl (GenLoop.const : BasedLoopSpace x) := by
@@ -469,6 +594,7 @@ theorem SecondHurewicz.toLoop_const {X : Type} [TopologicalSpace X] {x : X} :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The square class of the constant square is `0`. -/
 @[simp]
 theorem SecondHurewicz.squareHomologyClass_const {X : Type} [TopologicalSpace X] {x : X} :
     squareHomologyClass (GenLoop.const : GenLoop (Fin 2) X x) = 0 := by
@@ -476,6 +602,7 @@ theorem SecondHurewicz.squareHomologyClass_const {X : Type} [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `toLoop` of a `transAt` concatenation is the concatenation of the `toLoop`s. -/
 theorem SecondHurewicz.toLoop_transAt {X : Type} [TopologicalSpace X] {x : X}
     (p q : GenLoop (Fin 2) X x) :
     GenLoop.toLoop (0 : Fin 2) (GenLoop.transAt (0 : Fin 2) p q) =
@@ -488,12 +615,14 @@ theorem SecondHurewicz.toLoop_transAt {X : Type} [TopologicalSpace X] {x : X}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The square class is additive under `transAt` concatenation. -/
 theorem SecondHurewicz.squareHomologyClass_transAt {X : Type} [TopologicalSpace X] {x : X}
     (p q : GenLoop (Fin 2) X x) :
     squareHomologyClass (GenLoop.transAt (0 : Fin 2) p q) =
       squareHomologyClass p + squareHomologyClass q := by
   simp only [squareHomologyClass_eq_pathSquareClass, toLoop_transAt, pathSquareClass_trans]
 
+/-- Postcomposition of a generalized loop by a continuous map `f`. -/
 def SecondHurewicz.mapGenLoop {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) : C(GenLoop N X x, GenLoop N Y (f x))
     where
@@ -501,21 +630,25 @@ def SecondHurewicz.mapGenLoop {N X Y : Type} [TopologicalSpace X] [TopologicalSp
   continuous_toFun :=
     ((ContinuousMap.continuous_postcomp f).comp continuous_subtype_val).subtype_mk _
 
+/-- `(mapGenLoop f x p).val = f.comp p.val`. -/
 @[simp]
 theorem SecondHurewicz.mapGenLoop_val {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) (p : GenLoop N X x) : (mapGenLoop f x p).val = f.comp p.val :=
   rfl
 
+/-- `mapGenLoop` sends the constant loop to the constant loop. -/
 @[simp]
 theorem SecondHurewicz.mapGenLoop_const {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) : mapGenLoop (N := N) f x GenLoop.const = GenLoop.const :=
   rfl
 
+/-- `mapGenLoop` preserves loop homotopy. -/
 theorem SecondHurewicz.mapGenLoop_homotopic {N X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) {p q : GenLoop N X x} (h : GenLoop.Homotopic p q) :
     GenLoop.Homotopic (mapGenLoop f x p) (mapGenLoop f x q) :=
   h.comp_continuousMap f
 
+/-- `mapGenLoop` commutes with `transAt` concatenation. -/
 @[simp]
 theorem SecondHurewicz.mapGenLoop_transAt {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [DecidableEq N] (f : C(X, Y)) (x : X) (i : N) (p q : GenLoop N X x) :
@@ -526,10 +659,14 @@ theorem SecondHurewicz.mapGenLoop_transAt {N X Y : Type} [TopologicalSpace X] [T
   change f (if (t i : ℝ) ≤ 1 / 2 then _ else _) = if (t i : ℝ) ≤ 1 / 2 then _ else _
   split_ifs <;> rfl
 
+/-- The Hurewicz map `π_ 2 X x → H_2 X` as a function: the square homology class of
+a representative. -/
 def SecondHurewicz.hurewiczFunction {X : Type} [TopologicalSpace X] (x : X) :
     π_ 2 X x → SingularMayerVietoris.SingularHomology X 2 :=
   Quotient.lift squareHomologyClass (fun _ _ h => squareHomologyClass_homotopic h)
 
+/-- The Hurewicz map `π_ 2 X x → H_2 X` as a monoid homomorphism to the
+multiplicative homology group. -/
 def SecondHurewicz.hurewiczPi2 {X : Type} [TopologicalSpace X] (x : X) :
     π_ 2 X x →* Multiplicative (SingularMayerVietoris.SingularHomology X 2)
     where
@@ -547,6 +684,7 @@ def SecondHurewicz.hurewiczPi2 {X : Type} [TopologicalSpace X] (x : X) :
         Multiplicative.ofAdd (squareHomologyClass p + squareHomologyClass q)
     rw [squareHomologyClass_transAt, add_comm]
 
+/-- The degree-two Hurewicz map `Additive (π_ 2 X x) →ₗ[ℤ] H_2 X`. -/
 def SecondHurewicz.hurewiczMap {X : Type} [TopologicalSpace X] (x : X) :
     Additive (π_ 2 X x) →ₗ[ℤ] SingularMayerVietoris.SingularHomology X 2
     where
@@ -554,6 +692,7 @@ def SecondHurewicz.hurewiczMap {X : Type} [TopologicalSpace X] (x : X) :
   map_add' := (hurewiczPi2 x).toAdditiveLeft.map_add
   map_smul' n a := by simpa using map_intCast_smul (hurewiczPi2 x).toAdditiveLeft ℤ ℤ n a
 
+/-- `hurewiczMap x ⟦p⟧` is the square homology class of `p`. -/
 theorem SecondHurewicz.hurewiczMap_representative {X : Type} [TopologicalSpace X] (x : X)
     (p : GenLoop (Fin 2) X x) :
     hurewiczMap x (Additive.ofMul (⟦p⟧ : π_ 2 X x)) =
@@ -563,12 +702,17 @@ theorem SecondHurewicz.hurewiczMap_representative {X : Type} [TopologicalSpace X
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-! ### The prism operator -/
+
+/-- The time-`t` slice of a homotopy `H : C(I × A, X)`, as a map `C(A, X)`. -/
 def SecondHurewicz.SimplyConnected.timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) : C(A, X) :=
   H.comp (SingularHomology.crossInsertLeft t)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The zero-degree left cross product with a point chain is the `crossInsertLeft`
+pushforward. -/
 theorem SecondHurewicz.SimplyConnected.crossPoint_left {A : Type} [TopologicalSpace A] (n : ℕ)
     (t : (unitInterval)) (c : SingularChains.Chains A n) :
     SingularHomology.crossProductZeroLeft (unitInterval) A n (SingularChains.pointChain t)
@@ -579,6 +723,8 @@ theorem SecondHurewicz.SimplyConnected.crossPoint_left {A : Type} [TopologicalSp
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The `H`-pushforward of a `crossInsertLeft t` chain is the `timeSlice H t`
+pushforward. -/
 theorem SecondHurewicz.SimplyConnected.inducedChain_timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) (n : ℕ)
     (c : SingularChains.Chains A n) :
@@ -595,6 +741,8 @@ theorem SecondHurewicz.SimplyConnected.inducedChain_timeSlice {A X : Type} [Topo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The prism operator of a homotopy `H : C(I × A, X)`: `Chains A n →ₗ[ℤ]
+Chains X (n+1)`, built from the degree-`n` cross product with `intervalChain`. -/
 def SecondHurewicz.SimplyConnected.prismOperator {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) :
     SingularChains.Chains A n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
@@ -604,6 +752,7 @@ def SecondHurewicz.SimplyConnected.prismOperator {A X : Type} [TopologicalSpace 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `prismOperator n H c` is the `H`-pushforward of `c × intervalChain`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.prismOperator_apply {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) (c : SingularChains.Chains A n) :
@@ -615,6 +764,7 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_apply {A X : Type} [Topolog
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The prism boundary identity: `∂(prism c) = H₁# c - H₀# c - prism(∂c)`. -/
 theorem SecondHurewicz.SimplyConnected.prismOperator_boundary {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (c : SingularChains.Chains A (n + 1)) :
@@ -637,6 +787,7 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_boundary {A X : Type} [Topo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Precomposing the homotopy with `id × f` equals pushing the chain forward by `f` first. -/
 theorem SecondHurewicz.SimplyConnected.prismOperator_domain {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] (n : ℕ) (f : C(A, B)) (H : C((unitInterval) × B, X))
     (c : SingularChains.Chains A n) :
@@ -651,6 +802,8 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_domain {A B X : Type} [Topo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The prism chain of a homotopy of the standard `n`-simplex:
+`prismOperator n H` applied to the identity simplex chain. -/
 def SecondHurewicz.SimplyConnected.simplexPrism {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : C((unitInterval) × SingularChains.Simplex n, X)) : SingularChains.Chains X (n + 1) :=
   prismOperator n H
@@ -659,6 +812,7 @@ def SecondHurewicz.SimplyConnected.simplexPrism {X : Type} [TopologicalSpace X] 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `prismOperator` on a simplex chain is the `H`-pushforward of the simplex prism. -/
 theorem SecondHurewicz.SimplyConnected.prismOperator_simplex {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (smp : SingularChains.SingularSimplex A n) :
@@ -673,6 +827,7 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_simplex {A X : Type} [Topol
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `simplexPrism n H` is `H₁# id - H₀# id - ∑` face prisms. -/
 theorem SecondHurewicz.SimplyConnected.simplexPrism_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (H : C((unitInterval) × SingularChains.Simplex (n + 1), X)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom (simplexPrism (n + 1) H) =
@@ -688,11 +843,15 @@ theorem SecondHurewicz.SimplyConnected.simplexPrism_boundary {X : Type} [Topolog
   rw [SingularChains.boundary_simplex, map_sum]
   simp only [map_zsmul, ContinuousMap.id_comp, prismOperator_simplex]
 
+/-- The endpoint operator `Chains X n →ₗ[ℤ] Chains X n` sending each simplex to its
+time-`t` slice under `H`. -/
 def SecondHurewicz.SimplyConnected.simplexEndpointOperator {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (t : (unitInterval)) : SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n :=
   SingularChains.chainLift X n fun smp => SingularChains.simplexChain X n (timeSlice (H smp) t)
 
+/-- `simplexEndpointOperator` sends a simplex to its time-`t` slice `timeSlice (H
+smp) t`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_simplex {X : Type}
     [TopologicalSpace X] (n : ℕ)
@@ -702,11 +861,14 @@ theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_simplex {X : Type
       SingularChains.simplexChain X n (timeSlice (H smp) t) :=
   SingularChains.chainLift_simplex X n _ smp
 
+/-- The simplexwise prism operator: `Chains X n →ₗ[ℤ] Chains X (n+1)` sending each
+simplex `smp` to `simplexPrism n (H smp)`. -/
 def SecondHurewicz.SimplyConnected.simplexPrismOperator {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X)) :
     SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
   SingularChains.chainLift X n fun smp => simplexPrism n (H smp)
 
+/-- `simplexPrismOperator` sends a simplex `smp` to `simplexPrism n (H smp)`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.simplexPrismOperator_simplex {X : Type}
     [TopologicalSpace X] (n : ℕ)
@@ -715,6 +877,8 @@ theorem SecondHurewicz.SimplyConnected.simplexPrismOperator_simplex {X : Type}
     simplexPrismOperator n H (SingularChains.simplexChain X n smp) = simplexPrism n (H smp) :=
   SingularChains.chainLift_simplex X n _ smp
 
+/-- `H` and `H'` are face-compatible if `H'` restricted to each face equals `H` of
+the face simplex. -/
 def SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies {X : Type} [TopologicalSpace X]
     (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -726,6 +890,7 @@ def SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies {X : Type} [Topologi
     (H' smp).comp ((ContinuousMap.id (unitInterval)).prodMap (SingularChains.simplexFace n i)) =
       H (smp.comp (SingularChains.simplexFace n i))
 
+/-- For face-compatible families, the `i`-th face of a time slice of `H'` is the corresponding time slice of `H`. -/
 theorem SecondHurewicz.SimplyConnected.timeSlice_face {X : Type} [TopologicalSpace X] {n : ℕ}
     {H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X)}
     {H' :
@@ -737,6 +902,8 @@ theorem SecondHurewicz.SimplyConnected.timeSlice_face {X : Type} [TopologicalSpa
       timeSlice (H (smp.comp (SingularChains.simplexFace n i))) t :=
   congrArg (fun F => timeSlice F t) (h smp i)
 
+/-- For a face-compatible family, `simplexEndpointOperator` commutes with the
+boundary map. -/
 theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_boundary {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -757,6 +924,8 @@ theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_boundary {X : Typ
       SingularChains.boundary_simplex, map_sum, map_zsmul, timeSlice_face h]
   exact LinearMap.congr_fun hc c
 
+/-- For a face-compatible family, the simplexwise prism boundary identity holds:
+`∂(prism c) = H₁# c - H₀# c - prism(∂c)`. -/
 theorem SecondHurewicz.SimplyConnected.simplexPrismOperator_boundary {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -781,6 +950,7 @@ theorem SecondHurewicz.SimplyConnected.simplexPrismOperator_boundary {X : Type}
       map_sum, map_zsmul, hface]
   exact LinearMap.congr_fun hc c
 
+/-- If every homotopy starts at its simplex, the time-`0` endpoint operator is the identity. -/
 theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_zero {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -790,6 +960,8 @@ theorem SecondHurewicz.SimplyConnected.simplexEndpointOperator_zero {X : Type}
   rw [simplexEndpointOperator_simplex, h₀]
   rfl
 
+/-- The `2`-cycle obtained by applying the time-`1` endpoint operator of `H₂` to a
+`2`-cycle `c`. -/
 def SecondHurewicz.SimplyConnected.straightenedTwoCycle {X : Type} [TopologicalSpace X]
     (H₁ : SingularChains.SingularSimplex X 1 → C((unitInterval) × SingularChains.Simplex 1, X))
     (H₂ : SingularChains.SingularSimplex X 2 → C((unitInterval) × SingularChains.Simplex 2, X))
@@ -804,6 +976,8 @@ def SecondHurewicz.SimplyConnected.straightenedTwoCycle {X : Type} [TopologicalS
           c,
         map_zero])
 
+/-- The straightened `2`-cycle is homologous to the original cycle (the prism is
+its homology witness). -/
 theorem SecondHurewicz.SimplyConnected.straightenedTwoCycle_class {X : Type} [TopologicalSpace X]
     (H₁ : SingularChains.SingularSimplex X 1 → C((unitInterval) × SingularChains.Simplex 1, X))
     (H₂ : SingularChains.SingularSimplex X 2 → C((unitInterval) × SingularChains.Simplex 2, X))
@@ -821,6 +995,11 @@ theorem SecondHurewicz.SimplyConnected.straightenedTwoCycle_class {X : Type} [To
     map_zero, sub_zero]
   rfl
 
+/-! ### Vertex and edge straightening data -/
+
+/-- Vertex-homotopy data in degree `n`: a homotopy for each simplex that is the
+identity at time `0`, vertex-based at time `1`, stationary on already-based
+simplices, and face-compatible. -/
 structure SecondHurewicz.SimplyConnected.VertexHomotopyData {X : Type} [TopologicalSpace X]
     (x : X) (n : ℕ) where
   homotopy : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X)
@@ -839,12 +1018,14 @@ structure SecondHurewicz.SimplyConnected.VertexHomotopyData {X : Type} [Topologi
     ∀ smp : C(SingularChains.Simplex (n + 1), X),
       FaceCompatible (fun i => homotopy (smp.comp (SingularChains.simplexFace n i)))
 
+/-- The boundary homotopy of a simplex assembled from vertex homotopy data. -/
 def SecondHurewicz.SimplyConnected.vertexBoundaryHomotopy {X : Type} [TopologicalSpace X] {x : X}
     {n : ℕ} (D : VertexHomotopyData x n) (smp : C(SingularChains.Simplex (n + 1), X)) :
     C((unitInterval) × SimplexBoundary (n + 1), X) :=
   glueFaceHomotopies (fun i => D.homotopy (smp.comp (SingularChains.simplexFace n i)))
     (D.face_compatible smp)
 
+/-- On the `i`-th face of the boundary, `vertexBoundaryHomotopy` is `D.homotopy` applied to that face. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexBoundaryHomotopy_face {X : Type} [TopologicalSpace X]
     {x : X} {n : ℕ} (D : VertexHomotopyData x n) (smp : C(SingularChains.Simplex (n + 1), X))
@@ -853,6 +1034,7 @@ theorem SecondHurewicz.SimplyConnected.vertexBoundaryHomotopy_face {X : Type} [T
       D.homotopy (smp.comp (SingularChains.simplexFace n i)) (r, s) :=
   glueFaceHomotopies_face _ _ i r s
 
+/-- At time `0`, `vertexBoundaryHomotopy` is `smp` on the boundary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexBoundaryHomotopy_zero {X : Type} [TopologicalSpace X]
     {x : X} {n : ℕ} (D : VertexHomotopyData x n) (smp : C(SingularChains.Simplex (n + 1), X))
@@ -860,6 +1042,7 @@ theorem SecondHurewicz.SimplyConnected.vertexBoundaryHomotopy_zero {X : Type} [T
   glueFaceHomotopies_zero _ _ smp (fun i t => D.zero (smp.comp (SingularChains.simplexFace n i)) t)
     s
 
+/-- The one-step vertex homotopy: stationary on already vertex-based simplices, otherwise the extension of `vertexBoundaryHomotopy`. -/
 def SecondHurewicz.SimplyConnected.vertexStepHomotopy {X : Type} [TopologicalSpace X] {x : X}
     {n : ℕ} (D : VertexHomotopyData x n) (smp : C(SingularChains.Simplex (n + 1), X)) :
     C((unitInterval) × SingularChains.Simplex (n + 1), X) := by
@@ -873,6 +1056,7 @@ def SecondHurewicz.SimplyConnected.vertexStepHomotopy {X : Type} [TopologicalSpa
       extendBoundaryHomotopy smp (vertexBoundaryHomotopy D smp)
         (vertexBoundaryHomotopy_zero D smp)
 
+/-- On an already vertex-based simplex, the vertex step is stationary. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_of_verticesBased {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (D : VertexHomotopyData x n)
     (smp : C(SingularChains.Simplex (n + 1), X)) (h : VerticesBased x (n + 1) smp) :
@@ -882,6 +1066,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_of_verticesBased {X : 
           C((unitInterval) × SingularChains.Simplex (n + 1), SingularChains.Simplex (n + 1))) := by
   classical simp only [vertexStepHomotopy, if_pos h]
 
+/-- On a non-vertex-based simplex, the vertex step is `extendBoundaryHomotopy` of `vertexBoundaryHomotopy D smp`. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_of_not_verticesBased {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (D : VertexHomotopyData x n)
     (smp : C(SingularChains.Simplex (n + 1), X)) (h : ¬VerticesBased x (n + 1) smp) :
@@ -889,6 +1074,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_of_not_verticesBased {
       extendBoundaryHomotopy smp (vertexBoundaryHomotopy D smp)
         (vertexBoundaryHomotopy_zero D smp) := by classical simp only [vertexStepHomotopy, if_neg h]
 
+/-- At time `0` the vertex step homotopy is the simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_zero {X : Type} [TopologicalSpace X]
     {x : X} {n : ℕ} (D : VertexHomotopyData x n) (smp : C(SingularChains.Simplex (n + 1), X))
@@ -900,6 +1086,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_zero {X : Type} [Topol
   · rw [vertexStepHomotopy_of_not_verticesBased D smp h]
     exact extendBoundaryHomotopy_bottom _ _ _ s
 
+/-- On the `i`-th face, the vertex step evaluates to `D.homotopy` of that face. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_face_apply {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (D : VertexHomotopyData x n)
     (smp : C(SingularChains.Simplex (n + 1), X)) (i : Fin (n + 2)) (r : (unitInterval))
@@ -913,6 +1100,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_face_apply {X : Type}
   · rw [vertexStepHomotopy_of_not_verticesBased D smp h, extendBoundaryHomotopy_face]
     exact vertexBoundaryHomotopy_face D smp i r s
 
+/-- The face homotopies `D.homotopy` are face-compatible with the vertex step `vertexStepHomotopy D`. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_face {X : Type} [TopologicalSpace X]
     {x : X} {n : ℕ} (D : VertexHomotopyData x n) :
     FaceCompatibleHomotopies n D.homotopy (vertexStepHomotopy D) := by
@@ -920,6 +1108,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_face {X : Type} [Topol
   ext u
   exact vertexStepHomotopy_face_apply D smp i u.1 u.2
 
+/-- At time `1` the vertex step lands on vertex-based simplices. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_one_verticesBased {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (D : VertexHomotopyData x n)
     (smp : C(SingularChains.Simplex (n + 1), X)) :
@@ -930,6 +1119,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_one_verticesBased {X :
   rw [← hij, vertexStepHomotopy_face_apply]
   exact D.one_verticesBased (smp.comp (SingularChains.simplexFace n i)) j
 
+/-- The vertex step homotopies are face-compatible across simplices. -/
 theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_faceCompatible {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (D : VertexHomotopyData x n)
     (smp : C(SingularChains.Simplex (n + 2), X)) :
@@ -940,6 +1130,8 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_faceCompatible {X : Ty
   rw [vertexStepHomotopy_face_apply, vertexStepHomotopy_face_apply,
     SingularChains.singularSimplex_face_face smp hij]
 
+/-- The `VertexHomotopyData` in degree `n` induces vertex data in degree `n+1`
+(via `vertexStepHomotopy`). -/
 def SecondHurewicz.SimplyConnected.VertexHomotopyData.next {X : Type} [TopologicalSpace X] {x : X}
     {n : ℕ} (D : SecondHurewicz.SimplyConnected.VertexHomotopyData x n) :
     SecondHurewicz.SimplyConnected.VertexHomotopyData x (n + 1)
@@ -950,11 +1142,13 @@ def SecondHurewicz.SimplyConnected.VertexHomotopyData.next {X : Type} [Topologic
   of_verticesBased := SecondHurewicz.SimplyConnected.vertexStepHomotopy_of_verticesBased D
   face_compatible := SecondHurewicz.SimplyConnected.vertexStepHomotopy_faceCompatible D
 
+/-- The edge path of a simplex along edge `(i,j)` in the chosen base paths. -/
 def SecondHurewicz.SimplyConnected.basedEdgePath {X : Type} [TopologicalSpace X] (x : X)
     (smp : C(SingularChains.Simplex 1, X)) (h₀ : smp (stdSimplex.vertex (S := ℝ) (0 : Fin 2)) = x)
     (h₁ : smp (stdSimplex.vertex (S := ℝ) (1 : Fin 2)) = x) : Path x x :=
   (SingularChains.simplexPath smp).cast h₀.symm h₁.symm
 
+/-- The based edge path of a constant configuration is constant. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.basedEdgePath_const {X : Type} [TopologicalSpace X]
     (x : X) :
@@ -963,15 +1157,19 @@ theorem SecondHurewicz.SimplyConnected.basedEdgePath_const {X : Type} [Topologic
   funext t
   rfl
 
+/-- The chosen path from a vertex value to the basepoint `x` (using
+`SimplyConnectedSpace`). -/
 def SecondHurewicz.SimplyConnected.chosenBasePath {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x y : X) : Path y x := by
   classical exact if h : y = x then (Path.refl x).cast h rfl else PathConnectedSpace.somePath y x
 
+/-- The chosen base path at `x` itself is the constant path. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.chosenBasePath_self {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) : chosenBasePath x x = Path.refl x := by
   simp [chosenBasePath]
 
+/-- The chosen nullhomotopy of a based edge loop. -/
 def SecondHurewicz.SimplyConnected.chosenNullHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (p : Path x x) : p.Homotopy (Path.refl x) := by
   classical
@@ -979,6 +1177,7 @@ def SecondHurewicz.SimplyConnected.chosenNullHomotopy {X : Type} [TopologicalSpa
     if h : p = Path.refl x then (Path.Homotopy.refl (Path.refl x)).cast h.symm rfl
     else Classical.choice (SimplyConnectedSpace.paths_homotopic p (Path.refl x))
 
+/-- The chosen nullhomotopy of the constant loop is stationary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.chosenNullHomotopy_refl {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
@@ -986,12 +1185,14 @@ theorem SecondHurewicz.SimplyConnected.chosenNullHomotopy_refl {X : Type} [Topol
   simp [chosenNullHomotopy]
   rfl
 
+/-- The homotopy contracting a `0`-simplex to `x` along `chosenBasePath`. -/
 def SecondHurewicz.SimplyConnected.vertexHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 0, X)) :
     C((unitInterval) × SingularChains.Simplex 0, X) :=
   (chosenBasePath x (smp (stdSimplex.vertex (S := ℝ) (0 : Fin 1)))).toContinuousMap.comp
     (ContinuousMap.fst : C((unitInterval) × SingularChains.Simplex 0, (unitInterval)))
 
+/-- At time `0`, `vertexHomotopy` is the given `0`-simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexHomotopy_zero {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 0, X))
@@ -999,12 +1200,14 @@ theorem SecondHurewicz.SimplyConnected.vertexHomotopy_zero {X : Type} [Topologic
   change chosenBasePath x (smp (stdSimplex.vertex (S := ℝ) (0 : Fin 1))) 0 = smp s
   rw [Path.source, SingularChains.simplexZero_eq_vertex s]
 
+/-- At time `1`, `vertexHomotopy` lands at the basepoint. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexHomotopy_one {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 0, X))
     (s : SingularChains.Simplex 0) : vertexHomotopy x smp (1, s) = x :=
   (chosenBasePath x (smp (stdSimplex.vertex (S := ℝ) (0 : Fin 1)))).target
 
+/-- The vertex homotopy at the basepoint is stationary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexHomotopy_const {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
@@ -1015,6 +1218,7 @@ theorem SecondHurewicz.SimplyConnected.vertexHomotopy_const {X : Type} [Topologi
   rw [chosenBasePath_self]
   rfl
 
+/-- The homotopy contracting an edge to the basepoint, relative to its endpoints. -/
 def SecondHurewicz.SimplyConnected.edgeNullHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X))
     (h₀ : smp (stdSimplex.vertex (S := ℝ) (0 : Fin 2)) = x)
@@ -1024,6 +1228,7 @@ def SecondHurewicz.SimplyConnected.edgeNullHomotopy {X : Type} [TopologicalSpace
     ((ContinuousMap.id (unitInterval)).prodMap
       ⟨stdSimplexHomeomorphUnitInterval, stdSimplexHomeomorphUnitInterval.continuous⟩)
 
+/-- At time `0`, `edgeNullHomotopy` is the edge itself. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_zero {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X)) (h₀ h₁)
@@ -1035,6 +1240,7 @@ theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_zero {X : Type} [Topolog
   change smp (stdSimplexHomeomorphUnitInterval.symm (stdSimplexHomeomorphUnitInterval s)) = smp s
   rw [stdSimplexHomeomorphUnitInterval.symm_apply_apply]
 
+/-- At time `1`, `edgeNullHomotopy` is constant at `x`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_one {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X)) (h₀ h₁)
@@ -1044,6 +1250,7 @@ theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_one {X : Type} [Topologi
   rw [ContinuousMap.HomotopyWith.apply_one]
   rfl
 
+/-- `edgeNullHomotopy` sends vertex `0` to `x` for all times. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_vertex_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X))
@@ -1054,6 +1261,7 @@ theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_vertex_zero {X : Type}
   rw [stdSimplexHomeomorphUnitInterval_zero]
   exact Path.Homotopy.source _ t
 
+/-- `edgeNullHomotopy` sends vertex `1` to `x` for all times. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_vertex_one {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X)) (h₀ h₁)
@@ -1064,6 +1272,7 @@ theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_vertex_one {X : Type} [T
   rw [stdSimplexHomeomorphUnitInterval_one]
   exact Path.Homotopy.target _ t
 
+/-- The edge nullhomotopy of the constant edge is stationary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_const {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
@@ -1078,6 +1287,7 @@ theorem SecondHurewicz.SimplyConnected.edgeNullHomotopy_const {X : Type} [Topolo
   rw [basedEdgePath_const, chosenNullHomotopy_refl]
   rfl
 
+/-- The initial vertex-homotopy data built from `chosenBasePath`. -/
 def SecondHurewicz.SimplyConnected.vertexInitialData {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) : VertexHomotopyData x 0
     where
@@ -1093,16 +1303,20 @@ def SecondHurewicz.SimplyConnected.vertexInitialData {X : Type} [TopologicalSpac
     smp :=
     faceCompatible_zero (fun i => vertexHomotopy x (smp.comp (SingularChains.simplexFace 0 i)))
 
+/-- The vertex-straightening data for simplices: the recursive tower of vertex
+homotopies. -/
 def SecondHurewicz.SimplyConnected.vertexStraighteningData {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) : (n : ℕ) → VertexHomotopyData x n
   | 0 => vertexInitialData x
   | n + 1 => (vertexStraighteningData x n).next
 
+/-- The homotopy straightening the vertices of a simplex to the basepoint. -/
 def SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (n : ℕ) (smp : C(SingularChains.Simplex n, X)) :
     C((unitInterval) × SingularChains.Simplex n, X) :=
   (vertexStraighteningData x n).homotopy smp
 
+/-- At time `0`, `vertexStraighteningHomotopy` is the simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
@@ -1110,6 +1324,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero {X : Typ
     vertexStraighteningHomotopy x n smp (0, s) = smp s :=
   (vertexStraighteningData x n).zero smp s
 
+/-- The time-`0` slice of the vertex-straightening homotopy is the simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
@@ -1118,12 +1333,14 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_zer
   ext s
   exact vertexStraighteningHomotopy_zero x n smp s
 
+/-- Vertex straightening is face-compatible across consecutive degrees. -/
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ) :
     FaceCompatibleHomotopies n (vertexStraighteningHomotopy x n)
       (vertexStraighteningHomotopy x (n + 1)) :=
   vertexStepHomotopy_face (vertexStraighteningData x n)
 
+/-- The `i`-th face of a time slice of the degree `n + 1` straightening is the time slice of the degree `n` straightening of that face. -/
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : C(SingularChains.Simplex (n + 1), X)) (i : Fin (n + 2)) (r : (unitInterval)) :
@@ -1132,12 +1349,14 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_fac
       timeSlice (vertexStraighteningHomotopy x n (smp.comp (SingularChains.simplexFace n i))) r :=
   timeSlice_face (vertexStraighteningHomotopy_face x n) smp i r
 
+/-- At time `1` the vertex-straightened simplex is vertex-based. -/
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : C(SingularChains.Simplex n, X)) :
     VerticesBased x n (timeSlice (vertexStraighteningHomotopy x n smp) 1) :=
   (vertexStraighteningData x n).one_verticesBased smp
 
+/-- On an already vertex-based simplex the straightening is stationary. -/
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_of_verticesBased {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : C(SingularChains.Simplex n, X)) (h : VerticesBased x n smp) :
@@ -1147,6 +1366,8 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_of_verticesBa
           C((unitInterval) × SingularChains.Simplex n, SingularChains.Simplex n)) :=
   (vertexStraighteningData x n).of_verticesBased smp h
 
+/-- Time slices of the vertex straightening of an already-based simplex are the
+simplex itself. -/
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_of_verticesBased
     {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : C(SingularChains.Simplex n, X)) (h : VerticesBased x n smp) (r : (unitInterval)) :
@@ -1154,6 +1375,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_timeSlice_of_
   rw [vertexStraighteningHomotopy_of_verticesBased x n smp h]
   rfl
 
+/-- The vertex straightening of the constant simplex is stationary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_const {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ) :
@@ -1162,12 +1384,15 @@ theorem SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_const {X : Ty
   rw [vertexStraighteningHomotopy_of_verticesBased x n _ (verticesBased_const x n)]
   rfl
 
+/-- The stationary homotopy of a simplex (constant in time). -/
 def SecondHurewicz.SimplyConnected.stationarySimplexHomotopy {X : Type} [TopologicalSpace X]
     (n : ℕ) (smp : C(SingularChains.Simplex n, X)) :
     C((unitInterval) × SingularChains.Simplex n, X) :=
   smp.comp
     (ContinuousMap.snd : C((unitInterval) × SingularChains.Simplex n, SingularChains.Simplex n))
 
+/-- The homotopy straightening the edges of a simplex to basepoint loops, keeping
+the vertices fixed. -/
 def SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X)) :
     C((unitInterval) × SingularChains.Simplex 1, X) := by
@@ -1179,6 +1404,7 @@ def SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy {X : Type} [Topolog
       edgeNullHomotopy x smp h.1 h.2
     else stationarySimplexHomotopy 1 smp
 
+/-- At time `0`, `edgeStraighteningHomotopy` is the simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X))
@@ -1189,6 +1415,7 @@ theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_zero {X : Type}
   · exact edgeNullHomotopy_zero x smp _ _ s
   · rfl
 
+/-- At time `1`, `edgeStraighteningHomotopy` has based edges. -/
 theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_one {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X))
     (h₀ : smp (stdSimplex.vertex (S := ℝ) (0 : Fin 2)) = x)
@@ -1202,6 +1429,7 @@ theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_one {X : Type}
   rw [edgeStraighteningHomotopy, dif_pos h]
   exact edgeNullHomotopy_one x smp _ _ s
 
+/-- The edge straightening fixes each vertex. -/
 theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_vertex {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (smp : C(SingularChains.Simplex 1, X))
     (i : Fin 2) (t : (unitInterval)) :
@@ -1216,6 +1444,7 @@ theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_vertex {X : Typ
     · exact (edgeNullHomotopy_vertex_one x smp h.1 h.2 t).trans h.2.symm
   · rfl
 
+/-- The edge straightening of the constant simplex is stationary. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_const {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
@@ -1225,6 +1454,8 @@ theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_const {X : Type
   simp only [edgeStraighteningHomotopy, ContinuousMap.const_apply]
   exact edgeNullHomotopy_const x
 
+/-- The `i`-th face of the edge straightening agrees with the edge straightening
+of the face. -/
 theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     FaceCompatibleHomotopies 0 (stationarySimplexHomotopy 0) (edgeStraighteningHomotopy x) := by
@@ -1237,6 +1468,7 @@ theorem SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_face {X : Type}
   rw [SingularChains.simplexZero_eq_vertex s, SingularChains.simplexFace_vertex]
   exact edgeStraighteningHomotopy_vertex x smp _ t
 
+/-- The face restrictions of `H'` on a degree `n + 2` simplex are pairwise compatible. -/
 theorem SecondHurewicz.SimplyConnected.nextFaceHomotopies_compatible {X : Type}
     [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -1277,6 +1509,8 @@ theorem SecondHurewicz.SimplyConnected.nextFaceHomotopies_compatible {X : Type}
         (t, s)
   rw [SingularChains.simplexFace_comp hij]
 
+/-- The coherent boundary homotopy of a simplex assembled from face-compatible
+data. -/
 def SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy {X : Type} [TopologicalSpace X]
     {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -1288,6 +1522,7 @@ def SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy {X : Type} [Topo
   glueFaceHomotopies (fun i => H' (smp.comp (SingularChains.simplexFace (n + 1) i)))
     (nextFaceHomotopies_compatible H H' h smp)
 
+/-- On the `i`-th face boundary, `coherentFaceBoundaryHomotopy` evaluates to `H'` of that face. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy_face {X : Type}
     [TopologicalSpace X] {n : ℕ}
@@ -1301,6 +1536,7 @@ theorem SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy_face {X : Ty
       H' (smp.comp (SingularChains.simplexFace (n + 1) i)) (t, s) :=
   glueFaceHomotopies_face _ _ i t s
 
+/-- At time `0` the coherent boundary homotopy is the simplex. -/
 theorem SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy_zero {X : Type}
     [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -1313,6 +1549,8 @@ theorem SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy_zero {X : Ty
   glueFaceHomotopies_zero _ _ smp
     (fun i s => h₀ (smp.comp (SingularChains.simplexFace (n + 1) i)) s) b
 
+/-- The extension of a coherent boundary homotopy to the whole simplex cylinder,
+using the homotopy extension property. -/
 def SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy {X : Type} [TopologicalSpace X]
     {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -1325,6 +1563,7 @@ def SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy {X : Type} [Top
   extendBoundaryHomotopy smp (coherentFaceBoundaryHomotopy H H' h smp)
     (coherentFaceBoundaryHomotopy_zero H H' h h₀ smp)
 
+/-- At time `0` the extended coherent homotopy is the simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero {X : Type}
     [TopologicalSpace X] {n : ℕ}
@@ -1337,6 +1576,7 @@ theorem SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero {X : T
     extendCoherentSimplexHomotopy H H' h h₀ smp (0, s) = smp s :=
   extendBoundaryHomotopy_bottom _ _ _ s
 
+/-- The extended degree `n + 2` family is face-compatible with `H'`. -/
 theorem SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face {X : Type}
     [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -1356,12 +1596,17 @@ theorem SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face {X : T
   rw [extendBoundaryHomotopy_face]
   exact coherentFaceBoundaryHomotopy_face H H' h smp i t s
 
+/-! ### Based triangles and the triangle quotient -/
+
+/-- The boundary of the `2`-simplex as a subset: the union of its three edges. -/
 def SecondHurewicz.SimplyConnected.triangleBoundary : Set (SingularChains.Simplex 2) :=
   {s | ∃ i, s i = 0}
 
+/-- A based triangle at `x`: a `2`-simplex map sending `triangleBoundary` to `x`. -/
 def SecondHurewicz.SimplyConnected.BasedTriangle {X : Type} [TopologicalSpace X] (x : X) :=
   { τ : C(SingularChains.Simplex 2, X) // ∀ s ∈ triangleBoundary, τ s = x }
 
+/-- The quotient map `I × I → Simplex 2` sending `(a, b)` to `![1 - a, a - min a b, min a b]`. -/
 def SecondHurewicz.SimplyConnected.triangleQuotient :
     C((unitInterval) × (unitInterval), SingularChains.Simplex 2)
     where
@@ -1384,26 +1629,31 @@ def SecondHurewicz.SimplyConnected.triangleQuotient :
     intro i
     fin_cases i <;> dsimp <;> fun_prop
 
+/-- `triangleQuotient z 0 = 1 - z.1`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_zero
     (z : (unitInterval) × (unitInterval)) : triangleQuotient z 0 = 1 - (z.1 : ℝ) :=
   rfl
 
+/-- `triangleQuotient z 1 = z.1 - min z.1 z.2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_one
     (z : (unitInterval) × (unitInterval)) :
     triangleQuotient z 1 = (z.1 : ℝ) - Min.min (z.1 : ℝ) (z.2 : ℝ) :=
   rfl
 
+/-- `triangleQuotient z 2 = min z.1 z.2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_two
     (z : (unitInterval) × (unitInterval)) : triangleQuotient z 2 = Min.min (z.1 : ℝ) (z.2 : ℝ) :=
   rfl
 
+/-- The quotient `(Fin 2 → I) → Simplex 2`, i.e. `triangleQuotient ∘ (t ↦ (t 0, t 1))`. -/
 def SecondHurewicz.SimplyConnected.triangleCubeQuotient :
     C(Fin 2 → (unitInterval), SingularChains.Simplex 2) :=
   triangleQuotient.comp ⟨fun t => (t 0, t 1), by fun_prop⟩
 
+/-- `triangleCubeQuotient` sends the square boundary into the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.triangleCubeQuotient_boundary (t : Fin 2 → (unitInterval))
     (ht : t ∈ Cube.boundary (Fin 2)) : triangleCubeQuotient t ∈ triangleBoundary := by
   rcases ht with ⟨i, hi | hi⟩
@@ -1426,10 +1676,12 @@ theorem SecondHurewicz.SimplyConnected.triangleCubeQuotient_boundary (t : Fin 2 
       change (t 0 : ℝ) - Min.min (t 0 : ℝ) (t 1 : ℝ) = 0
       simp [hi, min_eq_left (t 0).property.2]
 
+/-- The based square loop `τ ∘ triangleCubeQuotient`. -/
 def SecondHurewicz.SimplyConnected.basedTriangleLoop {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedTriangle x) : GenLoop (Fin 2) X x :=
   ⟨τ.val.comp triangleCubeQuotient, fun t ht => τ.property _ (triangleCubeQuotient_boundary t ht)⟩
 
+/-- The square map of `basedTriangleLoop τ` is `τ ∘ triangleQuotient`. -/
 theorem SecondHurewicz.SimplyConnected.squareMap_basedTriangleLoop {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
     SecondHurewicz.squareMap (basedTriangleLoop τ) = τ.val.comp triangleQuotient := by
@@ -1442,20 +1694,24 @@ theorem SecondHurewicz.SimplyConnected.squareMap_basedTriangleLoop {X : Type} [T
   rw [SecondHurewicz.squareCoordinates_zero, SecondHurewicz.squareCoordinates_one]
   rfl
 
+/-- The `π_2`-class `⟦basedTriangleLoop τ⟧` of a based triangle. -/
 def SecondHurewicz.SimplyConnected.basedTriangleClass {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedTriangle x) : Additive (π_ 2 X x) :=
   Additive.ofMul (⟦basedTriangleLoop τ⟧ : π_ 2 X x)
 
+/-- The constant based triangle at `x`. -/
 def SecondHurewicz.SimplyConnected.constantBasedTriangle {X : Type} [TopologicalSpace X] (x : X) :
     BasedTriangle x :=
   ⟨ContinuousMap.const (SingularChains.Simplex 2) x, fun _ _ => rfl⟩
 
+/-- The edge-straightening homotopy of a triangle. -/
 def SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 2) : C((unitInterval) × SingularChains.Simplex 2, X) :=
   extendCoherentSimplexHomotopy (stationarySimplexHomotopy 0) (edgeStraighteningHomotopy x)
     (edgeStraighteningHomotopy_face x) (edgeStraighteningHomotopy_zero x) smp
 
+/-- At time `0` the triangle edge straightening is the triangle. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
@@ -1463,6 +1719,7 @@ theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_zero {X
     triangleEdgeStraighteningHomotopy x smp (0, s) = smp s :=
   extendCoherentSimplexHomotopy_zero _ _ _ _ smp s
 
+/-- Triangle edge straightening is face-compatible with `edgeStraighteningHomotopy`. -/
 theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     FaceCompatibleHomotopies 1 (edgeStraighteningHomotopy x)
@@ -1470,6 +1727,7 @@ theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_face {X
   extendCoherentSimplexHomotopy_face (stationarySimplexHomotopy 0) (edgeStraighteningHomotopy x)
     (edgeStraighteningHomotopy_face x) (edgeStraighteningHomotopy_zero x)
 
+/-- The edge-straightening homotopy of a tetrahedron (`3`-simplex). -/
 def SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 3) : C((unitInterval) × SingularChains.Simplex 3, X) :=
@@ -1477,6 +1735,7 @@ def SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy {X : Typ
     (triangleEdgeStraighteningHomotopy x) (triangleEdgeStraighteningHomotopy_face x)
     (triangleEdgeStraighteningHomotopy_zero x) smp
 
+/-- At time `0` the tetrahedron edge straightening is the tetrahedron. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_zero {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
@@ -1484,6 +1743,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_zero
     tetrahedronEdgeStraighteningHomotopy x smp (0, s) = smp s :=
   extendCoherentSimplexHomotopy_zero _ _ _ _ smp s
 
+/-- Tetrahedron edge straightening is face-compatible with `triangleEdgeStraighteningHomotopy`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     FaceCompatibleHomotopies 2 (triangleEdgeStraighteningHomotopy x)
@@ -1492,6 +1752,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_face
     (triangleEdgeStraighteningHomotopy x) (triangleEdgeStraighteningHomotopy_face x)
     (triangleEdgeStraighteningHomotopy_zero x)
 
+/-- For vertex-based `smp`, every face of the time-`1` endpoint is constant `x`. -/
 theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_one_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 2) (h : VerticesBased x 2 smp) (i : Fin 3) :
@@ -1503,6 +1764,7 @@ theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_one_fac
     edgeStraighteningHomotopy_one x (smp.comp (SingularChains.simplexFace 1 i)) (h.face i 0)
       (h.face i 1) s
 
+/-- For vertex-based `smp`, the time-`1` endpoint is `x` on the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_one_boundary {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 2) (h : VerticesBased x 2 smp)
@@ -1515,23 +1777,29 @@ theorem SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy_one_bou
     congrArg (fun f : C(SingularChains.Simplex 1, X) => f t)
       (triangleEdgeStraighteningHomotopy_one_face x smp h i)
 
+/-- The time-`1` endpoint of the edge straightening: a boundary-based triangle. -/
 def SecondHurewicz.SimplyConnected.edgeStraightenedTriangle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 2)
     (h : VerticesBased x 2 smp) : BasedTriangle x :=
   ⟨timeSlice (triangleEdgeStraighteningHomotopy x smp) 1,
     triangleEdgeStraighteningHomotopy_one_boundary x smp h⟩
 
+/-- The vertex normalization of a simplex: its time-`1` slice under the vertex
+straightening. -/
 def SecondHurewicz.SimplyConnected.vertexNormalizedSimplex {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (n : ℕ) (smp : SingularChains.SingularSimplex X n) :
     SingularChains.SingularSimplex X n :=
   timeSlice (vertexStraighteningHomotopy x n smp) 1
 
+/-- The vertex normalization is vertex-based. -/
 theorem SecondHurewicz.SimplyConnected.vertexNormalizedSimplex_verticesBased {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : SingularChains.SingularSimplex X n) :
     VerticesBased x n (vertexNormalizedSimplex x n smp) :=
   vertexStraighteningHomotopy_one_verticesBased x n smp
 
+/-- The faces of the vertex normalization are the vertex normalizations of the
+faces. -/
 theorem SecondHurewicz.SimplyConnected.vertexNormalizedSimplex_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : SingularChains.SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
@@ -1539,18 +1807,22 @@ theorem SecondHurewicz.SimplyConnected.vertexNormalizedSimplex_face {X : Type}
       vertexNormalizedSimplex x n (smp.comp (SingularChains.simplexFace n i)) :=
   vertexStraighteningHomotopy_timeSlice_face x n smp i 1
 
+/-- The vertex normalization of an already vertex-based simplex is the simplex
+itself. -/
 theorem SecondHurewicz.SimplyConnected.vertexNormalizedSimplex_of_verticesBased {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (smp : SingularChains.SingularSimplex X n) (h : VerticesBased x n smp) :
     vertexNormalizedSimplex x n smp = smp :=
   vertexStraighteningHomotopy_timeSlice_of_verticesBased x n smp h 1
 
+/-- The normalized triangle: vertex- then edge-straightened. -/
 def SecondHurewicz.SimplyConnected.normalizedTriangle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 2) :
     BasedTriangle x :=
   edgeStraightenedTriangle x (vertexNormalizedSimplex x 2 smp)
     (vertexNormalizedSimplex_verticesBased x 2 smp)
 
+/-- Normalizing an already vertex-based triangle. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTriangle_of_verticesBased {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 2) (h : VerticesBased x 2 smp) :
@@ -1561,11 +1833,13 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangle_of_verticesBased {X : 
       timeSlice (triangleEdgeStraighteningHomotopy x smp) 1
   rw [vertexNormalizedSimplex_of_verticesBased x 2 smp h]
 
+/-- The normalized tetrahedron map: vertex- then edge-straightened `3`-simplex. -/
 def SecondHurewicz.SimplyConnected.normalizedTetrahedronMap {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 3) :
     SingularChains.SingularSimplex X 3 :=
   timeSlice (tetrahedronEdgeStraighteningHomotopy x (vertexNormalizedSimplex x 3 smp)) 1
 
+/-- The `i`-th face of the normalized tetrahedron map is the normalized triangle of the `i`-th face. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTetrahedronMap_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 3) (i : Fin 4) :
@@ -1578,6 +1852,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTetrahedronMap_face {X : Type}
   rw [timeSlice_face (tetrahedronEdgeStraighteningHomotopy_face x), vertexNormalizedSimplex_face]
   rfl
 
+/-- On the `i`-th face, the normalized tetrahedron map sends the triangle boundary to `x`. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTetrahedronMap_face_boundary {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 3) (i : Fin 4) (s : SingularChains.Simplex 2)
@@ -1588,11 +1863,14 @@ theorem SecondHurewicz.SimplyConnected.normalizedTetrahedronMap_face_boundary {X
       (normalizedTetrahedronMap_face x smp i)
   exact hf.trans ((normalizedTriangle x (smp.comp (SingularChains.simplexFace 2 i))).property s hs)
 
+/-- The normalized `2`-chain: `simplexEndpointOperator` at time `1` of the
+straightening. -/
 def SecondHurewicz.SimplyConnected.normalizedTwoChain {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) : SingularChains.Chains X 2 →ₗ[ℤ] SingularChains.Chains X 2 :=
   SingularChains.chainLift X 2 fun smp =>
     SingularChains.simplexChain X 2 (normalizedTriangle x smp).val
 
+/-- `normalizedTwoChain` sends a simplex generator to the simplex chain of its normalized triangle. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.normalizedTwoChain_simplex {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 2) :
@@ -1600,6 +1878,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTwoChain_simplex {X : Type} [To
       SingularChains.simplexChain X 2 (normalizedTriangle x smp).val :=
   SingularChains.chainLift_simplex X 2 _ smp
 
+/-- `normalizedTwoChain` agrees with the vertex-then-edge normalization. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTwoChain_eq {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     normalizedTwoChain x =
@@ -1610,6 +1889,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTwoChain_eq {X : Type} [Topolog
   simp only [normalizedTwoChain_simplex, LinearMap.comp_apply, simplexEndpointOperator_simplex]
   rfl
 
+/-- The degree-`2` cycle obtained by straightening along `vertexStraighteningHomotopy`. -/
 def SecondHurewicz.SimplyConnected.vertexNormalizedTwoCycle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -1617,6 +1897,7 @@ def SecondHurewicz.SimplyConnected.vertexNormalizedTwoCycle {X : Type} [Topologi
   straightenedTwoCycle (vertexStraighteningHomotopy x 1) (vertexStraighteningHomotopy x 2)
     (vertexStraighteningHomotopy_face x 1) c
 
+/-- The vertex-normalized `2`-cycle is homologous to `c`. -/
 theorem SecondHurewicz.SimplyConnected.vertexNormalizedTwoCycle_class {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -1626,6 +1907,7 @@ theorem SecondHurewicz.SimplyConnected.vertexNormalizedTwoCycle_class {X : Type}
   straightenedTwoCycle_class _ _ (vertexStraighteningHomotopy_face x 1)
     (vertexStraighteningHomotopy_timeSlice_zero x 2) c
 
+/-- The fully normalized cycle: `vertexNormalizedTwoCycle` followed by edge straightening. -/
 def SecondHurewicz.SimplyConnected.normalizedTwoCycle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -1633,6 +1915,7 @@ def SecondHurewicz.SimplyConnected.normalizedTwoCycle {X : Type} [TopologicalSpa
   straightenedTwoCycle (edgeStraighteningHomotopy x) (triangleEdgeStraighteningHomotopy x)
     (triangleEdgeStraighteningHomotopy_face x) (vertexNormalizedTwoCycle x c)
 
+/-- The underlying chain of `normalizedTwoCycle c`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.normalizedTwoCycle_val {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X)
@@ -1641,6 +1924,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTwoCycle_val {X : Type} [Topolo
   rw [normalizedTwoChain_eq]
   rfl
 
+/-- The normalized `2`-cycle is homologous to `c`. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTwoCycle_class {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -1656,12 +1940,18 @@ theorem SecondHurewicz.SimplyConnected.normalizedTwoCycle_class {X : Type} [Topo
           (vertexNormalizedTwoCycle x c)).trans
       (vertexNormalizedTwoCycle_class x c)
 
+/-! ### The tetrahedron boundary and square rotation -/
+
+/-- The one-skeleton of the tetrahedron: points with at least two vanishing
+barycentric coordinates. -/
 def SecondHurewicz.SimplyConnected.tetrahedronOneSkeleton : Set (SingularChains.Simplex 3) :=
   {s | ∃ i j : Fin 4, i ≠ j ∧ s i = 0 ∧ s j = 0}
 
+/-- A based tetrahedron at `x`: a `3`-simplex map sending the one-skeleton to `x`. -/
 def SecondHurewicz.SimplyConnected.BasedTetrahedron {X : Type} [TopologicalSpace X] (x : X) :=
   { τ : C(SingularChains.Simplex 3, X) // ∀ s ∈ tetrahedronOneSkeleton, τ s = x }
 
+/-- Each face map of the triangle lands in `triangleBoundary`. -/
 theorem SecondHurewicz.SimplyConnected.simplexFace_triangleBoundary (i : Fin 4)
     (s : SingularChains.Simplex 2) (hs : s ∈ triangleBoundary) :
     SingularChains.simplexFace 2 i s ∈ tetrahedronOneSkeleton := by
@@ -1670,17 +1960,20 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_triangleBoundary (i : Fin 4)
     ⟨i, i.succAbove j, (Fin.succAbove_ne i j).symm, SingularChains.simplexFace_apply_self 2 i s,
       (SingularChains.simplexFace_apply_succAbove 2 i s j).trans hj⟩
 
+/-- The `i`-th face of a based tetrahedron, as a based triangle. -/
 def SecondHurewicz.SimplyConnected.basedTetrahedronFace {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedTetrahedron x) (i : Fin 4) : BasedTriangle x :=
   ⟨τ.val.comp (SingularChains.simplexFace 2 i), fun s hs =>
     τ.property _ (simplexFace_triangleBoundary i s hs)⟩
 
+/-- The linear blend between two simplex values of a tetrahedron. -/
 def SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend {n : ℕ} (t : (unitInterval))
     (a b : SingularChains.Simplex n) : SingularChains.Simplex n :=
   ⟨(1 - (t : ℝ)) • (a : Fin (n + 1) → ℝ) + (t : ℝ) • (b : Fin (n + 1) → ℝ),
     convex_stdSimplex ℝ _ a.property b.property (sub_nonneg.mpr t.property.2) t.property.1
       (by ring)⟩
 
+/-- At `t = 0` the tetrahedron blend is the first map. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_zero {n : ℕ}
     (a b : SingularChains.Simplex n) : tetrahedronSimplexBlend 0 a b = a := by
@@ -1689,6 +1982,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_zero {n : ℕ}
   change (1 - (0 : ℝ)) * a i + (0 : ℝ) * b i = a i
   simp
 
+/-- At `t = 1` the tetrahedron blend is the second map. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_one {n : ℕ}
     (a b : SingularChains.Simplex n) : tetrahedronSimplexBlend 1 a b = b := by
@@ -1697,6 +1991,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_one {n : ℕ}
   change (1 - (1 : ℝ)) * a i + (1 : ℝ) * b i = b i
   simp
 
+/-- Blending a simplex point with itself is the identity. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_self {n : ℕ} (t : (unitInterval))
     (a : SingularChains.Simplex n) : tetrahedronSimplexBlend t a a = a := by
@@ -1705,6 +2000,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_self {n : ℕ} (t
   change (1 - (t : ℝ)) * a i + (t : ℝ) * a i = a i
   ring
 
+/-- The blend of two tetrahedron maps as a continuous map on the cylinder. -/
 def SecondHurewicz.SimplyConnected.tetrahedronSimplexBlendMap {n : ℕ} {Y : Type}
     [TopologicalSpace Y] (f g : C(Y, SingularChains.Simplex n)) :
     C((unitInterval) × Y, SingularChains.Simplex n)
@@ -1724,12 +2020,14 @@ def SecondHurewicz.SimplyConnected.tetrahedronSimplexBlendMap {n : ℕ} {Y : Typ
       ((continuous_const.sub (continuous_subtype_val.comp continuous_fst)).mul hf).add
         ((continuous_subtype_val.comp continuous_fst).mul hg)
 
+/-- A coordinate vanishing at both endpoints of a blend vanishes throughout. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronSimplexBlend_zero_coordinate {n : ℕ}
     (t : (unitInterval)) (a b : SingularChains.Simplex n) (i : Fin (n + 1)) (ha : a i = 0)
     (hb : b i = 0) : tetrahedronSimplexBlend t a b i = 0 := by
   change (1 - (t : ℝ)) * a i + (t : ℝ) * b i = 0
   simp [ha, hb]
 
+/-- Face `0` of a `2`-simplex is `![0, s 0, s 1, s 2]`. -/
 theorem SecondHurewicz.SimplyConnected.simplexFace_two_zero (s : SingularChains.Simplex 2) :
     (SingularChains.simplexFace 2 0 s : Fin 4 → ℝ) = ![0, s 0, s 1, s 2] := by
   funext i
@@ -1739,6 +2037,7 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_two_zero (s : SingularChains.
   · exact SingularChains.simplexFace_apply_succAbove 2 0 s 1
   · exact SingularChains.simplexFace_apply_succAbove 2 0 s 2
 
+/-- Face `1` of a `2`-simplex is `![s 0, 0, s 1, s 2]`. -/
 theorem SecondHurewicz.SimplyConnected.simplexFace_two_one (s : SingularChains.Simplex 2) :
     (SingularChains.simplexFace 2 1 s : Fin 4 → ℝ) = ![s 0, 0, s 1, s 2] := by
   funext i
@@ -1748,6 +2047,7 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_two_one (s : SingularChains.S
   · exact SingularChains.simplexFace_apply_succAbove 2 1 s 1
   · exact SingularChains.simplexFace_apply_succAbove 2 1 s 2
 
+/-- Face `2` of a `2`-simplex is `![s 0, s 1, 0, s 2]`. -/
 theorem SecondHurewicz.SimplyConnected.simplexFace_two_two (s : SingularChains.Simplex 2) :
     (SingularChains.simplexFace 2 2 s : Fin 4 → ℝ) = ![s 0, s 1, 0, s 2] := by
   funext i
@@ -1757,6 +2057,7 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_two_two (s : SingularChains.S
   · exact SingularChains.simplexFace_apply_self 2 2 s
   · exact SingularChains.simplexFace_apply_succAbove 2 2 s 2
 
+/-- Face `3` of a `2`-simplex is `![s 0, s 1, s 2, 0]`. -/
 theorem SecondHurewicz.SimplyConnected.simplexFace_two_three (s : SingularChains.Simplex 2) :
     (SingularChains.simplexFace 2 3 s : Fin 4 → ℝ) = ![s 0, s 1, s 2, 0] := by
   funext i
@@ -1766,6 +2067,8 @@ theorem SecondHurewicz.SimplyConnected.simplexFace_two_three (s : SingularChains
   · exact SingularChains.simplexFace_apply_succAbove 2 3 s 2
   · exact SingularChains.simplexFace_apply_self 2 3 s
 
+/-- A `3`-simplex map is a based tetrahedron if its one-skeleton restrictions are
+constant at `x`. -/
 def SecondHurewicz.SimplyConnected.BasedTetrahedron.ofFaces {X : Type} [TopologicalSpace X]
     {x : X} (τ : C(SingularChains.Simplex 3, X))
     (h :
@@ -1789,6 +2092,7 @@ def SecondHurewicz.SimplyConnected.BasedTetrahedron.ofFaces {X : Type} [Topologi
         SecondHurewicz.SimplyConnected.simplexFace_inverse 2 i ⟨s, hi⟩] at he
     exact he⟩
 
+/-- The first quadrilateral filling the tetrahedron boundary. -/
 def SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA :
     C(Fin 2 → (unitInterval), SingularChains.Simplex 3)
     where
@@ -1817,6 +2121,7 @@ def SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA :
     intro i
     fin_cases i <;> dsimp <;> fun_prop
 
+/-- `tetrahedronQuadrilateralA` sends the square boundary into the tetrahedron `1`-skeleton. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_boundary
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     tetrahedronQuadrilateralA u ∈ tetrahedronOneSkeleton := by
@@ -1838,10 +2143,12 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_boundary
         simp [DFunLike.coe, tetrahedronQuadrilateralA, hi, min_eq_left (u 0).property.2,
           max_eq_right (u 0).property.2]
 
+/-- The diagonal of `tetrahedronQuadrilateralA` lands in the `1`-skeleton. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_diagonal (t : (unitInterval)) :
     tetrahedronQuadrilateralA ![t, t] ∈ tetrahedronOneSkeleton := by
   refine ⟨1, 3, by decide, ?_, ?_⟩ <;> simp [DFunLike.coe, tetrahedronQuadrilateralA]
 
+/-- The cyclic shift of a `3`-simplex, `s ↦ ![s 3, s 0, s 1, s 2]`. -/
 def SecondHurewicz.SimplyConnected.tetrahedronQuarterShift :
     C(SingularChains.Simplex 3, SingularChains.Simplex 3)
     where
@@ -1866,6 +2173,7 @@ def SecondHurewicz.SimplyConnected.tetrahedronQuarterShift :
     · exact (continuous_apply 1).comp continuous_subtype_val
     · exact (continuous_apply 2).comp continuous_subtype_val
 
+/-- The cyclic index permutation `Fin 4 ≃ Fin 4` behind `tetrahedronQuarterShift`. -/
 def SecondHurewicz.SimplyConnected.tetrahedronQuarterIndex : Fin 4 ≃ Fin 4
     where
   toFun i := ![1, 2, 3, 0] i
@@ -1873,11 +2181,13 @@ def SecondHurewicz.SimplyConnected.tetrahedronQuarterIndex : Fin 4 ≃ Fin 4
   left_inv i := by fin_cases i <;> rfl
   right_inv i := by fin_cases i <;> rfl
 
+/-- `tetrahedronQuarterShift s` has `s i` at index `tetrahedronQuarterIndex i`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_index (s : SingularChains.Simplex 3)
     (i : Fin 4) : tetrahedronQuarterShift s (tetrahedronQuarterIndex i) = s i := by
   fin_cases i <;> rfl
 
+/-- `tetrahedronQuarterShift` preserves the tetrahedron `1`-skeleton. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_oneSkeleton
     (s : SingularChains.Simplex 3) (hs : s ∈ tetrahedronOneSkeleton) :
     tetrahedronQuarterShift s ∈ tetrahedronOneSkeleton := by
@@ -1886,27 +2196,32 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_oneSkeleton
     ⟨tetrahedronQuarterIndex i, tetrahedronQuarterIndex j, fun h =>
       hij (tetrahedronQuarterIndex.injective h), by simpa, by simpa⟩
 
+/-- The based square loop `τ ∘ tetrahedronQuadrilateralA`. -/
 def SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralLoop {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTetrahedron x) : GenLoop (Fin 2) X x :=
   ⟨τ.val.comp tetrahedronQuadrilateralA, fun u hu =>
     τ.property _ (tetrahedronQuadrilateralA_boundary u hu)⟩
 
+/-- The quadrilateral loop sends diagonal points to `x`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralLoop_diagonal {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) (t : (unitInterval)) :
     tetrahedronQuadrilateralLoop τ ![t, t] = x :=
   τ.property _ (tetrahedronQuadrilateralA_diagonal t)
 
+/-- The based square loop `τ ∘ tetrahedronQuadrilateralB`. -/
 def SecondHurewicz.SimplyConnected.tetrahedronShiftedQuadrilateralLoop {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) : GenLoop (Fin 2) X x :=
   ⟨τ.val.comp (tetrahedronQuarterShift.comp tetrahedronQuadrilateralA), fun u hu =>
     τ.property _
       (tetrahedronQuarterShift_oneSkeleton _ (tetrahedronQuadrilateralA_boundary u hu))⟩
 
+/-- The shifted quadrilateral loop sends diagonal points to `x`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronShiftedQuadrilateralLoop_diagonal {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) (t : (unitInterval)) :
     tetrahedronShiftedQuadrilateralLoop τ ![t, t] = x :=
   τ.property _ (tetrahedronQuarterShift_oneSkeleton _ (tetrahedronQuadrilateralA_diagonal t))
 
+/-- The quarter-turn rotation of the square `I × I` about its center. -/
 def SecondHurewicz.SimplyConnected.quarterTurn : C(Fin 2 → (unitInterval), Fin 2 → (unitInterval))
     where
   toFun u := ![u 1, (unitInterval.symm) (u 0)]
@@ -1915,11 +2230,13 @@ def SecondHurewicz.SimplyConnected.quarterTurn : C(Fin 2 → (unitInterval), Fin
     intro i
     fin_cases i <;> dsimp <;> fun_prop
 
+/-- `quarterTurn u = ![u 1, 1 - u 0]`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.quarterTurn_apply (u : Fin 2 → (unitInterval)) :
     quarterTurn u = ![u 1, (unitInterval.symm) (u 0)] :=
   rfl
 
+/-- `quarterTurn` preserves the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.quarterTurn_boundary (u : Fin 2 → (unitInterval))
     (hu : u ∈ Cube.boundary (Fin 2)) : quarterTurn u ∈ Cube.boundary (Fin 2) := by
   rcases hu with ⟨i, hi | hi⟩
@@ -1932,32 +2249,40 @@ theorem SecondHurewicz.SimplyConnected.quarterTurn_boundary (u : Fin 2 → (unit
       exact ⟨1, Or.inl (by simp [hi])⟩
     · exact ⟨0, Or.inr (by simpa using hi)⟩
 
+/-- The based square loop `p ∘ quarterTurn`. -/
 def SecondHurewicz.SimplyConnected.rotatedSquareLoop {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : GenLoop (Fin 2) X x :=
   ⟨p.val.comp quarterTurn, fun u hu => p.property _ (quarterTurn_boundary u hu)⟩
 
+/-- The rotation vector field on the square used for the rotation homotopy. -/
 def SecondHurewicz.SimplyConnected.rotationVector (v : ℝ × ℝ) : ℝ × ℝ :=
   (v.2, -v.1)
 
+/-- The norm of the rotation vector. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationVector_norm (v : ℝ × ℝ) :
     ‖rotationVector v‖ = ‖v‖ := by simp [rotationVector, Prod.norm_def, max_comm]
 
+/-- The affine blend `((1 - t) * v.1 + t * v.2, (1 - t) * v.2 - t * v.1)` interpolating `v` toward `rotationVector v`. -/
 def SecondHurewicz.SimplyConnected.rotationBlend (t : ℝ) (v : ℝ × ℝ) : ℝ × ℝ :=
   ((1 - t) * v.1 + t * v.2, (1 - t) * v.2 - t * v.1)
 
+/-- At `t = 0` the rotation blend is the identity. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationBlend_zero (v : ℝ × ℝ) : rotationBlend 0 v = v := by
   ext <;> simp [rotationBlend]
 
+/-- At `t = 1` the rotation blend reaches `rotationVector v`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationBlend_one (v : ℝ × ℝ) :
     rotationBlend 1 v = rotationVector v := by ext <;> simp [rotationBlend, rotationVector]
 
+/-- For every `t`, `rotationBlend t 0 = 0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationBlend_zero_vector (t : ℝ) :
     rotationBlend t 0 = 0 := by ext <;> simp [rotationBlend]
 
+/-- The rotation blend is nonzero off the center. -/
 theorem SecondHurewicz.SimplyConnected.rotationBlend_ne_zero (t : ℝ) {v : ℝ × ℝ} (hv : v ≠ 0) :
     rotationBlend t v ≠ 0 := by
   intro h
@@ -1971,19 +2296,23 @@ theorem SecondHurewicz.SimplyConnected.rotationBlend_ne_zero (t : ℝ) {v : ℝ 
   apply hv
   exact Prod.ext (mul_eq_zero.mp ha |>.resolve_left hd) (mul_eq_zero.mp hb |>.resolve_left hd)
 
+/-- The rotation blend is continuous. -/
 theorem SecondHurewicz.SimplyConnected.rotationBlend_continuous :
     Continuous (fun z : ℝ × (ℝ × ℝ) => rotationBlend z.1 z.2) := by
   unfold rotationBlend
   fun_prop
 
+/-- The centered square coordinates `(2 * u 0 - 1, 2 * u 1 - 1)`. -/
 def SecondHurewicz.SimplyConnected.rotationCentered (u : Fin 2 → (unitInterval)) : ℝ × ℝ :=
   (2 * (u 0 : ℝ) - 1, 2 * (u 1 : ℝ) - 1)
 
+/-- The centering map is continuous. -/
 theorem SecondHurewicz.SimplyConnected.rotationCentered_continuous :
     Continuous rotationCentered := by
   unfold rotationCentered
   fun_prop
 
+/-- The centered coordinates have norm at most `1`. -/
 theorem SecondHurewicz.SimplyConnected.rotationCentered_norm_le (u : Fin 2 → (unitInterval)) :
     ‖rotationCentered u‖ ≤ 1 := by
   rw [norm_prod_le_iff]
@@ -1991,6 +2320,7 @@ theorem SecondHurewicz.SimplyConnected.rotationCentered_norm_le (u : Fin 2 → (
   · constructor <;> dsimp [rotationCentered] <;> linarith [(u 0).property.1, (u 0).property.2]
   · constructor <;> dsimp [rotationCentered] <;> linarith [(u 1).property.1, (u 1).property.2]
 
+/-- On the square boundary, the centered coordinates have norm `1`. -/
 theorem SecondHurewicz.SimplyConnected.rotationCentered_norm_boundary (u : Fin 2 → (unitInterval))
     (hu : u ∈ Cube.boundary (Fin 2)) : ‖rotationCentered u‖ = 1 := by
   apply le_antisymm (rotationCentered_norm_le u)
@@ -2010,10 +2340,12 @@ theorem SecondHurewicz.SimplyConnected.rotationCentered_norm_boundary (u : Fin 2
       have hc : ‖(rotationCentered u).2‖ = 1 := by norm_num [rotationCentered, hi]
       exact hc ▸ norm_snd_le (rotationCentered u)
 
+/-- The normalizing denominator for radial projection to the boundary. -/
 def SecondHurewicz.SimplyConnected.rotationDenominator (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) : ℝ :=
   1 - ‖rotationCentered u‖ + ‖rotationBlend t (rotationCentered u)‖
 
+/-- The rotation denominator is positive. -/
 theorem SecondHurewicz.SimplyConnected.rotationDenominator_pos (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) : 0 < rotationDenominator t u := by
   by_cases hv : rotationCentered u = 0
@@ -2024,6 +2356,7 @@ theorem SecondHurewicz.SimplyConnected.rotationDenominator_pos (t : (unitInterva
     unfold rotationDenominator
     linarith
 
+/-- The rotation denominator is continuous. -/
 theorem SecondHurewicz.SimplyConnected.rotationDenominator_continuous :
     Continuous
       (fun z : (unitInterval) × (Fin 2 → (unitInterval)) => rotationDenominator z.1 z.2) := by
@@ -2036,10 +2369,12 @@ theorem SecondHurewicz.SimplyConnected.rotationDenominator_continuous :
         ((continuous_subtype_val.comp continuous_fst).prodMk
           (rotationCentered_continuous.comp continuous_snd))
 
+/-- The radial normalization of centered square coordinates to the boundary. -/
 def SecondHurewicz.SimplyConnected.rotationNormalized (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) : ℝ × ℝ :=
   (rotationDenominator t u)⁻¹ • rotationBlend t (rotationCentered u)
 
+/-- The radial normalization is continuous. -/
 theorem SecondHurewicz.SimplyConnected.rotationNormalized_continuous :
     Continuous
       (fun z : (unitInterval) × (Fin 2 → (unitInterval)) => rotationNormalized z.1 z.2) := by
@@ -2055,6 +2390,7 @@ theorem SecondHurewicz.SimplyConnected.rotationNormalized_continuous :
         ((continuous_subtype_val.comp continuous_fst).prodMk
           (rotationCentered_continuous.comp continuous_snd))
 
+/-- The normalized coordinates stay within the boundary norm. -/
 theorem SecondHurewicz.SimplyConnected.rotationNormalized_norm_le (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) : ‖rotationNormalized t u‖ ≤ 1 := by
   have hd := rotationDenominator_pos t u
@@ -2063,6 +2399,7 @@ theorem SecondHurewicz.SimplyConnected.rotationNormalized_norm_le (t : (unitInte
   unfold rotationDenominator
   linarith [rotationCentered_norm_le u]
 
+/-- On the boundary the normalization is the identity. -/
 theorem SecondHurewicz.SimplyConnected.rotationNormalized_norm_boundary (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     ‖rotationNormalized t u‖ = 1 := by
@@ -2072,16 +2409,19 @@ theorem SecondHurewicz.SimplyConnected.rotationNormalized_norm_boundary (t : (un
   rw [rotationNormalized, norm_smul, Real.norm_of_nonneg (inv_nonneg.mpr hd.le)]
   rw [← he, inv_mul_cancel₀ (ne_of_gt hd)]
 
+/-- At `t = 0` the normalization is the identity. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationNormalized_zero (u : Fin 2 → (unitInterval)) :
     rotationNormalized 0 u = rotationCentered u := by
   simp [rotationNormalized, rotationDenominator]
 
+/-- At `t = 1` the normalization reaches the quarter-turned boundary point. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.rotationNormalized_one (u : Fin 2 → (unitInterval)) :
     rotationNormalized 1 u = rotationVector (rotationCentered u) := by
   simp [rotationNormalized, rotationDenominator]
 
+/-- The uncentering map (adding the center back). -/
 def SecondHurewicz.SimplyConnected.rotationUncenter (v : ℝ × ℝ) (hv : ‖v‖ ≤ 1) :
     Fin 2 → (unitInterval) :=
   ![⟨(v.1 + 1) / 2,
@@ -2093,16 +2433,19 @@ def SecondHurewicz.SimplyConnected.rotationUncenter (v : ℝ × ℝ) (hv : ‖v�
       have h := abs_le.mp (show |v.2| ≤ 1 from (norm_snd_le v).trans hv)
       constructor <;> linarith⟩]
 
+/-- `rotationUncenter` respects equality. -/
 theorem SecondHurewicz.SimplyConnected.rotationUncenter_congr {v w : ℝ × ℝ} {hv : ‖v‖ ≤ 1}
     {hw : ‖w‖ ≤ 1} (h : v = w) : rotationUncenter v hv = rotationUncenter w hw := by
   subst w
   rfl
 
+/-- `rotationUncenter` of centered coordinates recovers the point. -/
 theorem SecondHurewicz.SimplyConnected.rotationUncenter_centered (u : Fin 2 → (unitInterval)) :
     rotationUncenter (rotationCentered u) (rotationCentered_norm_le u) = u := by
   funext i
   fin_cases i <;> apply Subtype.ext <;> dsimp [rotationUncenter, rotationCentered] <;> ring
 
+/-- `rotationUncenter` applied to the rotated vector. -/
 theorem SecondHurewicz.SimplyConnected.rotationUncenter_vector (u : Fin 2 → (unitInterval)) :
     rotationUncenter (rotationVector (rotationCentered u))
         (by simpa using rotationCentered_norm_le u) =
@@ -2113,6 +2456,7 @@ theorem SecondHurewicz.SimplyConnected.rotationUncenter_vector (u : Fin 2 → (u
       dsimp [rotationUncenter, rotationVector, rotationCentered, unitInterval.symm] <;>
     ring
 
+/-- `rotationUncenter` preserves the boundary. -/
 theorem SecondHurewicz.SimplyConnected.rotationUncenter_boundary (v : ℝ × ℝ) (hv : ‖v‖ ≤ 1)
     (he : ‖v‖ = 1) : rotationUncenter v hv ∈ Cube.boundary (Fin 2) := by
   have hm : 1 ≤ Max.max |v.1| |v.2| := by simpa [Prod.norm_def, Real.norm_eq_abs] using he.ge
@@ -2146,6 +2490,7 @@ theorem SecondHurewicz.SimplyConnected.rotationUncenter_boundary (v : ℝ × ℝ
       dsimp [rotationUncenter]
       linarith
 
+/-- The homotopy map rotating the square by a quarter turn. -/
 def SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap :
     C((unitInterval) × (Fin 2 → (unitInterval)), Fin 2 → (unitInterval))
     where
@@ -2167,6 +2512,7 @@ def SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap :
             ((rotationNormalized z.1 z.2).2 + 1) / 2)
       exact (rotationNormalized_continuous.snd.add continuous_const).div_const 2
 
+/-- At time `0` the quarter-turn homotopy is the identity. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_zero (u : Fin 2 → (unitInterval)) :
     quarterTurnHomotopyMap (0, u) = u := by
@@ -2175,6 +2521,7 @@ theorem SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_zero (u : Fin 2 �
           (rotationNormalized_zero u)).trans
       (rotationUncenter_centered u)
 
+/-- At time `1` the quarter-turn homotopy is the quarter turn. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_one (u : Fin 2 → (unitInterval)) :
     quarterTurnHomotopyMap (1, u) = quarterTurn u := by
@@ -2183,12 +2530,14 @@ theorem SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_one (u : Fin 2 →
           (rotationNormalized_one u)).trans
       (rotationUncenter_vector u)
 
+/-- The quarter-turn homotopy preserves the boundary. -/
 theorem SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_boundary (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     quarterTurnHomotopyMap (t, u) ∈ Cube.boundary (Fin 2) :=
   rotationUncenter_boundary (rotationNormalized t u) (rotationNormalized_norm_le t u)
     (rotationNormalized_norm_boundary t u hu)
 
+/-- The homotopy from a based square to its quarter-turned rotation. -/
 def SecondHurewicz.SimplyConnected.rotatedSquareLoop_homotopy {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     p.val.HomotopyRel (rotatedSquareLoop p).val (Cube.boundary (Fin 2))
@@ -2200,6 +2549,7 @@ def SecondHurewicz.SimplyConnected.rotatedSquareLoop_homotopy {X : Type*} [Topol
   prop' t u
     hu := (p.property _ (quarterTurnHomotopyMap_boundary t u hu)).trans (p.property u hu).symm
 
+/-- The rotated square loop has the same `π_2`-class: `⟦rotatedSquareLoop p⟧ = ⟦p⟧`. -/
 theorem SecondHurewicz.SimplyConnected.rotatedSquareLoop_class {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) : (⟦rotatedSquareLoop p⟧ : π_ 2 X x) = ⟦p⟧ := by
   have h : (⟦p⟧ : π_ 2 X x) = ⟦rotatedSquareLoop p⟧ :=
@@ -2207,10 +2557,12 @@ theorem SecondHurewicz.SimplyConnected.rotatedSquareLoop_class {X : Type*} [Topo
       (show GenLoop.Homotopic p (rotatedSquareLoop p) from ⟨rotatedSquareLoop_homotopy p⟩)
   exact h.symm
 
+/-- The second quadrilateral filling the tetrahedron boundary. -/
 def SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralB :
     C(Fin 2 → (unitInterval), SingularChains.Simplex 3) :=
   (tetrahedronQuarterShift.comp tetrahedronQuadrilateralA).comp quarterTurn
 
+/-- The perimeter relation between the two quadrilateral fillings. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateral_perimeter
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     tetrahedronQuadrilateralA u = tetrahedronQuadrilateralB u := by
@@ -2271,6 +2623,8 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateral_perimeter
           tetrahedronQuarterShift_three, tetrahedronQuadrilateralB_apply, hi,
           min_eq_left (u 0).property.2, max_eq_right (u 0).property.2, (u 0).property.1]
 
+/-- The homotopy between the two quadrilateral fillings of a based tetrahedron
+(using `Subsingleton (π_2)`). -/
 def SecondHurewicz.SimplyConnected.tetrahedronFillingsHomotopy {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTetrahedron x) :
     (tetrahedronQuadrilateralLoop τ).val.HomotopyRel
@@ -2297,18 +2651,23 @@ def SecondHurewicz.SimplyConnected.tetrahedronFillingsHomotopy {X : Type} [Topol
     change τ.val (tetrahedronSimplexBlend t _ _) = τ.val (tetrahedronQuadrilateralA u)
     rw [← tetrahedronQuadrilateral_perimeter u hu, tetrahedronSimplexBlend_self]
 
+/-- The two quadrilateral fillings are homotopic rel boundary. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronFillings_homotopic {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     GenLoop.Homotopic (tetrahedronQuadrilateralLoop τ)
       (rotatedSquareLoop (tetrahedronShiftedQuadrilateralLoop τ)) :=
   ⟨tetrahedronFillingsHomotopy τ⟩
 
+/-- The two quadrilateral fillings have equal `π_2`-classes. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronFillings_class {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTetrahedron x) :
     (⟦tetrahedronQuadrilateralLoop τ⟧ : π_ 2 X x) = ⟦tetrahedronShiftedQuadrilateralLoop τ⟧ :=
   (Quotient.sound (tetrahedronFillings_homotopic τ)).trans
     (rotatedSquareLoop_class (tetrahedronShiftedQuadrilateralLoop τ))
 
+/-! ### Cyclic permutation of the triangle -/
+
+/-- The cyclic permutation of the triangle's vertices. -/
 def SecondHurewicz.SimplyConnected.triangleCyclicPermutation :
     C(SingularChains.Simplex 2, SingularChains.Simplex 2)
     where
@@ -2332,6 +2691,7 @@ def SecondHurewicz.SimplyConnected.triangleCyclicPermutation :
     · exact (continuous_apply 2).comp continuous_subtype_val
     · exact (continuous_apply 0).comp continuous_subtype_val
 
+/-- The cyclic permutation preserves the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.triangleCyclicPermutation_boundary
     (s : SingularChains.Simplex 2) (hs : s ∈ triangleBoundary) :
     triangleCyclicPermutation s ∈ triangleBoundary := by
@@ -2341,11 +2701,13 @@ theorem SecondHurewicz.SimplyConnected.triangleCyclicPermutation_boundary
   · exact ⟨0, hi⟩
   · exact ⟨1, hi⟩
 
+/-- The cyclic permutation of a based triangle is again based. -/
 def SecondHurewicz.SimplyConnected.cyclicBasedTriangle {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedTriangle x) : BasedTriangle x :=
   ⟨τ.val.comp triangleCyclicPermutation, fun s hs =>
     τ.property _ (triangleCyclicPermutation_boundary s hs)⟩
 
+/-- The cyclically permuted triangle quotient agrees at the common zero face. -/
 theorem SecondHurewicz.SimplyConnected.cyclicTriangleQuotient_commonZero
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     ∃ i : Fin 3,
@@ -2380,6 +2742,7 @@ theorem SecondHurewicz.SimplyConnected.cyclicTriangleQuotient_commonZero
         simp [triangleCubeQuotient_apply, triangleCyclicPermutation_zero, hi,
           min_eq_left (u 0).property.2]
 
+/-- The blend of the cyclically permuted cube quotient with the quarter-turned quotient stays in the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.cyclicTriangleQuotient_blend_boundary (t : (unitInterval))
     (u : Fin 2 → (unitInterval)) (hu : u ∈ Cube.boundary (Fin 2)) :
     tetrahedronSimplexBlend t (triangleCyclicPermutation (triangleCubeQuotient u))
@@ -2388,6 +2751,7 @@ theorem SecondHurewicz.SimplyConnected.cyclicTriangleQuotient_blend_boundary (t 
   obtain ⟨i, hi, hj⟩ := cyclicTriangleQuotient_commonZero u hu
   exact ⟨i, tetrahedronSimplexBlend_zero_coordinate t _ _ i hi hj⟩
 
+/-- The `HomotopyRel` from the cyclically permuted based-triangle loop to its rotated square loop. -/
 def SecondHurewicz.SimplyConnected.cyclicTriangleLoopHomotopy {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
     (basedTriangleLoop (cyclicBasedTriangle τ)).val.HomotopyRel
@@ -2417,6 +2781,7 @@ def SecondHurewicz.SimplyConnected.cyclicTriangleLoopHomotopy {X : Type} [Topolo
     (τ.property _ (cyclicTriangleQuotient_blend_boundary t u hu)).trans
       ((basedTriangleLoop (cyclicBasedTriangle τ)).property u hu).symm
 
+/-- Cyclic permutation of a based triangle preserves its `π_2`-class. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.basedTriangleClass_cyclic {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
@@ -2431,9 +2796,13 @@ theorem SecondHurewicz.SimplyConnected.basedTriangleClass_cyclic {X : Type} [Top
     Quotient.sound h
   exact congrArg Additive.ofMul (he.trans (rotatedSquareLoop_class (basedTriangleLoop τ)))
 
+/-! ### Subdivision of the square -/
+
+/-- The subdivision square `Fin 2 → unitInterval`. -/
 abbrev SecondHurewicz.SimplyConnected.SubdivisionSquare :=
   Fin 2 → (unitInterval)
 
+/-- A boundary point of the subdivision square has some coordinate equal to `0` or `1`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionSquare_boundary_cases (u : SubdivisionSquare)
     (hu : u ∈ Cube.boundary (Fin 2)) : u 0 = 0 ∨ u 0 = 1 ∨ u 1 = 0 ∨ u 1 = 1 := by
   rcases hu with ⟨i, hi⟩
@@ -2445,26 +2814,31 @@ theorem SecondHurewicz.SimplyConnected.subdivisionSquare_boundary_cases (u : Sub
     · exact Or.inr (Or.inr (Or.inl hi))
     · exact Or.inr (Or.inr (Or.inr hi))
 
+/-- Two square points share a `0`-coordinate, a `1`-coordinate, or lie on the diagonal. -/
 inductive SecondHurewicz.SimplyConnected.SubdivisionSameSide (a b : SubdivisionSquare) : Prop
   | zero (i : Fin 2) (ha : a i = 0) (hb : b i = 0)
   | one (i : Fin 2) (ha : a i = 1) (hb : b i = 1)
   | diagonal (ha : a 0 = a 1) (hb : b 0 = b 1)
 
+/-- The blend between subdivision square points. -/
 def SecondHurewicz.SimplyConnected.subdivisionBlend (t : (unitInterval))
     (a b : SubdivisionSquare) : SubdivisionSquare := fun i => Set.Icc.convexComb (a i) (b i) t
 
+/-- At `t = 0` the subdivision blend is the first point. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionBlend_zero (a b : SubdivisionSquare) :
     subdivisionBlend 0 a b = a := by
   funext i
   exact Set.Icc.convexComb_zero _ _
 
+/-- At `t = 1` the subdivision blend is the second point. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionBlend_one (a b : SubdivisionSquare) :
     subdivisionBlend 1 a b = b := by
   funext i
   exact Set.Icc.convexComb_one _ _
 
+/-- The blend of two subdivision maps as a continuous map. -/
 def SecondHurewicz.SimplyConnected.subdivisionBlendMap
     (f g : C(SubdivisionSquare, SubdivisionSquare)) :
     C((unitInterval) × SubdivisionSquare, SubdivisionSquare)
@@ -2478,6 +2852,7 @@ def SecondHurewicz.SimplyConnected.subdivisionBlendMap
         (((continuous_apply i).comp (f.continuous.comp continuous_snd)).prodMk
           (((continuous_apply i).comp (g.continuous.comp continuous_snd)).prodMk continuous_fst))
 
+/-- A point on the subdivision diagonal. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionOnDiagonal {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x)
     (a : SubdivisionSquare) (ha : a 0 = a 1) : p a = x := by
@@ -2488,6 +2863,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionOnDiagonal {X : Type*} [Topolo
     · exact ha.symm
   exact (congrArg p h).trans (hd _)
 
+/-- For same-side maps, the blend stays based. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionBlend_based {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x)
     {a b : SubdivisionSquare} (h : SubdivisionSameSide a b) (t : (unitInterval)) :
@@ -2503,11 +2879,13 @@ theorem SecondHurewicz.SimplyConnected.subdivisionBlend_based {X : Type*} [Topol
     apply subdivisionOnDiagonal p hd
     simp only [subdivisionBlend, ha, hb]
 
+/-- The pullback of a based square along a subdivision map. -/
 def SecondHurewicz.SimplyConnected.subdivisionPullbackLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (f : C(SubdivisionSquare, SubdivisionSquare))
     (hf : ∀ u ∈ Cube.boundary (Fin 2), p (f u) = x) : GenLoop (Fin 2) X x :=
   ⟨p.val.comp f, hf⟩
 
+/-- The linear homotopy between subdivision pullbacks along same-side maps. -/
 def SecondHurewicz.SimplyConnected.subdivisionLinearHomotopy {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x)
     (f g : C(SubdivisionSquare, SubdivisionSquare))
@@ -2529,34 +2907,40 @@ def SecondHurewicz.SimplyConnected.subdivisionLinearHomotopy {X : Type*} [Topolo
     rw [subdivisionBlend_one]
   prop' t u hu := (subdivisionBlend_based p hd (hfg u hu) t).trans (hf u hu).symm
 
+/-- `u - min (u, v)` as a point of the unit interval. -/
 def SecondHurewicz.SimplyConnected.subdivisionSubMin (u v : (unitInterval)) : (unitInterval) :=
   ⟨(u : ℝ) - Min.min (u : ℝ) (v : ℝ), sub_nonneg.mpr (min_le_left _ _),
     (sub_le_self _ (le_min u.property.1 v.property.1)).trans u.property.2⟩
 
+/-- `subdivisionSubMin 0 v = 0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionSubMin_zero_left (v : (unitInterval)) :
     subdivisionSubMin 0 v = 0 := by
   apply Subtype.ext
   simp [subdivisionSubMin, v.property.1]
 
+/-- `subdivisionSubMin u 0 = u`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionSubMin_zero_right (u : (unitInterval)) :
     subdivisionSubMin u 0 = u := by
   apply Subtype.ext
   simp [subdivisionSubMin, u.property.1]
 
+/-- `subdivisionSubMin 1 v = 1 - v`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionSubMin_one_left (v : (unitInterval)) :
     subdivisionSubMin 1 v = (unitInterval.symm) v := by
   apply Subtype.ext
   simp [subdivisionSubMin, v.property.2]
 
+/-- `subdivisionSubMin u 1 = 0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionSubMin_one_right (u : (unitInterval)) :
     subdivisionSubMin u 1 = 0 := by
   apply Subtype.ext
   simp [subdivisionSubMin, u.property.2]
 
+/-- The product map onto the lower triangle of the subdivision. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerProductMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
@@ -2572,6 +2956,7 @@ def SecondHurewicz.SimplyConnected.subdivisionLowerProductMap :
         (continuous_subtype_val.comp (continuous_apply 0)).mul
           (continuous_subtype_val.comp (continuous_apply 1))
 
+/-- The product map onto the upper triangle of the subdivision. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperProductMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
@@ -2585,6 +2970,7 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperProductMap :
       unfold Set.Icc.convexComb
       fun_prop
 
+/-- The cone map onto the upper triangle of the subdivision. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperConeMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
@@ -2601,12 +2987,14 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperConeMap :
       unfold Set.Icc.convexComb
       fun_prop
 
+/-- The map `u ↦ ![u 0, min (u 0) (u 1)]` onto the lower triangle. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
   toFun u := ![u 0, Min.min (u 0) (u 1)]
   continuous_toFun := by fun_prop
 
+/-- The map from the subdivision square onto the upper triangle. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
@@ -2620,6 +3008,7 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap :
       fun_prop
     · exact continuous_apply 0
 
+/-- `p (subdivisionLowerProductMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionLowerProductMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -2630,6 +3019,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionLowerProductMap_based {X : Typ
   · exact p.property _ ⟨1, Or.inl (by simp [subdivisionLowerProductMap, h])⟩
   · exact subdivisionOnDiagonal p hd _ (by simp [subdivisionLowerProductMap, h])
 
+/-- `p (subdivisionUpperProductMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperProductMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -2640,6 +3030,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperProductMap_based {X : Typ
   · exact subdivisionOnDiagonal p hd _ (by simp [subdivisionUpperProductMap, h])
   · exact p.property _ ⟨1, Or.inr (by simp [subdivisionUpperProductMap, h])⟩
 
+/-- `p (subdivisionUpperConeMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperConeMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -2650,6 +3041,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperConeMap_based {X : Type*}
   · exact subdivisionOnDiagonal p hd _ (by simp [subdivisionUpperConeMap, h])
   · exact p.property _ ⟨0, Or.inl (by simp [subdivisionUpperConeMap, h])⟩
 
+/-- `p (subdivisionLowerTriangleMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -2664,6 +3056,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap_based {X : Ty
           simp [subdivisionLowerTriangleMap, h,
             min_eq_left (show u 0 ≤ (1 : (unitInterval)) from (u 0).property.2)])
 
+/-- `p (subdivisionUpperTriangleMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -2674,31 +3067,37 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap_based {X : Ty
   · exact subdivisionOnDiagonal p hd _ (by simp [subdivisionUpperTriangleMap, h])
   · exact p.property _ ⟨0, Or.inl (by simp [subdivisionUpperTriangleMap, h])⟩
 
+/-- The pullback loop `p ∘ subdivisionLowerProductMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerProductLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionLowerProductMap (subdivisionLowerProductMap_based p hd)
 
+/-- The pullback loop `p ∘ subdivisionUpperProductMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperProductLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionUpperProductMap (subdivisionUpperProductMap_based p hd)
 
+/-- The pullback loop `p ∘ subdivisionUpperConeMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperConeLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionUpperConeMap (subdivisionUpperConeMap_based p hd)
 
+/-- The pullback loop `p ∘ subdivisionLowerTriangleMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerTriangleLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionLowerTriangleMap (subdivisionLowerTriangleMap_based p hd)
 
+/-- The pullback loop `p ∘ subdivisionUpperTriangleMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperTriangleLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionUpperTriangleMap (subdivisionUpperTriangleMap_based p hd)
 
+/-- The side restrictions of the lower product triangle. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionLowerProductTriangle_sides
     (u : SubdivisionSquare) (hu : u ∈ Cube.boundary (Fin 2)) :
     SubdivisionSameSide (subdivisionLowerProductMap u) (subdivisionLowerTriangleMap u) := by
@@ -2715,6 +3114,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionLowerProductTriangle_sides
           simp [subdivisionLowerTriangleMap, h,
             min_eq_left (show u 0 ≤ (1 : (unitInterval)) from (u 0).property.2)])
 
+/-- The side restrictions of the upper product/cone maps. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperProductCone_sides (u : SubdivisionSquare)
     (hu : u ∈ Cube.boundary (Fin 2)) :
     SubdivisionSameSide (subdivisionUpperProductMap u) (subdivisionUpperConeMap u) := by
@@ -2725,6 +3125,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperProductCone_sides (u : Su
       .diagonal (by simp [subdivisionUpperProductMap, h]) (by simp [subdivisionUpperConeMap, h])
   · exact .one 1 (by simp [subdivisionUpperProductMap, h]) (by simp [subdivisionUpperConeMap, h])
 
+/-- The side restrictions of the upper cone and triangle maps. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperConeTriangle_sides (u : SubdivisionSquare)
     (hu : u ∈ Cube.boundary (Fin 2)) :
     SubdivisionSameSide (subdivisionUpperConeMap u) (subdivisionUpperTriangleMap u) := by
@@ -2737,6 +3138,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperConeTriangle_sides (u : S
   · exact
       .zero 0 (by simp [subdivisionUpperConeMap, h]) (by simp [subdivisionUpperTriangleMap, h])
 
+/-- The `HomotopyRel` between the lower product and lower triangle loops. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerTriangleHomotopy {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -2745,6 +3147,7 @@ def SecondHurewicz.SimplyConnected.subdivisionLowerTriangleHomotopy {X : Type*}
   subdivisionLinearHomotopy p hd _ _ (subdivisionLowerProductMap_based p hd)
     (subdivisionLowerTriangleMap_based p hd) subdivisionLowerProductTriangle_sides
 
+/-- The `HomotopyRel` between the upper product and upper cone loops. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperConeHomotopy {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     (subdivisionUpperProductLoop p hd).val.HomotopyRel (subdivisionUpperConeLoop p hd).val
@@ -2752,6 +3155,7 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperConeHomotopy {X : Type*} [Top
   subdivisionLinearHomotopy p hd _ _ (subdivisionUpperProductMap_based p hd)
     (subdivisionUpperConeMap_based p hd) subdivisionUpperProductCone_sides
 
+/-- The `HomotopyRel` between the upper cone and upper triangle loops. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperTriangleHomotopy {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -2760,11 +3164,13 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperTriangleHomotopy {X : Type*}
   subdivisionLinearHomotopy p hd _ _ (subdivisionUpperConeMap_based p hd)
     (subdivisionUpperTriangleMap_based p hd) subdivisionUpperConeTriangle_sides
 
+/-- `toLoop` of a `transAt` concatenation is the `trans` of the `toLoop`s. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_toLoop_transAt {X : Type*} [TopologicalSpace X]
     {x : X} (i : Fin 2) (a b : GenLoop (Fin 2) X x) :
     GenLoop.toLoop i (GenLoop.transAt i a b) = (GenLoop.toLoop i a).trans (GenLoop.toLoop i b) := by
   rw [← GenLoop.fromLoop_trans_toLoop, GenLoop.to_from]
 
+/-- `transAt` respects homotopy in both arguments. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_transAt_homotopic {X : Type*}
     [TopologicalSpace X] {x : X} (i : Fin 2) {a b c d : GenLoop (Fin 2) X x}
     (ha : GenLoop.Homotopic a c) (hb : GenLoop.Homotopic b d) :
@@ -2775,6 +3181,7 @@ theorem SecondHurewicz.SimplyConnected.subdivision_transAt_homotopic {X : Type*}
   rcases GenLoop.homotopicTo i hb with ⟨Hb⟩
   exact ⟨Ha.hcomp Hb⟩
 
+/-- The warp coordinate interpolating between two subdivision maps. -/
 noncomputable def SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate :
     C((unitInterval) × (unitInterval), (unitInterval))
     where
@@ -2786,22 +3193,26 @@ noncomputable def SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate :
     unfold Set.Icc.convexComb
     fun_prop
 
+/-- `subdivisionWarpCoordinate (u, v)` is the `u`-blend between `2v - 1` and `2v` clamped to `I`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_apply (u v : (unitInterval)) :
     subdivisionWarpCoordinate (u, v) =
       Set.Icc.convexComb (Set.projIcc 0 1 zero_le_one (2 * (v : ℝ) - 1))
         (Set.projIcc 0 1 zero_le_one (2 * (v : ℝ))) u :=
   rfl
 
+/-- `subdivisionWarpCoordinate (u, 0) = 0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_zero (u : (unitInterval)) :
     subdivisionWarpCoordinate (u, 0) = 0 := by
   simp [subdivisionWarpCoordinate, Set.projIcc, Set.Icc.convexComb]
 
+/-- `subdivisionWarpCoordinate (u, 1) = 1`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_one (u : (unitInterval)) :
     subdivisionWarpCoordinate (u, 1) = 1 := by
   norm_num [subdivisionWarpCoordinate, Set.projIcc, Set.Icc.convexComb]
 
+/-- For `v ≤ 1/2`, `subdivisionWarpCoordinate (u, v) = u * (2v)`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_of_le_half (u v : (unitInterval))
     (hv : (v : ℝ) ≤ 1 / 2) :
     subdivisionWarpCoordinate (u, v) = u * Set.projIcc 0 1 zero_le_one (2 * (v : ℝ)) := by
@@ -2811,6 +3222,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_of_le_half (u v
   apply Subtype.ext
   simp
 
+/-- For `v ≥ 1/2`, `subdivisionWarpCoordinate` blends `u` toward `1` with parameter `2v - 1`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_of_half_le (u v : (unitInterval))
     (hv : 1 / 2 ≤ (v : ℝ)) :
     subdivisionWarpCoordinate (u, v) =
@@ -2823,12 +3235,14 @@ theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_of_half_le (u v
   change (1 - (u : ℝ)) * _ + (u : ℝ) * 1 = (1 - _) * (u : ℝ) + _ * 1
   ring
 
+/-- For `v > 1/2`, `subdivisionWarpCoordinate` blends `u` toward `1` with parameter `2v - 1`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate_of_half_lt (u v : (unitInterval))
     (hv : 1 / 2 < (v : ℝ)) :
     subdivisionWarpCoordinate (u, v) =
       Set.Icc.convexComb u 1 (Set.projIcc 0 1 zero_le_one (2 * (v : ℝ) - 1)) :=
   subdivisionWarpCoordinate_of_half_le u v hv.le
 
+/-- The warp map `u ↦ ![u 0, subdivisionWarpCoordinate (u 0, u 1)]`. -/
 def SecondHurewicz.SimplyConnected.subdivisionWarpMap : C(SubdivisionSquare, SubdivisionSquare)
     where
   toFun u := ![u 0, subdivisionWarpCoordinate (u 0, u 1)]
@@ -2843,6 +3257,7 @@ def SecondHurewicz.SimplyConnected.subdivisionWarpMap : C(SubdivisionSquare, Sub
           (show Continuous (fun u : SubdivisionSquare => (u 0, u 1)) from
             (continuous_apply 0).prodMk (continuous_apply 1))
 
+/-- Each boundary point is on the same side as its warp-map image. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpMap_sides (u : SubdivisionSquare)
     (hu : u ∈ Cube.boundary (Fin 2)) : SubdivisionSameSide u (subdivisionWarpMap u) := by
   rcases subdivisionSquare_boundary_cases u hu with h | h | h | h
@@ -2851,6 +3266,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionWarpMap_sides (u : Subdivision
   · exact .zero 1 h (by simp [subdivisionWarpMap, h])
   · exact .one 1 h (by simp [subdivisionWarpMap, h])
 
+/-- `p (subdivisionWarpMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpMap_based {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (u : SubdivisionSquare) (hu : u ∈ Cube.boundary (Fin 2)) :
     p (subdivisionWarpMap u) = x := by
@@ -2860,16 +3276,19 @@ theorem SecondHurewicz.SimplyConnected.subdivisionWarpMap_based {X : Type*} [Top
   · exact p.property _ ⟨1, Or.inl (by simp [subdivisionWarpMap, h])⟩
   · exact p.property _ ⟨1, Or.inr (by simp [subdivisionWarpMap, h])⟩
 
+/-- The pullback loop `p ∘ subdivisionWarpMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionWarpLoop {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionWarpMap (subdivisionWarpMap_based p)
 
+/-- The `HomotopyRel` from `p` to `subdivisionWarpLoop p`. -/
 def SecondHurewicz.SimplyConnected.subdivisionWarpHomotopy {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     p.val.HomotopyRel (subdivisionWarpLoop p).val (Cube.boundary (Fin 2)) :=
   subdivisionLinearHomotopy p hd (ContinuousMap.id _) subdivisionWarpMap p.property
     (subdivisionWarpMap_based p) subdivisionWarpMap_sides
 
+/-- The warp loop is the `transAt 1` concatenation of the lower and upper product loops. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionWarpLoop_eq_transAt {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -2894,6 +3313,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionWarpLoop_eq_transAt {X : Type*
       congrArg (fun v : (unitInterval) => p ![u 0, v])
         (subdivisionWarpCoordinate_of_half_lt (u 0) (u 1) (lt_of_not_ge h))
 
+/-- `p` is homotopic to the `transAt 1` concatenation of its lower and upper triangle loops. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_homotopic {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop.Homotopic p
@@ -2906,6 +3326,7 @@ theorem SecondHurewicz.SimplyConnected.subdivision_homotopic {X : Type*} [Topolo
   · exact ⟨subdivisionLowerTriangleHomotopy p hd⟩
   · exact ⟨(subdivisionUpperConeHomotopy p hd).trans (subdivisionUpperTriangleHomotopy p hd)⟩
 
+/-- `⟦p⟧ = ⟦subdivisionLowerTriangleLoop⟧ * ⟦subdivisionUpperTriangleLoop⟧` in `π_2`. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_class {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     (⟦p⟧ : π_ 2 X x) =
@@ -2923,6 +3344,7 @@ theorem SecondHurewicz.SimplyConnected.subdivision_class {X : Type*} [Topologica
             subdivisionLowerTriangleLoop p hd)).symm.trans
         (mul_comm _ _))
 
+/-- The additive form of `subdivision_class`. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_additiveClass {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     Additive.ofMul (⟦p⟧ : π_ 2 X x) =
@@ -2931,6 +3353,9 @@ theorem SecondHurewicz.SimplyConnected.subdivision_additiveClass {X : Type*} [To
         (Additive.ofMul (⟦subdivisionUpperTriangleLoop p hd⟧ : π_ 2 X x)) :=
   congrArg Additive.ofMul (subdivision_class p hd)
 
+/-! ### Tetrahedron boundary relations -/
+
+/-- On the lower triangle of the square, `tetrahedronQuadrilateralA` lands on face `3` of the tetrahedron. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_lower
     (u : Fin 2 → (unitInterval)) :
     tetrahedronQuadrilateralA (subdivisionLowerTriangleMap u) =
@@ -2955,6 +3380,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_lower
     simp [tetrahedronQuadrilateralA_zero, tetrahedronQuadrilateralA_one,
       tetrahedronQuadrilateralA_two, tetrahedronQuadrilateralA_three, triangleCubeQuotient_apply]
 
+/-- On the upper triangle of the square, `tetrahedronQuadrilateralA` lands on face `1` of the tetrahedron. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_upper
     (u : Fin 2 → (unitInterval)) :
     tetrahedronQuadrilateralA (subdivisionUpperTriangleMap u) =
@@ -2984,6 +3410,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA_upper
       tetrahedronQuadrilateralA_two, tetrahedronQuadrilateralA_three, triangleCubeQuotient_apply,
       subdivisionSubMin_coe, min_eq_left hm, max_eq_right hm]
 
+/-- The third face of the quarter-shifted tetrahedron. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_face_three
     (s : SingularChains.Simplex 2) :
     tetrahedronQuarterShift (SingularChains.simplexFace 2 3 s) = SingularChains.simplexFace 2 0 s :=
@@ -3000,6 +3427,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_face_three
   · exact SingularChains.simplexFace_apply_succAbove 2 3 s 1
   · exact SingularChains.simplexFace_apply_succAbove 2 3 s 2
 
+/-- The first face of the quarter-shifted tetrahedron. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_face_one
     (s : SingularChains.Simplex 2) :
     tetrahedronQuarterShift (SingularChains.simplexFace 2 1 s) =
@@ -3018,6 +3446,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronQuarterShift_face_one
   · exact SingularChains.simplexFace_apply_self 2 1 s
   · exact SingularChains.simplexFace_apply_succAbove 2 1 s 1
 
+/-- The lower subdivision loop of the quadrilateral loop equals the `basedTriangleLoop` of face `3`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronLowerLoop_eq_face {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     subdivisionLowerTriangleLoop (tetrahedronQuadrilateralLoop τ)
@@ -3030,6 +3459,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronLowerLoop_eq_face {X : Type}
       τ.val (SingularChains.simplexFace 2 3 (triangleCubeQuotient u))
   rw [tetrahedronQuadrilateralA_lower]
 
+/-- The upper subdivision loop of the quadrilateral loop equals the `basedTriangleLoop` of face `1`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronUpperLoop_eq_face {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     subdivisionUpperTriangleLoop (tetrahedronQuadrilateralLoop τ)
@@ -3042,6 +3472,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronUpperLoop_eq_face {X : Type}
       τ.val (SingularChains.simplexFace 2 1 (triangleCubeQuotient u))
   rw [tetrahedronQuadrilateralA_upper]
 
+/-- The lower subdivision loop of the shifted quadrilateral equals the `basedTriangleLoop` of face `0`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronShiftedLowerLoop_eq_face {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     subdivisionLowerTriangleLoop (tetrahedronShiftedQuadrilateralLoop τ)
@@ -3054,6 +3485,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronShiftedLowerLoop_eq_face {X : 
       τ.val (SingularChains.simplexFace 2 0 (triangleCubeQuotient u))
   rw [tetrahedronQuadrilateralA_lower, tetrahedronQuarterShift_face_three]
 
+/-- The upper subdivision loop of the shifted quadrilateral equals the `basedTriangleLoop` of twice-cyclically-permuted face `2`. -/
 theorem SecondHurewicz.SimplyConnected.tetrahedronShiftedUpperLoop_eq_face {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     subdivisionUpperTriangleLoop (tetrahedronShiftedQuadrilateralLoop τ)
@@ -3068,6 +3500,7 @@ theorem SecondHurewicz.SimplyConnected.tetrahedronShiftedUpperLoop_eq_face {X : 
           (triangleCyclicPermutation (triangleCyclicPermutation (triangleCubeQuotient u))))
   rw [tetrahedronQuadrilateralA_upper, tetrahedronQuarterShift_face_one]
 
+/-- `basedTriangleClass (face 3) + basedTriangleClass (face 1) = basedTriangleClass (face 0) + basedTriangleClass (face 2)`. -/
 theorem SecondHurewicz.SimplyConnected.basedTetrahedron_pair_relation {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     basedTriangleClass (basedTetrahedronFace τ 3) +
@@ -3090,6 +3523,7 @@ theorem SecondHurewicz.SimplyConnected.basedTetrahedron_pair_relation {X : Type}
   simp only [basedTriangleClass_cyclic] at hB
   exact hA.symm.trans ((congrArg Additive.ofMul (tetrahedronFillings_class τ)).trans hB)
 
+/-- The alternating sum `face 0 - face 1 + face 2 - face 3` of based-triangle classes is `0`. -/
 theorem SecondHurewicz.SimplyConnected.basedTetrahedron_boundary_relation {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     basedTriangleClass (basedTetrahedronFace τ 0) -
@@ -3105,18 +3539,21 @@ theorem SecondHurewicz.SimplyConnected.basedTetrahedron_boundary_relation {X : T
             basedTriangleClass (basedTetrahedronFace τ 1)) := by abel
     _ = 0 := sub_eq_zero.mpr (basedTetrahedron_pair_relation τ).symm
 
+/-- The signed sum `∑ i, (-1)^i • basedTriangleClass (face i)` over the four faces is `0`. -/
 theorem SecondHurewicz.SimplyConnected.basedTetrahedron_signed_relation {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTetrahedron x) :
     ∑ i : Fin 4, (-1 : ℤ) ^ i.val • basedTriangleClass (basedTetrahedronFace τ i) = 0 := by
   have h := basedTetrahedron_boundary_relation τ
   simpa [Fin.sum_univ_succ, sub_eq_add_neg, add_assoc] using h
 
+/-- The normalized `3`-simplex packaged as a `BasedTetrahedron` via `normalizedTetrahedronMap`. -/
 def SecondHurewicz.SimplyConnected.normalizedTetrahedron {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 3) :
     BasedTetrahedron x :=
   BasedTetrahedron.ofFaces (normalizedTetrahedronMap x smp)
     (normalizedTetrahedronMap_face_boundary x smp)
 
+/-- The faces of the normalized tetrahedron are normalized based triangles. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.normalizedTetrahedron_face {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 3) (i : Fin 4) :
@@ -3125,6 +3562,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTetrahedron_face {X : Type} [To
   apply Subtype.ext
   exact normalizedTetrahedronMap_face x smp i
 
+/-- The signed sum of the normalized-triangle classes of the four faces is `0`. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTriangle_boundary_relation {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (smp : SingularChains.SingularSimplex X 3) :
@@ -3137,6 +3575,9 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangle_boundary_relation {X :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-! ### The two-triangle decomposition of the square -/
+
+/-- The affine `2`-simplex into `I × I` with vertices `v : Fin 3 → Fin 2 × Fin 2`. -/
 def SecondHurewicz.SimplyConnected.squareAffineTriangle (v : Fin 3 → Fin 2 × Fin 2) :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   ((SingularChains.pathSimplex Path.id).prodMap (SingularChains.pathSimplex Path.id)).comp
@@ -3147,6 +3588,7 @@ def SecondHurewicz.SimplyConnected.squareAffineTriangle (v : Fin 3 → Fin 2 × 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The first coordinate of `squareAffineTriangle v` is `∑ i, s i * stdVertices 1 (v i).1 1`. -/
 theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_fst_coe (v : Fin 3 → Fin 2 × Fin 2)
     (s : SingularChains.Simplex 2) :
     ((squareAffineTriangle v s).1 : ℝ) =
@@ -3159,6 +3601,7 @@ theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_fst_coe (v : Fin 3 �
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The second coordinate of `squareAffineTriangle v` is `∑ i, s i * stdVertices 1 (v i).2 1`. -/
 theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_snd_coe (v : Fin 3 → Fin 2 × Fin 2)
     (s : SingularChains.Simplex 2) :
     ((squareAffineTriangle v s).2 : ℝ) =
@@ -3171,24 +3614,28 @@ theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_snd_coe (v : Fin 3 �
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The lower product triangle in `I × I`. -/
 def SecondHurewicz.SimplyConnected.lowerProductTriangle :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (1, 0), (1, 1)]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The upper product triangle in `I × I`. -/
 def SecondHurewicz.SimplyConnected.upperProductTriangle :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 1), (1, 1)]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The degenerate left edge of the product square. -/
 def SecondHurewicz.SimplyConnected.leftProductDegenerate :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 0), (0, 1)]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The degenerate bottom edge of the product square. -/
 def SecondHurewicz.SimplyConnected.bottomProductDegenerate :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 0), (1, 0)]
@@ -3196,6 +3643,7 @@ def SecondHurewicz.SimplyConnected.bottomProductDegenerate :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The first coordinate of `lowerProductTriangle` is `s 1 + s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_fst (s : SingularChains.Simplex 2) :
     ((lowerProductTriangle s).1 : ℝ) = s 1 + s 2 := by
@@ -3205,6 +3653,7 @@ theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_fst (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The second coordinate of `lowerProductTriangle` is `s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_snd (s : SingularChains.Simplex 2) :
     ((lowerProductTriangle s).2 : ℝ) = s 2 := by
@@ -3214,6 +3663,7 @@ theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_snd (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The first coordinate of `upperProductTriangle` is `s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperProductTriangle_fst (s : SingularChains.Simplex 2) :
     ((upperProductTriangle s).1 : ℝ) = s 2 := by
@@ -3223,6 +3673,7 @@ theorem SecondHurewicz.SimplyConnected.upperProductTriangle_fst (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The second coordinate of `upperProductTriangle` is `s 1 + s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperProductTriangle_snd (s : SingularChains.Simplex 2) :
     ((upperProductTriangle s).2 : ℝ) = s 1 + s 2 := by
@@ -3232,6 +3683,7 @@ theorem SecondHurewicz.SimplyConnected.upperProductTriangle_snd (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The first coordinate of `leftProductDegenerate` is `0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.leftProductDegenerate_fst (s : SingularChains.Simplex 2) :
     (leftProductDegenerate s).1 = 0 := by
@@ -3242,6 +3694,7 @@ theorem SecondHurewicz.SimplyConnected.leftProductDegenerate_fst (s : SingularCh
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- The second coordinate of `bottomProductDegenerate` is `0`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.bottomProductDegenerate_snd (s : SingularChains.Simplex 2) :
     (bottomProductDegenerate s).2 = 0 := by
@@ -3251,12 +3704,16 @@ theorem SecondHurewicz.SimplyConnected.bottomProductDegenerate_snd (s : Singular
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The lower triangle of the square's diagonal subdivision, as a singular
+`2`-simplex. -/
 def SecondHurewicz.SimplyConnected.lowerSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   SecondHurewicz.squareCoordinates.comp lowerProductTriangle
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The upper triangle of the square's diagonal subdivision, as a singular
+`2`-simplex. -/
 def SecondHurewicz.SimplyConnected.upperSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   SecondHurewicz.squareCoordinates.comp upperProductTriangle
@@ -3264,6 +3721,7 @@ def SecondHurewicz.SimplyConnected.upperSquareTriangle :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `lowerSquareTriangle s` has coordinate `0` equal to `s 1 + s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 0 : ℝ) = s 1 + s 2 := by simp [lowerSquareTriangle]
@@ -3271,6 +3729,7 @@ theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_zero (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `lowerSquareTriangle s` has coordinate `1` equal to `s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_one (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 1 : ℝ) = s 2 := by simp [lowerSquareTriangle]
@@ -3278,6 +3737,7 @@ theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_one (s : SingularChai
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `upperSquareTriangle s` has coordinate `0` equal to `s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (upperSquareTriangle s 0 : ℝ) = s 2 := by simp [upperSquareTriangle]
@@ -3285,12 +3745,14 @@ theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_zero (s : SingularCha
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 
+/-- `upperSquareTriangle s` has coordinate `1` equal to `s 1 + s 2`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_one (s : SingularChains.Simplex 2) :
     (upperSquareTriangle s 1 : ℝ) = s 1 + s 2 := by simp [upperSquareTriangle]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `productSquareChain` decomposes as a sum of four signed triangles. -/
 theorem SecondHurewicz.SimplyConnected.productSquareChain_four_triangles :
     SecondHurewicz.productSquareChain =
       SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 lowerProductTriangle -
@@ -3316,6 +3778,7 @@ theorem SecondHurewicz.SimplyConnected.productSquareChain_four_triangles :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `squareMap p ∘ leftProductDegenerate` is constant `x`. -/
 theorem SecondHurewicz.SimplyConnected.squareMap_leftProductDegenerate {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (SecondHurewicz.squareMap p).comp leftProductDegenerate =
@@ -3327,6 +3790,7 @@ theorem SecondHurewicz.SimplyConnected.squareMap_leftProductDegenerate {X : Type
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `squareMap p ∘ bottomProductDegenerate` is constant `x`. -/
 theorem SecondHurewicz.SimplyConnected.squareMap_bottomProductDegenerate {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (SecondHurewicz.squareMap p).comp bottomProductDegenerate =
@@ -3338,6 +3802,7 @@ theorem SecondHurewicz.SimplyConnected.squareMap_bottomProductDegenerate {X : Ty
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The square chain equals the signed sum of the two square triangles. -/
 theorem SecondHurewicz.SimplyConnected.squareChain_two_triangles {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     SecondHurewicz.squareChain p =
@@ -3355,6 +3820,7 @@ theorem SecondHurewicz.SimplyConnected.squareChain_two_triangles {X : Type} [Top
       _
   abel
 
+/-- `triangleQuotient ∘ lowerProductTriangle = id`. -/
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_lowerProductTriangle :
     triangleQuotient.comp lowerProductTriangle = ContinuousMap.id (SingularChains.Simplex 2) := by
   apply ContinuousMap.ext
@@ -3378,6 +3844,7 @@ theorem SecondHurewicz.SimplyConnected.triangleQuotient_lowerProductTriangle :
   · change Min.min ((lowerProductTriangle s).1 : ℝ) ((lowerProductTriangle s).2 : ℝ) = s 2
     rw [lowerProductTriangle_fst, lowerProductTriangle_snd, min_eq_right hle]
 
+/-- The triangle quotient of the upper product triangle lands on the boundary. -/
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_upperProductTriangle_boundary
     (s : SingularChains.Simplex 2) :
     triangleQuotient (upperProductTriangle s) ∈ triangleBoundary := by
@@ -3385,12 +3852,14 @@ theorem SecondHurewicz.SimplyConnected.triangleQuotient_upperProductTriangle_bou
   rw [triangleQuotient_one, upperProductTriangle_fst, upperProductTriangle_snd,
     min_eq_left (le_add_of_nonneg_left (stdSimplex.zero_le s 1)), sub_self]
 
+/-- The lower triangle of `basedTriangleLoop τ` under the quotient. -/
 theorem SecondHurewicz.SimplyConnected.basedTriangleLoop_lower {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) : (basedTriangleLoop τ).val.comp lowerSquareTriangle = τ.val := by
   change (SecondHurewicz.squareMap (basedTriangleLoop τ)).comp lowerProductTriangle = _
   rw [squareMap_basedTriangleLoop, ContinuousMap.comp_assoc,
     triangleQuotient_lowerProductTriangle, ContinuousMap.comp_id]
 
+/-- The upper triangle of `basedTriangleLoop τ` under the quotient. -/
 theorem SecondHurewicz.SimplyConnected.basedTriangleLoop_upper {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
     (basedTriangleLoop τ).val.comp upperSquareTriangle =
@@ -3400,6 +3869,7 @@ theorem SecondHurewicz.SimplyConnected.basedTriangleLoop_upper {X : Type} [Topol
   ext s
   exact τ.property _ (triangleQuotient_upperProductTriangle_boundary s)
 
+/-- The square chain of `basedTriangleLoop τ` expressed via the quotient. -/
 theorem SecondHurewicz.SimplyConnected.squareChain_basedTriangleLoop {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedTriangle x) :
     SecondHurewicz.squareChain (basedTriangleLoop τ) =
@@ -3407,6 +3877,9 @@ theorem SecondHurewicz.SimplyConnected.squareChain_basedTriangleLoop {X : Type}
         SingularChains.simplexChain X 2 (ContinuousMap.const (SingularChains.Simplex 2) x) := by
   rw [squareChain_two_triangles, basedTriangleLoop_lower, basedTriangleLoop_upper]
 
+/-! ### Descending to second homology -/
+
+/-- The `2`-cycle of a based triangle (its square chain with boundary correction). -/
 def SecondHurewicz.SimplyConnected.basedTriangleCycle {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedTriangle x) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2 :=
@@ -3417,6 +3890,7 @@ def SecondHurewicz.SimplyConnected.basedTriangleCycle {X : Type} [TopologicalSpa
       rw [← squareChain_basedTriangleLoop]
       exact SecondHurewicz.squareChain_boundary (basedTriangleLoop τ))
 
+/-- The underlying chain of `basedTriangleCycle τ`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.basedTriangleCycle_val {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
@@ -3425,6 +3899,7 @@ theorem SecondHurewicz.SimplyConnected.basedTriangleCycle_val {X : Type} [Topolo
         SingularChains.simplexChain X 2 (ContinuousMap.const (SingularChains.Simplex 2) x) :=
   rfl
 
+/-- The Hurewicz map on the class of a based triangle equals its cycle class. -/
 theorem SecondHurewicz.SimplyConnected.hurewicz_basedTriangleClass {X : Type} [TopologicalSpace X]
     {x : X} (τ : BasedTriangle x) :
     SecondHurewicz.hurewiczMap x (basedTriangleClass τ) =
@@ -3438,6 +3913,8 @@ theorem SecondHurewicz.SimplyConnected.hurewicz_basedTriangleClass {X : Type} [T
   apply Subtype.ext
   exact squareChain_basedTriangleLoop τ
 
+/-- The descent of a normalized `2`-cycle to a `π_2`-class: the based triangle
+classes summed over the cycle. -/
 def SecondHurewicz.SimplyConnected.secondHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (F : SingularChains.Chains X 2 →ₗ[ℤ] M)
     (hF :
@@ -3448,6 +3925,7 @@ def SecondHurewicz.SimplyConnected.secondHomologyDesc {X : Type} [TopologicalSpa
       (SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2).subtype)
     (fun b => hF b)
 
+/-- `hurewiczMap` of `secondHomologyDesc c` returns the class of `c`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.secondHomologyDesc_cycleClass {X : Type}
     [TopologicalSpace X] {M : Type*} [AddCommGroup M] [Module ℤ M]
@@ -3459,6 +3937,7 @@ theorem SecondHurewicz.SimplyConnected.secondHomologyDesc_cycleClass {X : Type}
       F c.1 :=
   SingularHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) 2 _ _ c
 
+/-- `hurewiczMap ∘ secondHomologyDesc` is the identity on homology classes. -/
 theorem SecondHurewicz.SimplyConnected.comp_secondHomologyDesc_eq_id {X : Type}
     [TopologicalSpace X] {M : Type*} [AddCommGroup M] [Module ℤ M]
     (F : SingularChains.Chains X 2 →ₗ[ℤ] M)
@@ -3473,16 +3952,21 @@ theorem SecondHurewicz.SimplyConnected.comp_secondHomologyDesc_eq_id {X : Type}
   intro c
   simpa only [LinearMap.comp_apply, secondHomologyDesc_cycleClass, LinearMap.id_apply] using hg c
 
+/-! ### Chain augmentation and the inverse map -/
+
+/-- The augmentation `Chains X n → ℤ` sending every simplex generator to `1`. -/
 def SecondHurewicz.SimplyConnected.chainAugmentation (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularChains.Chains X n →ₗ[ℤ] ℤ :=
   SingularChains.chainLift X n fun _ => 1
 
+/-- `chainAugmentation` of a simplex generator is `1`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.chainAugmentation_simplex (X : Type) [TopologicalSpace X]
     (n : ℕ) (smp : SingularChains.SingularSimplex X n) :
     chainAugmentation X n (SingularChains.simplexChain X n smp) = 1 :=
   SingularChains.chainLift_simplex X n _ smp
 
+/-- `chainAugmentation` of a degree-`2` boundary equals `chainAugmentation` of the `2`-chain. -/
 theorem SecondHurewicz.SimplyConnected.chainAugmentation_boundaryTwo (X : Type)
     [TopologicalSpace X] (c : SingularChains.Chains X 2) :
     chainAugmentation X 1 (SingularChains.boundaryTwo X c) = chainAugmentation X 2 c := by
@@ -3493,6 +3977,7 @@ theorem SecondHurewicz.SimplyConnected.chainAugmentation_boundaryTwo (X : Type)
       chainAugmentation_simplex, sub_self, zero_add]
   exact LinearMap.congr_fun h c
 
+/-- `chainAugmentation` vanishes on `2`-cycles. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.chainAugmentation_twoCycle (X : Type) [TopologicalSpace X]
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -3503,6 +3988,7 @@ theorem SecondHurewicz.SimplyConnected.chainAugmentation_twoCycle (X : Type) [To
   change SingularChains.boundaryTwo X c.1 = 0 at hc
   rw [hc, map_zero]
 
+/-- `chainLift` of `f - m` equals `chainLift` of `f` minus the augmentation times `m`. -/
 theorem SecondHurewicz.SimplyConnected.chainLift_sub_constant (X : Type) [TopologicalSpace X]
     {M : Type} [AddCommGroup M] [Module ℤ M] (n : ℕ) (f : SingularChains.SingularSimplex X n → M)
     (m : M) (c : SingularChains.Chains X n) :
@@ -3521,6 +4007,7 @@ theorem SecondHurewicz.SimplyConnected.chainLift_sub_constant (X : Type) [Topolo
       (congrArg (fun z : M => SingularChains.chainLift X n f c - z)
         (int_smul_eq_zsmul (inferInstance : Module ℤ M) (chainAugmentation X n c) m))
 
+/-- On a `2`-cycle, `chainLift` of `f - m` equals `chainLift` of `f`. -/
 theorem SecondHurewicz.SimplyConnected.chainLift_sub_constant_twoCycle (X : Type)
     [TopologicalSpace X] {M : Type} [AddCommGroup M] [Module ℤ M]
     (f : SingularChains.SingularSimplex X 2 → M) (m : M)
@@ -3528,10 +4015,13 @@ theorem SecondHurewicz.SimplyConnected.chainLift_sub_constant_twoCycle (X : Type
     SingularChains.chainLift X 2 (fun smp => f smp - m) c.1 = SingularChains.chainLift X 2 f c.1 := by
   rw [chainLift_sub_constant, chainAugmentation_twoCycle, zero_smul, sub_zero]
 
+/-- The operator `Chains X 2 →ₗ[ℤ] Additive (π_2 X x)` summing the based triangle
+classes. -/
 def SecondHurewicz.SimplyConnected.triangleClassOperator {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) : SingularChains.Chains X 2 →ₗ[ℤ] Additive (π_ 2 X x) :=
   SingularChains.chainLift X 2 fun smp => basedTriangleClass (normalizedTriangle x smp)
 
+/-- `triangleClassOperator` applied to a simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.triangleClassOperator_simplex {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
@@ -3540,6 +4030,8 @@ theorem SecondHurewicz.SimplyConnected.triangleClassOperator_simplex {X : Type}
       basedTriangleClass (normalizedTriangle x smp) :=
   SingularChains.chainLift_simplex X 2 _ smp
 
+/-- `triangleClassOperator` vanishes on `3`-boundaries (the tetrahedron signed
+relation). -/
 theorem SecondHurewicz.SimplyConnected.triangleClassOperator_boundary {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (b : SingularChains.Chains X 3) :
     triangleClassOperator x (((SingularChains.singularComplex X).d 3 2).hom b) = 0 := by
@@ -3551,12 +4043,14 @@ theorem SecondHurewicz.SimplyConnected.triangleClassOperator_boundary {X : Type}
     exact normalizedTriangle_boundary_relation x smp
   exact LinearMap.congr_fun h b
 
+/-- The normalized cycle operator on `2`-chains. -/
 def SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     SingularChains.Chains X 2 →ₗ[ℤ]
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2 :=
   SingularChains.chainLift X 2 fun smp => basedTriangleCycle (normalizedTriangle x smp)
 
+/-- `normalizedTriangleCycleOperator` applied to a simplex. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_simplex {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
@@ -3565,6 +4059,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_simplex {
       basedTriangleCycle (normalizedTriangle x smp) :=
   SingularChains.chainLift_simplex X 2 _ smp
 
+/-- The underlying chain of `normalizedTriangleCycleOperator c` is the `chainLift` of the normalized triangle minus the constant simplex. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_val {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (c : SingularChains.Chains X 2) :
     (normalizedTriangleCycleOperator x c).val =
@@ -3586,6 +4081,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_val {X : 
       Submodule.subtype_apply, basedTriangleCycle_val, SingularChains.chainLift_simplex]
   exact LinearMap.congr_fun h c
 
+/-- On a `2`-cycle value, `normalizedTriangleCycleOperator` agrees with `normalizedTwoCycle`. -/
 theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_twoCycle {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -3595,6 +4091,7 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator_twoCycle 
     normalizedTwoCycle_val]
   rfl
 
+/-- Hurewicz after `triangleClassOperator` is `cycleClass` after `normalizedTriangleCycleOperator`. -/
 theorem SecondHurewicz.SimplyConnected.hurewiczMap_comp_triangleClassOperator {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     (SecondHurewicz.hurewiczMap x).comp (triangleClassOperator x) =
@@ -3606,6 +4103,7 @@ theorem SecondHurewicz.SimplyConnected.hurewiczMap_comp_triangleClassOperator {X
     normalizedTriangleCycleOperator_simplex]
   exact hurewicz_basedTriangleClass (normalizedTriangle x smp)
 
+/-- `hurewiczMap` of the triangle-class operator on a `2`-cycle returns its class. -/
 theorem SecondHurewicz.SimplyConnected.hurewiczMap_triangleClassOperator_twoCycle {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2) :
@@ -3619,11 +4117,14 @@ theorem SecondHurewicz.SimplyConnected.hurewiczMap_triangleClassOperator_twoCycl
   rw [normalizedTriangleCycleOperator_twoCycle] at h
   exact h.trans (normalizedTwoCycle_class x c)
 
+/-- The inverse Hurewicz map `H_2 X →ₗ[ℤ] Additive (π_2 X x)` for simply
+connected `X`. -/
 def SecondHurewicz.SimplyConnected.hurewiczInverse {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     SingularMayerVietoris.SingularHomology X 2 →ₗ[ℤ] Additive (π_ 2 X x) :=
   secondHomologyDesc (triangleClassOperator x) (triangleClassOperator_boundary x)
 
+/-- `hurewiczInverse` on a cycle class. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.hurewiczInverse_cycleClass {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X)
@@ -3633,18 +4134,23 @@ theorem SecondHurewicz.SimplyConnected.hurewiczInverse_cycleClass {X : Type} [To
       triangleClassOperator x c.val :=
   secondHomologyDesc_cycleClass _ _ c
 
+/-- `hurewiczMap ∘ hurewiczInverse` is the identity on `H_2`. -/
 theorem SecondHurewicz.SimplyConnected.hurewiczMap_comp_hurewiczInverse {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     (SecondHurewicz.hurewiczMap x).comp (hurewiczInverse x) = LinearMap.id :=
   comp_secondHomologyDesc_eq_id (triangleClassOperator x) (triangleClassOperator_boundary x)
     (SecondHurewicz.hurewiczMap x) (hurewiczMap_triangleClassOperator_twoCycle x)
 
+/-- `hurewiczMap` of `hurewiczInverse` of a class returns the class. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (c : SingularMayerVietoris.SingularHomology X 2) :
     SecondHurewicz.hurewiczMap x (hurewiczInverse x c) = c :=
   LinearMap.congr_fun (hurewiczMap_comp_hurewiczInverse x) c
 
+/-! ### Normalized squares -/
+
+/-- The lower square triangle of `p` is vertex-based. -/
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_verticesBased {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     VerticesBased x 2 (p.val.comp lowerSquareTriangle) := by
@@ -3662,6 +4168,7 @@ theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_verticesBased {X : Ty
     change (lowerSquareTriangle (stdSimplex.vertex (S := ℝ) i) 1 : ℝ) = 0
     simp [hi, stdSimplex.vertex]
 
+/-- The upper square triangle of `p` is vertex-based. -/
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_verticesBased {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     VerticesBased x 2 (p.val.comp upperSquareTriangle) := by
@@ -3679,6 +4186,7 @@ theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_verticesBased {X : Ty
     change (upperSquareTriangle (stdSimplex.vertex (S := ℝ) i) 0 : ℝ) = 0
     simp [hi, stdSimplex.vertex]
 
+/-- The face-`1` restrictions of the lower and upper square triangles of `p` agree. -/
 theorem SecondHurewicz.SimplyConnected.squareTriangles_diagonal {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     (p.val.comp lowerSquareTriangle).comp (SingularChains.simplexFace 1 1) =
@@ -3703,6 +4211,7 @@ theorem SecondHurewicz.SimplyConnected.squareTriangles_diagonal {X : Type} [Topo
     rw [lowerSquareTriangle_one, upperSquareTriangle_one, SingularChains.simplexFace_apply_self,
       zero_add]
 
+/-- For `i ≠ 1`, face `i` of the lower square triangle of `p` is constant `x`. -/
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_outerFace {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) (i : Fin 3) (hi : i ≠ 1) :
     (p.val.comp lowerSquareTriangle).comp (SingularChains.simplexFace 1 i) =
@@ -3732,6 +4241,7 @@ theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_outerFace {X : Type}
     change (lowerSquareTriangle (SingularChains.simplexFace 1 2 s) 1 : ℝ) = 0
     rw [lowerSquareTriangle_one, SingularChains.simplexFace_apply_self]
 
+/-- For `i ≠ 1`, face `i` of the upper square triangle of `p` is constant `x`. -/
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_outerFace {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) (i : Fin 3) (hi : i ≠ 1) :
     (p.val.comp upperSquareTriangle).comp (SingularChains.simplexFace 1 i) =
@@ -3761,6 +4271,7 @@ theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_outerFace {X : Type}
     change (upperSquareTriangle (SingularChains.simplexFace 1 2 s) 0 : ℝ) = 0
     rw [upperSquareTriangle_zero, SingularChains.simplexFace_apply_self]
 
+/-- For `t 1 ≤ t 0`, `lowerSquareTriangle (triangleQuotient (t 0, t 1)) = t`. -/
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_quotient (t : Fin 2 → (unitInterval))
     (h : (t 1 : ℝ) ≤ t 0) : lowerSquareTriangle (triangleQuotient (t 0, t 1)) = t := by
   funext i
@@ -3772,6 +4283,7 @@ theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_quotient (t : Fin 2 �
   · change (lowerSquareTriangle (triangleQuotient (t 0, t 1)) 1 : ℝ) = (t 1 : ℝ)
     rw [lowerSquareTriangle_one, triangleQuotient_two, min_eq_right h]
 
+/-- For `t 0 ≤ t 1`, `upperSquareTriangle (triangleQuotient (t 1, t 0)) = t`. -/
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_quotient (t : Fin 2 → (unitInterval))
     (h : (t 0 : ℝ) ≤ t 1) : upperSquareTriangle (triangleQuotient (t 1, t 0)) = t := by
   funext i
@@ -3783,6 +4295,7 @@ theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_quotient (t : Fin 2 �
     rw [upperSquareTriangle_one, triangleQuotient_one, triangleQuotient_two]
     ring
 
+/-- The perimeter of the triangle quotient on the lower half. -/
 theorem SecondHurewicz.SimplyConnected.triangleQuotient_perimeter_of_le
     (z : (unitInterval) × (unitInterval)) (hper : z.1 = 0 ∨ z.1 = 1 ∨ z.2 = 0 ∨ z.2 = 1)
     (hle : (z.2 : ℝ) ≤ z.1) : triangleQuotient z 0 = 0 ∨ triangleQuotient z 2 = 0 := by
@@ -3801,6 +4314,7 @@ theorem SecondHurewicz.SimplyConnected.triangleQuotient_perimeter_of_le
     rw [triangleQuotient_zero, hu]
     norm_num
 
+/-- A point of the `Fin 2` cube boundary has some coordinate equal to `0` or `1`. -/
 theorem SecondHurewicz.SimplyConnected.cubeBoundary_productBoundary (t : Fin 2 → (unitInterval))
     (ht : t ∈ Cube.boundary (Fin 2)) : t 0 = 0 ∨ t 0 = 1 ∨ t 1 = 0 ∨ t 1 = 1 := by
   rcases ht with ⟨i, hi | hi⟩
@@ -3811,6 +4325,7 @@ theorem SecondHurewicz.SimplyConnected.cubeBoundary_productBoundary (t : Fin 2 �
     · exact Or.inr (Or.inl hi)
     · exact Or.inr (Or.inr (Or.inr hi))
 
+/-- Glue `L` and `U` along the diagonal face `s 1 = 0`. -/
 def SecondHurewicz.SimplyConnected.gluedTriangleHomotopyMap {X : Type} [TopologicalSpace X]
     (L U : C((unitInterval) × SingularChains.Simplex 2, X))
     (hdiag : ∀ r s, s 1 = 0 → L (r, s) = U (r, s)) :
@@ -3828,6 +4343,7 @@ def SecondHurewicz.SimplyConnected.gluedTriangleHomotopyMap {X : Type} [Topologi
       simp only [triangleQuotient_one, he, min_self, sub_self]
     simpa only [he] using hdiag z.1 (triangleQuotient (z.2 0, z.2 1)) hq
 
+/-- The glued map is `x` on the square boundary, given the boundary hypotheses on `L` and `U`. -/
 theorem SecondHurewicz.SimplyConnected.gluedTriangleHomotopyMap_boundary {X : Type}
     [TopologicalSpace X] (L U : C((unitInterval) × SingularChains.Simplex 2, X))
     (hdiag : ∀ r s, s 1 = 0 → L (r, s) = U (r, s)) (x : X)
@@ -3846,6 +4362,7 @@ theorem SecondHurewicz.SimplyConnected.gluedTriangleHomotopyMap_boundary {X : Ty
       · exact Or.inr (Or.inl hp)
     exact hU r _ (triangleQuotient_perimeter_of_le (t 1, t 0) hp' (le_of_not_ge h))
 
+/-- The `HomotopyRel` from `p` to `q` glued from lower- and upper-triangle homotopies. -/
 def SecondHurewicz.SimplyConnected.gluedTriangleHomotopy {X : Type} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 2) X x}
     (L : (p.val.comp lowerSquareTriangle).Homotopy (q.val.comp lowerSquareTriangle))
@@ -3890,6 +4407,7 @@ private theorem SecondHurewicz.SimplyConnected.basedTriangles_diagonal_mo1973_67
     (hs : s 1 = 0) : τ.val s = υ.val s :=
   (τ.property s ⟨1, hs⟩).trans (υ.property s ⟨1, hs⟩).symm
 
+/-- The based square loop gluing `τ` on the lower triangle and `υ` on the upper triangle. -/
 def SecondHurewicz.SimplyConnected.basedTrianglesLoop {X : Type} [TopologicalSpace X] {x : X}
     (τ υ : BasedTriangle x) : GenLoop (Fin 2) X x :=
   ⟨(gluedTriangleHomotopyMap (τ.val.comp ContinuousMap.snd) (υ.val.comp ContinuousMap.snd)
@@ -3902,6 +4420,7 @@ def SecondHurewicz.SimplyConnected.basedTrianglesLoop {X : Type} [TopologicalSpa
         (fun _ s hs => τ.property s (hs.elim (fun h => ⟨0, h⟩) (fun h => ⟨2, h⟩)))
         (fun _ s hs => υ.property s (hs.elim (fun h => ⟨0, h⟩) (fun h => ⟨2, h⟩))) 0 t ht⟩
 
+/-- `basedTrianglesLoop τ υ` is `τ` below the diagonal and `υ` above it. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_apply {X : Type} [TopologicalSpace X]
     {x : X} (τ υ : BasedTriangle x) (t : Fin 2 → (unitInterval)) :
@@ -3910,6 +4429,7 @@ theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_apply {X : Type} [Topo
       else υ.val (triangleQuotient (t 1, t 0)) :=
   rfl
 
+/-- `basedTrianglesLoop` sends diagonal points to `x`. -/
 theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_diagonal {X : Type} [TopologicalSpace X]
     {x : X} (τ υ : BasedTriangle x) (u : (unitInterval)) :
     basedTrianglesLoop τ υ (fun _ => u) = x := by
@@ -3917,6 +4437,7 @@ theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_diagonal {X : Type} [T
   apply τ.property
   exact ⟨1, by simp only [triangleQuotient_one, min_self, sub_self]⟩
 
+/-- The lower triangle restriction of `basedTrianglesLoop τ υ` is `τ`. -/
 theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_lower {X : Type} [TopologicalSpace X]
     {x : X} (τ υ : BasedTriangle x) :
     (basedTrianglesLoop τ υ).val.comp lowerSquareTriangle = τ.val := by
@@ -3942,6 +4463,7 @@ private theorem SecondHurewicz.SimplyConnected.triangleQuotient_swapped_upper_mo
   rw [hpair]
   exact ContinuousMap.congr_fun triangleQuotient_lowerProductTriangle s
 
+/-- The upper triangle restriction of `basedTrianglesLoop τ υ` is `υ`. -/
 theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_upper {X : Type} [TopologicalSpace X]
     {x : X} (τ υ : BasedTriangle x) :
     (basedTrianglesLoop τ υ).val.comp upperSquareTriangle = υ.val := by
@@ -3962,6 +4484,7 @@ theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_upper {X : Type} [Topo
     exact basedTriangles_diagonal_mo1973_6743 τ υ s hs
   · rw [triangleQuotient_swapped_upper_mo1973_6748]
 
+/-- The `HomotopyRel` from `p` to `basedTrianglesLoop τ υ` assembled from triangle homotopies `L`, `U`. -/
 def SecondHurewicz.SimplyConnected.basedTrianglesHomotopy {X : Type} [TopologicalSpace X] {x : X}
     {p : GenLoop (Fin 2) X x} (τ υ : BasedTriangle x)
     (L : (p.val.comp lowerSquareTriangle).Homotopy τ.val)
@@ -3972,11 +4495,13 @@ def SecondHurewicz.SimplyConnected.basedTrianglesHomotopy {X : Type} [Topologica
   gluedTriangleHomotopy (L.cast rfl (basedTrianglesLoop_lower τ υ).symm)
     (U.cast rfl (basedTrianglesLoop_upper τ υ).symm) hdiag hL hU
 
+/-- If `P` holds on all points of face `i`, it holds at every `s` with `s i = 0`. -/
 theorem SecondHurewicz.SimplyConnected.triangleProperty_of_face
     {P : SingularChains.Simplex 2 → Prop} (i : Fin 3)
     (h : ∀ u, P (SingularChains.simplexFace 1 i u)) (s : SingularChains.Simplex 2) (hs : s i = 0) :
     P s := by simpa only [simplexFace_inverse] using h (simplexFaceInverse 1 i ⟨s, hs⟩)
 
+/-- The `HomotopyRel` from `p` to `basedTrianglesLoop τ υ` given homotopies to `τ` and `υ` on the two triangles. -/
 def SecondHurewicz.SimplyConnected.basedTrianglesHomotopy_of_faces {X : Type} [TopologicalSpace X]
     {x : X} {p : GenLoop (Fin 2) X x} (τ υ : BasedTriangle x)
     (L : (p.val.comp lowerSquareTriangle).Homotopy τ.val)
@@ -3995,16 +4520,19 @@ def SecondHurewicz.SimplyConnected.basedTrianglesHomotopy_of_faces {X : Type} [T
       hs.elim (triangleProperty_of_face (P := fun s => U (r, s) = x) 0 (hU r 0 (by decide)) s)
         (triangleProperty_of_face (P := fun s => U (r, s) = x) 2 (hU r 2 (by decide)) s))
 
+/-- The edge-straightened `BasedTriangle` of the lower square triangle of `p`. -/
 def SecondHurewicz.SimplyConnected.squareNormalizedLowerTriangle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) : BasedTriangle x :=
   edgeStraightenedTriangle x (p.val.comp lowerSquareTriangle)
     (lowerSquareTriangle_verticesBased p)
 
+/-- The edge-straightened `BasedTriangle` of the upper square triangle of `p`. -/
 def SecondHurewicz.SimplyConnected.squareNormalizedUpperTriangle {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) : BasedTriangle x :=
   edgeStraightenedTriangle x (p.val.comp upperSquareTriangle)
     (upperSquareTriangle_verticesBased p)
 
+/-- The homotopy from a vertex-based `2`-simplex to its edge-straightened triangle. -/
 def SecondHurewicz.SimplyConnected.squareNormalizationTriangleHomotopy {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (smp : C(SingularChains.Simplex 2, X))
     (h : VerticesBased x 2 smp) : smp.Homotopy (edgeStraightenedTriangle x smp h).val
@@ -4013,16 +4541,19 @@ def SecondHurewicz.SimplyConnected.squareNormalizationTriangleHomotopy {X : Type
   map_zero_left := triangleEdgeStraighteningHomotopy_zero x smp
   map_one_left _ := rfl
 
+/-- The homotopy from `p ∘ lowerSquareTriangle` to its normalized triangle. -/
 def SecondHurewicz.SimplyConnected.squareLowerNormalizationHomotopy {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (p.val.comp lowerSquareTriangle).Homotopy (squareNormalizedLowerTriangle p).val :=
   squareNormalizationTriangleHomotopy _ (lowerSquareTriangle_verticesBased p)
 
+/-- The homotopy from `p ∘ upperSquareTriangle` to its normalized triangle. -/
 def SecondHurewicz.SimplyConnected.squareUpperNormalizationHomotopy {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (p.val.comp upperSquareTriangle).Homotopy (squareNormalizedUpperTriangle p).val :=
   squareNormalizationTriangleHomotopy _ (upperSquareTriangle_verticesBased p)
 
+/-- On face `i`, the triangle edge-straightening homotopy is `edgeStraighteningHomotopy` of that face. -/
 theorem SecondHurewicz.SimplyConnected.squareNormalization_edge_face {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (smp : C(SingularChains.Simplex 2, X))
     (i : Fin 3) (r : (unitInterval)) (s : SingularChains.Simplex 1) :
@@ -4030,6 +4561,7 @@ theorem SecondHurewicz.SimplyConnected.squareNormalization_edge_face {X : Type}
       edgeStraighteningHomotopy x (smp.comp (SingularChains.simplexFace 1 i)) (r, s) :=
   DFunLike.congr_fun (triangleEdgeStraighteningHomotopy_face x smp i) (r, s)
 
+/-- The lower and upper normalization homotopies agree on face `1`. -/
 theorem SecondHurewicz.SimplyConnected.squareNormalization_diagonal {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (r : (unitInterval)) (s : SingularChains.Simplex 1) :
@@ -4042,6 +4574,7 @@ theorem SecondHurewicz.SimplyConnected.squareNormalization_diagonal {X : Type}
         (r, SingularChains.simplexFace 1 1 s)
   rw [squareNormalization_edge_face, squareNormalization_edge_face, squareTriangles_diagonal]
 
+/-- The lower normalization homotopy is `x` on outer faces `i ≠ 1`. -/
 theorem SecondHurewicz.SimplyConnected.squareLowerNormalization_outerFace {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (r : (unitInterval)) (i : Fin 3) (hi : i ≠ 1) (s : SingularChains.Simplex 1) :
@@ -4054,6 +4587,7 @@ theorem SecondHurewicz.SimplyConnected.squareLowerNormalization_outerFace {X : T
     edgeStraighteningHomotopy_const]
   rfl
 
+/-- The upper normalization homotopy is `x` on outer faces `i ≠ 1`. -/
 theorem SecondHurewicz.SimplyConnected.squareUpperNormalization_outerFace {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (r : (unitInterval)) (i : Fin 3) (hi : i ≠ 1) (s : SingularChains.Simplex 1) :
@@ -4066,6 +4600,7 @@ theorem SecondHurewicz.SimplyConnected.squareUpperNormalization_outerFace {X : T
     edgeStraighteningHomotopy_const]
   rfl
 
+/-- The `HomotopyRel` from `p` to the loop of its normalized lower/upper triangles. -/
 def SecondHurewicz.SimplyConnected.squareNormalizationHomotopy {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     p.val.HomotopyRel
@@ -4076,22 +4611,28 @@ def SecondHurewicz.SimplyConnected.squareNormalizationHomotopy {X : Type} [Topol
     (squareUpperNormalizationHomotopy p) (squareNormalization_diagonal p)
     (squareLowerNormalization_outerFace p) (squareUpperNormalization_outerFace p)
 
+/-- `p` is homotopic to `basedTrianglesLoop` of its normalized triangles. -/
 theorem SecondHurewicz.SimplyConnected.squareNormalization_homotopic {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     GenLoop.Homotopic p
       (basedTrianglesLoop (squareNormalizedLowerTriangle p) (squareNormalizedUpperTriangle p)) :=
   ⟨squareNormalizationHomotopy p⟩
 
+/-! ### Subdivision triangle classes -/
+
+/-- The square map of the positively oriented upper subdivision triangle. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   SecondHurewicz.squareCoordinates.comp (squareAffineTriangle ![(0, 0), (1, 1), (0, 1)])
 
+/-- The `0`-face of the upper positive subdivision triangle. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle_zero
     (s : SingularChains.Simplex 2) : (subdivisionUpperPositiveSquareTriangle s 0 : ℝ) = s 1 := by
   simp [subdivisionUpperPositiveSquareTriangle, squareAffineTriangle_fst_coe,
     SingularMayerVietoris.stdVertices, stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
+/-- The `1`-face of the upper positive subdivision triangle. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle_one
     (s : SingularChains.Simplex 2) :
@@ -4099,6 +4640,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle_on
   simp [subdivisionUpperPositiveSquareTriangle, squareAffineTriangle_snd_coe,
     SingularMayerVietoris.stdVertices, stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
+/-- The coordinate sum of a subdivision triangle. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionTriangle_coordinate_sum
     (s : SingularChains.Simplex 2) : s 0 + s 1 + s 2 = 1 := by
   have hsum := stdSimplex.sum_eq_one s
@@ -4106,6 +4648,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionTriangle_coordinate_sum
   change s 0 + (s 1 + s 2) = 1 at hsum
   linarith
 
+/-- `p (lowerSquareTriangle s) = x` for `s` on the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionLowerSquareTriangle_based {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
@@ -4129,6 +4672,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionLowerSquareTriangle_based {X :
     apply Subtype.ext
     simpa using hi
 
+/-- `p (upperSquareTriangle s) = x` for `s` on the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
@@ -4152,6 +4696,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeSquareTriangle_ba
     apply Subtype.ext
     simpa using hi
 
+/-- `p (subdivisionUpperPositiveSquareTriangle s) = x` for `s` on the triangle boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
@@ -4175,22 +4720,26 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle_ba
     apply Subtype.ext
     simp [hi]
 
+/-- The lower subdivision triangle as a based triangle. -/
 def SecondHurewicz.SimplyConnected.subdivisionLowerBasedTriangle {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     BasedTriangle x :=
   ⟨p.val.comp lowerSquareTriangle, subdivisionLowerSquareTriangle_based p hd⟩
 
+/-- The upper subdivision triangle read against the orientation, as a `BasedTriangle`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperNegativeBasedTriangle {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) : BasedTriangle x :=
   ⟨p.val.comp upperSquareTriangle, subdivisionUpperNegativeSquareTriangle_based p hd⟩
 
+/-- The upper subdivision triangle read with the orientation, as a `BasedTriangle`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperPositiveBasedTriangle {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) : BasedTriangle x :=
   ⟨p.val.comp subdivisionUpperPositiveSquareTriangle,
     subdivisionUpperPositiveSquareTriangle_based p hd⟩
 
+/-- The lower triangle loop equals the loop of the lower based triangle. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionLowerTriangleLoop_eq_basedTriangleLoop
     {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4202,6 +4751,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionLowerTriangleLoop_eq_basedTria
   funext i
   fin_cases i <;> apply Subtype.ext <;> simp
 
+/-- The upper triangle loops equal the loops of the upper based triangles. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperTriangleLoop_eq_basedTriangleLoop
     {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4216,6 +4766,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperTriangleLoop_eq_basedTria
   funext i
   fin_cases i <;> apply Subtype.ext <;> simp [subdivisionSubMin]
 
+/-- The loop of the upper negative based triangle at `u` is `p ![min (u 0) (u 1), u 0]`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeBasedTriangle_loop_apply {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : Fin 2 → (unitInterval)) :
@@ -4226,6 +4777,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeBasedTriangle_loo
   funext i
   fin_cases i <;> apply Subtype.ext <;> simp
 
+/-- `⟦p⟧` splits as the sum of the lower and upper positive based-triangle classes. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_basedTriangleClass_sum {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4236,18 +4788,21 @@ theorem SecondHurewicz.SimplyConnected.subdivision_basedTriangleClass_sum {X : T
     subdivisionUpperTriangleLoop_eq_basedTriangleLoop, basedTriangleClass] using
     subdivision_additiveClass p hd
 
+/-- The subdivision-square map underlying the negatively oriented upper triangle. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
   toFun u := ![Min.min (u 0) (u 1), u 0]
   continuous_toFun := by fun_prop
 
+/-- The `subdivisionUpperNegativeMap` with the second coordinate reversed. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap :
     C(SubdivisionSquare, SubdivisionSquare)
     where
   toFun u := ![Min.min (u 0) ((unitInterval.symm) (u 1)), u 0]
   continuous_toFun := by fun_prop
 
+/-- `p (subdivisionUpperNegativeMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -4262,6 +4817,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap_based {X : Ty
           simp [subdivisionUpperNegativeMap, h,
             min_eq_left (show u 0 ≤ (1 : (unitInterval)) from (u 0).property.2)])
 
+/-- `p (subdivisionUpperNegativeReversedMap u) = x` for `u` on the square boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (u : SubdivisionSquare)
@@ -4276,17 +4832,20 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap_based
             min_eq_left (show u 0 ≤ (1 : (unitInterval)) from (u 0).property.2)])
   · exact p.property _ ⟨0, Or.inl (by simp [subdivisionUpperNegativeReversedMap, h])⟩
 
+/-- The pullback loop `p ∘ subdivisionUpperNegativeMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperNegativeLoop {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) (hd : ∀ t : (unitInterval), p ![t, t] = x) :
     GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionUpperNegativeMap (subdivisionUpperNegativeMap_based p hd)
 
+/-- The pullback loop `p ∘ subdivisionUpperNegativeReversedMap`. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedLoop {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) : GenLoop (Fin 2) X x :=
   subdivisionPullbackLoop p subdivisionUpperNegativeReversedMap
     (subdivisionUpperNegativeReversedMap_based p hd)
 
+/-- The upper triangle map and the reversed upper negative map land on the same side of the boundary. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_sides (u : SubdivisionSquare)
     (hu : u ∈ Cube.boundary (Fin 2)) :
     SubdivisionSameSide (subdivisionUpperTriangleMap u) (subdivisionUpperNegativeReversedMap u) :=
@@ -4307,6 +4866,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_sides (u : Su
       .zero 0 (by simp [subdivisionUpperTriangleMap, h])
         (by simp [subdivisionUpperNegativeReversedMap, h])
 
+/-- The homotopy relating the upper negative loop to its reversal. -/
 def SecondHurewicz.SimplyConnected.subdivisionUpperOrientationHomotopy {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4315,6 +4875,7 @@ def SecondHurewicz.SimplyConnected.subdivisionUpperOrientationHomotopy {X : Type
   subdivisionLinearHomotopy p hd _ _ (subdivisionUpperTriangleMap_based p hd)
     (subdivisionUpperNegativeReversedMap_based p hd) subdivisionUpperOrientation_sides
 
+/-- The reversed upper negative loop is `symmAt 1` of the upper negative loop. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedLoop_eq_symmAt {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4328,6 +4889,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedLoop_eq_s
         (fun j => if j = 1 then (unitInterval.symm) (u 1) else u j)
   simp [subdivisionUpperNegativeLoop, subdivisionPullbackLoop, subdivisionUpperNegativeMap]
 
+/-- The upper triangle loop is homotopic to the `symmAt 1`-reversed upper negative loop. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_homotopic {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4336,6 +4898,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_homotopic {X 
   rw [← subdivisionUpperNegativeReversedLoop_eq_symmAt]
   exact ⟨subdivisionUpperOrientationHomotopy p hd⟩
 
+/-- `⟦subdivisionUpperTriangleLoop⟧ = ⟦subdivisionUpperNegativeLoop⟧⁻¹` in `π_2`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_class {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4349,6 +4912,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_class {X : Ty
     h.trans
       (HomotopyGroup.inv_spec (i := (1 : Fin 2)) (p := subdivisionUpperNegativeLoop p hd)).symm
 
+/-- The additive form of `subdivisionUpperOrientation_class`. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_additiveClass {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4357,10 +4921,12 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperOrientation_additiveClass
         (Additive.ofMul (⟦subdivisionUpperNegativeLoop p hd⟧ : π_ 2 X x)) :=
   congrArg Additive.ofMul (subdivisionUpperOrientation_class p hd)
 
+/-- From `a = b + c` and `c = -d`, conclude `a = b - d`. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_eq_sub_of_eq_add {A : Type*} [AddGroup A]
     {a b c d : A} (h : a = b + c) (hc : c = -d) : a = b - d :=
   h.trans ((congrArg (fun z => b + z) hc).trans (sub_eq_add_neg b d).symm)
 
+/-- The upper negative loop equals the loop of its based triangle. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeLoop_eq_basedTriangleLoop
     {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4370,6 +4936,8 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperNegativeLoop_eq_basedTria
   intro u
   exact (subdivisionUpperNegativeBasedTriangle_loop_apply p hd u).symm
 
+/-- The class of the upper positive based triangle is the negated upper negative
+class. -/
 theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveBasedTriangle_class_eq_neg
     {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4380,6 +4948,7 @@ theorem SecondHurewicz.SimplyConnected.subdivisionUpperPositiveBasedTriangle_cla
     subdivisionUpperNegativeLoop_eq_basedTriangleLoop]
   exact subdivisionUpperOrientation_additiveClass p hd
 
+/-- `⟦p⟧` splits as the lower based-triangle class minus the upper negative one. -/
 theorem SecondHurewicz.SimplyConnected.subdivision_basedTriangleClass_sub {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) :
@@ -4390,6 +4959,7 @@ theorem SecondHurewicz.SimplyConnected.subdivision_basedTriangleClass_sub {X : T
     (subdivision_basedTriangleClass_sum p hd)
     (subdivisionUpperPositiveBasedTriangle_class_eq_neg p hd)
 
+/-- `⟦basedTrianglesLoop τ υ⟧` is `basedTriangleClass τ - basedTriangleClass υ`. -/
 theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_class {X : Type} [TopologicalSpace X]
     {x : X} (τ υ : BasedTriangle x) :
     Additive.ofMul (⟦basedTrianglesLoop τ υ⟧ : π_ 2 X x) =
@@ -4406,12 +4976,14 @@ theorem SecondHurewicz.SimplyConnected.basedTrianglesLoop_class {X : Type} [Topo
     Subtype.ext (basedTrianglesLoop_upper τ υ)
   simpa only [hl, hu] using subdivision_basedTriangleClass_sub (basedTrianglesLoop τ υ) hd
 
+/-- `⟦p⟧ = ⟦basedTrianglesLoop (squareNormalizedLowerTriangle p) (squareNormalizedUpperTriangle p)⟧`. -/
 theorem SecondHurewicz.SimplyConnected.squareNormalization_quotient {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (⟦p⟧ : π_ 2 X x) =
       ⟦basedTrianglesLoop (squareNormalizedLowerTriangle p) (squareNormalizedUpperTriangle p)⟧ :=
   Quotient.sound (squareNormalization_homotopic p)
 
+/-- `basedTriangleClass (lower) - basedTriangleClass (upper) = ⟦p⟧` additively. -/
 theorem SecondHurewicz.SimplyConnected.squareNormalization_class {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     basedTriangleClass (squareNormalizedLowerTriangle p) -
@@ -4423,6 +4995,7 @@ theorem SecondHurewicz.SimplyConnected.squareNormalization_class {X : Type} [Top
           (squareNormalizedUpperTriangle p)).symm.trans
       h.symm
 
+/-- `triangleClassOperator` of the square chain of `p` is `⟦p⟧` additively. -/
 theorem SecondHurewicz.SimplyConnected.triangleClassOperator_squareChain {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (p : GenLoop (Fin 2) X x) :
     triangleClassOperator x (SecondHurewicz.squareChain p) = Additive.ofMul (⟦p⟧ : π_ 2 X x) := by
@@ -4432,6 +5005,7 @@ theorem SecondHurewicz.SimplyConnected.triangleClassOperator_squareChain {X : Ty
     normalizedTriangle_of_verticesBased x _ (upperSquareTriangle_verticesBased p)]
   exact squareNormalization_class p
 
+/-- `hurewiczInverse ∘ hurewiczMap` on a `⟦p⟧` representative returns `⟦p⟧`. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.hurewiczInverse_hurewiczMap_mk {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) (p : GenLoop (Fin 2) X x) :
@@ -4440,6 +5014,7 @@ theorem SecondHurewicz.SimplyConnected.hurewiczInverse_hurewiczMap_mk {X : Type}
   rw [SecondHurewicz.hurewiczMap_representative, hurewiczInverse_cycleClass]
   exact triangleClassOperator_squareChain x p
 
+/-- `hurewiczInverse` of `hurewiczMap` of a class returns the class. -/
 @[simp]
 theorem SecondHurewicz.SimplyConnected.hurewiczInverse_hurewiczMap {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (a : Additive (π_ 2 X x)) :
@@ -4451,12 +5026,18 @@ theorem SecondHurewicz.SimplyConnected.hurewiczInverse_hurewiczMap {X : Type} [T
   intro p
   exact hurewiczInverse_hurewiczMap_mk x p
 
+/-- `hurewiczInverse ∘ hurewiczMap` is the identity on `Additive (π_2)`. -/
 theorem SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap {X : Type}
     [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     (hurewiczInverse x).comp (SecondHurewicz.hurewiczMap x) = LinearMap.id := by
   ext a
   exact hurewiczInverse_hurewiczMap x a
 
+/-! ### The degree-two Hurewicz equivalence -/
+
+/-- **The degree-two Hurewicz equivalence**: for `SimplyConnectedSpace X`,
+`hurewiczMap` and `hurewiczInverse` are inverse `ℤ`-linear maps, giving
+`Additive (π_ 2 X x) ≃ₗ[ℤ] H_2 X`. -/
 def Hurewicz.degreeTwoLinearEquiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     Additive (π_ 2 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 2 :=
@@ -4465,6 +5046,8 @@ def Hurewicz.degreeTwoLinearEquiv {X : Type} [TopologicalSpace X]
     (SecondHurewicz.SimplyConnected.hurewiczMap_comp_hurewiczInverse x)
     (SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap x)
 
+/-- The monoid equivalence `π_ 2 X x ≃* Multiplicative (H_2 X)` for simply
+connected `X`. -/
 def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     π_ 2 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 2)
@@ -4476,6 +5059,10 @@ def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace
     c := congrArg Multiplicative.ofAdd (hurewiczMap_hurewiczInverse x (Multiplicative.toAdd c))
 
 
+/-! ### Composing homotopy families -/
+
+/-- A continuous cylinder map `I × A → X` viewed as a `Homotopy` between its
+time-`0` and time-`1` slices. -/
 def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     (H : C((unitInterval) × A, X)) :
     ContinuousMap.Homotopy (SecondHurewicz.SimplyConnected.timeSlice H 0)
@@ -4485,6 +5072,7 @@ def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpac
   map_zero_left _ := rfl
   map_one_left _ := rfl
 
+/-- Transitivity of homotopies commutes with precomposition by a continuous map. -/
 theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁)
     (G : f₁.Homotopy f₂) (f : C(B, A)) :
@@ -4495,6 +5083,7 @@ theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpac
   simp only [ContinuousMap.Homotopy.trans_apply]
   split_ifs <;> rfl
 
+/-- The concatenation of two constant homotopies is the constant homotopy. -/
 theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (x : X)
     (hF : F.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x)
@@ -4507,6 +5096,7 @@ theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [Topologi
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
+/-- `HomotopyRel` transitivity respects equality of the homotopies. -/
 theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ g₀ g₁ g₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (F' : g₀.Homotopy g₁)
     (G' : g₁.Homotopy g₂) (hF : F.toContinuousMap = F'.toContinuousMap)
@@ -4519,12 +5109,16 @@ theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [Topologi
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
+/-- A simplex-indexed family `H` starting at `smp` viewed as a `Homotopy` from
+`smp` to its time-`1` endpoint. -/
 def Hurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (h₀ : ∀ smp s, H smp (0, s) = smp s) (smp : SingularChains.SingularSimplex X n) :
     smp.Homotopy (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) :=
   (cylinderHomotopy (H smp)).cast (by ext s; exact h₀ smp s) rfl
 
+/-- The composition of two coherent simplex homotopy families (first `H₀` then
+`H₁`), staying face-compatible. -/
 def Hurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
@@ -4533,6 +5127,7 @@ def Hurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
       (simplexFamilyHomotopy G hG₀
         (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1))).toContinuousMap
 
+/-- At time `0`, `composeSimplexHomotopies H₀ H₁` is `H₀` at time `0`. -/
 @[simp]
 theorem Hurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -4541,6 +5136,8 @@ theorem Hurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {
     composeSimplexHomotopies H G hH₀ hG₀ smp (0, s) = smp s :=
   ContinuousMap.Homotopy.apply_zero _ s
 
+/-- At time `1`, `composeSimplexHomotopies H G` evaluates `G` at the time-`1`
+endpoint of `H smp`. -/
 @[simp]
 theorem Hurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -4550,6 +5147,8 @@ theorem Hurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n
       G (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) (1, s) :=
   ContinuousMap.Homotopy.apply_one _ s
 
+/-- The time-`1` slice of the composed homotopy is the time-`1` slice of `G`
+applied to the time-`1` endpoint of `H smp`. -/
 @[simp]
 theorem Hurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
     {n : ℕ}
@@ -4562,6 +5161,8 @@ theorem Hurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalS
   ext s
   exact composeSimplexHomotopies_one H G hH₀ hG₀ smp s
 
+/-- The face restriction of the composed homotopy is the composition of the face
+homotopies. -/
 theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' G' :
@@ -4590,6 +5191,8 @@ theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {
     rw [hG (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1) i,
       SecondHurewicz.SimplyConnected.timeSlice_face hH smp i 1]
 
+/-- If `H` and `G` are both stationary on the constant simplex at `x`, so is
+their composition on the constant simplex. -/
 theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s) (x : X)
@@ -4619,6 +5222,7 @@ theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] 
     exact hG
 
 
+/-- The glued boundary map of a constant family is the constant map. -/
 theorem Hurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
     (f : C(SingularChains.Simplex n, X))
     (g : C((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
@@ -4639,6 +5243,7 @@ theorem Hurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X]
       (congrArg (SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀) hu).trans
         ((SecondHurewicz.SimplyConnected.gluedBoundaryMap_sideInclusion f g h₀ _).trans (hg _))
 
+/-- The coherent boundary homotopy of the constant family is stationary. -/
 theorem Hurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -4661,6 +5266,7 @@ theorem Hurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace
   rw [hc]
   rfl
 
+/-- The coherent extension of the constant family is stationary. -/
 theorem Hurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :

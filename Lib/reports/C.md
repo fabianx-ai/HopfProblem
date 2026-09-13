@@ -1,198 +1,257 @@
 # Lane C report — the Hurewicz theorem in every degree
 
-**Lane:** `lib/C-hurewicz` (base `721fc82`; toolchain `leanprover/lean4:v4.33.0`).
-**Ledger/textbook:** `Lib/docs/C.md` (Axis 1–5; Stage-2 review incorporated in `f42b9e6`).
+**Current Lean checkpoint:** `1a31384`, branch `lib/C-10-boundary`.
+**Toolchain:** `leanprover/lean4:v4.33.0`.
+**Textbook and live ledger:** `Lib/docs/C.md`; aggregate receipt: `Lib/docs/C-INTERFACE_RECEIPT.md`.
+**Scope:** lane C only. The reassigned J/E2/F/G packets and target files were not edited.
 
-## The generalized statement
+## Current result
 
-For `2 ≤ n`, `X` simply connected, `x : X`, with `Subsingleton (π_ k X x)` for
-`2 ≤ k < n` (i.e. `X` is `(n-1)`-connected): the Hurewicz map
-`Additive (π_ n X x) ≃ₗ[ℤ] SingularHomology X n` is a `ℤ`-linear equivalence.
-The textbook proof (`Lib/docs/C.md`, §§1–15) is the cube-triangulation proof:
-straightening/normalization tower (§8), the Kuhn decomposition
-`[p] = Σ_σ sign(σ)·[p ∘ cubeSimplex σ]` (§9–10), the prism operator (§6), the
-cross product (§3), the homotopy-extension property of `(Δⁿ, ∂Δⁿ)` (§5), and the
-cell-filling / Hopf-degree inputs.
+For `2 ≤ n`, a simply connected space `X`, and `x : X`, assuming
+`Subsingleton (π_ j X x)` for `2 ≤ j < n`, the general Hurewicz equivalence is:
 
-## What landed
+```lean
+Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE x n hn hpi
+```
 
-Baselines (bytes verbatim except import lines and the noted renames; each with its
-source range on the pre-move HEAD, byte count, and SHA-256 in the commit message):
+Its result is `Additive (π_ n X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X n`.
+The return type locally installs `Nontrivial (Fin n)` from `hn`; no additional mathematical
+hypothesis is imposed. The degree-`m + 3` form is `Hurewicz.hurewiczLinearEquiv x hpi`.
+The degree-two input is `Hurewicz.degreeTwoLinearEquiv`.
 
-| Commit | Module | Decls | Source on |
-|---|---|---|---|
-| `4b9b9d7` | `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` | 96 | `527ac35` |
-| `4d4cdc7` | `Lib/AlgebraicTopology/Hurewicz/SimplexCube.lean` | 47 | `527ac35` |
-| `63b933a` | `Lib/AlgebraicTopology/Hurewicz/HomotopyExtension.lean` | 87 | `4d4cdc7` |
-| `f6ef77a` | `Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean` | 72 | `63b933a` |
-| `b42417b` | `Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean` | 440 | `f6ef77a` |
-| `7633126` | `Lib/AlgebraicTopology/Hurewicz/Subdivision.lean` | 228 | `b42417b` |
-| `aa3f112` | `Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean` | 127 | `7633126` |
-| `2cb2ca5` | `Lib/AlgebraicTopology/Hurewicz/Degree.lean` | 53 | `aa3f112` |
-| `75a473c` | `Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean` | 75 | `2cb2ca5` |
-| `8611afa` | (composition machinery into `PrismOperator.lean`) | 11 | `2cb2ca5`-era |
+C10 and C13 are **landed**, not blocked. `Lib/reports/C-handoff.md` is a historical handoff.
+The proof follows the normalization tower, coherent cube gluing, signed Kuhn subdivision,
+and prism class-preservation arguments of `Lib/docs/C.md`, §§8–13.
 
-Renames applied at baseline (all lane-A-landed names): `FirstHurewicz. →
-SingularChains.`, `PeriodTorusHigherHomology.crossInsertLeft →
-SingularHomology.crossInsertLeft`. Four misnamed generic theorems moved along
-with their consuming blocks and noted in the commit bodies
-(`PeriodTorusLineBundle.ChernCocycle.simplexFace_comp`, `singularSimplex_face_face`;
-`PeriodTorusHigherHomology.formalBoundary_edge_simplex`,
-`formalPointCrossProduct_edge_boundary`,
-`formalPointCrossProduct_mem_supported`,
-`formalEdgeCrossProduct_mem_supported`).
+## Continuation commits
 
-New mathematics (the lane's two generalizations, both flagged in the ledger):
-
-- **G1** (`4238402`, `CubeChainDecomposition.lean`): the Kuhn decomposition at
-  every degree, `HigherHurewicz.cubeChain_eq_sum_simplices`, by induction with
-  the prism identity at the step. New apparatus: the general-`n` uncurrying
-  `cubeCoordinates`, the recursive `fundamentalCubeChain`, `cubeChain`,
-  `curryLoop`, the recursion `cubeChain_succ`, the prism identification
-  `evalLeft_crossProductEdge_intervalChain_simplex` (general form of the pinned
-  `intervalTetrahedronChain_eq_prismCubeRealization`), base cases at `n = 0, 1, 2`
-  (the degree-2 case recovering `SecondHurewicz.squareChain_two_triangles` via the
-  vertex identifications of the permutation simplices).
-- **G2** (`59ec7f8`, `Straightening.lean`): the normalization tower at every
-  degree. `HigherHurewicz.TowerPair` (bundled consecutive storeys), the
-  edge-straightening tower, `vertexEdgeHomotopy` (the general vertex+edge
-  storey), `NormalizationState` (augmented family + next normalization +
-  zeros + face compatibility + both endpoint properties, all seven invariants
-  propagated), `normalizationStep`, `normalizationBaseTwo`,
-  `normalizationTower` (driven by `hpi : ∀ j, 2 ≤ j → j ≤ k+2 →
-  Subsingleton (π_ j X x)`), and the public `normalizationHomotopy (n)` with
-  `normalizationHomotopy_zero` and `normalizationHomotopy_endpoint` (the
-  endpoint is based at `x` on the boundary).
-
-## Consumers re-routed
-
-`Hopf/Hurewicz.lean` imports the new modules; the moved names keep their
-`HigherHurewicz.*` / `SecondHurewicz.*` spellings so every consumer elaborates
-unchanged. The two renamed lane-A prefixes go through the existing
-`Hopf/LibShims.lean` re-export block (8 `FirstHurewicz.*` aliases added for the
-`triangleEdge*`/`simplexFace_vertex` facts that moved to `SingularChains.*`).
-`Hopf/Hurewicz.lean`: 20,871 → 9,632 lines.
-
-## Gates
-
-- `lake build` (full project, 8,822 jobs): green; wall 2m20s warm.
-- Comparator (`lake exe comparator comparator/config.json`, run with
-  `COMPARATOR_LANDRUN=<passthrough>` since `landrun` is absent on this box):
-  `lean4export` + nanoda kernel + Lean default kernel all accept
-  `Mathoverflow1973.mathoverflow_1973`; axioms `[propext, Classical.choice,
-  Quot.sound]` only. Wall 17m35s.
-- Census (`scripts/lib_stock_census.py`): 5,024 → 3,927 (ratchet lowered and
-  committed). The `HigherHurewicz` prefix is now absent from `Hopf/`.
-- `#print axioms` on the lane's key declarations (`cubeChain_eq_sum_simplices`,
-  `cubeChain_eq_sum_simplices_step`, `cubeChain_succ`, `fundamentalCubeChain`,
-  `straightenedCycle`, `singularHomologyDesc`, `comp_singularHomologyDesc_eq_id`,
-  `CubeGluing.coherentCubeEndpoint`, `CubicalBoundary.cubicalBoundaryValue_eq_zero`,
-  `simplexStraighteningHomotopy`): all depend only on `[propext,
-  Classical.choice, Quot.sound]`.
-- Lint: the only warnings in the lane's files are pre-existing
-  `linter.dupNamespace` notes inherited from the lane-A namespaces (the rename
-  phase's business) — no warnings from the new G1/G2 content.
-
-## Docstring coverage
-
-Public declarations without a docstring in the lane's moved files: the baseline
-moves carry the raw code (0/47 SimplexCube, 0/87 HomotopyExtension, 0/72
-CubeTriangulation, 0/454 PrismOperator, 0/228 Subdivision, 0/126 CubeGluing,
-0/53 Degree, 0/103 CrossProduct). The new-math content is docstringed
-(CubeChainDecomposition: the 20 new declarations; Straightening: 17/18). The
-per-declaration docstring pass belongs to the rename phase (the reference
-example's pattern: `lib(C): rename …` then `lib(C): doc …`), which renames to
-Mathlib-shaped names and documents each public declaration against the textbook
-section. Target 0 is **not** met at this checkpoint; it is the rename phase's
-deliverable.
-
-## Mathlib twin files
-
-| Lane-C module | Mathlib twin |
+| Commit | Independently checked result |
 |---|---|
-| `SimplexCube.lean` | none existing (the simplex–cube dictionary); shape after `Mathlib/AlgebraicTopology/TopologicalSimplex.lean` |
-| `HomotopyExtension.lean` | HEP of the pair `(Δⁿ, ∂Δⁿ)`; nearest `Mathlib/Topology/Homotopy/…` |
-| `CubeTriangulation.lean` | none existing (Kuhn triangulation); shape after `Mathlib/AlgebraicTopology/TopologicalSimplex.lean` |
-| `PrismOperator.lean` | `Mathlib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean` (Mathlib's prism lives there) |
-| `Subdivision.lean` | shape after `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` |
-| `CubeGluing.lean` | none existing; shape after the reference example's `SimplexPaths.lean` |
-| `Degree.lean` | the headline's home; the reference example `Degree1.lean` is the degree-1 instance |
-| `CubeChainDecomposition.lean` | none existing (the Kuhn decomposition) |
-| `Straightening.lean` | none existing (the normalization tower) |
+| `0a3b870` | Constant preservation through the tower; normalized cube; `classOperator_cubeChain`; inverse/map round trip; general linear equivalence |
+| `71eccfe` | Strong-induction homology-to-homotopy vanishing and `sphere_pi_subsingleton_of_lt`; C13 bootstrap interface |
+| `26a4708` | Replace degree-three/four/five/six proof towers with general-theorem adapters; lower stock baseline |
+| `c2059b6` | General based sphere-map classification, basepoint adjustment, self-map and inverse consequences; eight recognition adapters |
+| `2d6cd4c` | `HigherHurewicz → Hurewicz`; generic coface, composition, subdivision, and cube-coordinate renames; compatibility exports |
+| `2bde114` | Cross-product/descent APIs renamed from `PeriodTorusHigherHomology` to `SingularHomology`, with project shims |
+| `e0e73ff` through `1a31384` | Twelve file-specific documentation commits, with comment-only token validation |
 
-## Open items (the exact seams)
+All current names above are inside `Mathoverflow1973`. Compatibility names are supplied by
+`Hopf/LibShims.lean`, not by importing project code into `Lib/`.
 
-1. **C10 assembly (the headline `hurewiczLinearEquiv` at general `n`).** Ingredients
-   landed this branch (`lib/C-10-boundary`):
-   - `classOperator_boundary` (`199fb46`): the class operator vanishes on
-     boundaries at degree `n ≥ 3`.
-   - `cubeChain_boundary` / `cubeCycle` / `cubeHomologyClass` (`bbfed66`):
-     the triangulated cube chain of a based loop is a cycle at every degree
-     `n ≥ 2`. Combinatorial core `sum_cubeOrientation_faces` (interior faces
-     cancel by Kuhn transposition; outer faces are constant with total
-     orientation zero). `#print axioms`: `[propext, Classical.choice, Quot.sound]`.
-   - `hurewiczInverse` (`4e730ad`): `singularHomologyDesc` of the class
-     operator, degree `n ≥ 3`.
-   - `cubeHomologyClass_homotopic` / `hurewiczFunction` (`737b1d0`): a
-     boundary-relative homotopy of based cubes descends through the
-     cube-to-sphere quotient, so the cube class is well-defined on `π_n`
-     for `n ≥ 2`.
-   Still to assemble:
-   - Additivity at degree `≥ 3`. Chain-level identity is landed (`a97c230`,
-     `4e52180`): `cubeChain p + cubeChain q - cubeChain (transAt 0 p q)` equals
-     a boundary minus `induced (transAt ∘ cubeCoordinates) (concatChain ×
-     d(fund))` on the remaining cube. Kill that extra term in homology
-     (based maps are constant on the remaining boundary). Degree 2 is
-     `82ba4ba`. Then `hurewiczFunction` upgrades to a `ℤ`-linear `hurewiczMap`.
-   - Round trips: `hurewiczMap ∘ classOperator = id` via the landed
-     `comp_singularHomologyDesc_eq_id` + the pointwise
-     `hurewiczMap_classOperator_cycle`; the other direction via the
-     normalized cube (`CubeGluing.coherentCubeEndpoint` +
-     `coherentCubeHomotopy` + `NativeSubdivision.nativeCubeSubdivision_class` +
-     `cubeChain_eq_sum_simplices`).
-   - Then `hurewiczLinearEquiv := LinearEquiv.ofLinearMap …` and the per-degree
-     blocks (`Second/Third/Fourth/Fifth/SixthHurewicz`, ~1,000 declarations
-     remaining in `Hopf/Hurewicz.lean`) become one-line instantiations and are
-     deleted.
-   - **Engineering note:** boundary-plumbing proofs must NOT rewrite into
-     composed tower expressions in place (timeout at `isDefEq`/`whnf`). Work
-     through small named intermediate lemmas.
-2. **C11 CubeSphere** — **LANDED** (`f3d6ba6` baseline + `d597ac4`
-   generalize): `Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean` holds the
-   general-`n` cube-sphere quotient (the pre-existing `Degree.SphereCube.*`
-   block, moved) plus the general-`n` `quotientLoop`, `factorMap`,
-   `factorMap_quotient/_comp_quotient/_unique`, and
-   `factor_cubeChain/cubeCycle/cubeHomologyClass` (the last via the G1
-   `cubeChain` and the factor identity). The pinned `n = 6` content in
-   `Hopf/Recognition.lean` is re-derived as one-line instantiations
-   (`SixSphereCube.StandardSphere = SphereHomology.UnitSphere 6 =
-   Degree.SphereCube.Sphere 6` definitionally); statements unchanged,
-   consumers untouched.
-3. **C13 HopfDegree** (`Degree.sphere_homotopicRel_of_topClass_eq` etc.,
-   pinned `n = 6` in `Hopf/Recognition.lean`): needs C10's headline (the
-   sphere-connectivity bootstrap `sphere_pi_subsingleton_of_lt` is the
-   induction through the general `hurewiczLinearEquiv`); blocked until then.
-4. **C12 CellFilling** — **LANDED** (`71632be`): `Lib/Topology/Homotopy/
-   CellFilling.lean` holds `Degree.Sphere.homotopic_const_discrete`,
-   `real_unitSphere_finite`, `homotopic_const_of_homeomorph`,
-   `boundary_homotopic_const_of_pi`, `exists_boundary_extension_of_pi`, and
-   `Degree.CylinderFilling.exists_filling`. The disk-cylinder dependencies
-   turned out to be already in `Lib/Topology/Homotopy/{HandleRetraction,
-   CylinderHEP}.lean` (lanes E1/D2) — my earlier "blocked on lane F/D1"
-   assessment was wrong. The pinned `n = 6` instances
-   (`Degree.Sphere.boundary_homotopic_const`, `exists_boundary_extension`) and
-   the `Degree.LowCellLifting.*` consumer stay in `Hopf/Recognition.lean`.
-5. **Rename + doc phase** (the protocol's separate commit): Mathlib-shaped
-   names and per-declaration docstrings for all baseline-moved content; the
-   `instance`-reduction refactor (the `integerLinearMapModule`/
-   `integerTensorModule` local-instance diamond) is attempted there, per the
-   ledger.
+## C13 and consumers
 
-## The interface receipt
+`Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean` now exports:
 
-The lane-A seam is closed: every signature naming `FirstHurewicz.*`,
-`SingularMayerVietoris.*`, `PeriodTorusHigherHomology.*` resolves against the
-landed `Lib/AlgebraicTopology/SingularHomology/*` modules at the current HEAD
-(the full build is the evidence). The remaining `Hopf/`-side references are the
-per-degree blocks (item 1) and the `SphereHomology.*` leftovers (lane B's
-partial move; not mine).
+- `Hurewicz.pi_subsingleton_of_homology_vanishing` and `sphere_pi_subsingleton_of_lt`;
+- `Hurewicz.hurewiczMap_injective`, including the degree-two bridge;
+- `Hurewicz.factorMap_homotopyRel` and `basedSphereCube_homologyClass`;
+- `Hurewicz.sphere_homotopicRel_of_topClass_eq` for degrees `m + 2`;
+- `Hurewicz.exists_basepoint_adjustment` for positive-dimensional quotient spheres;
+- `Hurewicz.sphere_homotopic_id_of_topClass`;
+- `Hurewicz.right_inverse_is_left_inverse`, with top-homology injectivity assumed for the
+  sphere map, not for its proposed right inverse.
+
+The classification is expressed using the pushed-forward quotient cube class, exactly as the
+recognition consumer needs it. A separately normalized integer-valued degree API is not claimed.
+
+`Hopf/Hurewicz.lean` retains the types of the degree-three/four/five equivalences, but their
+bodies instantiate the general theorem. Its sphere homotopy-vanishing instances use the general
+bootstrap. `Hopf/Recognition.lean` retains its degree-six public consumer interfaces and
+naturality statements; its classification and basepoint-adjustment proofs call `Lib`.
+The project theorem statements, including `Degree.threefoldHomotopyEquiv`, were not changed.
+
+At `26a4708`, the two consumer files changed by **+69 / −10,575 lines**, a net reduction of
+**10,506 Lean lines**. The subsequent C13 adapters removed another **109 net lines** from
+`Hopf/Recognition.lean` (+18 / −127). At `1a31384`:
+
+| File | Lines |
+|---|---:|
+| `Hopf/Hurewicz.lean` | 423 |
+| `Hopf/Recognition.lean` | 8,284 |
+
+The stock census was lowered from **3,893 to 2,862** at the consumer-deduplication commit.
+The prefix list was unchanged; `python3 scripts/lib_stock_census.py --check` passes.
+This measures the script's explicit stock-declaration rule, not every mathematical declaration
+or generated alias in the Lean environment.
+
+## Verification receipts
+
+The successful committed-unit gates below used the pinned toolchain. Wall times come from the
+recorded start/end epochs, not from Lean's per-module timing lines. Logs are under
+`/home/kimi/s6-notes/`.
+
+| Gate | Result | Wall seconds | Log |
+|---|---|---:|---|
+| C10 `lake build Lib.AlgebraicTopology.Hurewicz.CubeSphere` | pass | not captured | original tool output; CubeSphere module time 8.4 s is not total wall time |
+| C13 bootstrap `lake build Lib.AlgebraicTopology.Hurewicz.HopfDegree` | pass | 18 | `C13-hopfdegree-build.log` |
+| C10 adapters `lake build Hopf.Recognition` | pass | 902 | `C10-consumer-build.log` |
+| C13 classification `lake build Lib.AlgebraicTopology.Hurewicz.HopfDegree` | pass | 7 | `C13-classification-build.log` |
+| C13 consumers `lake build Hopf.Recognition` | pass | 455 | `C13-consumer-build.log` |
+| Generic rename `lake build Hopf.Recognition` | pass | 739 | `C-rename-build.log` |
+| Cross-product rename `lake build Hopf.Recognition` | pass | 726 | `C-cross-rename-build.log` |
+| Documentation batch `lake build Hopf.Recognition Lib.Topology.Homotopy.CellFilling` | pass | 705 | `C-doc-build.log` |
+| Documentation rework: direct `lake env lean` on twelve files | all pass | per-command timestamps recorded | `C-doc-rework-checks.log` |
+| Aggregate provider / importing consumer | both pass | 3 / 3 | `C-interface-provider.log`, `C-interface-consumer.log` |
+
+The documentation rework log includes an interrupted first CubeSphere check followed by a
+successful retry; it is not evidence of thirteen distinct checked files. Two final comment
+clarifications and one missing docstring were subsequently added without changing code tokens.
+
+Axiom output for the principal consumer audit is verbatim:
+
+```text
+'Mathoverflow1973.Degree.sphere_homotopicRel_of_topClass_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.Sphere.homotopic_id_of_topClass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.right_inverse_is_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+Source: `C13-consumer-axioms.log`. The renamed Hurewicz equivalence, sphere self-map theorem,
+and cross product were also audited with the same axiom set (`C-rename-shims.log`,
+`C-cross-rename-shims.log`). The durable lane-C probes are appended to `Lib/AxiomAudit.lean`.
+
+### Final comprehensive gates at the current Lean checkpoint
+
+| Command | Result | Wall seconds | Log |
+|---|---|---:|---|
+| `lake build Lib Hopf.Final Solution` | exit 0; 8,817 jobs | 784 | `C-final-build.log` |
+| `lake env lean Lib/AxiomAudit.lean` | exit 0; only permitted axioms | 4 | `C-final-axioms.log` |
+| `lake exe comparator comparator/config.json` | **environment-blocked**, exit 1 | less than 1 at recorded timestamp resolution | `C-final-comparator.log` |
+| `lake env lean C_FinalConsumerAudit.lean` (temporary import of `Solution`) | exit 0 | 3 | `C-final-consumer-axioms.log` |
+
+The build ran from epoch `1789261194` to `1789261978`. The comparator did not reach a
+verification verdict; its actual diagnostic was:
+
+```text
+Building Challenge
+could not execute external process 'landrun'
+uncaught exception: Child exited with 255
+```
+
+`landrun` must be provisioned on the session's PATH before this gate can be completed. The
+existing real binary found during environment diagnosis was inaccessible to this user.
+No passthrough/fake sandbox was used, and comparator configuration was not changed. The old
+integration comparator verdict is **not** substituted for a current one. Owner assistance or
+permission to provision a local real sandbox is requested.
+
+The independent final consumer axiom output is:
+
+```text
+'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Degree.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+The temporary audit source was removed. No further Lean source changes followed these gates.
+
+## Documentation coverage
+
+The continuation added module overviews, proof-order section headers, and missing role-stating
+docstrings. Review corrected several initial prose errors about composition direction,
+conditional straightening, coordinate indices, and constant simplices. The code was never
+changed to match those descriptions.
+
+A comment-aware, string-aware scan of explicit public declarations, excluding private and
+generated declarations, gave the following fixed coverage snapshot. After adding the one
+missing `formalPointCrossProduct` docstring, all listed declarations are documented.
+
+| File stem | Explicit public declarations | Missing docstrings |
+|---|---:|---:|
+| SimplexCube | 44 | 0 |
+| HomotopyExtension | 82 | 0 |
+| PrismOperator | 453 | 0 |
+| Straightening | 44 | 0 |
+| CubeTriangulation | 70 | 0 |
+| CubeGluing | 127 | 0 |
+| Subdivision | 226 | 0 |
+| CubeChainDecomposition | 132 | 0 |
+| Degree | 53 | 0 |
+| CubeSphere | 68 | 0 |
+| CrossProduct | 103 | 0 |
+| CellFilling | 6 | 0 |
+| **Total for the twelve-file pass** | **1,408** | **0** |
+
+`HopfDegree.lean` was documented as part of its implementation and is not included in this
+particular twelve-file census. Comment-stripped token comparison of all twelve files against
+`2bde114` passed. Linter output is not warning-free: existing unused-simp and `letI`/`haveI`
+style warnings remain. No linter or repository security setting was disabled.
+
+## The integer-module instance experiment
+
+A disposable copy of `CrossProduct.lean` removed only the local wrappers selecting
+`integerLinearMapModule`/`integerTensorModule`, leaving the definitions and proofs unchanged.
+Lean exited **1** at four scalar-action elaboration sites. The first diagnostic was:
+
+```text
+congrArg (fun l => l b) (LinearMap.map_smul F r a)
+has type
+  (F (r • a)) b = (r • F a) b
+but is expected to have type
+  (F (r • a)) b = (RingHom.id ℤ) r • (F a) b
+```
+
+The affected constructions were `integerBilinearRightApply`, `integerBilinearFlip`,
+`integerBilinearPostcompose`, and `crossProductHomologyCycles`.
+Evidence: `C-module-diamond.log`. The disposable file was removed. Production instances remain;
+this records the attempted removal and its concrete limitation rather than claiming it succeeded.
+
+## Historical extraction provenance and corrections
+
+The original baseline table is retained for provenance; these are not new continuation moves:
+
+| Commit | Module | Historical declaration count | Source head |
+|---|---|---:|---|
+| `4b9b9d7` | CrossProduct | 96 | `527ac35` |
+| `4d4cdc7` | SimplexCube | 47 | `527ac35` |
+| `63b933a` | HomotopyExtension | 87 | `4d4cdc7` |
+| `f6ef77a` | CubeTriangulation | 72 | `63b933a` |
+| `b42417b` | PrismOperator | 440 | `f6ef77a` |
+| `7633126` | Subdivision | 228 | `b42417b` |
+| `aa3f112` | CubeGluing | 127 | `7633126` |
+| `2cb2ca5` | Degree | 53 | `aa3f112` |
+| `75a473c` | CubeChainDecomposition | 75 | `2cb2ca5` |
+| `8611afa` | Composition machinery into PrismOperator | 11 | `2cb2ca5` era |
+
+The general chain decomposition was introduced at `4238402`; the normalization tower at
+`59ec7f8`. C11 was already landed at `f3d6ba6`/`d597ac4`; C12 at `71632be`.
+
+Corrections required by `Lib/reviews/INTEGRATION.md`:
+
+- The integration census was **5,170 → 3,893**, not 5,024 → 3,927.
+- The historical Hurewicz file reduction was **22,910 → 9,631** lines, not 20,871 → 9,632.
+- The integration review reports that the SimplexCube baseline range is off by one line at
+  both ends and its recorded hash is not reproducible from that stated range. This report
+  does not silently replace it with a guessed corrected hash.
+- The PrismOperator baseline hash covers the source range **after removal of the cut
+  sub-block**, not the entire advertised contiguous range.
+- `CrossProduct.lean` uses plain `import`, not a `module`/`public import` header. This deviation
+  is explicit here. The legacy dependency graph also prevents simply switching the new
+  HopfDegree file to the module system without converting its dependencies first.
+- The historical Stage-2 review referenced by `f42b9e6` is recovered as
+  `Lib/docs/C-STAGE2-REVIEW.md`. Its original reviewer was not named in the recovered artifact;
+  owner confirmation remains outstanding. Recovery is not represented as a new review.
+- The pinned Mathlib uses root `GenLoop`; the former open naming question is closed.
+
+## Mathlib twins and remaining packaging limits
+
+| Lane-C module | Twin / shape reference |
+|---|---|
+| SimplexCube, CubeTriangulation | `Mathlib/AlgebraicTopology/TopologicalSimplex.lean`; cube construction has no exact twin |
+| HomotopyExtension | `Mathlib/Topology/Homotopy/Basic.lean` (shape) |
+| PrismOperator | `Mathlib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean` |
+| Subdivision | `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (shape) |
+| CubeGluing | in-tree `Hurewicz/SimplexPaths.lean` (shape) |
+| Degree, Straightening, HopfDegree | in-tree `Hurewicz/Degree1.lean` (shape; no exact higher-degree twin) |
+| CubeChainDecomposition, CrossProduct | `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (shape) |
+| CubeSphere | `Mathlib/Topology/OnePoint.lean` |
+| CellFilling | `Mathlib/Topology/Homotopy/Contractible.lean` (shape) |
+
+The specifically requested generic-name cleanups and `HigherHurewicz → Hurewicz` rename are
+landed. Full migration out of `Mathoverflow1973`, renaming the remaining degree-two helper
+namespaces, and converting the entire import graph to `module` are not claimed here.
+The historical prospectus's separately named general naturality and positive-degree
+homology-vanishing wrappers are not among the thirteen validated public outputs; the existing
+degree-six naturality consumer remains in `Hopf/Recognition.lean`. The remaining generic
+`Degree.DiskCube` and lane-B leftovers in `Hopf/Hurewicz.lean` have not been silently counted as
+extracted. These are explicit remaining upstream-packaging/API items, not C10/C13 proof blockers.
+
+No push has been performed. Attribution was not changed through git configuration.
