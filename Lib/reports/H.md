@@ -6,7 +6,9 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 # Lane H report — complex analysis (Ahlfors Ch. 6, Rudin 14.8)
 
 **Status: all movable H baselines landed (8 Lib files, ~470 declarations, green), module
-docstrings installed, axiom receipts exact. Per-decl docstrings open.**
+docstrings installed, axiom receipts exact. Per-decl docstrings: complete — verified
+2026-09-13 (GLM seat): 0 of the 483 declarations across the eight H Lib files lack a
+docstring.**
 
 ## What moved (source on 721fc82, cut BY NAME out of the SpecialPeriods project namespace)
 
@@ -35,7 +37,12 @@ kept (deviation — the SpecialPeriods namespace is otherwise project code).
 
 The `RiemannMapping` **triangle tail** (114 decls: `triangleDomain`, `triangleMap`,
 normalization/Ford-cycle machinery) is project code per the plan's STOP-at-5579 note (seed
-closure on `SpecialPeriods`/`triangle*`); it stays in `Hopf/LCP/AnalyticFillings.lean`.
+closure on `SpecialPeriods`/`triangle*`). Post-split disposition (2026-09-13): the 114
+declarations live under `Hopf/Proof/LCP/AnalyticFillings.lean` (demoted proof-side by
+`20f69036`; not census-counted), so the owner's done-last rule applies — each needs a
+generalisation before it can move, which is not a pure move. Verified this session: no
+`RiemannMapping.*` stock declaration remains under `Hopf/` outside `Hopf/Proof/` (the
+census's RiemannMapping 114 figure predates the split).
 
 ## H axiom receipts
 
