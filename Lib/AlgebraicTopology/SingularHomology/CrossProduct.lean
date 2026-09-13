@@ -67,8 +67,10 @@ the prism side condition), in five steps.
 * `SingularHomology.integerLinearMapModule`, `.integerTensorModule` :
   `@[instance_reducible]` `Module ℤ` instances on `A →ₗ[ℤ] B` and `A ⊗[ℤ] B`, used as local
   instances throughout this file: they pin the diamond between Mathlib's two instances and
-  the one the product constructions elaborate against. (Lane-C open item: reproduced
-  verbatim; removal is attempted in a later refactor commit and the outcome recorded.)
+  the one the product constructions elaborate against. A disposable removal of the local instance wrappers fails at scalar-action
+  elaboration in `integerBilinearRightApply`, `integerBilinearFlip`,
+  `integerBilinearPostcompose` and `crossProductHomologyCycles`; the instances are
+  retained.
 * Consumers: the Hurewicz lane (the fundamental cube chain by recursion on degree), the torus
   lane (the section of the circle-splitting sequence), the Pontryagin product (the addition
   pushforward of this product).
@@ -89,6 +91,8 @@ namespace Mathoverflow1973
 
 /-! ### ℤ-module instances on linear maps and tensor products -/
 
+/-- The `ℤ`-module structure on `A →ₗ[ℤ] B` used in this file, pinning the elaboration
+diamond between Mathlib's instances and the one the product constructions need. -/
 @[instance_reducible]
 def SingularHomology.integerLinearMapModule {A B : Type*} [AddCommGroup A]
     [AddCommGroup B] [modA : Module ℤ A] [modB : Module ℤ B] : Module ℤ (A →ₗ[ℤ] B) :=
@@ -96,6 +100,8 @@ def SingularHomology.integerLinearMapModule {A B : Type*} [AddCommGroup A]
     (@smulCommClass_self ℤ B _ modB.toMulAction)
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- The `ℤ`-module structure on `A ⊗[ℤ] B` used in this file, pinning the elaboration
+diamond against Mathlib's instances. -/
 @[instance_reducible]
 def SingularHomology.integerTensorModule {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     [modA : Module ℤ A] [modB : Module ℤ B] : Module ℤ (A ⊗[ℤ] B) :=
@@ -105,6 +111,8 @@ def SingularHomology.integerTensorModule {A B : Type*} [AddCommGroup A] [AddComm
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Evaluation of a bilinear map `F : A →ₗ[ℤ] B →ₗ[ℤ] C` at a right argument `b`, as a
+linear map `A →ₗ[ℤ] C`. -/
 def SingularHomology.integerBilinearRightApply {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (b : B) : A →ₗ[ℤ] C
@@ -115,6 +123,7 @@ def SingularHomology.integerBilinearRightApply {A B C : Type*} [AddCommGroup A]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `integerBilinearRightApply F b` applied to `a` is `F a b`. -/
 @[simp]
 theorem SingularHomology.integerBilinearRightApply_apply {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
@@ -123,6 +132,8 @@ theorem SingularHomology.integerBilinearRightApply_apply {A B C : Type*} [AddCom
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The flip of a bilinear map: `integerBilinearFlip F b a = F a b`, as a bilinear map
+`B →ₗ[ℤ] A →ₗ[ℤ] C`. -/
 def SingularHomology.integerBilinearFlip {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (F : A →ₗ[ℤ] B →ₗ[ℤ] C) : B →ₗ[ℤ] A →ₗ[ℤ] C
@@ -141,6 +152,7 @@ def SingularHomology.integerBilinearFlip {A B C : Type*} [AddCommGroup A]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `integerBilinearFlip F b a = F a b`. -/
 @[simp]
 theorem SingularHomology.integerBilinearFlip_apply {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
@@ -151,6 +163,8 @@ theorem SingularHomology.integerBilinearFlip_apply {A B C : Type*} [AddCommGroup
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The bilinear lift of a simplex-wise function `f σ τ` to a bilinear map on chain
+groups `Chains X p →ₗ[ℤ] Chains Y q →ₗ[ℤ] M`. -/
 def SingularHomology.chainBilinearLift (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (p q : ℕ) {M : Type} [AddCommGroup M] [modM : Module ℤ M]
     (f : SingularChains.SingularSimplex X p → SingularChains.SingularSimplex Y q → M) :
@@ -159,6 +173,8 @@ def SingularHomology.chainBilinearLift (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a left generator simplex, `chainBilinearLift f` applied to `simplexChain σ` is
+the chain lift of `f σ`. -/
 @[simp]
 theorem SingularHomology.chainBilinearLift_simplex_left (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (p q : ℕ) {M : Type} [AddCommGroup M] [modM : Module ℤ M]
@@ -170,6 +186,8 @@ theorem SingularHomology.chainBilinearLift_simplex_left (X Y : Type) [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On generator simplices, `chainBilinearLift f (simplexChain σ) (simplexChain τ) =
+f σ τ`. -/
 @[simp]
 theorem SingularHomology.chainBilinearLift_simplex (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (p q : ℕ) {M : Type} [AddCommGroup M] [modM : Module ℤ M]
@@ -181,6 +199,8 @@ theorem SingularHomology.chainBilinearLift_simplex (X Y : Type) [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Two bilinear maps on singular chains that agree on all generator simplex pairs are
+equal. -/
 theorem SingularHomology.chainBilinearMap_ext (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (p q : ℕ) {M : Type} [AddCommGroup M] [modM : Module ℤ M]
     {F G : SingularChains.Chains X p →ₗ[ℤ] SingularChains.Chains Y q →ₗ[ℤ] M}
@@ -197,22 +217,27 @@ theorem SingularHomology.chainBilinearMap_ext (X Y : Type) [TopologicalSpace X]
 
 /-! ### Point insertions and the zero-degree cross product -/
 
+/-- The point of `X` carried by a singular `0`-simplex: its value at the unique vertex. -/
 def SingularHomology.zeroSimplexValue {X : Type} [TopologicalSpace X]
     (σ : SingularChains.SingularSimplex X 0) : X :=
   σ (stdSimplex.vertex (S := ℝ) (0 : Fin 1))
 
+/-- `zeroSimplexValue` of a postcomposition is `f` applied to the zero-simplex value. -/
 @[simp]
 theorem SingularHomology.zeroSimplexValue_comp {X X' : Type} [TopologicalSpace X]
     [TopologicalSpace X'] (f : C(X, X')) (σ : SingularChains.SingularSimplex X 0) :
     zeroSimplexValue (f.comp σ) = f (zeroSimplexValue σ) :=
   rfl
 
+/-- The map `x ↦ (x, y)` inserting a fixed right point `y`. -/
 def SingularHomology.crossInsertRight {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (y : Y) : C(X, X × Y) :=
   ⟨fun x => (x, y), continuous_id.prodMk continuous_const⟩
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The degree-`0`-left cross product: `Chains X 0 →ₗ Chains Y n →ₗ Chains (X × Y) n`,
+sending `(σ, τ)` to `τ` pushed along the insertion of `σ`'s point. -/
 def SingularHomology.crossProductZeroLeft (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains X 0 →ₗ[ℤ]
@@ -222,6 +247,8 @@ def SingularHomology.crossProductZeroLeft (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The degree-`0`-right cross product: `Chains X n →ₗ Chains Y 0 →ₗ Chains (X × Y) n`,
+sending `(σ, τ)` to `σ` pushed along the insertion of `τ`'s point. -/
 def SingularHomology.crossProductZeroRight (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains X n →ₗ[ℤ]
@@ -231,6 +258,8 @@ def SingularHomology.crossProductZeroRight (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a left `0`-simplex generator, `crossProductZeroLeft` inserts the point
+`zeroSimplexValue σ`. -/
 @[simp]
 theorem SingularHomology.crossProductZeroLeft_simplex_left {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X 0) :
@@ -242,6 +271,8 @@ theorem SingularHomology.crossProductZeroLeft_simplex_left {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplex generators, `crossProductZeroLeft` sends `σ, τ` to the chain of
+`τ` composed with `crossInsertLeft (zeroSimplexValue σ)`. -/
 @[simp]
 theorem SingularHomology.crossProductZeroLeft_simplex {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X 0)
@@ -253,6 +284,8 @@ theorem SingularHomology.crossProductZeroLeft_simplex {X Y : Type} [TopologicalS
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a right `0`-simplex generator, `crossProductZeroRight` inserts the point
+`zeroSimplexValue τ`. -/
 @[simp]
 theorem SingularHomology.crossProductZeroRight_simplex_right {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (c : SingularChains.Chains X n)
@@ -270,6 +303,8 @@ theorem SingularHomology.crossProductZeroRight_simplex_right {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplex generators, `crossProductZeroRight` sends `σ, τ` to the chain of
+`σ` composed with `crossInsertRight (zeroSimplexValue τ)`. -/
 @[simp]
 theorem SingularHomology.crossProductZeroRight_simplex {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X n)
@@ -281,6 +316,7 @@ theorem SingularHomology.crossProductZeroRight_simplex {X Y : Type} [Topological
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductZeroLeft` is natural in both space maps. -/
 theorem SingularHomology.crossProductZeroLeft_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ) (a : SingularChains.Chains X 0)
@@ -306,6 +342,7 @@ theorem SingularHomology.crossProductZeroLeft_natural {X Y X' Y' : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Postcomposition of a bilinear map `F : A →ₗ B →ₗ C` with a linear map `C →ₗ D`. -/
 def SingularHomology.integerBilinearPostcompose {A B C D : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     [Module ℤ D] (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (g : C →ₗ[ℤ] D) : A →ₗ[ℤ] B →ₗ[ℤ] D
@@ -326,6 +363,7 @@ def SingularHomology.integerBilinearPostcompose {A B C D : Type*} [AddCommGroup 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `integerBilinearPostcompose F g a b = g (F a b)`. -/
 @[simp]
 theorem SingularHomology.integerBilinearPostcompose_apply {A B C D : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [Module ℤ A] [Module ℤ B]
@@ -335,6 +373,8 @@ theorem SingularHomology.integerBilinearPostcompose_apply {A B C D : Type*}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Precomposition of a bilinear map `F : A →ₗ B →ₗ C` with linear maps `A' →ₗ A` and
+`B' →ₗ B`. -/
 def SingularHomology.integerBilinearPrecompose {A B C A' B' : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup A'] [AddCommGroup B'] [Module ℤ A]
     [Module ℤ B] [Module ℤ C] [Module ℤ A'] [Module ℤ B'] (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (f : A' →ₗ[ℤ] A)
@@ -358,6 +398,7 @@ def SingularHomology.integerBilinearPrecompose {A B C A' B' : Type*} [AddCommGro
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `integerBilinearPrecompose F f g a' b' = F (f a') (g b')`. -/
 @[simp]
 theorem SingularHomology.integerBilinearPrecompose_apply {A B C A' B' : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup A'] [AddCommGroup B']
@@ -370,6 +411,7 @@ theorem SingularHomology.integerBilinearPrecompose_apply {A B C A' B' : Type*}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Two bilinear maps on formal chains that agree on generator pairs are equal. -/
 theorem SingularHomology.integerFormalBilinearMap_ext (V W : Type*) (p q : ℕ) {M : Type*}
     [AddCommGroup M] [Module ℤ M]
     {F G :
@@ -385,6 +427,8 @@ theorem SingularHomology.integerFormalBilinearMap_ext (V W : Type*) (p q : ℕ) 
   intro w
   exact h v w
 
+/-- Extensionality for bilinear maps out of `FormalChains V n` and
+`FormalChains W m`: equality on simplex generators suffices. -/
 theorem SingularHomology.formalChains_bilinear_ext {V W M : Type*} {n m : ℕ}
     [AddCommGroup M] [Module ℤ M]
     {f g :
@@ -399,11 +443,13 @@ theorem SingularHomology.formalChains_bilinear_ext {V W M : Type*} {n m : ℕ}
   apply SingularMayerVietoris.formalChains_ext
   exact h v
 
+/-- The bilinear lift of a generator-wise map to formal chains in both arguments. -/
 def SingularHomology.formalBilinearLift {V W M : Type*} {n m : ℕ} [AddCommGroup M]
     [Module ℤ M] (f : (Fin n → V) → (Fin m → W) → M) :
     SingularMayerVietoris.FormalChains V n →ₗ[ℤ] SingularMayerVietoris.FormalChains W m →ₗ[ℤ] M :=
   SingularMayerVietoris.formalLift fun v => SingularMayerVietoris.formalLift (f v)
 
+/-- `formalBilinearLift` evaluated on simplex generators returns the defining value. -/
 @[simp]
 theorem SingularHomology.formalBilinearLift_simplex {V W M : Type*} {n m : ℕ}
     [AddCommGroup M] [Module ℤ M] (f : (Fin n → V) → (Fin m → W) → M) (v : Fin n → V)
@@ -414,6 +460,8 @@ theorem SingularHomology.formalBilinearLift_simplex {V W M : Type*} {n m : ℕ}
 
 /-! ### The formal point cross product -/
 
+/-- The bilinear product of a formal point chain and a formal `q`-chain, obtained by
+inserting the point as the left coordinate of each vertex. -/
 def SingularHomology.formalPointCrossProduct {V W : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains V 1 →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W (q + 1) →ₗ[ℤ]
@@ -421,6 +469,8 @@ def SingularHomology.formalPointCrossProduct {V W : Type*} (q : ℕ) :
   SingularMayerVietoris.formalLift fun v =>
     SingularMayerVietoris.formalMap (fun w => (v 0, w)) (q + 1)
 
+/-- On a point generator `v : Fin 1 → V`, the formal point cross product maps `w`
+to the formal chain of `(v 0, w)`. -/
 @[simp]
 theorem SingularHomology.formalPointCrossProduct_simplex_left {V W : Type*} (q : ℕ)
     (v : Fin 1 → V) (d : SingularMayerVietoris.FormalChains W (q + 1)) :
@@ -428,6 +478,7 @@ theorem SingularHomology.formalPointCrossProduct_simplex_left {V W : Type*} (q :
       SingularMayerVietoris.formalMap (fun w => (v 0, w)) (q + 1) d := by
   exact LinearMap.congr_fun (SingularMayerVietoris.formalLift_simplex _ _) d
 
+/-- `formalPointCrossProduct` on generators `v, w` is the formal map of `w ↦ (v 0, w)`. -/
 @[simp]
 theorem SingularHomology.formalPointCrossProduct_simplex {V W : Type*} (q : ℕ)
     (v : Fin 1 → V) (w : Fin (q + 1) → W) :
@@ -437,6 +488,8 @@ theorem SingularHomology.formalPointCrossProduct_simplex {V W : Type*} (q : ℕ)
   rw [formalPointCrossProduct_simplex_left, SingularMayerVietoris.formalMap_simplex]
   rfl
 
+/-- The formal point cross product at a `0`-simplex `w` in the right argument is the
+formal chain of the constant pair map. -/
 @[simp]
 theorem SingularHomology.formalPointCrossProduct_zero_simplex_right {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 1) (w : Fin 1 → W) :
@@ -455,6 +508,8 @@ theorem SingularHomology.formalPointCrossProduct_zero_simplex_right {V W : Type*
     rfl
   exact LinearMap.congr_fun h c
 
+/-- Boundary compatibility of the formal point cross product: the boundary of
+`point × c` relates to `point × ∂c`. -/
 theorem SingularHomology.formalBoundary_pointCrossProduct {V W : Type*} (q : ℕ)
     (c : SingularMayerVietoris.FormalChains V 1)
     (d : SingularMayerVietoris.FormalChains W (q + 2)) :
@@ -473,6 +528,7 @@ theorem SingularHomology.formalBoundary_pointCrossProduct {V W : Type*} (q : ℕ
           (SingularMayerVietoris.formalSimplex w)).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-- Naturality of the formal point cross product under maps `f : V → V'`, `g : W → W'`. -/
 theorem SingularHomology.formalMap_pointCrossProduct {V W V' W' : Type*} (f : V → V')
     (g : W → W') (q : ℕ) (c : SingularMayerVietoris.FormalChains V 1)
     (d : SingularMayerVietoris.FormalChains W (q + 1)) :
@@ -493,6 +549,9 @@ theorem SingularHomology.formalMap_pointCrossProduct {V W V' W' : Type*} (f : V 
 
 /-! ### The formal edge cross product and its boundary law -/
 
+/-- The formal edge cross product `FormalChains V 2 →ₗ FormalChains W (q+1) →ₗ`
+formal chains of degree `q + 2`: the formal-chain shadow of the `1`-dimensional
+cross product. -/
 def SingularHomology.formalEdgeCrossProduct {V W : Type*} :
     (q : ℕ) →
       SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
@@ -511,6 +570,8 @@ def SingularHomology.formalEdgeCrossProduct {V W : Type*} :
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex w)))
 
+/-- The formal edge cross product at a `0`-simplex right argument `w` is
+`formalMap (v ↦ (v, w 0))` applied to `c`. -/
 @[simp]
 theorem SingularHomology.formalEdgeCrossProduct_zero_simplex_right {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 2) (w : Fin 1 → W) :
@@ -518,6 +579,8 @@ theorem SingularHomology.formalEdgeCrossProduct_zero_simplex_right {V W : Type*}
       SingularMayerVietoris.formalMap (fun v => (v, w 0)) 2 c := by
   exact LinearMap.congr_fun (SingularMayerVietoris.formalLift_simplex _ _) c
 
+/-- On an edge generator `v` and a `(q+1)`-simplex `w`, the formal edge cross product
+is the sum of the two prism terms of the edge. -/
 @[simp]
 theorem SingularHomology.formalEdgeCrossProduct_simplex_succ {V W : Type*} (q : ℕ)
     (v : Fin 2 → V) (w : Fin (q + 2) → W) :
@@ -532,6 +595,8 @@ theorem SingularHomology.formalEdgeCrossProduct_simplex_succ {V W : Type*} (q : 
               (SingularMayerVietoris.formalSimplex w))) :=
   formalBilinearLift_simplex _ _ _
 
+/-- The boundary of the formal edge cross product at right degree `0` is the point
+cross product of the edge's boundary. -/
 theorem SingularHomology.formalBoundary_edgeCrossProduct_zero {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 2) (d : SingularMayerVietoris.FormalChains W 1) :
     SingularMayerVietoris.formalBoundary 1 (formalEdgeCrossProduct 0 c d) =
@@ -548,6 +613,8 @@ theorem SingularHomology.formalBoundary_edgeCrossProduct_zero {V W : Type*}
           (SingularMayerVietoris.formalSimplex v)).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-- The boundary law for the formal edge cross product: `∂(e × c) = ∂e × c - e × ∂c`
+at the formal-chain level. -/
 theorem SingularHomology.formalBoundary_edgeCrossProduct {V W : Type*} :
     ∀ (q : ℕ) (c : SingularMayerVietoris.FormalChains V 2)
       (d : SingularMayerVietoris.FormalChains W (q + 2)),
@@ -616,6 +683,7 @@ theorem SingularHomology.formalBoundary_edgeCrossProduct {V W : Type*} :
       rfl
     exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-- Naturality of the formal edge cross product under maps `f : V → V'`, `g : W → W'`. -/
 theorem SingularHomology.formalMap_edgeCrossProduct {V W V' W' : Type*} (f : V → V')
     (g : W → W') :
     ∀ (q : ℕ) (c : SingularMayerVietoris.FormalChains V 2)
@@ -658,6 +726,7 @@ theorem SingularHomology.formalMap_edgeCrossProduct {V W V' W' : Type*} (f : V �
 
 /-! ### Affine simplices in a product -/
 
+/-- The affine simplex on a constant vertex list is the constant map. -/
 @[simp]
 theorem SingularHomology.affineSimplex_constant {n p : ℕ} (a : SingularChains.Simplex p) :
     SingularMayerVietoris.affineSimplex (fun _ : Fin (n + 1) => a) =
@@ -668,18 +737,23 @@ theorem SingularHomology.affineSimplex_constant {n p : ℕ} (a : SingularChains.
   change (∑ i, t i • (a : Fin (p + 1) → ℝ)) = (a : Fin (p + 1) → ℝ)
   rw [← Finset.sum_smul, stdSimplex.sum_eq_one t, one_smul]
 
+/-- The affine simplex in `Simplex p × Simplex q` with vertex pairs `v`, formed
+componentwise. -/
 def SingularHomology.productAffineSimplex {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
     C(SingularChains.Simplex n, SingularChains.Simplex p × SingularChains.Simplex q) :=
   (SingularMayerVietoris.affineSimplex (fun i => (v i).1)).prodMk
     (SingularMayerVietoris.affineSimplex (fun i => (v i).2))
 
+/-- The `j`-th vertex of `productAffineSimplex v` is the pair `v j`. -/
 @[simp]
 theorem SingularHomology.productAffineSimplex_vertex {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) (i : Fin (n + 1)) :
     productAffineSimplex v (SingularMayerVietoris.stdVertices n i) = v i := by
   apply Prod.ext <;> simp [productAffineSimplex, SingularMayerVietoris.stdVertices]
 
+/-- The `i`-th face of `productAffineSimplex v` is the product affine simplex of the
+vertex pairs with `v i` dropped. -/
 theorem SingularHomology.productAffineSimplex_face {n p q : ℕ}
     (v : Fin (n + 2) → SingularChains.Simplex p × SingularChains.Simplex q) (i : Fin (n + 2)) :
     (productAffineSimplex v).comp (SingularChains.simplexFace n i) =
@@ -694,6 +768,8 @@ theorem SingularHomology.productAffineSimplex_face {n p q : ℕ}
       congrArg (fun f : C(SingularChains.Simplex n, SingularChains.Simplex q) => f t)
         (SingularMayerVietoris.affineSimplex_face (fun j => (v j).2) i)
 
+/-- Postcomposing `productAffineSimplex v` with a product map gives the product affine
+simplex of the mapped vertex pairs. -/
 theorem SingularHomology.prodMap_productAffineSimplex {m p q r s : ℕ}
     (v : Fin (p + 1) → SingularChains.Simplex r) (w : Fin (q + 1) → SingularChains.Simplex s)
     (z : Fin (m + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
@@ -713,6 +789,8 @@ theorem SingularHomology.prodMap_productAffineSimplex {m p q r s : ℕ}
       congrArg (fun f : C(SingularChains.Simplex m, SingularChains.Simplex s) => f t)
         (SingularMayerVietoris.affineSimplex_comp w (fun j => (z j).2))
 
+/-- The formal-chain map sending a vertex-pair list to the chain of its product affine
+simplex. -/
 def SingularHomology.productAffineChainMap (p q n : ℕ) :
     SingularMayerVietoris.FormalChains (SingularChains.Simplex p × SingularChains.Simplex q)
         (n + 1) →ₗ[ℤ]
@@ -721,6 +799,7 @@ def SingularHomology.productAffineChainMap (p q n : ℕ) :
     SingularChains.simplexChain (SingularChains.Simplex p × SingularChains.Simplex q) n
       (productAffineSimplex v)
 
+/-- `productAffineChainMap` on a generator `v` is the chain of `productAffineSimplex v`. -/
 @[simp]
 theorem SingularHomology.productAffineChainMap_simplex (p q n : ℕ)
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
@@ -729,6 +808,8 @@ theorem SingularHomology.productAffineChainMap_simplex (p q n : ℕ)
         (productAffineSimplex v) :=
   SingularMayerVietoris.formalLift_simplex _ _
 
+/-- The product affine chain map commutes with the formal boundary: `∂` of the affine
+chain is the alternating sum of the face affine simplices. -/
 theorem SingularHomology.productAffineChainMap_boundary (p q n : ℕ)
     (c :
       SingularMayerVietoris.FormalChains (SingularChains.Simplex p × SingularChains.Simplex q)
@@ -761,6 +842,8 @@ theorem SingularHomology.productAffineChainMap_boundary (p q n : ℕ)
     rfl
   exact LinearMap.congr_fun h c
 
+/-- Postcomposing the product affine chain map with the map induced by a product of
+continuous maps gives the product affine chain map of the mapped vertices. -/
 theorem SingularHomology.inducedChain_productAffineChainMap {m p q r s : ℕ}
     (v : Fin (p + 1) → SingularChains.Simplex r) (w : Fin (q + 1) → SingularChains.Simplex s)
     (c :
@@ -797,6 +880,9 @@ theorem SingularHomology.inducedChain_productAffineChainMap {m p q r s : ℕ}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product `Chains X 1 →ₗ Chains Y n →ₗ Chains (X × Y) (n + 1)`: on
+generators, the `σ × τ` image of the affine prism triangulation of
+`Simplex 1 × Simplex n`. -/
 def SingularHomology.crossProductEdge (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains X 1 →ₗ[ℤ]
@@ -810,6 +896,8 @@ def SingularHomology.crossProductEdge (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplex generators, `crossProductEdge` is the induced chain of the product
+affine prism chain. -/
 @[simp]
 theorem SingularHomology.crossProductEdge_simplex (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X 1)
@@ -824,6 +912,7 @@ theorem SingularHomology.crossProductEdge_simplex (X Y : Type) [TopologicalSpace
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductEdge` is natural in both space maps. -/
 theorem SingularHomology.crossProductEdge_natural {X Y X' Y' : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y'))
     (n : ℕ) (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y n) :
@@ -846,6 +935,8 @@ theorem SingularHomology.crossProductEdge_natural {X Y X' Y' : Type} [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The affine simplex on the standard vertices is the identity inclusion of the
+simplex into its affine span image. -/
 theorem SingularHomology.affineSimplex_stdVertices_image {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) :
     SingularMayerVietoris.affineSimplex v ∘ SingularMayerVietoris.stdVertices n = v := by
@@ -854,6 +945,8 @@ theorem SingularHomology.affineSimplex_stdVertices_image {n p : ℕ}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If all left vertices of `v` are the same point `a`, the product affine simplex is
+constant in the left factor. -/
 theorem SingularHomology.productAffineSimplex_point_left {n p q : ℕ}
     (a : SingularChains.Simplex p) (v : Fin (n + 1) → SingularChains.Simplex q) :
     productAffineSimplex (fun i => (a, v i)) =
@@ -863,6 +956,8 @@ theorem SingularHomology.productAffineSimplex_point_left {n p q : ℕ}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If all right vertices of `v` are the same point `b`, the product affine simplex is
+constant in the right factor. -/
 theorem SingularHomology.productAffineSimplex_point_right {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (b : SingularChains.Simplex q) :
     productAffineSimplex (fun i => (v i, b)) =
@@ -872,6 +967,8 @@ theorem SingularHomology.productAffineSimplex_point_right {n p q : ℕ}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductZeroLeft` computed on a left `0`-chain and a formal affine chain `b`
+is the induced chain of the point-insertion affine chain map. -/
 theorem SingularHomology.crossProductZeroLeft_affineChainMap (p q n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 1)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) (n + 1)) :
@@ -901,6 +998,8 @@ theorem SingularHomology.crossProductZeroLeft_affineChainMap (p q n : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductEdge` computed on an edge chain `a` and a formal chain `b` equals the
+induced chain of the edge cross product on formal chains. -/
 theorem SingularHomology.crossProductEdge_affineChainMap (p q n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) (n + 1)) :
@@ -936,6 +1035,9 @@ theorem SingularHomology.crossProductEdge_affineChainMap (p q n : ℕ)
 
 /-! ### The formal triangle cross product -/
 
+/-- The formal triangle cross product `FormalChains V 3 →ₗ FormalChains W (q+1) →ₗ`
+formal chains of degree `q + 3`: the formal-chain shadow of the `2`-dimensional
+cross product. -/
 def SingularHomology.formalTriangleCrossProduct {V W : Type*} :
     (q : ℕ) →
       SingularMayerVietoris.FormalChains V 3 →ₗ[ℤ]
@@ -954,6 +1056,8 @@ def SingularHomology.formalTriangleCrossProduct {V W : Type*} :
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex w)))
 
+/-- The formal triangle cross product at a `0`-simplex right argument `w` is
+`formalMap (v ↦ (v, w 0))` applied to `c`. -/
 @[simp]
 theorem SingularHomology.formalTriangleCrossProduct_zero_simplex_right {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 3) (w : Fin 1 → W) :
@@ -961,6 +1065,8 @@ theorem SingularHomology.formalTriangleCrossProduct_zero_simplex_right {V W : Ty
       SingularMayerVietoris.formalMap (fun v => (v, w 0)) 3 c := by
   exact LinearMap.congr_fun (SingularMayerVietoris.formalLift_simplex _ _) c
 
+/-- On a triangle generator `v` and a `(q+1)`-simplex `w`, the formal triangle cross
+product is the signed sum of the three prism terms. -/
 @[simp]
 theorem SingularHomology.formalTriangleCrossProduct_simplex_succ {V W : Type*} (q : ℕ)
     (v : Fin 3 → V) (w : Fin (q + 2) → W) :
@@ -975,6 +1081,8 @@ theorem SingularHomology.formalTriangleCrossProduct_simplex_succ {V W : Type*} (
               (SingularMayerVietoris.formalSimplex w))) :=
   formalBilinearLift_simplex _ _ _
 
+/-- The boundary of the formal triangle cross product at right degree `0` is the point
+cross product of the triangle's boundary. -/
 theorem SingularHomology.formalBoundary_triangleCrossProduct_zero {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 3) (d : SingularMayerVietoris.FormalChains W 1) :
     SingularMayerVietoris.formalBoundary 2 (formalTriangleCrossProduct 0 c d) =
@@ -992,6 +1100,8 @@ theorem SingularHomology.formalBoundary_triangleCrossProduct_zero {V W : Type*}
           (SingularMayerVietoris.formalSimplex v)).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-- The boundary law for the formal triangle cross product:
+`∂(t × c) = ∂t × c + t × ∂c` (sign by left degree `2`) at the formal-chain level. -/
 theorem SingularHomology.formalBoundary_triangleCrossProduct {V W : Type*} :
     ∀ (q : ℕ) (c : SingularMayerVietoris.FormalChains V 3)
       (d : SingularMayerVietoris.FormalChains W (q + 2)),
@@ -1062,6 +1172,8 @@ theorem SingularHomology.formalBoundary_triangleCrossProduct {V W : Type*} :
       rfl
     exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
 
+/-- Naturality of the formal triangle cross product under maps `f : V → V'`,
+`g : W → W'`. -/
 theorem SingularHomology.formalMap_triangleCrossProduct {V W V' W' : Type*} (f : V → V')
     (g : W → W') :
     ∀ (q : ℕ) (c : SingularMayerVietoris.FormalChains V 3)
@@ -1107,6 +1219,9 @@ theorem SingularHomology.formalMap_triangleCrossProduct {V W V' W' : Type*} (f :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product `Chains X 2 →ₗ Chains Y n →ₗ Chains (X × Y) (n + 2)`: on
+generators, the `σ × τ` image of the affine prism triangulation of
+`Simplex 2 × Simplex n`. -/
 def SingularHomology.crossProductTriangle (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains X 2 →ₗ[ℤ]
@@ -1120,6 +1235,8 @@ def SingularHomology.crossProductTriangle (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplex generators, `crossProductTriangle` is the induced chain of the product
+affine prism chain. -/
 @[simp]
 theorem SingularHomology.crossProductTriangle_simplex (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X 2)
@@ -1135,6 +1252,7 @@ theorem SingularHomology.crossProductTriangle_simplex (X Y : Type) [TopologicalS
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductTriangle` is natural in both space maps. -/
 theorem SingularHomology.crossProductTriangle_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ) (a : SingularChains.Chains X 2)
@@ -1158,6 +1276,8 @@ theorem SingularHomology.crossProductTriangle_natural {X Y X' Y' : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductTriangle` computed on a triangle chain `a` and formal chain `b`
+equals the induced chain of the formal triangle cross product. -/
 theorem SingularHomology.crossProductTriangle_affineChainMap (p q n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 3)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) (n + 1)) :
@@ -1193,6 +1313,8 @@ theorem SingularHomology.crossProductTriangle_affineChainMap (p q n : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `crossProductTriangle a b` at right degree `0` on formal chains is
+`crossProductEdge` of `∂a` and `b`. -/
 theorem SingularHomology.crossProductTriangle_boundary_zero_affine (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 3)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 1) :
@@ -1211,6 +1333,8 @@ theorem SingularHomology.crossProductTriangle_boundary_zero_affine (p q : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On formal chains, the boundary of the triangle cross product satisfies
+`∂(a × b) = ∂a × b + a × ∂b`. -/
 theorem SingularHomology.crossProductTriangle_boundary_affine (p q n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 3)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) (n + 2)) :
@@ -1234,6 +1358,8 @@ theorem SingularHomology.crossProductTriangle_boundary_affine (p q n : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `crossProductTriangle a b` when `b` is a `0`-chain is
+`crossProductEdge` of `∂a` and `b`. -/
 theorem SingularHomology.crossProductTriangle_boundary_zero {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 2)
     (b : SingularChains.Chains Y 0) :
@@ -1259,6 +1385,9 @@ theorem SingularHomology.crossProductTriangle_boundary_zero {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary law for `crossProductTriangle`: `∂(a × b) = ∂a × b + a × ∂b`,
+where the `∂a`-term uses `crossProductEdge` (the left degree drops) and the `∂b`-term
+uses `crossProductTriangle` at degree `n - 1`. -/
 theorem SingularHomology.crossProductTriangle_boundary {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 2)
     (b : SingularChains.Chains Y (n + 1)) :
@@ -1289,6 +1418,7 @@ theorem SingularHomology.crossProductTriangle_boundary {X Y : Type} [Topological
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If `b` is a cycle, `∂(a × b) = ∂a × b` for the triangle cross product. -/
 theorem SingularHomology.crossProductTriangle_boundary_of_right_cycle {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 2)
     (b : SingularChains.Chains Y n)
@@ -1306,6 +1436,8 @@ theorem SingularHomology.crossProductTriangle_boundary_of_right_cycle {X Y : Typ
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `crossProductEdge a b` at right degree `0` on formal chains is the
+point cross product of `∂a`. -/
 theorem SingularHomology.crossProductEdge_boundary_zero_affine (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 1) :
@@ -1324,6 +1456,8 @@ theorem SingularHomology.crossProductEdge_boundary_zero_affine (p q : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On formal chains, the boundary of the edge cross product satisfies
+`∂(a × b) = ∂a × b - a × ∂b`. -/
 theorem SingularHomology.crossProductEdge_boundary_affine (p q n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) (n + 2)) :
@@ -1347,6 +1481,8 @@ theorem SingularHomology.crossProductEdge_boundary_affine (p q n : ℕ)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary of `crossProductEdge a b` when `b` is a `0`-chain is
+`crossProductZeroLeft` of `∂a` and `b`. -/
 theorem SingularHomology.crossProductEdge_boundary_zero {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y 0) :
     ((SingularChains.singularComplex (X × Y)).d 1 0).hom (crossProductEdge X Y 0 a b) =
@@ -1371,6 +1507,9 @@ theorem SingularHomology.crossProductEdge_boundary_zero {X Y : Type} [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The boundary law for `crossProductEdge`: `∂(a × b) = ∂a × b - a × ∂b`, where the
+`∂a`-term uses `crossProductZeroLeft` (the left degree drops to `0`) and the `∂b`-term
+uses `crossProductEdge` at degree `n - 1`. -/
 theorem SingularHomology.crossProductEdge_boundary {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 1)
     (b : SingularChains.Chains Y (n + 1)) :
@@ -1401,6 +1540,7 @@ theorem SingularHomology.crossProductEdge_boundary {X Y : Type} [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If `b` is a cycle, `∂(a × b) = ∂a × b` for the edge cross product. -/
 theorem SingularHomology.crossProductEdge_cycle {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y n)
     (ha : ((SingularChains.singularComplex X).d 1 0).hom a = 0)
@@ -1419,6 +1559,7 @@ theorem SingularHomology.crossProductEdge_cycle {X Y : Type} [TopologicalSpace X
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If `a` is a `1`-cycle, `∂(a × b) = -a × ∂b` for the edge cross product. -/
 theorem SingularHomology.crossProductEdge_boundary_of_left_cycle {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 1)
     (ha : ((SingularChains.singularComplex X).d 1 0).hom a = 0)
@@ -1431,11 +1572,14 @@ theorem SingularHomology.crossProductEdge_boundary_of_left_cycle {X Y : Type}
 /-! ### Descent to homology -/
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The submodule of degree-`n` cycles of `K` consisting of boundaries, as a submodule
+of the cycle module. -/
 abbrev SingularHomology.homologyBoundaries (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : Submodule ℤ (SingularMayerVietoris.ModuleHomology.Cycle K n) :=
   SingularChains.ChainHomology.ShortBoundaries (K.sc n)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Two linear maps out of `K.homology n` agreeing on all cycle classes are equal. -/
 theorem SingularHomology.homologyLinearMap_ext (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M] {f g : K.homology n →ₗ[ℤ] M}
     (h :
@@ -1449,6 +1593,8 @@ theorem SingularHomology.homologyLinearMap_ext (K : ChainComplex (ModuleCat.{0} 
   exact h c
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- If `f` vanishes on every boundary cycle, the boundary submodule is contained in
+the kernel of `f`. -/
 theorem SingularHomology.homologyBoundaries_le_ker (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M]
     (f : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] M)
@@ -1463,6 +1609,8 @@ theorem SingularHomology.homologyBoundaries_le_ker (K : ChainComplex (ModuleCat.
   exact (congrArg f he).symm.trans (hf b')
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A linear map on degree-`n` cycles of `K` vanishing on boundaries descends to a
+linear map on `K.homology n`. -/
 def SingularHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     {M : Type*} [AddCommGroup M] [Module ℤ M]
     (f : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] M)
@@ -1472,6 +1620,7 @@ def SingularHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n 
     (K.sc n).moduleCatHomologyIso.hom.hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- `homologyDesc f hf` sends the class of a cycle `c` to `f c`. -/
 @[simp]
 theorem SingularHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M]
@@ -1487,6 +1636,8 @@ theorem SingularHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{0
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product of a `1`-cycle in `X` and a cycle in `Y`, landing in cycles of
+`X × Y` via `crossProductEdge` (linear in the right argument). -/
 def SingularHomology.crossProductCycles (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1 →ₗ[ℤ]
@@ -1536,6 +1687,7 @@ def SingularHomology.crossProductCycles (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The underlying chain of `crossProductCycles a b` is `crossProductEdge a.1 b.1`. -/
 @[simp]
 theorem SingularHomology.crossProductCycles_val (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ)
@@ -1546,6 +1698,8 @@ theorem SingularHomology.crossProductCycles_val (X Y : Type) [TopologicalSpace X
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product of a `1`-cycle and a cycle as a map to homology classes of
+`X × Y`, linear in the right argument. -/
 def SingularHomology.crossProductCycleClasses (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1 →ₗ[ℤ]
@@ -1557,6 +1711,7 @@ def SingularHomology.crossProductCycleClasses (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The class-valued edge cross product vanishes when the right chain is a boundary. -/
 theorem SingularHomology.crossProductCycleClasses_boundary_right {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ)
     (a : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1)
@@ -1581,6 +1736,8 @@ theorem SingularHomology.crossProductCycleClasses_boundary_right {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product of a fixed left `1`-cycle `a` with `Y`-homology classes,
+descended in the right argument. -/
 def SingularHomology.crossProductHomologyFixed {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ)
     (a : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1) :
@@ -1591,6 +1748,8 @@ def SingularHomology.crossProductHomologyFixed {X Y : Type} [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductHomologyFixed a` sends the class of a cycle `b` to the class of
+`crossProductCycles` on representatives. -/
 @[simp]
 theorem SingularHomology.crossProductHomologyFixed_cycleClass {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ)
@@ -1604,6 +1763,8 @@ theorem SingularHomology.crossProductHomologyFixed_cycleClass {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product of a `1`-cycle in `X` with a cycle in `Y` as a map into
+`n + 1`-homology of `X × Y` (descended in the right argument). -/
 def SingularHomology.crossProductHomologyCycles (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1 →ₗ[ℤ]
@@ -1648,6 +1809,7 @@ def SingularHomology.crossProductHomologyCycles (X Y : Type) [TopologicalSpace X
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The class-valued edge cross product vanishes when the left chain is a boundary. -/
 theorem SingularHomology.crossProductCycleClasses_boundary_left {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 2)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) n) :
@@ -1665,6 +1827,8 @@ theorem SingularHomology.crossProductCycleClasses_boundary_left {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The homology-valued edge cross product vanishes when the left `1`-chain is a
+boundary. -/
 theorem SingularHomology.crossProductHomologyCycles_boundary_left {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 2) :
     crossProductHomologyCycles X Y n
@@ -1685,6 +1849,7 @@ theorem SingularHomology.crossProductHomologyCycles_boundary_left {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The homology cross product `H_1(X) →ₗ[ℤ] H_n(Y) →ₗ[ℤ] H_{n+1}(X × Y)`. -/
 def SingularHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     (SingularChains.singularComplex X).homology 1 →ₗ[ℤ]
@@ -1695,6 +1860,8 @@ def SingularHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `crossProductHomology` on cycle classes `⟦a⟧`, `⟦b⟧` is the class of the edge
+cross product `a × b`. -/
 @[simp]
 theorem SingularHomology.crossProductHomology_cycleClass (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ)
@@ -1712,6 +1879,8 @@ theorem SingularHomology.crossProductHomology_cycleClass (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- In right degree `0`, `crossProductEdge` coincides with `crossProductZeroRight`
+(up to the degree identification). -/
 theorem SingularHomology.crossProductEdge_zero_eq_zeroRight (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] :
     crossProductEdge X Y 0 = crossProductZeroRight X Y 1 := by
@@ -1733,6 +1902,8 @@ theorem SingularHomology.crossProductEdge_zero_eq_zeroRight (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a `0`-simplex right generator, `crossProductEdge` at degree `0` sends
+`(σ, τ)` to `σ` composed with the point insertion. -/
 theorem SingularHomology.crossProductEdge_zero_simplex_right (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 1)
     (τ : SingularChains.SingularSimplex Y 0) :
@@ -1742,6 +1913,8 @@ theorem SingularHomology.crossProductEdge_zero_simplex_right (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a point `0`-cycle `y`, `crossProductEdge a` agrees with the point-insertion
+pushforward of `a`. -/
 @[simp]
 theorem SingularHomology.crossProductEdge_pointCycle_right (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 1) (y : Y) :
@@ -1752,6 +1925,8 @@ theorem SingularHomology.crossProductEdge_pointCycle_right (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a point `0`-cycle, `crossProductCycles a` is the pushforward of `a` along the
+point insertion. -/
 @[simp]
 theorem SingularHomology.crossProductCycles_pointCycle_right (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y]
@@ -1765,6 +1940,8 @@ theorem SingularHomology.crossProductCycles_pointCycle_right (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On the homology class of a point `0`-cycle, `crossProductHomology a` is the
+point-insertion pushforward on homology. -/
 @[simp]
 theorem SingularHomology.crossProductHomology_pointClass_right (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularMayerVietoris.SingularHomology X 1)
@@ -1786,6 +1963,8 @@ theorem SingularHomology.crossProductHomology_pointClass_right (X Y : Type)
         (SingularChains.singularChainMap (SingularHomology.crossInsertRight y)) 1 c).symm
 
 
+/-- The formal boundary of the `1`-simplex generator `v` is the formal difference
+`w ↦ v 1 - v 0` of its endpoints. -/
 theorem SingularHomology.formalBoundary_edge_simplex {V : Type*} (v : Fin 2 → V) :
     SingularMayerVietoris.formalBoundary 1 (SingularMayerVietoris.formalSimplex v) =
       SingularMayerVietoris.formalSimplex (fun _ : Fin 1 => v 1) -
@@ -1797,6 +1976,8 @@ theorem SingularHomology.formalBoundary_edge_simplex {V : Type*} (v : Fin 2 → 
     neg_one_smul, ← sub_eq_add_neg]
   congr 1 <;> congr 1 <;> funext i <;> rw [Fin.eq_zero i] <;> rfl
 
+/-- The formal point cross product of an edge generator's boundary is the difference
+of the two endpoint insertions. -/
 theorem SingularHomology.formalPointCrossProduct_edge_boundary {V W : Type*} (q : ℕ)
     (v : Fin 2 → V) (d : SingularMayerVietoris.FormalChains W (q + 1)) :
     formalPointCrossProduct q
@@ -1807,6 +1988,8 @@ theorem SingularHomology.formalPointCrossProduct_edge_boundary {V W : Type*} (q 
     formalPointCrossProduct_simplex_left, formalPointCrossProduct_simplex_left]
 
 
+/-- If `c` is supported on `T` and `v 0 ∈ S`, the formal point cross product of `v`
+and `c` is supported on `S × T`. -/
 theorem SingularHomology.formalPointCrossProduct_mem_supported {V W : Type*} {S : Set V}
     {T : Set W} (q : ℕ) {c : SingularMayerVietoris.FormalChains V 1}
     {d : SingularMayerVietoris.FormalChains W (q + 1)}
@@ -1824,6 +2007,8 @@ theorem SingularHomology.formalPointCrossProduct_mem_supported {V W : Type*} {S 
     SingularMayerVietoris.formalMap_mem_supported (S := T) (T := S ×ˢ T) (fun w => (v 0, w))
       (fun _ hw => ⟨hv 0, hw⟩) hd
 
+/-- If the edge generator's vertices lie in `S` and `c` is supported on `T`, the
+formal edge cross product is supported on `S × T`. -/
 theorem SingularHomology.formalEdgeCrossProduct_mem_supported {V W : Type*} {S : Set V}
     {T : Set W} :
     ∀ (q : ℕ) {c : SingularMayerVietoris.FormalChains V 2}
