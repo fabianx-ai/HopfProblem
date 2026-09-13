@@ -34,6 +34,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Induction on path-homotopy classes -/
+
+/-- Properties of path-homotopy classes are stable under endpoint casts. -/
 theorem TriangleRegularBaseFundamentalGroup.pathClass_property_cast {X : Type*}
     [TopologicalSpace X] (P : ∀ {x y : X}, Path.Homotopic.Quotient x y → Prop) {x y x' y' : X}
     (q : Path.Homotopic.Quotient x y) (hx : x' = x) (hy : y' = y) (hq : P q) : P (q.cast hx hy) :=
@@ -42,6 +45,7 @@ theorem TriangleRegularBaseFundamentalGroup.pathClass_property_cast {X : Type*}
   cases hy
   simpa using hq
 
+/-- A property holding at reflexivity, under transitivity, and inside each chart of an open cover holds of all path classes. -/
 theorem TriangleRegularBaseFundamentalGroup.pathClass_induction_of_open_cover {X : Type*}
     [TopologicalSpace X] {ι : Type*} (U : ι → Set X) (hopen : ∀ i, IsOpen (U i))
     (hcover : ⋃ i, U i = Set.univ) (P : ∀ {x y : X}, Path.Homotopic.Quotient x y → Prop)
@@ -88,12 +92,14 @@ theorem TriangleRegularBaseFundamentalGroup.pathClass_induction_of_open_cover {X
   have htransport := pathClass_property_cast P _ p.source.symm p.target.symm hfull
   rwa [hp] at htransport
 
+/-- Cancelling a class on the left by its inverse inside a transitivity. -/
 theorem TriangleRegularBaseFundamentalGroup.quotient_symm_trans_cancel {X : Type*}
     [TopologicalSpace X] {x y z : X} (p : Path.Homotopic.Quotient x y)
     (q : Path.Homotopic.Quotient y z) : p.symm.trans (p.trans q) = q := by
   rw [← Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.refl_trans]
 
+/-- Right cancellation of a common transitivity factor in path classes. -/
 theorem TriangleRegularBaseFundamentalGroup.quotient_trans_right_cancel {X : Type*}
     [TopologicalSpace X] {x y z : X} {p q : Path.Homotopic.Quotient x y}
     (r : Path.Homotopic.Quotient y z) (h : p.trans r = q.trans r) : p = q := by
@@ -101,15 +107,20 @@ theorem TriangleRegularBaseFundamentalGroup.quotient_trans_right_cancel {X : Typ
   simpa only [Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.trans_symm,
     Path.Homotopic.Quotient.trans_refl] using h'
 
+/-! ### Loop classes from a section -/
+
+/-- The based loop `F x · p · (F y)⁻¹` of a path class against a section `F`. -/
 def TriangleRegularBaseFundamentalGroup.basedLoop {X : Type*} [TopologicalSpace X] {o : X}
     (F : ∀ x, Path.Homotopic.Quotient o x) {x y : X} (p : Path.Homotopic.Quotient x y) :
     FundamentalGroup X o :=
   ((F x).trans p).trans (F y).symm
 
+/-- The based loop `p · q⁻¹` comparing two classes to the same point. -/
 def TriangleRegularBaseFundamentalGroup.pathDifference {X : Type*} [TopologicalSpace X] {o x : X}
     (p q : Path.Homotopic.Quotient o x) : FundamentalGroup X o :=
   p.trans q.symm
 
+/-- The based loop of the trivial class is trivial. -/
 @[simp]
 theorem TriangleRegularBaseFundamentalGroup.basedLoop_refl {X : Type*} [TopologicalSpace X]
     {o : X} (F : ∀ x, Path.Homotopic.Quotient o x) (x : X) :
@@ -117,6 +128,7 @@ theorem TriangleRegularBaseFundamentalGroup.basedLoop_refl {X : Type*} [Topologi
   simp only [basedLoop, Path.Homotopic.Quotient.trans_refl, Path.Homotopic.Quotient.trans_symm,
     FundamentalGroup.one_def]
 
+/-- The based loop map reverses transitivity into multiplication. -/
 theorem TriangleRegularBaseFundamentalGroup.basedLoop_trans {X : Type*} [TopologicalSpace X]
     {o x y z : X} (F : ∀ x, Path.Homotopic.Quotient o x) (p : Path.Homotopic.Quotient x y)
     (q : Path.Homotopic.Quotient y z) : basedLoop F (p.trans q) = basedLoop F q * basedLoop F p :=
@@ -124,6 +136,7 @@ theorem TriangleRegularBaseFundamentalGroup.basedLoop_trans {X : Type*} [Topolog
   simp only [basedLoop, FundamentalGroup.mul_def, Path.Homotopic.Quotient.trans_assoc,
     quotient_symm_trans_cancel]
 
+/-- The based loop of `p` expressed through the path differences of `a` and `b`. -/
 theorem TriangleRegularBaseFundamentalGroup.basedLoop_comparison {X : Type*} [TopologicalSpace X]
     {o x y : X} (F : ∀ z, Path.Homotopic.Quotient o z) (a : Path.Homotopic.Quotient o x)
     (b : Path.Homotopic.Quotient o y) (p : Path.Homotopic.Quotient x y) (h : a.trans p = b) :
@@ -137,6 +150,9 @@ theorem TriangleRegularBaseFundamentalGroup.basedLoop_comparison {X : Type*} [To
     Path.Homotopic.Quotient.symm_trans, Path.Homotopic.Quotient.trans_refl]
   rw [← h, quotient_symm_trans_cancel]
 
+/-! ### The two-chart simply connected cover -/
+
+/-- A two-open-set cover by simply connected pieces with path-connected intersection and a common basepoint. -/
 structure TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover (X : Type*)
     [TopologicalSpace X] where
   U : TopologicalSpace.Opens X
@@ -148,26 +164,31 @@ structure TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover (X : Type*
   baseU : base ∈ U
   baseV : base ∈ V
 
+/-- A chosen basepoint-to-`x` path inside `U`. -/
 def TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathU {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) (hx : x ∈ D.U) : Path D.base x :=
   (D.simplyU.isPathConnected.joinedIn D.base D.baseU x hx).somePath
 
+/-- A chosen basepoint-to-`x` path inside `V`. -/
 def TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathV {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) (hx : x ∈ D.V) : Path D.base x :=
   (D.simplyV.isPathConnected.joinedIn D.base D.baseV x hx).somePath
 
+/-- The chosen `U`-path stays inside `U`. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathU_mem {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) (hx : x ∈ D.U) (t : (unitInterval)) : D.pathU x hx t ∈ D.U :=
   JoinedIn.somePath_mem _ t
 
+/-- The chosen `V`-path stays inside `V`. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathV_mem {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) (hx : x ∈ D.V) (t : (unitInterval)) : D.pathV x hx t ∈ D.V :=
   JoinedIn.somePath_mem _ t
 
+/-- Chosen `U`-paths are transitive along paths inside `U`. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathU_trans {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     {x y : X} (hx : x ∈ D.U) (hy : y ∈ D.U) (p : Path x y) (hp : ∀ t, p t ∈ D.U) :
@@ -178,6 +199,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathU_trans 
     SimplyConnectedCover.homotopic_of_mem D.simplyU _ _
       (SimplyConnectedCover.trans_mem _ _ (D.pathU_mem x hx) hp) (D.pathU_mem y hy)
 
+/-- Chosen `V`-paths are transitive along paths inside `V`. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathV_trans {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     {x y : X} (hx : x ∈ D.V) (hy : y ∈ D.V) (p : Path x y) (hp : ∀ t, p t ∈ D.V) :
@@ -188,12 +210,14 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.pathV_trans 
     SimplyConnectedCover.homotopic_of_mem D.simplyV _ _
       (SimplyConnectedCover.trans_mem _ _ (D.pathV_mem x hx) hp) (D.pathV_mem y hy)
 
+/-- The loop class comparing the `U`- and `V`-paths to an overlap point. -/
 def TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) (hxU : x ∈ D.U) (hxV : x ∈ D.V) : FundamentalGroup X D.base :=
   (Path.Homotopic.Quotient.mk (D.pathU x hxU)).trans
     (Path.Homotopic.Quotient.mk (D.pathV x hxV)).symm
 
+/-- The switch class is constant on joined points of the overlap. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
     {X : Type*} [TopologicalSpace X]
     (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X) {x y : X} (hxU : x ∈ D.U)
@@ -217,6 +241,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_
   simp only [Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.trans_refl]
 
+/-- The switch class at the basepoint is trivial. -/
 @[simp]
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_base {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X) :
@@ -231,12 +256,14 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_
     exact SimplyConnectedCover.homotopic_of_mem D.simplyV _ _ (D.pathV_mem _ _) (fun _ => D.baseV)
   simp only [switchClass, hU, hV, Path.Homotopic.Quotient.trans_symm, FundamentalGroup.one_def]
 
+/-- A point outside `U` lies in `V`. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.memV_of_not_memU {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     {x : X} (hx : x ∉ D.U) : x ∈ D.V := by
   have h : x ∈ (D.U : Set X) ∪ D.V := by rw [D.cover]; trivial
   exact h.resolve_left hx
 
+/-- A basepoint section of path classes using the `U`-path on `U` and the `V`-path elsewhere. -/
 def TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (x : X) : Path.Homotopic.Quotient D.base x := by
@@ -245,17 +272,20 @@ def TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection {X 
     if hx : x ∈ D.U then Path.Homotopic.Quotient.mk (D.pathU x hx)
     else Path.Homotopic.Quotient.mk (D.pathV x (D.memV_of_not_memU hx))
 
+/-- On `U` the section is the chosen `U`-path class. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection_eq_U {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     {x : X} (hx : x ∈ D.U) : D.basedSection x = Path.Homotopic.Quotient.mk (D.pathU x hx) := by
   simp only [basedSection, dif_pos hx]
 
+/-- Off `U` the section is the chosen `V`-path class. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection_eq_V {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     {x : X} (hxU : x ∉ D.U) (hxV : x ∈ D.V) :
     D.basedSection x = Path.Homotopic.Quotient.mk (D.pathV x hxV) := by
   simp only [basedSection, dif_neg hxU]
 
+/-- The section at the basepoint is the trivial class. -/
 @[simp]
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection_base {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X) :
@@ -264,6 +294,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedSection
   apply Path.Homotopic.Quotient.eq.mpr
   exact SimplyConnectedCover.homotopic_of_mem D.simplyU _ _ (D.pathU_mem _ _) (fun _ => D.baseU)
 
+/-- The path difference against the `U`-path lies in any subgroup containing the switch classes. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.comparisonU_mem {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (H : Subgroup (FundamentalGroup X D.base)) {x : X} (hx : x ∈ D.U) :
@@ -274,6 +305,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.comparisonU_
   simpa only [TriangleRegularBaseFundamentalGroup.pathDifference,
     Path.Homotopic.Quotient.trans_symm, FundamentalGroup.one_def] using H.one_mem
 
+/-- The path difference against the `V`-path lies in any subgroup containing the switch classes. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.comparisonV_mem {X : Type*}
     [TopologicalSpace X] (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
     (H : Subgroup (FundamentalGroup X D.base))
@@ -289,6 +321,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.comparisonV_
     simpa only [TriangleRegularBaseFundamentalGroup.pathDifference,
       Path.Homotopic.Quotient.trans_symm, FundamentalGroup.one_def] using H.one_mem
 
+/-- The based loop of a path inside `U` lies in the subgroup. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedLoop_mem_of_path_in_U
     {X : Type*} [TopologicalSpace X]
     (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
@@ -302,6 +335,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedLoop_me
       (Path.Homotopic.Quotient.mk p) (D.pathU_trans hx hy p hp)]
   exact H.mul_mem (H.inv_mem (D.comparisonU_mem H hy)) (D.comparisonU_mem H hx)
 
+/-- The based loop of a path inside `V` lies in the subgroup containing the switch classes. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedLoop_mem_of_path_in_V
     {X : Type*} [TopologicalSpace X]
     (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X)
@@ -317,6 +351,7 @@ theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.basedLoop_me
       (Path.Homotopic.Quotient.mk p) (D.pathV_trans hx hy p hp)]
   exact H.mul_mem (H.inv_mem (D.comparisonV_mem H hH hy)) (D.comparisonV_mem H hH hx)
 
+/-- A subgroup of the fundamental group containing all switch classes is everything. -/
 theorem
   TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
     {X : Type*} [TopologicalSpace X]
@@ -362,6 +397,7 @@ theorem
   simpa only [TriangleRegularBaseFundamentalGroup.basedLoop, D.basedSection_base,
     Path.Homotopic.Quotient.refl_trans, hrefl, Path.Homotopic.Quotient.trans_refl] using hq
 
+/-- The switch class equals the loop formed by any `U`-path followed by the reverse of any `V`-path. -/
 theorem TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover.switchClass_eq_of_paths
     {X : Type*} [TopologicalSpace X]
     (D : TriangleRegularBaseFundamentalGroup.TwoSimplyConnectedCover X) {x : X} (hxU : x ∈ D.U)
