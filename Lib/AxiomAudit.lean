@@ -88,3 +88,5 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.Hurewicz.sphere_homotopic_id_of_topClass
 #print axioms Mathoverflow1973.Hurewicz.right_inverse_is_left_inverse
 #print axioms Mathoverflow1973.Hurewicz.exists_basepoint_adjustment
+#print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+#print axioms Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt
