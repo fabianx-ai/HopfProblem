@@ -196,3 +196,9 @@ passed for all six declarations, and `git diff --check` was clean.
 Census: **2,293 → 2,287**, prefix list unchanged. The next consolidated
 consumer-chain gate will include this move; it is not claimed rerun here.
 Wang and wrapper removal remain pending with the C/J owner as stated above.
+
+Consolidated consumer gate after the Suspension rename: `lake build Lib
+Solution S6Shortcuts S6 Challenge` and `lake env lean Lib/AxiomAudit.lean`
+both exited 0 with pinned Lean 4.33.0. This includes the quotient-chart move
+above; the earlier deferred-chain note is now discharged. Wang and wrapper
+removal remain pending on the owner's C/J handoff.

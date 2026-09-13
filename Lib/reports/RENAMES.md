@@ -56,9 +56,8 @@ root-name collisions across 79 files — the hard part works):
 
 ## Open rename and record discipline
 
-- `Suspension.topSus`: choose the type name against its Mathlib twin under
-  `Mathlib/Topology/Homotopy/`, then rename again; a type is not called `topSus`.
-  The final name is not yet settled.
+- `Suspension.topSus`: resolved by the `Suspension` type rename below; old
+  spellings survive only in the transitional Hopf shims, not the Lib API.
 - Rename commits must not rewrite another seat's ledger or `Lib/reviews/*`.
   Historical names remain in the record; this ledger carries the rename map.
 
@@ -149,3 +148,37 @@ unchanged; this commit changes only this ledger. The remaining finite-cover
 transfer formulas and the Mathoverflow1973 wrapper removal remain pending on
 the C/J prerequisite handoff documented in `Lib/reports/I.md`; name confirmation
 does not bypass that dependency.
+
+## Suspension type name (GLM seat run by Devin/Astra)
+
+Canonical type: `Mathoverflow1973.Suspension X`, replacing
+`Mathoverflow1973.Suspension.topSus X`. The actual shape/naming twin is
+`Mathlib/Topology/Compactification/OnePoint/Basic.lean`: the type `OnePoint X`
+is in the parent namespace, followed by its namespace-scoped API. This is a
+naming/layout analogue, not a claim that one-point compactification and
+suspension are the same construction. There is no suspension type in the
+pinned Mathlib tree; the proposed destination remains
+`Mathlib/Topology/Homotopy/Suspension.lean`.
+
+The two previously anonymous-looking instances become
+`Suspension.instTopologicalSpace` and `Suspension.instNonempty`; this avoids
+colliding `instLocal1` names when the extra namespace layer is removed.
+The definition now qualifies `Suspension.suspensionSetoid` explicitly.
+All other declaration bodies are changed only by the name map.
+
+The existing Hopf export blocks are preserved through compatibility aliases
+in `Hopf/LibShims.lean`. Thus the old `topSus` spelling is not part of Lib,
+but downstream Hopf consumers remain source-compatible while wrapper removal
+waits for Wang. No other seat's ledger, review, draft or mathematics is rewritten.
+
+Verification at the rename boundary: pinned Lean 4.33.0;
+`lake build Lib.AlgebraicTopology.SingularHomology.SphereHomology Hopf.LibShims`,
+`lake build Lib Solution S6Shortcuts S6 Challenge`, and
+`lake env lean Lib/AxiomAudit.lean` all exited 0. Lib-only
+`Suspension_RenameCheck.lean` checked the new type, constructor and instances;
+`Suspension_ShimCheck.lean` checked the old Hopf aliases. The suspension
+compactness and path-connectedness instances have exactly
+`[propext, Classical.choice, Quot.sound]`. Census **2,287 → 2,287**, prefix
+list unchanged; no `topSus` remains in Lib Lean sources. All three Lib files
+match the ordered name map plus the one explicit setoid qualification.
+`git diff --check` is clean. The existing Hopf export lines are byte-preserved.
