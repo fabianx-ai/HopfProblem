@@ -41,13 +41,18 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The punctured ball model -/
+
+/-- The open ball of radius `R` with the origin removed. -/
 abbrev PuncturedBall.Space (E : Type*) [NormedAddCommGroup E] (R : ℝ) :=
   { x : E // x ≠ 0 ∧ ‖x‖ < R }
 
+/-- The inclusion of the radius-`R` punctured ball into the punctured space. -/
 def PuncturedBall.toPunctured {E : Type*} [NormedAddCommGroup E] (R : ℝ) :
     C(Space E R, PuncturedRadial.Space E) :=
   ⟨fun x => ⟨x.val, x.property.1⟩, continuous_subtype_val.subtype_mk _⟩
 
+/-- The sphere of radius `r` inside the punctured ball. -/
 def PuncturedBall.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
     (r : ℝ) (hr : 0 < r) (hrR : r < R) : C(Metric.sphere (0 : E) 1, Space E R) :=
   ⟨fun u =>
@@ -58,15 +63,18 @@ def PuncturedBall.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
       exact hrR⟩,
     (continuous_const.smul continuous_subtype_val).subtype_mk _⟩
 
+/-- The convex blend of a punctured-ball point with the radius-`r` sphere. -/
 def PuncturedBall.blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
     (r : ℝ) (q : (unitInterval) × Space E R) : E :=
   PuncturedRadial.blendVector r (q.1, toPunctured R q.2)
 
+/-- The blend vector is continuous. -/
 theorem PuncturedBall.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (R : ℝ) (r : ℝ) : Continuous (blendVector (E := E) R r) :=
   (PuncturedRadial.continuous_blendVector r).comp
     (continuous_fst.prodMk ((toPunctured R).continuous.comp continuous_snd))
 
+/-- The blend norm interpolates between `‖x‖` and `r`. -/
 theorem PuncturedBall.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (R : ℝ) (r : ℝ) (hr : 0 < r) (t : (unitInterval)) (x : Space E R) :
     ‖blendVector R r (t, x)‖ = (1 - (t : ℝ)) * ‖x.val‖ + (t : ℝ) * r := by
@@ -77,6 +85,7 @@ theorem PuncturedBall.norm_blendVector {E : Type*} [NormedAddCommGroup E] [Norme
   rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hscale, add_mul, mul_assoc,
     div_mul_cancel₀ _ hn.ne']
 
+/-- The blend stays inside the ball of radius `R`. -/
 theorem PuncturedBall.norm_blendVector_lt {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (R : ℝ) (r : ℝ) (hr : 0 < r) (hrR : r < R) (t : (unitInterval))
     (x : Space E R) : ‖blendVector R r (t, x)‖ < R := by
@@ -85,6 +94,9 @@ theorem PuncturedBall.norm_blendVector_lt {E : Type*} [NormedAddCommGroup E]
     (convex_Iio (𝕜 := ℝ) R) x.property.2 hrR (sub_nonneg.mpr t.property.2) t.property.1
       (sub_add_cancel 1 (t : ℝ))
 
+/-! ### Transporting exactness -/
+
+/-- Exactness transports across linear equivalences of all three terms. -/
 theorem HomologyTransport.exact_of_equivalences {R A B C A' B' C' : Type*} [Ring R]
     [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
     [AddCommGroup A'] [Module R A'] [AddCommGroup B'] [Module R B'] [AddCommGroup C']
@@ -111,6 +123,9 @@ theorem HomologyTransport.exact_of_equivalences {R A B C A' B' C' : Type*} [Ring
     obtain ⟨a, ha⟩ := hb
     exact ⟨eA a, (hf a).trans (congrArg eB ha)⟩
 
+/-! ### Critical points of smooth functions -/
+
+/-- A local minimum of a smooth function is a critical point. -/
 theorem ManifoldMorse.mem_criticalPoints_of_localMin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {p : M} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hmin : IsLocalMin f p) :
@@ -122,6 +137,7 @@ theorem ManifoldMorse.mem_criticalPoints_of_localMin {E M : Type*} [NormedAddCom
   have hmin' : IsLocalMin f (e.symm (e p)) := by rw [e.left_inv hp]; exact hmin
   exact (hmin'.comp_continuous (e.continuousAt_symm (e.map_source hp))).fderiv_eq_zero
 
+/-- A local maximum of a smooth function is a critical point. -/
 theorem ManifoldMorse.mem_criticalPoints_of_localMax {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {p : M} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hmax : IsLocalMax f p) :
@@ -133,6 +149,7 @@ theorem ManifoldMorse.mem_criticalPoints_of_localMax {E M : Type*} [NormedAddCom
   have hmax' : IsLocalMax f (e.symm (e p)) := by rw [e.left_inv hp]; exact hmax
   exact (hmax'.comp_continuous (e.continuousAt_symm (e.map_source hp))).fderiv_eq_zero
 
+/-- With only two critical points they are the unique global minimum and maximum. -/
 theorem ManifoldMorse.unique_extrema_of_two_critical_values {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -172,6 +189,7 @@ theorem ManifoldMorse.unique_extrema_of_two_critical_values {E M : Type*}
       exact False.elim (not_le_of_gt hpq hx)
     · exact h
 
+/-- A small sublevel of a unique minimum fits in any neighborhood. -/
 theorem exists_small_sublevel_subset {X : Type*} [TopologicalSpace X] [CompactSpace X]
     {f : X → ℝ} (hf : Continuous f) {p : X} (hunique : ∀ x, f x ≤ f p → x = p) {U : Set X}
     (hU : IsOpen U) (hpU : p ∈ U) : ∃ ε > (0 : ℝ), {x | f x ≤ f p + ε} ⊆ U := by
