@@ -1019,3 +1019,650 @@ export Mathoverflow1973.SingularHomology (
   zeroSimplexValue_comp
 )
 end Mathoverflow1973.PeriodTorusHigherHomology
+
+/-! ### `SecondHurewicz` → `Hurewicz.DegreeTwo` rename compatibility
+
+The degree-two Hurewicz declarations were renamed from `Mathoverflow1973.SecondHurewicz`
+to `Mathoverflow1973.Hurewicz.DegreeTwo`. These exports preserve every captured public
+name for `Hopf` consumers; the list was generated from the pre-rename Lean environment
+(see `Lib/docs/C16-NAMES.md`). `export` is used where the old parent is a namespace;
+generated names under declaration parents (equation lemmas, structure fields) use
+`alias`. -/
+
+namespace Mathoverflow1973.SecondHurewicz
+export Mathoverflow1973.Hurewicz.DegreeTwo (
+  BasedLoopSpace
+  Remaining
+  boundaryThree_suspensionTwo
+  boundaryTwo_suspensionOne_of_cycle
+  crossProductEdge_point_right
+  crossProductTriangle_point_right
+  crossProductTriangle_zero_eq_zeroRight
+  evaluated_edge_endpoint_cancel
+  evaluated_triangle_endpoint_cancel
+  evaluation
+  evaluation_comp_right_one
+  evaluation_comp_right_zero
+  evaluation_comp_toLoop
+  evaluation_one
+  evaluation_right_one_chain
+  evaluation_right_zero_chain
+  evaluation_zero
+  fundamentalSquareChain
+  hurewiczFunction
+  hurewiczMap
+  hurewiczMap_representative
+  hurewiczPi2
+  induced_intervalChain
+  intervalChain
+  intervalChain_boundary
+  mapGenLoop
+  mapGenLoop_const
+  mapGenLoop_homotopic
+  mapGenLoop_transAt
+  mapGenLoop_val
+  pathSquareClass
+  pathSquareClass_homotopic
+  pathSquareClass_homotopy
+  pathSquareClass_refl
+  pathSquareClass_trans
+  pathSquareCycle
+  pathSquareCycle_val
+  pathSquare_concat_boundary
+  pathSquare_homotopy_boundary
+  productSquareChain
+  productSquareChain_boundary
+  squareChain
+  squareChain_boundary
+  squareCoordinates
+  squareCoordinates_one
+  squareCoordinates_zero
+  squareCycle
+  squareHomologyClass
+  squareHomologyClass_const
+  squareHomologyClass_eq_pathSquareClass
+  squareHomologyClass_homotopic
+  squareHomologyClass_transAt
+  squareMap
+  suspensionOne
+  suspensionOne_apply
+  suspensionOne_toLoop
+  suspensionTwo
+  suspensionTwo_apply
+  toLoop_const
+  toLoop_transAt
+)
+end Mathoverflow1973.SecondHurewicz
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected (
+  BasedTetrahedron
+  BasedTriangle
+  CofaceCompatible
+  FaceCompatible
+  FaceCompatibleHomotopies
+  SimplexBoundary
+  SubdivisionSameSide
+  SubdivisionSquare
+  VertexHomotopyData
+  VerticesBased
+  barycenterCoordinate
+  barycenterCoordinate_pos
+  basedEdgePath
+  basedEdgePath_const
+  basedTetrahedronFace
+  basedTetrahedron_boundary_relation
+  basedTetrahedron_pair_relation
+  basedTetrahedron_signed_relation
+  basedTriangleClass
+  basedTriangleClass_cyclic
+  basedTriangleCycle
+  basedTriangleCycle_val
+  basedTriangleLoop
+  basedTriangleLoop_lower
+  basedTriangleLoop_upper
+  basedTrianglesHomotopy
+  basedTrianglesHomotopy_of_faces
+  basedTrianglesLoop
+  basedTrianglesLoop_apply
+  basedTrianglesLoop_class
+  basedTrianglesLoop_diagonal
+  basedTrianglesLoop_lower
+  basedTrianglesLoop_upper
+  bottomDenominator_le
+  bottomInclusion
+  bottomOrSide
+  bottomProductDegenerate
+  bottomProductDegenerate_snd
+  card_mul_barycenterCoordinate
+  chainAugmentation
+  chainAugmentation_boundaryTwo
+  chainAugmentation_simplex
+  chainAugmentation_twoCycle
+  chainLift_sub_constant
+  chainLift_sub_constant_twoCycle
+  chosenBasePath
+  chosenBasePath_self
+  chosenNullHomotopy
+  chosenNullHomotopy_refl
+  coherentFaceBoundaryHomotopy
+  coherentFaceBoundaryHomotopy_face
+  coherentFaceBoundaryHomotopy_zero
+  comp_secondHomologyDesc_eq_id
+  constantBasedTriangle
+  continuous_cylinderDenominator
+  continuous_minimumCoordinate
+  continuous_retractedSimplex
+  continuous_retractedTime
+  coordinateDenominator_le
+  crossPoint_left
+  cubeBoundary_productBoundary
+  cyclicBasedTriangle
+  cyclicTriangleLoopHomotopy
+  cyclicTriangleQuotient_blend_boundary
+  cyclicTriangleQuotient_commonZero
+  cylinderDenominator
+  cylinderDenominator_eq_one_of_mem
+  cylinderDenominator_half_le
+  cylinderDenominator_le_one
+  cylinderDenominator_ne_zero
+  cylinderDenominator_pos
+  cylinderRetraction
+  cylinderRetraction_bottom
+  cylinderRetraction_fix
+  cylinderRetraction_side
+  cylinderRetraction_val_of_mem
+  edgeNullHomotopy
+  edgeNullHomotopy_const
+  edgeNullHomotopy_one
+  edgeNullHomotopy_vertex_one
+  edgeNullHomotopy_vertex_zero
+  edgeNullHomotopy_zero
+  edgeStraightenedTriangle
+  edgeStraighteningHomotopy
+  edgeStraighteningHomotopy_const
+  edgeStraighteningHomotopy_face
+  edgeStraighteningHomotopy_one
+  edgeStraighteningHomotopy_vertex
+  edgeStraighteningHomotopy_zero
+  exists_coordinate_eq_minimum
+  extendBoundaryHomotopy
+  extendBoundaryHomotopy_bottom
+  extendBoundaryHomotopy_boundary
+  extendBoundaryHomotopy_face
+  extendBoundaryHomotopy_side
+  extendCoherentSimplexHomotopy
+  extendCoherentSimplexHomotopy_face
+  extendCoherentSimplexHomotopy_zero
+  faceCompatible_of_cofaceCompatible
+  faceCompatible_zero
+  faceFamilyMap
+  faceFamilyMap_factorsThrough
+  glueFaceHomotopies
+  glueFaceHomotopies_face
+  glueFaceHomotopies_time
+  glueFaceHomotopies_unique
+  glueFaceHomotopies_zero
+  gluedBoundaryMap
+  gluedBoundaryMap_bottomInclusion
+  gluedBoundaryMap_sideInclusion
+  gluedTriangleHomotopy
+  gluedTriangleHomotopyMap
+  gluedTriangleHomotopyMap_boundary
+  hurewiczInverse
+  hurewiczInverse_comp_hurewiczMap
+  hurewiczInverse_cycleClass
+  hurewiczInverse_hurewiczMap
+  hurewiczInverse_hurewiczMap_mk
+  hurewiczMap_comp_hurewiczInverse
+  hurewiczMap_comp_triangleClassOperator
+  hurewiczMap_hurewiczInverse
+  hurewiczMap_triangleClassOperator_twoCycle
+  hurewiczPi2Equiv
+  hurewicz_basedTriangleClass
+  inducedChain_timeSlice
+  isClosed_simplexBoundary
+  leftProductDegenerate
+  leftProductDegenerate_fst
+  lowerProductTriangle
+  lowerProductTriangle_fst
+  lowerProductTriangle_snd
+  lowerSquareTriangle
+  lowerSquareTriangle_one
+  lowerSquareTriangle_outerFace
+  lowerSquareTriangle_quotient
+  lowerSquareTriangle_verticesBased
+  lowerSquareTriangle_zero
+  minimumCoordinate
+  minimumCoordinate_eq_zero_of_mem_boundary
+  minimumCoordinate_le
+  minimumCoordinate_nonneg
+  nextFaceHomotopies_compatible
+  normalizedTetrahedron
+  normalizedTetrahedronMap
+  normalizedTetrahedronMap_face
+  normalizedTetrahedronMap_face_boundary
+  normalizedTetrahedron_face
+  normalizedTriangle
+  normalizedTriangleCycleOperator
+  normalizedTriangleCycleOperator_simplex
+  normalizedTriangleCycleOperator_twoCycle
+  normalizedTriangleCycleOperator_val
+  normalizedTriangle_boundary_relation
+  normalizedTriangle_of_verticesBased
+  normalizedTwoChain
+  normalizedTwoChain_eq
+  normalizedTwoChain_simplex
+  normalizedTwoCycle
+  normalizedTwoCycle_class
+  normalizedTwoCycle_val
+  prismOperator
+  prismOperator_apply
+  prismOperator_boundary
+  prismOperator_domain
+  prismOperator_simplex
+  productSquareChain_four_triangles
+  quarterTurn
+  quarterTurnHomotopyMap
+  quarterTurnHomotopyMap_boundary
+  quarterTurnHomotopyMap_one
+  quarterTurnHomotopyMap_zero
+  quarterTurn_apply
+  quarterTurn_boundary
+  retractedCoordinate_nonneg
+  retractedCoordinate_numerator_nonneg
+  retractedCoordinates_sum
+  retractedSimplex
+  retractedSimplex_eq_of_mem
+  retractedTime
+  retractedTime_eq_of_mem
+  retractedTime_le_one
+  retractedTime_nonneg
+  retracted_mem_bottomOrSide
+  rotatedSquareLoop
+  rotatedSquareLoop_class
+  rotatedSquareLoop_homotopy
+  rotationBlend
+  rotationBlend_continuous
+  rotationBlend_ne_zero
+  rotationBlend_one
+  rotationBlend_zero
+  rotationBlend_zero_vector
+  rotationCentered
+  rotationCentered_continuous
+  rotationCentered_norm_boundary
+  rotationCentered_norm_le
+  rotationDenominator
+  rotationDenominator_continuous
+  rotationDenominator_pos
+  rotationNormalized
+  rotationNormalized_continuous
+  rotationNormalized_norm_boundary
+  rotationNormalized_norm_le
+  rotationNormalized_one
+  rotationNormalized_zero
+  rotationUncenter
+  rotationUncenter_boundary
+  rotationUncenter_centered
+  rotationUncenter_congr
+  rotationUncenter_vector
+  rotationVector
+  rotationVector_norm
+  secondHomologyDesc
+  secondHomologyDesc_cycleClass
+  sideDenominator_le
+  sideInclusion
+  simplexBoundary
+  simplexBoundary_exists_face
+  simplexCard_pos
+  simplexEndpointOperator
+  simplexEndpointOperator_boundary
+  simplexEndpointOperator_simplex
+  simplexEndpointOperator_zero
+  simplexFaceBoundary
+  simplexFaceCover
+  simplexFaceCover_isQuotientMap
+  simplexFaceCover_surjective
+  simplexFaceCylinder
+  simplexFaceInverse
+  simplexFace_injective
+  simplexFace_intersection
+  simplexFace_inverse
+  simplexFace_mem_boundary
+  simplexFace_range
+  simplexFace_triangleBoundary
+  simplexFace_two_one
+  simplexFace_two_three
+  simplexFace_two_two
+  simplexFace_two_zero
+  simplexPrism
+  simplexPrismOperator
+  simplexPrismOperator_boundary
+  simplexPrismOperator_simplex
+  simplexPrism_boundary
+  simplexVertex_exists_face
+  squareAffineTriangle
+  squareAffineTriangle_fst_coe
+  squareAffineTriangle_snd_coe
+  squareChain_basedTriangleLoop
+  squareChain_two_triangles
+  squareLowerNormalizationHomotopy
+  squareLowerNormalization_outerFace
+  squareMap_basedTriangleLoop
+  squareMap_bottomProductDegenerate
+  squareMap_leftProductDegenerate
+  squareNormalizationHomotopy
+  squareNormalizationTriangleHomotopy
+  squareNormalization_class
+  squareNormalization_diagonal
+  squareNormalization_edge_face
+  squareNormalization_homotopic
+  squareNormalization_quotient
+  squareNormalizedLowerTriangle
+  squareNormalizedUpperTriangle
+  squareTriangles_diagonal
+  squareUpperNormalizationHomotopy
+  squareUpperNormalization_outerFace
+  stationarySimplexHomotopy
+  straightenedTwoCycle
+  straightenedTwoCycle_class
+  subdivisionBlend
+  subdivisionBlendMap
+  subdivisionBlend_based
+  subdivisionBlend_one
+  subdivisionBlend_zero
+  subdivisionLinearHomotopy
+  subdivisionLowerBasedTriangle
+  subdivisionLowerProductLoop
+  subdivisionLowerProductMap
+  subdivisionLowerProductMap_based
+  subdivisionLowerProductTriangle_sides
+  subdivisionLowerSquareTriangle_based
+  subdivisionLowerTriangleHomotopy
+  subdivisionLowerTriangleLoop
+  subdivisionLowerTriangleLoop_eq_basedTriangleLoop
+  subdivisionLowerTriangleMap
+  subdivisionLowerTriangleMap_based
+  subdivisionOnDiagonal
+  subdivisionPullbackLoop
+  subdivisionSquare_boundary_cases
+  subdivisionSubMin
+  subdivisionSubMin_one_left
+  subdivisionSubMin_one_right
+  subdivisionSubMin_zero_left
+  subdivisionSubMin_zero_right
+  subdivisionTriangle_coordinate_sum
+  subdivisionUpperConeHomotopy
+  subdivisionUpperConeLoop
+  subdivisionUpperConeMap
+  subdivisionUpperConeMap_based
+  subdivisionUpperConeTriangle_sides
+  subdivisionUpperNegativeBasedTriangle
+  subdivisionUpperNegativeBasedTriangle_loop_apply
+  subdivisionUpperNegativeLoop
+  subdivisionUpperNegativeLoop_eq_basedTriangleLoop
+  subdivisionUpperNegativeMap
+  subdivisionUpperNegativeMap_based
+  subdivisionUpperNegativeReversedLoop
+  subdivisionUpperNegativeReversedLoop_eq_symmAt
+  subdivisionUpperNegativeReversedMap
+  subdivisionUpperNegativeReversedMap_based
+  subdivisionUpperNegativeSquareTriangle_based
+  subdivisionUpperOrientationHomotopy
+  subdivisionUpperOrientation_additiveClass
+  subdivisionUpperOrientation_class
+  subdivisionUpperOrientation_homotopic
+  subdivisionUpperOrientation_sides
+  subdivisionUpperPositiveBasedTriangle
+  subdivisionUpperPositiveBasedTriangle_class_eq_neg
+  subdivisionUpperPositiveSquareTriangle
+  subdivisionUpperPositiveSquareTriangle_based
+  subdivisionUpperPositiveSquareTriangle_one
+  subdivisionUpperPositiveSquareTriangle_zero
+  subdivisionUpperProductCone_sides
+  subdivisionUpperProductLoop
+  subdivisionUpperProductMap
+  subdivisionUpperProductMap_based
+  subdivisionUpperTriangleHomotopy
+  subdivisionUpperTriangleLoop
+  subdivisionUpperTriangleLoop_eq_basedTriangleLoop
+  subdivisionUpperTriangleMap
+  subdivisionUpperTriangleMap_based
+  subdivisionWarpCoordinate
+  subdivisionWarpCoordinate_apply
+  subdivisionWarpCoordinate_of_half_le
+  subdivisionWarpCoordinate_of_half_lt
+  subdivisionWarpCoordinate_of_le_half
+  subdivisionWarpCoordinate_one
+  subdivisionWarpCoordinate_zero
+  subdivisionWarpHomotopy
+  subdivisionWarpLoop
+  subdivisionWarpLoop_eq_transAt
+  subdivisionWarpMap
+  subdivisionWarpMap_based
+  subdivisionWarpMap_sides
+  subdivision_additiveClass
+  subdivision_basedTriangleClass_sub
+  subdivision_basedTriangleClass_sum
+  subdivision_class
+  subdivision_eq_sub_of_eq_add
+  subdivision_homotopic
+  subdivision_toLoop_transAt
+  subdivision_transAt_homotopic
+  tetrahedronEdgeStraighteningHomotopy
+  tetrahedronEdgeStraighteningHomotopy_face
+  tetrahedronEdgeStraighteningHomotopy_zero
+  tetrahedronFillingsHomotopy
+  tetrahedronFillings_class
+  tetrahedronFillings_homotopic
+  tetrahedronLowerLoop_eq_face
+  tetrahedronOneSkeleton
+  tetrahedronQuadrilateralA
+  tetrahedronQuadrilateralA_boundary
+  tetrahedronQuadrilateralA_diagonal
+  tetrahedronQuadrilateralA_lower
+  tetrahedronQuadrilateralA_upper
+  tetrahedronQuadrilateralB
+  tetrahedronQuadrilateralLoop
+  tetrahedronQuadrilateralLoop_diagonal
+  tetrahedronQuadrilateral_perimeter
+  tetrahedronQuarterIndex
+  tetrahedronQuarterShift
+  tetrahedronQuarterShift_face_one
+  tetrahedronQuarterShift_face_three
+  tetrahedronQuarterShift_index
+  tetrahedronQuarterShift_oneSkeleton
+  tetrahedronShiftedLowerLoop_eq_face
+  tetrahedronShiftedQuadrilateralLoop
+  tetrahedronShiftedQuadrilateralLoop_diagonal
+  tetrahedronShiftedUpperLoop_eq_face
+  tetrahedronSimplexBlend
+  tetrahedronSimplexBlendMap
+  tetrahedronSimplexBlend_one
+  tetrahedronSimplexBlend_self
+  tetrahedronSimplexBlend_zero
+  tetrahedronSimplexBlend_zero_coordinate
+  tetrahedronUpperLoop_eq_face
+  timeSlice
+  timeSlice_face
+  triangleBoundary
+  triangleClassOperator
+  triangleClassOperator_boundary
+  triangleClassOperator_simplex
+  triangleClassOperator_squareChain
+  triangleCubeQuotient
+  triangleCubeQuotient_boundary
+  triangleCyclicPermutation
+  triangleCyclicPermutation_boundary
+  triangleEdgeStraighteningHomotopy
+  triangleEdgeStraighteningHomotopy_face
+  triangleEdgeStraighteningHomotopy_one_boundary
+  triangleEdgeStraighteningHomotopy_one_face
+  triangleEdgeStraighteningHomotopy_zero
+  triangleProperty_of_face
+  triangleQuotient
+  triangleQuotient_lowerProductTriangle
+  triangleQuotient_one
+  triangleQuotient_perimeter_of_le
+  triangleQuotient_two
+  triangleQuotient_upperProductTriangle_boundary
+  triangleQuotient_zero
+  upperProductTriangle
+  upperProductTriangle_fst
+  upperProductTriangle_snd
+  upperSquareTriangle
+  upperSquareTriangle_one
+  upperSquareTriangle_outerFace
+  upperSquareTriangle_quotient
+  upperSquareTriangle_verticesBased
+  upperSquareTriangle_zero
+  vertexBoundaryHomotopy
+  vertexBoundaryHomotopy_face
+  vertexBoundaryHomotopy_zero
+  vertexHomotopy
+  vertexHomotopy_const
+  vertexHomotopy_one
+  vertexHomotopy_zero
+  vertexInitialData
+  vertexNormalizedSimplex
+  vertexNormalizedSimplex_face
+  vertexNormalizedSimplex_of_verticesBased
+  vertexNormalizedSimplex_verticesBased
+  vertexNormalizedTwoCycle
+  vertexNormalizedTwoCycle_class
+  vertexStepHomotopy
+  vertexStepHomotopy_face
+  vertexStepHomotopy_faceCompatible
+  vertexStepHomotopy_face_apply
+  vertexStepHomotopy_of_not_verticesBased
+  vertexStepHomotopy_of_verticesBased
+  vertexStepHomotopy_one_verticesBased
+  vertexStepHomotopy_zero
+  vertexStraighteningData
+  vertexStraighteningHomotopy
+  vertexStraighteningHomotopy_const
+  vertexStraighteningHomotopy_face
+  vertexStraighteningHomotopy_of_verticesBased
+  vertexStraighteningHomotopy_one_verticesBased
+  vertexStraighteningHomotopy_timeSlice_face
+  vertexStraighteningHomotopy_timeSlice_of_verticesBased
+  vertexStraighteningHomotopy_timeSlice_zero
+  vertexStraighteningHomotopy_zero
+  verticesBased_const
+  verticesBased_zero_iff
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.BasedTetrahedron
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.BasedTetrahedron (
+  ofFaces
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.BasedTetrahedron
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.SubdivisionSameSide
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSameSide (
+  casesOn
+  diagonal
+  one
+  rec
+  recOn
+  zero
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.SubdivisionSameSide
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.VertexHomotopyData
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData (
+  casesOn
+  ctorIdx
+  face_compatible
+  homotopy
+  mk
+  next
+  noConfusion
+  noConfusionType
+  of_verticesBased
+  one_verticesBased
+  rec
+  recOn
+  zero
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.VertexHomotopyData
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.VertexHomotopyData.mk
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.mk (
+  inj
+  injEq
+  noConfusion
+  sizeOf_spec
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.VertexHomotopyData.mk
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.VerticesBased
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.VerticesBased (
+  face
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.VerticesBased
+
+namespace Mathoverflow1973.SecondHurewicz.SimplyConnected.vertexStraighteningData
+export Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningData (
+  match_1
+)
+end Mathoverflow1973.SecondHurewicz.SimplyConnected.vertexStraighteningData
+
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.basedTriangleClass.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.basedTriangleClass.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.chosenBasePath.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.chosenBasePath.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.chosenNullHomotopy.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.chosenNullHomotopy.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.edgeNullHomotopy.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.extendBoundaryHomotopy.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.extendBoundaryHomotopy.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.lowerSquareTriangle.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.normalizedTetrahedron.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedron.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.normalizedTriangle.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangle.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.normalizedTriangleCycleOperator.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.normalizedTwoChain.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoChain.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.rotationBlend.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationBlend.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.rotationCentered.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.rotationDenominator.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationDenominator.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.rotationNormalized.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.rotationVector.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationVector.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.secondHomologyDesc.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.simplexBoundary.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.simplexPrism.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.simplexPrism.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionBlend.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerBasedTriangle.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerBasedTriangle.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerProductLoop.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductLoop.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerProductLoop.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductLoop.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerTriangleLoop.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleLoop.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionPullbackLoop.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionPullbackLoop.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionSubMin.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperNegativeBasedTriangle.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeBasedTriangle.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperNegativeLoop.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeLoop.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperPositiveBasedTriangle.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveBasedTriangle.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperProductLoop.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductLoop.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperProductLoop.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductLoop.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperTriangleLoop.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleLoop.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.triangleClassOperator.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.triangleEdgeStraighteningHomotopy.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy.congr_simp
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.upperSquareTriangle.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.vertexStepHomotopy.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy.eq_1
+alias Mathoverflow1973.SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy.congr_simp := Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy.congr_simp
+alias Mathoverflow1973.SecondHurewicz.fundamentalSquareChain.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.fundamentalSquareChain.eq_1
+alias Mathoverflow1973.SecondHurewicz.intervalChain.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.intervalChain.eq_1
+alias Mathoverflow1973.SecondHurewicz.productSquareChain.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.productSquareChain.eq_1
+alias Mathoverflow1973.SecondHurewicz.squareChain.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.squareChain.eq_1
+alias Mathoverflow1973.SecondHurewicz.squareCoordinates.eq_1 := Mathoverflow1973.Hurewicz.DegreeTwo.squareCoordinates.eq_1

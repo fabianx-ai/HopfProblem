@@ -201,7 +201,7 @@ theorem Hurewicz.SimplexGeometry.simplexQuotient_last {n : ℕ} (u : Fin n → (
 barycentric coordinate: it lies on the simplex boundary. -/
 theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary_of_zero {n : ℕ}
     (u : Fin n → (unitInterval)) (i : Fin n) (hi : u i = 0) :
-    simplexQuotient n u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    simplexQuotient n u ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   have hp : prefixMinimum u n = 0 :=
     le_antisymm (hi ▸ prefixMinimum_le_coordinate u n i i.isLt) bot_le
   exact ⟨Fin.last n, by rw [simplexQuotient_last, hp]; rfl⟩
@@ -210,7 +210,7 @@ theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary_of_zero {n : ℕ}
 vanishes and `simplexQuotient n u` lies on the simplex boundary. -/
 theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary_of_one {n : ℕ}
     (u : Fin n → (unitInterval)) (i : Fin n) (hi : u i = 1) :
-    simplexQuotient n u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    simplexQuotient n u ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   refine ⟨i.castSucc, ?_⟩
   rw [simplexQuotient_castSucc, prefixMinimum_succ u i.val i.isLt]
   change
@@ -221,7 +221,7 @@ theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary_of_one {n : ℕ}
 /-- The simplex quotient sends the cube boundary into the simplex boundary. -/
 theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary {n : ℕ}
     (u : Fin n → (unitInterval)) (hu : u ∈ Cube.boundary (Fin n)) :
-    simplexQuotient n u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    simplexQuotient n u ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   obtain ⟨i, hi | hi⟩ := hu
   · exact simplexQuotient_boundary_of_zero u i hi
   · exact simplexQuotient_boundary_of_one u i hi
@@ -231,7 +231,7 @@ boundary to `x`. -/
 def Hurewicz.SimplexGeometry.BasedSimplex (n : ℕ) {X : Type*} [TopologicalSpace X]
     (x : X) :=
   { τ : C(SingularChains.Simplex n, X) //
-    ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, τ s = x }
+    ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n, τ s = x }
 
 /-- The based cube map `GenLoop (Fin n) X x` obtained from a based simplex `τ` by
 precomposing with the simplex quotient. -/
@@ -317,7 +317,7 @@ theorem Hurewicz.SimplexGeometry.simplexQuotient_cubeSimplex_refl (n : ℕ) :
 point lies on the simplex boundary. -/
 theorem Hurewicz.SimplexGeometry.simplexQuotient_boundary_of_coordinate_le {n : ℕ}
     (u : Fin n → (unitInterval)) (i j : Fin n) (hij : i < j) (hu : u i ≤ u j) :
-    simplexQuotient n u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    simplexQuotient n u ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   refine ⟨j.castSucc, ?_⟩
   rw [simplexQuotient_castSucc, prefixMinimum_succ u j.val j.isLt]
   have hp : prefixMinimum u j.val ≤ u j := (prefixMinimum_le_coordinate u j.val i hij).trans hu
@@ -349,7 +349,7 @@ boundary. -/
 theorem Hurewicz.SimplexGeometry.simplexQuotient_cubeSimplex_boundary {n : ℕ}
     (e : Equiv.Perm (Fin n)) (he : e ≠ Equiv.refl (Fin n)) (s : SingularChains.Simplex n) :
     simplexQuotient n (Hurewicz.CubeTriangulation.cubeSimplex e s) ∈
-      SecondHurewicz.SimplyConnected.simplexBoundary n := by
+      Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   obtain ⟨i, j, hij, hu⟩ := cubeSimplex_coordinate_inversion e he s
   exact simplexQuotient_boundary_of_coordinate_le _ i j hij hu
 
@@ -440,7 +440,7 @@ def Hurewicz.SimplexGeometry.simplexTwoBoundary (n : ℕ) : Set (SingularChains.
 /-- Each face map lands in the simplex boundary (the face's `i`-th coordinate is
 `0`). -/
 theorem Hurewicz.SimplexGeometry.simplexFace_simplexBoundary (n : ℕ) (i : Fin (n + 2))
-    (s : SingularChains.Simplex n) (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n) :
+    (s : SingularChains.Simplex n) (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) :
     SingularChains.simplexFace n i s ∈ simplexTwoBoundary (n + 1) := by
   obtain ⟨j, hj⟩ := hs
   exact
@@ -529,15 +529,15 @@ def Hurewicz.SimplexGeometry.BasedSimplexBoundary.ofFaces {X : Type*} [Topologic
     {x : X} {n : ℕ} (τ : C(SingularChains.Simplex (n + 1), X))
     (h :
       ∀ i : Fin (n + 2),
-        ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n,
+        ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n,
           (τ.comp (SingularChains.simplexFace n i)) s = x) :
     Hurewicz.SimplexGeometry.BasedSimplexBoundary (n + 1) x :=
   ⟨τ, by
     intro s hs
     obtain ⟨i, j, hij, hi, hj⟩ := hs
     obtain ⟨k, hk⟩ := Fin.exists_succAbove_eq hij.symm
-    let t := SecondHurewicz.SimplyConnected.simplexFaceInverse n i ⟨s, hi⟩
-    have ht : t ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    let t := Hurewicz.DegreeTwo.SimplyConnected.simplexFaceInverse n i ⟨s, hi⟩
+    have ht : t ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
       refine ⟨k, ?_⟩
       change s (i.succAbove k) = 0
       rw [hk]
@@ -545,7 +545,7 @@ def Hurewicz.SimplexGeometry.BasedSimplexBoundary.ofFaces {X : Type*} [Topologic
     have he := h i t ht
     change τ (SingularChains.simplexFace n i t) = x at he
     rw [show SingularChains.simplexFace n i t = s from
-        SecondHurewicz.SimplyConnected.simplexFace_inverse n i ⟨s, hi⟩] at he
+        Hurewicz.DegreeTwo.SimplyConnected.simplexFace_inverse n i ⟨s, hi⟩] at he
     exact he⟩
 
 /-! ### The native class and cube reparametrization -/
@@ -568,10 +568,10 @@ def Hurewicz.NativeSubdivision.nativeCubeQuarterTurnHomotopyMap {N : Type*} [Dec
   toFun z
     k :=
     if k = i then
-      SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap (z.1, nativeCubePair i j z.2) 0
+      Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap (z.1, nativeCubePair i j z.2) 0
     else
       if k = j then
-        SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap (z.1, nativeCubePair i j z.2) 1
+        Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap (z.1, nativeCubePair i j z.2) 1
       else z.2 k
   continuous_toFun := by
     apply continuous_pi
@@ -580,13 +580,13 @@ def Hurewicz.NativeSubdivision.nativeCubeQuarterTurnHomotopyMap {N : Type*} [Dec
     · simp only [if_pos hi]
       exact
         (continuous_apply (0 : Fin 2)).comp
-          (SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap.continuous.comp
+          (Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap.continuous.comp
             (continuous_fst.prodMk ((nativeCubePair i j).continuous.comp continuous_snd)))
     · by_cases hj : k = j
       · simp only [if_neg hi, if_pos hj]
         exact
           (continuous_apply (1 : Fin 2)).comp
-            (SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap.continuous.comp
+            (Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap.continuous.comp
               (continuous_fst.prodMk ((nativeCubePair i j).continuous.comp continuous_snd)))
       · simp only [if_neg hi, if_neg hj]
         exact (continuous_apply k).comp continuous_snd
@@ -599,13 +599,13 @@ theorem Hurewicz.NativeSubdivision.nativeCubeQuarterTurnHomotopyMap_zero {N : Ty
   funext k
   change
     (if k = i then
-        SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap (0, nativeCubePair i j u) 0
+        Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap (0, nativeCubePair i j u) 0
       else
         if k = j then
-          SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap (0, nativeCubePair i j u) 1
+          Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap (0, nativeCubePair i j u) 1
         else u k) =
       u k
-  simp only [SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_zero]
+  simp only [Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap_zero]
   change (if k = i then u i else if k = j then u j else u k) = u k
   split_ifs with hi hj <;> simp_all
 
@@ -625,7 +625,7 @@ theorem Hurewicz.NativeSubdivision.nativeCubeQuarterTurnHomotopyMap_boundary {N 
   have hp (h : nativeCubePair i j u ∈ Cube.boundary (Fin 2)) :
     nativeCubeQuarterTurnHomotopyMap i j (t, u) ∈ Cube.boundary N := by
     obtain ⟨k, hk⟩ :=
-      SecondHurewicz.SimplyConnected.quarterTurnHomotopyMap_boundary t (nativeCubePair i j u) h
+      Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap_boundary t (nativeCubePair i j u) h
     fin_cases k
     · exact ⟨i, by simpa [nativeCubeQuarterTurnHomotopyMap] using hk⟩
     · exact ⟨j, by simpa [nativeCubeQuarterTurnHomotopyMap, hij.symm] using hk⟩
@@ -963,7 +963,7 @@ a based simplex. -/
 theorem Hurewicz.NativeSubdivision.nativeCubeSimplex_based {X : Type*} [TopologicalSpace X]
     {x : X} {n : ℕ} (p : GenLoop (Fin n) X x) (hp : NativeCubeInternalBased p)
     (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n)
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n) :
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) :
     p (Hurewicz.CubeTriangulation.cubeSimplex e s) = x := by
   cases n with
   | zero =>

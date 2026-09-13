@@ -978,7 +978,7 @@ def Hurewicz.cubeRemainingCoordinates (n : ℕ) :
   continuous_toFun := by fun_prop
 
 /-- Uncurrying a cube: the continuous map `I × (Fin n → I) → Fin (n + 1) → I` inserting the
-first coordinate at position `0`. General-`n` form of `SecondHurewicz.squareCoordinates`. -/
+first coordinate at position `0`. General-`n` form of `Hurewicz.DegreeTwo.squareCoordinates`. -/
 def Hurewicz.cubeCoordinates (n : ℕ) :
     C((unitInterval) × (Fin n → (unitInterval)), Fin (n + 1) → (unitInterval)) where
   toFun z := Cube.insertAt (0 : Fin (n + 1)) (z.1, Hurewicz.cubeRemainingCoordinates n z.2)
@@ -1024,7 +1024,7 @@ simplex. -/
 theorem SingularChains.inducedChain_const {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (y : Y) (n : ℕ) (a : SingularChains.Chains X n) :
     SingularChains.inducedChain (ContinuousMap.const X y) n a =
-      SecondHurewicz.SimplyConnected.chainAugmentation X n a •
+      Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X n a •
         SingularChains.simplexChain Y n (ContinuousMap.const (SingularChains.Simplex n) y) := by
   let m : SingularChains.Chains Y n :=
     SingularChains.simplexChain Y n (ContinuousMap.const (SingularChains.Simplex n) y)
@@ -1041,7 +1041,7 @@ theorem SingularChains.inducedChain_const {X Y : Type} [TopologicalSpace X] [Top
     apply SingularChains.chainMap_ext X n
     intro σ
     simp [SingularChains.chainLift_simplex]
-  have hsub := SecondHurewicz.SimplyConnected.chainLift_sub_constant X n
+  have hsub := Hurewicz.DegreeTwo.SimplyConnected.chainLift_sub_constant X n
     (fun _ => m) m a
   rw [hf]
   simpa [hz, sub_self] using (eq_sub_iff_add_eq.mp hsub).symm
@@ -1080,11 +1080,11 @@ def Hurewicz.fundamentalCubeChain :
   | 0 => SingularChains.pointChain 0
   | 1 => SingularChains.inducedChain
       ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval), Fin 1 →
-        (unitInterval))) 1 SecondHurewicz.intervalChain
+        (unitInterval))) 1 Hurewicz.DegreeTwo.intervalChain
   | n + 2 =>
     SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
       (SingularHomology.crossProductEdge (unitInterval) (Fin (n + 1) → (unitInterval))
-        (n + 1) SecondHurewicz.intervalChain (Hurewicz.fundamentalCubeChain (n + 1)))
+        (n + 1) Hurewicz.DegreeTwo.intervalChain (Hurewicz.fundamentalCubeChain (n + 1)))
 
 /-- The cube chain of a based `n`-cube: the image of the fundamental chain. -/
 def Hurewicz.cubeChain {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
@@ -1098,7 +1098,7 @@ theorem Hurewicz.fundamentalCubeChain_succ (n : ℕ) :
     Hurewicz.fundamentalCubeChain (n + 2) =
       SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
         (SingularHomology.crossProductEdge (unitInterval)
-          (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+          (Fin (n + 1) → (unitInterval)) (n + 1) Hurewicz.DegreeTwo.intervalChain
           (Hurewicz.fundamentalCubeChain (n + 1))) :=
   rfl
 
@@ -1111,7 +1111,7 @@ theorem Hurewicz.cubeChain_succ {n : ℕ} {X : Type} [TopologicalSpace X] {x : X
     Hurewicz.cubeChain p =
       (SingularChains.inducedChain (Hurewicz.CubeSubdivision.evalLeft X) ((n + 1) + 1))
         ((SingularHomology.crossProductEdge (unitInterval) C((unitInterval), X)
-            (n + 1)) SecondHurewicz.intervalChain
+            (n + 1)) Hurewicz.DegreeTwo.intervalChain
           (Hurewicz.cubeChain (Hurewicz.curryLoop p))) := by
   unfold Hurewicz.cubeChain
   show (SingularChains.inducedChain p.val (n + 2) (Hurewicz.fundamentalCubeChain (n + 2))) =
@@ -1150,7 +1150,7 @@ theorem Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex {n : ℕ} {X : 
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin n)) :
     (SingularChains.inducedChain (Hurewicz.CubeSubdivision.evalLeft X) (n + 1))
         ((SingularHomology.crossProductEdge (unitInterval) C((unitInterval), X) n)
-          SecondHurewicz.intervalChain
+          Hurewicz.DegreeTwo.intervalChain
           (SingularChains.simplexChain C((unitInterval), X) n
             ((Hurewicz.curryLoop p).val.comp
               (Hurewicz.CubeTriangulation.cubeSimplex e)))) =
@@ -1158,7 +1158,7 @@ theorem Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex {n : ℕ} {X : 
         ((SingularHomology.formalEdgeCrossProduct n)
           (SingularMayerVietoris.formalSimplex (fun i : Fin 2 => i))
           (SingularMayerVietoris.formalSimplex (fun j : Fin (n + 1) => j))) := by
-  rw [SecondHurewicz.intervalChain, SingularChains.pathChain,
+  rw [Hurewicz.DegreeTwo.intervalChain, SingularChains.pathChain,
     SingularHomology.crossProductEdge_simplex,
     Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct]
   rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
@@ -1220,8 +1220,8 @@ theorem Hurewicz.cubeChain_one {X : Type} [TopologicalSpace X] {x : X}
   rw [show Hurewicz.fundamentalCubeChain 1 =
       SingularChains.inducedChain
         ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-          Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain from rfl]
-  rw [SecondHurewicz.intervalChain, SingularChains.pathChain, SingularChains.inducedChain_simplex,
+          Fin 1 → (unitInterval))) 1 Hurewicz.DegreeTwo.intervalChain from rfl]
+  rw [Hurewicz.DegreeTwo.intervalChain, SingularChains.pathChain, SingularChains.inducedChain_simplex,
     SingularChains.inducedChain_simplex]
   congr 1
   rw [Hurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one]
@@ -1233,42 +1233,42 @@ theorem Hurewicz.cubeCoordinates_one_comp_eq_squareCoordinates :
         ((ContinuousMap.id (unitInterval)).prodMap
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
             Fin 1 → (unitInterval)))) =
-      SecondHurewicz.squareCoordinates := by
+      Hurewicz.DegreeTwo.squareCoordinates := by
   apply ContinuousMap.ext
   intro z
   funext i
   refine Fin.cases ?_ (fun j => ?_) i
-  · show Hurewicz.cubeCoordinates 1 _ 0 = SecondHurewicz.squareCoordinates z 0
-    rw [Hurewicz.cubeCoordinates_zero, SecondHurewicz.squareCoordinates_zero]
+  · show Hurewicz.cubeCoordinates 1 _ 0 = Hurewicz.DegreeTwo.squareCoordinates z 0
+    rw [Hurewicz.cubeCoordinates_zero, Hurewicz.DegreeTwo.squareCoordinates_zero]
     rfl
   · have hj : j = 0 := Subsingleton.elim _ _
     subst hj
-    show Hurewicz.cubeCoordinates 1 _ (0 : Fin 1).succ = SecondHurewicz.squareCoordinates z 1
-    rw [Hurewicz.cubeCoordinates_succ, SecondHurewicz.squareCoordinates_one]
+    show Hurewicz.cubeCoordinates 1 _ (0 : Fin 1).succ = Hurewicz.DegreeTwo.squareCoordinates z 1
+    rw [Hurewicz.cubeCoordinates_succ, Hurewicz.DegreeTwo.squareCoordinates_one]
     rfl
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The fundamental chain of the `2`-cube is the fundamental square chain. -/
 theorem Hurewicz.fundamentalCubeChain_two :
-    Hurewicz.fundamentalCubeChain 2 = SecondHurewicz.fundamentalSquareChain := by
+    Hurewicz.fundamentalCubeChain 2 = Hurewicz.DegreeTwo.fundamentalSquareChain := by
   have key : (SingularHomology.crossProductEdge (unitInterval)
-        (Fin 1 → (unitInterval)) 1) SecondHurewicz.intervalChain
+        (Fin 1 → (unitInterval)) 1) Hurewicz.DegreeTwo.intervalChain
         ((SingularChains.inducedChain
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-            Fin 1 → (unitInterval))) 1) SecondHurewicz.intervalChain) =
+            Fin 1 → (unitInterval))) 1) Hurewicz.DegreeTwo.intervalChain) =
       (SingularChains.inducedChain
         ((ContinuousMap.id (unitInterval)).prodMap
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-            Fin 1 → (unitInterval)))) 2) SecondHurewicz.productSquareChain := by
-    rw [SecondHurewicz.productSquareChain,
+            Fin 1 → (unitInterval)))) 2) Hurewicz.DegreeTwo.productSquareChain := by
+    rw [Hurewicz.DegreeTwo.productSquareChain,
       SingularHomology.crossProductEdge_natural, SingularChains.inducedChain_id,
       LinearMap.id_apply]
   rw [Hurewicz.fundamentalCubeChain_succ 0,
     show Hurewicz.fundamentalCubeChain (0 + 1) =
         SingularChains.inducedChain
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-            Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain from rfl,
+            Fin 1 → (unitInterval))) 1 Hurewicz.DegreeTwo.intervalChain from rfl,
     key, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
     Hurewicz.cubeCoordinates_one_comp_eq_squareCoordinates]
   rfl
@@ -1278,10 +1278,10 @@ attribute [local instance] SingularHomology.integerLinearMapModule
 /-- The cube chain in degree `2` is the square chain. -/
 theorem Hurewicz.cubeChain_eq_squareChain {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) :
-    Hurewicz.cubeChain p = SecondHurewicz.squareChain p := by
+    Hurewicz.cubeChain p = Hurewicz.DegreeTwo.squareChain p := by
   unfold Hurewicz.cubeChain
-  rw [Hurewicz.fundamentalCubeChain_two, SecondHurewicz.squareChain,
-    SecondHurewicz.suspensionOne_toLoop, SecondHurewicz.fundamentalSquareChain,
+  rw [Hurewicz.fundamentalCubeChain_two, Hurewicz.DegreeTwo.squareChain,
+    Hurewicz.DegreeTwo.suspensionOne_toLoop, Hurewicz.DegreeTwo.fundamentalSquareChain,
     ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
   rfl
 
@@ -1366,10 +1366,10 @@ attribute [local instance] SingularHomology.integerLinearMapModule
 /-- The identity interval chain is the sum of the two half-interval chains, up to the
 boundary of the concatenation 2-simplex. -/
 theorem Hurewicz.intervalChain_split :
-    SingularChains.inducedChain Hurewicz.intervalScaleLeft 1 SecondHurewicz.intervalChain +
+    SingularChains.inducedChain Hurewicz.intervalScaleLeft 1 Hurewicz.DegreeTwo.intervalChain +
         SingularChains.inducedChain Hurewicz.intervalScaleRight 1
-          SecondHurewicz.intervalChain -
-      SecondHurewicz.intervalChain =
+          Hurewicz.DegreeTwo.intervalChain -
+      Hurewicz.DegreeTwo.intervalChain =
       ((SingularChains.singularComplex (unitInterval)).d 2 1).hom
         (SingularChains.concatChain Hurewicz.intervalPathLeft
           Hurewicz.intervalPathRight) := by
@@ -1378,8 +1378,8 @@ theorem Hurewicz.intervalChain_split :
       Hurewicz.intervalPathRight
   rw [show ((SingularChains.singularComplex (unitInterval)).d 2 1).hom = SingularChains.boundaryTwo
       (unitInterval) from rfl, h, Hurewicz.intervalPathLeft_trans_intervalPathRight,
-    ← SecondHurewicz.induced_intervalChain Hurewicz.intervalPathLeft,
-    ← SecondHurewicz.induced_intervalChain Hurewicz.intervalPathRight]
+    ← Hurewicz.DegreeTwo.induced_intervalChain Hurewicz.intervalPathLeft,
+    ← Hurewicz.DegreeTwo.induced_intervalChain Hurewicz.intervalPathRight]
   simp only [Hurewicz.intervalPathLeft, Hurewicz.intervalPathRight]
   abel
 
@@ -1438,13 +1438,13 @@ theorem Hurewicz.cubeScale_zero_sum_fundamentalCubeChain (n : ℕ) :
       SingularChains.inducedChain (Hurewicz.cubeScaleLeft (0 : Fin (n + 2))) (n + 2)
           (SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
             (SingularHomology.crossProductEdge (unitInterval)
-              (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+              (Fin (n + 1) → (unitInterval)) (n + 1) Hurewicz.DegreeTwo.intervalChain
               (Hurewicz.fundamentalCubeChain (n + 1)))) =
         SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
           (SingularHomology.crossProductEdge (unitInterval)
             (Fin (n + 1) → (unitInterval)) (n + 1)
             (SingularChains.inducedChain Hurewicz.intervalScaleLeft 1
-              SecondHurewicz.intervalChain)
+              Hurewicz.DegreeTwo.intervalChain)
             (Hurewicz.fundamentalCubeChain (n + 1))) := by
     rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
       Hurewicz.cubeScaleLeft_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
@@ -1454,13 +1454,13 @@ theorem Hurewicz.cubeScale_zero_sum_fundamentalCubeChain (n : ℕ) :
       SingularChains.inducedChain (Hurewicz.cubeScaleRight (0 : Fin (n + 2))) (n + 2)
           (SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
             (SingularHomology.crossProductEdge (unitInterval)
-              (Fin (n + 1) → (unitInterval)) (n + 1) SecondHurewicz.intervalChain
+              (Fin (n + 1) → (unitInterval)) (n + 1) Hurewicz.DegreeTwo.intervalChain
               (Hurewicz.fundamentalCubeChain (n + 1)))) =
         SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
           (SingularHomology.crossProductEdge (unitInterval)
             (Fin (n + 1) → (unitInterval)) (n + 1)
             (SingularChains.inducedChain Hurewicz.intervalScaleRight 1
-              SecondHurewicz.intervalChain)
+              Hurewicz.DegreeTwo.intervalChain)
             (Hurewicz.fundamentalCubeChain (n + 1))) := by
     rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
       Hurewicz.cubeScaleRight_zero_comp_cubeCoordinates, SingularChains.inducedChain_comp,
@@ -1691,9 +1691,9 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
       (Hurewicz.fundamentalCubeChain 1) =
         SingularChains.inducedChain
           ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-            Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain :=
+            Fin 1 → (unitInterval))) 1 Hurewicz.DegreeTwo.intervalChain :=
     rfl
-  rw [hfun, ← SingularChains.inducedChain_boundary, SecondHurewicz.intervalChain_boundary, map_sub]
+  rw [hfun, ← SingularChains.inducedChain_boundary, Hurewicz.DegreeTwo.intervalChain_boundary, map_sub]
   have hnat (c : SingularChains.Chains (unitInterval) 0) :
       SingularHomology.crossProductTriangle (unitInterval)
             (Fin 1 → (unitInterval)) 0
@@ -1718,7 +1718,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
     simpa [SingularChains.inducedChain_id] using h.symm
   rw [map_sub, hnat (SingularChains.pointChain 1), hnat (SingularChains.pointChain 0),
     ← map_sub]
-  simp only [SecondHurewicz.crossProductTriangle_point_right]
+  simp only [Hurewicz.DegreeTwo.crossProductTriangle_point_right]
   have hx (y : (unitInterval))
       (hy : ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm y) ∈ Cube.boundary (Fin 1)) :
       ((GenLoop.transAt (0 : Fin 2) p q).val.comp (Hurewicz.cubeCoordinates 1)).comp
@@ -1804,9 +1804,9 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
         Hurewicz.fundamentalCubeChain 1 =
           SingularChains.inducedChain
             ((Homeomorph.funUnique (Fin 1) (unitInterval)).symm : C((unitInterval),
-              Fin 1 → (unitInterval))) 1 SecondHurewicz.intervalChain :=
+              Fin 1 → (unitInterval))) 1 Hurewicz.DegreeTwo.intervalChain :=
       rfl
-    rw [hfun, ← SingularChains.inducedChain_boundary, SecondHurewicz.intervalChain_boundary,
+    rw [hfun, ← SingularChains.inducedChain_boundary, Hurewicz.DegreeTwo.intervalChain_boundary,
       map_sub, SingularChains.inducedChain_pointChain, SingularChains.inducedChain_pointChain]
     apply Submodule.sub_mem
     · apply SingularChains.pointChain_mem_supported
@@ -1818,14 +1818,14 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
   | n + 1 => by
     have ih := Hurewicz.fundamentalCubeChain_boundary_supported n
     rw [Hurewicz.fundamentalCubeChain_succ, ← SingularChains.inducedChain_boundary,
-      SingularHomology.crossProductEdge_boundary n SecondHurewicz.intervalChain
+      SingularHomology.crossProductEdge_boundary n Hurewicz.DegreeTwo.intervalChain
         (Hurewicz.fundamentalCubeChain (n + 1)), map_sub]
     apply Submodule.sub_mem
     · have hd : ((SingularChains.singularComplex (unitInterval)).d 1 0).hom
-          SecondHurewicz.intervalChain =
+          Hurewicz.DegreeTwo.intervalChain =
         SingularChains.pointChain (1 : (unitInterval)) -
           SingularChains.pointChain (0 : (unitInterval)) :=
-        SecondHurewicz.intervalChain_boundary
+        Hurewicz.DegreeTwo.intervalChain_boundary
       rw [hd, map_sub, LinearMap.sub_apply, SingularHomology.crossProductZeroLeft_pointChain,
         SingularHomology.crossProductZeroLeft_pointChain, map_sub]
       apply Submodule.sub_mem
@@ -1841,14 +1841,14 @@ theorem Hurewicz.fundamentalCubeChain_boundary_supported :
           (Cube.boundary (Fin (n + 1))) n] at ih
       obtain ⟨c, hc⟩ := ih
       rw [← hc]
-      have hinterval : SecondHurewicz.intervalChain =
+      have hinterval : Hurewicz.DegreeTwo.intervalChain =
           SingularChains.inducedChain (ContinuousMap.id (unitInterval)) 1
-            SecondHurewicz.intervalChain := by
+            Hurewicz.DegreeTwo.intervalChain := by
         rw [SingularChains.inducedChain_id, LinearMap.id_apply]
       rw [hinterval, ← SingularHomology.crossProductEdge_natural
           (ContinuousMap.id (unitInterval))
           (SingularMayerVietoris.subtypeInclusion (Cube.boundary (Fin (n + 1)))) n
-          SecondHurewicz.intervalChain c, ← LinearMap.comp_apply,
+          Hurewicz.DegreeTwo.intervalChain c, ← LinearMap.comp_apply,
         ← SingularChains.inducedChain_comp]
       apply SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo
       intro z
@@ -1894,7 +1894,7 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_eq_smul {n : ℕ} {X : Type}
     apply ContinuousMap.ext
     intro z
     exact Hurewicz.transAt_cubeCoordinates_of_mem_boundary p q z.1 z.2.property
-  refine ⟨SecondHurewicz.SimplyConnected.chainAugmentation
+  refine ⟨Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation
       ((unitInterval) × Cube.boundary (Fin (n + 1))) (n + 2)
       (SingularHomology.crossProductTriangle (unitInterval)
         (Cube.boundary (Fin (n + 1))) n
@@ -1929,49 +1929,49 @@ theorem Hurewicz.boundary_const_simplex {X : Type} [TopologicalSpace X] (x : X)
 
 /-- The lower triangle of the square is the identity permutation simplex. -/
 theorem Hurewicz.lowerSquareTriangle_eq_cubeSimplex_one :
-    SecondHurewicz.SimplyConnected.lowerSquareTriangle =
+    Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle =
       Hurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2)) := by
   apply ContinuousMap.ext
   intro s
   funext i
   apply Subtype.ext
   refine Fin.cases ?_ (fun j => ?_) i
-  · show (↑(SecondHurewicz.SimplyConnected.lowerSquareTriangle s 0) : ℝ) =
+  · show (↑(Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle s 0) : ℝ) =
       ↑((Hurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2))) s
         ((1 : Equiv.Perm (Fin 2)) 0))
-    rw [SecondHurewicz.SimplyConnected.lowerSquareTriangle_zero,
+    rw [Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_zero,
       Hurewicz.CubeTriangulation.cubeSimplex_coordinate]
     simp [Fin.sum_univ_three]
   · have hj : j = 0 := Subsingleton.elim _ _
     subst hj
-    show (↑(SecondHurewicz.SimplyConnected.lowerSquareTriangle s 1) : ℝ) =
+    show (↑(Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle s 1) : ℝ) =
       ↑((Hurewicz.CubeTriangulation.cubeSimplex (1 : Equiv.Perm (Fin 2))) s
         ((1 : Equiv.Perm (Fin 2)) 1))
-    rw [SecondHurewicz.SimplyConnected.lowerSquareTriangle_one,
+    rw [Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_one,
       Hurewicz.CubeTriangulation.cubeSimplex_coordinate]
     simp [Fin.sum_univ_three]
 
 /-- The upper triangle of the square is the transposition permutation simplex. -/
 theorem Hurewicz.upperSquareTriangle_eq_cubeSimplex_swap :
-    SecondHurewicz.SimplyConnected.upperSquareTriangle =
+    Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle =
       Hurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1) := by
   apply ContinuousMap.ext
   intro s
   funext i
   apply Subtype.ext
   refine Fin.cases ?_ (fun j => ?_) i
-  · show (↑(SecondHurewicz.SimplyConnected.upperSquareTriangle s 0) : ℝ) =
+  · show (↑(Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle s 0) : ℝ) =
       ↑((Hurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1)) s
         ((Equiv.swap (0 : Fin 2) 1) 1))
-    rw [SecondHurewicz.SimplyConnected.upperSquareTriangle_zero,
+    rw [Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_zero,
       Hurewicz.CubeTriangulation.cubeSimplex_coordinate]
     simp [Fin.sum_univ_three]
   · have hj : j = 0 := Subsingleton.elim _ _
     subst hj
-    show (↑(SecondHurewicz.SimplyConnected.upperSquareTriangle s 1) : ℝ) =
+    show (↑(Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle s 1) : ℝ) =
       ↑((Hurewicz.CubeTriangulation.cubeSimplex (Equiv.swap 0 1)) s
         ((Equiv.swap (0 : Fin 2) 1) 0))
-    rw [SecondHurewicz.SimplyConnected.upperSquareTriangle_one,
+    rw [Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_one,
       Hurewicz.CubeTriangulation.cubeSimplex_coordinate]
     simp [Fin.sum_univ_three]
 
@@ -1985,13 +1985,13 @@ theorem Hurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
       Hurewicz.CubeTriangulation.cubeOrientation e •
         SingularChains.simplexChain X 2
           (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) := by
-  have hub : Hurewicz.cubeChain p = SecondHurewicz.squareChain p := by
+  have hub : Hurewicz.cubeChain p = Hurewicz.DegreeTwo.squareChain p := by
     unfold Hurewicz.cubeChain
-    rw [Hurewicz.fundamentalCubeChain_two, SecondHurewicz.squareChain,
-      SecondHurewicz.suspensionOne_toLoop, SecondHurewicz.fundamentalSquareChain,
+    rw [Hurewicz.fundamentalCubeChain_two, Hurewicz.DegreeTwo.squareChain,
+      Hurewicz.DegreeTwo.suspensionOne_toLoop, Hurewicz.DegreeTwo.fundamentalSquareChain,
       ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
     rfl
-  rw [hub, SecondHurewicz.SimplyConnected.squareChain_two_triangles,
+  rw [hub, Hurewicz.DegreeTwo.SimplyConnected.squareChain_two_triangles,
     Hurewicz.lowerSquareTriangle_eq_cubeSimplex_one,
     Hurewicz.upperSquareTriangle_eq_cubeSimplex_swap]
   have huniv : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1} := by decide

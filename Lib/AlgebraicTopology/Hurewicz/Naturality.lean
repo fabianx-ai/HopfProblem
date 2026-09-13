@@ -83,28 +83,28 @@ coordinate is the element of `Fin n` chosen by the `Nonempty` instance;
 def homotopyMap {n : ℕ} [Nonempty (Fin n)] {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) : π_ n X x →* π_ n Y (f x) where
   toFun :=
-    Quotient.map (SecondHurewicz.mapGenLoop f x)
-      (fun _ _ h => SecondHurewicz.mapGenLoop_homotopic f x h)
+    Quotient.map (Hurewicz.DegreeTwo.mapGenLoop f x)
+      (fun _ _ h => Hurewicz.DegreeTwo.mapGenLoop_homotopic f x h)
   map_one' := by
-    change (⟦SecondHurewicz.mapGenLoop f x GenLoop.const⟧ : π_ n Y (f x)) =
+    change (⟦Hurewicz.DegreeTwo.mapGenLoop f x GenLoop.const⟧ : π_ n Y (f x)) =
       ⟦GenLoop.const⟧
-    rw [SecondHurewicz.mapGenLoop_const]
+    rw [Hurewicz.DegreeTwo.mapGenLoop_const]
   map_mul' a b := by
     refine Quotient.inductionOn₂ a b fun p q => ?_
     exact
       (congrArg
-            (Quotient.map (SecondHurewicz.mapGenLoop f x)
-              (fun _ _ h => SecondHurewicz.mapGenLoop_homotopic f x h))
+            (Quotient.map (Hurewicz.DegreeTwo.mapGenLoop f x)
+              (fun _ _ h => Hurewicz.DegreeTwo.mapGenLoop_homotopic f x h))
             (HomotopyGroup.mul_spec
               (i := Classical.choice (inferInstance : Nonempty (Fin n)))
               (p := p) (q := q))).trans
         ((congrArg (fun r : GenLoop (Fin n) Y (f x) => (⟦r⟧ : π_ n Y (f x)))
-              (SecondHurewicz.mapGenLoop_transAt f x
+              (Hurewicz.DegreeTwo.mapGenLoop_transAt f x
                 (Classical.choice (inferInstance : Nonempty (Fin n))) q p)).trans
           (HomotopyGroup.mul_spec
             (i := Classical.choice (inferInstance : Nonempty (Fin n)))
-            (p := SecondHurewicz.mapGenLoop f x p)
-            (q := SecondHurewicz.mapGenLoop f x q)).symm)
+            (p := Hurewicz.DegreeTwo.mapGenLoop f x p)
+            (q := Hurewicz.DegreeTwo.mapGenLoop f x q)).symm)
 
 /-! ### Naturality of the cube chain, cycle, and homology class -/
 
@@ -113,7 +113,7 @@ equals the chain of the postcomposed cube. -/
 theorem cubeChain_natural {n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) (p : GenLoop (Fin n) X x) :
     SingularChains.inducedChain f n (Hurewicz.cubeChain p) =
-      Hurewicz.cubeChain (SecondHurewicz.mapGenLoop f x p) := by
+      Hurewicz.cubeChain (Hurewicz.DegreeTwo.mapGenLoop f x p) := by
   change SingularChains.inducedChain f n
       (SingularChains.inducedChain p.val n (fundamentalCubeChain n)) =
     SingularChains.inducedChain (f.comp p.val) n (fundamentalCubeChain n)
@@ -124,7 +124,7 @@ theorem cubeCycle_natural {m : ℕ} {X Y : Type} [TopologicalSpace X] [Topologic
     (f : C(X, Y)) (x : X) (p : GenLoop (Fin (m + 2)) X x) :
     SingularMayerVietoris.ModuleHomology.mapCycles
         (SingularChains.singularChainMap f) (m + 2) (Hurewicz.cubeCycle p) =
-      Hurewicz.cubeCycle (SecondHurewicz.mapGenLoop f x p) := by
+      Hurewicz.cubeCycle (Hurewicz.DegreeTwo.mapGenLoop f x p) := by
   apply Subtype.ext
   rw [SingularMayerVietoris.ModuleHomology.mapCycles_val, Hurewicz.cubeCycle_val,
     Hurewicz.cubeCycle_val]
@@ -134,7 +134,7 @@ theorem cubeCycle_natural {m : ℕ} {X Y : Type} [TopologicalSpace X] [Topologic
 theorem cubeHomologyClass_natural {m : ℕ} {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : GenLoop (Fin (m + 2)) X x) :
     SingularMayerVietoris.singularHomologyMap f (m + 2) (Hurewicz.cubeHomologyClass p) =
-      Hurewicz.cubeHomologyClass (SecondHurewicz.mapGenLoop f x p) := by
+      Hurewicz.cubeHomologyClass (Hurewicz.DegreeTwo.mapGenLoop f x p) := by
   change
     (HomologicalComplex.homologyMap (SingularChains.singularChainMap f) (m + 2)).hom
         (SingularMayerVietoris.ModuleHomology.cycleClass
@@ -194,8 +194,8 @@ theorem hurewiczLinearEquivOfTwoLE_natural {X Y : Type} [TopologicalSpace X]
   | zero =>
     intro a
     change SingularMayerVietoris.singularHomologyMap f 2
-        (SecondHurewicz.hurewiczMap x a) =
-      SecondHurewicz.hurewiczMap (f x) ((homotopyMap f x).toAdditive a)
+        (Hurewicz.DegreeTwo.hurewiczMap x a) =
+      Hurewicz.DegreeTwo.hurewiczMap (f x) ((homotopyMap f x).toAdditive a)
     simpa only [hurewiczMap_eq_second] using hurewiczMap_natural (m := 0) f x a
   | succ m => exact hurewiczLinearEquiv_natural f x hX hY
 

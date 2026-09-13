@@ -458,11 +458,11 @@ theorem Hurewicz.cubeHomologyClass_homotopic {m : ℕ} {X : Type} [TopologicalSp
 /-- In degree `2` the cube homology class is the square homology class. -/
 theorem Hurewicz.cubeHomologyClass_eq_squareHomologyClass {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
-    Hurewicz.cubeHomologyClass (m := 0) p = SecondHurewicz.squareHomologyClass p := by
-  unfold Hurewicz.cubeHomologyClass SecondHurewicz.squareHomologyClass
+    Hurewicz.cubeHomologyClass (m := 0) p = Hurewicz.DegreeTwo.squareHomologyClass p := by
+  unfold Hurewicz.cubeHomologyClass Hurewicz.DegreeTwo.squareHomologyClass
   apply congrArg
   apply Subtype.ext
-  change Hurewicz.cubeChain p = SecondHurewicz.squareChain p
+  change Hurewicz.cubeChain p = Hurewicz.DegreeTwo.squareChain p
   exact Hurewicz.cubeChain_eq_squareChain p
 
 /-- Concatenation along the first coordinate adds cube classes in degree `2`. -/
@@ -472,7 +472,7 @@ theorem Hurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpace X]
       Hurewicz.cubeHomologyClass (m := 0) p +
         Hurewicz.cubeHomologyClass (m := 0) q := by
   simpa only [Hurewicz.cubeHomologyClass_eq_squareHomologyClass] using
-    SecondHurewicz.squareHomologyClass_transAt p q
+    Hurewicz.DegreeTwo.squareHomologyClass_transAt p q
 
 
 /-- Concatenation along any coordinate adds cube classes in degree `2`. -/
@@ -543,8 +543,8 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
       have hodd : ¬Even (n + 3) := Nat.not_even_iff_odd.mpr hEven.add_one
       simp only [if_neg hodd, one_smul] at hbound
       have haug :=
-        congrArg (SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1)) hbound
-      simpa [map_zero, map_zsmul, SecondHurewicz.SimplyConnected.chainAugmentation_simplex]
+        congrArg (Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1)) hbound
+      simpa [map_zero, map_zsmul, Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation_simplex]
         using haug.symm
     refine ⟨0, ?_⟩
     rw [hk, hk0, zero_smul, map_zero]
@@ -749,7 +749,7 @@ theorem Hurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace X]
 
 namespace Hurewicz
 
-open SecondHurewicz.SimplyConnected
+open Hurewicz.DegreeTwo.SimplyConnected
 
 /-- The edge tower's high storey is stationary on the constant simplex. -/
 theorem edgeTower_high_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)

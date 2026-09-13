@@ -918,7 +918,7 @@ theorem Hurewicz.CubeTriangulation.eq_of_sorted_adjacent {n : ℕ} {α : Type*} 
 boundary or on a shared chamber face where the boundary sum cancels. -/
 theorem Hurewicz.CubeTriangulation.cubeSimplex_simplexBoundary {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1))
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (n + 1)) :
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (n + 1)) :
     cubeSimplex e s ∈ Cube.boundary (Fin (n + 1)) ∨
       ∃ i j : Fin (n + 1), i ≠ j ∧ cubeSimplex e s i = cubeSimplex e s j := by
   obtain ⟨k, hk⟩ := hs
