@@ -109,11 +109,11 @@ simplex–cube homeomorphism. -/
 def Hurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
-      (SecondHurewicz.SimplyConnected.simplexBoundary n) :=
+      (Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) :=
   ContinuousMap.HomotopyRel.cast
     (nativeCubeNullHomotopy_comp (basedSimplexNativeLoop τ)
       ⟨simplexCubeHomeomorph n, (simplexCubeHomeomorph n).continuous⟩
-      (SecondHurewicz.SimplyConnected.simplexBoundary n)
+      (Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n)
       (fun s hs => (simplexCubeHomeomorph_boundary_iff n s).mpr hs))
     (basedSimplexNativeLoop_comp_homeomorph τ) rfl
 
@@ -122,13 +122,13 @@ to the simplex boundary to the constant map at `x`. -/
 def Hurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
-      (SecondHurewicz.SimplyConnected.simplexBoundary n) := by
+      (Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) := by
   classical
     exact
     if h : τ = constantBasedSimplex n x then
       ContinuousMap.HomotopyRel.cast
         (ContinuousMap.HomotopyRel.refl (ContinuousMap.const (SingularChains.Simplex n) x)
-          (SecondHurewicz.SimplyConnected.simplexBoundary n))
+          (Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n))
         (congrArg (fun υ : BasedSimplex n x => υ.val) h).symm rfl
     else simplexNullHomotopyUnnormalized τ
 
@@ -152,7 +152,7 @@ theorem Hurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace X] (n
     (x : X) [Subsingleton (π_ n X x)] :
     simplexNullHomotopy (constantBasedSimplex n x) =
       ContinuousMap.HomotopyRel.refl (ContinuousMap.const (SingularChains.Simplex n) x)
-        (SecondHurewicz.SimplyConnected.simplexBoundary n) := by
+        (Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) := by
   classical
   unfold simplexNullHomotopy
   rw [dif_pos rfl]
@@ -177,9 +177,9 @@ def Hurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] (n : �
     C((unitInterval) × SingularChains.Simplex n, X) := by
   classical
     exact
-    if h : ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, smp s = x then
+    if h : ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n, smp s = x then
       (simplexNullHomotopy (⟨smp, h⟩ : BasedSimplex n x)).toContinuousMap
-    else SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n smp
+    else Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy n smp
 
 /-- The straightening homotopy starts at the simplex itself. -/
 @[simp]
@@ -197,7 +197,7 @@ theorem Hurewicz.simplexStraighteningHomotopy_zero {X : Type} [TopologicalSpace 
 the constant map `x`. -/
 theorem Hurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
-    (h : ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, smp s = x)
+    (h : ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n, smp s = x)
     (s : SingularChains.Simplex n) : simplexStraighteningHomotopy n x smp (1, s) = x := by
   classical
   rw [simplexStraighteningHomotopy, dif_pos h]
@@ -208,7 +208,7 @@ times. -/
 theorem Hurewicz.simplexStraighteningHomotopy_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (r : (unitInterval)) (s : SingularChains.Simplex n)
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n) :
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) :
     simplexStraighteningHomotopy n x smp (r, s) = smp s := by
   classical
   unfold simplexStraighteningHomotopy
@@ -225,7 +225,7 @@ theorem Hurewicz.simplexStraighteningHomotopy_const {X : Type} [TopologicalSpace
       ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x := by
   classical
   have h :
-    ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n,
+    ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n,
       (ContinuousMap.const (SingularChains.Simplex n) x) s = x :=
     fun _ _ => rfl
   rw [simplexStraighteningHomotopy, dif_pos h]
@@ -236,8 +236,8 @@ stationary homotopy of the face: `simplexStraighteningHomotopy` is face-compatib
 with `stationarySimplexHomotopy`. -/
 theorem Hurewicz.simplexStraighteningHomotopy_face {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ (n + 1) X x)] :
-    SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n
-      (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n)
+    Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n
+      (Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy n)
       (simplexStraighteningHomotopy (n + 1) x) := by
   intro smp i
   ext u
@@ -255,15 +255,15 @@ theorem Hurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpace X] {
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
     (hone :
       ∀ smp,
-        SecondHurewicz.SimplyConnected.timeSlice (H smp) 1 =
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1 =
           ContinuousMap.const (SingularChains.Simplex n) x)
     (smp : SingularChains.SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
-    (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1).comp (SingularChains.simplexFace n i) =
+    (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1).comp (SingularChains.simplexFace n i) =
       ContinuousMap.const (SingularChains.Simplex n) x :=
-  (SecondHurewicz.SimplyConnected.timeSlice_face hface smp i 1).trans (hone _)
+  (Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face hface smp i 1).trans (hone _)
 
 /-- If the time-`1` endpoint of every lower-family homotopy is the constant simplex
 at `x`, then the time-`1` endpoint of `H' smp` takes the value `x` on the whole
@@ -273,17 +273,17 @@ theorem Hurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] {n : �
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
     (hone :
       ∀ smp,
-        SecondHurewicz.SimplyConnected.timeSlice (H smp) 1 =
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1 =
           ContinuousMap.const (SingularChains.Simplex n) x)
     (smp : SingularChains.SingularSimplex X (n + 1)) (s : SingularChains.Simplex (n + 1))
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (n + 1)) :
-    SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1 s = x := by
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (n + 1)) :
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1 s = x := by
   obtain ⟨i, t, ht⟩ :=
-    SecondHurewicz.SimplyConnected.simplexBoundary_exists_face n
-      (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary (n + 1))
+    Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary_exists_face n
+      (⟨s, hs⟩ : Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary (n + 1))
   have he : SingularChains.simplexFace n i t = s := congrArg Subtype.val ht
   rw [← he]
   exact
@@ -299,18 +299,18 @@ def Hurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1) :=
   SingularMayerVietoris.ModuleHomology.mkCycle (SingularChains.singularComplex X) (n + 1)
-    (SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1)
+    (Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1)
     (by
       have hc : ((SingularChains.singularComplex X).d (n + 1) n).hom c.1 = 0 := by
         exact
           SingularMayerVietoris.ModuleHomology.cycle_condition (SingularChains.singularComplex X)
             (n + 1) c
       rw [Nat.add_sub_cancel,
-        SecondHurewicz.SimplyConnected.simplexEndpointOperator_boundary n H H' h, hc, map_zero])
+        Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_boundary n H H' h, hc, map_zero])
 
 /-- The underlying chain of `straightenedCycle` is the time-`1` endpoint of `H'`
 applied to `c`. -/
@@ -320,10 +320,10 @@ theorem Hurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     (straightenedCycle n H H' h c).1 =
-      SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1 :=
+      Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1 :=
   rfl
 
 /-- The prism operator of `H'` bounds the difference between `c` and its straightened
@@ -333,18 +333,18 @@ theorem Hurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X] (n :
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (h₀ : ∀ smp, SecondHurewicz.SimplyConnected.timeSlice (H' smp) 0 = smp)
+    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h₀ : ∀ smp, Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 0 = smp)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
-        (SecondHurewicz.SimplyConnected.simplexPrismOperator (n + 1) H' c.1) =
+        (Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator (n + 1) H' c.1) =
       (straightenedCycle n H H' h c).1 - c.1 := by
   have hc : ((SingularChains.singularComplex X).d (n + 1) n).hom c.1 = 0 := by
     exact
       SingularMayerVietoris.ModuleHomology.cycle_condition (SingularChains.singularComplex X)
         (n + 1) c
-  rw [SecondHurewicz.SimplyConnected.simplexPrismOperator_boundary n H H' h,
-    SecondHurewicz.SimplyConnected.simplexEndpointOperator_zero (n + 1) H' h₀, hc, map_zero,
+  rw [Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_boundary n H H' h,
+    Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_zero (n + 1) H' h₀, hc, map_zero,
     sub_zero]
   rfl
 
@@ -355,8 +355,8 @@ theorem Hurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : �
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (h₀ : ∀ smp, SecondHurewicz.SimplyConnected.timeSlice (H' smp) 0 = smp)
+    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h₀ : ∀ smp, Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 0 = smp)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) (n + 1)
         (straightenedCycle n H H' h c) =
@@ -366,7 +366,7 @@ theorem Hurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : �
     (SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff (SingularChains.singularComplex X)
         (n + 1) _ _).mpr
   exact
-    ⟨SecondHurewicz.SimplyConnected.simplexPrismOperator (n + 1) H' c.1,
+    ⟨Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator (n + 1) H' c.1,
       straightenedCycle_boundary n H H' h h₀ c⟩
 
 /-! ### Descending to singular homology -/
@@ -537,19 +537,19 @@ theorem Hurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X] (n : 
 sign sum `∑ i, (-1)^i` times `chainAugmentation c`. -/
 theorem Hurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
     (c : SingularChains.Chains X (n + 1)) :
-    SecondHurewicz.SimplyConnected.chainAugmentation X n
+    Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X n
         (((SingularChains.singularComplex X).d (n + 1) n).hom c) =
       (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) •
-        SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c := by
+        Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) c := by
   have h :
-    (SecondHurewicz.SimplyConnected.chainAugmentation X n).comp
+    (Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X n).comp
         ((SingularChains.singularComplex X).d (n + 1) n).hom =
       (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) •
-        SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) := by
+        Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) := by
     apply SingularChains.chainMap_ext X (n + 1)
     intro smp
     simp only [LinearMap.comp_apply, SingularChains.boundary_simplex, map_sum, map_zsmul,
-      SecondHurewicz.SimplyConnected.chainAugmentation_simplex, LinearMap.smul_apply,
+      Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation_simplex, LinearMap.smul_apply,
       zsmul_eq_mul, mul_one, Int.cast_id]
   exact LinearMap.congr_fun h c
 
@@ -557,16 +557,16 @@ theorem Hurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n :
 `chainAugmentation c` (the sign sum is `1`). -/
 theorem Hurewicz.chainAugmentation_boundary_even (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even (n + 1)) (c : SingularChains.Chains X (n + 1)) :
-    SecondHurewicz.SimplyConnected.chainAugmentation X n
+    Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X n
         (((SingularChains.singularComplex X).d (n + 1) n).hom c) =
-      SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c := by
+      Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) c := by
   rw [chainAugmentation_boundary, boundarySignSum_even n hn, one_smul]
 
 /-- For even positive `n`, `chainAugmentation` of an `n`-cycle vanishes. -/
 theorem Hurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even n) (hpos : 0 < n)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
-    SecondHurewicz.SimplyConnected.chainAugmentation X n c.1 = 0 := by
+    Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X n c.1 = 0 := by
   cases n with
   | zero => exact False.elim (Nat.lt_irrefl 0 hpos)
   | succ n =>
@@ -583,7 +583,7 @@ theorem Hurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalSpace X
     (f : SingularChains.SingularSimplex X n → M) (m : M)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.chainLift X n (fun smp => f smp - m) c.1 = SingularChains.chainLift X n f c.1 := by
-  rw [SecondHurewicz.SimplyConnected.chainLift_sub_constant,
+  rw [Hurewicz.DegreeTwo.SimplyConnected.chainLift_sub_constant,
     chainAugmentation_evenCycle X n hn hpos, zero_smul, sub_zero]
 
 /-! ### Coherent cube endpoints -/
@@ -622,7 +622,7 @@ on the simplex boundary. -/
 theorem Hurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ}
     (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s (e i) = CubeTriangulation.cubeSimplex e s (e j)) :
-    s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   have hreal := congrArg (fun t : (unitInterval) => (t : ℝ)) h
   rw [CubeTriangulation.cubeSimplex_coordinate, CubeTriangulation.cubeSimplex_coordinate] at hreal
   rcases lt_or_gt_of_ne hij with hlt | hgt
@@ -634,7 +634,7 @@ simplex boundary. -/
 theorem Hurewicz.cubeSimplex_coordinate_equality_boundary {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s i = CubeTriangulation.cubeSimplex e s j) :
-    s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+    s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   apply cubeSimplex_ordered_coordinate_equality_boundary e s (e.symm.injective.ne hij)
   simpa only [Equiv.apply_symm_apply] using h
 
@@ -646,17 +646,17 @@ theorem Hurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [Topolo
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
     (hconst :
       H (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (hone :
       ∀ smp,
-        SecondHurewicz.SimplyConnected.timeSlice (H smp) 1 =
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1 =
           ContinuousMap.const (SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1)))
     (s : SingularChains.Simplex (n + 1))
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (n + 1)) :
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (n + 1)) :
     CubeGluing.coherentCubeEndpoint H H' hface hconst p (CubeTriangulation.cubeSimplex e s) = x :=
   by
   have he :=
@@ -671,13 +671,13 @@ theorem Hurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [Topolo
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
     (hconst :
       H (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (hone :
       ∀ smp,
-        SecondHurewicz.SimplyConnected.timeSlice (H smp) 1 =
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1 =
           ContinuousMap.const (SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (u : Fin (n + 1) → (unitInterval)) (i j : Fin (n + 1))
     (hij : i ≠ j) (hu : u i = u j) : CubeGluing.coherentCubeEndpoint H H' hface hconst p u = x := by
@@ -739,21 +739,21 @@ theorem Hurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [TopologicalS
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hf : ∀ smp, (f smp).val = SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1)
+    (hf : ∀ smp, (f smp).val = Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1)
     (c : SingularChains.Chains X (n + 1)) :
     (normalizedCycleAssignment n x f c).val =
-      SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c -
-        SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c •
+      Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c -
+        Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) c •
           constantSimplexChain (n + 1) x := by
-  rw [normalizedCycleAssignment_val, SecondHurewicz.SimplyConnected.chainLift_sub_constant]
+  rw [normalizedCycleAssignment_val, Hurewicz.DegreeTwo.SimplyConnected.chainLift_sub_constant]
   have hmap :
     SingularChains.chainLift X (n + 1)
         (fun smp => SingularChains.simplexChain X (n + 1) (f smp).val) =
-      SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 := by
+      Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 := by
     apply SingularChains.chainMap_ext X (n + 1)
     intro smp
     rw [SingularChains.chainLift_simplex,
-      SecondHurewicz.SimplyConnected.simplexEndpointOperator_simplex, hf]
+      Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_simplex, hf]
   rw [hmap]
 
 /-- For `n + 1` even, the normalized cycle assignment of a cycle equals its
@@ -764,8 +764,8 @@ theorem Hurewicz.normalizedCycleAssignment_evenCycle {X : Type} [TopologicalSpac
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (hf : ∀ smp, (f smp).val = SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (hf : ∀ smp, (f smp).val = Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1)
     (heven : Even (n + 1))
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     normalizedCycleAssignment n x f c.val = straightenedCycle n H H' hface c := by
@@ -782,19 +782,19 @@ theorem Hurewicz.normalizedCycleAssignment_oddCycle {X : Type} [TopologicalSpace
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (hf : ∀ smp, (f smp).val = SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (hf : ∀ smp, (f smp).val = Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1)
     (hodd : Odd (n + 1))
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     normalizedCycleAssignment n x f c.val =
       straightenedCycle n H H' hface c -
-        SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c.val •
+        Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) c.val •
           constantSimplexCycle (n + 1) x hodd := by
   apply Subtype.ext
   change
     (normalizedCycleAssignment n x f c.val).val =
       (straightenedCycle n H H' hface c).val -
-        SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c.val •
+        Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation X (n + 1) c.val •
           (constantSimplexCycle (n + 1) x hodd).val
   rw [normalizedCycleAssignment_val_endpoint n x f H' hf, straightenedCycle_val,
     constantSimplexCycle_val]
@@ -807,9 +807,9 @@ theorem Hurewicz.normalizedCycleAssignment_class {X : Type} [TopologicalSpace X]
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (h₀ : ∀ smp, SecondHurewicz.SimplyConnected.timeSlice (H' smp) 0 = smp)
-    (hf : ∀ smp, (f smp).val = SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h₀ : ∀ smp, Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 0 = smp)
+    (hf : ∀ smp, (f smp).val = Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (n + 1)) :
     SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) (n + 1)
         (normalizedCycleAssignment n x f c.val) =

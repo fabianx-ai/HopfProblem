@@ -64,6 +64,7 @@ Original source lines 237525--248758; see PROVENANCE.md.
 import Hopf.LibShims
 import Hopf.LCP.IntegralHomology
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
+import Lib.AlgebraicTopology.Hurewicz.Naturality
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
@@ -148,26 +149,8 @@ theorem SixthHurewicz.cubeHomologyClass_homotopic {X : Type} [TopologicalSpace X
   HigherHurewicz.cubeHomologyClass_homotopic h
 
 def SixthHurewicz.homotopyMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
-    (x : X) : π_ 6 X x →* π_ 6 Y (f x)
-    where
-  toFun :=
-    Quotient.map (SecondHurewicz.mapGenLoop f x)
-      (fun _ _ h => SecondHurewicz.mapGenLoop_homotopic f x h)
-  map_one' := by
-    change (⟦SecondHurewicz.mapGenLoop f x GenLoop.const⟧ : π_ 6 Y (f x)) = ⟦GenLoop.const⟧
-    rw [SecondHurewicz.mapGenLoop_const]
-  map_mul' a
-    b := by
-    refine Quotient.inductionOn₂ a b fun p q => ?_
-    exact
-      (congrArg
-            (Quotient.map (SecondHurewicz.mapGenLoop f x)
-              (fun _ _ h => SecondHurewicz.mapGenLoop_homotopic f x h))
-            (HomotopyGroup.mul_spec (i := (0 : Fin 6)) (p := p) (q := q))).trans
-        ((congrArg (fun r : GenLoop (Fin 6) Y (f x) => (⟦r⟧ : π_ 6 Y (f x)))
-              (SecondHurewicz.mapGenLoop_transAt f x (0 : Fin 6) q p)).trans
-          (HomotopyGroup.mul_spec (i := (0 : Fin 6)) (p := SecondHurewicz.mapGenLoop f x p) (q :=
-              SecondHurewicz.mapGenLoop f x q)).symm)
+    (x : X) : π_ 6 X x →* π_ 6 Y (f x) :=
+  Hurewicz.homotopyMap f x
 
 def SixthHurewicz.hurewiczFunction {X : Type} [TopologicalSpace X] (x : X) :
     π_ 6 X x → SingularMayerVietoris.SingularHomology X 6 :=
@@ -219,43 +202,33 @@ def SixthHurewicz.hurewiczPi6Equiv {X : Type} [TopologicalSpace X] [SimplyConnec
 
 theorem SixthHurewicz.cubeChain_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
-    FirstHurewicz.inducedChain f 6 (cubeChain p) = cubeChain (SecondHurewicz.mapGenLoop f x p) := by
-  rw [cubeChain_eq_induced, cubeChain_eq_induced, SecondHurewicz.mapGenLoop_val,
-    FirstHurewicz.inducedChain_comp, LinearMap.comp_apply]
+    FirstHurewicz.inducedChain f 6 (cubeChain p) = cubeChain (SecondHurewicz.mapGenLoop f x p) :=
+  Hurewicz.cubeChain_natural f x p
 
 theorem SixthHurewicz.cubeCycle_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
     SingularMayerVietoris.ModuleHomology.mapCycles (FirstHurewicz.singularChainMap f) 6
         (cubeCycle p) =
-      cubeCycle (SecondHurewicz.mapGenLoop f x p) := by
-  apply Subtype.ext
-  rw [SingularMayerVietoris.ModuleHomology.mapCycles_val, cubeCycle_val, cubeCycle_val]
-  exact cubeChain_natural f x p
+      cubeCycle (SecondHurewicz.mapGenLoop f x p) :=
+  Hurewicz.cubeCycle_natural f x p
 
 theorem SixthHurewicz.cubeHomologyClass_natural {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : GenLoop (Fin 6) X x) :
     SingularMayerVietoris.singularHomologyMap f 6 (cubeHomologyClass p) =
-      cubeHomologyClass (SecondHurewicz.mapGenLoop f x p) := by
-  change
-    (HomologicalComplex.homologyMap (FirstHurewicz.singularChainMap f) 6).hom
-        (SingularMayerVietoris.ModuleHomology.cycleClass (FirstHurewicz.singularComplex X) 6
-          (cubeCycle p)) =
-      _
-  rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass, cubeCycle_natural]
-  rfl
+      cubeHomologyClass (SecondHurewicz.mapGenLoop f x p) :=
+  Hurewicz.cubeHomologyClass_natural f x p
 
 theorem SixthHurewicz.hurewiczFunction_natural {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : π_ 6 X x) :
     SingularMayerVietoris.singularHomologyMap f 6 (hurewiczFunction x a) =
-      hurewiczFunction (f x) (homotopyMap f x a) := by
-  refine Quotient.inductionOn a fun p => ?_
-  exact cubeHomologyClass_natural f x p
+      hurewiczFunction (f x) (homotopyMap f x a) :=
+  Hurewicz.hurewiczFunction_natural f x a
 
 theorem SixthHurewicz.hurewiczMap_natural {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (x : X) (a : Additive (π_ 6 X x)) :
     SingularMayerVietoris.singularHomologyMap f 6 (hurewiczMap x a) =
       hurewiczMap (f x) ((homotopyMap f x).toAdditive a) :=
-  hurewiczFunction_natural f x a.toMul
+  Hurewicz.hurewiczMap_natural f x a
 
 theorem SixthHurewicz.hurewiczLinearEquiv_natural {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y] (f : C(X, Y)) (x : X)
@@ -264,7 +237,9 @@ theorem SixthHurewicz.hurewiczLinearEquiv_natural {X Y : Type} [TopologicalSpace
     [Subsingleton (π_ 4 Y (f x))] [Subsingleton (π_ 5 Y (f x))] (a : Additive (π_ 6 X x)) :
     SingularMayerVietoris.singularHomologyMap f 6 (hurewiczLinearEquiv x a) =
       hurewiczLinearEquiv (f x) ((homotopyMap f x).toAdditive a) :=
-  hurewiczMap_natural f x a
+  Hurewicz.hurewiczLinearEquiv_natural f x
+    (by intro j hj hjn; interval_cases j <;> infer_instance)
+    (by intro j hj hjn; interval_cases j <;> infer_instance) a
 
 def SpecialPeriods.Threefold.HomotopySix.hurewiczEquiv (x : SpecialPeriods.Threefold.Space) :
     Additive (π_ 6 SpecialPeriods.Threefold.Space x) ≃ₗ[ℤ]
@@ -985,7 +960,7 @@ theorem sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X] {x : 
         SingularMayerVietoris.singularHomologyMap g 6
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop)) :
     f.HomotopicRel g { SixSphereCube.sphereBasePoint } :=
-  HigherHurewicz.sphere_homotopicRel_of_topClass_eq
+  Hurewicz.sphere_homotopicRel_of_topClass_eq
     (by intro j hj hjn; interval_cases j <;> infer_instance) f g hf hg h
 
 theorem Sphere.based_homotopicRel_id_of_topClass
@@ -1013,7 +988,7 @@ theorem Sphere.homotopic_id_of_topClass
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) =
         SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) :
     g.Homotopic (ContinuousMap.id SixSphereCube.StandardSphere) :=
-  HigherHurewicz.sphere_homotopic_id_of_topClass g hd
+  Hurewicz.sphere_homotopic_id_of_topClass g hd
 
 theorem right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space)
     (g : C(SpecialPeriods.Threefold.Space, SixSphereCube.StandardSphere))

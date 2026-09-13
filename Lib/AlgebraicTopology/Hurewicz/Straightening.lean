@@ -77,18 +77,18 @@ structure Hurewicz.TowerPair {X : Type} [TopologicalSpace X] (x : X) (k : ℕ) w
   /-- The higher storey starts at the identity. -/
   high_zero : ∀ smp s, high smp (0, s) = smp s
   /-- Face compatibility between the storeys. -/
-  compat : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies k low high
+  compat : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies k low high
 
 /-- The extension step of a tower pair: the next storey is the coherent extension of the pair
 over one dimension up. -/
 def Hurewicz.TowerPair.step {X : Type} [TopologicalSpace X] {x : X} {k : ℕ}
     (S : Hurewicz.TowerPair x k) : Hurewicz.TowerPair x (k + 1) where
   low := S.high
-  high := SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy S.low S.high S.compat
+  high := Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy S.low S.high S.compat
     S.high_zero
   low_zero := S.high_zero
-  high_zero := SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _
-  compat := SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _
+  high_zero := Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _
+  compat := Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _
 
 /-- The edge-straightening tower: storey `0` is stationary, storey `1` is the edge
 straightening, and each higher storey extends the previous two. This is the dimension-general
@@ -96,11 +96,11 @@ form of `triangleEdgeStraighteningHomotopy` / `tetrahedronEdgeStraighteningHomot
 def Hurewicz.edgeTower {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
     (k : ℕ) → Hurewicz.TowerPair x k
   | 0 =>
-    { low := SecondHurewicz.SimplyConnected.stationarySimplexHomotopy 0
-      high := SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy x
+    { low := Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy 0
+      high := Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy x
       low_zero := fun _smp _s => rfl
-      high_zero := SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_zero x
-      compat := SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_face x }
+      high_zero := Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_zero x
+      compat := Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_face x }
   | k + 1 => Hurewicz.TowerPair.step (Hurewicz.edgeTower x k)
 
 /-- The vertex-then-edge normalization at dimension `k`: straighten the vertices first, then
@@ -110,8 +110,8 @@ def Hurewicz.vertexEdgeHomotopy {X : Type} [TopologicalSpace X] [SimplyConnected
     (x : X) (k : ℕ) :
     SingularChains.SingularSimplex X k → C((unitInterval) × SingularChains.Simplex k, X) :=
   Hurewicz.composeSimplexHomotopies
-    (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy x k) (Hurewicz.edgeTower x k).low
-    (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero x k)
+    (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy x k) (Hurewicz.edgeTower x k).low
+    (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_zero x k)
     (Hurewicz.edgeTower x k).low_zero
 
 /-- At time `0` the vertex-then-edge normalization homotopy is the simplex itself. -/
@@ -123,14 +123,14 @@ theorem Hurewicz.vertexEdgeHomotopy_zero {X : Type} [TopologicalSpace X]
 /-- The vertex-then-edge normalization is face-compatible between consecutive dimensions. -/
 theorem Hurewicz.vertexEdgeHomotopy_face {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (k : ℕ) :
-    SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies k (Hurewicz.vertexEdgeHomotopy x k)
+    Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies k (Hurewicz.vertexEdgeHomotopy x k)
       (Hurewicz.vertexEdgeHomotopy x (k + 1)) :=
   Hurewicz.composeSimplexHomotopies_face _ _ _ _
-    (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero x k)
+    (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_zero x k)
     (Hurewicz.edgeTower x k).low_zero
-    (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_zero x (k + 1))
+    (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_zero x (k + 1))
     (Hurewicz.edgeTower x (k + 1)).low_zero
-    (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_face x k)
+    (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_face x k)
     (Hurewicz.edgeTower x k).compat
 
 /-- The endpoint of the vertex-then-edge normalization at dimension `1` is the constant
@@ -138,14 +138,14 @@ loop: after the vertices are moved to the basepoint, every edge is a based loop,
 edge straightening collapses (simple connectivity). -/
 theorem Hurewicz.vertexEdgeHomotopy_one_endpoint {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 1) :
-    SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 1 smp) 1 =
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 1 smp) 1 =
       ContinuousMap.const (SingularChains.Simplex 1) x := by
   apply ContinuousMap.ext
   intro s
   unfold Hurewicz.vertexEdgeHomotopy
   rw [Hurewicz.timeSlice_composeSimplexHomotopies_one]
-  have hb := SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 1 smp
-  exact SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_one x _ (hb 0) (hb 1) s
+  have hb := Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 1 smp
+  exact Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_one x _ (hb 0) (hb 1) s
 
 /-- The endpoint of the vertex-then-edge normalization at dimension `k + 1` is based at `x`
 on the whole boundary. -/
@@ -153,11 +153,11 @@ theorem Hurewicz.vertexEdgeHomotopy_endpoint_boundary {X : Type} [TopologicalSpa
     [SimplyConnectedSpace X] (x : X) (k : ℕ)
     (hone :
       ∀ smp,
-        SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x k smp) 1 =
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x k smp) 1 =
           ContinuousMap.const (SingularChains.Simplex k) x)
     (smp : SingularChains.SingularSimplex X (k + 1)) (s : SingularChains.Simplex (k + 1))
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (k + 1)) :
-    SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x (k + 1) smp) 1 s =
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (k + 1)) :
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x (k + 1) smp) 1 s =
       x :=
   Hurewicz.simplexEndpoint_boundary (Hurewicz.vertexEdgeHomotopy x k)
     (Hurewicz.vertexEdgeHomotopy x (k + 1)) (Hurewicz.vertexEdgeHomotopy_face x k) x
@@ -183,17 +183,17 @@ structure Hurewicz.NormalizationState {X : Type} [TopologicalSpace X] (x : X) (k
   /-- The next normalization starts at the identity. -/
   nxt_zero : ∀ smp s, nxt smp (0, s) = smp s
   /-- Face compatibility from the augmented family to the next normalization. -/
-  compat : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies k aug nxt
+  compat : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies k aug nxt
   /-- The augmented family collapses every simplex to the basepoint at `t = 1`. -/
   aug_one :
     ∀ smp,
-      SecondHurewicz.SimplyConnected.timeSlice (aug smp) 1 =
+      Hurewicz.DegreeTwo.SimplyConnected.timeSlice (aug smp) 1 =
         ContinuousMap.const (SingularChains.Simplex k) x
   /-- The next normalization's endpoint is based at `x` on the boundary. -/
   nxt_endpoint :
     ∀ (smp : SingularChains.SingularSimplex X (k + 1)) (s : SingularChains.Simplex (k + 1)),
-      s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (k + 1) →
-      SecondHurewicz.SimplyConnected.timeSlice (nxt smp) 1 s = x
+      s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (k + 1) →
+      Hurewicz.DegreeTwo.SimplyConnected.timeSlice (nxt smp) 1 s = x
 
 /-- Composing a coherent family whose endpoint is boundary-based with the dimension-`k`
 straightening collapses every simplex to the basepoint at `t = 1` (using
@@ -203,10 +203,10 @@ theorem Hurewicz.composeSimplexHomotopies_one_straightening {X : Type} [Topologi
     (H : SingularChains.SingularSimplex X k → C((unitInterval) × SingularChains.Simplex k, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s)
     (hone : ∀ (smp : SingularChains.SingularSimplex X k) (s : SingularChains.Simplex k),
-      s ∈ SecondHurewicz.SimplyConnected.simplexBoundary k →
-        SecondHurewicz.SimplyConnected.timeSlice (H smp) 1 s = x)
+      s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary k →
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1 s = x)
     (smp : SingularChains.SingularSimplex X k) :
-    SecondHurewicz.SimplyConnected.timeSlice
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice
         (Hurewicz.composeSimplexHomotopies H (Hurewicz.simplexStraighteningHomotopy k x)
           hH₀ (Hurewicz.simplexStraighteningHomotopy_zero k x) smp) 1 =
       ContinuousMap.const (SingularChains.Simplex k) x := by
@@ -229,35 +229,35 @@ def Hurewicz.normalizationStep {X : Type} [TopologicalSpace X] [SimplyConnectedS
       (Hurewicz.simplexStraighteningHomotopy (k + 1) x) S.nxt_zero
       (Hurewicz.simplexStraighteningHomotopy_zero (k + 1) x)
   · exact Hurewicz.composeSimplexHomotopies
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy S.aug S.nxt S.compat
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy S.aug S.nxt S.compat
         S.nxt_zero)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
-        (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy k)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy k)
         (Hurewicz.simplexStraighteningHomotopy (k + 1) x)
         (Hurewicz.simplexStraighteningHomotopy_face k x)
         (Hurewicz.simplexStraighteningHomotopy_zero (k + 1) x))
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
   · exact Hurewicz.composeSimplexHomotopies_zero _ _ _ _
   · exact Hurewicz.composeSimplexHomotopies_zero _ _ _ _
   · exact Hurewicz.composeSimplexHomotopies_face _ _ _ _ S.nxt_zero
       (Hurewicz.simplexStraighteningHomotopy_zero (k + 1) x)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face S.aug S.nxt S.compat
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face S.aug S.nxt S.compat
         S.nxt_zero)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
   · exact Hurewicz.composeSimplexHomotopies_one_straightening S.nxt S.nxt_zero
       S.nxt_endpoint
   · intro smp s hs
     exact Hurewicz.simplexEndpoint_boundary _ _
       (Hurewicz.composeSimplexHomotopies_face _ _ _ _ S.nxt_zero
         (Hurewicz.simplexStraighteningHomotopy_zero (k + 1) x)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face S.aug S.nxt S.compat
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face S.aug S.nxt S.compat
           S.nxt_zero)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _))
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _))
       x (Hurewicz.composeSimplexHomotopies_one_straightening S.nxt S.nxt_zero
         S.nxt_endpoint) smp s hs
 
@@ -273,22 +273,22 @@ def Hurewicz.normalizationBaseTwo {X : Type} [TopologicalSpace X] [SimplyConnect
       (Hurewicz.vertexEdgeHomotopy_zero x 2)
       (Hurewicz.simplexStraighteningHomotopy_zero 2 x)
   · exact Hurewicz.composeSimplexHomotopies (Hurewicz.vertexEdgeHomotopy x 3)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
-        (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy 1)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy 1)
         (Hurewicz.simplexStraighteningHomotopy 2 x)
         (Hurewicz.simplexStraighteningHomotopy_face 1 x)
         (Hurewicz.simplexStraighteningHomotopy_zero 2 x))
       (Hurewicz.vertexEdgeHomotopy_zero x 3)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
   · exact Hurewicz.composeSimplexHomotopies_zero _ _ _ _
   · exact Hurewicz.composeSimplexHomotopies_zero _ _ _ _
   · exact Hurewicz.composeSimplexHomotopies_face _ _ _ _
       (Hurewicz.vertexEdgeHomotopy_zero x 2)
       (Hurewicz.simplexStraighteningHomotopy_zero 2 x)
       (Hurewicz.vertexEdgeHomotopy_zero x 3)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
       (Hurewicz.vertexEdgeHomotopy_face x 2)
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
   · exact Hurewicz.composeSimplexHomotopies_one_straightening
       (Hurewicz.vertexEdgeHomotopy x 2) (Hurewicz.vertexEdgeHomotopy_zero x 2)
       (Hurewicz.vertexEdgeHomotopy_endpoint_boundary x 1
@@ -299,9 +299,9 @@ def Hurewicz.normalizationBaseTwo {X : Type} [TopologicalSpace X] [SimplyConnect
         (Hurewicz.vertexEdgeHomotopy_zero x 2)
         (Hurewicz.simplexStraighteningHomotopy_zero 2 x)
         (Hurewicz.vertexEdgeHomotopy_zero x 3)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
         (Hurewicz.vertexEdgeHomotopy_face x 2)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _))
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _))
       x (Hurewicz.composeSimplexHomotopies_one_straightening
         (Hurewicz.vertexEdgeHomotopy x 2) (Hurewicz.vertexEdgeHomotopy_zero x 2)
         (Hurewicz.vertexEdgeHomotopy_endpoint_boundary x 1
@@ -328,7 +328,7 @@ def Hurewicz.normalizationHomotopy {X : Type} [TopologicalSpace X] [SimplyConnec
     (x : X) (n : ℕ) (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
     SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X) :=
   match n with
-  | 0 => SecondHurewicz.SimplyConnected.stationarySimplexHomotopy 0
+  | 0 => Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy 0
   | 1 => Hurewicz.vertexEdgeHomotopy x 1
   | 2 => Hurewicz.vertexEdgeHomotopy x 2
   | n + 3 =>
@@ -353,18 +353,18 @@ theorem Hurewicz.normalizationHomotopy_zero {X : Type} [TopologicalSpace X]
 basepoint: the tower preserves `VerticesBased` at dimension `2`. -/
 theorem Hurewicz.edgeTower_two_verticesBased {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (τ : SingularChains.SingularSimplex X 2)
-    (h : SecondHurewicz.SimplyConnected.VerticesBased x 2 τ) :
-    SecondHurewicz.SimplyConnected.VerticesBased x 2
-      (SecondHurewicz.SimplyConnected.timeSlice
+    (h : Hurewicz.DegreeTwo.SimplyConnected.VerticesBased x 2 τ) :
+    Hurewicz.DegreeTwo.SimplyConnected.VerticesBased x 2
+      (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
         ((Hurewicz.edgeTower x 2).low τ) 1) := by
   intro j
-  obtain ⟨i, j', hj⟩ := SecondHurewicz.SimplyConnected.simplexVertex_exists_face 1 j
+  obtain ⟨i, j', hj⟩ := Hurewicz.DegreeTwo.SimplyConnected.simplexVertex_exists_face 1 j
   have key := (Hurewicz.edgeTower x 1).compat τ i
   show ((Hurewicz.edgeTower x 2).low τ) (1, stdSimplex.vertex (S := ℝ) j) = x
   rw [← hj]
   have hv := ContinuousMap.ext_iff.mp key (1, stdSimplex.vertex (S := ℝ) j')
   refine hv.trans ?_
-  exact SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_one x _
+  exact Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_one x _
     (by show τ ((SingularChains.simplexFace 1 i) (stdSimplex.vertex (S := ℝ) 0)) = x
         rw [SingularChains.simplexFace_vertex]; exact h _)
     (by show τ ((SingularChains.simplexFace 1 i) (stdSimplex.vertex (S := ℝ) 1)) = x
@@ -374,40 +374,40 @@ theorem Hurewicz.edgeTower_two_verticesBased {X : Type} [TopologicalSpace X]
 boundary. -/
 theorem Hurewicz.vertexEdgeHomotopy_two_endpoint_boundary {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (smp : SingularChains.SingularSimplex X 2)
-    (s : SingularChains.Simplex 2) (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary 2) :
-    SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 2 smp) 1 s =
+    (s : SingularChains.Simplex 2) (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary 2) :
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 2 smp) 1 s =
       x := by
-  obtain ⟨i, t, ht⟩ := SecondHurewicz.SimplyConnected.simplexBoundary_exists_face 1
-    (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary 2)
+  obtain ⟨i, t, ht⟩ := Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary_exists_face 1
+    (⟨s, hs⟩ : Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary 2)
   have he : SingularChains.simplexFace 1 i t = s := congrArg Subtype.val ht
   rw [← he]
   show (Hurewicz.composeSimplexHomotopies
-      (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy x 2)
+      (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy x 2)
       ((Hurewicz.edgeTower x 2).low) _ _ smp) (1, SingularChains.simplexFace 1 i t) = x
   rw [Hurewicz.composeSimplexHomotopies_one]
   have key := (Hurewicz.edgeTower x 1).compat
-    (SecondHurewicz.SimplyConnected.timeSlice
-      (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1) i
+    (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+      (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1) i
   have hv := ContinuousMap.ext_iff.mp key (1, t)
   refine hv.trans ?_
-  apply SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_one
-  · show (SecondHurewicz.SimplyConnected.timeSlice
-        (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1)
+  apply Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_one
+  · show (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+        (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1)
         ((SingularChains.simplexFace 1 i) (stdSimplex.vertex (S := ℝ) 0)) = x
     rw [SingularChains.simplexFace_vertex]
-    exact SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 2 smp _
-  · show (SecondHurewicz.SimplyConnected.timeSlice
-        (SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1)
+    exact Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 2 smp _
+  · show (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+        (Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy x 2 smp) 1)
         ((SingularChains.simplexFace 1 i) (stdSimplex.vertex (S := ℝ) 1)) = x
     rw [SingularChains.simplexFace_vertex]
-    exact SecondHurewicz.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 2 smp _
+    exact Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased x 2 smp _
 
 /-- The normalization homotopy's endpoint is based at `x` on the boundary: the normalized
 simplex is a based map `(Δⁿ, ∂Δⁿ) → (X, x)`. -/
 theorem Hurewicz.normalizationHomotopy_endpoint {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) (n : ℕ)
     (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) (smp : SingularChains.SingularSimplex X n)
-    (s : SingularChains.Simplex n) (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n) :
+    (s : SingularChains.Simplex n) (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n) :
     Hurewicz.normalizationHomotopy x n hpi smp (1, s) = x := by
   match n with
   | 0 =>
@@ -419,7 +419,7 @@ theorem Hurewicz.normalizationHomotopy_endpoint {X : Type} [TopologicalSpace X]
     rw [Fin.sum_univ_one] at hsum
     exact one_ne_zero (hsum.symm.trans hi)
   | 1 =>
-    show SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 1 smp) 1 s = x
+    show Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.vertexEdgeHomotopy x 1 smp) 1 s = x
     rw [Hurewicz.vertexEdgeHomotopy_one_endpoint x smp]
     rfl
   | 2 =>
@@ -434,15 +434,15 @@ constructions. -/
 def Hurewicz.normalizedSimplex {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
     (x : X) (n : ℕ) (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x))
     (smp : SingularChains.SingularSimplex X n) : Hurewicz.SimplexGeometry.BasedSimplex n x :=
-  ⟨SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.normalizationHomotopy x n hpi smp) 1,
+  ⟨Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.normalizationHomotopy x n hpi smp) 1,
    fun s hs => Hurewicz.normalizationHomotopy_endpoint x n hpi smp s hs⟩
 
 /-- The endpoint of the straightening of a based simplex is again based. -/
 theorem Hurewicz.SimplexGeometry.straighteningHomotopy_one_based {X : Type}
     [TopologicalSpace X] {x : X} {k : ℕ} [Subsingleton (π_ k X x)]
     (τ : Hurewicz.SimplexGeometry.BasedSimplex k x) :
-    ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary k,
-      SecondHurewicz.SimplyConnected.timeSlice
+    ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary k,
+      Hurewicz.DegreeTwo.SimplyConnected.timeSlice
           (Hurewicz.simplexStraighteningHomotopy k x τ.val) 1 s = x := by
   intro s hs
   show Hurewicz.simplexStraighteningHomotopy k x τ.val (1, s) = x
@@ -454,7 +454,7 @@ def Hurewicz.SimplexGeometry.straightenedBasedSimplex {X : Type} [TopologicalSpa
     {x : X} {k : ℕ} [Subsingleton (π_ k X x)]
     (τ : Hurewicz.SimplexGeometry.BasedSimplex k x) :
     Hurewicz.SimplexGeometry.BasedSimplex k x :=
-  ⟨SecondHurewicz.SimplyConnected.timeSlice
+  ⟨Hurewicz.DegreeTwo.SimplyConnected.timeSlice
       (Hurewicz.simplexStraighteningHomotopy k x τ.val) 1,
     Hurewicz.SimplexGeometry.straighteningHomotopy_one_based τ⟩
 
@@ -507,8 +507,8 @@ dimension-`n−1` straightening by the stationary family. -/
 def Hurewicz.topStorey {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     [Subsingleton (π_ (n + 1) X x)] :
     SingularChains.SingularSimplex X (n + 2) → C((unitInterval) × SingularChains.Simplex (n + 2), X) :=
-  SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
-    (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n)
+  Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
+    (Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy n)
     (Hurewicz.simplexStraighteningHomotopy (n + 1) x)
     (Hurewicz.simplexStraighteningHomotopy_face n x)
     (Hurewicz.simplexStraighteningHomotopy_zero (n + 1) x)
@@ -517,15 +517,15 @@ def Hurewicz.topStorey {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
 theorem Hurewicz.topStorey_zero {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     [Subsingleton (π_ (n + 1) X x)] (smp : SingularChains.SingularSimplex X (n + 2))
     (s : SingularChains.Simplex (n + 2)) : Hurewicz.topStorey x n smp (0, s) = smp s :=
-  SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _ smp s
+  Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _ smp s
 
 /-- The face compatibility of the top storey: its face restrictions are the dimension-`n`
 straightening of the faces. -/
 theorem Hurewicz.topStorey_face {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     [Subsingleton (π_ (n + 1) X x)] :
-    SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies (n + 1)
+    Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies (n + 1)
       (Hurewicz.simplexStraighteningHomotopy (n + 1) x) (Hurewicz.topStorey x n) :=
-  SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _
+  Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _
 
 /-- The tower state one level below a degree: the augmented normalization and the
 normalization at the target degree, packaged for the one-off top construction. -/
@@ -562,36 +562,36 @@ def Hurewicz.topNormalization {X : Type} [TopologicalSpace X] [SimplyConnectedSp
   | 2 =>
     exact
       Hurewicz.composeSimplexHomotopies
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
           (Hurewicz.towerBelow x hn hpi).aug (Hurewicz.towerBelow x hn hpi).nxt
           (Hurewicz.towerBelow x hn hpi).compat
           (Hurewicz.towerBelow x hn hpi).nxt_zero)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
-          (SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy x)
-          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
-            (SecondHurewicz.SimplyConnected.stationarySimplexHomotopy 0)
-            (SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy x)
-            (SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_face x)
-            (SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy_zero x))
-          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
-          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _))
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
+          (Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy x)
+          (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
+            (Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy 0)
+            (Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy x)
+            (Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_face x)
+            (Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_zero x))
+          (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+          (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _))
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
   | m + 3 =>
     haveI := hpi (m + 2) (by omega) (by omega)
     exact
       Hurewicz.composeSimplexHomotopies
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
           (Hurewicz.towerBelow x hn hpi).aug (Hurewicz.towerBelow x hn hpi).nxt
           (Hurewicz.towerBelow x hn hpi).compat
           (Hurewicz.towerBelow x hn hpi).nxt_zero)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
           (Hurewicz.simplexStraighteningHomotopy (m + 2) x)
           (Hurewicz.topStorey x (m + 1))
-          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+          (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
           (Hurewicz.topStorey_zero x (m + 1)))
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero _ _ _ _)
 
 /-- The top normalization starts at the identity. -/
 theorem Hurewicz.topNormalization_zero {X : Type} [TopologicalSpace X]
@@ -636,11 +636,11 @@ faces). -/
 theorem Hurewicz.topStorey_relBoundary {X : Type} [TopologicalSpace X] {x : X} {m : ℕ}
     [Subsingleton (π_ (m + 2) X x)] (τ : Hurewicz.SimplexGeometry.BasedSimplex (m + 3) x)
     (r : (unitInterval)) (s : SingularChains.Simplex (m + 3))
-    (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (m + 3)) :
+    (hs : s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (m + 3)) :
     Hurewicz.topStorey x (m + 1) τ.val (r, s) = τ.val s := by
   obtain ⟨j, t, ht⟩ :=
-    SecondHurewicz.SimplyConnected.simplexBoundary_exists_face (m + 2)
-      (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary (m + 3))
+    Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary_exists_face (m + 2)
+      (⟨s, hs⟩ : Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary (m + 3))
   have he : SingularChains.simplexFace (m + 2) j t = s := congrArg Subtype.val ht
   rw [← he]
   have hf := Hurewicz.topStorey_face x (m + 1) τ.val j
@@ -663,7 +663,7 @@ def Hurewicz.SimplexGeometry.topStoreySimplex {X : Type} [TopologicalSpace X] {x
     {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
     (τ : Hurewicz.SimplexGeometry.BasedSimplex (m + 3) x) :
     Hurewicz.SimplexGeometry.BasedSimplex (m + 3) x :=
-  ⟨SecondHurewicz.SimplyConnected.timeSlice (Hurewicz.topStorey x (m + 1) τ.val) 1, by
+  ⟨Hurewicz.DegreeTwo.SimplyConnected.timeSlice (Hurewicz.topStorey x (m + 1) τ.val) 1, by
     intro s hs
     show Hurewicz.topStorey x (m + 1) τ.val (1, s) = x
     exact (Hurewicz.topStorey_relBoundary τ 1 s hs).trans (τ.property s hs)⟩
@@ -728,21 +728,21 @@ theorem Hurewicz.topNormalization_endpoint {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
     (hn : 2 ≤ m + 3) (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (σ : SingularChains.SingularSimplex X (m + 4)) :
-    SecondHurewicz.SimplyConnected.timeSlice
+    Hurewicz.DegreeTwo.SimplyConnected.timeSlice
         (Hurewicz.topNormalization x (m + 3) hn hpi σ) 1 =
-      SecondHurewicz.SimplyConnected.timeSlice
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+      Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
           (Hurewicz.simplexStraighteningHomotopy (m + 2) x)
           (Hurewicz.topStorey x (m + 1))
-          (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+          (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
           (Hurewicz.topStorey_zero x (m + 1))
-          (SecondHurewicz.SimplyConnected.timeSlice
-            (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+          (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+            (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
               (Hurewicz.towerBelow x hn hpi).aug
               (Hurewicz.towerBelow x hn hpi).nxt
               (Hurewicz.towerBelow x hn hpi).compat
               (Hurewicz.towerBelow x hn hpi).nxt_zero σ) 1)) 1 := by
-  show SecondHurewicz.SimplyConnected.timeSlice
+  show Hurewicz.DegreeTwo.SimplyConnected.timeSlice
       (Hurewicz.composeSimplexHomotopies _ _ _ _ σ) 1 = _
   exact Hurewicz.timeSlice_composeSimplexHomotopies_one _ _ _ _ σ
 
@@ -754,31 +754,31 @@ theorem Hurewicz.topNormalization_endpoint_face {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ} [Subsingleton (π_ (m + 2) X x)]
     (hn : 2 ≤ m + 3) (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (σ : SingularChains.SingularSimplex X (m + 4)) (i : Fin (m + 5)) :
-    (SecondHurewicz.SimplyConnected.timeSlice
+    (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
         (Hurewicz.topNormalization x (m + 3) hn hpi σ) 1).comp
         (SingularChains.simplexFace (m + 3) i) =
-      SecondHurewicz.SimplyConnected.timeSlice
+      Hurewicz.DegreeTwo.SimplyConnected.timeSlice
         (Hurewicz.topStorey x (m + 1)
-          (SecondHurewicz.SimplyConnected.timeSlice
+          (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
             (Hurewicz.normalizationHomotopy x (m + 3) hpi
               (σ.comp (SingularChains.simplexFace (m + 3) i))) 1)) 1 := by
   rw [Hurewicz.topNormalization_endpoint]
-  rw [SecondHurewicz.SimplyConnected.timeSlice_face
-    (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face
+  rw [Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face
+    (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face
       (Hurewicz.simplexStraighteningHomotopy (m + 2) x)
       (Hurewicz.topStorey x (m + 1))
-      (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+      (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
       (Hurewicz.topStorey_zero x (m + 1)))
     _ i 1]
-  rw [SecondHurewicz.SimplyConnected.timeSlice_face
-    (show SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies (m + 3)
+  rw [Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face
+    (show Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies (m + 3)
         (Hurewicz.towerBelow x hn hpi).nxt
-        (SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy
+        (Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy
           (Hurewicz.towerBelow x hn hpi).aug
           (Hurewicz.towerBelow x hn hpi).nxt
           (Hurewicz.towerBelow x hn hpi).compat
           (Hurewicz.towerBelow x hn hpi).nxt_zero) from
-      SecondHurewicz.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
+      Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face _ _ _ _)
     σ i 1]
   rw [Hurewicz.towerBelow_nxt_eq]
 
@@ -793,22 +793,22 @@ def Hurewicz.normalizedTopSimplex {X : Type} [TopologicalSpace X]
     (σ : SingularChains.SingularSimplex X (m + 4)) :
     Hurewicz.SimplexGeometry.BasedSimplexBoundary (m + 4) x :=
   Hurewicz.SimplexGeometry.BasedSimplexBoundary.ofFaces
-    (SecondHurewicz.SimplyConnected.timeSlice
+    (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
       (Hurewicz.topNormalization x (m + 3) (by omega) hpi σ) 1)
     (fun i s hs => by
       haveI := hpi (m + 2) (by omega) (by omega)
-      show (SecondHurewicz.SimplyConnected.timeSlice
+      show (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
           (Hurewicz.topNormalization x (m + 3) _ hpi σ) 1).comp
             (SingularChains.simplexFace (m + 3) i) s = x
       rw [Hurewicz.topNormalization_endpoint_face]
       obtain ⟨j, t, ht⟩ :=
-        SecondHurewicz.SimplyConnected.simplexBoundary_exists_face (m + 2)
-          (⟨s, hs⟩ : SecondHurewicz.SimplyConnected.SimplexBoundary (m + 3))
+        Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary_exists_face (m + 2)
+          (⟨s, hs⟩ : Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary (m + 3))
       have he : SingularChains.simplexFace (m + 2) j t = s := congrArg Subtype.val ht
       rw [← he, ← ContinuousMap.comp_apply,
-        SecondHurewicz.SimplyConnected.timeSlice_face
+        Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face
           (Hurewicz.topStorey_face x (m + 1)) _ j 1,
-        show (SecondHurewicz.SimplyConnected.timeSlice
+        show (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
               (Hurewicz.normalizationHomotopy x (m + 3) hpi
                 (σ.comp (SingularChains.simplexFace (m + 3) i))) 1).comp
             (SingularChains.simplexFace (m + 2) j) =

@@ -107,14 +107,14 @@ theorem sphere_pi_subsingleton_of_lt (n k : ℕ) (hk : 2 ≤ k) (hkn : k < n)
 
 /-! ### Sphere-map classification via the top cube class -/
 
-open SphereCube SecondHurewicz.SimplyConnected
+open SphereCube Hurewicz.DegreeTwo.SimplyConnected
 
 /-- The higher Hurewicz map in degree two agrees with the second Hurewicz map. -/
 theorem hurewiczMap_eq_second {X : Type} [TopologicalSpace X] (x : X) :
-    hurewiczMap (m := 0) x = SecondHurewicz.hurewiczMap x := by
+    hurewiczMap (m := 0) x = Hurewicz.DegreeTwo.hurewiczMap x := by
   ext a
   change hurewiczMap (m := 0) x (Additive.ofMul (Additive.toMul a)) =
-    SecondHurewicz.hurewiczMap x (Additive.ofMul (Additive.toMul a))
+    Hurewicz.DegreeTwo.hurewiczMap x (Additive.ofMul (Additive.toMul a))
   refine Quotient.inductionOn (Additive.toMul a) ?_
   intro p
   exact cubeHomologyClass_eq_squareHomologyClass p

@@ -28,7 +28,7 @@ cube boundary under it.
 
 ## Main definitions and results
 
-* `SecondHurewicz.SimplyConnected.simplexBoundary`, `SimplexBoundary`,
+* `Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary`, `SimplexBoundary`,
   `bottomOrSide`: the simplex boundary and the bottom-or-side part of the cylinder.
 * `Hurewicz.simplexCubeHomeomorph`: the simplex–cube homeomorphism.
 * `Hurewicz.simplexCubeHomeomorph_boundary_iff`: boundary correspondence.
@@ -57,21 +57,21 @@ namespace Mathoverflow1973
 
 /-- The boundary of the standard `n`-simplex: the set of points where at least one
 barycentric coordinate vanishes. -/
-def SecondHurewicz.SimplyConnected.simplexBoundary (n : ℕ) : Set (SingularChains.Simplex n) :=
+def Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary (n : ℕ) : Set (SingularChains.Simplex n) :=
   {s | ∃ i : Fin (n + 1), s i = 0}
 
 /-- The simplex boundary `simplexBoundary n` as a subtype. -/
-abbrev SecondHurewicz.SimplyConnected.SimplexBoundary (n : ℕ) :=
+abbrev Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary (n : ℕ) :=
   ↥(simplexBoundary n)
 
 /-- The bottom-or-side part of the simplex cylinder `unitInterval × Simplex n`:
 the bottom face `t = 0` together with the lateral faces over the simplex boundary. -/
-def SecondHurewicz.SimplyConnected.bottomOrSide (n : ℕ) :
+def Hurewicz.DegreeTwo.SimplyConnected.bottomOrSide (n : ℕ) :
     Set (unitInterval × SingularChains.Simplex n) :=
   {u | u.1 = 0 ∨ u.2 ∈ simplexBoundary n}
 
 /-- The simplex boundary is closed, as a finite union of closed face preimages. -/
-theorem SecondHurewicz.SimplyConnected.isClosed_simplexBoundary (n : ℕ) :
+theorem Hurewicz.DegreeTwo.SimplyConnected.isClosed_simplexBoundary (n : ℕ) :
     IsClosed (simplexBoundary n) := by
   have h : IsClosed (⋃ i : Fin (n + 1), {s : SingularChains.Simplex n | s i = 0}) :=
     isClosed_iUnion_of_finite fun i =>
@@ -80,12 +80,12 @@ theorem SecondHurewicz.SimplyConnected.isClosed_simplexBoundary (n : ℕ) :
 
 /-- Every point in the image of a face inclusion `simplexFace n i` lies in the simplex
 boundary (its `i`-th coordinate is `0`). -/
-theorem SecondHurewicz.SimplyConnected.simplexFace_mem_boundary (n : ℕ) (i : Fin (n + 2))
+theorem Hurewicz.DegreeTwo.SimplyConnected.simplexFace_mem_boundary (n : ℕ) (i : Fin (n + 2))
     (s : SingularChains.Simplex n) : SingularChains.simplexFace n i s ∈ simplexBoundary (n + 1) :=
   ⟨i, SingularChains.simplexFace_apply_self n i s⟩
 
 /-- The inclusion of the simplex as the bottom face `(0, s)` of `bottomOrSide n`. -/
-def SecondHurewicz.SimplyConnected.bottomInclusion (n : ℕ) :
+def Hurewicz.DegreeTwo.SimplyConnected.bottomInclusion (n : ℕ) :
     C(SingularChains.Simplex n, ↥(bottomOrSide n))
     where
   toFun s := ⟨(0, s), Or.inl rfl⟩
@@ -93,7 +93,7 @@ def SecondHurewicz.SimplyConnected.bottomInclusion (n : ℕ) :
 
 /-- The inclusion of `unitInterval × SimplexBoundary n` as the lateral part of
 `bottomOrSide n`. -/
-def SecondHurewicz.SimplyConnected.sideInclusion (n : ℕ) :
+def Hurewicz.DegreeTwo.SimplyConnected.sideInclusion (n : ℕ) :
     C(unitInterval × SimplexBoundary n, ↥(bottomOrSide n))
     where
   toFun u := ⟨(u.1, u.2.val), Or.inr u.2.property⟩
@@ -115,7 +115,7 @@ def Hurewicz.realCubeSet (n : ℕ) : Set (Fin n → ℝ) :=
 whole simplex boundary to the basepoint. -/
 def Hurewicz.BasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :=
   { τ : C(SingularChains.Simplex n, X) //
-    ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, τ s = x }
+    ∀ s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n, τ s = x }
 
 /-- The constant based simplex at `x`. -/
 def Hurewicz.constantBasedSimplex (n : ℕ) {X : Type} [TopologicalSpace X] (x : X) :
@@ -390,7 +390,7 @@ coordinate vanishes, i.e. iff it lies on the simplex boundary. -/
 theorem Hurewicz.simplexFlatHomeomorph_mem_frontier_iff (n : ℕ)
     (s : SingularChains.Simplex n) :
     (simplexFlatHomeomorph n s).val ∈ frontier (flatSimplexSet n) ↔
-      s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+      s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   rw [frontier, (isClosed_flatSimplexSet n).closure_eq]
   change (_ ∧ _) ↔ ∃ i : Fin (n + 1), s i = 0
   rw [simplexFlatHomeomorph_mem_interior_iff]
@@ -484,7 +484,7 @@ def Hurewicz.simplexCubeHomeomorph (n : ℕ) :
 the homeomorphism identifies the two boundaries. -/
 theorem Hurewicz.simplexCubeHomeomorph_boundary_iff (n : ℕ) (s : SingularChains.Simplex n) :
     simplexCubeHomeomorph n s ∈ Cube.boundary (Fin n) ↔
-      s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n := by
+      s ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n := by
   change
     realCubeHomeomorph n (flatCubeHomeomorph n (simplexFlatHomeomorph n s)) ∈
         Cube.boundary (Fin n) ↔
@@ -498,7 +498,7 @@ theorem Hurewicz.simplexCubeHomeomorph_boundary_iff (n : ℕ) (s : SingularChain
 lies on the cube boundary. -/
 theorem Hurewicz.simplexCubeHomeomorph_symm_boundary_iff (n : ℕ)
     (u : Fin n → (unitInterval)) :
-    (simplexCubeHomeomorph n).symm u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n ↔
+    (simplexCubeHomeomorph n).symm u ∈ Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary n ↔
       u ∈ Cube.boundary (Fin n) := by
   rw [← simplexCubeHomeomorph_boundary_iff, Homeomorph.apply_symm_apply]
 

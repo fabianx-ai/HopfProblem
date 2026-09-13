@@ -2,13 +2,13 @@
 
 ## Scope and provenance
 
-- Repository: `/home/kimi/hopf`, branch `lib/C-10-boundary`.
-- Checked Lean head: `1a313843ed86eb106842fa1e2be031a5bb803eea`.
+- Repository: `/home/kimi/hopf`, branch `lib/C-14-integrated-receipt`.
+- Checked Lean head: `37fc1de8a74a3b294a54fd9e804c82c074ae9591`.
 - Toolchain: `leanprover/lean4:v4.33.0`, executable directory `/tmp/shared-lean-copy/toolchain-v4.33.0/bin`.
 - Ledger: the **current Axis-5 section** of `Lib/docs/C.md`.
-- Ledger file SHA-256: `e7dceb65570ab09da72b86106d559f1dddb53a22e6f570ce6f8892227265d21f`.
+- Ledger file SHA-256: `6b1d5d42398a6c91d7655dd1911667e4cd656574992d3aa937516730eba58d84`.
 - Boundary list: C1–C13; thirteen public output aliases; thirteen import-visible output checks.
-- Representation checks: `Degree.SphereCube.Sphere n = SphereHomology.UnitSphere n` by `rfl`, and a degree-six equivalence under the four explicit lower-homotopy-group instances.
+- Representation checks: `SphereCube.Sphere n = SphereHomology.UnitSphere n` by `rfl`, and a degree-six equivalence under the four explicit lower-homotopy-group instances.
 
 This is a retrospective check of the **implemented current interface**. It does not claim that
 C10 or C13 existed at `856e4762`, nor that this newly assembled ledger was a pre-implementation
@@ -35,10 +35,10 @@ abbrev C7 := @Mathoverflow1973.Hurewicz.normalizationHomotopy
 abbrev C8 := @Mathoverflow1973.Hurewicz.NativeSubdivision.nativeCubeSubdivision_class
 abbrev C9 := @Mathoverflow1973.Hurewicz.CubeGluing.coherentCubeEndpoint
 abbrev C10 := @Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE
-abbrev C11 := @Mathoverflow1973.Degree.SphereCube.factorMap
-abbrev C12 := @Mathoverflow1973.Degree.CylinderFilling.exists_filling
+abbrev C11 := @Mathoverflow1973.SphereCube.factorMap
+abbrev C12 := @Mathoverflow1973.CylinderFilling.exists_filling
 abbrev C13 := @Mathoverflow1973.Hurewicz.sphere_homotopicRel_of_topClass_eq
-example (n : ℕ) : Mathoverflow1973.Degree.SphereCube.Sphere n =
+example (n : ℕ) : Mathoverflow1973.SphereCube.Sphere n =
     Mathoverflow1973.SphereHomology.UnitSphere n := rfl
 end C_InterfaceCheck
 ```
@@ -49,8 +49,8 @@ Command (from the repository root):
 PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean -o C_InterfaceCheck.olean C_InterfaceCheck.lean
 ```
 
-Exit **0**. Wall time **3 seconds**, epoch `1789261012` to `1789261015`.
-Actual output: `/home/kimi/s6-notes/C-interface-provider.log`.
+Exit **0**. Wall time **5 seconds**, epoch `1789264797` to `1789264802`.
+Actual output: `/home/kimi/s6-notes/C-interface-integrated-provider.log`.
 
 ## Importing consumer
 
@@ -74,10 +74,11 @@ Command:
 LEAN_PATH=.:$LEAN_PATH PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean C_InterfaceConsumerCheck.lean
 ```
 
-Exit **0**. Successful run wall time **3 seconds**, epoch `1789261058` to `1789261061`.
-The earlier consumer attempt omitted `noncomputable section`; it was corrected before the
-successful run. Actual printed types and exit status:
-`/home/kimi/s6-notes/C-interface-consumer.log`.
+Exit **0**. Successful run wall time **4 seconds**, epoch `1789264808` to `1789264812`.
+(Historical: in the `1a31384` receipt an initial consumer attempt omitted
+`noncomputable section`; the corrected source shown above was already in place for this run.)
+Actual printed types and exit status:
+`/home/kimi/s6-notes/C-interface-integrated-consumer.log`.
 
 ## Durable consumers and cleanup
 
@@ -87,10 +88,16 @@ successful run. Actual printed types and exit status:
 - `Hopf/LibShims.lean` preserves the renamed public APIs for project consumers.
 - `lake build Hopf.Recognition` passed after the mathematical changes and after both rename
   units. These are actual downstream import-boundary checks, not same-file `#check`s.
-- Both disposable probe sources and the generated local provider `.olean` were removed.
+- Both disposable probe sources and the generated local provider `.olean` were removed
+  after full copies were preserved as `/home/kimi/s6-notes/C-interface-integrated-provider.lean`
+  and `/home/kimi/s6-notes/C-interface-integrated-consumer.lean`.
   No temporary `axiom`, `sorry`, or challenge declaration was used in these probes.
-- After cleanup the only untracked file was the requested recovered historical review,
-  `Lib/docs/C-STAGE2-REVIEW.md`; there were no Lean source changes or probe artifacts.
+- After cleanup the only untracked file was the repository-level `AGENTS.md` provided by the
+  environment; there were no Lean source changes or probe artifacts.
+
+Historical: the previous receipt recorded at `1a313843ed86eb106842fa1e2be031a5bb803eea`
+used the pre-rename `Mathoverflow1973.Degree.*` spellings and `C-interface-*.log` evidence;
+its run results are preserved in those logs and are not re-claimed here.
 
 Coordinating reviewer: **Devin**. Verdict: the thirteen implemented outputs are import-visible
 with the types in the current ledger. This receipt does not certify the unimplemented optional
