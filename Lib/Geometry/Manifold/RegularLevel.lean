@@ -49,6 +49,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Height charts at regular points -/
+
+/-- A nonzero scalar functional is surjective. -/
 theorem RegularLevel.surjective_of_ne_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {L : E →L[ℝ] ℝ} (hL : L ≠ 0) : Function.Surjective L := by
   have hex : ∃ v, L v ≠ 0 := by
@@ -59,6 +62,7 @@ theorem RegularLevel.surjective_of_ne_zero {E : Type*} [NormedAddCommGroup E]
   refine ⟨(r / L v) • v, ?_⟩
   rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hv]
 
+/-- A nonzero functional's kernel has codimension one. -/
 theorem RegularLevel.finrank_kernel_add_one {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {L : E →L[ℝ] ℝ} (hL : L ≠ 0) :
     Module.finrank ℝ L.ker + 1 = Module.finrank ℝ E := by
@@ -68,6 +72,7 @@ theorem RegularLevel.finrank_kernel_add_one {E : Type*} [NormedAddCommGroup E]
   rw [hr, finrank_top, Module.finrank_self] at hdim
   omega
 
+/-- Near a regular point `f` is the first coordinate of a chart. -/
 theorem RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} {U : Set E} {x : E} (hU : IsOpen U)
     (hx : x ∈ U) (hf : ContDiffOn ℝ ∞ f U) (hreg : fderiv ℝ f x ≠ 0) :
@@ -93,9 +98,11 @@ theorem RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedAddComm
     change (f x, Classical.choose hk (x - x)) = (f x, 0)
     simp
 
+/-- The model `ℝ × D` for height charts. -/
 abbrev RegularLevel.Model (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] :=
   EuclideanSpace ℝ (Fin (Module.finrank ℝ E - 1))
 
+/-- Near a regular point `f` is the height coordinate of a manifold chart. -/
 theorem RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M}
@@ -135,6 +142,7 @@ theorem RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCommGrou
     change (f (e.symm (e x)), j 0) = (f x, 0)
     rw [e.left_inv hxe, map_zero]
 
+/-- The inverse height chart returns points of level `b`. -/
 theorem RegularLevel.inverse_height {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     {v : D} (hv : (b, v) ∈ e.target) : f (e.symm (b, v)) = b := by
@@ -142,13 +150,19 @@ theorem RegularLevel.inverse_height {M D : Type*} [TopologicalSpace M] [Topologi
   rw [e.right_inv hv] at h
   exact h.symm
 
+/-! ### Charts on a regular level set -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The slice of a level point through the height chart. -/
 def RegularLevel.sliceInverse {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     (base : { x : M // f x = b }) (v : D) : { x : M // f x = b } :=
   if hv : (b, v) ∈ e.target then ⟨e.symm (b, v), inverse_height e he hv⟩ else base
 
+/-! ### Slice charts on a level set -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The chart on the level set induced by a height chart. -/
 def RegularLevel.sliceChart {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     (base : { x : M // f x = b }) : OpenPartialHomeomorph { x : M // f x = b } D
@@ -199,6 +213,7 @@ def RegularLevel.sliceChart {M D : Type*} [TopologicalSpace M] [TopologicalSpace
     rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse slice chart computes through the height chart. -/
 theorem RegularLevel.sliceChart_symm_coe {M D : Type*} [TopologicalSpace M]
     [TopologicalSpace D] {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D))
     (he : ∀ y ∈ e.source, (e y).1 = f y) (base : { x : M // f x = b }) {v : D}
@@ -208,6 +223,7 @@ theorem RegularLevel.sliceChart_symm_coe {M D : Type*} [TopologicalSpace M]
   change (sliceInverse e he base v : M) = _
   simp only [sliceInverse, dif_pos hv]
 
+/-- Slice-chart transitions are smooth. -/
 theorem RegularLevel.contDiffOn_slice_transition {E D M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D] [TopologicalSpace M]
     [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
@@ -236,6 +252,9 @@ theorem RegularLevel.contDiffOn_slice_transition {E D M : Type*} [NormedAddCommG
   rw [sliceChart_symm_coe Φ.toOpenPartialHomeomorph hΦ x hv.1]
   rfl
 
+/-! ### The regular level manifold -/
+
+/-- A height chart around each point of the regular level. -/
 def RegularLevel.heightChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -243,6 +262,7 @@ def RegularLevel.heightChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
     (x : { x : M // f x = b }) : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, ℝ × Model E) M (ℝ × Model E) ∞ :=
   Classical.choose (exists_native_height_chart hf (hreg x x.property))
 
+/-- A level point lies in its height chart. -/
 theorem RegularLevel.heightChart_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -250,6 +270,7 @@ theorem RegularLevel.heightChart_mem_source {E M : Type*} [NormedAddCommGroup E]
     (x : { x : M // f x = b }) : (x : M) ∈ (heightChart hf hreg x).source :=
   (Classical.choose_spec (exists_native_height_chart hf (hreg x x.property))).1
 
+/-- The height chart reads off the function value. -/
 theorem RegularLevel.heightChart_height {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -258,6 +279,7 @@ theorem RegularLevel.heightChart_height {E M : Type*} [NormedAddCommGroup E]
     ∀ y ∈ (heightChart hf hreg x).source, (heightChart hf hreg x y).1 = f y :=
   (Classical.choose_spec (exists_native_height_chart hf (hreg x x.property))).2.1
 
+/-- The level-set chart induced by a height chart. -/
 def RegularLevel.levelChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -265,6 +287,7 @@ def RegularLevel.levelChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
     (x : { x : M // f x = b }) : OpenPartialHomeomorph { x : M // f x = b } (Model E) :=
   sliceChart (heightChart hf hreg x).toOpenPartialHomeomorph (heightChart_height hf hreg x) x
 
+/-- The level set's charted-space structure. -/
 @[instance_reducible]
 def RegularLevel.chartedSpace {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -277,6 +300,7 @@ def RegularLevel.chartedSpace {E M : Type*} [NormedAddCommGroup E] [NormedSpace 
   mem_chart_source := heightChart_mem_source hf hreg
   chart_mem_atlas := fun x => ⟨x, rfl⟩
 
+/-- The regular level is a smooth manifold. -/
 theorem RegularLevel.isManifold {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -292,6 +316,7 @@ theorem RegularLevel.isManifold {E M : Type*} [NormedAddCommGroup E] [NormedSpac
     contDiffOn_slice_transition (heightChart hf hreg x) (heightChart hf hreg y)
       (heightChart_height hf hreg x) (heightChart_height hf hreg y) x y
 
+/-- The inclusion of the regular level is smooth. -/
 theorem RegularLevel.contMDiff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -319,6 +344,7 @@ theorem RegularLevel.contMDiff_inclusion {E M : Type*} [NormedAddCommGroup E]
   rw [heq]
   exact (Φ.left_inv' hy).symm
 
+/-- Smoothness into the level is smoothness into the ambient space. -/
 theorem RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -342,6 +368,7 @@ theorem RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCommGroup
     change ContMDiffAt I 𝓘(ℝ, Model E) ∞ (fun y => (Φ (g y)).2) x
     exact contDiff_snd.contMDiff.contMDiffAt.comp x hcomp
 
+/-- A map into the level is smooth exactly when its inclusion is. -/
 theorem RegularLevel.contMDiff_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -353,6 +380,7 @@ theorem RegularLevel.contMDiff_iff_inclusion {E M : Type*} [NormedAddCommGroup E
   let _ := chartedSpace hf hreg
   exact forall_congr' (contMDiffAt_iff_inclusion hf hreg I g)
 
+/-- The level inclusion has injective derivative. -/
 theorem RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
