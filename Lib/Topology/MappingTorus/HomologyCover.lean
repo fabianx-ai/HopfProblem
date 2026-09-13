@@ -45,10 +45,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Wang sequence algebra -/
+
+/-- The difference map `id − F`. -/
 def MappingTorusHomology.Algebra.difference {M : Type*} [AddCommGroup M] [Module ℤ M]
     (F : M →ₗ[ℤ] M) : M →ₗ[ℤ] M :=
   LinearMap.id - F
 
+/-- The Mayer–Vietoris difference map on the two-summand model `(u,v) ↦ (u+v, −(u+Fv))`. -/
 def MappingTorusHomology.Algebra.twoArcMap {M : Type*} [AddCommGroup M] [Module ℤ M]
     (F : M →ₗ[ℤ] M) : (M × M) →ₗ[ℤ] (M × M) :=
   SingularHomology.intLinearMapOfAddHom
@@ -62,17 +66,20 @@ def MappingTorusHomology.Algebra.twoArcMap {M : Type*} [AddCommGroup M] [Module 
           rw [map_add]
           abel }
 
+/-- The two-arc map computes `(p₁ + p₂, −(p₁ + F p₂))`. -/
 @[simp]
 theorem MappingTorusHomology.Algebra.twoArcMap_apply {M : Type*} [AddCommGroup M] [Module ℤ M]
     (F : M →ₗ[ℤ] M) (p : M × M) : twoArcMap F p = (p.1 + p.2, -(p.1 + F p.2)) :=
   rfl
 
+/-- The pair sum of a two-arc image is the difference on the second component. -/
 theorem MappingTorusHomology.Algebra.pairSum_twoArcMap {M : Type*} [AddCommGroup M] [Module ℤ M]
     (F : M →ₗ[ℤ] M) (p : M × M) :
     SingularHomology.pairSumMap M (twoArcMap F p) = difference F p.2 := by
   change (p.1 + p.2) + -(p.1 + F p.2) = p.2 - F p.2
   abel
 
+/-- The two-arc kernel is the antidiagonal of `ker (id − F)`. -/
 theorem MappingTorusHomology.Algebra.twoArcMap_kernel_iff {M : Type*} [AddCommGroup M]
     [Module ℤ M] (F : M →ₗ[ℤ] M) (p : M × M) :
     twoArcMap F p = 0 ↔ p.1 = -p.2 ∧ difference F p.2 = 0 := by
@@ -86,6 +93,7 @@ theorem MappingTorusHomology.Algebra.twoArcMap_kernel_iff {M : Type*} [AddCommGr
     rw [twoArcMap_apply, hfst, hF, neg_add_cancel, neg_zero]
     rfl
 
+/-- Exactness identifies `range (id − F)` with the kernel of the fold. -/
 theorem MappingTorusHomology.Algebra.range_difference_eq_ker {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (F : M →ₗ[ℤ] M) (i : M →ₗ[ℤ] N)
     (hJ :
@@ -113,15 +121,20 @@ theorem MappingTorusHomology.Algebra.range_difference_eq_ker {M N : Type*} [AddC
         (pairSum_twoArcMap F p).symm
       _ = x := by rw [hp, SingularHomology.pairSumMap_apply, add_zero]
 
+/-! ### The connecting boundary -/
+
+/-- The boundary `n ↦ −(d n)₁` through a kernel presentation. -/
 def MappingTorusHomology.Algebra.boundary {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (d : N →ₗ[ℤ] (P × P)) : N →ₗ[ℤ] P :=
   (SingularHomology.negativeFirstMap P).comp d
 
+/-- The boundary computes the negated first component. -/
 @[simp]
 theorem MappingTorusHomology.Algebra.boundary_apply {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (d : N →ₗ[ℤ] (P × P)) (n : N) : boundary d n = -(d n).1 :=
   rfl
 
+/-- The connecting image lies in the two-arc kernel. -/
 theorem MappingTorusHomology.Algebra.connecting_mem_kernel {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) (n : N) :
@@ -129,12 +142,14 @@ theorem MappingTorusHomology.Algebra.connecting_mem_kernel {N P : Type*} [AddCom
   rw [← hd]
   exact ⟨n, rfl⟩
 
+/-- On the kernel the boundary also equals the second component. -/
 theorem MappingTorusHomology.Algebra.boundary_eq_snd {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) (n : N) : boundary d n = (d n).2 := by
   have hp := (twoArcMap_kernel_iff F (d n)).mp (connecting_mem_kernel F d hd n)
   rw [boundary_apply, hp.1, neg_neg]
 
+/-- The connecting image is antidiagonal in the boundary. -/
 theorem MappingTorusHomology.Algebra.connecting_eq_antidiagonal {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) (n : N) :
@@ -143,6 +158,7 @@ theorem MappingTorusHomology.Algebra.connecting_eq_antidiagonal {N P : Type*} [A
   · simp only [boundary_apply, neg_neg]
   · exact (boundary_eq_snd F d hd n).symm
 
+/-- The boundary lands in `ker (id − F)`. -/
 theorem MappingTorusHomology.Algebra.boundary_mem_kernel {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) (n : N) :
@@ -150,6 +166,7 @@ theorem MappingTorusHomology.Algebra.boundary_mem_kernel {N P : Type*} [AddCommG
   rw [boundary_eq_snd F d hd n]
   exact ((twoArcMap_kernel_iff F (d n)).mp (connecting_mem_kernel F d hd n)).2
 
+/-- The boundary range is `ker (id − F)`. -/
 theorem MappingTorusHomology.Algebra.boundary_range {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) :
@@ -167,6 +184,7 @@ theorem MappingTorusHomology.Algebra.boundary_range {N P : Type*} [AddCommGroup 
     rw [boundary_apply, hn]
     exact neg_neg b
 
+/-- The boundary kernel equals the kernel of `d`. -/
 theorem MappingTorusHomology.Algebra.boundary_ker {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) :
@@ -181,6 +199,7 @@ theorem MappingTorusHomology.Algebra.boundary_ker {N P : Type*} [AddCommGroup N]
     rw [boundary_apply, hn]
     exact neg_zero
 
+/-- Exactness identifies the inclusion range with the boundary kernel. -/
 theorem MappingTorusHomology.Algebra.range_inclusion_eq_ker_boundary {M N P : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N] [AddCommGroup P] [Module ℤ P]
     (F : P →ₗ[ℤ] P) (i : M →ₗ[ℤ] N) (d : N →ₗ[ℤ] (P × P))
@@ -189,17 +208,22 @@ theorem MappingTorusHomology.Algebra.range_inclusion_eq_ker_boundary {M N P : Ty
     LinearMap.range i = LinearMap.ker (boundary d) :=
   hi.trans (boundary_ker F d hd).symm
 
+/-! ### Homology of the two-open cover -/
+
+/-- The monodromy map `f_*` on homology. -/
 abbrev MappingTorusHomology.monodromyHomologyMap {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ] SingularMayerVietoris.SingularHomology X n :=
   SingularMayerVietoris.singularHomologyMap (f : C(X, X)) n
 
+/-- The fiber inclusion map on homology. -/
 abbrev MappingTorusHomology.fibreHomologyMap {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) n :=
   SingularMayerVietoris.singularHomologyMap (MappingTorus.HomologyCover.fibreInclusion f) n
 
+/-- The homology of `U` and `V` is two copies of the fiber homology. -/
 def MappingTorusHomology.arcHomologyEquiv {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     (SingularMayerVietoris.SingularHomology (MappingTorus.HomologyCover.U f) n ×
         SingularMayerVietoris.SingularHomology (MappingTorus.HomologyCover.V f) n) ≃ₗ[ℤ]
@@ -209,6 +233,7 @@ def MappingTorusHomology.arcHomologyEquiv {X : Type} [TopologicalSpace X] (f : X
       (SingularHomology.homotopyEquivHomologyEquiv
           (MappingTorus.HomologyCover.homotopyEquivV f) n).toAddEquiv).toIntLinearEquiv
 
+/-- The intersection homology is two copies of the fiber homology. -/
 def MappingTorusHomology.intersectionHomologyEquiv {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology
@@ -220,6 +245,7 @@ def MappingTorusHomology.intersectionHomologyEquiv {X : Type} [TopologicalSpace 
         (MappingTorus.HomologyCover.intersectionHomotopyEquiv f) n).trans
     (SingularHomology.sumHomologyEquiv X X n)
 
+/-- The intersection equivalence computes through the homotopy equivalence. -/
 @[simp]
 theorem MappingTorusHomology.intersectionHomologyEquiv_apply {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ)
@@ -234,6 +260,7 @@ theorem MappingTorusHomology.intersectionHomologyEquiv_apply {X : Type} [Topolog
           (MappingTorus.HomologyCover.intersectionHomotopyEquiv f).toFun n a) :=
   rfl
 
+/-- The `U` inclusion on homology factors through the homotopy equivalence. -/
 theorem MappingTorusHomology.inclusionU_homology {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (MappingTorus.HomologyCover.inclusionU f) n =
@@ -245,6 +272,7 @@ theorem MappingTorusHomology.inclusionU_homology {X : Type} [TopologicalSpace X]
     SingularHomology.singularHomologyMap_comp]
   rfl
 
+/-- The `V` inclusion on homology factors through the homotopy equivalence. -/
 theorem MappingTorusHomology.inclusionV_homology {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap (MappingTorus.HomologyCover.inclusionV f) n =
@@ -256,6 +284,7 @@ theorem MappingTorusHomology.inclusionV_homology {X : Type} [TopologicalSpace X]
     SingularHomology.singularHomologyMap_comp]
   rfl
 
+/-- The `U` intersection map on homology is the fold. -/
 theorem MappingTorusHomology.intersectionToU_homology {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ)
     (a :
@@ -283,6 +312,7 @@ theorem MappingTorusHomology.intersectionToU_homology {X : Type} [TopologicalSpa
       (SingularMayerVietoris.singularHomologyMap
         (MappingTorus.HomologyCover.intersectionHomotopyEquiv f).toFun n a)
 
+/-- The `V` intersection map on homology is the twisted fold. -/
 theorem MappingTorusHomology.intersectionToV_homology {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ)
     (a :
@@ -312,6 +342,7 @@ theorem MappingTorusHomology.intersectionToV_homology {X : Type} [TopologicalSpa
         (MappingTorus.HomologyCover.intersectionHomotopyEquiv f).toFun n a)
   simpa only [SingularHomology.singularHomologyMap_id, LinearMap.id_apply] using h
 
+/-- The left Mayer–Vietoris map in fiber coordinates. -/
 theorem MappingTorusHomology.leftHomologyMap_coordinates {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ)
     (a :
@@ -337,6 +368,7 @@ theorem MappingTorusHomology.leftHomologyMap_coordinates {X : Type} [Topological
   rw [map_neg, intersectionToU_homology, intersectionToV_homology]
   rfl
 
+/-- The right Mayer–Vietoris map in fiber coordinates. -/
 theorem MappingTorusHomology.rightHomologyMap_coordinates {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ)
     (a :
@@ -354,6 +386,9 @@ theorem MappingTorusHomology.rightHomologyMap_coordinates {X : Type} [Topologica
   rw [inclusionU_homology, inclusionV_homology]
   exact (map_add (fibreHomologyMap f n) _ _).symm
 
+/-! ### Cokernel and kernel exactness -/
+
+/-- The induced inclusion of the `id − F` cokernel. -/
 def MappingTorusHomology.Algebra.cokernelInclusion {M N : Type*} [AddCommGroup M] [Module ℤ M]
     [AddCommGroup N] [Module ℤ N] (F : M →ₗ[ℤ] M) (i : M →ₗ[ℤ] N)
     (hJ :
@@ -363,6 +398,7 @@ def MappingTorusHomology.Algebra.cokernelInclusion {M N : Type*} [AddCommGroup M
   SingularHomology.intLinearMapOfAddHom
     ((LinearMap.range (difference F)).liftQ i (range_difference_eq_ker F i hJ).le).toAddMonoidHom
 
+/-- The cokernel inclusion is injective. -/
 theorem MappingTorusHomology.Algebra.cokernelInclusion_injective {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (F : M →ₗ[ℤ] M) (i : M →ₗ[ℤ] N)
     (hJ :
@@ -378,6 +414,7 @@ theorem MappingTorusHomology.Algebra.cokernelInclusion_injective {M N : Type*} [
   change i (a - b) = 0
   rw [map_sub, hxy, sub_self]
 
+/-- The cokernel inclusion has range `range i`. -/
 theorem MappingTorusHomology.Algebra.cokernelInclusion_range {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (F : M →ₗ[ℤ] M) (i : M →ₗ[ℤ] N)
     (hJ :
@@ -392,6 +429,7 @@ theorem MappingTorusHomology.Algebra.cokernelInclusion_range {M N : Type*} [AddC
   · rintro ⟨a, rfl⟩
     exact ⟨Submodule.Quotient.mk a, rfl⟩
 
+/-- The boundary viewed as a map into `ker (id − F)`. -/
 def MappingTorusHomology.Algebra.kernelBoundary {N P : Type*} [AddCommGroup N] [Module ℤ N]
     [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) :
@@ -406,6 +444,7 @@ def MappingTorusHomology.Algebra.kernelBoundary {N P : Type*} [AddCommGroup N] [
         apply Subtype.ext
         exact map_add (boundary d) n m }
 
+/-- The kernel boundary vanishes exactly when the boundary does. -/
 theorem MappingTorusHomology.Algebra.kernelBoundary_eq_zero_iff {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) (n : N) :
@@ -416,6 +455,7 @@ theorem MappingTorusHomology.Algebra.kernelBoundary_eq_zero_iff {N P : Type*} [A
   · intro hn
     exact Subtype.ext hn
 
+/-- The kernel boundary's kernel is the boundary's kernel. -/
 theorem MappingTorusHomology.Algebra.kernelBoundary_ker {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) :
@@ -423,6 +463,7 @@ theorem MappingTorusHomology.Algebra.kernelBoundary_ker {N P : Type*} [AddCommGr
   ext n
   exact kernelBoundary_eq_zero_iff F d hd n
 
+/-- The kernel boundary surjects onto `ker (id − F)`. -/
 theorem MappingTorusHomology.Algebra.kernelBoundary_surjective {N P : Type*} [AddCommGroup N]
     [Module ℤ N] [AddCommGroup P] [Module ℤ P] (F : P →ₗ[ℤ] P) (d : N →ₗ[ℤ] (P × P))
     (hd : LinearMap.range d = LinearMap.ker (twoArcMap F)) :
@@ -434,6 +475,7 @@ theorem MappingTorusHomology.Algebra.kernelBoundary_surjective {N P : Type*} [Ad
   obtain ⟨n, hn⟩ := hb
   exact ⟨n, Subtype.ext hn⟩
 
+/-- The cokernel inclusion range is the kernel-boundary kernel. -/
 theorem MappingTorusHomology.Algebra.cokernelInclusion_range_eq_ker_kernelBoundary {M N P : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N] [AddCommGroup P] [Module ℤ P]
     (F : M →ₗ[ℤ] M) (F' : P →ₗ[ℤ] P) (i : M →ₗ[ℤ] N) (d : N →ₗ[ℤ] (P × P))
@@ -446,16 +488,21 @@ theorem MappingTorusHomology.Algebra.cokernelInclusion_range_eq_ker_kernelBounda
   rw [cokernelInclusion_range, kernelBoundary_ker, boundary_ker F' d hd]
   exact hi
 
+/-! ### The Wang sequence -/
+
+/-- The Wang difference `id − f_*` on homology. -/
 def MappingTorusHomology.wangDifference {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ] SingularMayerVietoris.SingularHomology X n :=
   Algebra.difference (monodromyHomologyMap f n)
 
+/-- The Wang difference computes `a − f_* a`. -/
 @[simp]
 theorem MappingTorusHomology.wangDifference_apply {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     wangDifference f n a = a - SingularMayerVietoris.singularHomologyMap (f : C(X, X)) n a :=
   rfl
 
+/-- Exactness of the two-arc Mayer–Vietoris step at the pair. -/
 theorem MappingTorusHomology.twoArc_exact_at_pair {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     LinearMap.range (Algebra.twoArcMap (monodromyHomologyMap f n)) =
@@ -499,6 +546,7 @@ theorem MappingTorusHomology.twoArc_exact_at_pair {X : Type} [TopologicalSpace X
     refine ⟨intersectionHomologyEquiv f n b, ?_⟩
     rw [← leftHomologyMap_coordinates, hb, LinearEquiv.apply_symm_apply]
 
+/-- The Mayer–Vietoris connecting map of the cover. -/
 abbrev MappingTorusHomology.mayerVietorisConnecting {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1) →ₗ[ℤ]
@@ -510,12 +558,14 @@ abbrev MappingTorusHomology.mayerVietorisConnecting {X : Type} [TopologicalSpace
     (MappingTorus.HomologyCover.V f) (MappingTorus.HomologyCover.U_open f)
     (MappingTorus.HomologyCover.V_open f) (MappingTorus.HomologyCover.cover f) n
 
+/-- The connecting map in `X × X` coordinates. -/
 def MappingTorusHomology.boundaryCoordinates {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1) →ₗ[ℤ]
       (SingularMayerVietoris.SingularHomology X n × SingularMayerVietoris.SingularHomology X n) :=
   (intersectionHomologyEquiv f n).toLinearMap.comp (mayerVietorisConnecting f n)
 
+/-- The boundary coordinates are the connecting map's image. -/
 @[simp]
 theorem MappingTorusHomology.boundaryCoordinates_apply {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ)
@@ -523,6 +573,7 @@ theorem MappingTorusHomology.boundaryCoordinates_apply {X : Type} [TopologicalSp
     boundaryCoordinates f n a = intersectionHomologyEquiv f n (mayerVietorisConnecting f n a) :=
   rfl
 
+/-- The boundary coordinates have range the two-arc kernel. -/
 theorem MappingTorusHomology.boundaryCoordinates_range {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ) :
     LinearMap.range (boundaryCoordinates f n) =
@@ -556,6 +607,7 @@ theorem MappingTorusHomology.boundaryCoordinates_range {X : Type} [TopologicalSp
     refine ⟨b, ?_⟩
     rw [boundaryCoordinates_apply, hb, LinearEquiv.apply_symm_apply]
 
+/-- The right Mayer–Vietoris map has range the fiber image. -/
 theorem MappingTorusHomology.rightHomologyMap_range {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     LinearMap.range
@@ -573,6 +625,7 @@ theorem MappingTorusHomology.rightHomologyMap_range {X : Type} [TopologicalSpace
     rw [rightHomologyMap_coordinates, LinearEquiv.apply_symm_apply]
     exact congrArg (fibreHomologyMap f n) (add_zero a)
 
+/-- The fiber image is the boundary-coordinates kernel. -/
 theorem MappingTorusHomology.boundaryCoordinates_ker {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) :
     LinearMap.range (fibreHomologyMap f (n + 1)) = LinearMap.ker (boundaryCoordinates f n) := by
@@ -583,67 +636,80 @@ theorem MappingTorusHomology.boundaryCoordinates_ker {X : Type} [TopologicalSpac
       (MappingTorus.HomologyCover.V_open f) (MappingTorus.HomologyCover.cover f)]
   exact (rightHomologyMap_range f (n + 1)).symm
 
+/-- The Wang boundary `H_{n+1}(T_f) → H_n(X)`. -/
 def MappingTorusHomology.wangBoundary {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1) →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology X n :=
   Algebra.boundary (boundaryCoordinates f n)
 
+/-- The Wang boundary is the negated first coordinate. -/
 @[simp]
 theorem MappingTorusHomology.wangBoundary_apply {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) (a : SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1)) :
     wangBoundary f n a = -(boundaryCoordinates f n a).1 :=
   rfl
 
+/-- The boundary coordinates are antidiagonal in the Wang boundary. -/
 theorem MappingTorusHomology.boundaryCoordinates_eq_antidiagonal {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1)) :
     boundaryCoordinates f n a = (-wangBoundary f n a, wangBoundary f n a) :=
   Algebra.connecting_eq_antidiagonal _ _ (boundaryCoordinates_range f n) a
 
+/-- Wang exactness at the fiber: `range(id − f_*) = ker i_*`. -/
 theorem MappingTorusHomology.wang_exact_at_fibre {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) : LinearMap.range (wangDifference f n) = LinearMap.ker (fibreHomologyMap f n) :=
   Algebra.range_difference_eq_ker _ _ (twoArc_exact_at_pair f n)
 
+/-- Wang exactness at the torus: `range i_* = ker ∂`. -/
 theorem MappingTorusHomology.wang_exact_at_mappingTorus {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ) :
     LinearMap.range (fibreHomologyMap f (n + 1)) = LinearMap.ker (wangBoundary f n) :=
   Algebra.range_inclusion_eq_ker_boundary _ _ _ (boundaryCoordinates_ker f n)
     (boundaryCoordinates_range f n)
 
+/-- The Wang boundary range is `ker(id − f_*)`. -/
 theorem MappingTorusHomology.wangBoundary_range {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) : LinearMap.range (wangBoundary f n) = LinearMap.ker (wangDifference f n) :=
   Algebra.boundary_range _ _ (boundaryCoordinates_range f n)
 
+/-- The fiber map on the Wang cokernel. -/
 def MappingTorusHomology.cokernelInclusion {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     (SingularMayerVietoris.SingularHomology X n ⧸ LinearMap.range (wangDifference f n)) →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) n :=
   Algebra.cokernelInclusion _ _ (twoArc_exact_at_pair f n)
 
+/-- The cokernel inclusion computes the fiber map. -/
 @[simp]
 theorem MappingTorusHomology.cokernelInclusion_mk {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
     (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     cokernelInclusion f n (Submodule.Quotient.mk a) = fibreHomologyMap f n a :=
   rfl
 
+/-- The cokernel inclusion is injective. -/
 theorem MappingTorusHomology.cokernelInclusion_injective {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ) : Function.Injective (cokernelInclusion f n) :=
   Algebra.cokernelInclusion_injective _ _ (twoArc_exact_at_pair f n)
 
+/-- The Wang boundary into `ker(id − f_*)`. -/
 def MappingTorusHomology.kernelBoundary {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) (n + 1) →ₗ[ℤ]
       LinearMap.ker (wangDifference f n) :=
   Algebra.kernelBoundary _ _ (boundaryCoordinates_range f n)
 
+/-- The Wang boundary surjects onto the difference kernel. -/
 theorem MappingTorusHomology.kernelBoundary_surjective {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) (n : ℕ) : Function.Surjective (kernelBoundary f n) :=
   Algebra.kernelBoundary_surjective _ _ (boundaryCoordinates_range f n)
 
+/-- The shifted cokernel inclusion range is the Wang-boundary kernel. -/
 theorem MappingTorusHomology.cokernelInclusion_range_eq_ker_kernelBoundary {X : Type}
     [TopologicalSpace X] (f : X ≃ₜ X) (n : ℕ) :
     LinearMap.range (cokernelInclusion f (n + 1)) = LinearMap.ker (kernelBoundary f n) :=
   Algebra.cokernelInclusion_range_eq_ker_kernelBoundary _ _ _ _ (twoArc_exact_at_pair f (n + 1))
     (boundaryCoordinates_ker f n) (boundaryCoordinates_range f n)
 
+/-- The degree-zero fiber homology map is surjective. -/
 theorem MappingTorusHomology.fibreHomologyMap_zero_surjective {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) : Function.Surjective (fibreHomologyMap f 0) := by
   intro b
@@ -655,12 +721,14 @@ theorem MappingTorusHomology.fibreHomologyMap_zero_surjective {X : Type} [Topolo
     ⟨(arcHomologyEquiv f 0 a).1 + (arcHomologyEquiv f 0 a).2,
       (rightHomologyMap_coordinates f 0 a).symm.trans ha⟩
 
+/-- The degree-zero cokernel inclusion is surjective. -/
 theorem MappingTorusHomology.cokernelInclusion_zero_surjective {X : Type} [TopologicalSpace X]
     (f : X ≃ₜ X) : Function.Surjective (cokernelInclusion f 0) := by
   intro b
   obtain ⟨a, ha⟩ := fibreHomologyMap_zero_surjective f b
   exact ⟨Submodule.Quotient.mk a, ha⟩
 
+/-- The degree-zero homology of the mapping torus is the coinvariants of `f_*`. -/
 def MappingTorusHomology.degreeZeroHomologyEquiv {X : Type} [TopologicalSpace X] (f : X ≃ₜ X) :
     SingularMayerVietoris.SingularHomology (MappingTorus.Torus f) 0 ≃ₗ[ℤ]
       (SingularMayerVietoris.SingularHomology X 0 ⧸ LinearMap.range (wangDifference f 0)) :=
