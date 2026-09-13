@@ -75,6 +75,9 @@ section
 
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
+/-! ### Supported divisions and no-return perturbations -/
+
+/-- A supported division of smooth functions is smooth. -/
 theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {χ D : M → ℝ}
     (hχ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ χ) (hD : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ D)
@@ -86,6 +89,7 @@ theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddC
     filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hx] with y hy
     simp only [image_eq_zero_of_notMem_tsupport hy, zero_div]
 
+/-- An excursion interval outside a no-return set exists. -/
 theorem FlowCancellation.exists_excursion_interval {X : Type*} [TopologicalSpace X]
     {γ : ℝ → X} (hγ : Continuous γ) {K N : Set X} (hK : IsClosed K) (hKN : K ⊆ N) {a b t : ℝ}
     (ht : t ∈ Set.Icc a b) (ha : γ a ∈ N) (hb : γ b ∈ N) (hout : γ t ∉ N) :
@@ -124,6 +128,7 @@ theorem FlowCancellation.exists_excursion_interval {X : Type*} [TopologicalSpace
   · have hrB : r ∈ B := Or.inr ⟨⟨(lt_of_not_ge hrt).le, le_trans hr.2.le hub⟩, hrK⟩
     exact (not_le_of_gt hr.2) (hu.2 hrB)
 
+/-- A native curve equals the flow on a closed interval. -/
 theorem FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -144,6 +149,7 @@ theorem FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : Type*}
   rw [closure_Ioo (lt_trans hc.1 hc.2).ne] at heqclosed
   exact heqclosed
 
+/-- A supported perturbation preserves the no-return property. -/
 theorem FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V V' : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -176,6 +182,7 @@ theorem FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*
       ⟨sub_nonneg.mpr hst.le, sub_le_sub_right htu.le s⟩
   exact hout (hmid ▸ hh)
 
+/-- The coproduct swap of transverse coordinates is surjective. -/
 theorem TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] (A : D →L[ℝ] E) (C : Z →L[ℝ] E) (h : Function.Surjective (A.coprod C)) :
@@ -189,6 +196,7 @@ theorem TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [NormedAddC
 
 end
 
+/-- A positive height rescaling exists. -/
 theorem MorseCancellation.exists_positive_height_rescaling {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -238,6 +246,7 @@ theorem MorseCancellation.exists_positive_height_rescaling {E M : Type*} [Normed
     filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hx] with y hy
     simp only [ρ, image_eq_zero_of_notMem_tsupport hy, sub_zero, zero_div, add_zero]
 
+/-- A positive band normalization exists. -/
 theorem MorseCancellation.exists_positive_band_normalization {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -283,6 +292,9 @@ theorem MorseCancellation.exists_positive_band_normalization {E M : Type*} [Norm
   · intro x hx
     exact hgerm x (fun h => hχsupport h hx)
 
+/-! ### Flow time changes -/
+
+/-- A local affine height germ exists. -/
 theorem FlowTimeChange.local_affine_height_germ {γ : ℝ → ℝ} (hγ : Continuous γ) {U : Set ℝ}
     (hU : IsOpen U) (hd : ∀ t, γ t ∈ U → HasDerivAt γ (-1) t) {t : ℝ} (ht : γ t ∈ U) :
     ∀ᶠ s in 𝓝 t, γ s + s = γ t + t := by
@@ -296,6 +308,7 @@ theorem FlowTimeChange.local_affine_height_germ {γ : ℝ → ℝ} (hγ : Contin
       (fun r hr => (hder r hr).differentiableAt.differentiableWithinAt)
       (fun r hr => (hder r hr).deriv) hs htu
 
+/-- The scalar local height translation. -/
 theorem FlowTimeChange.scalar_local_height_translation {γ : ℝ → ℝ} (hγ : Continuous γ)
     {U : Set ℝ} (hU : IsOpen U) {a b c t : ℝ} (hIU : Set.Icc a b ⊆ U)
     (hd : ∀ s, γ s ∈ U → HasDerivAt γ (-1) s) (hzero : γ 0 = c) (hc : c ∈ Set.Icc a b)
@@ -333,6 +346,7 @@ theorem FlowTimeChange.scalar_local_height_translation {γ : ℝ → ℝ} (hγ :
   have hfinish : P s₁ := heq ▸ hinit
   exact hfinish
 
+/-- The native local height translation. -/
 theorem FlowTimeChange.native_local_height_translation {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -349,6 +363,7 @@ theorem FlowTimeChange.native_local_height_translation {E M : Type*} [NormedAddC
   rw [hspeed (F s x) hs] at hd
   exact hd
 
+/-- The normalized flow's level image. -/
 theorem FlowTimeChange.normalized_flow_level_image {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} {a b : ℝ} (hab : a ≤ b)
     (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) :
@@ -370,6 +385,7 @@ theorem FlowTimeChange.normalized_flow_level_image {X : Type*} [TopologicalSpace
       linarith
     · rw [← F.map_add, show a - b + (b - a) = 0 by ring, F.map_zero_apply]
 
+/-- The normalized flow's sublevel membership. -/
 theorem FlowTimeChange.normalized_flow_sublevel_iff {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {a b : ℝ} (hab : a ≤ b)
     (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) (x : X) :
@@ -412,6 +428,7 @@ theorem FlowTimeChange.normalized_flow_sublevel_iff {X : Type*} [TopologicalSpac
     rw [hend] at hh
     linarith
 
+/-- The normalized flow's sublevel image. -/
 theorem FlowTimeChange.normalized_flow_sublevel_image {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {a b : ℝ} (hab : a ≤ b)
     (hshift : ∀ x t, f x ∈ Set.Icc a b → f x - t ∈ Set.Icc a b → f (F t x) = f x - t) :
@@ -428,6 +445,7 @@ theorem FlowTimeChange.normalized_flow_sublevel_image {X : Type*} [TopologicalSp
     rw [hi]
     exact hy
 
+/-- A positive integral clock for the flow exists. -/
 theorem FlowTimeChange.exists_positive_integral_clock {a : ℝ → ℝ} (ha : Continuous a)
     {δ : ℝ} (hδ : 0 < δ) (hlower : ∀ t, δ ≤ a t) :
     ∃ c : ℝ ≃o ℝ,
@@ -470,6 +488,7 @@ theorem FlowTimeChange.exists_positive_integral_clock {a : ℝ → ℝ} (ha : Co
     HasDerivAt.of_local_left_inverse c.symm.continuous.continuousAt (hd (c.symm t))
       (ne_of_gt (hδ.trans_le (hlower _))) (Filter.Eventually.of_forall c.apply_symm_apply)
 
+/-- A native curve's positive reparametrization. -/
 theorem FlowTimeChange.native_curve_positive_reparametrization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {ρ : M → ℝ} {γ : ℝ → M} (hγ : IsMIntegralCurve γ V)
@@ -488,6 +507,7 @@ theorem FlowTimeChange.native_curve_positive_reparametrization {E M : Type*}
   rw [he]
   exact hh
 
+/-- A native flow time change exists. -/
 theorem FlowTimeChange.exists_native_flow_time_change {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {ρ : M → ℝ} (hρ : Continuous ρ)
@@ -520,6 +540,7 @@ theorem FlowTimeChange.exists_native_flow_time_change {E M : Type*} [NormedAddCo
       (by simp only [Function.comp_apply, hc0', F.map_zero_apply, G.map_zero_apply])
   exact ⟨c, hc0, hcint, hcinv', fun t => congrFun heq t⟩
 
+/-- The time-changed flow has the same orbits. -/
 theorem FlowTimeChange.native_flow_time_change_orbits {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {ρ : M → ℝ} (hρ : Continuous ρ)
@@ -557,6 +578,7 @@ theorem FlowTimeChange.native_flow_time_change_orbits {E M : Type*} [NormedAddCo
     · intro h
       exact (h.comp c.symm.tendsto_atBot).congr (fun t => (heq t).symm)
 
+/-- An orbit-preserving band normalization exists. -/
 theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -601,6 +623,7 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     exact ⟨c, hc0, heq⟩
   · exact native_flow_time_change_orbits hρ.continuous hpos hW₁ F G hF hG
 
+/-- An orbit-preserving ambient band bridge exists. -/
 theorem FlowTimeChange.exists_orbit_preserving_ambient_band_bridge {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -624,6 +647,7 @@ theorem FlowTimeChange.exists_orbit_preserving_ambient_band_bridge {E M : Type*}
   rw [(hgeometry x).1] at hm
   exact hm
 
+/-- An orbit-preserving native band bridge exists. -/
 theorem FlowTimeChange.exists_orbit_preserving_native_band_bridge {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -649,6 +673,9 @@ theorem FlowTimeChange.exists_orbit_preserving_native_band_bridge {E M : Type*}
   obtain ⟨e, he⟩ := RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
   exact ⟨D, e, hsublevel, he, horbit⟩
 
+/-! ### The native suspended flow -/
+
+/-- The native model pullback vanishes exactly on the critical set. -/
 theorem FlowSuspension.native_model_pullback_zero_iff {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -669,6 +696,7 @@ theorem FlowSuspension.native_model_pullback_zero_iff {D E H X M : Type*}
     rw [h]
     exact map_zero L.symm
 
+/-- The native model pullback is smooth. -/
 theorem FlowSuspension.contMDiffOn_native_model_pullback {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -688,6 +716,7 @@ theorem FlowSuspension.contMDiffOn_native_model_pullback {D E H X M : Type*}
         (e.contMDiffOn_toFun.contMDiffAt (e.open_source.mem_nhds hx)) hinv
         (by simp)).contMDiffWithinAt
 
+/-- A native model field replacement exists. -/
 theorem FlowSuspension.exists_native_model_field_replacement {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -724,6 +753,7 @@ theorem FlowSuspension.exists_native_model_field_replacement {D E H X M : Type*}
   intro y
   exact (hzero y).trans ⟨And.left, fun hy => ⟨hy, fun ht => hregV y ht hy⟩⟩
 
+/-- The native chart flow exists for all time. -/
 theorem FlowSuspension.native_chart_flow_all_time {B M : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) 1 M] [T2Space M]
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {V : (x : M) → TangentSpace 𝓘(ℝ, B) x}
@@ -750,6 +780,7 @@ theorem FlowSuspension.native_chart_flow_all_time {B M : Type*} [NormedAddCommGr
       (by simp only [γ, G.map_zero_apply, F.map_zero_apply])
   exact fun t => congrFun heq t
 
+/-- The native chart target is flow invariant. -/
 theorem FlowSuspension.native_chart_target_invariant {B M : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) 1 M] [T2Space M]
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {V : (x : M) → TangentSpace 𝓘(ℝ, B) x}
@@ -766,6 +797,7 @@ theorem FlowSuspension.native_chart_target_invariant {B M : Type*} [NormedAddCom
   rw [heq]
   exact Φ.map_source' (hstay _ hp t)
 
+/-- The flow complement is invariant. -/
 theorem FlowSuspension.flow_complement_invariant {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {S : Set X} (hS : ∀ x ∈ S, ∀ t, F t x ∈ S) : ∀ x ∉ S, ∀ t, F t x ∉ S := by
   intro x hx t ht
@@ -773,6 +805,7 @@ theorem FlowSuspension.flow_complement_invariant {X : Type*} [TopologicalSpace X
   rw [← F.map_add, neg_add_cancel, F.map_zero_apply] at hh
   exact hx hh
 
+/-- The native model pullback is the inverse derivative. -/
 theorem FlowSuspension.native_model_pullback_eq_mfderiv_symm {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -790,6 +823,7 @@ theorem FlowSuspension.native_model_pullback_eq_mfderiv_symm {D E H X M : Type*}
   rw [hi]
   rfl
 
+/-- A native model curve lifts to a manifold curve. -/
 theorem FlowSuspension.hasMFDerivAt_lift_native_model_curve {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -815,6 +849,7 @@ theorem FlowSuspension.hasMFDerivAt_lift_native_model_curve {D E H X M : Type*}
   rw [hr] at hp
   exact congrArg (fun v : TangentSpace 𝓘(ℝ, E) (e.symm (α t)) => s • v) hp.symm
 
+/-- The native model flow exists for all time. -/
 theorem FlowSuspension.native_model_flow_all_time {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -840,6 +875,7 @@ theorem FlowSuspension.native_model_flow_all_time {D E H X M : Type*}
       (by simp only [γ, G.map_zero_apply, F.map_zero_apply])
   exact fun t => congrFun heq t
 
+/-- The native model target is invariant. -/
 theorem FlowSuspension.native_model_target_invariant {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -857,6 +893,7 @@ theorem FlowSuspension.native_model_target_invariant {D E H X M : Type*}
   rw [heq]
   exact A.map_source' (hstay _ hp t)
 
+/-- A native base suspension exists. -/
 theorem FlowSuspension.exists_native_base_suspension {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N] (D : Diffeomorph 𝓘(ℝ, Z) 𝓘(ℝ, Z) N N ∞) {K S : Set N}
@@ -890,6 +927,7 @@ theorem FlowSuspension.exists_native_base_suspension {Z N : Type*} [NormedAddCom
   · intro p hp
     rw [hmap, I.fixedOn (τ p.2) p.1 hp]
 
+/-- The native suspended flow. -/
 def FlowSuspension.nativeSuspensionFlow {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     (Ψ : Diffeomorph (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (N × ℝ) (N × ℝ) ∞) :
@@ -908,6 +946,7 @@ def FlowSuspension.nativeSuspensionFlow {Z N : Type*} [NormedAddCommGroup Z]
     · rfl
     · ring
 
+/-- The native suspended flow computes in the chart. -/
 theorem FlowSuspension.nativeSuspensionFlow_chart {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -916,11 +955,13 @@ theorem FlowSuspension.nativeSuspensionFlow_chart {Z N : Type*} [NormedAddCommGr
   change Ψ ((Ψ.symm (Ψ p)).1, (Ψ.symm (Ψ p)).2 + t) = _
   rw [Ψ.symm_apply_apply]
 
+/-- The native vertical field on the cylinder. -/
 def FlowSuspension.nativeVerticalField {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace N] [ChartedSpace Z N] (p : N × ℝ) :
     TangentSpace (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) p :=
   (show Z × ℝ from (0, 1))
 
+/-- The native vertical field is smooth. -/
 theorem FlowSuspension.contMDiff_nativeVerticalField {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N] :
@@ -946,6 +987,7 @@ theorem FlowSuspension.contMDiff_nativeVerticalField {Z N : Type*} [NormedAddCom
       ((hz.comp contMDiff_fst).prodMk (ho.comp contMDiff_snd))
   exact hp
 
+/-- The native suspension field. -/
 def FlowSuspension.nativeSuspensionField {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     (Ψ : Diffeomorph (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (N × ℝ) (N × ℝ) ∞)
@@ -953,6 +995,7 @@ def FlowSuspension.nativeSuspensionField {Z N : Type*} [NormedAddCommGroup Z]
   mfderiv (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) Ψ (Ψ.symm p)
     (nativeVerticalField (Ψ.symm p))
 
+/-- The native suspension field is smooth. -/
 theorem FlowSuspension.contMDiff_nativeSuspensionField {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -968,6 +1011,7 @@ theorem FlowSuspension.contMDiff_nativeSuspensionField {Z N : Type*} [NormedAddC
   apply Bundle.TotalSpace.ext (Ψ.apply_symm_apply p).symm
   rfl
 
+/-- The native vertical field's integral curve. -/
 theorem FlowSuspension.nativeVerticalField_integralCurve {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N] (p : N × ℝ) :
@@ -985,6 +1029,7 @@ theorem FlowSuspension.nativeVerticalField_integralCurve {Z N : Type*}
   change ((0 : Z), (0 : ℝ) + s) = s • ((0 : Z), (1 : ℝ))
   simp
 
+/-- The native suspended flow is an integral curve. -/
 theorem FlowSuspension.nativeSuspensionFlow_integralCurve {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1012,6 +1057,7 @@ theorem FlowSuspension.nativeSuspensionFlow_integralCurve {Z N : Type*}
     (mfderiv (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) (𝓘(ℝ, Z).prod 𝓘(ℝ, ℝ)) Ψ (γ t)).map_smul (r : ℝ)
       (nativeVerticalField (γ t))
 
+/-- The native suspended flow's height. -/
 theorem FlowSuspension.nativeSuspensionFlow_height {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1025,6 +1071,7 @@ theorem FlowSuspension.nativeSuspensionFlow_height {Z N : Type*} [NormedAddCommG
   change (Ψ ((Ψ.symm p).1, (Ψ.symm p).2 + t)).2 = p.2 + t
   rw [hheight, hi]
 
+/-- The native level flow is vertical in the chart. -/
 theorem FlowSuspension.native_level_flow_chart_vertical {Z E N M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace N] [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1069,6 +1116,7 @@ theorem FlowSuspension.native_level_flow_chart_vertical {Z E N M : Type*}
   rw [hpF] at hv
   exact hv
 
+/-- A native level flow cylinder with the field exists. -/
 theorem FlowSuspension.exists_native_level_flow_cylinder_with_field {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -1096,6 +1144,9 @@ theorem FlowSuspension.exists_native_level_flow_cylinder_with_field {E M : Type*
     ⟨A, hsource, htarget, hformula,
       native_level_flow_chart_vertical A F hcurve Subtype.val hformula⟩
 
+/-! ### Normalized level cylinders -/
+
+/-- The derivative of height divided by a constant. -/
 theorem FlowTimeChange.mfderiv_height_div_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) (r : ℝ) :
@@ -1106,6 +1157,7 @@ theorem FlowTimeChange.mfderiv_height_div_const {E M : Type*} [NormedAddCommGrou
   rw [heq]
   exact (hf.hasMFDerivAt.const_smul r⁻¹).mfderiv
 
+/-- The manifold derivative of the scaled height. -/
 theorem FlowTimeChange.mvfderiv_height_div_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) (r : ℝ) (v : TangentSpace 𝓘(ℝ, E) x) :
@@ -1117,6 +1169,7 @@ theorem FlowTimeChange.mvfderiv_height_div_const {E M : Type*} [NormedAddCommGro
   have hconst : mvfderiv 𝓘(ℝ, E) (fun _ : M => r⁻¹) x = 0 := by simp [mvfderiv, mfderiv_const]
   simp [hconst, div_eq_mul_inv, mul_comm]
 
+/-- The scaled height's critical points. -/
 theorem FlowTimeChange.criticalPoints_height_div_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {r : ℝ} (hr : r ≠ 0) :
@@ -1127,6 +1180,7 @@ theorem FlowTimeChange.criticalPoints_height_div_const {E M : Type*} [NormedAddC
   rw [mfderiv_height_div_const (hf.mdifferentiableAt (by simp))]
   exact smul_eq_zero.trans (or_iff_right (inv_ne_zero hr))
 
+/-- Descending the scaled height is the scaled descent. -/
 theorem FlowTimeChange.descending_height_div_const_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x) {r : ℝ} (hr : 0 < r)
@@ -1135,6 +1189,7 @@ theorem FlowTimeChange.descending_height_div_const_iff {E M : Type*} [NormedAddC
   rw [mvfderiv_height_div_const hf r]
   rw [div_lt_iff₀ hr, MulZeroClass.zero_mul]
 
+/-- A normalized whole-level cylinder exists. -/
 theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -1224,6 +1279,9 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
   rw [hformula]
   exact (div_left_inj' hr.ne').mp hh
 
+/-! ### The native suspension field -/
+
+/-- The native suspension field's height is one. -/
 theorem FlowSuspension.nativeSuspensionField_height {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1241,6 +1299,7 @@ theorem FlowSuspension.nativeSuspensionField_height {Z N : Type*} [NormedAddComm
   change (1 : ℝ) = (nativeSuspensionField Ψ p).2 at hv
   exact hv.symm
 
+/-- The native suspension field is nonvanishing. -/
 theorem FlowSuspension.nativeSuspensionField_ne_zero {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1251,6 +1310,7 @@ theorem FlowSuspension.nativeSuspensionField_ne_zero {Z N : Type*} [NormedAddCom
   rw [nativeSuspensionField_height Ψ hheight p] at hh
   exact one_ne_zero hh
 
+/-- The suspension field is vertical where the flow germ is trivial. -/
 theorem FlowSuspension.nativeSuspensionField_eq_vertical_of_flow_germ {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1270,6 +1330,7 @@ theorem FlowSuspension.nativeSuspensionField_eq_vertical_of_flow_germ {Z N : Typ
   rw [one_smul, one_smul, h0] at hval
   convert! hval using 1
 
+/-- The suspension field is vertical off the base. -/
 theorem FlowSuspension.nativeSuspensionField_eq_vertical_off_base {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1287,6 +1348,7 @@ theorem FlowSuspension.nativeSuspensionField_eq_vertical_off_base {Z N : Type*}
   rw [hi]
   exact hfix (p.1, p.2 + t) hp
 
+/-- The suspension field is vertical below the support. -/
 theorem FlowSuspension.nativeSuspensionField_eq_vertical_below {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1303,6 +1365,7 @@ theorem FlowSuspension.nativeSuspensionField_eq_vertical_below {Z N : Type*}
   rw [hi]
   exact hleft (p.1, p.2 + t) (by dsimp; linarith)
 
+/-- The suspension field is vertical above the support. -/
 theorem FlowSuspension.nativeSuspensionField_eq_vertical_above {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1321,6 +1384,7 @@ theorem FlowSuspension.nativeSuspensionField_eq_vertical_above {Z N : Type*}
   change Ψ (q.1, q.2 + t) = (p.1, p.2 + t)
   rw [hright (q.1, q.2 + t) (by dsimp; rw [htime]; linarith), hbase, htime]
 
+/-- The suspended flow fixes vertical lines off the support. -/
 theorem FlowSuspension.nativeSuspensionFlow_fixed_line {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
     [IsManifold 𝓘(ℝ, Z) ∞ N]
@@ -1335,6 +1399,7 @@ theorem FlowSuspension.nativeSuspensionFlow_fixed_line {Z N : Type*} [NormedAddC
   rw [hi]
   exact hfix (s + t)
 
+/-- A compactly supported native level suspension exists. -/
 theorem FlowSuspension.exists_compact_native_level_suspension {Z N : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N] [T2Space N]
@@ -1392,6 +1457,7 @@ theorem FlowSuspension.exists_compact_native_level_suspension {Z N : Type*}
   · intro x hx s t
     exact nativeSuspensionFlow_fixed_line Ψ (fun u => hfixed (x, u) hx) s t
 
+/-- The manifold derivative of the native model pullback. -/
 theorem FlowSuspension.mvfderiv_native_model_pullback {D E H X M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace X] [ChartedSpace H X] {I : ModelWithCorners ℝ D H}
@@ -1408,6 +1474,7 @@ theorem FlowSuspension.mvfderiv_native_model_pullback {D E H X M : Type*}
           (by simp))
         (A.right_inv' hx) (W (A.symm x))).symm
 
+/-- The manifold derivative of the native level height. -/
 theorem FlowSuspension.mvfderiv_native_level_height {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {Z N : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace N] [ChartedSpace Z N]
@@ -1443,6 +1510,7 @@ theorem FlowSuspension.mvfderiv_native_level_height {E M : Type*} [NormedAddComm
   change (0 : ℝ) - (s * (W q).2 + q.2 * (0 : ℝ)) = -s * (W q).2
   ring
 
+/-- A native whole-level holonomy exists. -/
 theorem FlowSuspension.exists_native_whole_level_holonomy {Z E N M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace N] [ChartedSpace Z N]
@@ -1554,6 +1622,7 @@ theorem FlowSuspension.exists_native_whole_level_holonomy {Z E N M : Type*}
   · intro x hx u t
     rw [hfull, hfixed x hx u t]
 
+/-- The whole-level exterior tails of the holonomy. -/
 theorem FlowSuspension.native_whole_level_exterior_tails {Z N M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace N]
     [ChartedSpace Z N] [IsManifold 𝓘(ℝ, Z) ∞ N] [TopologicalSpace M] (A : N × ℝ → M) (ι : N → M)
@@ -1580,6 +1649,7 @@ theorem FlowSuspension.native_whole_level_exterior_tails {Z N M : Type*}
     congr 1
     ring
 
+/-- A regular level isotopy is realized by a suspension. -/
 theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -1683,6 +1753,7 @@ theorem FlowSuspension.exists_native_regular_level_isotopy_realization {E M : Ty
   · intro x t ht
     simpa only [hA1] using htailRight x t ht
 
+/-- The whole-level basins of the holonomy. -/
 theorem FlowSuspension.whole_level_basins_of_holonomy {X M : Type*} [TopologicalSpace M]
     (F H G : Flow ℝ M) (ι : X → M) (D : X → X)
     (hHtop :
@@ -1722,6 +1793,7 @@ theorem FlowSuspension.whole_level_basins_of_holonomy {X M : Type*} [Topological
         (MorseCancellation.flow_time_atTop_limit_iff H 1 (ι (D x)) p)
       _ ↔ Filter.Tendsto (fun t => F t (ι (D x))) Filter.atTop (𝓝 p) := hHtop (ι (D x)) p
 
+/-- A unique connection is determined by basin intersection. -/
 theorem FlowSuspension.unique_connection_of_level_basin_intersection {M : Type*}
     [TopologicalSpace M] (F G : Flow ℝ M) {f : M → ℝ} (hf : Continuous f) {p q : M} {c : ℝ}
     (hpc : c < f p) (hqc : f q < c) (D : { x : M // f x = c } → { x : M // f x = c })
@@ -1758,12 +1830,16 @@ theorem FlowSuspension.unique_connection_of_level_basin_intersection {M : Type*}
   refine ⟨-s, ?_⟩
   rw [← hv, ← G.map_add, neg_add_cancel, G.map_zero_apply]
 
+/-! ### Transverse time lifts -/
+
+/-- The linear time lift of a transverse vector. -/
 def TransverseGerms.timeLiftLinear {A Z : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] (L : A →L[ℝ] Z) (α : A →L[ℝ] ℝ) :
     (A × ℝ) →L[ℝ] (Z × ℝ) :=
   (L.comp (ContinuousLinearMap.fst ℝ A ℝ)).prod
     (ContinuousLinearMap.snd ℝ A ℝ + α.comp (ContinuousLinearMap.fst ℝ A ℝ))
 
+/-- The time lift coproduct is surjective. -/
 theorem TransverseGerms.surjective_time_lift_coprod {A B Z : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] (L : A →L[ℝ] Z) (R : B →L[ℝ] Z) (α : A →L[ℝ] ℝ) (β : B →L[ℝ] ℝ)
@@ -1777,6 +1853,7 @@ theorem TransverseGerms.surjective_time_lift_coprod {A B Z : Type*} [NormedAddCo
   · change (t - α a - β b + α a) + (0 + β b) = t
     ring
 
+/-- The native time lift's derivative. -/
 theorem TransverseGerms.native_time_lift_derivative {A Z : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {HA HZ X N : Type*}
     [TopologicalSpace HA] [TopologicalSpace HZ] {I : ModelWithCorners ℝ A HA}
@@ -1791,6 +1868,7 @@ theorem TransverseGerms.native_time_lift_derivative {A Z : Type*} [NormedAddComm
   have ht := (hasMFDerivAt_snd (I := I) (I' := 𝓘(ℝ, ℝ)) (x, s)).add hp
   exact (hn.prodMk ht).mfderiv
 
+/-- Native transversality from time lifts. -/
 theorem TransverseGerms.native_transversality_time_lifts {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {HA HB HZ X Y N : Type*} [TopologicalSpace HA]
@@ -1808,6 +1886,7 @@ theorem TransverseGerms.native_transversality_time_lifts {A B Z : Type*}
   rw [native_time_lift_derivative s hf hv, native_time_lift_derivative t hg hw]
   exact surjective_time_lift_coprod _ _ _ _ (htrans hxy)
 
+/-- Native transverse sheets from level maps. -/
 theorem TransverseGerms.native_transverse_sheets_of_level_maps
     {A B Z E HA HB HZ HE X Y N M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -1837,6 +1916,7 @@ theorem TransverseGerms.native_transverse_sheets_of_level_maps
     (native_transversality_partial_diffeomorph_iff C hF hG hcross hsource).mp
       (native_transversality_time_lifts hf hg hv hw hxy htrans s t)
 
+/-- Native transverse basin tubes from level maps. -/
 theorem FlowSuspension.native_transverse_basin_tubes_of_level_maps {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -1898,6 +1978,7 @@ theorem FlowSuspension.native_transverse_basin_tubes_of_level_maps {E M : Type*}
     exact (MorseCancellation.flow_time_atTop_limit_iff F u.2 (β u.1) p).mpr hu
   · simpa only [add_zero, hformula] using ht
 
+/-- The native vertical cylinder flow. -/
 theorem FlowSuspension.native_vertical_cylinder_flow {Z E M : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
@@ -1929,6 +2010,7 @@ theorem FlowSuspension.native_vertical_cylinder_flow {Z E M : Type*} [NormedAddC
       (by simp only [γ, F.map_zero_apply, add_zero])
   exact congrFun heq t
 
+/-- The corrected cylinder tails. -/
 theorem FlowSuspension.native_corrected_cylinder_tails {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
@@ -1958,6 +2040,9 @@ theorem FlowSuspension.native_corrected_cylinder_tails {Z E M : Type*}
       hright (z, 1 + t) (by dsimp; linarith), hright (z, 1) le_rfl,
       native_vertical_cylinder_flow Φ hΦsource hV hΦmodel F hF (D z) (hDU hz) 1 t]
 
+/-! ### Phase cylinder charts -/
+
+/-- The phase slice flow coordinates. -/
 theorem FlowSuspension.phase_slice_flow_coordinates {D Z E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1979,6 +2064,7 @@ theorem FlowSuspension.phase_slice_flow_coordinates {D Z E M : Type*}
   rw [hsource]
   exact ⟨hq, Set.mem_univ _⟩
 
+/-- The phase flow sheet is smooth. -/
 theorem FlowSuspension.phase_flow_sheet_contMDiffAt {D Z E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2009,6 +2095,7 @@ theorem FlowSuspension.phase_flow_sheet_contMDiffAt {D Z E M : Type*}
   filter_upwards [hnear] with w hw
   exact (phase_slice_flow_coordinates A hsource F hflow Q hQU S v T hphase w.2 hw w.1).1
 
+/-- The phase flow subsheet's properties. -/
 theorem FlowSuspension.phase_flow_subsheet_properties {D Z E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {B : Type*}
@@ -2044,6 +2131,7 @@ theorem FlowSuspension.phase_flow_subsheet_properties {D Z E M : Type*}
       congrArg Prod.fst
         (phase_slice_flow_coordinates A hsource F hflow Q hQU S v T hphase (L w.2) hw w.1).2
 
+/-- The phase cylinder chart. -/
 def FlowSuspension.phaseCylinderChart {E Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     (Q : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞) (v : E → ℝ) (hv : ContDiff ℝ ∞ v) :
@@ -2079,12 +2167,14 @@ def FlowSuspension.phaseCylinderChart {E Z : Type*} [NormedAddCommGroup E]
           (contDiff_snd.contDiffOn.sub
             (hv.contDiffOn.comp hQi (Set.mapsTo_univ _ _)))).contMDiffOn
 
+/-- The phase cylinder chart's target. -/
 theorem FlowSuspension.phaseCylinderChart_target {E Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     (Q : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞) (v : E → ℝ) (hv : ContDiff ℝ ∞ v) :
     (phaseCylinderChart Q v hv).target = Q.target ×ˢ Set.univ :=
   rfl
 
+/-- The phase cylinder chart is vertical. -/
 theorem FlowSuspension.phaseCylinderChart_vertical {E Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     (Q : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞) (v : E → ℝ) (hv : ContDiff ℝ ∞ v) {p : E × ℝ}
@@ -2106,6 +2196,7 @@ theorem FlowSuspension.phaseCylinderChart_vertical {E Z : Type*} [NormedAddCommG
       (((hasDerivAt_id (0 : ℝ)).const_add p.2).add_const (v p.1))
   exact hd'.unique he
 
+/-- A phase flow basin chart exists. -/
 theorem FlowSuspension.exists_phase_flow_basin_chart {D Z E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2148,6 +2239,7 @@ theorem FlowSuspension.exists_phase_flow_basin_chart {D Z E M : Type*}
   rw [show P w = F (w.2 - T) (S w.1) from hPflow w.1 hw.1 w.2]
   exact (hshift (w.2 - T) (S w.1)).trans (hbasin w.1 hw.1)
 
+/-- The phase flow chart's subsheet germ. -/
 theorem FlowSuspension.phase_flow_chart_subsheet_germ {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {B : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -2161,6 +2253,7 @@ theorem FlowSuspension.phase_flow_chart_subsheet_germ {D E M : Type*}
   filter_upwards [hnear] with w hw
   exact (hformula (L w.2) hw w.1).symm
 
+/-- The native flow is vertical in the chart. -/
 theorem FlowCancellation.native_flow_chart_vertical {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -2195,6 +2288,7 @@ theorem FlowCancellation.native_flow_chart_vertical {D E M : Type*} [NormedAddCo
   rw [hpF] at hv
   exact hv
 
+/-- A Euclidean level flow cylinder exists. -/
 theorem FlowCancellation.exists_euclidean_level_flow_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -2237,6 +2331,7 @@ theorem FlowCancellation.exists_euclidean_level_flow_cylinder {E M : Type*}
       native_flow_chart_vertical Φ F hcurve ι hformula⟩
   exact congrArg Subtype.val (NativeParametrization.centered_zero z)
 
+/-- A native phase cylinder exists. -/
 theorem FlowSuspension.exists_native_phase_cylinder {Z E B M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M]
@@ -2277,6 +2372,7 @@ theorem FlowSuspension.exists_native_phase_cylinder {Z E B M : Type*}
     (MorseCancellation.partialChartField_of_model_conjugacy R Φ (fun _ : E × ℝ => (0, 1))
         (fun _ : Z × ℝ => (0, 1)) (fun p hp => phaseCylinderChart_vertical Q v hv hp) hy).symm
 
+/-- A flow cylinder with an arbitrary gap exists. -/
 theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
@@ -2388,6 +2484,7 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     rw [hmap, hAmap]
     exact hhf
 
+/-- A normalized connection cylinder exists. -/
 theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -2513,6 +2610,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
       (hgeometry x₀).2.1 p |>.mpr hp₀, (hgeometry x₀).2.2 q |>.mpr hq₀, huniqueG, hU, h0U,
       hsource, haxis, hheight, hfield, hgeometry, t₀, rfl⟩
 
+/-- The cubic flow cylinder pushes the vertical field forward. -/
 theorem MorseCancellation.cubicFlowCylinder_pushforward_vertical {m : ℕ} (σ : Fin m → ℝ) (a : ℝ)
     (p : (Fin m → ℝ) × ℝ) :
     fderiv ℝ (cubicFlowCylinder σ a) p (0, 1) =
@@ -2523,6 +2621,7 @@ theorem MorseCancellation.cubicFlowCylinder_pushforward_vertical {m : ℕ} (σ :
   have hd' := hasDerivAt_cubicFlowCylinder σ a p.1 p.2
   exact hd.unique hd'
 
+/-- The native field's transition pushforward. -/
 theorem FlowSuspension.native_field_transition_pushforward {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2560,6 +2659,7 @@ theorem FlowSuspension.native_field_transition_pushforward {D B E M : Type*}
   rw [hpushA]
   exact hpushC
 
+/-- The native vertical transition derivative. -/
 theorem FlowSuspension.native_vertical_transition_derivative {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {Z : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -2574,6 +2674,7 @@ theorem FlowSuspension.native_vertical_transition_derivative {E M : Type*}
     {p : ℝ × Z} (hp : p ∈ (A.trans C.symm).source) : fderiv ℝ (C.symm ∘ A) p (1, 0) = (1, 0) :=
   native_field_transition_pushforward A C V (fun _ => (1, 0)) (fun _ => (1, 0)) hA hC hp
 
+/-- The vertical transition formula. -/
 theorem FlowSuspension.vertical_transition_formula {Z : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] (R : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, ℝ × Z) (ℝ × Z) (ℝ × Z) ∞)
     (hvertical : ∀ p ∈ R.source, fderiv ℝ R p (1, 0) = (1, 0)) {I : Set ℝ} (hI : IsOpen I)
@@ -2601,6 +2702,9 @@ theorem FlowSuspension.vertical_transition_formula {Z : Type*} [NormedAddCommGro
   · have hh : (R (t, z)).2 - 0 = (R (t₀, z)).2 - 0 := congrArg Prod.snd heq
     simpa only [sub_zero] using hh
 
+/-! ### Transition phases -/
+
+/-- A vertical transition phase exists. -/
 theorem FlowSuspension.exists_vertical_transition_phase {Z : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] (R : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, ℝ × Z) (ℝ × Z) (ℝ × Z) ∞)
     (hvertical : ∀ p ∈ R.source, fderiv ℝ R p (1, 0) = (1, 0)) {t₀ : ℝ}
@@ -2638,6 +2742,7 @@ theorem FlowSuspension.exists_vertical_transition_phase {Z : Type*} [NormedAddCo
   · intro t ht z hz
     exact vertical_transition_formula R hvertical isOpen_Ioo isPreconnected_Ioo hsub ht₀ ht hz
 
+/-- A transverse transition chart exists. -/
 theorem FlowSuspension.exists_transverse_transition_chart {Z : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
     (R : PartialDiffeomorph 𝓘(ℝ, ℝ × Z) 𝓘(ℝ, ℝ × Z) (ℝ × Z) (ℝ × Z) ∞)
@@ -2687,6 +2792,7 @@ theorem FlowSuspension.exists_transverse_transition_chart {Z : Type*}
     rw [hPmap]
     exact hformula t ht z (hPsub hz)
 
+/-- A native transition phase exists. -/
 theorem FlowSuspension.exists_native_transition_phase {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2735,6 +2841,7 @@ theorem FlowSuspension.exists_native_transition_phase {Z E M : Type*}
     rw [hmap] at hh
     exact hh.symm
 
+/-- A global native transition phase exists. -/
 theorem FlowSuspension.exists_global_native_transition_phase {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2774,6 +2881,7 @@ theorem FlowSuspension.exists_global_native_transition_phase {Z E M : Type*}
   rw [heq hz.2]
   exact hh
 
+/-- A latest-time native transition phase exists. -/
 theorem FlowSuspension.exists_time_last_native_transition_phase {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2825,6 +2933,7 @@ theorem FlowSuspension.exists_time_last_native_transition_phase {Z E M : Type*}
   have hh := hformula t ht z hz
   exact ⟨hh.1.2, hh.2.1.2, hh.2.2⟩
 
+/-- A native endpoint slice phase exists. -/
 theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ}
     (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
@@ -2892,6 +3001,9 @@ theorem FlowSuspension.exists_native_endpoint_slice_phase {E M : Type*}
   · intro z hz
     exact (hformula T hT z hz.1).2.2
 
+/-! ### Transported corrections -/
+
+/-- Supported isotopies compose. -/
 def TransverseGerms.compose_supported_isotopies {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {D₁ D₂ : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞} {K₁ K₂ S : Set E}
     (A : SupportedDiffeomorph.SupportedRelativeIsotopy D₁ K₁ S)
@@ -2918,6 +3030,7 @@ def TransverseGerms.compose_supported_isotopies {E : Type*} [NormedAddCommGroup 
     rw [A.fixedOn t x hx, B.fixedOn t x hx]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A transported transition correction exists. -/
 theorem TransverseGerms.exists_transported_transition_correction {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] {Z : Type*} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     (Q P : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞)
@@ -2978,6 +3091,7 @@ theorem TransverseGerms.exists_transported_transition_correction {E : Type*}
       (hHt (H.map_source' hDz))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A common transverse range exists. -/
 theorem TransverseGerms.exists_common_transverse_range {E Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     (Q P : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Z) E Z ∞)
@@ -3024,6 +3138,7 @@ theorem TransverseGerms.exists_common_transverse_range {E Z : Type*} [NormedAddC
   have hyP : y ∈ P'.target := hsame ▸ hy
   exact ⟨hy.1, hyP.1⟩
 
+/-- Common transverse coordinates exist. -/
 theorem TransverseGerms.exists_common_transverse_coordinates {D B Z : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] (e : D ≃L[ℝ] B)
@@ -3088,6 +3203,7 @@ theorem TransverseGerms.exists_common_transverse_coordinates {D B Z : Type*}
   · intro u hu
     exact (hPmap (H u)).trans ((hdiagram u hu).trans (hQmap u).symm)
 
+/-- A restricted native cylinder exists. -/
 theorem TransverseGerms.exists_restricted_native_cylinder {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M]
@@ -3113,6 +3229,7 @@ theorem TransverseGerms.exists_restricted_native_cylinder {Z E M : Type*}
   exact ⟨B, hBs, fun _ hz => hz.1, fun _ hy => hy.1, fun _ => rfl, fun y hy => hA y hy.1⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative split coordinate vanishes exactly on the positive part. -/
 theorem TransverseGerms.splitCoordinates_negative_zero_iff {ι : Type*} [Fintype ι]
     (w : ι → ℝ) (z : ι → ℝ) :
     (MorseHandle.splitCoordinates w z).1 = 0 ↔ ∀ i, w i = -1 → z i = 0 := by
@@ -3125,6 +3242,7 @@ theorem TransverseGerms.splitCoordinates_negative_zero_iff {ι : Type*} [Fintype
     exact h i.1 i.2
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The positive split coordinate vanishes exactly on the negative part. -/
 theorem TransverseGerms.splitCoordinates_positive_zero_iff {ι : Type*} [Fintype ι]
     (w : ι → ℝ) (hw : ∀ i, w i = -1 ∨ w i = 1) (z : ι → ℝ) :
     (MorseHandle.splitCoordinates w z).2 = 0 ↔ ∀ i, w i = 1 → z i = 0 := by
@@ -3137,7 +3255,10 @@ theorem TransverseGerms.splitCoordinates_positive_zero_iff {ι : Type*} [Fintype
     ext i
     exact h i.1 ((hw i.1).resolve_left i.2)
 
+/-! ### Endpoint basins -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- Original endpoint slice data exists. -/
 theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) (Φq Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -3220,6 +3341,7 @@ theorem MorseCancellation.exists_original_endpoint_slice_data {E M : Type*} [Nor
     exact hPphase (e.symm u) (hP'sub u hu)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The incoming linear stable plane. -/
 theorem MorseCancellation.incoming_linear_stable_plane {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
@@ -3259,6 +3381,7 @@ theorem MorseCancellation.incoming_linear_stable_plane {E M : Type*} [NormedAddC
       · simp [endpointLinearField, hi]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing linear unstable plane. -/
 theorem MorseCancellation.outgoing_linear_unstable_plane {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f x) {m : ℕ} (σ : Fin m → ℝ)
@@ -3297,6 +3420,7 @@ theorem MorseCancellation.outgoing_linear_unstable_plane {E M : Type*} [NormedAd
       · simp [endpointLinearField, hi, h i hi]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The endpoint axis tail of a restriction. -/
 theorem MorseCancellation.endpoint_axis_tail_of_restriction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {p : M} {m : ℕ} (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -3315,6 +3439,7 @@ theorem MorseCancellation.endpoint_axis_tail_of_restriction {E M : Type*} [Norme
   exact ⟨s, hs, heq ▸ hz, (hmap _).trans hval⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A cubic endpoint basin restriction exists. -/
 theorem MorseCancellation.exists_cubic_endpoint_basin_restriction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -3382,6 +3507,7 @@ theorem MorseCancellation.exists_cubic_endpoint_basin_restriction {E M : Type*} 
       exact outgoing_linear_unstable_plane c σ hσ L hL (endpointFieldProduct (1 / 2) (-1) z)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- An actual incoming cubic basin exists. -/
 theorem MorseCancellation.exists_actual_incoming_cubic_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -3415,6 +3541,7 @@ theorem MorseCancellation.exists_actual_incoming_cubic_basin {E M : Type*} [Norm
   · exact endpoint_axis_tail_of_restriction Φ Ψ hsub hmap hΨc hΨcenter F x hlim htail
 
 attribute [local instance 100] Classical.propDecidable in
+/-- An actual outgoing cubic basin exists. -/
 theorem MorseCancellation.exists_actual_outgoing_cubic_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -3451,10 +3578,14 @@ theorem MorseCancellation.exists_actual_outgoing_cubic_basin {E M : Type*} [Norm
   · exact fun z hz => (hbasin z hz).2 rfl
   · exact endpoint_axis_tail_of_restriction Φ Ψ hsub hmap hΨc' hΨcenter' F x hlim htail
 
+/-! ### Sign enumerations -/
+
+/-- A non-negative coordinate is positive. -/
 theorem SignedCoordinates.positive_of_not_negative {ι : Type*} {w : ι → ℝ}
     (hw : ∀ i, w i = -1 ∨ w i = 1) {i : ι} (hi : w i ≠ -1) : w i = 1 :=
   (hw i).resolve_left hi
 
+/-- Equal negative counts give a sign equivalence. -/
 theorem SignedCoordinates.exists_equiv_of_negative_card_eq {ι κ : Type*} [Fintype ι]
     [Fintype κ] (w₀ : ι → ℝ) (w₁ : κ → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1)
     (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1) (hcard : Fintype.card ι = Fintype.card κ)
@@ -3483,12 +3614,14 @@ theorem SignedCoordinates.exists_equiv_of_negative_card_eq {ι κ : Type*} [Fint
       (positive_of_not_negative h₁ (eP x).property).trans
         (positive_of_not_negative h₀ x.property).symm
 
+/-- A coordinate enumeration exists. -/
 theorem MorseCancellation.exists_coordinate_enum {m n : ℕ} (hn : n = m + 1) (j : Fin n) :
     ∃ ρ : Option (Fin m) ≃ Fin n, ρ Option.none = j := by
   let ρ₀ : Option (Fin m) ≃ Fin n := Fintype.equivOfCardEq (by simp [hn])
   exact ⟨ρ₀.trans (Equiv.swap (ρ₀ Option.none) j), by simp⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative cardinality of the split. -/
 theorem SignedCoordinates.negative_card_split {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n)
     (w : Fin n → ℝ) :
     Fintype.card { j // w j = -1 } =
@@ -3500,6 +3633,7 @@ theorem SignedCoordinates.negative_card_split {m n : ℕ} (ρ : Option (Fin m) �
   simp only [Fintype.card_subtype, Finset.card_eq_sum_ones, Finset.sum_filter, Fintype.sum_option]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Adjacent sign enumerations exist. -/
 theorem SignedCoordinates.exists_adjacent_sign_enumerations {m : ℕ}
     (w₀ w₁ : Fin (m + 1) → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1) (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1)
     (hindex : Fintype.card { i // w₁ i = -1 } = Fintype.card { i // w₀ i = -1 } + 1) :
@@ -3541,6 +3675,7 @@ theorem SignedCoordinates.exists_adjacent_sign_enumerations {m : ℕ}
     exact (hη i).symm
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Adjacent sign enumerations in a dimension exist. -/
 theorem SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension {m n : ℕ}
     (hn : n = m + 1) (w₀ w₁ : Fin n → ℝ) (h₀ : ∀ i, w₀ i = -1 ∨ w₀ i = 1)
     (h₁ : ∀ i, w₁ i = -1 ∨ w₁ i = 1)
@@ -3551,7 +3686,10 @@ theorem SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension {m n : 
   subst n
   exact exists_adjacent_sign_enumerations w₀ w₁ h₀ h₁ hindex
 
+/-! ### Matched connection endpoints -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- Matched connection basin endpoints exist. -/
 theorem MorseCancellation.exists_matched_connection_basin_endpoints {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p q : M} (cp : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -3602,6 +3740,7 @@ theorem MorseCancellation.exists_matched_connection_basin_endpoints {E M : Type*
       hptail, hqtail⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Actual connection slice data exists. -/
 theorem MorseCancellation.exists_actual_connection_slice_data {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ} {p q x : M}
@@ -3680,6 +3819,9 @@ theorem MorseCancellation.exists_actual_connection_slice_data {E M : Type*} [Nor
   · intro z hz
     exact (hplimits z p).1.trans (hpbasin z (hps ▸ hz))
 
+/-! ### Transverse block corrections -/
+
+/-- The scalar displacement is differentiable. -/
 theorem TransverseGerms.hasFDerivAt_scalar_displacement {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] {f g : A → A} (hfzero : f 0 = 0)
     (hf : HasFDerivAt f (ContinuousLinearMap.id ℝ A) 0)
@@ -3697,6 +3839,7 @@ theorem TransverseGerms.hasFDerivAt_scalar_displacement {A : Type*} [NormedAddCo
   rw [he, add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg hα.1]
   exact (mul_le_of_le_one_left (norm_nonneg _) hα.2).trans hx
 
+/-- An open transverse convex blend exists. -/
 theorem TransverseGerms.exists_open_transverse_convex_blend {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {φ : (A × B) → (A × B)} {U : Set (A × B)} (hU : IsOpen U) (hzero : (0 : A × B) ∈ U)
@@ -3780,6 +3923,7 @@ theorem TransverseGerms.exists_open_transverse_convex_blend {A B : Type*}
     simp only [show ((0 : A), (0 : B)) = (0 : A × B) from rfl, hφzero, map_zero, sub_self,
       smul_zero, add_zero, Prod.fst_zero]
 
+/-- A supported transverse germ linearization exists. -/
 theorem TransverseGerms.exists_supported_transverse_germ_linearization {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B]
@@ -3884,6 +4028,7 @@ theorem TransverseGerms.exists_supported_transverse_germ_linearization {A B : Ty
     dsimp [G]
     exact congrArg C (Φ.left_inv' hxsource)
 
+/-- The transverse block map. -/
 def TransverseGerms.transverseBlockMap {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (P : A ≃L[ℝ] A) (S : B ≃L[ℝ] B)
     (Q : B →L[ℝ] A) (R : A →L[ℝ] B) : (A × B) →L[ℝ] (A × B) :=
@@ -3892,6 +4037,7 @@ def TransverseGerms.transverseBlockMap {A B : Type*} [NormedAddCommGroup A]
       (ContinuousLinearMap.fst ℝ A B + Q.comp (ContinuousLinearMap.snd ℝ A B))
   T.prod (S.toContinuousLinearMap.comp (ContinuousLinearMap.snd ℝ A B) + R.comp T)
 
+/-- A transverse block factorization exists. -/
 theorem TransverseGerms.exists_transverse_block_factorization {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] (C : (A × B) ≃L[ℝ] (A × B)) (P : A ≃L[ℝ] A)
@@ -3951,6 +4097,7 @@ theorem TransverseGerms.exists_transverse_block_factorization {A B : Type*}
   intro p
   exact hmodel p
 
+/-- A supported lower shear isotopy exists. -/
 theorem TransverseGerms.exists_supported_lower_shear_isotopy {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] (R : A →L[ℝ] B) {U : Set (A × B)} (hU : IsOpen U)
@@ -4010,6 +4157,7 @@ theorem TransverseGerms.exists_supported_lower_shear_isotopy {A B : Type*}
     rw [hp]
     rfl
 
+/-- A supported transverse block reduction exists. -/
 theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B]
@@ -4119,6 +4267,7 @@ theorem TransverseGerms.exists_supported_transverse_block_reduction {A B : Type*
     rw [hmodel]
     simp only [neg_apply, add_neg_cancel_right, neg_add_cancel_right]
 
+/-- A projected equivalence of native transverse data exists. -/
 theorem TransverseGerms.exists_projected_equiv_of_native_transverse {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B]
@@ -4154,6 +4303,7 @@ theorem TransverseGerms.exists_projected_equiv_of_native_transverse {A B : Type*
   let P := (LinearEquiv.ofBijective (N.comp D).toLinearMap hbij).toContinuousLinearEquiv
   exact ⟨P, fun _ => rfl⟩
 
+/-- A block reduction of native transverse data exists. -/
 theorem TransverseGerms.exists_block_reduction_of_native_transverse {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B]
@@ -4186,6 +4336,7 @@ theorem TransverseGerms.exists_block_reduction_of_native_transverse {A B : Type*
   obtain ⟨P, hP⟩ := exists_projected_equiv_of_native_transverse Φ hzero hΦzero htrans
   exact ⟨P, hP, exists_supported_transverse_block_reduction Φ hzero hΦzero P hP hunique⟩
 
+/-- Label sheets are transverse in the incoming chart. -/
 theorem TransverseGerms.label_sheets_transverse_in_incoming_chart {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -4218,6 +4369,7 @@ theorem TransverseGerms.label_sheets_transverse_in_incoming_chart {A B Z : Type*
     ChartMapPerturbation.transverse_in_chart P.symm hqdiff hpdiff hcross htarget
       (htrans hcross)
 
+/-- Relative label sheet germs. -/
 theorem TransverseGerms.relative_label_sheet_germs {A B Z : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] (Q P : PartialDiffeomorph 𝓘(ℝ, A × B) 𝓘(ℝ, Z) (A × B) Z ∞)
@@ -4239,6 +4391,7 @@ theorem TransverseGerms.relative_label_sheet_germs {A B Z : Type*} [NormedAddCom
     exact P.left_inv' hy
   exact ⟨heqH, heqP⟩
 
+/-- Relative transversality from label sheets. -/
 theorem TransverseGerms.relative_transverse_of_label_sheets {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -4260,6 +4413,7 @@ theorem TransverseGerms.relative_transverse_of_label_sheets {A B Z : Type*}
   rw [heqH.mfderiv_eq, heqP.mfderiv_eq] at ht
   exact fun _ => ht
 
+/-- The relative intersection of a native unique connection. -/
 theorem FlowSuspension.relative_intersection_of_native_unique_connection
     {A B Z E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
@@ -4310,6 +4464,7 @@ theorem FlowSuspension.relative_intersection_of_native_unique_connection
     rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A cylinder block correction exists. -/
 theorem TransverseGerms.exists_cylinder_block_correction {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -4354,6 +4509,9 @@ theorem TransverseGerms.exists_cylinder_block_correction {A B Z : Type*}
   · filter_upwards [H.open_source.mem_nhds h0, hgerm] with z hz hg
     rw [hformula z hz, hg]
 
+/-! ### Cylinder holonomy -/
+
+/-- The flow preserves the base region. -/
 theorem FlowSuspension.flow_preserves_base_region {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (F : Flow ℝ (E × ℝ)) {K U : Set E} (hKU : K ⊆ U)
     (hfix : ∀ x ∉ K, ∀ s t : ℝ, F t (x, s) = (x, s + t)) {p : E × ℝ} (hp : p.1 ∈ U) (t : ℝ) :
@@ -4367,6 +4525,7 @@ theorem FlowSuspension.flow_preserves_base_region {E : Type*} [NormedAddCommGrou
   change p.1 = (F t p).1 at he
   exact hout (he ▸ hp)
 
+/-- A native suspension chart exists. -/
 theorem FlowSuspension.exists_native_suspension_chart {E B M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M]
@@ -4414,6 +4573,7 @@ theorem FlowSuspension.exists_native_suspension_chart {E B M : Type*}
     change Φ (C.chart p) = Φ (D p.1, p.2)
     rw [C.upper p hp]
 
+/-- A full cylinder holonomy exists. -/
 theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) ∞ M]
@@ -4553,6 +4713,7 @@ theorem FlowSuspension.exists_full_cylinder_holonomy {E B M : Type*} [NormedAddC
     rw [hfull _ hp, hFfixed x hx.2 s t]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A native block holonomy exists. -/
 theorem FlowSuspension.exists_native_block_holonomy {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -4649,6 +4810,7 @@ theorem FlowSuspension.exists_native_block_holonomy {A B Z E M : Type*}
     intro t ht
     rw [hΩupper _ ht, hz]
 
+/-- The corrected cylinder's unique connection. -/
 theorem FlowSuspension.corrected_cylinder_unique_connection {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -4728,6 +4890,9 @@ theorem FlowSuspension.corrected_cylinder_unique_connection {A B Z E M : Type*}
       exact Φ.map_source' hsource
     exact (hx hxt).elim
 
+/-! ### Phase clocks -/
+
+/-- A small supported scalar germ exists. -/
 theorem FlowTimeChange.exists_small_supported_scalar_germ {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ}
     (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0) {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) {ε : ℝ}
@@ -4770,6 +4935,7 @@ theorem FlowTimeChange.exists_small_supported_scalar_germ {E : Type*}
     rw [abs_mul, abs_of_nonneg β.nonneg]
     exact (mul_le_of_le_one_left (abs_nonneg (v x)) β.le_one).trans_lt hvx
 
+/-- A bounded step profile exists. -/
 theorem FlowTimeChange.exists_bounded_step_profile :
     ∃ (τ : ℝ → ℝ) (L : ℝ),
       ContDiff ℝ ∞ τ ∧
@@ -4812,6 +4978,7 @@ theorem FlowTimeChange.exists_bounded_step_profile :
     have hh : |deriv τ t| ≤ C := by simpa only [Real.norm_eq_abs] using hC t
     exact hh.trans (by dsimp [L]; linarith [le_max_left C 0])
 
+/-- A supported phase clock exists. -/
 theorem FlowTimeChange.exists_supported_phase_clock {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ} (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0)
     {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) :
@@ -4889,12 +5056,14 @@ theorem FlowTimeChange.exists_supported_phase_clock {E : Type*} [NormedAddCommGr
     rw [hD, hright p.1 hp, one_mul]
   · exact hpositive
 
+/-- The phase-conjugating diffeomorphism. -/
 def FlowTimeChange.phaseConjugatingDiffeomorph {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) :
     Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞ :=
   ((ContinuousLinearEquiv.prodComm ℝ E ℝ).toDiffeomorph.trans D).trans
     (ContinuousLinearEquiv.prodComm ℝ ℝ E).toDiffeomorph
 
+/-- The phase clock flow's base. -/
 theorem FlowTimeChange.phaseClockFlow_base {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
     (hbase : ∀ p, (D p).2 = p.2) (p : E × ℝ) (t : ℝ) :
@@ -4908,6 +5077,7 @@ theorem FlowTimeChange.phaseClockFlow_base {E : Type*} [NormedAddCommGroup E]
   rw [hbase]
   exact hh
 
+/-- The phase clock field's base at zero. -/
 theorem FlowTimeChange.phaseClockField_base_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
     (hbase : ∀ p, (D p).2 = p.2) (p : E × ℝ) :
@@ -4924,6 +5094,7 @@ theorem FlowTimeChange.phaseClockField_base_zero {E : Type*} [NormedAddCommGroup
   rw [heq] at hd
   exact hd.unique (hasDerivAt_const 0 p.1)
 
+/-- The phase clock field's time derivative. -/
 theorem FlowTimeChange.phaseClockField_time_derivative {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) (p : E × ℝ) :
     (FlowSuspension.suspensionField (phaseConjugatingDiffeomorph D) p).2 =
@@ -4944,6 +5115,7 @@ theorem FlowTimeChange.phaseClockField_time_derivative {E : Type*} [NormedAddCom
       0 at hd
   exact hd.unique hi
 
+/-- The phase clock field's time component is positive. -/
 theorem FlowTimeChange.phaseClockField_time_positive {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞)
     (hpos : ∀ q, 1 / 2 < fderiv ℝ (fun p => (D p).1) q (1, 0)) (p : E × ℝ) :
@@ -4951,6 +5123,7 @@ theorem FlowTimeChange.phaseClockField_time_positive {E : Type*} [NormedAddCommG
   rw [phaseClockField_time_derivative]
   exact hpos _
 
+/-- The phase clock field is vertical for a translation germ. -/
 theorem FlowTimeChange.phaseClockField_eq_vertical_of_translation_germ {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E]
     (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) (p : E × ℝ) {h : ℝ}
@@ -4976,6 +5149,7 @@ theorem FlowTimeChange.phaseClockField_eq_vertical_of_translation_germ {E : Type
     hd.unique
       ((hasDerivAt_const 0 z.1).prodMk (((hasDerivAt_id (0 : ℝ)).const_add z.2).add_const h))
 
+/-- A compact phase field support exists. -/
 theorem FlowTimeChange.exists_compact_phase_field_support {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E]
     (D : Diffeomorph 𝓘(ℝ, ℝ × E) 𝓘(ℝ, ℝ × E) (ℝ × E) (ℝ × E) ∞) {g : E → ℝ} {τ : ℝ → ℝ}
@@ -5020,6 +5194,9 @@ theorem FlowTimeChange.exists_compact_phase_field_support {E : Type*}
     intro s
     rw [hD, hg, MulZeroClass.mul_zero]
 
+/-! ### Phase flow coordinates -/
+
+/-- Coordinates for the phase flow. -/
 structure FlowTimeChange.PhaseFlowCoordinates {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (g : E → ℝ) (W : (E × ℝ) → E × ℝ) (F : Flow ℝ (E × ℝ)) where
   chart : Diffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, E × ℝ) (E × ℝ) (E × ℝ) ∞
@@ -5030,6 +5207,7 @@ structure FlowTimeChange.PhaseFlowCoordinates {E : Type*} [NormedAddCommGroup E]
   upper : ∀ p, 2 / 3 ≤ p.2 → chart p = (p.1, p.2 + g p.1)
   axis : ∀ t : ℝ, chart (0, t) = (0, t)
 
+/-- A compact phase flow exists. -/
 theorem FlowTimeChange.exists_compact_phase_flow {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {v : E → ℝ} (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0)
     {U : Set E} (hU : IsOpen U) (h0U : (0 : E) ∈ U) :
@@ -5108,6 +5286,7 @@ theorem FlowTimeChange.exists_compact_phase_flow {E : Type*} [NormedAddCommGroup
     change Q ((Q.symm (0, s)).1, (Q.symm (0, s)).2 + t) = _
     rw [hiaxis, hQaxis]
 
+/-- The partial chart field's vertical factor. -/
 theorem FlowTimeChange.partialChartField_vertical_factor {E B M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace M] [ChartedSpace B M]
@@ -5125,6 +5304,7 @@ theorem FlowTimeChange.partialChartField_vertical_factor {E B M : Type*}
   conv_lhs => rw [hw]
   rw [map_smul, map_smul]
 
+/-- A native positive cylinder rescaling exists. -/
 theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace M] [ChartedSpace B M] [T2Space M] [IsManifold 𝓘(ℝ, B) ∞ M]
@@ -5178,6 +5358,7 @@ theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
       LocalFunctionReplacement.replace_germ_off_support Φ hC hCsource (fun _ _ => rfl)
         hwfix hx
 
+/-- A native cylinder conjugacy exists. -/
 theorem FlowSuspension.exists_native_cylinder_conjugacy {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M]
@@ -5216,6 +5397,7 @@ theorem FlowSuspension.exists_native_cylinder_conjugacy {Z E M : Type*}
     (MorseCancellation.partialChartField_of_model_conjugacy D.toPartialDiffeomorph Φ
         (fun _ : Z × ℝ => (0, 1)) (suspensionField D) hpush hy).symm
 
+/-- A native phase realization exists. -/
 theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace M] [ChartedSpace B M]
@@ -5335,6 +5517,7 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     have hp : ((0 : E), s) ∈ Φ.source := by rw [hsource]; exact ⟨h0U, Set.mem_univ _⟩
     rw [hfull _ hp, haxis]
 
+/-- A native matched phase cylinder exists. -/
 theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -5413,6 +5596,7 @@ theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
       rw [hΞright (z, t) (by dsimp; linarith), hΨmap, hclock]
       exact hr (t + v₁ z) (by linarith [h₁.1])
 
+/-- A unique phase-corrected cylinder exists. -/
 theorem FlowSuspension.exists_unique_phase_corrected_cylinder {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -5531,6 +5715,9 @@ theorem FlowSuspension.exists_unique_phase_corrected_cylinder {A B Z E M : Type*
       hdesc₂ f x (hdesc₁ x hx), hkeep, hΞsource, hΞtarget.trans hΩtarget, hΞfield, haxis, hunique,
       hΞmatch⟩
 
+/-! ### Matched cubic time formulas -/
+
+/-- The native endpoint phase through the box. -/
 theorem MorseCancellation.native_endpoint_phase_through_box {E Z M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {m : ℕ}
@@ -5561,6 +5748,7 @@ theorem MorseCancellation.native_endpoint_phase_through_box {E Z M : Type*} [Nor
         (t - T))
     _ = A (q, t + v) := congrArg (fun s : ℝ => A (q, s)) (by ring)
 
+/-- The matched cubic time formulas. -/
 theorem MorseCancellation.matched_cubic_time_formulas {E Z B M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M] [IsManifold 𝓘(ℝ, B) 1 M] [T2Space M]
@@ -5640,6 +5828,9 @@ theorem MorseCancellation.matched_cubic_time_formulas {E Z B M : Type*} [NormedA
       _ = Ξ (e z, t) := (hformula t ht).symm
       _ = Φm (cubicFlowCylinder σ a (z, t)) := (hmid z t).symm
 
+/-! ### Field chart gluing -/
+
+/-- Partial chart fields with a forward germ agree. -/
 theorem FieldChartGluing.partialChartField_eq_of_forward_germ {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
@@ -5660,6 +5851,7 @@ theorem FieldChartGluing.partialChartField_eq_of_forward_germ {D E M : Type*}
   rw [hiΦ, hiΨ, heq.mfderiv_eq]
   rfl
 
+/-- A chart-germ map is a local diffeomorphism. -/
 theorem FieldChartGluing.isLocalDiffeomorphAt_of_chart_germ {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
@@ -5670,6 +5862,7 @@ theorem FieldChartGluing.isLocalDiffeomorphAt_of_chart_germ {D E M : Type*}
   exact ⟨Ψ, ⟨hp, hpU⟩, fun x hx => hUsub hx.2⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A native field chart near a compact set exists. -/
 theorem FieldChartGluing.exists_native_field_chart_near_compact {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M] (f : D → M) (W : D → D)
@@ -5711,6 +5904,7 @@ theorem FieldChartGluing.exists_native_field_chart_near_compact {D E M : Type*}
   rw [hi] at hsame
   exact (hfield y hyΨ).trans hsame.symm
 
+/-- A controlled field germ chart exists. -/
 theorem FieldChartGluing.exists_controlled_field_germ_chart {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
@@ -5737,6 +5931,7 @@ theorem FieldChartGluing.exists_controlled_field_germ_chart {D E M : Type*}
   exact (hUsub hy.1.2).trans (hmodel y hy.1.1)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The signed split transverse rate. -/
 theorem MorseCancellation.signed_split_transverse_rate {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1) (z : Fin m → ℝ) :
     MorseHandle.splitCoordinates σ (fun i => σ i * z i) =
@@ -5751,6 +5946,7 @@ theorem MorseCancellation.signed_split_transverse_rate {m : ℕ} (σ : Fin m →
     simp [(hσ i.1).resolve_left i.2]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The signed split transverse exponential. -/
 theorem MorseCancellation.signed_split_transverse_exponential {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1) (t : ℝ) (z : Fin m → ℝ) :
     MorseHandle.splitCoordinates σ (fun i => Real.exp (-σ i * t) * z i) =
@@ -5765,6 +5961,7 @@ theorem MorseCancellation.signed_split_transverse_exponential {m : ℕ} (σ : Fi
     simp [(hσ i.1).resolve_left i.2]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The signed block change of the cubic cylinder. -/
 theorem MorseCancellation.signed_block_change_cubic_cylinder {m : ℕ} (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
     (P : MorseHandle.NegativeSpace σ ≃L[ℝ] MorseHandle.NegativeSpace σ)
@@ -5782,6 +5979,7 @@ theorem MorseCancellation.signed_block_change_cubic_cylinder {m : ℕ} (σ : Fin
         (signed_split_transverse_exponential σ hσ t) P S z
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A signed block-changed cubic chart exists. -/
 theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (σ : Fin m → ℝ) (hσ : ∀ i, σ i = -1 ∨ σ i = 1)
@@ -5845,6 +6043,7 @@ theorem MorseCancellation.exists_signed_block_changed_cubic_chart {m : ℕ} {E M
     change Φ (cubicFlowCylinder σ a (T ((MorseHandle.splitCoordinates σ).symm u), t)) = _
     rw [hT]
 
+/-- A native regular cubic field chart exists. -/
 theorem MorseCancellation.exists_native_regular_cubic_field_chart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) (Φ : PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞)
@@ -5921,6 +6120,7 @@ theorem MorseCancellation.exists_native_regular_cubic_field_chart {E M : Type*} 
     rw [hpx] at hv
     exact hv
 
+/-- A regular cubic chart of a native vertical field exists. -/
 theorem MorseCancellation.exists_regular_cubic_chart_of_native_vertical_field {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ}
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
@@ -5946,16 +6146,21 @@ theorem MorseCancellation.exists_regular_cubic_chart_of_native_vertical_field {E
     (FlowSuspension.native_vertical_cylinder_flow Φ hsource hV hmodel F hF p.1 hz 0
         p.2).symm
 
+/-! ### The three-chart gluing -/
+
+/-- The three-chart glued map. -/
 def FieldChartGluing.threeChartMap {Z M : Type*} (f₀ fₘ f₁ : (ℝ × Z) → M) (a b : ℝ)
     (p : ℝ × Z) : M :=
   if p.1 ≤ a then f₀ p else if b ≤ p.1 then f₁ p else fₘ p
 
+/-- The three-chart map's left germ. -/
 theorem FieldChartGluing.threeChartMap_left_germ {Z M : Type*} [TopologicalSpace Z]
     [Zero Z] (f₀ fₘ f₁ : (ℝ × Z) → M) {a b : ℝ} {p : ℝ × Z} (hp : p.1 < a) :
     threeChartMap f₀ fₘ f₁ a b =ᶠ[𝓝 p] f₀ := by
   filter_upwards [continuousAt_fst.eventually (eventually_lt_nhds hp)] with q hq
   simp only [threeChartMap, if_pos hq.le]
 
+/-- The three-chart map's middle germ. -/
 theorem FieldChartGluing.threeChartMap_middle_germ {Z M : Type*} [TopologicalSpace Z]
     [Zero Z] (f₀ fₘ f₁ : (ℝ × Z) → M) {a b : ℝ} {p : ℝ × Z} (ha : a < p.1) (hb : p.1 < b) :
     threeChartMap f₀ fₘ f₁ a b =ᶠ[𝓝 p] fₘ := by
@@ -5963,12 +6168,14 @@ theorem FieldChartGluing.threeChartMap_middle_germ {Z M : Type*} [TopologicalSpa
     continuousAt_fst.eventually (eventually_lt_nhds hb)] with q hqa hqb
   simp only [threeChartMap, if_neg (not_le_of_gt hqa), if_neg (not_le_of_gt hqb)]
 
+/-- The three-chart map's right germ. -/
 theorem FieldChartGluing.threeChartMap_right_germ {Z M : Type*} [TopologicalSpace Z]
     [Zero Z] (f₀ fₘ f₁ : (ℝ × Z) → M) {a b : ℝ} (hab : a < b) {p : ℝ × Z} (hp : b < p.1) :
     threeChartMap f₀ fₘ f₁ a b =ᶠ[𝓝 p] f₁ := by
   filter_upwards [continuousAt_fst.eventually (eventually_gt_nhds hp)] with q hq
   simp only [threeChartMap, if_neg (not_le_of_gt (hab.trans hq)), if_pos hq.le]
 
+/-- The three-chart map's left closed germ. -/
 theorem FieldChartGluing.threeChartMap_left_closed_germ {Z M : Type*} [TopologicalSpace Z]
     [Zero Z] (f₀ fₘ f₁ : (ℝ × Z) → M) {a b : ℝ} (hab : a < b) (heq : f₀ =ᶠ[𝓝 (a, (0 : Z))] fₘ)
     {s : ℝ} (hs : s ≤ a) : threeChartMap f₀ fₘ f₁ a b =ᶠ[𝓝 (s, (0 : Z))] f₀ := by
@@ -5981,6 +6188,7 @@ theorem FieldChartGluing.threeChartMap_left_closed_germ {Z M : Type*} [Topologic
     · simp only [threeChartMap, if_neg hpa, if_neg (not_le_of_gt hpb)]
       exact hp.symm
 
+/-- The three-chart map's right closed germ. -/
 theorem FieldChartGluing.threeChartMap_right_closed_germ {Z M : Type*} [TopologicalSpace Z]
     [Zero Z] (f₀ fₘ f₁ : (ℝ × Z) → M) {a b : ℝ} (hab : a < b) (heq : f₁ =ᶠ[𝓝 (b, (0 : Z))] fₘ)
     {s : ℝ} (hs : b ≤ s) : threeChartMap f₀ fₘ f₁ a b =ᶠ[𝓝 (s, (0 : Z))] f₁ := by
@@ -5993,6 +6201,7 @@ theorem FieldChartGluing.threeChartMap_right_closed_germ {Z M : Type*} [Topologi
       exact hp.symm
   · exact threeChartMap_right_germ f₀ fₘ f₁ hab hs
 
+/-- Three glued native field charts exist. -/
 theorem FieldChartGluing.exists_glued_three_native_field_charts {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
@@ -6066,6 +6275,7 @@ theorem FieldChartGluing.exists_glued_three_native_field_charts {Z E M : Type*}
   · filter_upwards [threeChartMap_right_closed_germ Φ₀ Φₘ Φ₁ hab hgerm₁ hbr] with p hp
     exact (hmap p).trans hp
 
+/-- A regular chart's closed axis is injective. -/
 theorem FieldChartGluing.injective_closed_axis_of_regular_chart {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M]
@@ -6110,6 +6320,7 @@ theorem FieldChartGluing.injective_closed_axis_of_regular_chart {Z E M : Type*}
   rw [hregular s hs', hregular t ht'] at heq
   exact congrArg Prod.fst (Φ.toOpenPartialHomeomorph.injOn (hsource s hs') (hsource t ht') heq)
 
+/-- A closed-axis native field chart exists. -/
 theorem FieldChartGluing.exists_closed_axis_native_field_chart {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
@@ -6163,6 +6374,9 @@ theorem FieldChartGluing.exists_closed_axis_native_field_chart {Z E M : Type*}
       (haxis r ⟨hlr, le_rfl⟩).trans (hγ₁ r hbr.le), ?_, hg₀, hg₁⟩
   exact fun s hs => (haxis s ⟨hs.1.le, hs.2.le⟩).trans (hregular s hs)
 
+/-! ### Full cubic field charts -/
+
+/-- A cubic spatial overlap germ exists. -/
 theorem MorseCancellation.exists_cubic_spatial_overlap_germ {m : ℕ} {M : Type*} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) (Φ Ψ : Model m → M) {c r : ℝ} (hr : 0 < r) {l : Filter ℝ} [Filter.NeBot l]
     (hlim : Filter.Tendsto (fun t => cubicFlowCylinder σ a (0, t)) l (𝓝 (c, (0 : Fin m → ℝ))))
@@ -6200,6 +6414,7 @@ theorem MorseCancellation.exists_cubic_spatial_overlap_germ {m : ℕ} {M : Type*
   change Φ (C (C.symm p)) = Ψ (C (C.symm p)) at hp
   rwa [hright] at hp
 
+/-- The cubic cylinder's forward flow stays in the box. -/
 theorem MorseCancellation.cubicFlowCylinder_forward_stays_box {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) (z : Fin m → ℝ) {c r T : ℝ} (hr : 0 < r)
     (hlim :
@@ -6213,6 +6428,7 @@ theorem MorseCancellation.cubicFlowCylinder_forward_stays_box {m : ℕ} (σ : Fi
   obtain ⟨u, hu, hut⟩ := (hnear.and (Filter.eventually_ge_atTop t)).exists
   exact cubicFlowCylinder_stays_axis_ball σ ha z ⟨ht, hut⟩ hT (Metric.ball_subset_closedBall hu)
 
+/-- The cubic cylinder's backward flow stays in the box. -/
 theorem MorseCancellation.cubicFlowCylinder_backward_stays_box {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) (z : Fin m → ℝ) {c r T : ℝ} (hr : 0 < r)
     (hlim :
@@ -6226,23 +6442,27 @@ theorem MorseCancellation.cubicFlowCylinder_backward_stays_box {m : ℕ} (σ : F
   obtain ⟨u, hu, hut⟩ := (hnear.and (Filter.eventually_le_atBot t)).exists
   exact cubicFlowCylinder_stays_axis_ball σ ha z ⟨hut, ht⟩ (Metric.ball_subset_closedBall hu) hT
 
+/-- The cubic axis parameter is strictly monotone. -/
 theorem MorseCancellation.strictMono_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
     StrictMono (cubicAxisParameter a) := by
   intro s t hst
   exact mul_lt_mul_of_pos_left (strictMono_tanh (mul_lt_mul_of_pos_left hst ha)) ha
 
+/-- The cylinder axis tends to the top endpoint. -/
 theorem MorseCancellation.tendsto_cubicFlowCylinder_axis_atTop {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) :
     Filter.Tendsto (fun t => cubicFlowCylinder σ a (0, t)) Filter.atTop
       (𝓝 (a, (0 : Fin m → ℝ))) := by
   simpa only [cubicFlowCylinder_axis] using tendsto_cubicModelOrbit_atTop (m := m) ha
 
+/-- The cylinder axis tends to the bottom endpoint. -/
 theorem MorseCancellation.tendsto_cubicFlowCylinder_axis_atBot {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) :
     Filter.Tendsto (fun t => cubicFlowCylinder σ a (0, t)) Filter.atBot
       (𝓝 (-a, (0 : Fin m → ℝ))) := by
   simpa only [cubicFlowCylinder_axis] using tendsto_cubicModelOrbit_atBot (m := m) ha
 
+/-- The cylinder's clock at zero. -/
 theorem MorseCancellation.cubicFlowCylinder_zero_clock {m : ℕ} (σ : Fin m → ℝ) {a s : ℝ} (ha : 0 < a)
     (hs : s ∈ Set.Ioo (-a) a) :
     cubicFlowCylinder σ a (0, cubicAxisClock a s) = (s, (0 : Fin m → ℝ)) := by
@@ -6250,6 +6470,7 @@ theorem MorseCancellation.cubicFlowCylinder_zero_clock {m : ℕ} (σ : Fin m →
   change (cubicAxisParameter a (cubicAxisClock a s), 0) = (s, 0)
   rw [cubicAxisParameter_clock ha hs]
 
+/-- The incoming axis segment lies in the box. -/
 theorem MorseCancellation.incoming_axis_segment_in_box {m : ℕ} (σ : Fin m → ℝ) {a r T : ℝ} (ha : 0 < a)
     (hr : 0 < r)
     (hstart : cubicFlowCylinder σ a (0, T) ∈ Metric.closedBall (a, (0 : Fin m → ℝ)) r) :
@@ -6271,6 +6492,7 @@ theorem MorseCancellation.incoming_axis_segment_in_box {m : ℕ} (σ : Fin m →
   · subst s
     exact ⟨Metric.mem_closedBall_self hr.le, fun h => (lt_irrefl _ h).elim⟩
 
+/-- The outgoing axis segment lies in the box. -/
 theorem MorseCancellation.outgoing_axis_segment_in_box {m : ℕ} (σ : Fin m → ℝ) {a r T : ℝ} (ha : 0 < a)
     (hr : 0 < r)
     (hstart : cubicFlowCylinder σ a (0, T) ∈ Metric.closedBall (-a, (0 : Fin m → ℝ)) r) :
@@ -6292,6 +6514,7 @@ theorem MorseCancellation.outgoing_axis_segment_in_box {m : ℕ} (σ : Fin m →
     rw [cubicFlowCylinder_zero_clock σ ha hs'] at hb
     exact ⟨hb, fun _ => ht⟩
 
+/-- A matched full cubic field chart exists. -/
 theorem MorseCancellation.exists_matched_full_cubic_field_chart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {m : ℕ} (σ : Fin m → ℝ)
     {a : ℝ} (ha : 0 < a) (Φq Φm Φp : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -6379,6 +6602,7 @@ theorem MorseCancellation.exists_matched_full_cubic_field_chart {E M : Type*} [N
       hgp' hqaxis hpaxis hleft hright hne
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A full cubic chart from the corrected cylinder exists. -/
 theorem MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {m : ℕ}
@@ -6550,6 +6774,9 @@ theorem MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder {Z E M
   exact
     ⟨Φ, haxis, hfield, hΦq.trans hqval, hΦp.trans hpval, (hΦmid 0 ⟨by linarith, ha⟩).trans hmid0⟩
 
+/-! ### Cylinder basin labels -/
+
+/-- The cylinder phase basin coordinates. -/
 theorem FlowSuspension.cylinder_phase_basin_coordinates {E Z M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [TopologicalSpace M] (F : Flow ℝ M) (Φ : Z × ℝ → M)
@@ -6572,6 +6799,7 @@ theorem FlowSuspension.cylinder_phase_basin_coordinates {E Z M : Type*}
     exact hshift _ _
   exact hslice.trans (hend.symm.trans (hbasin _ hu))
 
+/-- The cylinder's outgoing basin labels. -/
 theorem FlowSuspension.cylinder_outgoing_basin_labels {Z M : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace M] {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (F : Flow ℝ M) (Φ : Z × ℝ → M)
@@ -6599,6 +6827,7 @@ theorem FlowSuspension.cylinder_outgoing_basin_labels {Z M : Type*} [NormedAddCo
     have hi : Q.symm (Q (x, (0 : B))) = (x, 0) := Q.left_inv' hx
     rw [← hQx, hi]
 
+/-- The cylinder's incoming basin labels. -/
 theorem FlowSuspension.cylinder_incoming_basin_labels {Z M : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace M] {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (F : Flow ℝ M) (Φ : Z × ℝ → M)
@@ -6624,11 +6853,13 @@ theorem FlowSuspension.cylinder_incoming_basin_labels {Z M : Type*} [NormedAddCo
     rw [← hPy, hi]
     exact hy0
 
+/-- The cylinder's transverse part vanishes exactly on the axis. -/
 theorem MorseCancellation.cubicFlowCylinder_transverse_zero_iff {m : ℕ} (σ : Fin m → ℝ) (a T : ℝ)
     (z : Fin m → ℝ) (i : Fin m) : (cubicFlowCylinder σ a (z, T)).2 i = 0 ↔ z i = 0 := by
   simp [cubicFlowCylinder, Real.exp_ne_zero]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The incoming cubic slice basin. -/
 theorem MorseCancellation.incoming_cubic_slice_basin {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (σ : Fin m → ℝ) (a T : ℝ)
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞) (F : Flow ℝ M) {p : M}
@@ -6653,6 +6884,7 @@ theorem MorseCancellation.incoming_cubic_slice_basin {m : ℕ} {E M : Type*} [No
   rw [(MorseHandle.splitCoordinates σ).apply_symm_apply]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing cubic slice basin. -/
 theorem MorseCancellation.outgoing_cubic_slice_basin {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (σ : Fin m → ℝ)
     (hσ : ∀ i, σ i = -1 ∨ σ i = 1) (a T : ℝ)
@@ -6677,6 +6909,9 @@ theorem MorseCancellation.outgoing_cubic_slice_basin {m : ℕ} {E M : Type*} [No
   rw [he, ← TransverseGerms.splitCoordinates_positive_zero_iff σ hσ]
   rw [(MorseHandle.splitCoordinates σ).apply_symm_apply]
 
+/-! ### Lyapunov residence bounds -/
+
+/-- A native Lyapunov residence bound exists. -/
 theorem FlowCancellation.exists_native_lyapunov_residence {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -6723,6 +6958,7 @@ theorem FlowCancellation.exists_native_lyapunov_residence {E M : Type*}
   have hhi : f (γ 0) ≤ f q := hmax (hstay 0 h0)
   linarith
 
+/-- Native residence bounds combine. -/
 theorem FlowCancellation.combine_native_residence_bounds {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {B N U : Set M}
@@ -6753,6 +6989,7 @@ theorem FlowCancellation.combine_native_residence_bounds {E M : Type*}
       (hnoreturn γ hγ a (b + (T₀ + T₁)) haN hbN (t + T₀)
         ⟨by linarith [ha.2, ht.1], by linarith [hb.1, ht.2]⟩)
 
+/-- A perturbed band residence bound exists. -/
 theorem FlowCancellation.exists_perturbed_band_residence {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [T2Space M]
@@ -6782,13 +7019,18 @@ theorem FlowCancellation.exists_perturbed_band_residence {E M : Type*}
         native_no_return_of_supported_perturbation (hV.of_le (by simp)) F hcurve hK hKN hNU hoff
           hnoreturn hγ ha hb)
 
+/-! ### The transverse energy Lyapunov function -/
+
+/-- The transverse energy Lyapunov function. -/
 def MorseCancellation.transverseEnergy {m : ℕ} (σ : Fin m → ℝ) (p : Model m) : ℝ :=
   ∑ i, (σ i * p.2 i) ^ 2
 
+/-- The transverse energy is nonnegative. -/
 theorem MorseCancellation.transverseEnergy_nonneg {m : ℕ} (σ : Fin m → ℝ) (p : Model m) :
     0 ≤ transverseEnergy σ p :=
   Finset.sum_nonneg (fun _ _ => sq_nonneg _)
 
+/-- The transverse energy vanishes exactly on the axis. -/
 theorem MorseCancellation.transverseEnergy_zero_iff {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
     (p : Model m) : transverseEnergy σ p = 0 ↔ p.2 = 0 := by
   constructor
@@ -6801,14 +7043,17 @@ theorem MorseCancellation.transverseEnergy_zero_iff {m : ℕ} (σ : Fin m → �
   · intro h
     simp [transverseEnergy, h]
 
+/-- The field Lyapunov function. -/
 def MorseCancellation.fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) (p : Model m) : ℝ :=
   p.1 + k * ∑ i, σ i * p.2 i ^ 2
 
+/-- The field Lyapunov function is smooth. -/
 theorem MorseCancellation.contDiff_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) :
     ContDiff ℝ ∞ (fieldLyapunov σ k) := by
   unfold fieldLyapunov
   fun_prop
 
+/-- The field Lyapunov function is differentiable. -/
 theorem MorseCancellation.hasFDerivAt_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (k : ℝ) (p : Model m) :
     HasFDerivAt (fieldLyapunov σ k)
       (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ) +
@@ -6827,6 +7072,7 @@ theorem MorseCancellation.hasFDerivAt_fieldLyapunov {m : ℕ} (σ : Fin m → �
   intro v
   simp [mul_assoc, mul_comm]
 
+/-- The Lyapunov decay speed of the field. -/
 theorem MorseCancellation.fieldLyapunov_speed {m : ℕ} (σ : Fin m → ℝ) (k a : ℝ) (φ : Model m → ℝ)
     (p : Model m) :
     fderiv ℝ (fieldLyapunov σ k) p (cancelledDescent σ a φ p) =
@@ -6846,6 +7092,7 @@ theorem MorseCancellation.fieldLyapunov_speed {m : ℕ} (σ : Fin m → ℝ) (k 
   rw [hsum]
   ring
 
+/-- A compact field Lyapunov bound exists. -/
 theorem MorseCancellation.exists_compact_fieldLyapunov {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
     {a : ℝ} (ha : 0 < a) {φ : Model m → ℝ} (hφ : ContDiff ℝ ∞ φ) (hφnonneg : ∀ p, 0 ≤ φ p)
     (hone : ∀ s ∈ Set.Icc (-a) a, φ (s, 0) = 1) {C : Set (Model m)} (hC : IsCompact C) :
@@ -6897,6 +7144,7 @@ theorem MorseCancellation.exists_compact_fieldLyapunov {m : ℕ} (σ : Fin m →
   rw [fieldLyapunov_speed]
   exact hn hp
 
+/-- A compact Lyapunov residence bound exists. -/
 theorem MorseCancellation.exists_compact_lyapunov_residence {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {L : D → ℝ} {W : D → D} (hL : ContDiff ℝ ∞ L) (hW : Continuous W)
     {C : Set D} (hC : IsCompact C) (hneg : ∀ x ∈ C, fderiv ℝ L x (W x) < 0) :
@@ -6948,6 +7196,7 @@ theorem MorseCancellation.exists_compact_lyapunov_residence {D : Type*} [NormedA
   have hhi : L (γ 0) ≤ L q := hmax (hstay 0 h0)
   linarith
 
+/-- A partial chart integral curve's derivative. -/
 theorem MorseCancellation.hasDerivAt_partialChart_integralCurve {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, D) M D ∞) (W : D → D)
@@ -6973,6 +7222,7 @@ theorem MorseCancellation.hasDerivAt_partialChart_integralCurve {D E M : Type*} 
   have hv := congrArg (fun A : D →L[ℝ] D => A (W (e (γ t)))) hinv
   exact congrArg (fun v => (NormedSpace.fromTangentSpace t r) • v) hv
 
+/-- A native compact Lyapunov residence bound exists. -/
 theorem MorseCancellation.exists_native_compact_lyapunov_residence {D E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞)
@@ -7000,6 +7250,7 @@ theorem MorseCancellation.exists_native_compact_lyapunov_residence {D E M : Type
           (hV (γ t) (hstay t ht)))
   exact hout (hcoords t ht)
 
+/-- A cancelled-descent residence bound exists. -/
 theorem MorseCancellation.exists_native_cancelledDescent_residence_bound {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ}
     (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {a : ℝ} (ha : 0 < a)
@@ -7016,6 +7267,7 @@ theorem MorseCancellation.exists_native_cancelledDescent_residence_bound {E M : 
     exists_native_compact_lyapunov_residence Φ hL (contDiff_cancelledDescent σ a hφ).continuous hC
       hsource hneg hV
 
+/-- A native cubic field has finite passage time. -/
 theorem MorseCancellation.exists_native_cubic_field_finite_passage {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
@@ -7063,6 +7315,9 @@ theorem MorseCancellation.exists_native_cubic_field_finite_passage {E M : Type*}
     FlowCancellation.exists_perturbed_band_residence hf hV hV' F hcurve hK.isClosed hN
       hsuppN hNU (fun x hx => (hkeep x hx).self_of_nhds) hneg hnoreturn hinner
 
+/-! ### The cubic axis flow -/
+
+/-- The native cubic axis flow. -/
 theorem MorseCancellation.native_cubic_axis_flow {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
@@ -7094,6 +7349,7 @@ theorem MorseCancellation.native_cubic_axis_flow {m : ℕ} {E M : Type*} [Normed
   have heq := isMIntegralCurve_Ioo_eq_of_contMDiff_boundaryless hV (hcurve (Φ (0, 0))) hΓ hinit
   exact congrFun heq t
 
+/-- The native cubic axis orbit. -/
 theorem MorseCancellation.native_cubic_axis_orbit {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
@@ -7120,6 +7376,7 @@ theorem MorseCancellation.native_cubic_axis_orbit {m : ℕ} {E M : Type*} [Norme
       (Φ.mdifferentiableAt (by simp) hq).continuousAt.tendsto.comp
         (tendsto_cubicModelOrbit_atBot ha)
 
+/-- The native cubic closed axis. -/
 theorem MorseCancellation.native_cubic_closed_axis {m : ℕ} {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
@@ -7153,6 +7410,9 @@ theorem MorseCancellation.native_cubic_closed_axis {m : ℕ} {E M : Type*} [Norm
     · obtain ⟨⟨s, z⟩, ⟨hs, hz⟩, he⟩ := hx
       exact ⟨(s, z), ⟨⟨hs.1.le, hs.2.le⟩, hz⟩, he⟩
 
+/-! ### Band crossings -/
+
+/-- A uniform directed band crossing exists. -/
 theorem FlowCancellation.exists_uniform_directed_band_crossing {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7179,6 +7439,7 @@ theorem FlowCancellation.exists_uniform_directed_band_crossing {X : Type*}
   rw [← F.map_add, add_neg_cancel, F.map_zero_apply] at hh
   exact (not_lt_of_ge hx) hh
 
+/-- The band entry time is continuous. -/
 theorem FlowCancellation.continuousOn_band_entryTime {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7201,6 +7462,7 @@ theorem FlowCancellation.continuousOn_band_entryTime {X : Type*} [TopologicalSpa
       (forwardInvariant_sublevel_of_boundary F hf hD hder hlower) hentry
       (fun x hx => ⟨T, hT.le, (hforward x hx).le⟩)
 
+/-- A native flow band crossing exists. -/
 theorem FlowCancellation.exists_native_flow_band_crossing {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -7231,6 +7493,7 @@ theorem FlowCancellation.exists_native_flow_band_crossing {E M : Type*}
     ⟨F, hcurve, exists_uniform_directed_band_crossing F hf.continuous hD hder hlower hupper hres',
       continuousOn_band_entryTime F hf.continuous hD hder hlower hupper hres'⟩
 
+/-- A cubic connection has finite passage. -/
 theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
@@ -7360,6 +7623,7 @@ theorem MorseCancellation.exists_cubic_connection_finite_passage {E M : Type*} [
     FlowCancellation.exists_native_flow_band_crossing hf hV'
       (fun x hx => hboundary x (Or.inl hx)) (fun x hx => hboundary x (Or.inr hx)) hpass
 
+/-- A function along a native integral curve differentiates at a point. -/
 theorem FlowCancellation.hasDerivAt_comp_native_integralCurve_at {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {γ : ℝ → M} {t : ℝ}
@@ -7376,6 +7640,7 @@ theorem FlowCancellation.hasDerivAt_comp_native_integralCurve_at {E M : Type*}
       (NormedSpace.fromTangentSpace t r) • (mvfderiv 𝓘(ℝ, E) f (γ t)) (V (γ t))
   exact map_smul _ _ _
 
+/-- The manifold derivative of the signed level time. -/
 theorem FlowCancellation.mvfderiv_signedLevelTime {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
@@ -7399,18 +7664,22 @@ theorem FlowCancellation.mvfderiv_signedLevelTime {E M : Type*} [NormedAddCommGr
     congrArg (fun y : M => mvfderiv 𝓘(ℝ, E) (signedLevelTime F f c) y (V y)) (F.map_zero_apply x)
   exact he.symm.trans hh
 
+/-- The basin of a band crossing. -/
 def FlowCancellation.crossingBasin {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (f : X → ℝ) (c d : ℝ) : Set X :=
   levelBasin F f c ∩ levelBasin F f d
 
+/-- The duration of a band crossing. -/
 def FlowCancellation.crossingDuration {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (f : X → ℝ) (c d : ℝ) (x : X) : ℝ :=
   signedLevelTime F f c x - signedLevelTime F f d x
 
+/-- The height of the flow band. -/
 def FlowCancellation.flowBandHeight {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (f : X → ℝ) (c d : ℝ) (x : X) : ℝ :=
   c + (d - c) * signedLevelTime F f c x / crossingDuration F f c d x
 
+/-- The crossing duration is positive. -/
 theorem FlowCancellation.crossingDuration_pos {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7426,6 +7695,7 @@ theorem FlowCancellation.crossingDuration_pos {X : Type*} [TopologicalSpace X]
   rw [← F.map_add, sub_add_cancel, signedLevelTime_hits F f d hx.2] at hh
   exact (not_le_of_gt hcd) hh
 
+/-- The crossing duration under the flow. -/
 theorem FlowCancellation.crossingDuration_flow {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7436,6 +7706,7 @@ theorem FlowCancellation.crossingDuration_flow {X : Type*} [TopologicalSpace X]
     signedLevelTime_flow F hf hD hder hd hx.2 s]
   ring
 
+/-- The band height under the flow. -/
 theorem FlowCancellation.flowBandHeight_flow {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7447,6 +7718,7 @@ theorem FlowCancellation.flowBandHeight_flow {X : Type*} [TopologicalSpace X]
     signedLevelTime_flow F hf hD hder hc hx.1 s]
   ring
 
+/-- The band height's lower bound. -/
 theorem FlowCancellation.flowBandHeight_lower {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7454,6 +7726,7 @@ theorem FlowCancellation.flowBandHeight_lower {X : Type*} [TopologicalSpace X]
   simp only [flowBandHeight, signedLevelTime_eq_zero F hf hD hder hc hx, MulZeroClass.mul_zero,
     zero_div, add_zero]
 
+/-- The band height's upper bound. -/
 theorem FlowCancellation.flowBandHeight_upper {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c d : ℝ}
@@ -7466,6 +7739,7 @@ theorem FlowCancellation.flowBandHeight_upper {X : Type*} [TopologicalSpace X]
   rw [flowBandHeight, heq, mul_div_cancel_right₀ _ hpos.ne']
   ring
 
+/-- The band height is smooth. -/
 theorem FlowCancellation.smooth_flowBandHeight {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
@@ -7518,9 +7792,13 @@ theorem FlowCancellation.smooth_flowBandHeight {E M : Type*} [NormedAddCommGroup
     exact he.symm.trans (by simpa using hchain.unique hline)
   exact ⟨hnative, hnative ▸ neg_neg_of_pos (div_pos (sub_pos.mpr hcd) (hpos x hx))⟩
 
+/-! ### The logarithmic coordinate -/
+
+/-- The logarithmic coordinate of a positive height. -/
 def FlowCancellation.logarithmicCoordinate (η L t : ℝ) : ℝ :=
   Real.log (1 + (t / η) ^ 2) / L
 
+/-- The logarithmic coordinate is smooth. -/
 theorem FlowCancellation.contDiff_logarithmicCoordinate (η L : ℝ) :
     ContDiff ℝ ∞ (logarithmicCoordinate η L) := by
   apply ContDiff.div_const
@@ -7529,6 +7807,7 @@ theorem FlowCancellation.contDiff_logarithmicCoordinate (η L : ℝ) :
   · intro t
     positivity
 
+/-- The logarithmic coordinate's derivative. -/
 theorem FlowCancellation.hasDerivAt_logarithmicCoordinate {η L : ℝ} (hη : 0 < η)
     (hL : 0 < L) (t : ℝ) :
     HasDerivAt (logarithmicCoordinate η L) (2 * t / (L * (η ^ 2 + t ^ 2))) t := by
@@ -7538,6 +7817,7 @@ theorem FlowCancellation.hasDerivAt_logarithmicCoordinate {η L : ℝ} (hη : 0 
   simp only [Pi.pow_apply, id_eq, Nat.cast_ofNat, Nat.reduceSub, pow_one]
   field_simp
 
+/-- The weighted derivative bound of the logarithmic coordinate. -/
 theorem FlowCancellation.logarithmicCoordinate_weighted_deriv_bound {η L : ℝ} (hη : 0 < η)
     (hL : 0 < L) (t : ℝ) : |t * deriv (logarithmicCoordinate η L) t| ≤ 2 / L := by
   rw [(hasDerivAt_logarithmicCoordinate hη hL t).deriv]
@@ -7547,6 +7827,7 @@ theorem FlowCancellation.logarithmicCoordinate_weighted_deriv_bound {η L : ℝ}
   rw [heq, abs_of_nonneg (by positivity)]
   exact mul_le_of_le_one_right (by positivity) ((div_le_one hden).mpr (by nlinarith))
 
+/-- A logarithmic cutoff exists. -/
 theorem FlowCancellation.exists_logarithmic_cutoff {ε δ : ℝ} (hε : 0 < ε) (hδ : 0 < δ) :
     ∃ χ : ℝ → ℝ,
       ContDiff ℝ ∞ χ ∧
@@ -7624,6 +7905,7 @@ theorem FlowCancellation.exists_logarithmic_cutoff {ε δ : ℝ} (hε : 0 < ε) 
         hB.le)
       hsmall
 
+/-- A nonnegative function vanishing at a point has zero derivative. -/
 theorem FlowCancellation.deriv_eq_zero_of_nonneg_zero {χ : ℝ → ℝ} (hχ : Differentiable ℝ χ)
     (hnonneg : ∀ t, 0 ≤ χ t) {t : ℝ} (ht : χ t = 0) : deriv χ t = 0 := by
   have hm : IsLocalMin χ t :=
@@ -7634,6 +7916,7 @@ theorem FlowCancellation.deriv_eq_zero_of_nonneg_zero {χ : ℝ → ℝ} (hχ : 
         exact hnonneg s)
   exact hm.hasDerivAt_eq_zero (hχ t).hasDerivAt
 
+/-- The weighted blend is negative. -/
 theorem FlowCancellation.weighted_blend_neg {α a b r s z μ C δ : ℝ}
     (hα : α ∈ Set.Icc (0 : ℝ) 1) (ha : a ≤ -μ) (hb : b ≤ -μ) (hC : 0 ≤ C) (hr : |r| ≤ C * |s|)
     (hz : |s * z| ≤ δ) (hsmall : C * δ < μ) : b + α * (a - b) - z * r < 0 := by
@@ -7648,6 +7931,7 @@ theorem FlowCancellation.weighted_blend_neg {α a b r s z μ C δ : ℝ}
       _ ≤ C * δ := mul_le_mul_of_nonneg_left hz hC
   linarith [neg_abs_le (z * r)]
 
+/-- The flow height's derivative at a critical point is zero. -/
 theorem FlowCancellation.hasDerivAt_flow_height_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} {x : M}
@@ -7661,9 +7945,13 @@ theorem FlowCancellation.hasDerivAt_flow_height_zero {E M : Type*} [NormedAddCom
   have he := congrArg (fun y : M => mvfderiv 𝓘(ℝ, E) f y (V y)) (F.map_zero_apply x)
   exact he ▸ hh
 
+/-! ### The descent blend -/
+
+/-- The descent blend of two Lyapunov functions. -/
 def FlowCancellation.descentBlend {M : Type*} (χ : ℝ → ℝ) (θ f g : M → ℝ) (x : M) : ℝ :=
   g x + χ (θ x) * (f x - g x)
 
+/-- The descent blend's manifold derivative. -/
 theorem FlowCancellation.mvfderiv_descentBlend {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {χ : ℝ → ℝ} {θ f g : M → ℝ} {x : M}
@@ -7688,6 +7976,7 @@ theorem FlowCancellation.mvfderiv_descentBlend {E M : Type*} [NormedAddCommGroup
   simp only [Pi.sub_apply, Function.comp_apply, F.map_zero_apply] at he
   exact he.trans (by ring)
 
+/-- A native descent blend exists. -/
 theorem FlowCancellation.exists_native_descent_blend {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U) {θ f g : M → ℝ}
@@ -7747,14 +8036,19 @@ theorem FlowCancellation.exists_native_descent_blend {E M : Type*} [NormedAddCom
     filter_upwards [ht (eventually_gt_nhds hxout)] with y hy
     exact hout y hy.le
 
+/-! ### Flow tubes -/
+
+/-- The flow tube of a compact set. -/
 def FlowCancellation.flowTube {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (S : Set X)
     (ε : ℝ) : Set X :=
   (fun q : ℝ × X => F q.1 q.2) '' (Set.Icc (-ε) ε ×ˢ S)
 
+/-- The flow tube is compact. -/
 theorem FlowCancellation.isCompact_flowTube {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {S : Set X} (hS : IsCompact S) (ε : ℝ) : IsCompact (flowTube F S ε) :=
   (CompactIccSpace.isCompact_Icc.prod hS).image (F.continuous continuous_fst continuous_snd)
 
+/-- A flow tube inside an open set exists. -/
 theorem FlowCancellation.exists_flowTube_subset {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {S N : Set X} (hS : IsCompact S) (hN : IsOpen N) (hSN : S ⊆ N) :
     ∃ ε : ℝ, 0 < ε ∧ flowTube F S ε ⊆ N := by
@@ -7771,6 +8065,7 @@ theorem FlowCancellation.exists_flowTube_subset {X : Type*} [TopologicalSpace X]
   rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_lt]
   constructor <;> linarith [ht.1, ht.2]
 
+/-- Signed-time membership in the flow tube. -/
 theorem FlowCancellation.mem_flowTube_of_signedTime {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) (f : X → ℝ) (c : ℝ) {ε : ℝ} {x : X} (hx : x ∈ levelBasin F f c)
     (ht : |signedLevelTime F f c x| ≤ ε) : x ∈ flowTube F {y | f y = c} ε := by
@@ -7780,6 +8075,7 @@ theorem FlowCancellation.mem_flowTube_of_signedTime {X : Type*} [TopologicalSpac
   · constructor <;> linarith [(abs_le.mp ht).1, (abs_le.mp ht).2]
   · simp only [← F.map_add, neg_add_cancel, F.map_zero_apply]
 
+/-- A compact negative margin exists. -/
 theorem FlowCancellation.exists_compact_negative_margin {X : Type*} [TopologicalSpace X]
     {S : Set X} (hS : IsCompact S) {D : X → ℝ} (hD : ContinuousOn D S) (hneg : ∀ x ∈ S, D x < 0) :
     ∃ μ : ℝ, 0 < μ ∧ ∀ x ∈ S, D x < -μ := by
@@ -7791,6 +8087,7 @@ theorem FlowCancellation.exists_compact_negative_margin {X : Type*} [Topological
     linarith [hneg p hp]
   · exact ⟨1, zero_lt_one, fun x hx => (hne ⟨x, hx⟩).elim⟩
 
+/-- The directional derivative is smooth on a set. -/
 theorem FlowCancellation.contMDiffOn_directionalDerivative {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {U : Set M} (hU : IsOpen U)
@@ -7808,6 +8105,7 @@ theorem FlowCancellation.contMDiffOn_directionalDerivative {E M : Type*}
       (NormedSpace.fromTangentSpace (g x)) (mfderivWithin 𝓘(ℝ, E) 𝓘(ℝ, ℝ) g U x (V x))
   rw [mfderivWithin_of_isOpen hU hx]
 
+/-- Native time collar bounds exist. -/
 theorem FlowCancellation.exists_native_time_collar_bounds {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompactSpace M] {U : Set M}
@@ -7882,6 +8180,7 @@ theorem FlowCancellation.exists_native_time_collar_bounds {E M : Type*}
   simpa only [ℓ, F.map_zero_apply, hreturn, heq y hy, sub_self, sub_zero, Real.norm_eq_abs,
     abs_neg] using hmvt
 
+/-- A boundary germ correction exists. -/
 theorem FlowCancellation.exists_boundary_germ_correction {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -7917,6 +8216,7 @@ theorem FlowCancellation.exists_boundary_germ_correction {E M : Type*}
     signedLevelTime_eq_zero F hf.continuous hD
       (fun y t => FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve y) t) hfc hx
 
+/-- A signed-time level separation exists. -/
 theorem FlowCancellation.exists_signedTime_level_separation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -7941,6 +8241,7 @@ theorem FlowCancellation.exists_signedTime_level_separation {E M : Type*}
   have hh : -|signedLevelTime F f c x| < -r := hmargin x hx
   linarith
 
+/-- A level-preserving boundary correction exists. -/
 theorem FlowCancellation.exists_boundary_correction_preserving_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -7961,6 +8262,7 @@ theorem FlowCancellation.exists_boundary_correction_preserving_level {E M : Type
     exists_boundary_germ_correction hU hf hg hV F hcurve hcU hbasin heq hfc hgneg hr
   exact ⟨b, hb, hbneg, hbc, fun x hx => hboff x (hdU hx) (hsep x hx).le⟩
 
+/-- The band lies in the crossing basin. -/
 theorem FlowCancellation.band_subset_crossingBasin {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {c d T : ℝ} (hT : 0 < T)
     (hforward : ∀ x, f x ≤ d → f (F T x) < c) (hbackward : ∀ x, c ≤ f x → d < f (F (-T) x)) :
@@ -7980,6 +8282,7 @@ theorem FlowCancellation.band_subset_crossingBasin {X : Type*} [TopologicalSpace
           ⟨by simpa only [F.map_zero_apply] using hx.2, (hbackward x hx.1).le⟩)
     exact ⟨t, ht⟩
 
+/-- Smooth band height germs exist. -/
 theorem FlowCancellation.exists_smooth_band_height_germs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -8025,9 +8328,13 @@ theorem FlowCancellation.exists_smooth_band_height_germs {E M : Type*}
   · exact (hkc x hx).trans (hbc x hx)
   · exact hkd x hx
 
+/-! ### Band replacement -/
+
+/-- The band replacement of a function. -/
 def FlowCancellation.bandReplacement {X : Type*} (f g : X → ℝ) (c d : ℝ) (x : X) : ℝ := by
   classical exact if f x ∈ Set.Ioo c d then g x else f x
 
+/-- The band replacement's germ on the boundary. -/
 theorem FlowCancellation.bandReplacement_germ_boundary {X : Type*} [TopologicalSpace X]
     {f g : X → ℝ} {c d : ℝ} {x : X} (heq : g =ᶠ[𝓝 x] f) :
     bandReplacement f g c d =ᶠ[𝓝 x] f ∧ bandReplacement f g c d =ᶠ[𝓝 x] g := by
@@ -8036,18 +8343,21 @@ theorem FlowCancellation.bandReplacement_germ_boundary {X : Type*} [TopologicalS
     simp only [bandReplacement, hy, ite_self]
   exact ⟨hh, hh.trans heq.symm⟩
 
+/-- The band replacement's germ in the interior. -/
 theorem FlowCancellation.bandReplacement_germ_interior {X : Type*} [TopologicalSpace X]
     {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) {x : X} (hx : f x ∈ Set.Ioo c d) :
     bandReplacement f g c d =ᶠ[𝓝 x] g := by
   filter_upwards [(isOpen_Ioo.preimage hf).mem_nhds hx] with y hy
   exact if_pos hy
 
+/-- The band replacement's germ in the exterior. -/
 theorem FlowCancellation.bandReplacement_germ_exterior {X : Type*} [TopologicalSpace X]
     {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) {x : X} (hx : f x ∉ Set.Icc c d) :
     bandReplacement f g c d =ᶠ[𝓝 x] f := by
   filter_upwards [((isClosed_Icc.preimage hf).isOpen_compl).mem_nhds hx] with y hy
   exact if_neg (fun h => hy ⟨h.1.le, h.2.le⟩)
 
+/-- The band replacement's germ on a closed set. -/
 theorem FlowCancellation.bandReplacement_germ_on_closed {X : Type*} [TopologicalSpace X]
     {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) (hboundary : ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f)
     {x : X} (hx : f x ∈ Set.Icc c d) : bandReplacement f g c d =ᶠ[𝓝 x] g := by
@@ -8058,6 +8368,7 @@ theorem FlowCancellation.bandReplacement_germ_on_closed {X : Type*} [Topological
   exact
     bandReplacement_germ_interior hf ⟨lt_of_le_of_ne hx.1 (Ne.symm hc), lt_of_le_of_ne hx.2 hd⟩
 
+/-- The band replacement's germ off an open set. -/
 theorem FlowCancellation.bandReplacement_germ_off_open {X : Type*} [TopologicalSpace X]
     {f g : X → ℝ} {c d : ℝ} (hf : Continuous f) (hboundary : ∀ x, f x = c ∨ f x = d → g =ᶠ[𝓝 x] f)
     {x : X} (hx : f x ∉ Set.Ioo c d) : bandReplacement f g c d =ᶠ[𝓝 x] f := by
@@ -8069,6 +8380,7 @@ theorem FlowCancellation.bandReplacement_germ_off_open {X : Type*} [TopologicalS
   intro h
   exact hx ⟨lt_of_le_of_ne h.1 (Ne.symm hc), lt_of_le_of_ne h.2 hd⟩
 
+/-- The band replacement is smooth. -/
 theorem FlowCancellation.contMDiff_bandReplacement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {c d : ℝ} {U : Set M}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hg : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g U) (hU : IsOpen U)
@@ -8081,6 +8393,7 @@ theorem FlowCancellation.contMDiff_bandReplacement {E M : Type*} [NormedAddCommG
         (bandReplacement_germ_on_closed hf.continuous hboundary hx)
   · exact hf.contMDiffAt.congr_of_eventuallyEq (bandReplacement_germ_exterior hf.continuous hx)
 
+/-- Equal germs give equal manifold derivatives. -/
 theorem FlowCancellation.mvfderiv_eq_of_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f g : M → ℝ} {x : M} (heq : f =ᶠ[𝓝 x] g) :
@@ -8088,6 +8401,7 @@ theorem FlowCancellation.mvfderiv_eq_of_germ {E M : Type*} [NormedAddCommGroup E
   unfold mvfderiv
   rw [heq.mfderiv_eq, heq.eq_of_nhds]
 
+/-- A global band Lyapunov function exists. -/
 theorem FlowCancellation.exists_global_band_lyapunov {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -8110,6 +8424,9 @@ theorem FlowCancellation.exists_global_band_lyapunov {E M : Type*} [NormedAddCom
   · intro x hx
     exact bandReplacement_germ_off_open hf.continuous hgerm hx
 
+/-! ### The cubic Hessian -/
+
+/-- The Hessian of the cubic model. -/
 def MorseCancellation.hessian {m : ℕ} (σ : Fin m → ℝ) (p : Model m) : Model m →L[ℝ] Model m →L[ℝ] ℝ :=
   (2 * p.1) •
       (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).smulRight
@@ -8119,10 +8436,12 @@ def MorseCancellation.hessian {m : ℕ} (σ : Fin m → ℝ) (p : Model m) : Mod
         (((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))).smulRight
           ((ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ ℝ (Fin m → ℝ))))
 
+/-- The Hessian computes the second derivative. -/
 theorem MorseCancellation.hessian_apply {m : ℕ} (σ : Fin m → ℝ) (p v w : Model m) :
     hessian σ p v w = 2 * p.1 * v.1 * w.1 + ∑ i, 2 * σ i * v.2 i * w.2 i := by
   simp [hessian, mul_assoc]
 
+/-- The differential is differentiable. -/
 theorem MorseCancellation.hasFDerivAt_differential {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
     HasFDerivAt (differential σ t) (hessian σ p) p := by
   have hx := (ContinuousLinearMap.fst ℝ ℝ (Fin m → ℝ)).hasFDerivAt (x := p)
@@ -8140,11 +8459,13 @@ theorem MorseCancellation.hasFDerivAt_differential {m : ℕ} (σ : Fin m → ℝ
         apply ContinuousLinearMap.ext; intro w
         simp [hessian, L, mul_assoc])
 
+/-- The cubic's Hessian derivative. -/
 theorem MorseCancellation.fderiv_cubic_hessian {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
     fderiv ℝ (fderiv ℝ (cubic σ t)) p = hessian σ p := by
   rw [show fderiv ℝ (cubic σ t) = differential σ t from funext (fderiv_cubic σ t)]
   exact (hasFDerivAt_differential σ t p).fderiv
 
+/-- The cubic Hessian is bijective at the critical point. -/
 theorem MorseCancellation.hessian_bijective {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {p : Model m}
     (hp : p.1 ≠ 0) : Function.Bijective (hessian σ p) := by
   have hi : Function.Injective (hessian σ p) := by
@@ -8169,6 +8490,7 @@ theorem MorseCancellation.hessian_bijective {m : ℕ} (σ : Fin m → ℝ) (hσ 
             hd).mp
         hi⟩
 
+/-- The cubic critical point is Morse. -/
 theorem MorseCancellation.cubic_isMorse {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0) {t : ℝ}
     (ht : t ≠ 0) : MorsePerturbation.IsMorse (cubic σ t) := by
   intro p hcrit
@@ -8178,6 +8500,9 @@ theorem MorseCancellation.cubic_isMorse {m : ℕ} (σ : Fin m → ℝ) (hσ : �
   have h := ((critical_iff σ hσ t p).mp hcrit).1
   exact ht (by simpa [hp] using h)
 
+/-! ### Native cubic cancellation -/
+
+/-- A cutoff for the native cubic cancellation exists. -/
 theorem NativeCubicCancellation.exists_cutoff {m : ℕ} {V : Set (MorseCancellation.Model m)}
     (hV : IsOpen V) (h0 : (0 : MorseCancellation.Model m) ∈ V) :
     ∃ φ : MorseCancellation.Model m → ℝ,
@@ -8198,6 +8523,7 @@ theorem NativeCubicCancellation.exists_cutoff {m : ℕ} {V : Set (MorseCancellat
   · intro p hp
     exact φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hp)
 
+/-- The Morse property transfers across equal germs. -/
 theorem MorseCancellationPreservation.isMorseAt_of_same_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {x : M} (hf : ManifoldMorse.IsMorseAt E f x) (heq : g =ᶠ[𝓝 x] f) :
@@ -8212,6 +8538,7 @@ theorem MorseCancellationPreservation.isMorseAt_of_same_germ {E M : Type*}
   rw [hc.fderiv_eq, (hc.fderiv (𝕜 := ℝ)).fderiv_eq]
   exact hgood
 
+/-- A regular point of the replacement is Morse. -/
 theorem MorseCancellationPreservation.isMorseAt_of_regular {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {g : M → ℝ} (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g) {x : M}
@@ -8223,6 +8550,7 @@ theorem MorseCancellationPreservation.isMorseAt_of_regular {E M : Type*}
   intro hc
   exact hreg ((ManifoldMorse.mem_criticalPoints_iff hg he hx).mpr hc)
 
+/-- A function whose critical germs are Morse is Morse. -/
 theorem MorseCancellationPreservation.isMorse_of_critical_germs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f g : M → ℝ} (hf : ManifoldMorse.IsMorse E f)
@@ -8234,6 +8562,7 @@ theorem MorseCancellationPreservation.isMorse_of_critical_germs {E M : Type*}
   · exact isMorseAt_of_same_germ (hf x) (hkeep x hx)
   · exact isMorseAt_of_regular hg hx
 
+/-- A negative directional derivative excludes criticality. -/
 theorem FlowCancellation.not_critical_of_directional_neg {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {g : M → ℝ} {x : M}
@@ -8244,6 +8573,7 @@ theorem FlowCancellation.not_critical_of_directional_neg {E M : Type*}
   rw [hx] at hneg
   simp at hneg
 
+/-- The band replacement removes the Morse pair. -/
 theorem FlowCancellation.remove_morse_band_pair {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
@@ -8305,6 +8635,7 @@ theorem FlowCancellation.remove_morse_band_pair {E M : Type*} [NormedAddCommGrou
   rw [heq, ← Set.ncard_pair hpq]
   exact Set.ncard_sdiff_add_ncard_of_subset hsub (ManifoldMorse.finite_criticalPoints hf hm)
 
+/-- A unique native cubic connection can be cancelled. -/
 theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
@@ -8372,6 +8703,7 @@ theorem MorseCancellation.cancel_unique_native_cubic_connection {E M : Type*} [N
       hq ⟨hc.le, (hpq.trans hd).le⟩ ⟨(hc.trans hpq).le, hd.le⟩ hpair
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A unique native transverse connection can be cancelled. -/
 theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -8536,6 +8868,7 @@ theorem MorseCancellation.cancel_unique_native_transverse_connection {Z E M : Ty
         exact hunique x hbot htop)
   simpa only [hΓp, hΓq] using hcancel
 
+/-- Native endpoint slice data can be cancelled. -/
 theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} (σ : Fin m → ℝ)
@@ -8603,6 +8936,9 @@ theorem MorseCancellation.cancel_native_endpoint_slice_data {E M : Type*} [Norme
       D.smooth_phaseQ D.smooth_phaseP D.zero_phaseQ D.zero_phaseP hRq hRp hboxq hboxp D.sliceQ
       D.sliceP D.formulaQ D.formulaP hqbasin hpbasin hold hp hq hpq hc hd hpair
 
+/-! ### Transversality of the cancellation data -/
+
+/-- The cancellation data's sheets are transverse. -/
 def MorseCancellation.NativeConnectionCancellationData.Transverse {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ}
     {f : M → ℝ} {p q : M} (D : MorseCancellation.NativeConnectionCancellationData (E := E) f p q m) :
@@ -8611,6 +8947,7 @@ def MorseCancellation.NativeConnectionCancellationData.Transverse {E M : Type*} 
     𝓘(ℝ, MorseHandle.PositiveSpace D.σ) 𝓘(ℝ, Fin m → ℝ) (fun x => D.slices.Q (x, 0))
     (fun y => D.slices.P (0, y)) 0 0
 
+/-- The cancellation of a native connection datum. -/
 theorem MorseCancellation.NativeConnectionCancellationData.cancel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ} {p q : M}
@@ -8642,6 +8979,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.cancel {E M : Type*} 
   simpa only [D.endpointP, D.endpointQ] using hh
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Native connection cancellation data exists. -/
 theorem MorseCancellation.exists_native_connection_cancellation_data {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -8737,6 +9075,7 @@ theorem MorseCancellation.exists_native_connection_cancellation_data {E M : Type
     rw [hB0]
     exact hreference
 
+/-- The first derivative of a time-independent label. -/
 theorem TransverseGerms.derivative_first_of_time_independent_label {A Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     {F : ℝ × A → Z × ℝ} {f : A → Z} (hF : DifferentiableAt ℝ F 0) (hf : DifferentiableAt ℝ f 0)
@@ -8754,6 +9093,7 @@ theorem TransverseGerms.derivative_first_of_time_independent_label {A Z : Type*}
   intro u
   exact congrArg (fun L : (ℝ × A) →L[ℝ] Z => L u) heq
 
+/-- Transverse labels of time-independent flow sheets. -/
 theorem TransverseGerms.transverse_labels_of_time_independent_flow_sheets {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {F : ℝ × A → Z × ℝ} {G : ℝ × B → Z × ℝ} {f : A → Z}
@@ -8772,6 +9112,7 @@ theorem TransverseGerms.transverse_labels_of_time_independent_flow_sheets {A B Z
   rw [← hfirstF u, ← hfirstG v]
   exact congrArg Prod.fst huv
 
+/-- Transverse labels of native flow sheets. -/
 theorem TransverseGerms.transverse_labels_of_native_flow_sheets {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -8801,6 +9142,9 @@ theorem TransverseGerms.transverse_labels_of_native_flow_sheets {A B Z E M : Typ
   rw [mfderiv_eq_fderiv, mfderiv_eq_fderiv]
   exact hl
 
+/-! ### Basin sheets and factorizations -/
+
+/-- The outgoing basin sheet of the cancellation data. -/
 def MorseCancellation.NativeConnectionCancellationData.outgoingSheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
@@ -8811,6 +9155,7 @@ def MorseCancellation.NativeConnectionCancellationData.outgoingSheet {E M : Type
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
         ((MorseHandle.splitCoordinates D.σ).symm (w.2, 0), D.Tq)))
 
+/-- The incoming basin sheet of the cancellation data. -/
 def MorseCancellation.NativeConnectionCancellationData.incomingSheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {m : ℕ} {f : M → ℝ} {p q : M}
@@ -8821,6 +9166,7 @@ def MorseCancellation.NativeConnectionCancellationData.incomingSheet {E M : Type
       (MorseCancellation.cubicFlowCylinder D.σ (1 / 2)
         ((MorseHandle.splitCoordinates D.σ).symm (0, w.2), D.Tp)))
 
+/-- The outgoing sheet's properties. -/
 theorem MorseCancellation.NativeConnectionCancellationData.outgoingSheet_properties {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -8848,6 +9194,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoingSheet_propert
   unfold outgoingSheet
   simpa only [ContinuousLinearMap.inl_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
 
+/-- The incoming sheet's properties. -/
 theorem MorseCancellation.NativeConnectionCancellationData.incomingSheet_properties {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -8877,6 +9224,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.incomingSheet_propert
   unfold incomingSheet
   simpa only [ContinuousLinearMap.inr_apply, Prod.fst_zero, Prod.snd_zero, zero_sub] using hh
 
+/-- The native sheets are transverse. -/
 theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_sheets {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -8919,6 +9267,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_
       hin0 hq hp houtlabel hinlabel htrans
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing basin chart of the cancellation data. -/
 theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -8964,6 +9313,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart 
   simpa only [ContinuousLinearMap.inl_apply] using heq
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The incoming basin chart of the cancellation data. -/
 theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -9010,6 +9360,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart 
   unfold incomingSheet
   simpa only [ContinuousLinearMap.inr_apply] using heq
 
+/-- Native transversality from sheet factorizations. -/
 theorem TransverseGerms.native_transversality_of_sheet_factorizations
     {A B U V E HU HV HE X Y M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup U] [NormedSpace ℝ U]
@@ -9042,6 +9393,7 @@ theorem TransverseGerms.native_transversality_of_sheet_factorizations
   rw [hFd, hGd] at hab
   exact hab
 
+/-- A native plane factorization exists. -/
 theorem TransverseGerms.exists_native_plane_factorization {A Z U E HU HE X M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -9067,6 +9419,7 @@ theorem TransverseGerms.exists_native_plane_factorization {A Z U E HU HE X M : T
   rw [ha, hRL]
   exact (P.right_inv' hy).symm.trans (congrArg P ha)
 
+/-- A native plane sheet factorization exists. -/
 theorem TransverseGerms.exists_native_plane_sheet_factorization {A Z U E HU HE X M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -9083,6 +9436,7 @@ theorem TransverseGerms.exists_native_plane_sheet_factorization {A Z U E HU HE X
   have hcomp := hmodel.comp_tendsto hut
   exact ⟨u, hu, hu0, hfactor.trans hcomp.symm⟩
 
+/-- A native basin sheet factorization exists. -/
 theorem TransverseGerms.exists_native_basin_sheet_factorization {A Z U E HU HE X M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -9102,6 +9456,7 @@ theorem TransverseGerms.exists_native_basin_sheet_factorization {A Z U E HU HE X
   exact exists_native_plane_sheet_factorization P hP0 L R hRL hF hx hplane hmodel
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The outgoing basin factorization. -/
 theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_factorization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -9134,6 +9489,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.outgoing_basin_factor
       hbasin hmodel
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The incoming basin factorization. -/
 theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_factorization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {f : M → ℝ}
@@ -9165,6 +9521,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.incoming_basin_factor
       (hx.trans hzero.symm) (fun y => Filter.Tendsto (fun t => D.flow t y) Filter.atTop (𝓝 p)) hp
       hbasin hmodel
 
+/-- The native basin sheets are transverse. -/
 theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_basin_sheets
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -9187,6 +9544,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.transverse_of_native_
       (D.incomingSheet_properties.1.mdifferentiableAt (by simp)) hu hv hu0 hv0 hFu hGv
       (hy.trans hx.symm) htrans
 
+/-- Transverse basin sheets give a cancellation. -/
 theorem MorseCancellation.NativeConnectionCancellationData.cancel_of_transverse_basin_sheets
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -9219,6 +9577,7 @@ theorem MorseCancellation.NativeConnectionCancellationData.cancel_of_transverse_
     hq hpq hc hd hpair
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A unique connection with transverse basin sheets cancels. -/
 theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ}
@@ -9290,6 +9649,7 @@ theorem MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets {E
       hpair
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The cancellation theorem: a unique transverse connection can be cancelled by a level isotopy. -/
 theorem MorseCancellation.cancel_of_transverse_level_isotopy {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {m : ℕ} {A B HA HB X Y : Type*}
@@ -9400,10 +9760,14 @@ theorem MorseCancellation.cancel_of_transverse_level_isotopy {E M : Type*} [Norm
       (fun z hz => (hzeros z).mpr (hzero z hz)) hneg G hG hinj hpc hqc (hpc'.trans hqc') hl hu
       hpair hpG hqG huniqueG hgermp hgermq hS hT hS0 hT0 hSb hTb ht
 
+/-! ### The Morse count after pair removal -/
+
+/-- The number of Morse critical points. -/
 def MorseCancellation.nativeMorseCount (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type*}
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (k : ℕ) : ℕ :=
   {z : M | z ∈ ManifoldMorse.criticalPoints E f ∧ nativeMorseIndex E f z = k}.ncard
 
+/-- The indexed critical points after removing a pair. -/
 theorem MorseCancellation.indexed_criticalPoints_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (hcrit :
@@ -9426,6 +9790,7 @@ theorem MorseCancellation.indexed_criticalPoints_after_pair_removal {E M : Type*
     exact ⟨hzg, (nativeMorseIndex_congr_germ (hkeep z hzg)).trans hindex⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The index-`k` Morse count of the new function plus the removed pair's index-`k` contributions equals that of the old. -/
 theorem MorseCancellation.nativeMorseCount_after_pair_removal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
@@ -9471,6 +9836,7 @@ theorem MorseCancellation.nativeMorseCount_after_pair_removal {E M : Type*} [Nor
   exact (Nat.add_assoc _ _ _).trans hc
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Removing an adjacent-index pair lowers the counts at the two indices by one each and fixes the others. -/
 theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
