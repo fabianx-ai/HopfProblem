@@ -359,3 +359,32 @@ real `landrun` (provisioning approval still outstanding); the original Stage-2
 reviewer remains unknown (recovered review only).
 
 No push has been performed. Attribution was not changed through git configuration.
+
+## Verification checkpoint — C19 Hurewicz leftovers (`lib/C-19-hurewicz-leftovers`)
+
+Working tree over upstream `27f8e7f5`; committed on the named branch. Classification
+ledger: `Lib/docs/C19-LEFTOVERS.md` — 9 FREE declarations moved
+(`SphereHomology.twoOpenCover_*` and `suspensionConeCover` to
+`VanKampen.lean`/`SuspensionCover.lean`; the six `Third/Fourth/FifthHurewicz` wrappers
+to `CubeSphere.lean`), 7 CHARGED declarations retained in `Hopf/Hurewicz.lean`
+(`SixSphereCube` data + pinned `Sphere.piN_subsingleton` theorems).
+
+| Command | Result | Log |
+|---|---|---|
+| pre-move interface provider + consumer probes | exit 0 | `C19-interface-pre-{provider,consumer}.log` |
+| `lake build Lib` | exit 0 (8815 jobs) | `C19-lib-build.log` |
+| `lake build Hopf.Proof.Final Solution` | exit 0 (8839 jobs); `mathoverflow_1973` axioms `[propext, Classical.choice, Quot.sound]` | `C19-consumer-build2.log` |
+| post-move interface provider + consumer probes | exit 0 | `C19-interface-post-{provider,consumer}.log` |
+| `C19_AxiomProbe` (`#print axioms` on the 9 moved decls) | `[propext, Classical.choice, Quot.sound]` only | `C19-axiom-probe.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 1639 ≤ 1648 | `C19-census.log` |
+| `git diff --check` | clean | — |
+
+An earlier `lake build Hopf.Hurewicz Hopf.LibShims Hopf.Final Solution` attempt exited 1
+because `Hopf.Final` no longer exists post-split (renamed `Hopf.Proof.Final`); every
+listed real target built, and the corrected target set above passes
+(`C19-consumer-build.log` retains the failed attempt). Probe sources live as `.lean.txt`
+under `Lib/docs/logs/C/` — the census import guard scans every `.lean` file under `Lib/`,
+so evidence files importing `Hopf.*` must not carry a `.lean` extension there.
+
+The Comparator remains owner-deferred (`landrun` unavailable); not run, not claimed.
+Shim retirement and global `Mathoverflow1973` removal remain GLM's lane.

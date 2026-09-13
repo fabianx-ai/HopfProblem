@@ -930,4 +930,70 @@ def hurewiczLinearEquivOfTwoLE (x : X) (n : ℕ) (hn : 2 ≤ n)
 
 end Hurewicz
 
+/-- The Hurewicz isomorphism in degree three: `Hurewicz.hurewiczLinearEquiv` at `m = 0`,
+with the vanishing hypothesis reduced to `Subsingleton (π_ 2 X x)`. -/
+def ThirdHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] :
+    Additive (π_ 3 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 3 :=
+  Hurewicz.hurewiczLinearEquiv (m := 0) x (by
+    intro j hj hjn
+    interval_cases j <;> infer_instance)
+
+/-- The Hurewicz isomorphism in degree three as a multiplicative-group equivalence. -/
+def ThirdHurewicz.hurewiczPi3Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] :
+    π_ 3 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 3)
+    where
+  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
+  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
+  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
+  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
+  map_mul' a b := by
+    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
+    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
+
+/-- The Hurewicz isomorphism in degree four: `Hurewicz.hurewiczLinearEquiv` at `m = 1`,
+with the vanishing hypothesis reduced to `π_ 2` and `π_ 3`. -/
+def FourthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] :
+    Additive (π_ 4 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 4 :=
+  Hurewicz.hurewiczLinearEquiv (m := 1) x (by
+    intro j hj hjn
+    interval_cases j <;> infer_instance)
+
+/-- The Hurewicz isomorphism in degree four as a multiplicative-group equivalence. -/
+def FourthHurewicz.hurewiczPi4Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] :
+    π_ 4 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 4)
+    where
+  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
+  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
+  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
+  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
+  map_mul' a b := by
+    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
+    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
+
+/-- The Hurewicz isomorphism in degree five: `Hurewicz.hurewiczLinearEquiv` at `m = 2`,
+with the vanishing hypothesis reduced to `π_ 2`, `π_ 3`, and `π_ 4`. -/
+def FifthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)] :
+    Additive (π_ 5 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 5 :=
+  Hurewicz.hurewiczLinearEquiv (m := 2) x (by
+    intro j hj hjn
+    interval_cases j <;> infer_instance)
+
+/-- The Hurewicz isomorphism in degree five as a multiplicative-group equivalence. -/
+def FifthHurewicz.hurewiczPi5Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)] :
+    π_ 5 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 5)
+    where
+  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
+  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
+  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
+  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
+  map_mul' a b := by
+    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
+    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
+
 end Mathoverflow1973
