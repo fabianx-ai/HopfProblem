@@ -12,6 +12,7 @@ class|inductive|instance|opaque`, possibly prefixed by attributes/`private`/`pro
 `noncomputable`/`nonrec`) in every `Hopf/**/*.lean` file whose dotted name starts with one
 of the *stock prefixes* listed in `scripts/lib_stock_prefixes.txt` (one entry per line,
 `#` comments allowed).  An entry is either a namespace prefix `Smale` (matches `Smale.*`),
+an exact-name entry `=Name` (matches only the declaration `Name`, for leaves whose prefix was dropped),
 a deeper prefix `CuspRetraction.Patching` (matches `CuspRetraction.Patching.*` only), or a
 file-scoped prefix `Hopf/SphereTopology.lean:CuspCentralHomology` (matches only in that
 file; used when one namespace name is generic in one slice and project-specific in another).
@@ -81,6 +82,9 @@ def match_entry(entry: str, rel: str, name: str) -> bool:
         scope, entry = entry.split(':', 1)
         if rel != scope:
             return False
+    if entry.startswith('='):
+        # exact-name entry `=Name`: a former `Prefix.Name` leaf declaration whose prefix was dropped
+        return name == entry[1:]
     comps = name.split('.')
     want = entry.split('.')
     return comps[:len(want)] == want and len(comps) > len(want)
