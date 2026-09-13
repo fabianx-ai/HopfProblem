@@ -168,16 +168,17 @@ Reviewer verdict GO for the code; two record items, both Muse item 1:
 
 **GO.** The merged head builds, every probe is on the standard axioms, no statement under `Hopf/`
 changed, every declaration that left `Hopf/` is in `Lib/` and the environment diff is a bijection
-under the rename map. The seat findings are record items and are on the seat files
-(`NEXT-STEPS-{GLM,KIMI,MUSE}.md`); the three decisions of §2 are the coordinator's and are recorded
+under the rename map. The seat findings are record items and are in `NEXT_STEPS.md`; the three decisions of §2 are the coordinator's and are recorded
 here and in the affected reports.
 
 Owner items:
 
 1. **`AGENTS.md`** (added by GLM in `686b598e`) reads "First read ~/collaboration-protocol.md", an
    off-tree file on the owner's machine. Recommendation: point it at the in-tree
-   `lean-protocol.md`, or drop the file. Decision: put to the owner in chat; recorded here when answered.
+   `lean-protocol.md`, or drop the file. Decision (owner, 2026-09-14): keep as is.
 2. **Freed rows** (decision 3): the 113 pure-move rows still under `Hopf/Proof/` are assigned to the
    seats as direct `Hopf/Proof/ -> Lib/` moves, not moved back into the stock files first (which would
-   raise the census above its baseline for no gain). Decision: put to the owner in chat; recorded here when answered.
+   raise the census above its baseline for no gain). Decision (owner, 2026-09-14): the remainder is
+   done by Claude agents, no seat assignment for now; the next steps of all lanes are in one file,
+   `NEXT_STEPS.md`, which replaces the three seat files.
 3. The Comparator stays deferred until publication (unchanged).
