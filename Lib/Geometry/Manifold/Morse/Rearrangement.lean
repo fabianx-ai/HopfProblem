@@ -14,7 +14,7 @@ public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.Cancellation
 public import Lib.Geometry.Manifold.Transversality.Basic
 public import Lib.Geometry.Manifold.Immersion.Relative
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Rearrangement of Morse functions and the band-cancellation tail
 
