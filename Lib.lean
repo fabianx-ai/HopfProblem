@@ -26,6 +26,9 @@ import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Lib.Geometry.Manifold.Morse.RearrangementTheorem
+import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow

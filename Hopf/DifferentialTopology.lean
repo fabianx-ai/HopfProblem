@@ -78,6 +78,7 @@ import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.ConnectionCancellation
 import Mathlib
 
 set_option maxSynthPendingDepth 3
@@ -105,107 +106,6 @@ attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {χ D : M → ℝ}
-    (hχ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ χ) (hD : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ D)
-    (hsupp : ∀ x ∈ tsupport χ, D x ≠ 0) : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun x => χ x / D x) := by
-  intro x
-  by_cases hx : x ∈ tsupport χ
-  · exact (hχ x).div₀ (hD x) (hsupp x hx)
-  · apply (contMDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq
-    filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hx] with y hy
-    simp only [image_eq_zero_of_notMem_tsupport hy, zero_div]
-
-theorem FlowCancellation.exists_excursion_interval {X : Type*} [TopologicalSpace X]
-    {γ : ℝ → X} (hγ : Continuous γ) {K N : Set X} (hK : IsClosed K) (hKN : K ⊆ N) {a b t : ℝ}
-    (ht : t ∈ Set.Icc a b) (ha : γ a ∈ N) (hb : γ b ∈ N) (hout : γ t ∉ N) :
-    ∃ s u : ℝ, a ≤ s ∧ s < t ∧ t < u ∧ u ≤ b ∧ γ s ∈ N ∧ γ u ∈ N ∧ ∀ r ∈ Set.Ioo s u, γ r ∉ K := by
-  let A := Insert.insert a (Set.Icc a t ∩ γ ⁻¹' K)
-  let B := Insert.insert b (Set.Icc t b ∩ γ ⁻¹' K)
-  have hA : IsCompact A := (CompactIccSpace.isCompact_Icc.inter_right (hK.preimage hγ)).insert a
-  have hB : IsCompact B := (CompactIccSpace.isCompact_Icc.inter_right (hK.preimage hγ)).insert b
-  obtain ⟨s, hs⟩ := hA.exists_isGreatest (Set.insert_nonempty _ _)
-  obtain ⟨u, hu⟩ := hB.exists_isLeast (Set.insert_nonempty _ _)
-  have has : a ≤ s := hs.2 (Set.mem_insert _ _)
-  have hub : u ≤ b := hu.2 (Set.mem_insert _ _)
-  have hst : s ≤ t := by
-    rcases hs.1 with he | hh
-    · exact he ▸ ht.1
-    · exact hh.1.2
-  have htu : t ≤ u := by
-    rcases hu.1 with he | hh
-    · exact he ▸ ht.2
-    · exact hh.1.1
-  have hsN : γ s ∈ N := by
-    rcases hs.1 with he | hh
-    · exact he ▸ ha
-    · exact hKN hh.2
-  have huN : γ u ∈ N := by
-    rcases hu.1 with he | hh
-    · exact he ▸ hb
-    · exact hKN hh.2
-  have hst' : s < t := lt_of_le_of_ne hst (fun he => hout (he ▸ hsN))
-  have htu' : t < u := lt_of_le_of_ne htu (fun he => hout (he ▸ huN))
-  refine ⟨s, u, has, hst', htu', hub, hsN, huN, ?_⟩
-  intro r hr hrK
-  by_cases hrt : r ≤ t
-  · have hrA : r ∈ A := Or.inr ⟨⟨le_trans has hr.1.le, hrt⟩, hrK⟩
-    exact (not_le_of_gt hr.1) (hs.2 hrA)
-  · have hrB : r ∈ B := Or.inr ⟨⟨(lt_of_not_ge hrt).le, le_trans hr.2.le hub⟩, hrK⟩
-    exact (not_le_of_gt hr.2) (hu.2 hrB)
-
-theorem FlowCancellation.native_curve_eq_flow_on_closed_interval {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {γ : ℝ → M}
-    (hγcont : Continuous γ) {a b c : ℝ} (hc : c ∈ Set.Ioo a b)
-    (hγ : IsMIntegralCurveOn γ V (Set.Ioo a b)) : ∀ t ∈ Set.Icc a b, γ t = F (t - c) (γ c) := by
-  have hF : IsMIntegralCurve (fun t => F (t - c) (γ c)) V := by
-    have he : (fun t => F (t - c) (γ c)) = ((fun t => F t (γ c)) ∘ (· + -c)) := by
-      funext t
-      simp only [Function.comp_apply, sub_eq_add_neg]
-    rw [he]
-    exact (hcurve (γ c)).comp_add (-c)
-  have heq : Set.EqOn γ (fun t => F (t - c) (γ c)) (Set.Ioo a b) :=
-    isMIntegralCurveOn_Ioo_eqOn_of_contMDiff_boundaryless hc hV hγ (hF.isMIntegralCurveOn _)
-      (by simp)
-  have heqclosed := heq.closure hγcont hF.continuous
-  rw [closure_Ioo (lt_trans hc.1 hc.2).ne] at heqclosed
-  exact heqclosed
-
-theorem FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V V' : (x : M) → TangentSpace 𝓘(ℝ, E) x}
-    (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (F : Flow ℝ M) (hcurve : ∀ x, IsMIntegralCurve (fun t => F t x) V) {K N U : Set M}
-    (hK : IsClosed K) (hKN : K ⊆ N) (hNU : N ⊆ U) (hoff : ∀ x ∉ K, V' x = V x)
-    (hnoreturn : ∀ x ∈ N, ∀ t : ℝ, 0 ≤ t → F t x ∈ N → ∀ s ∈ Set.Icc (0 : ℝ) t, F s x ∈ U)
-    {γ : ℝ → M} (hγ : IsMIntegralCurve γ V') {a b : ℝ} (ha : γ a ∈ N) (hb : γ b ∈ N) :
-    ∀ t ∈ Set.Icc a b, γ t ∈ U := by
-  intro t ht
-  by_contra hout
-  obtain ⟨s, u, -, hst, htu, -, hsN, huN, havoid⟩ :=
-    exists_excursion_interval hγ.continuous hK hKN ht ha hb (fun hh => hout (hNU hh))
-  have hold : IsMIntegralCurveOn γ V (Set.Ioo s u) := by
-    intro r hr
-    have hd := (hγ r).hasMFDerivWithinAt (s := Set.Ioo s u)
-    rw [hoff (γ r) (havoid r hr)] at hd
-    exact hd
-  have heq :=
-    native_curve_eq_flow_on_closed_interval hV F hcurve hγ.continuous
-      (show t ∈ Set.Ioo s u from ⟨hst, htu⟩) hold
-  have hs : γ s = F (s - t) (γ t) := heq s ⟨le_rfl, (lt_trans hst htu).le⟩
-  have hu : γ u = F (u - t) (γ t) := heq u ⟨(lt_trans hst htu).le, le_rfl⟩
-  have hend : F (u - s) (γ s) = γ u := by
-    rw [hs, ← F.map_add, show u - s + (s - t) = u - t by ring, ← hu]
-  have hmid : F (t - s) (γ s) = γ t := by
-    rw [hs, ← F.map_add, show t - s + (s - t) = 0 by ring, F.map_zero_apply]
-  have hh :=
-    hnoreturn (γ s) hsN (u - s) (sub_nonneg.mpr (lt_trans hst htu).le) (hend ▸ huN) (t - s)
-      ⟨sub_nonneg.mpr hst.le, sub_le_sub_right htu.le s⟩
-  exact hout (hmid ▸ hh)
-
 theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (p q : ManifoldMorse.criticalPoints E f)
@@ -214,17 +114,6 @@ theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedA
     ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f := by
   intro z hz hcrit
   exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
-
-theorem TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (A : D →L[ℝ] E) (C : Z →L[ℝ] E) (h : Function.Surjective (A.coprod C)) :
-    Function.Surjective (C.coprod A) := by
-  intro w
-  obtain ⟨⟨u, v⟩, huv⟩ := h w
-  refine ⟨(v, u), ?_⟩
-  change C v + A u = w
-  rw [add_comm]
-  exact huv
 
 theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]

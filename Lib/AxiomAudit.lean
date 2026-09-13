@@ -88,3 +88,7 @@ is an evidence command rather than library content.
 #print axioms Mathoverflow1973.Hurewicz.sphere_homotopic_id_of_topClass
 #print axioms Mathoverflow1973.Hurewicz.right_inverse_is_left_inverse
 #print axioms Mathoverflow1973.Hurewicz.exists_basepoint_adjustment
+
+#print axioms Mathoverflow1973.MorseCancellation.cancel_of_transverse_level_isotopy
+#print axioms Mathoverflow1973.MorseRearrangement.exists_morse_rearrangement_of_no_connection
+#print axioms Mathoverflow1973.MorseCancellation.exists_excellent_indexed_morse_birth
