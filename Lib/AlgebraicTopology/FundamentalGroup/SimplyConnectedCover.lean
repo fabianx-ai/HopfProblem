@@ -5,12 +5,15 @@ Authors: Fabian Franz
 -/
 import Mathlib
 /-!
-# The simply connected covering construction
+# Simple connectedness from an open cover
 
-  The simply connected cover: for a path-connected, locally path-connected and
-  semilocally simply connected space, the space of homotopy classes of paths from
-  a basepoint, covering `X` by endpoint evaluation (Hatcher, Algebraic Topology,
-  Section 1.3 prerequisites).
+Paths contained in simply connected members of an open cover define compatible
+path-homotopy classes when pairwise intersections are path connected and the
+members share a basepoint. The subdivision argument extends this compatibility
+along every path, yielding `simplyConnectedSpace_of_open_cover`.
+
+This is the open-cover gluing principle of van Kampen (Hatcher, *Algebraic
+Topology*, Theorem 1.20), not a construction of a universal covering space.
 -/
 
 
@@ -177,6 +180,7 @@ theorem SimplyConnectedCover.section_trans_of_open_cover {X : Type*} [Topologica
   rw [hn n le_rfl] at h
   exact section_subpath_zero_one F p h
 
+/-- An open cover by simply connected sets with a common basepoint and path-connected pairwise intersections makes the whole space simply connected. -/
 theorem simplyConnectedSpace_of_open_cover {X ι : Type*} [TopologicalSpace X] (U : ι → Set X)
     (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ)
     (hsimply : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i)
