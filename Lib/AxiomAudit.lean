@@ -54,10 +54,7 @@ is an evidence command rather than library content.
 -- Lane A (singular homology core)
 #print axioms Mathoverflow1973.SingularMayerVietoris.exact_at_ambient
 #print axioms Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton
--- stayed in Hopf/ (obstruction: SphereReflection/MorseSurgeryData
--- infrastructure, lanes D1/F/G); same statement, probed via Hopf import:
--- removed: LinearSphereAction.homology_eq_sign_smul still lives in
--- Hopf/SphereTopology.lean (lane G/D scope); the probe was premature.
+#print axioms Mathoverflow1973.LinearSphereAction.homology_eq_sign_smul
 
 -- Lane D1 (Morse theory I)
 #print axioms Mathoverflow1973.ManifoldMorse.exists_morse_function

@@ -181,3 +181,43 @@ de-duplication pass (Q4) and are an open item.
 
 ---
 
+## Current linear-sphere-action probe landing (GLM seat run by Devin/Astra)
+
+The exact remaining probe closure has 35 source declarations: one radial
+normalization map in SingularHomology and 34 linear-action and reflection
+lemmas in SphereTopology. Their original positions at `721fc82` lie inside
+the A ranges in `TASK-LIB-GLM.md`. The historical whole-family obstruction
+is superseded for this probe closure; this is not a claim that every other
+historical A remainder has moved.
+
+They move to `Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean`.
+The only changes inside declaration bodies are three explicit alias maps:
+`Suspension.topSus → Suspension`,
+`PeriodTorusHigherHomology → SingularHomology`, and
+`CuspCentralHomology.contractibleCoverConnecting_injective →
+Suspension.contractibleCoverConnecting_injective`. These resolve existing
+Hopf spellings to the canonical Lib API; the mathematics and propositions
+are unchanged. Source and normalized-target hashes are recorded separately
+in `Lib/reports/A-linear-sphere-provenance.json`; this is not a claim of
+literal byte identity before that name map.
+
+Verification for this boundary:
+
+- All 35 source hashes and normalized hashes match; each normalized declaration
+  occurs exactly once in the target. Source files differ only by the recorded
+  removals, explicit imports and blank-line cleanup.
+- `Lib.lean` registers the module; both source consumers import it explicitly.
+- `lake build Lib Solution S6Shortcuts S6 Challenge`: exit 0 (8840 jobs),
+  on the final documented tree; the earlier pre-documentation focused build
+  of the new module and `Hopf.SphereTopology` also passed.
+- `lake env lean Lib/AxiomAudit.lean`: exit 0. The linear-sphere probe and
+  the A/B/D1/D2/E1 headline probes use exactly
+  `[propext, Classical.choice, Quot.sound]`.
+- The standalone Lib-only linear-sphere probe passed with those same axioms.
+- Stock census: **2234 → 2199**; `--check` and the Lib import guard pass.
+- `git diff --check`: clean.
+
+This closes the remaining A probe extraction in this round, not every
+historical A follow-up. Wang transfer formulas and wrapper removal remain
+blocked on C/J-owned prerequisites, as recorded in `Lib/reports/I.md`.
+

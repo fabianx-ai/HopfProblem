@@ -70,6 +70,7 @@ import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
+import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Morse.Cancellation
@@ -15429,13 +15430,6 @@ theorem PassageHomology.radialCylinderChart_symm_eq (E : Type) [NormedAddCommGro
       (PartialChart.openInclusion_symm_coe (I := 𝓘(ℝ, E)) (puncturedVectorSpace E) hz)
   rw [heq]
   rfl
-
-def PuncturedRadial.toSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
-    C(Space N, Metric.sphere (0 : N) 1) :=
-  ⟨fun u => RadialExtension.direction u.val u.property,
-    ((continuous_subtype_val.norm.inv₀ (fun u => norm_ne_zero_iff.mpr u.property)).smul
-          continuous_subtype_val).subtype_mk
-      _⟩
 
 theorem PuncturedRadial.toSphere_fromSphere {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) (hr : 0 < r) (u : Metric.sphere (0 : N) 1) :
