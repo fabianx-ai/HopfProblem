@@ -55,6 +55,13 @@ import Lib.Analysis.Complex.SquareRoot
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.Whitney.BigonModel
+import Lib.Geometry.Manifold.Morse.CircleGluing
+import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Whitney.AnnularExtension
+import Lib.Geometry.Manifold.Whitney.FrameField
+import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+import Lib.Geometry.Manifold.Whitney.RankThreeModel
+import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows

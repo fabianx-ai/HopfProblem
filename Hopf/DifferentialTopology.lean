@@ -109,12 +109,4 @@ theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedA
   intro z hz hcrit
   exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
 
-theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
-    (C : Z →L[ℝ] F) (h : Function.Bijective (G.coprod C)) : (G.coprod C).IsInvertible := by
-  let e := (LinearEquiv.ofBijective (G.coprod C).toLinearMap h).toContinuousLinearEquiv
-  exact ⟨e, rfl⟩
-
-
 end
