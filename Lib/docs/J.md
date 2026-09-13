@@ -259,8 +259,8 @@ $H_2(T^r)$ by the matrix of $2 \times 2$ minors" is exactly Theorem D read in th
 
 The concrete rank-4 objects of the project — the lattice $\mathbb{Z}^4$, the quotient torus
 $\mathbb{R}^4 / \mathbb{Z}^4$, the named monodromy matrices and their exterior squares/cubes
-evaluated `by decide` — are project data and stay in `Hopf/FiniteCore.lean` (and
-`Hopf/LCP/LocalModels.lean`). They become thin instantiations: each `by decide` matrix identity
+evaluated `by decide` — are project data and stay in `Hopf/Proof/FiniteCore.lean` (and
+`Hopf/Proof/LCP/LocalModels.lean`). They become thin instantiations: each `by decide` matrix identity
 is the generic minor-formula (Theorem D) evaluated at a concrete matrix. The homeomorphism
 bridges $\mathbb{R}^4/\mathbb{Z}^4 \cong (S^1)^4$ and their rank-3 cousins
 (`splitFlatTorusHomeomorph` etc.) are likewise adapters: the general theorem is about the
@@ -287,7 +287,8 @@ J7's Orzech step, so the true order is J2 → J1 → J3 → J4 → J5 → J6 →
 
 **Generalization work items (the lane's new mathematics).**
 (G-J1) Replace `Lattice := Fin 4 → ℤ` by `Fin r → ℤ` (equivalently a free ℤ-module with a
-chosen basis) throughout the Specialization blocks 6503–6552, 6911–7256: the statements become
+chosen basis) throughout the Specialization blocks 6503–6552, 6911–7256 at `15bd5f7`
+(now `Proof/LCP/Specialization.lean`, roughly :3650–4080): the statements become
 rank-general; the proofs are identical with `r` for `4`.
 (G-J2) The wedge isomorphism J7 at arbitrary rank $r$ (today: rank 4, degrees
 2, 3; a second copy at rank 3 in BoundaryTopology): the §6 proof is the general one.
@@ -299,7 +300,8 @@ the J-E boundary in the ledger with its missing inputs enumerated.
 (G-J3) **Settled 2026-09-12: this item is GLM's, not J's.** The cross-product
 swap/associator coherence suite (110 declarations; exact exclusion manifest in the
 Axis-5 section below — the earlier "42" counted only the named families) at
-Specialization 3771–5987:
+Specialization:3771–5987 at `15bd5f7` (all since landed in
+`Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean:2065–4359`):
 `formalEdgeSwapDefect/Homotopy`, `crossProductSwapHomotopy`,
 `formalAssociatorDefect/Homotopy`, `crossProductAssociatorHomotopy`,
 `crossProductMixedSwapHomotopy`, and the homology-level laws `crossProductHomology_swap`,
@@ -323,25 +325,37 @@ by GLM. J imports them from `CrossProduct.lean` when they land and keeps them un
 
 Dependency schedule (candidate packets, not permission to implement): J-A before J-D;
 J-B1 before J-B2a before J-B2b; J-C1 before J-C2 before J-C3; J-C3 additionally
-requires J-B2a; J-D requires J-A, J-B2b and J-C3. J-C1 waits on the public module
-seam M-C, J-C2 on S-cross, J-B2a on S-path/S-nat/S-cross, and J-C3 on G-J3.
+requires J-B2a; J-D requires J-A, J-B2b and J-C3. J-C1's wait on the public module
+seam M-C is discharged (CrossProduct.lean is a module; Pontryagin.lean has landed);
+J-C2's S-cross provider has landed; J-B2a still waits on the S-path cluster only
+(S-nat/S-cross landed); J-C3's G-J3 suite has landed (CrossProduct.lean:2065–4359),
+leaving J-B2a/public loop-class as its remaining gate.
 `Torus.lean` never imports `Pontryagin.lean`; product-valued top-class lemmas belong
 to J-C3 in Pontryagin, which may import Torus. `MinorCoordinates` is Mathlib-only.
 Every packet still needs its exact aggregate provider/consumer receipt before GO.
 
-Consumers and their re-routing: `Hopf.LCP.IntegralHomology` (Wang-sequence machinery, cusp
-coinvariants, `coordinateTopEquiv`, the cup-product interface
-`PeriodTorusCohomologyCup.coordinateTorusH2Coordinates_basis_pair`),
-`Hopf.LCP.BoundaryTopology` (rank-3 wedge re-run — deleted in favor of the general J7 —,
-monodromy actions, `singularH2/H3Equiv`), `Hopf.LCP.Specialization` (the rank-4 adapters
-stay and become thin), `Hopf.FiniteCore` (the `by decide` instantiations stay),
+Consumers and their re-routing: `Hopf.LCP.IntegralHomology` /
+`Hopf.Proof.LCP.IntegralHomology` (Wang-sequence machinery, cusp
+coinvariants, `coordinateTopEquiv` :19620, the cup-product interface
+`PeriodTorusCohomologyCup.coordinateTorusH2Coordinates_basis_pair` :10784 —
+proof-side decls),
+`Hopf.Proof.LCP.BoundaryTopology` (rank-3 wedge re-run — to be re-routed to the
+general J7 once J-D lands, currently still present —, monodromy actions,
+`singularH2Equiv`/`singularH3Equiv` :16419/:16426), `Hopf.Proof.LCP.Specialization`
+(the rank-4 adapters stay and become thin), `Hopf.Proof.FiniteCore` (the `by decide`
+instantiations stay),
 `Hopf.Recognition` (only cross-product plumbing through lane C).
 
 ---
 
 # Axis 5 — typed ledger
 
-**Review-3 status (15bd5f7 + uncommitted reviewer repairs): J-A GO only.**
+**Review-3 status (15bd5f7 + uncommitted reviewer repairs): J-A GO only —
+superseded by integration-3** (J-A/J-B1/J-C1 have since landed in
+`Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean`,
+`Lib/AlgebraicTopology/SingularHomology/Torus.lean`, and
+`Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean`; landed coordinates are
+given per-declaration below).
 J-A's 15-node interface, concrete representation construction and separate importing
 consumer have been checked; its reviewed ledger hash and commands are in the
 review-3 receipt. This is not a GO for the whole lane. J-B..J-D are explicitly gated
@@ -356,8 +370,8 @@ independently reviewed by seat `devin-axis5-j` → **NO-GO** (nine findings; the
 is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
 
 * fixes both proposed signatures to universe `Type` — `SingularMayerVietoris.SingularHomology`
-  takes `Y : Type` (`MayerVietoris.lean:853`) and `crossProductHomology` takes
-  `(X Y : Type)` (`CrossProduct.lean:1689`), so `Type*` does not elaborate;
+  takes `Y : Type` (`MayerVietoris.lean:939`) and `crossProductHomology` takes
+  `(X Y : Type)` (`CrossProduct.lean:1855`), so `Type*` does not elaborate;
 * records the full namespace/elaboration context (below);
 * enumerates every in-scope declaration with its exact current signature, source
   location, and disposition — public outputs get exact target signatures, internal
@@ -372,7 +386,7 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
 ## Context and elaboration conventions
 
 * All declarations below live inside `namespace Mathoverflow1973` — the standing Lib
-  convention (`CrossProduct.lean:89`; the rename to `AlgebraicTopology.SingularHomology.*`
+  convention (`CrossProduct.lean:92`; the rename to `AlgebraicTopology.SingularHomology.*`
   is a separate scheduled commit). The ledger records **landing names** (current names
   verbatim); post-rename names are the same identifiers under
   `AlgebraicTopology.SingularHomology.<file-prefix>`.
@@ -384,7 +398,7 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
 * `attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
   PeriodTorusHigherHomology.integerTensorModule` must be reproduced at the source's
   cross-product/Pontryagin wrapper sites when comparing nested linear-map types — the two
-  `@[instance_reducible]` definitions (`CrossProduct.lean:94`,`:101`) differ from the
+  `@[instance_reducible]` definitions (`CrossProduct.lean:99`,`:108`) differ from the
   ambient `AddCommGroup.toIntModule`, and signatures written in the wrong instance
   context do not elaborate identically. The definitions themselves land in lane C's
   `CrossProduct.lean` (already present); the `attribute [local instance] … in`
@@ -392,7 +406,7 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
 * Universes: all spaces are `Type` (universe 0). No `Type*` generalization is promised
   at this boundary.
 * `Lattice`/`LatticeMatrix`/`PeriodDomain` are CHARGED rank-4 abbreviations
-  (`Hopf/FiniteCore.lean:215`,`:218`; `Hopf/LCP/LocalModels.lean:250`) — they are **not**
+  (`Hopf/Proof/FiniteCore.lean:277`,`:280`; `Hopf/Proof/LCP/LocalModels.lean:312`) — they are **not**
   Lib-importable. Every generalized target below replaces `Fin 4` by `Fin r`, or drops
   the lattice pin entirely (`c : M →ₗ[ℤ] SH G 1` for arbitrary `M`).
 * `SH X n` in prose is `SingularMayerVietoris.SingularHomology X n`; signatures below
@@ -402,6 +416,12 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
   homology-equivalence and composition APIs in the ledger resolve in `SingularHomology`,
   not via the exports in `Hopf/LibShims.lean`. Inside each declaration's dotted namespace,
   its own earlier landing names are in scope; cross-namespace references must be qualified.
+  The circle-section signatures additionally need `open PeriodTorusHigherHomology`
+  for the bare `CirclePaths.{positiveLoop, arcSumCycle}` and `circleProductMap` names.
+  `circleProductMap` is a Lib provider (CircleProduct.lean:1241); the `CirclePaths.*`
+  names are still Hopf-side (the unlanded S-path cluster, `LCP/CuspFilling.lean:325+`
+  and `Proof/LCP/CuspFilling.lean`), so a Lib-only packet cannot yet resolve them —
+  the signatures are provisional until the S-path provider lands.
 * The degree-one target API is `AlgebraicTopology.SingularH1`,
   `AlgebraicTopology.SingularH1.map` and `AlgebraicTopology.Hurewicz.loopHomologyClass`
   from `Lib.AlgebraicTopology.Hurewicz.Degree1` (106, 334, 726). The first two agree
@@ -409,12 +429,13 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
   `SingularMayerVietoris.singularHomologyMap f 1` (review-3 module probe, `rfl`).
   `SingularChains.singularComplex` is the real chain API. No `Hopf.LibShims` import
   or compatibility alias is permitted in a production packet.
-* **Module seam M-C (NOT GO):** `CrossProduct.lean:6–9` and `PathClass.lean:6–18`
-  are legacy files at `15bd5f7`, despite living under `Lib/`. A `module` probe rejects
-  importing CrossProduct. Its instance/plumbing/coherence API must acquire a public
-  module provider before J-C or J-B2 can be certified. Review-3 provisional module
-  probes reproduce the two instance definitions in an isolated namespace and use
-  signature-only declarations for unlanded inputs; this does not certify M-C.
+* **Module seam M-C (RESOLVED at integration-3):** `CrossProduct.lean` is now a
+  `module` file (`module`/`public import`, lines 6–11) — the provider cone is
+  converted and the J-C/J-B2 gating objection no longer applies. (At `15bd5f7`,
+  `CrossProduct.lean:6–9` and `PathClass.lean:6–18` were legacy files; a `module`
+  probe then rejected importing CrossProduct. The review-3 provisional probes
+  reproduced the instance definitions in an isolated namespace — no longer needed
+  for certification.)
 * Replacing old loop-class aliases by the Degree1 API is **not** a claim that the old
   and new loop-class proof terms are definitionally equal. The unchanged old proof
   closures through legacy PathClass must be re-aligned to the public Degree1 API;
@@ -428,7 +449,8 @@ imports           Mathlib (module file: `module` + `public import`)
 visibility        `module`; `public section`; `noncomputable section`;
                   `namespace Mathoverflow1973.PeriodTorusHigherHomologyExterior`
 source            Lib/docs/J.md §7, Theorem D and its standard-basis lemma;
-                  Specialization.lean 6637–6882 for the existing coordinate proof
+                  Specialization.lean 6637–6882 at `15bd5f7` (now `PeriodTorusHigherHomologyExterior`,
+Proof/LCP/Specialization.lean:3726+) for the existing coordinate proof
 destination       Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean
 focused_check     `lake build Lib.LinearAlgebra.ExteriorPower.MinorCoordinates`
 return_seam       Axis 3 if a promised output turns out not to be rank-general
@@ -464,7 +486,7 @@ All 15 names were checked by a separate importing consumer. Order is table order
 | powersetCardFinEquiv | §7: fixed subset coordinate indices | preceding three outputs; toLex; Equiv.subtypeUnivEquiv; Finset.orderIsoOfFin | standardExteriorBasisFin |
 | powersetCardFinEquiv_lt_iff | §7: coordinate matrices use lexicographic subset order | powersetCardFinEquiv; sortedSubsetLinearOrder; OrderIso.lt_iff_lt | Hopf-side rank-four compatibility adapter (not a J-A output) |
 | standardExteriorBasis | §7 standard-basis lemma | Pi.basisFun; Module.Basis.exteriorPower | standardExterior_map_coefficient; standardExteriorBasisFin |
-| standardExterior_map_coefficient | §7 minor formula | standardExteriorBasis; exteriorPower.map; exteriorPower.basis_repr_apply; exteriorPower.ιMultiDual_apply_ιMulti; Matrix.det_transpose (theorem shell; source Specialization 6641) | rank-four adapter; exteriorPowerMap_toMatrix proof pattern |
+| standardExterior_map_coefficient | §7 minor formula | standardExteriorBasis; exteriorPower.map; exteriorPower.basis_repr_apply; exteriorPower.ιMultiDual_apply_ιMulti; Matrix.det_transpose (theorem shell; source Specialization 6641 at `15bd5f7`) | rank-four adapter; exteriorPowerMap_toMatrix proof pattern |
 | standardExteriorBasisFin | §7 fixed coordinate basis | standardExteriorBasis; powersetCardFinEquiv; Module.Basis.reindex in forward direction | standardExteriorCoordinates; exteriorPowerMap_toMatrix |
 | standardExteriorCoordinates | §7 coordinate matrices | standardExteriorBasisFin.equivFun | J-D coordinateTorusH2Coordinates/coordinateTorusH3Coordinates |
 | exteriorPower_finrank_choose | §7 binomial rank count | exteriorPower.finrank_eq; Module.finrank_fintype_fun_eq_card; Fintype.card_fin | J-D coordinateTorusWedgeTwo_bijective/coordinateTorusWedgeThree_bijective |
@@ -535,13 +557,13 @@ route is order-theoretic, not computational.
 ### Basis, coordinates, rank
 
 ```lean
--- verbatim move (Specialization 6637):
+-- verbatim move (Specialization:6637 → MinorCoordinates.lean:91):
 public noncomputable def standardExteriorBasis (m n : ℕ) :
     Module.Basis (Set.powersetCard (Fin m) n) ℤ (⋀[ℤ]^n (Fin m → ℤ))
   -- body: (Pi.basisFun ℤ (Fin m)).exteriorPower n   (Mathlib
   --   `Module.Basis.exteriorPower`, ExteriorPower/Basis.lean)
 
--- verbatim move (Specialization 6641):
+-- verbatim move (Specialization:6641 → MinorCoordinates.lean:97):
 public theorem standardExterior_map_coefficient (m n : ℕ)
     (A : Matrix (Fin m) (Fin m) ℤ) (s t : Set.powersetCard (Fin m) n) :
     (standardExteriorBasis m n).repr
@@ -549,7 +571,7 @@ public theorem standardExterior_map_coefficient (m n : ℕ)
       (A.submatrix (Set.powersetCard.ofFinEmbEquiv.symm s)
           (Set.powersetCard.ofFinEmbEquiv.symm t)).det
 
--- NEW — generalized `squareBasis`/`cubeBasis` (6742/6745).  Direction matches
+-- NEW — generalized `squareBasis`/`cubeBasis` (Specialization:6742/6745 — now generalized at MinorCoordinates.lean:119).  Direction matches
 -- the source `(latticeExteriorBasis 2).reindex pairSubsetEquiv.symm` where
 -- `pairSubsetEquiv.symm : powersetCard → Fin 6`; here the equiv already runs
 -- `powersetCard → Fin (m.choose n)`, so no `.symm`:
@@ -557,7 +579,7 @@ public noncomputable def standardExteriorBasisFin (m n : ℕ) :
     Module.Basis (Fin (m.choose n)) ℤ (⋀[ℤ]^n (Fin m → ℤ))
   -- body: (standardExteriorBasis m n).reindex (powersetCardFinEquiv m n)
 
--- NEW — generalized `squareCoordinates`/`cubeCoordinates` (6764/6767);
+-- NEW — generalized `squareCoordinates`/`cubeCoordinates` (Specialization:6764/6767 — now generalized at MinorCoordinates.lean:124);
 -- `.equivFun` gives the plain function space (source uses `.equivFun` too):
 public noncomputable def standardExteriorCoordinates (m n : ℕ) :
     (⋀[ℤ]^n (Fin m → ℤ)) ≃ₗ[ℤ] (Fin (m.choose n) → ℤ)
@@ -587,7 +609,7 @@ public def exteriorMinorMatrix (p m n : ℕ) (T : Matrix (Fin p) (Fin m) ℤ) :
   --   ((Set.powersetCard.ofFinEmbEquiv.symm
   --       ((powersetCardFinEquiv m n).symm t) : Fin n → Fin m))).det
 
--- generalized `exteriorMap` (6826), rectangular:
+-- generalized `exteriorMap` (6826, now Proof/LCP/Specialization.lean:3890), rectangular:
 public noncomputable def exteriorPowerMap (p m n : ℕ)
     (A : Matrix (Fin p) (Fin m) ℤ) :
     (⋀[ℤ]^n (Fin m → ℤ)) →ₗ[ℤ] (⋀[ℤ]^n (Fin p → ℤ))
@@ -619,7 +641,8 @@ public theorem cauchyBinet_minors (p q m n : ℕ)
   --   equals product.
 ```
 
-Rank-4 compatibility declarations (Specialization 6662–6882) are **retained in Hopf**
+Rank-4 compatibility declarations (Specialization 6662–6882 at 15bd5f7, now
+`PeriodTorusHigherHomologyExterior` in Proof/LCP/Specialization.lean:3726+) are **retained in Hopf**
 until their replacements and coordinate-compatibility equations are proved and their
 consumers rerouted. They are not public outputs of the Mathlib-only J-A packet.
 In particular pairSubset/tripleSubset, their ordered/equivalence lemmas and the old
@@ -648,7 +671,7 @@ Compat detail: `pairSubsetEquiv : Fin 6 ≃ Set.powersetCard (Fin 4) 2` runs the
 `tripleSubsetEquiv` at `n = 3`.
 
 Owner-flagged (not moved by J without owner sign-off): `LocalSystemMatrices.{pairIndices,
-exteriorSquare, tripleIndices, exteriorCube}` (`FiniteCore.lean:328–338`) — generic
+exteriorSquare, tripleIndices, exteriorCube}` (`Proof/FiniteCore.lean:390–399`) — generic
 minor-matrix API at rank 4; recommend moving into `MinorCoordinates.lean` as the
 lexicographic instances of `exteriorPowerMap_toMatrix`, or replacing by
 `exteriorMinorMatrix 4 4 n` outright.
@@ -656,9 +679,11 @@ lexicographic instances of `exteriorPowerMap_toMatrix`, or replacing by
 ## Boundary J-B — `Lib/AlgebraicTopology/SingularHomology/Torus.lean`
 
 ```text
-commit_boundary   J-B1 (recursive torus core, candidate only; not certified);
-                  J-B2a (circle/naturality and coordinate-basis closure, blocked);
-                  J-B2b (public degree-one identification, blocked).
+commit_boundary   J-B1 (recursive torus core — LANDED in Torus.lean);
+                  J-B2a (circle/naturality and coordinate-basis closure — S-nat landed,
+                  S-path still unlanded);
+                  J-B2b (public degree-one identification — Degree1 landed; S-path gate
+                  remains).
 imports           J-B1: Mathlib; Lib.AlgebraicTopology.SingularHomology.{MayerVietoris,
                   CircleProduct, HomotopyInvariance}.
                   J-B2a: J-B1 plus the public M-C provider and circle seams S-path/S-nat/S-cross.
@@ -680,56 +705,58 @@ Proof-closure census (all names in `PeriodTorusHigherHomology` unless qualified)
 
 | Outputs | Exact earlier inputs / source proof closure |
 |---|---|
-| ProductTorus; zero/successor homeomorphisms | Pi topology on AddCircle; Fin.cons/Fin.elim0; CuspFilling 13103, 13147–13174 |
-| binomialModule; binomialPascalIndexEquiv; binomialModuleSuccEquiv | Nat.choose_succ_succ', finCongr, finSumFinEquiv, LinearEquiv.piCongrLeft', LinearEquiv.sumArrowLequivProdArrow; CuspFilling 14916–14926 |
-| integerBinomialZeroEquiv; binomialModule_finrank; subsingleton/zero results | LinearEquiv.funUnique, Nat.choose_zero_right, Module.finrank_fin_fun, Nat.choose_eq_zero_of_lt; CuspFilling 14940–14961 |
-| productTorusHomologyEquiv; zero/succ/succ_apply | preceding Pascal API; SingularHomology.connectedHomologyZeroEquiv, totallyDisconnected_homology_subsingleton, homeomorphHomologyEquiv, circleProductHomologyEquiv, circleProductHomologyEquiv_apply; structural recursion, CuspFilling 14963–15014 |
-| homology free/finite/finrank/torsionFree/subsingleton | preceding equivalence; Module.Free.of_equiv, Module.Finite.of_surjective, LinearEquiv.finrank_eq; CuspFilling 15016–15038 |
-| productTorusTopClass; equiv_topClass; zero/succ_coordinates/succ_boundary | preceding core; SingularHomology.pointClass and connectedHomologyZeroEquiv_pointClass; binomialModuleSuccEquiv_top at Specialization 3394, itself from binomialModule_eq_zero_of_lt; Specialization 3400–3438 |
+| ProductTorus; zero/successor homeomorphisms | Pi topology on AddCircle; Fin.cons/Fin.elim0; now Torus.lean:46, :49–69 (was CuspFilling 13103, 13147–13174) |
+| binomialModule; binomialPascalIndexEquiv; binomialModuleSuccEquiv | Nat.choose_succ_succ', finCongr, finSumFinEquiv, LinearEquiv.piCongrLeft', LinearEquiv.sumArrowLequivProdArrow; now Torus.lean:78–85 (was CuspFilling 14916–14926) |
+| integerBinomialZeroEquiv; binomialModule_finrank; subsingleton/zero results | LinearEquiv.funUnique, Nat.choose_zero_right, Module.finrank_fin_fun, Nat.choose_eq_zero_of_lt; now Torus.lean:102–121 (was CuspFilling 14940–14961) |
+| productTorusHomologyEquiv; zero/succ/succ_apply | preceding Pascal API; SingularHomology.connectedHomologyZeroEquiv, totallyDisconnected_homology_subsingleton, homeomorphHomologyEquiv, circleProductHomologyEquiv, circleProductHomologyEquiv_apply; structural recursion, now Torus.lean:176–208 (was CuspFilling 14963–15014) |
+| homology free/finite/finrank/torsionFree/subsingleton | preceding equivalence; Module.Free.of_equiv, Module.Finite.of_surjective, LinearEquiv.finrank_eq; now Torus.lean:229–248 (was CuspFilling 15016–15038) |
+| productTorusTopClass; equiv_topClass; zero/succ_coordinates/succ_boundary | preceding core; SingularHomology.pointClass and connectedHomologyZeroEquiv_pointClass; binomialModuleSuccEquiv_top (now Torus.lean:170), itself from binomialModule_eq_zero_of_lt; now Torus.lean:253–286 (was Specialization 3394, 3400–3438) |
 
 Core helpers are not silently private: binomialModuleSuccEquiv_apply_fst/snd
-(CuspFilling 14929/14935), binomialCoordinateBasis/apply (Specialization 3349/3354),
-binomialModuleSuccEquiv_single_inl/inr (3359/3372), integerBinomialZeroEquiv_one_single
-(3384), and binomialModuleSuccEquiv_top (3394) are retained source helpers. Their
+(now Torus.lean:91/:97, was CuspFilling 14929/14935), binomialCoordinateBasis/apply
+(Torus.lean:125/:130, was Specialization 3349/3354),
+binomialModuleSuccEquiv_single_inl/inr (Torus.lean:135/:148, was 3359/3372),
+integerBinomialZeroEquiv_one_single (Torus.lean:160, was 3384), and
+binomialModuleSuccEquiv_top (Torus.lean:170, was 3394) are retained source helpers. Their
 complete signature census and aggregate J-B1 consumer test remain required before GO.
 
 ```lean
 abbrev PeriodTorusHigherHomology.ProductTorus (n : ℕ) := Fin n → AddCircle (1 : ℝ)
-  -- (CuspFilling 13103; TopologicalSpace/AddCommGroup/IsTopologicalAddGroup via Pi)
+  -- (Torus.lean:46; was CuspFilling:13103; TopologicalSpace/AddCommGroup/IsTopologicalAddGroup via Pi)
 
 def PeriodTorusHigherHomology.productTorusZeroHomeomorph : ProductTorus 0 ≃ₜ PUnit
-  -- (CuspFilling 13167)
+  -- (Torus.lean:69; was CuspFilling:13167)
 def PeriodTorusHigherHomology.productTorusSuccHomeomorph (n : ℕ) :
     ProductTorus (n + 1) ≃ₜ AddCircle (1 : ℝ) × ProductTorus n
-  -- (CuspFilling 13147; note: `CircleTopology.Circle` is the abbrev `AddCircle (1 : ℝ)`
-  --  at CircleProduct.lean:137, so the circleProductHomologyEquiv domain unifies)
+  -- (Torus.lean:49; was CuspFilling:13147; note: `CircleTopology.Circle` is the abbrev `AddCircle (1 : ℝ)`
+  --  at CircleProduct.lean:148, so the circleProductHomologyEquiv domain unifies)
 
 abbrev PeriodTorusHigherHomology.binomialModule (r n : ℕ) := Fin (r.choose n) → ℤ
-  -- (CuspFilling 14916)
+  -- (Torus.lean:78; was CuspFilling:14916)
 def PeriodTorusHigherHomology.binomialPascalIndexEquiv (r n : ℕ) :
-    Fin ((r + 1).choose (n + 1)) ≃ Fin (r.choose (n + 1)) ⊕ Fin (r.choose n) -- (14919)
+    Fin ((r + 1).choose (n + 1)) ≃ Fin (r.choose (n + 1)) ⊕ Fin (r.choose n) -- (Torus.lean:81; was CuspFilling:14919)
 def PeriodTorusHigherHomology.binomialModuleSuccEquiv (r n : ℕ) :
     binomialModule (r + 1) (n + 1) ≃ₗ[ℤ] binomialModule r (n + 1) × binomialModule r n
-  -- (14923)
+  -- (Torus.lean:85; was CuspFilling:14923)
 def PeriodTorusHigherHomology.integerBinomialZeroEquiv (r : ℕ) :
-    ℤ ≃ₗ[ℤ] binomialModule r 0                                                  -- (14940)
+    ℤ ≃ₗ[ℤ] binomialModule r 0                                                  -- (Torus.lean:102; was CuspFilling:14940)
 theorem PeriodTorusHigherHomology.binomialModule_finrank (r n : ℕ) :
-    Module.finrank ℤ (binomialModule r n) = r.choose n                          -- (14945)
+    Module.finrank ℤ (binomialModule r n) = r.choose n                          -- (Torus.lean:107; was CuspFilling:14945)
 theorem PeriodTorusHigherHomology.binomialModule_subsingleton_of_lt {r n : ℕ}
-    (h : r < n) : Subsingleton (binomialModule r n)                             -- (14949)
+    (h : r < n) : Subsingleton (binomialModule r n)                             -- (Torus.lean:111; was CuspFilling:14949)
 instance PeriodTorusHigherHomology.binomialModule_zero_succ_subsingleton (n : ℕ) :
-    Subsingleton (binomialModule 0 (n + 1))                                     -- (14955)
+    Subsingleton (binomialModule 0 (n + 1))                                     -- (Torus.lean:117; was CuspFilling:14955)
 theorem PeriodTorusHigherHomology.binomialModule_eq_zero_of_lt {r n : ℕ}
-    (h : r < n) (x : binomialModule r n) : x = 0                                -- (14959)
+    (h : r < n) (x : binomialModule r n) : x = 0                                -- (Torus.lean:121; was CuspFilling:14959)
 
 def PeriodTorusHigherHomology.productTorusHomologyEquiv : (r n : ℕ) →
     SingularMayerVietoris.SingularHomology (ProductTorus r) n ≃ₗ[ℤ] binomialModule r n
-  -- (CuspFilling 14963; the codomain stays `binomialModule` — it is an abbrev, so the
+  -- (Torus.lean:176; was CuspFilling:14963; the codomain stays `binomialModule` — it is an abbrev, so the
   --  "plain function space" spelling is defeq; no codomain change at landing)
 theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_zero (r : ℕ) :
     productTorusHomologyEquiv r 0 =
       (connectedHomologyZeroEquiv (ProductTorus r)).trans (integerBinomialZeroEquiv r)
-  -- (14981)
+  -- (Torus.lean:194; was CuspFilling:14981)
 theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ (r n : ℕ) :
     productTorusHomologyEquiv (r + 1) (n + 1) =
       ((homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1)).toAddEquiv.trans
@@ -737,7 +764,7 @@ theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ (r n : ℕ) :
             (((productTorusHomologyEquiv r (n + 1)).toAddEquiv.prodCongr
                   (productTorusHomologyEquiv r n).toAddEquiv).trans
               (binomialModuleSuccEquiv r n).symm.toAddEquiv))).toIntLinearEquiv
-  -- (14986)
+  -- (Torus.lean:199; was CuspFilling:14986)
 theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ_apply (r n : ℕ)
     (a : SingularMayerVietoris.SingularHomology (ProductTorus (r + 1)) (n + 1)) :
     binomialModuleSuccEquiv r n (productTorusHomologyEquiv (r + 1) (n + 1) a) =
@@ -747,23 +774,23 @@ theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_succ_apply (r n : �
         productTorusHomologyEquiv r n
           (circleBoundary (ProductTorus r) n
             (homeomorphHomologyEquiv (productTorusSuccHomeomorph r) (n + 1) a)))
-  -- (14995; alias `productTorusHomologyEquiv_succ_pair` at Specialization 6439 is
-  --  deleted, consumers re-pointed — dedup item)
+  -- (Torus.lean:208; was CuspFilling:14995; alias `productTorusHomologyEquiv_succ_pair`
+  --  still lives at LCP/Specialization.lean:583 — dedup item, not yet merged)
 def PeriodTorusHigherHomology.productTorusTopClass (n : ℕ) :
-    SingularMayerVietoris.SingularHomology (ProductTorus n) n                   -- (3400)
+    SingularMayerVietoris.SingularHomology (ProductTorus n) n                   -- (Torus.lean:253; was Specialization:3400)
 theorem PeriodTorusHigherHomology.productTorusHomologyEquiv_topClass (n : ℕ) :
     productTorusHomologyEquiv n n (productTorusTopClass n) = fun _ => (1 : ℤ)
-  -- (Specialization 3405)
+  -- (Torus.lean:258; was Specialization:3405)
 theorem PeriodTorusHigherHomology.productTorusTopClass_zero :
-    productTorusTopClass 0 = pointClass (0 : ProductTorus 0)                    -- (3410)
+    productTorusTopClass 0 = pointClass (0 : ProductTorus 0)                    -- (Torus.lean:263; was Specialization:3410)
 theorem PeriodTorusHigherHomology.productTorusTopClass_succ_coordinates (n : ℕ) :
     circleProductHomologyEquiv (ProductTorus n) n
         (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) = (0, productTorusTopClass n)         -- (3417)
+          (productTorusTopClass (n + 1))) = (0, productTorusTopClass n)         -- (Torus.lean:270; was Specialization:3417)
 theorem PeriodTorusHigherHomology.productTorusTopClass_succ_boundary (n : ℕ) :
     circleBoundary (ProductTorus n) n
         (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          (productTorusTopClass (n + 1))) = productTorusTopClass n              -- (3433)
+          (productTorusTopClass (n + 1))) = productTorusTopClass n              -- (Torus.lean:286; was Specialization:3433)
 
 theorem PeriodTorusHigherHomology.productTorus_homology_free (r n : ℕ) :
     Module.Free ℤ (SingularMayerVietoris.SingularHomology (ProductTorus r) n)
@@ -778,60 +805,64 @@ theorem PeriodTorusHigherHomology.productTorus_homology_subsingleton_of_lt {r n 
     (h : r < n) :
     Subsingleton (SingularMayerVietoris.SingularHomology (ProductTorus r) n)
   -- CuspFilling declaration starts, in the order above:
-  -- free 15016; finite 15020; finrank 15025; torsionFree 15030; subsingleton 15035.
+  -- free 15016; finite 15020; finrank 15025; torsionFree 15030; subsingleton 15035
+  -- (was CuspFilling:15016–15035; now Torus.lean:229/233/238/243/248).
 
 ```
 
-**J-B2a coordinate outputs — blocked, not part of J-B1.** Their proof closure needs
-S-nat, including `circleProductMap` (CuspFilling 14325) and
-`circleProductHomologyEquiv_naturality` (14480). In particular:
-`coordinateTorusBasis_apply` (Specialization 6498) →
-`productTorusHomologyEquiv_coordinateTorusClass` (6459) →
-`circleCoordinates_coordinateTorusClass_take` (6428) → S-nat.
+**J-B2a coordinate outputs — landed in LCP/Specialization.lean (interface side),
+not part of J-B1.** Their proof closure needed S-nat, which has since landed
+(`circleProductMap` at CircleProduct.lean:1241,
+`circleProductHomologyEquiv_naturality` at :1396). In particular:
+`coordinateTorusBasis_apply` (Specialization 6498, now LCP/Specialization.lean:642) →
+`productTorusHomologyEquiv_coordinateTorusClass` (6459, now :603) →
+`circleCoordinates_coordinateTorusClass_take` (6428, now :572) → S-nat.
 The Along basis/span/range family inherits this dependency. Coordinate maps and
 matrix helpers are grouped here conservatively rather than claimed as separate green units.
 
 ```lean
 def PeriodTorusHigherHomology.coordinateTorusMap :
-    (r n : ℕ) → Fin (r.choose n) → C(ProductTorus n, ProductTorus r)             -- (6237)
+    (r n : ℕ) → Fin (r.choose n) → C(ProductTorus n, ProductTorus r)             -- (LCP/Specialization.lean:405; was Specialization:6237)
 def PeriodTorusHigherHomology.coordinateTorusClass (r n : ℕ) (i : Fin (r.choose n)) :
-    SingularMayerVietoris.SingularHomology (ProductTorus r) n                    -- (6361)
+    SingularMayerVietoris.SingularHomology (ProductTorus r) n                    -- (LCP/Specialization.lean:505; was Specialization:6361)
 def PeriodTorusHigherHomology.coordinateTorusBasis (r n : ℕ) :
     Module.Basis (Fin (r.choose n)) ℤ
-      (SingularMayerVietoris.SingularHomology (ProductTorus r) n)                -- (6492)
+      (SingularMayerVietoris.SingularHomology (ProductTorus r) n)                -- (LCP/Specialization.lean:636; was Specialization:6492)
 theorem PeriodTorusHigherHomology.coordinateTorusBasis_apply (r n : ℕ)
     (i : Fin (r.choose n)) : coordinateTorusBasis r n i = coordinateTorusClass r n i
-  -- (6498)
+  -- (LCP/Specialization.lean:642; was Specialization:6498)
 
 def PeriodTorusHigherHomology.coordinateTorusMapAlong {X : Type} [TopologicalSpace X]
     {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ) (i : Fin (r.choose n)) :
-    C(ProductTorus n, X)                                                       -- (6555)
+    C(ProductTorus n, X)                                                       -- (LCP/Specialization.lean:649; was Specialization:6555)
 def PeriodTorusHigherHomology.coordinateTorusClassAlong {X : Type} [TopologicalSpace X]
     {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ) (i : Fin (r.choose n)) :
-    SingularMayerVietoris.SingularHomology X n                                   -- (6559)
+    SingularMayerVietoris.SingularHomology X n                                   -- (LCP/Specialization.lean:653; was Specialization:6559)
 def PeriodTorusHigherHomology.coordinateTorusBasisAlong {X : Type} [TopologicalSpace X]
     {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ) :
-    Module.Basis (Fin (r.choose n)) ℤ (SingularMayerVietoris.SingularHomology X n) -- (6565)
+    Module.Basis (Fin (r.choose n)) ℤ (SingularMayerVietoris.SingularHomology X n) -- (LCP/Specialization.lean:659; was Specialization:6565)
 theorem PeriodTorusHigherHomology.coordinateTorusBasisAlong_apply {X : Type}
     [TopologicalSpace X] {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ)
     (i : Fin (r.choose n)) :
-    coordinateTorusBasisAlong e n i = coordinateTorusClassAlong e n i            -- (6571)
+    coordinateTorusBasisAlong e n i = coordinateTorusClassAlong e n i            -- (LCP/Specialization.lean:665; was Specialization:6571)
 theorem PeriodTorusHigherHomology.coordinateTorusBasisAlong_coe {X : Type}
     [TopologicalSpace X] {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ) :
-    ⇑(coordinateTorusBasisAlong e n) = coordinateTorusClassAlong e n             -- (6586)
+    ⇑(coordinateTorusBasisAlong e n) = coordinateTorusClassAlong e n             -- (LCP/Specialization.lean:680; was Specialization:6586)
 theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_span {X : Type}
     [TopologicalSpace X] {r : ℕ} (e : X ≃ₜ ProductTorus r) (n : ℕ) :
-    Submodule.span ℤ (Set.range (coordinateTorusClassAlong e n)) = ⊤             -- (6591)
+    Submodule.span ℤ (Set.range (coordinateTorusClassAlong e n)) = ⊤             -- (LCP/Specialization.lean:685; was Specialization:6591)
 theorem PeriodTorusHigherHomology.surjective_of_coordinateTorusClassAlong_mem_range
     {X : Type} [TopologicalSpace X] {r : ℕ} {M : Type*} [AddCommGroup M] [Module ℤ M]
     (e : X ≃ₜ ProductTorus r) (n : ℕ)
     (f : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology X n)
     (hf : ∀ i : Fin (r.choose n), coordinateTorusClassAlong e n i ∈
-      LinearMap.range f) : Function.Surjective f                                -- (6596)
+      LinearMap.range f) : Function.Surjective f                                -- (LCP/Specialization.lean:690; was Specialization:6596)
 
 ```
 
-**J-B2b degree-one outputs — blocked identification seam.** The canonical Degree1
+**J-B2b degree-one outputs — landed in LCP/Specialization.lean; the identification
+seam is resolved** (Degree1 provider `Lib.AlgebraicTopology.Hurewicz.Degree1` exists;
+the S-path cluster it transitively needs remains unlanded in Hopf/). The canonical Degree1
 signatures below elaborate in the review-3 Lib-only provisional provider. The source
 proofs use the old loop-class interface; they are not verbatim public-module moves.
 `coordinateH1_basis_hit` and `coordinateH1_apply` below are missing mathematical
@@ -840,23 +871,24 @@ surjectivity, naturality or J-D can be handed to Axis 6.
 
 ```lean
 def PeriodTorusHigherHomology.coordinateH1Add (n : ℕ) :
-    (Fin n → ℤ) →+ AlgebraicTopology.SingularH1 (ProductTorus n)                     -- (6884)
+    (Fin n → ℤ) →+ AlgebraicTopology.SingularH1 (ProductTorus n)                     -- (LCP/Specialization.lean:710; was Specialization:6884)
 def PeriodTorusHigherHomology.coordinateH1 (n : ℕ) :
-    (Fin n → ℤ) →ₗ[ℤ] AlgebraicTopology.SingularH1 (ProductTorus n)                  -- (6891)
+    (Fin n → ℤ) →ₗ[ℤ] AlgebraicTopology.SingularH1 (ProductTorus n)                  -- (LCP/Specialization.lean:717; was Specialization:6891)
 @[simp]
 theorem PeriodTorusHigherHomology.coordinateH1_basis (n : ℕ) (i : Fin n) :
     coordinateH1 n (Pi.basisFun ℤ (Fin n) i) =
-      AlgebraicTopology.Hurewicz.loopHomologyClass (coordinatePeriodLoop n (Pi.single i 1))   -- (6901)
+      AlgebraicTopology.Hurewicz.loopHomologyClass (coordinatePeriodLoop n (Pi.single i 1))   -- (LCP/Specialization.lean:727; was Specialization:6901)
 @[simp]
 theorem PeriodTorusHigherHomology.coordinateH1_single (n : ℕ) (i : Fin n) :
     coordinateH1 n (Pi.single i 1) =
-      AlgebraicTopology.Hurewicz.loopHomologyClass (coordinatePeriodLoop n (Pi.single i 1))   -- (6907)
+      AlgebraicTopology.Hurewicz.loopHomologyClass (coordinatePeriodLoop n (Pi.single i 1))   -- (LCP/Specialization.lean:733; was Specialization:6907)
 -- NB: `AlgebraicTopology.SingularH1 X` is the abbrev
 -- `((TopCat.toSSet.obj X).chainComplex ℤ).homology 1` (Degree1.lean:106) — defeq to
 -- `SingularMayerVietoris.SingularHomology X 1`; `SingularH1.map f` is defeq to
 -- `singularHomologyMap f 1`. No bridging equiv is needed, only `change`/defeq use.
 
--- NEW — generalizes `coordinateH1_four_surjective` (7033, rank-4-only). Proof is NOT
+-- NEW — generalizes `coordinateH1_four_surjective` (Specialization:7033, rank-4-only;
+  -- now Proof/LCP/Specialization.lean:4070). Proof is NOT
 -- the rank-4 detour through the marking: `coordinateTorusBasis r 1` exhibits the range
 -- of `coordinateH1 r` hitting every `coordinateTorusClass r 1 i` (the two bases differ
 -- by a permutation of `Fin (r.choose 1) ≃ Fin r`), then
@@ -872,48 +904,60 @@ theorem PeriodTorusHigherHomology.coordinateH1_apply (r : ℕ) (v : Fin r → �
 theorem PeriodTorusHigherHomology.coordinateH1_surjective (r : ℕ) :
     Function.Surjective (coordinateH1 r)
 
--- NEW — generalizes `coordinateH1_matrix_natural` (6940), conditional on the
+-- NEW — generalizes `coordinateH1_matrix_natural` (Specialization:6940 — the
+  -- rank-4 `(p : PeriodDomain)` analogue is now Proof/LCP/Specialization.lean:3977), conditional on the
 -- missing `coordinateH1_apply` above: rewrite both sides with that identity, then
--- use the public-API form of `torusMatrixMap_coordinatePeriodHomology` (3533).
+-- use the public-API form of `torusMatrixMap_coordinatePeriodHomology` (3533, now
+  -- Proof/LCP/Specialization.lean:3307).
 -- Basis linearity alone does not establish the arbitrary-column loop identity.
 -- This is J-B2b, not a green J-B1 result.
 theorem PeriodTorusHigherHomology.coordinateH1_matrix_natural (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ) (v : Fin r → ℤ) :
     AlgebraicTopology.SingularH1.map (torusMatrixMap A) (coordinateH1 r v) =
       coordinateH1 r (A *ᵥ v)
-  -- the rank-4 `coordinateH1_matrix_natural (p : PeriodDomain)` (6940) is then a
+  -- the rank-4 `coordinateH1_matrix_natural (p : PeriodDomain)` (now Proof/LCP/Specialization.lean:3977) is then a
   -- corollary; it stays in Hopf only if its `PeriodDomain` formulation is what
   -- consumers cite — prefer re-pointing consumers at this general version.
 
--- NEW — generalizes `coordinateH1_four_bijective` (6929): `coordinateH1_surjective`
+-- NEW — generalizes `coordinateH1_four_bijective` (Specialization:6929 — now
+  -- Proof/LCP/Specialization.lean:3966): `coordinateH1_surjective`
 -- plus `OrzechProperty.bijective_of_surjective_of_finrank_le` with
 -- `Module.finrank_fintype_fun_eq_card` on both sides:
 theorem PeriodTorusHigherHomology.coordinateH1_bijective (r : ℕ) :
     Function.Bijective (coordinateH1 r)
 def PeriodTorusHigherHomology.coordinateH1Equiv (r : ℕ) :
     (Fin r → ℤ) ≃ₗ[ℤ] AlgebraicTopology.SingularH1 (ProductTorus r)
-  -- generalizes `coordinateH1FourEquiv` (6936): LinearEquiv.ofBijective _ (coordinateH1_bijective r)
+  -- generalizes `coordinateH1FourEquiv` (Specialization:6936 — now
+  -- Proof/LCP/Specialization.lean:3973): LinearEquiv.ofBijective _ (coordinateH1_bijective r)
 ```
 
 **J-B2 proof-closure disposition (not J-B1).** The coordinate-matrix/map recursion
-at Specialization 6200–6359, classes/coordinate equations at 6361–6502, and Along
-family at 6555–6635 belong to J-B2a. Its dependency chain includes the previously
-omitted torusMatrixLinearMap/continuous/torusMatrixMap at 2464/2481/2488, the map
-identities through 2524, and coordinateProjection at CuspFilling 13106–13145.
-The coordinateCircleMap/loop/torusTailMap family at Specialization 3454–3594 and
-coordinatePeriodLoop at CuspFilling 13176 require the S-path/public-loop-class
+at Specialization:6200–6359 (now LCP/Specialization.lean:405–503),
+classes/coordinate equations at 6361–6502 (now LCP/Specialization.lean:505–648), and Along
+family at 6555–6635 (now LCP/Specialization.lean:649–703) belong to J-B2a. Its dependency chain includes the previously
+omitted torusMatrixLinearMap/continuous/torusMatrixMap at 2464/2481/2488 (now
+Proof/LCP/Specialization.lean:2540/2557/2564), the map
+identities through 2524, and coordinateProjection at CuspFilling:13106–13145 (now
+LCP/CuspFilling.lean:268–307).
+The coordinateCircleMap/loop/torusTailMap family at Specialization:3454–3594 (now
+Proof/LCP/Specialization.lean:3234+ for the coordinateCircleMap family and
+LCP/Specialization.lean:238–247 for torusTailMap) and
+coordinatePeriodLoop at CuspFilling:13176 (now LCP/CuspFilling.lean:309) require the S-path/public-loop-class
 alignment when used on homology. No rank-four PeriodDomain adapter moves with them.
 
-`productTorusTopClass_succ_product` (Specialization 3646) and its product-dependent
-proof helpers `productTorusSucc_inverse_eq_add` (3596), `torusSplit_positiveCircleCross`
-(3609), `productTorusTopClass_two` (3673), and `productTorusTopClass_three` (3683) move
+`productTorusTopClass_succ_product` (Specialization:3646, now
+Proof/LCP/Specialization.lean:3379) and its product-dependent
+proof helpers `productTorusSucc_inverse_eq_add` (3596, now Proof/LCP/Specialization.lean:3329),
+`torusSplit_positiveCircleCross` (3609, now :3342), `productTorusTopClass_two`
+(3673, now :3406), and `productTorusTopClass_three` (3683, now :3416) move
 with **J-C3**, after Torus; Torus does not contain their Pontryagin-valued types.
-`productTorusTopClass_succ_cross` (3631), `torusHeadCircleMap_positiveHomology` (3625)
-and `productTorusTopClass_one` (3655) depend on circle/loop seams but not Pontryagin
+`productTorusTopClass_succ_cross` (3631, now Proof/LCP/Specialization.lean:3364),
+`torusHeadCircleMap_positiveHomology` (3625, now :3358)
+and `productTorusTopClass_one` (3655, now :3388) depend on circle/loop seams but not Pontryagin
 and belong to J-B2a. This allocation breaks the type-level Torus↔Pontryagin cycle.
 
 The following names are existing `SingularHomology` inputs, **not moves**:
-pointClass, singularHomologyMap_pointClass (CircleProduct 964/988),
+pointClass, singularHomologyMap_pointClass (CircleProduct.lean:1072/1098),
 singularHomologyMap_comp and homeomorphHomologyEquiv_symm_apply
 (HomotopyInvariance; all four checked with Lib imports alone).
 
@@ -925,6 +969,7 @@ def PeriodTorusHigherHomology.torusMatrixMap {m n : ℕ}
 
 def PeriodTorusHigherHomology.coordinatePeriodLoop (r : ℕ) (v : Fin r → ℤ) :
     Path (0 : ProductTorus r) 0
+  -- (LCP/CuspFilling.lean:309; binder renamed n → r for the rank-general convention)
 
 def PeriodTorusHigherHomology.torusTailMap (n : ℕ) :
     C(ProductTorus n, ProductTorus (n + 1))
@@ -932,8 +977,8 @@ def PeriodTorusHigherHomology.torusTailMap (n : ℕ) :
 theorem PeriodTorusHigherHomology.torusTailMap_add (n : ℕ) (x y : ProductTorus n) :
     torusTailMap n (x + y) = torusTailMap n x + torusTailMap n y
 
-theorem PeriodTorusHigherHomology.coordinateTorusMapAlong_add {G : Type}
-    [TopologicalSpace G] [Add G] {r : ℕ} (e : G ≃ₜ ProductTorus r)
+theorem PeriodTorusHigherHomology.coordinateTorusMapAlong_add {X : Type}
+    [TopologicalSpace X] [Add X] {r : ℕ} (e : X ≃ₜ ProductTorus r)
     (he : ∀ x y, e (x + y) = e x + e y) (n : ℕ) (i : Fin (r.choose n))
     (x y : ProductTorus n) :
     coordinateTorusMapAlong e n i (x + y) =
@@ -950,21 +995,27 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_one :
       AlgebraicTopology.Hurewicz.loopHomologyClass (coordinatePeriodLoop 1 (Pi.single 0 1))
 ```
 
-Source coordinates in order: Specialization 2488; CuspFilling 13176;
-Specialization 3554, 3563, 6626, 3533, 3655. The two loop-class statements are target
+Source coordinates in order: Proof/LCP/Specialization.lean:2564; LCP/CuspFilling.lean:309;
+LCP/Specialization.lean:238, :247; Proof/LCP/Specialization.lean:3715, :3307, :3388.
+(Provenance: Specialization 2488; CuspFilling 13176; Specialization 3554, 3563, 6626,
+3533, 3655.) The two loop-class statements are target
 signatures in the public Degree1 API, not claims that their original proofs already
 import through that module. The new rank-general basis-hit/apply nodes have no existing
 source declarations; their textbook source is §4's coordinate-basis identification.
 
-**J-B2 — circle-section API, blocked seam.** Public outputs (exact signatures; the
-proofs route through the unlanded circle-path cluster below):
+**J-B2 — circle-section API, seam resolved.** Public outputs (exact signatures; the
+proofs route through the circle-path cluster, **landed** in `CircleProduct.lean`
+and `CrossProduct.lean` — see the landed-provider notes below). These signatures use
+unqualified `CirclePaths.{positiveLoop, arcSumCycle}` and `circleProductMap` — inside
+`namespace Mathoverflow1973` they resolve under `open PeriodTorusHigherHomology`,
+which the ledger context must include alongside `open SingularHomology`.
 
 ```lean
 def PeriodTorusHigherHomology.positiveCircleCross (X : Type) [TopologicalSpace X]
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (CircleTopology.Circle × X) (n + 1)
-  -- (CuspFilling 13700; body = crossProductHomology Circle X n
+  -- (LCP/CuspFilling.lean:390; was CuspFilling:13700; body = crossProductHomology Circle X n
   --   (AlgebraicTopology.Hurewicz.loopHomologyClass CirclePaths.positiveLoop))
 theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Type)
     [TopologicalSpace X] (n : ℕ)
@@ -976,111 +1027,123 @@ theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Typ
       SingularMayerVietoris.ModuleHomology.cycleClass
         (SingularChains.singularComplex (CircleTopology.Circle × X)) (n + 1)
         (crossProductCycles CircleTopology.Circle X n CirclePaths.arcSumCycle b)
-                                                                          -- (13707)
+                                                                          -- (Proof/LCP/CuspFilling.lean:13466; was CuspFilling:13707)
 theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleBoundaryCoordinates X n (positiveCircleCross X n b) = (-b, b)     -- (14310)
+    circleBoundaryCoordinates X n (positiveCircleCross X n b) = (-b, b)     -- (Proof/LCP/CuspFilling.lean:13798; was CuspFilling:14310)
 @[simp]
 theorem PeriodTorusHigherHomology.circleBoundary_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleBoundary X n (positiveCircleCross X n b) = b                      -- (14319)
+    circleBoundary X n (positiveCircleCross X n b) = b                      -- (Proof/LCP/CuspFilling.lean:13807; was CuspFilling:14319)
 theorem PeriodTorusHigherHomology.circleProjection_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0      -- (14579)
+    circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0      -- (LCP/CuspFilling.lean:674; was CuspFilling:14579)
 @[simp]
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_positiveCircleCross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleProductHomologyEquiv X n (positiveCircleCross X n b) = (0, b)     -- (14585)
+    circleProductHomologyEquiv X n (positiveCircleCross X n b) = (0, b)     -- (Proof/LCP/CuspFilling.lean:13815; was CuspFilling:14585)
 theorem PeriodTorusHigherHomology.positiveCircleCross_eq_symm (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
     positiveCircleCross X n b = (circleProductHomologyEquiv X n).symm (0, b)
-                                                                          -- (14592)
+                                                                          -- (Proof/LCP/CuspFilling.lean:13822; was CuspFilling:14592)
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_eq_section_add_cross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology X (n + 1) ×
       SingularMayerVietoris.SingularHomology X n) :
     (circleProductHomologyEquiv X n).symm a =
-      circleSectionHomology X (n + 1) a.1 + positiveCircleCross X n a.2     -- (14598)
+      circleSectionHomology X (n + 1) a.1 + positiveCircleCross X n a.2     -- (Proof/LCP/CuspFilling.lean:13828; was CuspFilling:14598)
 theorem PeriodTorusHigherHomology.positiveCircleCross_naturality {X : Type}
     [TopologicalSpace X] {Y : Type} [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
     SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1)
         (positiveCircleCross X n b) =
       positiveCircleCross Y n
-        (SingularMayerVietoris.singularHomologyMap f n b)                   -- (14610)
+        (SingularMayerVietoris.singularHomologyMap f n b)                   -- (Proof/LCP/CuspFilling.lean:13840; was CuspFilling:14610)
 ```
 
-Supporting decls moving with this boundary (verbatim signatures, same file or
-`CrossProduct.lean` if the owner lands the cluster there):
-`circleProductMap` (CuspFilling 14325 — `C(Circle × X, Circle × Y)` from `f : C(X, Y)`),
-`circleConnecting_positiveCircleCross_cycleClass` (14271),
-`circleBoundaryCoordinates_positiveCircleCross_cycleClass` (14291),
-`twoChainSmallCycle` (14129), `twoChainSmallCycle_*` boundary/class lemmas,
-`connectingHomomorphism_twoChain` (14194),
-`crossProductEdge_path_boundary` (13856),
-`intersectionDifferenceCycle` + `positiveCircleSmallCycle*` (the small-cycle helpers
-used at 14278–14290).
+Supporting decls moving with this boundary (verbatim signatures):
+`circleProductMap` (landed: CircleProduct.lean:1241 — `C(Circle × X, Circle × Y)`
+from `f : C(X, Y)`), `circleConnecting_positiveCircleCross_cycleClass`
+(Proof/LCP/CuspFilling.lean:13759),
+`circleBoundaryCoordinates_positiveCircleCross_cycleClass`
+(Proof/LCP/CuspFilling.lean:13779),
+`twoChainSmallCycle` (LCP/CuspFilling.lean:583), `twoChainSmallCycle_*`
+boundary/class lemmas, `connectingHomomorphism_twoChain`
+(LCP/CuspFilling.lean:648), `crossProductEdge_path_boundary`
+(LCP/CuspFilling.lean:413), `intersectionDifferenceCycle` +
+`positiveCircleSmallCycle*` (Proof/LCP/CuspFilling.lean:13512 / :13706).
 
-**S-nat — unlanded splitting-naturality closure**, all in CuspFilling:
-`circleProductMap` (14325), `intersectionProductMap` (14331),
-`circleProductMap_projection` (14338), `intersectionProductMap_homotopyEquiv` (14344),
-`circleProjectionHomology_naturality` (14362), `sumHomologyEquiv_naturality` (14369),
-`productIntersectionHomologyEquiv_naturality` (14384), `circleProductMap_mapsToU` (14409),
-`circleProductMap_mapsToV` (14414), `circleProductIntersectionRestriction_eq` (14419),
-`circleMayerVietorisConnecting_naturality` (14427), `circleBoundaryCoordinates_naturality`
-(14443), `circleBoundary_naturality` (14466), `circleProductHomologyEquiv_naturality`
-(14480), and `circleProductHomologyEquiv_symm_naturality` (14493).
-This gates the coordinate basis **and** the circle-section naturality result; it is
-not supplied by the landed CircleProduct module. Owner/provider commit is outstanding.
+**S-nat — splitting-naturality closure, LANDED in `CircleProduct.lean`:**
+`circleProductMap` (:1241), `intersectionProductMap` (:1247),
+`circleProductMap_projection` (:1254), `intersectionProductMap_homotopyEquiv` (:1260),
+`circleProjectionHomology_naturality` (:1278), `sumHomologyEquiv_naturality` (:1285),
+`productIntersectionHomologyEquiv_naturality` (:1300), `circleProductMap_mapsToU` (:1325),
+`circleProductMap_mapsToV` (:1330), `circleProductIntersectionRestriction_eq` (:1335),
+`circleMayerVietorisConnecting_naturality` (:1343), `circleBoundaryCoordinates_naturality`
+(:1359), `circleBoundary_naturality` (:1382), `circleProductHomologyEquiv_naturality`
+(:1396), and `circleProductHomologyEquiv_symm_naturality` (:1409).
+This gated the coordinate basis **and** the circle-section naturality result; the
+gate is now open.
 
-**S-path — unlanded circle-path closure**, CuspFilling **13348–13698**. In addition
-to the named outputs below, include CirclePaths.circleTranslation (13348),
-circleTranslation_apply (13360), circleTranslationHomotopy (13365),
-circleTranslation_singularHomologyMap (13380), circleTranslation_inducedHomology
-(13386), loopHomologyClass_map_circleTranslation (13390), quarterPoint (13410),
-quarterPoint_coe (13419), quarterIntersection_component (13424),
-threeQuarterIntersection_component (13430), quarterU (13435), quarterV (13439),
-uCirclePath_apply (13517), vCirclePath_apply (13523), quarterLoop_apply (13542),
-quarterTranslation_zero (13572), quarterLoop_eq_translation (13576),
-quarterIntersectionSection_comp (13665), threeQuarterIntersectionSection_component
-(13675), and threeQuarterIntersectionSection_comp (13691). These earlier/later
+**S-path — unlanded circle-path closure**, now split between
+`LCP/CuspFilling.lean` (interface) and `Proof/LCP/CuspFilling.lean` (proof side).
+In addition to the named outputs below, include CirclePaths.circleTranslation
+(LCP/CuspFilling:325), circleTranslation_apply (:337), circleTranslationHomotopy
+(:342), circleTranslation_singularHomologyMap (:357),
+circleTranslation_inducedHomology (:363), loopHomologyClass_map_circleTranslation
+(:367), quarterPoint (Proof/LCP/CuspFilling.lean:13187), quarterPoint_coe (:13196),
+quarterIntersection_component (:13201), threeQuarterIntersection_component
+(:13207), quarterU (:13212), quarterV (:13216), uCirclePath_apply (:13294),
+vCirclePath_apply (:13300), quarterLoop_apply (:13319), quarterTranslation_zero
+(:13337), quarterLoop_eq_translation (:13341), quarterIntersectionSection_comp
+(:13430), threeQuarterIntersectionSection_component (:13440), and
+threeQuarterIntersectionSection_comp (:13456). These earlier/later
 helpers are part of the source proof closure, not optional omissions.
 
-**S-cross — unlanded cross-product naturality**, CuspFilling 14509–14576;
-its exact theorem names and declaration starts are listed below.
+**S-cross — cross-product naturality, LANDED in `CrossProduct.lean`:**
+`crossProductCycles_natural` (:4292), `crossProductHomology_natural` (:4309),
+`crossProductHomology_snd` (:4332) — was CuspFilling:14509–14576.
 
-S-path/S-cross named interfaces (all currently legacy source, NOT GO):
-`CirclePaths.{positiveLoop` (13558) + `positiveLoop_apply`, `quarterLoop`,
-`arcSumCycle` (13609), `arcSumCycle_class` (13614),
-`arcSumCycle_positiveLoop_class` (13628), `quarterIntersection` (13398),
-`threeQuarterIntersection` (13404), `threeQuarterPoint` (13414), `threeQuarterU` (13443),
-`threeQuarterV` (13447), `uPath` (13451), `vPath` (13480), `uCirclePath` (13510),
-`vCirclePath` (13513), `uCirclePath_trans_vCirclePath`, `quarterLoop_homologyClass`,
-`quarterIntersectionSection` (13633, `X : Type*`), `threeQuarterIntersectionSection`
-(13641, `X : Type*`), `quarterIntersectionSection_component`, `boundaryOne_arcSum`};
-`crossProductCycles_natural` (14509), `crossProductHomology_natural` (14526),
-`crossProductHomology_snd` (14549).
+S-path named interfaces (still unlanded — legacy source) and landed S-cross providers:
+`CirclePaths.{positiveLoop` (LCP/CuspFilling:376) + `positiveLoop_apply` (:385),
+`quarterLoop` (Proof/LCP/CuspFilling.lean:13305), `arcSumCycle` (:13374), `arcSumCycle_class`
+(:13379), `arcSumCycle_positiveLoop_class` (:13393), `quarterIntersection` (:13175),
+`threeQuarterIntersection` (:13181), `threeQuarterPoint` (:13191), `threeQuarterU`
+(:13220), `threeQuarterV` (:13224), `uPath` (:13228), `vPath` (:13257),
+`uCirclePath` (:13287), `vCirclePath` (:13290), `uCirclePath_trans_vCirclePath`
+(:13324), `quarterLoop_homologyClass` (:13353), `quarterIntersectionSection`
+(:13398, `X : Type*`), `threeQuarterIntersectionSection` (:13406, `X : Type*`),
+`quarterIntersectionSection_component` (:13415), `boundaryOne_arcSum` (:13367)};
+`crossProductCycles_natural` (landed: CrossProduct.lean:4292),
+`crossProductHomology_natural` (landed: CrossProduct.lean:4309),
+`crossProductHomology_snd` (landed: CrossProduct.lean:4332).
 
-Lane A's report (`Lib/reports/A.md` §Wang note) proposes that cluster for
-`CrossProduct.lean`; its landing is **not J-owned** — owner confirmation needed
-(GLM's cross-product work is the natural home). Only the restricted J-B1 recursive
-core above is independent of this cluster. J-B2a waits for an owner-approved public
-provider of S-path, S-nat and S-cross plus M-C; it does not acquire permission to
-land another lane's cluster merely because its statements need it. NB: the `quarterIntersectionSection` family uses
+Lane A's report (`Lib/reports/A.md` §Wang note) proposed that cluster for
+`CrossProduct.lean`; the S-nat closure and the S-cross naturality suite have
+**landed** (CircleProduct.lean:1241–1414 and CrossProduct.lean:4292–4332), and the
+M-C module seam is resolved (CrossProduct.lean is `module`). What remains unlanded
+is the **S-path** cluster above — `CirclePaths.*` in `Hopf/Proof/LCP/CuspFilling.lean`
+and the interface decls in `Hopf/LCP/CuspFilling.lean`; its landing is still
+**not J-owned** — owner confirmation needed (GLM's cross-product work is the
+natural home). Only the restricted J-B1 recursive core above is independent of
+this cluster. J-B2a still waits on S-path's public provider; it does not acquire
+permission to land another lane's cluster merely because its statements need it.
+NB: the `quarterIntersectionSection` family uses
 `Type*` for the ambient space — harmless there (pure topology, no homology), keep as-is.
 
 ## Boundary J-C — `Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean`
 
 ```text
-commit_boundary   J-C1 (candidate; blocked by M-C public-module provider);
-                  J-C2 (also needs S-cross); J-C3 (also needs GLM's G-J3,
+commit_boundary   J-C1 (LANDED in Pontryagin.lean);
+                  J-C2 (S-cross landed; still Hopf-side at LCP/Specialization.lean);
+                  J-C3 (needs GLM's G-J3 — now landed in CrossProduct.lean —
                   J-B2a circle/top-class API and the public loop-class alignment).
-                  All three remain NOT GO until aggregate module/consumer checks.
+                  J-C1 is landed; J-C2/J-C3 aggregate module/consumer checks remain open.
 imports           Mathlib; Lib.AlgebraicTopology.SingularHomology.{MayerVietoris,
                   CrossProduct}; J-B's Torus.lean only for the top-class lemmas of J-C3
 visibility        `module` file; outputs `public` inside `namespace Mathoverflow1973`
@@ -1090,32 +1153,33 @@ focused_check     `lake build Lib.AlgebraicTopology.SingularHomology.Pontryagin`
 return_seam       Axis 5 if a lemma's coherence dependency was misread
 ```
 
-**J-C1 public outputs** (mathematical inputs exist at head, but their CrossProduct
-provider is legacy: NOT GO for a production module). Inputs: `crossProductHomology`,
+**J-C1 public outputs** (LANDED in `Pontryagin.lean`; the CrossProduct provider
+is now a `module` file — the review-3 M-C objection is resolved). Inputs:
+`crossProductHomology`,
 `integerBilinearPostcompose`, `singularHomologyMap`, and the topology/linear algebra
 APIs used in the source proofs; no torus import is needed by this sub-boundary.
 
 ```lean
 def PeriodTorusHigherHomologyPontryagin.cyclicMap (X Y Z : Type) [TopologicalSpace X]
-    [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z))  -- (3143)
+    [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z))  -- (Pontryagin.lean:45; was Specialization:3143)
 def PeriodTorusHigherHomologyPontryagin.additionMap (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × G, G)                 -- (3147)
+    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × G, G)                 -- (Pontryagin.lean:49; was Specialization:3147)
 def PeriodTorusHigherHomologyPontryagin.rightAdditionMap (G : Type) [TopologicalSpace G]
-    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × (G × G), G)           -- (3151)
+    [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × (G × G), G)           -- (Pontryagin.lean:53; was Specialization:3151)
 theorem PeriodTorusHigherHomologyPontryagin.rightAdditionMap_comp_cyclic (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] :
-    (rightAdditionMap G).comp (cyclicMap G G G) = rightAdditionMap G         -- (3156)
+    (rightAdditionMap G).comp (cyclicMap G G G) = rightAdditionMap G         -- (Pontryagin.lean:58; was Specialization:3156)
 theorem PeriodTorusHigherHomologyPontryagin.rightAddition_homology_cyclic (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
     (SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n).comp
         (SingularMayerVietoris.singularHomologyMap (cyclicMap G G G) n) =
-      SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n       -- (3163;
+      SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n       -- (Pontryagin.lean:65; was Specialization:3163;
   -- needs only `singularHomologyMap_comp` + `rightAdditionMap_comp_cyclic` — J-C1)
 theorem PeriodTorusHigherHomologyPontryagin.additionMap_natural {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type}
     [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H] (f : C(G, H))
     (hf : ∀ x y, f (x + y) = f x + f y) :
-    f.comp (additionMap G) = (additionMap H).comp (f.prodMap f)              -- (3170)
+    f.comp (additionMap G) = (additionMap H).comp (f.prodMap f)              -- (Pontryagin.lean:72; was Specialization:3170)
 theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type}
     [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H] (f : C(G, H))
@@ -1123,67 +1187,69 @@ theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
     (SingularMayerVietoris.singularHomologyMap f n).comp
         (SingularMayerVietoris.singularHomologyMap (additionMap G) n) =
       (SingularMayerVietoris.singularHomologyMap (additionMap H) n).comp
-        (SingularMayerVietoris.singularHomologyMap (f.prodMap f) n)          -- (3177)
+        (SingularMayerVietoris.singularHomologyMap (f.prodMap f) n)          -- (Pontryagin.lean:79; was Specialization:3177)
 def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology G n →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G (n + 1)                     -- (3190)
+        SingularMayerVietoris.SingularHomology G (n + 1)                     -- (Pontryagin.lean:92; was Specialization:3190)
 theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology G 1)
     (b : SingularMayerVietoris.SingularHomology G n) :
     product G n a b =
       SingularMayerVietoris.singularHomologyMap (additionMap G) (n + 1)
-        (PeriodTorusHigherHomology.crossProductHomology G G n a b)           -- (3202)
+        (SingularHomology.crossProductHomology G G n a b)                    -- (was Specialization:3202;
+  -- retarget: source landed at Pontryagin.lean:104 spells `SingularHomology.crossProductHomology`)
 abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G 2                           -- (3213)
+        SingularMayerVietoris.SingularHomology G 2                           -- (Pontryagin.lean:115; was Specialization:3213)
 abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology G 2 →ₗ[ℤ]
-        SingularMayerVietoris.SingularHomology G 3                           -- (3222)
+        SingularMayerVietoris.SingularHomology G 3                           -- (Pontryagin.lean:124; was Specialization:3222)
 def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
         SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
-          SingularMayerVietoris.SingularHomology G 3                         -- (3231)
+          SingularMayerVietoris.SingularHomology G 3                         -- (Pontryagin.lean:133; was Specialization:3231)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a b c = product12 G a (product11 G b c)                  -- (3269)
+    tripleProduct G a b c = product12 G a (product11 G b c)                  -- (Pontryagin.lean:171; was Specialization:3269)
 
 -- generic multilinear/alternating plumbing (3698–3768), verbatim — pure linear
 -- algebra, no coherence deps, so J-C1 even though its consumers are J-C3:
 def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
-    (β : M →ₗ[ℤ] M →ₗ[ℤ] N) : MultilinearMap ℤ (fun _ : Fin 2 => M) N        -- (3698)
+    (β : M →ₗ[ℤ] M →ₗ[ℤ] N) : MultilinearMap ℤ (fun _ : Fin 2 => M) N        -- (Pontryagin.lean:178; was Specialization:3698)
 def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     (β : M →ₗ[ℤ] M →ₗ[ℤ] N) (hdiag : ∀ x : M, β x x = 0) :
-    AlternatingMap ℤ M N (Fin 2)                                            -- (3715)
+    AlternatingMap ℤ M N (Fin 2)                                            -- (Pontryagin.lean:195; was Specialization:3715)
 theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     [Module.IsTorsionFree ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N)
-    (hskew : ∀ x y : M, β x y = -β y x) (x : M) : β x x = 0                 -- (3728)
+    (hskew : ∀ x y : M, β x y = -β y x) (x : M) : β x x = 0                 -- (Pontryagin.lean:208; was Specialization:3728)
 def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N) : MultilinearMap ℤ (fun _ : Fin 3 => M) N
-                                                                          -- (3736)
+                                                                          -- (Pontryagin.lean:216; was Specialization:3736)
 def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N) (h01 : ∀ x z : M, g x x z = 0)
     (h02 : ∀ x y : M, g x y x = 0) (h12 : ∀ x y : M, g x y y = 0) :
-    AlternatingMap ℤ M N (Fin 3)                                            -- (3753)
+    AlternatingMap ℤ M N (Fin 3)                                            -- (Pontryagin.lean:233; was Specialization:3753)
 ```
 
-**J-C2 — needs `crossProductHomology_natural`** (still `Hopf/`-only, CuspFilling 14526;
-also `crossProductCycles_natural` 14509, `crossProductHomology_snd` 14549 — same
-unlanded cluster as J-B2; record on that seam). Exact signatures:
+**J-C2 — needs `crossProductHomology_natural`** — **provider landed** at
+integration-3: `crossProductHomology_natural` (CrossProduct.lean:4309),
+`crossProductCycles_natural` (:4292), `crossProductHomology_snd` (:4332). J-C2's
+dependency is discharged; ordering still puts J-C1 first. Exact signatures:
 
 ```lean
 theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type}
@@ -1194,7 +1260,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type}
     (b : SingularMayerVietoris.SingularHomology G n) :
     SingularMayerVietoris.singularHomologyMap f (n + 1) (product G n a b) =
       product H n (SingularMayerVietoris.singularHomologyMap f 1 a)
-        (SingularMayerVietoris.singularHomologyMap f n b)                    -- (3277)
+        (SingularMayerVietoris.singularHomologyMap f n b)                    -- (LCP/Specialization.lean:157; was Specialization:3277)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_natural {G H : Type}
     [TopologicalSpace G] [TopologicalSpace H] [AddCommGroup G] [AddCommGroup H]
     [IsTopologicalAddGroup G] [IsTopologicalAddGroup H] (f : C(G, H))
@@ -1203,55 +1269,59 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_natural {G H : Type}
     SingularMayerVietoris.singularHomologyMap f 3 (tripleProduct G a b c) =
       tripleProduct H (SingularMayerVietoris.singularHomologyMap f 1 a)
         (SingularMayerVietoris.singularHomologyMap f 1 b)
-        (SingularMayerVietoris.singularHomologyMap f 1 c)                    -- (3292)
+        (SingularMayerVietoris.singularHomologyMap f 1 c)                    -- (LCP/Specialization.lean:172; was Specialization:3292)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
     tripleProduct G a b c =
       SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) 3
-        (PeriodTorusHigherHomology.crossProductHomology G (G × G) 2 a
-          (PeriodTorusHigherHomology.crossProductHomology G G 1 b c))        -- (3309;
-  -- direct call site of `crossProductHomology_natural` at 3317)
+        (SingularHomology.crossProductHomology G (G × G) 2 a
+          (SingularHomology.crossProductHomology G G 1 b c))                 -- (3309;
+  -- retarget: source at LCP/Specialization.lean:189 spells the LibShims alias
+  -- `PeriodTorusHigherHomology.crossProductHomology`; the Lib target spells the landed
+  -- provider `SingularHomology.crossProductHomology` (CrossProduct.lean:1855).
+  -- direct call site of `crossProductHomology_natural`, was Specialization:3317)
 ```
 
 **J-C3 — needs GLM's G-J3 coherence suite** (the homology-level laws
-`crossProductHomology_{swap,pushforward_anticommute,associative,cyclic}` and friends,
-currently Specialization 3771–5987; exact exclusion manifest below). Exact signatures:
+`crossProductHomology_{swap,pushforward_anticommute,associative,cyclic}` and friends —
+**landed** in `CrossProduct.lean:2065–4359` at integration-3; the historical
+exclusion manifest below was generated from `git show 15bd5f7`). Exact signatures:
 
 ```lean
 theorem PeriodTorusHigherHomologyPontryagin.product11_skew (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b : SingularMayerVietoris.SingularHomology G 1) :
-    product11 G a b = -product11 G b a                                      -- (4199)
+    product11 G a b = -product11 G b a                                      -- (LCP/Specialization.lean:283; was Specialization:4199)
 theorem PeriodTorusHigherHomologyPontryagin.product11_self (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (a : SingularMayerVietoris.SingularHomology G 1) : product11 G a a = 0  -- (4207)
+    (a : SingularMayerVietoris.SingularHomology G 1) : product11 G a a = 0  -- (LCP/Specialization.lean:289; was Specialization:4207)
 def PeriodTorusHigherHomologyPontryagin.homologyAlternatingTwo (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
     AlternatingMap ℤ (SingularMayerVietoris.SingularHomology G 1)
-      (SingularMayerVietoris.SingularHomology G 2) (Fin 2)                    -- (4215)
+      (SingularMayerVietoris.SingularHomology G 2) (Fin 2)                    -- (LCP/Specialization.lean:297; was Specialization:4215)
 def PeriodTorusHigherHomologyPontryagin.homologyAlternatingThree (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
     AlternatingMap ℤ (SingularMayerVietoris.SingularHomology G 1)
-      (SingularMayerVietoris.SingularHomology G 3) (Fin 3)                    -- (6055)
+      (SingularMayerVietoris.SingularHomology G 3) (Fin 3)                    -- (LCP/Specialization.lean:368; was Specialization:6055)
 def PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
     (⋀[ℤ]^2 (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G 2                            -- (4224)
+      SingularMayerVietoris.SingularHomology G 2                            -- (LCP/Specialization.lean:306; was Specialization:4224)
 theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     (v : Fin 2 → SingularMayerVietoris.SingularHomology G 1) :
-    homologyWedgeTwo G (exteriorPower.ιMulti ℤ 2 v) = product11 G (v 0) (v 1) -- (4234)
+    homologyWedgeTwo G (exteriorPower.ιMulti ℤ 2 v) = product11 G (v 0) (v 1) -- (LCP/Specialization.lean:316; was Specialization:4234)
 def PeriodTorusHigherHomologyPontryagin.homologyWedgeThree (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
     (⋀[ℤ]^3 (SingularMayerVietoris.SingularHomology G 1)) →ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology G 3                            -- (6065;
+      SingularMayerVietoris.SingularHomology G 3                            -- (LCP/Specialization.lean:378; was Specialization:6065;
   -- NOTE the hypothesis is torsion-freeness of H₂, not H₃ — the wedge descends via
   --  alternatingOfTrilinear which needs the degree-2 diagonal vanishing)
 theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeThree_apply_ιMulti (G : Type)
@@ -1259,7 +1329,7 @@ theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeThree_apply_ιMulti (G 
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     (v : Fin 3 → SingularMayerVietoris.SingularHomology G 1) :
     homologyWedgeThree G (exteriorPower.ιMulti ℤ 3 v) =
-      tripleProduct G (v 0) (v 1) (v 2)                                     -- (6075)
+      tripleProduct G (v 0) (v 1) (v 2)                                     -- (LCP/Specialization.lean:388; was Specialization:6075)
 
 -- the lattice wedge, de-pinned: `Lattice` → arbitrary `M`; `latticeWedgeTwo G c`
 -- becomes `(homologyWedgeTwo G).comp (exteriorPower.map 2 c)` at general `M`:
@@ -1269,7 +1339,7 @@ def PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong (G : Type)
     {M : Type} [AddCommGroup M] [Module ℤ M]
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
     (⋀[ℤ]^2 M) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 2
-  -- generalizes `latticeWedgeTwo` (4243); the rank-4 name is deleted, consumers
+  -- generalizes `latticeWedgeTwo` (Specialization:4243, now Proof/LCP/Specialization.lean:3433); the rank-4 name is deleted, consumers
   -- re-pointed at `wedgeTwoAlong G c` with `M := Lattice`
 def PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -1277,14 +1347,14 @@ def PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong (G : Type)
     {M : Type} [AddCommGroup M] [Module ℤ M]
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
     (⋀[ℤ]^3 M) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 3
-  -- likewise for `latticeWedgeThree` (6084)
+  -- likewise for `latticeWedgeThree` (Specialization:6084, now Proof/LCP/Specialization.lean:3479)
 theorem PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     {M : Type} [AddCommGroup M] [Module ℤ M]
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 2 → M) :
     wedgeTwoAlong G c (exteriorPower.ιMulti ℤ 2 v) = product11 G (c (v 0)) (c (v 1))
-  -- generalizes `latticeWedgeTwo_apply_ιMulti` (4253, @[simp])
+  -- generalizes `latticeWedgeTwo_apply_ιMulti` (Specialization:4253, now Proof/LCP/Specialization.lean:3443, @[simp])
 theorem PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -1292,7 +1362,7 @@ theorem PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong_apply_ιMulti (G : T
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 3 → M) :
     wedgeThreeAlong G c (exteriorPower.ιMulti ℤ 3 v) =
       tripleProduct G (c (v 0)) (c (v 1)) (c (v 2))
-  -- generalizes `latticeWedgeThree_apply_ιMulti` (6094, @[simp])
+  -- generalizes `latticeWedgeThree_apply_ιMulti` (Specialization:6094, now Proof/LCP/Specialization.lean:3489, @[simp])
 
 -- wedge naturality (needs J-C2's naturality seam AND the J-C3 wedge — dual deps;
 -- lands with J-C3):
@@ -1308,7 +1378,7 @@ theorem PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong_natural {G : Type}
     (hmark : ∀ v, SingularMayerVietoris.singularHomologyMap f 1 (c v) = d (A v)) :
     (SingularMayerVietoris.singularHomologyMap f 2).comp (wedgeTwoAlong G c) =
       (wedgeTwoAlong H d).comp (exteriorPower.map 2 A)
-  -- de-pinned `latticeWedgeTwo_natural` (4264): source uses `Lattice` for all three
+  -- de-pinned `latticeWedgeTwo_natural` (Specialization:4264, now Proof/LCP/Specialization.lean:3454): source uses `Lattice` for all three
   -- of M N A; general M N with A : M →ₗ[ℤ] N is the same proof
 theorem PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong_natural {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -1322,7 +1392,7 @@ theorem PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong_natural {G : Type}
     (hmark : ∀ v, SingularMayerVietoris.singularHomologyMap f 1 (c v) = d (A v)) :
     (SingularMayerVietoris.singularHomologyMap f 3).comp (wedgeThreeAlong G c) =
       (wedgeThreeAlong H d).comp (exteriorPower.map 3 A)
-  -- de-pins `latticeWedgeThree_natural` (Specialization 6106); provisional module
+  -- de-pins `latticeWedgeThree_natural` (Specialization:6106, now Proof/LCP/Specialization.lean:3501); provisional module
   -- signature elaborated in review 3; proof still waits on J-C2/J-C3.
 
 theorem PeriodTorusHigherHomologyPontryagin.product11_mem_range_wedgeTwoAlong
@@ -1333,7 +1403,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product11_mem_range_wedgeTwoAlong
     (hc : Function.Surjective c)
     (a b : SingularMayerVietoris.SingularHomology G 1) :
     product11 G a b ∈ LinearMap.range (wedgeTwoAlong G c)
-  -- generalizes `product11_mem_range_latticeWedgeTwo` (6131)
+  -- generalizes `product11_mem_range_latticeWedgeTwo` (Specialization:6131, now Proof/LCP/Specialization.lean:3524)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_mem_range_wedgeThreeAlong
     (G : Type) [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -1342,28 +1412,28 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_mem_range_wedgeThreeAl
     (hc : Function.Surjective c)
     (a b d : SingularMayerVietoris.SingularHomology G 1) :
     tripleProduct G a b d ∈ LinearMap.range (wedgeThreeAlong G c)
-  -- generalizes `tripleProduct_mem_range_latticeWedgeThree` (6144)
+  -- generalizes `tripleProduct_mem_range_latticeWedgeThree` (Specialization:6144, now Proof/LCP/Specialization.lean:3537)
 
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_cyclic (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a b c = tripleProduct G b c a                           -- (6013;
+    tripleProduct G a b c = tripleProduct G b c a                           -- (LCP/Specialization.lean:326; was Specialization:6013;
   -- needs `crossProductHomology_cyclic` (GLM) + `tripleProduct_eq_cross` (J-C2))
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self12 (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     (a b : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a b b = 0                                               -- (6031)
+    tripleProduct G a b b = 0                                               -- (LCP/Specialization.lean:344; was Specialization:6031)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self02 (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     (a b : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a b a = 0                                               -- (6039)
+    tripleProduct G a b a = 0                                               -- (LCP/Specialization.lean:352; was Specialization:6039)
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self01 (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
     (a b : SingularMayerVietoris.SingularHomology G 1) :
-    tripleProduct G a a b = 0                                               -- (6047)
+    tripleProduct G a a b = 0                                               -- (LCP/Specialization.lean:360; was Specialization:6047)
 
 theorem PeriodTorusHigherHomology.productTorusTopClass_succ_product (n : ℕ) :
     productTorusTopClass (n + 1) =
@@ -1377,12 +1447,12 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_succ_product (n : ℕ) :
 theorem PeriodTorusHigherHomology.productTorusTopClass_two_is_product :
     ∃ a b : SingularMayerVietoris.SingularHomology (ProductTorus 2) 1,
       productTorusTopClass 2 =
-        PeriodTorusHigherHomologyPontryagin.product11 (ProductTorus 2) a b   -- (6156)
+        PeriodTorusHigherHomologyPontryagin.product11 (ProductTorus 2) a b   -- (Proof/LCP/Specialization.lean:3549; was Specialization:6156)
 theorem PeriodTorusHigherHomology.productTorusTopClass_three_is_tripleProduct :
     ∃ a b c : SingularMayerVietoris.SingularHomology (ProductTorus 3) 1,
       productTorusTopClass 3 =
         PeriodTorusHigherHomologyPontryagin.tripleProduct (ProductTorus 3) a b c
-                                                                          -- (6165)
+                                                                          -- (Proof/LCP/Specialization.lean:3558; was Specialization:6165)
 theorem PeriodTorusHigherHomology.map_topClass_two_mem_range_wedgeTwoAlong {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -1392,7 +1462,7 @@ theorem PeriodTorusHigherHomology.map_topClass_two_mem_range_wedgeTwoAlong {G : 
     (hf : ∀ x y, f (x + y) = f x + f y) :
     SingularMayerVietoris.singularHomologyMap f 2 (productTorusTopClass 2) ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong G c)
-  -- de-pins `map_topClass_two_mem_range_latticeWedgeTwo` (6178)
+  -- de-pins `map_topClass_two_mem_range_latticeWedgeTwo` (Specialization:6178, now Proof/LCP/Specialization.lean:3571)
 theorem PeriodTorusHigherHomology.map_topClass_three_mem_range_wedgeThreeAlong {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -1402,9 +1472,9 @@ theorem PeriodTorusHigherHomology.map_topClass_three_mem_range_wedgeThreeAlong {
     (hf : ∀ x y, f (x + y) = f x + f y) :
     SingularMayerVietoris.singularHomologyMap f 3 (productTorusTopClass 3) ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong G c)
-  -- de-pins `map_topClass_three_mem_range_latticeWedgeThree` (6189)
+  -- de-pins `map_topClass_three_mem_range_latticeWedgeThree` (Specialization:6189, now Proof/LCP/Specialization.lean:3582)
 
--- the surjectivity/descend-to-range family (6784–6824), de-pinned; all in J-C3:
+-- the surjectivity/descend-to-range family (Specialization:6784–6824, now Proof/LCP/Specialization.lean:3848–3900), de-pinned; all in J-C3:
 theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_wedgeTwoAlong
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
@@ -1414,7 +1484,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_wedgeTwoAl
     (hc : Function.Surjective c) (i : Fin (r.choose 2)) :
     coordinateTorusClassAlong e 2 i ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong G c)
-  -- de-pins `coordinateTorusClassAlong_mem_range_latticeWedgeTwo` (6784); depends on
+  -- de-pins `coordinateTorusClassAlong_mem_range_latticeWedgeTwo` (Specialization:6784, now Proof/LCP/Specialization.lean:3848); depends on
   -- `coordinateTorusMapAlong_add` (J-B2a public helper; exact signature above)
 theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_wedgeThreeAlong
     {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -1425,7 +1495,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_wedgeThree
     (hc : Function.Surjective c) (i : Fin (r.choose 3)) :
     coordinateTorusClassAlong e 3 i ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong G c)
-  -- de-pins `coordinateTorusClassAlong_mem_range_latticeWedgeThree` (6795)
+  -- de-pins `coordinateTorusClassAlong_mem_range_latticeWedgeThree` (Specialization:6795, now Proof/LCP/Specialization.lean:3859)
 theorem PeriodTorusHigherHomology.wedgeTwoAlong_surjective_of_torusHomeomorph {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
@@ -1434,7 +1504,7 @@ theorem PeriodTorusHigherHomology.wedgeTwoAlong_surjective_of_torusHomeomorph {G
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
     (hc : Function.Surjective c) :
     Function.Surjective (PeriodTorusHigherHomologyPontryagin.wedgeTwoAlong G c)
-  -- de-pins `latticeWedgeTwo_surjective_of_torusHomeomorph` (6806)
+  -- de-pins `latticeWedgeTwo_surjective_of_torusHomeomorph` (Specialization:6806, now Proof/LCP/Specialization.lean:3870)
 theorem PeriodTorusHigherHomology.wedgeThreeAlong_surjective_of_torusHomeomorph {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
@@ -1443,7 +1513,7 @@ theorem PeriodTorusHigherHomology.wedgeThreeAlong_surjective_of_torusHomeomorph 
     (c : M →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
     (hc : Function.Surjective c) :
     Function.Surjective (PeriodTorusHigherHomologyPontryagin.wedgeThreeAlong G c)
-  -- de-pins `latticeWedgeThree_surjective_of_torusHomeomorph` (6816)
+  -- de-pins `latticeWedgeThree_surjective_of_torusHomeomorph` (Specialization:6816, now Proof/LCP/Specialization.lean:3880)
 ```
 
 ## Boundary J-D — `Lib/AlgebraicTopology/SingularHomology/TorusExterior.lean`
@@ -1467,53 +1537,53 @@ Public outputs — the rank-4 decls generalized to `(r : ℕ)`:
 def PeriodTorusHigherHomology.coordinateTorusWedgeTwo (r : ℕ) :
     (⋀[ℤ]^2 (Fin r → ℤ)) →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (ProductTorus r) 2
-  -- generalizes 6949; body `wedgeTwoAlong (ProductTorus r) (coordinateH1 r)`
+  -- generalizes Specialization:6949 (now Proof/LCP/Specialization.lean:3986); body `wedgeTwoAlong (ProductTorus r) (coordinateH1 r)`
   -- with `letI := productTorus_homology_torsionFree r 2`
 @[simp]
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti (r : ℕ)
     (v : Fin 2 → Fin r → ℤ) :
     coordinateTorusWedgeTwo r (exteriorPower.ιMulti ℤ 2 v) =
       PeriodTorusHigherHomologyPontryagin.product11 (ProductTorus r)
-        (coordinateH1 r (v 0)) (coordinateH1 r (v 1))              -- generalizes Specialization 6964
+        (coordinateH1 r (v 0)) (coordinateH1 r (v 1))              -- generalizes Specialization:6964 (now Proof/LCP/Specialization.lean:4001)
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ) :
     (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 2).comp
         (coordinateTorusWedgeTwo r) =
       (coordinateTorusWedgeTwo r).comp (exteriorPower.map 2 A.mulVecLin)
-  -- generalizes `coordinateTorusWedgeTwo_matrix` (7009) — via `wedgeTwoAlong_natural`
+  -- generalizes `coordinateTorusWedgeTwo_matrix` (Specialization:7009, now Proof/LCP/Specialization.lean:4046) — via `wedgeTwoAlong_natural`
   -- (J-C3) with the NEW rank-general `coordinateH1_matrix_natural` (J-B2b, blocked identification seam) as `hmark`;
   -- no `PeriodDomain` input
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_surjective (r : ℕ) :
     Function.Surjective (coordinateTorusWedgeTwo r)
-  -- generalizes 7037 — via `wedgeTwoAlong_surjective_of_torusHomeomorph`
+  -- generalizes Specialization:7037 (now Proof/LCP/Specialization.lean:4074) — via `wedgeTwoAlong_surjective_of_torusHomeomorph`
   -- (Homeomorph.refl _) (fun _ _ => rfl) (coordinateH1 r) (coordinateH1_surjective r)
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_bijective (r : ℕ) :
     Function.Bijective (coordinateTorusWedgeTwo r)
-  -- generalizes 7051 — Orzech + exteriorPower_finrank_choose (J-A) +
+  -- generalizes Specialization:7051 (now Proof/LCP/Specialization.lean:4088) — Orzech + exteriorPower_finrank_choose (J-A) +
   -- productTorus_homology_finrank (J-B)
 def PeriodTorusHigherHomology.coordinateTorusWedgeTwoEquiv (r : ℕ) :
     (⋀[ℤ]^2 (Fin r → ℤ)) ≃ₗ[ℤ]
-      SingularMayerVietoris.SingularHomology (ProductTorus r) 2    -- generalizes 7069
+      SingularMayerVietoris.SingularHomology (ProductTorus r) 2    -- generalizes Specialization:7069 (now Proof/LCP/Specialization.lean:4106)
 def PeriodTorusHigherHomology.coordinateTorusH2ExteriorEquiv (r : ℕ) :
     SingularMayerVietoris.SingularHomology (ProductTorus r) 2 ≃ₗ[ℤ]
-      (⋀[ℤ]^2 (Fin r → ℤ))                                        -- generalizes 7079
+      (⋀[ℤ]^2 (Fin r → ℤ))                                        -- generalizes Specialization:7079 (now Proof/LCP/Specialization.lean:4116)
 theorem PeriodTorusHigherHomology.coordinateTorusH2ExteriorEquiv_wedge (r : ℕ)
     (v : ⋀[ℤ]^2 (Fin r → ℤ)) :
     coordinateTorusH2ExteriorEquiv r (coordinateTorusWedgeTwo r v) = v
-                                                                   -- generalizes 7090
+                                                                   -- generalizes Specialization:7090 (now Proof/LCP/Specialization.lean:4127)
 theorem PeriodTorusHigherHomology.coordinateTorusH2ExteriorEquiv_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ)
     (a : SingularMayerVietoris.SingularHomology (ProductTorus r) 2) :
     coordinateTorusH2ExteriorEquiv r
         (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 2 a) =
       exteriorPower.map 2 A.mulVecLin (coordinateTorusH2ExteriorEquiv r a)
-  -- generalizes 7110 — the `Elliptic.examplePeriod .four` marking inside the current
+  -- generalizes Specialization:7110 (now Proof/LCP/Specialization.lean:4147) — the `Elliptic.examplePeriod .four` marking inside the current
   --  proof is project data; the general proof uses `coordinateTorusWedgeTwo_matrix r`
   --  (above) + surjectivity, no `PeriodDomain` input
 def PeriodTorusHigherHomology.coordinateTorusH2Coordinates (r : ℕ) :
     SingularMayerVietoris.SingularHomology (ProductTorus r) 2 ≃ₗ[ℤ]
       (Fin (r.choose 2) → ℤ)
-  -- generalizes 7136 — body `(coordinateTorusH2ExteriorEquiv r).trans
+  -- generalizes Specialization:7136 (now Proof/LCP/Specialization.lean:4173) — body `(coordinateTorusH2ExteriorEquiv r).trans
   --   (standardExteriorCoordinates r 2)` (J-A)
 theorem PeriodTorusHigherHomology.coordinateTorusH2Coordinates_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ)
@@ -1521,7 +1591,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusH2Coordinates_matrix (r : ℕ)
     coordinateTorusH2Coordinates r
         (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 2 a) =
       PeriodTorusHigherHomologyExterior.exteriorMinorMatrix r r 2 A *ᵥ coordinateTorusH2Coordinates r a
-  -- generalizes 7144 — `LocalSystemMatrices.exteriorSquare A` is replaced by
+  -- generalizes Specialization:7144 (now Proof/LCP/Specialization.lean:4181) — `LocalSystemMatrices.exteriorSquare A` is replaced by
   -- `PeriodTorusHigherHomologyExterior.exteriorMinorMatrix r r 2 A` (J-A).
   -- At r=4, agreement additionally requires the retained Hopf subset-enumeration
   -- compatibility equations from J-A's order pinning; the minor formula alone is insufficient.
@@ -1529,49 +1599,49 @@ theorem PeriodTorusHigherHomology.coordinateTorusH2Coordinates_matrix (r : ℕ)
 def PeriodTorusHigherHomology.coordinateTorusWedgeThree (r : ℕ) :
     (⋀[ℤ]^3 (Fin r → ℤ)) →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (ProductTorus r) 3
-  -- Specialization 6956; wedgeThreeAlong with coordinateH1 and the H2 torsion-free instance.
+  -- Specialization:6956 (now Proof/LCP/Specialization.lean:3993); wedgeThreeAlong with coordinateH1 and the H2 torsion-free instance.
 @[simp]
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_apply_ιMulti (r : ℕ)
     (v : Fin 3 → Fin r → ℤ) :
     coordinateTorusWedgeThree r (exteriorPower.ιMulti ℤ 3 v) =
       PeriodTorusHigherHomologyPontryagin.tripleProduct (ProductTorus r)
         (coordinateH1 r (v 0)) (coordinateH1 r (v 1)) (coordinateH1 r (v 2))
-  -- Specialization 6976.
+  -- Specialization:6976 (now Proof/LCP/Specialization.lean:4013).
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ) :
     (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 3).comp
         (coordinateTorusWedgeThree r) =
       (coordinateTorusWedgeThree r).comp (exteriorPower.map 3 A.mulVecLin)
-  -- Specialization 7022; consumes wedgeThreeAlong_natural and J-B2b matrix naturality.
+  -- Specialization:7022 (now Proof/LCP/Specialization.lean:4059); consumes wedgeThreeAlong_natural and J-B2b matrix naturality.
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_surjective (r : ℕ) :
     Function.Surjective (coordinateTorusWedgeThree r)
-  -- Specialization 7044; consumes wedgeThreeAlong_surjective_of_torusHomeomorph.
+  -- Specialization:7044 (now Proof/LCP/Specialization.lean:4081); consumes wedgeThreeAlong_surjective_of_torusHomeomorph.
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_bijective (r : ℕ) :
     Function.Bijective (coordinateTorusWedgeThree r)
-  -- Specialization 7060; Orzech with J-A/J-B rank and free/finite instances.
+  -- Specialization:7060 (now Proof/LCP/Specialization.lean:4097); Orzech with J-A/J-B rank and free/finite instances.
 def PeriodTorusHigherHomology.coordinateTorusWedgeThreeEquiv (r : ℕ) :
     (⋀[ℤ]^3 (Fin r → ℤ)) ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (ProductTorus r) 3
-  -- Specialization 7074.
+  -- Specialization:7074 (now Proof/LCP/Specialization.lean:4111).
 def PeriodTorusHigherHomology.coordinateTorusH3ExteriorEquiv (r : ℕ) :
     SingularMayerVietoris.SingularHomology (ProductTorus r) 3 ≃ₗ[ℤ]
       (⋀[ℤ]^3 (Fin r → ℤ))
-  -- Specialization 7084.
+  -- Specialization:7084 (now Proof/LCP/Specialization.lean:4121).
 theorem PeriodTorusHigherHomology.coordinateTorusH3ExteriorEquiv_wedge (r : ℕ)
     (v : ⋀[ℤ]^3 (Fin r → ℤ)) :
     coordinateTorusH3ExteriorEquiv r (coordinateTorusWedgeThree r v) = v
-  -- Specialization 7096.
+  -- Specialization:7096 (now Proof/LCP/Specialization.lean:4133).
 theorem PeriodTorusHigherHomology.coordinateTorusH3ExteriorEquiv_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ)
     (a : SingularMayerVietoris.SingularHomology (ProductTorus r) 3) :
     coordinateTorusH3ExteriorEquiv r
         (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 3 a) =
       exteriorPower.map 3 A.mulVecLin (coordinateTorusH3ExteriorEquiv r a)
-  -- Specialization 7123; consumes the wedge matrix law and surjectivity.
+  -- Specialization:7123 (now Proof/LCP/Specialization.lean:4160); consumes the wedge matrix law and surjectivity.
 def PeriodTorusHigherHomology.coordinateTorusH3Coordinates (r : ℕ) :
     SingularMayerVietoris.SingularHomology (ProductTorus r) 3 ≃ₗ[ℤ]
       (Fin (r.choose 3) → ℤ)
-  -- Specialization 7140; exterior equivalence followed by J-A coordinates.
+  -- Specialization:7140 (now Proof/LCP/Specialization.lean:4177); exterior equivalence followed by J-A coordinates.
 theorem PeriodTorusHigherHomology.coordinateTorusH3Coordinates_matrix (r : ℕ)
     (A : Matrix (Fin r) (Fin r) ℤ)
     (a : SingularMayerVietoris.SingularHomology (ProductTorus r) 3) :
@@ -1579,7 +1649,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusH3Coordinates_matrix (r : ℕ)
         (SingularMayerVietoris.singularHomologyMap (torusMatrixMap A) 3 a) =
       PeriodTorusHigherHomologyExterior.exteriorMinorMatrix r r 3 A *ᵥ
         coordinateTorusH3Coordinates r a
-  -- Specialization 7158; rectangular J-A API instantiated at p = m = r.
+  -- Specialization:7158 (now Proof/LCP/Specialization.lean:4195); rectangular J-A API instantiated at p = m = r.
 
 -- the §6 headline, at degrees 2 and 3 (rank-r generalization; the general-degree-n
 -- version is deferred to J-E):
@@ -1595,8 +1665,9 @@ def PeriodTorusHigherHomology.productTorusWedgeThreeEquiv (r : ℕ) :
       SingularMayerVietoris.SingularHomology (ProductTorus r) 3
 ```
 
-The rank-3 re-run in `Hopf/LCP/BoundaryTopology.lean` is deleted and re-routed to these
-general statements.
+The rank-3 re-run in `Hopf/Proof/LCP/BoundaryTopology.lean` (`markedWedgeTwo` :2188,
+`markedWedgeThree` :2197 and friends) is to be re-routed to these general statements at
+J-D landing; it has not been deleted.
 
 ## Deferred boundary J-E — general-`n` wedge (NOT GO; missing inputs enumerated)
 
@@ -1628,8 +1699,9 @@ The §5–§6 statements at general `n` —
 `productTorusExteriorEquiv (r n : ℕ) : (⋀[ℤ]^n (SH (ProductTorus r) 1)) ≃ₗ[ℤ]
 SH (ProductTorus r) n` —
 need an `n`-fold iterated product and its alternating descent. The landed inputs are
-insufficient: `crossProductHomology_swap` exists only at `(1,1)` (Specialization 4172)
-and `crossProductHomology_associative` only at `(1,1,1)` (5949). Exact missing inputs:
+insufficient: `crossProductHomology_swap` exists only at `(1,1)` (now CrossProduct.lean:2480)
+and `crossProductHomology_associative` only at `(1,1,1)` (now CrossProduct.lean:4219).
+Exact missing inputs:
 
 ```lean
 noncomputable def PeriodTorusHigherHomology.homologyDegreeCast (X : Type)
@@ -1673,7 +1745,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_associative' {X Y Z : Typ
       homologyDegreeCast (X × (Y × Z)) (Nat.add_assoc p q r).symm
         (crossProductHomology' X (Y × Z) p (q + r) a
           (crossProductHomology' Y Z q r b c))
-  -- equation form generalizes the (1,1,1) instance at Specialization 5949
+  -- equation form generalizes the (1,1,1) instance now at CrossProduct.lean:4219
 
 -- J-owned, built on those:
 def PeriodTorusHigherHomologyPontryagin.nfoldProduct (G : Type)
@@ -1713,9 +1785,11 @@ interleaved in the same range). Expanding the suffix groups below reproduces thi
 name/line census. `chainTrilinearMap_ext` is included; all line numbers are declaration
 starts rather than attribute lines. The exact script command is in the review-3 receipt.
 
-J claims **no** declaration in `Hopf/LCP/Specialization.lean` lines 3771–5987 belonging
-to the cross-product coherence suite. Exact excluded names (all `PeriodTorusHigherHomology.*`,
-all currently in that range, destination `CrossProduct.lean` under GLM):
+J claims **no** declaration in `Hopf/LCP/Specialization.lean` lines 3771–5987
+(at `15bd5f7`) belonging to the cross-product coherence suite. Exact excluded names
+(all `PeriodTorusHigherHomology.*`, all were in that range at `15bd5f7`; **all since
+landed in `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean:2065–4359` under
+GLM** — the line numbers below are the historical census, kept verbatim):
 `formalMap_comp` (3771), `formalMap_prod_swap` (3783),
 `formalMap_swap_pointCrossProduct_one` (3792), `formalMap_swap_edgeCrossProduct_zero`
 (3824), `formalEdgeSwapDefect` + `_apply` (3856/3863), `formalBoundary_edgeSwapDefect`
@@ -1767,36 +1841,37 @@ named families only — the manifest above is the exclusion list.)
 
 ## J-charged (stays in `Hopf/`)
 
-`Hopf/FiniteCore.lean:339–392` (`squareA₁`, `cubeM₀_eq`, and the `by decide`
-instantiations) stays; after J-A lands, its proofs become one-line instantiations of
+`Hopf/Proof/FiniteCore.lean` (`squareA₁` :402, `cubeM₀_eq` :453, and the `by decide`
+instantiations — was :339–392) stays; after J-A lands, its proofs become one-line instantiations of
 `standardExterior_map_coefficient`. The rank-4 `PeriodDomain`/`RealTorus₄`/`flatTorus*`
-adapters (`realTorusHomologyEquiv` 6504, `periodTorusHomologyEquiv` 6508,
-`realTorusH4Equiv` 6551, `realTorus_homology_*` 6522–6546, `flatTorusCircleHomeomorph_add`
-3441, `periodTorusCircle_inducedHomology_periodLoop` 3446, `coordinateH1_four_*`
-6912–6929) stay in `Hopf/` as thin adapters — they consume the generalized J-B/J-D API
+adapters (`realTorusHomologyEquiv` 6504 → Proof/LCP/Specialization.lean:3650,
+`periodTorusHomologyEquiv` 6508 → :3654,
+`realTorusH4Equiv` 6551 → :3697, `realTorus_homology_*` 6522–6546 → :3668–3687,
+`flatTorusCircleHomeomorph_add` 3441 → :3221,
+`periodTorusCircle_inducedHomology_periodLoop` 3446 → :3226, `coordinateH1_four_*`
+6912–6929 → :3949–3966) stay in `Hopf/` as thin adapters — they consume the generalized J-B/J-D API
 at `r = 4`.
 
 ---
 
 # Open items, seams, probes
 
-1. **Seams — all landed at head `f034c13`.** Lane A's API is in
+1. **Seams — all landed.** (First-pass probe ran at `f034c13`; coordinates re-verified
+   at integration-3.) Lane A's API is in
    `Lib/AlgebraicTopology/SingularHomology/`: the abbrev
-   `SingularMayerVietoris.SingularHomology` (`MayerVietoris.lean:853`),
-   `SingularMayerVietoris.singularHomologyMap` (`MayerVietoris.lean:856`),
+   `SingularMayerVietoris.SingularHomology` (`MayerVietoris.lean:939`),
+   `SingularMayerVietoris.singularHomologyMap` (`MayerVietoris.lean:943`),
    the $S^1 \times Y$ splitting `SingularHomology.circleProductHomologyEquiv`
-   (`CircleProduct.lean:798`, formerly SphereTopology 2191) with
+   (`CircleProduct.lean:891`, formerly SphereTopology 2191) with
    `circleSectionHomology`/`circleProjectionHomology`/`circleBoundaryCoordinates`, and
    `SingularHomology.{connectedHomologyZeroEquiv, totallyDisconnected_homology_subsingleton,
-   homeomorphHomologyEquiv}` (`HomotopyInvariance.lean:223, 233, 164`). Lane C: the cross
-   product `PeriodTorusHigherHomology.crossProductHomology` at `(1, n)`
-   (`CrossProduct.lean:1689`) plus boundary laws; the swap/associator coherence suite is
-   still under `Hopf/LCP/Specialization.lean` pending GLM's G-J3 move. **Unlanded seam
-   (recorded per the axis-5 review):** `crossProductHomology_natural`
-   (`Hopf/LCP/CuspFilling.lean:14526`, together with `crossProductCycles_natural` 14509
-   and `crossProductHomology_snd` 14549) is still Hopf-internal — it is part of the
-   circle-path/cross-product-naturality cluster that gates J-B2 and J-C2 (see the
-   Axis-5 boundaries above). Probe
+   homeomorphHomologyEquiv}` (`HomotopyInvariance.lean:247, 259, 179`). Lane C: the cross
+   product `SingularHomology.crossProductHomology` at `(1, n)`
+   (`CrossProduct.lean:1855`) plus boundary laws; the swap/associator coherence suite
+   has landed in `CrossProduct.lean:2065–4359`. **Resolved seam** (the axis-5 review
+   flagged it unlanded): `crossProductHomology_natural`
+   (`CrossProduct.lean:4309`, together with `crossProductCycles_natural` :4292
+   and `crossProductHomology_snd` :4332) is now a public Lib provider. Probe
    commands (first-pass receipt, runnable at head `f034c13`):
    `lake env lean Lib/AlgebraicTopology/SingularHomology/J_InterfaceCheck.lean`,
    likewise the consumer probe; receipt at `Lib/docs/J-INTERFACE_RECEIPT.md`. A
@@ -1810,12 +1885,14 @@ at `r = 4`.
 3. **Q4 note** (minor formula exists outside the tree): moved as-is; de-duplication is the
    owner's call.
 4. **`PeriodTorusHigherHomology.rightTranslation`** is defined in
-   `Hopf/LCP/BoundaryTopology.lean:14298`, far from the torus API: at landing, check
+   `Hopf/LCP/BoundaryTopology.lean:173` (was :14298 before the proof split), far from the torus API: at landing, check
    whether it belongs to `Torus.lean`; recorded here because it sits outside the lane's
    named ranges.
 5. **Duplications to delete at landing**: `formalMap_comp` = `formalMap_comp_apply`
-   (Specialization 3771 vs 4451, identical statements); `productTorusHomologyEquiv_succ_pair`
-   (Specialization 6439) is an exact alias of CuspFilling's `productTorusHomologyEquiv_succ_apply`.
+   (Specialization:3771 vs 4451 — now both in `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean`, identical statements);
+   `productTorusHomologyEquiv_succ_pair` (LCP/Specialization.lean:583, was
+   Specialization:6439) is an exact alias of the landed
+   `productTorusHomologyEquiv_succ_apply` (Torus.lean:208).
 6. **Bib keys.** `hatcher02` exists in the pinned Mathlib bib. Hirsch/Milnor keys are not needed
    for this lane.
 7. **Citation flag for the owner.** The task file names this lane "Hatcher Ex. 2.48,
@@ -1836,4 +1913,13 @@ at `r = 4`.
    and off-by-one source coordinates. All findings verified against the sources and
    incorporated into the present second-pass ledger (revision note at the top of the
    Axis-5 section). The review is committed in-tree as `Lib/docs/J-axis5-review.md`.
-   A re-review of this revised ledger is outstanding before J's Axis-6 work starts.
+   Subsequent re-reviews (committed as `Lib/docs/J-axis5-review2.md` and
+   `J-axis5-review3.md`) repaired the ledger further and returned a scoped J-A GO.
+   At integration-3 (base `27f8e7f`, this branch) a fresh Axis-5 pass found the
+   ledger's coordinates and seam claims stale after the `Hopf/` proof split and the
+   S-nat/S-cross/G-J3 landings; two repair rounds and a targeted re-confirmation
+   (**GO**) brought the ledger consistent at `88e354b` — recorded in
+   `Lib/docs/J-axis5-i3-review.md`. This is ledger consistency only: no
+   J-B/J-C/J-D/J-E boundary is certified; J-B2a remains blocked on the unlanded
+   S-path cluster. A re-review of this revised ledger is outstanding before J's
+   Axis-6 work starts.

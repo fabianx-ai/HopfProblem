@@ -198,7 +198,7 @@ own probe.
 
 `Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean` landed after the
 review-3 GO, with **all 15 manifest nodes and real proofs** — including
-`standardExterior_map_coefficient` (ported verbatim from Specialization:6641),
+`standardExterior_map_coefficient` (ported verbatim from Specialization:6641 at `15bd5f7`),
 `exteriorPowerMap_toMatrix` and `cauchyBinet_minors` (proved via the recorded
 recipes: `toMatrix_apply` + `basis_apply`/`map_apply_ιMulti_family`/
 `ιMultiDual_apply_ιMulti` + `det_transpose`; and `map_comp` + `mulVecLin_mul` +
