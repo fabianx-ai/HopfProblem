@@ -2058,6 +2058,7 @@ theorem SingularHomology.formalEdgeCrossProduct_mem_supported {V W : Type*} {S :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Formal chain maps compose: pushing forward along `g` then `f` is pushing forward along `f ∘ g`. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (g : V → W) (n : ℕ)
@@ -2071,6 +2072,7 @@ theorem PeriodTorusHigherHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (
     intro v
     simp only [LinearMap.comp_apply, SingularMayerVietoris.formalMap_simplex, Function.comp_assoc]
   exact LinearMap.congr_fun h c
+/-- Formal chain maps along a product of maps commute with the factor swap in the stated sense. -/
 
 theorem PeriodTorusHigherHomology.formalMap_prod_swap {V W V' W' : Type*} (f : V → V')
     (g : W → W') (n : ℕ) (c : SingularMayerVietoris.FormalChains (W × V) n) :
@@ -2080,6 +2082,7 @@ theorem PeriodTorusHigherHomology.formalMap_prod_swap {V W V' W' : Type*} (f : V
         (SingularMayerVietoris.formalMap (Prod.map g f) n c) := by
   rw [PeriodTorusHigherHomology.formalMap_comp, PeriodTorusHigherHomology.formalMap_comp]
   rfl
+/-- Swapping factors turns a point cross product (1, 2) into an edge cross product (0) of the swapped chains. -/
 
 theorem PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_one {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 1) (d : SingularMayerVietoris.FormalChains W 2) :
@@ -2112,6 +2115,7 @@ theorem PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_one {V W : Ty
       _ = _ :=
         (SingularHomology.formalEdgeCrossProduct_zero_simplex_right (SingularMayerVietoris.formalSimplex w) v).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
+/-- Swapping factors turns an edge cross product in degree zero into a point cross product of the swapped chains. -/
 
 theorem PeriodTorusHigherHomology.formalMap_swap_edgeCrossProduct_zero {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 2) (d : SingularMayerVietoris.FormalChains W 1) :
@@ -2144,12 +2148,14 @@ theorem PeriodTorusHigherHomology.formalMap_swap_edgeCrossProduct_zero {V W : Ty
       _ = _ :=
         (SingularHomology.formalPointCrossProduct_simplex_left 1 w (SingularMayerVietoris.formalSimplex v)).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
+/-- The defect measuring the failure of the edge cross product to commute with the factor swap: the sum of the edge cross product and its swap. -/
 
 def PeriodTorusHigherHomology.formalEdgeSwapDefect {V W : Type*} :
     SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W 2 →ₗ[ℤ] SingularMayerVietoris.FormalChains (V × W) 3 :=
   SingularHomology.formalEdgeCrossProduct 1 +
     (SingularHomology.formalEdgeCrossProduct 1).flip.compr₂ (SingularMayerVietoris.formalMap Prod.swap 3)
+/-- Explicit form of the edge swap defect: `σ ×₁ τ + swap#(τ ×₁ σ)`. -/
 
 @[simp]
 
@@ -2159,6 +2165,7 @@ theorem PeriodTorusHigherHomology.formalEdgeSwapDefect_apply {V W : Type*}
       SingularHomology.formalEdgeCrossProduct 1 c d +
         SingularMayerVietoris.formalMap Prod.swap 3 (SingularHomology.formalEdgeCrossProduct 1 d c) :=
   rfl
+/-- The edge swap defect is a cycle — its boundary vanishes, so it represents the graded-commutativity obstruction in homology. -/
 
 theorem PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 2) (d : SingularMayerVietoris.FormalChains W 2) :
@@ -2167,6 +2174,7 @@ theorem PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect {V W : Type*}
     SingularMayerVietoris.formalMap_boundary, SingularHomology.formalBoundary_edgeCrossProduct, map_sub,
     PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_one, PeriodTorusHigherHomology.formalMap_swap_edgeCrossProduct_zero]
   abel
+/-- The edge swap defect is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_edgeSwapDefect {V W V' W' : Type*} (f : V → V')
     (g : W → W') (c : SingularMayerVietoris.FormalChains V 2)
@@ -2176,6 +2184,7 @@ theorem PeriodTorusHigherHomology.formalMap_edgeSwapDefect {V W V' W' : Type*} (
         (SingularMayerVietoris.formalMap g 2 d) := by
   rw [PeriodTorusHigherHomology.formalEdgeSwapDefect_apply, map_add, SingularHomology.formalMap_edgeCrossProduct, PeriodTorusHigherHomology.formalMap_prod_swap,
     SingularHomology.formalMap_edgeCrossProduct, PeriodTorusHigherHomology.formalEdgeSwapDefect_apply]
+/-- A degree-3 chain homotopy witnessing that the edge swap defect is a boundary: the chain-level proof of graded commutativity of the cross product. -/
 
 def PeriodTorusHigherHomology.formalEdgeSwapHomotopy {V W : Type*} :
     SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
@@ -2184,6 +2193,7 @@ def PeriodTorusHigherHomology.formalEdgeSwapHomotopy {V W : Type*} :
     SingularMayerVietoris.formalCone (v 0, w 0) 3
       (PeriodTorusHigherHomology.formalEdgeSwapDefect (SingularMayerVietoris.formalSimplex v)
         (SingularMayerVietoris.formalSimplex w))
+/-- On simplices the swap homotopy is the cone over `(v 0, w 0)` of the swap defect. -/
 
 @[simp]
 
@@ -2195,6 +2205,7 @@ theorem PeriodTorusHigherHomology.formalEdgeSwapHomotopy_simplex {V W : Type*} (
         (PeriodTorusHigherHomology.formalEdgeSwapDefect (SingularMayerVietoris.formalSimplex v)
           (SingularMayerVietoris.formalSimplex w)) :=
   SingularHomology.formalBilinearLift_simplex _ _ _
+/-- The boundary of the swap homotopy is exactly the swap defect: `∂H = σ ×₁ τ + swap#(τ ×₁ σ)`. -/
 
 theorem PeriodTorusHigherHomology.formalEdgeSwapHomotopy_boundary {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 2) (d : SingularMayerVietoris.FormalChains W 2) :
@@ -2209,6 +2220,7 @@ theorem PeriodTorusHigherHomology.formalEdgeSwapHomotopy_boundary {V W : Type*}
       SingularMayerVietoris.formalBoundary_cone, PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect, map_zero,
       sub_zero]
   exact LinearMap.congr_fun (LinearMap.congr_fun h c) d
+/-- The swap homotopy is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_edgeSwapHomotopy {V W V' W' : Type*} (f : V → V')
     (g : W → W') (c : SingularMayerVietoris.FormalChains V 2)
@@ -2232,6 +2244,7 @@ theorem PeriodTorusHigherHomology.formalMap_edgeSwapHomotopy {V W V' W' : Type*}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Composing the factor swap with a product affine simplex is the product affine simplex of the swapped vertices. -/
 
 theorem PeriodTorusHigherHomology.prodSwap_productAffineSimplex {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
@@ -2244,6 +2257,7 @@ theorem PeriodTorusHigherHomology.prodSwap_productAffineSimplex {n p q : ℕ}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Chains induced along the factor swap transfer through the product affine chain map. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_swap_productAffineChainMap (p q n : ℕ)
     (c :
@@ -2272,6 +2286,7 @@ theorem PeriodTorusHigherHomology.inducedChain_swap_productAffineChainMap (p q n
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Chains induced by a product map after a factor swap equal the swapped double pushforward. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_prodMap_swap {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
@@ -2288,6 +2303,7 @@ theorem PeriodTorusHigherHomology.inducedChain_prodMap_swap {X Y X' Y' : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The chain homotopy on `X × Y` in degree 3 witnessing graded commutativity of the 1-1 cross product. -/
 
 def PeriodTorusHigherHomology.crossProductSwapHomotopy (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
@@ -2302,6 +2318,7 @@ def PeriodTorusHigherHomology.crossProductSwapHomotopy (X Y : Type) [Topological
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplices the cross product swap homotopy is induced by the explicit prism data of the product simplex. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_simplex (X Y : Type)
@@ -2318,6 +2335,7 @@ theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_simplex (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product swap homotopy is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
@@ -2341,6 +2359,7 @@ theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_natural {X Y X' Y' : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The swap homotopy commutes with the affine chain maps on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_affineChainMap (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -2376,6 +2395,7 @@ theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_affineChainMap (p q :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Affine form of the swap homotopy boundary identity on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary_affine (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -2399,6 +2419,7 @@ theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary_affine (p q 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The defining identity of the swap homotopy: `∂H = a ×₁ b + swap#(b ×₁ a)` — graded commutativity at chain level. -/
 
 theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 1)
@@ -2428,6 +2449,7 @@ theorem PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary {X Y : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cycle-class cross product of two 1-cycles plus its swap pushforward vanishes: `a × b + swap#(b × a) = 0` in homology. -/
 
 theorem PeriodTorusHigherHomology.crossProductCycleClasses_add_swap_eq_zero {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y]
@@ -2455,6 +2477,7 @@ theorem PeriodTorusHigherHomology.crossProductCycleClasses_add_swap_eq_zero {X Y
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Graded commutativity on homology: `a × b + swap#(b × a) = 0` for 1-classes. -/
 
 theorem PeriodTorusHigherHomology.crossProductHomology_add_swap_eq_zero {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularMayerVietoris.SingularHomology X 1)
@@ -2474,6 +2497,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_add_swap_eq_zero {X Y : T
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Graded commutativity: swapping the factors of a 1-1 cross product negates it. -/
 
 theorem PeriodTorusHigherHomology.crossProductHomology_swap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularMayerVietoris.SingularHomology X 1)
@@ -2486,6 +2510,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_swap {X Y : Type} [Topolo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Anticommutativity under a swap-invariant map: `f#(a × a') = -f#(b × b')` pairing structure on the same space. -/
 
 theorem PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute {X Z : Type}
     [TopologicalSpace X] [TopologicalSpace Z] (f : C(X × X, Z))
@@ -2503,6 +2528,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute {
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Postcompose a ℤ-trilinear map with a linear map on its output. -/
 
 def PeriodTorusHigherHomology.integerTrilinearPostcompose {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
@@ -2529,6 +2555,7 @@ def PeriodTorusHigherHomology.integerTrilinearPostcompose {A B C D E : Type*} [A
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The postcomposed trilinear map evaluates as `g (F a b c)`. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.integerTrilinearPostcompose_apply {A B C D E : Type*}
@@ -2540,6 +2567,7 @@ theorem PeriodTorusHigherHomology.integerTrilinearPostcompose_apply {A B C D E :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Precompose a ℤ-trilinear map with linear maps in each of its three arguments. -/
 
 def PeriodTorusHigherHomology.integerTrilinearPrecompose {A B C D A' B' C' : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup A']
@@ -2567,6 +2595,7 @@ def PeriodTorusHigherHomology.integerTrilinearPrecompose {A B C D A' B' C' : Typ
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The precomposed trilinear map evaluates argumentwise along the three precomposition maps. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.integerTrilinearPrecompose_apply {A B C D A' B' C' : Type*}
@@ -2579,6 +2608,7 @@ theorem PeriodTorusHigherHomology.integerTrilinearPrecompose_apply {A B C D A' B
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Reassociate a bilinear-then-bilinear pipeline into a trilinear map, left-associated. -/
 
 def PeriodTorusHigherHomology.integerTrilinearLeftAssociated {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
@@ -2605,6 +2635,7 @@ def PeriodTorusHigherHomology.integerTrilinearLeftAssociated {A B C D E : Type*}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Reassociate a bilinear-then-bilinear pipeline into a trilinear map, right-associated. -/
 
 def PeriodTorusHigherHomology.integerTrilinearRightAssociated {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
@@ -2629,6 +2660,7 @@ def PeriodTorusHigherHomology.integerTrilinearRightAssociated {A B C D E : Type*
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- A pointwise-defined map on triples of singular simplices lifts to a ℤ-trilinear map on the free chain groups. -/
 
 def PeriodTorusHigherHomology.chainTrilinearLift (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (p q r : ℕ) {M : Type} [AddCommGroup M] [Module ℤ M]
@@ -2641,6 +2673,7 @@ def PeriodTorusHigherHomology.chainTrilinearLift (X Y Z : Type) [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `chainTrilinearLift` evaluates on basis simplex chains as `f σ τ υ`. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.chainTrilinearLift_simplex (X Y Z : Type) [TopologicalSpace X]
@@ -2657,6 +2690,7 @@ theorem PeriodTorusHigherHomology.chainTrilinearLift_simplex (X Y Z : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Two trilinear maps on singular chain groups agreeing on all triples of basis simplices are equal. -/
 
 theorem PeriodTorusHigherHomology.chainTrilinearMap_ext (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (p q r : ℕ) {M : Type} [AddCommGroup M] [Module ℤ M]
@@ -2674,6 +2708,7 @@ theorem PeriodTorusHigherHomology.chainTrilinearMap_ext (X Y Z : Type) [Topologi
   intro σ
   apply SingularHomology.chainBilinearMap_ext Y Z q r
   exact h σ
+/-- Formal chain maps compose, applied form. -/
 
 theorem PeriodTorusHigherHomology.formalMap_comp_apply {V W Z : Type*} (f : W → Z) (g : V → W)
     (n : ℕ) (c : SingularMayerVietoris.FormalChains V n) :
@@ -2686,6 +2721,7 @@ theorem PeriodTorusHigherHomology.formalMap_comp_apply {V W Z : Type*} (f : W �
     intro v
     simp only [LinearMap.comp_apply, SingularMayerVietoris.formalMap_simplex, Function.comp_assoc]
   exact LinearMap.congr_fun h c
+/-- The formal chain map along the identity is the identity. -/
 
 theorem PeriodTorusHigherHomology.formalMap_id_apply {V : Type*} (n : ℕ)
     (c : SingularMayerVietoris.FormalChains V n) :
@@ -2696,6 +2732,7 @@ theorem PeriodTorusHigherHomology.formalMap_id_apply {V : Type*} (n : ℕ)
     simp only [SingularMayerVietoris.formalMap_simplex, LinearMap.id_apply]
     rfl
   exact LinearMap.congr_fun h c
+/-- Under the triple re-association `(V × W) × Z → V × (W × Z)`, the left-nested edge/point cross product becomes the right-nested one. -/
 
 theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 1) (b : SingularMayerVietoris.FormalChains W 2)
@@ -2715,6 +2752,7 @@ theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left {V W Z : Typ
     rw [← hn, PeriodTorusHigherHomology.formalMap_comp_apply]
     rfl
   exact LinearMap.congr_fun h a
+/-- Under the triple re-association, the middle-nested cross product transfers to the right-nested form. -/
 
 theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 1)
@@ -2736,6 +2774,7 @@ theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle {V W Z : T
     rw [← hl, PeriodTorusHigherHomology.formalMap_comp_apply, ← hr]
     rfl
   exact LinearMap.congr_fun h b
+/-- Under the triple re-association, the triangle/point cross product transfers to the right-nested form. -/
 
 theorem PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
@@ -2755,6 +2794,7 @@ theorem PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right {V W Z 
     rw [PeriodTorusHigherHomology.formalMap_id_apply] at hn
     exact hn
   exact LinearMap.congr_fun h c
+/-- Two trilinear maps on formal chains agreeing on formal simplices are equal. -/
 
 theorem PeriodTorusHigherHomology.formalChains_trilinear_ext {V W Z M : Type*} {n m l : ℕ}
     [AddCommGroup M] [Module ℤ M]
@@ -2773,6 +2813,7 @@ theorem PeriodTorusHigherHomology.formalChains_trilinear_ext {V W Z M : Type*} {
   intro v
   apply SingularHomology.formalChains_bilinear_ext
   exact h v
+/-- A pointwise-defined map on triples of formal simplices lifts to a ℤ-trilinear map on formal chain groups. -/
 
 def PeriodTorusHigherHomology.formalTrilinearLift {V W Z M : Type*} {n m l : ℕ} [AddCommGroup M]
     [Module ℤ M] (f : (Fin n → V) → (Fin m → W) → (Fin l → Z) → M) :
@@ -2780,6 +2821,7 @@ def PeriodTorusHigherHomology.formalTrilinearLift {V W Z M : Type*} {n m l : ℕ
       SingularMayerVietoris.FormalChains W m →ₗ[ℤ]
         SingularMayerVietoris.FormalChains Z l →ₗ[ℤ] M :=
   SingularMayerVietoris.formalLift fun v => SingularHomology.formalBilinearLift (f v)
+/-- `formalTrilinearLift` evaluates on formal simplices as `f v w z`. -/
 
 @[simp]
 
@@ -2789,6 +2831,7 @@ theorem PeriodTorusHigherHomology.formalTrilinearLift_simplex {V W Z M : Type*} 
     PeriodTorusHigherHomology.formalTrilinearLift f (SingularMayerVietoris.formalSimplex v)
         (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) =
       f v w z := by simp [PeriodTorusHigherHomology.formalTrilinearLift]
+/-- The associativity defect of the cross product: the failure of `(a × b) × c` and `a × (b × c)` to agree after the product re-association. -/
 
 def PeriodTorusHigherHomology.formalAssociatorDefect {V W Z : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
@@ -2804,6 +2847,7 @@ def PeriodTorusHigherHomology.formalAssociatorDefect {V W Z : Type*} (q : ℕ) :
               (SingularMayerVietoris.FormalChains (V × (W × Z)) (q + 3))).compl₂
           (SingularHomology.formalEdgeCrossProduct q)).comp
       (SingularHomology.formalEdgeCrossProduct (q + 1))
+/-- Explicit form of the associator defect as the difference of the two bracketings pushed through the re-association. -/
 
 @[simp]
 
@@ -2815,6 +2859,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorDefect_apply {V W Z : Type*} (
           (SingularHomology.formalTriangleCrossProduct q (SingularHomology.formalEdgeCrossProduct 1 a b) c) -
         SingularHomology.formalEdgeCrossProduct (q + 1) a (SingularHomology.formalEdgeCrossProduct q b c) :=
   rfl
+/-- In the lowest degrees the associator defect vanishes. -/
 
 @[simp]
 
@@ -2822,6 +2867,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorDefect_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z 1) : PeriodTorusHigherHomology.formalAssociatorDefect 0 a b c = 0 := by
   rw [PeriodTorusHigherHomology.formalAssociatorDefect_apply, PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right, sub_self]
+/-- The Leibniz rule for the associator defect. -/
 
 theorem PeriodTorusHigherHomology.formalBoundary_associatorDefect {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
@@ -2833,6 +2879,7 @@ theorem PeriodTorusHigherHomology.formalBoundary_associatorDefect {V W Z : Type*
     LinearMap.sub_apply, PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle]
   rw [PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left (q + 1) (SingularMayerVietoris.formalBoundary 1 a) b c]
   abel
+/-- The product re-association is natural: pushforward along a product of maps commutes with it. -/
 
 theorem PeriodTorusHigherHomology.formalMap_prodAssoc_naturality {V W Z V' W' Z' : Type*}
     (f : V → V') (g : W → W') (h : Z → Z') (n : ℕ)
@@ -2851,6 +2898,7 @@ theorem PeriodTorusHigherHomology.formalMap_prodAssoc_naturality {V W Z V' W' Z'
     simp only [LinearMap.comp_apply, SingularMayerVietoris.formalMap_simplex]
     rfl
   exact LinearMap.congr_fun heq c
+/-- The associator defect is natural under maps of the three factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_associatorDefect {V W Z V' W' Z' : Type*} (f : V → V')
     (g : W → W') (h : Z → Z') (q : ℕ) (a : SingularMayerVietoris.FormalChains V 2)
@@ -2864,6 +2912,7 @@ theorem PeriodTorusHigherHomology.formalMap_associatorDefect {V W Z V' W' Z' : T
     SingularHomology.formalMap_triangleCrossProduct, SingularHomology.formalMap_edgeCrossProduct, SingularHomology.formalMap_edgeCrossProduct,
     SingularHomology.formalMap_edgeCrossProduct]
   rfl
+/-- Private plumbing: postcompose the output of a trilinear map on formal chain groups. -/
 
 private def PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 {V W Z U U' : Type*}
     {n m l r s : ℕ}
@@ -2879,6 +2928,7 @@ private def PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 {V W Z U U' : 
     (LinearMap.llcomp ℤ (SingularMayerVietoris.FormalChains Z l)
       (SingularMayerVietoris.FormalChains U r) (SingularMayerVietoris.FormalChains U' s) f)
 
+/-- Private plumbing: precompose the last argument of a trilinear map on formal chain groups. -/
 private def PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 {V W Z Z' U : Type*}
     {n m l l' r : ℕ}
     (F :
@@ -2893,6 +2943,7 @@ private def PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 {V W Z Z' U
     ((LinearMap.llcomp ℤ (SingularMayerVietoris.FormalChains Z' l')
           (SingularMayerVietoris.FormalChains Z l) (SingularMayerVietoris.FormalChains U r)).flip
       f)
+/-- The chain homotopy witnessing that the associator defect is a boundary, degree by degree; zero in the lowest degree. -/
 
 def PeriodTorusHigherHomology.formalAssociatorHomotopy {V W Z : Type*} :
     (q : ℕ) →
@@ -2910,6 +2961,7 @@ def PeriodTorusHigherHomology.formalAssociatorHomotopy {V W Z : Type*} :
             (SingularMayerVietoris.formalSimplex w)
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex z)))
+/-- The associator homotopy vanishes in the lowest degree. -/
 
 @[simp]
 
@@ -2917,6 +2969,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z 1) : PeriodTorusHigherHomology.formalAssociatorHomotopy 0 a b c = 0 :=
   rfl
+/-- On simplices the successor step of the associator homotopy is the cone of the lower-degree data. -/
 
 @[simp]
 
@@ -2932,6 +2985,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ {V W Z :
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex z))) :=
   PeriodTorusHigherHomology.formalTrilinearLift_simplex _ _ _ _
+/-- Degree-zero boundary identity of the associator homotopy. -/
 
 theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
@@ -2939,6 +2993,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary_zero {V W Z 
     SingularMayerVietoris.formalBoundary 3 (PeriodTorusHigherHomology.formalAssociatorHomotopy 0 a b c) =
       PeriodTorusHigherHomology.formalAssociatorDefect 0 a b c := by
   rw [PeriodTorusHigherHomology.formalAssociatorHomotopy_zero, map_zero, PeriodTorusHigherHomology.formalAssociatorDefect_zero]
+/-- The defining identity: `∂H + (swapped bracketing defect) = 0` — the homotopy carries one bracketing of the cross product to the other. -/
 
 theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Type*} :
     ∀ (q : ℕ) (a : SingularMayerVietoris.FormalChains V 2)
@@ -3027,6 +3082,7 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Typ
       rw [PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ, SingularMayerVietoris.formalBoundary_cone, hz,
         map_zero, sub_zero, sub_add_cancel]
     exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
+/-- The associator homotopy is natural under maps of the three factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_associatorHomotopy {V W Z V' W' Z' : Type*}
     (f : V → V') (g : W → W') (h : Z → Z') :
@@ -3069,6 +3125,7 @@ theorem PeriodTorusHigherHomology.formalMap_associatorHomotopy {V W Z V' W' Z' :
         SingularMayerVietoris.formalMap_simplex, SingularMayerVietoris.formalMap_simplex,
         SingularMayerVietoris.formalMap_simplex]
     exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
+/-- The triple product affine simplex: the affine `n`-simplex in `Simplex p × (Simplex q × Simplex r)` with the given paired vertices. -/
 
 def PeriodTorusHigherHomology.tripleAffineSimplex {n p q r : ℕ}
     (v :
@@ -3078,6 +3135,7 @@ def PeriodTorusHigherHomology.tripleAffineSimplex {n p q r : ℕ}
       SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) :=
   (SingularMayerVietoris.affineSimplex (fun i => (v i).1)).prodMk
     (SingularHomology.productAffineSimplex (fun i => (v i).2))
+/-- Faces of the triple product affine simplex are computed vertexwise. -/
 
 theorem PeriodTorusHigherHomology.tripleAffineSimplex_face {n p q r : ℕ}
     (v :
@@ -3096,6 +3154,7 @@ theorem PeriodTorusHigherHomology.tripleAffineSimplex_face {n p q r : ℕ}
         (fun f : C(SingularChains.Simplex n, SingularChains.Simplex q × SingularChains.Simplex r) =>
           f t)
         (SingularHomology.productAffineSimplex_face (fun j => (v j).2) i)
+/-- The affine chain map on the triple product of standard simplices. -/
 
 def PeriodTorusHigherHomology.tripleAffineChainMap (p q r n : ℕ) :
     SingularMayerVietoris.FormalChains
@@ -3104,6 +3163,7 @@ def PeriodTorusHigherHomology.tripleAffineChainMap (p q r n : ℕ) :
       SingularChains.Chains
         (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) n :=
   SingularMayerVietoris.formalLift fun v => SingularChains.simplexChain _ n (PeriodTorusHigherHomology.tripleAffineSimplex v)
+/-- The triple affine chain map evaluates formal simplices to the chain of the triple affine simplex. -/
 
 @[simp]
 
@@ -3114,6 +3174,7 @@ theorem PeriodTorusHigherHomology.tripleAffineChainMap_simplex (p q r n : ℕ)
     PeriodTorusHigherHomology.tripleAffineChainMap p q r n (SingularMayerVietoris.formalSimplex v) =
       SingularChains.simplexChain _ n (PeriodTorusHigherHomology.tripleAffineSimplex v) :=
   SingularMayerVietoris.formalLift_simplex _ _
+/-- The triple affine chain map commutes with the boundary. -/
 
 theorem PeriodTorusHigherHomology.tripleAffineChainMap_boundary (p q r n : ℕ)
     (c :
@@ -3151,6 +3212,7 @@ theorem PeriodTorusHigherHomology.tripleAffineChainMap_boundary (p q r n : ℕ)
     rw [map_zsmul, PeriodTorusHigherHomology.tripleAffineChainMap_simplex, PeriodTorusHigherHomology.tripleAffineSimplex_face]
     rfl
   exact LinearMap.congr_fun h c
+/-- The affine map of pairs associated to vertex lists on the left-associated product: the map `(x, y) ↦ (affine v x, affine w y)` re-associated to the right. -/
 
 def PeriodTorusHigherHomology.affineProductLeft {a b p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
@@ -3161,6 +3223,7 @@ def PeriodTorusHigherHomology.affineProductLeft {a b p q r : ℕ}
           (SingularChains.Simplex r) :
         C(_, _)).comp
     ((SingularHomology.productAffineSimplex v).prodMap (SingularMayerVietoris.affineSimplex w))
+/-- The right-associated analogue: the map of pairs built from a simplex vertex list and a paired vertex list. -/
 
 def PeriodTorusHigherHomology.affineProductRight {a b p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
@@ -3168,6 +3231,7 @@ def PeriodTorusHigherHomology.affineProductRight {a b p q r : ℕ}
     C(SingularChains.Simplex a × SingularChains.Simplex b,
       SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) :=
   (SingularMayerVietoris.affineSimplex v).prodMap (SingularHomology.productAffineSimplex w)
+/-- The left-associated product affine map composed with a product affine simplex is the triple product affine simplex of the combined vertices. -/
 
 theorem PeriodTorusHigherHomology.affineProductLeft_comp {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
@@ -3188,6 +3252,7 @@ theorem PeriodTorusHigherHomology.affineProductLeft_comp {a b m p q r : ℕ}
     · exact
         congrArg (fun f : C(SingularChains.Simplex m, SingularChains.Simplex r) => f t)
           (SingularMayerVietoris.affineSimplex_comp w (fun j => (z j).2))
+/-- The right-associated analogue of the composition identity. -/
 
 theorem PeriodTorusHigherHomology.affineProductRight_comp {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
@@ -3208,6 +3273,7 @@ theorem PeriodTorusHigherHomology.affineProductRight_comp {a b m p q r : ℕ}
     · exact
         congrArg (fun f : C(SingularChains.Simplex m, SingularChains.Simplex r) => f t)
           (SingularMayerVietoris.affineSimplex_comp (fun j => (w j).2) (fun j => (z j).2))
+/-- Chains induced by the left-associated product affine map transfer through the affine chain structures. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_affineProductLeft {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
@@ -3229,6 +3295,7 @@ theorem PeriodTorusHigherHomology.inducedChain_affineProductLeft {a b m p q r : 
       PeriodTorusHigherHomology.tripleAffineChainMap_simplex, PeriodTorusHigherHomology.affineProductLeft_comp]
     rfl
   exact LinearMap.congr_fun h c
+/-- Chains induced by the right-associated product affine map transfer through the affine chain structures. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_affineProductRight {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
@@ -3253,6 +3320,7 @@ theorem PeriodTorusHigherHomology.inducedChain_affineProductRight {a b m p q r :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The associativity defect of the homology cross product on the space level: the difference of the two bracketings after re-associating `X × (Y × Z)`. -/
 
 def PeriodTorusHigherHomology.crossProductAssociatorDefect (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ) :
@@ -3266,6 +3334,7 @@ def PeriodTorusHigherHomology.crossProductAssociatorDefect (X Y Z : Type) [Topol
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Explicit form: the defect is the pushforward of the two bracketings along the product-association homeomorphism. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_apply (X Y Z : Type)
@@ -3279,6 +3348,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_apply (X Y Z : Ty
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The chain homotopy on the space level carrying one bracketing of the triple cross product to the other, degree by degree. -/
 
 def PeriodTorusHigherHomology.crossProductAssociatorHomotopy (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ) :
@@ -3295,6 +3365,7 @@ def PeriodTorusHigherHomology.crossProductAssociatorHomotopy (X Y Z : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplices the associator homotopy is induced by the explicit prism data. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex (X Y Z : Type)
@@ -3313,6 +3384,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex (X Y Z 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The associator homotopy is natural under maps of the three factors. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural {X : Type} {Y : Type}
     {Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
@@ -3343,6 +3415,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural {X : Ty
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Chains induced along the product association commute with product pushforwards. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_prodAssoc_natural {X : Type} {Y : Type} {Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
@@ -3361,6 +3434,7 @@ theorem PeriodTorusHigherHomology.inducedChain_prodAssoc_natural {X : Type} {Y :
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The associator defect is natural under maps of the three factors. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_natural {X : Type} {Y : Type}
     {Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
@@ -3376,6 +3450,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_natural {X : Type
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The product affine simplex extends its vertex data: composition with the standard vertices returns the pairs. -/
 
 theorem PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
@@ -3385,6 +3460,7 @@ theorem PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image {n p q 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple product of affine maps composed with the triple product affine simplex factors through the vertexwise data. -/
 
 theorem PeriodTorusHigherHomology.prodMap_tripleAffineSimplex {a b c m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p) (w : Fin (b + 1) → SingularChains.Simplex q)
@@ -3417,6 +3493,7 @@ theorem PeriodTorusHigherHomology.prodMap_tripleAffineSimplex {a b c m p q r : �
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Chains induced by triple products of affine maps transfer through the triple affine chain map. -/
 
 theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p) (w : Fin (b + 1) → SingularChains.Simplex q)
@@ -3458,6 +3535,7 @@ theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triangle cross product on the left-associated product transfers across the product association on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_left (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p × SingularChains.Simplex q) 3)
@@ -3527,6 +3605,7 @@ theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_lef
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The edge cross product on the right-associated product transfers across the product association on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -3571,6 +3650,7 @@ theorem PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right (
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The associator homotopy commutes with the affine chain maps on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -3618,6 +3698,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The associator defect commutes with the affine chain maps on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -3634,6 +3715,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap (p
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Affine, degree-zero boundary identity for the associator homotopy. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero_affine (p q r : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -3655,6 +3737,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero_a
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Affine Leibniz-type identity for the associator homotopy on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
@@ -3683,6 +3766,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Degree-zero case of the associator homotopy's defining boundary identity. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (a : SingularChains.Chains X 1)
@@ -3710,6 +3794,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero {
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The defining identity of the associator homotopy on the space level: its boundary is the associativity defect. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
@@ -3743,6 +3828,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary {X Y Z
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If the third chain is a cycle, the boundary of the associator homotopy reduces to the defect of the cycle data alone. -/
 
 theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cycle {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
@@ -3758,6 +3844,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cyc
     have hc' : ((SingularChains.singularComplex Z).d (n + 1) n).hom c = 0 := by
       simpa only [Nat.succ_sub_one] using hc
     simpa only [hc', map_zero, add_zero] using PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary n a b c
+/-- Swapping factors turns a point cross product (2, 3) into a triangle cross product of the swapped chains. -/
 
 theorem PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_two {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 1) (d : SingularMayerVietoris.FormalChains W 3) :
@@ -3791,12 +3878,14 @@ theorem PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_two {V W : Ty
         (SingularHomology.formalTriangleCrossProduct_zero_simplex_right (SingularMayerVietoris.formalSimplex w)
             v).symm
   exact LinearMap.congr_fun (LinearMap.congr_fun heq c) d
+/-- The mixed-swap defect between the (3, 2) and (2, 3) bracketings of the cross product: the failure of the triangle/edge cross products to commute with the factor swap. -/
 
 def PeriodTorusHigherHomology.formalMixedSwapDefect {V W : Type*} :
     SingularMayerVietoris.FormalChains V 3 →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W 2 →ₗ[ℤ] SingularMayerVietoris.FormalChains (V × W) 4 :=
   SingularHomology.formalTriangleCrossProduct 1 -
     (SingularHomology.formalEdgeCrossProduct 2).flip.compr₂ (SingularMayerVietoris.formalMap Prod.swap 4)
+/-- Explicit form of the mixed swap defect: triangle cross product minus the swapped edge cross product. -/
 
 @[simp]
 
@@ -3806,6 +3895,7 @@ theorem PeriodTorusHigherHomology.formalMixedSwapDefect_apply {V W : Type*}
       SingularHomology.formalTriangleCrossProduct 1 c d -
         SingularMayerVietoris.formalMap Prod.swap 4 (SingularHomology.formalEdgeCrossProduct 2 d c) :=
   rfl
+/-- The boundary of the mixed swap defect is the edge swap defect of the boundary: the defects compose coherently. -/
 
 theorem PeriodTorusHigherHomology.formalBoundary_mixedSwapDefect {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 3) (d : SingularMayerVietoris.FormalChains W 2) :
@@ -3815,6 +3905,7 @@ theorem PeriodTorusHigherHomology.formalBoundary_mixedSwapDefect {V W : Type*}
     SingularMayerVietoris.formalMap_boundary, SingularHomology.formalBoundary_edgeCrossProduct, map_sub,
     PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_two, PeriodTorusHigherHomology.formalEdgeSwapDefect_apply]
   abel
+/-- The mixed swap defect is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_mixedSwapDefect {V W V' W' : Type*} (f : V → V')
     (g : W → W') (c : SingularMayerVietoris.FormalChains V 3)
@@ -3824,6 +3915,7 @@ theorem PeriodTorusHigherHomology.formalMap_mixedSwapDefect {V W V' W' : Type*} 
         (SingularMayerVietoris.formalMap g 2 d) := by
   rw [PeriodTorusHigherHomology.formalMixedSwapDefect_apply, map_sub, SingularHomology.formalMap_triangleCrossProduct, PeriodTorusHigherHomology.formalMap_prod_swap,
     SingularHomology.formalMap_edgeCrossProduct, PeriodTorusHigherHomology.formalMixedSwapDefect_apply]
+/-- The chain homotopy witnessing that the mixed swap defect is a boundary. -/
 
 def PeriodTorusHigherHomology.formalMixedSwapHomotopy {V W : Type*} :
     SingularMayerVietoris.FormalChains V 3 →ₗ[ℤ]
@@ -3835,6 +3927,7 @@ def PeriodTorusHigherHomology.formalMixedSwapHomotopy {V W : Type*} :
         PeriodTorusHigherHomology.formalEdgeSwapHomotopy
           (SingularMayerVietoris.formalBoundary 2 (SingularMayerVietoris.formalSimplex v))
           (SingularMayerVietoris.formalSimplex w))
+/-- On simplices the mixed swap homotopy is the cone of the mixed swap defect. -/
 
 @[simp]
 
@@ -3849,6 +3942,7 @@ theorem PeriodTorusHigherHomology.formalMixedSwapHomotopy_simplex {V W : Type*} 
             (SingularMayerVietoris.formalBoundary 2 (SingularMayerVietoris.formalSimplex v))
             (SingularMayerVietoris.formalSimplex w)) :=
   SingularHomology.formalBilinearLift_simplex _ _ _
+/-- The boundary identity of the mixed swap homotopy, including the lower-order defect term. -/
 
 theorem PeriodTorusHigherHomology.formalMixedSwapHomotopy_boundary {V W : Type*}
     (c : SingularMayerVietoris.FormalChains V 3) (d : SingularMayerVietoris.FormalChains W 2) :
@@ -3882,6 +3976,7 @@ theorem PeriodTorusHigherHomology.formalMixedSwapHomotopy_boundary {V W : Type*}
     rw [PeriodTorusHigherHomology.formalMixedSwapHomotopy_simplex, SingularMayerVietoris.formalBoundary_cone, hz, map_zero,
       sub_zero, sub_add_cancel]
   exact LinearMap.congr_fun (LinearMap.congr_fun heq c) d
+/-- The mixed swap homotopy is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.formalMap_mixedSwapHomotopy {V W V' W' : Type*} (f : V → V')
     (g : W → W') (c : SingularMayerVietoris.FormalChains V 3)
@@ -3907,6 +4002,7 @@ theorem PeriodTorusHigherHomology.formalMap_mixedSwapHomotopy {V W V' W' : Type*
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The space-level chain homotopy for the mixed (2,1) swap of cross products on `X × Y`. -/
 
 def PeriodTorusHigherHomology.crossProductMixedSwapHomotopy (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
@@ -3921,6 +4017,7 @@ def PeriodTorusHigherHomology.crossProductMixedSwapHomotopy (X Y : Type) [Topolo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On simplices the mixed swap homotopy is induced by the explicit prism data. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_simplex (X Y : Type)
@@ -3937,6 +4034,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_simplex (X Y : T
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The mixed swap homotopy is natural under maps of both factors. -/
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
@@ -3960,6 +4058,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_natural {X Y X' 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The mixed swap homotopy commutes with the affine chain maps on standard simplices. -/
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_affineChainMap (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 3)
@@ -3995,6 +4094,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_affineChainMap (
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Affine form of the mixed swap homotopy boundary identity. -/
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_affine (p q : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 3)
@@ -4023,6 +4123,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_affine 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The defining boundary identity of the mixed swap homotopy, with the lower-order swap homotopy term. -/
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 2)
@@ -4057,6 +4158,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary {X Y : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- If the 2-chain is a cycle, the mixed swap homotopy boundary reduces to the swap homotopy of the boundary data. -/
 
 theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_of_cycle {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (a : SingularChains.Chains X 2)
@@ -4069,6 +4171,7 @@ theorem PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_of_cycl
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product of a 2-cycle of `X` with a 1-cycle of `Y`, a 3-cycle of `X × Y` — the degree-(2,1) instance of the cycle-level cross product. -/
 
 def PeriodTorusHigherHomology.crossProductTwoOneCycles (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
@@ -4120,6 +4223,7 @@ def PeriodTorusHigherHomology.crossProductTwoOneCycles (X Y : Type) [Topological
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The underlying chain of the (2,1) cycle cross product is the chain-level cross product of the underlying chains. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductTwoOneCycles_val (X Y : Type) [TopologicalSpace X]
@@ -4131,6 +4235,7 @@ theorem PeriodTorusHigherHomology.crossProductTwoOneCycles_val (X Y : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The homology cross product of a 2-class with a 1-class, valued in `H₃(X × Y)`, normalized through the factor swap. -/
 
 def PeriodTorusHigherHomology.crossProductHomologyTwoOne (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
@@ -4142,6 +4247,7 @@ def PeriodTorusHigherHomology.crossProductHomologyTwoOne (X Y : Type) [Topologic
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Explicit evaluation of the (2,1) homology cross product through the swap pushforward. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductHomologyTwoOne_apply (X Y : Type)
@@ -4154,6 +4260,7 @@ theorem PeriodTorusHigherHomology.crossProductHomologyTwoOne_apply (X Y : Type)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The (2,1) homology cross product is computed on cycle representatives. -/
 @[simp]
 
 theorem PeriodTorusHigherHomology.crossProductHomologyTwoOne_cycleClass (X Y : Type)
@@ -4186,6 +4293,7 @@ theorem PeriodTorusHigherHomology.crossProductHomologyTwoOne_cycleClass (X Y : T
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Associativity of the cross product on cycle classes: the two bracketings agree after the product re-association. -/
 
 theorem PeriodTorusHigherHomology.crossProductCycleClasses_associative {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
@@ -4213,6 +4321,7 @@ theorem PeriodTorusHigherHomology.crossProductCycleClasses_associative {X Y Z : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Associativity of the homology cross product: `(a × b) × c = (a × (b × c))` after the canonical re-association of the product space. -/
 
 theorem PeriodTorusHigherHomology.crossProductHomology_associative {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
@@ -4237,6 +4346,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_associative {X Y Z : Type
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cyclic re-association map `Y × (Z × X) → X × (Y × Z)` used to state cyclicity of the triple cross product. -/
 
 def PeriodTorusHigherHomology.crossProductCyclicMap (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z)) :=
@@ -4244,6 +4354,7 @@ def PeriodTorusHigherHomology.crossProductCyclicMap (X Y Z : Type) [TopologicalS
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cyclic map composes with association and swap to the identity: it is a homeomorphism with two-fold inverse data. -/
 
 theorem PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] :
@@ -4254,6 +4365,7 @@ theorem PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap {X Y Z : Type
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- Cyclicity of the triple 1-class cross product: cyclically permuting the three factors rotates the value, the Jacobi-type identity for the cross product. -/
 
 theorem PeriodTorusHigherHomology.crossProductHomology_cyclic {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (a : SingularMayerVietoris.SingularHomology X 1)
@@ -4287,6 +4399,7 @@ open SingularHomology
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cycle-level cross product is natural under maps of both factors. -/
 theorem PeriodTorusHigherHomology.crossProductCycles_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ)
@@ -4304,6 +4417,7 @@ theorem PeriodTorusHigherHomology.crossProductCycles_natural {X Y X' Y' : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The homology cross product is natural: it commutes with the maps induced by `f.prodMap g`. -/
 theorem PeriodTorusHigherHomology.crossProductHomology_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ) (a : (SingularChains.singularComplex X).homology 1)
@@ -4327,6 +4441,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_natural {X Y X' Y' : Type
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The cross product maps to zero under the second projection: `H_*` of a product pushed to a factor kills mixed classes, the Künneth projection identity. -/
 theorem PeriodTorusHigherHomology.crossProductHomology_snd {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X 1)
     (b : SingularMayerVietoris.SingularHomology Y n) :
