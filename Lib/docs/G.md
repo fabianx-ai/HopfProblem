@@ -11,9 +11,9 @@ namespaces/coordinates — refreshed to post-rename names at this head below),
 the two truncated G5 result types it flagged are restored verbatim below), and the
 fresh-context closing review `Lib/docs/G-closing-subagent-review.md` (NO-GO on one
 residual truncation — `exists_primitive_functional_unit` still stopped mid-expression —
-plus four minor repairs; **all findings applied in this revision**: the signature now
-runs verbatim through Recognition.lean:5433, and the attribution/coordinate corrections
-are landed). Closing-review acceptance is pending re-confirmation.
+plus four minor repairs; all findings applied), with re-confirmation in
+`Lib/docs/G-closing-reconfirm-subagent-review.md` — **closing verdict GO at `66d04dc`**:
+all 35 signatures verbatim at live coordinates, all mechanism/ordering claims confirmed.
 Landed repairs: the trade cut, elimination order, and Whitney codimension-two input in
 §§4–5 carry the source's actual mechanisms; §3's unique-minimum argument carries the
 (0,1)-cancellation mechanism; every ledger signature is verbatim at live coordinates
