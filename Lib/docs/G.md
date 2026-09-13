@@ -297,7 +297,7 @@ no inner product is used anywhere in the chain), and the `Lib/` statement drops 
 never uses it; a compact smooth Hausdorff manifold is second countable anyway, so the wrapper
 loses no content). The five spellings of $S^6$
 (`SphereHomology.UnitSphere 6`, `Hemisphere.Sphere 6`, `SixSphere` (MinimalSystem.lean:60),
-`MetricSixSphere` (Recognition), `SixSphereCube.StandardSphere`), all definitionally `Metric.sphere (0 : EuclideanSpace ℝ
+`MetricSixSphere` (Proof/Recognition.lean:270), `SixSphereCube.StandardSphere`), all definitionally `Metric.sphere (0 : EuclideanSpace ℝ
 (Fin 7)) 1`, consolidate on that spelling in the `Lib/` file; the `Hopf/` consumer keeps its
 statement verbatim (the re-routing is definitional).
 
@@ -366,7 +366,7 @@ Lib theorem (a `letI`/infer-step adapter — the statement seen from `Hopf/` is 
 the comparator gate).
 
 **Rows G1–G6 — the typed ledger.** All signatures below are **verbatim from the current
-sources** (coordinates re-verified at `27f8e7f`, post-integration-3 + proof-split; `Hopf/Proof/`
+sources** (coordinates re-verified at `84d9450`, post-integration-3 + proof-split + `import all`-cleanup; `Hopf/Proof/`
 holds proof-side declarations — the stock/proof split moved many `Hopf/` coordinates); nothing is
 reconstructed or compressed. The row order G1 → G2a → G3 → G2b → G4 → G5 → G6 is the true
 dependency order — G2 splits because `exists_minimal_ordered_morse_system_without_
