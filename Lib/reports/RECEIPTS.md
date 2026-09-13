@@ -252,5 +252,26 @@ Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
   wrong-path rank-3 re-run described as deleted, shifted block ranges,
   nonexistent `Hopf.FiniteCore` consumer path, truncated G-J3 range, one wrong
   coordinate) — all repaired; second re-confirmation GO. Ledger consistent at
-  `90cd3d9`. Scoped: Axis-5 consistency only — J-B/J-C/J-D/J-E uncertified,
-  J-B2a still blocked on the unlanded S-path cluster.
+  `90cd3d9`. Scoped: Axis-5 consistency only — J-B/J-C/J-D/J-E uncertified;
+  J-B2a's remaining gate was the S-path cluster.
+- **S-path landing (Muse, NEXT-STEPS-MUSE §6)**: extracted the circle-path /
+  circle-section cluster into
+  `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean` — 88 declarations,
+  verbatim signatures modulo retargets (`FirstHurewicz.*` → `SingularChains.*`,
+  `PeriodTorusHigherHomology.CircleTopology.*` → `SingularHomology.CircleTopology.*`,
+  bare `crossProduct*`/`circle*`/`sumHomologyEquiv_*` via `open SingularHomology`;
+  `SingularChains.loopHomologyClass` is the constant the source used through the
+  `FirstHurewicz` export — `AlgebraicTopology.Hurewicz.loopHomologyClass` is a
+  defeq-equal but distinct constant). The five `biprod_*_mo1973_*` helpers were
+  widened `private` → public (`@[expose]` forbids private references in exported
+  `def` bodies). Builds: `lake build
+  Lib.AlgebraicTopology.SingularHomology.CirclePaths` green; `Lib` aggregate
+  green; all six direct consumers green
+  (`Hopf/{LCP,Proof/LCP}/{Specialization,IntegralHomology}`,
+  `Hopf/Proof/LCP/{CuspFilling,BoundaryTopology}`). Census ratchet
+  `1622 ≤ 1648` (26 counted decls left `Hopf/LCP/`). Sources removed from
+  `Hopf/LCP/CuspFilling.lean` (:325–678) and `Hopf/Proof/LCP/CuspFilling.lean`
+  (:13175–13857); consumers gained
+  `import Lib.AlgebraicTopology.SingularHomology.CirclePaths`. J-B2a's external
+  provider gate is discharged; J-B2a itself (coordinate-basis closure) is not
+  thereby certified.

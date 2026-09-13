@@ -105,6 +105,7 @@ import Lib.Topology.MappingTorus.HomologyCover
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.PathClass
+import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 
 /-!
 # Reusable V10 Section 6 library

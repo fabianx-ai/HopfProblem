@@ -327,9 +327,10 @@ Dependency schedule (candidate packets, not permission to implement): J-A before
 J-B1 before J-B2a before J-B2b; J-C1 before J-C2 before J-C3; J-C3 additionally
 requires J-B2a; J-D requires J-A, J-B2b and J-C3. J-C1's wait on the public module
 seam M-C is discharged (CrossProduct.lean is a module; Pontryagin.lean has landed);
-J-C2's S-cross provider has landed; J-B2a still waits on the S-path cluster only
-(S-nat/S-cross landed); J-C3's G-J3 suite has landed (CrossProduct.lean:2065–4359),
-leaving J-B2a/public loop-class as its remaining gate.
+J-C2's S-cross provider has landed; all three J-B2a seams have landed (S-nat and
+S-cross earlier, S-path in `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`);
+J-C3's G-J3 suite has landed (CrossProduct.lean:2065–4359), leaving
+J-B2a/public loop-class as its remaining gate.
 `Torus.lean` never imports `Pontryagin.lean`; product-valued top-class lemmas belong
 to J-C3 in Pontryagin, which may import Torus. `MinorCoordinates` is Mathlib-only.
 Every packet still needs its exact aggregate provider/consumer receipt before GO.
@@ -419,9 +420,9 @@ is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
   The circle-section signatures additionally need `open PeriodTorusHigherHomology`
   for the bare `CirclePaths.{positiveLoop, arcSumCycle}` and `circleProductMap` names.
   `circleProductMap` is a Lib provider (CircleProduct.lean:1241); the `CirclePaths.*`
-  names are still Hopf-side (the unlanded S-path cluster, `LCP/CuspFilling.lean:325+`
-  and `Proof/LCP/CuspFilling.lean`), so a Lib-only packet cannot yet resolve them —
-  the signatures are provisional until the S-path provider lands.
+  names are landed in `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`
+  (namespace `Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths`), so
+  `open PeriodTorusHigherHomology` resolves them in a Lib-only packet.
 * The degree-one target API is `AlgebraicTopology.SingularH1`,
   `AlgebraicTopology.SingularH1.map` and `AlgebraicTopology.Hurewicz.loopHomologyClass`
   from `Lib.AlgebraicTopology.Hurewicz.Degree1` (106, 334, 726). The first two agree
@@ -680,10 +681,10 @@ lexicographic instances of `exteriorPowerMap_toMatrix`, or replacing by
 
 ```text
 commit_boundary   J-B1 (recursive torus core — LANDED in Torus.lean);
-                  J-B2a (circle/naturality and coordinate-basis closure — S-nat landed,
-                  S-path still unlanded);
-                  J-B2b (public degree-one identification — Degree1 landed; S-path gate
-                  remains).
+                  J-B2a (circle/naturality and coordinate-basis closure — S-nat and
+                  S-path landed; coordinate-basis closure remains);
+                  J-B2b (public degree-one identification — Degree1 landed; circle-path
+                  provider landed).
 imports           J-B1: Mathlib; Lib.AlgebraicTopology.SingularHomology.{MayerVietoris,
                   CircleProduct, HomotopyInvariance}.
                   J-B2a: J-B1 plus the public M-C provider and circle seams S-path/S-nat/S-cross.
@@ -862,7 +863,9 @@ theorem PeriodTorusHigherHomology.surjective_of_coordinateTorusClassAlong_mem_ra
 
 **J-B2b degree-one outputs — landed in LCP/Specialization.lean; the identification
 seam is resolved** (Degree1 provider `Lib.AlgebraicTopology.Hurewicz.Degree1` exists;
-the S-path cluster it transitively needs remains unlanded in Hopf/). The canonical Degree1
+the S-path cluster it transitively needs has landed in
+`Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`, spelled with the
+`SingularChains` chain-level API — see the S-path entry below). The canonical Degree1
 signatures below elaborate in the review-3 Lib-only provisional provider. The source
 proofs use the old loop-class interface; they are not verbatim public-module moves.
 `coordinateH1_basis_hit` and `coordinateH1_apply` below are missing mathematical
@@ -942,8 +945,9 @@ LCP/CuspFilling.lean:268–307).
 The coordinateCircleMap/loop/torusTailMap family at Specialization:3454–3594 (now
 Proof/LCP/Specialization.lean:3234+ for the coordinateCircleMap family and
 LCP/Specialization.lean:238–247 for torusTailMap) and
-coordinatePeriodLoop at CuspFilling:13176 (now LCP/CuspFilling.lean:309) require the S-path/public-loop-class
-alignment when used on homology. No rank-four PeriodDomain adapter moves with them.
+coordinatePeriodLoop at CuspFilling:13176 (now LCP/CuspFilling.lean:309) require the
+public loop-class alignment when used on homology (the S-path provider itself has
+landed in `CirclePaths.lean`). No rank-four PeriodDomain adapter moves with them.
 
 `productTorusTopClass_succ_product` (Specialization:3646, now
 Proof/LCP/Specialization.lean:3379) and its product-dependent
@@ -1015,8 +1019,10 @@ def PeriodTorusHigherHomology.positiveCircleCross (X : Type) [TopologicalSpace X
     (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (CircleTopology.Circle × X) (n + 1)
-  -- (LCP/CuspFilling.lean:390; was CuspFilling:13700; body = crossProductHomology Circle X n
-  --   (AlgebraicTopology.Hurewicz.loopHomologyClass CirclePaths.positiveLoop))
+  -- (CirclePaths.lean:143; was CuspFilling:13700 → LCP/CuspFilling:390; body =
+  --   crossProductHomology Circle X n (SingularChains.loopHomologyClass
+  --   CirclePaths.positiveLoop) — the source's actual constant;
+  --   `AlgebraicTopology.Hurewicz.loopHomologyClass` is the defeq-equal Degree1 face)
 theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle
@@ -1027,56 +1033,56 @@ theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Typ
       SingularMayerVietoris.ModuleHomology.cycleClass
         (SingularChains.singularComplex (CircleTopology.Circle × X)) (n + 1)
         (crossProductCycles CircleTopology.Circle X n CirclePaths.arcSumCycle b)
-                                                                          -- (Proof/LCP/CuspFilling.lean:13466; was CuspFilling:13707)
+                                                                          -- (CirclePaths.lean:724; was Proof/LCP/CuspFilling.lean:13466)
 theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleBoundaryCoordinates X n (positiveCircleCross X n b) = (-b, b)     -- (Proof/LCP/CuspFilling.lean:13798; was CuspFilling:14310)
+    circleBoundaryCoordinates X n (positiveCircleCross X n b) = (-b, b)     -- (CirclePaths.lean:1056; was Proof/LCP/CuspFilling.lean:13798)
 @[simp]
 theorem PeriodTorusHigherHomology.circleBoundary_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleBoundary X n (positiveCircleCross X n b) = b                      -- (Proof/LCP/CuspFilling.lean:13807; was CuspFilling:14319)
+    circleBoundary X n (positiveCircleCross X n b) = b                      -- (CirclePaths.lean:1065; was Proof/LCP/CuspFilling.lean:13807)
 theorem PeriodTorusHigherHomology.circleProjection_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0      -- (LCP/CuspFilling.lean:674; was CuspFilling:14579)
+    circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0      -- (CirclePaths.lean:427; was LCP/CuspFilling.lean:674)
 @[simp]
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_positiveCircleCross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
-    circleProductHomologyEquiv X n (positiveCircleCross X n b) = (0, b)     -- (Proof/LCP/CuspFilling.lean:13815; was CuspFilling:14585)
+    circleProductHomologyEquiv X n (positiveCircleCross X n b) = (0, b)     -- (CirclePaths.lean:1073; was Proof/LCP/CuspFilling.lean:13815)
 theorem PeriodTorusHigherHomology.positiveCircleCross_eq_symm (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
     positiveCircleCross X n b = (circleProductHomologyEquiv X n).symm (0, b)
-                                                                          -- (Proof/LCP/CuspFilling.lean:13822; was CuspFilling:14592)
+                                                                          -- (CirclePaths.lean:1080; was Proof/LCP/CuspFilling.lean:13822)
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_eq_section_add_cross
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology X (n + 1) ×
       SingularMayerVietoris.SingularHomology X n) :
     (circleProductHomologyEquiv X n).symm a =
-      circleSectionHomology X (n + 1) a.1 + positiveCircleCross X n a.2     -- (Proof/LCP/CuspFilling.lean:13828; was CuspFilling:14598)
+      circleSectionHomology X (n + 1) a.1 + positiveCircleCross X n a.2     -- (CirclePaths.lean:1086; was Proof/LCP/CuspFilling.lean:13828)
 theorem PeriodTorusHigherHomology.positiveCircleCross_naturality {X : Type}
     [TopologicalSpace X] {Y : Type} [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
     SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1)
         (positiveCircleCross X n b) =
       positiveCircleCross Y n
-        (SingularMayerVietoris.singularHomologyMap f n b)                   -- (Proof/LCP/CuspFilling.lean:13840; was CuspFilling:14610)
+        (SingularMayerVietoris.singularHomologyMap f n b)                   -- (CirclePaths.lean:1098; was Proof/LCP/CuspFilling.lean:13840)
 ```
 
 Supporting decls moving with this boundary (verbatim signatures):
 `circleProductMap` (landed: CircleProduct.lean:1241 — `C(Circle × X, Circle × Y)`
 from `f : C(X, Y)`), `circleConnecting_positiveCircleCross_cycleClass`
-(Proof/LCP/CuspFilling.lean:13759),
+(CirclePaths.lean:1017),
 `circleBoundaryCoordinates_positiveCircleCross_cycleClass`
-(Proof/LCP/CuspFilling.lean:13779),
-`twoChainSmallCycle` (LCP/CuspFilling.lean:583), `twoChainSmallCycle_*`
+(CirclePaths.lean:1037),
+`twoChainSmallCycle` (CirclePaths.lean:336), `twoChainSmallCycle_*`
 boundary/class lemmas, `connectingHomomorphism_twoChain`
-(LCP/CuspFilling.lean:648), `crossProductEdge_path_boundary`
-(LCP/CuspFilling.lean:413), `intersectionDifferenceCycle` +
-`positiveCircleSmallCycle*` (Proof/LCP/CuspFilling.lean:13512 / :13706).
+(CirclePaths.lean:401), `crossProductEdge_path_boundary`
+(CirclePaths.lean:166), `intersectionDifferenceCycle` +
+`positiveCircleSmallCycle*` (CirclePaths.lean:770 / :964).
 
 **S-nat — splitting-naturality closure, LANDED in `CircleProduct.lean`:**
 `circleProductMap` (:1241), `intersectionProductMap` (:1247),
@@ -1090,35 +1096,59 @@ boundary/class lemmas, `connectingHomomorphism_twoChain`
 This gated the coordinate basis **and** the circle-section naturality result; the
 gate is now open.
 
-**S-path — unlanded circle-path closure**, now split between
-`LCP/CuspFilling.lean` (interface) and `Proof/LCP/CuspFilling.lean` (proof side).
-In addition to the named outputs below, include CirclePaths.circleTranslation
-(LCP/CuspFilling:325), circleTranslation_apply (:337), circleTranslationHomotopy
-(:342), circleTranslation_singularHomologyMap (:357),
-circleTranslation_inducedHomology (:363), loopHomologyClass_map_circleTranslation
-(:367), quarterPoint (Proof/LCP/CuspFilling.lean:13187), quarterPoint_coe (:13196),
-quarterIntersection_component (:13201), threeQuarterIntersection_component
-(:13207), quarterU (:13212), quarterV (:13216), uCirclePath_apply (:13294),
-vCirclePath_apply (:13300), quarterLoop_apply (:13319), quarterTranslation_zero
-(:13337), quarterLoop_eq_translation (:13341), quarterIntersectionSection_comp
-(:13430), threeQuarterIntersectionSection_component (:13440), and
-threeQuarterIntersectionSection_comp (:13456). These earlier/later
-helpers are part of the source proof closure, not optional omissions.
+**S-path — circle-path closure, LANDED in
+`Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`** (88 declarations,
+extracted from `LCP/CuspFilling.lean:325–678` and
+`Proof/LCP/CuspFilling.lean:13175–13857` at the pre-move head; signatures
+verified verbatim modulo the retargets below). Includes CirclePaths.circleTranslation
+(:78), circleTranslation_apply (:90), circleTranslationHomotopy
+(:95), circleTranslation_singularHomologyMap (:110),
+circleTranslation_inducedHomology (:116), loopHomologyClass_map_circleTranslation
+(:120), quarterPoint (:445), quarterPoint_coe (:454),
+quarterIntersection_component (:459), threeQuarterIntersection_component
+(:465), quarterU (:470), quarterV (:474), uCirclePath_apply (:552),
+vCirclePath_apply (:558), quarterLoop_apply (:577), quarterTranslation_zero
+(:595), quarterLoop_eq_translation (:599), quarterIntersectionSection_comp
+(:688), threeQuarterIntersectionSection_component (:698), and
+threeQuarterIntersectionSection_comp (:714), plus the two-chain engine
+(`twoChainMiddle` :268, `twoChainSmallCycle` :336,
+`connectingHomomorphism_twoChain` :401, the `biprod_*_mo1973_*` helpers
+:188–266 — widened from `private` to public because `@[expose]`-exported
+`def` bodies may not reference private declarations), the intersection
+difference/cross-chain machinery (`intersectionDifferenceCycle` :770,
+`uCrossChain`/`vCrossChain` :859/:868 and boundary/inclusion lemmas,
+`positiveCircleSmallCycle*` :964–1015), and the section-coordinate
+families (`*_toU`/`*_toV` :826–857, `*Homology_coordinates` :750/:760).
+
+*Retargets applied on landing* (all public Lib APIs — no `Hopf.LibShims`):
+`FirstHurewicz.*` → `SingularChains.*` (`Chains`, `singularComplex`,
+`inducedChain*`, `pathChain*`, `boundaryOne*`, `Cycles1`, `mkCycle1`,
+`cycleClass`, `chainClass`, `pathClass*`, `homologyToChainClass_*`,
+`loopHomologyClass`, `inducedHomology`, `singularChainMap`);
+`PeriodTorusHigherHomology.CircleTopology.*` → `SingularHomology.CircleTopology.*`;
+bare `crossProduct*`/`crossInsertLeft`/`circle*`/`sumHomologyEquiv_*` names →
+`SingularHomology.*` via `open SingularHomology`. NB on loop-class spelling:
+the landed decls use `SingularChains.loopHomologyClass` — the constant the
+source actually referenced through the `FirstHurewicz` export.
+`AlgebraicTopology.Hurewicz.loopHomologyClass` (Degree1.lean) is a separate,
+definitionally equal declaration; it is *not* the same constant, so
+statement-level rewrites do not cross between the two spellings. The public
+degree-one alignment for J-B2b is therefore a spelling choice, not a blocker.
 
 **S-cross — cross-product naturality, LANDED in `CrossProduct.lean`:**
 `crossProductCycles_natural` (:4292), `crossProductHomology_natural` (:4309),
 `crossProductHomology_snd` (:4332) — was CuspFilling:14509–14576.
 
-S-path named interfaces (still unlanded — legacy source) and landed S-cross providers:
-`CirclePaths.{positiveLoop` (LCP/CuspFilling:376) + `positiveLoop_apply` (:385),
-`quarterLoop` (Proof/LCP/CuspFilling.lean:13305), `arcSumCycle` (:13374), `arcSumCycle_class`
-(:13379), `arcSumCycle_positiveLoop_class` (:13393), `quarterIntersection` (:13175),
-`threeQuarterIntersection` (:13181), `threeQuarterPoint` (:13191), `threeQuarterU`
-(:13220), `threeQuarterV` (:13224), `uPath` (:13228), `vPath` (:13257),
-`uCirclePath` (:13287), `vCirclePath` (:13290), `uCirclePath_trans_vCirclePath`
-(:13324), `quarterLoop_homologyClass` (:13353), `quarterIntersectionSection`
-(:13398, `X : Type*`), `threeQuarterIntersectionSection` (:13406, `X : Type*`),
-`quarterIntersectionSection_component` (:13415), `boundaryOne_arcSum` (:13367)};
+S-path named interfaces (landed, `CirclePaths.lean` coordinates) and landed S-cross
+providers: `CirclePaths.{positiveLoop` (:129) + `positiveLoop_apply` (:138),
+`quarterLoop` (:563), `arcSumCycle` (:632), `arcSumCycle_class`
+(:637), `arcSumCycle_positiveLoop_class` (:651), `quarterIntersection` (:433),
+`threeQuarterIntersection` (:439), `threeQuarterPoint` (:449), `threeQuarterU`
+(:478), `threeQuarterV` (:482), `uPath` (:486), `vPath` (:515),
+`uCirclePath` (:545), `vCirclePath` (:548), `uCirclePath_trans_vCirclePath`
+(:582), `quarterLoop_homologyClass` (:611), `quarterIntersectionSection`
+(:656, `X : Type*`), `threeQuarterIntersectionSection` (:664, `X : Type*`),
+`quarterIntersectionSection_component` (:673), `boundaryOne_arcSum` (:625)};
 `crossProductCycles_natural` (landed: CrossProduct.lean:4292),
 `crossProductHomology_natural` (landed: CrossProduct.lean:4309),
 `crossProductHomology_snd` (landed: CrossProduct.lean:4332).
@@ -1126,15 +1156,17 @@ S-path named interfaces (still unlanded — legacy source) and landed S-cross pr
 Lane A's report (`Lib/reports/A.md` §Wang note) proposed that cluster for
 `CrossProduct.lean`; the S-nat closure and the S-cross naturality suite have
 **landed** (CircleProduct.lean:1241–1414 and CrossProduct.lean:4292–4332), and the
-M-C module seam is resolved (CrossProduct.lean is `module`). What remains unlanded
-is the **S-path** cluster above — `CirclePaths.*` in `Hopf/Proof/LCP/CuspFilling.lean`
-and the interface decls in `Hopf/LCP/CuspFilling.lean`; its landing is still
-**not J-owned** — owner confirmation needed (GLM's cross-product work is the
-natural home). Only the restricted J-B1 recursive core above is independent of
-this cluster. J-B2a still waits on S-path's public provider; it does not acquire
-permission to land another lane's cluster merely because its statements need it.
+M-C module seam is resolved (CrossProduct.lean is `module`), and the **S-path**
+cluster above has landed in `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`
+(Muse-seat extraction per `NEXT-STEPS-MUSE.md` §6 — the "not J-owned" note is
+discharged by that assignment, not by J acquiring another lane). The module
+compiles standalone (`lake build Lib.AlgebraicTopology.SingularHomology.CirclePaths`),
+the `Lib` aggregate includes it, and all six direct consumers
+(`Hopf/Proof/LCP/{CuspFilling, Specialization, BoundaryTopology, IntegralHomology}`,
+`Hopf/LCP/{Specialization, IntegralHomology}`) build green against it. Only the
+restricted J-B1 recursive core above is independent of this cluster.
 NB: the `quarterIntersectionSection` family uses
-`Type*` for the ambient space — harmless there (pure topology, no homology), keep as-is.
+`Type*` for the ambient space — harmless there (pure topology, no homology), kept as-is.
 
 ## Boundary J-C — `Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean`
 
@@ -1919,7 +1951,11 @@ at `r = 4`.
    ledger's coordinates and seam claims stale after the `Hopf/` proof split and the
    S-nat/S-cross/G-J3 landings; two repair rounds and a targeted re-confirmation
    (**GO**) brought the ledger consistent at `88e354b` — recorded in
-   `Lib/docs/J-axis5-i3-review.md`. This is ledger consistency only: no
-   J-B/J-C/J-D/J-E boundary is certified; J-B2a remains blocked on the unlanded
-   S-path cluster. A re-review of this revised ledger is outstanding before J's
+   `Lib/docs/J-axis5-i3-review.md`. Since then the S-path cluster has landed
+   (`Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean`, Muse-seat §6
+   extraction; the "gate" paragraphs and coordinates above are updated to the
+   landed coordinates). This is ledger consistency only: no
+   J-B/J-C/J-D/J-E boundary is certified; J-B2a no longer waits on an external
+   provider — its remaining work is the coordinate-basis closure itself.
+   A re-review of this revised ledger is outstanding before J's
    Axis-6 work starts.

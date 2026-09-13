@@ -64,6 +64,7 @@ Original source lines 187883--211735; see PROVENANCE.md.
 import Hopf.LibShims
 import Hopf.LCP.BoundaryTopology
 import Hopf.Proof.LCP.GlobalAssembly
+import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
