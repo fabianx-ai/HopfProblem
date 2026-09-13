@@ -16,9 +16,9 @@ is a signed sum of squares (Milnor, Morse Theory, Lemma 2.2). The headline state
   chart around a critical point.
 
 The file also carries the perturbation machinery feeding it and the existence of Morse
-functions on compact manifolds (`Smale.ManifoldMorse.exists_morse_function`, Milnor
-h-cobordism Thm 2.5): `Smale.MorsePerturbation.*`, `Smale.ManifoldPerturbation.perturb`,
-`Smale.ManifoldMorse.IsMorseOn`, `exists_compact_plateau`, `exists_morse_extension`,
+functions on compact manifolds (`ManifoldMorse.exists_morse_function`, Milnor
+h-cobordism Thm 2.5): `MorsePerturbation.*`, `ManifoldPerturbation.perturb`,
+`ManifoldMorse.IsMorseOn`, `exists_compact_plateau`, `exists_morse_extension`,
 `exists_morse_function_of_haar`, and the parametrized-integral tools
 (`contDiff_parametric_intervalIntegral*`).
 
@@ -35,7 +35,7 @@ h-cobordism Thm 2.5): `Smale.MorsePerturbation.*`, `Smale.ManifoldPerturbation.p
 ## Main definitions and results
 
 * `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn` : the signed Morse chart.
-* `Smale.ManifoldMorse.exists_morse_function` : existence of Morse functions.
+* `ManifoldMorse.exists_morse_function` : existence of Morse functions.
 
 ## References
 
@@ -68,49 +68,49 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-def Smale.MorsePerturbation.dualEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorsePerturbation.dualEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] : E ≃L[ℝ] (E →L[ℝ] ℝ) := by
   classical
     exact
     ((Module.Basis.ofVectorSpace ℝ E).toDualEquiv.trans
         LinearMap.toContinuousLinearMap).toContinuousLinearEquiv
 
-def Smale.MorsePerturbation.coordinateGradient {E : Type*} [NormedAddCommGroup E]
+def MorsePerturbation.coordinateGradient {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (f : E → ℝ) (x : E) : E :=
   dualEquiv.symm (fderiv ℝ f x)
 
-def Smale.MorsePerturbation.linearPerturbation {E : Type*} [NormedAddCommGroup E]
+def MorsePerturbation.linearPerturbation {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (f : E → ℝ) (a : E) (x : E) : ℝ :=
   f x - dualEquiv a x
 
-def Smale.MorsePerturbation.IsMorse {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorsePerturbation.IsMorse {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : E → ℝ) : Prop :=
   ∀ x, fderiv ℝ f x = 0 → Function.Bijective (fderiv ℝ (fderiv ℝ f) x)
 
-theorem Smale.MorsePerturbation.contDiff_fderiv {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.contDiff_fderiv {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (fderiv ℝ f) :=
   hf.fderiv_right (by simp)
 
-theorem Smale.MorsePerturbation.contDiff_coordinateGradient {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.contDiff_coordinateGradient {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (coordinateGradient f) :=
   dualEquiv.symm.contDiff.comp (contDiff_fderiv hf)
 
-theorem Smale.MorsePerturbation.fderiv_linearPerturbation {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.fderiv_linearPerturbation {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) (a x : E) :
     fderiv ℝ (linearPerturbation f a) x = fderiv ℝ f x - dualEquiv a := by
   unfold linearPerturbation
   rw [fderiv_fun_sub (hf.differentiable (by simp) x) (dualEquiv a).differentiableAt,
     ContinuousLinearMap.fderiv]
 
-theorem Smale.MorsePerturbation.hessian_linearPerturbation {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.hessian_linearPerturbation {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) (a x : E) :
     fderiv ℝ (fderiv ℝ (linearPerturbation f a)) x = fderiv ℝ (fderiv ℝ f) x := by
   have heq : fderiv ℝ (linearPerturbation f a) = fun y => fderiv ℝ f y - dualEquiv a :=
     funext (fderiv_linearPerturbation hf a)
   rw [heq, fderiv_sub_const]
 
-theorem Smale.MorsePerturbation.fderiv_coordinateGradient {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.fderiv_coordinateGradient {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) (x : E) :
     fderiv ℝ (coordinateGradient f) x =
       dualEquiv.symm.toContinuousLinearMap.comp (fderiv ℝ (fderiv ℝ f) x) := by
@@ -118,14 +118,14 @@ theorem Smale.MorsePerturbation.fderiv_coordinateGradient {E : Type*} [NormedAdd
     (dualEquiv.symm.hasFDerivAt.comp x
         ((contDiff_fderiv hf).differentiable (by simp) x).hasFDerivAt).fderiv
 
-theorem Smale.MorsePerturbation.isMorse_of_regularValue {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.isMorse_of_regularValue {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} (hf : ContDiff ℝ ∞ f) {a : E}
-    (ha : a ∈ Smale.RegularValues.regularValues (coordinateGradient f)) :
+    (ha : a ∈ RegularValues.regularValues (coordinateGradient f)) :
     IsMorse (linearPerturbation f a) := by
   intro x hx
   rw [fderiv_linearPerturbation hf a x, sub_eq_zero] at hx
   have hxa : coordinateGradient f x = a := by simp [coordinateGradient, hx]
-  have hbij := Smale.RegularValues.bijective_fderiv_of_mem_regularValues ha hxa
+  have hbij := RegularValues.bijective_fderiv_of_mem_regularValues ha hxa
   rw [hessian_linearPerturbation hf a x]
   have heq :
     (fun v : E => dualEquiv (fderiv ℝ (coordinateGradient f) x v)) = fderiv ℝ (fderiv ℝ f) x := by
@@ -135,7 +135,7 @@ theorem Smale.MorsePerturbation.isMorse_of_regularValue {E : Type*} [NormedAddCo
   rw [← heq]
   exact dualEquiv.bijective.comp hbij
 
-theorem Smale.MorsePerturbation.isOpen_forall_mem_compact {P X : Type*} [TopologicalSpace P]
+theorem MorsePerturbation.isOpen_forall_mem_compact {P X : Type*} [TopologicalSpace P]
     [TopologicalSpace X] {K : Set X} (hK : IsCompact K) {U : Set (P × X)} (hU : IsOpen U) :
     IsOpen {p : P | ∀ x ∈ K, (p, x) ∈ U} := by
   let : CompactSpace K := isCompact_iff_compactSpace.mp hK
@@ -157,7 +157,7 @@ theorem Smale.MorsePerturbation.isOpen_forall_mem_compact {P X : Type*} [Topolog
   rw [heq]
   exact hproj.isOpen_compl
 
-theorem Smale.MorsePerturbation.contDiff_spatialDerivative {P E F : Type*} [NormedAddCommGroup P]
+theorem MorsePerturbation.contDiff_spatialDerivative {P E F : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : P → E → F} (hf : ContDiff ℝ ∞ (Function.uncurry f)) :
     ContDiff ℝ ∞ (fun q : P × E => fderiv ℝ (f q.1) q.2) := by
@@ -165,10 +165,10 @@ theorem Smale.MorsePerturbation.contDiff_spatialDerivative {P E F : Type*} [Norm
   have hg : ContDiff ℝ ∞ (Function.uncurry g) := hf.comp (contDiff_fst.fst.prodMk contDiff_snd)
   exact hg.fderiv contDiff_snd (by simp)
 
-theorem Smale.MorsePerturbation.bijective_hessian_iff {E : Type*} [NormedAddCommGroup E]
+theorem MorsePerturbation.bijective_hessian_iff {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (A : E →L[ℝ] (E →L[ℝ] ℝ)) :
     Function.Bijective A ↔ (dualEquiv.symm.toContinuousLinearMap.comp A).det ≠ 0 := by
-  rw [← Smale.RegularValues.bijective_iff_det_ne_zero]
+  rw [← RegularValues.bijective_iff_det_ne_zero]
   constructor
   · intro hA
     exact dualEquiv.symm.bijective.comp hA
@@ -179,7 +179,7 @@ theorem Smale.MorsePerturbation.bijective_hessian_iff {E : Type*} [NormedAddComm
     rw [← heq]
     exact dualEquiv.bijective.comp hA
 
-theorem Smale.MorsePerturbation.contDiffAt_spatialDerivative {P E F : Type*}
+theorem MorsePerturbation.contDiffAt_spatialDerivative {P E F : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : P → E → F} {q : P × E}
     (hf : ContDiffAt ℝ ∞ (Function.uncurry f) q) :
@@ -189,7 +189,7 @@ theorem Smale.MorsePerturbation.contDiffAt_spatialDerivative {P E F : Type*}
     hf.comp (q, q.2) (contDiffAt_fst.fst.prodMk contDiffAt_snd)
   exact hg.fderiv contDiffAt_snd (by simp)
 
-theorem Smale.MorsePerturbation.contDiffOn_spatialDerivative {P E F : Type*}
+theorem MorsePerturbation.contDiffOn_spatialDerivative {P E F : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : P → E → F} {U : Set (P × E)} (hU : IsOpen U)
     (hf : ContDiffOn ℝ ∞ (Function.uncurry f) U) :
@@ -197,7 +197,7 @@ theorem Smale.MorsePerturbation.contDiffOn_spatialDerivative {P E F : Type*}
   intro q hq
   exact (contDiffAt_spatialDerivative (hf.contDiffAt (hU.mem_nhds hq))).contDiffWithinAt
 
-theorem Smale.MorsePerturbation.isOpen_goodJetOn {P E : Type*} [NormedAddCommGroup P]
+theorem MorsePerturbation.isOpen_goodJetOn {P E : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     {f : P → E → ℝ} {U : Set (P × E)} (hU : IsOpen U)
     (hf : ContDiffOn ℝ ∞ (Function.uncurry f) U) :
@@ -235,40 +235,40 @@ theorem Smale.MorsePerturbation.isOpen_goodJetOn {P E : Type*} [NormedAddCommGro
   rw [heq]
   exact ha.union hb
 
-def Smale.ManifoldPerturbation.coordinateVector {E M : Type*} [NormedAddCommGroup E]
+def ManifoldPerturbation.coordinateVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {p : M}
     (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (x : M) : E :=
   φ x • extChartAt 𝓘(ℝ, E) p x
 
-theorem Smale.ManifoldPerturbation.contMDiff_coordinateVector {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldPerturbation.contMDiff_coordinateVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {p : M} (φ : SmoothBumpFunction 𝓘(ℝ, E) p) :
     ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (coordinateVector φ) :=
   φ.contMDiff_smul contMDiffOn_extChartAt
 
-def Smale.ManifoldPerturbation.perturb {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def ManifoldPerturbation.perturb {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {p : M}
     (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (f : M → ℝ) (a : E) (x : M) : ℝ :=
-  f x - Smale.MorsePerturbation.dualEquiv a (coordinateVector φ x)
+  f x - MorsePerturbation.dualEquiv a (coordinateVector φ x)
 
-theorem Smale.ManifoldPerturbation.contMDiff_perturb {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldPerturbation.contMDiff_perturb {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {p : M} (φ : SmoothBumpFunction 𝓘(ℝ, E) p) {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) :
     ContMDiff (𝓘(ℝ, E).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (fun q : E × M => perturb φ f q.1 q.2) :=
   (hf.comp contMDiff_snd).sub
-    ((Smale.MorsePerturbation.dualEquiv.contDiff.contMDiff.comp contMDiff_fst).clm_apply
+    ((MorsePerturbation.dualEquiv.contDiff.contMDiff.comp contMDiff_fst).clm_apply
       ((contMDiff_coordinateVector φ).comp contMDiff_snd))
 
 @[simp]
-theorem Smale.ManifoldPerturbation.perturb_zero {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldPerturbation.perturb_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {p : M}
     (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (f : M → ℝ) : perturb φ f 0 = f := by
   funext x
   simp [perturb]
 
 /-- Being Morse at a point: the point is a nondegenerate critical point of `f` - the Hessian there is a nondegenerate quadratic form (Milnor, Morse Theory, Section 2). -/
-def Smale.ManifoldMorse.IsMorseAt (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def ManifoldMorse.IsMorseAt (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (x : M) : Prop :=
   ∃ e : OpenPartialHomeomorph M E,
     e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M ∧
@@ -277,35 +277,35 @@ def Smale.ManifoldMorse.IsMorseAt (E : Type*) {M : Type*} [NormedAddCommGroup E]
           Function.Bijective (fderiv ℝ (fderiv ℝ (f ∘ e.symm)) (e x)))
 
 /-- Being Morse on a set: `f` is Morse at every point of the set (all critical points in the set are nondegenerate). -/
-def Smale.ManifoldMorse.IsMorseOn (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def ManifoldMorse.IsMorseOn (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (K : Set M) : Prop :=
   ∀ x ∈ K, IsMorseAt E f x
 
 /-- Being a Morse function: `f` is smooth and all its critical points are nondegenerate (Milnor, Morse Theory, Section 2). -/
-def Smale.ManifoldMorse.IsMorse (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def ManifoldMorse.IsMorse (E : Type*) {M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) : Prop :=
   ∀ x, IsMorseAt E f x
 
-theorem Smale.ManifoldMorse.IsMorseOn.union {E : Type*} {M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.IsMorseOn.union {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {K L : Set M}
-    (hK : Smale.ManifoldMorse.IsMorseOn E f K) (hL : Smale.ManifoldMorse.IsMorseOn E f L) :
-    Smale.ManifoldMorse.IsMorseOn E f (K ∪ L) := by
+    (hK : ManifoldMorse.IsMorseOn E f K) (hL : ManifoldMorse.IsMorseOn E f L) :
+    ManifoldMorse.IsMorseOn E f (K ∪ L) := by
   intro x hx
   rcases hx with hx | hx
   · exact hK x hx
   · exact hL x hx
 
-theorem Smale.ManifoldMorse.contDiffOn_chartExpression {E : Type*} {M : Type*}
+theorem ManifoldMorse.contDiffOn_chartExpression {E : Type*} {M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {e : OpenPartialHomeomorph M E}
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) : ContDiffOn ℝ ∞ (f ∘ e.symm) e.target :=
   (hf.comp_contMDiffOn (contMDiffOn_symm_of_mem_maximalAtlas he)).contDiffOn
 
-theorem Smale.ManifoldMorse.isMorseAt_of_chart_eventuallyEq {E : Type*} {M : Type*}
+theorem ManifoldMorse.isMorseAt_of_chart_eventuallyEq {E : Type*} {M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {g : E → ℝ} {x : M} {e : OpenPartialHomeomorph M E}
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) (hx : x ∈ e.source)
-    (hg : Smale.MorsePerturbation.IsMorse g) (heq : f ∘ e.symm =ᶠ[𝓝 (e x)] g) : IsMorseAt E f x :=
+    (hg : MorsePerturbation.IsMorse g) (heq : f ∘ e.symm =ᶠ[𝓝 (e x)] g) : IsMorseAt E f x :=
   by
   refine ⟨e, he, hx, ?_⟩
   by_cases hc : fderiv ℝ (f ∘ e.symm) (e x) = 0
@@ -314,7 +314,7 @@ theorem Smale.ManifoldMorse.isMorseAt_of_chart_eventuallyEq {E : Type*} {M : Typ
     exact hg (e x) ((heq.fderiv_eq (𝕜 := ℝ)).symm.trans hc)
   · exact Or.inl hc
 
-theorem Smale.ManifoldMorse.contDiffOn_inChart {E : Type*} {M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.contDiffOn_inChart {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {P : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] {f : P → M → ℝ}
     (hf : ContMDiff (𝓘(ℝ, P).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (Function.uncurry f))
@@ -327,7 +327,7 @@ theorem Smale.ManifoldMorse.contDiffOn_inChart {E : Type*} {M : Type*} [NormedAd
     contDiffAt_fst.contMDiffAt.prodMk (hi.comp q contDiffAt_snd.contMDiffAt)
   exact (hf.contMDiffAt.comp q hmap).contDiffAt.contDiffWithinAt
 
-theorem Smale.ManifoldMorse.isOpen_morseInChart {E : Type*} {M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.isOpen_morseInChart {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {P : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] {f : P → M → ℝ}
     (hf : ContMDiff (𝓘(ℝ, P).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (Function.uncurry f))
@@ -338,7 +338,7 @@ theorem Smale.ManifoldMorse.isOpen_morseInChart {E : Type*} {M : Type*} [NormedA
           (fderiv ℝ (f q.1 ∘ e.symm) (e q.2) ≠ 0 ∨
             Function.Bijective (fderiv ℝ (fderiv ℝ (f q.1 ∘ e.symm)) (e q.2)))} := by
   have hg :=
-    Smale.MorsePerturbation.isOpen_goodJetOn (f := fun a y => f a (e.symm y))
+    MorsePerturbation.isOpen_goodJetOn (f := fun a y => f a (e.symm y))
       (e.open_target.preimage (continuous_snd : Continuous (Prod.snd : P × E → E)))
       (contDiffOn_inChart hf he)
   let S : Set (P × M) := {q | q.2 ∈ e.source}
@@ -355,7 +355,7 @@ theorem Smale.ManifoldMorse.isOpen_morseInChart {E : Type*} {M : Type*} [NormedA
   · rintro ⟨hq, -, hg⟩
     exact ⟨hq, hg⟩
 
-theorem Smale.ManifoldMorse.isOpen_isMorseAt {E : Type*} {M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.isOpen_isMorseAt {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {P : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] {f : P → M → ℝ}
     (hf : ContMDiff (𝓘(ℝ, P).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (Function.uncurry f)) :
@@ -372,20 +372,20 @@ theorem Smale.ManifoldMorse.isOpen_isMorseAt {E : Type*} {M : Type*} [NormedAddC
   rw [heq]
   exact isOpen_iUnion fun e => isOpen_iUnion fun he => isOpen_morseInChart hf he
 
-theorem Smale.ManifoldMorse.isOpen_isMorseOn {E : Type*} {M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.isOpen_isMorseOn {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {P : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] {f : P → M → ℝ}
     (hf : ContMDiff (𝓘(ℝ, P).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (Function.uncurry f)) {K : Set M}
     (hK : IsCompact K) : IsOpen {p : P | IsMorseOn E (f p) K} :=
-  Smale.MorsePerturbation.isOpen_forall_mem_compact hK (isOpen_isMorseAt hf)
+  MorsePerturbation.isOpen_forall_mem_compact hK (isOpen_isMorseAt hf)
 
-def Smale.MorsePerturbation.hessianEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorsePerturbation.hessianEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (f : E → ℝ) (x : E)
     (h : Function.Bijective (fderiv ℝ (fderiv ℝ f) x)) : E ≃L[ℝ] (E →L[ℝ] ℝ) :=
   (LinearEquiv.ofBijective (fderiv ℝ (fderiv ℝ f) x).toLinearMap h).toContinuousLinearEquiv
 
 @[simp]
-theorem Smale.MorsePerturbation.hessianEquiv_toContinuousLinearMap {E : Type*}
+theorem MorsePerturbation.hessianEquiv_toContinuousLinearMap {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (f : E → ℝ) (x : E)
     (h : Function.Bijective (fderiv ℝ (fderiv ℝ f) x)) :
     (hessianEquiv f x h).toContinuousLinearMap = fderiv ℝ (fderiv ℝ f) x := by
@@ -393,11 +393,11 @@ theorem Smale.MorsePerturbation.hessianEquiv_toContinuousLinearMap {E : Type*}
   rfl
 
 /-- The critical-point set of a Morse function: the set of points where the differential vanishes (Milnor, Morse Theory, Section 2). -/
-def Smale.ManifoldMorse.criticalPoints {M : Type*} [TopologicalSpace M] (E : Type*)
+def ManifoldMorse.criticalPoints {M : Type*} [TopologicalSpace M] (E : Type*)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [ChartedSpace E M] (f : M → ℝ) : Set M :=
   {x | mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0}
 
-theorem Smale.ManifoldMorse.mem_criticalPoints_iff {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.mem_criticalPoints_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {e : OpenPartialHomeomorph M E}
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) {x : M} (hx : x ∈ e.source) :
@@ -427,7 +427,7 @@ theorem Smale.ManifoldMorse.mem_criticalPoints_iff {E M : Type*} [NormedAddCommG
     rw [hw] at hh
     exact hh
 
-theorem Smale.ManifoldMorse.criticalPoints_isClosed {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.criticalPoints_isClosed {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) : IsClosed (criticalPoints E f) := by
   apply isOpen_compl_iff.mp
@@ -449,7 +449,7 @@ theorem Smale.ManifoldMorse.criticalPoints_isClosed {E M : Type*} [NormedAddComm
   exact hy.2.2 ((mem_criticalPoints_iff hf he hy.1).mp hc)
 
 /-- The critical points of a Morse function form a discrete set: nondegeneracy forces the Hessian to be invertible there (Milnor, Morse Theory, Section 2). -/
-theorem Smale.ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) : IsDiscrete (criticalPoints E f) := by
   rw [isDiscrete_iff_forall_mem_exists_isOpen]
@@ -460,10 +460,10 @@ theorem Smale.ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCo
     have hloc :=
       (contDiffOn_chartExpression hf he).contDiffAt (e.open_target.mem_nhds (e.map_source hxS))
     have hdf := hloc.fderiv_right (m := ∞) (by simp)
-    let L := Smale.MorsePerturbation.hessianEquiv (f ∘ e.symm) (e x) hH
+    let L := MorsePerturbation.hessianEquiv (f ∘ e.symm) (e x) hH
     have hL : HasFDerivAt (fderiv ℝ (f ∘ e.symm)) L.toContinuousLinearMap (e x) := by
       rw [show L.toContinuousLinearMap = fderiv ℝ (fderiv ℝ (f ∘ e.symm)) (e x) from
-          Smale.MorsePerturbation.hessianEquiv_toContinuousLinearMap _ _ hH]
+          MorsePerturbation.hessianEquiv_toContinuousLinearMap _ _ hH]
       exact (hdf.differentiableAt (by simp)).hasFDerivAt
     let d := hdf.toOpenPartialHomeomorph (fderiv ℝ (f ∘ e.symm)) hL (by simp)
     have hd : e x ∈ d.source := hdf.mem_toOpenPartialHomeomorph_source hL (by simp)
@@ -482,18 +482,18 @@ theorem Smale.ManifoldMorse.criticalPoints_isDiscrete {E M : Type*} [NormedAddCo
       exact ⟨⟨hxS, hd⟩, hx⟩
 
 /-- A Morse function on a compact manifold has finitely many critical points: discrete plus compact equals finite - the counting tool behind the surgery windows (Milnor, Morse Theory, Section 2). -/
-theorem Smale.ManifoldMorse.finite_criticalPoints {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.finite_criticalPoints {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : IsMorse E f) : (criticalPoints E f).Finite :=
   (criticalPoints_isClosed hf).isCompact.finite (criticalPoints_isDiscrete hf hm)
 
-def Smale.FlowConstruction.chartDirection {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def FlowConstruction.chartDirection {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (e : OpenPartialHomeomorph M E) (w : E) :
     (x : M) → TangentSpace 𝓘(ℝ, E) x :=
   VectorField.mpullback 𝓘(ℝ, E) 𝓘(ℝ, E) e (fun y => (NormedSpace.fromTangentSpace y).symm w)
 
-theorem Smale.FlowConstruction.contMDiffOn_chartDirection {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.contMDiffOn_chartDirection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {e : OpenPartialHomeomorph M E}
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) (w : E) :
@@ -512,7 +512,7 @@ theorem Smale.FlowConstruction.contMDiffOn_chartDirection {E M : Type*} [NormedA
     ((hW (e x)).mpullback_vectorField_preimage (contMDiffAt_of_mem_maximalAtlas he hx) hinv
         (by simp)).contMDiffWithinAt
 
-theorem Smale.FlowConstruction.mvfderiv_chartDirection {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.mvfderiv_chartDirection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {e : OpenPartialHomeomorph M E}
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) (w : E) {x : M} (hx : x ∈ e.source) :
@@ -534,10 +534,10 @@ theorem Smale.FlowConstruction.mvfderiv_chartDirection {E M : Type*} [NormedAddC
   rw [VectorField.mpullback_apply, hi]
   exact (congrArg (fun A : E →L[ℝ] ℝ => A w) hc).symm
 
-theorem Smale.FlowConstruction.exists_unitSpeedField_near_regular {E M : Type*}
+theorem FlowConstruction.exists_unitSpeedField_near_regular {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    {p : M} (hp : p ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    {p : M} (hp : p ∉ ManifoldMorse.criticalPoints E f) :
     ∃ U : Set M,
       IsOpen U ∧
         p ∈ U ∧
@@ -550,14 +550,14 @@ theorem Smale.FlowConstruction.exists_unitSpeedField_near_regular {E M : Type*}
   have he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M := IsManifold.chart_mem_maximalAtlas p
   have hpS : p ∈ e.source := mem_chart_source E p
   have hdf : fderiv ℝ (f ∘ e.symm) (e p) ≠ 0 := fun h =>
-    hp ((Smale.ManifoldMorse.mem_criticalPoints_iff hf he hpS).mpr h)
+    hp ((ManifoldMorse.mem_criticalPoints_iff hf he hpS).mpr h)
   have hw : ∃ w : E, fderiv ℝ (f ∘ e.symm) (e p) w ≠ 0 := by
     by_contra! h
     exact hdf (ContinuousLinearMap.ext h)
   obtain ⟨w, hw⟩ := hw
   let D : M → ℝ := fun x => fderiv ℝ (f ∘ e.symm) (e x) w
   have hder :=
-    (Smale.ManifoldMorse.contDiffOn_chartExpression hf he).fderiv_of_isOpen e.open_target (m := ∞)
+    (ManifoldMorse.contDiffOn_chartExpression hf he).fderiv_of_isOpen e.open_target (m := ∞)
       (by simp)
   have hD : ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ D e.source :=
     (hder.clm_apply contDiffOn_const).contMDiffOn.comp (contMDiffOn_of_mem_maximalAtlas he)
@@ -576,11 +576,11 @@ theorem Smale.FlowConstruction.exists_unitSpeedField_near_regular {E M : Type*}
     rw [map_smul, smul_eq_mul, mvfderiv_chartDirection hf he w hx.1]
     exact inv_mul_cancel₀ hx.2
 
-theorem Smale.FlowConstruction.exists_prescribedDerivativeField {E M : Type*}
+theorem FlowConstruction.exists_prescribedDerivativeField {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [SigmaCompactSpace M] {f χ : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hχ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ χ)
-    (hsupp : tsupport χ ⊆ (Smale.ManifoldMorse.criticalPoints E f)ᶜ) :
+    (hsupp : tsupport χ ⊆ (ManifoldMorse.criticalPoints E f)ᶜ) :
     ∃ V : (x : M) → TangentSpace 𝓘(ℝ, E) x,
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
         ∀ x, mvfderiv 𝓘(ℝ, E) f x (V x) = χ x := by
@@ -595,7 +595,7 @@ theorem Smale.FlowConstruction.exists_prescribedDerivativeField {E M : Type*}
               U ∧
             ∀ x ∈ U, V x ∈ C x := by
     intro p
-    by_cases hp : p ∉ Smale.ManifoldMorse.criticalPoints E f
+    by_cases hp : p ∉ ManifoldMorse.criticalPoints E f
     · obtain ⟨U, hU, hpU, V, hV, hVunit⟩ := exists_unitSpeedField_near_regular hf hp
       refine ⟨U, hU.mem_nhds hpU, (fun x => χ x • V x), hχ.contMDiffOn.smul_section hV, ?_⟩
       intro x hx
@@ -613,13 +613,13 @@ theorem Smale.FlowConstruction.exists_prescribedDerivativeField {E M : Type*}
       (TangentSpace 𝓘(ℝ, E) (M := M)) C hC hlocal
   exact ⟨V, V.contMDiff, hV⟩
 
-theorem Smale.FlowConstruction.exists_gluedDescentField {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_gluedDescentField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [SigmaCompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {ι : Type*} [Finite ι] (U K : ι → Set M)
     (hU : ∀ i, IsOpen (U i)) (hK : ∀ i, IsClosed (K i)) (hKU : ∀ i, K i ⊆ U i)
     (hdisj : Pairwise (fun i j => Disjoint (U i) (U j)))
-    (hcover : Smale.ManifoldMorse.criticalPoints E f ⊆ ⋃ i, K i)
+    (hcover : ManifoldMorse.criticalPoints E f ⊆ ⋃ i, K i)
     (Vloc : ι → (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hVloc :
       ∀ i,
@@ -628,14 +628,14 @@ theorem Smale.FlowConstruction.exists_gluedDescentField {E M : Type*} [NormedAdd
     (hdesc :
       ∀ i x,
         x ∈ U i →
-          x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (Vloc i x) < 0) :
+          x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (Vloc i x) < 0) :
     ∃ V : (x : M) → TangentSpace 𝓘(ℝ, E) x,
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
-        (∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
+        (∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
           ∀ i x, x ∈ K i → V x = Vloc i x := by
   let C : (x : M) → Set (TangentSpace 𝓘(ℝ, E) x) := fun x =>
     {w |
-      (x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x w < 0) ∧
+      (x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x w < 0) ∧
         ∀ i, x ∈ K i → w = Vloc i x}
   have hC (x : M) : Convex ℝ (C x) := by
     intro u hu v hv a b ha hb hab
@@ -664,7 +664,7 @@ theorem Smale.FlowConstruction.exists_gluedDescentField {E M : Type*} [NormedAdd
       · subst j
         rfl
       · exact False.elim (Set.disjoint_left.mp (hdisj hij) hx (hKU j hxj))
-    · have hpreg : p ∉ Smale.ManifoldMorse.criticalPoints E f := fun h => hp (hcover h)
+    · have hpreg : p ∉ ManifoldMorse.criticalPoints E f := fun h => hp (hcover h)
       obtain ⟨W, hW, hpW, V, hV, hVf⟩ := exists_unitSpeedField_near_regular hf hpreg
       refine
         ⟨W ∩ (⋃ i, K i)ᶜ, (hW.inter hclosed.isOpen_compl).mem_nhds ⟨hpW, hp⟩, (fun x => -(V x)),
@@ -687,8 +687,8 @@ theorem MorseCancellation.exists_closed_patch_descent_field {E M : Type*} [Norme
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [SigmaCompactSpace M] {f : M → ℝ}
     (V₀ : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hV₀ : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V₀ x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero₀ : ∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V₀ x = 0)
-    (hdesc₀ : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V₀ x) < 0)
+    (hzero₀ : ∀ x ∈ ManifoldMorse.criticalPoints E f, V₀ x = 0)
+    (hdesc₀ : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V₀ x) < 0)
     {ι : Type*} [Finite ι] (K U : ι → Set M) (hK : ∀ i, IsClosed (K i)) (hU : ∀ i, IsOpen (U i))
     (hKU : ∀ i, K i ⊆ U i) (hdisj : Pairwise (fun i j => Disjoint (K i) (K j)))
     (Vloc : ι → (x : M) → TangentSpace 𝓘(ℝ, E) x)
@@ -696,21 +696,21 @@ theorem MorseCancellation.exists_closed_patch_descent_field {E M : Type*} [Norme
       ∀ i,
         ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞
           (fun x => (⟨x, Vloc i x⟩ : TangentBundle 𝓘(ℝ, E) M)) (U i))
-    (hzero : ∀ i x, x ∈ U i → x ∈ Smale.ManifoldMorse.criticalPoints E f → Vloc i x = 0)
+    (hzero : ∀ i x, x ∈ U i → x ∈ ManifoldMorse.criticalPoints E f → Vloc i x = 0)
     (hdesc :
       ∀ i x,
         x ∈ U i →
-          x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (Vloc i x) < 0) :
+          x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (Vloc i x) < 0) :
     ∃ V : (x : M) → TangentSpace 𝓘(ℝ, E) x,
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
-        (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0) ∧
-          (∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
+        (∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0) ∧
+          (∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
             ∀ i x, x ∈ K i → V x = Vloc i x := by
   classical
   let C : (x : M) → Set (TangentSpace 𝓘(ℝ, E) x) := fun x =>
     {w |
-      (x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x w < 0) ∧
-        (x ∈ Smale.ManifoldMorse.criticalPoints E f → w = 0) ∧ ∀ i, x ∈ K i → w = Vloc i x}
+      (x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x w < 0) ∧
+        (x ∈ ManifoldMorse.criticalPoints E f → w = 0) ∧ ∀ i, x ∈ K i → w = Vloc i x}
   have hC (x : M) : Convex ℝ (C x) := by
     intro u hu v hv a b ha hb hab
     refine ⟨?_, ?_, ?_⟩
@@ -758,13 +758,13 @@ theorem MorseCancellation.exists_closed_patch_descent_field {E M : Type*} [Norme
       (TangentSpace 𝓘(ℝ, E) (M := M)) C hC hlocal
   exact ⟨V, V.contMDiff, fun x => (hV x).2.1, fun x => (hV x).1, fun i x hx => (hV x).2.2 i hx⟩
 
-def Smale.FlowConstruction.partialChartField {E F M : Type*} [NormedAddCommGroup E]
+def FlowConstruction.partialChartField {E F M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace M]
     [ChartedSpace E M] (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) M F ∞) (W : F → F) :
     (x : M) → TangentSpace 𝓘(ℝ, E) x :=
   VectorField.mpullback 𝓘(ℝ, E) 𝓘(ℝ, F) e (fun y => (NormedSpace.fromTangentSpace y).symm (W y))
 
-theorem Smale.FlowConstruction.contMDiffOn_partialChartField {E F M : Type*}
+theorem FlowConstruction.contMDiffOn_partialChartField {E F M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace M] [ChartedSpace E M] [CompleteSpace E] [IsManifold 𝓘(ℝ, E) ∞ M]
     (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) M F ∞) {W : F → F} (hW : ContDiff ℝ ∞ W) :
@@ -785,7 +785,7 @@ theorem Smale.FlowConstruction.contMDiffOn_partialChartField {E F M : Type*}
         ((e.contMDiffOn x hx).contMDiffAt (e.open_source.mem_nhds hx)) hinv
         (by simp)).contMDiffWithinAt
 
-theorem Smale.FlowConstruction.mvfderiv_partialChartField {E F M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.mvfderiv_partialChartField {E F M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace M]
     [ChartedSpace E M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, F) M F ∞) (W : F → F) {x : M} (hx : x ∈ e.source) :
@@ -943,7 +943,7 @@ theorem LineBundleTransport.exists_interval_cutoff (a b : ℝ) :
 
 /-- A smooth function with a prescribed compact plateau exists on any smooth manifold:
 the tool for making perturbations constant off a compact set. -/
-theorem Smale.ManifoldMorse.exists_compact_plateau {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.exists_compact_plateau {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] (p : M) :
     ∃ (φ : SmoothBumpFunction 𝓘(ℝ, E) p) (U L : Set M),
       IsOpen U ∧
@@ -957,14 +957,14 @@ theorem Smale.ManifoldMorse.exists_compact_plateau {E M : Type*} [NormedAddCommG
   obtain ⟨L, hpL, hLU, hL⟩ := local_compact_nhds (hU.mem_nhds hpU)
   exact ⟨φ, U, L, hU, fun x hx => (hUN hx).2, fun x hx => (hUN hx).1, hL, hpL, hLU⟩
 
-theorem Smale.ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {p : M}
     (φ : SmoothBumpFunction 𝓘(ℝ, E) p) {f : M → ℝ} {G : E → ℝ} {U : Set M} {V : Set E}
     (hU : IsOpen U) (hUs : U ⊆ (chartAt E p).source) (hφ : Set.EqOn φ (fun _ => 1) U)
     (hV : IsOpen V) (hG : Set.EqOn G (f ∘ (chartAt E p).symm) V) (a : E) {x : M} (hx : x ∈ U)
     (hxV : chartAt E p x ∈ V) :
-    Smale.ManifoldPerturbation.perturb φ f a ∘ (chartAt E p).symm =ᶠ[𝓝 (chartAt E p x)]
-      Smale.MorsePerturbation.linearPerturbation G a := by
+    ManifoldPerturbation.perturb φ f a ∘ (chartAt E p).symm =ᶠ[𝓝 (chartAt E p x)]
+      MorsePerturbation.linearPerturbation G a := by
   let e := chartAt E p
   have hxt : e x ∈ e.target := e.map_source (hUs hx)
   have hi : ContinuousAt e.symm (e x) := e.symm.continuousAt hxt
@@ -977,8 +977,8 @@ theorem Smale.ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAd
   change G y = f (e.symm y) at hGy
   change
     f (e.symm y) -
-        Smale.MorsePerturbation.dualEquiv a (φ (e.symm y) • extChartAt 𝓘(ℝ, E) p (e.symm y)) =
-      G y - Smale.MorsePerturbation.dualEquiv a y
+        MorsePerturbation.dualEquiv a (φ (e.symm y) • extChartAt 𝓘(ℝ, E) p (e.symm y)) =
+      G y - MorsePerturbation.dualEquiv a y
   rw [hφy, one_smul, ← hGy]
   congr 2
   simpa only [extChartAt_coe, Function.comp_apply, modelWithCornersSelf_coe, id_eq] using
@@ -986,7 +986,7 @@ theorem Smale.ManifoldMorse.perturb_inChart_eventuallyEq {E M : Type*} [NormedAd
 
 /-- A smooth function prescribed on a closed subset of a smooth manifold extends to a
 Morse function on the whole manifold (Milnor, \*Morse Theory\* Section 1). -/
-theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
     [MeasureTheory.Measure.IsAddHaarMeasure μ] {p : M} (φ : SmoothBumpFunction 𝓘(ℝ, E) p)
@@ -996,8 +996,8 @@ theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommG
     (hε : 0 < ε) :
     ∃ a : E,
       ‖a‖ < ε ∧
-        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (Smale.ManifoldPerturbation.perturb φ f a) ∧
-          IsMorseOn E (Smale.ManifoldPerturbation.perturb φ f a) (L ∪ K) := by
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (ManifoldPerturbation.perturb φ f a) ∧
+          IsMorseOn E (ManifoldPerturbation.perturb φ f a) (L ∪ K) := by
   let e := chartAt E p
   have he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M := IsManifold.chart_mem_maximalAtlas p
   have hLc : IsCompact (e '' L) := hL.image_of_continuousOn (e.continuousOn.mono (hLU.trans hUs))
@@ -1007,13 +1007,13 @@ theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommG
   obtain ⟨G, hG, V, hV, hLV, -, hGV⟩ :=
     LineBundleTransport.exists_smooth_extension_near_closed hLc.isClosed e.open_target hLt
       (contDiffOn_chartExpression hf he)
-  have hfamily := Smale.ManifoldPerturbation.contMDiff_perturb φ hf
-  let A : Set E := {a | IsMorseOn E (Smale.ManifoldPerturbation.perturb φ f a) K}
-  have hA : IsOpen A := isOpen_isMorseOn (f := Smale.ManifoldPerturbation.perturb φ f) hfamily hK
+  have hfamily := ManifoldPerturbation.contMDiff_perturb φ hf
+  let A : Set E := {a | IsMorseOn E (ManifoldPerturbation.perturb φ f a) K}
+  have hA : IsOpen A := isOpen_isMorseOn (f := ManifoldPerturbation.perturb φ f) hfamily hK
   have hA₀ : (0 : E) ∈ A := by simpa [A] using hfK
   have hd :=
-    Smale.RegularValues.dense_regularValues μ
-      ((Smale.MorsePerturbation.contDiff_coordinateGradient hG).differentiable (by simp))
+    RegularValues.dense_regularValues μ
+      ((MorsePerturbation.contDiff_coordinateGradient hG).differentiable (by simp))
   obtain ⟨a, ha, haA, haε⟩ :=
     hd.exists_mem_open (hA.inter Metric.isOpen_ball) ⟨0, hA₀, Metric.mem_ball_self hε⟩
   refine ⟨a, mem_ball_zero_iff.mp haε, ?_, ?_⟩
@@ -1022,14 +1022,14 @@ theorem Smale.ManifoldMorse.exists_morse_extension {E M : Type*} [NormedAddCommG
     intro x hx
     apply
       isMorseAt_of_chart_eventuallyEq he (hUs (hLU hx))
-        (Smale.MorsePerturbation.isMorse_of_regularValue hG ha)
+        (MorsePerturbation.isMorse_of_regularValue hG ha)
     exact
       perturb_inChart_eventuallyEq φ hU hUs hφ hV hGV a (hLU hx) (hLV (Set.mem_image_of_mem e hx))
 
 /-- Every smooth function on a compact smooth manifold can be uniformly approximated by
 a Morse function; in particular a compact smooth manifold admits a Morse function
 (Milnor, \*Morse Theory\* Section 1). -/
-theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] :
@@ -1051,7 +1051,7 @@ theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedA
       obtain ⟨a, -, hfa, hma⟩ :=
         exists_morse_extension μ (φ p) (hU p) (hUs p) (hφ p) (hL p) (hLU p) hf hK hm (ε := 1)
           zero_lt_one
-      refine ⟨Smale.ManifoldPerturbation.perturb (φ p) f a, hfa, ?_⟩
+      refine ⟨ManifoldPerturbation.perturb (φ p) f a, hfa, ?_⟩
       have heq : (⋃ q ∈ Insert.insert p t, L q) = L p ∪ ⋃ q ∈ t, L q := by
         ext x
         simp only [Set.mem_iUnion, Finset.mem_insert, Set.mem_union]
@@ -1071,7 +1071,7 @@ theorem Smale.ManifoldMorse.exists_morse_function_of_haar {E M : Type*} [NormedA
   exact Set.mem_univ x
 
 /-- Every compact smooth manifold admits a Morse function (Milnor, Morse Theory, Section 1; Hatcher, Algebraic Topology, Section 0). -/
-theorem Smale.ManifoldMorse.exists_morse_function (E : Type*) (M : Type*) [NormedAddCommGroup E]
+theorem ManifoldMorse.exists_morse_function (E : Type*) (M : Type*) [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [T2Space M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] :
     ∃ f : M → ℝ, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧ IsMorse E f := by
@@ -1885,7 +1885,7 @@ theorem SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn {E : Type*}
   have hr : φ (φ.symm y) = y := φ.right_inv hy
   simpa only [hr] using hφnormal (φ.symm y) (φ.map_target hy)
 
-def Smale.ManifoldMorse.chartPartialDiffeomorph {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.chartPartialDiffeomorph {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (e : OpenPartialHomeomorph M E)
     (he : e ∈ IsManifold.maximalAtlas 𝓘(ℝ, E) ∞ M) : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M E ∞
     where
@@ -1895,7 +1895,7 @@ def Smale.ManifoldMorse.chartPartialDiffeomorph {E M : Type*} [NormedAddCommGrou
   contMDiffOn_toFun := contMDiffOn_of_mem_maximalAtlas he
   contMDiffOn_invFun := contMDiffOn_symm_of_mem_maximalAtlas he
 
-structure Smale.ManifoldMorse.SignedMorseChart {E M : Type*} [NormedAddCommGroup E]
+structure ManifoldMorse.SignedMorseChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (x : M) where
   weights : Fin (Module.finrank ℝ E) → ℝ
   signs : ∀ i, weights i = -1 ∨ weights i = 1
@@ -1907,7 +1907,7 @@ structure Smale.ManifoldMorse.SignedMorseChart {E M : Type*} [NormedAddCommGroup
   equation : ∀ y ∈ chart.source, f y = f x + ∑ i, weights i * (chart y i) ^ 2
   inverse_equation : ∀ y ∈ chart.target, f (chart.symm y) = f x + ∑ i, weights i * y i ^ 2
 
-theorem Smale.ManifoldMorse.nonempty_signedMorseChart {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.nonempty_signedMorseChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) (x : M)
     (hx : x ∈ criticalPoints E f) : Nonempty (SignedMorseChart (E := E) f x) := by
@@ -1929,20 +1929,20 @@ theorem Smale.ManifoldMorse.nonempty_signedMorseChart {E M : Type*} [NormedAddCo
       change f (e.symm (d.symm y)) = f x + ∑ i, w i * y i ^ 2
       simpa only [Function.comp_apply, e.left_inv hxS] using hdinv y hyd
 
-abbrev Smale.MorseHandle.Negative {ι : Type*} (w : ι → ℝ) :=
+abbrev MorseHandle.Negative {ι : Type*} (w : ι → ℝ) :=
   { i // w i = -1 }
 
-abbrev Smale.MorseHandle.Positive {ι : Type*} (w : ι → ℝ) :=
+abbrev MorseHandle.Positive {ι : Type*} (w : ι → ℝ) :=
   { i // w i ≠ -1 }
 
-abbrev Smale.MorseHandle.NegativeSpace {ι : Type*} (w : ι → ℝ) :=
+abbrev MorseHandle.NegativeSpace {ι : Type*} (w : ι → ℝ) :=
   EuclideanSpace ℝ (Negative w)
 
-abbrev Smale.MorseHandle.PositiveSpace {ι : Type*} (w : ι → ℝ) :=
+abbrev MorseHandle.PositiveSpace {ι : Type*} (w : ι → ℝ) :=
   EuclideanSpace ℝ (Positive w)
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.MorseHandle.splitLinearEquiv {ι : Type*} (w : ι → ℝ) :
+def MorseHandle.splitLinearEquiv {ι : Type*} (w : ι → ℝ) :
     (ι → ℝ) ≃ₗ[ℝ] (NegativeSpace w × PositiveSpace w) := by
   let e : (ι → ℝ) ≃ₗ[ℝ] ((Negative w → ℝ) × (Positive w → ℝ)) :=
     { toEquiv := Equiv.piEquivPiSubtypeProd (fun i => w i = -1) (fun _ => ℝ)
@@ -1954,12 +1954,12 @@ def Smale.MorseHandle.splitLinearEquiv {ι : Type*} (w : ι → ℝ) :
         (WithLp.linearEquiv 2 ℝ (Positive w → ℝ)).symm)
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.MorseHandle.splitCoordinates {ι : Type*} [Fintype ι] (w : ι → ℝ) :
+def MorseHandle.splitCoordinates {ι : Type*} [Fintype ι] (w : ι → ℝ) :
     (ι → ℝ) ≃L[ℝ] (NegativeSpace w × PositiveSpace w) :=
   (splitLinearEquiv w).toContinuousLinearEquiv
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.MorseHandle.signedSum_eq_norms {ι : Type*} [Fintype ι] (w : ι → ℝ)
+theorem MorseHandle.signedSum_eq_norms {ι : Type*} [Fintype ι] (w : ι → ℝ)
     (hw : ∀ i, w i = -1 ∨ w i = 1) (z : ι → ℝ) :
     ∑ i, w i * (z i) ^ 2 = -‖(splitCoordinates w z).1‖ ^ 2 + ‖(splitCoordinates w z).2‖ ^ 2 := by
   rw [EuclideanSpace.real_norm_sq_eq, EuclideanSpace.real_norm_sq_eq]
@@ -1981,78 +1981,78 @@ theorem Smale.MorseHandle.signedSum_eq_norms {ι : Type*} [Fintype ι] (w : ι �
     _ = _ := by rw [hneg, hpos]; rfl
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.MorseHandle.signedSum_symm_eq_norms {ι : Type*} [Fintype ι] (w : ι → ℝ)
+theorem MorseHandle.signedSum_symm_eq_norms {ι : Type*} [Fintype ι] (w : ι → ℝ)
     (hw : ∀ i, w i = -1 ∨ w i = 1) (z : NegativeSpace w × PositiveSpace w) :
     ∑ i, w i * ((splitCoordinates w).symm z i) ^ 2 = -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2 := by
   simpa only [ContinuousLinearEquiv.apply_symm_apply] using
     signedSum_eq_norms w hw ((splitCoordinates w).symm z)
 
-abbrev Smale.ManifoldMorse.SignedMorseChart.NegativeCoordinates {E M : Type*}
+abbrev ManifoldMorse.SignedMorseChart.NegativeCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) :=
-  Smale.MorseHandle.NegativeSpace c.weights
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) :=
+  MorseHandle.NegativeSpace c.weights
 
-abbrev Smale.ManifoldMorse.SignedMorseChart.PositiveCoordinates {E M : Type*}
+abbrev ManifoldMorse.SignedMorseChart.PositiveCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) :=
-  Smale.MorseHandle.PositiveSpace c.weights
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) :=
+  MorseHandle.PositiveSpace c.weights
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.finrank_negative_add_positive {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.finrank_negative_add_positive {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) :
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) :
     Module.finrank ℝ c.NegativeCoordinates + Module.finrank ℝ c.PositiveCoordinates =
       Module.finrank ℝ E := by
-  have h := (Smale.MorseHandle.splitLinearEquiv c.weights).finrank_eq
+  have h := (MorseHandle.splitLinearEquiv c.weights).finrank_eq
   simpa only [Module.finrank_prod, Module.finrank_fin_fun] using h.symm
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.SignedMorseChart.splitChart {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.SignedMorseChart.splitChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {x : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) :
+    (c : ManifoldMorse.SignedMorseChart (E := E) f x) :
     PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, c.NegativeCoordinates × c.PositiveCoordinates) M
       (c.NegativeCoordinates × c.PositiveCoordinates) ∞ :=
-  c.chart.trans (Smale.MorseHandle.splitCoordinates c.weights).toDiffeomorph.toPartialDiffeomorph
+  c.chart.trans (MorseHandle.splitCoordinates c.weights).toDiffeomorph.toPartialDiffeomorph
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.splitChart_mem_source {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.splitChart_mem_source {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) : x ∈ c.splitChart.source :=
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) : x ∈ c.splitChart.source :=
   ⟨c.mem_source, Set.mem_univ _⟩
 
 attribute [local instance 100] Classical.propDecidable in
 @[simp]
-theorem Smale.ManifoldMorse.SignedMorseChart.splitChart_center {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.splitChart_center {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) : c.splitChart x = 0 := by
-  change Smale.MorseHandle.splitCoordinates c.weights (c.chart x) = 0
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) : c.splitChart x = 0 := by
+  change MorseHandle.splitCoordinates c.weights (c.chart x) = 0
   rw [c.center, map_zero]
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.splitChart_equation {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.splitChart_equation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) {y : M}
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) {y : M}
     (hy : y ∈ c.splitChart.source) :
     f y = f x - ‖(c.splitChart y).1‖ ^ 2 + ‖(c.splitChart y).2‖ ^ 2 := by
-  rw [c.equation y hy.1, Smale.MorseHandle.signedSum_eq_norms c.weights c.signs]
+  rw [c.equation y hy.1, MorseHandle.signedSum_eq_norms c.weights c.signs]
   change f x + (-‖(c.splitChart y).1‖ ^ 2 + ‖(c.splitChart y).2‖ ^ 2) = _
   ring
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.splitChart_inverse_equation {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.splitChart_inverse_equation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x)
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x)
     {y : c.NegativeCoordinates × c.PositiveCoordinates} (hy : y ∈ c.splitChart.target) :
     f (c.splitChart.symm y) = f x - ‖y.1‖ ^ 2 + ‖y.2‖ ^ 2 := by
-  change f (c.chart.symm ((Smale.MorseHandle.splitCoordinates c.weights).symm y)) = _
-  rw [c.inverse_equation ((Smale.MorseHandle.splitCoordinates c.weights).symm y) hy.2,
-    Smale.MorseHandle.signedSum_symm_eq_norms c.weights c.signs]
+  change f (c.chart.symm ((MorseHandle.splitCoordinates c.weights).symm y)) = _
+  rw [c.inverse_equation ((MorseHandle.splitCoordinates c.weights).symm y) hy.2,
+    MorseHandle.signedSum_symm_eq_norms c.weights c.signs]
   ring
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.exists_closed_productBlock {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.exists_closed_productBlock {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {x : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f x) :
+    {x : M} (c : ManifoldMorse.SignedMorseChart (E := E) f x) :
     ∃ r > (0 : ℝ),
       Metric.closedBall (0 : c.NegativeCoordinates) r ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) r ⊆
@@ -2067,43 +2067,43 @@ theorem Smale.ManifoldMorse.SignedMorseChart.exists_closed_productBlock {E M : T
   exact hsub
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.ManifoldMorse.SignedMorseChart.descentField {E M : Type*} [NormedAddCommGroup E]
+def ManifoldMorse.SignedMorseChart.descentField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) : (x : M) → TangentSpace 𝓘(ℝ, E) x :=
-  Smale.FlowConstruction.partialChartField c.splitChart Smale.MorseHandle.descent
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) : (x : M) → TangentSpace 𝓘(ℝ, E) x :=
+  FlowConstruction.partialChartField c.splitChart MorseHandle.descent
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.contMDiffOn_descentField {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.contMDiffOn_descentField {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) [CompleteSpace E]
+    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [CompleteSpace E]
     [IsManifold 𝓘(ℝ, E) ∞ M] :
     ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞
       (fun x => (⟨x, c.descentField x⟩ : TangentBundle 𝓘(ℝ, E) M)) c.splitChart.source :=
-  Smale.FlowConstruction.contMDiffOn_partialChartField c.splitChart
-    Smale.MorseHandle.contDiff_descent
+  FlowConstruction.contMDiffOn_partialChartField c.splitChart
+    MorseHandle.contDiff_descent
 
 attribute [local instance 100] Classical.propDecidable in
 @[simp]
-theorem Smale.ManifoldMorse.SignedMorseChart.descentField_center {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.descentField_center {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) : c.descentField p = 0 := by
-  have hzero : Smale.MorseHandle.descent (c.splitChart p) = 0 := by
+    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) : c.descentField p = 0 := by
+  have hzero : MorseHandle.descent (c.splitChart p) = 0 := by
     rw [c.splitChart_center]
-    simp [Smale.MorseHandle.descent]
-  unfold descentField Smale.FlowConstruction.partialChartField
+    simp [MorseHandle.descent]
+  unfold descentField FlowConstruction.partialChartField
   rw [VectorField.mpullback_apply, hzero, map_zero, map_zero]
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.mvfderiv_descentField {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.mvfderiv_descentField {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
+    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M} (hx : x ∈ c.splitChart.source) :
     mvfderiv 𝓘(ℝ, E) f x (c.descentField x) =
       -2 * (‖(c.splitChart x).1‖ ^ 2 + ‖(c.splitChart x).2‖ ^ 2) := by
-  rw [descentField, Smale.FlowConstruction.mvfderiv_partialChartField hf c.splitChart _ hx]
+  rw [descentField, FlowConstruction.mvfderiv_partialChartField hf c.splitChart _ hx]
   have hcoord :
     (f ∘ c.splitChart.symm) =ᶠ[𝓝 (c.splitChart x)]
-      (fun z => f p + Smale.MorseHandle.quadratic z) := by
+      (fun z => f p + MorseHandle.quadratic z) := by
     filter_upwards [c.splitChart.open_target.mem_nhds
         (c.splitChart.toOpenPartialHomeomorph.map_source hx)] with
       z hz
@@ -2111,12 +2111,12 @@ theorem Smale.ManifoldMorse.SignedMorseChart.mvfderiv_descentField {E M : Type*}
     rw [c.splitChart_inverse_equation hz]
     ring
   rw [hcoord.fderiv_eq, fderiv_const_add]
-  exact Smale.MorseHandle.fderiv_quadratic_descent _
+  exact MorseHandle.fderiv_quadratic_descent _
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.ManifoldMorse.SignedMorseChart.mvfderiv_descentField_neg {E M : Type*}
+theorem ManifoldMorse.SignedMorseChart.mvfderiv_descentField_neg {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p)
+    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M} (hx : x ∈ c.splitChart.source) (hxp : x ≠ p) :
     mvfderiv 𝓘(ℝ, E) f x (c.descentField x) < 0 := by
   have hcoord : c.splitChart x ≠ 0 := by
@@ -2126,10 +2126,10 @@ theorem Smale.ManifoldMorse.SignedMorseChart.mvfderiv_descentField_neg {E M : Ty
       c.splitChart.toOpenPartialHomeomorph.injOn hx c.splitChart_mem_source
         (h.trans c.splitChart_center.symm)
   rw [c.mvfderiv_descentField hf hx]
-  simpa only [Smale.MorseHandle.fderiv_quadratic_descent] using
-    Smale.MorseHandle.fderiv_quadratic_descent_neg hcoord
+  simpa only [MorseHandle.fderiv_quadratic_descent] using
+    MorseHandle.fderiv_quadratic_descent_neg hcoord
 
-theorem Smale.ManifoldMorse.exists_adaptedDescentField {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.exists_adaptedDescentField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) :
@@ -2167,7 +2167,7 @@ theorem Smale.ManifoldMorse.exists_adaptedDescentField {E M : Type*} [NormedAddC
     mvfderiv 𝓘(ℝ, E) f x ((c p).descentField x) < 0 :=
     (c p).mvfderiv_descentField_neg hf hx.2 (fun h => hreg (h.symm ▸ p.2))
   obtain ⟨V, hV, hstrict, hmatch⟩ :=
-    Smale.FlowConstruction.exists_gluedDescentField hf U K hU hKclosed hKU hdisj hcover
+    FlowConstruction.exists_gluedDescentField hf U K hU hKclosed hKU hdisj hcover
       (fun p => (c p).descentField) hVloc hdesc
   refine ⟨V, hV, ?_, hstrict, ?_⟩
   · intro p hp
@@ -2181,8 +2181,8 @@ theorem Smale.ManifoldMorse.exists_adaptedDescentField {E M : Type*} [NormedAddC
 theorem MorseCancellation.morse_descentField_zero_at_critical {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    {x : M} (hx : x ∈ c.splitChart.source) (hcrit : x ∈ Smale.ManifoldMorse.criticalPoints E f) :
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    {x : M} (hx : x ∈ c.splitChart.source) (hcrit : x ∈ ManifoldMorse.criticalPoints E f) :
     c.descentField x = 0 := by
   by_cases hxp : x = p
   · subst x
@@ -2199,17 +2199,17 @@ theorem MorseCancellation.morse_descentField_zero_at_critical {E M : Type*} [Nor
 theorem MorseCancellation.exists_prescribed_morse_patch_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}
-    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (c : ∀ i, Smale.ManifoldMorse.SignedMorseChart (E := E) f (p i)) (K : ι → Set M)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {ι : Type*}
+    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ ManifoldMorse.criticalPoints E f)
+    (c : ∀ i, ManifoldMorse.SignedMorseChart (E := E) f (p i)) (K : ι → Set M)
     (hK : ∀ i, IsClosed (K i)) (hKchart : ∀ i, K i ⊆ (c i).splitChart.source)
     (hdisj : Pairwise (fun i j => Disjoint (K i) (K j))) :
     ∃ V : (x : M) → TangentSpace 𝓘(ℝ, E) x,
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
-        (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0) ∧
-          (∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
+        (∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0) ∧
+          (∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
             ∀ i x, x ∈ K i → V x = (c i).descentField x := by
-  obtain ⟨V₀, hV₀, hzero₀, hdesc₀, -⟩ := Smale.ManifoldMorse.exists_adaptedDescentField hf hm
+  obtain ⟨V₀, hV₀, hzero₀, hdesc₀, -⟩ := ManifoldMorse.exists_adaptedDescentField hf hm
   apply
     exists_closed_patch_descent_field V₀ hV₀ hzero₀ hdesc₀ K (fun i => (c i).splitChart.source) hK
       (fun i => (c i).splitChart.open_source) hKchart hdisj (fun i => (c i).descentField)
@@ -2221,7 +2221,7 @@ theorem MorseCancellation.exists_prescribed_morse_patch_field {E M : Type*} [Nor
 attribute [local instance 100] Classical.propDecidable in
 def MorseCancellation.morseClosedBlock {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ) : Set M :=
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ) : Set M :=
   c.splitChart.symm ''
     (Metric.closedBall (0 : c.NegativeCoordinates) R ×ˢ
       Metric.closedBall (0 : c.PositiveCoordinates) R)
@@ -2229,7 +2229,7 @@ def MorseCancellation.morseClosedBlock {E M : Type*} [NormedAddCommGroup E] [Nor
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.morseClosedBlock_subset_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) R ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) R ⊆
@@ -2241,7 +2241,7 @@ theorem MorseCancellation.morseClosedBlock_subset_source {E M : Type*} [NormedAd
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.morseClosedBlock_height {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) R ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) R ⊆
@@ -2259,7 +2259,7 @@ theorem MorseCancellation.morseClosedBlock_height {E M : Type*} [NormedAddCommGr
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.morseClosedBlock_mem_nhds {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
+    (c : ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) R ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) R ⊆
@@ -2286,7 +2286,7 @@ theorem MorseCancellation.morseClosedBlock_mem_nhds {E M : Type*} [NormedAddComm
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.isCompact_morseClosedBlock {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    [FiniteDimensional ℝ E] (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
+    [FiniteDimensional ℝ E] (c : ManifoldMorse.SignedMorseChart (E := E) f p) (R : ℝ)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) R ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) R ⊆

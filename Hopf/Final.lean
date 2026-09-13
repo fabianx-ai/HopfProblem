@@ -92,7 +92,7 @@ attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_secondCountable in
 def SixSphereComplexAtlas.threefoldHomeomorph : SpecialPeriods.Threefold.Space ≃ₜ unitSphere 6 :=
   Classical.choice
-    (Smale.homeomorphic_sixSphere_of_homotopySixSphere (ℂ × ComplexPlane₂)
+    (homeomorphic_sixSphere_of_homotopySixSphere (ℂ × ComplexPlane₂)
       SpecialPeriods.Threefold.Space SpecialPeriods.Threefold.real_dimension
       threefoldHomotopyEquiv)
 

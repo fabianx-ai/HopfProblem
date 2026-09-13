@@ -527,7 +527,7 @@ theorem SmoothODE.contDiffAt_ordinary_localFlow {E : Type*} [NormedAddCommGroup 
     (picard_endpoint_eq_local_solution v hv (abs_lt.mpr hqsmall.2) hzero hend hcurve
         (hinit q.1 hqsmall.1) (hH q.1 hqsmall.1)).symm
 
-theorem Smale.DiskFraming.starConvex_thickening_zero {D : Type*} [NormedAddCommGroup D]
+theorem DiskFraming.starConvex_thickening_zero {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {K : Set D} (hK : StarConvex ℝ (0 : D) K) (δ : ℝ) :
     StarConvex ℝ (0 : D) (Metric.thickening δ K) := by
   rw [starConvex_zero_iff]
@@ -541,7 +541,7 @@ theorem Smale.DiskFraming.starConvex_thickening_zero {D : Type*} [NormedAddCommG
     _ ≤ Dist.dist x z := (mul_le_of_le_one_left dist_nonneg ha₁)
     _ < δ := hxz
 
-theorem Smale.DiskFraming.exists_smooth_map_into_neighborhood {D : Type*} [NormedAddCommGroup D]
+theorem DiskFraming.exists_smooth_map_into_neighborhood {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] {K U : Set D} (hK : IsCompact K) (hz : (0 : D) ∈ K)
     (hstar : StarConvex ℝ (0 : D) K) (hU : IsOpen U) (hKU : K ⊆ U) :
     ∃ ρ : D → D,
@@ -575,7 +575,7 @@ theorem Smale.DiskFraming.exists_smooth_map_into_neighborhood {D : Type*} [Norme
     change β x • x = x
     rw [(hβone x).mp (interior_subset hx), one_smul]
 
-theorem Smale.exists_smooth_extension_near_starConvex {D G H N : Type*} [NormedAddCommGroup D]
+theorem exists_smooth_extension_near_starConvex {D G H N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
     {f : D → N} {K U : Set D} (hK : IsCompact K) (hz : (0 : D) ∈ K)
@@ -589,7 +589,7 @@ theorem Smale.exists_smooth_extension_near_starConvex {D G H N : Type*} [NormedA
   intro x hx
   exact congrArg f (hρid hx)
 
-theorem Smale.exists_smooth_extension_near_point {D G H N : Type*} [NormedAddCommGroup D]
+theorem exists_smooth_extension_near_point {D G H N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
     {f : D → N} {U : Set D} {x₀ : D} (hf : ContMDiffOn 𝓘(ℝ, D) J ∞ f U) (hU : IsOpen U)
@@ -623,7 +623,7 @@ theorem SmoothODE.contDiffAt_local_field_flow {E : Type*} [NormedAddCommGroup E]
     {H : E × ℝ → E} (hc : ContinuousAt H (x, 0)) (hinit : ∀ p ∈ P, H (p, 0) = p)
     (hH : ∀ p ∈ P, ∀ t ∈ Set.Ioo (-ε) ε, HasDerivAt (fun s : ℝ => H (p, s)) (v (H (p, t))) t) :
     ContDiffAt ℝ ∞ H (x, 0) := by
-  obtain ⟨w, hwM, heq⟩ := Smale.exists_smooth_extension_near_point hv.contMDiffOn hO hxO
+  obtain ⟨w, hwM, heq⟩ := exists_smooth_extension_near_point hv.contMDiffOn hO hxO
   have hw : ContDiff ℝ ∞ w := contMDiff_iff_contDiff.mp hwM
   have hevent : ∀ᶠ q in 𝓝 (x, (0 : ℝ)), w (H q) = v (H q) := by
     have heq' : w =ᶠ[𝓝 (H (x, 0))] v := by rwa [hinit x hxP]
@@ -798,7 +798,7 @@ theorem SmoothODE.exists_uniform_smalltime_contMDiff {E M : Type*} [NormedAddCom
     exact (contMDiffAt_iff_contMDiffAt_nhds (by simp)).mp hq
   let T : Set ℝ := {t | ∀ p ∈ (Set.univ : Set M), (t, p) ∈ Prod.swap ⁻¹' U}
   have hT : IsOpen T :=
-    Smale.MorsePerturbation.isOpen_forall_mem_compact isCompact_univ (hU.preimage continuous_swap)
+    MorsePerturbation.isOpen_forall_mem_compact isCompact_univ (hU.preimage continuous_swap)
   have h0 : (0 : ℝ) ∈ T := fun p _ => hzero p
   obtain ⟨ε, hε, hεsub⟩ := Metric.mem_nhds_iff.mp (hT.mem_nhds h0)
   refine ⟨ε, hε, ?_⟩
@@ -946,10 +946,10 @@ theorem SmoothODE.partialChartField_flow_shift {E M : Type*} [NormedAddCommGroup
     [NormedSpace ℝ B] (Φ : PartialDiffeomorph 𝓘(ℝ, B) 𝓘(ℝ, E) B M ∞) (F : Flow ℝ M)
     (hs : ∀ t, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (F t)) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) (W : B → B)
-    (hmodel : ∀ x ∈ Φ.target, V x = Smale.FlowConstruction.partialChartField Φ.symm W x) (t : ℝ)
+    (hmodel : ∀ x ∈ Φ.target, V x = FlowConstruction.partialChartField Φ.symm W x) (t : ℝ)
     {x : M} (hx : x ∈ (Φ.trans (nativeFlowTimeDiffeomorph F hs t).toPartialDiffeomorph).target) :
     V x =
-      Smale.FlowConstruction.partialChartField
+      FlowConstruction.partialChartField
         (Φ.trans (nativeFlowTimeDiffeomorph F hs t).toPartialDiffeomorph).symm W x := by
   have hxΦ : F (-t) x ∈ Φ.target := hx.2
   have hdiff : Φ.symm.toOpenPartialHomeomorph.MDifferentiable 𝓘(ℝ, E) 𝓘(ℝ, B) :=
@@ -972,7 +972,7 @@ theorem SmoothODE.partialChartField_flow_shift {E M : Type*} [NormedAddCommGroup
   change
     V x =
       (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) (F (-t)) x).inverse
-        (Smale.FlowConstruction.partialChartField Φ.symm W (F (-t) x))
+        (FlowConstruction.partialChartField Φ.symm W (F (-t) x))
   rw [← hmodel _ hxΦ]
   exact (mpullback_flow_time F hs hF (-t) x).symm
 end Mathoverflow1973

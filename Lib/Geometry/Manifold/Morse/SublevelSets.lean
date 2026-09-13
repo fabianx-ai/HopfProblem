@@ -41,14 +41,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-abbrev Smale.PuncturedBall.Space (E : Type*) [NormedAddCommGroup E] (R : ℝ) :=
+abbrev PuncturedBall.Space (E : Type*) [NormedAddCommGroup E] (R : ℝ) :=
   { x : E // x ≠ 0 ∧ ‖x‖ < R }
 
-def Smale.PuncturedBall.toPunctured {E : Type*} [NormedAddCommGroup E] (R : ℝ) :
-    C(Space E R, Smale.PuncturedRadial.Space E) :=
+def PuncturedBall.toPunctured {E : Type*} [NormedAddCommGroup E] (R : ℝ) :
+    C(Space E R, PuncturedRadial.Space E) :=
   ⟨fun x => ⟨x.val, x.property.1⟩, continuous_subtype_val.subtype_mk _⟩
 
-def Smale.PuncturedBall.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
+def PuncturedBall.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
     (r : ℝ) (hr : 0 < r) (hrR : r < R) : C(Metric.sphere (0 : E) 1, Space E R) :=
   ⟨fun u =>
     ⟨r • (u : E), smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u),
@@ -58,16 +58,16 @@ def Smale.PuncturedBall.fromSphere {E : Type*} [NormedAddCommGroup E] [NormedSpa
       exact hrR⟩,
     (continuous_const.smul continuous_subtype_val).subtype_mk _⟩
 
-def Smale.PuncturedBall.blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
+def PuncturedBall.blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ)
     (r : ℝ) (q : (unitInterval) × Space E R) : E :=
-  Smale.PuncturedRadial.blendVector r (q.1, toPunctured R q.2)
+  PuncturedRadial.blendVector r (q.1, toPunctured R q.2)
 
-theorem Smale.PuncturedBall.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
+theorem PuncturedBall.continuous_blendVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (R : ℝ) (r : ℝ) : Continuous (blendVector (E := E) R r) :=
-  (Smale.PuncturedRadial.continuous_blendVector r).comp
+  (PuncturedRadial.continuous_blendVector r).comp
     (continuous_fst.prodMk ((toPunctured R).continuous.comp continuous_snd))
 
-theorem Smale.PuncturedBall.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem PuncturedBall.norm_blendVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (R : ℝ) (r : ℝ) (hr : 0 < r) (t : (unitInterval)) (x : Space E R) :
     ‖blendVector R r (t, x)‖ = (1 - (t : ℝ)) * ‖x.val‖ + (t : ℝ) * r := by
   have hn : 0 < ‖x.val‖ := norm_pos_iff.mpr x.property.1
@@ -77,7 +77,7 @@ theorem Smale.PuncturedBall.norm_blendVector {E : Type*} [NormedAddCommGroup E] 
   rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hscale, add_mul, mul_assoc,
     div_mul_cancel₀ _ hn.ne']
 
-theorem Smale.PuncturedBall.norm_blendVector_lt {E : Type*} [NormedAddCommGroup E]
+theorem PuncturedBall.norm_blendVector_lt {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (R : ℝ) (r : ℝ) (hr : 0 < r) (hrR : r < R) (t : (unitInterval))
     (x : Space E R) : ‖blendVector R r (t, x)‖ < R := by
   rw [norm_blendVector R r hr]
@@ -85,7 +85,7 @@ theorem Smale.PuncturedBall.norm_blendVector_lt {E : Type*} [NormedAddCommGroup 
     (convex_Iio (𝕜 := ℝ) R) x.property.2 hrR (sub_nonneg.mpr t.property.2) t.property.1
       (sub_add_cancel 1 (t : ℝ))
 
-theorem Smale.HomologyTransport.exact_of_equivalences {R A B C A' B' C' : Type*} [Ring R]
+theorem HomologyTransport.exact_of_equivalences {R A B C A' B' C' : Type*} [Ring R]
     [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
     [AddCommGroup A'] [Module R A'] [AddCommGroup B'] [Module R B'] [AddCommGroup C']
     [Module R C'] (eA : A ≃ₗ[R] A') (eB : B ≃ₗ[R] B') (eC : C ≃ₗ[R] C') (f : A →ₗ[R] B)
@@ -111,7 +111,7 @@ theorem Smale.HomologyTransport.exact_of_equivalences {R A B C A' B' C' : Type*}
     obtain ⟨a, ha⟩ := hb
     exact ⟨eA a, (hf a).trans (congrArg eB ha)⟩
 
-theorem Smale.ManifoldMorse.mem_criticalPoints_of_localMin {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.mem_criticalPoints_of_localMin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {p : M} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hmin : IsLocalMin f p) :
     p ∈ criticalPoints E f := by
@@ -122,7 +122,7 @@ theorem Smale.ManifoldMorse.mem_criticalPoints_of_localMin {E M : Type*} [Normed
   have hmin' : IsLocalMin f (e.symm (e p)) := by rw [e.left_inv hp]; exact hmin
   exact (hmin'.comp_continuous (e.continuousAt_symm (e.map_source hp))).fderiv_eq_zero
 
-theorem Smale.ManifoldMorse.mem_criticalPoints_of_localMax {E M : Type*} [NormedAddCommGroup E]
+theorem ManifoldMorse.mem_criticalPoints_of_localMax {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {p : M} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hmax : IsLocalMax f p) :
     p ∈ criticalPoints E f := by
@@ -133,7 +133,7 @@ theorem Smale.ManifoldMorse.mem_criticalPoints_of_localMax {E M : Type*} [Normed
   have hmax' : IsLocalMax f (e.symm (e p)) := by rw [e.left_inv hp]; exact hmax
   exact (hmax'.comp_continuous (e.continuousAt_symm (e.map_source hp))).fderiv_eq_zero
 
-theorem Smale.ManifoldMorse.unique_extrema_of_two_critical_values {E M : Type*}
+theorem ManifoldMorse.unique_extrema_of_two_critical_values {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     {p q : M} (hpq : f p < f q) (hcrit : ∀ x ∈ criticalPoints E f, x = p ∨ x = q) :
@@ -172,7 +172,7 @@ theorem Smale.ManifoldMorse.unique_extrema_of_two_critical_values {E M : Type*}
       exact False.elim (not_le_of_gt hpq hx)
     · exact h
 
-theorem Smale.exists_small_sublevel_subset {X : Type*} [TopologicalSpace X] [CompactSpace X]
+theorem exists_small_sublevel_subset {X : Type*} [TopologicalSpace X] [CompactSpace X]
     {f : X → ℝ} (hf : Continuous f) {p : X} (hunique : ∀ x, f x ≤ f p → x = p) {U : Set X}
     (hU : IsOpen U) (hpU : p ∈ U) : ∃ ε > (0 : ℝ), {x | f x ≤ f p + ε} ⊆ U := by
   by_cases hne : Uᶜ.Nonempty

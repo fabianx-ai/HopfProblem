@@ -99,11 +99,11 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.tangentSpaceT2
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.tangentSpaceT2
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.tangentSpaceT2
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
 theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {χ D : M → ℝ}
@@ -208,14 +208,14 @@ theorem FlowCancellation.native_no_return_of_supported_perturbation {E M : Type*
 
 theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    (p q : Smale.ManifoldMorse.criticalPoints E f)
-    (hconsecutive : ∀ r : Smale.ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))
+    (p q : ManifoldMorse.criticalPoints E f)
+    (hconsecutive : ∀ r : ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))
     {a b : ℝ} (ha : f p < a) (hb : b < f q) :
-    ∀ z, f z ∈ Set.Icc a b → z ∉ Smale.ManifoldMorse.criticalPoints E f := by
+    ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f := by
   intro z hz hcrit
   exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
 
-theorem Smale.TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [NormedAddCommGroup D]
+theorem TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] (A : D →L[ℝ] E) (C : Z →L[ℝ] E) (h : Function.Surjective (A.coprod C)) :
     Function.Surjective (C.coprod A) := by
@@ -226,7 +226,7 @@ theorem Smale.TransverseCoordinates.surjective_coprod_swap {D Z E : Type*} [Norm
   rw [add_comm]
   exact huv
 
-theorem Smale.FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
+theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
     (C : Z →L[ℝ] F) (h : Function.Bijective (G.coprod C)) : (G.coprod C).IsInvertible := by

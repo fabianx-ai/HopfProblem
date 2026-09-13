@@ -209,7 +209,7 @@ theorem FlowTimeChange.native_local_height_translation {E M : Type*} [NormedAddC
       (hf.continuous.comp (F.continuous continuous_id continuous_const)) hU hIU (γ := fun s =>
       f (F s x)) ?_ (by rw [F.map_zero_apply]) hx ht
   intro s hs
-  have hd := Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) s
+  have hd := FlowConstruction.hasDerivAt_comp_integralCurve hf (hcurve x) s
   rw [hspeed (F s x) hs] at hd
   exact hd
 
@@ -426,9 +426,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ}
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ (U : Set ℝ) (W : (x : M) → TangentSpace 𝓘(ℝ, E) x) (G : Flow ℝ M),
       IsOpen U ∧
         Set.Icc a b ⊆ U ∧
@@ -436,9 +436,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
             (∀ x, IsMIntegralCurve (fun t => G t x) W) ∧
               (∀ x, W x = 0 ↔ V x = 0) ∧
                 (∀ x,
-                    x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (W x) < 0) ∧
+                    x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (W x) < 0) ∧
                   (∀ x, f x ∈ U → mvfderiv 𝓘(ℝ, E) f x (W x) = -1) ∧
-                    (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, W y = V y) ∧
+                    (∀ x ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 x, W y = V y) ∧
                       (∀ x, ∃ c : ℝ ≃o ℝ, c 0 = 0 ∧ ∀ t, G t x = F (c.symm t) x) ∧
                         ∀ x,
                           Set.range (fun t => G t x) = Set.range (fun t => F t x) ∧
@@ -452,9 +452,9 @@ theorem FlowTimeChange.exists_orbit_preserving_band_normalization {E M : Type*}
     MorseCancel.exists_positive_band_normalization hf hV hdesc hband
   have hW₁ := hW.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
   let W : (x : M) → TangentSpace 𝓘(ℝ, E) x := fun x => ρ x • V x
-  let G := Smale.FlowConstruction.compactFlow hW₁
+  let G := FlowConstruction.compactFlow hW₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) W :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hW₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hW₁ x
   refine ⟨U, W, G, hU, hAU, hW, hG, hzeros, hneg, hspeed, ?_, ?_, ?_⟩
   · intro x hx
     filter_upwards [hgerm x hx] with y hy
@@ -470,9 +470,9 @@ theorem FlowTimeChange.exists_orbit_preserving_ambient_band_bridge {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       D '' {x : M | f x = a} = {x : M | f x = b} ∧
         D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧ ∀ x, ∃ t, F t x = D x := by
@@ -493,24 +493,24 @@ theorem FlowTimeChange.exists_orbit_preserving_native_band_bridge {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
+    (hdesc : ∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V) {a b : ℝ} (hab : a ≤ b)
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (ha : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hb : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
-    letI := Smale.RegularLevel.chartedSpace hf ha
-    letI := Smale.RegularLevel.chartedSpace hf hb
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f)
+    (ha : ∀ x, f x = a → x ∉ ManifoldMorse.criticalPoints E f)
+    (hb : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
+    letI := RegularLevel.chartedSpace hf ha
+    letI := RegularLevel.chartedSpace hf hb
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       ∃ e :
-        Diffeomorph 𝓘(ℝ, Smale.RegularLevel.Model E) 𝓘(ℝ, Smale.RegularLevel.Model E)
+        Diffeomorph 𝓘(ℝ, RegularLevel.Model E) 𝓘(ℝ, RegularLevel.Model E)
           { x : M // f x = a } { x : M // f x = b } ∞,
         D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} ∧
           (∀ x, (e x : M) = D x) ∧ ∀ x, ∃ t, F t x = D x := by
-  let _ := Smale.RegularLevel.chartedSpace hf ha
-  let _ := Smale.RegularLevel.chartedSpace hf hb
+  let _ := RegularLevel.chartedSpace hf ha
+  let _ := RegularLevel.chartedSpace hf hb
   obtain ⟨D, hlevel, hsublevel, horbit⟩ :=
     exists_orbit_preserving_ambient_band_bridge hf hV hdesc F hF hab hband
-  obtain ⟨e, he⟩ := Smale.RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
+  obtain ⟨e, he⟩ := RegularLevel.exists_levelDiffeomorph_of_ambient hf ha hb D hlevel
   exact ⟨D, e, hsublevel, he, horbit⟩
 
 theorem FlowTimeChange.mfderiv_height_div_const {E M : Type*} [NormedAddCommGroup E]
@@ -537,8 +537,8 @@ theorem FlowTimeChange.mvfderiv_height_div_const {E M : Type*} [NormedAddCommGro
 theorem FlowTimeChange.criticalPoints_height_div_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {r : ℝ} (hr : r ≠ 0) :
-    Smale.ManifoldMorse.criticalPoints E (fun y => f y / r) =
-      Smale.ManifoldMorse.criticalPoints E f := by
+    ManifoldMorse.criticalPoints E (fun y => f y / r) =
+      ManifoldMorse.criticalPoints E f := by
   ext x
   change mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) (fun y => f y / r) x = 0 ↔ mfderiv 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f x = 0
   rw [mfderiv_height_div_const (hf.mdifferentiableAt (by simp))]
@@ -557,14 +557,14 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
-    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hreg : ∀ y, f y = c → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ y, f y = c → y ∉ ManifoldMorse.criticalPoints E f)
     (z : { y : M // f y = c }) :
-    letI := Smale.RegularLevel.chartedSpace hf hreg
+    letI := RegularLevel.chartedSpace hf hreg
     ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (A :
-      PartialDiffeomorph (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
+      PartialDiffeomorph (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E)
         ({ y : M // f y = c } × ℝ) M ∞),
       0 < r ∧
         r < c - a ∧
@@ -572,8 +572,8 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
             (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
               (∀ y, W y = 0 ↔ V y = 0) ∧
                 (∀ y,
-                    y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                  (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ x in 𝓝 y, W x = V x) ∧
+                    y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                  (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ x in 𝓝 y, W x = V x) ∧
                     (∀ y,
                         Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
                           (∀ p,
@@ -589,32 +589,32 @@ theorem FlowTimeChange.exists_normalized_whole_level_cylinder {E M : Type*}
                               ∀ y ∈ A.target,
                                 W y =
                                   VectorField.mpullback 𝓘(ℝ, E)
-                                    (𝓘(ℝ, Smale.RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) A.symm
+                                    (𝓘(ℝ, RegularLevel.Model E).prod 𝓘(ℝ, ℝ)) A.symm
                                     FlowSuspension.nativeVerticalField y := by
-  let _ := Smale.RegularLevel.chartedSpace hf hreg
-  let _ := Smale.RegularLevel.isManifold hf hreg
+  let _ := RegularLevel.chartedSpace hf hreg
+  let _ := RegularLevel.isManifold hf hreg
   let r : ℝ := (c - a) / 2
   have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
   have hrbound : r < c - a := by dsimp [r]; linarith
   let g : M → ℝ := fun y => f y / r
   have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
-  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+  have hcrit : ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f :=
     criticalPoints_height_div_const hf hr.ne'
   have hdescent :
-    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    ∀ y, y ∉ ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
     intro y hy
     rw [hcrit] at hy
     exact
       (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
   have hregular :
-    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ ManifoldMorse.criticalPoints E g := by
     intro y hy
     rw [hcrit]
     exact
       hband y ⟨(div_le_div_iff_of_pos_right hr).mp hy.1, (div_le_div_iff_of_pos_right hr).mp hy.2⟩
   obtain ⟨U, W, G, hU, hIU, hW, hG, hzero, hneg, hspeed, hgerm, -, hgeometry⟩ :=
     exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
-  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+  have hnegf (y : M) (hy : y ∉ ManifoldMorse.criticalPoints E f) :
     mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
     (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
       (hneg y (hcrit ▸ hy))
@@ -647,9 +647,9 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hdim : Module.finrank ℝ E = m + 1)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {a b c : ℝ} (ha : a < c)
-    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hb : c < b) (hband : ∀ y, f y ∈ Set.Icc a b → y ∉ ManifoldMorse.criticalPoints E f)
     {x : M} (hx : f x = c) :
     ∃ (r : ℝ) (W : (y : M) → TangentSpace 𝓘(ℝ, E) y) (G : Flow ℝ M) (U : Set (Fin m → ℝ)) (Φ :
       PartialDiffeomorph 𝓘(ℝ, (Fin m → ℝ) × ℝ) 𝓘(ℝ, E) ((Fin m → ℝ) × ℝ) M ∞),
@@ -657,8 +657,8 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
         ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
           (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
             (∀ y, W y = 0 ↔ V y = 0) ∧
-              (∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+              (∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
+                (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
                   (∀ y,
                       Set.range (fun t => G t y) = Set.range (fun t => F t y) ∧
                         (∀ p,
@@ -674,22 +674,22 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
                             (∀ z ∈ Φ.source, z.2 ∈ Set.Icc (0 : ℝ) 1 → f (Φ z) = c - r * z.2) ∧
                               ∀ y ∈ Φ.target,
                                 W y =
-                                  Smale.FlowConstruction.partialChartField Φ.symm
+                                  FlowConstruction.partialChartField Φ.symm
                                     (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y := by
   let r : ℝ := (c - a) / 2
   have hr : 0 < r := div_pos (sub_pos.mpr ha) (by norm_num)
   let g : M → ℝ := fun y => f y / r
   have hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g := hf.div_const r
-  have hcrit : Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f :=
+  have hcrit : ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f :=
     criticalPoints_height_div_const hf hr.ne'
   have hdescent :
-    ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
+    ∀ y, y ∉ ManifoldMorse.criticalPoints E g → mvfderiv 𝓘(ℝ, E) g y (V y) < 0 := by
     intro y hy
     rw [hcrit] at hy
     exact
       (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (V y)).mpr (hdesc y hy)
   have hregular :
-    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ Smale.ManifoldMorse.criticalPoints E g := by
+    ∀ y, g y ∈ Set.Icc (a / r) (b / r) → y ∉ ManifoldMorse.criticalPoints E g := by
     intro y hy
     rw [hcrit]
     exact
@@ -698,7 +698,7 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     exists_orbit_preserving_band_normalization hg hV hdescent F hF hregular
   have hc : c / r ∈ Set.Icc (a / r) (b / r) :=
     ⟨div_le_div_of_nonneg_right ha.le hr.le, div_le_div_of_nonneg_right hb.le hr.le⟩
-  have hreg (y : M) (hy : g y = c / r) : y ∉ Smale.ManifoldMorse.criticalPoints E g :=
+  have hreg (y : M) (hy : g y = c / r) : y ∉ ManifoldMorse.criticalPoints E g :=
     hregular y (hy ▸ hc)
   have hboundary (y : M) (hy : g y = c / r) : mvfderiv 𝓘(ℝ, E) g y (W y) < 0 := by
     rw [hspeed y (hy ▸ hIH hc)]
@@ -706,12 +706,12 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
   obtain ⟨O, ι, A, hO, h0O, hι0, hAsource, hlevel, hAmap, hAfield⟩ :=
     FlowCancellation.exists_euclidean_level_flow_cylinder hg hreg hW G hG hboundary
       (show g x = c / r by change f x / r = c / r; rw [hx])
-  let e : (Fin m → ℝ) ≃L[ℝ] Smale.RegularLevel.Model E :=
-    ContinuousLinearEquiv.ofFinrankEq (by simp [Smale.RegularLevel.Model, hdim])
-  let Q := Smale.PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
+  let e : (Fin m → ℝ) ≃L[ℝ] RegularLevel.Model E :=
+    ContinuousLinearEquiv.ofFinrankEq (by simp [RegularLevel.Model, hdim])
+  let Q := PartialChart.restrictTarget e.toDiffeomorph.toPartialDiffeomorph hO
   have hQtarget : Q.target = O := by
     ext z
-    change (z ∈ (Set.univ : Set (Smale.RegularLevel.Model E)) ∧ z ∈ O) ↔ z ∈ O
+    change (z ∈ (Set.univ : Set (RegularLevel.Model E)) ∧ z ∈ O) ↔ z ∈ O
     simp only [Set.mem_univ, true_and]
   have hQ0 : (0 : Fin m → ℝ) ∈ Q.source := by
     change (0 : Fin m → ℝ) ∈ Set.univ ∧ e 0 ∈ O
@@ -721,7 +721,7 @@ theorem FlowTimeChange.exists_arbitrary_gap_flow_cylinder {E M : Type*}
     FlowSuspension.exists_native_phase_cylinder A hAsource Q hQtarget (fun _ => (0 : ℝ))
       contDiff_const W hAfield
   have hmap (z : (Fin m → ℝ) × ℝ) : Φ z = A (Q z.1, z.2) := by rw [hΦmap, add_zero]
-  have hnegf (y : M) (hy : y ∉ Smale.ManifoldMorse.criticalPoints E f) :
+  have hnegf (y : M) (hy : y ∉ ManifoldMorse.criticalPoints E f) :
     mvfderiv 𝓘(ℝ, E) f y (W y) < 0 :=
     (descending_height_div_const_iff (hf.mdifferentiableAt (by simp)) hr (W y)).mp
       (hneg y (hcrit ▸ hy))
@@ -758,11 +758,11 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hdim : Module.finrank ℝ E = m + 1)
     (V : (y : M) → TangentSpace 𝓘(ℝ, E) y)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun y => (⟨y, V y⟩ : TangentBundle 𝓘(ℝ, E) M)))
-    (hzero : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, V y = 0)
-    (hdesc : ∀ y, y ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
+    (hzero : ∀ y ∈ ManifoldMorse.criticalPoints E f, V y = 0)
+    (hdesc : ∀ y, y ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f y (V y) < 0)
     (F : Flow ℝ M) (hF : ∀ y, IsMIntegralCurve (fun t => F t y) V) {p q x : M} (hpq : f p < f q)
     {c d : ℝ} (hc : c < f p) (hd : f q < d)
-    (hpair : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
+    (hpair : ∀ y ∈ ManifoldMorse.criticalPoints E f, f y ∈ Set.Icc c d → y = p ∨ y = q)
     (hp : Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
     (hq : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 q))
     (hunique :
@@ -778,11 +778,11 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
             ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞
                 (fun y => (⟨y, W y⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
               (∀ y, IsMIntegralCurve (fun t => G t y) W) ∧
-                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0) ∧
+                (∀ y ∈ ManifoldMorse.criticalPoints E f, W y = 0) ∧
                   (∀ y,
-                      y ∉ Smale.ManifoldMorse.criticalPoints E f →
+                      y ∉ ManifoldMorse.criticalPoints E f →
                         mvfderiv 𝓘(ℝ, E) f y (W y) < 0) ∧
-                    (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
+                    (∀ y ∈ ManifoldMorse.criticalPoints E f, ∀ᶠ z in 𝓝 y, W z = V z) ∧
                       (∀ y, Antitone (fun t => f (G t y))) ∧
                         Filter.Tendsto (fun t => G t x₀) Filter.atTop (𝓝 p) ∧
                           Filter.Tendsto (fun t => G t x₀) Filter.atBot (𝓝 q) ∧
@@ -798,7 +798,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
                                           z.2 ∈ Set.Icc (0 : ℝ) 1 → f (A z) = b - r * z.2) ∧
                                         (∀ y ∈ A.target,
                                             W y =
-                                              Smale.FlowConstruction.partialChartField A.symm
+                                              FlowConstruction.partialChartField A.symm
                                                 (fun _ : (Fin m → ℝ) × ℝ => (0, 1)) y) ∧
                                           (∀ y,
                                               Set.range (fun t => G t y) =
@@ -823,7 +823,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
   have hlob : lo < b := by dsimp [lo]; linarith
   have hbhi : b < hi := by dsimp [hi]; linarith
   have hhiq : hi < f q := by dsimp [hi]; linarith
-  have hband : ∀ y, f y ∈ Set.Icc lo hi → y ∉ Smale.ManifoldMorse.criticalPoints E f := by
+  have hband : ∀ y, f y ∈ Set.Icc lo hi → y ∉ ManifoldMorse.criticalPoints E f := by
     intro y hy hcrit
     have houter : f y ∈ Set.Icc c d := ⟨by linarith [hy.1], by linarith [hy.2]⟩
     rcases hpair y hcrit houter with he | he
@@ -860,7 +860,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     ⟨r, W, G, U, A, hr, hW, hG, hWzero, hWdesc, hgerms, hgeometry, hU, h0U, hsource, haxis,
       hheight, hfield⟩ :=
     exists_arbitrary_gap_flow_cylinder hf hdim hV hdesc F hF hlob hbhi hband ht₀
-  have hzeros : ∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, W y = 0 := fun y hy =>
+  have hzeros : ∀ y ∈ ManifoldMorse.criticalPoints E f, W y = 0 := fun y hy =>
     (hWzero y).mpr (hzero y hy)
   have huniqueG :
     ∀ y,
@@ -873,7 +873,7 @@ theorem FlowTimeChange.exists_normalized_connection_cylinder {E M : Type*}
     exact hh
   exact
     ⟨x₀, r, b, W, G, U, A, hxp, hxq, hr, hW, hG, hzeros, hWdesc, hgerms,
-      Smale.FlowConstruction.antitone_flow_height hf G hG hzeros hWdesc,
+      FlowConstruction.antitone_flow_height hf G hG hzeros hWdesc,
       (hgeometry x₀).2.1 p |>.mpr hp₀, (hgeometry x₀).2.2 q |>.mpr hq₀, huniqueG, hU, h0U,
       hsource, haxis, hheight, hfield, hgeometry, t₀, rfl⟩
 
@@ -1357,14 +1357,14 @@ theorem FlowTimeChange.partialChartField_vertical_factor {E B M : Type*}
     [TopologicalSpace M] [ChartedSpace B M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E × ℝ) 𝓘(ℝ, B) (E × ℝ) M ∞) (W : (E × ℝ) → E × ℝ)
     (hbase : ∀ p, (W p).1 = 0) (x : M) :
-    Smale.FlowConstruction.partialChartField Φ.symm W x =
+    FlowConstruction.partialChartField Φ.symm W x =
       (W (Φ.symm x)).2 •
-        Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x := by
+        FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x := by
   have hw (p : E × ℝ) : W p = (W p).2 • ((0 : E), (1 : ℝ)) := by
     apply Prod.ext
     · simpa only [Prod.smul_fst, smul_zero] using hbase p
     · simp only [Prod.smul_snd, smul_eq_mul, mul_one]
-  unfold Smale.FlowConstruction.partialChartField
+  unfold FlowConstruction.partialChartField
   rw [VectorField.mpullback_apply, VectorField.mpullback_apply]
   conv_lhs => rw [hw]
   rw [map_smul, map_smul]
@@ -1377,7 +1377,7 @@ theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
     (W : (E × ℝ) → E × ℝ) (hW : ContDiff ℝ ∞ W) (hbase : ∀ p, (W p).1 = 0)
     (hpos : ∀ p, 0 < (W p).2) {C : Set (E × ℝ)} (hC : IsCompact C) (hCsource : C ⊆ Φ.source)
     (hfix : ∀ p ∉ C, W p = (0, 1)) :
@@ -1386,7 +1386,7 @@ theorem FlowTimeChange.exists_native_positive_cylinder_rescaling {E B M : Type*}
         (∀ x, 0 < ρ x) ∧
           ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞
               (fun x => (⟨x, ρ x • V x⟩ : TangentBundle 𝓘(ℝ, B) M)) ∧
-            (∀ x ∈ Φ.target, ρ x • V x = Smale.FlowConstruction.partialChartField Φ.symm W x) ∧
+            (∀ x ∈ Φ.target, ρ x • V x = FlowConstruction.partialChartField Φ.symm W x) ∧
               (∀ x, ρ x • V x = 0 ↔ V x = 0) ∧
                 (∀ (f : M → ℝ) x,
                     mvfderiv 𝓘(ℝ, B) f x (V x) < 0 → mvfderiv 𝓘(ℝ, B) f x (ρ x • V x) < 0) ∧
@@ -1432,7 +1432,7 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ x ∈ Φ.target,
-        V x = Smale.FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
+        V x = FlowConstruction.partialChartField Φ.symm (fun _ : E × ℝ => (0, 1)) x)
     (H : Flow ℝ M) (hH : ∀ x, IsMIntegralCurve (fun t => H t x) V) {v : E → ℝ}
     (hv : ContDiff ℝ ∞ v) (hv0 : v 0 = 0) :
     ∃ (N : Set M) (g : E → ℝ) (V' : (x : M) → TangentSpace 𝓘(ℝ, B) x) (G : Flow ℝ M),
@@ -1464,7 +1464,7 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
                                       Ω.target = Φ.target ∧
                                         (∀ y ∈ Ω.target,
                                             V' y =
-                                              Smale.FlowConstruction.partialChartField Ω.symm
+                                              FlowConstruction.partialChartField Ω.symm
                                                 (fun _ : E × ℝ => (0, 1)) y) ∧
                                           (∀ p, p.2 ≤ 1 / 3 → Ω p = Φ p) ∧
                                             (∀ p, 2 / 3 ≤ p.2 → Ω p = Φ (p.1, p.2 + g p.1)) ∧
@@ -1488,9 +1488,9 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     rintro x ⟨p, hp, rfl⟩
     exact ⟨Φ.map_source' (hCsource hp), ⟨p, ⟨hKU (hCsub hp).1, (hCsub hp).2⟩, rfl⟩⟩
   have hV'₁ := hV'.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let G := Smale.FlowConstruction.compactFlow hV'₁
+  let G := FlowConstruction.compactFlow hV'₁
   have hG (x : M) : IsMIntegralCurve (fun t => G t x) V' :=
-    Smale.FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
+    FlowConstruction.isMIntegralCurve_compactFlow hV'₁ x
   have hstay (p : E × ℝ) (hp : p ∈ Φ.source) (t : ℝ) : F t p ∈ Φ.source := by
     rw [hsource] at hp ⊢
     exact ⟨(hFbase p t) ▸ hp.1, Set.mem_univ _⟩
@@ -1498,11 +1498,11 @@ theorem FlowTimeChange.exists_native_phase_realization {E B M : Type*}
     FlowSuspension.native_chart_flow_all_time Φ hV'₁ G hG F W hF hnew (hstay p hp) t
   have hnew' (y : M) (hy : y ∈ Φ.target) :
     V' y =
-      Smale.FlowConstruction.partialChartField Φ.symm
+      FlowConstruction.partialChartField Φ.symm
         (FlowSuspension.suspensionField Cdata.chart) y := by
     exact
       (hnew y hy).trans
-        (congrArg (fun w => Smale.FlowConstruction.partialChartField Φ.symm w y) Cdata.field_eq)
+        (congrArg (fun w => FlowConstruction.partialChartField Φ.symm w y) Cdata.field_eq)
   obtain ⟨Ω, hΩsource, hΩtarget, hΩmap, hΩfield⟩ :=
     FlowSuspension.exists_native_cylinder_conjugacy Φ hsource Cdata.chart
       (fun p => by rw [Cdata.base]) V' hnew'
@@ -1554,7 +1554,7 @@ theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
     (hV : ContMDiff 𝓘(ℝ, B) (𝓘(ℝ, B).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, B) M)))
     (hmodel :
       ∀ y ∈ Ω.target,
-        V y = Smale.FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y)
+        V y = FlowConstruction.partialChartField Ω.symm (fun _ : Z × ℝ => (0, 1)) y)
     (F : Flow ℝ M) (hF : ∀ x, IsMIntegralCurve (fun t => F t x) V)
     (hleft : ∀ p, p.2 ≤ 0 → Ω p = Φ p)
     (hright : ∀ᶠ z in 𝓝 (0 : E), ∀ t : ℝ, 1 ≤ t → Ω (Q z, t) = Φ (P z, t)) :
@@ -1580,7 +1580,7 @@ theorem FlowTimeChange.exists_native_matched_phase_cylinder {E Z B M : Type*}
                         Ξ.target = Ω.target ∧
                           (∀ y ∈ Ξ.target,
                               W y =
-                                Smale.FlowConstruction.partialChartField Ξ.symm
+                                FlowConstruction.partialChartField Ξ.symm
                                   (fun _ : E × ℝ => (0, 1)) y) ∧
                             (∀ t : ℝ, Ξ (0, t) = Ω (0, t)) ∧
                               ∀ᶠ z in 𝓝 (0 : E),

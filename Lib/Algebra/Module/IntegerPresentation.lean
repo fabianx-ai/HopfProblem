@@ -6,7 +6,7 @@ public import Mathlib
 # Integer presentations
 
 Presentations of `ℤ`-modules by generators and explicit relation columns: a
-`Smale.IntegerPresentation B r c` is a surjective linear map `Fin r → ℤ →ₗ B` whose kernel
+`IntegerPresentation B r c` is a surjective linear map `Fin r → ℤ →ₗ B` whose kernel
 is the span of `c` explicit column vectors. Includes the presentation matrix and the
 triviality criterion (a presentation of the zero module has surjective presentation
 matrix) — Milnor, *Lectures on the h-cobordism theorem*, §7, Thm. 7.6's algebra.
@@ -14,7 +14,7 @@ matrix) — Milnor, *Lectures on the h-cobordism theorem*, §7, Thm. 7.6's algeb
 ## Provenance
 
 Moved verbatim from `Hopf/SphereTopology.lean` (lane F0b). The declarations keep their
-`Mathoverflow1973.Smale.*` names so existing consumers re-point through unchanged fully
+`Mathoverflow1973.*` names so existing consumers re-point through unchanged fully
 qualified names; the upstream-shaped rename is a separate commit. The interleaved
 geometric gluers `MorseSurgeryData.indexThreePresentation` and
 `SurgeryWindows.middlePresentation` stay in `Hopf/SphereTopology.lean` and move with
@@ -25,7 +25,7 @@ lane F10.
 
 namespace Mathoverflow1973
 
-theorem Smale.HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
+theorem HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module R A] [Module R B] [Module R C]
     (p : A →ₗ[R] B) (q : B →ₗ[R] C) (v : A) (hq : LinearMap.ker q = Submodule.span R {p v}) :
     LinearMap.ker (q.comp p) = LinearMap.ker p ⊔ Submodule.span R { v } := by
@@ -55,14 +55,14 @@ theorem Smale.HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommR
       rw [hq]
       exact Submodule.subset_span (by simp)
 
-structure Smale.IntegerPresentation (B : Type*) [AddCommGroup B] [Module ℤ B] (r c : ℕ) where
+structure IntegerPresentation (B : Type*) [AddCommGroup B] [Module ℤ B] (r c : ℕ) where
   map : (Fin r → ℤ) →ₗ[ℤ] B
   columns : Fin c → (Fin r → ℤ)
   surjective : Function.Surjective map
   kernel_eq : LinearMap.ker map = Submodule.span ℤ (Set.range columns)
 
-def Smale.IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B] {r : ℕ}
-    (e : (Fin r → ℤ) ≃ₗ[ℤ] B) : Smale.IntegerPresentation B r 0
+def IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B] {r : ℕ}
+    (e : (Fin r → ℤ) ≃ₗ[ℤ] B) : IntegerPresentation B r 0
     where
   map := e.toLinearMap
   columns := Fin.elim0
@@ -71,9 +71,9 @@ def Smale.IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B
     rw [LinearMap.ker_eq_bot.mpr e.injective]
     simp
 
-def Smale.IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommGroup C]
-    [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c) (e : B ≃ₗ[ℤ] C) :
-    Smale.IntegerPresentation C r c
+def IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommGroup C]
+    [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (e : B ≃ₗ[ℤ] C) :
+    IntegerPresentation C r c
     where
   map := e.toLinearMap.comp P.map
   columns := P.columns
@@ -89,18 +89,18 @@ def Smale.IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommG
         rw [hv, map_zero]
     exact h.trans P.kernel_eq
 
-def Smale.IntegerPresentation.liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
-    (P : Smale.IntegerPresentation B r c) (b : B) : Fin r → ℤ :=
+def IntegerPresentation.liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
+    (P : IntegerPresentation B r c) (b : B) : Fin r → ℤ :=
   Classical.choose (P.surjective b)
 
-theorem Smale.IntegerPresentation.map_liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (b : B) : P.map (P.liftRelation b) = b :=
+theorem IntegerPresentation.map_liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B]
+    {r c : ℕ} (P : IntegerPresentation B r c) (b : B) : P.map (P.liftRelation b) = b :=
   Classical.choose_spec (P.surjective b)
 
-def Smale.IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [Module ℤ B]
-    [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
+def IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [Module ℤ B]
+    [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
     (hq : Function.Surjective q) (b : B) (hker : LinearMap.ker q = Submodule.span ℤ { b }) :
-    Smale.IntegerPresentation C r (c + 1)
+    IntegerPresentation C r (c + 1)
     where
   map := q.comp P.map
   columns := Fin.cons (P.liftRelation b) P.columns
@@ -109,20 +109,20 @@ def Smale.IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGrou
     have hk : LinearMap.ker q = Submodule.span ℤ {P.map (P.liftRelation b)} := by
       rw [P.map_liftRelation]
       exact hker
-    rw [Smale.HomologyTransport.ker_comp_span_singleton P.map q (P.liftRelation b) hk,
+    rw [HomologyTransport.ker_comp_span_singleton P.map q (P.liftRelation b) hk,
       P.kernel_eq, Fin.range_cons, Submodule.span_insert, sup_comm]
 
-def Smale.IntegerPresentation.matrix {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
-    (P : Smale.IntegerPresentation B r c) : Matrix (Fin r) (Fin c) ℤ := fun i j => P.columns j i
+def IntegerPresentation.matrix {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
+    (P : IntegerPresentation B r c) : Matrix (Fin r) (Fin c) ℤ := fun i j => P.columns j i
 
-theorem Smale.IntegerPresentation.columns_sum_eq_mulVec {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (z : Fin c → ℤ) :
+theorem IntegerPresentation.columns_sum_eq_mulVec {B : Type*} [AddCommGroup B] [Module ℤ B]
+    {r c : ℕ} (P : IntegerPresentation B r c) (z : Fin c → ℤ) :
     (∑ j, z j • P.columns j) = P.matrix.mulVec z := by
   funext i
-  simp [Smale.IntegerPresentation.matrix, Matrix.mulVec, dotProduct, mul_comm]
+  simp [IntegerPresentation.matrix, Matrix.mulVec, dotProduct, mul_comm]
 
-theorem Smale.IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (v : Fin r → ℤ) :
+theorem IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup B] [Module ℤ B]
+    {r c : ℕ} (P : IntegerPresentation B r c) (v : Fin r → ℤ) :
     v ∈ Set.range P.matrix.mulVec ↔ v ∈ Submodule.span ℤ (Set.range P.columns) := by
   rw [Submodule.mem_span_range_iff_exists_fun ℤ]
   constructor
@@ -131,30 +131,30 @@ theorem Smale.IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup
   · rintro ⟨z, hz⟩
     exact ⟨z, (P.columns_sum_eq_mulVec z).symm.trans hz⟩
 
-theorem Smale.IntegerPresentation.matrix_image_eq_kernel {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) :
+theorem IntegerPresentation.matrix_image_eq_kernel {B : Type*} [AddCommGroup B] [Module ℤ B]
+    {r c : ℕ} (P : IntegerPresentation B r c) :
     Set.range P.matrix.mulVec = (LinearMap.ker P.map : Set (Fin r → ℤ)) := by
   ext v
   rw [P.mem_range_matrix_iff, P.kernel_eq]
   rfl
 
-theorem Smale.IntegerPresentation.matrix_relation {B : Type*} [AddCommGroup B] [Module ℤ B]
-    {r c : ℕ} (P : Smale.IntegerPresentation B r c) (z : Fin c → ℤ) :
+theorem IntegerPresentation.matrix_relation {B : Type*} [AddCommGroup B] [Module ℤ B]
+    {r c : ℕ} (P : IntegerPresentation B r c) (z : Fin c → ℤ) :
     P.map (P.matrix.mulVec z) = 0 := by
   have h : P.matrix.mulVec z ∈ Set.range P.matrix.mulVec := ⟨z, rfl⟩
   rw [P.matrix_image_eq_kernel] at h
   exact h
 
-theorem Smale.IntegerPresentation.columns_span_of_subsingleton {B : Type*} [AddCommGroup B]
-    [Module ℤ B] {r c : ℕ} (P : Smale.IntegerPresentation B r c) [Subsingleton B] :
+theorem IntegerPresentation.columns_span_of_subsingleton {B : Type*} [AddCommGroup B]
+    [Module ℤ B] {r c : ℕ} (P : IntegerPresentation B r c) [Subsingleton B] :
     Submodule.span ℤ (Set.range P.columns) = ⊤ := by
   apply top_unique
   intro v _
   rw [← P.kernel_eq]
   exact Subsingleton.elim _ _
 
-theorem Smale.IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} [AddCommGroup B]
-    [Module ℤ B] {r c : ℕ} (P : Smale.IntegerPresentation B r c) [Subsingleton B] :
+theorem IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} [AddCommGroup B]
+    [Module ℤ B] {r c : ℕ} (P : IntegerPresentation B r c) [Subsingleton B] :
     Function.Surjective P.matrix.mulVec := by
   intro v
   apply (P.mem_range_matrix_iff v).mpr
@@ -163,12 +163,12 @@ theorem Smale.IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} 
 
 
 
-theorem Smale.IntegerPresentation.ofEquiv_matrix_injective {B : Type*} [AddCommGroup B]
+theorem IntegerPresentation.ofEquiv_matrix_injective {B : Type*} [AddCommGroup B]
     [Module ℤ B] {r : ℕ} (e : (Fin r → ℤ) ≃ₗ[ℤ] B) :
     Function.Injective (ofEquiv e).matrix.mulVec := fun _ _ _ => Subsingleton.elim _ _
 
-theorem Smale.IntegerPresentation.adjoin_mulVec {B C : Type*} [AddCommGroup B] [AddCommGroup C]
-    [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
+theorem IntegerPresentation.adjoin_mulVec {B C : Type*} [AddCommGroup B] [AddCommGroup C]
+    [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
     (hq : Function.Surjective q) (b : B) (hker : LinearMap.ker q = Submodule.span ℤ { b })
     (z : Fin (c + 1) → ℤ) :
     (P.adjoin q hq b hker).matrix.mulVec z =
@@ -178,16 +178,16 @@ theorem Smale.IntegerPresentation.adjoin_mulVec {B C : Type*} [AddCommGroup B] [
   rw [P.columns_sum_eq_mulVec]
   rfl
 
-theorem Smale.IntegerPresentation.adjoin_coefficient {B C : Type*} [AddCommGroup B]
-    [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c)
+theorem IntegerPresentation.adjoin_coefficient {B C : Type*} [AddCommGroup B]
+    [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c)
     (q : B →ₗ[ℤ] C) (hq : Function.Surjective q) (b : B)
     (hker : LinearMap.ker q = Submodule.span ℤ { b }) (z : Fin (c + 1) → ℤ) :
     P.map ((P.adjoin q hq b hker).matrix.mulVec z) = z 0 • b := by
   rw [P.adjoin_mulVec q hq b hker, map_add, map_zsmul, P.map_liftRelation, P.matrix_relation,
     add_zero]
 
-theorem Smale.IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup B]
-    [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : Smale.IntegerPresentation B r c)
+theorem IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup B]
+    [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c)
     (q : B →ₗ[ℤ] C) (hq : Function.Surjective q) (b : B)
     (hker : LinearMap.ker q = Submodule.span ℤ { b }) (hP : Function.Injective P.matrix.mulVec)
     (hb : ∀ z : ℤ, z • b = 0 → z = 0) : Function.Injective (P.adjoin q hq b hker).matrix.mulVec :=
@@ -208,7 +208,7 @@ theorem Smale.IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddComm
   apply hzero (x - y)
   rw [Matrix.mulVec_sub, hxy, sub_self]
 
-theorem Smale.HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing R]
+theorem HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
@@ -249,14 +249,14 @@ theorem Smale.HomologyTransport.exists_split_rank_one_extension {R : Type*} [Com
   change i a + s 0 = i a
   rw [map_zero, add_zero]
 
-theorem Smale.HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommRing R]
+theorem HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
     ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
   obtain ⟨e, he, hp⟩ := exists_split_rank_one_extension i p hi hp hk
   exact ⟨e.toAddEquiv, he, hp⟩
-def Smale.HomologyTransport.integerCoordinateSplit (n : ℕ) :
+def HomologyTransport.integerCoordinateSplit (n : ℕ) :
     (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
     where
   toFun v := (fun i => v i.succ, v 0)
@@ -267,7 +267,7 @@ def Smale.HomologyTransport.integerCoordinateSplit (n : ℕ) :
     exact Fin.cases rfl (fun _ => rfl) i
   right_inv v := rfl
   map_add' _ _ := rfl
-theorem Smale.HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
+theorem HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
   have h : e.symm 1 * e 1 = 1 := by
     calc
       e.symm 1 * e 1 = e (e.symm 1 • (1 : ℤ)) := by
@@ -275,7 +275,7 @@ theorem Smale.HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ
         simp
       _ = 1 := by simp
   exact Int.isUnit_iff_natAbs_eq.mp (IsUnit.of_mul_eq_one_right _ h)
-theorem Smale.HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
+theorem HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
     [Nontrivial R] [StrongRankCondition R] {r c : ℕ} (A : Matrix (Fin r) (Fin c) R)
     (hA : Function.Bijective A.mulVec) : c = r := by
   let e := LinearEquiv.ofBijective A.mulVecLin hA

@@ -12,12 +12,12 @@ import Lib.Geometry.Manifold.Flow.Compact
 # Regular levels are manifolds
 
 A regular level set of a `C^∞` function is an embedded submanifold of one lower dimension
-(Lee, Cor 5.14): `Smale.RegularLevel.chartedSpace` and its chart lemmas, carrying the
+(Lee, Cor 5.14): `RegularLevel.chartedSpace` and its chart lemmas, carrying the
 `letI := …` charted-space idiom of the source verbatim.
 
 ## Main definitions and results
 
-* `Smale.RegularLevel.chartedSpace` : the charted-space structure on a regular level.
+* `RegularLevel.chartedSpace` : the charted-space structure on a regular level.
 
 ## References
 
@@ -49,7 +49,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem Smale.RegularLevel.surjective_of_ne_zero {E : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.surjective_of_ne_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {L : E →L[ℝ] ℝ} (hL : L ≠ 0) : Function.Surjective L := by
   have hex : ∃ v, L v ≠ 0 := by
     by_contra! h
@@ -59,7 +59,7 @@ theorem Smale.RegularLevel.surjective_of_ne_zero {E : Type*} [NormedAddCommGroup
   refine ⟨(r / L v) • v, ?_⟩
   rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hv]
 
-theorem Smale.RegularLevel.finrank_kernel_add_one {E : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.finrank_kernel_add_one {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {L : E →L[ℝ] ℝ} (hL : L ≠ 0) :
     Module.finrank ℝ L.ker + 1 = Module.finrank ℝ E := by
   have hr : L.range = ⊤ := LinearMap.range_eq_top.mpr (surjective_of_ne_zero hL)
@@ -68,7 +68,7 @@ theorem Smale.RegularLevel.finrank_kernel_add_one {E : Type*} [NormedAddCommGrou
   rw [hr, finrank_top, Module.finrank_self] at hdim
   omega
 
-theorem Smale.RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → ℝ} {U : Set E} {x : E} (hU : IsOpen U)
     (hx : x ∈ U) (hf : ContDiffOn ℝ ∞ f U) (hreg : fderiv ℝ f x ≠ 0) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, ℝ × (fderiv ℝ f x).ker) E (ℝ × (fderiv ℝ f x).ker) ∞,
@@ -93,13 +93,13 @@ theorem Smale.RegularLevel.exists_height_partialDiffeomorph {E : Type*} [NormedA
     change (f x, Classical.choose hk (x - x)) = (f x, 0)
     simp
 
-abbrev Smale.RegularLevel.Model (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] :=
+abbrev RegularLevel.Model (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] :=
   EuclideanSpace ℝ (Fin (Module.finrank ℝ E - 1))
 
-theorem Smale.RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M}
-    (hx : x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hx : x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, ℝ × Model E) M (ℝ × Model E) ∞,
       x ∈ Φ.source ∧ (∀ y ∈ Φ.source, (Φ y).1 = f y) ∧ Φ x = (f x, 0) := by
   let e := chartAt E x
@@ -112,10 +112,10 @@ theorem Smale.RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCo
       contMDiffOn_toFun := contMDiffOn_of_mem_maximalAtlas he
       contMDiffOn_invFun := contMDiffOn_symm_of_mem_maximalAtlas he }
   have hreg : fderiv ℝ (f ∘ e.symm) (e x) ≠ 0 := fun h =>
-    hx ((Smale.ManifoldMorse.mem_criticalPoints_iff hf he hxe).mpr h)
+    hx ((ManifoldMorse.mem_criticalPoints_iff hf he hxe).mpr h)
   obtain ⟨d, hd, -, hfirst, hcenter⟩ :=
     exists_height_partialDiffeomorph e.open_target (e.map_source hxe)
-      (Smale.ManifoldMorse.contDiffOn_chartExpression hf he) hreg
+      (ManifoldMorse.contDiffOn_chartExpression hf he) hreg
   let L := fderiv ℝ (f ∘ e.symm) (e x)
   have hdim : Module.finrank ℝ L.ker = Module.finrank ℝ (Model E) := by
     have hh := finrank_kernel_add_one hreg
@@ -135,7 +135,7 @@ theorem Smale.RegularLevel.exists_native_height_chart {E M : Type*} [NormedAddCo
     change (f (e.symm (e x)), j 0) = (f x, 0)
     rw [e.left_inv hxe, map_zero]
 
-theorem Smale.RegularLevel.inverse_height {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
+theorem RegularLevel.inverse_height {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     {v : D} (hv : (b, v) ∈ e.target) : f (e.symm (b, v)) = b := by
   have h := he (e.symm (b, v)) (e.map_target hv)
@@ -143,13 +143,13 @@ theorem Smale.RegularLevel.inverse_height {M D : Type*} [TopologicalSpace M] [To
   exact h.symm
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.RegularLevel.sliceInverse {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
+def RegularLevel.sliceInverse {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     (base : { x : M // f x = b }) (v : D) : { x : M // f x = b } :=
   if hv : (b, v) ∈ e.target then ⟨e.symm (b, v), inverse_height e he hv⟩ else base
 
 attribute [local instance 100] Classical.propDecidable in
-def Smale.RegularLevel.sliceChart {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
+def RegularLevel.sliceChart {M D : Type*} [TopologicalSpace M] [TopologicalSpace D]
     {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D)) (he : ∀ y ∈ e.source, (e y).1 = f y)
     (base : { x : M // f x = b }) : OpenPartialHomeomorph { x : M // f x = b } D
     where
@@ -199,7 +199,7 @@ def Smale.RegularLevel.sliceChart {M D : Type*} [TopologicalSpace M] [Topologica
     rfl
 
 attribute [local instance 100] Classical.propDecidable in
-theorem Smale.RegularLevel.sliceChart_symm_coe {M D : Type*} [TopologicalSpace M]
+theorem RegularLevel.sliceChart_symm_coe {M D : Type*} [TopologicalSpace M]
     [TopologicalSpace D] {f : M → ℝ} {b : ℝ} (e : OpenPartialHomeomorph M (ℝ × D))
     (he : ∀ y ∈ e.source, (e y).1 = f y) (base : { x : M // f x = b }) {v : D}
     (hv : v ∈ (sliceChart e he base).target) :
@@ -208,7 +208,7 @@ theorem Smale.RegularLevel.sliceChart_symm_coe {M D : Type*} [TopologicalSpace M
   change (sliceInverse e he base v : M) = _
   simp only [sliceInverse, dif_pos hv]
 
-theorem Smale.RegularLevel.contDiffOn_slice_transition {E D M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contDiffOn_slice_transition {E D M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D] [TopologicalSpace M]
     [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
     (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, ℝ × D) M (ℝ × D) ∞)
@@ -236,40 +236,40 @@ theorem Smale.RegularLevel.contDiffOn_slice_transition {E D M : Type*} [NormedAd
   rw [sliceChart_symm_coe Φ.toOpenPartialHomeomorph hΦ x hv.1]
   rfl
 
-def Smale.RegularLevel.heightChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularLevel.heightChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (x : { x : M // f x = b }) : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, ℝ × Model E) M (ℝ × Model E) ∞ :=
   Classical.choose (exists_native_height_chart hf (hreg x x.property))
 
-theorem Smale.RegularLevel.heightChart_mem_source {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.heightChart_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (x : { x : M // f x = b }) : (x : M) ∈ (heightChart hf hreg x).source :=
   (Classical.choose_spec (exists_native_height_chart hf (hreg x x.property))).1
 
-theorem Smale.RegularLevel.heightChart_height {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.heightChart_height {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (x : { x : M // f x = b }) :
     ∀ y ∈ (heightChart hf hreg x).source, (heightChart hf hreg x y).1 = f y :=
   (Classical.choose_spec (exists_native_height_chart hf (hreg x x.property))).2.1
 
-def Smale.RegularLevel.levelChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularLevel.levelChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (x : { x : M // f x = b }) : OpenPartialHomeomorph { x : M // f x = b } (Model E) :=
   sliceChart (heightChart hf hreg x).toOpenPartialHomeomorph (heightChart_height hf hreg x) x
 
 @[instance_reducible]
-def Smale.RegularLevel.chartedSpace {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularLevel.chartedSpace {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
     ChartedSpace (Model E) { x : M // f x = b }
     where
   atlas := Set.range (levelChart hf hreg)
@@ -277,10 +277,10 @@ def Smale.RegularLevel.chartedSpace {E M : Type*} [NormedAddCommGroup E] [Normed
   mem_chart_source := heightChart_mem_source hf hreg
   chart_mem_atlas := fun x => ⟨x, rfl⟩
 
-theorem Smale.RegularLevel.isManifold {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem RegularLevel.isManifold {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
     letI := chartedSpace hf hreg
     IsManifold 𝓘(ℝ, Model E) ∞ { x : M // f x = b } := by
   let _ := chartedSpace hf hreg
@@ -292,10 +292,10 @@ theorem Smale.RegularLevel.isManifold {E M : Type*} [NormedAddCommGroup E] [Norm
     contDiffOn_slice_transition (heightChart hf hreg x) (heightChart hf hreg y)
       (heightChart_height hf hreg x) (heightChart_height hf hreg y) x y
 
-theorem Smale.RegularLevel.contMDiff_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
     letI := chartedSpace hf hreg
     ContMDiff 𝓘(ℝ, Model E) 𝓘(ℝ, E) ∞ (Subtype.val : { x : M // f x = b } → M) := by
   let _ := chartedSpace hf hreg
@@ -319,10 +319,10 @@ theorem Smale.RegularLevel.contMDiff_inclusion {E M : Type*} [NormedAddCommGroup
   rw [heq]
   exact (Φ.left_inv' hy).symm
 
-theorem Smale.RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
     [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (x : X) :
     letI := chartedSpace hf hreg
@@ -330,7 +330,7 @@ theorem Smale.RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCom
   let _ := chartedSpace hf hreg
   constructor
   · intro hg
-    exact (Smale.RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt.comp x hg
+    exact (RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt.comp x hg
   · intro hg
     apply contMDiffAt_iff_target.mpr
     refine ⟨Topology.IsInducing.subtypeVal.continuousAt_iff.mpr hg.continuousAt, ?_⟩
@@ -342,10 +342,10 @@ theorem Smale.RegularLevel.contMDiffAt_iff_inclusion {E M : Type*} [NormedAddCom
     change ContMDiffAt I 𝓘(ℝ, Model E) ∞ (fun y => (Φ (g y)).2) x
     exact contDiff_snd.contMDiff.contMDiffAt.comp x hcomp
 
-theorem Smale.RegularLevel.contMDiff_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiff_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
     [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) :
     letI := chartedSpace hf hreg
@@ -353,10 +353,10 @@ theorem Smale.RegularLevel.contMDiff_iff_inclusion {E M : Type*} [NormedAddCommG
   let _ := chartedSpace hf hreg
   exact forall_congr' (contMDiffAt_iff_inclusion hf hreg I g)
 
-theorem Smale.RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
     [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (x : X)
     (hg : ContMDiffAt I 𝓘(ℝ, E) ∞ (Subtype.val ∘ g) x)
@@ -365,7 +365,7 @@ theorem Smale.RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedA
     Function.Injective (mfderiv I 𝓘(ℝ, Model E) g x) := by
   let _ := chartedSpace hf hreg
   have hgl := (contMDiffAt_iff_inclusion hf hreg I g x).mpr hg
-  have hv := (Smale.RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt (x := g x)
+  have hv := (RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt (x := g x)
   rw [mfderiv_comp x (hv.mdifferentiableAt (by simp)) (hgl.mdifferentiableAt (by simp))] at hi
   exact fun v w hvw =>
     hi

@@ -25,20 +25,20 @@ import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 
 Collars of regular level sets, compactly supported ambient diffeomorphisms moving one level
 to a nearby one, and the tubular neighbourhood of an embedded closed ball:
-`Smale.CollarHeight.*`, `Smale.SupportedDiffeomorph.*` (diffeomorphisms supported in a
-given open set), `Smale.DiskFraming.*`, `Smale.SmallPerturbation.*`,
-`Smale.SphereCoordinates.*`, and
-`Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall` — Lee Ch. 10's collar and
+`CollarHeight.*`, `SupportedDiffeomorph.*` (diffeomorphisms supported in a
+given open set), `DiskFraming.*`, `SmallPerturbation.*`,
+`SphereCoordinates.*`, and
+`exists_tubularNeighborhood_in_open_of_embedded_closedBall` — Lee Ch. 10's collar and
 tubular-neighbourhood theorems in the level-transport form used by the recognition
 development. (The plan's Tubular.lean is folded here; see Lib/reports/A.md.)
 
 ## Main definitions and results
 
-* `Smale.CollarHeight.*`, `Smale.SupportedDiffeomorph.*` : collar coordinates and supported
+* `CollarHeight.*`, `SupportedDiffeomorph.*` : collar coordinates and supported
   diffeomorphisms.
-* `Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall` : the tubular
+* `exists_tubularNeighborhood_in_open_of_embedded_closedBall` : the tubular
   neighbourhood theorem (specialized form).
-* `Smale.RegularLevel.*` : level-diffeomorphism lemmas.
+* `RegularLevel.*` : level-diffeomorphism lemmas.
 
 ## References
 
@@ -71,89 +71,89 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-abbrev Smale.NativeEuclideanEmbedding.NormalSpace {E M : Type*} [NormedAddCommGroup E]
+abbrev NativeEuclideanEmbedding.NormalSpace {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) :=
+    (e : NativeEuclideanEmbedding E M) (x : M) :=
   ↥(e.normalProjection x).range
 
-abbrev Smale.NativeEuclideanEmbedding.NormalModel {E M : Type*} [NormedAddCommGroup E]
+abbrev NativeEuclideanEmbedding.NormalModel {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) :=
+    (e : NativeEuclideanEmbedding E M) :=
   EuclideanSpace ℝ (Fin (e.ambientDimension - Module.finrank ℝ E))
 
-noncomputable def Smale.NativeEuclideanEmbedding.normalSpaceEquiv {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.normalSpaceEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.normalFiber x :=
+    (e : NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.normalFiber x :=
   ContinuousLinearEquiv.ofEq _ _ (e.range_normalProjection x)
 
-theorem Smale.NativeEuclideanEmbedding.finrank_normalSpace {E M : Type*} [NormedAddCommGroup E]
+theorem NativeEuclideanEmbedding.finrank_normalSpace {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    (e : NativeEuclideanEmbedding E M) (x : M) :
     Module.finrank ℝ (e.NormalSpace x) = e.ambientDimension - Module.finrank ℝ E := by
   have h := e.finrank_tangent_add_normal x
   rw [(e.normalSpaceEquiv x).toLinearEquiv.finrank_eq]
   omega
 
-noncomputable def Smale.NativeEuclideanEmbedding.normalModelEquiv {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.normalModelEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.NormalModel :=
+    (e : NativeEuclideanEmbedding E M) (x : M) : e.NormalSpace x ≃L[ℝ] e.NormalModel :=
   (LinearEquiv.ofFinrankEq (e.NormalSpace x) e.NormalModel
       (by
         rw [e.finrank_normalSpace x]
         exact finrank_euclideanSpace_fin.symm)).toContinuousLinearEquiv
 
-noncomputable def Smale.NativeEuclideanEmbedding.normalPrebundle {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.normalPrebundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     VectorPrebundle ℝ e.NormalModel e.NormalSpace :=
   ProjectionBundle.vectorPrebundle e.normalProjection e.normalProjection_idempotent
     e.normalModelEquiv e.contMDiff_normalProjection
 
-instance Smale.NativeEuclideanEmbedding.normalPrebundle_isContMDiff {E M : Type*}
+instance NativeEuclideanEmbedding.normalPrebundle_isContMDiff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     e.normalPrebundle.IsContMDiff 𝓘(ℝ, E) ∞ :=
   ProjectionBundle.vectorPrebundle_isContMDiff e.normalProjection
     e.normalProjection_idempotent e.normalModelEquiv e.contMDiff_normalProjection
 
-abbrev Smale.NativeEuclideanEmbedding.NormalBundle {E M : Type*} [NormedAddCommGroup E]
+abbrev NativeEuclideanEmbedding.NormalBundle {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) :=
+    (e : NativeEuclideanEmbedding E M) :=
   Bundle.TotalSpace e.NormalModel e.NormalSpace
 
-noncomputable instance Smale.NativeEuclideanEmbedding.normalBundleTopology {E M : Type*}
+noncomputable instance NativeEuclideanEmbedding.normalBundleTopology {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     TopologicalSpace e.NormalBundle :=
   e.normalPrebundle.totalSpaceTopology
 
-noncomputable instance Smale.NativeEuclideanEmbedding.normalFiberBundle {E M : Type*}
+noncomputable instance NativeEuclideanEmbedding.normalFiberBundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     FiberBundle e.NormalModel e.NormalSpace :=
   e.normalPrebundle.toFiberBundle
 
-instance Smale.NativeEuclideanEmbedding.normalVectorBundle {E M : Type*} [NormedAddCommGroup E]
+instance NativeEuclideanEmbedding.normalVectorBundle {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     VectorBundle ℝ e.NormalModel e.NormalSpace :=
   e.normalPrebundle.toVectorBundle
 
-instance Smale.NativeEuclideanEmbedding.normalContMDiffVectorBundle {E M : Type*}
+instance NativeEuclideanEmbedding.normalContMDiffVectorBundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     ContMDiffVectorBundle ∞ e.NormalModel e.NormalSpace 𝓘(ℝ, E) :=
   e.normalPrebundle.contMDiffVectorBundle 𝓘(ℝ, E)
 
-def Smale.NativeEuclideanEmbedding.normalVector {E M : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.normalVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
+    (e : NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   v.2
 
-theorem Smale.NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [NormedAddCommGroup E]
+theorem NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) :
+    [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
     ContMDiff ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞ e.normalVector := by
   intro z
   have hp :
@@ -197,36 +197,36 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [Nor
             e.normalProjection_idempotent e.normalModelEquiv z.1 v.1 hv v.2)).symm
   exact heq.contMDiffAt_iff.mpr hf
 
-def Smale.NativeEuclideanEmbedding.normalDisplacement {E M : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.normalDisplacement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
+    (e : NativeEuclideanEmbedding E M) (v : e.NormalBundle) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun v.proj + e.normalVector v
 
-theorem Smale.NativeEuclideanEmbedding.contMDiff_normalDisplacement {E M : Type*}
+theorem NativeEuclideanEmbedding.contMDiff_normalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
     ContMDiff ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       e.normalDisplacement :=
   (e.smooth.comp (Bundle.contMDiff_proj e.NormalSpace)).add e.contMDiff_normalVector
 
-theorem Smale.NativeEuclideanEmbedding.normalDisplacement_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.normalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    (e : NativeEuclideanEmbedding E M) (x : M) :
     e.normalDisplacement (Bundle.zeroSection e.NormalModel e.NormalSpace x) = e.toFun x := by
   simp [normalDisplacement, normalVector, Bundle.zeroSection]
 
-noncomputable def Smale.NativeEuclideanEmbedding.localNormalDisplacement {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
+    (e : NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun p.1 +
     ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
       p.2
 
-theorem Smale.NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : Type*}
+theorem NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     (x₀ : M) :
     ContMDiff ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       (e.localNormalDisplacement x₀) :=
@@ -236,14 +236,14 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : 
           contMDiff_fst).clm_apply
       contMDiff_snd)
 
-theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.localNormalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x₀ x : M) :
+    (e : NativeEuclideanEmbedding E M) (x₀ x : M) :
     e.localNormalDisplacement x₀ (x, 0) = e.toFun x := by simp [localNormalDisplacement]
 
-theorem Smale.NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type*}
+theorem NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) (v : e.NormalModel) :
+    (e : NativeEuclideanEmbedding E M) (x : M) (v : e.NormalModel) :
     ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x x v =
       ((e.normalModelEquiv x).symm v : EuclideanSpace ℝ (Fin e.ambientDimension)) := by
   change
@@ -254,17 +254,17 @@ theorem Smale.NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type
   rw [projectionIntertwiner_self _ (e.normalProjection_idempotent x)]
   exact projection_apply_range (e.normalProjection x) (e.normalProjection_idempotent x) _
 
-noncomputable def Smale.NativeEuclideanEmbedding.normalLinearSplitting {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.normalLinearSplitting {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] (e : NativeEuclideanEmbedding E M) (x : M) :
     (TangentSpace (𝓘(ℝ, E)) x × e.NormalModel) ≃L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
   ((ContinuousLinearEquiv.refl ℝ (TangentSpace (𝓘(ℝ, E)) x)).prodCongr
         ((e.normalModelEquiv x).symm.trans (e.normalSpaceEquiv x))).trans
     (e.tangentNormalEquiv x)
 
-theorem Smale.NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     mvfderiv ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (e.localNormalDisplacement x) (x, 0) =
       (e.normalLinearSplitting x).toContinuousLinearMap := by
   apply ContinuousLinearMap.ext
@@ -293,17 +293,17 @@ theorem Smale.NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero {E 
   rw [hprod, hleft, hright, hC]
   rfl
 
-theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_derivative_isInvertible
+theorem NativeEuclideanEmbedding.localNormalDisplacement_derivative_isInvertible
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    (e : NativeEuclideanEmbedding E M) (x : M) :
     (mvfderiv ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (e.localNormalDisplacement x)
         (x, 0)).IsInvertible :=
   ⟨e.normalLinearSplitting x, (e.mvfderiv_localNormalDisplacement_zero x).symm⟩
 
-theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
+theorem NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
+    (e : NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
     e.localNormalDisplacement x₀ p =
       e.normalDisplacement
         ⟨p.1,
@@ -311,18 +311,18 @@ theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
             p.2⟩ :=
   rfl
 
-theorem Smale.NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacement {E M : Type*}
+theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacement {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       (e.localNormalDisplacement x) (x, 0) := by
   exact
     isLocalDiffeomorphAt_of_invertible_mvfderiv (e.contMDiff_localNormalDisplacement x)
       (e.localNormalDisplacement_derivative_isInvertible x)
 
-noncomputable def Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph {E M : Type*}
+noncomputable def NativeEuclideanEmbedding.normalChartPartialDiffeomorph {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     PartialDiffeomorph ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel))
       e.NormalBundle (M × e.NormalModel) ∞
     where
@@ -335,9 +335,9 @@ noncomputable def Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph {
   contMDiffOn_invFun :=
     (FiberBundle.trivializationAt e.NormalModel e.NormalSpace x).contMDiffOn_symm
 
-theorem Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     e.normalChartPartialDiffeomorph x (Bundle.zeroSection e.NormalModel e.NormalSpace x) =
       (x, 0) := by
   change
@@ -345,17 +345,17 @@ theorem Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M :
       (x, 0)
   rw [map_zero]
 
-theorem Smale.NativeEuclideanEmbedding.normalChart_source_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.normalChart_source_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     Bundle.zeroSection e.NormalModel e.NormalSpace x ∈
       (e.normalChartPartialDiffeomorph x).source := by
   change x ∈ projectionTransportDomain e.normalProjection x
   exact mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent x
 
-theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M : Type*}
+theorem NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M)
     (v : e.NormalBundle) (hv : v ∈ (e.normalChartPartialDiffeomorph x).source) :
     e.localNormalDisplacement x (e.normalChartPartialDiffeomorph x v) = e.normalDisplacement v := by
   have hbase : v.proj ∈ projectionTransportDomain e.normalProjection x := hv
@@ -372,9 +372,9 @@ theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M 
       _
   rw [hback]
 
-theorem Smale.NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       e.normalDisplacement (Bundle.zeroSection e.NormalModel e.NormalSpace x) := by
   obtain ⟨d, hd, heq⟩ := e.isLocalDiffeomorphAt_localNormalDisplacement x
@@ -388,24 +388,24 @@ theorem Smale.NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_z
   intro v hv
   exact (e.localNormalDisplacement_chart_apply x v hv.1).symm.trans (heq hv.2)
 
-def Smale.NativeEuclideanEmbedding.regularNormalLocus {E M : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.regularNormalLocus {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) : Set e.NormalBundle :=
+    [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) : Set e.NormalBundle :=
   {v |
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       e.normalDisplacement v}
 
-theorem Smale.NativeEuclideanEmbedding.isOpen_regularNormalLocus {E M : Type*}
+theorem NativeEuclideanEmbedding.isOpen_regularNormalLocus {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) :
     IsOpen e.regularNormalLocus := by
   rw [isOpen_iff_mem_nhds]
   rintro v ⟨φ, hv, heq⟩
   exact Filter.mem_of_superset (φ.open_source.mem_nhds hv) (fun w hw ↦ ⟨φ, hw, heq⟩)
 
-theorem Smale.NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M : Type*}
+theorem NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) :
+    (e : NativeEuclideanEmbedding E M) :
     Set.InjOn e.normalDisplacement (Set.range (Bundle.zeroSection e.NormalModel e.NormalSpace)) :=
   by
   rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩ h
@@ -413,17 +413,17 @@ theorem Smale.NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection {E M
   exact
     congrArg (Bundle.zeroSection e.NormalModel e.NormalSpace) (e.closedEmbedding.injective hxy)
 
-theorem Smale.NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero {E M : Type*}
+theorem NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x : M) :
     ∃ U ∈ 𝓝 (Bundle.zeroSection e.NormalModel e.NormalSpace x),
       Set.InjOn e.normalDisplacement U := by
   obtain ⟨φ, hx, heq⟩ := e.isLocalDiffeomorphAt_normalDisplacement_zero x
   exact ⟨φ.source, φ.open_source.mem_nhds hx, heq.injOn_iff.mpr φ.toPartialEquiv.injOn⟩
 
-theorem Smale.NativeEuclideanEmbedding.exists_injective_normalNeighborhood {E M : Type*}
+theorem NativeEuclideanEmbedding.exists_injective_normalNeighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     [CompactSpace M] :
     ∃ U : Set e.NormalBundle,
       IsOpen U ∧
@@ -447,9 +447,9 @@ theorem Smale.NativeEuclideanEmbedding.exists_injective_normalNeighborhood {E M 
   · intro v
     exact v.property.2
 
-theorem Smale.NativeEuclideanEmbedding.isOpen_normalNeighborhood_image {E M : Type*}
+theorem NativeEuclideanEmbedding.isOpen_normalNeighborhood_image {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     {U : Set e.NormalBundle} (hU : IsOpen U)
     (hloc :
       IsLocalDiffeomorphOn ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
@@ -460,23 +460,23 @@ theorem Smale.NativeEuclideanEmbedding.isOpen_normalNeighborhood_image {E M : Ty
   rw [← hloc.isLocalHomeomorphOn.map_nhds_eq hv]
   exact Filter.image_mem_map (hU.mem_nhds hv)
 
-theorem Smale.NativeEuclideanEmbedding.normalBundle_nonempty {E M : Type*} [NormedAddCommGroup E]
+theorem NativeEuclideanEmbedding.normalBundle_nonempty {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) [Nonempty M] : Nonempty e.NormalBundle :=
+    (e : NativeEuclideanEmbedding E M) [Nonempty M] : Nonempty e.NormalBundle :=
   ⟨Bundle.zeroSection e.NormalModel e.NormalSpace (Classical.choice ‹Nonempty M›)⟩
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.normalBundle_nonempty in
-noncomputable def Smale.NativeEuclideanEmbedding.normalNeighborhoodEquiv {E M : Type*}
+attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+noncomputable def NativeEuclideanEmbedding.normalNeighborhoodEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) [Nonempty M] {U : Set e.NormalBundle}
+    (e : NativeEuclideanEmbedding E M) [Nonempty M] {U : Set e.NormalBundle}
     (hinj : Set.InjOn e.normalDisplacement U) :
     PartialEquiv e.NormalBundle (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   hinj.toPartialEquiv e.normalDisplacement U
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.normalBundle_nonempty in
-theorem Smale.NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E M : Type*}
+attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+theorem NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     [Nonempty M] {U : Set e.NormalBundle} (hU : IsOpen U)
     (hinj : Set.InjOn e.normalDisplacement U)
     (hloc :
@@ -507,11 +507,11 @@ theorem Smale.NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse {E
     exact (congrArg p.symm hfz.symm).trans (p.left_inv hzU)
   exact hfg.contMDiffAt_iff.mpr hg
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.normalBundle_nonempty in
-noncomputable def Smale.NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeomorph
+attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+noncomputable def NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeomorph
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-    (e : Smale.NativeEuclideanEmbedding E M) [Nonempty M] {U : Set e.NormalBundle} (hU : IsOpen U)
+    (e : NativeEuclideanEmbedding E M) [Nonempty M] {U : Set e.NormalBundle} (hU : IsOpen U)
     (hinj : Set.InjOn e.normalDisplacement U)
     (hloc :
       IsLocalDiffeomorphOn ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
@@ -526,10 +526,10 @@ noncomputable def Smale.NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeo
   contMDiffOn_invFun := fun _ hy ↦
     (e.contMDiffAt_normalNeighborhood_inverse hU hinj hloc hy).contMDiffWithinAt
 
-attribute [local instance] Smale.NativeEuclideanEmbedding.normalBundle_nonempty in
-theorem Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood {E M : Type*}
+attribute [local instance] NativeEuclideanEmbedding.normalBundle_nonempty in
+theorem NativeEuclideanEmbedding.exists_tubularNeighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     [Nonempty M] [CompactSpace M] :
     ∃ Φ :
       PartialDiffeomorph ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension)
@@ -546,9 +546,9 @@ theorem Smale.NativeEuclideanEmbedding.exists_tubularNeighborhood {E M : Type*}
   simpa only [Φ, normalNeighborhoodPartialDiffeomorph, normalNeighborhoodEquiv,
     Set.InjOn.toPartialEquiv, Set.BijOn.toPartialEquiv, e.normalDisplacement_zero] using hy
 
-structure Smale.NativeEuclideanEmbedding.SmoothRetraction {E M : Type*} [NormedAddCommGroup E]
+structure NativeEuclideanEmbedding.SmoothRetraction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    (e : Smale.NativeEuclideanEmbedding E M) where
+    (e : NativeEuclideanEmbedding E M) where
   domain : Set (EuclideanSpace ℝ (Fin e.ambientDimension))
   open_domain : IsOpen domain
   contains : Set.range e.toFun ⊆ domain
@@ -556,9 +556,9 @@ structure Smale.NativeEuclideanEmbedding.SmoothRetraction {E M : Type*} [NormedA
   smooth : ContMDiffOn (𝓡 e.ambientDimension) 𝓘(ℝ, E) ∞ toFun domain
   retract : ∀ x, toFun (e.toFun x) = x
 
-theorem Smale.NativeEuclideanEmbedding.nonempty_smoothRetraction {E M : Type*}
+theorem NativeEuclideanEmbedding.nonempty_smoothRetraction {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     [CompactSpace M] [Nonempty M] : Nonempty e.SmoothRetraction := by
   obtain ⟨Φ, hzero, hΦ, hrange⟩ := e.exists_tubularNeighborhood
   refine
@@ -572,9 +572,9 @@ theorem Smale.NativeEuclideanEmbedding.nonempty_smoothRetraction {E M : Type*}
   rw [heq] at hinv
   exact congrArg Bundle.TotalSpace.proj hinv
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp {E M : Type*}
+theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) (x : M) :
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) (x : M) :
     (mfderiv (𝓡 e.ambientDimension) 𝓘(ℝ, E) r.toFun (e.toFun x)).comp
         (mfderiv 𝓘(ℝ, E) (𝓡 e.ambientDimension) e.toFun x) =
       ContinuousLinearMap.id ℝ (TangentSpace 𝓘(ℝ, E) x) := by
@@ -587,9 +587,9 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp {E 
   rw [hr, mfderiv_id] at hd
   exact hd.symm
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_retract {E M : Type*}
+theorem NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_retract {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {x : M}
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {x : M}
     {v : EuclideanSpace ℝ (Fin e.ambientDimension)} (hv : v ∈ e.tangentImage x) :
     (mvfderiv 𝓘(ℝ, E) e.toFun x)
         ((mfderiv (𝓡 e.ambientDimension) 𝓘(ℝ, E) r.toFun (e.toFun x)) v) =
@@ -598,9 +598,9 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_ret
   have h := congrArg (fun A => A w) (r.mfderiv_retract_comp x)
   exact congrArg (mvfderiv 𝓘(ℝ, E) e.toFun x) h
 
-theorem Smale.NativeEuclideanEmbedding.contMDiff_embeddedField {E M : Type*}
+theorem NativeEuclideanEmbedding.contMDiff_embeddedField {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M)
+    [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M)
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
     ContMDiff 𝓘(ℝ, E) (𝓡 e.ambientDimension) ∞ (fun x => mvfderiv 𝓘(ℝ, E) e.toFun x (V x)) := by
@@ -610,46 +610,46 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_embeddedField {E M : Type*}
   rw [← modelWithCornersSelf_prod] at hp
   convert contDiff_snd.contMDiff.comp hp using 1 <;> rfl
 
-def Smale.RegularLevel.levelDisplacement {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularLevel.levelDisplacement {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
+    {e : NativeEuclideanEmbedding E M} (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (z : { x : M // f x = b } × ℝ) : EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun z.1 + z.2 • mvfderiv 𝓘(ℝ, E) e.toFun z.1 (V z.1)
 
-def Smale.RegularLevel.transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
+def RegularLevel.transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) : Set ({ x : M // f x = b } × ℝ) :=
   levelDisplacement V ⁻¹' r.domain
 
-def Smale.RegularLevel.transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
+def RegularLevel.transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) : ({ x : M // f x = b } × ℝ) → M :=
   r.toFun ∘ levelDisplacement V
 
-theorem Smale.RegularLevel.transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (x : { x : M // f x = b }) :
     transverseCoordinates r V (x, 0) = x := by
   simp only [transverseCoordinates, Function.comp_apply, levelDisplacement, zero_smul, add_zero]
   exact r.retract x
 
-theorem Smale.RegularLevel.zero_mem_transverseCoordinateDomain {E M : Type*}
+theorem RegularLevel.zero_mem_transverseCoordinateDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {b : ℝ} {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (x : { x : M // f x = b }) :
     (x, 0) ∈ transverseCoordinateDomain r V := by
   change e.toFun x + (0 : ℝ) • _ ∈ r.domain
   simp only [zero_smul, add_zero]
   exact r.contains ⟨x, rfl⟩
 
-theorem Smale.RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M}
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
     letI := chartedSpace hf hreg
     ContMDiff (𝓘(ℝ, Model E).prod 𝓘(ℝ, ℝ)) (𝓡 e.ambientDimension) ∞
@@ -658,7 +658,7 @@ theorem Smale.RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddC
   have hi :
     ContMDiff (𝓘(ℝ, Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ∞
       (fun z : { x : M // f x = b } × ℝ => (z.1 : M)) :=
-    (Smale.RegularLevel.contMDiff_inclusion hf hreg).comp contMDiff_fst
+    (RegularLevel.contMDiff_inclusion hf hreg).comp contMDiff_fst
   have hfirst := e.smooth.comp hi
   have hfield := (e.contMDiff_embeddedField hV).comp hi
   have htime :
@@ -666,23 +666,23 @@ theorem Smale.RegularLevel.contMDiff_levelDisplacement {E M : Type*} [NormedAddC
     contMDiff_snd
   exact hfirst.add (htime.smul hfield)
 
-theorem Smale.RegularLevel.isOpen_transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.isOpen_transverseCoordinateDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M}
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
     (r : e.SmoothRetraction) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
     IsOpen (transverseCoordinateDomain (f := f) (b := b) r V) := by
   let _ := chartedSpace hf hreg
   exact r.open_domain.preimage (contMDiff_levelDisplacement (e := e) V hf hreg hV).continuous
 
-theorem Smale.RegularLevel.contMDiffOn_transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.contMDiffOn_transverseCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M}
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
     (r : e.SmoothRetraction) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
     letI := chartedSpace hf hreg
     ContMDiffOn (𝓘(ℝ, Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ∞ (transverseCoordinates r V)
@@ -691,9 +691,9 @@ theorem Smale.RegularLevel.contMDiffOn_transverseCoordinates {E M : Type*} [Norm
   exact
     r.smooth.comp (contMDiff_levelDisplacement (e := e) V hf hreg hV).contMDiffOn (fun _ hz => hz)
 
-theorem Smale.RegularLevel.mfderiv_transverseCoordinates_time_zero {E M : Type*}
+theorem RegularLevel.mfderiv_transverseCoordinates_time_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {b : ℝ} {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (x : { x : M // f x = b }) :
     mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, E) (fun t : ℝ => transverseCoordinates r V (x, t)) 0 =
       (ContinuousLinearMap.id ℝ ℝ).smulRight (V x) := by
@@ -720,12 +720,12 @@ theorem Smale.RegularLevel.mfderiv_transverseCoordinates_time_zero {E M : Type*}
   congr 1
   exact congrArg (fun L => L (V x)) (r.mfderiv_retract_comp (x : M))
 
-theorem Smale.RegularLevel.mfderiv_transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.mfderiv_transverseCoordinates_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : Smale.NativeEuclideanEmbedding E M}
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} {e : NativeEuclideanEmbedding E M}
     (r : e.SmoothRetraction) (V : (x : M) → TangentSpace 𝓘(ℝ, E) x)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (x : { x : M // f x = b }) :
     letI := chartedSpace hf hreg
@@ -744,12 +744,12 @@ theorem Smale.RegularLevel.mfderiv_transverseCoordinates_zero {E M : Type*} [Nor
     mfderiv_transverseCoordinates_time_zero r V x]
   rfl
 
-theorem Smale.RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero {E M : Type*}
+theorem RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (x : { x : M // f x = b }) (hunit : mvfderiv 𝓘(ℝ, E) f (x : M) (V x) = 1) :
     letI := chartedSpace hf hreg
@@ -768,16 +768,16 @@ theorem Smale.RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero {E M 
             (bijective_transverseTangentMap hf hreg x (V x) hunit)).toContinuousLinearEquiv,
         rfl⟩
   exact
-    Smale.isLocalDiffeomorphAt_between_manifolds
+    isLocalDiffeomorphAt_between_manifolds
       (isOpen_transverseCoordinateDomain r V hf hreg hV)
       (zero_mem_transverseCoordinateDomain r V x) hs hi
 
-theorem Smale.RegularLevel.hasDerivAt_height_transverseCoordinates_zero {E M : Type*}
+theorem RegularLevel.hasDerivAt_height_transverseCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ}
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (x : { x : M // f x = b }) (hunit : mvfderiv 𝓘(ℝ, E) f (x : M) (V x) = 1) :
     HasDerivAt (fun t : ℝ => f (transverseCoordinates r V (x, t))) 1 0 := by
@@ -811,7 +811,7 @@ theorem Smale.RegularLevel.hasDerivAt_height_transverseCoordinates_zero {E M : T
     (congrArg (fun T : E →L[ℝ] ℝ => T (t • (V x : E))) hd).trans
       ((L.map_smul t (V x)).trans (congrArg (fun a : ℝ => t • a) hunit))
 
-theorem Smale.DiskFraming.starProjection_orthogonal_inf_eq_sub {F : Type*} [NormedAddCommGroup F]
+theorem DiskFraming.starProjection_orthogonal_inf_eq_sub {F : Type*} [NormedAddCommGroup F]
     [InnerProductSpace ℝ F] [FiniteDimensional ℝ F] {U V : Submodule ℝ F} (h : U ≤ V) :
     (Uᗮ ⊓ V).starProjection = V.starProjection - U.starProjection := by
   ext x
@@ -832,21 +832,21 @@ theorem Smale.DiskFraming.starProjection_orthogonal_inf_eq_sub {F : Type*} [Norm
     convert (Uᗮ ⊓ V)ᗮ.add_mem h₁ h₂ using 1
     abel
 
-def Smale.NativeEuclideanEmbedding.diskTangentImage {E M D : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.diskTangentImage {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
+    [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (fderiv ℝ (e.toFun ∘ f) x).range
 
-def Smale.NativeEuclideanEmbedding.diskNormalSpace {E M D : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.diskNormalSpace {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
+    [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) (f : D → M) (x : D) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (e.diskTangentImage f x)ᗮ ⊓ e.tangentImage (f x)
 
-theorem Smale.NativeEuclideanEmbedding.fderiv_comp_eq {E M D : Type*} [NormedAddCommGroup E]
+theorem NativeEuclideanEmbedding.fderiv_comp_eq {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M) {f : D → M}
+    [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) (x : D) :
     fderiv ℝ (e.toFun ∘ f) x =
       (mvfderiv 𝓘(ℝ, E) e.toFun (f x)).comp (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x) := by
@@ -854,26 +854,26 @@ theorem Smale.NativeEuclideanEmbedding.fderiv_comp_eq {E M D : Type*} [NormedAdd
     mfderiv_comp x (e.smooth.mdifferentiableAt (by simp)) (hf.mdifferentiableAt (by simp))]
   rfl
 
-theorem Smale.NativeEuclideanEmbedding.diskTangentImage_le {E M D : Type*} [NormedAddCommGroup E]
+theorem NativeEuclideanEmbedding.diskTangentImage_le {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M) {f : D → M}
+    [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) (x : D) :
     e.diskTangentImage f x ≤ e.tangentImage (f x) := by
   rw [diskTangentImage, e.fderiv_comp_eq hf x]
   exact LinearMap.range_comp_le_range _ _
 
-theorem Smale.NativeEuclideanEmbedding.injective_fderiv_comp {E M D : Type*}
+theorem NativeEuclideanEmbedding.injective_fderiv_comp {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M)
+    [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M)
     {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {x : D}
     (hi : Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) :
     Function.Injective (fderiv ℝ (e.toFun ∘ f) x) := by
   rw [e.fderiv_comp_eq hf x]
   exact (e.injective_mvfderiv (f x)).comp hi
 
-theorem Smale.NativeEuclideanEmbedding.finrank_diskTangent_add_normal {E M D : Type*}
+theorem NativeEuclideanEmbedding.finrank_diskTangent_add_normal {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : Smale.NativeEuclideanEmbedding E M)
+    [NormedAddCommGroup D] [InnerProductSpace ℝ D] (e : NativeEuclideanEmbedding E M)
     {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {x : D}
     (hi : Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) :
     Module.finrank ℝ D + Module.finrank ℝ (e.diskNormalSpace f x) = Module.finrank ℝ E := by
@@ -887,26 +887,26 @@ theorem Smale.NativeEuclideanEmbedding.finrank_diskTangent_add_normal {E M D : T
       (Submodule.finrank_add_inf_finrank_orthogonal (e.diskTangentImage_le hf x))
     _ = Module.finrank ℝ E := e.finrank_tangentImage (f x)
 
-def Smale.NativeEuclideanEmbedding.diskNormalProjection {E M D : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.diskNormalProjection {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M)
+    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M)
     (f : D → M) (x : D) :
     EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.tangentProjection (f x) - gramProjection (fderiv ℝ (e.toFun ∘ f) x)
 
-theorem Smale.NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
+theorem NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D]
-    (e : Smale.NativeEuclideanEmbedding E M) {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
+    (e : NativeEuclideanEmbedding E M) {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {x : D} (hi : Function.Injective (fderiv ℝ (e.toFun ∘ f) x)) :
     e.diskNormalProjection f x = (e.diskNormalSpace f x).starProjection := by
   rw [diskNormalProjection, gramProjection_eq_starProjection _ hi]
-  exact (Smale.DiskFraming.starProjection_orthogonal_inf_eq_sub (e.diskTangentImage_le hf x)).symm
+  exact (DiskFraming.starProjection_orthogonal_inf_eq_sub (e.diskTangentImage_le hf x)).symm
 
-theorem Smale.NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : Type*}
+theorem NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M) {f : D → M}
+    [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) :
     ContDiffOn ℝ ∞ (e.diskNormalProjection f)
       {x | Function.Injective (fderiv ℝ (e.toFun ∘ f) x)} := by
@@ -919,10 +919,10 @@ theorem Smale.NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : 
     hT.contDiffAt.sub (contMDiffAt_gramProjection hd.contMDiff.contMDiffAt hx).contDiffAt
   exact hp.contDiffWithinAt
 
-theorem Smale.NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D : Type*}
+theorem NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M) {f : D → M}
+    [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {K : Set D}
     (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) :
     ∃ U : Set D,
@@ -938,7 +938,7 @@ theorem Smale.NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D :
       e.injective_fderiv_comp hf (hi x hx), e.contDiffOn_diskNormalProjection hf, ?_⟩
   exact fun _ hx => e.diskNormalProjection_eq hf hx
 
-structure Smale.DiskFraming.SmoothRangeTransportOn {E F : Type*} [NormedAddCommGroup E]
+structure DiskFraming.SmoothRangeTransportOn {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (K : Set E)
     (P Q : E → F →L[ℝ] F) where
   toFun : E → F →L[ℝ] F
@@ -949,9 +949,9 @@ structure Smale.DiskFraming.SmoothRangeTransportOn {E F : Type*} [NormedAddCommG
   invertible : ∀ x ∈ K, (toFun x).IsInvertible
   intertwines : ∀ x ∈ K, Q x * toFun x = toFun x * P x
 
-def Smale.DiskFraming.SmoothRangeTransportOn.refl {E F : Type*} [NormedAddCommGroup E]
+def DiskFraming.SmoothRangeTransportOn.refl {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (K : Set E) (P : E → F →L[ℝ] F) :
-    Smale.DiskFraming.SmoothRangeTransportOn K P P
+    DiskFraming.SmoothRangeTransportOn K P P
     where
   toFun _ := 1
   neighborhood := Set.univ
@@ -961,11 +961,11 @@ def Smale.DiskFraming.SmoothRangeTransportOn.refl {E F : Type*} [NormedAddCommGr
   invertible _ _ := ⟨ContinuousLinearEquiv.refl ℝ F, rfl⟩
   intertwines _ _ := by rw [mul_one, one_mul]
 
-def Smale.DiskFraming.SmoothRangeTransportOn.trans {E F : Type*} [NormedAddCommGroup E]
+def DiskFraming.SmoothRangeTransportOn.trans {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q R : E → F →L[ℝ] F}
-    (a : Smale.DiskFraming.SmoothRangeTransportOn K P Q)
-    (b : Smale.DiskFraming.SmoothRangeTransportOn K Q R) :
-    Smale.DiskFraming.SmoothRangeTransportOn K P R
+    (a : DiskFraming.SmoothRangeTransportOn K P Q)
+    (b : DiskFraming.SmoothRangeTransportOn K Q R) :
+    DiskFraming.SmoothRangeTransportOn K P R
     where
   toFun x := b.toFun x * a.toFun x
   neighborhood := a.neighborhood ∩ b.neighborhood
@@ -982,10 +982,10 @@ def Smale.DiskFraming.SmoothRangeTransportOn.trans {E F : Type*} [NormedAddCommG
       _ = b.toFun x * (a.toFun x * P x) := by rw [a.intertwines x hx]
       _ = (b.toFun x * a.toFun x) * P x := (mul_assoc _ _ _).symm
 
-def Smale.DiskFraming.SmoothRangeTransportOn.symm {E F : Type*} [NormedAddCommGroup E]
+def DiskFraming.SmoothRangeTransportOn.symm {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
-    [CompleteSpace F] (a : Smale.DiskFraming.SmoothRangeTransportOn K P Q) :
-    Smale.DiskFraming.SmoothRangeTransportOn K Q P
+    [CompleteSpace F] (a : DiskFraming.SmoothRangeTransportOn K P Q) :
+    DiskFraming.SmoothRangeTransportOn K Q P
     where
   toFun x := (a.toFun x).inverse
   neighborhood := a.neighborhood ∩ {x | (a.toFun x).IsInvertible}
@@ -1010,9 +1010,9 @@ def Smale.DiskFraming.SmoothRangeTransportOn.symm {E F : Type*} [NormedAddCommGr
     rw [(a.invertible x hx).self_apply_inverse] at h
     exact h.symm
 
-theorem Smale.DiskFraming.SmoothRangeTransportOn.map_range {E F : Type*} [NormedAddCommGroup E]
+theorem DiskFraming.SmoothRangeTransportOn.map_range {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
-    (a : Smale.DiskFraming.SmoothRangeTransportOn K P Q) (x : E) (hx : x ∈ K) :
+    (a : DiskFraming.SmoothRangeTransportOn K P Q) (x : E) (hx : x ∈ K) :
     Submodule.map (a.toFun x).toLinearMap (P x).range = (Q x).range := by
   rw [← LinearMap.range_comp]
   have hlin :
@@ -1024,13 +1024,13 @@ theorem Smale.DiskFraming.SmoothRangeTransportOn.map_range {E F : Type*} [Normed
     LinearMap.range_comp_of_range_eq_top _
       (LinearMap.range_eq_top.mpr (a.invertible x hx).surjective)
 
-def Smale.DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [NormedAddCommGroup E]
+def DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {K : Set E} {P Q : E → F →L[ℝ] F}
     (hP : ∀ x ∈ K, IsIdempotentElem (P x)) (hQ : ∀ x ∈ K, IsIdempotentElem (Q x)) {U V : Set E}
     (hU : IsOpen U) (hV : IsOpen V) (hKU : K ⊆ U) (hKV : K ⊆ V) (hsP : ContDiffOn ℝ ∞ P U)
     (hsQ : ContDiffOn ℝ ∞ Q V)
     (hinv : ∀ x ∈ K, (projectionIntertwiner (P x) (Q x)).IsInvertible) :
-    Smale.DiskFraming.SmoothRangeTransportOn K P Q
+    DiskFraming.SmoothRangeTransportOn K P Q
     where
   toFun x := projectionIntertwiner (P x) (Q x)
   neighborhood := U ∩ V
@@ -1082,7 +1082,7 @@ theorem isOpen_continuousHomotopyTransportDomain {F : Type*} [NormedAddCommGroup
   have hi : IsOpen {A : F →L[ℝ] F | A.IsInvertible} := ContinuousLinearEquiv.isOpen
   exact isOpen_forall_compact (hi.preimage hr)
 
-theorem Smale.DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
+theorem DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]
     [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
     (hP : ∀ t x, x ∈ K → IsIdempotentElem (P t x))
@@ -1105,7 +1105,7 @@ theorem Smale.DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddComm
         (SmoothRangeTransportOn.ofProjections (hP t) (hP u) hUt hUu hKt hKu hst hsu
           (fun x hx => hu ⟨x, hx⟩))⟩
 
-theorem Smale.DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
+theorem DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]
     [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
     (hP : ∀ t x, x ∈ K → IsIdempotentElem (P t x))
@@ -1129,7 +1129,7 @@ theorem Smale.DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedA
           (SmoothRangeTransportOn.ofProjections (hP t) (hP u) hUt hUu hKt hKu hst hsu
               (fun x hx => hu ⟨x, hx⟩)).symm⟩
 
-theorem Smale.DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy {E F T : Type*}
+theorem DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy {E F T : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [CompleteSpace F] [TopologicalSpace T] {K : Set E} (hK : IsCompact K) (P : T → E → F →L[ℝ] F)
     (hP : ∀ t x, x ∈ K → IsIdempotentElem (P t x))
@@ -1145,7 +1145,7 @@ theorem Smale.DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy {E F T : T
   have ht : t ∈ C := by rw [hall]; exact Set.mem_univ t
   exact ht
 
-theorem Smale.DiskFraming.nonempty_transportOn_starConvex {E F : Type*} [NormedAddCommGroup E]
+theorem DiskFraming.nonempty_transportOn_starConvex {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {K U : Set E}
     (hK : IsCompact K) (hstar : StarConvex ℝ (0 : E) K) (hU : IsOpen U) (hKU : K ⊆ U)
     (P : E → F →L[ℝ] F) (hP : ∀ x ∈ K, IsIdempotentElem (P x)) (hs : ContDiffOn ℝ ∞ P U) :
@@ -1175,7 +1175,7 @@ theorem Smale.DiskFraming.nonempty_transportOn_starConvex {E F : Type*} [NormedA
   simpa only [hstart, hend] using
     nonempty_smoothRangeTransportOn_of_homotopy hK Q hQ hc hslice 0 1
 
-theorem Smale.DiskFraming.exists_smooth_frame_near_starConvex {E F : Type*} [NormedAddCommGroup E]
+theorem DiskFraming.exists_smooth_frame_near_starConvex {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {K U : Set E}
     (hK : IsCompact K) (hstar : StarConvex ℝ (0 : E) K) (hU : IsOpen U) (hKU : K ⊆ U)
     (P : E → F →L[ℝ] F) (hP : ∀ x ∈ K, IsIdempotentElem (P x)) (hs : ContDiffOn ℝ ∞ P U) :
@@ -1194,7 +1194,7 @@ theorem Smale.DiskFraming.exists_smooth_frame_near_starConvex {E F : Type*} [Nor
   rw [LinearMap.range_comp, Submodule.range_subtype]
   exact a.map_range x hx
 
-theorem Smale.DiskFraming.exists_smooth_frame_on_neighborhood_closedBall {E F : Type*}
+theorem DiskFraming.exists_smooth_frame_on_neighborhood_closedBall {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [CompleteSpace F] {U : Set E} (hU : IsOpen U)
     (hballU : Metric.closedBall (0 : E) 1 ⊆ U) (P : E → F →L[ℝ] F)
@@ -1224,10 +1224,10 @@ theorem Smale.DiskFraming.exists_smooth_frame_on_neighborhood_closedBall {E F : 
   · exact fun _ hx => hbU (Metric.ball_subset_closedBall hx.2)
   · exact fun x hx => hArange x (Metric.ball_subset_closedBall hx.2)
 
-theorem Smale.NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall {E M D : Type*}
+theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M) {f : D → M}
+    [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     (hi : ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
     (n : ℕ) (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) :
@@ -1243,7 +1243,7 @@ theorem Smale.NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall
     rw [hP x hx]
     exact (e.diskNormalSpace f x).isIdempotentElem_starProjection
   obtain ⟨V, hV, hKV, hVU, A, hA, hAi⟩ :=
-    Smale.DiskFraming.exists_smooth_frame_on_neighborhood_closedBall hU hKU
+    DiskFraming.exists_smooth_frame_on_neighborhood_closedBall hU hKU
       (e.diskNormalProjection f) hidem hsP
   have hz : (0 : D) ∈ Metric.closedBall (0 : D) 1 := Metric.mem_closedBall_self zero_le_one
   have hr : (e.diskNormalProjection f 0).range = e.diskNormalSpace f 0 := by
@@ -1268,7 +1268,7 @@ theorem Smale.NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall
     _ = (e.diskNormalProjection f x).range := (hAi x hx).2
     _ = e.diskNormalSpace f x := by rw [hP x (hVU hx), Submodule.range_starProjection]
 
-def Smale.DiskFraming.normalSplitEquiv {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def DiskFraming.normalSplitEquiv {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
     [NormedAddCommGroup F] [InnerProductSpace ℝ F] (L : D →L[ℝ] F) (A : Z →L[ℝ] F)
     {V : Submodule ℝ F} (hL : Function.Injective L) (hA : Function.Injective A)
@@ -1292,33 +1292,33 @@ def Smale.DiskFraming.normalSplitEquiv {D Z F : Type*} [NormedAddCommGroup D] [N
     exact ⟨q, Subtype.ext hq⟩
   exact (LinearEquiv.ofBijective b ⟨hbi, hbs⟩).toContinuousLinearEquiv
 
-def Smale.NativeEuclideanEmbedding.diskTangentNormalEquiv {E M D : Type*} [NormedAddCommGroup E]
+def NativeEuclideanEmbedding.diskTangentNormalEquiv {E M D : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M)
+    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M)
     {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {x : D}
     (hi : Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) {n : ℕ}
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension))
     (hA : Function.Injective A) (hAr : A.range = e.diskNormalSpace f x) :
     (D × EuclideanSpace ℝ (Fin n)) ≃L[ℝ] e.tangentImage (f x) :=
-  Smale.DiskFraming.normalSplitEquiv (fderiv ℝ (e.toFun ∘ f) x) A (e.injective_fderiv_comp hf hi)
+  DiskFraming.normalSplitEquiv (fderiv ℝ (e.toFun ∘ f) x) A (e.injective_fderiv_comp hf hi)
     hA (e.diskTangentImage_le hf x) hAr
 
-def Smale.DiskFraming.displacement {D Z F : Type*} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+def DiskFraming.displacement {D Z F : Type*} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (H : D → F) (A : D → Z →L[ℝ] F) (p : D × Z) : F :=
   H p.1 + A p.1 p.2
 
-theorem Smale.DiskFraming.displacement_zero {D Z F : Type*} [NormedAddCommGroup Z]
+theorem DiskFraming.displacement_zero {D Z F : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] (H : D → F) (A : D → Z →L[ℝ] F)
     (x : D) : displacement H A (x, 0) = H x := by simp [displacement]
 
-theorem Smale.DiskFraming.contDiffOn_displacement {D Z F : Type*} [NormedAddCommGroup D]
+theorem DiskFraming.contDiffOn_displacement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {H : D → F} {A : D → Z →L[ℝ] F} {V : Set D} (hH : ContDiff ℝ ∞ H)
     (hA : ContDiffOn ℝ ∞ A V) : ContDiffOn ℝ ∞ (displacement H A) (V ×ˢ Set.univ) :=
   (hH.comp contDiff_fst).contDiffOn.add
     ((hA.comp contDiffOn_fst (fun _ hp => hp.1)).clm_apply contDiffOn_snd)
 
-theorem Smale.DiskFraming.hasFDerivAt_displacement_zero {D Z F : Type*} [NormedAddCommGroup D]
+theorem DiskFraming.hasFDerivAt_displacement_zero {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {H : D → F} {A : D → Z →L[ℝ] F} {x : D} (hH : ContDiffAt ℝ ∞ H x)
     (hA : ContDiffAt ℝ ∞ A x) :
@@ -1342,67 +1342,67 @@ theorem Smale.DiskFraming.hasFDerivAt_displacement_zero {D Z F : Type*} [NormedA
   change fderiv ℝ H x q.1 + (A x q.2 + (fderiv ℝ A x q.1) 0) = fderiv ℝ H x q.1 + A x q.2
   rw [map_zero, add_zero]
 
-def Smale.NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates {E M D : Type*}
+def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
     (A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)) :
     D × EuclideanSpace ℝ (Fin n) → M :=
-  r.toFun ∘ Smale.DiskFraming.displacement (e.toFun ∘ f) A
+  r.toFun ∘ DiskFraming.displacement (e.toFun ∘ f) A
 
-def Smale.NativeEuclideanEmbedding.SmoothRetraction.diskCoordinateDomain {E M D : Type*}
+def NativeEuclideanEmbedding.SmoothRetraction.diskCoordinateDomain {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
     (A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension))
     (V : Set D) : Set (D × EuclideanSpace ℝ (Fin n)) :=
-  (V ×ˢ Set.univ) ∩ Smale.DiskFraming.displacement (e.toFun ∘ f) A ⁻¹' r.domain
+  (V ×ˢ Set.univ) ∩ DiskFraming.displacement (e.toFun ∘ f) A ⁻¹' r.domain
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates_zero {E M D : Type*}
+theorem NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates_zero {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} (f : D → M)
     (A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)) (x : D) :
     r.diskCoordinates f A (x, 0) = f x := by
-  rw [diskCoordinates, Function.comp_apply, Smale.DiskFraming.displacement_zero]
+  rw [diskCoordinates, Function.comp_apply, DiskFraming.displacement_zero]
   exact r.retract (f x)
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isOpen_diskCoordinateDomain
+theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_diskCoordinateDomain
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)} {V : Set D}
     (hV : IsOpen V) (hA : ContDiffOn ℝ ∞ A V) : IsOpen (r.diskCoordinateDomain f A V) := by
   have hc :=
-    (Smale.DiskFraming.contDiffOn_displacement (e.smooth.comp hf).contDiff hA).continuousOn
+    (DiskFraming.contDiffOn_displacement (e.smooth.comp hf).contDiff hA).continuousOn
   exact hc.isOpen_inter_preimage (hV.prod isOpen_univ) r.open_domain
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.zero_mem_diskCoordinateDomain
+theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_diskCoordinateDomain
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ}
+    [ChartedSpace E M] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ}
     (f : D → M) (A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension))
     {V : Set D} {x : D} (hx : x ∈ V) : (x, 0) ∈ r.diskCoordinateDomain f A V := by
   refine ⟨⟨hx, Set.mem_univ _⟩, ?_⟩
-  change Smale.DiskFraming.displacement (e.toFun ∘ f) A (x, 0) ∈ r.domain
-  rw [Smale.DiskFraming.displacement_zero]
+  change DiskFraming.displacement (e.toFun ∘ f) A (x, 0) ∈ r.domain
+  rw [DiskFraming.displacement_zero]
   exact r.contains ⟨f x, rfl⟩
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_diskCoordinates
+theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_diskCoordinates
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)} {V : Set D}
     (hA : ContDiffOn ℝ ∞ A V) :
     ContMDiffOn 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ (r.diskCoordinates f A)
       (r.diskCoordinateDomain f A V) :=
   r.smooth.comp
-    ((Smale.DiskFraming.contDiffOn_displacement (e.smooth.comp hf).contDiff hA).contMDiffOn.mono
+    ((DiskFraming.contDiffOn_displacement (e.smooth.comp hf).contDiff hA).contMDiffOn.mono
       Set.inter_subset_left)
     (fun _ hp => hp.2)
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_zero
+theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)} {x : D}
     (hA : ContDiffAt ℝ ∞ A x) :
@@ -1410,22 +1410,22 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_
       (mfderiv (𝓡 e.ambientDimension) 𝓘(ℝ, E) r.toFun (e.toFun (f x))).comp
         ((fderiv ℝ (e.toFun ∘ f) x).coprod (A x)) := by
   have hd :=
-    Smale.DiskFraming.hasFDerivAt_displacement_zero (e.smooth.comp hf).contDiff.contDiffAt hA
+    DiskFraming.hasFDerivAt_displacement_zero (e.smooth.comp hf).contDiff.contDiffAt hA
   have hr :
     MDifferentiableAt (𝓡 e.ambientDimension) 𝓘(ℝ, E) r.toFun
-      (Smale.DiskFraming.displacement (e.toFun ∘ f) A (x, 0)) := by
-    rw [Smale.DiskFraming.displacement_zero]
+      (DiskFraming.displacement (e.toFun ∘ f) A (x, 0)) := by
+    rw [DiskFraming.displacement_zero]
     exact
       (r.smooth.contMDiffAt (r.open_domain.mem_nhds (r.contains ⟨f x, rfl⟩))).mdifferentiableAt
         (by simp)
   rw [diskCoordinates, mfderiv_comp (x, 0) hr hd.differentiableAt.mdifferentiableAt,
-    mfderiv_eq_fderiv, hd.fderiv, Smale.DiskFraming.displacement_zero]
+    mfderiv_eq_fderiv, hd.fderiv, DiskFraming.displacement_zero]
   rfl
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_diskCoordinates_zero
+theorem NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
-    [FiniteDimensional ℝ D] {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
+    [FiniteDimensional ℝ D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     {n : ℕ} {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)} {x : D}
     (hA : ContDiffAt ℝ ∞ A x) (hi : Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
@@ -1442,10 +1442,10 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_dis
   have hleft := congrArg Subtype.val ((e.tangentImageEquiv (f x)).apply_symm_apply (L q))
   exact hleft.trans (r.embedding_derivative_retract (L q).property).symm
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_diskCoordinates_zero
+theorem NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_diskCoordinates_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D]
-    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {e : Smale.NativeEuclideanEmbedding E M}
+    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {e : NativeEuclideanEmbedding E M}
     (r : e.SmoothRetraction) {n : ℕ} {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)} {V : Set D}
     (hV : IsOpen V) (hA : ContDiffOn ℝ ∞ A V) {x : D} (hx : x ∈ V)
@@ -1453,11 +1453,11 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_dis
     (hAr : (A x).range = e.diskNormalSpace f x) :
     IsLocalDiffeomorphAt 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ (r.diskCoordinates f A)
       (x, 0) :=
-  Smale.isLocalDiffeomorphAt_of_contMDiffOn (r.isOpen_diskCoordinateDomain hf hV hA)
+  isLocalDiffeomorphAt_of_contMDiffOn (r.isOpen_diskCoordinateDomain hf hV hA)
     (r.zero_mem_diskCoordinateDomain f A hx) (r.contMDiffOn_diskCoordinates hf hA)
     (r.isInvertible_mfderiv_diskCoordinates_zero hf (hA.contDiffAt (hV.mem_nhds hx)) hi hAi hAr)
 
-theorem Smale.DiskFraming.exists_pos_prod_closedBall_subset {D Z : Type*} [TopologicalSpace D]
+theorem DiskFraming.exists_pos_prod_closedBall_subset {D Z : Type*} [TopologicalSpace D]
     [NormedAddCommGroup Z] {K : Set D} {U : Set (D × Z)} (hK : IsCompact K) (hU : IsOpen U)
     (hKU : K ×ˢ {(0 : Z)} ⊆ U) : ∃ ε : ℝ, 0 < ε ∧ K ×ˢ Metric.closedBall (0 : Z) ε ⊆ U := by
   obtain ⟨A, B, -, hB, hKA, hzeroB, hAB⟩ :=
@@ -1468,11 +1468,11 @@ theorem Smale.DiskFraming.exists_pos_prod_closedBall_subset {D Z : Type*} [Topol
   rintro ⟨x, z⟩ ⟨hx, hz⟩
   exact hAB ⟨hKA hx, hball hz⟩
 
-theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighborhood
+theorem NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighborhood
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D]
-    {e : Smale.NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
+    {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction) {n : ℕ} {f : D → M}
     (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {K V : Set D} (hK : IsCompact K) (hV : IsOpen V)
     (hKV : K ⊆ V) (hinj : Set.InjOn f K)
     (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
@@ -1504,14 +1504,14 @@ theorem Smale.NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighb
       r.isLocalDiffeomorphAt_diskCoordinates_zero hf hV hA (hKV hx) (hi x hx) (hAi x hx)
         (hAr x hx)
   apply
-    Smale.exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hzeroInj hlocal
+    exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hzeroInj hlocal
       (r.isOpen_diskCoordinateDomain hf hV hA)
   rintro ⟨x, v⟩ ⟨hx, hv⟩
   have hv0 : v = 0 := hv
   subst v
   exact r.zero_mem_diskCoordinateDomain f A (hKV hx)
 
-theorem Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D : Type*}
+theorem exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M}
@@ -1559,27 +1559,27 @@ theorem Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall {E M D :
     rintro _ ⟨p, hp, rfl⟩
     exact hp.2
 
-theorem Smale.RegularLevel.exists_unitHeightField {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_unitHeightField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ V : (x : M) → TangentSpace 𝓘(ℝ, E) x,
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
         ∀ x : { x : M // f x = b }, mvfderiv 𝓘(ℝ, E) f (x : M) (V x) = 1 := by
-  have hband : ∀ x, f x ∈ Set.Icc b b → x ∉ Smale.ManifoldMorse.criticalPoints E f := fun x hx =>
+  have hband : ∀ x, f x ∈ Set.Icc b b → x ∉ ManifoldMorse.criticalPoints E f := fun x hx =>
     hreg x (le_antisymm hx.2 hx.1)
   obtain ⟨φ, W, -, -, hW, hφ, V, hV, hheight⟩ :=
-    Smale.FlowConstruction.exists_regularBandField hf hband
+    FlowConstruction.exists_regularBandField hf hband
   refine ⟨V, hV, ?_⟩
   intro x
   exact (hheight x).trans (hφ (hW (by rw [x.property]; exact ⟨le_rfl, le_rfl⟩)))
 
-theorem Smale.RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     [Nonempty { x : M // f x = b }] :
     letI := chartedSpace hf hreg
     ∃ ε : ℝ,
@@ -1594,7 +1594,7 @@ theorem Smale.RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommG
   let _ : CompactSpace { x : M // f x = b } :=
     isCompact_iff_compactSpace.mp (isClosed_eq hf.continuous continuous_const).isCompact
   let _ : Nonempty M := Nonempty.map (fun x : { x : M // f x = b } => (x : M)) inferInstance
-  obtain ⟨e⟩ := Smale.nonempty_nativeEuclideanEmbedding (E := E) (M := M)
+  obtain ⟨e⟩ := nonempty_nativeEuclideanEmbedding (E := E) (M := M)
   obtain ⟨r⟩ := e.nonempty_smoothRetraction
   obtain ⟨V, hV, hunit⟩ := exists_unitHeightField hf hreg
   let K : Set ({ x : M // f x = b } × ℝ) := Set.univ ×ˢ {(0 : ℝ)}
@@ -1621,10 +1621,10 @@ theorem Smale.RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommG
     subst t
     exact zero_mem_transverseCoordinateDomain r V x
   obtain ⟨Φ, hKΦ, -, heq⟩ :=
-    Smale.exists_partialDiffeomorph_near_compact hK hinj hloc
+    exists_partialDiffeomorph_near_compact hK hinj hloc
       (isOpen_transverseCoordinateDomain r V hf hreg hV) hKD
   obtain ⟨ε, hε, hsource⟩ :=
-    Smale.DiskFraming.exists_pos_prod_closedBall_subset isCompact_univ Φ.open_source hKΦ
+    DiskFraming.exists_pos_prod_closedBall_subset isCompact_univ Φ.open_source hKΦ
   refine ⟨ε, hε, Φ, hsource, ?_, ?_⟩
   · intro x
     exact (congrFun heq (x, 0)).trans (transverseCoordinates_zero r V x)
@@ -1634,7 +1634,7 @@ theorem Smale.RegularLevel.exists_transverseCollar {E M : Type*} [NormedAddCommG
     rw [hh]
     exact hasDerivAt_height_transverseCoordinates_zero r V hf hreg hV x (hunit x)
 
-theorem Smale.RegularLevel.exists_heightBand_subset_open {X : Type*} [TopologicalSpace X]
+theorem RegularLevel.exists_heightBand_subset_open {X : Type*} [TopologicalSpace X]
     [CompactSpace X] {g : X → ℝ} (hg : Continuous g) {a : ℝ} {U : Set X} (hU : IsOpen U)
     (hlevel : ∀ x, g x = a → x ∈ U) : ∃ δ : ℝ, 0 < δ ∧ g ⁻¹' Metric.ball a δ ⊆ U := by
   have hclosed : IsClosed (g '' Uᶜ) := (hU.isClosed_compl.isCompact.image hg).isClosed
@@ -1647,11 +1647,11 @@ theorem Smale.RegularLevel.exists_heightBand_subset_open {X : Type*} [Topologica
   by_contra hnot
   exact hball hx ⟨x, hnot, rfl⟩
 
-theorem Smale.RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     [Nonempty { x : M // f x = b }] :
     letI := chartedSpace hf hreg
     ∃ ε : ℝ,
@@ -1676,9 +1676,9 @@ theorem Smale.RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup
   have hHt (x : { x : M // f x = b }) : HasDerivAt (fun t : ℝ => H (x, t)) 1 0 :=
     (hderiv x).sub_const b
   obtain ⟨χ, hKχ, -, hχ⟩ :=
-    Smale.CollarHeight.exists_heightChangeChart Φ.open_source hH hH0 hzeroSource hHt
+    CollarHeight.exists_heightChangeChart Φ.open_source hH hH0 hzeroSource hHt
   have hχzero (x : { x : M // f x = b }) : χ (x, 0) = (x, 0) :=
-    (congrFun hχ (x, 0)).trans (Smale.CollarHeight.heightChange_zero hH0 x)
+    (congrFun hχ (x, 0)).trans (CollarHeight.heightChange_zero hH0 x)
   have hχtarget (x : { x : M // f x = b }) : (x, 0) ∈ χ.target := by
     rw [← hχzero x]
     exact χ.map_source' (hKχ ⟨Set.mem_univ x, rfl⟩)
@@ -1695,7 +1695,7 @@ theorem Smale.RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup
     rw [hχinv x]
     exact hzeroSource x
   obtain ⟨δ, hδ, hproduct⟩ :=
-    Smale.DiskFraming.exists_pos_prod_closedBall_subset isCompact_univ Ψ.open_source hzeroΨ
+    DiskFraming.exists_pos_prod_closedBall_subset isCompact_univ Ψ.open_source hzeroΨ
   refine ⟨δ, hδ, Ψ, hproduct, ?_, ?_⟩
   · intro x
     change Φ (χ.symm (x, 0)) = x
@@ -1709,11 +1709,11 @@ theorem Smale.RegularLevel.exists_heightCollar {E M : Type*} [NormedAddCommGroup
     change f (Φ (χ.symm z)) - b = z.2 at hheight
     linarith
 
-theorem Smale.RegularLevel.exists_heightCollar_with_band {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_heightCollar_with_band {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     [Nonempty { x : M // f x = b }] :
     letI := chartedSpace hf hreg
     ∃ ε : ℝ,
@@ -1737,11 +1737,11 @@ theorem Smale.RegularLevel.exists_heightCollar_with_band {E M : Type*} [NormedAd
   · exact fun z hz => hsource ⟨hz.1, Metric.closedBall_subset_closedBall (min_le_left ε δ) hz.2⟩
   · exact fun x hx => hband (Metric.ball_subset_ball (min_le_right ε δ) hx)
 
-theorem Smale.SmallPerturbation.injective_id_add {E : Type*} [NormedAddCommGroup E] {u : E → E}
+theorem SmallPerturbation.injective_id_add {E : Type*} [NormedAddCommGroup E] {u : E → E}
     {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) : Function.Injective (fun x => x + u x) :=
   (AntilipschitzWith.id.add_lipschitzWith hu (by simpa only [inv_one] using hk)).injective
 
-theorem Smale.SmallPerturbation.surjective_id_add {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.surjective_id_add {E : Type*} [NormedAddCommGroup E]
     [CompleteSpace E] {u : E → E} {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) :
     Function.Surjective (fun x => x + u x) := by
   intro y
@@ -1753,12 +1753,12 @@ theorem Smale.SmallPerturbation.surjective_id_add {E : Type*} [NormedAddCommGrou
   have hx : y - u x = x := hc.fixedPoint_isFixedPt.eq
   exact eq_sub_iff_add_eq.mp hx.symm
 
-theorem Smale.SmallPerturbation.bijective_id_add {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.bijective_id_add {E : Type*} [NormedAddCommGroup E]
     [CompleteSpace E] {u : E → E} {k : ℝ≥0} (hu : LipschitzWith k u) (hk : k < 1) :
     Function.Bijective (fun x => x + u x) :=
   ⟨injective_id_add hu hk, surjective_id_add hu hk⟩
 
-theorem Smale.SmallPerturbation.isInvertible_fderiv_id_add {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.isInvertible_fderiv_id_add {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {u : E → E} {k : ℝ≥0} (hs : ContDiff ℝ ∞ u)
     (hu : LipschitzWith k u) (hk : k < 1) (x : E) :
     (fderiv ℝ (fun y => y + u y) x).IsInvertible := by
@@ -1775,19 +1775,19 @@ theorem Smale.SmallPerturbation.isInvertible_fderiv_id_add {E : Type*} [NormedAd
         hi).toContinuousLinearEquiv
   exact ⟨L, by ext v; rfl⟩
 
-def Smale.SmallPerturbation.diffeomorphIdAdd {E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
+def SmallPerturbation.diffeomorphIdAdd {E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {u : E → E} {k : ℝ≥0} (hs : ContDiff ℝ ∞ u)
     (hu : LipschitzWith k u) (hk : k < 1) : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞ := by
   have hloc : IsLocalDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) ∞ (fun x => x + u x) := by
     intro x
     apply
-      Smale.isLocalDiffeomorphAt_of_contMDiffOn isOpen_univ (Set.mem_univ x)
+      isLocalDiffeomorphAt_of_contMDiffOn isOpen_univ (Set.mem_univ x)
         (contDiff_id.add hs).contMDiff.contMDiffOn
     rw [mfderiv_eq_fderiv]
     exact isInvertible_fderiv_id_add hs hu hk x
   exact hloc.diffeomorphOfBijective (bijective_id_add hu hk)
 
-theorem Smale.SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {β : E → ℝ} {k : ℝ≥0} (hβ : LipschitzWith k β) (a : E) :
     LipschitzWith (k * ‖a‖₊) (fun x => β x • a) := by
   apply LipschitzWith.of_dist_le_mul
@@ -1801,23 +1801,23 @@ theorem Smale.SmallPerturbation.lipschitzWith_smul_const {E : Type*} [NormedAddC
       simp only [NNReal.coe_mul, coe_nnnorm]
       ring
 
-def Smale.SmallPerturbation.bumpTranslation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def SmallPerturbation.bumpTranslation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β) (hβ : LipschitzWith k β)
     (a : E) (ha : k * ‖a‖₊ < 1) : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞ :=
   diffeomorphIdAdd (hs.smul contDiff_const) (lipschitzWith_smul_const hβ a) ha
 
-theorem Smale.SmallPerturbation.bumpTranslation_apply {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.bumpTranslation_apply {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)
     (hβ : LipschitzWith k β) (a : E) (ha : k * ‖a‖₊ < 1) (x : E) :
     bumpTranslation hs hβ a ha x = x + β x • a :=
   rfl
 
-theorem Smale.SmallPerturbation.bumpTranslation_eq_of_zero {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.bumpTranslation_eq_of_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} {k : ℝ≥0} (hs : ContDiff ℝ ∞ β)
     (hβ : LipschitzWith k β) (a : E) (ha : k * ‖a‖₊ < 1) {x : E} (hx : β x = 0) :
     bumpTranslation hs hβ a ha x = x := by rw [bumpTranslation_apply, hx, zero_smul, add_zero]
 
-theorem Smale.SmallPerturbation.exists_radius_bumpTranslation {E : Type*} [NormedAddCommGroup E]
+theorem SmallPerturbation.exists_radius_bumpTranslation {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {β : E → ℝ} (hs : ContDiff ℝ ∞ β)
     (hcompact : HasCompactSupport β) :
     ∃ ε : ℝ,
@@ -1843,40 +1843,40 @@ theorem Smale.SmallPerturbation.exists_radius_bumpTranslation {E : Type*} [Norme
   by_contra hne
   exact hx (subset_tsupport β hne)
 
-theorem Smale.SupportedDiffeomorph.mapsTo_of_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
+theorem SupportedDiffeomorph.mapsTo_of_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
     (hfix : ∀ x ∉ S, d x = x) : Set.MapsTo d S S := by
   intro x hx
   by_contra hdx
   have heq : d x = x := d.injective (hfix (d x) hdx)
   exact hdx (heq.symm ▸ hx)
 
-theorem Smale.SupportedDiffeomorph.inverse_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
+theorem SupportedDiffeomorph.inverse_fixed_outside {X : Type*} (d : X ≃ X) {S : Set X}
     (hfix : ∀ x ∉ S, d x = x) : ∀ x ∉ S, d.symm x = x := by
   intro x hx
   apply d.injective
   rw [d.apply_symm_apply, hfix x hx]
 
-def Smale.SupportedDiffeomorph.extendMap {E F H H' X Y : Type*} [NormedAddCommGroup E]
+def SupportedDiffeomorph.extendMap {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
     (f : X → X) (y : Y) : Y := by classical exact if y ∈ Φ.target then Φ (f (Φ.symm y)) else y
 
-theorem Smale.SupportedDiffeomorph.extendMap_of_mem {E F H H' X Y : Type*} [NormedAddCommGroup E]
+theorem SupportedDiffeomorph.extendMap_of_mem {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
     (f : X → X) {y : Y} (hy : y ∈ Φ.target) : extendMap Φ f y = Φ (f (Φ.symm y)) := by
   simp only [extendMap, hy, if_pos]
 
-theorem Smale.SupportedDiffeomorph.extendMap_of_notMem {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extendMap_of_notMem {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
     (Φ : PartialDiffeomorph I J X Y ∞) (f : X → X) {y : Y} (hy : y ∉ Φ.target) :
     extendMap Φ f y = y := by simp only [extendMap, hy, if_false]
 
-theorem Smale.SupportedDiffeomorph.extendMap_id {E F H H' X Y : Type*} [NormedAddCommGroup E]
+theorem SupportedDiffeomorph.extendMap_id {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
@@ -1886,7 +1886,7 @@ theorem Smale.SupportedDiffeomorph.extendMap_id {E F H H' X Y : Type*} [NormedAd
     exact Φ.right_inv' hy
   · exact extendMap_of_notMem Φ id hy
 
-theorem Smale.SupportedDiffeomorph.extendMap_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
+theorem SupportedDiffeomorph.extendMap_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
@@ -1894,7 +1894,7 @@ theorem Smale.SupportedDiffeomorph.extendMap_chart {E F H H' X Y : Type*} [Norme
   rw [extendMap_of_mem Φ f (Φ.map_source' hx)]
   exact congrArg (fun z => Φ (f z)) (Φ.left_inv' hx)
 
-theorem Smale.SupportedDiffeomorph.extendMap_mem_target {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extendMap_mem_target {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -1903,7 +1903,7 @@ theorem Smale.SupportedDiffeomorph.extendMap_mem_target {E F H H' X Y : Type*}
   rw [extendMap_of_mem Φ f hy]
   exact Φ.map_source' (hf (Φ.map_target' hy))
 
-theorem Smale.SupportedDiffeomorph.extendMap_leftInverse {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extendMap_leftInverse {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -1917,7 +1917,7 @@ theorem Smale.SupportedDiffeomorph.extendMap_leftInverse {E F H H' X Y : Type*}
     exact Φ.right_inv' hy
   · rw [extendMap_of_notMem Φ d hy, extendMap_of_notMem Φ d.symm hy]
 
-theorem Smale.SupportedDiffeomorph.extendMap_eq_of_notMem_image {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extendMap_eq_of_notMem_image {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -1929,7 +1929,7 @@ theorem Smale.SupportedDiffeomorph.extendMap_eq_of_notMem_image {E F H H' X Y : 
     exact Φ.right_inv' hyt
   · exact extendMap_of_notMem Φ f hyt
 
-theorem Smale.SupportedDiffeomorph.mapsTo_source {E F H H' X Y : Type*} [NormedAddCommGroup E]
+theorem SupportedDiffeomorph.mapsTo_source {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
@@ -1937,7 +1937,7 @@ theorem Smale.SupportedDiffeomorph.mapsTo_source {E F H H' X Y : Type*} [NormedA
     Set.MapsTo d Φ.source Φ.source :=
   mapsTo_of_fixed_outside d (fun x hx => hfix x (fun hk => hx (hKΦ hk)))
 
-theorem Smale.SupportedDiffeomorph.contMDiff_extendMap {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.contMDiff_extendMap {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -1962,7 +1962,7 @@ theorem Smale.SupportedDiffeomorph.contMDiff_extendMap {E F H H' X Y : Type*}
     filter_upwards [hc.isOpen_compl.mem_nhds hnot] with z hz
     exact extendMap_eq_of_notMem_image Φ hfix hz
 
-def Smale.SupportedDiffeomorph.extension {E F H H' X Y : Type*} [NormedAddCommGroup E]
+def SupportedDiffeomorph.extension {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
@@ -1979,7 +1979,7 @@ def Smale.SupportedDiffeomorph.extension {E F H H' X Y : Type*} [NormedAddCommGr
       contMDiff_toFun := contMDiff_extendMap Φ d.contMDiff hK hKΦ hfix hdS
       contMDiff_invFun := contMDiff_extendMap Φ d.symm.contMDiff hK hKΦ hdi hdiS }
 
-theorem Smale.SupportedDiffeomorph.extension_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
+theorem SupportedDiffeomorph.extension_chart {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
     [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] (Φ : PartialDiffeomorph I J X Y ∞)
@@ -1988,7 +1988,7 @@ theorem Smale.SupportedDiffeomorph.extension_chart {E F H H' X Y : Type*} [Norme
     extension Φ d hK hKΦ hfix (Φ x) = Φ (d x) :=
   extendMap_chart Φ d hx
 
-theorem Smale.SupportedDiffeomorph.extension_eq_of_notMem_image {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extension_eq_of_notMem_image {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -1997,7 +1997,7 @@ theorem Smale.SupportedDiffeomorph.extension_eq_of_notMem_image {E F H H' X Y : 
     extension Φ d hK hKΦ hfix y = y :=
   extendMap_eq_of_notMem_image Φ hfix hy
 
-theorem Smale.SupportedDiffeomorph.extension_eq_of_notMem_target {E F H H' X Y : Type*}
+theorem SupportedDiffeomorph.extension_eq_of_notMem_target {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
@@ -2006,7 +2006,7 @@ theorem Smale.SupportedDiffeomorph.extension_eq_of_notMem_target {E F H H' X Y :
     (hy : y ∉ Φ.target) : extension Φ d hK hKΦ hfix y = y :=
   extendMap_of_notMem Φ d hy
 
-theorem Smale.RegularLevel.le_shift_iff_of_abs_sub_ge {u b t ε : ℝ} (ht : |t| < ε)
+theorem RegularLevel.le_shift_iff_of_abs_sub_ge {u b t ε : ℝ} (ht : |t| < ε)
     (hu : ε ≤ |u - b|) : u ≤ b + t ↔ u ≤ b := by
   by_cases hbelow : u ≤ b
   · rw [abs_of_nonpos (sub_nonpos.mpr hbelow)] at hu
@@ -2015,11 +2015,11 @@ theorem Smale.RegularLevel.le_shift_iff_of_abs_sub_ge {u b t ε : ℝ} (ht : |t|
     rw [abs_of_nonneg (sub_nonneg.mpr habove)] at hu
     constructor <;> intro hh <;> exfalso <;> linarith [(abs_lt.mp ht).2]
 
-theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
+theorem RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) (ε : ℝ) (hε : 0 < ε) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) (ε : ℝ) (hε : 0 < ε) :
     letI := chartedSpace hf hreg
     ∀ Ψ : PartialDiffeomorph (𝓘(ℝ, Model E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E) ({ x : M // f x = b } × ℝ) M ∞,
       ((Set.univ : Set { x : M // f x = b }) ×ˢ Metric.closedBall (0 : ℝ) ε ⊆ Ψ.source) →
@@ -2054,7 +2054,7 @@ theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
     (ProperSpace.isCompact_closedBall (0 : ℝ) ε).of_isClosed_subset (isClosed_tsupport β)
       (hsupp.trans Metric.ball_subset_closedBall)
   obtain ⟨η, hη, htranslations⟩ :=
-    Smale.SmallPerturbation.exists_radius_bumpTranslation hβ hcompact
+    SmallPerturbation.exists_radius_bumpTranslation hβ hcompact
   let C : Set ({ x : M // f x = b } × ℝ) := Set.univ ×ˢ tsupport β
   have hC : IsCompact C := isCompact_univ.prod hcompact
   have hCsource : C ⊆ Ψ.source := fun z hz =>
@@ -2092,16 +2092,16 @@ theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
     intro z hz
     have hzβ : z.2 ∉ tsupport β := fun hh => hz ⟨Set.mem_univ z.1, hh⟩
     exact Prod.ext rfl (hdfix z.2 hzβ)
-  let D := Smale.SupportedDiffeomorph.extension Ψ P hC hCsource hPfix
+  let D := SupportedDiffeomorph.extension Ψ P hC hCsource hPfix
   have hpoint (x : { x : M // f x = b }) : D x = Ψ (x, t) := by
     have hx0 : (x, 0) ∈ Ψ.source := hsource ⟨Set.mem_univ x, Metric.mem_closedBall_self hε.le⟩
     have hP0 : P (x, 0) = (x, t) := by exact Prod.ext rfl hd0
-    have hh := Smale.SupportedDiffeomorph.extension_chart Ψ P hC hCsource hPfix hx0
+    have hh := SupportedDiffeomorph.extension_chart Ψ P hC hCsource hPfix hx0
     change D (Ψ (x, 0)) = Ψ (P (x, 0)) at hh
     rwa [hzero x, hP0] at hh
   refine ⟨D, ?_, hpoint, ?_, ?_⟩
   · intro y hy
-    exact Smale.SupportedDiffeomorph.extension_eq_of_notMem_image Ψ P hC hCsource hPfix hy
+    exact SupportedDiffeomorph.extension_eq_of_notMem_image Ψ P hC hCsource hPfix hy
   · ext y
     constructor
     · rintro ⟨x, hx, rfl⟩
@@ -2134,8 +2134,8 @@ theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
       · let z := Ψ.symm y
         have hz : z ∈ Ψ.source := Ψ.map_target' hy
         have hPz : P z ∈ Ψ.source :=
-          Smale.SupportedDiffeomorph.mapsTo_source Ψ P.toEquiv hCsource hPfix hz
-        have hDy : D y = Ψ (P z) := Smale.SupportedDiffeomorph.extendMap_of_mem Ψ P hy
+          SupportedDiffeomorph.mapsTo_source Ψ P.toEquiv hCsource hPfix hz
+        have hDy : D y = Ψ (P z) := SupportedDiffeomorph.extendMap_of_mem Ψ P hy
         have hfy : f y = b + z.2 := by
           have hh := hheight z hz
           have hzy : Ψ z = y := Ψ.right_inv' hy
@@ -2155,7 +2155,7 @@ theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
           have hdz := horder.mpr (by linarith)
           linarith
       · have hDy : D y = y :=
-          Smale.SupportedDiffeomorph.extension_eq_of_notMem_target Ψ P hC hCsource hPfix hy
+          SupportedDiffeomorph.extension_eq_of_notMem_target Ψ P hC hCsource hPfix hy
         rw [hDy]
         have hfar : ε ≤ |f y - b| := by
           apply le_of_not_gt
@@ -2173,11 +2173,11 @@ theorem Smale.RegularLevel.exists_ambientTransport_of_heightCollar {E M : Type*}
       obtain ⟨x, rfl⟩ := D.surjective y
       exact ⟨x, (hsublevel x).mp hy, rfl⟩
 
-theorem Smale.RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty {E M : Type*}
+theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     [Nonempty { x : M // f x = b }] :
     ∃ δ : ℝ,
       0 < δ ∧
@@ -2198,11 +2198,11 @@ theorem Smale.RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty 
   obtain ⟨D, hfix, -, hlevel, hsublevel⟩ := htransport t ht
   exact ⟨D, hfix, hlevel, hsublevel⟩
 
-theorem Smale.RegularLevel.exists_nearby_ambient_level_diffeomorphs {E M : Type*}
+theorem RegularLevel.exists_nearby_ambient_level_diffeomorphs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {b : ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hreg : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ δ : ℝ,
       0 < δ ∧
         ∃ K : Set M,
@@ -2244,17 +2244,17 @@ theorem Smale.RegularLevel.exists_nearby_ambient_level_diffeomorphs {E M : Type*
         simpa only [Real.dist_eq] using hh
       exact (le_shift_iff_of_abs_sub_ge ht hfar).symm
 
-def Smale.RegularLevel.AmbientEquivalent {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def RegularLevel.AmbientEquivalent {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (a b : ℝ) : Prop :=
   ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
     D '' {x : M | f x = a} = {x : M | f x = b} ∧ D '' {x : M | f x ≤ a} = {x : M | f x ≤ b}
 
-theorem Smale.RegularLevel.ambientEquivalent_refl {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.ambientEquivalent_refl {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (a : ℝ) :
     AmbientEquivalent (E := E) f a a := by
   refine ⟨Diffeomorph.refl 𝓘(ℝ, E) M ∞, ?_, ?_⟩ <;> exact Set.image_id _
 
-theorem Smale.RegularLevel.ambientEquivalent_symm {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.ambientEquivalent_symm {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {a b : ℝ}
     (h : AmbientEquivalent (E := E) f a b) : AmbientEquivalent (E := E) f b a := by
   obtain ⟨D, hlevel, hsublevel⟩ := h
@@ -2264,7 +2264,7 @@ theorem Smale.RegularLevel.ambientEquivalent_symm {E M : Type*} [NormedAddCommGr
     rw [heq, Set.image_id]
   exact ⟨D.symm, hreverse _ _ hlevel, hreverse _ _ hsublevel⟩
 
-theorem Smale.RegularLevel.ambientEquivalent_trans {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.ambientEquivalent_trans {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {a b c : ℝ}
     (hab : AmbientEquivalent (E := E) f a b) (hbc : AmbientEquivalent (E := E) f b c) :
     AmbientEquivalent (E := E) f a c := by
@@ -2276,18 +2276,18 @@ theorem Smale.RegularLevel.ambientEquivalent_trans {E M : Type*} [NormedAddCommG
   · change (fun x => d (e x)) '' {x : M | f x ≤ a} = {x : M | f x ≤ c}
     rw [← Set.image_image, he', hd']
 
-theorem Smale.RegularLevel.exists_ambient_regularBand_transport {E M : Type*}
+theorem RegularLevel.exists_ambient_regularBand_transport {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ} (hab : a ≤ b)
-    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ Smale.ManifoldMorse.criticalPoints E f) :
+    (hband : ∀ x, f x ∈ Set.Icc a b → x ∉ ManifoldMorse.criticalPoints E f) :
     ∃ D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
       D '' {x : M | f x = a} = {x : M | f x = b} ∧ D '' {x : M | f x ≤ a} = {x : M | f x ≤ b} := by
   classical
   let B := Set.Icc a b
   let left : B := ⟨a, ⟨le_rfl, hab⟩⟩
   let right : B := ⟨b, ⟨hab, le_rfl⟩⟩
-  let reg (t : B) : ∀ x, f x = (t : ℝ) → x ∉ Smale.ManifoldMorse.criticalPoints E f := fun x hx =>
+  let reg (t : B) : ∀ x, f x = (t : ℝ) → x ∉ ManifoldMorse.criticalPoints E f := fun x hx =>
     hband x (hx ▸ t.property)
   let P : B → Prop := fun t => AmbientEquivalent (E := E) f a (t : ℝ)
   have hlocal : IsLocallyConstant P := by
@@ -2316,11 +2316,11 @@ theorem Smale.RegularLevel.exists_ambient_regularBand_transport {E M : Type*}
   have hright : P right := hconstant ▸ hleft
   exact hright
 
-theorem Smale.RegularLevel.exists_levelDiffeomorph_of_ambient {E M : Type*} [NormedAddCommGroup E]
+theorem RegularLevel.exists_levelDiffeomorph_of_ambient {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ}
-    (ha : ∀ x, f x = a → x ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hb : ∀ x, f x = b → x ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (ha : ∀ x, f x = a → x ∉ ManifoldMorse.criticalPoints E f)
+    (hb : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f)
     (D : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞)
     (hlevel : D '' {x : M | f x = a} = {x : M | f x = b}) :
     letI := chartedSpace hf ha
@@ -2341,17 +2341,17 @@ theorem Smale.RegularLevel.exists_levelDiffeomorph_of_ambient {E M : Type*} [Nor
   let e := D.toHomeomorph.subtype (p := fun x => f x = a) (q := fun x => f x = b) hiff
   have he : ContMDiff 𝓘(ℝ, Model E) 𝓘(ℝ, Model E) ∞ e :=
     (contMDiff_iff_inclusion hf hb 𝓘(ℝ, Model E) e).mpr
-      (D.contMDiff.comp (Smale.RegularLevel.contMDiff_inclusion hf ha))
+      (D.contMDiff.comp (RegularLevel.contMDiff_inclusion hf ha))
   have hei : ContMDiff 𝓘(ℝ, Model E) 𝓘(ℝ, Model E) ∞ e.symm :=
     (contMDiff_iff_inclusion hf ha 𝓘(ℝ, Model E) e.symm).mpr
-      (D.symm.contMDiff.comp (Smale.RegularLevel.contMDiff_inclusion hf hb))
+      (D.symm.contMDiff.comp (RegularLevel.contMDiff_inclusion hf hb))
   let F : Diffeomorph 𝓘(ℝ, Model E) 𝓘(ℝ, Model E) { x : M // f x = a } { x : M // f x = b } ∞ :=
     { e.toEquiv with
       contMDiff_toFun := he
       contMDiff_invFun := hei }
   exact ⟨F, fun _ => rfl⟩
 
-def Smale.SphereCoordinates.ofLinearIsometry {N P : Type*} [NormedAddCommGroup N]
+def SphereCoordinates.ofLinearIsometry {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] {n : ℕ}
     [Fact (Module.finrank ℝ N = n + 1)] [Fact (Module.finrank ℝ P = n + 1)] (L : N ≃ₗᵢ[ℝ] P) :
     Diffeomorph (𝓡 n) (𝓡 n) (Metric.sphere (0 : N) 1) (Metric.sphere (0 : P) 1) ∞ := by

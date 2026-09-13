@@ -10,14 +10,14 @@ import Lib.Geometry.Manifold.Morse.Handle
 /-!
 # Flows of smooth vector fields on compact manifolds
 
-Flow boxes and partial chart fields (`Smale.FlowConstruction.*`), the Morse-block machinery
+Flow boxes and partial chart fields (`FlowConstruction.*`), the Morse-block machinery
 isolating critical points (`MorseCancellation.morseClosedBlock*`,
 `exists_disjoint_morse_block_field`), and inverse-function ingredients
 (`isLocalDiffeomorphAt_of_invertible_mvfderiv`).
 
 ## Main definitions and results
 
-* `Smale.FlowConstruction.*` : flow boxes and partial chart fields.
+* `FlowConstruction.*` : flow boxes and partial chart fields.
 * `isLocalDiffeomorphAt_of_invertible_mvfderiv` : inverse function theorem form.
 
 ## References
@@ -50,7 +50,7 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem Smale.FlowConstruction.exists_localFlow_in_open {E : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_localFlow_in_open {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] {v : E → E} {x₀ : E} (hv : ContDiffAt ℝ 1 v x₀)
     {U : Set E} (hU : IsOpen U) (hxU : x₀ ∈ U) :
     ∃ r > (0 : ℝ),
@@ -92,13 +92,13 @@ theorem Smale.FlowConstruction.exists_localFlow_in_open {E : Type*} [NormedAddCo
     have ht' := (hs hq).1.2
     exact ((hα x hx').2 t (Set.Ioo_subset_Icc_self ht')).hasDerivAt (Icc_mem_nhds ht'.1 ht'.2)
 
-def Smale.FlowConstruction.coordinateField {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def FlowConstruction.coordinateField {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M]
     (v : (x : M) → TangentSpace 𝓘(ℝ, E) x) (p : M) (y : E) : E :=
   tangentCoordChange 𝓘(ℝ, E) ((chartAt E p).symm y) p ((chartAt E p).symm y)
     (v ((chartAt E p).symm y))
 
-theorem Smale.FlowConstruction.contDiffAt_coordinateField {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.contDiffAt_coordinateField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M]
     {v : (x : M) → TangentSpace 𝓘(ℝ, E) x} {p : M}
     (hv :
@@ -111,7 +111,7 @@ theorem Smale.FlowConstruction.contDiffAt_coordinateField {E M : Type*} [NormedA
         (BoundarylessManifold.isInteriorPoint (x := p)))
   convert h.snd using 1 <;> rfl
 
-theorem Smale.FlowConstruction.coordinateField_eq_mfderiv {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.coordinateField_eq_mfderiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M]
     (v : (x : M) → TangentSpace 𝓘(ℝ, E) x) (p : M) {y : E} (hy : y ∈ (chartAt E p).target) :
     coordinateField v p y =
@@ -119,7 +119,7 @@ theorem Smale.FlowConstruction.coordinateField_eq_mfderiv {E M : Type*} [NormedA
   rw [mfderiv_chartAt_eq_tangentCoordChange ((chartAt E p).map_target hy)]
   rfl
 
-theorem Smale.FlowConstruction.mfderiv_symm_coordinateField {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.mfderiv_symm_coordinateField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M]
     (v : (x : M) → TangentSpace 𝓘(ℝ, E) x) (p : M) {y : E} (hy : y ∈ (chartAt E p).target) :
     mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) (chartAt E p).symm y
@@ -131,7 +131,7 @@ theorem Smale.FlowConstruction.mfderiv_symm_coordinateField {E M : Type*} [Norme
   rw [coordinateField_eq_mfderiv v p hy]
   exact congrArg (fun A : E →L[ℝ] E => A (v (e.symm y))) he
 
-theorem Smale.FlowConstruction.hasMFDerivAt_lift_coordinateCurve {E M : Type*}
+theorem FlowConstruction.hasMFDerivAt_lift_coordinateCurve {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x} {p : M} {α : ℝ → E} {t : ℝ}
     (hα : HasDerivAt α (coordinateField v p (α t)) t) (ht : α t ∈ (chartAt E p).target) :
@@ -149,7 +149,7 @@ theorem Smale.FlowConstruction.hasMFDerivAt_lift_coordinateCurve {E M : Type*}
       (NormedSpace.fromTangentSpace t a) • v ((chartAt E p).symm (α t))
   rw [map_smul, mfderiv_symm_coordinateField v p ht]
 
-theorem Smale.FlowConstruction.exists_manifoldLocalFlow {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_manifoldLocalFlow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x} (p : M)
     (hv :
@@ -188,7 +188,7 @@ theorem Smale.FlowConstruction.exists_manifoldLocalFlow {E M : Type*} [NormedAdd
     have hcurve := (hα (e x) hx.2).2 t ht
     exact (hasMFDerivAt_lift_coordinateCurve hcurve.2 hcurve.1).hasMFDerivWithinAt
 
-theorem Smale.FlowConstruction.exists_uniformIntegralCurves {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_uniformIntegralCurves {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
@@ -208,7 +208,7 @@ theorem Smale.FlowConstruction.exists_uniformIntegralCurves {E M : Type*} [Norme
   apply Set.mem_iInter₂.mp (hδsub ?_) p hps
   simpa only [Metric.mem_ball, dist_zero_right, Real.norm_eq_abs] using abs_lt.mpr ht
 
-theorem Smale.FlowConstruction.exists_globalIntegralCurve {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_globalIntegralCurve {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -216,7 +216,7 @@ theorem Smale.FlowConstruction.exists_globalIntegralCurve {E M : Type*} [NormedA
   obtain ⟨ε, hε, h⟩ := exists_uniformIntegralCurves hv
   exact exists_isMIntegralCurve_of_isMIntegralCurveOn hv hε h x
 
-def Smale.FlowConstruction.flow {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def FlowConstruction.flow {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -224,21 +224,21 @@ def Smale.FlowConstruction.flow {E M : Type*} [NormedAddCommGroup E] [NormedSpac
   (exists_globalIntegralCurve hv x).choose t
 
 @[simp]
-theorem Smale.FlowConstruction.flow_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem FlowConstruction.flow_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (x : M) : flow hv 0 x = x :=
   (exists_globalIntegralCurve hv x).choose_spec.1
 
-theorem Smale.FlowConstruction.isMIntegralCurve_flow {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.isMIntegralCurve_flow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
     (x : M) : IsMIntegralCurve (fun t => flow hv t x) v :=
   (exists_globalIntegralCurve hv x).choose_spec.2
 
-theorem Smale.FlowConstruction.flow_add {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem FlowConstruction.flow_add {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -250,7 +250,7 @@ theorem Smale.FlowConstruction.flow_add {E M : Type*} [NormedAddCommGroup E] [No
       (by simp only [Function.comp_apply, zero_add, flow_zero])
   exact congrFun heq s
 
-theorem Smale.FlowConstruction.flow_eq_local {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.flow_eq_local {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -261,7 +261,7 @@ theorem Smale.FlowConstruction.flow_eq_local {E M : Type*} [NormedAddCommGroup E
     ((isMIntegralCurve_flow hv x).isMIntegralCurveOn _) (hF x hx).2
     ((flow_zero hv x).trans (hF x hx).1.symm) ht
 
-theorem Smale.FlowConstruction.exists_continuousOn_flow {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_continuousOn_flow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -275,7 +275,7 @@ theorem Smale.FlowConstruction.exists_continuousOn_flow {E M : Type*} [NormedAdd
     hFc.comp continuous_swap.continuousOn (fun _ hq => ⟨hq.2, hq.1⟩)
   exact hc.congr (fun q hq => flow_eq_local hv hε hF hq.2 hq.1)
 
-theorem Smale.FlowConstruction.exists_smalltime_continuous {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.exists_smalltime_continuous {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
@@ -299,7 +299,7 @@ theorem Smale.FlowConstruction.exists_smalltime_continuous {E M : Type*} [Normed
     ((hF p).continuousAt (prod_mem_nhds (Ioo_mem_nhds htp.1 htp.2) ((hU p).mem_nhds hxp))).comp
       (continuousAt_const.prodMk continuousAt_id)
 
-theorem Smale.FlowConstruction.continuous_flow_time {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.continuous_flow_time {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -339,7 +339,7 @@ theorem Smale.FlowConstruction.continuous_flow_time {E M : Type*} [NormedAddComm
   rw [hSuniv]
   exact Set.mem_univ t
 
-theorem Smale.FlowConstruction.continuous_flow {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.continuous_flow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
@@ -363,7 +363,7 @@ theorem Smale.FlowConstruction.continuous_flow {E M : Type*} [NormedAddCommGroup
     rfl
   exact heq ▸ hcomp
 
-def Smale.FlowConstruction.compactFlow {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def FlowConstruction.compactFlow {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M]
     [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M))) :
@@ -373,7 +373,7 @@ def Smale.FlowConstruction.compactFlow {E M : Type*} [NormedAddCommGroup E] [Nor
   map_add' := flow_add hv
   map_zero' := flow_zero hv
 
-theorem Smale.FlowConstruction.isMIntegralCurve_compactFlow {E M : Type*} [NormedAddCommGroup E]
+theorem FlowConstruction.isMIntegralCurve_compactFlow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] [CompactSpace M] {v : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (hv : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) 1 (fun x => (⟨x, v x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -384,9 +384,9 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_disjoint_morse_block_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}
-    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (c : ∀ i, Smale.ManifoldMorse.SignedMorseChart (E := E) f (p i)) (R : ι → ℝ)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {ι : Type*}
+    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ ManifoldMorse.criticalPoints E f)
+    (c : ∀ i, ManifoldMorse.SignedMorseChart (E := E) f (p i)) (R : ι → ℝ)
     (hblock :
       ∀ i,
         Metric.closedBall (0 : (c i).NegativeCoordinates) (R i) ×ˢ
@@ -400,8 +400,8 @@ theorem MorseCancellation.exists_disjoint_morse_block_field {E M : Type*} [Norme
     ∃ (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (F : Flow ℝ M),
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
         (∀ x, IsMIntegralCurve (fun t => F t x) V) ∧
-          (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0) ∧
-            (∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
+          (∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0) ∧
+            (∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
               ∀ i (z : (c i).NegativeCoordinates × (c i).PositiveCoordinates),
                 ‖z.1‖ < R i →
                   ‖z.2‖ < R i → ∀ᶠ y in 𝓝 ((c i).splitChart.symm z), V y = (c i).descentField y :=
@@ -420,8 +420,8 @@ theorem MorseCancellation.exists_disjoint_morse_block_field {E M : Type*} [Norme
   obtain ⟨V, hV, hzero, hdesc, hmatch⟩ :=
     exists_prescribed_morse_patch_field hf hm p hp c K hK hKsource hdisj
   have hV₁ := hV.of_le (show (1 : WithTop ℕ∞) ≤ (↑(⊤ : ℕ∞) : ℕ∞ω) by simp)
-  let F := Smale.FlowConstruction.compactFlow hV₁
-  refine ⟨V, F, hV, Smale.FlowConstruction.isMIntegralCurve_compactFlow hV₁, hzero, hdesc, ?_⟩
+  let F := FlowConstruction.compactFlow hV₁
+  refine ⟨V, F, hV, FlowConstruction.isMIntegralCurve_compactFlow hV₁, hzero, hdesc, ?_⟩
   intro i z hn hp
   filter_upwards [morseClosedBlock_mem_nhds (c i) (R i) (hblock i) hn hp] with y hy
   exact hmatch i y hy
@@ -441,7 +441,7 @@ theorem MorseCancellation.exists_larger_closedBall_inside_open {A : Type*} [Norm
 attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_morse_block_enlargement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) {r : ℝ} (hr : 0 < r)
+    {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) {r : ℝ} (hr : 0 < r)
     (hblock :
       Metric.closedBall (0 : c.NegativeCoordinates) (2 * r) ×ˢ
           Metric.closedBall (0 : c.PositiveCoordinates) (2 * r) ⊆
@@ -465,9 +465,9 @@ attribute [local instance 100] Classical.propDecidable in
 theorem MorseCancellation.exists_disjoint_surgery_block_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}
-    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ Smale.ManifoldMorse.criticalPoints E f)
-    (c : ∀ i, Smale.ManifoldMorse.SignedMorseChart (E := E) f (p i)) (r : ι → ℝ)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {ι : Type*}
+    [Finite ι] (p : ι → M) (hp : ∀ i, p i ∈ ManifoldMorse.criticalPoints E f)
+    (c : ∀ i, ManifoldMorse.SignedMorseChart (E := E) f (p i)) (r : ι → ℝ)
     (hr : ∀ i, 0 < r i)
     (hblock :
       ∀ i,
@@ -482,8 +482,8 @@ theorem MorseCancellation.exists_disjoint_surgery_block_field {E M : Type*} [Nor
     ∃ (V : (x : M) → TangentSpace 𝓘(ℝ, E) x) (F : Flow ℝ M),
       ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)) ∧
         (∀ x, IsMIntegralCurve (fun t => F t x) V) ∧
-          (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f, V x = 0) ∧
-            (∀ x, x ∉ Smale.ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
+          (∀ x ∈ ManifoldMorse.criticalPoints E f, V x = 0) ∧
+            (∀ x, x ∉ ManifoldMorse.criticalPoints E f → mvfderiv 𝓘(ℝ, E) f x (V x) < 0) ∧
               ∀ i z,
                 z ∈
                     Metric.closedBall (0 : (c i).NegativeCoordinates) (2 * r i) ×ˢ
