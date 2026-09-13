@@ -5,6 +5,44 @@ Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
 import Lib.AlgebraicTopology.Hurewicz.PrismOperator
+/-!
+# The fundamental cube chain and its Kuhn decomposition
+
+`Hurewicz.cubeChain_eq_sum_simplices` decomposes the cube chain of a based `n`-cube,
+for every `n`, into the signed sum
+`∑ e, cubeOrientation e • simplexChain X n (p.val.comp (cubeSimplex e))` over the
+Freudenthal–Kuhn simplices, and `Hurewicz.cubeChain_boundary` shows that for `n ≥ 2`
+the cube chain of a based cube is a cycle (`Hurewicz.cubeCycle`).
+
+## Outline of the construction
+
+1. Prism insertion signs: `CubeSubdivision.PermutationInsertion.insert` splices an
+   omitted index back into a permutation, and `sign_insert` tracks the sign.
+2. The recursive fundamental chain `Hurewicz.fundamentalCubeChain` is built by the
+   edge cross product of the interval chain with the previous fundamental chain.
+3. `cubeChain_eq_sum_simplices` identifies the cube chain with the signed Kuhn sum.
+4. `fundamentalCubeChain_boundary_supported` bounds the support of the boundary, and
+   `cubeChain_transAt_zero_*` supplies the concatenation correction term.
+5. `Hurewicz.cubeChain_boundary` cancels the boundary using the face trichotomy and
+   the permutation-insertion sign sum.
+
+## Main definitions and results
+
+* `Hurewicz.fundamentalCubeChain`, `Hurewicz.cubeChain`, `Hurewicz.cubeCycle`:
+  the fundamental chain, the chain of a based cube, and its cycle.
+* `Hurewicz.cubeChain_eq_sum_simplices`, `Hurewicz.cubeChain_boundary`: the Kuhn
+  decomposition and the cycle property.
+
+## References
+
+* The construction is recorded in `Lib/docs/C.md`, §§3 and 10–11; the cross-product
+  convention follows [Allen Hatcher, *Algebraic Topology*][hatcher02], §3.B.
+
+## Tags
+
+cube chain, Kuhn triangulation, boundary cancellation
+-/
+
 
 set_option maxSynthPendingDepth 3
 
@@ -14,6 +52,10 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+/-! ### Permutation sign sums -/
+
+/-- A signed sum over permutations vanishes if the summand is invariant under the
+swap `i j` (with `i ≠ j`), since orbits pair terms of opposite orientation. -/
 theorem Hurewicz.CubeSubdivision.signed_sum_eq_zero_of_swap_invariant {n : ℕ} {A : Type*}
     [AddCommGroup A] (i j : Fin n) (hij : i ≠ j) (f : Equiv.Perm (Fin n) → A)
     (hf : ∀ e, f ((Equiv.swap i j).trans e) = f e) :
@@ -32,28 +74,40 @@ theorem Hurewicz.CubeSubdivision.signed_sum_eq_zero_of_swap_invariant {n : ℕ} 
     ext k
     simp
 
+/-- The signed sum `∑ e, cubeOrientation e • a` of a constant function over
+permutations vanishes for `n ≥ 2` (nontrivial `Fin n`). -/
 theorem Hurewicz.CubeSubdivision.signed_sum_constant_eq_zero {n : ℕ} [Nontrivial (Fin n)]
     {A : Type*} [AddCommGroup A] (a : A) :
     ∑ e : Equiv.Perm (Fin n), Hurewicz.CubeTriangulation.cubeOrientation e • a = 0 := by
   obtain ⟨i, j, hij⟩ := exists_pair_ne (Fin n)
   exact signed_sum_eq_zero_of_swap_invariant i j hij (fun _ => a) (fun _ => rfl)
 
+/-! ### The prism realization -/
+
+/-- The prism cube vertex of the pair `z = (t, k)`: coordinate `0` is the time `t`,
+and coordinate `i.succ` is the `k`-th Kuhn vertex coordinate of `e` at `i`. -/
 def Hurewicz.CubeSubdivision.prismCubeVertex {n : ℕ} (e : Equiv.Perm (Fin n))
     (z : Fin 2 × Fin (n + 1)) : Hurewicz.CubeTriangulation.CubeN (n + 1) :=
   Fin.cases (SingularChains.pathSimplex Path.id (SingularMayerVietoris.stdVertices 1 z.1))
     (Hurewicz.CubeTriangulation.cubeVertex e z.2)
 
+/-- The `i.succ`-coordinate of `prismCubeVertex e z` is the `e`-Kuhn vertex of `z.2`
+at coordinate `i`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.prismCubeVertex_succ {n : ℕ} (e : Equiv.Perm (Fin n))
     (z : Fin 2 × Fin (n + 1)) (i : Fin n) :
     prismCubeVertex e z i.succ = Hurewicz.CubeTriangulation.cubeVertex e z.2 i :=
   rfl
 
+/-- The affine simplex in the `(n+1)`-cube on the prism vertices `v`, viewing each
+vertex as a pair `(time, Kuhn index)`. -/
 def Hurewicz.CubeSubdivision.prismCubeSimplex {m n : ℕ} (e : Equiv.Perm (Fin n))
     (v : Fin (m + 1) → Fin 2 × Fin (n + 1)) :
     C(SingularChains.Simplex m, Hurewicz.CubeTriangulation.CubeN (n + 1)) :=
   Hurewicz.CubeTriangulation.cubeAffineSimplex (fun j => prismCubeVertex e (v j))
 
+/-- If `z.2` differs from the swapped index `i.succ.castSucc`, the prism cube vertex
+is unchanged by the adjacent transposition. -/
 theorem Hurewicz.CubeSubdivision.prismCubeVertex_swap_of_ne {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (i : Fin n) (z : Fin 2 × Fin (n + 2))
     (hz : z.2 ≠ i.succ.castSucc) :
@@ -63,6 +117,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeVertex_swap_of_ne {n : ℕ}
   · rfl
   · exact congrFun (Hurewicz.CubeTriangulation.cubeVertex_swap_of_ne e i z.2 hz) k
 
+/-- If no vertex of `v` uses index `i.succ.castSucc`, the prism cube simplex is
+unchanged by the adjacent transposition of `e`. -/
 theorem Hurewicz.CubeSubdivision.prismCubeSimplex_swap_of_omitted {m n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (i : Fin n) (v : Fin (m + 1) → Fin 2 × Fin (n + 2))
     (hv : ∀ j, (v j).2 ≠ i.succ.castSucc) :
@@ -71,6 +127,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeSimplex_swap_of_omitted {m n : ℕ}
   funext j
   exact prismCubeVertex_swap_of_ne e i (v j) (hv j)
 
+/-- If all left coordinates of the prism vertices are `0`, the prism cube simplex has
+zeroth coordinate `0`. -/
 theorem Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_left_zero {m n : ℕ}
     (e : Equiv.Perm (Fin n)) (v : Fin (m + 1) → Fin 2 × Fin (n + 1)) (hv : ∀ j, (v j).1 = 0)
     (s : SingularChains.Simplex m) : prismCubeSimplex e v s 0 = 0 := by
@@ -78,6 +136,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_left_zero {m n : ℕ}
   intro j
   simp [prismCubeVertex, hv j, SingularMayerVietoris.stdVertices]
 
+/-- If no vertex of `v` uses the last index, the prism cube simplex maps into the
+face where the last ordered coordinate vanishes. -/
 theorem Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_last_omitted {m n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (v : Fin (m + 1) → Fin 2 × Fin (n + 2))
     (hv : ∀ j, (v j).2 ≠ Fin.last (n + 1)) (s : SingularChains.Simplex m) :
@@ -93,6 +153,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_last_omitted {m n : �
   have hlt := (v j).2.isLt
   omega
 
+/-- The realization of a formal prism chain by the cube map `p`: the induced chain of
+`p ∘ prismCubeSimplex e` applied to the formal chain. -/
 def Hurewicz.CubeSubdivision.prismCubeRealization {X : Type} [TopologicalSpace X] {n : ℕ}
     (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X)) (e : Equiv.Perm (Fin n)) (m : ℕ) :
     SingularMayerVietoris.FormalChains (Fin 2 × Fin (n + 1)) (m + 1) →ₗ[ℤ]
@@ -100,6 +162,8 @@ def Hurewicz.CubeSubdivision.prismCubeRealization {X : Type} [TopologicalSpace X
   SingularMayerVietoris.formalLift fun v =>
     SingularChains.simplexChain X m (p.comp (prismCubeSimplex e v))
 
+/-- On a simplex generator `v`, `prismCubeRealization` is the `p`-pushforward of the
+affine prism simplex on `v`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.prismCubeRealization_simplex {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
@@ -108,6 +172,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeRealization_simplex {X : Type}
       SingularChains.simplexChain X m (p.comp (prismCubeSimplex e v)) :=
   SingularMayerVietoris.formalLift_simplex _ _
 
+/-- The signed sum over permutations `e` of `cubeOrientation e • prismCubeRealization
+p e m`, realizing the oriented prism of the cube map `p`. -/
 def Hurewicz.CubeSubdivision.orientedPrismRealization {X : Type} [TopologicalSpace X]
     {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X)) (m : ℕ) :
     SingularMayerVietoris.FormalChains (Fin 2 × Fin (n + 1)) (m + 1) →ₗ[ℤ]
@@ -117,6 +183,8 @@ def Hurewicz.CubeSubdivision.orientedPrismRealization {X : Type} [TopologicalSpa
       Hurewicz.CubeTriangulation.cubeOrientation e •
         SingularChains.simplexChain X m (p.comp (prismCubeSimplex e v))
 
+/-- On a vertex family `v`, `orientedPrismRealization` is the signed sum of the
+`p`-pushforwards of the prism simplices on `v`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_simplex {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
@@ -127,12 +195,16 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_simplex {X : Type}
           SingularChains.simplexChain X m (p.comp (prismCubeSimplex e v)) :=
   SingularMayerVietoris.formalLift_simplex _ _
 
+/-- Evaluation at the left coordinate: `(t, γ) ↦ γ t` as a continuous map
+`unitInterval × C(unitInterval, X) → X`. -/
 def Hurewicz.CubeSubdivision.evalLeft (X : Type) [TopologicalSpace X] :
     C((unitInterval) × C((unitInterval), X), X)
     where
   toFun z := z.2 z.1
   continuous_toFun := by fun_prop
 
+/-- An affine cube simplex composed with an affine simplex is the affine simplex of
+the composed vertices. -/
 theorem Hurewicz.CubeSubdivision.cubeAffineSimplex_comp {k m n : ℕ}
     (v : Fin (n + 1) → Hurewicz.CubeTriangulation.CubeN k)
     (w : Fin (m + 1) → SingularChains.Simplex n) :
@@ -152,6 +224,8 @@ theorem Hurewicz.CubeSubdivision.cubeAffineSimplex_comp {k m n : ℕ}
     SingularMayerVietoris.affineSimplex_coordinate, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/-- An affine cube simplex composed with the affine simplex of standard vertices
+selected by `a` is the affine simplex on the selected vertices `v ∘ a`. -/
 theorem Hurewicz.CubeSubdivision.cubeAffineSimplex_comp_selectedVertices {k m n : ℕ}
     (v : Fin (n + 1) → Hurewicz.CubeTriangulation.CubeN k) (a : Fin (m + 1) → Fin (n + 1)) :
     (Hurewicz.CubeTriangulation.cubeAffineSimplex v).comp
@@ -161,6 +235,9 @@ theorem Hurewicz.CubeSubdivision.cubeAffineSimplex_comp_selectedVertices {k m n 
   rw [cubeAffineSimplex_comp]
   simp only [Hurewicz.CubeTriangulation.cubeAffineSimplex_vertex]
 
+/-- The prism map `Simplex 1 × Simplex n → CubeN (n+1)` sending `(t, s)` to the cube
+point whose `0`-coordinate is `t` and whose `i.succ`-coordinate is the `e`-Kuhn
+coordinate of `s`. -/
 def Hurewicz.CubeSubdivision.prismCubeMap {n : ℕ} (e : Equiv.Perm (Fin n)) :
     C(SingularChains.Simplex 1 × SingularChains.Simplex n,
       Hurewicz.CubeTriangulation.CubeN (n + 1))
@@ -178,6 +255,8 @@ def Hurewicz.CubeSubdivision.prismCubeMap {n : ℕ} (e : Equiv.Perm (Fin n)) :
         (continuous_apply j).comp
           ((Hurewicz.CubeTriangulation.cubeSimplex e).continuous.comp continuous_snd)
 
+/-- `prismCubeMap e` composed with a product affine simplex on pair-vertices `v` is
+the prism cube simplex on `v`. -/
 theorem Hurewicz.CubeSubdivision.prismCubeMap_affine {m n : ℕ} (e : Equiv.Perm (Fin n))
     (v : Fin (m + 1) → Fin 2 × Fin (n + 1)) :
     (prismCubeMap e).comp
@@ -208,6 +287,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeMap_affine {m n : ℕ} (e : Equiv.Perm
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- `prismCubeRealization p e m` equals the `p`-pushforward of the prism realization
+chain. -/
 theorem Hurewicz.CubeSubdivision.prismCubeRealization_eq_induced {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
     (e : Equiv.Perm (Fin n)) (m : ℕ) :
@@ -235,6 +316,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeRealization_eq_induced {X : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The prism realization of `p` at permutation `e` equals the `p`-pushforward of the
+edge cross product of the interval chain with the `e`-th Kuhn simplex chain. -/
 theorem Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
     (e : Equiv.Perm (Fin n)) :
@@ -252,22 +335,32 @@ theorem Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct {X : Type
   rw [SingularHomology.formalMap_edgeCrossProduct]
   simp only [SingularMayerVietoris.formalMap_simplex, Function.comp_def]
 
+/-! ### The bad-prism submodule -/
+
+/-- The submodule of `FormalChains (Fin 2 × Fin (q+1)) m` generated by chains
+supported on the left-zero locus or on the locus omitting a nonzero index: the
+formal prism terms that degenerate under realization. -/
 def Hurewicz.CubeSubdivision.badPrism (q m : ℕ) :
     Submodule ℤ (SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m) :=
   SingularMayerVietoris.formalChainsSupported {z | z.1 = 0} m ⊔
     ⨆ i : { i : Fin (q + 1) // i ≠ 0 },
       SingularMayerVietoris.formalChainsSupported {z | z.2 ≠ i.val} m
 
+/-- A formal chain supported on `{z | z.1 = 0}` belongs to `badPrism`. -/
 theorem Hurewicz.CubeSubdivision.mem_badPrism_of_left_zero {q m : ℕ}
     {c : SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m}
     (hc : c ∈ SingularMayerVietoris.formalChainsSupported {z | z.1 = 0} m) : c ∈ badPrism q m :=
   Submodule.mem_sup_left hc
 
+/-- A formal chain supported on `{z | ∀ j, (z j).2 ≠ i}` for `i ≠ 0` belongs to
+`badPrism`. -/
 theorem Hurewicz.CubeSubdivision.mem_badPrism_of_omit {q m : ℕ} (i : Fin (q + 1))
     (hi : i ≠ 0) {c : SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m}
     (hc : c ∈ SingularMayerVietoris.formalChainsSupported {z | z.2 ≠ i} m) : c ∈ badPrism q m :=
   Submodule.mem_sup_right (Submodule.mem_iSup_of_mem ⟨i, hi⟩ hc)
 
+/-- `badPrism` is contained in any submodule containing the left-zero and
+index-omitting supported chains. -/
 theorem Hurewicz.CubeSubdivision.badPrism_le {q m : ℕ}
     {P : Submodule ℤ (SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m)}
     (hzero : SingularMayerVietoris.formalChainsSupported {z | z.1 = 0} m ≤ P)
@@ -277,6 +370,8 @@ theorem Hurewicz.CubeSubdivision.badPrism_le {q m : ℕ}
     badPrism q m ≤ P :=
   sup_le hzero (iSup_le fun i => homit i.val i.property)
 
+/-- If a linear map kills all left-zero and index-omitting supported generators, it
+kills `badPrism`. -/
 theorem Hurewicz.CubeSubdivision.badPrism_le_ker {q m : ℕ} {M : Type*} [AddCommGroup M]
     [Module ℤ M] (f : SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m →ₗ[ℤ] M)
     (hzero : ∀ v, (∀ j, (v j).1 = 0) → f (SingularMayerVietoris.formalSimplex v) = 0)
@@ -289,6 +384,7 @@ theorem Hurewicz.CubeSubdivision.badPrism_le_ker {q m : ℕ} {M : Type*} [AddCom
   · intro i hi
     exact SingularMayerVietoris.formalChainsSupported_le (homit i hi)
 
+/-- The formal cone at `(0, 0)` of a bad-prism chain is again a bad-prism chain. -/
 theorem Hurewicz.CubeSubdivision.formalCone_mem_badPrism {q m : ℕ}
     {c : SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m} (hc : c ∈ badPrism q m) :
     SingularMayerVietoris.formalCone (0, 0) m c ∈ badPrism q (m + 1) := by
@@ -305,6 +401,8 @@ theorem Hurewicz.CubeSubdivision.formalCone_mem_badPrism {q m : ℕ}
         mem_badPrism_of_omit i hi (SingularMayerVietoris.formalCone_mem_supported (Ne.symm hi) hd)
   exact hle hc
 
+/-- The formal map of `Prod.map id Fin.succ` sends bad-prism chains to bad-prism
+chains. -/
 theorem Hurewicz.CubeSubdivision.formalMap_succ_mem_badPrism {q m : ℕ}
     {c : SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) m} (hc : c ∈ badPrism q m) :
     SingularMayerVietoris.formalMap (Prod.map id (Fin.succ : Fin (q + 1) → Fin (q + 2))) m c ∈
@@ -328,6 +426,8 @@ theorem Hurewicz.CubeSubdivision.formalMap_succ_mem_badPrism {q m : ℕ}
           (fun _ hz h => hz (Fin.succ_injective _ h)) hd
   exact hle hc
 
+/-- The formal edge cross product of an edge chain with a chain omitting index `i ≠ 0`
+is a bad-prism chain. -/
 theorem Hurewicz.CubeSubdivision.formalEdgeCrossProduct_mem_badPrism_of_omit {q r : ℕ}
     (i : Fin (q + 1)) (hi : i ≠ 0) (c : SingularMayerVietoris.FormalChains (Fin 2) 2)
     {d : SingularMayerVietoris.FormalChains (Fin (q + 1)) (r + 1)}
@@ -340,6 +440,9 @@ theorem Hurewicz.CubeSubdivision.formalEdgeCrossProduct_mem_badPrism_of_omit {q 
   exact
     SingularHomology.formalEdgeCrossProduct_mem_supported r (S := Set.univ) (by simp) hd
 
+/-! ### The retained first boundary -/
+
+/-- The signed boundary sum over all faces except face `0`, retaining the first vertex. -/
 def Hurewicz.CubeSubdivision.retainedFirstBoundary {W : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains W (q + 2) →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W (q + 1) :=
@@ -347,6 +450,8 @@ def Hurewicz.CubeSubdivision.retainedFirstBoundary {W : Type*} (q : ℕ) :
     ∑ i : Fin (q + 1),
       (-1 : ℤ) ^ (i.val + 1) • SingularMayerVietoris.formalSimplex (w ∘ i.succ.succAbove)
 
+/-- On a simplex generator, the retained boundary is the signed sum of the faces with
+nonzero indices. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.retainedFirstBoundary_simplex {W : Type*} (q : ℕ)
     (w : Fin (q + 2) → W) :
@@ -355,6 +460,8 @@ theorem Hurewicz.CubeSubdivision.retainedFirstBoundary_simplex {W : Type*} (q : 
         (-1 : ℤ) ^ (i.val + 1) • SingularMayerVietoris.formalSimplex (w ∘ i.succ.succAbove) :=
   SingularMayerVietoris.formalLift_simplex _ _
 
+/-- The formal boundary of a simplex splits as the first-face term plus the retained
+remaining boundary. -/
 theorem Hurewicz.CubeSubdivision.formalBoundary_firstFace_split_simplex {W : Type*} (q : ℕ)
     (w : Fin (q + 2) → W) :
     SingularMayerVietoris.formalBoundary (q + 1) (SingularMayerVietoris.formalSimplex w) =
@@ -365,15 +472,21 @@ theorem Hurewicz.CubeSubdivision.formalBoundary_firstFace_split_simplex {W : Typ
   simp only [Fin.val_zero, pow_zero, one_smul, Fin.val_succ, Fin.succAbove_zero]
   rfl
 
+/-! ### Prism shuffles and the standard prism -/
+
+/-- The prism vertex list of the shuffle of `v : Fin 2 → V` and `w : Fin (q+1) → W`:
+`Fin (q+3)` vertices pairing initial segments of `v` with terminal segments of `w`. -/
 def Hurewicz.CubeSubdivision.shufflePrismVertices {V W : Type*} {q : ℕ} (v : Fin 2 → V)
     (w : Fin (q + 1) → W) (i : Fin (q + 1)) : Fin (q + 2) → V × W := fun k =>
   (if k ≤ i.castSucc then v 0 else v 1, w (i.predAbove k))
 
+/-- The first shuffle prism vertex pairs `v 0` with `w 0`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.shufflePrismVertices_first {V W : Type*} {q : ℕ}
     (v : Fin 2 → V) (w : Fin (q + 1) → W) (i : Fin (q + 1)) :
     shufflePrismVertices v w i 0 = (v 0, w 0) := by simp [shufflePrismVertices]
 
+/-- At index `0` the shuffle prism vertices use `(v 0, w 0)`. -/
 theorem Hurewicz.CubeSubdivision.shufflePrismVertices_zero_index {V W : Type*} {q : ℕ}
     (v : Fin 2 → V) (w : Fin (q + 1) → W) :
     shufflePrismVertices v w 0 = Fin.cons (v 0, w 0) (fun j => (v 1, w j)) := by
@@ -382,6 +495,7 @@ theorem Hurewicz.CubeSubdivision.shufflePrismVertices_zero_index {V W : Type*} {
   · simp
   · simp [shufflePrismVertices]
 
+/-- At successor index `j.succ` the shuffle prism vertices use `(v _, w j)`. -/
 theorem Hurewicz.CubeSubdivision.shufflePrismVertices_succ_index {V W : Type*} {q : ℕ}
     (v : Fin 2 → V) (w : Fin (q + 2) → W) (i : Fin (q + 1)) :
     shufflePrismVertices v w i.succ =
@@ -391,6 +505,7 @@ theorem Hurewicz.CubeSubdivision.shufflePrismVertices_succ_index {V W : Type*} {
   · simp
   · simp [shufflePrismVertices, Fin.tail, Fin.le_castSucc_iff]
 
+/-- The shuffle prism vertices are natural under maps `f : V → V'`, `g : W → W'`. -/
 theorem Hurewicz.CubeSubdivision.shufflePrismVertices_map {V W V' W' : Type*} {q : ℕ}
     (f : V → V') (g : W → W') (v : Fin 2 → V) (w : Fin (q + 1) → W) (i : Fin (q + 1)) :
     Prod.map f g ∘ shufflePrismVertices v w i = shufflePrismVertices (f ∘ v) (g ∘ w) i := by
@@ -398,11 +513,14 @@ theorem Hurewicz.CubeSubdivision.shufflePrismVertices_map {V W V' W' : Type*} {q
   simp only [shufflePrismVertices, Function.comp_apply, Prod.map_apply]
   split_ifs <;> rfl
 
+/-- The standard prism of `v` and `w`: the signed sum
+`∑ i, (-1)^i • formalSimplex (shufflePrismVertices v w i)` over `Fin (q+1)`. -/
 def Hurewicz.CubeSubdivision.standardPrism {V W : Type*} (q : ℕ) (v : Fin 2 → V)
     (w : Fin (q + 1) → W) : SingularMayerVietoris.FormalChains (V × W) (q + 2) :=
   ∑ i : Fin (q + 1),
     (-1 : ℤ) ^ i.val • SingularMayerVietoris.formalSimplex (shufflePrismVertices v w i)
 
+/-- At right degree `0`, the standard prism is the point cross product of `v` and `w`. -/
 theorem Hurewicz.CubeSubdivision.standardPrism_zero {V W : Type*} (v : Fin 2 → V)
     (w : Fin 1 → W) :
     standardPrism 0 v w = SingularMayerVietoris.formalSimplex (fun i => (v i, w 0)) := by
@@ -415,6 +533,8 @@ theorem Hurewicz.CubeSubdivision.standardPrism_zero {V W : Type*} (v : Fin 2 →
   · rw [Fin.eq_zero j]
     rfl
 
+/-- At right degree `q+1`, the standard prism is the formal edge cross product
+summand built from the shuffle prism vertices. -/
 theorem Hurewicz.CubeSubdivision.standardPrism_succ {V W : Type*} (q : ℕ) (v : Fin 2 → V)
     (w : Fin (q + 2) → W) :
     standardPrism (q + 1) v w =
@@ -432,6 +552,7 @@ theorem Hurewicz.CubeSubdivision.standardPrism_succ {V W : Type*} (q : ℕ) (v :
   intro i hi
   simp only [Fin.val_succ, pow_succ, mul_neg_one, neg_smul, shufflePrismVertices_succ_index]
 
+/-- The standard prism is natural under `f : V → V'`, `g : W → W'`. -/
 theorem Hurewicz.CubeSubdivision.formalMap_standardPrism {V W V' W' : Type*} (f : V → V')
     (g : W → W') (q : ℕ) (v : Fin 2 → V) (w : Fin (q + 1) → W) :
     SingularMayerVietoris.formalMap (Prod.map f g) (q + 2) (standardPrism q v w) =
@@ -439,12 +560,15 @@ theorem Hurewicz.CubeSubdivision.formalMap_standardPrism {V W V' W' : Type*} (f 
   simp only [standardPrism, map_sum, map_smul, SingularMayerVietoris.formalMap_simplex,
     shufflePrismVertices_map]
 
+/-- The discrepancy between the formal edge cross product and the standard prism:
+the difference of the two prism decompositions. -/
 def Hurewicz.CubeSubdivision.prismDiscrepancy {V W : Type*} (q : ℕ) (v : Fin 2 → V)
     (w : Fin (q + 1) → W) : SingularMayerVietoris.FormalChains (V × W) (q + 2) :=
   SingularHomology.formalEdgeCrossProduct q (SingularMayerVietoris.formalSimplex v)
       (SingularMayerVietoris.formalSimplex w) -
     standardPrism q v w
 
+/-- The prism discrepancy at right degree `0` vanishes. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.prismDiscrepancy_zero {V W : Type*} (v : Fin 2 → V)
     (w : Fin 1 → W) : prismDiscrepancy 0 v w = 0 := by
@@ -452,6 +576,7 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_zero {V W : Type*} (v : Fin 2 
     SingularHomology.formalEdgeCrossProduct_zero_simplex_right,
     SingularMayerVietoris.formalMap_simplex, standardPrism_zero, Function.comp_def, sub_self]
 
+/-- The prism discrepancy is natural under maps `f : V → V'`, `g : W → W'`. -/
 theorem Hurewicz.CubeSubdivision.formalMap_prismDiscrepancy {V W V' W' : Type*} (f : V → V')
     (g : W → W') (q : ℕ) (v : Fin 2 → V) (w : Fin (q + 1) → W) :
     SingularMayerVietoris.formalMap (Prod.map f g) (q + 2) (prismDiscrepancy q v w) =
@@ -459,15 +584,19 @@ theorem Hurewicz.CubeSubdivision.formalMap_prismDiscrepancy {V W V' W' : Type*} 
   simp only [prismDiscrepancy, map_sub, SingularHomology.formalMap_edgeCrossProduct,
     formalMap_standardPrism, SingularMayerVietoris.formalMap_simplex]
 
+/-- The prism discrepancy of the universal edge and simplex: `prismDiscrepancy`
+specialized to the standard vertex lists. -/
 def Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy (q : ℕ) :
     SingularMayerVietoris.FormalChains (Fin 2 × Fin (q + 1)) (q + 2) :=
   prismDiscrepancy q (fun i => i) (fun j => j)
 
+/-- The canonical prism discrepancy at right degree `0` vanishes. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_zero :
     canonicalPrismDiscrepancy 0 = 0 :=
   prismDiscrepancy_zero _ _
 
+/-- Every prism discrepancy is the formal map of the canonical one. -/
 theorem Hurewicz.CubeSubdivision.prismDiscrepancy_eq_map_canonical {V W : Type*} (q : ℕ)
     (v : Fin 2 → V) (w : Fin (q + 1) → W) :
     prismDiscrepancy q v w =
@@ -475,6 +604,9 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_eq_map_canonical {V W : Type*}
   simpa only [canonicalPrismDiscrepancy, Function.comp_def] using
     (formalMap_prismDiscrepancy v w q (fun i => i) (fun j => j)).symm
 
+/-- The successor step: `prismDiscrepancy (q+1) v w` is the formal cone at `(v 0, w 0)`
+of `-(z ↦ (v 0, z))`-image of `w`, minus the edge cross product of `v` with `∂w`,
+plus `standardPrism q v (Fin.tail w)`. -/
 theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ {V W : Type*} (q : ℕ) (v : Fin 2 → V)
     (w : Fin (q + 2) → W) :
     prismDiscrepancy (q + 1) v w =
@@ -491,6 +623,7 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ {V W : Type*} (q : ℕ) (
   simp only [map_sub, map_add, map_neg]
   abel
 
+/-- The retained-first-boundary part of the successor-step prism discrepancy. -/
 theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ_retained {V W : Type*} (q : ℕ)
     (v : Fin 2 → V) (w : Fin (q + 2) → W) :
     prismDiscrepancy (q + 1) v w =
@@ -505,6 +638,7 @@ theorem Hurewicz.CubeSubdivision.prismDiscrepancy_succ_retained {V W : Type*} (q
   simp only [map_sub, map_add, map_neg]
   abel
 
+/-- The successor-step formula for the canonical prism discrepancy. -/
 theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_succ (q : ℕ) :
     canonicalPrismDiscrepancy (q + 1) =
       SingularMayerVietoris.formalCone ((0 : Fin 2), (0 : Fin (q + 2))) (q + 2)
@@ -522,6 +656,7 @@ theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_succ (q : ℕ) :
     SingularMayerVietoris.formalMap_simplex, Function.comp_def]
   rfl
 
+/-- The canonical prism discrepancy is a bad-prism chain. -/
 theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_mem_badPrism (q : ℕ) :
     canonicalPrismDiscrepancy q ∈ badPrism q (q + 2) := by
   induction q with
@@ -545,6 +680,10 @@ theorem Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_mem_badPrism (q : ℕ
         formalEdgeCrossProduct_mem_badPrism_of_omit i.succ (Fin.succ_ne_zero i) _
           (SingularMayerVietoris.formalSimplex_mem_supported fun j => Fin.succAbove_ne i.succ j)
 
+/-! ### Vanishing of the oriented prism on bad terms -/
+
+/-- The oriented prism realization vanishes on generators whose left coordinate is
+`0`. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_left_zero {X : Type}
     [TopologicalSpace X] {x : X} {m n : ℕ} (p : GenLoop (Fin (n + 3)) X x)
     (v : Fin (m + 1) → Fin 2 × Fin (n + 3)) (hv : ∀ j, (v j).1 = 0) :
@@ -556,6 +695,7 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_left_zero {X : Type}
   simp only [orientedPrismRealization_simplex, hconst]
   exact signed_sum_constant_eq_zero _
 
+/-- The oriented prism realization vanishes on generators omitting the last index. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_last_omitted {X : Type}
     [TopologicalSpace X] {x : X} {m n : ℕ} (p : GenLoop (Fin (n + 3)) X x)
     (v : Fin (m + 1) → Fin 2 × Fin (n + 3)) (hv : ∀ j, (v j).2 ≠ Fin.last (n + 2)) :
@@ -569,6 +709,7 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_last_omitted {X : Type
   simp only [orientedPrismRealization_simplex, hconst]
   exact signed_sum_constant_eq_zero _
 
+/-- The oriented prism realization vanishes on generators omitting an interior index. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_interior_omitted {X : Type}
     [TopologicalSpace X] {x : X} {m n : ℕ} (p : GenLoop (Fin (n + 3)) X x) (i : Fin (n + 1))
     (v : Fin (m + 1) → Fin 2 × Fin (n + 3)) (hv : ∀ j, (v j).2 ≠ i.succ.castSucc) :
@@ -586,6 +727,7 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_interior_omitted {X : 
     congrArg (fun f => SingularChains.simplexChain X m (p.val.comp f))
       (prismCubeSimplex_swap_of_omitted e i v hv).symm
 
+/-- The oriented prism realization vanishes on generators omitting any nonzero index. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_nonzero_omitted {X : Type}
     [TopologicalSpace X] {x : X} {m n : ℕ} (p : GenLoop (Fin (n + 3)) X x) (i : Fin (n + 3))
     (hi : i ≠ 0) (v : Fin (m + 1) → Fin 2 × Fin (n + 3)) (hv : ∀ j, (v j).2 ≠ i) :
@@ -608,18 +750,22 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_nonzero_omitted {X : T
   apply orientedPrismRealization_interior_omitted p j v
   simpa only [hj] using hv
 
+/-- The oriented prism realization kills the bad-prism submodule. -/
 theorem Hurewicz.CubeSubdivision.badPrism_le_ker_orientedPrismRealization {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (p : GenLoop (Fin (n + 3)) X x) (m : ℕ) :
     badPrism (n + 2) (m + 1) ≤ LinearMap.ker (orientedPrismRealization p.val m) :=
   badPrism_le_ker _ (fun v hv => orientedPrismRealization_left_zero p v hv)
     (fun i hi v hv => orientedPrismRealization_nonzero_omitted p i hi v hv)
 
+/-- The oriented prism realization of the canonical prism discrepancy vanishes. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_canonicalPrismDiscrepancy
     {X : Type} [TopologicalSpace X] {x : X} {n : ℕ} (p : GenLoop (Fin (n + 3)) X x) :
     orientedPrismRealization p.val (n + 3) (canonicalPrismDiscrepancy (n + 2)) = 0 :=
   badPrism_le_ker_orientedPrismRealization p (n + 3)
     (canonicalPrismDiscrepancy_mem_badPrism (n + 2))
 
+/-- The oriented prism realization of the edge cross product equals that of the
+standard prism. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard {X : Type}
     [TopologicalSpace X] {x : X} {n : ℕ} (p : GenLoop (Fin (n + 3)) X x) :
     orientedPrismRealization p.val (n + 3)
@@ -637,6 +783,8 @@ private theorem Hurewicz.CubeSubdivision.linearMap_zsmul_apply_mo1973_8057 {M N 
     (r • f) a = r • f a :=
   map_zsmul (LinearMap.evalAddMonoidHom a) r f
 
+/-- The oriented prism realization of `p` equals the signed sum of the `p`-pushforward
+Kuhn-cell chains. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X))
     (m : ℕ) (c : SingularMayerVietoris.FormalChains (Fin 2 × Fin (n + 1)) (m + 1)) :
@@ -655,22 +803,29 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum {X : Type}
   simpa only [LinearMap.sum_apply, linearMap_zsmul_apply_mo1973_8057] using
     LinearMap.congr_fun h c
 
+/-! ### Permutation insertion -/
+
+/-- The permutation of `Fin (n+1)` obtained from `e : Perm (Fin n)` by inserting the
+index `k` at position `0` (sending `k` to `0` and `succAbove`ing the rest). -/
 def Hurewicz.CubeSubdivision.PermutationInsertion.insert {n : ℕ} (k : Fin (n + 1))
     (e : Equiv.Perm (Fin n)) : Equiv.Perm (Fin (n + 1)) :=
   Equiv.Perm.decomposeFin.symm (0, e) * k.cycleRange
 
+/-- `insert k e` sends `k` to `0`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_apply_self {n : ℕ}
     (k : Fin (n + 1)) (e : Equiv.Perm (Fin n)) :
     Hurewicz.CubeSubdivision.PermutationInsertion.insert k e k = 0 := by
   simp [Hurewicz.CubeSubdivision.PermutationInsertion.insert]
 
+/-- `insert k e` sends `k.succAbove j` to `(e j).succ`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_apply_succAbove {n : ℕ}
     (k : Fin (n + 1)) (e : Equiv.Perm (Fin n)) (j : Fin n) :
     Hurewicz.CubeSubdivision.PermutationInsertion.insert k e (k.succAbove j) = (e j).succ :=
   by simp [Hurewicz.CubeSubdivision.PermutationInsertion.insert]
 
+/-- The inverse of `insert k e` sends `0` to `k`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_zero {n : ℕ}
     (k : Fin (n + 1)) (e : Equiv.Perm (Fin n)) :
@@ -678,6 +833,7 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_zero {n 
   apply (Hurewicz.CubeSubdivision.PermutationInsertion.insert k e).injective
   simp
 
+/-- The inverse of `insert k e` sends `r.succ` to `k.succAbove (e.symm r)`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_succ {n : ℕ}
     (k : Fin (n + 1)) (e : Equiv.Perm (Fin n)) (j : Fin n) :
@@ -686,6 +842,7 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_succ {n 
   apply (Hurewicz.CubeSubdivision.PermutationInsertion.insert k e).injective
   simp
 
+/-- The sign of `insert k e` is `(-1)^k` times the sign of `e`. -/
 @[simp]
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert {n : ℕ} (k : Fin (n + 1))
     (e : Equiv.Perm (Fin n)) :
@@ -693,17 +850,21 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert {n : ℕ} (k :
       (-1) ^ (k : ℕ) * Equiv.Perm.sign e := by
   simp [Hurewicz.CubeSubdivision.PermutationInsertion.insert, mul_comm]
 
+/-- The integer sign of `insert k e` is `(-1)^k` times the integer sign of `e`. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert_int {n : ℕ}
     (k : Fin (n + 1)) (e : Equiv.Perm (Fin n)) :
     (Equiv.Perm.sign (Hurewicz.CubeSubdivision.PermutationInsertion.insert k e) : ℤ) =
       (-1 : ℤ) ^ (k : ℕ) * (Equiv.Perm.sign e : ℤ) := by simp
 
+/-- `j.val < (k.predAbove r).val` iff `(k.succAbove j).val < r.val`. -/
 theorem Hurewicz.CubeSubdivision.lt_predAbove_iff_succAbove_lt {n : ℕ} (k : Fin (n + 1))
     (j : Fin n) (r : Fin (n + 2)) : j.val < (k.predAbove r).val ↔ (k.succAbove j).val < r.val := by
   simp only [Fin.succAbove, Fin.predAbove, Fin.lt_def, Fin.val_castSucc, apply_dite Fin.val,
     Fin.val_pred, Fin.coe_castPred, dite_eq_ite, apply_ite Fin.val, Fin.val_succ]
   split_ifs <;> omega
 
+/-- The prism cube vertex of the shuffle at index `r` equals the prism cube vertex of
+the inserted permutation `insert r e`. -/
 theorem Hurewicz.CubeSubdivision.prismCubeVertex_shuffle {n : ℕ} (e : Equiv.Perm (Fin n))
     (k : Fin (n + 1)) (r : Fin (n + 2)) :
     prismCubeVertex e (shufflePrismVertices (fun i : Fin 2 => i) (fun j : Fin (n + 1) => j) k r) =
@@ -723,6 +884,8 @@ theorem Hurewicz.CubeSubdivision.prismCubeVertex_shuffle {n : ℕ} (e : Equiv.Pe
       Hurewicz.CubeTriangulation.cubeVertex, PermutationInsertion.insert_symm_apply_succ]
     simp only [lt_predAbove_iff_succAbove_lt]
 
+/-- The prism cube simplex of the shuffle at `k` equals the prism cube simplex of
+`insert k e`. -/
 theorem Hurewicz.CubeSubdivision.prismCubeSimplex_shuffle {n : ℕ} (e : Equiv.Perm (Fin n))
     (k : Fin (n + 1)) :
     prismCubeSimplex e (shufflePrismVertices (fun i : Fin 2 => i) (fun j : Fin (n + 1) => j) k) =
@@ -731,6 +894,7 @@ theorem Hurewicz.CubeSubdivision.prismCubeSimplex_shuffle {n : ℕ} (e : Equiv.P
   funext r
   exact prismCubeVertex_shuffle e k r
 
+/-- Insertion `(k, e) ↦ insert k e` is injective. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_injective {n : ℕ} :
     Function.Injective
       (fun p : Fin (n + 1) × Equiv.Perm (Fin n) =>
@@ -744,6 +908,7 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_injective {n : ℕ}
   apply Fin.succ_injective n
   simpa using congrArg (fun σ : Equiv.Perm (Fin (n + 1)) => σ (k.succAbove j)) h
 
+/-- Insertion `(k, e) ↦ insert k e` is bijective onto `Perm (Fin (n+1))`. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_bijective {n : ℕ} :
     Function.Bijective
       (fun p : Fin (n + 1) × Equiv.Perm (Fin n) =>
@@ -751,6 +916,8 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.insert_bijective {n : ℕ}
   apply (Fintype.bijective_iff_injective_and_card _).mpr
   exact ⟨insert_injective, by simp [Fintype.card_perm, Nat.factorial_succ]⟩
 
+/-- Sums over `Perm (Fin (n+1))` reindex as double sums over `k` and
+`Perm (Fin n)` via insertion. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_insert {n : ℕ} {A : Type*}
     [AddCommMonoid A] (f : Equiv.Perm (Fin (n + 1)) → A) :
     (∑ k : Fin (n + 1),
@@ -760,6 +927,8 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_insert {n : ℕ} {A : 
   rw [← Fintype.sum_prod_type']
   exact insert_bijective.sum_comp f
 
+/-- The sign-weighted sum over `Perm (Fin (n+1))` reindexed by insertion picks up the
+factor `(-1)^k`. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_insert {n : ℕ} {A : Type*}
     [AddCommGroup A] (f : Equiv.Perm (Fin (n + 1)) → A) :
     (∑ k : Fin (n + 1),
@@ -769,6 +938,7 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_insert {n : ℕ} 
       ∑ σ : Equiv.Perm (Fin (n + 1)), (Equiv.Perm.sign σ : ℤ) • f σ := by
   simpa only [sign_insert_int] using sum_insert (fun σ => (Equiv.Perm.sign σ : ℤ) • f σ)
 
+/-- The `(-1)^k •`-weighted sum over `Perm (Fin (n+1))` reindexed by insertion. -/
 theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_smul_insert {n : ℕ}
     {A : Type*} [AddCommGroup A] (f : Equiv.Perm (Fin (n + 1)) → A) :
     (∑ k : Fin (n + 1),
@@ -779,6 +949,8 @@ theorem Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_smul_insert {n : 
       ∑ σ : Equiv.Perm (Fin (n + 1)), (Equiv.Perm.sign σ : ℤ) • f σ := by
   simpa only [SemigroupAction.mul_smul] using sum_sign_insert f
 
+/-- The oriented prism realization of the standard prism equals the signed Kuhn-cell
+sum of `p`. -/
 theorem Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism {X : Type}
     [TopologicalSpace X] {n : ℕ} (p : C(Hurewicz.CubeTriangulation.CubeN (n + 1), X)) :
     orientedPrismRealization p (n + 1)
@@ -814,12 +986,16 @@ def Hurewicz.cubeCoordinates (n : ℕ) :
     apply (Cube.insertAt (0 : Fin (n + 1))).continuous.comp
     fun_prop
 
+/-! ### Cube coordinates -/
+
+/-- The zeroth coordinate of `cubeCoordinates n z` is the interval component `z.1`. -/
 @[simp]
 theorem Hurewicz.cubeCoordinates_zero (n : ℕ)
     (z : (unitInterval) × (Fin n → (unitInterval))) :
     Hurewicz.cubeCoordinates n z 0 = z.1 := by
   simp [Hurewicz.cubeCoordinates, Cube.insertAt, Homeomorph.funSplitAt_symm_apply]
 
+/-- The `j.succ` coordinate of `cubeCoordinates n z` is the cube component `z.2 j`. -/
 @[simp]
 theorem Hurewicz.cubeCoordinates_succ (n : ℕ)
     (z : (unitInterval) × (Fin n → (unitInterval))) (j : Fin n) :
@@ -915,6 +1091,9 @@ def Hurewicz.cubeChain {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin n) X x) : SingularChains.Chains X n :=
   SingularChains.inducedChain p.val n (Hurewicz.fundamentalCubeChain n)
 
+/-- The recursive step: the fundamental `(n+2)`-cube chain is the `cubeCoordinates`
+pushforward of the edge cross product of the interval chain with the
+`n+1`-fundamental chain. -/
 theorem Hurewicz.fundamentalCubeChain_succ (n : ℕ) :
     Hurewicz.fundamentalCubeChain (n + 2) =
       SingularChains.inducedChain (Hurewicz.cubeCoordinates (n + 1)) (n + 2)
@@ -1578,6 +1757,7 @@ theorem SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo {X Y : Type}
     exact hf (σ s)
   exact hle (Submodule.mem_top)
 
+/-- The zero-simplex value of the constant `0`-simplex at `x` is `x`. -/
 theorem SingularHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
     (x : X) :
     SingularHomology.zeroSimplexValue
@@ -1586,6 +1766,8 @@ theorem SingularHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The degree-`0`-left cross product of the point chain at `x` with `b` is the
+`x`-insertion pushforward of `b`. -/
 theorem SingularHomology.crossProductZeroLeft_pointChain {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (x : X)
     (b : SingularChains.Chains Y n) :
@@ -1594,12 +1776,14 @@ theorem SingularHomology.crossProductZeroLeft_pointChain {X Y : Type}
   rw [SingularChains.pointChain, SingularHomology.crossProductZeroLeft_simplex_left,
     SingularHomology.zeroSimplexValue_const]
 
+/-- The pushforward of the point chain at `x` along `f` is the point chain at `f x`. -/
 theorem SingularChains.inducedChain_pointChain {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
     SingularChains.inducedChain f 0 (SingularChains.pointChain x) =
       SingularChains.pointChain (f x) := by
   simp [SingularChains.pointChain, SingularChains.inducedChain_simplex, ContinuousMap.const_comp]
 
+/-- The point chain at `x ∈ U` is supported on `U`. -/
 theorem SingularChains.pointChain_mem_supported {X : Type} [TopologicalSpace X]
     (U : Set X) (x : X) (hx : x ∈ U) :
     SingularChains.pointChain x ∈ SingularMayerVietoris.supportedChainSubmodule U 0 := by
@@ -1723,6 +1907,8 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_eq_smul {n : ℕ} {X : Type}
         Hurewicz.intervalPathRight) c, ← LinearMap.comp_apply,
     ← SingularChains.inducedChain_comp, hconst, SingularChains.inducedChain_const, ← hconcat]
 
+/-- The boundary of the constant `(n+1)`-simplex chain at `x` is the alternating sum
+of constant `n`-simplex chains. -/
 theorem Hurewicz.boundary_const_simplex {X : Type} [TopologicalSpace X] (x : X)
     (n : ℕ) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom
@@ -2040,6 +2226,7 @@ def Hurewicz.cubeCycle {m : ℕ} {X : Type} [TopologicalSpace X] {x : X}
           (Hurewicz.cubeChain p) = 0
       exact Hurewicz.cubeChain_boundary p)
 
+/-- The underlying chain of `cubeCycle p` is `cubeChain p`. -/
 @[simp]
 theorem Hurewicz.cubeCycle_val {m : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin (m + 2)) X x) :
