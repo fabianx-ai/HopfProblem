@@ -19,7 +19,8 @@ public import Lib.Topology.Homotopy.CylinderHEP
 public import Lib.Topology.Homotopy.HandleRetraction
 public import Lib.Geometry.Manifold.Morse.SublevelSets
 public import Lib.Geometry.Manifold.Morse.Index
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Lib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # The native Euclidean embedding of a compact manifold
@@ -134,7 +135,7 @@ theorem isLocalDiffeomorphAt_of_contMDiffOn {D E M : Type*} [NormedAddCommGroup 
     (hinv : (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x).IsInvertible) :
     IsLocalDiffeomorphAt 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f x := by
   obtain ⟨Φ, hxΦ, -, heq⟩ := exists_partialDiffeomorph_into_manifold hU hx hf hinv
-  exact ⟨Φ, hxΦ, heq⟩
+  exact IsLocalDiffeomorphAt.of_eqOn Φ hxΦ heq
 
 /-- An invertible derivative between manifolds gives a partial diffeomorphism. -/
 theorem exists_partialDiffeomorph_between_manifolds {D E M : Type*} [NormedAddCommGroup D]
@@ -188,7 +189,7 @@ theorem isLocalDiffeomorphAt_between_manifolds {D E M : Type*} [NormedAddCommGro
     (hx : x ∈ U) (hf : ContMDiffOn I 𝓘(ℝ, E) ∞ f U)
     (hinv : (mfderiv I 𝓘(ℝ, E) f x).IsInvertible) : IsLocalDiffeomorphAt I 𝓘(ℝ, E) ∞ f x := by
   obtain ⟨Φ, hxΦ, -, heq⟩ := exists_partialDiffeomorph_between_manifolds hU hx hf hinv
-  exact ⟨Φ, hxΦ, heq⟩
+  exact IsLocalDiffeomorphAt.of_eqOn Φ hxΦ heq
 
 /-- An invertible derivative between boundaryless manifolds gives a partial diffeomorphism. -/
 theorem exists_partialDiffeomorph_boundaryless {D E H H' X Y : Type*} [NormedAddCommGroup D]
@@ -234,7 +235,7 @@ theorem isLocalDiffeomorphAt_boundaryless {D E H H' X Y : Type*} [NormedAddCommG
     (hf : ContMDiffOn I J ∞ f U) (hinv : (mfderiv I J f x).IsInvertible) :
     IsLocalDiffeomorphAt I J ∞ f x := by
   obtain ⟨Φ, hxΦ, -, heq⟩ := exists_partialDiffeomorph_boundaryless hU hx hf hinv
-  exact ⟨Φ, hxΦ, heq⟩
+  exact IsLocalDiffeomorphAt.of_eqOn Φ hxΦ heq
 
 theorem exists_partialDiffeomorph_of_isLocalDiffeomorphAt
     {E F H H' X Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -243,8 +244,7 @@ theorem exists_partialDiffeomorph_of_isLocalDiffeomorphAt
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
     {f : X → Y} {x : X} (h : IsLocalDiffeomorphAt I J ∞ f x) :
     ∃ φ : PartialDiffeomorph I J X Y ∞, x ∈ φ.source ∧ Set.EqOn f φ φ.source := by
-  obtain ⟨φ, hx, heq⟩ := h
-  exact ⟨φ, hx, heq⟩
+  exact h.exists_partialDiffeomorph
 
 /-- An injective local diffeomorphism on an open set is a partial diffeomorphism. -/
 def partialDiffeomorphOfInjectiveLocal {E F H H' X Y : Type*} [NormedAddCommGroup E]
@@ -298,11 +298,13 @@ theorem exists_partialDiffeomorph_near_compact {E F H H' X Y : Type*} [NormedAdd
   let R : Set X := {x | IsLocalDiffeomorphAt I J ∞ f x}
   have hR : IsOpen R := by
     rw [isOpen_iff_mem_nhds]
-    rintro x ⟨φ, hx, heq⟩
-    exact Filter.mem_of_superset (φ.open_source.mem_nhds hx) (fun y hy => ⟨φ, hy, heq⟩)
+    intro x hx'
+    obtain ⟨φ, hx, heq⟩ := IsLocalDiffeomorphAt.exists_partialDiffeomorph hx'
+    exact Filter.mem_of_superset (φ.open_source.mem_nhds hx)
+      (fun y hy => IsLocalDiffeomorphAt.of_eqOn φ hy heq)
   have hlocalinj : ∀ x ∈ K, ∃ V ∈ 𝓝 x, Set.InjOn f V := by
     intro x hx
-    obtain ⟨φ, hφ, heq⟩ := hloc x hx
+    obtain ⟨φ, hφ, heq⟩ := (hloc x hx).exists_partialDiffeomorph
     exact ⟨φ.source, φ.open_source.mem_nhds hφ, heq.injOn_iff.mpr φ.toPartialEquiv.injOn⟩
   obtain ⟨V, hV, hKV, hVi⟩ :=
     hinj.exists_isOpen_superset hK (fun x hx => (hloc x hx).contMDiffAt.continuousAt) hlocalinj
