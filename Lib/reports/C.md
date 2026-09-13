@@ -388,3 +388,25 @@ so evidence files importing `Hopf.*` must not carry a `.lean` extension there.
 
 The Comparator remains owner-deferred (`landrun` unavailable); not run, not claimed.
 Shim retirement and global `Mathoverflow1973` removal remain GLM's lane.
+
+## Verification checkpoint — C20 docstrings (`lib/C-20-docstrings`)
+
+Working tree over C19 (`eb79090`); one commit per file as instructed. The module
+docstring for `Hurewicz/Straightening.lean` moved above the imports (it was a section
+doc inside the namespace — `INTEGRATION-3.md` §3.6 flagged the missing module doc).
+Per-declaration docstrings closed the remaining gap: 34 undocumented `private`
+helpers across 8 files (all public declarations were already covered by the merged
+documentation wave). No statement or proof changed; commits are comments-only.
+
+| Command | Result | Log |
+|---|---|---|
+| `lake build` (the 8 touched Hurewicz modules) | exit 0 | `C20-docstrings-build.log` |
+| `lake build Lib Hopf.Proof.Final Solution` | exit 0 (8846 jobs); `mathoverflow_1973` axioms standard | `C20-final-build.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 1639 ≤ 1648 | — |
+| `git diff --check` | clean | — |
+
+Commits: `80e8a1d` (Straightening module doc), `5c74c20`, `3963b3e`, `878a2cd`,
+`dc4572d`, `30b2449`, `55a633f`, `b522548`, `98f371a` (per-file private-docstring
+sweep). Note: the seat file said 23 declarations remained in `Hopf/Hurewicz.lean`;
+at `27f8e7f5` the file held 16 top-level declarations (the earlier count predates
+the merged extractions). All 16 are classified in `Lib/docs/C19-LEFTOVERS.md`.
