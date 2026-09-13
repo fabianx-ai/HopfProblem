@@ -3,17 +3,19 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.SublevelSets
-import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
-import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.Topology.Homotopy.HandleRetraction
-import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+module
+
+public import Mathlib
+public import Lib.Geometry.Manifold.Morse.Handle
+public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Geometry.Manifold.Morse.SublevelSets
+public import Lib.Geometry.Manifold.Morse.Index
+public import Lib.Geometry.Manifold.Flow.HeightTranslating
+public import Lib.AlgebraicTopology.SingularHomology.Chains
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+public import Lib.Topology.Homotopy.HandleRetraction
+public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 /-!
 # The homotopy extension property for cylinders
 
@@ -35,7 +37,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 

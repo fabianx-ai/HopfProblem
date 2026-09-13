@@ -3,13 +3,15 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Geometry.Manifold.Flow.Compact
-import Lib.Geometry.Manifold.RegularLevel
-import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
+module
+
+public import Mathlib
+public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Geometry.Manifold.Morse.Handle
+public import Lib.Geometry.Manifold.Flow.Compact
+public import Lib.Geometry.Manifold.RegularLevel
+public import Lib.Geometry.Manifold.Morse.HandleAttachment
+public import Lib.Geometry.Manifold.Flow.HeightTranslating
 
 /-!
 # Existence of Morse functions and smoothing
@@ -44,7 +46,7 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 
 universe u v
 
-noncomputable section
+@[expose] public noncomputable section
 
 namespace Mathoverflow1973
 
