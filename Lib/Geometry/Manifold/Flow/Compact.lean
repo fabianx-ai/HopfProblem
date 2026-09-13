@@ -8,7 +8,8 @@ module
 public import Mathlib
 public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.Handle
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Lib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Flows of smooth vector fields on compact manifolds
@@ -636,7 +637,7 @@ theorem isLocalDiffeomorphAt_of_invertible_mvfderiv {E F : Type*} [NormedAddComm
     exact congrArg (fun L : TangentSpace I x →L[ℝ] F ↦ L v) (hA.trans hderiv)
   obtain ⟨d, hd, _, hdf⟩ :=
     exists_partialDiffeomorph_of_contDiffOn c.open_target (c.map_source' hc) hfc hfcinv
-  refine ⟨c.trans d, ⟨hc, hd⟩, ?_⟩
+  refine IsLocalDiffeomorphAt.of_eqOn (c.trans d) ⟨hc, hd⟩ ?_
   intro y hy
   change f y = d (c y)
   rw [hdf]
