@@ -5,6 +5,49 @@ Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 
+/-!
+# Straightening cycles and descending to singular homology
+
+`Hurewicz.straightenedCycle n H H' h c` replaces a singular `(n + 1)`-cycle `c` by its
+time-`1` endpoint under a face-compatible pair of simplex homotopies;
+`Hurewicz.straightenedCycle_class` shows the two cycles represent the same homology
+class (the prism operator bounds their difference).
+`Hurewicz.singularHomologyDesc n F hF` descends a `ℤ`-linear map on `n`-chains that
+vanishes on boundaries to a map `SingularHomology X n →ₗ[ℤ] M`.
+
+## Outline of the construction
+
+1. Vanishing `π_ n X x` gives boundary-relative nullhomotopies of based cube and
+   simplex maps (`nativeCubeNullHomotopy`, `simplexNullHomotopy`).
+2. `simplexStraighteningHomotopy` contracts an already boundary-based `n`-simplex to
+   `x` and is stationary on all other simplices, compatibly with the stationary
+   lower-dimensional family.
+3. The time-`1` endpoint of a face-compatible homotopy preserves the homology class
+   via the prism operator (`straightenedCycle_class`).
+4. `singularHomologyDesc` descends chain maps killing boundaries to homology.
+5. Parity of the boundary signs of the constant simplex
+   (`constantSimplexCycle`, `correctedSimplexCycle`) corrects the straightened cycle
+   assignment (`normalizedCycleAssignment_class`).
+
+## Main definitions and results
+
+* `Hurewicz.straightenedCycle`, `Hurewicz.straightenedCycle_class`: straightening a
+  cycle preserves its class.
+* `Hurewicz.singularHomologyDesc`: descent of boundary-killing chain maps.
+* `Hurewicz.normalizedCycleAssignment`, `Hurewicz.normalizedCycleAssignment_class`:
+  the normalized assignment and its class preservation.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorems 2.10 and 4.32; the
+  argument is recorded in `Lib/docs/C.md`, §§8 and 12–13.
+
+## Tags
+
+Hurewicz theorem, straightening, cycles, singular homology
+-/
+
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -13,6 +56,10 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+/-! ### Nullhomotopies from vanishing homotopy groups -/
+
+/-- A based cube map into a space with `Subsingleton (π_ n X x)` is homotopic relative
+to the cube boundary to the constant map at `x`. -/
 def Hurewicz.nativeCubeNullHomotopy {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     [hπ : Subsingleton (π_ n X x)] (p : GenLoop (Fin n) X x) :
     p.val.HomotopyRel (ContinuousMap.const (Fin n → (unitInterval)) x) (Cube.boundary (Fin n)) :=
@@ -20,6 +67,8 @@ def Hurewicz.nativeCubeNullHomotopy {n : ℕ} {X : Type*} [TopologicalSpace X] {
     (show GenLoop.Homotopic p GenLoop.const from
       Quotient.exact (@Subsingleton.elim (π_ n X x) hπ ⟦p⟧ ⟦GenLoop.const⟧))
 
+/-- The nullhomotopy precomposed with a map `r : C(A, Fin n → unitInterval)` sending
+`S ⊆ A` into the cube boundary, as a homotopy rel `S`. -/
 def Hurewicz.nativeCubeNullHomotopy_comp {n : ℕ} {X : Type*} [TopologicalSpace X] {x : X}
     {A : Type*} [TopologicalSpace A] [Subsingleton (π_ n X x)] (p : GenLoop (Fin n) X x)
     (r : C(A, Fin n → (unitInterval))) (S : Set A) (hr : Set.MapsTo r S (Cube.boundary (Fin n))) :
@@ -33,11 +82,17 @@ def Hurewicz.nativeCubeNullHomotopy_comp {n : ℕ} {X : Type*} [TopologicalSpace
   map_one_left a := (nativeCubeNullHomotopy p).apply_one (r a)
   prop' t _ ha := (nativeCubeNullHomotopy p).eq_fst t (hr ha)
 
+/-! ### Straightening simplices relative to the boundary -/
+
+/-- The based cube map obtained from a based simplex `τ` by precomposing with the
+inverse `simplexCubeHomeomorph n ⁻¹` of the simplex–cube homeomorphism. -/
 def Hurewicz.basedSimplexNativeLoop {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     (τ : BasedSimplex n x) : GenLoop (Fin n) X x :=
   ⟨τ.val.comp ⟨(simplexCubeHomeomorph n).symm, (simplexCubeHomeomorph n).symm.continuous⟩,
     fun u hu => τ.property _ ((simplexCubeHomeomorph_symm_boundary_iff n u).mpr hu)⟩
 
+/-- Composing `basedSimplexNativeLoop τ` back with `simplexCubeHomeomorph n` recovers
+`τ`. -/
 theorem Hurewicz.basedSimplexNativeLoop_comp_homeomorph {n : ℕ} {X : Type}
     [TopologicalSpace X] {x : X} (τ : BasedSimplex n x) :
     (basedSimplexNativeLoop τ).val.comp
@@ -48,6 +103,9 @@ theorem Hurewicz.basedSimplexNativeLoop_comp_homeomorph {n : ℕ} {X : Type}
   change τ.val ((simplexCubeHomeomorph n).symm (simplexCubeHomeomorph n s)) = τ.val s
   rw [Homeomorph.symm_apply_apply]
 
+/-- The unnormalized nullhomotopy of a based simplex `τ`, obtained by transporting the
+native cube nullhomotopy of `basedSimplexNativeLoop τ` back along the
+simplex–cube homeomorphism. -/
 def Hurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
@@ -59,6 +117,8 @@ def Hurewicz.simplexNullHomotopyUnnormalized {n : ℕ} {X : Type} [TopologicalSp
       (fun s hs => (simplexCubeHomeomorph_boundary_iff n s).mpr hs))
     (basedSimplexNativeLoop_comp_homeomorph τ) rfl
 
+/-- A based `n`-simplex in a space with `Subsingleton (π_ n X x)` is homotopic relative
+to the simplex boundary to the constant map at `x`. -/
 def Hurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) :
     τ.val.HomotopyRel (ContinuousMap.const (SingularChains.Simplex n) x)
@@ -72,18 +132,21 @@ def Hurewicz.simplexNullHomotopy {n : ℕ} {X : Type} [TopologicalSpace X] {x : 
         (congrArg (fun υ : BasedSimplex n x => υ.val) h).symm rfl
     else simplexNullHomotopyUnnormalized τ
 
+/-- The simplex nullhomotopy starts at `τ`. -/
 @[simp]
 theorem Hurewicz.simplexNullHomotopy_zero {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) (s : SingularChains.Simplex n) :
     simplexNullHomotopy τ (0, s) = τ.val s :=
   (simplexNullHomotopy τ).apply_zero s
 
+/-- The simplex nullhomotopy ends at the constant map at `x`. -/
 @[simp]
 theorem Hurewicz.simplexNullHomotopy_one {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
     [Subsingleton (π_ n X x)] (τ : BasedSimplex n x) (s : SingularChains.Simplex n) :
     simplexNullHomotopy τ (1, s) = x :=
   (simplexNullHomotopy τ).apply_one s
 
+/-- The nullhomotopy of the constant based simplex is itself stationary. -/
 @[simp]
 theorem Hurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] :
@@ -95,6 +158,8 @@ theorem Hurewicz.simplexNullHomotopy_constant {X : Type} [TopologicalSpace X] (n
   rw [dif_pos rfl]
   rfl
 
+/-- The underlying continuous map of the constant simplex's nullhomotopy is constant in
+the time parameter. -/
 @[simp]
 theorem Hurewicz.simplexNullHomotopy_constant_toContinuousMap {X : Type}
     [TopologicalSpace X] (n : ℕ) (x : X) [Subsingleton (π_ n X x)] :
@@ -103,6 +168,10 @@ theorem Hurewicz.simplexNullHomotopy_constant_toContinuousMap {X : Type}
   rw [simplexNullHomotopy_constant]
   rfl
 
+/-- The straightening homotopy of a singular `n`-simplex in a space with
+`Subsingleton (π_ n X x)`: if `smp` is already boundary-based it is the
+nullhomotopy `simplexNullHomotopy` contracting `smp` to `x`, and otherwise it is
+stationary. -/
 def Hurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n) :
     C((unitInterval) × SingularChains.Simplex n, X) := by
@@ -112,6 +181,7 @@ def Hurewicz.simplexStraighteningHomotopy {X : Type} [TopologicalSpace X] (n : �
       (simplexNullHomotopy (⟨smp, h⟩ : BasedSimplex n x)).toContinuousMap
     else SecondHurewicz.SimplyConnected.stationarySimplexHomotopy n smp
 
+/-- The straightening homotopy starts at the simplex itself. -/
 @[simp]
 theorem Hurewicz.simplexStraighteningHomotopy_zero {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
@@ -123,6 +193,8 @@ theorem Hurewicz.simplexStraighteningHomotopy_zero {X : Type} [TopologicalSpace 
     exact simplexNullHomotopy_zero (⟨smp, h⟩ : BasedSimplex n x) s
   · rfl
 
+/-- For an already boundary-based simplex `smp`, the straightening homotopy ends at
+the constant map `x`. -/
 theorem Hurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (h : ∀ s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n, smp s = x)
@@ -131,6 +203,8 @@ theorem Hurewicz.simplexStraighteningHomotopy_one {X : Type} [TopologicalSpace X
   rw [simplexStraighteningHomotopy, dif_pos h]
   exact simplexNullHomotopy_one (⟨smp, h⟩ : BasedSimplex n x) s
 
+/-- On the simplex boundary the straightening homotopy is fixed at `smp s` for all
+times. -/
 theorem Hurewicz.simplexStraighteningHomotopy_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X) [Subsingleton (π_ n X x)] (smp : SingularChains.SingularSimplex X n)
     (r : (unitInterval)) (s : SingularChains.Simplex n)
@@ -143,6 +217,7 @@ theorem Hurewicz.simplexStraighteningHomotopy_boundary {X : Type} [TopologicalSp
     exact (simplexNullHomotopy (⟨smp, h⟩ : BasedSimplex n x)).eq_fst r hs
   · rfl
 
+/-- The straightening homotopy of the constant simplex is stationary. -/
 @[simp]
 theorem Hurewicz.simplexStraighteningHomotopy_const {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ n X x)] :
@@ -156,6 +231,9 @@ theorem Hurewicz.simplexStraighteningHomotopy_const {X : Type} [TopologicalSpace
   rw [simplexStraighteningHomotopy, dif_pos h]
   exact simplexNullHomotopy_constant_toContinuousMap n x
 
+/-- The degree-`(n+1)` straightening homotopy restricted to each face equals the
+stationary homotopy of the face: `simplexStraighteningHomotopy` is face-compatible
+with `stationarySimplexHomotopy`. -/
 theorem Hurewicz.simplexStraighteningHomotopy_face {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) [Subsingleton (π_ (n + 1) X x)] :
     SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n
@@ -170,6 +248,8 @@ theorem Hurewicz.simplexStraighteningHomotopy_face {X : Type} [TopologicalSpace 
     simplexStraighteningHomotopy_boundary (n + 1) x smp u.1 _
       ⟨i, SingularChains.simplexFace_apply_self n i u.2⟩
 
+/-- If the time-`1` endpoint of every lower-family homotopy is the constant simplex
+at `x`, then every face of the time-`1` endpoint of `H' smp` is also constant. -/
 theorem Hurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -185,6 +265,9 @@ theorem Hurewicz.simplexEndpoint_face_constant {X : Type} [TopologicalSpace X] {
       ContinuousMap.const (SingularChains.Simplex n) x :=
   (SecondHurewicz.SimplyConnected.timeSlice_face hface smp i 1).trans (hone _)
 
+/-- If the time-`1` endpoint of every lower-family homotopy is the constant simplex
+at `x`, then the time-`1` endpoint of `H' smp` takes the value `x` on the whole
+simplex boundary. -/
 theorem Hurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -207,6 +290,10 @@ theorem Hurewicz.simplexEndpoint_boundary {X : Type} [TopologicalSpace X] {n : �
     congrArg (fun f : C(SingularChains.Simplex n, X) => f t)
       (simplexEndpoint_face_constant H H' hface x hone smp i)
 
+/-! ### Straightened cycles and prism class preservation -/
+
+/-- The straightened form of an `(n + 1)`-cycle `c`: the chain obtained by evaluating a
+face-compatible simplex homotopy family `H'` at time `1`, which is again a cycle. -/
 def Hurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -225,6 +312,8 @@ def Hurewicz.straightenedCycle {X : Type} [TopologicalSpace X] (n : ℕ)
       rw [Nat.add_sub_cancel,
         SecondHurewicz.SimplyConnected.simplexEndpointOperator_boundary n H H' h, hc, map_zero])
 
+/-- The underlying chain of `straightenedCycle` is the time-`1` endpoint of `H'`
+applied to `c`. -/
 @[simp]
 theorem Hurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -237,6 +326,8 @@ theorem Hurewicz.straightenedCycle_val {X : Type} [TopologicalSpace X] (n : ℕ)
       SecondHurewicz.SimplyConnected.simplexEndpointOperator (n + 1) H' 1 c.1 :=
   rfl
 
+/-- The prism operator of `H'` bounds the difference between `c` and its straightened
+cycle: `c - straightenedCycle c` is a boundary. -/
 theorem Hurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -257,6 +348,8 @@ theorem Hurewicz.straightenedCycle_boundary {X : Type} [TopologicalSpace X] (n :
     sub_zero]
   rfl
 
+/-- Straightening preserves the homology class: `straightenedCycle c` and `c` represent
+the same class. -/
 theorem Hurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -276,6 +369,10 @@ theorem Hurewicz.straightenedCycle_class {X : Type} [TopologicalSpace X] (n : �
     ⟨SecondHurewicz.SimplyConnected.simplexPrismOperator (n + 1) H' c.1,
       straightenedCycle_boundary n H H' h h₀ c⟩
 
+/-! ### Descending to singular homology -/
+
+/-- A `ℤ`-linear map on singular `n`-chains that vanishes on all boundaries descends to
+a linear map on `SingularHomology X n`. -/
 def Hurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
     (hF :
@@ -287,6 +384,8 @@ def Hurewicz.singularHomologyDesc {X : Type} [TopologicalSpace X] {M : Type*}
       (SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n).subtype)
     (fun b => hF b)
 
+/-- `singularHomologyDesc` sends the class of a cycle `c` to `F` applied to `c`'s
+underlying chain. -/
 @[simp]
 theorem Hurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
@@ -299,6 +398,8 @@ theorem Hurewicz.singularHomologyDesc_cycleClass {X : Type} [TopologicalSpace X]
       F c.1 :=
   SingularHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) n _ _ c
 
+/-- If `g : M →ₗ[ℤ] SingularHomology X n` sends `F c` to the class of `c` for every
+cycle `c`, then `g ∘ singularHomologyDesc n F hF` is the identity on homology. -/
 theorem Hurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X] {M : Type*}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (F : SingularChains.Chains X n →ₗ[ℤ] M)
     (hF :
@@ -315,18 +416,26 @@ theorem Hurewicz.comp_singularHomologyDesc_eq_id {X : Type} [TopologicalSpace X]
   simpa only [LinearMap.comp_apply, singularHomologyDesc_cycleClass, LinearMap.id_apply] using
     hg c
 
+/-! ### Parity of the constant simplex -/
+
+/-- When `n + 1` is even, the alternating boundary sign sum `∑ (-1)^i` over
+`Fin (n + 2)` equals `1`. -/
 theorem Hurewicz.boundarySignSum_even (n : ℕ) (hn : Even (n + 1)) :
     (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) = 1 := by
   rw [Fin.sum_neg_one_pow]
   have h : ¬Even (n + 2) := Nat.not_even_iff_odd.mpr hn.add_one
   exact if_neg h
 
+/-- When `n + 1` is odd, the alternating boundary sign sum over `Fin (n + 2)` equals
+`0`. -/
 theorem Hurewicz.boundarySignSum_odd (n : ℕ) (hn : Odd (n + 1)) :
     (∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val) = 0 := by
   rw [Fin.sum_neg_one_pow]
   have h : Even (n + 2) := hn.add_one
   exact if_pos h
 
+/-- The boundary of the constant `(n + 1)`-simplex chain is the alternating sign sum
+times the constant `n`-simplex chain. -/
 theorem Hurewicz.boundary_constantSimplexChain {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) =
@@ -337,17 +446,21 @@ theorem Hurewicz.boundary_constantSimplexChain {X : Type} [TopologicalSpace X] (
     (map_sum (zmultiplesHom (SingularChains.Chains X n) (constantSimplexChain n x))
         (fun i : Fin (n + 2) => (-1 : ℤ) ^ i.val) Finset.univ).symm
 
+/-- For `n + 1` even, the boundary of the constant `(n + 1)`-simplex chain is the
+constant `n`-simplex chain. -/
 theorem Hurewicz.boundary_constantSimplexChain_even {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (hn : Even (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) =
       constantSimplexChain n x := by
   rw [boundary_constantSimplexChain, boundarySignSum_even n hn, one_smul]
 
+/-- For `n + 1` odd, the boundary of the constant `(n + 1)`-simplex chain vanishes. -/
 theorem Hurewicz.boundary_constantSimplexChain_odd {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (hn : Odd (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 1) n).hom (constantSimplexChain (n + 1) x) = 0 := by
   rw [boundary_constantSimplexChain, boundarySignSum_odd n hn, zero_smul]
 
+/-- For odd `n`, the constant `n`-simplex chain is a cycle. -/
 theorem Hurewicz.constantSimplexChain_cycle_condition {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X) (hn : Odd n) :
     ((SingularChains.singularComplex X).d n (n - 1)).hom (constantSimplexChain n x) = 0 := by
@@ -355,17 +468,20 @@ theorem Hurewicz.constantSimplexChain_cycle_condition {X : Type} [TopologicalSpa
   | zero => simp at hn
   | succ n => exact boundary_constantSimplexChain_odd n x hn
 
+/-- The constant `n`-simplex chain viewed as a cycle, for odd `n`. -/
 def Hurewicz.constantSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n :=
   SingularMayerVietoris.ModuleHomology.mkCycle (SingularChains.singularComplex X) n
     (constantSimplexChain n x) (constantSimplexChain_cycle_condition n x hn)
 
+/-- The underlying chain of `constantSimplexCycle` is the constant simplex chain. -/
 @[simp]
 theorem Hurewicz.constantSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) : (constantSimplexCycle n x hn).1 = constantSimplexChain n x :=
   rfl
 
+/-- For odd `n`, the homology class of `constantSimplexCycle` is `0`. -/
 @[simp]
 theorem Hurewicz.constantSimplexCycle_class {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (hn : Odd n) :
@@ -377,6 +493,10 @@ theorem Hurewicz.constantSimplexCycle_class {X : Type} [TopologicalSpace X] (n :
         n _).mpr
   exact ⟨constantSimplexChain (n + 1) x, boundary_constantSimplexChain_even n x hn.add_one⟩
 
+/-! ### Corrected simplices and chain augmentation -/
+
+/-- For a simplex whose faces are all constant at `x`, the corrected chain (the simplex
+minus the constant simplex) is a cycle. -/
 theorem Hurewicz.correctedSimplexChain_boundary {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (smp : SingularChains.SingularSimplex X (n + 1))
     (hfaces :
@@ -389,6 +509,7 @@ theorem Hurewicz.correctedSimplexChain_boundary {X : Type} [TopologicalSpace X] 
     SingularChains.boundary_simplex]
   simp only [hfaces, ContinuousMap.const_comp, sub_self]
 
+/-- The cycle formed by a boundary-constant simplex minus the constant simplex chain. -/
 def Hurewicz.correctedSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (smp : SingularChains.SingularSimplex X (n + 1))
     (hfaces :
@@ -399,6 +520,8 @@ def Hurewicz.correctedSimplexCycle {X : Type} [TopologicalSpace X] (n : ℕ) (x 
   SingularMayerVietoris.ModuleHomology.mkCycle (SingularChains.singularComplex X) (n + 1)
     (correctedSimplexChain (n + 1) x smp) (correctedSimplexChain_boundary n x smp hfaces)
 
+/-- The underlying chain of `correctedSimplexCycle` is `smp`'s chain minus the constant
+simplex chain. -/
 @[simp]
 theorem Hurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (smp : SingularChains.SingularSimplex X (n + 1))
@@ -410,6 +533,8 @@ theorem Hurewicz.correctedSimplexCycle_val {X : Type} [TopologicalSpace X] (n : 
       SingularChains.simplexChain X (n + 1) smp - constantSimplexChain (n + 1) x :=
   rfl
 
+/-- `chainAugmentation` of the boundary of an `(n+1)`-chain equals the alternating
+sign sum `∑ i, (-1)^i` times `chainAugmentation c`. -/
 theorem Hurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
     (c : SingularChains.Chains X (n + 1)) :
     SecondHurewicz.SimplyConnected.chainAugmentation X n
@@ -428,6 +553,8 @@ theorem Hurewicz.chainAugmentation_boundary (X : Type) [TopologicalSpace X] (n :
       zsmul_eq_mul, mul_one, Int.cast_id]
   exact LinearMap.congr_fun h c
 
+/-- For `n + 1` even, `chainAugmentation` of the boundary of `c` equals
+`chainAugmentation c` (the sign sum is `1`). -/
 theorem Hurewicz.chainAugmentation_boundary_even (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even (n + 1)) (c : SingularChains.Chains X (n + 1)) :
     SecondHurewicz.SimplyConnected.chainAugmentation X n
@@ -435,6 +562,7 @@ theorem Hurewicz.chainAugmentation_boundary_even (X : Type) [TopologicalSpace X]
       SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1) c := by
   rw [chainAugmentation_boundary, boundarySignSum_even n hn, one_smul]
 
+/-- For even positive `n`, `chainAugmentation` of an `n`-cycle vanishes. -/
 theorem Hurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (hn : Even n) (hpos : 0 < n)
     (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -448,6 +576,8 @@ theorem Hurewicz.chainAugmentation_evenCycle (X : Type) [TopologicalSpace X] (n 
         (n + 1) c
     rw [hc, map_zero]
 
+/-- On an even-degree cycle, `chainLift` of `smp ↦ f smp - m` equals `chainLift` of
+`f` (the constant correction vanishes). -/
 theorem Hurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalSpace X] {M : Type}
     [AddCommGroup M] [Module ℤ M] (n : ℕ) (hn : Even n) (hpos : 0 < n)
     (f : SingularChains.SingularSimplex X n → M) (m : M)
@@ -456,6 +586,10 @@ theorem Hurewicz.chainLift_sub_constant_evenCycle (X : Type) [TopologicalSpace X
   rw [SecondHurewicz.SimplyConnected.chainLift_sub_constant,
     chainAugmentation_evenCycle X n hn hpos, zero_smul, sub_zero]
 
+/-! ### Coherent cube endpoints -/
+
+/-- If the tail sums of a simplex point at two indices `i < j` coincide, the
+`j`-th barycentric coordinate vanishes. -/
 theorem Hurewicz.simplex_coordinate_zero_of_tail_eq {n : ℕ} (s : SingularChains.Simplex n)
     {i j : Fin n} (hij : i < j)
     (h :
@@ -483,6 +617,8 @@ theorem Hurewicz.simplex_coordinate_zero_of_tail_eq {n : ℕ} (s : SingularChain
         Finset.sum_le_sum_of_subset_of_nonneg hsub (fun k _ _ => stdSimplex.zero_le s k)
   exact le_antisymm (by linarith) (stdSimplex.zero_le s i.succ)
 
+/-- If two ordered coordinates `e i < e j` of `cubeSimplex e s` coincide, then `s` lies
+on the simplex boundary. -/
 theorem Hurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ}
     (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s (e i) = CubeTriangulation.cubeSimplex e s (e j)) :
@@ -493,6 +629,8 @@ theorem Hurewicz.cubeSimplex_ordered_coordinate_equality_boundary {n : ℕ}
   · exact ⟨i.succ, simplex_coordinate_zero_of_tail_eq s hlt hreal⟩
   · exact ⟨j.succ, simplex_coordinate_zero_of_tail_eq s hgt hreal.symm⟩
 
+/-- If two distinct coordinates of `cubeSimplex e s` coincide, then `s` lies on the
+simplex boundary. -/
 theorem Hurewicz.cubeSimplex_coordinate_equality_boundary {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) {i j : Fin n} (hij : i ≠ j)
     (h : CubeTriangulation.cubeSimplex e s i = CubeTriangulation.cubeSimplex e s j) :
@@ -500,6 +638,8 @@ theorem Hurewicz.cubeSimplex_coordinate_equality_boundary {n : ℕ} (e : Equiv.P
   apply cubeSimplex_ordered_coordinate_equality_boundary e s (e.symm.injective.ne hij)
   simpa only [Equiv.apply_symm_apply] using h
 
+/-- The coherent cube endpoint is based at `x` on the boundary of each Kuhn cell:
+every boundary point of `cubeSimplex e` maps to `x`. -/
 theorem Hurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -524,6 +664,7 @@ theorem Hurewicz.coherentCubeEndpoint_cell_boundary {n : ℕ} {X : Type} [Topolo
       (CubeGluing.coherentCubeEndpoint_cell H H' hface hconst p e)
   exact he.trans (simplexEndpoint_boundary H H' hface x hone _ s hs)
 
+/-- The coherent cube endpoint is internally based for the native subdivision. -/
 theorem Hurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [TopologicalSpace X]
     {x : X}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -545,6 +686,10 @@ theorem Hurewicz.coherentCubeEndpoint_internalBased {n : ℕ} {X : Type} [Topolo
     coherentCubeEndpoint_cell_boundary H H' hface hconst hone p e s
       (cubeSimplex_coordinate_equality_boundary e s hij hu)
 
+/-! ### Normalized cycle assignments -/
+
+/-- The linear map on `(n + 1)`-chains assigning to each simplex the corrected cycle of
+its normalized based simplex `f smp`. -/
 def Hurewicz.normalizedCycleAssignment {X : Type} [TopologicalSpace X] (n : ℕ) (x : X)
     (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x) :
     SingularChains.Chains X (n + 1) →ₗ[ℤ]
@@ -552,6 +697,8 @@ def Hurewicz.normalizedCycleAssignment {X : Type} [TopologicalSpace X] (n : ℕ)
   SingularChains.chainLift X (n + 1) fun smp =>
     correctedSimplexCycle n x (f smp).val (SimplexGeometry.basedSimplex_face (f smp))
 
+/-- On a generator simplex, `normalizedCycleAssignment` returns the corrected cycle of
+`f smp`. -/
 @[simp]
 theorem Hurewicz.normalizedCycleAssignment_simplex {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
@@ -560,6 +707,8 @@ theorem Hurewicz.normalizedCycleAssignment_simplex {X : Type} [TopologicalSpace 
       correctedSimplexCycle n x (f smp).val (SimplexGeometry.basedSimplex_face (f smp)) :=
   SingularChains.chainLift_simplex X (n + 1) _ smp
 
+/-- The underlying chain of `normalizedCycleAssignment c` is the lift of
+`smp ↦ simplexChain (f smp) - constantSimplexChain x` applied to `c`. -/
 theorem Hurewicz.normalizedCycleAssignment_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (c : SingularChains.Chains X (n + 1)) :
@@ -581,6 +730,9 @@ theorem Hurewicz.normalizedCycleAssignment_val {X : Type} [TopologicalSpace X] (
       correctedSimplexCycle_val, SingularChains.chainLift_simplex]
   exact LinearMap.congr_fun h c
 
+/-- When `f` is the time-`1` endpoint of `H'`, the underlying chain of
+`normalizedCycleAssignment c` equals the endpoint chain minus the chain augmentation
+times the constant simplex chain. -/
 theorem Hurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [TopologicalSpace X]
     (n : ℕ) (x : X)
     (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
@@ -604,6 +756,8 @@ theorem Hurewicz.normalizedCycleAssignment_val_endpoint {X : Type} [TopologicalS
       SecondHurewicz.SimplyConnected.simplexEndpointOperator_simplex, hf]
   rw [hmap]
 
+/-- For `n + 1` even, the normalized cycle assignment of a cycle equals its
+straightened cycle. -/
 theorem Hurewicz.normalizedCycleAssignment_evenCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -620,6 +774,8 @@ theorem Hurewicz.normalizedCycleAssignment_evenCycle {X : Type} [TopologicalSpac
     chainAugmentation_evenCycle X (n + 1) heven (Nat.zero_lt_succ n), zero_smul, sub_zero,
     straightenedCycle_val]
 
+/-- For `n + 1` odd, the normalized cycle assignment of a cycle equals its straightened
+cycle minus the augmentation times the constant simplex cycle. -/
 theorem Hurewicz.normalizedCycleAssignment_oddCycle {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
@@ -643,6 +799,8 @@ theorem Hurewicz.normalizedCycleAssignment_oddCycle {X : Type} [TopologicalSpace
   rw [normalizedCycleAssignment_val_endpoint n x f H' hf, straightenedCycle_val,
     constantSimplexCycle_val]
 
+/-- The normalized cycle assignment preserves homology classes: applied to a cycle `c`
+it represents the same class as `c`. -/
 theorem Hurewicz.normalizedCycleAssignment_class {X : Type} [TopologicalSpace X] (n : ℕ)
     (x : X) (f : SingularChains.SingularSimplex X (n + 1) → SimplexGeometry.BasedSimplex (n + 1) x)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
