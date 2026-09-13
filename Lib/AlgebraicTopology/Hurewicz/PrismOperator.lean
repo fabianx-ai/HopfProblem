@@ -16,49 +16,49 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.crossProductTriangle_zero_eq_zeroRight (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
-    PeriodTorusHigherHomology.crossProductTriangle X Y 0 =
-      PeriodTorusHigherHomology.crossProductZeroRight X Y 2 := by
-  apply PeriodTorusHigherHomology.chainBilinearMap_ext X Y 2 0
+    SingularHomology.crossProductTriangle X Y 0 =
+      SingularHomology.crossProductZeroRight X Y 2 := by
+  apply SingularHomology.chainBilinearMap_ext X Y 2 0
   intro σ τ
-  rw [PeriodTorusHigherHomology.crossProductTriangle_simplex,
-    PeriodTorusHigherHomology.formalTriangleCrossProduct_zero_simplex_right,
+  rw [SingularHomology.crossProductTriangle_simplex,
+    SingularHomology.formalTriangleCrossProduct_zero_simplex_right,
     SingularMayerVietoris.formalMap_simplex,
-    PeriodTorusHigherHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex,
-    PeriodTorusHigherHomology.crossProductZeroRight_simplex]
+    SingularHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex,
+    SingularHomology.crossProductZeroRight_simplex]
   apply congrArg (SingularChains.simplexChain (X × Y) 2)
   change
     (σ.prodMap τ).comp
-        (PeriodTorusHigherHomology.productAffineSimplex
+        (SingularHomology.productAffineSimplex
           (fun i =>
             (SingularMayerVietoris.stdVertices 2 i, SingularMayerVietoris.stdVertices 0 0))) =
-      (PeriodTorusHigherHomology.crossInsertRight
-            (PeriodTorusHigherHomology.zeroSimplexValue τ)).comp
+      (SingularHomology.crossInsertRight
+            (SingularHomology.zeroSimplexValue τ)).comp
         σ
-  rw [PeriodTorusHigherHomology.productAffineSimplex_point_right,
+  rw [SingularHomology.productAffineSimplex_point_right,
     SingularMayerVietoris.affineSimplex_stdVertices, ContinuousMap.comp_id]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.crossProductTriangle_point_right (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularChains.Chains X 2) (y : Y) :
-    PeriodTorusHigherHomology.crossProductTriangle X Y 0 a (SingularChains.pointChain y) =
-      SingularChains.inducedChain (PeriodTorusHigherHomology.crossInsertRight y) 2 a := by
+    SingularHomology.crossProductTriangle X Y 0 a (SingularChains.pointChain y) =
+      SingularChains.inducedChain (SingularHomology.crossInsertRight y) 2 a := by
   rw [crossProductTriangle_zero_eq_zeroRight, SingularChains.pointChain,
-    PeriodTorusHigherHomology.crossProductZeroRight_simplex_right]
+    SingularHomology.crossProductZeroRight_simplex_right]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.crossProductEdge_point_right (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (a : SingularChains.Chains X 1) (y : Y) :
-    PeriodTorusHigherHomology.crossProductEdge X Y 0 a (SingularChains.pointChain y) =
-      SingularChains.inducedChain (PeriodTorusHigherHomology.crossInsertRight y) 1 a := by
-  rw [SingularChains.pointChain, PeriodTorusHigherHomology.crossProductEdge_zero_simplex_right]
+    SingularHomology.crossProductEdge X Y 0 a (SingularChains.pointChain y) =
+      SingularChains.inducedChain (SingularHomology.crossInsertRight y) 1 a := by
+  rw [SingularChains.pointChain, SingularHomology.crossProductEdge_zero_simplex_right]
   rfl
 
 abbrev SecondHurewicz.Remaining :=
@@ -85,14 +85,14 @@ theorem SecondHurewicz.evaluation_one {X : Type} [TopologicalSpace X] (x : X)
 
 @[simp]
 theorem SecondHurewicz.evaluation_comp_right_zero {X : Type} [TopologicalSpace X] (x : X) :
-    (evaluation x).comp (PeriodTorusHigherHomology.crossInsertRight (0 : (unitInterval))) =
+    (evaluation x).comp (SingularHomology.crossInsertRight (0 : (unitInterval))) =
       ContinuousMap.const (BasedLoopSpace x) x := by
   ext p
   exact evaluation_zero x p
 
 @[simp]
 theorem SecondHurewicz.evaluation_comp_right_one {X : Type} [TopologicalSpace X] (x : X) :
-    (evaluation x).comp (PeriodTorusHigherHomology.crossInsertRight (1 : (unitInterval))) =
+    (evaluation x).comp (SingularHomology.crossInsertRight (1 : (unitInterval))) =
       ContinuousMap.const (BasedLoopSpace x) x := by
   ext p
   exact evaluation_one x p
@@ -125,147 +125,147 @@ theorem SecondHurewicz.evaluation_comp_toLoop {X : Type} [TopologicalSpace X] {x
   ext z
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.intervalChain : SingularChains.Chains (unitInterval) 1 :=
   SingularChains.pathChain Path.id
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.intervalChain_boundary :
     SingularChains.boundaryOne (unitInterval) intervalChain =
       SingularChains.pointChain (1 : (unitInterval)) -
         SingularChains.pointChain (0 : (unitInterval)) :=
   SingularChains.boundaryOne_pathChain Path.id
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.evaluation_right_zero_chain {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     (a : SingularChains.Chains (BasedLoopSpace x) n) :
     SingularChains.inducedChain (evaluation x) n
         (SingularChains.inducedChain
-          (PeriodTorusHigherHomology.crossInsertRight (0 : (unitInterval))) n a) =
+          (SingularHomology.crossInsertRight (0 : (unitInterval))) n a) =
       SingularChains.inducedChain (ContinuousMap.const (BasedLoopSpace x) x) n a := by
   change
     ((SingularChains.inducedChain (evaluation x) n).comp
           (SingularChains.inducedChain
-            (PeriodTorusHigherHomology.crossInsertRight (0 : (unitInterval))) n))
+            (SingularHomology.crossInsertRight (0 : (unitInterval))) n))
         a =
       _
   rw [← SingularChains.inducedChain_comp, evaluation_comp_right_zero]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.evaluation_right_one_chain {X : Type} [TopologicalSpace X] (x : X) (n : ℕ)
     (a : SingularChains.Chains (BasedLoopSpace x) n) :
     SingularChains.inducedChain (evaluation x) n
         (SingularChains.inducedChain
-          (PeriodTorusHigherHomology.crossInsertRight (1 : (unitInterval))) n a) =
+          (SingularHomology.crossInsertRight (1 : (unitInterval))) n a) =
       SingularChains.inducedChain (ContinuousMap.const (BasedLoopSpace x) x) n a := by
   change
     ((SingularChains.inducedChain (evaluation x) n).comp
           (SingularChains.inducedChain
-            (PeriodTorusHigherHomology.crossInsertRight (1 : (unitInterval))) n))
+            (SingularHomology.crossInsertRight (1 : (unitInterval))) n))
         a =
       _
   rw [← SingularChains.inducedChain_comp, evaluation_comp_right_one]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.evaluated_edge_endpoint_cancel {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1) :
     SingularChains.inducedChain (evaluation x) 1
-        (PeriodTorusHigherHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 0 a
+        (SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 0 a
           (SingularChains.boundaryOne (unitInterval) intervalChain)) =
       0 := by
   simp only [intervalChain_boundary, map_sub, crossProductEdge_point_right,
     evaluation_right_one_chain, evaluation_right_zero_chain, sub_self]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.evaluated_triangle_endpoint_cancel {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
     SingularChains.inducedChain (evaluation x) 2
-        (PeriodTorusHigherHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 0 a
+        (SingularHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 0 a
           (SingularChains.boundaryOne (unitInterval) intervalChain)) =
       0 := by
   simp only [intervalChain_boundary, map_sub, crossProductTriangle_point_right,
     evaluation_right_one_chain, evaluation_right_zero_chain, sub_self]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.suspensionOne {X : Type} [TopologicalSpace X] (x : X) :
     SingularChains.Chains (BasedLoopSpace x) 1 →ₗ[ℤ] SingularChains.Chains X 2 :=
   (SingularChains.inducedChain (evaluation x) 2).comp
-    (PeriodTorusHigherHomology.integerBilinearRightApply
-      (PeriodTorusHigherHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1)
+    (SingularHomology.integerBilinearRightApply
+      (SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1)
       intervalChain)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.suspensionOne_apply {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1) :
     suspensionOne x a =
       SingularChains.inducedChain (evaluation x) 2
-        (PeriodTorusHigherHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1 a
+        (SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1 a
           intervalChain) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.suspensionTwo {X : Type} [TopologicalSpace X] (x : X) :
     SingularChains.Chains (BasedLoopSpace x) 2 →ₗ[ℤ] SingularChains.Chains X 3 :=
   (SingularChains.inducedChain (evaluation x) 3).comp
-    (PeriodTorusHigherHomology.integerBilinearRightApply
-      (PeriodTorusHigherHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 1)
+    (SingularHomology.integerBilinearRightApply
+      (SingularHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 1)
       intervalChain)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.suspensionTwo_apply {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
     suspensionTwo x a =
       SingularChains.inducedChain (evaluation x) 3
-        (PeriodTorusHigherHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 1 a
+        (SingularHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 1 a
           intervalChain) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.boundaryTwo_suspensionOne_of_cycle {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 1)
     (ha : SingularChains.boundaryOne (BasedLoopSpace x) a = 0) :
     SingularChains.boundaryTwo X (suspensionOne x a) = 0 := by
   change ((SingularChains.singularComplex X).d 2 1).hom (suspensionOne x a) = 0
   rw [suspensionOne_apply, ← SingularChains.inducedChain_boundary,
-    PeriodTorusHigherHomology.crossProductEdge_boundary 0]
+    SingularHomology.crossProductEdge_boundary 0]
   change
     SingularChains.inducedChain (evaluation x) 1
-        (PeriodTorusHigherHomology.crossProductZeroLeft (BasedLoopSpace x) (unitInterval) 1
+        (SingularHomology.crossProductZeroLeft (BasedLoopSpace x) (unitInterval) 1
             (SingularChains.boundaryOne (BasedLoopSpace x) a) intervalChain -
-          PeriodTorusHigherHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 0 a
+          SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 0 a
             (SingularChains.boundaryOne (unitInterval) intervalChain)) =
       0
   rw [ha, map_zero, LinearMap.zero_apply, zero_sub, map_neg, evaluated_edge_endpoint_cancel,
     neg_zero]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.boundaryThree_suspensionTwo {X : Type} [TopologicalSpace X] (x : X)
     (a : SingularChains.Chains (BasedLoopSpace x) 2) :
     ((SingularChains.singularComplex X).d 3 2).hom (suspensionTwo x a) =
       suspensionOne x (SingularChains.boundaryTwo (BasedLoopSpace x) a) := by
   rw [suspensionTwo_apply, ← SingularChains.inducedChain_boundary,
-    PeriodTorusHigherHomology.crossProductTriangle_boundary 0]
+    SingularHomology.crossProductTriangle_boundary 0]
   change
     SingularChains.inducedChain (evaluation x) 2
-        (PeriodTorusHigherHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1
+        (SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1
             (SingularChains.boundaryTwo (BasedLoopSpace x) a) intervalChain +
-          PeriodTorusHigherHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 0 a
+          SingularHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 0 a
             (SingularChains.boundaryOne (unitInterval) intervalChain)) =
       _
   rw [map_add, evaluated_triangle_endpoint_cancel, add_zero]
@@ -343,15 +343,15 @@ theorem SecondHurewicz.pathSquareClass_trans {X : Type} [TopologicalSpace X] (x 
         _).mpr
   exact ⟨-suspensionTwo x (SingularChains.concatChain p q), pathSquare_concat_boundary x p q⟩
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.productSquareChain :
     SingularChains.Chains ((unitInterval) × (unitInterval)) 2 :=
-  PeriodTorusHigherHomology.crossProductEdge (unitInterval) (unitInterval) 1 intervalChain
+  SingularHomology.crossProductEdge (unitInterval) (unitInterval) 1 intervalChain
     intervalChain
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.productSquareChain_boundary :
     SingularChains.boundaryTwo ((unitInterval) × (unitInterval)) productSquareChain =
       SingularChains.inducedChain (SingularHomology.crossInsertLeft (1 : (unitInterval)))
@@ -359,33 +359,33 @@ theorem SecondHurewicz.productSquareChain_boundary :
           SingularChains.inducedChain
             (SingularHomology.crossInsertLeft (0 : (unitInterval))) 1 intervalChain -
         (SingularChains.inducedChain
-            (PeriodTorusHigherHomology.crossInsertRight (1 : (unitInterval))) 1 intervalChain -
+            (SingularHomology.crossInsertRight (1 : (unitInterval))) 1 intervalChain -
           SingularChains.inducedChain
-            (PeriodTorusHigherHomology.crossInsertRight (0 : (unitInterval))) 1 intervalChain) := by
+            (SingularHomology.crossInsertRight (0 : (unitInterval))) 1 intervalChain) := by
   change
     ((SingularChains.singularComplex ((unitInterval) × (unitInterval))).d 2 1).hom
-        (PeriodTorusHigherHomology.crossProductEdge (unitInterval) (unitInterval) 1 intervalChain
+        (SingularHomology.crossProductEdge (unitInterval) (unitInterval) 1 intervalChain
           intervalChain) =
       _
-  rw [PeriodTorusHigherHomology.crossProductEdge_boundary 0]
+  rw [SingularHomology.crossProductEdge_boundary 0]
   change
-    PeriodTorusHigherHomology.crossProductZeroLeft (unitInterval) (unitInterval) 1
+    SingularHomology.crossProductZeroLeft (unitInterval) (unitInterval) 1
           (SingularChains.boundaryOne (unitInterval) intervalChain) intervalChain -
-        PeriodTorusHigherHomology.crossProductEdge (unitInterval) (unitInterval) 0 intervalChain
+        SingularHomology.crossProductEdge (unitInterval) (unitInterval) 0 intervalChain
           (SingularChains.boundaryOne (unitInterval) intervalChain) =
       _
   simp only [intervalChain_boundary, map_sub, LinearMap.sub_apply, crossProductEdge_point_right]
   simp only [SingularChains.pointChain,
-    PeriodTorusHigherHomology.crossProductZeroLeft_simplex_left]
+    SingularHomology.crossProductZeroLeft_simplex_left]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.fundamentalSquareChain : SingularChains.Chains (Fin 2 → (unitInterval)) 2 :=
   SingularChains.inducedChain squareCoordinates 2 productSquareChain
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.induced_intervalChain {X : Type} [TopologicalSpace X] {a b : X}
     (p : Path a b) :
     SingularChains.inducedChain p.toContinuousMap 1 intervalChain = SingularChains.pathChain p := by
@@ -394,14 +394,14 @@ theorem SecondHurewicz.induced_intervalChain {X : Type} [TopologicalSpace X] {a 
   ext s
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.suspensionOne_toLoop {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) :
     suspensionOne x (SingularChains.pathChain (GenLoop.toLoop (0 : Fin 2) p)) =
       SingularChains.inducedChain (squareMap p) 2 productSquareChain := by
   have h :=
-    PeriodTorusHigherHomology.crossProductEdge_natural
+    SingularHomology.crossProductEdge_natural
       (GenLoop.toLoop (0 : Fin 2) p).toContinuousMap (ContinuousMap.id (unitInterval)) 1
       intervalChain intervalChain
   rw [induced_intervalChain, SingularChains.inducedChain_id, LinearMap.id_apply] at h
@@ -416,47 +416,47 @@ theorem SecondHurewicz.suspensionOne_toLoop {X : Type} [TopologicalSpace X] {x :
       _
   rw [← SingularChains.inducedChain_comp, evaluation_comp_toLoop]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.squareChain {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     SingularChains.Chains X 2 :=
   suspensionOne x (SingularChains.pathChain (GenLoop.toLoop (0 : Fin 2) p))
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.squareChain_boundary {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : SingularChains.boundaryTwo X (squareChain p) = 0 :=
   boundaryTwo_suspensionOne_of_cycle x _ (SingularChains.boundaryOne_loop (GenLoop.toLoop 0 p))
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.squareCycle {X : Type} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2 :=
   pathSquareCycle x (GenLoop.toLoop (0 : Fin 2) p)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.squareHomologyClass {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 2) X x) : SingularMayerVietoris.SingularHomology X 2 :=
   SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 2
     (squareCycle p)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.squareHomologyClass_eq_pathSquareClass {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     squareHomologyClass p = pathSquareClass x (GenLoop.toLoop (0 : Fin 2) p) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.squareHomologyClass_homotopic {X : Type} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 2) X x} (h : GenLoop.Homotopic p q) :
     squareHomologyClass p = squareHomologyClass q :=
   pathSquareClass_homotopic x (GenLoop.homotopicTo (0 : Fin 2) h)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.toLoop_const {X : Type} [TopologicalSpace X] {x : X} :
     GenLoop.toLoop (0 : Fin 2) (GenLoop.const : GenLoop (Fin 2) X x) =
       Path.refl (GenLoop.const : BasedLoopSpace x) := by
@@ -466,16 +466,16 @@ theorem SecondHurewicz.toLoop_const {X : Type} [TopologicalSpace X] {x : X} :
   intro u
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.squareHomologyClass_const {X : Type} [TopologicalSpace X] {x : X} :
     squareHomologyClass (GenLoop.const : GenLoop (Fin 2) X x) = 0 := by
   rw [squareHomologyClass_eq_pathSquareClass, toLoop_const, pathSquareClass_refl]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.toLoop_transAt {X : Type} [TopologicalSpace X] {x : X}
     (p q : GenLoop (Fin 2) X x) :
     GenLoop.toLoop (0 : Fin 2) (GenLoop.transAt (0 : Fin 2) p q) =
@@ -486,8 +486,8 @@ theorem SecondHurewicz.toLoop_transAt {X : Type} [TopologicalSpace X] {x : X}
   rw [GenLoop.to_from] at h
   exact h.symm
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.squareHomologyClass_transAt {X : Type} [TopologicalSpace X] {x : X}
     (p q : GenLoop (Fin 2) X x) :
     squareHomologyClass (GenLoop.transAt (0 : Fin 2) p q) =
@@ -561,24 +561,24 @@ theorem SecondHurewicz.hurewiczMap_representative {X : Type} [TopologicalSpace X
         (squareCycle p) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) : C(A, X) :=
   H.comp (SingularHomology.crossInsertLeft t)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.crossPoint_left {A : Type} [TopologicalSpace A] (n : ℕ)
     (t : (unitInterval)) (c : SingularChains.Chains A n) :
-    PeriodTorusHigherHomology.crossProductZeroLeft (unitInterval) A n (SingularChains.pointChain t)
+    SingularHomology.crossProductZeroLeft (unitInterval) A n (SingularChains.pointChain t)
         c =
       SingularChains.inducedChain (SingularHomology.crossInsertLeft t) n c := by
-  rw [SingularChains.pointChain, PeriodTorusHigherHomology.crossProductZeroLeft_simplex_left]
+  rw [SingularChains.pointChain, SingularHomology.crossProductZeroLeft_simplex_left]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.inducedChain_timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) (n : ℕ)
     (c : SingularChains.Chains A n) :
@@ -593,28 +593,28 @@ theorem SecondHurewicz.SimplyConnected.inducedChain_timeSlice {A X : Type} [Topo
   rw [← SingularChains.inducedChain_comp]
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.prismOperator {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) :
     SingularChains.Chains A n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
   (SingularChains.inducedChain H (n + 1)).comp
-    (PeriodTorusHigherHomology.crossProductEdge (unitInterval) A n SecondHurewicz.intervalChain)
+    (SingularHomology.crossProductEdge (unitInterval) A n SecondHurewicz.intervalChain)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.prismOperator_apply {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) (c : SingularChains.Chains A n) :
     prismOperator n H c =
       SingularChains.inducedChain H (n + 1)
-        (PeriodTorusHigherHomology.crossProductEdge (unitInterval) A n
+        (SingularHomology.crossProductEdge (unitInterval) A n
           SecondHurewicz.intervalChain c) :=
   rfl
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.prismOperator_boundary {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (c : SingularChains.Chains A (n + 1)) :
@@ -623,42 +623,42 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_boundary {A X : Type} [Topo
           SingularChains.inducedChain (timeSlice H 0) (n + 1) c -
         prismOperator n H (((SingularChains.singularComplex A).d (n + 1) n).hom c) := by
   rw [prismOperator_apply, ← SingularChains.inducedChain_boundary,
-    PeriodTorusHigherHomology.crossProductEdge_boundary n]
+    SingularHomology.crossProductEdge_boundary n]
   change
     SingularChains.inducedChain H (n + 1)
-        (PeriodTorusHigherHomology.crossProductZeroLeft (unitInterval) A (n + 1)
+        (SingularHomology.crossProductZeroLeft (unitInterval) A (n + 1)
             (SingularChains.boundaryOne (unitInterval) SecondHurewicz.intervalChain) c -
-          PeriodTorusHigherHomology.crossProductEdge (unitInterval) A n
+          SingularHomology.crossProductEdge (unitInterval) A n
             SecondHurewicz.intervalChain
             (((SingularChains.singularComplex A).d (n + 1) n).hom c)) =
       _
   simp only [SecondHurewicz.intervalChain_boundary, map_sub, LinearMap.sub_apply, crossPoint_left,
     inducedChain_timeSlice, prismOperator_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.prismOperator_domain {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] (n : ℕ) (f : C(A, B)) (H : C((unitInterval) × B, X))
     (c : SingularChains.Chains A n) :
     prismOperator n (H.comp ((ContinuousMap.id (unitInterval)).prodMap f)) c =
       prismOperator n H (SingularChains.inducedChain f n c) := by
   have h :=
-    PeriodTorusHigherHomology.crossProductEdge_natural (ContinuousMap.id (unitInterval)) f n
+    SingularHomology.crossProductEdge_natural (ContinuousMap.id (unitInterval)) f n
       SecondHurewicz.intervalChain c
   rw [SingularChains.inducedChain_id, LinearMap.id_apply] at h
   simp only [prismOperator_apply, SingularChains.inducedChain_comp, LinearMap.comp_apply]
   exact congrArg (SingularChains.inducedChain H (n + 1)) h
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.simplexPrism {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : C((unitInterval) × SingularChains.Simplex n, X)) : SingularChains.Chains X (n + 1) :=
   prismOperator n H
     (SingularChains.simplexChain (SingularChains.Simplex n) n
       (ContinuousMap.id (SingularChains.Simplex n)))
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.prismOperator_simplex {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (smp : SingularChains.SingularSimplex A n) :
@@ -671,8 +671,8 @@ theorem SecondHurewicz.SimplyConnected.prismOperator_simplex {A X : Type} [Topol
   rw [SingularChains.inducedChain_simplex, ContinuousMap.comp_id] at h
   exact h.symm
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.simplexPrism_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (H : C((unitInterval) × SingularChains.Simplex (n + 1), X)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom (simplexPrism (n + 1) H) =
@@ -938,7 +938,7 @@ theorem SecondHurewicz.SimplyConnected.vertexStepHomotopy_faceCompatible {X : Ty
   apply faceCompatible_of_cofaceCompatible
   intro i j hij r u
   rw [vertexStepHomotopy_face_apply, vertexStepHomotopy_face_apply,
-    PeriodTorusLineBundle.ChernCocycle.singularSimplex_face_face smp hij]
+    SingularChains.singularSimplex_face_face smp hij]
 
 def SecondHurewicz.SimplyConnected.VertexHomotopyData.next {X : Type} [TopologicalSpace X] {x : X}
     {n : ℕ} (D : SecondHurewicz.SimplyConnected.VertexHomotopyData x n) :
@@ -1275,7 +1275,7 @@ theorem SecondHurewicz.SimplyConnected.nextFaceHomotopies_compatible {X : Type}
         (smp.comp
           ((SingularChains.simplexFace (n + 1) i.castSucc).comp (SingularChains.simplexFace n j)))
         (t, s)
-  rw [PeriodTorusLineBundle.ChernCocycle.simplexFace_comp hij]
+  rw [SingularChains.simplexFace_comp hij]
 
 def SecondHurewicz.SimplyConnected.coherentFaceBoundaryHomotopy {X : Type} [TopologicalSpace X]
     {n : ℕ}
@@ -3135,18 +3135,18 @@ theorem SecondHurewicz.SimplyConnected.normalizedTriangle_boundary_relation {X :
   simpa only [normalizedTetrahedron_face] using
     basedTetrahedron_signed_relation (normalizedTetrahedron x smp)
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.squareAffineTriangle (v : Fin 3 → Fin 2 × Fin 2) :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   ((SingularChains.pathSimplex Path.id).prodMap (SingularChains.pathSimplex Path.id)).comp
-    (PeriodTorusHigherHomology.productAffineSimplex
+    (SingularHomology.productAffineSimplex
       (fun i =>
         (SingularMayerVietoris.stdVertices 1 (v i).1,
           SingularMayerVietoris.stdVertices 1 (v i).2)))
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_fst_coe (v : Fin 3 → Fin 2 × Fin 2)
     (s : SingularChains.Simplex 2) :
     ((squareAffineTriangle v s).1 : ℝ) =
@@ -3157,8 +3157,8 @@ theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_fst_coe (v : Fin 3 �
       _
   exact SingularMayerVietoris.affineSimplex_coordinate _ _ _
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_snd_coe (v : Fin 3 → Fin 2 × Fin 2)
     (s : SingularChains.Simplex 2) :
     ((squareAffineTriangle v s).2 : ℝ) =
@@ -3169,32 +3169,32 @@ theorem SecondHurewicz.SimplyConnected.squareAffineTriangle_snd_coe (v : Fin 3 �
       _
   exact SingularMayerVietoris.affineSimplex_coordinate _ _ _
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.lowerProductTriangle :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (1, 0), (1, 1)]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.upperProductTriangle :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 1), (1, 1)]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.leftProductDegenerate :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 0), (0, 1)]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.bottomProductDegenerate :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 0), (1, 0)]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_fst (s : SingularChains.Simplex 2) :
@@ -3202,8 +3202,8 @@ theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_fst (s : SingularCha
   simp [lowerProductTriangle, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_snd (s : SingularChains.Simplex 2) :
@@ -3211,8 +3211,8 @@ theorem SecondHurewicz.SimplyConnected.lowerProductTriangle_snd (s : SingularCha
   simp [lowerProductTriangle, squareAffineTriangle_snd_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperProductTriangle_fst (s : SingularChains.Simplex 2) :
@@ -3220,8 +3220,8 @@ theorem SecondHurewicz.SimplyConnected.upperProductTriangle_fst (s : SingularCha
   simp [upperProductTriangle, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperProductTriangle_snd (s : SingularChains.Simplex 2) :
@@ -3229,8 +3229,8 @@ theorem SecondHurewicz.SimplyConnected.upperProductTriangle_snd (s : SingularCha
   simp [upperProductTriangle, squareAffineTriangle_snd_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.leftProductDegenerate_fst (s : SingularChains.Simplex 2) :
@@ -3239,8 +3239,8 @@ theorem SecondHurewicz.SimplyConnected.leftProductDegenerate_fst (s : SingularCh
   simp [leftProductDegenerate, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.bottomProductDegenerate_snd (s : SingularChains.Simplex 2) :
@@ -3249,48 +3249,48 @@ theorem SecondHurewicz.SimplyConnected.bottomProductDegenerate_snd (s : Singular
   simp [bottomProductDegenerate, squareAffineTriangle_snd_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.lowerSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   SecondHurewicz.squareCoordinates.comp lowerProductTriangle
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 def SecondHurewicz.SimplyConnected.upperSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   SecondHurewicz.squareCoordinates.comp upperProductTriangle
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 0 : ℝ) = s 1 + s 2 := by simp [lowerSquareTriangle]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.lowerSquareTriangle_one (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 1 : ℝ) = s 2 := by simp [lowerSquareTriangle]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (upperSquareTriangle s 0 : ℝ) = s 2 := by simp [upperSquareTriangle]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 @[simp]
 theorem SecondHurewicz.SimplyConnected.upperSquareTriangle_one (s : SingularChains.Simplex 2) :
     (upperSquareTriangle s 1 : ℝ) = s 1 + s 2 := by simp [upperSquareTriangle]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.productSquareChain_four_triangles :
     SecondHurewicz.productSquareChain =
       SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 lowerProductTriangle -
@@ -3298,13 +3298,13 @@ theorem SecondHurewicz.SimplyConnected.productSquareChain_four_triangles :
           SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 upperProductTriangle +
         SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 bottomProductDegenerate := by
   rw [SecondHurewicz.productSquareChain, SecondHurewicz.intervalChain, SingularChains.pathChain,
-    PeriodTorusHigherHomology.crossProductEdge_simplex,
-    PeriodTorusHigherHomology.formalEdgeCrossProduct_simplex_succ,
-    PeriodTorusHigherHomology.formalPointCrossProduct_edge_boundary,
-    PeriodTorusHigherHomology.formalBoundary_edge_simplex]
-  simp only [map_sub, PeriodTorusHigherHomology.formalEdgeCrossProduct_zero_simplex_right,
+    SingularHomology.crossProductEdge_simplex,
+    SingularHomology.formalEdgeCrossProduct_simplex_succ,
+    SingularHomology.formalPointCrossProduct_edge_boundary,
+    SingularHomology.formalBoundary_edge_simplex]
+  simp only [map_sub, SingularHomology.formalEdgeCrossProduct_zero_simplex_right,
     SingularMayerVietoris.formalMap_simplex, SingularMayerVietoris.formalCone_simplex,
-    PeriodTorusHigherHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex]
+    SingularHomology.productAffineChainMap_simplex, SingularChains.inducedChain_simplex]
   change
     (SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 lowerProductTriangle -
           SingularChains.simplexChain ((unitInterval) × (unitInterval)) 2 leftProductDegenerate) -
@@ -3314,8 +3314,8 @@ theorem SecondHurewicz.SimplyConnected.productSquareChain_four_triangles :
       _
   abel
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.squareMap_leftProductDegenerate {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (SecondHurewicz.squareMap p).comp leftProductDegenerate =
@@ -3325,8 +3325,8 @@ theorem SecondHurewicz.SimplyConnected.squareMap_leftProductDegenerate {X : Type
   refine ⟨0, Or.inl ?_⟩
   rw [SecondHurewicz.squareCoordinates_zero, leftProductDegenerate_fst]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.squareMap_bottomProductDegenerate {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
     (SecondHurewicz.squareMap p).comp bottomProductDegenerate =
@@ -3336,8 +3336,8 @@ theorem SecondHurewicz.SimplyConnected.squareMap_bottomProductDegenerate {X : Ty
   refine ⟨1, Or.inl ?_⟩
   rw [SecondHurewicz.squareCoordinates_one, bottomProductDegenerate_snd]
 
-attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
-    PeriodTorusHigherHomology.integerTensorModule in
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 theorem SecondHurewicz.SimplyConnected.squareChain_two_triangles {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     SecondHurewicz.squareChain p =
@@ -3443,7 +3443,7 @@ def SecondHurewicz.SimplyConnected.secondHomologyDesc {X : Type} [TopologicalSpa
     (hF :
       ∀ b : SingularChains.Chains X 3, F (((SingularChains.singularComplex X).d 3 2).hom b) = 0) :
     SingularMayerVietoris.SingularHomology X 2 →ₗ[ℤ] M :=
-  PeriodTorusHigherHomology.homologyDesc (SingularChains.singularComplex X) 2
+  SingularHomology.homologyDesc (SingularChains.singularComplex X) 2
     (F.comp
       (SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 2).subtype)
     (fun b => hF b)
@@ -3457,7 +3457,7 @@ theorem SecondHurewicz.SimplyConnected.secondHomologyDesc_cycleClass {X : Type}
     secondHomologyDesc F hF
         (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 2 c) =
       F c.1 :=
-  PeriodTorusHigherHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) 2 _ _ c
+  SingularHomology.homologyDesc_cycleClass (SingularChains.singularComplex X) 2 _ _ c
 
 theorem SecondHurewicz.SimplyConnected.comp_secondHomologyDesc_eq_id {X : Type}
     [TopologicalSpace X] {M : Type*} [AddCommGroup M] [Module ℤ M]
@@ -3469,7 +3469,7 @@ theorem SecondHurewicz.SimplyConnected.comp_secondHomologyDesc_eq_id {X : Type}
         g (F c.1) =
           SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 2 c) :
     g.comp (secondHomologyDesc F hF) = LinearMap.id := by
-  apply PeriodTorusHigherHomology.homologyLinearMap_ext (SingularChains.singularComplex X) 2
+  apply SingularHomology.homologyLinearMap_ext (SingularChains.singularComplex X) 2
   intro c
   simpa only [LinearMap.comp_apply, secondHomologyDesc_cycleClass, LinearMap.id_apply] using hg c
 
@@ -4457,11 +4457,13 @@ theorem SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap {X : Typ
   ext a
   exact hurewiczInverse_hurewiczMap x a
 
-def SecondHurewicz.SimplyConnected.hurewiczLinearEquiv {X : Type} [TopologicalSpace X]
+def Hurewicz.degreeTwoLinearEquiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
     Additive (π_ 2 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 2 :=
-  LinearEquiv.ofLinearMap (SecondHurewicz.hurewiczMap x) (hurewiczInverse x)
-    (hurewiczMap_comp_hurewiczInverse x) (hurewiczInverse_comp_hurewiczMap x)
+  LinearEquiv.ofLinearMap (SecondHurewicz.hurewiczMap x)
+    (SecondHurewicz.SimplyConnected.hurewiczInverse x)
+    (SecondHurewicz.SimplyConnected.hurewiczMap_comp_hurewiczInverse x)
+    (SecondHurewicz.SimplyConnected.hurewiczInverse_comp_hurewiczMap x)
 
 def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) :
@@ -4474,7 +4476,7 @@ def SecondHurewicz.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace
     c := congrArg Multiplicative.ofAdd (hurewiczMap_hurewiczInverse x (Multiplicative.toAdd c))
 
 
-def ThirdHurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     (H : C((unitInterval) × A, X)) :
     ContinuousMap.Homotopy (SecondHurewicz.SimplyConnected.timeSlice H 0)
       (SecondHurewicz.SimplyConnected.timeSlice H 1)
@@ -4483,7 +4485,7 @@ def ThirdHurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [Topologica
   map_zero_left _ := rfl
   map_one_left _ := rfl
 
-theorem ThirdHurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
+theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁)
     (G : f₁.Homotopy f₂) (f : C(B, A)) :
     (F.trans G).toContinuousMap.comp ((ContinuousMap.id (unitInterval)).prodMap f) =
@@ -4493,7 +4495,7 @@ theorem ThirdHurewicz.homotopyTrans_compContinuousMap {A B X : Type} [Topologica
   simp only [ContinuousMap.Homotopy.trans_apply]
   split_ifs <;> rfl
 
-theorem ThirdHurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (x : X)
     (hF : F.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x)
     (hG : G.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x) :
@@ -4505,7 +4507,7 @@ theorem ThirdHurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [Top
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
-theorem ThirdHurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ g₀ g₁ g₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (F' : g₀.Homotopy g₁)
     (G' : g₁.Homotopy g₂) (hF : F.toContinuousMap = F'.toContinuousMap)
     (hG : G.toContinuousMap = G'.toContinuousMap) :
@@ -4517,13 +4519,13 @@ theorem ThirdHurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [Top
   · exact ContinuousMap.congr_fun hF _
   · exact ContinuousMap.congr_fun hG _
 
-def ThirdHurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
+def Hurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (h₀ : ∀ smp s, H smp (0, s) = smp s) (smp : SingularChains.SingularSimplex X n) :
     smp.Homotopy (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1) :=
   (cylinderHomotopy (H smp)).cast (by ext s; exact h₀ smp s) rfl
 
-def ThirdHurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
+def Hurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) : C((unitInterval) × SingularChains.Simplex n, X) :=
@@ -4532,7 +4534,7 @@ def ThirdHurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : 
         (SecondHurewicz.SimplyConnected.timeSlice (H smp) 1))).toContinuousMap
 
 @[simp]
-theorem ThirdHurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
@@ -4540,7 +4542,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_zero {X : Type} [TopologicalSpace
   ContinuousMap.Homotopy.apply_zero _ s
 
 @[simp]
-theorem ThirdHurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
@@ -4549,7 +4551,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace 
   ContinuousMap.Homotopy.apply_one _ s
 
 @[simp]
-theorem ThirdHurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
+theorem Hurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalSpace X]
     {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
@@ -4560,7 +4562,7 @@ theorem ThirdHurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [Topolog
   ext s
   exact composeSimplexHomotopies_one H G hH₀ hG₀ smp s
 
-theorem ThirdHurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' G' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -4588,7 +4590,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace
     rw [hG (SecondHurewicz.SimplyConnected.timeSlice (H' smp) 1) i,
       SecondHurewicz.SimplyConnected.timeSlice_face hH smp i 1]
 
-theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s) (x : X)
     (hH :
@@ -4617,7 +4619,7 @@ theorem ThirdHurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpac
     exact hG
 
 
-theorem ThirdHurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpace X] {n : ℕ}
     (f : C(SingularChains.Simplex n, X))
     (g : C((unitInterval) × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
     (h₀ : ∀ s, g (0, s) = f s.val) (x : X) (hf : ∀ s, f s = x) (hg : ∀ u, g u = x)
@@ -4637,7 +4639,7 @@ theorem ThirdHurewicz.gluedBoundaryMap_constant_value {X : Type} [TopologicalSpa
       (congrArg (SecondHurewicz.SimplyConnected.gluedBoundaryMap f g h₀) hu).trans
         ((SecondHurewicz.SimplyConnected.gluedBoundaryMap_sideInclusion f g h₀ _).trans (hg _))
 
-theorem ThirdHurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -4659,7 +4661,7 @@ theorem ThirdHurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [Topological
   rw [hc]
   rfl
 
-theorem ThirdHurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
       SingularChains.SingularSimplex X (n + 1) →

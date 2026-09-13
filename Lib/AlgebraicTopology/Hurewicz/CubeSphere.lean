@@ -5,8 +5,9 @@ Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.Degree
 import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.OnePointCollapse
-
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -39,10 +40,10 @@ theorem OnePointCollapse.collapseLift_apply {K X : Type*} [TopologicalSpace K] [
     collapseLift F hF hne f x hf (collapse F a) = f a :=
   ContinuousMap.congr_fun (collapseLift_comp F hF hne f x hf) a
 
-abbrev SixSphereCube.OpenUnitInterval :=
+abbrev Hurewicz.CubeSphere.OpenUnitInterval :=
   Set.Ioo (0 : ℝ) 1
 
-def SixSphereCube.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o Set.Ioo (-1 : ℝ) 1
+def Hurewicz.CubeSphere.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o Set.Ioo (-1 : ℝ) 1
     where
   toFun t := ⟨2 * (t : ℝ) - 1, by constructor <;> linarith [t.property.1, t.property.2]⟩
   invFun t := ⟨((t : ℝ) + 1) / 2, by constructor <;> linarith [t.property.1, t.property.2]⟩
@@ -61,32 +62,32 @@ def SixSphereCube.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o Set.Ioo
     change 2 * (t : ℝ) - 1 ≤ 2 * (s : ℝ) - 1 ↔ (t : ℝ) ≤ (s : ℝ)
     constructor <;> intro h <;> linarith
 
-def SixSphereCube.openUnitIntervalHomeomorph : OpenUnitInterval ≃ₜ ℝ :=
+def Hurewicz.CubeSphere.openUnitIntervalHomeomorph : OpenUnitInterval ≃ₜ ℝ :=
   openUnitIntervalAffineOrderIso.toHomeomorph.trans (orderIsoIooNegOneOne ℝ).toHomeomorph.symm
 
-abbrev SixSphereCube.CubeInteriorN (n : ℕ) :=
+abbrev Hurewicz.CubeSphere.CubeInteriorN (n : ℕ) :=
   { u : Fin n → (unitInterval) // u ∉ Cube.boundary (Fin n) }
 
-theorem SixSphereCube.not_mem_cubeBoundary_iff {n : ℕ} (u : Fin n → (unitInterval)) :
+theorem Hurewicz.CubeSphere.not_mem_cubeBoundary_iff {n : ℕ} (u : Fin n → (unitInterval)) :
     u ∉ Cube.boundary (Fin n) ↔ ∀ i, 0 < (u i : ℝ) ∧ (u i : ℝ) < 1 := by
   simp only [Cube.boundary, Set.mem_ofPred_eq, not_exists, not_or, unitInterval.coe_pos,
     unitInterval.coe_lt_one, unitInterval.pos_iff_ne_zero, unitInterval.lt_one_iff_ne_one]
 
-theorem SixSphereCube.cubeBoundary_eq_iUnion (n : ℕ) :
+theorem Hurewicz.CubeSphere.cubeBoundary_eq_iUnion (n : ℕ) :
     Cube.boundary (Fin n) =
       ⋃ i : Fin n,
         {u : Fin n → (unitInterval) | u i = 0} ∪ {u : Fin n → (unitInterval) | u i = 1} := by
   ext u
   simp only [Cube.boundary, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_union]
 
-theorem SixSphereCube.isClosed_cubeBoundaryN (n : ℕ) : IsClosed (Cube.boundary (Fin n)) := by
+theorem Hurewicz.CubeSphere.isClosed_cubeBoundaryN (n : ℕ) : IsClosed (Cube.boundary (Fin n)) := by
   rw [cubeBoundary_eq_iUnion]
   exact
     isClosed_iUnion_of_finite fun i =>
       (isClosed_eq (continuous_apply i) continuous_const).union
         (isClosed_eq (continuous_apply i) continuous_const)
 
-def SixSphereCube.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃ₜ (Fin n → OpenUnitInterval)
+def Hurewicz.CubeSphere.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃ₜ (Fin n → OpenUnitInterval)
     where
   toFun u i := ⟨(u.val i : ℝ), (not_mem_cubeBoundary_iff u.val).mp u.property i⟩
   invFun
@@ -113,7 +114,7 @@ def SixSphereCube.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃ₜ (Fi
     have hi : Continuous (fun v : Fin n → OpenUnitInterval => v i) := continuous_apply i
     exact (continuous_subtype_val.comp hi).subtype_mk _
 
-def SixSphereCube.cubeInteriorEuclideanHomeomorph (n : ℕ) :
+def Hurewicz.CubeSphere.cubeInteriorEuclideanHomeomorph (n : ℕ) :
     CubeInteriorN n ≃ₜ EuclideanSpace ℝ (Fin n) :=
   (cubeInteriorCoordinates n).trans
     ((Homeomorph.piCongrRight fun _ : Fin n => openUnitIntervalHomeomorph).trans
@@ -123,16 +124,16 @@ abbrev Degree.SphereCube.Sphere (n : ℕ) :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
 
 def Degree.SphereCube.compactification (n : ℕ) :
-    OnePoint (SixSphereCube.CubeInteriorN n) ≃ₜ Sphere n :=
-  (SixSphereCube.cubeInteriorEuclideanHomeomorph n).onePointCongr.trans
+    OnePoint (Hurewicz.CubeSphere.CubeInteriorN n) ≃ₜ Sphere n :=
+  (Hurewicz.CubeSphere.cubeInteriorEuclideanHomeomorph n).onePointCongr.trans
     (onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin n)) (ι := Fin (n + 1)) (by simp))
 
 def Degree.SphereCube.point (n : ℕ) : Sphere n :=
   compactification n (OnePoint.infty)
 
 def Degree.SphereCube.quotient (n : ℕ) : C(Fin n → (unitInterval), Sphere n) :=
-  (compactification n : C(OnePoint (SixSphereCube.CubeInteriorN n), Sphere n)).comp
-    (OnePointCollapse.collapseMap (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n))
+  (compactification n : C(OnePoint (Hurewicz.CubeSphere.CubeInteriorN n), Sphere n)).comp
+    (OnePointCollapse.collapseMap (Cube.boundary (Fin n)) (Hurewicz.CubeSphere.isClosed_cubeBoundaryN n))
 
 theorem Degree.SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterval))
     (hz : z ∈ Cube.boundary (Fin n)) : quotient n z = point n := by
@@ -180,7 +181,7 @@ def Degree.SphereCube.basedCube {n : ℕ} {X : Type*} [TopologicalSpace X] (u : 
 theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type*}
     [TopologicalSpace X] (hn : 0 < n) (u : C(Sphere n, X)) [Subsingleton (π_ n X (u (point n)))] :
     u.HomotopicRel (ContinuousMap.const (Sphere n) (u (point n))) {point n} := by
-  let H := HigherHurewicz.nativeCubeNullHomotopy (basedCube u)
+  let H := Hurewicz.nativeCubeNullHomotopy (basedCube u)
   have hfib : ∀ a b, cylinder n a = cylinder n b → H a = H b := by
     rintro ⟨t, z⟩ ⟨s, w⟩ h
     have ht : t = s := congrArg Prod.fst h
@@ -225,9 +226,9 @@ theorem Degree.SphereCube.quotientLoop_val (n : ℕ) : (quotientLoop n).val = qu
 is the identity on the cube class. -/
 def Degree.SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin n) X x) : C(Sphere n, X) :=
-  (OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n)
+  (OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (Hurewicz.CubeSphere.isClosed_cubeBoundaryN n)
         ⟨0, zero_boundary hn⟩ p.val x (fun u hu => p.property u hu)).comp
-    ((compactification n).symm : C(Sphere n, OnePoint (SixSphereCube.CubeInteriorN n)))
+    ((compactification n).symm : C(Sphere n, OnePoint (Hurewicz.CubeSphere.CubeInteriorN n)))
 
 /-- The factor map on the quotient image of a cube point is the loop's value. -/
 @[simp]
@@ -235,13 +236,13 @@ theorem Degree.SphereCube.factorMap_quotient {n : ℕ} (hn : 0 < n) {X : Type*} 
     {x : X} (p : GenLoop (Fin n) X x) (u : Fin n → (unitInterval)) :
     factorMap hn p (quotient n u) = p u := by
   change
-    OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (SixSphereCube.isClosed_cubeBoundaryN n)
+    OnePointCollapse.collapseLift (Cube.boundary (Fin n)) (Hurewicz.CubeSphere.isClosed_cubeBoundaryN n)
         ⟨0, zero_boundary hn⟩ p.val x (fun v hv => p.property v hv)
         ((compactification n).symm (compactification n (OnePointCollapse.collapse (Cube.boundary (Fin n)) u))) =
       p u
   rw [(compactification n).symm_apply_apply]
   exact OnePointCollapse.collapseLift_apply (Cube.boundary (Fin n))
-    (SixSphereCube.isClosed_cubeBoundaryN n) ⟨0, zero_boundary hn⟩ p.val x
+    (Hurewicz.CubeSphere.isClosed_cubeBoundaryN n) ⟨0, zero_boundary hn⟩ p.val x
     (fun v hv => p.property v hv) u
 
 /-- The factor map composed with the quotient is the loop. -/
@@ -265,23 +266,23 @@ recovers the loop's cube chain. -/
 theorem Degree.SphereCube.factor_cubeChain {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) :
     SingularChains.inducedChain (factorMap hn p) n
-        (HigherHurewicz.cubeChain (quotientLoop n)) =
-      HigherHurewicz.cubeChain p := by
-  simp only [HigherHurewicz.cubeChain]
+        (Hurewicz.cubeChain (quotientLoop n)) =
+      Hurewicz.cubeChain p := by
+  simp only [Hurewicz.cubeChain]
   rw [quotientLoop_val, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp,
     factorMap_comp_quotient]
 
 /-- The factor map on the cube cycle: the sphere's cube cycle maps to the loop's cube cycle. -/
 theorem Degree.SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x)
-    (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
+    (hσ : Hurewicz.cubeChain (quotientLoop n) ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)
-    (hp : HigherHurewicz.cubeChain p ∈
+    (hp : Hurewicz.cubeChain p ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularMayerVietoris.ModuleHomology.mapCycles
         (SingularChains.singularChainMap (factorMap hn p)) n
-        ⟨HigherHurewicz.cubeChain (quotientLoop n), hσ⟩ =
-      ⟨HigherHurewicz.cubeChain p, hp⟩ := by
+        ⟨Hurewicz.cubeChain (quotientLoop n), hσ⟩ =
+      ⟨Hurewicz.cubeChain p, hp⟩ := by
   apply Subtype.ext
   rw [SingularMayerVietoris.ModuleHomology.mapCycles_val]
   exact factor_cubeChain hn p
@@ -290,18 +291,523 @@ theorem Degree.SphereCube.factor_cubeCycle {n : ℕ} (hn : 0 < n) {X : Type} [To
 cube class. -/
 theorem Degree.SphereCube.factor_cubeHomologyClass {n : ℕ} (hn : 0 < n) {X : Type}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x)
-    (hσ : HigherHurewicz.cubeChain (quotientLoop n) ∈
+    (hσ : Hurewicz.cubeChain (quotientLoop n) ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex (Sphere n)) n)
-    (hp : HigherHurewicz.cubeChain p ∈
+    (hp : Hurewicz.cubeChain p ∈
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularMayerVietoris.singularHomologyMap (factorMap hn p) n
         (SingularMayerVietoris.ModuleHomology.cycleClass
           (SingularChains.singularComplex (Sphere n)) n
-          ⟨HigherHurewicz.cubeChain (quotientLoop n), hσ⟩) =
+          ⟨Hurewicz.cubeChain (quotientLoop n), hσ⟩) =
       SingularMayerVietoris.ModuleHomology.cycleClass
-        (SingularChains.singularComplex X) n ⟨HigherHurewicz.cubeChain p, hp⟩ := by
+        (SingularChains.singularComplex X) n ⟨Hurewicz.cubeChain p, hp⟩ := by
   rw [SingularMayerVietoris.singularHomologyMap]
   rw [SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass]
   exact congrArg _ (factor_cubeCycle hn p hσ hp)
+
+/-- The factor map on the cube homology class, using the general cube cycle. -/
+theorem Degree.SphereCube.factor_cubeHomologyClass_cycle {m : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin (m + 2)) X x) :
+    SingularMayerVietoris.singularHomologyMap (factorMap (Nat.succ_pos (m + 1)) p) (m + 2)
+        (Hurewicz.cubeHomologyClass (quotientLoop (m + 2))) =
+      Hurewicz.cubeHomologyClass p := by
+  unfold Hurewicz.cubeHomologyClass
+  rw [SingularMayerVietoris.singularHomologyMap,
+    SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass]
+  apply congrArg
+  apply Subtype.ext
+  rw [SingularMayerVietoris.ModuleHomology.mapCycles_val, Hurewicz.cubeCycle_val,
+    Hurewicz.cubeCycle_val]
+  exact factor_cubeChain (Nat.succ_pos (m + 1)) p
+
+/-- A homotopy of based cubes relative to the boundary descends to a homotopy of
+factor maps on the sphere. -/
+def Degree.SphereCube.factorMap_homotopy {n : ℕ} (hn : 0 < n) {X : Type*}
+    [TopologicalSpace X] {x : X} {p q : GenLoop (Fin n) X x}
+    (H : p.val.HomotopyRel q.val (Cube.boundary (Fin n))) :
+    (factorMap hn p).Homotopy (factorMap hn q) := by
+  have hfib : ∀ a b, cylinder n a = cylinder n b → H a = H b := by
+    rintro ⟨t, z⟩ ⟨s, w⟩ h
+    have ht : t = s := congrArg Prod.fst h
+    subst s
+    have hzw : quotient n z = quotient n w := congrArg Prod.snd h
+    rcases (quotient_eq_iff n z w).mp hzw with rfl | ⟨hz, hw⟩
+    · rfl
+    · exact
+        ((H.eq_fst t hz).trans (p.property z hz)).trans
+          ((H.eq_fst t hw).trans (p.property w hw)).symm
+  let G := (cylinder_isQuotientMap hn).lift H.toHomotopy.toContinuousMap hfib
+  have hG (t : (unitInterval)) (z : Fin n → (unitInterval)) :
+      G (t, quotient n z) = H (t, z) :=
+    ContinuousMap.congr_fun
+      ((cylinder_isQuotientMap hn).lift_comp H.toHomotopy.toContinuousMap hfib) (t, z)
+  refine
+    { toContinuousMap := G
+      map_zero_left := ?_
+      map_one_left := ?_ }
+  · intro z
+    obtain ⟨w, rfl⟩ := quotient_surjective hn z
+    exact (hG 0 w).trans ((H.apply_zero w).trans (factorMap_quotient hn p w).symm)
+  · intro z
+    obtain ⟨w, rfl⟩ := quotient_surjective hn z
+    exact (hG 1 w).trans ((H.apply_one w).trans (factorMap_quotient hn q w).symm)
+
+/-- Homotopic based cubes have the same cube homology class. -/
+theorem Hurewicz.cubeHomologyClass_homotopic {m : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} {p q : GenLoop (Fin (m + 2)) X x} (h : GenLoop.Homotopic p q) :
+    Hurewicz.cubeHomologyClass p = Hurewicz.cubeHomologyClass q := by
+  obtain ⟨H⟩ := h
+  have Hf : (Degree.SphereCube.factorMap (Nat.succ_pos (m + 1)) p).Homotopic
+      (Degree.SphereCube.factorMap (Nat.succ_pos (m + 1)) q) :=
+    ⟨Degree.SphereCube.factorMap_homotopy (Nat.succ_pos (m + 1)) H⟩
+  rw [← Degree.SphereCube.factor_cubeHomologyClass_cycle p,
+    ← Degree.SphereCube.factor_cubeHomologyClass_cycle q]
+  exact congrArg (fun F => F (Hurewicz.cubeHomologyClass
+      (Degree.SphereCube.quotientLoop (m + 2))))
+    (SingularHomology.homotopic_homologyMap Hf (m + 2))
+
+/-- In degree `2` the cube homology class is the square homology class. -/
+theorem Hurewicz.cubeHomologyClass_eq_squareHomologyClass {X : Type}
+    [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) :
+    Hurewicz.cubeHomologyClass (m := 0) p = SecondHurewicz.squareHomologyClass p := by
+  unfold Hurewicz.cubeHomologyClass SecondHurewicz.squareHomologyClass
+  apply congrArg
+  apply Subtype.ext
+  change Hurewicz.cubeChain p = SecondHurewicz.squareChain p
+  exact Hurewicz.cubeChain_eq_squareChain p
+
+/-- Concatenation along the first coordinate adds cube classes in degree `2`. -/
+theorem Hurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpace X]
+    {x : X} (p q : GenLoop (Fin 2) X x) :
+    Hurewicz.cubeHomologyClass (m := 0) (GenLoop.transAt (0 : Fin 2) p q) =
+      Hurewicz.cubeHomologyClass (m := 0) p +
+        Hurewicz.cubeHomologyClass (m := 0) q := by
+  simpa only [Hurewicz.cubeHomologyClass_eq_squareHomologyClass] using
+    SecondHurewicz.squareHomologyClass_transAt p q
+
+
+/-- Concatenation along any coordinate adds cube classes in degree `2`. -/
+theorem Hurewicz.cubeHomologyClass_transAt_two_coord {X : Type} [TopologicalSpace X]
+    {x : X} (i : Fin 2) (p q : GenLoop (Fin 2) X x) :
+    Hurewicz.cubeHomologyClass (m := 0) (GenLoop.transAt i p q) =
+      Hurewicz.cubeHomologyClass (m := 0) p +
+        Hurewicz.cubeHomologyClass (m := 0) q := by
+  have h : GenLoop.Homotopic (GenLoop.transAt i p q)
+      (GenLoop.transAt (0 : Fin 2) p q) :=
+    Quotient.eq.mp (HomotopyGroup.transAt_indep (0 : Fin 2) p q)
+  rw [Hurewicz.cubeHomologyClass_homotopic h]
+  exact Hurewicz.cubeHomologyClass_transAt_two p q
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+/-- The extra term of the `transAt 0` cube-chain difference is a boundary at every
+degree. -/
+theorem Hurewicz.cubeChain_transAt_zero_extra_boundary {n : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (n + 2)) X x) :
+    ∃ W : SingularChains.Chains X (n + 3),
+      ((SingularChains.singularComplex X).d (n + 3) (n + 2)).hom W =
+        SingularChains.inducedChain
+          ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+            (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
+          (SingularHomology.crossProductTriangle (unitInterval)
+            (Fin (n + 1) → (unitInterval)) n
+            (SingularChains.concatChain Hurewicz.intervalPathLeft
+              Hurewicz.intervalPathRight)
+            (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+              (Hurewicz.fundamentalCubeChain (n + 1)))) := by
+  obtain ⟨k, hk⟩ := Hurewicz.cubeChain_transAt_zero_extra_eq_smul p q
+  by_cases hEven : Even (n + 2)
+  · have hdiff := Hurewicz.cubeChain_transAt_zero_diff_boundary p q
+    have hp := Hurewicz.cubeChain_boundary p
+    have hq := Hurewicz.cubeChain_boundary q
+    have ht := Hurewicz.cubeChain_boundary (GenLoop.transAt (0 : Fin (n + 2)) p q)
+    have hdd :
+        ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
+            (((SingularChains.singularComplex X).d (n + 3) (n + 2)).hom
+              (SingularChains.inducedChain
+                ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+                  (Hurewicz.cubeCoordinates (n + 1))) (n + 3)
+                (SingularHomology.crossProductTriangle (unitInterval)
+                  (Fin (n + 1) → (unitInterval)) (n + 1)
+                  (SingularChains.concatChain Hurewicz.intervalPathLeft
+                    Hurewicz.intervalPathRight)
+                  (Hurewicz.fundamentalCubeChain (n + 1))))) = 0 :=
+      congrArg (fun f : SingularChains.Chains X (n + 3) ⟶ SingularChains.Chains X (n + 1) =>
+          f.hom _) ((SingularChains.singularComplex X).d_comp_d (n + 3) (n + 2) (n + 1))
+    have hextra0 :
+        ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
+            (SingularChains.inducedChain
+              ((GenLoop.transAt (0 : Fin (n + 2)) p q).val.comp
+                (Hurewicz.cubeCoordinates (n + 1))) (n + 2)
+              (SingularHomology.crossProductTriangle (unitInterval)
+                (Fin (n + 1) → (unitInterval)) n
+                (SingularChains.concatChain Hurewicz.intervalPathLeft
+                  Hurewicz.intervalPathRight)
+                (((SingularChains.singularComplex (Fin (n + 1) → (unitInterval))).d (n + 1) n).hom
+                  (Hurewicz.fundamentalCubeChain (n + 1))))) = 0 := by
+      have h := congrArg ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom hdiff
+      simp only [map_sub, map_add, hp, hq, ht, hdd, add_zero, sub_zero, zero_sub] at h
+      exact neg_eq_zero.mp h.symm
+    have hk0 : k = 0 := by
+      have hbound := congrArg ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom hk
+      rw [hextra0, map_zsmul, Hurewicz.boundary_const_simplex, Fin.sum_neg_one_pow] at hbound
+      have hodd : ¬Even (n + 3) := Nat.not_even_iff_odd.mpr hEven.add_one
+      simp only [if_neg hodd, one_smul] at hbound
+      have haug :=
+        congrArg (SecondHurewicz.SimplyConnected.chainAugmentation X (n + 1)) hbound
+      simpa [map_zero, map_zsmul, SecondHurewicz.SimplyConnected.chainAugmentation_simplex]
+        using haug.symm
+    refine ⟨0, ?_⟩
+    rw [hk, hk0, zero_smul, map_zero]
+  · refine ⟨k • SingularChains.simplexChain X (n + 3)
+        (ContinuousMap.const (SingularChains.Simplex (n + 3)) x), ?_⟩
+    rw [hk, map_zsmul, Hurewicz.boundary_const_simplex, Fin.sum_neg_one_pow]
+    have hodd : ¬Even (n + 4) := by
+      simpa [show n + 4 = n + 2 + 2 from rfl, Nat.even_add] using hEven
+    simp [if_neg hodd]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+/-- Concatenation along coordinate `0` adds cube homology classes at every degree `n ≥ 2`. -/
+theorem Hurewicz.cubeHomologyClass_transAt_zero {m : ℕ} {X : Type}
+    [TopologicalSpace X] {x : X} (p q : GenLoop (Fin (m + 2)) X x) :
+    Hurewicz.cubeHomologyClass (GenLoop.transAt (0 : Fin (m + 2)) p q) =
+      Hurewicz.cubeHomologyClass p + Hurewicz.cubeHomologyClass q := by
+  obtain ⟨Wextra, hWextra⟩ := Hurewicz.cubeChain_transAt_zero_extra_boundary p q
+  have hdiff := Hurewicz.cubeChain_transAt_zero_diff_boundary p q
+  unfold Hurewicz.cubeHomologyClass
+  rw [← map_add]
+  apply
+    (SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
+        (SingularChains.singularComplex X) (m + 2)
+        (Hurewicz.cubeCycle (GenLoop.transAt (0 : Fin (m + 2)) p q))
+        (Hurewicz.cubeCycle p + Hurewicz.cubeCycle q)).mpr
+  refine ⟨Wextra -
+      SingularChains.inducedChain
+        ((GenLoop.transAt (0 : Fin (m + 2)) p q).val.comp
+          (Hurewicz.cubeCoordinates (m + 1))) (m + 3)
+        (SingularHomology.crossProductTriangle (unitInterval)
+          (Fin (m + 1) → (unitInterval)) (m + 1)
+          (SingularChains.concatChain Hurewicz.intervalPathLeft
+            Hurewicz.intervalPathRight)
+          (Hurewicz.fundamentalCubeChain (m + 1))), ?_⟩
+  simp only [Submodule.coe_add, Submodule.coe_sub, Hurewicz.cubeCycle_val, map_sub, hWextra]
+  rw [show Hurewicz.cubeChain (GenLoop.transAt (0 : Fin (m + 2)) p q) -
+        (Hurewicz.cubeChain p + Hurewicz.cubeChain q) =
+      - (Hurewicz.cubeChain p + Hurewicz.cubeChain q -
+          Hurewicz.cubeChain (GenLoop.transAt (0 : Fin (m + 2)) p q)) by abel,
+    hdiff]
+  abel
+
+/-- Concatenation along any coordinate adds cube homology classes at every degree `n ≥ 2`. -/
+theorem Hurewicz.cubeHomologyClass_transAt {m : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (i : Fin (m + 2)) (p q : GenLoop (Fin (m + 2)) X x) :
+    Hurewicz.cubeHomologyClass (GenLoop.transAt i p q) =
+      Hurewicz.cubeHomologyClass p + Hurewicz.cubeHomologyClass q := by
+  have h : GenLoop.Homotopic (GenLoop.transAt i p q)
+      (GenLoop.transAt (0 : Fin (m + 2)) p q) :=
+    Quotient.eq.mp (HomotopyGroup.transAt_indep (0 : Fin (m + 2)) p q)
+  rw [Hurewicz.cubeHomologyClass_homotopic h]
+  exact Hurewicz.cubeHomologyClass_transAt_zero p q
+
+
+/-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
+def Hurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
+  Quotient.lift Hurewicz.cubeHomologyClass fun _ _ h =>
+    Hurewicz.cubeHomologyClass_homotopic h
+
+/-- The Hurewicz function as a group homomorphism `π_n →+ (H_n, +)` written multiplicatively. -/
+def Hurewicz.hurewiczPi {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    π_ (m + 2) X x →* Multiplicative (SingularMayerVietoris.SingularHomology X (m + 2))
+    where
+  toFun a := Multiplicative.ofAdd (Hurewicz.hurewiczFunction x a)
+  map_one' := congrArg Multiplicative.ofAdd (Hurewicz.cubeHomologyClass_const (x := x))
+  map_mul' a b := by
+    refine Quotient.inductionOn₂ a b fun p q => ?_
+    refine
+      (congrArg (fun c : π_ (m + 2) X x =>
+            Multiplicative.ofAdd (Hurewicz.hurewiczFunction x c))
+          (HomotopyGroup.mul_spec (i := (0 : Fin (m + 2))) (p := p) (q := q))).trans
+        ?_
+    change
+      Multiplicative.ofAdd
+          (Hurewicz.cubeHomologyClass (GenLoop.transAt (0 : Fin (m + 2)) q p)) =
+        Multiplicative.ofAdd
+          (Hurewicz.cubeHomologyClass p + Hurewicz.cubeHomologyClass q)
+    apply congrArg Multiplicative.ofAdd
+    rw [Hurewicz.cubeHomologyClass_transAt_zero q p]
+    exact add_comm _ _
+
+/-- The Hurewicz map in degree `n ≥ 2`, as a `ℤ`-linear map on the additive homotopy group. -/
+def Hurewicz.hurewiczMap {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
+    Additive (π_ (m + 2) X x) →ₗ[ℤ] SingularMayerVietoris.SingularHomology X (m + 2)
+    where
+  toFun := (Hurewicz.hurewiczPi (m := m) x).toAdditiveLeft
+  map_add' := (Hurewicz.hurewiczPi (m := m) x).toAdditiveLeft.map_add
+  map_smul' n a := by
+    simpa using
+      map_intCast_smul (Hurewicz.hurewiczPi (m := m) x).toAdditiveLeft ℤ ℤ n a
+
+/-- The cube chain of a based simplex loop is the corrected simplex chain (the identity
+permutation cell is the simplex itself; every other Kuhn cell is constant, and the total
+orientation of the constants vanishes). -/
+theorem Hurewicz.cubeChain_basedSimplexLoop {n : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (τ : Hurewicz.SimplexGeometry.BasedSimplex (n + 2) x) :
+    Hurewicz.cubeChain (Hurewicz.SimplexGeometry.basedSimplexLoop τ) =
+      Hurewicz.correctedSimplexChain (n + 2) x τ.val := by
+  rw [Hurewicz.cubeChain_eq_sum_simplices]
+  exact Hurewicz.SimplexGeometry.basedSimplex_simplexChain_sum τ
+
+/-- The Hurewicz map on a representative is the cube homology class. -/
+theorem Hurewicz.hurewiczMap_representative {m : ℕ} {X : Type} [TopologicalSpace X]
+    (x : X) (p : GenLoop (Fin (m + 2)) X x) :
+    Hurewicz.hurewiczMap (m := m) x (Additive.ofMul (⟦p⟧ : π_ (m + 2) X x)) =
+      Hurewicz.cubeHomologyClass p :=
+  rfl
+
+/-- The Hurewicz image of a based simplex class is the class of its corrected simplex cycle. -/
+theorem Hurewicz.hurewicz_basedSimplexClass {n : ℕ} {X : Type} [TopologicalSpace X]
+    {x : X} (τ : Hurewicz.SimplexGeometry.BasedSimplex (n + 2) x) :
+    Hurewicz.hurewiczMap (m := n) x
+        (Hurewicz.SimplexGeometry.basedSimplexClass τ) =
+      SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) (n + 2)
+        (Hurewicz.correctedSimplexCycle (n + 1) x τ.val
+          (Hurewicz.SimplexGeometry.basedSimplex_face (n := n + 1) τ)) := by
+  rw [Hurewicz.SimplexGeometry.basedSimplexClass,
+    Hurewicz.hurewiczMap_representative]
+  unfold Hurewicz.cubeHomologyClass
+  congr 1
+  apply Subtype.ext
+  exact Hurewicz.cubeChain_basedSimplexLoop τ
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+/-- On a cycle, the Hurewicz map of the class operator recovers the cycle class. -/
+theorem Hurewicz.hurewiczMap_classOperator_cycle {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (c : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) (m + 3)) :
+    Hurewicz.hurewiczMap (m := m + 1) x
+        (Hurewicz.classOperator x (m + 3) hpi c.1) =
+      SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X)
+        (m + 3) c := by
+  let S := Hurewicz.normalizationTower x m fun j hj hj' => hpi j hj (by omega)
+  let f := Hurewicz.normalizedSimplex x (m + 3) hpi
+  have hcomp :
+      (Hurewicz.hurewiczMap (m := m + 1) x).comp
+          (Hurewicz.classOperator x (m + 3) hpi) =
+        (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X)
+            (m + 3)).comp
+          (Hurewicz.normalizedCycleAssignment (m + 2) x f) := by
+    apply SingularChains.chainMap_ext X (m + 3)
+    intro smp
+    simp only [LinearMap.comp_apply, Hurewicz.classOperator_simplex,
+      Hurewicz.normalizedCycleAssignment_simplex]
+    exact Hurewicz.hurewicz_basedSimplexClass (f smp)
+  have h := LinearMap.congr_fun hcomp c.1
+  simp only [LinearMap.comp_apply] at h
+  rw [h]
+  exact Hurewicz.normalizedCycleAssignment_class (m + 2) x f S.aug S.nxt S.compat
+    (fun smp => by
+      apply ContinuousMap.ext
+      intro s
+      exact S.nxt_zero smp s)
+    (fun smp => rfl) c
+
+/-- `hurewiczMap ∘ hurewiczInverse = id` at degree `n ≥ 3`. -/
+theorem Hurewicz.hurewiczMap_comp_hurewiczInverse {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    (Hurewicz.hurewiczMap (m := m + 1) x).comp (Hurewicz.hurewiczInverse x hpi) =
+      LinearMap.id :=
+  Hurewicz.comp_singularHomologyDesc_eq_id (m + 3)
+    (Hurewicz.classOperator x (m + 3) hpi)
+    (Hurewicz.classOperator_boundary x hpi)
+    (Hurewicz.hurewiczMap (m := m + 1) x)
+    (Hurewicz.hurewiczMap_classOperator_cycle x hpi)
+
+@[simp]
+theorem Hurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (c : SingularMayerVietoris.SingularHomology X (m + 3)) :
+    Hurewicz.hurewiczMap (m := m + 1) x (Hurewicz.hurewiczInverse x hpi c) = c :=
+  LinearMap.congr_fun (Hurewicz.hurewiczMap_comp_hurewiczInverse x hpi) c
+
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+/-- The class operator on a cube chain is the signed sum of normalized cell classes. -/
+theorem Hurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    Hurewicz.classOperator x (m + 3) hpi (Hurewicz.cubeChain p) =
+      ∑ e : Equiv.Perm (Fin (m + 3)),
+        Hurewicz.CubeTriangulation.cubeOrientation e •
+          Hurewicz.SimplexGeometry.basedSimplexClass
+            (Hurewicz.normalizedSimplex x (m + 3) hpi
+              (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))) := by
+  rw [Hurewicz.cubeChain_eq_sum_simplices]
+  simp only [map_sum, map_zsmul, Hurewicz.classOperator_simplex]
+
+namespace Hurewicz
+
+open SecondHurewicz.SimplyConnected
+
+theorem edgeTower_high_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    (edgeTower x k).high (ContinuousMap.const (SingularChains.Simplex (k + 1)) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 1)) x := by
+  induction k with
+  | zero => exact edgeStraighteningHomotopy_const x
+  | succ k ih =>
+    exact Hurewicz.extendCoherentSimplexHomotopy_const _ _ _ (edgeTower x k).high_zero x ih
+
+theorem edgeTower_low_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    (edgeTower x k).low (ContinuousMap.const (SingularChains.Simplex k) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex k) x := by
+  cases k with
+  | zero => rfl
+  | succ k => exact edgeTower_high_const x k
+
+theorem vertexEdgeHomotopy_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) :
+    vertexEdgeHomotopy x k (ContinuousMap.const (SingularChains.Simplex k) x) =
+      ContinuousMap.const ((unitInterval) × SingularChains.Simplex k) x :=
+  Hurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexStraighteningHomotopy_const x k)
+    (edgeTower_low_const x k)
+
+theorem normalizationTower_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    (k : ℕ) (hpi : ∀ j, 2 ≤ j → j ≤ k + 2 → Subsingleton (π_ j X x)) :
+    (normalizationTower x k hpi).aug (ContinuousMap.const (SingularChains.Simplex (k + 2)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 2)) x ∧
+      (normalizationTower x k hpi).nxt (ContinuousMap.const (SingularChains.Simplex (k + 3)) x) =
+        ContinuousMap.const ((unitInterval) × SingularChains.Simplex (k + 3)) x := by
+  induction k with
+  | zero =>
+    letI := hpi 2 (by omega) (by omega)
+    constructor
+    · exact Hurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexEdgeHomotopy_const x 2)
+        (simplexStraighteningHomotopy_const 2 x)
+    · exact Hurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexEdgeHomotopy_const x 3)
+        (Hurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x
+          (simplexStraighteningHomotopy_const 2 x))
+  | succ k ih =>
+    letI := hpi (k + 3) (by omega) (by omega)
+    have hc := ih fun j hj hjk => hpi j hj (by omega)
+    constructor
+    · exact Hurewicz.composeSimplexHomotopies_const _ _ _ _ x hc.2
+        (simplexStraighteningHomotopy_const (k + 3) x)
+    · exact Hurewicz.composeSimplexHomotopies_const _ _ _ _ x
+        (Hurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x hc.2)
+        (Hurewicz.extendCoherentSimplexHomotopy_const _ _ _ _ x
+          (simplexStraighteningHomotopy_const (k + 3) x))
+
+variable {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+
+def normalizedCube (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) : GenLoop (Fin (m + 3)) X x :=
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  CubeGluing.coherentCubeEndpoint S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 p
+
+theorem normalizedCube_cell (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
+    (normalizedCube x hpi p).val.comp (CubeTriangulation.cubeSimplex e) =
+      (normalizedSimplex x (m + 3) hpi (p.val.comp (CubeTriangulation.cubeSimplex e))).val := by
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  exact CubeGluing.coherentCubeEndpoint_cell S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 p e
+
+def normalizationCubeHomotopy (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    p.val.HomotopyRel (normalizedCube x hpi p).val (Cube.boundary (Fin (m + 3))) :=
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  CubeGluing.coherentCubeHomotopy S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 S.nxt_zero p
+
+theorem normalizedCube_internalBased (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    NativeSubdivision.NativeCubeInternalBased (normalizedCube x hpi p) := by
+  let S := normalizationTower x m (fun j hj hj' => hpi j hj (by omega))
+  exact coherentCubeEndpoint_internalBased S.aug S.nxt S.compat
+    (normalizationTower_const x m _).1 S.aug_one p
+
+theorem normalizedCube_simplex (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
+    NativeSubdivision.nativeBasedCubeSimplex (normalizedCube x hpi p)
+      (normalizedCube_internalBased x hpi p) e =
+      normalizedSimplex x (m + 3) hpi (p.val.comp (CubeTriangulation.cubeSimplex e)) := by
+  apply Subtype.ext
+  exact normalizedCube_cell x hpi p e
+
+theorem classOperator_cubeChain (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    classOperator x (m + 3) hpi (cubeChain p) = Additive.ofMul (⟦p⟧ : π_ (m + 3) X x) := by
+  have h := (NativeSubdivision.nativeClass_homotopic
+    (p := p) (q := normalizedCube x hpi p) ⟨normalizationCubeHomotopy x hpi p⟩).trans
+    (NativeSubdivision.nativeCubeSubdivision_class (normalizedCube x hpi p)
+      (normalizedCube_internalBased x hpi p))
+  simp only [normalizedCube_simplex] at h
+  exact (classOperator_cubeChain_sum x hpi p).trans h.symm
+
+@[simp]
+theorem hurewiczInverse_hurewiczMap_mk (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (p : GenLoop (Fin (m + 3)) X x) :
+    hurewiczInverse x hpi (hurewiczMap (m := m + 1) x (Additive.ofMul (⟦p⟧ : π_ (m + 3) X x))) =
+      Additive.ofMul (⟦p⟧ : π_ (m + 3) X x) := by
+  rw [hurewiczMap_representative]
+  change hurewiczInverse x hpi (SingularMayerVietoris.ModuleHomology.cycleClass
+    (SingularChains.singularComplex X) (m + 3) (cubeCycle p)) = _
+  rw [hurewiczInverse_cycleClass]
+  exact classOperator_cubeChain x hpi p
+
+@[simp]
+theorem hurewiczInverse_hurewiczMap (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+    (a : Additive (π_ (m + 3) X x)) :
+    hurewiczInverse x hpi (hurewiczMap (m := m + 1) x a) = a := by
+  change hurewiczInverse x hpi (hurewiczMap (m := m + 1) x
+    (Additive.ofMul (Additive.toMul a))) = Additive.ofMul (Additive.toMul a)
+  refine Quotient.inductionOn (Additive.toMul a) ?_
+  intro p
+  exact hurewiczInverse_hurewiczMap_mk x hpi p
+
+theorem hurewiczInverse_comp_hurewiczMap (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    (hurewiczInverse x hpi).comp (hurewiczMap (m := m + 1) x) = LinearMap.id := by
+  ext a
+  exact hurewiczInverse_hurewiczMap x hpi a
+
+def hurewiczLinearEquiv (x : X) {m : ℕ}
+    (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
+    Additive (π_ (m + 3) X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X (m + 3) :=
+  LinearEquiv.ofLinearMap (hurewiczMap (m := m + 1) x) (hurewiczInverse x hpi)
+    (hurewiczMap_comp_hurewiczInverse x hpi) (hurewiczInverse_comp_hurewiczMap x hpi)
+
+def hurewiczLinearEquivOfTwoLE (x : X) (n : ℕ) (hn : 2 ≤ n)
+    (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
+    letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+    Additive (π_ n X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X n := by
+  letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+  rcases n with _ | n'
+  · exact absurd hn (by omega)
+  rcases n' with _ | n''
+  · exact absurd hn (by omega)
+  rcases n'' with _ | m
+  · exact Hurewicz.degreeTwoLinearEquiv x
+  · exact hurewiczLinearEquiv x hpi
+
+end Hurewicz
 
 end Mathoverflow1973

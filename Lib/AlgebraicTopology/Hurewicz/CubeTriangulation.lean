@@ -14,10 +14,10 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-abbrev HigherHurewicz.CubeTriangulation.CubeN (n : ℕ) :=
+abbrev Hurewicz.CubeTriangulation.CubeN (n : ℕ) :=
   Fin n → (unitInterval)
 
-def HigherHurewicz.CubeTriangulation.cubeAffineSimplex {m n : ℕ} (v : Fin (m + 1) → CubeN n) :
+def Hurewicz.CubeTriangulation.cubeAffineSimplex {m n : ℕ} (v : Fin (m + 1) → CubeN n) :
     C(SingularChains.Simplex m, CubeN n)
     where
   toFun s
@@ -39,13 +39,13 @@ def HigherHurewicz.CubeTriangulation.cubeAffineSimplex {m n : ℕ} (v : Fin (m +
         ((continuous_apply j).comp continuous_subtype_val).mul continuous_const
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_coordinate {m n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeAffineSimplex_coordinate {m n : ℕ}
     (v : Fin (m + 1) → CubeN n) (s : SingularChains.Simplex m) (i : Fin n) :
     (cubeAffineSimplex v s i : ℝ) = ∑ j, s j * (v j i : ℝ) :=
   rfl
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_vertex {m n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeAffineSimplex_vertex {m n : ℕ}
     (v : Fin (m + 1) → CubeN n) (j : Fin (m + 1)) :
     cubeAffineSimplex v (SingularMayerVietoris.stdVertices m j) = v j := by
   funext i
@@ -53,7 +53,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_vertex {m n : ℕ}
   simp [cubeAffineSimplex_coordinate, SingularMayerVietoris.stdVertices, stdSimplex.vertex,
     Pi.single_apply]
 
-theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_face {m n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeAffineSimplex_face {m n : ℕ}
     (v : Fin (m + 2) → CubeN n) (i : Fin (m + 2)) :
     (cubeAffineSimplex v).comp (SingularChains.simplexFace m i) =
       cubeAffineSimplex (fun j => v (i.succAbove j)) := by
@@ -65,20 +65,20 @@ theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_face {m n : ℕ}
   simp only [SingularChains.simplexFace_apply_self, MulZeroClass.zero_mul,
     SingularChains.simplexFace_apply_succAbove, zero_add]
 
-theorem HigherHurewicz.CubeTriangulation.cubeAffineSimplex_constant_coordinate {m n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeAffineSimplex_constant_coordinate {m n : ℕ}
     (v : Fin (m + 1) → CubeN n) (i : Fin n) (c : (unitInterval)) (h : ∀ j, v j i = c)
     (s : SingularChains.Simplex m) : cubeAffineSimplex v s i = c := by
   apply Subtype.ext
   simp only [cubeAffineSimplex_coordinate, h, ← Finset.sum_mul, stdSimplex.sum_eq_one, one_mul]
 
-def HigherHurewicz.CubeTriangulation.cubeVertex {n : ℕ} (e : Equiv.Perm (Fin n))
+def Hurewicz.CubeTriangulation.cubeVertex {n : ℕ} (e : Equiv.Perm (Fin n))
     (k : Fin (n + 1)) : CubeN n := fun i => if (e.symm i).val < k.val then 1 else 0
 
-def HigherHurewicz.CubeTriangulation.cubeSimplex {n : ℕ} (e : Equiv.Perm (Fin n)) :
+def Hurewicz.CubeTriangulation.cubeSimplex {n : ℕ} (e : Equiv.Perm (Fin n)) :
     C(SingularChains.Simplex n, CubeN n) :=
   cubeAffineSimplex (cubeVertex e)
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeSimplex_coordinate {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) (i : Fin n) :
     (cubeSimplex e s (e i) : ℝ) = ∑ k : Fin (n + 1), if i.val < k.val then s k else 0 := by
   simp only [cubeSimplex, cubeAffineSimplex_coordinate, cubeVertex, Equiv.symm_apply_apply]
@@ -86,7 +86,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate {n : ℕ} (e : E
   intro k _
   split_ifs <;> simp
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_antitone {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeSimplex_antitone {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) : Antitone (fun i => cubeSimplex e s (e i)) := by
   intro i j hij
   change (cubeSimplex e s (e j) : ℝ) ≤ (cubeSimplex e s (e i) : ℝ)
@@ -101,46 +101,62 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_antitone {n : ℕ} (e : Equ
     · exact stdSimplex.zero_le s k
     · exact le_refl 0
 
-def HigherHurewicz.CubeTriangulation.cubeOrientation {n : ℕ} (e : Equiv.Perm (Fin n)) : ℤ :=
+def Hurewicz.CubeTriangulation.cubeOrientation {n : ℕ} (e : Equiv.Perm (Fin n)) : ℤ :=
   Equiv.Perm.sign e
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeOrientation_refl (n : ℕ) :
+theorem Hurewicz.CubeTriangulation.cubeOrientation_refl (n : ℕ) :
     cubeOrientation (Equiv.refl (Fin n)) = 1 := by simp [cubeOrientation]
 
-theorem HigherHurewicz.CubeTriangulation.cubeOrientation_swap {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeOrientation_swap {n : ℕ} (e : Equiv.Perm (Fin n))
     {i j : Fin n} (h : i ≠ j) : cubeOrientation ((Equiv.swap i j).trans e) = -cubeOrientation e :=
   by simp [cubeOrientation, Equiv.Perm.sign_trans, Equiv.Perm.sign_swap h]
 
-abbrev HigherHurewicz.CubeTriangulation.SortedCoordinates {n : ℕ} {α : Type*} [LinearOrder α]
+/-- The chamber orientations sum to zero: transposing a fixed pair of coordinates reverses
+the sign, so the permutation signs cancel in pairs. -/
+theorem Hurewicz.CubeTriangulation.cubeOrientation_sum (n : ℕ) :
+    ∑ e : Equiv.Perm (Fin (n + 2)), Hurewicz.CubeTriangulation.cubeOrientation e = 0 := by
+  have hij : (0 : Fin (n + 2)) ≠ 1 := Fin.zero_ne_one
+  have h :=
+    Equiv.sum_comp (Equiv.mulRight (Equiv.swap (0 : Fin (n + 2)) 1))
+      (Hurewicz.CubeTriangulation.cubeOrientation (n := n + 2))
+  change
+    (∑ e : Equiv.Perm (Fin (n + 2)),
+        Hurewicz.CubeTriangulation.cubeOrientation ((Equiv.swap 0 1).trans e)) =
+      ∑ e : Equiv.Perm (Fin (n + 2)), Hurewicz.CubeTriangulation.cubeOrientation e at h
+  simp_rw [Hurewicz.CubeTriangulation.cubeOrientation_swap _ hij] at h
+  rw [Finset.sum_neg_distrib] at h
+  omega
+
+abbrev Hurewicz.CubeTriangulation.SortedCoordinates {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin n → α) (e : Equiv.Perm (Fin n)) : Prop :=
   Antitone (fun i => u (e i))
 
-def HigherHurewicz.CubeTriangulation.sortedPermutation {n : ℕ} {α : Type*} [LinearOrder α]
+def Hurewicz.CubeTriangulation.sortedPermutation {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin n → α) : Equiv.Perm (Fin n) :=
   Tuple.sort (fun i => OrderDual.toDual (u i))
 
-theorem HigherHurewicz.CubeTriangulation.sortedPermutation_sorted {n : ℕ} {α : Type*}
+theorem Hurewicz.CubeTriangulation.sortedPermutation_sorted {n : ℕ} {α : Type*}
     [LinearOrder α] (u : Fin n → α) : SortedCoordinates u (sortedPermutation u) :=
   Tuple.monotone_sort (fun i => OrderDual.toDual (u i))
 
-theorem HigherHurewicz.CubeTriangulation.exists_sortedPermutation {n : ℕ} {α : Type*}
+theorem Hurewicz.CubeTriangulation.exists_sortedPermutation {n : ℕ} {α : Type*}
     [LinearOrder α] (u : Fin n → α) : ∃ e : Equiv.Perm (Fin n), SortedCoordinates u e :=
   ⟨sortedPermutation u, sortedPermutation_sorted u⟩
 
-theorem HigherHurewicz.CubeTriangulation.sorted_values_eq {n : ℕ} {α : Type*} [LinearOrder α]
+theorem Hurewicz.CubeTriangulation.sorted_values_eq {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin n → α) {e f : Equiv.Perm (Fin n)} (he : SortedCoordinates u e)
     (hf : SortedCoordinates u f) : ∀ i : Fin n, u (e i) = u (f i) :=
   congrFun (Tuple.unique_antitone he hf)
 
-theorem HigherHurewicz.CubeTriangulation.sum_fin_differences {n : ℕ} (a : Fin (n + 1) → ℝ) :
+theorem Hurewicz.CubeTriangulation.sum_fin_differences {n : ℕ} (a : Fin (n + 1) → ℝ) :
     ∑ i : Fin n, (a i.castSucc - a i.succ) = a 0 - a (Fin.last n) := by
   rw [Finset.sum_sub_distrib]
   have h₀ := Fin.sum_univ_succ a
   have h₁ := Fin.sum_univ_castSucc a
   linarith
 
-theorem HigherHurewicz.CubeTriangulation.sum_fin_differences_tail (n : ℕ) (a : Fin (n + 1) → ℝ)
+theorem Hurewicz.CubeTriangulation.sum_fin_differences_tail (n : ℕ) (a : Fin (n + 1) → ℝ)
     (i : Fin n) :
     ∑ k : Fin n, (if i.val ≤ k.val then a k.castSucc - a k.succ else 0) =
       a i.castSucc - a (Fin.last n) := by
@@ -157,17 +173,17 @@ theorem HigherHurewicz.CubeTriangulation.sum_fin_differences_tail (n : ℕ) (a :
         Nat.lt_succ_iff, zero_add, Fin.castSucc_succ]
       simpa only [Fin.succ_last] using ih (fun k => a k.succ) i
 
-def HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates {n : ℕ} (e : Equiv.Perm (Fin n))
+def Hurewicz.CubeTriangulation.cubeExtendedCoordinates {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : CubeN n) : Fin (n + 2) → ℝ :=
   Fin.cons 1 (Fin.snoc (fun i => (u (e i) : ℝ)) 0)
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_zero {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_zero {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) : cubeExtendedCoordinates e u 0 = 1 := by
   simp only [cubeExtendedCoordinates, Fin.cons_zero]
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_last {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_last {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) : cubeExtendedCoordinates e u (Fin.last (n + 1)) = 0 :=
   by
   change cubeExtendedCoordinates e u (Fin.last n).succ = 0
@@ -175,12 +191,12 @@ theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_last {n : ℕ}
   simp only [Fin.cons_succ, Fin.snoc_last]
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_inner {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_inner {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) (i : Fin n) :
     cubeExtendedCoordinates e u i.castSucc.succ = (u (e i) : ℝ) := by
   simp only [cubeExtendedCoordinates, Fin.cons_succ, Fin.snoc_castSucc]
 
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_nonneg {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_nonneg {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) (i : Fin (n + 2)) :
     0 ≤ cubeExtendedCoordinates e u i := by
   cases i using Fin.cases with
@@ -190,7 +206,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_nonneg {n : ℕ
     | last => simp only [cubeExtendedCoordinates, Fin.cons_succ, Fin.snoc_last, le_refl]
     | cast i => simpa only [cubeExtendedCoordinates_inner] using (u (e i)).property.1
 
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_le_one {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_le_one {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) (i : Fin (n + 2)) :
     cubeExtendedCoordinates e u i ≤ 1 := by
   cases i using Fin.cases with
@@ -200,7 +216,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_le_one {n : ℕ
     | last => simp only [cubeExtendedCoordinates, Fin.cons_succ, Fin.snoc_last, zero_le_one]
     | cast i => simpa only [cubeExtendedCoordinates_inner] using (u (e i)).property.2
 
-theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_antitone {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeExtendedCoordinates_antitone {n : ℕ}
     (e : Equiv.Perm (Fin n)) (u : CubeN n) (h : SortedCoordinates u e) :
     Antitone (cubeExtendedCoordinates e u) := by
   intro i j hij
@@ -230,19 +246,19 @@ theorem HigherHurewicz.CubeTriangulation.cubeExtendedCoordinates_antitone {n : �
           have hreal : (u (e j) : ℝ) ≤ (u (e i) : ℝ) := h hh
           simpa only [cubeExtendedCoordinates_inner] using hreal
 
-def HigherHurewicz.CubeTriangulation.cubeBarycentric {n : ℕ} (e : Equiv.Perm (Fin n))
+def Hurewicz.CubeTriangulation.cubeBarycentric {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : CubeN n) : Fin (n + 1) → ℝ := fun i =>
   cubeExtendedCoordinates e u i.castSucc - cubeExtendedCoordinates e u i.succ
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_zero {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_zero {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (u : CubeN (n + 1)) :
     cubeBarycentric e u 0 = 1 - (u (e 0) : ℝ) := by
   simp only [cubeBarycentric, Fin.castSucc_zero, cubeExtendedCoordinates, Fin.cons_zero,
     Fin.cons_succ, Fin.snoc_apply_zero]
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_last {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_last {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (u : CubeN (n + 1)) :
     cubeBarycentric e u (Fin.last (n + 1)) = (u (e (Fin.last n)) : ℝ) := by
   change
@@ -252,7 +268,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_last {n : ℕ}
   simp only [cubeExtendedCoordinates_inner, cubeExtendedCoordinates_last, sub_zero]
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_inner {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_inner {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (u : CubeN (n + 1)) (i : Fin n) :
     cubeBarycentric e u i.succ.castSucc = (u (e i.castSucc) : ℝ) - (u (e i.succ) : ℝ) := by
   change
@@ -261,24 +277,24 @@ theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_inner {n : ℕ}
       _
   simp only [cubeExtendedCoordinates_inner]
 
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_nonneg {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_nonneg {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : CubeN n) (h : SortedCoordinates u e) (i : Fin (n + 1)) : 0 ≤ cubeBarycentric e u i :=
   sub_nonneg.mpr (cubeExtendedCoordinates_antitone e u h (Nat.le_succ i.val))
 
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_sum {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_sum {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : CubeN n) : ∑ i, cubeBarycentric e u i = 1 := by
   unfold cubeBarycentric
   rw [sum_fin_differences]
   simp only [cubeExtendedCoordinates_zero, cubeExtendedCoordinates_last, sub_zero]
 
-theorem HigherHurewicz.CubeTriangulation.cubeBarycentric_tail {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeBarycentric_tail {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : CubeN n) (i : Fin n) :
     ∑ k : Fin (n + 1), (if i.val < k.val then cubeBarycentric e u k else 0) = (u (e i) : ℝ) := by
   have h := sum_fin_differences_tail (n + 1) (cubeExtendedCoordinates e u) i.succ
   simpa only [Fin.val_succ, Nat.succ_le_iff, cubeBarycentric, Fin.castSucc_succ,
     cubeExtendedCoordinates_inner, cubeExtendedCoordinates_last, sub_zero] using h
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate_zero {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_coordinate_zero {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1)) :
     (cubeSimplex e s (e 0) : ℝ) = 1 - s 0 := by
   rw [cubeSimplex_coordinate, Fin.sum_univ_succ]
@@ -288,7 +304,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate_zero {n : ℕ}
   rw [Fin.sum_univ_succ] at hs
   linarith
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate_last {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_coordinate_last {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1)) :
     (cubeSimplex e s (e (Fin.last n)) : ℝ) = s (Fin.last (n + 1)) := by
   rw [cubeSimplex_coordinate, Fin.sum_univ_castSucc]
@@ -299,7 +315,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_coordinate_last {n : ℕ}
     exact if_neg (Nat.not_lt.mpr (Nat.le_of_lt_succ k.isLt))
   rw [hz, zero_add]
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_adjacent_difference {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_adjacent_difference {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1)) (i : Fin n) :
     (cubeSimplex e s (e i.castSucc) : ℝ) - (cubeSimplex e s (e i.succ) : ℝ) = s i.succ.castSucc :=
   by
@@ -325,15 +341,15 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_adjacent_difference {n : �
           simp only [Fin.val_castSucc, Fin.val_succ, if_neg h, if_neg h', if_neg hk, sub_zero]
     _ = s i.succ.castSucc := by simp
 
-def HigherHurewicz.CubeTriangulation.cubeOrderedRegion {n : ℕ} (e : Equiv.Perm (Fin n)) :
+def Hurewicz.CubeTriangulation.cubeOrderedRegion {n : ℕ} (e : Equiv.Perm (Fin n)) :
     Set (CubeN n) :=
   {u | SortedCoordinates u e}
 
-theorem HigherHurewicz.CubeTriangulation.continuous_cubeCoordinate {n : ℕ} (i : Fin n) :
+theorem Hurewicz.CubeTriangulation.continuous_cubeCoordinate {n : ℕ} (i : Fin n) :
     Continuous (fun u : CubeN n => (u i : ℝ)) :=
   continuous_subtype_val.comp (continuous_apply i)
 
-theorem HigherHurewicz.CubeTriangulation.continuous_cubeExtendedCoordinates {n : ℕ}
+theorem Hurewicz.CubeTriangulation.continuous_cubeExtendedCoordinates {n : ℕ}
     (e : Equiv.Perm (Fin n)) (i : Fin (n + 2)) :
     Continuous (fun u : CubeN n => cubeExtendedCoordinates e u i) := by
   cases i using Fin.cases with
@@ -347,13 +363,13 @@ theorem HigherHurewicz.CubeTriangulation.continuous_cubeExtendedCoordinates {n :
         (continuous_const : Continuous (fun _ : CubeN n => (0 : ℝ)))
     | cast i => simpa only [cubeExtendedCoordinates_inner] using continuous_cubeCoordinate (e i)
 
-theorem HigherHurewicz.CubeTriangulation.continuous_cubeBarycentric {n : ℕ}
+theorem Hurewicz.CubeTriangulation.continuous_cubeBarycentric {n : ℕ}
     (e : Equiv.Perm (Fin n)) (i : Fin (n + 1)) :
     Continuous (fun u : CubeN n => cubeBarycentric e u i) :=
   (continuous_cubeExtendedCoordinates e i.castSucc).sub
     (continuous_cubeExtendedCoordinates e i.succ)
 
-def HigherHurewicz.CubeTriangulation.cubeSimplexInverse {n : ℕ} (e : Equiv.Perm (Fin n)) :
+def Hurewicz.CubeTriangulation.cubeSimplexInverse {n : ℕ} (e : Equiv.Perm (Fin n)) :
     C(↥(cubeOrderedRegion e), SingularChains.Simplex n)
     where
   toFun
@@ -366,12 +382,12 @@ def HigherHurewicz.CubeTriangulation.cubeSimplexInverse {n : ℕ} (e : Equiv.Per
     intro i
     exact (continuous_cubeBarycentric e i).comp continuous_subtype_val
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_sorted {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeSimplex_sorted {n : ℕ} (e : Equiv.Perm (Fin n))
     (s : SingularChains.Simplex n) : SortedCoordinates (cubeSimplex e s) e :=
   cubeSimplex_antitone e s
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_inverse {n : ℕ} (e : Equiv.Perm (Fin n))
+theorem Hurewicz.CubeTriangulation.cubeSimplex_inverse {n : ℕ} (e : Equiv.Perm (Fin n))
     (u : ↥(cubeOrderedRegion e)) : cubeSimplex e (cubeSimplexInverse e u) = u.val := by
   funext k
   obtain ⟨i, rfl⟩ := e.surjective k
@@ -380,7 +396,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_inverse {n : ℕ} (e : Equi
   exact cubeBarycentric_tail e u.val i
 
 @[simp]
-theorem HigherHurewicz.CubeTriangulation.cubeSimplexInverse_simplex {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplexInverse_simplex {n : ℕ}
     (e : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n) :
     cubeSimplexInverse e ⟨cubeSimplex e s, cubeSimplex_sorted e s⟩ = s := by
   cases n with
@@ -403,7 +419,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplexInverse_simplex {n : ℕ}
         simpa only [← Fin.castSucc_succ, cubeBarycentric_inner] using
           cubeSimplex_adjacent_difference e s i
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_injective {n : ℕ} (e : Equiv.Perm (Fin n)) :
+theorem Hurewicz.CubeTriangulation.cubeSimplex_injective {n : ℕ} (e : Equiv.Perm (Fin n)) :
     Function.Injective (cubeSimplex e) := by
   intro s t h
   have hh :
@@ -412,7 +428,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_injective {n : ℕ} (e : Eq
     Subtype.ext h
   simpa only [cubeSimplexInverse_simplex] using congrArg (cubeSimplexInverse e) hh
 
-theorem HigherHurewicz.CubeTriangulation.cubeVertex_swap_of_ne {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeVertex_swap_of_ne {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (i : Fin n) (k : Fin (n + 2)) (hk : k ≠ i.succ.castSucc) :
     cubeVertex e k = cubeVertex ((Equiv.swap i.castSucc i.succ).trans e) k := by
   funext coord
@@ -434,7 +450,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeVertex_swap_of_ne {n : ℕ}
     simp only [h]
   · rw [Equiv.swap_apply_of_ne_of_ne h₀ h₁]
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_swap {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_face_swap {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (i : Fin n) :
     (cubeSimplex e).comp (SingularChains.simplexFace n i.succ.castSucc) =
       (cubeSimplex ((Equiv.swap i.castSucc i.succ).trans e)).comp
@@ -444,7 +460,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_swap {n : ℕ}
   funext j
   exact cubeVertex_swap_of_ne e i _ (Fin.succAbove_ne _ _)
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_zero_coordinate {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_face_zero_coordinate {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex n) :
     cubeSimplex e (SingularChains.simplexFace n 0 s) (e 0) = 1 := by
   change ((cubeAffineSimplex (cubeVertex e)).comp (SingularChains.simplexFace n 0)) s (e 0) = 1
@@ -453,7 +469,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_zero_coordinate {n : �
   intro j
   simp [cubeVertex]
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_last_coordinate {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_face_last_coordinate {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex n) :
     cubeSimplex e (SingularChains.simplexFace n (Fin.last (n + 1)) s) (e (Fin.last n)) = 0 := by
   change
@@ -467,45 +483,45 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_last_coordinate {n : �
     Fin.val_last]
   exact if_neg (Nat.not_lt.mpr (Nat.le_of_lt_succ j.isLt))
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_zero_boundary {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_face_zero_boundary {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex n) :
     cubeSimplex e (SingularChains.simplexFace n 0 s) ∈ Cube.boundary (Fin (n + 1)) :=
   ⟨e 0, Or.inr (cubeSimplex_face_zero_coordinate e s)⟩
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_face_last_boundary {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_face_last_boundary {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex n) :
     cubeSimplex e (SingularChains.simplexFace n (Fin.last (n + 1)) s) ∈
       Cube.boundary (Fin (n + 1)) :=
   ⟨e (Fin.last n), Or.inl (cubeSimplex_face_last_coordinate e s)⟩
 
-theorem HigherHurewicz.CubeTriangulation.exists_cubeSimplex {n : ℕ} (u : CubeN n) :
+theorem Hurewicz.CubeTriangulation.exists_cubeSimplex {n : ℕ} (u : CubeN n) :
     ∃ e : Equiv.Perm (Fin n), ∃ s : SingularChains.Simplex n, cubeSimplex e s = u := by
   obtain ⟨e, he⟩ := exists_sortedPermutation u
   exact ⟨e, cubeSimplexInverse e ⟨u, he⟩, cubeSimplex_inverse e ⟨u, he⟩⟩
 
-def HigherHurewicz.CubeTriangulation.cubeSimplexCylinder {n : ℕ} (e : Equiv.Perm (Fin n)) :
+def Hurewicz.CubeTriangulation.cubeSimplexCylinder {n : ℕ} (e : Equiv.Perm (Fin n)) :
     C((unitInterval) × SingularChains.Simplex n, (unitInterval) × CubeN n) :=
   (ContinuousMap.id (unitInterval)).prodMap (cubeSimplex e)
 
-def HigherHurewicz.CubeTriangulation.cubeCylinderCover (n : ℕ) :
+def Hurewicz.CubeTriangulation.cubeCylinderCover (n : ℕ) :
     C((Σ _e : Equiv.Perm (Fin n), (unitInterval) × SingularChains.Simplex n),
       (unitInterval) × CubeN n)
     where
   toFun a := cubeSimplexCylinder a.fst a.snd
   continuous_toFun := continuous_sigma fun e => (cubeSimplexCylinder e).continuous
 
-theorem HigherHurewicz.CubeTriangulation.cubeCylinderCover_surjective (n : ℕ) :
+theorem Hurewicz.CubeTriangulation.cubeCylinderCover_surjective (n : ℕ) :
     Function.Surjective (cubeCylinderCover n) := by
   rintro ⟨r, u⟩
   obtain ⟨e, s, rfl⟩ := exists_cubeSimplex u
   exact ⟨⟨e, (r, s)⟩, rfl⟩
 
-theorem HigherHurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap (n : ℕ) :
+theorem Hurewicz.CubeTriangulation.cubeCylinderCover_isQuotientMap (n : ℕ) :
     Topology.IsQuotientMap (cubeCylinderCover n) :=
   Topology.IsQuotientMap.of_surjective_continuous (cubeCylinderCover_surjective n)
     (cubeCylinderCover n).continuous
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_mem_boundary_iff {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_mem_boundary_iff {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1)) :
     cubeSimplex e s ∈ Cube.boundary (Fin (n + 1)) ↔ s 0 = 0 ∨ s (Fin.last (n + 1)) = 0 := by
   constructor
@@ -536,14 +552,14 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_mem_boundary_iff {n : ℕ}
       change (cubeSimplex e s (e (Fin.last n)) : ℝ) = 0
       rw [cubeSimplex_coordinate_last, hs]
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_tie {n : ℕ} (e : Equiv.Perm (Fin (n + 1)))
+theorem Hurewicz.CubeTriangulation.cubeSimplex_tie {n : ℕ} (e : Equiv.Perm (Fin (n + 1)))
     (s : SingularChains.Simplex (n + 1)) (i : Fin n)
     (h : cubeSimplex e s (e i.castSucc) = cubeSimplex e s (e i.succ)) : s i.succ.castSucc = 0 := by
   have hd := cubeSimplex_adjacent_difference e s i
   rw [h, sub_self] at hd
   exact hd.symm
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_tie_iff {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_tie_iff {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1)) (i : Fin n) :
     cubeSimplex e s (e i.castSucc) = cubeSimplex e s (e i.succ) ↔ s i.succ.castSucc = 0 := by
   refine ⟨cubeSimplex_tie e s i, ?_⟩
@@ -553,7 +569,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_tie_iff {n : ℕ}
   rw [hs] at hd
   exact sub_eq_zero.mp hd
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_eq_of_sorted {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_eq_of_sorted {n : ℕ}
     (e f : Equiv.Perm (Fin n)) (s : SingularChains.Simplex n)
     (hf : SortedCoordinates (cubeSimplex e s) f) : cubeSimplex f s = cubeSimplex e s := by
   funext k
@@ -566,7 +582,7 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_eq_of_sorted {n : ℕ}
     _ = (cubeSimplex e s (f i) : ℝ) :=
       congrArg Subtype.val (sorted_values_eq (cubeSimplex e s) (cubeSimplex_sorted e s) hf i)
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_overlap_preimage {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_overlap_preimage {n : ℕ}
     (e f : Equiv.Perm (Fin n)) (s t : SingularChains.Simplex n)
     (h : cubeSimplex e s = cubeSimplex f t) : s = t := by
   have hf : SortedCoordinates (cubeSimplex e s) f := by
@@ -574,24 +590,24 @@ theorem HigherHurewicz.CubeTriangulation.cubeSimplex_overlap_preimage {n : ℕ}
     exact cubeSimplex_sorted f t
   exact cubeSimplex_injective f ((cubeSimplex_eq_of_sorted e f s hf).trans h)
 
-theorem HigherHurewicz.CubeTriangulation.coordinate_swap_of_tie {n : ℕ} {α : Type*}
+theorem Hurewicz.CubeTriangulation.coordinate_swap_of_tie {n : ℕ} {α : Type*}
     {u : Fin n → α} {e : Equiv.Perm (Fin n)} {a b : Fin n} (hab : u (e a) = u (e b)) (i : Fin n) :
     u (((Equiv.swap a b).trans e) i) = u (e i) :=
   Equiv.apply_swap_eq_self (v := fun j => u (e j)) hab i
 
-theorem HigherHurewicz.CubeTriangulation.sortedCoordinates_swap_of_tie {n : ℕ} {α : Type*}
+theorem Hurewicz.CubeTriangulation.sortedCoordinates_swap_of_tie {n : ℕ} {α : Type*}
     [LinearOrder α] {u : Fin n → α} {e : Equiv.Perm (Fin n)} (he : SortedCoordinates u e)
     {a b : Fin n} (hab : u (e a) = u (e b)) : SortedCoordinates u ((Equiv.swap a b).trans e) := by
   intro i j hij
   simpa only [coordinate_swap_of_tie hab] using he hij
 
-private theorem HigherHurewicz.CubeTriangulation.swap_trans_swap_trans_swap_mo1973_8327 {n : ℕ}
+private theorem Hurewicz.CubeTriangulation.swap_trans_swap_trans_swap_mo1973_8327 {n : ℕ}
     {a b c : Fin n} (hab : a ≠ b) (hac : a ≠ c) :
     ((Equiv.swap b c).trans (Equiv.swap a b)).trans (Equiv.swap b c) = Equiv.swap a c := by
   simpa only [Equiv.symm_swap, Equiv.swap_apply_of_ne_of_ne hab hac, Equiv.swap_apply_left] using
     Equiv.symm_trans_swap_trans a b (Equiv.swap b c)
 
-private theorem HigherHurewicz.CubeTriangulation.eq_swap_of_sorted_tie_of_lt_mo1973_8328 {n : ℕ}
+private theorem Hurewicz.CubeTriangulation.eq_swap_of_sorted_tie_of_lt_mo1973_8328 {n : ℕ}
     {α : Type*} [LinearOrder α] (u : Fin (n + 1) → α) {A : Type*}
     (F : Equiv.Perm (Fin (n + 1)) → A)
     (hswap :
@@ -635,7 +651,7 @@ private theorem HigherHurewicz.CubeTriangulation.eq_swap_of_sorted_tie_of_lt_mo1
         rw [← Equiv.trans_assoc, ← Equiv.trans_assoc,
           swap_trans_swap_trans_swap_mo1973_8327 hlt.ne hab.ne]
 
-theorem HigherHurewicz.CubeTriangulation.eq_swap_of_sorted_tie {n : ℕ} {α : Type*} [LinearOrder α]
+theorem Hurewicz.CubeTriangulation.eq_swap_of_sorted_tie {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin (n + 1) → α) {A : Type*} (F : Equiv.Perm (Fin (n + 1)) → A)
     (hswap :
       ∀ e,
@@ -650,7 +666,7 @@ theorem HigherHurewicz.CubeTriangulation.eq_swap_of_sorted_tie {n : ℕ} {α : T
   · simpa only [Equiv.swap_comm b a] using
       eq_swap_of_sorted_tie_of_lt_mo1973_8328 u F hswap a b e hgt he hab.symm
 
-private theorem HigherHurewicz.CubeTriangulation.label_swap_apply_mo1973_8330 {ι β : Type*}
+private theorem Hurewicz.CubeTriangulation.label_swap_apply_mo1973_8330 {ι β : Type*}
     [DecidableEq ι] (v : ι → β) {a b : ι} (hab : v a = v b) (z : ι) :
     v (Equiv.swap a b z) = v z := by
   by_cases hza : z = a
@@ -661,7 +677,7 @@ private theorem HigherHurewicz.CubeTriangulation.label_swap_apply_mo1973_8330 {�
     simpa only [Equiv.swap_apply_right] using hab
   rw [Equiv.swap_apply_of_ne_of_ne hza hzb]
 
-theorem HigherHurewicz.CubeTriangulation.valuePreservingPermutation_induction {ι β : Type*}
+theorem Hurewicz.CubeTriangulation.valuePreservingPermutation_induction {ι β : Type*}
     [DecidableEq ι] [Finite ι] (v : ι → β) {P : Equiv.Perm ι → Prop} (hone : P 1)
     (hswap :
       ∀ (r : Equiv.Perm ι) (a b : ι),
@@ -693,7 +709,7 @@ theorem HigherHurewicz.CubeTriangulation.valuePreservingPermutation_induction {�
       hswap q' a (q a) (hvalues a).symm hvalues' (ih q'.support.card hlt q' rfl hvalues')
     simpa only [q', Equiv.swap_mul_self_mul] using hstep
 
-theorem HigherHurewicz.CubeTriangulation.eq_of_value_preserving_swaps {ι β : Type*}
+theorem Hurewicz.CubeTriangulation.eq_of_value_preserving_swaps {ι β : Type*}
     [DecidableEq ι] [Finite ι] (v : ι → β) {A : Type*} (G : Equiv.Perm ι → A)
     (hswap :
       ∀ (r : Equiv.Perm ι),
@@ -702,7 +718,7 @@ theorem HigherHurewicz.CubeTriangulation.eq_of_value_preserving_swaps {ι β : T
   valuePreservingPermutation_induction v (P := fun q => G 1 = G q) rfl
     (fun q a b hab hq ih => ih.trans (hswap q hq a b hab)) r hr
 
-theorem HigherHurewicz.CubeTriangulation.eq_of_sorted_adjacent {n : ℕ} {α : Type*} [LinearOrder α]
+theorem Hurewicz.CubeTriangulation.eq_of_sorted_adjacent {n : ℕ} {α : Type*} [LinearOrder α]
     (u : Fin (n + 1) → α) {A : Type*} (F : Equiv.Perm (Fin (n + 1)) → A)
     (hswap :
       ∀ e,
@@ -737,7 +753,7 @@ theorem HigherHurewicz.CubeTriangulation.eq_of_sorted_adjacent {n : ℕ} {α : T
   simpa only [Equiv.Perm.one_def, Equiv.refl_trans, Equiv.trans_assoc, Equiv.symm_trans_self,
     Equiv.trans_refl] using hG
 
-theorem HigherHurewicz.CubeTriangulation.cubeSimplex_simplexBoundary {n : ℕ}
+theorem Hurewicz.CubeTriangulation.cubeSimplex_simplexBoundary {n : ℕ}
     (e : Equiv.Perm (Fin (n + 1))) (s : SingularChains.Simplex (n + 1))
     (hs : s ∈ SecondHurewicz.SimplyConnected.simplexBoundary (n + 1)) :
     cubeSimplex e s ∈ Cube.boundary (Fin (n + 1)) ∨

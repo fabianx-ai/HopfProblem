@@ -122,65 +122,41 @@ deliverable.
 
 ## Open items (the exact seams)
 
-1. **C10 assembly (the headline `hurewiczLinearEquiv` at general `n`).** All
-   ingredients are landed; what remains is the assembly, designed in full.
-   Landed in `20b50c5` (Straightening.lean): the class-level straightening
-   invariance (`basedSimplexClass_straightening`, with
-   `straightenedBasedSimplex` and the rel-boundary homotopy
-   `basedSimplexLoop_straighteningHomotopy`), the normalized simplex
-   (`normalizedSimplex`, the tower's endpoint as a based simplex), the top
-   storey (`topStorey`), the one-level-below state (`towerBelow`, with the
-   `n = 2` branch avoiding `π_1`/`π_2` input via the edge tower), and the
-   one-off top normalization (`topNormalization` + `topNormalization_zero`).
+1. **C10 assembly (the headline `hurewiczLinearEquiv` at general `n`).** Ingredients
+   landed this branch (`lib/C-10-boundary`):
+   - `classOperator_boundary` (`199fb46`): the class operator vanishes on
+     boundaries at degree `n ≥ 3`.
+   - `cubeChain_boundary` / `cubeCycle` / `cubeHomologyClass` (`bbfed66`):
+     the triangulated cube chain of a based loop is a cycle at every degree
+     `n ≥ 2`. Combinatorial core `sum_cubeOrientation_faces` (interior faces
+     cancel by Kuhn transposition; outer faces are constant with total
+     orientation zero). `#print axioms`: `[propext, Classical.choice, Quot.sound]`.
+   - `hurewiczInverse` (`4e730ad`): `singularHomologyDesc` of the class
+     operator, degree `n ≥ 3`.
+   - `cubeHomologyClass_homotopic` / `hurewiczFunction` (`737b1d0`): a
+     boundary-relative homotopy of based cubes descends through the
+     cube-to-sphere quotient, so the cube class is well-defined on `π_n`
+     for `n ≥ 2`.
    Still to assemble:
-   - `normalizedSimplex (n) x hpi smp : SimplexGeometry.BasedSimplex n x` :=
-     `⟨timeSlice (normalizationHomotopy x n hpi smp) 1,
-     normalizationHomotopy_endpoint …⟩` (the `BasedSimplex` membership form is
-     exactly the endpoint theorem's conclusion).
-   - The class operator `classOperator (n) x hpi := SingularChains.chainLift X n
-     (fun smp => SimplexGeometry.basedSimplexClass (normalizedSimplex …))`.
-   - Boundary vanishing `classOperator ∘ ∂ = 0`: via
-     `SimplexGeometry.basedSimplexBoundary_signed_relation` applied to the
-     normalized `(n+1)`-simplex — needing the **one-off top normalization**
-     `N(n+1) := compose (B⁺) (T⁺)` with `B⁺ := extendCoherent (towerState.aug)
-     (towerState.nxt) …` (the state's compat is exactly the needed face input)
-     and `T⁺ := extendCoherent (S (n-1)) (T n) …` (the self-extension of the top
-     storey, avoiding `S n` since `π_ n` is the answer, not a hypothesis). The
-     face relation at the class level: `face_i` of the `N(n+1)`-endpoint is the
-     `T n`-endpoint of the `norm(n)`-face (via the two
-     `extendCoherentSimplexHomotopy_face` instances of `B⁺` and `T⁺`), and the
-     `T n`-endpoint has the same class as its input (homotopy invariance of
-     `basedSimplexClass`, rel boundary — the straightening is rel-boundary on
-     based inputs). No plain-`N` face chain is needed (the codebase's
-     per-degree `lowerK`/`threeK` alternation is subsumed).
-   - `hurewiczMap (n) x : Additive (π_ n X x) →ₗ[ℤ] SingularHomology X n` from
-     the cube chain's class (well-defined by the homotopy invariance via the
-     prism; multiplicative by the pinch/`pathCubeClass_trans` content);
-     `hurewiczInverse (n) x := singularHomologyDesc n (classOperator …)
-     (classOperator_boundary …)`.
-   - Round trips: `hurewiczMap ∘ classOperator = id` via the landed general
+   - Additivity at degree `≥ 3`. Chain-level identity is landed (`a97c230`,
+     `4e52180`): `cubeChain p + cubeChain q - cubeChain (transAt 0 p q)` equals
+     a boundary minus `induced (transAt ∘ cubeCoordinates) (concatChain ×
+     d(fund))` on the remaining cube. Kill that extra term in homology
+     (based maps are constant on the remaining boundary). Degree 2 is
+     `82ba4ba`. Then `hurewiczFunction` upgrades to a `ℤ`-linear `hurewiczMap`.
+   - Round trips: `hurewiczMap ∘ classOperator = id` via the landed
      `comp_singularHomologyDesc_eq_id` + the pointwise
-     `hurewiczMap_classOperator_cycle` (the class operator computes a
-     representative whose class is the given one — via
-     `normalizedCycleAssignment_class`, which needs exactly the tower's face
-     chain and zero/endpoint properties, all present); the other direction via
-     the normalized cube (`CubeGluing.coherentCubeEndpoint` +
+     `hurewiczMap_classOperator_cycle`; the other direction via the
+     normalized cube (`CubeGluing.coherentCubeEndpoint` +
      `coherentCubeHomotopy` + `NativeSubdivision.nativeCubeSubdivision_class` +
      `cubeChain_eq_sum_simplices`).
    - Then `hurewiczLinearEquiv := LinearEquiv.ofLinearMap …` and the per-degree
      blocks (`Second/Third/Fourth/Fifth/SixthHurewicz`, ~1,000 declarations
      remaining in `Hopf/Hurewicz.lean`) become one-line instantiations and are
      deleted.
-   - **Engineering note (learned the hard way):** the boundary-plumbing proofs
-     (`topNormalization_endpoint_face_boundary` and downstream) must NOT
-     rewrite into the composed tower expressions in place: the composed
-     homotopy terms are large enough that naive `rw`/`exact`-unification times
-     out at the default heartbeat count. Work instead through small named
-     intermediate lemmas (one per face-value step: `composeSimplexHomotopies_one`,
-     `faceCompatible_apply`, `timeSlice_face`, then the collapse), each stated
-     about a single boundary value, so no unification ever sees the whole tower
-     term. The attempted direct version hit deterministic timeouts at
-     `isDefEq`/`whnf` and was reverted; the design above is the corrected route.
+   - **Engineering note:** boundary-plumbing proofs must NOT rewrite into
+     composed tower expressions in place (timeout at `isDefEq`/`whnf`). Work
+     through small named intermediate lemmas.
 2. **C11 CubeSphere** — **LANDED** (`f3d6ba6` baseline + `d597ac4`
    generalize): `Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean` holds the
    general-`n` cube-sphere quotient (the pre-existing `Degree.SphereCube.*`
