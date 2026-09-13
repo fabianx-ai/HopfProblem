@@ -97,19 +97,19 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-def Degree.DiskCube.target {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
+def DiskCube.target {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
     (L : V ≃L[ℝ] (Fin n → ℝ)) : Set V :=
   L ⁻¹' HigherHurewicz.realCubeSet n
 
-theorem Degree.DiskCube.target_compact {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.target_compact {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : IsCompact (target L) :=
   L.toHomeomorph.isCompact_preimage.mpr (HigherHurewicz.isCompact_realCubeSet n)
 
-theorem Degree.DiskCube.target_convex {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
+theorem DiskCube.target_convex {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
     (L : V ≃L[ℝ] (Fin n → ℝ)) : Convex ℝ (target L) :=
   (HigherHurewicz.convex_realCubeSet n).linear_preimage L.toLinearMap
 
-theorem Degree.DiskCube.target_interior_nonempty {V : Type*} [NormedAddCommGroup V]
+theorem DiskCube.target_interior_nonempty {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : (interior (target L)).Nonempty := by
   obtain ⟨v, hv⟩ := HigherHurewicz.interior_realCubeSet_nonempty n
   refine ⟨L.symm v, ?_⟩
@@ -118,7 +118,7 @@ theorem Degree.DiskCube.target_interior_nonempty {V : Type*} [NormedAddCommGroup
   change L (L.symm v) ∈ interior (HigherHurewicz.realCubeSet n)
   rwa [L.apply_symm_apply]
 
-theorem Degree.DiskCube.exists_ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.exists_ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
     ∃ e : V ≃ₜ V,
       e '' Metric.closedBall (0 : V) 1 = target L ∧
@@ -135,36 +135,36 @@ theorem Degree.DiskCube.exists_ambient {V : Type*} [NormedAddCommGroup V] [Norme
         (target_compact L).isClosed.closure_eq] using he,
       hb⟩
 
-def Degree.DiskCube.ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def DiskCube.ambient {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) : V ≃ₜ V :=
   Classical.choose (exists_ambient L)
 
-theorem Degree.DiskCube.ambient_image {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.ambient_image {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
     ambient L '' Metric.closedBall (0 : V) 1 = target L :=
   (Classical.choose_spec (exists_ambient L)).1
 
-theorem Degree.DiskCube.ambient_frontier {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.ambient_frontier {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
     ambient L '' frontier (Metric.closedBall (0 : V) 1) = frontier (target L) :=
   (Classical.choose_spec (exists_ambient L)).2
 
-theorem Degree.DiskCube.ambient_mem_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.ambient_mem_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) (v : V) :
     v ∈ Metric.closedBall (0 : V) 1 ↔ L (ambient L v) ∈ HigherHurewicz.realCubeSet n := by
   change v ∈ Metric.closedBall (0 : V) 1 ↔ ambient L v ∈ target L
   rw [← ambient_image]
   exact ((ambient L).injective.mem_set_image).symm
 
-def Degree.DiskCube.homeomorph {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def DiskCube.homeomorph {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
-    Degree.DiskCylinder.Disk (E := V) ≃ₜ (Fin n → (unitInterval)) :=
+    DiskCylinder.Disk (E := V) ≃ₜ (Fin n → (unitInterval)) :=
   (((ambient L).trans L.toHomeomorph).subtype (ambient_mem_iff L)).trans
     (HigherHurewicz.realCubeHomeomorph n)
 
-theorem Degree.DiskCube.boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ))
-    (z : Degree.DiskCylinder.Disk (E := V)) :
+    (z : DiskCylinder.Disk (E := V)) :
     homeomorph L z ∈ Cube.boundary (Fin n) ↔ ‖(z : V)‖ = 1 := by
   change HigherHurewicz.realCubeHomeomorph n _ ∈ Cube.boundary (Fin n) ↔ _
   rw [HigherHurewicz.realCubeHomeomorph_mem_boundary_iff]
@@ -179,7 +179,7 @@ theorem Degree.DiskCube.boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedS
   rw [(ambient L).injective.mem_set_image]
   rw [frontier_closedBall (0 : V) (one_ne_zero), mem_sphere_zero_iff_norm]
 
-theorem Degree.DiskCube.symm_boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem DiskCube.symm_boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) (z : Fin n → (unitInterval)) :
     ‖((homeomorph L).symm z : V)‖ = 1 ↔ z ∈ Cube.boundary (Fin n) := by
   rw [← boundary_iff, Homeomorph.apply_symm_apply]
@@ -402,19 +402,19 @@ def SixSphereCube.euclideanOnePointSphereHomeomorph :
 def SixSphereCube.sphereBasePoint : StandardSphere :=
   euclideanOnePointSphereHomeomorph (OnePoint.infty)
 
-theorem Degree.Sphere.piTwo_subsingleton (x : SixSphereCube.StandardSphere) :
+theorem Sphere.piTwo_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 2 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 2 (by decide) (by decide) x
 
-theorem Degree.Sphere.piThree_subsingleton (x : SixSphereCube.StandardSphere) :
+theorem Sphere.piThree_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 3 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 3 (by decide) (by decide) x
 
-theorem Degree.Sphere.piFour_subsingleton (x : SixSphereCube.StandardSphere) :
+theorem Sphere.piFour_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 4 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 4 (by decide) (by decide) x
 
-theorem Degree.Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
+theorem Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 5 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 5 (by decide) (by decide) x
 

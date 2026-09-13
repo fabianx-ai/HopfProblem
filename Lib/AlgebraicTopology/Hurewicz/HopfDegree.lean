@@ -13,7 +13,7 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 For a simply connected space whose integral homology vanishes in degrees `2 ≤ k < n`,
 `Hurewicz.pi_subsingleton_of_homology_vanishing` proves that its homotopy groups
 vanish in the same range. In particular, `Hurewicz.sphere_pi_subsingleton_of_lt`
-proves `Subsingleton (π_ k (Degree.SphereCube.Sphere n) x)` for `2 ≤ k < n`.
+proves `Subsingleton (π_ k (SphereCube.Sphere n) x)` for `2 ≤ k < n`.
 
 On the classification side, equality of the pushed-forward cube homology class of two
 based sphere maps already forces them to be homotopic relative to the basepoint:
@@ -94,12 +94,12 @@ theorem pi_subsingleton_of_homology_vanishing {X : Type} [TopologicalSpace X]
 
 /-- The homotopy groups of the n-sphere vanish in degrees `2 ≤ k < n`. -/
 theorem sphere_pi_subsingleton_of_lt (n k : ℕ) (hk : 2 ≤ k) (hkn : k < n)
-    (x : Degree.SphereCube.Sphere n) : Subsingleton (π_ k (Degree.SphereCube.Sphere n) x) := by
+    (x : SphereCube.Sphere n) : Subsingleton (π_ k (SphereCube.Sphere n) x) := by
   rcases n with _ | n
   · omega
   rcases n with _ | n
   · omega
-  letI : SimplyConnectedSpace (Degree.SphereCube.Sphere (n + 2)) :=
+  letI : SimplyConnectedSpace (SphereCube.Sphere (n + 2)) :=
     EuclideanSphere.simplyConnectedSpace n
   exact pi_subsingleton_of_homology_vanishing x (n + 2)
     (fun j hj hjn => SphereHomology.unitSphere_homology_subsingleton (n + 1) j
@@ -107,7 +107,7 @@ theorem sphere_pi_subsingleton_of_lt (n k : ℕ) (hk : 2 ≤ k) (hkn : k < n)
 
 /-! ### Sphere-map classification via the top cube class -/
 
-open Degree.SphereCube SecondHurewicz.SimplyConnected
+open SphereCube SecondHurewicz.SimplyConnected
 
 /-- The higher Hurewicz map in degree two agrees with the second Hurewicz map. -/
 theorem hurewiczMap_eq_second {X : Type} [TopologicalSpace X] (x : X) :

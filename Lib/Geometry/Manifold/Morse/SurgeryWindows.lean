@@ -356,7 +356,7 @@ theorem Smale.GeneralPosition.exists_avoidance_patch_at {E G H K X N : Type*}
     (f : C(X, N)) {C : Set X} (hC : IsClosed C) {x : X} (hx : x ∉ C) :
     ∃ p : MapAvoidancePatch I J (N := N) C, p.Compatible f ∧ p.cutoff x ≠ 0 := by
   classical
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c := modelChartPartialDiffeomorph (I := J) (f x)
   have hsource : f x ∈ c.source := mem_extChartAt_source (I := J) (f x)
   have hU : f ⁻¹' c.source ∩ Cᶜ ∈ 𝓝 x :=
     ((c.open_source.preimage f.continuous).inter hC.isOpen_compl).mem_nhds ⟨hsource, hx⟩
@@ -1003,7 +1003,7 @@ theorem Smale.OpenHomotopyExtension.exists_extended_homotopy {X Y : Type*} [Topo
   · exact (hlocal 0 ⟨x, hx⟩).trans (hzero ⟨x, hx⟩)
   · exact houtside 0 x (fun h => hx (hKU h))
 
-theorem NoExotic.dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddCommGroup E]
+theorem dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F}
     {s : Set E} (hs : IsOpen s) (hf : ContDiffOn ℝ 1 f s) : dimH (f '' s) ≤ dimH s := by
   apply dimH_image_le_of_locally_lipschitzOn
@@ -1011,7 +1011,7 @@ theorem NoExotic.dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddComm
   obtain ⟨C, U, hU, hL⟩ := (hf.contDiffAt (hs.mem_nhds hx)).exists_lipschitzOnWith
   exact ⟨C, U, mem_nhdsWithin_of_mem_nhds hU, hL⟩
 
-theorem NoExotic.dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
     [ChartedSpace H M] [IsManifold I ∞ M] {f : M → F} {s : Set M} (hs : IsOpen s)
@@ -1039,7 +1039,7 @@ theorem NoExotic.dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [Norme
     (dimH_image_le_of_contDiffOn_isOpen hV (hfc.of_le (by simp))).trans
       ((dimH_mono (Set.subset_univ V)).trans_eq (Real.dimH_univ_eq_finrank E))
 
-theorem NoExotic.dimH_image_manifold_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem dimH_image_manifold_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
     [ChartedSpace H M] [IsManifold I ∞ M] [LindelofSpace M] {f : M → F} {s : Set M}
@@ -1058,7 +1058,7 @@ theorem NoExotic.dimH_image_manifold_le {E F : Type*} [NormedAddCommGroup E] [No
   rw [dimH_bUnion htcount]
   exact iSup_le (fun x ↦ iSup_le (fun _ ↦ dimH_image_chart_le hs hf x))
 
-theorem NoExotic.dense_compl_manifold_image {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem dense_compl_manifold_image {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
     [ChartedSpace H M] [IsManifold I ∞ M] [LindelofSpace M] [FiniteDimensional ℝ F] {f : M → F}
@@ -1066,7 +1066,7 @@ theorem NoExotic.dense_compl_manifold_image {E F : Type*} [NormedAddCommGroup E]
     (hd : Module.finrank ℝ E < Module.finrank ℝ F) : Dense (f '' s)ᶜ :=
   dense_compl_of_dimH_lt_finrank ((dimH_image_manifold_le hs hf).trans_lt (Nat.cast_lt.mpr hd))
 
-theorem NoExotic.not_surjective_contMDiff_of_dim_lt {E F : Type*} [NormedAddCommGroup E]
+theorem not_surjective_contMDiff_of_dim_lt {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H M : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless]
     [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] [LindelofSpace M]
@@ -1103,7 +1103,7 @@ theorem NoExotic.not_surjective_contMDiff_of_dim_lt {E F : Type*} [NormedAddComm
   exact
     (not_le_of_gt (Nat.cast_lt.mpr hd : (Module.finrank ℝ E : ℝ≥0∞) < Module.finrank ℝ F)) hdim
 
-theorem NoExotic.exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
+theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
     [SigmaCompactSpace M] [T2Space M] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -1134,73 +1134,73 @@ theorem NoExotic.exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGr
     have hhx : ‖h x - f x‖ < ε / 2 := by simpa only [dist_eq_norm] using hh x
     linarith
 
-noncomputable def NoExotic.RealIntervalProgress.progress (l u t : ℝ) : ℝ :=
+noncomputable def RealIntervalProgress.progress (l u t : ℝ) : ℝ :=
   Set.projIcc (0 : ℝ) 1 zero_le_one ((t - l) / (u - l))
 
-theorem NoExotic.RealIntervalProgress.continuous_progress (l u : ℝ) : Continuous (progress l u) :=
+theorem RealIntervalProgress.continuous_progress (l u : ℝ) : Continuous (progress l u) :=
   continuous_subtype_val.comp
     (continuous_projIcc.comp ((continuous_id.sub continuous_const).div_const _))
 
-theorem NoExotic.RealIntervalProgress.progress_before {l u t : ℝ} (hlu : l ≤ u) (ht : t ≤ l) :
+theorem RealIntervalProgress.progress_before {l u t : ℝ} (hlu : l ≤ u) (ht : t ≤ l) :
     progress l u t = 0 := by
   have h :=
     Set.projIcc_of_le_left (a := (0 : ℝ)) (b := 1) zero_le_one
       (div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr ht) (sub_nonneg.mpr hlu))
   exact congrArg Subtype.val h
 
-theorem NoExotic.RealIntervalProgress.progress_after {l u t : ℝ} (hlu : l < u) (ht : u ≤ t) :
+theorem RealIntervalProgress.progress_after {l u t : ℝ} (hlu : l < u) (ht : u ≤ t) :
     progress l u t = 1 := by
   have hr : 1 ≤ (t - l) / (u - l) := by
     apply (le_div_iff₀ (sub_pos.mpr hlu)).mpr
     simpa only [one_mul] using sub_le_sub_right ht l
   exact congrArg Subtype.val (Set.projIcc_of_right_le zero_le_one hr)
 
-noncomputable def NoExotic.ZeroAvoidanceCutoff.weight {X F : Type*} [TopologicalSpace X]
+noncomputable def ZeroAvoidanceCutoff.weight {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) : C(X, ℝ) :=
-  ⟨fun x ↦ 1 - NoExotic.RealIntervalProgress.progress ε (2 * ε) ‖f x‖,
+  ⟨fun x ↦ 1 - RealIntervalProgress.progress ε (2 * ε) ‖f x‖,
     continuous_const.sub
-      ((NoExotic.RealIntervalProgress.continuous_progress ε (2 * ε)).comp f.continuous.norm)⟩
+      ((RealIntervalProgress.continuous_progress ε (2 * ε)).comp f.continuous.norm)⟩
 
-theorem NoExotic.ZeroAvoidanceCutoff.weight_bounds {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.weight_bounds {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (x : X) : 0 ≤ weight f ε x ∧ weight f ε x ≤ 1 := by
-  have hp : NoExotic.RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ∈ Set.Icc (0 : ℝ) 1 :=
+  have hp : RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ∈ Set.Icc (0 : ℝ) 1 :=
     (Set.projIcc (0 : ℝ) 1 zero_le_one ((‖f x‖ - ε) / (2 * ε - ε))).property
   change
-    0 ≤ 1 - NoExotic.RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ∧
-      1 - NoExotic.RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ≤ 1
+    0 ≤ 1 - RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ∧
+      1 - RealIntervalProgress.progress ε (2 * ε) ‖f x‖ ≤ 1
   constructor <;> linarith [hp.1, hp.2]
 
-theorem NoExotic.ZeroAvoidanceCutoff.weight_small {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.weight_small {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X} (hx : ‖f x‖ ≤ ε) :
     weight f ε x = 1 := by
   simp only [weight, ContinuousMap.coe_mk,
-    NoExotic.RealIntervalProgress.progress_before (by linarith : ε ≤ 2 * ε) hx, sub_zero]
+    RealIntervalProgress.progress_before (by linarith : ε ≤ 2 * ε) hx, sub_zero]
 
-theorem NoExotic.ZeroAvoidanceCutoff.weight_large {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.weight_large {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] (f : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X} (hx : 2 * ε ≤ ‖f x‖) :
     weight f ε x = 0 := by
   simp only [weight, ContinuousMap.coe_mk,
-    NoExotic.RealIntervalProgress.progress_after (by linarith : ε < 2 * ε) hx, sub_self]
+    RealIntervalProgress.progress_after (by linarith : ε < 2 * ε) hx, sub_self]
 
-noncomputable def NoExotic.ZeroAvoidanceCutoff.blend {X F : Type*} [TopologicalSpace X]
+noncomputable def ZeroAvoidanceCutoff.blend {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) : C(X, F) :=
   ⟨fun x ↦ f x + weight f ε x • (g x - f x),
     f.continuous.add ((weight f ε).continuous.smul (g.continuous.sub f.continuous))⟩
 
-theorem NoExotic.ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : ‖f x‖ ≤ ε) : blend f g ε x = g x := by
   change f x + weight f ε x • (g x - f x) = g x
   rw [weight_small f ε hε hx, one_smul]
   abel
 
-theorem NoExotic.ZeroAvoidanceCutoff.blend_large {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.blend_large {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : 2 * ε ≤ ‖f x‖) : blend f g ε x = f x := by
   change f x + weight f ε x • (g x - f x) = f x
   rw [weight_large f ε hε hx, zero_smul, add_zero]
 
-theorem NoExotic.ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (x : X) :
     Dist.dist (blend f g ε x) (f x) ≤ Dist.dist (g x) (f x) := by
   simp only [dist_eq_norm]
@@ -1208,7 +1208,7 @@ theorem NoExotic.ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpa
   rw [add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg (weight_bounds f ε x).1]
   exact mul_le_of_le_one_left (norm_nonneg _) (weight_bounds f ε x).2
 
-theorem NoExotic.ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hg : ∀ x, g x ≠ 0) (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (x : X) : blend f g ε x ≠ 0 := by
   by_cases hx : ‖f x‖ ≤ ε
@@ -1219,7 +1219,7 @@ theorem NoExotic.ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpa
     rw [hz, dist_zero_left] at hh
     exact hx hh.le
 
-noncomputable def NoExotic.ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X]
+noncomputable def ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) :
     ContinuousMap.HomotopyRel f (blend f g ε) {x | 2 * ε ≤ ‖f x‖}
     where
@@ -1239,7 +1239,7 @@ noncomputable def NoExotic.ZeroAvoidanceCutoff.homotopy {X F : Type*} [Topologic
     change f x + (t : ℝ) • (blend f g ε x - f x) = f x
     rw [blend_large f g ε hε hx, sub_self, smul_zero, add_zero]
 
-theorem NoExotic.ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
+theorem ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (t : (unitInterval)) (x : X) :
     Dist.dist (homotopy f g ε hε (t, x)) (f x) < ε := by
@@ -1252,7 +1252,7 @@ theorem NoExotic.ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [Topological
     _ ≤ Dist.dist (g x) (f x) := by simpa only [dist_eq_norm] using dist_blend_le f g ε x
     _ < ε := hclose x
 
-theorem NoExotic.exists_nonzero_homotopy_small {B H M F : Type*} [NormedAddCommGroup B]
+theorem exists_nonzero_homotopy_small {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
     [SigmaCompactSpace M] [T2Space M] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -1286,7 +1286,7 @@ theorem Smale.SurgeryBoundaryPair.exists_belt_avoiding_circle {N P R X Y : Type*
   have hparam (x : U) : d.newPiece (⟨(coord x).1, (coord x).1.property.le⟩, (coord x).2) = g x :=
     congrArg (fun y : d.NewInterior => (y : Y)) (e.apply_symm_apply ⟨g x, x.property⟩)
   obtain ⟨q, hq, G, hclose⟩ :=
-    NoExotic.exists_nonzero_homotopy_small (I := 𝓡 1) normal (1 / 8) (by norm_num)
+    exists_nonzero_homotopy_small (I := 𝓡 1) normal (1 / 8) (by norm_num)
       (by simpa only [finrank_euclideanSpace_fin] using hdim)
   have hnorm (t) (x : U) : ‖G (t, x)‖ < 1 := by
     by_cases hx : 1 / 4 ≤ ‖normal x‖

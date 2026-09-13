@@ -28,7 +28,7 @@ Topology*, Ch. 8; the weak Whitney immersion theorem).
    general `Plane` (representation-only generality dictated by the twin file).
 3. `Smale.CurveImmersion` and the arc/germ existence one-offs.
 4. Support machinery: `Smale.OpenObstacle`, `Smale.ManifoldSmoothing`,
-   `Smale.FrameField` with `Degree.AxisCoordinates`, and the tubular
+   `Smale.FrameField` with `AxisCoordinates`, and the tubular
    neighborhood existence one-offs.
 
 ## Main definitions and results
@@ -72,7 +72,7 @@ theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [Norm
             ∀ y ∈ V,
               ∃ d : Diffeomorph J J M M ∞,
                 Smale.SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) x
+  let c := modelChartPartialDiffeomorph (I := J) x
   let Φ := Smale.PartialChart.restrictTarget c.symm hU
   have hxc : x ∈ c.source := mem_extChartAt_source x
   have hcx : c.symm (c x) = x := c.left_inv' hxc
@@ -655,7 +655,7 @@ theorem Smale.ManifoldImmersion.isOpen_injective_nativeDerivative {P E G H N : T
     IsOpen {q : P × E | q ∈ W ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J (f q.1) q.2)} := by
   rw [isOpen_iff_mem_nhds]
   rintro q ⟨hq, hqinj⟩
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f q.1 q.2)
+  let c := modelChartPartialDiffeomorph (I := J) (f q.1 q.2)
   let U := W ∩ (Function.uncurry f) ⁻¹' c.source
   have hU : IsOpen U := hf.continuousOn.isOpen_inter_preimage hW c.open_source
   have hqU : q ∈ U := ⟨hq, mem_extChartAt_source (f q.1 q.2)⟩
@@ -1585,7 +1585,7 @@ theorem Smale.ManifoldImmersion.exists_relative_immersion_patch_at_in_open {E G 
           IsCompact L ∧
             L ∈ 𝓝 x ∧ L ⊆ p.plateau ∧ (∀ y ∈ C, p.cutoff y = 0) ∧ p.chart.source ⊆ O := by
   classical
-  let c₀ := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c₀ := modelChartPartialDiffeomorph (I := J) (f x)
   let c := Smale.PartialChart.restrictSource c₀ hO
   have hsource : f x ∈ c.source := ⟨mem_extChartAt_source (I := J) (f x), hxO⟩
   have hU : f ⁻¹' c.source ∩ Cᶜ ∈ 𝓝 x :=
@@ -1786,7 +1786,7 @@ theorem Smale.ManifoldImmersion.exists_separating_patch_in_open {E G H N : Type*
     ∃ p : Smale.GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C,
       p.Compatible f ∧ p.cutoff x = 1 ∧ p.cutoff y = 0 ∧ p.chart.source ⊆ O := by
   classical
-  let c₀ := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c₀ := modelChartPartialDiffeomorph (I := J) (f x)
   let c := Smale.PartialChart.restrictSource c₀ hO
   have hsource : f x ∈ c.source := ⟨mem_extChartAt_source (I := J) (f x), hxO⟩
   have hU : f ⁻¹' c.source ∩ (C ∪ { y })ᶜ ∈ 𝓝 x := by
@@ -1836,7 +1836,7 @@ theorem Smale.ManifoldImmersion.exists_open_injOn_of_injective_fderiv {E F : Typ
   have hinv : (fderiv ℝ (L ∘ f) x).IsInvertible := by
     rw [hderiv.fderiv]
     exact ⟨ContinuousLinearEquiv.refl ℝ E, rfl⟩
-  obtain ⟨φ, hxφ, hφU, hφeq⟩ := NoExotic.exists_partialDiffeomorph_of_contDiffOn hU hx hcomp hinv
+  obtain ⟨φ, hxφ, hφU, hφeq⟩ := exists_partialDiffeomorph_of_contDiffOn hU hx hcomp hinv
   refine ⟨φ.source, φ.open_source, hxφ, hφU, ?_⟩
   intro y hy z hz hyz
   apply φ.toPartialEquiv.injOn hy hz
@@ -1850,7 +1850,7 @@ theorem Smale.ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative_
     [IsManifold J ∞ N] {f : E → N} {W : Set E} (hW : IsOpen W) (hf : ContMDiffOn 𝓘(ℝ, E) J ∞ f W)
     {x : E} (hxW : x ∈ W) (hinj : Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
     ∃ V : Set E, IsOpen V ∧ x ∈ V ∧ V ⊆ W ∧ Set.InjOn f V := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c := modelChartPartialDiffeomorph (I := J) (f x)
   have hx : f x ∈ c.source := mem_extChartAt_source (f x)
   let U := W ∩ f ⁻¹' c.source
   have hU : IsOpen U := hf.continuousOn.isOpen_inter_preimage hW c.open_source
@@ -4055,30 +4055,30 @@ theorem Smale.FrameField.exists_sheared_frame_chart {X Z F : Type*} [NormedAddCo
     Smale.exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hzeroInj hlocal
       (hU.preimage continuous_fst) (fun _ hp => hKU hp.1)
 
-def Degree.AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] ℝ :=
   (ContinuousLinearMap.fst ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
-def Degree.AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+def AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] V :=
   (ContinuousLinearMap.snd ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
-theorem Degree.AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (tangentShear (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
-theorem Degree.AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (transverseBlock (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
-theorem Degree.AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) (s : ℝ) (z : V) :
     L (s, z) = (s + tangentShear L z, transverseBlock L z) := by
   have hp : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
   rw [hp, map_add, map_smul, hL]
   apply Prod.ext <;> simp [tangentShear, transverseBlock]
 
-theorem Degree.AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) :
     L = Smale.FrameField.shearedBlock (tangentShear L) (transverseBlock L) := by
   apply ContinuousLinearMap.ext
@@ -4086,7 +4086,7 @@ theorem Degree.AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] 
   rw [Smale.FrameField.shearedBlock_apply]
   exact axis_block_apply L hL p.1 p.2
 
-theorem Degree.AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : Function.Bijective L) : Function.Bijective (transverseBlock L) := by
   constructor
@@ -4100,7 +4100,7 @@ theorem Degree.AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddC
     rw [axis_block_apply L hL] at hz
     exact ⟨z, congrArg (fun p : ℝ × V => p.2) hz⟩
 
-theorem Degree.AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : L.IsInvertible) : (transverseBlock L).IsInvertible := by
   let e :=
@@ -4108,7 +4108,7 @@ theorem Degree.AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedA
         (bijective_transverseBlock L hL hi.bijective)).toContinuousLinearEquiv
   exact ⟨e, rfl⟩
 
-theorem Degree.AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : (ℝ × V) → (ℝ × V)} {s : ℝ} (hF : ContDiffAt ℝ ∞ F (s, 0))
     (heq : (fun r : ℝ => F (r, 0)) =ᶠ[𝓝 s] (fun r => (r, (0 : V)))) :
     fderiv ℝ F (s, 0) (1, 0) = (1, 0) := by
@@ -4117,7 +4117,7 @@ theorem Degree.AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommG
   have hd := (hF.differentiableAt (by simp)).hasFDerivAt.comp_hasDerivAt s ha
   exact hd.deriv.symm.trans (heq.deriv_eq.trans ha.deriv)
 
-theorem Degree.AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
+theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞) {s₀ : ℝ}
@@ -4222,22 +4222,22 @@ theorem Smale.exists_smooth_open_curve_with_endpoint_germs {B : Type*} [NormedAd
     change 7 / 8 < t at ht
     exact (congrArg Subtype.val (hfb ht.le)).trans htb
 
-def Degree.LinearFramePaths.matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
+def LinearFramePaths.matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℝ D) : (D →L[ℝ] D) ≃L[ℝ] Matrix ι ι ℝ :=
   (LinearMap.toContinuousLinearMap.symm.trans (LinearMap.toMatrix b b)).toContinuousLinearEquiv
 
-theorem Degree.LinearFramePaths.det_matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
+theorem LinearFramePaths.det_matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℝ D)
     (A : D →L[ℝ] D) : Matrix.det (matrixCoordinates b A) = A.toLinearMap.det :=
   LinearMap.det_toMatrix b A.toLinearMap
 
-def Degree.LinearFramePaths.operatorComponent {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def LinearFramePaths.operatorComponent {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     (σ : ℝ) : TopologicalSpace.Opens (D →L[ℝ] D) :=
   ⟨{A | 0 < σ * A.toLinearMap.det},
     isOpen_lt continuous_const (continuous_const.mul ContinuousLinearMap.continuous_det)⟩
 
-theorem Degree.LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedAddCommGroup D]
+theorem LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι] (b : Module.Basis ι ℝ D)
     {σ : ℝ} (A B : operatorComponent (D := D) σ) : Joined A B := by
   classical
@@ -4267,7 +4267,7 @@ theorem Degree.LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedA
   have h := (joined_determinantComponent A' B').map hψ
   rwa [hA, hB] at h
 
-theorem Degree.LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type*}
+theorem LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι]
     (basis : Module.Basis ι ℝ D) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ} (ha : ContDiffOn ℝ ∞ a U)
     (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V) (h0U : (0 : ℝ) ∈ U)
@@ -4302,7 +4302,7 @@ theorem Degree.LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type
   have hi : Function.Injective (L t) := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
-theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
+theorem AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)} {T₀ T₁ : ℝ → (V →L[ℝ] V)}
     {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀) (hA₁ : ContDiffOn ℝ ∞ A₁ U₁)
@@ -4327,14 +4327,14 @@ theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     Smale.exists_smooth_open_curve_with_endpoint_germs S hA₀ hA₁ hU₀ hU₁ h0 h1 (Set.mem_univ _)
       (Set.mem_univ _) γ
   obtain ⟨T, hT, hi, -, ht₀, ht₁⟩ :=
-    Degree.LinearFramePaths.exists_smooth_invertible_frame_join basis hT₀ hT₁ hU₀ hU₁ h0 h1 hsign
+    LinearFramePaths.exists_smooth_invertible_frame_join basis hT₀ hT₁ hU₀ hU₁ h0 h1 hsign
   have hTi (s : ℝ) : (T s).IsInvertible :=
     ⟨(LinearEquiv.ofBijective (T s).toLinearMap (hi s)).toContinuousLinearEquiv, rfl⟩
   exact
     ⟨A, T, hA, hT, hTi, fun s => Smale.FrameField.isInvertible_shearedBlock (A s) (T s) (hTi s),
       ha₀, ha₁, ht₀, ht₁⟩
 
-theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
+theorem AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {p q : ℝ} (hpq : p < q) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)}
     {T₀ T₁ : ℝ → (V →L[ℝ] V)} {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀)
@@ -4385,7 +4385,7 @@ theorem Degree.AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*
   · filter_upwards [hζ1 ht₁] with s hs
     exact hs.trans (congrArg T₁ (hξζ s))
 
-theorem Degree.AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
+theorem AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R : E → F} {K U : Set E} {x : E} (hH : ContDiff ℝ ∞ H) (hR : ContDiffOn ℝ ∞ R U)
     (hU : IsOpen U) (hx : x ∈ U) (hvalue : ∀ y ∈ K ∩ U, R y = H y)
@@ -4432,7 +4432,7 @@ theorem Degree.AxisCoordinates.exists_flat_local_correction {E F : Type*} [Norme
       simpa only [add_zero, Pi.add_def, G] using (hh.hasFDerivAt.add hc).fderiv
     · exact (hoff y hb).fderiv_eq
 
-theorem Degree.AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
+theorem AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R₀ R₁ : (ℝ × V) → F} {U₀ U₁ : Set (ℝ × V)} {p q : ℝ} (hpq : p < q) (hH : ContDiff ℝ ∞ H)
     (hR₀ : ContDiffOn ℝ ∞ R₀ U₀) (hR₁ : ContDiffOn ℝ ∞ R₁ U₁) (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁)
@@ -4534,7 +4534,7 @@ theorem Smale.FrameField.exists_sheared_tubular_chart {X Z F E M : Type*} [Norme
         ((hA.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
         ((hT.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
 
-theorem Degree.AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
+theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (basis : Module.Basis ι ℝ V) (Ψ Φ₀ Φ₁ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)

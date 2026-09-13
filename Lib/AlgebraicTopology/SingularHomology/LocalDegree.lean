@@ -23,7 +23,7 @@ on small spheres:
 * `Smale.LocalDegree.BoundaryData` — for `f` differentiable at `0` with `f 0 = 0`, the small
   sphere on which `f` avoids `0`, with `homology_compare` (the boundary map and the linear
   map agree in homology — the definition of the local degree's sign datum);
-* `Degree.PassageHomology.*` — punctured spaces, the two-puncture extension, linking
+* `PassageHomology.*` — punctured spaces, the two-puncture extension, linking
   spheres, cylinder puncture/slice/link, and the punctured passage trace (the "linking
   relation" of a path with a sphere).
 
@@ -53,7 +53,7 @@ The radial-cylinder chart family that needs `Smale.PartialChart`/diffeomorphic g
 
 * `Smale.PuncturedRadial.sphereHomotopyEquiv` : the radial homotopy equivalence.
 * `Smale.LocalDegree.BoundaryData` and `.homology_compare` : the local degree boundary datum.
-* `Degree.PassageHomology.radial_sphere_homology_relation` : the linking relation.
+* `PassageHomology.radial_sphere_homology_relation` : the linking relation.
 
 ## References
 
@@ -86,18 +86,18 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-def Degree.PassageHomology.twoPunctureSet {X : Type} (a b : X) : Set X :=
+def PassageHomology.twoPunctureSet {X : Type} (a b : X) : Set X :=
   ({ a }ᶜ : Set X) ∩ { b }ᶜ
 
-def Degree.PassageHomology.firstPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
+def PassageHomology.firstPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
     C(twoPunctureSet a b, ({ a }ᶜ : Set X)) :=
   ContinuousMap.inclusion Set.inter_subset_left
 
-def Degree.PassageHomology.secondPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
+def PassageHomology.secondPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
     C(twoPunctureSet a b, ({ b }ᶜ : Set X)) :=
   ContinuousMap.inclusion Set.inter_subset_right
 
-theorem Degree.PassageHomology.homology_ext_of_ambient_vanishing {X : Type} [TopologicalSpace X]
+theorem PassageHomology.homology_ext_of_ambient_vanishing {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ) (n : ℕ)
     [Subsingleton (SingularMayerVietoris.SingularHomology X (n + 1))]
     {a b : SingularMayerVietoris.SingularHomology (U ∩ V : Set X) n}
@@ -125,7 +125,7 @@ theorem Degree.PassageHomology.homology_ext_of_ambient_vanishing {X : Type} [Top
   rw [SingularMayerVietoris.leftHomologyMap_apply, SingularMayerVietoris.leftHomologyMap_apply,
     hfirst, hsecond]
 
-theorem Degree.PassageHomology.two_puncture_homology_ext {X : Type} [TopologicalSpace X]
+theorem PassageHomology.two_puncture_homology_ext {X : Type} [TopologicalSpace X]
     [T1Space X] [ContractibleSpace X] {p q : X} (hpq : p ≠ q) (n : ℕ)
     {a b : SingularMayerVietoris.SingularHomology (twoPunctureSet p q) n}
     (hfirst :
@@ -147,7 +147,7 @@ theorem Degree.PassageHomology.two_puncture_homology_ext {X : Type} [Topological
     homology_ext_of_ambient_vanishing _ _ isOpen_compl_singleton isOpen_compl_singleton hc n
       hfirst hsecond
 
-theorem Degree.PassageHomology.affine_sphere_ne_of_norm_ne {E : Type} [NormedAddCommGroup E]
+theorem PassageHomology.affine_sphere_ne_of_norm_ne {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {p c : E} {r : ℝ} (hr : 0 ≤ r) (h : ‖c - p‖ ≠ r)
     (u : Metric.sphere (0 : E) 1) : c + r • u.val ≠ p := by
   intro he
@@ -160,7 +160,7 @@ theorem Degree.PassageHomology.affine_sphere_ne_of_norm_ne {E : Type} [NormedAdd
       rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hr, mem_sphere_zero_iff_norm.mp u.property,
         mul_one]
 
-def Degree.PassageHomology.puncturedSphereMap {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def PassageHomology.puncturedSphereMap {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p c : E) (r : ℝ) (h : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p) :
     C(Metric.sphere (0 : E) 1, ({ p }ᶜ : Set E))
     where
@@ -168,7 +168,7 @@ def Degree.PassageHomology.puncturedSphereMap {E : Type} [NormedAddCommGroup E] 
   continuous_toFun :=
     (continuous_const.add (continuous_const.smul continuous_subtype_val)).subtype_mk _
 
-theorem Degree.PassageHomology.puncturedSphereMap_homotopic_of_family {E : Type}
+theorem PassageHomology.puncturedSphereMap_homotopic_of_family {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E) (c : C(unitInterval, E))
     (r : C(unitInterval, ℝ)) {c₀ c₁ : E} {r₀ r₁ : ℝ} (hc₀ : c 0 = c₀) (hc₁ : c 1 = c₁)
     (hr₀ : r 0 = r₀) (hr₁ : r 1 = r₁)
@@ -194,7 +194,7 @@ theorem Degree.PassageHomology.puncturedSphereMap_homotopic_of_family {E : Type}
     change c 1 + r 1 • u.val = c₁ + r₁ • u.val
     rw [hc₁, hr₁]
 
-theorem Degree.PassageHomology.puncturedSphereMap_radius_homotopic {E : Type}
+theorem PassageHomology.puncturedSphereMap_radius_homotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E) {r₀ r₁ : ℝ} (hr₀ : 0 < r₀) (hr₁ : 0 < r₁)
     (h₀ : ∀ u : Metric.sphere (0 : E) 1, p + r₀ • u.val ≠ p)
     (h₁ : ∀ u : Metric.sphere (0 : E) 1, p + r₁ • u.val ≠ p) :
@@ -214,7 +214,7 @@ theorem Degree.PassageHomology.puncturedSphereMap_radius_homotopic {E : Type}
         (sub_add_cancel 1 (t : ℝ))
   exact affine_sphere_ne_of_norm_ne hrt.le (by simpa using hrt.ne) u
 
-theorem Degree.PassageHomology.puncturedSphereMap_center_homotopic {E : Type}
+theorem PassageHomology.puncturedSphereMap_center_homotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p c : E) {r : ℝ} (hinside : ‖c - p‖ < r)
     (h₀ : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p)
     (h₁ : ∀ u : Metric.sphere (0 : E) 1, p + r • u.val ≠ p) :
@@ -236,7 +236,7 @@ theorem Degree.PassageHomology.puncturedSphereMap_center_homotopic {E : Type}
   exact
     affine_sphere_ne_of_norm_ne ((norm_nonneg _).trans_lt hinside).le (hn.trans_lt hinside).ne u
 
-theorem Degree.PassageHomology.puncturedSphereMap_outside_nullhomotopic {E : Type}
+theorem PassageHomology.puncturedSphereMap_outside_nullhomotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p c : E) {r : ℝ} (hr : 0 ≤ r)
     (houtside : r < ‖c - p‖) (h : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p) :
     ∃ q : ({ p }ᶜ : Set E), (puncturedSphereMap p c r h).Homotopic (ContinuousMap.const _ q) := by
@@ -267,7 +267,7 @@ theorem Degree.PassageHomology.puncturedSphereMap_outside_nullhomotopic {E : Typ
     rw [zero_smul, add_zero]
   exact ⟨⟨c, hcp⟩, he ▸ H⟩
 
-def Degree.PassageHomology.twoPunctureSphereMap {E : Type} [NormedAddCommGroup E]
+def PassageHomology.twoPunctureSphereMap {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (p q c : E) (r : ℝ) (hp : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p)
     (hq : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ q) :
     C(Metric.sphere (0 : E) 1, twoPunctureSet p q)
@@ -276,13 +276,13 @@ def Degree.PassageHomology.twoPunctureSphereMap {E : Type} [NormedAddCommGroup E
   continuous_toFun :=
     (continuous_const.add (continuous_const.smul continuous_subtype_val)).subtype_mk _
 
-def Degree.PassageHomology.innerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
+def PassageHomology.innerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
     (r : ℝ) (hr : 0 < r) (hrb : r < ‖b‖) : C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
   twoPunctureSphereMap 0 b 0 r
     (affine_sphere_ne_of_norm_ne hr.le (by simpa only [sub_self, norm_zero] using hr.ne))
     (affine_sphere_ne_of_norm_ne hr.le (by simpa only [zero_sub, norm_neg] using hrb.ne'))
 
-def Degree.PassageHomology.outerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
+def PassageHomology.outerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
     (R : ℝ) (hbR : ‖b‖ < R) : C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
   twoPunctureSphereMap 0 b 0 R
     (affine_sphere_ne_of_norm_ne ((norm_nonneg b).trans_lt hbR).le
@@ -290,14 +290,14 @@ def Degree.PassageHomology.outerSphere {E : Type} [NormedAddCommGroup E] [Normed
     (affine_sphere_ne_of_norm_ne ((norm_nonneg b).trans_lt hbR).le
       (by simpa only [zero_sub, norm_neg] using hbR.ne))
 
-def Degree.PassageHomology.linkingSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def PassageHomology.linkingSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (b : E) (ε : ℝ) (hε : 0 < ε) (hεb : ε < ‖b‖) :
     C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
   twoPunctureSphereMap 0 b b ε
     (affine_sphere_ne_of_norm_ne hε.le (by simpa only [sub_zero] using hεb.ne'))
     (affine_sphere_ne_of_norm_ne hε.le (by simpa only [sub_self, norm_zero] using hε.ne))
 
-theorem Degree.PassageHomology.radial_sphere_homology_relation {E : Type} [NormedAddCommGroup E]
+theorem PassageHomology.radial_sphere_homology_relation {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (b : E) {r R ε : ℝ} (hr : 0 < r) (hrb : r < ‖b‖) (hbR : ‖b‖ < R)
     (hε : 0 < ε) (hεb : ε < ‖b‖) (n : ℕ) (hn : n ≠ 0) :
     SingularMayerVietoris.singularHomologyMap (outerSphere b R hbR) n =
@@ -380,35 +380,35 @@ theorem Degree.PassageHomology.radial_sphere_homology_relation {E : Type} [Norme
         LinearMap.zero_apply] using LinearMap.congr_fun hjiMap a
     rw [ho, hi, zero_add]
 
-def Degree.PassageHomology.cylinderPuncture {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def PassageHomology.cylinderPuncture {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (τ : ℝ) (u : Metric.sphere (0 : E) 1) : E :=
   Real.exp τ • u.val
 
-theorem Degree.PassageHomology.norm_cylinderPuncture {E : Type} [NormedAddCommGroup E]
+theorem PassageHomology.norm_cylinderPuncture {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (τ : ℝ) (u : Metric.sphere (0 : E) 1) :
     ‖cylinderPuncture τ u‖ = Real.exp τ := by
   rw [cylinderPuncture, norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos τ),
     mem_sphere_zero_iff_norm.mp u.property, mul_one]
 
-def Degree.PassageHomology.cylinderSlice {E : Type} [NormedAddCommGroup E] (τ : ℝ)
+def PassageHomology.cylinderSlice {E : Type} [NormedAddCommGroup E] (τ : ℝ)
     (u : Metric.sphere (0 : E) 1) (t : ℝ) (ht : t ≠ τ) :
     C(Metric.sphere (0 : E) 1, ({(τ, u)}ᶜ : Set (ℝ × Metric.sphere (0 : E) 1)))
     where
   toFun v := ⟨(t, v), fun h => ht (congrArg Prod.fst h)⟩
   continuous_toFun := (continuous_const.prodMk continuous_id).subtype_mk _
 
-def Degree.PassageHomology.clampTime : C(ℝ, ℝ) :=
+def PassageHomology.clampTime : C(ℝ, ℝ) :=
   ⟨fun t => Max.max 0 (Min.min 1 t), continuous_const.max (continuous_const.min continuous_id)⟩
 
-theorem Degree.PassageHomology.clampTime_mem (t : ℝ) : clampTime t ∈ Set.Icc (0 : ℝ) 1 :=
+theorem PassageHomology.clampTime_mem (t : ℝ) : clampTime t ∈ Set.Icc (0 : ℝ) 1 :=
   ⟨le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩
 
-theorem Degree.PassageHomology.clampTime_of_mem {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
+theorem PassageHomology.clampTime_of_mem {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     clampTime t = t := by
   change Max.max 0 (Min.min 1 t) = t
   rw [min_eq_right ht.2, max_eq_right ht.1]
 
-theorem Degree.PassageHomology.clampTime_eq_interior_iff {τ : ℝ} (hτ : τ ∈ Set.Ioo (0 : ℝ) 1)
+theorem PassageHomology.clampTime_eq_interior_iff {τ : ℝ} (hτ : τ ∈ Set.Ioo (0 : ℝ) 1)
     (t : ℝ) : clampTime t = τ ↔ t = τ := by
   constructor
   · intro he
@@ -427,7 +427,7 @@ theorem Degree.PassageHomology.clampTime_eq_interior_iff {τ : ℝ} (hτ : τ �
     subst t
     exact clampTime_of_mem ⟨hτ.1.le, hτ.2.le⟩
 
-def Degree.PassageHomology.puncturedPassageTrace {E X : Type} [NormedAddCommGroup E]
+def PassageHomology.puncturedPassageTrace {E X : Type} [NormedAddCommGroup E]
     [TopologicalSpace X] (H : C(ℝ × Metric.sphere (0 : E) 1, X)) (S : Set X) {τ : ℝ}
     (hτ : τ ∈ Set.Ioo (0 : ℝ) 1) (u : Metric.sphere (0 : E) 1)
     (hcross :
@@ -448,7 +448,7 @@ def Degree.PassageHomology.puncturedPassageTrace {E X : Type} [NormedAddCommGrou
       continuous_snd.comp continuous_subtype_val
     exact (H.continuous.comp (ht.prodMk hv)).subtype_mk _
 
-theorem Degree.PassageHomology.puncturedPassageTrace_on_interval {E X : Type}
+theorem PassageHomology.puncturedPassageTrace_on_interval {E X : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace X]
     (H : C(ℝ × Metric.sphere (0 : E) 1, X)) (S : Set X) {τ : ℝ} (hτ : τ ∈ Set.Ioo (0 : ℝ) 1)
     (u : Metric.sphere (0 : E) 1)
@@ -459,7 +459,7 @@ theorem Degree.PassageHomology.puncturedPassageTrace_on_interval {E X : Type}
   change H (clampTime p.val.1, p.val.2) = H p.val
   rw [clampTime_of_mem hp]
 
-def Degree.PassageHomology.puncturedVectorSpace (E : Type) [NormedAddCommGroup E] :
+def PassageHomology.puncturedVectorSpace (E : Type) [NormedAddCommGroup E] :
     TopologicalSpace.Opens E :=
   ⟨({0}ᶜ : Set E), isOpen_compl_singleton⟩
 

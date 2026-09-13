@@ -13,12 +13,12 @@ import Lib.Geometry.Manifold.Morse.Handle
 Flow boxes and partial chart fields (`Smale.FlowConstruction.*`), the Morse-block machinery
 isolating critical points (`MorseCancellation.morseClosedBlock*`,
 `exists_disjoint_morse_block_field`), and inverse-function ingredients
-(`NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv`).
+(`isLocalDiffeomorphAt_of_invertible_mvfderiv`).
 
 ## Main definitions and results
 
 * `Smale.FlowConstruction.*` : flow boxes and partial chart fields.
-* `NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv` : inverse function theorem form.
+* `isLocalDiffeomorphAt_of_invertible_mvfderiv` : inverse function theorem form.
 
 ## References
 
@@ -510,7 +510,7 @@ theorem MorseCancellation.exists_disjoint_surgery_block_field {E M : Type*} [Nor
     hmatch i z ((mem_closedBall_zero_iff.mp hz.1).trans_lt (hR i))
       ((mem_closedBall_zero_iff.mp hz.2).trans_lt (hR i))
 
-theorem NoExotic.exists_partialDiffeomorph_of_contDiffOn {E F : Type*} [NormedAddCommGroup E]
+theorem exists_partialDiffeomorph_of_contDiffOn {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F}
     {U : Set E} {x : E} (hU : IsOpen U) (hx : x ∈ U) (hf : ContDiffOn ℝ ∞ f U)
     (hinv : (fderiv ℝ f x).IsInvertible) :
@@ -552,7 +552,7 @@ theorem NoExotic.exists_partialDiffeomorph_of_contDiffOn {E F : Type*} [NormedAd
       ?_, hsource, rfl⟩
   exact ⟨hfx.mem_toOpenPartialHomeomorph_source hfd (by simp), hxW⟩
 
-def NoExotic.tangentModelEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H M : Type*}
+def tangentModelEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
     (x : M) : TangentSpace I x ≃L[ℝ] E where
   toFun v := v
@@ -564,7 +564,7 @@ def NoExotic.tangentModelEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   continuous_toFun := continuous_id
   continuous_invFun := continuous_id
 
-noncomputable def NoExotic.modelChartPartialDiffeomorph {E : Type*} [NormedAddCommGroup E]
+noncomputable def modelChartPartialDiffeomorph {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {H M : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] (x : M) :
     PartialDiffeomorph I 𝓘(ℝ, E) M E ∞
@@ -576,7 +576,7 @@ noncomputable def NoExotic.modelChartPartialDiffeomorph {E : Type*} [NormedAddCo
     simpa only [extChartAt_source] using (contMDiffOn_extChartAt (I := I) (x := x) (n := ∞))
   contMDiffOn_invFun := contMDiffOn_extChartAt_symm x
 
-theorem NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv {E F : Type*} [NormedAddCommGroup E]
+theorem isLocalDiffeomorphAt_of_invertible_mvfderiv {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]
     [ChartedSpace H M] [IsManifold I ∞ M] {f : M → F} {x : M} (hf : ContMDiff I 𝓘(ℝ, F) ∞ f)

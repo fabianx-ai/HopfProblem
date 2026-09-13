@@ -433,7 +433,7 @@ theorem SixSphereCube.cubeBoundary_nonempty : (Cube.boundary (Fin 6)).Nonempty :
   ⟨0, zero_mem_cubeBoundary⟩
 
 def SixSphereCube.cubeInteriorSphereHomeomorph : OnePoint CubeInterior ≃ₜ StandardSphere :=
-  Degree.SphereCube.compactification 6
+  SphereCube.compactification 6
 
 @[simp]
 theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
@@ -441,7 +441,7 @@ theorem SixSphereCube.cubeInteriorSphereHomeomorph_infty :
   rfl
 
 def SixSphereCube.cubeSphereMap : C(Fin 6 → (unitInterval), StandardSphere) :=
-  Degree.SphereCube.quotient 6
+  SphereCube.quotient 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
@@ -450,18 +450,18 @@ theorem SixSphereCube.cubeSphereMap_apply (u : Fin 6 → (unitInterval)) :
 
 theorem SixSphereCube.cubeSphereMap_boundary (u : Fin 6 → (unitInterval))
     (hu : u ∈ Cube.boundary (Fin 6)) : cubeSphereMap u = sphereBasePoint :=
-  Degree.SphereCube.quotient_boundary 6 u hu
+  SphereCube.quotient_boundary 6 u hu
 
 theorem SixSphereCube.cubeSphereMap_eq_iff (u v : Fin 6 → (unitInterval)) :
     cubeSphereMap u = cubeSphereMap v ↔
       u = v ∨ u ∈ Cube.boundary (Fin 6) ∧ v ∈ Cube.boundary (Fin 6) :=
-  Degree.SphereCube.quotient_eq_iff 6 u v
+  SphereCube.quotient_eq_iff 6 u v
 
 theorem SixSphereCube.cubeSphereMap_surjective : Function.Surjective cubeSphereMap :=
-  Degree.SphereCube.quotient_surjective (by decide)
+  SphereCube.quotient_surjective (by decide)
 
 def SixSphereCube.cubeSphereLoop : GenLoop (Fin 6) StandardSphere sphereBasePoint :=
-  Degree.SphereCube.quotientLoop 6
+  SphereCube.quotientLoop 6
 
 @[simp]
 theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
@@ -469,23 +469,23 @@ theorem SixSphereCube.cubeSphereLoop_val : cubeSphereLoop.val = cubeSphereMap :=
 
 def SixSphereCube.factorMap {X : Type*} [TopologicalSpace X] {x : X} (p : GenLoop (Fin 6) X x) :
     C(StandardSphere, X) :=
-  Degree.SphereCube.factorMap (by decide) p
+  SphereCube.factorMap (by decide) p
 
 @[simp]
 theorem SixSphereCube.factorMap_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (u : Fin 6 → (unitInterval)) :
     factorMap p (cubeSphereMap u) = p u :=
-  Degree.SphereCube.factorMap_quotient (by decide) p u
+  SphereCube.factorMap_quotient (by decide) p u
 
 @[simp]
 theorem SixSphereCube.factorMap_comp_cubeSphereMap {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) : (factorMap p).comp cubeSphereMap = p.val :=
-  Degree.SphereCube.factorMap_comp_quotient (by decide) p
+  SphereCube.factorMap_comp_quotient (by decide) p
 
 theorem SixSphereCube.factorMap_unique {X : Type*} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) (f : C(StandardSphere, X)) (hf : f.comp cubeSphereMap = p.val) :
     f = factorMap p :=
-  Degree.SphereCube.factorMap_unique (by decide) p f hf
+  SphereCube.factorMap_unique (by decide) p f hf
 
 
 theorem SixSphereCube.factor_cubeChain {X : Type} [TopologicalSpace X] {x : X}
@@ -554,7 +554,7 @@ def SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyEquiv
   SpecialPeriods.Threefold.SphereHomologyMap.homologyEquivOfTopClassPreimage (sphereMap x)
     sourceCubeClass (sphereMap_sourceCubeClass x) n
 
-theorem Degree.sphereMap_piSix_bijective (x : SpecialPeriods.Threefold.Space) :
+theorem sphereMap_piSix_bijective (x : SpecialPeriods.Threefold.Space) :
     Function.Bijective
       (SixthHurewicz.homotopyMap (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
         SixSphereCube.sphereBasePoint) := by
@@ -599,34 +599,34 @@ theorem Degree.sphereMap_piSix_bijective (x : SpecialPeriods.Threefold.Space) :
           rw [source.apply_symm_apply, middle.apply_symm_apply]
     exact congrArg Additive.toMul (target.injective ht)
 
-theorem Degree.BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup V]
+theorem BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (x : SpecialPeriods.Threefold.Space)
     (L : V ≃L[ℝ] (Fin 6 → ℝ))
-    (u : C(Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space))
+    (u : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space))
     (hu :
-      ∀ z : Degree.DiskCylinder.Disk (E := V),
+      ∀ z : DiskCylinder.Disk (E := V),
         ‖(z : V)‖ = 1 →
           u z =
             SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
               SixSphereCube.sphereBasePoint) :
-    ∃ v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
-      (∀ z : Degree.DiskCylinder.Disk (E := V),
+    ∃ v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
+      (∀ z : DiskCylinder.Disk (E := V),
           ‖(z : V)‖ = 1 → v z = SixSphereCube.sphereBasePoint) ∧
         ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp v).HomotopicRel u
-          {z : Degree.DiskCylinder.Disk (E := V) | ‖(z : V)‖ = 1} := by
+          {z : DiskCylinder.Disk (E := V) | ‖(z : V)‖ = 1} := by
   let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let e := Degree.DiskCube.homeomorph L
+  let e := DiskCube.homeomorph L
   let q : GenLoop (Fin 6) SpecialPeriods.Threefold.Space (F SixSphereCube.sphereBasePoint) :=
     ⟨u.comp (e.symm : C(_, _)), fun z hz =>
-      hu (e.symm z) ((Degree.DiskCube.symm_boundary_iff L z).mpr hz)⟩
-  obtain ⟨a, ha⟩ := (Degree.sphereMap_piSix_bijective x).2 ⟦q⟧
+      hu (e.symm z) ((DiskCube.symm_boundary_iff L z).mpr hz)⟩
+  obtain ⟨a, ha⟩ := (sphereMap_piSix_bijective x).2 ⟦q⟧
   obtain ⟨p, hp⟩ := Quotient.exists_rep a
   have he : SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint ⟦p⟧ = ⟦q⟧ :=
     (congrArg (SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint) hp).trans ha
   have hh : GenLoop.Homotopic (SecondHurewicz.mapGenLoop F SixSphereCube.sphereBasePoint p) q :=
     Quotient.exact he
   obtain ⟨H⟩ := hh
-  let v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere) :=
+  let v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere) :=
     p.val.comp (e : C(_, _))
   refine
     ⟨v, ?_,
@@ -637,15 +637,15 @@ theorem Degree.BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCom
           map_one_left := ?_
           prop' := ?_ }⟩⟩
   · intro z hz
-    exact p.property (e z) ((Degree.DiskCube.boundary_iff L z).mpr hz)
+    exact p.property (e z) ((DiskCube.boundary_iff L z).mpr hz)
   · intro z
     exact H.apply_zero (e z)
   · intro z
     exact (H.apply_one (e z)).trans (congrArg u (e.symm_apply_apply z))
   · intro t z hz
-    exact H.eq_fst t ((Degree.DiskCube.boundary_iff L z).mpr hz)
+    exact H.eq_fst t ((DiskCube.boundary_iff L z).mpr hz)
 
-theorem Degree.Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
+theorem Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
     (x : SixSphereCube.StandardSphere) : Subsingleton (π_ n SixSphereCube.StandardSphere x) := by
   have hn5 : n ≤ 5 := by omega
   interval_cases n
@@ -655,37 +655,37 @@ theorem Degree.Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
   · exact piFour_subsingleton x
   · exact piFive_subsingleton x
 
-theorem Degree.Sphere.boundary_homotopic_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem Sphere.boundary_homotopic_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (hd : Module.finrank ℝ V ≤ 6)
-    (u : C(Degree.DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
+    (u : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
     (x : SixSphereCube.StandardSphere) : u.Homotopic (ContinuousMap.const _ x) :=
   boundary_homotopic_const_of_pi (fun _ hn hn6 => pi_subsingleton hn hn6) hd u x
 
-theorem Degree.Sphere.exists_boundary_extension {V : Type} [NormedAddCommGroup V]
+theorem Sphere.exists_boundary_extension {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (hd : Module.finrank ℝ V ≤ 6)
-    (u : C(Degree.DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
+    (u : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
     (x : SixSphereCube.StandardSphere) :
-    ∃ v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
-      (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x :=
+    ∃ v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere),
+      (∀ s, v (DiskCylinder.boundaryToDisk s) = u s) ∧ v ⟨0, by simp⟩ = x :=
   exists_boundary_extension_of_pi (fun _ hn hn6 => pi_subsingleton hn hn6) hd u x
 
-theorem Degree.LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
+theorem LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
     [PathConnectedSpace Y] (F : C(SixSphereCube.StandardSphere, Y))
     (hpi : ∀ n, 0 < n → n < 6 → ∀ y : Y, Subsingleton (π_ n Y y)) :
-    Degree.FiniteCells.RelativeDiskLifting F 5 := by
+    FiniteCells.RelativeDiskLifting F 5 := by
   intro V _ _ _ hd a u H h0 h1
   obtain ⟨v, hv, _⟩ :=
-    Degree.Sphere.exists_boundary_extension (hd.trans (by decide)) a SixSphereCube.sphereBasePoint
-  have h0' : ∀ s, H (0, s) = (F.comp v) (Degree.DiskCylinder.boundaryToDisk s) := by
+    Sphere.exists_boundary_extension (hd.trans (by decide)) a SixSphereCube.sphereBasePoint
+  have h0' : ∀ s, H (0, s) = (F.comp v) (DiskCylinder.boundaryToDisk s) := by
     intro s
     exact (h0 s).trans (congrArg F (hv s).symm)
   obtain ⟨G, hG0, hG1, hGside⟩ :=
-    Degree.CylinderFilling.exists_filling hpi (by omega : Module.finrank ℝ V + 1 ≤ 6) (F.comp v) u
+    CylinderFilling.exists_filling hpi (by omega : Module.finrank ℝ V + 1 ≤ 6) (F.comp v) u
       H h0' h1 (F SixSphereCube.sphereBasePoint)
   exact ⟨v, G, hv, hG0, hG1, hGside⟩
 
 attribute [local instance] SpecialPeriods.Threefold.space_simplyConnected in
-theorem Degree.LowCellLifting.threefold_pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
+theorem LowCellLifting.threefold_pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
     (x : SpecialPeriods.Threefold.Space) : Subsingleton (π_ n SpecialPeriods.Threefold.Space x) :=
   by
   have hn5 : n ≤ 5 := by omega
@@ -697,97 +697,97 @@ theorem Degree.LowCellLifting.threefold_pi_subsingleton {n : ℕ} (hn : 0 < n) (
   · exact SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton x
 
 attribute [local instance] SpecialPeriods.Threefold.space_simplyConnected in
-theorem Degree.LowCellLifting.sphereMap_relativeDiskLifting_five
+theorem LowCellLifting.sphereMap_relativeDiskLifting_five
     (x : SpecialPeriods.Threefold.Space) :
-    Degree.FiniteCells.RelativeDiskLifting
+    FiniteCells.RelativeDiskLifting
       (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) 5 :=
   relativeDiskLifting_five _ (fun _ hn hn6 => threefold_pi_subsingleton hn hn6)
 
-theorem Degree.TopCellLifting.exists_top_disk_lift {V : Type} [NormedAddCommGroup V]
+theorem TopCellLifting.exists_top_disk_lift {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (x : SpecialPeriods.Threefold.Space)
     (L : V ≃L[ℝ] (Fin 6 → ℝ)) (hd : Module.finrank ℝ V ≤ 6)
-    (a : C(Degree.DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
-    (u : C(Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space))
-    (H : C((unitInterval) × Degree.DiskCylinder.Sphere (E := V), SpecialPeriods.Threefold.Space))
+    (a : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere))
+    (u : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space))
+    (H : C((unitInterval) × DiskCylinder.Sphere (E := V), SpecialPeriods.Threefold.Space))
     (h0 : ∀ s, H (0, s) = SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x (a s))
-    (h1 : ∀ s, H (1, s) = u (Degree.DiskCylinder.boundaryToDisk s)) :
-    ∃ (v : C(Degree.DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere)) (G :
-      C((unitInterval) × Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space)),
-      (∀ s, v (Degree.DiskCylinder.boundaryToDisk s) = a s) ∧
+    (h1 : ∀ s, H (1, s) = u (DiskCylinder.boundaryToDisk s)) :
+    ∃ (v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere)) (G :
+      C((unitInterval) × DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space)),
+      (∀ s, v (DiskCylinder.boundaryToDisk s) = a s) ∧
         (∀ z, G (0, z) = SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x (v z)) ∧
-          (∀ z, G (1, z) = u z) ∧ ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s) :=
+          (∀ z, G (1, z) = u z) ∧ ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s) :=
   by
   let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let c : C(Degree.DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere) :=
+  let c : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere) :=
     ContinuousMap.const _ SixSphereCube.sphereBasePoint
-  obtain ⟨Ac⟩ := (Degree.Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint).symm
-  let A : Path c a := Degree.MappingPaths.ofHomotopy Ac
+  obtain ⟨Ac⟩ := (Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint).symm
+  let A : Path c a := MappingPaths.ofHomotopy Ac
   let FA : Path (F.comp c) (F.comp a) := A.map (ContinuousMap.continuous_postcomp F)
-  let HP : Path (F.comp a) (u.comp Degree.DiskCylinder.boundaryToDisk) :=
+  let HP : Path (F.comp a) (u.comp DiskCylinder.boundaryToDisk) :=
     { toContinuousMap := H.curry
       source' := ContinuousMap.ext h0
       target' := ContinuousMap.ext h1 }
   let K := HP.symm.trans FA.symm
-  obtain ⟨u₀, E, hE, hu₀⟩ := Degree.BoundaryPathTransport.exists_transport u K rfl
+  obtain ⟨u₀, E, hE, hu₀⟩ := BoundaryPathTransport.exists_transport u K rfl
   have hu₀' :
-    ∀ z : Degree.DiskCylinder.Disk (E := V),
+    ∀ z : DiskCylinder.Disk (E := V),
       ‖(z : V)‖ = 1 → u₀ z = F SixSphereCube.sphereBasePoint := by
     intro z hz
     exact ContinuousMap.congr_fun hu₀ ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
-  obtain ⟨p, hp, ⟨B⟩⟩ := Degree.BasedDiskLifting.exists_based_disk_lift x L u₀ hu₀'
-  have hp' : p.comp Degree.DiskCylinder.boundaryToDisk = c := by
+  obtain ⟨p, hp, ⟨B⟩⟩ := BasedDiskLifting.exists_based_disk_lift x L u₀ hu₀'
+  have hp' : p.comp DiskCylinder.boundaryToDisk = c := by
     apply ContinuousMap.ext
     intro s
-    exact hp (Degree.DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)
-  obtain ⟨v, P, hP, hv⟩ := Degree.BoundaryPathTransport.exists_transport p A hp'
+    exact hp (DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)
+  obtain ⟨v, P, hP, hv⟩ := BoundaryPathTransport.exists_transport p A hp'
   let FP : Path (F.comp p) (F.comp v) := P.map (ContinuousMap.continuous_postcomp F)
-  let BP := Degree.MappingPaths.ofHomotopy B.toHomotopy
+  let BP := MappingPaths.ofHomotopy B.toHomotopy
   have hFP :
-    Degree.MappingPaths.Over
-      (fun w : C(Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp Degree.DiskCylinder.boundaryToDisk)
+    MappingPaths.Over
+      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
+        w.comp DiskCylinder.boundaryToDisk)
       FP FA := by
     intro t
     apply ContinuousMap.ext
     intro s
     exact congrArg F (ContinuousMap.congr_fun (hP t) s)
   have hBP :
-    Degree.MappingPaths.Over
-      (fun w : C(Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp Degree.DiskCylinder.boundaryToDisk)
+    MappingPaths.Over
+      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
+        w.comp DiskCylinder.boundaryToDisk)
       BP (Path.refl (F.comp c)) := by
     intro t
     apply ContinuousMap.ext
     intro s
-    have hs : ‖(Degree.DiskCylinder.boundaryToDisk s : V)‖ = 1 :=
+    have hs : ‖(DiskCylinder.boundaryToDisk s : V)‖ = 1 :=
       mem_sphere_zero_iff_norm.mp s.property
-    exact (B.eq_fst t hs).trans (congrArg F (hp (Degree.DiskCylinder.boundaryToDisk s) hs))
+    exact (B.eq_fst t hs).trans (congrArg F (hp (DiskCylinder.boundaryToDisk s) hs))
   let R := FP.symm.trans (BP.trans E.symm)
   let Q := FA.symm.trans ((Path.refl (F.comp c)).trans K.symm)
   have hR :
-    Degree.MappingPaths.Over
-      (fun w : C(Degree.DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp Degree.DiskCylinder.boundaryToDisk)
+    MappingPaths.Over
+      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
+        w.comp DiskCylinder.boundaryToDisk)
       R Q :=
     hFP.symm.trans (hBP.trans hE.symm)
-  have hQ : Q.Homotopic HP := Degree.MappingPaths.normalization_cancellation FA HP
-  obtain ⟨G, hG0, hG1, hGside⟩ := Degree.SideRectification.exists_rectification R Q HP hR hQ
+  have hQ : Q.Homotopic HP := MappingPaths.normalization_cancellation FA HP
+  obtain ⟨G, hG0, hG1, hGside⟩ := SideRectification.exists_rectification R Q HP hR hQ
   exact ⟨v, G, fun s => ContinuousMap.congr_fun hv s, hG0, hG1, hGside⟩
 
-theorem Degree.TopCellLifting.sphereMap_relativeDiskLifting_six
+theorem TopCellLifting.sphereMap_relativeDiskLifting_six
     (x : SpecialPeriods.Threefold.Space) :
-    Degree.FiniteCells.RelativeDiskLifting
+    FiniteCells.RelativeDiskLifting
       (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) 6 := by
   intro V _ _ _ hd a u H h0 h1
   by_cases hlow : Module.finrank ℝ V ≤ 5
-  · exact Degree.LowCellLifting.sphereMap_relativeDiskLifting_five x V hlow a u H h0 h1
+  · exact LowCellLifting.sphereMap_relativeDiskLifting_five x V hlow a u H h0 h1
   · have heq : Module.finrank ℝ V = 6 := by omega
     obtain ⟨L⟩ :=
       FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
         (show Module.finrank ℝ V = Module.finrank ℝ (Fin 6 → ℝ) by simpa using heq)
     exact exists_top_disk_lift x L hd a u H h0 h1
 
-theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
+theorem MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : Smale.ManifoldMorse.IsMorse E f)
@@ -795,7 +795,7 @@ theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup
     (c : (p : Smale.ManifoldMorse.criticalPoints E f) → Cell (E := E) f p.val)
     (hdis : ∀ p q, p ≠ q → Disjoint (c p).band (c q).band)
     (p : Smale.ManifoldMorse.criticalPoints E f) :
-    Degree.FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
+    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
   classical
   let K := Smale.ManifoldMorse.criticalPoints E f
   let : Fintype K := (Smale.ManifoldMorse.finite_criticalPoints hf hm).fintype
@@ -803,12 +803,12 @@ theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup
     LinearOrder.lift' (fun p : K => f p.val)
       (fun p q h => Subtype.ext (hinj p.property q.property h))
   have hstep (p : K) :
-    Degree.FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
+    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
     induction p using WellFoundedLT.induction with
     | ind p
       ih =>
       have hlower :
-        Degree.FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
+        FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
         by
         by_cases hex : ∃ q : K, q < p
         · let s : Finset K := Finset.univ.filter (fun q => q < p)
@@ -830,7 +830,7 @@ theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup
                 have hrq : r ≤ q := s.le_max' r (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrp⟩)
                 change f x ≤ f q at hrq
                 nlinarith [sq_pos_of_pos (c q).radius_pos, hx.1])
-          exact Degree.FiniteCells.Built.equiv e (ih q hqp)
+          exact FiniteCells.Built.equiv e (ih q hqp)
         · let : IsEmpty { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
             isEmpty_sublevel_of_no_critical hf
               (by
@@ -839,10 +839,10 @@ theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup
                 refine ⟨⟨x, hx⟩, ?_⟩
                 change f x < f p
                 nlinarith [sq_pos_of_pos (c p).radius_pos])
-          exact Degree.FiniteCells.Built.empty _
-      apply Degree.FiniteCells.Built.equiv (c p).comparison
+          exact FiniteCells.Built.empty _
+      apply FiniteCells.Built.equiv (c p).comparison
       exact
-        Degree.FiniteCells.Built.attach _
+        FiniteCells.Built.attach _
           (coreCellMap (c p).chart (c p).radius (c p).radius_pos (c p).block)
           (fun u hu =>
             (coreCellMap_lower_iff (c p).chart (c p).radius (c p).radius_pos (c p).block u).mpr
@@ -850,13 +850,13 @@ theorem Degree.MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup
           (c p).dimension_le hlower
   exact hstep p
 
-theorem Degree.MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommGroup E]
+theorem MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
-    Degree.FiniteCells.Built (Module.finrank ℝ E) M := by
+    FiniteCells.Built (Module.finrank ℝ E) M := by
   classical
     cases isEmpty_or_nonempty M with
-  | inl h => exact Degree.FiniteCells.Built.empty _
+  | inl h => exact FiniteCells.Built.empty _
   | inr
     h =>
     obtain ⟨f, hf, hm, _, hinj⟩ :=
@@ -875,19 +875,19 @@ theorem Degree.MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedA
       change f x ≤ f p + (c q).radius ^ 2
       exact (hmax (Set.mem_univ x)).trans (le_add_of_nonneg_right (sq_nonneg (c q).radius))
     exact
-      Degree.FiniteCells.Built.equiv
+      FiniteCells.Built.equiv
         ((Homeomorph.setCongr hfull).trans (Homeomorph.Set.univ M)).toHomotopyEquiv hb
 
 attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
     SpecialPeriods.Threefold.space_isSmoothRealManifold in
-theorem Degree.Threefold.finite_homotopy_cells :
-    Degree.FiniteCells.Built 6 SpecialPeriods.Threefold.Space := by
+theorem Threefold.finite_homotopy_cells :
+    FiniteCells.Built 6 SpecialPeriods.Threefold.Space := by
   simpa only [SpecialPeriods.Threefold.real_dimension] using
-    (Degree.MorseCells.built_of_compact_smooth_manifold (E := ℂ × ComplexPlane₂) (M :=
+    (MorseCells.built_of_compact_smooth_manifold (E := ℂ × ComplexPlane₂) (M :=
       SpecialPeriods.Threefold.Space))
 
-theorem Degree.exists_right_homotopy_inverse (x : SpecialPeriods.Threefold.Space) :
+theorem exists_right_homotopy_inverse (x : SpecialPeriods.Threefold.Space) :
     ∃ g : C(SpecialPeriods.Threefold.Space, SixSphereCube.StandardSphere),
       ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp g).Homotopic
         (ContinuousMap.id SpecialPeriods.Threefold.Space) :=
@@ -895,19 +895,19 @@ theorem Degree.exists_right_homotopy_inverse (x : SpecialPeriods.Threefold.Space
     (TopCellLifting.sphereMap_relativeDiskLifting_six x) Threefold.finite_homotopy_cells
     (ContinuousMap.id SpecialPeriods.Threefold.Space)
 
-def Degree.cylinderQuotient :
+def cylinderQuotient :
     C((unitInterval) × (Fin 6 → (unitInterval)), (unitInterval) × SixSphereCube.StandardSphere) :=
   (ContinuousMap.id (unitInterval)).prodMap SixSphereCube.cubeSphereMap
 
-theorem Degree.cylinderQuotient_surjective : Function.Surjective cylinderQuotient := by
+theorem cylinderQuotient_surjective : Function.Surjective cylinderQuotient := by
   rintro ⟨t, z⟩
   obtain ⟨u, rfl⟩ := SixSphereCube.cubeSphereMap_surjective z
   exact ⟨(t, u), rfl⟩
 
-theorem Degree.cylinderQuotient_isQuotientMap : Topology.IsQuotientMap cylinderQuotient :=
+theorem cylinderQuotient_isQuotientMap : Topology.IsQuotientMap cylinderQuotient :=
   .of_surjective_continuous cylinderQuotient_surjective cylinderQuotient.continuous
 
-theorem Degree.cubeHomotopy_constant_on_cylinderFibres {X : Type*} [TopologicalSpace X] {x : X}
+theorem cubeHomotopy_constant_on_cylinderFibres {X : Type*} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (H : p.val.HomotopyRel q.val (Cube.boundary (Fin 6)))
     (a b : (unitInterval) × (Fin 6 → (unitInterval)))
     (h : cylinderQuotient a = cylinderQuotient b) : H a = H b := by
@@ -922,14 +922,14 @@ theorem Degree.cubeHomotopy_constant_on_cylinderFibres {X : Type*} [TopologicalS
       ((H.eq_fst t hu).trans (p.property u hu)).trans
         ((H.eq_fst t hv).trans (p.property v hv)).symm
 
-def Degree.cubeHomotopyLift {X : Type*} [TopologicalSpace X] {x : X} {p q : GenLoop (Fin 6) X x}
+def cubeHomotopyLift {X : Type*} [TopologicalSpace X] {x : X} {p q : GenLoop (Fin 6) X x}
     (H : p.val.HomotopyRel q.val (Cube.boundary (Fin 6))) :
     C((unitInterval) × SixSphereCube.StandardSphere, X) :=
   cylinderQuotient_isQuotientMap.lift H.toHomotopy.toContinuousMap
     (cubeHomotopy_constant_on_cylinderFibres H)
 
 @[simp]
-theorem Degree.cubeHomotopyLift_apply {X : Type*} [TopologicalSpace X] {x : X}
+theorem cubeHomotopyLift_apply {X : Type*} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (H : p.val.HomotopyRel q.val (Cube.boundary (Fin 6)))
     (t : (unitInterval)) (u : Fin 6 → (unitInterval)) :
     cubeHomotopyLift H (t, SixSphereCube.cubeSphereMap u) = H (t, u) :=
@@ -938,44 +938,44 @@ theorem Degree.cubeHomotopyLift_apply {X : Type*} [TopologicalSpace X] {x : X}
       (cubeHomotopy_constant_on_cylinderFibres H))
     (t, u)
 
-def Degree.factorHomotopy {X : Type*} [TopologicalSpace X] {x : X} {p q : GenLoop (Fin 6) X x}
+def factorHomotopy {X : Type*} [TopologicalSpace X] {x : X} {p q : GenLoop (Fin 6) X x}
     (H : p.val.HomotopyRel q.val (Cube.boundary (Fin 6))) :
     (SixSphereCube.factorMap p).HomotopyRel (SixSphereCube.factorMap q)
       { SixSphereCube.sphereBasePoint } :=
   HigherHurewicz.factorMap_homotopyRel (by decide) H
 
-theorem Degree.factorMap_homotopicRel {X : Type*} [TopologicalSpace X] {x : X}
+theorem factorMap_homotopicRel {X : Type*} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (h : GenLoop.Homotopic p q) :
     (SixSphereCube.factorMap p).HomotopicRel (SixSphereCube.factorMap q)
       { SixSphereCube.sphereBasePoint } := by
   obtain ⟨H⟩ := h
   exact ⟨factorHomotopy H⟩
 
-theorem Degree.SphereBasepoint.exists_adjustment {Y : Type*} [TopologicalSpace Y] {y : Y}
+theorem SphereBasepoint.exists_adjustment {Y : Type*} [TopologicalSpace Y] {y : Y}
     (u : C(SixSphereCube.StandardSphere, Y)) (P : Path (u SixSphereCube.sphereBasePoint) y) :
     ∃ v : C(SixSphereCube.StandardSphere, Y),
       v SixSphereCube.sphereBasePoint = y ∧ u.Homotopic v :=
   HigherHurewicz.exists_basepoint_adjustment (by decide) u P
 
-def Degree.basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
+def basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
     GenLoop (Fin 6) X x :=
   HigherHurewicz.basedSphereCube f hf
 
 @[simp]
-theorem Degree.factorMap_basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
+theorem factorMap_basedSphereCube {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
     SixSphereCube.factorMap (basedSphereCube f hf) = f :=
   HigherHurewicz.factorMap_basedSphereCube (by decide) f hf
 
-theorem Degree.basedSphereCube_homologyClass {X : Type} [TopologicalSpace X] {x : X}
+theorem basedSphereCube_homologyClass {X : Type} [TopologicalSpace X] {x : X}
     (f : C(SixSphereCube.StandardSphere, X)) (hf : f SixSphereCube.sphereBasePoint = x) :
     SixthHurewicz.cubeHomologyClass (basedSphereCube f hf) =
       SingularMayerVietoris.singularHomologyMap f 6
         (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) :=
   HigherHurewicz.basedSphereCube_homologyClass f hf
 
-theorem Degree.sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X] {x : X}
+theorem sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X] {x : X}
     [SimplyConnectedSpace X] [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)]
     [Subsingleton (π_ 4 X x)] [Subsingleton (π_ 5 X x)] (f g : C(SixSphereCube.StandardSphere, X))
     (hf : f SixSphereCube.sphereBasePoint = x) (hg : g SixSphereCube.sphereBasePoint = x)
@@ -988,7 +988,7 @@ theorem Degree.sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X
   HigherHurewicz.sphere_homotopicRel_of_topClass_eq
     (by intro j hj hjn; interval_cases j <;> infer_instance) f g hf hg h
 
-theorem Degree.Sphere.based_homotopicRel_id_of_topClass
+theorem Sphere.based_homotopicRel_id_of_topClass
     (g : C(SixSphereCube.StandardSphere, SixSphereCube.StandardSphere))
     (hg : g SixSphereCube.sphereBasePoint = SixSphereCube.sphereBasePoint)
     (hd :
@@ -1002,11 +1002,11 @@ theorem Degree.Sphere.based_homotopicRel_id_of_topClass
   let := piFour_subsingleton SixSphereCube.sphereBasePoint
   let := piFive_subsingleton SixSphereCube.sphereBasePoint
   apply
-    Degree.sphere_homotopicRel_of_topClass_eq g (ContinuousMap.id SixSphereCube.StandardSphere) hg
+    sphere_homotopicRel_of_topClass_eq g (ContinuousMap.id SixSphereCube.StandardSphere) hg
       rfl
   simpa only [PeriodTorusHigherHomology.singularHomologyMap_id, LinearMap.id_apply] using hd
 
-theorem Degree.Sphere.homotopic_id_of_topClass
+theorem Sphere.homotopic_id_of_topClass
     (g : C(SixSphereCube.StandardSphere, SixSphereCube.StandardSphere))
     (hd :
       SingularMayerVietoris.singularHomologyMap g 6
@@ -1015,7 +1015,7 @@ theorem Degree.Sphere.homotopic_id_of_topClass
     g.Homotopic (ContinuousMap.id SixSphereCube.StandardSphere) :=
   HigherHurewicz.sphere_homotopic_id_of_topClass g hd
 
-theorem Degree.right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space)
+theorem right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space)
     (g : C(SpecialPeriods.Threefold.Space, SixSphereCube.StandardSphere))
     (hfg :
       ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp g).Homotopic
@@ -1026,7 +1026,7 @@ theorem Degree.right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space
     (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) g
     (SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective x 6).1 hfg
 
-def Degree.sphereHomotopyEquiv (x : SpecialPeriods.Threefold.Space) :
+def sphereHomotopyEquiv (x : SpecialPeriods.Threefold.Space) :
     SixSphereCube.StandardSphere ≃ₕ SpecialPeriods.Threefold.Space := by
   let g := Classical.choose (exists_right_homotopy_inverse x)
   have hfg := Classical.choose_spec (exists_right_homotopy_inverse x)
@@ -1036,7 +1036,7 @@ def Degree.sphereHomotopyEquiv (x : SpecialPeriods.Threefold.Space) :
       left_inv := right_inverse_is_left_inverse x g hfg
       right_inv := hfg }
 
-def Degree.threefoldHomotopyEquiv :
+def threefoldHomotopyEquiv :
     SpecialPeriods.Threefold.Space ≃ₕ Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1 :=
   (sphereHomotopyEquiv (Classical.choice SpecialPeriods.Threefold.space_nonempty)).symm
 
@@ -1135,7 +1135,7 @@ theorem AdaptedWindows.attaching_sphere_reaches_of_compact_basin_section {E M X 
       ∀ y, y ∈ Set.range α ↔ Filter.Tendsto (fun t => S.flow t y.val) Filter.atBot (𝓝 p.val)) :
     ∀ u : Metric.sphere (0 : (S.data p).chart.NegativeCoordinates) 1,
       ((S.data p).surgery.attachingSphere u).val ∈
-        Degree.FlowCancellation.levelBasin S.flow f a := by
+        FlowCancellation.levelBasin S.flow f a := by
   let _ := Smale.RegularLevel.chartedSpace hf ha
   let _ := Smale.RegularLevel.chartedSpace hf (S.data p).lower_regular
   have hback (x : X) := (hfull (α x)).mp (Set.mem_range_self x)
@@ -1320,12 +1320,12 @@ theorem AdaptedWindows.level_transport_homotopic_in_sublevel {E M X : Type} [Nor
       ((MorseCancellation.levelSublevelMap f hab.le).comp γ) := by
   have hboundary (y : M) (hy : f y = a) : mvfderiv 𝓘(ℝ, E) f y (S.field y) < 0 :=
     S.descent y (ha y hy)
-  have hreach (x : X) : (g x).val ∈ Degree.FlowCancellation.levelBasin S.flow f a := by
+  have hreach (x : X) : (g x).val ∈ FlowCancellation.levelBasin S.flow f a := by
     obtain ⟨t, ht⟩ := horbit x
     exact ⟨t, by rw [ht]; exact (γ x).property⟩
-  let θ : X → ℝ := fun x => Degree.FlowCancellation.signedLevelTime S.flow f a (g x).val
+  let θ : X → ℝ := fun x => FlowCancellation.signedLevelTime S.flow f a (g x).val
   obtain ⟨hB, htime, -⟩ :=
-    Degree.FlowCancellation.smooth_signed_level_time hf S.smooth S.flow S.integral hboundary
+    FlowCancellation.smooth_signed_level_time hf S.smooth S.flow S.integral hboundary
   have hθ : Continuous θ := by
     apply continuous_iff_continuousAt.mpr
     intro x
@@ -1334,7 +1334,7 @@ theorem AdaptedWindows.level_transport_homotopic_in_sublevel {E M X : Type} [Nor
         (htime.continuousOn.continuousAt (hB.mem_nhds (hreach x)))
         (continuous_subtype_val.comp g.continuous).continuousAt
   have hhit (x : X) : f (S.flow (θ x) (g x).val) = a :=
-    Degree.FlowCancellation.signedLevelTime_hits S.flow f a (hreach x)
+    FlowCancellation.signedLevelTime_hits S.flow f a (hreach x)
   have hθpos (x : X) : 0 < θ x := by
     by_contra h
     have hh :=
@@ -1346,7 +1346,7 @@ theorem AdaptedWindows.level_transport_homotopic_in_sublevel {E M X : Type} [Nor
   have hend (x : X) : S.flow (θ x) (g x).val = (γ x).val := by
     obtain ⟨t, ht⟩ := horbit x
     have hθt : θ x = t :=
-      Degree.FlowCancellation.signedLevelTime_eq_of_level S.flow hf.continuous
+      FlowCancellation.signedLevelTime_eq_of_level S.flow hf.continuous
         (MorseCancellation.contMDiff_directionalDerivative hf S.smooth).continuous
         (fun y s => Smale.FlowConstruction.hasDerivAt_comp_integralCurve hf (S.integral y) s)
         hboundary (by rw [ht]; exact (γ x).property)
@@ -2007,7 +2007,7 @@ theorem AdaptedWindows.no_connection_above_canonical_cut {E M : Type} [NormedAdd
   have hplower : f p < S.toSurgeryWindows.lower q :=
     (S.toSurgeryWindows.value_lt_upper p).trans (S.separated p q hpq)
   obtain ⟨t, ht⟩ :=
-    Degree.FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hx.1
+    FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hx.1
       hx.2 (S.toSurgeryWindows.lower_lt_value q) hplower
   let y : (S.data q).LowerLevel := ⟨S.flow t x, ht⟩
   have hyback : Filter.Tendsto (fun s => S.flow s y.val) Filter.atBot (𝓝 q.val) :=
@@ -2110,7 +2110,7 @@ theorem AdaptedWindows.exists_common_cut_value_exchange {E M : Type} [NormedAddC
     S.no_connection_above_canonical_cut hf p q hpq hq
       (hal.trans (S.toSurgeryWindows.lower_lt_value p)) γ horbit
   obtain ⟨g, hg, hmg, hcrit, hgp, hgq, hdesc, hexterior, hpgerm, hqgerm, hothers, hindices⟩ :=
-    Degree.MorseRearrangement.exists_morse_rearrangement_of_no_connection hf hm S.smooth S.flow
+    MorseRearrangement.exists_morse_rearrangement_of_no_connection hf hm S.smooth S.flow
       S.integral S.zero S.descent S.distinct (S.data p).chart (S.data q).chart
       (S.critical_model_germ p) (S.critical_model_germ q) hpband hqband hpq hqband hpband
       (MorseCancellation.surgery_pair_band_isolation S.toSurgeryWindows p q hconsecutive) hnoconnection
@@ -2518,10 +2518,10 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
                                     a <
                                       T.toSurgeryWindows.lower
                                         ⟨(p j).val, hc.symm ▸ (p j).property⟩) ∧
-                                  Degree.MorseRearrangement.beforeValueRank (fun j => g (p j)) q =
+                                  MorseRearrangement.beforeValueRank (fun j => g (p j)) q =
                                     m
   have hex : ∃ m, P m :=
-    ⟨Degree.MorseRearrangement.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
+    ⟨MorseRearrangement.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
       Iff.rfl, fun _ => Iff.rfl, ha, S₀, horder, fun _ _ => rfl, fun _ _ _ => rfl, rfl, rfl,
       fun _ _ => Filter.EventuallyEq.rfl, hlower, rfl⟩
   obtain
@@ -2575,17 +2575,17 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
       T.exists_middle_family_value_exchange hg hmg hga hgorder pg hpg hglower Bg γg hfamily hgsurj
         i q hiq hglobal
     have hdecrease :
-      Degree.MorseRearrangement.beforeValueRank (fun k => u (p k)) q <
-        Degree.MorseRearrangement.beforeValueRank (fun k => g (p k)) q := by
+      MorseRearrangement.beforeValueRank (fun k => u (p k)) q <
+        MorseRearrangement.beforeValueRank (fun k => g (p k)) q := by
       apply
-        Degree.MorseRearrangement.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
+        MorseRearrangement.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
       intro k hki hkq
       apply huothers (pg k) (pg k).property
       · exact fun heq => hki (hpinj (Subtype.ext heq))
       · exact fun heq => hkq (hpinj (Subtype.ext heq))
     have hminimal :=
       Nat.find_min' hex
-        (show P (Degree.MorseRearrangement.beforeValueRank (fun k => u (p k)) q) from
+        (show P (MorseRearrangement.beforeValueRank (fun k => u (p k)) q) from
           ⟨u, hu, hmu, hcu.trans hcrit, fun y => (hus y).trans (hsub y), fun y =>
             (hul y).trans (hlevel y), hua, U, huorder, fun z hz =>
             (huindices z (hcrit.symm ▸ hz)).trans (hindices z hz), fun z hz hzoutside =>
@@ -2612,7 +2612,7 @@ theorem AdaptedWindows.backward_basin_reaches_compact_section {E M : Type} [Norm
       ∀ y, y ∈ Set.range α ↔ Filter.Tendsto (fun t => S.flow t y.val) Filter.atBot (𝓝 p.val))
     {x : M} (hx : x ∉ Smale.ManifoldMorse.criticalPoints E f)
     (hback : Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 p.val)) :
-    x ∈ Degree.FlowCancellation.levelBasin S.flow f a := by
+    x ∈ FlowCancellation.levelBasin S.flow f a := by
   let _ : Fact (Module.finrank ℝ (S.data p).chart.NegativeCoordinates = 2 + 1) :=
     ⟨(MorseCancellation.nativeMorseIndex_eq_chart (S.data p).chart).symm.trans hp⟩
   have hreach :=
@@ -2623,8 +2623,8 @@ theorem AdaptedWindows.backward_basin_reaches_compact_section {E M : Type} [Norm
   have hyback : Filter.Tendsto (fun s => S.flow s y.val) Filter.atBot (𝓝 p.val) :=
     (MorseCancellation.flow_time_atBot_limit_iff S.flow t x p.val).mpr hback
   obtain ⟨u, hu⟩ := (S.attaching_basin_iff hf p y).mp hyback
-  apply (Degree.FlowCancellation.levelBasin_flow_iff S.flow f a t x).mp
-  change y.val ∈ Degree.FlowCancellation.levelBasin S.flow f a
+  apply (FlowCancellation.levelBasin_flow_iff S.flow f a t x).mp
+  change y.val ∈ FlowCancellation.levelBasin S.flow f a
   rw [← hu]
   exact hreach u
 
@@ -2633,7 +2633,7 @@ theorem AdaptedWindows.backward_basin_reaches_intermediate_cut {E M : Type} [Nor
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x p : M}
     (hback : Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 p)) {b : ℝ} (hxb : f x < b)
-    (hbp : b < f p) : x ∈ Degree.FlowCancellation.levelBasin S.flow f b := by
+    (hbp : b < f p) : x ∈ FlowCancellation.levelBasin S.flow f b := by
   have hh : Filter.Tendsto (fun t => f (S.flow t x)) Filter.atBot (𝓝 (f p)) :=
     hf.continuous.continuousAt.tendsto.comp hback
   obtain ⟨t, ht⟩ := (hh.eventually (eventually_gt_nhds hbp)).exists
@@ -2657,7 +2657,7 @@ theorem AdaptedWindows.transported_basin_image_of_reaching {E M : Type} [NormedA
     (hreach :
       ∀ y : { z : M // f z = b },
         Filter.Tendsto (fun t => S.flow t y.val) Filter.atBot (𝓝 p) →
-          y.val ∈ Degree.FlowCancellation.levelBasin S.flow f a) :
+          y.val ∈ FlowCancellation.levelBasin S.flow f a) :
     ∀ y, y ∈ Set.range β ↔ Filter.Tendsto (fun t => S.flow t y.val) Filter.atBot (𝓝 p) := by
   intro y
   constructor
@@ -2699,7 +2699,7 @@ theorem AdaptedWindows.exists_higher_middle_family {E M : Type} [NormedAddCommGr
   let _ := Smale.RegularLevel.chartedSpace hf hb
   obtain ⟨hs, he, hi, hpair, hfull⟩ := hα
   have hreach (j : Fin n) (x : (Smale.Hemisphere.Sphere 2)) :
-    (α j x).val ∈ Degree.FlowCancellation.levelBasin S.flow f b := by
+    (α j x).val ∈ FlowCancellation.levelBasin S.flow f b := by
     apply
       S.backward_basin_reaches_intermediate_cut hf ((hfull j (α j x)).mp (Set.mem_range_self x))
     · simpa only [(α j x).property] using hab
@@ -2770,10 +2770,10 @@ theorem MorseCancellation.lower_backward_basins_preserved {E M : Type} [NormedAd
     intro t
     rcases le_total 0 t with ht | ht
     · exact
-        Degree.FlowCancellation.native_flow_eq_on_positive_halfline (hW.of_le (by simp)) H T.flow
+        FlowCancellation.native_flow_eq_on_positive_halfline (hW.of_le (by simp)) H T.flow
           hH T.integral (fun s _ => hagree s) t ht
     · exact
-        Degree.FlowCancellation.native_flow_eq_on_negative_halfline (hW.of_le (by simp)) H T.flow
+        FlowCancellation.native_flow_eq_on_negative_halfline (hW.of_le (by simp)) H T.flow
           hH T.integral (fun s _ => hagree s) t ht
   have hold (x : M) (hx : Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 p)) :
     ∀ t, H t x = T.flow t x := by
@@ -2789,10 +2789,10 @@ theorem MorseCancellation.lower_backward_basins_preserved {E M : Type} [NormedAd
     intro t
     rcases le_total 0 t with ht | ht
     · exact
-        Degree.FlowCancellation.native_flow_eq_on_positive_halfline (T.smooth.of_le (by simp))
+        FlowCancellation.native_flow_eq_on_positive_halfline (T.smooth.of_le (by simp))
           T.flow H T.integral hH (fun s _ => hagree s) t ht
     · exact
-        Degree.FlowCancellation.native_flow_eq_on_negative_halfline (T.smooth.of_le (by simp))
+        FlowCancellation.native_flow_eq_on_negative_halfline (T.smooth.of_le (by simp))
           T.flow H T.integral hH (fun s _ => hagree s) t ht
   refine ⟨?_, ?_⟩
   · intro x
@@ -2834,7 +2834,7 @@ theorem MorseCancellation.lower_forward_basins_preserved {E M : Type} [NormedAdd
   have heq : (fun t => T.flow t y) =ᶠ[Filter.atTop] (fun t => H t y) := by
     filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with t ht
     exact
-      Degree.FlowCancellation.native_flow_eq_on_positive_halfline (hW.of_le (by simp)) H T.flow hH
+      FlowCancellation.native_flow_eq_on_positive_halfline (hW.of_le (by simp)) H T.flow hH
         T.integral (fun s hs => hout _ (hbound s hs)) t ht
   intro p
   exact (Filter.tendsto_congr' heq).trans (hgeometry y p)
@@ -2853,9 +2853,9 @@ theorem AdaptedWindows.reaches_cut_of_forward_holonomy {E M : Type} [NormedAddCo
             Filter.Tendsto (fun t => S.flow t (D x).val) Filter.atTop (𝓝 p))
     (x : { y : M // f y = b }) (y : { z : M // f z = a })
     (horbit : ∃ t : ℝ, S.flow t (D x).val = y.val) :
-    x.val ∈ Degree.FlowCancellation.levelBasin T.flow f a := by
+    x.val ∈ FlowCancellation.levelBasin T.flow f a := by
   obtain ⟨p, hp, q, hq, -, hytop, hyheight⟩ :=
-    Degree.FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
+    FlowCancellation.exists_native_descent_endpoints hf S.smooth S.flow S.integral S.zero
       S.descent S.distinct y.val
   have hqa : f q < a := by simpa only [y.property] using (hyheight (ha y.val y.property)).1
   obtain ⟨t, ht⟩ := horbit
@@ -2864,11 +2864,11 @@ theorem AdaptedWindows.reaches_cut_of_forward_holonomy {E M : Type} [NormedAddCo
     exact (MorseCancellation.flow_time_atTop_limit_iff S.flow t (D x).val q).mp hytop
   have hxtop := (hforward x q).mpr hDx
   obtain ⟨r, hr, s, hs, hxback, -, hxheight⟩ :=
-    Degree.FlowCancellation.exists_native_descent_endpoints hf T.smooth T.flow T.integral T.zero
+    FlowCancellation.exists_native_descent_endpoints hf T.smooth T.flow T.integral T.zero
       T.descent T.distinct x.val
   have hbr : b < f r := by simpa only [x.property] using (hxheight (hb x.val x.property)).2
   exact
-    Degree.FlowCancellation.exists_level_crossing_of_endpoint_limits T.flow hf.continuous hxback
+    FlowCancellation.exists_level_crossing_of_endpoint_limits T.flow hf.continuous hxback
       hxtop (hab.trans hbr) hqa
 
 theorem AdaptedWindows.exists_relative_surgery_cut_transport {E M : Type} [NormedAddCommGroup E]
@@ -2931,7 +2931,7 @@ theorem AdaptedWindows.exists_relative_surgery_cut_transport {E M : Type} [Norme
   obtain
     ⟨r, C, W, V, H, G, hr, hrbound, hC, hCband, hW, hH, hgeometry, hV, hG, hzero, hdesc, hgerms,
       houtside, hend, hheight, hleft, hright, hprotected⟩ :=
-    Degree.FlowSuspension.exists_relative_regular_level_isotopy_realization hf S.smooth S.descent
+    FlowSuspension.exists_relative_regular_level_isotopy_realization hf S.smooth S.descent
       S.flow S.integral hl hu hband (S.data q).upper_regular z D K P hK I
   have hmodel (p : Smale.ManifoldMorse.criticalPoints E f) :
     ∀ᶠ y in 𝓝 p.val, V y = (S.data p).chart.descentField y := by
@@ -2941,7 +2941,7 @@ theorem AdaptedWindows.exists_relative_surgery_cut_transport {E M : Type} [Norme
     MorseCancellation.exists_adapted_windows_with_prescribed_flow_lt hf hm S.distinct hV G hG
       (fun y hy => (hzero y).mpr (S.zero y hy)) hdesc (fun p => (S.data p).chart) hmodel ε hε
   obtain ⟨hback₀, hforward₀⟩ :=
-    Degree.FlowSuspension.whole_level_basins_of_holonomy S.flow H G Subtype.val D
+    FlowSuspension.whole_level_basins_of_holonomy S.flow H G Subtype.val D
       (fun x p => (hgeometry x).2.1 p) (fun x p => (hgeometry x).2.2 p) hend hleft hright
   have hback (x : (S.data q).UpperLevel) (p : M) :
     Filter.Tendsto (fun t => T.flow t x.val) Filter.atBot (𝓝 p) ↔
@@ -3034,7 +3034,7 @@ theorem AdaptedWindows.exists_relative_family_lower_transport {E M : Type} [Norm
       (K : Set (S.data q).UpperLevel),
       IsCompact K →
         Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K
-            (Degree.MorseRearrangement.otherSheetImages (fun j => α j) i) →
+            (MorseRearrangement.otherSheetImages (fun j => α j) i) →
           (∀ j, Disjoint (Set.range (D ∘ α j)) (Set.range (S.data q).surgery.beltSphere)) →
             ∃ T : AdaptedWindows E f,
               (∀ z, (T.data z).chart = (S.data z).chart) ∧
@@ -3083,7 +3083,7 @@ theorem AdaptedWindows.exists_relative_family_lower_transport {E M : Type} [Norm
     Smale.SphereCoordinates.standardParametrization (S.data q).chart.NegativeCoordinates 2 x₀
   obtain ⟨T, hcharts, hradii, hgerms, hback, hforward, hprotected, hcut, hkeep⟩ :=
     S.exists_relative_surgery_cut_transport hf hm q (α i x₀) ε hε D K
-      (Degree.MorseRearrangement.otherSheetImages (fun j => α j) i) hK I
+      (MorseRearrangement.otherSheetImages (fun j => α j) i) hK I
   obtain ⟨hs, he, hi, hpair, hfull⟩ := hα
   have holdreach (j : Fin n) (x : (Smale.Hemisphere.Sphere 2)) :=
     S.belt_complement_reaches_lower_level hf q (α j x)
@@ -3127,7 +3127,7 @@ theorem AdaptedWindows.exists_relative_family_lower_transport {E M : Type} [Norm
     obtain ⟨s, hs⟩ := hδold j x
     have hfix : D (α j x) = α j x :=
       I.endpoint_fixed_on (α j x)
-        (Degree.MorseRearrangement.mem_otherSheetImages (fun j => α j) i j hji x)
+        (MorseRearrangement.mem_otherSheetImages (fun j => α j) i j hji x)
     rw [hfix] at hs
     obtain ⟨t, ht⟩ := hβflow j x
     change S.flow t (α j x).val = (β j x).val at ht
@@ -3140,7 +3140,7 @@ theorem AdaptedWindows.exists_relative_family_lower_transport {E M : Type} [Norm
         (β j x).property hshared
   · intro j hji x
     exact
-      hprotected (α j x) (Degree.MorseRearrangement.mem_otherSheetImages (fun j => α j) i j hji x)
+      hprotected (α j x) (MorseRearrangement.mem_otherSheetImages (fun j => α j) i j hji x)
 
 theorem AdaptedWindows.section_class_of_flow_transport {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -3622,7 +3622,7 @@ theorem MorseCancellation.exists_centered_passage_clock {τ : ℝ} (hτ : τ ∈
                 ((D : ℝ → ℝ) =ᶠ[𝓝 (1 / 2 : ℝ)] fun t => t + (τ - 1 / 2)) ∧
                   HasDerivAt (D : ℝ → ℝ) 1 (1 / 2) := by
   obtain ⟨D, hfix, hgerm, hpoint, hmono, -⟩ :=
-    Degree.MorseRearrangement.exists_increasing_interval_translation
+    MorseRearrangement.exists_increasing_interval_translation
       (show (1 / 2 : ℝ) ∈ Set.Ioo (0 : ℝ) 1 by constructor <;> norm_num) hτ
   have h0 : D 0 = 0 := hfix 0 (by simp)
   have h1 : D 1 = 1 := hfix 1 (by simp)
@@ -3656,9 +3656,9 @@ theorem MorseCancellation.exists_radial_link_meridian_with_derivative {E M : Typ
           SingularMayerVietoris.singularHomologyMap β 2 =
               SingularMayerVietoris.singularHomologyMap
                 (Smale.LinearSphereAction.sphereMap L.toContinuousLinearMap L.injective) 2 ∧
-            ((Degree.PassageHomology.puncturedPassageTrace H (Set.range d.surgery.beltSphere) hτ
+            ((PassageHomology.puncturedPassageTrace H (Set.range d.surgery.beltSphere) hτ
                       x₀ hcross).comp
-                  (Degree.PassageHomology.cylinderLink τ x₀ ε hε hεx)).Homotopic
+                  (PassageHomology.cylinderLink τ x₀ ε hε hεx)).Homotopic
               ((nativeBeltTubeMeridian d w (1 / 2) (by norm_num) (by norm_num)).comp β) := by
   let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
   dsimp only
@@ -3716,20 +3716,20 @@ theorem MorseCancellation.exists_radial_link_meridian_with_derivative {E M : Typ
     normal_boundary_homotopic_native_meridian d (fun z : (EuclideanSpace ℝ (Fin 3)) => H (Ψ z)) b
       hcs hdomain hsmall (1 / 2) (by norm_num) (by norm_num)
   have hlink :
-    (Degree.PassageHomology.puncturedPassageTrace H (Set.range d.surgery.beltSphere) hτ x₀
+    (PassageHomology.puncturedPassageTrace H (Set.range d.surgery.beltSphere) hτ x₀
             hcross).comp
-        (Degree.PassageHomology.cylinderLink τ x₀ b.radius b.radius_pos hεx) =
+        (PassageHomology.cylinderLink τ x₀ b.radius b.radius_pos hεx) =
       J := by
     apply ContinuousMap.ext
     intro u
     apply Subtype.ext
     have htimeu :
-      (Degree.PassageHomology.cylinderLink τ x₀ b.radius b.radius_pos hεx u).val.1 ∈
+      (PassageHomology.cylinderLink τ x₀ b.radius b.radius_pos hεx u).val.1 ∈
         Set.Icc (0 : ℝ) 1 := by
       rw [← radialParameterChart_link τ x₀ b.radius b.radius_pos hεx u]
       exact ⟨(hst (hball u)).2.2.1.le, (hst (hball u)).2.2.2.le⟩
     rw [ContinuousMap.comp_apply,
-      Degree.PassageHomology.puncturedPassageTrace_on_interval H (Set.range d.surgery.beltSphere)
+      PassageHomology.puncturedPassageTrace_on_interval H (Set.range d.surgery.beltSphere)
         hτ x₀ hcross _ htimeu,
       hJ]
     rw [show Ψ (b.radius • u.val) = _ from
@@ -3768,12 +3768,12 @@ theorem AdaptedWindows.exists_passage_derivative_class_addition {E M : Type}
           (∀ x (y : (S.data p).LowerLevel) (t : ℝ), S.flow t x.val.val = y.val → D x = y) ∧
             let G :=
               D.comp
-                (Degree.PassageHomology.puncturedPassageTrace H
+                (PassageHomology.puncturedPassageTrace H
                   (Set.range (S.data p).surgery.beltSphere) hτ x₀ hcross)
             SingularMayerVietoris.singularHomologyMap
-                (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
+                (G.comp (PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
               SingularMayerVietoris.singularHomologyMap
-                  (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
+                  (G.comp (PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
                 SingularMayerVietoris.singularHomologyMap
                   ((S.data p).surgery.attachingSphere.comp
                     (Smale.LinearSphereAction.sphereMap L.toContinuousLinearMap L.injective))
@@ -3799,10 +3799,10 @@ theorem AdaptedWindows.exists_passage_derivative_class_addition {E M : Type}
   rw [htube] at hlink
   let G :=
     D.comp
-      (Degree.PassageHomology.puncturedPassageTrace H (Set.range (S.data p).surgery.beltSphere) hτ
+      (PassageHomology.puncturedPassageTrace H (Set.range (S.data p).surgery.beltSphere) hτ
         x₀ hcross)
   have hDlink :
-    (G.comp (Degree.PassageHomology.cylinderLink τ x₀ ε hε hεx)).Homotopic
+    (G.comp (PassageHomology.cylinderLink τ x₀ ε hε hεx)).Homotopic
       ((D.comp (MorseCancellation.nativeUpperMeridianInComplement S p w σ hσ)).comp β) :=
     (ContinuousMap.Homotopic.refl D).comp hlink
   have hatt :
@@ -3822,11 +3822,11 @@ theorem AdaptedWindows.exists_passage_derivative_class_addition {E M : Type}
   have hh := hrelation ε hε hεx
   change
     SingularMayerVietoris.singularHomologyMap
-        (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
+        (G.comp (PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
       SingularMayerVietoris.singularHomologyMap
-          (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
+          (G.comp (PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
         SingularMayerVietoris.singularHomologyMap
-          (G.comp (Degree.PassageHomology.cylinderLink τ x₀ ε hε hεx)) 2 at hh
+          (G.comp (PassageHomology.cylinderLink τ x₀ ε hε hεx)) 2 at hh
   rw [hlinkMap, hderivativeMap] at hh
   exact hh
 
@@ -4331,7 +4331,7 @@ theorem MorseCancellation.opposite_centered_passages_of_normal_factors {E M Y N 
               L₁.toContinuousLinearMap 0 ∧
             (L₁.trans L₀.symm).toLinearMap.det < 0 := by
   obtain ⟨C, hC⟩ :=
-    Degree.SupportedGerms.exists_linearEquiv_with_det (EuclideanSpace.basisFun (Fin 2) ℝ).toBasis
+    SupportedGerms.exists_linearEquiv_with_det (EuclideanSpace.basisFun (Fin 2) ℝ).toBasis
       (0 : Fin 2) (show (-1 : ℝ) ≠ 0 by norm_num)
   have hCneg : C.toLinearMap.det < 0 := by rw [hC]; norm_num
   obtain ⟨c₀, hc₀, A₀, hA₀, hbij₀⟩ :=
@@ -4534,14 +4534,14 @@ theorem MorseCancellation.exists_native_prescribed_finite_family_passage {ι E M
     (hfe : Topology.IsEmbedding (a i))
     (hdisj : Disjoint (Set.range (a i)) (Set.range d.surgery.beltSphere))
     (x : (Smale.Hemisphere.Sphere 2)) (v : Metric.sphere (0 : d.chart.PositiveCoordinates) 1)
-    (hv : d.surgery.beltSphere v ∉ Degree.MorseRearrangement.otherSheetImages (fun j => a j) i)
+    (hv : d.surgery.beltSphere v ∉ MorseRearrangement.otherSheetImages (fun j => a j) i)
     (γ : Path (a i x) (d.surgery.beltSphere v)) (k : ℤ) (hk : k = 1 ∨ k = -1) :
     let _ := Smale.RegularLevel.chartedSpace hf d.upper_regular
     (∀ j, ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ (a j)) →
       (∀ z, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) (a i) z)) →
         ∃ A :
           CenteredSheetPassage (Smale.RegularLevel.Model E) (a i) d.surgery.beltSphere x v
-            (Degree.MorseRearrangement.otherSheetImages (fun j => a j) i),
+            (MorseRearrangement.otherSheetImages (fun j => a j) i),
           ∃ L : (EuclideanSpace ℝ (Fin 3)) ≃L[ℝ] d.chart.NegativeCoordinates,
             HasFDerivAt
                 (fun z : (EuclideanSpace ℝ (Fin 3)) =>
@@ -4563,9 +4563,9 @@ theorem MorseCancellation.exists_native_prescribed_finite_family_passage {ι E M
   dsimp only
   intro ha hfi
   obtain ⟨n, b, hb, hbrange⟩ :=
-    Degree.MorseRearrangement.exists_sheetSumMap_for_finite_family
+    MorseRearrangement.exists_sheetSumMap_for_finite_family
       (fun j : { j : ι // j ≠ i } => a j.val) (fun j => ha j.val)
-  have hrange : Set.range b = Degree.MorseRearrangement.otherSheetImages (fun j => a j) i :=
+  have hrange : Set.range b = MorseRearrangement.otherSheetImages (fun j => a j) i :=
     hbrange
   have hbc : IsClosed (Set.range b) := (isCompact_range hb.continuous).isClosed
   have hx : a i x ∉ Set.range b := by
@@ -4579,7 +4579,7 @@ theorem MorseCancellation.exists_native_prescribed_finite_family_passage {ι E M
       (ha i) hfi hb
   let A' :
     CenteredSheetPassage (Smale.RegularLevel.Model E) (a i) d.surgery.beltSphere x v
-      (Degree.MorseRearrangement.otherSheetImages (fun j => a j) i) :=
+      (MorseRearrangement.otherSheetImages (fun j => a j) i) :=
     { A with avoids := by rw [← hrange]; exact A.avoids }
   exact ⟨A', L, hL, hunit⟩
 
@@ -4615,7 +4615,7 @@ theorem AdaptedWindows.exists_higher_family_prescribed_passage {E M : Type} [Nor
               ∃ A :
                 MorseCancellation.CenteredSheetPassage (Smale.RegularLevel.Model E) (β i)
                   (S.data q).surgery.beltSphere x v
-                  (Degree.MorseRearrangement.otherSheetImages (fun j => β j) i),
+                  (MorseRearrangement.otherSheetImages (fun j => β j) i),
                 ∃ L : (EuclideanSpace ℝ (Fin 3)) ≃L[ℝ] (S.data q).chart.NegativeCoordinates,
                   HasFDerivAt
                       (fun z : (EuclideanSpace ℝ (Fin 3)) =>
@@ -4662,7 +4662,7 @@ theorem AdaptedWindows.exists_higher_family_prescribed_passage {E M : Type} [Nor
     Smale.SphereCoordinates.standardParametrization (S.data q).chart.PositiveCoordinates 2 x
   have hv :
     (S.data q).surgery.beltSphere v ∉
-      Degree.MorseRearrangement.otherSheetImages (fun j => β j) i := by
+      MorseRearrangement.otherSheetImages (fun j => β j) i := by
     intro h
     obtain ⟨j, hj⟩ := Set.mem_iUnion.mp h
     exact Set.disjoint_left.mp (hdisj j.val) hj (Set.mem_range_self v)
@@ -4723,25 +4723,25 @@ theorem AdaptedWindows.prescribed_passage_actual_endpoint_classes {E M : Type}
     S.exists_passage_derivative_class_addition hf q H hτ x₀ v hpoint hcross L hL hH
   let G :=
     D.comp
-      (Degree.PassageHomology.puncturedPassageTrace H (Set.range (S.data q).surgery.beltSphere) hτ
+      (PassageHomology.puncturedPassageTrace H (Set.range (S.data q).surgery.beltSphere) hτ
         x₀ hcross)
   have hmap (s : ℝ) (hs : s ∈ Set.Icc (0 : ℝ) 1) (hsτ : s ≠ τ)
     (σ : C((Smale.Hemisphere.Sphere 2), (S.data q).LowerLevel))
     (hσ : ∀ x, ∃ t : ℝ, S.flow t (H (s, x)).val = (σ x).val) :
-    G.comp (Degree.PassageHomology.cylinderSlice τ x₀ s hsτ) = σ := by
+    G.comp (PassageHomology.cylinderSlice τ x₀ s hsτ) = σ := by
     apply ContinuousMap.ext
     intro x
     obtain ⟨t, ht⟩ := hσ x
     apply hunique _ (σ x) t
     have heq :=
-      Degree.PassageHomology.puncturedPassageTrace_on_interval H
+      PassageHomology.puncturedPassageTrace_on_interval H
         (Set.range (S.data q).surgery.beltSphere) hτ x₀ hcross
-        (Degree.PassageHomology.cylinderSlice τ x₀ s hsτ x) hs
+        (PassageHomology.cylinderSlice τ x₀ s hsτ x) hs
     change
       S.flow t
-          (Degree.PassageHomology.puncturedPassageTrace H
+          (PassageHomology.puncturedPassageTrace H
               (Set.range (S.data q).surgery.beltSphere) hτ x₀ hcross
-              (Degree.PassageHomology.cylinderSlice τ x₀ s hsτ x)).val.val =
+              (PassageHomology.cylinderSlice τ x₀ s hsτ x)).val.val =
         (σ x).val
     rw [heq]
     exact ht
@@ -4777,9 +4777,9 @@ theorem AdaptedWindows.prescribed_passage_actual_endpoint_classes {E M : Type}
         _
   change
     SingularMayerVietoris.singularHomologyMap
-        (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
+        (G.comp (PassageHomology.cylinderSlice τ x₀ 1 hτ.2.ne')) 2 =
       SingularMayerVietoris.singularHomologyMap
-          (G.comp (Degree.PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
+          (G.comp (PassageHomology.cylinderSlice τ x₀ 0 hτ.1.ne)) 2 +
         SingularMayerVietoris.singularHomologyMap
           ((S.data q).surgery.attachingSphere.comp
             (Smale.LinearSphereAction.sphereMap L.toContinuousLinearMap L.injective))
@@ -4856,7 +4856,7 @@ theorem AdaptedWindows.exists_prescribed_family_slide {E M : Type} [NormedAddCom
   obtain ⟨D, hD⟩ := hFd 1
   have I :
     Smale.SupportedDiffeomorph.SupportedRelativeIsotopy D K
-      (Degree.MorseRearrangement.otherSheetImages (fun j => γ j) i) :=
+      (MorseRearrangement.otherSheetImages (fun j => γ j) i) :=
     { family := F
       smooth := hF
       zero := hF0
@@ -4874,7 +4874,7 @@ theorem AdaptedWindows.exists_prescribed_family_slide {E M : Type} [NormedAddCom
       exact hτ.2.ne' ((hcount 1 ⟨zero_le_one, le_rfl⟩ x w).mp heq).1
     · have heq : D (γ j x) = γ j x :=
         I.endpoint_fixed_on (γ j x)
-          (Degree.MorseRearrangement.mem_otherSheetImages (fun j => γ j) i j hji x)
+          (MorseRearrangement.mem_otherSheetImages (fun j => γ j) i j hji x)
       exact Set.disjoint_left.mp (havoid j) (Set.mem_range_self x) ⟨w, hw.trans heq⟩
   obtain
     ⟨T, hcharts, hradii, hgerms, β, δ, hβ, hδ, hβflow, hδflow, hδold, hother, hprotected,
@@ -7177,7 +7177,7 @@ theorem AdaptedWindows.cancel_single_basin_section_isotopy {E M : Type} [NormedA
   have hcross' : δ y = α x := by exact (congrArg D.symm hcross).trans (D.symm_apply_apply (α x))
   have ht : Smale.NativeTransversality.At (𝓡 2) (𝓡 3) 𝓘(ℝ, Smale.RegularLevel.Model E) α δ x y := by
     have hh :=
-      (Degree.TransverseGerms.native_transversality_partial_diffeomorph_iff
+      (TransverseGerms.native_transversality_partial_diffeomorph_iff
             D.symm.toPartialDiffeomorph (hDα.mdifferentiableAt (by simp))
             (hβ.mdifferentiableAt (by simp)) hcross (Set.mem_univ _)).mp
         (htrans x y)
@@ -7369,7 +7369,7 @@ theorem MorseCancellation.cancel_from_preserved_unit_belt_cut {E M : Type} [Norm
     intro x y hxy
     have hold : β₀ y = δ x := e.injective hxy
     have hh :=
-      (Degree.TransverseGerms.native_transversality_partial_diffeomorph_iff e.toPartialDiffeomorph
+      (TransverseGerms.native_transversality_partial_diffeomorph_iff e.toPartialDiffeomorph
             (hgood.1.mdifferentiableAt (by simp)) (hβ₀.mdifferentiableAt (by simp)) hold
             (Set.mem_univ _)).mp
         (hgood.2.2.2 x y)

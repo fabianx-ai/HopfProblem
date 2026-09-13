@@ -94,7 +94,7 @@ def SixSphereComplexAtlas.threefoldHomeomorph : SpecialPeriods.Threefold.Space �
   Classical.choice
     (Smale.homeomorphic_sixSphere_of_homotopySixSphere (ℂ × ComplexPlane₂)
       SpecialPeriods.Threefold.Space SpecialPeriods.Threefold.real_dimension
-      Degree.threefoldHomotopyEquiv)
+      threefoldHomotopyEquiv)
 
 attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold

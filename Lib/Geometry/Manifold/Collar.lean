@@ -106,14 +106,14 @@ noncomputable def Smale.NativeEuclideanEmbedding.normalPrebundle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     VectorPrebundle ℝ e.NormalModel e.NormalSpace :=
-  NoExotic.ProjectionBundle.vectorPrebundle e.normalProjection e.normalProjection_idempotent
+  ProjectionBundle.vectorPrebundle e.normalProjection e.normalProjection_idempotent
     e.normalModelEquiv e.contMDiff_normalProjection
 
 instance Smale.NativeEuclideanEmbedding.normalPrebundle_isContMDiff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (e : Smale.NativeEuclideanEmbedding E M) [IsManifold 𝓘(ℝ, E) ∞ M] :
     e.normalPrebundle.IsContMDiff 𝓘(ℝ, E) ∞ :=
-  NoExotic.ProjectionBundle.vectorPrebundle_isContMDiff e.normalProjection
+  ProjectionBundle.vectorPrebundle_isContMDiff e.normalProjection
     e.normalProjection_idempotent e.normalModelEquiv e.contMDiff_normalProjection
 
 abbrev Smale.NativeEuclideanEmbedding.NormalBundle {E M : Type*} [NormedAddCommGroup E]
@@ -163,7 +163,7 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [Nor
   have hc :
     ContMDiffAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) 𝓘(ℝ, e.NormalModel) ∞
       (fun v : e.NormalBundle ↦
-        NoExotic.ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv z.1 v.1 v.2)
+        ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv z.1 v.1 v.2)
       z := by
     have h :=
       (Bundle.contMDiffAt_totalSpace (IB := 𝓘(ℝ, E)) (IM := (𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel))
@@ -171,29 +171,29 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_normalVector {E M : Type*} [Nor
         contMDiffAt_id
     exact h.2
   have hf :=
-    ((NoExotic.ProjectionBundle.contMDiff_ambientFromCoordinates e.normalProjection
+    ((ProjectionBundle.contMDiff_ambientFromCoordinates e.normalProjection
               e.normalModelEquiv e.contMDiff_normalProjection z.1).contMDiffAt.comp
           z hp).clm_apply
       hc
   have heq :
     e.normalVector =ᶠ[𝓝 z]
       (fun v : e.NormalBundle ↦
-        NoExotic.ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv z.1
+        ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv z.1
           v.1
-          (NoExotic.ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv z.1 v.1
+          (ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv z.1 v.1
             v.2)) := by
     have ho :=
-      NoExotic.isOpen_projectionTransportDomain e.normalProjection e.contMDiff_normalProjection
+      isOpen_projectionTransportDomain e.normalProjection e.contMDiff_normalProjection
         z.1
     have hn :=
       hp.continuousAt
         (ho.mem_nhds
-          (NoExotic.mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent
+          (mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent
             z.1))
     filter_upwards [hn] with v hv
     exact
       (congrArg Subtype.val
-          (NoExotic.ProjectionBundle.fromCoordinates_toCoordinates e.normalProjection
+          (ProjectionBundle.fromCoordinates_toCoordinates e.normalProjection
             e.normalProjection_idempotent e.normalModelEquiv z.1 v.1 hv v.2)).symm
   exact heq.contMDiffAt_iff.mpr hf
 
@@ -221,7 +221,7 @@ noncomputable def Smale.NativeEuclideanEmbedding.localNormalDisplacement {E M : 
     (e : Smale.NativeEuclideanEmbedding E M) (x₀ : M) (p : M × e.NormalModel) :
     EuclideanSpace ℝ (Fin e.ambientDimension) :=
   e.toFun p.1 +
-    NoExotic.ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
+    ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
       p.2
 
 theorem Smale.NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : Type*}
@@ -231,7 +231,7 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_localNormalDisplacement {E M : 
     ContMDiff ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       (e.localNormalDisplacement x₀) :=
   (e.smooth.comp contMDiff_fst).add
-    (((NoExotic.ProjectionBundle.contMDiff_ambientFromCoordinates e.normalProjection
+    (((ProjectionBundle.contMDiff_ambientFromCoordinates e.normalProjection
               e.normalModelEquiv e.contMDiff_normalProjection x₀).comp
           contMDiff_fst).clm_apply
       contMDiff_snd)
@@ -244,15 +244,15 @@ theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_zero {E M : Type*
 theorem Smale.NativeEuclideanEmbedding.ambientNormalCoordinates_self {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : Smale.NativeEuclideanEmbedding E M) (x : M) (v : e.NormalModel) :
-    NoExotic.ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x x v =
+    ProjectionBundle.ambientFromCoordinates e.normalProjection e.normalModelEquiv x x v =
       ((e.normalModelEquiv x).symm v : EuclideanSpace ℝ (Fin e.ambientDimension)) := by
   change
     e.normalProjection x
-        (NoExotic.projectionIntertwiner (e.normalProjection x) (e.normalProjection x)
+        (projectionIntertwiner (e.normalProjection x) (e.normalProjection x)
           ((e.normalModelEquiv x).symm v)) =
       _
-  rw [NoExotic.projectionIntertwiner_self _ (e.normalProjection_idempotent x)]
-  exact NoExotic.projection_apply_range (e.normalProjection x) (e.normalProjection_idempotent x) _
+  rw [projectionIntertwiner_self _ (e.normalProjection_idempotent x)]
+  exact projection_apply_range (e.normalProjection x) (e.normalProjection_idempotent x) _
 
 noncomputable def Smale.NativeEuclideanEmbedding.normalLinearSplitting {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
@@ -307,7 +307,7 @@ theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_eq {E M : Type*}
     e.localNormalDisplacement x₀ p =
       e.normalDisplacement
         ⟨p.1,
-          NoExotic.ProjectionBundle.fromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
+          ProjectionBundle.fromCoordinates e.normalProjection e.normalModelEquiv x₀ p.1
             p.2⟩ :=
   rfl
 
@@ -317,7 +317,7 @@ theorem Smale.NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacem
     IsLocalDiffeomorphAt ((𝓘(ℝ, E)).prod 𝓘(ℝ, e.NormalModel)) (𝓡 e.ambientDimension) ∞
       (e.localNormalDisplacement x) (x, 0) := by
   exact
-    NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv (e.contMDiff_localNormalDisplacement x)
+    isLocalDiffeomorphAt_of_invertible_mvfderiv (e.contMDiff_localNormalDisplacement x)
       (e.localNormalDisplacement_derivative_isInvertible x)
 
 noncomputable def Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph {E M : Type*}
@@ -341,7 +341,7 @@ theorem Smale.NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero {E M :
     e.normalChartPartialDiffeomorph x (Bundle.zeroSection e.NormalModel e.NormalSpace x) =
       (x, 0) := by
   change
-    (x, NoExotic.ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv x x 0) =
+    (x, ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv x x 0) =
       (x, 0)
   rw [map_zero]
 
@@ -350,24 +350,24 @@ theorem Smale.NativeEuclideanEmbedding.normalChart_source_zero {E M : Type*}
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M) :
     Bundle.zeroSection e.NormalModel e.NormalSpace x ∈
       (e.normalChartPartialDiffeomorph x).source := by
-  change x ∈ NoExotic.projectionTransportDomain e.normalProjection x
-  exact NoExotic.mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent x
+  change x ∈ projectionTransportDomain e.normalProjection x
+  exact mem_projectionTransportDomain e.normalProjection e.normalProjection_idempotent x
 
 theorem Smale.NativeEuclideanEmbedding.localNormalDisplacement_chart_apply {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (e : Smale.NativeEuclideanEmbedding E M) (x : M)
     (v : e.NormalBundle) (hv : v ∈ (e.normalChartPartialDiffeomorph x).source) :
     e.localNormalDisplacement x (e.normalChartPartialDiffeomorph x v) = e.normalDisplacement v := by
-  have hbase : v.proj ∈ NoExotic.projectionTransportDomain e.normalProjection x := hv
+  have hbase : v.proj ∈ projectionTransportDomain e.normalProjection x := hv
   have hback :=
-    NoExotic.ProjectionBundle.fromCoordinates_toCoordinates e.normalProjection
+    ProjectionBundle.fromCoordinates_toCoordinates e.normalProjection
       e.normalProjection_idempotent e.normalModelEquiv x v.proj hbase v.2
   rw [e.localNormalDisplacement_eq]
   change
     e.normalDisplacement
         ⟨v.proj,
-          NoExotic.ProjectionBundle.fromCoordinates e.normalProjection e.normalModelEquiv x v.proj
-            (NoExotic.ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv x
+          ProjectionBundle.fromCoordinates e.normalProjection e.normalModelEquiv x v.proj
+            (ProjectionBundle.toCoordinates e.normalProjection e.normalModelEquiv x
               v.proj v.2)⟩ =
       _
   rw [hback]
@@ -892,7 +892,7 @@ def Smale.NativeEuclideanEmbedding.diskNormalProjection {E M D : Type*} [NormedA
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] (e : Smale.NativeEuclideanEmbedding E M)
     (f : D → M) (x : D) :
     EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
-  e.tangentProjection (f x) - NoExotic.gramProjection (fderiv ℝ (e.toFun ∘ f) x)
+  e.tangentProjection (f x) - gramProjection (fderiv ℝ (e.toFun ∘ f) x)
 
 theorem Smale.NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -900,7 +900,7 @@ theorem Smale.NativeEuclideanEmbedding.diskNormalProjection_eq {E M D : Type*}
     (e : Smale.NativeEuclideanEmbedding E M) {f : D → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
     {x : D} (hi : Function.Injective (fderiv ℝ (e.toFun ∘ f) x)) :
     e.diskNormalProjection f x = (e.diskNormalSpace f x).starProjection := by
-  rw [diskNormalProjection, NoExotic.gramProjection_eq_starProjection _ hi]
+  rw [diskNormalProjection, gramProjection_eq_starProjection _ hi]
   exact (Smale.DiskFraming.starProjection_orthogonal_inf_eq_sub (e.diskTangentImage_le hf x)).symm
 
 theorem Smale.NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : Type*}
@@ -916,7 +916,7 @@ theorem Smale.NativeEuclideanEmbedding.contDiffOn_diskNormalProjection {E M D : 
     (e.contMDiff_tangentProjection.comp hf).contDiff
   intro x hx
   have hp : ContDiffAt ℝ ∞ (e.diskNormalProjection f) x :=
-    hT.contDiffAt.sub (NoExotic.contMDiffAt_gramProjection hd.contMDiff.contMDiffAt hx).contDiffAt
+    hT.contDiffAt.sub (contMDiffAt_gramProjection hd.contMDiff.contMDiffAt hx).contDiffAt
   exact hp.contDiffWithinAt
 
 theorem Smale.NativeEuclideanEmbedding.exists_open_diskNormalProjection {E M D : Type*}
@@ -1029,10 +1029,10 @@ def Smale.DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [Normed
     (hP : ∀ x ∈ K, IsIdempotentElem (P x)) (hQ : ∀ x ∈ K, IsIdempotentElem (Q x)) {U V : Set E}
     (hU : IsOpen U) (hV : IsOpen V) (hKU : K ⊆ U) (hKV : K ⊆ V) (hsP : ContDiffOn ℝ ∞ P U)
     (hsQ : ContDiffOn ℝ ∞ Q V)
-    (hinv : ∀ x ∈ K, (NoExotic.projectionIntertwiner (P x) (Q x)).IsInvertible) :
+    (hinv : ∀ x ∈ K, (projectionIntertwiner (P x) (Q x)).IsInvertible) :
     Smale.DiskFraming.SmoothRangeTransportOn K P Q
     where
-  toFun x := NoExotic.projectionIntertwiner (P x) (Q x)
+  toFun x := projectionIntertwiner (P x) (Q x)
   neighborhood := U ∩ V
   open_neighborhood := hU.inter hV
   contains := fun _ hx => ⟨hKU hx, hKV hx⟩
@@ -1041,9 +1041,9 @@ def Smale.DiskFraming.SmoothRangeTransportOn.ofProjections {E F : Type*} [Normed
       ((contDiffOn_const.sub (hsQ.mono Set.inter_subset_right)).clm_comp
         (contDiffOn_const.sub (hsP.mono Set.inter_subset_left)))
   invertible := hinv
-  intertwines x hx := NoExotic.projectionIntertwiner_intertwines (P x) (Q x) (hP x hx) (hQ x hx)
+  intertwines x hx := projectionIntertwiner_intertwines (P x) (Q x) (hP x hx) (hQ x hx)
 
-theorem NoExotic.isOpen_forall_compact {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+theorem isOpen_forall_compact {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [CompactSpace Y] {R : X → Y → Prop} (ho : IsOpen {p : X × Y | R p.1 p.2}) :
     IsOpen {x | ∀ y, R x y} := by
   have hclosed := isClosedMap_fst_of_compactSpace _ ho.isClosed_compl
@@ -1060,18 +1060,18 @@ theorem NoExotic.isOpen_forall_compact {X Y : Type*} [TopologicalSpace X] [Topol
   rw [heq]
   exact hclosed.isOpen_compl
 
-def NoExotic.homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+def homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {M : Type*} {T : Type*} (P : T → M → F →L[ℝ] F) (s : T) : Set T :=
   {t | ∀ x, (projectionIntertwiner (P s x) (P t x)).IsInvertible}
 
-theorem NoExotic.mem_homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+theorem mem_homotopyTransportDomain {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {M : Type*} {T : Type*} (P : T → M → F →L[ℝ] F) (hP : ∀ t x, IsIdempotentElem (P t x))
     (s : T) : s ∈ homotopyTransportDomain P s := by
   intro x
   rw [projectionIntertwiner_self _ (hP s x)]
   exact ⟨ContinuousLinearEquiv.refl ℝ F, rfl⟩
 
-theorem NoExotic.isOpen_continuousHomotopyTransportDomain {F : Type*} [NormedAddCommGroup F]
+theorem isOpen_continuousHomotopyTransportDomain {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [CompleteSpace F] {M T : Type*} [TopologicalSpace M] [CompactSpace M]
     [TopologicalSpace T] (P : T → M → F →L[ℝ] F) (hc : Continuous (fun p : T × M ↦ P p.1 p.2))
     (s : T) : IsOpen (homotopyTransportDomain P s) := by
@@ -1094,8 +1094,8 @@ theorem Smale.DiskFraming.isOpen_transportOnClass {E F T : Type*} [NormedAddComm
   have hR (t : T) (x : K) : IsIdempotentElem (R t x) := hP t x.1 x.property
   rw [isOpen_iff_mem_nhds]
   rintro t ⟨a⟩
-  have hdom := NoExotic.isOpen_continuousHomotopyTransportDomain R hc t
-  have ht := NoExotic.mem_homotopyTransportDomain R hR t
+  have hdom := isOpen_continuousHomotopyTransportDomain R hc t
+  have ht := mem_homotopyTransportDomain R hR t
   apply Filter.mem_of_superset (hdom.mem_nhds ht)
   intro u hu
   obtain ⟨Ut, hUt, hKt, hst⟩ := hs t
@@ -1117,8 +1117,8 @@ theorem Smale.DiskFraming.isOpen_compl_transportOnClass {E F T : Type*} [NormedA
   have hR (t : T) (x : K) : IsIdempotentElem (R t x) := hP t x.1 x.property
   rw [isOpen_iff_mem_nhds]
   intro t ht
-  have hdom := NoExotic.isOpen_continuousHomotopyTransportDomain R hc t
-  have htmem := NoExotic.mem_homotopyTransportDomain R hR t
+  have hdom := isOpen_continuousHomotopyTransportDomain R hc t
+  have htmem := mem_homotopyTransportDomain R hR t
   apply Filter.mem_of_superset (hdom.mem_nhds htmem)
   rintro u hu ⟨a⟩
   obtain ⟨Ut, hUt, hKt, hst⟩ := hs t

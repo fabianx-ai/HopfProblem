@@ -1994,7 +1994,7 @@ theorem Smale.ManifoldSmoothing.exists_smoothing_patch_at_in_open {E G H K X N :
     ∃ p : MapSmoothingPatch I J (X := X) (N := N),
       p.Compatible f ∧ x ∈ p.plateau ∧ p.chart.source ⊆ O := by
   classical
-  let c₀ := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c₀ := modelChartPartialDiffeomorph (I := J) (f x)
   let c := Smale.PartialChart.restrictSource c₀ hO
   have hsource : f x ∈ c.source := ⟨mem_extChartAt_source (I := J) (f x), hxO⟩
   have hU : f ⁻¹' c.source ∈ 𝓝 x := (c.open_source.preimage f.continuous).mem_nhds hsource

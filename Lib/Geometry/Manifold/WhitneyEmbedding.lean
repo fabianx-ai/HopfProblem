@@ -97,7 +97,7 @@ theorem Smale.exists_partialDiffeomorph_into_manifold {D E M : Type*} [NormedAdd
     (hinv : (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x).IsInvertible) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, E) D M ∞,
       x ∈ Φ.source ∧ Φ.source ⊆ U ∧ Set.EqOn f Φ Φ.source := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) (f x)
+  let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, E)) (f x)
   have hc : f x ∈ c.source := mem_extChartAt_source (f x)
   let V : Set D := U ∩ f ⁻¹' c.source
   have hV : IsOpen V := hf.continuousOn.isOpen_inter_preimage hU c.open_source
@@ -111,7 +111,7 @@ theorem Smale.exists_partialDiffeomorph_into_manifold {D E M : Type*} [NormedAdd
       mfderiv_comp x (c.mdifferentiableAt (by simp) hc)
         ((hf.contMDiffAt (hU.mem_nhds hx)).mdifferentiableAt (by simp))]
     exact hcinv.comp hinv
-  obtain ⟨d, hd, hdV, hdf⟩ := NoExotic.exists_partialDiffeomorph_of_contDiffOn hV hxV hcf hderiv
+  obtain ⟨d, hd, hdV, hdf⟩ := exists_partialDiffeomorph_of_contDiffOn hV hxV hcf hderiv
   have hdx : d x ∈ c.target := by
     rw [hdf]
     exact c.map_source' hc
@@ -139,7 +139,7 @@ theorem Smale.exists_partialDiffeomorph_between_manifolds {D E M : Type*} [Norme
     (hinv : (mfderiv I 𝓘(ℝ, E) f x).IsInvertible) :
     ∃ Φ : PartialDiffeomorph I 𝓘(ℝ, E) X M ∞,
       x ∈ Φ.source ∧ Φ.source ⊆ U ∧ Set.EqOn f Φ Φ.source := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := I) x
+  let c := modelChartPartialDiffeomorph (I := I) x
   have hxc : x ∈ c.source := mem_extChartAt_source x
   have hcx : c x ∈ c.target := c.map_source' hxc
   have hleft (y : X) (hy : y ∈ c.source) : c.symm (c y) = y := c.left_inv' hy
@@ -190,7 +190,7 @@ theorem Smale.exists_partialDiffeomorph_boundaryless {D E H H' X Y : Type*} [Nor
     [IsManifold J ∞ Y] {f : X → Y} {U : Set X} {x : X} (hU : IsOpen U) (hx : x ∈ U)
     (hf : ContMDiffOn I J ∞ f U) (hinv : (mfderiv I J f x).IsInvertible) :
     ∃ Φ : PartialDiffeomorph I J X Y ∞, x ∈ Φ.source ∧ Φ.source ⊆ U ∧ Set.EqOn f Φ Φ.source := by
-  let c := NoExotic.modelChartPartialDiffeomorph (I := J) (f x)
+  let c := modelChartPartialDiffeomorph (I := J) (f x)
   have hc : f x ∈ c.source := mem_extChartAt_source (f x)
   let V : Set X := U ∩ f ⁻¹' c.source
   have hV : IsOpen V := hf.continuousOn.isOpen_inter_preimage hU c.open_source
@@ -554,7 +554,7 @@ theorem Smale.NativeEuclideanEmbedding.finrank_tangentImage {E : Type*} {M : Typ
     Module.finrank ℝ (e.tangentImage x) = Module.finrank ℝ E := by
   exact LinearMap.finrank_range_of_inj (e.injective_mvfderiv x)
 
-noncomputable def NoExotic.realAdjoint {E F : Type*} [NormedAddCommGroup E]
+noncomputable def realAdjoint {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] : (E →L[ℝ] F) →L[ℝ] (F →L[ℝ] E)
     where
@@ -563,12 +563,12 @@ noncomputable def NoExotic.realAdjoint {E F : Type*} [NormedAddCommGroup E]
   map_smul' r A := by simp
   cont := ContinuousLinearMap.adjoint.continuous
 
-noncomputable def NoExotic.gramOperator {E F : Type*} [NormedAddCommGroup E]
+noncomputable def gramOperator {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) : E →L[ℝ] E :=
   A.adjoint.comp A
 
-theorem NoExotic.gramOperator_isInvertible {E F : Type*} [NormedAddCommGroup E]
+theorem gramOperator_isInvertible {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) (hA : Function.Injective A) :
     (gramOperator A).IsInvertible := by
@@ -576,12 +576,12 @@ theorem NoExotic.gramOperator_isInvertible {E F : Type*} [NormedAddCommGroup E]
   let g := (LinearEquiv.ofInjectiveEndo (gramOperator A).toLinearMap hG).toContinuousLinearEquiv
   exact ⟨g, by ext v; rfl⟩
 
-noncomputable def NoExotic.gramProjection {E F : Type*} [NormedAddCommGroup E]
+noncomputable def gramProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) : F →L[ℝ] F :=
   A.comp ((gramOperator A).inverse.comp A.adjoint)
 
-theorem NoExotic.gramProjection_eq_starProjection {E F : Type*} [NormedAddCommGroup E]
+theorem gramProjection_eq_starProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) (hA : Function.Injective A) :
     gramProjection A = A.range.starProjection := by
@@ -595,7 +595,7 @@ theorem NoExotic.gramProjection_eq_starProjection {E F : Type*} [NormedAddCommGr
     change A.adjoint v - gramOperator A ((gramOperator A).inverse (A.adjoint v)) = 0
     rw [(gramOperator_isInvertible A hA).self_apply_inverse, sub_self]
 
-theorem NoExotic.contMDiffAt_gramProjection {E F : Type*} [NormedAddCommGroup E]
+theorem contMDiffAt_gramProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] {B H M : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -684,11 +684,11 @@ theorem Smale.NativeEuclideanEmbedding.contMDiff_tangentProjection {E M : Type*}
       (A y).range = (e.localDifferential x y).range :=
         LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.mpr φ.surjective)
       _ = e.tangentImage y := e.localDifferential_range x y hy
-  have h := NoExotic.contMDiffAt_gramProjection hs (hi x (mem_chart_source _ _))
-  have heq : e.tangentProjection =ᶠ[𝓝 x] (fun y => NoExotic.gramProjection (A y)) := by
+  have h := contMDiffAt_gramProjection hs (hi x (mem_chart_source _ _))
+  have heq : e.tangentProjection =ᶠ[𝓝 x] (fun y => gramProjection (A y)) := by
     filter_upwards [chart_source_mem_nhds E x] with y hy
     simpa only [tangentProjection, hr y hy] using
-      (NoExotic.gramProjection_eq_starProjection _ (hi y hy)).symm
+      (gramProjection_eq_starProjection _ (hi y hy)).symm
   exact heq.contMDiffAt_iff.mpr h
 
 def Smale.NativeEuclideanEmbedding.normalFiber {E M : Type*} [NormedAddCommGroup E]
