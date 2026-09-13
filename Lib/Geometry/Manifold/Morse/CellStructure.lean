@@ -903,6 +903,7 @@ theorem MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGr
       (Filter.Eventually.of_forall (fun y => hmin (Set.mem_univ y)))
   exact h p hp ((hmin (Set.mem_univ x.val)).trans x.property)
 
+/-- Across a regular band of a smooth function on a compact manifold, the sublevel inclusion is a homotopy equivalence. -/
 theorem FlowConstruction.exists_regularSublevelHomotopyEquiv {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -912,6 +913,7 @@ theorem FlowConstruction.exists_regularSublevelHomotopyEquiv {E M : Type*}
   obtain ⟨F, hF⟩ := exists_heightTranslatingFlow hf hband
   exact ⟨regularSublevelHomotopyEquivOfFlow F hF hf.continuous hab, fun _ => rfl⟩
 
+/-- Build each upper Morse sublevel from finitely many cells by induction over the critical values and the disjoint cell bands. -/
 theorem MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -975,6 +977,7 @@ theorem MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
           (c p).dimension_le hlower
   exact hstep p
 
+/-- A compact finite-dimensional smooth manifold admits a finite cell construction of dimension at most its manifold dimension. -/
 theorem MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
