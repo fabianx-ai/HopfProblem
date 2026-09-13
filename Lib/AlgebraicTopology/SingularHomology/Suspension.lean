@@ -81,16 +81,21 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Suspension of spheres -/
+
+/-- The map from the suspension of the `n`-sphere to the `n+1`-sphere along latitudes. -/
 def SphereHomology.suspensionSphereMap (n : ℕ) :
     Suspension (UnitSphere n) → UnitSphere (n + 1) :=
   Quotient.lift (fun p => Latitude.point n p.1 p.2)
     (fun p q h => (Latitude.point_eq_iff n p.1 q.1 p.2 q.2).mpr h)
 
+/-- The suspension-to-sphere latitude map is continuous. -/
 @[continuity, fun_prop]
 theorem SphereHomology.suspensionSphereMap_continuous (n : ℕ) :
     Continuous (suspensionSphereMap n) :=
   Suspension.isQuotientMap_mk.continuous_iff.mpr (Latitude.point_continuous n)
 
+/-- The suspension-to-sphere latitude map is injective. -/
 theorem SphereHomology.suspensionSphereMap_injective (n : ℕ) :
     Function.Injective (suspensionSphereMap n) := by
   intro a b
@@ -101,12 +106,14 @@ theorem SphereHomology.suspensionSphereMap_injective (n : ℕ) :
       intro h
       exact Quotient.sound ((Latitude.point_eq_iff n p.1 q.1 p.2 q.2).mp h)
 
+/-- The suspension-to-sphere latitude map is surjective. -/
 theorem SphereHomology.suspensionSphereMap_surjective (n : ℕ) :
     Function.Surjective (suspensionSphereMap n) := by
   intro y
   obtain ⟨⟨t, x⟩, h⟩ := Latitude.point_surjective n y
   exact ⟨Suspension.mk t x, h⟩
 
+/-- The suspension of the `n`-sphere is homeomorphic to the `n+1`-sphere. -/
 def SphereHomology.suspensionSphereHomeomorph (n : ℕ) :
     Suspension (UnitSphere n) ≃ₜ UnitSphere (n + 1) :=
   Continuous.homeoOfEquivCompactToT2 (f :=
@@ -114,17 +121,22 @@ def SphereHomology.suspensionSphereHomeomorph (n : ℕ) :
       ⟨suspensionSphereMap_injective n, suspensionSphereMap_surjective n⟩)
     (suspensionSphereMap_continuous n)
 
+/-- The suspension-sphere homeomorphism sends `mk t x` to the latitude point. -/
 @[simp]
 theorem SphereHomology.suspensionSphereHomeomorph_mk (n : ℕ) (t : unitInterval)
     (x : UnitSphere n) :
     suspensionSphereHomeomorph n (Suspension.mk t x) = Latitude.point n t x :=
   rfl
 
+/-- Spheres of positive dimension are path connected. -/
 instance SphereHomology.unitSphere_pathConnectedSpace (n : ℕ) :
     PathConnectedSpace (UnitSphere (n + 1)) :=
   (suspensionSphereHomeomorph n).surjective.pathConnectedSpace
     (suspensionSphereHomeomorph n).continuous
 
+/-! ### Split exact pairs -/
+
+/-- A retraction together with exactness makes the pair map injective. -/
 theorem SingularHomology.splitExactPair_injective {A B C : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (i : A →ₗ[ℤ] B) (p : B →ₗ[ℤ] A) (d : B →ₗ[ℤ] C) (hpi : p.comp i = LinearMap.id)
@@ -146,6 +158,7 @@ theorem SingularHomology.splitExactPair_injective {A B C : Type*}
   have hdiff : b - b' = 0 := by rw [← ha, ha0, map_zero]
   exact sub_eq_zero.mp hdiff
 
+/-- A split exact pair with surjective quotient map gives a surjective pair map. -/
 theorem SingularHomology.splitExactPair_surjective {A B C : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C]
     (i : A →ₗ[ℤ] B) (p : B →ₗ[ℤ] A) (d : B →ₗ[ℤ] C) (hpi : p.comp i = LinearMap.id)
@@ -164,6 +177,7 @@ theorem SingularHomology.splitExactPair_surjective {A B C : Type*}
     have hdi : d (i (a - p b)) = 0 := hi
     rw [map_add, hdi, add_zero, hb]
 
+/-- A split short exact datum gives an equivalence `B ≃ A × C`. -/
 def SingularHomology.splitExactEquiv {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C] (i : A →ₗ[ℤ] B) (p : B →ₗ[ℤ] A)
     (d : B →ₗ[ℤ] C) (hpi : p.comp i = LinearMap.id) (hex : LinearMap.range i = LinearMap.ker d)
@@ -175,6 +189,7 @@ def SingularHomology.splitExactEquiv {A B C : Type*} [AddCommGroup A] [AddCommGr
         map_add' b b' := Prod.ext (map_add p b b') (map_add d b b') } :
       B ≃+ (A × C)).toIntLinearEquiv
 
+/-- The split-exact equivalence computes the two components. -/
 @[simp]
 theorem SingularHomology.splitExactEquiv_apply {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C] (i : A →ₗ[ℤ] B)
@@ -183,6 +198,7 @@ theorem SingularHomology.splitExactEquiv_apply {A B C : Type*} [AddCommGroup A]
     splitExactEquiv i p d hpi hex hsurj b = (p b, d b) :=
   rfl
 
+/-- The equivalence sends an included element to its first component. -/
 @[simp]
 theorem SingularHomology.splitExactEquiv_apply_inclusion {A B C : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [Module ℤ A] [Module ℤ B] [Module ℤ C] (i : A →ₗ[ℤ] B)
@@ -195,6 +211,9 @@ theorem SingularHomology.splitExactEquiv_apply_inclusion {A B C : Type*} [AddCom
   have hdi : d (i a) = 0 := hi
   rw [splitExactEquiv_apply, hpa, hdi]
 
+/-! ### Circle boundary splitting -/
+
+/-- An additive homomorphism between `ℤ`-modules is automatically `ℤ`-linear. -/
 def SingularHomology.intLinearMapOfAddHom {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     {modA : Module ℤ A} {modB : Module ℤ B} (f : A →+ B) : A →ₗ[ℤ] B
     where
@@ -206,6 +225,7 @@ def SingularHomology.intLinearMapOfAddHom {A B : Type*} [AddCommGroup A] [AddCom
     rw [int_smul_eq_zsmul, int_smul_eq_zsmul]
     exact f.map_zsmul n a
 
+/-- The map summing the two components of a pair. -/
 def SingularHomology.pairSumMap (A : Type*) [AddCommGroup A] [Module ℤ A] :
     (A × A) →ₗ[ℤ] A :=
   intLinearMapOfAddHom
@@ -213,6 +233,7 @@ def SingularHomology.pairSumMap (A : Type*) [AddCommGroup A] [Module ℤ A] :
       map_zero' := add_zero 0
       map_add' ac bd := add_add_add_comm ac.1 bd.1 ac.2 bd.2 }
 
+/-- The map negating the first component of a pair. -/
 def SingularHomology.negativeFirstMap (A : Type*) [AddCommGroup A] [Module ℤ A] :
     (A × A) →ₗ[ℤ] A :=
   intLinearMapOfAddHom
@@ -220,11 +241,13 @@ def SingularHomology.negativeFirstMap (A : Type*) [AddCommGroup A] [Module ℤ A
       map_zero' := neg_zero
       map_add' ac bd := neg_add ac.1 bd.1 }
 
+/-- The pair-sum map computes the sum of components. -/
 @[simp]
 theorem SingularHomology.pairSumMap_apply (A : Type*) [AddCommGroup A] [Module ℤ A]
     (ac : A × A) : pairSumMap A ac = ac.1 + ac.2 :=
   rfl
 
+/-- A boundary landing in the kernel of pair-sum has components summing to zero. -/
 theorem SingularHomology.circleBoundary_sum_eq_zero {A : Type*} [AddCommGroup A]
     [Module ℤ A] {B : Type*} [AddCommGroup B] [Module ℤ B] (δ : B →ₗ[ℤ] (A × A))
     (hrange : LinearMap.range δ = LinearMap.ker (pairSumMap A)) (b : B) : (δ b).1 + (δ b).2 = 0 :=
@@ -233,6 +256,7 @@ theorem SingularHomology.circleBoundary_sum_eq_zero {A : Type*} [AddCommGroup A]
   rw [hrange] at hb
   exact hb
 
+/-- Composing the boundary with the negative-first map preserves the kernel. -/
 theorem SingularHomology.circleBoundary_negativeFirst_ker {A : Type*} [AddCommGroup A]
     [Module ℤ A] {B : Type*} [AddCommGroup B] [Module ℤ B] (δ : B →ₗ[ℤ] (A × A))
     (hrange : LinearMap.range δ = LinearMap.ker (pairSumMap A)) :
@@ -249,6 +273,7 @@ theorem SingularHomology.circleBoundary_negativeFirst_ker {A : Type*} [AddCommGr
     rw [hb]
     exact neg_zero
 
+/-- Composing the boundary with the negative-first map is surjective. -/
 theorem SingularHomology.circleBoundary_negativeFirst_surjective {A : Type*}
     [AddCommGroup A] [Module ℤ A] {B : Type*} [AddCommGroup B] [Module ℤ B] (δ : B →ₗ[ℤ] (A × A))
     (hrange : LinearMap.range δ = LinearMap.ker (pairSumMap A)) :
@@ -262,6 +287,7 @@ theorem SingularHomology.circleBoundary_negativeFirst_surjective {A : Type*}
   rw [hb]
   exact neg_neg a
 
+/-- The circle boundary split gives `B ≃ P × A`. -/
 def SingularHomology.circleSplitExactEquiv {A : Type*} [AddCommGroup A] [Module ℤ A]
     {B P : Type*} [AddCommGroup B] [AddCommGroup P] [Module ℤ B] [Module ℤ P] (i : P →ₗ[ℤ] B)
     (p : B →ₗ[ℤ] P) (δ : B →ₗ[ℤ] (A × A)) (hpi : p.comp i = LinearMap.id)
@@ -271,6 +297,7 @@ def SingularHomology.circleSplitExactEquiv {A : Type*} [AddCommGroup A] [Module 
     (hker.trans (circleBoundary_negativeFirst_ker δ hrange).symm)
     (circleBoundary_negativeFirst_surjective δ hrange)
 
+/-- The circle split equivalence sends an included element to its first component. -/
 @[simp]
 theorem SingularHomology.circleSplitExactEquiv_apply_inclusion {A : Type*}
     [AddCommGroup A] [Module ℤ A] {B P : Type*} [AddCommGroup B] [AddCommGroup P] [Module ℤ B]
@@ -282,6 +309,9 @@ theorem SingularHomology.circleSplitExactEquiv_apply_inclusion {A : Type*}
     (hker.trans (circleBoundary_negativeFirst_ker δ hrange).symm)
     (circleBoundary_negativeFirst_surjective δ hrange) a
 
+/-! ### Homology of a contractible two-cover -/
+
+/-- For a cover by contractible opens the connecting homomorphism is injective. -/
 theorem Suspension.contractibleCoverConnecting_injective {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     [ContractibleSpace U] [ContractibleSpace V] (n : ℕ) :
@@ -298,6 +328,7 @@ theorem Suspension.contractibleCoverConnecting_injective {X : Type} [Topological
   have ha : a = 0 := Subsingleton.elim _ _
   rw [ha, map_zero, LinearMap.zero_apply]
 
+/-- For a cover by contractible opens the connecting homomorphism is surjective in positive degree. -/
 theorem Suspension.contractibleCoverConnecting_surjective {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     [ContractibleSpace U] [ContractibleSpace V] (n : ℕ) :
@@ -313,6 +344,7 @@ theorem Suspension.contractibleCoverConnecting_surjective {X : Type} [Topologica
   rw [← SingularMayerVietoris.exact_at_intersection U V hU hV hcover (n + 1)] at ha
   exact ha
 
+/-- Higher homology of a space covered by two contractible opens is the shifted homology of the intersection. -/
 def Suspension.contractibleCoverHomologyHigherEquiv {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     [ContractibleSpace U] [ContractibleSpace V] (n : ℕ) :
@@ -322,6 +354,7 @@ def Suspension.contractibleCoverHomologyHigherEquiv {X : Type} [TopologicalSpace
     ⟨contractibleCoverConnecting_injective U V hU hV hcover (n + 1),
       contractibleCoverConnecting_surjective U V hU hV hcover n⟩
 
+/-- The degree-one connecting map into the kernel of the left map. -/
 def Suspension.contractibleCoverConnectingToKernel {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
     SingularMayerVietoris.SingularHomology X 1 →ₗ[ℤ]
@@ -334,6 +367,7 @@ def Suspension.contractibleCoverConnectingToKernel {X : Type} [TopologicalSpace 
           rw [← SingularMayerVietoris.exact_at_intersection U V hU hV hcover 0]
           exact ⟨a, rfl⟩)).toAddMonoidHom
 
+/-- The degree-one connecting map onto the kernel is bijective for contractible covers. -/
 theorem Suspension.contractibleCoverConnectingToKernel_bijective {X : Type}
     [TopologicalSpace X] (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     [ContractibleSpace U] [ContractibleSpace V] :
@@ -350,6 +384,7 @@ theorem Suspension.contractibleCoverConnectingToKernel_bijective {X : Type}
     obtain ⟨b, hb⟩ := ha
     exact ⟨b, Subtype.ext hb⟩
 
+/-- Degree-one homology of a contractible two-cover is the kernel of the left map. -/
 def Suspension.contractibleCoverHomologyOneEquivKernel {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
     [ContractibleSpace U] [ContractibleSpace V] :
@@ -358,6 +393,7 @@ def Suspension.contractibleCoverHomologyOneEquivKernel {X : Type} [TopologicalSp
   LinearEquiv.ofBijective (contractibleCoverConnectingToKernel U V hU hV hcover)
     (contractibleCoverConnectingToKernel_bijective U V hU hV hcover)
 
+/-- Higher homology of a suspension is the shifted homology of the base. -/
 def SphereHomology.suspensionHomologyHigherEquiv (X : Type) [TopologicalSpace X] [Nonempty X]
     (k : ℕ) :
     SingularMayerVietoris.SingularHomology (Suspension X) (k + 2) ≃ₗ[ℤ]
@@ -370,6 +406,7 @@ def SphereHomology.suspensionHomologyHigherEquiv (X : Type) [TopologicalSpace X]
     (SingularHomology.homotopyEquivHomologyEquiv
       Suspension.middleBandHomotopyEquiv (k + 1))
 
+/-- Higher homology of the `n+1`-sphere is the shifted homology of the `n`-sphere. -/
 def SphereHomology.unitSphereHomologySuspensionEquiv (n k : ℕ) :
     SingularMayerVietoris.SingularHomology (UnitSphere (n + 1)) (k + 2) ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (UnitSphere n) (k + 1) :=
@@ -377,20 +414,26 @@ def SphereHomology.unitSphereHomologySuspensionEquiv (n k : ℕ) :
         (k + 2)).trans
     (suspensionHomologyHigherEquiv (UnitSphere n) k)
 
+/-! ### The circle as a plane sphere -/
+
+/-- The real Euclidean plane is isometric to `ℂ`. -/
 def SphereHomology.euclideanPlaneComplexIsometry : EuclideanSpace ℝ (Fin 2) ≃ₗᵢ[ℝ] ℂ :=
   Complex.orthonormalBasisOneI.repr.symm
 
+/-- The isometry preserves membership in centred spheres. -/
 theorem SphereHomology.euclideanPlaneComplexIsometry_mem_sphere (x : EuclideanSpace ℝ (Fin 2))
     (r : ℝ) :
     euclideanPlaneComplexIsometry x ∈ Metric.sphere (0 : ℂ) r ↔
       x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) r := by
   simp only [mem_sphere_zero_iff_norm, LinearIsometryEquiv.norm_map]
 
+/-- The unit sphere in the Euclidean plane is homeomorphic to `Circle`. -/
 def SphereHomology.sphereCircleHomeomorph :
     Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) 1 ≃ₜ _root_.Circle :=
   euclideanPlaneComplexIsometry.toHomeomorph.subtype
     (fun x => (euclideanPlaneComplexIsometry_mem_sphere x 1).symm)
 
+/-- The plane unit sphere and `Circle` have equivalent singular homology. -/
 def SphereHomology.sphereCircleHomologyEquiv (n : ℕ) :
     SingularMayerVietoris.SingularHomology (Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) 1)
         n ≃ₗ[ℤ]
