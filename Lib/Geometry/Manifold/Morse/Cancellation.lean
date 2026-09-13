@@ -953,7 +953,7 @@ theorem FlowConstruction.scalar_height_translation {φ γ : ℝ → ℝ} (hφ : 
     isMIntegralCurveOn_Ioo_eqOn_of_contMDiff_boundaryless hzero hV hactual hlinear
       (by simpa only [add_zero] using hγ₀) htime
 
-/-- A height-translating flow exists on a product chart. -/
+/-- A global flow satisfies `f (F t x) = f x + t` whenever both `f x` and `f x + t` lie in the given regular band. -/
 theorem FlowConstruction.exists_heightTranslatingFlow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
