@@ -7,10 +7,54 @@ module
 
 public import Mathlib
 
+/-!
+# The Whitney bigon: explicit strip-coordinate model
+
+`WhitneyPairModel` builds the standard model picture behind the Whitney trick:
+two sheets `x ↦ (x, 0)` and `x ↦ (x, h)` in the plane, the bigon they bound
+(`bigon h`), and smooth strip coordinates near each corner
+(`lowerStripCoordinates`, `upperStripCoordinates`) joined by the corner
+transition data (`cornerTransition`, `cornerScale`, `cornerSign`). The model is
+deliberately elementary — everything is a concrete map between `ℝ × ℝ` and the
+product `Space` — so that later Whitney-disk arguments can cite exact smooth
+charts instead of an existence statement.
+
+## Main definitions and results
+
+* `WhitneyPairModel.bigon` : the bigon bounded by the two sheets; closed,
+  star-convex, and compact for `0 < h` (`isClosed_bigon`, `starConvex_bigon`,
+  `isCompact_bigon`), with interior/frontier characterizations
+  (`mem_interior_bigon_iff`, `mem_frontier_bigon_iff`) and boundary cover
+  (`exists_bigon_boundary_cover`).
+* `bigonReflection` / `exchangeEdges_involutive` : the sheet-swapping symmetry.
+* `leftCornerCoordinates`, `rightCornerCoordinates`, `cornerTransition`,
+  `cornerScale`, `cornerSign` : smooth corner charts and their exchange
+  behaviour (`leftCornerCoordinates_exchange`).
+* `lowerStripCoordinates`, `upperStripCoordinates` : smooth strip coordinates
+  (`contDiff_lowerStripCoordinates`, `contDiff_upperStripCoordinates`) agreeing
+  with the sheets on their sides (`lowerStripCoordinates_lower`, …).
+* `StripCoordinates.reverse` : orientation-reversing model map, smooth
+  (`contDiff_reverse`).
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §6
+  (Theorem 6.6, the Whitney lemma this model serves).
+
+## Twin
+
+No Mathlib counterpart exists.
+
+## Tags
+
+Whitney trick, bigon, strip coordinates, model
+-/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
 open scoped ContDiff
+
 
 @[expose] public noncomputable section
 

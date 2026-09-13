@@ -1,11 +1,13 @@
 # Fresh independent review of Lane G
 
+*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; no other content changed.*
+
 Reviewer: **fresh-g-subagent** (Devin subagent).
 Scope: review and report only; no ledger repairs, repository edits, commits, package writes, or builds.
 
 ## Reviewed snapshot and verdicts
 
-- Repository: `/home/ox-alpha/HopfProblem`, branch `lib/textbook-extraction`.
+- Repository: `the repository root`, branch `lib/textbook-extraction`.
 - Initial observed HEAD: `37fc1de8a74a3b294a54fd9e804c82c074ae9591`.
 - HEAD advanced during this review to `7e98c5835863c6b241143dcc9f593ccc855f9fc9` (E2 documentation repairs, by another worker). The six scoped files below have **no diff between those two commits**. This report applies to their identical contents at both HEADs, not an imagined earlier `bd9c393` checkout.
 - Initial and latest observed working-tree status: only `?? AGENTS.md`; no tracked modifications. `git diff --check` exited 0. The working tree is therefore tracked-clean, not literally clean.
@@ -21,7 +23,7 @@ Scope: review and report only; no ledger repairs, repository edits, commits, pac
 
 ## Method and independence
 
-First read `/home/ox-alpha/collaboration-protocol.md`, repository `AGENTS.md`, and the full `lean-protocol.md`, including Stage 2 and the certified Axis-5 handoff requirements. Then read all 1,256 lines of G.md and all 68 lines of its receipt. Inspected live source declarations and the load-bearing proof bodies, including helpers outside the suggested ledger coordinates. Formed the findings about the repaired mathematics, stale names/coordinates, stale compiled context, and incomplete ownership before consulting any previous G review. Only afterward read `Lib/docs/G-stage2-astra-review2.md` as a checklist. Its old findings are not substituted for current inspection.
+First read `~/collaboration-protocol.md`, repository `AGENTS.md`, and the full `lean-protocol.md`, including Stage 2 and the certified Axis-5 handoff requirements. Then read all 1,256 lines of G.md and all 68 lines of its receipt. Inspected live source declarations and the load-bearing proof bodies, including helpers outside the suggested ledger coordinates. Formed the findings about the repaired mathematics, stale names/coordinates, stale compiled context, and incomplete ownership before consulting any previous G review. Only afterward read `Lib/docs/G-stage2-astra-review2.md` as a checklist. Its old findings are not substituted for current inspection.
 
 ## Numbered findings and specific actions
 

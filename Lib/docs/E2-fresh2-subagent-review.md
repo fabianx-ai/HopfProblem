@@ -1,7 +1,9 @@
 # E2 fresh second independent review
 
+*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; no other content changed.*
+
 Reviewer identity: **fresh2-e2** (new reviewer, not fresh-e2-subagent or astra).
-Scope: CURRENT `/home/ox-alpha/HopfProblem/Lib/docs/E2.md`, all 991 lines, its historical receipt, and direct live-source correspondence. No repository edits.
+Scope: CURRENT `Lib/docs/E2.md`, all 991 lines, its historical receipt, and direct live-source correspondence. No repository edits.
 
 ## Snapshot and scoped verdict
 
@@ -20,7 +22,7 @@ Scope: CURRENT `/home/ox-alpha/HopfProblem/Lib/docs/E2.md`, all 991 lines, its h
 
 ## Method and independence
 
-Read `/home/ox-alpha/collaboration-protocol.md` first, then repository `AGENTS.md`, Stage-2 and Axis-5 requirements in `lean-protocol.md`, the entire current E2 and receipt. Independently examined the mathematical implications and live source declarations/proof bodies before reading `Lib/docs/E2-fresh-subagent-review.md` and `Lib/docs/E2-stage2-astra-review.md` as a final checklist. Those older verdicts are not evidence of present failures. Historical receipt names and pre-integration commands were treated as historical, not asserted to be today's API.
+Read `~/collaboration-protocol.md` first, then repository `AGENTS.md`, Stage-2 and Axis-5 requirements in `lean-protocol.md`, the entire current E2 and receipt. Independently examined the mathematical implications and live source declarations/proof bodies before reading `Lib/docs/E2-fresh-subagent-review.md` and `Lib/docs/E2-stage2-astra-review.md` as a final checklist. Those older verdicts are not evidence of present failures. Historical receipt names and pre-integration commands were treated as historical, not asserted to be today's API.
 
 No Lean probes were run in this review. Direct source inspection suffices to identify the residual coordinate mistakes without relying on potentially stale oleans. Accordingly there is no new legacy or production elaboration success/failure to report, and no missing-artifact diagnosis is being mistaken for a source type error. I did not invoke a build to create artifacts.
 
@@ -112,7 +114,7 @@ Minor editorial follow-up: E2:800 refers to “§14's namespace table,” but th
 
 ## Source hash manifest (identical before and after review)
 
-Paths relative to `/home/ox-alpha/HopfProblem`:
+Paths relative to `the repository root`:
 
 | File | SHA-256 |
 |---|---|
@@ -129,11 +131,11 @@ Paths relative to `/home/ox-alpha/HopfProblem`:
 
 All Git invocations used environment `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0='*'`. No environment/config-changing script was sourced.
 
-1. `pwd && git -C /home/ox-alpha/HopfProblem rev-parse HEAD && git -C /home/ox-alpha/HopfProblem status --short && sha256sum /home/ox-alpha/HopfProblem/Lib/docs/E2.md` — exit 0; initial snapshot above.
+1. `pwd && git -C the repository root rev-parse HEAD && git -C the repository root status --short && sha256sum Lib/docs/E2.md` — exit 0; initial snapshot above.
 2. `sha256sum` on receipt and all eight source paths in the manifest — exit 0; initial hashes above. Specialized read/grep/find tools supplied all document/source inspection; no source files were modified or generated.
-3. `ls -ld /home/ox-alpha/s6-notes /tmp /tmp/shared-lean-copy/toolchain-v4.33.0/bin` — exit 0. Required toolchain directory exists; it was not invoked. Report-name lookup found no existing `E2-fresh2-subagent-review*`, so no overwrite or suffix was necessary.
-4. Final combined command: `git -C /home/ox-alpha/HopfProblem rev-parse HEAD && git -C /home/ox-alpha/HopfProblem branch --show-current && git -C /home/ox-alpha/HopfProblem status --short && git -C /home/ox-alpha/HopfProblem diff --check && sha256sum` on E2, receipt, and all eight absolute source paths above — exit 0; HEAD/status/hashes unchanged, diff check clean.
-5. Wrote only this new report at `/home/ox-alpha/s6-notes/E2-fresh2-subagent-review.md`; existence is checked after writing. No temporary probes or generated local artifacts need removal.
+3. `ls -ld ~/s6-notes /tmp /tmp/shared-lean-copy/toolchain-v4.33.0/bin` — exit 0. Required toolchain directory exists; it was not invoked. Report-name lookup found no existing `E2-fresh2-subagent-review*`, so no overwrite or suffix was necessary.
+4. Final combined command: `git -C the repository root rev-parse HEAD && git -C the repository root branch --show-current && git -C the repository root status --short && git -C the repository root diff --check && sha256sum` on E2, receipt, and all eight absolute source paths above — exit 0; HEAD/status/hashes unchanged, diff check clean.
+5. Wrote only this new report at `Lib/docs/E2-fresh2-subagent-review.md`; existence is checked after writing. No temporary probes or generated local artifacts need removal.
 
 No repository/source/ledger/AGENTS edits; no G-artifact inspection or changes; no builds, package writes/update/cache/clean, Git configuration changes, commits, pushes or further agents. No new proof stubs, axioms or sorrys. Exact textbook edition/theorem-number verification, full axiom audit, exhaustive helper/consumer census, full compilation and aggregate production interface tests were not performed. Hash stability bounds this verdict to the actual current source snapshot rather than an old repair state.
 

@@ -13,7 +13,7 @@ public import Lib.Geometry.Manifold.Collar
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.Cancellation
 public import Lib.Geometry.Manifold.Transversality.Basic
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # The immersion chain: plane, curve and manifold immersions in charts
 
@@ -3287,8 +3287,8 @@ theorem exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_ze
       (fun x hx => (hframe x hx).2)
   let W := Φ.source ∩ Φ ⁻¹' O
   have hW : IsOpen W := Φ.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage Φ.open_source hO
-  have hWloc : IsLocalDiffeomorphOn 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ Φ W := fun p =>
-    ⟨Φ, p.property.1, fun _ _ => rfl⟩
+  have hWloc : IsLocalDiffeomorphOn 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ Φ W :=
+    fun p => PartialDiffeomorph.isLocalDiffeomorphAt _ _ _ Φ p.property.1
   let Ψ :=
     partialDiffeomorphOfInjectiveLocal hW (Φ.toPartialEquiv.injOn.mono Set.inter_subset_left)
       hWloc
@@ -3350,7 +3350,7 @@ theorem exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_gl
       hinj₀ hi₀ n hcodim₀ hO (fun _ hx => hfO hx)
   let eprod := e.symm.prodCongr (ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ (Fin n)))
   let c := eprod.toDiffeomorph
-  let Ψ := c.toPartialDiffeomorph.trans Φ
+  let Ψ := c.toPartialDiffeomorph'.trans Φ
   have hpre (x : D) (hx : x ∈ K) : e.symm x ∈ K₀ := by
     change e (e.symm x) ∈ K
     simpa only [e.apply_symm_apply] using hx
@@ -3581,7 +3581,7 @@ theorem MorseCancellation.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCo
       (by simp only [B, N, Module.finrank_prod, Module.finrank_self, finrank_euclideanSpace_fin])
   let P : (ℝ × (D × B)) ≃L[ℝ] (D × N) :=
     (sheetAxisShuffle (D := D) (B := B)).trans ((ContinuousLinearEquiv.refl ℝ D).prodCongr L)
-  let Φ := P.toDiffeomorph.toPartialDiffeomorph.trans Q
+  let Φ := P.toDiffeomorph.toPartialDiffeomorph'.trans Q
   have hQ0 : (0 : D × N) ∈ Q.source :=
     hprod ⟨Set.mem_singleton 0, Metric.mem_closedBall_self hε.le⟩
   have hΦ0 : (0 : ℝ × (D × B)) ∈ Φ.source := by
@@ -3684,7 +3684,7 @@ theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAd
   obtain ⟨Q, hQ0, hQy, hQavoid, hQrec⟩ :=
     exists_clean_sheet_axis_chart hg hge hgi 2 hcodim y hclosedf.isOpen_compl hy
   let T := terminalSheetCoordinates (D := (EuclideanSpace ℝ (Fin 2)))
-  let Ψ := T.toPartialDiffeomorph.trans Q
+  let Ψ := T.toPartialDiffeomorph'.trans Q
   have hT1 : T ((1 : ℝ), (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) = 0 := by
     change ((1 : ℝ) - 1, ((0 : (EuclideanSpace ℝ (Fin 2))), (0 : (EuclideanSpace ℝ (Fin 2))))) = 0
     rw [sub_self]
@@ -4170,7 +4170,7 @@ theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
       (contDiff_transverseBlock (V := V)).contDiffOn.comp hdf (fun _ _ => Set.mem_univ _), ?_, ?_⟩
   · intro s hs
     have hl : IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ R (s, 0) :=
-      ⟨R, (hUN hs).1, fun _ _ => rfl⟩
+      PartialDiffeomorph.isLocalDiffeomorphAt _ _ _ R (hUN hs).1
     have hi : (fderiv ℝ R (s, 0)).IsInvertible := by
       refine ⟨hl.mfderivToContinuousLinearEquiv (by simp), ?_⟩
       have he := hl.mfderivToContinuousLinearEquiv_coe (by simp)

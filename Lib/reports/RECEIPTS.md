@@ -184,7 +184,7 @@ Seat: Devin. Batch based on `bbf1dd2`, split into provider-conversion, J-natural
 
 All five default roots (`Lib.lean`, `Solution.lean`, `S6Shortcuts.lean`, `S6.lean`, `Challenge.lean`) compiled successfully using direct Lean 4.33.0 with local output artifacts. The only recorded warning was the existing `Challenge.lean:42` use of `sorry`; Challenge was not modified. The full source-consumer chain, including Recognition and Final, compiled. An ordinary module aggregate importing Rearrangement, BigonModel, MinimalSystem, CircleProduct and CrossProduct passed its 21 API checks; the separate J consumer checked all 18 moved outputs. The current recognition and signed-Morse-chart theorems report only `[propext, Classical.choice, Quot.sound]`, not `sorryAx`. No pre-change axiom comparison is claimed.
 
-Evidence directory: `/tmp/sidekick-modconv-batch3-1789272770/`. `gate/build.sh` records the direct-build recipe; `gate/driver.log` and `gate/driver2.log` record the initial stale-artifact failure and successful continuation after fixing dependency traversal; `gate/ProbeAggregate.lean`/`.log` and `gate/ProbeAxioms.lean`/`.log` record the probes. `cone/ProbeJ.log`, `cone/CuspFilling-final.log` and `fg/` hold focused consumer and move-preservation evidence. These temporary paths are local evidence, not durable CI storage.
+Evidence directory: `Lib/docs/logs/devin/modconv-batch3/` (in-tree copy of the run's `/tmp` evidence; the paths below are relative to it; `*.lean` probe sources carry a `.txt` suffix in-tree so the stock census does not read them as code). `gate/build.sh` records the direct-build recipe; `gate/driver.log` and `gate/driver2.log` record the initial stale-artifact failure and successful continuation after fixing dependency traversal; `gate/ProbeAggregate.lean`/`.log` and `gate/ProbeAxioms.lean`/`.log` record the probes. `cone/ProbeJ.log`, `cone/CuspFilling-final.log` and `fg/` hold focused consumer and move-preservation evidence.
 
 Lake commands were stopped after the resolver attempted to delete/re-clone shared Mathlib on a URL-mismatch diagnostic; permission prevented it. Direct Lean was used instead. The environment owner still needs to resolve that issue; do not run package-update/cache/clean commands or modify the shared checkout to reproduce this batch.
 
@@ -201,3 +201,77 @@ Verified Git blob IDs for selected outputs (before this documentation-only addit
 ### Still open
 
 G2a–G6 and the remaining F geometric/Whitney/slide blocks are not moved by this batch. J's circle-path/section cluster and higher coordinate/exterior boundaries remain unfinished; G-J3 was already public in CrossProduct before this batch, not newly moved here. E2's remaining Hopf-side outputs and proposed general-k implementation are not covered by provider conversion. Exact remaining helper packets, complete textbook module documentation, current ledgers/coordinates, independent acceptance and lane-level receipts still need completion. A green conversion batch is not a whole-lane Axis-5/6 certification.
+
+## Integration-3 seat receipts (Muse/Devin), head `84d9450`
+
+Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
+`NEXT-STEPS-MUSE.md` and `Lib/reviews/INTEGRATION-3.md` §3.
+
+- **Lake build**: `lake build` (SEAT-SETUP recipe, `GIT_CONFIG_*` set) completed
+  8854 jobs over the post-`import all`-cleanup code (`840aef4`; subsequent
+  commits are doc-only). `Solution.lean` reports the standard axiom set
+  `[propext, Classical.choice, Quot.sound]` only.
+- **Census ratchet**: `scripts/lib_stock_census.py` → `ratchet OK: 1648 <= baseline 1648`.
+- **Off-tree citations** (`0ab4a4a`): review-file `/home/ox-alpha/...` paths
+  repointed to in-tree copies (with a disclosure line per file); RECEIPTS
+  `/tmp/sidekick-modconv-batch3-*/` evidence copied to
+  `Lib/docs/logs/devin/modconv-batch3/` (`*.lean` → `*.lean.txt`); J ledger
+  `~/s6-notes/J-review*.md` citations repointed to the in-tree
+  `Lib/docs/J-axis5-review*.md`/`J-stage2-review.md`.
+- **Module docstrings** (`1ebcb45`): `Morse/MinimalSystem.lean`,
+  `Whitney/BigonModel.lean`.
+- **`import all` removal** (`840aef4`): `Transversality/Basic.lean` and
+  `Immersion/Relative.lean` now use `public import` only. Because module
+  importers cannot unfold Mathlib's non-`@[expose]` bodies, Basic adds two
+  transparent Lib replacements (`Diffeomorph.toPartialDiffeomorph'`,
+  `IsLocalDiffeomorph.diffeomorph'`, both outside `namespace
+  Mathoverflow1973`) built on `PartialEquiv` literals, `Equiv.ofBijective`,
+  and the public `localInverse` API; Relative uses the public constructor
+  `PartialDiffeomorph.isLocalDiffeomorphAt` at the two literal-existential
+  sites. The remaining `import all` lines sit in GLM-owned files.
+- **E2 closing review**: `Lib/docs/E2-closing-subagent-review.md` — GO at
+  `840aef4` (22/22 signatures verbatim; coordinate drift corrected).
+- **G closing review**: `Lib/docs/G-closing-subagent-review.md` — NO-GO (one
+  residual truncation + four minors), all repaired; re-confirmation chain in
+  `Lib/docs/G-closing-reconfirm-subagent-review.md` — GO at `66d04dc`.
+- **Ledger refresh** (`2cb2117`, `6a8e4a8`): E2/G signature blocks regenerated
+  verbatim against post-proof-split, post-rename sources; all coordinate
+  comments re-verified.
+- **E2 Axis-5 review**: `Lib/docs/E2-axis5-subagent-review.md` — initial NO-GO
+  (residual coordinate drift in the §13 table and two ledger comments after the
+  `840aef4` insertions); repairs at `d4038e1`; re-confirmation GO → ledger
+  marked accepted at `88e354b`.
+- **G Axis-5 review**: `Lib/docs/G-axis5-subagent-review.md` — GO at `84d9450`
+  (35/35 signatures verbatim, current names clean); ledger marked accepted at
+  `ac6c338`.
+- **J Axis-5 review**: `Lib/docs/J-axis5-i3-review.md` — initial NO-GO (stale
+  pre-move coordinates throughout, LibShims-only `crossProductHomology`
+  spellings, undisclosed `coordinatePeriodLoop` binder rename, stale
+  S-nat/S-cross/G-J3 seam claims); two repair rounds; first re-confirmation
+  found six residual defects (false `CirclePaths` Lib-provider claim,
+  wrong-path rank-3 re-run described as deleted, shifted block ranges,
+  nonexistent `Hopf.FiniteCore` consumer path, truncated G-J3 range, one wrong
+  coordinate) — all repaired; second re-confirmation GO. Ledger consistent at
+  `90cd3d9`. Scoped: Axis-5 consistency only — J-B/J-C/J-D/J-E uncertified;
+  J-B2a's remaining gate was the S-path cluster.
+- **S-path landing (Muse, NEXT-STEPS-MUSE §6)**: extracted the circle-path /
+  circle-section cluster into
+  `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean` — 88 declarations,
+  verbatim signatures modulo retargets (`FirstHurewicz.*` → `SingularChains.*`,
+  `PeriodTorusHigherHomology.CircleTopology.*` → `SingularHomology.CircleTopology.*`,
+  bare `crossProduct*`/`circle*`/`sumHomologyEquiv_*` via `open SingularHomology`;
+  `SingularChains.loopHomologyClass` is the constant the source used through the
+  `FirstHurewicz` export — `AlgebraicTopology.Hurewicz.loopHomologyClass` is a
+  defeq-equal but distinct constant). The five `biprod_*_mo1973_*` helpers were
+  widened `private` → public (`@[expose]` forbids private references in exported
+  `def` bodies). Builds: `lake build
+  Lib.AlgebraicTopology.SingularHomology.CirclePaths` green; `Lib` aggregate
+  green; all six direct consumers green
+  (`Hopf/{LCP,Proof/LCP}/{Specialization,IntegralHomology}`,
+  `Hopf/Proof/LCP/{CuspFilling,BoundaryTopology}`). Census ratchet
+  `1622 ≤ 1648` (26 counted decls left `Hopf/LCP/`). Sources removed from
+  `Hopf/LCP/CuspFilling.lean` (:325–678) and `Hopf/Proof/LCP/CuspFilling.lean`
+  (:13175–13857); consumers gained
+  `import Lib.AlgebraicTopology.SingularHomology.CirclePaths`. J-B2a's external
+  provider gate is discharged; J-B2a itself (coordinate-basis closure) is not
+  thereby certified.

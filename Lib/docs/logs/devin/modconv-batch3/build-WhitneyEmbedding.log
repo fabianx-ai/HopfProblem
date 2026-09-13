@@ -1,0 +1,1 @@
+Lib/Geometry/Manifold/WhitneyEmbedding.lean:248:11: error: Tactic `rcases` failed: `x✝ : IsLocalDiffeomorphAt I J ∞ f ↑⟨↑p.symm y, hx⟩` is not an inductive datatype

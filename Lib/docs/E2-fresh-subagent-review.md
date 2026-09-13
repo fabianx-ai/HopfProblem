@@ -1,10 +1,12 @@
 # E2 fresh independent review — CURRENT repaired revision
 
+*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; no other content changed.*
+
 Reviewer: **fresh-e2-subagent**. Review only; no repository repairs made.
 
 ## Reviewed snapshot and verdicts
 
-- Repository `/home/ox-alpha/HopfProblem`, branch `lib/textbook-extraction`.
+- Repository `the repository root`, branch `lib/textbook-extraction`.
 - Reviewed HEAD: **`7e98c5835863c6b241143dcc9f593ccc855f9fc9`**.
 - E2 SHA-256: **`e086918395489c712b94d4729f033fe4e8936eca3c8ad65945fb33423be9474e`**.
 - Receipt SHA-256: `adaa4fcd50e5cbb6a794185405a1fbfab3d98f540baf632660bd075ac20cf885`.
@@ -114,7 +116,7 @@ Every Git terminal invocation used `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.dir
 
 1. Start: `git rev-parse HEAD && git status --short && sha256sum Lib/docs/E2.md Lib/docs/E2-INTERFACE_RECEIPT.md` — exit 0, current snapshot above.
 2. `git diff 37fc1de8a74a3b294a54fd9e804c82c074ae9591..HEAD --name-only` — exit 0, only `Lib/docs/E2.md`. This establishes that the live Lean bodies inspected in the initial independent pass did not change during the repair commit. Read all current E2; additionally inspected the current germ, ellipsoid/shrinking and finite-avoidance proof bodies again.
-3. `ls -ld /tmp /home/ox-alpha/s6-notes` — exit 0 before creation. Wrote only my own `/tmp/E2_Fresh_7e98_RepairCheck.lean`.
+3. `ls -ld /tmp ~/s6-notes` — exit 0 before creation. Wrote only my own `/tmp/E2_Fresh_7e98_RepairCheck.lean`.
 4. Ran:
 
    `/tmp/shared-lean-copy/toolchain-v4.33.0/bin/lake env /tmp/shared-lean-copy/toolchain-v4.33.0/bin/lean /tmp/E2_Fresh_7e98_RepairCheck.lean`
@@ -133,7 +135,7 @@ Every Git terminal invocation used `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.dir
 
 ## Final verification and cleanup
 
-Final command `rm -- /tmp/E2_Fresh_7e98_RepairCheck.lean && git rev-parse HEAD && git status --short && git diff --check && sha256sum Lib/docs/E2.md Lib/docs/E2-INTERFACE_RECEIPT.md && test -s /home/ox-alpha/s6-notes/E2-fresh-subagent-review.md && test ! -e /tmp/E2_Fresh_7e98_RepairCheck.lean` exited **0**. HEAD and both E2 hashes are **unchanged from this pass's start**. Report existence and removal of my exact probe were verified. No olean/ilean outputs were requested.
+Final command `rm -- /tmp/E2_Fresh_7e98_RepairCheck.lean && git rev-parse HEAD && git status --short && git diff --check && sha256sum Lib/docs/E2.md Lib/docs/E2-INTERFACE_RECEIPT.md && test -s Lib/docs/E2-fresh-subagent-review.md && test ! -e /tmp/E2_Fresh_7e98_RepairCheck.lean` exited **0**. HEAD and both E2 hashes are **unchanged from this pass's start**. Report existence and removal of my exact probe were verified. No olean/ilean outputs were requested.
 
 Final status is ` M Lib/docs/G.md` plus `?? AGENTS.md`. The G change appeared externally during this E2 review; it was not inspected, edited, or reverted. `git diff --check` still passed. This report's verdict is therefore tied to a stable CURRENT E2 hash, not invalidated by unrelated concurrent G work.
 
