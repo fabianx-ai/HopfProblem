@@ -229,8 +229,9 @@ Row accounting against the 232 recorded rows:
   `biprod_lift_f_apply_mo1973_12802`, `biprodElement_desc_mo1973_12803`,
   `biprodElement_boundary_mo1973_12804`, `biprod_lift_eq_boundary_mo1973_12805`,
   `MappingTorusHomology.Covering.sum_range_shift_of_endpoints_mo1973_27356`),
-  de-privatized to compile outside their source file. They need real names in
-  the next rename commit (hazard §7).
+  all six still `private` on this branch (an earlier version of this sentence
+  said "de-privatized"; corrected, see the integration note below). They need
+  real names in the next rename commit (hazard §7).
 
 Spellings normalised at the move boundary: `FirstHurewicz.` -> `SingularChains.`,
 `PeriodTorusHigherHomology.CircleTopology.` -> `SingularHomology.CircleTopology.`
@@ -249,12 +250,16 @@ Solution S6Shortcuts S6 Challenge` green (8,854 jobs, 0 errors); census
 Quot.sound}`.
 
 Tooling note for the next mover: the extraction machinery is at
-`/tmp/wang_extract.py` (attr-aware up-walk: blanks are transparent when
-collecting attributes) and `/tmp/wang_gen.py` (dependency-ordered assembly:
-full-dotted AND bare-last-component reference harvest, simp-order pins,
-trailing-attribute strip). The deletion used a line mask; overlapping ranges
-with sequential deletion swallow neighbour declarations (two over-deletions
-caught by the per-declaration-name audit and redone).
+`Lib/docs/logs/glm/wang_extract.py` (attr-aware up-walk: blanks are transparent
+when collecting attributes) and `Lib/docs/logs/glm/wang_gen.py`
+(dependency-ordered assembly: full-dotted AND bare-last-component reference
+harvest, simp-order pins, trailing-attribute strip). Both were off-tree on the
+seat's machine and were copied in unchanged on 2026-09-14 (record fix 1 of
+`NEXT_STEPS.md`); the intermediate files they exchange (`wang_blocks.json`,
+`wang_header.txt`) were not preserved, and `wang_gen.py` runs `lake build` in a
+hard-coded checkout directory, so neither runs as is. The deletion used a line
+mask; overlapping ranges with sequential deletion swallow neighbour declarations
+(two over-deletions caught by the per-declaration-name audit and redone).
 
 ## Integration-4 note (coordinator, 2026-09-14)
 

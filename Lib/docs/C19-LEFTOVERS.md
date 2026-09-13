@@ -20,7 +20,17 @@ outside `Hopf/Proof/` held 16 declarations of stock. Each was classified individ
 
 `Lib.lean` gains the `SuspensionCover` import; `Hopf/Hurewicz.lean` imports the new leaf
 and the destination modules so every old reference still resolves. Statements and
-proofs are unchanged apart from the necessary import/namespace placement.
+proofs are unchanged apart from the necessary import/namespace placement and two
+qualifier retargets in the moved blocks (record fix of 2026-09-14, `INTEGRATION-4.md`
+§4 Kimi item 1):
+
+- `Suspension.topSus.* -> Suspension.*` in `SphereHomology.suspensionConeCover`
+  (`SuspensionCover.lean:28–44`; `topSus` is the `abbrev topSus := @Suspension` alias of
+  `Hopf/LibShims.lean`, and the rename is owner-confirmed, `INTEGRATION-3.md` §5);
+- `HigherHurewicz.hurewiczLinearEquiv -> Hurewicz.hurewiczLinearEquiv` in the six
+  `Third/Fourth/FifthHurewicz` wrappers (`CubeSphere.lean:933,955,977`; a shim unwind —
+  `HigherHurewicz.hurewiczLinearEquiv` is the `export Hurewicz (… hurewiczLinearEquiv …)`
+  of `Hopf/LibShims.lean`, so both spellings name the same constant).
 
 ## CHARGED — stays in `Hopf/Hurewicz.lean` (7)
 

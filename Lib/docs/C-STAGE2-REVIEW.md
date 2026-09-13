@@ -1,8 +1,10 @@
 > Recovered historical Stage-2 review referenced by `f42b9e6`. Original reviewer identity is not recorded in the source artifact and awaits owner confirmation. Recovered by Devin; this is not a newly performed mathematical review. Source: `logs/C/C-review.md`. The historical text below is preserved verbatim, including its off-tree paths, which name the artifact the original reviewer read.
 
+> Record fix 2026-09-14: the citation `~/s6-notes/review/C.md` in the "Reviewed:" line below was rewritten to its in-tree copy `Lib/docs/C.md`; nothing else changed.
+
 # Lane C — Stage 2 review (textbook proof, §§1–16)
 
-Reviewed: `~/s6-notes/review/C.md`, Axis 1 (§§1–16, everything before `# Axes 2–3`), read once
+Reviewed: `Lib/docs/C.md`, Axis 1 (§§1–16, everything before `# Axes 2–3`), read once
 as mathematics. Overall: the architecture is sound and most of the flagged computations check
 out — in particular the §3.3 chain-identity sign computation is *correct* (both groupings
 verified below), the §8.1 tower induction is correct, the §15 bootstrap is *not* circular, and

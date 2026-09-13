@@ -375,7 +375,12 @@ ledger: `Lib/docs/C19-LEFTOVERS.md` — 9 FREE declarations moved
 (`SphereHomology.twoOpenCover_*` and `suspensionConeCover` to
 `VanKampen.lean`/`SuspensionCover.lean`; the six `Third/Fourth/FifthHurewicz` wrappers
 to `CubeSphere.lean`), 7 CHARGED declarations retained in `Hopf/Hurewicz.lean`
-(`SixSphereCube` data + pinned `Sphere.piN_subsingleton` theorems).
+(`SixSphereCube` data + pinned `Sphere.piN_subsingleton` theorems). Two qualifier
+retargets were made in the moved blocks (recorded 2026-09-14, `INTEGRATION-4.md` §4):
+`Suspension.topSus.* -> Suspension.*` in `suspensionConeCover` (owner-confirmed rename,
+`INTEGRATION-3.md` §5) and `HigherHurewicz.hurewiczLinearEquiv ->
+Hurewicz.hurewiczLinearEquiv` in the six wrappers (shim unwind; both names are the same
+constant through `Hopf/LibShims.lean`). Details in `Lib/docs/C19-LEFTOVERS.md`.
 
 | Command | Result | Log |
 |---|---|---|
@@ -402,8 +407,9 @@ Shim retirement and global `Mathoverflow1973` removal remain GLM's lane.
 Working tree over C19 (`eb79090`); one commit per file as instructed. The module
 docstring for `Hurewicz/Straightening.lean` moved above the imports (it was a section
 doc inside the namespace — `INTEGRATION-3.md` §3.6 flagged the missing module doc).
-Per-declaration docstrings closed the remaining gap: 34 undocumented `private`
-helpers across 8 files (all public declarations were already covered by the merged
+Per-declaration docstrings closed the remaining gap: 35 undocumented `private`
+helpers across 8 files (35 `/--` blocks added by `5c74c20`..`98f371a` inclusive; an
+earlier version of this sentence said 34) (all public declarations were already covered by the merged
 documentation wave). No statement or proof changed; commits are comments-only.
 
 | Command | Result | Log |

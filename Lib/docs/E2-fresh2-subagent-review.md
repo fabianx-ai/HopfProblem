@@ -1,6 +1,6 @@
 # E2 fresh second independent review
 
-*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; no other content changed.*
+*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; the repository-root path in the quoted `git -C` commands and in the manifest heading is elided as `<repository root>` (record fix 2026-09-14: the first rewrite had produced the unreadable `git -C the repository root`); no other content changed.*
 
 Reviewer identity: **fresh2-e2** (new reviewer, not fresh-e2-subagent or astra).
 Scope: CURRENT `Lib/docs/E2.md`, all 991 lines, its historical receipt, and direct live-source correspondence. No repository edits.
@@ -114,7 +114,7 @@ Minor editorial follow-up: E2:800 refers to “§14's namespace table,” but th
 
 ## Source hash manifest (identical before and after review)
 
-Paths relative to `the repository root`:
+Paths relative to `<repository root>`:
 
 | File | SHA-256 |
 |---|---|
@@ -131,10 +131,10 @@ Paths relative to `the repository root`:
 
 All Git invocations used environment `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0='*'`. No environment/config-changing script was sourced.
 
-1. `pwd && git -C the repository root rev-parse HEAD && git -C the repository root status --short && sha256sum Lib/docs/E2.md` — exit 0; initial snapshot above.
+1. `pwd && git -C <repository root> rev-parse HEAD && git -C <repository root> status --short && sha256sum Lib/docs/E2.md` — exit 0; initial snapshot above.
 2. `sha256sum` on receipt and all eight source paths in the manifest — exit 0; initial hashes above. Specialized read/grep/find tools supplied all document/source inspection; no source files were modified or generated.
 3. `ls -ld ~/s6-notes /tmp /tmp/shared-lean-copy/toolchain-v4.33.0/bin` — exit 0. Required toolchain directory exists; it was not invoked. Report-name lookup found no existing `E2-fresh2-subagent-review*`, so no overwrite or suffix was necessary.
-4. Final combined command: `git -C the repository root rev-parse HEAD && git -C the repository root branch --show-current && git -C the repository root status --short && git -C the repository root diff --check && sha256sum` on E2, receipt, and all eight absolute source paths above — exit 0; HEAD/status/hashes unchanged, diff check clean.
+4. Final combined command: `git -C <repository root> rev-parse HEAD && git -C <repository root> branch --show-current && git -C <repository root> status --short && git -C <repository root> diff --check && sha256sum` on E2, receipt, and all eight absolute source paths above — exit 0; HEAD/status/hashes unchanged, diff check clean.
 5. Wrote only this new report at `Lib/docs/E2-fresh2-subagent-review.md`; existence is checked after writing. No temporary probes or generated local artifacts need removal.
 
 No repository/source/ledger/AGENTS edits; no G-artifact inspection or changes; no builds, package writes/update/cache/clean, Git configuration changes, commits, pushes or further agents. No new proof stubs, axioms or sorrys. Exact textbook edition/theorem-number verification, full axiom audit, exhaustive helper/consumer census, full compilation and aggregate production interface tests were not performed. Hash stability bounds this verdict to the actual current source snapshot rather than an old repair state.
