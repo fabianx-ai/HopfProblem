@@ -1,5 +1,7 @@
 # Lane G — Interface receipt
 
+**Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
+
 **Head:** `1cc1784` (post-F0a/F0b) for the recorded probes — **historical**; names and
 provider locations below carry a post-integration map at `7e98c58`. **Status:**
 DRAFT — historical FQN checks passed in legacy context under old names; the

@@ -1,5 +1,7 @@
 # Lane G — textbook, decomposition, placement, and typed ledger
 
+**Implementation update after bbf1dd2:** see the public-module conversion addendum in `Lib/reports/RECEIPTS.md` for the verified current move scope and remaining work. Legacy-provider claims and source coordinates below describe the earlier ledger/probe snapshots where superseded by that addendum; they are not current blockers for the converted providers.
+
 **Stage-2 status: re-review corrections applied, pending independent acceptance.**
 Reviews: `Lib/docs/G-stage2-astra-review.md` (NO-GO), `Lib/docs/G-stage2-astra-review2.md`
 (re-review at `bd9c393`), `Lib/docs/G-fresh-subagent-review.md` (GO on the §§3–5
