@@ -117,3 +117,18 @@ future upstream namespace alignment with `Complex`.
 Decision: confirm `RiemannMapping` for the present extraction. No rename,
 statement or proof change. Receipt: census **2,287 → 2,287**, prefix list
 unchanged; this commit changes only this ledger.
+
+### HolomorphicCousin — retain the family name
+
+Existing analytic reference: `Mathlib/Analysis/Complex/CauchyIntegral.lean`
+(the Cauchy integral formula and its analytic hypotheses). This is an input/API
+reference, not an existing solution of the additive Cousin problem. The local
+extension `Lib/Analysis/Complex/Cousin.lean` uses the Cauchy–Green correction
+and a smooth partition of unity; `HolomorphicCousin` identifies that holomorphic
+cocycle problem rather than a generic gluing construction. A future
+`Mathlib/Analysis/Complex/Cousin.lean` is a proposed new destination.
+
+Decision: confirm `HolomorphicCousin`. No rename, statement or proof change.
+Receipt: census **2,287 → 2,287**, prefix list unchanged; this commit changes
+only this ledger. This does not claim that a Cauchy integral theorem alone
+proves the Cousin result.
