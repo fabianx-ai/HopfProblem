@@ -1,6 +1,6 @@
-# Recognition moves (unit 1)
+# Recognition moves (units 1 and 2)
 
-Worktree `lib/next-recognition`, base `304a0fea`. Commit `1e9506bb`. Source lines are those of
+Worktree `lib/next-recognition`, base `304a0fea`. Commits `1e9506bb` (unit 1, 28 rows) and `67708e07` (unit 2, 59 rows). Source lines are those of
 `Hopf/Recognition.lean` at `304a0fea` (whole block: docstring, attributes, declaration, proof).
 Dependency analysis: `lean-agent-ide dump Hopf.Recognition --modules Hopf,Lib` on the seeded build
 (scratch, not committed): a row is BLOCKED when one of its constants uses a constant defined in a stock
@@ -153,71 +153,75 @@ The blocking constant is the first one found (a stock declaration still under `H
 (`Hopf/Recognition.lean:303-514`), all mentioning `SixSphereCube` objects.
 
 
-## Free by the dump but not moved in this pass (59)
+## Moved, unit 2 (59)
 
-No use of a stock constant outside `Hopf/Recognition.lean`; not moved for lack of time in this pass
-(each needs the textual retarget check of shim-qualified names before a build). Candidates for the next
-unit, in file order:
+Text verbatim into `Lib/Geometry/Manifold/Morse/CutTransport.lean` (new module, registered in `Lib.lean`), in the
+order of the source file; qualifier retarget `PeriodTorusHigherHomology.{singularHomologyMap_comp,
+singularHomologyMap_id, homotopyEquivHomologyEquiv, homotopic_homologyMap} -> SingularHomology.*` (same
+constants; nine occurrences). `Lib/Geometry/Manifold/Morse/Cancellation.lean` and `ConnectionCancellation.lean`
+are imported, not edited.
 
-- `MorseCancellation.levelSublevelMap` (`Hopf/Recognition.lean:782-784`)
-- `AdaptedWindows.level_transport_homotopic_in_sublevel` (`Hopf/Recognition.lean:786-850`)
-- `MorseCancellation.sublevelMap` (`Hopf/Recognition.lean:865-867`)
-- `MorseCancellation.middleSectionClass` (`Hopf/Recognition.lean:869-873`)
-- `MorseCancellation.sublevelMap_trans` (`Hopf/Recognition.lean:1048-1051`)
-- `MorseCancellation.sublevelHomologyMap_comp` (`Hopf/Recognition.lean:1053-1058`)
-- `MorseCancellation.regular_sublevel_inclusion_bijective` (`Hopf/Recognition.lean:1060-1073`)
-- `MorseCancellation.span_prefix_succ` (`Hopf/Recognition.lean:1137-1147`)
-- `MorseCancellation.canonicalMiddleMatrix` (`Hopf/Recognition.lean:1339-1343`)
-- `MorseCancellation.equalCutSection` (`Hopf/Recognition.lean:1526-1530`)
-- `MorseCancellation.equalCutSublevelHomeomorph` (`Hopf/Recognition.lean:1532-1540`)
-- `MorseCancellation.equalCutHomologyEquiv` (`Hopf/Recognition.lean:1542-1547`)
-- `MorseCancellation.equalCutSection_class` (`Hopf/Recognition.lean:1549-1567`)
-- `MorseCancellation.canonicalMiddleMatrix_equalCut` (`Hopf/Recognition.lean:1569-1582`)
-- `MorseCancellation.native_index_order_of_equal_index_exchange` (`Hopf/Recognition.lean:1636-1680`)
-- `AdaptedWindows.backward_basin_reaches_intermediate_cut` (`Hopf/Recognition.lean:1987-2003`)
-- `AdaptedWindows.transported_basin_image_of_reaching` (`Hopf/Recognition.lean:2005-2039`)
-- `AdaptedWindows.upper_point_not_on_belt_of_lower_orbit` (`Hopf/Recognition.lean:2076-2095`)
-- `MorseCancellation.lower_backward_basins_preserved` (`Hopf/Recognition.lean:2097-2167`)
-- `MorseCancellation.lower_forward_basins_preserved` (`Hopf/Recognition.lean:2169-2196`)
-- `AdaptedWindows.reaches_cut_of_forward_holonomy` (`Hopf/Recognition.lean:2198-2228`)
-- `AdaptedWindows.section_class_of_flow_transport` (`Hopf/Recognition.lean:2501-2523`)
-- `MorseCancellation.signed_relation_of_regular_cut_transport` (`Hopf/Recognition.lean:2525-2553`)
-- `MorseCancellation.exists_sheet_arc_tube_with_normal_change` (`Hopf/Recognition.lean:2658-2706`)
-- `MorseCancellation.exists_clean_sheet_arc_tube_with_normal_change` (`Hopf/Recognition.lean:2708-2799`)
-- `MorseCancellation.exists_relative_sheet_passages_with_normal_change` (`Hopf/Recognition.lean:2801-2908`)
-- `MorseCancellation.LongitudinalTubeMotion.sheet_trace_germ_of_endpoint_germs` (`Hopf/Recognition.lean:2910-2969`)
-- `MorseCancellation.exists_centered_passage_clock` (`Hopf/Recognition.lean:2971-2988`)
-- `MorseCancellation.passageNormalProduct` (`Hopf/Recognition.lean:3214-3216`)
-- `MorseCancellation.passageNormalProduct_det` (`Hopf/Recognition.lean:3218-3227`)
-- `MorseCancellation.relative_normal_frame_det` (`Hopf/Recognition.lean:3229-3249`)
-- `MorseCancellation.passage_normal_relative_det_neg` (`Hopf/Recognition.lean:3251-3262`)
-- `MorseCancellation.mfderiv_normal_trace_model` (`Hopf/Recognition.lean:3264-3288`)
-- `MorseCancellation.LongitudinalTubeMotion.normal_trace_mfderiv` (`Hopf/Recognition.lean:3290-3339`)
-- `MorseCancellation.mfderiv_retime_unit_rate` (`Hopf/Recognition.lean:3341-3372`)
-- `MorseCancellation.fderiv_retimed_trace_parameter` (`Hopf/Recognition.lean:3374-3401`)
-- `MorseCancellation.exists_shared_passage_frames` (`Hopf/Recognition.lean:3403-3434`)
-- `MorseCancellation.CenteredSheetPassage` (`Hopf/Recognition.lean:3436-3448`)
-- `MorseCancellation.LongitudinalTubeMotion.centeredSheetPassage` (`Hopf/Recognition.lean:3450-3478`)
-- `MorseCancellation.bijective_trace_normal_of_native_transverse` (`Hopf/Recognition.lean:3480-3504`)
-- `MorseCancellation.hasFDerivAt_terminal_normal_factor` (`Hopf/Recognition.lean:3506-3528`)
-- `MorseCancellation.regular_below_pivot_of_regular_lower_band` (`Hopf/Recognition.lean:4490-4501`)
-- `MorseCancellation.lower_window_le_of_radius_le` (`Hopf/Recognition.lean:4503-4509`)
-- `MorseCancellation.common_cut_band_of_smaller_radius` (`Hopf/Recognition.lean:4511-4523`)
-- `MorseCancellation.higher_window_separation_of_value_order` (`Hopf/Recognition.lean:4525-4529`)
-- `MorseCancellation.canonicalMiddleMatrix_single_class_addition` (`Hopf/Recognition.lean:4755-4772`)
-- `MorseCancellation.SurgeryWindows.regular_before_first_middle_pivot` (`Hopf/Recognition.lean:4774-4805`)
-- `MorseCancellation.low_index_cut_of_preserved_other_values` (`Hopf/Recognition.lean:4807-4831`)
-- `MorseCancellation.equalCutSection_trans` (`Hopf/Recognition.lean:5108-5113`)
-- `MorseCancellation.equalCutHomologyEquiv_refl` (`Hopf/Recognition.lean:5115-5131`)
-- `MorseCancellation.equalCutHomologyEquiv_trans` (`Hopf/Recognition.lean:5133-5147`)
-- `MorseCancellation.regularCutHomologyEquiv` (`Hopf/Recognition.lean:5463-5471`)
-- `ManifoldMorse.MorseSurgeryData.instLocal1` (`Hopf/Recognition.lean:6023-6025`)
-- `SupportedDiffeomorph.IsotopicToIdentity.homotopic` (`Hopf/Recognition.lean:6359-6370`)
-- `SupportedDiffeomorph.IsotopicToIdentity.comp_homotopic` (`Hopf/Recognition.lean:6372-6377`)
-- `MorseCancellation.conjugate_level_isotopy` (`Hopf/Recognition.lean:6592-6613`)
-- `MorseCancellation.intersection_count_under_injective_map` (`Hopf/Recognition.lean:6615-6627`)
-- `MorseCancellation.consecutive_last_two_first_three` (`Hopf/Recognition.lean:6740-6780`)
-- `MorseCancellation.native_index_excluded_of_count_zero` (`Hopf/Recognition.lean:6991-7007`)
+| declaration | source `304a0fea` | destination |
+|---|---|---|
+| `MorseCancellation.levelSublevelMap` | `Hopf/Recognition.lean:782-784` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:66` |
+| `AdaptedWindows.level_transport_homotopic_in_sublevel` | `Hopf/Recognition.lean:786-850` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:70` |
+| `MorseCancellation.sublevelMap` | `Hopf/Recognition.lean:865-867` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:136` |
+| `MorseCancellation.middleSectionClass` | `Hopf/Recognition.lean:869-873` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:140` |
+| `MorseCancellation.sublevelMap_trans` | `Hopf/Recognition.lean:1048-1051` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:146` |
+| `MorseCancellation.sublevelHomologyMap_comp` | `Hopf/Recognition.lean:1053-1058` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:151` |
+| `MorseCancellation.regular_sublevel_inclusion_bijective` | `Hopf/Recognition.lean:1060-1073` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:158` |
+| `MorseCancellation.span_prefix_succ` | `Hopf/Recognition.lean:1137-1147` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:173` |
+| `MorseCancellation.canonicalMiddleMatrix` | `Hopf/Recognition.lean:1339-1343` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:185` |
+| `MorseCancellation.equalCutSection` | `Hopf/Recognition.lean:1526-1530` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:191` |
+| `MorseCancellation.equalCutSublevelHomeomorph` | `Hopf/Recognition.lean:1532-1540` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:197` |
+| `MorseCancellation.equalCutHomologyEquiv` | `Hopf/Recognition.lean:1542-1547` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:207` |
+| `MorseCancellation.equalCutSection_class` | `Hopf/Recognition.lean:1549-1567` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:214` |
+| `MorseCancellation.canonicalMiddleMatrix_equalCut` | `Hopf/Recognition.lean:1569-1582` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:234` |
+| `MorseCancellation.native_index_order_of_equal_index_exchange` | `Hopf/Recognition.lean:1636-1680` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:249` |
+| `AdaptedWindows.backward_basin_reaches_intermediate_cut` | `Hopf/Recognition.lean:1987-2003` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:295` |
+| `AdaptedWindows.transported_basin_image_of_reaching` | `Hopf/Recognition.lean:2005-2039` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:313` |
+| `AdaptedWindows.upper_point_not_on_belt_of_lower_orbit` | `Hopf/Recognition.lean:2076-2095` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:349` |
+| `MorseCancellation.lower_backward_basins_preserved` | `Hopf/Recognition.lean:2097-2167` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:370` |
+| `MorseCancellation.lower_forward_basins_preserved` | `Hopf/Recognition.lean:2169-2196` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:442` |
+| `AdaptedWindows.reaches_cut_of_forward_holonomy` | `Hopf/Recognition.lean:2198-2228` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:471` |
+| `AdaptedWindows.section_class_of_flow_transport` | `Hopf/Recognition.lean:2501-2523` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:503` |
+| `MorseCancellation.signed_relation_of_regular_cut_transport` | `Hopf/Recognition.lean:2525-2553` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:527` |
+| `MorseCancellation.exists_sheet_arc_tube_with_normal_change` | `Hopf/Recognition.lean:2658-2706` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:557` |
+| `MorseCancellation.exists_clean_sheet_arc_tube_with_normal_change` | `Hopf/Recognition.lean:2708-2799` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:607` |
+| `MorseCancellation.exists_relative_sheet_passages_with_normal_change` | `Hopf/Recognition.lean:2801-2908` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:700` |
+| `MorseCancellation.LongitudinalTubeMotion.sheet_trace_germ_of_endpoint_germs` | `Hopf/Recognition.lean:2910-2969` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:809` |
+| `MorseCancellation.exists_centered_passage_clock` | `Hopf/Recognition.lean:2971-2988` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:870` |
+| `MorseCancellation.passageNormalProduct` | `Hopf/Recognition.lean:3214-3216` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:889` |
+| `MorseCancellation.passageNormalProduct_det` | `Hopf/Recognition.lean:3218-3227` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:893` |
+| `MorseCancellation.relative_normal_frame_det` | `Hopf/Recognition.lean:3229-3249` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:904` |
+| `MorseCancellation.passage_normal_relative_det_neg` | `Hopf/Recognition.lean:3251-3262` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:926` |
+| `MorseCancellation.mfderiv_normal_trace_model` | `Hopf/Recognition.lean:3264-3288` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:939` |
+| `MorseCancellation.LongitudinalTubeMotion.normal_trace_mfderiv` | `Hopf/Recognition.lean:3290-3339` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:965` |
+| `MorseCancellation.mfderiv_retime_unit_rate` | `Hopf/Recognition.lean:3341-3372` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1016` |
+| `MorseCancellation.fderiv_retimed_trace_parameter` | `Hopf/Recognition.lean:3374-3401` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1049` |
+| `MorseCancellation.exists_shared_passage_frames` | `Hopf/Recognition.lean:3403-3434` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1078` |
+| `MorseCancellation.CenteredSheetPassage` | `Hopf/Recognition.lean:3436-3448` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1111` |
+| `MorseCancellation.LongitudinalTubeMotion.centeredSheetPassage` | `Hopf/Recognition.lean:3450-3478` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1125` |
+| `MorseCancellation.bijective_trace_normal_of_native_transverse` | `Hopf/Recognition.lean:3480-3504` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1155` |
+| `MorseCancellation.hasFDerivAt_terminal_normal_factor` | `Hopf/Recognition.lean:3506-3528` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1181` |
+| `MorseCancellation.regular_below_pivot_of_regular_lower_band` | `Hopf/Recognition.lean:4490-4501` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1205` |
+| `MorseCancellation.lower_window_le_of_radius_le` | `Hopf/Recognition.lean:4503-4509` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1218` |
+| `MorseCancellation.common_cut_band_of_smaller_radius` | `Hopf/Recognition.lean:4511-4523` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1226` |
+| `MorseCancellation.higher_window_separation_of_value_order` | `Hopf/Recognition.lean:4525-4529` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1240` |
+| `MorseCancellation.canonicalMiddleMatrix_single_class_addition` | `Hopf/Recognition.lean:4755-4772` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1247` |
+| `MorseCancellation.SurgeryWindows.regular_before_first_middle_pivot` | `Hopf/Recognition.lean:4774-4805` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1266` |
+| `MorseCancellation.low_index_cut_of_preserved_other_values` | `Hopf/Recognition.lean:4807-4831` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1299` |
+| `MorseCancellation.equalCutSection_trans` | `Hopf/Recognition.lean:5108-5113` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1324` |
+| `MorseCancellation.equalCutHomologyEquiv_refl` | `Hopf/Recognition.lean:5115-5131` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1331` |
+| `MorseCancellation.equalCutHomologyEquiv_trans` | `Hopf/Recognition.lean:5133-5147` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1349` |
+| `MorseCancellation.regularCutHomologyEquiv` | `Hopf/Recognition.lean:5463-5471` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1366` |
+| `ManifoldMorse.MorseSurgeryData.instLocal1` | `Hopf/Recognition.lean:6023-6025` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1375` |
+| `SupportedDiffeomorph.IsotopicToIdentity.homotopic` | `Hopf/Recognition.lean:6359-6370` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1379` |
+| `SupportedDiffeomorph.IsotopicToIdentity.comp_homotopic` | `Hopf/Recognition.lean:6372-6377` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1392` |
+| `MorseCancellation.conjugate_level_isotopy` | `Hopf/Recognition.lean:6592-6613` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1399` |
+| `MorseCancellation.intersection_count_under_injective_map` | `Hopf/Recognition.lean:6615-6627` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1422` |
+| `MorseCancellation.consecutive_last_two_first_three` | `Hopf/Recognition.lean:6740-6780` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1436` |
+| `MorseCancellation.native_index_excluded_of_count_zero` | `Hopf/Recognition.lean:6991-7007` | `Lib/Geometry/Manifold/Morse/CutTransport.lean:1478` |
 
 ## Build (unit 1)
 
@@ -239,3 +243,21 @@ exit 0 Mon Sep 14 00:57:06 CEST 2026
 `python3 scripts/lib_stock_census.py --check`: `ratchet PASS: 1558 <= baseline 1648`
 (`Hopf/Recognition.lean` 213 -> 185).
 
+## Build (unit 2)
+
+```
+start Mon Sep 14 00:59:51 CEST 2026
+✔ [8818/8820] Built Lib.Geometry.Manifold.Morse.CutTransport (36s)
+✔ [8819/8820] Built Lib (6.7s)
+Build completed successfully (8820 jobs).
+✔ [8855/8859] Built Hopf.Recognition (99s)
+✔ [8856/8859] Built Hopf.Proof.Recognition (15s)
+✔ [8857/8859] Built Hopf.Proof.Final (9.6s)
+ℹ [8858/8859] Built Solution (5.8s)
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (8859 jobs).
+exit 0 Mon Sep 14 01:03:02 CEST 2026
+```
+
+`python3 scripts/lib_stock_census.py --check`: `ratchet PASS: 1499 <= baseline 1648`
+(`Hopf/Recognition.lean` 185 -> 126; the 126 remaining rows are the 92 blocked and the 34 charged ones).
