@@ -159,8 +159,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -18420,6 +18418,5 @@ theorem SpecialPeriods.Construction.cuspDataOfSphere_periodPoint
         ((z : ℂ) / SpecialPeriods.Triangle.width) :=
   (periodFunctionsOfSphere π hπ h₀ h₁).cuspData_periodPoint z hz
 
-end Mathoverflow1973
 
 end

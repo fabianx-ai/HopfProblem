@@ -68,8 +68,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2547,4 +2545,3 @@ def SphereCoordinates.ofLinearIsometry {N P : Type*} [NormedAddCommGroup N]
       right_inv := fun y => Subtype.ext (L.apply_symm_apply y)
       contMDiff_toFun := hs.codRestrict_sphere hforward
       contMDiff_invFun := hi.codRestrict_sphere hinverse }
-end Mathoverflow1973

@@ -55,8 +55,6 @@ open scoped ContinuousMap
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 abbrev SixSphere :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1
 
@@ -77,4 +75,3 @@ theorem homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
     SphereHomology.unitSphere_homology_subsingleton 5 k hk hktop
   exact (SingularHomology.homotopyEquivHomologyEquiv h k).injective.subsingleton
 
-end Mathoverflow1973

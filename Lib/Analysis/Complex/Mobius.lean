@@ -43,8 +43,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -556,4 +554,3 @@ theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_strict_iff {a b c : ℂ} (ha
       ‖(z : ℂ)‖ < 1 := by
   rw [closedDiscHalfPlaneHomeomorph_apply]
   exact MobiusCircle.orientation_mul_crossRatio_im_pos_iff ha hb hc hab.symm hbc hac z.property.2
-end Mathoverflow1973

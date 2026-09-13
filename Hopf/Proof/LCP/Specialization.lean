@@ -154,8 +154,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -3225,7 +3223,7 @@ theorem PeriodTorusHigherHomology.flatTorusCircleHomeomorph_add (x y : RealTorus
   flatTorusCircleMap.map_add x y
 
 theorem PeriodTorusHigherHomology.periodTorusCircle_inducedHomology_periodLoop (p : PeriodDomain)
-    (v : Lattice) :
+    (v : PeriodLattice) :
     FirstHurewicz.inducedHomology (periodTorusCircleHomeomorph p : C(_, _))
         (FirstHurewicz.loopHomologyClass (p.periodLoop v)) =
       FirstHurewicz.loopHomologyClass (coordinatePeriodLoop 4 v) := by
@@ -3434,8 +3432,8 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
 def PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
-    (⋀[ℤ]^2 Lattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 2 :=
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
+    (⋀[ℤ]^2 PeriodLattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 2 :=
   (homologyWedgeTwo G).comp (exteriorPower.map 2 c)
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
@@ -3444,7 +3442,7 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
 theorem PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 2 → Lattice) :
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 2 → PeriodLattice) :
     latticeWedgeTwo G c (exteriorPower.ιMulti ℤ 2 v) = product11 G (c (v 0)) (c (v 1)) := by
   change homologyWedgeTwo G (exteriorPower.map 2 c (exteriorPower.ιMulti ℤ 2 v)) = _
   rw [exteriorPower.map_apply_ιMulti, homologyWedgeTwo_apply_ιMulti]
@@ -3458,8 +3456,8 @@ theorem PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo_natural {G : Type}
     [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology H 2)] (f : C(G, H))
     (hf : ∀ x y, f (x + y) = f x + f y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
-    (d : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology H 1) (A : Lattice →ₗ[ℤ] Lattice)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
+    (d : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology H 1) (A : PeriodLattice →ₗ[ℤ] PeriodLattice)
     (hmark : ∀ v, SingularMayerVietoris.singularHomologyMap f 1 (c v) = d (A v)) :
     (SingularMayerVietoris.singularHomologyMap f 2).comp (latticeWedgeTwo G c) =
       (latticeWedgeTwo H d).comp (exteriorPower.map 2 A) := by
@@ -3480,8 +3478,8 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
 def PeriodTorusHigherHomologyPontryagin.latticeWedgeThree (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
-    (⋀[ℤ]^3 Lattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 3 :=
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) :
+    (⋀[ℤ]^3 PeriodLattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 3 :=
   (homologyWedgeThree G).comp (exteriorPower.map 3 c)
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
@@ -3490,7 +3488,7 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
 theorem PeriodTorusHigherHomologyPontryagin.latticeWedgeThree_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 3 → Lattice) :
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (v : Fin 3 → PeriodLattice) :
     latticeWedgeThree G c (exteriorPower.ιMulti ℤ 3 v) =
       tripleProduct G (c (v 0)) (c (v 1)) (c (v 2)) := by
   change homologyWedgeThree G (exteriorPower.map 3 c (exteriorPower.ιMulti ℤ 3 v)) = _
@@ -3505,8 +3503,8 @@ theorem PeriodTorusHigherHomologyPontryagin.latticeWedgeThree_natural {G : Type}
     [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology H 2)] (f : C(G, H))
     (hf : ∀ x y, f (x + y) = f x + f y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
-    (d : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology H 1) (A : Lattice →ₗ[ℤ] Lattice)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1)
+    (d : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology H 1) (A : PeriodLattice →ₗ[ℤ] PeriodLattice)
     (hmark : ∀ v, SingularMayerVietoris.singularHomologyMap f 1 (c v) = d (A v)) :
     (SingularMayerVietoris.singularHomologyMap f 3).comp (latticeWedgeThree G c) =
       (latticeWedgeThree H d).comp (exteriorPower.map 3 A) := by
@@ -3525,7 +3523,7 @@ theorem PeriodTorusHigherHomologyPontryagin.latticeWedgeThree_natural {G : Type}
 theorem PeriodTorusHigherHomologyPontryagin.product11_mem_range_latticeWedgeTwo (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (a b : SingularMayerVietoris.SingularHomology G 1) :
     product11 G a b ∈ LinearMap.range (latticeWedgeTwo G c) := by
   obtain ⟨v, rfl⟩ := hc a
@@ -3538,7 +3536,7 @@ attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_mem_range_latticeWedgeThree (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (a b d : SingularMayerVietoris.SingularHomology G 1) :
     tripleProduct G a b d ∈ LinearMap.range (latticeWedgeThree G c) := by
   obtain ⟨v, rfl⟩ := hc a
@@ -3572,7 +3570,7 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_three_is_tripleProduct :
 theorem PeriodTorusHigherHomology.map_topClass_two_mem_range_latticeWedgeTwo {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (f : C(ProductTorus 2, G)) (hf : ∀ x y, f (x + y) = f x + f y) :
     SingularMayerVietoris.singularHomologyMap f 2 (productTorusTopClass 2) ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo G c) := by
@@ -3583,7 +3581,7 @@ theorem PeriodTorusHigherHomology.map_topClass_two_mem_range_latticeWedgeTwo {G 
 theorem PeriodTorusHigherHomology.map_topClass_three_mem_range_latticeWedgeThree {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (f : C(ProductTorus 3, G)) (hf : ∀ x y, f (x + y) = f x + f y) :
     SingularMayerVietoris.singularHomologyMap f 3 (productTorusTopClass 3) ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.latticeWedgeThree G c) := by
@@ -3725,9 +3723,9 @@ theorem PeriodTorusHigherHomology.coordinateTorusMapAlong_add {X : Type} [Topolo
   exact homeomorph_symm_add_of_add e he _ _
 
 abbrev PeriodTorusHigherHomologyExterior.latticeExterior (n : ℕ) :=
-  ⋀[ℤ]^n Lattice
+  ⋀[ℤ]^n PeriodLattice
 
-def PeriodTorusHigherHomologyExterior.latticeBasis : Module.Basis (Fin 4) ℤ Lattice :=
+def PeriodTorusHigherHomologyExterior.latticeBasis : Module.Basis (Fin 4) ℤ PeriodLattice :=
   Pi.basisFun ℤ (Fin 4)
 
 def PeriodTorusHigherHomologyExterior.latticeExteriorBasis (n : ℕ) :
@@ -3850,7 +3848,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_latticeWed
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
     (e : G ≃ₜ ProductTorus r) (he : ∀ x y, e (x + y) = e x + e y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (i : Fin (r.choose 2)) :
     coordinateTorusClassAlong e 2 i ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo G c) :=
@@ -3861,7 +3859,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusClassAlong_mem_range_latticeWed
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
     (e : G ≃ₜ ProductTorus r) (he : ∀ x y, e (x + y) = e x + e y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c)
     (i : Fin (r.choose 3)) :
     coordinateTorusClassAlong e 3 i ∈
       LinearMap.range (PeriodTorusHigherHomologyPontryagin.latticeWedgeThree G c) :=
@@ -3872,7 +3870,7 @@ theorem PeriodTorusHigherHomology.latticeWedgeTwo_surjective_of_torusHomeomorph 
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
     (e : G ≃ₜ ProductTorus r) (he : ∀ x y, e (x + y) = e x + e y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c) :
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c) :
     Function.Surjective (PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo G c) :=
   surjective_of_coordinateTorusClassAlong_mem_range e 2
     (PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo G c)
@@ -3882,7 +3880,7 @@ theorem PeriodTorusHigherHomology.latticeWedgeThree_surjective_of_torusHomeomorp
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] {r : ℕ}
     (e : G ≃ₜ ProductTorus r) (he : ∀ x y, e (x + y) = e x + e y)
-    (c : Lattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c) :
+    (c : PeriodLattice →ₗ[ℤ] SingularMayerVietoris.SingularHomology G 1) (hc : Function.Surjective c) :
     Function.Surjective (PeriodTorusHigherHomologyPontryagin.latticeWedgeThree G c) :=
   surjective_of_coordinateTorusClassAlong_mem_range e 3
     (PeriodTorusHigherHomologyPontryagin.latticeWedgeThree G c)
@@ -3958,7 +3956,7 @@ theorem PeriodTorusHigherHomology.coordinateH1_four_eq_periodMarking (p : Period
   rw [p.singularH1Equiv_symm_apply, periodTorusCircle_inducedHomology_periodLoop]
   simp only [Pi.basisFun_apply]
 
-theorem PeriodTorusHigherHomology.coordinateH1_four_apply (p : PeriodDomain) (v : Lattice) :
+theorem PeriodTorusHigherHomology.coordinateH1_four_apply (p : PeriodDomain) (v : PeriodLattice) :
     coordinateH1 4 v = FirstHurewicz.loopHomologyClass (coordinatePeriodLoop 4 v) := by
   rw [coordinateH1_four_eq_periodMarking p, LinearMap.comp_apply]
   simp only [LinearEquiv.coe_coe]
@@ -3972,11 +3970,11 @@ theorem PeriodTorusHigherHomology.coordinateH1_four_bijective (p : PeriodDomain)
       p.singularH1Equiv.symm.bijective
 
 def PeriodTorusHigherHomology.coordinateH1FourEquiv (p : PeriodDomain) :
-    Lattice ≃ₗ[ℤ] FirstHurewicz.SingularH1 (ProductTorus 4) :=
+    PeriodLattice ≃ₗ[ℤ] FirstHurewicz.SingularH1 (ProductTorus 4) :=
   LinearEquiv.ofBijective (coordinateH1 4) (coordinateH1_four_bijective p)
 
 theorem PeriodTorusHigherHomology.coordinateH1_matrix_natural (p : PeriodDomain)
-    (A : LatticeMatrix) (v : Lattice) :
+    (A : LatticeMatrix) (v : PeriodLattice) :
     FirstHurewicz.inducedHomology (torusMatrixMap A) (coordinateH1 4 v) =
       coordinateH1 4 (A *ᵥ v) := by
   rw [coordinateH1_four_apply p, coordinateH1_four_apply p,
@@ -3985,21 +3983,21 @@ theorem PeriodTorusHigherHomology.coordinateH1_matrix_natural (p : PeriodDomain)
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 def PeriodTorusHigherHomology.coordinateTorusWedgeTwo :
-    (⋀[ℤ]^2 Lattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology (ProductTorus 4) 2 := by
+    (⋀[ℤ]^2 PeriodLattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology (ProductTorus 4) 2 := by
   letI := productTorus_homology_torsionFree 4 2
   exact PeriodTorusHigherHomologyPontryagin.latticeWedgeTwo (ProductTorus 4) (coordinateH1 4)
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 def PeriodTorusHigherHomology.coordinateTorusWedgeThree :
-    (⋀[ℤ]^3 Lattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology (ProductTorus 4) 3 := by
+    (⋀[ℤ]^3 PeriodLattice) →ₗ[ℤ] SingularMayerVietoris.SingularHomology (ProductTorus 4) 3 := by
   letI := productTorus_homology_torsionFree 4 2
   exact PeriodTorusHigherHomologyPontryagin.latticeWedgeThree (ProductTorus 4) (coordinateH1 4)
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 @[simp]
-theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti (v : Fin 2 → Lattice) :
+theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti (v : Fin 2 → PeriodLattice) :
     coordinateTorusWedgeTwo (exteriorPower.ιMulti ℤ 2 v) =
       PeriodTorusHigherHomologyPontryagin.product11 (ProductTorus 4) (coordinateH1 4 (v 0))
         (coordinateH1 4 (v 1)) := by
@@ -4011,7 +4009,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti (v : Fin
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 @[simp]
-theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_apply_ιMulti (v : Fin 3 → Lattice) :
+theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_apply_ιMulti (v : Fin 3 → PeriodLattice) :
     coordinateTorusWedgeThree (exteriorPower.ιMulti ℤ 3 v) =
       PeriodTorusHigherHomologyPontryagin.tripleProduct (ProductTorus 4) (coordinateH1 4 (v 0))
         (coordinateH1 4 (v 1)) (coordinateH1 4 (v 2)) := by
@@ -4023,7 +4021,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_apply_ιMulti (v : F
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti_periodLoops
-    (p : PeriodDomain) (v : Fin 2 → Lattice) :
+    (p : PeriodDomain) (v : Fin 2 → PeriodLattice) :
     coordinateTorusWedgeTwo (exteriorPower.ιMulti ℤ 2 v) =
       PeriodTorusHigherHomologyPontryagin.product11 (ProductTorus 4)
         (FirstHurewicz.loopHomologyClass (coordinatePeriodLoop 4 (v 0)))
@@ -4033,7 +4031,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusWedgeTwo_apply_ιMulti_periodLo
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomology.coordinateTorusWedgeThree_apply_ιMulti_periodLoops
-    (p : PeriodDomain) (v : Fin 3 → Lattice) :
+    (p : PeriodDomain) (v : Fin 3 → PeriodLattice) :
     coordinateTorusWedgeThree (exteriorPower.ιMulti ℤ 3 v) =
       PeriodTorusHigherHomologyPontryagin.tripleProduct (ProductTorus 4)
         (FirstHurewicz.loopHomologyClass (coordinatePeriodLoop 4 (v 0)))
@@ -4137,7 +4135,7 @@ theorem PeriodTorusHigherHomology.coordinateTorusH3ExteriorEquiv_wedge
   coordinateTorusWedgeThreeEquiv.symm_apply_apply v
 
 theorem PeriodTorusHigherHomology.coordinateTorusH3ExteriorEquiv_symm_ιMulti
-    (v : Fin 3 → Lattice) :
+    (v : Fin 3 → PeriodLattice) :
     coordinateTorusH3ExteriorEquiv.symm (exteriorPower.ιMulti ℤ 3 v) =
       PeriodTorusHigherHomologyPontryagin.tripleProduct (ProductTorus 4)
         (FirstHurewicz.loopHomologyClass (coordinatePeriodLoop 4 (v 0)))
@@ -9669,24 +9667,24 @@ theorem Elliptic.familyPeriodEquiv_symm_linearMatrix (j : Kind) (z : SpecialPeri
   rw [LinearEquiv.apply_symm_apply, familyPeriodEquiv_flatLinear, LinearEquiv.apply_symm_apply]
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
-def Elliptic.familyPermutation (j : Kind) (v : Lattice) : Equiv.Perm (Family j) :=
+def Elliptic.familyPermutation (j : Kind) (v : PeriodLattice) : Equiv.Perm (Family j) :=
   (familyRotation j).toEquiv.prodCongr (flatTorusAffine j v).toEquiv
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
 @[simp]
-theorem Elliptic.familyPermutation_apply (j : Kind) (v : Lattice) (x : Family j) :
+theorem Elliptic.familyPermutation_apply (j : Kind) (v : PeriodLattice) (x : Family j) :
     familyPermutation j v x = (familyRotation j x.1, flatTorusAffine j v x.2) :=
   rfl
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
-def Elliptic.familyLift (j : Kind) (v : Lattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
+def Elliptic.familyLift (j : Kind) (v : PeriodLattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
     SpecialPeriods.Disc × ComplexPlane₂ :=
   (familyRotation j x.1,
     linearMatrix j ((familyPeriods j).point x.1) *ᵥ x.2 +
       (familyPeriods j).periodEquiv (familyRotation j x.1) ((1 / (j.order : ℝ)) • realCast v))
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
-theorem Elliptic.familyLift_quotientMap (j : Kind) (v : Lattice)
+theorem Elliptic.familyLift_quotientMap (j : Kind) (v : PeriodLattice)
     (x : SpecialPeriods.Disc × ComplexPlane₂) :
     (familyPeriods j).quotientMap (familyLift j v x) =
       familyPermutation j v ((familyPeriods j).quotientMap x) := by
@@ -9749,7 +9747,7 @@ theorem Elliptic.familyLinearLift_holomorphic (j : Kind) :
         Function.comp_def]
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
-theorem Elliptic.familyLift_holomorphic (j : Kind) (v : Lattice) :
+theorem Elliptic.familyLift_holomorphic (j : Kind) (v : PeriodLattice) :
     ContMDiff (modelWithCornersSelf ℂ FamilyModel) (modelWithCornersSelf ℂ FamilyModel) ω
       (familyLift j v) := by
   have hf :
@@ -9765,7 +9763,7 @@ theorem Elliptic.familyLift_holomorphic (j : Kind) (v : Lattice) :
   exact hf.prodMk hw
 
 attribute [local instance] Elliptic.familyCoveringChartedSpace Elliptic.familyCoveringManifold in
-theorem Elliptic.familyPermutation_holomorphic (j : Kind) (v : Lattice) :
+theorem Elliptic.familyPermutation_holomorphic (j : Kind) (v : PeriodLattice) :
     letI := (familyPeriods j).totalChartedSpace
     ContMDiff (modelWithCornersSelf ℂ FamilyModel) (modelWithCornersSelf ℂ FamilyModel) ω
       (familyPermutation j v) := by
@@ -10232,17 +10230,17 @@ abbrev Elliptic.CyclicGroup (j : Kind) :=
   Multiplicative (ZMod j.order)
 
 @[instance_reducible]
-def Elliptic.affineAction (j : Kind) (p : FixedPeriod j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+def Elliptic.affineAction (j : Kind) (p : FixedPeriod j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     MulAction (CyclicGroup j) p.val.Torus :=
   CyclicAction.action (affinePermutation j p v) (affinePermutation_pow_order j p v hv)
 
-theorem Elliptic.affineAction_generator_smul (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineAction_generator_smul (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) (x : p.val.Torus) :
     letI := affineAction j p v hv
     CyclicAction.generator j.order • x = affineBiholomorph j p v x :=
   CyclicAction.generator_smul (affinePermutation j p v) (affinePermutation_pow_order j p v hv) x
 
-theorem Elliptic.affineAction_free_iff (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineAction_free_iff (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) :
     letI := affineAction j p v hv
     IsCancelSMul (CyclicGroup j) p.val.Torus ↔ AdmissibleTwist j v := by
@@ -10252,53 +10250,53 @@ theorem Elliptic.affineAction_free_iff (j : Kind) (p : FixedPeriod j) (v : Latti
       ?_
   simpa only [Equiv.Perm.coe_pow] using affinePermutation_free_iff j p v hv
 
-theorem Elliptic.affineAction_free (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineAction_free (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) :
     letI := affineAction j p v hv.1
     IsCancelSMul (CyclicGroup j) p.val.Torus :=
   (affineAction_free_iff j p v hv.1).mpr hv
 
-theorem Elliptic.affineAction_continuous (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineAction_continuous (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) :
     letI := affineAction j p v hv
     ContinuousConstSMul (CyclicGroup j) p.val.Torus :=
   CyclicAction.continuousConstSMul (affinePermutation j p v)
     (affinePermutation_pow_order j p v hv) (affineBiholomorph j p v).continuous
 
-abbrev Elliptic.Surface (j : Kind) (p : FixedPeriod j) (v : Lattice) (hv : AdmissibleTwist j v) :=
+abbrev Elliptic.Surface (j : Kind) (p : FixedPeriod j) (v : PeriodLattice) (hv : AdmissibleTwist j v) :=
   @FiniteQuotient.Space (CyclicGroup j) p.val.Torus _ (affineAction j p v hv.1)
 
-def Elliptic.surfaceProjection (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.surfaceProjection (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : p.val.Torus → Surface j p v hv :=
   @FiniteQuotient.project (CyclicGroup j) p.val.Torus _ (affineAction j p v hv.1)
 
-theorem Elliptic.surfaceProjection_surjective (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.surfaceProjection_surjective (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : Function.Surjective (surfaceProjection j p v hv) :=
   Quotient.mk_surjective
 
-theorem Elliptic.surfaceProjection_continuous (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.surfaceProjection_continuous (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : Continuous (surfaceProjection j p v hv) := by
   let := affineAction j p v hv.1
   exact FiniteQuotient.project_continuous (CyclicGroup j) p.val.Torus
 
-instance Elliptic.surfaceCompact (j : Kind) (p : FixedPeriod j) (v : Lattice)
+instance Elliptic.surfaceCompact (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : CompactSpace (Surface j p v hv) := by
   let := affineAction j p v hv.1
   exact FiniteQuotient.spaceCompactSpace (CyclicGroup j) p.val.Torus
 
-instance Elliptic.surfacePathConnected (j : Kind) (p : FixedPeriod j) (v : Lattice)
+instance Elliptic.surfacePathConnected (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : PathConnectedSpace (Surface j p v hv) :=
   (surfaceProjection_surjective j p v hv).pathConnectedSpace
     (surfaceProjection_continuous j p v hv)
 
-theorem Elliptic.surfaceProjection_isCoveringMap (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.surfaceProjection_isCoveringMap (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : IsCoveringMap (surfaceProjection j p v hv) := by
   let := affineAction j p v hv.1
   let := affineAction_continuous j p v hv.1
   let := affineAction_free j p v hv
   exact FiniteQuotient.project_isCoveringMap (CyclicGroup j) p.val.Torus
 
-theorem Elliptic.surfaceProjection_fibre_card (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.surfaceProjection_fibre_card (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : Surface j p v hv) :
     Nat.card (surfaceProjection j p v hv ⁻¹' { y }) = j.order := by
   let := affineAction j p v hv.1
@@ -10381,20 +10379,20 @@ theorem Elliptic.discPower_eq_zero_iff (m : ℕ) (hm : 0 < m) (z : SpecialPeriod
   rw [Subtype.ext_iff, Subtype.ext_iff]
   exact discPower_coe_eq_zero_iff m hm z
 
-theorem Elliptic.familyPermutation_iterate (j : Kind) (v : Lattice) (r : ℕ) (x : Family j) :
+theorem Elliptic.familyPermutation_iterate (j : Kind) (v : PeriodLattice) (r : ℕ) (x : Family j) :
     (familyPermutation j v)^[r] x = ((familyRotation j)^[r] x.1, (flatTorusAffine j v)^[r] x.2) :=
   by
   induction r with
   | zero => rfl
   | succ r ih => simp only [Function.iterate_succ_apply', ih, familyPermutation_apply]
 
-theorem Elliptic.familyPermutation_pow_apply (j : Kind) (v : Lattice) (r : ℕ) (x : Family j) :
+theorem Elliptic.familyPermutation_pow_apply (j : Kind) (v : PeriodLattice) (r : ℕ) (x : Family j) :
     (familyPermutation j v ^ r) x = ((familyRotation j)^[r] x.1, (flatTorusAffine j v)^[r] x.2) :=
   by
   rw [Equiv.Perm.coe_pow]
   exact familyPermutation_iterate j v r x
 
-theorem Elliptic.familyPermutation_pow_order (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.familyPermutation_pow_order (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     familyPermutation j v ^ j.order = 1 := by
   apply Equiv.ext
   intro x
@@ -10402,7 +10400,7 @@ theorem Elliptic.familyPermutation_pow_order (j : Kind) (v : Lattice) (hv : j.ma
     flatTorusAffine_iterate_order j v hv]
   rfl
 
-theorem Elliptic.familyPermutation_pow_ne (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.familyPermutation_pow_ne (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (r : ℕ) (hr : 0 < r) (hrm : r < j.order) (x : Family j) : (familyPermutation j v ^ r) x ≠ x :=
   by
   intro hx
@@ -10424,7 +10422,7 @@ theorem Elliptic.familyRotation_iterate_fixed_iff (j : Kind) (r : ℕ) (hr : 0 <
   · exact SpecialPeriods.discRotateThree_iterate_fixed_iff r hr hrm z
   · exact SpecialPeriods.discRotateFour_iterate_fixed_iff r hr hrm z
 
-theorem Elliptic.familyPermutation_free_iff (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.familyPermutation_free_iff (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     (∀ r : ℕ, 0 < r → r < j.order → ∀ x : Family j, (familyPermutation j v ^ r) x ≠ x) ↔
       AdmissibleTwist j v := by
   constructor
@@ -10439,17 +10437,17 @@ theorem Elliptic.familyPermutation_free_iff (j : Kind) (v : Lattice) (hv : j.mat
     exact familyPermutation_pow_ne j v ha
 
 @[instance_reducible]
-def Elliptic.familyAction (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+def Elliptic.familyAction (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     MulAction (CyclicGroup j) (Family j) :=
   CyclicAction.action (familyPermutation j v) (familyPermutation_pow_order j v hv)
 
-theorem Elliptic.familyAction_generator_smul (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.familyAction_generator_smul (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (x : Family j) :
     letI := familyAction j v hv
     CyclicAction.generator j.order • x = familyPermutation j v x :=
   CyclicAction.generator_smul (familyPermutation j v) (familyPermutation_pow_order j v hv) x
 
-theorem Elliptic.familyAction_apply (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.familyAction_apply (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : CyclicGroup j) (x : Family j) :
     letI := familyAction j v hv
     g • x = ((familyRotation j)^[g.toAdd.val] x.1, (flatTorusAffine j v)^[g.toAdd.val] x.2) :=
@@ -10457,7 +10455,7 @@ theorem Elliptic.familyAction_apply (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ
         x).trans
     (familyPermutation_iterate j v g.toAdd.val x)
 
-theorem Elliptic.familyAction_free_iff (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.familyAction_free_iff (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := familyAction j v hv
     IsCancelSMul (CyclicGroup j) (Family j) ↔ AdmissibleTwist j v := by
   refine
@@ -10466,12 +10464,12 @@ theorem Elliptic.familyAction_free_iff (j : Kind) (v : Lattice) (hv : j.matrix *
       ?_
   simpa only [Equiv.Perm.coe_pow] using familyPermutation_free_iff j v hv
 
-theorem Elliptic.familyAction_free (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.familyAction_free (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     letI := familyAction j v hv.1
     IsCancelSMul (CyclicGroup j) (Family j) :=
   (familyAction_free_iff j v hv.1).mpr hv
 
-theorem Elliptic.familyAction_holomorphic (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.familyAction_holomorphic (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : CyclicGroup j) :
     letI := (familyPeriods j).totalChartedSpace
     letI := familyAction j v hv
@@ -10482,7 +10480,7 @@ theorem Elliptic.familyAction_holomorphic (j : Kind) (v : Lattice) (hv : j.matri
     CyclicAction.smul_contMDiff (familyPermutation j v) (familyPermutation_pow_order j v hv)
       (familyPermutation_holomorphic j v) g
 
-theorem Elliptic.familyAction_continuous (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.familyAction_continuous (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := familyAction j v hv
     ContinuousConstSMul (CyclicGroup j) (Family j) := by
   apply
@@ -10505,7 +10503,7 @@ theorem Elliptic.discPower_familyRotation_iterate (j : Kind) (r : ℕ) (z : Spec
   | zero => rfl
   | succ r ih => rw [Function.iterate_succ_apply', discPower_familyRotation, ih]
 
-theorem Elliptic.familyAction_discPower (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.familyAction_discPower (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : CyclicGroup j) (x : Family j) :
     letI := familyAction j v hv
     discPower j.order j.order_pos (g • x).1 = discPower j.order j.order_pos x.1 := by
@@ -10564,29 +10562,29 @@ instance Elliptic.discLocallyCompact : LocallyCompactSpace SpecialPeriods.Disc :
 def Elliptic.upstairsProjection (j : Kind) (x : Family j) : SpecialPeriods.Disc :=
   discPower j.order j.order_pos x.1
 
-theorem Elliptic.upstairsProjection_invariant (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.upstairsProjection_invariant (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : CyclicGroup j) (x : Family j) :
     letI := familyAction j v hv
     upstairsProjection j (g • x) = upstairsProjection j x :=
   familyAction_discPower j v hv g x
 
-abbrev Elliptic.Filling (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :=
+abbrev Elliptic.Filling (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :=
   @FiniteQuotient.Space (CyclicGroup j) (Family j) _ (familyAction j v hv.1)
 
-def Elliptic.fillingQuotient (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+def Elliptic.fillingQuotient (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     Family j → Filling j v hv :=
   @FiniteQuotient.project (CyclicGroup j) (Family j) _ (familyAction j v hv.1)
 
-theorem Elliptic.fillingQuotient_surjective (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.fillingQuotient_surjective (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     Function.Surjective (fillingQuotient j v hv) :=
   Quotient.mk_surjective
 
-theorem Elliptic.fillingQuotient_continuous (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.fillingQuotient_continuous (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     Continuous (fillingQuotient j v hv) := by
   let := familyAction j v hv.1
   exact FiniteQuotient.project_continuous (CyclicGroup j) (Family j)
 
-instance Elliptic.fillingChartedSpace (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+instance Elliptic.fillingChartedSpace (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     ChartedSpace FamilyModel (Filling j v hv) := by
   letI := (familyPeriods j).totalChartedSpace
   let := familyAction j v hv.1
@@ -10594,14 +10592,14 @@ instance Elliptic.fillingChartedSpace (j : Kind) (v : Lattice) (hv : AdmissibleT
   let := familyAction_free j v hv
   exact FiniteQuotient.chartedSpace (E := FamilyModel) (CyclicGroup j) (Family j)
 
-theorem Elliptic.fillingQuotient_isCoveringMap (j : Kind) (v : Lattice)
+theorem Elliptic.fillingQuotient_isCoveringMap (j : Kind) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : IsCoveringMap (fillingQuotient j v hv) := by
   let := familyAction j v hv.1
   let := familyAction_continuous j v hv.1
   let := familyAction_free j v hv
   exact FiniteQuotient.project_isCoveringMap (CyclicGroup j) (Family j)
 
-theorem Elliptic.fillingQuotient_holomorphic (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.fillingQuotient_holomorphic (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     letI := (familyPeriods j).totalChartedSpace
     ContMDiff (modelWithCornersSelf ℂ FamilyModel) (modelWithCornersSelf ℂ FamilyModel) ω
       (fillingQuotient j v hv) := by
@@ -10614,7 +10612,7 @@ theorem Elliptic.fillingQuotient_holomorphic (j : Kind) (v : Lattice) (hv : Admi
     FiniteQuotient.project_holomorphic (CyclicGroup j) (Family j)
       (familyAction_holomorphic j v hv.1)
 
-def Elliptic.fillingProjection (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+def Elliptic.fillingProjection (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     Filling j v hv → SpecialPeriods.Disc := by
   letI := familyAction j v hv.1
   exact FiniteQuotient.descend (upstairsProjection j) (upstairsProjection_invariant j v hv.1)
@@ -11029,7 +11027,7 @@ private def ThreefoldOverlapMappingTorus.Elliptic.homeomorphToPerm_mo1973_15505 
   map_one' := rfl
   map_mul' _ _ := rfl
 
-theorem ThreefoldOverlapMappingTorus.Elliptic.affine_pow_order (j : Elliptic.Kind) (v : Lattice)
+theorem ThreefoldOverlapMappingTorus.Elliptic.affine_pow_order (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) : Elliptic.flatTorusAffine j v ^ j.order = 1 := by
   apply Homeomorph.ext
   intro x
@@ -11039,7 +11037,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.affine_pow_order (j : Elliptic.Kin
         (Elliptic.flatTorusPermutation_pow_order j v hv))
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.affine_symm_pow_order (j : Elliptic.Kind)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : (Elliptic.flatTorusAffine j v).symm ^ j.order = 1 := by
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : (Elliptic.flatTorusAffine j v).symm ^ j.order = 1 := by
   change (Elliptic.flatTorusAffine j v)⁻¹ ^ j.order = 1
   rw [inv_pow, affine_pow_order j v hv, inv_one]
 
@@ -11099,7 +11097,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.polarFamilyAt_injective (j : Ellip
   · exact congrArg (fun y : Elliptic.Family j => y.2) hpq
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.polarFamilyAt_twist (j : Elliptic.Kind)
-    (v : Lattice) (r : ℝ) (a : ThreefoldOverlapMappingTorus.Radius j.order r)
+    (v : PeriodLattice) (r : ℝ) (a : ThreefoldOverlapMappingTorus.Radius j.order r)
     (p : ThreefoldOverlapMappingTorus.Circle × RealTorus₄) :
     polarFamilyAt j r a
         (Elliptic.HigherHomology.MappingTorusQuotient.twist j.order
@@ -11113,7 +11111,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.polarFamilyAt_twist (j : Elliptic.
         (Elliptic.flatTorusAffine j v).symm p.2)
   exact Prod.ext (root_add_order j r a p.1) rfl
 
-theorem ThreefoldOverlapMappingTorus.Elliptic.polarFamilyAt_smul (j : Elliptic.Kind) (v : Lattice)
+theorem ThreefoldOverlapMappingTorus.Elliptic.polarFamilyAt_smul (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) (r : ℝ) (a : ThreefoldOverlapMappingTorus.Radius j.order r)
     (g : Elliptic.CyclicGroup j) (p : ThreefoldOverlapMappingTorus.Circle × RealTorus₄) :
     letI :=
@@ -11198,22 +11196,22 @@ theorem ThreefoldOverlapMappingTorus.quotientHomeomorph_symm_apply {X Y Z : Type
     (quotientHomeomorph q p hq hp h).symm (p x) = q x :=
   quotientComparison_apply p q hp.surjective (fun x x' => (h x x').symm) x
 
-def ThreefoldOverlapMappingTorus.Elliptic.puncturedSet (j : Elliptic.Kind) (v : Lattice)
+def ThreefoldOverlapMappingTorus.Elliptic.puncturedSet (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) : Set (Elliptic.Filling j v hv) :=
   {y |
     (Elliptic.fillingProjection j v hv y : ℂ) ≠ 0 ∧
       ‖(Elliptic.fillingProjection j v hv y : ℂ)‖ < r}
 
-abbrev ThreefoldOverlapMappingTorus.Elliptic.PuncturedFilling (j : Elliptic.Kind) (v : Lattice)
+abbrev ThreefoldOverlapMappingTorus.Elliptic.PuncturedFilling (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :=
   puncturedSet j v hv r
 
-abbrev ThreefoldOverlapMappingTorus.Elliptic.PuncturedUpstairs (j : Elliptic.Kind) (v : Lattice)
+abbrev ThreefoldOverlapMappingTorus.Elliptic.PuncturedUpstairs (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :=
   Elliptic.fillingQuotient j v hv ⁻¹' puncturedSet j v hv r
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedUpstairs_mem (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) (x : Elliptic.Family j) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) (x : Elliptic.Family j) :
     x ∈ PuncturedUpstairs j v hv r ↔ (x.1 : ℂ) ≠ 0 ∧ ‖(x.1 : ℂ)‖ ^ j.order < r := by
   change ((x.1 : ℂ) ^ j.order ≠ 0 ∧ ‖(x.1 : ℂ) ^ j.order‖ < r) ↔ _
   rw [norm_pow]
@@ -11223,7 +11221,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedUpstairs_mem (j : Ellipti
   · rintro ⟨hne, hnorm⟩
     exact ⟨pow_ne_zero _ hne, hnorm⟩
 
-def ThreefoldOverlapMappingTorus.Elliptic.upstairsRootHomeomorph (j : Elliptic.Kind) (v : Lattice)
+def ThreefoldOverlapMappingTorus.Elliptic.upstairsRootHomeomorph (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     PuncturedUpstairs j v hv r ≃ₜ ThreefoldOverlapMappingTorus.RootDisc j.order r × RealTorus₄
     where
@@ -11238,7 +11236,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.upstairsRootHomeomorph (j : Elliptic.K
     ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd).subtype_mk _
 
 def ThreefoldOverlapMappingTorus.Elliptic.upstairsPolarHomeomorph (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     PuncturedUpstairs j v hv r ≃ₜ
       ThreefoldOverlapMappingTorus.Radius j.order r ×
         (ThreefoldOverlapMappingTorus.Circle × RealTorus₄) :=
@@ -11247,7 +11245,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.upstairsPolarHomeomorph (j : Elliptic.
           (Homeomorph.refl RealTorus₄)).trans
       (Homeomorph.prodAssoc _ _ _))
 
-def ThreefoldOverlapMappingTorus.Elliptic.polarQuotient (j : Elliptic.Kind) (v : Lattice)
+def ThreefoldOverlapMappingTorus.Elliptic.polarQuotient (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (p :
       ThreefoldOverlapMappingTorus.Radius j.order r ×
@@ -11257,7 +11255,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.polarQuotient (j : Elliptic.Kind) (v :
     ((upstairsPolarHomeomorph j v hv r).symm p)
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_isOpenQuotientMap (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     IsOpenQuotientMap (polarQuotient j v hv r) := by
   have hq : IsOpenQuotientMap (Elliptic.fillingQuotient j v hv) :=
     ⟨Elliptic.fillingQuotient_surjective j v hv, Elliptic.fillingQuotient_continuous j v hv,
@@ -11270,7 +11268,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_isOpenQuotientMap (j
 
 @[simp]
 theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_projection_norm (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (p :
       ThreefoldOverlapMappingTorus.Radius j.order r ×
         (ThreefoldOverlapMappingTorus.Circle × RealTorus₄)) :
@@ -11278,12 +11276,12 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_projection_norm (j :
   change ‖(ThreefoldOverlapMappingTorus.root j.order r p.1 p.2.1 : ℂ) ^ j.order‖ = _
   rw [norm_pow, ThreefoldOverlapMappingTorus.root_norm]
 
-abbrev ThreefoldOverlapMappingTorus.Elliptic.BoundaryQuotient (j : Elliptic.Kind) (v : Lattice)
+abbrev ThreefoldOverlapMappingTorus.Elliptic.BoundaryQuotient (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) :=
   Elliptic.HigherHomology.MappingTorusQuotient.ProductQuotient j.order
     (Elliptic.flatTorusAffine j v).symm (affine_symm_pow_order j v hv.1)
 
-def ThreefoldOverlapMappingTorus.Elliptic.radialQuotient (j : Elliptic.Kind) (v : Lattice)
+def ThreefoldOverlapMappingTorus.Elliptic.radialQuotient (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (p :
       ThreefoldOverlapMappingTorus.Radius j.order r ×
@@ -11294,7 +11292,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.radialQuotient (j : Elliptic.Kind) (v 
       (Elliptic.flatTorusAffine j v).symm (affine_symm_pow_order j v hv.1) p.2)
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.radialQuotient_isOpenQuotientMap (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     IsOpenQuotientMap (radialQuotient j v hv r) := by
   let :=
     Elliptic.HigherHomology.MappingTorusQuotient.productAction j.order
@@ -11308,7 +11306,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.radialQuotient_isOpenQuotientMap (
         (ThreefoldOverlapMappingTorus.Circle × RealTorus₄))
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_eq_iff (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (p q :
       ThreefoldOverlapMappingTorus.Radius j.order r ×
         (ThreefoldOverlapMappingTorus.Circle × RealTorus₄)) :
@@ -11368,7 +11366,7 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.polarQuotient_eq_iff (j : Elliptic
     exact Elliptic.FiniteQuotient.project_smul (Elliptic.CyclicGroup j) (Elliptic.Family j) g⁻¹ _
 
 def ThreefoldOverlapMappingTorus.Elliptic.puncturedPolarHomeomorph (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     PuncturedFilling j v hv r ≃ₜ
       ThreefoldOverlapMappingTorus.Radius j.order r × BoundaryQuotient j v hv :=
   ThreefoldOverlapMappingTorus.quotientHomeomorph (polarQuotient j v hv r)
@@ -11377,7 +11375,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.puncturedPolarHomeomorph (j : Elliptic
 
 @[simp]
 theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedPolarHomeomorph_symm_radialQuotient
-    (j : Elliptic.Kind) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (j : Elliptic.Kind) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (p :
       ThreefoldOverlapMappingTorus.Radius j.order r ×
         (ThreefoldOverlapMappingTorus.Circle × RealTorus₄)) :
@@ -11385,11 +11383,11 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedPolarHomeomorph_symm_radi
       polarQuotient j v hv r p :=
   ThreefoldOverlapMappingTorus.quotientHomeomorph_symm_apply _ _ _ _ _ p
 
-abbrev ThreefoldOverlapMappingTorus.Elliptic.Boundary (j : Elliptic.Kind) (v : Lattice) :=
+abbrev ThreefoldOverlapMappingTorus.Elliptic.Boundary (j : Elliptic.Kind) (v : PeriodLattice) :=
   MappingTorus.Torus (Elliptic.flatTorusAffine j v)
 
 def ThreefoldOverlapMappingTorus.Elliptic.puncturedProductHomeomorph (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ) :
     PuncturedFilling j v hv r ≃ₜ ThreefoldOverlapMappingTorus.Radius j.order r × Boundary j v :=
   (puncturedPolarHomeomorph j v hv r).trans
     ((Homeomorph.refl _).prodCongr
@@ -11397,7 +11395,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.puncturedProductHomeomorph (j : Ellipt
         (Elliptic.flatTorusAffine j v).symm (affine_symm_pow_order j v hv.1)))
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedProductHomeomorph_symm_mk
-    (j : Elliptic.Kind) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (j : Elliptic.Kind) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (a : ThreefoldOverlapMappingTorus.Radius j.order r) (t : ℝ) (x : RealTorus₄) :
     (puncturedProductHomeomorph j v hv r).symm
         (a, MappingTorus.mk (Elliptic.flatTorusAffine j v) (t, x)) =
@@ -11416,13 +11414,13 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.puncturedProductHomeomorph_symm_mk
       (a, (((t / j.order : ℝ) : ThreefoldOverlapMappingTorus.Circle), x))
 
 def ThreefoldOverlapMappingTorus.Elliptic.puncturedMappingTorusHomotopyEquiv (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (a : ThreefoldOverlapMappingTorus.Radius j.order r) :
     PuncturedFilling j v hv r ≃ₕ Boundary j v :=
   (puncturedProductHomeomorph j v hv r).toHomotopyEquiv.trans
     (ThreefoldOverlapMappingTorus.radiusProductHomotopyEquiv a (Boundary j v))
 
-def ThreefoldOverlapMappingTorus.Elliptic.boundaryInclusion (j : Elliptic.Kind) (v : Lattice)
+def ThreefoldOverlapMappingTorus.Elliptic.boundaryInclusion (j : Elliptic.Kind) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (a : ThreefoldOverlapMappingTorus.Radius j.order r) :
     C(Boundary j v, PuncturedFilling j v hv r) :=
@@ -11431,7 +11429,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.boundaryInclusion (j : Elliptic.Kind) 
 
 @[simp]
 theorem ThreefoldOverlapMappingTorus.Elliptic.boundaryInclusion_mk (j : Elliptic.Kind)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (r : ℝ)
     (a : ThreefoldOverlapMappingTorus.Radius j.order r) (t : ℝ) (x : RealTorus₄) :
     boundaryInclusion j v hv r a (MappingTorus.mk (Elliptic.flatTorusAffine j v) (t, x)) =
       polarQuotient j v hv r
@@ -11439,6 +11437,5 @@ theorem ThreefoldOverlapMappingTorus.Elliptic.boundaryInclusion_mk (j : Elliptic
   puncturedProductHomeomorph_symm_mk j v hv r a t x
 
 
-end Mathoverflow1973
 
 end

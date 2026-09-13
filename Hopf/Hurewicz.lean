@@ -141,8 +141,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 abbrev SixSphereCube.StandardSphere :=
   SphereHomology.UnitSphere 6
 
@@ -168,7 +166,5 @@ theorem Sphere.piFour_subsingleton (x : SixSphereCube.StandardSphere) :
 theorem Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
     Subsingleton (π_ 5 SixSphereCube.StandardSphere x) :=
   HigherHurewicz.sphere_pi_subsingleton_of_lt 6 5 (by decide) (by decide) x
-
-end Mathoverflow1973
 
 end

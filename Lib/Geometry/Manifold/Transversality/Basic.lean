@@ -124,8 +124,6 @@ def IsLocalDiffeomorph.diffeomorph' {E F H H' M N : Type*} [NormedAddCommGroup E
         heq).contMDiffAt
       ((hf ((Equiv.ofBijective f hf').symm y)).localInverse_open_source.mem_nhds hmem)
 
-namespace Mathoverflow1973
-
 theorem NativeSubmersion.surjective_fderiv_sourceChart_iff {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -2903,5 +2901,3 @@ theorem SupportedDiffeomorph.exists_open_pointMoving {E H M : Type*} [NormedAddC
       exact (hd x).symm.trans hend
     · intro z hz
       exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
-
-end Mathoverflow1973

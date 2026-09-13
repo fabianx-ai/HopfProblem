@@ -58,9 +58,7 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
 /-! ### Collapsing the boundary: the cube–sphere quotient -/
-
 
 /-- The map on the one-point collapse `OnePoint ↥Fᶜ` induced by `f : C(K, X)`, when `f`
 sends all of the closed nonempty set `F` to `x`. -/
@@ -474,7 +472,6 @@ theorem Hurewicz.cubeHomologyClass_transAt_two {X : Type} [TopologicalSpace X]
   simpa only [Hurewicz.cubeHomologyClass_eq_squareHomologyClass] using
     Hurewicz.DegreeTwo.squareHomologyClass_transAt p q
 
-
 /-- Concatenation along any coordinate adds cube classes in degree `2`. -/
 theorem Hurewicz.cubeHomologyClass_transAt_two_coord {X : Type} [TopologicalSpace X]
     {x : X} (i : Fin 2) (p q : GenLoop (Fin 2) X x) :
@@ -598,7 +595,6 @@ theorem Hurewicz.cubeHomologyClass_transAt {m : ℕ} {X : Type} [TopologicalSpac
     Quotient.eq.mp (HomotopyGroup.transAt_indep (0 : Fin (m + 2)) p q)
   rw [Hurewicz.cubeHomologyClass_homotopic h]
   exact Hurewicz.cubeHomologyClass_transAt_zero p q
-
 
 /-! ### The Hurewicz linear map -/
 
@@ -727,7 +723,6 @@ theorem Hurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
     (c : SingularMayerVietoris.SingularHomology X (m + 3)) :
     Hurewicz.hurewiczMap (m := m + 1) x (Hurewicz.hurewiczInverse x hpi c) = c :=
   LinearMap.congr_fun (Hurewicz.hurewiczMap_comp_hurewiczInverse x hpi) c
-
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
@@ -995,5 +990,3 @@ def FifthHurewicz.hurewiczPi5Equiv {X : Type} [TopologicalSpace X] [SimplyConnec
   map_mul' a b := by
     change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
     exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
-
-end Mathoverflow1973

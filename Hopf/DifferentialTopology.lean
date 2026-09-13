@@ -94,9 +94,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
@@ -119,6 +116,5 @@ theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCo
   let e := (LinearEquiv.ofBijective (G.coprod C).toLinearMap h).toContinuousLinearEquiv
   exact ⟨e, rfl⟩
 
-end Mathoverflow1973
 
 end

@@ -61,8 +61,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -481,4 +479,3 @@ theorem Coproduct.sigmaHomologyEquiv_symm_single {ι : Type} [Fintype ι]
   · intro j _ hji
     rw [Pi.single_eq_of_ne hji, map_zero]
   · simp
-end Mathoverflow1973

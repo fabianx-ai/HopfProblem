@@ -39,8 +39,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -734,4 +732,3 @@ def MappingTorusHomology.degreeZeroHomologyEquiv {X : Type} [TopologicalSpace X]
       (SingularMayerVietoris.SingularHomology X 0 ⧸ LinearMap.range (wangDifference f 0)) :=
   (LinearEquiv.ofBijective (cokernelInclusion f 0)
       ⟨cokernelInclusion_injective f 0, cokernelInclusion_zero_surjective f⟩).symm
-end Mathoverflow1973

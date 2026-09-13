@@ -64,8 +64,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -443,4 +441,3 @@ theorem SingularHomology.sumHomologyEquiv_fold {X : Type} [TopologicalSpace X] (
       (sumHomologyEquiv X X n a).1 + (sumHomologyEquiv X X n a).2 := by
   rw [sumHomologyEquiv_sumElim, disjointHomology_id_apply,
     disjointHomology_id_apply]
-end Mathoverflow1973

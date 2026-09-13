@@ -18,8 +18,6 @@ This file is not a Lean `module` because `FundamentalGroup/VanKampen.lean` is no
 it converts when its dependencies do.
 -/
 
-namespace Mathoverflow1973
-
 noncomputable section
 
 /-- The canonical two-open cover of a suspension by its north and south cones; the
@@ -52,5 +50,3 @@ def SphereHomology.suspensionConeCover (X : Type) [TopologicalSpace X] [PathConn
     norm_num
 
 end
-
-end Mathoverflow1973

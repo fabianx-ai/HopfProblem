@@ -79,10 +79,8 @@ six-sphere carries a complex structure.
 open Matrix
 open scoped Matrix
 
-namespace Mathoverflow1973
-
 /-- The integral dual-cusp nilpotent as a lattice endomorphism. -/
-abbrev dualCuspN : Module.End ℤ Lattice :=
+abbrev dualCuspN : Module.End ℤ PeriodLattice :=
   Matrix.toLin' (M₀ - 1)
 
 /-- The dual-cusp endomorphism is square-zero. -/
@@ -114,4 +112,3 @@ theorem dualCuspNReal_square_zero : dualCuspNReal * dualCuspNReal = 0 := by
   ext i
   fin_cases i <;> simp
 
-end Mathoverflow1973

@@ -37,8 +37,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -210,4 +208,3 @@ theorem exists_small_sublevel_subset {X : Type*} [TopologicalSpace X] [CompactSp
     intro x _
     by_contra hx
     exact hne ⟨x, hx⟩
-end Mathoverflow1973

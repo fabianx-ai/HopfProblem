@@ -172,8 +172,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -3176,7 +3174,7 @@ theorem Elliptic.Equivariant.Data.centralInclusion_flatProjection {j : Elliptic.
   rw [← D.periodEquiv_eq_periodEquiv, LinearEquiv.symm_apply_apply]
 
 theorem Elliptic.Equivariant.Data.permutation_centralInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (x : D.centralPeriod.val.Torus) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (x : D.centralPeriod.val.Torus) :
     D.permutation v (D.centralInclusion x) =
       D.centralInclusion (Elliptic.affineBiholomorph j D.centralPeriod v x) := by
   obtain ⟨y, rfl⟩ := Elliptic.flatProjection_surjective D.centralPeriod.val x
@@ -3185,7 +3183,7 @@ theorem Elliptic.Equivariant.Data.permutation_centralInclusion {j : Elliptic.Kin
   exact Prod.ext (Elliptic.familyRotation_zero j) (Elliptic.flatTorusAffine_mkQ j v y)
 
 theorem Elliptic.Equivariant.Data.permutation_iterate_centralInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (n : ℕ) (x : D.centralPeriod.val.Torus) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (n : ℕ) (x : D.centralPeriod.val.Torus) :
     (D.permutation v)^[n] (D.centralInclusion x) =
       D.centralInclusion ((Elliptic.affineBiholomorph j D.centralPeriod v)^[n] x) := by
   induction n with
@@ -3195,14 +3193,14 @@ theorem Elliptic.Equivariant.Data.permutation_iterate_centralInclusion {j : Elli
       D.permutation_centralInclusion]
 
 theorem Elliptic.Equivariant.Data.permutation_pow_centralInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (n : ℕ) (x : D.centralPeriod.val.Torus) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (n : ℕ) (x : D.centralPeriod.val.Torus) :
     (D.permutation v ^ n) (D.centralInclusion x) =
       D.centralInclusion ((Elliptic.affinePermutation j D.centralPeriod v ^ n) x) := by
   rw [Equiv.Perm.coe_pow, Equiv.Perm.coe_pow]
   exact D.permutation_iterate_centralInclusion v n x
 
 theorem Elliptic.Equivariant.Data.centralInclusion_smul {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : D.centralPeriod.val.Torus) :
     letI := Elliptic.affineAction j D.centralPeriod v hv
     letI := D.action v hv
@@ -3215,7 +3213,7 @@ theorem Elliptic.Equivariant.Data.centralInclusion_smul {j : Elliptic.Kind}
   exact (D.permutation_pow_centralInclusion v g.toAdd.val x).symm
 
 theorem Elliptic.Equivariant.Data.centralInclusion_quotient_invariant {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (g : Elliptic.CyclicGroup j) (x : D.centralPeriod.val.Torus) :
     letI := Elliptic.affineAction j D.centralPeriod v hv.1
     D.quotient v hv (D.centralInclusion (g • x)) = D.quotient v hv (D.centralInclusion x) := by
@@ -3225,7 +3223,7 @@ theorem Elliptic.Equivariant.Data.centralInclusion_quotient_invariant {j : Ellip
   exact D.quotient_smul v hv g (D.centralInclusion x)
 
 def Elliptic.Equivariant.Data.centralFibreInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Elliptic.Surface j D.centralPeriod v hv → D.Space v hv := by
   let := Elliptic.affineAction j D.centralPeriod v hv.1
   exact
@@ -3234,14 +3232,14 @@ def Elliptic.Equivariant.Data.centralFibreInclusion {j : Elliptic.Kind}
 
 @[simp]
 theorem Elliptic.Equivariant.Data.centralFibreInclusion_surfaceProjection {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : D.centralPeriod.val.Torus) :
     D.centralFibreInclusion v hv (Elliptic.surfaceProjection j D.centralPeriod v hv x) =
       D.quotient v hv (D.centralInclusion x) :=
   rfl
 
 theorem Elliptic.Equivariant.Data.centralFibreInclusion_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Continuous (D.centralFibreInclusion v hv) := by
   let := Elliptic.affineAction j D.centralPeriod v hv.1
   exact
@@ -3250,7 +3248,7 @@ theorem Elliptic.Equivariant.Data.centralFibreInclusion_continuous {j : Elliptic
       ((D.quotient_continuous v hv).comp D.centralInclusion_continuous)
 
 theorem Elliptic.Equivariant.Data.centralFibreInclusion_injective {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Function.Injective (D.centralFibreInclusion v hv) := by
   intro a b hab
   obtain ⟨x, rfl⟩ := Elliptic.surfaceProjection_surjective j D.centralPeriod v hv a
@@ -3267,13 +3265,13 @@ theorem Elliptic.Equivariant.Data.centralFibreInclusion_injective {j : Elliptic.
   exact hg
 
 theorem Elliptic.Equivariant.Data.centralFibreInclusion_isClosedEmbedding {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Topology.IsClosedEmbedding (D.centralFibreInclusion v hv) :=
   (D.centralFibreInclusion_continuous v hv).isClosedEmbedding
     (D.centralFibreInclusion_injective v hv)
 
 theorem Elliptic.Equivariant.Data.range_centralFibreInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Set.range (D.centralFibreInclusion v hv) = D.projection v hv ⁻¹' { Elliptic.discZero } := by
   rw [D.projection_central_fibre]
   ext q
@@ -3288,7 +3286,7 @@ theorem Elliptic.Equivariant.Data.range_centralFibreInclusion {j : Elliptic.Kind
 
 @[simp]
 theorem Elliptic.Equivariant.Data.projection_centralFibreInclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : Elliptic.Surface j D.centralPeriod v hv) :
     D.projection v hv (D.centralFibreInclusion v hv x) = Elliptic.discZero := by
   have hx := Set.mem_range_self (f := D.centralFibreInclusion v hv) x
@@ -3296,18 +3294,18 @@ theorem Elliptic.Equivariant.Data.projection_centralFibreInclusion {j : Elliptic
   exact hx
 
 def Elliptic.Equivariant.Data.centralFibreHomeomorph {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Elliptic.Surface j D.centralPeriod v hv ≃ₜ D.projection v hv ⁻¹' { Elliptic.discZero } :=
   (D.centralFibreInclusion_isClosedEmbedding v hv).isEmbedding.toHomeomorph.trans
     (Homeomorph.setCongr (D.range_centralFibreInclusion v hv))
 
 def Elliptic.Equivariant.Data.surfaceIntoFilling {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     ContinuousMap (Elliptic.Surface j D.centralPeriod v hv) (D.Space v hv) :=
   ⟨D.centralFibreInclusion v hv, D.centralFibreInclusion_continuous v hv⟩
 
 def Elliptic.Equivariant.Data.fillingSurfaceRetraction {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     ContinuousMap (D.Space v hv) (Elliptic.Surface j D.centralPeriod v hv) :=
   ContinuousMap.comp
     ⟨(D.centralFibreHomeomorph v hv).symm, (D.centralFibreHomeomorph v hv).symm.continuous⟩
@@ -3315,7 +3313,7 @@ def Elliptic.Equivariant.Data.fillingSurfaceRetraction {j : Elliptic.Kind}
 
 @[simp]
 theorem Elliptic.Equivariant.Data.fillingSurfaceRetraction_comp_inclusion {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     (D.fillingSurfaceRetraction v hv).comp (D.surfaceIntoFilling v hv) = ContinuousMap.id _ := by
   ext x
   have he :
@@ -3330,7 +3328,7 @@ theorem Elliptic.Equivariant.Data.fillingSurfaceRetraction_comp_inclusion {j : E
   rw [he, Homeomorph.symm_apply_apply]
 
 theorem Elliptic.Equivariant.Data.surfaceIntoFilling_comp_retraction {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     (D.surfaceIntoFilling v hv).comp (D.fillingSurfaceRetraction v hv) =
       (D.fillingCentralSubtypeInclusion v hv).comp (D.fillingCentralRetraction v hv) := by
   ext x
@@ -3339,7 +3337,7 @@ theorem Elliptic.Equivariant.Data.surfaceIntoFilling_comp_retraction {j : Ellipt
       ((D.centralFibreHomeomorph v hv).apply_symm_apply (D.fillingCentralRetraction v hv x))
 
 def Elliptic.Equivariant.Data.fillingSurfaceStrongDeformationRetraction {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     (ContinuousMap.id (D.Space v hv)).HomotopyRel
       ((D.surfaceIntoFilling v hv).comp (D.fillingSurfaceRetraction v hv))
       (Set.range (D.surfaceIntoFilling v hv))
@@ -3374,7 +3372,7 @@ def ThreefoldOverlapMappingTorus.Elliptic.specialBoundaryToCentral (j : Elliptic
     (specialBoundaryToFullFilling j)
 
 theorem ThreefoldOverlapMappingTorus.Elliptic.centralInclusion_surfaceRetraction
-    {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j) (v : Lattice)
+    {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j) (v : PeriodLattice)
     (hv : Elliptic.AdmissibleTwist j v) (y : D.Space v hv) :
     D.centralFibreInclusion v hv (D.fillingSurfaceRetraction v hv y) = D.fillingRadial v hv 1 y :=
   congrArg (fun f : C(D.Space v hv, D.Space v hv) => f y)
@@ -4179,23 +4177,23 @@ theorem Elliptic.HigherHomology.mappingTorusH1Equiv_fibre (j : Elliptic.Kind)
   rw [mappingTorusH1Equiv, shortExtensionFinTwoEquivOfEndpoints_inclusion,
     mappingTorusCokernelOneEquiv_mk]
 
-def Elliptic.psiOne : Lattice →ₗ[ℤ] ℤ
+def Elliptic.psiOne : PeriodLattice →ₗ[ℤ] ℤ
     where
   toFun w := 2 * w 1 + w 2 + 3 * w 3
   map_add' w z := by simp only [Pi.add_apply]; ring
   map_smul' a w := by simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
-def Elliptic.psiTwo : Lattice →ₗ[ℤ] ℤ
+def Elliptic.psiTwo : PeriodLattice →ₗ[ℤ] ℤ
     where
   toFun w := w 1 + w 2 + 2 * w 3
   map_add' w z := by simp only [Pi.add_apply]; ring
   map_smul' a w := by simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
-def Elliptic.psi : Kind → Lattice →ₗ[ℤ] ℤ
+def Elliptic.psi : Kind → PeriodLattice →ₗ[ℤ] ℤ
   | .three => psiOne
   | .four => psiTwo
 
-def Elliptic.coinvariantMap (j : Kind) : Lattice →ₗ[ℤ] (Fin 2 → ℤ)
+def Elliptic.coinvariantMap (j : Kind) : PeriodLattice →ₗ[ℤ] (Fin 2 → ℤ)
     where
   toFun w := ![γ w, psi j w]
   map_add' w z := by ext k; fin_cases k <;> simp [γ]
@@ -4206,7 +4204,7 @@ def Elliptic.coinvariantMap (j : Kind) : Lattice →ₗ[ℤ] (Fin 2 → ℤ)
     · rfl
     · exact (psi j).map_smul a w
 
-def Elliptic.coinvariantSection (j : Kind) : (Fin 2 → ℤ) →ₗ[ℤ] Lattice
+def Elliptic.coinvariantSection (j : Kind) : (Fin 2 → ℤ) →ₗ[ℤ] PeriodLattice
     where
   toFun
     c :=
@@ -4225,13 +4223,13 @@ theorem Elliptic.coinvariantMap_section (j : Kind) (c : Fin 2 → ℤ) :
 theorem Elliptic.coinvariantMap_surjective (j : Kind) : Function.Surjective (coinvariantMap j) :=
   fun c => ⟨coinvariantSection j c, coinvariantMap_section j c⟩
 
-def Elliptic.coinvariantDifference (j : Kind) : Lattice →ₗ[ℤ] Lattice :=
+def Elliptic.coinvariantDifference (j : Kind) : PeriodLattice →ₗ[ℤ] PeriodLattice :=
   (j.matrix - 1).mulVecLin
 
-theorem Elliptic.coinvariantDifference_apply (j : Kind) (w : Lattice) :
+theorem Elliptic.coinvariantDifference_apply (j : Kind) (w : PeriodLattice) :
     coinvariantDifference j w = j.matrix *ᵥ w - w := by simp [coinvariantDifference]
 
-theorem Elliptic.coinvariantMap_monodromy (j : Kind) (w : Lattice) :
+theorem Elliptic.coinvariantMap_monodromy (j : Kind) (w : PeriodLattice) :
     coinvariantMap j (j.matrix *ᵥ w) = coinvariantMap j w := by
   cases j <;> ext k <;> fin_cases k <;>
       simp [coinvariantMap, γ, psi, psiOne, psiTwo, Kind.matrix, A₁, A₂, dotProduct,
@@ -4239,16 +4237,16 @@ theorem Elliptic.coinvariantMap_monodromy (j : Kind) (w : Lattice) :
     ring
 
 @[simp]
-theorem Elliptic.coinvariantMap_difference (j : Kind) (w : Lattice) :
+theorem Elliptic.coinvariantMap_difference (j : Kind) (w : PeriodLattice) :
     coinvariantMap j (coinvariantDifference j w) = 0 := by
   rw [coinvariantDifference_apply, map_sub, coinvariantMap_monodromy, sub_self]
 
-def Elliptic.coinvariantKernelLift (j : Kind) (w : Lattice) : Lattice :=
+def Elliptic.coinvariantKernelLift (j : Kind) (w : PeriodLattice) : PeriodLattice :=
   match j with
   | .three => ![0, w 3, w 1 + w 3, 0]
   | .four => ![0, -w 1 - w 3, w 3, 0]
 
-theorem Elliptic.coinvariantDifference_kernelLift (j : Kind) (w : Lattice)
+theorem Elliptic.coinvariantDifference_kernelLift (j : Kind) (w : PeriodLattice)
     (hw : coinvariantMap j w = 0) : coinvariantDifference j (coinvariantKernelLift j w) = w := by
   have h0 : w 0 = 0 := congrFun hw 0
   have hψ : psi j w = 0 := congrFun hw 1
@@ -4310,20 +4308,20 @@ def Elliptic.flatLinearEquiv (j : Kind) : RealCoordinates ≃ₗ[ℝ] RealCoordi
         x
     rw [Matrix.mulVec_mulVec, realMatrix_mul_pow_pred_mo1973_22122, Matrix.one_mulVec]
 
-def Elliptic.realCastAddHom : Lattice →+ RealCoordinates
+def Elliptic.realCastAddHom : PeriodLattice →+ RealCoordinates
     where
   toFun := realCast
   map_zero' := by ext k; simp [realCast]
   map_add' w z := by ext k; simp [realCast]
 
-def Elliptic.integerTranslationHom : Multiplicative Lattice →* AffineAutomorphism :=
+def Elliptic.integerTranslationHom : Multiplicative PeriodLattice →* AffineAutomorphism :=
   (AffineEquiv.constVAddHom ℝ RealCoordinates).comp realCastAddHom.toMultiplicative
 
-def Elliptic.integerTranslation (w : Lattice) : AffineAutomorphism :=
+def Elliptic.integerTranslation (w : PeriodLattice) : AffineAutomorphism :=
   integerTranslationHom (Multiplicative.ofAdd w)
 
 @[simp]
-theorem Elliptic.integerTranslation_apply (w : Lattice) (x : RealCoordinates) :
+theorem Elliptic.integerTranslation_apply (w : PeriodLattice) (x : RealCoordinates) :
     integerTranslation w x = realCast w + x :=
   rfl
 
@@ -4331,16 +4329,16 @@ theorem Elliptic.integerTranslation_apply (w : Lattice) (x : RealCoordinates) :
 theorem Elliptic.integerTranslation_zero : integerTranslation 0 = 1 :=
   integerTranslationHom.map_one
 
-theorem Elliptic.integerTranslation_add (w z : Lattice) :
+theorem Elliptic.integerTranslation_add (w z : PeriodLattice) :
     integerTranslation (w + z) = integerTranslation w * integerTranslation z :=
   integerTranslationHom.map_mul (Multiplicative.ofAdd w) (Multiplicative.ofAdd z)
 
 @[simp]
-theorem Elliptic.integerTranslation_neg (w : Lattice) :
+theorem Elliptic.integerTranslation_neg (w : PeriodLattice) :
     integerTranslation (-w) = (integerTranslation w)⁻¹ :=
   integerTranslationHom.map_inv (Multiplicative.ofAdd w)
 
-def Elliptic.affineGenerator (j : Kind) (v : Lattice) : AffineAutomorphism
+def Elliptic.affineGenerator (j : Kind) (v : PeriodLattice) : AffineAutomorphism
     where
   toFun := flatAffine j v
   invFun x := (flatLinearEquiv j).symm (x - (1 / (j.order : ℝ)) • realCast v)
@@ -4368,7 +4366,7 @@ def Elliptic.affineGenerator (j : Kind) (v : Lattice) : AffineAutomorphism
     rw [map_add, add_assoc]
 
 @[simp]
-theorem Elliptic.affineGenerator_apply (j : Kind) (v : Lattice) (x : RealCoordinates) :
+theorem Elliptic.affineGenerator_apply (j : Kind) (v : PeriodLattice) (x : RealCoordinates) :
     affineGenerator j v x = flatAffine j v x :=
   rfl
 
@@ -4382,24 +4380,24 @@ theorem Elliptic.affineAutomorphism_pow_apply (f : AffineAutomorphism) (n : ℕ)
   | zero => rfl
   | succ n ih => rw [pow_succ', affineAutomorphism_mul_apply, ih, Function.iterate_succ_apply']
 
-theorem Elliptic.affineGenerator_pow_apply (j : Kind) (v : Lattice) (n : ℕ)
+theorem Elliptic.affineGenerator_pow_apply (j : Kind) (v : PeriodLattice) (n : ℕ)
     (x : RealCoordinates) : (affineGenerator j v ^ n) x = (flatAffine j v)^[n] x :=
   affineAutomorphism_pow_apply _ _ _
 
-theorem Elliptic.affineGenerator_translation (j : Kind) (v w : Lattice) :
+theorem Elliptic.affineGenerator_translation (j : Kind) (v w : PeriodLattice) :
     affineGenerator j v * integerTranslation w =
       integerTranslation (j.matrix *ᵥ w) * affineGenerator j v := by
   ext x
   simp only [affineAutomorphism_mul_apply, affineGenerator_apply, integerTranslation_apply,
     flatAffine, map_add, flatLinear_realCast, add_assoc]
 
-theorem Elliptic.affineGenerator_pow_order (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.affineGenerator_pow_order (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     affineGenerator j v ^ j.order = integerTranslation v := by
   ext x
   rw [affineGenerator_pow_apply, flatAffine_iterate_order j v hv, integerTranslation_apply,
     add_comm]
 
-theorem Elliptic.affineGenerator_pow_translation (j : Kind) (v w : Lattice) (n : ℕ) :
+theorem Elliptic.affineGenerator_pow_translation (j : Kind) (v w : PeriodLattice) (n : ℕ) :
     affineGenerator j v ^ n * integerTranslation w =
       integerTranslation (j.matrix ^ n *ᵥ w) * affineGenerator j v ^ n := by
   induction n with
@@ -4597,20 +4595,20 @@ theorem Elliptic.flatProjection_isCoveringMap (p : PeriodDomain) :
     exact DiscreteTopology.isDiscrete
   exact hq.isCoveringMap.comp_homeomorph (periodEquiv p).toHomeomorph
 
-def Elliptic.affineCoverProjection (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.affineCoverProjection (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : RealCoordinates → Surface j p v hv :=
   surfaceProjection j p v hv ∘ flatProjection p.val
 
-theorem Elliptic.affineCoverProjection_continuous (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineCoverProjection_continuous (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : Continuous (affineCoverProjection j p v hv) :=
   (surfaceProjection_continuous j p v hv).comp (flatProjection_continuous p.val)
 
-theorem Elliptic.affineCoverProjection_surjective (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineCoverProjection_surjective (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : Function.Surjective (affineCoverProjection j p v hv) :=
   (surfaceProjection_surjective j p v hv).comp (flatProjection_surjective p.val)
 
 theorem Elliptic.affineCoverProjection_eq_iff_flatCongruent (j : Kind) (p : FixedPeriod j)
-    (v : Lattice) (hv : AdmissibleTwist j v) (x y : RealCoordinates) :
+    (v : PeriodLattice) (hv : AdmissibleTwist j v) (x y : RealCoordinates) :
     affineCoverProjection j p v hv x = affineCoverProjection j p v hv y ↔
       ∃ r : ℕ, r < j.order ∧ FlatCongruent x ((flatAffine j v)^[r] y) := by
   let := affineAction j p v hv.1
@@ -4635,9 +4633,9 @@ theorem Elliptic.affineCoverProjection_eq_iff_flatCongruent (j : Kind) (p : Fixe
     exact ((flatProjection_eq_iff p.val _ _).mpr hxy).symm
 
 theorem Elliptic.affineCoverProjection_eq_iff_translate (j : Kind) (p : FixedPeriod j)
-    (v : Lattice) (hv : AdmissibleTwist j v) (x y : RealCoordinates) :
+    (v : PeriodLattice) (hv : AdmissibleTwist j v) (x y : RealCoordinates) :
     affineCoverProjection j p v hv x = affineCoverProjection j p v hv y ↔
-      ∃ r : ℕ, r < j.order ∧ ∃ w : Lattice, x = realCast w + (flatAffine j v)^[r] y := by
+      ∃ r : ℕ, r < j.order ∧ ∃ w : PeriodLattice, x = realCast w + (flatAffine j v)^[r] y := by
   rw [affineCoverProjection_eq_iff_flatCongruent]
   simp only [FlatCongruent, sub_eq_iff_eq_add]
 
@@ -4648,8 +4646,8 @@ theorem Elliptic.realCast_injective : Function.Injective realCast := by
   change (w i : ℝ) = (z i : ℝ) at hi
   exact_mod_cast hi
 
-theorem Elliptic.affineTranslate_unique (j : Kind) (p : FixedPeriod j) (v : Lattice)
-    (hv : AdmissibleTwist j v) (x : RealCoordinates) (r s : Fin j.order) (w z : Lattice)
+theorem Elliptic.affineTranslate_unique (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
+    (hv : AdmissibleTwist j v) (x : RealCoordinates) (r s : Fin j.order) (w z : PeriodLattice)
     (h : realCast w + (flatAffine j v)^[r.val] x = realCast z + (flatAffine j v)^[s.val] x) :
     r = s ∧ w = z := by
   let := affineAction j p v hv.1
@@ -4673,27 +4671,27 @@ theorem Elliptic.affineTranslate_unique (j : Kind) (p : FixedPeriod j) (v : Latt
   subst s
   exact ⟨rfl, realCast_injective (add_right_cancel h)⟩
 
-theorem Elliptic.surfaceProjection_fibre_finite (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.surfaceProjection_fibre_finite (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (x : Surface j p v hv) :
     Finite (surfaceProjection j p v hv ⁻¹' { x }) := by
   apply Nat.finite_of_card_ne_zero
   rw [surfaceProjection_fibre_card]
   exact Nat.ne_of_gt j.order_pos
 
-theorem Elliptic.affineCoverProjection_isCoveringMap (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineCoverProjection_isCoveringMap (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) : IsCoveringMap (affineCoverProjection j p v hv) :=
   CoveringComposition.covering_comp_of_finite_fibres (flatProjection_isCoveringMap p.val)
     (surfaceProjection_isCoveringMap j p v hv) (surfaceProjection_fibre_finite j p v hv)
 
-def Elliptic.affineNormalForm (j : Kind) (v w : Lattice) (r : ℕ) : AffineAutomorphism :=
+def Elliptic.affineNormalForm (j : Kind) (v w : PeriodLattice) (r : ℕ) : AffineAutomorphism :=
   integerTranslation w * affineGenerator j v ^ r
 
-theorem Elliptic.affineNormalForm_apply (j : Kind) (v w : Lattice) (r : ℕ) (x : RealCoordinates) :
+theorem Elliptic.affineNormalForm_apply (j : Kind) (v w : PeriodLattice) (r : ℕ) (x : RealCoordinates) :
     affineNormalForm j v w r x = realCast w + (flatAffine j v)^[r] x := by
   rw [affineNormalForm, affineAutomorphism_mul_apply, integerTranslation_apply,
     affineGenerator_pow_apply]
 
-theorem Elliptic.affineNormalForm_mul (j : Kind) (v w z : Lattice) (r s : ℕ) :
+theorem Elliptic.affineNormalForm_mul (j : Kind) (v w z : PeriodLattice) (r s : ℕ) :
     affineNormalForm j v w r * affineNormalForm j v z s =
       affineNormalForm j v (w + j.matrix ^ r *ᵥ z) (r + s) := by
   unfold affineNormalForm
@@ -4710,17 +4708,17 @@ theorem Elliptic.affineNormalForm_mul (j : Kind) (v w z : Lattice) (r s : ℕ) :
     _ = integerTranslation (w + j.matrix ^ r *ᵥ z) * affineGenerator j v ^ (r + s) := by
       rw [← integerTranslation_add, ← pow_add]
 
-theorem Elliptic.affineNormalForm_reduce_order (j : Kind) (v w : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.affineNormalForm_reduce_order (j : Kind) (v w : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (n : ℕ) (hn : j.order ≤ n) :
     affineNormalForm j v w n = affineNormalForm j v (w + v) (n - j.order) := by
   unfold affineNormalForm
   rw [integerTranslation_add, ← affineGenerator_pow_order j v hv, mul_assoc, ← pow_add,
     Nat.add_sub_of_le hn]
 
-def Elliptic.affineNormalFormsSubgroup (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+def Elliptic.affineNormalFormsSubgroup (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     Subgroup AffineAutomorphism
     where
-  carrier := {g | ∃ w : Lattice, ∃ r : Fin j.order, g = affineNormalForm j v w r.val}
+  carrier := {g | ∃ w : PeriodLattice, ∃ r : Fin j.order, g = affineNormalForm j v w r.val}
   one_mem' := ⟨0, ⟨0, j.order_pos⟩, by simp [affineNormalForm]⟩
   mul_mem' := by
     rintro f g ⟨w, r, rfl⟩ ⟨z, s, rfl⟩
@@ -4749,23 +4747,23 @@ def Elliptic.affineNormalFormsSubgroup (j : Kind) (v : Lattice) (hv : j.matrix *
       rw [hw, affineNormalForm, affineGenerator_pow_order j v hv, integerTranslation_neg,
         inv_mul_cancel]
 
-def Elliptic.affineDeckSubgroup (j : Kind) (v : Lattice) : Subgroup AffineAutomorphism :=
+def Elliptic.affineDeckSubgroup (j : Kind) (v : PeriodLattice) : Subgroup AffineAutomorphism :=
   Subgroup.closure (Set.range integerTranslation ∪ {affineGenerator j v})
 
-theorem Elliptic.integerTranslation_mem_affineDeckSubgroup (j : Kind) (v w : Lattice) :
+theorem Elliptic.integerTranslation_mem_affineDeckSubgroup (j : Kind) (v w : PeriodLattice) :
     integerTranslation w ∈ affineDeckSubgroup j v :=
   Subgroup.subset_closure (Or.inl (Set.mem_range_self w))
 
-theorem Elliptic.affineGenerator_mem_affineDeckSubgroup (j : Kind) (v : Lattice) :
+theorem Elliptic.affineGenerator_mem_affineDeckSubgroup (j : Kind) (v : PeriodLattice) :
     affineGenerator j v ∈ affineDeckSubgroup j v :=
   Subgroup.subset_closure (Or.inr rfl)
 
-theorem Elliptic.affineNormalForm_mem_affineDeckSubgroup (j : Kind) (v w : Lattice) (r : ℕ) :
+theorem Elliptic.affineNormalForm_mem_affineDeckSubgroup (j : Kind) (v w : PeriodLattice) (r : ℕ) :
     affineNormalForm j v w r ∈ affineDeckSubgroup j v :=
   (affineDeckSubgroup j v).mul_mem (integerTranslation_mem_affineDeckSubgroup j v w)
     ((affineDeckSubgroup j v).pow_mem (affineGenerator_mem_affineDeckSubgroup j v) r)
 
-theorem Elliptic.affineDeckSubgroup_eq_normalForms (j : Kind) (v : Lattice)
+theorem Elliptic.affineDeckSubgroup_eq_normalForms (j : Kind) (v : PeriodLattice)
     (hv : j.matrix *ᵥ v = v) : affineDeckSubgroup j v = affineNormalFormsSubgroup j v hv := by
   apply le_antisymm
   · apply (Subgroup.closure_le _).mpr
@@ -4777,50 +4775,50 @@ theorem Elliptic.affineDeckSubgroup_eq_normalForms (j : Kind) (v : Lattice)
   · rintro g ⟨w, r, rfl⟩
     exact affineNormalForm_mem_affineDeckSubgroup j v w r.val
 
-theorem Elliptic.mem_affineDeckSubgroup_iff (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+theorem Elliptic.mem_affineDeckSubgroup_iff (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : AffineAutomorphism) :
     g ∈ affineDeckSubgroup j v ↔
-      ∃ w : Lattice, ∃ r : Fin j.order, g = affineNormalForm j v w r.val := by
+      ∃ w : PeriodLattice, ∃ r : Fin j.order, g = affineNormalForm j v w r.val := by
   rw [affineDeckSubgroup_eq_normalForms j v hv]
   rfl
 
-abbrev Elliptic.AffineDeckGroup (j : Kind) (v : Lattice) :=
+abbrev Elliptic.AffineDeckGroup (j : Kind) (v : PeriodLattice) :=
   affineDeckSubgroup j v
 
-def Elliptic.deckTranslationHom (j : Kind) (v : Lattice) :
-    Multiplicative Lattice →* AffineDeckGroup j v :=
+def Elliptic.deckTranslationHom (j : Kind) (v : PeriodLattice) :
+    Multiplicative PeriodLattice →* AffineDeckGroup j v :=
   integerTranslationHom.codRestrict (affineDeckSubgroup j v)
     (fun w => integerTranslation_mem_affineDeckSubgroup j v w.toAdd)
 
-def Elliptic.deckGenerator (j : Kind) (v : Lattice) : AffineDeckGroup j v :=
+def Elliptic.deckGenerator (j : Kind) (v : PeriodLattice) : AffineDeckGroup j v :=
   ⟨affineGenerator j v, affineGenerator_mem_affineDeckSubgroup j v⟩
 
-def Elliptic.deckNormalForm (j : Kind) (v : Lattice) (a : Lattice × Fin j.order) :
+def Elliptic.deckNormalForm (j : Kind) (v : PeriodLattice) (a : PeriodLattice × Fin j.order) :
     AffineDeckGroup j v :=
   deckTranslationHom j v (Multiplicative.ofAdd a.1) * deckGenerator j v ^ a.2.val
 
-theorem Elliptic.deckNormalForm_surjective (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.deckNormalForm_surjective (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     Function.Surjective (deckNormalForm j v) := by
   intro g
   obtain ⟨w, r, hr⟩ := (mem_affineDeckSubgroup_iff j v hv g).mp g.property
   exact ⟨(w, r), Subtype.ext hr.symm⟩
 
-theorem Elliptic.deckGenerator_pow_order (j : Kind) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+theorem Elliptic.deckGenerator_pow_order (j : Kind) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     deckGenerator j v ^ j.order = deckTranslationHom j v (Multiplicative.ofAdd v) :=
   Subtype.ext (affineGenerator_pow_order j v hv)
 
-instance Elliptic.affineDeckGroupMulAction (j : Kind) (v : Lattice) :
+instance Elliptic.affineDeckGroupMulAction (j : Kind) (v : PeriodLattice) :
     MulAction (AffineDeckGroup j v) RealCoordinates
     where
   smul g x := (g : AffineAutomorphism) x
   one_smul _ := rfl
   mul_smul _ _ _ := rfl
 
-instance Elliptic.affineDeckGroupContinuousConstSMul (j : Kind) (v : Lattice) :
+instance Elliptic.affineDeckGroupContinuousConstSMul (j : Kind) (v : PeriodLattice) :
     ContinuousConstSMul (AffineDeckGroup j v) RealCoordinates where
   continuous_const_smul g := affineAutomorphism_continuous g.val
 
-theorem Elliptic.affineDeckGroup_eval_injective (j : Kind) (v : Lattice)
+theorem Elliptic.affineDeckGroup_eval_injective (j : Kind) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (x : RealCoordinates) :
     Function.Injective (fun g : AffineDeckGroup j v => g • x) := by
   intro g h hgh
@@ -4831,11 +4829,11 @@ theorem Elliptic.affineDeckGroup_eval_injective (j : Kind) (v : Lattice)
   have hu := affineTranslate_unique j (exampleFixedPeriod j) v hv x a.2 b.2 a.1 b.1 he
   exact congrArg (deckNormalForm j v) (Prod.ext hu.2 hu.1)
 
-theorem Elliptic.affineDeckGroup_free (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v) :
+theorem Elliptic.affineDeckGroup_free (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     IsCancelSMul (AffineDeckGroup j v) RealCoordinates where
   right_cancel' _ _ x hgh := affineDeckGroup_eval_injective j v hv x hgh
 
-theorem Elliptic.affineCoverProjection_orbit_iff (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineCoverProjection_orbit_iff (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (x y : RealCoordinates) :
     affineCoverProjection j p v hv x = affineCoverProjection j p v hv y ↔
       x ∈ MulAction.orbit (AffineDeckGroup j v) y := by
@@ -4853,7 +4851,7 @@ theorem Elliptic.affineCoverProjection_orbit_iff (j : Kind) (p : FixedPeriod j) 
     exact he.symm.trans (affineNormalForm_apply j v a.1 a.2.val y)
 
 theorem Elliptic.affineCoverProjection_isQuotientCoveringMap (j : Kind) (p : FixedPeriod j)
-    (v : Lattice) (hv : AdmissibleTwist j v) :
+    (v : PeriodLattice) (hv : AdmissibleTwist j v) :
     IsQuotientCoveringMap (affineCoverProjection j p v hv) (AffineDeckGroup j v) := by
   let := affineDeckGroup_free j v hv
   exact
@@ -4861,13 +4859,13 @@ theorem Elliptic.affineCoverProjection_isQuotientCoveringMap (j : Kind) (p : Fix
       (affineCoverProjection_isCoveringMap j p v hv).isLocalHomeomorph
       (affineCoverProjection_surjective j p v hv) (affineCoverProjection_orbit_iff j p v hv)
 
-def Elliptic.surfaceFundamentalGroupDeckOppositeEquiv (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.surfaceFundamentalGroupDeckOppositeEquiv (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) :
     FundamentalGroup (Surface j p v hv) (affineCoverProjection j p v hv y) ≃*
       (AffineDeckGroup j v)ᵐᵒᵖ :=
   (affineCoverProjection_isQuotientCoveringMap j p v hv).fundamentalGroupEquiv ⟨y, rfl⟩
 
-def Elliptic.surfaceFundamentalGroupDeckEquiv (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.surfaceFundamentalGroupDeckEquiv (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) :
     FundamentalGroup (Surface j p v hv) (affineCoverProjection j p v hv y) ≃*
       AffineDeckGroup j v :=
@@ -4875,7 +4873,7 @@ def Elliptic.surfaceFundamentalGroupDeckEquiv (j : Kind) (p : FixedPeriod j) (v 
     (MulEquiv.inv' (AffineDeckGroup j v)).symm
 
 theorem Elliptic.surfaceFundamentalGroupDeckEquiv_monodromy (j : Kind) (p : FixedPeriod j)
-    (v : Lattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
+    (v : PeriodLattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
     (γ : FundamentalGroup (Surface j p v hv) (affineCoverProjection j p v hv y)) :
     (surfaceFundamentalGroupDeckEquiv j p v hv y γ)⁻¹ • y =
       ((affineCoverProjection_isQuotientCoveringMap j p v hv).isCoveringMap.monodromy γ ⟨y, rfl⟩ :
@@ -4886,7 +4884,7 @@ theorem Elliptic.surfaceFundamentalGroupDeckEquiv_monodromy (j : Kind) (p : Fixe
   exact hq.unop_fundamentalGroupToMulOpposite_smul
 
 def Elliptic.HigherHomology.periodCover (j : Elliptic.Kind) (p : Elliptic.FixedPeriod j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     C(p.val.Torus, Elliptic.Surface j p v hv) :=
   ⟨Elliptic.surfaceProjection j p v hv, Elliptic.surfaceProjection_continuous j p v hv⟩
 
@@ -5356,7 +5354,7 @@ def restrictedRetractionHomotopy {A X : Type*} [TopologicalSpace A] [Topological
     obtain ⟨a, rfl⟩ := hx
     exact ⟨a, rfl⟩
 
-theorem Elliptic.fillingRadial_projection_coe (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_projection_coe (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (u : unitInterval) (x : Filling j v hv) :
     (fillingProjection j v hv (fillingRadial j v hv u x) : ℂ) =
       (((1 - (u : ℝ) : ℝ) : ℂ) ^ j.order) * (fillingProjection j v hv x : ℂ) := by
@@ -5367,14 +5365,14 @@ theorem Elliptic.fillingRadial_projection_coe (j : Kind) (v : Lattice) (hv : Adm
       (((1 - (u : ℝ) : ℝ) : ℂ) ^ j.order) * (y.1 : ℂ) ^ j.order
   rw [Complex.real_smul, mul_pow]
 
-theorem Elliptic.fillingRadial_projection_norm (j : Kind) (v : Lattice) (hv : AdmissibleTwist j v)
+theorem Elliptic.fillingRadial_projection_norm (j : Kind) (v : PeriodLattice) (hv : AdmissibleTwist j v)
     (u : unitInterval) (x : Filling j v hv) :
     ‖(fillingProjection j v hv (fillingRadial j v hv u x) : ℂ)‖ =
       (1 - (u : ℝ)) ^ j.order * ‖(fillingProjection j v hv x : ℂ)‖ := by
   rw [fillingRadial_projection_coe, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
     abs_of_nonneg (sub_nonneg.mpr u.property.2)]
 
-theorem Elliptic.fillingRadial_projection_norm_le (j : Kind) (v : Lattice)
+theorem Elliptic.fillingRadial_projection_norm_le (j : Kind) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (u : unitInterval) (x : Filling j v hv) :
     ‖(fillingProjection j v hv (fillingRadial j v hv u x) : ℂ)‖ ≤
       ‖(fillingProjection j v hv x : ℂ)‖ := by
@@ -5665,21 +5663,21 @@ def ThreefoldHomology.BoundaryFirst.latticeMonodromy : Option Elliptic.Kind → 
   | some j => j.matrix
 
 def ThreefoldHomology.BoundaryFirst.latticeDifference (i : Option Elliptic.Kind) :
-    Lattice →ₗ[ℤ] Lattice :=
+    PeriodLattice →ₗ[ℤ] PeriodLattice :=
   -((latticeMonodromy i - 1).mulVecLin)
 
 theorem ThreefoldHomology.BoundaryFirst.latticeDifference_apply (i : Option Elliptic.Kind)
-    (w : Lattice) : latticeDifference i w = w - latticeMonodromy i *ᵥ w := by
+    (w : PeriodLattice) : latticeDifference i w = w - latticeMonodromy i *ᵥ w := by
   simp [latticeDifference]
 
-def ThreefoldHomology.BoundaryFirst.cuspCoinvariantMap : Lattice →ₗ[ℤ] (Fin 2 → ℤ)
+def ThreefoldHomology.BoundaryFirst.cuspCoinvariantMap : PeriodLattice →ₗ[ℤ] (Fin 2 → ℤ)
     where
   toFun w := ![w 0, w 1]
   map_add' w z := by ext k; fin_cases k <;> rfl
   map_smul' a w := by ext k; fin_cases k <;> rfl
 
 def ThreefoldHomology.BoundaryFirst.latticeCoinvariantMap :
-    Option Elliptic.Kind → Lattice →ₗ[ℤ] (Fin 2 → ℤ)
+    Option Elliptic.Kind → PeriodLattice →ₗ[ℤ] (Fin 2 → ℤ)
   | none => cuspCoinvariantMap
   | some j => Elliptic.coinvariantMap j
 
@@ -5699,7 +5697,7 @@ theorem ThreefoldHomology.BoundaryFirst.latticeDifference_range (i : Option Elli
   cases i with
   | none =>
     ext w
-    change (∃ v : Lattice, (M₀ - 1) *ᵥ v = w) ↔ cuspCoinvariantMap w = 0
+    change (∃ v : PeriodLattice, (M₀ - 1) *ᵥ v = w) ↔ cuspCoinvariantMap w = 0
     rw [M₀_sub_one_range]
     constructor
     · rintro ⟨h0, h1⟩
@@ -5710,7 +5708,7 @@ theorem ThreefoldHomology.BoundaryFirst.latticeDifference_range (i : Option Elli
   | some j => exact (Elliptic.coinvariantMap_ker_eq_range j).symm
 
 def ThreefoldHomology.BoundaryFirst.latticeCokernelEquiv (i : Option Elliptic.Kind) :
-    (Lattice ⧸ LinearMap.range (latticeDifference i)) ≃ₗ[ℤ] (Fin 2 → ℤ) :=
+    (PeriodLattice ⧸ LinearMap.range (latticeDifference i)) ≃ₗ[ℤ] (Fin 2 → ℤ) :=
   (Submodule.quotEquivOfEq _ _ (latticeDifference_range i)).trans
     ((latticeCoinvariantMap i).quotKerEquivOfSurjective (latticeCoinvariantMap_surjective i))
 
@@ -9002,7 +9000,7 @@ theorem PeriodFamily.Data.deckTransportHom_eq_of_inverse_endpoint {V B : Type*}
   apply inv_injective
   exact IsCancelSMul.right_cancel _ _ b ((D.deckTransportHom_monodromy hq b γ).trans hγ)
 
-def PeriodFamily.FlatTorus.periodVector : Lattice →+ RealPlane₄
+def PeriodFamily.FlatTorus.periodVector : PeriodLattice →+ RealPlane₄
     where
   toFun := Elliptic.realCast
   map_zero' := by ext i; simp [Elliptic.realCast]
@@ -9014,11 +9012,11 @@ theorem PeriodFamily.FlatTorus.periodVector_injective : Function.Injective perio
   have hi : (c i : ℝ) = (d i : ℝ) := congrFun h i
   exact_mod_cast hi
 
-theorem PeriodFamily.FlatTorus.periodVector_mem_standardLattice (c : Lattice) :
+theorem PeriodFamily.FlatTorus.periodVector_mem_standardLattice (c : PeriodLattice) :
     periodVector c ∈ standardLattice :=
   (Elliptic.standardLattice_mem_iff _).mpr ⟨c, rfl⟩
 
-def PeriodFamily.FlatTorus.periodLatticeMap : Lattice →+ standardLattice :=
+def PeriodFamily.FlatTorus.periodLatticeMap : PeriodLattice →+ standardLattice :=
   periodVector.codRestrict standardLattice.toAddSubgroup periodVector_mem_standardLattice
 
 theorem PeriodFamily.FlatTorus.periodLatticeMap_bijective : Function.Bijective periodLatticeMap :=
@@ -9030,10 +9028,10 @@ theorem PeriodFamily.FlatTorus.periodLatticeMap_bijective : Function.Bijective p
     obtain ⟨c, hc⟩ := (Elliptic.standardLattice_mem_iff z).mp z.property
     exact ⟨c, Subtype.ext hc.symm⟩
 
-def PeriodFamily.FlatTorus.periodLatticeEquiv : Lattice ≃+ standardLattice :=
+def PeriodFamily.FlatTorus.periodLatticeEquiv : PeriodLattice ≃+ standardLattice :=
   AddEquiv.ofBijective periodLatticeMap periodLatticeMap_bijective
 
-def PeriodFamily.FlatTorus.latticeEquiv : standardLattice ≃+ Lattice :=
+def PeriodFamily.FlatTorus.latticeEquiv : standardLattice ≃+ PeriodLattice :=
   periodLatticeEquiv.symm
 
 theorem PeriodFamily.FlatTorus.periodVector_latticeEquiv (z : standardLattice) :
@@ -9051,7 +9049,7 @@ def PeriodFamily.FlatTorus.zeroLift : standardLattice.mkQ ⁻¹' ({0} : Set Real
   ⟨0, by simp⟩
 
 def PeriodFamily.FlatTorus.fundamentalGroupEquiv :
-    FundamentalGroup RealTorus₄ 0 ≃* Multiplicative Lattice :=
+    FundamentalGroup RealTorus₄ 0 ≃* Multiplicative PeriodLattice :=
   ((quotientCovering.fundamentalGroupEquiv zeroLift).trans MulOpposite.opMulEquiv.symm).trans
     latticeEquiv.toMultiplicative
 
@@ -9071,20 +9069,20 @@ theorem PeriodFamily.FlatTorus.fundamentalGroupEquiv_monodromy
   simpa only [add_zero] using h
 
 @[simp]
-theorem PeriodFamily.FlatTorus.mkQ_periodVector (c : Lattice) :
+theorem PeriodFamily.FlatTorus.mkQ_periodVector (c : PeriodLattice) :
     standardLattice.mkQ (periodVector c) = 0 :=
   (Submodule.Quotient.mk_eq_zero standardLattice).mpr (periodVector_mem_standardLattice c)
 
-def PeriodFamily.FlatTorus.periodLoop (c : Lattice) : Path (0 : RealTorus₄) 0 :=
+def PeriodFamily.FlatTorus.periodLoop (c : PeriodLattice) : Path (0 : RealTorus₄) 0 :=
   ((Path.segment (0 : RealPlane₄) (periodVector c)).map standardLattice.continuous_mkQ).cast
     (map_zero standardLattice.mkQ).symm (mkQ_periodVector c).symm
 
-theorem PeriodFamily.FlatTorus.periodLoop_apply (c : Lattice) (t : unitInterval) :
+theorem PeriodFamily.FlatTorus.periodLoop_apply (c : PeriodLattice) (t : unitInterval) :
     periodLoop c t = standardLattice.mkQ ((t : ℝ) • Elliptic.realCast c) := by
   change standardLattice.mkQ (Path.segment (0 : RealPlane₄) (Elliptic.realCast c) t) = _
   simp only [Path.segment_apply, AffineMap.lineMap_apply_module, smul_zero, zero_add]
 
-theorem PeriodFamily.FlatTorus.periodLoop_monodromy (c : Lattice) :
+theorem PeriodFamily.FlatTorus.periodLoop_monodromy (c : PeriodLattice) :
     quotientCovering.isCoveringMap.monodromy (FirstHurewicz.loopQuotient (periodLoop c))
         zeroLift =
       ⟨periodVector c, mkQ_periodVector c⟩ := by
@@ -9096,20 +9094,20 @@ theorem PeriodFamily.FlatTorus.periodLoop_monodromy (c : Lattice) :
   rfl
 
 @[simp]
-theorem PeriodFamily.FlatTorus.fundamentalGroupEquiv_periodLoop (c : Lattice) :
+theorem PeriodFamily.FlatTorus.fundamentalGroupEquiv_periodLoop (c : PeriodLattice) :
     fundamentalGroupEquiv (FirstHurewicz.loopQuotient (periodLoop c)) = Multiplicative.ofAdd c := by
   apply Multiplicative.toAdd.injective
   apply periodVector_injective
   rw [fundamentalGroupEquiv_monodromy, periodLoop_monodromy]
   rfl
 
-theorem PeriodFamily.FlatTorus.fundamentalGroupEquiv_symm_apply (c : Lattice) :
+theorem PeriodFamily.FlatTorus.fundamentalGroupEquiv_symm_apply (c : PeriodLattice) :
     fundamentalGroupEquiv.symm (Multiplicative.ofAdd c) =
       FirstHurewicz.loopQuotient (periodLoop c) := by
   apply fundamentalGroupEquiv.injective
   rw [MulEquiv.apply_symm_apply, fundamentalGroupEquiv_periodLoop]
 
-def PeriodFamily.FlatTorus.singularH1Equiv : FirstHurewicz.SingularH1 RealTorus₄ ≃ₗ[ℤ] Lattice :=
+def PeriodFamily.FlatTorus.singularH1Equiv : FirstHurewicz.SingularH1 RealTorus₄ ≃ₗ[ℤ] PeriodLattice :=
   FirstHurewicz.singularH1EquivOfPi1 (0 : RealTorus₄) fundamentalGroupEquiv
 
 @[simp]
@@ -9119,19 +9117,19 @@ theorem PeriodFamily.FlatTorus.singularH1Equiv_loopHomologyClass (p : Path (0 : 
   FirstHurewicz.singularH1EquivOfPi1_loopHomologyClass (0 : RealTorus₄) fundamentalGroupEquiv p
 
 @[simp]
-theorem PeriodFamily.FlatTorus.singularH1Equiv_periodLoop (c : Lattice) :
+theorem PeriodFamily.FlatTorus.singularH1Equiv_periodLoop (c : PeriodLattice) :
     singularH1Equiv (FirstHurewicz.loopHomologyClass (periodLoop c)) = c := by
   rw [singularH1Equiv_loopHomologyClass, fundamentalGroupEquiv_periodLoop]
   rfl
 
 @[simp]
-theorem PeriodFamily.FlatTorus.singularH1Equiv_symm_apply (c : Lattice) :
+theorem PeriodFamily.FlatTorus.singularH1Equiv_symm_apply (c : PeriodLattice) :
     singularH1Equiv.symm c = FirstHurewicz.loopHomologyClass (periodLoop c) := by
   apply singularH1Equiv.injective
   rw [LinearEquiv.apply_symm_apply, singularH1Equiv_periodLoop]
 
 theorem PeriodFamily.FlatTorus.periodLoop_map_triangle (g : SpecialPeriods.TriangleGroup)
-    (c : Lattice) :
+    (c : PeriodLattice) :
     (periodLoop c).map (SpecialPeriods.triangleTorusHomeomorph g).continuous =
       (periodLoop ((SpecialPeriods.triangleDualRepresentation g : LatticeMatrix) *ᵥ c)).cast
         (SpecialPeriods.triangleTorusHomeomorph_zero g)
@@ -9144,7 +9142,7 @@ theorem PeriodFamily.FlatTorus.periodLoop_map_triangle (g : SpecialPeriods.Trian
     SpecialPeriods.triangleRealEquiv_realCast]
 
 theorem PeriodFamily.FlatTorus.inducedHomology_periodLoop_triangle
-    (g : SpecialPeriods.TriangleGroup) (c : Lattice) :
+    (g : SpecialPeriods.TriangleGroup) (c : PeriodLattice) :
     FirstHurewicz.inducedHomology
         (SpecialPeriods.triangleTorusHomeomorph g : C(RealTorus₄, RealTorus₄))
         (FirstHurewicz.loopHomologyClass (periodLoop c)) =
@@ -9165,7 +9163,7 @@ theorem PeriodFamily.FlatTorus.singularH1Equiv_inducedHomology_triangle
 
 theorem PeriodFamily.Data.periodEquiv_realCast {V B : Type} [NormedAddCommGroup V]
     [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
-    [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) (b : B) (c : Lattice) :
+    [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) (b : B) (c : PeriodLattice) :
     D.periods.periodEquiv b (Elliptic.realCast c) = (D.periods.point b).periodVector c := by
   rw [D.periodEquiv_matrix, PeriodDomain.periodVector_apply]
   simp only [Elliptic.realCast, Complex.ofReal_intCast]
@@ -9634,11 +9632,11 @@ theorem Elliptic.LogGauge.logMeridianRoot_pow_norm (j : Elliptic.Kind) (s₀ : �
   rw [norm_pow, logMeridianRoot_norm]
 
 def Elliptic.LogGauge.negativeLogFlat {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (z : SpecialPeriods.Disc) (s : ℂ) : Elliptic.RealCoordinates :=
+    (v : PeriodLattice) (z : SpecialPeriods.Disc) (s : ℂ) : Elliptic.RealCoordinates :=
   (D.periods.periodEquiv z).symm (-s • periodVector D.periods v z)
 
 theorem Elliptic.LogGauge.negativeLogFlat_rotation {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (z : SpecialPeriods.Disc) (s : ℂ) :
     negativeLogFlat D v (Elliptic.familyRotation j z) (s - 1 / (j.order : ℂ)) =
       Elliptic.flatAffine j v (negativeLogFlat D v z s) := by
@@ -9651,21 +9649,21 @@ theorem Elliptic.LogGauge.negativeLogFlat_rotation {j : Elliptic.Kind}
   ring
 
 def Elliptic.LogGauge.logMeridianComplex {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : ComplexPlane₂ :=
+    (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : ComplexPlane₂ :=
   -logMeridianParameter j s₀ t • periodVector D.periods v (logMeridianRoot j s₀ hs₀ t)
 
 theorem Elliptic.LogGauge.logMeridianComplex_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Continuous (logMeridianComplex D v s₀ hs₀) :=
   (logMeridianParameter_continuous j s₀).neg.smul
     ((periodVector_holomorphic D.periods v).continuous.comp (logMeridianRoot_continuous j s₀ hs₀))
 
 def Elliptic.LogGauge.logMeridianFlat {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : Elliptic.RealCoordinates :=
+    (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : Elliptic.RealCoordinates :=
   negativeLogFlat D v (logMeridianRoot j s₀ hs₀ t) (logMeridianParameter j s₀ t)
 
 theorem Elliptic.LogGauge.logMeridianFlat_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Continuous (logMeridianFlat D v s₀ hs₀) := by
   change
     Continuous
@@ -9675,7 +9673,7 @@ theorem Elliptic.LogGauge.logMeridianFlat_continuous {j : Elliptic.Kind}
   exact (logMeridianRoot_continuous j s₀ hs₀).prodMk (logMeridianComplex_continuous D v s₀ hs₀)
 
 theorem Elliptic.LogGauge.logMeridianFlat_one {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) :
     logMeridianFlat D v s₀ hs₀ 1 = Elliptic.flatAffine j v (logMeridianFlat D v s₀ hs₀ 0) := by
   simp only [logMeridianFlat, logMeridianRoot_one, logMeridianParameter_one,
@@ -9683,7 +9681,7 @@ theorem Elliptic.LogGauge.logMeridianFlat_one {j : Elliptic.Kind}
   exact negativeLogFlat_rotation D v hv _ _
 
 def Elliptic.LogGauge.logMeridianFlatPath {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Path (logMeridianFlat D v s₀ hs₀ 0) (Elliptic.flatAffine j v (logMeridianFlat D v s₀ hs₀ 0))
     where
   toFun := logMeridianFlat D v s₀ hs₀
@@ -9692,24 +9690,24 @@ def Elliptic.LogGauge.logMeridianFlatPath {j : Elliptic.Kind} (D : Elliptic.Equi
   target' := logMeridianFlat_one D v hv s₀ hs₀
 
 def Elliptic.LogGauge.logMeridianFamily {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : D.TotalSpace :=
+    (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : D.TotalSpace :=
   (logMeridianRoot j s₀ hs₀ t, standardLattice.mkQ (logMeridianFlat D v s₀ hs₀ t))
 
 theorem Elliptic.LogGauge.logMeridianFamily_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Continuous (logMeridianFamily D v s₀ hs₀) :=
   (logMeridianRoot_continuous j s₀ hs₀).prodMk
     (standardLattice.continuous_mkQ.comp (logMeridianFlat_continuous D v s₀ hs₀))
 
 theorem Elliptic.LogGauge.logMeridianFamily_one {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) :
     logMeridianFamily D v s₀ hs₀ 1 = D.permutation v (logMeridianFamily D v s₀ hs₀ 0) := by
   simp only [logMeridianFamily, D.permutation_apply, logMeridianRoot_one,
     logMeridianFlat_one D v hv, Elliptic.flatTorusAffine_mkQ]
 
 theorem Elliptic.LogGauge.quotient_permutation {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : D.TotalSpace) : D.quotient v hv (D.permutation v x) = D.quotient v hv x := by
   let := D.action v hv.1
   have hg : Elliptic.CyclicAction.generator j.order • x = D.permutation v x :=
@@ -9718,7 +9716,7 @@ theorem Elliptic.LogGauge.quotient_permutation {j : Elliptic.Kind}
   exact D.quotient_smul v hv (Elliptic.CyclicAction.generator j.order) x
 
 def Elliptic.LogGauge.logMeridianLoop {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Path (D.quotient v hv (logMeridianFamily D v s₀ hs₀ 0))
       (D.quotient v hv (logMeridianFamily D v s₀ hs₀ 0))
     where
@@ -9738,24 +9736,24 @@ theorem Elliptic.LogGauge.logMeridianRootStar_continuous {j : Elliptic.Kind} (s�
   (logMeridianRoot_continuous j s₀ hs₀).subtype_mk _
 
 def Elliptic.LogGauge.logMeridianComplexPoint {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
     (t : (unitInterval)) : CoverStar :=
   ⟨(logMeridianRoot j s₀ hs₀ t, logMeridianComplex D v s₀ hs₀ t),
     logMeridianRoot_ne_zero j s₀ hs₀ t⟩
 
 def Elliptic.LogGauge.logMeridianFamilyStar {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : FamilyStar D.periods :=
+    (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (t : (unitInterval)) : FamilyStar D.periods :=
   ⟨logMeridianFamily D v s₀ hs₀ t, logMeridianRoot_ne_zero j s₀ hs₀ t⟩
 
 theorem Elliptic.LogGauge.logMeridianFamilyStar_eq_project {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
     (t : (unitInterval)) :
     logMeridianFamilyStar D v s₀ hs₀ t =
       project D.periods (logMeridianComplexPoint D v s₀ hs₀ t) :=
   rfl
 
 theorem Elliptic.LogGauge.gaugeMap_logMeridianFamilyStar {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (s₀ : ℂ) (hs₀ : 0 < s₀.im)
     (t : (unitInterval)) :
     gaugeMap D.periods v (logMeridianFamilyStar D v s₀ hs₀ t) =
       zeroSection D.periods (logMeridianRootStar (j := j) s₀ hs₀ t) := by
@@ -9776,7 +9774,7 @@ theorem Elliptic.LogGauge.gaugeMap_logMeridianFamilyStar {j : Elliptic.Kind}
   simp only [map_zero]
 
 def Elliptic.LogGauge.logMeridianFillingPoint {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) (t : (unitInterval)) : FillingStar D v hv :=
   fillingStarProject D v hv (logMeridianFamilyStar D v s₀ hs₀ t)
 
@@ -9786,7 +9784,7 @@ def Elliptic.LogGauge.tautologicalZeroPoint {j : Elliptic.Kind} (D : Elliptic.Eq
     (zeroSection D.periods (logMeridianRootStar (j := j) s₀ hs₀ t))
 
 theorem Elliptic.LogGauge.fillingToTautological_logMeridian {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) (t : (unitInterval)) :
     fillingToTautologicalBiholomorph D v hv (logMeridianFillingPoint D v hv s₀ hs₀ t) =
       tautologicalZeroPoint D s₀ hs₀ t := by
@@ -9794,19 +9792,19 @@ theorem Elliptic.LogGauge.fillingToTautological_logMeridian {j : Elliptic.Kind}
     gaugeMap_logMeridianFamilyStar]
   rfl
 
-theorem Elliptic.affineCoverProjection_deck (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineCoverProjection_deck (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) (g : AffineDeckGroup j v) :
     affineCoverProjection j p v hv (g • y) = affineCoverProjection j p v hv y :=
   (affineCoverProjection_orbit_iff j p v hv _ _).mpr ⟨g, rfl⟩
 
-def Elliptic.affineDeckPathLoop (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.affineDeckPathLoop (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) (g : AffineDeckGroup j v)
     (q : Path y (g • y)) :
     Path (affineCoverProjection j p v hv y) (affineCoverProjection j p v hv y) :=
   (q.map (affineCoverProjection_continuous j p v hv)).cast rfl
     (affineCoverProjection_deck j p v hv y g).symm
 
-theorem Elliptic.affineDeckPathLoop_monodromy (j : Kind) (p : FixedPeriod j) (v : Lattice)
+theorem Elliptic.affineDeckPathLoop_monodromy (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) (g : AffineDeckGroup j v)
     (q : Path y (g • y)) :
     (affineCoverProjection_isQuotientCoveringMap j p v hv).isCoveringMap.monodromy
@@ -9819,7 +9817,7 @@ theorem Elliptic.affineDeckPathLoop_monodromy (j : Kind) (p : FixedPeriod j) (v 
   rfl
 
 theorem Elliptic.surfaceFundamentalGroupDeckEquiv_affineDeckPathLoop (j : Kind)
-    (p : FixedPeriod j) (v : Lattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
+    (p : FixedPeriod j) (v : PeriodLattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
     (g : AffineDeckGroup j v) (q : Path y (g • y)) :
     surfaceFundamentalGroupDeckEquiv j p v hv y
         (FundamentalGroup.fromPath ⟦affineDeckPathLoop j p v hv y g q⟧) =
@@ -9831,50 +9829,50 @@ theorem Elliptic.surfaceFundamentalGroupDeckEquiv_affineDeckPathLoop (j : Kind)
     (surfaceFundamentalGroupDeckEquiv_monodromy j p v hv y _).trans
       (congrArg Subtype.val (affineDeckPathLoop_monodromy j p v hv y g q))
 
-def Elliptic.affineGeneratorPathLoop (j : Kind) (p : FixedPeriod j) (v : Lattice)
+def Elliptic.affineGeneratorPathLoop (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
     (hv : AdmissibleTwist j v) (y : RealCoordinates) (q : Path y (flatAffine j v y)) :
     Path (affineCoverProjection j p v hv y) (affineCoverProjection j p v hv y) :=
   affineDeckPathLoop j p v hv y (deckGenerator j v) q
 
 theorem Elliptic.surfaceFundamentalGroupDeckEquiv_affineGeneratorPathLoop (j : Kind)
-    (p : FixedPeriod j) (v : Lattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
+    (p : FixedPeriod j) (v : PeriodLattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
     (q : Path y (flatAffine j v y)) :
     surfaceFundamentalGroupDeckEquiv j p v hv y
         (FundamentalGroup.fromPath ⟦affineGeneratorPathLoop j p v hv y q⟧) =
       (deckGenerator j v)⁻¹ :=
   surfaceFundamentalGroupDeckEquiv_affineDeckPathLoop j p v hv y (deckGenerator j v) q
 
-def Elliptic.affineTranslationPath (y : RealCoordinates) (w : Lattice) :
+def Elliptic.affineTranslationPath (y : RealCoordinates) (w : PeriodLattice) :
     Path y (y + realCast w) :=
   Path.segment y (y + realCast w)
 
-theorem Elliptic.affineTranslationPath_apply (y : RealCoordinates) (w : Lattice)
+theorem Elliptic.affineTranslationPath_apply (y : RealCoordinates) (w : PeriodLattice)
     (t : unitInterval) : affineTranslationPath y w t = y + (t : ℝ) • realCast w := by
   change AffineMap.lineMap y (y + realCast w) (t : ℝ) = _
   rw [AffineMap.lineMap_apply_module]
   module
 
-theorem Elliptic.deckTranslationHom_smul (j : Kind) (v : Lattice) (y : RealCoordinates)
-    (w : Lattice) : deckTranslationHom j v (Multiplicative.ofAdd w) • y = y + realCast w :=
+theorem Elliptic.deckTranslationHom_smul (j : Kind) (v : PeriodLattice) (y : RealCoordinates)
+    (w : PeriodLattice) : deckTranslationHom j v (Multiplicative.ofAdd w) • y = y + realCast w :=
   add_comm _ _
 
-def Elliptic.affineTranslationLoop (j : Kind) (p : FixedPeriod j) (v : Lattice)
-    (hv : AdmissibleTwist j v) (y : RealCoordinates) (w : Lattice) :
+def Elliptic.affineTranslationLoop (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
+    (hv : AdmissibleTwist j v) (y : RealCoordinates) (w : PeriodLattice) :
     Path (affineCoverProjection j p v hv y) (affineCoverProjection j p v hv y) :=
   affineDeckPathLoop j p v hv y (deckTranslationHom j v (Multiplicative.ofAdd w))
     ((affineTranslationPath y w).cast rfl (deckTranslationHom_smul j v y w))
 
 @[simp]
-theorem Elliptic.affineTranslationLoop_apply (j : Kind) (p : FixedPeriod j) (v : Lattice)
-    (hv : AdmissibleTwist j v) (y : RealCoordinates) (w : Lattice) (t : unitInterval) :
+theorem Elliptic.affineTranslationLoop_apply (j : Kind) (p : FixedPeriod j) (v : PeriodLattice)
+    (hv : AdmissibleTwist j v) (y : RealCoordinates) (w : PeriodLattice) (t : unitInterval) :
     affineTranslationLoop j p v hv y w t =
       affineCoverProjection j p v hv (y + (t : ℝ) • realCast w) := by
   change affineCoverProjection j p v hv (affineTranslationPath y w t) = _
   rw [affineTranslationPath_apply]
 
 theorem Elliptic.surfaceFundamentalGroupDeckEquiv_affineTranslationLoop (j : Kind)
-    (p : FixedPeriod j) (v : Lattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
-    (w : Lattice) :
+    (p : FixedPeriod j) (v : PeriodLattice) (hv : AdmissibleTwist j v) (y : RealCoordinates)
+    (w : PeriodLattice) :
     surfaceFundamentalGroupDeckEquiv j p v hv y
         (FundamentalGroup.fromPath ⟦affineTranslationLoop j p v hv y w⟧) =
       deckTranslationHom j v (Multiplicative.ofAdd (-w)) := by
@@ -9886,7 +9884,7 @@ theorem Elliptic.surfaceFundamentalGroupDeckEquiv_affineTranslationLoop (j : Kin
   exact (map_inv (deckTranslationHom j v) (Multiplicative.ofAdd w)).symm
 
 theorem Elliptic.LogGauge.fillingSurfaceRetraction_quotient_flat {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) :
     D.fillingSurfaceRetraction v hv (D.quotient v hv (z, standardLattice.mkQ x)) =
       Elliptic.affineCoverProjection j D.centralPeriod v hv x := by
@@ -9916,7 +9914,7 @@ theorem Elliptic.LogGauge.fundamentalGroup_cast_loop {Y : Type*} [TopologicalSpa
   rfl
 
 def Elliptic.LogGauge.retractedFlatLoop {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (z : SpecialPeriods.Disc)
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (z : SpecialPeriods.Disc)
     (x : Elliptic.RealCoordinates)
     (γ :
       Path (D.quotient v hv (z, standardLattice.mkQ x))
@@ -9928,7 +9926,7 @@ def Elliptic.LogGauge.retractedFlatLoop {j : Elliptic.Kind} (D : Elliptic.Equiva
     (fillingSurfaceRetraction_quotient_flat D v hv z x).symm
 
 def Elliptic.LogGauge.logMeridianSurfaceLoop {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ) (hs₀ : 0 < s₀.im) :
     Path (Elliptic.affineCoverProjection j D.centralPeriod v hv (logMeridianFlat D v s₀ hs₀ 0))
       (Elliptic.affineCoverProjection j D.centralPeriod v hv (logMeridianFlat D v s₀ hs₀ 0)) :=
   retractedFlatLoop D v hv (logMeridianRoot j s₀ hs₀ 0) (logMeridianFlat D v s₀ hs₀ 0)
@@ -9936,7 +9934,7 @@ def Elliptic.LogGauge.logMeridianSurfaceLoop {j : Elliptic.Kind} (D : Elliptic.E
 
 @[simp]
 theorem Elliptic.LogGauge.logMeridianSurfaceLoop_apply {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) (t : (unitInterval)) :
     logMeridianSurfaceLoop D v hv s₀ hs₀ t =
       Elliptic.affineCoverProjection j D.centralPeriod v hv (logMeridianFlat D v s₀ hs₀ t) :=
@@ -9944,7 +9942,7 @@ theorem Elliptic.LogGauge.logMeridianSurfaceLoop_apply {j : Elliptic.Kind}
     (logMeridianFlat D v s₀ hs₀ t)
 
 theorem Elliptic.LogGauge.logMeridianSurfaceLoop_eq_affineGeneratorPathLoop {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) :
     logMeridianSurfaceLoop D v hv s₀ hs₀ =
       Elliptic.affineGeneratorPathLoop j D.centralPeriod v hv (logMeridianFlat D v s₀ hs₀ 0)
@@ -9953,7 +9951,7 @@ theorem Elliptic.LogGauge.logMeridianSurfaceLoop_eq_affineGeneratorPathLoop {j :
   exact logMeridianSurfaceLoop_apply D v hv s₀ hs₀ t
 
 theorem Elliptic.LogGauge.surfaceFundamentalGroupDeckEquiv_logMeridian {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (s₀ : ℂ)
     (hs₀ : 0 < s₀.im) :
     Elliptic.surfaceFundamentalGroupDeckEquiv j D.centralPeriod v hv
         (logMeridianFlat D v s₀ hs₀ 0)
@@ -9963,19 +9961,19 @@ theorem Elliptic.LogGauge.surfaceFundamentalGroupDeckEquiv_logMeridian {j : Elli
   exact
     Elliptic.surfaceFundamentalGroupDeckEquiv_affineGeneratorPathLoop j D.centralPeriod v hv _ _
 
-theorem Elliptic.LogGauge.standardLattice_mkQ_realCast (w : Lattice) :
+theorem Elliptic.LogGauge.standardLattice_mkQ_realCast (w : PeriodLattice) :
     standardLattice.mkQ (Elliptic.realCast w) = 0 :=
   (Submodule.Quotient.mk_eq_zero standardLattice).mpr
     ((Elliptic.standardLattice_mem_iff _).mpr ⟨w, rfl⟩)
 
 def Elliptic.LogGauge.fibreTranslationFamily {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : Lattice) (t : (unitInterval)) :
+    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : PeriodLattice) (t : (unitInterval)) :
     D.TotalSpace :=
   (z, standardLattice.mkQ (x + (t : ℝ) • Elliptic.realCast w))
 
 theorem Elliptic.LogGauge.fibreTranslationFamily_continuous {j : Elliptic.Kind}
     (D : Elliptic.Equivariant.Data j) (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates)
-    (w : Lattice) : Continuous (fibreTranslationFamily D z x w) :=
+    (w : PeriodLattice) : Continuous (fibreTranslationFamily D z x w) :=
   continuous_const.prodMk
     (standardLattice.continuous_mkQ.comp
       (continuous_const.add (continuous_subtype_val.smul continuous_const)))
@@ -9983,19 +9981,19 @@ theorem Elliptic.LogGauge.fibreTranslationFamily_continuous {j : Elliptic.Kind}
 @[simp]
 theorem Elliptic.LogGauge.fibreTranslationFamily_zero {j : Elliptic.Kind}
     (D : Elliptic.Equivariant.Data j) (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates)
-    (w : Lattice) : fibreTranslationFamily D z x w 0 = (z, standardLattice.mkQ x) := by
+    (w : PeriodLattice) : fibreTranslationFamily D z x w 0 = (z, standardLattice.mkQ x) := by
   simp [fibreTranslationFamily]
 
 @[simp]
 theorem Elliptic.LogGauge.fibreTranslationFamily_one {j : Elliptic.Kind}
     (D : Elliptic.Equivariant.Data j) (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates)
-    (w : Lattice) : fibreTranslationFamily D z x w 1 = (z, standardLattice.mkQ x) := by
+    (w : PeriodLattice) : fibreTranslationFamily D z x w 1 = (z, standardLattice.mkQ x) := by
   change (z, standardLattice.mkQ (x + (1 : ℝ) • Elliptic.realCast w)) = (z, standardLattice.mkQ x)
   rw [one_smul, map_add, standardLattice_mkQ_realCast, add_zero]
 
 theorem Elliptic.LogGauge.periodEquiv_fibreTranslation {j : Elliptic.Kind}
     (D : Elliptic.Equivariant.Data j) (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates)
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     D.periods.periodEquiv z (x + (t : ℝ) • Elliptic.realCast w) =
       D.periods.periodEquiv z x + (t : ℂ) • periodVector D.periods w z := by
   simp only [map_add, map_smul, periodVector, RCLike.real_smul_eq_coe_smul (K := ℂ)]
@@ -10003,7 +10001,7 @@ theorem Elliptic.LogGauge.periodEquiv_fibreTranslation {j : Elliptic.Kind}
 
 theorem Elliptic.LogGauge.fibreTranslationFamily_complex_formula {j : Elliptic.Kind}
     (D : Elliptic.Equivariant.Data j) (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates)
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     fibreTranslationFamily D z x w t =
       D.periods.quotientMap
         (z, D.periods.periodEquiv z x + (t : ℂ) • periodVector D.periods w z) := by
@@ -10017,8 +10015,8 @@ theorem Elliptic.LogGauge.fibreTranslationFamily_complex_formula {j : Elliptic.K
   rw [LinearEquiv.symm_apply_apply]
 
 def Elliptic.LogGauge.fibreTranslationLoop {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) (z : SpecialPeriods.Disc)
-    (x : Elliptic.RealCoordinates) (w : Lattice) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) (z : SpecialPeriods.Disc)
+    (x : Elliptic.RealCoordinates) (w : PeriodLattice) :
     Path (D.quotient v hv (z, standardLattice.mkQ x)) (D.quotient v hv (z, standardLattice.mkQ x))
     where
   toFun t := D.quotient v hv (fibreTranslationFamily D z x w t)
@@ -10028,15 +10026,15 @@ def Elliptic.LogGauge.fibreTranslationLoop {j : Elliptic.Kind} (D : Elliptic.Equ
   target' := congrArg (D.quotient v hv) (fibreTranslationFamily_one D z x w)
 
 def Elliptic.LogGauge.fibreTranslationSurfaceLoop {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
-    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : Lattice) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
+    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : PeriodLattice) :
     Path (Elliptic.affineCoverProjection j D.centralPeriod v hv x)
       (Elliptic.affineCoverProjection j D.centralPeriod v hv x) :=
   retractedFlatLoop D v hv z x (fibreTranslationLoop D v hv z x w)
 
 theorem Elliptic.LogGauge.fibreTranslationSurfaceLoop_eq {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
-    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : Lattice) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
+    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : PeriodLattice) :
     fibreTranslationSurfaceLoop D v hv z x w =
       Elliptic.affineTranslationLoop j D.centralPeriod v hv x w := by
   ext t
@@ -10047,8 +10045,8 @@ theorem Elliptic.LogGauge.fibreTranslationSurfaceLoop_eq {j : Elliptic.Kind}
   rw [fillingSurfaceRetraction_quotient_flat, Elliptic.affineTranslationLoop_apply]
 
 theorem Elliptic.LogGauge.fibreTranslationSurfaceLoop_deck {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
-    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : Lattice) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
+    (z : SpecialPeriods.Disc) (x : Elliptic.RealCoordinates) (w : PeriodLattice) :
     Elliptic.surfaceFundamentalGroupDeckEquiv j D.centralPeriod v hv x
         (FundamentalGroup.fromPath ⟦fibreTranslationSurfaceLoop D v hv z x w⟧) =
       Elliptic.deckTranslationHom j v (Multiplicative.ofAdd (-w)) := by
@@ -10056,13 +10054,13 @@ theorem Elliptic.LogGauge.fibreTranslationSurfaceLoop_deck {j : Elliptic.Kind}
   exact Elliptic.surfaceFundamentalGroupDeckEquiv_affineTranslationLoop j D.centralPeriod v hv x w
 
 def Elliptic.LogGauge.fibreTranslationFamilyStar {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (z : BaseStar) (x : Elliptic.RealCoordinates) (w : Lattice)
+    (D : Elliptic.Equivariant.Data j) (z : BaseStar) (x : Elliptic.RealCoordinates) (w : PeriodLattice)
     (t : (unitInterval)) : FamilyStar D.periods :=
   ⟨fibreTranslationFamily D z.1 x w t, z.2⟩
 
 theorem Elliptic.LogGauge.gaugeMap_fibreTranslationFamilyStar_formula {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (z : BaseStar) (x : Elliptic.RealCoordinates)
-    (w : Lattice) (s : ℂ) (hs : CuspUniformization.exponential s = (z.1 : ℂ))
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (z : BaseStar) (x : Elliptic.RealCoordinates)
+    (w : PeriodLattice) (s : ℂ) (hs : CuspUniformization.exponential s = (z.1 : ℂ))
     (t : (unitInterval)) :
     (gaugeMap D.periods v (fibreTranslationFamilyStar D z x w t) : D.TotalSpace) =
       D.periods.quotientMap
@@ -10077,7 +10075,7 @@ theorem Elliptic.LogGauge.gaugeMap_fibreTranslationFamilyStar_formula {j : Ellip
   exact gaugeMap_project_of_exponential D.periods v a s hs
 
 theorem Elliptic.LogGauge.gaugeMap_fibreTranslationFamilyStar_negativeLog {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (z : BaseStar) (w : Lattice) (s : ℂ)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (z : BaseStar) (w : PeriodLattice) (s : ℂ)
     (hs : CuspUniformization.exponential s = (z.1 : ℂ)) (t : (unitInterval)) :
     gaugeMap D.periods v
         (fibreTranslationFamilyStar D z
@@ -10093,14 +10091,14 @@ theorem Elliptic.LogGauge.gaugeMap_fibreTranslationFamilyStar_negativeLog {j : E
   abel
 
 def Elliptic.LogGauge.fibreTranslationFillingPoint {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
-    (z : BaseStar) (x : Elliptic.RealCoordinates) (w : Lattice) (t : (unitInterval)) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
+    (z : BaseStar) (x : Elliptic.RealCoordinates) (w : PeriodLattice) (t : (unitInterval)) :
     FillingStar D v hv :=
   fillingStarProject D v hv (fibreTranslationFamilyStar D z x w t)
 
 theorem Elliptic.LogGauge.fillingToTautological_fibreTranslation {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
-    (z : BaseStar) (w : Lattice) (s : ℂ) (hs : CuspUniformization.exponential s = (z.1 : ℂ))
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
+    (z : BaseStar) (w : PeriodLattice) (s : ℂ) (hs : CuspUniformization.exponential s = (z.1 : ℂ))
     (t : (unitInterval)) :
     fillingToTautologicalBiholomorph D v hv
         (fibreTranslationFillingPoint D v hv z
@@ -10429,13 +10427,13 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingDeckEquiv_attachingLo
       (Elliptic.mainTwist_admissible j) s₀ hs₀
 
 abbrev SpecialPeriods.Threefold.EllipticGeometry.attachingFibreFullLoop (j : Elliptic.Kind)
-    (s₀ : ℂ) (hs₀ : 0 < s₀.im) (w : Lattice) :=
+    (s₀ : ℂ) (hs₀ : 0 < s₀.im) (w : PeriodLattice) :=
   Elliptic.LogGauge.fibreTranslationLoop (SpecialPeriods.EllipticFilling.specialLocalData j)
     j.twist (Elliptic.mainTwist_admissible j) (Elliptic.LogGauge.logMeridianRoot j s₀ hs₀ 0)
     (attachingFlatBase j s₀ hs₀) w
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.attachingFibreFullLoop_projection
-    (j : Elliptic.Kind) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (w : Lattice) (t : (unitInterval)) :
+    (j : Elliptic.Kind) (s₀ : ℂ) (hs₀ : 0 < s₀.im) (w : PeriodLattice) (t : (unitInterval)) :
     (SpecialPeriods.EllipticFilling.specialFullFillingProjection j
           (attachingFibreFullLoop j s₀ hs₀ w t) :
         ℂ) =
@@ -10448,7 +10446,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingFibreFullLoop_mem_pie
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     attachingFibreFullLoop j s₀ hs₀ w t ∈
       SpecialPeriods.EllipticFilling.pieceDomain SpecialPeriods.specialPeriodMap
         SpecialPeriods.specialPeriodMap_generator₁ SpecialPeriods.specialPeriodMap_generator₂
@@ -10466,7 +10464,7 @@ def SpecialPeriods.Threefold.EllipticGeometry.attachingFibreLoop (j : Elliptic.K
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) : Path (attachingBasepoint j s₀ hs₀ hr) (attachingBasepoint j s₀ hs₀ hr)
+    (w : PeriodLattice) : Path (attachingBasepoint j s₀ hs₀ hr) (attachingBasepoint j s₀ hs₀ hr)
     where
   toFun
     t := ⟨attachingFibreFullLoop j s₀ hs₀ w t, attachingFibreFullLoop_mem_piece j s₀ hs₀ hr w t⟩
@@ -10480,7 +10478,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.parameter_attachingFibreLoop (
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     parameter j (attachingFibreLoop j s₀ hs₀ hr w t) =
       CuspUniformization.exponential s₀ ^ j.order :=
   attachingFibreFullLoop_projection j s₀ hs₀ w t
@@ -10490,7 +10488,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.parameter_attachingFibreLoop_n
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) : parameter j (attachingFibreLoop j s₀ hs₀ hr w t) ≠ 0 := by
+    (w : PeriodLattice) (t : (unitInterval)) : parameter j (attachingFibreLoop j s₀ hs₀ hr w t) ≠ 0 := by
   rw [parameter_attachingFibreLoop]
   exact pow_ne_zero j.order (CuspUniformization.exponential_ne_zero s₀)
 
@@ -10499,7 +10497,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.projectionToBase_attachingFibr
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     SpecialPeriods.Threefold.specialEllipticPieceProjectionToBase j
         (attachingFibreLoop j s₀ hs₀ hr w t) ∈
       SpecialPeriods.Threefold.regularPatch :=
@@ -10514,7 +10512,7 @@ def SpecialPeriods.Threefold.EllipticGeometry.attachingFibreRetractionLoop (j : 
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     Path
       (Elliptic.affineCoverProjection j
         (SpecialPeriods.EllipticFilling.specialLocalData j).centralPeriod j.twist
@@ -10531,7 +10529,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingFibreRetractionLoop_e
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     attachingFibreRetractionLoop j s₀ hs₀ hr w =
       Elliptic.LogGauge.fibreTranslationSurfaceLoop
         (SpecialPeriods.EllipticFilling.specialLocalData j) j.twist
@@ -10545,7 +10543,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingDeckEquiv_attachingFi
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     attachingDeckEquiv j s₀ hs₀ hr
         (FundamentalGroup.fromPath ⟦attachingFibreLoop j s₀ hs₀ hr w⟧) =
       Elliptic.deckTranslationHom j j.twist (Multiplicative.ofAdd (-w)) := by
@@ -10694,7 +10692,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.smallOverlap_attachingFibreLoo
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     SpecialPeriods.EllipticFilling.smallOverlap SpecialPeriods.specialPeriodMap
         SpecialPeriods.specialPeriodMap_generator₁ SpecialPeriods.specialPeriodMap_generator₂
         SpecialPeriods.Threefold.specialBaseCover j (attachingFibreLoop j s₀ hs₀ hr w t) =
@@ -10776,7 +10774,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.specialEllipticOverlap_attachi
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     SpecialPeriods.Threefold.specialEllipticOverlap j (attachingFibreLoop j s₀ hs₀ hr w t) =
       (PeriodFamily.regularData SpecialPeriods.specialPeriodMap
             SpecialPeriods.specialPeriodMap_generator₁
@@ -12062,7 +12060,7 @@ attribute [local instance] SpecialPeriods.triangleTorusAction
 def PeriodFamily.Data.latticeFundamentalGroupHom {V B : Type*} [NormedAddCommGroup V]
     [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) (b : B) :
-    Multiplicative Lattice →* FundamentalGroup D.Space (D.fundamentalGroupBasepoint b) :=
+    Multiplicative PeriodLattice →* FundamentalGroup D.Space (D.fundamentalGroupBasepoint b) :=
   (D.flatFibreFundamentalGroupHom b).comp
     PeriodFamily.FlatTorus.fundamentalGroupEquiv.symm.toMonoidHom
 
@@ -12098,7 +12096,7 @@ attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in
 theorem PeriodFamily.Data.latticeFundamentalGroupHom_periodLoop {V B : Type*}
     [NormedAddCommGroup V] [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
-    [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) (b : B) (v : Lattice) :
+    [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) (b : B) (v : PeriodLattice) :
     D.latticeFundamentalGroupHom b (Multiplicative.ofAdd v) =
       D.flatFibreFundamentalGroupHom b
         (Path.Homotopic.Quotient.mk (PeriodFamily.FlatTorus.periodLoop v)) := by
@@ -12109,7 +12107,7 @@ theorem PeriodFamily.Data.latticeFundamentalGroupHom_periodLoop {V B : Type*}
   rw [PeriodFamily.FlatTorus.fundamentalGroupEquiv_symm_apply]
   rfl
 
-def SpecialPeriods.triangleLatticeMulAutHom : TriangleGroup →* MulAut (Multiplicative Lattice)
+def SpecialPeriods.triangleLatticeMulAutHom : TriangleGroup →* MulAut (Multiplicative PeriodLattice)
     where
   toFun
     g :=
@@ -12135,7 +12133,7 @@ def SpecialPeriods.triangleLatticeMulAutHom : TriangleGroup →* MulAut (Multipl
 
 @[simp]
 theorem SpecialPeriods.triangleLatticeMulAutHom_toAdd (g : TriangleGroup)
-    (n : Multiplicative Lattice) :
+    (n : Multiplicative PeriodLattice) :
     (triangleLatticeMulAutHom g n).toAdd =
       (triangleDualRepresentation g : LatticeMatrix) *ᵥ n.toAdd :=
   rfl
@@ -12152,7 +12150,7 @@ theorem PeriodFamily.FlatTorus.instContinuousConstSMul1 :
 attribute [local instance] PeriodFamily.FlatTorus.instMulAction1
     PeriodFamily.FlatTorus.instContinuousConstSMul1 in
 theorem PeriodFamily.FlatTorus.fibreActionFundamentalGroupHom_periodLoop
-    (g : SpecialPeriods.TriangleGroup) (c : Lattice) :
+    (g : SpecialPeriods.TriangleGroup) (c : PeriodLattice) :
     DiagonalQuotient.fibreActionFundamentalGroupHom (0 : RealTorus₄)
         SpecialPeriods.triangleTorusAction_zero g (FirstHurewicz.loopQuotient (periodLoop c)) =
       FirstHurewicz.loopQuotient
@@ -12235,7 +12233,7 @@ def PeriodFamily.Data.fundamentalGroupAction {V B : Type*} [NormedAddCommGroup V
     [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B) :
-    FundamentalGroup D.BaseSpace (D.baseQuotient b) →* MulAut (Multiplicative Lattice) :=
+    FundamentalGroup D.BaseSpace (D.baseQuotient b) →* MulAut (Multiplicative PeriodLattice) :=
   SpecialPeriods.triangleLatticeMulAutHom.comp (D.deckTransportHom hq b)
 
 attribute [local instance] SpecialPeriods.triangleTorusAction
@@ -12244,7 +12242,7 @@ theorem PeriodFamily.Data.latticeFundamentalGroupHom_conjugation {V B : Type*}
     [NormedAddCommGroup V] [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
-    (β : FundamentalGroup D.BaseSpace (D.baseQuotient b)) (v : Multiplicative Lattice) :
+    (β : FundamentalGroup D.BaseSpace (D.baseQuotient b)) (v : Multiplicative PeriodLattice) :
     D.latticeFundamentalGroupHom b (D.fundamentalGroupAction hq b β v) =
       D.sectionFundamentalGroupHom b β * D.latticeFundamentalGroupHom b v *
         (D.sectionFundamentalGroupHom b β)⁻¹ := by
@@ -12274,7 +12272,7 @@ def PeriodFamily.Data.semidirectFundamentalGroupEquiv {V B : Type*} [NormedAddCo
     [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B) :
-    (Multiplicative Lattice) ⋊[D.fundamentalGroupAction hq b]
+    (Multiplicative PeriodLattice) ⋊[D.fundamentalGroupAction hq b]
         (FundamentalGroup D.BaseSpace (D.baseQuotient b)) ≃*
       FundamentalGroup D.Space (D.fundamentalGroupBasepoint b) :=
   SplitGroupExtension.mulEquiv (D.latticeFundamentalGroupHom b)
@@ -12291,7 +12289,7 @@ def PeriodFamily.Data.fundamentalGroupSemidirectEquiv {V B : Type*} [NormedAddCo
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B) :
     FundamentalGroup D.Space (D.fundamentalGroupBasepoint b) ≃*
-      (Multiplicative Lattice) ⋊[D.fundamentalGroupAction hq b]
+      (Multiplicative PeriodLattice) ⋊[D.fundamentalGroupAction hq b]
         (FundamentalGroup D.BaseSpace (D.baseQuotient b)) :=
   (D.semidirectFundamentalGroupEquiv hq b).symm
 
@@ -12318,7 +12316,7 @@ theorem PeriodFamily.Data.fundamentalGroupSemidirectEquiv_lattice {V B : Type*}
     [NormedAddCommGroup V] [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     D.fundamentalGroupSemidirectEquiv hq b (D.latticeFundamentalGroupHom b v) =
       SemidirectProduct.inl v :=
   SplitGroupExtension.mulEquiv_symm_inclusion _ _ _ _ _ _ _ _ v
@@ -12340,7 +12338,7 @@ def PeriodFamily.Data.freeFundamentalGroupAction {V B : Type*} [NormedAddCommGro
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
     (e : FundamentalGroup D.BaseSpace (D.baseQuotient b) ≃* FreeGroup Bool) :
-    FreeGroup Bool →* MulAut (Multiplicative Lattice) :=
+    FreeGroup Bool →* MulAut (Multiplicative PeriodLattice) :=
   (D.fundamentalGroupAction hq b).comp e.symm.toMonoidHom
 
 def PeriodFamily.Data.semidirectFreeReparametrization {V B : Type*} [NormedAddCommGroup V]
@@ -12348,10 +12346,10 @@ def PeriodFamily.Data.semidirectFreeReparametrization {V B : Type*} [NormedAddCo
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
     (e : FundamentalGroup D.BaseSpace (D.baseQuotient b) ≃* FreeGroup Bool) :
-    (Multiplicative Lattice) ⋊[D.fundamentalGroupAction hq b]
+    (Multiplicative PeriodLattice) ⋊[D.fundamentalGroupAction hq b]
         (FundamentalGroup D.BaseSpace (D.baseQuotient b)) ≃*
-      (Multiplicative Lattice) ⋊[D.freeFundamentalGroupAction hq b e] (FreeGroup Bool) := by
-  refine SemidirectProduct.congr (MulEquiv.refl (Multiplicative Lattice)) e ?_
+      (Multiplicative PeriodLattice) ⋊[D.freeFundamentalGroupAction hq b e] (FreeGroup Bool) := by
+  refine SemidirectProduct.congr (MulEquiv.refl (Multiplicative PeriodLattice)) e ?_
   intro β
   apply MulEquiv.ext
   intro v
@@ -12364,7 +12362,7 @@ theorem PeriodFamily.Data.semidirectFreeReparametrization_inl {V B : Type*} [Nor
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
     (e : FundamentalGroup D.BaseSpace (D.baseQuotient b) ≃* FreeGroup Bool)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     D.semidirectFreeReparametrization hq b e (SemidirectProduct.inl v) =
       SemidirectProduct.inl v := by
   apply SemidirectProduct.ext
@@ -12388,7 +12386,7 @@ def PeriodFamily.Data.fundamentalGroupFreeSemidirectEquiv {V B : Type*} [NormedA
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
     (e : FundamentalGroup D.BaseSpace (D.baseQuotient b) ≃* FreeGroup Bool) :
     FundamentalGroup D.Space (D.fundamentalGroupBasepoint b) ≃*
-      (Multiplicative Lattice) ⋊[D.freeFundamentalGroupAction hq b e] (FreeGroup Bool) :=
+      (Multiplicative PeriodLattice) ⋊[D.freeFundamentalGroupAction hq b e] (FreeGroup Bool) :=
   (D.fundamentalGroupSemidirectEquiv hq b).trans (D.semidirectFreeReparametrization hq b e)
 
 @[simp]
@@ -12397,7 +12395,7 @@ theorem PeriodFamily.Data.fundamentalGroupFreeSemidirectEquiv_lattice {V B : Typ
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B)
     (hq : IsQuotientCoveringMap D.baseQuotient SpecialPeriods.TriangleGroup) (b : B)
     (e : FundamentalGroup D.BaseSpace (D.baseQuotient b) ≃* FreeGroup Bool)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     D.fundamentalGroupFreeSemidirectEquiv hq b e (D.latticeFundamentalGroupHom b v) =
       SemidirectProduct.inl v := by
   change
@@ -12518,7 +12516,7 @@ theorem PeriodFamily.Meridians.sourceFreeTriangleHom_of (b : Bool) :
   FreeGroup.lift_apply_of
 
 def PeriodFamily.Meridians.sourceFreeLatticeAction :
-    FreeGroup Bool →* MulAut (Multiplicative Lattice) :=
+    FreeGroup Bool →* MulAut (Multiplicative PeriodLattice) :=
   SpecialPeriods.triangleLatticeMulAutHom.comp sourceFreeTriangleHom
 
 @[simp]
@@ -12529,7 +12527,7 @@ theorem PeriodFamily.Meridians.sourceFreeLatticeAction_of (b : Bool) :
   rw [sourceFreeTriangleHom_of]
 
 @[simp]
-theorem PeriodFamily.Meridians.sourceFreeLatticeAction_first (v : Multiplicative Lattice) :
+theorem PeriodFamily.Meridians.sourceFreeLatticeAction_first (v : Multiplicative PeriodLattice) :
     (sourceFreeLatticeAction (FreeGroup.of Bool.false) v).toAdd = A₁ *ᵥ v.toAdd := by
   rw [sourceFreeLatticeAction_of, SpecialPeriods.triangleLatticeMulAutHom_toAdd]
   exact
@@ -12537,7 +12535,7 @@ theorem PeriodFamily.Meridians.sourceFreeLatticeAction_first (v : Multiplicative
       SpecialPeriods.triangleDualRepresentation_generator₁_matrix
 
 @[simp]
-theorem PeriodFamily.Meridians.sourceFreeLatticeAction_second (v : Multiplicative Lattice) :
+theorem PeriodFamily.Meridians.sourceFreeLatticeAction_second (v : Multiplicative PeriodLattice) :
     (sourceFreeLatticeAction (FreeGroup.of Bool.true) v).toAdd = A₂ *ᵥ v.toAdd := by
   rw [sourceFreeLatticeAction_of, SpecialPeriods.triangleLatticeMulAutHom_toAdd]
   exact
@@ -12559,7 +12557,7 @@ theorem PeriodFamily.compatibleMeridian_deckTransport (P : HolomorphicPeriodMap 
 def PeriodFamily.markedRegularFundamentalGroupAction (P : HolomorphicPeriodMap ℂ ℍ)
     (h₁ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorOneSL • z) = (P.point z).step₁)
     (h₂ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorTwoSL • z) = (P.point z).step₂) :
-    FreeGroup Bool →* MulAut (Multiplicative Lattice) :=
+    FreeGroup Bool →* MulAut (Multiplicative PeriodLattice) :=
   ((regularData P h₁ h₂)).freeFundamentalGroupAction (regularCovering P h₁ h₂)
     (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint)
     Meridians.compatibleRegularFundamentalGroupEquiv
@@ -12590,8 +12588,8 @@ theorem PeriodFamily.markedRegularFundamentalGroupAction_eq (P : HolomorphicPeri
 def PeriodFamily.markedSemidirectReparametrization (P : HolomorphicPeriodMap ℂ ℍ)
     (h₁ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorOneSL • z) = (P.point z).step₁)
     (h₂ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorTwoSL • z) = (P.point z).step₂) :
-    (Multiplicative Lattice) ⋊[markedRegularFundamentalGroupAction P h₁ h₂] (FreeGroup Bool) ≃*
-      (Multiplicative Lattice) ⋊[Meridians.sourceFreeLatticeAction] (FreeGroup Bool) := by
+    (Multiplicative PeriodLattice) ⋊[markedRegularFundamentalGroupAction P h₁ h₂] (FreeGroup Bool) ≃*
+      (Multiplicative PeriodLattice) ⋊[Meridians.sourceFreeLatticeAction] (FreeGroup Bool) := by
   refine SemidirectProduct.congr (MulEquiv.refl _) (MulEquiv.refl _) ?_
   intro w
   apply MulEquiv.ext
@@ -12603,7 +12601,7 @@ def PeriodFamily.markedSemidirectReparametrization (P : HolomorphicPeriodMap ℂ
 theorem PeriodFamily.markedSemidirectReparametrization_inl (P : HolomorphicPeriodMap ℂ ℍ)
     (h₁ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorOneSL • z) = (P.point z).step₁)
     (h₂ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorTwoSL • z) = (P.point z).step₂)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     markedSemidirectReparametrization P h₁ h₂ (SemidirectProduct.inl v) =
       SemidirectProduct.inl v :=
   rfl
@@ -12623,7 +12621,7 @@ def PeriodFamily.markedRegularFundamentalGroupEquiv (P : HolomorphicPeriodMap �
     FundamentalGroup ((regularData P h₁ h₂)).Space
         (((regularData P h₁ h₂)).fundamentalGroupBasepoint
           (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint)) ≃*
-      (Multiplicative Lattice) ⋊[Meridians.sourceFreeLatticeAction] (FreeGroup Bool) :=
+      (Multiplicative PeriodLattice) ⋊[Meridians.sourceFreeLatticeAction] (FreeGroup Bool) :=
   (((regularData P h₁ h₂)).fundamentalGroupFreeSemidirectEquiv (regularCovering P h₁ h₂)
         (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint)
         Meridians.compatibleRegularFundamentalGroupEquiv).trans
@@ -12633,7 +12631,7 @@ def PeriodFamily.markedRegularFundamentalGroupEquiv (P : HolomorphicPeriodMap �
 theorem PeriodFamily.markedRegularFundamentalGroupEquiv_lattice (P : HolomorphicPeriodMap ℂ ℍ)
     (h₁ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorOneSL • z) = (P.point z).step₁)
     (h₂ : ∀ z : ℍ, P.point (SpecialPeriods.Triangle.generatorTwoSL • z) = (P.point z).step₂)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     markedRegularFundamentalGroupEquiv P h₁ h₂
         (((regularData P h₁ h₂)).latticeFundamentalGroupHom
           (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint) v) =
@@ -12693,7 +12691,7 @@ def SpecialPeriods.Threefold.specialRegularFamilyMarkedPoint : SpecialRegularFam
     (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint)
 
 def SpecialPeriods.Threefold.specialRegularFamilyMarkedLatticeHom :
-    Multiplicative Lattice →*
+    Multiplicative PeriodLattice →*
       FundamentalGroup SpecialRegularFamily specialRegularFamilyMarkedPoint :=
   ((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
         SpecialPeriods.specialPeriodMap_generator₁
@@ -12731,14 +12729,14 @@ theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridianClass_eq_sect
 
 def SpecialPeriods.Threefold.specialRegularFamilyMarkedFundamentalGroupEquiv :
     FundamentalGroup SpecialRegularFamily specialRegularFamilyMarkedPoint ≃*
-      (Multiplicative Lattice) ⋊[PeriodFamily.Meridians.sourceFreeLatticeAction]
+      (Multiplicative PeriodLattice) ⋊[PeriodFamily.Meridians.sourceFreeLatticeAction]
         (FreeGroup Bool) :=
   PeriodFamily.markedRegularFundamentalGroupEquiv SpecialPeriods.specialPeriodMap
     SpecialPeriods.specialPeriodMap_generator₁ SpecialPeriods.specialPeriodMap_generator₂
 
 @[simp]
 theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedFundamentalGroupEquiv_lattice
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     specialRegularFamilyMarkedFundamentalGroupEquiv (specialRegularFamilyMarkedLatticeHom v) =
       SemidirectProduct.inl v :=
   PeriodFamily.markedRegularFundamentalGroupEquiv_lattice SpecialPeriods.specialPeriodMap
@@ -12753,7 +12751,7 @@ theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedFundamentalGroupEquiv
     SpecialPeriods.specialPeriodMap_generator₁ SpecialPeriods.specialPeriodMap_generator₂ b
 
 theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_conjugation (b : Bool)
-    (v : Multiplicative Lattice) :
+    (v : Multiplicative PeriodLattice) :
     specialRegularFamilyMarkedMeridianClass b * specialRegularFamilyMarkedLatticeHom v *
         (specialRegularFamilyMarkedMeridianClass b)⁻¹ =
       specialRegularFamilyMarkedLatticeHom
@@ -12767,7 +12765,7 @@ theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_conjugation 
         (FreeGroup.of b) v).symm
 
 theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_first_conjugation
-    (v : Lattice) :
+    (v : PeriodLattice) :
     specialRegularFamilyMarkedMeridianClass Bool.false *
           specialRegularFamilyMarkedLatticeHom (Multiplicative.ofAdd v) *
         (specialRegularFamilyMarkedMeridianClass Bool.false)⁻¹ =
@@ -12779,7 +12777,7 @@ theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_first_conjug
         (PeriodFamily.Meridians.sourceFreeLatticeAction_first (Multiplicative.ofAdd v)))
 
 theorem SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_second_conjugation
-    (v : Lattice) :
+    (v : PeriodLattice) :
     specialRegularFamilyMarkedMeridianClass Bool.true *
           specialRegularFamilyMarkedLatticeHom (Multiplicative.ofAdd v) *
         (specialRegularFamilyMarkedMeridianClass Bool.true)⁻¹ =
@@ -12831,7 +12829,7 @@ theorem PeriodFamily.markedRegularFundamentalGroup_subgroup_eq_top (P : Holomorp
           (((regularData P h₁ h₂)).fundamentalGroupBasepoint
             (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint))))
     (hL :
-      ∀ v : Multiplicative Lattice,
+      ∀ v : Multiplicative PeriodLattice,
         ((regularData P h₁ h₂)).latticeFundamentalGroupHom
             (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint) v ∈
           S)
@@ -12885,7 +12883,7 @@ theorem PeriodFamily.markedRegularFundamentalGroupHom_ext (P : HolomorphicPeriod
             (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint)) →*
         A)
     (hL :
-      ∀ v : Multiplicative Lattice,
+      ∀ v : Multiplicative PeriodLattice,
         f
             (((regularData P h₁ h₂)).latticeFundamentalGroupHom
               (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint) v) =
@@ -12926,20 +12924,20 @@ theorem SpecialPeriods.Threefold.PiOne.regularHom_surjective : Function.Surjecti
   SpecialPeriods.Threefold.regularFamilyInclusionMap_fundamentalGroup_surjective
     SpecialPeriods.Threefold.specialRegularFamilyMarkedPoint
 
-def SpecialPeriods.Threefold.PiOne.latticeHom : Multiplicative Lattice →* GlobalGroup :=
+def SpecialPeriods.Threefold.PiOne.latticeHom : Multiplicative PeriodLattice →* GlobalGroup :=
   regularHom.comp SpecialPeriods.Threefold.specialRegularFamilyMarkedLatticeHom
 
 def SpecialPeriods.Threefold.PiOne.meridian (b : Bool) : GlobalGroup :=
   regularHom (SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridianClass b)
 
-theorem SpecialPeriods.Threefold.PiOne.meridian_first_conjugation (v : Lattice) :
+theorem SpecialPeriods.Threefold.PiOne.meridian_first_conjugation (v : PeriodLattice) :
     meridian Bool.false * latticeHom (Multiplicative.ofAdd v) * (meridian Bool.false)⁻¹ =
       latticeHom (Multiplicative.ofAdd (A₁ *ᵥ v)) := by
   simpa only [map_mul, map_inv, meridian, latticeHom, MonoidHom.comp_apply] using
     congrArg regularHom
       (SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_first_conjugation v)
 
-theorem SpecialPeriods.Threefold.PiOne.meridian_second_conjugation (v : Lattice) :
+theorem SpecialPeriods.Threefold.PiOne.meridian_second_conjugation (v : PeriodLattice) :
     meridian Bool.true * latticeHom (Multiplicative.ofAdd v) * (meridian Bool.true)⁻¹ =
       latticeHom (Multiplicative.ofAdd (A₂ *ᵥ v)) := by
   simpa only [map_mul, map_inv, meridian, latticeHom, MonoidHom.comp_apply] using
@@ -12947,7 +12945,7 @@ theorem SpecialPeriods.Threefold.PiOne.meridian_second_conjugation (v : Lattice)
       (SpecialPeriods.Threefold.specialRegularFamilyMarkedMeridian_second_conjugation v)
 
 theorem SpecialPeriods.Threefold.PiOne.hom_ext {H : Type*} [Monoid H] (f g : GlobalGroup →* H)
-    (hL : ∀ v : Multiplicative Lattice, f (latticeHom v) = g (latticeHom v))
+    (hL : ∀ v : Multiplicative PeriodLattice, f (latticeHom v) = g (latticeHom v))
     (hM : ∀ b : Bool, f (meridian b) = g (meridian b)) : f = g := by
   have h :=
     PeriodFamily.markedRegularFundamentalGroupHom_ext SpecialPeriods.specialPeriodMap
@@ -12958,7 +12956,7 @@ theorem SpecialPeriods.Threefold.PiOne.hom_ext {H : Type*} [Monoid H] (f g : Glo
   exact DFunLike.congr_fun h δ
 
 theorem SpecialPeriods.Threefold.PiOne.hom_eq_one {H : Type*} [Monoid H] (f : GlobalGroup →* H)
-    (hL : ∀ v : Multiplicative Lattice, f (latticeHom v) = 1)
+    (hL : ∀ v : Multiplicative PeriodLattice, f (latticeHom v) = 1)
     (hM : ∀ b : Bool, f (meridian b) = 1) : f = 1 :=
   hom_ext f 1 hL hM
 
@@ -12995,7 +12993,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingFibreLoop_mem_overlap
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) (t : (unitInterval)) :
+    (w : PeriodLattice) (t : (unitInterval)) :
     attachingFibreLoop j s₀ hs₀ hr w t ∈
       (SpecialPeriods.Threefold.specialEllipticOverlap j).source := by
   rw [SpecialPeriods.Threefold.specialEllipticOverlap_source]
@@ -13147,7 +13145,7 @@ def SpecialPeriods.Threefold.EllipticGeometry.includedAttachingFibreLoop (j : El
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     Path
       (SpecialPeriods.Threefold.regularFamilyInclusionMap
         (((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
@@ -14418,7 +14416,7 @@ theorem PeriodFamily.Boundary.ellipticTriangle_mkQ (j : Elliptic.Kind)
 attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in
 theorem PeriodFamily.Boundary.flatTorusAffine_eq_translation_triangle (j : Elliptic.Kind)
-    (v : Lattice) :
+    (v : PeriodLattice) :
     (Elliptic.flatTorusAffine j v : C(RealTorus₄, RealTorus₄)) =
       (PeriodTorusHigherHomology.rightTranslation
             (standardLattice.mkQ ((1 / (j.order : ℝ)) • Elliptic.realCast v))).comp
@@ -14440,7 +14438,7 @@ theorem PeriodFamily.Boundary.flatTorusAffine_eq_translation_triangle (j : Ellip
 
 attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in
-theorem PeriodFamily.Boundary.flatTorusAffine_homology_triangle (j : Elliptic.Kind) (v : Lattice)
+theorem PeriodFamily.Boundary.flatTorusAffine_homology_triangle (j : Elliptic.Kind) (v : PeriodLattice)
     (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap
         (Elliptic.flatTorusAffine j v : C(RealTorus₄, RealTorus₄)) n =
@@ -14466,7 +14464,7 @@ theorem PeriodFamily.Boundary.nativeTailFrame_inv_homology_fixed (j : Elliptic.K
 attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in
 theorem PeriodFamily.Boundary.ellipticWangBoundary_generator_fixed (j : Elliptic.Kind)
-    (v : Lattice) (n : ℕ)
+    (v : PeriodLattice) (n : ℕ)
     (a :
       SingularMayerVietoris.SingularHomology (MappingTorus.Torus (Elliptic.flatTorusAffine j v))
         (n + 1)) :
@@ -14490,7 +14488,7 @@ theorem PeriodFamily.Boundary.ellipticWangBoundary_generator_fixed (j : Elliptic
 
 attribute [local instance] SpecialPeriods.triangleTorusAction
     SpecialPeriods.triangleTorusAction_continuous in
-theorem PeriodFamily.Boundary.nativeTailFrame_inv_wangBoundary (j : Elliptic.Kind) (v : Lattice)
+theorem PeriodFamily.Boundary.nativeTailFrame_inv_wangBoundary (j : Elliptic.Kind) (v : PeriodLattice)
     (n : ℕ)
     (a :
       SingularMayerVietoris.SingularHomology (MappingTorus.Torus (Elliptic.flatTorusAffine j v))
@@ -14638,7 +14636,7 @@ private def ThreefoldHomology.BoundaryFirst.boundaryCokernelOneCoordinatesAddEqu
     (SingularMayerVietoris.SingularHomology RealTorus₄ 1 ⧸
         LinearMap.range
           (MappingTorusHomology.wangDifference (ThreefoldOverlapMappingTorus.monodromy i) 1)) ≃+
-      (Lattice ⧸ LinearMap.range (latticeDifference i)) := by
+      (PeriodLattice ⧸ LinearMap.range (latticeDifference i)) := by
   letI :=
     Submodule.Quotient.module
       (LinearMap.range
@@ -14657,12 +14655,12 @@ def ThreefoldHomology.BoundaryFirst.boundaryCokernelOneCoordinates
         LinearMap.range
           (MappingTorusHomology.wangDifference (ThreefoldOverlapMappingTorus.monodromy i)
             1)) ≃ₗ[ℤ]
-      (Lattice ⧸ LinearMap.range (latticeDifference i)) :=
+      (PeriodLattice ⧸ LinearMap.range (latticeDifference i)) :=
   (boundaryCokernelOneCoordinatesAddEquiv_mo1973_25077 i).toIntLinearEquiv
 
 private def ThreefoldHomology.BoundaryFirst.latticeCokernelAddEquiv_mo1973_25080
     (i : SpecialPeriods.Threefold.Puncture) :
-    (Lattice ⧸ LinearMap.range (latticeDifference i)) ≃+ (Fin 2 → ℤ) := by
+    (PeriodLattice ⧸ LinearMap.range (latticeDifference i)) ≃+ (Fin 2 → ℤ) := by
   letI := Submodule.Quotient.module (LinearMap.range (latticeDifference i))
   exact (latticeCokernelEquiv i).toAddEquiv
 
@@ -16358,7 +16356,7 @@ theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_zero :
     PeriodTorusHigherHomology.flatTorusCircleHomeomorph (0 : RealTorus₄) = 0 :=
   PeriodTorusHigherHomology.flatTorusCircleMap.map_zero
 
-theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop_apply (c : Lattice)
+theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop_apply (c : PeriodLattice)
     (t : unitInterval) :
     PeriodTorusHigherHomology.flatTorusCircleHomeomorph (periodLoop c t) =
       PeriodTorusHigherHomology.coordinatePeriodLoop 4 c t := by
@@ -16367,7 +16365,7 @@ theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop_apply (c : L
   rw [PeriodTorusHigherHomology.coordinatePeriodLoop_apply]
   rfl
 
-theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop (c : Lattice) :
+theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop (c : PeriodLattice) :
     (periodLoop c).map PeriodTorusHigherHomology.flatTorusCircleHomeomorph.continuous =
       (PeriodTorusHigherHomology.coordinatePeriodLoop 4 c).cast flatTorusCircleHomeomorph_zero
         flatTorusCircleHomeomorph_zero := by
@@ -16375,7 +16373,7 @@ theorem PeriodFamily.FlatTorus.flatTorusCircleHomeomorph_periodLoop (c : Lattice
   funext t
   exact flatTorusCircleHomeomorph_periodLoop_apply c t
 
-theorem PeriodFamily.FlatTorus.inducedHomology_periodLoop_circle (c : Lattice) :
+theorem PeriodFamily.FlatTorus.inducedHomology_periodLoop_circle (c : PeriodLattice) :
     FirstHurewicz.inducedHomology
         (PeriodTorusHigherHomology.flatTorusCircleHomeomorph :
           C(RealTorus₄, PeriodTorusHigherHomology.ProductTorus 4))
@@ -16384,7 +16382,7 @@ theorem PeriodFamily.FlatTorus.inducedHomology_periodLoop_circle (c : Lattice) :
   rw [FirstHurewicz.inducedHomology_loopHomologyClass, flatTorusCircleHomeomorph_periodLoop]
   rfl
 
-theorem PeriodFamily.FlatTorus.inducedHomology_singularH1Equiv_symm_circle (c : Lattice) :
+theorem PeriodFamily.FlatTorus.inducedHomology_singularH1Equiv_symm_circle (c : PeriodLattice) :
     FirstHurewicz.inducedHomology
         (PeriodTorusHigherHomology.flatTorusCircleHomeomorph :
           C(RealTorus₄, PeriodTorusHigherHomology.ProductTorus 4))
@@ -16409,7 +16407,7 @@ theorem PeriodFamily.FlatTorus.coordinateH1_eq_flatMarking :
   rw [PeriodTorusHigherHomology.coordinateH1_basis, inducedHomology_singularH1Equiv_symm_circle]
   simp only [Pi.basisFun_apply]
 
-theorem PeriodFamily.FlatTorus.coordinateH1_flatMarking (c : Lattice) :
+theorem PeriodFamily.FlatTorus.coordinateH1_flatMarking (c : PeriodLattice) :
     SingularMayerVietoris.singularHomologyMap
         (PeriodTorusHigherHomology.flatTorusCircleHomeomorph :
           C(RealTorus₄, PeriodTorusHigherHomology.ProductTorus 4))
@@ -17030,7 +17028,7 @@ attribute [local instance] TrianglePeriodFamilyHomologyAlgebra.cokernelQuotientM
 def PeriodFamily.HomologyDifference.cokernelOneCoordinates :
     (SingularMayerVietoris.SingularHomology RealTorus₄ 1 ⧸
         LinearMap.range (PeriodFamily.Homology.sourceDifference 1)) ≃ₗ[ℤ]
-      (Lattice ⧸ LinearMap.range TrianglePeriodFamilyHomologyLattice.deltaOne) :=
+      (PeriodLattice ⧸ LinearMap.range TrianglePeriodFamilyHomologyLattice.deltaOne) :=
   cokernelEquivOfCommuting (PeriodFamily.Homology.sourceDifference 1)
     TrianglePeriodFamilyHomologyLattice.deltaOne
     (PeriodFamily.FlatTorus.singularH1Equiv.toAddEquiv.prodCongr
@@ -17132,7 +17130,7 @@ attribute [local instance] TrianglePeriodFamilyHomologyAlgebra.cokernelQuotientM
 def PeriodFamily.HomologyDifference.cokernelThreeCoordinates :
     (SingularMayerVietoris.SingularHomology RealTorus₄ 3 ⧸
         LinearMap.range (PeriodFamily.Homology.sourceDifference 3)) ≃ₗ[ℤ]
-      (Lattice ⧸ LinearMap.range TrianglePeriodFamilyHomologyLattice.deltaThree) :=
+      (PeriodLattice ⧸ LinearMap.range TrianglePeriodFamilyHomologyLattice.deltaThree) :=
   cokernelEquivOfCommuting (PeriodFamily.Homology.sourceDifference 3)
     TrianglePeriodFamilyHomologyLattice.deltaThree
     (PeriodFamily.FlatTorus.singularH3Coordinates.toAddEquiv.prodCongr
@@ -19121,7 +19119,7 @@ attribute [local instance] SpecialPeriods.triangleTorusAction
 theorem PeriodFamily.Data.latticeFundamentalGroupHom_baseChange {V B : Type*}
     [NormedAddCommGroup V] [NormedSpace ℂ V] [TopologicalSpace B] [ChartedSpace V B]
     [MulAction SpecialPeriods.TriangleGroup B] (D : PeriodFamily.Data V B) {b₀ b₁ : B}
-    (p : Path b₀ b₁) (v : Multiplicative Lattice) :
+    (p : Path b₀ b₁) (v : Multiplicative PeriodLattice) :
     FundamentalGroup.fundamentalGroupMulEquivOfPath (D.zeroSectionPath p)
         (D.latticeFundamentalGroupHom b₀ v) =
       D.latticeFundamentalGroupHom b₁ v :=
@@ -19129,7 +19127,7 @@ theorem PeriodFamily.Data.latticeFundamentalGroupHom_baseChange {V B : Type*}
     (PeriodFamily.FlatTorus.fundamentalGroupEquiv.symm v)
 
 def SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) :
     Path
       (((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
             SpecialPeriods.specialPeriodMap_generator₁
@@ -19146,7 +19144,7 @@ def SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop
       (continuous_const.prodMk continuous_id))
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop_apply
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) (t : (unitInterval)) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) (t : (unitInterval)) :
     regularColumnLoop b w t =
       ((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
             SpecialPeriods.specialPeriodMap_generator₁
@@ -19161,7 +19159,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop_apply
   rw [PeriodFamily.FlatTorus.periodLoop_apply]
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop_class
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) :
     FundamentalGroup.fromPath ⟦regularColumnLoop b w⟧ =
       ((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
             SpecialPeriods.specialPeriodMap_generator₁
@@ -19173,7 +19171,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.regularColumnLoop_class
       b w).symm
 
 def SpecialPeriods.Threefold.EllipticGeometry.globalColumnLoop
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) :
     Path
       (SpecialPeriods.Threefold.regularFamilyInclusionMap
         (((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
@@ -19188,7 +19186,7 @@ def SpecialPeriods.Threefold.EllipticGeometry.globalColumnLoop
   (regularColumnLoop b w).map SpecialPeriods.Threefold.regularFamilyInclusionMap.continuous
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.globalColumnLoop_apply
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) (t : (unitInterval)) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) (t : (unitInterval)) :
     globalColumnLoop b w t =
       SpecialPeriods.Threefold.regularFamilyInclusionMap
         (((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
@@ -19198,7 +19196,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.globalColumnLoop_apply
   congrArg SpecialPeriods.Threefold.regularFamilyInclusionMap (regularColumnLoop_apply b w t)
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.globalColumnLoop_class
-    (b : SpecialPeriods.TriangleRegularPoint) (w : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (w : PeriodLattice) :
     FundamentalGroup.fromPath ⟦globalColumnLoop b w⟧ =
       FundamentalGroup.map SpecialPeriods.Threefold.regularFamilyInclusionMap
         (((PeriodFamily.regularData SpecialPeriods.specialPeriodMap
@@ -19246,7 +19244,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.upstairsPathGlobalTail_symm
 
 theorem SpecialPeriods.Threefold.EllipticGeometry.transport_globalColumnLoop
     {b : SpecialPeriods.TriangleRegularPoint}
-    (p : Path (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint) b) (w : Lattice) :
+    (p : Path (PeriodFamily.Meridians.normalizedRegularMeridianBasepoint) b) (w : PeriodLattice) :
     FundamentalGroup.fundamentalGroupMulEquivOfPath (upstairsPathGlobalTail p).symm
         (FundamentalGroup.fromPath ⟦globalColumnLoop b w⟧) =
       SpecialPeriods.Threefold.PiOne.latticeHom (Multiplicative.ofAdd w) := by
@@ -19290,7 +19288,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.includedAttachingFibreLoop_eq_
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     includedAttachingFibreLoop j s₀ hs₀ hr w =
       globalColumnLoop (attachingUpstairsPoint j s₀ hs₀ 0) w := by
   ext t
@@ -19373,7 +19371,7 @@ theorem SpecialPeriods.Threefold.EllipticGeometry.attachingTransportHom_fibreLoo
     (hr :
       ‖CuspUniformization.exponential s₀‖ ^ j.order <
         SpecialPeriods.Threefold.specialBaseCover.radius (Option.some j))
-    (w : Lattice) :
+    (w : PeriodLattice) :
     attachingTransportHom j s₀ hs₀ hr
         (FundamentalGroup.fromPath ⟦attachingFibreLoop j s₀ hs₀ hr w⟧) =
       SpecialPeriods.Threefold.PiOne.latticeHom (Multiplicative.ofAdd w) := by
@@ -19553,7 +19551,7 @@ def SpecialPeriods.Threefold.CuspAttaching.regularFamilyInclusionMap :
 
 def SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom
     (b : SpecialPeriods.TriangleRegularPoint) :
-    Multiplicative Lattice →*
+    Multiplicative PeriodLattice →*
       FundamentalGroup SpecialPeriods.Threefold.Space
         (SpecialPeriods.Threefold.inclusion Option.none
           (regularData.fundamentalGroupBasepoint b)) :=
@@ -19567,12 +19565,12 @@ def SpecialPeriods.Threefold.CuspAttaching.regularFibreMap
     regularData.quotient_continuous.comp (continuous_const.prodMk continuous_id)⟩
 
 def SpecialPeriods.Threefold.CuspAttaching.regularLatticeLoop
-    (b : SpecialPeriods.TriangleRegularPoint) (v : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (v : PeriodLattice) :
     Path (regularData.fundamentalGroupBasepoint b) (regularData.fundamentalGroupBasepoint b) :=
   (PeriodFamily.FlatTorus.periodLoop v).map (regularFibreMap b).continuous
 
 def SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop
-    (b : SpecialPeriods.TriangleRegularPoint) (v : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (v : PeriodLattice) :
     Path
       (SpecialPeriods.Threefold.inclusion Option.none (regularData.fundamentalGroupBasepoint b))
       (SpecialPeriods.Threefold.inclusion Option.none
@@ -19580,7 +19578,7 @@ def SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop
   (regularLatticeLoop b v).map regularFamilyInclusionMap.continuous
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop_apply
-    (b : SpecialPeriods.TriangleRegularPoint) (v : Lattice) (t : (unitInterval)) :
+    (b : SpecialPeriods.TriangleRegularPoint) (v : PeriodLattice) (t : (unitInterval)) :
     globalLatticeLoop b v t =
       SpecialPeriods.Threefold.inclusion Option.none
         (regularData.quotient (b, standardLattice.mkQ ((t : ℝ) • Elliptic.realCast v))) :=
@@ -19590,7 +19588,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop_apply
     (PeriodFamily.FlatTorus.periodLoop_apply v t)
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_periodLoop
-    (b : SpecialPeriods.TriangleRegularPoint) (v : Lattice) :
+    (b : SpecialPeriods.TriangleRegularPoint) (v : PeriodLattice) :
     globalLatticeHom b (Multiplicative.ofAdd v) =
       Path.Homotopic.Quotient.mk (globalLatticeLoop b v) := by
   change
@@ -19601,14 +19599,14 @@ theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_periodLoop
   rfl
 
 def SpecialPeriods.Threefold.CuspAttaching.nativeGlobalPeriodLoop
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice) :
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice) :
     Path (SpecialPeriods.Threefold.inclusion (Option.some Option.none) (nativeFibreMap s 0))
       (SpecialPeriods.Threefold.inclusion (Option.some Option.none) (nativeFibreMap s 0)) :=
   (((nativePeriodData s).periodLoop (CuspUniformization.sourcePeriodCoordinates v)).map
         (nativeFibreMap_continuous s)).map
     (SpecialPeriods.Threefold.inclusion_openEmbedding (Option.some Option.none)).continuous
 
-def PeriodDomain.fullPeriodCoordinatesEquiv : Lattice ≃ₗ[ℤ] FullPeriodMatrix.IntegerPeriods
+def PeriodDomain.fullPeriodCoordinatesEquiv : PeriodLattice ≃ₗ[ℤ] FullPeriodMatrix.IntegerPeriods
     where
   toFun c := (![c 2, c 3], ![c 0, c 1])
   invFun c := ![c.2 0, c.2 1, c.1 0, c.1 1]
@@ -19618,7 +19616,7 @@ def PeriodDomain.fullPeriodCoordinatesEquiv : Lattice ≃ₗ[ℤ] FullPeriodMatr
   map_smul' n c := by ext i <;> fin_cases i <;> rfl
 
 theorem PeriodDomain.fullPeriod_periodVector (p : PeriodDomain) (q : FullPeriodMatrix)
-    (h : q.matrix = p.val.leftBlock) (c : Lattice) :
+    (h : q.matrix = p.val.leftBlock) (c : PeriodLattice) :
     q.periodVector (fullPeriodCoordinatesEquiv c) = p.periodVector c := by
   ext i
   fin_cases i <;>
@@ -19635,7 +19633,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.nativePeriodData_matrix_eq_regula
         (data.point_leftBlock s)).symm
 
 theorem SpecialPeriods.Threefold.CuspAttaching.native_periodVector_sourceCoordinates
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice) :
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice) :
     (nativePeriodData s).periodVector (CuspUniformization.sourcePeriodCoordinates v) =
       regularData.periods.periodEquiv (cuspLift s) (Elliptic.realCast v) := by
   calc
@@ -19646,14 +19644,14 @@ theorem SpecialPeriods.Threefold.CuspAttaching.native_periodVector_sourceCoordin
 
 theorem
   SpecialPeriods.Threefold.CuspAttaching.sourcePeriodCoordinates_eq_integer_of_projection_zero
-    (v : Lattice) (hv : CuspUniformization.cuspLatticeProjection v = 0) :
+    (v : PeriodLattice) (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     CuspUniformization.sourcePeriodCoordinates v = (![v 2, v 3], 0) := by
   change (![v 2, v 3], CuspUniformization.cuspLatticeProjection v) = _
   rw [hv]
 
 theorem
   SpecialPeriods.Threefold.CuspAttaching.nativeFibre_periodLoop_nullhomotopic_of_projection_zero
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice)
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice)
     (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     Path.Homotopic
       (((nativePeriodData s).periodLoop (CuspUniformization.sourcePeriodCoordinates v)).map
@@ -19792,7 +19790,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.inclusion_nativeFibreMap_zero
   simp only [HolomorphicPeriodMap.quotientMap, map_zero]
 
 theorem SpecialPeriods.Threefold.CuspAttaching.nativeGlobalPeriodLoop_apply
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice) (t : (unitInterval)) :
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice) (t : (unitInterval)) :
     nativeGlobalPeriodLoop s v t =
       SpecialPeriods.Threefold.inclusion (Option.some Option.none)
         (CuspUniformization.fibreCover data.correction radius s (cuspParameter_norm_lt s)
@@ -19808,7 +19806,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.nativeGlobalPeriodLoop_apply
         (nativeFibreMap_mkQ s _))
 
 theorem SpecialPeriods.Threefold.CuspAttaching.quotientMap_nativePeriodVector
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice) (t : (unitInterval)) :
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice) (t : (unitInterval)) :
     regularData.periods.quotientMap
         (cuspLift s,
           (t : ℝ) •
@@ -19835,7 +19833,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.quotientMap_nativePeriodVector
       ((regularData.periods.periodEquiv (cuspLift s)).symm_apply_apply _)
 
 theorem SpecialPeriods.Threefold.CuspAttaching.nativeGlobalPeriodLoop_cast
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice) :
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice) :
     (nativeGlobalPeriodLoop s v).cast (inclusion_nativeFibreMap_zero s).symm
         (inclusion_nativeFibreMap_zero s).symm =
       globalLatticeLoop (cuspLift s) v := by
@@ -19851,7 +19849,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.nativeGlobalPeriodLoop_cast
           (globalLatticeLoop_apply (cuspLift s) v t).symm))
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop_nullhomotopic_at_cusp
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice)
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice)
     (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     Path.Homotopic (globalLatticeLoop (cuspLift s) v)
       (Path.refl
@@ -19884,7 +19882,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeLoop_nullhomotopic_a
   exact hc
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_eq_one_at_cusp
-    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : Lattice)
+    (s : SpecialPeriods.CuspFamily.LogBase radius) (v : PeriodLattice)
     (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     globalLatticeHom (cuspLift s) (Multiplicative.ofAdd v) = 1 := by
   rw [globalLatticeHom_periodLoop]
@@ -19899,7 +19897,7 @@ def SpecialPeriods.Threefold.CuspAttaching.globalZeroSectionPath
   (regularData.zeroSectionPath p).map regularFamilyInclusionMap.continuous
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_baseChange
-    {b₀ b₁ : SpecialPeriods.TriangleRegularPoint} (p : Path b₀ b₁) (v : Multiplicative Lattice) :
+    {b₀ b₁ : SpecialPeriods.TriangleRegularPoint} (p : Path b₀ b₁) (v : Multiplicative PeriodLattice) :
     FundamentalGroup.fundamentalGroupMulEquivOfPath (globalZeroSectionPath p)
         (globalLatticeHom b₀ v) =
       globalLatticeHom b₁ v := by
@@ -19912,7 +19910,7 @@ theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_baseChange
         (regularData.latticeFundamentalGroupHom_baseChange p v))
 
 theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_eq_one_of_projection_zero
-    (b : SpecialPeriods.TriangleRegularPoint) (v : Lattice)
+    (b : SpecialPeriods.TriangleRegularPoint) (v : PeriodLattice)
     (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     globalLatticeHom b (Multiplicative.ofAdd v) = 1 := by
   obtain ⟨s, hs⟩ := exists_small_exponential
@@ -19929,13 +19927,13 @@ theorem SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_eq_one_of_projec
         (globalLatticeHom_eq_one_at_cusp s' v hv))
     _ = 1 := map_one _
 
-theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_one_of_cusp_projection_zero (v : Lattice)
+theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_one_of_cusp_projection_zero (v : PeriodLattice)
     (hv : CuspUniformization.cuspLatticeProjection v = 0) :
     latticeHom (Multiplicative.ofAdd v) = 1 :=
   SpecialPeriods.Threefold.CuspAttaching.globalLatticeHom_eq_one_of_projection_zero
     PeriodFamily.Meridians.normalizedRegularMeridianBasepoint v hv
 
-theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_one_of_cusp_monodromy_kernel (v : Lattice)
+theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_one_of_cusp_monodromy_kernel (v : PeriodLattice)
     (hv : (M₀ - 1) *ᵥ v = 0) : latticeHom (Multiplicative.ofAdd v) = 1 :=
   latticeHom_eq_one_of_cusp_projection_zero v
     ((CuspUniformization.cuspLatticeProjection_eq_zero_iff v).mpr hv)
@@ -20643,35 +20641,35 @@ theorem SpecialPeriods.Threefold.PiOne.meridian_second_eq_first_inv :
     meridian Bool.true = (meridian Bool.false)⁻¹ :=
   eq_inv_of_mul_eq_one_right meridian_product_eq_one
 
-def LatticeCuspNormalClosure.uHat : Lattice :=
+def LatticeCuspNormalClosure.uHat : PeriodLattice :=
   ![0, 1, 0, 0]
 
-def LatticeCuspNormalClosure.wHat : Lattice :=
+def LatticeCuspNormalClosure.wHat : PeriodLattice :=
   ![0, 0, 1, 0]
 
 theorem LatticeCuspNormalClosure.first_matrix_wHat : A₁ *ᵥ wHat = uHat - wHat := by decide
 
 theorem LatticeCuspNormalClosure.image_wHat_eq_one {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G)
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
+    (φ : Multiplicative PeriodLattice →* G)
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
     φ (Multiplicative.ofAdd wHat) = 1 :=
   hc wHat rfl rfl
 
 theorem LatticeCuspNormalClosure.image_uHat_eq_one {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x : G)
+    (φ : Multiplicative PeriodLattice →* G) (x : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
     φ (Multiplicative.ofAdd uHat) = 1 := by
   have h := hx wHat
   rw [first_matrix_wHat, ofAdd_sub, map_div, image_wHat_eq_one φ hc] at h
   simpa only [mul_one, mul_inv_cancel, div_one] using h.symm
 
 theorem LatticeCuspNormalClosure.image_eq_one_of_gamma_eq_zero {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x : G)
+    (φ : Multiplicative PeriodLattice →* G) (x : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) (v : Lattice)
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) (v : PeriodLattice)
     (hv : γ v = 0) : φ (Multiplicative.ofAdd v) = 1 := by
   have hv₀ : v 0 = 0 := hv
   have hrest := hc (v - v 1 • uHat) (by simp [uHat, hv₀]) (by simp [uHat])
@@ -20680,10 +20678,10 @@ theorem LatticeCuspNormalClosure.image_eq_one_of_gamma_eq_zero {G : Type*} [Grou
   simpa only [ofAdd_sub, map_div, hu, div_one] using hrest
 
 theorem LatticeCuspNormalClosure.image_eq_zpow_gamma {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x : G)
+    (φ : Multiplicative PeriodLattice →* G) (x : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) (v : Lattice) :
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) (v : PeriodLattice) :
     φ (Multiplicative.ofAdd v) = φ (Multiplicative.ofAdd ε) ^ γ v := by
   have hk : γ (v - γ v • ε) = 0 := by simp [γ, ε]
   have h := image_eq_one_of_gamma_eq_zero φ x hx hc (v - γ v • ε) hk
@@ -20691,50 +20689,50 @@ theorem LatticeCuspNormalClosure.image_eq_zpow_gamma {G : Type*} [Group G]
   exact div_eq_one.mp h
 
 theorem LatticeCuspNormalClosure.image_epsilon_prime_eq {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x : G)
+    (φ : Multiplicative PeriodLattice →* G) (x : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
     φ (Multiplicative.ofAdd ε') = φ (Multiplicative.ofAdd ε) := by
   simpa only [γ_ε', zpow_one] using image_eq_zpow_gamma φ x hx hc ε'
 
 theorem LatticeCuspNormalClosure.image_epsilon_commute_first {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x : G)
+    (φ : Multiplicative PeriodLattice →* G) (x : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v))) :
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v))) :
     Commute (φ (Multiplicative.ofAdd ε)) x := by
   have h := hx ε
   rw [A₁_fixes_ε] at h
   exact ((mul_inv_eq_iff_eq_mul).mp h).symm
 
 theorem LatticeCuspNormalClosure.image_epsilon_commute_second {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x y : G)
+    (φ : Multiplicative PeriodLattice →* G) (x y : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
     (hy :
-      ∀ v : Lattice, y * φ (Multiplicative.ofAdd v) * y⁻¹ = φ (Multiplicative.ofAdd (A₂ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
+      ∀ v : PeriodLattice, y * φ (Multiplicative.ofAdd v) * y⁻¹ = φ (Multiplicative.ofAdd (A₂ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1) :
     Commute (φ (Multiplicative.ofAdd ε)) y := by
   have h := hy ε'
   rw [A₂_fixes_ε', image_epsilon_prime_eq φ x hx hc] at h
   exact ((mul_inv_eq_iff_eq_mul).mp h).symm
 
 theorem LatticeCuspNormalClosure.image_epsilon_commute_lattice {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (v : Multiplicative Lattice) :
+    (φ : Multiplicative PeriodLattice →* G) (v : Multiplicative PeriodLattice) :
     Commute (φ (Multiplicative.ofAdd ε)) (φ v) := by
   change φ (Multiplicative.ofAdd ε) * φ v = φ v * φ (Multiplicative.ofAdd ε)
   rw [← map_mul, ← map_mul, mul_comm]
 
 theorem LatticeCuspNormalClosure.image_epsilon_mem_center_of_hom_ext {G : Type*} [Group G]
-    (φ : Multiplicative Lattice →* G) (x y : G)
+    (φ : Multiplicative PeriodLattice →* G) (x y : G)
     (hx :
-      ∀ v : Lattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
+      ∀ v : PeriodLattice, x * φ (Multiplicative.ofAdd v) * x⁻¹ = φ (Multiplicative.ofAdd (A₁ *ᵥ v)))
     (hy :
-      ∀ v : Lattice, y * φ (Multiplicative.ofAdd v) * y⁻¹ = φ (Multiplicative.ofAdd (A₂ *ᵥ v)))
-    (hc : ∀ v : Lattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1)
+      ∀ v : PeriodLattice, y * φ (Multiplicative.ofAdd v) * y⁻¹ = φ (Multiplicative.ofAdd (A₂ *ᵥ v)))
+    (hc : ∀ v : PeriodLattice, v 0 = 0 → v 1 = 0 → φ (Multiplicative.ofAdd v) = 1)
     (hext :
       ∀ f g : G →* G,
-        (∀ v : Multiplicative Lattice, f (φ v) = g (φ v)) → f x = g x → f y = g y → f = g) :
+        (∀ v : Multiplicative PeriodLattice, f (φ v) = g (φ v)) → f x = g x → f y = g y → f = g) :
     φ (Multiplicative.ofAdd ε) ∈ Subgroup.center G := by
   let a := φ (Multiplicative.ofAdd ε)
   have hconj : (MulAut.conj a).toMonoidHom = MonoidHom.id G := by
@@ -20755,10 +20753,10 @@ def SpecialPeriods.Threefold.PiOne.c : GlobalGroup :=
   latticeHom (Multiplicative.ofAdd ε)
 
 theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_one_of_first_two_coordinates_zero
-    (v : Lattice) (h₀ : v 0 = 0) (h₁ : v 1 = 0) : latticeHom (Multiplicative.ofAdd v) = 1 :=
+    (v : PeriodLattice) (h₀ : v 0 = 0) (h₁ : v 1 = 0) : latticeHom (Multiplicative.ofAdd v) = 1 :=
   latticeHom_eq_one_of_cusp_monodromy_kernel v ((M₀_sub_one_kernel v).mpr ⟨h₀, h₁⟩)
 
-theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_c_zpow (v : Lattice) :
+theorem SpecialPeriods.Threefold.PiOne.latticeHom_eq_c_zpow (v : PeriodLattice) :
     latticeHom (Multiplicative.ofAdd v) = c ^ γ v :=
   LatticeCuspNormalClosure.image_eq_zpow_gamma latticeHom (meridian Bool.false)
     meridian_first_conjugation latticeHom_eq_one_of_first_two_coordinates_zero v
@@ -20779,7 +20777,7 @@ theorem SpecialPeriods.Threefold.PiOne.c_commute (g : GlobalGroup) : Commute c g
   (Subgroup.mem_center_iff.mp c_mem_center g).symm
 
 private theorem SpecialPeriods.Threefold.PiOne.commute_all_of_marked_mo1973_26322
-    (g : GlobalGroup) (hL : ∀ v : Multiplicative Lattice, Commute g (latticeHom v))
+    (g : GlobalGroup) (hL : ∀ v : Multiplicative PeriodLattice, Commute g (latticeHom v))
     (hM : ∀ b : Bool, Commute g (meridian b)) : ∀ h : GlobalGroup, Commute g h := by
   have heq : (MulAut.conj g).toMonoidHom = MonoidHom.id GlobalGroup := by
     apply hom_ext
@@ -21025,6 +21023,5 @@ theorem SpecialPeriods.Threefold.space_loops_nullhomotopic {x : Space} (p : Path
     Path.Homotopic p (Path.refl x) :=
   space_paths_homotopic p (Path.refl x)
 
-end Mathoverflow1973
 
 end

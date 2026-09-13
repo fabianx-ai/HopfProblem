@@ -39,8 +39,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -599,4 +597,3 @@ theorem SideRectification.exists_rectification {V Y : Type*} [NormedAddCommGroup
       (hW 1 (CylinderBoundary.lower (DiskCylinder.sideMap (t, s)))).trans
         ((CylinderBoundaryFamilies.glued_side fb gt side hs0 hs1 1 t s).trans
           (congrArg (fun v => v s) (K.apply_one t)))
-end Mathoverflow1973

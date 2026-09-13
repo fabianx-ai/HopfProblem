@@ -28,8 +28,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -544,4 +542,3 @@ theorem CoveringOrthant.localChart_coordinate_identity {G M Q H : Type*} [Group 
   have hze := localChart_target_subset hq e a hz
   rw [localChart_symm_apply, he (e.symm z) (e.map_target hze), e.right_inv hze]
 
-end Mathoverflow1973

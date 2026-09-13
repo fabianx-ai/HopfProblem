@@ -32,8 +32,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -62,4 +60,3 @@ theorem SingularHomology.inducedChain_crossInsertLeft {X Y X' Y' : Type}
     congrArg (fun h : C(Y, X' × Y') => SingularChains.inducedChain h n c)
       (crossInsertLeft_natural f g x)
   simpa only [SingularChains.inducedChain_comp, LinearMap.comp_apply] using h
-end Mathoverflow1973

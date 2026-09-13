@@ -18,6 +18,7 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 | `Lib/Geometry/Manifold/Quotient/LocalOrbit.lean` | PeriodConstruction LocalOrbitQuotient.* subset | 17 | 91dc733 |
 | `Lib/Geometry/Manifold/Quotient/Atlas.lean` | PeriodConstruction OnePointAtlas.* + BranchedQuotientAtlas.* subset | 22 | 91dc733 |
 | `Lib/Topology/MappingTorus/Basic.lean` | LocalModels MappingTorus.* 6899–8394 | 76 | 79211df |
+| `Lib/Topology/MappingTorus/Wang.lean` | the stock-side Wang closure (`Lib/reports/I-wang-dependencies.json`, 232 rows): 43 stock-side rows + 7 closure rows the JSON undercounts (see below) | 50 | 9c2dec3 + df3da70 |
 
 ## Remaining lane I units (resume order, each = one cfg + delete + build + commit)
 
@@ -202,3 +203,55 @@ Solution S6Shortcuts S6 Challenge` and `lake env lean Lib/AxiomAudit.lean`
 both exited 0 with pinned Lean 4.33.0. This includes the quotient-chart move
 above; the earlier deferred-chain note is now discharged. Wang and wrapper
 removal remain pending on the owner's C/J handoff.
+
+## Wang landing (2026-09-13, GLM seat, head 27f8e7f5 + B-status commit)
+
+`Lib/Topology/MappingTorus/Wang.lean` landed on `lib/A-8-wang` (branched from
+`27f8e7f5` plus the `B.md` status commit `767b56a`): 50 declarations in two
+commits — baseline `9c2dec3` (Lib file + `Lib.lean` import, Hopf untouched),
+deletion `df3da70` (Hopf stock files lose the rows; the four consumers
+`Hopf/LCP/{CuspFilling,IntegralHomology,Specialization}.lean` and
+`Hopf/SingularHomology.lean` gain `import Lib.Topology.MappingTorus.Wang`;
+full names unchanged, no shim needed).
+
+Row accounting against the 232 recorded rows:
+
+- 189 rows are demoted proof-side rows under `Hopf/Proof/` (owner rule: done
+  last, generalisation first) and are NOT moved.
+- 43 stock-side rows are moved with statements verified identical modulo
+  whitespace and `@[simp]` attribute-line offsets against the recorded
+  revision `e5a00e92` (block bytes drift because of the 70-file documentation
+  wave, INTEGRATION-3 §3.6).
+- 7 closure rows the JSON undercounts are moved with the rest: the `@[simp]`
+  lemma `PeriodTorusHigherHomology.CirclePaths.circleTranslation_apply`
+  (map_zero/map_one in `circleTranslationHomotopy` need it) and six private
+  auto-named helpers (`biprodElement_mo1973_12801`,
+  `biprod_lift_f_apply_mo1973_12802`, `biprodElement_desc_mo1973_12803`,
+  `biprodElement_boundary_mo1973_12804`, `biprod_lift_eq_boundary_mo1973_12805`,
+  `MappingTorusHomology.Covering.sum_range_shift_of_endpoints_mo1973_27356`),
+  de-privatized to compile outside their source file. They need real names in
+  the next rename commit (hazard §7).
+
+Spellings normalised at the move boundary: `FirstHurewicz.` -> `SingularChains.`,
+`PeriodTorusHigherHomology.CircleTopology.` -> `SingularHomology.CircleTopology.`
+(approved maps), plus bare cross-family references qualified to their Lib homes
+(`crossProductHomology`, `crossProductEdge*`, `crossInsertLeft/Right`,
+`homotopy_homologyMap`, `singularHomologyMap_{comp,id}`, the PassageHomology
+cylinder family). Attribute lines are re-anchored per declaration (a blank line
+between `@[simp]` and its declaration had dropped them).
+
+Verification: `lake build Lib` green, 0 `sorry`; full chain `lake build
+Solution S6Shortcuts S6 Challenge` green (8,854 jobs, 0 errors); census
+1648 -> 1598, ratchet PASS (drop = the 50 moved rows); `#print axioms` on
+`twoChainSmallCycle`, `connectingHomomorphism_twoChain`, `positiveCircleCross`,
+`Covering.translatedPositiveLoop`, `radialCylinderDiffeomorph`,
+`PartialChart.openInclusion` — all exactly `{propext, Classical.choice,
+Quot.sound}`.
+
+Tooling note for the next mover: the extraction machinery is at
+`/tmp/wang_extract.py` (attr-aware up-walk: blanks are transparent when
+collecting attributes) and `/tmp/wang_gen.py` (dependency-ordered assembly:
+full-dotted AND bare-last-component reference harvest, simp-order pins,
+trailing-attribute strip). The deletion used a line mask; overlapping ranges
+with sequential deletion swallow neighbour declarations (two over-deletions
+caught by the per-declaration-name audit and redone).

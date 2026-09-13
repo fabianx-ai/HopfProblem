@@ -180,8 +180,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1015,6 +1013,5 @@ theorem homeomorphic_sixSphere_of_homotopySixSphere (E : Type) [NormedAddCommGro
     Nonempty (M ≃ₜ MetricSixSphere) :=
   MorseCancellation.nonempty_homeomorph_of_homotopySixSphere E M hdim hM
 
-end Mathoverflow1973
 
 end

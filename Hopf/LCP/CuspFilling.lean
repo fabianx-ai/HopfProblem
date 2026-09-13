@@ -124,6 +124,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.LinearAlgebra.SquareZero
 import Lib.Topology.MappingTorus.Basic
+import Lib.Topology.MappingTorus.Wang
 import Lib.Topology.Homotopy.SublevelRetraction
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.PathClass
@@ -146,9 +147,6 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 universe u v
 
 noncomputable section
-
-namespace Mathoverflow1973
-
 
 theorem FirstHurewicz.basedLoopClass_triangleFacePath {X : Type} [TopologicalSpace X] {b : X}
     (r : ∀ x : X, Path b x) (σ : SingularSimplex X 2) (i : Fin 3) :
@@ -264,7 +262,6 @@ theorem FirstHurewicz.singularH1EquivOfPi1_loopHomologyClass {X : Type} [Topolog
     singularH1EquivOfPi1 b e (loopHomologyClass p) = (e (loopQuotient p)).toAdd :=
   singularH1EquivOfPi1_hurewiczFunction b e (loopQuotient p)
 
-
 def PeriodTorusHigherHomology.coordinateProjection (n : ℕ) : (Fin n → ℝ) →+ ProductTorus n
     where
   toFun x i := (x i : AddCircle (1 : ℝ))
@@ -320,9 +317,5 @@ theorem PeriodTorusHigherHomology.coordinatePeriodLoop_apply (n : ℕ) (v : Fin 
   simp only [coordinatePeriodLoop, Path.cast_coe, Path.map_coe, Function.comp_apply,
     Path.segment_apply, AffineMap.lineMap_apply_module, smul_zero, zero_add,
     coordinateProjection_apply, Pi.smul_apply, smul_eq_mul]
-
-
-
-end Mathoverflow1973
 
 end

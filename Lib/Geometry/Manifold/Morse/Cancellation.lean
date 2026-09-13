@@ -65,8 +65,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Adapted surgery windows and basin blocks -/
 
 attribute [local instance 100] Classical.propDecidable in
@@ -6359,4 +6357,3 @@ structure MorseCancellation.NativeConnectionCancellationData {E M : Type*} [Norm
         Filter.Tendsto (fun t => flow t y) Filter.atTop (𝓝 p) → ∃ t, flow t (A (0, 0)) = y
   slices : NativeEndpointSliceData σ (1 / 2) Φq Φp A Rq Rp Tq Tp
 
-end Mathoverflow1973

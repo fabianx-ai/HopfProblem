@@ -65,8 +65,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -9858,6 +9856,5 @@ theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAd
   · intro j hj hj'
     simpa only [hip, hiq, if_neg (Ne.symm hj), if_neg (Ne.symm hj'), Nat.add_zero] using hc j
 
-end Mathoverflow1973
 
 end

@@ -31,8 +31,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -231,4 +229,3 @@ protected theorem EuclideanSphere.simplyConnectedSpace (n : ℕ) :
       apply homotopic_refl_of_not_surjective
       exact fun a ↦ hi (a (-v)) rfl
 
-end Mathoverflow1973

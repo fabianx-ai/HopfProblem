@@ -27,8 +27,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -228,4 +226,3 @@ theorem ProductRestriction.productRestriction_surjective {K X Y : Type*} [Topolo
     [TopologicalSpace X] (f : K × X → Y) (B : Set X) (C : Set Y) (hpre : ∀ p, f p ∈ C ↔ p.2 ∈ B)
     (hf : Function.Surjective f) : Function.Surjective (productRestriction f B C hpre) :=
   (hf.restrictPreimage C).comp (productPreimageHomeomorph f B C hpre).surjective
-end Mathoverflow1973

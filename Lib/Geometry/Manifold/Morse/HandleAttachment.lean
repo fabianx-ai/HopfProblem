@@ -52,8 +52,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1670,4 +1668,3 @@ def AttachmentBoundaryData.surgeryBoundaryPair {N P M : Type*} [NormedAddCommGro
   boundary := d.boundary
   old_overlap := d.old_overlap
   new_overlap := d.new_overlap
-end Mathoverflow1973

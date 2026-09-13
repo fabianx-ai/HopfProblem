@@ -27,8 +27,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -433,4 +431,3 @@ theorem TwoOpenTransition.fundamentalGroupToMulOpposite_trans_U_V {X G : Type*}
   have hm := congrArg Subtype.val (D.monodromy_trans_U_V hb hc α β hα hβ 1)
   simpa only [MulOpposite.unop_op, basepointU_eq_fiberPointU, smul_pointU, mul_one, one_mul,
     fiberPointU_val] using hm.symm
-end Mathoverflow1973

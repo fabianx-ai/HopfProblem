@@ -40,8 +40,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -476,4 +474,3 @@ theorem SingularChains.inducedHomology_loopHomologyClass {X Y : Type} [Topologic
     inducedHomology f (loopHomologyClass p) = loopHomologyClass (p.map f.continuous) := by
   rw [loopHomologyClass, inducedHomology_cycleClass, inducedCycles_loopCycle]
   rfl
-end Mathoverflow1973

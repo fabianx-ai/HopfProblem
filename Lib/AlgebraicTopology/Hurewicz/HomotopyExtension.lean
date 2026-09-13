@@ -54,8 +54,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Simplex faces and triangle edges -/
 
 /-- The `i`-th face map sends the vertex `k` of the `n`-simplex to the vertex
@@ -916,4 +914,3 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.extendBoundaryHomotopy_face {n : ℕ}
       h (t, ⟨SingularChains.simplexFace n i s, simplexFace_mem_boundary n i s⟩) :=
   extendBoundaryHomotopy_boundary f h h0 t _ (simplexFace_mem_boundary n i s)
 
-end Mathoverflow1973

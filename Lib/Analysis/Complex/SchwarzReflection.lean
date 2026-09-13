@@ -42,8 +42,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -237,4 +235,3 @@ theorem SchwarzReflection.analyticOnNhd_pasteUpper {U : Set ℂ} (hU : IsOpen U)
     filter_upwards [continuousAt_const.eventually_lt Complex.continuous_im.continuousAt hpos] with
       w hw
     exact pasteUpper_of_nonneg f g hw.le
-end Mathoverflow1973

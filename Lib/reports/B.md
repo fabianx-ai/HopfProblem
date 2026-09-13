@@ -5,6 +5,13 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 
 # Lane B report — fundamental group, van Kampen, simply connected spheres
 
+**Current status (2026-09-13, GLM seat):** the B probe theorem
+`simplyConnectedSpace_of_open_cover` is landed in
+`Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean` and probed in
+`Lib/AxiomAudit.lean` with exact standard axioms; the "[corrected] NOT complete"
+line below is history. The van Kampen extraction itself remains open and is not
+claimed by this status.
+
 ## Landed
 
 - `Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean` (9, da29618)

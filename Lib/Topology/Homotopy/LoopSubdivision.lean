@@ -30,8 +30,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -181,4 +179,3 @@ theorem _root_.Path.Homotopic.exists_loops_homotopic_concat_of_open_cover {X : T
     use τ k
     grind [Path.trans_range, Path.symm_range, Set.union_subset, Path.range_subpath]
 
-end Mathoverflow1973

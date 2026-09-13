@@ -16,8 +16,6 @@ import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
   Theorem 1.20).
 -/
 
-
-
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -30,8 +28,6 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 universe u v
 
 noncomputable section
-
-namespace Mathoverflow1973
 
 local infixr:80 " ≫ₚ " => Path.trans
 
@@ -1825,5 +1821,3 @@ theorem SphereHomology.twoOpenCover_fundamentalGroup_eq_one {X : Type*} [Topolog
       change D.inclusionHomV a = 1
       rw [ha, map_one]
   exact DFunLike.congr_fun h g
-
-end Mathoverflow1973

@@ -155,9 +155,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 theorem BranchedQuotientAtlas.Data.contDiffOn_transition {E M Q : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
     {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) (i j : ι) :
@@ -214,6 +211,5 @@ def LocalOrbitQuotient.localHomeomorph {G X : Type*} [Group G] [TopologicalSpace
     (localToImage_continuous H U hU) (localToImage_isOpenMap H U hU)
 
 
-end Mathoverflow1973
 
 end

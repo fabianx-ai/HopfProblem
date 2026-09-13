@@ -68,8 +68,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1980,4 +1978,3 @@ structure AdaptedWindows (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] 
             Metric.closedBall (0 : (data p).chart.PositiveCoordinates) (2 * (data p).radius) →
         ∀ᶠ y in 𝓝 ((data p).chart.splitChart.symm z), field y = (data p).chart.descentField y
 
-end Mathoverflow1973

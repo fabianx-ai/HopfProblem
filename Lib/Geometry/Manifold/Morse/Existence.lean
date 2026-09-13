@@ -48,8 +48,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2247,4 +2245,3 @@ theorem ManifoldSmoothing.exists_smooth_homotopy_with_collars {E G H K X N : Typ
       map_zero_left := fun x => hlo 0 x (by norm_num)
       map_one_left := fun x => hhi 1 x (by norm_num) }
   exact ⟨H', hF, hlo, hhi⟩
-end Mathoverflow1973

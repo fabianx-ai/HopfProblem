@@ -55,8 +55,6 @@ open Set Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-- The pulled-back cube: the inverse image of the real cube `realCubeSet n` under
 the continuous linear equivalence `L`. -/
 def DiskCube.target {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : ℕ}
@@ -165,4 +163,3 @@ theorem DiskCube.symm_boundary_iff {V : Type*} [NormedAddCommGroup V] [NormedSpa
     ‖((homeomorph L).symm z : V)‖ = 1 ↔ z ∈ Cube.boundary (Fin n) := by
   rw [← boundary_iff, Homeomorph.apply_symm_apply]
 
-end Mathoverflow1973

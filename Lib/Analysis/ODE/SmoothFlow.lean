@@ -46,8 +46,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1044,4 +1042,3 @@ theorem SmoothODE.partialChartField_flow_shift {E M : Type*} [NormedAddCommGroup
         (FlowConstruction.partialChartField Φ.symm W (F (-t) x))
   rw [← hmodel _ hxΦ]
   exact (mpullback_flow_time F hs hF (-t) x).symm
-end Mathoverflow1973

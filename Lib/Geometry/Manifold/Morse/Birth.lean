@@ -61,8 +61,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -956,6 +954,5 @@ theorem MorseCancellation.exists_excellent_indexed_morse_birth {E M : Type*} [No
       hiq, hpq, hpband, hqband, hcount, hcrit, hexterior, hkeep, hck.symm, hck'.symm,
       fun j hj hj' => (hcothers j hj hj').symm⟩
 
-end Mathoverflow1973
 
 end

@@ -161,8 +161,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -858,7 +856,7 @@ theorem SpecialPeriods.triangleRealEquiv_inv (g : TriangleGroup) :
     triangleRealEquiv g⁻¹ = (triangleRealEquiv g).symm :=
   triangleRealRepresentation.map_inv g
 
-theorem SpecialPeriods.triangleRealEquiv_realCast (g : TriangleGroup) (v : Lattice) :
+theorem SpecialPeriods.triangleRealEquiv_realCast (g : TriangleGroup) (v : PeriodLattice) :
     triangleRealEquiv g (Elliptic.realCast v) =
       Elliptic.realCast ((triangleDualRepresentation g : LatticeMatrix) *ᵥ v) := by
   rw [triangleRealEquiv_apply]
@@ -8707,27 +8705,27 @@ abbrev Elliptic.Equivariant.Data.TotalSpace {j : Elliptic.Kind}
   D.periods.TotalSpace
 
 def Elliptic.Equivariant.Data.permutation {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) : Equiv.Perm D.TotalSpace :=
+    (v : PeriodLattice) : Equiv.Perm D.TotalSpace :=
   Elliptic.familyPermutation j v
 
 @[simp]
 theorem Elliptic.Equivariant.Data.permutation_apply {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (x : D.TotalSpace) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (x : D.TotalSpace) :
     D.permutation v x = (Elliptic.familyRotation j x.1, Elliptic.flatTorusAffine j v x.2) :=
   rfl
 
 theorem Elliptic.Equivariant.Data.permutation_pow_order {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     D.permutation v ^ j.order = 1 :=
   Elliptic.familyPermutation_pow_order j v hv
 
 @[instance_reducible]
 def Elliptic.Equivariant.Data.action {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : j.matrix *ᵥ v = v) : MulAction (Elliptic.CyclicGroup j) D.TotalSpace :=
+    (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) : MulAction (Elliptic.CyclicGroup j) D.TotalSpace :=
   Elliptic.familyAction j v hv
 
 theorem Elliptic.Equivariant.Data.action_apply {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : D.TotalSpace) :
     letI := D.action v hv
     g • x =
@@ -8736,19 +8734,19 @@ theorem Elliptic.Equivariant.Data.action_apply {j : Elliptic.Kind}
   Elliptic.familyAction_apply j v hv g x
 
 theorem Elliptic.Equivariant.Data.action_free {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := D.action v hv.1
     IsCancelSMul (Elliptic.CyclicGroup j) D.TotalSpace :=
   Elliptic.familyAction_free j v hv
 
 theorem Elliptic.Equivariant.Data.action_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v) :
     letI := D.action v hv
     ContinuousConstSMul (Elliptic.CyclicGroup j) D.TotalSpace :=
   Elliptic.familyAction_continuous j v hv
 
 theorem Elliptic.Equivariant.Data.action_discPower {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : D.TotalSpace) :
     letI := D.action v hv
     Elliptic.discPower j.order j.order_pos (g • x).1 =
@@ -8835,7 +8833,7 @@ theorem Elliptic.Equivariant.Data.equivariantCoveringManifold :
 attribute [local instance] Elliptic.Equivariant.Data.equivariantCoveringChartedSpace
     Elliptic.Equivariant.Data.equivariantCoveringManifold in
 def Elliptic.Equivariant.Data.complexLift {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
+    (v : PeriodLattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
     SpecialPeriods.Disc × ComplexPlane₂ :=
   (Elliptic.familyRotation j x.1,
     Elliptic.linearMatrix j (D.periods.point x.1) *ᵥ x.2 +
@@ -8845,7 +8843,7 @@ def Elliptic.Equivariant.Data.complexLift {j : Elliptic.Kind} (D : Elliptic.Equi
 attribute [local instance] Elliptic.Equivariant.Data.equivariantCoveringChartedSpace
     Elliptic.Equivariant.Data.equivariantCoveringManifold in
 theorem Elliptic.Equivariant.Data.complexLift_quotientMap {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (x : SpecialPeriods.Disc × ComplexPlane₂) :
     D.periods.quotientMap (D.complexLift v x) = D.permutation v (D.periods.quotientMap x) := by
   change
     (Elliptic.familyRotation j x.1,
@@ -8911,7 +8909,7 @@ theorem Elliptic.Equivariant.Data.linearLift_holomorphic {j : Elliptic.Kind}
 attribute [local instance] Elliptic.Equivariant.Data.equivariantCoveringChartedSpace
     Elliptic.Equivariant.Data.equivariantCoveringManifold in
 theorem Elliptic.Equivariant.Data.complexLift_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) :
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (D.complexLift v) := by
   have hf :
@@ -8929,7 +8927,7 @@ theorem Elliptic.Equivariant.Data.complexLift_holomorphic {j : Elliptic.Kind}
 attribute [local instance] Elliptic.Equivariant.Data.equivariantCoveringChartedSpace
     Elliptic.Equivariant.Data.equivariantCoveringManifold in
 theorem Elliptic.Equivariant.Data.permutation_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) :
     letI := D.periods.totalChartedSpace
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
       (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (D.permutation v) := by
@@ -8946,7 +8944,7 @@ theorem Elliptic.Equivariant.Data.permutation_holomorphic {j : Elliptic.Kind}
 attribute [local instance] Elliptic.Equivariant.Data.equivariantCoveringChartedSpace
     Elliptic.Equivariant.Data.equivariantCoveringManifold in
 theorem Elliptic.Equivariant.Data.action_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) :
     letI := D.periods.totalChartedSpace
     letI := D.action v hv
@@ -8977,7 +8975,7 @@ theorem Elliptic.Equivariant.Data.upstairsProjection_proper {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.upstairsProjection_invariant {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : j.matrix *ᵥ v = v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : j.matrix *ᵥ v = v)
     (g : Elliptic.CyclicGroup j) (x : D.TotalSpace) :
     letI := D.action v hv
     D.upstairsProjection (g • x) = D.upstairsProjection x :=
@@ -8985,12 +8983,12 @@ theorem Elliptic.Equivariant.Data.upstairsProjection_invariant {j : Elliptic.Kin
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 def Elliptic.Equivariant.Data.Space {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) : Type :=
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) : Type :=
   @Elliptic.FiniteQuotient.Space (Elliptic.CyclicGroup j) D.TotalSpace _ (D.action v hv.1)
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 instance Elliptic.Equivariant.Data.spaceTopology {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     TopologicalSpace (D.Space v hv) :=
   inferInstanceAs
     (TopologicalSpace
@@ -8998,25 +8996,25 @@ instance Elliptic.Equivariant.Data.spaceTopology {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 def Elliptic.Equivariant.Data.quotient {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) : D.TotalSpace → D.Space v hv :=
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) : D.TotalSpace → D.Space v hv :=
   @Elliptic.FiniteQuotient.project (Elliptic.CyclicGroup j) D.TotalSpace _ (D.action v hv.1)
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_surjective {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Function.Surjective (D.quotient v hv) :=
   Quotient.mk_surjective
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Continuous (D.quotient v hv) := by
   let := D.action v hv.1
   exact Elliptic.FiniteQuotient.project_continuous (Elliptic.CyclicGroup j) D.TotalSpace
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_eq_iff_mem_orbit {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x y : D.TotalSpace) :
     letI := D.action v hv.1
     D.quotient v hv x = D.quotient v hv y ↔ x ∈ MulAction.orbit (Elliptic.CyclicGroup j) y := by
@@ -9026,7 +9024,7 @@ theorem Elliptic.Equivariant.Data.quotient_eq_iff_mem_orbit {j : Elliptic.Kind}
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 @[simp]
 theorem Elliptic.Equivariant.Data.quotient_smul {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (g : Elliptic.CyclicGroup j) (x : D.TotalSpace) :
     letI := D.action v hv.1
     D.quotient v hv (g • x) = D.quotient v hv x := by
@@ -9035,14 +9033,14 @@ theorem Elliptic.Equivariant.Data.quotient_smul {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 instance Elliptic.Equivariant.Data.spaceT2 {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) : T2Space (D.Space v hv) := by
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) : T2Space (D.Space v hv) := by
   let := D.action v hv.1
   let := D.action_continuous v hv.1
   exact Elliptic.FiniteQuotient.spaceT2Space (Elliptic.CyclicGroup j) D.TotalSpace
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 instance Elliptic.Equivariant.Data.spaceSecondCountable {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     SecondCountableTopology (D.Space v hv) := by
   let := D.action v hv.1
   let := D.action_continuous v hv.1
@@ -9050,7 +9048,7 @@ instance Elliptic.Equivariant.Data.spaceSecondCountable {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotientCoveringMap {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := D.action v hv.1
     IsQuotientCoveringMap (D.quotient v hv) (Elliptic.CyclicGroup j) := by
   let := D.action v hv.1
@@ -9061,7 +9059,7 @@ theorem Elliptic.Equivariant.Data.quotientCoveringMap {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_isCoveringMap {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     IsCoveringMap (D.quotient v hv) := by
   let := D.action v hv.1
   exact (D.quotientCoveringMap v hv).isCoveringMap
@@ -9069,7 +9067,7 @@ theorem Elliptic.Equivariant.Data.quotient_isCoveringMap {j : Elliptic.Kind}
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 @[instance_reducible]
 def Elliptic.Equivariant.Data.chartedSpace {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     ChartedSpace Elliptic.FamilyModel (D.Space v hv) := by
   let := D.periods.totalChartedSpace
   let := D.action v hv.1
@@ -9077,7 +9075,7 @@ def Elliptic.Equivariant.Data.chartedSpace {j : Elliptic.Kind} (D : Elliptic.Equ
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.isManifold {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := D.chartedSpace v hv
     IsManifold (modelWithCornersSelf ℂ Elliptic.FamilyModel) ω (D.Space v hv) := by
   let := D.periods.totalChartedSpace
@@ -9087,7 +9085,7 @@ theorem Elliptic.Equivariant.Data.isManifold {j : Elliptic.Kind} (D : Elliptic.E
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_holomorphic {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     letI := D.periods.totalChartedSpace
     letI := D.chartedSpace v hv
     ContMDiff (modelWithCornersSelf ℂ Elliptic.FamilyModel)
@@ -9101,7 +9099,7 @@ theorem Elliptic.Equivariant.Data.quotient_holomorphic {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.quotient_fibre_card {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (y : D.Space v hv) : Nat.card (D.quotient v hv ⁻¹' { y }) = j.order := by
   let := D.action v hv.1
   let := D.action_continuous v hv.1
@@ -9113,7 +9111,7 @@ theorem Elliptic.Equivariant.Data.quotient_fibre_card {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 def Elliptic.Equivariant.Data.projection {j : Elliptic.Kind} (D : Elliptic.Equivariant.Data j)
-    (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) : D.Space v hv → SpecialPeriods.Disc := by
+    (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) : D.Space v hv → SpecialPeriods.Disc := by
   let := D.action v hv.1
   exact
     Elliptic.FiniteQuotient.descend D.upstairsProjection (D.upstairsProjection_invariant v hv.1)
@@ -9121,14 +9119,14 @@ def Elliptic.Equivariant.Data.projection {j : Elliptic.Kind} (D : Elliptic.Equiv
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 @[simp]
 theorem Elliptic.Equivariant.Data.projection_quotient {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v)
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v)
     (x : D.TotalSpace) :
     D.projection v hv (D.quotient v hv x) = Elliptic.discPower j.order j.order_pos x.1 :=
   rfl
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.projection_surjective {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Function.Surjective (D.projection v hv) := by
   let := D.action v hv.1
   exact
@@ -9137,7 +9135,7 @@ theorem Elliptic.Equivariant.Data.projection_surjective {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.projection_proper {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     IsProperMap (D.projection v hv) := by
   let := D.action v hv.1
   exact
@@ -9146,13 +9144,13 @@ theorem Elliptic.Equivariant.Data.projection_proper {j : Elliptic.Kind}
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.projection_continuous {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     Continuous (D.projection v hv) :=
   (D.projection_proper v hv).continuous
 
 attribute [local instance] Elliptic.Equivariant.Data.discLocallyCompact in
 theorem Elliptic.Equivariant.Data.projection_central_fibre {j : Elliptic.Kind}
-    (D : Elliptic.Equivariant.Data j) (v : Lattice) (hv : Elliptic.AdmissibleTwist j v) :
+    (D : Elliptic.Equivariant.Data j) (v : PeriodLattice) (hv : Elliptic.AdmissibleTwist j v) :
     D.projection v hv ⁻¹' { Elliptic.discZero } =
       D.quotient v hv '' {x : D.TotalSpace | x.1 = Elliptic.discZero} := by
   let := D.action v hv.1
@@ -10075,6 +10073,5 @@ def SpecialPeriods.Threefold.CuspPiece.nativeToCommon (D : SpecialPeriods.CuspFa
     SpecialPeriods.Threefold.ModelChange.diffeomorph SpecialPeriods.Threefold.cuspModelEquiv
       (Space D C) ω
 
-end Mathoverflow1973
 
 end

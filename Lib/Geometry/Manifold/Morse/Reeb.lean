@@ -53,8 +53,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -732,4 +730,3 @@ theorem ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E M : Ty
     cq.neg.nonempty_sublevelDisk_before_next_critical hf.neg hminNeg (neg_lt_neg haq) hregularR
   exact ⟨homeomorphSphereOfSublevelDisks L R⟩
 
-end Mathoverflow1973

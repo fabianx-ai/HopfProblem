@@ -66,8 +66,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Evaluating `crossProductTriangle` at the degenerate zero simplex on the left
@@ -5303,4 +5301,3 @@ theorem Hurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpac
         F v)
       (coherentFaceBoundaryHomotopy_const H H' h x hc)
 
-end Mathoverflow1973

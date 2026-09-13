@@ -74,8 +74,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -330,4 +328,3 @@ theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_injective_chain_conditi
     exact cycle_of_boundary_relation f n (hf (n - 1)) c.1 (cycle_condition K n c) z b hb
   · intro n c b hb
     exact hinj n c.1 (cycle_condition L n c) b hb
-end Mathoverflow1973

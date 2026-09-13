@@ -49,8 +49,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -1835,4 +1833,3 @@ theorem FlowConstruction.frontier_sublevel_eq_of_strict_flow {X : Type*}
     have hstrict := htop (F s x) hyeq (-s) (by linarith)
     rw [← F.map_add, neg_add_cancel, F.map_zero_apply, hx] at hstrict
     exact lt_irrefl b hstrict
-end Mathoverflow1973

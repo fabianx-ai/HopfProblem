@@ -65,8 +65,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -2478,4 +2476,3 @@ theorem MorseCancellation.isCompact_morseClosedBlock {E M : Type*} [NormedAddCom
   (ProperSpace.isCompact_closedBall (0 : c.NegativeCoordinates) R).prod
       (ProperSpace.isCompact_closedBall (0 : c.PositiveCoordinates) R) |>.image_of_continuousOn
     (c.splitChart.symm.contMDiffOn_toFun.continuousOn.mono hblock)
-end Mathoverflow1973

@@ -139,8 +139,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -274,7 +272,7 @@ theorem TrianglePeriodFamilyHomologyAlgebra.overlapMap_mem_range_iff {H : Type*}
     apply (rowEquiv H).injective
     rw [row_overlapMap_column_symm, rowEquiv_apply, hbc]
 
-abbrev Lattice :=
+abbrev PeriodLattice :=
   Fin 4 → ℤ
 
 abbrev LatticeMatrix :=
@@ -298,13 +296,13 @@ def A₂ : LatticeMatrix :=
 def M₀ : LatticeMatrix :=
   !![1, 0, 0, 0; 0, 1, 0, 0; 0, 1, 1, 0; -1, 0, 0, 1]
 
-def ε : Lattice :=
+def ε : PeriodLattice :=
   ![1, 2, -4, 0]
 
-def ε' : Lattice :=
+def ε' : PeriodLattice :=
   ![1, 3, -3, 0]
 
-def γ (v : Lattice) : ℤ :=
+def γ (v : PeriodLattice) : ℤ :=
   v 0
 
 def B₀ : Matrix (Fin 2) (Fin 2) ℤ :=
@@ -329,11 +327,11 @@ theorem A₂_fixes_ε' : A₂ *ᵥ ε' = ε' := by decide
 theorem γ_ε' : γ ε' = 1 :=
   rfl
 
-theorem M₀_sub_one_mulVec (v : Lattice) : (M₀ - 1) *ᵥ v = ![0, 0, v 1, -v 0] := by
+theorem M₀_sub_one_mulVec (v : PeriodLattice) : (M₀ - 1) *ᵥ v = ![0, 0, v 1, -v 0] := by
   ext i
   fin_cases i <;> simp [M₀, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Matrix.one_apply]
 
-theorem M₀_sub_one_kernel (v : Lattice) : (M₀ - 1) *ᵥ v = 0 ↔ v 0 = 0 ∧ v 1 = 0 := by
+theorem M₀_sub_one_kernel (v : PeriodLattice) : (M₀ - 1) *ᵥ v = 0 ↔ v 0 = 0 ∧ v 1 = 0 := by
   rw [M₀_sub_one_mulVec]
   constructor
   · intro h
@@ -345,7 +343,7 @@ theorem M₀_sub_one_kernel (v : Lattice) : (M₀ - 1) *ᵥ v = 0 ↔ v 0 = 0 �
   · rintro ⟨h₀, h₁⟩
     simp [h₀, h₁]
 
-theorem M₀_sub_one_range (v : Lattice) : (∃ w : Lattice, (M₀ - 1) *ᵥ w = v) ↔ v 0 = 0 ∧ v 1 = 0 :=
+theorem M₀_sub_one_range (v : PeriodLattice) : (∃ w : PeriodLattice, (M₀ - 1) *ᵥ w = v) ↔ v 0 = 0 ∧ v 1 = 0 :=
   by
   constructor
   · rintro ⟨w, rfl⟩
@@ -356,7 +354,7 @@ theorem M₀_sub_one_range (v : Lattice) : (∃ w : Lattice, (M₀ - 1) *ᵥ w =
     ext i
     fin_cases i <;> simp [h₀, h₁]
 
-theorem A₁_fixed_iff (v : Lattice) : A₁ *ᵥ v = v ↔ v 1 = 2 * v 0 ∧ v 2 = -4 * v 0 := by
+theorem A₁_fixed_iff (v : PeriodLattice) : A₁ *ᵥ v = v ↔ v 1 = 2 * v 0 ∧ v 2 = -4 * v 0 := by
   constructor
   · intro h
     have h₁ := congrFun h 1
@@ -368,7 +366,7 @@ theorem A₁_fixed_iff (v : Lattice) : A₁ *ᵥ v = v ↔ v 1 = 2 * v 0 ∧ v 2
     ext i
     fin_cases i <;> simp [A₁, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h₁, h₂] <;> ring
 
-theorem A₂_fixed_iff (v : Lattice) : A₂ *ᵥ v = v ↔ v 1 = 3 * v 0 ∧ v 2 = -3 * v 0 := by
+theorem A₂_fixed_iff (v : PeriodLattice) : A₂ *ᵥ v = v ↔ v 1 = 3 * v 0 ∧ v 2 = -3 * v 0 := by
   constructor
   · intro h
     have h₁ := congrFun h 1
@@ -453,14 +451,14 @@ theorem PeriodTorusHigherHomologyExterior.cubeA₂_eq :
 theorem PeriodTorusHigherHomologyExterior.cubeM₀_eq :
     cubeM₀ = !![1, 0, 0, 0; 0, 1, 0, 0; 0, 1, 1, 0; -1, 0, 0, 1] := by decide
 
-def TrianglePeriodFamilyHomologyLattice.deltaOne : (Lattice × Lattice) →ₗ[ℤ] Lattice :=
+def TrianglePeriodFamilyHomologyLattice.deltaOne : (PeriodLattice × PeriodLattice) →ₗ[ℤ] PeriodLattice :=
   TrianglePeriodFamilyHomologyAlgebra.delta A₁.mulVecLin A₂.mulVecLin
 
-def TrianglePeriodFamilyHomologyLattice.deltaThree : (Lattice × Lattice) →ₗ[ℤ] Lattice :=
+def TrianglePeriodFamilyHomologyLattice.deltaThree : (PeriodLattice × PeriodLattice) →ₗ[ℤ] PeriodLattice :=
   TrianglePeriodFamilyHomologyAlgebra.delta PeriodTorusHigherHomologyExterior.cubeA₁.mulVecLin
     PeriodTorusHigherHomologyExterior.cubeA₂.mulVecLin
 
-def TrianglePeriodFamilyHomologyLattice.functionalOdd : Lattice →ₗ[ℤ] ℤ :=
+def TrianglePeriodFamilyHomologyLattice.functionalOdd : PeriodLattice →ₗ[ℤ] ℤ :=
   LinearMap.proj 0
 
 theorem TrianglePeriodFamilyHomologyLattice.functionalOdd_surjective :
@@ -468,7 +466,7 @@ theorem TrianglePeriodFamilyHomologyLattice.functionalOdd_surjective :
   intro a
   exact ⟨![a, 0, 0, 0], rfl⟩
 
-theorem TrianglePeriodFamilyHomologyLattice.deltaOne_apply (b c : Lattice) :
+theorem TrianglePeriodFamilyHomologyLattice.deltaOne_apply (b c : PeriodLattice) :
     deltaOne (b, c) =
       ![0, 6 * b 0 - b 1 + b 2 - c 1 - c 2, -6 * b 0 - b 1 - 2 * b 2 - 6 * c 0 + c 1 - c 2,
         -2 * b 0 + b 1 + 3 * c 0 + c 2] := by
@@ -477,7 +475,7 @@ theorem TrianglePeriodFamilyHomologyLattice.deltaOne_apply (b c : Lattice) :
   fin_cases i <;> simp [A₁, A₂, dotProduct, Fin.sum_univ_succ, Matrix.vecHead, Matrix.vecTail] <;>
     ring
 
-theorem TrianglePeriodFamilyHomologyLattice.deltaThree_apply (b c : Lattice) :
+theorem TrianglePeriodFamilyHomologyLattice.deltaThree_apply (b c : PeriodLattice) :
     deltaThree (b, c) =
       ![0, -b 0 - b 1 + b 2 - c 1 - c 2, b 0 - b 1 - 2 * b 2 + c 0 + c 1 - c 2,
         -2 * b 0 - 6 * b 1 + 3 * c 0 - 6 * c 2] := by
@@ -489,19 +487,19 @@ theorem TrianglePeriodFamilyHomologyLattice.deltaThree_apply (b c : Lattice) :
   ext i
   fin_cases i <;> simp [dotProduct, Fin.sum_univ_succ, Matrix.vecHead, Matrix.vecTail] <;> ring
 
-def TrianglePeriodFamilyHomologyLattice.preimageOne (x : Lattice) : Lattice × Lattice :=
+def TrianglePeriodFamilyHomologyLattice.preimageOne (x : PeriodLattice) : PeriodLattice × PeriodLattice :=
   (![0, x 3, -x 1 - x 2 - 2 * x 3, 0], ![0, -2 * x 1 - x 2 - 3 * x 3, 0, 0])
 
-def TrianglePeriodFamilyHomologyLattice.preimageThree (x : Lattice) : Lattice × Lattice :=
+def TrianglePeriodFamilyHomologyLattice.preimageThree (x : PeriodLattice) : PeriodLattice × PeriodLattice :=
   (![x 3, 0, x 3 - x 1 - x 2, 0], ![x 3, -2 * x 1 - x 2, 0, 0])
 
-theorem TrianglePeriodFamilyHomologyLattice.deltaOne_preimage (x : Lattice) :
+theorem TrianglePeriodFamilyHomologyLattice.deltaOne_preimage (x : PeriodLattice) :
     deltaOne (preimageOne x) = ![0, x 1, x 2, x 3] := by
   rw [preimageOne, deltaOne_apply]
   ext i
   fin_cases i <;> simp <;> ring
 
-theorem TrianglePeriodFamilyHomologyLattice.deltaThree_preimage (x : Lattice) :
+theorem TrianglePeriodFamilyHomologyLattice.deltaThree_preimage (x : PeriodLattice) :
     deltaThree (preimageThree x) = ![0, x 1, x 2, x 3] := by
   rw [preimageThree, deltaThree_apply]
   ext i
@@ -538,22 +536,22 @@ theorem TrianglePeriodFamilyHomologyLattice.deltaThree_range :
     fin_cases i <;> simp [hx0]
 
 def TrianglePeriodFamilyHomologyLattice.cokernelOneEquiv :
-    (Lattice ⧸ LinearMap.range deltaOne) ≃ₗ[ℤ] ℤ :=
+    (PeriodLattice ⧸ LinearMap.range deltaOne) ≃ₗ[ℤ] ℤ :=
   (Submodule.quotEquivOfEq _ _ deltaOne_range).trans
     (functionalOdd.quotKerEquivOfSurjective functionalOdd_surjective)
 
 def TrianglePeriodFamilyHomologyLattice.cokernelThreeEquiv :
-    (Lattice ⧸ LinearMap.range deltaThree) ≃ₗ[ℤ] ℤ :=
+    (PeriodLattice ⧸ LinearMap.range deltaThree) ≃ₗ[ℤ] ℤ :=
   (Submodule.quotEquivOfEq _ _ deltaThree_range).trans
     (functionalOdd.quotKerEquivOfSurjective functionalOdd_surjective)
 
 @[simp]
-theorem TrianglePeriodFamilyHomologyLattice.cokernelThreeEquiv_mk (x : Lattice) :
+theorem TrianglePeriodFamilyHomologyLattice.cokernelThreeEquiv_mk (x : PeriodLattice) :
     cokernelThreeEquiv (Submodule.Quotient.mk x) = x 0 := by
   simp [cokernelThreeEquiv]
   rfl
 
-theorem ThreefoldHomology.SecondSource.kernel_coordinates (x y : Lattice)
+theorem ThreefoldHomology.SecondSource.kernel_coordinates (x y : PeriodLattice)
     (h : TrianglePeriodFamilyHomologyLattice.deltaOne (x, y) = 0) :
     x 2 = -4 * x 0 ∧ y 1 = 3 * y 0 ∧ y 2 = 2 * x 0 - x 1 - 3 * y 0 := by
   rw [TrianglePeriodFamilyHomologyLattice.deltaOne_apply] at h
@@ -565,25 +563,25 @@ theorem ThreefoldHomology.SecondSource.kernel_coordinates (x y : Lattice)
   change -2 * x 0 + x 1 + 3 * y 0 + y 2 = 0 at h₃
   omega
 
-def ThreefoldHomology.SecondSource.deltaVector : Lattice :=
+def ThreefoldHomology.SecondSource.deltaVector : PeriodLattice :=
   ![0, 0, 0, 1]
 
-def ThreefoldHomology.SecondSource.threeCoordinates (κ₃ κ₄ : ℤ) (x y : Lattice) : Fin 2 → ℤ :=
+def ThreefoldHomology.SecondSource.threeCoordinates (κ₃ κ₄ : ℤ) (x y : PeriodLattice) : Fin 2 → ℤ :=
   ![x 3 + (x 1 - 2 * x 0) + (κ₄ * y 0 - y 3) + κ₃ * x 0, x 0]
 
-def ThreefoldHomology.SecondSource.fourCoordinates (_x y : Lattice) : Fin 2 → ℤ :=
+def ThreefoldHomology.SecondSource.fourCoordinates (_x y : PeriodLattice) : Fin 2 → ℤ :=
   ![0, -y 0]
 
-def ThreefoldHomology.SecondSource.cuspCoordinates (κ₄ : ℤ) (x y : Lattice) : Lattice :=
+def ThreefoldHomology.SecondSource.cuspCoordinates (κ₄ : ℤ) (x y : PeriodLattice) : PeriodLattice :=
   ![0, 0, x 1 - 2 * x 0, κ₄ * y 0 - y 3]
 
-def ThreefoldHomology.SecondSource.threeWangVector (κ₃ : ℤ) (a : Fin 2 → ℤ) : Lattice :=
+def ThreefoldHomology.SecondSource.threeWangVector (κ₃ : ℤ) (a : Fin 2 → ℤ) : PeriodLattice :=
   a 1 • ε + (a 0 - κ₃ * a 1) • deltaVector
 
-def ThreefoldHomology.SecondSource.fourWangVector (κ₄ : ℤ) (a : Fin 2 → ℤ) : Lattice :=
+def ThreefoldHomology.SecondSource.fourWangVector (κ₄ : ℤ) (a : Fin 2 → ℤ) : PeriodLattice :=
   a 1 • (-ε') + (2 * a 0 - κ₄ * a 1) • deltaVector
 
-theorem ThreefoldHomology.SecondSource.threeCoordinates_reconstruct (κ₃ κ₄ : ℤ) (x y : Lattice)
+theorem ThreefoldHomology.SecondSource.threeCoordinates_reconstruct (κ₃ κ₄ : ℤ) (x y : PeriodLattice)
     (h : TrianglePeriodFamilyHomologyLattice.deltaOne (x, y) = 0) :
     threeWangVector κ₃ (threeCoordinates κ₃ κ₄ x y) - A₂ *ᵥ cuspCoordinates κ₄ x y = x := by
   have hx₂ := (kernel_coordinates x y h).1
@@ -592,7 +590,7 @@ theorem ThreefoldHomology.SecondSource.threeCoordinates_reconstruct (κ₃ κ₄
       simp [threeWangVector, threeCoordinates, cuspCoordinates, deltaVector, ε, A₂, hx₂] <;>
     ring
 
-theorem ThreefoldHomology.SecondSource.fourCoordinates_reconstruct (κ₄ : ℤ) (x y : Lattice)
+theorem ThreefoldHomology.SecondSource.fourCoordinates_reconstruct (κ₄ : ℤ) (x y : PeriodLattice)
     (h : TrianglePeriodFamilyHomologyLattice.deltaOne (x, y) = 0) :
     fourWangVector κ₄ (fourCoordinates x y) - cuspCoordinates κ₄ x y = y := by
   have hy₁ := (kernel_coordinates x y h).2.1
@@ -602,12 +600,11 @@ theorem ThreefoldHomology.SecondSource.fourCoordinates_reconstruct (κ₄ : ℤ)
       simp [fourWangVector, fourCoordinates, cuspCoordinates, deltaVector, ε', hy₁, hy₂] <;>
     ring
 
-theorem ThreefoldHomology.SecondSource.cuspCoordinates_fixed (κ₄ : ℤ) (x y : Lattice) :
+theorem ThreefoldHomology.SecondSource.cuspCoordinates_fixed (κ₄ : ℤ) (x y : PeriodLattice) :
     M₀ *ᵥ cuspCoordinates κ₄ x y = cuspCoordinates κ₄ x y := by
   ext i
   fin_cases i <;> simp [cuspCoordinates, M₀, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
 
-end Mathoverflow1973
 
 end

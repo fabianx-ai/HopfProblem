@@ -167,9 +167,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
-
 def PeriodTorusHigherHomology.rightTranslation {G : Type*} [TopologicalSpace G] [AddGroup G]
     [IsTopologicalAddGroup G] (a : G) : C(G, G) :=
   ⟨fun x => x + a, continuous_id.add continuous_const⟩
@@ -200,6 +197,5 @@ theorem PeriodTorusHigherHomology.rightTranslation_singularHomologyMap {G : Type
   rightTranslation_singularHomologyMap_of_path (PathConnectedSpace.somePath 0 a) n
 
 
-end Mathoverflow1973
 
 end

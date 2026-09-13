@@ -59,8 +59,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### The tower storeys -/
 
 /-- Two consecutive storeys of a coherent simplex-homotopy tower, with the basepoint and face

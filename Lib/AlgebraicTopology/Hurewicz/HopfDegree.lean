@@ -69,7 +69,7 @@ open Topology
 
 noncomputable section
 
-namespace Mathoverflow1973.Hurewicz
+namespace Hurewicz
 
 /-! ### Homology vanishing and strong induction -/
 
@@ -301,4 +301,4 @@ theorem right_inverse_is_left_inverse {m : ℕ} {X : Type} [TopologicalSpace X]
   rw [SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply] at he
   exact he
 
-end Mathoverflow1973.Hurewicz
+end Hurewicz

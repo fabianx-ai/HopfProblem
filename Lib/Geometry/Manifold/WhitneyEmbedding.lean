@@ -64,8 +64,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -850,4 +848,3 @@ theorem NativeEuclideanEmbedding.contMDiff_normalProjection {E M : Type*}
     funext e.normalProjection_eq
   rw [heq]
   exact contMDiff_const.sub e.contMDiff_tangentProjection
-end Mathoverflow1973

@@ -60,8 +60,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -419,4 +417,3 @@ instance ProjectionBundle.vectorPrebundle_isContMDiff {F K : Type*}
     exact
       ⟨coordinateChange P q x₀ x₁, contMDiffOn_coordinateChange P q hs x₀ x₁,
         coordinateChange_apply P hP q hs x₀ x₁⟩
-end Mathoverflow1973

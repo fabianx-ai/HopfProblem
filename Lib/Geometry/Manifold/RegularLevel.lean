@@ -47,8 +47,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -403,4 +401,3 @@ theorem RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedAddComm
     hi
       (congrArg (mfderiv 𝓘(ℝ, Model E) 𝓘(ℝ, E) (Subtype.val : { x : M // f x = b } → M) (g x))
         hvw)
-end Mathoverflow1973

@@ -57,8 +57,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -169,4 +167,3 @@ theorem OnePointCollapse.isQuotientMap_collapse {K : Type*} [TopologicalSpace K]
   exact
     Topology.IsQuotientMap.of_surjective_continuous (collapse_surjective F hne)
       (continuous_collapse F hF)
-end Mathoverflow1973

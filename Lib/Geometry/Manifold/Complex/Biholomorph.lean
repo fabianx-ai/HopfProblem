@@ -48,8 +48,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -216,4 +214,3 @@ theorem TriangleUniformizationGluing.biholomorphOfHomeomorph_toHomeomorph {M N :
     (biholomorphOfHomeomorph e he).toHomeomorph = e := by
   ext x
   rfl
-end Mathoverflow1973

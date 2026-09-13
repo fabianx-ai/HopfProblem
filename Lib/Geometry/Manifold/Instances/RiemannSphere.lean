@@ -44,8 +44,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -418,4 +416,3 @@ instance RiemannSphere.chartedSpace : ChartedSpace ℂ RiemannSphere :=
 /-- The Riemann sphere is a smooth manifold. -/
 instance RiemannSphere.isManifold : IsManifold (modelWithCornersSelf ℂ ℂ) ω RiemannSphere :=
   standardCharts.isManifold
-end Mathoverflow1973

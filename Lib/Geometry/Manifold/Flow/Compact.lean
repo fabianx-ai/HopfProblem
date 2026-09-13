@@ -47,8 +47,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -644,4 +642,3 @@ theorem isLocalDiffeomorphAt_of_invertible_mvfderiv {E F : Type*} [NormedAddComm
   rw [hdf]
   change f y = f (c.symm (c y))
   exact (congrArg f (c.left_inv' hy.1)).symm
-end Mathoverflow1973

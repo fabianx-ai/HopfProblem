@@ -174,8 +174,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -234,6 +232,5 @@ theorem mathoverflow_1973 :
       IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
   exact SixSphereComplexAtlas.exists_complex_atlas
 
-end Mathoverflow1973
 
 end

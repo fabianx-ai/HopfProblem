@@ -30,8 +30,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -179,4 +177,3 @@ theorem LocalOrbitQuotient.localToImage_injective {G X : Type*} [Group G] [Topol
   obtain ⟨g, hg⟩ := Quotient.exact hxy
   have hgH : g ∈ H := hreturn g ⟨x, ⟨y, y.property, hg⟩, x.property⟩
   exact (localProjection_eq_iff H U hU x y).mpr ⟨⟨g, hgH⟩, hg⟩
-end Mathoverflow1973

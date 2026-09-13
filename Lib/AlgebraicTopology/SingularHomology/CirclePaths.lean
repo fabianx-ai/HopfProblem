@@ -71,8 +71,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 open SingularHomology
 
 def PeriodTorusHigherHomology.CirclePaths.circleTranslation (a : ℝ) :
@@ -125,7 +123,6 @@ theorem PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTransl
     circleTranslation_inducedHomology]
   rfl
 
-
 def PeriodTorusHigherHomology.CirclePaths.positiveLoop :
     Path (0 : (CircleTopology.Circle)) 0
     where
@@ -139,14 +136,12 @@ theorem PeriodTorusHigherHomology.CirclePaths.positiveLoop_apply (t : unitInterv
     positiveLoop t = ((t : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
-
 def PeriodTorusHigherHomology.positiveCircleCross (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology
         ((CircleTopology.Circle) × X) (n + 1) :=
   crossProductHomology (CircleTopology.Circle) X n
     (SingularChains.loopHomologyClass CirclePaths.positiveLoop)
-
 
 theorem PeriodTorusHigherHomology.crossProductEdge_boundary_of_right_cycle {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 1)
@@ -183,7 +178,6 @@ theorem PeriodTorusHigherHomology.const_prodMk_id_eq_crossInsertLeft_mo1973_1279
   apply ContinuousMap.ext
   intro y
   rfl
-
 
 def PeriodTorusHigherHomology.biprodElement_mo1973_12801
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.X n) (b : L.X n) : (K ⊞ L).X n :=
@@ -422,13 +416,11 @@ theorem PeriodTorusHigherHomology.connectingHomomorphism_twoChain {X : Type} [To
   connectingHomomorphism_cycleClass U V hU hV hcover n (twoChainSmallCycle U V n a b z ha hb)
     (twoChainMiddle U V n a b) rfl z (twoChainMiddle_boundary U V n a b z ha hb)
 
-
 @[simp]
 theorem PeriodTorusHigherHomology.circleProjection_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
     circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0 :=
   crossProductHomology_snd n (SingularChains.loopHomologyClass CirclePaths.positiveLoop) b
-
 
 def PeriodTorusHigherHomology.CirclePaths.quarterIntersection :
     ↥(CircleTopology.arcU ∩
@@ -590,7 +582,6 @@ theorem PeriodTorusHigherHomology.CirclePaths.uCirclePath_trans_vCirclePath :
   · congr 1
     ring
 
-
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterTranslation_zero :
     circleTranslation (1 / 4) (0 : (CircleTopology.Circle)) =
@@ -719,7 +710,6 @@ theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_co
   apply ContinuousMap.ext
   intro x
   exact threeQuarterIntersectionSection_component X x
-
 
 theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Type)
     [TopologicalSpace X] (n : ℕ)
@@ -855,7 +845,6 @@ theorem PeriodTorusHigherHomology.threeQuarterIntersectionSection_toV (X : Type)
         ((ContinuousMap.const X CirclePaths.threeQuarterV).prodMk (ContinuousMap.id X)) :=
   rfl
 
-
 def PeriodTorusHigherHomology.uCrossChain (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.Chains (CircleTopology.productU X) (n + 1) :=
@@ -959,7 +948,6 @@ theorem PeriodTorusHigherHomology.arcCrossChains_inclusion_sum (X : Type) [Topol
         (SingularChains.pathChain CirclePaths.uCirclePath +
           SingularChains.pathChain CirclePaths.vCirclePath)
         b.1 := by rw [uCrossChain_inclusion, vCrossChain_inclusion, map_add, LinearMap.add_apply]
-
 
 def PeriodTorusHigherHomology.positiveCircleSmallCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -1068,7 +1056,6 @@ theorem PeriodTorusHigherHomology.circleBoundary_positiveCircleCross (X : Type)
   rw [circleBoundary_apply, circleBoundaryCoordinates_positiveCircleCross]
   exact neg_neg b
 
-
 @[simp]
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
@@ -1113,8 +1100,5 @@ theorem PeriodTorusHigherHomology.positiveCircleCross_naturality {X : Type} [Top
       simpa only [map_zero] using circleProductHomologyEquiv_symm_naturality f n (0, b)
     _ = _ :=
       (positiveCircleCross_eq_symm Y n (SingularMayerVietoris.singularHomologyMap f n b)).symm
-
-
-end Mathoverflow1973
 
 end

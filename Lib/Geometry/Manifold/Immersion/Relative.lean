@@ -62,8 +62,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -4641,4 +4639,3 @@ theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι :
     rw [hformula, hp]
     exact Ψ.right_inv' hs.2
 
-end Mathoverflow1973

@@ -63,8 +63,6 @@ universe u v
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Linear transverse chart corrections -/
 
 /-- A chart composed with a linear transverse correction on the `V` factor. -/
@@ -2783,4 +2781,3 @@ theorem MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension
     exact ht (x, w) y
   exact ⟨e, he, disjoint_ranges_of_native_transverse_dimension htrans hdim⟩
 
-end Mathoverflow1973

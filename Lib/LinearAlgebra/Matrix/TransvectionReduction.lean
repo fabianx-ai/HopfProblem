@@ -13,13 +13,11 @@ the coordinate-matrix API that transports `ℤ`-bases through these operations.
 ## Provenance
 
 Moved verbatim from `Hopf/Recognition.lean` (lane F0a). The declarations keep their
-`Mathoverflow1973.MorseCancellation.*` names so existing consumers re-point through unchanged
+`MorseCancellation.*` names so existing consumers re-point through unchanged
 fully qualified names; the upstream-shaped rename to `Matrix.*` is a separate commit.
 -/
 
 @[expose] public noncomputable section
-
-namespace Mathoverflow1973
 
 def MorseCancellation.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
     (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) : Matrix (Fin r) (Fin n) ℤ := fun i j =>
@@ -216,4 +214,3 @@ theorem MorseCancellation.functional_rows_of_matrix_product {H K : Type} [AddCom
   exact mul_comm _ _
 
 
-end Mathoverflow1973

@@ -54,8 +54,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 /-! ### Nullhomotopies from vanishing homotopy groups -/
 
 /-- A based cube map into a space with `Subsingleton (π_ n X x)` is homotopic relative
@@ -823,4 +821,3 @@ theorem Hurewicz.normalizedCycleAssignment_class {X : Type} [TopologicalSpace X]
       constantSimplexCycle_class, zsmul_zero, sub_zero]
     exact straightenedCycle_class n H H' hface h₀ c
 
-end Mathoverflow1973

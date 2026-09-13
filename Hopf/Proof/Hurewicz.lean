@@ -144,8 +144,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -212,6 +210,5 @@ theorem SphereHomology.unitSphere_piTwo_subsingleton (n : ℕ) (x : UnitSphere (
   exact (SecondHurewicz.SimplyConnected.hurewiczPi2Equiv x).injective.subsingleton
 
 
-end Mathoverflow1973
 
 end

@@ -52,46 +52,46 @@ is an evidence command rather than library content.
 #print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
 
 -- Lane A (singular homology core)
-#print axioms Mathoverflow1973.SingularMayerVietoris.exact_at_ambient
-#print axioms Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton
-#print axioms Mathoverflow1973.LinearSphereAction.homology_eq_sign_smul
+#print axioms SingularMayerVietoris.exact_at_ambient
+#print axioms SphereHomology.unitSphere_homology_subsingleton
+#print axioms LinearSphereAction.homology_eq_sign_smul
 
 -- Lane D1 (Morse theory I)
-#print axioms Mathoverflow1973.ManifoldMorse.exists_morse_function
-#print axioms Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
-#print axioms Mathoverflow1973.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
-#print axioms Mathoverflow1973.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
+#print axioms ManifoldMorse.exists_morse_function
+#print axioms SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
+#print axioms ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
+#print axioms ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
 
 -- Lane H (complex analysis)
-#print axioms Mathoverflow1973.RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
-#print axioms Mathoverflow1973.HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
-#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root
-#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_ball
+#print axioms RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
+#print axioms HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
+#print axioms AnalyticRootCover.exists_analytic_square_root
+#print axioms AnalyticRootCover.exists_analytic_square_root_ball
 
 -- Lane D2 (Whitney embedding, projection bundle, collar, cells)
-#print axioms Mathoverflow1973.exists_tubularNeighborhood_in_open_of_embedded_closedBall
+#print axioms exists_tubularNeighborhood_in_open_of_embedded_closedBall
 
 -- Lane I (quotients, mapping torus, split extensions)
-#print axioms Mathoverflow1973.SplitGroupExtension.mulEquiv
-#print axioms Mathoverflow1973.MappingTorusHomology.monodromyHomologyMap
+#print axioms SplitGroupExtension.mulEquiv
+#print axioms MappingTorusHomology.monodromyHomologyMap
 
 -- Lane C (Hurewicz theorem, higher degrees and sphere connectivity)
-#print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquiv
-#print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE
-#print axioms Mathoverflow1973.Hurewicz.pi_subsingleton_of_homology_vanishing
-#print axioms Mathoverflow1973.Hurewicz.sphere_pi_subsingleton_of_lt
-#print axioms Mathoverflow1973.Hurewicz.sphere_homotopicRel_of_topClass_eq
-#print axioms Mathoverflow1973.Hurewicz.sphere_homotopic_id_of_topClass
-#print axioms Mathoverflow1973.Hurewicz.right_inverse_is_left_inverse
-#print axioms Mathoverflow1973.Hurewicz.exists_basepoint_adjustment
-#print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural
-#print axioms Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt
-#print axioms Mathoverflow1973.DiskCube.homeomorph
-#print axioms Mathoverflow1973.DiskCube.boundary_iff
+#print axioms Hurewicz.hurewiczLinearEquiv
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE
+#print axioms Hurewicz.pi_subsingleton_of_homology_vanishing
+#print axioms Hurewicz.sphere_pi_subsingleton_of_lt
+#print axioms Hurewicz.sphere_homotopicRel_of_topClass_eq
+#print axioms Hurewicz.sphere_homotopic_id_of_topClass
+#print axioms Hurewicz.right_inverse_is_left_inverse
+#print axioms Hurewicz.exists_basepoint_adjustment
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+#print axioms Hurewicz.subsingleton_singularHomology_of_lt
+#print axioms DiskCube.homeomorph
+#print axioms DiskCube.boundary_iff
 
-#print axioms Mathoverflow1973.MorseCancellation.cancel_of_transverse_level_isotopy
-#print axioms Mathoverflow1973.MorseRearrangement.exists_morse_rearrangement_of_no_connection
-#print axioms Mathoverflow1973.MorseCancellation.exists_excellent_indexed_morse_birth
-#print axioms Mathoverflow1973.simplyConnectedSpace_of_open_cover
-#print axioms Mathoverflow1973.MorseCells.built_of_compact_smooth_manifold
-#print axioms Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
+#print axioms MorseCancellation.cancel_of_transverse_level_isotopy
+#print axioms MorseRearrangement.exists_morse_rearrangement_of_no_connection
+#print axioms MorseCancellation.exists_excellent_indexed_morse_birth
+#print axioms simplyConnectedSpace_of_open_cover
+#print axioms MorseCells.built_of_compact_smooth_manifold
+#print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros

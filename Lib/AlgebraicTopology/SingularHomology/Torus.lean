@@ -39,8 +39,6 @@ Hatcher, *Algebraic Topology*, §2.2 (Mayer–Vietoris, product homology).
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
-
 open SingularHomology
 
 abbrev PeriodTorusHigherHomology.ProductTorus (n : ℕ) :=
@@ -290,4 +288,3 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_succ_boundary (n : ℕ) :
       productTorusTopClass n :=
   congrArg Prod.snd (productTorusTopClass_succ_coordinates n)
 
-end Mathoverflow1973

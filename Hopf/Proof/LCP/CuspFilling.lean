@@ -152,8 +152,6 @@ universe u v
 
 noncomputable section
 
-namespace Mathoverflow1973
-
 local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
@@ -12860,7 +12858,7 @@ theorem CuspCentralHomology.circleBoundaryCellMap_eq_phaseAction
   intro p
   exact circleBoundaryCellMap_phaseAction C ε hε p.1 p.2
 
-def PeriodDomain.periodVector (p : PeriodDomain) : Lattice →+ ComplexPlane₂
+def PeriodDomain.periodVector (p : PeriodDomain) : PeriodLattice →+ ComplexPlane₂
     where
   toFun c := p.val.matrix *ᵥ (fun i => (c i : ℂ))
   map_zero' := by
@@ -12872,11 +12870,11 @@ def PeriodDomain.periodVector (p : PeriodDomain) : Lattice →+ ComplexPlane₂
     exact Matrix.mulVec_add _ _ _
 
 @[simp]
-theorem PeriodDomain.periodVector_apply (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.periodVector_apply (p : PeriodDomain) (c : PeriodLattice) :
     p.periodVector c = p.val.matrix *ᵥ (fun i => (c i : ℂ)) :=
   rfl
 
-theorem PeriodDomain.periodVector_eq_sum (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.periodVector_eq_sum (p : PeriodDomain) (c : PeriodLattice) :
     p.periodVector c = ∑ i, c i • p.basis i := by
   ext j
   simp [periodVector, Matrix.mulVec, dotProduct, p.basis_apply, zsmul_eq_mul, mul_comm]
@@ -12891,7 +12889,7 @@ theorem PeriodDomain.periodVector_injective (p : PeriodDomain) :
   exact h
 
 theorem PeriodDomain.mem_lattice_iff (p : PeriodDomain) (z : ComplexPlane₂) :
-    z ∈ p.lattice ↔ ∃ c : Lattice, p.periodVector c = z := by
+    z ∈ p.lattice ↔ ∃ c : PeriodLattice, p.periodVector c = z := by
   rw [p.lattice_eq_span_basis, Submodule.mem_span_range_iff_exists_fun]
   constructor
   · rintro ⟨c, hc⟩
@@ -12899,11 +12897,11 @@ theorem PeriodDomain.mem_lattice_iff (p : PeriodDomain) (z : ComplexPlane₂) :
   · rintro ⟨c, hc⟩
     exact ⟨c, (p.periodVector_eq_sum c).symm.trans hc⟩
 
-theorem PeriodDomain.periodVector_mem_lattice (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.periodVector_mem_lattice (p : PeriodDomain) (c : PeriodLattice) :
     p.periodVector c ∈ p.lattice :=
   (p.mem_lattice_iff _).mpr ⟨c, rfl⟩
 
-def PeriodDomain.periodLatticeMap (p : PeriodDomain) : Lattice →+ p.lattice :=
+def PeriodDomain.periodLatticeMap (p : PeriodDomain) : PeriodLattice →+ p.lattice :=
   p.periodVector.codRestrict p.lattice.toAddSubgroup p.periodVector_mem_lattice
 
 theorem PeriodDomain.periodLatticeMap_bijective (p : PeriodDomain) :
@@ -12915,10 +12913,10 @@ theorem PeriodDomain.periodLatticeMap_bijective (p : PeriodDomain) :
     obtain ⟨c, hc⟩ := (p.mem_lattice_iff z).mp z.property
     exact ⟨c, Subtype.ext hc⟩
 
-def PeriodDomain.periodLatticeEquiv (p : PeriodDomain) : Lattice ≃+ p.lattice :=
+def PeriodDomain.periodLatticeEquiv (p : PeriodDomain) : PeriodLattice ≃+ p.lattice :=
   AddEquiv.ofBijective p.periodLatticeMap p.periodLatticeMap_bijective
 
-def PeriodDomain.latticeEquiv (p : PeriodDomain) : p.lattice ≃+ Lattice :=
+def PeriodDomain.latticeEquiv (p : PeriodDomain) : p.lattice ≃+ PeriodLattice :=
   p.periodLatticeEquiv.symm
 
 theorem PeriodDomain.periodVector_latticeEquiv (p : PeriodDomain) (z : p.lattice) :
@@ -12936,7 +12934,7 @@ def PeriodDomain.zeroLift (p : PeriodDomain) : p.lattice.mkQ ⁻¹' ({0} : Set p
   ⟨0, by simp⟩
 
 def PeriodDomain.fundamentalGroupEquiv (p : PeriodDomain) :
-    FundamentalGroup p.Torus 0 ≃* Multiplicative Lattice :=
+    FundamentalGroup p.Torus 0 ≃* Multiplicative PeriodLattice :=
   ((p.quotientCovering.fundamentalGroupEquiv p.zeroLift).trans MulOpposite.opMulEquiv.symm).trans
     p.latticeEquiv.toMultiplicative
 
@@ -12958,20 +12956,20 @@ theorem PeriodDomain.fundamentalGroupEquiv_monodromy (p : PeriodDomain)
   simpa only [add_zero] using h
 
 @[simp]
-theorem PeriodDomain.mkQ_periodVector (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.mkQ_periodVector (p : PeriodDomain) (c : PeriodLattice) :
     p.lattice.mkQ (p.periodVector c) = 0 :=
   (Submodule.Quotient.mk_eq_zero p.lattice).mpr (p.periodVector_mem_lattice c)
 
-def PeriodDomain.periodLoop (p : PeriodDomain) (c : Lattice) : Path (0 : p.Torus) 0 :=
+def PeriodDomain.periodLoop (p : PeriodDomain) (c : PeriodLattice) : Path (0 : p.Torus) 0 :=
   ((Path.segment (0 : ComplexPlane₂) (p.periodVector c)).map p.lattice.continuous_mkQ).cast
     (map_zero p.lattice.mkQ).symm (p.mkQ_periodVector c).symm
 
-theorem PeriodDomain.periodLoop_apply (p : PeriodDomain) (c : Lattice) (t : unitInterval) :
+theorem PeriodDomain.periodLoop_apply (p : PeriodDomain) (c : PeriodLattice) (t : unitInterval) :
     p.periodLoop c t = p.lattice.mkQ ((t : ℝ) • p.periodVector c) := by
   simp only [periodLoop, Path.cast_coe, Path.map_coe, Function.comp_apply, Path.segment_apply,
     AffineMap.lineMap_apply_module, smul_zero, zero_add]
 
-theorem PeriodDomain.periodLoop_monodromy (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.periodLoop_monodromy (p : PeriodDomain) (c : PeriodLattice) :
     p.quotientCovering.isCoveringMap.monodromy (FirstHurewicz.loopQuotient (p.periodLoop c))
         p.zeroLift =
       ⟨p.periodVector c, p.mkQ_periodVector c⟩ := by
@@ -12983,7 +12981,7 @@ theorem PeriodDomain.periodLoop_monodromy (p : PeriodDomain) (c : Lattice) :
   rfl
 
 @[simp]
-theorem PeriodDomain.fundamentalGroupEquiv_periodLoop (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.fundamentalGroupEquiv_periodLoop (p : PeriodDomain) (c : PeriodLattice) :
     p.fundamentalGroupEquiv (FirstHurewicz.loopQuotient (p.periodLoop c)) =
       Multiplicative.ofAdd c := by
   apply Multiplicative.toAdd.injective
@@ -12992,7 +12990,7 @@ theorem PeriodDomain.fundamentalGroupEquiv_periodLoop (p : PeriodDomain) (c : La
   rfl
 
 def PeriodDomain.singularH1Equiv (p : PeriodDomain) :
-    FirstHurewicz.SingularH1 p.Torus ≃ₗ[ℤ] Lattice :=
+    FirstHurewicz.SingularH1 p.Torus ≃ₗ[ℤ] PeriodLattice :=
   FirstHurewicz.singularH1EquivOfPi1 (0 : p.Torus) p.fundamentalGroupEquiv
 
 @[simp]
@@ -13003,13 +13001,13 @@ theorem PeriodDomain.singularH1Equiv_loopHomologyClass (p : PeriodDomain)
   FirstHurewicz.singularH1EquivOfPi1_loopHomologyClass (0 : p.Torus) p.fundamentalGroupEquiv q
 
 @[simp]
-theorem PeriodDomain.singularH1Equiv_periodLoop (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.singularH1Equiv_periodLoop (p : PeriodDomain) (c : PeriodLattice) :
     p.singularH1Equiv (FirstHurewicz.loopHomologyClass (p.periodLoop c)) = c := by
   rw [p.singularH1Equiv_loopHomologyClass, p.fundamentalGroupEquiv_periodLoop]
   rfl
 
 @[simp]
-theorem PeriodDomain.singularH1Equiv_symm_apply (p : PeriodDomain) (c : Lattice) :
+theorem PeriodDomain.singularH1Equiv_symm_apply (p : PeriodDomain) (c : PeriodLattice) :
     p.singularH1Equiv.symm c = FirstHurewicz.loopHomologyClass (p.periodLoop c) := by
   apply p.singularH1Equiv.injective
   rw [LinearEquiv.apply_symm_apply, p.singularH1Equiv_periodLoop]
@@ -13077,7 +13075,7 @@ theorem PeriodTorusHigherHomology.periodTorusCircleHomeomorph_zero (p : PeriodDo
   simpa only [Elliptic.flatProjection, map_zero] using h
 
 theorem PeriodTorusHigherHomology.periodTorusCircleHomeomorph_periodLoop_apply (p : PeriodDomain)
-    (v : Lattice) (t : unitInterval) :
+    (v : PeriodLattice) (t : unitInterval) :
     periodTorusCircleHomeomorph p (p.periodLoop v t) = coordinatePeriodLoop 4 v t := by
   rw [PeriodDomain.periodLoop_apply]
   have hv : (t : ℝ) • p.periodVector v = Elliptic.periodEquiv p ((t : ℝ) • Elliptic.realCast v) :=
@@ -13091,7 +13089,7 @@ theorem PeriodTorusHigherHomology.periodTorusCircleHomeomorph_periodLoop_apply (
   rfl
 
 theorem PeriodTorusHigherHomology.periodTorusCircleHomeomorph_periodLoop (p : PeriodDomain)
-    (v : Lattice) :
+    (v : PeriodLattice) :
     (p.periodLoop v).map (periodTorusCircleHomeomorph p).continuous =
       (coordinatePeriodLoop 4 v).cast (periodTorusCircleHomeomorph_zero p)
         (periodTorusCircleHomeomorph_zero p) := by
@@ -15912,7 +15910,7 @@ def homeomorphFundamentalGroupEquiv {X Y : Type*} [TopologicalSpace X] [Topologi
     ext t
     exact e.apply_symm_apply (γ t)
 
-def CuspUniformization.sourcePeriodCoordinates : Lattice ≃+ FullPeriodMatrix.IntegerPeriods
+def CuspUniformization.sourcePeriodCoordinates : PeriodLattice ≃+ FullPeriodMatrix.IntegerPeriods
     where
   toFun v := (![v 2, v 3], ![v 0, v 1])
   invFun c := ![c.2 0, c.2 1, c.1 0, c.1 1]
@@ -15920,13 +15918,13 @@ def CuspUniformization.sourcePeriodCoordinates : Lattice ≃+ FullPeriodMatrix.I
   right_inv c := by apply Prod.ext <;> ext i <;> fin_cases i <;> rfl
   map_add' v w := by apply Prod.ext <;> ext i <;> fin_cases i <;> rfl
 
-def CuspUniformization.cuspLatticeProjection : Lattice →+ (Fin 2 → ℤ)
+def CuspUniformization.cuspLatticeProjection : PeriodLattice →+ (Fin 2 → ℤ)
     where
   toFun v := ![v 0, v 1]
   map_zero' := by ext i; fin_cases i <;> rfl
   map_add' v w := by ext i; fin_cases i <;> rfl
 
-theorem CuspUniformization.cuspLatticeProjection_eq_zero_iff (v : Lattice) :
+theorem CuspUniformization.cuspLatticeProjection_eq_zero_iff (v : PeriodLattice) :
     cuspLatticeProjection v = 0 ↔ (M₀ - 1) *ᵥ v = 0 := by
   rw [M₀_sub_one_kernel]
   constructor
@@ -16234,6 +16232,5 @@ theorem ThreefoldHomologyFinitenessCusp.fullHomology_subsingleton_of_four_lt
   refine ⟨fun a b => (fullCentralHomologyEquiv D n).symm.injective ?_⟩
   exact Subsingleton.elim _ _
 
-end Mathoverflow1973
 
 end
