@@ -11,7 +11,7 @@ public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Collar
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
+import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # The Morse cancellation toolbox
 
