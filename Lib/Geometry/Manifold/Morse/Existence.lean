@@ -52,7 +52,10 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Attaching unions of a signed Morse chart -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching union is homeomorphic to the model with level and orbit control. -/
 theorem ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
@@ -141,6 +144,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_leve
     exact hlevel
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A homotopy follows the model boundary orbits of the chart. -/
 def ManifoldMorse.SignedMorseChart.FollowsModelBoundaryOrbits {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -167,6 +171,7 @@ def ManifoldMorse.SignedMorseChart.FollowsModelBoundaryOrbits {E M : Type*}
                   c.splitChart.symm (MorseHandle.descentFlow t (c.splitChart x.val))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The flow follows the model boundary orbits. -/
 theorem ManifoldMorse.SignedMorseChart.followsModelBoundaryOrbits_of_flow {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -199,6 +204,7 @@ theorem ManifoldMorse.SignedMorseChart.followsModelBoundaryOrbits_of_flow {E M :
   exact (horbit x hx t ht (hmodel ▸ hlevel)).trans hmodel
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A closed product block inside a prescribed set exists. -/
 theorem ManifoldMorse.SignedMorseChart.exists_closed_productBlock_in {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) {W : Set M} (hW : IsOpen W)
@@ -223,6 +229,7 @@ theorem ManifoldMorse.SignedMorseChart.exists_closed_productBlock_in {E M : Type
   exact hsub
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A field-compatible block of the signed chart exists. -/
 theorem ManifoldMorse.SignedMorseChart.exists_fieldCompatibleBlock {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -266,6 +273,7 @@ theorem ManifoldMorse.exists_isolating_radius {X : Type*} {f : X → ℝ} {K : S
   exact hball hd ⟨x, ⟨hx, by simpa only [Set.mem_singleton_iff] using hxp⟩, rfl⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- An isolated field-compatible block below a level exists. -/
 theorem ManifoldMorse.SignedMorseChart.exists_isolated_fieldCompatibleBlock_lt {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -295,6 +303,9 @@ theorem ManifoldMorse.SignedMorseChart.exists_isolated_fieldCompatibleBlock_lt {
   have hr : 2 * ρ ≤ 2 * R := mul_le_mul_of_nonneg_left hρR.le (by norm_num)
   exact ⟨Metric.closedBall_subset_closedBall hr hz.1, Metric.closedBall_subset_closedBall hr hz.2⟩
 
+/-! ### Regular loci -/
+
+/-- The regular-in-chart locus is open. -/
 theorem ManifoldMorse.isOpen_regularInChart {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] {f : P → M → ℝ}
@@ -342,6 +353,7 @@ theorem ManifoldMorse.isOpen_regularPoint {E P M : Type*} [NormedAddCommGroup E]
   intro r hr hcrit
   exact hr.2 ((mem_criticalPoints_iff (hslice r.1) he hr.1).mp hcrit)
 
+/-- The regular locus is open. -/
 theorem ManifoldMorse.isOpen_regularOn {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : P → M → ℝ}
@@ -365,15 +377,20 @@ theorem ManifoldMorse.eventually_criticalPoints_eq {E P M : Type*} [NormedAddCom
   · exact hfixed a x hx
   · exact iff_of_false (ha x hx) (hreg x hx)
 
+/-! ### Constant perturbations -/
+
+/-- The perturbation of a function by a constant shift. -/
 def ManifoldMorse.constantPerturb {M : Type*} (f ψ : M → ℝ) (a : ℝ) (x : M) : ℝ :=
   f x + a * ψ x
 
+/-- The constant perturbation is smooth. -/
 theorem ManifoldMorse.contMDiff_constantPerturb {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f ψ : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hψ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ ψ) :
     ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (Function.uncurry (constantPerturb f ψ)) :=
   (hf.comp contMDiff_snd).add (contMDiff_fst.smul (hψ.comp contMDiff_snd))
 
+/-- A locally constant perturbation does not change the derivative. -/
 theorem ManifoldMorse.mfderiv_constantPerturb_of_locally_constant {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f ψ : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M} {b : ℝ} (hψ : ψ =ᶠ[𝓝 x] fun _ => b) (a : ℝ) :
@@ -386,6 +403,7 @@ theorem ManifoldMorse.mfderiv_constantPerturb_of_locally_constant {E M : Type*}
   rw [mfderiv_add (hf.mdifferentiableAt (by simp)) mdifferentiableAt_const, mfderiv_const]
   exact add_zero _
 
+/-- Small constant perturbations preserve the Morse critical points. -/
 theorem ManifoldMorse.eventually_constantPerturb_morse_criticalPoints {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f ψ : M → ℝ}
@@ -542,6 +560,7 @@ theorem ManifoldMorse.exists_morse_function_with_distinct_critical_values (E : T
   exact ⟨g, hg, hmg, finite_criticalPoints hg hmg, hinj⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A Morse boundary attachment with model orbits exists below a level. -/
 theorem ManifoldMorse.exists_morse_boundary_attachment_with_model_orbits_lt {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -617,6 +636,9 @@ theorem ManifoldMorse.exists_morse_boundary_attachment_with_model_orbits_lt {E M
   filter_upwards [hW.mem_nhds (hblockW hz).2] with y hy
   exact heqW y hy
 
+/-! ### Surgery boundary pairs -/
+
+/-- The boundary pair with the new boundary exchanged. -/
 def SurgeryBoundaryPair.changeNewBoundary {N P R X Y Z : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] (d : SurgeryBoundaryPair N P R X Y) (e : Y ≃ₜ Z) :
@@ -644,6 +666,7 @@ def SurgeryBoundaryPair.changeNewBoundary {N P R X Y Z : Type*} [NormedAddCommGr
   old_overlap := d.old_overlap
   new_overlap := fun r p => e.injective.eq_iff.trans (d.new_overlap r p)
 
+/-- The frontier of a closed cover piece is level-homeomorphic. -/
 def ClosedCover.frontierLevelHomeomorph {M : Type*} [TopologicalSpace M] {f : M → ℝ} {b : ℝ}
     {A : Set M} (hA : IsClosed A) (e : A ≃ₜ { x : M // f x ≤ b })
     (he : ∀ x, f (e x) = b ↔ (x : M) ∈ frontier A) : frontier A ≃ₜ { x : M // f x = b } := by
@@ -678,6 +701,7 @@ def ClosedCover.frontierLevelHomeomorph {M : Type*} [TopologicalSpace M] {f : M 
             (e.symm.continuous.comp (continuous_subtype_val.subtype_mk _))).subtype_mk
         _
 
+/-- The boundary exchange preserves incidence. -/
 theorem SurgeryBoundaryPair.exchange_preserves_incidence {E F R X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
@@ -693,6 +717,7 @@ theorem SurgeryBoundaryPair.exchange_preserves_incidence {E F R X Y : Type*}
     refine ⟨q, hr, (PuncturedHandle.exchange E F).injective ?_⟩
     exact hq.trans (PuncturedHandle.exchange_boundary q.1 q.2).symm
 
+/-- The boundary-pair complements are homeomorphic. -/
 def SurgeryBoundaryPair.complementHomeomorph {E F R X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace R]
     [TopologicalSpace X] [TopologicalSpace Y] (d : SurgeryBoundaryPair E F R X Y) :
@@ -703,6 +728,7 @@ def SurgeryBoundaryPair.complementHomeomorph {E F R X Y : Type*} [NormedAddCommG
     d.newComplement_cover (PuncturedHandle.exchange E F) d.exchange_preserves_incidence
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The chart's boundary levels are homeomorphic. -/
 def ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -728,6 +754,7 @@ def ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph {E M : Type*}
       e he)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The surgery boundary pair of a signed chart level. -/
 def ManifoldMorse.SignedMorseChart.levelSurgeryBoundaryPair {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p)
@@ -754,6 +781,7 @@ def ManifoldMorse.SignedMorseChart.levelSurgeryBoundaryPair {E M : Type*}
     (c.boundaryLevelHomeomorph hf ρ hρ hblock e he)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt sphere's height in the handle map. -/
 theorem ManifoldMorse.SignedMorseChart.normHandleMap_belt_height {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -776,7 +804,10 @@ theorem ManifoldMorse.SignedMorseChart.normHandleMap_belt_height {E M : Type*}
   have hv : ‖(v : c.PositiveCoordinates)‖ = 1 := mem_sphere_zero_iff_norm.mp v.property
   simp [MorseHandle.modelMap, norm_smul, Real.norm_eq_abs, abs_of_pos hρ, hv]
 
+/-! ### The belt core map -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map into the handle. -/
 def ManifoldMorse.SignedMorseChart.beltCoreMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -797,6 +828,7 @@ def ManifoldMorse.SignedMorseChart.beltCoreMap {E M : Type*} [NormedAddCommGroup
       _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map computes the belt point. -/
 theorem ManifoldMorse.SignedMorseChart.beltCoreMap_coe {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -814,6 +846,7 @@ theorem ManifoldMorse.SignedMorseChart.beltCoreMap_coe {E M : Type*} [NormedAddC
   simp only [smul_zero]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map is smooth into the ambient manifold. -/
 theorem ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap_ambient {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (n : ℕ)
@@ -858,6 +891,7 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap_ambient {E M : Type
   simpa [MorseHandle.modelMap] using hh
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt sphere is the image of the belt core map. -/
 theorem ManifoldMorse.SignedMorseChart.beltSphere_eq_beltCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [T2Space M]
@@ -884,6 +918,7 @@ theorem ManifoldMorse.SignedMorseChart.beltSphere_eq_beltCoreMap {E M : Type*}
   exact hfixed _ (c.normHandleMap_belt_height ρ hρ hblock v)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map is smooth. -/
 theorem ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [FiniteDimensional ℝ E]
@@ -901,6 +936,9 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap {E M : Type*}
     (RegularLevel.contMDiff_iff_inclusion hf hreg (𝓡 n) (c.beltCoreMap ρ hρ hblock)).mpr
       (c.contMDiff_beltCoreMap_ambient n ρ hρ hblock)
 
+/-! ### Restricted partial charts -/
+
+/-- A partial chart restricted in source. -/
 def PartialChart.restrictSource {E F H H' M N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     [TopologicalSpace H'] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ F H'}
@@ -913,6 +951,7 @@ def PartialChart.restrictSource {E F H H' M N : Type*} [NormedAddCommGroup E]
   contMDiffOn_toFun := Φ.contMDiffOn_toFun.mono Set.inter_subset_left
   contMDiffOn_invFun := Φ.contMDiffOn_invFun.mono Set.inter_subset_left
 
+/-- A partial chart restricted in target. -/
 def PartialChart.restrictTarget {E F H H' M N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     [TopologicalSpace H'] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ F H'}
@@ -921,6 +960,7 @@ def PartialChart.restrictTarget {E F H H' M N : Type*} [NormedAddCommGroup E]
     PartialDiffeomorph I J M N ∞ :=
   (restrictSource Φ.symm hV).symm
 
+/-- A partial chart has bijective derivative. -/
 theorem PartialChart.bijective_mfderiv {E F H H' M N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     [TopologicalSpace H'] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ F H'}
@@ -931,6 +971,7 @@ theorem PartialChart.bijective_mfderiv {E F H H' M N : Type*} [NormedAddCommGrou
     ⟨Φ.mdifferentiableOn (by simp), Φ.symm.mdifferentiableOn (by simp)⟩
   exact hdiff.mfderiv_bijective hx
 
+/-- The linearized sphere map has injective derivative. -/
 theorem PartialChart.injective_mfderiv_linear_sphere {N F E H M : Type*}
     [NormedAddCommGroup N] [InnerProductSpace ℝ N] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
@@ -953,6 +994,7 @@ theorem PartialChart.injective_mfderiv_linear_sphere {N F E H M : Type*}
   exact (bijective_mfderiv Φ hu).injective.comp (hL.comp hsphere)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_attachingCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -968,6 +1010,7 @@ theorem ManifoldMorse.SignedMorseChart.injective_attachingCoreMap {E M : Type*}
   exact Subtype.ext (congrArg (fun z => (z.1 : c.NegativeCoordinates)) hh)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_beltCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -983,6 +1026,7 @@ theorem ManifoldMorse.SignedMorseChart.injective_beltCoreMap {E M : Type*}
   exact Subtype.ext (congrArg (fun z => (z.2 : c.PositiveCoordinates)) hh)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map is a closed embedding. -/
 theorem ManifoldMorse.SignedMorseChart.attachingCoreMap_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [T2Space M] (ρ : ℝ)
@@ -996,6 +1040,7 @@ theorem ManifoldMorse.SignedMorseChart.attachingCoreMap_isClosedEmbedding {E M :
     (c.injective_attachingCoreMap ρ hρ hblock)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map is a closed embedding. -/
 theorem ManifoldMorse.SignedMorseChart.beltCoreMap_isClosedEmbedding {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [T2Space M] (ρ : ℝ)
@@ -1008,6 +1053,7 @@ theorem ManifoldMorse.SignedMorseChart.beltCoreMap_isClosedEmbedding {E M : Type
   (c.beltCoreMap ρ hρ hblock).continuous.isClosedEmbedding (c.injective_beltCoreMap ρ hρ hblock)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map's ambient derivative is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap_ambient
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {f : M → ℝ} {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (n : ℕ)
@@ -1044,6 +1090,7 @@ theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap_ambien
   exact PartialChart.injective_mfderiv_linear_sphere c.splitChart.symm L hL u hu
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map's ambient derivative is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap_ambient {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (n : ℕ)
@@ -1079,6 +1126,7 @@ theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap_ambient {E 
   exact PartialChart.injective_mfderiv_linear_sphere c.splitChart.symm L hL v hv
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching core map's derivative is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [FiniteDimensional ℝ E]
@@ -1099,6 +1147,7 @@ theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap {E M :
       (c.injective_mfderiv_attachingCoreMap_ambient n ρ hρ hblock u)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt core map's derivative is injective. -/
 theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) [FiniteDimensional ℝ E]
@@ -1118,27 +1167,34 @@ theorem ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap {E M : Type
       (c.contMDiff_beltCoreMap_ambient n ρ hρ hblock v)
       (c.injective_mfderiv_beltCoreMap_ambient n ρ hρ hblock v)
 
+/-! ### Smoothing homotopies -/
+
+/-- The flattening time function of a homotopy. -/
 def ManifoldSmoothing.flattenTime (t : unitInterval) : unitInterval :=
   ⟨Max.max 0 (Min.min 1 (3 * (t : ℝ) - 1)), le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩
 
+/-- The flattening time is continuous. -/
 theorem ManifoldSmoothing.continuous_flattenTime : Continuous flattenTime :=
   (continuous_const.max
       (continuous_const.min
         ((continuous_const.mul continuous_subtype_val).sub continuous_const))) |>.subtype_mk
     _
 
+/-- The flattening time is zero on the lower collar. -/
 theorem ManifoldSmoothing.flattenTime_eq_zero (t : unitInterval) (ht : (t : ℝ) ≤ 1 / 3) :
     flattenTime t = 0 := by
   apply Subtype.ext
   change Max.max 0 (Min.min 1 (3 * (t : ℝ) - 1)) = 0
   exact max_eq_left ((min_le_right _ _).trans (by linarith))
 
+/-- The flattening time is one on the upper collar. -/
 theorem ManifoldSmoothing.flattenTime_eq_one (t : unitInterval) (ht : 2 / 3 ≤ (t : ℝ)) :
     flattenTime t = 1 := by
   apply Subtype.ext
   change Max.max 0 (Min.min 1 (3 * (t : ℝ) - 1)) = 1
   rw [min_eq_left (by linarith), max_eq_right zero_le_one]
 
+/-- The homotopy flattened to be stationary on the collars. -/
 def ManifoldSmoothing.flattenedHomotopyMap {X N : Type*} [TopologicalSpace X]
     [TopologicalSpace N] {f g : C(X, N)} (H : f.Homotopy g) : C(unitInterval × X, N)
     where
@@ -1146,58 +1202,73 @@ def ManifoldSmoothing.flattenedHomotopyMap {X N : Type*} [TopologicalSpace X]
   continuous_toFun :=
     H.continuous.comp ((continuous_flattenTime.comp continuous_fst).prodMk continuous_snd)
 
+/-- The flattened homotopy on the lower collar. -/
 theorem ManifoldSmoothing.flattenedHomotopyMap_lower {X N : Type*} [TopologicalSpace X]
     [TopologicalSpace N] {f g : C(X, N)} (H : f.Homotopy g) (t : unitInterval) (x : X)
     (ht : (t : ℝ) ≤ 1 / 3) : flattenedHomotopyMap H (t, x) = f x := by
   change H (flattenTime t, x) = f x
   rw [flattenTime_eq_zero t ht, H.apply_zero]
 
+/-- The flattened homotopy on the upper collar. -/
 theorem ManifoldSmoothing.flattenedHomotopyMap_upper {X N : Type*} [TopologicalSpace X]
     [TopologicalSpace N] {f g : C(X, N)} (H : f.Homotopy g) (t : unitInterval) (x : X)
     (ht : 2 / 3 ≤ (t : ℝ)) : flattenedHomotopyMap H (t, x) = g x := by
   change H (flattenTime t, x) = g x
   rw [flattenTime_eq_one t ht, H.apply_one]
 
+/-! ### Homotopy collars -/
+
+/-- The collar regions where the homotopy is flattened. -/
 def ManifoldSmoothing.homotopyCollars (X : Type*) : Set (unitInterval × X) :=
   {q | (q.1 : ℝ) ≤ 1 / 4 ∨ 3 / 4 ≤ (q.1 : ℝ)}
 
+/-- A neighborhood of the homotopy collars. -/
 def ManifoldSmoothing.homotopyCollarNeighborhood (X : Type*) : Set (unitInterval × X) :=
   {q | (q.1 : ℝ) < 1 / 3 ∨ 2 / 3 < (q.1 : ℝ)}
 
+/-- The homotopy collars are closed. -/
 theorem ManifoldSmoothing.isClosed_homotopyCollars {X : Type*} [TopologicalSpace X] :
     IsClosed (homotopyCollars X) :=
   (isClosed_le (continuous_subtype_val.comp continuous_fst) continuous_const).union
     (isClosed_le continuous_const (continuous_subtype_val.comp continuous_fst))
 
+/-- The collar neighborhood is open. -/
 theorem ManifoldSmoothing.isOpen_homotopyCollarNeighborhood {X : Type*}
     [TopologicalSpace X] : IsOpen (homotopyCollarNeighborhood X) :=
   (isOpen_lt (continuous_subtype_val.comp continuous_fst) continuous_const).union
     (isOpen_lt continuous_const (continuous_subtype_val.comp continuous_fst))
 
+/-- The collars lie in the collar neighborhood. -/
 theorem ManifoldSmoothing.homotopyCollars_subset {X : Type*} :
     homotopyCollars X ⊆ homotopyCollarNeighborhood X := by
   rintro q (hl | hu)
   · exact Or.inl (by linarith)
   · exact Or.inr (by linarith)
 
+/-! ### Chart perturbations of maps -/
+
+/-- A family of coordinate perturbations of a map. -/
 def ChartMapPerturbation.coordinateFamily {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (q : F × X) : F :=
   c (f q.2) + β q.2 • q.1
 
+/-- A coordinate perturbation is valid on a chart domain. -/
 def ChartMapPerturbation.Valid {G F K X N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K] {J : ModelWithCorners ℝ G K}
     [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (a : F) : Prop :=
   ∀ x ∈ tsupport β, coordinateFamily c f β (a, x) ∈ c.target
 
+/-- The perturbed map in the chart. -/
 def ChartMapPerturbation.perturb {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (a : F) (x : X) : N := by
   classical exact if f x ∈ c.source then c.symm (coordinateFamily c f β (a, x)) else f x
 
+/-- A zero perturbation leaves the map unchanged. -/
 theorem ChartMapPerturbation.perturb_eq_of_zero {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
@@ -1209,6 +1280,7 @@ theorem ChartMapPerturbation.perturb_eq_of_zero {G F K X N : Type*} [NormedAddCo
     exact c.left_inv' hs
   · simp only [perturb, hs, if_false]
 
+/-- The zero perturbation is the original map. -/
 theorem ChartMapPerturbation.perturb_zero {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
@@ -1220,6 +1292,7 @@ theorem ChartMapPerturbation.perturb_zero {G F K X N : Type*} [NormedAddCommGrou
     exact c.left_inv' hs
   · simp only [perturb, hs, if_false]
 
+/-- The zero perturbation is valid. -/
 theorem ChartMapPerturbation.valid_zero {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
@@ -1228,6 +1301,7 @@ theorem ChartMapPerturbation.valid_zero {G F K X N : Type*} [NormedAddCommGroup 
   intro x hx
   simpa only [coordinateFamily, smul_zero, add_zero] using c.map_source' (hsupport hx)
 
+/-- The coordinate perturbation lands in the target chart. -/
 theorem ChartMapPerturbation.coordinate_mem_target {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1238,6 +1312,7 @@ theorem ChartMapPerturbation.coordinate_mem_target {G F K X N : Type*}
   · simpa only [coordinateFamily, hβx, zero_smul, add_zero] using c.map_source' hx
   · exact ha x (subset_tsupport β hβx)
 
+/-- The perturbed map lands in the source. -/
 theorem ChartMapPerturbation.perturb_mem_source {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
@@ -1247,6 +1322,7 @@ theorem ChartMapPerturbation.perturb_mem_source {G F K X N : Type*} [NormedAddCo
   simp only [perturb, hx, if_pos]
   exact c.map_target' (coordinate_mem_target c f β ha hx)
 
+/-- The perturbation computes in the chart. -/
 theorem ChartMapPerturbation.chart_perturb {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
@@ -1256,6 +1332,7 @@ theorem ChartMapPerturbation.chart_perturb {G F K X N : Type*} [NormedAddCommGro
   simp only [perturb, hx, if_pos]
   exact c.right_inv' (coordinate_mem_target c f β ha hx)
 
+/-- The coordinate family is smooth. -/
 theorem ChartMapPerturbation.contMDiffAt_coordinateFamily {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1268,6 +1345,7 @@ theorem ChartMapPerturbation.contMDiffAt_coordinateFamily {E G F H K X N : Type*
         (hf.comp contMDiff_snd).contMDiffAt).add
     (((hβ.comp contMDiff_snd).contMDiffAt).smul contMDiffAt_fst)
 
+/-- Small perturbations are valid. -/
 theorem ChartMapPerturbation.eventually_valid {E G F H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1294,6 +1372,7 @@ theorem ChartMapPerturbation.exists_radius_valid {E G F H K X N : Type*}
   obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.mp (eventually_valid c hf hβ hcompact hsupport)
   exact ⟨ε, hε, fun a ha => hball (by simpa only [Metric.mem_ball, dist_zero_right] using ha)⟩
 
+/-- The perturbation is smooth. -/
 theorem ChartMapPerturbation.contMDiffAt_perturb {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1321,6 +1400,7 @@ theorem ChartMapPerturbation.contMDiffAt_perturb {E G F H K X N : Type*}
     filter_upwards [continuous_snd.continuousAt.tendsto.eventually hz] with r hr
     exact perturb_eq_of_zero c f β r.1 hr
 
+/-- The perturbation is jointly smooth. -/
 theorem ChartMapPerturbation.contMDiff_perturb {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1334,6 +1414,7 @@ theorem ChartMapPerturbation.contMDiff_perturb {E G F H K X N : Type*}
     (contMDiffAt_perturb c hf hβ hsupport (a, x) ha).comp x
       (contMDiffAt_const.prodMk contMDiffAt_id)
 
+/-- The coordinate family is continuous. -/
 theorem ChartMapPerturbation.continuousAt_coordinateFamily {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1344,6 +1425,7 @@ theorem ChartMapPerturbation.continuousAt_coordinateFamily {G F K X N : Type*}
         fun r : F × X => f r.2) (hf.comp continuous_snd).continuousAt).add
     ((hβ.comp continuous_snd).continuousAt.smul continuousAt_fst)
 
+/-- A continuous small perturbation is eventually valid. -/
 theorem ChartMapPerturbation.eventually_valid_of_continuous {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1356,6 +1438,7 @@ theorem ChartMapPerturbation.eventually_valid_of_continuous {G F K X N : Type*}
   apply c.open_target.mem_nhds
   simpa only [coordinateFamily, smul_zero, add_zero] using c.map_source' (hsupport hx)
 
+/-- A radius on which a continuous perturbation is valid exists. -/
 theorem ChartMapPerturbation.exists_radius_valid_of_continuous {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1366,6 +1449,7 @@ theorem ChartMapPerturbation.exists_radius_valid_of_continuous {G F K X N : Type
     Metric.mem_nhds_iff.mp (eventually_valid_of_continuous c hf hβ hcompact hsupport)
   exact ⟨ε, hε, fun a ha => hball (by simpa only [Metric.mem_ball, dist_zero_right] using ha)⟩
 
+/-- The perturbation is continuous. -/
 theorem ChartMapPerturbation.continuousAt_perturb {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
@@ -1391,6 +1475,7 @@ theorem ChartMapPerturbation.continuousAt_perturb {G F K X N : Type*} [NormedAdd
     filter_upwards [continuous_snd.continuousAt.tendsto.eventually hz] with r hr
     exact (perturb_eq_of_zero c f β r.1 hr).symm
 
+/-- A continuous family eventually maps a compact set into an open set. -/
 theorem ChartMapPerturbation.eventually_maps_compact_into_open_of_continuous
     {G F K X N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X]
@@ -1405,6 +1490,7 @@ theorem ChartMapPerturbation.eventually_maps_compact_into_open_of_continuous
   apply hU.mem_nhds
   simpa only [perturb_zero] using hfL hx
 
+/-- The perturbation of a smooth map is smooth. -/
 theorem ChartMapPerturbation.contMDiffAt_perturb_of_contMDiffAt {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1434,6 +1520,7 @@ theorem ChartMapPerturbation.contMDiffAt_perturb_of_contMDiffAt {E G F H K X N :
     filter_upwards [continuous_snd.continuousAt.tendsto.eventually hz] with r hr
     exact perturb_eq_of_zero c f β r.1 hr
 
+/-- A family eventually maps a compact set into an open set. -/
 theorem ChartMapPerturbation.eventually_maps_compact_into_open {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1451,6 +1538,7 @@ theorem ChartMapPerturbation.eventually_maps_compact_into_open {E G F H K X N : 
   apply hU.mem_nhds
   simpa only [perturb_zero] using hfL hx
 
+/-- A small interval scaling stays within the bound. -/
 theorem ChartMapPerturbation.norm_interval_smul_lt {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {ε : ℝ} {a : F} (ha : ‖a‖ < ε) (t : unitInterval) : ‖(t : ℝ) • a‖ < ε := by
   calc
@@ -1458,6 +1546,7 @@ theorem ChartMapPerturbation.norm_interval_smul_lt {F : Type*} [NormedAddCommGro
     _ ≤ ‖a‖ := by nlinarith [t.2.2, norm_nonneg a]
     _ < ε := ha
 
+/-- The perturbation is a homotopy relative to the fixed set. -/
 def ChartMapPerturbation.homotopyRel {E G F H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1491,12 +1580,14 @@ def ChartMapPerturbation.homotopyRel {E G F H K X N : Type*} [NormedAddCommGroup
     rw [one_smul]
   prop' _ x hx := perturb_eq_of_zero c f β _ hx
 
+/-- The time-variable perturbation of a homotopy. -/
 def ChartMapPerturbation.variablePerturb {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (a : X → F) (x : X) : N :=
   perturb c f β (a x) x
 
+/-- The variable perturbation is continuous. -/
 theorem ChartMapPerturbation.continuous_variablePerturb {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1510,6 +1601,7 @@ theorem ChartMapPerturbation.continuous_variablePerturb {G F K X N : Type*}
     (continuousAt_perturb c hf hβ hsupport (a x, x) (hvalid x)).comp (f := fun y : X => (a y, y))
       (ha.prodMk continuous_id).continuousAt
 
+/-- The variable perturbation is smooth. -/
 theorem ChartMapPerturbation.contMDiffAt_variablePerturb {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1522,6 +1614,7 @@ theorem ChartMapPerturbation.contMDiffAt_variablePerturb {E G F H K X N : Type*}
   (contMDiffAt_perturb_of_contMDiffAt c hsupport (a x, x) hf hβ hvalid).comp x (f := fun y : X =>
     (a y, y)) (ha.prodMk contMDiffAt_id)
 
+/-- The variable perturbation is a relative homotopy. -/
 def ChartMapPerturbation.variableHomotopyRel {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N] [ChartedSpace K N]
@@ -1560,18 +1653,21 @@ def ChartMapPerturbation.variableHomotopyRel {G F K X N : Type*} [NormedAddCommG
     · change perturb c f β ((t : ℝ) • a x) x = f x
       rw [ha₀, smul_zero, perturb_zero]
 
+/-- The perturbation cut off outside a plateau. -/
 def ChartMapPerturbation.cutoffCoordinates {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (χ : X → ℝ) (x : X) : F :=
   χ x • c (f x)
 
+/-- The cutoff coordinates on the plateau. -/
 theorem ChartMapPerturbation.cutoffCoordinates_eq_of_one {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (χ : X → ℝ) {x : X} (hx : χ x = 1) :
     cutoffCoordinates c f χ x = c (f x) := by simp only [cutoffCoordinates, hx, one_smul]
 
+/-- The cutoff coordinates are continuous. -/
 theorem ChartMapPerturbation.continuous_cutoffCoordinates {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1591,6 +1687,7 @@ theorem ChartMapPerturbation.continuous_cutoffCoordinates {G F K X N : Type*}
     filter_upwards [hz] with y hy
     simp only [cutoffCoordinates, hy, zero_smul, Pi.zero_apply]
 
+/-- The cutoff coordinates are smooth. -/
 theorem ChartMapPerturbation.contMDiffAt_cutoffCoordinates {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1633,12 +1730,14 @@ theorem ChartMapPerturbation.exists_smooth_coordinate_approximation {E G F H K X
     hk.exists_contMDiff_approx_and_eqOn I ⊤ (continuous_const (y := ε)) (fun _ => hε) hC hUn hkU
   exact ⟨g, g.contMDiff, hg, hgeq⟩
 
+/-- The smoothed map built from the cutoff perturbation. -/
 def ChartMapPerturbation.smoothedMap {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β χ : X → ℝ) (g : X → F) : X → N :=
   variablePerturb c f β (fun x => g x - cutoffCoordinates c f χ x)
 
+/-- The coordinate family on the plateau. -/
 theorem ChartMapPerturbation.coordinateFamily_eq_on_plateau {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
@@ -1648,6 +1747,7 @@ theorem ChartMapPerturbation.coordinateFamily_eq_on_plateau {G F K X N : Type*}
   simp only [coordinateFamily, cutoffCoordinates, hβx, hχx, one_smul]
   abel
 
+/-- The smoothed map on the plateau. -/
 theorem ChartMapPerturbation.smoothedMap_eq_on_plateau {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1666,6 +1766,7 @@ theorem ChartMapPerturbation.smoothedMap_eq_on_plateau {G F K X N : Type*}
   simp only [perturb, hsource, if_pos]
   rw [coordinateFamily_eq_on_plateau c f β χ g hβx (hnested x hs)]
 
+/-- The smoothed map is smooth on the plateau. -/
 theorem ChartMapPerturbation.contMDiffAt_smoothedMap_on_plateau {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1690,6 +1791,7 @@ theorem ChartMapPerturbation.contMDiffAt_smoothedMap_on_plateau {E G F H K X N :
   filter_upwards [hplateau] with y hy
   exact smoothedMap_eq_on_plateau c f β χ g hsupport hnested hy
 
+/-- The smoothed map is smooth where the old map was. -/
 theorem ChartMapPerturbation.contMDiffAt_smoothedMap_of_old {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1704,21 +1806,27 @@ theorem ChartMapPerturbation.contMDiffAt_smoothedMap_of_old {E G F H K X N : Typ
   contMDiffAt_variablePerturb c hβsupport hf hβ
     (hg.sub (contMDiffAt_cutoffCoordinates c hχsupport hf hχ)) hvalid
 
+/-! ### Homotopy relative to a subset -/
+
+/-- Two maps are homotopic relative to a subset within a target. -/
 def HomotopicRelWithin {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     (f g : C(X, Y)) (C K : Set X) (O : Set Y) : Prop :=
   ∃ F : f.HomotopyRel g C, ∀ t : unitInterval, Set.MapsTo (fun x => F (t, x)) K O
 
+/-- Relative homotopy is reflexive. -/
 theorem HomotopicRelWithin.refl {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     {K : Set X} {O : Set Y} (f : C(X, Y)) (C : Set X) (hmaps : Set.MapsTo f K O) :
     HomotopicRelWithin f f C K O :=
   ⟨ContinuousMap.HomotopyRel.refl f C, fun _ => hmaps⟩
 
+/-- A relative homotopy within the target is a relative homotopy. -/
 theorem HomotopicRelWithin.homotopicRel {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} {C K : Set X} {O : Set Y}
     (H : HomotopicRelWithin f g C K O) : f.HomotopicRel g C := by
   obtain ⟨F, _⟩ := H
   exact ⟨F⟩
 
+/-- The right map lands in the target. -/
 theorem HomotopicRelWithin.mapsTo_right {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} {C K : Set X} {O : Set Y}
     (H : HomotopicRelWithin f g C K O) : Set.MapsTo g K O := by
@@ -1726,6 +1834,7 @@ theorem HomotopicRelWithin.mapsTo_right {X Y : Type*} [TopologicalSpace X]
   intro x hx
   exact (congrArg (fun y => y ∈ O) (F.map_one_left x)).mp (hF 1 hx)
 
+/-- Relative homotopy is transitive. -/
 theorem HomotopicRelWithin.trans {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     {f g h : C(X, Y)} {C K : Set X} {O : Set Y} (H : HomotopicRelWithin f g C K O)
     (G : HomotopicRelWithin g h C K O) : HomotopicRelWithin f h C K O := by
@@ -1739,6 +1848,7 @@ theorem HomotopicRelWithin.trans {X Y : Type*} [TopologicalSpace X] [Topological
   · exact hF _ hx
   · exact hG _ hx
 
+/-- Relative homotopy is monotone in the fixed set. -/
 theorem HomotopicRelWithin.mono {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     {f g : C(X, Y)} {C K : Set X} {O : Set Y} (H : HomotopicRelWithin f g C K O)
     {D L : Set X} {P : Set Y} (hDC : D ⊆ C) (hLK : L ⊆ K) (hOP : O ⊆ P) :
@@ -1748,6 +1858,7 @@ theorem HomotopicRelWithin.mono {X Y : Type*} [TopologicalSpace X] [TopologicalS
     ⟨{ toHomotopy := F.toHomotopy, prop' := fun t x hx => F.eq_fst t (hDC hx) }, fun t x hx =>
       hOP (hF t (hLK hx))⟩
 
+/-- The perturbation lands in the target given a source subset. -/
 theorem ChartMapPerturbation.perturb_mem_of_source_subset {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1758,6 +1869,7 @@ theorem ChartMapPerturbation.perturb_mem_of_source_subset {G F K X N : Type*}
   · exact hsource (perturb_mem_source c f β ha hxc)
   · simpa only [perturb, if_neg hxc] using hx
 
+/-- The perturbation is homotopic relative to the fixed set within the target. -/
 theorem ChartMapPerturbation.homotopicRelWithin_of_source_subset {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -1775,6 +1887,7 @@ theorem ChartMapPerturbation.homotopicRelWithin_of_source_subset {E G F H K X N 
   exact
     perturb_mem_of_source_subset c f β (hvalid _ (norm_interval_smul_lt ha t)) hsource (hmaps hx)
 
+/-- The variable perturbation is relatively homotopic within the target. -/
 theorem ChartMapPerturbation.variableHomotopicRelWithin_of_source_subset {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -1793,6 +1906,9 @@ theorem ChartMapPerturbation.variableHomotopicRelWithin_of_source_subset {G F K 
     perturb_mem_of_source_subset c f β (hvalid _ (norm_interval_smul_lt (hbound x) t)) hsource
       (hmaps hx)
 
+/-! ### Smoothing patches -/
+
+/-- A patch on which a map can be smoothed relative to a boundary. -/
 structure ManifoldSmoothing.MapSmoothingPatch {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] (I : ModelWithCorners ℝ E H) (J : ModelWithCorners ℝ G K)
@@ -1806,6 +1922,7 @@ structure ManifoldSmoothing.MapSmoothingPatch {E G H K X N : Type*} [NormedAddCo
   outer_compact : HasCompactSupport outer
   nested : ∀ x ∈ tsupport cutoff, outer x = 1
 
+/-- Two smoothing patches are compatible on their overlap. -/
 def ManifoldSmoothing.MapSmoothingPatch.Compatible {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1814,6 +1931,7 @@ def ManifoldSmoothing.MapSmoothingPatch.Compatible {E G H K X N : Type*}
     (f : X → N) : Prop :=
   Set.MapsTo f (tsupport p.outer) p.chart.source
 
+/-- The plateau where the patch smoothing is exact. -/
 def ManifoldSmoothing.MapSmoothingPatch.plateau {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K}
@@ -1821,6 +1939,7 @@ def ManifoldSmoothing.MapSmoothingPatch.plateau {E G H K X N : Type*} [NormedAdd
     (p : ManifoldSmoothing.MapSmoothingPatch I J (X := X) (N := N)) : Set X :=
   interior {x | p.cutoff x = 1}
 
+/-- The inner support lies in the outer patch. -/
 theorem ManifoldSmoothing.MapSmoothingPatch.inner_support_subset_outer {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1833,6 +1952,7 @@ theorem ManifoldSmoothing.MapSmoothingPatch.inner_support_subset_outer {E G H K 
   rw [p.nested x hx]
   exact one_ne_zero
 
+/-- The inner patch is compatible with the outer. -/
 theorem ManifoldSmoothing.MapSmoothingPatch.inner_compatible {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1841,6 +1961,7 @@ theorem ManifoldSmoothing.MapSmoothingPatch.inner_compatible {E G H K X N : Type
     {f : X → N} (hf : p.Compatible f) : tsupport p.cutoff ⊆ f ⁻¹' p.chart.source := fun _ hx =>
   hf (p.inner_support_subset_outer hx)
 
+/-- The plateau cutoff is eventually one. -/
 theorem ManifoldSmoothing.MapSmoothingPatch.plateau_eventually_one {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1850,6 +1971,7 @@ theorem ManifoldSmoothing.MapSmoothingPatch.plateau_eventually_one {E G H K X N 
   filter_upwards [isOpen_interior.mem_nhds hx] with y hy
   exact interior_subset (s := {y : X | p.cutoff y = 1}) hy
 
+/-- One patch smoothing step exists within the target. -/
 theorem ManifoldSmoothing.exists_smoothing_patch_step_within_target {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1950,6 +2072,7 @@ theorem ManifoldSmoothing.exists_finite_patch_smoothing_within_target {E G H K X
       · exact Or.inr hplateau
       · exact Or.inl (hsm₁ x (Or.inr ⟨j, hjs, hplateau⟩))
 
+/-- Finitely many patches give a global smoothing. -/
 theorem ManifoldSmoothing.exists_finite_patch_smoothing {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1967,6 +2090,7 @@ theorem ManifoldSmoothing.exists_finite_patch_smoothing {E G H K X N : Type*}
       (fun _ => Set.subset_univ _) (Set.mapsTo_univ f Set.univ) s
   exact ⟨f', hc, hrel.homotopicRel, hsm⟩
 
+/-- A smoothing exists from a finite patch cover. -/
 theorem ManifoldSmoothing.exists_smoothing_of_finite_patches {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -1985,6 +2109,9 @@ theorem ManifoldSmoothing.exists_smoothing_of_finite_patches {E G H K X N : Type
   obtain ⟨i, hi⟩ := hcover x
   exact hsm x (Or.inr ⟨i, Finset.mem_univ i, hi⟩)
 
+/-! ### Existence of smoothings -/
+
+/-- A smoothing patch exists at a point inside an open set. -/
 theorem ManifoldSmoothing.exists_smoothing_patch_at_in_open {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -2014,6 +2141,7 @@ theorem ManifoldSmoothing.exists_smoothing_patch_at_in_open {E G H K X N : Type*
   change x ∈ interior {y : X | β y = 1}
   exact mem_interior_iff_mem_nhds.mpr β.eventuallyEq_one
 
+/-- A smoothing patch exists at every point. -/
 theorem ManifoldSmoothing.exists_smoothing_patch_at {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -2025,6 +2153,7 @@ theorem ManifoldSmoothing.exists_smoothing_patch_at {E G H K X N : Type*}
     exists_smoothing_patch_at_in_open (I := I) (J := J) f x isOpen_univ (Set.mem_univ _)
   exact ⟨p, hc, hp⟩
 
+/-- A smooth map homotopic relative to a closed set exists. -/
 theorem ManifoldSmoothing.exists_smooth_map_homotopicRel {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -2049,6 +2178,7 @@ theorem ManifoldSmoothing.exists_smooth_map_homotopicRel {E G H K X N : Type*}
   obtain ⟨i, hi, hix⟩ := Set.mem_iUnion₂.mp (hs (Set.mem_univ x))
   exact ⟨⟨i, hi⟩, hix⟩
 
+/-- A smooth map homotopic to a continuous map exists. -/
 theorem ManifoldSmoothing.exists_smooth_map_homotopic {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -2060,6 +2190,7 @@ theorem ManifoldSmoothing.exists_smooth_map_homotopic {E G H K X N : Type*}
       (Set.Subset.refl ∅) contMDiffOn_empty
   exact ⟨f', hf', ⟨H.toHomotopy⟩⟩
 
+/-- The flattened homotopy is smooth on the collar complement. -/
 theorem ManifoldSmoothing.contMDiffOn_flattenedHomotopyMap {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -2085,6 +2216,7 @@ theorem ManifoldSmoothing.contMDiffOn_flattenedHomotopyMap {E G H K X N : Type*}
       exact flattenedHomotopyMap_upper H r.1 r.2 (le_of_lt hr)
     exact (hs.contMDiffAt.congr_of_eventuallyEq heq).contMDiffWithinAt
 
+/-- A smooth homotopy with collar control exists. -/
 theorem ManifoldSmoothing.exists_smooth_homotopy_with_collars {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
