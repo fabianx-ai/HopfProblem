@@ -67,20 +67,26 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The cancelled birth family -/
+
+/-- The cancelled family: the birth deformation truncated to a plateau. -/
 def MorseCancellation.cancelled {m : ℕ} (σ : Fin m → ℝ) (φ : Model m → ℝ) (t : ℝ) (p : Model m) : ℝ :=
   cubic σ (-t) p + 2 * t * φ p * p.1
 
+/-- The cancelled family is smooth. -/
 theorem MorseCancellation.contDiff_cancelled_family {m : ℕ} (σ : Fin m → ℝ) {φ : Model m → ℝ}
     (hφ : ContDiff ℝ ∞ φ) : ContDiff ℝ ∞ (Function.uncurry (cancelled σ φ)) := by
   exact
     ((contDiff_cubic_family σ).comp (contDiff_fst.neg.prodMk contDiff_snd)).add
       (((contDiff_const.mul contDiff_fst).mul (hφ.comp contDiff_snd)).mul contDiff_snd.fst)
 
+/-- The cancelled family at parameter zero. -/
 theorem MorseCancellation.cancelled_zero {m : ℕ} (σ : Fin m → ℝ) (φ : Model m → ℝ) :
     cancelled σ φ 0 = cubic σ 0 := by
   funext p
   simp [cancelled]
 
+/-- The cancelled family's germ on the plateau. -/
 theorem MorseCancellation.cancelled_germ_plateau {m : ℕ} (σ : Fin m → ℝ) {φ : Model m → ℝ}
     {U : Set (Model m)} (hU : IsOpen U) (hφU : Set.EqOn φ (fun _ => 1) U) (t : ℝ) {p : Model m}
     (hp : p ∈ U) : cancelled σ φ t =ᶠ[𝓝 p] cubic σ t := by
@@ -88,15 +94,20 @@ theorem MorseCancellation.cancelled_germ_plateau {m : ℕ} (σ : Fin m → ℝ) 
   simp [cancelled, cubic, hφU hq]
   ring
 
+/-- The cancelled family is unchanged off the support. -/
 theorem MorseCancellation.cancelled_eq_off_support {m : ℕ} (σ : Fin m → ℝ) (φ : Model m → ℝ) (t : ℝ)
     {p : Model m} (hp : p ∉ tsupport φ) : cancelled σ φ t p = cubic σ (-t) p := by
   simp [cancelled, image_eq_zero_of_notMem_tsupport hp]
 
+/-- The cancelled family's germ off the support. -/
 theorem MorseCancellation.cancelled_germ_off_support {m : ℕ} (σ : Fin m → ℝ) (φ : Model m → ℝ) (t : ℝ)
     {p : Model m} (hp : p ∉ tsupport φ) : cancelled σ φ t =ᶠ[𝓝 p] cubic σ (-t) := by
   filter_upwards [(isClosed_tsupport φ).isOpen_compl.mem_nhds hp] with q hq
   exact cancelled_eq_off_support σ φ t hq
 
+/-! ### Exact cubic births -/
+
+/-- An exact cubic birth deformation exists. -/
 theorem MorseCancellation.exists_exact_cubic_birth {m : ℕ} (σ : Fin m → ℝ) (hσ : ∀ i, σ i ≠ 0)
     {φ : Model m → ℝ} (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) {U : Set (Model m)}
     (hU : IsOpen U) (h0 : (0 : Model m) ∈ U) (hφU : Set.EqOn φ (fun _ => 1) U) :
@@ -156,6 +167,7 @@ theorem MorseCancellation.exists_exact_cubic_birth {m : ℕ} (σ : Fin m → ℝ
   · intro p hpS
     simpa only [neg_neg] using cancelled_germ_off_support σ φ (-(a ^ 2)) hpS
 
+/-- A positive scalar rescaling gives a cubic diffeomorphism. -/
 theorem MorseCancellation.exists_positive_scalar_cubic_diffeomorph {a : ℝ} (ha : 0 < a) :
     ∃ e : ℝ ≃ₘ[ℝ] ℝ, ∀ s, e s = s ^ 3 / 3 + a ^ 2 * s := by
   let g : ℝ → ℝ := fun s => s ^ 3 / 3 + a ^ 2 * s
@@ -201,6 +213,7 @@ theorem MorseCancellation.exists_positive_scalar_cubic_diffeomorph {a : ℝ} (ha
       contMDiff_invFun := hi.contMDiff }
   exact ⟨e, fun _ => rfl⟩
 
+/-- A positive height rescaling gives a cubic diffeomorphism. -/
 theorem MorseCancellation.exists_positive_cubic_height_diffeomorph {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) : ∃ D : Model m ≃ₘ[ℝ] Model m, ∀ p, D p = (cubic σ (a ^ 2) p, p.2) := by
   obtain ⟨e, he⟩ := exists_positive_scalar_cubic_diffeomorph ha
@@ -223,6 +236,9 @@ theorem MorseCancellation.exists_positive_cubic_height_diffeomorph {m : ℕ} (σ
   rw [he]
   rfl
 
+/-! ### Morse charts of the cubic -/
+
+/-- The Hessian of a function composed with a linear equivalence. -/
 theorem MorseCancellation.hessian_comp_linearEquiv {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : F → ℝ} (hf : ContDiff ℝ ∞ f)
     (L : E ≃L[ℝ] F) (x : E) :
@@ -240,6 +256,7 @@ theorem MorseCancellation.hessian_comp_linearEquiv {E F : Type*} [NormedAddCommG
     (A.hasFDerivAt.comp x
         ((hdf.differentiable (by simp) (L x)).hasFDerivAt.comp x L.hasFDerivAt)).fderiv
 
+/-- The Morse condition is preserved by linear reparametrization. -/
 theorem MorseCancellation.euclidean_isMorse_comp_linearEquiv {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : F → ℝ} (hf : ContDiff ℝ ∞ f)
     (hm : MorsePerturbation.IsMorse f) (L : E ≃L[ℝ] F) :
@@ -268,6 +285,7 @@ theorem MorseCancellation.euclidean_isMorse_comp_linearEquiv {E F : Type*} [Norm
   rw [hessian_comp_linearEquiv hf L]
   exact hA.comp ((hm (L x) hcrit).comp L.bijective)
 
+/-- A function with the native model germ is Morse at the point. -/
 theorem MorseCancellation.isMorseAt_of_native_model_germ {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {M : Type*} [TopologicalSpace M]
     [ChartedSpace E M] [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -291,6 +309,7 @@ theorem MorseCancellation.isMorseAt_of_native_model_germ {E F : Type*} [NormedAd
     simpa only [L.apply_symm_apply] using L.continuous.continuousAt.tendsto (x := L.symm p)
   exact hmodel.comp_tendsto ht
 
+/-- The Morse condition is preserved by affine reparametrization. -/
 theorem MorseCancellation.euclidean_isMorse_affine {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : E → ℝ} (hf : ContDiff ℝ ∞ f) (hm : MorsePerturbation.IsMorse f) {c : ℝ}
     (hc : c ≠ 0) (b : ℝ) : MorsePerturbation.IsMorse (fun x => b + c * f x) := by
@@ -305,6 +324,7 @@ theorem MorseCancellation.euclidean_isMorse_affine {E : Type*} [NormedAddCommGro
   rw [fderiv_const_smul (hdf.differentiable (by simp) x)]
   exact (isUnit_iff_ne_zero.mpr hc).smul_bijective.comp (hm x hcrit)
 
+/-- A positive compact scaling into an open set exists. -/
 theorem MorseCancellation.exists_pos_compact_smul_subset {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {K U : Set E} (hK : IsCompact K) (hU : IsOpen U) (h0 : (0 : E) ∈ U) :
     ∃ δ : ℝ, 0 < δ ∧ (fun x : E => δ • x) '' K ⊆ U := by
@@ -325,6 +345,7 @@ theorem MorseCancellation.exists_pos_compact_smul_subset {E : Type*} [NormedAddC
   rw [heq] at hm
   linarith
 
+/-- A centered native height chart exists. -/
 theorem MorseCancellation.exists_centered_native_height_chart {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {M : Type*} [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {x : M}
@@ -373,6 +394,9 @@ theorem MorseCancellation.exists_centered_native_height_chart {E : Type*} [Norme
   rw [hright] at hh
   exact hh.symm
 
+/-! ### The native Morse birth -/
+
+/-- The inserted pair of Morse charts at a birth. -/
 theorem MorseCancellation.insert_morse_chart_pair {E D M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -467,6 +491,7 @@ theorem MorseCancellation.insert_morse_chart_pair {E D M : Type*} [NormedAddComm
     rintro ⟨z, hz, rfl⟩
     exact hnot (Φ z) (Φ.map_source' (hKΦ hz)) hy
 
+/-- A native Morse birth with two critical points exists. -/
 theorem MorseCancellation.exists_native_morse_birth {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -578,6 +603,7 @@ theorem MorseCancellation.exists_native_morse_birth {E M : Type*} [NormedAddComm
   rintro ⟨z, hz, rfl⟩
   exact hy (hΦU (Φ.map_source' (hKΦ hz)))
 
+/-- Injectivity on a set extends to two additional points when the old values are preserved and the two new values are distinct and outside the old image. -/
 theorem MorseCancellation.injOn_of_two_new_values {X : Type*} {f g : X → ℝ} {C : Set X} {p q : X}
     (hinj : Set.InjOn f C) (hkeep : ∀ y ∈ C, g y = f y) (hp : g p ∉ f '' C) (hq : g q ∉ f '' C)
     (hpq : g p ≠ g q) : Set.InjOn g {y | y ∈ C ∨ y = p ∨ y = q} := by
@@ -596,6 +622,7 @@ theorem MorseCancellation.injOn_of_two_new_values {X : Type*} {f g : X → ℝ} 
     · exact False.elim (hpq heq.symm)
     · rfl
 
+/-- Insert a local pair of Morse critical points while preserving all old critical germs and keeping the critical values pairwise distinct. -/
 theorem MorseCancellation.exists_excellent_native_morse_birth {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -684,6 +711,9 @@ theorem MorseCancellation.exists_excellent_native_morse_birth {E M : Type*} [Nor
   intro y hy
   exact hexterior y (fun hh => hy hh.1)
 
+/-! ### Indices of the birth critical points -/
+
+/-- A signed chart of a split quadratic germ exists. -/
 theorem MorseCancellation.exists_signed_chart_of_split_quadratic {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M} {m : ℕ}
     (P : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Model m) M (Model m) ∞) (hp : p ∈ P.source)
@@ -728,6 +758,7 @@ theorem MorseCancellation.exists_signed_chart_of_split_quadratic {E M : Type*} [
         exact h }
   exact ⟨c, hwn, hws⟩
 
+/-- A signed chart of the scaled cubic germ exists. -/
 theorem MorseCancellation.exists_signed_chart_of_scaled_cubic_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {m : ℕ}
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -782,6 +813,7 @@ theorem MorseCancellation.exists_signed_chart_of_scaled_cubic_germ {E M : Type*}
   linarith
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative-index count of the split form. -/
 theorem MorseCancellation.negative_card_split {m n : ℕ} (ρ : Option (Fin m) ≃ Fin n) (w : Fin n → ℝ) :
     Fintype.card { j // w j = -1 } =
       (if w (ρ Option.none) = -1 then 1 else 0) +
@@ -790,6 +822,7 @@ theorem MorseCancellation.negative_card_split {m n : ℕ} (ρ : Option (Fin m) �
   rw [← ρ.sum_comp, Fintype.sum_option]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The index of a scaled cubic germ. -/
 theorem MorseCancellation.native_index_of_scaled_cubic_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {m : ℕ}
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -808,6 +841,7 @@ theorem MorseCancellation.native_index_of_scaled_cubic_germ {E M : Type*} [Norme
   simp only [hcσ]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The indices of the two cubic birth germs. -/
 theorem MorseCancellation.native_indices_of_cubic_birth_germs {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {m : ℕ}
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, E) (Model m) M ∞)
@@ -828,6 +862,7 @@ theorem MorseCancellation.native_indices_of_cubic_birth_germs {E M : Type*} [Nor
         (by simpa only [neg_one_mul] using hq) (by simpa only [neg_one_mul] using hgq)
     simpa [Nat.add_comm] using h
 
+/-- Transverse signs with a prescribed count exist. -/
 theorem MorseCancellation.exists_transverse_signs_of_count {m k : ℕ} (hk : k ≤ m) :
     ∃ σ : Fin m → ℝ, (∀ i, σ i = -1 ∨ σ i = 1) ∧ {i | σ i = -1}.ncard = k := by
   classical
@@ -844,6 +879,7 @@ theorem MorseCancellation.exists_transverse_signs_of_count {m k : ℕ} (hk : k �
     simp only [Set.mem_ofPred_eq]
     rw [Fin.card_filter_val_lt, min_eq_right hk]
 
+/-- An excellent Morse birth with prescribed indices exists. -/
 theorem MorseCancellation.exists_excellent_indexed_morse_birth {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
