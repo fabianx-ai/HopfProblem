@@ -985,7 +985,7 @@ theorem sphere_homotopicRel_of_topClass_eq {X : Type} [TopologicalSpace X] {x : 
         SingularMayerVietoris.singularHomologyMap g 6
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop)) :
     f.HomotopicRel g { SixSphereCube.sphereBasePoint } :=
-  HigherHurewicz.sphere_homotopicRel_of_topClass_eq
+  Hurewicz.sphere_homotopicRel_of_topClass_eq
     (by intro j hj hjn; interval_cases j <;> infer_instance) f g hf hg h
 
 theorem Sphere.based_homotopicRel_id_of_topClass
@@ -1013,7 +1013,7 @@ theorem Sphere.homotopic_id_of_topClass
           (SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) =
         SixthHurewicz.cubeHomologyClass SixSphereCube.cubeSphereLoop) :
     g.Homotopic (ContinuousMap.id SixSphereCube.StandardSphere) :=
-  HigherHurewicz.sphere_homotopic_id_of_topClass g hd
+  Hurewicz.sphere_homotopic_id_of_topClass g hd
 
 theorem right_inverse_is_left_inverse (x : SpecialPeriods.Threefold.Space)
     (g : C(SpecialPeriods.Threefold.Space, SixSphereCube.StandardSphere))

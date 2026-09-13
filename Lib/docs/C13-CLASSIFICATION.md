@@ -163,7 +163,7 @@ theorem right_inverse_is_left_inverse {m : ℕ} {X : Type} [TopologicalSpace X]
 - deps: `sphere_homotopic_id_of_topClass`, `SingularHomology.homotopic_homologyMap`, `SingularHomology.singularHomologyMap_comp`, `ContinuousMap.Homotopic.comp`, `ContinuousMap.Homotopic.refl`
 - representation equations: `homotopic_homologyMap`, `singularHomologyMap_comp`
 
-## Production verification receipt
+## Production verification receipt (historical: baseline `26a4708` and later `1a31384` state, superseded by the integrated receipt below)
 
 - production build `lake build Lib.AlgebraicTopology.Hurewicz.HopfDegree` exit 0,
   7 seconds (epoch 1789253240 → 1789253247), log `~/s6-notes/C13-classification-build.log`
@@ -173,3 +173,28 @@ theorem right_inverse_is_left_inverse {m : ℕ} {X : Type} [TopologicalSpace X]
   (`sphere_homotopicRel_of_topClass_eq`, `sphere_homotopic_id_of_topClass`,
   `right_inverse_is_left_inverse`, `exists_basepoint_adjustment`) use
   `[propext, Classical.choice, Quot.sound]`; temporary probes removed.
+
+## Production verification receipt — integrated head `37fc1de8`
+
+Integrated base `37fc1de8a74a3b294a54fd9e804c82c074ae9591` (branch
+`lib/C-14-integrated-receipt`). At this head the standalone `Degree.` prefix was removed;
+the interface names above are now `Mathoverflow1973.SphereCube.*`,
+`Mathoverflow1973.CylinderFilling.*`, `Mathoverflow1973.Hurewicz.*`, and
+`Mathoverflow1973.threefoldHomotopyEquiv`. The pre-integration `Degree.`-prefixed names
+above are historical.
+
+Two adapter-body edits in `Hopf/Recognition.lean` re-pointed the existing general
+instantiations to the current namespace (`HigherHurewicz.` → `Hurewicz.`):
+`sphere_homotopicRel_of_topClass_eq` and `Sphere.homotopic_id_of_topClass`. No statements
+changed and no proofs were deleted.
+
+- `lake build Hopf.Recognition` — exit 0, 8,813 jobs, epoch 1789264924 → 1789265765,
+  log `~/s6-notes/C13-integrated-recognition.log`
+- `lake build Hopf.Final Solution` — exit 0, 8,816 jobs, epoch 1789265777 → 1789265786,
+  log `~/s6-notes/C13-integrated-final.log`
+- consumer axiom probe `lake env lean C13_IntegratedConsumerAudit.lean` (`import Solution`,
+  `#print axioms` on `sphere_homotopicRel_of_topClass_eq`, `Sphere.homotopic_id_of_topClass`,
+  `threefoldHomotopyEquiv`, `mathoverflow_1973`) — exit 0, all four on
+  `[propext, Classical.choice, Quot.sound]`, log `~/s6-notes/C13-integrated-consumer-axioms.log`;
+  probe source preserved at `~/s6-notes/C13-integrated-consumer-audit.lean` and removed from
+  the repository.

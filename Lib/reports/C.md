@@ -1,9 +1,10 @@
 # Lane C report — the Hurewicz theorem in every degree
 
-**Current Lean checkpoint:** `1a31384`, branch `lib/C-10-boundary`.
+**Current Lean checkpoint:** `37fc1de8`, branch `lib/C-14-integrated-receipt`.
 **Toolchain:** `leanprover/lean4:v4.33.0`.
 **Textbook and live ledger:** `Lib/docs/C.md`; aggregate receipt: `Lib/docs/C-INTERFACE_RECEIPT.md`.
 **Scope:** lane C only. The reassigned J/E2/F/G packets and target files were not edited.
+**Authorship:** acting seat Devin, powered by Fusion (GPT-6 Astra Low Thinking + SWE-2 Medium).
 
 ## Current result
 
@@ -58,7 +59,7 @@ recognition consumer needs it. A separately normalized integer-valued degree API
 bodies instantiate the general theorem. Its sphere homotopy-vanishing instances use the general
 bootstrap. `Hopf/Recognition.lean` retains its degree-six public consumer interfaces and
 naturality statements; its classification and basepoint-adjustment proofs call `Lib`.
-The project theorem statements, including `Degree.threefoldHomotopyEquiv`, were not changed.
+The project theorem statements, including `threefoldHomotopyEquiv`, were not changed.
 
 At `26a4708`, the two consumer files changed by **+69 / −10,575 lines**, a net reduction of
 **10,506 Lean lines**. The subsequent C13 adapters removed another **109 net lines** from
@@ -110,7 +111,7 @@ Source: `C13-consumer-axioms.log`. The renamed Hurewicz equivalence, sphere self
 and cross product were also audited with the same axiom set (`C-rename-shims.log`,
 `C-cross-rename-shims.log`). The durable lane-C probes are appended to `Lib/AxiomAudit.lean`.
 
-### Final comprehensive gates at the current Lean checkpoint
+### Final comprehensive gates (historical: recorded at `1a31384`, not rerun at `37fc1de8`)
 
 | Command | Result | Wall seconds | Log |
 |---|---|---:|---|
@@ -141,7 +142,25 @@ The independent final consumer axiom output is:
 'Mathoverflow1973.Degree.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
-The temporary audit source was removed. No further Lean source changes followed these gates.
+The temporary audit source was removed. No further Lean source changes followed those gates
+at `1a31384`.
+
+### Integrated-head gates at `37fc1de8` (after the two C13 adapter-body edits)
+
+Two `Hopf/Recognition.lean` adapter bodies were re-pointed from the compatibility
+`HigherHurewicz.` spelling to the current `Hurewicz.` names
+(`sphere_homotopicRel_of_topClass_eq`, `Sphere.homotopic_id_of_topClass`); statements
+unchanged. Fresh downstream gates, replacing nothing in the historical table above:
+
+| Command | Result | Log |
+|---|---|---|
+| `lake build Hopf.Recognition` | exit 0; 8,813 jobs | `C13-integrated-recognition.log` |
+| `lake build Hopf.Final Solution` | exit 0; 8,816 jobs | `C13-integrated-final.log` |
+| `lake env lean C13_IntegratedConsumerAudit.lean` (`import Solution`, four `#print axioms`) | exit 0; `[propext, Classical.choice, Quot.sound]` only | `C13-integrated-consumer-axioms.log` |
+
+The full-`Lib` aggregate build and `Lib/AxiomAudit.lean` were not rerun at `37fc1de8`; the
+`1a31384` table above remains their last recorded result. See also the integrated receipt in
+`Lib/docs/C13-CLASSIFICATION.md` and the refreshed `Lib/docs/C-INTERFACE_RECEIPT.md`.
 
 ## Documentation coverage
 
