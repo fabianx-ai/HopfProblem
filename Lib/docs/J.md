@@ -353,8 +353,7 @@ any further change to the J-A packet invalidates its reviewed hash.
 
 **Revision note (2026-09-12, second pass).** The first-pass ledger and its probes were
 independently reviewed by seat `devin-axis5-j` → **NO-GO** (nine findings; the review
-text is held in `~/s6-notes/J-review-devin-axis5-j.md`, to be committed as
-`Lib/docs/J-review.md` alongside the Stage-2 review). This revision:
+is committed in-tree as `Lib/docs/J-axis5-review.md`). This revision:
 
 * fixes both proposed signatures to universe `Type` — `SingularMayerVietoris.SingularHomology`
   takes `Y : Type` (`MayerVietoris.lean:853`) and `crossProductHomology` takes
@@ -1828,17 +1827,13 @@ at `r = 4`.
    corrected citations; no content change.
 8. **Review.** Two independent reviews now exist for this lane. (a) Stage-2 review of
    §§1–8: done; the report (six corrections, four remarks, all incorporated in the
-   current text) is held off-tree (Kimi seat's `~/s6-notes/J-review.md`; durable copy at
-   the Muse seat's `~/s6-notes/kimi-notes/J-review.md`) and is committed into the tree
-   as `Lib/docs/J-review.md` with the reviewer named — pending the owner confirming the
-   reviewer's identity. (b) Axis-5 review of the first-pass ledger + probes by seat
+   current text) is committed in-tree as `Lib/docs/J-stage2-review.md` (Kimi seat,
+   reviewer named there). (b) Axis-5 review of the first-pass ledger + probes by seat
    `devin-axis5-j` (GPT-6 Astra): **NO-GO**, nine findings — universe-0 vs `Type*` in the
    two proposed signatures, missing namespace/elaboration context and ChallengeNode
    fields, a genuine typed gap behind the general-`n` wedge descent, literal `…`s in
    signatures, stale ownership wording ("J appends G-J3"), the J7/J8 dependency order,
    and off-by-one source coordinates. All findings verified against the sources and
    incorporated into the present second-pass ledger (revision note at the top of the
-   Axis-5 section). The review text is held off-tree at
-   `~/s6-notes/J-review-devin-axis5-j.md` and is committed as
-   `Lib/docs/J-axis5-review.md` alongside (a). A re-review of this revised ledger is
-   outstanding before J's Axis-6 work starts.
+   Axis-5 section). The review is committed in-tree as `Lib/docs/J-axis5-review.md`.
+   A re-review of this revised ledger is outstanding before J's Axis-6 work starts.

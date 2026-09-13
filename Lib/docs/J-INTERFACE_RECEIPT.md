@@ -93,12 +93,11 @@ exit 0 — 0 errors, 0 warnings.
 
 ## Axis-5 review
 
-Stage-2 review of `Lib/docs/J.md` exists off-tree at `~/s6-notes/J-review.md`
-(origin: kimi's review of the pre-revision ledger).
+Stage-2 review of `Lib/docs/J.md` is committed in-tree at
+`Lib/docs/J-stage2-review.md` (origin: kimi's review of the pre-revision ledger).
 
-**First Axis-5 review — NO-GO** (seat `devin-axis5-j`, GPT-6 Astra, report at
-`~/s6-notes/J-review-devin-axis5-j.md`, to be committed as
-`Lib/docs/J-axis5-review.md`). Nine findings, all confirmed against the sources and
+**First Axis-5 review — NO-GO** (seat `devin-axis5-j`, GPT-6 Astra, report committed
+in-tree as `Lib/docs/J-axis5-review.md`). Nine findings, all confirmed against the sources and
 addressed by the second-pass `J.md` ledger:
 
 1. The two proposed signatures used `G : Type*` against the universe-0
@@ -128,8 +127,7 @@ addressed by the second-pass `J.md` ledger:
    signatures (binders, instances, universes, codomains); internal movers are
    name+line manifests.
 
-**Second Axis-5 review — NO-GO** (same seat, report at
-`~/s6-notes/J-review2-devin-axis5-j.md`, committed as
+**Second Axis-5 review — NO-GO** (same seat, report committed in-tree as
 `Lib/docs/J-axis5-review2.md` alongside the first). Eleven findings; the J-A-relevant ones were: wrong
 `reindex` direction, `.repr`/function-space mismatch, and no second-pass
 aggregate receipt. Both de-pinned wedge constructors passed the reviewer's own

@@ -1,0 +1,6 @@
+theorem homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
+    (h : M ≃ₕ SixSphere) (k : ℕ) (hk : k ≠ 0) (hktop : k ≠ 6) :
+    Subsingleton (SingularMayerVietoris.SingularHomology M k) := by
+  let : Subsingleton (SingularMayerVietoris.SingularHomology SixSphere k) :=
+    SphereHomology.unitSphere_homology_subsingleton 5 k hk hktop
+  exact (PeriodTorusHigherHomology.homotopyEquivHomologyEquiv h k).injective.subsingleton

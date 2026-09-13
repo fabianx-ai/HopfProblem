@@ -1,7 +1,9 @@
 # Fresh independent G review after repairs
 
+*Editorial note (Muse seat): absolute host paths in this report were rewritten to repo-relative or `~/` form when the file was brought in-tree; no other content changed.*
+
 Reviewer identity: **fresh2-g**, a new Devin subagent, not a prior G reviewer.
-Scope: current `/home/ox-alpha/HopfProblem/Lib/docs/G.md`, receipt, live signatures and load-bearing proof mechanisms. Review/report only.
+Scope: current `Lib/docs/G.md`, receipt, live signatures and load-bearing proof mechanisms. Review/report only.
 
 ## Snapshot and separate verdicts
 
@@ -17,7 +19,7 @@ No concurrent change to the reviewed ledger, receipt or primary source files was
 
 ## Method and independence
 
-Read `/home/ox-alpha/collaboration-protocol.md` first, then AGENTS.md, lean-protocol.md (including Stage 2, Axis-5 Challenge/GO and extraction-mode rules), all 1,194 lines of current G.md and its 82-line receipt. Inspected all 35 declaration starts and their source signatures, and read the load-bearing proof bodies and complement/minimum/trade helpers before consulting the prior reviews. The dangling `let p' :=` signatures were identified directly in the current ledger/source comparison, not inherited from a checklist. Subsequently read G-fresh-subagent-review.md, both astra reviews and the superseded self-review to check repair coverage. No previous verdict was adopted as evidence in place of source inspection.
+Read `~/collaboration-protocol.md` first, then AGENTS.md, lean-protocol.md (including Stage 2, Axis-5 Challenge/GO and extraction-mode rules), all 1,194 lines of current G.md and its 82-line receipt. Inspected all 35 declaration starts and their source signatures, and read the load-bearing proof bodies and complement/minimum/trade helpers before consulting the prior reviews. The dangling `let p' :=` signatures were identified directly in the current ledger/source comparison, not inherited from a checklist. Subsequently read G-fresh-subagent-review.md, both astra reviews and the superseded self-review to check repair coverage. No previous verdict was adopted as evidence in place of source inspection.
 
 Comparison is a manual source-text review, not machine equality of elaborated types. Selected long proof bodies were followed at their substantive calls; not every transitive helper was audited line by line. I did not fetch the books afresh or claim new page-by-page verification of Milnor/Smale. The cited theorems are treated at the stated standard-input scope; the closed-manifold trade is justified through the actual unique-minimum/source chain, not by silently applying a triad theorem verbatim.
 
@@ -146,9 +148,9 @@ G2a outer minimization does not call trade. G2b at ST:10215–10220 explicitly c
 
 Git commands used process-local `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0='*'`. No config-changing script was sourced.
 
-- `pwd`, `git -C /home/ox-alpha/HopfProblem rev-parse HEAD`, `git ... status --short`, initial ledger `sha256sum`: exit 0, snapshot above.
+- `pwd`, `git -C the repository root rev-parse HEAD`, `git ... status --short`, initial ledger `sha256sum`: exit 0, snapshot above.
 - `sha256sum` on receipt and five primary Lean files near the beginning, repeated with ledger at the end: exit 0, unchanged hashes below.
-- `ls -ld /tmp /home/ox-alpha/s6-notes`: exit 0; verified destinations.
+- `ls -ld /tmp ~/s6-notes`: exit 0; verified destinations.
 - `git branch --show-current`, `git diff --check`, scoped `git diff fdd2143... --stat -- ...`: exit 0; correct branch, no whitespace errors or scoped changes.
 - `/tmp/shared-lean-copy/toolchain-v4.33.0/bin/lean --version`: exit 0, Lean 4.33.0, commit `d8b18978322de05a8f3dba51ef03cf5461676c17`.
 - Specialized read/grep/find tools performed all file reading/searching and the report-name pre-existence check. The requested report did not exist; no overwrite was needed.
