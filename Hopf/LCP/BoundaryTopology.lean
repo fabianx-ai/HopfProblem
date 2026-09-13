@@ -153,6 +153,7 @@ import Lib.Topology.Covering.DiagonalQuotient
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import S6.TwoExceptionalGluing
+import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
 
 set_option maxSynthPendingDepth 3
 
@@ -166,36 +167,5 @@ open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDi
 universe u v
 
 noncomputable section
-
-def PeriodTorusHigherHomology.rightTranslation {G : Type*} [TopologicalSpace G] [AddGroup G]
-    [IsTopologicalAddGroup G] (a : G) : C(G, G) :=
-  ⟨fun x => x + a, continuous_id.add continuous_const⟩
-
-@[simp]
-theorem PeriodTorusHigherHomology.rightTranslation_apply {G : Type*} [TopologicalSpace G]
-    [AddGroup G] [IsTopologicalAddGroup G] (a x : G) : rightTranslation a x = x + a :=
-  rfl
-
-def PeriodTorusHigherHomology.rightTranslationHomotopyAlong {G : Type*} [TopologicalSpace G]
-    [AddGroup G] [IsTopologicalAddGroup G] {a : G} (p : Path (0 : G) a) :
-    (ContinuousMap.id G).Homotopy (rightTranslation a)
-    where
-  toFun z := z.2 + p z.1
-  continuous_toFun := continuous_snd.add (p.continuous.comp continuous_fst)
-  map_zero_left x := by simp
-  map_one_left x := by simp
-
-theorem PeriodTorusHigherHomology.rightTranslation_singularHomologyMap_of_path {G : Type}
-    [TopologicalSpace G] [AddGroup G] [IsTopologicalAddGroup G] {a : G} (p : Path (0 : G) a)
-    (n : ℕ) : SingularMayerVietoris.singularHomologyMap (rightTranslation a) n = LinearMap.id := by
-  rw [← homotopy_homologyMap (rightTranslationHomotopyAlong p) n, singularHomologyMap_id]
-
-@[simp]
-theorem PeriodTorusHigherHomology.rightTranslation_singularHomologyMap {G : Type}
-    [TopologicalSpace G] [AddGroup G] [IsTopologicalAddGroup G] [PathConnectedSpace G] (a : G)
-    (n : ℕ) : SingularMayerVietoris.singularHomologyMap (rightTranslation a) n = LinearMap.id :=
-  rightTranslation_singularHomologyMap_of_path (PathConnectedSpace.somePath 0 a) n
-
-
 
 end

@@ -108,6 +108,8 @@ import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.PathClass
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
+import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
+import Lib.AlgebraicTopology.SingularHomology.FirstHurewicz
 
 /-!
 # Reusable V10 Section 6 library
