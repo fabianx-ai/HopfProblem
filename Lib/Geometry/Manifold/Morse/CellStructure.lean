@@ -63,25 +63,32 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Union and cylinder quotients -/
+
+/-- The union of a space and an attachment along a map. -/
 abbrev Attachment.Union {K M : Type*} [TopologicalSpace K] [TopologicalSpace M] (A : Set M)
     (h : C(K, M)) :=
   ↥(A ∪ Set.range h)
 
+/-- The sum quotient realizing the union. -/
 def Attachment.sumQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (h : C(K, M)) : C(A ⊕ K, Attachment.Union A h) :=
   ⟨ClosedAttachment.sumMap A h, ClosedAttachment.continuous_sumMap A h⟩
 
+/-- The sum quotient map is surjective. -/
 theorem Attachment.sumQuotient_surjective {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (h : C(K, M)) : Function.Surjective (sumQuotient A h) := by
   rintro ⟨x, hx | ⟨k, rfl⟩⟩
   · exact ⟨.inl ⟨x, hx⟩, rfl⟩
   · exact ⟨.inr k, rfl⟩
 
+/-- The cylinder quotient of the attaching map. -/
 def Attachment.cylinderQuotient {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (h : C(K, M)) :
     C((unitInterval) × (A ⊕ K), (unitInterval) × Attachment.Union A h) :=
   (ContinuousMap.id (unitInterval)).prodMap (sumQuotient A h)
 
+/-- The cylinder quotient map is surjective. -/
 theorem Attachment.cylinderQuotient_surjective {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (h : C(K, M)) : Function.Surjective (cylinderQuotient A h) :=
   by
@@ -89,11 +96,15 @@ theorem Attachment.cylinderQuotient_surjective {K M : Type*} [TopologicalSpace K
   obtain ⟨z, rfl⟩ := sumQuotient_surjective A h x
   exact ⟨(t, z), rfl⟩
 
+/-- The cylinder quotient is a quotient map. -/
 theorem Attachment.cylinderQuotient_isQuotientMap {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (h : C(K, M)) :
     Topology.IsQuotientMap (cylinderQuotient A h) :=
   .of_surjective_continuous (cylinderQuotient_surjective A h) (cylinderQuotient A h).continuous
 
+/-! ### The union family -/
+
+/-- A family defined on the sum by cases. -/
 def Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) {r : C(K, K)}
     (H : (ContinuousMap.id K).HomotopyRel r B) :
@@ -122,6 +133,7 @@ def Attachment.familyOnSum {K M : Type*} [TopologicalSpace K] [TopologicalSpace 
     funext p
     rcases p with ⟨t, a | k⟩ <;> rfl
 
+/-- The sum family is constant on quotient fibres. -/
 theorem Attachment.familyOnSum_constant_on_fibres {K M : Type*} [TopologicalSpace K]
     [TopologicalSpace M] (A : Set M) (B : Set K) (h : C(K, M)) {r : C(K, K)}
     (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
@@ -159,6 +171,7 @@ theorem Attachment.familyOnSum_constant_on_fibres {K M : Type*} [TopologicalSpac
       subst l
       rfl
 
+/-- The family descending to the union. -/
 def Attachment.unionFamily {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
     {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
@@ -167,6 +180,7 @@ def Attachment.unionFamily {K M : Type*} [TopologicalSpace K] [CompactSpace K]
   (cylinderQuotient_isQuotientMap A h).lift (familyOnSum A B h H)
     (familyOnSum_constant_on_fibres A B h H hinj hface)
 
+/-- The union family computes the sum family. -/
 @[simp]
 theorem Attachment.unionFamily_apply {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
@@ -178,6 +192,7 @@ theorem Attachment.unionFamily_apply {K M : Type*} [TopologicalSpace K] [Compact
       (familyOnSum_constant_on_fibres A B h H hinj hface))
     (t, z)
 
+/-- The union family is fixed on the lower part. -/
 theorem Attachment.unionFamily_fixed_lower {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K)
     (h : C(K, M)) {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B)
@@ -185,6 +200,7 @@ theorem Attachment.unionFamily_fixed_lower {K M : Type*} [TopologicalSpace K]
     unionFamily A B h H hinj hface (t, ⟨a.val, Or.inl a.property⟩) = ⟨a.val, Or.inl a.property⟩ :=
   unionFamily_apply A B h H hinj hface t (.inl a)
 
+/-- The union family on the handle. -/
 theorem Attachment.unionFamily_on_handle {K M : Type*} [TopologicalSpace K]
     [CompactSpace K] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K)
     (h : C(K, M)) {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B)
@@ -192,6 +208,7 @@ theorem Attachment.unionFamily_on_handle {K M : Type*} [TopologicalSpace K]
     (unionFamily A B h H hinj hface (t, ⟨h k, Or.inr ⟨k, rfl⟩⟩)).val = h (H (t, k)) :=
   congrArg Subtype.val (unionFamily_apply A B h H hinj hface t (.inr k))
 
+/-- The union family at parameter zero. -/
 theorem Attachment.unionFamily_zero {K M : Type*} [TopologicalSpace K] [CompactSpace K]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A] (B : Set K) (h : C(K, M))
     {r : C(K, K)} (H : (ContinuousMap.id K).HomotopyRel r B) (hinj : Function.Injective h)
@@ -205,6 +222,9 @@ theorem Attachment.unionFamily_zero {K M : Type*} [TopologicalSpace K] [CompactS
     apply Subtype.ext
     exact congrArg h (H.apply_zero k)
 
+/-! ### Handle interpolation and deformation -/
+
+/-- The interpolation between a point and its handle projection. -/
 def Handle.interpolate {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (t : (unitInterval)) (z : Space (N := N) (P := P)) :
     Space (N := N) (P := P) :=
@@ -215,6 +235,7 @@ def Handle.interpolate {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
       (convex_closedBall (0 : P) 1 : Convex ℝ _) z.2.property (retraction z).2.property
         (sub_nonneg.mpr t.property.2) t.property.1 (by ring)⟩)
 
+/-- The handle interpolation is continuous. -/
 theorem Handle.continuous_interpolate {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] :
     Continuous (fun tz : (unitInterval) × Space (N := N) (P := P) => interpolate tz.1 tz.2) := by
@@ -234,23 +255,27 @@ theorem Handle.continuous_interpolate {N P : Type*} [NormedAddCommGroup N]
             (ht.smul (continuous_subtype_val.comp (continuous_snd.comp hr)))).subtype_mk
         _)
 
+/-- The interpolation at zero is the point. -/
 @[simp]
 theorem Handle.interpolate_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (z : Space (N := N) (P := P)) :
     interpolate 0 z = z := by apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate]
 
+/-- The interpolation at one is the handle projection. -/
 @[simp]
 theorem Handle.interpolate_one {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (z : Space (N := N) (P := P)) :
     interpolate 1 z = retraction z := by
   apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate]
 
+/-- The interpolation fixes the lower part. -/
 theorem Handle.interpolate_fixed {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (t : (unitInterval)) (z : Space (N := N) (P := P))
     (hz : z ∈ faceCore) : interpolate t z = z := by
   have hr := retraction_eq_self z hz
   apply Prod.ext <;> apply Subtype.ext <;> simp [interpolate, hr, ← add_smul]
 
+/-- The deformation retract of the union onto the handle core. -/
 def Handle.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
     (ContinuousMap.id (Space (N := N) (P := P))).HomotopyRel retraction faceCore
@@ -261,14 +286,19 @@ def Handle.deformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
   map_one_left := interpolate_one
   prop' := interpolate_fixed
 
+/-! ### The core attachment -/
+
+/-- The core of an attachment: the union with the core disk. -/
 abbrev CoreAttachment.Core {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
     Set (Handle.Space (N := N) (P := P)) :=
   {z | (z.2 : P) = 0}
 
+/-- A face of the core attachment. -/
 abbrev CoreAttachment.Face {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P] :
     Set (Handle.Space (N := N) (P := P)) :=
   {z | ‖(z.1 : N)‖ = 1}
 
+/-- The face deformation of the core attachment. -/
 def CoreAttachment.faceDeformation {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] :
     (ContinuousMap.id (Handle.Space (N := N) (P := P))).HomotopyRel
@@ -277,11 +307,13 @@ def CoreAttachment.faceDeformation {N P : Type*} [NormedAddCommGroup N] [NormedS
   __ := Handle.deformation.toHomotopy
   prop' t z hz := Handle.interpolate_fixed t z (Or.inl hz)
 
+/-- The union of all core faces. -/
 abbrev CoreAttachment.CoreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace M] (A : Set M)
     (h : C(Handle.Space (N := N) (P := P), M)) :=
   ↥(A ∪ h '' Core)
 
+/-- The deformation family of the core attachment. -/
 def CoreAttachment.family {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -290,6 +322,7 @@ def CoreAttachment.family {N P M : Type*} [NormedAddCommGroup N] [NormedSpace �
     C((unitInterval) × Attachment.Union A h, Attachment.Union A h) :=
   Attachment.unionFamily A Face h faceDeformation hinj hface
 
+/-- The core family at parameter zero. -/
 theorem CoreAttachment.family_zero {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -298,6 +331,7 @@ theorem CoreAttachment.family_zero {N P M : Type*} [NormedAddCommGroup N] [Norme
     family A h hinj hface (0, x) = x :=
   Attachment.unionFamily_zero A Face h faceDeformation hinj hface x
 
+/-- The core family is fixed on the lower part. -/
 theorem CoreAttachment.family_fixed_lower {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -306,6 +340,7 @@ theorem CoreAttachment.family_fixed_lower {N P M : Type*} [NormedAddCommGroup N]
     family A h hinj hface (t, ⟨a.val, Or.inl a.property⟩) = ⟨a.val, Or.inl a.property⟩ :=
   Attachment.unionFamily_fixed_lower A Face h faceDeformation hinj hface t a
 
+/-- The core family on the handle. -/
 theorem CoreAttachment.family_on_handle {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -315,6 +350,7 @@ theorem CoreAttachment.family_on_handle {N P M : Type*} [NormedAddCommGroup N]
     (family A h hinj hface (t, ⟨h z, Or.inr ⟨z, rfl⟩⟩)).val = h (Handle.interpolate t z) :=
   Attachment.unionFamily_on_handle A Face h faceDeformation hinj hface t z
 
+/-- The core family at time one lands in the core union. -/
 theorem CoreAttachment.family_one_mem_coreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -329,6 +365,7 @@ theorem CoreAttachment.family_one_mem_coreUnion {N P M : Type*} [NormedAddCommGr
     · exact Or.inl ((hface (Handle.retraction z)).mpr hz)
     · exact Or.inr ⟨Handle.retraction z, hz, rfl⟩
 
+/-- The inclusion of the core union into the attachment. -/
 def CoreAttachment.inclusion {N P M : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
     [TopologicalSpace M] (A : Set M) (h : C(Handle.Space (N := N) (P := P), M)) :
     C(CoreUnion A h, Attachment.Union A h) :=
@@ -337,6 +374,7 @@ def CoreAttachment.inclusion {N P M : Type*} [NormedAddCommGroup N] [NormedAddCo
       x.property.elim Or.inl (fun hx => Or.inr (by obtain ⟨z, _, hz⟩ := hx; exact ⟨z, hz⟩))⟩,
     continuous_subtype_val.subtype_mk _⟩
 
+/-- The retraction of the attachment onto the core union. -/
 def CoreAttachment.reduce {N P M : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N] [FiniteDimensional ℝ P]
     [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -347,6 +385,7 @@ def CoreAttachment.reduce {N P M : Type*} [NormedAddCommGroup N] [NormedSpace �
           (continuous_const.prodMk continuous_id)).subtype_mk
       _⟩
 
+/-- The core family fixes the core union. -/
 theorem CoreAttachment.family_fixed_coreUnion {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -360,6 +399,7 @@ theorem CoreAttachment.family_fixed_coreUnion {N P M : Type*} [NormedAddCommGrou
     change (family A h hinj hface (t, ⟨h z, Or.inr ⟨z, rfl⟩⟩)).val = h z
     rw [family_on_handle, Handle.interpolate_fixed t z (Or.inr hz)]
 
+/-- The core union is a deformation retract of the attachment. -/
 def CoreAttachment.coreUnionHomotopyEquiv {N P M : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ N]
     [FiniteDimensional ℝ P] [TopologicalSpace M] [T2Space M] (A : Set M) [CompactSpace A]
@@ -387,6 +427,9 @@ def CoreAttachment.coreUnionHomotopyEquiv {N P M : Type*} [NormedAddCommGroup N]
         map_one_left := fun _ => rfl }
     exact ⟨H.symm⟩
 
+/-! ### Core cells -/
+
+/-- The core cell's dimension is the handle index. -/
 theorem MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
@@ -396,6 +439,7 @@ theorem MorseCells.core_dimension_le {E M : Type*} [NormedAddCommGroup E] [Norme
   rw [finrank_euclideanSpace]
   exact (Fintype.card_subtype_le (fun i => c.weights i = -1)).trans_eq (Fintype.card_fin _)
 
+/-- The characteristic map of a core cell. -/
 def MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -407,6 +451,7 @@ def MorseCells.coreCellMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   (c.attachingHandleMap ρ hρ hblock).comp
     ⟨fun u => (u, ⟨0, by simp⟩), continuous_id.prodMk continuous_const⟩
 
+/-- The core cell map is injective on the interior. -/
 theorem MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -418,6 +463,7 @@ theorem MorseCells.coreCellMap_injective {E M : Type*} [NormedAddCommGroup E]
   intro u v h
   exact congrArg Prod.fst (c.attachingHandleMap_injective ρ hρ hblock h)
 
+/-- A core cell image point lies in the lower part exactly on the boundary. -/
 theorem MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -429,6 +475,7 @@ theorem MorseCells.coreCellMap_lower_iff {E M : Type*} [NormedAddCommGroup E]
     f (coreCellMap c ρ hρ hblock u) ≤ f p - ρ ^ 2 ↔ ‖(u : c.NegativeCoordinates)‖ = 1 :=
   c.attachingHandleMap_lower_iff ρ hρ hblock (u, ⟨0, by simp⟩)
 
+/-- The image of the core cell map. -/
 theorem MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -447,6 +494,7 @@ theorem MorseCells.image_core {E M : Type*} [NormedAddCommGroup E] [NormedSpace 
   · rintro ⟨u, rfl⟩
     exact ⟨(u, ⟨0, by simp⟩), rfl, rfl⟩
 
+/-- The handle attachment is homotopy equivalent to the cell attachment. -/
 def MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -475,6 +523,9 @@ def MorseCells.cellHandleHomotopyEquiv {E M : Type*} [NormedAddCommGroup E]
       (mark.symm.toHomotopyEquiv.trans
         (core.trans (c.attachingHandleUnionHomeomorph hf ρ hρ hblock).symm.toHomotopyEquiv))
 
+/-! ### Finite cell attachment -/
+
+/-- A finite cell complex built by successive attachments. -/
 inductive FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → Prop
   | empty (X : Type) [TopologicalSpace X] [IsEmpty X] : Built d X
   |
@@ -487,19 +538,25 @@ inductive FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → 
     (hdim : Module.finrank ℝ V ≤ d) (hA : Built d A) :
     Built d (ClosedAttachment.Space A {u : MorseHandle.UnitDisk V | ‖(u : V)‖ = 1} h)
 
+/-! ### Attaching maps -/
+
+/-- The inclusion of the old complex into the attachment. -/
 def AttachmentMaps.oldInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) : C(A, ClosedAttachment.Space A B h) :=
   ⟨fun a => Quot.mk _ (.inl a), continuous_quot_mk.comp continuous_inl⟩
 
+/-- The inclusion of the cell into the attachment. -/
 def AttachmentMaps.cellInclusion {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) : C(K, ClosedAttachment.Space A B h) :=
   ⟨fun k => Quot.mk _ (.inr k), continuous_quot_mk.comp continuous_inr⟩
 
+/-- The attaching map agrees on the boundary. -/
 theorem AttachmentMaps.boundary_eq {K M : Type*} [TopologicalSpace K] [TopologicalSpace M]
     (A : Set M) (B : Set K) (h : C(K, M)) (a : A) (k : K) (hk : k ∈ B) (ha : a.val = h k) :
     oldInclusion A B h a = cellInclusion A B h k :=
   Quot.sound ⟨hk, ha⟩
 
+/-- The sum map respects the quotient relation. -/
 theorem AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
     [TopologicalSpace M] [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X))
     (g : C(K, X)) (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) (a b : A ⊕ K)
@@ -511,6 +568,7 @@ theorem AttachmentMaps.sum_respects {K M X : Type*} [TopologicalSpace K]
     | inr k => exact hc a k hab.1 hab.2
   | inr k => cases b <;> exact hab.elim
 
+/-- The glued attachment of a cell. -/
 def AttachmentMaps.glue {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (f : C(A, X)) (g : C(K, X))
     (hc : ∀ a k, k ∈ B → a.val = h k → f a = g k) : C(ClosedAttachment.Space A B h, X)
@@ -518,14 +576,17 @@ def AttachmentMaps.glue {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M
   toFun := Quot.lift (Sum.elim f g) (sum_respects A B h f g hc)
   continuous_toFun := continuous_quot_lift _ (continuous_sum_dom.mpr ⟨f.continuous, g.continuous⟩)
 
+/-- The family on the old part. -/
 def AttachmentMaps.familyOld {M X : Type*} [TopologicalSpace M] [TopologicalSpace X]
     (A : Set M) (F : C((unitInterval) × A, X)) (t : (unitInterval)) : C(A, X) :=
   F.comp ⟨fun a => (t, a), continuous_const.prodMk continuous_id⟩
 
+/-- The family on the cell. -/
 def AttachmentMaps.familyCell {K X : Type*} [TopologicalSpace K] [TopologicalSpace X]
     (G : C((unitInterval) × K, X)) (t : (unitInterval)) : C(K, X) :=
   G.comp ⟨fun k => (t, k), continuous_const.prodMk continuous_id⟩
 
+/-- The glued deformation family. -/
 def AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [TopologicalSpace M]
     [TopologicalSpace X] (A : Set M) (B : Set K) (h : C(K, M)) (F : C((unitInterval) × A, X))
     (G : C((unitInterval) × K, X)) (hFG : ∀ t a k, k ∈ B → a.val = h k → F (t, a) = G (t, k)) :
@@ -541,6 +602,9 @@ def AttachmentMaps.glueFamily {K M X : Type*} [TopologicalSpace K] [TopologicalS
     funext p
     rcases p with ⟨t, a | k⟩ <;> rfl
 
+/-! ### Relative disk lifting -/
+
+/-- A relative disk lifting through a cell attachment. -/
 def FiniteCells.RelativeDiskLifting {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (d : ℕ) : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V],
@@ -557,10 +621,12 @@ def FiniteCells.RelativeDiskLifting {X Y : Type} [TopologicalSpace X] [Topologic
                   (∀ z, G (1, z) = u z) ∧
                     ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s)
 
+/-- Maps into the target lift through the attachment. -/
 def FiniteCells.MapsLift {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (Z : Type) [TopologicalSpace Z] : Prop :=
   ∀ u : C(Z, Y), ∃ v : C(Z, X), (F.comp v).Homotopic u
 
+/-- The empty attachment lifts trivially. -/
 theorem FiniteCells.mapsLift_empty {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) (Z : Type) [TopologicalSpace Z] [IsEmpty Z] : MapsLift F Z := by
   intro u
@@ -569,6 +635,7 @@ theorem FiniteCells.mapsLift_empty {X Y : Type} [TopologicalSpace X] [Topologica
   have he : F.comp v = u := ContinuousMap.ext (fun z => isEmptyElim z)
   rw [he]
 
+/-- Lifting is preserved by equivalence. -/
 theorem FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) {Z W : Type} [TopologicalSpace Z] [TopologicalSpace W] (e : Z ≃ₕ W)
     (h : MapsLift F Z) : MapsLift F W := by
@@ -579,6 +646,7 @@ theorem FiniteCells.mapsLift_equiv {X Y : Type} [TopologicalSpace X] [Topologica
   have h₂ := (ContinuousMap.Homotopic.refl u).comp e.right_inv
   simpa only [ContinuousMap.comp_assoc, ContinuousMap.comp_id] using h₁.trans h₂
 
+/-- Lifting extends across one attachment. -/
 theorem FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (F : C(X, Y)) {d : ℕ} (hF : RelativeDiskLifting F d) {V M : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace M] (A : Set M)
@@ -638,6 +706,7 @@ theorem FiniteCells.mapsLift_attach {X Y : Type} [TopologicalSpace X] [Topologic
       | inl a => exact HA.map_one_left a
       | inr z => exact hGD1 z
 
+/-- A built cell complex lifts maps. -/
 theorem FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (F : C(X, Y)) {d : ℕ} (hF : RelativeDiskLifting F d) {Z : Type}
     [TopologicalSpace Z] (hZ : Built d Z) : MapsLift F Z := by
@@ -646,6 +715,9 @@ theorem FiniteCells.mapsLift_of_built {X Y : Type} [TopologicalSpace X]
   | equiv e _ ih => exact mapsLift_equiv F e ih
   | attach A h hb hd _ ih => exact mapsLift_attach F hF A h hb hd ih
 
+/-! ### Morse cells -/
+
+/-- A Morse cell attachment below a level exists. -/
 theorem MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -707,6 +779,7 @@ theorem MorseCells.exists_morse_cell_attachment_lt {E M : Type*} [NormedAddCommG
     ⟨(cellHandleHomotopyEquiv c ρ hρ hblock hf.continuous).trans
         ((c.attachingHandleUnionHomeomorph hf.continuous ρ hρ hblock).toHomotopyEquiv.trans e)⟩
 
+/-- A Morse cell: a chart block around a critical point. -/
 structure MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (p : M) where
   radius : ℝ
@@ -727,11 +800,13 @@ structure MorseCells.Cell {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
         (coreCellMap chart radius radius_pos block) ≃ₕ
       { x : M // f x ≤ f p + radius ^ 2 }
 
+/-- The height band of a Morse cell. -/
 def MorseCells.Cell.band {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : MorseCells.Cell (E := E) f p) : Set ℝ :=
   Set.Icc (f p - c.radius ^ 2) (f p + c.radius ^ 2)
 
+/-- A Morse cell below a level exists. -/
 theorem MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] [CompactSpace M] {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -742,6 +817,7 @@ theorem MorseCells.exists_cell_lt {E M : Type*} [NormedAddCommGroup E] [NormedSp
   obtain ⟨ρ, hρ, hlt, c, hb, hi, hd, ⟨e⟩⟩ := exists_morse_cell_attachment_lt hf hm hp hunique hR
   exact ⟨⟨ρ, hρ, c, hb, hi, hd, e⟩, hlt⟩
 
+/-- Disjoint Morse cells at distinct critical points exist. -/
 theorem MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -796,6 +872,7 @@ theorem MorseCells.exists_disjoint_cells {E M : Type*} [NormedAddCommGroup E]
   · exact (hpq (Subtype.ext (hinj p.property q.property h))).elim
   · exact (hordered q p h).symm
 
+/-- Disjoint cells order by height. -/
 theorem MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p q : M}
     (c : Cell (E := E) f p) (d : Cell (E := E) f q) (h : Disjoint c.band d.band)
@@ -811,6 +888,7 @@ theorem MorseCells.upper_lt_lower_of_disjoint {E M : Type} [NormedAddCommGroup E
     · nlinarith [sq_nonneg d.radius]
   exact Set.disjoint_left.mp h hc hd
 
+/-- A sublevel with no critical points is empty. -/
 theorem MorseCells.isEmpty_sublevel_of_no_critical {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
