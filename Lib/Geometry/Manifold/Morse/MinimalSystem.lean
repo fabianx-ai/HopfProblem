@@ -9,10 +9,49 @@ public import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
+/-!
+# Homotopy six-sphere data: connectivity and homology vanishing
+
+`SixSphere` is the round unit sphere in `ℝ⁷`. A space homotopy equivalent to it
+inherits its basic invariants: `simplyConnectedSpace_of_homotopySixSphere` and
+`pathConnectedSpace_of_homotopySixSphere` give simple and path connectivity, and
+`homotopySixSphere_homology_subsingleton` gives `Subsingleton` singular homology in
+every degree other than `0` and `6` (transported through
+`SingularHomology.homotopyEquivHomologyEquiv` from
+`SphereHomology.unitSphere_homology_subsingleton`).
+
+This is the hypothesis-generation input for the six-dimensional recognition
+theorem (Smale 1961, Theorem A): the two-critical-point Morse conclusion is
+assembled over this data, not inside this file.
+
+## Main declarations
+
+* `SixSphere` : the unit sphere in `EuclideanSpace ℝ (Fin 7)`.
+* `simplyConnectedSpace_of_homotopySixSphere`,
+  `pathConnectedSpace_of_homotopySixSphere` : connectivity of a homotopy `S⁶`.
+* `homotopySixSphere_homology_subsingleton` : `Hₖ(M)` is a subsingleton for
+  `k ∉ {0, 6}` when `M ≃ₕ SixSphere`.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], Ch. 9
+  (the recognition application this data feeds).
+
+## Twin
+
+No Mathlib counterpart exists; the declarations are upstream-shaped but have no
+Mathlib file to converge to.
+
+## Tags
+
+six-sphere, homotopy equivalence, simple connectivity, singular homology
+-/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
 open scoped ContinuousMap
+
 
 @[expose] public noncomputable section
 
