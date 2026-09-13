@@ -8,6 +8,50 @@ import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.OnePointCollapse
+
+/-!
+# The Hurewicz theorem and the cube–sphere quotient
+
+`Hurewicz.hurewiczLinearEquiv x hpi : Additive (π_ (m + 3) X x) ≃ₗ[ℤ]
+SingularMayerVietoris.SingularHomology X (m + 3)` is the Hurewicz isomorphism in degree
+`m + 3` for a simply connected space `X` with `Subsingleton (π_ j X x)` for
+`2 ≤ j < m + 3`; `Hurewicz.hurewiczLinearEquivOfTwoLE x n hn hpi` repackages it for every
+degree `n ≥ 2`.
+
+## Outline of the construction
+
+1. The sphere is realized as the one-point collapse of the cube boundary:
+   `Degree.SphereCube.quotient : C(Fin n → unitInterval, Sphere n)` sends
+   `Cube.boundary (Fin n)` to `Degree.SphereCube.point n`
+   (`Degree.SphereCube.quotient_boundary`).
+2. A based cube map factors through the quotient as `Degree.SphereCube.factorMap`, and
+   homotopies descend through the quotient cylinder `Degree.SphereCube.cylinder`
+   (`Degree.SphereCube.factorMap_homotopy`).
+3. Additivity of the cube class under `transAt` concatenation is proved by
+   `Hurewicz.cubeHomologyClass_transAt_zero` and `Hurewicz.cubeHomologyClass_transAt`.
+4. `Hurewicz.hurewiczMap` is the induced `ℤ`-linear map on homotopy classes.
+5. Normalization (`normalizedCube`, `normalizationCubeHomotopy`) gives the inverse
+   `hurewiczInverse`, and the round trips `hurewiczInverse_comp_hurewiczMap` and
+   `hurewiczMap_comp_hurewiczInverse` assemble the linear equivalence.
+
+## Main definitions and results
+
+* `Degree.SphereCube.quotient`, `Degree.SphereCube.factorMap`: the cube–sphere quotient
+  and the factorization of based cube maps.
+* `Hurewicz.hurewiczMap`, `Hurewicz.hurewiczInverse`: the two directions.
+* `Hurewicz.hurewiczLinearEquiv`, `Hurewicz.hurewiczLinearEquivOfTwoLE`: the Hurewicz
+  isomorphisms.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], Theorem 4.32; the argument is
+  recorded in `Lib/docs/C.md`, §§11–13 and 16.
+
+## Tags
+
+Hurewicz theorem, cube, sphere, quotient, singular homology
+-/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -15,7 +59,11 @@ open Set Function Filter Manifold Topology
 noncomputable section
 
 namespace Mathoverflow1973
+/-! ### Collapsing the boundary: the cube–sphere quotient -/
 
+
+/-- The map on the one-point collapse `OnePoint ↥Fᶜ` induced by `f : C(K, X)`, when `f`
+sends all of the closed nonempty set `F` to `x`. -/
 def OnePointCollapse.collapseLift {K X : Type*} [TopologicalSpace K] [CompactSpace K] [T2Space K]
     [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty) (f : C(K, X)) (x : X)
     (hf : ∀ a ∈ F, f a = x) : C(OnePoint ↥Fᶜ, X) :=
@@ -26,6 +74,7 @@ def OnePointCollapse.collapseLift {K X : Type*} [TopologicalSpace K] [CompactSpa
       · rfl
       · exact (hf a ha).trans (hf b hb).symm)
 
+/-- `collapseLift` composed with the collapse map `collapseMap F hF` recovers `f`. -/
 @[simp]
 theorem OnePointCollapse.collapseLift_comp {K X : Type*} [TopologicalSpace K] [CompactSpace K]
     [T2Space K] [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty)
@@ -33,6 +82,7 @@ theorem OnePointCollapse.collapseLift_comp {K X : Type*} [TopologicalSpace K] [C
     (collapseLift F hF hne f x hf).comp (collapseMap F hF) = f :=
   Topology.IsQuotientMap.lift_comp (f := collapseMap F hF) (isQuotientMap_collapse F hF hne) f _
 
+/-- The value of `collapseLift` at `collapse F a` is `f a`. -/
 @[simp]
 theorem OnePointCollapse.collapseLift_apply {K X : Type*} [TopologicalSpace K] [CompactSpace K]
     [T2Space K] [TopologicalSpace X] (F : Set K) (hF : IsClosed F) (hne : F.Nonempty)
@@ -40,9 +90,11 @@ theorem OnePointCollapse.collapseLift_apply {K X : Type*} [TopologicalSpace K] [
     collapseLift F hF hne f x hf (collapse F a) = f a :=
   ContinuousMap.congr_fun (collapseLift_comp F hF hne f x hf) a
 
+/-- The open unit interval `(0, 1)` as a subset of `ℝ`. -/
 abbrev Hurewicz.CubeSphere.OpenUnitInterval :=
   Set.Ioo (0 : ℝ) 1
 
+/-- The affine order isomorphism between the open unit interval `(0, 1)` and `(-1, 1)`. -/
 def Hurewicz.CubeSphere.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o Set.Ioo (-1 : ℝ) 1
     where
   toFun t := ⟨2 * (t : ℝ) - 1, by constructor <;> linarith [t.property.1, t.property.2]⟩
@@ -62,17 +114,24 @@ def Hurewicz.CubeSphere.openUnitIntervalAffineOrderIso : OpenUnitInterval ≃o S
     change 2 * (t : ℝ) - 1 ≤ 2 * (s : ℝ) - 1 ↔ (t : ℝ) ≤ (s : ℝ)
     constructor <;> intro h <;> linarith
 
+/-- A homeomorphism between the open unit interval `(0, 1)` and `ℝ`. -/
 def Hurewicz.CubeSphere.openUnitIntervalHomeomorph : OpenUnitInterval ≃ₜ ℝ :=
   openUnitIntervalAffineOrderIso.toHomeomorph.trans (orderIsoIooNegOneOne ℝ).toHomeomorph.symm
 
+/-- The interior of the unit `n`-cube: the subtype of cube points not on
+`Cube.boundary (Fin n)`. -/
 abbrev Hurewicz.CubeSphere.CubeInteriorN (n : ℕ) :=
   { u : Fin n → (unitInterval) // u ∉ Cube.boundary (Fin n) }
 
+/-- A cube point lies off the boundary iff every coordinate is strictly between `0`
+and `1`. -/
 theorem Hurewicz.CubeSphere.not_mem_cubeBoundary_iff {n : ℕ} (u : Fin n → (unitInterval)) :
     u ∉ Cube.boundary (Fin n) ↔ ∀ i, 0 < (u i : ℝ) ∧ (u i : ℝ) < 1 := by
   simp only [Cube.boundary, Set.mem_ofPred_eq, not_exists, not_or, unitInterval.coe_pos,
     unitInterval.coe_lt_one, unitInterval.pos_iff_ne_zero, unitInterval.lt_one_iff_ne_one]
 
+/-- The cube boundary is the union of the faces `u i = 0` and `u i = 1` for
+`i : Fin n`. -/
 theorem Hurewicz.CubeSphere.cubeBoundary_eq_iUnion (n : ℕ) :
     Cube.boundary (Fin n) =
       ⋃ i : Fin n,
@@ -80,6 +139,7 @@ theorem Hurewicz.CubeSphere.cubeBoundary_eq_iUnion (n : ℕ) :
   ext u
   simp only [Cube.boundary, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_union]
 
+/-- The cube boundary `Cube.boundary (Fin n)` is closed. -/
 theorem Hurewicz.CubeSphere.isClosed_cubeBoundaryN (n : ℕ) : IsClosed (Cube.boundary (Fin n)) := by
   rw [cubeBoundary_eq_iUnion]
   exact
@@ -87,6 +147,8 @@ theorem Hurewicz.CubeSphere.isClosed_cubeBoundaryN (n : ℕ) : IsClosed (Cube.bo
       (isClosed_eq (continuous_apply i) continuous_const).union
         (isClosed_eq (continuous_apply i) continuous_const)
 
+/-- The cube interior is homeomorphic to `Fin n → OpenUnitInterval` by restricting the
+coordinates. -/
 def Hurewicz.CubeSphere.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃ₜ (Fin n → OpenUnitInterval)
     where
   toFun u i := ⟨(u.val i : ℝ), (not_mem_cubeBoundary_iff u.val).mp u.property i⟩
@@ -114,27 +176,37 @@ def Hurewicz.CubeSphere.cubeInteriorCoordinates (n : ℕ) : CubeInteriorN n ≃�
     have hi : Continuous (fun v : Fin n → OpenUnitInterval => v i) := continuous_apply i
     exact (continuous_subtype_val.comp hi).subtype_mk _
 
+/-- The cube interior is homeomorphic to `EuclideanSpace ℝ (Fin n)`, coordinatewise via
+`openUnitIntervalHomeomorph`. -/
 def Hurewicz.CubeSphere.cubeInteriorEuclideanHomeomorph (n : ℕ) :
     CubeInteriorN n ≃ₜ EuclideanSpace ℝ (Fin n) :=
   (cubeInteriorCoordinates n).trans
     ((Homeomorph.piCongrRight fun _ : Fin n => openUnitIntervalHomeomorph).trans
       (PiLp.homeomorph 2 (fun _ : Fin n => ℝ)).symm)
 
+/-- The `n`-sphere as the unit sphere of `EuclideanSpace ℝ (Fin (n + 1))`. -/
 abbrev Degree.SphereCube.Sphere (n : ℕ) :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
 
+/-- The one-point compactification of the cube interior is homeomorphic to the
+`n`-sphere. -/
 def Degree.SphereCube.compactification (n : ℕ) :
     OnePoint (Hurewicz.CubeSphere.CubeInteriorN n) ≃ₜ Sphere n :=
   (Hurewicz.CubeSphere.cubeInteriorEuclideanHomeomorph n).onePointCongr.trans
     (onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin n)) (ι := Fin (n + 1)) (by simp))
 
+/-- The basepoint of `Sphere n`: the image of the point at infinity of the cube
+interior's compactification. -/
 def Degree.SphereCube.point (n : ℕ) : Sphere n :=
   compactification n (OnePoint.infty)
 
+/-- The quotient map from the unit `n`-cube to the `n`-sphere, collapsing
+`Cube.boundary (Fin n)` to `point n`. -/
 def Degree.SphereCube.quotient (n : ℕ) : C(Fin n → (unitInterval), Sphere n) :=
   (compactification n : C(OnePoint (Hurewicz.CubeSphere.CubeInteriorN n), Sphere n)).comp
     (OnePointCollapse.collapseMap (Cube.boundary (Fin n)) (Hurewicz.CubeSphere.isClosed_cubeBoundaryN n))
 
+/-- Every boundary point of the cube is sent by `quotient n` to the sphere basepoint. -/
 theorem Degree.SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterval))
     (hz : z ∈ Cube.boundary (Fin n)) : quotient n z = point n := by
   change
@@ -142,15 +214,19 @@ theorem Degree.SphereCube.quotient_boundary (n : ℕ) (z : Fin n → (unitInterv
       compactification n (OnePoint.infty)
   rw [OnePointCollapse.collapse_of_mem _ hz]
 
+/-- The all-zero corner of the cube lies on the boundary when `0 < n`. -/
 theorem Degree.SphereCube.zero_boundary {n : ℕ} (hn : 0 < n) :
     (0 : Fin n → (unitInterval)) ∈ Cube.boundary (Fin n) :=
   ⟨⟨0, hn⟩, Or.inl rfl⟩
 
+/-- The cube-to-sphere quotient map is surjective when `0 < n`. -/
 theorem Degree.SphereCube.quotient_surjective {n : ℕ} (hn : 0 < n) :
     Function.Surjective (quotient n) :=
   (compactification n).surjective.comp
     (OnePointCollapse.collapse_surjective (Cube.boundary (Fin n)) ⟨0, zero_boundary hn⟩)
 
+/-- Two cube points have the same image under `quotient n` iff they are equal or both
+lie on the cube boundary. -/
 theorem Degree.SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterval)) :
     quotient n z = quotient n w ↔ z = w ∨ z ∈ Cube.boundary (Fin n) ∧ w ∈ Cube.boundary (Fin n) :=
   by
@@ -160,24 +236,32 @@ theorem Degree.SphereCube.quotient_eq_iff (n : ℕ) (z w : Fin n → (unitInterv
       _
   rw [(compactification n).injective.eq_iff, OnePointCollapse.collapse_eq_iff]
 
+/-- The product of the identity on `unitInterval` with the cube-to-sphere quotient:
+the cylinder over the quotient. -/
 def Degree.SphereCube.cylinder (n : ℕ) :
     C((unitInterval) × (Fin n → (unitInterval)), (unitInterval) × Sphere n) :=
   (ContinuousMap.id (unitInterval)).prodMap (quotient n)
 
+/-- The cylinder over the quotient is surjective when `0 < n`. -/
 theorem Degree.SphereCube.cylinder_surjective {n : ℕ} (hn : 0 < n) :
     Function.Surjective (cylinder n) := by
   rintro ⟨t, z⟩
   obtain ⟨w, rfl⟩ := quotient_surjective hn z
   exact ⟨(t, w), rfl⟩
 
+/-- The cylinder over the quotient is a quotient map when `0 < n`. -/
 theorem Degree.SphereCube.cylinder_isQuotientMap {n : ℕ} (hn : 0 < n) :
     Topology.IsQuotientMap (cylinder n) :=
   .of_surjective_continuous (cylinder_surjective hn) (cylinder n).continuous
 
+/-- The based cube map `GenLoop (Fin n) X (u (point n))` obtained by precomposing a
+sphere map `u` with the quotient; it is constant `u (point n)` on the boundary. -/
 def Degree.SphereCube.basedCube {n : ℕ} {X : Type*} [TopologicalSpace X] (u : C(Sphere n, X)) :
     GenLoop (Fin n) X (u (point n)) :=
   ⟨u.comp (quotient n), fun z hz => congrArg u (quotient_boundary n z hz)⟩
 
+/-- If `π_ n X (u (point n))` is a subsingleton, the sphere map `u` is homotopic
+relative to the basepoint to the constant map at `u (point n)`. -/
 theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type*}
     [TopologicalSpace X] (hn : 0 < n) (u : C(Sphere n, X)) [Subsingleton (π_ n X (u (point n)))] :
     u.HomotopicRel (ContinuousMap.const (Sphere n) (u (point n))) {point n} := by
@@ -218,9 +302,12 @@ theorem Degree.SphereCube.homotopicRel_const_of_subsingleton {n : ℕ} {X : Type
 def Degree.SphereCube.quotientLoop (n : ℕ) : GenLoop (Fin n) (Sphere n) (point n) :=
   ⟨quotient n, quotient_boundary n⟩
 
+/-- The underlying map of `quotientLoop n` is the quotient map `quotient n`. -/
 @[simp]
 theorem Degree.SphereCube.quotientLoop_val (n : ℕ) : (quotientLoop n).val = quotient n :=
   rfl
+
+/-! ### Factor maps through the quotient -/
 
 /-- The factor map of a based loop through the sphere quotient: the loop pushed to the sphere
 is the identity on the cube class. -/
@@ -351,6 +438,8 @@ def Degree.SphereCube.factorMap_homotopy {n : ℕ} (hn : 0 < n) {X : Type*}
   · intro z
     obtain ⟨w, rfl⟩ := quotient_surjective hn z
     exact (hG 1 w).trans ((H.apply_one w).trans (factorMap_quotient hn q w).symm)
+
+/-! ### Additivity of the cube class -/
 
 /-- Homotopic based cubes have the same cube homology class. -/
 theorem Hurewicz.cubeHomologyClass_homotopic {m : ℕ} {X : Type} [TopologicalSpace X]
@@ -511,6 +600,8 @@ theorem Hurewicz.cubeHomologyClass_transAt {m : ℕ} {X : Type} [TopologicalSpac
   exact Hurewicz.cubeHomologyClass_transAt_zero p q
 
 
+/-! ### The Hurewicz linear map -/
+
 /-- The Hurewicz function at degree `n ≥ 2`: the cube homology class of a representative. -/
 def Hurewicz.hurewiczFunction {m : ℕ} {X : Type} [TopologicalSpace X] (x : X) :
     π_ (m + 2) X x → SingularMayerVietoris.SingularHomology X (m + 2) :=
@@ -627,6 +718,8 @@ theorem Hurewicz.hurewiczMap_comp_hurewiczInverse {X : Type} [TopologicalSpace X
     (Hurewicz.hurewiczMap (m := m + 1) x)
     (Hurewicz.hurewiczMap_classOperator_cycle x hpi)
 
+/-- The composite `hurewiczMap ∘ hurewiczInverse` is the identity on degree-`m + 3`
+singular homology classes. -/
 @[simp]
 theorem Hurewicz.hurewiczMap_hurewiczInverse {X : Type} [TopologicalSpace X]
     [SimplyConnectedSpace X] (x : X) {m : ℕ}
@@ -652,10 +745,13 @@ theorem Hurewicz.classOperator_cubeChain_sum {X : Type} [TopologicalSpace X]
   rw [Hurewicz.cubeChain_eq_sum_simplices]
   simp only [map_sum, map_zsmul, Hurewicz.classOperator_simplex]
 
+/-! ### Normalization and the inverse -/
+
 namespace Hurewicz
 
 open SecondHurewicz.SimplyConnected
 
+/-- The edge tower's high storey is stationary on the constant simplex. -/
 theorem edgeTower_high_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (k : ℕ) :
     (edgeTower x k).high (ContinuousMap.const (SingularChains.Simplex (k + 1)) x) =
@@ -665,6 +761,7 @@ theorem edgeTower_high_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpa
   | succ k ih =>
     exact Hurewicz.extendCoherentSimplexHomotopy_const _ _ _ (edgeTower x k).high_zero x ih
 
+/-- The edge tower's low storey is stationary on the constant simplex. -/
 theorem edgeTower_low_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (k : ℕ) :
     (edgeTower x k).low (ContinuousMap.const (SingularChains.Simplex k) x) =
@@ -673,6 +770,7 @@ theorem edgeTower_low_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpac
   | zero => rfl
   | succ k => exact edgeTower_high_const x k
 
+/-- The vertex-then-edge normalization is stationary on the constant simplex. -/
 theorem vertexEdgeHomotopy_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (k : ℕ) :
     vertexEdgeHomotopy x k (ContinuousMap.const (SingularChains.Simplex k) x) =
@@ -680,6 +778,7 @@ theorem vertexEdgeHomotopy_const {X : Type} [TopologicalSpace X] [SimplyConnecte
   Hurewicz.composeSimplexHomotopies_const _ _ _ _ x (vertexStraighteningHomotopy_const x k)
     (edgeTower_low_const x k)
 
+/-- Every storey of the normalization tower is stationary on the constant simplex. -/
 theorem normalizationTower_const {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
     (k : ℕ) (hpi : ∀ j, 2 ≤ j → j ≤ k + 2 → Subsingleton (π_ j X x)) :
     (normalizationTower x k hpi).aug (ContinuousMap.const (SingularChains.Simplex (k + 2)) x) =
@@ -708,6 +807,8 @@ theorem normalizationTower_const {X : Type} [TopologicalSpace X] [SimplyConnecte
 
 variable {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
 
+/-- The normalized form of a based `(m + 3)`-cube map: the endpoint of the coherent
+cube homotopy assembled from the normalization tower. -/
 def normalizedCube (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) : GenLoop (Fin (m + 3)) X x :=
@@ -715,6 +816,8 @@ def normalizedCube (x : X) {m : ℕ}
   CubeGluing.coherentCubeEndpoint S.aug S.nxt S.compat
     (normalizationTower_const x m _).1 p
 
+/-- On each Freudenthal–Kuhn cell `e`, the normalized cube agrees with the normalized
+simplex of the corresponding simplex restriction of `p`. -/
 theorem normalizedCube_cell (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
@@ -724,6 +827,7 @@ theorem normalizedCube_cell (x : X) {m : ℕ}
   exact CubeGluing.coherentCubeEndpoint_cell S.aug S.nxt S.compat
     (normalizationTower_const x m _).1 p e
 
+/-- The homotopy from a based cube map `p` to its normalization `normalizedCube x hpi p`. -/
 def normalizationCubeHomotopy (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) :
@@ -732,6 +836,8 @@ def normalizationCubeHomotopy (x : X) {m : ℕ}
   CubeGluing.coherentCubeHomotopy S.aug S.nxt S.compat
     (normalizationTower_const x m _).1 S.nxt_zero p
 
+/-- The normalized cube is internally based in the sense of
+`NativeSubdivision.NativeCubeInternalBased`. -/
 theorem normalizedCube_internalBased (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) :
@@ -740,6 +846,8 @@ theorem normalizedCube_internalBased (x : X) {m : ℕ}
   exact coherentCubeEndpoint_internalBased S.aug S.nxt S.compat
     (normalizationTower_const x m _).1 S.aug_one p
 
+/-- The `e`-th based simplex of the normalized cube's subdivision is the normalized
+simplex of `p` restricted to the cell `cubeSimplex e`. -/
 theorem normalizedCube_simplex (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) (e : Equiv.Perm (Fin (m + 3))) :
@@ -749,6 +857,8 @@ theorem normalizedCube_simplex (x : X) {m : ℕ}
   apply Subtype.ext
   exact normalizedCube_cell x hpi p e
 
+/-- The class operator sends the cube chain of `p` to the additive form of its
+homotopy class `⟦p⟧`. -/
 theorem classOperator_cubeChain (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
     (p : GenLoop (Fin (m + 3)) X x) :
@@ -760,6 +870,8 @@ theorem classOperator_cubeChain (x : X) {m : ℕ}
   simp only [normalizedCube_simplex] at h
   exact (classOperator_cubeChain_sum x hpi p).trans h.symm
 
+/-- The inverse Hurewicz map recovers `⟦p⟧` from the image of `p`'s class under
+`hurewiczMap`. -/
 @[simp]
 theorem hurewiczInverse_hurewiczMap_mk (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
@@ -772,6 +884,7 @@ theorem hurewiczInverse_hurewiczMap_mk (x : X) {m : ℕ}
   rw [hurewiczInverse_cycleClass]
   exact classOperator_cubeChain x hpi p
 
+/-- `hurewiczInverse` is a left inverse of `hurewiczMap` on `Additive (π_ (m+3) X x)`. -/
 @[simp]
 theorem hurewiczInverse_hurewiczMap (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
@@ -783,18 +896,25 @@ theorem hurewiczInverse_hurewiczMap (x : X) {m : ℕ}
   intro p
   exact hurewiczInverse_hurewiczMap_mk x hpi p
 
+/-- The composite `hurewiczInverse ∘ hurewiczMap` is the identity linear map. -/
 theorem hurewiczInverse_comp_hurewiczMap (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
     (hurewiczInverse x hpi).comp (hurewiczMap (m := m + 1) x) = LinearMap.id := by
   ext a
   exact hurewiczInverse_hurewiczMap x hpi a
 
+/-- **The Hurewicz theorem.** For a simply connected space `X` with
+`Subsingleton (π_ j X x)` for `2 ≤ j < m + 3`, the Hurewicz map is a `ℤ`-linear
+equivalence `Additive (π_ (m + 3) X x) ≃ₗ[ℤ] SingularHomology X (m + 3)`. -/
 def hurewiczLinearEquiv (x : X) {m : ℕ}
     (hpi : ∀ j, 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x)) :
     Additive (π_ (m + 3) X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X (m + 3) :=
   LinearEquiv.ofLinearMap (hurewiczMap (m := m + 1) x) (hurewiczInverse x hpi)
     (hurewiczMap_comp_hurewiczInverse x hpi) (hurewiczInverse_comp_hurewiczMap x hpi)
 
+/-- **The Hurewicz theorem.** For a simply connected space `X`, every degree `n ≥ 2`
+with `Subsingleton (π_ j X x)` for `2 ≤ j < n`, the Hurewicz map is a `ℤ`-linear
+equivalence `Additive (π_ n X x) ≃ₗ[ℤ] SingularHomology X n`. -/
 def hurewiczLinearEquivOfTwoLE (x : X) (n : ℕ) (hn : 2 ≤ n)
     (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
     letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
