@@ -1,0 +1,69 @@
+CMD: lake env lean -o C19_InterfaceCheck.olean C19_InterfaceCheck.lean (post-move)
+start 1789321040
+C19_InterfaceCheck.lean:12:0: warning: Definition `C19_InterfaceCheck.c1` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+C19_InterfaceCheck.lean:12:0: warning: Definition `c1` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.lean:14:0: warning: Definition `c2` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.lean:36:0: warning: Definition `C19_InterfaceCheck.c13` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+C19_InterfaceCheck.lean:36:0: warning: Definition `c13` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.lean:38:0: warning: Definition `C19_InterfaceCheck.c14` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+C19_InterfaceCheck.lean:38:0: warning: Definition `c14` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.lean:40:0: warning: Definition `C19_InterfaceCheck.c15` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+C19_InterfaceCheck.lean:40:0: warning: Definition `c15` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.lean:42:0: warning: Definition `C19_InterfaceCheck.c16` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+C19_InterfaceCheck.lean:42:0: warning: Definition `c16` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+C19_InterfaceCheck.c1.{u_1} {X : Type u_1} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
+  PathConnectedSpace X
+C19_InterfaceCheck.c2.{u_1} {X : Type u_1} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+  [SimplyConnectedSpace ↥D.U] [SimplyConnectedSpace ↥D.V] (g : FundamentalGroup X D.base) : g = 1
+C19_InterfaceCheck.c3 (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X) :
+  FundamentalGroup.VanKampen.TwoOpenCover (Suspension X)
+C19_InterfaceCheck.c4 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] :
+  Additive (HomotopyGroup.Pi 3 X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X 3)
+C19_InterfaceCheck.c5 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] :
+  HomotopyGroup.Pi 3 X x ≃* Multiplicative ↑(SingularMayerVietoris.SingularHomology X 3)
+C19_InterfaceCheck.c6 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)] :
+  Additive (HomotopyGroup.Pi 4 X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X 4)
+C19_InterfaceCheck.c7 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)] :
+  HomotopyGroup.Pi 4 X x ≃* Multiplicative ↑(SingularMayerVietoris.SingularHomology X 4)
+C19_InterfaceCheck.c8 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)]
+  [Subsingleton (HomotopyGroup.Pi 4 X x)] :
+  Additive (HomotopyGroup.Pi 5 X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X 5)
+C19_InterfaceCheck.c9 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)]
+  [Subsingleton (HomotopyGroup.Pi 4 X x)] :
+  HomotopyGroup.Pi 5 X x ≃* Multiplicative ↑(SingularMayerVietoris.SingularHomology X 5)
+C19_InterfaceCheck.c10 : Set (EuclideanSpace ℝ (Fin (6 + 1)))
+C19_InterfaceCheck.c11 : OnePoint (EuclideanSpace ℝ (Fin 6)) ≃ₜ ↑SixSphereCube.StandardSphere
+C19_InterfaceCheck.c12 : ↑SixSphereCube.StandardSphere
+C19_InterfaceCheck.c13 (x : ↑SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 2 (↑SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c14 (x : ↑SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 3 (↑SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c15 (x : ↑SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 4 (↑SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c16 (x : ↑SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 5 (↑SixSphereCube.StandardSphere) x)
+exit 0
+end 1789321047

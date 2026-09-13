@@ -1,0 +1,4 @@
+Mathoverflow1973.BranchedQuotientAtlas.Data.contDiffOn_transition
+Mathoverflow1973.BranchedQuotientAtlas.Data.contMDiff_project
+Mathoverflow1973.BranchedQuotientAtlas.Data.isManifold
+Mathoverflow1973.LocalOrbitQuotient.localHomeomorph

@@ -1,0 +1,7 @@
+=== BUILD Challenge.lean (07:11:51) ===
+EXIT 0 Challenge.lean
+=== BUILD Lib/GroupTheory/Abelianization/SemidirectProduct.lean (07:11:53) ===
+EXIT 0 Lib/GroupTheory/Abelianization/SemidirectProduct.lean
+=== BUILD Hopf/LCP/BoundaryTopology.lean (07:11:55) ===
+EXIT 1 Hopf/LCP/BoundaryTopology.lean
+STOP at Hopf/LCP/BoundaryTopology.lean

@@ -1,0 +1,7 @@
+start Mon Sep 14 00:17:00 CEST 2026
+Build completed successfully (8817 jobs).
+lib-exit 0
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (8856 jobs).
+consumers-exit 0
+end Mon Sep 14 00:17:12 CEST 2026

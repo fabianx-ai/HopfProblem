@@ -1,0 +1,29 @@
+import C15_DiskCubeInterfaceCheck
+noncomputable section
+open Mathoverflow1973 Topology
+#check @C15_DiskCubeInterfaceCheck.target
+#check @C15_DiskCubeInterfaceCheck.target_compact
+#check @C15_DiskCubeInterfaceCheck.target_convex
+#check @C15_DiskCubeInterfaceCheck.target_interior_nonempty
+#check @C15_DiskCubeInterfaceCheck.exists_ambient
+#check @C15_DiskCubeInterfaceCheck.ambient
+#check @C15_DiskCubeInterfaceCheck.ambient_image
+#check @C15_DiskCubeInterfaceCheck.ambient_frontier
+#check @C15_DiskCubeInterfaceCheck.ambient_mem_iff
+#check @C15_DiskCubeInterfaceCheck.homeomorph
+#check @C15_DiskCubeInterfaceCheck.boundary_iff
+#check @C15_DiskCubeInterfaceCheck.symm_boundary_iff
+
+example {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
+    {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) :
+    DiskCylinder.Disk (E := V) ≃ₜ (Fin n → unitInterval) :=
+  C15_DiskCubeInterfaceCheck.homeomorph L
+
+example {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
+    {n : ℕ} (L : V ≃L[ℝ] (Fin n → ℝ)) (z : DiskCylinder.Disk (E := V)) :
+    C15_DiskCubeInterfaceCheck.homeomorph L z ∈ Cube.boundary (Fin n) ↔
+      ‖(z : V)‖ = 1 :=
+  C15_DiskCubeInterfaceCheck.boundary_iff L z
+
+example : Mathoverflow1973.DiskCylinder.Disk (E := Fin 0 → ℝ) ≃ₜ (Fin 0 → unitInterval) :=
+  C15_DiskCubeInterfaceCheck.homeomorph (ContinuousLinearEquiv.refl ℝ (Fin 0 → ℝ))

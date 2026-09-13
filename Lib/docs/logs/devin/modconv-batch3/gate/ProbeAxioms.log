@@ -1,0 +1,6 @@
+'Mathoverflow1973.homeomorphic_sixSphere_of_homotopySixSphere' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
