@@ -13,9 +13,11 @@ name confirmations, the 70-file documentation wave, the record fixes. Kimi's C13
 Devin's module conversion, J naturality, F2 and G1 landed in the same head; full chain green.
 Review: `Lib/reviews/INTEGRATION-3.md` §3 "GLM seat". Start every new branch from this head.
 
-Seat note: this seat is run by Devin/Astra while GLM is paused. Commit as the seat and name
-the model in the report. This seat does not author E2, F, G or J; the Muse seat does not
-review E1, H or I.
+Seat note (2026-09-13, evening): GLM runs this seat again; Devin/Astra ran it for
+`lib/A-7-linear-sphere` and the reports say so where it matters. Ownership of the lanes is
+unchanged (A, B, D, E1, H, I); E2, F, G, J stay with the Muse seat and C with the Kimi seat. GLM
+needs explicit instructions: each item below names the files, the gate and the receipt; do not
+add steps, do not rewrite another seat's ledger, and start every branch from the head above.
 
 Settled by review 3: E1 done (old item 2); record fixes done (old item 1); name confirmations
 done (old item 5); documentation wave merged (old item 6, first pass). The `Suspension` name is
