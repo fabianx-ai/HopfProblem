@@ -50,10 +50,10 @@ file imports its own stock file and the previous proof file. No stock file impor
 | `lake build Solution S6Shortcuts S6 Challenge` | green (`build-exit 0`); run 2 built the whole `Hopf` chain 17:58–18:05 and failed on one exposed lemma, run 3 rebuilt from `IntegralHomology` on 18:06–18:08 with exit 0; log `proof_split_build.log` |
 | `envdiff` base → split, prefix `Hopf` | VERDICT PASS — lost 10 added 14 of which source declarations: 0 0 ; names with changed type 10 of which source: 0; receipt `envdiff.json` (source = ranged, non-notation constants; auxiliary differences are `_proof_n` renumbering, lazily realized `noConfusion`, equation lemmas and notation artifacts, listed in the receipt) |
 | Module map equals the plan | every planned source declaration found in its planned module (`module-map-check.json`: missing 0, wrong module 0) |
-| Census `scripts/lib_stock_census.py --check` | `ratchet PASS: 2113 <= baseline 2113` (the list is unchanged; the count walks `Hopf/` recursively) |
+| Census `scripts/lib_stock_census.py --check` | the script now skips `Hopf/Proof/` (owner's decision: what is proof-specific is not counted as still to be moved); baseline 2,663 -> 2,113 -> 1648; the prefix list is unchanged |
 
-## Open for the owner
+## Owner decisions (2026-09-13)
 
-- Whether `Hopf/LCP/` is included in the split (done here as `Hopf/Proof/LCP/`) or left as is.
-- The 475 demoted declarations (`DEMOTED.md`): they keep their stock names under `Hopf/Proof/`
-  and still count in the census; each needs a generalisation before it can move to `Lib/`.
+- Decided: `Hopf/LCP/` is included; the 475 demoted declarations (`DEMOTED.md`) keep their names
+  under `Hopf/Proof/` and are no longer counted by the census; each needs a generalisation before
+  it can move to `Lib/`.

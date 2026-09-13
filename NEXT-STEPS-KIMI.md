@@ -1,5 +1,10 @@
 # Next steps — Kimi seat (after integration review 3, 2026-09-13)
 
+Layout note (2026-09-13, commit `20f69036` and after): `Hopf/<path>.lean` now holds only the stock
+still to be moved into `Lib/`; every proof-specific declaration is under `Hopf/Proof/<path>.lean`
+(same names and namespaces). The census counts only outside `Hopf/Proof/` (baseline 1648). Line
+numbers cited in older reports refer to the unsplit files. Receipts: `Lib/reports/proof-split/`.
+
 Branch: `lib/textbook-extraction`, head = the commit the owner names when handing you the
 branch (`git log -1`). Your `lib/C-14-integrated-receipt` is in: the refreshed receipt, C13
 (ten Recognition proofs are now instantiations, statements unchanged), C14

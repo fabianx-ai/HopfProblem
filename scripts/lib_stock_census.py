@@ -55,9 +55,16 @@ PREFIX_FILE = os.path.join('scripts', 'lib_stock_prefixes.txt')
 BASELINE_FILE = os.path.join('scripts', 'lib_stock_baseline.txt')
 
 
+# Directories under the top that hold proof-specific code and are never "stock": since the split of
+# 2026-09-13 (Lib/reports/proof-split/), Hopf/Proof/ holds the proof and the stock-named declarations
+# bound to it (DEMOTED.md); what is proof-specific is not counted as still to be moved.
+EXCLUDED_SUBDIRS = ('Proof',)
+
+
 def lean_files(root: str, top: str) -> list[str]:
     out: list[str] = []
-    for dirpath, _dirs, files in os.walk(os.path.join(root, top)):
+    for dirpath, dirs, files in os.walk(os.path.join(root, top)):
+        dirs[:] = [d for d in dirs if d not in EXCLUDED_SUBDIRS]
         for f in files:
             if f.endswith('.lean'):
                 out.append(os.path.join(dirpath, f))
