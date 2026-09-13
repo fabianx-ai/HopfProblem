@@ -101,3 +101,19 @@ Decision: confirm `SphereHomology`; retain
 `Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean`. No rename,
 statement or proof change. Receipt: census **2,287 → 2,287**, prefix list
 unchanged; this commit changes only this ledger.
+
+### RiemannMapping — retain the extracted family name
+
+Existing twin: `Mathlib/Analysis/Complex/RiemannMapping.lean` at the pinned
+revision. Its declarations are under `Complex`; its overview explicitly says
+that the file has partial results, not the complete theorem, and uses a
+private-module setup. The local extension remains
+`Lib/Analysis/Complex/RiemannMapping.lean`, with its proof steps in
+`RiemannMapping/Steps.lean`. The historical label `new` was incorrect for the
+Mathlib file itself. Keeping the `RiemannMapping` construction family avoids
+claiming a direct replacement by the pinned partial API; this does not settle
+future upstream namespace alignment with `Complex`.
+
+Decision: confirm `RiemannMapping` for the present extraction. No rename,
+statement or proof change. Receipt: census **2,287 → 2,287**, prefix list
+unchanged; this commit changes only this ledger.
