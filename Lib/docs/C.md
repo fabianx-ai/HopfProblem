@@ -10,11 +10,10 @@ This file contains, in order:
   mathematical language. No Lean names occur in these sections.
 * **Axes 2–3** (§17): the additive decomposition into named lemmas, in dependency order.
 * **Axis 4** (§18): file placement under `Lib/` with the Mathlib twin of each file.
-* **Axis 5** (§19): the exact typed ledger. Rows that depend on GLM's lane A modules (not yet
-  landed) name the *current* `Hopf/` declaration as evidence and the planned `Lib/` name as the
-  target; that is the recorded seam. The aggregate interface probe and its receipt are pending
-  lane A (see §20).
-* **Open items** (§20).
+* **Axis 5** (§19): the current typed ledger, checked at `1a31384`, followed by the explicitly
+  superseded pre-landing plan. The aggregate interface receipt is `C-INTERFACE_RECEIPT.md`.
+* **Current limitations and provenance** appear after the live signatures. Historical open
+  items are retained only as part of the superseded plan.
 
 ---
 
@@ -827,7 +826,213 @@ instantiation of the general `hurewiczLinearEquiv` at $n = 2, \dots, 6$.
 
 ---
 
-# Axis 5 — typed ledger
+# Axis 5 — current typed ledger (validated at `1a31384`)
+
+This section supersedes the pre-landing plan preserved below. Lanes A and B are available in
+`Lib/`; there are no project imports in the lane-C library. C10 and C13 now exist, including
+both Hurewicz round trips and the general sphere-map classification. The names below are the
+actual public declarations, not proposed renames. All are under `Mathoverflow1973`.
+
+The aggregate provider imports `Lib.AlgebraicTopology.Hurewicz.HopfDegree` and
+`Lib.Topology.Homotopy.CellFilling`. It aliases the thirteen outputs below; a separate consumer
+checks all thirteen and constructs the degree-six equivalence. Both compiles exited 0.
+See `C-INTERFACE_RECEIPT.md`. This is a current-head receipt, not a claim that the same
+interface was present at the historical integration head `856e4762`.
+
+## Common ChallengeNode fields
+
+The following fields apply to every row; the row and exact signature complete the node.
+
+```text
+class: FREE
+visibility: plain-import Lean files; noncomputable section; namespace Mathoverflow1973
+imports: the production module in the table, available through the two aggregate imports above
+signature: the exact declaration header in the corresponding code block below
+destination: the namespace in the signature and the production module in the table
+commit_boundary: the already-landed module boundary, with C10 assembly at 0a3b870 and C13 at c2059b6
+focused_check: lake build <production module>
+return_seam: Axis 5 for type/visibility discrepancies; Axis 1 for missing mathematical hypotheses
+```
+
+| id | source | production module | dependencies / representation | consumer |
+|---|---|---|---|---|
+| C1 | §§3,10 | `Lib.AlgebraicTopology.SingularHomology.CrossProduct` | `SingularChains`, `SingularHomology.homologyDesc`; local integer-module instances retained | C5, C6; torus consumers through shims |
+| C2 | §3 | `Lib.AlgebraicTopology.Hurewicz.CubeTriangulation` | `cubeAffineSimplex`, `cubeVertex`; permutation-indexed cells | C6, C8, C9 |
+| C3 | §4 | `Lib.AlgebraicTopology.Hurewicz.SimplexCube` | `simplexFlatHomeomorph`, `flatCubeHomeomorph`, `realCubeHomeomorph`; boundary iff | C7; C13 basepoint adjustment |
+| C4 | §5 | `Lib.AlgebraicTopology.Hurewicz.HomotopyExtension` | `gluedBoundaryMap`, `cylinderRetraction`; bottom/side restrictions | C5, C7, C13 |
+| C5 | §6 | `Lib.AlgebraicTopology.Hurewicz.PrismOperator` | `simplexPrism`, `SingularChains.chainLift`; family boundary identity | C7, C10 |
+| C6 | §§3,10 | `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition` | `fundamentalCubeChain`, `cubeChain_succ`, prism insertion identities | C10 |
+| C7 | §8 | `Lib.AlgebraicTopology.Hurewicz.Straightening` | `edgeTower`, `normalizationStep`, `normalizationTower`; starts at simplex, based endpoint | C10 |
+| C8 | §9 | `Lib.AlgebraicTopology.Hurewicz.Subdivision` | `nativeClass_eq_sum_simplices`; internal basedness required | C9, C10 |
+| C9 | §§9,13 | `Lib.AlgebraicTopology.Hurewicz.CubeGluing` | `coherentCubeHomotopyMap`, boundary constancy; coherent endpoint | C7 boundary relation, C10 |
+| C10 | §§11–13 | `Lib.AlgebraicTopology.Hurewicz.CubeSphere` | `hurewiczLinearEquiv`, `degreeTwoLinearEquiv`; `Nontrivial (Fin n)` supplied by `hn` | `Hopf.Hurewicz`, `Hopf.Recognition` |
+| C11 | §16.1 | `Lib.AlgebraicTopology.Hurewicz.CubeSphere` | `OnePointCollapse.collapseLift`, `compactification`; `factorMap_comp_quotient` | C10 well-definedness, C13 |
+| C12 | §§5.2,16.2 | `Lib.Topology.Homotopy.CellFilling` | `Degree.Sphere.exists_boundary_extension_of_pi`, `Degree.CylinderBall.boundaryHomeomorph` | `Hopf.Recognition` cell lifting |
+| C13 | §§15–16 | `Lib.AlgebraicTopology.Hurewicz.HopfDegree` | `hurewiczMap_injective`, `basedSphereCube_homologyClass`, `factorMap_homotopyRel`; quotient sphere model | `Degree.sphere_homotopicRel_of_topClass_eq`, recognition |
+
+The historical boundary numbers are not a dependency ordering: in particular C11's quotient
+construction precedes C10's assembly inside `CubeSphere`. The import graph and declaration
+order in the production files give the executable ordering. The more detailed C13 node ledgers
+are in `C13-BOOTSTRAP.md` and `C13-CLASSIFICATION.md`; their historical `HigherHurewicz`
+spellings were renamed to `Hurewicz` at `2d6cd4c`, with compatibility shims in `Hopf/LibShims.lean`.
+
+### C1 — cross product on homology
+
+```lean
+def SingularHomology.crossProductHomology (X Y : Type) [TopologicalSpace X]
+    [TopologicalSpace Y] (n : ℕ) :
+    (SingularChains.singularComplex X).homology 1 →ₗ[ℤ]
+      (SingularChains.singularComplex Y).homology n →ₗ[ℤ]
+        (SingularChains.singularComplex (X × Y)).homology (n + 1)
+```
+
+### C2 — Kuhn simplex
+
+```lean
+def Hurewicz.CubeTriangulation.cubeSimplex {n : ℕ} (e : Equiv.Perm (Fin n)) :
+    C(SingularChains.Simplex n, Hurewicz.CubeTriangulation.CubeN n)
+```
+
+### C3 — simplex–cube homeomorphism
+
+```lean
+def Hurewicz.simplexCubeHomeomorph (n : ℕ) :
+    SingularChains.Simplex n ≃ₜ (Fin n → unitInterval)
+```
+
+### C4 — boundary homotopy extension
+
+```lean
+def SecondHurewicz.SimplyConnected.extendBoundaryHomotopy {n : ℕ} {X : Type*}
+    [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
+    (h : C(unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
+    (h0 : ∀ s, h (0, s) = f s.val) : C(unitInterval × SingularChains.Simplex n, X)
+```
+
+### C5 — simplexwise prism operator
+
+```lean
+def SecondHurewicz.SimplyConnected.simplexPrismOperator {X : Type} [TopologicalSpace X]
+    (n : ℕ)
+    (H : SingularChains.SingularSimplex X n → C(unitInterval × SingularChains.Simplex n, X)) :
+    SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1)
+```
+
+### C6 — chain decomposition
+
+```lean
+theorem Hurewicz.cubeChain_eq_sum_simplices (n : ℕ) {X : Type} [TopologicalSpace X]
+    {x : X} (p : GenLoop (Fin n) X x) :
+    Hurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin n),
+      Hurewicz.CubeTriangulation.cubeOrientation e •
+        SingularChains.simplexChain X n
+          (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))
+```
+
+### C7 — normalization family
+
+```lean
+def Hurewicz.normalizationHomotopy {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) (n : ℕ) (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
+    SingularChains.SingularSimplex X n → C(unitInterval × SingularChains.Simplex n, X)
+```
+
+### C8 — subdivision class
+
+```lean
+theorem Hurewicz.NativeSubdivision.nativeCubeSubdivision_class {n : ℕ} [Nontrivial (Fin n)]
+    {X : Type*} [TopologicalSpace X] {x : X} (p : GenLoop (Fin n) X x)
+    (hp : Hurewicz.NativeSubdivision.NativeCubeInternalBased p) :
+    Additive.ofMul (⟦p⟧ : π_ n X x) =
+      ∑ e : Equiv.Perm (Fin n),
+        Hurewicz.CubeTriangulation.cubeOrientation e •
+          Hurewicz.SimplexGeometry.basedSimplexClass
+            (Hurewicz.NativeSubdivision.nativeBasedCubeSimplex p hp e)
+```
+
+### C9 — coherent cube endpoint
+
+```lean
+def Hurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [TopologicalSpace X] {x : X}
+    (H₀ : C(SingularChains.Simplex n, X) → C(unitInterval × SingularChains.Simplex n, X))
+    (H₁ : C(SingularChains.Simplex (n + 1), X) →
+      C(unitInterval × SingularChains.Simplex (n + 1), X))
+    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hconst : H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
+      ContinuousMap.const (unitInterval × SingularChains.Simplex n) x)
+    (p : GenLoop (Fin (n + 1)) X x) : GenLoop (Fin (n + 1)) X x
+```
+
+### C10 — Hurewicz equivalence in every degree at least two
+
+```lean
+def Hurewicz.hurewiczLinearEquivOfTwoLE {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
+    (x : X) (n : ℕ) (hn : 2 ≤ n)
+    (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
+    letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+    Additive (π_ n X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X n
+```
+
+### C11 — factorization through the sphere quotient
+
+```lean
+def Degree.SphereCube.factorMap {n : ℕ} (hn : 0 < n) {X : Type*} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin n) X x) : C(Degree.SphereCube.Sphere n, X)
+```
+
+### C12 — cylinder filling
+
+```lean
+theorem Degree.CylinderFilling.exists_filling {V X : Type} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace X] [PathConnectedSpace X] {d : ℕ}
+    (hpi : ∀ n, 0 < n → n < d → ∀ x : X, Subsingleton (π_ n X x))
+    (hd : Module.finrank ℝ V + 1 ≤ d) (f g : C(Degree.DiskCylinder.Disk (E := V), X))
+    (H : C(unitInterval × Degree.DiskCylinder.Sphere (E := V), X))
+    (h0 : ∀ s, H (0, s) = f (Degree.DiskCylinder.boundaryToDisk s))
+    (h1 : ∀ s, H (1, s) = g (Degree.DiskCylinder.boundaryToDisk s)) (x : X) :
+    ∃ G : C(unitInterval × Degree.DiskCylinder.Disk (E := V), X),
+      (∀ z, G (0, z) = f z) ∧
+        (∀ z, G (1, z) = g z) ∧ ∀ t s, G (t, Degree.DiskCylinder.boundaryToDisk s) = H (t, s)
+```
+
+### C13 — based sphere-map classification
+
+```lean
+theorem Hurewicz.sphere_homotopicRel_of_topClass_eq {m : ℕ} {X : Type} [TopologicalSpace X]
+    [SimplyConnectedSpace X] {x : X}
+    (hpi : ∀ j, 2 ≤ j → j < m + 2 → Subsingleton (π_ j X x))
+    (f g : C(Degree.SphereCube.Sphere (m + 2), X))
+    (hf : f (Degree.SphereCube.point (m + 2)) = x)
+    (hg : g (Degree.SphereCube.point (m + 2)) = x)
+    (h : SingularMayerVietoris.singularHomologyMap f (m + 2)
+          (Hurewicz.cubeHomologyClass (Degree.SphereCube.quotientLoop (m + 2))) =
+        SingularMayerVietoris.singularHomologyMap g (m + 2)
+          (Hurewicz.cubeHomologyClass (Degree.SphereCube.quotientLoop (m + 2)))) :
+    f.HomotopicRel g {Degree.SphereCube.point (m + 2)}
+```
+
+## Current limitations and provenance
+
+* The local integer-module instances remain: the recorded removal experiment fails at four
+  scalar-action elaboration sites. This is not a new axiom or a failed production build.
+* Universe-zero spaces are required where the concrete integral singular-chain interface is
+  used. Pure topology retains `Type*` where supported; the old blanket `Type*` promise below
+  was inaccurate.
+* `GenLoop` is the pinned Mathlib's root name. There is no outstanding naming question.
+* The historical Stage-2 review is recovered in `C-STAGE2-REVIEW.md`; the source did not name
+  its reviewer. Original attribution awaits the owner and is not fabricated here.
+* Plain imports and the transitional `Mathoverflow1973`/`SecondHurewicz` namespaces remain.
+  The requested `HigherHurewicz → Hurewicz` rename and the explicitly identified generic-name
+  cleanups are landed. Complete Mathlib-root namespace/module-system conversion is not claimed.
+* The historical prospectus mentioned a separately named general naturality theorem and a
+  positive-degree homology-vanishing corollary. Those extra public wrappers are not part of the
+  thirteen validated outputs; the degree-six naturality consumer remains proved in `Hopf`.
+  They are not to be inferred from this receipt as separately exported declarations.
+
+# Historical pre-landing Axis-5 plan (superseded)
+
+The following is retained as provenance only. Its proposed names, blockers, and future-tense
+claims are not the current interface; use the validated ledger above.
 
 Ledger rows are given for the **headline nodes** of each commit boundary (one row per
 boundary's public output cluster; the full per-declaration census is generated from the sources
@@ -985,7 +1190,10 @@ dependency).
 
 ---
 
-# Open items, seams, probes
+# Historical open items, seams, probes (superseded)
+
+This list records the pre-landing plan, not the current status. The live status and validated
+signatures are in the current Axis-5 section above and `Lib/reports/C.md`.
 
 1. **Lane-A seam (blocking).** Every signature mentioning
    `FirstHurewicz.Chains`/`FirstHurewicz.SingularSimplex`/`FirstHurewicz.singularComplex`/
