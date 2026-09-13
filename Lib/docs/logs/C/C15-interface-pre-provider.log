@@ -1,0 +1,4 @@
+CMD: PATH=... lake env lean -o C15_DiskCubeInterfaceCheck.olean C15_DiskCubeInterfaceCheck.lean (pre-move)
+start 05:10:30 epoch 1789269030
+exit 0
+end 05:10:33 epoch 1789269033

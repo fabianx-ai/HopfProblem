@@ -61,6 +61,6 @@ PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean -o C13_Inte
 LEAN_PATH=.:$LEAN_PATH PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean C13_InterfaceConsumerCheck.lean
 ```
 
-Both exit statuses were 0. Two planned output signatures, four existing API checks, and the sphere-model definitional equality elaborated. Both outputs were visible to the separate consumer. Evidence: `/home/kimi/s6-notes/C13-interface-provider.log` and `C13-interface-consumer.log`.
+Both exit statuses were 0. Two planned output signatures, four existing API checks, and the sphere-model definitional equality elaborated. Both outputs were visible to the separate consumer. Evidence: `logs/C/C13-interface-provider.log` and `logs/C/C13-interface-consumer.log`.
 
 Independent interface reviewer: Devin implementation agent; coordinating review: Devin. Verdict: GO for the two signatures with plain-import visibility. A `module`/`public import` header cannot yet be used: the imported legacy modules are non-module files. The final successful probes use exactly the plain-import context specified above. No mathematical hypothesis was changed. The temporary axioms used to elaborate signatures are not production declarations and must be removed before committing this boundary.

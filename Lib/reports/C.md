@@ -79,7 +79,7 @@ or generated alias in the Lean environment.
 
 The successful committed-unit gates below used the pinned toolchain. Wall times come from the
 recorded start/end epochs, not from Lean's per-module timing lines. Logs are under
-`/home/kimi/s6-notes/`.
+`Lib/docs/logs/C/`.
 
 | Gate | Result | Wall seconds | Log |
 |---|---|---:|---|

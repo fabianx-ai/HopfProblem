@@ -1,0 +1,39 @@
+CMD: LEAN_PATH=.:$LEAN_PATH PATH=... lake env lean C15_DiskCubeConsumerCheck.lean (post-move)
+start 05:13:16 epoch 1789269196
+@C15_DiskCubeInterfaceCheck.target : {V : Type u_1} →
+  [inst : NormedAddCommGroup V] → [inst_1 : NormedSpace ℝ V] → {n : ℕ} → (V ≃L[ℝ] Fin n → ℝ) → Set V
+@C15_DiskCubeInterfaceCheck.target_compact : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ), IsCompact (DiskCube.target L)
+@C15_DiskCubeInterfaceCheck.target_convex : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ), Convex ℝ (DiskCube.target L)
+@C15_DiskCubeInterfaceCheck.target_interior_nonempty : ∀ {V : Type u_1} [inst : NormedAddCommGroup V]
+  [inst_1 : NormedSpace ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ), (interior (DiskCube.target L)).Nonempty
+@C15_DiskCubeInterfaceCheck.exists_ambient : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  [FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ),
+  ∃ e,
+    ⇑e '' Metric.closedBall 0 1 = DiskCube.target L ∧
+      ⇑e '' frontier (Metric.closedBall 0 1) = frontier (DiskCube.target L)
+@C15_DiskCubeInterfaceCheck.ambient : {V : Type u_1} →
+  [inst : NormedAddCommGroup V] →
+    [inst_1 : NormedSpace ℝ V] → [FiniteDimensional ℝ V] → {n : ℕ} → (V ≃L[ℝ] Fin n → ℝ) → V ≃ₜ V
+@C15_DiskCubeInterfaceCheck.ambient_image : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  [inst_2 : FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ),
+  ⇑(DiskCube.ambient L) '' Metric.closedBall 0 1 = DiskCube.target L
+@C15_DiskCubeInterfaceCheck.ambient_frontier : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  [inst_2 : FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ),
+  ⇑(DiskCube.ambient L) '' frontier (Metric.closedBall 0 1) = frontier (DiskCube.target L)
+@C15_DiskCubeInterfaceCheck.ambient_mem_iff : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  [inst_2 : FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ) (v : V),
+  v ∈ Metric.closedBall 0 1 ↔ L ((DiskCube.ambient L) v) ∈ Hurewicz.realCubeSet n
+@C15_DiskCubeInterfaceCheck.homeomorph : {V : Type u_1} →
+  [inst : NormedAddCommGroup V] →
+    [inst_1 : NormedSpace ℝ V] →
+      [FiniteDimensional ℝ V] → {n : ℕ} → (V ≃L[ℝ] Fin n → ℝ) → ↑DiskCylinder.Disk ≃ₜ (Fin n → ↑unitInterval)
+@C15_DiskCubeInterfaceCheck.boundary_iff : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]
+  [inst_2 : FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ) (z : ↑DiskCylinder.Disk),
+  (DiskCube.homeomorph L) z ∈ Cube.boundary (Fin n) ↔ ‖↑z‖ = 1
+@C15_DiskCubeInterfaceCheck.symm_boundary_iff : ∀ {V : Type u_1} [inst : NormedAddCommGroup V]
+  [inst_1 : NormedSpace ℝ V] [inst_2 : FiniteDimensional ℝ V] {n : ℕ} (L : V ≃L[ℝ] Fin n → ℝ)
+  (z : Fin n → ↑unitInterval), ‖↑((DiskCube.homeomorph L).symm z)‖ = 1 ↔ z ∈ Cube.boundary (Fin n)
+exit 0
+end 05:13:20 epoch 1789269200

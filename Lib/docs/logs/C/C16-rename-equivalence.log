@@ -1,0 +1,20 @@
+CMD: python3 C16-rename-equivalence.py (vs f9a24ba)
+MATCH Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/Degree.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/Degree1.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/H1Character.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/HomotopyExtension.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/Naturality.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/SimplexCube.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/SimplexPaths.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/Straightening.lean
+MATCH Lib/AlgebraicTopology/Hurewicz/Subdivision.lean
+RESULT: ALL MATCH
+exit 0

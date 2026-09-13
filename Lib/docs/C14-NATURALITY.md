@@ -125,7 +125,7 @@ theorem subsingleton_singularHomology_of_lt {X : Type} [TopologicalSpace X]
 ## Production interface receipt (retrospective; base `2550436` plus working diff)
 
 Provider `C14_InterfaceCheck.lean` (temporary, removed after run; source preserved at
-`/home/kimi/s6-notes/C14-interface-provider.lean`):
+`logs/C/C14-interface-provider.lean.txt`):
 
 ```lean
 import Lib.AlgebraicTopology.Hurewicz.Naturality
@@ -149,7 +149,7 @@ end C14_InterfaceCheck
 ```
 
 Consumer `C14_InterfaceConsumerCheck.lean` (temporary, removed; source preserved at
-`/home/kimi/s6-notes/C14-interface-consumer.lean`):
+`logs/C/C14-interface-consumer.lean.txt`):
 
 ```lean
 import C14_InterfaceCheck
@@ -217,15 +217,15 @@ Commands and results (all under
 `PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH`):
 
 - `lake build Lib.AlgebraicTopology.Hurewicz.Naturality` — exit 0;
-  `~/s6-notes/C14-naturality-build.log`.
+  `logs/C/C14-naturality-build.log`.
 - `lake build Hopf.Recognition` — exit 0 (adapters elaborate definitionally);
-  `~/s6-notes/C14-recognition-build.log`.
+  `logs/C/C14-recognition-build.log`.
 - `lake env lean -o C14_InterfaceCheck.olean C14_InterfaceCheck.lean` — exit 0;
-  `~/s6-notes/C14-interface-provider.log`.
+  `logs/C/C14-interface-provider.log`.
 - `LEAN_PATH=.:$LEAN_PATH lake env lean C14_InterfaceConsumerCheck.lean` — exit 0;
-  `~/s6-notes/C14-interface-consumer.log`.
+  `logs/C/C14-interface-consumer.log`.
 - `#print axioms` on `homotopyMap`, `hurewiczLinearEquivOfTwoLE_natural`,
   `subsingleton_singularHomology_of_lt` — `[propext, Classical.choice, Quot.sound]`
-  only; `~/s6-notes/C14-naturality-provider.log`.
+  only; `logs/C/C14-naturality-provider.log`.
 - `python3 scripts/lib_stock_census.py --check` — PASS, 2663 ≤ 2663;
-  `~/s6-notes/C14-census.log`.
+  `logs/C/C14-census.log`.

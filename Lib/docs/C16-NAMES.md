@@ -53,7 +53,7 @@ run_cmd do
       logInfo m!"{name}"
 ```
 
-- Source: `~/s6-notes/C16-capture-old-names.lean`; output: `~/s6-notes/C16-old-names.log`
+- Source: `logs/C/C16-capture-old-names.lean.txt`; output: `logs/C/C16-old-names.log`
   (597 names, exit 0).
 - This list is frozen evidence and was not recaptured after the rename.
 - The existing compatibility abbreviation
@@ -97,40 +97,42 @@ outstanding).
   Lib.Topology.Homeomorph.DiskCube Hopf.LibShims`: the Lib targets succeeded, but the
   aggregate command ended **exit 1** because the first generated `export` block used
   `export` under declaration (non-namespace) parents — 55 `unknown namespace` errors
-  (`~/s6-notes/C16-focused-build.log`). This failed initial attempt is recorded
+  (`logs/C/C16-focused-build.log`). This failed initial attempt is recorded
   separately; it was a shim-syntax issue, not a mathematical failure.
 - Repair attempts for declaration-parent leaves: an `abbrev` attempt still failed
   (exit 1 — `abbrev` could not infer the implicit arguments); the final `alias`
-  form succeeded, **exit 0** (`~/s6-notes/C16-libshims-build.log` contains both
+  form succeeded, **exit 0** (`logs/C/C16-libshims-build.log` contains both
   attempts; the final successful entry is the tail). One
   `linter.auxLemma` warning: the captured name `vertexStraighteningData.match_1` is an
   auto-generated matcher, preserved for completeness.
 - Full build `lake build Lib Hopf.Final Solution`: exit 0
-  (`~/s6-notes/C16-full-build.log`).
+  (`logs/C/C16-full-build.log`).
 - Axiom audit `lake env lean Lib/AxiomAudit.lean`: exit 0, all audited
   declarations on `[propext, Classical.choice, Quot.sound]`
-  (`~/s6-notes/C16-axiom-audit.log`).
+  (`logs/C/C16-axiom-audit.log`).
 - Old/new-name probe (`import Hopf.LibShims`, `Naturality`, `DiskCube`, `Solution`):
   old and new names for `mapGenLoop` and `SimplyConnected.hurewiczPi2Equiv` check at
   identical types and are `rfl`-equal; `#print axioms` for new `hurewiczPi2Equiv`,
   Naturality headlines, `DiskCube.boundary_iff`, and `mathoverflow_1973` all standard
-  three axioms (source `/home/kimi/s6-notes/C16_NamesProbe.lean`, log
-  `/home/kimi/s6-notes/C16-names-probe.log`).
-- C16 interface supplement: provider `/home/kimi/s6-notes/C16_InterfaceCheck.lean`
-  (log `C16-interface-provider.log`) and consumer
-  `/home/kimi/s6-notes/C16_InterfaceConsumerCheck.lean` (log
-  `C16-interface-consumer.log`), aliases over current names plus the degree-six
+  three axioms (source `logs/C/C16_NamesProbe.lean.txt`, log
+  `logs/C/C16-names-probe.log`).
+- C16 interface supplement: provider `logs/C/C16_InterfaceCheck.lean.txt`
+  (log `logs/C/C16-interface-provider.log`) and consumer
+  `logs/C/C16_InterfaceConsumerCheck.lean.txt` (log
+  `logs/C/C16-interface-consumer.log`), aliases over current names plus the degree-six
   equivalence — both exit 0. This supplements rather than rewrites the historical
   `C-INTERFACE_RECEIPT.md` (`37fc1de8`).
-- Rename equivalence artifact: `/home/kimi/s6-notes/C16-rename-equivalence.py` +
-  `C16-rename-equivalence.log` — mechanically compares all 17
+- Rename equivalence artifact: `logs/C/C16-rename-equivalence.py` +
+  `logs/C/C16-rename-equivalence.log` — mechanically compares all 17
   `Lib/AlgebraicTopology/Hurewicz/*.lean` files against `git show f9a24ba:` with the
   token replaced; all `MATCH`.
-- Exhaustive old-name resolution probe: `/home/kimi/s6-notes/C16-old-names-probe.lean`
-  + `C16-old-names-probe.log` — `#check`s all 597 frozen captured names through the
-  shims; exit 0.
+- Exhaustive old-name resolution probe: `logs/C/C16-old-names-probe.lean.txt`
+  + `logs/C/C16-old-names-probe.log` — `#check`s all 597 frozen captured names through the
+  shims; exit 0. The `.lean` source was regenerated from `logs/C/C16-old-names.log` on
+  2026-09-14 (one `#check` per captured name); the original source file was not
+  preserved.
 - Census `scripts/lib_stock_census.py --check`: PASS, 2651 ≤ baseline 2651,
-  extracted-prefix list unchanged (`~/s6-notes/C16-census.log`).
+  extracted-prefix list unchanged (`logs/C/C16-census.log`).
 - `git diff --check` clean.
 - Independent review: conditional GO archived in
   `Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md`; merge conditions (retrospective

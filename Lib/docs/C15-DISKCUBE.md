@@ -12,7 +12,7 @@ Typed ledger for moving the `Mathoverflow1973.DiskCube` block out of
 - Source byte checksum: SHA-256 of the exact UTF-8 newline-preserving slice
   `lines[99:185]` (1-based lines 100–185) is
   `4a7c7223b148a00a874d69a898fcf4f511727deb18af128036fd82de0e1f20f2`.
-  The source bytes are preserved at `/home/kimi/s6-notes/C15-diskcube-source-block.txt`.
+  The source bytes are preserved at `logs/C/C15-diskcube-source-block.txt`.
 - Transfer rule: the block is pasted unchanged except the single namespace
   normalization `HigherHurewicz.` → `Hurewicz.` (the shim spelling used inside
   `Hopf`); no proof text is altered. Per-declaration docstrings are added as
@@ -101,22 +101,22 @@ pre-implementation challenge.
 
 - Pre-move provider `C15_DiskCubeInterfaceCheck.lean` (`import Hopf.Hurewicz`,
   twelve `abbrev` aliases): `lake env lean -o` exit 0; log
-  `~/s6-notes/C15-interface-pre-provider.log`, source
-  `~/s6-notes/C15-interface-pre-provider.lean`.
+  `logs/C/C15-interface-pre-provider.log`, source
+  `logs/C/C15-interface-pre-provider.lean.txt`.
 - Pre-move consumer `C15_DiskCubeConsumerCheck.lean` (imports the provider, `#check`s
   all aliases, arbitrary-`V` `homeomorph`/`boundary_iff` examples, `n = 0` example):
-  exit 0; log `~/s6-notes/C15-interface-pre-consumer.log`, source
-  `~/s6-notes/C15-interface-pre-consumer.lean`.
+  exit 0; log `logs/C/C15-interface-pre-consumer.log`, source
+  `logs/C/C15-interface-pre-consumer.lean.txt`.
 - Post-move provider `lake env lean -o C15_DiskCubeInterfaceCheck.olean
   C15_DiskCubeInterfaceCheck.lean` (same body, `import
   Lib.Topology.Homeomorph.DiskCube`) — exit 0, epoch 1789269184→1789269187; log
-  `~/s6-notes/C15-interface-post-provider.log`, source
-  `~/s6-notes/C15-interface-post-provider.lean`.
+  `logs/C/C15-interface-post-provider.log`, source
+  `logs/C/C15-interface-post-provider.lean.txt`.
 - Post-move consumer `LEAN_PATH=.:$LEAN_PATH lake env lean
   C15_DiskCubeConsumerCheck.lean` — exit 0, epoch 1789269196→1789269200; log
-  `~/s6-notes/C15-interface-post-consumer.log`, source
-  `~/s6-notes/C15-interface-post-consumer.lean`.
+  `logs/C/C15-interface-post-consumer.log`, source
+  `logs/C/C15-interface-post-consumer.lean.txt`.
 - Builds: `lake build Lib.Topology.Homeomorph.DiskCube` exit 0
-  (`~/s6-notes/C15-diskcube-build.log`); `lake build Hopf.Hurewicz` exit 0
-  (`~/s6-notes/C15-hurewicz-build.log`). Census `--check` PASS 2651 ≤ 2663, then
-  `--update` lowered the baseline to 2651 (`~/s6-notes/C15-census.log`).
+  (`logs/C/C15-diskcube-build.log`); `lake build Hopf.Hurewicz` exit 0
+  (`logs/C/C15-hurewicz-build.log`). Census `--check` PASS 2651 ≤ 2663, then
+  `--update` lowered the baseline to 2651 (`logs/C/C15-census.log`).

@@ -17,8 +17,8 @@ Interface-elaboration receipt: provider
 `lake env lean -o C13_ClassificationInterfaceCheck.olean C13_ClassificationInterfaceCheck.lean` exit 0;
 consumer `LEAN_PATH=.:$LEAN_PATH lake env lean C13_ClassificationInterfaceConsumerCheck.lean` exit 0.
 11 output signatures visible, 14 external API checks, logs at
-`~/s6-notes/C13-classification-interface-provider.log` and
-`~/s6-notes/C13-classification-interface-consumer.log`, baseline `26a4708`.
+`logs/C/C13-classification-interface-provider.log` and
+`logs/C/C13-classification-interface-consumer.log`, baseline `26a4708`.
 
 ## Nodes
 
@@ -166,9 +166,9 @@ theorem right_inverse_is_left_inverse {m : ℕ} {X : Type} [TopologicalSpace X]
 ## Production verification receipt (historical: baseline `26a4708` and later `1a31384` state, superseded by the integrated receipt below)
 
 - production build `lake build Lib.AlgebraicTopology.Hurewicz.HopfDegree` exit 0,
-  7 seconds (epoch 1789253240 → 1789253247), log `~/s6-notes/C13-classification-build.log`
+  7 seconds (epoch 1789253240 → 1789253247), log `logs/C/C13-classification-build.log`
 - production check `lake env lean C13_ClassificationProductionCheck.lean` exit 0,
-  3 seconds, log `~/s6-notes/C13-classification-production.log`
+  3 seconds, log `logs/C/C13-classification-production.log`
 - 11 exported outputs checked; four audited declarations
   (`sphere_homotopicRel_of_topClass_eq`, `sphere_homotopic_id_of_topClass`,
   `right_inverse_is_left_inverse`, `exists_basepoint_adjustment`) use
@@ -189,12 +189,12 @@ instantiations to the current namespace (`HigherHurewicz.` → `Hurewicz.`):
 changed and no proofs were deleted.
 
 - `lake build Hopf.Recognition` — exit 0, 8,813 jobs, epoch 1789264924 → 1789265765,
-  log `~/s6-notes/C13-integrated-recognition.log`
+  log `logs/C/C13-integrated-recognition.log`
 - `lake build Hopf.Final Solution` — exit 0, 8,816 jobs, epoch 1789265777 → 1789265786,
-  log `~/s6-notes/C13-integrated-final.log`
+  log `logs/C/C13-integrated-final.log`
 - consumer axiom probe `lake env lean C13_IntegratedConsumerAudit.lean` (`import Solution`,
   `#print axioms` on `sphere_homotopicRel_of_topClass_eq`, `Sphere.homotopic_id_of_topClass`,
   `threefoldHomotopyEquiv`, `mathoverflow_1973`) — exit 0, all four on
-  `[propext, Classical.choice, Quot.sound]`, log `~/s6-notes/C13-integrated-consumer-axioms.log`;
-  probe source preserved at `~/s6-notes/C13-integrated-consumer-audit.lean` and removed from
+  `[propext, Classical.choice, Quot.sound]`, log `logs/C/C13-integrated-consumer-axioms.log`;
+  probe source preserved at `logs/C/C13-integrated-consumer-audit.lean.txt` and removed from
   the repository.

@@ -1,0 +1,38 @@
+CMD: python3 scripts/lib_stock_census.py --check
+start 05:04:44
+stock declarations under Hopf/: 2663  (prefixes: 222, prefixes now absent from Hopf/: 33)
+  extracted (no longer under Hopf/): DiskCone
+  extracted (no longer under Hopf/): HomologyTransport
+  extracted (no longer under Hopf/): IntegerPresentation
+  extracted (no longer under Hopf/): SmoothMorseLemma
+  extracted (no longer under Hopf/): LineBundleTransport
+  extracted (no longer under Hopf/): SingularMayerVietoris
+  extracted (no longer under Hopf/): EuclideanSphere
+  extracted (no longer under Hopf/): ManifoldAtlasTransport
+  extracted (no longer under Hopf/): HigherHurewicz
+  extracted (no longer under Hopf/): SecondHurewicz
+  extracted (no longer under Hopf/): FundamentalGroup.VanKampen
+  extracted (no longer under Hopf/): SimplyConnectedCover
+  extracted (no longer under Hopf/): TriangleRegularBaseFundamentalGroup
+  extracted (no longer under Hopf/): _root_
+  extracted (no longer under Hopf/): RiemannBoundary
+  extracted (no longer under Hopf/): SchwarzReflection
+  extracted (no longer under Hopf/): RiemannSphere
+  extracted (no longer under Hopf/): TriangleRiemannNormalization
+  extracted (no longer under Hopf/): HolomorphicCousin
+  extracted (no longer under Hopf/): AnalyticRootCover
+  extracted (no longer under Hopf/): AnalyticRootCoverContinuation
+  extracted (no longer under Hopf/): OnePointAtlas
+  extracted (no longer under Hopf/): TwoAffineCharts
+  extracted (no longer under Hopf/): FreeActionLocus
+  extracted (no longer under Hopf/): CoveringQuotient
+  extracted (no longer under Hopf/): DiscreteQuotient
+  extracted (no longer under Hopf/): InvariantSubsetQuotient
+  extracted (no longer under Hopf/): ProductRestriction
+  extracted (no longer under Hopf/): DiagonalQuotient
+  extracted (no longer under Hopf/): TwoOpenTransition
+  extracted (no longer under Hopf/): SplitGroupExtension
+  extracted (no longer under Hopf/): ThreefoldHomologyFinitenessRetraction
+  extracted (no longer under Hopf/): CuspRetraction.Patching
+ratchet PASS: 2663 <= baseline 2663
+exit 0
