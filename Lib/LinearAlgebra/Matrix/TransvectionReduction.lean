@@ -13,7 +13,7 @@ the coordinate-matrix API that transports `ℤ`-bases through these operations.
 ## Provenance
 
 Moved verbatim from `Hopf/Recognition.lean` (lane F0a). The declarations keep their
-`Mathoverflow1973.MorseCancel.*` names so existing consumers re-point through unchanged
+`Mathoverflow1973.MorseCancellation.*` names so existing consumers re-point through unchanged
 fully qualified names; the upstream-shaped rename to `Matrix.*` is a separate commit.
 -/
 
@@ -21,11 +21,11 @@ fully qualified names; the upstream-shaped rename to `Matrix.*` is a separate co
 
 namespace Mathoverflow1973
 
-def MorseCancel.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
+def MorseCancellation.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
     (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) : Matrix (Fin r) (Fin n) ℤ := fun i j =>
   B.symm (v j) i
 
-theorem MorseCancel.classCoordinateMatrix_mulVec {A : Type} [AddCommGroup A] [Module ℤ A]
+theorem MorseCancellation.classCoordinateMatrix_mulVec {A : Type} [AddCommGroup A] [Module ℤ A]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) (z : Fin n → ℤ) :
     B ((classCoordinateMatrix B v).mulVec z) = ∑ j, z j • v j := by
   have hvec : (classCoordinateMatrix B v).mulVec z = ∑ j, z j • B.symm (v j) := by
@@ -36,7 +36,7 @@ theorem MorseCancel.classCoordinateMatrix_mulVec {A : Type} [AddCommGroup A] [Mo
   intro j hj
   rw [map_zsmul, LinearEquiv.apply_symm_apply]
 
-theorem MorseCancel.classCoordinateMatrix_surjective {A : Type} [AddCommGroup A] [hA : Module ℤ A]
+theorem MorseCancellation.classCoordinateMatrix_surjective {A : Type} [AddCommGroup A] [hA : Module ℤ A]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A)
     (hspan : Submodule.span ℤ (Set.range v) = ⊤) :
     Function.Surjective (classCoordinateMatrix B v).mulVec := by
@@ -50,7 +50,7 @@ theorem MorseCancel.classCoordinateMatrix_surjective {A : Type} [AddCommGroup A]
     intro j hj
     exact (int_smul_eq_zsmul hA (z j) (v j)).symm
   exact hsum.trans hz
-theorem MorseCancel.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
+theorem MorseCancellation.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
     (i j : Fin n) (hij : i ≠ j) (k : ℤ) (hA : Function.Surjective A.mulVec) :
     Function.Surjective (A * Matrix.transvection i j k).mulVec := by
   intro y
@@ -60,7 +60,7 @@ theorem MorseCancel.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) 
     add_neg_cancel, Matrix.transvection_zero, Matrix.mul_one]
   exact hz
 
-theorem MorseCancel.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Matrix (Fin r) (Fin n) ℤ)
+theorem MorseCancellation.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Matrix (Fin r) (Fin n) ℤ)
     (i j : Fin n) (k : ℤ) (hchanged : ∀ u, A' u j = A u j + k * A u i)
     (hother : ∀ u v, v ≠ j → A' u v = A u v) : A' = A * Matrix.transvection i j k := by
   funext u v
@@ -69,7 +69,7 @@ theorem MorseCancel.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Matrix (F
     exact (hchanged u).trans (Matrix.mul_transvection_apply_same i j u k A).symm
   · exact (hother u v hv).trans (Matrix.mul_transvection_apply_of_ne i j u v hv k A).symm
 
-theorem MorseCancel.mul_transvection_list_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
+theorem MorseCancellation.mul_transvection_list_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
     (hA : Function.Surjective A.mulVec) (ops : List (Fin n × Fin n × ℤ))
     (hvalid : ∀ op ∈ ops, op.1 ≠ op.2.1) :
     Function.Surjective
@@ -86,7 +86,7 @@ theorem MorseCancel.mul_transvection_list_surjective {r n : ℕ} (A : Matrix (Fi
     simpa only [List.map_append, List.map_singleton, List.prod_append, List.prod_singleton,
       ← Matrix.mul_assoc] using mul_transvection_surjective _ op.1 op.2.1 hop op.2.2 (ih hprev)
 
-theorem MorseCancel.primitive_row_has_unit_after_column_additions {n : ℕ}
+theorem MorseCancellation.primitive_row_has_unit_after_column_additions {n : ℕ}
     (A : Matrix (Fin 1) (Fin n) ℤ) (hA : Function.Surjective A.mulVec) :
     ∃ ops : List (Fin n × Fin n × ℤ),
       (∀ op ∈ ops, op.1 ≠ op.2.1) ∧
@@ -163,7 +163,7 @@ theorem MorseCancel.primitive_row_has_unit_after_column_additions {n : ℕ}
     exact Finset.dvd_sum (fun j _ => dvd_mul_of_dvd_left (hdiv j) (x j))
   obtain ⟨v, hv⟩ := hdvd
   exact ⟨ops, hvalid, i, Int.eq_one_or_neg_one_of_mul_eq_one hv.symm⟩
-theorem MorseCancel.functional_class_row_surjective {H : Type} [AddCommGroup H] [Module ℤ H]
+theorem MorseCancellation.functional_class_row_surjective {H : Type} [AddCommGroup H] [Module ℤ H]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (v : Fin n → H)
     (hA : Function.Surjective (classCoordinateMatrix B v).mulVec) (L : H →ₗ[ℤ] ℤ)
     (hL : Function.Surjective L) :
@@ -186,7 +186,7 @@ theorem MorseCancel.functional_class_row_surjective {H : Type} [AddCommGroup H] 
   intro j hj
   exact mul_comm _ _
 
-theorem MorseCancel.transported_classes_of_matrix_product {H K : Type} [AddCommGroup H]
+theorem MorseCancellation.transported_classes_of_matrix_product {H K : Type} [AddCommGroup H]
     [Module ℤ H] [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (e : H ≃ₗ[ℤ] K)
     (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
     (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P) (j : Fin n) :
@@ -200,7 +200,7 @@ theorem MorseCancel.transported_classes_of_matrix_product {H K : Type} [AddCommG
       exact (B.apply_symm_apply (e.symm (w j))).symm
     _ = _ := classCoordinateMatrix_mulVec B v _
 
-theorem MorseCancel.functional_rows_of_matrix_product {H K : Type} [AddCommGroup H] [Module ℤ H]
+theorem MorseCancellation.functional_rows_of_matrix_product {H K : Type} [AddCommGroup H] [Module ℤ H]
     [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (e : H ≃ₗ[ℤ] K)
     (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
     (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P)

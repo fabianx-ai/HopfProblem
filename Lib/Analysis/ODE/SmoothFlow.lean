@@ -13,7 +13,7 @@ import Lib.Geometry.Manifold.Flow.HeightTranslating
 
 For a `C^∞` vector field the flow depends `C^∞` on the initial point and on time
 (`Degree.SmoothODE.*`, Lee Thm 9.12's smoothness conclusion), with coordinate-field helpers
-(`MorseCancel.coordinateField`).
+(`MorseCancellation.coordinateField`).
 
 ## Main definitions and results
 
@@ -648,12 +648,12 @@ theorem Degree.SmoothODE.contDiffAt_local_field_flow {E : Type*} [NormedAddCommG
     rw [hh.2]
     exact hd
 
-def MorseCancel.coordinateField {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorseCancellation.coordinateField {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M E ∞) (z : E) : E :=
   VectorField.mpullback 𝓘(ℝ, E) 𝓘(ℝ, E) e.symm V z
 
-theorem MorseCancel.coordinateField_chart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+theorem MorseCancellation.coordinateField_chart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
     (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M E ∞) {x : M} (hx : x ∈ e.source) :
     coordinateField (V := V) e (e x) = mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) e x (V x) := by
@@ -672,7 +672,7 @@ theorem MorseCancel.coordinateField_chart {E M : Type*} [NormedAddCommGroup E] [
   rw [hAB]
   exact congrArg B hvx
 
-theorem MorseCancel.contDiffOn_coordinateField {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.contDiffOn_coordinateField {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} [CompleteSpace E] [IsManifold 𝓘(ℝ, E) ∞ M]
     (hV : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).tangent) ∞ (fun x => (⟨x, V x⟩ : TangentBundle 𝓘(ℝ, E) M)))
@@ -689,7 +689,7 @@ theorem MorseCancel.contDiffOn_coordinateField {E M : Type*} [NormedAddCommGroup
         ((e.symm.contMDiffOn z hz).contMDiffAt (e.open_target.mem_nhds hz)) hinv
         (by simp)).contMDiffWithinAt
 
-theorem MorseCancel.hasDerivAt_coordinate_integralCurve {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.hasDerivAt_coordinate_integralCurve {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (e : PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M E ∞)
     {γ : ℝ → M} (hγ : IsMIntegralCurve γ V) {t : ℝ} (ht : γ t ∈ e.source) :
@@ -752,10 +752,10 @@ theorem Degree.SmoothODE.contMDiffAt_native_flow_zero {E M : Type*} [NormedAddCo
     rw [F.map_zero_apply]
     exact e.right_inv' (hrect z hz' 0 ⟨neg_lt_zero.mpr hδ, hδ⟩).1
   have hODE (z : E) (hz' : z ∈ Metric.ball (e p) δ) (t : ℝ) (ht : t ∈ Set.Ioo (-δ) δ) :
-    HasDerivAt (fun s => H (z, s)) (MorseCancel.coordinateField (V := V) e (H (z, t))) t :=
-    MorseCancel.hasDerivAt_coordinate_integralCurve e (hcurve (e.symm z)) (hrect z hz' t ht).2
+    HasDerivAt (fun s => H (z, s)) (MorseCancellation.coordinateField (V := V) e (H (z, t))) t :=
+    MorseCancellation.hasDerivAt_coordinate_integralCurve e (hcurve (e.symm z)) (hrect z hz' t ht).2
   have hH : ContDiffAt ℝ ∞ H (e p, 0) :=
-    contDiffAt_local_field_flow (MorseCancel.contDiffOn_coordinateField hV e) e.open_target hz
+    contDiffAt_local_field_flow (MorseCancellation.contDiffOn_coordinateField hV e) e.open_target hz
       Metric.isOpen_ball (Metric.mem_ball_self hδ) hδ hHC hinit hODE
   let A (q : M × ℝ) : E × ℝ := (e q.1, q.2)
   have hA : ContMDiffAt (𝓘(ℝ, E).prod 𝓘(ℝ, ℝ)) 𝓘(ℝ, E × ℝ) ∞ A (p, 0) := by

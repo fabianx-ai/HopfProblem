@@ -105,7 +105,7 @@ attribute [local instance] Smale.NativeEuclideanEmbedding.tangentSpaceT2
 
 attribute [local instance] Smale.NativeEuclideanEmbedding.tangentSpaceT2
 
-theorem MorseCancel.contMDiff_supported_division {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.contMDiff_supported_division {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {χ D : M → ℝ}
     (hχ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ χ) (hD : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ D)
     (hsupp : ∀ x ∈ tsupport χ, D x ≠ 0) : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (fun x => χ x / D x) := by
@@ -206,7 +206,7 @@ theorem Degree.FlowCancellation.native_no_return_of_supported_perturbation {E M 
       ⟨sub_nonneg.mpr hst.le, sub_le_sub_right htu.le s⟩
   exact hout (hmid ▸ hh)
 
-theorem MorseCancel.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (p q : Smale.ManifoldMorse.criticalPoints E f)
     (hconsecutive : ∀ r : Smale.ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))

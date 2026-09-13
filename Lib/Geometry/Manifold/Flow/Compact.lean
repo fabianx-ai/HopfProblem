@@ -11,7 +11,7 @@ import Lib.Geometry.Manifold.Morse.Handle
 # Flows of smooth vector fields on compact manifolds
 
 Flow boxes and partial chart fields (`Smale.FlowConstruction.*`), the Morse-block machinery
-isolating critical points (`MorseCancel.morseClosedBlock*`,
+isolating critical points (`MorseCancellation.morseClosedBlock*`,
 `exists_disjoint_morse_block_field`), and inverse-function ingredients
 (`NoExotic.isLocalDiffeomorphAt_of_invertible_mvfderiv`).
 
@@ -381,7 +381,7 @@ theorem Smale.FlowConstruction.isMIntegralCurve_compactFlow {E M : Type*} [Norme
   isMIntegralCurve_flow hv x
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.exists_disjoint_morse_block_field {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_disjoint_morse_block_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}
@@ -426,7 +426,7 @@ theorem MorseCancel.exists_disjoint_morse_block_field {E M : Type*} [NormedAddCo
   filter_upwards [morseClosedBlock_mem_nhds (c i) (R i) (hblock i) hn hp] with y hy
   exact hmatch i y hy
 
-theorem MorseCancel.exists_larger_closedBall_inside_open {A : Type*} [NormedAddCommGroup A]
+theorem MorseCancellation.exists_larger_closedBall_inside_open {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [ProperSpace A] {U : Set A} (hU : IsOpen U) {R B : ℝ} (hR : 0 ≤ R)
     (hRB : R < B) (hsub : Metric.closedBall (0 : A) R ⊆ U) :
     ∃ S, R < S ∧ S < B ∧ Metric.closedBall (0 : A) S ⊆ U := by
@@ -439,7 +439,7 @@ theorem MorseCancel.exists_larger_closedBall_inside_open {A : Type*} [NormedAddC
       (Metric.closedBall_subset_closedBall (hSm.le.trans (min_le_left _ _))).trans hδU⟩
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.exists_morse_block_enlargement {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_morse_block_enlargement {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : Smale.ManifoldMorse.SignedMorseChart (E := E) f p) {r : ℝ} (hr : 0 < r)
     (hblock :
@@ -462,7 +462,7 @@ theorem MorseCancel.exists_morse_block_enlargement {E M : Type*} [NormedAddCommG
   simpa only [closedBall_prod_same, Prod.mk_zero_zero] using hsub
 
 attribute [local instance 100] Classical.propDecidable in
-theorem MorseCancel.exists_disjoint_surgery_block_field {E M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_disjoint_surgery_block_field {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f) {ι : Type*}

@@ -61,7 +61,7 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-theorem MorseCancel.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {U : Set M} (hU : IsOpen U) {x : M} (hx : x ∈ U) :
@@ -98,7 +98,7 @@ theorem MorseCancel.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddC
     · intro z hz
       exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
 
-theorem MorseCancel.exists_isotopic_two_points_in_dense {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_isotopic_two_points_in_dense {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {B : Set M} (hB : Dense B) {x y : M} (hxy : x ≠ y) :
@@ -121,7 +121,7 @@ theorem MorseCancel.exists_isotopic_two_points_in_dense {E H M : Type*} [NormedA
     rw [hdfix y hyU, hey]
     exact hy'B
 
-theorem MorseCancel.isotopicToIdentity_joined {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.isotopicToIdentity_joined {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {d : Diffeomorph J J M M ∞} (hd : Smale.SupportedDiffeomorph.IsotopicToIdentity d) (x : M) :
@@ -133,7 +133,7 @@ theorem MorseCancel.isotopicToIdentity_joined {E H M : Type*} [NormedAddCommGrou
         source' := hzero x
         target' := hone x }⟩
 
-def MorseCancel.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+def MorseCancellation.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace M] [ChartedSpace H M] (J : ModelWithCorners ℝ E H)
     (U : Set M) (x : M) : Set M :=
   {y |
@@ -141,7 +141,7 @@ def MorseCancel.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] [Norme
       ∃ d : Diffeomorph J J M M ∞,
         Smale.SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z}
 
-theorem MorseCancel.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (isotopicPointOrbit J U x) := by
@@ -158,7 +158,7 @@ theorem MorseCancel.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCommGrou
     change e (d w) = w
     rw [hdfix w hw, hefix w hw]
 
-theorem MorseCancel.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (U \ isotopicPointOrbit J U x) := by
@@ -179,7 +179,7 @@ theorem MorseCancel.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [NormedAddCo
     rw [hdfix w hw]
     exact Smale.SupportedDiffeomorph.inverse_fixed_outside e.toEquiv hefix w hw
 
-theorem MorseCancel.exists_isotopic_pointMoving_of_preconnected {E H M : Type*}
+theorem MorseCancellation.exists_isotopic_pointMoving_of_preconnected {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
     [IsManifold J ∞ M] [T2Space M] {U A : Set M} (hU : IsOpen U) (hA : IsPreconnected A)
@@ -202,7 +202,7 @@ theorem MorseCancel.exists_isotopic_pointMoving_of_preconnected {E H M : Type*}
       (isOpen_sdiff_isotopicPointOrbit hU x) hdisjoint hcover ⟨x, hx, hxOrbit⟩
   exact (hsub hy).2
 
-theorem MorseCancel.exists_isotopic_pointMoving_of_path {E H M : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_isotopic_pointMoving_of_path {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
     {U : Set M} (hU : IsOpen U) {x y : M} (γ : Path x y) (hγ : ∀ t, γ t ∈ U) :
@@ -2349,7 +2349,7 @@ theorem Smale.OpenObstacle.contMDiff_restrict {E' G H H' Y N : Type*} [NormedAdd
   apply (ContMDiff.subtypeVal_comp_iff U (Smale.OpenObstacle.restrict g U)).mp
   exact hg.comp contMDiff_subtype_val
 
-theorem MorseCancel.exists_smooth_path_avoiding_closed_image {E G H H' N Y : Type*}
+theorem MorseCancellation.exists_smooth_path_avoiding_closed_image {E G H H' N Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
@@ -2381,7 +2381,7 @@ theorem MorseCancel.exists_smooth_path_avoiding_closed_image {E G H H' N Y : Typ
   let η : Path x y := { toContinuousMap := f', source' := h0, target' := h1 }
   exact ⟨η, hf', fun t ht => Set.disjoint_left.mp hdisjoint ⟨t, rfl⟩ ht⟩
 
-theorem MorseCancel.exists_smooth_path_avoiding_closed_image_in_open {E G H H' N Y : Type*}
+theorem MorseCancellation.exists_smooth_path_avoiding_closed_image_in_open {E G H H' N Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
     {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
@@ -3138,7 +3138,7 @@ theorem Smale.exists_embedded_arc_with_local_endpoint_germs {G H N : Type*} [Nor
       (γ.cast heqa.eq_of_nhds heqb.eq_of_nhds) hxy' hdim hS
   exact ⟨f, hf, hfa.trans heqa, hfb.trans heqb, hemb, hi, havoid⟩
 
-theorem MorseCancel.exists_clean_arc_with_local_endpoint_germs {G V H H' N Y : Type*}
+theorem MorseCancellation.exists_clean_arc_with_local_endpoint_germs {G V H H' N Y : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace H] [TopologicalSpace H']
     {J : ModelWithCorners ℝ G H} {I : ModelWithCorners ℝ V H'} [J.Boundaryless]
@@ -3532,7 +3532,7 @@ theorem Smale.exists_clean_embedded_sheet_neighborhood {E M D G N : Type*} [Norm
       exact ⟨c u, hu⟩
   exact hrange.trans (himage q hq)
 
-def MorseCancel.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+def MorseCancellation.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup B] [NormedSpace ℝ B] : (ℝ × (D × B)) ≃L[ℝ] (D × (ℝ × B))
     where
   toLinearEquiv :=
@@ -3545,7 +3545,7 @@ def MorseCancel.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [NormedSpa
   continuous_toFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
   continuous_invFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
 
-theorem MorseCancel.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCommGroup D]
+theorem MorseCancellation.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {E M X : Type*} [FiniteDimensional ℝ D] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X] [ChartedSpace D X]
@@ -3602,7 +3602,7 @@ theorem MorseCancel.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCommGrou
       rw [h1, h2]
       exact L.map_zero
 
-theorem MorseCancel.chart_axis_curve_properties {V E H M : Type*} [NormedAddCommGroup V]
+theorem MorseCancellation.chart_axis_curve_properties {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) J (ℝ × V) M ∞) (p : ℝ) (hp : (p, (0 : V)) ∈ Φ.source) :
@@ -3626,7 +3626,7 @@ theorem MorseCancel.chart_axis_curve_properties {V E H M : Type*} [NormedAddComm
   exact
     (Smale.PartialChart.bijective_mfderiv Φ hp).injective.comp (fun _ _ h => congrArg Prod.fst h)
 
-def MorseCancel.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] :
+def MorseCancellation.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] :
     Diffeomorph 𝓘(ℝ, ℝ × (D × D)) 𝓘(ℝ, ℝ × (D × D)) (ℝ × (D × D)) (ℝ × (D × D)) ∞
     where
   toEquiv :=
@@ -3641,7 +3641,7 @@ def MorseCancel.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D] [Nor
     ((contDiff_fst.add contDiff_const).prodMk
         (contDiff_snd.snd.prodMk contDiff_snd.fst)).contMDiff
 
-theorem MorseCancel.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommGroup E]
+theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X]
     [ChartedSpace (EuclideanSpace ℝ (Fin 2)) X] [IsManifold (𝓡 2) ∞ X] [CompactSpace X]
