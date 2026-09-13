@@ -132,3 +132,20 @@ Decision: confirm `HolomorphicCousin`. No rename, statement or proof change.
 Receipt: census **2,287 → 2,287**, prefix list unchanged; this commit changes
 only this ledger. This does not claim that a Cauchy integral theorem alone
 proves the Cousin result.
+
+### MappingTorus families — retain the mathematical names
+
+Existing references: `Mathlib/Topology/Homeomorph/Quotient.lean` for quotient
+homeomorphisms and `Mathlib/Topology/Covering/Quotient.lean` for quotient
+coverings. The local `Lib/Topology/MappingTorus/Basic.lean` and
+`HomologyCover.lean` add the mapping-torus construction and its homology;
+`MappingTorus` and `MappingTorusHomology` distinguish these two roles.
+`Mathlib/Topology/MappingTorus/` remains a proposed destination, not an
+existing twin directory in the pinned tree.
+
+Decision: confirm `MappingTorus` and `MappingTorusHomology`; no rename,
+statement or proof change. Receipt: census **2,287 → 2,287**, prefix list
+unchanged; this commit changes only this ledger. The remaining finite-cover
+transfer formulas and the Mathoverflow1973 wrapper removal remain pending on
+the C/J prerequisite handoff documented in `Lib/reports/I.md`; name confirmation
+does not bypass that dependency.
