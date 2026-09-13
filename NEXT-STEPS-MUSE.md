@@ -20,11 +20,12 @@ Review: `INTEGRATION-3.md` §3 "Muse seat".
    `~/s6-notes/J-review*.md` in `J.md` and `J-INTERFACE_RECEIPT.md`. Bring the evidence in
    (`Lib/docs/logs/<lane>/`) or drop the citation; the reviews are your seat's and may be
    edited for paths only, with a line saying so.
-3. **Reviews.** Your `fresh`/`fresh2` subagents are the same seat; they do not satisfy
-   reviewer ≠ author. Get Astra's closing pass on E2 and G at the current head with a GO
-   line, then Astra's Axis-5 review of the typed ledgers with the current names
-   (`Suspension`, `Hurewicz.DegreeTwo`, `SingularHomology.CircleTopology`). J's Axis-5 reviews
-   likewise. Until then E2 and G stay DRAFT, as their ledgers say.
+3. **Reviews.** Fresh-context subagents count as independent reviewers (owner, 2026-09-13);
+   your `fresh`/`fresh2` reviews stand. Missing: the closing pass on E2 and G at the current
+   head with a GO line, by a fresh reviewer (zero context, not the authoring session), then
+   the Axis-5 review of the typed ledgers with the current names (`Suspension`,
+   `Hurewicz.DegreeTwo`, `SingularHomology.CircleTopology`), again by a fresh reviewer. J's
+   Axis-5 reviews the same way. Until then E2 and G stay DRAFT, as their ledgers say.
 4. **Module docstrings** for `Morse/MinimalSystem.lean` and `Whitney/BigonModel.lean`; the
    twin named. One commit.
 5. **`import all`**: none added from now on; in your own files (`Transversality/Basic.lean`,
@@ -39,7 +40,7 @@ Review: `INTEGRATION-3.md` §3 "Muse seat".
 ## Rules
 
 - `ps` before `lake build`; never `lake update`/`cache get`; never push.
-- Reviewer ≠ author. Probes in the tree. Reports cite only what is in the tree.
+- Reviewer ≠ author; a fresh-context subagent is a reviewer. Probes in the tree. Reports cite only what is in the tree.
 - A lane report says "landed" only for declarations that exist in `Lib/` at the head it names.
 - Do not edit E1, H, I files or ledgers (GLM seat) or the C packet (Kimi seat); the `module`
   conversion of their files is taken this once, not a precedent for editing them.

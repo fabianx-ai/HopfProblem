@@ -90,7 +90,7 @@ directory; the declaration-block splitter is the one used in review 2.
    item 1 asked for exactly the opposite. The archived review is kept verbatim as an archive;
    the links are dead for every other reader.
 3. **Independent review** is a fresh `devin --print` session of the same model family; it
-   says so. Verdict: conditional GO for C14–C16, NO-GO for "lane complete". Its two conditions
+   says so, and it counts as independent under the owner's rule above. Verdict: conditional GO for C14–C16, NO-GO for "lane complete". Its two conditions
    are owner gates: (a) the interface probe was written after the implementation, not before
    (`lean-protocol.md` Stage-2 order), to be recorded as an owner-approved exception; (b) the
    Comparator run is blocked on `landrun`. Both are put to the owner in §5.
@@ -113,10 +113,12 @@ directory; the declaration-block splitter is the one used in review 2.
 3. **Verification**: the seat built with direct `lean`, not Lake, because the shared `.lake`
    made Lake try to re-clone Mathlib (`RECEIPTS.md`); the Lake build in §2 is the first Lake
    verification of these commits.
-4. **Reviews**: `E2-fresh*.md` and `G-fresh*.md` are Devin subagents of the same seat, not
-   Astra. They are useful and honest (both say NO-GO / NOT YET on the exact ledgers), but the
-   reviewer ≠ author rule for the Axis-5 review of E2 and G is still unmet. `G.md` says
-   "pending independent acceptance"; `E2.md` says DRAFT.
+4. **Reviews**: `E2-fresh*.md` and `G-fresh*.md` are fresh-context subagents launched by the
+   seat (zero context, review only). Owner's rule (2026-09-13): a fresh-context subagent counts
+   as an independent reviewer, so reviewer ≠ author is satisfied by them. Their verdicts stand:
+   GO on the §§3–5 mathematics and the G ordering, NO-GO / NOT YET on the exact ledgers;
+   `G.md` says "pending independent acceptance", `E2.md` says DRAFT. What is missing is the
+   closing pass at the current head with a GO line, by a fresh reviewer.
 5. **Off-tree citations**: `/home/ox-alpha/...` in the four review files (27 lines),
    `/tmp/sidekick-modconv-batch3-1789272770/` as the evidence directory in `RECEIPTS.md`,
    `~/s6-notes/J-review*.md` in `J.md` and `J-INTERFACE_RECEIPT.md`.
