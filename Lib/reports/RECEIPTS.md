@@ -237,3 +237,20 @@ Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
 - **Ledger refresh** (`2cb2117`, `6a8e4a8`): E2/G signature blocks regenerated
   verbatim against post-proof-split, post-rename sources; all coordinate
   comments re-verified.
+- **E2 Axis-5 review**: `Lib/docs/E2-axis5-subagent-review.md` — initial NO-GO
+  (residual coordinate drift in the §13 table and two ledger comments after the
+  `840aef4` insertions); repairs at `d4038e1`; re-confirmation GO → ledger
+  marked accepted at `88e354b`.
+- **G Axis-5 review**: `Lib/docs/G-axis5-subagent-review.md` — GO at `84d9450`
+  (35/35 signatures verbatim, current names clean); ledger marked accepted at
+  `ac6c338`.
+- **J Axis-5 review**: `Lib/docs/J-axis5-i3-review.md` — initial NO-GO (stale
+  pre-move coordinates throughout, LibShims-only `crossProductHomology`
+  spellings, undisclosed `coordinatePeriodLoop` binder rename, stale
+  S-nat/S-cross/G-J3 seam claims); two repair rounds; first re-confirmation
+  found six residual defects (false `CirclePaths` Lib-provider claim,
+  wrong-path rank-3 re-run described as deleted, shifted block ranges,
+  nonexistent `Hopf.FiniteCore` consumer path, truncated G-J3 range, one wrong
+  coordinate) — all repaired; second re-confirmation GO. Ledger consistent at
+  `90cd3d9`. Scoped: Axis-5 consistency only — J-B/J-C/J-D/J-E uncertified,
+  J-B2a still blocked on the unlanded S-path cluster.
