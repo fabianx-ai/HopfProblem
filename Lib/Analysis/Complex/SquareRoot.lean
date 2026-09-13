@@ -58,6 +58,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Local roots and the ambient section -/
+
+/-- An analytic root of a unit exists locally. -/
 theorem AnalyticRootCover.exists_analytic_unit_root {g : ℂ → ℂ} {a : ℂ} {m : ℕ}
     (hg : AnalyticAt ℂ g a) (hga : g a ≠ 0) (hm : 0 < m) :
     ∃ r : ℂ → ℂ, AnalyticAt ℂ r a ∧ r a ≠ 0 ∧ ∀ᶠ w in 𝓝 a, r w ^ m = g w := by
@@ -86,22 +89,27 @@ theorem AnalyticRootCover.exists_analytic_unit_root {g : ℂ → ℂ} {a : ℂ} 
     exact hb0
   · exact hg.continuousAt.tendsto.eventually hRpow
 
+/-- The ambient value of a section germ. -/
 def AnalyticRootCover.ambientVal (S : TopologicalSpace.Opens ℂ) (V : TopologicalSpace.Opens S)
     (x : V) : ℂ :=
   ((x : S) : ℂ)
 
+/-- The ambient value is injective on germs. -/
 theorem AnalyticRootCover.ambientVal_injective (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) : Function.Injective (ambientVal S V) :=
   Subtype.val_injective.comp Subtype.val_injective
 
+/-- The ambient open set of the cover. -/
 def AnalyticRootCover.ambientOpen (S : TopologicalSpace.Opens ℂ) (V : TopologicalSpace.Opens S) :
     TopologicalSpace.Opens ℂ :=
   ⟨Subtype.val '' (V : Set S), S.isOpen.isOpenMap_subtype_val _ V.isOpen⟩
 
+/-- The ambient value lies in the ambient open. -/
 theorem AnalyticRootCover.ambientVal_mem (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) (x : V) : ambientVal S V x ∈ ambientOpen S V :=
   ⟨(x : S), x.2, rfl⟩
 
+/-- Membership in the ambient open. -/
 theorem AnalyticRootCover.mem_ambientOpen (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) {z : ℂ} :
     z ∈ ambientOpen S V ↔ ∃ x : V, ambientVal S V x = z := by
@@ -111,6 +119,7 @@ theorem AnalyticRootCover.mem_ambientOpen (S : TopologicalSpace.Opens ℂ)
   · rintro ⟨x, rfl⟩
     exact ambientVal_mem S V x
 
+/-- A coerced point lies in the ambient open. -/
 @[simp]
 theorem AnalyticRootCover.coe_mem_ambientOpen (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) (x : S) : (x : ℂ) ∈ ambientOpen S V ↔ x ∈ V := by
@@ -122,16 +131,19 @@ theorem AnalyticRootCover.coe_mem_ambientOpen (S : TopologicalSpace.Opens ℂ)
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/-- The section extended to the ambient open. -/
 def AnalyticRootCover.extendSection (S : TopologicalSpace.Opens ℂ) (V : TopologicalSpace.Opens S)
     (s : V → ℂ) : ℂ → ℂ :=
   Function.extend (ambientVal S V) s 0
 
+/-- The extended section computes the ambient value. -/
 @[simp]
 theorem AnalyticRootCover.extendSection_apply (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) (s : V → ℂ) (x : V) :
     extendSection S V s (ambientVal S V x) = s x :=
   (ambientVal_injective S V).extend_apply s 0 x
 
+/-- The extended section agrees with the original. -/
 theorem AnalyticRootCover.extendSection_agrees (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) (s : V → ℂ) (f : ℂ → ℂ)
     (hf : ∀ x, s x = f (ambientVal S V x)) : Set.EqOn (extendSection S V s) f (ambientOpen S V) :=
@@ -141,11 +153,13 @@ theorem AnalyticRootCover.extendSection_agrees (S : TopologicalSpace.Opens ℂ)
   rw [extendSection_apply]
   exact hf x
 
+/-- Two extensions agreeing on germs are equal. -/
 theorem AnalyticRootCover.extension_agreement (S : TopologicalSpace.Opens ℂ)
     (V : TopologicalSpace.Opens S) (f : ℂ → ℂ) :
     Set.EqOn (extendSection S V (fun x => f (ambientVal S V x))) f (ambientOpen S V) :=
   extendSection_agrees S V _ f (fun _ => rfl)
 
+/-- The restricted extension agrees with the original. -/
 theorem AnalyticRootCover.extendSection_restrict_agrees (S : TopologicalSpace.Opens ℂ)
     {U V : TopologicalSpace.Opens S} (i : U ⟶ V) (s : V → ℂ) :
     Set.EqOn (extendSection S U (fun x => s (Set.inclusion i.le x))) (extendSection S V s)
@@ -155,6 +169,7 @@ theorem AnalyticRootCover.extendSection_restrict_agrees (S : TopologicalSpace.Op
   rw [extendSection_apply]
   exact (extendSection_apply S V s (Set.inclusion i.le x)).symm
 
+/-- The restricted extension eventually equals the original. -/
 theorem AnalyticRootCover.extendSection_restrict_eventuallyEq (S : TopologicalSpace.Opens ℂ)
     {U V : TopologicalSpace.Opens S} (i : U ⟶ V) (s : V → ℂ) (x : U) :
     extendSection S U (fun y => s (Set.inclusion i.le y)) =ᶠ[𝓝 (ambientVal S U x)]
@@ -162,10 +177,14 @@ theorem AnalyticRootCover.extendSection_restrict_eventuallyEq (S : TopologicalSp
   filter_upwards [(ambientOpen S U).isOpen.mem_nhds (ambientVal_mem S U x)] with z hz
   exact extendSection_restrict_agrees S i s hz
 
+/-! ### The root presheaf -/
+
+/-- A section whose square is the function. -/
 def AnalyticRootCover.IsRootSection (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {V : TopologicalSpace.Opens S} (s : V → ℂ) : Prop :=
   ∀ x : V, AnalyticAt ℂ (extendSection S V s) (ambientVal S V x) ∧ s x ^ 2 = F (ambientVal S V x)
 
+/-- The local predicate defining root sections. -/
 def AnalyticRootCover.rootLocalPredicate (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ) :
     TopCat.LocalPredicate (fun _ : TopCat.of S => ℂ)
     where
@@ -186,30 +205,36 @@ def AnalyticRootCover.rootLocalPredicate (S : TopologicalSpace.Opens ℂ) (F : �
     · have hsq : s (Set.inclusion i.le y) ^ 2 = F (ambientVal S U x) := (hV y).2
       rwa [hix] at hsq
 
+/-- The presheaf of local square roots. -/
 def AnalyticRootCover.rootPresheaf (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ) :
     (TopCat.of S).Presheaf (Type 0) :=
   TopCat.subpresheafToTypes (rootLocalPredicate S F).toPrelocalPredicate
 
+/-- A square-root section of an analytic function. -/
 abbrev AnalyticRootCover.RootSection (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     (V : TopologicalSpace.Opens S) :=
   (rootPresheaf S F).obj (Opposite.op V)
 
+/-- A root section is analytic. -/
 theorem AnalyticRootCover.rootSection_analytic (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {V : TopologicalSpace.Opens S} (s : RootSection S F V) (x : V) :
     AnalyticAt ℂ (extendSection S V s.1) (ambientVal S V x) :=
   (s.2 x).1
 
+/-- A root section squares to the function. -/
 theorem AnalyticRootCover.rootSection_sq (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {V : TopologicalSpace.Opens S} (s : RootSection S F V) (x : V) :
     s.1 x ^ 2 = F (ambientVal S V x) :=
   (s.2 x).2
 
+/-- The presheaf restriction computes the extended section. -/
 @[simp]
 theorem AnalyticRootCover.rootPresheaf_map_apply (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {U V : TopologicalSpace.Opens S} (i : U ⟶ V) (s : RootSection S F V) (x : U) :
     ((rootPresheaf S F).map i.op s).1 x = s.1 (Set.inclusion i.le x) :=
   rfl
 
+/-- The extended root section is analytic. -/
 theorem AnalyticRootCover.RootSection.analyticOnNhd_extend {S : TopologicalSpace.Opens ℂ}
     {F : ℂ → ℂ} {V : TopologicalSpace.Opens S} (s : AnalyticRootCover.RootSection S F V) :
     AnalyticOnNhd ℂ (AnalyticRootCover.extendSection S V s.1)
@@ -218,6 +243,7 @@ theorem AnalyticRootCover.RootSection.analyticOnNhd_extend {S : TopologicalSpace
   obtain ⟨x, rfl⟩ := (AnalyticRootCover.mem_ambientOpen S V).mp hz
   exact AnalyticRootCover.rootSection_analytic S F s x
 
+/-- The extended section squares to the function. -/
 theorem AnalyticRootCover.RootSection.square_eq {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {V : TopologicalSpace.Opens S} (s : AnalyticRootCover.RootSection S F V) {z : ℂ}
     (hz : z ∈ AnalyticRootCover.ambientOpen S V) :
@@ -226,12 +252,14 @@ theorem AnalyticRootCover.RootSection.square_eq {S : TopologicalSpace.Opens ℂ}
   rw [AnalyticRootCover.extendSection_apply]
   exact AnalyticRootCover.rootSection_sq S F s x
 
+/-- Root sections equal on germs are equal. -/
 @[ext]
 theorem AnalyticRootCover.RootSection.ext {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {V : TopologicalSpace.Opens S} {s t : AnalyticRootCover.RootSection S F V}
     (he : ∀ x, s.1 x = t.1 x) : s = t :=
   Subtype.ext (funext he)
 
+/-- A root section built from an analytic square root. -/
 def AnalyticRootCover.rootSectionOfAnalytic (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {V : TopologicalSpace.Opens S} (f : ℂ → ℂ) (hf : AnalyticOnNhd ℂ f (ambientOpen S V))
     (hsq : ∀ x : V, f (ambientVal S V x) ^ 2 = F (ambientVal S V x)) : RootSection S F V := by
@@ -240,6 +268,7 @@ def AnalyticRootCover.rootSectionOfAnalytic (S : TopologicalSpace.Opens ℂ) (F 
   filter_upwards [(ambientOpen S V).isOpen.mem_nhds (ambientVal_mem S V x)] with z hz
   exact (extension_agreement S V f hz).symm
 
+/-- The extension of an analytic root agrees with it. -/
 theorem AnalyticRootCover.extend_rootSectionOfAnalytic_eqOn (S : TopologicalSpace.Opens ℂ)
     (F : ℂ → ℂ) {V : TopologicalSpace.Opens S} (f : ℂ → ℂ)
     (hf : AnalyticOnNhd ℂ f (ambientOpen S V))
@@ -247,6 +276,9 @@ theorem AnalyticRootCover.extend_rootSectionOfAnalytic_eqOn (S : TopologicalSpac
     Set.EqOn (extendSection S V (rootSectionOfAnalytic S F f hf hsq).1) f (ambientOpen S V) :=
   extension_agreement S V f
 
+/-! ### Uniqueness and existence of local roots -/
+
+/-- A product of analytic functions vanishing gives a vanishing factor. -/
 theorem AnalyticRootCover.eventuallyEq_zero_or_eventuallyEq_zero_of_mul_eq_zero {r s : ℂ → ℂ}
     {a : ℂ} (hr : AnalyticAt ℂ r a) (hs : AnalyticAt ℂ s a) (hmul : ∀ᶠ z in 𝓝 a, r z * s z = 0) :
     r =ᶠ[𝓝 a] 0 ∨ s =ᶠ[𝓝 a] 0 := by
@@ -258,6 +290,7 @@ theorem AnalyticRootCover.eventuallyEq_zero_or_eventuallyEq_zero_of_mul_eq_zero 
   · exact Or.inl (hr.frequently_zero_iff_eventually_zero.mp hrzero)
   · exact Or.inr (hs.frequently_zero_iff_eventually_zero.mp hszero)
 
+/-- Two analytic square roots agree up to sign. -/
 theorem AnalyticRootCover.eventuallyEq_or_neg_of_sq_eq {r s : ℂ → ℂ} {a : ℂ}
     (hr : AnalyticAt ℂ r a) (hs : AnalyticAt ℂ s a)
     (hsq : (fun z => r z ^ 2) =ᶠ[𝓝 a] (fun z => s z ^ 2)) :
@@ -272,11 +305,13 @@ theorem AnalyticRootCover.eventuallyEq_or_neg_of_sq_eq {r s : ℂ → ℂ} {a : 
   · exact Or.inl (hsub.mono fun z hz => sub_eq_zero.mp hz)
   · exact Or.inr (hadd.mono fun z hz => eq_neg_iff_add_eq_zero.mpr hz)
 
+/-- Two analytic functions on a preconnected set that have equal germs at one point of the set agree on the whole set. -/
 theorem AnalyticRootCover.eqOn_of_eventuallyEq {r s : ℂ → ℂ} {V : Set ℂ} {a : ℂ}
     (hr : AnalyticOnNhd ℂ r V) (hs : AnalyticOnNhd ℂ s V) (hV : IsPreconnected V) (ha : a ∈ V)
     (heq : r =ᶠ[𝓝 a] s) : Set.EqOn r s V :=
   hr.eqOn_of_preconnected_of_eventuallyEq hs hV ha heq
 
+/-- An analytic germ of finite even order `2 * n` has a square-root germ of order `n`. -/
 theorem AnalyticRootCover.exists_analytic_square_root {F : ℂ → ℂ} {a : ℂ} {n : ℕ}
     (hF : AnalyticAt ℂ F a) (horder : analyticOrderAt F a = (2 * n : ℕ)) :
     ∃ r : ℂ → ℂ, AnalyticAt ℂ r a ∧ (∀ᶠ z in 𝓝 a, r z ^ 2 = F z) ∧ analyticOrderAt r a = n := by
@@ -294,6 +329,7 @@ theorem AnalyticRootCover.exists_analytic_square_root {F : ℂ → ℂ} {a : ℂ
     refine ⟨q, hq, hqa, ?_⟩
     exact Filter.Eventually.of_forall (fun _ => rfl)
 
+/-- A square-root germ at a point of finite even analytic order is represented on a sufficiently small ball inside the prescribed neighborhood. -/
 theorem AnalyticRootCover.exists_analytic_square_root_ball {F : ℂ → ℂ} {a : ℂ} {n : ℕ} {S : Set ℂ}
     (hF : AnalyticAt ℂ F a) (horder : analyticOrderAt F a = (2 * n : ℕ)) (hS : S ∈ 𝓝 a) :
     ∃ ε > 0,
@@ -310,6 +346,9 @@ theorem AnalyticRootCover.exists_analytic_square_root_ball {F : ℂ → ℂ} {a 
   · exact fun z hz => (hball hz).2.1
   · exact fun z hz => (hball hz).2.2
 
+/-! ### The root stalk -/
+
+/-- Germs are equal exactly when the sections eventually agree. -/
 theorem AnalyticRootCover.germ_eq_iff_eventuallyEq (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     {U V : TopologicalSpace.Opens (TopCat.of S)} (x : S) (hxU : x ∈ U) (hxV : x ∈ V)
     (s : RootSection S F U) (t : RootSection S F V) :
@@ -347,6 +386,7 @@ theorem AnalyticRootCover.germ_eq_iff_eventuallyEq (S : TopologicalSpace.Opens �
       _ = extendSection S V t.1 (ambientVal S W y) := (hA y.2.2)
       _ = t.1 (Set.inclusion iV.le y) := extendSection_apply S V t.1 (Set.inclusion iV.le y)
 
+/-- The negative of a root section. -/
 def AnalyticRootCover.RootSection.neg {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U : TopologicalSpace.Opens S} (s : AnalyticRootCover.RootSection S F U) :
     AnalyticRootCover.RootSection S F U :=
@@ -356,12 +396,14 @@ def AnalyticRootCover.RootSection.neg {S : TopologicalSpace.Opens ℂ} {F : ℂ 
       rw [neg_sq]
       exact square_eq s (AnalyticRootCover.ambientVal_mem S U x))
 
+/-- The extension of the negated section is the negated extension. -/
 theorem AnalyticRootCover.RootSection.extend_neg_eqOn {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U : TopologicalSpace.Opens S} (s : AnalyticRootCover.RootSection S F U) :
     Set.EqOn (AnalyticRootCover.extendSection S U s.neg.1)
       (fun z => -AnalyticRootCover.extendSection S U s.1 z) (AnalyticRootCover.ambientOpen S U) :=
   by exact AnalyticRootCover.extend_rootSectionOfAnalytic_eqOn S F _ _ _
 
+/-- A root germ equals the given section or its negative. -/
 theorem AnalyticRootCover.germ_eq_or_neg {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U V : TopologicalSpace.Opens S} (x : S) (hxU : x ∈ U) (hxV : x ∈ V) (s : RootSection S F U)
     (t : RootSection S F V) :
@@ -385,6 +427,7 @@ theorem AnalyticRootCover.germ_eq_or_neg {S : TopologicalSpace.Opens ℂ} {F : �
     filter_upwards [hneg, (ambientOpen S U).isOpen.mem_nhds hxUA] with z hz hzU
     exact hz.trans (RootSection.extend_neg_eqOn s hzU).symm
 
+/-- The germ map is injective. -/
 theorem AnalyticRootCover.germ_injective {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U : TopologicalSpace.Opens S} (hU : IsPreconnected (ambientOpen S U : Set ℂ)) (x : S)
     (hx : x ∈ U) : Function.Injective ((rootPresheaf S F).germ U x hx) := by
@@ -396,6 +439,7 @@ theorem AnalyticRootCover.germ_injective {S : TopologicalSpace.Opens ℂ} {F : �
   intro y
   simpa only [extendSection_apply] using he (ambientVal_mem S U y)
 
+/-- Every root germ comes from a section. -/
 theorem AnalyticRootCover.germ_surjective {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U : TopologicalSpace.Opens S} (s : RootSection S F U) (x : S) (hx : x ∈ U) :
     Function.Surjective ((rootPresheaf S F).germ U x hx) := by
@@ -405,12 +449,14 @@ theorem AnalyticRootCover.germ_surjective {S : TopologicalSpace.Opens ℂ} {F : 
   · exact ⟨s, hpos.symm.trans ht⟩
   · exact ⟨s.neg, hneg.symm.trans ht⟩
 
+/-- The root stalk is bijective with the two roots. -/
 theorem AnalyticRootCover.germ_bijective {S : TopologicalSpace.Opens ℂ} {F : ℂ → ℂ}
     {U : TopologicalSpace.Opens S} (hU : IsPreconnected (ambientOpen S U : Set ℂ))
     (s : RootSection S F U) (x : S) (hx : x ∈ U) :
     Function.Bijective ((rootPresheaf S F).germ U x hx) :=
   ⟨germ_injective hU x hx, germ_surjective s x hx⟩
 
+/-- The comap of the ambient open along a subset. -/
 theorem AnalyticRootCover.ambientOpen_comap_of_subset (S : TopologicalSpace.Opens ℂ)
     (A : TopologicalSpace.Opens ℂ) (hAS : A ≤ S) :
     ambientOpen S (TopologicalSpace.Opens.comap ⟨Subtype.val, continuous_subtype_val⟩ A) = A := by
@@ -421,6 +467,7 @@ theorem AnalyticRootCover.ambientOpen_comap_of_subset (S : TopologicalSpace.Open
   · intro hz
     exact ⟨⟨z, hAS hz⟩, hz, rfl⟩
 
+/-- A neighborhood where the section is a root exists. -/
 theorem AnalyticRootCover.exists_root_neighborhood (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     (hF : AnalyticOnNhd ℂ F S) (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ))
     (x : S) :
@@ -442,6 +489,7 @@ theorem AnalyticRootCover.exists_root_neighborhood (S : TopologicalSpace.Opens �
     have hy := ambientVal_mem S U y
     rwa [hUA] at hy
 
+/-- The root presheaf is locally bijective on stalks. -/
 theorem AnalyticRootCover.rootPresheaf_locally_bijective (S : TopologicalSpace.Opens ℂ)
     (F : ℂ → ℂ) (hF : AnalyticOnNhd ℂ F S)
     (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ)) :
@@ -452,12 +500,14 @@ theorem AnalyticRootCover.rootPresheaf_locally_bijective (S : TopologicalSpace.O
   obtain ⟨U, hx, hU, ⟨s⟩⟩ := exists_root_neighborhood S F hF horder x
   exact ⟨U, hx, fun y hy => germ_bijective hU s y hy⟩
 
+/-- The root stalk over a nonzero point is nonempty. -/
 theorem AnalyticRootCover.rootStalk_nonempty (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     (hF : AnalyticOnNhd ℂ F S) (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ))
     (x : S) : Nonempty ((rootPresheaf S F).stalk x) := by
   obtain ⟨U, hx, _, ⟨s⟩⟩ := exists_root_neighborhood S F hF horder x
   exact ⟨(rootPresheaf S F).germ U x hx s⟩
 
+/-- The order of a square root is half the order of the function. -/
 theorem AnalyticRootCover.square_root_order {f r : ℂ → ℂ} {a : ℂ} {n : ℕ} (hr : AnalyticAt ℂ r a)
     (heq : (fun z => r z ^ 2) =ᶠ[𝓝 a] f) (horder : analyticOrderAt f a = (2 * n : ℕ)) :
     analyticOrderAt r a = n := by
@@ -475,6 +525,7 @@ theorem AnalyticRootCover.square_root_order {f r : ℂ → ℂ} {a : ℂ} {n : �
     omega
   rw [← hk, hkn]
 
+/-- If an analytic function has finite even order at each zero, it has finite even analytic order at every point of the domain. -/
 theorem AnalyticRootCover.even_order_at_all_points {f : ℂ → ℂ} {U : Set ℂ}
     (hf : AnalyticOnNhd ℂ f U)
     (hzero : ∀ a ∈ U, f a = 0 → ∃ n : ℕ, analyticOrderAt f a = (2 * n : ℕ)) :
@@ -487,25 +538,32 @@ theorem AnalyticRootCover.even_order_at_all_points {f : ℂ → ℂ} {U : Set �
         simpa only [MulZeroClass.mul_zero, Nat.cast_zero] using
           (hf a ha).analyticOrderAt_eq_zero.mpr hfa⟩
 
+/-! ### Étale continuation of sections -/
+
+/-- The presheaf defined by a local predicate. -/
 abbrev AnalyticRootCoverContinuation.predicatePresheaf {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) : TopCat.Presheaf (Type) X :=
   TopCat.subpresheafToTypes P.toPrelocalPredicate
 
+/-- The value of an étale section germ. -/
 def AnalyticRootCoverContinuation.etaleValue {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (g : (predicatePresheaf P).EtaleSpace) : Y :=
   TopCat.stalkToFiber P g.base g.germ
 
+/-- The germ of a section at a point. -/
 def AnalyticRootCoverContinuation.sectionGerm {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (U : TopologicalSpace.Opens X)
     (s : (predicatePresheaf P).obj (Opposite.op U)) (x : U) : (predicatePresheaf P).EtaleSpace :=
   ⟨x.1, (predicatePresheaf P).germ U x.1 x.2 s⟩
 
+/-- The étale value of a section germ is the value. -/
 theorem AnalyticRootCoverContinuation.etaleValue_sectionGerm {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (U : TopologicalSpace.Opens X)
     (s : (predicatePresheaf P).obj (Opposite.op U)) (x : U) :
     etaleValue P (sectionGerm P U s x) = s.1 x :=
   TopCat.stalkToFiber_germ P U x.1 x.2 s
 
+/-- An étale section is locally the germs of sections. -/
 theorem AnalyticRootCoverContinuation.etaleSection_localGerms {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
@@ -534,6 +592,7 @@ theorem AnalyticRootCoverContinuation.etaleSection_localGerms {X : TopCat.{0}} {
   dsimp only [sectionGerm]
   rw [(predicatePresheaf P).germ_res_apply]
 
+/-- An étale section locally agrees with a section. -/
 theorem AnalyticRootCoverContinuation.etaleSection_locally {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
@@ -545,6 +604,7 @@ theorem AnalyticRootCoverContinuation.etaleSection_locally {X : TopCat.{0}} {Y :
   intro y hy
   rw [hs y hy, etaleValue_sectionGerm]
 
+/-- An étale section satisfies the predicate. -/
 theorem AnalyticRootCoverContinuation.etaleSection_pred {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) : P.pred (U := ⊤) (fun x => etaleValue P (σ x.1)) := by
@@ -556,11 +616,13 @@ theorem AnalyticRootCoverContinuation.etaleSection_pred {X : TopCat.{0}} {Y : Ty
   funext y
   exact hs y.1 y.2
 
+/-- A global section built from an étale section. -/
 def AnalyticRootCoverContinuation.sectionOfEtaleSection {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) : (predicatePresheaf P).obj (Opposite.op ⊤) :=
   ⟨fun x => etaleValue P (σ x.1), etaleSection_pred P σ hσ⟩
 
+/-- The built section's germ is the étale value. -/
 theorem AnalyticRootCoverContinuation.sectionOfEtaleSection_germ {X : TopCat.{0}} {Y : Type}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
@@ -582,6 +644,7 @@ theorem AnalyticRootCoverContinuation.sectionOfEtaleSection_germ {X : TopCat.{0}
       rw [hg]
     _ = σ x := (hs x hxU).symm
 
+/-- A germ-bijective predicate yields a global section with a prescribed germ. -/
 theorem AnalyticRootCoverContinuation.exists_global_section_with_germ_of_germ_bijective
     {X : TopCat.{0}} {Y : Type} [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
     (P : TopCat.LocalPredicate (fun _ : X => Y))
@@ -600,6 +663,9 @@ theorem AnalyticRootCoverContinuation.exists_global_section_with_germ_of_germ_bi
   have hg := (sectionOfEtaleSection_germ P σ hbase x₀).trans hσ.1
   simpa only [sectionGerm, TopCat.Presheaf.EtaleSpace.mk.injEq, heq_eq_eq, true_and] using hg
 
+/-! ### Global square roots -/
+
+/-- The ambient open of the whole space is everything. -/
 theorem AnalyticRootCover.ambientOpen_top (S : TopologicalSpace.Opens ℂ) : ambientOpen S ⊤ = S := by
   ext z
   constructor
@@ -608,6 +674,7 @@ theorem AnalyticRootCover.ambientOpen_top (S : TopologicalSpace.Opens ℂ) : amb
   · intro hz
     exact ⟨⟨z, hz⟩, trivial, rfl⟩
 
+/-- A global root section with a prescribed germ exists. -/
 theorem AnalyticRootCover.exists_global_rootSection_with_germ (S : TopologicalSpace.Opens ℂ)
     (F : ℂ → ℂ) [SimplyConnectedSpace S] (hF : AnalyticOnNhd ℂ F S)
     (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ)) (x : S)
@@ -618,6 +685,7 @@ theorem AnalyticRootCover.exists_global_rootSection_with_germ (S : TopologicalSp
     AnalyticRootCoverContinuation.exists_global_section_with_germ_of_germ_bijective
       (rootLocalPredicate S F) (rootPresheaf_locally_bijective S F hF horder) x g
 
+/-- A global root section exists. -/
 theorem AnalyticRootCover.exists_global_rootSection (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ)
     [SimplyConnectedSpace S] (hF : AnalyticOnNhd ℂ F S)
     (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ)) :
@@ -627,6 +695,7 @@ theorem AnalyticRootCover.exists_global_rootSection (S : TopologicalSpace.Opens 
   obtain ⟨s, _⟩ := exists_global_rootSection_with_germ S F hF horder x g
   exact ⟨s⟩
 
+/-- An analytic function of finite even order at every point of a simply connected open complex domain has an analytic square root, with each order halved. -/
 theorem AnalyticRootCover.exists_analytic_square_root_on (S : TopologicalSpace.Opens ℂ)
     (F : ℂ → ℂ) [SimplyConnectedSpace S] (hF : AnalyticOnNhd ℂ F S)
     (horder : ∀ a ∈ S, ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ)) :
@@ -648,6 +717,7 @@ theorem AnalyticRootCover.exists_analytic_square_root_on (S : TopologicalSpace.O
     square_root_order (hr a ha)
       (Filter.eventually_of_mem (S.isOpen.mem_nhds ha) (fun _ hz => hsquare hz)) hn
 
+/-- An analytic function on a simply connected open complex domain has an analytic square root if every zero has finite even order. -/
 theorem AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
     (S : TopologicalSpace.Opens ℂ) (F : ℂ → ℂ) [SimplyConnectedSpace S] (hF : AnalyticOnNhd ℂ F S)
     (hzero : ∀ a ∈ S, F a = 0 → ∃ n : ℕ, analyticOrderAt F a = (2 * n : ℕ)) :
@@ -657,12 +727,17 @@ theorem AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
           ∀ a ∈ S, ∀ n : ℕ, analyticOrderAt F a = (2 * n : ℕ) → analyticOrderAt r a = n :=
   exists_analytic_square_root_on S F hF (even_order_at_all_points hF hzero)
 
+/-! ### Square roots on the upper half-plane -/
+
+/-- The upper half-plane as an open set. -/
 def AnalyticRootCover.upperHalfPlaneOpen : TopologicalSpace.Opens ℂ :=
   ⟨UpperHalfPlane.upperHalfPlaneSet, UpperHalfPlane.isOpen_upperHalfPlaneSet⟩
 
+/-- The upper half-plane is contractible. -/
 instance AnalyticRootCover.instContractibleSpace1 : ContractibleSpace upperHalfPlaneOpen :=
   (convex_halfSpace_im_gt 0).contractibleSpace ⟨Complex.I, by simp⟩
 
+/-- An analytic function on the upper half-plane whose zeros have finite even order has an analytic square root with halved orders. -/
 theorem AnalyticRootCover.exists_analytic_square_root_upperHalfPlane (F : ℂ → ℂ)
     (hF : AnalyticOnNhd ℂ F UpperHalfPlane.upperHalfPlaneSet)
     (hzero :
@@ -675,6 +750,7 @@ theorem AnalyticRootCover.exists_analytic_square_root_upperHalfPlane (F : ℂ �
             ∀ n : ℕ, analyticOrderAt F a = (2 * n : ℕ) → analyticOrderAt r a = n :=
   exists_analytic_square_root_on_of_even_zeros upperHalfPlaneOpen F hF hzero
 
+/-- A holomorphic function on the upper half-plane whose zeros have finite even order admits a holomorphic square root with halved orders. -/
 theorem AnalyticRootCover.exists_holomorphic_square_root_upperHalfPlane (f : ℍ → ℂ)
     (hf : MDifferentiable 𝓘(ℂ, ℂ) 𝓘(ℂ, ℂ) f)
     (hzero :

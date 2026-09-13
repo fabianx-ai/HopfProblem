@@ -45,14 +45,19 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The cylinder-to-ball homeomorphism -/
+
+/-- The boundary `I × S ∪ {0,1} × D` of the cylinder ball. -/
 def CylinderBall.boundary {V : Type*} [NormedAddCommGroup V] :
     Set ((unitInterval) × DiskCylinder.Disk (E := V)) :=
   {p | p.1 = 0 ∨ p.1 = 1 ∨ ‖(p.2 : V)‖ = 1}
 
+/-- The rescaled time coordinate has norm at most one. -/
 theorem CylinderBall.time_norm_le (t : (unitInterval)) : ‖(2 * t.val - 1 : ℝ)‖ ≤ 1 := by
   rw [Real.norm_eq_abs, abs_le]
   constructor <;> linarith [t.property.1, t.property.2]
 
+/-- The forward map from the cylinder to the ball. -/
 def CylinderBall.forward {V : Type*} [NormedAddCommGroup V] :
     C((unitInterval) × DiskCylinder.Disk (E := V), DiskCylinder.Disk (E := ℝ × V))
     where
@@ -67,6 +72,7 @@ def CylinderBall.forward {V : Type*} [NormedAddCommGroup V] :
           (continuous_subtype_val.comp continuous_snd)).subtype_mk
       _
 
+/-- The time coordinate of a ball point under the inverse. -/
 def CylinderBall.inverseTime {V : Type*} [NormedAddCommGroup V]
     (z : DiskCylinder.Disk (E := ℝ × V)) : (unitInterval) :=
   ⟨(z.val.1 + 1) / 2,
@@ -75,11 +81,13 @@ def CylinderBall.inverseTime {V : Type*} [NormedAddCommGroup V]
     rcases abs_le.mp hn with ⟨hl, hu⟩
     constructor <;> linarith⟩
 
+/-- The space coordinate of a ball point under the inverse. -/
 def CylinderBall.inverseSpace {V : Type*} [NormedAddCommGroup V]
     (z : DiskCylinder.Disk (E := ℝ × V)) : DiskCylinder.Disk (E := V) :=
   ⟨z.val.2,
     mem_closedBall_zero_iff.mpr ((max_le_iff.mp (mem_closedBall_zero_iff.mp z.property)).2)⟩
 
+/-- The inverse map from the ball to the cylinder. -/
 def CylinderBall.inverse {V : Type*} [NormedAddCommGroup V] :
     C(DiskCylinder.Disk (E := ℝ × V), (unitInterval) × DiskCylinder.Disk (E := V))
     where
@@ -89,6 +97,7 @@ def CylinderBall.inverse {V : Type*} [NormedAddCommGroup V] :
       fun_prop
     exact (ht.subtype_mk _).prodMk ((continuous_snd.comp continuous_subtype_val).subtype_mk _)
 
+/-- The cylinder `I × D` is homeomorphic to the ball. -/
 def CylinderBall.homeomorph {V : Type*} [NormedAddCommGroup V] :
     ((unitInterval) × DiskCylinder.Disk (E := V)) ≃ₜ DiskCylinder.Disk (E := ℝ × V)
     where
@@ -111,6 +120,7 @@ def CylinderBall.homeomorph {V : Type*} [NormedAddCommGroup V] :
   continuous_toFun := forward.continuous
   continuous_invFun := inverse.continuous
 
+/-- A ball point has norm one exactly on the cylinder boundary. -/
 theorem CylinderBall.norm_eq_one_iff {V : Type*} [NormedAddCommGroup V]
     (p : (unitInterval) × DiskCylinder.Disk (E := V)) :
     ‖((homeomorph (V := V) p).val)‖ = 1 ↔ p ∈ boundary := by
@@ -135,6 +145,7 @@ theorem CylinderBall.norm_eq_one_iff {V : Type*} [NormedAddCommGroup V]
       exact mem_closedBall_zero_iff.mp p.2.property
     · rw [h, max_eq_right (time_norm_le p.1)]
 
+/-- The ball sphere is homeomorphic to the cylinder boundary. -/
 def CylinderBall.diskSphereHomeomorph {V : Type*} [NormedAddCommGroup V] :
     { z : DiskCylinder.Disk (E := V) // ‖(z : V)‖ = 1 } ≃ₜ
       DiskCylinder.Sphere (E := V)
@@ -146,25 +157,32 @@ def CylinderBall.diskSphereHomeomorph {V : Type*} [NormedAddCommGroup V] :
   continuous_toFun := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := DiskCylinder.boundaryToDisk.continuous.subtype_mk _
 
+/-- The cylinder boundary is homeomorphic to the ball sphere. -/
 def CylinderBall.boundaryHomeomorph {V : Type*} [NormedAddCommGroup V] :
     boundary (V := V) ≃ₜ DiskCylinder.Sphere (E := ℝ × V) :=
   ((homeomorph (V := V)).subtype (fun p => (norm_eq_one_iff p).symm)).trans diskSphereHomeomorph
 
+/-! ### Gluing maps on the cylinder boundary -/
+
+/-- The bottom-and-side inclusion into the boundary quotient. -/
 def CylinderBoundary.lower {V : Type*} [NormedAddCommGroup V] :
     C(DiskCylinder.bottomOrSide (E := V), CylinderBall.boundary (V := V)) :=
   ⟨fun p => ⟨p.val, p.property.elim Or.inl (fun h => Or.inr (Or.inr h))⟩,
     continuous_subtype_val.subtype_mk _⟩
 
+/-- The top disk inclusion into the boundary quotient. -/
 def CylinderBoundary.top {V : Type*} [NormedAddCommGroup V] :
     C(DiskCylinder.Disk (E := V), CylinderBall.boundary (V := V)) :=
   ⟨fun z => ⟨(1, z), Or.inr (Or.inl rfl)⟩, (continuous_const.prodMk continuous_id).subtype_mk _⟩
 
+/-- The quotient map of the cylinder boundary. -/
 def CylinderBoundary.quotient {V : Type*} [NormedAddCommGroup V] :
     C(DiskCylinder.bottomOrSide (E := V) ⊕ DiskCylinder.Disk (E := V),
       CylinderBall.boundary (V := V)) :=
   ⟨Sum.elim CylinderBoundary.lower top,
     CylinderBoundary.lower.continuous.sumElim top.continuous⟩
 
+/-- The boundary quotient map is surjective. -/
 theorem CylinderBoundary.quotient_surjective {V : Type*} [NormedAddCommGroup V] :
     Function.Surjective (quotient (V := V)) := by
   rintro ⟨⟨t, z⟩, ht | ht | hz⟩
@@ -174,6 +192,7 @@ theorem CylinderBoundary.quotient_surjective {V : Type*} [NormedAddCommGroup V] 
     exact ⟨.inr z, rfl⟩
   · exact ⟨.inl ⟨(t, z), Or.inr hz⟩, rfl⟩
 
+/-- The boundary quotient map is a quotient map. -/
 theorem CylinderBoundary.quotient_isQuotientMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] : Topology.IsQuotientMap (quotient (V := V)) := by
   have hclosed : IsClosed (DiskCylinder.bottomOrSide (E := V)) :=
@@ -183,6 +202,7 @@ theorem CylinderBoundary.quotient_isQuotientMap {V : Type*} [NormedAddCommGroup 
     isCompact_iff_compactSpace.mp hclosed.isCompact
   exact .of_surjective_continuous quotient_surjective quotient.continuous
 
+/-- Bottom and top maps agreeing on the sphere descend to the quotient. -/
 theorem CylinderBoundary.lower_top_compat {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -204,6 +224,7 @@ theorem CylinderBoundary.lower_top_compat {V : Type*} [NormedAddCommGroup V]
   rw [ha, DiskCylinder.gluedBottomSide_side]
   exact (h1 s).trans (congrArg g hz)
 
+/-- The boundary quotient data gluing bottom/side and top maps. -/
 def CylinderBoundary.data {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -213,6 +234,7 @@ def CylinderBoundary.data {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
   ⟨Sum.elim (DiskCylinder.gluedBottomSide f H h0) g,
     (DiskCylinder.gluedBottomSide f H h0).continuous.sumElim g.continuous⟩
 
+/-- The glued data is constant on quotient fibers. -/
 theorem CylinderBoundary.data_constant_on_fibres {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -236,6 +258,7 @@ theorem CylinderBoundary.data_constant_on_fibres {V : Type*} [NormedAddCommGroup
     | inr b =>
       exact congrArg g (congrArg (fun p : CylinderBall.boundary (V := V) => p.val.2) he)
 
+/-- The map glued from the boundary pieces. -/
 def CylinderBoundary.glued {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -245,6 +268,7 @@ def CylinderBoundary.glued {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V
     C(CylinderBall.boundary (V := V), X) :=
   quotient_isQuotientMap.lift (data f g H h0) (data_constant_on_fibres f g H h0 h1)
 
+/-- The glued map on the bottom and side. -/
 theorem CylinderBoundary.glued_lower {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -258,6 +282,7 @@ theorem CylinderBoundary.glued_lower {V : Type*} [NormedAddCommGroup V] [NormedS
     (quotient_isQuotientMap.lift_comp (data f g H h0) (data_constant_on_fibres f g H h0 h1))
     (.inl a)
 
+/-- The glued map on the top. -/
 theorem CylinderBoundary.glued_top {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -269,6 +294,7 @@ theorem CylinderBoundary.glued_top {V : Type*} [NormedAddCommGroup V] [NormedSpa
     (quotient_isQuotientMap.lift_comp (data f g H h0) (data_constant_on_fibres f g H h0 h1))
     (.inr z)
 
+/-- The glued map on the bottom disk. -/
 theorem CylinderBoundary.glued_bottom {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -279,6 +305,7 @@ theorem CylinderBoundary.glued_bottom {V : Type*} [NormedAddCommGroup V] [Normed
     glued f g H h0 h1 (CylinderBoundary.lower (DiskCylinder.bottomMap z)) = f z := by
   rw [glued_lower, DiskCylinder.gluedBottomSide_bottom]
 
+/-- The glued map on the side. -/
 theorem CylinderBoundary.glued_side {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {X : Type*} [TopologicalSpace X]
     (f g : C(DiskCylinder.Disk (E := V), X))
@@ -289,6 +316,9 @@ theorem CylinderBoundary.glued_side {V : Type*} [NormedAddCommGroup V] [NormedSp
     glued f g H h0 h1 (CylinderBoundary.lower (DiskCylinder.sideMap (t, s))) =
       H (t, s) := by rw [glued_lower, DiskCylinder.gluedBottomSide_side]
 
+/-! ### Homotopies as paths in mapping spaces -/
+
+/-- A homotopy of continuous maps as a path in the mapping space. -/
 def MappingPaths.ofHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
     {f g : C(A, B)} (H : f.Homotopy g) : Path f g
     where
@@ -296,6 +326,7 @@ def MappingPaths.ofHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace
   source' := H.curry_zero
   target' := H.curry_one
 
+/-- A path in the mapping space as a homotopy. -/
 def MappingPaths.toHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
     [LocallyCompactSpace A] {f g : C(A, B)} (p : Path f g) : f.Homotopy g
     where
@@ -303,15 +334,18 @@ def MappingPaths.toHomotopy {A B : Type*} [TopologicalSpace A] [TopologicalSpace
   map_zero_left a := ContinuousMap.congr_fun p.source a
   map_one_left a := ContinuousMap.congr_fun p.target a
 
+/-- `q` lies over `p` under `r`: each `q t` is `r (p t)`. -/
 def MappingPaths.Over {A B : Type*} [TopologicalSpace A] [TopologicalSpace B] {a₀ a₁ : A}
     {b₀ b₁ : B} (r : A → B) (p : Path a₀ a₁) (q : Path b₀ b₁) : Prop :=
   ∀ t, r (p t) = q t
 
+/-- The `Over` relation is symmetric under path reversal. -/
 theorem MappingPaths.Over.symm {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
     {a₀ a₁ : A} {b₀ b₁ : B} {r : A → B} {p : Path a₀ a₁} {q : Path b₀ b₁}
     (h : MappingPaths.Over r p q) : MappingPaths.Over r p.symm q.symm := fun t =>
   h (unitInterval.symm t)
 
+/-- The `Over` relation is transitive under concatenation. -/
 theorem MappingPaths.Over.trans {A B : Type*} [TopologicalSpace A] [TopologicalSpace B]
     {a₀ a₁ a₂ : A} {b₀ b₁ b₂ : B} {r : A → B} {p₀ : Path a₀ a₁} {p₁ : Path a₁ a₂}
     {q₀ : Path b₀ b₁} {q₁ : Path b₁ b₂} (h₀ : MappingPaths.Over r p₀ q₀)
@@ -324,6 +358,7 @@ theorem MappingPaths.Over.trans {A B : Type*} [TopologicalSpace A] [TopologicalS
     | exact h₀ _
     | exact h₁ _
 
+/-- The normalized zigzag of paths is homotopic to the original. -/
 theorem MappingPaths.normalization_cancellation {B : Type*} [TopologicalSpace B]
     {b₀ b₁ b₂ : B} (a : Path b₀ b₁) (h : Path b₁ b₂) :
     (a.symm.trans ((Path.refl b₀).trans ((h.symm.trans a.symm).symm))).Homotopic h := by
@@ -334,6 +369,9 @@ theorem MappingPaths.normalization_cancellation {B : Type*} [TopologicalSpace B]
   have hcancel := (Path.Homotopic.symm_trans a).hcomp (Path.Homotopic.refl h)
   exact hfirst.trans (hassoc.trans (hcancel.trans (Path.Homotopic.refl_trans h)))
 
+/-! ### Boundary path transport -/
+
+/-- A boundary path of cylinder maps transports to an extension. -/
 theorem BoundaryPathTransport.exists_transport {V Y : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f : C(DiskCylinder.Disk (E := V), Y))
@@ -364,22 +402,28 @@ theorem BoundaryPathTransport.exists_transport {V Y : Type*} [NormedAddCommGroup
   refine ⟨g, P, hP, ?_⟩
   simpa using hP 1
 
+/-! ### Homotopy extension for the disk cylinder -/
+
+/-- The bottom family of a cylinder homotopy. -/
 def CylinderBoundaryFamilies.bottomFamily {V Y : Type*} [NormedAddCommGroup V]
     [TopologicalSpace Y] (f : C((unitInterval) × DiskCylinder.Disk (E := V), Y)) :
     C(DiskCylinder.Disk (E := V), C((unitInterval), Y)) :=
   (f.comp ContinuousMap.prodSwap).curry
 
+/-- The top family of a cylinder homotopy. -/
 def CylinderBoundaryFamilies.topFamily {V Y : Type*} [NormedAddCommGroup V]
     [TopologicalSpace Y] (g : C((unitInterval) × DiskCylinder.Disk (E := V), Y)) :
     C(DiskCylinder.Disk (E := V), C((unitInterval), Y)) :=
   (g.comp ContinuousMap.prodSwap).curry
 
+/-- The side family of a cylinder homotopy. -/
 def CylinderBoundaryFamilies.sideFamily {V Y : Type*} [NormedAddCommGroup V]
     [TopologicalSpace Y]
     (H : C((unitInterval) × ((unitInterval) × DiskCylinder.Sphere (E := V)), Y)) :
     C((unitInterval) × DiskCylinder.Sphere (E := V), C((unitInterval), Y)) :=
   (H.comp ContinuousMap.prodSwap).curry
 
+/-- A homotopy glued from bottom, top, and side families. -/
 def CylinderBoundaryFamilies.glued {V Y : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f g : C((unitInterval) × DiskCylinder.Disk (E := V), Y))
@@ -392,6 +436,7 @@ def CylinderBoundaryFamilies.glued {V Y : Type*} [NormedAddCommGroup V] [NormedS
         (fun s => ContinuousMap.ext (fun t => h1 t s))).uncurry.comp
     ContinuousMap.prodSwap
 
+/-- The glued homotopy on the bottom. -/
 theorem CylinderBoundaryFamilies.glued_bottom {V Y : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f g : C((unitInterval) × DiskCylinder.Disk (E := V), Y))
@@ -407,6 +452,7 @@ theorem CylinderBoundaryFamilies.glued_bottom {V Y : Type*} [NormedAddCommGroup 
       (fun s => ContinuousMap.ext (fun t => h1 t s)) z)
     t
 
+/-- The glued homotopy on the top. -/
 theorem CylinderBoundaryFamilies.glued_top {V Y : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f g : C((unitInterval) × DiskCylinder.Disk (E := V), Y))
@@ -421,6 +467,7 @@ theorem CylinderBoundaryFamilies.glued_top {V Y : Type*} [NormedAddCommGroup V]
       (fun s => ContinuousMap.ext (fun t => h1 t s)) z)
     t
 
+/-- The glued homotopy on the side. -/
 theorem CylinderBoundaryFamilies.glued_side {V Y : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f g : C((unitInterval) × DiskCylinder.Disk (E := V), Y))
@@ -436,6 +483,9 @@ theorem CylinderBoundaryFamilies.glued_side {V Y : Type*} [NormedAddCommGroup V]
       (fun s => ContinuousMap.ext (fun t => h1 t s)) r s)
     t
 
+/-! ### The cylinder homotopy extension -/
+
+/-- A cylinder boundary homotopy extends to the whole cylinder (HEP). -/
 theorem CylinderHEP.exists_extension {V Y : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [TopologicalSpace Y]
     (f : C((unitInterval) × DiskCylinder.Disk (E := V), Y))
@@ -466,6 +516,9 @@ theorem CylinderHEP.exists_extension {V Y : Type*} [NormedAddCommGroup V] [Norme
       (DiskCylinder.extend_side f' J' h0' t (b p)).trans
         (congrArg (fun p => J (t, p)) (b.symm_apply_apply p))
 
+/-! ### Boundary rectification -/
+
+/-- The cylinder boundary splits into bottom, side, and top cases. -/
 theorem SideRectification.boundary_cases {V : Type*} [NormedAddCommGroup V]
     (p : CylinderBall.boundary (V := V)) :
     (∃ z, p = CylinderBoundary.lower (DiskCylinder.bottomMap z)) ∨
@@ -480,6 +533,7 @@ theorem SideRectification.boundary_cases {V : Type*} [NormedAddCommGroup V]
     exact Or.inr (Or.inl ⟨z, rfl⟩)
   · exact Or.inr (Or.inr ⟨t, ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩, rfl⟩)
 
+/-- A side-fixed homotopy rectifies to one glued from the pieces. -/
 theorem SideRectification.exists_rectification {V Y : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace Y]
     {f g : C(DiskCylinder.Disk (E := V), Y)} (P : Path f g)

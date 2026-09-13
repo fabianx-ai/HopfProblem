@@ -35,6 +35,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Transporting atlases along a homeomorphism -/
+
+/-- The charted space structure on `N` transported from `M` along a homeomorphism. -/
 @[instance_reducible]
 def ManifoldAtlasTransport.chartedSpace {H M N : Type*} [TopologicalSpace H] [Nonempty H]
     [TopologicalSpace M] [TopologicalSpace N] [ChartedSpace H M] (h : M ≃ₜ N) : ChartedSpace H N
@@ -45,6 +48,7 @@ def ManifoldAtlasTransport.chartedSpace {H M N : Type*} [TopologicalSpace H] [No
   mem_chart_source y := ⟨h.symm y, mem_chart_source H (h.symm y), h.apply_symm_apply y⟩
   chart_mem_atlas y := ⟨chartAt H (h.symm y), chart_mem_atlas H (h.symm y), rfl⟩
 
+/-- Transition maps of the transported atlas equal the original transition maps. -/
 theorem ManifoldAtlasTransport.transition_eq {H M N : Type*} [TopologicalSpace H] [Nonempty H]
     [TopologicalSpace M] [TopologicalSpace N] (h : M ≃ₜ N) (e e' : OpenPartialHomeomorph M H) :
     (e.lift_openEmbedding h.isOpenEmbedding).symm.trans
@@ -52,6 +56,7 @@ theorem ManifoldAtlasTransport.transition_eq {H M N : Type*} [TopologicalSpace H
       e.symm.trans e' :=
   e.lift_openEmbedding_trans e' h.isOpenEmbedding
 
+/-- A manifold transported along a homeomorphism is still a manifold for the same model. -/
 theorem ManifoldAtlasTransport.isManifold {H M N : Type*} [TopologicalSpace H] [Nonempty H]
     [TopologicalSpace M] [TopologicalSpace N] [ChartedSpace H M] {𝕜 E : Type*}
     [NontriviallyNormedField 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E]

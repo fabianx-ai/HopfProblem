@@ -70,18 +70,24 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Singular chains of a binary sum -/
+
+/-- The left inclusion into a binary sum of spaces. -/
 def SingularHomology.sumInlMap (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] :
     C(X, X ⊕ Y) :=
   ⟨Sum.inl, continuous_inl⟩
 
+/-- The right inclusion into a binary sum of spaces. -/
 def SingularHomology.sumInrMap (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] :
     C(Y, X ⊕ Y) :=
   ⟨Sum.inr, continuous_inr⟩
 
+/-- The elimination map out of a binary sum given by maps on each summand. -/
 def SingularHomology.sumElimMap {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(X, Z)) (g : C(Y, Z)) : C(X ⊕ Y, Z) :=
   ⟨Sum.elim f g, f.continuous.sumElim g.continuous⟩
 
+/-- Every singular simplex of a sum factors through one of the two summands. -/
 theorem SingularHomology.singularSimplex_sum_split (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex (X ⊕ Y) n) :
     (∃ τ : SingularChains.SingularSimplex X n, σ = (sumInlMap X Y).comp τ) ∨
@@ -98,12 +104,14 @@ theorem SingularHomology.singularSimplex_sum_split (X Y : Type) [TopologicalSpac
     have hc : Continuous g := Topology.IsEmbedding.inr.continuous_iff.mpr (hg ▸ σ.continuous)
     exact Or.inr ⟨⟨g, hc⟩, ContinuousMap.ext (congrFun hg)⟩
 
+/-- The map sending a summand simplex to the simplex in the sum. -/
 def SingularHomology.sumSimplexMap (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y]
     (n : ℕ) :
     SingularChains.SingularSimplex X n ⊕ SingularChains.SingularSimplex Y n →
       SingularChains.SingularSimplex (X ⊕ Y) n :=
   Sum.elim ((sumInlMap X Y).comp) ((sumInrMap X Y).comp)
 
+/-- The summand-to-sum simplex map is injective. -/
 theorem SingularHomology.sumSimplexMap_injective (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) : Function.Injective (sumSimplexMap X Y n) := by
   classical
@@ -123,6 +131,7 @@ theorem SingularHomology.sumSimplexMap_injective (X Y : Type) [TopologicalSpace 
       congr 1
       exact ContinuousMap.ext fun t => Sum.inr.inj (congrArg (fun f => f t) h)
 
+/-- The summand-to-sum simplex map is surjective. -/
 theorem SingularHomology.sumSimplexMap_surjective (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) : Function.Surjective (sumSimplexMap X Y n) := by
   intro σ
@@ -130,6 +139,7 @@ theorem SingularHomology.sumSimplexMap_surjective (X Y : Type) [TopologicalSpace
   · exact ⟨Sum.inl τ, hτ.symm⟩
   · exact ⟨Sum.inr τ, hτ.symm⟩
 
+/-- Singular simplices of a sum are equivalently simplices of the summands. -/
 def SingularHomology.sumSimplexEquiv (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularChains.SingularSimplex X n ⊕ SingularChains.SingularSimplex Y n ≃
@@ -137,18 +147,23 @@ def SingularHomology.sumSimplexEquiv (X Y : Type) [TopologicalSpace X]
   Equiv.ofBijective (sumSimplexMap X Y n)
     ⟨sumSimplexMap_injective X Y n, sumSimplexMap_surjective X Y n⟩
 
+/-- The inverse equivalence sends a left-included simplex to `Sum.inl`. -/
 @[simp]
 theorem SingularHomology.sumSimplexEquiv_symm_inl (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X n) :
     (sumSimplexEquiv X Y n).symm ((sumInlMap X Y).comp σ) = Sum.inl σ :=
   (sumSimplexEquiv X Y n).symm_apply_apply (Sum.inl σ)
 
+/-- The inverse equivalence sends a right-included simplex to `Sum.inr`. -/
 @[simp]
 theorem SingularHomology.sumSimplexEquiv_symm_inr (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex Y n) :
     (sumSimplexEquiv X Y n).symm ((sumInrMap X Y).comp σ) = Sum.inr σ :=
   (sumSimplexEquiv X Y n).symm_apply_apply (Sum.inr σ)
 
+/-! ### The biproduct of two singular complexes -/
+
+/-- The chain map from the biproduct of the two complexes to the complex of the sum. -/
 def SingularHomology.sumChainComplexMap (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
     SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y ⟶
@@ -156,6 +171,7 @@ def SingularHomology.sumChainComplexMap (X Y : Type) [TopologicalSpace X]
   CategoryTheory.Limits.biprod.desc (SingularChains.singularChainMap (sumInlMap X Y))
     (SingularChains.singularChainMap (sumInrMap X Y))
 
+/-- In degree `n`, sum chains split into the biproduct by simplex decomposition. -/
 def SingularHomology.sumChainInverseDegree (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     SingularChains.Chains (X ⊕ Y) n →ₗ[ℤ]
@@ -176,6 +192,7 @@ def SingularHomology.sumChainInverseDegree (X Y : Type)
           (SingularChains.simplexChain Y n τ))
       ((sumSimplexEquiv X Y n).symm σ)
 
+/-- The splitting sends a left-included simplex chain to the left component. -/
 theorem SingularHomology.sumChainInverseDegree_inl (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex X n) :
     sumChainInverseDegree X Y n
@@ -188,6 +205,7 @@ theorem SingularHomology.sumChainInverseDegree_inl (X Y : Type)
   simp only [sumChainInverseDegree, SingularChains.chainLift_simplex,
     sumSimplexEquiv_symm_inl, Sum.elim_inl]
 
+/-- The splitting sends a right-included simplex chain to the right component. -/
 theorem SingularHomology.sumChainInverseDegree_inr (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (σ : SingularChains.SingularSimplex Y n) :
     sumChainInverseDegree X Y n
@@ -200,6 +218,7 @@ theorem SingularHomology.sumChainInverseDegree_inr (X Y : Type)
   simp only [sumChainInverseDegree, SingularChains.chainLift_simplex,
     sumSimplexEquiv_symm_inr, Sum.elim_inr]
 
+/-- The sum map and the splitting compose to the identity on the biproduct. -/
 theorem SingularHomology.sumChainComplexMap_comp_inverse (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     (sumChainComplexMap X Y).f n ≫ ModuleCat.ofHom (sumChainInverseDegree X Y n) =
@@ -260,6 +279,7 @@ theorem SingularHomology.sumChainComplexMap_comp_inverse (X Y : Type)
         rw [SingularChains.inducedChain_simplex, sumChainInverseDegree_inr,
           CategoryTheory.Category.comp_id]
 
+/-- The splitting and the sum map compose to the identity on sum chains. -/
 theorem SingularHomology.sumChainInverse_comp_map (X Y : Type)
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     ModuleCat.ofHom (sumChainInverseDegree X Y n) ≫ (sumChainComplexMap X Y).f n =
@@ -291,6 +311,7 @@ theorem SingularHomology.sumChainInverse_comp_map (X Y : Type)
               (SingularChains.singularChainMap (sumInrMap X Y)) n)).trans
         (SingularChains.inducedChain_simplex (sumInrMap X Y) n τ)
 
+/-- Each component of the sum chain map is an isomorphism. -/
 theorem SingularHomology.sumChainComplexMap_component_isIso
     (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) :
     CategoryTheory.IsIso ((sumChainComplexMap X Y).f n) :=
@@ -298,6 +319,7 @@ theorem SingularHomology.sumChainComplexMap_component_isIso
       sumChainComplexMap_comp_inverse X Y n,
       sumChainInverse_comp_map X Y n⟩⟩
 
+/-- The singular complex of a binary sum is the biproduct of the summand complexes. -/
 def SingularHomology.sumChainComplexIso (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] :
     SingularChains.singularComplex X ⊞ SingularChains.singularComplex Y ≅
@@ -308,6 +330,9 @@ def SingularHomology.sumChainComplexIso (X Y : Type) [TopologicalSpace X]
     HomologicalComplex.Hom.isIso_of_components (sumChainComplexMap X Y)
   exact CategoryTheory.asIso (sumChainComplexMap X Y)
 
+/-! ### Homology of a binary sum -/
+
+/-- Singular homology of a binary sum is the product of the summand homologies. -/
 def SingularHomology.sumHomologyEquiv (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) :
     SingularMayerVietoris.SingularHomology (X ⊕ Y) n ≃ₗ[ℤ]
@@ -317,6 +342,7 @@ def SingularHomology.sumHomologyEquiv (X Y : Type) [TopologicalSpace X]
     (SingularMayerVietoris.homologyBiprodEquiv (SingularChains.singularComplex X)
       (SingularChains.singularComplex Y) n)
 
+/-- The inverse equivalence maps a pair of classes to the sum of their included classes. -/
 theorem SingularHomology.sumHomologyEquiv_symm_apply (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ)
     (a :
@@ -335,6 +361,7 @@ theorem SingularHomology.sumHomologyEquiv_symm_apply (X Y : Type) [TopologicalSp
       (SingularChains.singularChainMap (sumInlMap X Y))
       (SingularChains.singularChainMap (sumInrMap X Y)) a
 
+/-- The equivalence sends a left-included class to the pair with zero right component. -/
 @[simp]
 theorem SingularHomology.sumHomologyEquiv_inl (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
@@ -343,6 +370,7 @@ theorem SingularHomology.sumHomologyEquiv_inl (X Y : Type) [TopologicalSpace X]
   apply (sumHomologyEquiv X Y n).symm.injective
   rw [LinearEquiv.symm_apply_apply, sumHomologyEquiv_symm_apply, map_zero, add_zero]
 
+/-- The equivalence sends a right-included class to the pair with zero left component. -/
 @[simp]
 theorem SingularHomology.sumHomologyEquiv_inr (X Y : Type) [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularMayerVietoris.SingularHomology Y n) :
@@ -351,6 +379,7 @@ theorem SingularHomology.sumHomologyEquiv_inr (X Y : Type) [TopologicalSpace X]
   apply (sumHomologyEquiv X Y n).symm.injective
   rw [LinearEquiv.symm_apply_apply, sumHomologyEquiv_symm_apply, map_zero, zero_add]
 
+/-- Eliminating a left-included class is the left map on homology. -/
 theorem SingularHomology.sumElim_homology_inl {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
@@ -362,6 +391,7 @@ theorem SingularHomology.sumElim_homology_inl {X : Type} {Y : Type}
       (TopCat.ofHom (sumInlMap X Y)) (TopCat.ofHom (sumElimMap f g))
   exact (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) a).symm
 
+/-- Eliminating a right-included class is the right map on homology. -/
 theorem SingularHomology.sumElim_homology_inr {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ) (a : SingularMayerVietoris.SingularHomology Y n) :
@@ -373,6 +403,7 @@ theorem SingularHomology.sumElim_homology_inr {X : Type} {Y : Type}
       (TopCat.ofHom (sumInrMap X Y)) (TopCat.ofHom (sumElimMap f g))
   exact (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) a).symm
 
+/-- The identity map acts trivially on homology. -/
 theorem SingularHomology.disjointHomology_id_apply {X : Type}
     [TopologicalSpace X] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.id X) n a = a := by
@@ -381,6 +412,7 @@ theorem SingularHomology.disjointHomology_id_apply {X : Type}
       (TopCat.of X)
   exact LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) a
 
+/-- Eliminating the inverse-equivalent pair splits into the two pushed components. -/
 theorem SingularHomology.sumHomologyEquiv_sumElim_symm {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ)
@@ -393,6 +425,7 @@ theorem SingularHomology.sumHomologyEquiv_sumElim_symm {X : Type} {Y : Type}
   rw [sumHomologyEquiv_symm_apply, map_add, sumElim_homology_inl,
     sumElim_homology_inr]
 
+/-- Eliminating a sum class is the sum of the two pushed components. -/
 theorem SingularHomology.sumHomologyEquiv_sumElim {X : Type} {Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] {Z : Type} [TopologicalSpace Z] (f : C(X, Z))
     (g : C(Y, Z)) (n : ℕ) (a : SingularMayerVietoris.SingularHomology (X ⊕ Y) n) :
@@ -402,6 +435,7 @@ theorem SingularHomology.sumHomologyEquiv_sumElim {X : Type} {Y : Type}
   have h := sumHomologyEquiv_sumElim_symm f g n (sumHomologyEquiv X Y n a)
   rwa [LinearEquiv.symm_apply_apply] at h
 
+/-- Folding a self-sum class gives the sum of its two components. -/
 theorem SingularHomology.sumHomologyEquiv_fold {X : Type} [TopologicalSpace X] (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology (X ⊕ X) n) :
     SingularMayerVietoris.singularHomologyMap

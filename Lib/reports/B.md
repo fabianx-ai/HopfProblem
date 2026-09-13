@@ -9,7 +9,7 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 
 - `Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean` (9, da29618)
 
-## Drafted, not landed (preserved in ~/s6-notes/hopf-lib-a/drafts/)
+## Historical draft attempts (subsequent landings recorded below)
 
 - `VanKampen.lean` — 114 BT decls + 51 HW family members. The family's
   three STRUCTURES (LocalPathValue, PathValue, TwoOpenCover) live in
@@ -52,3 +52,25 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
   lane H; B's probes are covered by the landed VanKampen family) and
   per-declaration docstrings.
 
+## Current open-cover probe landing (GLM seat run by Devin/Astra)
+
+The historical blocker is obsolete for the current tree: the proof of
+`simplyConnectedSpace_of_open_cover` uses only the already-landed
+`SimplyConnectedCover` helpers. Its generic statement gives simple
+connectedness from an open cover by simply connected sets with a common
+basepoint and path-connected pairwise intersections (the van Kampen gluing
+principle, Hatcher Theorem 1.20). The verbatim proof moves from
+`Hopf/Hurewicz.lean` to `Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean`.
+
+
+Probe-tail verification: the 54-declaration B/D1/D2 batch is byte-verbatim
+from `53c0d47`; source-range hashes are in
+`Lib/reports/BD2-probe-tail-provenance.json` and
+`Lib/reports/D1-reeb-provenance.json`. The target modules and
+`Hopf.Recognition` build with pinned Lean 4.33.0. Lib-only probes and the
+permanent axiom audit report exactly `[propext, Classical.choice, Quot.sound]`
+for the B open-cover, D1 Reeb, D2 finite-cell and H even-zero square-root
+heads. Census **2,287 → 2,234**: 53 counted stock declarations moved, plus
+the B root theorem outside the prefix census. The prefix list is unchanged.
+The final consolidated consumer-chain check follows the documentation-only
+follow-up; it is not claimed rerun in this baseline receipt.

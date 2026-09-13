@@ -35,6 +35,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The semidirect product of a split extension -/
+
+/-- The map `N ⋊[φ] H → E` induced by compatible inclusion and section. -/
 def SplitGroupExtension.hom {N E H : Type*} [Group N] [Group E] [Group H] (i : N →* E)
     (s : H →* E) (φ : H →* MulAut N) (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹) :
     N ⋊[φ] H →* E :=
@@ -43,28 +46,33 @@ def SplitGroupExtension.hom {N E H : Type*} [Group N] [Group E] [Group H] (i : N
       ext n
       exact hconj h n)
 
+/-- The semidirect homomorphism computes `i n · s h`. -/
 @[simp]
 theorem SplitGroupExtension.hom_apply {N E H : Type*} [Group N] [Group E] [Group H] (i : N →* E)
     (s : H →* E) (φ : H →* MulAut N) (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹)
     (x : N ⋊[φ] H) : hom i s φ hconj x = i x.left * s x.right :=
   rfl
 
+/-- The inclusion lands in the projection kernel. -/
 theorem SplitGroupExtension.projection_inclusion {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (hex : i.range = p.ker) (n : N) : p (i n) = 1 := by
   apply MonoidHom.mem_ker.mp
   rw [← hex]
   exact ⟨n, rfl⟩
 
+/-- The projection splits the section. -/
 theorem SplitGroupExtension.projection_section {E H : Type*} [Group E] [Group H] (p : E →* H)
     (s : H →* E) (hs : p.comp s = MonoidHom.id H) (h : H) : p (s h) = h :=
   DFunLike.congr_fun hs h
 
+/-- The projection of the semidirect map is the `H` component. -/
 theorem SplitGroupExtension.projection_hom {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hs : p.comp s = MonoidHom.id H)
     (hex : i.range = p.ker) (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹) (x : N ⋊[φ] H) :
     p (hom i s φ hconj x) = x.right := by
   rw [hom_apply, map_mul, projection_inclusion i p hex, projection_section p s hs, one_mul]
 
+/-- The semidirect map is injective for an exact split extension. -/
 theorem SplitGroupExtension.hom_injective {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
     (hs : p.comp s = MonoidHom.id H) (hex : i.range = p.ker)
@@ -77,6 +85,7 @@ theorem SplitGroupExtension.hom_injective {N E H : Type*} [Group N] [Group E] [G
     exact mul_right_cancel hxy
   exact SemidirectProduct.ext (hi hl) hr
 
+/-- The semidirect map is surjective for an exact split extension. -/
 theorem SplitGroupExtension.hom_surjective {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hs : p.comp s = MonoidHom.id H)
     (hex : i.range = p.ker) (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹) :
@@ -90,18 +99,21 @@ theorem SplitGroupExtension.hom_surjective {N E H : Type*} [Group N] [Group E] [
   change i n * s (p e) = e
   rw [hn, inv_mul_cancel_right]
 
+/-- The semidirect map is bijective. -/
 theorem SplitGroupExtension.hom_bijective {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
     (hs : p.comp s = MonoidHom.id H) (hex : i.range = p.ker)
     (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹) : Function.Bijective (hom i s φ hconj) :=
   ⟨hom_injective i p s φ hi hs hex hconj, hom_surjective i p s φ hs hex hconj⟩
 
+/-- A split extension is the semidirect product. -/
 def SplitGroupExtension.mulEquiv {N E H : Type*} [Group N] [Group E] [Group H] (i : N →* E)
     (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
     (hs : p.comp s = MonoidHom.id H) (hex : i.range = p.ker)
     (hconj : ∀ h n, i (φ h n) = s h * i n * (s h)⁻¹) : N ⋊[φ] H ≃* E :=
   MulEquiv.ofBijective (hom i s φ hconj) (hom_bijective i p s φ hi hs hex hconj)
 
+/-- The equivalence sends `inl n` to `i n`. -/
 @[simp]
 theorem SplitGroupExtension.mulEquiv_inl {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
@@ -111,6 +123,7 @@ theorem SplitGroupExtension.mulEquiv_inl {N E H : Type*} [Group N] [Group E] [Gr
   change hom i s φ hconj (SemidirectProduct.inl n) = _
   simp
 
+/-- The equivalence sends `inr h` to `s h`. -/
 @[simp]
 theorem SplitGroupExtension.mulEquiv_inr {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
@@ -120,6 +133,7 @@ theorem SplitGroupExtension.mulEquiv_inr {N E H : Type*} [Group N] [Group E] [Gr
   change hom i s φ hconj (SemidirectProduct.inr h) = _
   simp
 
+/-- The inverse sends `i n` to `inl n`. -/
 @[simp]
 theorem SplitGroupExtension.mulEquiv_symm_inclusion {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)
@@ -129,6 +143,7 @@ theorem SplitGroupExtension.mulEquiv_symm_inclusion {N E H : Type*} [Group N] [G
   apply (mulEquiv i p s φ hi hs hex hconj).injective
   rw [MulEquiv.apply_symm_apply, mulEquiv_inl]
 
+/-- The inverse sends `s h` to `inr h`. -/
 @[simp]
 theorem SplitGroupExtension.mulEquiv_symm_section {N E H : Type*} [Group N] [Group E] [Group H]
     (i : N →* E) (p : E →* H) (s : H →* E) (φ : H →* MulAut N) (hi : Function.Injective i)

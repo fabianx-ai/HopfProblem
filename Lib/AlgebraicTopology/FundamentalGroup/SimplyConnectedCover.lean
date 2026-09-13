@@ -5,12 +5,15 @@ Authors: Fabian Franz
 -/
 import Mathlib
 /-!
-# The simply connected covering construction
+# Simple connectedness from an open cover
 
-  The simply connected cover: for a path-connected, locally path-connected and
-  semilocally simply connected space, the space of homotopy classes of paths from
-  a basepoint, covering `X` by endpoint evaluation (Hatcher, Algebraic Topology,
-  Section 1.3 prerequisites).
+Paths contained in simply connected members of an open cover define compatible
+path-homotopy classes when pairwise intersections are path connected and the
+members share a basepoint. The subdivision argument extends this compatibility
+along every path, yielding `simplyConnectedSpace_of_open_cover`.
+
+This is the open-cover gluing principle of van Kampen (Hatcher, *Algebraic
+Topology*, Theorem 1.20), not a construction of a universal covering space.
 -/
 
 
@@ -34,6 +37,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Paths in simply connected charts -/
+
+/-- Two paths contained in a simply connected subset are homotopic. -/
 theorem SimplyConnectedCover.homotopic_of_mem {X : Type*} [TopologicalSpace X] {s : Set X}
     (hs : IsSimplyConnected s) {x y : X} (p q : Path x y) (hp : ∀ t, p t ∈ s)
     (hq : ∀ t, q t ∈ s) : Path.Homotopic p q := by
@@ -57,6 +63,7 @@ theorem SimplyConnectedCover.homotopic_of_mem {X : Type*} [TopologicalSpace X] {
   have hq' : q'.map continuous_subtype_val = q := by ext t; rfl
   exact hp' ▸ hq' ▸ h
 
+/-- The concatenation of two paths contained in a set stays in the set. -/
 theorem SimplyConnectedCover.trans_mem {X : Type*} [TopologicalSpace X] {s : Set X} {x y z : X}
     (p : Path x y) (q : Path y z) (hp : ∀ t, p t ∈ s) (hq : ∀ t, q t ∈ s) :
     ∀ t, p.trans q t ∈ s := by
@@ -64,16 +71,19 @@ theorem SimplyConnectedCover.trans_mem {X : Type*} [TopologicalSpace X] {s : Set
   rw [Path.trans_range]
   exact Set.union_subset (Set.range_subset_iff.mpr hp) (Set.range_subset_iff.mpr hq)
 
+/-- A chosen path from the basepoint to `x` inside the simply connected chart `U i`. -/
 def SimplyConnectedCover.chartPath {X : Type*} [TopologicalSpace X] {ι : Type*} (U : ι → Set X)
     (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i) (i : ι) (x : X)
     (hx : x ∈ U i) : Path o x :=
   ((hs i).isPathConnected.joinedIn o (ho i) x hx).somePath
 
+/-- The chosen chart path stays inside its chart. -/
 theorem SimplyConnectedCover.chartPath_mem {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i) (i : ι)
     (x : X) (hx : x ∈ U i) (t : (unitInterval)) : chartPath U hs o ho i x hx t ∈ U i :=
   JoinedIn.somePath_mem _ t
 
+/-- Chart paths to the same point through different charts agree up to homotopy when intersections are path connected. -/
 theorem SimplyConnectedCover.chartPath_homotopic {X : Type*} [TopologicalSpace X] {ι : Type*}
     (U : ι → Set X) (hs : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i)
     (hinter : ∀ i j, IsPathConnected (U i ∩ U j)) (i j : ι) (x : X) (hi : x ∈ U i)
@@ -85,6 +95,7 @@ theorem SimplyConnectedCover.chartPath_homotopic {X : Type*} [TopologicalSpace X
       (homotopic_of_mem (hs j) h.somePath _ (fun t => (h.somePath_mem t).2)
         (chartPath_mem U hs o ho j x hj))
 
+/-- Casting a transitivity of path-homotopy classes along endpoint equalities splits into the transitivity of the casts. -/
 theorem SimplyConnectedCover.quotient_cast_trans {X : Type*} [TopologicalSpace X]
     {o x y o' x' y' : X} (p : Path.Homotopic.Quotient o x) (q : Path.Homotopic.Quotient x y)
     (ho : o' = o) (hx : x' = x) (hy : y' = y) :
@@ -94,11 +105,13 @@ theorem SimplyConnectedCover.quotient_cast_trans {X : Type*} [TopologicalSpace X
   cases hy
   simp
 
+/-- A section of path-homotopy classes commutes with casting along an equality of endpoints. -/
 theorem SimplyConnectedCover.quotient_cast_section {X : Type*} [TopologicalSpace X] {o : X}
     (F : ∀ z, Path.Homotopic.Quotient o z) {x y : X} (h : x = y) : (F y).cast rfl h = F x := by
   cases h
   simp
 
+/-- Section transitivity along a full path follows from the hypothesis on the unit subpath. -/
 theorem SimplyConnectedCover.section_subpath_zero_one {X : Type*} [TopologicalSpace X] {o x y : X}
     (F : ∀ z, Path.Homotopic.Quotient o z) (p : Path x y)
     (h :
@@ -115,6 +128,7 @@ theorem SimplyConnectedCover.section_subpath_zero_one {X : Type*} [TopologicalSp
     quotient_cast_section F p.source.symm, hp, quotient_cast_section F p.target.symm] at h'
   exact h'
 
+/-- Path-homotopy-class sections that are transitive inside each chart of a simply connected open cover are transitive along all paths. -/
 theorem SimplyConnectedCover.section_trans_of_open_cover {X : Type*} [TopologicalSpace X]
     {ι : Type*} (U : ι → Set X) (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ) (o : X)
     (F : ∀ x, Path.Homotopic.Quotient o x)
@@ -165,4 +179,48 @@ theorem SimplyConnectedCover.section_trans_of_open_cover {X : Type*} [Topologica
   have h := hwalk n
   rw [hn n le_rfl] at h
   exact section_subpath_zero_one F p h
+
+/-- An open cover by simply connected sets with a common basepoint and path-connected pairwise intersections makes the whole space simply connected. -/
+theorem simplyConnectedSpace_of_open_cover {X ι : Type*} [TopologicalSpace X] (U : ι → Set X)
+    (hopen : ∀ i, IsOpen (U i)) (hcover : ⋃ i, U i = Set.univ)
+    (hsimply : ∀ i, IsSimplyConnected (U i)) (o : X) (ho : ∀ i, o ∈ U i)
+    (hinter : ∀ i j, IsPathConnected (U i ∩ U j)) : SimplyConnectedSpace X := by
+  classical
+  have hcov : ∀ x : X, ∃ i, x ∈ U i := by
+    intro x
+    apply Set.mem_iUnion.mp
+    rw [hcover]
+    trivial
+  let idx (x : X) : ι := (hcov x).choose
+  have hidx (x : X) : x ∈ U (idx x) := (hcov x).choose_spec
+  let c (x : X) : Path o x := SimplyConnectedCover.chartPath U hsimply o ho (idx x) x (hidx x)
+  let F (x : X) : Path.Homotopic.Quotient o x := Path.Homotopic.Quotient.mk (c x)
+  have hFi (i : ι) (x : X) (hx : x ∈ U i) :
+    F x = Path.Homotopic.Quotient.mk (SimplyConnectedCover.chartPath U hsimply o ho i x hx) := by
+    apply Path.Homotopic.Quotient.eq.mpr
+    exact SimplyConnectedCover.chartPath_homotopic U hsimply o ho hinter (idx x) i x (hidx x) hx
+  have hF (i : ι) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ U i) :
+    (F x).trans (Path.Homotopic.Quotient.mk p) = F y := by
+    have hx : x ∈ U i := by simpa using hp 0
+    have hy : y ∈ U i := by simpa using hp 1
+    rw [hFi i x hx, hFi i y hy, ← Path.Homotopic.Quotient.mk_trans, Path.Homotopic.Quotient.eq]
+    exact
+      SimplyConnectedCover.homotopic_of_mem (hsimply i) _ _
+        (SimplyConnectedCover.trans_mem _ _
+          (SimplyConnectedCover.chartPath_mem U hsimply o ho i x hx) hp)
+        (SimplyConnectedCover.chartPath_mem U hsimply o ho i y hy)
+  have hpc : PathConnectedSpace X :=
+    { nonempty := ⟨o⟩
+      joined := fun x y => ⟨(c x).symm.trans (c y)⟩ }
+  apply simply_connected_iff_paths_homotopic'.mpr
+  refine ⟨hpc, ?_⟩
+  intro x y p q
+  have hp := SimplyConnectedCover.section_trans_of_open_cover U hopen hcover o F hF p
+  have hq := SimplyConnectedCover.section_trans_of_open_cover U hopen hcover o F hF q
+  apply Path.Homotopic.Quotient.eq.mp
+  have h :=
+    congrArg (fun r : Path.Homotopic.Quotient o y => (F x).symm.trans r) (hp.trans hq.symm)
+  simpa only [← Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
+    Path.Homotopic.Quotient.refl_trans] using h
+
 end Mathoverflow1973

@@ -107,6 +107,9 @@ def SingularMayerVietoris.smallChainSubmodule {X : Type} [TopologicalSpace X] (U
     (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
   supportedChainSubmodule U n ⊔ supportedChainSubmodule V n
 
+/-! ### Small and supported chains -/
+
+/-- The small chains are spanned by the supported simplices. -/
 theorem SingularMayerVietoris.smallChainSubmodule_eq_span {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     smallChainSubmodule U V n =
@@ -117,23 +120,27 @@ theorem SingularMayerVietoris.smallChainSubmodule_eq_span {X : Type} [Topologica
     Submodule.span_union, ← Set.image_union]
   rfl
 
+/-- A simplex supported on `U` lies in the supported submodule. -/
 theorem SingularMayerVietoris.simplexChain_mem_supported {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
     SingularChains.simplexChain X n σ ∈ supportedChainSubmodule U n :=
   Submodule.subset_span ⟨σ, hσ, rfl⟩
 
+/-- A simplex supported on `U` or `V` is small. -/
 theorem SingularMayerVietoris.simplexChain_mem_small {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U ∨ Set.range σ ⊆ V) :
     SingularChains.simplexChain X n σ ∈ smallChainSubmodule U V n := by
   rw [smallChainSubmodule_eq_span]
   exact Submodule.subset_span ⟨σ, hσ, rfl⟩
 
+/-- Faces of a supported simplex are supported. -/
 theorem SingularMayerVietoris.simplex_face_supported {X : Type} [TopologicalSpace X] (U : Set X)
     (n : ℕ) (σ : SingularChains.SingularSimplex X (n + 1)) (hσ : Set.range σ ⊆ U)
     (i : Fin (n + 2)) : Set.range (σ.comp (SingularChains.simplexFace n i)) ⊆ U := by
   rintro x ⟨s, rfl⟩
   exact hσ ⟨SingularChains.simplexFace n i s, rfl⟩
 
+/-- The boundary of a small simplex is small. -/
 theorem SingularMayerVietoris.boundary_mem_small_succ {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (c : SingularChains.Chains X (n + 1))
     (hc : c ∈ smallChainSubmodule U V (n + 1)) :
@@ -157,6 +164,7 @@ theorem SingularMayerVietoris.boundary_mem_small_succ {X : Type} [TopologicalSpa
         (fun h => simplex_face_supported V n σ h i)
   exact hle hc
 
+/-- The boundary of a small chain is small. -/
 theorem SingularMayerVietoris.boundary_mem_small {X : Type} [TopologicalSpace X] (U V : Set X)
     (i j : ℕ) (c : SingularChains.Chains X i) (hc : c ∈ smallChainSubmodule U V i) :
     ((SingularChains.singularComplex X).d i j).hom c ∈ smallChainSubmodule U V j := by
@@ -170,10 +178,12 @@ theorem SingularMayerVietoris.boundary_mem_small {X : Type} [TopologicalSpace X]
     rw [he]
     exact Submodule.zero_mem _
 
+/-- The submodule of small chains. -/
 instance SingularMayerVietoris.smallChainModule {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) : Module ℤ (smallChainSubmodule U V n) :=
   (smallChainSubmodule U V n).module
 
+/-- The boundary restricted to small chains. -/
 def SingularMayerVietoris.smallDifferential {X : Type} [TopologicalSpace X] (U V : Set X)
     (i j : ℕ) : smallChainSubmodule U V i →ₗ[ℤ] smallChainSubmodule U V j :=
   (((SingularChains.singularComplex X).d i j).hom.comp
@@ -205,6 +215,7 @@ def SingularMayerVietoris.smallComplex {X : Type} [TopologicalSpace X] (U V : Se
       congrArg (fun f : SingularChains.Chains X i ⟶ SingularChains.Chains X k => f.hom c.1)
         ((SingularChains.singularComplex X).d_comp_d i j k)
 
+/-- The inclusion of small chains into all chains. -/
 def SingularMayerVietoris.smallInclusion {X : Type} [TopologicalSpace X] (U V : Set X) :
     smallComplex U V ⟶ SingularChains.singularComplex X
     where
@@ -216,10 +227,12 @@ def SingularMayerVietoris.smallInclusion {X : Type} [TopologicalSpace X] (U V : 
     intro c
     rfl
 
+/-- The small-chain inclusion is injective in each degree. -/
 theorem SingularMayerVietoris.smallInclusion_f_injective {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) : Function.Injective ((smallInclusion U V).f n) :=
   Subtype.val_injective
 
+/-- The small-chain inclusion is a mono. -/
 instance SingularMayerVietoris.smallInclusion_mono {X : Type} [TopologicalSpace X] (U V : Set X) :
     CategoryTheory.Mono (smallInclusion U V) :=
   HomologicalComplex.mono_of_mono_f _
@@ -239,6 +252,7 @@ def SingularMayerVietoris.liftToSmall {X : Type} [TopologicalSpace X] (U V : Set
     apply Subtype.ext
     exact congrArg (fun g : K.X i ⟶ SingularChains.Chains X j => g.hom c) (f.comm i j)
 
+/-- A chain lifted to small chains includes to itself. -/
 @[simp]
 theorem SingularMayerVietoris.liftToSmall_inclusion {X : Type} [TopologicalSpace X] (U V : Set X)
     {K : ChainComplex (ModuleCat ℤ) ℕ} (f : K ⟶ SingularChains.singularComplex X)
@@ -249,15 +263,18 @@ theorem SingularMayerVietoris.liftToSmall_inclusion {X : Type} [TopologicalSpace
   apply ModuleCat.hom_ext
   rfl
 
+/-- The chain map induced by a subtype inclusion. -/
 def SingularMayerVietoris.subtypeInclusion {X : Type} [TopologicalSpace X] (U : Set X) :
     C(U, X) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- A simplex factored through a subtype containing its range. -/
 def SingularMayerVietoris.restrictSimplex {X : Type} [TopologicalSpace X] (U : Set X) (n : ℕ)
     (σ : SingularChains.SingularSimplex X n) (hσ : Set.range σ ⊆ U) :
     SingularChains.SingularSimplex U n :=
   ⟨fun p => ⟨σ p, hσ ⟨p, rfl⟩⟩, σ.continuous.subtype_mk _⟩
 
+/-- The restricted simplex includes to the original. -/
 @[simp]
 theorem SingularMayerVietoris.subtypeInclusion_comp_restrictSimplex {X : Type}
     [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex X n)
@@ -265,12 +282,14 @@ theorem SingularMayerVietoris.subtypeInclusion_comp_restrictSimplex {X : Type}
   ext p
   rfl
 
+/-- The range of the subtype chain map is the supported submodule. -/
 theorem SingularMayerVietoris.range_subtypeInclusion_comp {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n) :
     Set.range ((subtypeInclusion U).comp σ) ⊆ U := by
   rintro x ⟨p, rfl⟩
   exact (σ p).2
 
+/-- The restricted simplex maps back to the original. -/
 @[simp]
 theorem SingularMayerVietoris.restrictSimplex_inclusion {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n)
@@ -279,16 +298,19 @@ theorem SingularMayerVietoris.restrictSimplex_inclusion {X : Type} [TopologicalS
   ext p
   rfl
 
+/-- A chosen simplex preimage under a surjective map. -/
 def SingularMayerVietoris.simplexRetraction {X : Type} [TopologicalSpace X] (U : Set X) (n : ℕ)
     (σ : SingularChains.SingularSimplex X n) : SingularChains.Chains U n := by
   classical
     exact
     if hσ : Set.range σ ⊆ U then SingularChains.simplexChain U n (restrictSimplex U n σ hσ) else 0
 
+/-- The chain retraction along a surjective map on simplices. -/
 def SingularMayerVietoris.subtypeChainRetraction {X : Type} [TopologicalSpace X] (U : Set X)
     (n : ℕ) : SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains U n :=
   SingularChains.chainLift X n (simplexRetraction U n)
 
+/-- The retraction of an included simplex is the restricted simplex. -/
 theorem SingularMayerVietoris.subtypeChainRetraction_inclusion_simplex {X : Type}
     [TopologicalSpace X] (U : Set X) (n : ℕ) (σ : SingularChains.SingularSimplex U n) :
     subtypeChainRetraction U n
@@ -300,6 +322,7 @@ theorem SingularMayerVietoris.subtypeChainRetraction_inclusion_simplex {X : Type
   simp only [simplexRetraction, dif_pos (range_subtypeInclusion_comp U n σ),
     restrictSimplex_inclusion]
 
+/-- The retraction left-inverts the subtype chain inclusion. -/
 theorem SingularMayerVietoris.subtypeChainRetraction_comp {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
     (subtypeChainRetraction U n).comp (SingularChains.inducedChain (subtypeInclusion U) n) =
@@ -308,6 +331,7 @@ theorem SingularMayerVietoris.subtypeChainRetraction_comp {X : Type} [Topologica
   intro σ
   exact subtypeChainRetraction_inclusion_simplex U n σ
 
+/-- The subtype chain map is injective. -/
 theorem SingularMayerVietoris.subtypeInclusion_chain_injective {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
     Function.Injective (SingularChains.inducedChain (subtypeInclusion U) n) :=
@@ -316,6 +340,7 @@ theorem SingularMayerVietoris.subtypeInclusion_chain_injective {X : Type} [Topol
         (SingularChains.inducedChain (subtypeInclusion U) n)
       from fun c => LinearMap.congr_fun (subtypeChainRetraction_comp U n) c).injective
 
+/-- The generator image under the subtype chain map. -/
 theorem SingularMayerVietoris.subtypeInclusion_generator_image {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
     SingularChains.inducedChain (subtypeInclusion U) n ''
@@ -332,6 +357,7 @@ theorem SingularMayerVietoris.subtypeInclusion_generator_image {X : Type} [Topol
     refine ⟨SingularChains.simplexChain U n (restrictSimplex U n σ hσ), ⟨_, rfl⟩, ?_⟩
     rw [SingularChains.inducedChain_simplex, subtypeInclusion_comp_restrictSimplex]
 
+/-- The subtype chain map's range is the supported submodule. -/
 theorem SingularMayerVietoris.subtypeInclusion_chain_range {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) :
     LinearMap.range (SingularChains.inducedChain (subtypeInclusion U) n) =
@@ -340,6 +366,7 @@ theorem SingularMayerVietoris.subtypeInclusion_chain_range {X : Type} [Topologic
     subtypeInclusion_generator_image]
   rfl
 
+/-- Supported submodules intersect to the intersection support. -/
 theorem SingularMayerVietoris.supportedChainSubmodule_inf {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     supportedChainSubmodule U n ⊓ supportedChainSubmodule V n =
@@ -353,12 +380,16 @@ theorem SingularMayerVietoris.supportedChainSubmodule_inf {X : Type} [Topologica
   unfold supportedChainSubmodule
   rw [SingularChains.simplex_span_inter, hsets]
 
+/-- A chain lies in the subtype range exactly when supported. -/
 theorem SingularMayerVietoris.subtypeInclusion_chain_mem {X : Type} [TopologicalSpace X]
     (U : Set X) (n : ℕ) (c : SingularChains.Chains U n) :
     SingularChains.inducedChain (subtypeInclusion U) n c ∈ supportedChainSubmodule U n := by
   rw [← subtypeInclusion_chain_range U n]
   exact ⟨c, rfl⟩
 
+/-! ### The Mayer–Vietoris short complex -/
+
+/-- The left map of the Mayer–Vietoris short complex into small chains. -/
 def SingularMayerVietoris.toSmallLeft {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularChains.singularComplex U ⟶ smallComplex U V :=
   liftToSmall U V (SingularChains.singularChainMap (subtypeInclusion U))
@@ -366,6 +397,7 @@ def SingularMayerVietoris.toSmallLeft {X : Type} [TopologicalSpace X] (U V : Set
       (show supportedChainSubmodule U n ≤ smallChainSubmodule U V n from le_sup_left)
         (subtypeInclusion_chain_mem U n c))
 
+/-- The right map from small chains to the ambient chains. -/
 def SingularMayerVietoris.toSmallRight {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularChains.singularComplex V ⟶ smallComplex U V :=
   liftToSmall U V (SingularChains.singularChainMap (subtypeInclusion V))
@@ -373,18 +405,21 @@ def SingularMayerVietoris.toSmallRight {X : Type} [TopologicalSpace X] (U V : Se
       (show supportedChainSubmodule V n ≤ smallChainSubmodule U V n from le_sup_right)
         (subtypeInclusion_chain_mem V n c))
 
+/-- The left map computes through the intersection inclusions. -/
 @[simp]
 theorem SingularMayerVietoris.toSmallLeft_inclusion {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     toSmallLeft U V ≫ smallInclusion U V = SingularChains.singularChainMap (subtypeInclusion U) :=
   liftToSmall_inclusion U V _ _
 
+/-- The right map computes the signed sum of inclusions. -/
 @[simp]
 theorem SingularMayerVietoris.toSmallRight_inclusion {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     toSmallRight U V ≫ smallInclusion U V = SingularChains.singularChainMap (subtypeInclusion V) :=
   liftToSmall_inclusion U V _ _
 
+/-- The two cover inclusions are jointly surjective onto small chains. -/
 theorem SingularMayerVietoris.toSmall_jointly_surjective {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (s : (smallComplex U V).X n) :
     ∃ x : SingularChains.Chains U n,
@@ -404,14 +439,17 @@ theorem SingularMayerVietoris.toSmall_jointly_surjective {X : Type} [Topological
   rw [hx, hy]
   exact hcd
 
+/-- The chain map of the intersection into the left cover. -/
 def SingularMayerVietoris.intersectionToLeft {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularChains.singularComplex (U ∩ V : Set X) ⟶ SingularChains.singularComplex U :=
   SingularChains.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V ⊆ U))
 
+/-- The chain map of the intersection into the right cover. -/
 def SingularMayerVietoris.intersectionToRight {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularChains.singularComplex (U ∩ V : Set X) ⟶ SingularChains.singularComplex V :=
   SingularChains.singularChainMap (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V ⊆ V))
 
+/-- The left intersection map viewed in the ambient chains. -/
 theorem SingularMayerVietoris.intersectionToLeft_ambient {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     intersectionToLeft U V ≫ SingularChains.singularChainMap (subtypeInclusion U) =
@@ -423,6 +461,7 @@ theorem SingularMayerVietoris.intersectionToLeft_ambient {X : Type} [Topological
       (TopCat.ofHom (subtypeInclusion U))
   exact h.symm
 
+/-- The right intersection map viewed in the ambient chains. -/
 theorem SingularMayerVietoris.intersectionToRight_ambient {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     intersectionToRight U V ≫ SingularChains.singularChainMap (subtypeInclusion V) =
@@ -434,6 +473,7 @@ theorem SingularMayerVietoris.intersectionToRight_ambient {X : Type} [Topologica
       (TopCat.ofHom (subtypeInclusion V))
   exact h.symm
 
+/-- The left intersection map computes through the subtype inclusion. -/
 @[simp]
 theorem SingularMayerVietoris.intersectionToLeft_ambient_apply {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (c : SingularChains.Chains (U ∩ V : Set X) n) :
@@ -441,6 +481,7 @@ theorem SingularMayerVietoris.intersectionToLeft_ambient_apply {X : Type} [Topol
       SingularChains.inducedChain (subtypeInclusion (U ∩ V)) n c :=
   congrArg (fun f => (f.f n).hom c) (intersectionToLeft_ambient U V)
 
+/-- The right intersection map computes through the subtype inclusion. -/
 @[simp]
 theorem SingularMayerVietoris.intersectionToRight_ambient_apply {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (c : SingularChains.Chains (U ∩ V : Set X) n) :
@@ -448,6 +489,7 @@ theorem SingularMayerVietoris.intersectionToRight_ambient_apply {X : Type} [Topo
       SingularChains.inducedChain (subtypeInclusion (U ∩ V)) n c :=
   congrArg (fun f => (f.f n).hom c) (intersectionToRight_ambient U V)
 
+/-- The left intersection chain map is injective. -/
 theorem SingularMayerVietoris.intersectionToLeft_f_injective {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) : Function.Injective ((intersectionToLeft U V).f n).hom := by
   intro a b hab
@@ -463,6 +505,7 @@ theorem SingularMayerVietoris.intersectionToLeft_f_injective {X : Type} [Topolog
       (congrArg (SingularChains.inducedChain (subtypeInclusion U) n) hab)
     _ = _ := intersectionToLeft_ambient_apply U V n b
 
+/-- The two intersection inclusions commute with the cover inclusions. -/
 theorem SingularMayerVietoris.intersection_toSmall_comm {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     intersectionToLeft U V ≫ toSmallLeft U V = intersectionToRight U V ≫ toSmallRight U V := by
@@ -470,6 +513,7 @@ theorem SingularMayerVietoris.intersection_toSmall_comm {X : Type} [TopologicalS
   simp only [CategoryTheory.Category.assoc, toSmallLeft_inclusion, toSmallRight_inclusion,
     intersectionToLeft_ambient, intersectionToRight_ambient]
 
+/-- A small chain over the overlap lifts to the left. -/
 theorem SingularMayerVietoris.toSmall_overlap_lift {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (x : SingularChains.Chains U n) (y : SingularChains.Chains V n)
     (hxy : ((toSmallLeft U V).f n).hom x = ((toSmallRight U V).f n).hom y) :
@@ -496,18 +540,22 @@ theorem SingularMayerVietoris.toSmall_overlap_lift {X : Type} [TopologicalSpace 
     rw [intersectionToRight_ambient_apply]
     exact hz.trans hxy'
 
+/-- The middle term of the Mayer–Vietoris short complex. -/
 def SingularMayerVietoris.middleComplex {X : Type} [TopologicalSpace X] (U V : Set X) :
     ChainComplex (ModuleCat ℤ) ℕ :=
   SingularChains.singularComplex U ⊞ SingularChains.singularComplex V
 
+/-- The left short-complex map `c ↦ (i_* c, −j_* c)`. -/
 def SingularMayerVietoris.leftMap {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularChains.singularComplex (U ∩ V : Set X) ⟶ middleComplex U V :=
   CategoryTheory.Limits.biprod.lift (intersectionToLeft U V) (-(intersectionToRight U V))
 
+/-- The right short-complex map `(a, b) ↦ i_* a + j_* b`. -/
 def SingularMayerVietoris.rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
     middleComplex U V ⟶ smallComplex U V :=
   CategoryTheory.Limits.biprod.desc (toSmallLeft U V) (toSmallRight U V)
 
+/-- The first component of the left map. -/
 @[simp]
 theorem SingularMayerVietoris.leftMap_fst {X : Type} [TopologicalSpace X] (U V : Set X) :
     leftMap U V ≫
@@ -515,6 +563,7 @@ theorem SingularMayerVietoris.leftMap_fst {X : Type} [TopologicalSpace X] (U V :
       intersectionToLeft U V :=
   CategoryTheory.Limits.biprod.lift_fst _ _
 
+/-- The second component of the left map. -/
 @[simp]
 theorem SingularMayerVietoris.leftMap_snd {X : Type} [TopologicalSpace X] (U V : Set X) :
     leftMap U V ≫
@@ -522,6 +571,7 @@ theorem SingularMayerVietoris.leftMap_snd {X : Type} [TopologicalSpace X] (U V :
       -(intersectionToRight U V) :=
   CategoryTheory.Limits.biprod.lift_snd _ _
 
+/-- The right map on the left summand is the `U` inclusion. -/
 @[simp]
 theorem SingularMayerVietoris.inl_rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
     (CategoryTheory.Limits.biprod.inl : SingularChains.singularComplex U ⟶ middleComplex U V) ≫
@@ -529,6 +579,7 @@ theorem SingularMayerVietoris.inl_rightMap {X : Type} [TopologicalSpace X] (U V 
       toSmallLeft U V :=
   CategoryTheory.Limits.biprod.inl_desc _ _
 
+/-- The right map on the right summand is the `V` inclusion. -/
 @[simp]
 theorem SingularMayerVietoris.inr_rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
     (CategoryTheory.Limits.biprod.inr : SingularChains.singularComplex V ⟶ middleComplex U V) ≫
@@ -536,6 +587,7 @@ theorem SingularMayerVietoris.inr_rightMap {X : Type} [TopologicalSpace X] (U V 
       toSmallRight U V :=
   CategoryTheory.Limits.biprod.inr_desc _ _
 
+/-- The composite `leftMap ∘ rightMap` is zero. -/
 theorem SingularMayerVietoris.leftMap_rightMap {X : Type} [TopologicalSpace X] (U V : Set X) :
     leftMap U V ≫ rightMap U V = 0 := by
   change
@@ -558,42 +610,52 @@ theorem SingularMayerVietoris.chainSequence_shortExact {X : Type} [TopologicalSp
     (intersectionToLeft_f_injective U V) (toSmall_jointly_surjective U V)
     (toSmall_overlap_lift U V)
 
+/-! ### Homology of the short complex -/
+
+/-- The homology map induced by a chain map. -/
 abbrev SingularMayerVietoris.homologyLinearMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : K ⟶ L) (n : ℕ) : K.homology n →ₗ[ℤ] L.homology n :=
   (HomologicalComplex.homologyMap f n).hom
 
+/-- Homology maps compose. -/
 theorem SingularMayerVietoris.homologyLinearMap_comp {K L M : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : K ⟶ L) (g : L ⟶ M) (n : ℕ) :
     homologyLinearMap (f ≫ g) n = (homologyLinearMap g n).comp (homologyLinearMap f n) :=
   congrArg ModuleCat.Hom.hom (HomologicalComplex.homologyMap_comp f g n)
 
+/-- The homology map of a negated chain map is negated. -/
 @[simp]
 theorem SingularMayerVietoris.homologyLinearMap_neg {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : K ⟶ L) (n : ℕ) : homologyLinearMap (-f) n = -homologyLinearMap f n :=
   congrArg ModuleCat.Hom.hom (HomologicalComplex.homologyMap_neg f n)
 
+/-- The connecting homomorphism of the short complex. -/
 def SingularMayerVietoris.connectingMap
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) : S.X₃.homology (n + 1) →ₗ[ℤ] S.X₁.homology n :=
   (hS.δ (n + 1) n (by simp)).hom
 
+/-- Exactness at the left homology term. -/
 theorem SingularMayerVietoris.exact_at_leftHomology
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) : LinearMap.range (connectingMap hS n) = LinearMap.ker (homologyLinearMap S.f n) :=
   (hS.homology_exact₁ (n + 1) n (by simp)).moduleCat_range_eq_ker
 
+/-- Exactness at the middle homology term. -/
 theorem SingularMayerVietoris.exact_at_middleHomology
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) :
     LinearMap.range (homologyLinearMap S.f n) = LinearMap.ker (homologyLinearMap S.g n) :=
   (hS.homology_exact₂ n).moduleCat_range_eq_ker
 
+/-- Exactness at the right homology term. -/
 theorem SingularMayerVietoris.exact_at_rightHomology
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) :
     LinearMap.range (homologyLinearMap S.g (n + 1)) = LinearMap.ker (connectingMap hS n) :=
   (hS.homology_exact₃ (n + 1) n (by simp)).moduleCat_range_eq_ker
 
+/-- The degree-zero right map is surjective. -/
 theorem SingularMayerVietoris.homologyLinearMap_second_zero_surjective
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact) :
     Function.Surjective (homologyLinearMap S.g 0) := by
@@ -601,6 +663,7 @@ theorem SingularMayerVietoris.homologyLinearMap_second_zero_surjective
   have := HomologicalComplex.epi_homologyMap_of_epi_of_not_rel S.g 0 (by intro j; simp)
   exact (ModuleCat.epi_iff_surjective _).mp inferInstance
 
+/-- The connecting map is natural in the short exact sequence. -/
 theorem SingularMayerVietoris.connectingMap_naturality
     {S T : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (φ : S ⟶ T) (hT : T.ShortExact) (n : ℕ) :
@@ -609,17 +672,20 @@ theorem SingularMayerVietoris.connectingMap_naturality
   congrArg ModuleCat.Hom.hom
     (HomologicalComplex.HomologySequence.δ_naturality φ hS hT (n + 1) n (by simp))
 
+/-- The homology class of a cycle element. -/
 def SingularMayerVietoris.homologyClassOfCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) {i : ℕ}
     (z : K.X i) (j : ℕ) (hj : (ComplexShape.down ℕ).next i = j) (hz : (K.d i j).hom z = 0) :
     K.homology i :=
   (K.homologyπ i).hom (K.cyclesMk z j hj hz)
 
+/-- The chosen lift of a connecting preimage is a cycle. -/
 theorem SingularMayerVietoris.connectingMap_lift_is_cycle
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (z₂ : S.X₂.X (n + 1)) (z₁ : S.X₁.X n)
     (hz₁ : (S.f.f n).hom z₁ = (S.X₂.d (n + 1) n).hom z₂) (k : ℕ) : (S.X₁.d n k).hom z₁ = 0 :=
   hS.d_eq_zero_of_f_eq_d_apply (n + 1) n z₂ z₁ hz₁ k
 
+/-- The connecting map computes on cycle classes. -/
 theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
     {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (z₃ : S.X₃.X (n + 1)) (hz₃ : (S.X₃.d (n + 1) n).hom z₃ = 0) (z₂ : S.X₂.X (n + 1))
@@ -631,6 +697,7 @@ theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
         (connectingMap_lift_is_cycle hS n z₂ z₁ hz₁ _) :=
   hS.δ_apply (n + 1) n (by simp) z₃ hz₃ z₂ hz₂ z₁ hz₁ _ rfl
 
+/-- The left component of an `inl` homology class. -/
 theorem SingularMayerVietoris.homology_fst_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
@@ -643,6 +710,7 @@ theorem SingularMayerVietoris.homology_fst_inl
   rw [CategoryTheory.Limits.biprod.inl_fst, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
+/-- The right component of an `inl` homology class. -/
 theorem SingularMayerVietoris.homology_snd_inl
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
@@ -655,6 +723,7 @@ theorem SingularMayerVietoris.homology_snd_inl
   rw [CategoryTheory.Limits.biprod.inl_snd, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom a) h).symm
 
+/-- The left component of an `inr` homology class. -/
 theorem SingularMayerVietoris.homology_fst_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
@@ -667,6 +736,7 @@ theorem SingularMayerVietoris.homology_fst_inr
   rw [CategoryTheory.Limits.biprod.inr_fst, HomologicalComplex.homologyMap_zero] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
+/-- The right component of an `inr` homology class. -/
 theorem SingularMayerVietoris.homology_snd_inr
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
@@ -679,6 +749,7 @@ theorem SingularMayerVietoris.homology_snd_inr
   rw [CategoryTheory.Limits.biprod.inr_snd, HomologicalComplex.homologyMap_id] at h
   exact (congrArg (fun f => f.hom b) h).symm
 
+/-- Every pair-homology class splits into `inl` and `inr` parts. -/
 theorem SingularMayerVietoris.homology_biprod_total
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (K ⊞ L).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
@@ -702,6 +773,9 @@ theorem SingularMayerVietoris.homology_biprod_total
     HomologicalComplex.homologyMap_comp] at h
   exact congrArg (fun f => f.hom a) h
 
+/-! ### Homology of a bipod sequence -/
+
+/-- Homology of a bipod complex is the product of homologies. -/
 def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) :
     (K ⊞ L).homology n ≃ₗ[ℤ] (K.homology n × L.homology n) :=
   ({    toFun
@@ -748,6 +822,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
           rw [map_add, map_add] } :
       (K ⊞ L).homology n ≃+ (K.homology n × L.homology n)).toIntLinearEquiv
 
+/-- The inverse equivalence computes the pair class. -/
 theorem SingularMayerVietoris.homologyBiprodEquiv_symm_apply
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n × L.homology n) :
     (homologyBiprodEquiv K L n).symm a =
@@ -756,6 +831,7 @@ theorem SingularMayerVietoris.homologyBiprodEquiv_symm_apply
           a.2 :=
   rfl
 
+/-- The equivalence descends a pair of homology maps. -/
 theorem SingularMayerVietoris.homologyBiprodEquiv_desc {K : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     {L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (n : ℕ) {A : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : K ⟶ A) (g : L ⟶ A) (a : K.homology n × L.homology n) :
@@ -776,14 +852,17 @@ theorem SingularMayerVietoris.homologyBiprodEquiv_desc {K : ChainComplex (Module
     rw [CategoryTheory.Limits.biprod.inr_desc] at h
     exact (congrArg (fun k => k.hom a.2) h).symm
 
+/-- The first map of the bipod sequence. -/
 def SingularMayerVietoris.biprodSequenceFirstMap {A K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : A ⟶ K ⊞ L) (n : ℕ) : A.homology n →ₗ[ℤ] (K.homology n × L.homology n) :=
   (homologyBiprodEquiv K L n).toLinearMap.comp (homologyLinearMap f n)
 
+/-- The second map of the bipod sequence. -/
 def SingularMayerVietoris.biprodSequenceSecondMap {K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (g : K ⊞ L ⟶ B) (n : ℕ) : (K.homology n × L.homology n) →ₗ[ℤ] B.homology n :=
   (homologyLinearMap g n).comp (homologyBiprodEquiv K L n).symm.toLinearMap
 
+/-- The second map descends the two components. -/
 theorem SingularMayerVietoris.biprodSequenceSecondMap_desc
     {K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : K ⟶ B) (g : L ⟶ B) (n : ℕ)
     (a : K.homology n × L.homology n) :
@@ -791,6 +870,7 @@ theorem SingularMayerVietoris.biprodSequenceSecondMap_desc
       homologyLinearMap f n a.1 + homologyLinearMap g n a.2 :=
   homologyBiprodEquiv_desc n f g a
 
+/-- The bipod sequence is exact at the left term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_leftHomology
     {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
@@ -804,6 +884,7 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_leftHomology
   · intro h
     exact (homologyBiprodEquiv K L n).injective (h.trans (map_zero _).symm)
 
+/-- The bipod sequence is exact at the middle term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_middleHomology
     {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
@@ -828,6 +909,7 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_middleHomology
         (congrArg (homologyBiprodEquiv K L n) hb).trans
           ((homologyBiprodEquiv K L n).apply_symm_apply a)⟩
 
+/-- The bipod sequence is exact at the right term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_rightHomology
     {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
@@ -844,47 +926,59 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_rightHomology
     refine ⟨homologyBiprodEquiv K L (n + 1) a, ?_⟩
     rwa [LinearEquiv.symm_apply_apply]
 
+/-- The degree-zero second map is surjective. -/
 theorem SingularMayerVietoris.biprodSequence_second_zero_surjective
     {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) :
     Function.Surjective (biprodSequenceSecondMap g 0) :=
   (homologyLinearMap_second_zero_surjective hS).comp (homologyBiprodEquiv K L 0).symm.surjective
 
+/-! ### Small homology and the comparison -/
+
+/-- The singular homology module of a space. -/
 abbrev SingularMayerVietoris.SingularHomology (Y : Type) [TopologicalSpace Y] (n : ℕ) :=
   (SingularChains.singularComplex Y).homology n
 
+/-- The homology map induced by a continuous map. -/
 abbrev SingularMayerVietoris.singularHomologyMap {Y Z : Type} [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(Y, Z)) (n : ℕ) :
     SingularHomology Y n →ₗ[ℤ] SingularHomology Z n :=
   homologyLinearMap (SingularChains.singularChainMap f) n
 
+/-- The induced map in degree `n + 1` formulation. -/
 @[simp]
 theorem SingularMayerVietoris.singularHomologyMap_one {Y Z : Type} [TopologicalSpace Y]
     [TopologicalSpace Z] (f : C(Y, Z)) :
     singularHomologyMap f 1 = SingularChains.inducedHomology f :=
   rfl
 
+/-- The homology of the small-chains complex. -/
 abbrev SingularMayerVietoris.SmallHomology {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) :=
   (smallComplex U V).homology n
 
+/-- The left map on small homology. -/
 def SingularMayerVietoris.smallLeftHomologyMap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) :
     SingularHomology (U ∩ V : Set X) n →ₗ[ℤ] (SingularHomology U n × SingularHomology V n) :=
   biprodSequenceFirstMap (leftMap U V) n
 
+/-- The right map on small homology. -/
 def SingularMayerVietoris.smallRightHomologyMap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) : (SingularHomology U n × SingularHomology V n) →ₗ[ℤ] SmallHomology U V n :=
   biprodSequenceSecondMap (rightMap U V) n
 
+/-- The connecting map of the small homology sequence. -/
 def SingularMayerVietoris.smallConnectingMap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) : SmallHomology U V (n + 1) →ₗ[ℤ] SingularHomology (U ∩ V : Set X) n :=
   connectingMap (chainSequence_shortExact U V) n
 
+/-- The comparison from small homology to singular homology. -/
 def SingularMayerVietoris.smallHomologyComparison {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) : SmallHomology U V n →ₗ[ℤ] SingularHomology X n :=
   homologyLinearMap (smallInclusion U V) n
 
+/-- The left small-homology map in components. -/
 theorem SingularMayerVietoris.smallLeftHomologyMap_components {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularHomology (U ∩ V : Set X) n) :
     smallLeftHomologyMap U V n a =
@@ -906,6 +1000,7 @@ theorem SingularMayerVietoris.smallLeftHomologyMap_components {X : Type} [Topolo
       (LinearMap.congr_fun
           (homologyLinearMap_comp (leftMap U V) CategoryTheory.Limits.biprod.snd n) a).symm
 
+/-- The right small-homology map in components. -/
 theorem SingularMayerVietoris.smallRightHomologyMap_components {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularHomology U n × SingularHomology V n) :
     smallRightHomologyMap U V n a =
@@ -922,6 +1017,7 @@ theorem SingularMayerVietoris.smallRightHomologyMap_components {X : Type} [Topol
   rw [inl_rightMap, inr_rightMap]
   exact biprodSequenceSecondMap_desc (toSmallLeft U V) (toSmallRight U V) n a
 
+/-- The left small-homology map on a class. -/
 theorem SingularMayerVietoris.smallLeftHomologyMap_apply {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularHomology (U ∩ V : Set X) n) :
     smallLeftHomologyMap U V n a =
@@ -931,12 +1027,14 @@ theorem SingularMayerVietoris.smallLeftHomologyMap_apply {X : Type} [Topological
   rw [smallLeftHomologyMap_components, leftMap_fst, leftMap_snd, homologyLinearMap_neg]
   rfl
 
+/-- The right small-homology map on a class. -/
 theorem SingularMayerVietoris.smallRightHomologyMap_apply {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularHomology U n × SingularHomology V n) :
     smallRightHomologyMap U V n a =
       homologyLinearMap (toSmallLeft U V) n a.1 + homologyLinearMap (toSmallRight U V) n a.2 := by
   rw [smallRightHomologyMap_components, inl_rightMap, inr_rightMap]
 
+/-- The comparison intertwines the right maps. -/
 theorem SingularMayerVietoris.smallHomologyComparison_right {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularHomology U n × SingularHomology V n) :
     smallHomologyComparison U V n (smallRightHomologyMap U V n a) =
@@ -951,26 +1049,31 @@ theorem SingularMayerVietoris.smallHomologyComparison_right {X : Type} [Topologi
       homologyLinearMap (smallInclusion U V) n (homologyLinearMap (toSmallRight U V) n a.2) = _
     rw [← LinearMap.comp_apply, ← homologyLinearMap_comp, toSmallRight_inclusion]
 
+/-- The small sequence is exact at the intersection homology. -/
 theorem SingularMayerVietoris.small_exact_at_intersection {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     LinearMap.range (smallConnectingMap U V n) = LinearMap.ker (smallLeftHomologyMap U V n) :=
   biprodSequence_exact_at_leftHomology (chainSequence_shortExact U V) n
 
+/-- The small sequence is exact at the pair homology. -/
 theorem SingularMayerVietoris.small_exact_at_pair {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) :
     LinearMap.range (smallLeftHomologyMap U V n) = LinearMap.ker (smallRightHomologyMap U V n) :=
   biprodSequence_exact_at_middleHomology (chainSequence_shortExact U V) n
 
+/-- The small sequence is exact at the small homology. -/
 theorem SingularMayerVietoris.small_exact_at_smallHomology {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     LinearMap.range (smallRightHomologyMap U V (n + 1)) =
       LinearMap.ker (smallConnectingMap U V n) :=
   biprodSequence_exact_at_rightHomology (chainSequence_shortExact U V) n
 
+/-- The degree-zero right small map is surjective. -/
 theorem SingularMayerVietoris.smallRightHomologyMap_zero_surjective {X : Type}
     [TopologicalSpace X] (U V : Set X) : Function.Surjective (smallRightHomologyMap U V 0) :=
   biprodSequence_second_zero_surjective (chainSequence_shortExact U V)
 
+/-- The left map after the connecting map is zero. -/
 theorem SingularMayerVietoris.smallLeftHomologyMap_comp_right {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) : (smallRightHomologyMap U V n).comp (smallLeftHomologyMap U V n) = 0 :=
   by
@@ -981,6 +1084,7 @@ theorem SingularMayerVietoris.smallLeftHomologyMap_comp_right {X : Type} [Topolo
   rw [small_exact_at_pair] at ha
   exact ha
 
+/-- Transported exactness: the range is the kernel. -/
 theorem SingularMayerVietoris.rightTransport_range_eq_ker {A P B C : Type*} [AddCommGroup A]
     [Module ℤ A] [AddCommGroup P] [Module ℤ P] [AddCommGroup B] [Module ℤ B] [AddCommGroup C]
     [Module ℤ C] (e : B ≃ₗ[ℤ] C) (g : P →ₗ[ℤ] B) (δ : B →ₗ[ℤ] A)
@@ -1001,21 +1105,27 @@ theorem SingularMayerVietoris.rightTransport_range_eq_ker {A P B C : Type*} [Add
     obtain ⟨p, hp⟩ := hp
     exact ⟨p, (congrArg e hp).trans (e.apply_symm_apply c)⟩
 
+/-- The transported connecting range. -/
 theorem SingularMayerVietoris.rightTransport_connecting_range {A B C : Type*} [AddCommGroup A]
     [Module ℤ A] [AddCommGroup B] [Module ℤ B] [AddCommGroup C] [Module ℤ C] (e : B ≃ₗ[ℤ] C)
     (δ : B →ₗ[ℤ] A) : LinearMap.range (δ.comp e.symm.toLinearMap) = LinearMap.range δ :=
   e.symm.range_comp δ
 
+/-- The transported second map's kernel. -/
 theorem SingularMayerVietoris.rightTransport_second_ker {P B C : Type*} [AddCommGroup P]
     [Module ℤ P] [AddCommGroup B] [Module ℤ B] [AddCommGroup C] [Module ℤ C] (e : B ≃ₗ[ℤ] C)
     (g : P →ₗ[ℤ] B) : LinearMap.ker (e.toLinearMap.comp g) = LinearMap.ker g :=
   e.ker_comp g
 
+/-- The transported second map is surjective. -/
 theorem SingularMayerVietoris.rightTransport_second_surjective {P B C : Type*} [AddCommGroup P]
     [Module ℤ P] [AddCommGroup B] [Module ℤ B] [AddCommGroup C] [Module ℤ C] (e : B ≃ₗ[ℤ] C)
     (g : P →ₗ[ℤ] B) (hg : Function.Surjective g) : Function.Surjective (e.toLinearMap.comp g) :=
   e.surjective.comp hg
 
+/-! ### Affine simplices and the barycenter -/
+
+/-- The affine simplex on a list of vertices. -/
 def SingularMayerVietoris.affineSimplex {n p : ℕ} (v : Fin (n + 1) → SingularChains.Simplex p) :
     C(SingularChains.Simplex n, SingularChains.Simplex p)
     where
@@ -1030,6 +1140,7 @@ def SingularMayerVietoris.affineSimplex {n p : ℕ} (v : Fin (n + 1) → Singula
       continuous_finsetSum _
         (fun i _ => ((continuous_apply i).comp continuous_subtype_val).smul continuous_const)
 
+/-- The affine simplex evaluates the convex combination. -/
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_coordinate {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (t : SingularChains.Simplex n) (j : Fin (p + 1)) :
@@ -1037,6 +1148,7 @@ theorem SingularMayerVietoris.affineSimplex_coordinate {n p : ℕ}
   change (∑ i, t i • (v i : Fin (p + 1) → ℝ)) j = _
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/-- The affine simplex at a vertex. -/
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_vertex {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (i : Fin (n + 1)) :
@@ -1047,9 +1159,11 @@ theorem SingularMayerVietoris.affineSimplex_vertex {n p : ℕ}
       (v i : Fin (p + 1) → ℝ)
   simp [Pi.single_apply]
 
+/-- The standard basis vertices of the simplex. -/
 def SingularMayerVietoris.stdVertices (n : ℕ) : Fin (n + 1) → SingularChains.Simplex n :=
   stdSimplex.vertex
 
+/-- The affine simplex on the standard vertices is the identity. -/
 @[simp]
 theorem SingularMayerVietoris.affineSimplex_stdVertices (n : ℕ) :
     affineSimplex (stdVertices n) = ContinuousMap.id (SingularChains.Simplex n) := by
@@ -1060,6 +1174,7 @@ theorem SingularMayerVietoris.affineSimplex_stdVertices (n : ℕ) :
   change (∑ i, t i • Pi.single i (1 : ℝ)) j = t j
   simp [Finset.sum_apply, Pi.smul_apply, Pi.single_apply]
 
+/-- The face of an affine simplex is affine on the deleted vertices. -/
 theorem SingularMayerVietoris.affineSimplex_face {n p : ℕ}
     (v : Fin (n + 2) → SingularChains.Simplex p) (i : Fin (n + 2)) :
     (affineSimplex v).comp (SingularChains.simplexFace n i) =
@@ -1074,6 +1189,7 @@ theorem SingularMayerVietoris.affineSimplex_face {n p : ℕ}
   simp only [SingularChains.simplexFace_apply_self, zero_smul,
     SingularChains.simplexFace_apply_succAbove, zero_add]
 
+/-- Affine simplices compose by vertex lists. -/
 theorem SingularMayerVietoris.affineSimplex_comp {m n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (w : Fin (m + 1) → SingularChains.Simplex n) :
     (affineSimplex v).comp (affineSimplex w) = affineSimplex (fun j => affineSimplex v (w j)) := by
@@ -1086,6 +1202,7 @@ theorem SingularMayerVietoris.affineSimplex_comp {m n p : ℕ}
   simp only [affineSimplex_coordinate, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/-- The affine simplex lands in the convex hull of its vertices. -/
 theorem SingularMayerVietoris.affineSimplex_mem_convexHull {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (t : SingularChains.Simplex n) :
     (affineSimplex v t : Fin (p + 1) → ℝ) ∈
@@ -1098,10 +1215,12 @@ theorem SingularMayerVietoris.affineSimplex_mem_convexHull {n p : ℕ}
   · intro i _
     exact subset_convexHull ℝ _ (Set.mem_range_self i)
 
+/-- The barycenter of the standard simplex. -/
 def SingularMayerVietoris.simplexBarycenter {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) : SingularChains.Simplex p :=
   affineSimplex v (stdSimplex.barycenter : SingularChains.Simplex n)
 
+/-- The barycenter's coordinates are all `1/(n+1)`. -/
 theorem SingularMayerVietoris.simplexBarycenter_coe {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) :
     (simplexBarycenter v : Fin (p + 1) → ℝ) =
@@ -1109,28 +1228,36 @@ theorem SingularMayerVietoris.simplexBarycenter_coe {n p : ℕ}
   change (∑ i, (Fintype.card (Fin (n + 1)) : ℝ)⁻¹ • (v i : Fin (p + 1) → ℝ)) = _
   simp only [Fintype.card_fin, Finset.smul_sum]
 
+/-- The affine simplex sends the barycenter to the vertex average. -/
 theorem SingularMayerVietoris.affineSimplex_simplexBarycenter {m n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (w : Fin (m + 1) → SingularChains.Simplex n) :
     affineSimplex v (simplexBarycenter w) = simplexBarycenter (fun j => affineSimplex v (w j)) :=
   ContinuousMap.congr_fun (affineSimplex_comp v w)
     (stdSimplex.barycenter : SingularChains.Simplex m)
 
+/-! ### Formal chains -/
+
+/-- Formal chains: finsupp chains on affine simplices. -/
 abbrev SingularMayerVietoris.FormalChains (V : Type*) (n : ℕ) :=
   (Fin n → V) →₀ ℤ
 
+/-- A formal simplex as a formal chain. -/
 def SingularMayerVietoris.formalSimplex {V : Type*} {n : ℕ} (v : Fin n → V) : FormalChains V n :=
   Finsupp.single v 1
 
+/-- A function on formal simplices lifted to formal chains. -/
 def SingularMayerVietoris.formalLift {V M : Type*} {n : ℕ} [AddCommGroup M] [Module ℤ M]
     (f : (Fin n → V) → M) : FormalChains V n →ₗ[ℤ] M :=
   Finsupp.linearCombination ℤ f
 
+/-- The formal lift computes the given value on a simplex. -/
 @[simp]
 theorem SingularMayerVietoris.formalLift_simplex {V M : Type*} {n : ℕ} [AddCommGroup M]
     [modM : Module ℤ M] (f : (Fin n → V) → M) (v : Fin n → V) :
     formalLift f (formalSimplex v) = f v := by
   exact (Finsupp.linearCombination_single ℤ 1 v).trans (modM.one_smul (f v))
 
+/-- Formal-chain maps agreeing on simplices are equal. -/
 theorem SingularMayerVietoris.formalChains_ext {V M : Type*} {n : ℕ} [AddCommGroup M] [Module ℤ M]
     {f g : FormalChains V n →ₗ[ℤ] M} (h : ∀ v, f (formalSimplex v) = g (formalSimplex v)) :
     f = g := by
@@ -1140,34 +1267,41 @@ theorem SingularMayerVietoris.formalChains_ext {V M : Type*} {n : ℕ} [AddCommG
     simp [formalSimplex, Finsupp.smul_single]
   rw [hs, f.map_smul, g.map_smul, h]
 
+/-- A vertex map induces a map of formal chains. -/
 def SingularMayerVietoris.formalMap {V W : Type*} (f : V → W) (n : ℕ) :
     FormalChains V n →ₗ[ℤ] FormalChains W n :=
   Finsupp.lmapDomain ℤ ℤ (fun v => f ∘ v)
 
+/-- The formal map applies the vertex map to a simplex. -/
 @[simp]
 theorem SingularMayerVietoris.formalMap_simplex {V W : Type*} (f : V → W) {n : ℕ}
     (v : Fin n → V) : formalMap f n (formalSimplex v) = formalSimplex (f ∘ v) := by
   simp [formalMap, formalSimplex]
 
+/-- The cone of a formal simplex on a vertex. -/
 def SingularMayerVietoris.formalCone {V : Type*} (a : V) (n : ℕ) :
     FormalChains V n →ₗ[ℤ] FormalChains V (n + 1) :=
   Finsupp.lmapDomain ℤ ℤ (fun v => Fin.cons a v)
 
+/-- The cone prepends the vertex. -/
 @[simp]
 theorem SingularMayerVietoris.formalCone_simplex {V : Type*} (a : V) {n : ℕ} (v : Fin n → V) :
     formalCone a n (formalSimplex v) = formalSimplex (Fin.cons a v) := by
   simp [formalCone, formalSimplex]
 
+/-- The formal boundary on affine simplices. -/
 def SingularMayerVietoris.formalBoundary {V : Type*} (n : ℕ) :
     FormalChains V (n + 1) →ₗ[ℤ] FormalChains V n :=
   formalLift fun v => ∑ i : Fin (n + 1), (-1 : ℤ) ^ i.val • formalSimplex (v ∘ i.succAbove)
 
+/-- The formal boundary is the alternating face sum. -/
 @[simp]
 theorem SingularMayerVietoris.formalBoundary_simplex {V : Type*} (n : ℕ) (v : Fin (n + 1) → V) :
     formalBoundary n (formalSimplex v) =
       ∑ i : Fin (n + 1), (-1 : ℤ) ^ i.val • formalSimplex (v ∘ i.succAbove) :=
   formalLift_simplex _ _
 
+/-- The boundary of a cone at degree zero. -/
 theorem SingularMayerVietoris.formalBoundary_cone_zero {V : Type*} (a : V)
     (c : FormalChains V 0) : formalBoundary 0 (formalCone a 0 c) = c := by
   have h : (formalBoundary 0).comp (formalCone a 0) = LinearMap.id := by
@@ -1182,6 +1316,7 @@ theorem SingularMayerVietoris.formalBoundary_cone_zero {V : Type*} (a : V)
     congr 1
   exact LinearMap.congr_fun h c
 
+/-- The cone is a chain contraction of the boundary. -/
 theorem SingularMayerVietoris.formalBoundary_cone {V : Type*} (a : V) (n : ℕ)
     (c : FormalChains V (n + 1)) :
     formalBoundary (n + 1) (formalCone a (n + 1) c) = c - formalCone a n (formalBoundary n c) := by
@@ -1207,6 +1342,7 @@ theorem SingularMayerVietoris.formalBoundary_cone {V : Type*} (a : V) (n : ℕ)
     rfl
   exact LinearMap.congr_fun h c
 
+/-- The formal boundary squares to zero. -/
 theorem SingularMayerVietoris.formalBoundary_comp {V : Type*} (n : ℕ) :
     (formalBoundary (V := V) n).comp (formalBoundary (n + 1)) = 0 := by
   induction n with
@@ -1227,11 +1363,13 @@ theorem SingularMayerVietoris.formalBoundary_comp {V : Type*} (n : ℕ) :
     change formalBoundary n (formalBoundary (n + 1) (formalSimplex (Fin.tail v))) = 0 at hb
     rw [hv, formalBoundary_cone, map_sub, formalBoundary_cone, hb, map_zero, sub_zero, sub_self]
 
+/-- The formal boundary is a chain-map identity. -/
 @[simp]
 theorem SingularMayerVietoris.formalBoundary_boundary {V : Type*} (n : ℕ)
     (c : FormalChains V (n + 2)) : formalBoundary n (formalBoundary (n + 1) c) = 0 :=
   LinearMap.congr_fun (formalBoundary_comp n) c
 
+/-- The formal map commutes with the boundary. -/
 theorem SingularMayerVietoris.formalMap_boundary {V W : Type*} (f : V → W) (n : ℕ)
     (c : FormalChains V (n + 1)) :
     formalMap f n (formalBoundary n c) = formalBoundary n (formalMap f (n + 1) c) := by
@@ -1243,6 +1381,7 @@ theorem SingularMayerVietoris.formalMap_boundary {V W : Type*} (f : V → W) (n 
       Function.comp_assoc]
   exact LinearMap.congr_fun h c
 
+/-- The formal map commutes with the cone. -/
 theorem SingularMayerVietoris.formalMap_cone {V W : Type*} (f : V → W) (a : V) (n : ℕ)
     (c : FormalChains V n) :
     formalMap f (n + 1) (formalCone a n c) = formalCone (f a) n (formalMap f n c) := by
@@ -1256,9 +1395,13 @@ theorem SingularMayerVietoris.formalMap_cone {V W : Type*} (f : V → W) (a : V)
     refine Fin.cases ?_ (fun j => ?_) i <;> rfl
   exact LinearMap.congr_fun h c
 
+/-! ### Barycentric subdivision -/
+
+/-- A center assignment for coning formal simplices. -/
 abbrev SingularMayerVietoris.FormalCenter (V : Type*) :=
   ∀ n : ℕ, (Fin (n + 1) → V) → V
 
+/-- The barycentric subdivision of a formal chain. -/
 def SingularMayerVietoris.formalSubdivision {V : Type*} (center : FormalCenter V) :
     (n : ℕ) → FormalChains V n →ₗ[ℤ] FormalChains V n
   | 0 => LinearMap.id
@@ -1266,11 +1409,13 @@ def SingularMayerVietoris.formalSubdivision {V : Type*} (center : FormalCenter V
     formalLift fun v =>
       formalCone (center n v) n (formalSubdivision center n (formalBoundary n (formalSimplex v)))
 
+/-- Subdivision of a 0-simplex is the simplex. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivision_zero {V : Type*} (center : FormalCenter V)
     (c : FormalChains V 0) : formalSubdivision center 0 c = c :=
   rfl
 
+/-- Subdivision of a simplex is the cone of the boundary subdivision. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivision_simplex_succ {V : Type*} (center : FormalCenter V)
     (n : ℕ) (v : Fin (n + 1) → V) :
@@ -1279,6 +1424,7 @@ theorem SingularMayerVietoris.formalSubdivision_simplex_succ {V : Type*} (center
         (formalSubdivision center n (formalBoundary n (formalSimplex v))) :=
   formalLift_simplex _ _
 
+/-- Subdivision is a chain map. -/
 theorem SingularMayerVietoris.formalBoundary_subdivision {V : Type*} (center : FormalCenter V) :
     ∀ (n : ℕ) (c : FormalChains V (n + 1)),
       formalBoundary n (formalSubdivision center (n + 1) c) =
@@ -1305,6 +1451,7 @@ theorem SingularMayerVietoris.formalBoundary_subdivision {V : Type*} (center : F
       rw [formalBoundary_cone, ih, formalBoundary_boundary, map_zero, map_zero, sub_zero]
     exact LinearMap.congr_fun h c
 
+/-- The formal map commutes with subdivision. -/
 theorem SingularMayerVietoris.formalMap_subdivision {V W : Type*} (center : FormalCenter V)
     (center' : FormalCenter W) (f : V → W) (hf : ∀ n v, f (center n v) = center' n (f ∘ v)) :
     ∀ (n : ℕ) (c : FormalChains V n),
@@ -1324,14 +1471,19 @@ theorem SingularMayerVietoris.formalMap_subdivision {V W : Type*} (center : Form
       rw [formalMap_cone, ih, formalMap_boundary, formalMap_simplex, hf]
     exact LinearMap.congr_fun h c
 
+/-! ### The affine chain map -/
+
+/-- The barycenter of an affine simplex. -/
 def SingularMayerVietoris.simplexCenter (p : ℕ) : FormalCenter (SingularChains.Simplex p) :=
   fun _ v => simplexBarycenter v
 
+/-- The chain map realizing formal chains as singular chains. -/
 def SingularMayerVietoris.affineChainMap (p n : ℕ) :
     FormalChains (SingularChains.Simplex p) (n + 1) →ₗ[ℤ]
       SingularChains.Chains (SingularChains.Simplex p) n :=
   formalLift fun v => SingularChains.simplexChain (SingularChains.Simplex p) n (affineSimplex v)
 
+/-- The affine chain map sends a formal simplex to its affine simplex. -/
 @[simp]
 theorem SingularMayerVietoris.affineChainMap_simplex (p n : ℕ)
     (v : Fin (n + 1) → SingularChains.Simplex p) :
@@ -1339,6 +1491,7 @@ theorem SingularMayerVietoris.affineChainMap_simplex (p n : ℕ)
       SingularChains.simplexChain (SingularChains.Simplex p) n (affineSimplex v) :=
   formalLift_simplex _ _
 
+/-- The affine chain map commutes with the boundary. -/
 theorem SingularMayerVietoris.affineChainMap_boundary (p n : ℕ)
     (c : FormalChains (SingularChains.Simplex p) (n + 2)) :
     ((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 1) n).hom
@@ -1363,6 +1516,7 @@ theorem SingularMayerVietoris.affineChainMap_boundary (p n : ℕ)
     rfl
   exact LinearMap.congr_fun h c
 
+/-- The induced chain of an affine chain map. -/
 theorem SingularMayerVietoris.inducedChain_affineChainMap {m n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p)
     (c : FormalChains (SingularChains.Simplex n) (m + 1)) :
@@ -1378,6 +1532,7 @@ theorem SingularMayerVietoris.inducedChain_affineChainMap {m n p : ℕ}
     rfl
   exact LinearMap.congr_fun h c
 
+/-- The affine chain of the standard simplex is the identity simplex. -/
 @[simp]
 theorem SingularMayerVietoris.affineChainMap_stdVertices (n : ℕ) :
     affineChainMap n n (formalSimplex (stdVertices n)) =
@@ -1385,12 +1540,14 @@ theorem SingularMayerVietoris.affineChainMap_stdVertices (n : ℕ) :
         (ContinuousMap.id (SingularChains.Simplex n)) := by
   rw [affineChainMap_simplex, affineSimplex_stdVertices]
 
+/-- The affine map preserves the barycenter. -/
 theorem SingularMayerVietoris.affineSimplex_preserves_center {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) (m : ℕ)
     (w : Fin (m + 1) → SingularChains.Simplex n) :
     affineSimplex v (simplexCenter n m w) = simplexCenter p m (affineSimplex v ∘ w) :=
   affineSimplex_simplexBarycenter v w
 
+/-- The formal chain homotopy between subdivision and identity. -/
 def SingularMayerVietoris.formalSubdivisionHomotopy {V : Type*} (center : FormalCenter V) :
     (n : ℕ) → FormalChains V n →ₗ[ℤ] FormalChains V (n + 1)
   | 0 => 0
@@ -1400,11 +1557,13 @@ def SingularMayerVietoris.formalSubdivisionHomotopy {V : Type*} (center : Formal
         (formalSimplex v - formalSubdivision center (n + 1) (formalSimplex v) -
           formalSubdivisionHomotopy center n (formalBoundary n (formalSimplex v)))
 
+/-- The subdivision homotopy in degree zero. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivisionHomotopy_zero {V : Type*} (center : FormalCenter V)
     (c : FormalChains V 0) : formalSubdivisionHomotopy center 0 c = 0 :=
   rfl
 
+/-- The subdivision homotopy on a simplex. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivisionHomotopy_simplex_succ {V : Type*}
     (center : FormalCenter V) (n : ℕ) (v : Fin (n + 1) → V) :
@@ -1414,6 +1573,7 @@ theorem SingularMayerVietoris.formalSubdivisionHomotopy_simplex_succ {V : Type*}
           formalSubdivisionHomotopy center n (formalBoundary n (formalSimplex v))) :=
   formalLift_simplex _ _
 
+/-- The subdivision homotopy satisfies the chain-homotopy identity. -/
 theorem SingularMayerVietoris.formalSubdivisionHomotopy_boundary {V : Type*}
     (center : FormalCenter V) :
     ∀ (n : ℕ) (c : FormalChains V (n + 1)),
@@ -1474,6 +1634,7 @@ theorem SingularMayerVietoris.formalSubdivisionHomotopy_boundary {V : Type*}
         sub_add_cancel]
     exact LinearMap.congr_fun h c
 
+/-- The formal map commutes with the subdivision homotopy. -/
 theorem SingularMayerVietoris.formalMap_subdivisionHomotopy {V W : Type*}
     (center : FormalCenter V) (center' : FormalCenter W) (f : V → W)
     (hf : ∀ n v, f (center n v) = center' n (f ∘ v)) :
@@ -1497,6 +1658,7 @@ theorem SingularMayerVietoris.formalMap_subdivisionHomotopy {V W : Type*}
         formalMap_boundary, formalMap_simplex]
     exact LinearMap.congr_fun h c
 
+/-- Iterated subdivision remains a chain map. -/
 theorem SingularMayerVietoris.formalBoundary_subdivision_iterate {V : Type*}
     (center : FormalCenter V) (k n : ℕ) (c : FormalChains V (n + 1)) :
     formalBoundary n ((formalSubdivision center (n + 1))^[k] c) =
@@ -1507,6 +1669,7 @@ theorem SingularMayerVietoris.formalBoundary_subdivision_iterate {V : Type*}
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', formalBoundary_subdivision,
       ih]
 
+/-- The formal map commutes with iterated subdivision. -/
 theorem SingularMayerVietoris.formalMap_subdivision_iterate {V W : Type*}
     (center : FormalCenter V) (center' : FormalCenter W) (f : V → W)
     (hf : ∀ n v, f (center n v) = center' n (f ∘ v)) (k n : ℕ) (c : FormalChains V n) :
@@ -1518,11 +1681,13 @@ theorem SingularMayerVietoris.formalMap_subdivision_iterate {V W : Type*}
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
       formalMap_subdivision center center' f hf, ih]
 
+/-- The homotopy between iterated subdivision and identity. -/
 def SingularMayerVietoris.formalSubdivisionIteratedHomotopy {V : Type*} (center : FormalCenter V)
     (k n : ℕ) : FormalChains V n →ₗ[ℤ] FormalChains V (n + 1) :=
   ∑ j ∈ Finset.range k,
     (formalSubdivisionHomotopy center n).comp ((formalSubdivision center n) ^ j)
 
+/-- The iterated homotopy computes on a chain. -/
 theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_apply {V : Type*}
     (center : FormalCenter V) (k n : ℕ) (c : FormalChains V n) :
     formalSubdivisionIteratedHomotopy center k n c =
@@ -1531,12 +1696,14 @@ theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_apply {V : Type*
   simp only [formalSubdivisionIteratedHomotopy, LinearMap.sum_apply, LinearMap.comp_apply,
     Module.End.pow_apply]
 
+/-- The iterated homotopy in degree zero. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_zero {V : Type*}
     (center : FormalCenter V) (n : ℕ) (c : FormalChains V n) :
     formalSubdivisionIteratedHomotopy center 0 n c = 0 := by
   simp [formalSubdivisionIteratedHomotopy]
 
+/-- The iterated homotopy recursion. -/
 theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_succ {V : Type*}
     (center : FormalCenter V) (k n : ℕ) (c : FormalChains V n) :
     formalSubdivisionIteratedHomotopy center (k + 1) n c =
@@ -1544,12 +1711,14 @@ theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_succ {V : Type*}
         formalSubdivisionHomotopy center n ((formalSubdivision center n)^[k] c) := by
   simp only [formalSubdivisionIteratedHomotopy_apply, Finset.sum_range_succ]
 
+/-- The iterated homotopy is zero in degree zero. -/
 @[simp]
 theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_degree_zero {V : Type*}
     (center : FormalCenter V) (k : ℕ) (c : FormalChains V 0) :
     formalSubdivisionIteratedHomotopy center k 0 c = 0 := by
   simp [formalSubdivisionIteratedHomotopy_apply]
 
+/-- The iterated homotopy satisfies the chain-homotopy identity. -/
 theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_boundary {V : Type*}
     (center : FormalCenter V) (k n : ℕ) (c : FormalChains V (n + 1)) :
     formalBoundary (n + 1) (formalSubdivisionIteratedHomotopy center k (n + 1) c) +
@@ -1581,6 +1750,7 @@ theorem SingularMayerVietoris.formalSubdivisionIteratedHomotopy_boundary {V : Ty
         rw [Function.iterate_succ_apply']
         abel
 
+/-- The formal map commutes with the iterated homotopy. -/
 theorem SingularMayerVietoris.formalMap_subdivisionIteratedHomotopy {V W : Type*}
     (center : FormalCenter V) (center' : FormalCenter W) (f : V → W)
     (hf : ∀ n v, f (center n v) = center' n (f ∘ v)) (k n : ℕ) (c : FormalChains V n) :
@@ -1600,6 +1770,7 @@ def SingularMayerVietoris.subdivision (X : Type) [TopologicalSpace X] (k n : ℕ
       (affineChainMap n n
         ((formalSubdivision (simplexCenter n) (n + 1))^[k] (formalSimplex (stdVertices n))))
 
+/-- The singular subdivision of a simplex. -/
 @[simp]
 theorem SingularMayerVietoris.subdivision_simplex (X : Type) [TopologicalSpace X] (k n : ℕ)
     (σ : SingularChains.SingularSimplex X n) :
@@ -1609,6 +1780,7 @@ theorem SingularMayerVietoris.subdivision_simplex (X : Type) [TopologicalSpace X
           ((formalSubdivision (simplexCenter n) (n + 1))^[k] (formalSimplex (stdVertices n)))) :=
   SingularChains.chainLift_simplex X n _ σ
 
+/-- The induced chain of a subdivision. -/
 theorem SingularMayerVietoris.inducedChain_subdivision {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : SingularChains.Chains X n) :
     SingularChains.inducedChain f n (subdivision X k n c) =
@@ -1623,11 +1795,13 @@ theorem SingularMayerVietoris.inducedChain_subdivision {X Y : Type} [Topological
     rfl
   exact LinearMap.congr_fun h c
 
+/-- An affine simplex is the affine map of the standard vertices. -/
 theorem SingularMayerVietoris.affineSimplex_comp_stdVertices {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) : affineSimplex v ∘ stdVertices n = v := by
   funext i
   exact affineSimplex_vertex v i
 
+/-- Subdivision commutes with the affine chain map. -/
 theorem SingularMayerVietoris.subdivision_affineChainMap (p k n : ℕ)
     (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
     subdivision (SingularChains.Simplex p) k n (affineChainMap p n c) =
@@ -1675,6 +1849,7 @@ def SingularMayerVietoris.subdivisionHomotopy (X : Type) [TopologicalSpace X] (k
         (formalSubdivisionIteratedHomotopy (simplexCenter n) k (n + 1)
           (formalSimplex (stdVertices n))))
 
+/-- The singular subdivision homotopy on a simplex. -/
 @[simp]
 theorem SingularMayerVietoris.subdivisionHomotopy_simplex (X : Type) [TopologicalSpace X]
     (k n : ℕ) (σ : SingularChains.SingularSimplex X n) :
@@ -1685,6 +1860,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_simplex (X : Type) [Topologica
             (formalSimplex (stdVertices n)))) :=
   SingularChains.chainLift_simplex X n _ σ
 
+/-- The induced chain of the subdivision homotopy. -/
 theorem SingularMayerVietoris.inducedChain_subdivisionHomotopy {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (k n : ℕ) (c : SingularChains.Chains X n) :
     SingularChains.inducedChain f (n + 1) (subdivisionHomotopy X k n c) =
@@ -1700,6 +1876,7 @@ theorem SingularMayerVietoris.inducedChain_subdivisionHomotopy {X Y : Type} [Top
     rfl
   exact LinearMap.congr_fun h c
 
+/-- The subdivision homotopy commutes with the affine chain map. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_affineChainMap (p k n : ℕ)
     (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
     subdivisionHomotopy (SingularChains.Simplex p) k n (affineChainMap p n c) =
@@ -1718,6 +1895,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_affineChainMap (p k n : ℕ)
       formalMap_simplex, affineSimplex_comp_stdVertices]
   exact LinearMap.congr_fun h c
 
+/-- The degree-zero boundary of the conjugated homotopy. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero_affineChainMap (p k : ℕ)
     (c : FormalChains (SingularChains.Simplex p) 1) :
     ((SingularChains.singularComplex (SingularChains.Simplex p)).d 1 0).hom
@@ -1729,6 +1907,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero_affineChainMap (
   simpa only [formalSubdivisionIteratedHomotopy_degree_zero, add_zero] using
     formalSubdivisionIteratedHomotopy_boundary (simplexCenter p) k 0 c
 
+/-- The boundary of the conjugated subdivision homotopy. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_affineChainMap (p k n : ℕ)
     (c : FormalChains (SingularChains.Simplex p) (n + 2)) :
     ((SingularChains.singularComplex (SingularChains.Simplex p)).d (n + 2) (n + 1)).hom
@@ -1744,6 +1923,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_affineChainMap (p k n
     congrArg (affineChainMap p (n + 1))
       (formalSubdivisionIteratedHomotopy_boundary (simplexCenter p) k (n + 1) c)
 
+/-- The subdivision homotopy boundary in degree zero. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero {X : Type} [TopologicalSpace X]
     (k : ℕ) (c : SingularChains.Chains X 0) :
     ((SingularChains.singularComplex X).d 1 0).hom (subdivisionHomotopy X k 0 c) =
@@ -1762,6 +1942,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_zero {X : Type} [Topo
       hσ
   exact LinearMap.congr_fun h c
 
+/-- The subdivision homotopy satisfies `∂h + h∂ = sd − id`. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary {X : Type} [TopologicalSpace X]
     (k n : ℕ) (c : SingularChains.Chains X (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom
@@ -1785,6 +1966,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary {X : Type} [Topologic
       LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply] using hσ
   exact LinearMap.congr_fun h c
 
+/-- On a cycle the homotopy boundary is `sd − id`. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_boundary_of_cycle {X : Type}
     [TopologicalSpace X] (k n : ℕ) (c : SingularChains.Chains X n)
     (hc : ((SingularChains.singularComplex X).d n (n - 1)).hom c = 0) :
@@ -1798,19 +1980,25 @@ theorem SingularMayerVietoris.subdivisionHomotopy_boundary_of_cycle {X : Type}
       simpa only [Nat.succ_sub_one] using hc
     simpa only [hc', map_zero, add_zero] using subdivisionHomotopy_boundary k n c
 
+/-! ### Supported formal chains -/
+
+/-- The formal chains supported on a vertex set. -/
 def SingularMayerVietoris.formalChainsSupported {V : Type*} (S : Set V) (n : ℕ) :
     Submodule ℤ (FormalChains V n) :=
   Finsupp.supported ℤ ℤ {v | ∀ i, v i ∈ S}
 
+/-- A formal chain is supported exactly when its support is. -/
 theorem SingularMayerVietoris.mem_formalChainsSupported_iff {V : Type*} {n : ℕ} {S : Set V}
     {c : FormalChains V n} : c ∈ formalChainsSupported S n ↔ ∀ v ∈ c.support, ∀ i, v i ∈ S :=
   Iff.rfl
 
+/-- Supported formal chains are monotone in the vertex set. -/
 theorem SingularMayerVietoris.formalChainsSupported_mono {V : Type*} {n : ℕ} {S T : Set V}
     (h : S ⊆ T) : formalChainsSupported S n ≤ formalChainsSupported T n := by
   intro c hc v hv i
   exact h (hc hv i)
 
+/-- Every formal chain is supported on all vertices. -/
 @[simp]
 theorem SingularMayerVietoris.formalChainsSupported_univ {V : Type*} (n : ℕ) :
     formalChainsSupported (Set.univ : Set V) n = ⊤ := by
@@ -1818,15 +2006,18 @@ theorem SingularMayerVietoris.formalChainsSupported_univ {V : Type*} (n : ℕ) :
   intro c _ v hv i
   exact Set.mem_univ _
 
+/-- A formal simplex is supported exactly when its vertices are. -/
 @[simp]
 theorem SingularMayerVietoris.formalSimplex_mem_supported_iff {V : Type*} {n : ℕ} {S : Set V}
     (v : Fin n → V) : formalSimplex v ∈ formalChainsSupported S n ↔ ∀ i, v i ∈ S := by
   classical simp [formalSimplex, formalChainsSupported, Finsupp.mem_supported]
 
+/-- A formal simplex with vertices in the set is supported. -/
 theorem SingularMayerVietoris.formalSimplex_mem_supported {V : Type*} {n : ℕ} {S : Set V}
     {v : Fin n → V} (hv : ∀ i, v i ∈ S) : formalSimplex v ∈ formalChainsSupported S n :=
   (formalSimplex_mem_supported_iff v).mpr hv
 
+/-- A vertex set bounding the support gives supportedness. -/
 theorem SingularMayerVietoris.formalChainsSupported_le {V : Type*} {n : ℕ} {S : Set V}
     {P : Submodule ℤ (FormalChains V n)} (h : ∀ v, (∀ i, v i ∈ S) → formalSimplex v ∈ P) :
     formalChainsSupported S n ≤ P := by
@@ -1835,12 +2026,14 @@ theorem SingularMayerVietoris.formalChainsSupported_le {V : Type*} {n : ℕ} {S 
   rintro _ ⟨v, hv, rfl⟩
   exact h v hv
 
+/-- A formal linear map preserves supportedness. -/
 theorem SingularMayerVietoris.formalLinearMap_mem_of_supported {V M : Type*} {n : ℕ}
     [AddCommGroup M] [Module ℤ M] {S : Set V} (f : FormalChains V n →ₗ[ℤ] M) (P : Submodule ℤ M)
     {c : FormalChains V n} (hc : c ∈ formalChainsSupported S n)
     (h : ∀ v, (∀ i, v i ∈ S) → f (formalSimplex v) ∈ P) : f c ∈ P := by
   exact (formalChainsSupported_le (P := P.comap f) h) hc
 
+/-- The formal boundary preserves supportedness. -/
 theorem SingularMayerVietoris.formalBoundary_mem_supported {V : Type*} {S : Set V} (n : ℕ)
     {c : FormalChains V (n + 1)} (hc : c ∈ formalChainsSupported S (n + 1)) :
     formalBoundary n c ∈ formalChainsSupported S n := by
@@ -1852,6 +2045,7 @@ theorem SingularMayerVietoris.formalBoundary_mem_supported {V : Type*} {S : Set 
   apply Submodule.smul_mem
   exact formalSimplex_mem_supported fun j => hv (i.succAbove j)
 
+/-- The formal cone preserves supportedness with its center. -/
 theorem SingularMayerVietoris.formalCone_mem_supported {V : Type*} {n : ℕ} {S : Set V} {a : V}
     (ha : a ∈ S) {c : FormalChains V n} (hc : c ∈ formalChainsSupported S n) :
     formalCone a n c ∈ formalChainsSupported S (n + 1) := by
@@ -1862,6 +2056,7 @@ theorem SingularMayerVietoris.formalCone_mem_supported {V : Type*} {n : ℕ} {S 
   intro i
   exact Fin.cases ha hv i
 
+/-- The formal map preserves supportedness. -/
 theorem SingularMayerVietoris.formalMap_mem_supported {V W : Type*} {n : ℕ} {S : Set V}
     {T : Set W} (f : V → W) (hf : Set.MapsTo f S T) {c : FormalChains V n}
     (hc : c ∈ formalChainsSupported S n) : formalMap f n c ∈ formalChainsSupported T n := by
@@ -1870,6 +2065,7 @@ theorem SingularMayerVietoris.formalMap_mem_supported {V W : Type*} {n : ℕ} {S
   rw [formalMap_simplex]
   exact formalSimplex_mem_supported fun i => hf (hv i)
 
+/-- Subdivision preserves supportedness. -/
 theorem SingularMayerVietoris.formalSubdivision_mem_supported {V : Type*}
     (center : FormalCenter V) {S : Set V} (hcenter : ∀ k v, (∀ i, v i ∈ S) → center k v ∈ S) :
     ∀ (n : ℕ) {c : FormalChains V n},
@@ -1890,6 +2086,7 @@ theorem SingularMayerVietoris.formalSubdivision_mem_supported {V : Type*}
       formalCone_mem_supported (hcenter n v hv)
         (ih (formalBoundary_mem_supported n (formalSimplex_mem_supported hv)))
 
+/-- A cone supported on the convex hull exists. -/
 theorem SingularMayerVietoris.formalCone_support_exists {V : Type*} {n : ℕ} (a : V)
     {c : FormalChains V n} {w : Fin (n + 1) → V} (hw : w ∈ (formalCone a n c).support) :
     ∃ v ∈ c.support, w = Fin.cons a v := by
@@ -1898,6 +2095,7 @@ theorem SingularMayerVietoris.formalCone_support_exists {V : Type*} {n : ℕ} (a
   obtain ⟨v, hv, heq⟩ := Finset.mem_image.mp (Finsupp.mapDomain_support hw)
   exact ⟨v, hv, heq.symm⟩
 
+/-- A lift supported on the convex hull exists. -/
 theorem SingularMayerVietoris.formalLift_support_exists {V W : Type*} {n : ℕ} {m : ℕ}
     (f : (Fin n → V) → FormalChains W m) {c : FormalChains V n} {w : Fin m → W}
     (hw : w ∈ (formalLift f c).support) : ∃ v ∈ c.support, w ∈ (f v).support := by
@@ -1906,6 +2104,7 @@ theorem SingularMayerVietoris.formalLift_support_exists {V W : Type*} {n : ℕ} 
   obtain ⟨v, hv, hterm⟩ := Finset.mem_biUnion.mp (Finsupp.support_sum hw)
   exact ⟨v, hv, Finsupp.support_smul hterm⟩
 
+/-- A supported formal map exists. -/
 theorem SingularMayerVietoris.formalLinearMap_support_exists {V W : Type*} {n : ℕ} {m : ℕ}
     (f : FormalChains V n →ₗ[ℤ] FormalChains W m) {c : FormalChains V n} {w : Fin m → W}
     (hw : w ∈ (f c).support) : ∃ v ∈ c.support, w ∈ (f (formalSimplex v)).support := by
@@ -1916,6 +2115,7 @@ theorem SingularMayerVietoris.formalLinearMap_support_exists {V W : Type*} {n : 
   rw [hf] at hw
   exact formalLift_support_exists _ hw
 
+/-- A supported formal boundary exists. -/
 theorem SingularMayerVietoris.formalBoundary_support_exists {V : Type*} (n : ℕ)
     (v : Fin (n + 1) → V) {w : Fin n → V}
     (hw : w ∈ (formalBoundary n (formalSimplex v)).support) :
@@ -1927,6 +2127,7 @@ theorem SingularMayerVietoris.formalBoundary_support_exists {V : Type*} (n : ℕ
   have hs : w ∈ (formalSimplex (v ∘ i.succAbove)).support := Finsupp.support_smul hterm
   simpa [formalSimplex] using hs
 
+/-- A formal linear map is supported on the convex hull. -/
 theorem SingularMayerVietoris.formalLinearMap_mem_of_support {V M : Type*} [AddCommGroup M]
     [Module ℤ M] {n : ℕ} (f : FormalChains V n →ₗ[ℤ] M) (P : Submodule ℤ M) (c : FormalChains V n)
     (hf : ∀ v ∈ c.support, f (formalSimplex v) ∈ P) : f c ∈ P := by
@@ -1937,6 +2138,7 @@ theorem SingularMayerVietoris.formalLinearMap_mem_of_support {V M : Type*} [AddC
     exact hf v hv
   exact h (fun _ hv => hv)
 
+/-- A singular linear map is supported on the convex hull. -/
 theorem SingularMayerVietoris.singularLinearMap_mem_of_support {M : Type*} [AddCommGroup M]
     [Module ℤ M] {X : Type} [TopologicalSpace X] (n : ℕ) (f : SingularChains.Chains X n →ₗ[ℤ] M)
     (P : Submodule ℤ M) (c : SingularChains.Chains X n)
@@ -1954,6 +2156,7 @@ theorem SingularMayerVietoris.singularLinearMap_mem_of_support {M : Type*} [AddC
     exact hf σ hσ
   exact h hc
 
+/-- A singular linear map is small. -/
 theorem SingularMayerVietoris.singularLinearMap_mem_of_small {M : Type*} [AddCommGroup M]
     [Module ℤ M] {X : Type} [TopologicalSpace X] (U V : Set X) (n : ℕ)
     (f : SingularChains.Chains X n →ₗ[ℤ] M) (P : Submodule ℤ M) (c : SingularChains.Chains X n)
@@ -1969,6 +2172,7 @@ theorem SingularMayerVietoris.singularLinearMap_mem_of_small {M : Type*} [AddCom
     exact hf σ hσ
   exact h hc
 
+/-- A realized chain is supported. -/
 theorem SingularMayerVietoris.realizedChain_mem_supported {X : Type} [TopologicalSpace X]
     (U : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X)) (hσ : Set.range σ ⊆ U)
     (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
@@ -1982,6 +2186,7 @@ theorem SingularMayerVietoris.realizedChain_mem_supported {X : Type} [Topologica
   rintro x ⟨t, rfl⟩
   exact hσ ⟨affineSimplex v t, rfl⟩
 
+/-- A realized chain is small. -/
 theorem SingularMayerVietoris.realizedChain_mem_small {X : Type} [TopologicalSpace X]
     (U V : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X))
     (hσ : Set.range σ ⊆ U ∨ Set.range σ ⊆ V)
@@ -1995,6 +2200,7 @@ theorem SingularMayerVietoris.realizedChain_mem_small {X : Type} [TopologicalSpa
       (le_sup_right : supportedChainSubmodule V n ≤ smallChainSubmodule U V n)
         (realizedChain_mem_supported V p n σ hσ c)
 
+/-- A chain supported on small sets is small. -/
 theorem SingularMayerVietoris.realizedChain_mem_small_of_support {X : Type} [TopologicalSpace X]
     (U V : Set X) (p n : ℕ) (σ : C(SingularChains.Simplex p, X))
     (c : FormalChains (SingularChains.Simplex p) (n + 1))
@@ -2009,10 +2215,14 @@ theorem SingularMayerVietoris.realizedChain_mem_small_of_support {X : Type} [Top
   simp only [LinearMap.comp_apply, affineChainMap_simplex, SingularChains.inducedChain_simplex]
   exact simplexChain_mem_small U V n (σ.comp (affineSimplex v)) (hc v hv)
 
+/-! ### Mesh estimates -/
+
+/-- The barycenter of a vertex list. -/
 def SingularMayerVietoris.vertexBarycenter {E : Type*} [SeminormedAddCommGroup E]
     [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) : E :=
   (1 / ((n : ℝ) + 1)) • ∑ i, v i
 
+/-- The barycenter lies in the convex hull. -/
 theorem SingularMayerVietoris.vertexBarycenter_mem_of_convex {E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) {s : Set E}
     (hs : Convex ℝ s) (hv : ∀ i, v i ∈ s) : vertexBarycenter v ∈ s := by
@@ -2022,6 +2232,7 @@ theorem SingularMayerVietoris.vertexBarycenter_mem_of_convex {E : Type*}
       (by simpa using (Nat.cast_pos.mpr (Nat.succ_pos n) : (0 : ℝ) < ((n + 1 : ℕ) : ℝ)))
       (by intro i hi; exact hv i)
 
+/-- The barycenter minus a vertex. -/
 theorem SingularMayerVietoris.vertexBarycenter_sub {E : Type*} [SeminormedAddCommGroup E]
     [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) (x : E) :
     vertexBarycenter v - x = (1 / ((n : ℝ) + 1)) • ∑ i, (v i - x) := by
@@ -2031,6 +2242,7 @@ theorem SingularMayerVietoris.vertexBarycenter_sub {E : Type*} [SeminormedAddCom
   rw [← Nat.cast_smul_eq_nsmul ℝ, smul_smul]
   simp [hn]
 
+/-- The summed norms of vertex differences bound the diameter. -/
 theorem SingularMayerVietoris.sum_norm_vertex_sub_le {E : Type*} [SeminormedAddCommGroup E]
     {n : ℕ} (v : Fin (n + 1) → E) {D : ℝ} (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D)
     (j : Fin (n + 1)) : (∑ i, ‖v i - v j‖) ≤ (n : ℝ) * D := by
@@ -2044,6 +2256,7 @@ theorem SingularMayerVietoris.sum_norm_vertex_sub_le {E : Type*} [SeminormedAddC
       simpa only [dist_eq_norm] using hpair i j
     _ = (n : ℝ) * D := by simp
 
+/-- The barycenter-to-vertex distance bound. -/
 theorem SingularMayerVietoris.dist_vertexBarycenter_vertex_le {E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) {D : ℝ}
     (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D) (j : Fin (n + 1)) :
@@ -2056,6 +2269,7 @@ theorem SingularMayerVietoris.dist_vertexBarycenter_vertex_le {E : Type*}
       (mul_le_mul_of_nonneg_left (sum_norm_vertex_sub_le v hpair j) hc)
     _ = (n : ℝ) / ((n : ℝ) + 1) * D := by ring
 
+/-- The barycenter-to-hull distance bound. -/
 theorem SingularMayerVietoris.dist_vertexBarycenter_convexHull_le {E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) {D : ℝ}
     (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D) {x : E} (hx : x ∈ convexHull ℝ (Set.range v)) :
@@ -2068,6 +2282,7 @@ theorem SingularMayerVietoris.dist_vertexBarycenter_convexHull_le {E : Type*}
   have h := convexHull_min hball (convex_closedBall _ _) hx
   simpa only [Metric.mem_closedBall, dist_comm] using h
 
+/-- The convex-hull diameter bound. -/
 theorem SingularMayerVietoris.dist_convexHull_range_le {E : Type*} [SeminormedAddCommGroup E]
     [NormedSpace ℝ E] {n : ℕ} (v : Fin (n + 1) → E) {D : ℝ}
     (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D) {x y : E} (hx : x ∈ convexHull ℝ (Set.range v))
@@ -2075,6 +2290,7 @@ theorem SingularMayerVietoris.dist_convexHull_range_le {E : Type*} [SeminormedAd
   obtain ⟨_, ⟨i, rfl⟩, _, ⟨j, rfl⟩, h⟩ := convexHull_exists_dist_ge2 hx hy
   exact h.trans (hpair i j)
 
+/-- A pairwise Lebesgue number for two open covers. -/
 theorem SingularMayerVietoris.exists_lebesgue_number_two_pairwise {K X : Type*}
     [PseudoMetricSpace K] [CompactSpace K] [TopologicalSpace X] (σ : C(K, X)) {U V : Set X}
     (hU : IsOpen U) (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) :
@@ -2110,6 +2326,7 @@ theorem SingularMayerVietoris.exists_lebesgue_number_two_pairwise {K X : Type*}
     rw [Set.not_nonempty_iff_eq_empty.mp hs, Set.image_empty]
     exact Set.empty_subset _
 
+/-- A Lebesgue number for a two-element open cover. -/
 theorem SingularMayerVietoris.exists_lebesgue_number_two {K X : Type*} [PseudoMetricSpace K]
     [CompactSpace K] [TopologicalSpace X] (σ : C(K, X)) {U V : Set X} (hU : IsOpen U)
     (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) :
@@ -2119,16 +2336,20 @@ theorem SingularMayerVietoris.exists_lebesgue_number_two {K X : Type*} [PseudoMe
   intro x hx y hy
   exact (Metric.dist_le_diam_of_mem Metric.isBounded_of_compactSpace hx hy).trans hs
 
+/-- The subdivision mesh factor `n/(n+1)`. -/
 def SingularMayerVietoris.meshFactor (n : ℕ) : ℝ :=
   (n : ℝ) / ((n : ℝ) + 1)
 
+/-- The mesh factor is nonnegative. -/
 theorem SingularMayerVietoris.meshFactor_nonneg (n : ℕ) : 0 ≤ meshFactor n := by
   exact div_nonneg (Nat.cast_nonneg n) (by positivity)
 
+/-- The mesh factor is less than one. -/
 theorem SingularMayerVietoris.meshFactor_lt_one (n : ℕ) : meshFactor n < 1 := by
   apply (div_lt_one (by positivity : (0 : ℝ) < (n : ℝ) + 1)).mpr
   linarith
 
+/-- The mesh factor is monotone in the degree. -/
 theorem SingularMayerVietoris.meshFactor_mono : Monotone meshFactor := by
   intro n m hnm
   dsimp [meshFactor]
@@ -2136,25 +2357,30 @@ theorem SingularMayerVietoris.meshFactor_mono : Monotone meshFactor := by
   have hnm' : (n : ℝ) ≤ (m : ℝ) := by exact_mod_cast hnm
   nlinarith
 
+/-- Mesh factor powers tend to zero. -/
 theorem SingularMayerVietoris.meshFactor_pow_tendsto (n : ℕ) :
     Filter.Tendsto (fun k : ℕ => meshFactor n ^ k) Filter.atTop (𝓝 0) :=
   tendsto_pow_atTop_nhds_zero_of_lt_one (meshFactor_nonneg n) (meshFactor_lt_one n)
 
+/-- Scaled mesh powers tend to zero. -/
 theorem SingularMayerVietoris.meshFactor_pow_mul_tendsto (n : ℕ) (D : ℝ) :
     Filter.Tendsto (fun k : ℕ => meshFactor n ^ k * D) Filter.atTop (𝓝 0) := by
   simpa only [MulZeroClass.zero_mul] using (meshFactor_pow_tendsto n).mul_const D
 
+/-- Scaled mesh powers are eventually small. -/
 theorem SingularMayerVietoris.eventually_meshFactor_pow_mul_lt (n : ℕ) (D : ℝ) {δ : ℝ}
     (hδ : 0 < δ) : ∃ N : ℕ, ∀ k ≥ N, meshFactor n ^ k * D < δ := by
   apply Filter.eventually_atTop.mp
   exact (meshFactor_pow_mul_tendsto n D).eventually (eventually_lt_nhds hδ)
 
+/-- A Lebesgue number for the preimage cover of the simplex. -/
 theorem SingularMayerVietoris.simplex_lebesgue_number_two {X : Type*} [TopologicalSpace X]
     {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U) (hV : IsOpen V)
     (hcover : Set.range σ ⊆ U ∪ V) :
     ∃ δ > 0, ∀ s : Set (SingularChains.Simplex n), Metric.diam s ≤ δ → σ '' s ⊆ U ∨ σ '' s ⊆ V :=
   exists_lebesgue_number_two σ hU hV hcover
 
+/-- Simplices below the Lebesgue number are small. -/
 theorem SingularMayerVietoris.simplex_lebesgue_number_subsimplices {X : Type*}
     [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) :
@@ -2166,6 +2392,7 @@ theorem SingularMayerVietoris.simplex_lebesgue_number_subsimplices {X : Type*}
   intro m f hf
   simpa only [ContinuousMap.coe_comp, Set.range_comp] using hsmall (Set.range f) hf
 
+/-- Iterated subdivision eventually makes a simplex small. -/
 theorem SingularMayerVietoris.simplex_eventually_small_of_diameter {X : Type*}
     [TopologicalSpace X] {U V : Set X} {n : ℕ} (σ : C(SingularChains.Simplex n, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : Set.range σ ⊆ U ∪ V) (D : ℝ) :
@@ -2180,6 +2407,7 @@ theorem SingularMayerVietoris.simplex_eventually_small_of_diameter {X : Type*}
   intro k hk m f hf
   exact hsmall m f (hf.trans (hN k hk).le)
 
+/-- A finite family of simplices is eventually simultaneously small. -/
 theorem SingularMayerVietoris.finite_family_eventually_small_of_diameter {X : Type*}
     [TopologicalSpace X] {U V : Set X} {n : ℕ} (s : Finset C(SingularChains.Simplex n, X))
     (hU : IsOpen U) (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) (D : ℝ) :
@@ -2203,6 +2431,7 @@ theorem SingularMayerVietoris.finite_family_eventually_small_of_diameter {X : Ty
     · exact hNσ k ((le_max_left _ _).trans hk) m f hf
     · exact hNs k ((le_max_right _ _).trans hk) τ hτ m f hf
 
+/-- The simplex barycenter is the vertex barycenter. -/
 theorem SingularMayerVietoris.simplexBarycenter_eq_vertexBarycenter {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) :
     (simplexBarycenter v : Fin (p + 1) → ℝ) =
@@ -2210,12 +2439,14 @@ theorem SingularMayerVietoris.simplexBarycenter_eq_vertexBarycenter {n p : ℕ}
   rw [simplexBarycenter_coe]
   simp only [vertexBarycenter, Nat.cast_add, Nat.cast_one, one_div]
 
+/-- Points of an affine simplex are within the vertex diameter. -/
 theorem SingularMayerVietoris.dist_affineSimplex_le {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) {D : ℝ} (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D)
     (t u : SingularChains.Simplex n) : Dist.dist (affineSimplex v t) (affineSimplex v u) ≤ D :=
   dist_convexHull_range_le (fun i => (v i : Fin (p + 1) → ℝ)) hpair
     (affineSimplex_mem_convexHull v t) (affineSimplex_mem_convexHull v u)
 
+/-- The affine simplex's diameter is bounded by the vertex diameter. -/
 theorem SingularMayerVietoris.affineSimplex_diam_le {n p : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p) {D : ℝ}
     (hpair : ∀ i j, Dist.dist (v i) (v j) ≤ D) : Metric.diam (Set.range (affineSimplex v)) ≤ D := by
@@ -2223,6 +2454,7 @@ theorem SingularMayerVietoris.affineSimplex_diam_le {n p : ℕ}
   rintro _ ⟨t, rfl⟩ _ ⟨u, rfl⟩
   exact dist_affineSimplex_le v hpair t u
 
+/-- Vertex-bounded families become small under iteration. -/
 theorem SingularMayerVietoris.finite_family_eventually_small_of_vertices {p : ℕ} {X : Type*}
     [TopologicalSpace X] {U V : Set X} (s : Finset C(SingularChains.Simplex p, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) (D : ℝ) :
@@ -2238,6 +2470,7 @@ theorem SingularMayerVietoris.finite_family_eventually_small_of_vertices {p : �
   intro k hk σ hσ m v hv
   exact hN k hk σ hσ m (affineSimplex v) (affineSimplex_diam_le v hv)
 
+/-- The formal center lies in the convex hull. -/
 theorem SingularMayerVietoris.formalCenter_mem_of_convex {V E : Type*} [SeminormedAddCommGroup E]
     [NormedSpace ℝ E] (center : FormalCenter V) (coords : V → E)
     (hcenter : ∀ n (v : Fin (n + 1) → V), coords (center n v) = vertexBarycenter (coords ∘ v))
@@ -2246,6 +2479,7 @@ theorem SingularMayerVietoris.formalCenter_mem_of_convex {V E : Type*} [Seminorm
   rw [hcenter]
   exact vertexBarycenter_mem_of_convex (coords ∘ v) hS hv
 
+/-- Subdivision vertices stay in the convex hull. -/
 theorem SingularMayerVietoris.formalSubdivision_simplex_vertices_mem_convexHull {V E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] (center : FormalCenter V) (coords : V → E)
     (hcenter : ∀ n (v : Fin (n + 1) → V), coords (center n v) = vertexBarycenter (coords ∘ v))
@@ -2263,6 +2497,7 @@ theorem SingularMayerVietoris.formalSubdivision_simplex_vertices_mem_convexHull 
   have hsub := formalSubdivision_mem_supported center hS n hv
   exact (mem_formalChainsSupported_iff.mp hsub) w hw i
 
+/-- One subdivision scales the mesh by the factor. -/
 theorem SingularMayerVietoris.formalSubdivision_simplex_mesh {V E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] (center : FormalCenter V) (coords : V → E)
     (hcenter : ∀ n (v : Fin (n + 1) → V), coords (center n v) = vertexBarycenter (coords ∘ v))
@@ -2303,6 +2538,7 @@ theorem SingularMayerVietoris.formalSubdivision_simplex_mesh {V E : Type*}
       · change Dist.dist (coords (u i)) (coords (u j)) ≤ meshFactor (n + 1) * D
         exact (huMesh i j).trans (mul_le_mul_of_nonneg_right (meshFactor_mono (Nat.le_succ n)) hD)
 
+/-- Subdivision scales a chain's mesh by the factor. -/
 theorem SingularMayerVietoris.formalSubdivision_mesh {V E : Type*} [SeminormedAddCommGroup E]
     [NormedSpace ℝ E] (center : FormalCenter V) (coords : V → E)
     (hcenter : ∀ n (v : Fin (n + 1) → V), coords (center n v) = vertexBarycenter (coords ∘ v))
@@ -2314,6 +2550,7 @@ theorem SingularMayerVietoris.formalSubdivision_mesh {V E : Type*} [SeminormedAd
   obtain ⟨v, hv, hw⟩ := formalLinearMap_support_exists (formalSubdivision center (n + 1)) hw
   exact formalSubdivision_simplex_mesh center coords hcenter n v (hc v hv) hw
 
+/-- Iterated subdivision scales the mesh by the power. -/
 theorem SingularMayerVietoris.formalSubdivision_iterate_mesh {V E : Type*}
     [SeminormedAddCommGroup E] [NormedSpace ℝ E] (center : FormalCenter V) (coords : V → E)
     (hcenter : ∀ n (v : Fin (n + 1) → V), coords (center n v) = vertexBarycenter (coords ∘ v))
@@ -2331,11 +2568,13 @@ theorem SingularMayerVietoris.formalSubdivision_iterate_mesh {V E : Type*}
         w hw i j
     simpa only [pow_succ, mul_assoc, mul_left_comm] using h
 
+/-- Points of the standard simplex are within distance one. -/
 theorem SingularMayerVietoris.simplex_dist_le_one {p : ℕ} (x y : SingularChains.Simplex p) :
     Dist.dist x y ≤ 1 :=
   (Metric.dist_le_diam_of_mem (bounded_stdSimplex (Fin (p + 1))) x.property y.property).trans
     diam_stdSimplex_le
 
+/-- Iterated subdivision makes the standard simplex's mesh small. -/
 theorem SingularMayerVietoris.simplex_formalSubdivision_iterate_mesh {p n : ℕ} (k : ℕ)
     (c : FormalChains (SingularChains.Simplex p) (n + 1)) :
     ∀ w ∈ ((formalSubdivision (fun _ v => simplexBarycenter v) (n + 1))^[k] c).support,
@@ -2350,6 +2589,7 @@ theorem SingularMayerVietoris.simplex_formalSubdivision_iterate_mesh {p n : ℕ}
   change Dist.dist (w i : Fin (p + 1) → ℝ) (w j : Fin (p + 1) → ℝ) ≤ meshFactor n ^ k
   simpa only [mul_one] using h w hw i j
 
+/-- A finite family is eventually small under iterated subdivision. -/
 theorem SingularMayerVietoris.finite_family_formalSubdivision_eventually_small {p : ℕ} {X : Type*}
     [TopologicalSpace X] {U V : Set X} (s : Finset C(SingularChains.Simplex p, X)) (hU : IsOpen U)
     (hV : IsOpen V) (hcover : ∀ σ ∈ s, Set.range σ ⊆ U ∪ V) :
@@ -2366,6 +2606,9 @@ theorem SingularMayerVietoris.finite_family_formalSubdivision_eventually_small {
   apply hN k hk σ hσ p w
   simpa only [mul_one] using simplex_formalSubdivision_iterate_mesh k c w hw
 
+/-! ### Subdivision lands in small chains -/
+
+/-- The subdivision homotopy stays in small chains. -/
 theorem SingularMayerVietoris.subdivisionHomotopy_mem_small {X : Type} [TopologicalSpace X]
     (U V : Set X) (k n : ℕ) (c : SingularChains.Chains X n) (hc : c ∈ smallChainSubmodule U V n) :
     subdivisionHomotopy X k n c ∈ smallChainSubmodule U V (n + 1) := by
@@ -2376,6 +2619,7 @@ theorem SingularMayerVietoris.subdivisionHomotopy_mem_small {X : Type} [Topologi
   rw [subdivisionHomotopy_simplex]
   exact realizedChain_mem_small U V n (n + 1) σ hσ _
 
+/-- Some iterate of subdivision lands every chain in small chains. -/
 theorem SingularMayerVietoris.eventually_subdivision_mem_small {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ)
     (c : SingularChains.Chains X n) :
@@ -2397,6 +2641,9 @@ theorem SingularMayerVietoris.eventually_subdivision_mem_small {X : Type} [Topol
   intro v hv
   exact hN k hk σ hσ (formalSimplex (stdVertices n)) v hv
 
+/-! ### The small-chains quasi-isomorphism -/
+
+/-- A deformation retract makes the small inclusion a quasi-isomorphism. -/
 theorem SingularMayerVietoris.smallInclusion_quasiIso_of_deformation {X : Type}
     [TopologicalSpace X] (U V : Set X)
     (s : ∀ _k n : ℕ, SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n)
@@ -2438,6 +2685,7 @@ theorem SingularMayerVietoris.smallInclusion_quasiIso_of_deformation {X : Type}
     rw [map_add, hs, hb, hh k n c.1 hc']
     rw [← add_sub_assoc, add_comm, add_sub_cancel_right]
 
+/-- The small-chains inclusion is a quasi-isomorphism. -/
 theorem SingularMayerVietoris.smallInclusion_quasiIso {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
     QuasiIso (smallInclusion U V) := by
@@ -2449,17 +2697,20 @@ theorem SingularMayerVietoris.smallInclusion_quasiIso {X : Type} [TopologicalSpa
     obtain ⟨N, hN⟩ := eventually_subdivision_mem_small U V hU hV hcover n c
     exact ⟨N, hN N le_rfl⟩
 
+/-- Small homology is isomorphic to singular homology. -/
 def SingularMayerVietoris.smallHomologyIso {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     (smallComplex U V).homology n ≅ (SingularChains.singularComplex X).homology n := by
   letI := smallInclusion_quasiIso U V hU hV hcover
   exact isoOfQuasiIsoAt (smallInclusion U V) n
 
+/-- Small homology is linearly equivalent to singular homology. -/
 def SingularMayerVietoris.smallHomologyEquiv {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     (smallComplex U V).homology n ≃ₗ[ℤ] (SingularChains.singularComplex X).homology n :=
   (smallHomologyIso U V hU hV hcover n).toLinearEquiv
 
+/-- The small-homology equivalence computes the comparison. -/
 @[simp]
 theorem SingularMayerVietoris.smallHomologyEquiv_toLinearMap {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
@@ -2467,11 +2718,15 @@ theorem SingularMayerVietoris.smallHomologyEquiv_toLinearMap {X : Type} [Topolog
       (HomologicalComplex.homologyMap (smallInclusion U V) n).hom :=
   rfl
 
+/-! ### The Mayer–Vietoris sequence -/
+
+/-- The left Mayer–Vietoris homology map. -/
 abbrev SingularMayerVietoris.leftHomologyMap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) :
     SingularHomology (U ∩ V : Set X) n →ₗ[ℤ] (SingularHomology U n × SingularHomology V n) :=
   smallLeftHomologyMap U V n
 
+/-- The right Mayer–Vietoris homology map. -/
 def SingularMayerVietoris.rightHomologyMap {X : Type} [TopologicalSpace X] (U V : Set X) (n : ℕ) :
     (SingularHomology U n × SingularHomology V n) →ₗ[ℤ] SingularHomology X n := by
   let f :=
@@ -2485,6 +2740,7 @@ def SingularMayerVietoris.rightHomologyMap {X : Type} [TopologicalSpace X] (U V 
         convert! f.map_zsmul r a using 1
         exact int_smul_eq_zsmul .. }
 
+/-- The left map computes the signed inclusion pair. -/
 theorem SingularMayerVietoris.leftHomologyMap_apply {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (a : SingularHomology (U ∩ V : Set X) n) :
     leftHomologyMap U V n a =
@@ -2493,6 +2749,7 @@ theorem SingularMayerVietoris.leftHomologyMap_apply {X : Type} [TopologicalSpace
             a) :=
   smallLeftHomologyMap_apply U V n a
 
+/-- The right map computes the sum of inclusions. -/
 @[simp]
 theorem SingularMayerVietoris.rightHomologyMap_apply {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (a : SingularHomology U n × SingularHomology V n) :
@@ -2501,6 +2758,7 @@ theorem SingularMayerVietoris.rightHomologyMap_apply {X : Type} [TopologicalSpac
         singularHomologyMap (subtypeInclusion V) n a.2 :=
   rfl
 
+/-- The right map transports through the small-homology comparison. -/
 theorem SingularMayerVietoris.rightHomologyMap_eq_comparison {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) :
     rightHomologyMap U V n = (smallHomologyComparison U V n).comp (smallRightHomologyMap U V n) :=
@@ -2509,6 +2767,7 @@ theorem SingularMayerVietoris.rightHomologyMap_eq_comparison {X : Type} [Topolog
   intro a
   exact (smallHomologyComparison_right U V n a).symm
 
+/-- The left map after the connecting map is zero. -/
 theorem SingularMayerVietoris.leftHomologyMap_comp_right {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) : (rightHomologyMap U V n).comp (leftHomologyMap U V n) = 0 := by
   apply LinearMap.ext
@@ -2520,16 +2779,19 @@ theorem SingularMayerVietoris.leftHomologyMap_comp_right {X : Type} [Topological
     smallHomologyComparison U V n (smallRightHomologyMap U V n (smallLeftHomologyMap U V n a)) = 0
   rw [ha, map_zero]
 
+/-- The equivalence computes the comparison map. -/
 theorem SingularMayerVietoris.smallHomologyEquiv_eq_comparison {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     (smallHomologyEquiv U V hU hV hcover n).toLinearMap = smallHomologyComparison U V n :=
   smallHomologyEquiv_toLinearMap U V hU hV hcover n
 
+/-- The Mayer–Vietoris connecting homomorphism. -/
 def SingularMayerVietoris.connectingHomomorphism {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     SingularHomology X (n + 1) →ₗ[ℤ] SingularHomology (U ∩ V : Set X) n :=
   (smallConnectingMap U V n).comp (smallHomologyEquiv U V hU hV hcover (n + 1)).symm.toLinearMap
 
+/-- The connecting homomorphism transports through the comparison. -/
 theorem SingularMayerVietoris.connectingHomomorphism_comparison {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ)
     (a : SmallHomology U V (n + 1)) :
@@ -2540,12 +2802,14 @@ theorem SingularMayerVietoris.connectingHomomorphism_comparison {X : Type} [Topo
     congrArg (smallConnectingMap U V n)
       ((smallHomologyEquiv U V hU hV hcover (n + 1)).symm_apply_apply a)
 
+/-- The right map equals the transported small right map. -/
 theorem SingularMayerVietoris.rightHomologyMap_eq_transport {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     rightHomologyMap U V n =
       (smallHomologyEquiv U V hU hV hcover n).toLinearMap.comp (smallRightHomologyMap U V n) := by
   rw [smallHomologyEquiv_eq_comparison, rightHomologyMap_eq_comparison]
 
+/-- Mayer–Vietoris exactness at the intersection term. -/
 theorem SingularMayerVietoris.exact_at_intersection {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     LinearMap.range (connectingHomomorphism U V hU hV hcover n) =
@@ -2553,6 +2817,7 @@ theorem SingularMayerVietoris.exact_at_intersection {X : Type} [TopologicalSpace
   rw [connectingHomomorphism, rightTransport_connecting_range]
   exact small_exact_at_intersection U V n
 
+/-- Mayer–Vietoris exactness at the pair term. -/
 theorem SingularMayerVietoris.exact_at_pair {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     LinearMap.range (leftHomologyMap U V n) = LinearMap.ker (rightHomologyMap U V n) := by
@@ -2570,6 +2835,7 @@ theorem SingularMayerVietoris.exact_at_ambient {X : Type} [TopologicalSpace X] (
       (smallRightHomologyMap U V (n + 1)) (smallConnectingMap U V n)
       (small_exact_at_smallHomology U V n)
 
+/-- The degree-zero right map is surjective. -/
 theorem SingularMayerVietoris.rightHomologyMap_zero_surjective {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
     Function.Surjective (rightHomologyMap U V 0) := by
@@ -2578,6 +2844,7 @@ theorem SingularMayerVietoris.rightHomologyMap_zero_surjective {X : Type} [Topol
     rightTransport_second_surjective (smallHomologyEquiv U V hU hV hcover 0)
       (smallRightHomologyMap U V 0) (smallRightHomologyMap_zero_surjective U V)
 
+/-- The connecting map after the left map is zero. -/
 theorem SingularMayerVietoris.connectingHomomorphism_comp_left {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ) :
     (leftHomologyMap U V n).comp (connectingHomomorphism U V hU hV hcover n) = 0 := by

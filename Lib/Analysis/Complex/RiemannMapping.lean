@@ -83,15 +83,20 @@ def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ℂ :=
   e x
 
+/-! ### Triangle normalization to the disc -/
+
+/-- The disc coordinate is injective. -/
 theorem TriangleRiemannNormalization.discCoordinate_injective {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) : Function.Injective (discCoordinate e) := by
   intro x y he
   exact e.injective (Subtype.ext he)
 
+/-- Distinct disc coordinates stay distinct. -/
 theorem TriangleRiemannNormalization.discCoordinate_ne {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) {x y : K} (hxy : x ≠ y) :
     discCoordinate e x ≠ discCoordinate e y := fun he => hxy (discCoordinate_injective e he)
 
+/-- The disc coordinate has norm at most one. -/
 theorem TriangleRiemannNormalization.discCoordinate_norm_le {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ‖discCoordinate e x‖ ≤ 1 := by
   simpa only [discCoordinate, Metric.mem_closedBall, dist_zero_right] using (e x).property
@@ -102,6 +107,7 @@ def TriangleRiemannNormalization.punctureMap {K : Type*} [TopologicalSpace K]
     RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
   ⟨discCoordinate e x, discCoordinate_norm_le e x, discCoordinate_ne e x.property⟩
 
+/-- The puncture map is an embedding. -/
 theorem TriangleRiemannNormalization.punctureMap_isEmbedding {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (pinf : K) :
     Topology.IsEmbedding (punctureMap e pinf) := by
@@ -116,6 +122,7 @@ theorem TriangleRiemannNormalization.punctureMap_isEmbedding {K : Type*} [Topolo
   have hcomp : Topology.IsEmbedding (fun x : {x : K | x ≠ pinf} => (e (x : K) : ℂ)) := hv.comp he
   exact hs.of_comp_iff.mp hcomp
 
+/-- The puncture map is surjective. -/
 theorem TriangleRiemannNormalization.punctureMap_surjective {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (pinf : K) :
     Function.Surjective (punctureMap e pinf) := by
@@ -131,6 +138,7 @@ theorem TriangleRiemannNormalization.punctureMap_surjective {K : Type*} [Topolog
   apply Subtype.ext
   exact congrArg (fun w : Metric.closedBall (0 : ℂ) 1 => (w : ℂ)) (e.apply_symm_apply y)
 
+/-- The punctured triangle is homeomorphic to its normalization. -/
 def TriangleRiemannNormalization.punctureHomeomorph {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (pinf : K) :
     {x : K | x ≠ pinf} ≃ₜ RiemannSphere.closedDiscWithoutPole (discCoordinate e pinf) :=
@@ -149,6 +157,7 @@ def TriangleRiemannNormalization.normalizationHomeomorph {K : Type*} [Topologica
     (RiemannSphere.closedDiscHalfPlaneHomeomorph (discCoordinate_ne e h01)
       (discCoordinate_ne e h0inf) (discCoordinate_ne e h1inf) h0 h1 hinf)
 
+/-- The normalization homeomorphism computes the disc coordinate. -/
 @[simp]
 theorem TriangleRiemannNormalization.normalizationHomeomorph_apply {K : Type*}
     [TopologicalSpace K] (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1)
@@ -163,6 +172,7 @@ theorem TriangleRiemannNormalization.normalizationHomeomorph_apply {K : Type*}
       (discCoordinate_ne e h0inf) (discCoordinate_ne e h1inf) h0 h1 hinf
       (punctureHomeomorph e pinf x)
 
+/-- The normalization sends the first vertex to `0`. -/
 @[simp]
 theorem TriangleRiemannNormalization.normalizationHomeomorph_first {K : Type*}
     [TopologicalSpace K] (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1)
@@ -172,6 +182,7 @@ theorem TriangleRiemannNormalization.normalizationHomeomorph_first {K : Type*}
   rw [normalizationHomeomorph_apply]
   exact RiemannSphere.MobiusCircle.crossRatio_at_zero _ _ _
 
+/-- The normalization sends the second vertex to `1`. -/
 @[simp]
 theorem TriangleRiemannNormalization.normalizationHomeomorph_second {K : Type*}
     [TopologicalSpace K] (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1)
@@ -183,6 +194,7 @@ theorem TriangleRiemannNormalization.normalizationHomeomorph_second {K : Type*}
     RiemannSphere.MobiusCircle.crossRatio_at_one (discCoordinate_ne e h01.symm)
       (discCoordinate_ne e h1inf)
 
+/-- The strict half-plane corresponds to the interior. -/
 theorem TriangleRiemannNormalization.normalizationHomeomorph_strict_iff {K : Type*}
     [TopologicalSpace K] (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1)
     (h0inf : p0 ≠ pinf) (h1inf : p1 ≠ pinf) (h0 : ‖discCoordinate e p0‖ = 1)
@@ -198,6 +210,7 @@ theorem TriangleRiemannNormalization.normalizationHomeomorph_strict_iff {K : Typ
       (discCoordinate_ne e h0inf) (discCoordinate_ne e h1inf) h0 h1 hinf
       (punctureHomeomorph e pinf x)
 
+/-- The normalization orientation factor is nonzero. -/
 theorem TriangleRiemannNormalization.normalization_orientation_ne_zero {K : Type*}
     [TopologicalSpace K] (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (p0 p1 pinf : K) (h01 : p0 ≠ p1)
     (h0inf : p0 ≠ pinf) (h1inf : p1 ≠ pinf) (h0 : ‖discCoordinate e p0‖ = 1)
@@ -250,6 +263,9 @@ theorem RiemannMapping.tendsto_norm_discHomeomorph_of_notMem {U : Set ℂ}
       simpa only [Metric.mem_ball, dist_zero_right] using (e (z i)).property
     exact hi.trans hr
 
+/-! ### The logarithmic half-strip chart -/
+
+/-- The disc-coordinate norm tends to `1` along cocompact filters. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_cocompact {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) {α : Type*}
     {l : Filter α} {z : α → ℂ} (hz : Filter.Tendsto z l (Filter.cocompact ℂ))
@@ -276,6 +292,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_cocompact {D : Set ℂ}
       simpa only [Metric.mem_ball, dist_zero_right, ← hh] using (e ⟨z i, hi⟩).property
     exact hb.trans hr
 
+/-- The disc norm tends to `1` as the norm tends to infinity. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_norm_atTop {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) {α : Type*}
     {l : Filter α} {z : α → ℂ} (hz : Filter.Tendsto (fun i => ‖z i‖) l Filter.atTop)
@@ -283,6 +300,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_norm_atTop {D : Set ℂ}
   apply tendsto_norm_discHomeomorph_of_cocompact e he _ hmem
   simpa only [Metric.cobounded_eq_cocompact] using tendsto_norm_atTop_iff_cobounded.mp hz
 
+/-- The disc norm tends to `1` as the imaginary part tends to infinity. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) {α : Type*}
     {l : Filter α} {z : α → ℂ} (hz : Filter.Tendsto (fun i => (z i).im) l Filter.atTop)
@@ -294,16 +312,19 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop {D : Set ℂ}
 def RiemannBoundary.logHalfStrip (a c : ℝ) (q : ℂ) : ℂ :=
   a - Complex.I * c * Complex.log q
 
+/-- The real part of the logarithmic half-strip coordinate. -/
 @[simp]
 theorem RiemannBoundary.logHalfStrip_re (a c : ℝ) (q : ℂ) :
     (logHalfStrip a c q).re = a + c * q.arg := by
   simp [logHalfStrip, Complex.mul_re, Complex.mul_im, Complex.log_im]
 
+/-- The imaginary part of the logarithmic half-strip coordinate. -/
 @[simp]
 theorem RiemannBoundary.logHalfStrip_im (a c : ℝ) (q : ℂ) :
     (logHalfStrip a c q).im = -c * Real.log ‖q‖ := by
   simp [logHalfStrip, Complex.mul_re, Complex.mul_im, Complex.log_re]
 
+/-- The half-strip imaginary part tends to infinity. -/
 theorem RiemannBoundary.tendsto_logHalfStrip_im_atTop (a : ℝ) {c : ℝ} (hc : 0 < c) :
     Filter.Tendsto (fun q : ℂ => (logHalfStrip a c q).im) (𝓝[≠] 0) Filter.atTop := by
   simp only [logHalfStrip_im]
@@ -311,6 +332,7 @@ theorem RiemannBoundary.tendsto_logHalfStrip_im_atTop (a : ℝ) {c : ℝ} (hc : 
     (Filter.tendsto_const_mul_atTop_of_neg (neg_neg_of_pos hc)).mpr
       (Real.tendsto_log_nhdsGT_zero.comp tendsto_norm_nhdsNE_zero)
 
+/-- The disc norm along the half-strip tends to `1`. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_logHalfStrip {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (a : ℝ) {c : ℝ}
     (hc : 0 < c) (hmem : ∀ᶠ q in 𝓝[{z : ℂ | 0 < z.im}] (0 : ℂ), logHalfStrip a c q ∈ D) :
@@ -325,17 +347,21 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_logHalfStrip {D : Set ℂ}
   rw [heq, Complex.zero_im] at hz
   exact (lt_irrefl 0) hz
 
+/-- The half-strip coordinate on the one-point domain. -/
 def RiemannBoundary.onePointLogHalfStrip (a c : ℝ) (q : ℂ) : OnePoint ℂ :=
   if q = 0 then (OnePoint.infty) else (logHalfStrip a c q : OnePoint ℂ)
 
+/-- The half-strip coordinate at the marked point. -/
 @[simp]
 theorem RiemannBoundary.onePointLogHalfStrip_zero (a c : ℝ) :
     onePointLogHalfStrip a c 0 = (OnePoint.infty) := by simp [onePointLogHalfStrip]
 
+/-- The half-strip coordinate off the marked point. -/
 theorem RiemannBoundary.onePointLogHalfStrip_of_ne_zero (a c : ℝ) {q : ℂ} (hq : q ≠ 0) :
     onePointLogHalfStrip a c q = (logHalfStrip a c q : OnePoint ℂ) := by
   simp [onePointLogHalfStrip, hq]
 
+/-- The half-strip coordinate tends to infinity cocompactly. -/
 theorem RiemannBoundary.tendsto_logHalfStrip_cocompact (a : ℝ) {c : ℝ} (hc : 0 < c) :
     Filter.Tendsto (logHalfStrip a c) (𝓝[≠] 0) (Filter.cocompact ℂ) := by
   have hn : Filter.Tendsto (fun q : ℂ => ‖logHalfStrip a c q‖) (𝓝[≠] 0) Filter.atTop :=
@@ -343,6 +369,7 @@ theorem RiemannBoundary.tendsto_logHalfStrip_cocompact (a : ℝ) {c : ℝ} (hc :
       (tendsto_logHalfStrip_im_atTop a hc)
   simpa only [Metric.cobounded_eq_cocompact] using tendsto_norm_atTop_iff_cobounded.mp hn
 
+/-- The coerced half-strip coordinate tends to `∞`. -/
 theorem RiemannBoundary.tendsto_coe_logHalfStrip_infty (a : ℝ) {c : ℝ} (hc : 0 < c) :
     Filter.Tendsto (fun q : ℂ => (logHalfStrip a c q : OnePoint ℂ)) (𝓝[≠] 0)
       (𝓝 (OnePoint.infty)) := by
@@ -350,6 +377,7 @@ theorem RiemannBoundary.tendsto_coe_logHalfStrip_infty (a : ℝ) {c : ℝ} (hc :
     simpa only [Filter.coclosedCompact_eq_cocompact] using (OnePoint.tendsto_coe_infty (X := ℂ))
   exact hcoe.comp (tendsto_logHalfStrip_cocompact a hc)
 
+/-- The one-point half-strip coordinate is continuous at zero. -/
 theorem RiemannBoundary.continuousAt_onePointLogHalfStrip_zero (a : ℝ) {c : ℝ} (hc : 0 < c) :
     ContinuousAt (onePointLogHalfStrip a c) 0 := by
   rw [continuousAt_iff_punctured_nhds, onePointLogHalfStrip_zero]
@@ -357,40 +385,49 @@ theorem RiemannBoundary.continuousAt_onePointLogHalfStrip_zero (a : ℝ) {c : �
   filter_upwards [self_mem_nhdsWithin] with q hq
   exact (onePointLogHalfStrip_of_ne_zero a c hq).symm
 
+/-- The one-point domain of the boundary chart. -/
 def RiemannBoundary.onePointDomain (D : Set ℂ) : Set (OnePoint ℂ) :=
   ((↑) : ℂ → OnePoint ℂ) '' D
 
+/-- A finite point lies in the one-point domain. -/
 @[simp]
 theorem RiemannBoundary.coe_mem_onePointDomain {D : Set ℂ} {z : ℂ} :
     (z : OnePoint ℂ) ∈ onePointDomain D ↔ z ∈ D := by exact OnePoint.coe_injective.mem_set_image
 
+/-- `∞` is not in the one-point domain. -/
 @[simp]
 theorem RiemannBoundary.infty_notMem_onePointDomain (D : Set ℂ) :
     (OnePoint.infty) ∉ onePointDomain D :=
   OnePoint.infty_notMem_image_coe
 
+/-- The one-point domain is open. -/
 theorem RiemannBoundary.isOpen_onePointDomain {D : Set ℂ} (hD : IsOpen D) :
     IsOpen (onePointDomain D) :=
   OnePoint.isOpen_image_coe.mpr hD
 
+/-- The one-point domain is homeomorphic to its model. -/
 def RiemannBoundary.onePointDomainHomeomorph (D : Set ℂ) : D ≃ₜ onePointDomain D :=
   OnePoint.isOpenEmbedding_coe.isEmbedding.homeomorphImage D
 
+/-- The one-point homeomorphism computes the coordinate. -/
 @[simp]
 theorem RiemannBoundary.onePointDomainHomeomorph_apply_coe (D : Set ℂ) (z : D) :
     (onePointDomainHomeomorph D z : OnePoint ℂ) = (z : ℂ) :=
   rfl
 
+/-- The one-point domain is homeomorphic to the disc. -/
 def RiemannBoundary.onePointDomainDiscHomeomorph {D : Set ℂ} (e : D ≃ₜ Metric.ball (0 : ℂ) 1) :
     onePointDomain D ≃ₜ Metric.ball (0 : ℂ) 1 :=
   (onePointDomainHomeomorph D).symm.trans e
 
+/-- The disc homeomorphism computes the disc coordinate. -/
 @[simp]
 theorem RiemannBoundary.onePointDomainDiscHomeomorph_apply {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (z : D) :
     onePointDomainDiscHomeomorph e (onePointDomainHomeomorph D z) = e z := by
   simp [onePointDomainDiscHomeomorph]
 
+/-- The disc homeomorphism computes on a representative. -/
 theorem RiemannBoundary.onePointDomainDiscHomeomorph_representative {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (b : ℂ)
     (z : onePointDomain D) : (z : OnePoint ℂ).elim b f = (onePointDomainDiscHomeomorph e z : ℂ) :=
@@ -399,6 +436,7 @@ theorem RiemannBoundary.onePointDomainDiscHomeomorph_representative {D : Set ℂ
   simpa only [onePointDomainHomeomorph_apply_coe, OnePoint.elim_some,
     onePointDomainDiscHomeomorph_apply] using he w
 
+/-- `∞` is a frontier point of the cocompact one-point domain. -/
 theorem RiemannBoundary.infty_mem_frontier_onePointDomain_of_cocompact {D : Set ℂ} {α : Type*}
     {l : Filter α} [Filter.NeBot l] {z : α → ℂ} (hz : Filter.Tendsto z l (Filter.cocompact ℂ))
     (hmem : ∀ᶠ i in l, z i ∈ D) : ((OnePoint.infty) : OnePoint ℂ) ∈ frontier (onePointDomain D) :=
@@ -411,6 +449,9 @@ theorem RiemannBoundary.infty_mem_frontier_onePointDomain_of_cocompact {D : Set 
     exact subset_closure (coe_mem_onePointDomain.mpr hi)
   exact ⟨hcl, fun hi => infty_notMem_onePointDomain D (interior_subset hi)⟩
 
+/-! ### Normal families -/
+
+/-- A bounded holomorphic family is uniformly equicontinuous on a thickening. -/
 theorem RiemannMapping.uniformEquicontinuousOn_of_thickening_subset_of_forall_norm_le
     {ι E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F]
     [NormedSpace ℂ F] {f : ι → E → F} {s U : Set E} {r : ℝ} (hr₀ : 0 < r)
@@ -443,6 +484,7 @@ theorem RiemannMapping.uniformEquicontinuousOn_of_thickening_subset_of_forall_no
       · have := (norm_nonneg _).trans (hC i x (hsU hx))
         positivity
 
+/-- A bounded holomorphic family is equicontinuous at a point. -/
 theorem RiemannMapping.equicontinuousAt_of_forall_norm_le {ι E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F] {f : ι → E → F} {U : Set E} {x : E}
     (hU : U ∈ 𝓝 x) (hfd : ∀ i, DifferentiableOn ℂ (f i) U) (hf : ∃ C, ∀ i, ∀ z ∈ U, ‖f i z‖ ≤ C) :
@@ -458,15 +500,19 @@ theorem RiemannMapping.equicontinuousAt_of_forall_norm_le {ι E F : Type*} [Norm
   rwa [EquicontinuousWithinAt,
     nhdsWithin_eq_nhds.mpr (Metric.ball_mem_nhds _ (by positivity))] at this
 
+/-- An exhaustion of the domain by compact subsets. -/
 def RiemannMapping.compactSubsets (U : Set ℂ) : Set (Set ℂ) :=
   {K | K ⊆ U ∧ IsCompact K}
 
+/-- The function space of holomorphic maps to the disc. -/
 abbrev RiemannMapping.FunctionSpace (U : Set ℂ) :=
   ℂ →ᵤ[compactSubsets U] ℂ
 
+/-- Evaluation at a point of the domain. -/
 def RiemannMapping.evaluation {U : Set ℂ} (f : FunctionSpace U) : ℂ → ℂ :=
   UniformOnFun.toFun (compactSubsets U) f
 
+/-- The function-space uniformity is countably generated. -/
 theorem RiemannMapping.uniformity_isCountablyGenerated {U : Set ℂ} (hUo : IsOpen U) :
     (𝓤 (FunctionSpace U)).IsCountablyGenerated := by
   have := hUo.locallyCompactSpace
@@ -481,6 +527,7 @@ theorem RiemannMapping.uniformity_isCountablyGenerated {U : Set ℂ} (hUo : IsOp
     rw [← Subtype.isCompact_iff] at hKc
     exact (φ.exists_superset_of_isCompact hKc).imp fun n hn => by gcongr
 
+/-- Locally uniform convergence implies pointwise evaluation convergence. -/
 theorem RiemannMapping.evaluation_tendstoLocallyUniformlyOn {U : Set ℂ} (hUo : IsOpen U)
     {f : FunctionSpace U} {s : Set (FunctionSpace U)} :
     TendstoLocallyUniformlyOn evaluation (evaluation f) (𝓝[s] f) U := by
@@ -489,6 +536,7 @@ theorem RiemannMapping.evaluation_tendstoLocallyUniformlyOn {U : Set ℂ} (hUo :
   intro K hKU hK
   exact (UniformOnFun.tendsto_iff_tendstoUniformlyOn.mp h) K ⟨hKU, hK⟩
 
+/-- A bounded holomorphic family has compact closure. -/
 theorem RiemannMapping.isCompact_closure_of_bounded_holomorphic {U : Set ℂ} (hUo : IsOpen U)
     {s : Set (FunctionSpace U)} (hsd : ∀ f ∈ s, DifferentiableOn ℂ (evaluation f) U)
     (hsb : ∃ C : ℝ, ∀ f ∈ s, ∀ z ∈ U, ‖evaluation f z‖ ≤ C) : IsCompact (closure s) := by
@@ -507,6 +555,7 @@ theorem RiemannMapping.isCompact_closure_of_bounded_holomorphic {U : Set ℂ} (h
       ⟨Metric.closedBall 0 C, ProperSpace.isCompact_closedBall _ _, fun f hf => by
         simpa only [mem_closedBall_zero_iff] using hC f hf x (hK.1 hx)⟩
 
+/-- The normalized class of injective disc maps with prescribed derivative data. -/
 def RiemannMapping.normalizedClass (U : Set ℂ) (x₀ : ℂ) : Set (FunctionSpace U) :=
   {f |
     Set.MapsTo (evaluation f) U (Metric.ball 0 1) ∧
@@ -514,11 +563,13 @@ def RiemannMapping.normalizedClass (U : Set ℂ) (x₀ : ℂ) : Set (FunctionSpa
         DifferentiableOn ℂ (evaluation f) U ∧
           (∀ z ∈ U, deriv (evaluation f) z ≠ 0) ∧ evaluation f x₀ = 0}
 
+/-- The normalized class has compact closure. -/
 theorem RiemannMapping.normalizedClass_compact_closure {U : Set ℂ} (hUo : IsOpen U) (x₀ : ℂ) :
     IsCompact (closure (normalizedClass U x₀)) := by
   apply isCompact_closure_of_bounded_holomorphic hUo (fun f hf => hf.2.2.1)
   exact ⟨1, fun f hf z hz => (mem_ball_zero_iff.mp (hf.1 hz)).le⟩
 
+/-- The closure of the normalized class. -/
 theorem RiemannMapping.closure_normalizedClass {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     closure (normalizedClass U x₀) ⊆
@@ -564,6 +615,7 @@ theorem RiemannMapping.closure_normalizedClass {U : Set ℂ} (hUo : IsOpen U)
         (hFd.mono fun g hg => hg.deriv hUo)
     exact htendsto.deriv hFd hUo
 
+/-- The derivative norm is continuous on the closure. -/
 theorem RiemannMapping.norm_deriv_continuousOn_closure {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ContinuousOn (fun f : FunctionSpace U => ‖deriv (evaluation f) x₀‖)
@@ -601,23 +653,27 @@ theorem RiemannMapping.exists_maximal_normalizedMap {U : Set ℂ} (hUo : IsOpen 
     simp only [hz, norm_zero, lt_self_iff_false] at hpos
   exact ⟨f, ⟨hmap, hinj', hdiff, hderiv', hzero⟩, fun g hg => hmax (subset_closure hg)⟩
 
+/-- The disc extension of a limit map. -/
 def RiemannMapping.discExtension {U : Set ℂ} (f : ℂ → ℂ) (hf : Set.MapsTo f U (Metric.ball 0 1)) :
     ℂ → Complex.UnitDisc := by
   classical
     exact fun z =>
     if hz : z ∈ U then Complex.UnitDisc.mk (f z) (mem_ball_zero_iff.mp (hf hz)) else 0
 
+/-- The disc extension computes the map. -/
 @[simp]
 theorem RiemannMapping.discExtension_coe {U : Set ℂ} (f : ℂ → ℂ)
     (hf : Set.MapsTo f U (Metric.ball 0 1)) {z : ℂ} (hz : z ∈ U) :
     (discExtension f hf z : ℂ) = f z := by
   simp only [discExtension, dif_pos hz, Complex.UnitDisc.coe_mk]
 
+/-- The disc extension agrees with the map on the domain. -/
 theorem RiemannMapping.discExtension_eqOn {U : Set ℂ} (f : ℂ → ℂ)
     (hf : Set.MapsTo f U (Metric.ball 0 1)) :
     Set.EqOn (Complex.UnitDisc.coe ∘ discExtension f hf) f U := fun _ hz =>
   discExtension_coe f hf hz
 
+/-- The normalized class is nonempty. -/
 theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     (normalizedClass U x₀).Nonempty := by
@@ -685,6 +741,9 @@ theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set 
   rw [heDeriv] at hglt
   exact hle.not_gt hglt
 
+/-! ### The Riemann map -/
+
+/-- A holomorphic map with nonvanishing derivative is a local diffeomorphism. -/
 theorem RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero (U : TopologicalSpace.Opens ℂ)
     {f : ℂ → ℂ} (hf : DifferentiableOn ℂ f (U : Set ℂ)) (hderiv : ∀ z ∈ U, deriv f z ≠ 0) {z : ℂ}
     (hz : z ∈ U) :
@@ -724,13 +783,16 @@ theorem RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero (U : TopologicalSpa
       (e.contDiffAt_symm hw ((hD _ hwU).hasFDerivAt_equiv (hderiv _ hwU))
           (hF _ hwU)).contDiffWithinAt
 
+/-- The unit disc as a subtype. -/
 def RiemannMapping.unitDisc : TopologicalSpace.Opens ℂ :=
   ⟨Metric.ball 0 1, Metric.isOpen_ball⟩
 
+/-- The Riemann map of the domain onto the disc. -/
 def RiemannMapping.riemannMap (U : TopologicalSpace.Opens ℂ) (hUc : IsSimplyConnected (U : Set ℂ))
     (hU : (U : Set ℂ) ≠ Set.univ) (x₀ : U) : ℂ → ℂ :=
   (exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero U.isOpen hUc hU x₀.property).choose
 
+/-- The Riemann map is the maximizing normalized map. -/
 theorem RiemannMapping.riemannMap_spec (U : TopologicalSpace.Opens ℂ)
     (hUc : IsSimplyConnected (U : Set ℂ)) (hU : (U : Set ℂ) ≠ Set.univ) (x₀ : U) :
     DifferentiableOn ℂ (riemannMap U hUc hU x₀) (U : Set ℂ) ∧
@@ -738,16 +800,22 @@ theorem RiemannMapping.riemannMap_spec (U : TopologicalSpace.Opens ℂ)
         (∀ z ∈ U, deriv (riemannMap U hUc hU x₀) z ≠ 0) ∧ riemannMap U hUc hU x₀ x₀ = 0 :=
   (exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero U.isOpen hUc hU x₀.property).choose_spec
 
+/-! ### Primitives on rectangles -/
+
+/-- An open rectangle in the plane. -/
 def RiemannBoundary.openRectangle (a b c d : ℝ) : Set ℂ :=
   {z | z.re ∈ Set.Ioo a b ∧ z.im ∈ Set.Ioo c d}
 
+/-- The open rectangle is open. -/
 theorem RiemannBoundary.isOpen_openRectangle (a b c d : ℝ) : IsOpen (openRectangle a b c d) :=
   isOpen_Ioo.reProdIm isOpen_Ioo
 
+/-- The open rectangle is convex. -/
 theorem RiemannBoundary.convex_openRectangle (a b c d : ℝ) : Convex ℝ (openRectangle a b c d) :=
   ((convex_halfSpace_re_gt a).inter (convex_halfSpace_re_lt b)).inter
     ((convex_halfSpace_im_gt c).inter (convex_halfSpace_im_lt d))
 
+/-- A point with mixed coordinates lies in the open rectangle. -/
 theorem RiemannBoundary.mixed_mem_openRectangle {a b c d : ℝ} {z w : ℂ}
     (hz : z ∈ openRectangle a b c d) (hw : w ∈ openRectangle a b c d) :
     z.re + w.im * Complex.I ∈ openRectangle a b c d := by
@@ -756,12 +824,14 @@ theorem RiemannBoundary.mixed_mem_openRectangle {a b c d : ℝ} {z w : ℂ}
     sub_zero, add_zero, Complex.add_im, Complex.mul_im, mul_one, zero_add] using
     And.intro hz.1 hw.2
 
+/-- The closed rectangle lies in the open rectangle. -/
 theorem RiemannBoundary.rectangle_subset_openRectangle {a b c d : ℝ} {z w : ℂ}
     (hz : z ∈ openRectangle a b c d) (hw : w ∈ openRectangle a b c d) :
     Complex.Rectangle z w ⊆ openRectangle a b c d :=
   Complex.Convex.rectangle_subset (convex_openRectangle a b c d) hz hw
     (mixed_mem_openRectangle hz hw) (mixed_mem_openRectangle hw hz)
 
+/-- A horizontal segment lies in the rectangle. -/
 theorem RiemannBoundary.horizontal_segment_subset {a b c d : ℝ} {x₁ x₂ y : ℝ}
     (h₁ : (x₁ : ℂ) + y * Complex.I ∈ openRectangle a b c d)
     (h₂ : (x₂ : ℂ) + y * Complex.I ∈ openRectangle a b c d) :
@@ -769,6 +839,7 @@ theorem RiemannBoundary.horizontal_segment_subset {a b c d : ℝ} {x₁ x₂ y :
   convert rectangle_subset_openRectangle h₁ h₂ using 1
   simp [Complex.horizontalSegment_eq x₁ x₂ y, Complex.Rectangle]
 
+/-- A vertical segment lies in the rectangle. -/
 theorem RiemannBoundary.vertical_segment_subset {a b c d : ℝ} {x y₁ y₂ : ℝ}
     (h₁ : (x : ℂ) + y₁ * Complex.I ∈ openRectangle a b c d)
     (h₂ : (x : ℂ) + y₂ * Complex.I ∈ openRectangle a b c d) :
@@ -776,6 +847,7 @@ theorem RiemannBoundary.vertical_segment_subset {a b c d : ℝ} {x y₁ y₂ : �
   convert rectangle_subset_openRectangle h₁ h₂ using 1
   simp [Complex.verticalSegment_eq x y₁ y₂, Complex.Rectangle]
 
+/-- The difference of wedge integrals over an open rectangle. -/
 theorem RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hc : ContinuousOn f (openRectangle a b c d))
     (hf : Complex.IsConservativeOn f (openRectangle a b c d)) {p z w : ℂ}
@@ -831,6 +903,7 @@ theorem RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle {a b c d :
   rw [hHoriz, hVert]
   linear_combination hBoundary
 
+/-- The wedge integral is differentiable on the open rectangle. -/
 theorem RiemannBoundary.hasDerivAt_wedgeIntegral_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (openRectangle a b c d)) {p z : ℂ} (hp : p ∈ openRectangle a b c d)
     (hz : z ∈ openRectangle a b c d) :
@@ -845,6 +918,7 @@ theorem RiemannBoundary.hasDerivAt_wedgeIntegral_openRectangle {a b c d : ℝ} {
     sub_eq_iff_eq_add.mp
       (wedgeIntegral_sub_wedgeIntegral_openRectangle hf.continuousOn hf.isConservativeOn hp hz hw)
 
+/-- A closed form is exact on the open rectangle. -/
 theorem RiemannBoundary.isExactOn_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (openRectangle a b c d)) :
     Complex.IsExactOn f (openRectangle a b c d) := by
@@ -856,6 +930,7 @@ theorem RiemannBoundary.isExactOn_openRectangle {a b c d : ℝ} {f : ℂ → ℂ
   · refine ⟨fun _ => 0, fun z hz => ?_⟩
     exact (h ⟨z, hz⟩).elim
 
+/-- A Lipschitz extension primitive exists on the open rectangle. -/
 theorem RiemannBoundary.exists_lipschitz_extension_primitive_openRectangle {a b c d : ℝ}
     {f : ℂ → ℂ} {F : ℂ → ℂ} {K : ℝ≥0} (hF : ∀ z ∈ openRectangle a b c d, HasDerivAt F (f z) z)
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖₊ ≤ K) :
@@ -872,6 +947,7 @@ theorem RiemannBoundary.exists_lipschitz_extension_primitive_openRectangle {a b 
   filter_upwards [(isOpen_openRectangle a b c d).mem_nhds hz] with w hw
   exact (heq hw).symm
 
+/-- A continuous primitive exists on the open rectangle. -/
 theorem RiemannBoundary.exists_continuous_primitive_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     {K : ℝ≥0} (hf : DifferentiableOn ℂ f (openRectangle a b c d))
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖₊ ≤ K) :
@@ -880,6 +956,7 @@ theorem RiemannBoundary.exists_continuous_primitive_openRectangle {a b c d : ℝ
   obtain ⟨G, hG, _, hd⟩ := exists_lipschitz_extension_primitive_openRectangle hF hb
   exact ⟨G, hG.continuous, hd⟩
 
+/-- A bounded continuous primitive exists on the open rectangle. -/
 theorem RiemannBoundary.exists_continuous_primitive_openRectangle_of_norm_le {a b c d : ℝ}
     {f : ℂ → ℂ} {M : ℝ} (hf : DifferentiableOn ℂ f (openRectangle a b c d))
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖ ≤ M) :
@@ -888,12 +965,14 @@ theorem RiemannBoundary.exists_continuous_primitive_openRectangle_of_norm_le {a 
   intro z hz
   exact_mod_cast (hb z hz).trans (Real.le_coe_toNNReal M)
 
+/-- The horizontal primitive is differentiable. -/
 theorem RiemannBoundary.hasDerivAt_horizontal {F : ℂ → ℂ} {f : ℂ} {x y : ℝ}
     (hF : HasDerivAt F f ((x : ℂ) + y * Complex.I)) :
     HasDerivAt (fun t : ℝ => F (t + y * Complex.I)) f x := by
   have h := hF.comp (x : ℂ) ((hasDerivAt_id (x : ℂ)).add_const (y * Complex.I))
   simpa only [mul_one, Function.comp_def, id_eq] using h.comp_ofReal
 
+/-- The upper limit converges uniformly on the filter. -/
 theorem RiemannBoundary.upper_limit_tendstoUniformlyOnFilter {q : ℂ → ℂ} {x : ℝ}
     (hq : Filter.Tendsto q (𝓝[{z : ℂ | 0 < z.im}] (x : ℂ)) (𝓝 0)) :
     TendstoUniformlyOnFilter (fun y t : ℝ => q (t + y * Complex.I)) (fun _ => 0) (𝓝[>] 0) (𝓝 x) :=
@@ -918,6 +997,7 @@ theorem RiemannBoundary.upper_limit_tendstoUniformlyOnFilter {q : ℂ → ℂ} {
   simpa only [Function.comp_def, dist_zero_left, dist_zero_right] using
     Metric.tendsto_nhds.mp (hq.comp ht) ε hε
 
+/-- The boundary trace difference is differentiable. -/
 theorem RiemannBoundary.hasDerivAt_boundary_trace_sub {F G f g : ℂ → ℂ} {a b h x : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (hF : Continuous F) (hG : Continuous G)
     (hFd :
@@ -954,6 +1034,7 @@ theorem RiemannBoundary.hasDerivAt_boundary_trace_sub {F G f g : ℂ → ℂ} {a
     simpa [H] using (hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))
   exact hasDerivAt_of_tendstoLocallyUniformlyOn isOpen_Ioo hdu hd hlim hx
 
+/-- The boundary trace difference computes the jump. -/
 theorem RiemannBoundary.boundary_trace_sub_eq {F G f g : ℂ → ℂ} {a b h x t : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (ht : t ∈ Set.Ioo a b) (hF : Continuous F) (hG : Continuous G)
     (hFd :
@@ -973,6 +1054,7 @@ theorem RiemannBoundary.boundary_trace_sub_eq {F G f g : ℂ → ℂ} {a b h x t
       (fun s hs => (hd s hs).differentiableAt.differentiableWithinAt)
       (fun s hs => (hd s hs).deriv) hx ht
 
+/-- A vanishing boundary jump gives an analytic extension. -/
 theorem RiemannBoundary.exists_analytic_extension_of_vanishing_jump {f g : ℂ → ℂ} {a b h M N : ℝ}
     (hab : a < b) (hh : 0 < h) (hf : DifferentiableOn ℂ f (openRectangle a b 0 h))
     (hg : DifferentiableOn ℂ g (openRectangle a b (-h) 0))
@@ -1035,6 +1117,7 @@ theorem RiemannBoundary.exists_analytic_extension_of_vanishing_jump {f g : ℂ �
       exact SchwarzReflection.pasteUpper_of_neg F (fun w => G w + c) hw
     exact (((hGd z hz).add_const c).congr_of_eventuallyEq hnear).deriv
 
+/-- The norm of `z − 1/conj z`. -/
 theorem RiemannBoundary.norm_sub_inv_conj (w : ℂ) : ‖w - (conj w)⁻¹‖ = |‖w‖ ^ 2 - 1| / ‖w‖ := by
   have heq : w - (conj w)⁻¹ = ((‖w‖ ^ 2 - 1 : ℝ) : ℂ) / conj w := by
     by_cases hw : w = 0
@@ -1045,6 +1128,7 @@ theorem RiemannBoundary.norm_sub_inv_conj (w : ℂ) : ‖w - (conj w)⁻¹‖ = 
       Complex.ofReal_sub, Complex.ofReal_one]
   rw [heq, norm_div, Complex.norm_real, Real.norm_eq_abs, Complex.norm_conj]
 
+/-- `z − 1/conj z` tends to zero as `|z|` tends to `1`. -/
 theorem RiemannBoundary.tendsto_sub_inv_conj_of_norm {α : Type*} {l : Filter α} {f : α → ℂ}
     (hf : Filter.Tendsto (fun x => ‖f x‖) l (𝓝 1)) :
     Filter.Tendsto (fun x => f x - (conj (f x))⁻¹) l (𝓝 0) := by
@@ -1058,6 +1142,7 @@ theorem RiemannBoundary.tendsto_sub_inv_conj_of_norm {α : Type*} {l : Filter α
   rw [hfun] at hdiv
   simpa only [zero_div] using hdiv
 
+/-- A modulus-one extension has norm one on the axis. -/
 theorem RiemannBoundary.norm_axis_eq_one_of_extension {H f : ℂ → ℂ} {a b h x : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (hH : ContinuousOn H (openRectangle a b (-h) h))
     (heq : Set.EqOn H f (openRectangle a b 0 h))
@@ -1086,6 +1171,7 @@ theorem RiemannBoundary.norm_axis_eq_one_of_extension {H f : ℂ → ℂ} {a b h
     rw [heq (by simpa [openRectangle] using And.intro hx hy)]
   exact tendsto_nhds_unique hHt (hft.congr' hevent.symm)
 
+/-- A bounded modulus-one boundary trace gives an analytic extension. -/
 theorem RiemannBoundary.exists_analytic_extension_of_modulus_one_bounded {f : ℂ → ℂ}
     {a b h M m : ℝ} (hab : a < b) (hh : 0 < h) (hm : 0 < m)
     (hf : DifferentiableOn ℂ f (openRectangle a b 0 h))
@@ -1129,6 +1215,7 @@ theorem RiemannBoundary.exists_analytic_extension_of_modulus_one_bounded {f : �
     ⟨H, hH, he, hl, fun x hx =>
       norm_axis_eq_one_of_extension hh hx hH.continuousOn he (hmod x hx)⟩
 
+/-- Points of a centered rectangle are within twice the radius. -/
 theorem RiemannBoundary.dist_lt_two_mul_of_mem_centeredRectangle {x r : ℝ} {z : ℂ}
     (hz : z ∈ openRectangle (x - r) (x + r) (-r) r) : Dist.dist z (x : ℂ) < 2 * r := by
   have hre : |(z - x).re| < r := by
@@ -1139,6 +1226,7 @@ theorem RiemannBoundary.dist_lt_two_mul_of_mem_centeredRectangle {x r : ℝ} {z 
   rw [dist_eq_norm]
   exact (Complex.norm_le_abs_re_add_abs_im (z - x)).trans_lt (by linarith)
 
+/-- A ball lies in the centered rectangle. -/
 theorem RiemannBoundary.ball_subset_centeredRectangle (x r : ℝ) :
     Metric.ball (x : ℂ) r ⊆ openRectangle (x - r) (x + r) (-r) r := by
   intro z hz
@@ -1149,6 +1237,7 @@ theorem RiemannBoundary.ball_subset_centeredRectangle (x r : ℝ) :
     sub_zero] at hre him
   exact ⟨⟨by linarith [hre.1], by linarith [hre.2]⟩, him⟩
 
+/-- A modulus-one boundary trace gives an analytic extension. -/
 theorem RiemannBoundary.exists_analytic_extension_of_modulus_one {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → ℂ} {x : ℝ} (hx : (x : ℂ) ∈ U) (hf : DifferentiableOn ℂ f (U ∩ {z : ℂ | 0 < z.im}))
     (hmod :
@@ -1209,6 +1298,7 @@ theorem RiemannBoundary.exists_analytic_extension_of_modulus_one {U : Set ℂ} (
     have htR := ball_subset_centeredRectangle x r ht
     exact hHcircle t (by simpa only [Complex.ofReal_re] using htR.1)
 
+/-- The disc norm tends to `1` approaching a non-member. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_nhdsWithin_of_notMem {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) {a : ℂ}
     (ha : a ∉ D) : Filter.Tendsto (fun z => ‖f z‖) (𝓝[D] a) (𝓝 1) := by
@@ -1220,6 +1310,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_nhdsWithin_of_notMem {D : Se
   · simpa only [Function.comp_def, he] using ht
   · simpa only [Subtype.range_coe] using (self_mem_nhdsWithin : D ∈ 𝓝[D] a)
 
+/-- The disc norm tends to `1` in the boundary chart. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart {D U : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f φ : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (hU : IsOpen U)
     (hφ : ContinuousOn φ (U ∩ {z : ℂ | 0 ≤ z.im}))
@@ -1242,6 +1333,9 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart {D U : Set
     filter_upwards [hnear, self_mem_nhdsWithin] with z hz hu
     exact hside ⟨hz, hu⟩
 
+/-! ### Boundary behavior at the upper half-plane -/
+
+/-- The imaginary part of a scaled exponential. -/
 theorem RiemannMapping.im_mul_exp_real (c : ℂ) (θ : ℝ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I)).im = ‖c‖ * Real.sin (c.arg + θ) := by
   calc
@@ -1256,6 +1350,7 @@ theorem RiemannMapping.im_mul_exp_real (c : ℂ) (θ : ℝ) :
       ring
     _ = ‖c‖ * Real.sin (c.arg + θ) := by rw [Complex.im_ofReal_mul, Complex.exp_ofReal_mul_I_im]
 
+/-- The imaginary part of a scaled exponential power. -/
 theorem RiemannMapping.im_mul_exp_real_pow (c : ℂ) (θ : ℝ) (n : ℕ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I) ^ n).im = ‖c‖ * Real.sin (c.arg + (n : ℝ) * θ) := by
   rw [← Complex.exp_nat_mul]
@@ -1265,6 +1360,7 @@ theorem RiemannMapping.im_mul_exp_real_pow (c : ℂ) (θ : ℝ) (n : ℕ) :
   rw [h]
   exact im_mul_exp_real c ((n : ℝ) * θ)
 
+/-- A unit direction whose power lies in the upper half-plane exists. -/
 theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c ≠ 0) {n : ℕ}
     (hn : 2 ≤ n) : ∃ v : ℂ, ‖v‖ = 1 ∧ 0 < v.im ∧ (c * v ^ n).im < 0 := by
   have hn₂ : (2 : ℝ) ≤ n := by exact_mod_cast hn
@@ -1308,21 +1404,25 @@ theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c �
       exact
         mul_neg_of_pos_of_neg hc₀ (Real.sin_neg_of_neg_of_neg_pi_lt (by linarith) (by linarith))
 
+/-- A direction whose power lies in the upper half-plane exists. -/
 theorem RiemannMapping.exists_upperHalf_power_direction {c : ℂ} (hc : c ≠ 0) {n : ℕ}
     (hn : 2 ≤ n) : ∃ v : ℂ, 0 < v.im ∧ (c * v ^ n).im < 0 := by
   obtain ⟨v, _, hv, hcv⟩ := exists_unit_upperHalf_power_direction hc hn
   exact ⟨v, hv, hcv⟩
 
+/-- The boundary ray converges to the vertex. -/
 theorem RiemannMapping.tendsto_boundaryRay (a v : ℂ) :
     Filter.Tendsto (fun t : ℝ => a + (t : ℂ) * v) (𝓝[>] 0) (𝓝 a) := by
   have hc : Continuous (fun t : ℝ => a + (t : ℂ) * v) := by fun_prop
   simpa using (hc.continuousAt (x := 0)).tendsto.mono_left nhdsWithin_le_nhds
 
+/-- The boundary ray has positive imaginary part. -/
 theorem RiemannMapping.boundaryRay_im_pos {a v : ℂ} (ha : a.im = 0) (hv : 0 < v.im) {t : ℝ}
     (ht : 0 < t) : 0 < (a + (t : ℂ) * v).im := by
   simpa only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, ha,
     MulZeroClass.zero_mul, MulZeroClass.mul_zero, add_zero, zero_add] using mul_pos ht hv
 
+/-- The analytic order at an upper-half-plane boundary point is finite. -/
 theorem RiemannMapping.analyticOrderAt_ne_top_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (ha : a.im = 0) (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : analyticOrderAt f a ≠ ⊤ := by
   intro htop
@@ -1335,6 +1435,7 @@ theorem RiemannMapping.analyticOrderAt_ne_top_of_upper_halfPlane {f : ℂ → �
   obtain ⟨t, ht⟩ := hfalse.exists
   exact ht
 
+/-- The leading coefficient has nonnegative imaginary part. -/
 theorem RiemannMapping.nonneg_im_leading_of_upper_halfPlane {f u : ℂ → ℂ} {a : ℂ} {m : ℕ}
     (ha : a.im = 0) (hu : ContinuousAt u a) (hfactor : ∀ᶠ z in 𝓝 a, f z = (z - a) ^ m * u z)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) {v : ℂ} (hv : 0 < v.im) :
@@ -1359,6 +1460,7 @@ theorem RiemannMapping.nonneg_im_leading_of_upper_halfPlane {f u : ℂ → ℂ} 
     exact hpos (boundaryRay_im_pos ha hv ht)
   exact ((mul_pos_iff_of_pos_left (pow_pos ht m)).mp hp).le
 
+/-- The analytic order at the boundary is one. -/
 theorem RiemannMapping.analyticOrderAt_eq_one_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : f a = 0)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : analyticOrderAt f a = 1 := by
@@ -1382,6 +1484,7 @@ theorem RiemannMapping.analyticOrderAt_eq_one_of_upper_halfPlane {f : ℂ → �
   rw [← horder, hm]
   rfl
 
+/-- The derivative at an upper-half-plane boundary point is nonzero. -/
 theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : f a = 0)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : deriv f a ≠ 0 := by
@@ -1389,19 +1492,23 @@ theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane {f : ℂ → ℂ} {a : �
   have hd := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hf).mp ho
   simpa only [iteratedDeriv_one] using hd.2
 
+/-- The boundary logarithm near a vertex. -/
 def RiemannMapping.boundaryLog (f : ℂ → ℂ) (a z : ℂ) : ℂ :=
   -Complex.I * Complex.log (f z / f a)
 
+/-- The boundary logarithm computes on the point. -/
 @[simp]
 theorem RiemannMapping.boundaryLog_self {f : ℂ → ℂ} {a : ℂ} (hfa : f a ≠ 0) :
     boundaryLog f a a = 0 := by simp [boundaryLog, hfa]
 
+/-- The boundary logarithm is analytic. -/
 theorem RiemannMapping.analyticAt_boundaryLog {f : ℂ → ℂ} {a : ℂ} (hf : AnalyticAt ℂ f a)
     (hfa : f a ≠ 0) : AnalyticAt ℂ (boundaryLog f a) a := by
   have hratio : AnalyticAt ℂ (fun z => f z / f a) a := hf.div_const
   have hslit : f a / f a ∈ Complex.slitPlane := by simp [hfa]
   exact analyticAt_const.mul (hratio.clog hslit)
 
+/-- The boundary logarithm is differentiable. -/
 theorem RiemannMapping.hasDerivAt_boundaryLog {f : ℂ → ℂ} {a d : ℂ} (hf : HasDerivAt f d a)
     (hfa : f a ≠ 0) : HasDerivAt (boundaryLog f a) (-Complex.I * (d / f a)) a := by
   have hslit : f a / f a ∈ Complex.slitPlane := by simp [hfa]
@@ -1409,6 +1516,7 @@ theorem RiemannMapping.hasDerivAt_boundaryLog {f : ℂ → ℂ} {a d : ℂ} (hf 
   change HasDerivAt (fun z => -Complex.I * Complex.log (f z / f a)) (-Complex.I * (d / f a)) a
   simpa only [div_self hfa, div_one] using hlog.const_mul (-Complex.I)
 
+/-- The boundary logarithm has positive imaginary part. -/
 theorem RiemannMapping.im_boundaryLog_pos {f : ℂ → ℂ} {a z : ℂ} (hfa : ‖f a‖ = 1) (hfz : f z ≠ 0)
     (hz : ‖f z‖ < 1) : 0 < (boundaryLog f a z).im := by
   have hfa0 : f a ≠ 0 := by
@@ -1419,6 +1527,7 @@ theorem RiemannMapping.im_boundaryLog_pos {f : ℂ → ℂ} {a z : ℂ} (hfa : �
   have hlog := Real.log_neg hratio0 hratio1
   simpa [boundaryLog, Complex.mul_im, Complex.log_re] using neg_pos.mpr hlog
 
+/-- The disc map's derivative is nonzero at the boundary. -/
 theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane_to_unitDisc {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : ‖f a‖ = 1)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → ‖f z‖ < 1) : deriv f a ≠ 0 := by
@@ -1436,6 +1545,7 @@ theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane_to_unitDisc {f : ℂ →
   apply hlogDeriv
   simpa [hderiv] using (hasDerivAt_boundaryLog hf.differentiableAt.hasDerivAt hfa0).deriv
 
+/-- A boundary chart maps into a ball at the target. -/
 theorem RiemannMapping.exists_boundary_chart_target_ball (e : OpenPartialHomeomorph ℂ ℂ) {a : ℂ}
     (ha : a ∈ e.source) {r : ℝ} (hr : 0 < r) :
     ∃ δ > 0, ∀ w ∈ Metric.ball (e a) δ, w ∈ e.target ∧ e.symm w ∈ Metric.ball a r := by
@@ -1449,44 +1559,55 @@ theorem RiemannMapping.exists_boundary_chart_target_ball (e : OpenPartialHomeomo
     exact ⟨hw, hb⟩
   exact Metric.mem_nhds_iff.mp hnear
 
+/-! ### Principal roots and sector maps -/
+
+/-- The principal `n`-th root. -/
 def RiemannBoundary.principalRoot (n : ℕ) (z : ℂ) : ℂ :=
   z ^ ((n : ℂ)⁻¹)
 
+/-- The principal root raised to `n` is the argument. -/
 @[simp]
 theorem RiemannBoundary.principalRoot_pow {n : ℕ} (hn : 0 < n) (z : ℂ) :
     principalRoot n z ^ n = z :=
   Complex.cpow_nat_inv_pow z hn.ne'
 
+/-- The principal root of zero is zero. -/
 @[simp]
 theorem RiemannBoundary.principalRoot_zero {n : ℕ} (hn : 0 < n) : principalRoot n 0 = 0 := by
   exact Complex.zero_cpow (inv_ne_zero (Nat.cast_ne_zero.mpr hn.ne'))
 
+/-- The principal root is injective. -/
 theorem RiemannBoundary.principalRoot_injective {n : ℕ} (hn : 0 < n) :
     Function.Injective (principalRoot n) := by
   intro z w h
   simpa only [principalRoot_pow hn] using congrArg (fun u : ℂ => u ^ n) h
 
+/-- The principal root vanishes only at zero. -/
 @[simp]
 theorem RiemannBoundary.principalRoot_eq_zero_iff {n : ℕ} (hn : 0 < n) {z : ℂ} :
     principalRoot n z = 0 ↔ z = 0 := by
   have h : principalRoot n z = principalRoot n 0 ↔ z = 0 := (principalRoot_injective hn).eq_iff
   simpa only [principalRoot_zero hn] using h
 
+/-- The norm of the principal root. -/
 @[simp]
 theorem RiemannBoundary.norm_principalRoot (n : ℕ) (z : ℂ) :
     ‖principalRoot n z‖ = ‖z‖ ^ ((n : ℝ)⁻¹) :=
   Complex.norm_cpow_inv_nat z n
 
+/-- The principal root's exponent has positive real part on the sector. -/
 theorem RiemannBoundary.principalRoot_exponent_re_pos {n : ℕ} (hn : 0 < n) :
     0 < ((n : ℂ)⁻¹).re := by
   simpa only [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re] using
     inv_pos.mpr (Nat.cast_pos.mpr hn : (0 : ℝ) < n)
 
+/-- The principal root is continuous at zero. -/
 theorem RiemannBoundary.continuousAt_principalRoot_zero {n : ℕ} (hn : 0 < n) :
     ContinuousAt (principalRoot n) 0 :=
   Complex.continuousAt_cpow_const_of_re_pos (Or.inl (by simp))
     (principalRoot_exponent_re_pos hn)
 
+/-- The principal root is continuous on the closed upper half-plane. -/
 theorem RiemannBoundary.continuousOn_principalRoot_closedUpper {n : ℕ} (hn : 0 < n) :
     ContinuousOn (principalRoot n) {z : ℂ | 0 ≤ z.im} := by
   intro z _hz
@@ -1506,6 +1627,7 @@ theorem RiemannBoundary.continuousOn_principalRoot_closedUpper {n : ℕ} (hn : 0
     hc.congr_of_eventuallyEq ((cpow_eq_nhds hz0).filter_mono nhdsWithin_le_nhds)
       (Complex.cpow_def_of_ne_zero hz0 _)
 
+/-- The principal root is differentiable on the open upper half-plane. -/
 theorem RiemannBoundary.differentiableOn_principalRoot_upper (n : ℕ) :
     DifferentiableOn ℂ (principalRoot n) {z : ℂ | 0 < z.im} := by
   intro z hz
@@ -1513,16 +1635,19 @@ theorem RiemannBoundary.differentiableOn_principalRoot_upper (n : ℕ) :
     ((differentiableAt_id : DifferentiableAt ℂ (fun w : ℂ => w) z).cpow_const
         (Or.inr (ne_of_gt hz))).differentiableWithinAt
 
+/-- The principal root is analytic on the upper half-plane. -/
 theorem RiemannBoundary.analyticOnNhd_principalRoot_upper (n : ℕ) :
     AnalyticOnNhd ℂ (principalRoot n) {z : ℂ | 0 < z.im} :=
   (differentiableOn_principalRoot_upper n).analyticOnNhd
     (isOpen_lt continuous_const Complex.continuous_im)
 
+/-- The principal root of a nonnegative real is nonnegative. -/
 theorem RiemannBoundary.principalRoot_ofReal_nonneg (n : ℕ) {x : ℝ} (hx : 0 ≤ x) :
     principalRoot n (x : ℂ) = (x ^ ((n : ℝ)⁻¹) : ℝ) := by
   simpa only [principalRoot, Complex.ofReal_inv, Complex.ofReal_natCast] using
     (Complex.ofReal_cpow hx ((n : ℝ)⁻¹)).symm
 
+/-- The principal root of a nonpositive real has controlled argument. -/
 theorem RiemannBoundary.principalRoot_ofReal_nonpos (n : ℕ) {x : ℝ} (hx : x ≤ 0) :
     principalRoot n (x : ℂ) =
       ((-x) ^ ((n : ℝ)⁻¹) : ℝ) * Complex.exp ((Real.pi / (n : ℝ) : ℝ) * Complex.I) := by
@@ -1535,6 +1660,7 @@ theorem RiemannBoundary.principalRoot_ofReal_nonpos (n : ℕ) {x : ℝ} (hx : x 
   simp only [div_eq_mul_inv, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast]
   ring
 
+/-- The divided argument lies in the standard interval. -/
 theorem RiemannBoundary.arg_div_nat_mem_Ioc {n : ℕ} (hn : 0 < n) (z : ℂ) :
     z.arg / (n : ℝ) ∈ Set.Ioc (-Real.pi) Real.pi := by
   have hnR : (0 : ℝ) < n := Nat.cast_pos.mpr hn
@@ -1547,6 +1673,7 @@ theorem RiemannBoundary.arg_div_nat_mem_Ioc {n : ℕ} (hn : 0 < n) (z : ℂ) :
     have hu : Real.pi ≤ Real.pi * (n : ℝ) := by nlinarith [Real.pi_pos]
     exact (Complex.arg_le_pi z).trans hu
 
+/-- The argument of the principal root is the divided argument. -/
 theorem RiemannBoundary.arg_principalRoot {n : ℕ} (hn : 0 < n) (z : ℂ) :
     Complex.arg (principalRoot n z) = z.arg / (n : ℝ) := by
   by_cases hz : z = 0
@@ -1562,6 +1689,7 @@ theorem RiemannBoundary.arg_principalRoot {n : ℕ} (hn : 0 < n) (z : ℂ) :
     Complex.arg_mul_cos_add_sin_mul_I (Real.rpow_pos_of_pos (norm_pos_iff.mpr hz) ((n : ℝ)⁻¹))
       (arg_div_nat_mem_Ioc hn z)
 
+/-- The principal root's argument lies in the open sector. -/
 theorem RiemannBoundary.principalRoot_arg_mem_Ioo {n : ℕ} (hn : 0 < n) {z : ℂ} (hz : 0 < z.im) :
     Complex.arg (principalRoot n z) ∈ Set.Ioo 0 (Real.pi / (n : ℝ)) := by
   rw [arg_principalRoot hn]
@@ -1572,11 +1700,13 @@ theorem RiemannBoundary.principalRoot_arg_mem_Ioo {n : ℕ} (hn : 0 < n) {z : �
       (div_lt_div_iff_of_pos_right (Nat.cast_pos.mpr hn)).mpr
         (Complex.arg_lt_pi_iff.mpr (Or.inr (ne_of_gt hz)))⟩
 
+/-- The principal-root power on the sector. -/
 theorem RiemannBoundary.principalRoot_pow_of_sector {n : ℕ} (hn : 0 < n) {z : ℂ}
     (hz : z.arg ∈ Set.Icc 0 (Real.pi / (n : ℝ))) : principalRoot n (z ^ n) = z := by
   apply Complex.pow_cpow_nat_inv hn.ne' _ hz.2
   exact (neg_neg_of_pos (div_pos Real.pi_pos (Nat.cast_pos.mpr hn))).trans_le hz.1
 
+/-- The cubic sector leaves angular slack. -/
 theorem RiemannBoundary.cubic_sector_slack (w : ℂ) :
     3 * w.re - Real.sqrt 3 * w.im = (2 * Real.sqrt 3 * ‖w‖) * Real.sin (Real.pi / 3 - w.arg) := by
   rw [Real.sin_sub, Real.sin_pi_div_three, Real.cos_pi_div_three]
@@ -1588,6 +1718,7 @@ theorem RiemannBoundary.cubic_sector_slack (w : ℂ) :
       ring
     _ = _ := by ring
 
+/-- The quartic sector leaves angular slack. -/
 theorem RiemannBoundary.quartic_sector_slack (w : ℂ) :
     w.re - w.im = (Real.sqrt 2 * ‖w‖) * Real.sin (Real.pi / 4 - w.arg) := by
   rw [Real.sin_sub, Real.sin_pi_div_four, Real.cos_pi_div_four]
@@ -1601,6 +1732,7 @@ theorem RiemannBoundary.quartic_sector_slack (w : ℂ) :
       ring
     _ = _ := by ring
 
+/-- The cube root maps the upper half-plane to a sector. -/
 theorem RiemannBoundary.principalRoot_three_upper {z : ℂ} (hz : 0 < z.im) :
     0 < (principalRoot 3 z).im ∧
       Real.sqrt 3 * (principalRoot 3 z).im < 3 * (principalRoot 3 z).re := by
@@ -1621,11 +1753,13 @@ theorem RiemannBoundary.principalRoot_three_upper {z : ℂ} (hz : 0 < z.im) :
         (mul_pos (mul_pos (by norm_num) (Real.sqrt_pos.mpr (by norm_num))) (norm_pos_iff.mpr hw))
         (Real.sin_pos_of_pos_of_lt_pi (by linarith [ha.2]) (by linarith [Real.pi_pos, ha.1]))
 
+/-- The cube root of a nonnegative real has zero imaginary part. -/
 theorem RiemannBoundary.principalRoot_three_ofReal_nonneg_im {x : ℝ} (hx : 0 ≤ x) :
     (principalRoot 3 (x : ℂ)).im = 0 := by
   rw [principalRoot_ofReal_nonneg 3 hx]
   exact Complex.ofReal_im _
 
+/-- The cube root of a nonpositive real lies on the sector boundary. -/
 theorem RiemannBoundary.principalRoot_three_ofReal_nonpos_boundary {x : ℝ} (hx : x ≤ 0) :
     Real.sqrt 3 * (principalRoot 3 (x : ℂ)).im = 3 * (principalRoot 3 (x : ℂ)).re := by
   rw [principalRoot_ofReal_nonpos 3 hx]
@@ -1638,6 +1772,7 @@ theorem RiemannBoundary.principalRoot_three_ofReal_nonpos_boundary {x : ℝ} (hx
         (Real.sqrt 3 * Real.sqrt 3) * ((-x) ^ (3 : ℝ)⁻¹ / 2) := by ring
     _ = _ := by rw [hsq]; ring
 
+/-- The cube root maps the real axis to the sector boundary. -/
 theorem RiemannBoundary.principalRoot_three_real_boundary {z : ℂ} (hz : z.im = 0) :
     (principalRoot 3 z).im = 0 ∨
       Real.sqrt 3 * (principalRoot 3 z).im = 3 * (principalRoot 3 z).re := by
@@ -1647,26 +1782,34 @@ theorem RiemannBoundary.principalRoot_three_real_boundary {z : ℂ} (hz : z.im =
   · exact Or.inl (principalRoot_three_ofReal_nonneg_im hp)
   · exact Or.inr (principalRoot_three_ofReal_nonpos_boundary hn)
 
+/-! ### The rotated quartic root -/
+
+/-- The rotation aligning the quartic root with the sector. -/
 def RiemannBoundary.quarticRootRotation : ℂ :=
   Complex.exp (((-Real.pi / 4 : ℝ) : ℂ) * Complex.I)
 
+/-- The real part of the quartic rotation. -/
 @[simp]
 theorem RiemannBoundary.quarticRootRotation_re : quarticRootRotation.re = Real.sqrt 2 / 2 := by
   simp only [quarticRootRotation, Complex.exp_ofReal_mul_I_re, neg_div, Real.cos_neg,
     Real.cos_pi_div_four]
 
+/-- The imaginary part of the quartic rotation. -/
 @[simp]
 theorem RiemannBoundary.quarticRootRotation_im : quarticRootRotation.im = -(Real.sqrt 2 / 2) := by
   simp only [quarticRootRotation, Complex.exp_ofReal_mul_I_im, neg_div, Real.sin_neg,
     Real.sin_pi_div_four]
 
+/-- The quartic rotation has norm one. -/
 @[simp]
 theorem RiemannBoundary.norm_quarticRootRotation : ‖quarticRootRotation‖ = 1 :=
   Complex.norm_exp_ofReal_mul_I _
 
+/-- The quartic rotation is nonzero. -/
 theorem RiemannBoundary.quarticRootRotation_ne_zero : quarticRootRotation ≠ 0 :=
   Complex.exp_ne_zero _
 
+/-- The fourth power of the quartic rotation. -/
 @[simp]
 theorem RiemannBoundary.quarticRootRotation_pow_four : quarticRootRotation ^ 4 = -1 := by
   rw [quarticRootRotation, ← Complex.exp_nat_mul]
@@ -1677,9 +1820,11 @@ theorem RiemannBoundary.quarticRootRotation_pow_four : quarticRootRotation ^ 4 =
   rw [he, Complex.exp_neg, Complex.exp_pi_mul_I]
   norm_num
 
+/-- The rotated principal fourth root. -/
 def RiemannBoundary.rotatedPrincipalRootFour (z : ℂ) : ℂ :=
   quarticRootRotation * principalRoot 4 z
 
+/-- The rotated fourth root raised to four. -/
 @[simp]
 theorem RiemannBoundary.rotatedPrincipalRootFour_pow (z : ℂ) :
     rotatedPrincipalRootFour z ^ 4 = -z := by
@@ -1687,16 +1832,19 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_pow (z : ℂ) :
     principalRoot_pow (by norm_num : 0 < 4)]
   ring
 
+/-- The rotated fourth root of zero is zero. -/
 @[simp]
 theorem RiemannBoundary.rotatedPrincipalRootFour_zero : rotatedPrincipalRootFour 0 = 0 := by
   rw [rotatedPrincipalRootFour, principalRoot_zero (by norm_num : 0 < 4), MulZeroClass.mul_zero]
 
+/-- The norm of the rotated fourth root. -/
 @[simp]
 theorem RiemannBoundary.norm_rotatedPrincipalRootFour (z : ℂ) :
     ‖rotatedPrincipalRootFour z‖ = ‖z‖ ^ (4 : ℝ)⁻¹ := by
   rw [rotatedPrincipalRootFour, norm_mul, norm_quarticRootRotation, one_mul, norm_principalRoot]
   norm_num only [Nat.cast_ofNat]
 
+/-- The real part of the rotated fourth root. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_re (z : ℂ) :
     (rotatedPrincipalRootFour z).re =
       (Real.sqrt 2 / 2) * ((principalRoot 4 z).re + (principalRoot 4 z).im) := by
@@ -1704,6 +1852,7 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_re (z : ℂ) :
     quarticRootRotation_im]
   ring
 
+/-- The imaginary part of the rotated fourth root. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_im (z : ℂ) :
     (rotatedPrincipalRootFour z).im =
       (Real.sqrt 2 / 2) * ((principalRoot 4 z).im - (principalRoot 4 z).re) := by
@@ -1711,12 +1860,14 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_im (z : ℂ) :
     quarticRootRotation_im]
   ring
 
+/-- The sum of real and imaginary parts of the rotated fourth root. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_re_add_im (z : ℂ) :
     (rotatedPrincipalRootFour z).re + (rotatedPrincipalRootFour z).im =
       Real.sqrt 2 * (principalRoot 4 z).im := by
   rw [rotatedPrincipalRootFour_re, rotatedPrincipalRootFour_im]
   ring
 
+/-- The rotated fourth root maps the upper half-plane into the sector. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_upper {z : ℂ} (hz : 0 < z.im) :
     (rotatedPrincipalRootFour z).im < 0 ∧
       0 < (rotatedPrincipalRootFour z).re + (rotatedPrincipalRootFour z).im := by
@@ -1742,11 +1893,13 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_upper {z : ℂ} (hz : 0 < z.im)
   · rw [rotatedPrincipalRootFour_re_add_im]
     exact mul_pos (Real.sqrt_pos.mpr (by norm_num)) hi
 
+/-- The rotated fourth root of a nonnegative real lies on the boundary ray. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_ofReal_nonneg_boundary {x : ℝ} (hx : 0 ≤ x) :
     (rotatedPrincipalRootFour (x : ℂ)).re + (rotatedPrincipalRootFour (x : ℂ)).im = 0 := by
   rw [rotatedPrincipalRootFour_re_add_im, principalRoot_ofReal_nonneg 4 hx]
   simp only [Complex.ofReal_im, MulZeroClass.mul_zero]
 
+/-- The rotated fourth root of a nonpositive real has controlled imaginary part. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_ofReal_nonpos_im {x : ℝ} (hx : x ≤ 0) :
     (rotatedPrincipalRootFour (x : ℂ)).im = 0 := by
   rw [rotatedPrincipalRootFour_im, principalRoot_ofReal_nonpos 4 hx]
@@ -1755,6 +1908,7 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_ofReal_nonpos_im {x : ℝ} (hx 
     Complex.exp_ofReal_mul_I_re, Nat.cast_ofNat, Real.sin_pi_div_four, Real.cos_pi_div_four,
     sub_self, MulZeroClass.mul_zero]
 
+/-- The rotated fourth root maps the real axis to the sector boundary. -/
 theorem RiemannBoundary.rotatedPrincipalRootFour_real_boundary {z : ℂ} (hz : z.im = 0) :
     (rotatedPrincipalRootFour z).im = 0 ∨
       (rotatedPrincipalRootFour z).re + (rotatedPrincipalRootFour z).im = 0 := by
@@ -1764,19 +1918,25 @@ theorem RiemannBoundary.rotatedPrincipalRootFour_real_boundary {z : ℂ} (hz : z
   · exact Or.inr (rotatedPrincipalRootFour_ofReal_nonneg_boundary hp)
   · exact Or.inl (rotatedPrincipalRootFour_ofReal_nonpos_im hn)
 
+/-- The rotated fourth root is continuous on the closed upper half-plane. -/
 theorem RiemannBoundary.continuousOn_rotatedPrincipalRootFour_closedUpper :
     ContinuousOn rotatedPrincipalRootFour {z : ℂ | 0 ≤ z.im} :=
   continuousOn_const.mul (continuousOn_principalRoot_closedUpper (by norm_num : 0 < 4))
 
+/-- The rotated fourth root is continuous at zero. -/
 theorem RiemannBoundary.continuousAt_rotatedPrincipalRootFour_zero :
     ContinuousAt rotatedPrincipalRootFour 0 :=
   continuousAt_const.mul (continuousAt_principalRoot_zero (by norm_num : 0 < 4))
 
+/-- The rotated fourth root is analytic on the upper half-plane. -/
 theorem RiemannBoundary.analyticOnNhd_rotatedPrincipalRootFour_upper :
     AnalyticOnNhd ℂ rotatedPrincipalRootFour {z : ℂ | 0 < z.im} := by
   intro z hz
   exact analyticAt_const.mul (analyticOnNhd_principalRoot_upper 4 z hz)
 
+/-! ### Conformal extension across the boundary -/
+
+/-- Near the boundary point `|z|<1` is eventually the upper half-plane. -/
 theorem RiemannBoundary.norm_lt_one_iff_im_pos_eventually {H k : ℂ → ℂ} {x : ℝ}
     (hH : ContinuousAt H (x : ℂ)) (hcenter : ‖H (x : ℂ)‖ = 1)
     (hk : ∀ᶠ z in 𝓝 (x : ℂ), 0 < z.im → ‖k z‖ < 1) (hu : ∀ᶠ z in 𝓝 (x : ℂ), 0 < z.im → H z = k z)
@@ -1806,6 +1966,7 @@ theorem RiemannBoundary.norm_lt_one_iff_im_pos_eventually {H k : ℂ → ℂ} {x
   · rw [hzu hpos]
     exact iff_of_true (hzk hpos) hpos
 
+/-- A modulus-one boundary trace gives a conformal extension. -/
 theorem RiemannBoundary.exists_conformal_extension_of_modulus_one {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → ℂ} {x : ℝ} (hx : (x : ℂ) ∈ U) (hf : DifferentiableOn ℂ f (U ∩ {z : ℂ | 0 < z.im}))
     (hmod :
@@ -1847,6 +2008,7 @@ theorem RiemannBoundary.exists_conformal_extension_of_modulus_one {U : Set ℂ} 
     ⟨r, hr, H, hHa, hHe, hHl, hHc, hHx.hasStrictDerivAt, hnonzero,
       norm_lt_one_iff_im_pos_eventually hHx.continuousAt hcenter hk hu hl hreal⟩
 
+/-- The disc map extends conformally in the half chart. -/
 theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_in_half_chart {D U : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f φ : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f D) (hφ : DifferentiableOn ℂ φ (U ∩ {z : ℂ | 0 < z.im}))
@@ -1871,17 +2033,20 @@ theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_in_half_chart 
     simpa only [Function.comp_def, Metric.mem_ball, dist_zero_right, ← hv] using
       (e ⟨φ z, hp⟩).property
 
+/-- The inverse disc homeomorphism at a boundary point. -/
 def RiemannBoundary.discHomeomorphInverse {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (z : ℂ) : X := by
   classical
     exact
     if hz : z ∈ Metric.ball (0 : ℂ) 1 then (e.symm ⟨z, hz⟩ : X) else (e.symm ⟨0, by simp⟩ : X)
 
+/-- The inverse disc map computes on the image. -/
 theorem RiemannBoundary.discHomeomorphInverse_of_mem {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {z : ℂ} (hz : z ∈ Metric.ball (0 : ℂ) 1) :
     discHomeomorphInverse e z = (e.symm ⟨z, hz⟩ : X) := by
   simp only [discHomeomorphInverse, dif_pos hz]
 
+/-- The inverse disc map converges in the boundary chart. -/
 theorem RiemannBoundary.tendsto_discHomeomorphInverse_of_boundary_chart {X : Type*}
     [TopologicalSpace X] {D : Set X} (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : X → ℂ}
     (he : ∀ z : D, f z = (e z : ℂ)) {φ : ℂ → X} {H : ℂ → ℂ} {d : ℂ} (hφ : ContinuousAt φ 0)
@@ -1915,11 +2080,13 @@ theorem RiemannBoundary.tendsto_discHomeomorphInverse_of_boundary_chart {X : Typ
     exact congrArg Subtype.val hinv
   exact ht.congr' heq.symm
 
+/-- A unit-circle point is in the closed unit ball. -/
 theorem RiemannBoundary.unitCircle_mem_closure_unitBall {w : ℂ} (hw : ‖w‖ = 1) :
     w ∈ closure (Metric.ball (0 : ℂ) 1) := by
   rw [closure_ball (0 : ℂ) (by norm_num : (1 : ℝ) ≠ 0)]
   simpa only [Metric.mem_closedBall, dist_zero_right, hw] using le_rfl (a := (1 : ℝ))
 
+/-- Boundary points with equal disc values are equal. -/
 theorem RiemannBoundary.boundary_points_eq_of_equal_disc_values {X : Type*} [TopologicalSpace X]
     {D : Set X} [T2Space X] (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : X → ℂ}
     (he : ∀ z : D, f z = (e z : ℂ)) {φ ψ : ℂ → X} {F G : ℂ → ℂ} {dF dG : ℂ}
@@ -1935,6 +2102,7 @@ theorem RiemannBoundary.boundary_points_eq_of_equal_disc_values {X : Type*} [Top
   rw [← hvalue] at htG
   exact tendsto_nhds_unique htF htG
 
+/-- The logarithm is continuous on the closed upper half-plane. -/
 theorem RiemannBoundary.continuousWithinAt_log_closedUpper {q : ℂ} (hq : q ≠ 0) :
     ContinuousWithinAt Complex.log {z : ℂ | 0 ≤ z.im} q := by
   by_cases hi : q.im = 0
@@ -1949,17 +2117,20 @@ theorem RiemannBoundary.continuousWithinAt_log_closedUpper {q : ℂ} (hq : q ≠
       exact Complex.continuousWithinAt_log_of_re_neg_of_im_zero hre hi
   · exact (continuousAt_clog (Or.inr hi)).continuousWithinAt
 
+/-- The half-strip logarithm is continuous on the closed upper half-plane. -/
 theorem RiemannBoundary.continuousWithinAt_logHalfStrip_closedUpper (a c : ℝ) {q : ℂ}
     (hq : q ≠ 0) : ContinuousWithinAt (logHalfStrip a c) {z : ℂ | 0 ≤ z.im} q := by
   exact
     continuousWithinAt_const.sub
       (continuousWithinAt_const.mul (continuousWithinAt_log_closedUpper hq))
 
+/-- The half-strip logarithm is analytic on the upper half-plane. -/
 theorem RiemannBoundary.analyticOnNhd_logHalfStrip_upper (a c : ℝ) :
     AnalyticOnNhd ℂ (logHalfStrip a c) {z : ℂ | 0 < z.im} := by
   intro q hq
   exact analyticAt_const.sub (analyticAt_const.mul (analyticAt_clog (Or.inr (ne_of_gt hq))))
 
+/-- The half-strip real part lies in the strip interval. -/
 theorem RiemannBoundary.logHalfStrip_re_mem_Ioo (a : ℝ) {c : ℝ} (hc : 0 < c) {q : ℂ}
     (hq : 0 < q.im) : (logHalfStrip a c q).re ∈ Set.Ioo a (a + c * Real.pi) := by
   have harg0 : q.arg ≠ 0 := fun h => (ne_of_gt hq) (Complex.arg_eq_zero_iff.mp h).2
@@ -1968,6 +2139,7 @@ theorem RiemannBoundary.logHalfStrip_re_mem_Ioo (a : ℝ) {c : ℝ} (hc : 0 < c)
   rw [logHalfStrip_re]
   constructor <;> nlinarith
 
+/-- The half-strip real part of a real input. -/
 theorem RiemannBoundary.logHalfStrip_real_re (a c : ℝ) (t : ℝ) :
     (logHalfStrip a c (t : ℂ)).re = a ∨ (logHalfStrip a c (t : ℂ)).re = a + c * Real.pi := by
   by_cases ht : 0 ≤ t
@@ -1976,6 +2148,7 @@ theorem RiemannBoundary.logHalfStrip_real_re (a c : ℝ) (t : ℝ) :
   · right
     simp [logHalfStrip_re, Complex.arg_ofReal_of_neg (lt_of_not_ge ht)]
 
+/-- A half-strip height bounding the radius exists. -/
 theorem RiemannBoundary.exists_logHalfStrip_height_radius (a B : ℝ) {c : ℝ} (hc : 0 < c) :
     ∃ R > 0, ∀ q ∈ Metric.ball (0 : ℂ) R, q ≠ 0 → B < (logHalfStrip a c q).im := by
   have ht : ∀ᶠ q in 𝓝[≠] (0 : ℂ), B < (logHalfStrip a c q).im :=
@@ -1983,6 +2156,7 @@ theorem RiemannBoundary.exists_logHalfStrip_height_radius (a B : ℝ) {c : ℝ} 
   obtain ⟨R, hR, hs⟩ := Metric.mem_nhdsWithin_iff.mp ht
   exact ⟨R, hR, fun q hq hne => hs ⟨hq, hne⟩⟩
 
+/-- The disc map extends conformally at an ideal vertex. -/
 theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_at_ideal_vertex {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ))
     (hf : DifferentiableOn ℂ f D) (a B : ℝ) {c : ℝ} (hc : 0 < c)
@@ -2047,15 +2221,20 @@ theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_at_ideal_verte
   simpa only [Function.comp_def, Metric.mem_ball, dist_zero_right, ← hv] using
     (e ⟨logHalfStrip a c q, hp⟩).property
 
+/-! ### The disc compactification -/
+
+/-- The map from the domain compactification to the closed disc. -/
 def RiemannBoundary.discCompactificationMap {X : Type*} [TopologicalSpace X] {D : Set X}
     (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) : X → ℂ :=
   hD.extend (fun z : D => (e z : ℂ))
 
+/-- The compactification map computes the disc coordinate. -/
 theorem RiemannBoundary.discCompactificationMap_coe {X : Type*} [TopologicalSpace X] {D : Set X}
     (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (z : D) :
     discCompactificationMap hD e z = (e z : ℂ) :=
   hD.extend_eq (continuous_subtype_val.comp e.continuous) z
 
+/-- The disc map has limits at every boundary point. -/
 def RiemannBoundary.DiscBoundaryLimits {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) : Prop :=
   ∀ x ∉ D,
@@ -2064,6 +2243,7 @@ def RiemannBoundary.DiscBoundaryLimits {X : Type*} [TopologicalSpace X] {D : Set
         Filter.Tendsto (fun z : D => (e z : ℂ)) (Filter.comap Subtype.val (𝓝 x)) (𝓝 w) ∧
           Filter.Tendsto (discHomeomorphInverse e) (𝓝[Metric.ball (0 : ℂ) 1] w) (𝓝 x)
 
+/-- The compactification map is continuous. -/
 theorem RiemannBoundary.discCompactificationMap_continuous {X : Type*} [TopologicalSpace X]
     {D : Set X} (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e) :
     Continuous (discCompactificationMap hD e) := by
@@ -2076,6 +2256,7 @@ theorem RiemannBoundary.discCompactificationMap_continuous {X : Type*} [Topologi
   · obtain ⟨w, _, hw, _⟩ := hb x hx
     exact ⟨w, hw⟩
 
+/-- The compactification map on a boundary point is the limit. -/
 theorem RiemannBoundary.discCompactificationMap_boundary {X : Type*} [TopologicalSpace X]
     {D : Set X} (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e)
     {x : X} (hx : x ∉ D) :
@@ -2087,6 +2268,7 @@ theorem RiemannBoundary.discCompactificationMap_boundary {X : Type*} [Topologica
   rw [he]
   exact ⟨hw, hi⟩
 
+/-- The compactification map has norm at most one. -/
 theorem RiemannBoundary.discCompactificationMap_norm_le {X : Type*} [TopologicalSpace X]
     {D : Set X} (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e)
     (x : X) : ‖discCompactificationMap hD e x‖ ≤ 1 := by
@@ -2097,6 +2279,7 @@ theorem RiemannBoundary.discCompactificationMap_norm_le {X : Type*} [Topological
           simpa only [Metric.mem_ball, dist_zero_right] using (e ⟨x, hx⟩).property).le
   · exact ((discCompactificationMap_boundary hD e hb hx).1).le
 
+/-- The compactification map is injective. -/
 theorem RiemannBoundary.discCompactificationMap_injective {X : Type*} [TopologicalSpace X]
     {D : Set X} [T2Space X] (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1)
     (hb : DiscBoundaryLimits e) : Function.Injective (discCompactificationMap hD e) := by
@@ -2125,6 +2308,7 @@ theorem RiemannBoundary.discCompactificationMap_injective {X : Type*} [Topologic
         mem_closure_iff_nhdsWithin_neBot.mp (unitCircle_mem_closure_unitBall hn)
       exact tendsto_nhds_unique ht hu
 
+/-- The compactification map has range the closed disc. -/
 theorem RiemannBoundary.discCompactificationMap_range {X : Type*} [TopologicalSpace X] {D : Set X}
     [CompactSpace X] (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e) :
     Set.range (discCompactificationMap hD e) = Metric.closedBall (0 : ℂ) 1 := by
@@ -2140,6 +2324,7 @@ theorem RiemannBoundary.discCompactificationMap_range {X : Type*} [TopologicalSp
     rw [← closure_ball (0 : ℂ) (by norm_num : (1 : ℝ) ≠ 0)]
     exact closure_minimal hdisc hclosed
 
+/-- The domain compactification is homeomorphic to the closed disc. -/
 def RiemannBoundary.closedDiscHomeomorph {X : Type*} [TopologicalSpace X] {D : Set X} [T2Space X]
     [CompactSpace X] (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e) :
     X ≃ₜ Metric.closedBall (0 : ℂ) 1 := by
@@ -2159,18 +2344,24 @@ def RiemannBoundary.closedDiscHomeomorph {X : Type*} [TopologicalSpace X] {D : S
     Continuous.homeoOfEquivCompactToT2 (f := Equiv.ofBijective F hF)
       ((discCompactificationMap_continuous hD e hb).subtype_mk _)
 
+/-- The closed-disc homeomorphism computes the compactification map. -/
 theorem RiemannBoundary.closedDiscHomeomorph_coe {X : Type*} [TopologicalSpace X] {D : Set X}
     [T2Space X] [CompactSpace X] (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1)
     (hb : DiscBoundaryLimits e) (z : D) : (closedDiscHomeomorph hD e hb z : ℂ) = (e z : ℂ) :=
   discCompactificationMap_coe hD e z
 
+/-! ### The triangle side parameter -/
+
+/-- The parameter along a triangle side. -/
 def RiemannMapping.triangleSideParameter (e : OpenPartialHomeomorph ℂ ℂ) (a w : ℂ) : ℂ :=
   e.symm (w + e a)
 
+/-- The side parameter at the vertex. -/
 theorem RiemannMapping.triangleSideParameter_zero (e : OpenPartialHomeomorph ℂ ℂ) {a : ℂ}
     (ha : a ∈ e.source) : triangleSideParameter e a 0 = a := by
   simp only [triangleSideParameter, zero_add, e.left_inv ha]
 
+/-- The side parameter is continuous at the vertex. -/
 theorem RiemannMapping.continuousAt_triangleSideParameter_zero (e : OpenPartialHomeomorph ℂ ℂ)
     {a : ℂ} (ha : a ∈ e.source) : ContinuousAt (triangleSideParameter e a) 0 := by
   have hi := e.continuousOn_symm.continuousAt (e.open_target.mem_nhds (e.map_source ha))
@@ -2178,9 +2369,13 @@ theorem RiemannMapping.continuousAt_triangleSideParameter_zero (e : OpenPartialH
     ContinuousAt.comp (g := e.symm) (f := fun w : ℂ => w + e a) (x := 0)
       (by simpa only [zero_add] using hi) (continuousAt_id.add_const (e a))
 
+/-! ### The half-strip exponential -/
+
+/-- The half-strip exponential coordinate. -/
 def RiemannBoundary.halfStripExp (a c : ℝ) (z : ℂ) : ℂ :=
   Complex.exp (Complex.I * (z - a) / c)
 
+/-- The half-strip logarithm inverts the exponential. -/
 theorem RiemannBoundary.logHalfStrip_halfStripExp (a : ℝ) {c : ℝ} (hc : 0 < c) {z : ℂ}
     (hz : z.re ∈ Set.Ioo a (a + c * Real.pi)) : logHalfStrip a c (halfStripExp a c z) = z := by
   have hcC : (c : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hc.ne'
@@ -2196,10 +2391,12 @@ theorem RiemannBoundary.logHalfStrip_halfStripExp (a : ℝ) {c : ℝ} (hc : 0 < 
   ring_nf
   simp
 
+/-- The norm of the half-strip exponential. -/
 @[simp]
 theorem RiemannBoundary.norm_halfStripExp (a c : ℝ) (z : ℂ) :
     ‖halfStripExp a c z‖ = Real.exp (-z.im / c) := by simp [halfStripExp, Complex.norm_exp]
 
+/-- The half-strip exponential has positive imaginary part. -/
 theorem RiemannBoundary.halfStripExp_im_pos (a : ℝ) {c : ℝ} (hc : 0 < c) {z : ℂ}
     (hz : z.re ∈ Set.Ioo a (a + c * Real.pi)) : 0 < (halfStripExp a c z).im := by
   rw [halfStripExp, Complex.exp_im]

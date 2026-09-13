@@ -37,17 +37,24 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 
+/-! ### Loop subdivision -/
+
+/-- A partial equivalence's image of the punctured source is the punctured target. -/
 theorem _root_.PartialEquiv.image_source_minus_singleton_eq {α β : Type*} (e : PartialEquiv α β)
     {a : α} (h : a ∈ e.source) : e '' (e.source \ { a }) = e.target \ {e a} := by
   rw [Set.image_sdiff_of_injOn, PartialEquiv.image_source_eq_target, Set.image_singleton]
   · exact e.injOn
   · exact Set.singleton_subset_iff.mpr h
 
+/-- The inverse image of the punctured target is the punctured source. -/
 theorem _root_.PartialEquiv.symm_image_target_minus_singleton_eq {α β : Type*}
     (e : PartialEquiv α β) {b : β} (h : b ∈ e.target) :
     e.symm '' (e.target \ { b }) = e.source \ {e.symm b} :=
   e.symm.image_source_minus_singleton_eq h
 
+/-! ### Subdividing loops by an open cover -/
+
+/-- A loop can be subdivided so each piece lies in a cover element. -/
 theorem _root_.Path.exists_partition_unitInterval_of_open_cover {X : Type u} [TopologicalSpace X]
     {ι : Type v} {c : ι → Set X} {a : X} (hc₁ : ∀ i, IsOpen (c i)) (hc₂ : Set.univ ⊆ ⋃ i, c i)
     (γ : Path a a) :
@@ -66,6 +73,7 @@ theorem _root_.Path.exists_partition_unitInterval_of_open_cover {X : Type u} [To
   use i
   rwa [Set.uIcc_of_le (ht_mono (Nat.le_add_right _ _))]
 
+/-- Subdivision points can be joined through path-connected overlaps. -/
 theorem _root_.Path.exists_path_range_of_isPathConnected_inter {X : Type u} [TopologicalSpace X]
     {ι : Type v} {c : ι → Set X} {a : X} (hc₃ : ∀ i j, IsPathConnected (c i ∩ c j))
     (ha : ∀ i, a ∈ c i) {n : ℕ} (τ : Fin (n + 1) → ι) (p : Fin (n + 2) → X)
@@ -90,6 +98,7 @@ private lemma _root_.Path.Homotopic.cancel_junction {X : Type u} [TopologicalSpa
       (Path.Homotopic.Quotient.mk r),
     Path.Homotopic.Quotient.symm_trans, Path.Homotopic.Quotient.refl_trans]
 
+/-- The conjugated concatenation of subpaths is homotopic to the original. -/
 lemma _root_.Path.Homotopic.concat_trans_trans_symm {X : Type u} [TopologicalSpace X] {n : ℕ}
     (p q : Fin (n + 1) → X) (F : ∀ k : Fin n, Path (p k.castSucc) (p k.succ))
     (G : ∀ k : Fin (n + 1), Path (q k) (p k)) :
@@ -119,6 +128,7 @@ private lemma _root_.Path.Homotopic.cast_trans_trans_homotopic_of_homotopic_cast
     Path.Homotopic.trans
       (Path.Homotopic.trans ⟨Path.Homotopy.reflTrans _⟩ ⟨Path.Homotopy.transRefl _⟩) h
 
+/-- A loop is homotopic to a concatenation of chart loops along an open cover. -/
 theorem _root_.Path.Homotopic.exists_loops_homotopic_concat_of_open_cover {X : Type u}
     [TopologicalSpace X] {ι : Type v} {c : ι → Set X} {a : X} (hc₁ : ∀ i, IsOpen (c i))
     (hc₂ : Set.univ ⊆ ⋃ i, c i) (hc₃ : ∀ i j, IsPathConnected (c i ∩ c j)) (ha : ∀ i, a ∈ c i)

@@ -34,6 +34,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Discrete-quotient smoothness -/
+
+/-- A continuous map differing from the identity by a discrete-submodule value is smooth. -/
 theorem contDiffOn_of_sub_mem_discrete {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (L : Submodule ℤ E) [DiscreteTopology L] {f : E → E} {s : Set E} (hf : ContinuousOn f s)
     (hL : ∀ x ∈ s, f x - x ∈ L) (n : ℕ∞ω) : ContDiffOn ℂ n f s := by
@@ -49,6 +52,7 @@ theorem contDiffOn_of_sub_mem_discrete {E : Type*} [NormedAddCommGroup E] [Norme
       fun y => y + (f x - x)) ?_ hx
   exact heq.mono fun y hy => (sub_eq_iff_eq_add.mp hy).trans (add_comm _ _)
 
+/-- Two continuous lifts of the same local-homeomorphism quotient agree near a point where they coincide. -/
 theorem eventuallyEq_of_localHomeomorph_comp_eq {X Y Z : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] {q : X → Y} (hq : IsLocalHomeomorph q) {f g : Z → X}
     {z : Z} (hf : ContinuousAt f z) (hg : ContinuousAt g z) (hz : f z = g z)
@@ -60,31 +64,39 @@ theorem eventuallyEq_of_localHomeomorph_comp_eq {X Y Z : Type*} [TopologicalSpac
   filter_upwards [hfU, hgU, he] with w hfw hgw hw
   exact hq.injOn_localInverseAt_target hfw hgw hw
 
+/-! ### Charts on a quotient covering -/
+
+/-- A chosen lift of a quotient point under the covering. -/
 def CoveringQuotient.representative {M Q G : Type*} [TopologicalSpace M] [TopologicalSpace Q]
     [Group G] [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (x : Q) : M :=
   (hq.surjective x).choose
 
+/-- The chosen representative projects back to the quotient point. -/
 theorem CoveringQuotient.project_representative {M Q G : Type*} [TopologicalSpace M]
     [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G)
     (x : Q) : q (representative hq x) = x :=
   (hq.surjective x).choose_spec
 
+/-- A local inverse of the covering near the chosen point `x`. -/
 def CoveringQuotient.localInverse {M Q G : Type*} [TopologicalSpace M] [TopologicalSpace Q]
     [Group G] [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (x : M) :
     OpenPartialHomeomorph Q M :=
   hq.isCoveringMap.isLocalHomeomorph.localInverseAt x
 
+/-- The inverse of the local inverse is the quotient map. -/
 @[simp]
 theorem CoveringQuotient.localInverse_symm {M Q G : Type*} [TopologicalSpace M]
     [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G)
     (x : M) : (localInverse hq x).symm = q :=
   hq.isCoveringMap.isLocalHomeomorph.localInverseAt_symm x
 
+/-- The local inverse is a right inverse of the quotient map. -/
 theorem CoveringQuotient.project_localInverse {M Q G : Type*} [TopologicalSpace M]
     [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G)
     (x : M) {y : Q} (hy : y ∈ (localInverse hq x).source) : q (localInverse hq x y) = y :=
   hq.isCoveringMap.isLocalHomeomorph.apply_localInverseAt_of_mem hy
 
+/-- A quotient map is smooth when every deck transformation is smooth. -/
 theorem CoveringQuotient.contMDiffOn_lift {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (n : ℕ∞ω)
@@ -107,11 +119,13 @@ theorem CoveringQuotient.contMDiffOn_lift {E M Q G : Type*} [NormedAddCommGroup 
     exact hsource.mono fun y hy => (project_localInverse hq a hy).trans (hq.map_smul g).symm
   exact ((hG g).contMDiffAt.congr_of_eventuallyEq heq).contMDiffWithinAt
 
+/-- The quotient chart at `x` composed from a local inverse and a source chart. -/
 def CoveringQuotient.chart {E M Q G : Type*} [NormedAddCommGroup E] [TopologicalSpace M]
     [ChartedSpace E M] [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q}
     (hq : IsQuotientCoveringMap q G) (x : Q) : OpenPartialHomeomorph Q E :=
   (localInverse hq (representative hq x)).trans (chartAt E (representative hq x))
 
+/-- The quotient inherits a charted-space structure from the covering. -/
 @[instance_reducible]
 def CoveringQuotient.chartedSpace {E M Q G : Type*} [NormedAddCommGroup E] [TopologicalSpace M]
     [ChartedSpace E M] [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q}
@@ -136,6 +150,7 @@ def CoveringQuotient.chartedSpace {E M Q G : Type*} [NormedAddCommGroup E] [Topo
       exact mem_chart_source E (representative hq x)
   chart_mem_atlas x := Set.mem_range_self x
 
+/-- The inverse quotient chart is the source chart's inverse followed by the quotient map. -/
 theorem CoveringQuotient.chart_symm {E M Q G : Type*} [NormedAddCommGroup E] [TopologicalSpace M]
     [ChartedSpace E M] [TopologicalSpace Q] [Group G] [MulAction G M] {q : M → Q}
     (hq : IsQuotientCoveringMap q G) (x : Q) :
@@ -146,6 +161,7 @@ theorem CoveringQuotient.chart_symm {E M Q G : Type*} [NormedAddCommGroup E] [To
   rw [localInverse_symm]
   rfl
 
+/-- Quotient chart transitions differ by a deck transformation. -/
 theorem CoveringQuotient.transition_eq {E M Q G : Type*} [NormedAddCommGroup E]
     [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G] [MulAction G M]
     {q : M → Q} (hq : IsQuotientCoveringMap q G) (x y : Q) :
@@ -156,6 +172,7 @@ theorem CoveringQuotient.transition_eq {E M Q G : Type*} [NormedAddCommGroup E]
   simp only [OpenPartialHomeomorph.trans_apply, chart_symm, Function.comp_apply]
   rfl
 
+/-- Quotient chart transitions are smooth when deck transformations are smooth. -/
 theorem CoveringQuotient.contDiffOn_transition {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (n : ℕ∞ω)
@@ -190,6 +207,7 @@ theorem CoveringQuotient.contDiffOn_transition {E M Q G : Type*} [NormedAddCommG
   rw [transition_eq]
   exact hc'.contDiffWithinAt
 
+/-- The quotient of a manifold by a smooth quotient covering is a manifold. -/
 theorem CoveringQuotient.isManifold {E M Q G : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G] [MulAction G M]
     {q : M → Q} (hq : IsQuotientCoveringMap q G) (n : ℕ∞ω)
@@ -204,6 +222,7 @@ theorem CoveringQuotient.isManifold {E M Q G : Type*} [NormedAddCommGroup E] [No
   rintro e e' ⟨x, rfl⟩ ⟨y, rfl⟩
   simpa using contDiffOn_transition hq n hG x y
 
+/-- The covering projection is smooth for the quotient chart structure. -/
 theorem CoveringQuotient.contMDiff_project {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (n : ℕ∞ω)
@@ -234,6 +253,7 @@ theorem CoveringQuotient.contMDiff_project {E M Q G : Type*} [NormedAddCommGroup
   simpa [extChartAt, OpenPartialHomeomorph.extend, hchart, chart, Function.comp_def] using
     hc.comp x hmid
 
+/-- A map out of the quotient is smooth when its lift is. -/
 theorem CoveringQuotient.contMDiff_of_comp {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) {F H N : Type*}
@@ -253,6 +273,7 @@ theorem CoveringQuotient.contMDiff_of_comp {E M Q G : Type*} [NormedAddCommGroup
   have hchart : chartAt E x = chart (E := E) hq x := rfl
   simpa [extChartAt, OpenPartialHomeomorph.extend, hchart, chart, Function.comp_def] using hsrc
 
+/-- A map out of the quotient is smooth on a set when its lift is. -/
 theorem CoveringQuotient.contMDiffOn_of_comp {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) {F H N : Type*}
@@ -277,6 +298,7 @@ theorem CoveringQuotient.contMDiffOn_of_comp {E M Q G : Type*} [NormedAddCommGro
   have hchart : chartAt E x = chart (E := E) hq x := rfl
   simpa [extChartAt, OpenPartialHomeomorph.extend, hchart, chart, Function.comp_def] using hsrc
 
+/-- Local inverses of the covering are holomorphic. -/
 theorem CoveringQuotient.localInverse_holomorphic {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G) (n : ℕ∞ω)
@@ -291,6 +313,7 @@ theorem CoveringQuotient.localInverse_holomorphic {E M Q G : Type*} [NormedAddCo
   contMDiffOn_of_comp hq (modelWithCornersSelf ℂ E) n (localInverse hq a).open_source
     (contMDiffOn_lift hq n hG a)
 
+/-- The covering projection is a local diffeomorphism. -/
 theorem CoveringQuotient.project_isLocalDiffeomorph {E M Q G : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] [Group G]
     [MulAction G M] {q : M → Q} (hq : IsQuotientCoveringMap q G)
@@ -318,6 +341,9 @@ theorem CoveringQuotient.project_isLocalDiffeomorph {E M Q G : Type*} [NormedAdd
   change q y = (localInverse hq x).symm y
   rw [localInverse_symm]
 
+/-! ### Quotients by a discrete submodule -/
+
+/-- Quotienting by a discrete submodule is a local homeomorphism. -/
 theorem DiscreteQuotient.quotient_localHomeomorph {E : Type*} [NormedAddCommGroup E]
     (L : Submodule ℤ E) [DiscreteTopology L] : IsLocalHomeomorph (L.mkQ : E → E ⧸ L) := by
   have : DiscreteTopology L.toAddSubgroup := inferInstanceAs (DiscreteTopology L)
@@ -325,19 +351,23 @@ theorem DiscreteQuotient.quotient_localHomeomorph {E : Type*} [NormedAddCommGrou
     (AddSubgroup.isAddQuotientCoveringMap_of_comm L.toAddSubgroup
         DiscreteTopology.isDiscrete).isCoveringMap.isLocalHomeomorph
 
+/-- A chosen lift of a quotient point. -/
 def DiscreteQuotient.representative {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     (x : E ⧸ L) : E :=
   (L.mkQ_surjective x).choose
 
+/-- The chosen representative projects back to the quotient point. -/
 @[simp]
 theorem DiscreteQuotient.mkQ_representative {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     (x : E ⧸ L) : L.mkQ (representative L x) = x :=
   (L.mkQ_surjective x).choose_spec
 
+/-- The quotient chart near `x` given by the local inverse of `mkQ`. -/
 def DiscreteQuotient.chart {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     [DiscreteTopology L] (x : E ⧸ L) : OpenPartialHomeomorph (E ⧸ L) E :=
   (quotient_localHomeomorph L).localInverseAt (representative L x)
 
+/-- The quotient by a discrete submodule is a charted space. -/
 instance DiscreteQuotient.chartedSpace {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     [DiscreteTopology L] : ChartedSpace E (E ⧸ L)
     where
@@ -350,15 +380,18 @@ instance DiscreteQuotient.chartedSpace {E : Type*} [NormedAddCommGroup E] (L : S
     simpa only [chart, mkQ_representative] using h
   chart_mem_atlas x := Set.mem_range_self x
 
+/-- The inverse quotient chart is `mkQ`. -/
 @[simp]
 theorem DiscreteQuotient.chart_symm {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     [DiscreteTopology L] (x : E ⧸ L) : (chart L x).symm = (L.mkQ : E → E ⧸ L) :=
   (quotient_localHomeomorph L).localInverseAt_symm (representative L x)
 
+/-- The quotient chart computes points back through `mkQ`. -/
 theorem DiscreteQuotient.mkQ_chart {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     [DiscreteTopology L] (x y : E ⧸ L) (hy : y ∈ (chart L x).source) : L.mkQ (chart L x y) = y :=
   (quotient_localHomeomorph L).apply_localInverseAt_of_mem hy
 
+/-- Quotient chart transitions differ from the identity by a lattice element. -/
 theorem DiscreteQuotient.transition_sub_mem {E : Type*} [NormedAddCommGroup E] (L : Submodule ℤ E)
     [DiscreteTopology L] (x y : E ⧸ L) (z : E)
     (hz : z ∈ ((chart L x).symm.trans (chart L y)).source) :
@@ -369,6 +402,7 @@ theorem DiscreteQuotient.transition_sub_mem {E : Type*} [NormedAddCommGroup E] (
   apply mkQ_chart
   simpa only [OpenPartialHomeomorph.symm_symm, chart_symm, Set.mem_preimage] using hz.2
 
+/-- The quotient by a discrete submodule is a smooth manifold. -/
 instance DiscreteQuotient.isManifold {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (L : Submodule ℤ E) [DiscreteTopology L] (n : ℕ∞ω) :
     IsManifold (modelWithCornersSelf ℂ E) n (E ⧸ L) := by
@@ -381,6 +415,7 @@ instance DiscreteQuotient.isManifold {E : Type*} [NormedAddCommGroup E] [NormedS
       (transition_sub_mem L x y) n
   simpa using h
 
+/-- The quotient map `mkQ` is smooth. -/
 theorem DiscreteQuotient.contMDiff_mkQ {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (L : Submodule ℤ E) [DiscreteTopology L] (n : ℕ∞ω) :
     ContMDiff (modelWithCornersSelf ℂ E) (modelWithCornersSelf ℂ E) n (L.mkQ : E → E ⧸ L) := by
@@ -395,6 +430,7 @@ theorem DiscreteQuotient.contMDiff_mkQ {E : Type*} [NormedAddCommGroup E] [Norme
   have hchart : chartAt E y = chart L y := rfl
   simpa [extChartAt, OpenPartialHomeomorph.extend, hchart, chartAt_self_eq] using h
 
+/-- A map out of the quotient is smooth when its composition with `mkQ` is. -/
 theorem DiscreteQuotient.contMDiff_of_comp_mkQ {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] (L : Submodule ℤ E) [DiscreteTopology L] {F H M : Type*}
     [NormedAddCommGroup F] [NormedSpace ℂ F] [TopologicalSpace H] [TopologicalSpace M]
@@ -407,6 +443,7 @@ theorem DiscreteQuotient.contMDiff_of_comp_mkQ {E : Type*} [NormedAddCommGroup E
   simpa [extChartAt, OpenPartialHomeomorph.extend, hchart, chart_symm] using
     (hf.contMDiffAt.contMDiffWithinAt (s := Set.univ) (x := chart L x x))
 
+/-- The quotient by a discrete submodule is an additive Lie group. -/
 instance DiscreteQuotient.lieAddGroup {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (L : Submodule ℤ E) [DiscreteTopology L] (n : ℕ∞ω) :
     LieAddGroup (modelWithCornersSelf ℂ E) n (E ⧸ L)
@@ -440,6 +477,7 @@ instance DiscreteQuotient.lieAddGroup {E : Type*} [NormedAddCommGroup E] [Normed
     simpa [Function.comp_def, map_neg] using
       (contMDiff_mkQ L n).comp (contDiff_neg : ContDiff ℂ n (fun z : E => -z)).contMDiff
 
+/-- A linear equivalence respecting the lattices descends to a biholomorphism of quotients. -/
 def DiscreteQuotient.linearBiholomorph {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] (L : Submodule ℤ E) (K : Submodule ℤ F)
     [DiscreteTopology L] [DiscreteTopology K] (e : E ≃L[ℂ] F)
@@ -453,4 +491,57 @@ def DiscreteQuotient.linearBiholomorph {E F : Type*} [NormedAddCommGroup E] [Nor
   contMDiff_invFun := by
     apply contMDiff_of_comp_mkQ
     exact (contMDiff_mkQ L ω).comp e.symm.contDiff.contMDiff
+
+/-! ### Quotient charts over orthants -/
+
+/-- A quotient-covering chart obtained by composing a local inverse of the covering with a source chart. -/
+def CoveringOrthant.localChart {G M Q H : Type*} [Group G] [TopologicalSpace M]
+    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
+    OpenPartialHomeomorph Q H :=
+  (hq.isCoveringMap.isLocalHomeomorph.localInverseAt a).trans e
+
+/-- The quotient of the chart centre lies in the local chart's source. -/
+theorem CoveringOrthant.self_mem_localChart_source {G M Q H : Type*} [Group G]
+    [TopologicalSpace M] [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) (ha : a ∈ e.source) :
+    q a ∈ (localChart hq e a).source := by
+  change
+    q a ∈ (hq.isCoveringMap.isLocalHomeomorph.localInverseAt a).source ∧
+      hq.isCoveringMap.isLocalHomeomorph.localInverseAt a (q a) ∈ e.source
+  exact
+    ⟨hq.isCoveringMap.isLocalHomeomorph.apply_self_mem_localInverseAt_source, by
+      simpa only [IsLocalHomeomorph.localInverseAt_apply_self] using ha⟩
+
+/-- The inverse quotient chart is `q` after the source chart's inverse. -/
+theorem CoveringOrthant.localChart_symm {G M Q H : Type*} [Group G] [TopologicalSpace M]
+    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
+    ((localChart hq e a).symm : H → Q) = q ∘ e.symm := by
+  simp only [localChart, OpenPartialHomeomorph.coe_trans_symm,
+    IsLocalHomeomorph.localInverseAt_symm]
+
+/-- The inverse quotient chart applies the inverse source chart followed by the quotient map. -/
+@[simp]
+theorem CoveringOrthant.localChart_symm_apply {G M Q H : Type*} [Group G] [TopologicalSpace M]
+    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) (z : H) :
+    (localChart hq e a).symm z = q (e.symm z) := by rw [localChart_symm, Function.comp_apply]
+
+/-- The local chart's target lies inside the source chart's target. -/
+theorem CoveringOrthant.localChart_target_subset {G M Q H : Type*} [Group G] [TopologicalSpace M]
+    [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) :
+    (localChart hq e a).target ⊆ e.target := fun _ hz => hz.1
+
+/-- A coordinate identity in the source chart descends to the quotient chart. -/
+theorem CoveringOrthant.localChart_coordinate_identity {G M Q H : Type*} [Group G]
+    [TopologicalSpace M] [TopologicalSpace Q] [TopologicalSpace H] [MulAction G M] {q : M → Q}
+    (hq : IsQuotientCoveringMap q G) (e : OpenPartialHomeomorph M H) (a : M) {R : Type*}
+    (f : Q → R) (F : H → R) (he : ∀ x ∈ e.source, f (q x) = F (e x)) :
+    ∀ z ∈ (localChart hq e a).target, f ((localChart hq e a).symm z) = F z := by
+  intro z hz
+  have hze := localChart_target_subset hq e a hz
+  rw [localChart_symm_apply, he (e.symm z) (e.map_target hze), e.right_inv hze]
+
 end Mathoverflow1973

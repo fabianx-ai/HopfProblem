@@ -52,13 +52,18 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The model handle map -/
+
+/-- The closed unit disk of a normed space. -/
 abbrev MorseHandle.UnitDisk (V : Type*) [NormedAddCommGroup V] :=
   Metric.closedBall (0 : V) 1
 
+/-- The model handle embedding of the disk product into `N × P`. -/
 def MorseHandle.modelMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : UnitDisk N × UnitDisk P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖(z.2 : P)‖ ^ 2)) • (z.1 : N), ρ • (z.2 : P))
 
+/-- The model handle map is continuous. -/
 theorem MorseHandle.continuous_modelMap {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) :
     Continuous (modelMap (N := N) (P := P) ρ) := by
@@ -72,11 +77,13 @@ theorem MorseHandle.continuous_modelMap {N P : Type*} [NormedAddCommGroup N]
           hu).prodMk
       (continuous_const.smul hv)
 
+/-- The descending scale factor is positive. -/
 theorem MorseHandle.negative_scale_pos {N P : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     0 < ρ * Real.sqrt (1 + ‖(z.2 : P)‖ ^ 2) :=
   mul_pos hρ (Real.sqrt_pos.mpr (by positivity))
 
+/-- The model handle map is injective. -/
 theorem MorseHandle.modelMap_injective {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) :
     Function.Injective (modelMap (N := N) (P := P) ρ) := by
@@ -92,6 +99,7 @@ theorem MorseHandle.modelMap_injective {N P : Type*} [NormedAddCommGroup N]
       one_smul] using hh
   exact Prod.ext (Subtype.ext hu) rfl
 
+/-- The model handle lands in the `2ρ` product block. -/
 theorem MorseHandle.modelMap_mem_product {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (z : UnitDisk N × UnitDisk P) :
@@ -116,6 +124,7 @@ theorem MorseHandle.modelMap_mem_product {N P : Type*} [NormedAddCommGroup N]
     have hh := mul_le_mul_of_nonneg_left hv hρ.le
     linarith
 
+/-- The quadratic height of a model-handle point. -/
 theorem MorseHandle.modelMap_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     -‖(modelMap ρ z).1‖ ^ 2 + ‖(modelMap ρ z).2‖ ^ 2 =
@@ -124,6 +133,7 @@ theorem MorseHandle.modelMap_height {N P : Type*} [NormedAddCommGroup N] [Normed
     abs_of_pos hρ, mul_pow, Real.sq_sqrt (show 0 ≤ 1 + ‖(z.2 : P)‖ ^ 2 by positivity)]
   ring
 
+/-- A model-handle point lies below `-ρ²` exactly on the belt boundary. -/
 theorem MorseHandle.modelMap_lower_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (z : UnitDisk N × UnitDisk P) :
@@ -144,6 +154,7 @@ theorem MorseHandle.modelMap_lower_iff {N P : Type*} [NormedAddCommGroup N]
   · intro h
     simp only [h, one_pow, sub_self, MulZeroClass.mul_zero, zero_sub, mul_neg, mul_one, le_refl]
 
+/-- Every model-handle point lies below `ρ²`. -/
 theorem MorseHandle.modelMap_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : UnitDisk N × UnitDisk P) :
     -‖(modelMap ρ z).1‖ ^ 2 + ‖(modelMap ρ z).2‖ ^ 2 ≤ ρ ^ 2 := by
@@ -156,19 +167,26 @@ theorem MorseHandle.modelMap_upper {N P : Type*} [NormedAddCommGroup N] [NormedS
     nlinarith [mul_nonneg hfactor hu₂]
   simpa only [mul_one] using mul_le_mul_of_nonneg_left hsmall (sq_nonneg ρ)
 
+/-! ### The belt-face rescaling -/
+
+/-- The radial rescaling factor on the belt face. -/
 def MorseHandle.beltFaceScale (r : ℝ) : ℝ :=
   Real.sqrt (1 + r ^ 2) / Real.sqrt 2
 
+/-- The belt-face scale is positive. -/
 theorem MorseHandle.beltFaceScale_pos (r : ℝ) : 0 < beltFaceScale r :=
   div_pos (Real.sqrt_pos.mpr (by positivity)) (Real.sqrt_pos.mpr (by norm_num))
 
+/-- The belt-face scale is continuous. -/
 theorem MorseHandle.continuous_beltFaceScale : Continuous beltFaceScale :=
   (Real.continuous_sqrt.comp (continuous_const.add (continuous_id.pow 2))).div_const _
 
+/-- The belt-face scale is one on the unit sphere. -/
 theorem MorseHandle.beltFaceScale_one : beltFaceScale 1 = 1 := by
   simp only [beltFaceScale, one_pow, one_add_one_eq_two]
   exact div_self (Real.sqrt_pos.mpr (by norm_num)).ne'
 
+/-- The belt-face scale is monotone on radii. -/
 theorem MorseHandle.beltFaceScale_monotone : MonotoneOn beltFaceScale (Set.Ici 0) := by
   intro r hr s hs hrs
   apply div_le_div_of_nonneg_right _ (Real.sqrt_nonneg 2)
@@ -176,6 +194,7 @@ theorem MorseHandle.beltFaceScale_monotone : MonotoneOn beltFaceScale (Set.Ici 0
   have hsq : r ^ 2 ≤ s ^ 2 := (sq_le_sq₀ hr hs).mpr hrs
   linarith
 
+/-- The scaled radius is strictly monotone. -/
 theorem MorseHandle.beltFaceRadius_strictMono :
     StrictMonoOn (fun r => beltFaceScale r * r) (Set.Ici 0) := by
   intro r hr s hs hrs
@@ -183,26 +202,32 @@ theorem MorseHandle.beltFaceRadius_strictMono :
     (mul_lt_mul_of_pos_left hrs (beltFaceScale_pos r)).trans_le
       (mul_le_mul_of_nonneg_right (beltFaceScale_monotone hr hs hrs.le) hs)
 
+/-- The radial rescaling of the belt face. -/
 def MorseHandle.beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (u : N) :
     N :=
   beltFaceScale ‖u‖ • u
 
+/-- The belt-face map is continuous. -/
 theorem MorseHandle.continuous_beltFaceMap {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Continuous (beltFaceMap (N := N)) :=
   (continuous_beltFaceScale.comp continuous_norm).smul continuous_id
 
+/-- The belt-face map scales the norm by `beltFaceScale`. -/
 theorem MorseHandle.norm_beltFaceMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     (u : N) : ‖beltFaceMap u‖ = beltFaceScale ‖u‖ * ‖u‖ := by
   rw [beltFaceMap, norm_smul, Real.norm_eq_abs, abs_of_pos (beltFaceScale_pos _)]
 
+/-- The belt-face map fixes the origin. -/
 theorem MorseHandle.beltFaceMap_zero {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     beltFaceMap (0 : N) = 0 := by simp only [beltFaceMap, smul_zero]
 
+/-- The belt-face map preserves the open unit disk. -/
 theorem MorseHandle.norm_beltFaceMap_lt_one_iff {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (u : N) : ‖beltFaceMap u‖ < 1 ↔ ‖u‖ < 1 := by
   have hh := beltFaceRadius_strictMono.lt_iff_lt (norm_nonneg u) (show 0 ≤ (1 : ℝ) by norm_num)
   simpa only [beltFaceScale_one, mul_one, norm_beltFaceMap] using hh
 
+/-- The belt-face map preserves the closed unit disk. -/
 theorem MorseHandle.beltFaceMap_mem_disk {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] {u : N} (hu : ‖u‖ ≤ 1) : ‖beltFaceMap u‖ ≤ 1 := by
   rw [norm_beltFaceMap]
@@ -211,6 +236,7 @@ theorem MorseHandle.beltFaceMap_mem_disk {N : Type*} [NormedAddCommGroup N]
     exact beltFaceScale_monotone (norm_nonneg u) (by norm_num) hu
   exact (mul_le_mul_of_nonneg_right hs (norm_nonneg u)).trans (by simpa only [one_mul])
 
+/-- The belt-face map is injective. -/
 theorem MorseHandle.beltFaceMap_injective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Function.Injective (beltFaceMap (N := N)) := by
   intro u v huv
@@ -221,6 +247,7 @@ theorem MorseHandle.beltFaceMap_injective {N : Type*} [NormedAddCommGroup N]
   rw [hn] at huv
   exact (smul_right_injective N (beltFaceScale_pos ‖v‖).ne') huv
 
+/-- The belt-face map surjects onto the unit disk. -/
 theorem MorseHandle.beltFaceMap_surjOn_disk {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] :
     Set.SurjOn (beltFaceMap (N := N)) (Metric.closedBall 0 1) (Metric.closedBall 0 1) := by
@@ -245,15 +272,18 @@ theorem MorseHandle.beltFaceMap_surjOn_disk {N : Type*} [NormedAddCommGroup N]
   change beltFaceScale ‖u‖ • ((r / ‖v‖) • v) = v
   rw [hnorm, smul_smul, ← mul_div_assoc, hrv, div_self hvpos.ne', one_smul]
 
+/-- The belt-face rescaling restricted to the unit disk. -/
 def MorseHandle.beltFaceDiskMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] :
     UnitDisk N → UnitDisk N := fun u =>
   ⟨beltFaceMap u.val,
     mem_closedBall_zero_iff.mpr (beltFaceMap_mem_disk (mem_closedBall_zero_iff.mp u.property))⟩
 
+/-- The disk-rescaling map is continuous. -/
 theorem MorseHandle.continuous_beltFaceDiskMap {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Continuous (beltFaceDiskMap (N := N)) :=
   (continuous_beltFaceMap.comp continuous_subtype_val).subtype_mk _
 
+/-- The disk-rescaling map is bijective. -/
 theorem MorseHandle.beltFaceDiskMap_bijective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] : Function.Bijective (beltFaceDiskMap (N := N)) := by
   constructor
@@ -263,19 +293,25 @@ theorem MorseHandle.beltFaceDiskMap_bijective {N : Type*} [NormedAddCommGroup N]
     obtain ⟨u, hu, huv⟩ := beltFaceMap_surjOn_disk v.property
     exact ⟨⟨u, hu⟩, Subtype.ext huv⟩
 
+/-- The belt-face rescaling is a homeomorphism of the disk. -/
 def MorseHandle.beltFaceDiskHomeomorph {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] : UnitDisk N ≃ₜ UnitDisk N :=
   Continuous.homeoOfEquivCompactToT2 (f :=
     Equiv.ofBijective beltFaceDiskMap beltFaceDiskMap_bijective) continuous_beltFaceDiskMap
 
+/-! ### The ambient homeomorphism -/
+
+/-- The ambient handle map extending the model map to `N × P`. -/
 def MorseHandle.ambientMap {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : N × P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖z.2‖ ^ 2)) • z.1, ρ • z.2)
 
+/-- The inverse of the ambient handle map. -/
 def MorseHandle.ambientInverse {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (z : N × P) : N × P :=
   ((ρ * Real.sqrt (1 + ‖ρ⁻¹ • z.2‖ ^ 2))⁻¹ • z.1, ρ⁻¹ • z.2)
 
+/-- The ambient inverse left-inverts the ambient map. -/
 theorem MorseHandle.ambientInverse_ambientMap {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     ambientInverse ρ (ambientMap ρ z) = z := by
@@ -286,6 +322,7 @@ theorem MorseHandle.ambientInverse_ambientMap {N P : Type*} [NormedAddCommGroup 
       inv_mul_cancel₀ hscale.ne']
   · simp only [ambientInverse, ambientMap, smul_smul, inv_mul_cancel₀ hρ.ne', one_smul]
 
+/-- The ambient inverse right-inverts the ambient map. -/
 theorem MorseHandle.ambientMap_ambientInverse {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     ambientMap ρ (ambientInverse ρ z) = z := by
@@ -295,6 +332,7 @@ theorem MorseHandle.ambientMap_ambientInverse {N P : Type*} [NormedAddCommGroup 
   · simp only [ambientInverse, ambientMap, smul_smul, mul_inv_cancel₀ hscale.ne', one_smul]
   · simp only [ambientInverse, ambientMap, smul_smul, mul_inv_cancel₀ hρ.ne', one_smul]
 
+/-- The ambient handle map is a homeomorphism. -/
 def MorseHandle.ambientHomeomorph {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (hρ : 0 < ρ) : (N × P) ≃ₜ (N × P) := by
   have hscale (v : P) : 0 < ρ * Real.sqrt (1 + ‖v‖ ^ 2) :=
@@ -317,6 +355,7 @@ def MorseHandle.ambientHomeomorph {N P : Type*} [NormedAddCommGroup N] [NormedSp
       continuous_const.mul (Real.continuous_sqrt.comp (continuous_const.add (hv.norm.pow 2)))
     exact ((hc.inv₀ (fun z => (hscale (ρ⁻¹ • z.2)).ne')).smul continuous_fst).prodMk hv
 
+/-- The ambient homeomorphism fixes the origin. -/
 @[simp]
 theorem MorseHandle.ambientHomeomorph_zero {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (hρ : 0 < ρ) :
@@ -324,6 +363,7 @@ theorem MorseHandle.ambientHomeomorph_zero {N P : Type*} [NormedAddCommGroup N]
   change ambientMap ρ (0 : N × P) = 0
   simp only [ambientMap, Prod.fst_zero, Prod.snd_zero, smul_zero, Prod.mk_zero_zero]
 
+/-- The model handle range is a neighborhood of the origin. -/
 theorem MorseHandle.range_modelMap_mem_nhds_zero {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) :
     Set.range (modelMap (N := N) (P := P) ρ) ∈ 𝓝 (0 : N × P) := by
@@ -340,12 +380,14 @@ theorem MorseHandle.range_modelMap_mem_nhds_zero {N P : Type*} [NormedAddCommGro
         rfl⟩
   exact Filter.mem_of_superset (hO.mem_nhds hzero) hsub
 
+/-- The inverse scale squared is `ρ² + ‖v‖²`. -/
 theorem MorseHandle.inverse_scale_sq {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     {ρ : ℝ} (hρ : 0 < ρ) (v : P) : (ρ * Real.sqrt (1 + ‖ρ⁻¹ • v‖ ^ 2)) ^ 2 = ρ ^ 2 + ‖v‖ ^ 2 := by
   rw [mul_pow, Real.sq_sqrt (by positivity), norm_smul, Real.norm_eq_abs,
     abs_of_pos (inv_pos.mpr hρ)]
   field_simp
 
+/-- Membership in the handle range by norm and height bounds. -/
 theorem MorseHandle.mem_range_modelMap_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     z ∈ Set.range (modelMap ρ) ↔ ‖z.2‖ ≤ ρ ∧ -(ρ ^ 2) ≤ -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2 := by
@@ -375,18 +417,24 @@ theorem MorseHandle.mem_range_modelMap_iff {N P : Type*} [NormedAddCommGroup N]
         ?_⟩
     exact ambientMap_ambientInverse hρ z
 
+/-! ### The descent flow -/
+
+/-- The model Morse height `-‖u‖² + ‖v‖²`. -/
 def MorseHandle.quadratic {N P : Type*} [NormedAddCommGroup N] [NormedAddCommGroup P]
     (z : N × P) : ℝ :=
   -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2
 
+/-- The descent vector field `(-u, v)`. -/
 def MorseHandle.descent {N P : Type*} [NormedAddCommGroup P] (z : N × P) : N × P :=
   (z.1, -z.2)
 
+/-- The descent field is smooth. -/
 theorem MorseHandle.contDiff_descent {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] :
     ContDiff ℝ ∞ (descent (N := N) (P := P)) :=
   contDiff_fst.prodMk contDiff_snd.neg
 
+/-- The height decreases along the descent field. -/
 theorem MorseHandle.fderiv_quadratic_descent {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] (z : N × P) :
     fderiv ℝ quadratic z (descent z) = -2 * (‖z.1‖ ^ 2 + ‖z.2‖ ^ 2) := by
@@ -401,6 +449,7 @@ theorem MorseHandle.fderiv_quadratic_descent {N P : Type*} [NormedAddCommGroup N
     inner_neg_right, real_inner_self_eq_norm_sq, two_smul]
   ring
 
+/-- The height strictly decreases away from the origin. -/
 theorem MorseHandle.fderiv_quadratic_descent_neg {N P : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [NormedAddCommGroup P] [InnerProductSpace ℝ P] {z : N × P}
     (hz : z ≠ 0) : fderiv ℝ quadratic z (descent z) < 0 := by
@@ -412,6 +461,7 @@ theorem MorseHandle.fderiv_quadratic_descent_neg {N P : Type*} [NormedAddCommGro
     exact hz (Prod.ext (norm_eq_zero.mp hu) (norm_eq_zero.mp hv))
   nlinarith
 
+/-- The flow of the descent field. -/
 def MorseHandle.descentFlow {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] : Flow ℝ (N × P)
     where
@@ -422,6 +472,7 @@ def MorseHandle.descentFlow {N P : Type*} [NormedAddCommGroup N] [NormedSpace �
   map_add' s t z := by simp only [Real.exp_add, neg_add, smul_smul]
   map_zero' z := by simp
 
+/-- The descent flow has the descent field as derivative. -/
 theorem MorseHandle.hasDerivAt_descentFlow {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (z : N × P) (t : ℝ) :
     HasDerivAt (fun s => descentFlow s z) (descent (descentFlow t z)) t := by
@@ -430,30 +481,35 @@ theorem MorseHandle.hasDerivAt_descentFlow {N P : Type*} [NormedAddCommGroup N]
   simpa only [descentFlow, descent, id_eq, Pi.neg_apply, mul_neg, mul_one, neg_smul] using
     h₁.prodMk h₂
 
+/-- The negative component grows exponentially. -/
 theorem MorseHandle.norm_descentFlow_fst {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (t : ℝ) (z : N × P) :
     ‖(descentFlow t z).1‖ = Real.exp t * ‖z.1‖ := by
   change ‖Real.exp t • z.1‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos t)]
 
+/-- The positive component decays exponentially. -/
 theorem MorseHandle.norm_descentFlow_snd {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (t : ℝ) (z : N × P) :
     ‖(descentFlow t z).2‖ = Real.exp (-t) * ‖z.2‖ := by
   change ‖Real.exp (-t) • z.2‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos (-t))]
 
+/-- Forward flow does not shrink the negative component. -/
 theorem MorseHandle.norm_fst_le_descentFlow {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {t : ℝ} (ht : 0 ≤ t) (z : N × P) :
     ‖z.1‖ ≤ ‖(descentFlow t z).1‖ := by
   rw [norm_descentFlow_fst]
   exact le_mul_of_one_le_left (norm_nonneg _) (Real.one_le_exp_iff.mpr ht)
 
+/-- Forward flow does not grow the positive component. -/
 theorem MorseHandle.norm_snd_descentFlow_le {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {t : ℝ} (ht : 0 ≤ t) (z : N × P) :
     ‖(descentFlow t z).2‖ ≤ ‖z.2‖ := by
   rw [norm_descentFlow_snd]
   exact mul_le_of_le_one_left (norm_nonneg _) (Real.exp_le_one_iff.mpr (neg_nonpos.mpr ht))
 
+/-- The lower level union handle, characterized by height or `P`-norm. -/
 theorem MorseHandle.mem_lower_union_handle_iff {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P) :
     z ∈ {w | quadratic w ≤ -(ρ ^ 2)} ∪ Set.range (modelMap ρ) ↔
@@ -470,20 +526,27 @@ theorem MorseHandle.mem_lower_union_handle_iff {N P : Type*} [NormedAddCommGroup
       · exact Or.inl hq
       · exact Or.inr ⟨h, le_of_not_ge hq⟩
 
+/-! ### The belt-level model -/
+
+/-- The flow time from the belt face to the level `ρ²`. -/
 def MorseHandle.beltFaceTime (r : ℝ) : ℝ :=
   Real.log (Real.sqrt (1 + r ^ 2))
 
+/-- The belt-face flow time is nonnegative. -/
 theorem MorseHandle.beltFaceTime_nonneg (r : ℝ) : 0 ≤ beltFaceTime r :=
   Real.log_nonneg (Real.one_le_sqrt.mpr (by nlinarith [sq_nonneg r]))
 
+/-- The belt-face time exponentiates to `√(1 + r²)`. -/
 theorem MorseHandle.exp_beltFaceTime (r : ℝ) :
     Real.exp (beltFaceTime r) = Real.sqrt (1 + r ^ 2) :=
   Real.exp_log (Real.sqrt_pos.mpr (by positivity))
 
+/-- The point on level `ρ²` flowing to a belt-face point. -/
 def MorseHandle.beltLevelModel {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) : N × P :=
   (ρ • u, (ρ * Real.sqrt (1 + ‖u‖ ^ 2)) • v)
 
+/-- The belt-level model lies on level `ρ²`. -/
 theorem MorseHandle.beltLevelModel_height {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (u : N)
     {v : P} (hv : ‖v‖ = 1) : quadratic (beltLevelModel ρ u v) = ρ ^ 2 := by
@@ -493,6 +556,7 @@ theorem MorseHandle.beltLevelModel_height {N P : Type*} [NormedAddCommGroup N]
     Real.sq_sqrt (show 0 ≤ 1 + ‖u‖ ^ 2 by positivity)]
   ring
 
+/-- Flowing the belt-level model for the belt-face time reaches the handle. -/
 theorem MorseHandle.descentFlow_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : UnitDisk N)
     (v : UnitDisk P) (hv : ‖v.val‖ = 1) :
@@ -514,6 +578,7 @@ theorem MorseHandle.descentFlow_beltFaceTime {N P : Type*} [NormedAddCommGroup N
     congr 1
     field_simp
 
+/-- The belt-level flow stays in the `2ρ` block. -/
 theorem MorseHandle.descentFlow_beltLevelModel_mem_block {N P : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ}
     (hρ : 0 < ρ) (u : UnitDisk N) {v : P} (hv : ‖v‖ = 1) {t : ℝ}
@@ -544,6 +609,7 @@ theorem MorseHandle.descentFlow_beltLevelModel_mem_block {N P : Type*}
       _ ≤ ρ * 2 := (mul_le_mul_of_nonneg_left hs hρ.le)
       _ = 2 * ρ := mul_comm _ _
 
+/-- Backward flow from the handle reaches the belt level. -/
 theorem MorseHandle.descentFlow_neg_beltFaceTime {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : UnitDisk N)
     (v : UnitDisk P) (hv : ‖v.val‖ = 1) :
@@ -552,6 +618,7 @@ theorem MorseHandle.descentFlow_neg_beltFaceTime {N P : Type*} [NormedAddCommGro
   rw [← descentFlow_beltFaceTime ρ u v hv, ← descentFlow.map_add, neg_add_cancel,
     descentFlow.map_zero_apply]
 
+/-- The backward belt-face flow stays in the `2ρ` block. -/
 theorem MorseHandle.descentFlow_positiveFace_mem_block {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (u : UnitDisk N) (v : UnitDisk P) (hv : ‖v.val‖ = 1) {t : ℝ}
@@ -563,9 +630,13 @@ theorem MorseHandle.descentFlow_positiveFace_mem_block {N P : Type*} [NormedAddC
   apply descentFlow_beltLevelModel_mem_block hρ u hv
   constructor <;> linarith [ht.1, ht.2]
 
+/-! ### The belt passage -/
+
+/-- The flow time across the belt sphere at parameter `s`. -/
 def BeltPassage.time (s : ℝ) : ℝ :=
   Real.log (Real.sqrt (1 + s ^ 2) / s)
 
+/-- The belt-passage time is nonnegative. -/
 theorem BeltPassage.time_nonneg {s : ℝ} (hs : 0 < s) : 0 ≤ time s := by
   have hroot := Real.sqrt_nonneg (1 + s ^ 2)
   have hsquare := Real.sq_sqrt (show 0 ≤ 1 + s ^ 2 by positivity)
@@ -573,18 +644,22 @@ theorem BeltPassage.time_nonneg {s : ℝ} (hs : 0 < s) : 0 ≤ time s := by
   apply (le_div_iff₀ hs).mpr
   nlinarith
 
+/-- The passage time exponentiates to `√(1 + s²)/s`. -/
 theorem BeltPassage.exp_time {s : ℝ} (hs : 0 < s) :
     Real.exp (time s) = Real.sqrt (1 + s ^ 2) / s :=
   Real.exp_log (div_pos (Real.sqrt_pos.mpr (by positivity)) hs)
 
+/-- The upper end of the belt passage at level `ρ²`. -/
 def BeltPassage.upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) : N × P :=
   ((ρ * s) • u, (ρ * Real.sqrt (1 + s ^ 2)) • v)
 
+/-- The lower end of the belt passage on the belt sphere. -/
 def BeltPassage.lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) : N × P :=
   ((ρ * Real.sqrt (1 + s ^ 2)) • u, (ρ * s) • v)
 
+/-- Flowing the upper end for the passage time reaches the lower end. -/
 theorem BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) {s : ℝ} (hs : 0 < s) (u : N) (v : P) :
     MorseHandle.descentFlow (time s) (BeltPassage.upper ρ s u v) =
@@ -600,6 +675,7 @@ theorem BeltPassage.descentFlow_time {N P : Type*} [NormedAddCommGroup N] [Norme
     congr 1
     field_simp
 
+/-- The belt passage stays in the `2ρ` block. -/
 theorem BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ s : ℝ} (hρ : 0 < ρ) (hs : 0 < s)
     (hs₁ : s ≤ 1) {u : N} (hu : ‖u‖ = 1) {v : P} (hv : ‖v‖ = 1) {t : ℝ}
@@ -629,6 +705,7 @@ theorem BeltPassage.descentFlow_mem_block {N P : Type*} [NormedAddCommGroup N]
       _ ≤ ρ * 2 := (mul_le_mul_of_nonneg_left hr hρ.le)
       _ = 2 * ρ := mul_comm _ _
 
+/-- The lower end depends smoothly on the passage parameter. -/
 theorem BeltPassage.contDiff_lower {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
     ContDiff ℝ ∞ (fun s => BeltPassage.lower ρ s u v) :=
@@ -637,17 +714,20 @@ theorem BeltPassage.contDiff_lower {N P : Type*} [NormedAddCommGroup N] [NormedS
         contDiff_const).prodMk
     ((contDiff_const.mul contDiff_id).smul contDiff_const)
 
+/-- At parameter zero the lower end is the equatorial point. -/
 theorem BeltPassage.lower_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
     BeltPassage.lower ρ 0 u v = (ρ • u, 0) := by
   simp only [BeltPassage.lower, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
     mul_one, MulZeroClass.mul_zero, zero_smul]
 
+/-- Negating the parameter negates the negative component. -/
 theorem BeltPassage.upper_neg {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) (u : N) (v : P) :
     BeltPassage.upper ρ (-s) u v = BeltPassage.upper ρ s (-u) v := by
   simp only [BeltPassage.upper, neg_sq, mul_neg, neg_smul, smul_neg]
 
+/-- The upper end lies on level `ρ²`. -/
 theorem BeltPassage.upper_height {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ s : ℝ) {u : N} (hu : ‖u‖ = 1) {v : P}
     (hv : ‖v‖ = 1) : MorseHandle.quadratic (BeltPassage.upper ρ s u v) = ρ ^ 2 := by
@@ -655,6 +735,7 @@ theorem BeltPassage.upper_height {N P : Type*} [NormedAddCommGroup N] [NormedSpa
     hu, hv, mul_one, sq_abs, mul_pow, Real.sq_sqrt (show 0 ≤ 1 + s ^ 2 by positivity)]
   ring
 
+/-- The upper end depends smoothly on the passage parameter. -/
 theorem BeltPassage.contDiff_upper {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
     ContDiff ℝ ∞ (fun s => BeltPassage.upper ρ s u v) :=
@@ -663,12 +744,14 @@ theorem BeltPassage.contDiff_upper {N P : Type*} [NormedAddCommGroup N] [NormedS
           ((contDiff_const.add (contDiff_id.pow 2)).sqrt (fun _ => by positivity))).smul
       contDiff_const)
 
+/-- At parameter zero the upper end is the equatorial point. -/
 theorem BeltPassage.upper_zero {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] (ρ : ℝ) (u : N) (v : P) :
     BeltPassage.upper ρ 0 u v = (0, ρ • v) := by
   simp only [BeltPassage.upper, zero_pow (by decide : 2 ≠ 0), add_zero, Real.sqrt_one,
     mul_one, MulZeroClass.mul_zero, zero_smul]
 
+/-- The upper end stays in the `2ρ` block. -/
 theorem BeltPassage.upper_mem_block {N P : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ s : ℝ} (hρ : 0 < ρ) (hs : |s| ≤ 1) {u : N}
     (hu : ‖u‖ = 1) {v : P} (hv : ‖v‖ = 1) :
@@ -688,14 +771,19 @@ theorem BeltPassage.upper_mem_block {N P : Type*} [NormedAddCommGroup N] [Normed
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (mul_pos hρ hrpos), hv, mul_one]
     exact (mul_le_mul_of_nonneg_left hr hρ.le).trans_eq (mul_comm _ _)
 
+/-! ### Regular values -/
+
+/-- The points where the derivative determinant vanishes. -/
 def RegularValues.singularPoints {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : E → E) : Set E :=
   {x | (fderiv ℝ f x).det = 0}
 
+/-- The values all of whose preimages have invertible derivative. -/
 def RegularValues.regularValues {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : E → E) : Set E :=
   (f '' singularPoints f)ᶜ
 
+/-- A value is regular exactly when every preimage has nonzero determinant. -/
 theorem RegularValues.mem_regularValues_iff {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (f : E → E) (y : E) :
     y ∈ regularValues f ↔ ∀ x, f x = y → (fderiv ℝ f x).det ≠ 0 := by
@@ -705,6 +793,7 @@ theorem RegularValues.mem_regularValues_iff {E : Type*} [NormedAddCommGroup E]
   · intro hy ⟨x, hx, hxy⟩
     exact hy x hxy hx
 
+/-- A finite-dimensional linear map is bijective iff its determinant is nonzero. -/
 theorem RegularValues.bijective_iff_det_ne_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (A : E →L[ℝ] E) :
     Function.Bijective A ↔ A.det ≠ 0 := by
@@ -718,12 +807,14 @@ theorem RegularValues.bijective_iff_det_ne_zero {E : Type*} [NormedAddCommGroup 
     have hi := LinearMap.ker_eq_bot.mp hker
     exact ⟨hi, LinearMap.injective_iff_surjective.mp hi⟩
 
+/-- The derivative at a preimage of a regular value is bijective. -/
 theorem RegularValues.bijective_fderiv_of_mem_regularValues {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → E} {y : E}
     (hy : y ∈ regularValues f) {x : E} (hx : f x = y) : Function.Bijective (fderiv ℝ f x) := by
   have hdet := (mem_regularValues_iff f y).mp hy x hx
   exact (bijective_iff_det_ne_zero _).mpr hdet
 
+/-- Sard's theorem: the singular values have measure zero. -/
 theorem RegularValues.measure_singularValues_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] {f : E → E}
@@ -731,6 +822,7 @@ theorem RegularValues.measure_singularValues_eq_zero {E : Type*} [NormedAddCommG
   MeasureTheory.addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ
     (fun x _ => (hf x).hasFDerivAt.hasFDerivWithinAt) (fun _ hx => hx)
 
+/-- Regular values are dense. -/
 theorem RegularValues.dense_regularValues {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] {f : E → E}

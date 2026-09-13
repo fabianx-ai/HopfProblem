@@ -63,22 +63,29 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### The collapse map to the one-point compactification -/
+
+/-- The map collapsing `F` to the point at infinity of `OnePoint Fᶜ`. -/
 def OnePointCollapse.collapse {K : Type*} (F : Set K) (a : K) : OnePoint ↥Fᶜ := by
   classical exact if h : a ∈ F then (OnePoint.infty) else ((⟨a, h⟩ : ↥Fᶜ) : OnePoint ↥Fᶜ)
 
+/-- Points of `F` collapse to infinity. -/
 @[simp]
 theorem OnePointCollapse.collapse_of_mem {K : Type*} (F : Set K) {a : K} (ha : a ∈ F) :
     collapse F a = (OnePoint.infty) := by classical simp only [collapse, dif_pos ha]
 
+/-- Points off `F` collapse to their image. -/
 theorem OnePointCollapse.collapse_of_not_mem {K : Type*} (F : Set K) {a : K} (ha : a ∉ F) :
     collapse F a = ((⟨a, ha⟩ : ↥Fᶜ) : OnePoint ↥Fᶜ) := by
   classical simp only [collapse, dif_neg ha]
 
+/-- A complement point collapses to its image. -/
 @[simp]
 theorem OnePointCollapse.collapse_coe {K : Type*} (F : Set K) (a : ↥Fᶜ) :
     collapse F a.val = (a : OnePoint ↥Fᶜ) :=
   collapse_of_not_mem F a.property
 
+/-- The collapse hits infinity exactly on `F`. -/
 @[simp]
 theorem OnePointCollapse.collapse_eq_infty_iff {K : Type*} (F : Set K) (a : K) :
     collapse F a = (OnePoint.infty) ↔ a ∈ F := by
@@ -87,6 +94,7 @@ theorem OnePointCollapse.collapse_eq_infty_iff {K : Type*} (F : Set K) (a : K) :
   · simp only [OnePointCollapse.collapse_of_mem F ha, ha]
   · simp only [collapse_of_not_mem F ha, OnePoint.coe_ne_infty, ha]
 
+/-- Collapses agree exactly on equal points or inside `F`. -/
 theorem OnePointCollapse.collapse_eq_iff {K : Type*} (F : Set K) (a b : K) :
     collapse F a = collapse F b ↔ a = b ∨ a ∈ F ∧ b ∈ F := by
   classical
@@ -104,6 +112,7 @@ theorem OnePointCollapse.collapse_eq_iff {K : Type*} (F : Set K) (a b : K) :
     · rfl
     · rw [OnePointCollapse.collapse_of_mem F ha, OnePointCollapse.collapse_of_mem F hb]
 
+/-- The collapse of a nonempty `F` is surjective. -/
 theorem OnePointCollapse.collapse_surjective {K : Type*} (F : Set K) (hne : F.Nonempty) :
     Function.Surjective (collapse F) := by
   intro z
@@ -113,6 +122,7 @@ theorem OnePointCollapse.collapse_surjective {K : Type*} (F : Set K) (hne : F.No
     exact ⟨a, OnePointCollapse.collapse_of_mem F ha⟩
   | coe a => exact ⟨a.val, collapse_coe F a⟩
 
+/-- The preimage of a set avoiding infinity is the image of the complement. -/
 theorem OnePointCollapse.collapse_preimage_of_not_mem {K : Type*} (F : Set K)
     (s : Set (OnePoint ↥Fᶜ)) (hs : (OnePoint.infty) ∉ s) :
     collapse F ⁻¹' s = Subtype.val '' (((↑) : ↥Fᶜ → OnePoint ↥Fᶜ) ⁻¹' s) := by
@@ -127,11 +137,13 @@ theorem OnePointCollapse.collapse_preimage_of_not_mem {K : Type*} (F : Set K)
   · rintro ⟨b, hb, rfl⟩
     simpa only [Set.mem_preimage, collapse_coe] using hb
 
+/-- The complement of a preimage containing infinity is the complement image. -/
 theorem OnePointCollapse.collapse_preimage_compl_of_mem {K : Type*} (F : Set K)
     (s : Set (OnePoint ↥Fᶜ)) (hs : (OnePoint.infty) ∈ s) :
     (collapse F ⁻¹' s)ᶜ = Subtype.val '' ((((↑) : ↥Fᶜ → OnePoint ↥Fᶜ) ⁻¹' s)ᶜ) :=
   collapse_preimage_of_not_mem F sᶜ (fun h => h hs)
 
+/-- The collapse of a closed set in a Hausdorff space is continuous. -/
 theorem OnePointCollapse.continuous_collapse {K : Type*} [TopologicalSpace K] [T2Space K] (F : Set K)
     (hF : IsClosed F) : Continuous (collapse F) := by
   classical
@@ -144,10 +156,12 @@ theorem OnePointCollapse.continuous_collapse {K : Type*} [TopologicalSpace K] [T
   · rw [collapse_preimage_of_not_mem F s hinf]
     exact hF.isOpen_compl.isOpenMap_subtype_val _ (OnePoint.isOpen_def.mp hs).2
 
+/-- The collapse as a continuous map. -/
 def OnePointCollapse.collapseMap {K : Type*} [TopologicalSpace K] [T2Space K] (F : Set K)
     (hF : IsClosed F) : C(K, OnePoint ↥Fᶜ) :=
   ⟨collapse F, continuous_collapse F hF⟩
 
+/-- The collapse of a compact Hausdorff space is a quotient map. -/
 theorem OnePointCollapse.isQuotientMap_collapse {K : Type*} [TopologicalSpace K] [T2Space K]
     (F : Set K) [CompactSpace K] (hF : IsClosed F) (hne : F.Nonempty) :
     Topology.IsQuotientMap (collapse F) := by

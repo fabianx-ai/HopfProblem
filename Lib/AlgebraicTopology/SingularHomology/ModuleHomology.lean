@@ -80,21 +80,27 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Cycles and homology classes -/
+
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Degree-`n` cycles of a chain complex of `ℤ`-modules, as a subtype. -/
 abbrev SingularMayerVietoris.ModuleHomology.Cycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) :=
   LinearMap.ker (K.d n ((ComplexShape.down ℕ).next n)).hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The module structure on cycles of a module chain complex. -/
 instance SingularMayerVietoris.ModuleHomology.cycleModule (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : Module ℤ (SingularMayerVietoris.ModuleHomology.Cycle K n) :=
   (SingularMayerVietoris.ModuleHomology.Cycle K n).module
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The next index in the descending shape is `n − 1`. -/
 theorem SingularMayerVietoris.ModuleHomology.next_nat (n : ℕ) :
     (ComplexShape.down ℕ).next n = n - 1 := by cases n <;> simp
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A cycle satisfies the differential condition. -/
 theorem SingularMayerVietoris.ModuleHomology.cycle_condition
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) : (K.d n (n - 1)).hom c.1 = 0 := by
@@ -102,6 +108,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycle_condition
   exact c.2
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A chain with zero differential as a cycle. -/
 def SingularMayerVietoris.ModuleHomology.mkCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : K.X n) (hc : (K.d n (n - 1)).hom c = 0) :
     SingularMayerVietoris.ModuleHomology.Cycle K n :=
@@ -111,16 +118,19 @@ def SingularMayerVietoris.ModuleHomology.mkCycle (K : ChainComplex (ModuleCat.{0
     exact hc⟩
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The homology class of a cycle. -/
 def SingularMayerVietoris.ModuleHomology.cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] K.homology n :=
   SingularChains.ChainHomology.shortCycleClass (K.sc n)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Every homology class is a cycle class. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_surjective
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) : Function.Surjective (cycleClass K n) :=
   SingularChains.ChainHomology.shortCycleClass_surjective (K.sc n)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A cycle class vanishes exactly on boundaries. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_zero_iff
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) :
@@ -133,6 +143,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_zero_iff
   rw [ChainComplex.prev]
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Two cycle classes agree exactly when they differ by a boundary. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
     (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (c d : SingularMayerVietoris.ModuleHomology.Cycle K n) :
@@ -140,17 +151,22 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
   simpa only [map_sub, sub_eq_zero, Submodule.coe_sub] using cycleClass_eq_zero_iff K n (c - d)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A boundary viewed as a cycle. -/
 def SingularMayerVietoris.ModuleHomology.boundaryCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
     (n : ℕ) (b : K.X (n + 1)) : SingularMayerVietoris.ModuleHomology.Cycle K n :=
   mkCycle K n ((K.d (n + 1) n).hom b)
     (congrArg (fun f : K.X (n + 1) ⟶ K.X (n - 1) => f.hom b) (K.d_comp_d (n + 1) n (n - 1)))
 
+/-! ### Chain maps and quasi-isomorphisms -/
+
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The short-complex component of a chain map in degree `n`. -/
 abbrev SingularMayerVietoris.ModuleHomology.shortMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : L ⟶ K) (n : ℕ) : L.sc n ⟶ K.sc n :=
   (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} ℤ) (ComplexShape.down ℕ) n).map f
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The induced map on cycles of a chain map. -/
 def SingularMayerVietoris.ModuleHomology.mapCycles {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (f : L ⟶ K) (n : ℕ) :
     SingularMayerVietoris.ModuleHomology.Cycle L n →ₗ[ℤ]
@@ -159,6 +175,7 @@ def SingularMayerVietoris.ModuleHomology.mapCycles {K L : ChainComplex (ModuleCa
       CategoryTheory.ShortComplex.cyclesMap (shortMap f n) ≫ (K.sc n).moduleCatCyclesIso.hom).hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The mapped cycle's underlying chain. -/
 @[simp]
 theorem SingularMayerVietoris.ModuleHomology.mapCycles_val
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
@@ -174,6 +191,7 @@ theorem SingularMayerVietoris.ModuleHomology.mapCycles_val
   exact congrArg (fun g => g.hom c) hcat
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- The homology map sends cycle classes to cycle classes. -/
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle L n) :
@@ -193,6 +211,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_cycleClass
   exact congrArg (fun g => g.hom c) hcat
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Cycle lifting gives surjectivity on homology. -/
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_surjective_of_cycle_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hlift :
@@ -210,6 +229,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_surjective_of_cycle_lif
   exact ⟨b, by simpa only [mapCycles_val] using hb⟩
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Boundary lifting gives injectivity on homology. -/
 theorem SingularMayerVietoris.ModuleHomology.homologyMap_injective_of_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hlift :
@@ -230,6 +250,7 @@ theorem SingularMayerVietoris.ModuleHomology.homologyMap_injective_of_boundary_l
   exact hlift (c - d) b (hb.trans (mapCycles_val f n (c - d)))
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Cycle and boundary lifting give a quasi-isomorphism at `n`. -/
 theorem SingularMayerVietoris.ModuleHomology.quasiIsoAt_of_cycle_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hsurj :
@@ -249,6 +270,7 @@ theorem SingularMayerVietoris.ModuleHomology.quasiIsoAt_of_cycle_boundary_liftin
       homologyMap_surjective_of_cycle_lifting f n hsurj⟩
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- Cycle and boundary lifting give a quasi-isomorphism. -/
 theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_cycle_boundary_lifting
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K)
     (hsurj :
@@ -268,6 +290,7 @@ theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_cycle_boundary_lifting
   exact quasiIsoAt_of_cycle_boundary_lifting f n (hsurj n) (hinj n)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- A boundary relation pulls a chain back to a cycle. -/
 theorem SingularMayerVietoris.ModuleHomology.cycle_of_boundary_relation
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K) (n : ℕ)
     (hf : Function.Injective (f.f (n - 1)).hom) (c : K.X n) (hc : (K.d n (n - 1)).hom c = 0)
@@ -283,6 +306,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycle_of_boundary_relation
   exact (congrArg (fun g : L.X n ⟶ K.X (n - 1) => g.hom z) (f.comm n (n - 1))).symm.trans hz
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
+/-- An injective chain map with lifting conditions is a quasi-isomorphism. -/
 theorem SingularMayerVietoris.ModuleHomology.quasiIso_of_injective_chain_conditions
     {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K)
     (hf : ∀ n, Function.Injective (f.f n).hom)

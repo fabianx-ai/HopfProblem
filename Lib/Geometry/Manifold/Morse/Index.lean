@@ -42,18 +42,24 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Stretching heights along a flow -/
+
+/-- The piecewise-linear stretch of `ℝ` fixing `c` and scaling above it. -/
 def FlowConstruction.stretchHeight (c k r : ℝ) : ℝ :=
   r + (k - 1) * Max.max 0 (r - c)
 
+/-- Below `c` the stretch is the identity. -/
 theorem FlowConstruction.stretchHeight_of_le {c k r : ℝ} (hr : r ≤ c) :
     stretchHeight c k r = r := by
   simp only [stretchHeight, max_eq_left (sub_nonpos.mpr hr), MulZeroClass.mul_zero, add_zero]
 
+/-- Above `c` the stretch scales by `k`. -/
 theorem FlowConstruction.stretchHeight_of_ge {c k r : ℝ} (hr : c ≤ r) :
     stretchHeight c k r = c + k * (r - c) := by
   rw [stretchHeight, max_eq_right (sub_nonneg.mpr hr)]
   ring
 
+/-- Stretching by `k` then `k⁻¹` is the identity. -/
 theorem FlowConstruction.stretchHeight_inverse {c k : ℝ} (hk : 0 < k) (r : ℝ) :
     stretchHeight c k⁻¹ (stretchHeight c k r) = r := by
   by_cases hr : r ≤ c
@@ -66,11 +72,13 @@ theorem FlowConstruction.stretchHeight_inverse {c k : ℝ} (hk : 0 < k) (r : ℝ
     field_simp
     ring
 
+/-- The height stretch is continuous. -/
 theorem FlowConstruction.continuous_stretchHeight (c k : ℝ) :
     Continuous (stretchHeight c k) :=
   continuous_id.add
     (continuous_const.mul (continuous_const.max (continuous_id.sub continuous_const)))
 
+/-- The height stretch is a homeomorphism for positive `k`. -/
 def FlowConstruction.stretchHeightHomeomorph (c k : ℝ) (hk : 0 < k) : ℝ ≃ₜ ℝ
     where
   toFun := stretchHeight c k
@@ -80,11 +88,13 @@ def FlowConstruction.stretchHeightHomeomorph (c k : ℝ) (hk : 0 < k) : ℝ ≃�
   continuous_toFun := continuous_stretchHeight c k
   continuous_invFun := continuous_stretchHeight c k⁻¹
 
+/-- The stretch sending level `a` to level `b`. -/
 theorem FlowConstruction.stretchHeight_endpoint {c a b : ℝ} (hca : c < a) :
     stretchHeight c ((b - c) / (a - c)) a = b := by
   rw [stretchHeight_of_ge hca.le, div_mul_cancel₀ _ (sub_ne_zero.mpr hca.ne')]
   ring
 
+/-- The stretch hits `b` exactly at `a`. -/
 theorem FlowConstruction.stretchHeight_endpoint_iff {c a b r : ℝ} (hca : c < a)
     (hcb : c < b) : stretchHeight c ((b - c) / (a - c)) r = b ↔ r = a := by
   have hk : 0 < (b - c) / (a - c) := div_pos (sub_pos.mpr hcb) (sub_pos.mpr hca)
@@ -96,6 +106,7 @@ theorem FlowConstruction.stretchHeight_endpoint_iff {c a b r : ℝ} (hca : c < a
   · rintro rfl
     exact stretchHeight_endpoint hca
 
+/-- Points at or below `a` stretch to at most `b`. -/
 theorem FlowConstruction.stretchHeight_le_target {c a b r : ℝ} (hca : c < a) (hcb : c < b)
     (hr : r ≤ a) : stretchHeight c ((b - c) / (a - c)) r ≤ b := by
   by_cases hrc : r ≤ c
@@ -109,14 +120,17 @@ theorem FlowConstruction.stretchHeight_le_target {c a b r : ℝ} (hca : c < a) (
         add_le_add le_rfl (mul_le_mul_of_nonneg_left (sub_le_sub_right hr c) hk)
       _ = b := by rw [div_mul_cancel₀ _ (sub_ne_zero.mpr hca.ne')]; ring
 
+/-- The flow rescaled by the height stretch. -/
 def FlowConstruction.stretchFlow {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (f : X → ℝ)
     (c k : ℝ) (x : X) : X :=
   F (stretchHeight c k (f x) - f x) x
 
+/-- The stretched flow is continuous. -/
 theorem FlowConstruction.continuous_stretchFlow {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) (f : X → ℝ) (hf : Continuous f) (c k : ℝ) : Continuous (stretchFlow F f c k) :=
   F.continuous (((continuous_stretchHeight c k).comp hf).sub hf) continuous_id
 
+/-- The stretched flow realizes the height stretch on `f`-levels. -/
 theorem FlowConstruction.stretchFlow_height {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {f : X → ℝ} {c d a b : ℝ}
     (hF : ∀ x t, f x ∈ Set.Icc c d → f x + t ∈ Set.Icc c d → f (F t x) = f x + t) (hca : c < a)
@@ -138,6 +152,7 @@ theorem FlowConstruction.stretchFlow_height {X : Type*} [TopologicalSpace X] (F 
         (by rw [hsum]; exact ⟨hslo, hshi.trans hb⟩)
     exact hh.trans hsum
 
+/-- The stretched flow maps level `a` below level `b`. -/
 theorem FlowConstruction.stretchFlow_le_target {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} {c d a b : ℝ}
     (hF : ∀ x t, f x ∈ Set.Icc c d → f x + t ∈ Set.Icc c d → f (F t x) = f x + t) (hca : c < a)
@@ -146,6 +161,7 @@ theorem FlowConstruction.stretchFlow_le_target {X : Type*} [TopologicalSpace X]
   rw [stretchFlow_height F hF hca hcb ha hb hx]
   exact stretchHeight_le_target hca hcb hx
 
+/-- The stretched flows at inverse factors compose to the identity. -/
 theorem FlowConstruction.stretchFlow_inverse {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {f : X → ℝ} {c d a b : ℝ}
     (hF : ∀ x t, f x ∈ Set.Icc c d → f x + t ∈ Set.Icc c d → f (F t x) = f x + t) (hca : c < a)
@@ -168,6 +184,9 @@ theorem FlowConstruction.stretchFlow_inverse {X : Type*} [TopologicalSpace X] (F
       by ring,
     F.map_zero_apply]
 
+/-! ### Flow moves between regular sublevels -/
+
+/-- Flow stretching gives a homeomorphism between regular sublevels. -/
 def FlowConstruction.regularSublevelHomeomorphOfFlow {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} {c d a b : ℝ}
     (hF : ∀ x t, f x ∈ Set.Icc c d → f x + t ∈ Set.Icc c d → f (F t x) = f x + t)
@@ -185,6 +204,7 @@ def FlowConstruction.regularSublevelHomeomorphOfFlow {X : Type*} [TopologicalSpa
   continuous_invFun :=
     ((continuous_stretchFlow F f hf c _).comp continuous_subtype_val).subtype_mk _
 
+/-- The sublevel homeomorphism reaches level `b` exactly at level `a`. -/
 theorem FlowConstruction.regularSublevelHomeomorphOfFlow_level_iff {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f : X → ℝ} {c d a b : ℝ}
     (hF : ∀ x t, f x ∈ Set.Icc c d → f x + t ∈ Set.Icc c d → f (F t x) = f x + t)
@@ -195,6 +215,9 @@ theorem FlowConstruction.regularSublevelHomeomorphOfFlow_level_iff {X : Type*}
   rw [stretchFlow_height F hF hca hcb ha hb x.2]
   exact stretchHeight_endpoint_iff hca hcb
 
+/-! ### Negating the Morse function -/
+
+/-- Negating `f` does not change its critical points. -/
 theorem ManifoldMorse.criticalPoints_neg {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) :
     criticalPoints E (fun x => -f x) = criticalPoints E f := by
@@ -203,6 +226,7 @@ theorem ManifoldMorse.criticalPoints_neg {E M : Type*} [NormedAddCommGroup E]
   rw [mfderiv_neg]
   exact neg_eq_zero
 
+/-- The signed Morse chart of `-f` obtained by flipping the positive part. -/
 def ManifoldMorse.SignedMorseChart.neg {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
@@ -226,12 +250,16 @@ def ManifoldMorse.SignedMorseChart.neg {E M : Type*} [NormedAddCommGroup E]
     rw [c.inverse_equation y hy]
     simp only [neg_mul, Finset.sum_neg_distrib, neg_add]
 
+/-! ### The sublevel deformation retraction -/
+
+/-- The inclusion of a smaller sublevel into a larger one. -/
 def FlowConstruction.sublevelInclusion {M : Type*} [TopologicalSpace M] {f : M → ℝ}
     {a b : ℝ} (hab : a ≤ b) : C({ x : M // f x ≤ a }, { x : M // f x ≤ b })
     where
   toFun x := ⟨x.1, x.2.trans hab⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
+/-- The flow deformation interpolates the height down to `a`. -/
 theorem FlowConstruction.sublevel_deformation_height {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t) {x : M}
@@ -246,6 +274,7 @@ theorem FlowConstruction.sublevel_deformation_height {M : Type*} [TopologicalSpa
     have hprod : 0 ≤ (1 - u) * (f x - a) := mul_nonneg (sub_nonneg.mpr hu.2) (sub_nonneg.mpr hax)
     exact ⟨by nlinarith, by linarith⟩
 
+/-- The deformation stays inside the larger sublevel. -/
 theorem FlowConstruction.sublevel_deformation_mem {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t) {x : M}
@@ -254,6 +283,7 @@ theorem FlowConstruction.sublevel_deformation_mem {M : Type*} [TopologicalSpace 
   rw [sublevel_deformation_height F hF hx hu]
   exact (add_le_of_nonpos_right (mul_nonpos_of_nonneg_of_nonpos hu.1 (min_le_left _ _))).trans hx
 
+/-- The endpoint of the deformation lies in the smaller sublevel. -/
 theorem FlowConstruction.sublevel_retraction_mem {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t) {x : M}
@@ -265,6 +295,7 @@ theorem FlowConstruction.sublevel_retraction_mem {M : Type*} [TopologicalSpace M
   have hm := min_le_right (0 : ℝ) (a - f x)
   linarith
 
+/-- The flow retraction of the larger sublevel onto the smaller. -/
 def FlowConstruction.sublevelRetraction {M : Type*} [TopologicalSpace M] {f : M → ℝ}
     {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t)
@@ -276,6 +307,7 @@ def FlowConstruction.sublevelRetraction {M : Type*} [TopologicalSpace M] {f : M 
           continuous_subtype_val).subtype_mk
       _
 
+/-- The retraction fixes the smaller sublevel. -/
 theorem FlowConstruction.sublevelRetraction_inclusion {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t)
@@ -285,6 +317,7 @@ theorem FlowConstruction.sublevelRetraction_inclusion {M : Type*} [TopologicalSp
   change F (Min.min 0 (a - f x.1)) x.1 = x.1
   rw [min_eq_left (sub_nonneg.mpr x.2), F.map_zero_apply]
 
+/-- The retraction is homotopic to the identity rel the smaller sublevel. -/
 def FlowConstruction.sublevelDeformation {M : Type*} [TopologicalSpace M] {f : M → ℝ}
     {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t)
@@ -317,6 +350,7 @@ def FlowConstruction.sublevelDeformation {M : Type*} [TopologicalSpace M] {f : M
     change F (u.1 * Min.min 0 (a - f x.1)) x.1 = x.1
     rw [min_eq_left (sub_nonneg.mpr hx), MulZeroClass.mul_zero, F.map_zero_apply]
 
+/-- Regular sublevels across a flow band are homotopy equivalent. -/
 def FlowConstruction.regularSublevelHomotopyEquivOfFlow {M : Type*} [TopologicalSpace M]
     {f : M → ℝ} {a b : ℝ} (F : Flow ℝ M)
     (hF : ∀ x t, f x ∈ Set.Icc a b → f x + t ∈ Set.Icc a b → f (F t x) = f x + t)

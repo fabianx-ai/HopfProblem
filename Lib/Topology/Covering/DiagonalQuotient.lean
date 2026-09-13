@@ -34,6 +34,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Fibres of locally trivial maps -/
+
+/-- A local trivialization identifies the fibre over a point of the patch with `F`. -/
 def DiagonalQuotient.fibreHomeomorphOfLocalTrivializations {E B F J : Type*} [TopologicalSpace E]
     [TopologicalSpace B] [TopologicalSpace F] (f : E → B) (U : J → TopologicalSpace.Opens B)
     (h : ∀ i, (f ⁻¹' (U i : Set B)) ≃ₜ ((U i) × F)) (hbase : ∀ i x, ((h i x).1 : B) = f x.val)
@@ -77,6 +80,7 @@ def DiagonalQuotient.fibreHomeomorphOfLocalTrivializations {E B F J : Type*} [To
             ((h i).symm.continuous.comp (continuous_const.prodMk continuous_id))).subtype_mk
         _
 
+/-- On a trivialization patch the map is the first projection. -/
 theorem DiagonalQuotient.restrictPreimage_eq_fst_comp {E B F J : Type*} [TopologicalSpace E]
     [TopologicalSpace B] [TopologicalSpace F] (f : E → B) (U : J → TopologicalSpace.Opens B)
     (h : ∀ i, (f ⁻¹' (U i : Set B)) ≃ₜ ((U i) × F)) (hbase : ∀ i x, ((h i x).1 : B) = f x.val)
@@ -85,6 +89,7 @@ theorem DiagonalQuotient.restrictPreimage_eq_fst_comp {E B F J : Type*} [Topolog
   apply Subtype.ext
   exact (hbase i x).symm
 
+/-- Over each patch a locally trivial map with compact fibre is proper. -/
 theorem DiagonalQuotient.restrictPreimage_proper_of_localTrivializations {E B F J : Type*}
     [TopologicalSpace E] [TopologicalSpace B] [TopologicalSpace F] [CompactSpace F] (f : E → B)
     (U : J → TopologicalSpace.Opens B) (h : ∀ i, (f ⁻¹' (U i : Set B)) ≃ₜ ((U i) × F))
@@ -93,6 +98,7 @@ theorem DiagonalQuotient.restrictPreimage_proper_of_localTrivializations {E B F 
   rw [restrictPreimage_eq_fst_comp f U h hbase i]
   exact isProperMap_fst_of_compactSpace.comp (h i).isProperMap
 
+/-- A locally trivial map with compact fibre is proper. -/
 theorem DiagonalQuotient.proper_of_localTrivializations {E B F J : Type*} [TopologicalSpace E]
     [TopologicalSpace B] [TopologicalSpace F] [CompactSpace F] (f : E → B) (hf : Continuous f)
     (U : J → TopologicalSpace.Opens B) (hU : TopologicalSpace.IsOpenCover U)
@@ -108,6 +114,7 @@ theorem DiagonalQuotient.proper_of_localTrivializations {E B F J : Type*} [Topol
       continuous_subtype_val
   simpa only [Set.image_val_preimage_restrictPreimage, Set.image_singleton] using hc
 
+/-- The total space of a locally trivial map over a Hausdorff base with Hausdorff fibre is Hausdorff. -/
 theorem DiagonalQuotient.t2Space_of_localTrivializations {E B F J : Type*} [TopologicalSpace E]
     [TopologicalSpace B] [TopologicalSpace F] [T2Space B] [T2Space F] (f : E → B)
     (hf : Continuous f) (U : J → TopologicalSpace.Opens B) (hU : TopologicalSpace.IsOpenCover U)
@@ -138,32 +145,42 @@ theorem DiagonalQuotient.t2Space_of_localTrivializations {E B F J : Type*} [Topo
   · obtain ⟨V, W, hV, hW, hx, hy, hVW⟩ := t2_separation hb
     exact ⟨f ⁻¹' V, f ⁻¹' W, hV.preimage hf, hW.preimage hf, hx, hy, hVW.preimage f⟩
 
+/-! ### The diagonal quotient -/
+
+/-- The quotient of the base by the group action. -/
 abbrev DiagonalQuotient.BaseSpace (G B : Type*) [Group G] [MulAction G B] :=
   MulAction.orbitRel.Quotient G B
 
+/-- The quotient of `B × F` by the diagonal group action. -/
 abbrev DiagonalQuotient.Space (G B F : Type*) [Group G] [MulAction G B] [MulAction G F] :=
   MulAction.orbitRel.Quotient G (B × F)
 
+/-- The quotient map from the base to its orbit space. -/
 def DiagonalQuotient.baseQuotient (G B : Type*) [Group G] [MulAction G B] : B → BaseSpace G B :=
   Quotient.mk (MulAction.orbitRel G B)
 
+/-- The quotient map from `B × F` to the diagonal quotient. -/
 def DiagonalQuotient.quotient (G B F : Type*) [Group G] [MulAction G B] [MulAction G F] :
     B × F → Space G B F :=
   Quotient.mk (MulAction.orbitRel G (B × F))
 
+/-- The diagonal quotient map is surjective. -/
 theorem DiagonalQuotient.quotient_surjective (G B F : Type*) [Group G] [MulAction G B]
     [MulAction G F] : Function.Surjective (quotient G B F) :=
   Quotient.mk_surjective
 
+/-- Two pairs have the same quotient exactly when a group element moves one to the other. -/
 theorem DiagonalQuotient.quotient_eq_iff (G B F : Type*) [Group G] [MulAction G B] [MulAction G F]
     (x y : B × F) : quotient G B F x = quotient G B F y ↔ ∃ g : G, g • y = x :=
   Quotient.eq''
 
+/-- The quotient map is invariant under the diagonal action. -/
 @[simp]
 theorem DiagonalQuotient.quotient_smul (G B F : Type*) [Group G] [MulAction G B] [MulAction G F]
     (g : G) (x : B × F) : quotient G B F (g • x) = quotient G B F x :=
   (quotient_eq_iff G B F _ _).mpr ⟨g, rfl⟩
 
+/-- The projection of the diagonal quotient onto the base quotient. -/
 def DiagonalQuotient.projection (G B F : Type*) [Group G] [MulAction G B] [MulAction G F] :
     Space G B F → BaseSpace G B :=
   Quotient.lift (fun x : B × F => baseQuotient G B x.1)
@@ -171,54 +188,67 @@ def DiagonalQuotient.projection (G B F : Type*) [Group G] [MulAction G B] [MulAc
       rintro x y ⟨g, hg⟩
       exact Quotient.sound ⟨g, congrArg Prod.fst hg⟩)
 
+/-- The inclusion of the fibre `F` over the class of `b`. -/
 def DiagonalQuotient.fibreInclusion (G B F : Type*) [Group G] [MulAction G B] [MulAction G F]
     (b : B) (f : F) : Space G B F :=
   quotient G B F (b, f)
 
+/-- The base quotient map is continuous. -/
 theorem DiagonalQuotient.baseQuotient_continuous (G B : Type*) [Group G] [MulAction G B]
     [TopologicalSpace B] : Continuous (baseQuotient G B) :=
   continuous_quot_mk
 
+/-- The diagonal quotient map is continuous. -/
 theorem DiagonalQuotient.quotient_continuous (G B F : Type*) [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] : Continuous (quotient G B F) :=
   continuous_quot_mk
 
+/-- The diagonal quotient map is a quotient map. -/
 theorem DiagonalQuotient.quotient_isQuotientMap (G B F : Type*) [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] :
     Topology.IsQuotientMap (quotient G B F) :=
   isQuotientMap_quotient_mk'
 
+/-- The projection to the base quotient is continuous. -/
 theorem DiagonalQuotient.projection_continuous (G B F : Type*) [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] : Continuous (projection G B F) :=
   (quotient_isQuotientMap G B F).continuous_iff.mpr
     ((baseQuotient_continuous G B).comp continuous_fst)
 
+/-- The fibre inclusion is continuous. -/
 theorem DiagonalQuotient.fibreInclusion_continuous (G B F : Type*) [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (b : B) :
     Continuous (fibreInclusion G B F b) :=
   (quotient_continuous G B F).comp (continuous_const.prodMk continuous_id)
 
+/-! ### Local trivializations over covering patches -/
+
+/-- A local inverse of the base quotient covering near the class of `b`. -/
 def DiagonalQuotient.baseLocalInverse {G : Type*} {B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
     OpenPartialHomeomorph (BaseSpace G B) B :=
   hq.isCoveringMap.isLocalHomeomorph.localInverseAt b
 
+/-- The base local inverse is a right inverse of the quotient map. -/
 theorem DiagonalQuotient.baseQuotient_localInverse {G : Type*} {B : Type*} [Group G]
     [MulAction G B] [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B)
     {x : BaseSpace G B} (hx : x ∈ (baseLocalInverse hq b).source) :
     baseQuotient G B (baseLocalInverse hq b x) = x :=
   hq.isCoveringMap.isLocalHomeomorph.apply_localInverseAt_of_mem hx
 
+/-- The open patch of the base quotient covered by the local inverse at `b`. -/
 def DiagonalQuotient.patch {G : Type*} {B : Type*} [Group G] [MulAction G B] [TopologicalSpace B]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
     TopologicalSpace.Opens (BaseSpace G B) :=
   ⟨(baseLocalInverse hq b).source, (baseLocalInverse hq b).open_source⟩
 
+/-- The class of `b` lies in its own patch. -/
 theorem DiagonalQuotient.baseQuotient_mem_patch {G : Type*} {B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
     baseQuotient G B b ∈ patch hq b :=
   hq.isCoveringMap.isLocalHomeomorph.apply_self_mem_localInverseAt_source
 
+/-- The local-inverse patches cover the base quotient. -/
 theorem DiagonalQuotient.patch_cover {G : Type*} {B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) :
     TopologicalSpace.IsOpenCover (patch hq) := by
@@ -228,6 +258,7 @@ theorem DiagonalQuotient.patch_cover {G : Type*} {B : Type*} [Group G] [MulActio
   obtain ⟨b, rfl⟩ := hq.surjective x
   exact Set.mem_iUnion.mpr ⟨b, baseQuotient_mem_patch hq b⟩
 
+/-- The fibre inclusion is injective. -/
 theorem DiagonalQuotient.fibreInclusion_injective {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
@@ -239,6 +270,7 @@ theorem DiagonalQuotient.fibreInclusion_injective {G : Type*} {B : Type*} {F : T
   have hg1 : g = 1 := IsCancelSMul.right_cancel _ _ b (hb.trans (one_smul G b).symm)
   simpa only [hg1, one_smul] using (congrArg Prod.snd hg).symm
 
+/-- The diagonal quotient of a quotient covering is again a quotient covering. -/
 theorem DiagonalQuotient.quotientCoveringMap {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] :
@@ -255,12 +287,14 @@ theorem DiagonalQuotient.quotientCoveringMap {G : Type*} {B : Type*} {F : Type*}
     rintro g ⟨z, ⟨w, hw, rfl⟩, hz⟩
     exact hd g ⟨g • w.1, ⟨w.1, hw, rfl⟩, hz⟩
 
+/-- The diagonal quotient map is a covering map. -/
 theorem DiagonalQuotient.quotient_isCoveringMap {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] :
     IsCoveringMap (quotient G B F) :=
   (quotientCoveringMap (F := F) hq).isCoveringMap
 
+/-- The diagonal quotient map is an open quotient map. -/
 theorem DiagonalQuotient.quotient_isOpenQuotientMap {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] :
@@ -268,11 +302,13 @@ theorem DiagonalQuotient.quotient_isOpenQuotientMap {G : Type*} {B : Type*} {F :
   let := hq.toContinuousConstSMul
   exact MulAction.isOpenQuotientMap_quotientMk
 
+/-- The trivializing map on a patch, sending `(class, f)` to the orbit of `(lift, f)`. -/
 def DiagonalQuotient.patchMap {G : Type*} {B : Type*} {F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B)
     (x : patch hq b × F) : Space G B F :=
   quotient G B F (baseLocalInverse hq b x.1, x.2)
 
+/-- The patch map projects to its first component. -/
 @[simp]
 theorem DiagonalQuotient.projection_patchMap {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B]
@@ -280,6 +316,7 @@ theorem DiagonalQuotient.projection_patchMap {G : Type*} {B : Type*} {F : Type*}
     projection G B F (patchMap hq b x) = (x.1 : BaseSpace G B) :=
   baseQuotient_localInverse hq b x.1.property
 
+/-- The patch trivialization is injective. -/
 theorem DiagonalQuotient.patchMap_injective {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
@@ -299,6 +336,7 @@ theorem DiagonalQuotient.patchMap_injective {G : Type*} {B : Type*} {F : Type*} 
   apply Prod.ext hbase
   simpa only [hg1, one_smul] using (congrArg Prod.snd hg).symm
 
+/-- The patch trivialization is continuous. -/
 theorem DiagonalQuotient.patchMap_continuous {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
@@ -306,6 +344,7 @@ theorem DiagonalQuotient.patchMap_continuous {G : Type*} {B : Type*} {F : Type*}
   (quotient_continuous G B F).comp
     ((baseLocalInverse hq b).isOpenEmbedding_restrict.continuous.prodMap continuous_id)
 
+/-- The patch trivialization is an open embedding. -/
 theorem DiagonalQuotient.patchMap_openEmbedding {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] (b : B) :
@@ -314,6 +353,7 @@ theorem DiagonalQuotient.patchMap_openEmbedding {G : Type*} {B : Type*} {F : Typ
     ((quotient_isOpenQuotientMap (F := F) hq).isOpenMap.comp
       ((baseLocalInverse hq b).isOpenEmbedding_restrict.isOpenMap.prodMap IsOpenMap.id))
 
+/-- The range of the patch trivialization is the preimage of the patch. -/
 theorem DiagonalQuotient.patchMap_range {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
@@ -331,6 +371,7 @@ theorem DiagonalQuotient.patchMap_range {G : Type*} {B : Type*} {F : Type*} [Gro
     apply (quotient_eq_iff G B F _ _).mpr
     exact ⟨g, Prod.ext hg rfl⟩
 
+/-- The preimage of a patch is homeomorphic to the patch times the fibre. -/
 def DiagonalQuotient.patchHomeomorph {G : Type*} {B : Type*} {F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] (b : B) :
@@ -338,6 +379,7 @@ def DiagonalQuotient.patchHomeomorph {G : Type*} {B : Type*} {F : Type*} [Group 
   ((patchMap_openEmbedding (F := F) hq b).isEmbedding.toHomeomorph.trans
       (Homeomorph.setCongr (patchMap_range hq b))).symm
 
+/-- The patch homeomorphism's first component is the projection. -/
 theorem DiagonalQuotient.patchHomeomorph_projection {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] (b : B)
@@ -349,6 +391,7 @@ theorem DiagonalQuotient.patchHomeomorph_projection {G : Type*} {B : Type*} {F :
   rw [he] at hp
   exact hp.symm
 
+/-- The fibre over a base class is homeomorphic to `F`. -/
 def DiagonalQuotient.fibreHomeomorphOver {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] (b : B) :
@@ -356,6 +399,7 @@ def DiagonalQuotient.fibreHomeomorphOver {G : Type*} {B : Type*} {F : Type*} [Gr
   fibreHomeomorphOfLocalTrivializations (projection G B F) (patch hq) (patchHomeomorph hq)
     (patchHomeomorph_projection hq) b (baseQuotient G B b) (baseQuotient_mem_patch hq b)
 
+/-- The projection is proper when the fibre is compact. -/
 theorem DiagonalQuotient.projection_proper {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F] [CompactSpace F] :
@@ -363,6 +407,7 @@ theorem DiagonalQuotient.projection_proper {G : Type*} {B : Type*} {F : Type*} [
   proper_of_localTrivializations (projection G B F) (projection_continuous G B F) (patch hq)
     (patch_cover hq) (patchHomeomorph hq) (patchHomeomorph_projection hq)
 
+/-- The diagonal quotient is Hausdorff when base quotient and fibre are. -/
 theorem DiagonalQuotient.spaceT2Space {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F]
@@ -370,12 +415,14 @@ theorem DiagonalQuotient.spaceT2Space {G : Type*} {B : Type*} {F : Type*} [Group
   t2Space_of_localTrivializations (projection G B F) (projection_continuous G B F) (patch hq)
     (patch_cover hq) (patchHomeomorph hq) (patchHomeomorph_projection hq)
 
+/-- The base quotient is Hausdorff for a properly discontinuous action on a locally compact Hausdorff space. -/
 theorem DiagonalQuotient.baseT2Space {G : Type*} {B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) [T2Space B]
     [LocallyCompactSpace B] [ProperlyDiscontinuousSMul G B] : T2Space (BaseSpace G B) := by
   let := hq.toContinuousConstSMul
   infer_instance
 
+/-- The diagonal quotient is second countable when base and fibre are. -/
 theorem DiagonalQuotient.spaceSecondCountable {G : Type*} {B : Type*} {F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) [ContinuousConstSMul G F]
@@ -384,18 +431,23 @@ theorem DiagonalQuotient.spaceSecondCountable {G : Type*} {B : Type*} {F : Type*
   (quotient_isQuotientMap G B F).secondCountableTopology
     (quotient_isOpenQuotientMap (F := F) hq).isOpenMap
 
+/-- Acting on the base component equals acting inversely on the fibre. -/
 theorem DiagonalQuotient.quotient_smul_fst {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] (g : G) (b : B) (f : F) :
     quotient G B F (g • b, f) = quotient G B F (b, g⁻¹ • f) := by
   apply (quotient_eq_iff G B F _ _).mpr
   exact ⟨g, by simp⟩
 
+/-- Conjugation by a path computes the fundamental-group basepoint change. -/
 theorem fundamentalGroup_basepoint_change_apply {X : Type*} [TopologicalSpace X] {x₀ x₁ : X}
     (p : Path x₀ x₁) (γ : FundamentalGroup X x₀) :
     FundamentalGroup.fundamentalGroupMulEquivOfPath p γ =
       (Path.Homotopic.Quotient.mk p).symm.trans (γ.trans (Path.Homotopic.Quotient.mk p)) :=
   rfl
 
+/-! ### The zero section and fundamental group -/
+
+/-- The section of the diagonal quotient induced by a `G`-fixed point of `F`. -/
 def DiagonalQuotient.zeroSection {G B F : Type*} [Group G] [MulAction G B] [MulAction G F] (c : F)
     (hc : ∀ g : G, g • c = c) : BaseSpace G B → Space G B F :=
   Quotient.lift (fun b : B => quotient G B F (b, c))
@@ -403,12 +455,14 @@ def DiagonalQuotient.zeroSection {G B F : Type*} [Group G] [MulAction G B] [MulA
       rintro b b' ⟨g, hg⟩
       exact (quotient_eq_iff G B F _ _).mpr ⟨g, Prod.ext hg (hc g)⟩)
 
+/-- The zero section is continuous. -/
 theorem DiagonalQuotient.zeroSection_continuous {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (c : F) (hc : ∀ g : G, g • c = c) :
     Continuous (zeroSection (B := B) c hc) :=
   isQuotientMap_quotient_mk'.continuous_iff.mpr
     ((quotient_continuous G B F).comp (continuous_id.prodMk continuous_const))
 
+/-- The zero section is a section of the projection. -/
 @[simp]
 theorem DiagonalQuotient.projection_zeroSection {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] (c : F) (hc : ∀ g : G, g • c = c) (x : BaseSpace G B) :
@@ -416,17 +470,20 @@ theorem DiagonalQuotient.projection_zeroSection {G B F : Type*} [Group G] [MulAc
   induction x using Quotient.inductionOn with
   | h b => rfl
 
+/-- The fundamental-group map induced by the fibre inclusion. -/
 def DiagonalQuotient.fibreFundamentalGroupHom {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (b : B) (c : F) :
     FundamentalGroup F c →* FundamentalGroup (Space G B F) (fibreInclusion G B F b c) :=
   FundamentalGroup.map ⟨fibreInclusion G B F b, fibreInclusion_continuous G B F b⟩ c
 
+/-- The fundamental-group map induced by the projection. -/
 def DiagonalQuotient.projectionFundamentalGroupHom {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (b : B) (c : F) :
     FundamentalGroup (Space G B F) (fibreInclusion G B F b c) →*
       FundamentalGroup (BaseSpace G B) (baseQuotient G B b) :=
   FundamentalGroup.map ⟨projection G B F, projection_continuous G B F⟩ (fibreInclusion G B F b c)
 
+/-- The fundamental-group map induced by the zero section. -/
 def DiagonalQuotient.sectionFundamentalGroupHom {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (c : F) (hc : ∀ g : G, g • c = c)
     (b : B) :
@@ -434,6 +491,7 @@ def DiagonalQuotient.sectionFundamentalGroupHom {G B F : Type*} [Group G] [MulAc
       FundamentalGroup (Space G B F) (fibreInclusion G B F b c) :=
   FundamentalGroup.map ⟨zeroSection c hc, zeroSection_continuous c hc⟩ (baseQuotient G B b)
 
+/-- The projection map after the section map is the identity on the base fundamental group. -/
 theorem DiagonalQuotient.projectionFundamentalGroupHom_comp_section {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (c : F)
     (hc : ∀ g : G, g • c = c) (b : B) :
@@ -452,6 +510,7 @@ theorem DiagonalQuotient.projectionFundamentalGroupHom_comp_section {G B F : Typ
     ext t
     exact projection_zeroSection c hc (γ t)
 
+/-- Fibre loops project to the trivial base loop. -/
 @[simp]
 theorem DiagonalQuotient.projectionFundamentalGroupHom_fibre {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (b : B) (c : F)
@@ -468,6 +527,7 @@ theorem DiagonalQuotient.projectionFundamentalGroupHom_fibre {G B F : Type*} [Gr
     ext t
     rfl
 
+/-- The fibre fundamental-group image lies in the kernel of the projection map. -/
 theorem DiagonalQuotient.fibreFundamentalGroupHom_range_le_ker {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (b : B) (c : F) :
     (fibreFundamentalGroupHom (G := G) b c).range ≤
@@ -475,11 +535,13 @@ theorem DiagonalQuotient.fibreFundamentalGroupHom_range_le_ker {G B F : Type*} [
   rintro γ ⟨δ, rfl⟩
   exact projectionFundamentalGroupHom_fibre b c δ
 
+/-- The monodromy action of the base fundamental group as a homomorphism to `G`. -/
 def DiagonalQuotient.deckTransportHom {G B : Type*} [Group G] [MulAction G B] [TopologicalSpace B]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) :
     FundamentalGroup (BaseSpace G B) (baseQuotient G B b) →* G :=
   (MulEquiv.inv' G).symm.toMonoidHom.comp (hq.fundamentalGroupToMulOpposite ⟨b, rfl⟩)
 
+/-- The deck-transport element realizes the covering monodromy on `b`. -/
 theorem DiagonalQuotient.deckTransportHom_monodromy {G B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B)
     (γ : FundamentalGroup (BaseSpace G B) (baseQuotient G B b)) :
@@ -488,12 +550,14 @@ theorem DiagonalQuotient.deckTransportHom_monodromy {G B : Type*} [Group G] [Mul
   rw [inv_inv]
   exact hq.unop_fundamentalGroupToMulOpposite_smul
 
+/-- The fundamental-group endomorphism induced by a `G`-action on the fibre fixing `c`. -/
 def DiagonalQuotient.fibreActionFundamentalGroupHom {G F : Type*} [Group G] [MulAction G F]
     [TopologicalSpace F] [ContinuousConstSMul G F] (c : F) (hc : ∀ g : G, g • c = c) (g : G) :
     FundamentalGroup F c →* FundamentalGroup F c :=
   FundamentalGroup.mapOfEq ⟨fun x : F => g • x, ContinuousConstSMul.continuous_const_smul g⟩
     (hc g)
 
+/-- A quotient loop with trivial projection lifts to a vertical loop of the product. -/
 theorem DiagonalQuotient.quotient_loop_lift_of_projection_eq_refl {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     [ContinuousConstSMul G F] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) (c : F)
@@ -542,6 +606,7 @@ theorem DiagonalQuotient.quotient_loop_lift_of_projection_eq_refl {G B F : Type*
     ext t
     exact congrFun (cov.liftPath_lifts γ (b, c) γ.source) t
 
+/-- A product loop with trivial first component is its second component made vertical. -/
 theorem DiagonalQuotient.product_loop_eq_vertical_of_fst_eq_refl {B F : Type*}
     [TopologicalSpace B] [TopologicalSpace F] (b : B) (c : F)
     (α : Path.Homotopic.Quotient (b, c) (b, c)) (h : α.map ⟨Prod.fst, continuous_fst⟩ = .refl b) :
@@ -564,6 +629,7 @@ theorem DiagonalQuotient.product_loop_eq_vertical_of_fst_eq_refl {B F : Type*}
           ⟨fun f : F => (b, f), continuous_const.prodMk continuous_id⟩ :=
       hv _
 
+/-- Mapping fibre loops vertically into the product is injective. -/
 theorem DiagonalQuotient.product_vertical_loop_map_injective {B F : Type*} [TopologicalSpace B]
     [TopologicalSpace F] (b : B) (c : F) :
     Function.Injective
@@ -580,6 +646,7 @@ theorem DiagonalQuotient.product_vertical_loop_map_injective {B F : Type*} [Topo
     congrArg (fun γ : Path.Homotopic.Quotient (b, c) (b, c) => γ.map ⟨Prod.snd, continuous_snd⟩) h
   exact (hleft α).symm.trans (hs.trans (hleft β))
 
+/-- The fibre fundamental-group map is injective. -/
 theorem DiagonalQuotient.fibreFundamentalGroupHom_injective {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     [ContinuousConstSMul G F] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) (c : F) :
@@ -597,6 +664,7 @@ theorem DiagonalQuotient.fibreFundamentalGroupHom_injective {G B F : Type*} [Gro
   rw [← Path.Homotopic.Quotient.map_comp, ← Path.Homotopic.Quotient.map_comp]
   exact h
 
+/-- The fibre fundamental-group image is exactly the kernel of the projection map. -/
 theorem DiagonalQuotient.fibreFundamentalGroupHom_range_eq_ker {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     [ContinuousConstSMul G F] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B) (c : F) :
@@ -636,6 +704,7 @@ theorem DiagonalQuotient.fibreFundamentalGroupHom_range_eq_ker {G B F : Type*} [
   rw [← Path.Homotopic.Quotient.map_comp] at hv
   exact hv.symm.trans hα
 
+/-- The homotopy lifting a base loop to a fibre translation by its monodromy element. -/
 def DiagonalQuotient.liftedFibreHomotopy {G B F : Type*} [Group G] [MulAction G B] [MulAction G F]
     [TopologicalSpace B] [TopologicalSpace F] [ContinuousConstSMul G F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (b : B)
@@ -662,6 +731,7 @@ def DiagonalQuotient.liftedFibreHomotopy {G B F : Type*} [Group G] [MulAction G 
         quotient G B F (b, g • f)
     rw [hend, quotient_smul_fst, inv_inv]
 
+/-- A homotopy between maps conjugates the induced fundamental-group maps by the evaluation path. -/
 theorem DiagonalQuotient.fundamentalGroup_conjugation_of_homotopy {F E : Type*}
     [TopologicalSpace F] [TopologicalSpace E] (f₀ f₁ : C(F, E)) (H : f₀.Homotopy f₁) (c : F)
     (e : E) (h₀ : f₀ c = e) (h₁ : f₁ c = e) (v : FundamentalGroup F c) :
@@ -681,6 +751,7 @@ theorem DiagonalQuotient.fundamentalGroup_conjugation_of_homotopy {F E : Type*}
     exact hp
   rw [hsquare, mul_inv_cancel_right]
 
+/-- Basepoint-change maps compose along composed maps. -/
 theorem DiagonalQuotient.fundamentalGroup_mapOfEq_comp {A B C : Type*} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace C] (f : C(A, B)) (g : C(B, C)) (a : A) (b : B) (c : C)
     (hf : f a = b) (hg : g b = c) (v : FundamentalGroup A a) :
@@ -689,6 +760,7 @@ theorem DiagonalQuotient.fundamentalGroup_mapOfEq_comp {A B C : Type*} [Topologi
   simp only [FundamentalGroup.mapOfEq_apply, Path.Homotopic.Quotient.map_cast,
     Path.Homotopic.Quotient.map_comp, Path.Homotopic.Quotient.cast_cast]
 
+/-- The section conjugates a fibre loop by the deck-transport action of the base loop. -/
 theorem DiagonalQuotient.sectionFundamentalGroupHom_conjugate_fibre {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     [ContinuousConstSMul G F] (hq : IsQuotientCoveringMap (baseQuotient G B) G) (c : F)
@@ -733,17 +805,22 @@ theorem DiagonalQuotient.sectionFundamentalGroupHom_conjugate_fibre {G B F : Typ
   rw [hs, hi, hterminal] at hconj
   exact hconj
 
+/-! ### Sections from local inverses -/
+
+/-- The map `U × F → Space` built from a continuous local section of the base quotient. -/
 def DiagonalQuotient.sectionMap {G B F : Type*} [Group G] [MulAction G B] [MulAction G F]
     [TopologicalSpace B] (U : TopologicalSpace.Opens (BaseSpace G B)) (s : C(U, B)) (x : U × F) :
     Space G B F :=
   quotient G B F (s x.1, x.2)
 
+/-- The section map is continuous. -/
 theorem DiagonalQuotient.sectionMap_continuous {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
     (U : TopologicalSpace.Opens (BaseSpace G B)) (s : C(U, B)) :
     Continuous (sectionMap (F := F) U s) :=
   (quotient_continuous G B F).comp (s.continuous.prodMap continuous_id)
 
+/-- A continuous section of the base quotient is an open embedding. -/
 theorem DiagonalQuotient.baseSection_openEmbedding {G B : Type*} [Group G] [MulAction G B]
     [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G)
     (U : TopologicalSpace.Opens (BaseSpace G B)) (s : C(U, B))
@@ -753,6 +830,7 @@ theorem DiagonalQuotient.baseSection_openEmbedding {G B : Type*} [Group G] [MulA
   rw [hcomp]
   exact U.isOpenEmbedding'
 
+/-- The section map projects to its first component. -/
 @[simp]
 theorem DiagonalQuotient.projection_sectionMap {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] (U : TopologicalSpace.Opens (BaseSpace G B))
@@ -760,6 +838,7 @@ theorem DiagonalQuotient.projection_sectionMap {G B F : Type*} [Group G] [MulAct
     projection G B F (sectionMap U s x) = (x.1 : BaseSpace G B) :=
   hs x.1
 
+/-- The section map is injective. -/
 theorem DiagonalQuotient.sectionMap_injective {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G)
     (U : TopologicalSpace.Opens (BaseSpace G B)) (s : C(U, B))
@@ -772,6 +851,7 @@ theorem DiagonalQuotient.sectionMap_injective {G B F : Type*} [Group G] [MulActi
   apply fibreInclusion_injective hq (s y.1)
   simpa only [sectionMap, fibreInclusion, hbase] using hxy
 
+/-- The range of the section map is the preimage of `U`. -/
 theorem DiagonalQuotient.sectionMap_range {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] (hq : IsQuotientCoveringMap (baseQuotient G B) G)
     (U : TopologicalSpace.Opens (BaseSpace G B)) (s : C(U, B))
@@ -789,6 +869,7 @@ theorem DiagonalQuotient.sectionMap_range {G B F : Type*} [Group G] [MulAction G
     refine ⟨(⟨baseQuotient G B z, hy⟩, g • f), ?_⟩
     exact (quotient_eq_iff G B F _ _).mpr ⟨g, Prod.ext hg rfl⟩
 
+/-- The section map is an open embedding. -/
 theorem DiagonalQuotient.sectionMap_openEmbedding {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] [ContinuousConstSMul G F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (U : TopologicalSpace.Opens (BaseSpace G B))
@@ -798,6 +879,7 @@ theorem DiagonalQuotient.sectionMap_openEmbedding {G B F : Type*} [Group G] [Mul
     ((quotient_isOpenQuotientMap (F := F) hq).isOpenMap.comp
       ((baseSection_openEmbedding hq U s hs).isOpenMap.prodMap IsOpenMap.id))
 
+/-- The preimage of a section domain is homeomorphic to `U × F`. -/
 def DiagonalQuotient.sectionHomeomorph {G B F : Type*} [Group G] [MulAction G B] [MulAction G F]
     [TopologicalSpace B] [TopologicalSpace F] [ContinuousConstSMul G F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (U : TopologicalSpace.Opens (BaseSpace G B))
@@ -806,6 +888,7 @@ def DiagonalQuotient.sectionHomeomorph {G B F : Type*} [Group G] [MulAction G B]
   ((sectionMap_openEmbedding (F := F) hq U s hs).isEmbedding.toHomeomorph.trans
       (Homeomorph.setCongr (sectionMap_range hq U s hs))).symm
 
+/-- The section homeomorphism's first component is the projection. -/
 theorem DiagonalQuotient.sectionHomeomorph_projection {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] [ContinuousConstSMul G F]
     (hq : IsQuotientCoveringMap (baseQuotient G B) G) (U : TopologicalSpace.Opens (BaseSpace G B))
@@ -818,6 +901,7 @@ theorem DiagonalQuotient.sectionHomeomorph_projection {G B F : Type*} [Group G] 
   rw [he] at hp
   exact hp.symm
 
+/-- The section homeomorphism computes on quotient points. -/
 @[simp]
 theorem DiagonalQuotient.sectionHomeomorph_apply_quotient {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F]
@@ -832,6 +916,9 @@ theorem DiagonalQuotient.sectionHomeomorph_apply_quotient {G B F : Type*} [Group
       (x, f) :=
   (sectionHomeomorph hq U s hs).apply_symm_apply (x, f)
 
+/-! ### Basepoint change along the fibre -/
+
+/-- Basepoint change along the evaluation path identifies the two induced maps. -/
 theorem DiagonalQuotient.fundamentalGroup_basepointChange_of_homotopy {F E : Type*}
     [TopologicalSpace F] [TopologicalSpace E] (f₀ f₁ : C(F, E)) (H : f₀.Homotopy f₁) (c : F)
     (v : FundamentalGroup F c) :
@@ -854,6 +941,7 @@ theorem DiagonalQuotient.fundamentalGroup_basepointChange_of_homotopy {F E : Typ
   rw [hsquare, ← Path.Homotopic.Quotient.trans_assoc, Path.Homotopic.Quotient.symm_trans,
     Path.Homotopic.Quotient.refl_trans]
 
+/-- A base path gives a homotopy between the fibre inclusions at its endpoints. -/
 def DiagonalQuotient.fibreBasepointHomotopy {G B F : Type*} [Group G] [MulAction G B]
     [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] {b₀ b₁ : B} (p : Path b₀ b₁) :
     ContinuousMap.Homotopy
@@ -872,11 +960,13 @@ def DiagonalQuotient.fibreBasepointHomotopy {G B F : Type*} [Group G] [MulAction
     change quotient G B F (p 1, f) = quotient G B F (b₁, f)
     rw [p.target]
 
+/-- The path between fibre inclusions traced at a fixed fibre point. -/
 def DiagonalQuotient.fibreBasepointPath {G B F : Type*} [Group G] [MulAction G B] [MulAction G F]
     [TopologicalSpace B] [TopologicalSpace F] (c : F) {b₀ b₁ : B} (p : Path b₀ b₁) :
     Path (fibreInclusion G B F b₀ c) (fibreInclusion G B F b₁ c) :=
   (fibreBasepointHomotopy (G := G) (F := F) p).evalAt c
 
+/-- The fibre fundamental-group maps at two basepoints differ by the connecting path. -/
 theorem DiagonalQuotient.fibreFundamentalGroupHom_baseChange {G B F : Type*} [Group G]
     [MulAction G B] [MulAction G F] [TopologicalSpace B] [TopologicalSpace F] (c : F) {b₀ b₁ : B}
     (p : Path b₀ b₁) (v : FundamentalGroup F c) :

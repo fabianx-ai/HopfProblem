@@ -69,6 +69,7 @@ import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.Geometry.Manifold.Morse.CellStructure
+import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
 
@@ -761,97 +762,6 @@ theorem TopCellLifting.sphereMap_relativeDiskLifting_six
       FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
         (show Module.finrank ℝ V = Module.finrank ℝ (Fin 6 → ℝ) by simpa using heq)
     exact exists_top_disk_lift x L hd a u H h0 h1
-
-theorem MorseCells.built_upper_sublevels {E M : Type} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
-    (hm : ManifoldMorse.IsMorse E f)
-    (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f))
-    (c : (p : ManifoldMorse.criticalPoints E f) → Cell (E := E) f p.val)
-    (hdis : ∀ p q, p ≠ q → Disjoint (c p).band (c q).band)
-    (p : ManifoldMorse.criticalPoints E f) :
-    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
-  classical
-  let K := ManifoldMorse.criticalPoints E f
-  let : Fintype K := (ManifoldMorse.finite_criticalPoints hf hm).fintype
-  let : LinearOrder K :=
-    LinearOrder.lift' (fun p : K => f p.val)
-      (fun p q h => Subtype.ext (hinj p.property q.property h))
-  have hstep (p : K) :
-    FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p + (c p).radius ^ 2 } := by
-    induction p using WellFoundedLT.induction with
-    | ind p
-      ih =>
-      have hlower :
-        FiniteCells.Built (Module.finrank ℝ E) { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
-        by
-        by_cases hex : ∃ q : K, q < p
-        · let s : Finset K := Finset.univ.filter (fun q => q < p)
-          have hs : s.Nonempty := by
-            obtain ⟨q, hq⟩ := hex
-            exact ⟨q, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hq⟩⟩
-          let q := s.max' hs
-          have hqp : q < p := (Finset.mem_filter.mp (s.max'_mem hs)).2
-          have hgap : f q + (c q).radius ^ 2 < f p - (c p).radius ^ 2 :=
-            upper_lt_lower_of_disjoint (c q) (c p) (hdis q p (ne_of_lt hqp)) hqp
-          obtain ⟨e, _⟩ :=
-            FlowConstruction.exists_regularSublevelHomotopyEquiv hf hgap.le
-              (by
-                intro x hx hcrit
-                let r : K := ⟨x, hcrit⟩
-                have hrp : r < p := by
-                  change f x < f p
-                  nlinarith [sq_pos_of_pos (c p).radius_pos, hx.2]
-                have hrq : r ≤ q := s.le_max' r (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrp⟩)
-                change f x ≤ f q at hrq
-                nlinarith [sq_pos_of_pos (c q).radius_pos, hx.1])
-          exact FiniteCells.Built.equiv e (ih q hqp)
-        · let : IsEmpty { x : M // f x ≤ f p - (c p).radius ^ 2 } :=
-            isEmpty_sublevel_of_no_critical hf
-              (by
-                intro x hx hle
-                apply hex
-                refine ⟨⟨x, hx⟩, ?_⟩
-                change f x < f p
-                nlinarith [sq_pos_of_pos (c p).radius_pos])
-          exact FiniteCells.Built.empty _
-      apply FiniteCells.Built.equiv (c p).comparison
-      exact
-        FiniteCells.Built.attach _
-          (coreCellMap (c p).chart (c p).radius (c p).radius_pos (c p).block)
-          (fun u hu =>
-            (coreCellMap_lower_iff (c p).chart (c p).radius (c p).radius_pos (c p).block u).mpr
-              hu)
-          (c p).dimension_le hlower
-  exact hstep p
-
-theorem MorseCells.built_of_compact_smooth_manifold {E M : Type} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
-    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
-    FiniteCells.Built (Module.finrank ℝ E) M := by
-  classical
-    cases isEmpty_or_nonempty M with
-  | inl h => exact FiniteCells.Built.empty _
-  | inr
-    h =>
-    obtain ⟨f, hf, hm, _, hinj⟩ :=
-      ManifoldMorse.exists_morse_function_with_distinct_critical_values E M
-    obtain ⟨c, hdis⟩ := exists_disjoint_cells hf hm hinj
-    obtain ⟨p, _, hmax⟩ :=
-      isCompact_univ.exists_isMaxOn (Set.univ_nonempty) hf.continuous.continuousOn
-    have hp : p ∈ ManifoldMorse.criticalPoints E f :=
-      ManifoldMorse.mem_criticalPoints_of_localMax hf
-        (Filter.Eventually.of_forall (fun y => hmax (Set.mem_univ y)))
-    let q : ManifoldMorse.criticalPoints E f := ⟨p, hp⟩
-    have hb := built_upper_sublevels hf hm hinj c hdis q
-    have hfull : {x : M | f x ≤ f q + (c q).radius ^ 2} = Set.univ := by
-      apply Set.eq_univ_of_forall
-      intro x
-      change f x ≤ f p + (c q).radius ^ 2
-      exact (hmax (Set.mem_univ x)).trans (le_add_of_nonneg_right (sq_nonneg (c q).radius))
-    exact
-      FiniteCells.Built.equiv
-        ((Homeomorph.setCongr hfull).trans (Homeomorph.Set.univ M)).toHomotopyEquiv hb
 
 attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
@@ -7828,112 +7738,6 @@ theorem MorseCancellation.ordered_no_middle_indices_count_two {E M : Type} [Norm
       hfive
   have heq := S.middle_counts_equal hf hdim e r n hprefix hrc hblock hcount
   omega
-
-def negLevelHomeomorph {M : Type*} [TopologicalSpace M] (f : M → ℝ) (a : ℝ) :
-    { x : M // -f x = -a } ≃ₜ { x : M // f x = a }
-    where
-  toFun x := ⟨x.1, neg_inj.mp x.2⟩
-  invFun x := ⟨x.1, congrArg Neg.neg x.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  continuous_toFun := continuous_subtype_val.subtype_mk _
-  continuous_invFun := continuous_subtype_val.subtype_mk _
-
-def twoDiskDecompositionOfSublevels {M : Type*} [TopologicalSpace M] [T2Space M] {n : ℕ}
-    {f : M → ℝ} {a : ℝ} (L : SublevelDisk n f a) (R : SublevelDisk n (fun x => -f x) (-a)) :
-    TwoDiskDecomposition n M := by
-  let B := L.boundaryHomeomorph
-  let C := R.boundaryHomeomorph.trans (negLevelHomeomorph f a)
-  let e := B.trans C.symm
-  refine
-    { boundaryEquiv := e
-      left := L.map
-      right := R.map
-      left_injective := L.map_injective
-      right_injective := R.map_injective
-      covers := ?_
-      overlap := ?_ }
-  · intro y
-    by_cases hy : f y ≤ a
-    · left
-      exact
-        ⟨L.homeomorph.symm ⟨y, hy⟩, congrArg Subtype.val (L.homeomorph.apply_symm_apply ⟨y, hy⟩)⟩
-    · right
-      have hy' : -f y ≤ -a := neg_le_neg (le_of_not_ge hy)
-      exact
-        ⟨R.homeomorph.symm ⟨y, hy'⟩,
-          congrArg Subtype.val (R.homeomorph.apply_symm_apply ⟨y, hy'⟩)⟩
-  · intro x y
-    constructor
-    · intro h
-      have hL : f (L.map x) ≤ a := (L.homeomorph x).2
-      have hR : -f (R.map y) ≤ -a := (R.homeomorph y).2
-      have hxlevel : f (L.map x) = a := by rw [← h] at hR; linarith
-      have hylevel : -f (R.map y) = -a := by rw [← h, hxlevel]
-      have hxnorm := (L.boundary_iff x).mp hxlevel
-      have hynorm := (R.boundary_iff y).mp hylevel
-      let z : DiskDouble.Boundary (Hemisphere.Ambient n) :=
-        ⟨x.1, mem_sphere_zero_iff_norm.mpr hxnorm⟩
-      let w : DiskDouble.Boundary (Hemisphere.Ambient n) :=
-        ⟨y.1, mem_sphere_zero_iff_norm.mpr hynorm⟩
-      have hbc : B z = C w := Subtype.ext h
-      have hew : e z = w := by
-        apply C.injective
-        change C (C.symm (B z)) = C w
-        rw [C.apply_symm_apply]
-        exact hbc
-      refine ⟨z, rfl, ?_⟩
-      rw [hew]
-      rfl
-    · rintro ⟨z, rfl, rfl⟩
-      have heq := congrArg Subtype.val (C.apply_symm_apply (B z))
-      exact heq.symm
-
-def homeomorphSphereOfSublevelDisks {M : Type*} [TopologicalSpace M] [T2Space M] {n : ℕ}
-    {f : M → ℝ} {a : ℝ} (L : SublevelDisk n f a) (R : SublevelDisk n (fun x => -f x) (-a)) :
-    M ≃ₜ Hemisphere.Sphere n :=
-  (twoDiskDecompositionOfSublevels L R).homeomorphSphere
-
-theorem ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E M : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) {p q : M} (hpq : f p < f q)
-    (hcrit : criticalPoints E f = { p, q }) :
-    Nonempty (M ≃ₜ Hemisphere.Sphere (Module.finrank ℝ E)) := by
-  have hcover : ∀ x ∈ criticalPoints E f, x = p ∨ x = q := by
-    intro x hx
-    rw [hcrit] at hx
-    simpa only [Set.mem_insert_iff, Set.mem_singleton_iff] using hx
-  have hp : p ∈ criticalPoints E f := by rw [hcrit]; simp
-  have hq : q ∈ criticalPoints E f := by rw [hcrit]; simp
-  obtain ⟨hmin, hmax⟩ := unique_extrema_of_two_critical_values hf hpq hcover
-  obtain ⟨cp⟩ := nonempty_signedMorseChart hf hm p hp
-  obtain ⟨cq⟩ := nonempty_signedMorseChart hf hm q hq
-  let a := (f p + f q) / 2
-  have hpa : f p < a := by dsimp [a]; linarith
-  have haq : a < f q := by dsimp [a]; linarith
-  have hregularL : ∀ x, f p < f x → f x ≤ a → x ∉ criticalPoints E f := by
-    intro x hxlo hxhi hxcrit
-    rcases hcover x hxcrit with h | h
-    · rw [h] at hxlo
-      exact lt_irrefl _ hxlo
-    · rw [h] at hxhi
-      exact not_le_of_gt haq hxhi
-  obtain ⟨L⟩ := cp.nonempty_sublevelDisk_before_next_critical hf hmin hpa hregularL
-  have hminNeg : ∀ x, -f x ≤ -f q → x = q := fun x hx => hmax x (neg_le_neg_iff.mp hx)
-  have hregularR : ∀ x, -f q < -f x → -f x ≤ -a → x ∉ criticalPoints E (fun y => -f y) := by
-    intro x hxlo hxhi hxcrit
-    have hxcrit' : x ∈ criticalPoints E f := by
-      rw [← criticalPoints_neg (E := E) f]
-      exact hxcrit
-    rcases hcover x hxcrit' with h | h
-    · rw [h] at hxhi
-      linarith
-    · rw [h] at hxlo
-      exact lt_irrefl _ hxlo
-  obtain ⟨R⟩ :=
-    cq.neg.nonempty_sublevelDisk_before_next_critical hf.neg hminNeg (neg_lt_neg haq) hregularR
-  exact ⟨homeomorphSphereOfSublevelDisks L R⟩
 
 theorem MorseCancellation.critical_pair_of_surgery_count_two {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]

@@ -36,6 +36,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Branched quotient atlases -/
+
+/-- An atlas on a quotient where charts pull back to smooth local diffeomorphisms along `q`. -/
 structure BranchedQuotientAtlas.Data {E M Q : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] (q : M → Q) (ι : Type*) where
   chart : ι → OpenPartialHomeomorph Q E
@@ -54,17 +57,20 @@ structure BranchedQuotientAtlas.Data {E M Q : Type*} [NormedAddCommGroup E] [Nor
               IsLocalDiffeomorphAt (modelWithCornersSelf ℂ E) (modelWithCornersSelf ℂ E) ω
                 (chart i ∘ q) a
 
+/-- A chosen chart index covering a point. -/
 def BranchedQuotientAtlas.Data.indexAt {E M Q : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q} {ι : Type*}
     (D : BranchedQuotientAtlas.Data (E := E) q ι) (x : Q) : ι :=
   (D.cover x).choose
 
+/-- The chosen chart covers the point. -/
 theorem BranchedQuotientAtlas.Data.mem_chart_source {E M Q : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
     {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) (x : Q) :
     x ∈ (D.chart (D.indexAt x)).source :=
   (D.cover x).choose_spec
 
+/-- The charted-space structure induced on the quotient. -/
 @[instance_reducible]
 def BranchedQuotientAtlas.Data.chartedSpace {E M Q : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
@@ -75,6 +81,7 @@ def BranchedQuotientAtlas.Data.chartedSpace {E M Q : Type*} [NormedAddCommGroup 
   mem_chart_source := D.mem_chart_source
   chart_mem_atlas x := Set.mem_range_self (D.indexAt x)
 
+/-- Each atlas chart lies in the induced atlas. -/
 theorem BranchedQuotientAtlas.Data.chart_mem_atlas {E M Q : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
     {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) (i : ι) :
@@ -82,6 +89,7 @@ theorem BranchedQuotientAtlas.Data.chart_mem_atlas {E M Q : Type*} [NormedAddCom
     D.chart i ∈ atlas E Q :=
   Set.mem_range_self i
 
+/-- The chart at a point is a chosen covering chart. -/
 theorem BranchedQuotientAtlas.Data.chartAt_eq {E M Q : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
     {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) (x : Q) :
@@ -89,40 +97,50 @@ theorem BranchedQuotientAtlas.Data.chartAt_eq {E M Q : Type*} [NormedAddCommGrou
     chartAt E x = D.chart (D.indexAt x) :=
   rfl
 
+/-! ### The one-point atlas -/
+
+/-- The chart on `Q` given by inclusion into the one-point compactification. -/
 def OnePointAtlas.inclusionChart {Q : Type*} [TopologicalSpace Q] [Nonempty Q] :
     OpenPartialHomeomorph Q (OnePoint Q) :=
   OnePoint.isOpenEmbedding_coe.toOpenPartialHomeomorph ((↑) : Q → OnePoint Q)
 
+/-- The inclusion chart has source all of `Q`. -/
 @[simp]
 theorem OnePointAtlas.inclusionChart_source {Q : Type*} [TopologicalSpace Q] [Nonempty Q] :
     (inclusionChart (Q := Q)).source = Set.univ :=
   OnePoint.isOpenEmbedding_coe.toOpenPartialHomeomorph_source _
 
+/-- The inclusion chart has target `Q` inside `OnePoint Q`. -/
 @[simp]
 theorem OnePointAtlas.inclusionChart_target {Q : Type*} [TopologicalSpace Q] [Nonempty Q] :
     (inclusionChart (Q := Q)).target = Set.range ((↑) : Q → OnePoint Q) :=
   OnePoint.isOpenEmbedding_coe.toOpenPartialHomeomorph_target _
 
+/-- The inverse inclusion chart is the coercion. -/
 @[simp]
 theorem OnePointAtlas.inclusionChart_symm_coe {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     (q : Q) : (inclusionChart (Q := Q)).symm (q : OnePoint Q) = q :=
   (inclusionChart (Q := Q)).left_inv (by simp)
 
+/-- A chart of `Q` viewed as a chart of `OnePoint Q` away from infinity. -/
 def OnePointAtlas.oldChart {Q : Type*} [TopologicalSpace Q] [Nonempty Q] [ChartedSpace ℂ Q]
     (q : Q) : OpenPartialHomeomorph (OnePoint Q) ℂ :=
   (inclusionChart (Q := Q)).symm.trans (chartAt ℂ q)
 
+/-- The old chart computes the `Q` chart on coerced points. -/
 @[simp]
 theorem OnePointAtlas.oldChart_coe {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (q x : Q) : oldChart q (x : OnePoint Q) = chartAt ℂ q x := by
   change chartAt ℂ q ((inclusionChart (Q := Q)).symm (x : OnePoint Q)) = _
   rw [inclusionChart_symm_coe]
 
+/-- The old chart pulled back to `Q` is the original chart. -/
 theorem OnePointAtlas.oldChart_comp_coe {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (q : Q) : oldChart q ∘ ((↑) : Q → OnePoint Q) = chartAt ℂ q := by
   funext x
   exact oldChart_coe q x
 
+/-- A coerced point lies in the old chart source exactly in `Q`. -/
 @[simp]
 theorem OnePointAtlas.coe_mem_oldChart_source {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (q x : Q) :
@@ -133,12 +151,14 @@ theorem OnePointAtlas.coe_mem_oldChart_source {Q : Type*} [TopologicalSpace Q] [
       _
   simp only [inclusionChart_target, Set.mem_range_self, inclusionChart_symm_coe, true_and]
 
+/-- The old chart source pulls back to the `Q` chart source. -/
 theorem OnePointAtlas.oldChart_preimage_source {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (q : Q) :
     ((↑) : Q → OnePoint Q) ⁻¹' (oldChart q).source = (chartAt ℂ q).source := by
   ext x
   exact coe_mem_oldChart_source q x
 
+/-- Infinity is not in the old chart source. -/
 theorem OnePointAtlas.infty_not_mem_oldChart_source {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (q : Q) : ((OnePoint.infty) : OnePoint Q) ∉ (oldChart q).source := by
   intro hx
@@ -147,6 +167,7 @@ theorem OnePointAtlas.infty_not_mem_oldChart_source {Q : Type*} [TopologicalSpac
   obtain ⟨x, hx⟩ := hr
   exact OnePoint.coe_ne_infty x hx
 
+/-- The old chart pulled back to `Q` is holomorphic. -/
 theorem OnePointAtlas.oldChart_pullback_holomorphic {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] [IsManifold 𝓘(ℂ) ω Q] (q : Q) :
     ContMDiffOn 𝓘(ℂ) 𝓘(ℂ) ω (oldChart q ∘ ((↑) : Q → OnePoint Q))
@@ -154,6 +175,7 @@ theorem OnePointAtlas.oldChart_pullback_holomorphic {Q : Type*} [TopologicalSpac
   rw [oldChart_comp_coe, oldChart_preimage_source]
   exact contMDiffOn_chart
 
+/-- The pulled-back old chart is a local diffeomorphism. -/
 theorem OnePointAtlas.oldChart_pullback_localDiffeomorph {Q : Type*} [TopologicalSpace Q]
     [Nonempty Q] [ChartedSpace ℂ Q] [IsManifold 𝓘(ℂ) ω Q] (q x : Q)
     (hx : (x : OnePoint Q) ∈ (oldChart q).source) :
@@ -168,11 +190,13 @@ theorem OnePointAtlas.oldChart_pullback_localDiffeomorph {Q : Type*} [Topologica
   · exact (coe_mem_oldChart_source q x).mp hx
   · exact Set.eqOn_refl _ _
 
+/-- The atlas of `OnePoint Q`: a chart at infinity plus the old charts. -/
 def OnePointAtlas.chart {Q : Type*} [TopologicalSpace Q] [Nonempty Q] [ChartedSpace ℂ Q]
     (e : OpenPartialHomeomorph (OnePoint Q) ℂ) : Option Q → OpenPartialHomeomorph (OnePoint Q) ℂ
   | none => e
   | some q => oldChart q
 
+/-- The one-point atlas covers `OnePoint Q`. -/
 theorem OnePointAtlas.chart_cover {Q : Type*} [TopologicalSpace Q] [Nonempty Q] [ChartedSpace ℂ Q]
     (e : OpenPartialHomeomorph (OnePoint Q) ℂ) (he : ((OnePoint.infty) : OnePoint Q) ∈ e.source)
     (x : OnePoint Q) : ∃ i, x ∈ (chart e i).source := by
@@ -181,6 +205,7 @@ theorem OnePointAtlas.chart_cover {Q : Type*} [TopologicalSpace Q] [Nonempty Q] 
   · rename_i q
     exact ⟨Option.some q, (coe_mem_oldChart_source q q).mpr (mem_chart_source ℂ q)⟩
 
+/-- Chart overlaps never return to infinity. -/
 theorem OnePointAtlas.overlap_ne_infty {Q : Type*} [TopologicalSpace Q] [Nonempty Q]
     [ChartedSpace ℂ Q] (e : OpenPartialHomeomorph (OnePoint Q) ℂ) (i j : Option Q) (hij : i ≠ j)
     (z : ℂ) (hz : z ∈ ((chart e i).symm.trans (chart e j)).source) :
@@ -199,6 +224,7 @@ theorem OnePointAtlas.overlap_ne_infty {Q : Type*} [TopologicalSpace Q] [Nonempt
       rw [← hinfty]
       exact hz.2
 
+/-- The one-point atlas packaged as branched quotient atlas data. -/
 def OnePointAtlas.data {Q : Type*} [TopologicalSpace Q] [Nonempty Q] [ChartedSpace ℂ Q]
     (e : OpenPartialHomeomorph (OnePoint Q) ℂ) [IsManifold 𝓘(ℂ) ω Q]
     (he : ((OnePoint.infty) : OnePoint Q) ∈ e.source)

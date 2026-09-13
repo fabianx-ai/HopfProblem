@@ -33,6 +33,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Compact zero sets of continuous functions -/
+
+/-- The zero set is compact inside a compact sublevel. -/
 theorem LocalCollapse.zeroSet_isCompact {X : Type*} [TopologicalSpace X] (f : C(X, ℝ))
     {r : ℝ} (hr : 0 < r) (hc : IsCompact {x : X | f x ≤ r}) : IsCompact {x : X | f x = 0} := by
   apply hc.of_isClosed_subset (isClosed_eq f.continuous continuous_const)
@@ -41,6 +44,7 @@ theorem LocalCollapse.zeroSet_isCompact {X : Type*} [TopologicalSpace X] (f : C(
   rw [show f x = 0 from hx]
   exact hr.le
 
+/-- A small positive sublevel of the zero set fits in a neighborhood. -/
 theorem LocalCollapse.exists_positive_sublevel_subset_open {X : Type*}
     [TopologicalSpace X] (f : C(X, ℝ)) (hf : ∀ x, 0 ≤ f x) {r : ℝ} (hr : 0 < r)
     (hc : IsCompact {x : X | f x ≤ r}) {U : Set X} (hU : IsOpen U) (hS : {x : X | f x = 0} ⊆ U) :
@@ -59,6 +63,9 @@ theorem LocalCollapse.exists_positive_sublevel_subset_open {X : Type*}
   apply hsub ⟨hab.1.trans_le (hf x), hfx⟩
   exact ⟨x, ⟨hx.trans (min_le_left r (b / 2)), hxu⟩, rfl⟩
 
+/-! ### Collapses preserving a zero set -/
+
+/-- A homotopy fixing the zero set and nonincreasing in `f`, collapsing a region. -/
 structure LocalCollapse.Collapse {X : Type*} [TopologicalSpace X]
     (f : C(X, ℝ)) where
   homotopy : C(unitInterval × X, X)
@@ -69,6 +76,7 @@ structure LocalCollapse.Collapse {X : Type*} [TopologicalSpace X]
   isOpen_collapseSet : IsOpen collapseSet
   map_one_zero : ∀ x ∈ collapseSet, f (homotopy (1, x)) = 0
 
+/-- The trivial collapse. -/
 def LocalCollapse.Collapse.identity {X : Type*} [TopologicalSpace X]
     (f : C(X, ℝ)) : LocalCollapse.Collapse f
     where
@@ -80,6 +88,7 @@ def LocalCollapse.Collapse.identity {X : Type*} [TopologicalSpace X]
   isOpen_collapseSet := isOpen_empty
   map_one_zero _ h := h.elim
 
+/-- The composite of two collapses. -/
 def LocalCollapse.Collapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
     (A B : LocalCollapse.Collapse f) : LocalCollapse.Collapse f
     where
@@ -108,6 +117,7 @@ def LocalCollapse.Collapse.comp {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
       exact A.map_one_zero x hx
     · exact B.map_one_zero (A.homotopy (1, x)) hx
 
+/-- A zero point in either collapse set lies in the composite's. -/
 theorem LocalCollapse.Collapse.mem_comp_collapseSet_of_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} (A B : LocalCollapse.Collapse f) {x : X}
     (hx : f x = 0) (h : x ∈ A.collapseSet ∪ B.collapseSet) : x ∈ (A.comp B).collapseSet := by
@@ -117,12 +127,14 @@ theorem LocalCollapse.Collapse.mem_comp_collapseSet_of_zero {X : Type*}
     change A.homotopy (1, x) ∈ B.collapseSet
     rwa [A.fixes_zero 1 x hx]
 
+/-- A list of collapses combined by composition. -/
 def LocalCollapse.Collapse.combine {X : Type*} [TopologicalSpace X] {f : C(X, ℝ)}
     {ι : Type*} (A : ι → LocalCollapse.Collapse f) :
     List ι → LocalCollapse.Collapse f
   | [] => identity f
   | i :: l => (A i).comp (combine A l)
 
+/-- A zero point in a member's collapse set lies in the combination's. -/
 theorem LocalCollapse.Collapse.mem_combine_collapseSet_of_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*}
     (A : ι → LocalCollapse.Collapse f) (l : List ι) {x : X} (hx : f x = 0) {i : ι}
@@ -135,6 +147,9 @@ theorem LocalCollapse.Collapse.mem_combine_collapseSet_of_zero {X : Type*}
       exact mem_comp_collapseSet_of_zero (A a) (combine A l) hx (Or.inl hxi)
     · exact mem_comp_collapseSet_of_zero (A a) (combine A l) hx (Or.inr (ih hi))
 
+/-! ### Covering the zero set by a collapse -/
+
+/-- Finitely many collapses covering the compact zero set combine to one. -/
 theorem LocalCollapse.exists_localCollapse_covering_zero {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} {ι : Type*} (A : ι → LocalCollapse.Collapse f)
     (hcompact : IsCompact {x : X | f x = 0})
@@ -151,6 +166,7 @@ theorem LocalCollapse.exists_localCollapse_covering_zero {X : Type*}
     LocalCollapse.Collapse.mem_combine_collapseSet_of_zero A s.toList hx
       (by simpa only [Finset.mem_toList] using hi) hxi
 
+/-- Locally covering collapses combine to a global collapse of the zero set. -/
 theorem LocalCollapse.exists_localCollapse_covering_zero_of_local {X : Type*}
     [TopologicalSpace X] {f : C(X, ℝ)} (hcompact : IsCompact {x : X | f x = 0})
     (hlocal : ∀ x : X, f x = 0 → ∃ A : LocalCollapse.Collapse f, x ∈ A.collapseSet) :
@@ -161,6 +177,7 @@ theorem LocalCollapse.exists_localCollapse_covering_zero_of_local {X : Type*}
   intro x hx
   exact Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hA ⟨x, hx⟩⟩
 
+/-- A small sublevel admits a collapse covering it. -/
 theorem LocalCollapse.exists_small_sublevel_localCollapse {X : Type*}
     [TopologicalSpace X] (f : C(X, ℝ)) (hf : ∀ x, 0 ≤ f x) {r : ℝ} (hr : 0 < r)
     (hc : IsCompact {x : X | f x ≤ r})

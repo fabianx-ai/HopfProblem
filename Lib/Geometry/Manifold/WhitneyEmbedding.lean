@@ -70,6 +70,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Local diffeomorphisms from invertible derivatives -/
+
+/-- Distinct values of a finite set admit separating radii. -/
 theorem ManifoldMorse.exists_separated_value_radii {X : Type*} {f : X → ℝ} {K : Set X}
     (hK : K.Finite) (hinj : Set.InjOn f K) :
     ∃ r : K → ℝ, (∀ p, 0 < r p) ∧ ∀ p q : K, f p < f q → f p + (r p) ^ 2 < f q - (r q) ^ 2 := by
@@ -93,6 +96,7 @@ theorem ManifoldMorse.exists_separated_value_radii {X : Type*} {f : X → ℝ} {
     exact (ne_of_lt hpq) (congrArg f heq)
   nlinarith
 
+/-- An invertible derivative gives a partial diffeomorphism into the manifold. -/
 theorem exists_partialDiffeomorph_into_manifold {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : D → M} {U : Set D}
@@ -124,6 +128,7 @@ theorem exists_partialDiffeomorph_into_manifold {D E M : Type*} [NormedAddCommGr
   rw [hdf]
   exact (c.left_inv' (hdV hy.1).2).symm
 
+/-- An invertible derivative makes a smooth map a local diffeomorphism. -/
 theorem isLocalDiffeomorphAt_of_contMDiffOn {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : D → M} {U : Set D}
@@ -133,6 +138,7 @@ theorem isLocalDiffeomorphAt_of_contMDiffOn {D E M : Type*} [NormedAddCommGroup 
   obtain ⟨Φ, hxΦ, -, heq⟩ := exists_partialDiffeomorph_into_manifold hU hx hf hinv
   exact ⟨Φ, hxΦ, heq⟩
 
+/-- An invertible derivative between manifolds gives a partial diffeomorphism. -/
 theorem exists_partialDiffeomorph_between_manifolds {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {H X : Type*}
@@ -175,6 +181,7 @@ theorem exists_partialDiffeomorph_between_manifolds {D E M : Type*} [NormedAddCo
     change f y = d (c y)
     simpa only [hleft y hy.1] using hh
 
+/-- An invertible derivative between manifolds is a local diffeomorphism. -/
 theorem isLocalDiffeomorphAt_between_manifolds {D E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {H X : Type*}
@@ -185,6 +192,7 @@ theorem isLocalDiffeomorphAt_between_manifolds {D E M : Type*} [NormedAddCommGro
   obtain ⟨Φ, hxΦ, -, heq⟩ := exists_partialDiffeomorph_between_manifolds hU hx hf hinv
   exact ⟨Φ, hxΦ, heq⟩
 
+/-- An invertible derivative between boundaryless manifolds gives a partial diffeomorphism. -/
 theorem exists_partialDiffeomorph_boundaryless {D E H H' X Y : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace H'] {I : ModelWithCorners ℝ D H}
@@ -218,6 +226,7 @@ theorem exists_partialDiffeomorph_boundaryless {D E H H' X Y : Type*} [NormedAdd
   rw [heq]
   exact (c.left_inv' (hdV hy.1).2).symm
 
+/-- An invertible derivative between boundaryless manifolds is a local diffeomorphism. -/
 theorem isLocalDiffeomorphAt_boundaryless {D E H H' X Y : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [CompleteSpace D] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace H'] {I : ModelWithCorners ℝ D H}
@@ -239,6 +248,7 @@ theorem exists_partialDiffeomorph_of_isLocalDiffeomorphAt
   obtain ⟨φ, hx, heq⟩ := h
   exact ⟨φ, hx, heq⟩
 
+/-- An injective local diffeomorphism on an open set is a partial diffeomorphism. -/
 def partialDiffeomorphOfInjectiveLocal {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -279,6 +289,7 @@ def partialDiffeomorphOfInjectiveLocal {E F H H' X Y : Type*} [NormedAddCommGrou
       contMDiffOn_toFun := hloc.contMDiffOn
       contMDiffOn_invFun := hinverse }
 
+/-- A map locally diffeomorphic near a compact set restricts to a partial diffeomorphism. -/
 theorem exists_partialDiffeomorph_near_compact {E F H H' X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'} [TopologicalSpace X]
@@ -304,13 +315,18 @@ theorem exists_partialDiffeomorph_near_compact {E F H H' X Y : Type*} [NormedAdd
   have hWloc : IsLocalDiffeomorphOn I J ∞ f W := fun x => x.property.1.2
   exact ⟨partialDiffeomorphOfInjectiveLocal hW hWi hWloc, hKW, Set.inter_subset_right, rfl⟩
 
+/-! ### Collar height changes -/
+
+/-- The collar map shifting heights by `h`. -/
 def CollarHeight.heightChange {X : Type*} (h : X × ℝ → ℝ) (z : X × ℝ) : X × ℝ :=
   (z.1, h z)
 
+/-- On the zero section the height change is the identity. -/
 theorem CollarHeight.heightChange_zero {X : Type*} {h : X × ℝ → ℝ}
     (hzero : ∀ x, h (x, 0) = 0) (x : X) : heightChange h (x, 0) = (x, 0) :=
   Prod.ext rfl (hzero x)
 
+/-- The height change is smooth when `h` is. -/
 theorem CollarHeight.contMDiffOn_heightChange {D H X : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X]
     [ChartedSpace H X] {h : X × ℝ → ℝ} {U : Set (X × ℝ)}
@@ -318,6 +334,7 @@ theorem CollarHeight.contMDiffOn_heightChange {D H X : Type*} [NormedAddCommGrou
     ContMDiffOn (I.prod 𝓘(ℝ, ℝ)) (I.prod 𝓘(ℝ, ℝ)) ∞ (heightChange h) U :=
   contMDiff_fst.contMDiffOn.prodMk hh
 
+/-- The derivative of the height on the zero section. -/
 theorem CollarHeight.mfderiv_height_zero {D H X : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X]
     [ChartedSpace H X] {h : X × ℝ → ℝ} {U : Set (X × ℝ)} (hU : IsOpen U)
@@ -338,6 +355,7 @@ theorem CollarHeight.mfderiv_height_zero {D H X : Type*} [NormedAddCommGroup D]
   change (0 : ℝ) + v.2 = v.2
   exact zero_add _
 
+/-- The height change has invertible derivative on the zero section. -/
 theorem CollarHeight.mfderiv_heightChange_zero {D H X : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X]
     [ChartedSpace H X] {h : X × ℝ → ℝ} {U : Set (X × ℝ)} (hU : IsOpen U)
@@ -351,6 +369,7 @@ theorem CollarHeight.mfderiv_heightChange_zero {D H X : Type*} [NormedAddCommGro
     mfderiv_fst, mfderiv_height_zero hU hh hzero x hx htime]
   rfl
 
+/-- The height change is a local diffeomorphism near the zero section. -/
 theorem CollarHeight.exists_heightChangeChart {D H X : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X]
     [ChartedSpace H X] [CompleteSpace D] [I.Boundaryless] [IsManifold I ∞ X] [T2Space X]
@@ -384,6 +403,9 @@ theorem CollarHeight.exists_heightChangeChart {D H X : Type*} [NormedAddCommGrou
         have ht : t = 0 := hx.2
         simpa only [ht] using hsource x)
 
+/-! ### The tangent space of a regular level -/
+
+/-- The regular-level inclusion has injective derivative. -/
 theorem RegularLevel.injective_mfderiv_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -410,6 +432,7 @@ theorem RegularLevel.injective_mfderiv_inclusion {E M : Type*} [NormedAddCommGro
   exact fun u v huv =>
     hi (congrArg (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, Model E) (fun y : M => (Φ y).2) (x : M)) huv)
 
+/-- The height derivative vanishes on the level tangent space. -/
 theorem RegularLevel.height_derivative_comp_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -428,6 +451,7 @@ theorem RegularLevel.height_derivative_comp_inclusion {E M : Type*} [NormedAddCo
   rw [heq, mfderiv_const] at hc
   exact hc.symm
 
+/-- The level tangent space is the kernel of the height derivative. -/
 theorem RegularLevel.range_mfderiv_inclusion {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -455,6 +479,7 @@ theorem RegularLevel.range_mfderiv_inclusion {E M : Type*} [NormedAddCommGroup E
   rw [hAr]
   omega
 
+/-- The tangent map paired with the height derivative. -/
 def RegularLevel.transverseTangentMap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -464,6 +489,7 @@ def RegularLevel.transverseTangentMap {E M : Type*} [NormedAddCommGroup E] [Norm
   (mfderiv 𝓘(ℝ, Model E) 𝓘(ℝ, E) (Subtype.val : { x : M // f x = b } → M) x).coprod
     ((ContinuousLinearMap.id ℝ ℝ).smulRight v)
 
+/-- The transverse tangent map is bijective. -/
 theorem RegularLevel.bijective_transverseTangentMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -498,6 +524,7 @@ theorem RegularLevel.bijective_transverseTangentMap {E M : Type*} [NormedAddComm
     change A u + L w • v = w
     rw [hu, sub_add_cancel]
 
+/-- A tangent lift's normal derivative is surjective. -/
 theorem RegularLevel.surjective_normal_derivative_of_tangent_lift {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ}
@@ -534,6 +561,9 @@ theorem RegularLevel.surjective_normal_derivative_of_tangent_lift {E M : Type*}
   rw [hv]
   exact congrArg (fun T : N →L[ℝ] N => T z) hnormal
 
+/-! ### The normal bundle of an embedding -/
+
+/-- A smooth embedding into Euclidean space with injective derivative. -/
 structure NativeEuclideanEmbedding (E M : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] where
   ambientDimension : ℕ
@@ -542,6 +572,7 @@ structure NativeEuclideanEmbedding (E M : Type*) [NormedAddCommGroup E] [NormedS
   closedEmbedding : Topology.IsClosedEmbedding toFun
   injective_mfderiv : ∀ x, Function.Injective (mfderiv 𝓘(ℝ, E) (𝓡 ambientDimension) toFun x)
 
+/-- A native Euclidean embedding exists. -/
 theorem nonempty_nativeEuclideanEmbedding {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
@@ -549,24 +580,28 @@ theorem nonempty_nativeEuclideanEmbedding {E : Type*} {M : Type*} [NormedAddComm
   obtain ⟨n, f, hs, hc, hd⟩ := exists_embedding_euclidean_of_compact (I := 𝓘(ℝ, E)) (M := M)
   exact ⟨⟨n, f, hs, hc, hd⟩⟩
 
+/-- The embedding's derivative is injective. -/
 theorem NativeEuclideanEmbedding.injective_mvfderiv {E : Type*} {M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     Function.Injective (mvfderiv 𝓘(ℝ, E) e.toFun x) :=
   (NormedSpace.fromTangentSpace (e.toFun x)).injective.comp (e.injective_mfderiv x)
 
+/-- The tangent image of the embedding at a point. -/
 def NativeEuclideanEmbedding.tangentImage {E : Type*} {M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (mvfderiv 𝓘(ℝ, E) e.toFun x).range
 
+/-- The tangent image's rank equals the source dimension. -/
 theorem NativeEuclideanEmbedding.finrank_tangentImage {E : Type*} {M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     Module.finrank ℝ (e.tangentImage x) = Module.finrank ℝ E := by
   exact LinearMap.finrank_range_of_inj (e.injective_mvfderiv x)
 
+/-- The real adjoint of a linear map. -/
 noncomputable def realAdjoint {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] : (E →L[ℝ] F) →L[ℝ] (F →L[ℝ] E)
@@ -576,11 +611,13 @@ noncomputable def realAdjoint {E F : Type*} [NormedAddCommGroup E]
   map_smul' r A := by simp
   cont := ContinuousLinearMap.adjoint.continuous
 
+/-- The Gram operator `A*A` of a linear map. -/
 noncomputable def gramOperator {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) : E →L[ℝ] E :=
   A.adjoint.comp A
 
+/-- The Gram operator of an injective map is invertible. -/
 theorem gramOperator_isInvertible {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) (hA : Function.Injective A) :
@@ -589,11 +626,13 @@ theorem gramOperator_isInvertible {E F : Type*} [NormedAddCommGroup E]
   let g := (LinearEquiv.ofInjectiveEndo (gramOperator A).toLinearMap hG).toContinuousLinearEquiv
   exact ⟨g, by ext v; rfl⟩
 
+/-- The orthogonal projection via the Gram operator. -/
 noncomputable def gramProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) : F →L[ℝ] F :=
   A.comp ((gramOperator A).inverse.comp A.adjoint)
 
+/-- The Gram projection equals the star projection. -/
 theorem gramProjection_eq_starProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (A : E →L[ℝ] F) (hA : Function.Injective A) :
@@ -608,6 +647,7 @@ theorem gramProjection_eq_starProjection {E F : Type*} [NormedAddCommGroup E]
     change A.adjoint v - gramOperator A ((gramOperator A).inverse (A.adjoint v)) = 0
     rw [(gramOperator_isInvertible A hA).self_apply_inverse, sub_self]
 
+/-- The Gram projection is smooth in the map. -/
 theorem contMDiffAt_gramProjection {E F : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] {B H M : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -623,6 +663,7 @@ theorem contMDiffAt_gramProjection {E F : Type*} [NormedAddCommGroup E]
       (gramOperator_isInvertible (A x) hinj).contDiffAt_map_inverse hgram
   exact hA.clm_comp (hinverse.clm_comp hadj)
 
+/-- The local differential of the embedding in charts. -/
 def NativeEuclideanEmbedding.localDifferential {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     (e : NativeEuclideanEmbedding E M) (x₀ : M) :
@@ -630,6 +671,7 @@ def NativeEuclideanEmbedding.localDifferential {E M : Type*} [NormedAddCommGroup
   inTangentCoordinates 𝓘(ℝ, E) (𝓡 e.ambientDimension) id e.toFun
     (mfderiv 𝓘(ℝ, E) (𝓡 e.ambientDimension) e.toFun) x₀
 
+/-- The local differential is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiffAt_localDifferential {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x₀ : M) :
@@ -637,6 +679,7 @@ theorem NativeEuclideanEmbedding.contMDiffAt_localDifferential {E M : Type*}
       (e.localDifferential x₀) x₀ :=
   e.smooth.contMDiffAt.mfderiv_const (by simp)
 
+/-- The local differential computes the chart derivative. -/
 theorem NativeEuclideanEmbedding.localDifferential_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     (e : NativeEuclideanEmbedding E M) (x₀ y : M) :
@@ -656,6 +699,7 @@ private theorem NativeEuclideanEmbedding.localFiberMap_bijective {E M : Type*}
   rw [← Bundle.Trivialization.symm_continuousLinearEquivAt_eq _ hy']
   exact ContinuousLinearEquiv.bijective _
 
+/-- The local differential is injective. -/
 theorem NativeEuclideanEmbedding.localDifferential_injective {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x₀ y : M)
@@ -663,6 +707,7 @@ theorem NativeEuclideanEmbedding.localDifferential_injective {E M : Type*}
   rw [e.localDifferential_eq]
   exact (e.injective_mvfderiv y).comp (localFiberMap_bijective x₀ y hy).1
 
+/-- The local differential's range is the tangent image. -/
 theorem NativeEuclideanEmbedding.localDifferential_range {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) (x₀ y : M)
@@ -671,12 +716,14 @@ theorem NativeEuclideanEmbedding.localDifferential_range {E M : Type*}
   apply LinearMap.range_comp_of_range_eq_top
   exact LinearMap.range_eq_top.mpr (localFiberMap_bijective x₀ y hy).2
 
+/-- The orthogonal projection onto the tangent image. -/
 def NativeEuclideanEmbedding.tangentProjection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
   (e.tangentImage x).starProjection
 
+/-- The tangent projection is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_tangentProjection {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] (e : NativeEuclideanEmbedding E M) [FiniteDimensional ℝ E] :
@@ -704,35 +751,41 @@ theorem NativeEuclideanEmbedding.contMDiff_tangentProjection {E M : Type*}
       (gramProjection_eq_starProjection _ (hi y hy)).symm
   exact heq.contMDiffAt_iff.mpr h
 
+/-- The normal fiber over a point. -/
 def NativeEuclideanEmbedding.normalFiber {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) :=
   (e.tangentImage x)ᗮ
 
+/-- The projection onto the normal fiber. -/
 def NativeEuclideanEmbedding.normalProjection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension) :=
   (e.normalFiber x).starProjection
 
+/-- The normal projection computes the orthogonal complement. -/
 theorem NativeEuclideanEmbedding.normalProjection_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     e.normalProjection x = 1 - e.tangentProjection x :=
   Submodule.starProjection_orthogonal' (e.tangentImage x)
 
+/-- The normal projection's range. -/
 theorem NativeEuclideanEmbedding.range_normalProjection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
     (e.normalProjection x).range = e.normalFiber x :=
   (e.normalFiber x).range_starProjection
 
+/-- The normal projection is idempotent. -/
 theorem NativeEuclideanEmbedding.normalProjection_idempotent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) : IsIdempotentElem (e.normalProjection x) :=
   (e.normalFiber x).isIdempotentElem_starProjection
 
+/-- Tangent and normal ranks sum to the ambient dimension. -/
 theorem NativeEuclideanEmbedding.finrank_tangent_add_normal {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) (x : M) :
@@ -745,12 +798,14 @@ theorem NativeEuclideanEmbedding.finrank_tangent_add_normal {E M : Type*}
       (e.tangentImage x).finrank_add_finrank_orthogonal
     _ = e.ambientDimension := finrank_euclideanSpace_fin
 
+/-- The tangent space is Hausdorff. -/
 theorem NativeEuclideanEmbedding.tangentSpaceT2 {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (x : M) :
     T2Space (TangentSpace 𝓘(ℝ, E) x) :=
   inferInstanceAs (T2Space E)
 
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2 in
+/-- The tangent space is finite-dimensional. -/
 theorem NativeEuclideanEmbedding.tangentSpaceFiniteDimensional {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [FiniteDimensional ℝ E] (x : M) : FiniteDimensional ℝ (TangentSpace 𝓘(ℝ, E) x) :=
@@ -759,6 +814,7 @@ theorem NativeEuclideanEmbedding.tangentSpaceFiniteDimensional {E M : Type*}
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
     NativeEuclideanEmbedding.tangentSpaceFiniteDimensional in
+/-- The tangent space is equivalent to its image. -/
 def NativeEuclideanEmbedding.tangentImageEquiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [FiniteDimensional ℝ E] (x : M) :
@@ -769,6 +825,7 @@ def NativeEuclideanEmbedding.tangentImageEquiv {E M : Type*} [NormedAddCommGroup
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
     NativeEuclideanEmbedding.tangentSpaceFiniteDimensional in
+/-- The ambient space splits as tangent plus normal. -/
 def NativeEuclideanEmbedding.tangentNormalEquiv {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [FiniteDimensional ℝ E] (x : M) :
@@ -781,6 +838,7 @@ def NativeEuclideanEmbedding.tangentNormalEquiv {E M : Type*} [NormedAddCommGrou
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
     NativeEuclideanEmbedding.tangentSpaceFiniteDimensional in
+/-- The normal projection is smooth. -/
 theorem NativeEuclideanEmbedding.contMDiff_normalProjection {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (e : NativeEuclideanEmbedding E M) [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M] :

@@ -38,10 +38,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 
+/-! ### Point-set properties of Euclidean spheres -/
+
+/-- The `n`-dimensional unit sphere in `ℝⁿ⁺¹` is nonempty. -/
 instance EuclideanSphere.instLocal1 {n : ℕ} :
     Nonempty ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :=
   Set.Nonempty.to_subtype (NormedSpace.sphere_nonempty.mpr (by norm_num))
 
+/-- The `n + 1`-dimensional unit sphere is infinite. -/
 instance EuclideanSphere.instLocal2 {n : ℕ} :
     Infinite ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 1)) := by
   rw [← Set.infinite_univ_iff]
@@ -54,6 +58,7 @@ instance EuclideanSphere.instLocal2 {n : ℕ} :
   rw [stereographic'_target]
   exact Set.infinite_univ
 
+/-- The `n + 1`-dimensional unit sphere is path connected. -/
 instance EuclideanSphere.instLocal3 (n : ℕ) :
     PathConnectedSpace
       ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 1)) := by
@@ -63,6 +68,7 @@ instance EuclideanSphere.instLocal3 (n : ℕ) :
     exact Nat.one_lt_ofNat
   · exact zero_le_one' ℝ
 
+/-- A Euclidean sphere minus one point is contractible via stereographic projection. -/
 instance EuclideanSphere.instContractibleSpace1 {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :
     ContractibleSpace
@@ -74,18 +80,21 @@ instance EuclideanSphere.instContractibleSpace1 {n : ℕ}
   convert Homeomorph.contractibleSpace proj.toHomeomorphSourceTarget <;>
     exact (stereographic'_source v).symm
 
+/-- A Euclidean sphere of dimension at least one minus one point is path connected. -/
 theorem EuclideanSphere.isPathConnected_compl_singleton {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 1)) :
     IsPathConnected ({ v }ᶜ) := by
   rw [isPathConnected_iff_pathConnectedSpace]
   infer_instance
 
+/-- The inverse stereographic chart sends the origin to the antipode `-v`. -/
 lemma EuclideanSphere.stereographic'_symm_zero {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n) :
     (stereographic' n v).toPartialEquiv.symm 0 = -v := by
   ext
   simp [stereographic', stereographic, stereoInvFun]
 
+/-- A Euclidean sphere of dimension at least two minus a pair of antipodal points is path connected. -/
 theorem EuclideanSphere.isPathConnected_compl_singleton_inter_neg {n : ℕ}
     (v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 2)) :
     IsPathConnected ({ v }ᶜ ∩ {-v}ᶜ) := by
@@ -165,6 +174,9 @@ private lemma EuclideanSphere.hx {n : ℕ}
     rw [Finset.mem_insert, Finset.mem_singleton, h]
     exact Or.inr (neg_neg v).symm
 
+/-! ### Loops on higher spheres -/
+
+/-- A non-surjective loop on a sphere is homotopic to the constant loop. -/
 theorem EuclideanSphere.homotopic_refl_of_not_surjective {n : ℕ}
     {v : (fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) n} (γ : Path v v)
     (h : ¬(Function.Surjective γ)) : γ.Homotopic (Path.refl v) := by
@@ -193,6 +205,7 @@ theorem EuclideanSphere.homotopic_refl_of_not_surjective {n : ℕ}
     ⟨Subtype.val, continuous_subtype_val⟩
   exact Path.Homotopic.map ((simply_connected_iff_loops_nullhomotopic.mp h).right v' γ') incl
 
+/-- Spheres of dimension at least two are simply connected. -/
 protected theorem EuclideanSphere.simplyConnectedSpace (n : ℕ) :
     SimplyConnectedSpace
       ((fun (n : ℕ) => Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) (n + 2)) := by

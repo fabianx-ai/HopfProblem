@@ -67,10 +67,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Naturality of the small-chains comparison -/
+
+/-- A map restricting to a continuous map between specified subsets. -/
 def CoverNaturality.mapOn {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (A : Set X) (B : Set Y) (hf : Set.MapsTo f A B) : C(A, B) :=
   ⟨fun x => ⟨f x.val, hf x.property⟩, (f.continuous.comp continuous_subtype_val).subtype_mk _⟩
 
+/-- Singular chain maps are functorial under composition. -/
 theorem CoverNaturality.chainMap_comp {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) :
     SingularChains.singularChainMap f ≫ SingularChains.singularChainMap g =
@@ -78,10 +82,12 @@ theorem CoverNaturality.chainMap_comp {X Y Z : Type} [TopologicalSpace X]
   (((AlgebraicTopology.singularChainComplexFunctor (ModuleCat ℤ)).obj (ModuleCat.of ℤ ℤ)).map_comp
       (TopCat.ofHom f) (TopCat.ofHom g)).symm
 
+/-- A map respecting two subsets respects their intersection. -/
 theorem CoverNaturality.map_intersection {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') : Set.MapsTo f (U ∩ V) (U' ∩ V') := fun _ hx => ⟨hU hx.1, hV hx.2⟩
 
+/-- A cover-respecting map sends small chains to small chains. -/
 theorem CoverNaturality.inducedChain_mem_small {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') (n : ℕ) (c : SingularChains.Chains X n)
@@ -108,6 +114,7 @@ theorem CoverNaturality.inducedChain_mem_small {X Y : Type} [TopologicalSpace X]
       exact hV (hσ ⟨t, rfl⟩)
   exact hle hc
 
+/-- The induced map between small-chain complexes of two covers. -/
 def CoverNaturality.smallMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -116,6 +123,7 @@ def CoverNaturality.smallMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace
     (SingularMayerVietoris.smallInclusion U V ≫ SingularChains.singularChainMap f)
     (fun n c => inducedChain_mem_small U V U' V' f hU hV n c.val c.property)
 
+/-- The small-chain map commutes with inclusion into all chains. -/
 theorem CoverNaturality.smallMap_inclusion {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -123,6 +131,7 @@ theorem CoverNaturality.smallMap_inclusion {X Y : Type} [TopologicalSpace X]
       SingularMayerVietoris.smallInclusion U V ≫ SingularChains.singularChainMap f :=
   SingularMayerVietoris.liftToSmall_inclusion U' V' _ _
 
+/-- The small-chain map restricts to the induced map on the left summand. -/
 theorem CoverNaturality.smallMap_left {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -135,6 +144,7 @@ theorem CoverNaturality.smallMap_left {X Y : Type} [TopologicalSpace X] [Topolog
     SingularMayerVietoris.toSmallLeft_inclusion, chainMap_comp, chainMap_comp]
   rfl
 
+/-- The small-chain map restricts to the induced map on the right summand. -/
 theorem CoverNaturality.smallMap_right {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -147,6 +157,7 @@ theorem CoverNaturality.smallMap_right {X Y : Type} [TopologicalSpace X]
     SingularMayerVietoris.toSmallRight_inclusion, chainMap_comp, chainMap_comp]
   rfl
 
+/-- The intersection inclusion into the left piece is natural. -/
 theorem CoverNaturality.intersection_left {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -159,6 +170,7 @@ theorem CoverNaturality.intersection_left {X Y : Type} [TopologicalSpace X]
   rw [chainMap_comp, chainMap_comp]
   rfl
 
+/-- The intersection inclusion into the right piece is natural. -/
 theorem CoverNaturality.intersection_right {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -171,6 +183,7 @@ theorem CoverNaturality.intersection_right {X Y : Type} [TopologicalSpace X]
   rw [chainMap_comp, chainMap_comp]
   rfl
 
+/-- A cover-respecting map induces a map of Mayer–Vietoris chain sequences. -/
 def CoverNaturality.chainSequenceMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') :
@@ -205,6 +218,7 @@ def CoverNaturality.chainSequenceMap {X Y : Type} [TopologicalSpace X] [Topologi
         CategoryTheory.Limits.biprod.inr_desc, CategoryTheory.Limits.biprod.inr_desc_assoc]
       exact (smallMap_right U V U' V' f hU hV).symm
 
+/-- The small-chain connecting map is natural in cover-respecting maps. -/
 theorem CoverNaturality.smallConnecting_naturality {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') (n : ℕ) :
@@ -217,6 +231,7 @@ theorem CoverNaturality.smallConnecting_naturality {X Y : Type} [TopologicalSpac
     (SingularMayerVietoris.chainSequence_shortExact U V) (chainSequenceMap U V U' V' f hU hV)
     (SingularMayerVietoris.chainSequence_shortExact U' V') n
 
+/-- The small-homology comparison is natural in cover-respecting maps. -/
 theorem CoverNaturality.comparison_naturality {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U U')
     (hV : Set.MapsTo f V V') (n : ℕ) :
@@ -228,6 +243,7 @@ theorem CoverNaturality.comparison_naturality {X Y : Type} [TopologicalSpace X]
   rw [← SingularMayerVietoris.homologyLinearMap_comp, smallMap_inclusion,
     SingularMayerVietoris.homologyLinearMap_comp]
 
+/-- The Mayer–Vietoris connecting homomorphism is natural in cover-respecting maps. -/
 theorem CoverNaturality.connecting_naturality {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ)
@@ -259,6 +275,7 @@ theorem CoverNaturality.connecting_naturality {X Y : Type} [TopologicalSpace X]
   rw [← hcomp, SingularMayerVietoris.connectingHomomorphism_comparison]
   exact LinearMap.congr_fun (smallConnecting_naturality U V U' V' f hfU hfV n) b
 
+/-- Pointwise form of connecting-homomorphism naturality. -/
 theorem CoverNaturality.connecting_naturality_apply {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ)
@@ -271,10 +288,14 @@ theorem CoverNaturality.connecting_naturality_apply {X Y : Type} [TopologicalSpa
         (SingularMayerVietoris.singularHomologyMap f (n + 1) a) :=
   LinearMap.congr_fun (connecting_naturality U V U' V' f hfU hfV hU hV hc hU' hV' hc' n) a
 
+/-! ### Swapping the cover order -/
+
+/-- The identity exchanging the two factors of an intersection. -/
 def CoverNaturality.intersectionSwap {X : Type} [TopologicalSpace X] (U V : Set X) :
     C(↥(U ∩ V), ↥(V ∩ U)) :=
   ⟨fun x => ⟨x.val, x.property.symm⟩, continuous_subtype_val.subtype_mk _⟩
 
+/-- The small-chain complex of the swapped cover. -/
 def CoverNaturality.smallSwap {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularMayerVietoris.smallComplex U V ⟶ SingularMayerVietoris.smallComplex V U :=
   SingularMayerVietoris.liftToSmall V U (SingularMayerVietoris.smallInclusion U V)
@@ -282,11 +303,13 @@ def CoverNaturality.smallSwap {X : Type} [TopologicalSpace X] (U V : Set X) :
       change c.val ∈ SingularMayerVietoris.smallChainSubmodule V U n
       simpa only [SingularMayerVietoris.smallChainSubmodule, sup_comm] using c.property)
 
+/-- The swap commutes with inclusion into all chains. -/
 theorem CoverNaturality.smallSwap_inclusion {X : Type} [TopologicalSpace X] (U V : Set X) :
     smallSwap U V ≫ SingularMayerVietoris.smallInclusion V U =
       SingularMayerVietoris.smallInclusion U V :=
   SingularMayerVietoris.liftToSmall_inclusion V U _ _
 
+/-- The swap exchanges the left inclusion of one cover with the right of the other. -/
 theorem CoverNaturality.smallSwap_left {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularMayerVietoris.toSmallLeft U V ≫ smallSwap U V =
       SingularMayerVietoris.toSmallRight V U := by
@@ -294,6 +317,7 @@ theorem CoverNaturality.smallSwap_left {X : Type} [TopologicalSpace X] (U V : Se
   rw [CategoryTheory.Category.assoc, smallSwap_inclusion,
     SingularMayerVietoris.toSmallLeft_inclusion, SingularMayerVietoris.toSmallRight_inclusion]
 
+/-- The swap exchanges the right inclusion of one cover with the left of the other. -/
 theorem CoverNaturality.smallSwap_right {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularMayerVietoris.toSmallRight U V ≫ smallSwap U V =
       SingularMayerVietoris.toSmallLeft V U := by
@@ -301,6 +325,7 @@ theorem CoverNaturality.smallSwap_right {X : Type} [TopologicalSpace X] (U V : S
   rw [CategoryTheory.Category.assoc, smallSwap_inclusion,
     SingularMayerVietoris.toSmallRight_inclusion, SingularMayerVietoris.toSmallLeft_inclusion]
 
+/-- The intersection swap exchanges the two intersection inclusions. -/
 theorem CoverNaturality.intersectionSwap_left {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     SingularChains.singularChainMap (intersectionSwap U V) ≫
@@ -310,6 +335,7 @@ theorem CoverNaturality.intersectionSwap_left {X : Type} [TopologicalSpace X]
   rw [chainMap_comp]
   rfl
 
+/-- The intersection swap exchanges the two intersection inclusions, reversed. -/
 theorem CoverNaturality.intersectionSwap_right {X : Type} [TopologicalSpace X]
     (U V : Set X) :
     SingularChains.singularChainMap (intersectionSwap U V) ≫
@@ -319,6 +345,7 @@ theorem CoverNaturality.intersectionSwap_right {X : Type} [TopologicalSpace X]
   rw [chainMap_comp]
   rfl
 
+/-- The chain-sequence map swapping the two cover sets. -/
 def CoverNaturality.chainSequenceSwap {X : Type} [TopologicalSpace X] (U V : Set X) :
     SingularMayerVietoris.chainSequence U V ⟶ SingularMayerVietoris.chainSequence V U
     where
@@ -351,6 +378,7 @@ def CoverNaturality.chainSequenceSwap {X : Type} [TopologicalSpace X] (U V : Set
         CategoryTheory.Limits.zero_comp, add_zero, CategoryTheory.Limits.biprod.inr_desc_assoc]
       exact (smallSwap_right U V).symm
 
+/-- The swapped connecting map differs by a sign and the intersection swap. -/
 theorem CoverNaturality.smallConnecting_swap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (a : SingularMayerVietoris.SmallHomology U V (n + 1)) :
     SingularMayerVietoris.smallConnectingMap V U n
@@ -371,6 +399,7 @@ theorem CoverNaturality.smallConnecting_swap {X : Type} [TopologicalSpace X] (U 
   rw [SingularMayerVietoris.homologyLinearMap_neg] at h
   exact h.symm
 
+/-- The small-homology comparison is invariant under the cover swap. -/
 theorem CoverNaturality.comparison_swap {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (a : SingularMayerVietoris.SmallHomology U V n) :
     SingularMayerVietoris.smallHomologyComparison V U n
@@ -383,6 +412,7 @@ theorem CoverNaturality.comparison_swap {X : Type} [TopologicalSpace X] (U V : S
   rw [← LinearMap.comp_apply, ← SingularMayerVietoris.homologyLinearMap_comp, smallSwap_inclusion]
   rfl
 
+/-- Swapping the cover negates the connecting homomorphism up to the intersection swap. -/
 theorem CoverNaturality.connecting_swap {X : Type} [TopologicalSpace X] (U V : Set X)
     (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ) (hc' : V ∪ U = Set.univ) (n : ℕ)
     (a : SingularMayerVietoris.SingularHomology X (n + 1)) :
@@ -395,11 +425,15 @@ theorem CoverNaturality.connecting_swap {X : Type} [TopologicalSpace X] (U V : S
   rw [← comparison_swap U V (n + 1) b, SingularMayerVietoris.connectingHomomorphism_comparison]
   exact smallConnecting_swap U V n b
 
+/-! ### Reversing and normalized naturality -/
+
+/-- A map exchanging the two cover sets restricts to the intersections. -/
 def CoverNaturality.reversingIntersectionMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hU : Set.MapsTo f U V')
     (hV : Set.MapsTo f V U') : C(↥(U ∩ V), ↥(U' ∩ V')) :=
   mapOn f _ _ (fun _ hx => ⟨hV hx.2, hU hx.1⟩)
 
+/-- Naturality of the connecting homomorphism under a cover-reversing map. -/
 theorem CoverNaturality.connecting_reversing_naturality {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U V')
     (hfV : Set.MapsTo f V U') (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ)
@@ -415,6 +449,7 @@ theorem CoverNaturality.connecting_reversing_naturality {X Y : Type} [Topologica
   rw [← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp]
   rfl
 
+/-- The map between overlap coordinates induced through the two homotopy equivalences. -/
 def CoverNaturality.overlapCoordinateMap {X Y S T : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace S] [TopologicalSpace T] (U V : Set X) (U' V' : Set Y)
     (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : Set.MapsTo f V V') (eS : S ≃ₕ ↥(U ∩ V))
@@ -422,6 +457,7 @@ def CoverNaturality.overlapCoordinateMap {X Y S T : Type} [TopologicalSpace X]
   eT.invFun.comp
     ((mapOn f (U ∩ V) (U' ∩ V') (map_intersection U V U' V' f hfU hfV)).comp eS.toFun)
 
+/-- Connecting-map naturality transported along overlap coordinates. -/
 theorem CoverNaturality.normalized_connecting_naturality {X Y S T : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace S] [TopologicalSpace T]
     (U V : Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U')
@@ -447,15 +483,20 @@ theorem CoverNaturality.normalized_connecting_naturality {X Y S T : Type}
     SingularHomology.homotopyEquivHomologyEquiv_symm_apply]
   rfl
 
+/-! ### Restriction of maps to cover pieces -/
+
+/-- The restriction of a map to a subset mapped into a target subset. -/
 def SingularMayerVietoris.coverRestriction {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (A : Set X) (B : Set Y) (hf : Set.MapsTo f A B) : C(A, B) :=
   ⟨fun x => ⟨f x, hf x.property⟩, (f.continuous.comp continuous_subtype_val).subtype_mk _⟩
 
+/-- A cover-respecting map restricted to the cover intersection. -/
 def SingularMayerVietoris.intersectionRestriction {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') : C((U ∩ V : Set X), (U' ∩ V' : Set Y)) :=
   coverRestriction f (U ∩ V) (U' ∩ V') (fun _ hx => ⟨hfU hx.1, hfV hx.2⟩)
 
+/-- The restricted map composed with the subtype inclusion is the ambient map. -/
 theorem SingularMayerVietoris.coverRestriction_ambient {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (A : Set X) (B : Set Y) (hf : Set.MapsTo f A B) :
     SingularChains.singularChainMap (coverRestriction f A B hf) ≫
@@ -467,6 +508,7 @@ theorem SingularMayerVietoris.coverRestriction_ambient {X Y : Type} [Topological
   have h₂ := F.map_comp (TopCat.ofHom (subtypeInclusion A)) (TopCat.ofHom f)
   exact h₁.symm.trans h₂
 
+/-- The left intersection inclusion commutes with the restrictions. -/
 theorem SingularMayerVietoris.coverRestriction_intersection_left {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') :
@@ -482,6 +524,7 @@ theorem SingularMayerVietoris.coverRestriction_intersection_left {X Y : Type} [T
       (TopCat.ofHom (ContinuousMap.inclusion (Set.inter_subset_left : U' ∩ V' ⊆ U')))
   exact h₁.symm.trans h₂
 
+/-- The right intersection inclusion commutes with the restrictions. -/
 theorem SingularMayerVietoris.coverRestriction_intersection_right {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y)
     (hfU : Set.MapsTo f U U') (hfV : Set.MapsTo f V V') :
@@ -497,6 +540,7 @@ theorem SingularMayerVietoris.coverRestriction_intersection_right {X Y : Type}
       (TopCat.ofHom (ContinuousMap.inclusion (Set.inter_subset_right : U' ∩ V' ⊆ V')))
   exact h₁.symm.trans h₂
 
+/-- A cover-respecting map preserves small chains. -/
 theorem SingularMayerVietoris.inducedChain_mem_small_of_mapsTo {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') (n : ℕ) (c : SingularChains.Chains X n)
@@ -522,12 +566,14 @@ theorem SingularMayerVietoris.inducedChain_mem_small_of_mapsTo {X Y : Type} [Top
       exact hfV (hσ ⟨s, rfl⟩)
   exact hle hc
 
+/-- The induced small-chain map of a cover-respecting map. -/
 def SingularMayerVietoris.smallMapOfMapsTo {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') : smallComplex U V ⟶ smallComplex U' V' :=
   liftToSmall U' V' (smallInclusion U V ≫ SingularChains.singularChainMap f)
     (fun n c => inducedChain_mem_small_of_mapsTo f U V U' V' hfU hfV n c.1 c.2)
 
+/-- The small-chain map commutes with inclusion into all chains. -/
 @[simp]
 theorem SingularMayerVietoris.smallMapOfMapsTo_inclusion {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
@@ -536,6 +582,7 @@ theorem SingularMayerVietoris.smallMapOfMapsTo_inclusion {X Y : Type} [Topologic
       smallInclusion U V ≫ SingularChains.singularChainMap f :=
   liftToSmall_inclusion U' V' _ _
 
+/-- The small-chain map restricts to the left summand map. -/
 theorem SingularMayerVietoris.toSmallLeft_smallMapOfMapsTo {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') :
@@ -566,6 +613,7 @@ theorem SingularMayerVietoris.toSmallLeft_smallMapOfMapsTo {X Y : Type} [Topolog
           smallInclusion U' V' :=
       (CategoryTheory.Category.assoc _ _ _).symm
 
+/-- The small-chain map restricts to the right summand map. -/
 theorem SingularMayerVietoris.toSmallRight_smallMapOfMapsTo {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') :
@@ -596,12 +644,16 @@ theorem SingularMayerVietoris.toSmallRight_smallMapOfMapsTo {X Y : Type} [Topolo
           smallInclusion U' V' :=
       (CategoryTheory.Category.assoc _ _ _).symm
 
+/-! ### Chain-sequence naturality -/
+
+/-- The induced map on the middle (pushout) complex of two covers. -/
 def SingularMayerVietoris.coverMiddleMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') : middleComplex U V ⟶ middleComplex U' V' :=
   CategoryTheory.Limits.biprod.map (SingularChains.singularChainMap (coverRestriction f U U' hfU))
     (SingularChains.singularChainMap (coverRestriction f V V' hfV))
 
+/-- The left map commutes with the middle-complex map. -/
 theorem SingularMayerVietoris.intersectionRestriction_leftMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') :
@@ -624,6 +676,7 @@ theorem SingularMayerVietoris.intersectionRestriction_leftMap {X Y : Type} [Topo
       CategoryTheory.Preadditive.comp_neg, CategoryTheory.Preadditive.neg_comp]
     exact congrArg Neg.neg (coverRestriction_intersection_right f U V U' V' hfU hfV).symm
 
+/-- The right map commutes with the middle-complex map. -/
 theorem SingularMayerVietoris.coverMiddleMap_rightMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') :
@@ -644,6 +697,7 @@ theorem SingularMayerVietoris.coverMiddleMap_rightMap {X Y : Type} [TopologicalS
       CategoryTheory.Limits.biprod.inr_desc_assoc, CategoryTheory.Limits.biprod.inr_desc]
     exact (toSmallRight_smallMapOfMapsTo f U V U' V' hfU hfV).symm
 
+/-- A cover-respecting map induces a map of chain sequences. -/
 def SingularMayerVietoris.chainSequenceMapOfMapsTo {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') : chainSequence U V ⟶ chainSequence U' V'
@@ -654,6 +708,7 @@ def SingularMayerVietoris.chainSequenceMapOfMapsTo {X Y : Type} [TopologicalSpac
   comm₁₂ := intersectionRestriction_leftMap f U V U' V' hfU hfV
   comm₂₃ := coverMiddleMap_rightMap f U V U' V' hfU hfV
 
+/-- The small-homology comparison is natural along any commuting chain map. -/
 theorem SingularMayerVietoris.smallHomologyComparison_naturality_of_comm {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y)
     (g : smallComplex U V ⟶ smallComplex U' V')
@@ -665,6 +720,7 @@ theorem SingularMayerVietoris.smallHomologyComparison_naturality_of_comm {X Y : 
   rw [homologyLinearMap_comp, homologyLinearMap_comp] at h
   exact LinearMap.congr_fun h a
 
+/-- The connecting homomorphism is natural along any chain-sequence map covering `f`. -/
 theorem SingularMayerVietoris.connectingHomomorphism_naturality_of_sequenceMap {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y)
     (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (hU' : IsOpen U')
@@ -696,6 +752,7 @@ theorem SingularMayerVietoris.connectingHomomorphism_naturality_of_sequenceMap {
       (smallHomologyComparison_naturality_of_comm f U V U' V' φ.τ₃ hφ (n + 1) b)
   exact hδ.trans (hc.trans hn)
 
+/-- The Mayer–Vietoris connecting homomorphism is natural in cover-respecting maps. -/
 theorem SingularMayerVietoris.connectingHomomorphism_naturality {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y) (hfU : Set.MapsTo f U U')
     (hfV : Set.MapsTo f V V') (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
@@ -707,6 +764,7 @@ theorem SingularMayerVietoris.connectingHomomorphism_naturality {X Y : Type} [To
     (chainSequenceMapOfMapsTo f U V U' V' hfU hfV)
     (smallMapOfMapsTo_inclusion f U V U' V' hfU hfV) n
 
+/-- Pointwise form of connecting-homomorphism naturality. -/
 theorem SingularMayerVietoris.connectingHomomorphism_naturality_apply {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (U V : Set X) (U' V' : Set Y)
     (hfU : Set.MapsTo f U U') (hfV : Set.MapsTo f V V') (hU : IsOpen U) (hV : IsOpen V)
