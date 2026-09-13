@@ -567,7 +567,7 @@ theorem FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy {X : Type*}
   have hx : x ∈ D.chart i := by simpa using hp 0
   have hy : y ∈ D.chart i := by simpa using hp 1
   unfold localValue
-  rw [D.closePath_homotopic i ⟨FundamentalGroupVanKampen.homotopyIn p q hx hy hp hq H hH⟩]
+  rw [D.closePath_homotopic i ⟨FundamentalGroup.VanKampen.homotopyIn p q hx hy hp hq H hH⟩]
 
 /-- The overlap path: the path through `U ∩ V` witnessing compatibility of the two local values along the cover. -/
 def FundamentalGroup.VanKampen.TwoOpenCover.overlapPath {X : Type*} [TopologicalSpace X]
