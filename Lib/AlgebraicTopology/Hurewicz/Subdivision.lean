@@ -884,6 +884,7 @@ theorem Hurewicz.NativeSubdivision.permuteCubeLoop_additiveClass {N : Type*} {X 
     rw [permuteCubeLoop_mul, permuteCubeLoop_swap_additiveClass _ i j hij, ih]
     simp [Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hij]
 
+/-- Below `i`'s value, `Fin.succAbove` preserves the `< k` prefix test. -/
 private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff_mo1973_8180 {n : ℕ}
     (i : Fin (n + 1)) (j : Fin n) (k : ℕ) (h : k ≤ i.val) : (i.succAbove j).val < k ↔ j.val < k :=
   by
@@ -895,6 +896,8 @@ private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff_mo1973_8180 {n 
     simp only [Fin.val_succ]
     omega
 
+/-- At or above `i`'s value, `Fin.succAbove j < k + 1` iff `j < k`: the skip at `i` is
+absorbed by the `+1`. -/
 private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_succ_iff_mo1973_8181 {n : ℕ}
     (i : Fin (n + 1)) (j : Fin n) (k : ℕ) (h : i.val ≤ k) :
     (i.succAbove j).val < k + 1 ↔ j.val < k := by
