@@ -336,8 +336,8 @@ supplemented by the C16 working-tree supplement:
 | `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 2651 ≤ baseline 2651 | `C16-census.log` |
 | `git diff --check` | clean | — |
 
-The comparator remains environment-blocked (`landrun` not on `PATH`, owner-dependent;
-not retried — no provisioning authorized). Per-file rename equivalence is recorded by
+The comparator remains environment-blocked (`landrun` not on `PATH`; not retried).
+Per-file rename equivalence is recorded by
 `C16-rename-equivalence.{py,log}`: all 17 `Lib/AlgebraicTopology/Hurewicz/*.lean` files
 equal `git show f9a24ba:` with the token replaced. Ledgers:
 `Lib/docs/C14-NATURALITY.md`, `Lib/docs/C15-DISKCUBE.md`, `Lib/docs/C16-NAMES.md`.
@@ -345,17 +345,25 @@ equal `git show f9a24ba:` with the token replaced. Ledgers:
 A fresh independent-session review (`Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md`)
 returned a **conditional GO** for the C14–C16 implementation and **NO-GO** for an
 unconditional "all gates passed / lane complete" claim. Its merge conditions:
-corrected docs/evidence paths are **done** (this pass); inclusion of the C15/C16 files
-is **done** (`c170fc8`/`bc215bc`; this review archive rides with the final docs
-commit). Owner disposition for the retrospective interface-probe chronology and the
-blocked Comparator verdict remain **outstanding owner gates** — no owner approval is
-recorded or claimed here.
+corrected docs/evidence paths are **done**; inclusion of the C15/C16 files
+is **done** (`c170fc8`/`bc215bc`). The two remaining conditions were put to the
+owner and answered on 2026-09-13 (`Lib/reviews/INTEGRATION-3.md` §5.1):
+
+- **Retrospective interface-probe chronology — owner-approved exception.** The
+  C14–C16 interface probes were written after implementation; the independent
+  review and the merged full-chain build stand in for the Stage-2 order this once.
+- **Comparator — deferred by owner.** No run is required now; the gate stays open
+  in the tree until publication (`landrun` is not installed). The lane does not
+  run the Comparator itself.
 
 Final expected statuses: C14 APIs (`f9a24ba`), the C15 move (`c170fc8`), and the C16
-scoped rename (`bc215bc`) are complete and committed. Global shared-dependency module
+scoped rename (`bc215bc`) are complete and committed, merged into
+`lib/textbook-extraction` at `814bcfa` and verified on the merged head
+(`Lib/reviews/INTEGRATION-3.md` §2). Global shared-dependency module
 conversion and finer helper partition are future packaging, not silently done; global
-`Mathoverflow1973` root removal is GLM's lane. The Comparator cannot proceed without a
-real `landrun` (provisioning approval still outstanding); the original Stage-2
+`Mathoverflow1973` root removal is GLM's lane. The original Stage-2
 reviewer remains unknown (recovered review only).
 
-No push has been performed. Attribution was not changed through git configuration.
+No push has been performed. Seat identity is set repo-locally to
+`kimi <kimi@users.noreply.github.com>` per `NEXT-STEPS-KIMI.md` item 1; earlier
+commits through `cfcd2d8` carry the owner's identity with a Devin trailer.
