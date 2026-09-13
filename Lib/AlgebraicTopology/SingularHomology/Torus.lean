@@ -9,6 +9,7 @@ public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+public import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 
 /-!
 # Homology of the product torus
@@ -288,3 +289,123 @@ theorem PeriodTorusHigherHomology.productTorusTopClass_succ_boundary (n : ℕ) :
       productTorusTopClass n :=
   congrArg Prod.snd (productTorusTopClass_succ_coordinates n)
 
+def PeriodTorusHigherHomology.torusMatrixLinearMap {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
+    ProductTorus n →ₗ[ℤ] ProductTorus m
+    where
+  toFun x i := ∑ j, A i j • x j
+  map_add' x
+    y := by
+    ext i
+    simp only [Pi.add_apply, smul_add, Finset.sum_add_distrib]
+  map_smul' r
+    x := by
+    ext i
+    change (∑ j, A i j • (r • x j)) = r • ∑ j, A i j • x j
+    rw [Finset.smul_sum]
+    apply Finset.sum_congr rfl
+    intro j _
+    exact SMulCommClass.smul_comm (A i j) r (x j)
+
+theorem PeriodTorusHigherHomology.torusMatrixLinearMap_continuous {m n : ℕ}
+    (A : Matrix (Fin m) (Fin n) ℤ) : Continuous (torusMatrixLinearMap A) := by
+  apply continuous_pi
+  intro i
+  change Continuous (fun x : ProductTorus n => ∑ j, A i j • x j)
+  exact continuous_finsetSum Finset.univ (fun j _ => (continuous_apply j).zsmul (A i j))
+
+def PeriodTorusHigherHomology.torusMatrixMap {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
+    C(ProductTorus n, ProductTorus m) :=
+  ⟨torusMatrixLinearMap A, torusMatrixLinearMap_continuous A⟩
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusMatrixMap_apply {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
+    (x : ProductTorus n) (i : Fin m) : torusMatrixMap A x i = ∑ j, A i j • x j :=
+  rfl
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusMatrixMap_one (n : ℕ) :
+    torusMatrixMap (1 : Matrix (Fin n) (Fin n) ℤ) = ContinuousMap.id (ProductTorus n) := by
+  apply ContinuousMap.ext
+  intro x
+  ext i
+  simp [torusMatrixMap_apply, Matrix.one_apply]
+
+theorem PeriodTorusHigherHomology.torusMatrixMap_mul {m n r : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
+    (B : Matrix (Fin n) (Fin r) ℤ) :
+    torusMatrixMap (A * B) = (torusMatrixMap A).comp (torusMatrixMap B) := by
+  apply ContinuousMap.ext
+  intro x
+  ext i
+  change (∑ j, (A * B) i j • x j) = ∑ k, A i k • ∑ j, B k j • x j
+  simp only [Matrix.mul_apply, Finset.sum_smul, SemigroupAction.mul_smul, Finset.smul_sum]
+  exact Finset.sum_comm
+
+def PeriodTorusHigherHomology.coordinateCircleMap {n : ℕ} (v : Fin n → ℤ) :
+    C((CircleTopology.Circle), ProductTorus n)
+    where
+  toFun z i := v i • z
+  continuous_toFun := continuous_pi fun i => continuous_id.zsmul (v i)
+
+@[simp]
+theorem PeriodTorusHigherHomology.coordinateCircleMap_apply {n : ℕ} (v : Fin n → ℤ)
+    (z : (CircleTopology.Circle)) (i : Fin n) :
+    coordinateCircleMap v z i = v i • z :=
+  rfl
+
+@[simp]
+theorem PeriodTorusHigherHomology.coordinateCircleMap_zero {n : ℕ} (v : Fin n → ℤ) :
+    coordinateCircleMap v 0 = 0 := by
+  ext i
+  exact smul_zero (v i)
+
+theorem PeriodTorusHigherHomology.coordinateCircleMap_add {n : ℕ} (v : Fin n → ℤ)
+    (x y : (CircleTopology.Circle)) :
+    coordinateCircleMap v (x + y) = coordinateCircleMap v x + coordinateCircleMap v y := by
+  ext i
+  exact smul_add (v i) x y
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusMatrixMap_zero {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
+    torusMatrixMap A 0 = 0 :=
+  (torusMatrixLinearMap A).map_zero
+
+def PeriodTorusHigherHomology.torusHeadCircleMap (n : ℕ) :
+    C((CircleTopology.Circle), ProductTorus (n + 1)) :=
+  coordinateCircleMap (Pi.single (0 : Fin (n + 1)) 1)
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusHeadCircleMap_apply (n : ℕ)
+    (z : (CircleTopology.Circle)) :
+    torusHeadCircleMap n z = Fin.cons z 0 := by
+  ext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simp [torusHeadCircleMap, coordinateCircleMap_apply]
+  · simp [torusHeadCircleMap, coordinateCircleMap_apply]
+
+theorem PeriodTorusHigherHomology.productTorusTopClass_succ_cross (n : ℕ) :
+    productTorusTopClass (n + 1) =
+      SingularMayerVietoris.singularHomologyMap ((productTorusSuccHomeomorph n).symm : C(_, _))
+        (n + 1) (positiveCircleCross (ProductTorus n) n (productTorusTopClass n)) := by
+  apply (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)).injective
+  apply (circleProductHomologyEquiv (ProductTorus n) n).injective
+  rw [productTorusTopClass_succ_coordinates]
+  change
+    (0, productTorusTopClass n) =
+      circleProductHomologyEquiv (ProductTorus n) n
+        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
+          ((homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)).symm
+            (positiveCircleCross (ProductTorus n) n (productTorusTopClass n))))
+  rw [LinearEquiv.apply_symm_apply, circleProductHomologyEquiv_positiveCircleCross]
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusMatrixMap_zero_source {r : ℕ}
+    (A : Matrix (Fin r) (Fin 0) ℤ) : torusMatrixMap A = ContinuousMap.const (ProductTorus 0) 0 := by
+  apply ContinuousMap.ext
+  intro x
+  funext i
+  simp
+
+@[simp]
+theorem PeriodTorusHigherHomology.torusMatrixMap_add {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
+    (x y : ProductTorus n) : torusMatrixMap A (x + y) = torusMatrixMap A x + torusMatrixMap A y :=
+  (torusMatrixLinearMap A).map_add x y
