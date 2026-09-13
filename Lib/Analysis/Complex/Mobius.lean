@@ -49,17 +49,23 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Biholomorphisms of the Riemann sphere -/
+
+/-- A holomorphic bijection of the Riemann sphere with holomorphic inverse. -/
 abbrev RiemannSphere.Biholomorph :=
   Diffeomorph (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) RiemannSphere RiemannSphere ω
 
+/-- The reciprocal map `z ↦ 1/z` on the sphere. -/
 def RiemannSphere.reciprocal (p : RiemannSphere) : RiemannSphere :=
   p.elim ((0 : ℂ) : RiemannSphere) infinityParametrization
 
+/-- The reciprocal computes `1/z` on finite points. -/
 @[simp]
 theorem RiemannSphere.reciprocal_coe (z : ℂ) :
     reciprocal (z : RiemannSphere) = infinityParametrization z :=
   rfl
 
+/-- The reciprocal swaps `0` and `∞`. -/
 @[simp]
 theorem RiemannSphere.reciprocal_infinityParametrization (z : ℂ) :
     reciprocal (infinityParametrization z) = (z : RiemannSphere) := by
@@ -70,6 +76,7 @@ theorem RiemannSphere.reciprocal_infinityParametrization (z : ℂ) :
   · rw [infinityParametrization_of_ne hz, reciprocal_coe,
       infinityParametrization_of_ne (inv_ne_zero hz), inv_inv]
 
+/-- The reciprocal is an involution. -/
 theorem RiemannSphere.reciprocal_involutive : Function.Involutive reciprocal := by
   have hinfty : reciprocal (OnePoint.infty) = ((0 : ℂ) : RiemannSphere) := rfl
   intro p
@@ -77,6 +84,7 @@ theorem RiemannSphere.reciprocal_involutive : Function.Involutive reciprocal := 
   | infty => simp [hinfty]
   | coe z => simp []
 
+/-- The reciprocal is holomorphic. -/
 theorem RiemannSphere.reciprocal_holomorphic :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ω reciprocal := by
   apply standardCharts.contMDiff_of_comp_affineMaps (modelWithCornersSelf ℂ ℂ)
@@ -89,29 +97,35 @@ theorem RiemannSphere.reciprocal_holomorphic :
   rw [he]
   exact standardCharts.affineMap_holomorphic (!b)
 
+/-- The reciprocal as a biholomorphism. -/
 def RiemannSphere.reciprocalBiholomorph : Biholomorph
     where
   toEquiv := reciprocal_involutive.toPerm reciprocal
   contMDiff_toFun := reciprocal_holomorphic
   contMDiff_invFun := reciprocal_holomorphic
 
+/-- The reciprocal biholomorphism computes `1/z`. -/
 @[simp]
 theorem RiemannSphere.reciprocalBiholomorph_apply (p : RiemannSphere) :
     reciprocalBiholomorph p = reciprocal p :=
   rfl
 
+/-- The complex affine homeomorphism `z ↦ az + b`. -/
 def RiemannSphere.affineComplexHomeomorph (a b : ℂ) (ha : a ≠ 0) : ℂ ≃ₜ ℂ :=
   (Homeomorph.mulLeft₀ a ha).trans (Homeomorph.addRight b)
 
+/-- The affine map `z ↦ az + b` on the sphere. -/
 def RiemannSphere.affineHomeomorph (a b : ℂ) (ha : a ≠ 0) : RiemannSphere ≃ₜ RiemannSphere :=
   (affineComplexHomeomorph a b ha).onePointCongr
 
+/-- The affine map computes `az + b` on finite points. -/
 @[simp]
 theorem RiemannSphere.affineHomeomorph_coe (a b z : ℂ) (ha : a ≠ 0) :
     RiemannSphere.affineHomeomorph a b ha (z : RiemannSphere) =
       ((a * z + b : ℂ) : RiemannSphere) :=
   rfl
 
+/-- The affine map fixes `∞`. -/
 theorem RiemannSphere.affineHomeomorph_infinityParametrization (a b z : ℂ) (ha : a ≠ 0)
     (hz : a + b * z ≠ 0) :
     RiemannSphere.affineHomeomorph a b ha (infinityParametrization z) =
@@ -128,6 +142,7 @@ theorem RiemannSphere.affineHomeomorph_infinityParametrization (a b z : ℂ) (ha
     congr 1
     field_simp
 
+/-- The affine map is holomorphic. -/
 theorem RiemannSphere.affineHomeomorph_holomorphic (a b : ℂ) (ha : a ≠ 0) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ω
       (RiemannSphere.affineHomeomorph a b ha) := by
@@ -166,6 +181,7 @@ theorem RiemannSphere.affineHomeomorph_holomorphic (a b : ℂ) (ha : a ≠ 0) :
       change RiemannSphere.affineHomeomorph a b ha (infinityParametrization w) = _
       rw [infinityParametrization_of_ne hw, affineHomeomorph_coe]
 
+/-- The inverse affine map is affine. -/
 theorem RiemannSphere.affineHomeomorph_symm_eq (a b : ℂ) (ha : a ≠ 0) :
     ⇑(RiemannSphere.affineHomeomorph a b ha).symm =
       RiemannSphere.affineHomeomorph a⁻¹ (-a⁻¹ * b) (inv_ne_zero ha) := by
@@ -178,6 +194,7 @@ theorem RiemannSphere.affineHomeomorph_symm_eq (a b : ℂ) (ha : a ≠ 0) :
     congr 1
     ring
 
+/-- The affine map as a biholomorphism. -/
 def RiemannSphere.affineBiholomorph (a b : ℂ) (ha : a ≠ 0) : Biholomorph
     where
   toEquiv := (RiemannSphere.affineHomeomorph a b ha).toEquiv
@@ -189,25 +206,30 @@ def RiemannSphere.affineBiholomorph (a b : ℂ) (ha : a ≠ 0) : Biholomorph
     rw [affineHomeomorph_symm_eq]
     exact affineHomeomorph_holomorphic a⁻¹ (-a⁻¹ * b) (inv_ne_zero ha)
 
+/-- The affine biholomorphism computes `az + b`. -/
 @[simp]
 theorem RiemannSphere.affineBiholomorph_coe (a b z : ℂ) (ha : a ≠ 0) :
     affineBiholomorph a b ha (z : RiemannSphere) = ((a * z + b : ℂ) : RiemannSphere) :=
   rfl
 
+/-- The cross-ratio scale factor is nonzero. -/
 theorem RiemannSphere.crossRatioScale_ne_zero (a b c : ℂ) (hab : a ≠ b) (hbc : b ≠ c) :
     (b - c) / (b - a) ≠ 0 :=
   div_ne_zero (sub_ne_zero.mpr hbc) (sub_ne_zero.mpr hab.symm)
 
+/-- The cross-ratio residue factor is nonzero. -/
 theorem RiemannSphere.crossRatioResidue_ne_zero (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) : (c - a) * ((b - c) / (b - a)) ≠ 0 :=
   mul_ne_zero (sub_ne_zero.mpr hac.symm) (crossRatioScale_ne_zero a b c hab hbc)
 
+/-- The biholomorphism sending three points to `0, 1, ∞`. -/
 def RiemannSphere.threePointBiholomorph (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     Biholomorph :=
   ((affineBiholomorph 1 (-c) one_ne_zero).trans reciprocalBiholomorph).trans
     (affineBiholomorph ((c - a) * ((b - c) / (b - a))) ((b - c) / (b - a))
       (crossRatioResidue_ne_zero a b c hab hac hbc))
 
+/-- The three-point biholomorphism computes the cross ratio. -/
 theorem RiemannSphere.threePointBiholomorph_coe (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) (z : ℂ) (hz : z ≠ c) :
     threePointBiholomorph a b c hab hac hbc (z : RiemannSphere) =
@@ -222,6 +244,7 @@ theorem RiemannSphere.threePointBiholomorph_coe (a b c : ℂ) (hab : a ≠ b) (h
   field_simp
   ring
 
+/-- The three-point map sends the third point to `1`. -/
 @[simp]
 theorem RiemannSphere.threePointBiholomorph_third (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) :
@@ -238,6 +261,7 @@ theorem RiemannSphere.threePointBiholomorph_third (a b c : ℂ) (hab : a ≠ b) 
       _
   simp [hinfty]
 
+/-- The three-point map sends its pole point to `∞`. -/
 @[simp]
 theorem RiemannSphere.threePointBiholomorph_infty (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) :
@@ -255,28 +279,37 @@ theorem RiemannSphere.threePointBiholomorph_infty (a b c : ℂ) (hab : a ≠ b) 
       _
   simp [hinfty, hreciprocal]
 
+/-! ### The cross ratio and the Möbius circle -/
+
+/-- The cross ratio of four points. -/
 def RiemannSphere.MobiusCircle.crossRatio (a b c z : ℂ) : ℂ :=
   ((z - a) * (b - c)) / ((z - c) * (b - a))
 
+/-- The Möbius circle coefficient. -/
 def RiemannSphere.MobiusCircle.coefficient (a b c : ℂ) : ℂ :=
   (b - c) / (b - a)
 
+/-- The orientation factor of a Möbius circle. -/
 def RiemannSphere.MobiusCircle.orientation (a b c : ℂ) : ℝ :=
   -(coefficient a b c).im
 
+/-- The cross ratio equals the coefficient times the unit factor. -/
 theorem RiemannSphere.MobiusCircle.crossRatio_eq_coefficient (a b c z : ℂ) :
     crossRatio a b c z = coefficient a b c * ((z - a) / (z - c)) := by
   simp only [crossRatio, coefficient, div_eq_mul_inv, mul_inv_rev]
   ring
 
+/-- The circle coefficient is nonzero. -/
 theorem RiemannSphere.MobiusCircle.coefficient_ne_zero {a b c : ℂ} (hba : b ≠ a) (hbc : b ≠ c) :
     coefficient a b c ≠ 0 :=
   div_ne_zero (sub_ne_zero.mpr hbc) (sub_ne_zero.mpr hba)
 
+/-- The unit factor is nonzero. -/
 theorem RiemannSphere.MobiusCircle.unit_ne_zero {z : ℂ} (hz : ‖z‖ = 1) : z ≠ 0 := by
   intro h
   simp [h] at hz
 
+/-- The coefficient times the conjugate identity. -/
 theorem RiemannSphere.MobiusCircle.coefficient_mul_eq_conj_mul {a b c : ℂ} (ha : ‖a‖ = 1)
     (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hba : b ≠ a) :
     coefficient a b c * a = conj (coefficient a b c) * c := by
@@ -289,6 +322,7 @@ theorem RiemannSphere.MobiusCircle.coefficient_mul_eq_conj_mul {a b c : ℂ} (ha
   field_simp
   ring
 
+/-- The orientation factor is nonzero. -/
 theorem RiemannSphere.MobiusCircle.orientation_ne_zero {a b c : ℂ} (ha : ‖a‖ = 1) (hb : ‖b‖ = 1)
     (hc : ‖c‖ = 1) (hba : b ≠ a) (hbc : b ≠ c) (hac : a ≠ c) : orientation a b c ≠ 0 := by
   intro h
@@ -297,6 +331,7 @@ theorem RiemannSphere.MobiusCircle.orientation_ne_zero {a b c : ℂ} (ha : ‖a�
   rw [Complex.conj_eq_iff_im.mpr him] at hd
   exact hac (mul_left_cancel₀ (coefficient_ne_zero hba hbc) hd)
 
+/-- The imaginary part of the circle numerator. -/
 theorem RiemannSphere.MobiusCircle.numerator_im {a c d : ℂ} (hc : ‖c‖ = 1)
     (hd : d * a = conj d * c) (z : ℂ) :
     (d * (z - a) * conj (z - c)).im = d.im * (Complex.normSq z - 1) := by
@@ -320,6 +355,7 @@ theorem RiemannSphere.MobiusCircle.numerator_im {a c d : ℂ} (hc : ‖c‖ = 1)
     Complex.conj_im]
   ring
 
+/-- The imaginary part of the cross ratio. -/
 theorem RiemannSphere.MobiusCircle.crossRatio_im {a b c : ℂ} (ha : ‖a‖ = 1) (hb : ‖b‖ = 1)
     (hc : ‖c‖ = 1) (hba : b ≠ a) (z : ℂ) :
     (crossRatio a b c z).im = orientation a b c * (1 - ‖z‖ ^ 2) / Complex.normSq (z - c) := by
@@ -334,6 +370,7 @@ theorem RiemannSphere.MobiusCircle.crossRatio_im {a b c : ℂ} (ha : ‖a‖ = 1
   unfold orientation
   ring
 
+/-- The oriented imaginary part of the cross ratio. -/
 theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im {a b c : ℂ} (ha : ‖a‖ = 1)
     (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hba : b ≠ a) (z : ℂ) :
     orientation a b c * (crossRatio a b c z).im =
@@ -341,6 +378,7 @@ theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im {a b c : ℂ} (
   rw [crossRatio_im ha hb hc hba]
   ring
 
+/-- Positivity of the oriented imaginary part. -/
 theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im_pos_iff {a b c z : ℂ}
     (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hba : b ≠ a) (hbc : b ≠ c) (hac : a ≠ c)
     (hzc : z ≠ c) : 0 < orientation a b c * (crossRatio a b c z).im ↔ ‖z‖ < 1 := by
@@ -349,6 +387,7 @@ theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im_pos_iff {a b c 
   rw [orientation_mul_crossRatio_im ha hb hc hba, div_pos_iff_of_pos_right hd,
     mul_pos_iff_of_pos_left hK, sub_pos, sq_lt_one_iff₀ (norm_nonneg z)]
 
+/-- Negativity of the oriented imaginary part. -/
 theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im_neg_iff {a b c z : ℂ}
     (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hba : b ≠ a) (hbc : b ≠ c) (hac : a ≠ c)
     (hzc : z ≠ c) : orientation a b c * (crossRatio a b c z).im < 0 ↔ 1 < ‖z‖ := by
@@ -362,37 +401,47 @@ theorem RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im_neg_iff {a b c 
   rw [← neg_pos, heq, div_pos_iff_of_pos_right hd, mul_pos_iff_of_pos_left hK, sub_pos,
     one_lt_sq_iff₀ (norm_nonneg z)]
 
+/-- The oriented imaginary part of the coefficient. -/
 theorem RiemannSphere.MobiusCircle.orientation_mul_coefficient_im (a b c : ℂ) :
     orientation a b c * (coefficient a b c).im = -(orientation a b c ^ 2) := by
   unfold orientation
   ring
 
+/-- The oriented coefficient's imaginary part is negative. -/
 theorem RiemannSphere.MobiusCircle.orientation_mul_coefficient_im_neg {a b c : ℂ} (ha : ‖a‖ = 1)
     (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hba : b ≠ a) (hbc : b ≠ c) (hac : a ≠ c) :
     orientation a b c * (coefficient a b c).im < 0 := by
   rw [orientation_mul_coefficient_im]
   exact neg_neg_of_pos (sq_pos_of_ne_zero (orientation_ne_zero ha hb hc hba hbc hac))
 
+/-- The cross ratio at zero. -/
 theorem RiemannSphere.MobiusCircle.crossRatio_at_zero (a b c : ℂ) : crossRatio a b c a = 0 := by
   simp [crossRatio]
 
+/-- The cross ratio at one. -/
 theorem RiemannSphere.MobiusCircle.crossRatio_at_one {a b c : ℂ} (hba : b ≠ a) (hbc : b ≠ c) :
     crossRatio a b c b = 1 := by
   unfold crossRatio
   rw [mul_comm (b - c) (b - a)]
   exact div_self (mul_ne_zero (sub_ne_zero.mpr hba) (sub_ne_zero.mpr hbc))
 
+/-! ### The finite image and the disc-to-half-plane map -/
+
+/-- The finite image of a sphere subset. -/
 def RiemannSphere.finiteImage (s : Set ℂ) : Set RiemannSphere :=
   ((↑) : ℂ → RiemannSphere) '' s
 
+/-- A finite point lies in the finite image. -/
 @[simp]
 theorem RiemannSphere.coe_mem_finiteImage_iff (s : Set ℂ) (z : ℂ) :
     (z : RiemannSphere) ∈ finiteImage s ↔ z ∈ s := by simp [finiteImage]
 
+/-- `∞` is not in the finite image. -/
 @[simp]
 theorem RiemannSphere.infty_not_mem_finiteImage (s : Set ℂ) :
     ((OnePoint.infty) : RiemannSphere) ∉ finiteImage s := by simp [finiteImage]
 
+/-- The cross ratio is holomorphic on the disc. -/
 theorem RiemannSphere.crossRatio_holomorphicOn_disc {a b c : ℂ} (hab : a ≠ b) (hc : ‖c‖ = 1) :
     ContDiffOn ℂ ω (MobiusCircle.crossRatio a b c) {z : ℂ | ‖z‖ < 1} := by
   intro z hz
@@ -408,20 +457,25 @@ theorem RiemannSphere.crossRatio_holomorphicOn_disc {a b c : ℂ} (hab : a ≠ b
     (contDiffAt_id.sub contDiffAt_const).mul contDiffAt_const
   exact (hn.div hd hden).contDiffWithinAt
 
+/-- The closed disc with the pole removed. -/
 def RiemannSphere.closedDiscWithoutPole (c : ℂ) : Set ℂ :=
   {z | ‖z‖ ≤ 1 ∧ z ≠ c}
 
+/-- The closed oriented half-plane of the Möbius circle. -/
 def RiemannSphere.closedOrientedHalfPlane (k : ℝ) : Set ℂ :=
   {w | 0 ≤ k * w.im}
 
+/-- The finite image of a sphere set is homeomorphic to it. -/
 def RiemannSphere.finiteImageHomeomorph (s : Set ℂ) : s ≃ₜ finiteImage s :=
   (OnePoint.isOpenEmbedding_coe (X := ℂ)).isEmbedding.homeomorphImage s
 
+/-- The finite-image homeomorphism inverse computes the coercion. -/
 @[simp]
 theorem RiemannSphere.finiteImageHomeomorph_symm_apply_coe (s : Set ℂ) (p : finiteImage s) :
     (((finiteImageHomeomorph s).symm p : ℂ) : RiemannSphere) = (p : RiemannSphere) := by
   exact congrArg Subtype.val ((finiteImageHomeomorph s).apply_symm_apply p)
 
+/-- Nonnegativity of the oriented imaginary part. -/
 theorem RiemannSphere.orientation_mul_crossRatio_im_nonneg_iff {a b c : ℂ} (hab : a ≠ b)
     (hac : a ≠ c) (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) {z : ℂ}
     (hzc : z ≠ c) :
@@ -430,6 +484,7 @@ theorem RiemannSphere.orientation_mul_crossRatio_im_nonneg_iff {a b c : ℂ} (ha
     not_congr (MobiusCircle.orientation_mul_crossRatio_im_neg_iff ha hb hc hab.symm hbc hac hzc)
   simpa only [not_lt] using h
 
+/-- The three-point map lands in the closed half-plane exactly on the circle side. -/
 theorem RiemannSphere.threePointBiholomorph_mem_closedHalfPlane_iff {a b c : ℂ} (hab : a ≠ b)
     (hac : a ≠ c) (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (p : RiemannSphere) :
     threePointBiholomorph a b c hab hac hbc p ∈
@@ -450,6 +505,7 @@ theorem RiemannSphere.threePointBiholomorph_mem_closedHalfPlane_iff {a b c : ℂ
         Set.mem_ofPred_eq, and_iff_left hzc]
       exact orientation_mul_crossRatio_im_nonneg_iff hab hac hbc ha hb hc hzc
 
+/-- The closed disc is sphere-homeomorphic to the closed half-plane. -/
 def RiemannSphere.closedDiscHalfPlaneSphereHomeomorph {a b c : ℂ} (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) :
     finiteImage (closedDiscWithoutPole c) ≃ₜ
@@ -457,6 +513,7 @@ def RiemannSphere.closedDiscHalfPlaneSphereHomeomorph {a b c : ℂ} (hab : a ≠
   (threePointBiholomorph a b c hab hac hbc).toHomeomorph.subtype
     (fun p => (threePointBiholomorph_mem_closedHalfPlane_iff hab hac hbc ha hb hc p).symm)
 
+/-- The closed disc is homeomorphic to the closed half-plane. -/
 def RiemannSphere.closedDiscHalfPlaneHomeomorph {a b c : ℂ} (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) :
     closedDiscWithoutPole c ≃ₜ closedOrientedHalfPlane (MobiusCircle.orientation a b c) :=
@@ -464,6 +521,7 @@ def RiemannSphere.closedDiscHalfPlaneHomeomorph {a b c : ℂ} (hab : a ≠ b) (h
         (closedDiscHalfPlaneSphereHomeomorph hab hac hbc ha hb hc)).trans
     (finiteImageHomeomorph (closedOrientedHalfPlane (MobiusCircle.orientation a b c))).symm
 
+/-- The disc–half-plane homeomorphism computes through the sphere map. -/
 theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_sphere {a b c : ℂ} (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (z : closedDiscWithoutPole c) :
     (((closedDiscHalfPlaneHomeomorph hab hac hbc ha hb hc z :
@@ -477,6 +535,7 @@ theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_sphere {a b c : ℂ} (hab : 
       (closedDiscHalfPlaneSphereHomeomorph hab hac hbc ha hb hc
         (finiteImageHomeomorph (closedDiscWithoutPole c) z))
 
+/-- The disc–half-plane homeomorphism computes the cross ratio. -/
 @[simp]
 theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_apply {a b c : ℂ} (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (z : closedDiscWithoutPole c) :
@@ -487,6 +546,7 @@ theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_apply {a b c : ℂ} (hab : a
     threePointBiholomorph_coe a b c hab hac hbc z z.property.2]
   rfl
 
+/-- The strict half-plane corresponds to the open disc. -/
 theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_strict_iff {a b c : ℂ} (hab : a ≠ b)
     (hac : a ≠ c) (hbc : b ≠ c) (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1)
     (z : closedDiscWithoutPole c) :
