@@ -2536,39 +2536,6 @@ def CuspCentralHomology.smallRadiusActualFibreCollapseMap (C : ℂ → Matrix (F
     prescribedActualFibreCollapse_continuous_of_smallRadius C r δ hr hδ hδr hC hδ1 hRC hRF η hηδ t
       ht htη
 
-def PeriodTorusHigherHomology.torusMatrixLinearMap {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
-    ProductTorus n →ₗ[ℤ] ProductTorus m
-    where
-  toFun x i := ∑ j, A i j • x j
-  map_add' x
-    y := by
-    ext i
-    simp only [Pi.add_apply, smul_add, Finset.sum_add_distrib]
-  map_smul' r
-    x := by
-    ext i
-    change (∑ j, A i j • (r • x j)) = r • ∑ j, A i j • x j
-    rw [Finset.smul_sum]
-    apply Finset.sum_congr rfl
-    intro j _
-    exact SMulCommClass.smul_comm (A i j) r (x j)
-
-theorem PeriodTorusHigherHomology.torusMatrixLinearMap_continuous {m n : ℕ}
-    (A : Matrix (Fin m) (Fin n) ℤ) : Continuous (torusMatrixLinearMap A) := by
-  apply continuous_pi
-  intro i
-  change Continuous (fun x : ProductTorus n => ∑ j, A i j • x j)
-  exact continuous_finsetSum Finset.univ (fun j _ => (continuous_apply j).zsmul (A i j))
-
-def PeriodTorusHigherHomology.torusMatrixMap {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
-    C(ProductTorus n, ProductTorus m) :=
-  ⟨torusMatrixLinearMap A, torusMatrixLinearMap_continuous A⟩
-
-@[simp]
-theorem PeriodTorusHigherHomology.torusMatrixMap_apply {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
-    (x : ProductTorus n) (i : Fin m) : torusMatrixMap A x i = ∑ j, A i j • x j :=
-  rfl
-
 theorem PeriodTorusHigherHomology.torusMatrixMap_coordinateProjection {m n : ℕ}
     (A : Matrix (Fin m) (Fin n) ℤ) (x : Fin n → ℝ) :
     torusMatrixMap A (coordinateProjection n x) =
@@ -2582,24 +2549,6 @@ theorem PeriodTorusHigherHomology.torusMatrixMap_coordinateProjection {m n : ℕ
   calc
     _ = ((∑ j, A i j • x j : ℝ) : AddCircle (1 : ℝ)) := h.symm
     _ = _ := congrArg (fun y : ℝ => (y : AddCircle (1 : ℝ))) (by simp only [zsmul_eq_mul])
-
-@[simp]
-theorem PeriodTorusHigherHomology.torusMatrixMap_one (n : ℕ) :
-    torusMatrixMap (1 : Matrix (Fin n) (Fin n) ℤ) = ContinuousMap.id (ProductTorus n) := by
-  apply ContinuousMap.ext
-  intro x
-  ext i
-  simp [torusMatrixMap_apply, Matrix.one_apply]
-
-theorem PeriodTorusHigherHomology.torusMatrixMap_mul {m n r : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
-    (B : Matrix (Fin n) (Fin r) ℤ) :
-    torusMatrixMap (A * B) = (torusMatrixMap A).comp (torusMatrixMap B) := by
-  apply ContinuousMap.ext
-  intro x
-  ext i
-  change (∑ j, (A * B) i j • x j) = ∑ k, A i k • ∑ j, B k j • x j
-  simp only [Matrix.mul_apply, Finset.sum_smul, SemigroupAction.mul_smul, Finset.smul_sum]
-  exact Finset.sum_comm
 
 def CuspSpecialization.sourceProductCoordinateHomeomorph :
     (ToricSpace.CompactFibreTorus × PeriodTorusHigherHomology.ProductTorus 2) ≃ₜ
@@ -3230,30 +3179,6 @@ theorem PeriodTorusHigherHomology.periodTorusCircle_inducedHomology_periodLoop (
   rw [FirstHurewicz.inducedHomology_loopHomologyClass, periodTorusCircleHomeomorph_periodLoop]
   rfl
 
-def PeriodTorusHigherHomology.coordinateCircleMap {n : ℕ} (v : Fin n → ℤ) :
-    C((PeriodTorusHigherHomology.CircleTopology.Circle), ProductTorus n)
-    where
-  toFun z i := v i • z
-  continuous_toFun := continuous_pi fun i => continuous_id.zsmul (v i)
-
-@[simp]
-theorem PeriodTorusHigherHomology.coordinateCircleMap_apply {n : ℕ} (v : Fin n → ℤ)
-    (z : (PeriodTorusHigherHomology.CircleTopology.Circle)) (i : Fin n) :
-    coordinateCircleMap v z i = v i • z :=
-  rfl
-
-@[simp]
-theorem PeriodTorusHigherHomology.coordinateCircleMap_zero {n : ℕ} (v : Fin n → ℤ) :
-    coordinateCircleMap v 0 = 0 := by
-  ext i
-  exact smul_zero (v i)
-
-theorem PeriodTorusHigherHomology.coordinateCircleMap_add {n : ℕ} (v : Fin n → ℤ)
-    (x y : (PeriodTorusHigherHomology.CircleTopology.Circle)) :
-    coordinateCircleMap v (x + y) = coordinateCircleMap v x + coordinateCircleMap v y := by
-  ext i
-  exact smul_add (v i) x y
-
 theorem PeriodTorusHigherHomology.coordinateCircleMap_positiveLoop_apply {n : ℕ} (v : Fin n → ℤ)
     (t : unitInterval) :
     coordinateCircleMap v (CirclePaths.positiveLoop t) = coordinatePeriodLoop n v t := by
@@ -3290,11 +3215,6 @@ theorem PeriodTorusHigherHomology.torusMatrixMap_coordinatePeriodLoop_apply {m n
   ext i
   exact ((Int.castRingHom ℝ).map_mulVec A v i).symm
 
-@[simp]
-theorem PeriodTorusHigherHomology.torusMatrixMap_zero {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ) :
-    torusMatrixMap A 0 = 0 :=
-  (torusMatrixLinearMap A).map_zero
-
 theorem PeriodTorusHigherHomology.torusMatrixMap_coordinatePeriodLoop {m n : ℕ}
     (A : Matrix (Fin m) (Fin n) ℤ) (v : Fin n → ℤ) :
     (coordinatePeriodLoop n v).map (torusMatrixMap A).continuous =
@@ -3310,19 +3230,6 @@ theorem PeriodTorusHigherHomology.torusMatrixMap_coordinatePeriodHomology {m n :
       FirstHurewicz.loopHomologyClass (coordinatePeriodLoop m (A *ᵥ v)) := by
   rw [FirstHurewicz.inducedHomology_loopHomologyClass, torusMatrixMap_coordinatePeriodLoop]
   rfl
-
-def PeriodTorusHigherHomology.torusHeadCircleMap (n : ℕ) :
-    C((PeriodTorusHigherHomology.CircleTopology.Circle), ProductTorus (n + 1)) :=
-  coordinateCircleMap (Pi.single (0 : Fin (n + 1)) 1)
-
-@[simp]
-theorem PeriodTorusHigherHomology.torusHeadCircleMap_apply (n : ℕ)
-    (z : (PeriodTorusHigherHomology.CircleTopology.Circle)) :
-    torusHeadCircleMap n z = Fin.cons z 0 := by
-  ext i
-  refine Fin.cases ?_ (fun j => ?_) i
-  · simp [torusHeadCircleMap, coordinateCircleMap_apply]
-  · simp [torusHeadCircleMap, coordinateCircleMap_apply]
 
 
 theorem PeriodTorusHigherHomology.productTorusSucc_inverse_eq_add (n : ℕ) :
@@ -3359,21 +3266,6 @@ theorem PeriodTorusHigherHomology.torusHeadCircleMap_positiveHomology (n : ℕ) 
         (FirstHurewicz.loopHomologyClass CirclePaths.positiveLoop) =
       FirstHurewicz.loopHomologyClass (coordinatePeriodLoop (n + 1) (Pi.single 0 1)) :=
   coordinateCircleMap_positiveHomology (Pi.single (0 : Fin (n + 1)) 1)
-
-theorem PeriodTorusHigherHomology.productTorusTopClass_succ_cross (n : ℕ) :
-    productTorusTopClass (n + 1) =
-      SingularMayerVietoris.singularHomologyMap ((productTorusSuccHomeomorph n).symm : C(_, _))
-        (n + 1) (positiveCircleCross (ProductTorus n) n (productTorusTopClass n)) := by
-  apply (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)).injective
-  apply (circleProductHomologyEquiv (ProductTorus n) n).injective
-  rw [productTorusTopClass_succ_coordinates]
-  change
-    (0, productTorusTopClass n) =
-      circleProductHomologyEquiv (ProductTorus n) n
-        (homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)
-          ((homeomorphHomologyEquiv (productTorusSuccHomeomorph n) (n + 1)).symm
-            (positiveCircleCross (ProductTorus n) n (productTorusTopClass n))))
-  rw [LinearEquiv.apply_symm_apply, circleProductHomologyEquiv_positiveCircleCross]
 
 theorem PeriodTorusHigherHomology.productTorusTopClass_succ_product (n : ℕ) :
     productTorusTopClass (n + 1) =
@@ -3611,14 +3503,6 @@ theorem PeriodTorusHigherHomology.torusMatrixMap_takeHeadMatrix {r n : ℕ}
   · simp [takeHeadMatrix, Fin.sum_univ_succ]
   · simp [takeHeadMatrix, Fin.sum_univ_succ]
 
-@[simp]
-theorem PeriodTorusHigherHomology.torusMatrixMap_zero_source {r : ℕ}
-    (A : Matrix (Fin r) (Fin 0) ℤ) : torusMatrixMap A = ContinuousMap.const (ProductTorus 0) 0 := by
-  apply ContinuousMap.ext
-  intro x
-  funext i
-  simp
-
 
 theorem PeriodTorusHigherHomology.coordinateTorusMap_eq_torusMatrixMap (r n : ℕ)
     (i : Fin (r.choose n)) :
@@ -3697,11 +3581,6 @@ def PeriodTorusHigherHomology.realTorusH4Equiv :
     SingularMayerVietoris.SingularHomology RealTorus₄ 4 ≃ₗ[ℤ] ℤ :=
   (realTorusHomologyEquiv 4).trans (integerBinomialZeroEquiv 4).symm
 
-
-@[simp]
-theorem PeriodTorusHigherHomology.torusMatrixMap_add {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
-    (x y : ProductTorus n) : torusMatrixMap A (x + y) = torusMatrixMap A x + torusMatrixMap A y :=
-  (torusMatrixLinearMap A).map_add x y
 
 @[simp]
 theorem PeriodTorusHigherHomology.coordinateTorusMap_add (r n : ℕ) (i : Fin (r.choose n))
