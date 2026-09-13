@@ -62,12 +62,16 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+/-! ### Linear transverse chart corrections -/
+
+/-- A chart composed with a linear transverse correction on the `V` factor. -/
 def MorseCancellation.linearTransverseChart {V E M : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (C : V ≃L[ℝ] V) (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞) :
     PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞ :=
   ((ContinuousLinearEquiv.refl ℝ ℝ).prodCongr C).toDiffeomorph.toPartialDiffeomorph.trans Φ
 
+/-- The linear transverse chart fixes the axis. -/
 theorem MorseCancellation.linearTransverseChart_axis {V E M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (C : V ≃L[ℝ] V) (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
@@ -75,6 +79,7 @@ theorem MorseCancellation.linearTransverseChart_axis {V E M : Type*} [NormedAddC
   change Φ (t, C 0) = Φ (t, 0)
   rw [map_zero]
 
+/-- Axis points lie in the corrected source exactly in the original. -/
 theorem MorseCancellation.linearTransverseChart_axis_source {V E M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (C : V ≃L[ℝ] V) (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
@@ -82,6 +87,7 @@ theorem MorseCancellation.linearTransverseChart_axis_source {V E M : Type*} [Nor
   change (t, (0 : V)) ∈ Set.univ ∧ (t, C 0) ∈ Φ.source ↔ _
   simp only [Set.mem_univ, map_zero, true_and]
 
+/-- The transverse block of a composite factors out the linear correction. -/
 theorem MorseCancellation.transverseBlock_comp_linear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (C : V ≃L[ℝ] V) (L : (ℝ × V) →L[ℝ] (ℝ × V)) :
     AxisCoordinates.transverseBlock
@@ -90,6 +96,7 @@ theorem MorseCancellation.transverseBlock_comp_linear {V : Type*} [NormedAddComm
   ext z
   rfl
 
+/-- The transition derivative determinant picks up the transverse block of `C`. -/
 theorem MorseCancellation.det_transition_linearTransverseChart {V E M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] (C : V ≃L[ℝ] V) (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
@@ -113,12 +120,14 @@ theorem MorseCancellation.det_transition_linearTransverseChart {V E M : Type*} [
   rw [heq, fderiv_comp _ hre P.differentiableAt, P.fderiv, hP, transverseBlock_comp_linear]
   exact LinearMap.det_comp _ _
 
+/-- An invertible linear map has nonzero determinant. -/
 theorem MorseCancellation.det_ne_zero_of_isInvertible {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (T : V →L[ℝ] V) (hT : T.IsInvertible) : T.toLinearMap.det ≠ 0 := by
   obtain ⟨e, he⟩ := hT
   rw [← he]
   exact e.toLinearEquiv.isUnit_det'.ne_zero
 
+/-- Endpoint sheets can be given compatibly oriented charts on the arc. -/
 theorem MorseCancellation.exists_compatible_sheet_endpoint_orientation {A B E M ι : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [Finite ι] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -161,6 +170,7 @@ theorem MorseCancellation.exists_compatible_sheet_endpoint_orientation {A B E M 
   rw [hone]
   exact zero_lt_one
 
+/-- An embedded arc with injective differential admits a tubular sheet chart. -/
 theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] [CompactSpace M] {a : ℝ → M} (ha : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, E) ∞ a)
@@ -261,6 +271,7 @@ theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGrou
     ⟨R, ε, hε, Φ, hprod, fun t => (haxis t).trans (hΨaxis t), hgl, hgr, fun z hz =>
       hΞO (htarget hz).1⟩
 
+/-- An open tube avoiding a closed set recognizes the sheet away from it. -/
 theorem MorseCancellation.exists_open_tube_sheet_recognition {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -294,6 +305,7 @@ theorem MorseCancellation.exists_open_tube_sheet_recognition {V E H M : Type*} [
       · rintro ⟨h, -⟩
         exact (hzA.2 h).elim
 
+/-- A tube can be restricted cleanly around a compact axis segment. -/
 theorem MorseCancellation.exists_clean_axis_tube_restriction {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -322,6 +334,7 @@ theorem MorseCancellation.exists_clean_axis_tube_restriction {V E H M : Type*} [
     ⟨ε, hε, Ψ, hprod, fun _ => rfl, fun _ hz => hz.1, fun z hz => hSU z hz.2.1, fun z hz =>
       hTW z hz.2.2⟩
 
+/-- A tube around the unit axis contains a coordinate box. -/
 theorem MorseCancellation.exists_tube_support_box {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -355,15 +368,20 @@ theorem MorseCancellation.exists_tube_support_box {V E H M : Type*} [NormedAddCo
       Φ.open_source hwideAxis
   exact ⟨-a, 1 + b, r, by linarith, by linarith, hr, hprod⟩
 
+/-! ### Regular height coordinates -/
+
+/-- The map `(t, z) ↦ (F(t, z), z)` keeping the transverse coordinate. -/
 def RegularHeightCoordinates.heightMap {V : Type*} (F : ℝ × V → ℝ) (p : ℝ × V) : ℝ × V :=
   (F p, p.2)
 
+/-- A linear map on `ℝ × V` splits into scalar and transverse parts. -/
 theorem RegularHeightCoordinates.linear_decomposition {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (s : ℝ) (z : V) : L (s, z) = s * L (1, 0) + L (0, z) := by
   have he : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
   rw [he, map_add, map_smul]
   rfl
 
+/-- A height-preserving triangular map with nonzero axis component is bijective. -/
 theorem RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     Function.Bijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)) := by
@@ -383,22 +401,26 @@ theorem RegularHeightCoordinates.triangular_bijective {V : Type*} [NormedAddComm
       ring
     · rfl
 
+/-- The triangular map as a continuous linear equivalence. -/
 def RegularHeightCoordinates.triangularEquiv {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : ℝ × V →L[ℝ] ℝ) (hL : L (1, 0) ≠ 0) :
     (ℝ × V) ≃L[ℝ] (ℝ × V) :=
   (LinearEquiv.ofBijective (L.prod (ContinuousLinearMap.snd ℝ ℝ V)).toLinearMap
       (triangular_bijective L hL)).toContinuousLinearEquiv
 
+/-- The height map is smooth when `F` is. -/
 theorem RegularHeightCoordinates.contDiff_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) : ContDiff ℝ ∞ (heightMap F) :=
   hF.prodMk contDiff_snd
 
+/-- The derivative of the height map in block form. -/
 theorem RegularHeightCoordinates.fderiv_heightMap {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (p : ℝ × V) :
     fderiv ℝ (heightMap F) p = (fderiv ℝ F p).prod (ContinuousLinearMap.snd ℝ ℝ V) :=
   (((hF.differentiable (by simp) p).hasFDerivAt).prodMk
       (ContinuousLinearMap.snd ℝ ℝ V).hasFDerivAt).fderiv
 
+/-- The height map is a local diffeomorphism where its time derivative is nonzero. -/
 theorem RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {F : ℝ × V → ℝ}
     (hF : ContDiff ℝ ∞ F) {p : ℝ × V} (hreg : fderiv ℝ F p (1, 0) ≠ 0) :
@@ -412,20 +434,24 @@ theorem RegularHeightCoordinates.heightMap_localDiffeomorph {V : Type*}
       (contDiff_heightMap hF).contDiffOn hinv
   exact ⟨Φ, hp, fun _ _ => congrFun hΦ.symm _⟩
 
+/-- The height with a longitudinal displacement added. -/
 def RegularHeightCoordinates.displacedHeight {V : Type*} (u : ℝ × V → ℝ) (p : ℝ × V) : ℝ :=
   p.1 + u p
 
+/-- The displaced height is smooth. -/
 theorem RegularHeightCoordinates.contDiff_displacedHeight {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u) :
     ContDiff ℝ ∞ (displacedHeight u) :=
   contDiff_fst.add hu
 
+/-- The scalar time derivative of a height function. -/
 theorem RegularHeightCoordinates.scalar_derivative {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F) (s : ℝ) (z : V) :
     HasDerivAt (fun t : ℝ => F (t, z)) (fderiv ℝ F (s, z) (1, 0)) s :=
   ((hF.differentiable (by simp) (s, z)).hasFDerivAt).comp_hasDerivAt s
     ((hasDerivAt_id s).prodMk (hasDerivAt_const s z))
 
+/-- Positive time derivative makes the height map injective. -/
 theorem RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {F : ℝ × V → ℝ} (hF : ContDiff ℝ ∞ F)
     (hpos : ∀ p, 0 < fderiv ℝ F p (1, 0)) : Function.Injective (heightMap F) := by
@@ -437,6 +463,7 @@ theorem RegularHeightCoordinates.heightMap_injective_of_positive {V : Type*}
   have hst : s = t := (hmono z).injective (congrArg Prod.fst he)
   exact Prod.ext hst rfl
 
+/-- Bounded slope makes the height map surjective. -/
 theorem RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
     [NormedAddCommGroup V] {u : ℝ × V → ℝ} (hu : Continuous u) (C : ℝ) (hC : 0 ≤ C)
     (hbound : ∀ p, |u p| ≤ C) : Function.Surjective (heightMap (displacedHeight u)) := by
@@ -457,6 +484,7 @@ theorem RegularHeightCoordinates.heightMap_surjective_of_bounded {V : Type*}
   obtain ⟨s, _, he⟩ := intermediate_value_Icc hab hs.continuousOn ⟨hlo, hhi⟩
   exact ⟨(s, z), Prod.ext he rfl⟩
 
+/-- Compactly supported displacement keeps the height map surjective. -/
 theorem RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) : Function.Surjective (heightMap (displacedHeight u)) := by
@@ -466,6 +494,7 @@ theorem RegularHeightCoordinates.heightMap_surjective_of_compactSupport {V : Typ
     heightMap_surjective_of_bounded hu.continuous C hC0
       (fun p => by simpa only [Real.norm_eq_abs] using hC _ ⟨p, rfl⟩)
 
+/-- The longitudinal displacement as a diffeomorphism of `ℝ × V`. -/
 def RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] {u : ℝ × V → ℝ} (hu : ContDiff ℝ ∞ u)
     (hc : HasCompactSupport u) (hpos : ∀ p, 0 < fderiv ℝ (displacedHeight u) p (1, 0)) :
@@ -477,15 +506,20 @@ def RegularHeightCoordinates.longitudinalDiffeomorph {V : Type*} [NormedAddCommG
     hloc.diffeomorphOfBijective
       ⟨heightMap_injective_of_positive hs hpos, heightMap_surjective_of_compactSupport hu hc⟩
 
+/-! ### Interval translations -/
+
+/-- A compactly supported translation of the interval. -/
 def MorseRearrangement.IntervalTranslation (a b x y : ℝ) : Prop :=
   ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
     (∀ z, z ∉ Set.Ioo a b → D z = z) ∧ D =ᶠ[𝓝 x] fun z => z + (y - x)
 
+/-- The translation germ computes the shifted value. -/
 theorem MorseRearrangement.translation_germ_apply (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞)
     {x y : ℝ} (hD : D =ᶠ[𝓝 x] fun z => z + (y - x)) : D x = y := by
   have h := hD.self_of_nhds
   linarith
 
+/-- The identity interval translation. -/
 theorem MorseRearrangement.intervalTranslation_refl (a b x : ℝ) :
     IntervalTranslation a b x x := by
   refine ⟨Diffeomorph.refl 𝓘(ℝ, ℝ) ℝ ∞, fun _ _ => rfl, Filter.Eventually.of_forall ?_⟩
@@ -493,6 +527,7 @@ theorem MorseRearrangement.intervalTranslation_refl (a b x : ℝ) :
   change z = z + (x - x)
   ring
 
+/-- The inverse of an interval translation. -/
 theorem MorseRearrangement.intervalTranslation_symm {a b x y : ℝ}
     (h : IntervalTranslation a b x y) : IntervalTranslation a b y x := by
   obtain ⟨D, hfix, hgerm⟩ := h
@@ -508,6 +543,7 @@ theorem MorseRearrangement.intervalTranslation_symm {a b x y : ℝ}
     rw [D.apply_symm_apply] at hz
     linarith
 
+/-- Composition of interval translations. -/
 theorem MorseRearrangement.intervalTranslation_trans {a b x y z : ℝ}
     (hxy : IntervalTranslation a b x y) (hyz : IntervalTranslation a b y z) :
     IntervalTranslation a b x z := by
@@ -525,6 +561,7 @@ theorem MorseRearrangement.intervalTranslation_trans {a b x y z : ℝ}
     rw [hwG, hwD]
     ring
 
+/-- A local value extends to a supported interval translation. -/
 theorem MorseRearrangement.exists_local_interval_translation {a b x : ℝ}
     (hx : x ∈ Set.Ioo a b) : ∃ ε, 0 < ε ∧ ∀ y, Dist.dist y x < ε → IntervalTranslation a b x y := by
   obtain ⟨r, hr, hsub⟩ := Metric.mem_nhds_iff.mp (isOpen_Ioo.mem_nhds hx)
@@ -550,6 +587,7 @@ theorem MorseRearrangement.exists_local_interval_translation {a b x : ℝ}
   filter_upwards [Metric.ball_mem_nhds x β.rIn_pos] with z hz
   rw [hD, β.one_of_mem_closedBall (Metric.ball_subset_closedBall hz), one_smul]
 
+/-- An interval translation supported on a compact interval. -/
 theorem MorseRearrangement.exists_supported_interval_translation {a b x y : ℝ}
     (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) : IntervalTranslation a b x y := by
   let U := Set.Ioo a b
@@ -570,6 +608,7 @@ theorem MorseRearrangement.exists_supported_interval_translation {a b x y : ℝ}
   have hfinish : P ⟨y, hy⟩ := heq ▸ hstart
   exact hfinish
 
+/-- A diffeomorphism fixed outside an interval is strictly monotone on it. -/
 theorem MorseRearrangement.strictMono_of_fixed_exterior
     (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) {a b : ℝ} (hfix : ∀ z, z ∉ Set.Ioo a b → D z = z) :
     StrictMono D := by
@@ -579,6 +618,7 @@ theorem MorseRearrangement.strictMono_of_fixed_exterior
     rw [hfix b (fun h => (lt_irrefl b) h.2), hfix (b + 1) (fun h => by linarith [h.2])] at hanti
     linarith
 
+/-- A strictly monotone diffeomorphism has positive derivative. -/
 theorem MorseRearrangement.deriv_pos_of_strictMono_diffeomorph
     (D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) (hm : StrictMono D) (x : ℝ) : 0 < deriv D x := by
   have hd := (D.mdifferentiable (by simp) x).differentiableAt.hasDerivAt
@@ -593,6 +633,7 @@ theorem MorseRearrangement.deriv_pos_of_strictMono_diffeomorph
     norm_num at hh
   exact lt_of_le_of_ne hm.monotone.deriv_nonneg (Ne.symm hn)
 
+/-- An increasing supported translation of the interval. -/
 theorem MorseRearrangement.exists_increasing_interval_translation {a b x y : ℝ}
     (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) :
     ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
@@ -603,6 +644,7 @@ theorem MorseRearrangement.exists_increasing_interval_translation {a b x y : ℝ
   exact
     ⟨D, hfix, hgerm, translation_germ_apply D hgerm, hm, deriv_pos_of_strictMono_diffeomorph D hm⟩
 
+/-- An increasing translation with prescribed exterior germs. -/
 theorem MorseRearrangement.exists_increasing_interval_translation_with_exterior_germs
     {a b x y : ℝ} (hx : x ∈ Set.Ioo a b) (hy : y ∈ Set.Ioo a b) :
     ∃ D : Diffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
@@ -622,20 +664,27 @@ theorem MorseRearrangement.exists_increasing_interval_translation_with_exterior_
     exact hfix w (fun h => hw ⟨h.1.le, h.2.le⟩)
   exact ⟨D, fun z hz => (hout z hz).self_of_nhds, hgerm, hpoint, hmono, hderiv, hout⟩
 
+/-! ### Blending heights -/
+
+/-- The convex blend of two height functions along a cutoff. -/
 def MorseRearrangement.blendHeight (θ : ℝ) (P Q : ℝ → ℝ) (s : ℝ) : ℝ :=
   θ * P s + (1 - θ) * Q s
 
+/-- At cutoff zero the blend is the first height. -/
 theorem MorseRearrangement.blendHeight_zero (P Q : ℝ → ℝ) (s : ℝ) :
     blendHeight 0 P Q s = Q s := by simp [blendHeight]
 
+/-- At cutoff one the blend is the second height. -/
 theorem MorseRearrangement.blendHeight_one (P Q : ℝ → ℝ) (s : ℝ) :
     blendHeight 1 P Q s = P s := by simp [blendHeight]
 
+/-- Where the heights agree the blend is fixed. -/
 theorem MorseRearrangement.blendHeight_fixed {P Q : ℝ → ℝ} {s : ℝ} (hP : P s = s)
     (hQ : Q s = s) (θ : ℝ) : blendHeight θ P Q s = s := by
   rw [blendHeight, hP, hQ]
   ring
 
+/-- The blended slope stays positive when both slopes are. -/
 theorem MorseRearrangement.positive_blended_slope {θ a b : ℝ} (hθ : θ ∈ Set.Icc 0 1)
     (ha : 0 < a) (hb : 0 < b) : 0 < θ * a + (1 - θ) * b := by
   by_cases hzero : θ = 0
@@ -644,6 +693,7 @@ theorem MorseRearrangement.positive_blended_slope {θ a b : ℝ} (hθ : θ ∈ S
       add_pos_of_pos_of_nonneg (mul_pos (lt_of_le_of_ne hθ.1 (Ne.symm hzero)) ha)
         (mul_nonneg (sub_nonneg.mpr hθ.2) hb.le)
 
+/-- The blended height has the blended derivative. -/
 theorem MorseRearrangement.hasDerivAt_blended_height {f θ P Q : ℝ → ℝ} {t f' p' q' : ℝ}
     (hf : HasDerivAt f f' t) (hθ : HasDerivAt θ 0 t) (hP : HasDerivAt P p' (f t))
     (hQ : HasDerivAt Q q' (f t)) :
@@ -653,19 +703,25 @@ theorem MorseRearrangement.hasDerivAt_blended_height {f θ P Q : ℝ → ℝ} {t
   simp only [Pi.sub_apply]
   ring
 
+/-! ### Longitudinal blending -/
+
+/-- The longitudinal displacement of a blended height. -/
 def MorseCancellation.longitudinalBlendDisplacement {V : Type*} (D : ℝ → ℝ) (β : V → ℝ) (η : ℝ → ℝ)
     (t : ℝ) (p : ℝ × V) : ℝ :=
   η t * β p.2 * (D p.1 - p.1)
 
+/-- The longitudinal blend diffeomorphism of the tube. -/
 def MorseCancellation.longitudinalBlend {V : Type*} (D : ℝ → ℝ) (β : V → ℝ) (η : ℝ → ℝ)
     (p : ℝ × (ℝ × V)) : ℝ × V :=
   (p.2.1 + longitudinalBlendDisplacement D β η p.1 p.2, p.2.2)
 
+/-- The blend displacement is smooth. -/
 theorem MorseCancellation.longitudinalBlendDisplacement_smooth {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {D : ℝ → ℝ} {β : V → ℝ} (η : ℝ → ℝ) (hD : ContDiff ℝ ∞ D)
     (hβ : ContDiff ℝ ∞ β) (t : ℝ) : ContDiff ℝ ∞ (longitudinalBlendDisplacement D β η t) :=
   (contDiff_const.mul (hβ.comp contDiff_snd)).mul ((hD.comp contDiff_fst).sub contDiff_fst)
 
+/-- The longitudinal blend is smooth. -/
 theorem MorseCancellation.longitudinalBlend_smooth {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {D : ℝ → ℝ} {β : V → ℝ} {η : ℝ → ℝ} (hD : ContDiff ℝ ∞ D) (hβ : ContDiff ℝ ∞ β)
     (hη : ContDiff ℝ ∞ η) :
@@ -682,12 +738,14 @@ theorem MorseCancellation.longitudinalBlend_smooth {V : Type*} [NormedAddCommGro
             ((hD.contMDiff.comp hs').sub hs'))).prodMk_space
       hz'
 
+/-- At cutoff zero the blend is the identity. -/
 theorem MorseCancellation.longitudinalBlend_zero {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {D : ℝ → ℝ} {β : V → ℝ} {η : ℝ → ℝ} (hη : η 0 = 0) (p : ℝ × V) :
     longitudinalBlend D β η (0, p) = p := by
   simp only [longitudinalBlend, longitudinalBlendDisplacement, hη, MulZeroClass.zero_mul,
     add_zero]
 
+/-- The displacement vanishes outside the support. -/
 theorem MorseCancellation.longitudinalBlendDisplacement_zero_outside {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {D : ℝ → ℝ} {β : V → ℝ} (η : ℝ → ℝ) {l u : ℝ}
     (hfix : ∀ s ∉ Set.Ioo l u, D s = s) (t : ℝ) (p : ℝ × V) (hp : p ∉ Set.Icc l u ×ˢ tsupport β) :
@@ -698,12 +756,14 @@ theorem MorseCancellation.longitudinalBlendDisplacement_zero_outside {V : Type*}
   · have hd := hfix p.1 (fun h => hs ⟨h.1.le, h.2.le⟩)
     simp only [longitudinalBlendDisplacement, hd, sub_self, MulZeroClass.mul_zero]
 
+/-- The blend is fixed outside the support. -/
 theorem MorseCancellation.longitudinalBlend_fixed_outside {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {D : ℝ → ℝ} {β : V → ℝ} (η : ℝ → ℝ) {l u : ℝ}
     (hfix : ∀ s ∉ Set.Ioo l u, D s = s) (t : ℝ) (p : ℝ × V) (hp : p ∉ Set.Icc l u ×ˢ tsupport β) :
     longitudinalBlend D β η (t, p) = p := by
   rw [longitudinalBlend, longitudinalBlendDisplacement_zero_outside η hfix t p hp, add_zero]
 
+/-- The blend has positive longitudinal derivative. -/
 theorem MorseCancellation.longitudinalBlend_derivative_positive {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {D : ℝ → ℝ} {β : V → ℝ} {η : ℝ → ℝ} (hD : ContDiff ℝ ∞ D)
     (hβ : ContDiff ℝ ∞ β) (hDpos : ∀ s, 0 < deriv D s) (hβrange : ∀ z, β z ∈ Set.Icc (0 : ℝ) 1)
@@ -733,6 +793,7 @@ theorem MorseCancellation.longitudinalBlend_derivative_positive {V : Type*} [Nor
   have hpos := MorseRearrangement.positive_blended_slope hweight (hDpos p.1) zero_lt_one
   nlinarith
 
+/-- The blend preserves the transverse slices. -/
 theorem MorseCancellation.longitudinalBlend_slices {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] {D : ℝ → ℝ} {β : V → ℝ} {η : ℝ → ℝ} {l u : ℝ} (hD : ContDiff ℝ ∞ D)
     (hβ : ContDiff ℝ ∞ β) (hc : HasCompactSupport β) (hDpos : ∀ s, 0 < deriv D s)
@@ -749,10 +810,12 @@ theorem MorseCancellation.longitudinalBlend_slices {V : Type*} [NormedAddCommGro
         (longitudinalBlend_derivative_positive hD hβ hDpos hβrange hηrange t),
       fun _ => rfl⟩
 
+/-- The exponential glue `exp(-1/t)` is differentiable. -/
 theorem MorseCancellation.expNegInvGlue_hasDerivAt (t : ℝ) :
     HasDerivAt expNegInvGlue (t⁻¹ ^ 2 * expNegInvGlue t) t := by
   simpa using expNegInvGlue.hasDerivAt_polynomial_eval_inv_mul (1 : Polynomial ℝ) t
 
+/-- The smooth transition has positive derivative on the interior. -/
 theorem MorseCancellation.smoothTransition_deriv_pos {t : ℝ} (ht : t ∈ Set.Ioo (0 : ℝ) 1) :
     0 < deriv Real.smoothTransition t := by
   let a := expNegInvGlue t
@@ -780,6 +843,7 @@ theorem MorseCancellation.smoothTransition_deriv_pos {t : ℝ} (ht : t ∈ Set.I
     exact add_pos (mul_pos ha' hb) (mul_pos ha hb')
   · exact sq_pos_of_pos (add_pos ha hb)
 
+/-- The smooth transition is strictly monotone on its domain. -/
 theorem MorseCancellation.smoothTransition_strictMonoOn :
     StrictMonoOn Real.smoothTransition (Set.Icc (0 : ℝ) 1) := by
   apply
@@ -788,6 +852,7 @@ theorem MorseCancellation.smoothTransition_strictMonoOn :
   apply smoothTransition_deriv_pos
   simpa only [interior_Icc] using ht
 
+/-- Each level is crossed at a unique transition time. -/
 theorem MorseCancellation.exists_unique_smoothTransition_time {c : ℝ} (hc : c ∈ Set.Ioo (0 : ℝ) 1) :
     ∃ τ : ℝ,
       τ ∈ Set.Ioo (0 : ℝ) 1 ∧
@@ -812,6 +877,9 @@ theorem MorseCancellation.exists_unique_smoothTransition_time {c : ℝ} (hc : c 
   intro t ht
   exact ⟨fun h => smoothTransition_strictMonoOn.injOn ht hτ (h.trans heq.symm), fun h => h ▸ heq⟩
 
+/-! ### Longitudinal tube motions -/
+
+/-- A supported longitudinal motion of a tube preserving its axis and germ data. -/
 structure MorseCancellation.LongitudinalTubeMotion {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -845,6 +913,7 @@ structure MorseCancellation.LongitudinalTubeMotion {V E H M : Type*} [NormedAddC
       z ∈ Φ.source →
         family (t, Φ z) = Φ (longitudinalBlend profile cutoff Real.smoothTransition (t, z))
 
+/-- The trivial longitudinal tube motion exists. -/
 theorem MorseCancellation.nonempty_longitudinalTubeMotion {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M] [FiniteDimensional ℝ V]
@@ -914,6 +983,7 @@ theorem MorseCancellation.nonempty_longitudinalTubeMotion {V E H M : Type*} [Nor
   rw [← eq_div_iff hcpos.ne']
   exact hτunique t ht
 
+/-- The model motion fixes the axis. -/
 theorem MorseCancellation.LongitudinalTubeMotion.model_axis {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -924,6 +994,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.model_axis {V E H M : Type*} [N
   simp only [MorseCancellation.longitudinalBlend, MorseCancellation.longitudinalBlendDisplacement,
     A.cutoff_zero, A.profile_zero, mul_one, sub_zero, zero_add]
 
+/-- The model motion has the prescribed axis germ. -/
 theorem MorseCancellation.LongitudinalTubeMotion.model_germ {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -939,6 +1010,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.model_germ {V E H M : Type*} [N
   simp only [MorseCancellation.longitudinalBlend, MorseCancellation.longitudinalBlendDisplacement, hp, hβ,
     mul_one, add_sub_cancel_left]
 
+/-- The native motion fixes the chart axis. -/
 theorem MorseCancellation.LongitudinalTubeMotion.native_axis {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -948,6 +1020,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.native_axis {V E H M : Type*} [
   rw [A.formula t 0 h0]
   exact congrArg Φ (A.model_axis t)
 
+/-- The native motion has the prescribed axis germ. -/
 theorem MorseCancellation.LongitudinalTubeMotion.native_germ {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -960,6 +1033,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.native_germ {V E H M : Type*} [
   filter_upwards [A.model_germ t, hs] with p hp hs
   rw [A.formula p.1 p.2 hs, hp]
 
+/-- The motion is fixed outside the target tube. -/
 theorem MorseCancellation.LongitudinalTubeMotion.fixed_outside_target {V E H M : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -967,6 +1041,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.fixed_outside_target {V E H M :
     (t : ℝ) (y : M) (hy : y ∉ Φ.target) : A.family (t, y) = y :=
   A.fixedOutside t y (fun h => hy (A.support_subset h))
 
+/-- The moved axis point where the sheet crosses. -/
 theorem MorseCancellation.LongitudinalTubeMotion.crossing_axis {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -974,6 +1049,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.crossing_axis {V E H M : Type*}
     (h0 : (0 : ℝ × V) ∈ Φ.source) : A.family (A.time, Φ 0) = Φ (1, 0) := by
   rw [A.native_axis h0, A.time_value]
 
+/-- The whole sheet crosses the level exactly at the crossing axis. -/
 theorem MorseCancellation.LongitudinalTubeMotion.whole_sheet_crossing_iff {U V E H M X Y : Type*}
     [NormedAddCommGroup U] [NormedSpace ℝ U] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
@@ -1027,6 +1103,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.whole_sheet_crossing_iff {U V E
       _ = Φ (1, 0) := (A.crossing_axis h0)
       _ = g y₀ := hy₀
 
+/-- The sheet coordinate derivative is surjective along the axis. -/
 theorem MorseCancellation.surjective_sheet_coordinate_mfderiv {U W H X : Type*} [NormedAddCommGroup U]
     [NormedSpace ℝ U] [FiniteDimensional ℝ U] [NormedAddCommGroup W] [NormedSpace ℝ W]
     [TopologicalSpace H] {I : ModelWithCorners ℝ U H} [TopologicalSpace X] [ChartedSpace H X]
@@ -1048,6 +1125,7 @@ theorem MorseCancellation.surjective_sheet_coordinate_mfderiv {U W H X : Type*} 
   rw [heq]
   exact congrArg Q huv
 
+/-- The native coordinate plane traces the sheet transversely. -/
 theorem MorseCancellation.native_coordinate_plane_trace_transverse {U H X : Type*}
     [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U] [TopologicalSpace H]
     {I : ModelWithCorners ℝ U H} [TopologicalSpace X] [ChartedSpace H X] {V H' Y : Type*}
@@ -1090,6 +1168,7 @@ theorem MorseCancellation.native_coordinate_plane_trace_transverse {U H X : Type
     rw [add_zero, zero_add]
     exact Prod.ext ha hb
 
+/-- The whole moved sheet remains transverse to the level. -/
 theorem MorseCancellation.LongitudinalTubeMotion.whole_sheet_transverse {U V E HU HV H M X Y : Type*}
     [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U] [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1215,6 +1294,7 @@ theorem MorseCancellation.LongitudinalTubeMotion.whole_sheet_transverse {U V E H
   rw [hFgerm.mfderiv_eq, hGgerm.mfderiv_eq]
   exact hnative (congrArg Φ (hB0.trans hT0.symm))
 
+/-- Two endpoint sheets admit a clean arc avoiding a closed set. -/
 theorem MorseCancellation.exists_clean_two_sheet_arc_avoiding {E M X Y Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X]
@@ -1344,6 +1424,9 @@ theorem MorseCancellation.exists_clean_two_sheet_arc_avoiding {E M X Y Z : Type*
       havoid t ⟨lt_of_le_of_ne ht.1 (Ne.symm ht0), lt_of_le_of_ne ht.2 ht1⟩
         (horange.symm ▸ Or.inr htb)
 
+/-! ### Basin images of adapted windows -/
+
+/-- Forward basins are covered by countably many smooth ball images. -/
 theorem AdaptedWindows.exists_forward_basin_smooth_images {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1416,6 +1499,7 @@ theorem AdaptedWindows.exists_forward_basin_smooth_images {E M : Type*} [NormedA
               p.val).mpr
           (hpoint v hv)
 
+/-- Backward basins are covered by countably many smooth ball images. -/
 theorem AdaptedWindows.exists_backward_basin_smooth_images {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1491,6 +1575,7 @@ theorem AdaptedWindows.exists_backward_basin_smooth_images {E M : Type*} [Normed
               p.val).mpr
           (hpoint v hv)
 
+/-- A basis element admits a smooth ball parametrization. -/
 theorem MorseCancellation.exists_smooth_ball_parametrization {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] {d : ℕ} (hd : Module.finrank ℝ V ≤ d) {r : ℝ}
     (hr : 0 < r) :
@@ -1526,6 +1611,7 @@ theorem MorseCancellation.exists_smooth_ball_parametrization {V : Type*} [Normed
     rw [hz]
     exact B.right_inv hvt
 
+/-- A local smooth ball parametrization extends to a global image. -/
 theorem MorseCancellation.exists_global_smooth_image_of_ball {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace M]
@@ -1540,6 +1626,7 @@ theorem MorseCancellation.exists_global_smooth_image_of_ball {V : Type*} [Normed
     exact (hf.contMDiffAt (Metric.isOpen_ball.mem_nhds hx)).comp x hψ.contMDiff.contMDiffAt
   · rw [Set.range_comp, hrange]
 
+/-- The native flow is the chart flow on the positive half-line. -/
 theorem FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V W : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -1561,6 +1648,7 @@ theorem FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*}
         (hG x).continuous.continuousOn hc
     simpa only [sub_zero, G.map_zero_apply] using hh.symm
 
+/-- The native flow is the chart flow on the negative half-line. -/
 theorem FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) 1 M] [T2Space M] {V W : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -1584,6 +1672,7 @@ theorem FlowCancellation.native_flow_eq_on_negative_halfline {E M : Type*}
   · subst t
     rw [G.map_zero_apply, F.map_zero_apply]
 
+/-- A flow line between endpoint limits crosses the intermediate level. -/
 theorem FlowCancellation.exists_level_crossing_of_endpoint_limits {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {x p q : X}
     (hp : Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p))
@@ -1599,6 +1688,9 @@ theorem FlowCancellation.exists_level_crossing_of_endpoint_limits {X : Type*}
     mem_range_of_exists_le_of_exists_ge (hf.comp (F.continuous continuous_id continuous_const))
       ⟨s, hs.le⟩ ⟨t, ht.le⟩
 
+/-! ### Endpoint obstructions and basin counts -/
+
+/-- The union of forward basins of high critical points. -/
 def MorseCancellation.forwardHighBasins {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     (S : AdaptedWindows E f) (a : ℝ) : Set M :=
@@ -1606,6 +1698,7 @@ def MorseCancellation.forwardHighBasins {E M : Type*} [NormedAddCommGroup E] [No
     ∃ p : ManifoldMorse.criticalPoints E f,
       a ≤ f p ∧ Filter.Tendsto (fun t => S.flow t x) Filter.atTop (𝓝 p.val)}
 
+/-- The union of backward basins of low critical points. -/
 def MorseCancellation.backwardLowBasins {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     (S : AdaptedWindows E f) (a : ℝ) : Set M :=
@@ -1613,6 +1706,7 @@ def MorseCancellation.backwardLowBasins {E M : Type*} [NormedAddCommGroup E] [No
     ∃ p : ManifoldMorse.criticalPoints E f,
       f p ≤ a ∧ Filter.Tendsto (fun t => S.flow t x) Filter.atBot (𝓝 p.val)}
 
+/-- The high forward basins as an intersection formulation. -/
 theorem MorseCancellation.forwardHighBasins_eq_inter {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1633,6 +1727,7 @@ theorem MorseCancellation.forwardHighBasins_eq_inter {E M : Type*} [NormedAddCom
       ge_of_tendsto (hf.continuous.continuousAt.tendsto.comp hlim)
         (Filter.Eventually.of_forall hbound)
 
+/-- The low backward basins as an intersection formulation. -/
 theorem MorseCancellation.backwardLowBasins_eq_inter {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1653,6 +1748,7 @@ theorem MorseCancellation.backwardLowBasins_eq_inter {E M : Type*} [NormedAddCom
       le_of_tendsto (hf.continuous.continuousAt.tendsto.comp hlim)
         (Filter.Eventually.of_forall hbound)
 
+/-- The endpoint obstruction set is closed. -/
 theorem MorseCancellation.isClosed_endpoint_obstruction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1670,6 +1766,7 @@ theorem MorseCancellation.isClosed_endpoint_obstruction {E M : Type*} [NormedAdd
           isClosed_le (hf.continuous.comp (S.flow.continuous continuous_const continuous_id))
             continuous_const)
 
+/-- The level minus the basins is the endpoint obstruction. -/
 theorem MorseCancellation.levelBasin_compl_eq_endpoint_obstruction {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -1703,6 +1800,7 @@ theorem MorseCancellation.levelBasin_compl_eq_endpoint_obstruction {E M : Type*}
       rw [ht] at hh
       exact hreg p (le_antisymm hp hh) p.property
 
+/-- Forward basins are covered by global smooth images. -/
 theorem AdaptedWindows.exists_forward_basin_global_images {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1723,6 +1821,7 @@ theorem AdaptedWindows.exists_forward_basin_global_images {E M : Type*} [NormedA
   rw [hcover]
   exact Set.iUnion_congr (fun n => (hrange n).symm)
 
+/-- Backward basins are covered by global smooth images. -/
 theorem AdaptedWindows.exists_backward_basin_global_images {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1741,11 +1840,13 @@ theorem AdaptedWindows.exists_backward_basin_global_images {E M : Type*} [Normed
   rw [hcover]
   exact Set.iUnion_congr (fun n => (hrange n).symm)
 
+/-- The index type of endpoint obstruction basins. -/
 abbrev MorseCancellation.EndpointBasinIndex {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (a : ℝ) :=
   ({ p : ManifoldMorse.criticalPoints E f // a ≤ f p.val } × ℕ) ⊕
     ({ p : ManifoldMorse.criticalPoints E f // f p.val ≤ a } × ℕ)
 
+/-- There are countably many endpoint obstruction basins. -/
 theorem MorseCancellation.endpointBasinIndex_countable {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1754,6 +1855,7 @@ theorem MorseCancellation.endpointBasinIndex_countable {E M : Type*} [NormedAddC
   unfold EndpointBasinIndex
   infer_instance
 
+/-- The endpoint obstruction is covered by global smooth images. -/
 theorem AdaptedWindows.exists_endpoint_obstruction_global_images {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -1804,6 +1906,7 @@ theorem AdaptedWindows.exists_endpoint_obstruction_global_images {E M : Type*}
           exact Set.mem_iUnion.mpr ⟨n, hi⟩
         exact Or.inr ⟨p.val, p.property, hh⟩
 
+/-- The low backward basins form a closed set. -/
 theorem MorseCancellation.isClosed_backwardLowBasins {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1815,10 +1918,12 @@ theorem MorseCancellation.isClosed_backwardLowBasins {E M : Type*} [NormedAddCom
         isClosed_le (hf.continuous.comp (S.flow.continuous continuous_const continuous_id))
           continuous_const)
 
+/-- The index type of low backward basins. -/
 abbrev MorseCancellation.LowBackwardBasinIndex {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} (a : ℝ) :=
   { p : ManifoldMorse.criticalPoints E f // f p.val ≤ a } × ℕ
 
+/-- There are countably many low backward basins. -/
 theorem MorseCancellation.lowBackwardBasinIndex_countable {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1827,6 +1932,7 @@ theorem MorseCancellation.lowBackwardBasinIndex_countable {E M : Type*} [NormedA
   unfold LowBackwardBasinIndex
   infer_instance
 
+/-- The low backward obstruction is covered by smooth images. -/
 theorem AdaptedWindows.exists_low_backward_obstruction_images {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1854,6 +1960,9 @@ theorem AdaptedWindows.exists_low_backward_obstruction_images {E M : Type*} [Nor
       exact Set.mem_iUnion.mpr ⟨n, hn⟩
     exact ⟨p.val, p.property, hh⟩
 
+/-! ### Joining in sublevels and basins -/
+
+/-- A discrete family of smooth maps is jointly smooth. -/
 theorem MorseCancellation.contMDiff_discrete_family {ι V E H M : Type*} [TopologicalSpace ι]
     [DiscreteTopology ι] [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace M]
@@ -1873,6 +1982,7 @@ theorem MorseCancellation.contMDiff_discrete_family {ι V E H M : Type*} [Topolo
   filter_upwards [hnear] with q hq
   rw [Set.mem_singleton_iff.mp hq]
 
+/-- The range of a discrete family is the union of the ranges. -/
 theorem MorseCancellation.range_discrete_family {ι V M : Type*} [TopologicalSpace ι]
     [DiscreteTopology ι] [NormedAddCommGroup V] [NormedSpace ℝ V] [TopologicalSpace M]
     (f : ι → V → M) : Set.range (fun p : ι × V => f p.1 p.2) = ⋃ i, Set.range (f i) := by
@@ -1884,6 +1994,7 @@ theorem MorseCancellation.range_discrete_family {ι V M : Type*} [TopologicalSpa
     obtain ⟨i, v, hv⟩ := Set.mem_iUnion.mp hx
     exact ⟨(i, v), hv⟩
 
+/-- A point forward-limiting to a lower point joins it in the sublevel. -/
 theorem MorseCancellation.joinedIn_sublevel_of_forward_limit {X : Type*} [TopologicalSpace X]
     [LocallyPathConnectedSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
     (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x))) {x p : X} {a : ℝ} (hx : f x ≤ a)
@@ -1908,6 +2019,7 @@ theorem MorseCancellation.joinedIn_sublevel_of_forward_limit {X : Type*} [Topolo
     exact hh'.trans hx
   exact hsegment.trans htail
 
+/-- Points with a common forward limit join in the sublevel. -/
 theorem MorseCancellation.joined_sublevel_of_common_forward_limit {X : Type*} [TopologicalSpace X]
     [LocallyPathConnectedSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f)
     (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x))) {a : ℝ} (x y : { z : X // f z ≤ a }) {p : X}
@@ -1917,6 +2029,7 @@ theorem MorseCancellation.joined_sublevel_of_common_forward_limit {X : Type*} [T
     ((joinedIn_sublevel_of_forward_limit F hf hmono x.property hp hx).trans
         (joinedIn_sublevel_of_forward_limit F hf hmono y.property hp hy).symm).joined_subtype
 
+/-- Points in an open forward basin join the limit point in it. -/
 theorem MorseCancellation.joinedIn_open_forward_basin {X : Type*} [TopologicalSpace X]
     [LocallyPathConnectedSpace X] (F : Flow ℝ X) (p : X)
     (hopen : IsOpen {x : X | Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p)})
@@ -1937,6 +2050,7 @@ theorem MorseCancellation.joinedIn_open_forward_basin {X : Type*} [TopologicalSp
     exact (flow_time_atTop_limit_iff F ((u : ℝ) * T) x p).mpr hx
   exact hsegment.trans htail
 
+/-- A minimum-index critical point's forward basin is joined. -/
 theorem AdaptedWindows.joinedIn_minimum_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1959,6 +2073,9 @@ theorem AdaptedWindows.joinedIn_minimum_basin {E M : Type*} [NormedAddCommGroup 
     (MorseCancellation.joinedIn_open_forward_basin S.flow p.val hopen hpp hx).trans
       (MorseCancellation.joinedIn_open_forward_basin S.flow p.val hopen hpp hy).symm
 
+/-! ### Smooth time germs and level cylinders -/
+
+/-- Nonzero time derivative makes the time partial invertible. -/
 theorem SmoothODE.scalar_partial_invertible {P : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] {F : P × ℝ → ℝ} {p : P} {t v : ℝ} (hF : ContDiffAt ℝ ∞ F (p, t))
     (htime : HasDerivAt (fun s : ℝ => F (p, s)) v t) (hv : v ≠ 0) :
@@ -1978,6 +2095,7 @@ theorem SmoothODE.scalar_partial_invertible {P : Type*} [NormedAddCommGroup P]
   change v * r = r * v
   exact mul_comm v r
 
+/-- A smooth time germ solving `F(q, θ q) = c` near a point of nonzero time derivative. -/
 theorem SmoothODE.exists_smooth_scalar_time_germ {P : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [CompleteSpace P] {F : P × ℝ → ℝ} {p : P} {t c v : ℝ}
     (hF : ContDiffAt ℝ ∞ F (p, t)) (hlevel : F (p, t) = c)
@@ -1991,6 +2109,7 @@ theorem SmoothODE.exists_smooth_scalar_time_germ {P : Type*} [NormedAddCommGroup
   filter_upwards [hF.eventually_apply_implicitFunction (by simp) hinv] with q hq
   exact hq.trans hlevel
 
+/-- The manifold version: a smooth level-time germ near nonzero time derivative. -/
 theorem FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {H : M × ℝ → ℝ} {p : M} {t c v : ℝ}
@@ -2034,6 +2153,7 @@ theorem FlowCancellation.exists_native_smooth_time_germ {E M : Type*}
   change H (q, θ (e q)) = c
   rwa [hqleft] at hrootq
 
+/-- A smooth signed time to reach a regular level along a vector field. -/
 theorem FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ}
@@ -2073,6 +2193,7 @@ theorem FlowCancellation.smooth_signed_level_time {E M : Type*} [NormedAddCommGr
   · intro x hx s
     exact signedLevelTime_flow F hf.continuous hD hder hboundary hx s
 
+/-- A flow cylinder over a regular level along a nonvanishing field. -/
 theorem FlowCancellation.exists_native_level_flow_cylinder {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -2153,6 +2274,9 @@ theorem FlowCancellation.exists_native_level_flow_cylinder {E M : Type*}
       contMDiffOn_invFun := hψ }
   exact ⟨Φ, rfl, rfl, fun _ => rfl, fun _ _ => rfl⟩
 
+/-! ### Connectedness of regular levels -/
+
+/-- Endpoint basins join inside the regular level under the dimension bounds. -/
 theorem AdaptedWindows.joinedIn_regular_level_of_endpoint_dimensions {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -2220,6 +2344,7 @@ theorem AdaptedWindows.joinedIn_regular_level_of_endpoint_dimensions {E M : Type
         exact congrArg (fun z : { w : M // f w = a } × ℝ => z.1.val) (hinverse yL) }
   exact ⟨ξ, fun t => (Φ.symm (η t)).1.property⟩
 
+/-- The regular level is path connected under the endpoint dimension bounds. -/
 theorem AdaptedWindows.pathConnectedSpace_regular_level_of_endpoint_dimensions {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -2240,6 +2365,7 @@ theorem AdaptedWindows.pathConnectedSpace_regular_level_of_endpoint_dimensions {
     (S.joinedIn_regular_level_of_endpoint_dimensions hf hreg hhigh hlow hdim x.property y.property
         (PathConnectedSpace.somePath x.val y.val)).joined_subtype
 
+/-- In dimension six the middle regular level is path connected. -/
 theorem AdaptedWindows.pathConnectedSpace_middle_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} [PathConnectedSpace M]
@@ -2255,6 +2381,7 @@ theorem AdaptedWindows.pathConnectedSpace_middle_level {E M : Type*} [NormedAddC
   S.pathConnectedSpace_regular_level_of_endpoint_dimensions hf hreg
     (fun p hp => by have hh := hhigh p hp; omega) hlow (by omega) z₀
 
+/-- Above index-three critical points the upper level is path connected. -/
 theorem AdaptedWindows.pathConnectedSpace_index_three_upper_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -2278,6 +2405,9 @@ theorem AdaptedWindows.pathConnectedSpace_index_three_upper_level {E M : Type*}
       have hlow := S.toSurgeryWindows.lower_lt_value r
       exact ((not_lt_of_ge hr) (hsep.trans hlow)).elim
 
+/-! ### Transversality for rearrangement -/
+
+/-- A dimension bound making a map transverse to an ignored factor. -/
 theorem MorseRearrangement.native_transverse_dimension_bound {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2293,6 +2423,7 @@ theorem MorseRearrangement.native_transverse_dimension_bound {D Z G H H' K X Y N
   have hh := LinearMap.finrank_le_finrank_of_surjective (f := L.toLinearMap) hL
   simpa only [Module.finrank_prod] using hh
 
+/-- Under the transverse dimension bound the ranges can be made disjoint. -/
 theorem MorseRearrangement.disjoint_ranges_of_native_transverse_dimension
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
@@ -2307,6 +2438,7 @@ theorem MorseRearrangement.disjoint_ranges_of_native_transverse_dimension
   rintro z ⟨x, hx⟩ ⟨y, hy⟩
   exact (not_le_of_gt hdim) (native_transverse_dimension_bound (ht x y) (hy.trans hx.symm))
 
+/-- Transversality when the target factor is ignored. -/
 theorem MorseRearrangement.native_transverse_of_ignored_factor {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2334,6 +2466,7 @@ theorem MorseRearrangement.native_transverse_of_ignored_factor {D Z G H H' K X Y
   obtain ⟨⟨⟨a, b⟩, c⟩, hh⟩ := hsurj v
   exact ⟨(a, c), hh⟩
 
+/-- A chart map can be perturbed to a transverse plateau. -/
 theorem ChartMapPerturbation.exists_ambient_transverse_plateau
     {D Z G F H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
@@ -2412,6 +2545,7 @@ theorem ChartMapPerturbation.exists_ambient_transverse_plateau
     rw [hderiv]
     exact ht
 
+/-- A compact-core chart patch for local transversality constructions. -/
 structure NativeTransversality.Patch {G K N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace K] (J : ModelWithCorners ℝ G K) [TopologicalSpace N]
     [ChartedSpace K N] (X : Type*) [TopologicalSpace X] where
@@ -2427,12 +2561,14 @@ structure NativeTransversality.Patch {G K N : Type*} [NormedAddCommGroup G]
   plateau_source : plateau ⊆ chart.source
   plateau_one : ∀ y ∈ plateau, cutoff =ᶠ[𝓝 (chart y)] fun _ => 1
 
+/-- Compatibility of a patch with a map: the chart covers the core. -/
 def NativeTransversality.Patch.Compatible {G K N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace N]
     [ChartedSpace K N] {X : Type*} [TopologicalSpace X]
     (p : NativeTransversality.Patch J X (N := N)) (f : X → N) : Prop :=
   Set.MapsTo f p.core p.plateau
 
+/-- Every point of a compact space admits a patch around its image. -/
 theorem NativeTransversality.exists_patch_at {G K N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace N]
     [ChartedSpace K N] {X : Type*} [TopologicalSpace X] [FiniteDimensional ℝ G] [J.Boundaryless]
@@ -2471,6 +2607,7 @@ theorem NativeTransversality.exists_patch_at {G K N : Type*} [NormedAddCommGroup
         exact hone hz }
   exact ⟨p, hCO, hxC (Set.mem_singleton x)⟩
 
+/-- One step of the finite transversality patch construction. -/
 theorem NativeTransversality.exists_patch_step {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -2537,6 +2674,7 @@ theorem NativeTransversality.exists_patch_step {D Z G H H' K X Y N : Type*}
       have hplateau := hcompatible i hx
       exact hnew x ((p i).plateau_source hplateau) ((p i).plateau_one _ hplateau) y hxy
 
+/-- Finitely many patches give a transverse diffeomorphism. -/
 theorem NativeTransversality.exists_finite_patch_diffeomorph {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -2578,6 +2716,7 @@ theorem NativeTransversality.exists_finite_patch_diffeomorph {D Z G H H' K X Y N
     · exact ht₂ x (Or.inr hx) y
     · exact ht₂ x (Or.inl (Set.mem_iUnion₂.mpr ⟨j, hjs, hx⟩)) y
 
+/-- An ambient diffeomorphism making the map transverse. -/
 theorem NativeTransversality.exists_ambient_transverse_diffeomorph
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
@@ -2606,6 +2745,7 @@ theorem NativeTransversality.exists_ambient_transverse_diffeomorph
   obtain ⟨i, hi, hxi⟩ := Set.mem_iUnion₂.mp (hs (Set.mem_univ x))
   exact ht ⟨i, hi⟩ (Finset.mem_univ _) x (interior_subset hxi) y
 
+/-- Under the dimension bound an ambient diffeomorphism makes the ranges disjoint. -/
 theorem MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
