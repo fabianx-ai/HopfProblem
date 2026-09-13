@@ -127,6 +127,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.LinearAlgebra.SquareZero
 import Lib.Topology.MappingTorus.Basic
+import Lib.Topology.MappingTorus.Wang
 import Lib.Topology.Covering.Quotient
 import Lib.Topology.Homotopy.SublevelRetraction
 import Lib.AlgebraicTopology.SingularHomology.PathClass
@@ -150,7 +151,6 @@ universe u v
 noncomputable section
 
 namespace Mathoverflow1973
-
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -226,14 +226,12 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [T
           (PeriodTorusHigherHomology.crossProductHomology G (G × G) 2 a
             (PeriodTorusHigherHomology.crossProductHomology G G 1 b c))).symm
 
-
 theorem PeriodTorusHigherHomology.coordinatePeriodLoop_eq_projection (n : ℕ) (v : Fin n → ℤ)
     (t : unitInterval) :
     coordinatePeriodLoop n v t = coordinateProjection n ((t : ℝ) • (fun i => (v i : ℝ))) := by
   ext i
   rw [coordinatePeriodLoop_apply]
   rfl
-
 
 def PeriodTorusHigherHomology.torusTailMap (n : ℕ) : C(ProductTorus n, ProductTorus (n + 1)) :=
   ((productTorusSuccHomeomorph n).symm : C(_, _)).comp
@@ -277,7 +275,6 @@ theorem PeriodTorusHigherHomology.torusTailMap_coordinatePeriodHomology (n : ℕ
     FirstHurewicz.inducedHomology_loopHomologyClass, torusTailMap_coordinatePeriodLoop]
   rfl
 
-
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
 theorem PeriodTorusHigherHomologyPontryagin.product11_skew (G : Type) [TopologicalSpace G]
@@ -319,7 +316,6 @@ theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo_apply_ιMulti (G : 
     (v : Fin 2 → SingularMayerVietoris.SingularHomology G 1) :
     homologyWedgeTwo G (exteriorPower.ιMulti ℤ 2 v) = product11 G (v 0) (v 1) :=
   exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _
-
 
 attribute [local instance] PeriodTorusHigherHomology.integerLinearMapModule
     PeriodTorusHigherHomology.integerTensorModule in
@@ -392,7 +388,6 @@ theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeThree_apply_ιMulti (G 
     homologyWedgeThree G (exteriorPower.ιMulti ℤ 3 v) = tripleProduct G (v 0) (v 1) (v 2) :=
   exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _
 
-
 def PeriodTorusHigherHomology.omitHeadMatrix {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ) :
     Matrix (Fin (r + 1)) (Fin n) ℤ :=
   Fin.cons 0 A
@@ -400,7 +395,6 @@ def PeriodTorusHigherHomology.omitHeadMatrix {r n : ℕ} (A : Matrix (Fin r) (Fi
 def PeriodTorusHigherHomology.takeHeadMatrix {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ) :
     Matrix (Fin (r + 1)) (Fin (n + 1)) ℤ :=
   Fin.cons (Fin.cons 1 0) (fun i => Fin.cons 0 (A i))
-
 
 def PeriodTorusHigherHomology.coordinateTorusMap :
     (r n : ℕ) → Fin (r.choose n) → C(ProductTorus n, ProductTorus r)
@@ -500,7 +494,6 @@ theorem PeriodTorusHigherHomology.coordinateTorusMatrix_take (r n : ℕ) (j : Fi
     coordinateTorusMatrix (r + 1) (n + 1) ((binomialPascalIndexEquiv r n).symm (Sum.inr j)) =
       takeHeadMatrix (coordinateTorusMatrix r n j) := by
   rw [coordinateTorusMatrix, Equiv.apply_symm_apply]
-
 
 def PeriodTorusHigherHomology.coordinateTorusClass (r n : ℕ) (i : Fin (r.choose n)) :
     SingularMayerVietoris.SingularHomology (ProductTorus r) n :=
@@ -645,7 +638,6 @@ theorem PeriodTorusHigherHomology.coordinateTorusBasis_apply (r n : ℕ) (i : Fi
   rw [coordinateTorusBasis, Module.Basis.map_apply, LinearEquiv.apply_symm_apply,
     binomialCoordinateBasis_apply, productTorusHomologyEquiv_coordinateTorusClass]
 
-
 def PeriodTorusHigherHomology.coordinateTorusMapAlong {X : Type} [TopologicalSpace X] {r : ℕ}
     (e : X ≃ₜ ProductTorus r) (n : ℕ) (i : Fin (r.choose n)) : C(ProductTorus n, X) :=
   (e.symm : C(ProductTorus r, X)).comp (coordinateTorusMap r n i)
@@ -699,13 +691,11 @@ theorem PeriodTorusHigherHomology.surjective_of_coordinateTorusClassAlong_mem_ra
   rintro _ ⟨i, rfl⟩
   exact hf i
 
-
 theorem PeriodTorusHigherHomology.homeomorph_symm_add_of_add {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [Add X] [Add Y] (e : X ≃ₜ Y) (he : ∀ x y, e (x + y) = e x + e y)
     (x y : Y) : e.symm (x + y) = e.symm x + e.symm y := by
   apply e.injective
   rw [Homeomorph.apply_symm_apply, he, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
-
 
 def PeriodTorusHigherHomology.coordinateH1Add (n : ℕ) :
     (Fin n → ℤ) →+ FirstHurewicz.SingularH1 (ProductTorus n)
@@ -735,7 +725,6 @@ theorem PeriodTorusHigherHomology.coordinateH1_single (n : ℕ) (i : Fin n) :
       FirstHurewicz.loopHomologyClass (coordinatePeriodLoop n (Pi.single i 1)) := by
   simpa only [Pi.basisFun_apply] using coordinateH1_basis n i
 
-
 theorem PeriodTorusHigherHomology.positiveCircleCross_pointClass :
     positiveCircleCross Unit 0 (pointClass ()) =
       homeomorphHomologyEquiv
@@ -743,25 +732,6 @@ theorem PeriodTorusHigherHomology.positiveCircleCross_pointClass :
         (FirstHurewicz.loopHomologyClass CirclePaths.positiveLoop) :=
   crossProductHomology_pointClass_right (PeriodTorusHigherHomology.CircleTopology.Circle) Unit
     (FirstHurewicz.loopHomologyClass CirclePaths.positiveLoop) ()
-
-
-theorem MappingTorus.mk_unitCylinder_surjective {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
-    MappingTorus.mk f '' ((Set.Icc (0 : ℝ) 1) ×ˢ (Set.univ : Set X)) = Set.univ := by
-  apply Set.eq_univ_of_forall
-  intro q
-  obtain ⟨⟨t, x⟩, rfl⟩ := mk_surjective f q
-  refine ⟨deck f (-⌊t⌋) (t, x), ?_, mk_deck f (-⌊t⌋) (t, x)⟩
-  change (0 ≤ t + ((-⌊t⌋ : ℤ) : ℝ) ∧ t + ((-⌊t⌋ : ℤ) : ℝ) ≤ 1) ∧ True
-  push_cast
-  exact ⟨⟨by linarith [Int.floor_le t], by linarith [Int.lt_floor_add_one t]⟩, trivial⟩
-
-instance MappingTorus.compactSpace {X : Type*} [TopologicalSpace X] [CompactSpace X]
-    (f : X ≃ₜ X) : CompactSpace (Torus f) where
-  isCompact_univ := by
-    rw [← mk_unitCylinder_surjective f]
-    exact (CompactIccSpace.isCompact_Icc.prod isCompact_univ).image (mk_continuous f)
-
-
 theorem BranchedQuotientAtlas.project_localInverse_eventuallyEq {E M Q : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M]
     [TopologicalSpace Q] {q : M → Q} (hq : Continuous q) (e : OpenPartialHomeomorph Q E) {z : E}

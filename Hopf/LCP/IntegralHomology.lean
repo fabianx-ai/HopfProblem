@@ -147,6 +147,7 @@ import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.Topology.MappingTorus.HomologyCover
+import Lib.Topology.MappingTorus.Wang
 import Lib.GroupTheory.SplitExtension
 import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
@@ -169,120 +170,9 @@ universe u v
 noncomputable section
 
 namespace Mathoverflow1973
-
-
-theorem MappingTorusHomology.Covering.mk_add_int {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)
-    (t : ℝ) (k : ℤ) (x : X) :
-    MappingTorus.mk f (t + (k : ℝ), x) = MappingTorus.mk f (t, (f ^ k) x) := by
-  apply (MappingTorus.mk_eq_mk_iff f _ _).mpr
-  exact ⟨-k, by simp, by simp⟩
-
-
-def MappingTorusHomology.Covering.affineRealArc (a b : ℝ) : Path a b
-    where
-  toFun t := a + (b - a) * (t : ℝ)
-  continuous_toFun := continuous_const.add (continuous_const.mul continuous_subtype_val)
-  source' := by simp
-  target' := by simp
-
-
-def MappingTorusHomology.Covering.translatedPositiveLoop (a : ℝ) :
-    Path (a : (PeriodTorusHigherHomology.CircleTopology.Circle))
-      (a : (PeriodTorusHigherHomology.CircleTopology.Circle)) :=
-  ((PeriodTorusHigherHomology.CirclePaths.positiveLoop.map
-        (PeriodTorusHigherHomology.CirclePaths.circleTranslation a).continuous).cast
-    (by simp) (by simp))
-
-@[simp]
-theorem MappingTorusHomology.Covering.translatedPositiveLoop_apply (a : ℝ) (t : unitInterval) :
-    translatedPositiveLoop a t =
-      ((a + (t : ℝ) : ℝ) : (PeriodTorusHigherHomology.CircleTopology.Circle)) := by
-  change
-    (a : (PeriodTorusHigherHomology.CircleTopology.Circle)) +
-        ((t : ℝ) : (PeriodTorusHigherHomology.CircleTopology.Circle)) =
-      ((a + (t : ℝ) : ℝ) : (PeriodTorusHigherHomology.CircleTopology.Circle))
-  exact (AddCircle.coe_add (1 : ℝ) a (t : ℝ)).symm
-
-
-theorem MappingTorusHomology.Covering.translatedPositiveLoop_class (a : ℝ) :
-    FirstHurewicz.loopHomologyClass (translatedPositiveLoop a) =
-      FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop := by
-  have hc :
-    FirstHurewicz.loopHomologyClass (translatedPositiveLoop a) =
-      FirstHurewicz.loopHomologyClass
-        (PeriodTorusHigherHomology.CirclePaths.positiveLoop.map
-          (PeriodTorusHigherHomology.CirclePaths.circleTranslation a).continuous) := by
-    apply
-      FirstHurewicz.homologyToChainClass_injective
-        (PeriodTorusHigherHomology.CircleTopology.Circle)
-    rw [FirstHurewicz.homologyToChainClass_loopHomologyClass,
-      FirstHurewicz.homologyToChainClass_loopHomologyClass]
-    rfl
-  exact
-    hc.trans (PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTranslation a _)
-
-
-def MappingTorusHomology.Covering.homologyNorm {X : Type} [TopologicalSpace X] (m : ℕ)
-    (B : X ≃ₜ X) (n : ℕ) :
-    SingularMayerVietoris.SingularHomology X n →ₗ[ℤ] SingularMayerVietoris.SingularHomology X n :=
-  ∑ k ∈ Finset.range m, SingularMayerVietoris.singularHomologyMap ((B ^ k : X ≃ₜ X) : C(X, X)) n
-
-@[simp]
-theorem MappingTorusHomology.Covering.homologyNorm_apply {X : Type} [TopologicalSpace X] (m : ℕ)
-    (B : X ≃ₜ X) (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
-    homologyNorm m B n a =
-      ∑ k ∈ Finset.range m,
-        SingularMayerVietoris.singularHomologyMap ((B ^ k : X ≃ₜ X) : C(X, X)) n a := by
-  simp only [homologyNorm, LinearMap.sum_apply]
-
-
-private theorem MappingTorusHomology.Covering.sum_range_shift_of_endpoints_mo1973_27356
-    {A : Type*} [AddCommGroup A] (F : ℕ → A) (m : ℕ) (hF : F m = F 0) :
-    ∑ k ∈ Finset.range m, F (k + 1) = ∑ k ∈ Finset.range m, F k := by
-  apply add_right_cancel (b := F 0)
-  calc
-    (∑ k ∈ Finset.range m, F (k + 1)) + F 0 = ∑ k ∈ Finset.range (m + 1), F k :=
-      (Finset.sum_range_succ' F m).symm
-    _ = (∑ k ∈ Finset.range m, F k) + F 0 := by rw [Finset.sum_range_succ, hF]
-
-theorem MappingTorusHomology.Covering.homeomorph_symm_pow_eq {X : Type} [TopologicalSpace X]
-    (m : ℕ) (B : X ≃ₜ X) (hB : B ^ m = 1) (k : ℕ) (hk : k ≤ m) : B.symm ^ k = B ^ (m - k) := by
-  change B⁻¹ ^ k = B ^ (m - k)
-  rw [pow_sub B hk, hB, one_mul, inv_pow]
-
-theorem MappingTorusHomology.Covering.homologyNorm_symm {X : Type} [TopologicalSpace X] (m : ℕ)
-    (B : X ≃ₜ X) (n : ℕ) (hB : B ^ m = 1) : homologyNorm m B.symm n = homologyNorm m B n := by
-  unfold homologyNorm
-  calc
-    (∑ k ∈ Finset.range m,
-          SingularMayerVietoris.singularHomologyMap ((B.symm ^ k : X ≃ₜ X) : C(X, X)) n) =
-        ∑ k ∈ Finset.range m,
-          SingularMayerVietoris.singularHomologyMap ((B ^ (m - 1 - k + 1) : X ≃ₜ X) : C(X, X))
-            n := by
-      apply Finset.sum_congr rfl
-      intro k hk
-      have hkm : k < m := Finset.mem_range.mp hk
-      have hexp : m - k = m - 1 - k + 1 := by omega
-      rw [homeomorph_symm_pow_eq m B hB k hkm.le, hexp]
-    _ =
-        ∑ k ∈ Finset.range m,
-          SingularMayerVietoris.singularHomologyMap ((B ^ (k + 1) : X ≃ₜ X) : C(X, X)) n :=
-      (Finset.sum_range_reflect
-        (fun k => SingularMayerVietoris.singularHomologyMap ((B ^ (k + 1) : X ≃ₜ X) : C(X, X)) n)
-        m)
-    _ =
-        ∑ k ∈ Finset.range m,
-          SingularMayerVietoris.singularHomologyMap ((B ^ k : X ≃ₜ X) : C(X, X)) n := by
-      apply
-        sum_range_shift_of_endpoints_mo1973_27356
-          (fun k => SingularMayerVietoris.singularHomologyMap ((B ^ k : X ≃ₜ X) : C(X, X)) n) m
-      rw [hB, pow_zero]
-
-
 theorem MappingTorusHomology.Covering.inverseMonodromy_period_mo1973_27385 {X : Type}
     [TopologicalSpace X] (m : ℕ) (B : X ≃ₜ X) (h : B ^ m = 1) : B.symm ^ m = 1 := by
   rw [homeomorph_symm_pow_eq m B h m le_rfl, Nat.sub_self, pow_zero]
-
 
 end Mathoverflow1973
 
