@@ -202,7 +202,7 @@ Verified Git blob IDs for selected outputs (before this documentation-only addit
 
 G2a–G6 and the remaining F geometric/Whitney/slide blocks are not moved by this batch. J's circle-path/section cluster and higher coordinate/exterior boundaries remain unfinished; G-J3 was already public in CrossProduct before this batch, not newly moved here. E2's remaining Hopf-side outputs and proposed general-k implementation are not covered by provider conversion. Exact remaining helper packets, complete textbook module documentation, current ledgers/coordinates, independent acceptance and lane-level receipts still need completion. A green conversion batch is not a whole-lane Axis-5/6 certification.
 
-## Integration-3 seat receipts (Muse/Devin), head `84d9450`
+## Integration-3 seat receipts (Muse/Devin), head `6211eadc`
 
 Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
 `NEXT-STEPS-MUSE.md` and `Lib/reviews/INTEGRATION-3.md` §3.
@@ -253,9 +253,12 @@ Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
   nonexistent `Hopf.FiniteCore` consumer path, truncated G-J3 range, one wrong
   coordinate) — all repaired; second re-confirmation GO. Ledger consistent at
   `90cd3d9`. Scoped: Axis-5 consistency only — J-B/J-C/J-D/J-E uncertified;
-  J-B2a's remaining gate was the S-path cluster.
-- **S-path landing (Muse, NEXT-STEPS-MUSE §6)**: extracted the circle-path /
-  circle-section cluster into
+  J-B2a's remaining gate was the S-path cluster. `Lib/docs/J.md` was edited
+  again by `6211eadc` (the S-path landing, 164 lines changed) after that
+  Axis-5 stamp; the `90cd3d9` stamp predates that edit.
+- **S-path landing (Muse, NEXT-STEPS-MUSE §6)**, commit `6211eadc` (the last
+  commit of the branch; header above updated from `84d9450`, which predates
+  it): extracted the circle-path / circle-section cluster into
   `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean` — 88 declarations,
   verbatim signatures modulo retargets (`FirstHurewicz.*` → `SingularChains.*`,
   `PeriodTorusHigherHomology.CircleTopology.*` → `SingularHomology.CircleTopology.*`,
@@ -269,9 +272,14 @@ Branch `lib/textbook-extraction-muse-i3`, based on upstream `27f8e7f` per
   green; all six direct consumers green
   (`Hopf/{LCP,Proof/LCP}/{Specialization,IntegralHomology}`,
   `Hopf/Proof/LCP/{CuspFilling,BoundaryTopology}`). Census ratchet
-  `1622 ≤ 1648` (26 counted decls left `Hopf/LCP/`). Sources removed from
+  `1622 ≤ 1648` (26 counted decls left `Hopf/LCP/`). `lake build`: 8855 jobs
+  green (from the commit message). Sources removed from
   `Hopf/LCP/CuspFilling.lean` (:325–678) and `Hopf/Proof/LCP/CuspFilling.lean`
-  (:13175–13857); consumers gained
+  (:13175–13857): 26 of the 88 came from the stock file and 62 from
+  `Hopf/Proof/LCP/CuspFilling.lean`; those 62 were rows of
+  `Lib/reports/proof-split/DEMOTED.md`, moved without generalisation and
+  compiling in `Lib/` without any `Hopf` import, and are now listed in
+  `Lib/reports/proof-split/FREED.md` (integration 4, decision 3). Consumers gained
   `import Lib.AlgebraicTopology.SingularHomology.CirclePaths`. J-B2a's external
   provider gate is discharged; J-B2a itself (coordinate-basis closure) is not
   thereby certified.
