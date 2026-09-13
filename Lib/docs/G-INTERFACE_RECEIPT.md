@@ -26,16 +26,23 @@ confirmed real, not just unused-by-proof.
 
 ## Seam gate — why no producer probe yet
 
-The G decls' types close over `AdaptedWindows`, `Smale.ManifoldMorse.SurgeryWindows`,
-`MorseCancel.nativeMorseIndex/nativeMorseCount`, `IsNativeMiddleBasinFamily`,
-`middleSectionClass`, `canonicalMiddleMatrix`, `Smale.Hemisphere.*`,
-`SingularMayerVietoris.SingularHomology`, and the Reeb structures
-(`TwoDiskDecomposition`, `SublevelDisk`). These live in legacy (non-`module`)
-files — `Hopf/SphereTopology.lean`, `Hopf/Recognition.lean`,
-`Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` — which a `module` file cannot
-import. A producer probe in production context therefore cannot compile until
-lanes C/D1/E1/F finish module-izing the dependency cone. Per the lane DAG and
-`G.md` open item 1, that is the intended order: **G lands last**.
+Independently reproduced (astra finding 10): `module` + `public import
+Hopf.Recognition` fails at the import with
+`cannot import non-`module` Hopf.Recognition from `module``. The legacy
+(non-`module`) providers the G cone needs are: `AdaptedWindows` and
+`nativeMorseIndex`/`nativeMorseCount` (legacy `Lib/…/SurgeryWindows.lean`,
+owning them at ~1804/~6741), `IsNativeMiddleBasinFamily`, `middleSectionClass`,
+`canonicalMiddleMatrix`, `Smale.Hemisphere.*`, and the Reeb structures
+(`TwoDiskDecomposition` ST 5199, `SublevelDisk` ST 5283) — all in
+`Hopf/SphereTopology.lean`, `Hopf/Recognition.lean`, or legacy SurgeryWindows.
+**Correction vs. the first receipt draft:** `SingularMayerVietoris.
+SingularHomology` is already a real public module
+(`Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean:853`), and
+`SphereHomology.UnitSphere` is in `Lib/…/Sphere.lean` — the gate is the
+*geometric* cone, not the homology layer. Per-provider inventory, not a blanket
+claim: extraction waits on the D1/E1/C-side module-ization of SurgeryWindows and
+the Recognition/SphereTopology Morse machinery. Per the lane DAG, **G lands
+last**.
 
 `MorseCancel.canonicalMiddleMatrix`'s algebraic partner (`classCoordinateMatrix`,
 `mul_transvection_surjective`, `primitive_row_*`) is landed in Lib via F0a; the
@@ -45,9 +52,9 @@ structure itself (Rec 3359) and the geometric family remain in Recognition.
 
 | Module | Rows | Probe when unblocked |
 |---|---|---|
-| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G1, G2, G5 count theorems | producer probe: all 20 FQNs `#check` at module imports |
-| `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3 | same |
-| `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4, G5 pivot/cancel | same |
+| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G1, G2a | producer probe: all FQNs `#check` at module imports |
+| `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3, G2b | same (G2b consumes G3 — astra finding 8) |
+| `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4, G5 | same |
 | `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | G6 + headline | headline signature probe minus `SecondCountableTopology`, sphere consolidated |
 
 Consumer probe (post-landing): `Hopf.Recognition` wrapper re-proves

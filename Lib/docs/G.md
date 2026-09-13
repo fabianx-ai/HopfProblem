@@ -1,5 +1,15 @@
 # Lane G — textbook, decomposition, placement, and typed ledger
 
+**Stage-2 status: re-review corrections applied, pending independent acceptance.**
+The initial astra review is `Lib/docs/G-stage2-astra-review.md`; the re-review of
+`bd9c393` is `~/s6-notes/G-stage2-astra-review2.md`. The present uncommitted amendments
+restore the base trade signature, distinguish input-cut preservation from final
+cancellation, recover relative disk avoidance and surgery-complement transport, and
+reconcile the source table with G2a/G2b. The ledger contains 35 theorem signatures;
+its helper dependency census and production-module certification remain open.
+Muse's earlier `G-stage2-review.md` is self-review, superseded. These repairs do not
+constitute an independently frozen Axis-5 packet or authorization for Axis-6.
+
 **Smale's recognition theorem** (Smale, *Generalized Poincaré's conjecture in dimensions
 greater than four*, Ann. Math. 74 (1961), Theorem A; Milnor, *Lectures on the h-cobordism
 theorem*, Thm. 9.1 for the handle-elimination pattern): *a compact smooth manifold homotopy
@@ -28,7 +38,7 @@ Contents:
 ## 1. The theorem
 
 **Theorem (Smale 1961, Theorem A at $n = 6$).** *Let $E$ be a 6-dimensional finite-dimensional
-real normed space and $M$ a compact, Hausdorff, smooth ($C^\infty$) manifold modeled on $E$.
+real normed space and $M$ a compact, Hausdorff, smooth ($C^\infty$) manifold without boundary modeled on $E$.
 If $M$ is homotopy equivalent to the 6-sphere $S^6$, then $M$ is homeomorphic to $S^6$.*
 
 Remarks. (a) The hypothesis "homotopy equivalent" is used through three corollaries: $M$ is
@@ -40,8 +50,9 @@ library the target sphere is the unit sphere of $\mathbb{R}^7$,
 `Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1`, and the file's docstring records the precise
 relation to Mathlib's
 `proof_wanted ContinuousMap.HomotopyEquiv.nonempty_homeomorph_sphere` (topological, every $n$,
-Euclidean model, no compactness): our theorem is the smooth compact case at $n = 6$, strictly
-stronger per unit of generality dropped and strictly weaker in $n$.
+Euclidean model, no explicit compactness): our theorem establishes the smooth compact
+$n = 6$ case, after transport along a linear equivalence of model spaces. It does not
+strengthen the general topological statement.
 
 ## 2. The strategy
 
@@ -75,17 +86,41 @@ Then $f$ has only the minimum and the maximum, and Reeb concludes (§6).
 A Morse function $f \colon M \to \mathbb{R}$ with distinct critical values, ordered so that
 values increase with the index (*ordered*), exists by lanes D1 (existence of Morse functions)
 and E1 (rearrangement: the indices can be sorted without changing the critical set; an
-*excellent* system additionally separates all critical values). Choose $f$ *minimal*: fewest
-critical points among excellent ordered systems; and subject to that, *outer-index-minimal*:
-fewest index-(1) plus index-($n-1$) points. (Existence of the minimum: the critical set is
-finite, so both minima are attained.)
+*excellent* system additionally separates all critical values — the code's
+`exists_index_ordered_morse_system_preserving_critical_points`, which preserves the critical
+set, all indices, and all index counts).
 
-Since $M$ is connected, a minimal $f$ has exactly one local minimum (two minima would give two
-index-0 handles; their basins are open and disjoint... more directly: connectedness plus the
-handle picture forces a 0-handle per component at minimum; two minima would be cancelable or
-connectable, contradicting minimality — the code's
-`minimal_excellent_morse_extreme_counts_one`), and dually exactly one local maximum
-(index 6).
+**Existence of the minima.** Choose $f$ *minimal*: the set of critical-point counts of
+excellent Morse functions on $M$ is a nonempty subset of $\mathbb{N}$, so it has a least
+element attained by some $f$ (the code's `exists_minimal_excellent_morse_system` performs
+this `Nat.find`; the comparison class is *every* smooth Morse $g$ with distinct critical
+values, ordered or not). Then order $f$ by the rearrangement above — ordering preserves the
+count, so minimality is retained — and subject to the minimal count choose $f$
+*outer-index-minimal*: at $n=6$, minimize the index-$1$ + index-$5$ count among **all
+excellent Morse functions with the minimum total count**, whether ordered or not. Order
+the chosen function afterward; rearrangement preserves both the total and each index
+count, so both minimality properties survive (`exists_outer_index_minimal_ordered_morse_system`).
+This comparison class includes the excellent, not necessarily ordered, output of the trade.
+
+**Unique minimum.** Compactness and nonemptiness give a global minimum, whose Morse
+index is zero. If there is more than one index-0 point, the component bookkeeping for
+the handle decomposition of the connected manifold supplies an index-1 point $q$ whose
+two attaching ends lie in different path components of its lower sublevel
+(`exists_native_one_handle_joining_components`). This is a statement about attaching
+components, not yet about the endpoints of the given flow. Realizing the branches
+(`realize_one_handle_minimum_branches`) produces a compatible gradient-like field whose
+two ends descend to distinct minima $p,r$, with no other critical endpoints from $q$.
+Their values are distinct. Choose the higher minimum; the branch data gives its unique
+connecting orbit from $q$. A flow-preserving rearrangement makes this pair consecutive
+in critical value, retaining the critical set, indices and excellent Morse data.
+The isolated $(0,1)$ cancellation then removes the pair; surviving critical germs retain
+distinct critical values (`cancel_realized_higher_minimum`). The result is an excellent Morse function with exactly
+two fewer critical points (`exists_excellent_morse_reduction_of_multiple_minima`),
+contradicting minimality (`minimal_excellent_morse_forbids_pair_removal`). Hence
+`nativeMorseCount E f 0 = 1` (`minimal_excellent_morse_minimum_count_one`); applied to $-f$,
+whose indices are $n - \lambda$, `nativeMorseCount E f n = 1` — together
+`minimal_excellent_morse_extreme_counts_one`, and at $n = 6$ this is one minimum and one
+maximum.
 
 ## 4. Trading away index 1 (Milnor Thm. 8.1 at $n = 6$)
 
@@ -93,15 +128,40 @@ connectable, contradicting minimality — the code's
 *excellent* cancelling pair of indices $(2, 3)$: a local cubic model with a single
 intersection between the new attaching and belt spheres, embedded by the E2 machinery.
 
-**The trade.** Suppose an index-1 critical point $q$ exists. Its attaching sphere is $S^0$; its
-influence is local. The geometric content (the code's
-`exists_one_to_three_handle_trade`): place the born 2-handle so that its attaching circle meets
-the belt of the 1-handle in a single point (possible by the arc/tube machinery of E2/F in a
-simply connected level; the level's simple connectivity is inherited from $M$ by the van
-Kampen/Hurewicz bookkeeping of lanes A–B — the level of an ordered system below the index-2
-handles is simply connected because the higher handles do not change $\pi_1$), then cancel the
-$(1, 2)$-pair (first cancellation, E1). Net effect: one fewer index-1 point, one more index-3
-point, total critical count unchanged.
+**The trade.** Suppose an index-1 critical point $q$ exists. Its attaching sphere is $S^0$.
+The relevant regular cut $a$ is **after the original index-2 point region used by the
+argument and before the index-3 points**, not below the index-2 handles: 2-handles can kill
+fundamental-group generators, so a level below them need not be simply connected. The
+source's cut has index at most $2$ below and at least $3$ above (`hlow`/`hhigh`), with $q$
+below the cut and a critical-free band above it (the `Ioo a u` hypothesis) containing a
+basepoint `x`. The trade proceeds in two steps:
+
+* **Birth above the cut** (`exists_excellent_indexed_morse_birth` at $k = 2$): inside the
+  band, birth an excellent cancelling $(2,3)$-pair $b_2, b_3$. The birth changes nothing at
+  or below the cut: the level $f = a$ is preserved verbatim (`heq`, `hsub`, `hlevel` in the
+  code), the cut stays regular for the new function (`hgr`), the unique minimum survives
+  (`birth_preserves_unique_index_zero`), and there is a value gap below $b_2$ (`hgap`).
+* **Cancellation at the unchanged cut**
+  (`cancel_one_two_pair_at_unchanged_cut_of_unique_minimum`): the born 2-handle's attaching
+  circle is placed, in the preserved level $f^{-1}(a)$, to meet the belt sphere of the
+  1-handle $q$ transversely in a single point, and the first cancellation theorem removes
+  the $(1,2)$-pair $(q, b_2)$ using this preserved cut as input. The final cancellation
+  may change the function at the cut; its output promises pair removal and surviving
+  indices, not equality of the final level with the original one. The placement is the
+  substantive geometric content: the source realizes the two branches of the unique
+  minimum's 1-handle (`realize_unique_minimum_one_handle_branches`), produces flow windows
+  avoiding the level (`exists_same_flow_windows_avoiding_level`), identifies the attaching
+  branches along the common flow (`attaching_branches_of_same_flow`), uses the two distinct
+  unit-sphere points of the 1-handle's one-dimensional negative-coordinate space
+  (`exists_distinct_unitSphere_points_of_finrank_one`) to hit the belt once, and feeds the
+  transverse level data to
+  `cancel_one_two_pair_at_preserved_middle_cut`
+  (`exists_handle_trade_transverse_level_data` +
+  `cancel_transverse_pair_after_flow_preserving_descent`).
+
+Net effect (`exists_one_to_three_handle_trade`): an excellent Morse function $h$ with the
+same total count, `count 1` decreased by one, `count 3` increased by one, all other index
+counts unchanged — the born $b_3$ survives as the new index-3 point.
 
 **Minimality closes.** In an outer-index-minimal system the trade lowers the (index-1 +
 index-5) count while keeping the total count fixed — a contradiction. Hence no index-1 points;
@@ -118,23 +178,78 @@ number of 2-handles, $c$ the number of 3-handles), equal — by lane F's interse
 theorem — to the matrix of signed intersection numbers of belt spheres $S^{3}$ (of the
 2-handles) with attaching spheres $S^{2}$ (of the 3-handles) in the 5-dimensional level $N$.
 
-**Vanishing.** Since $M$ is a homology sphere, $H_*(M_{\leq a})$ in degree 2 must be killed by
-the index-3 handles: the middle matrix presents $H_2(\text{upper sublevel})$, which vanishes —
-a presentation of the trivial group. By lane F's algebra (F4c), $M_3$ is surjective; hence
-(F4a–b) a sequence of elementary column operations produces a unit entry; by F3 every such
-operation is realized by handle slides; by F2 + §7 of lane F the unit entry is converted to a
-single geometric intersection point of the corresponding belt/attaching spheres (the level $N$
-is 5-dimensional, the spheres have dimensions 3 and 2 — the Whitney case $(p, q) = (3, 2)$,
-$m = 5$, with the level's circles contracting by simple connectivity; this is exactly the
-code's pinned instance, now generalized in lane F to the model form); and by the first
-cancellation theorem (E1) the corresponding $(2, 3)$ pair cancels, *lowering the critical
-count* — contradicting minimality unless there was nothing to cancel. Hence no index-2 and no
-index-3 handles. (The contradiction argument is the code's
-`minimal_ordered_index_two_count_zero`; the count bookkeeping
-`ordered_no_middle_indices_count_two` then forces the total count to 2.)
+**Vanishing.** Handles of index at least 4 do not change $H_2$, so the sublevel just
+after all index-3 handles has the same $H_2$ as $M$, namely zero. The handle chain complex
+therefore gives a surjection $M_3 : \mathbb Z^c \to \mathbb Z^r$. If $r>0$, select a
+primitive coordinate functional on $\mathbb Z^r$; its composite with $M_3$ is a primitive
+integer row. Elementary column operations produce a unit in that row and are realized
+geometrically by slides of the 3-handles.
 
-**Index 4** is index 2 of $-f$: the same campaign on $-f$ (all hypotheses are
-sign-symmetric) kills index 4. $\square$
+The belt sphere of a 2-handle is $S^3$, and the attaching sphere of a 3-handle is $S^2$,
+in the 5-dimensional regular level $N$. **The Whitney step needs more than ambient simple
+connectivity.** Milnor's Theorem 6.6, with the moving sheet of dimension $2$ and the fixed
+sheet of dimension $3$, requires injectivity of
+$\pi_1(N \smallsetminus \text{fixed sheet}) \to \pi_1(N)$ in addition to the contractible
+Whitney loop and orientation hypotheses. The required input is supplied by the handle
+structure as follows — this is the mechanism the code implements, replacing ambient
+simple connectivity with a *lower-level* one.
+
+* **Lower-level circle contractions.** In an ordered system with one minimum and no
+  index-1 points, the noninitial handles preceding the chosen index-2 point have index
+  2. Start with the first sublevel disk, whose boundary is $S^5$, and induct through
+  those handles and the intervening regular intervals. The more general induction
+  allows indices 2 and 3 (`lower_circle_nullhomotopies_of_middle_indices`,
+  SphereTopology:5716); its specialization is
+  `lower_circle_nullhomotopies_of_ordered_native_indices` (SphereTopology:5821).
+  The induction step uses the complement argument below, then moves an arbitrary
+  upper-level circle off the belt and contracts it in that complement.
+* **Contract the disk in the old complement, then transport it.** For an index-$k$
+  handle, the old complement is the lower level minus the attaching $S^{k-1}$; the
+  new complement is the upper level minus the belt $S^{5-k}$. The surgery supplies
+  a homeomorphism between these complements. A circle in the old complement contracts
+  in the lower level. Relative general position moves the entire contracting disk
+  off the attaching sphere while fixing its boundary: the required inequality is
+  $2+(k-1)<5$, which holds for $k=2,3$. Transport this nullhomotopy through the
+  complement homeomorphism to obtain a contraction in the new complement. To prove
+  contractions for arbitrary circles in the upper level, first move the circle off
+  its belt using $1+(5-k)<5$. Circle avoidance and disk avoidance are distinct steps.
+  The source implements disk avoidance in `Smale.ImageComplement.circle_nullhomotopies`
+  (SurgeryWindows:691), complement transport in
+  `Smale.SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimension`
+  (705), and the upper-boundary step in `newBoundary_circle_nullhomotopies` (1357).
+  For the chosen index-2 handle, the attaching sphere is $S^1$ and $2+1<5$; the belt
+  is $S^3$, the boundary of the four-dimensional **cocore**, not of the descending
+  two-dimensional core disk.
+* **Keep regular-cut transport separate.** `exists_native_belt_cut_family`
+  (Recognition:8331) collects the lower-level contractions from
+  `last_index_two_collapse_is_primitive` (8295) and moves the attaching family and
+  its matrix through a critical-free band between two cuts **above** the chosen
+  critical value. It preserves the matrix and surjectivity. This is not the
+  old/new complement homeomorphism across the handle.
+* **Feed the Whitney disk construction.** The lower-level hypothesis
+  `hnull : ∀ δ : C(S¹, LowerLevel p), ∃ z, δ ~ const z` is sufficient input, not
+  literally the complement injectivity proposition. The signed-chart theorem
+  `surgery_beltComplement_circle_nullhomotopies` (SurgeryWindows:798) converts it
+  to contractions of all circles in the belt complement by the preceding argument.
+  `MorseSurgeryData.nonempty_belt_tubularBigon` (SingularHomology:19932, calls at
+  19956–19959) passes those contractions to the relative tubular-bigon construction.
+  With the smooth embedded attaching sphere, transverse data and a unit signed
+  intersection count, the Whitney cancellation removes opposite-sign pairs until
+  a single transverse intersection remains. `cancel_from_complete_middle_family`
+  (Recognition:8834) obtains the unit by slides and places the selected index-3 point
+  first; `cancel_from_preserved_unit_belt_cut` (8680) uses the retained lower-level
+  input, transported unit and flow data to perform the final pair cancellation.
+
+Once this input is in place, the unit gives one transverse geometric intersection and
+the first cancellation theorem removes the $(2,3)$ pair. This lowers the total critical
+count, contradicting minimality when $r>0$. Thus there are no index-2 handles; surjectivity
+alone does **not** eliminate the remaining index-3 handles.
+
+**Index 4** is index 2 of $-f$: the same campaign on $-f$ kills index 4.
+Only then does $H_3(M)=0$ force the index-3 count to vanish: the handle chain groups in
+degrees 2 and 4 are zero, so $H_3(M)$ is the free group on the remaining 3-handles.
+The source's complete-block matrix/count argument implements this final step. There are
+then exactly two critical points. $\square$
 
 ## 6. The Reeb conclusion
 
@@ -151,7 +266,7 @@ Generalized (per Q1): the model space — the whole chain takes an arbitrary
 finite-dimensional real normed space $E$ with $\mathrm{finrank}\, E = 6$ already (the code's
 signatures are `(E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]`;
 no inner product is used anywhere in the chain), and the `Lib/` statement drops the vestigial
-`[SecondCountableTopology M]` of the current wrapper (Recognition.lean:9444 — the inner chain
+`[SecondCountableTopology M]` of the current wrapper (Recognition.lean:9429 — the inner chain
 never uses it; a compact smooth Hausdorff manifold is second countable anyway, so the wrapper
 loses no content). The five spellings of $S^6$
 (`SphereHomology.UnitSphere 6`, `Smale.Hemisphere.Sphere 6`, `Smale.SixSphere`, `SixSphere`,
@@ -167,17 +282,26 @@ indices $= \{2, 3, 4\}$ and index 4 is index 2 of $-f$". Do not start it.
 
 # Axes 2–3 — additive decomposition, in dependency order
 
-| # | Lemma (§) | Inputs | Output | Current `Hopf/` home (names; lines on `1cc1784`) |
-|---|---|---|---|---|
-| G1 | Homotopy-sphere data (§1) | homotopy invariance (A), spheres (A/B) | path/simply connected, homology vanishing of $M$ | `Smale.simplyConnectedSpace_of_homotopySixSphere` (SingularHomology 14047), `Smale.pathConnectedSpace_of_homotopySixSphere` (SingularHomology 14052); `Smale.homotopySixSphere_homology_subsingleton` (SphereTopology 14226) |
-| G2 | Minimal ordered systems (§3) | D1 (Morse existence), E1 (rearrangement) | minimal excellent ordered system, one min, one max | `MorseCancel.exists_minimal_excellent_morse_system` (SphereTopology 6289), `MorseCancel.exists_index_ordered_morse_system_preserving_critical_points` (6942), `MorseCancel.minimal_excellent_morse_extreme_counts_one` (7013), `MorseCancel.exists_outer_index_minimal_ordered_morse_system` (10004), `MorseCancel.exists_minimal_ordered_morse_system_without_outer_indices` (10194) |
-| G3 | Handle trade (§4) | E1 (birth, cancellation), E2 (arcs), B ($\pi_1$) | index-1 → index-3 trade; outer counts vanish | `MorseCancel.exists_excellent_indexed_morse_birth` (8636), `MorseCancel.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum` (9600), `MorseCancel.exists_one_to_three_handle_trade` (9795), `MorseCancel.exists_one_to_three_handle_trade_at_cut` (9883), `MorseCancel.exists_one_to_three_handle_trade_of_ordered_indices` (9976), `MorseCancel.outer_index_minimal_index_one_count_zero` (10064), `MorseCancel.outer_index_minimality_neg` (10112), `MorseCancel.outer_index_minimal_outer_counts_zero` (10145) |
-| G4 | Middle blocks and the matrix (§5) | F10, F1 | the middle family; the middle matrix surjective | `MorseCancel.exists_middle_index_blocks` (SphereTopology 14386), `AdaptedWindows.exists_ordered_middle_family` (14468), `AdaptedWindows.exists_canonical_middle_family` (Rec 2688), `MorseCancel.canonical_middle_matrix_surjective` (Rec 3365), `Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_homotopySphere` / `..._of_complete_blocks` (SphereTopology 14338/14360) |
-| G5 | The pivot and the cancellation (§5) | F (slides, integer reduction, Whitney, single intersection) | a cancelled pair; middle counts zero; count two | `AdaptedWindows.exists_primitive_functional_unit` (Rec 7365), `AdaptedWindows.exists_first_middle_pivot` (Rec 3847), `MorseCancel.exists_native_belt_cut_family` (Rec 8340), `MorseCancel.cancel_from_preserved_unit_belt_cut` (Rec 8689), `MorseCancel.cancel_from_complete_middle_family` (Rec 8843), `MorseCancel.minimal_ordered_index_two_count_zero` / `..._four_count_zero` (Rec 8966/9026), `MorseCancel.ordered_no_middle_indices_count_two` (Rec 9258) |
-| G6 | Two critical points; Reeb (§6) | G2–G5, D1 (Reeb) | `Nonempty (M ≃ₜ S⁶)` | `MorseCancel.critical_pair_of_surgery_count_two` (Rec 9385), `MorseCancel.exists_two_critical_point_morse_of_homotopySixSphere` (Rec 9413), `MorseCancel.nonempty_homeomorph_of_homotopySixSphere` (Rec 9431), `Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points` (Rec 9344), headline `Smale.homeomorphic_sixSphere_of_homotopySixSphere` (Rec 9442) |
+Coordinates below are declaration starts at `bd9c393`; the relevant Lean sources are
+unchanged from `699d1a4`. ST = `Hopf/SphereTopology.lean`, Rec = `Hopf/Recognition.lean`,
+SH = `Hopf/SingularHomology.lean`. Exact names and signatures follow in Axis 5.
 
-Dependency order is row order; G1–G3 live in `Morse/MinimalSystem.lean` + `Morse/HandleTrade.lean`,
-G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/Smale.lean`.
+| # | Lemma (§) | Inputs | Output | Source declaration starts (in ledger order) |
+|---|---|---|---|---|
+| G1 | Homotopy-sphere data (§1) | A/B homotopy invariance and spheres | path/simple connectivity, homology vanishing | SH 14047, 14052; ST 14166 |
+| G2a | Preliminary minimal systems (§3) | D1 existence; E1 rearrangement and (0,1) cancellation | minimal excellent/ordered/outer-minimal systems, unique extrema | ST 6290, 6943, 7014, 10005 |
+| G3 | Handle trade (§4) | G1, G2a; E1 birth/cancellation; E2/F placement | index-1 → index-3 trade and outer-count vanishing | ST 8637, 9601, 9796, 9884, 9977, 10065, 10113, 10146 |
+| G2b | Post-trade assembly (§4) | G2a, G3 | minimal ordered system without outer indices | ST 10195 |
+| G4 | Middle blocks and matrix (§5) | F10, F1; ordered system and homotopy-sphere data | middle family and matrix surjectivity | ST 14278, 14300, 14326, 14408; Rec 2688, 3365 |
+| G5 | Pivot and cancellation (§5) | G4; F slides, integer reduction and Whitney; E1 cancellation | middle-count vanishing, total count two | Rec 7365, 3847, 8331, 8680, 8834, 8957, 9017, 9243 |
+| G6 | Two critical points; Reeb (§6) | G2b, G5, D1 Reeb | homeomorphism to S⁶ | Rec 9370, 9329, 9398, 9416, 9427 |
+
+These rows were originally thematic groups; the true dependency order requires splitting
+G2: `exists_minimal_ordered_morse_system_without_outer_indices` (G2b) consumes G3's
+`outer_index_minimal_outer_counts_zero`. The ledger below orders G2a → G3 → G2b → G4 →
+G5 → G6, and the file split follows it (see Axis 4): `MinimalSystem.lean` = G1 + G2a;
+`HandleTrade.lean` = G3 + G2b (post-trade assembly belongs with the trade);
+`MiddleBlocks.lean` = G4 + G5; `PoincareConjecture/Smale.lean` = G6 + the headline.
 
 ---
 
@@ -185,10 +309,13 @@ G4–G5 in `Morse/MiddleBlocks.lean`, G6 in `PoincareConjecture/Smale.lean`.
 
 | File | Rows | Mathlib twin |
 |---|---|---|
-| `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4 (block structure, middle matrix surjectivity) | none existing; shape after the reference example |
-| `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3 | none existing |
-| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G2, G5's count theorems | none existing |
-| `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | G1, G6 (the headline) | `Mathlib/Geometry/Manifold/PoincareConjecture.lean` (the `proof_wanted` file — our file is its smooth compact n=6 realization; the docstring records the relation) |
+| `Lib/Geometry/Manifold/Morse/MinimalSystem.lean` | G1 (homotopy-sphere data), G2a (minimal excellent/ordered/outer-minimal systems) | none existing |
+| `Lib/Geometry/Manifold/Morse/HandleTrade.lean` | G3 (birth, trade, outer-count kills), G2b (`without_outer_indices` assembly) | none existing |
+| `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` | G4 (block structure, middle matrix surjectivity), G5 (pivot, cancellation, count conclusions) | none existing; shape after the reference example |
+| `Lib/Geometry/Manifold/PoincareConjecture/Smale.lean` | G6 (Reeb assembly, the headline) | `Mathlib/Geometry/Manifold/PoincareConjecture.lean` (the `proof_wanted` file — our file is its smooth compact n=6 realization; the docstring records the relation) |
+
+Import order is `MinimalSystem → HandleTrade → MiddleBlocks → Smale`, matching the
+G2a → G3 → G2b → G4 → G5 → G6 dependency chain.
 
 ---
 
@@ -199,7 +326,7 @@ inputs to F's Whitney step), F (the whole Whitney/slide/integer engine), A/B (ho
 simply-connected inputs). The consumers `Hopf/Final.lean` (through `Degree.
 threefoldHomotopyEquiv`, which lane C re-routes) keep their statements.
 
-**Row G-headline (the axiom probe).** Current (Recognition 9442, verbatim in the G map):
+**Row G-headline (the axiom probe).** Current (Recognition 9427 at `699d1a4`, verbatim in the G map):
 `Smale.homeomorphic_sixSphere_of_homotopySixSphere (E : Type) [NormedAddCommGroup E]
 [NormedSpace ℝ E] [FiniteDimensional ℝ E] (M : Type) [TopologicalSpace M] [T2Space M]
 [SecondCountableTopology M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
@@ -212,12 +339,11 @@ The `Hopf/` theorem keeps its current statement (instance included) and re-prove
 Lib theorem (a `letI`/infer-step adapter — the statement seen from `Hopf/` is unchanged, per
 the comparator gate).
 
-**Rows G1–G6 — the typed ledger.** Imported from `~/s6-notes/kimi-notes/G-map.md` §1 items
-(1)–(15), re-grounded to the current source layout (all coordinates re-verified on `1cc1784`;
-the map's Recognition 11214–11317 block and SphereTopology 11803–13393 block are pre-move
-coordinates — the current positions are below). Signatures are verbatim unless marked
-"compressed" — compressed signatures elide repeated binder blocks with `…`; the verbatim
-form is at the cited source coordinate.
+**Rows G1–G6 — the typed ledger.** All signatures below are **verbatim from the current
+sources** (coordinates re-verified at `699d1a4` against the astra census); nothing is
+reconstructed or compressed. The row order G1 → G2a → G3 → G2b → G4 → G5 → G6 is the true
+dependency order — G2 splits because `exists_minimal_ordered_morse_system_without_
+outer_indices` (G2b) consumes G3's `outer_index_minimal_outer_counts_zero`.
 
 **Row G1 (homotopy-sphere data).** Verbatim:
 
@@ -230,7 +356,7 @@ theorem Smale.pathConnectedSpace_of_homotopySixSphere {M : Type*} [TopologicalSp
 
 theorem Smale.homotopySixSphere_homology_subsingleton {M : Type} [TopologicalSpace M]
     (h : M ≃ₕ Smale.SixSphere) (k : ℕ) (hk : k ≠ 0) (hktop : k ≠ 6) :
-    Subsingleton (SingularMayerVietoris.SingularHomology M k)    -- SphereTopology.lean:14226
+    Subsingleton (SingularMayerVietoris.SingularHomology M k)    -- SphereTopology.lean:14166
 ```
 
 Pure lemmas (no manifold content) — these are the hypothesis-generation half of the headline's
@@ -238,65 +364,126 @@ Pure lemmas (no manifold content) — these are the hypothesis-generation half o
 `PoincareConjecture/HomotopyData` section. The `≃ₕ Smale.SixSphere` spelling consolidates to
 `≃ₕ Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1` (defeq — `Smale.SixSphere` is that sphere).
 
-**Row G2 (minimal ordered systems).** The chain is a pure existence/minimality tower —
-no handle geometry, no `e : M ≃ₕ S⁶` except where marked:
+**Row G2a (preliminary minimal ordered systems).** Existence/minimality tower;
+the extreme-count proof uses the reviewed (0,1)-cancellation seam. Its surgical helpers
+must be supplied by the dependency census rather than treated as absent. Complete
+source signatures:
 
 ```lean
 theorem MorseCancel.exists_minimal_excellent_morse_system (E : Type*) (M : Type*)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
-    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
-    [PathConnectedSpace M] [Nonempty M] :
-    ∃ f : M → ℝ, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧ IsMorse E f ∧ … (excellent + minimal ncard)
-                          -- SphereTopology.lean:6289 (signature; compressed)
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
+    ∃ f : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧
+        Smale.ManifoldMorse.IsMorse E f ∧
+          ∃ _ : AdaptedWindows E f,
+            ∀ g : M → ℝ,
+              ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+                Smale.ManifoldMorse.IsMorse E g →
+                  Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+                    (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                      (Smale.ManifoldMorse.criticalPoints E g).ncard := by  -- SphereTopology.lean:6290
 
 theorem MorseCancel.exists_index_ordered_morse_system_preserving_critical_points {E M : Type*}
-    … : ∃ g : M → ℝ, … (same critical points, index-ordered values)
-                          -- SphereTopology.lean:6942 (compressed)
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M]
+    {f₀ : M → ℝ} (S₀ : AdaptedWindows E f₀) (hf₀ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f₀)
+    (hm₀ : Smale.ManifoldMorse.IsMorse E f₀) :
+    ∃ f : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧
+        Smale.ManifoldMorse.IsMorse E f ∧
+          Smale.ManifoldMorse.criticalPoints E f = Smale.ManifoldMorse.criticalPoints E f₀ ∧
+            (∀ x ∈ Smale.ManifoldMorse.criticalPoints E f₀,
+                nativeMorseIndex E f x = nativeMorseIndex E f₀ x) ∧
+              ∃ _ : AdaptedWindows E f,
+                (∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+                    f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q) ∧
+                  ∀ k, nativeMorseCount E f k = nativeMorseCount E f₀ k := by  -- SphereTopology.lean:6943
 
-theorem MorseCancel.minimal_excellent_morse_extreme_counts_one {E M : Type} …
-    (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ Smale.SixSphere) … :
-    nativeMorseCount E f 0 = 1 ∧ nativeMorseCount E f 6 = 1
-                          -- SphereTopology.lean:7013 (compressed)
+theorem MorseCancel.minimal_excellent_morse_extreme_counts_one {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hminimal :
+      ∀ g : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+          Smale.ManifoldMorse.IsMorse E g →
+            Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+              (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                (Smale.ManifoldMorse.criticalPoints E g).ncard) :
+    nativeMorseCount E f 0 = 1 ∧ nativeMorseCount E f (Module.finrank ℝ E) = 1 := by  -- SphereTopology.lean:7014
 
 theorem MorseCancel.exists_outer_index_minimal_ordered_morse_system (E : Type) (M : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [PathConnectedSpace M] :
-    ∃ f : M → ℝ, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧ Smale.ManifoldMorse.IsMorse E f ∧
+    ∃ f : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧
+        Smale.ManifoldMorse.IsMorse E f ∧
           ∃ _ : AdaptedWindows E f,
             (∀ p q : Smale.ManifoldMorse.criticalPoints E f,
                 f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q) ∧
               nativeMorseCount E f 0 = 1 ∧
                 nativeMorseCount E f (Module.finrank ℝ E) = 1 ∧
-                  (∀ g …, (criticalPoints E f).ncard ≤ (criticalPoints E g).ncard) ∧
-                    ∀ g …, (criticalPoints E g).ncard = (criticalPoints E f).ncard →
+                  (∀ g : M → ℝ,
+                      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+                        Smale.ManifoldMorse.IsMorse E g →
+                          Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+                            (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                              (Smale.ManifoldMorse.criticalPoints E g).ncard) ∧
+                    ∀ g : M → ℝ,
+                      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+                        Smale.ManifoldMorse.IsMorse E g →
+                          Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+                            (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                                (Smale.ManifoldMorse.criticalPoints E f).ncard →
                               nativeMorseCount E f 1 + nativeMorseCount E f 5 ≤
-                                nativeMorseCount E g 1 + nativeMorseCount E g 5
-                          -- SphereTopology.lean:10004; binder elisions as in map §1(6).
-                          -- NOTE: no hdim/e hypothesis — the 1+5 cost is stated at general
-                          -- finrank; the literal `1`/`5` indices pin it to n=6 anyway.
-
-theorem MorseCancel.exists_minimal_ordered_morse_system_without_outer_indices (E : Type)
-    (M : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
-    [CompactSpace M] [PathConnectedSpace M] (e : M ≃ₕ Smale.SixSphere)
-    (hdim : Module.finrank ℝ E = 6) :
-    ∃ f : M → ℝ, ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧ Smale.ManifoldMorse.IsMorse E f ∧
-          ∃ _ : AdaptedWindows E f,
-            (∀ p q …, f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q) ∧
-              nativeMorseCount E f 0 = 1 ∧ nativeMorseCount E f 6 = 1 ∧
-                nativeMorseCount E f 1 = 0 ∧ nativeMorseCount E f 5 = 0 ∧
-                  ∀ g : M → ℝ, … (minimality)
-                          -- SphereTopology.lean:10194 (map §1(5))
+                                nativeMorseCount E g 1 + nativeMorseCount E g 5 := by  -- SphereTopology.lean:10005
 ```
 
-**Row G3 (handle trade, Milnor Thm. 8.1 at n=6).** Birth → trade → count contradiction:
+`exists_minimal_excellent_morse_system` is the textbook "minimal Morse function" input
+(Faudree: an *excellent* Morse function minimising critical-point count); the other three
+refine it — index ordering, `count 0 = count dim = 1` (single min/max, §3 below), and
+outer-index minimality among equal critical-cardinality competitors.
+
+**Row G3 (handle trade, Milnor Thm. 8.1 at n=6).** Birth → trade → count contradiction.
+Complete verbatim signatures:
 
 ```lean
-theorem MorseCancel.exists_excellent_indexed_morse_birth {E M : Type*} … (k : ℕ)
-    (hband : ∀ y, f y ∈ Set.Ioo a u → y ∉ criticalPoints E f) … :
-    ∃ g : M → ℝ, … (excellent cancelling (k, k+1)-pair born in the band)
-                          -- SphereTopology.lean:8636 (compressed)
+theorem MorseCancel.exists_excellent_indexed_morse_birth {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hinj : Set.InjOn f (Smale.ManifoldMorse.criticalPoints E f)) {l u : ℝ}
+    (hband : ∀ y, f y ∈ Set.Ioo l u → y ∉ Smale.ManifoldMorse.criticalPoints E f) {x : M}
+    (hx : f x ∈ Set.Ioo l u) {k : ℕ} (hk : k < Module.finrank ℝ E) {U : Set M} (hU : IsOpen U)
+    (hxU : x ∈ U) :
+    ∃ (g : M → ℝ) (p q : M),
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g ∧
+        Smale.ManifoldMorse.IsMorse E g ∧
+          Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) ∧
+            p ∈ U ∧
+              q ∈ U ∧
+                nativeMorseIndex E g p = k ∧
+                  nativeMorseIndex E g q = k + 1 ∧
+                    g p < g q ∧
+                      g p ∈ Set.Ioo l u ∧
+                        g q ∈ Set.Ioo l u ∧
+                          (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                              (Smale.ManifoldMorse.criticalPoints E f).ncard + 2 ∧
+                            (∀ y,
+                                y ∈ Smale.ManifoldMorse.criticalPoints E g ↔
+                                  y ∈ Smale.ManifoldMorse.criticalPoints E f ∨ y = p ∨ y = q) ∧
+                              (∀ y, y ∉ U → g =ᶠ[𝓝 y] f) ∧
+                                (∀ y ∈ Smale.ManifoldMorse.criticalPoints E f, g =ᶠ[𝓝 y] f) ∧
+                                  nativeMorseCount E g k = nativeMorseCount E f k + 1 ∧
+                                    nativeMorseCount E g (k + 1) =
+                                        nativeMorseCount E f (k + 1) + 1 ∧
+                                      ∀ j,
+                                        j ≠ k →
+                                          j ≠ k + 1 →
+                                            nativeMorseCount E g j = nativeMorseCount E f j := by  -- SphereTopology.lean:8637
 
 theorem MorseCancel.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
@@ -309,30 +496,72 @@ theorem MorseCancel.cancel_one_two_pair_at_unchanged_cut_of_unique_minimum {E M 
     (hfr : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
     (hgr : ∀ y, g y = a → y ∉ Smale.ManifoldMorse.criticalPoints E g)
     (heq : ∀ y, g y = a ↔ f y = a)
-    (hhigh : ∀ z …, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
-    (hlow : ∀ z …, f z ≤ a → nativeMorseIndex E f z ≤ 3)
+    (hhigh : ∀ z : Smale.ManifoldMorse.criticalPoints E f, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
+    (hlow : ∀ z : Smale.ManifoldMorse.criticalPoints E f, f z ≤ a → nativeMorseIndex E f z ≤ 3)
     (m q r : Smale.ManifoldMorse.criticalPoints E g) (hm : nativeMorseIndex E g m = 0)
     (hq : nativeMorseIndex E g q = 1) (hr : nativeMorseIndex E g r = 2)
-    (hminimum : ∀ z …, nativeMorseIndex E g z = 0 → z = m)
+    (hminimum : ∀ z : Smale.ManifoldMorse.criticalPoints E g, nativeMorseIndex E g z = 0 → z = m)
     (hqa : g q < a) (har : a < g r)
-    (hgap : ∀ z …, g z < g r → g z < a)
-    (hnewlow : ∀ z …, g z ≤ a → nativeMorseIndex E g z ≤ 2) :
-    ∃ h : M → ℝ, ContMDiff … ∞ h ∧ IsMorse E h ∧ Set.InjOn h … ∧
-            (criticalPoints E h).ncard + 2 = (criticalPoints E g).ncard ∧
-              (∀ w, w ∈ criticalPoints E h ↔ w ∈ criticalPoints E g ∧ w ≠ q.val ∧ w ≠ r.val) ∧
-                ∀ w ∈ criticalPoints E h, nativeMorseIndex E h w = nativeMorseIndex E g w
-                          -- SphereTopology.lean:9600 (map §1(12), verbatim modulo binder …)
+    (hgap : ∀ z : Smale.ManifoldMorse.criticalPoints E g, g z < g r → g z < a)
+    (hnewlow :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E g, g z ≤ a → nativeMorseIndex E g z ≤ 2) :
+    ∃ h : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ h ∧
+        Smale.ManifoldMorse.IsMorse E h ∧
+          Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
+            (Smale.ManifoldMorse.criticalPoints E h).ncard + 2 =
+                (Smale.ManifoldMorse.criticalPoints E g).ncard ∧
+              (∀ w,
+                  w ∈ Smale.ManifoldMorse.criticalPoints E h ↔
+                    w ∈ Smale.ManifoldMorse.criticalPoints E g ∧ w ≠ q.val ∧ w ≠ r.val) ∧
+                ∀ w ∈ Smale.ManifoldMorse.criticalPoints E h,
+                  nativeMorseIndex E h w = nativeMorseIndex E g w := by  -- SphereTopology.lean:9601
 
-theorem MorseCancel.exists_one_to_three_handle_trade {E M : Type*} …
-    (hm0 : nativeMorseIndex E f m = 0) (hq1 : nativeMorseIndex E f q = 1) … {a l u : ℝ}
-    (hreg …) (hhigh : ∀ z …, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
-    (hlow : ∀ z …, f z ≤ a → nativeMorseIndex E f z ≤ 2) (hqa : f q < a) (hal : a < l)
-    (hband : ∀ y, f y ∈ Set.Ioo a u → y ∉ criticalPoints E f) {x : M}
-    (hx : f x ∈ Set.Ioo l u) : ∃ h … (same conclusion as the trade family)
-                          -- SphereTopology.lean:9795 (map §1(11), compressed)
+theorem MorseCancel.exists_one_to_three_handle_trade {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
+    (hdim : Module.finrank ℝ E = 6) (m q : Smale.ManifoldMorse.criticalPoints E f)
+    (hm0 : nativeMorseIndex E f m = 0) (hq1 : nativeMorseIndex E f q = 1)
+    (hminimum : ∀ z : Smale.ManifoldMorse.criticalPoints E f, nativeMorseIndex E f z = 0 → z = m)
+    {a l u : ℝ} (hreg : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hhigh : ∀ z : Smale.ManifoldMorse.criticalPoints E f, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
+    (hlow : ∀ z : Smale.ManifoldMorse.criticalPoints E f, f z ≤ a → nativeMorseIndex E f z ≤ 2)
+    (hqa : f q < a) (hal : a < l)
+    (hband : ∀ y, f y ∈ Set.Ioo a u → y ∉ Smale.ManifoldMorse.criticalPoints E f) {x : M}
+    (hx : f x ∈ Set.Ioo l u) :
+    ∃ h : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ h ∧
+        Smale.ManifoldMorse.IsMorse E h ∧
+          Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
+            (Smale.ManifoldMorse.criticalPoints E h).ncard =
+                (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+              nativeMorseCount E h 1 + 1 = nativeMorseCount E f 1 ∧
+                nativeMorseCount E h 3 = nativeMorseCount E f 3 + 1 ∧
+                  ∀ j, j ≠ 1 → j ≠ 3 → nativeMorseCount E h j = nativeMorseCount E f j := by  -- SphereTopology.lean:9796
 
-theorem MorseCancel.exists_one_to_three_handle_trade_at_cut {E M : Type*} …
-                          -- SphereTopology.lean:9883 (compressed; cut-fixed variant)
+theorem MorseCancel.exists_one_to_three_handle_trade_at_cut {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
+    (hdim : Module.finrank ℝ E = 6) (m q : Smale.ManifoldMorse.criticalPoints E f)
+    (hm0 : nativeMorseIndex E f m = 0) (hq1 : nativeMorseIndex E f q = 1)
+    (hminimum : ∀ z : Smale.ManifoldMorse.criticalPoints E f, nativeMorseIndex E f z = 0 → z = m)
+    {a : ℝ} (hreg : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (hhigh : ∀ z : Smale.ManifoldMorse.criticalPoints E f, a ≤ f z → 3 ≤ nativeMorseIndex E f z)
+    (hlow : ∀ z : Smale.ManifoldMorse.criticalPoints E f, f z ≤ a → nativeMorseIndex E f z ≤ 2)
+    (hqa : f q < a) :
+    ∃ h : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ h ∧
+        Smale.ManifoldMorse.IsMorse E h ∧
+          Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
+            (Smale.ManifoldMorse.criticalPoints E h).ncard =
+                (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+              nativeMorseCount E h 1 + 1 = nativeMorseCount E f 1 ∧
+                nativeMorseCount E h 3 = nativeMorseCount E f 3 + 1 ∧
+                  ∀ j, j ≠ 1 → j ≠ 3 → nativeMorseCount E h j = nativeMorseCount E f j := by  -- SphereTopology.lean:9884
 
 theorem MorseCancel.exists_one_to_three_handle_trade_of_ordered_indices {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
@@ -340,69 +569,233 @@ theorem MorseCancel.exists_one_to_three_handle_trade_of_ordered_indices {E M : T
     [PathConnectedSpace M] (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
     (hdim : Module.finrank ℝ E = 6)
-    (horder : ∀ p q …, f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
+    (horder :
+      ∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+        f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
     (m q : Smale.ManifoldMorse.criticalPoints E f) (hm0 : nativeMorseIndex E f m = 0)
     (hq1 : nativeMorseIndex E f q = 1)
-    (hminimum : ∀ z …, nativeMorseIndex E f z = 0 → z = m) :
-    ∃ h : M → ℝ, ContMDiff … ∞ h ∧ Smale.ManifoldMorse.IsMorse E h ∧
-            Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
+    (hminimum :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f, nativeMorseIndex E f z = 0 → z = m) :
+    ∃ h : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ h ∧
+        Smale.ManifoldMorse.IsMorse E h ∧
+          Set.InjOn h (Smale.ManifoldMorse.criticalPoints E h) ∧
             (Smale.ManifoldMorse.criticalPoints E h).ncard =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
+                (Smale.ManifoldMorse.criticalPoints E f).ncard ∧
               nativeMorseCount E h 1 + 1 = nativeMorseCount E f 1 ∧
                 nativeMorseCount E h 3 = nativeMorseCount E f 3 + 1 ∧
-                  ∀ j, j ≠ 1 → j ≠ 3 → nativeMorseCount E h j = nativeMorseCount E f j
-                          -- SphereTopology.lean:9976 (map §1(10))
+                  ∀ j, j ≠ 1 → j ≠ 3 → nativeMorseCount E h j = nativeMorseCount E f j := by  -- SphereTopology.lean:9977
 
-theorem MorseCancel.outer_index_minimal_index_one_count_zero {E M : Type} …
-    (S : AdaptedWindows E f) (hf …) (hm : IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
-    (hdim : Module.finrank ℝ E = 6) (horder …) (hzero : nativeMorseCount E f 0 = 1)
-    (hsecondary : ∀ g …, … nativeMorseCount E f 1 + nativeMorseCount E f 5 ≤ …) :
-    nativeMorseCount E f 1 = 0                     -- SphereTopology.lean:10064 (map §1(8))
+theorem MorseCancel.outer_index_minimal_index_one_count_zero {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
+    (hdim : Module.finrank ℝ E = 6)
+    (horder :
+      ∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+        f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
+    (hzero : nativeMorseCount E f 0 = 1)
+    (hsecondary :
+      ∀ g : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+          Smale.ManifoldMorse.IsMorse E g →
+            Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+              (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                  (Smale.ManifoldMorse.criticalPoints E f).ncard →
+                nativeMorseCount E f 1 + nativeMorseCount E f 5 ≤
+                  nativeMorseCount E g 1 + nativeMorseCount E g 5) :
+    nativeMorseCount E f 1 = 0 := by  -- SphereTopology.lean:10065
 
-theorem MorseCancel.outer_index_minimality_neg {E M : Type} … (hf …) (hm : IsMorse E f)
-    (hdim : Module.finrank ℝ E = 6) (hsecondary …) :
-    ∀ g : M → ℝ, … →
-      nativeMorseCount E (fun x => -f x) 1 + nativeMorseCount E (fun x => -f x) 5 ≤
-        nativeMorseCount E g 1 + nativeMorseCount E g 5
-                          -- SphereTopology.lean:10112 (map §1(9))
+theorem MorseCancel.outer_index_minimality_neg {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hdim : Module.finrank ℝ E = 6)
+    (hsecondary :
+      ∀ g : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+          Smale.ManifoldMorse.IsMorse E g →
+            Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+              (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                  (Smale.ManifoldMorse.criticalPoints E f).ncard →
+                nativeMorseCount E f 1 + nativeMorseCount E f 5 ≤
+                  nativeMorseCount E g 1 + nativeMorseCount E g 5) :
+    ∀ g : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+        Smale.ManifoldMorse.IsMorse E g →
+          Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+            (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                (Smale.ManifoldMorse.criticalPoints E (fun x => -f x)).ncard →
+              nativeMorseCount E (fun x => -f x) 1 + nativeMorseCount E (fun x => -f x) 5 ≤
+                nativeMorseCount E g 1 + nativeMorseCount E g 5 := by  -- SphereTopology.lean:10113
 
-theorem MorseCancel.outer_index_minimal_outer_counts_zero {E M : Type} …
-    (S : AdaptedWindows E f) (hf …) (hm : IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
-    (hdim : Module.finrank ℝ E = 6) (horder …) (hzero : nativeMorseCount E f 0 = 1)
-    (hsix : nativeMorseCount E f 6 = 1) (hsecondary …) :
-    nativeMorseCount E f 1 = 0 ∧ nativeMorseCount E f 5 = 0
-                          -- SphereTopology.lean:10145 (map §1(7))
+theorem MorseCancel.outer_index_minimal_outer_counts_zero {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
+    (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (e : M ≃ₕ Smale.SixSphere)
+    (hdim : Module.finrank ℝ E = 6)
+    (horder :
+      ∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+        f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
+    (hzero : nativeMorseCount E f 0 = 1) (hsix : nativeMorseCount E f 6 = 1)
+    (hsecondary :
+      ∀ g : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+          Smale.ManifoldMorse.IsMorse E g →
+            Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+              (Smale.ManifoldMorse.criticalPoints E g).ncard =
+                  (Smale.ManifoldMorse.criticalPoints E f).ncard →
+                nativeMorseCount E f 1 + nativeMorseCount E f 5 ≤
+                  nativeMorseCount E g 1 + nativeMorseCount E g 5) :
+    nativeMorseCount E f 1 = 0 ∧ nativeMorseCount E f 5 = 0 := by  -- SphereTopology.lean:10146
 ```
 
-**Row G4 (middle blocks and the matrix).**
+**Row G2b (post-trade assembly — consumes G3).** `exists_minimal_ordered_morse_system_
+without_outer_indices` packages G2a + G3 (its proof calls
+`outer_index_minimal_outer_counts_zero`); complete verbatim signature:
 
 ```lean
-theorem Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_homotopySphere
-    {E M : Type} … (hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ Smale.SixSphere) (r c : ℕ)
-    (htwo : …) (hc : …) (hthree : …) :
-    Function.Surjective (S.middleMatrix …).mulVec   -- SphereTopology.lean:14338 (compressed)
-
-theorem Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_complete_blocks
-    {E M : Type} …                                  -- SphereTopology.lean:14360 (compressed)
-
-theorem MorseCancel.exists_middle_index_blocks {E M : Type} …
-                          -- SphereTopology.lean:14386 (compressed)
-
-theorem AdaptedWindows.exists_ordered_middle_family {E M : Type} …
-                          -- SphereTopology.lean:14468 (compressed)
-
-theorem AdaptedWindows.exists_canonical_middle_family {E M : Type} [NormedAddCommGroup E]
-    …                                                 -- Recognition.lean:2688 (compressed)
-
-theorem MorseCancel.canonical_middle_matrix_surjective {E M : Type} [NormedAddCommGroup E]
-    …                                                 -- Recognition.lean:3365 (compressed)
+theorem MorseCancel.exists_minimal_ordered_morse_system_without_outer_indices (E : Type)
+    (M : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    [PathConnectedSpace M] (e : M ≃ₕ Smale.SixSphere) (hdim : Module.finrank ℝ E = 6) :
+    ∃ f : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧
+        Smale.ManifoldMorse.IsMorse E f ∧
+          ∃ _ : AdaptedWindows E f,
+            (∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+                f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q) ∧
+              nativeMorseCount E f 0 = 1 ∧
+                nativeMorseCount E f 6 = 1 ∧
+                  nativeMorseCount E f 1 = 0 ∧
+                    nativeMorseCount E f 5 = 0 ∧
+                      ∀ g : M → ℝ,
+                        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g →
+                          Smale.ManifoldMorse.IsMorse E g →
+                            Set.InjOn g (Smale.ManifoldMorse.criticalPoints E g) →
+                              (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                                (Smale.ManifoldMorse.criticalPoints E g).ncard := by  -- SphereTopology.lean:10195
 ```
 
-`canonicalMiddleMatrix` itself (`def`, Recognition.lean:3359) is pure algebra over
-`IsNativeMiddleBasinFamily`/`middleSectionClass` — it is an F10-adjacent input, already
-in-scope for the lane-F boundary, and G4 consumes it.
+**Row G4 (middle blocks and the matrix).** Verbatim:
 
-**Row G5 (pivot and cancellation).**
+```lean
+theorem Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_homotopySphere {E M : Type}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
+    (S : Smale.ManifoldMorse.SurgeryWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ Smale.SixSphere) (r c : ℕ)
+    (htwo : S.HasIndexTwoPrefix r) (hc : r + c < S.count) (hthree : S.HasIndexThreeBlock r c)
+    (hj : r + c + 1 < S.count)
+    (hafter :
+      ∀ i : Fin S.count,
+        r + c < i.val →
+          i.val + 1 < S.count →
+            2 ≤ Module.finrank ℝ (S.data (S.point i)).chart.NegativeCoordinates ∧
+              Module.finrank ℝ (S.data (S.point i)).chart.NegativeCoordinates ≠ 3) :
+    Function.Surjective (S.middleMatrix hf r c htwo hc hthree).mulVec := by  -- SphereTopology.lean:14278
+
+theorem Smale.ManifoldMorse.SurgeryWindows.middleMatrix_surjective_of_complete_blocks {E M : Type}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
+    (S : Smale.ManifoldMorse.SurgeryWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ Smale.SixSphere) (r c : ℕ)
+    (htwo : S.HasIndexTwoPrefix r) (hc : r + c < S.count) (hthree : S.HasIndexThreeBlock r c)
+    (hcount : r + c + 2 = S.count) :
+    Function.Surjective (S.middleMatrix hf r c htwo hc hthree).mulVec := by  -- SphereTopology.lean:14300
+
+theorem MorseCancel.exists_middle_index_blocks {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] {f : M → ℝ}
+    (S : Smale.ManifoldMorse.SurgeryWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6)
+    (horder :
+      ∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+        f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
+    (hzero : nativeMorseCount E f 0 = 1) (hone : nativeMorseCount E f 1 = 0) :
+    ∃ r c : ℕ,
+      S.HasIndexTwoPrefix r ∧
+        ∃ _ : r + c < S.count,
+          S.HasIndexThreeBlock r c ∧
+            r + c + 1 < S.count ∧
+              ∀ i : Fin S.count,
+                r + c < i.val →
+                  4 ≤ Module.finrank ℝ (S.data (S.point i)).chart.NegativeCoordinates := by  -- SphereTopology.lean:14326
+
+theorem AdaptedWindows.exists_ordered_middle_family {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : Smale.ManifoldMorse.IsMorse E f)
+    (hdim : Module.finrank ℝ E = 6) (r n : ℕ) (hn : r + n < S.toSurgeryWindows.count)
+    (hthree : S.toSurgeryWindows.HasIndexThreeBlock r n)
+    (ε : Smale.ManifoldMorse.criticalPoints E f → ℝ) (hε : ∀ q, 0 < ε q) :
+    let q := S.toSurgeryWindows.point ⟨r, by omega⟩
+    ∃ T : AdaptedWindows E f,
+      (∀ p, (T.data p).chart = (S.data p).chart) ∧
+        (∀ p, (T.data p).radius < ε p) ∧
+          (∀ p ∈ Smale.ManifoldMorse.criticalPoints E f, ∀ᶠ y in 𝓝 p, T.field y = S.field y) ∧
+            ∃ α : Fin n → (Smale.Hemisphere.Sphere 2) → (S.data q).UpperLevel,
+              MorseCancel.IsNativeMiddleBasinFamily T hf (S.data q).upper_regular
+                (MorseCancel.nativeMiddleBlockPoint S r n hn) α := by  -- SphereTopology.lean:14408
+
+theorem AdaptedWindows.exists_canonical_middle_family {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
+    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a : ℝ}
+    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f) {n : ℕ}
+    (p : Fin n → Smale.ManifoldMorse.criticalPoints E f)
+    (hp : ∀ j, MorseCancel.nativeMorseIndex E f (p j) = 3)
+    (α : Fin n → (Smale.Hemisphere.Sphere 2) → { y : M // f y = a })
+    (hα : MorseCancel.IsNativeMiddleBasinFamily S hf ha p α) :
+    ∃ γ : Fin n → (Smale.Hemisphere.Sphere 2) → { y : M // f y = a },
+      MorseCancel.IsNativeMiddleBasinFamily S hf ha p γ ∧
+        (∀ j, Set.range (γ j) = Set.range (α j)) ∧
+          ∀ j x,
+            ∃ t : ℝ,
+              S.flow t (MorseCancel.nativeIndexThreeAttachingSphere S (p j) (hp j) x).val =
+                (γ j x).val := by  -- Recognition.lean:2688
+
+theorem MorseCancel.canonical_middle_matrix_surjective {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] {f : M → ℝ}
+    (S T : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere)
+    (horder :
+      ∀ p q : Smale.ManifoldMorse.criticalPoints E f,
+        f p < f q → nativeMorseIndex E f p ≤ nativeMorseIndex E f q)
+    (hzero : nativeMorseCount E f 0 = 1) (hone : nativeMorseCount E f 1 = 0) (r n : ℕ)
+    (hr : nativeMorseCount E f 2 = r) (hn : nativeMorseCount E f 3 = n)
+    (hrc : r + n < S.toSurgeryWindows.count)
+    (hp : ∀ j, nativeMorseIndex E f (nativeMiddleBlockPoint S r n hrc j) = 3)
+    (hbefore :
+      ∀ j,
+        nativeMiddleBaseCut S r n hrc <
+          T.toSurgeryWindows.lower (nativeMiddleBlockPoint S r n hrc j))
+    (B :
+      (Fin r → ℤ) ≃ₗ[ℤ]
+        SingularMayerVietoris.SingularHomology { y : M // f y ≤ nativeMiddleBaseCut S r n hrc } 2)
+    (γ : Fin n → C((Smale.Hemisphere.Sphere 2), { y : M // f y = nativeMiddleBaseCut S r n hrc }))
+    (horbit :
+      ∀ j x,
+        ∃ t : ℝ,
+          T.flow t
+              (nativeIndexThreeAttachingSphere T (nativeMiddleBlockPoint S r n hrc j) (hp j)
+                  x).val =
+            (γ j x).val) :
+    Function.Surjective (canonicalMiddleMatrix B γ).mulVec  -- Recognition.lean:3365
+```
+
+`exists_canonical_middle_family` supplies a family with the same ranges and a pointwise
+flow-orbit parametrization of the native attaching spheres; it does not supply a unit
+column. `canonical_middle_matrix_surjective` derives matrix surjectivity from the span
+of the middle-section classes. The later `exists_primitive_functional_unit` supplies
+the unit after handle slides. The adjacent source helper
+`AdaptedWindows.no_connection_above_canonical_cut` (Recognition:3397) is not an additional
+promised G4 output; its dependency ownership remains part of the helper census.
+
+**Row G5 (pivot and cancellation).** Verbatim:
 
 ```lean
 theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddCommGroup E]
@@ -410,12 +803,18 @@ theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddC
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] [PathConnectedSpace M]
     {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = 6)
-    (horder : ∀ x y …, f x < f y → MorseCancel.nativeMorseIndex E f x ≤ … y)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → MorseCancel.nativeMorseIndex E f x ≤ MorseCancel.nativeMorseIndex E f y)
     {a : ℝ} (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
-    (hcut : ∀ z …, MorseCancel.nativeMorseIndex E f z < 3 → f z < a)
+    (hcut :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        MorseCancel.nativeMorseIndex E f z < 3 → f z < a)
     {r n : ℕ} (p : Fin n → Smale.ManifoldMorse.criticalPoints E f)
     (hp : ∀ j, MorseCancel.nativeMorseIndex E f (p j) = 3)
-    (hcomplete : ∀ z …, nativeMorseIndex E f z = 3 → ∃ j, p j = z)
+    (hcomplete :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        MorseCancel.nativeMorseIndex E f z = 3 → ∃ j, p j = z)
     (hlower : ∀ j, a < S.toSurgeryWindows.lower (p j))
     (B : (Fin r → ℤ) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2)
     (γ : Fin n → C((Smale.Hemisphere.Sphere 2), { y : M // f y = a }))
@@ -423,63 +822,335 @@ theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddC
     (hsurj : Function.Surjective (MorseCancel.canonicalMiddleMatrix B γ).mulVec)
     (L : SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2 →ₗ[ℤ] ℤ)
     (hL : Function.Surjective L) :
-    ∃ ops : List (Fin n × Fin n × ℤ), (∀ op ∈ ops, op.1 ≠ op.2.1) ∧ ∃ g : M → ℝ, …
-                          -- Recognition.lean:7365 (map §1(14); conclusion: handle slides
-                          -- produce g, windows T, family Γ, and a pivot
-                          -- ∃ i, L ((equalCutHomologyEquiv hsub).symm
-                          --   (MorseCancel.middleSectionClass (Γ i))) = 1 ∨ … = -1)
+    ∃ ops : List (Fin n × Fin n × ℤ),
+      (∀ op ∈ ops, op.1 ≠ op.2.1) ∧
+        ∃ g : M → ℝ,
+          ∃ hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g,
+            Smale.ManifoldMorse.IsMorse E g ∧
+              ∃ hcrit :
+                Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f,
+                (∀ x y : Smale.ManifoldMorse.criticalPoints E g,
+                    g x < g y →
+                      MorseCancel.nativeMorseIndex E g x ≤ MorseCancel.nativeMorseIndex E g y) ∧
+                  (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                      MorseCancel.nativeMorseIndex E g z = MorseCancel.nativeMorseIndex E f z) ∧
+                    (∀ d,
+                        MorseCancel.nativeMorseCount E g d = MorseCancel.nativeMorseCount E f d) ∧
+                      (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                          (∀ j, z ≠ (p j).val) → g z = f z) ∧
+                        (∀ z : Smale.ManifoldMorse.criticalPoints E g,
+                            MorseCancel.nativeMorseIndex E g z < 3 → g z < a) ∧
+                          ∃ hsub : ∀ y, g y ≤ a ↔ f y ≤ a,
+                            ∃ hlevel : ∀ y, g y = a ↔ f y = a,
+                              ∃ hga : ∀ y, g y = a → y ∉ Smale.ManifoldMorse.criticalPoints E g,
+                                ∃ T : AdaptedWindows E g,
+                                  (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                                      ∀ᶠ y in 𝓝 z, T.field y = S.field y) ∧
+                                    (∀ y, f y ≤ a → g =ᶠ[𝓝 y] f) ∧
+                                      let p' : Fin n → Smale.ManifoldMorse.criticalPoints E g :=
+                                        fun j => ⟨(p j).val, hcrit.symm ▸ (p j).property⟩
+                                      let B' := B.trans (MorseCancel.equalCutHomologyEquiv hsub)
+                                      (∀ j, MorseCancel.nativeMorseIndex E g (p' j) = 3) ∧
+                                        (∀ z : Smale.ManifoldMorse.criticalPoints E g,
+                                            MorseCancel.nativeMorseIndex E g z = 3 →
+                                              ∃ j, p' j = z) ∧
+                                          (∀ j, a < T.toSurgeryWindows.lower (p' j)) ∧
+                                            ∃ Γ :
+                                              Fin n →
+                                                C((Smale.Hemisphere.Sphere 2),
+                                                  { y : M // g y = a }),
+                                              MorseCancel.IsNativeMiddleBasinFamily T hg hga p'
+                                                  (fun j => Γ j) ∧
+                                                (∀ j,
+                                                    (∀ op ∈ ops, op.2.1 ≠ j) →
+                                                      Γ j =
+                                                        MorseCancel.equalCutSection hlevel
+                                                          (γ j)) ∧
+                                                  MorseCancel.canonicalMiddleMatrix (M := M) (f :=
+                                                        g) (a := a) (r := r) (n := n) B' Γ =
+                                                      MorseCancel.canonicalMiddleMatrix (M := M)
+                                                          (f := f) (a := a) (r := r) (n := n) B
+                                                          γ *
+                                                        (ops.map
+                                                            (fun op =>
+                                                              Matrix.transvection op.1 op.2.1
+                                                                op.2.2)).prod ∧
+                                                    Function.Surjective
+                                                        (MorseCancel.canonicalMiddleMatrix B'
+                                                            Γ).mulVec ∧
+                                                      (∃ i : Fin n,
+                                                          L
+                                                                ((MorseCancel.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancel.middleSectionClass
+                                                                    (Γ i))) =
+                                                              1 ∨
+                                                            L
+                                                                ((MorseCancel.equalCutHomologyEquiv
+                                                                      hsub).symm
+                                                                  (MorseCancel.middleSectionClass
+                                                                    (Γ i))) =
+                                                              -1) ∧
+                                                        ∀ z : M,
+                                                          f z ≤ a →
+                                                            (∀ x,
+                                                                Filter.Tendsto
+                                                                    (fun t => T.flow t x)
+                                                                    Filter.atBot (𝓝 z) ↔
+                                                                  Filter.Tendsto
+                                                                    (fun t => S.flow t x)
+                                                                    Filter.atBot (𝓝 z)) ∧
+                                                              (∀ x,
+                                                                  Filter.Tendsto
+                                                                      (fun t => S.flow t x)
+                                                                      Filter.atBot (𝓝 z) →
+                                                                    Set.range
+                                                                        (fun t => T.flow t x) =
+                                                                      Set.range
+                                                                        (fun t => S.flow t x)) ∧
+                                                                ∀ v,
+                                                                  Filter.Tendsto
+                                                                      (fun t => T.flow t z)
+                                                                      Filter.atTop (𝓝 v) ↔
+                                                                    Filter.Tendsto
+                                                                      (fun t => S.flow t z)
+                                                                      Filter.atTop (𝓝 v) := by  -- Recognition.lean:7365
 
-theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} …  -- Recognition.lean:3847
-theorem MorseCancel.exists_native_belt_cut_family {E M : Type} …  -- Recognition.lean:8340
-theorem MorseCancel.cancel_from_preserved_unit_belt_cut {E M : Type} …  -- Recognition.lean:8689
+theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} [PreconnectedSpace M]
+    [Nonempty M] (S₀ : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) {a : ℝ}
+    (ha : ∀ y, f y = a → y ∉ Smale.ManifoldMorse.criticalPoints E f)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → MorseCancel.nativeMorseIndex E f x ≤ MorseCancel.nativeMorseIndex E f y)
+    {r n : ℕ} (p : Fin n → Smale.ManifoldMorse.criticalPoints E f)
+    (hp : ∀ j, MorseCancel.nativeMorseIndex E f (p j) = 3)
+    (hcomplete :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        MorseCancel.nativeMorseIndex E f z = 3 → ∃ j, p j = z)
+    (hlower : ∀ j, a < S₀.toSurgeryWindows.lower (p j))
+    (B : (Fin r → ℤ) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2)
+    (γ : Fin n → C((Smale.Hemisphere.Sphere 2), { y : M // f y = a }))
+    (hγ : MorseCancel.IsNativeMiddleBasinFamily S₀ hf ha p (fun j => γ j))
+    (hsurj : Function.Surjective (MorseCancel.canonicalMiddleMatrix B γ).mulVec) (q : Fin n) :
+    ∃ g : M → ℝ,
+      ∃ hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g,
+        Smale.ManifoldMorse.IsMorse E g ∧
+          ∃ hcrit :
+            Smale.ManifoldMorse.criticalPoints E g = Smale.ManifoldMorse.criticalPoints E f,
+            (∀ x y : Smale.ManifoldMorse.criticalPoints E g,
+                g x < g y →
+                  MorseCancel.nativeMorseIndex E g x ≤ MorseCancel.nativeMorseIndex E g y) ∧
+              (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                  MorseCancel.nativeMorseIndex E g z = MorseCancel.nativeMorseIndex E f z) ∧
+                (∀ k, MorseCancel.nativeMorseCount E g k = MorseCancel.nativeMorseCount E f k) ∧
+                  (∀ z ∈ Smale.ManifoldMorse.criticalPoints E f,
+                      (∀ j, z ≠ (p j).val) → g z = f z) ∧
+                    (∀ j, j ≠ q → g (p q) < g (p j)) ∧
+                      ∃ hsub : ∀ y, g y ≤ a ↔ f y ≤ a,
+                        ∃ hlevel : ∀ y, g y = a ↔ f y = a,
+                          ∃ hga : ∀ y, g y = a → y ∉ Smale.ManifoldMorse.criticalPoints E g,
+                            ∃ T : AdaptedWindows E g,
+                              T.field = S₀.field ∧
+                                T.flow = S₀.flow ∧
+                                  (∀ y, f y ≤ a → g =ᶠ[𝓝 y] f) ∧
+                                    let p' : Fin n → Smale.ManifoldMorse.criticalPoints E g :=
+                                      fun j => ⟨(p j).val, hcrit.symm ▸ (p j).property⟩
+                                    let B' := B.trans (MorseCancel.equalCutHomologyEquiv hsub)
+                                    let γ' := fun j => MorseCancel.equalCutSection hlevel (γ j)
+                                    (∀ j, MorseCancel.nativeMorseIndex E g (p' j) = 3) ∧
+                                      (∀ j, a < T.toSurgeryWindows.lower (p' j)) ∧
+                                        MorseCancel.IsNativeMiddleBasinFamily T hg hga p'
+                                            (fun j => γ' j) ∧
+                                          (∀ j x, (γ' j x).val = (γ j x).val) ∧
+                                            MorseCancel.canonicalMiddleMatrix B' γ' =
+                                                MorseCancel.canonicalMiddleMatrix B γ ∧
+                                              Function.Surjective
+                                                (MorseCancel.canonicalMiddleMatrix B'
+                                                    γ').mulVec := by  -- Recognition.lean:3847
+
+theorem MorseCancel.exists_native_belt_cut_family {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] {f : M → ℝ}
+    (S T : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
+    (hzero : nativeMorseCount E f 0 = 1) (hone : nativeMorseCount E f 1 = 0) (r n : ℕ)
+    (hr : nativeMorseCount E f 2 = r) (hn : nativeMorseCount E f 3 = n) (hrpos : 0 < r)
+    (hrc : r + n < S.toSurgeryWindows.count)
+    (hradii : ∀ z, (T.data z).radius < (S.data z).radius) :
+    let q := S.toSurgeryWindows.point ⟨r, by omega⟩
+    let a := nativeMiddleBaseCut S r n hrc
+    let p := nativeMiddleBlockPoint S r n hrc
+    ∀ (_ : ∀ j, a < T.toSurgeryWindows.lower (p j))
+      (B : (Fin r → ℤ) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2)
+      (γ : Fin n → C((Smale.Hemisphere.Sphere 2), { y : M // f y = a })),
+      IsNativeMiddleBasinFamily T hf (S.data q).upper_regular p (fun j => γ j) →
+        Function.Surjective (canonicalMiddleMatrix B γ).mulVec →
+          ∃ hindex : Module.finrank ℝ (T.data q).chart.NegativeCoordinates = 2,
+            Function.Surjective ((T.data q).indexTwoCollapseCoordinate hf.continuous hindex) ∧
+              (∀ δ : C(Smale.Hemisphere.Sphere 1, (T.data q).LowerLevel),
+                  ∃ z, δ.Homotopic (ContinuousMap.const _ z)) ∧
+                (∀ z : Smale.ManifoldMorse.criticalPoints E f,
+                    nativeMorseIndex E f z < 3 → f z < T.toSurgeryWindows.upper q) ∧
+                  (∀ z : Smale.ManifoldMorse.criticalPoints E f,
+                      nativeMorseIndex E f z = 3 → ∃ j, p j = z) ∧
+                    (∀ j, T.toSurgeryWindows.upper q < T.toSurgeryWindows.lower (p j)) ∧
+                      ∃ β : Fin n → C((Smale.Hemisphere.Sphere 2), (T.data q).UpperLevel),
+                        IsNativeMiddleBasinFamily T hf (T.data q).upper_regular p (fun j => β j) ∧
+                          (∀ j x, ∃ t : ℝ, T.flow t (γ j x).val = (β j x).val) ∧
+                            ∃ B' :
+                              (Fin r → ℤ) ≃ₗ[ℤ]
+                                SingularMayerVietoris.SingularHomology
+                                  { y : M // f y ≤ T.toSurgeryWindows.upper q } 2,
+                              canonicalMiddleMatrix B' β = canonicalMiddleMatrix B γ ∧
+                                Function.Surjective (canonicalMiddleMatrix B' β).mulVec := by  -- Recognition.lean:8331
+
+theorem MorseCancel.cancel_from_preserved_unit_belt_cut {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f g : M → ℝ} (S : AdaptedWindows E f)
+    (T : AdaptedWindows E g) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g) (hmg : Smale.ManifoldMorse.IsMorse E g)
+    (hdim : Module.finrank ℝ E = 6) (p : Smale.ManifoldMorse.criticalPoints E f)
+    (hindex : Module.finrank ℝ (S.data p).chart.NegativeCoordinates = 2)
+    (hnull :
+      ∀ δ : C(Smale.Hemisphere.Sphere 1, (S.data p).LowerLevel),
+        ∃ z, δ.Homotopic (ContinuousMap.const _ z))
+    (hpcg : p.val ∈ Smale.ManifoldMorse.criticalPoints E g) (hpg : nativeMorseIndex E g p = 2)
+    (q : Smale.ManifoldMorse.criticalPoints E g) (hq : nativeMorseIndex E g q = 3)
+    (hconsecutive : ∀ z : Smale.ManifoldMorse.criticalPoints E g, ¬(g p < g z ∧ g z < g q))
+    (hpc : g p < (f p + (S.data p).radius ^ 2)) (hcq : (f p + (S.data p).radius ^ 2) < g q)
+    (hsub : ∀ y, g y ≤ (f p + (S.data p).radius ^ 2) ↔ f y ≤ (f p + (S.data p).radius ^ 2))
+    (hlevel : ∀ y, g y = (f p + (S.data p).radius ^ 2) ↔ f y = (f p + (S.data p).radius ^ 2))
+    (hga : ∀ y, g y = (f p + (S.data p).radius ^ 2) → y ∉ Smale.ManifoldMorse.criticalPoints E g)
+    (hforward :
+      ∀ y : (S.data p).UpperLevel,
+        Filter.Tendsto (fun t => T.flow t y.val) Filter.atTop (𝓝 p.val) ↔
+          Filter.Tendsto (fun t => S.flow t y.val) Filter.atTop (𝓝 p.val))
+    (γ : C((Smale.Hemisphere.Sphere 2), { y : M // g y = (f p + (S.data p).radius ^ 2) })) :
+    letI := Smale.RegularLevel.chartedSpace hg hga
+    ∀ (_ : ContMDiff (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) ∞ γ) (_ : Function.Injective γ)
+      (_ : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, Smale.RegularLevel.Model E) γ x)),
+      (∀ y, y ∈ Set.range γ ↔ Filter.Tendsto (fun t => T.flow t y.val) Filter.atBot (𝓝 q.val)) →
+        ((S.data p).indexTwoCollapseCoordinate hf.continuous hindex
+                ((equalCutHomologyEquiv hsub).symm (middleSectionClass γ))).natAbs =
+            1 →
+          ∃ v : M → ℝ,
+            ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ v ∧
+              Smale.ManifoldMorse.IsMorse E v ∧
+                (Smale.ManifoldMorse.criticalPoints E v).ncard + 2 =
+                    (Smale.ManifoldMorse.criticalPoints E g).ncard ∧
+                  (∀ z,
+                      z ∈ Smale.ManifoldMorse.criticalPoints E v ↔
+                        z ∈ Smale.ManifoldMorse.criticalPoints E g ∧ z ≠ p.val ∧ z ≠ q.val) ∧
+                    ∀ z,
+                      g z ∉
+                          Set.Ioo (T.toSurgeryWindows.lower ⟨p.val, hpcg⟩)
+                            (T.toSurgeryWindows.upper q) →
+                        v =ᶠ[𝓝 z] g := by  -- Recognition.lean:8680
 
 theorem MorseCancel.cancel_from_complete_middle_family {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] [PathConnectedSpace M]
     {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
     (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = 6)
-    (horder : ∀ x y …, f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
     (p : Smale.ManifoldMorse.criticalPoints E f)
     (hindex : Module.finrank ℝ (S.data p).chart.NegativeCoordinates = 2)
-    (hnull : ∀ δ : C(Smale.Hemisphere.Sphere 1, (S.data p).LowerLevel),
+    (hnull :
+      ∀ δ : C(Smale.Hemisphere.Sphere 1, (S.data p).LowerLevel),
         ∃ z, δ.Homotopic (ContinuousMap.const _ z))
-    (hprimitive : Function.Surjective ((S.data p).indexTwoCollapseCoordinate hf.continuous
-        hindex))
-    (hcut : ∀ z …, nativeMorseIndex E f z < 3 → f z < f p + (S.data p).radius ^ 2)
+    (hprimitive :
+      Function.Surjective ((S.data p).indexTwoCollapseCoordinate hf.continuous hindex))
+    (hcut :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        nativeMorseIndex E f z < 3 → f z < f p + (S.data p).radius ^ 2)
     {r n : ℕ} (labels : Fin n → Smale.ManifoldMorse.criticalPoints E f)
     (hlabels : ∀ j, nativeMorseIndex E f (labels j) = 3)
-    (hcomplete : ∀ z …, nativeMorseIndex E f z = 3 → ∃ j, labels j = z)
+    (hcomplete :
+      ∀ z : Smale.ManifoldMorse.criticalPoints E f,
+        nativeMorseIndex E f z = 3 → ∃ j, labels j = z)
     (hlower : ∀ j, f p + (S.data p).radius ^ 2 < S.toSurgeryWindows.lower (labels j))
-    (B : (Fin r → ℤ) ≃ₗ[ℤ]
+    (B :
+      (Fin r → ℤ) ≃ₗ[ℤ]
         SingularMayerVietoris.SingularHomology { y : M // f y ≤ f p + (S.data p).radius ^ 2 } 2)
     (γ : Fin n → C((Smale.Hemisphere.Sphere 2), (S.data p).UpperLevel))
     (hγ : IsNativeMiddleBasinFamily S hf (S.data p).upper_regular labels (fun j => γ j))
     (hsurj : Function.Surjective (canonicalMiddleMatrix B γ).mulVec) :
-    ∃ v : M → ℝ, ContMDiff … ∞ v ∧ IsMorse E v ∧ Set.InjOn v (criticalPoints E v) ∧
+    ∃ v : M → ℝ,
+      ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ v ∧
+        Smale.ManifoldMorse.IsMorse E v ∧
+          Set.InjOn v (Smale.ManifoldMorse.criticalPoints E v) ∧
             (Smale.ManifoldMorse.criticalPoints E v).ncard + 2 =
-              (Smale.ManifoldMorse.criticalPoints E f).ncard
-                          -- Recognition.lean:8843 (map §1(13); body: primitive unit →
-                          -- first_middle_pivot → cancels the (2,3) pair)
+              (Smale.ManifoldMorse.criticalPoints E f).ncard := by  -- Recognition.lean:8834
 
-theorem MorseCancel.minimal_ordered_index_two_count_zero {E M : Type} …
-    (hm : … IsMorse E f) (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere) (horder …)
+theorem MorseCancel.minimal_ordered_index_two_count_zero {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] [PathConnectedSpace M]
+    {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
     (hzero : nativeMorseCount E f 0 = 1) (hone : nativeMorseCount E f 1 = 0)
-    (hminimal : ∀ v …, (criticalPoints E f).ncard ≤ (criticalPoints E v).ncard) :
-    nativeMorseCount E f 2 = 0            -- Recognition.lean:8966 (map §1(15a))
+    (hminimal :
+      ∀ v : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ v →
+          Smale.ManifoldMorse.IsMorse E v →
+            Set.InjOn v (Smale.ManifoldMorse.criticalPoints E v) →
+              (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                (Smale.ManifoldMorse.criticalPoints E v).ncard) :
+    nativeMorseCount E f 2 = 0 := by  -- Recognition.lean:8957
 
-theorem MorseCancel.minimal_ordered_index_four_count_zero …
-    (hsix : nativeMorseCount E f 6 = 1) (hfive : nativeMorseCount E f 5 = 0) (hminimal …) :
-    nativeMorseCount E f 4 = 0            -- Recognition.lean:9026 (map §1(15b); −f duality)
+theorem MorseCancel.minimal_ordered_index_four_count_zero {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] [PathConnectedSpace M]
+    {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hm : Smale.ManifoldMorse.IsMorse E f) (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
+    (hsix : nativeMorseCount E f 6 = 1) (hfive : nativeMorseCount E f 5 = 0)
+    (hminimal :
+      ∀ v : M → ℝ,
+        ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ v →
+          Smale.ManifoldMorse.IsMorse E v →
+            Set.InjOn v (Smale.ManifoldMorse.criticalPoints E v) →
+              (Smale.ManifoldMorse.criticalPoints E f).ncard ≤
+                (Smale.ManifoldMorse.criticalPoints E v).ncard) :
+    nativeMorseCount E f 4 = 0 := by  -- Recognition.lean:9017
 
-theorem MorseCancel.ordered_no_middle_indices_count_two {E M : Type} …
-    (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere) (horder …)
+theorem MorseCancel.ordered_no_middle_indices_count_two {E M : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [Nonempty M] {f : M → ℝ}
+    (S : Smale.ManifoldMorse.SurgeryWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere)
+    (horder :
+      ∀ x y : Smale.ManifoldMorse.criticalPoints E f,
+        f x < f y → nativeMorseIndex E f x ≤ nativeMorseIndex E f y)
     (hzero : nativeMorseCount E f 0 = 1) (hsix : nativeMorseCount E f 6 = 1)
     (hone : nativeMorseCount E f 1 = 0) (htwo : nativeMorseCount E f 2 = 0)
     (hfour : nativeMorseCount E f 4 = 0) (hfive : nativeMorseCount E f 5 = 0) :
-    nativeMorseCount E f 3 = 0 ∧ S.count = 2
-                          -- Recognition.lean:9258 (map §1(15c); via
-                          -- middle_blocks_complete_of_no_four_five + S.middle_counts_equal)
+    nativeMorseCount E f 3 = 0 ∧ S.count = 2 := by  -- Recognition.lean:9243
 ```
+
+`exists_primitive_functional_unit` is the surjectivity→integral-primitive step (F11's
+slide machinery consumed), `exists_first_middle_pivot` the position-zero pivot, the
+`exists_native_belt_cut_family`/`cancel_from_preserved_unit_belt_cut` pair the
+regular-cut transport and cancellation interfaces (§5), and
+`cancel_from_complete_middle_family` the complete-block blocker. The three count
+theorems are the elimination conclusions in source order: index 2, index 4 (dual
+function −f), then index 3 via H₃ = 0 with the middle chain groups already zeroed —
+`ordered_no_middle_indices_count_two` takes the vanishing counts at indices 1, 2, 4
+and 5, and uses complete blocks and equal middle-matrix sizes to conclude the index-3
+count is zero and the total count is two.
+
 
 **Row G6 (two critical points; Reeb).** Verbatim:
 
@@ -489,7 +1160,7 @@ theorem MorseCancel.critical_pair_of_surgery_count_two {E M : Type} [NormedAddCo
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : Smale.ManifoldMorse.SurgeryWindows E f) (hcount : S.count = 2) :
     ∃ p q : M, f p < f q ∧ Smale.ManifoldMorse.criticalPoints E f = { p, q }
-                                                -- Recognition.lean:9385 (map §1(15d))
+                                                -- Recognition.lean:9370 (map §1(15d))
 
 theorem Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
@@ -497,7 +1168,7 @@ theorem Smale.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E 
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : IsMorse E f) {p q : M} (hpq : f p < f q)
     (hcrit : criticalPoints E f = { p, q }) :
     Nonempty (M ≃ₜ Smale.Hemisphere.Sphere (Module.finrank ℝ E))
-                                                -- Recognition.lean:9344 (map §1(4); Reeb —
+                                                -- Recognition.lean:9329 (map §1(4); Reeb —
                                                 -- lane D1 consumer surface, included here as
                                                 -- the G6 endpoint's direct dependency)
 
@@ -509,13 +1180,13 @@ theorem MorseCancel.exists_two_critical_point_morse_of_homotopySixSphere (E : Ty
       ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f ∧
         Smale.ManifoldMorse.IsMorse E f ∧
           ∃ p q : M, f p < f q ∧ Smale.ManifoldMorse.criticalPoints E f = { p, q }
-                                                -- Recognition.lean:9413 (map §1(3))
+                                                -- Recognition.lean:9398 (map §1(3))
 
 theorem MorseCancel.nonempty_homeomorph_of_homotopySixSphere (E : Type) (M : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     (hdim : Module.finrank ℝ E = 6) (e : M ≃ₕ SixSphere) : Nonempty (M ≃ₜ SixSphere)
-                                                -- Recognition.lean:9431 (map §1(2))
+                                                -- Recognition.lean:9416 (map §1(2))
                                                 -- NOTE: no [SecondCountableTopology M] —
                                                 -- the inner chain never carries it.
 
@@ -523,24 +1194,25 @@ theorem Smale.homeomorphic_sixSphere_of_homotopySixSphere (E : Type) [NormedAddC
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (M : Type) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M]
     (hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ Smale.SixSphere) :
-    Nonempty (M ≃ₜ Smale.SixSphere)             -- Recognition.lean:9442 (map §1(1));
+    Nonempty (M ≃ₜ Smale.SixSphere)             -- Recognition.lean:9427 (map §1(1));
                                                 -- body: nonempty_homeomorph_of_homotopySixSphere
 ```
 
 Two-Disk decomposition deps for Reeb (lane D1 structures, outside this lane): `Smale.
-twoDiskDecompositionOfSublevels` (Rec 9289), `Smale.homeomorphSphereOfSublevelDisks`
-(Rec 9339), `Smale.TwoDiskDecomposition` (SphereTopology 8073), `Smale.SublevelDisk`
-(SphereTopology 8157).
+twoDiskDecompositionOfSublevels` (Rec 9274), `Smale.homeomorphSphereOfSublevelDisks`
+(Rec 9324), `Smale.TwoDiskDecomposition` (SphereTopology 5199), `Smale.SublevelDisk`
+(SphereTopology 5283).
 
 **Ledger notes.**
 
 * *Namespaces.* All decls sit in `namespace Mathoverflow1973`; the dotted prefixes
   (`MorseCancel.`, `AdaptedWindows.`, `Smale.`, `Smale.ManifoldMorse.SurgeryWindows.`)
   are the actual namespaces — no bare name in this table resolves without one.
-* *`Type` vs `Type*`.* The chain mixes `(E : Type) (M : Type)` (the Recognition-side
-  homotopy-sphere chain) with `{E M : Type*}` (the handle-trade and Reeb chain). Normalize
-  to `Type*` in the Lib modules per the checklist; `exists_minimal_excellent_morse_system`
-  already uses `(E : Type*) (M : Type*)` explicit binders.
+* *`Type` vs `Type*`.* Preserve the elaborated universes during extraction. The chain mixes
+  `(E : Type) (M : Type)` (the Recognition-side homotopy-sphere chain) with polymorphic
+  declarations such as `exists_minimal_excellent_morse_system` and Reeb. The current
+  `SingularMayerVietoris.SingularHomology` takes spaces in `Type`; changing all binders to
+  `Type*` is not a representation-only rename and requires a separate typed design/probe.
 * *Sphere spellings.* Every `M ≃ₕ Smale.SixSphere` / `M ≃ₜ SixSphere` /
   `Smale.Hemisphere.Sphere n` occurrence consolidates to the `Metric.sphere` spelling where
   defeq permits; `Hemisphere.Sphere 2`-typed attaching maps (the `γ` binders) are part of the
@@ -569,7 +1241,12 @@ twoDiskDecompositionOfSublevels` (Rec 9289), `Smale.homeomorphSphereOfSublevelDi
    detail, unchanged.
 4. **The Mathlib `proof_wanted` relation** goes into the `Smale.lean` module docstring verbatim
    as in §1 remark (c).
-5. **Review.** Stage-2 independent review of §§1–7: in-tree at `Lib/docs/G-stage2-review.md`.
+5. **Review.** The initial independent review is `Lib/docs/G-stage2-astra-review.md`;
+   the `bd9c393` re-review is `~/s6-notes/G-stage2-astra-review2.md`. Its identified
+   narrative and ledger corrections are applied here, awaiting independent acceptance.
+   The G2a/G2b split was accepted in that re-review. The helper dependency census and
+   production provider/consumer certification remain separate obligations. Muse's
+   `G-stage2-review.md` is self-review, not independent certification.
 6. **GLM-lane overlap discovered after landing A–D2/H/I:** lane E2's source ranges were largely
    swept into GLM's `Lib/Geometry/Manifold/Morse/SurgeryWindows.lean` (17,556 lines; the D2
    baseline blob contains e.g. `exists_compact_embedding_of_immersion` at its line 12352 and

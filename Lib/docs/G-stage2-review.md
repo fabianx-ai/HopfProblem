@@ -1,5 +1,9 @@
 # Lane G — Stage-2 review (ledger §§1–7 + typed rows)
 
+**SUPERSEDED** — this is a self-review by the lane author; it does not satisfy the
+independence condition. The governing review is `G-stage2-astra-review.md` (NO-GO,
+findings being repaired in `G.md`).
+
 **Reviewer:** Muse (self-review pass; the scout map is `~/s6-notes/kimi-notes/G-map.md`).
 **Head reviewed:** `1cc1784` (post-F0a/F0b landing).
 **Scope:** `Lib/docs/G.md` Axis-1 §§1–7 narrative, Axes 2–3 decomposition table, Axis-4
