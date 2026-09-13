@@ -261,3 +261,143 @@ exit 0 Mon Sep 14 01:03:02 CEST 2026
 
 `python3 scripts/lib_stock_census.py --check`: `ratchet PASS: 1499 <= baseline 1648`
 (`Hopf/Recognition.lean` 185 -> 126; the 126 remaining rows are the 92 blocked and the 34 charged ones).
+
+
+## Second pass
+Worktree `lib/next-recognition2`, base `b78cfee8`. Commit `d66647b8` (31 rows). Source lines are those of
+`Hopf/Recognition.lean` at `b78cfee8` (whole block: docstring, attributes, declaration, proof).
+Dependency analysis: `lake env lean-agent-ide dump Hopf.Recognition --modules Hopf,Lib` on the seeded build
+(whose oleans predate the `singhom`/`spheretop` moves, so every blocking constant was re-located in the
+working tree by declaration grep); a row is FREE when every constant it uses transitively (through rows of
+the same file, `_proof_n` edges included) is defined under `Lib/` or in `Hopf/Recognition.lean` itself.
+
+### Moved (31)
+
+All into the new module `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean` (imports `AdaptedWindows`,
+`BeltCancellation`, `CutTransport`, `LocalContributionsNaturality`; registered in `Lib.lean`), in source order.
+Text verbatim; qualifier retarget naming the same constants:
+`PeriodTorusHigherHomology.{homeomorphHomologyEquiv, singularHomologyMap_comp, singularHomologyMap_id} ->
+SingularHomology.*` (rows marked *rt*). Header `set_option`/`open`/`open scoped`/`universe`/`noncomputable section`
+lines copied from the source file.
+
+| declaration | source `b78cfee8` | destination |
+|---|---|---|
+| `MorseCancellation.nativeMorseCount_eq_interval_length` | `Hopf/Recognition.lean:397-431` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:62` |
+| `MorseCancellation.native_middle_block_counts` | `Hopf/Recognition.lean:433-477` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:98` |
+| `AdaptedWindows.attaching_sphere_reaches_of_compact_basin_section` | `Hopf/Recognition.lean:479-557` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:144` |
+| `MorseCancellation.nativeIndexThreeAttachingSphere_regular` | `Hopf/Recognition.lean:559-589` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:224` |
+| `AdaptedWindows.exists_native_core_inclusion_equiv` | `Hopf/Recognition.lean:712-734` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:256` |
+| `MorseCancellation.nativeMiddleBaseCut` | `Hopf/Recognition.lean:1008-1011` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:280` |
+| `MorseCancellation.nativeMiddleCutSequence` | `Hopf/Recognition.lean:1013-1018` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:285` |
+| `MorseCancellation.nativeMiddleCutSequence_bands` | `Hopf/Recognition.lean:1020-1072` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:292` |
+| `AdaptedWindows.no_connection_above_canonical_cut` | `Hopf/Recognition.lean:1104-1147` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:346` |
+| `MorseCancellation.lower_cuts_preserved_of_critical_bound` | `Hopf/Recognition.lean:1149-1174` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:391` |
+| `AdaptedWindows.exists_common_cut_value_exchange` | `Hopf/Recognition.lean:1176-1282` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:418` |
+| `MorseCancellation.nativeMiddleBasinFamily_equalCut` | `Hopf/Recognition.lean:1285-1335` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:526` |
+| `MorseCancellation.nativeMiddleBasinFamily_labels_injective` | `Hopf/Recognition.lean:1435-1450` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:578` |
+| `AdaptedWindows.backward_basin_reaches_compact_section` | `Hopf/Recognition.lean:1616-1641` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:595` |
+| `AdaptedWindows.exists_relative_surgery_cut_transport` | `Hopf/Recognition.lean:1680-1822` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:622` |
+| `MorseCancellation.same_image_sphere_maps_unit` *rt* | `Hopf/Recognition.lean:1952-1994` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:766` |
+| `MorseCancellation.same_image_section_classes_unit` *rt* | `Hopf/Recognition.lean:1996-2009` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:810` |
+| `MorseCancellation.nativeMiddleBasinFamily_replace_zero` | `Hopf/Recognition.lean:2011-2053` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:825` |
+| `MorseCancellation.attaching_contributions_opposite_of_relative_det_neg` *rt* | `Hopf/Recognition.lean:2255-2278` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:869` |
+| `MorseCancellation.exists_centered_passage_normal_factors` | `Hopf/Recognition.lean:2281-2402` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:894` |
+| `MorseCancellation.opposite_centered_passages_of_normal_factors` | `Hopf/Recognition.lean:2404-2466` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1017` |
+| `MorseCancellation.exists_native_opposite_centered_passages` | `Hopf/Recognition.lean:2468-2519` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1081` |
+| `MorseCancellation.nativeMiddleBasinFamily_reindex` | `Hopf/Recognition.lean:3451-3464` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1135` |
+| `MorseCancellation.native_middle_block_complete_and_cut` | `Hopf/Recognition.lean:4108-4178` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1149` |
+| `LocalDegree.SeparatedNeighborhoods.pointComplementInclusion` | `Hopf/Recognition.lean:4309-4314` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1221` |
+| `LocalDegree.SeparatedNeighborhoods.componentConnecting_singlePoint` | `Hopf/Recognition.lean:4326-4345` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1228` |
+| `ManifoldMorse.MorseSurgeryData.beltIntersectionCount_smul` | `Hopf/Recognition.lean:4548-4563` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1251` |
+| `ManifoldMorse.MorseSurgeryData.exists_transverse_representative` | `Hopf/Recognition.lean:4827-4865` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1266` |
+| `AdaptedWindows.cancel_single_basin_section_isotopy` | `Hopf/Recognition.lean:4920-5038` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1306` |
+| `MorseCancellation.middle_blocks_complete_of_no_four_five` | `Hopf/Recognition.lean:5362-5402` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1426` |
+| `MorseCancellation.critical_pair_of_surgery_count_two` | `Hopf/Recognition.lean:5405-5434` | `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean:1468` |
+
+### Remaining (95)
+
+CHARGED (34, stay): `SixSphereCube.*` (21, `Hopf/Recognition.lean:183-290`) and the thirteen rows
+`cylinderQuotient` … `Sphere.homotopic_id_of_topClass` (`Hopf/Recognition.lean:293-394`), all mentioning
+`SixSphereCube` objects.
+
+Blocked (61): the blocking constants still defined under `Hopf/` (file given); all in
+`Hopf/SphereTopology.lean` except the first.
+
+| declaration | source `b78cfee8` | blocked by |
+|---|---|---|
+| `cylinderQuotient_isQuotientMap` | `Hopf/Recognition.lean:302-303` | `SixSphereCube.StandardSphere` (`Hopf/Hurewicz.lean`) |
+| `AdaptedWindows.exists_canonical_basin_sphere` | `Hopf/Recognition.lean:591-633` | `AdaptedWindows.exists_embedded_level_transport` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_canonical_middle_family` | `Hopf/Recognition.lean:635-660` | `AdaptedWindows.exists_embedded_level_transport` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass_parametrized` | `Hopf/Recognition.lean:663-674` | `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.native_attaching_class_of_flow_section` | `Hopf/Recognition.lean:677-710` | `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_core_inclusion_homology_comparison` | `Hopf/Recognition.lean:736-778` | `ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.native_sublevel_inclusion_exact` | `Hopf/Recognition.lean:780-809` | `EmbeddedCellAttachment.cell_exact_at_old`, `ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare`, `ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.native_index_three_inclusion_relation` | `Hopf/Recognition.lean:811-848` | `EmbeddedCellAttachment.cellConnectingMap`, `EmbeddedCellAttachment.cell_exact_at_ambient`, `EmbeddedCellAttachment.cell_exact_at_old` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.middle_inclusion_step` | `Hopf/Recognition.lean:851-911` | `EmbeddedCellAttachment.cellConnectingMap`, `EmbeddedCellAttachment.cell_exact_at_ambient`, `EmbeddedCellAttachment.cell_exact_at_old` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.finite_middle_inclusion_relations` | `Hopf/Recognition.lean:914-1006` | `EmbeddedCellAttachment.cellConnectingMap`, `EmbeddedCellAttachment.cell_exact_at_ambient`, `EmbeddedCellAttachment.cell_exact_at_old` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.ordered_middle_inclusion_relations` | `Hopf/Recognition.lean:1074-1101` | `EmbeddedCellAttachment.cellConnectingMap`, `EmbeddedCellAttachment.cell_exact_at_ambient`, `EmbeddedCellAttachment.cell_exact_at_old` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_middle_family_value_exchange` | `Hopf/Recognition.lean:1338-1433` | `AdaptedWindows.exists_embedded_level_transport` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_first_middle_pivot` | `Hopf/Recognition.lean:1452-1614` | `AdaptedWindows.exists_embedded_level_transport` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_higher_middle_family` | `Hopf/Recognition.lean:1644-1677` | `AdaptedWindows.exists_native_family_level_transport` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_relative_family_lower_transport` | `Hopf/Recognition.lean:1824-1949` | `AdaptedWindows.exists_native_family_level_transport` (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.exists_radial_link_meridian_with_derivative` | `Hopf/Recognition.lean:2056-2161` | `LocalDegree.BoundaryData.normalized_homology_compare`, `MorseCancellation.normal_boundary_homotopic_native_meridian` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_passage_derivative_class_addition` | `Hopf/Recognition.lean:2163-2253` | `LocalDegree.BoundaryData.normalized_homology_compare`, `MorseCancellation.nativeBeltTubeMeridian_eq`, `MorseCancellation.normal_boundary_homotopic_native_meridian` (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.choose_prescribed_normal_passage` | `Hopf/Recognition.lean:2521-2583` | `LinearSphereAction.homologyEquiv`, `LinearSphereAction.homologyEquiv_apply` (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.exists_native_prescribed_centered_passage` | `Hopf/Recognition.lean:2585-2631` | `LinearSphereAction.homologyEquiv`, `LinearSphereAction.homologyEquiv_apply` (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.exists_native_prescribed_finite_family_passage` | `Hopf/Recognition.lean:2633-2691` | `LinearSphereAction.homologyEquiv`, `LinearSphereAction.homologyEquiv_apply` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_higher_family_prescribed_passage` | `Hopf/Recognition.lean:2693-2783` | `AdaptedWindows.exists_native_family_level_transport`, `LinearSphereAction.homologyEquiv`, `LinearSphereAction.homologyEquiv_apply` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.prescribed_passage_actual_endpoint_classes` | `Hopf/Recognition.lean:2785-2895` | `LocalDegree.BoundaryData.normalized_homology_compare`, `MorseCancellation.nativeBeltTubeMeridian_eq`, `MorseCancellation.normal_boundary_homotopic_native_meridian` (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_prescribed_family_slide` | `Hopf/Recognition.lean:2897-3036` | `AdaptedWindows.exists_native_family_level_transport`, `LinearSphereAction.homologyEquiv`, `LinearSphereAction.homologyEquiv_apply` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_common_cut_prescribed_slide` | `Hopf/Recognition.lean:3038-3170` | `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family`, `LinearSphereAction.homologyEquiv` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_common_cut_prescribed_family_slide` | `Hopf/Recognition.lean:3172-3239` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_repeatable_column_slide` | `Hopf/Recognition.lean:3242-3303` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_iterated_column_slide` | `Hopf/Recognition.lean:3305-3391` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_integer_column_slide` | `Hopf/Recognition.lean:3393-3449` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_labelled_integer_slide` | `Hopf/Recognition.lean:3467-3612` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_arbitrary_column_addition` | `Hopf/Recognition.lean:3614-3740` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_arbitrary_column_sequence` | `Hopf/Recognition.lean:3743-3906` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_primitive_functional_unit` | `Hopf/Recognition.lean:3908-4055` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `AdaptedWindows.exists_lower_cut_geometric_matrix` | `Hopf/Recognition.lean:4058-4106` | `AdaptedWindows.exists_regular_band_middle_basin_family` (`Hopf/SphereTopology.lean`) |
+| `SpherePoint.sourceCountMark_topClass_natAbs` | `Hopf/Recognition.lean:4180-4185` | `SpherePoint.sourceCountMark` (`Hopf/SphereTopology.lean`) |
+| `OnePointCover.overlapHomologyEquiv_symm_include` | `Hopf/Recognition.lean:4187-4203` | `OnePointCover.overlapHomeomorph`, `OnePointCover.overlapHomologyEquiv`, `OnePointCover.overlapSphereEquiv` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseComponentConnecting` | `Hopf/Recognition.lean:4205-4217` | `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseLocalClass` | `Hopf/Recognition.lean:4219-4229` | `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv`, `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseConnecting_sum_overlaps` | `Hopf/Recognition.lean:4231-4250` | `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods`, `ManifoldMorse.MorseSurgeryData.attachingCollapse`, `ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_neighborhood` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseConnecting_sum_boundaries` | `Hopf/Recognition.lean:4252-4279` | `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv`, `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods`, `ManifoldMorse.MorseSurgeryData.attachingCollapse` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseSphereConnecting_sum` | `Hopf/Recognition.lean:4281-4306` | `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv`, `ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods`, `ManifoldMorse.MorseSurgeryData.attachingCollapse` … (`Hopf/SphereTopology.lean`) |
+| `LocalDegree.SeparatedNeighborhoods.pointComplementInclusion_sphereEquiv` | `Hopf/Recognition.lean:4316-4324` | `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv` (`Hopf/SphereTopology.lean`) |
+| `LocalDegree.SeparatedNeighborhoods.sphereConnecting_component` | `Hopf/Recognition.lean:4347-4393` | `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting`, `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseLocalClass_singlePoint` | `Hopf/Recognition.lean:4395-4405` | `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting`, `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv` … (`Hopf/SphereTopology.lean`) |
+| `SphereNormalCoordinates.localBoundary_homology_outward` | `Hopf/Recognition.lean:4407-4435` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `SphereNormalCoordinates.chartJacobian`, `SphereNormalCoordinates.chartJacobian_sign_factor` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseLocalBoundary_homology_sign_of_transverse` | `Hopf/Recognition.lean:4437-4491` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign_of_transverse`, `ManifoldMorse.MorseSurgeryData.isInvertible_collapseNormal_comp_of_transverse` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseLocalClass_eq_outward` | `Hopf/Recognition.lean:4494-4512` | `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting`, `LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseLocalBoundary_outward` | `Hopf/Recognition.lean:4514-4546` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapseSphereConnecting_signed_count` | `Hopf/Recognition.lean:4565-4600` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.collapse_homology_signed_count` | `Hopf/Recognition.lean:4602-4633` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_signed_count` | `Hopf/Recognition.lean:4635-4666` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_topClass_natAbs` | `Hopf/Recognition.lean:4668-4690` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_transverse_natAbs` | `Hopf/Recognition.lean:4692-4709` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.last_index_two_collapse_is_primitive` | `Hopf/Recognition.lean:4711-4744` | `ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate`, `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_surjective`, `ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.exists_native_belt_cut_family` | `Hopf/Recognition.lean:4746-4824` | `AdaptedWindows.exists_regular_band_middle_basin_family`, `ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate`, `ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_surjective` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.exists_single_intersection_of_unit_coordinate` | `Hopf/Recognition.lean:4867-4918` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.cancel_from_preserved_unit_belt_cut` | `Hopf/Recognition.lean:5041-5150` | `LocalDegree.BoundaryData.normalized_homology_eq_sign_smul`, `LocalDegree.NativeNeighborhood.overlapSphereEquiv`, `LocalDegree.NativeNeighborhood.sphereConnecting` … (`Hopf/SphereTopology.lean`) |
+| `MorseCancellation.cancel_from_complete_middle_family` | `Hopf/Recognition.lean:5153-5275` | `AdaptedWindows.exists_embedded_level_transport`, `AdaptedWindows.exists_native_family_level_transport`, `AdaptedWindows.exists_regular_band_middle_basin_family` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.coreBoundary_two_injective_of_upper` | `Hopf/Recognition.lean:5278-5290` | `ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap`, `ManifoldMorse.MorseSurgeryData.morseConnectingMap`, `ManifoldMorse.MorseSurgeryData.morse_exact_at_attachingSphere` (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexThreeAttaching_zsmul_eq_zero` | `Hopf/Recognition.lean:5292-5306` | `ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap`, `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass`, `ManifoldMorse.MorseSurgeryData.morseConnectingMap` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.MorseSurgeryData.indexThreePresentation_matrix_injective` | `Hopf/Recognition.lean:5308-5320` | `ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap`, `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass`, `ManifoldMorse.MorseSurgeryData.indexThreePresentation` … (`Hopf/SphereTopology.lean`) |
+| `ManifoldMorse.SurgeryWindows.middleMatrix_injective_of_upper_third` | `Hopf/Recognition.lean:5322-5359` | `ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap`, `ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass`, `ManifoldMorse.MorseSurgeryData.indexThreePresentation` … (`Hopf/SphereTopology.lean`) |
+
+### Build (second pass)
+
+```
+✔ [8837/8839] Built Lib.Geometry.Manifold.Morse.MiddleBlocks (8.3s)
+Build completed successfully (8839 jobs).
+✔ [8866/8878] Built Hopf.Recognition (32s)
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (8878 jobs).
+```
+
+`python3 scripts/lib_stock_census.py --check`: `ratchet PASS: 354 <= baseline 1648` (385 before).
+Verification: `git diff` of `Hopf/Recognition.lean` adds exactly one line (the import) and deletes 1440;
+every deleted non-blank line occurs in `MiddleBlocks.lean` after the retarget, and every body line of
+`MiddleBlocks.lean` comes from the base file.
