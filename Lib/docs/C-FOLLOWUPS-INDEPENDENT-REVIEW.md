@@ -1,0 +1,187 @@
+# C follow-ups — independent-session review (archived verbatim)
+
+Provenance: fresh `devin --print` CLI session launched against head `f9a24ba` plus the
+C15/C16 working-tree diff; read-only review (no builds, no edits, no delegation). No
+session ID was printed. The reviewer is from the same Devin/Fusion model family as the
+implementer — independent-session review, not independent-model or human certification.
+Full process output (including the reviewer's preamble lines and process exit) is
+preserved at `/home/kimi/s6-notes/C-followups-independent-review.log`; the verbatim
+report body (lines 5–145 of that log) follows unchanged, including original `file://`
+citations.
+
+---
+
+## Verdict
+
+**Conditional GO for the C14–C16 implementation. NO-GO for an unconditional “all gates passed / lane complete” claim.**
+
+I found **no mathematical correctness blocker or changed Hopf theorem statement** in these follow-ups. Before merging, correct the inaccurate verification records below and obtain an explicit owner disposition for the blocked Comparator gate and the acknowledged retrospective protocol validation.
+
+## Severity-ranked findings
+
+### 1. Medium — the focused-build receipt incorrectly reports success
+
+C16’s documentation labels the focused build exit 0, but `C16-focused-build.log` ends with **exit 1**, caused by the initial `Hopf.LibShims` export construction. Naturality and DiskCube themselves built during that command.
+
+The subsequent shim log contains failed attempts followed by a successful build, and the later full build genuinely succeeds. Thus this is **an inaccurate evidence summary, not a current build failure**.
+
+**Required correction:** record the initial failure and subsequent successful repair separately; cite the final shim build and full build as the successful gates.
+
+- Incorrect summary: [C16-NAMES.md:86-95](file:///home/kimi/hopf/Lib/docs/C16-NAMES.md)
+- Same issue in the lane report: [C.md:322-328](file:///home/kimi/hopf/Lib/reports/C.md)
+- Actual focused failure: [C16-focused-build.log:192-196](file:///home/kimi/s6-notes/C16-focused-build.log)
+- Successful shim retry: [C16-libshims-build.log:390-396](file:///home/kimi/s6-notes/C16-libshims-build.log)
+
+### 2. Medium — protocol compliance remains retrospective, not certified pre-implementation
+
+C14 explicitly admits that no compiled aggregate interface probe preceded implementation. C16’s design review was performed by the persistent agent with an implementation role. These disclosures are honest, but they do not satisfy the protocol’s pre-construction independent Challenge review and freeze requirements.
+
+This review supplies a fresh independent **post-implementation** review; it cannot retroactively establish the required chronology. Likewise, Comparator remains blocked, whereas the repository’s extraction definition of done requires its verdict.
+
+**Required disposition:** preserve the disclosures and record an owner-approved exception/deferred gate, rather than marking the original protocol sequence or Comparator complete.
+
+- C14 disclosure: [C14-NATURALITY.md:24-32](file:///home/kimi/hopf/Lib/docs/C14-NATURALITY.md)
+- C16 disclosure: [C16-NAMES.md:80-84](file:///home/kimi/hopf/Lib/docs/C16-NAMES.md)
+- Protocol requirement: [lean-protocol.md:349-388](file:///home/kimi/hopf/lean-protocol.md)
+- Comparator requirement: [README.md:165-169](file:///home/kimi/hopf/Lib/README.md)
+
+I read the Comparator evidence: it fails to execute `landrun`. **No Comparator pass is established.** [C-integrated-final-comparator.log](file:///home/kimi/s6-notes/C-integrated-final-comparator.log)
+
+### 3. Low — current documentation still describes the pre-C14 state
+
+`Lib/docs/C.md` still says the extra naturality/vanishing wrappers are outside the validated outputs and that degree-six naturality remains proved in Hopf. Its §14 implementation note describes only the reverse homology-to-homotopy application.
+
+The first statement about the historical thirteen outputs can remain historical, but the current-status passage needs a C14 addendum: general naturality and positive-degree vanishing now exist, and the Hopf naturality proofs are adapters.
+
+There is also a proof-correspondence distinction worth preserving: §14’s textbook proof directly straightens cycles to constants, whereas C14 transports triviality through the already-proved equivalence. The latter is mathematically sound and accurately described in the C14 ledger/module, but is not literally the former proof.
+
+[C.md:689-706](file:///home/kimi/hopf/Lib/docs/C.md)
+[C.md:1029-1031](file:///home/kimi/hopf/Lib/docs/C.md)
+
+### 4. Low — several evidence references are inaccurate
+
+The documented C16 hyphenated `.lean` source paths do not exist. I located and read the actual sources:
+
+- `/home/kimi/s6-notes/C16_NamesProbe.lean`
+- `/home/kimi/s6-notes/C16_InterfaceCheck.lean`
+- `/home/kimi/s6-notes/C16_InterfaceConsumerCheck.lean`
+
+The logs retain the documented hyphenated names. Correct the source references in C16’s evidence section. [C16-NAMES.md:99-108](file:///home/kimi/hopf/Lib/docs/C16-NAMES.md)
+
+C15 also gives the post-consumer start epoch as `1789269187`; its log says `1789269196`. This does not affect the exit-0 result. [C15-DISKCUBE.md:110-118](file:///home/kimi/hopf/Lib/docs/C15-DISKCUBE.md)
+
+## Mathematical and proof review
+
+### Naturality: correct strength and correspondence
+
+The construction is genuinely natural postcomposition, not an arbitrary equivalence with the right type:
+
+1. `homotopyMap` is the quotient map induced by `mapGenLoop`.
+2. Chain naturality uses pushforward composition on the fixed fundamental cube chain.
+3. The identity passes through cycles and homology classes.
+4. Quotient induction supplies function/map naturality.
+5. Equivalence naturality uses those same underlying Hurewicz maps.
+
+The degree ranges are appropriate:
+
+- Chain naturality: arbitrary `n`.
+- Homotopy monoid map: positive dimensions via `Nonempty (Fin n)`.
+- Cycle/class/map naturality: all `m + 2`.
+- General equivalence naturality: **every `n ≥ 2`**, with lower-homotopy vanishing on both spaces.
+- Degree two is explicitly bridged using `hurewiczMap_eq_second`; it is not incorrectly routed through the degree-`m+3` equivalence.
+- Degree six is a specialization, retaining the existing Hopf hypotheses.
+
+[Naturality.lean:83-107](file:///home/kimi/hopf/Lib/AlgebraicTopology/Hurewicz/Naturality.lean)
+[Naturality.lean:111-200](file:///home/kimi/hopf/Lib/AlgebraicTopology/Hurewicz/Naturality.lean)
+
+### Positive homology vanishing: correct
+
+For `k ≥ 2`, the proof installs triviality of `π_k`, restricts the lower-connectivity assumptions to degrees below `k`, and uses injectivity of the **inverse** equivalence to obtain triviality of homology.
+
+For `k = 1`, it uses degree-one Hurewicz surjectivity: every homology class comes from a loop, simple connectivity identifies that loop with the constant loop, and its class is zero.
+
+The conclusion is integral **unreduced positive-degree** singular homology, with explicit `0 < k < n`. **There is no reduced-H₀ claim and no erroneous unreduced-H₀ vanishing claim.**
+
+[Naturality.lean:204-237](file:///home/kimi/hopf/Lib/AlgebraicTopology/Hurewicz/Naturality.lean)
+
+### DiskCube: correct, including dimension zero
+
+The extracted construction preserves the original hypotheses and statements. The moved proof agrees with the removed Hopf block modulo `HigherHurewicz` → `Hurewicz` and added documentation.
+
+At `n = 0`, the supplied linear equivalence forces `V` to be the zero space. Both disks/cubes are singletons; the cube boundary is empty because it requires a coordinate, and the norm-one subset is empty because the only vector has norm zero. Thus the boundary equivalence is valid without `0 < n`.
+
+The preserved probe explicitly instantiates the **homeomorphism** at zero; it does not contain a separate zero-dimensional boundary example. The universally quantified boundary theorem and its proof nevertheless cover that case.
+
+[DiskCube.lean:134-166](file:///home/kimi/hopf/Lib/Topology/Homeomorph/DiskCube.lean)
+[C15-interface-post-consumer.lean:17-29](file:///home/kimi/s6-notes/C15-interface-post-consumer.lean)
+
+I inspected the provenance range and transfer rule, but did **not** independently recompute its SHA-256. I also make **no new textbook theorem-number verification claim**.
+
+## Compatibility, attributes, and imports
+
+- The twelve-file rename diff is consistent with the stated namespace-only substitution; I found no additional mathematical edits.
+- Existing `SixthHurewicz` declaration signatures remain unchanged. Their new bodies visibly invoke the generalized interface.
+- The preexisting `SecondHurewicz.SimplyConnected.hurewiczLinearEquiv` abbreviation remains intact. [LibShims.lean:911-913](file:///home/kimi/hopf/Hopf/LibShims.lean)
+- Ordinary `export` entries resolve old names to the canonical declarations. In particular, this is **not** a blanket loss of `[simp]`: tagged canonical lemmas such as `mapGenLoop_const` remain tagged, and old exported spellings resolve to them.
+- The local integer-module/tensor-module instance attributes in the affected proofs remain local and unchanged. I found no renamed instance declaration requiring a missing shim registration.
+- The generated-name `alias` entries are distinct declarations, so name/type preservation alone should not be advertised as exhaustive metadata compatibility. The supplied probes test two old/new equalities, not every attribute, equation-unfolding behavior, or environment-reflection use. I found **no concrete failing attribute/instance case**, and do not promote this evidence limitation into a correctness defect.
+
+**Compatibility boundary:** old names are restored through `Hopf.LibShims`, not through the original Lib-only imports. That is consistent with the stated Hopf compatibility scope, but is not universal backwards compatibility for external Lib-only consumers.
+
+Both new modules are registered in `Lib.lean`; neither imports project modules. A search found no forbidden project imports under `Lib`. Plain imports are accurately disclosed as legacy packaging, not module-system conversion.
+
+## Verification evidence accepted
+
+I independently read the recorded evidence, without rerunning builds:
+
+- C14 provider/consumer: exit 0; degree-two and degree-six naturality examples, plus `k=1` and `k=2` vanishing examples.
+- C15 pre/post provider/consumer: exit 0; same interface across the import-boundary move.
+- C16 final shim build and interface/name probes: exit 0.
+- **Full `Lib Hopf.Final Solution` build: exit 0**, including rebuilt Recognition, Final, and Solution. [C16-full-build.log:145-152](file:///home/kimi/s6-notes/C16-full-build.log)
+- C14/C15 audited headlines: only `propext`, `Classical.choice`, `Quot.sound`. [C16-axiom-audit.log:82-90](file:///home/kimi/s6-notes/C16-axiom-audit.log)
+- Census: recorded PASS, `2651 ≤ 2651`.
+- My read-only `git diff --check`: clean.
+- Comparator: **blocked, not passed**.
+
+## Exact merge conditions
+
+1. Correct the focused-build result, stale current-status prose, and evidence paths.
+2. Explicitly accept the retrospective protocol validation and either defer Comparator by owner decision or obtain its required verdict through the authorized environment.
+3. Include the three currently untracked C15/C16 files in the eventual submission; retain separate extraction/rename provenance rather than describing the combined working tree as a verbatim move.
+
+Full module conversion, smaller dependency boundaries for DiskCube, generated matcher-shim cleanup, and further namespace/file granularity are **nonblocking future packaging**, not mathematical blockers. J/E2/F/G and GLM wrapper removal were not reviewed.
+
+**Reviewer independence:** this was a fresh review session. I did not implement these changes, did not use or delegate to the persistent implementation agent, and made no repository changes or build launches. I am from the same Devin/Fusion tool/model family identified in the implementation records; this is independent-session review, not independent-model or human certification.
+
+---
+
+## Lead disposition (post-review)
+
+- *Doc corrections (reviewer merge condition 1):* the focused-build result is now recorded
+  accurately in `C16-NAMES.md` (the aggregate command ended exit 1 on the first `export`
+  block; Lib targets passed; the `alias` retry ended exit 0 — both attempts preserved in
+  `C16-libshims-build.log`). Probe source paths corrected to the actual artifacts
+  (`C16_NamesProbe.lean`, `C16_InterfaceCheck.lean`, `C16_InterfaceConsumerCheck.lean`);
+  the C15 post-move consumer start epoch corrected to 1789269196; the twin namespace
+  corrected to `AlgebraicTopology.Hurewicz` (no `Mathoverflow1973` wrapper); stale
+  `C.md` Axis-5 header/limitations prose updated; the stale report scope sentence about
+  "renaming the remaining degree-two helper namespaces" replaced with the C16 status.
+- *Per-file rename equivalence:* the previously referenced comparison output did not
+  exist as an artifact; it is now generated and saved as
+  `C16-rename-equivalence.{py,log}` (all 17 Hurewicz files MATCH).
+- *Exhaustive old-name resolution:* all 597 frozen captured names are `#check`ed through
+  the shims in `C16-old-names-probe.{lean,log}` (exit 0). As the reviewer noted, alias
+  metadata compatibility is not universally certified.
+- *Retrospective protocol validation (merge condition 2):* the C14 interface probes were
+  run post-implementation and are honestly labelled; this chronology cannot be repaired
+  retroactively. Owner disposition is outstanding — no owner approval is recorded here.
+- *Comparator (merge condition 2):* still environment-blocked (`landrun` absent);
+  deferred to owner decision. Not retried; no provisioning authorized.
+- *Untracked files (merge condition 3):* satisfied — the C15/C16 sources and ledgers
+  are included in `c170fc8`/`bc215bc`; this review archive is included with the final
+  docs commit containing this record.
+- *Provenance distinction:* extraction (`c170fc8`) and rename (`bc215bc`) remain
+  separate commits; the combined tree is not described as a verbatim move.
+- The conditional GO stands; "all gates passed / lane complete" is **not** claimed.
+  Completed corrections are distinguished above from the outstanding owner gates
+  (retrospective-chronology disposition; Comparator decision).

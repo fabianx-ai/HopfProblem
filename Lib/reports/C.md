@@ -1,6 +1,6 @@
 # Lane C report — the Hurewicz theorem in every degree
 
-**Current Lean checkpoint:** `37fc1de8`, branch `lib/C-14-integrated-receipt`.
+**Current Lean checkpoint:** `bc215bc`, branch `lib/C-14-integrated-receipt` (based on upstream `37fc1de8`).
 **Toolchain:** `leanprover/lean4:v4.33.0`.
 **Textbook and live ledger:** `Lib/docs/C.md`; aggregate receipt: `Lib/docs/C-INTERFACE_RECEIPT.md`.
 **Scope:** lane C only. The reassigned J/E2/F/G packets and target files were not edited.
@@ -265,13 +265,19 @@ Corrections required by `Lib/reviews/INTEGRATION.md`:
 | CellFilling | `Mathlib/Topology/Homotopy/Contractible.lean` (shape) |
 
 The specifically requested generic-name cleanups and `HigherHurewicz → Hurewicz` rename are
-landed. Full migration out of `Mathoverflow1973`, renaming the remaining degree-two helper
-namespaces, and converting the entire import graph to `module` are not claimed here.
+landed and committed (`bc215bc`): the degree-two namespace is now
+`Hurewicz.DegreeTwo`. Full migration out of `Mathoverflow1973`, finer-grained
+repartition of the degree-two support helpers (not part of the rename), and converting
+the entire import graph to `module` are future packaging, not claimed here.
 The historical prospectus's separately named general naturality and positive-degree
-homology-vanishing wrappers are not among the thirteen validated public outputs; the existing
-degree-six naturality consumer remains in `Hopf/Recognition.lean`. The remaining generic
-`DiskCube` and lane-B leftovers in `Hopf/Hurewicz.lean` have not been silently counted as
-extracted. These are explicit remaining upstream-packaging/API items, not C10/C13 proof blockers.
+homology-vanishing wrappers are now landed as C14 (`Lib/AlgebraicTopology/Hurewicz/Naturality.lean`,
+committed `f9a24ba`); the degree-six naturality consumer in `Hopf/Recognition.lean` is an
+adapter over `Hurewicz.*`. The generic `DiskCube` block is extracted as C15
+(`Lib/Topology/Homeomorph/DiskCube.lean`, committed `c170fc8`;
+census baseline lowered 2663 → 2651). The `SecondHurewicz` namespace is renamed
+`Hurewicz.DegreeTwo` as C16 (committed `bc215bc`), with generated compatibility exports in
+`Hopf/LibShims.lean` preserving every captured public old name. These items are no longer
+outstanding; remaining upstream-packaging/API limitations are kept separate below.
 
 ## Verification checkpoint `32982cb` (integrated)
 
@@ -304,8 +310,52 @@ performed after `12245ae`/`32982cb`, not before.
    unknown (the recovered review is not an independent new review).
 7. Acting model recorded above; no git configuration was changed.
 
-Broader packaging limitations stand separately: the transitional `Mathoverflow1973`/
-`SecondHurewicz` namespaces, remaining `Hopf` leftovers, and full Mathlib-root module
-conversion are not claimed here.
+Broader packaging limitations stand separately: the transitional `Mathoverflow1973` root
+namespace, remaining `Hopf` leftovers, and full Mathlib-root module conversion are not
+claimed here. (The `SecondHurewicz` namespace no longer exists in `Lib`; it survives only
+as compatibility exports in `Hopf/LibShims.lean` — see C16.)
+
+## Verification checkpoint — C14/C15/C16 (`bc215bc`)
+
+Current committed head for this lane: `bc215bc` — `f9a24ba` (C14 Naturality),
+`c170fc8` (C15 DiskCube extraction), `bc215bc` (C16 `SecondHurewicz` →
+`Hurewicz.DegreeTwo` rename). The gates below were run on the pre-commit working tree
+over `f9a24ba`; the source was subsequently committed as `c170fc8` and `bc215bc`
+without further change — they are not claimed as rerun at the committed head. The
+original aggregate receipt at `37fc1de8` remains the historical interface receipt,
+supplemented by the C16 working-tree supplement:
+
+| Command | Result | Log |
+|---|---|---|
+| `lake build Lib.AlgebraicTopology.Hurewicz.Naturality Lib.Topology.Homeomorph.DiskCube Hopf.LibShims` | **exit 1** — initial shim `export` syntax invalid under declaration parents; the Lib targets themselves built | `C16-focused-build.log` |
+| `lake build Hopf.LibShims` | final retry exit 0 (log contains the preceding failed attempts) | `C16-libshims-build.log` |
+| `lake build Lib Hopf.Final Solution` | exit 0 | `C16-full-build.log` |
+| `lake env lean Lib/AxiomAudit.lean` | exit 0; `[propext, Classical.choice, Quot.sound]` only | `C16-axiom-audit.log` |
+| C16 old/new-name probe (shim `rfl`-equal to canonical) | exit 0 | `C16-names-probe.log` |
+| C16 interface provider/consumer (C1–C13 aliases on current names, degree-six equivalence) | exit 0 | `C16-interface-{provider,consumer}.log` |
+| `python3 scripts/lib_stock_census.py --check` | exit 0; ratchet PASS, 2651 ≤ baseline 2651 | `C16-census.log` |
+| `git diff --check` | clean | — |
+
+The comparator remains environment-blocked (`landrun` not on `PATH`, owner-dependent;
+not retried — no provisioning authorized). Per-file rename equivalence is recorded by
+`C16-rename-equivalence.{py,log}`: all 17 `Lib/AlgebraicTopology/Hurewicz/*.lean` files
+equal `git show f9a24ba:` with the token replaced. Ledgers:
+`Lib/docs/C14-NATURALITY.md`, `Lib/docs/C15-DISKCUBE.md`, `Lib/docs/C16-NAMES.md`.
+
+A fresh independent-session review (`Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md`)
+returned a **conditional GO** for the C14–C16 implementation and **NO-GO** for an
+unconditional "all gates passed / lane complete" claim. Its merge conditions:
+corrected docs/evidence paths are **done** (this pass); inclusion of the C15/C16 files
+is **done** (`c170fc8`/`bc215bc`; this review archive rides with the final docs
+commit). Owner disposition for the retrospective interface-probe chronology and the
+blocked Comparator verdict remain **outstanding owner gates** — no owner approval is
+recorded or claimed here.
+
+Final expected statuses: C14 APIs (`f9a24ba`), the C15 move (`c170fc8`), and the C16
+scoped rename (`bc215bc`) are complete and committed. Global shared-dependency module
+conversion and finer helper partition are future packaging, not silently done; global
+`Mathoverflow1973` root removal is GLM's lane. The Comparator cannot proceed without a
+real `landrun` (provisioning approval still outstanding); the original Stage-2
+reviewer remains unknown (recovered review only).
 
 No push has been performed. Attribution was not changed through git configuration.

@@ -86,7 +86,10 @@ deterministically and sorted:
 
 Design reviewed GO before implementation by the persistent Devin subagent in a
 separate critical pass, with prior implementation role (C14/C15 receipts, C13)
-explicitly disclosed — a self-review, not independent certification.
+explicitly disclosed — a self-review, not independent certification. A later fresh
+independent-session review of the landed C14–C16 work is archived in
+`Lib/docs/C-FOLLOWUPS-INDEPENDENT-REVIEW.md` (conditional GO; owner gates
+outstanding).
 
 ## Verification evidence
 
@@ -96,10 +99,10 @@ explicitly disclosed — a self-review, not independent certification.
   `export` under declaration (non-namespace) parents — 55 `unknown namespace` errors
   (`~/s6-notes/C16-focused-build.log`). This failed initial attempt is recorded
   separately; it was a shim-syntax issue, not a mathematical failure.
-- `Hopf.LibShims` retry after switching declaration-parent leaves to `alias`
-  declarations: first attempt still exit 1 (`abbrev` could not infer implicit
-  arguments), then **exit 0** with `alias` (`~/s6-notes/C16-libshims-build.log`
-  contains both attempts; the final successful entry is the tail). One
+- Repair attempts for declaration-parent leaves: an `abbrev` attempt still failed
+  (exit 1 — `abbrev` could not infer the implicit arguments); the final `alias`
+  form succeeded, **exit 0** (`~/s6-notes/C16-libshims-build.log` contains both
+  attempts; the final successful entry is the tail). One
   `linter.auxLemma` warning: the captured name `vertexStraighteningData.match_1` is an
   auto-generated matcher, preserved for completeness.
 - Full build `lake build Lib Hopf.Final Solution`: exit 0

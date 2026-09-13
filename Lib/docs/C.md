@@ -10,8 +10,10 @@ This file contains, in order:
   mathematical language. No Lean names occur in these sections.
 * **Axes 2–3** (§17): the additive decomposition into named lemmas, in dependency order.
 * **Axis 4** (§18): file placement under `Lib/` with the Mathlib twin of each file.
-* **Axis 5** (§19): the current typed ledger, checked at `37fc1de8`, followed by the explicitly
-  superseded pre-landing plan. The aggregate interface receipt is `C-INTERFACE_RECEIPT.md`.
+* **Axis 5** (§19): the current typed ledger. Two distinct interface checkpoints apply: the
+  integrated aggregate receipt `C-INTERFACE_RECEIPT.md` was validated at `37fc1de8`, and a
+  C16 working-tree supplement re-validated the same aliases under the post-rename
+  `Hurewicz.DegreeTwo` names (see `C16-NAMES.md`). The superseded pre-landing plan follows.
 * **Current limitations and provenance** appear after the live signatures. Historical open
   items are retained only as part of the superseded plan.
 
@@ -826,7 +828,13 @@ instantiation of the general `hurewiczLinearEquiv` at $n = 2, \dots, 6$.
 
 ---
 
-# Axis 5 — current typed ledger (validated at `37fc1de8`)
+# Axis 5 — current typed ledger
+
+The aggregate interface receipt validating these signatures is `C-INTERFACE_RECEIPT.md`,
+produced at `37fc1de8`; a separate C16 working-tree supplement re-ran the same
+provider/consumer aliases after the `SecondHurewicz` → `Hurewicz.DegreeTwo` rename
+(`C16-NAMES.md`). These are distinct checkpoints; the `37fc1de8` receipt is not claimed to
+cover the rename.
 
 This section supersedes the pre-landing plan preserved below. Lanes A and B are available in
 `Lib/`; there are no project imports in the lane-C library. C10 and C13 now exist, including
@@ -903,16 +911,16 @@ def Hurewicz.simplexCubeHomeomorph (n : ℕ) :
 ### C4 — boundary homotopy extension
 
 ```lean
-def SecondHurewicz.SimplyConnected.extendBoundaryHomotopy {n : ℕ} {X : Type*}
+def Hurewicz.DegreeTwo.SimplyConnected.extendBoundaryHomotopy {n : ℕ} {X : Type*}
     [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
-    (h : C(unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
+    (h : C(unitInterval × Hurewicz.DegreeTwo.SimplyConnected.SimplexBoundary n, X))
     (h0 : ∀ s, h (0, s) = f s.val) : C(unitInterval × SingularChains.Simplex n, X)
 ```
 
 ### C5 — simplexwise prism operator
 
 ```lean
-def SecondHurewicz.SimplyConnected.simplexPrismOperator {X : Type} [TopologicalSpace X]
+def Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator {X : Type} [TopologicalSpace X]
     (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C(unitInterval × SingularChains.Simplex n, X)) :
     SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1)
@@ -957,7 +965,7 @@ def Hurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [TopologicalSp
     (H₀ : C(SingularChains.Simplex n, X) → C(unitInterval × SingularChains.Simplex n, X))
     (H₁ : C(SingularChains.Simplex (n + 1), X) →
       C(unitInterval × SingularChains.Simplex (n + 1), X))
-    (hface : SecondHurewicz.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
     (hconst : H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
       ContinuousMap.const (unitInterval × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) : GenLoop (Fin (n + 1)) X x
@@ -1021,13 +1029,26 @@ theorem Hurewicz.sphere_homotopicRel_of_topClass_eq {m : ℕ} {X : Type} [Topolo
 * `GenLoop` is the pinned Mathlib's root name. There is no outstanding naming question.
 * The historical Stage-2 review is recovered in `C-STAGE2-REVIEW.md`; the source did not name
   its reviewer. Original attribution awaits the owner and is not fabricated here.
-* Plain imports and the transitional `Mathoverflow1973`/`SecondHurewicz` namespaces remain.
+* Plain imports and the transitional `Mathoverflow1973` root namespace remain. The
+  `SecondHurewicz` namespace is renamed `Hurewicz.DegreeTwo` (C16); the old names
+  resolve through generated compatibility exports in `Hopf/LibShims.lean`.
   The requested `HigherHurewicz → Hurewicz` rename and the explicitly identified generic-name
   cleanups are landed. Complete Mathlib-root namespace/module-system conversion is not claimed.
 * The historical prospectus mentioned a separately named general naturality theorem and a
-  positive-degree homology-vanishing corollary. Those extra public wrappers are not part of the
-  thirteen validated outputs; the degree-six naturality consumer remains proved in `Hopf`.
-  They are not to be inferred from this receipt as separately exported declarations.
+  positive-degree homology-vanishing corollary. Both now exist in
+  `Lib/AlgebraicTopology/Hurewicz/Naturality.lean` (C14): the general
+  `hurewiczLinearEquivOfTwoLE_natural` and `subsingleton_singularHomology_of_lt`. The
+  degree-six consumer in `Hopf/Recognition.lean` is now an adapter over them. They remain
+  outside the thirteen validated C1–C13 outputs validated by the `37fc1de8` aggregate
+  receipt; the C14 provider/consumer receipt (`C14-NATURALITY.md`) validates the new APIs
+  separately.
+
+* *Implementation note (C14):* the Lean corollary
+  `Hurewicz.subsingleton_singularHomology_of_lt` proves the §14 forward vanishing *using*
+  the already-proved equivalence — for $k \ge 2$ via injectivity of the inverse Hurewicz
+  equivalence applied to $\pi_k$ triviality, and for $k = 1$ via degree-one Hurewicz
+  surjectivity (`loopHomologyClass_surjective`) — rather than by the literal
+  direct-straightening argument of §14. Same conclusion, different proof route.
 
 # Historical pre-landing Axis-5 plan (superseded)
 
