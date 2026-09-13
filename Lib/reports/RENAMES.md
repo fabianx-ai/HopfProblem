@@ -29,8 +29,8 @@ Name confirmations (no rename needed; twins recorded): `SingularMayerVietoris`
 
 ## Wrapper removal (Mathoverflow1973): attempted, reverted, resumable
 
-WIP preserved: `~/s6-notes/hopf-lib-a/wrapper-removal-wip.diff` (4,084 lines)
-and `~/s6-notes/hopf-lib-a/wang-wrapper-attempt.lean`.
+The off-tree WIP artifacts are not included in this repository; the findings
+and resume recipe below record the attempt.
 
 Findings from the attempt (Lib side was GREEN, zero errors, zero Mathlib
 root-name collisions across 79 files — the hard part works):
@@ -46,11 +46,20 @@ root-name collisions across 79 files — the hard part works):
 
 ## Resume recipe
 
-1. Recreate Wang.lean from the preserved attempt (or re-run the family
-   closure mover) and land it: `lake build Lib` green, consumers via shims.
+1. Recreate Wang.lean from the source families and land it: `lake build Lib` green, consumers via shims.
 2. Regenerate LibShims: one `export <Family> (<bare names>)` line per family,
    plus the CuspCentralHomology/CuspRetraction.Patching alias blocks as
    `abbrev`s.
 3. Re-apply the wrapper strip to Lib/ (79 files), strip `Mathoverflow1973.`
    from LibShims and Hopf/ (36 + references), migrate AxiomAudit probes.
 4. Full chain green -> single commit.
+
+## Open rename and record discipline
+
+- `Suspension.topSus`: choose the type name against its Mathlib twin under
+  `Mathlib/Topology/Homotopy/`, then rename again; a type is not called `topSus`.
+  The final name is not yet settled.
+- Rename commits must not rewrite another seat's ledger or `Lib/reviews/*`.
+  Historical names remain in the record; this ledger carries the rename map.
+
+Record fixes: GLM seat, run by Devin/Astra, based on upstream `37fc1de8`.

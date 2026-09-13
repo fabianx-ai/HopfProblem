@@ -5,8 +5,7 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 
 # Lane I report — quotient manifolds, mapping torus, split extensions
 
-**Status: 4 of ~14 units landed (green); the remainder is enumerated below with exact
-resume configs (cfg files in ~/s6-notes/hopf-lib-a/).**
+**Status: 4 of ~14 units landed (green); the remainder is enumerated below.**
 
 ## Landed
 
@@ -66,9 +65,6 @@ The four `LinearMap.map_smul` proof sites that failed under the local
 
 ## Tooling
 
-- `~/s6-notes/hopf-lib-a/dag.py` + `dag_gen.py` → `DAG.md`: computed import DAG
-  (dotted-name references over 721fc82 bytes, rename-mapped, family over-
-  approximation). Every future unit's import list is now precomputed.
 - extract.py still mangles one-line `attribute [local instance] X in` in two
   ways (head stripped + indented). Post-extract normalizer used:
   `re.sub(r'^\s*(?:attribute \[local instance\] )?((?:\w+\.)+integer(?:Tensor|LinearMap)Module) in\s*$', r'attribute [local instance] \1 in', ...)`.

@@ -9,7 +9,7 @@ applied inline (marked **[corrected]**). Provenance receipts for all lanes: `Lib
 
 - `Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean` (9, da29618)
 
-## Drafted, not landed (preserved in ~/s6-notes/hopf-lib-a/drafts/)
+## Historical draft attempts (subsequent landings recorded below)
 
 - `VanKampen.lean` — 114 BT decls + 51 HW family members. The family's
   three STRUCTURES (LocalPathValue, PathValue, TwoOpenCover) live in
