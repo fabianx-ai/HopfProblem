@@ -86,17 +86,23 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Twice-punctured spaces -/
+
+/-- The space with two points removed. -/
 def PassageHomology.twoPunctureSet {X : Type} (a b : X) : Set X :=
   ({ a }ᶜ : Set X) ∩ { b }ᶜ
 
+/-- The inclusion of the twice-punctured set into the first once-punctured set. -/
 def PassageHomology.firstPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
     C(twoPunctureSet a b, ({ a }ᶜ : Set X)) :=
   ContinuousMap.inclusion Set.inter_subset_left
 
+/-- The inclusion of the twice-punctured set into the second once-punctured set. -/
 def PassageHomology.secondPunctureInclusion {X : Type} [TopologicalSpace X] (a b : X) :
     C(twoPunctureSet a b, ({ b }ᶜ : Set X)) :=
   ContinuousMap.inclusion Set.inter_subset_right
 
+/-- When the ambient higher homology vanishes, classes are detected by the two puncture inclusions. -/
 theorem PassageHomology.homology_ext_of_ambient_vanishing {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hc : U ∪ V = Set.univ) (n : ℕ)
     [Subsingleton (SingularMayerVietoris.SingularHomology X (n + 1))]
@@ -125,6 +131,7 @@ theorem PassageHomology.homology_ext_of_ambient_vanishing {X : Type} [Topologica
   rw [SingularMayerVietoris.leftHomologyMap_apply, SingularMayerVietoris.leftHomologyMap_apply,
     hfirst, hsecond]
 
+/-- Homology classes of a twice-punctured contractible T1 space agree when both puncture images do. -/
 theorem PassageHomology.two_puncture_homology_ext {X : Type} [TopologicalSpace X]
     [T1Space X] [ContractibleSpace X] {p q : X} (hpq : p ≠ q) (n : ℕ)
     {a b : SingularMayerVietoris.SingularHomology (twoPunctureSet p q) n}
@@ -147,6 +154,7 @@ theorem PassageHomology.two_puncture_homology_ext {X : Type} [TopologicalSpace X
     homology_ext_of_ambient_vanishing _ _ isOpen_compl_singleton isOpen_compl_singleton hc n
       hfirst hsecond
 
+/-- A sphere around `c` of radius `r` misses `p` when `‖c - p‖ ≠ r`. -/
 theorem PassageHomology.affine_sphere_ne_of_norm_ne {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {p c : E} {r : ℝ} (hr : 0 ≤ r) (h : ‖c - p‖ ≠ r)
     (u : Metric.sphere (0 : E) 1) : c + r • u.val ≠ p := by
@@ -160,6 +168,9 @@ theorem PassageHomology.affine_sphere_ne_of_norm_ne {E : Type} [NormedAddCommGro
       rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hr, mem_sphere_zero_iff_norm.mp u.property,
         mul_one]
 
+/-! ### Spheres avoiding a puncture -/
+
+/-- A sphere avoiding `p` as a map into the once-punctured space. -/
 def PassageHomology.puncturedSphereMap {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p c : E) (r : ℝ) (h : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p) :
     C(Metric.sphere (0 : E) 1, ({ p }ᶜ : Set E))
@@ -168,6 +179,7 @@ def PassageHomology.puncturedSphereMap {E : Type} [NormedAddCommGroup E] [Normed
   continuous_toFun :=
     (continuous_const.add (continuous_const.smul continuous_subtype_val)).subtype_mk _
 
+/-- A family of puncture-avoiding spheres gives a homotopy. -/
 theorem PassageHomology.puncturedSphereMap_homotopic_of_family {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E) (c : C(unitInterval, E))
     (r : C(unitInterval, ℝ)) {c₀ c₁ : E} {r₀ r₁ : ℝ} (hc₀ : c 0 = c₀) (hc₁ : c 1 = c₁)
@@ -194,6 +206,7 @@ theorem PassageHomology.puncturedSphereMap_homotopic_of_family {E : Type}
     change c 1 + r 1 • u.val = c₁ + r₁ • u.val
     rw [hc₁, hr₁]
 
+/-- Puncture-avoiding spheres of different radii are homotopic. -/
 theorem PassageHomology.puncturedSphereMap_radius_homotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E) {r₀ r₁ : ℝ} (hr₀ : 0 < r₀) (hr₁ : 0 < r₁)
     (h₀ : ∀ u : Metric.sphere (0 : E) 1, p + r₀ • u.val ≠ p)
@@ -214,6 +227,7 @@ theorem PassageHomology.puncturedSphereMap_radius_homotopic {E : Type}
         (sub_add_cancel 1 (t : ℝ))
   exact affine_sphere_ne_of_norm_ne hrt.le (by simpa using hrt.ne) u
 
+/-- A puncture-avoiding sphere is homotopic to the one centred at `p`. -/
 theorem PassageHomology.puncturedSphereMap_center_homotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p c : E) {r : ℝ} (hinside : ‖c - p‖ < r)
     (h₀ : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p)
@@ -236,6 +250,7 @@ theorem PassageHomology.puncturedSphereMap_center_homotopic {E : Type}
   exact
     affine_sphere_ne_of_norm_ne ((norm_nonneg _).trans_lt hinside).le (hn.trans_lt hinside).ne u
 
+/-- A sphere outside the puncture is nullhomotopic in the punctured space. -/
 theorem PassageHomology.puncturedSphereMap_outside_nullhomotopic {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (p c : E) {r : ℝ} (hr : 0 ≤ r)
     (houtside : r < ‖c - p‖) (h : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p) :
@@ -267,6 +282,7 @@ theorem PassageHomology.puncturedSphereMap_outside_nullhomotopic {E : Type}
     rw [zero_smul, add_zero]
   exact ⟨⟨c, hcp⟩, he ▸ H⟩
 
+/-- A sphere avoiding both punctures as a map into the twice-punctured set. -/
 def PassageHomology.twoPunctureSphereMap {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (p q c : E) (r : ℝ) (hp : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ p)
     (hq : ∀ u : Metric.sphere (0 : E) 1, c + r • u.val ≠ q) :
@@ -276,12 +292,14 @@ def PassageHomology.twoPunctureSphereMap {E : Type} [NormedAddCommGroup E]
   continuous_toFun :=
     (continuous_const.add (continuous_const.smul continuous_subtype_val)).subtype_mk _
 
+/-- A small sphere around the origin inside the puncture `b`. -/
 def PassageHomology.innerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
     (r : ℝ) (hr : 0 < r) (hrb : r < ‖b‖) : C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
   twoPunctureSphereMap 0 b 0 r
     (affine_sphere_ne_of_norm_ne hr.le (by simpa only [sub_self, norm_zero] using hr.ne))
     (affine_sphere_ne_of_norm_ne hr.le (by simpa only [zero_sub, norm_neg] using hrb.ne'))
 
+/-- A large sphere enclosing both punctures. -/
 def PassageHomology.outerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (b : E)
     (R : ℝ) (hbR : ‖b‖ < R) : C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
   twoPunctureSphereMap 0 b 0 R
@@ -290,6 +308,7 @@ def PassageHomology.outerSphere {E : Type} [NormedAddCommGroup E] [NormedSpace �
     (affine_sphere_ne_of_norm_ne ((norm_nonneg b).trans_lt hbR).le
       (by simpa only [zero_sub, norm_neg] using hbR.ne))
 
+/-- A small sphere around `b` linking the second puncture. -/
 def PassageHomology.linkingSphere {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (b : E) (ε : ℝ) (hε : 0 < ε) (hεb : ε < ‖b‖) :
     C(Metric.sphere (0 : E) 1, twoPunctureSet 0 b) :=
@@ -297,6 +316,7 @@ def PassageHomology.linkingSphere {E : Type} [NormedAddCommGroup E] [NormedSpace
     (affine_sphere_ne_of_norm_ne hε.le (by simpa only [sub_zero] using hεb.ne'))
     (affine_sphere_ne_of_norm_ne hε.le (by simpa only [sub_self, norm_zero] using hε.ne))
 
+/-- The outer sphere's homology class is the sum of the inner and linking classes. -/
 theorem PassageHomology.radial_sphere_homology_relation {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (b : E) {r R ε : ℝ} (hr : 0 < r) (hrb : r < ‖b‖) (hbR : ‖b‖ < R)
     (hε : 0 < ε) (hεb : ε < ‖b‖) (n : ℕ) (hn : n ≠ 0) :
@@ -380,16 +400,21 @@ theorem PassageHomology.radial_sphere_homology_relation {E : Type} [NormedAddCom
         LinearMap.zero_apply] using LinearMap.congr_fun hjiMap a
     rw [ho, hi, zero_add]
 
+/-! ### Punctured passage traces -/
+
+/-- The point of the cylinder `ℝ × sphere` at log-radius `τ` and direction `u`. -/
 def PassageHomology.cylinderPuncture {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (τ : ℝ) (u : Metric.sphere (0 : E) 1) : E :=
   Real.exp τ • u.val
 
+/-- The cylinder puncture has norm `exp τ`. -/
 theorem PassageHomology.norm_cylinderPuncture {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (τ : ℝ) (u : Metric.sphere (0 : E) 1) :
     ‖cylinderPuncture τ u‖ = Real.exp τ := by
   rw [cylinderPuncture, norm_smul, Real.norm_eq_abs, abs_of_pos (Real.exp_pos τ),
     mem_sphere_zero_iff_norm.mp u.property, mul_one]
 
+/-- A slice of the punctured cylinder away from the puncture point. -/
 def PassageHomology.cylinderSlice {E : Type} [NormedAddCommGroup E] (τ : ℝ)
     (u : Metric.sphere (0 : E) 1) (t : ℝ) (ht : t ≠ τ) :
     C(Metric.sphere (0 : E) 1, ({(τ, u)}ᶜ : Set (ℝ × Metric.sphere (0 : E) 1)))
@@ -397,17 +422,21 @@ def PassageHomology.cylinderSlice {E : Type} [NormedAddCommGroup E] (τ : ℝ)
   toFun v := ⟨(t, v), fun h => ht (congrArg Prod.fst h)⟩
   continuous_toFun := (continuous_const.prodMk continuous_id).subtype_mk _
 
+/-- The clamp of a real parameter into `Icc 0 1`. -/
 def PassageHomology.clampTime : C(ℝ, ℝ) :=
   ⟨fun t => Max.max 0 (Min.min 1 t), continuous_const.max (continuous_const.min continuous_id)⟩
 
+/-- The clamped time lies in `Icc 0 1`. -/
 theorem PassageHomology.clampTime_mem (t : ℝ) : clampTime t ∈ Set.Icc (0 : ℝ) 1 :=
   ⟨le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩
 
+/-- The clamp is the identity on `Icc 0 1`. -/
 theorem PassageHomology.clampTime_of_mem {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     clampTime t = t := by
   change Max.max 0 (Min.min 1 t) = t
   rw [min_eq_right ht.2, max_eq_right ht.1]
 
+/-- The clamp takes an interior value only at that point. -/
 theorem PassageHomology.clampTime_eq_interior_iff {τ : ℝ} (hτ : τ ∈ Set.Ioo (0 : ℝ) 1)
     (t : ℝ) : clampTime t = τ ↔ t = τ := by
   constructor
@@ -427,6 +456,7 @@ theorem PassageHomology.clampTime_eq_interior_iff {τ : ℝ} (hτ : τ ∈ Set.I
     subst t
     exact clampTime_of_mem ⟨hτ.1.le, hτ.2.le⟩
 
+/-- The trace of a passage homotopy into the complement of the target set. -/
 def PassageHomology.puncturedPassageTrace {E X : Type} [NormedAddCommGroup E]
     [TopologicalSpace X] (H : C(ℝ × Metric.sphere (0 : E) 1, X)) (S : Set X) {τ : ℝ}
     (hτ : τ ∈ Set.Ioo (0 : ℝ) 1) (u : Metric.sphere (0 : E) 1)
@@ -448,6 +478,7 @@ def PassageHomology.puncturedPassageTrace {E X : Type} [NormedAddCommGroup E]
       continuous_snd.comp continuous_subtype_val
     exact (H.continuous.comp (ht.prodMk hv)).subtype_mk _
 
+/-- On the interval the punctured trace stays off the crossing set except at the puncture. -/
 theorem PassageHomology.puncturedPassageTrace_on_interval {E X : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace X]
     (H : C(ℝ × Metric.sphere (0 : E) 1, X)) (S : Set X) {τ : ℝ} (hτ : τ ∈ Set.Ioo (0 : ℝ) 1)
@@ -459,22 +490,29 @@ theorem PassageHomology.puncturedPassageTrace_on_interval {E X : Type}
   change H (clampTime p.val.1, p.val.2) = H p.val
   rw [clampTime_of_mem hp]
 
+/-- A normed space with the origin removed, as an open set. -/
 def PassageHomology.puncturedVectorSpace (E : Type) [NormedAddCommGroup E] :
     TopologicalSpace.Opens E :=
   ⟨({0}ᶜ : Set E), isOpen_compl_singleton⟩
 
+/-! ### Punctured radial spaces -/
+
+/-- The nonzero elements of `N`. -/
 abbrev PuncturedRadial.Space (N : Type*) [Zero N] :=
   { u : N // u ≠ 0 }
 
+/-- The radius-`r` sphere included into the punctured space. -/
 def PuncturedRadial.fromSphere {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
     (hr : 0 < r) : C(Metric.sphere (0 : N) 1, Space N) :=
   ⟨fun u => ⟨r • (u : N), smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u)⟩,
     (continuous_const.smul continuous_subtype_val).subtype_mk _⟩
 
+/-- The linear blend interpolating between a sphere point and a target vector. -/
 def PuncturedRadial.blendVector {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
     (q : (unitInterval) × Space N) : N :=
   ((1 - (q.1 : ℝ)) + (q.1 : ℝ) * (r / ‖q.2.val‖)) • q.2.val
 
+/-- The blend vector is continuous. -/
 theorem PuncturedRadial.continuous_blendVector {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) : Continuous (blendVector (N := N) r) := by
   have ht : Continuous (fun q : (unitInterval) × Space N => (q.1 : ℝ)) :=
@@ -487,6 +525,7 @@ theorem PuncturedRadial.continuous_blendVector {N : Type*} [NormedAddCommGroup N
             (continuous_const.div hu.norm (fun q => norm_ne_zero_iff.mpr q.2.property)))).smul
       hu
 
+/-- The blend vector never vanishes. -/
 theorem PuncturedRadial.blendVector_ne_zero {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (r : ℝ) (hr : 0 < r) (q : (unitInterval) × Space N) : blendVector r q ≠ 0 :=
   by
@@ -498,6 +537,9 @@ theorem PuncturedRadial.blendVector_ne_zero {N : Type*} [NormedAddCommGroup N]
     simpa only [smul_eq_mul, mul_one, Set.mem_Ioi] using h
   exact smul_ne_zero hpos.ne' q.2.property
 
+/-! ### Local degree of a differentiable map -/
+
+/-- Differentiability gives a ball where `f` approximates its derivative to within half. -/
 theorem LocalDegree.exists_pos_remainder_bound {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0) :
@@ -519,11 +561,13 @@ theorem LocalDegree.exists_pos_remainder_bound {E F : Type*} [NormedAddCommGroup
     Metric.eventually_nhds_iff_ball.mp
       ((herr.trans_isBigO hbig).bound (by norm_num : (0 : ℝ) < 1 / 2))
 
+/-- The linear blend between `f` and its derivative `L` at parameter `t`. -/
 def LocalDegree.blend {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (t : (unitInterval))
     (x : E) : F :=
   L x + (t : ℝ) • (f x - L x)
 
+/-- The blend is nonzero where `f` approximates `L` within half. -/
 theorem LocalDegree.blend_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F) (t : (unitInterval))
     {x : E} (hx : x ≠ 0) (hbound : ‖f x - L x‖ ≤ (1 / 2 : ℝ) * ‖L x‖) : blend f L t x ≠ 0 := by
@@ -542,6 +586,7 @@ theorem LocalDegree.blend_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSp
   rw [heq, norm_neg] at hsmall
   exact (lt_irrefl _ hsmall)
 
+/-- Under the half-bound, `f` is nonzero off the origin. -/
 theorem LocalDegree.image_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F) {x : E} (hx : x ≠ 0)
     (hbound : ‖f x - L x‖ ≤ (1 / 2 : ℝ) * ‖L x‖) : f x ≠ 0 := by
@@ -549,6 +594,7 @@ theorem LocalDegree.image_ne_zero {E F : Type*} [NormedAddCommGroup E] [NormedSp
   change L x + (1 : ℝ) • (f x - L x) ≠ 0 at h
   simpa using h
 
+/-- The sphere map induced by the linear equivalence `L`. -/
 def LocalDegree.linearSphereMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r) :
     C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
@@ -558,6 +604,7 @@ def LocalDegree.linearSphereMap {E F : Type*} [NormedAddCommGroup E] [NormedSpac
         (L.injective (h.trans (map_zero L).symm))⟩,
     (L.continuous.comp (continuous_const.smul continuous_subtype_val)).subtype_mk _⟩
 
+/-- The boundary map `u ↦ f (r • u)` into the punctured target. -/
 def LocalDegree.boundaryMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r)
     (hc : Continuous (fun u : Metric.sphere (0 : E) 1 => f (r • (u : E))))
@@ -570,6 +617,7 @@ def LocalDegree.boundaryMap {E F : Type*} [NormedAddCommGroup E] [NormedSpace �
       image_ne_zero L (smul_ne_zero hr.ne' (ne_zero_of_mem_unit_sphere u)) (hb u)⟩,
     hc.subtype_mk _⟩
 
+/-- The homotopy between the linear and actual boundary maps. -/
 def LocalDegree.boundaryHomotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r)
     (hc : Continuous (fun u : Metric.sphere (0 : E) 1 => f (r • (u : E))))
@@ -598,6 +646,7 @@ def LocalDegree.boundaryHomotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpa
     apply Subtype.ext
     simp [blend, boundaryMap]
 
+/-- A radius and continuity data packaging the boundary map of `f` near the origin. -/
 structure LocalDegree.BoundaryData {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : E → F) (L : E ≃L[ℝ] F) (s : Set E) where
   radius : ℝ
@@ -608,10 +657,12 @@ structure LocalDegree.BoundaryData {E F : Type*} [NormedAddCommGroup E] [NormedS
     ∀ u : Metric.sphere (0 : E) 1,
       ‖f (radius • (u : E)) - L (radius • (u : E))‖ ≤ (1 / 2 : ℝ) * ‖L (radius • (u : E))‖
 
+/-- Scaling a unit vector by `r` gives norm `r`. -/
 theorem LocalDegree.norm_radius_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (r : ℝ) (hr : 0 < r) (u : Metric.sphere (0 : E) 1) : ‖r • (u : E)‖ = r := by
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property, mul_one]
 
+/-- Differentiability and continuity supply boundary data on any neighbourhood of `0`. -/
 theorem LocalDegree.nonempty_boundaryData {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     {s : Set E} (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0)
@@ -633,6 +684,7 @@ theorem LocalDegree.nonempty_boundaryData {E F : Type*} [NormedAddCommGroup E]
   rw [mem_ball_zero_iff, norm_radius_smul r hr u]
   exact hrε
 
+/-- Smoothness at `0` supplies boundary data on any neighbourhood. -/
 theorem LocalDegree.nonempty_boundaryData_of_contDiffAt {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} (L : E ≃L[ℝ] F)
     {s : Set E} (hf : HasFDerivAt f L.toContinuousLinearMap 0) (hzero : f 0 = 0)
@@ -642,24 +694,28 @@ theorem LocalDegree.nonempty_boundaryData_of_contDiffAt {E F : Type*} [NormedAdd
     nonempty_boundaryData L hf hzero (Filter.inter_mem hs ht) (htc.mono Set.inter_subset_right)
   exact ⟨{ b with ball_subset := b.ball_subset.trans Set.inter_subset_left }⟩
 
+/-- The boundary map packaged by the data. -/
 def LocalDegree.BoundaryData.map {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F} {s : Set E}
     (b : LocalDegree.BoundaryData f L s) :
     C(Metric.sphere (0 : E) 1, PuncturedRadial.Space F) :=
   LocalDegree.boundaryMap f L b.radius b.radius_pos b.continuous b.remainder_bound
 
+/-- The packaged boundary map computes `f` on the radius-`r` sphere. -/
 theorem LocalDegree.BoundaryData.map_coe {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
     {s : Set E} (b : LocalDegree.BoundaryData f L s) (u : Metric.sphere (0 : E) 1) :
     (b.map u).val = f (b.radius • (u : E)) :=
   rfl
 
+/-- The boundary map is homotopic to the linear sphere map. -/
 def LocalDegree.BoundaryData.homotopy {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F} {s : Set E}
     (b : LocalDegree.BoundaryData f L s) :
     (LocalDegree.linearSphereMap L b.radius b.radius_pos).Homotopy b.map :=
   LocalDegree.boundaryHomotopy f L b.radius b.radius_pos b.continuous b.remainder_bound
 
+/-- A linear equivalence induces a homeomorphism of punctured spaces. -/
 def LocalDegree.puncturedLinearHomeomorph {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) :
     PuncturedRadial.Space E ≃ₜ PuncturedRadial.Space F :=
@@ -672,6 +728,7 @@ def LocalDegree.puncturedLinearHomeomorph {E F : Type} [NormedAddCommGroup E]
       · intro hx h
         exact hx (h ▸ map_zero L))
 
+/-- The boundary map and linear sphere map induce the same homology map. -/
 theorem LocalDegree.BoundaryData.homology_compare {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
     {s : Set E} (b : LocalDegree.BoundaryData f L s) (k : ℕ) :
