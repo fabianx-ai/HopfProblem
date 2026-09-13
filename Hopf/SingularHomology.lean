@@ -63,6 +63,24 @@ Original source lines 31128--62391; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.DifferentialTopology
+import Lib.Geometry.Manifold.Morse.Handle
+import Lib.Analysis.Calculus.MorseLemma
+import Lib.Geometry.Manifold.Flow.Compact
+import Lib.Geometry.Manifold.RegularLevel
+import Lib.Geometry.Manifold.Morse.HandleAttachment
+import Lib.Geometry.Manifold.Flow.HeightTranslating
+import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Analysis.ODE.SmoothFlow
+import Lib.Geometry.Manifold.WhitneyEmbedding
+import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Morse.SurgeryWindows
+import Lib.Geometry.Manifold.Transversality.Basic
+import Lib.Geometry.Manifold.Immersion.Relative
+import Lib.Geometry.Manifold.Morse.Rearrangement
+import Mathlib
+import Lib.AlgebraicTopology.SingularHomology.Sphere
+import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
@@ -93,9 +111,6 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 def PassageHomology.radialCylinderHomeomorph (E : Type) [NormedAddCommGroup E]
     [NormedSpace ℝ E] : (ℝ × Metric.sphere (0 : E) 1) ≃ₜ ({0}ᶜ : Set E) :=

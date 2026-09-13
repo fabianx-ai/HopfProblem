@@ -63,6 +63,35 @@ Original source lines 62392--81182; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.SingularHomology
+import Lib.Geometry.Manifold.Morse.Handle
+import Lib.Analysis.Calculus.MorseLemma
+import Lib.Geometry.Manifold.Flow.Compact
+import Lib.Geometry.Manifold.RegularLevel
+import Lib.Geometry.Manifold.Morse.HandleAttachment
+import Lib.Geometry.Manifold.Flow.HeightTranslating
+import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Analysis.ODE.SmoothFlow
+import Lib.Geometry.Manifold.WhitneyEmbedding
+import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Morse.SurgeryWindows
+import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Transversality.Basic
+import Lib.Geometry.Manifold.Immersion.Relative
+import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Mathlib
+import Lib.Topology.Homotopy.HandleRetraction
+import Lib.Algebra.Homology.MayerVietorisShortExact
+import Lib.AlgebraicTopology.SingularHomology.Chains
+import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
+import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Lib.AlgebraicTopology.SingularHomology.LocalDegree
+import Lib.Topology.Homotopy.LoopSubdivision
+import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
+import Lib.Geometry.Manifold.Whitney.BigonModel
+import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.Suspension
@@ -99,9 +128,6 @@ noncomputable section
 
 namespace Mathoverflow1973
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 theorem IntLinearAutomorphism.apply_eq_mul (e : ℤ ≃ₗ[ℤ] ℤ) (k : ℤ) : e k = e 1 * k := by
   simpa only [smul_eq_mul, mul_one, mul_comm] using e.map_smul k 1

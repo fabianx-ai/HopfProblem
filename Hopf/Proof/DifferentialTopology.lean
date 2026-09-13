@@ -58,11 +58,32 @@ Copyright 2025 The Formal Conjectures Authors.
 
 /-
 Move-only extraction from HopfProblem Solution.lean at 9ac8a456b526527837d7082ff775213ca8bc9809.
-Original source lines 248759--248811; see PROVENANCE.md.
+Original source lines 80--31127; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
-import Hopf.Recognition
+import Lib.Geometry.Manifold.Morse.Handle
+import Lib.Analysis.Calculus.MorseLemma
+import Lib.Geometry.Manifold.Flow.Compact
+import Lib.Geometry.Manifold.RegularLevel
+import Lib.Geometry.Manifold.Morse.HandleAttachment
+import Lib.Geometry.Manifold.Flow.HeightTranslating
+import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Analysis.ODE.SmoothFlow
+import Lib.Geometry.Manifold.WhitneyEmbedding
+import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
+import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Morse.SurgeryWindows
+import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Transversality.Basic
+import Lib.Geometry.Manifold.Immersion.Relative
+import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+import Mathlib
+import Hopf.DifferentialTopology
+
+/-! Proof-specific part of `Hopf.DifferentialTopology` (split by lean-agent-ide `split_module`); the stock part that is
+still to be moved into `Lib/` stays in `Hopf/DifferentialTopology.lean`. Declarations, names and namespaces are unchanged. -/
 
 set_option maxSynthPendingDepth 3
 
@@ -83,59 +104,12 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-abbrev unitSphere (n : ℕ) :=
-  Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-attribute [local instance] SpecialPeriods.Threefold.chartedSpace
-    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
-    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
-    SpecialPeriods.Threefold.space_secondCountable in
-def SixSphereComplexAtlas.threefoldHomeomorph : SpecialPeriods.Threefold.Space ≃ₜ unitSphere 6 :=
-  Classical.choice
-    (homeomorphic_sixSphere_of_homotopySixSphere (ℂ × ComplexPlane₂)
-      SpecialPeriods.Threefold.Space SpecialPeriods.Threefold.real_dimension
-      threefoldHomotopyEquiv)
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-attribute [local instance] SpecialPeriods.Threefold.chartedSpace
-    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
-    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
-    SpecialPeriods.Threefold.space_secondCountable in
-def SixSphereComplexAtlas.modelEquiv : (ℂ × ComplexPlane₂) ≃L[ℂ] EuclideanSpace ℂ (Fin 3) :=
-  SpecialPeriods.Threefold.cuspModelEquiv.symm.trans (EuclideanSpace.equiv (Fin 3) ℂ).symm
+attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
 
-attribute [local instance] SpecialPeriods.Threefold.chartedSpace
-    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
-    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
-    SpecialPeriods.Threefold.space_secondCountable in
-theorem SixSphereComplexAtlas.exists_complex_analytic_atlas :
-    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
-      letI := atlas
-      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) ω (unitSphere 6) := by
-  let := ManifoldAtlasTransport.chartedSpace (H := ℂ × ComplexPlane₂) threefoldHomeomorph
-  let := ManifoldAtlasTransport.isManifold 𝓘(ℂ, ℂ × ComplexPlane₂) ω threefoldHomeomorph
-  exact
-    ⟨SpecialPeriods.Threefold.ModelChange.chartedSpace modelEquiv (unitSphere 6),
-      SpecialPeriods.Threefold.ModelChange.isManifold modelEquiv (unitSphere 6) ω⟩
-
-attribute [local instance] SpecialPeriods.Threefold.chartedSpace
-    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
-    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
-    SpecialPeriods.Threefold.space_secondCountable in
-theorem SixSphereComplexAtlas.exists_complex_atlas :
-    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
-      letI := atlas
-      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
-  obtain ⟨atlas, h⟩ := exists_complex_analytic_atlas
-  refine ⟨atlas, ?_⟩
-  let := atlas
-  let := h
-  infer_instance
-
-theorem mathoverflow_1973 :
-    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
-      letI := atlas
-      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
-  exact SixSphereComplexAtlas.exists_complex_atlas
 
 end Mathoverflow1973
 

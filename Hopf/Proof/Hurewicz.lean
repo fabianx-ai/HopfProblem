@@ -77,7 +77,8 @@ import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
-import Hopf.SphereTopology
+import Hopf.Hurewicz
+import Hopf.Proof.SphereTopology
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -127,6 +128,9 @@ import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 
+/-! Proof-specific part of `Hopf.Hurewicz` (split by lean-agent-ide `split_module`); the stock part that is
+still to be moved into `Lib/` stays in `Hopf/Hurewicz.lean`. Declarations, names and namespaces are unchanged. -/
+
 set_option maxSynthPendingDepth 3
 
 open Set Function Filter Manifold Topology
@@ -142,141 +146,71 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+local infixr:80 " ≫ₚ " => Path.trans
 
-theorem SphereHomology.twoOpenCover_pathConnectedSpace {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X) : PathConnectedSpace X := by
-  apply pathConnectedSpace_iff_univ.mpr
-  rw [← D.cover]
-  exact D.pathConnectedU.union D.pathConnectedV ⟨D.base, D.baseU, D.baseV⟩
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem SphereHomology.twoOpenCover_fundamentalGroup_eq_one {X : Type*} [TopologicalSpace X]
+
+theorem fundamentalGroup_eq_one_of_path {X : Type*} [TopologicalSpace X] {x y : X} (p : Path x y)
+    (hx : ∀ g : FundamentalGroup X x, g = 1) (g : FundamentalGroup X y) : g = 1 := by
+  let e := FundamentalGroup.fundamentalGroupMulEquivOfPath p
+  obtain ⟨h, rfl⟩ := e.surjective g
+  rw [hx h, map_one]
+
+theorem simplyConnectedSpace_iff_fundamentalGroup_eq_one {X : Type*} [TopologicalSpace X]
+    [PathConnectedSpace X] (x : X) : SimplyConnectedSpace X ↔ ∀ g : FundamentalGroup X x, g = 1 :=
+  by
+  constructor
+  · intro h
+    let : SimplyConnectedSpace X := h
+    exact fun _ => Subsingleton.elim _ _
+  · intro hx
+    apply simply_connected_iff_loops_nullhomotopic.mpr
+    refine ⟨inferInstance, ?_⟩
+    intro y γ
+    exact
+      Path.Homotopic.Quotient.eq.mp
+        (fundamentalGroup_eq_one_of_path (PathConnectedSpace.somePath x y) hx
+          (Path.Homotopic.Quotient.mk γ))
+
+theorem simplyConnectedSpace_of_fundamentalGroup_eq_one {X : Type*} [TopologicalSpace X]
+    [PathConnectedSpace X] (x : X) (hx : ∀ g : FundamentalGroup X x, g = 1) :
+    SimplyConnectedSpace X :=
+  (simplyConnectedSpace_iff_fundamentalGroup_eq_one x).mpr hx
+
+
+theorem SphereHomology.twoOpenCover_simplyConnectedSpace {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
-    [SimplyConnectedSpace D.V] (g : FundamentalGroup X D.base) : g = 1 := by
-  have h :
-    MonoidHom.id (FundamentalGroup X D.base) =
-      (1 : FundamentalGroup X D.base →* FundamentalGroup X D.base) := by
-    apply D.hom_ext
-    · ext a
-      have ha : a = 1 := Subsingleton.elim _ _
-      change D.inclusionHomU a = 1
-      rw [ha, map_one]
-    · ext a
-      have ha : a = 1 := Subsingleton.elim _ _
-      change D.inclusionHomV a = 1
-      rw [ha, map_one]
-  exact DFunLike.congr_fun h g
+    [SimplyConnectedSpace D.V] : SimplyConnectedSpace X := by
+  let := twoOpenCover_pathConnectedSpace D
+  exact
+    simplyConnectedSpace_of_fundamentalGroup_eq_one D.base
+      (twoOpenCover_fundamentalGroup_eq_one D)
 
 
-def SphereHomology.suspensionConeCover (X : Type) [TopologicalSpace X] [PathConnectedSpace X]
-    (x : X) : FundamentalGroup.VanKampen.TwoOpenCover (Suspension.topSus X)
-    where
-  U := ⟨Suspension.topSus.northOpen, Suspension.topSus.northOpen_isOpen⟩
-  V := ⟨Suspension.topSus.southOpen, Suspension.topSus.southOpen_isOpen⟩
-  cover := Suspension.topSus.open_cover
-  pathConnectedU := by
+instance SphereHomology.suspension_simplyConnectedSpace (X : Type) [TopologicalSpace X]
+    [PathConnectedSpace X] : SimplyConnectedSpace (Suspension.topSus X) := by
+  let D := suspensionConeCover X (Classical.choice (inferInstance : Nonempty X))
+  let : SimplyConnectedSpace D.U := by
     change
-      IsPathConnected
+      SimplyConnectedSpace
         (Suspension.topSus.northOpen : Set (Suspension.topSus X))
-    exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
-  pathConnectedV := by
+    infer_instance
+  let : SimplyConnectedSpace D.V := by
     change
-      IsPathConnected
+      SimplyConnectedSpace
         (Suspension.topSus.southOpen : Set (Suspension.topSus X))
-    exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
-  pathConnectedIntersection := by
-    change IsPathConnected (Suspension.topSus.middleBand X)
-    exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
-  base := Suspension.topSus.mk ⟨1 / 2, by norm_num⟩ x
-  baseU := by
-    change (1 / 2 : ℝ) < 3 / 4
-    norm_num
-  baseV := by
-    change (1 / 4 : ℝ) < 1 / 2
-    norm_num
+    infer_instance
+  exact twoOpenCover_simplyConnectedSpace D
 
+instance SphereHomology.unitSphere_simplyConnectedSpace (n : ℕ) :
+    SimplyConnectedSpace (UnitSphere (n + 2)) :=
+  (suspensionSphereHomeomorph (n + 1)).symm.toHomotopyEquiv.simplyConnectedSpace
+theorem SphereHomology.unitSphere_piTwo_subsingleton (n : ℕ) (x : UnitSphere (n + 3)) :
+    Subsingleton (π_ 2 (UnitSphere (n + 3)) x) := by
+  let := unitSphere_homology_subsingleton (n + 2) 2 (by decide) (by omega)
+  exact (SecondHurewicz.SimplyConnected.hurewiczPi2Equiv x).injective.subsingleton
 
-def ThirdHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] :
-    Additive (π_ 3 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 3 :=
-  HigherHurewicz.hurewiczLinearEquiv (m := 0) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def ThirdHurewicz.hurewiczPi3Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] :
-    π_ 3 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 3)
-    where
-  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
-  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
-  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
-  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
-  map_mul' a b := by
-    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
-    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
-
-def FourthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] :
-    Additive (π_ 4 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 4 :=
-  HigherHurewicz.hurewiczLinearEquiv (m := 1) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def FourthHurewicz.hurewiczPi4Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] :
-    π_ 4 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 4)
-    where
-  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
-  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
-  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
-  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
-  map_mul' a b := by
-    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
-    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
-
-def FifthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)] :
-    Additive (π_ 5 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 5 :=
-  HigherHurewicz.hurewiczLinearEquiv (m := 2) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def FifthHurewicz.hurewiczPi5Equiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)] :
-    π_ 5 X x ≃* Multiplicative (SingularMayerVietoris.SingularHomology X 5)
-    where
-  toFun a := Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a))
-  invFun c := Additive.toMul ((hurewiczLinearEquiv x).symm (Multiplicative.toAdd c))
-  left_inv a := congrArg Additive.toMul ((hurewiczLinearEquiv x).symm_apply_apply (Additive.ofMul a))
-  right_inv c := congrArg Multiplicative.ofAdd ((hurewiczLinearEquiv x).apply_symm_apply (Multiplicative.toAdd c))
-  map_mul' a b := by
-    change Multiplicative.ofAdd (hurewiczLinearEquiv x (Additive.ofMul a + Additive.ofMul b)) = _
-    exact congrArg Multiplicative.ofAdd (map_add (hurewiczLinearEquiv x) _ _)
-
-abbrev SixSphereCube.StandardSphere :=
-  SphereHomology.UnitSphere 6
-
-def SixSphereCube.euclideanOnePointSphereHomeomorph :
-    OnePoint (EuclideanSpace ℝ (Fin 6)) ≃ₜ StandardSphere :=
-  onePointEquivSphereOfFinrankEq (V := EuclideanSpace ℝ (Fin 6)) (ι := Fin 7) (by simp)
-
-def SixSphereCube.sphereBasePoint : StandardSphere :=
-  euclideanOnePointSphereHomeomorph (OnePoint.infty)
-
-theorem Sphere.piTwo_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 2 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 2 (by decide) (by decide) x
-
-theorem Sphere.piThree_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 3 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 3 (by decide) (by decide) x
-
-theorem Sphere.piFour_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 4 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 4 (by decide) (by decide) x
-
-theorem Sphere.piFive_subsingleton (x : SixSphereCube.StandardSphere) :
-    Subsingleton (π_ 5 SixSphereCube.StandardSphere x) :=
-  HigherHurewicz.sphere_pi_subsingleton_of_lt 6 5 (by decide) (by decide) x
 
 end Mathoverflow1973
 

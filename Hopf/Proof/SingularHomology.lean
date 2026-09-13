@@ -58,10 +58,12 @@ Copyright 2025 The Formal Conjectures Authors.
 
 /-
 Move-only extraction from HopfProblem Solution.lean at 9ac8a456b526527837d7082ff775213ca8bc9809.
-Original source lines 80--31127; see PROVENANCE.md.
+Original source lines 31128--62391; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
+import Hopf.SingularHomology
+import Hopf.Proof.DifferentialTopology
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -74,12 +76,29 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.ConnectionCancellation
 import Mathlib
+import Lib.AlgebraicTopology.SingularHomology.Sphere
+import Lib.Topology.Homotopy.CellAttachment
+import Lib.Topology.Homotopy.HandleRetraction
+import Lib.Algebra.Homology.MayerVietorisShortExact
+import Lib.AlgebraicTopology.SingularHomology.Chains
+import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
+import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Lib.AlgebraicTopology.SingularHomology.LocalDegree
+import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+import Lib.Topology.Homotopy.LoopSubdivision
+import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
+import Lib.Geometry.Manifold.Whitney.BigonModel
+import Lib.Geometry.Manifold.Morse.MinimalSystem
+import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Morse.ConnectionCancellation
+
+/-! Proof-specific part of `Hopf.SingularHomology` (split by lean-agent-ide `split_module`); the stock part that is
+still to be moved into `Lib/` stays in `Hopf/SingularHomology.lean`. Declarations, names and namespaces are unchanged. -/
 
 set_option maxSynthPendingDepth 3
 
@@ -96,28 +115,10 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+local infixr:80 " ≫ₚ " => Path.trans
 
-attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
-
-attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2
-
-theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
-    (p q : ManifoldMorse.criticalPoints E f)
-    (hconsecutive : ∀ r : ManifoldMorse.criticalPoints E f, ¬(f p < f r ∧ f r < f q))
-    {a b : ℝ} (ha : f p < a) (hb : b < f q) :
-    ∀ z, f z ∈ Set.Icc a b → z ∉ ManifoldMorse.criticalPoints E f := by
-  intro z hz hcrit
-  exact hconsecutive ⟨z, hcrit⟩ ⟨ha.trans_le hz.1, hz.2.trans_lt hb⟩
-
-theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
-    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
-    [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
-    (C : Z →L[ℝ] F) (h : Function.Bijective (G.coprod C)) : (G.coprod C).IsInvertible := by
-  let e := (LinearEquiv.ofBijective (G.coprod C).toLinearMap h).toContinuousLinearEquiv
-  exact ⟨e, rfl⟩
 
 end Mathoverflow1973
 

@@ -58,11 +58,11 @@ Copyright 2025 The Formal Conjectures Authors.
 
 /-
 Move-only extraction from HopfProblem Solution.lean at 9ac8a456b526527837d7082ff775213ca8bc9809.
-Original source lines 148197--168788; see PROVENANCE.md.
+Original source lines 248759--248811; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
-import Hopf.LCP.Specialization
+import Hopf.Proof.Recognition
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -141,6 +141,25 @@ import Lib.Geometry.Manifold.Quotient.Atlas
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot
+import Lib.Analysis.Complex.Mobius
+import Lib.Analysis.Complex.SchwarzReflection
+import Lib.Analysis.Complex.RiemannMapping
+import Lib.Analysis.Complex.RiemannMapping.Steps
+import Lib.Geometry.Manifold.Complex.Biholomorph
+import Lib.Topology.Covering.DiagonalQuotient
+import Lib.GroupTheory.Abelianization.SemidirectProduct
+import Lib.Topology.MappingTorus.HomologyCover
+import Lib.GroupTheory.SplitExtension
+import Lib.GroupTheory.PresentedGroup.CentralTwist
+import Lib.Topology.FiberBundle.TwoOpenTransition
+import S6.TwoExceptionalGluing
+import S6Shortcuts
+import Lib.AlgebraicTopology.Hurewicz.CubeSphere
+import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Lib.Topology.Homotopy.CellFilling
+import Lib.Geometry.Manifold.ChartedSpace.Transport
+import Lib.Topology.Homotopy.CylinderHEP
+import Lib.LinearAlgebra.Matrix.TransvectionReduction
 
 set_option maxSynthPendingDepth 3
 
@@ -157,62 +176,63 @@ noncomputable section
 
 namespace Mathoverflow1973
 
+local infixr:80 " ≫ₚ " => Path.trans
 
-theorem BranchedQuotientAtlas.Data.contDiffOn_transition {E M Q : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
-    {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) (i j : ι) :
-    ContDiffOn ℂ ω ((D.chart i).symm.trans (D.chart j))
-      ((D.chart i).symm.trans (D.chart j)).source := by
-  intro z hz
-  by_cases hij : i = j
-  · subst j
-    apply contDiffWithinAt_id.congr_of_mem ?_ hz
-    intro w hw
-    exact (D.chart i).right_inv hw.1
-  · obtain ⟨a, ha, hf⟩ := D.overlap_lift i j hij z hz
-    exact
-      (BranchedQuotientAtlas.contDiffAt_transition_of_lift D.continuous_project (D.chart i)
-          (D.chart j) (D.pullback_contMDiff j) hz ha hf).contDiffWithinAt
+local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
-theorem BranchedQuotientAtlas.Data.isManifold {E M Q : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
-    {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) :
-    letI := D.chartedSpace
-    IsManifold (modelWithCornersSelf ℂ E) ω Q := by
-  let := D.chartedSpace
-  apply isManifold_of_contDiffOn
-  rintro e f ⟨i, rfl⟩ ⟨j, rfl⟩
-  simpa using D.contDiffOn_transition i j
+abbrev unitSphere (n : ℕ) :=
+  Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
 
-theorem BranchedQuotientAtlas.Data.contMDiff_project {E M Q : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℂ E] [TopologicalSpace M] [ChartedSpace E M] [TopologicalSpace Q] {q : M → Q}
-    {ι : Type*} (D : BranchedQuotientAtlas.Data (E := E) q ι) :
-    letI := D.chartedSpace
-    ContMDiff (modelWithCornersSelf ℂ E) (modelWithCornersSelf ℂ E) ω q := by
-  let := D.chartedSpace
-  let := D.isManifold
-  intro a
-  have hsource := D.mem_chart_source (q a)
-  have hhol :=
-    (D.pullback_contMDiff (D.indexAt (q a))).contMDiffAt
-      (((D.chart (D.indexAt (q a))).open_source.preimage D.continuous_project).mem_nhds hsource)
-  apply
-    (contMDiffAt_iff_target_of_mem_source (I := (modelWithCornersSelf ℂ E)) (I' :=
-        (modelWithCornersSelf ℂ E)) (D.mem_chart_source (q a))).mpr
-  refine ⟨D.continuous_project.continuousAt, ?_⟩
-  simpa [extChartAt, OpenPartialHomeomorph.extend, D.chartAt_eq, Function.comp_def] using hhol
+attribute [local instance] SpecialPeriods.Threefold.chartedSpace
+    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
+    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
+    SpecialPeriods.Threefold.space_secondCountable in
+def SixSphereComplexAtlas.threefoldHomeomorph : SpecialPeriods.Threefold.Space ≃ₜ unitSphere 6 :=
+  Classical.choice
+    (homeomorphic_sixSphere_of_homotopySixSphere (ℂ × ComplexPlane₂)
+      SpecialPeriods.Threefold.Space SpecialPeriods.Threefold.real_dimension
+      threefoldHomotopyEquiv)
 
+attribute [local instance] SpecialPeriods.Threefold.chartedSpace
+    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
+    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
+    SpecialPeriods.Threefold.space_secondCountable in
+def SixSphereComplexAtlas.modelEquiv : (ℂ × ComplexPlane₂) ≃L[ℂ] EuclideanSpace ℂ (Fin 3) :=
+  SpecialPeriods.Threefold.cuspModelEquiv.symm.trans (EuclideanSpace.equiv (Fin 3) ℂ).symm
 
-def LocalOrbitQuotient.localHomeomorph {G X : Type*} [Group G] [TopologicalSpace X]
-    [MulAction G X] (H : Subgroup G) (U : TopologicalSpace.Opens X)
-    (hU : ∀ h : H, Set.MapsTo (fun x : X => (h : G) • x) U U) [ContinuousConstSMul G X]
-    (hreturn : ∀ g : G, (((g • ·) '' (U : Set X)) ∩ U).Nonempty → g ∈ H) :
-    LocalQuotient H U hU ≃ₜ imageOpen (G := G) U :=
-  Equiv.toHomeomorphOfContinuousOpen
-    (Equiv.ofBijective (localToImage H U hU)
-      ⟨localToImage_injective H U hU hreturn, localToImage_surjective H U hU⟩)
-    (localToImage_continuous H U hU) (localToImage_isOpenMap H U hU)
+attribute [local instance] SpecialPeriods.Threefold.chartedSpace
+    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
+    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
+    SpecialPeriods.Threefold.space_secondCountable in
+theorem SixSphereComplexAtlas.exists_complex_analytic_atlas :
+    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
+      letI := atlas
+      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) ω (unitSphere 6) := by
+  let := ManifoldAtlasTransport.chartedSpace (H := ℂ × ComplexPlane₂) threefoldHomeomorph
+  let := ManifoldAtlasTransport.isManifold 𝓘(ℂ, ℂ × ComplexPlane₂) ω threefoldHomeomorph
+  exact
+    ⟨SpecialPeriods.Threefold.ModelChange.chartedSpace modelEquiv (unitSphere 6),
+      SpecialPeriods.Threefold.ModelChange.isManifold modelEquiv (unitSphere 6) ω⟩
 
+attribute [local instance] SpecialPeriods.Threefold.chartedSpace
+    SpecialPeriods.Threefold.space_isManifold SpecialPeriods.Threefold.space_isSmoothRealManifold
+    SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
+    SpecialPeriods.Threefold.space_secondCountable in
+theorem SixSphereComplexAtlas.exists_complex_atlas :
+    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
+      letI := atlas
+      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
+  obtain ⟨atlas, h⟩ := exists_complex_analytic_atlas
+  refine ⟨atlas, ?_⟩
+  let := atlas
+  let := h
+  infer_instance
+
+theorem mathoverflow_1973 :
+    ∃ atlas : ChartedSpace (EuclideanSpace ℂ (Fin 3)) (unitSphere 6),
+      letI := atlas
+      IsManifold 𝓘(ℂ, EuclideanSpace ℂ (Fin 3)) 1 (unitSphere 6) := by
+  exact SixSphereComplexAtlas.exists_complex_atlas
 
 end Mathoverflow1973
 
