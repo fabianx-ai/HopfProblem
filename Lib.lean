@@ -120,6 +120,12 @@ import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
 import Lib.AlgebraicTopology.SingularHomology.FirstHurewicz
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
+import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
+import Lib.Geometry.Manifold.Morse.RearrangementAmbient
+import Lib.AlgebraicTopology.SingularHomology.OnePointCover
+import Lib.Geometry.Manifold.Morse.SurgeryHomology
+import Lib.Geometry.Manifold.Morse.OrderedCancellation
+import Lib.Geometry.Manifold.Morse.AdaptedWindows
 
 /-!
 # Reusable V10 Section 6 library
