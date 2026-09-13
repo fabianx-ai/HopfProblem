@@ -88,3 +88,25 @@ Verdict: NO-GO — residual stale coordinates (Basic.lean:357→415, :2550→263
 E2.md:627/734, plus stale `~/`/`/tmp/` citation at E2.md:1025; all 23 signature
 rows themselves are verbatim at correct coordinates.
 ```
+
+## Re-confirmation (fresh-context subagent) — head `d4038e1`
+
+All findings verified repaired against live source:
+
+1. §13 table: `219, 234, 288` (E1), `365, 415` (E2), `1122, 2633` (E6),
+   `2679, 2758` (E7) — every coordinate is a declaration start in
+   `Transversality/Basic.lean` (:219 `exists_null_exceptional_values_on`,
+   :234 `exists_null_exceptional_values_in_chart`, :288
+   `exists_null_exceptional_values_manifold`, :365
+   `exists_null_exceptional_native_translations`, :415
+   `dense_native_translations`, :1122 `SupportedRelativeIsotopy.extension`,
+   :2633 `exists_supported_isotopy_extension`, :2679
+   `exists_chart_disk_shrinking`, :2758 `exists_disk_chart_isotopy`).
+2. Ledger comments at :627 and :734 carry the corrected second coordinates.
+3. The `~/`/`/tmp/` probe mention is annotated as a historical run record.
+4. Anchors re-stamped to `84d9450`; the `840aef4` on line 5 correctly remains
+   as the closing-review attribution.
+5. Repo sweep clean — the only remaining `Basic.lean:176/230/357/2550/2675`
+   references are the historical findings inside this review file.
+
+Verdict: GO
