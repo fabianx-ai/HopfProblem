@@ -60,6 +60,9 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Shifting critical values -/
+
+/-- A signed Morse chart of `f + k` obtained by shifting the chart height. -/
 def MorseCancellation.shiftedSignedMorseChart {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (k : ℝ) :
@@ -73,6 +76,7 @@ def MorseCancellation.shiftedSignedMorseChart {E M : Type*} [NormedAddCommGroup 
   equation x hx := by rw [c.equation x hx]; ring
   inverse_equation z hz := by rw [c.inverse_equation z hz]; ring
 
+/-- Adding a constant preserves the Morse property. -/
 theorem MorseCancellation.isMorseAt_add_const {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (hm : ManifoldMorse.IsMorseAt E f p) (k : ℝ) :
@@ -85,12 +89,14 @@ theorem MorseCancellation.isMorseAt_add_const {E M : Type*} [NormedAddCommGroup 
   rw [hd]
   exact hgood
 
+/-- A function agreeing with `f + k` near `p` is Morse at `p`. -/
 theorem MorseCancellation.isMorseAt_of_add_const_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p : M}
     (hm : ManifoldMorse.IsMorseAt E f p) {k : ℝ} (hgerm : g =ᶠ[𝓝 p] fun x => f x + k) :
     ManifoldMorse.IsMorseAt E g p :=
   MorseCancellationPreservation.isMorseAt_of_same_germ (isMorseAt_add_const hm k) hgerm
 
+/-- Adding a constant preserves the Morse index. -/
 theorem MorseCancellation.nativeMorseIndex_add_const {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (k : ℝ) :
@@ -98,12 +104,14 @@ theorem MorseCancellation.nativeMorseIndex_add_const {E M : Type*} [NormedAddCom
   rw [nativeMorseIndex_eq_chart (shiftedSignedMorseChart c k), nativeMorseIndex_eq_chart c]
   rfl
 
+/-- A function with an `f + k` germ has the same Morse index. -/
 theorem MorseCancellation.nativeMorseIndex_of_add_const_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) {k : ℝ}
     (hgerm : g =ᶠ[𝓝 p] fun x => f x + k) : nativeMorseIndex E g p = nativeMorseIndex E f p :=
   (nativeMorseIndex_congr_germ hgerm).trans (nativeMorseIndex_add_const c k)
 
+/-- Functions differing by a constant germ have equal derivatives. -/
 theorem MorseCancellation.mfderiv_of_add_const_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p : M}
     (hf : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ) f p) {k : ℝ} (hgerm : g =ᶠ[𝓝 p] fun x => f x + k) :
@@ -115,6 +123,9 @@ theorem MorseCancellation.mfderiv_of_add_const_germ {E M : Type*} [NormedAddComm
         rw [mvfderiv_fun_add hf mdifferentiableAt_const, mvfderiv_const, add_zero]
       exact hs
 
+/-! ### Basins across regular bands -/
+
+/-- An orbit-bridging map between levels identifies their basins. -/
 theorem FlowCancellation.levelBasin_eq_of_orbit_level_bridge {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) (f : X → ℝ) (a b : ℝ) (D : X → X)
     (hlevel : D '' {x | f x = a} = {x | f x = b}) (horbit : ∀ x, ∃ t, F t x = D x) :
@@ -138,6 +149,7 @@ theorem FlowCancellation.levelBasin_eq_of_orbit_level_bridge {X : Type*}
     rw [ht, heq] at hh
     exact (levelBasin_flow_iff F f a s x).mp hh
 
+/-- The two boundary levels of a regular band have the same flow basin under the stated descending-flow hypotheses. -/
 theorem FlowCancellation.levelBasin_eq_of_regular_band {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -151,6 +163,7 @@ theorem FlowCancellation.levelBasin_eq_of_regular_band {E M : Type*} [NormedAddC
     FlowTimeChange.exists_orbit_preserving_ambient_band_bridge hf hV hdesc F hF hab hband
   exact levelBasin_eq_of_orbit_level_bridge F f a b D hlevel horbit
 
+/-- An orbit-matching homeomorphism of sections carries the locus of a flow-invariant predicate on one section to its locus on the other. -/
 theorem MorseCancellation.image_flow_invariant_section {X A B : Type*} [TopologicalSpace X]
     [TopologicalSpace A] [TopologicalSpace B] (F : Flow ℝ X) (e : A ≃ₜ B) (ι : A → X) (κ : B → X)
     (horbit : ∀ x, ∃ t, F t (ι x) = κ (e x)) {P : X → Prop} (hP : ∀ t x, P (F t x) ↔ P x) :
@@ -169,6 +182,7 @@ theorem MorseCancellation.image_flow_invariant_section {X A B : Type*} [Topologi
     apply (hP t (ι (e.symm y))).mp
     rwa [ht]
 
+/-- Compactness of a flow-invariant section. -/
 theorem MorseCancellation.isCompact_flow_invariant_section_iff {X A B : Type*} [TopologicalSpace X]
     [TopologicalSpace A] [TopologicalSpace B] (F : Flow ℝ X) (e : A ≃ₜ B) (ι : A → X) (κ : B → X)
     (horbit : ∀ x, ∃ t, F t (ι x) = κ (e x)) {P : X → Prop} (hP : ∀ t x, P (F t x) ↔ P x) :
@@ -177,6 +191,7 @@ theorem MorseCancellation.isCompact_flow_invariant_section_iff {X A B : Type*} [
   exact e.isCompact_image
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Under the Morse-block and strict boundary-descent hypotheses, the forward basin of the critical point has a compact section in the level `f p + r²`. -/
 theorem MorseCancellation.isCompact_native_belt_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -208,6 +223,7 @@ theorem MorseCancellation.isCompact_native_belt_basin {E M : Type*} [NormedAddCo
   exact isCompact_range (c.beltCoreMap r hr hblock).continuous
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Under the Morse-block and strict boundary-descent hypotheses, the backward basin of the critical point has a compact section in the level `f p - r²`. -/
 theorem MorseCancellation.isCompact_native_attaching_basin {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]
     {f : M → ℝ} {p : M} {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -238,6 +254,7 @@ theorem MorseCancellation.isCompact_native_attaching_basin {E M : Type*} [Normed
   rw [heq]
   exact isCompact_range (c.attachingCoreMap r hr hblock).continuous
 
+/-- Compactness of flow-invariant sections transfers across a regular band. -/
 theorem FlowCancellation.isCompact_invariant_section_iff_of_regular_band {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -266,6 +283,7 @@ theorem FlowCancellation.isCompact_invariant_section_iff_of_regular_band {E M : 
   obtain ⟨t, ht⟩ := horbit x
   exact ⟨t, ht.trans (he x).symm⟩
 
+/-- Compactness of forward-basin sections transfers across a regular band. -/
 theorem FlowCancellation.isCompact_forward_section_iff_of_regular_band {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -282,6 +300,7 @@ theorem FlowCancellation.isCompact_forward_section_iff_of_regular_band {E M : Ty
     Filter.Tendsto (fun t => F t x) Filter.atTop (𝓝 p))
     (fun t x => MorseCancellation.flow_time_atTop_limit_iff F t x p)
 
+/-- Compactness of backward-basin sections transfers across a regular band. -/
 theorem FlowCancellation.isCompact_backward_section_iff_of_regular_band {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -298,6 +317,9 @@ theorem FlowCancellation.isCompact_backward_section_iff_of_regular_band {E M : T
     Filter.Tendsto (fun t => F t x) Filter.atBot (𝓝 p))
     (fun t x => MorseCancellation.flow_time_atBot_limit_iff F t x p)
 
+/-! ### Cylinder weights -/
+
+/-- Pull a function on the transverse label space back along the first component of the inverse cylinder chart. -/
 def MorseRearrangement.nativeCylinderWeight {Z H N E M : Type*} [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [TopologicalSpace H] {I : ModelWithCorners ℝ Z H} [TopologicalSpace N]
     [ChartedSpace H N] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -305,6 +327,7 @@ def MorseRearrangement.nativeCylinderWeight {Z H N E M : Type*} [NormedAddCommGr
     (x : M) : ℝ :=
   θ (A.symm x).1
 
+/-- The cylinder weight is smooth where the weight function is. -/
 theorem MorseRearrangement.contMDiffOn_nativeCylinderWeight {Z H N E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [TopologicalSpace H] {I : ModelWithCorners ℝ Z H}
     [TopologicalSpace N] [ChartedSpace H N] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -314,6 +337,7 @@ theorem MorseRearrangement.contMDiffOn_nativeCylinderWeight {Z H N E M : Type*}
     ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ (nativeCylinderWeight A θ) A.target :=
   hθ.comp_contMDiffOn (contMDiff_fst.comp_contMDiffOn A.contMDiffOn_invFun)
 
+/-- The cylinder weight stays in `[0, 1]` when `θ` does. -/
 theorem MorseRearrangement.nativeCylinderWeight_mem_Icc {Z H N E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [TopologicalSpace H] {I : ModelWithCorners ℝ Z H}
     [TopologicalSpace N] [ChartedSpace H N] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -323,6 +347,7 @@ theorem MorseRearrangement.nativeCylinderWeight_mem_Icc {Z H N E M : Type*}
     nativeCylinderWeight A θ x ∈ Set.Icc (0 : ℝ) 1 :=
   hθ _
 
+/-- Flow lines read off in cylinder coordinates. -/
 theorem MorseRearrangement.native_cylinder_flow_coordinates {Z H N E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [TopologicalSpace H] {I : ModelWithCorners ℝ Z H}
     [TopologicalSpace N] [ChartedSpace H N] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -339,6 +364,7 @@ theorem MorseRearrangement.native_cylinder_flow_coordinates {Z H N E M : Type*}
   rw [hexpr]
   exact A.left_inv' (by rw [hsource]; trivial)
 
+/-- The cylinder weight is invariant along the flow. -/
 theorem MorseRearrangement.nativeCylinderWeight_flow {Z H N E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [TopologicalSpace H] {I : ModelWithCorners ℝ Z H}
     [TopologicalSpace N] [ChartedSpace H N] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -350,6 +376,7 @@ theorem MorseRearrangement.nativeCylinderWeight_flow {Z H N E M : Type*}
   unfold nativeCylinderWeight
   rw [native_cylinder_flow_coordinates A hsource F ι hformula hx t]
 
+/-- For a flow cylinder over a compact smooth label manifold, construct a smooth invariant weight in `[0, 1]` with zero and one germs over two disjoint closed label sets. -/
 theorem MorseRearrangement.exists_native_cylinder_plateau_weight {Z H N E M : Type*}
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [TopologicalSpace H]
     {I : ModelWithCorners ℝ Z H} [TopologicalSpace N] [ChartedSpace H N] [IsManifold I ∞ N]
@@ -381,7 +408,10 @@ theorem MorseRearrangement.exists_native_cylinder_plateau_weight {Z H N E M : Ty
       (A.toOpenPartialHomeomorph.symm.continuousAt hx).fst
     exact hc.tendsto.eventually hθpoint
 
+/-! ### Basin weights near endpoints -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- Near the belt the positive coordinate is eventually nonzero on the upper basin. -/
 theorem MorseCancellation.eventually_nonzero_positive_coordinate_on_upper_level_basin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
@@ -403,6 +433,7 @@ theorem MorseCancellation.eventually_nonzero_positive_coordinate_on_upper_level_
   exact (not_le_of_gt ha) hh
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative coordinate is eventually nonzero on the lower basin. -/
 theorem MorseCancellation.eventually_nonzero_negative_coordinate_on_lower_level_basin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
@@ -424,6 +455,7 @@ theorem MorseCancellation.eventually_nonzero_negative_coordinate_on_lower_level_
   exact (not_le_of_gt ha) hh
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The basin weight is eventually constant on the belt neighborhood. -/
 theorem MorseCancellation.eventually_constant_basin_weight_of_belt_neighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
@@ -466,6 +498,7 @@ theorem MorseCancellation.eventually_constant_basin_weight_of_belt_neighborhood 
   exact (hinv x hx T).symm.trans (hplateau _ hU hlevel)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The basin weight is eventually constant on the attaching neighborhood. -/
 theorem MorseCancellation.eventually_constant_basin_weight_of_attaching_neighborhood {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {f : M → ℝ} {p : M}
@@ -507,6 +540,9 @@ theorem MorseCancellation.eventually_constant_basin_weight_of_attaching_neighbor
   obtain ⟨T, -, hlevel, hU⟩ := hexit (hne hx)
   exact (hinv x hx T).symm.trans (hplateau _ hU hlevel)
 
+/-! ### Extended basin weights -/
+
+/-- Off the basin the flow stays on the same side of the level. -/
 theorem MorseRearrangement.height_side_of_not_levelBasin {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {a : ℝ} {x : X}
     (hx : x ∉ FlowCancellation.levelBasin F f a) (t : ℝ) : f (F t x) < a ↔ f x < a := by
@@ -525,15 +561,18 @@ theorem MorseRearrangement.height_side_of_not_levelBasin {X : Type*} [Topologica
     exact hside 0 t (by simpa only [F.map_zero_apply] using hx)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The basin weight extended by flow transport across the band. -/
 def MorseRearrangement.extendedBasinWeight {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (f : X → ℝ) (a : ℝ) (w : X → ℝ) (x : X) : ℝ :=
   if x ∈ FlowCancellation.levelBasin F f a then w x else if f x < a then 1 else 0
 
+/-- The extended basin weight computes the basin weight. -/
 theorem MorseRearrangement.extendedBasinWeight_eq {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) (f : X → ℝ) (a : ℝ) (w : X → ℝ) {x : X}
     (hx : x ∈ FlowCancellation.levelBasin F f a) : extendedBasinWeight F f a w x = w x := by
   classical simp only [extendedBasinWeight, if_pos hx]
 
+/-- The extended basin weight under the flow. -/
 theorem MorseRearrangement.extendedBasinWeight_flow {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) (a : ℝ) (w : X → ℝ)
     (hinv : ∀ x ∈ FlowCancellation.levelBasin F f a, ∀ t : ℝ, w (F t x) = w x) (x : X)
@@ -549,6 +588,7 @@ theorem MorseRearrangement.extendedBasinWeight_flow {X : Type*} [TopologicalSpac
     simp only [extendedBasinWeight, if_neg hx, if_neg htx,
       height_side_of_not_levelBasin F hf hx t]
 
+/-- Extending a basin weight preserves its values in `[0, 1]` when the original weight has that range on the level basin. -/
 theorem MorseRearrangement.extendedBasinWeight_mem_Icc {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) (f : X → ℝ) (a : ℝ) (w : X → ℝ)
     (hw : ∀ x ∈ FlowCancellation.levelBasin F f a, w x ∈ Set.Icc (0 : ℝ) 1) (x : X) :
@@ -560,6 +600,7 @@ theorem MorseRearrangement.extendedBasinWeight_mem_Icc {X : Type*} [TopologicalS
   · simp only [extendedBasinWeight, if_neg hx]
     split_ifs <;> norm_num
 
+/-- The extended weight's germ at the lower level. -/
 theorem MorseRearrangement.extendedBasinWeight_lower_germ {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} {a : ℝ} {w : X → ℝ} {p : X} (hf : ContinuousAt f p) (hp : f p < a)
     (hw : ∀ᶠ x in 𝓝 p, x ∈ FlowCancellation.levelBasin F f a → w x = 1) :
@@ -571,6 +612,7 @@ theorem MorseRearrangement.extendedBasinWeight_lower_germ {X : Type*} [Topologic
   · exact (extendedBasinWeight_eq _ _ _ _ hbasin).trans (hx hbasin)
   · simp only [extendedBasinWeight, if_neg hbasin, if_pos hfx]
 
+/-- The extended weight's germ at the upper level. -/
 theorem MorseRearrangement.extendedBasinWeight_upper_germ {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f : X → ℝ} {a : ℝ} {w : X → ℝ} {p : X} (hf : ContinuousAt f p) (hp : a < f p)
     (hw : ∀ᶠ x in 𝓝 p, x ∈ FlowCancellation.levelBasin F f a → w x = 0) :
@@ -582,6 +624,7 @@ theorem MorseRearrangement.extendedBasinWeight_upper_germ {X : Type*} [Topologic
   · exact (extendedBasinWeight_eq _ _ _ _ hbasin).trans (hx hbasin)
   · simp only [extendedBasinWeight, if_neg hbasin, if_neg (not_lt_of_gt hfx)]
 
+/-- An endpoint limit gives a constant germ. -/
 theorem MorseRearrangement.constant_germ_of_endpoint_limit {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {w : X → ℝ} (hinv : ∀ x t, w (F t x) = w x) {p x : X} {k : ℝ} {l : Filter ℝ}
     [Filter.NeBot l] (hlim : Filter.Tendsto (fun t => F t x) l (𝓝 p))
@@ -591,6 +634,7 @@ theorem MorseRearrangement.constant_germ_of_endpoint_limit {X : Type*} [Topologi
   filter_upwards [hc.continuousAt.tendsto.eventually ht] with y hy
   exact (hinv y t).symm.trans hy
 
+/-- The pair band's basin complement. -/
 theorem MorseRearrangement.pair_band_basin_complement {X : Type*} [TopologicalSpace X]
     [CompactSpace X] (F : Flow ℝ X) {f : X → ℝ} (hf : Continuous f) {S : Set X}
     (hinj : Set.InjOn f S) (hmono : ∀ x, Antitone (fun t : ℝ => f (F t x)))
@@ -637,6 +681,7 @@ theorem MorseRearrangement.pair_band_basin_complement {X : Type*} [TopologicalSp
           exact (not_le_of_gt hp) hsge)
     exact Or.inr ⟨hax, by simpa only [hsq] using hslim⟩
 
+/-- The extended basin weight is smooth on the pair band. -/
 theorem MorseRearrangement.contMDiffOn_extendedBasinWeight_pair_band {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [TopologicalSpace M] [ChartedSpace H M] [CompactSpace M] (F : Flow ℝ M) {f : M → ℝ}
@@ -668,6 +713,7 @@ theorem MorseRearrangement.contMDiffOn_extendedBasinWeight_pair_band {E H M : Ty
       exact (contMDiffAt_const.congr_of_eventuallyEq heq).contMDiffWithinAt
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A stationary pair weight exists. -/
 theorem MorseRearrangement.exists_stationary_pair_weight {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M]
@@ -805,7 +851,10 @@ theorem MorseRearrangement.exists_stationary_pair_weight {E M : Type*}
       (fun x hx => FlowConstruction.strictAnti_flow_height hf hV₁ F hF hzero hdesc hx) hla
       hau hpa' haq' hpair hB hwB hstationary hpw hqw
 
+/-! ### Blended heights and rearrangement -/
+
 attribute [local instance 100] Classical.propDecidable in
+/-- A small Morse-field block exists around a signed Morse chart. -/
 theorem MorseCancellation.exists_small_native_morse_field_block {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) {V : (x : M) → TangentSpace 𝓘(ℝ, E) x}
@@ -837,6 +886,7 @@ theorem MorseCancellation.exists_small_native_morse_field_block {E M : Type*} [N
     ⟨Metric.closedBall_subset_closedBall h2r hz.1, Metric.closedBall_subset_closedBall h2r hz.2⟩
   exact ⟨r, hr, hr2, hsub.trans hblock, fun z hz => hfield z (hsub hz)⟩
 
+/-- Outside the blend interval the blended height agrees with `f`. -/
 theorem MorseRearrangement.blended_height_exterior_germ {M : Type*} [TopologicalSpace M]
     {f θ : M → ℝ} {P Q : ℝ → ℝ} {l u : ℝ} (hf : Continuous f)
     (hP : ∀ s ∉ Set.Ioo l u, P =ᶠ[𝓝 s] id) (hQ : ∀ s ∉ Set.Ioo l u, Q =ᶠ[𝓝 s] id) {x : M}
@@ -845,6 +895,7 @@ theorem MorseRearrangement.blended_height_exterior_germ {M : Type*} [Topological
     hf.continuousAt.tendsto.eventually (hQ _ hx)] with y hyP hyQ
   exact blendHeight_fixed hyP hyQ _
 
+/-- The globally blended height is smooth. -/
 theorem MorseRearrangement.contMDiff_globally_blended_height {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f θ : M → ℝ}
     {P Q : ℝ → ℝ} {l u : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -863,6 +914,7 @@ theorem MorseRearrangement.contMDiff_globally_blended_height {E M : Type*}
         ((contMDiffAt_const.sub hw).mul (hQ.contMDiff.contMDiffAt.comp x (hf x)))
   · exact (hf x).congr_of_eventuallyEq (blended_height_exterior_germ hf.continuous hPfix hQfix hx)
 
+/-- At weight one the blend is the `P` translation germ. -/
 theorem MorseRearrangement.blended_height_one_translation_germ {M : Type*}
     [TopologicalSpace M] {f θ : M → ℝ} {P Q : ℝ → ℝ} {p : M} {k : ℝ} (hf : ContinuousAt f p)
     (hθ : θ =ᶠ[𝓝 p] fun _ => 1) (hP : P =ᶠ[𝓝 (f p)] fun s => s + k) :
@@ -871,6 +923,7 @@ theorem MorseRearrangement.blended_height_one_translation_germ {M : Type*}
   rw [hx, blendHeight_one]
   exact hPx
 
+/-- At weight zero the blend is the `Q` translation germ. -/
 theorem MorseRearrangement.blended_height_zero_translation_germ {M : Type*}
     [TopologicalSpace M] {f θ : M → ℝ} {P Q : ℝ → ℝ} {p : M} {k : ℝ} (hf : ContinuousAt f p)
     (hθ : θ =ᶠ[𝓝 p] fun _ => 0) (hQ : Q =ᶠ[𝓝 (f p)] fun s => s + k) :
@@ -879,6 +932,7 @@ theorem MorseRearrangement.blended_height_zero_translation_germ {M : Type*}
   rw [hx, blendHeight_zero]
   exact hQx
 
+/-- The directional derivative of the blended height along the field. -/
 theorem MorseRearrangement.blended_height_directional_derivative {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f θ : M → ℝ}
     {P Q : ℝ → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -907,6 +961,7 @@ theorem MorseRearrangement.blended_height_directional_derivative {E M : Type*}
   rw [hdg0, hdf0, F.map_zero_apply] at heq
   exact heq
 
+/-- A stationary weight gives a rearranged Morse function blending the translations. -/
 theorem MorseRearrangement.exists_rearranged_morse_function_of_stationary_weight
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f θ : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -991,6 +1046,7 @@ theorem MorseRearrangement.exists_rearranged_morse_function_of_stationary_weight
     dsimp only at hh
     linarith
 
+/-- In the absence of a connecting orbit, prescribe new critical values for an isolated pair inside the band while preserving the critical set, Morse indices, descent field and exterior germs. -/
 theorem MorseRearrangement.exists_morse_rearrangement_of_no_connection {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M]
