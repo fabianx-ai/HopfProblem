@@ -65,10 +65,14 @@ local infixr:80 " ≫ₚ " => Path.trans
 
 local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
+/-! ### Homology of a disjoint open union -/
+
+/-- The inclusion of one piece `W i` into the union. -/
 def DisjointOpenHomology.inclusion {X : Type} [TopologicalSpace X] {ι : Type}
     (W : ι → Set X) (i : ι) : C(W i, ↥(⋃ j, W j)) :=
   ⟨Set.inclusion (Set.subset_iUnion W i), continuous_subtype_val.subtype_mk _⟩
 
+/-- A pairwise disjoint open union is homeomorphic to the sigma type of its pieces. -/
 def DisjointOpenHomology.unionHomeomorph {X : Type} [TopologicalSpace X] {ι : Type}
     (W : ι → Set X) (hW : ∀ i, IsOpen (W i)) (hd : Pairwise (Disjoint on W)) :
     (Σ i, W i) ≃ₜ ↥(⋃ i, W i) :=
@@ -83,6 +87,7 @@ def DisjointOpenHomology.unionHomeomorph {X : Type} [TopologicalSpace X] {ι : T
       intro i
       exact (hW i).isOpenMap_inclusion (Set.subset_iUnion W i))
 
+/-- Singular homology of a disjoint open union is the product of the piece homologies. -/
 def DisjointOpenHomology.homologyEquiv {X : Type} [TopologicalSpace X] {ι : Type}
     (W : ι → Set X) (hW : ∀ i, IsOpen (W i)) (hd : Pairwise (Disjoint on W)) [Fintype ι] (k : ℕ) :
     SingularMayerVietoris.SingularHomology (↥(⋃ i, W i)) k ≃ₗ[ℤ]
@@ -90,6 +95,7 @@ def DisjointOpenHomology.homologyEquiv {X : Type} [TopologicalSpace X] {ι : Typ
   (SingularHomology.homeomorphHomologyEquiv (unionHomeomorph W hW hd).symm k).trans
     (Coproduct.sigmaHomologyEquiv (fun i => W i) k)
 
+/-- The inverse decomposition maps a tuple of classes to the sum of their included classes. -/
 theorem DisjointOpenHomology.homologyEquiv_symm_apply {X : Type} [TopologicalSpace X]
     {ι : Type} (W : ι → Set X) (hW : ∀ i, IsOpen (W i)) (hd : Pairwise (Disjoint on W))
     [Fintype ι] (k : ℕ) (a : ∀ i, SingularMayerVietoris.SingularHomology (W i) k) :
@@ -108,21 +114,27 @@ theorem DisjointOpenHomology.homologyEquiv_symm_apply {X : Type} [TopologicalSpa
   rw [← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp]
   rfl
 
+/-! ### Homology over intersected cover pieces -/
+
+/-- The inclusion of `U ∩ V i` into `U` intersected with the union. -/
 def CoverOverlapHomology.componentInclusion {X : Type} [TopologicalSpace X] {ι : Type}
     (U : Set X) (V : ι → Set X) (i : ι) : C(↥(U ∩ V i), ↥(U ∩ ⋃ j, V j)) :=
   ⟨fun x => ⟨x.val, ⟨x.property.1, Set.mem_iUnion.mpr ⟨i, x.property.2⟩⟩⟩,
     continuous_subtype_val.subtype_mk _⟩
 
+/-- Intersecting with `U` distributes over a union, as a homeomorphism. -/
 def CoverOverlapHomology.distributeHomeomorph {X : Type} [TopologicalSpace X] {ι : Type}
     (U : Set X) (V : ι → Set X) : ↥(U ∩ ⋃ i, V i) ≃ₜ ↥(⋃ i, U ∩ V i) :=
   Homeomorph.setCongr (by ext x; simp)
 
+/-- Intersecting a pairwise disjoint family with a fixed set stays pairwise disjoint. -/
 theorem CoverOverlapHomology.disjoint_intersections {X : Type} {ι : Type} (U : Set X)
     (V : ι → Set X) (hd : Pairwise (Disjoint on V)) : Pairwise (Disjoint on (fun i => U ∩ V i)) :=
   by
   intro i j hij
   exact (hd hij).mono Set.inter_subset_right Set.inter_subset_right
 
+/-- Homology of `U` over a disjoint open union decomposes as the product over the intersections. -/
 def CoverOverlapHomology.homologyEquiv {X : Type} [TopologicalSpace X] {ι : Type}
     (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
     (hd : Pairwise (Disjoint on V)) [Fintype ι] (k : ℕ) :
@@ -132,6 +144,7 @@ def CoverOverlapHomology.homologyEquiv {X : Type} [TopologicalSpace X] {ι : Typ
     (DisjointOpenHomology.homologyEquiv (fun i => U ∩ V i) (fun i => hU.inter (hV i))
       (disjoint_intersections U V hd) k)
 
+/-- The inverse decomposition maps intersection classes to the sum of their included classes. -/
 theorem CoverOverlapHomology.homologyEquiv_symm_apply {X : Type} [TopologicalSpace X]
     {ι : Type} (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
     (hd : Pairwise (Disjoint on V)) [Fintype ι] (k : ℕ)
@@ -151,6 +164,7 @@ theorem CoverOverlapHomology.homologyEquiv_symm_apply {X : Type} [TopologicalSpa
   rw [← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp]
   rfl
 
+/-- A homology class on `U` over the union is the sum of its contributions on each intersection. -/
 theorem CoverOverlapHomology.homology_decomposition {X : Type} [TopologicalSpace X]
     {ι : Type} (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
     (hd : Pairwise (Disjoint on V)) [Fintype ι] (k : ℕ)
@@ -162,6 +176,7 @@ theorem CoverOverlapHomology.homology_decomposition {X : Type} [TopologicalSpace
   have h := homologyEquiv_symm_apply U V hU hV hd k (homologyEquiv U V hU hV hd k a)
   rwa [LinearEquiv.symm_apply_apply] at h
 
+/-- Pushing a class out of the overlap union splits into the pushed contributions on each piece. -/
 theorem CoverOverlapHomology.homology_map_out {X : Type} [TopologicalSpace X] {ι : Type}
     (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
     (hd : Pairwise (Disjoint on V)) [Fintype ι] {Y : Type} [TopologicalSpace Y]
@@ -185,6 +200,9 @@ theorem CoverOverlapHomology.homology_map_out {X : Type} [TopologicalSpace X] {�
       intro i _
       rw [SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply]
 
+/-! ### Local contributions of a cover -/
+
+/-- The connecting map from degree `k+1` homology of `X` to the product of degree `k` homologies of the cover overlaps. -/
 def CoverLocalContributions.componentConnecting {X : Type} [TopologicalSpace X] {ι : Type}
     [Fintype ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
     (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ) (k : ℕ) :
@@ -193,6 +211,7 @@ def CoverLocalContributions.componentConnecting {X : Type} [TopologicalSpace X] 
   (CoverOverlapHomology.homologyEquiv U V hU hV hd k).toLinearMap.comp
     (SingularMayerVietoris.connectingHomomorphism U (⋃ i, V i) hU (isOpen_iUnion hV) hc k)
 
+/-- A map sending each `V i` into `V'` sends the union into `V'`. -/
 theorem CoverLocalContributions.map_union {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {ι : Type} (V : ι → Set X) (V' : Set Y) (f : C(X, Y))
     (hfV : ∀ i, Set.MapsTo f (V i) V') : Set.MapsTo f (⋃ i, V i) V' := by
