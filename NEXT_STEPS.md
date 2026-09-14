@@ -15,7 +15,7 @@ No fresh-context reviewer looked at this round's moves. Run one reviewer per rec
 (`singhom-moves.md` 686 rows, `spheretop-moves.md` 331 + 231, `recognition-moves.md` 87 + 31,
 `lcp-moves.md` 94, `freed-wang.md` 73, `freed-circle.md` 16, the E1 split, `import-all.md`): statements
 verbatim modulo the disclosed retargets, nothing lost, every claim reproducible. Findings go into
-`INTEGRATION-5.md` §5 and are fixed before the next moves. Two points to judge explicitly: the second
+`INTEGRATION-5.md` §5 (a new section, "Review findings") and are fixed before the next moves. Two points to judge explicitly: the second
 SphereTopology pass moved the four `DiskOnePointCollapse.collapse*` rows after finding that their only
 "SixSphere" mention is the `SixSphereCube` export alias of `OnePointCollapse` (retarget
 `SixSphereCube.X -> OnePointCollapse.X`); and `lib/next-lcp` left a `namespace FirstHurewicz export

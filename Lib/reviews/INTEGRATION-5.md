@@ -66,3 +66,7 @@ helper renamed by the `wang` branch; the rest of the map is the integration-4 ma
 under `Hopf/` (95 Recognition, 23 + 2 + 3 residue); the 24 blocked `FREED.md` rows; the de-shim pass;
 6 `import all` lines; the module conversion of the 13 new non-`module` files; then the lanes and the
 300 generalisations.
+
+## 5. Review findings
+
+Empty until the review pass of the next round runs; see `NEXT_STEPS.md` §1.
