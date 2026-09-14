@@ -1,66 +1,75 @@
-# Next steps (after integration review 4, 2026-09-14)
+# Next steps (after integration review 5, 2026-09-14)
 
-Owner decision 2026-09-14: the remainder is done by Claude agents; no seat assignment for now. This
-file replaces `NEXT-STEPS-{GLM,KIMI,MUSE}.md` (their last versions are in the history at `37996bc3`).
+Owner decision 2026-09-14: the remainder is done by Claude agents; no seat assignment. Head:
+`lib/textbook-extraction`, the commit the owner names (`git log -1`). Reviews: `Lib/reviews/INTEGRATION-5.md`
+(the parallel round), `INTEGRATION-4.md`. Layout: `Hopf/<path>.lean` holds only the stock still to be
+moved into `Lib/`; proof-specific declarations are under `Hopf/Proof/<path>.lean`; the `Mathoverflow1973`
+wrapper survives only around the final theorem (`comparator/config.json` names
+`Mathoverflow1973.mathoverflow_1973`). Census (`scripts/lib_stock_census.py --check`, counts outside
+`Hopf/Proof/`): 123 against baseline 1648 — 1,516 declarations moved this round in 12 agent branches
+(receipts in `Lib/reports/integration-4/*-moves.md`, `freed-*.md`, `import-all.md`).
 
-Head: `lib/textbook-extraction`, the commit the owner names (`git log -1`). Review of the last
-round: `Lib/reviews/INTEGRATION-4.md`. Layout: `Hopf/<path>.lean` holds only the stock still to be
-moved into `Lib/`; proof-specific declarations are under `Hopf/Proof/<path>.lean` (same names and
-namespaces); the `Mathoverflow1973` wrapper is gone except around the final theorem
-(`comparator/config.json` names `Mathoverflow1973.mathoverflow_1973`). The census counts only outside
-`Hopf/Proof/` (baseline 1648, now 1586). `Lib/reports/proof-split/FREED.md`: 175 of the 475 demoted
-rows are pure moves (spurious `_proof_n` edges); 62 are in `Lib/` already, 113 remain under
-`Hopf/Proof/`. `AGENTS.md` stays as it is (owner, 2026-09-14).
+## 1. Review pass (first)
 
-## Record fixes (docs only, one commit each)
+No fresh-context reviewer looked at this round's moves. Run one reviewer per receipt
+(`singhom-moves.md` 686 rows, `spheretop-moves.md` 331 + 231, `recognition-moves.md` 87 + 31,
+`lcp-moves.md` 94, `freed-wang.md` 73, `freed-circle.md` 16, the E1 split, `import-all.md`): statements
+verbatim modulo the disclosed retargets, nothing lost, every claim reproducible. Findings go into
+`INTEGRATION-5.md` §5 and are fixed before the next moves. Two points to judge explicitly: the second
+SphereTopology pass moved the four `DiskOnePointCollapse.collapse*` rows after finding that their only
+"SixSphere" mention is the `SixSphereCube` export alias of `OnePointCollapse` (retarget
+`SixSphereCube.X -> OnePointCollapse.X`); and `lib/next-lcp` left a `namespace FirstHurewicz export
+SingularChains (...)` alias block in `Hopf/LCP/CuspFilling.lean` for three `Hopf/Proof/` consumers.
 
-1. `Lib/reports/I.md`: the tooling note cites `/tmp/wang_extract.py`, `/tmp/wang_gen.py` — bring
-   the scripts in under `Lib/docs/logs/glm/` or drop the sentences; the "de-privatized" sentence is
-   false (integration note at the end of the file says what is true).
-2. `Lib/README.md:187`, `Lib/EXTRACTION_PLAN.md:11,148` still describe every file as wrapped in
-   `namespace Mathoverflow1973`.
-3. `Lib/docs/C19-LEFTOVERS.md` and the C19 checkpoint in `Lib/reports/C.md`: name the two retargets
-   (`Suspension.topSus.* -> Suspension.*` in `suspensionConeCover`;
-   `HigherHurewicz.hurewiczLinearEquiv -> Hurewicz.hurewiczLinearEquiv` in the six wrappers); C20
-   documented 35 private helpers, not 34; `Lib/docs/C-STAGE2-REVIEW.md:5` cites `~/s6-notes/review/C.md`
-   (in-tree as `Lib/docs/C.md`).
-4. `Lib/reports/RECEIPTS.md`: the S-path bullet must say 62 of the 88 rows came from `Hopf/Proof/`
-   (`FREED.md`), carry `6211eadc` and its job count; the section header "head `84d9450`" is stale;
-   `J.md` was edited after its Axis-5 stamp at `90cd3d9`. `Lib/docs/E2-fresh2-subagent-review.md`:
-   the path rewrite produced `git -C the repository root rev-parse HEAD`; restore the command with the
-   path elided in brackets.
+## 2. Stock still under `Hopf/` (123 rows)
 
-## Moves (full chain green per commit, receipts as in `Lib/reports/proof-split/` and `integration-4/`)
+- `Hopf/Recognition.lean` 95: 34 CHARGED (`SixSphereCube.*` and 13 singletons) stay; 61 were blocked by
+  `Hopf/SphereTopology.lean` rows that the second pass has since moved
+  (`Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean`), so most are movable now — third pass, same
+  method (`lean-agent-ide dump Hopf.Recognition`, receipts as before).
+- `Hopf/SphereTopology.lean` 23, `Hopf/SingularHomology.lean` 2: CHARGED, stay; they are the file's residue
+  and should move to `Hopf/Proof/<path>.lean` under the layout rule once nothing stock depends on them.
+- `Hopf/Hurewicz.lean` 3: `SixSphereCube.{StandardSphere, euclideanOnePointSphereHomeomorph,
+  sphereBasePoint}` are proof-specific but used by stock `Hopf/Recognition.lean`; move them to
+  `Hopf/Proof/Hurewicz.lean` together with their Recognition consumers (item above).
+- The 24 `PeriodTorusHigherHomology` rows of `FREED.md` left under `Hopf/Proof/LCP/Specialization.lean`
+  (`freed-circle.md`, "blocked") were blocked by `Hopf/LCP/*` stock rows that `lib/next-lcp` moved
+  (`TorusCoordinates.lean`); move them now.
+- Then the stock files are empty or residue-only: say so per file, and retire the empty ones from the
+  import chain (the consumers import `Hopf.LibShims` and their `Hopf/Proof/` twin).
 
-5. **Freed rows, 113** (`FREED.md`): 73 `MappingTorusHomology` rows under
-   `Hopf/Proof/LCP/IntegralHomology.lean` and neighbours into `Lib/Topology/MappingTorus/Wang.lean`
-   (or a second Wang file past 3,000 lines); 40 `PeriodTorusHigherHomology` rows under
-   `Hopf/Proof/LCP/CuspFilling.lean` into `Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean` or
-   the module their subject names. Straight from `Hopf/Proof/` to `Lib/`, statements verbatim modulo
-   disclosed retargets, dependency order, `envdiff` before/after. Give
-   `MappingTorusHomology.Covering.sum_range_shift_of_endpoints_mo1973_27356` a real name in the pass.
-6. **Seven CHARGED Hurewicz leftovers** (`SixSphereCube` data, pinned `Sphere.piN_subsingleton`) sit in
-   the stock file `Hopf/Hurewicz.lean`; they are proof-specific and belong in
-   `Hopf/Proof/Hurewicz.lean` (which imports `Hopf.Hurewicz`). Then say what `Hopf/Hurewicz.lean` still holds.
-7. **De-shim pass**: in `Hopf/LibShims.lean` the root-level
-   `export HandleCoreAttachment (core coreSpace coreInclusion)` (from `686b598e`) creates three root
-   names; delete it (nothing uses the bare names) or restore the scope. Retire the `topSus` and
-   `Hurewicz.DegreeTwo` aliases by re-spelling their `Hopf/Proof/` consumers if the chain stays green;
-   record which aliases remain and why.
-8. **Lane I** remainder per `I.md`; **J**: J-B/J-C/J-D/J-E certification per `J.md`, then the product
-   at `(1, n)`; **E2** refactor at `2k+1 ≤ n` per `E2.md`; **B**: the van Kampen extraction itself.
-9. **E1 layout**: `ConnectionCancellation.lean`/`Cancellation.lean` split needs a per-declaration
-   DAG placement (`E1.md`, family cut is cyclic); four modules `Cubic`, `CubicFlow`, `Connection`,
-   `Cancellation`, statements unchanged, edge counts and placement table in `E1.md`.
-10. **`import all`** (owner: clean up when convenient): 9 lines in 8 files, each needs proof
-    restructuring against the public `LocalDiffeomorph` API; not urgent; add none.
-11. **Demoted rows, 300** (`DEMOTED.md` after the correction; `RiemannMapping` 124 and the rest):
-    generalisation, not moves; last.
+## 3. Shims and module system
+
+- De-shim pass, part 2: retire the `topSus` and `Hurewicz.DegreeTwo` aliases in `Hopf/LibShims.lean` and
+  the `FirstHurewicz` alias block in `Hopf/LCP/CuspFilling.lean` by re-spelling their `Hopf/Proof/`
+  consumers; give the remaining `*_mo1973_*` helpers in `Lib/` real names (`grep -rn '_mo1973_' Lib`).
+- `import all` (owner: when convenient): 6 lines left — `RegularLevel.lean` (2; needs a Lib-side
+  implicit-function datum with transparent `prodFun`), `SmoothFlow.lean` and `MorseLemma.lean` (mechanical
+  switch to `Diffeomorph.toPartialDiffeomorphUniv` from `Lib/Geometry/Manifold/LocalDiffeomorph.lean`;
+  MorseLemma is the root of the chain, full rebuild), `Morse/Cubic.lean`, `Morse/CubicFlow.lean` (inherited
+  from the old Cancellation file). `Transversality/Basic.lean` can redirect its `toPartialDiffeomorph'`,
+  `diffeomorph'` to the `LocalDiffeomorph.lean` versions (one line each).
+- The 13 non-`module` Lib files created this round (and the 46 older ones) block `module` importers;
+  conversion pass when the moves are done.
+
+## 4. Records
+
+- `Lib/reports/E1.md`, section "Layout split done": replace "still running at 8847/8858" by the final
+  green line (8858 jobs). `Lib/reports/I.md` and `NEXT_STEPS.md` history still mention the old name
+  `sum_range_shift_of_endpoints_mo1973_27356` (now `_eq`); fine as history.
+- `Lib/reports/proof-split/FREED.md` header: the 40 `PeriodTorusHigherHomology` rows were under
+  `Hopf/Proof/LCP/Specialization.lean`, not CuspFilling; the table was right.
+
+## 5. Lanes and generalisations (after the above)
+
+J-B/J-C/J-D/J-E certification per `Lib/docs/J.md`, then the product at `(1, n)`; E2 refactor at
+`2k+1 ≤ n` per `E2.md`; B: the van Kampen extraction; the 300 demoted rows of `DEMOTED.md`
+(after the correction): generalisation, not moves; last.
 
 ## Rules
 
-`ps` before `lake build`; never `lake update`/`cache get`; never push; Lake, not direct `lean`;
-reviewer ≠ author (a fresh-context subagent is a reviewer); probes and evidence in the tree, no
-`/tmp`, `~`, `/home` citations; a lane report says "landed" only for declarations that exist in
-`Lib/` at the head it names; nothing is "COMPLETE" while its probe theorem is still under `Hopf/`;
-the Comparator stays deferred until publication.
+`ps` before `lake build`; never `lake update`/`cache get`/`clean`; never push; Lake, not direct `lean`;
+never kill a process by command-line pattern (use `/proc/<pid>/cwd`); reviewer ≠ author (a fresh-context
+subagent is a reviewer); probes and evidence in the tree, no `/tmp`, `~`, `/home` citations; a lane report
+says "landed" only for declarations that exist in `Lib/` at the head it names; nothing is "COMPLETE"
+while its probe theorem is still under `Hopf/`; the Comparator stays deferred until publication.
