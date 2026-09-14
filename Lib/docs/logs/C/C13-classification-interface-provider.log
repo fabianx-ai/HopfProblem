@@ -1,0 +1,52 @@
+CMD: lake env lean -o C13_ClassificationInterfaceCheck.olean C13_ClassificationInterfaceCheck.lean
+START: 1789252864 Sun Sep 13 00:41:04 CEST 2026
+@HigherHurewicz.cubeHomologyClass_eq_squareHomologyClass : ∀ {X : Type} [inst : TopologicalSpace X] {x : X}
+  (p : ↑(GenLoop (Fin 2) X x)), HigherHurewicz.cubeHomologyClass p = SecondHurewicz.squareHomologyClass p
+@HigherHurewicz.hurewiczMap_representative : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X] (x : X)
+  (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (HigherHurewicz.hurewiczMap x) (Additive.ofMul ⟦p⟧) = HigherHurewicz.cubeHomologyClass p
+@SecondHurewicz.SimplyConnected.hurewiczLinearEquiv : {X : Type} →
+  [inst : TopologicalSpace X] →
+    [SimplyConnectedSpace X] → (x : X) → Additive (π_ 2 X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X 2)
+@Degree.SphereCube.factor_cubeHomologyClass_cycle : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X] {x : X}
+  (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (SingularMayerVietoris.singularHomologyMap (Degree.SphereCube.factorMap ⋯ p) (m + 2))
+      (HigherHurewicz.cubeHomologyClass (Degree.SphereCube.quotientLoop (m + 2))) =
+    HigherHurewicz.cubeHomologyClass p
+@Degree.SphereCube.factorMap_unique : ∀ {n : ℕ} (hn : 0 < n) {X : Type u_1} [inst : TopologicalSpace X] {x : X}
+  (p : ↑(GenLoop (Fin n) X x)) (f : C(↑(Degree.SphereCube.Sphere n), X)),
+  f.comp (Degree.SphereCube.quotient n) = ↑p → f = Degree.SphereCube.factorMap hn p
+@Degree.SphereCube.cylinder_isQuotientMap : ∀ {n : ℕ}, 0 < n → IsQuotientMap ⇑(Degree.SphereCube.cylinder n)
+HigherHurewicz.simplexCubeHomeomorph : (n : ℕ) → ↑(SingularChains.Simplex n) ≃ₜ (Fin n → ↑unitInterval)
+HigherHurewicz.simplexCubeHomeomorph_boundary_iff : ∀ (n : ℕ) (s : ↑(SingularChains.Simplex n)),
+  (HigherHurewicz.simplexCubeHomeomorph n) s ∈ Cube.boundary (Fin n) ↔
+    s ∈ SecondHurewicz.SimplyConnected.simplexBoundary n
+HigherHurewicz.simplexCubeHomeomorph_symm_boundary_iff : ∀ (n : ℕ) (u : Fin n → ↑unitInterval),
+  (HigherHurewicz.simplexCubeHomeomorph n).symm u ∈ SecondHurewicz.SimplyConnected.simplexBoundary n ↔
+    u ∈ Cube.boundary (Fin n)
+@SecondHurewicz.SimplyConnected.extendBoundaryHomotopy : {n : ℕ} →
+  {X : Type u_1} →
+    [inst : TopologicalSpace X] →
+      (f : C(↑(SingularChains.Simplex n), X)) →
+        (h : C(↑unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X)) →
+          (∀ (s : SecondHurewicz.SimplyConnected.SimplexBoundary n), h (0, s) = f ↑s) →
+            C(↑unitInterval × ↑(SingularChains.Simplex n), X)
+@SecondHurewicz.SimplyConnected.extendBoundaryHomotopy_bottom : ∀ {n : ℕ} {X : Type u_1} [inst : TopologicalSpace X]
+  (f : C(↑(SingularChains.Simplex n), X)) (h : C(↑unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
+  (h0 : ∀ (s : SecondHurewicz.SimplyConnected.SimplexBoundary n), h (0, s) = f ↑s) (s : ↑(SingularChains.Simplex n)),
+  (SecondHurewicz.SimplyConnected.extendBoundaryHomotopy f h h0) (0, s) = f s
+@SecondHurewicz.SimplyConnected.extendBoundaryHomotopy_side : ∀ {n : ℕ} {X : Type u_1} [inst : TopologicalSpace X]
+  (f : C(↑(SingularChains.Simplex n), X)) (h : C(↑unitInterval × SecondHurewicz.SimplyConnected.SimplexBoundary n, X))
+  (h0 : ∀ (s : SecondHurewicz.SimplyConnected.SimplexBoundary n), h (0, s) = f ↑s) (t : ↑unitInterval)
+  (s : SecondHurewicz.SimplyConnected.SimplexBoundary n),
+  (SecondHurewicz.SimplyConnected.extendBoundaryHomotopy f h h0) (t, ↑s) = h (t, s)
+@SingularHomology.homotopic_homologyMap : ∀ {X Y : Type} [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y]
+  {f g : C(X, Y)},
+  f.Homotopic g →
+    ∀ (n : ℕ), SingularMayerVietoris.singularHomologyMap f n = SingularMayerVietoris.singularHomologyMap g n
+@SingularHomology.singularHomologyMap_comp : ∀ {X Y Z : Type} [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y]
+  [inst_2 : TopologicalSpace Z] (f : C(X, Y)) (g : C(Y, Z)) (n : ℕ),
+  SingularMayerVietoris.singularHomologyMap (g.comp f) n =
+    SingularMayerVietoris.singularHomologyMap g n ∘ₗ SingularMayerVietoris.singularHomologyMap f n
+END: 1789252867 Sun Sep 13 00:41:07 CEST 2026
+EXIT: 0

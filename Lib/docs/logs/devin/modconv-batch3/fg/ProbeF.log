@@ -1,0 +1,13 @@
+WhitneyPairModel.firstSheet : WhitneyPairModel.Sheet → WhitneyPairModel.Space
+WhitneyPairModel.bigon : ℝ → Set (ℝ × ℝ)
+WhitneyPairModel.mem_frontier_bigon_iff : ∀ (h : ℝ) (p : ℝ × ℝ),
+  p ∈ frontier (WhitneyPairModel.bigon h) ↔ p ∈ WhitneyPairModel.bigon h ∧ (p.2 = 0 ∨ p.2 = h * (1 - p.1 ^ 2))
+WhitneyPairModel.cornerScale_pos : ∀ (t : ℝ), 0 < WhitneyPairModel.cornerScale t
+@WhitneyPairModel.upperStripCoordinates_right : ∀ {h : ℝ},
+  h ≠ 0 →
+    ∀ {p : ℝ × ℝ},
+      2 / 3 ≤ WhitneyPairModel.arcTime p →
+        StripCoordinates.reverse (WhitneyPairModel.upperStripCoordinates h p) =
+          (WhitneyPairModel.rightCornerCoordinates h p).swap
+@StripCoordinates.hasDerivAt_verticalSlice : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]
+  {F : ℝ × ℝ → E} {t s : ℝ}, DifferentiableAt ℝ F (t, s) → HasDerivAt (fun u => F (t, u)) ((fderiv ℝ F (t, s)) (0, 1)) s

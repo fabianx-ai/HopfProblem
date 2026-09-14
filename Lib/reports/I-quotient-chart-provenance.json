@@ -1,0 +1,60 @@
+{
+  "source_revision": "e5a00e920dad75a69b6a25779a738cd4d64f78f2",
+  "group": "CoveringOrthant",
+  "declarations": [
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.localChart",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1358,
+      "end": 1362,
+      "kind": "def",
+      "sha256": "1c93ec1b3c456877253fa9667f95598e5d50118c976f6df7a0ad0fd7ec12d09c",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    },
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.self_mem_localChart_source",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1364,
+      "end": 1373,
+      "kind": "theorem",
+      "sha256": "3417adb53c78d6630fe97da8aae4e07f8f85ed80ebdca3eafbbaca335b5f00cf",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    },
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.localChart_symm",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1375,
+      "end": 1380,
+      "kind": "theorem",
+      "sha256": "fe97afbeb1669c6f188049c05eb5736c7365d8c03db1de4cd99e577a69055842",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    },
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.localChart_symm_apply",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1382,
+      "end": 1386,
+      "kind": "theorem",
+      "sha256": "7f5a6efc2523a2a3fd3bae75c04a8a56183c58263665edff59cff30a7c471acf",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    },
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.localChart_target_subset",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1388,
+      "end": 1391,
+      "kind": "theorem",
+      "sha256": "53c08fabb9fe9377324350c083970abe9f48381c6e587b0e983b8e4318fea2e3",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    },
+    {
+      "name": "Mathoverflow1973.CoveringOrthant.localChart_coordinate_identity",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 1393,
+      "end": 1400,
+      "kind": "theorem",
+      "sha256": "8b9a71cceb18994ef634941d8066adc8ba6a57fe69d0f6aff85a36437e5f60f1",
+      "target": "Lib/Topology/Covering/Quotient.lean"
+    }
+  ]
+}

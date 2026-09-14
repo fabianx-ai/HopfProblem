@@ -1,0 +1,83 @@
+CMD: lake env lean Lib/AxiomAudit.lean
+start 03:13:06 epoch 1789261986
+'Module.End.cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.mul_sum_powers_eq_sum_powers' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.sum_powers_mul_eq_sum_powers' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.mul_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.cyclicAverage_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.cyclicAverage_apply_of_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.isProj_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.isIdempotentElem_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.range_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.comp_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.natAbs_det_eq_natCard_quotient_range_toLin'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.quotientRangeToLin'EquivZModOfIsCoprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.quotientRangeToLinEquivZModOfIsCoprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Module.End.oneAddSMul' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMul_zero' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMul_apply' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMul_mul_oneAddSMul' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMulEquiv' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMulEquiv_toLinearMap' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMulEquiv_apply' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMulEquiv_symm_toLinearMap' depends on axioms: [propext, Quot.sound]
+'Module.End.quadratic_term_eq_zero' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMul_preserves_bilin' depends on axioms: [propext, Quot.sound]
+'Module.End.oneAddSMul_preserves_bilin_of_isSkewAdjoint' depends on axioms: [propext, Quot.sound]
+'Abelianization.mapMulAut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationRepresentation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.AbelianizationCoinvariants' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.coinvariantsMk' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.coinvariantsMk_action' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationMulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationMulEquiv_apply_of_inl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationMulEquiv_apply_of_inr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationMulEquiv_symm_apply_inl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SemidirectProduct.abelianizationMulEquiv_symm_apply_inr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GroupExtension.Splitting.abelianizationMulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Subgroup.isMulCommutative_of_closure_eq_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AddSubgroup.isAddCommutative_of_closure_eq_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AddSubgroup.eq_of_le_of_quotient_subsingleton' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AddSubgroup.eq_top_of_le_of_quotient_subsingleton' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.SingularMayerVietoris.exact_at_ambient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.SphereHomology.unitSphere_homology_subsingleton' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Smale.ManifoldMorse.exists_morse_function' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Smale.ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.AnalyticRootCover.exists_analytic_square_root_ball' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Smale.exists_tubularNeighborhood_in_open_of_embedded_closedBall' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.SplitGroupExtension.mulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.MappingTorusHomology.monodromyHomologyMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.hurewiczLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.pi_subsingleton_of_homology_vanishing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Hurewicz.sphere_pi_subsingleton_of_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.sphere_homotopicRel_of_topClass_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Hurewicz.sphere_homotopic_id_of_topClass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.right_inverse_is_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.exists_basepoint_adjustment' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit 0
+end 03:13:10 epoch 1789261990

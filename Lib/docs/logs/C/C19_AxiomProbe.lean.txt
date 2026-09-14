@@ -1,0 +1,11 @@
+import Hopf.Hurewicz
+
+#print axioms Mathoverflow1973.SphereHomology.twoOpenCover_pathConnectedSpace
+#print axioms Mathoverflow1973.SphereHomology.twoOpenCover_fundamentalGroup_eq_one
+#print axioms Mathoverflow1973.SphereHomology.suspensionConeCover
+#print axioms Mathoverflow1973.ThirdHurewicz.hurewiczLinearEquiv
+#print axioms Mathoverflow1973.ThirdHurewicz.hurewiczPi3Equiv
+#print axioms Mathoverflow1973.FourthHurewicz.hurewiczLinearEquiv
+#print axioms Mathoverflow1973.FourthHurewicz.hurewiczPi4Equiv
+#print axioms Mathoverflow1973.FifthHurewicz.hurewiczLinearEquiv
+#print axioms Mathoverflow1973.FifthHurewicz.hurewiczPi5Equiv

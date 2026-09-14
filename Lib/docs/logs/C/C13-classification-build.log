@@ -1,0 +1,301 @@
+CMD: lake build Lib.AlgebraicTopology.Hurewicz.HopfDegree
+START: 1789253240 Sun Sep 13 00:47:20 CEST 2026
+⚠ [8712/8732] Replayed Lib.Topology.Homotopy.Suspension
+warning: Lib/Topology/Homotopy/Suspension.lean:86:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:93:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:97:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_eq_mk_iff`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:102:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_surjective`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:106:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.isQuotientMap_mk`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:112:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.continuous_mk`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:116:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.height`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:121:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.continuous_height`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:126:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.continuous_realHeight`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:130:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_zero_eq`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:134:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_one_eq`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:138:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:142:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:147:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mem_northOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:152:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mem_southOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:156:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northOpen_isOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:160:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southOpen_isOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:164:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.open_cover`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:172:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.north`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:176:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.south`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:181:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_zero`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:186:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.mk_one`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:190:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.north_mem_northOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:195:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.south_mem_southOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:200:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.instLocal1`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:204:7: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBand`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:207:7: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleCylinder`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:210:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBand_isOpen`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:214:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleCylinder_height`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:218:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBand_restrict_injective`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:238:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBandQuotientHomeomorph`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:245:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleCylinderHomeomorph`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:264:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBandHomeomorph`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:268:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleInterval_contractibleSpace`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:272:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBandHomotopyEquiv`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:279:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.joined_north`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:294:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.suspension_pathConnectedSpace`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:300:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.liftFromSurjection`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:304:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.liftFromSurjection_comp`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:310:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.liftFromSurjection_continuous`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:320:7: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.NorthCylinder`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:324:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northProjection`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:330:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northProjection_isQuotientMap`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:335:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northCylinderContraction`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:343:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northCylinderContraction_respects`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:365:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northCylinderContraction_continuous`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:380:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northContract`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:387:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northContract_projection`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:393:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northContract_continuous`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:398:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northContraction`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:422:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.northOpen_contractibleSpace`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:427:7: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.SouthCylinder`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:431:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southProjection`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:437:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southProjection_isQuotientMap`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:442:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southCylinderContraction`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:459:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southCylinderContraction_respects`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:484:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southCylinderContraction_continuous`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:501:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southContract`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:508:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southContract_projection`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:514:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southContract_continuous`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:519:4: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southContraction`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:547:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.southOpen_contractibleSpace`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:553:8: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.middleBandHomotopyEquiv_apply`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: Lib/Topology/Homotopy/Suspension.lean:558:9: The namespace `Suspension` is duplicated in the declaration `Mathoverflow1973.Suspension.Suspension.suspension_compactSpace`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+⚠ [8725/8732] Replayed Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1220:62: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [HigherHurewicz.cubeScaleLeft, ContinuousMap.coe_mk, HigherHurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1236:63: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, HigherHurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1356:87: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [HigherHurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1601:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [8726/8732] Replayed Lib.AlgebraicTopology.Hurewicz.Straightening
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:756:6: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:792:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8728/8732] Replayed Lib.AlgebraicTopology.Hurewicz.CubeSphere
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:494:32: This simp argument is unused:
+  Submodule.coe_sub
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Submodule.coe_add, HigherHurewicz.cubeCycle_val, map_sub, hWextra]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:691:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:699:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8732/8732] Built Lib.AlgebraicTopology.Hurewicz.HopfDegree (3.2s)
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:83:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:101:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:271:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Build completed successfully (8732 jobs).
+END: 1789253247 Sun Sep 13 00:47:27 CEST 2026
+EXIT: 0

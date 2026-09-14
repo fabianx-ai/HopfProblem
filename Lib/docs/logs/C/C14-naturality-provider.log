@@ -1,0 +1,63 @@
+CMD: PATH=... lake env lean C14_NaturalityProviderCheck.lean
+start 05:04:15 epoch 1789268655
+@Mathoverflow1973.Hurewicz.homotopyMap : {n : ℕ} →
+  [inst : Nonempty (Fin n)] →
+    {X Y : Type} →
+      [inst_1 : TopologicalSpace X] →
+        [inst_2 : TopologicalSpace Y] → (f : C(X, Y)) → (x : X) → HomotopyGroup.Pi n X x →* HomotopyGroup.Pi n Y (f x)
+@Mathoverflow1973.Hurewicz.cubeChain_natural : ∀ {n : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin n) X x)),
+  (Mathoverflow1973.SingularChains.inducedChain f n) (Mathoverflow1973.Hurewicz.cubeChain p) =
+    Mathoverflow1973.Hurewicz.cubeChain ((Mathoverflow1973.SecondHurewicz.mapGenLoop f x) p)
+@Mathoverflow1973.Hurewicz.cubeCycle_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.mapCycles (Mathoverflow1973.SingularChains.singularChainMap f)
+        (m + 2))
+      (Mathoverflow1973.Hurewicz.cubeCycle p) =
+    Mathoverflow1973.Hurewicz.cubeCycle ((Mathoverflow1973.SecondHurewicz.mapGenLoop f x) p)
+@Mathoverflow1973.Hurewicz.cubeHomologyClass_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 2))
+      (Mathoverflow1973.Hurewicz.cubeHomologyClass p) =
+    Mathoverflow1973.Hurewicz.cubeHomologyClass ((Mathoverflow1973.SecondHurewicz.mapGenLoop f x) p)
+@Mathoverflow1973.Hurewicz.hurewiczFunction_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : HomotopyGroup.Pi (m + 2) X x),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 2))
+      (Mathoverflow1973.Hurewicz.hurewiczFunction x a) =
+    Mathoverflow1973.Hurewicz.hurewiczFunction (f x) ((Mathoverflow1973.Hurewicz.homotopyMap f x) a)
+@Mathoverflow1973.Hurewicz.hurewiczMap_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : Additive (HomotopyGroup.Pi (m + 2) X x)),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 2)) ((Mathoverflow1973.Hurewicz.hurewiczMap x) a) =
+    (Mathoverflow1973.Hurewicz.hurewiczMap (f x)) ((MonoidHom.toAdditive (Mathoverflow1973.Hurewicz.homotopyMap f x)) a)
+@Mathoverflow1973.Hurewicz.hurewiczLinearEquiv_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : SimplyConnectedSpace X] [inst_3 : SimplyConnectedSpace Y] (f : C(X, Y))
+  (x : X) (hX : ∀ (j : ℕ), 2 ≤ j → j < m + 3 → Subsingleton (HomotopyGroup.Pi j X x))
+  (hY : ∀ (j : ℕ), 2 ≤ j → j < m + 3 → Subsingleton (HomotopyGroup.Pi j Y (f x)))
+  (a : Additive (HomotopyGroup.Pi (m + 3) X x)),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 3))
+      ((Mathoverflow1973.Hurewicz.hurewiczLinearEquiv x hX) a) =
+    (Mathoverflow1973.Hurewicz.hurewiczLinearEquiv (f x) hY)
+      ((MonoidHom.toAdditive (Mathoverflow1973.Hurewicz.homotopyMap f x)) a)
+@Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : SimplyConnectedSpace X] [inst_3 : SimplyConnectedSpace Y] (f : C(X, Y))
+  (x : X) (n : ℕ) (hn : 2 ≤ n) (hX : ∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (HomotopyGroup.Pi j X x))
+  (hY : ∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (HomotopyGroup.Pi j Y (f x))) (a : Additive (HomotopyGroup.Pi n X x)),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f n)
+      ((Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE x n hn hX) a) =
+    (Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE (f x) n hn hY)
+      ((MonoidHom.toAdditive (Mathoverflow1973.Hurewicz.homotopyMap f x)) a)
+@Mathoverflow1973.Hurewicz.singularHomology_one_subsingleton : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X), Subsingleton ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 1)
+@Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) (n : ℕ),
+  (∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (HomotopyGroup.Pi j X x)) →
+    ∀ (k : ℕ), 0 < k → k < n → Subsingleton ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X k)
+'Mathoverflow1973.Hurewicz.homotopyMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+exit 0
+end 05:04:18 epoch 1789268658

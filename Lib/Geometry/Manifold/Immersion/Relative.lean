@@ -1,0 +1,4647 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+module
+
+public import Mathlib
+public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.RegularLevel
+public import Lib.Geometry.Manifold.WhitneyEmbedding
+public import Lib.Geometry.Manifold.Collar
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.CubicFlow
+public import Lib.Geometry.Manifold.Transversality.Basic
+public import Mathlib.Geometry.Manifold.LocalDiffeomorph
+/-!
+# The immersion chain: plane, curve and manifold immersions in charts
+
+Immersion existence and extension in the chart-native setting: the plane
+immersion chain (generalize `Plane := ℝ x ℝ`), curve immersions, the manifold
+immersion relation with its tubular-neighborhood one-offs, and the perturbation
+machinery feeding the relative immersion theorem (Hirsch, *Differential
+Topology*, Ch. 8; the weak Whitney immersion theorem).
+
+## Outline
+
+1. `ManifoldImmersion`: the immersion relation for charted manifolds,
+   its local criteria and its stability under perturbation.
+2. `PlaneImmersion`: the two-dimensional model chain, stated for a
+   general `Plane` (representation-only generality dictated by the twin file).
+3. `CurveImmersion` and the arc/germ existence one-offs.
+4. Support machinery: `OpenObstacle`, `ManifoldSmoothing`,
+   `FrameField` with `AxisCoordinates`, and the tubular
+   neighborhood existence one-offs.
+
+## Main definitions and results
+
+* `ManifoldImmersion` - the immersion relation used downstream.
+* The `exists_*_tubularNeighborhood_of_embedded_starConvex` family.
+
+## References
+
+* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 8.
+* [whitney36] H. Whitney, *Differentiable manifolds*, Thm 5.
+
+## Tags
+
+immersion, whitney, tubular-neighborhood, relative-form
+-/
+
+set_option maxSynthPendingDepth 3
+
+open Set Function Filter Manifold Topology
+
+open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
+  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
+  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
+  UpperHalfPlane
+
+universe u v
+
+@[expose] public noncomputable section
+
+theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) {x : M} (hx : x ∈ U) :
+    ∃ V : Set M,
+      IsOpen V ∧
+        x ∈ V ∧
+          V ⊆ U ∧
+            ∀ y ∈ V,
+              ∃ d : Diffeomorph J J M M ∞,
+                SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z := by
+  let c := modelChartPartialDiffeomorph (I := J) x
+  let Φ := PartialChart.restrictTarget c.symm hU
+  have hxc : x ∈ c.source := mem_extChartAt_source x
+  have hcx : c.symm (c x) = x := c.left_inv' hxc
+  have hxΦ : c x ∈ Φ.source := by
+    refine ⟨c.map_source' hxc, ?_⟩
+    change c.symm (c x) ∈ U
+    rw [hcx]
+    exact hx
+  have hΦx : Φ (c x) = x := hcx
+  obtain ⟨ε, hε, hball, hmove⟩ := SupportedDiffeomorph.exists_supported_pointMoving Φ hxΦ
+  refine
+    ⟨Φ '' Metric.ball (c x) ε,
+      Φ.toOpenPartialHomeomorph.isOpen_image_of_subset_source Metric.isOpen_ball hball,
+      ⟨c x, Metric.mem_ball_self hε, hΦx⟩, ?_, ?_⟩
+  · rintro _ ⟨v, hv, rfl⟩
+    exact (Φ.map_source' (hball hv)).2
+  · rintro _ ⟨v, hv, rfl⟩
+    obtain ⟨A, hA, hzero, hdiff, hfix, hend⟩ := hmove v hv
+    obtain ⟨d, hd⟩ := hdiff 1
+    refine ⟨d, ⟨A, hA, hzero, hd, hdiff⟩, ?_, ?_⟩
+    · rw [hΦx] at hend
+      exact (hd x).symm.trans hend
+    · intro z hz
+      exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
+
+theorem MorseCancellation.exists_isotopic_two_points_in_dense {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {B : Set M} (hB : Dense B) {x y : M} (hxy : x ≠ y) :
+    ∃ d : Diffeomorph J J M M ∞,
+      SupportedDiffeomorph.IsotopicToIdentity d ∧ d x ∈ B ∧ d y ∈ B := by
+  obtain ⟨U, V, hU, hV, hx, hy, hdisj⟩ := t2_separation hxy
+  obtain ⟨U', hU', hx', hU'U, hmoveU⟩ := exists_open_isotopic_pointMoving (J := J) hU hx
+  obtain ⟨V', hV', hy', hV'V, hmoveV⟩ := exists_open_isotopic_pointMoving (J := J) hV hy
+  obtain ⟨x', hx'B, hx'U⟩ := hB.exists_mem_open hU' ⟨x, hx'⟩
+  obtain ⟨y', hy'B, hy'V⟩ := hB.exists_mem_open hV' ⟨y, hy'⟩
+  obtain ⟨d, hd, hdx, hdfix⟩ := hmoveU x' hx'U
+  obtain ⟨e, he, hey, hefix⟩ := hmoveV y' hy'V
+  have hyU : y ∉ U := fun h => Set.disjoint_left.mp hdisj h hy
+  have hxV : x' ∉ V := fun h => Set.disjoint_left.mp hdisj (hU'U hx'U) h
+  refine ⟨d.trans e, hd.trans he, ?_, ?_⟩
+  · change e (d x) ∈ B
+    rw [hdx, hefix x' hxV]
+    exact hx'B
+  · change e (d y) ∈ B
+    rw [hdfix y hyU, hey]
+    exact hy'B
+
+theorem MorseCancellation.isotopicToIdentity_joined {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {d : Diffeomorph J J M M ∞} (hd : SupportedDiffeomorph.IsotopicToIdentity d) (x : M) :
+    Joined x (d x) := by
+  obtain ⟨A, hA, hzero, hone, -⟩ := hd
+  exact
+    ⟨{  toFun := fun t => A ((t : ℝ), x)
+        continuous_toFun := hA.continuous.comp (continuous_subtype_val.prodMk continuous_const)
+        source' := hzero x
+        target' := hone x }⟩
+
+def MorseCancellation.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace H] [TopologicalSpace M] [ChartedSpace H M] (J : ModelWithCorners ℝ E H)
+    (U : Set M) (x : M) : Set M :=
+  {y |
+    y ∈ U ∧
+      ∃ d : Diffeomorph J J M M ∞,
+        SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z}
+
+theorem MorseCancellation.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (isotopicPointOrbit J U x) := by
+  rw [isOpen_iff_mem_nhds]
+  rintro y ⟨hyU, d, hd, hdx, hdfix⟩
+  obtain ⟨V, hV, hyV, hVU, hmove⟩ := exists_open_isotopic_pointMoving (J := J) hU hyU
+  apply Filter.mem_of_superset (hV.mem_nhds hyV)
+  intro z hz
+  obtain ⟨e, he, hey, hefix⟩ := hmove z hz
+  refine ⟨hVU hz, d.trans e, hd.trans he, ?_, ?_⟩
+  · change e (d x) = z
+    rw [hdx, hey]
+  · intro w hw
+    change e (d w) = w
+    rw [hdfix w hw, hefix w hw]
+
+theorem MorseCancellation.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (U \ isotopicPointOrbit J U x) := by
+  rw [isOpen_iff_mem_nhds]
+  rintro y ⟨hyU, hyOrbit⟩
+  obtain ⟨V, hV, hyV, hVU, hmove⟩ := exists_open_isotopic_pointMoving (J := J) hU hyU
+  apply Filter.mem_of_superset (hV.mem_nhds hyV)
+  intro z hz
+  refine ⟨hVU hz, ?_⟩
+  rintro ⟨_, d, hd, hdx, hdfix⟩
+  obtain ⟨e, he, hey, hefix⟩ := hmove z hz
+  apply hyOrbit
+  refine ⟨hyU, d.trans e.symm, hd.trans he.symm, ?_, ?_⟩
+  · change e.symm (d x) = y
+    rw [hdx, ← hey, e.symm_apply_apply]
+  · intro w hw
+    change e.symm (d w) = w
+    rw [hdfix w hw]
+    exact SupportedDiffeomorph.inverse_fixed_outside e.toEquiv hefix w hw
+
+theorem MorseCancellation.exists_isotopic_pointMoving_of_preconnected {E H M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold J ∞ M] [T2Space M] {U A : Set M} (hU : IsOpen U) (hA : IsPreconnected A)
+    (hAU : A ⊆ U) {x y : M} (hx : x ∈ A) (hy : y ∈ A) :
+    ∃ d : Diffeomorph J J M M ∞,
+      SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z := by
+  have hxOrbit : x ∈ isotopicPointOrbit J U x :=
+    ⟨hAU hx, Diffeomorph.refl J M ∞, SupportedDiffeomorph.isotopicToIdentity_refl, rfl,
+      fun _ _ => rfl⟩
+  have hcover : A ⊆ isotopicPointOrbit J U x ∪ (U \ isotopicPointOrbit J U x) := by
+    intro z hz
+    by_cases hh : z ∈ isotopicPointOrbit J U x
+    · exact Or.inl hh
+    · exact Or.inr ⟨hAU hz, hh⟩
+  have hdisjoint : Disjoint (isotopicPointOrbit J U x) (U \ isotopicPointOrbit J U x) := by
+    rw [Set.disjoint_left]
+    exact fun _ hz hw => hw.2 hz
+  have hsub :=
+    hA.subset_left_of_subset_union (isOpen_isotopicPointOrbit hU x)
+      (isOpen_sdiff_isotopicPointOrbit hU x) hdisjoint hcover ⟨x, hx, hxOrbit⟩
+  exact (hsub hy).2
+
+theorem MorseCancellation.exists_isotopic_pointMoving_of_path {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) {x y : M} (γ : Path x y) (hγ : ∀ t, γ t ∈ U) :
+    ∃ d : Diffeomorph J J M M ∞,
+      SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z := by
+  apply
+    exists_isotopic_pointMoving_of_preconnected (J := J) hU
+      (isConnected_range γ.continuous).isPreconnected
+      (show Set.range γ ⊆ U from by rintro _ ⟨t, rfl⟩; exact hγ t)
+  · exact ⟨0, γ.source⟩
+  · exact ⟨1, γ.target⟩
+
+def CurveImmersion.smoothTime (t : ℝ) : unitInterval :=
+  Set.projIcc 0 1 zero_le_one (Real.smoothTransition t)
+
+theorem CurveImmersion.contMDiff_smoothTime : ContMDiff 𝓘(ℝ, ℝ) (𝓡∂ 1) ∞ smoothTime := by
+  let : Fact ((0 : ℝ) < 1) := ⟨zero_lt_one⟩
+  have hp : ContMDiffOn 𝓘(ℝ, ℝ) (𝓡∂ 1) ∞ (Set.projIcc (0 : ℝ) 1 zero_le_one) (Set.Icc 0 1) :=
+    contMDiffOn_projIcc
+  have ht : ContDiff ℝ ∞ Real.smoothTransition := Real.smoothTransition.contDiff
+  apply contMDiffOn_univ.mp
+  exact
+    hp.comp ht.contMDiff.contMDiffOn
+      (fun t _ => ⟨Real.smoothTransition.nonneg t, Real.smoothTransition.le_one t⟩)
+
+theorem CurveImmersion.smoothTime_zero : smoothTime 0 = 0 := by
+  apply Subtype.ext
+  simp [smoothTime]
+
+theorem CurveImmersion.smoothTime_one : smoothTime 1 = 1 := by
+  apply Subtype.ext
+  simp [smoothTime]
+
+theorem exists_smooth_connecting_curve {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {x y : N} (γ : Path x y) :
+    ∃ f : C(ℝ, N), ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧ f 0 = x ∧ f 1 = y := by
+  let Z := EuclideanSpace ℝ (Fin 0)
+  let f₀ : C(Z, N) := ContinuousMap.const Z x
+  let f₁ : C(Z, N) := ContinuousMap.const Z y
+  let H : f₀.Homotopy f₁ :=
+    { toFun := fun q => γ q.1
+      continuous_toFun := γ.continuous.comp continuous_fst
+      map_zero_left := fun _ => γ.source
+      map_one_left := fun _ => γ.target }
+  obtain ⟨H', hH', -, -⟩ :=
+    ManifoldSmoothing.exists_smooth_homotopy_with_collars (I := 𝓘(ℝ, Z)) (J := J) contMDiff_const
+      contMDiff_const H
+  let f : ℝ → N := fun t => H' (CurveImmersion.smoothTime t, (0 : Z))
+  have hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f :=
+    hH'.comp (CurveImmersion.contMDiff_smoothTime.prodMk contMDiff_const)
+  refine ⟨⟨f, hf.continuous⟩, hf, ?_, ?_⟩
+  · change H' (CurveImmersion.smoothTime 0, (0 : Z)) = x
+    rw [CurveImmersion.smoothTime_zero, H'.apply_zero]
+    rfl
+  · change H' (CurveImmersion.smoothTime 1, (0 : Z)) = y
+    rw [CurveImmersion.smoothTime_one, H'.apply_one]
+    rfl
+
+def SupportedDiffeomorph.pointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace H] [TopologicalSpace M] [ChartedSpace H M] (J : ModelWithCorners ℝ E H)
+    (U : Set M) (x : M) : Set M :=
+  {y | y ∈ U ∧ ∃ d : Diffeomorph J J M M ∞, d x = y ∧ ∀ z ∉ U, d z = z}
+
+theorem SupportedDiffeomorph.isOpen_pointOrbit {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (pointOrbit J U x) := by
+  rw [isOpen_iff_mem_nhds]
+  rintro y ⟨hyU, d, hd, hdfix⟩
+  obtain ⟨V, hV, hyV, hVU, hmove⟩ := exists_open_pointMoving (J := J) hU hyU
+  apply Filter.mem_of_superset (hV.mem_nhds hyV)
+  intro z hz
+  obtain ⟨e, he, hefix⟩ := hmove z hz
+  refine ⟨hVU hz, d.trans e, ?_, ?_⟩
+  · change e (d x) = z
+    rw [hd, he]
+  · intro w hw
+    change e (d w) = w
+    rw [hdfix w hw, hefix w hw]
+
+theorem SupportedDiffeomorph.isOpen_sdiff_pointOrbit {E H M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
+    [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
+    {U : Set M} (hU : IsOpen U) (x : M) : IsOpen (U \ pointOrbit J U x) := by
+  rw [isOpen_iff_mem_nhds]
+  rintro y ⟨hyU, hyOrbit⟩
+  obtain ⟨V, hV, hyV, hVU, hmove⟩ := exists_open_pointMoving (J := J) hU hyU
+  apply Filter.mem_of_superset (hV.mem_nhds hyV)
+  intro z hz
+  refine ⟨hVU hz, ?_⟩
+  rintro ⟨_, d, hd, hdfix⟩
+  obtain ⟨e, he, hefix⟩ := hmove z hz
+  apply hyOrbit
+  refine ⟨hyU, d.trans e.symm, ?_, ?_⟩
+  · change e.symm (d x) = y
+    rw [hd, ← he]
+    exact e.toEquiv.symm_apply_apply y
+  · intro w hw
+    change e.symm (d w) = w
+    rw [hdfix w hw]
+    exact inverse_fixed_outside e.toEquiv hefix w hw
+
+theorem SupportedDiffeomorph.exists_pointMoving_of_preconnected {E H M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold J ∞ M] [T2Space M] {U S : Set M} (hU : IsOpen U) (hS : IsPreconnected S)
+    (hSU : S ⊆ U) {x y : M} (hx : x ∈ S) (hy : y ∈ S) :
+    ∃ d : Diffeomorph J J M M ∞, d x = y ∧ ∀ z ∉ U, d z = z := by
+  have hxOrbit : x ∈ pointOrbit J U x := ⟨hSU hx, Diffeomorph.refl J M ∞, rfl, fun _ _ => rfl⟩
+  have hcover : S ⊆ pointOrbit J U x ∪ (U \ pointOrbit J U x) := by
+    intro z hz
+    by_cases h : z ∈ pointOrbit J U x
+    · exact Or.inl h
+    · exact Or.inr ⟨hSU hz, h⟩
+  have hdisjoint : Disjoint (pointOrbit J U x) (U \ pointOrbit J U x) := by
+    rw [Set.disjoint_left]
+    exact fun _ hz hw => hw.2 hz
+  have hsub :=
+    hS.subset_left_of_subset_union (isOpen_pointOrbit hU x) (isOpen_sdiff_pointOrbit hU x)
+      hdisjoint hcover ⟨x, hx, hxOrbit⟩
+  exact (hsub hy).2
+
+theorem SupportedDiffeomorph.exists_pointMoving_of_path {E H M : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold J ∞ M] [T2Space M] {U : Set M} (hU : IsOpen U) {x y : M} (γ : Path x y)
+    (hγ : ∀ t, γ t ∈ U) : ∃ d : Diffeomorph J J M M ∞, d x = y ∧ ∀ z ∉ U, d z = z := by
+  apply
+    exists_pointMoving_of_preconnected (J := J) hU (isConnected_range γ.continuous).isPreconnected
+      (show Set.range γ ⊆ U from by rintro _ ⟨t, rfl⟩; exact hγ t)
+  · exact ⟨0, γ.source⟩
+  · exact ⟨1, γ.target⟩
+
+theorem exists_smooth_path_avoiding_finite {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    {x y : N} (γ : Path x y) (hdim : 2 ≤ Module.finrank ℝ G) {S : Set N} (hS : S.Finite)
+    (hx : x ∉ S) (hy : y ∉ S) : ∃ η : Path x y, ContMDiff (𝓡∂ 1) J ∞ η ∧ ∀ t, η t ∉ S := by
+  let : Fintype S := hS.fintype
+  let Z := EuclideanSpace ℝ (Fin 0)
+  let : ChartedSpace Z S := ChartedSpace.ofDiscreteTopology
+  let : IsManifold 𝓘(ℝ, Z) ∞ S := IsManifold.of_discreteTopology _
+  let g : C(S, N) := ⟨Subtype.val, continuous_subtype_val⟩
+  have hg : ContMDiff 𝓘(ℝ, Z) J ∞ g := contMDiff_of_discreteTopology
+  have hrange : Set.range g = S := by ext z; simp [g]
+  obtain ⟨f, hf, hf0, hf1⟩ := exists_smooth_connecting_curve (J := J) γ
+  let fI : C(unitInterval, N) := ⟨fun t => f t, f.continuous.comp continuous_subtype_val⟩
+  have hfI : ContMDiff (𝓡∂ 1) J ∞ fI := hf.comp contMDiff_subtypeVal_Icc
+  have hdim' :
+    Module.finrank ℝ (EuclideanSpace ℝ (Fin 1)) + Module.finrank ℝ Z < Module.finrank ℝ G := by
+    simp only [Z, finrank_euclideanSpace_fin]
+    omega
+  have hfixed : ∀ t ∈ ({0, 1} : Set unitInterval), fI t ∉ Set.range g := by
+    intro t ht
+    rw [hrange]
+    rcases ht with rfl | ht
+    · change f 0 ∉ S
+      rw [hf0]
+      exact hx
+    · have ht1 : t = 1 := ht
+      subst t
+      change f 1 ∉ S
+      rw [hf1]
+      exact hy
+  obtain ⟨f', hf', hrel, hdisjoint⟩ :=
+    GeneralPosition.exists_disjoint_smooth_map_homotopicRel fI g hfI hg hdim'
+      ((Set.finite_singleton (1 : unitInterval)).insert 0).isClosed hfixed
+  have hf'0 : f' 0 = x := (hrel.fst_eq_snd (by simp)).symm.trans hf0
+  have hf'1 : f' 1 = y := (hrel.fst_eq_snd (by simp)).symm.trans hf1
+  let η : Path x y := { toContinuousMap := f', source' := hf'0, target' := hf'1 }
+  refine ⟨η, hf', ?_⟩
+  intro t ht
+  rw [hrange] at hdisjoint
+  exact Set.disjoint_left.mp hdisjoint ⟨t, rfl⟩ ht
+
+theorem exists_pointMoving_fixing_finite {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    {x y : N} (γ : Path x y) (hdim : 2 ≤ Module.finrank ℝ G) {S : Set N} (hS : S.Finite)
+    (hx : x ∉ S) (hy : y ∉ S) : ∃ d : Diffeomorph J J N N ∞, d x = y ∧ ∀ z ∈ S, d z = z := by
+  obtain ⟨η, _, hη⟩ := exists_smooth_path_avoiding_finite (J := J) γ hdim hS hx hy
+  obtain ⟨d, hd, hfix⟩ :=
+    SupportedDiffeomorph.exists_pointMoving_of_path (J := J) hS.isClosed.isOpen_compl η hη
+  exact ⟨d, hd, fun z hz => hfix z (fun hn => hn hz)⟩
+
+def ChartMapPerturbation.collisionDomain {G F K X N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
+    {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) : Set (X × X) :=
+  {q | f q.1 ∈ c.source ∧ f q.2 ∈ c.source ∧ β q.1 - β q.2 ≠ 0}
+
+def ChartMapPerturbation.collisionParameter {G F K X N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
+    {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (q : X × X) : F :=
+  (β q.1 - β q.2)⁻¹ • (c (f q.2) - c (f q.1))
+
+theorem ChartMapPerturbation.isOpen_collisionDomain {G F K X N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
+    [ChartedSpace K N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {β : X → ℝ}
+    (hf : Continuous f) (hβ : Continuous β) : IsOpen (collisionDomain c f β) :=
+  (c.open_source.preimage (hf.comp continuous_fst)).inter
+    ((c.open_source.preimage (hf.comp continuous_snd)).inter
+      (isOpen_ne_fun ((hβ.comp continuous_fst).sub (hβ.comp continuous_snd)) continuous_const))
+
+theorem ChartMapPerturbation.contMDiffOn_collisionParameter {E G F H K X N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K} [TopologicalSpace X]
+    [ChartedSpace H X] [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {β : X → ℝ} (hf : ContMDiff I J ∞ f)
+    (hβ : ContMDiff I 𝓘(ℝ, ℝ) ∞ β) :
+    ContMDiffOn (I.prod I) 𝓘(ℝ, F) ∞ (collisionParameter c f β) (collisionDomain c f β) := by
+  intro q hq
+  have hcf : ContMDiffAt (I.prod I) 𝓘(ℝ, F) ∞ (fun r : X × X => c (f r.1)) q :=
+    (c.contMDiffOn_toFun.contMDiffAt (c.open_source.mem_nhds hq.1)).comp q
+      (hf.comp contMDiff_fst).contMDiffAt
+  have hcg : ContMDiffAt (I.prod I) 𝓘(ℝ, F) ∞ (fun r : X × X => c (f r.2)) q :=
+    (c.contMDiffOn_toFun.contMDiffAt (c.open_source.mem_nhds hq.2.1)).comp q
+      (hf.comp contMDiff_snd).contMDiffAt
+  have hb : ContMDiffAt (I.prod I) 𝓘(ℝ, ℝ) ∞ (fun r : X × X => β r.1 - β r.2) q :=
+    (hβ.comp contMDiff_fst).contMDiffAt.sub (hβ.comp contMDiff_snd).contMDiffAt
+  exact ((hb.inv₀ hq.2.2).smul (hcg.sub hcf)).contMDiffWithinAt
+
+theorem ChartMapPerturbation.collision_imp_old_and_equal_cutoff {G F K X N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
+    [ChartedSpace K N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {β : X → ℝ}
+    (hsupport : tsupport β ⊆ f ⁻¹' c.source) {a : F} (hvalid : Valid c f β a)
+    (hgood : a ∉ collisionParameter c f β '' collisionDomain c f β) {x y : X}
+    (heq : perturb c f β a x = perturb c f β a y) : f x = f y ∧ β x = β y := by
+  classical
+  by_cases hx : f x ∈ c.source
+  · have hpy : perturb c f β a y ∈ c.source := heq ▸ perturb_mem_source c f β hvalid hx
+    have hy : f y ∈ c.source := by
+      by_contra hn
+      simp only [perturb, hn, if_false] at hpy
+    have hcoord : c (f x) + β x • a = c (f y) + β y • a := by
+      have hh := congrArg c heq
+      simpa only [chart_perturb c f β hvalid hx, chart_perturb c f β hvalid hy,
+        coordinateFamily] using hh
+    by_cases hb : β x = β y
+    · refine ⟨c.toPartialEquiv.injOn hx hy ?_, hb⟩
+      rw [hb] at hcoord
+      exact add_right_cancel hcoord
+    · have hd : β x - β y ≠ 0 := sub_ne_zero.mpr hb
+      have hs : (β x - β y) • a = c (f y) - c (f x) := by
+        rw [sub_smul]
+        exact sub_eq_sub_iff_add_eq_add.mpr (by simpa only [add_comm] using hcoord)
+      exfalso
+      apply hgood
+      refine ⟨(x, y), ⟨hx, hy, hd⟩, ?_⟩
+      change (β x - β y)⁻¹ • (c (f y) - c (f x)) = a
+      rw [← hs, inv_smul_smul₀ hd]
+  · have hpx : perturb c f β a x = f x := by simp only [perturb, hx, if_false]
+    have hy : f y ∉ c.source := by
+      intro hy
+      have hpy := perturb_mem_source c f β hvalid hy
+      rw [← heq, hpx] at hpy
+      exact hx hpy
+    have hpy : perturb c f β a y = f y := by simp only [perturb, hy, if_false]
+    have hβx : β x = 0 := by
+      by_contra hn
+      exact hx (hsupport (subset_tsupport β hn))
+    have hβy : β y = 0 := by
+      by_contra hn
+      exact hy (hsupport (subset_tsupport β hn))
+    exact ⟨hpx.symm.trans (heq.trans hpy), hβx.trans hβy.symm⟩
+
+theorem ChartMapPerturbation.exists_small_collision_removing_parameter
+    {E G F H K X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
+    [TopologicalSpace K] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K}
+    [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {β : X → ℝ} [FiniteDimensional ℝ E]
+    [FiniteDimensional ℝ F] [IsManifold I ∞ X] [LindelofSpace (X × X)] (hf : ContMDiff I J ∞ f)
+    (hβ : ContMDiff I 𝓘(ℝ, ℝ) ∞ β) (hcompact : HasCompactSupport β)
+    (hsupport : tsupport β ⊆ f ⁻¹' c.source) (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ F)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ a : F,
+      ‖a‖ < ε ∧
+        Valid c f β a ∧
+          ContMDiff I J ∞ (perturb c f β a) ∧
+            ∀ x y, perturb c f β a x = perturb c f β a y → f x = f y ∧ β x = β y := by
+  have hd : Module.finrank ℝ (E × E) < Module.finrank ℝ F := by
+    simpa only [Module.finrank_prod, two_mul] using hdim
+  have hdense :=
+    GeneralPosition.dense_compl_manifold_image
+      (isOpen_collisionDomain c hf.continuous hβ.continuous)
+      (contMDiffOn_collisionParameter c hf hβ) hd
+  obtain ⟨δ, hδ, hvalid⟩ := exists_radius_valid c hf hβ hcompact hsupport
+  obtain ⟨a, hgood, har⟩ := hdense.exists_dist_lt 0 (lt_min hε hδ)
+  have ha : ‖a‖ < Min.min ε δ := by simpa only [dist_zero_left] using har
+  have hv := hvalid a (lt_of_lt_of_le ha (min_le_right _ _))
+  exact
+    ⟨a, lt_of_lt_of_le ha (min_le_left _ _), hv, contMDiff_perturb c hf hβ hsupport hv,
+      fun _ _ heq => collision_imp_old_and_equal_cutoff c hsupport hv hgood heq⟩
+
+def ChartMapPerturbation.obstacleDomain {G F K X Y N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
+    {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (g : Y → N) (β : X → ℝ) : Set (X × Y) :=
+  {q | f q.1 ∈ c.source ∧ g q.2 ∈ c.source ∧ β q.1 ≠ 0}
+
+def ChartMapPerturbation.obstacleParameter {G F K X Y N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
+    {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (g : Y → N) (β : X → ℝ) (q : X × Y) :
+    F :=
+  (β q.1)⁻¹ • (c (g q.2) - c (f q.1))
+
+theorem ChartMapPerturbation.isOpen_obstacleDomain {G F K X Y N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace Y]
+    [TopologicalSpace N] [ChartedSpace K N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N}
+    {g : Y → N} {β : X → ℝ} (hf : Continuous f) (hg : Continuous g) (hβ : Continuous β) :
+    IsOpen (obstacleDomain c f g β) :=
+  (c.open_source.preimage (hf.comp continuous_fst)).inter
+    ((c.open_source.preimage (hg.comp continuous_snd)).inter
+      (isOpen_ne_fun (hβ.comp continuous_fst) continuous_const))
+
+theorem ChartMapPerturbation.contMDiffOn_obstacleParameter {E E' G F H H' K X Y N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E']
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
+    {I' : ModelWithCorners ℝ E' H'} {J : ModelWithCorners ℝ G K} [TopologicalSpace X]
+    [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y] [TopologicalSpace N]
+    [ChartedSpace K N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {g : Y → N}
+    {β : X → ℝ} (hf : ContMDiff I J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hβ : ContMDiff I 𝓘(ℝ, ℝ) ∞ β) :
+    ContMDiffOn (I.prod I') 𝓘(ℝ, F) ∞ (obstacleParameter c f g β) (obstacleDomain c f g β) := by
+  intro q hq
+  have hcf : ContMDiffAt (I.prod I') 𝓘(ℝ, F) ∞ (fun r : X × Y => c (f r.1)) q :=
+    (c.contMDiffOn_toFun.contMDiffAt (c.open_source.mem_nhds hq.1)).comp q
+      (hf.comp contMDiff_fst).contMDiffAt
+  have hcg : ContMDiffAt (I.prod I') 𝓘(ℝ, F) ∞ (fun r : X × Y => c (g r.2)) q :=
+    (c.contMDiffOn_toFun.contMDiffAt (c.open_source.mem_nhds hq.2.1)).comp q
+      (hg.comp contMDiff_snd).contMDiffAt
+  exact (((hβ.comp contMDiff_fst).contMDiffAt.inv₀ hq.2.2).smul (hcg.sub hcf)).contMDiffWithinAt
+
+theorem ChartMapPerturbation.avoids_of_not_obstacle_parameter {G F K X Y N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
+    [ChartedSpace K N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : X → N} {g : Y → N}
+    {β : X → ℝ} (hsupport : tsupport β ⊆ f ⁻¹' c.source) {a : F} (ha : Valid c f β a)
+    (hgood : a ∉ obstacleParameter c f g β '' obstacleDomain c f g β) (x : X) (hx : β x ≠ 0)
+    (y : Y) : perturb c f β a x ≠ g y := by
+  intro heq
+  have hfx : f x ∈ c.source := hsupport (subset_tsupport β hx)
+  have hgy : g y ∈ c.source := heq ▸ perturb_mem_source c f β ha hfx
+  have hcoord : c (f x) + β x • a = c (g y) := by
+    rw [← heq, chart_perturb c f β ha hfx]
+    rfl
+  apply hgood
+  refine ⟨(x, y), ⟨hfx, hgy, hx⟩, ?_⟩
+  change (β x)⁻¹ • (c (g y) - c (f x)) = a
+  rw [← hcoord, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hx, one_smul]
+
+theorem ChartMapPerturbation.exists_small_embedding_avoiding_parameter
+    {E E' G F H H' K X Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E']
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [FiniteDimensional ℝ F] [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace K]
+    {I : ModelWithCorners ℝ E H} {I' : ModelWithCorners ℝ E' H'} {J : ModelWithCorners ℝ G K}
+    [TopologicalSpace X] [ChartedSpace H X] [IsManifold I ∞ X] [TopologicalSpace Y]
+    [ChartedSpace H' Y] [IsManifold I' ∞ Y] [TopologicalSpace N] [ChartedSpace K N]
+    [LindelofSpace (X × X)] [LindelofSpace (X × Y)] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞)
+    {f : X → N} {g : Y → N} {β : X → ℝ} (hf : ContMDiff I J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hβ : ContMDiff I 𝓘(ℝ, ℝ) ∞ β) (hcompact : HasCompactSupport β)
+    (hsupport : tsupport β ⊆ f ⁻¹' c.source) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ F)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ F) {ε : ℝ}
+    (hε : 0 < ε) :
+    ∃ a : F,
+      ‖a‖ < ε ∧
+        Valid c f β a ∧
+          ContMDiff I J ∞ (perturb c f β a) ∧
+            (∀ x y, perturb c f β a x = perturb c f β a y → f x = f y) ∧
+              ∀ x, β x ≠ 0 → ∀ y, perturb c f β a x ≠ g y := by
+  have hdself : Module.finrank ℝ (E × E) < Module.finrank ℝ F := by
+    simpa only [Module.finrank_prod, two_mul] using hself
+  have hdobstacle : Module.finrank ℝ (E × E') < Module.finrank ℝ F := by
+    simpa only [Module.finrank_prod] using hobstacle
+  have hs :=
+    GeneralPosition.dimH_image_manifold_le
+      (isOpen_collisionDomain c hf.continuous hβ.continuous)
+      (contMDiffOn_collisionParameter c hf hβ)
+  have ho :=
+    GeneralPosition.dimH_image_manifold_le
+      (isOpen_obstacleDomain c hf.continuous hg.continuous hβ.continuous)
+      (contMDiffOn_obstacleParameter c hf hg hβ)
+  have hdense :
+    Dense
+      ((collisionParameter c f β '' collisionDomain c f β) ∪
+          (obstacleParameter c f g β '' obstacleDomain c f g β))ᶜ := by
+    apply dense_compl_of_dimH_lt_finrank
+    rw [dimH_union]
+    exact max_lt (hs.trans_lt (Nat.cast_lt.mpr hdself)) (ho.trans_lt (Nat.cast_lt.mpr hdobstacle))
+  obtain ⟨δ, hδ, hvalid⟩ := exists_radius_valid c hf hβ hcompact hsupport
+  obtain ⟨a, hgood, hnorm⟩ := hdense.exists_dist_lt 0 (lt_min hε hδ)
+  have ha : ‖a‖ < Min.min ε δ := by simpa only [dist_zero_left] using hnorm
+  have hv := hvalid a (lt_min_iff.mp ha).2
+  refine ⟨a, (lt_min_iff.mp ha).1, hv, contMDiff_perturb c hf hβ hsupport hv, ?_, ?_⟩
+  · intro x y hxy
+    exact (collision_imp_old_and_equal_cutoff c hsupport hv (fun h => hgood (Or.inl h)) hxy).1
+  · exact avoids_of_not_obstacle_parameter c hsupport hv (fun h => hgood (Or.inr h))
+
+theorem ManifoldImmersion.injective_fderiv_chart_iff {E G F H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : E → N}
+    {x : E} (hf : MDifferentiableAt 𝓘(ℝ, E) J f x) (hx : f x ∈ c.source) :
+    Function.Injective (fderiv ℝ (c ∘ f) x) ↔ Function.Injective (mfderiv 𝓘(ℝ, E) J f x) := by
+  have hderiv : fderiv ℝ (c ∘ f) x = (mfderiv J 𝓘(ℝ, F) c (f x)).comp (mfderiv 𝓘(ℝ, E) J f x) := by
+    rw [← mfderiv_eq_fderiv, mfderiv_comp x (c.mdifferentiableAt (by simp) hx) hf]
+  have hc : Function.Injective (mfderiv J 𝓘(ℝ, F) c (f x)) :=
+    ((c.isLocalDiffeomorphAt J 𝓘(ℝ, F) ∞ hx).mfderivToContinuousLinearEquiv (by simp)).injective
+  rw [hderiv]
+  constructor
+  · intro h v w hvw
+    exact h (congrArg (mfderiv J 𝓘(ℝ, F) c (f x)) hvw)
+  · exact fun h => hc.comp h
+
+theorem ManifoldImmersion.fderiv_chart_eq_zero_iff {E G F H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : E → N}
+    {x : E} (hf : MDifferentiableAt 𝓘(ℝ, E) J f x) (hx : f x ∈ c.source) (v : E) :
+    fderiv ℝ (c ∘ f) x v = 0 ↔ mfderiv 𝓘(ℝ, E) J f x v = 0 := by
+  have hderiv : fderiv ℝ (c ∘ f) x = (mfderiv J 𝓘(ℝ, F) c (f x)).comp (mfderiv 𝓘(ℝ, E) J f x) := by
+    rw [← mfderiv_eq_fderiv, mfderiv_comp x (c.mdifferentiableAt (by simp) hx) hf]
+  have hc : Function.Injective (mfderiv J 𝓘(ℝ, F) c (f x)) :=
+    ((c.isLocalDiffeomorphAt J 𝓘(ℝ, F) ∞ hx).mfderivToContinuousLinearEquiv (by simp)).injective
+  rw [hderiv]
+  change (mfderiv J 𝓘(ℝ, F) c (f x)) (mfderiv 𝓘(ℝ, E) J f x v) = 0 ↔ _
+  constructor
+  · intro h
+    apply hc
+    simpa only [map_zero] using h
+  · intro h
+    rw [h, map_zero]
+
+theorem ManifoldImmersion.isOpen_injective_nativeDerivative {P E G H N : Type*}
+    [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {f : P → E → N} {W : Set (P × E)} (hW : IsOpen W)
+    (hf : ContMDiffOn (𝓘(ℝ, P).prod 𝓘(ℝ, E)) J ∞ (Function.uncurry f) W) :
+    IsOpen {q : P × E | q ∈ W ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J (f q.1) q.2)} := by
+  rw [isOpen_iff_mem_nhds]
+  rintro q ⟨hq, hqinj⟩
+  let c := modelChartPartialDiffeomorph (I := J) (f q.1 q.2)
+  let U := W ∩ (Function.uncurry f) ⁻¹' c.source
+  have hU : IsOpen U := hf.continuousOn.isOpen_inter_preimage hW c.open_source
+  have hqU : q ∈ U := ⟨hq, mem_extChartAt_source (f q.1 q.2)⟩
+  have hc : ContDiffOn ℝ ∞ (fun r : P × E => c (f r.1 r.2)) U := by
+    intro r hr
+    have hmap :
+      ContMDiffAt 𝓘(ℝ, P × E) (𝓘(ℝ, P).prod 𝓘(ℝ, E)) ∞ (fun s : P × E => (s.1, s.2)) r :=
+      contDiffAt_fst.contMDiffAt.prodMk contDiffAt_snd.contMDiffAt
+    have hfr := (hf.contMDiffAt (hW.mem_nhds hr.1)).comp r hmap
+    exact
+      ((c.contMDiffOn_toFun.contMDiffAt (c.open_source.mem_nhds hr.2)).comp r
+          hfr) |>.contDiffAt.contDiffWithinAt
+  have hd :=
+    MorsePerturbation.contDiffOn_spatialDerivative (f := fun a x => c (f a x)) hU hc
+  have hgood :
+    IsOpen
+      (U ∩
+        (fun r : P × E => fderiv ℝ (c ∘ f r.1) r.2) ⁻¹' {L : E →L[ℝ] G | Function.Injective L}) :=
+    hd.continuousOn.isOpen_inter_preimage hU ContinuousLinearMap.isOpen_injective
+  have hiff (r : P × E) (hr : r ∈ U) :
+    Function.Injective (fderiv ℝ (c ∘ f r.1) r.2) ↔
+      Function.Injective (mfderiv 𝓘(ℝ, E) J (f r.1) r.2) := by
+    have hs : ContMDiffAt 𝓘(ℝ, E) J ∞ (f r.1) r.2 :=
+      (hf.contMDiffAt (hW.mem_nhds hr.1)).comp r.2 (f := fun x : E => (r.1, x))
+        (contMDiffAt_const.prodMk contMDiffAt_id)
+    exact injective_fderiv_chart_iff c (hs.mdifferentiableAt (by simp)) hr.2
+  have hn := hgood.mem_nhds ⟨hqU, (hiff q hqU).mpr hqinj⟩
+  apply Filter.mem_of_superset hn
+  intro r hr
+  exact ⟨hr.1.1, (hiff r hr.1).mp hr.2⟩
+
+theorem ManifoldImmersion.isOpen_injective_derivative_on {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {f : E → N} {W : Set E}
+    (hW : IsOpen W) (hf : ContMDiffOn 𝓘(ℝ, E) J ∞ f W) :
+    IsOpen {x : E | x ∈ W ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J f x)} := by
+  have hfamily :
+    ContMDiffOn (𝓘(ℝ, ℝ).prod 𝓘(ℝ, E)) J ∞ (fun q : ℝ × E => f q.2) (Prod.snd ⁻¹' W) :=
+    hf.comp contMDiff_snd.contMDiffOn (fun _ hp => hp)
+  have hopen :=
+    (isOpen_injective_nativeDerivative (f := fun (_ : ℝ) => f) (hW.preimage continuous_snd)
+          hfamily).preimage
+      ((continuous_const (y := (0 : ℝ))).prodMk (continuous_id : Continuous (id : E → E)))
+  exact hopen
+
+theorem ManifoldImmersion.isOpen_injective_derivative {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {f : E → N}
+    (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) :
+    IsOpen {x : E | Function.Injective (mfderiv 𝓘(ℝ, E) J f x)} := by
+  have hfamily : ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, E)) J ∞ (fun q : ℝ × E => f q.2) :=
+    hf.comp contMDiff_snd
+  have hopen :=
+    (isOpen_injective_nativeDerivative (f := fun (_ : ℝ) => f) isOpen_univ
+          hfamily.contMDiffOn).preimage
+      ((continuous_const (y := (0 : ℝ))).prodMk (continuous_id : Continuous (id : E → E)))
+  change IsOpen {x : E | True ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J f x)} at hopen
+  simpa only [true_and] using hopen
+
+theorem ManifoldImmersion.eventually_injective_nativeDerivative {P E G H N : Type*}
+    [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {f : P → E → N} {W : Set (P × E)} (hW : IsOpen W)
+    (hf : ContMDiffOn (𝓘(ℝ, P).prod 𝓘(ℝ, E)) J ∞ (Function.uncurry f) W) {K : Set E}
+    (hK : IsCompact K) {a₀ : P} (hmem : ∀ x ∈ K, (a₀, x) ∈ W)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J (f a₀) x)) :
+    ∀ᶠ a in 𝓝 a₀, ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J (f a) x) := by
+  have hopen :=
+    MorsePerturbation.isOpen_forall_mem_compact hK (isOpen_injective_nativeDerivative hW hf)
+  have hn := hopen.mem_nhds (fun x hx => ⟨hmem x hx, hinj x hx⟩)
+  filter_upwards [hn] with a ha x hx
+  exact (ha x hx).2
+
+theorem ChartMapPerturbation.eventually_perturb_injective_derivative {E G F H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : E → N} {β : E → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hβ : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ β)
+    (hcompact : HasCompactSupport β) (hsupport : tsupport β ⊆ f ⁻¹' c.source) {K : Set E}
+    (hK : IsCompact K) (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∀ᶠ a : F in 𝓝 0, ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J (perturb c f β a) x) := by
+  obtain ⟨δ, hδ, hvalid⟩ := exists_radius_valid c hf hβ hcompact hsupport
+  let W : Set (F × E) := {q | ‖q.1‖ < δ}
+  have hW : IsOpen W := isOpen_lt continuous_fst.norm continuous_const
+  have hfamily :
+    ContMDiffOn (𝓘(ℝ, F).prod 𝓘(ℝ, E)) J ∞ (fun q : F × E => perturb c f β q.1 q.2) W := by
+    intro q hq
+    exact (contMDiffAt_perturb c hf hβ hsupport q (hvalid q.1 hq)).contMDiffWithinAt
+  apply ManifoldImmersion.eventually_injective_nativeDerivative hW hfamily hK
+  · intro x _
+    change ‖(0 : F)‖ < δ
+    simpa only [norm_zero] using hδ
+  · intro x hx
+    have heq : perturb c f β (0 : F) = f := funext (perturb_zero c f β)
+    change Function.Injective (mfderiv 𝓘(ℝ, E) J (perturb c f β (0 : F)) x)
+    rw [heq]
+    exact hinj x hx
+
+theorem ManifoldImmersion.exists_embedded_image_avoidance_step_controlled
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {ι : Type*} [Finite ι]
+    {C K : Set E} (p : ι → GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C) (i : ι)
+    (f : C(E, N)) (g : C(Y, N)) (A : Set Y) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f)
+    (hg : ContMDiff I' J ∞ g) (hcompatible : ∀ j, (p j).Compatible f)
+    (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) (hK : IsCompact K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) {O : Set N} (hO : IsOpen O)
+    (hmaps : Set.MapsTo f K O) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        (∀ j, (p j).Compatible f') ∧
+          HomotopicRelWithin f f' C K O ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              (∀ x y, f' x = f' y → f x = f y) ∧
+                Set.MapsTo f' K O ∧ ∀ x, (f x ∉ g '' A ∨ (p i).cutoff x ≠ 0) → f' x ∉ g '' A := by
+  have hkeep :
+    ∀ᶠ a in 𝓝 (0 : G),
+      ∀ j, (p j).Compatible (ChartMapPerturbation.perturb (p i).chart f (p i).cutoff a) := by
+    apply Filter.eventually_all.mpr
+    intro j
+    exact
+      ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf (p i).smooth
+        (hcompatible i) (p j).compact.isCompact (p j).chart.open_source (hcompatible j)
+  have hold :=
+    ChartMapPerturbation.eventually_perturb_injective_derivative (p i).chart hf (p i).smooth
+      (p i).compact (hcompatible i) hK hderiv
+  have hstay :=
+    ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf (p i).smooth
+      (hcompatible i) hK hO hmaps
+  obtain ⟨δ, hδ, hδkeep⟩ := Metric.mem_nhds_iff.mp (hkeep.and (hold.and hstay))
+  obtain ⟨r, hr, hvalid⟩ :=
+    ChartMapPerturbation.exists_radius_valid (p i).chart hf (p i).smooth (p i).compact
+      (hcompatible i)
+  obtain ⟨a, ha, -, hsmooth, hnoNew, havoid⟩ :=
+    ChartMapPerturbation.exists_small_embedding_avoiding_parameter (p i).chart hf hg
+      (p i).smooth (p i).compact (hcompatible i) hself hobstacle (lt_min hδ hr)
+  have haδ : ‖a‖ < δ := (lt_min_iff.mp ha).1
+  have har : ‖a‖ < r := (lt_min_iff.mp ha).2
+  let f' : C(E, N) := ⟨_, hsmooth.continuous⟩
+  have hretained :=
+    hδkeep (show a ∈ Metric.ball 0 δ by simpa only [Metric.mem_ball, dist_zero_right] using haδ)
+  let Hrel :=
+    ChartMapPerturbation.homotopyRel (p i).chart hf (p i).smooth (hcompatible i) hvalid har
+  refine ⟨f', hsmooth, hretained.1, ?_, hretained.2.1, hnoNew, hretained.2.2, ?_⟩
+  · refine ⟨{ Hrel.toHomotopy with prop' := fun t x hx => Hrel.eq_fst t ((p i).fixed x hx) }, ?_⟩
+    intro t x hx
+    change ChartMapPerturbation.perturb (p i).chart f (p i).cutoff ((t : ℝ) • a) x ∈ O
+    have hsmall : (t : ℝ) • a ∈ Metric.ball (0 : G) δ := by
+      simpa only [Metric.mem_ball, dist_zero_right] using
+        ChartMapPerturbation.norm_interval_smul_lt haδ t
+    exact (hδkeep hsmall).2.2 hx
+  · intro x hx
+    by_cases hzero : (p i).cutoff x = 0
+    · have hold : f x ∉ g '' A := hx.resolve_right (Classical.not_not.mpr hzero)
+      change ChartMapPerturbation.perturb (p i).chart f (p i).cutoff a x ∉ g '' A
+      rwa [ChartMapPerturbation.perturb_eq_of_zero _ _ _ _ hzero]
+    · rintro ⟨y, _, hy⟩
+      exact havoid x hzero y hy.symm
+
+theorem ManifoldImmersion.exists_finite_embedded_image_avoidance_controlled
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {ι : Type*} [Finite ι]
+    {C K : Set E} (p : ι → GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C)
+    (f : C(E, N)) (g : C(Y, N)) (A : Set Y) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f)
+    (hg : ContMDiff I' J ∞ g) (hcompatible : ∀ j, (p j).Compatible f)
+    (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) (hK : IsCompact K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) {O : Set N} (hO : IsOpen O)
+    (hmaps : Set.MapsTo f K O) (s : Finset ι) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        (∀ j, (p j).Compatible f') ∧
+          HomotopicRelWithin f f' C K O ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              (∀ x y, f' x = f' y → f x = f y) ∧
+                Set.MapsTo f' K O ∧
+                  ∀ x, (f x ∉ g '' A ∨ ∃ i ∈ s, (p i).cutoff x ≠ 0) → f' x ∉ g '' A := by
+  classical
+    induction s using Finset.induction_on with
+  |
+    empty =>
+    refine
+      ⟨f, hf, hcompatible, HomotopicRelWithin.refl f C hmaps, hderiv, (fun _ _ hxy => hxy),
+        hmaps, ?_⟩
+    intro x hx
+    simpa only [Finset.notMem_empty, false_and, exists_false, or_false] using hx
+  | @insert i s _
+    ih =>
+    obtain ⟨f₁, hf₁, hc₁, hhom₁, hd₁, hnoNew₁, hmaps₁, havoid₁⟩ := ih
+    obtain ⟨f₂, hf₂, hc₂, hhom₂, hd₂, hnoNew₂, hmaps₂, havoid₂⟩ :=
+      exists_embedded_image_avoidance_step_controlled p i f₁ g A hf₁ hg hc₁ hself hobstacle hK hd₁
+        hO hmaps₁
+    refine
+      ⟨f₂, hf₂, hc₂, hhom₁.trans hhom₂, hd₂, (fun x y hxy => hnoNew₁ x y (hnoNew₂ x y hxy)),
+        hmaps₂, ?_⟩
+    intro x hx
+    apply havoid₂ x
+    rcases hx with hold | ⟨j, hj, hactive⟩
+    · exact Or.inl (havoid₁ x (Or.inl hold))
+    · rcases Finset.mem_insert.mp hj with rfl | hjs
+      · exact Or.inr hactive
+      · exact Or.inl (havoid₁ x (Or.inr ⟨j, hjs, hactive⟩))
+
+theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image_controlled
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (A : Set Y) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (g '' A)) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K L C : Set E}
+    (hK : IsCompact K) (hL : IsCompact L) (hC : IsClosed C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hfixed : ∀ x ∈ L ∩ C, f x ∉ g '' A) {O : Set N} (hO : IsOpen O) (hmaps : Set.MapsTo f K O) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        HomotopicRelWithin f f' C K O ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              (∀ x y, f' x = f' y → f x = f y) ∧
+                Set.MapsTo f' K O ∧ ∀ x, (f x ∉ g '' A ∨ x ∈ L) → f' x ∉ g '' A := by
+  classical
+  let bad : Set E := L ∩ f ⁻¹' g '' A
+  have hbad : IsCompact bad := hL.inter_right (hclosed.preimage f.continuous)
+  have hp (x : bad) :
+    ∃ p : GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C,
+      p.Compatible f ∧ p.cutoff x.1 ≠ 0 :=
+    GeneralPosition.exists_avoidance_patch_at (I := 𝓘(ℝ, E)) (J := J) f hC
+      (fun hx => hfixed x.1 ⟨x.property.1, hx⟩ x.property.2)
+  choose p hpcompatible hpactive using hp
+  have hopen (x : bad) : IsOpen (Function.support (p x).cutoff) :=
+    isOpen_ne_fun (p x).smooth.continuous continuous_const
+  have hcover : bad ⊆ ⋃ x : bad, Function.support (p x).cutoff := by
+    intro x hx
+    exact Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hpactive ⟨x, hx⟩⟩
+  obtain ⟨s, hs⟩ :=
+    hbad.elim_finite_subcover (fun x : bad => Function.support (p x).cutoff) hopen hcover
+  obtain ⟨f', hf', -, hhom, hderiv', hnoNew, hmaps', havoid⟩ :=
+    exists_finite_embedded_image_avoidance_controlled (fun i : s => p i.1) f g A hf hg
+      (fun i => hpcompatible i.1) hself hobstacle hK hderiv hO hmaps Finset.univ
+  refine ⟨f', hf', hhom, ?_, hderiv', hnoNew, hmaps', ?_⟩
+  · let : CompactSpace K := isCompact_iff_compactSpace.mp hK
+    apply (f'.continuous.comp continuous_subtype_val).isClosedEmbedding
+    intro x y hxy
+    exact Subtype.ext (hinj x.property y.property (hnoNew x y hxy))
+  · intro x hx
+    apply havoid x
+    rcases hx with hold | hxL
+    · exact Or.inl hold
+    · by_cases hxg : f x ∈ g '' A
+      · have hx : x ∈ bad := ⟨hxL, hxg⟩
+        obtain ⟨i, hi, hix⟩ := Set.mem_iUnion₂.mp (hs hx)
+        exact Or.inr ⟨⟨i, hi⟩, Finset.mem_univ _, hix⟩
+      · exact Or.inl hxg
+
+theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (A : Set Y) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (g '' A)) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K L C : Set E}
+    (hK : IsCompact K) (hL : IsCompact L) (hC : IsClosed C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hfixed : ∀ x ∈ L ∩ C, f x ∉ g '' A) {O : Set N} (hO : IsOpen O) (hmaps : Set.MapsTo f K O) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              (∀ x y, f' x = f' y → f x = f y) ∧
+                Set.MapsTo f' K O ∧ ∀ x, (f x ∉ g '' A ∨ x ∈ L) → f' x ∉ g '' A := by
+  obtain ⟨f', hf', hhom, hemb, hd, hnoNew, hmaps', havoid⟩ :=
+    exists_embedded_avoidance_on_compact_of_isClosed_image_controlled f g A hf hg hclosed hself
+      hobstacle hK hL hC hinj hderiv hfixed hO hmaps
+  exact ⟨f', hf', hhom.homotopicRel, hemb, hd, hnoNew, hmaps', havoid⟩
+
+theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_range
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (Set.range g)) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K L C : Set E}
+    (hK : IsCompact K) (hL : IsCompact L) (hC : IsClosed C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hfixed : ∀ x ∈ L ∩ C, f x ∉ Set.range g) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              (∀ x y, f' x = f' y → f x = f y) ∧
+                ∀ x, (f x ∉ Set.range g ∨ x ∈ L) → f' x ∉ Set.range g := by
+  obtain ⟨f', hf', hhom, hemb, hd, hnoNew, -, havoid⟩ :=
+    exists_embedded_avoidance_on_compact_of_isClosed_image f g Set.univ hf hg
+      (by simpa only [Set.image_univ] using hclosed) hself hobstacle hK hL hC hinj hderiv
+      (by simpa only [Set.image_univ] using hfixed) isOpen_univ (fun _ _ => Set.mem_univ _)
+  refine ⟨f', hf', hhom, hemb, hd, hnoNew, ?_⟩
+  simpa only [Set.image_univ] using havoid
+
+abbrev PlaneImmersion.Plane :=
+  ℝ × ℝ
+
+def PlaneImmersion.linearMap {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (A : F × F) : Plane →L[ℝ] F :=
+  (ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight A.1 + (ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight A.2
+
+theorem PlaneImmersion.linearMap_apply {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (A : F × F) (v : Plane) : linearMap A v = v.1 • A.1 + v.2 • A.2 :=
+  rfl
+
+def PlaneImmersion.perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : Plane → F) (A : F × F) (x : Plane) : F :=
+  f x + linearMap A x
+
+theorem PlaneImmersion.contDiff_perturb_family {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
+    ContDiff ℝ ∞ (fun q : (F × F) × Plane => perturb f q.1 q.2) :=
+  (hf.comp contDiff_snd).add
+    (((contDiff_fst.comp contDiff_snd).smul (contDiff_fst.comp contDiff_fst)).add
+      ((contDiff_snd.comp contDiff_snd).smul (contDiff_snd.comp contDiff_fst)))
+
+theorem PlaneImmersion.fderiv_perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {f : Plane → F} (hf : ContDiff ℝ ∞ f) (A : F × F) (x : Plane) :
+    fderiv ℝ (perturb f A) x = fderiv ℝ f x + linearMap A :=
+  ((hf.differentiable (by simp) x).hasFDerivAt.add (linearMap A).hasFDerivAt).fderiv
+
+def PlaneImmersion.firstCollisionDomain {F : Type*} : Set (Plane × (Plane × F)) :=
+  {q | q.1.1 - q.2.1.1 ≠ 0}
+
+def PlaneImmersion.secondCollisionDomain {F : Type*} : Set (Plane × (Plane × F)) :=
+  {q | q.1.2 - q.2.1.2 ≠ 0}
+
+def PlaneImmersion.firstCollision {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : Plane → F) (q : Plane × (Plane × F)) : F × F :=
+  ((q.1.1 - q.2.1.1)⁻¹ • (f q.2.1 - f q.1 - (q.1.2 - q.2.1.2) • q.2.2), q.2.2)
+
+def PlaneImmersion.secondCollision {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : Plane → F) (q : Plane × (Plane × F)) : F × F :=
+  (q.2.2, (q.1.2 - q.2.1.2)⁻¹ • (f q.2.1 - f q.1 - (q.1.1 - q.2.1.1) • q.2.2))
+
+theorem PlaneImmersion.isOpen_firstCollisionDomain {F : Type*} [NormedAddCommGroup F] :
+    IsOpen (firstCollisionDomain (F := F)) :=
+  isOpen_ne.preimage (continuous_fst.fst.sub continuous_snd.fst.fst)
+
+theorem PlaneImmersion.isOpen_secondCollisionDomain {F : Type*} [NormedAddCommGroup F] :
+    IsOpen (secondCollisionDomain (F := F)) :=
+  isOpen_ne.preimage (continuous_fst.snd.sub continuous_snd.fst.snd)
+
+theorem PlaneImmersion.contDiffOn_firstCollision {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
+    ContDiffOn ℝ ∞ (firstCollision f) firstCollisionDomain := by
+  have h₁ : ContDiff ℝ ∞ (fun q : Plane × (Plane × F) => q.1.1 - q.2.1.1) :=
+    contDiff_fst.fst.sub contDiff_snd.fst.fst
+  have h₂ : ContDiff ℝ ∞ (fun q : Plane × (Plane × F) => q.1.2 - q.2.1.2) :=
+    contDiff_fst.snd.sub contDiff_snd.fst.snd
+  exact
+    ((h₁.contDiffOn.inv (fun _ h => h)).smul
+          (((hf.comp contDiff_snd.fst).sub (hf.comp contDiff_fst)).sub
+              (h₂.smul contDiff_snd.snd)).contDiffOn).prodMk
+      contDiff_snd.snd.contDiffOn
+
+theorem PlaneImmersion.contDiffOn_secondCollision {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
+    ContDiffOn ℝ ∞ (secondCollision f) secondCollisionDomain := by
+  have h₁ : ContDiff ℝ ∞ (fun q : Plane × (Plane × F) => q.1.1 - q.2.1.1) :=
+    contDiff_fst.fst.sub contDiff_snd.fst.fst
+  have h₂ : ContDiff ℝ ∞ (fun q : Plane × (Plane × F) => q.1.2 - q.2.1.2) :=
+    contDiff_fst.snd.sub contDiff_snd.fst.snd
+  exact
+    contDiff_snd.snd.contDiffOn.prodMk
+      ((h₂.contDiffOn.inv (fun _ h => h)).smul
+        (((hf.comp contDiff_snd.fst).sub (hf.comp contDiff_fst)).sub
+            (h₁.smul contDiff_snd.snd)).contDiffOn)
+
+theorem PlaneImmersion.mem_collision_of_eq {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (f : Plane → F) (A : F × F) {x y : Plane} (hxy : x ≠ y)
+    (heq : perturb f A x = perturb f A y) :
+    A ∈ firstCollision f '' firstCollisionDomain ∪ secondCollision f '' secondCollisionDomain := by
+  have hlinear : linearMap A (x - y) = f y - f x := by
+    rw [map_sub]
+    change f x + linearMap A x = f y + linearMap A y at heq
+    exact (sub_eq_sub_iff_add_eq_add).mpr (by simpa only [add_comm] using heq)
+  change (x.1 - y.1) • A.1 + (x.2 - y.2) • A.2 = f y - f x at hlinear
+  by_cases hfirst : x.1 - y.1 = 0
+  · have hsecond : x.2 - y.2 ≠ 0 := by
+      intro h
+      exact hxy (Prod.ext (sub_eq_zero.mp hfirst) (sub_eq_zero.mp h))
+    apply Or.inr
+    refine ⟨(x, (y, A.1)), hsecond, Prod.ext rfl ?_⟩
+    change (x.2 - y.2)⁻¹ • (f y - f x - (x.1 - y.1) • A.1) = A.2
+    rw [← eq_sub_of_add_eq' hlinear, inv_smul_smul₀ hsecond]
+  · apply Or.inl
+    refine ⟨(x, (y, A.2)), hfirst, Prod.ext ?_ rfl⟩
+    change (x.1 - y.1)⁻¹ • (f y - f x - (x.2 - y.2) • A.2) = A.1
+    rw [← eq_sub_of_add_eq hlinear, inv_smul_smul₀ hfirst]
+
+theorem PlaneImmersion.injective_perturb_of_not_collision {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (f : Plane → F) {A : F × F}
+    (hA :
+      A ∉ firstCollision f '' firstCollisionDomain ∪ secondCollision f '' secondCollisionDomain) :
+    Function.Injective (perturb f A) := by
+  intro x y heq
+  by_contra hxy
+  exact hA (mem_collision_of_eq f A hxy heq)
+
+def PlaneImmersion.badFirst {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : Plane → F) (q : Plane × (ℝ × F)) : F × F :=
+  (-fderiv ℝ f q.1 (1, q.2.1) - q.2.1 • q.2.2, q.2.2)
+
+def PlaneImmersion.badSecond {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : Plane → F) (q : Plane × (ℝ × F)) : F × F :=
+  (q.2.2, -fderiv ℝ f q.1 (q.2.1, 1) - q.2.1 • q.2.2)
+
+theorem PlaneImmersion.contDiff_badFirst {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (badFirst f) := by
+  have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (by simp)
+  have he : ContDiff ℝ ∞ (fun q : Plane × (ℝ × F) => fderiv ℝ f q.1 (1, q.2.1)) :=
+    (hd.comp contDiff_fst).clm_apply (contDiff_const.prodMk (contDiff_fst.comp contDiff_snd))
+  exact
+    (he.neg.sub ((contDiff_fst.comp contDiff_snd).smul (contDiff_snd.comp contDiff_snd))).prodMk
+      (contDiff_snd.comp contDiff_snd)
+
+theorem PlaneImmersion.contDiff_badSecond {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (badSecond f) := by
+  have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (by simp)
+  have he : ContDiff ℝ ∞ (fun q : Plane × (ℝ × F) => fderiv ℝ f q.1 (q.2.1, 1)) :=
+    (hd.comp contDiff_fst).clm_apply ((contDiff_fst.comp contDiff_snd).prodMk contDiff_const)
+  exact
+    (contDiff_snd.comp contDiff_snd).prodMk
+      (he.neg.sub ((contDiff_fst.comp contDiff_snd).smul (contDiff_snd.comp contDiff_snd)))
+
+theorem PlaneImmersion.mem_bad_of_nonzero_kernel {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (f : Plane → F) (A : F × F) (x v : Plane) (hv : v ≠ 0)
+    (hker : (fderiv ℝ f x + linearMap A) v = 0) :
+    A ∈ Set.range (badFirst f) ∪ Set.range (badSecond f) := by
+  by_cases hfirst : v.1 = 0
+  · have hsecond : v.2 ≠ 0 := by
+      intro h
+      exact hv (Prod.ext hfirst h)
+    let r := v.1 / v.2
+    have hvec : (r, (1 : ℝ)) = v.2⁻¹ • v := by
+      apply Prod.ext
+      · change v.1 / v.2 = v.2⁻¹ * v.1
+        rw [div_eq_mul_inv, mul_comm]
+      · change (1 : ℝ) = v.2⁻¹ * v.2
+        rw [inv_mul_cancel₀ hsecond]
+    have hz : (fderiv ℝ f x + linearMap A) (r, 1) = 0 := by rw [hvec, map_smul, hker, smul_zero]
+    change fderiv ℝ f x (r, 1) + (r • A.1 + (1 : ℝ) • A.2) = 0 at hz
+    rw [one_smul, ← add_assoc] at hz
+    have hsolve : A.2 = -(fderiv ℝ f x (r, 1) + r • A.1) := eq_neg_of_add_eq_zero_right hz
+    apply Or.inr
+    refine ⟨(x, (r, A.1)), Prod.ext rfl ?_⟩
+    change -fderiv ℝ f x (r, 1) - r • A.1 = A.2
+    simpa only [neg_add, sub_eq_add_neg] using hsolve.symm
+  · let r := v.2 / v.1
+    have hvec : ((1 : ℝ), r) = v.1⁻¹ • v := by
+      apply Prod.ext
+      · change (1 : ℝ) = v.1⁻¹ * v.1
+        rw [inv_mul_cancel₀ hfirst]
+      · change v.2 / v.1 = v.1⁻¹ * v.2
+        rw [div_eq_mul_inv, mul_comm]
+    have hz : (fderiv ℝ f x + linearMap A) (1, r) = 0 := by rw [hvec, map_smul, hker, smul_zero]
+    change fderiv ℝ f x (1, r) + ((1 : ℝ) • A.1 + r • A.2) = 0 at hz
+    rw [one_smul, ← add_assoc] at hz
+    have hsolve : fderiv ℝ f x (1, r) + A.1 = -(r • A.2) := eq_neg_of_add_eq_zero_left hz
+    apply Or.inl
+    refine ⟨(x, (r, A.2)), Prod.ext ?_ rfl⟩
+    change -fderiv ℝ f x (1, r) - r • A.2 = A.1
+    rw [sub_eq_add_neg, ← hsolve, neg_add_cancel_left]
+
+theorem PlaneImmersion.injective_add_linearMap_of_not_bad {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (f : Plane → F) {A : F × F}
+    (hA : A ∉ Set.range (badFirst f) ∪ Set.range (badSecond f)) (x : Plane) :
+    Function.Injective (fderiv ℝ f x + linearMap A) := by
+  intro v w hvw
+  have hz : (fderiv ℝ f x + linearMap A) (v - w) = 0 := by rw [map_sub, hvw, sub_self]
+  have heq : v - w = 0 := by
+    by_contra hne
+    exact hA (mem_bad_of_nonzero_kernel f A x (v - w) hne hz)
+  exact sub_eq_zero.mp heq
+
+theorem PlaneImmersion.dimH_bad_parameters_le {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
+    dimH (Set.range (badFirst f) ∪ Set.range (badSecond f)) ≤
+      (Module.finrank ℝ (Plane × (ℝ × F)) : ℝ≥0∞) := by
+  have hfirst : dimH (Set.range (badFirst f)) ≤ (Module.finrank ℝ (Plane × (ℝ × F)) : ℝ≥0∞) := by
+    rw [← Set.image_univ]
+    exact
+      GeneralPosition.dimH_image_manifold_le isOpen_univ
+        (contDiff_badFirst hf).contMDiff.contMDiffOn
+  have hsecond : dimH (Set.range (badSecond f)) ≤ (Module.finrank ℝ (Plane × (ℝ × F)) : ℝ≥0∞) := by
+    rw [← Set.image_univ]
+    exact
+      GeneralPosition.dimH_image_manifold_le isOpen_univ
+        (contDiff_badSecond hf).contMDiff.contMDiffOn
+  rw [dimH_union]
+  exact max_le hfirst hsecond
+
+theorem PlaneImmersion.dimH_collision_parameters_le {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
+    dimH (firstCollision f '' firstCollisionDomain ∪ secondCollision f '' secondCollisionDomain) ≤
+      (Module.finrank ℝ (Plane × (Plane × F)) : ℝ≥0∞) := by
+  have hfirst :=
+    GeneralPosition.dimH_image_manifold_le (isOpen_firstCollisionDomain (F := F))
+      (contDiffOn_firstCollision hf).contMDiffOn
+  have hsecond :=
+    GeneralPosition.dimH_image_manifold_le (isOpen_secondCollisionDomain (F := F))
+      (contDiffOn_secondCollision hf).contMDiffOn
+  rw [dimH_union]
+  exact max_le hfirst hsecond
+
+theorem PlaneImmersion.dense_injective_immersive_parameters {F : Type*}
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F}
+    (hf : ContDiff ℝ ∞ f) (hdim : 5 ≤ Module.finrank ℝ F) :
+    Dense
+      ((Set.range (badFirst f) ∪ Set.range (badSecond f)) ∪
+          (firstCollision f '' firstCollisionDomain ∪
+            secondCollision f '' secondCollisionDomain))ᶜ := by
+  have hd₁ : Module.finrank ℝ (Plane × (ℝ × F)) < Module.finrank ℝ (F × F) := by
+    change Module.finrank ℝ ((ℝ × ℝ) × (ℝ × F)) < Module.finrank ℝ (F × F)
+    simp only [Module.finrank_prod, Module.finrank_self]
+    omega
+  have hd₂ : Module.finrank ℝ (Plane × (Plane × F)) < Module.finrank ℝ (F × F) := by
+    change Module.finrank ℝ ((ℝ × ℝ) × ((ℝ × ℝ) × F)) < Module.finrank ℝ (F × F)
+    simp only [Module.finrank_prod, Module.finrank_self]
+    omega
+  apply dense_compl_of_dimH_lt_finrank
+  rw [dimH_union]
+  exact
+    max_lt ((dimH_bad_parameters_le hf).trans_lt (Nat.cast_lt.mpr hd₁))
+      ((dimH_collision_parameters_le hf).trans_lt (Nat.cast_lt.mpr hd₂))
+
+theorem PlaneImmersion.exists_small_affine_injective_immersion {F : Type*}
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F}
+    (hf : ContDiff ℝ ∞ f) (hdim : 5 ≤ Module.finrank ℝ F) {ε : ℝ} (hε : 0 < ε) :
+    ∃ A : F × F,
+      ‖A‖ < ε ∧
+        ContDiff ℝ ∞ (perturb f A) ∧
+          Function.Injective (perturb f A) ∧ ∀ x, Function.Injective (fderiv ℝ (perturb f A) x) :=
+  by
+  obtain ⟨A, hA, hnorm⟩ := (dense_injective_immersive_parameters hf hdim).exists_dist_lt 0 hε
+  refine ⟨A, ?_, ?_, ?_, ?_⟩
+  · simpa only [dist_zero_left] using hnorm
+  · exact (contDiff_perturb_family hf).comp (contDiff_const.prodMk contDiff_id)
+  · exact injective_perturb_of_not_collision f (fun h => hA (Or.inr h))
+  · intro x
+    rw [fderiv_perturb hf]
+    exact injective_add_linearMap_of_not_bad f (fun h => hA (Or.inl h)) x
+
+def PlaneImmersion.displacement {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (β : Plane → ℝ) (A : F × F) (x : Plane) : F :=
+  β x • linearMap A x
+
+theorem PlaneImmersion.contDiff_displacement_family {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) :
+    ContDiff ℝ ∞ (fun q : (F × F) × Plane => displacement β q.1 q.2) :=
+  (hβ.comp contDiff_snd).smul
+    ((contDiff_snd.fst.smul contDiff_fst.fst).add (contDiff_snd.snd.smul contDiff_fst.snd))
+
+theorem PlaneImmersion.displacement_zero {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (β : Plane → ℝ) (x : Plane) : displacement β (0 : F × F) x = 0 := by
+  simp only [displacement, linearMap_apply, Prod.fst_zero, Prod.snd_zero, smul_zero, add_zero]
+
+theorem PlaneImmersion.displacement_of_zero {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {β : Plane → ℝ} (A : F × F) {x : Plane} (hx : β x = 0) :
+    displacement β A x = 0 := by simp only [displacement, hx, zero_smul]
+
+theorem PlaneImmersion.eventually_displacement_lt {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β)
+    {ε : ℝ} (hε : 0 < ε) : ∀ᶠ A : F × F in 𝓝 0, ∀ x, ‖displacement β A x‖ < ε := by
+  have hsupport : ∀ᶠ A : F × F in 𝓝 0, ∀ x ∈ tsupport β, ‖displacement β A x‖ < ε := by
+    apply hcompact.isCompact.eventually_forall_of_forall_eventually
+    intro x _
+    have hc :=
+      (contDiff_displacement_family (F := F) hβ).continuous.norm.continuousAt (x :=
+        ((0 : F × F), x))
+    have hval : ‖displacement β (0 : F × F) x‖ < ε := by
+      simpa only [displacement_zero, norm_zero] using hε
+    exact hc.preimage_mem_nhds (isOpen_Iio.mem_nhds hval)
+  filter_upwards [hsupport] with A hA x
+  by_cases hx : x ∈ tsupport β
+  · exact hA x hx
+  · have hzero : β x = 0 := by
+      by_contra hne
+      exact hx (subset_tsupport β hne)
+    simpa only [displacement_of_zero A hzero, norm_zero] using hε
+
+theorem PlaneImmersion.exists_radius_displacement_lt {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β)
+    {ε : ℝ} (hε : 0 < ε) : ∃ δ > (0 : ℝ), ∀ A : F × F, ‖A‖ < δ → ∀ x, ‖displacement β A x‖ < ε := by
+  have hn : {A : F × F | ∀ x, ‖displacement β A x‖ < ε} ∈ 𝓝 0 :=
+    eventually_displacement_lt hβ hcompact hε
+  obtain ⟨δ, hδ, hball⟩ := Metric.mem_nhds_iff.mp hn
+  exact ⟨δ, hδ, fun A hA => hball (by simpa only [Metric.mem_ball, dist_zero_right] using hA)⟩
+
+def ManifoldImmersion.affinePatch {G F H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞)
+    (f : PlaneImmersion.Plane → N) (β : PlaneImmersion.Plane → ℝ) (A : F × F) :
+    PlaneImmersion.Plane → N :=
+  ChartMapPerturbation.variablePerturb c f β (PlaneImmersion.displacement β A)
+
+theorem ManifoldImmersion.chart_affinePatch_on_plateau {G F H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : PlaneImmersion.Plane → N}
+    {β χ : PlaneImmersion.Plane → ℝ} {A : F × F} (hsupport : tsupport β ⊆ f ⁻¹' c.source)
+    (hχ : ∀ x ∈ tsupport β, χ x = 1)
+    (hvalid :
+      ∀ x, ChartMapPerturbation.Valid c f β (PlaneImmersion.displacement β A x))
+    {x : PlaneImmersion.Plane} (hx : β x = 1) :
+    c (affinePatch c f β A x) =
+      PlaneImmersion.perturb (ChartMapPerturbation.cutoffCoordinates c f χ) A x := by
+  have hxs : x ∈ tsupport β := subset_tsupport β (by change β x ≠ 0; rw [hx]; norm_num)
+  change
+    c (ChartMapPerturbation.perturb c f β (PlaneImmersion.displacement β A x) x) = _
+  rw [ChartMapPerturbation.chart_perturb c f β (hvalid x) (hsupport hxs)]
+  simp only [ChartMapPerturbation.coordinateFamily, PlaneImmersion.perturb,
+    ChartMapPerturbation.cutoffCoordinates, PlaneImmersion.displacement, hx, hχ x hxs,
+    one_smul]
+
+theorem ManifoldImmersion.contMDiff_affinePatch {G F H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : PlaneImmersion.Plane → N}
+    {β : PlaneImmersion.Plane → ℝ} {A : F × F}
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f) (hβ : ContDiff ℝ ∞ β)
+    (hsupport : tsupport β ⊆ f ⁻¹' c.source)
+    (hvalid :
+      ∀ x, ChartMapPerturbation.Valid c f β (PlaneImmersion.displacement β A x)) :
+    ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ (affinePatch c f β A) := by
+  have hd :=
+    (PlaneImmersion.contDiff_displacement_family (F := F) hβ).comp
+      (contDiff_const (c := A) |>.prodMk contDiff_id)
+  intro x
+  exact
+    ChartMapPerturbation.contMDiffAt_variablePerturb c hsupport hf.contMDiffAt
+      hβ.contMDiff.contMDiffAt hd.contMDiff.contMDiffAt (hvalid x)
+
+theorem ManifoldImmersion.exists_affine_embedding_patch_with_property {G F H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) [FiniteDimensional ℝ F] [T2Space N]
+    (f : C(PlaneImmersion.Plane, N)) (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f)
+    {β χ : PlaneImmersion.Plane → ℝ} (hβ : ContDiff ℝ ∞ β) (hχ : ContDiff ℝ ∞ χ)
+    (hcompact : HasCompactSupport β) (hχsupport : tsupport χ ⊆ f ⁻¹' c.source)
+    (hχone : ∀ x ∈ tsupport β, χ x = 1) (hdim : 5 ≤ Module.finrank ℝ F)
+    (Q : (PlaneImmersion.Plane → N) → Prop)
+    (hQ : ∀ᶠ A : F × F in 𝓝 0, Q (affinePatch c f β A)) {K : Set PlaneImmersion.Plane}
+    (hK : IsCompact K) (hKsub : K ⊆ interior {x | β x = 1}) :
+    ∃ g : C(PlaneImmersion.Plane, N),
+      ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ g ∧
+        Q g ∧
+          Nonempty (f.HomotopyRel g {x | β x = 0}) ∧
+            Topology.IsClosedEmbedding (fun x : K => g x) ∧
+              ∀ x ∈ interior {x | β x = 1},
+                Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x) := by
+  have hsupport : tsupport β ⊆ f ⁻¹' c.source := by
+    intro x hx
+    exact hχsupport (subset_tsupport χ (by change χ x ≠ 0; rw [hχone x hx]; norm_num))
+  let k := ChartMapPerturbation.cutoffCoordinates c f χ
+  have hk : ContDiff ℝ ∞ k := by
+    have hm : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) 𝓘(ℝ, F) ∞ k := fun x =>
+      ChartMapPerturbation.contMDiffAt_cutoffCoordinates c hχsupport hf.contMDiffAt
+        hχ.contMDiff.contMDiffAt
+    exact hm.contDiff
+  obtain ⟨ε, hε, hvalid⟩ :=
+    ChartMapPerturbation.exists_radius_valid c hf hβ.contMDiff hcompact hsupport
+  obtain ⟨δ, hδ, hδbound⟩ :=
+    PlaneImmersion.exists_radius_displacement_lt (F := F) hβ hcompact hε
+  have hQmem : {A : F × F | Q (affinePatch c f β A)} ∈ 𝓝 0 := hQ
+  obtain ⟨η, hη, hηkeep⟩ := Metric.mem_nhds_iff.mp hQmem
+  obtain ⟨A, hA, -, hinj, hderiv⟩ :=
+    PlaneImmersion.exists_small_affine_injective_immersion hk hdim (lt_min hδ hη)
+  have hbound : ∀ x, ‖PlaneImmersion.displacement β A x‖ < ε :=
+    hδbound A (lt_of_lt_of_le hA (min_le_left _ _))
+  have hv :
+    ∀ x, ChartMapPerturbation.Valid c f β (PlaneImmersion.displacement β A x) :=
+    fun x => hvalid _ (hbound x)
+  have hsmooth := contMDiff_affinePatch c hf hβ hsupport hv
+  let g : C(PlaneImmersion.Plane, N) := ⟨affinePatch c f β A, hsmooth.continuous⟩
+  have hcoord (x : PlaneImmersion.Plane) (hx : β x = 1) :
+    c (g x) = PlaneImmersion.perturb k A x :=
+    chart_affinePatch_on_plateau c hsupport hχone hv hx
+  have hQg : Q g :=
+    hηkeep
+      (show A ∈ Metric.ball 0 η by
+        simpa only [Metric.mem_ball, dist_zero_right] using
+          (lt_of_lt_of_le hA (min_le_right δ η)))
+  refine ⟨g, hsmooth, hQg, ?_, ?_, ?_⟩
+  · have hd :=
+      (PlaneImmersion.contDiff_displacement_family (F := F) hβ).comp
+        (contDiff_const (c := A) |>.prodMk contDiff_id)
+    exact
+      ⟨ChartMapPerturbation.variableHomotopyRel c f.continuous hβ.continuous hsupport
+          hd.continuous hvalid hbound (fun _ hx => Or.inl hx)⟩
+  · let : CompactSpace K := isCompact_iff_compactSpace.mp hK
+    apply (g.continuous.comp continuous_subtype_val).isClosedEmbedding
+    intro x y hxy
+    change g x = g y at hxy
+    apply Subtype.ext
+    apply hinj
+    rw [← hcoord x (interior_subset (s := {z | β z = 1}) (hKsub x.property)), ←
+      hcoord y (interior_subset (s := {z | β z = 1}) (hKsub y.property)), hxy]
+  · intro x hx
+    have hβx : β x = 1 := interior_subset (s := {z | β z = 1}) hx
+    have hxs : f x ∈ c.source :=
+      hsupport (subset_tsupport β (by change β x ≠ 0; rw [hβx]; norm_num))
+    have hgs : g x ∈ c.source := ChartMapPerturbation.perturb_mem_source c f β (hv x) hxs
+    apply (injective_fderiv_chart_iff c (hsmooth.mdifferentiableAt (by simp)) hgs).mp
+    have heq : (c ∘ g) =ᶠ[𝓝 x] PlaneImmersion.perturb k A := by
+      filter_upwards [isOpen_interior.mem_nhds hx] with y hy
+      exact hcoord y (interior_subset (s := {z | β z = 1}) hy)
+    change Function.Injective (fderiv ℝ (c ∘ g) x)
+    rw [heq.fderiv_eq]
+    exact hderiv x
+
+theorem ManifoldImmersion.affinePatch_zero {G F H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : PlaneImmersion.Plane → N)
+    (β : PlaneImmersion.Plane → ℝ) : affinePatch c f β (0 : F × F) = f := by
+  funext x
+  change
+    ChartMapPerturbation.perturb c f β (PlaneImmersion.displacement β 0 x) x = f x
+  rw [PlaneImmersion.displacement_zero, ChartMapPerturbation.perturb_zero]
+
+theorem ManifoldImmersion.contMDiffAt_affinePatch_family {G F H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : PlaneImmersion.Plane → N}
+    {β : PlaneImmersion.Plane → ℝ} (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f)
+    (hβ : ContDiff ℝ ∞ β) (hsupport : tsupport β ⊆ f ⁻¹' c.source)
+    (q : (F × F) × PlaneImmersion.Plane)
+    (hvalid :
+      ChartMapPerturbation.Valid c f β (PlaneImmersion.displacement β q.1 q.2)) :
+    ContMDiffAt (𝓘(ℝ, F × F).prod 𝓘(ℝ, PlaneImmersion.Plane)) J ∞
+      (fun r : (F × F) × PlaneImmersion.Plane => affinePatch c f β r.1 r.2) q := by
+  have hid :
+    ContMDiffAt (𝓘(ℝ, F × F).prod 𝓘(ℝ, PlaneImmersion.Plane))
+      𝓘(ℝ, (F × F) × PlaneImmersion.Plane) ∞
+      (fun r : (F × F) × PlaneImmersion.Plane => r) q :=
+    (contMDiffAt_prod_module_iff _).mpr ⟨contMDiffAt_fst, contMDiffAt_snd⟩
+  have hd :=
+    (PlaneImmersion.contDiff_displacement_family (F := F) hβ).contMDiff.contMDiffAt |>.comp
+      q hid
+  exact
+    (ChartMapPerturbation.contMDiffAt_perturb c hf hβ.contMDiff hsupport
+          (PlaneImmersion.displacement β q.1 q.2, q.2) hvalid).comp
+      q (f := fun r : (F × F) × PlaneImmersion.Plane =>
+      (PlaneImmersion.displacement β r.1 r.2, r.2)) (hd.prodMk contMDiffAt_snd)
+
+theorem ManifoldImmersion.eventually_affinePatch_maps_compact_into_open {G F H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) {f : PlaneImmersion.Plane → N}
+    {β : PlaneImmersion.Plane → ℝ} (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f)
+    (hβ : ContDiff ℝ ∞ β) (hsupport : tsupport β ⊆ f ⁻¹' c.source)
+    {K : Set PlaneImmersion.Plane} (hK : IsCompact K) {U : Set N} (hU : IsOpen U)
+    (hmap : Set.MapsTo f K U) : ∀ᶠ A : F × F in 𝓝 0, Set.MapsTo (affinePatch c f β A) K U := by
+  apply hK.eventually_forall_of_forall_eventually
+  intro x hx
+  have hvalid :
+    ChartMapPerturbation.Valid c f β (PlaneImmersion.displacement β (0 : F × F) x) := by
+    rw [PlaneImmersion.displacement_zero]
+    exact ChartMapPerturbation.valid_zero c f β hsupport
+  have hc := (contMDiffAt_affinePatch_family c hf hβ hsupport (0, x) hvalid).continuousAt
+  apply hc.preimage_mem_nhds
+  apply hU.mem_nhds
+  rw [affinePatch_zero]
+  exact hmap hx
+
+theorem ManifoldImmersion.eventually_affinePatch_injective_derivative {G F H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) [J.Boundaryless] [IsManifold J ∞ N]
+    {f : PlaneImmersion.Plane → N} {β : PlaneImmersion.Plane → ℝ}
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f) (hβ : ContDiff ℝ ∞ β)
+    (hcompact : HasCompactSupport β) (hsupport : tsupport β ⊆ f ⁻¹' c.source)
+    {K : Set PlaneImmersion.Plane} (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x)) :
+    ∀ᶠ A : F × F in 𝓝 0,
+      ∀ x ∈ K,
+        Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J (affinePatch c f β A) x) :=
+  by
+  obtain ⟨ε, hε, hvalid⟩ :=
+    ChartMapPerturbation.exists_radius_valid c hf hβ.contMDiff hcompact hsupport
+  obtain ⟨δ, hδ, hδbound⟩ :=
+    PlaneImmersion.exists_radius_displacement_lt (F := F) hβ hcompact hε
+  let W : Set ((F × F) × PlaneImmersion.Plane) := {q | ‖q.1‖ < δ}
+  have hW : IsOpen W := isOpen_lt continuous_fst.norm continuous_const
+  have hfamily :
+    ContMDiffOn (𝓘(ℝ, F × F).prod 𝓘(ℝ, PlaneImmersion.Plane)) J ∞
+      (fun q : (F × F) × PlaneImmersion.Plane => affinePatch c f β q.1 q.2) W := by
+    intro q hq
+    exact
+      (contMDiffAt_affinePatch_family c hf hβ hsupport q
+          (hvalid _ (hδbound q.1 hq q.2))).contMDiffWithinAt
+  apply eventually_injective_nativeDerivative hW hfamily hK
+  · intro x _
+    change ‖(0 : F × F)‖ < δ
+    simpa only [norm_zero] using hδ
+  · intro x hx
+    change
+      Function.Injective
+        (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J (affinePatch c f β (0 : F × F)) x)
+    rw [affinePatch_zero]
+    exact hinj x hx
+
+theorem ManifoldImmersion.exists_immersion_patch_step {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    {ι : Type*} [Finite ι]
+    (p :
+      ι →
+        ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, PlaneImmersion.Plane) J (X :=
+          PlaneImmersion.Plane) (N := N))
+    (i : ι) (f : C(PlaneImmersion.Plane, N))
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f)
+    (hcompatible : ∀ j, (p j).Compatible f) (hdim : 5 ≤ Module.finrank ℝ G)
+    {K L C : Set PlaneImmersion.Plane} (hK : IsCompact K) (hL : IsCompact L)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x))
+    (hLsub : L ⊆ (p i).plateau) (hfixed : ∀ x ∈ C, (p i).cutoff x = 0) :
+    ∃ g : C(PlaneImmersion.Plane, N),
+      ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ g ∧
+        (∀ j, (p j).Compatible g) ∧
+          f.HomotopicRel g C ∧
+            Topology.IsClosedEmbedding (fun x : L => g x) ∧
+              ∀ x ∈ K ∪ L, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x) := by
+  have hinner := (p i).inner_compatible (hcompatible i)
+  have hkeep :
+    ∀ᶠ A : G × G in 𝓝 0, ∀ j, (p j).Compatible (affinePatch (p i).chart f (p i).cutoff A) := by
+    apply Filter.eventually_all.mpr
+    intro j
+    exact
+      eventually_affinePatch_maps_compact_into_open (p i).chart hf (p i).smooth.contDiff hinner
+        (p j).outer_compact.isCompact (p j).chart.open_source (hcompatible j)
+  have hold :=
+    eventually_affinePatch_injective_derivative (p i).chart hf (p i).smooth.contDiff (p i).compact
+      hinner hK hinj
+  let Q : (PlaneImmersion.Plane → N) → Prop := fun g =>
+    (∀ j, (p j).Compatible g) ∧
+      ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x)
+  have hQ : ∀ᶠ A : G × G in 𝓝 0, Q (affinePatch (p i).chart f (p i).cutoff A) := hkeep.and hold
+  obtain ⟨g, hg, ⟨hc, hKnew⟩, ⟨Hrel⟩, hemb, hplateau⟩ :=
+    exists_affine_embedding_patch_with_property (p i).chart f hf (p i).smooth.contDiff
+      (p i).outer_smooth.contDiff (p i).compact (hcompatible i) (p i).nested hdim Q hQ hL hLsub
+  refine ⟨g, hg, hc, ?_, hemb, ?_⟩
+  · exact ⟨{ Hrel.toHomotopy with prop' := fun t x hx => Hrel.eq_fst t (hfixed x hx) }⟩
+  · intro x hx
+    rcases hx with hx | hx
+    · exact hKnew x hx
+    · exact hplateau x (hLsub hx)
+
+theorem ManifoldImmersion.exists_finite_patch_immersion {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {ι : Type*} [Finite ι]
+    (p :
+      ι →
+        ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, PlaneImmersion.Plane) J (X :=
+          PlaneImmersion.Plane) (N := N))
+    (L : ι → Set PlaneImmersion.Plane) (hL : ∀ i, IsCompact (L i))
+    (hLsub : ∀ i, L i ⊆ (p i).plateau) (f : C(PlaneImmersion.Plane, N))
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f)
+    (hcompatible : ∀ i, (p i).Compatible f) (hdim : 5 ≤ Module.finrank ℝ G)
+    {K C : Set PlaneImmersion.Plane} (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x))
+    (hfixed : ∀ i x, x ∈ C → (p i).cutoff x = 0) (s : Finset ι) :
+    ∃ g : C(PlaneImmersion.Plane, N),
+      ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ g ∧
+        (∀ i, (p i).Compatible g) ∧
+          f.HomotopicRel g C ∧
+            ∀ x ∈ K ∪ ⋃ i ∈ s, L i,
+              Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x) := by
+  classical
+    induction s using Finset.induction_on with
+  | empty =>
+    refine ⟨f, hf, hcompatible, ContinuousMap.HomotopicRel.refl f, ?_⟩
+    simpa only [Finset.notMem_empty, Set.iUnion_of_empty, Set.iUnion_empty, Set.union_empty] using
+      hinj
+  | @insert i s _ ih =>
+    obtain ⟨g₁, hg₁, hc₁, hhom₁, hinj₁⟩ := ih
+    have hKold : IsCompact (K ∪ ⋃ j ∈ s, L j) := hK.union (s.isCompact_biUnion (fun j _ => hL j))
+    obtain ⟨g₂, hg₂, hc₂, hhom₂, -, hinj₂⟩ :=
+      exists_immersion_patch_step p i g₁ hg₁ hc₁ hdim hKold (hL i) hinj₁ (hLsub i) (hfixed i)
+    refine ⟨g₂, hg₂, hc₂, hhom₁.trans hhom₂, ?_⟩
+    intro x hx
+    apply hinj₂ x
+    rcases hx with hx | hx
+    · exact Or.inl (Or.inl hx)
+    · obtain ⟨j, hj, hxj⟩ := Set.mem_iUnion₂.mp hx
+      rcases Finset.mem_insert.mp hj with rfl | hjs
+      · exact Or.inr hxj
+      · exact Or.inl (Or.inr (Set.mem_iUnion₂.mpr ⟨j, hjs, hxj⟩))
+
+theorem ManifoldImmersion.exists_relative_immersion_patch_at_in_open {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (f : C(E, N)) {C : Set E}
+    (hC : IsClosed C) {x : E} (hx : x ∉ C) {O : Set N} (hO : IsOpen O) (hxO : f x ∈ O) :
+    ∃ p : ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N),
+      ∃ L : Set E,
+        p.Compatible f ∧
+          IsCompact L ∧
+            L ∈ 𝓝 x ∧ L ⊆ p.plateau ∧ (∀ y ∈ C, p.cutoff y = 0) ∧ p.chart.source ⊆ O := by
+  classical
+  let c₀ := modelChartPartialDiffeomorph (I := J) (f x)
+  let c := PartialChart.restrictSource c₀ hO
+  have hsource : f x ∈ c.source := ⟨mem_extChartAt_source (I := J) (f x), hxO⟩
+  have hU : f ⁻¹' c.source ∩ Cᶜ ∈ 𝓝 x :=
+    ((c.open_source.preimage f.continuous).inter hC.isOpen_compl).mem_nhds ⟨hsource, hx⟩
+  obtain ⟨χ, _, hχ⟩ := (SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, E)) x).mem_iff.mp hU
+  have hχone : {y : E | χ y = 1} ∈ 𝓝 x := χ.eventuallyEq_one
+  obtain ⟨β, _, hβ⟩ := (SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, E)) x).mem_iff.mp hχone
+  let p : ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N) :=
+    { chart := c
+      cutoff := β
+      outer := χ
+      smooth := β.contMDiff
+      outer_smooth := χ.contMDiff
+      compact := β.hasCompactSupport
+      outer_compact := χ.hasCompactSupport
+      nested := fun y hy => hβ hy }
+  have hxp : x ∈ p.plateau := mem_interior_iff_mem_nhds.mpr β.eventuallyEq_one
+  obtain ⟨L, hxL, hLp, hL⟩ := local_compact_nhds (isOpen_interior.mem_nhds hxp)
+  refine ⟨p, L, (fun _ hy => (hχ hy).1), hL, hxL, hLp, ?_, fun _ hz => hz.2⟩
+  intro y hy
+  change β y = 0
+  by_contra hne
+  have hi : y ∈ tsupport β := subset_tsupport β hne
+  have ho : y ∈ tsupport χ :=
+    subset_tsupport χ
+      (by
+        change χ y ≠ 0
+        rw [hβ hi]
+        exact one_ne_zero)
+  exact (hχ ho).2 hy
+
+theorem ManifoldImmersion.exists_relative_immersion_patch_at {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (f : C(E, N)) {C : Set E}
+    (hC : IsClosed C) {x : E} (hx : x ∉ C) :
+    ∃ p : ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, E) J (X := E) (N := N),
+      ∃ L : Set E,
+        p.Compatible f ∧ IsCompact L ∧ L ∈ 𝓝 x ∧ L ⊆ p.plateau ∧ ∀ y ∈ C, p.cutoff y = 0 := by
+  obtain ⟨p, L, hc, hL, hn, hp, hfix, _⟩ :=
+    exists_relative_immersion_patch_at_in_open (J := J) f hC hx isOpen_univ (Set.mem_univ _)
+  exact ⟨p, L, hc, hL, hn, hp, hfix⟩
+
+theorem ManifoldImmersion.exists_immersion_on_compact_rel {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] (f : C(PlaneImmersion.Plane, N))
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f) (hdim : 5 ≤ Module.finrank ℝ G)
+    {K L C : Set PlaneImmersion.Plane} (hK : IsCompact K) (hL : IsCompact L)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x))
+    (hC : IsClosed C) (hdis : Disjoint L C) :
+    ∃ g : C(PlaneImmersion.Plane, N),
+      ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ g ∧
+        f.HomotopicRel g C ∧
+          ∀ x ∈ K ∪ L, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x) := by
+  classical
+  have hp (x : L) :=
+    exists_relative_immersion_patch_at (J := J) f hC
+      (show (x : PlaneImmersion.Plane) ∉ C from fun hx =>
+        Set.disjoint_left.mp hdis x.property hx)
+  choose p T hcompatible hT hn hsub hfixed using hp
+  have hcover : L ⊆ ⋃ x : L, interior (T x) := by
+    intro x hx
+    exact Set.mem_iUnion.mpr ⟨⟨x, hx⟩, mem_interior_iff_mem_nhds.mpr (hn ⟨x, hx⟩)⟩
+  obtain ⟨s, hs⟩ :=
+    hL.elim_finite_subcover (fun x : L => interior (T x)) (fun _ => isOpen_interior) hcover
+  obtain ⟨g, hg, -, hhom, hderiv⟩ :=
+    exists_finite_patch_immersion (fun i : s => p i.1) (fun i : s => T i.1) (fun i => hT i.1)
+      (fun i => hsub i.1) f hf (fun i => hcompatible i.1) hdim hK hinj (fun i => hfixed i.1)
+      Finset.univ
+  refine ⟨g, hg, hhom, ?_⟩
+  intro x hx
+  apply hderiv x
+  rcases hx with hx | hx
+  · exact Or.inl hx
+  · obtain ⟨i, his, hxi⟩ := Set.mem_iUnion₂.mp (hs hx)
+    exact Or.inr (Set.mem_iUnion₂.mpr ⟨⟨i, his⟩, Finset.mem_univ _, interior_subset hxi⟩)
+
+theorem ManifoldImmersion.exists_selfIntersection_removal_step_within_target
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {ι : Type*} [Finite ι] {C K : Set E}
+    (p : ι → GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C) (i : ι) (f : C(E, N))
+    (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hcompatible : ∀ j, (p j).Compatible f)
+    (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ G) (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) {D : Set E} {O : Set N}
+    (hsource : (p i).chart.source ⊆ O) (hmaps : Set.MapsTo f D O) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        (∀ j, (p j).Compatible g) ∧
+          HomotopicRelWithin f g C D O ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x)) ∧
+              ∀ x y, g x = g y → f x = f y ∧ (p i).cutoff x = (p i).cutoff y := by
+  have hkeep :
+    ∀ᶠ a in 𝓝 (0 : G),
+      ∀ j, (p j).Compatible (ChartMapPerturbation.perturb (p i).chart f (p i).cutoff a) := by
+    apply Filter.eventually_all.mpr
+    intro j
+    exact
+      ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf (p i).smooth
+        (hcompatible i) (p j).compact.isCompact (p j).chart.open_source (hcompatible j)
+  have hold :=
+    ChartMapPerturbation.eventually_perturb_injective_derivative (p i).chart hf (p i).smooth
+      (p i).compact (hcompatible i) hK hinj
+  obtain ⟨δ, hδ, hδkeep⟩ := Metric.mem_nhds_iff.mp (hkeep.and hold)
+  obtain ⟨r, hr, hvalid⟩ :=
+    ChartMapPerturbation.exists_radius_valid (p i).chart hf (p i).smooth (p i).compact
+      (hcompatible i)
+  obtain ⟨a, ha, -, hsmooth, hremove⟩ :=
+    ChartMapPerturbation.exists_small_collision_removing_parameter (p i).chart hf
+      (p i).smooth (p i).compact (hcompatible i) hdim (lt_min hδ hr)
+  have haδ : ‖a‖ < δ := (lt_min_iff.mp ha).1
+  have har : ‖a‖ < r := (lt_min_iff.mp ha).2
+  let g : C(E, N) := ⟨_, hsmooth.continuous⟩
+  have hretained :=
+    hδkeep (show a ∈ Metric.ball 0 δ by simpa only [Metric.mem_ball, dist_zero_right] using haδ)
+  refine ⟨g, hsmooth, hretained.1, ?_, hretained.2, hremove⟩
+  have hrel :=
+    ChartMapPerturbation.homotopicRelWithin_of_source_subset (p i).chart hf (p i).smooth
+      (hcompatible i) hvalid har hsource hmaps
+  exact hrel.mono (fun x hx => (p i).fixed x hx) (Set.Subset.refl D) (Set.Subset.refl O)
+
+theorem ManifoldImmersion.exists_finite_selfIntersection_removal_within_target
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {ι : Type*} [Finite ι] {C K : Set E}
+    (p : ι → GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C) (f : C(E, N))
+    (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hcompatible : ∀ j, (p j).Compatible f)
+    (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ G) (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) {D : Set E} {O : Set N}
+    (hsource : ∀ i, (p i).chart.source ⊆ O) (hmaps : Set.MapsTo f D O) (s : Finset ι) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        (∀ j, (p j).Compatible g) ∧
+          HomotopicRelWithin f g C D O ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x)) ∧
+              ∀ x y, g x = g y → f x = f y ∧ ∀ i ∈ s, (p i).cutoff x = (p i).cutoff y := by
+  classical
+    induction s using Finset.induction_on with
+  | empty =>
+    exact
+      ⟨f, hf, hcompatible, HomotopicRelWithin.refl f C hmaps, hinj, fun _ _ hxy =>
+        ⟨hxy, fun _ hi => False.elim (Finset.notMem_empty _ hi)⟩⟩
+  | @insert i s _ ih =>
+    obtain ⟨g₁, hg₁, hc₁, hhom₁, hinj₁, hpair₁⟩ := ih
+    obtain ⟨g₂, hg₂, hc₂, hhom₂, hinj₂, hpair₂⟩ :=
+      exists_selfIntersection_removal_step_within_target p i g₁ hg₁ hc₁ hdim hK hinj₁ (hsource i)
+        hhom₁.mapsTo_right
+    refine ⟨g₂, hg₂, hc₂, hhom₁.trans hhom₂, hinj₂, ?_⟩
+    intro x y hxy
+    have hnew := hpair₂ x y hxy
+    have hold := hpair₁ x y hnew.1
+    refine ⟨hold.1, ?_⟩
+    intro j hj
+    rcases Finset.mem_insert.mp hj with rfl | hjs
+    · exact hnew.2
+    · exact hold.2 j hjs
+
+theorem ManifoldImmersion.exists_embedding_of_finite_separating_patches_within_target
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {ι : Type*} [Finite ι] {C K : Set E}
+    (p : ι → GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C) (f : C(E, N))
+    (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hcompatible : ∀ j, (p j).Compatible f)
+    (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ G) (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hseparate : ∀ x ∈ K, ∀ y ∈ K, x ≠ y → f x = f y → ∃ i, (p i).cutoff x ≠ (p i).cutoff y)
+    {D : Set E} {O : Set N} (hsource : ∀ i, (p i).chart.source ⊆ O) (hmaps : Set.MapsTo f D O) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        HomotopicRelWithin f g C D O ∧
+          Topology.IsClosedEmbedding (fun x : K => g x) ∧
+            ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x) := by
+  classical
+  let := Fintype.ofFinite ι
+  obtain ⟨g, hg, -, hhom, hinjg, hpairs⟩ :=
+    exists_finite_selfIntersection_removal_within_target p f hf hcompatible hdim hK hinj hsource
+      hmaps Finset.univ
+  refine ⟨g, hg, hhom, ?_, hinjg⟩
+  let : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  apply (g.continuous.comp continuous_subtype_val).isClosedEmbedding
+  intro x y hxy
+  apply Subtype.ext
+  by_contra hne
+  obtain ⟨hold, hcutoffs⟩ := hpairs x y hxy
+  obtain ⟨i, hi⟩ := hseparate x x.property y y.property hne hold
+  exact hi (hcutoffs i (Finset.mem_univ i))
+
+theorem ManifoldImmersion.exists_separating_patch_in_open {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (f : C(E, N)) {C : Set E}
+    (hC : IsClosed C) {x y : E} (hx : x ∉ C) (hxy : x ≠ y) {O : Set N} (hO : IsOpen O)
+    (hxO : f x ∈ O) :
+    ∃ p : GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C,
+      p.Compatible f ∧ p.cutoff x = 1 ∧ p.cutoff y = 0 ∧ p.chart.source ⊆ O := by
+  classical
+  let c₀ := modelChartPartialDiffeomorph (I := J) (f x)
+  let c := PartialChart.restrictSource c₀ hO
+  have hsource : f x ∈ c.source := ⟨mem_extChartAt_source (I := J) (f x), hxO⟩
+  have hU : f ⁻¹' c.source ∩ (C ∪ { y })ᶜ ∈ 𝓝 x := by
+    apply
+      ((c.open_source.preimage f.continuous).inter
+          ((hC.union isClosed_singleton).isOpen_compl)).mem_nhds
+    exact ⟨hsource, fun h => h.elim hx (fun h => hxy h)⟩
+  obtain ⟨β, -, hβ⟩ := (SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, E)) x).mem_iff.mp hU
+  let p : GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C :=
+    { chart := c
+      cutoff := β
+      smooth := β.contMDiff
+      compact := β.hasCompactSupport
+      fixed := fun z hz => image_eq_zero_of_notMem_tsupport (fun ht => (hβ ht).2 (Or.inl hz)) }
+  refine ⟨p, (fun _ ht => (hβ ht).1), β.eq_one, ?_, fun _ hz => hz.2⟩
+  exact image_eq_zero_of_notMem_tsupport (fun ht => (hβ ht).2 (Or.inr rfl))
+
+theorem ManifoldImmersion.exists_separating_patch_of_not_both_fixed_in_open
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (f : C(E, N))
+    {C : Set E} (hC : IsClosed C) {x y : E} (hxy : x ≠ y) (hfixed : ¬(x ∈ C ∧ y ∈ C)) {O : Set N}
+    (hO : IsOpen O) (hxO : x ∉ C → f x ∈ O) (hyO : y ∉ C → f y ∈ O) :
+    ∃ p : GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C,
+      p.Compatible f ∧ p.cutoff x ≠ p.cutoff y ∧ p.chart.source ⊆ O := by
+  by_cases hx : x ∈ C
+  · have hy : y ∉ C := fun hy => hfixed ⟨hx, hy⟩
+    obtain ⟨p, hp, hpy, hpx, hs⟩ :=
+      exists_separating_patch_in_open (J := J) f hC hy hxy.symm hO (hyO hy)
+    exact ⟨p, hp, by rw [hpx, hpy]; exact zero_ne_one, hs⟩
+  · obtain ⟨p, hp, hpx, hpy, hs⟩ :=
+      exists_separating_patch_in_open (J := J) f hC hx hxy hO (hxO hx)
+    exact ⟨p, hp, by rw [hpx, hpy]; exact one_ne_zero, hs⟩
+
+theorem ManifoldImmersion.exists_open_injOn_of_injective_fderiv {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : E → F} {U : Set E} {x : E} (hU : IsOpen U)
+    (hx : x ∈ U) (hf : ContDiffOn ℝ ∞ f U) (hinj : Function.Injective (fderiv ℝ f x)) :
+    ∃ V : Set E, IsOpen V ∧ x ∈ V ∧ V ⊆ U ∧ Set.InjOn f V := by
+  obtain ⟨L, hL⟩ := ContinuousLinearMap.HasLeftInverse.of_injective_of_finiteDimensional hinj
+  have hdf := (hf.contDiffAt (hU.mem_nhds hx)).differentiableAt (by simp)
+  have hderiv : HasFDerivAt (L ∘ f) (ContinuousLinearMap.id ℝ E) x := by
+    convert L.hasFDerivAt.comp x hdf.hasFDerivAt using 1
+    ext v
+    exact (hL v).symm
+  have hcomp : ContDiffOn ℝ ∞ (L ∘ f) U := L.contDiff.comp_contDiffOn hf
+  have hinv : (fderiv ℝ (L ∘ f) x).IsInvertible := by
+    rw [hderiv.fderiv]
+    exact ⟨ContinuousLinearEquiv.refl ℝ E, rfl⟩
+  obtain ⟨φ, hxφ, hφU, hφeq⟩ := exists_partialDiffeomorph_of_contDiffOn hU hx hcomp hinv
+  refine ⟨φ.source, φ.open_source, hxφ, hφU, ?_⟩
+  intro y hy z hz hyz
+  apply φ.toPartialEquiv.injOn hy hz
+  rw [hφeq]
+  exact congrArg L hyz
+
+theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative_on {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {f : E → N} {W : Set E} (hW : IsOpen W) (hf : ContMDiffOn 𝓘(ℝ, E) J ∞ f W)
+    {x : E} (hxW : x ∈ W) (hinj : Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ V : Set E, IsOpen V ∧ x ∈ V ∧ V ⊆ W ∧ Set.InjOn f V := by
+  let c := modelChartPartialDiffeomorph (I := J) (f x)
+  have hx : f x ∈ c.source := mem_extChartAt_source (f x)
+  let U := W ∩ f ⁻¹' c.source
+  have hU : IsOpen U := hf.continuousOn.isOpen_inter_preimage hW c.open_source
+  have hc : ContDiffOn ℝ ∞ (c ∘ f) U :=
+    (c.contMDiffOn_toFun.comp (hf.mono Set.inter_subset_left) (fun _ h => h.2)).contDiffOn
+  have hfx := hf.contMDiffAt (hW.mem_nhds hxW)
+  have hi := (injective_fderiv_chart_iff c (hfx.mdifferentiableAt (by simp)) hx).mpr hinj
+  obtain ⟨V, hV, hxV, hVU, hinjV⟩ := exists_open_injOn_of_injective_fderiv hU ⟨hxW, hx⟩ hc hi
+  exact
+    ⟨V, hV, hxV, hVU.trans Set.inter_subset_left, fun _ hy _ hz heq =>
+      hinjV hy hz (congrArg c heq)⟩
+
+theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {f : E → N} (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) {x : E}
+    (hinj : Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ V : Set E, IsOpen V ∧ x ∈ V ∧ Set.InjOn f V := by
+  obtain ⟨V, hV, hxV, _, hinjV⟩ :=
+    exists_open_injOn_of_injective_nativeDerivative_on isOpen_univ hf.contMDiffOn (Set.mem_univ x)
+      hinj
+  exact ⟨V, hV, hxV, hinjV⟩
+
+theorem ManifoldImmersion.exists_open_injOn_near_compact_on {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {f : E → N} {W : Set E} (hW : IsOpen W)
+    (hf : ContMDiffOn 𝓘(ℝ, E) J ∞ f W) {K : Set E} (hK : IsCompact K) (hKW : K ⊆ W)
+    (hinj : Set.InjOn f K) (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ V : Set E, IsOpen V ∧ K ⊆ V ∧ V ⊆ W ∧ Set.InjOn f V := by
+  have hc : ∀ x ∈ K, ContinuousAt f x := fun x hx =>
+    hf.continuousOn.continuousAt (hW.mem_nhds (hKW hx))
+  have hlocal : ∀ x ∈ K, ∃ V ∈ nhds x, Set.InjOn f V := by
+    intro x hx
+    obtain ⟨V, hV, hxV, _, hinjV⟩ :=
+      exists_open_injOn_of_injective_nativeDerivative_on hW hf (hKW hx) (hi x hx)
+    exact ⟨V, hV.mem_nhds hxV, hinjV⟩
+  obtain ⟨V, hV, hKV, hinjV⟩ := hinj.exists_isOpen_superset hK hc hlocal
+  exact
+    ⟨V ∩ W, hV.inter hW, fun _ hx => ⟨hKV hx, hKW hx⟩, Set.inter_subset_right,
+      hinjV.mono Set.inter_subset_left⟩
+
+theorem ManifoldImmersion.exists_open_embedded_immersive_neighborhood {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {f : E → N} {W : Set E} (hW : IsOpen W)
+    (hf : ContMDiffOn 𝓘(ℝ, E) J ∞ f W) {K : Set E} (hK : IsCompact K) (hKW : K ⊆ W)
+    (hinj : Set.InjOn f K) (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ V : Set E,
+      IsOpen V ∧
+        K ⊆ V ∧ V ⊆ W ∧ Set.InjOn f V ∧ ∀ x ∈ V, Function.Injective (mfderiv 𝓘(ℝ, E) J f x) := by
+  let O := {x : E | x ∈ W ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J f x)}
+  have hO : IsOpen O := isOpen_injective_derivative_on hW hf
+  have hOW : O ⊆ W := fun _ hx => hx.1
+  obtain ⟨V, hV, hKV, hVO, hinjV⟩ :=
+    exists_open_injOn_near_compact_on hO (hf.mono hOW) hK (fun x hx => ⟨hKW hx, hi x hx⟩) hinj hi
+  exact ⟨V, hV, hKV, hVO.trans hOW, hinjV, fun x hx => (hVO hx).2⟩
+
+theorem ManifoldImmersion.exists_open_injOn_near_compact {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    {f : E → N} (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) {K : Set E} (hK : IsCompact K)
+    (hinj : Set.InjOn f K) (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ V : Set E, IsOpen V ∧ K ⊆ V ∧ Set.InjOn f V := by
+  apply hinj.exists_isOpen_superset hK (fun _ _ => hf.continuous.continuousAt)
+  intro x hx
+  obtain ⟨V, hV, hxV, hinjV⟩ := exists_open_injOn_of_injective_nativeDerivative hf (hi x hx)
+  exact ⟨V, hV.mem_nhds hxV, hinjV⟩
+
+def ManifoldImmersion.doublePoints {X N : Type*} (f : X → N) (K : Set X) : Set (X × X) :=
+  {q | q.1 ∈ K ∧ q.2 ∈ K ∧ q.1 ≠ q.2 ∧ f q.1 = f q.2}
+
+theorem ManifoldImmersion.isCompact_doublePoints_of_locally_injective {X N : Type*}
+    [TopologicalSpace X] [TopologicalSpace N] [T2Space N] {f : X → N} (hf : Continuous f)
+    {K : Set X} (hK : IsCompact K)
+    (hlocal : ∀ x ∈ K, ∃ U : Set X, IsOpen U ∧ x ∈ U ∧ Set.InjOn f U) :
+    IsCompact (doublePoints f K) := by
+  classical
+  choose U hU hmem hinj using (fun x : K => hlocal x x.property)
+  let V : Set (X × X) := ⋃ x : K, (U x) ×ˢ (U x)
+  have hV : IsOpen V := isOpen_iUnion (fun x => (hU x).prod (hU x))
+  have hclosed : IsClosed {q : X × X | f q.1 = f q.2} :=
+    isClosed_eq (hf.comp continuous_fst) (hf.comp continuous_snd)
+  have heq : doublePoints f K = ((K ×ˢ K) ∩ {q : X × X | f q.1 = f q.2}) ∩ Vᶜ := by
+    ext q
+    constructor
+    · rintro ⟨hx, hy, hne, hcoll⟩
+      refine ⟨⟨⟨hx, hy⟩, hcoll⟩, ?_⟩
+      intro hv
+      obtain ⟨x, hxU, hyU⟩ := Set.mem_iUnion.mp hv
+      exact hne (hinj x hxU hyU hcoll)
+    · rintro ⟨⟨⟨hx, hy⟩, hcoll⟩, hv⟩
+      refine ⟨hx, hy, ?_, hcoll⟩
+      intro hxy
+      apply hv
+      apply Set.mem_iUnion.mpr
+      refine ⟨⟨q.1, hx⟩, hmem ⟨q.1, hx⟩, ?_⟩
+      rw [← hxy]
+      exact hmem ⟨q.1, hx⟩
+  rw [heq]
+  exact ((hK.prod hK).inter_right hclosed).inter_right hV.isClosed_compl
+
+theorem ManifoldImmersion.isCompact_doublePoints_of_injective_nativeDerivative
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {f : E → N} (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) {K : Set E}
+    (hK : IsCompact K) (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    IsCompact (doublePoints f K) :=
+  isCompact_doublePoints_of_locally_injective hf.continuous hK
+    (fun _ hx => exists_open_injOn_of_injective_nativeDerivative hf (hinj _ hx))
+
+theorem ManifoldImmersion.exists_compact_embedding_of_immersion_within_target
+    {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] (f : C(E, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f)
+    (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ G) {K C : Set E} (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C)) {O : Set N} (hO : IsOpen O) (hmaps : Set.MapsTo f (K \ C) O) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        HomotopicRelWithin f g C (K \ C) O ∧
+          Topology.IsClosedEmbedding (fun x : K => g x) ∧
+            ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x) := by
+  classical
+  let bad := doublePoints f K
+  have hbad : IsCompact bad := isCompact_doublePoints_of_injective_nativeDerivative hf hK hinj
+  have hp (q : bad) :
+    ∃ p : GeneralPosition.MapAvoidancePatch 𝓘(ℝ, E) J (N := N) C,
+      p.Compatible f ∧ p.cutoff q.1.1 ≠ p.cutoff q.1.2 ∧ p.chart.source ⊆ O := by
+    have hq := q.property
+    rcases hq with ⟨hx, hy, hne, heq⟩
+    have hnot : ¬(q.1.1 ∈ C ∧ q.1.2 ∈ C) := by
+      rintro ⟨hxC, hyC⟩
+      exact hne (hfixed ⟨hx, hxC⟩ ⟨hy, hyC⟩ heq)
+    exact
+      exists_separating_patch_of_not_both_fixed_in_open f hC hne hnot hO
+        (fun hxC => hmaps ⟨hx, hxC⟩) (fun hyC => hmaps ⟨hy, hyC⟩)
+  choose p hpcompatible hpactive hpsource using hp
+  let U (q : bad) : Set (E × E) := {r | (p q).cutoff r.1 ≠ (p q).cutoff r.2}
+  have hU (q : bad) : IsOpen (U q) :=
+    isOpen_ne_fun ((p q).smooth.continuous.comp continuous_fst)
+      ((p q).smooth.continuous.comp continuous_snd)
+  have hcover : bad ⊆ ⋃ q : bad, U q := by
+    intro q hq
+    exact Set.mem_iUnion.mpr ⟨⟨q, hq⟩, hpactive ⟨q, hq⟩⟩
+  obtain ⟨s, hs⟩ := hbad.elim_finite_subcover U hU hcover
+  refine
+    exists_embedding_of_finite_separating_patches_within_target (fun i : s => p i.1) f hf
+      (fun i => hpcompatible i.1) hdim hK hinj ?_ (fun i => hpsource i.1) hmaps
+  intro x hx y hy hne heq
+  have hxy : (x, y) ∈ bad := ⟨hx, hy, hne, heq⟩
+  obtain ⟨i, hi, hsep⟩ := Set.mem_iUnion₂.mp (hs hxy)
+  exact ⟨⟨i, hi⟩, hsep⟩
+
+theorem ManifoldImmersion.exists_compact_embedding_of_immersion {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    (f : C(E, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f)
+    (hdim : 2 * Module.finrank ℝ E < Module.finrank ℝ G) {K C : Set E} (hK : IsCompact K)
+    (hinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C)) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        f.HomotopicRel g C ∧
+          Topology.IsClosedEmbedding (fun x : K => g x) ∧
+            ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x) := by
+  obtain ⟨g, hg, hrel, he, hi⟩ :=
+    exists_compact_embedding_of_immersion_within_target f hf hdim hK hinj hC hfixed isOpen_univ
+      (Set.mapsTo_univ f (K \ C))
+  exact ⟨g, hg, hrel.homotopicRel, he, hi⟩
+
+theorem ManifoldImmersion.exists_relative_compact_embedding {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] (f : C(PlaneImmersion.Plane, N))
+    (hf : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ f) (hdim : 5 ≤ Module.finrank ℝ G)
+    {K C : Set PlaneImmersion.Plane} (hK : IsCompact K) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ x ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x)) :
+    ∃ g : C(PlaneImmersion.Plane, N),
+      ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ g ∧
+        f.HomotopicRel g C ∧
+          Topology.IsClosedEmbedding (fun x : K => g x) ∧
+            ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g x) := by
+  let U : Set PlaneImmersion.Plane :=
+    {x | Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J f x)}
+  have hU : IsOpen U := isOpen_injective_derivative hf
+  have hCU : K ∩ C ⊆ U := fun x hx => hderiv x hx
+  obtain ⟨D, hD, hCD, hDU⟩ := exists_compact_between (hK.inter_right hC) hU hCU
+  let L := K \ interior D
+  have hL : IsCompact L := hK.inter_right isOpen_interior.isClosed_compl
+  have hdis : Disjoint L C := Set.disjoint_left.mpr (fun _ hx hxC => hx.2 (hCD ⟨hx.1, hxC⟩))
+  obtain ⟨g₁, hg₁, hhom₁, hinj₁⟩ :=
+    exists_immersion_on_compact_rel f hf hdim hD hL (fun x hx => hDU hx) hC hdis
+  have hKinj : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J g₁ x) := by
+    intro x hx
+    apply hinj₁ x
+    by_cases hxD : x ∈ D
+    · exact Or.inl hxD
+    · exact Or.inr ⟨hx, fun hi => hxD (interior_subset hi)⟩
+  have hfixed₁ : Set.InjOn g₁ (K ∩ C) := by
+    intro x hx y hy hxy
+    apply hfixed hx hy
+    rw [hhom₁.fst_eq_snd hx.2, hhom₁.fst_eq_snd hy.2]
+    exact hxy
+  have hd : 2 * Module.finrank ℝ PlaneImmersion.Plane < Module.finrank ℝ G := by
+    simp only [PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self]
+    omega
+  obtain ⟨g₂, hg₂, hhom₂, hemb, hinj₂⟩ :=
+    exists_compact_embedding_of_immersion g₁ hg₁ hd hK hKinj hC hfixed₁
+  exact ⟨g₂, hg₂, hhom₁.trans hhom₂, hemb, hinj₂⟩
+
+theorem ManifoldImmersion.injective_mfderiv_comp_linearEquiv_iff {E E' G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E']
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [TopologicalSpace N] [ChartedSpace H N] (e : E' ≃L[ℝ] E) {f : E → N} {x : E'}
+    (hf : MDifferentiableAt 𝓘(ℝ, E) J f (e x)) :
+    Function.Injective (mfderiv 𝓘(ℝ, E') J (f ∘ e) x) ↔
+      Function.Injective (mfderiv 𝓘(ℝ, E) J f (e x)) := by
+  have he : mfderiv 𝓘(ℝ, E') 𝓘(ℝ, E) e x = e.toContinuousLinearMap := by
+    rw [mfderiv_eq_fderiv]
+    exact e.toContinuousLinearMap.fderiv
+  have hesmooth : ContMDiff 𝓘(ℝ, E') 𝓘(ℝ, E) ∞ e := e.contDiff.contMDiff
+  rw [mfderiv_comp x hf (hesmooth.mdifferentiableAt (by simp)), he]
+  constructor
+  · intro h v w hvw
+    apply e.symm.injective
+    apply h
+    change (mfderiv 𝓘(ℝ, E) J f (e x)) (e (e.symm v)) = (mfderiv 𝓘(ℝ, E) J f (e x)) (e (e.symm w))
+    exact
+      (congrArg (mfderiv 𝓘(ℝ, E) J f (e x)) (e.apply_symm_apply (v : E))).trans
+        (hvw.trans (congrArg (mfderiv 𝓘(ℝ, E) J f (e x)) (e.apply_symm_apply (w : E))).symm)
+  · exact fun h => h.comp e.injective
+
+theorem ManifoldImmersion.exists_relative_compact_embedding_twoDimensional {E G H N : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
+    [FiniteDimensional ℝ E] [FiniteDimensional ℝ G] [J.Boundaryless] [IsManifold J ∞ N]
+    [T2Space N] (f : C(E, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hsourceDim : Module.finrank ℝ E = 2)
+    (hdim : 5 ≤ Module.finrank ℝ G) {K C : Set E} (hK : IsCompact K) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ x ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, E) J f x)) :
+    ∃ g : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ g ∧
+        f.HomotopicRel g C ∧
+          Topology.IsClosedEmbedding (fun x : K => g x) ∧
+            ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J g x) := by
+  let e : PlaneImmersion.Plane ≃L[ℝ] E :=
+    ContinuousLinearEquiv.ofFinrankEq
+      (by
+        simp only [PlaneImmersion.Plane, Module.finrank_prod, Module.finrank_self]
+        omega)
+  let fp : C(PlaneImmersion.Plane, N) := ⟨f ∘ e, f.continuous.comp e.continuous⟩
+  have hfp : ContMDiff 𝓘(ℝ, PlaneImmersion.Plane) J ∞ fp := hf.comp e.contDiff.contMDiff
+  have hKp : IsCompact (e ⁻¹' K) := e.toHomeomorph.isCompact_preimage.mpr hK
+  have hCp : IsClosed (e ⁻¹' C) := hC.preimage e.continuous
+  have hfixedp : Set.InjOn fp ((e ⁻¹' K) ∩ (e ⁻¹' C)) := by
+    intro x hx y hy hxy
+    exact e.injective (hfixed ⟨hx.1, hx.2⟩ ⟨hy.1, hy.2⟩ hxy)
+  have hderivp :
+    ∀ x ∈ (e ⁻¹' K) ∩ (e ⁻¹' C),
+      Function.Injective (mfderiv 𝓘(ℝ, PlaneImmersion.Plane) J fp x) := by
+    intro x hx
+    exact
+      (injective_mfderiv_comp_linearEquiv_iff e (hf.mdifferentiableAt (by simp))).mpr
+        (hderiv (e x) ⟨hx.1, hx.2⟩)
+  obtain ⟨gp, hgp, ⟨Hrel⟩, hembp, hgpderiv⟩ :=
+    exists_relative_compact_embedding fp hfp hdim hKp hCp hfixedp hderivp
+  let g : C(E, N) := ⟨gp ∘ e.symm, gp.continuous.comp e.symm.continuous⟩
+  have hg : ContMDiff 𝓘(ℝ, E) J ∞ g := hgp.comp e.symm.contDiff.contMDiff
+  have hpreK (x : E) (hx : x ∈ K) : e.symm x ∈ e ⁻¹' K := by
+    change e (e.symm x) ∈ K
+    simpa only [e.apply_symm_apply] using hx
+  refine ⟨g, hg, ?_, ?_, ?_⟩
+  · refine
+      ⟨{  toFun := fun q => Hrel (q.1, e.symm q.2)
+          continuous_toFun :=
+            Hrel.continuous.comp (continuous_fst.prodMk (e.symm.continuous.comp continuous_snd))
+          map_zero_left := ?_
+          map_one_left := ?_
+          prop' := ?_ }⟩
+    · intro x
+      rw [Hrel.apply_zero]
+      exact congrArg f (e.apply_symm_apply x)
+    · intro x
+      exact Hrel.apply_one (e.symm x)
+    · intro t x hx
+      change Hrel (t, e.symm x) = f x
+      have hpreC : e.symm x ∈ e ⁻¹' C := by
+        change e (e.symm x) ∈ C
+        simpa only [e.apply_symm_apply] using hx
+      rw [Hrel.eq_fst t hpreC]
+      exact congrArg f (e.apply_symm_apply x)
+  · let : CompactSpace K := isCompact_iff_compactSpace.mp hK
+    apply (g.continuous.comp continuous_subtype_val).isClosedEmbedding
+    intro x y hxy
+    apply Subtype.ext
+    apply e.symm.injective
+    have hpeq : gp (e.symm x) = gp (e.symm y) := hxy
+    exact
+      congrArg Subtype.val
+        (hembp.injective (a₁ := ⟨e.symm x, hpreK x x.property⟩) (a₂ :=
+          ⟨e.symm y, hpreK y y.property⟩) hpeq)
+  · intro x hx
+    exact
+      (injective_mfderiv_comp_linearEquiv_iff e.symm (hgp.mdifferentiableAt (by simp))).mpr
+        (hgpderiv (e.symm x) (hpreK x hx))
+
+theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (A : Set Y) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (g '' A)) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K C B : Set E}
+    (hK : IsCompact K) (hC : IsClosed C) (hBC : B ⊆ interior C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hclean : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ g '' A) {O : Set N} (hO : IsOpen O)
+    (hmaps : Set.MapsTo f K O) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              Set.MapsTo f' K O ∧ ∀ x ∈ K \ B, f' x ∉ g '' A := by
+  let L : Set E := K \ interior C
+  have hL : IsCompact L := hK.inter_right isOpen_interior.isClosed_compl
+  have hfixed : ∀ x ∈ L ∩ C, f x ∉ g '' A := by
+    intro x hx
+    exact hclean x ⟨hx.1.1, hx.2⟩ (fun hxB => hx.1.2 (hBC hxB))
+  obtain ⟨f', hf', hhom, hemb, hderiv', -, hmaps', havoid⟩ :=
+    exists_embedded_avoidance_on_compact_of_isClosed_image f g A hf hg hclosed hself hobstacle hK
+      hL hC hinj hderiv hfixed hO hmaps
+  refine ⟨f', hf', hhom, hemb, hderiv', hmaps', ?_⟩
+  intro x hx
+  by_cases hxC : x ∈ C
+  · exact havoid x (Or.inl (hclean x ⟨hx.1, hxC⟩ hx.2))
+  · exact havoid x (Or.inr ⟨hx.1, fun hi => hxC (interior_subset hi)⟩)
+
+theorem ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood_of_isClosed_range
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (Set.range g)) (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K C B : Set E}
+    (hK : IsCompact K) (hC : IsClosed C) (hBC : B ⊆ interior C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hclean : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Set.range g) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              ∀ x ∈ K \ B, f' x ∉ Set.range g := by
+  obtain ⟨f', hf', hhom, hemb, hd, -, havoid⟩ :=
+    exists_embedded_image_avoidance_relative_neighborhood f g Set.univ hf hg
+      (by simpa only [Set.image_univ] using hclosed) hself hobstacle hK hC hBC hinj hderiv
+      (by simpa only [Set.image_univ] using hclean) isOpen_univ (fun _ _ => Set.mem_univ _)
+  refine ⟨f', hf', hhom, hemb, hd, ?_⟩
+  simpa only [Set.image_univ] using havoid
+
+theorem
+  ManifoldImmersion.exists_relative_embedded_avoidance_of_clean_neighborhood_of_isClosed_range
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(E, N))
+    (g : C(Y, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hclosed : IsClosed (Set.range g)) (hsourceDim : Module.finrank ℝ E = 2)
+    (hdim : 5 ≤ Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K C B : Set E}
+    (hK : IsCompact K) (hC : IsClosed C) (hBC : B ⊆ interior C) (hinj : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ x ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hclean : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Set.range g) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              ∀ x ∈ K \ B, f' x ∉ Set.range g := by
+  obtain ⟨f₁, hf₁, hhom₁, hemb₁, hderiv₁⟩ :=
+    exists_relative_compact_embedding_twoDimensional f hf hsourceDim hdim hK hC hinj hderiv
+  have hinj₁ : Set.InjOn f₁ K := by
+    intro x hx y hy hxy
+    exact congrArg Subtype.val (hemb₁.injective (a₁ := ⟨x, hx⟩) (a₂ := ⟨y, hy⟩) hxy)
+  have hclean₁ : ∀ x ∈ K ∩ C, x ∉ B → f₁ x ∉ Set.range g := by
+    intro x hx hxB
+    rw [← hhom₁.fst_eq_snd hx.2]
+    exact hclean x hx hxB
+  have hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G := by omega
+  obtain ⟨f₂, hf₂, hhom₂, hemb₂, hderiv₂, havoid₂⟩ :=
+    exists_embedded_avoidance_relative_neighborhood_of_isClosed_range f₁ g hf₁ hg hclosed hself
+      hobstacle hK hC hBC hinj₁ hderiv₁ hclean₁
+  exact ⟨f₂, hf₂, hhom₁.trans hhom₂, hemb₂, hderiv₂, havoid₂⟩
+
+theorem ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood
+    {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [LindelofSpace (E × Y)]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] [CompactSpace Y]
+    (f : C(E, N)) (g : C(Y, N)) (hf : ContMDiff 𝓘(ℝ, E) J ∞ f) (hg : ContMDiff I' J ∞ g)
+    (hself : 2 * Module.finrank ℝ E < Module.finrank ℝ G)
+    (hobstacle : Module.finrank ℝ E + Module.finrank ℝ E' < Module.finrank ℝ G) {K C B : Set E}
+    (hK : IsCompact K) (hC : IsClosed C) (hBC : B ⊆ interior C) (hinj : Set.InjOn f K)
+    (hderiv : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f x))
+    (hclean : ∀ x ∈ K ∩ C, x ∉ B → f x ∉ Set.range g) :
+    ∃ f' : C(E, N),
+      ContMDiff 𝓘(ℝ, E) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun x : K => f' x) ∧
+            (∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, E) J f' x)) ∧
+              ∀ x ∈ K \ B, f' x ∉ Set.range g :=
+  exists_embedded_avoidance_relative_neighborhood_of_isClosed_range f g hf hg
+    (isCompact_range g.continuous).isClosed hself hobstacle hK hC hBC hinj hderiv hclean
+
+def OpenObstacle.source {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
+    (g : C(Y, N)) (U : TopologicalSpace.Opens N) : TopologicalSpace.Opens Y :=
+  ⟨g ⁻¹' (U : Set N), U.isOpen.preimage g.continuous⟩
+
+def OpenObstacle.restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
+    (g : C(Y, N)) (U : TopologicalSpace.Opens N) : C(source g U, U)
+    where
+  toFun y := ⟨g y, y.property⟩
+  continuous_toFun := (g.continuous.comp continuous_subtype_val).subtype_mk _
+
+theorem OpenObstacle.mem_range_restrict_iff {Y N : Type*} [TopologicalSpace Y]
+    [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N) (x : U) :
+    x ∈ Set.range (OpenObstacle.restrict g U) ↔ (x : N) ∈ Set.range g := by
+  constructor
+  · rintro ⟨y, hy⟩
+    exact ⟨y, congrArg Subtype.val hy⟩
+  · rintro ⟨y, hy⟩
+    have hyU : y ∈ source g U := by
+      change g y ∈ U
+      exact hy.symm ▸ x.property
+    exact ⟨⟨y, hyU⟩, Subtype.ext hy⟩
+
+theorem OpenObstacle.range_restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
+    (g : C(Y, N)) (U : TopologicalSpace.Opens N) :
+    Set.range (OpenObstacle.restrict g U) = (Subtype.val : U → N) ⁻¹' Set.range g := by
+  ext x
+  exact mem_range_restrict_iff g U x
+
+theorem OpenObstacle.isClosed_range_restrict {Y N : Type*} [TopologicalSpace Y]
+    [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N)
+    (hclosed : IsClosed (Set.range g)) : IsClosed (Set.range (OpenObstacle.restrict g U)) :=
+  by
+  rw [OpenObstacle.range_restrict]
+  exact hclosed.preimage continuous_subtype_val
+
+theorem OpenObstacle.image_restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
+    (g : C(Y, N)) (U : TopologicalSpace.Opens N) (A : Set Y) :
+    OpenObstacle.restrict g U '' ((Subtype.val : source g U → Y) ⁻¹' A) =
+      (Subtype.val : U → N) ⁻¹' (g '' A) := by
+  ext x
+  constructor
+  · rintro ⟨y, hy, heq⟩
+    exact ⟨y, hy, congrArg Subtype.val heq⟩
+  · rintro ⟨y, hy, heq⟩
+    have hyU : y ∈ source g U := by
+      change g y ∈ U
+      exact heq.symm ▸ x.property
+    exact ⟨⟨y, hyU⟩, hy, Subtype.ext heq⟩
+
+theorem OpenObstacle.isClosed_image_restrict {Y N : Type*} [TopologicalSpace Y]
+    [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N) (A : Set Y)
+    (hclosed : IsClosed (g '' A)) :
+    IsClosed (OpenObstacle.restrict g U '' ((Subtype.val : source g U → Y) ⁻¹' A)) := by
+  rw [OpenObstacle.image_restrict]
+  exact hclosed.preimage continuous_subtype_val
+
+theorem OpenObstacle.contMDiff_restrict {E' G H H' Y N : Type*} [NormedAddCommGroup E']
+    [NormedSpace ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
+    [TopologicalSpace H'] {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'}
+    [TopologicalSpace Y] [ChartedSpace H' Y] [TopologicalSpace N] [ChartedSpace H N] (g : C(Y, N))
+    (U : TopologicalSpace.Opens N) (hg : ContMDiff I' J ∞ g) :
+    ContMDiff I' J ∞ (OpenObstacle.restrict g U) := by
+  apply (ContMDiff.subtypeVal_comp_iff U (OpenObstacle.restrict g U)).mp
+  exact hg.comp contMDiff_subtype_val
+
+theorem MorseCancellation.exists_smooth_path_avoiding_closed_image {E G H H' N Y : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H Y] [IsManifold I ∞ Y] [SecondCountableTopology Y]
+    [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] [T2Space N] {x y : N}
+    (γ : Path x y) (g : C(Y, N)) (hg : ContMDiff I J ∞ g) (hclosed : IsClosed (Set.range g))
+    (hdim : 1 + Module.finrank ℝ E < Module.finrank ℝ G) (hx : x ∉ Set.range g)
+    (hy : y ∉ Set.range g) : ∃ η : Path x y, ContMDiff (𝓡∂ 1) J ∞ η ∧ ∀ t, η t ∉ Set.range g := by
+  obtain ⟨f, hf, hf0, hf1⟩ := exists_smooth_connecting_curve (J := J) γ
+  let fI : C(unitInterval, N) := ⟨fun t => f t, f.continuous.comp continuous_subtype_val⟩
+  have hfI : ContMDiff (𝓡∂ 1) J ∞ fI := hf.comp contMDiff_subtypeVal_Icc
+  have hdim' :
+    Module.finrank ℝ (EuclideanSpace ℝ (Fin 1)) + Module.finrank ℝ E < Module.finrank ℝ G := by
+    simpa only [finrank_euclideanSpace_fin] using hdim
+  have hfixed : ∀ t ∈ ({0, 1} : Set unitInterval), fI t ∉ Set.range g := by
+    intro t ht
+    rcases ht with rfl | ht
+    · change f 0 ∉ Set.range g
+      rwa [hf0]
+    · have ht1 : t = 1 := ht
+      subst t
+      change f 1 ∉ Set.range g
+      rwa [hf1]
+  obtain ⟨f', hf', hrel, hdisjoint⟩ :=
+    GeneralPosition.exists_disjoint_smooth_map_homotopicRel_of_isClosed_range fI g hfI hg
+      hclosed hdim' ((Set.finite_singleton (1 : unitInterval)).insert 0).isClosed hfixed
+  have h0 : f' 0 = x := (hrel.fst_eq_snd (by simp)).symm.trans hf0
+  have h1 : f' 1 = y := (hrel.fst_eq_snd (by simp)).symm.trans hf1
+  let η : Path x y := { toContinuousMap := f', source' := h0, target' := h1 }
+  exact ⟨η, hf', fun t ht => Set.disjoint_left.mp hdisjoint ⟨t, rfl⟩ ht⟩
+
+theorem MorseCancellation.exists_smooth_path_avoiding_closed_image_in_open {E G H H' N Y : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
+    [TopologicalSpace Y] [ChartedSpace H Y] [IsManifold I ∞ Y] [SecondCountableTopology Y]
+    [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] [T2Space N]
+    (U : TopologicalSpace.Opens N) {x y : U} (γ : Path x y) (g : C(Y, N)) (hg : ContMDiff I J ∞ g)
+    (hclosed : IsClosed (Set.range g)) (hdim : 1 + Module.finrank ℝ E < Module.finrank ℝ G)
+    (hx : x.val ∉ Set.range g) (hy : y.val ∉ Set.range g) :
+    ∃ η : Path x y, ContMDiff (𝓡∂ 1) J ∞ η ∧ ∀ t, (η t).val ∉ Set.range g := by
+  obtain ⟨η, hη, havoid⟩ :=
+    exists_smooth_path_avoiding_closed_image γ (OpenObstacle.restrict g U)
+      (OpenObstacle.contMDiff_restrict g U hg)
+      (OpenObstacle.isClosed_range_restrict g U hclosed) hdim
+      (fun h => hx ((OpenObstacle.mem_range_restrict_iff g U x).mp h))
+      (fun h => hy ((OpenObstacle.mem_range_restrict_iff g U y).mp h))
+  exact
+    ⟨η, hη, fun t ht => havoid t ((OpenObstacle.mem_range_restrict_iff g U (η t)).mpr ht)⟩
+
+theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact_within_target
+    {E G H H' X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
+    [TopologicalSpace X] [ChartedSpace H X] [IsManifold I ∞ X] [T2Space X] [SigmaCompactSpace X]
+    [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] (f : C(X, N)) {K C U : Set X}
+    (hK : IsCompact K) (hC : IsClosed C) (hU : IsOpen U) (hCU : C ⊆ U)
+    (hfU : ContMDiffOn I J ∞ f U) (hfK : ContMDiffOn I J ∞ f Kᶜ) {D : Set X} {O : Set N}
+    (hO : IsOpen O) (hKO : Set.MapsTo f K O) (hmaps : Set.MapsTo f D O) :
+    ∃ f' : C(X, N), ContMDiff I J ∞ f' ∧ HomotopicRelWithin f f' C D O := by
+  classical
+  have hp (x : K) :=
+    exists_smoothing_patch_at_in_open (I := I) (J := J) f (x : X) hO (hKO x.property)
+  choose p hcompatible hplateau hsource using hp
+  have hcover : K ⊆ ⋃ x : K, (p x).plateau := by
+    intro x hx
+    exact Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hplateau ⟨x, hx⟩⟩
+  obtain ⟨s, hs⟩ :=
+    hK.elim_finite_subcover (fun x : K => (p x).plateau) (fun _ => isOpen_interior) hcover
+  obtain ⟨f', _, hhom, hsm⟩ :=
+    exists_finite_patch_smoothing_within_target (fun i : s => p i.1) f (fun i => hcompatible i.1)
+      hC hU hCU hfU (fun i => hsource i.1) hmaps Finset.univ
+  refine ⟨f', ?_, hhom⟩
+  intro x
+  apply hsm x
+  by_cases hx : x ∈ K
+  · obtain ⟨i, his, hxi⟩ := Set.mem_iUnion₂.mp (hs hx)
+    exact Or.inr ⟨⟨i, his⟩, Finset.mem_univ _, hxi⟩
+  · exact Or.inl ((hfK x hx).contMDiffAt (hK.isClosed.isOpen_compl.mem_nhds hx))
+
+theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact
+    {E G H H' X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
+    {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G H'} [J.Boundaryless]
+    [TopologicalSpace X] [ChartedSpace H X] [IsManifold I ∞ X] [T2Space X] [SigmaCompactSpace X]
+    [TopologicalSpace N] [ChartedSpace H' N] [IsManifold J ∞ N] (f : C(X, N)) {K C U : Set X}
+    (hK : IsCompact K) (hC : IsClosed C) (hU : IsOpen U) (hCU : C ⊆ U)
+    (hfU : ContMDiffOn I J ∞ f U) (hfK : ContMDiffOn I J ∞ f Kᶜ) :
+    ∃ f' : C(X, N), ContMDiff I J ∞ f' ∧ f.HomotopicRel f' C := by
+  obtain ⟨f', hf', hrel⟩ :=
+    exists_smooth_map_homotopicRel_of_smooth_off_compact_within_target f hK hC hU hCU hfU hfK
+      isOpen_univ (Set.mapsTo_univ f K) (Set.mapsTo_univ f Set.univ)
+  exact ⟨f', hf', hrel.homotopicRel⟩
+
+theorem CurveImmersion.exists_continuous_curve_with_endpoint_germs {N : Type*}
+    [TopologicalSpace N] (a b : C(ℝ, N)) (γ : Path (a 0) (b 1)) :
+    ∃ f : C(ℝ, N), Set.EqOn f a (Set.Iic (1 / 4 : ℝ)) ∧ Set.EqOn f b (Set.Ici (3 / 4 : ℝ)) := by
+  classical
+  let α : Path (a (1 / 4)) (a 0) :=
+    Path.ofLine (f := fun t : ℝ => a ((1 - t) / 4))
+      ((a.continuous.comp ((continuous_const.sub continuous_id).div_const 4)).continuousOn)
+      (by norm_num) (by norm_num)
+  let β : Path (b 1) (b (3 / 4)) :=
+    Path.ofLine (f := fun t : ℝ => b (1 - t / 4))
+      ((b.continuous.comp (continuous_const.sub (continuous_id.div_const 4))).continuousOn)
+      (by norm_num) (by norm_num)
+  let η := α.trans (γ.trans β)
+  let mid : ℝ → N := fun t => η.extend (2 * t - 1 / 2)
+  have hmid : Continuous mid :=
+    η.continuous_extend.comp ((continuous_const.mul continuous_id).sub continuous_const)
+  have hm₀ : mid (1 / 4) = a (1 / 4) := by
+    change η.extend (2 * (1 / 4) - 1 / 2) = _
+    norm_num
+  have hm₁ : mid (3 / 4) = b (3 / 4) := by
+    change η.extend (2 * (3 / 4) - 1 / 2) = _
+    norm_num
+  let right : ℝ → N := fun t => if t ≤ 3 / 4 then mid t else b t
+  have hr : Continuous right :=
+    hmid.if_le b.continuous continuous_id continuous_const (fun t ht => ht ▸ hm₁)
+  let f : ℝ → N := fun t => if t ≤ 1 / 4 then a t else right t
+  have hf : Continuous f :=
+    a.continuous.if_le hr continuous_id continuous_const
+      (by
+        intro t ht
+        subst t
+        simpa only [right, if_pos (show (1 / 4 : ℝ) ≤ 3 / 4 by norm_num)] using hm₀.symm)
+  refine ⟨⟨f, hf⟩, ?_, ?_⟩
+  · intro t ht
+    exact if_pos ht
+  · intro t ht
+    change 3 / 4 ≤ t at ht
+    change (if t ≤ 1 / 4 then a t else if t ≤ 3 / 4 then mid t else b t) = b t
+    rw [if_neg (show ¬t ≤ 1 / 4 by linarith)]
+    by_cases hte : t = 3 / 4
+    · subst t
+      simpa only [if_pos le_rfl] using hm₁
+    · exact if_neg (by intro h; exact hte (le_antisymm h ht))
+
+theorem exists_smooth_curve_with_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (a b : C(ℝ, N))
+    (ha : ContMDiff 𝓘(ℝ, ℝ) J ∞ a) (hb : ContMDiff 𝓘(ℝ, ℝ) J ∞ b) (γ : Path (a 0) (b 1)) :
+    ∃ f : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧
+        Set.EqOn f a (Set.Iic (1 / 8 : ℝ)) ∧ Set.EqOn f b (Set.Ici (7 / 8 : ℝ)) := by
+  obtain ⟨g, hgleft, hgright⟩ := CurveImmersion.exists_continuous_curve_with_endpoint_germs a b γ
+  let K := Set.Icc (1 / 4 : ℝ) (3 / 4)
+  let U := Set.Iio (1 / 4 : ℝ) ∪ Set.Ioi (3 / 4)
+  let C := Set.Iic (1 / 8 : ℝ) ∪ Set.Ici (7 / 8)
+  have hU : IsOpen U := isOpen_Iio.union isOpen_Ioi
+  have hC : IsClosed C := isClosed_Iic.union isClosed_Ici
+  have hCU : C ⊆ U := by
+    intro t ht
+    rcases ht with ht | ht
+    · change t ≤ 1 / 8 at ht
+      exact Or.inl (show t < 1 / 4 by linarith)
+    · change 7 / 8 ≤ t at ht
+      exact Or.inr (show 3 / 4 < t by linarith)
+  have hgU : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ g U := by
+    intro t ht
+    apply ContMDiffAt.contMDiffWithinAt
+    rcases ht with ht | ht
+    · have heq : g =ᶠ[𝓝 t] a := by
+        filter_upwards [isOpen_Iio.mem_nhds (show t ∈ Set.Iio (1 / 4 : ℝ) from ht)] with s hs
+        exact hgleft (show s ≤ 1 / 4 from hs.le)
+      exact ha.contMDiffAt.congr_of_eventuallyEq heq
+    · have heq : g =ᶠ[𝓝 t] b := by
+        filter_upwards [isOpen_Ioi.mem_nhds (show t ∈ Set.Ioi (3 / 4 : ℝ) from ht)] with s hs
+        exact hgright (show 3 / 4 ≤ s from hs.le)
+      exact hb.contMDiffAt.congr_of_eventuallyEq heq
+  have hKU : Kᶜ ⊆ U := by
+    intro t ht
+    change ¬(1 / 4 ≤ t ∧ t ≤ 3 / 4) at ht
+    change t < 1 / 4 ∨ 3 / 4 < t
+    exact not_and_or.mp ht |>.imp lt_of_not_ge lt_of_not_ge
+  obtain ⟨f, hf, hrel⟩ :=
+    ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact g
+      CompactIccSpace.isCompact_Icc hC hU hCU hgU (hgU.mono hKU)
+  refine ⟨f, hf, ?_, ?_⟩
+  · intro t ht
+    change t ≤ 1 / 8 at ht
+    exact
+      (hrel.fst_eq_snd (Or.inl ht)).symm.trans
+        (hgleft (show t ∈ Set.Iic (1 / 4 : ℝ) from by change t ≤ 1 / 4; linarith))
+  · intro t ht
+    change 7 / 8 ≤ t at ht
+    exact
+      (hrel.fst_eq_snd (Or.inr ht)).symm.trans
+        (hgright (show t ∈ Set.Ici (3 / 4 : ℝ) from by change 3 / 4 ≤ t; linarith))
+
+theorem ManifoldImmersion.exists_clean_curve_endpoint_neighborhood {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] {f : ℝ → N} (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f) (hxy : f 0 ≠ f 1)
+    (hi0 : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f 0))
+    (hi1 : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f 1)) {S : Set N} (hS : S.Finite) :
+    ∃ C : Set ℝ,
+      IsCompact C ∧
+        {(0 : ℝ), 1} ⊆ interior C ∧
+          Set.InjOn f C ∧
+            (∀ t ∈ C, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) ∧
+              (∀ t ∈ C, t ∉ ({0, 1} : Set ℝ) → f t ∉ S) := by
+  let B : Set ℝ := {0, 1}
+  have hB : IsCompact B := ((Set.finite_singleton (1 : ℝ)).insert 0).isCompact
+  have h0B : (0 : ℝ) ∈ B := by simp [B]
+  have h1B : (1 : ℝ) ∈ B := by simp [B]
+  have hinjB : Set.InjOn f B := by
+    intro s hs t ht heq
+    simp only [B, Set.mem_insert_iff, Set.mem_singleton_iff] at hs ht
+    rcases hs with rfl | rfl <;> rcases ht with rfl | rfl
+    · rfl
+    · exact (hxy heq).elim
+    · exact (hxy heq.symm).elim
+    · rfl
+  have hiB : ∀ t ∈ B, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t) := by
+    intro t ht
+    simp only [B, Set.mem_insert_iff, Set.mem_singleton_iff] at ht
+    rcases ht with rfl | rfl
+    · exact hi0
+    · exact hi1
+  obtain ⟨V, hV, hBV, hinjV⟩ := exists_open_injOn_near_compact hf hB hinjB hiB
+  let R := S \ {f 0, f 1}
+  have hR : IsClosed R := (hS.subset Set.sdiff_subset).isClosed
+  let U := (V ∩ {t | Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)}) ∩ f ⁻¹' Rᶜ
+  have hU : IsOpen U :=
+    (hV.inter (isOpen_injective_derivative hf)).inter (hR.isOpen_compl.preimage hf.continuous)
+  have hBU : B ⊆ U := by
+    intro t ht
+    refine ⟨⟨hBV ht, hiB t ht⟩, ?_⟩
+    simp only [B, Set.mem_insert_iff, Set.mem_singleton_iff] at ht
+    rcases ht with rfl | rfl <;> simp [R]
+  obtain ⟨C, hC, hBC, hCU⟩ := exists_compact_between hB hU hBU
+  refine ⟨C, hC, hBC, hinjV.mono (fun t ht => (hCU ht).1.1), fun t ht => (hCU ht).1.2, ?_⟩
+  intro t ht htB htS
+  apply (hCU ht).2
+  refine ⟨htS, ?_⟩
+  intro hends
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hends
+  rcases hends with h0 | h1
+  · have ht0 : t = 0 := hinjV (hCU ht).1.1 (hBV h0B) h0
+    exact htB (by simp [ht0])
+  · have ht1 : t = 1 := hinjV (hCU ht).1.1 (hBV h1B) h1
+    exact htB (by simp [ht1])
+
+def WeightedPerturbation.perturb {E F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : E → F) (β : E → ℝ) (a : F) (x : E) : F :=
+  f x + β x • a
+
+theorem WeightedPerturbation.contDiff_perturb {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {β : E → ℝ}
+    (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) (a : F) : ContDiff ℝ ∞ (perturb f β a) :=
+  hf.add (hβ.smul contDiff_const)
+
+theorem WeightedPerturbation.fderiv_perturb {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {β : E → ℝ}
+    (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) (a : F) (x : E) :
+    fderiv ℝ (perturb f β a) x = fderiv ℝ f x + (fderiv ℝ β x).smulRight a :=
+  ((hf.differentiable (by simp) x).hasFDerivAt.add
+      ((hβ.differentiable (by simp) x).hasFDerivAt.smul_const a)).fderiv
+
+def WeightedPerturbation.badDomain {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {X : Type*} (b : X → E) (β : E → ℝ) : Set (X × E) :=
+  {q | fderiv ℝ β (b q.1) q.2 ≠ 0}
+
+def WeightedPerturbation.badParameter {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] {X : Type*} (b : X → E) (f : E → F) (β : E → ℝ)
+    (q : X × E) : F :=
+  (fderiv ℝ β (b q.1) q.2)⁻¹ • (-(fderiv ℝ f (b q.1) q.2))
+
+theorem WeightedPerturbation.contMDiff_scalarDerivative {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace X] [ChartedSpace H X]
+    {b : X → E} {β : E → ℝ} (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) (hβ : ContDiff ℝ ∞ β) :
+    ContMDiff (I.prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (fun q : X × E => fderiv ℝ β (b q.1) q.2) :=
+  ((hβ.fderiv_right (by simp)).contMDiff.comp (hb.comp contMDiff_fst)).clm_apply contMDiff_snd
+
+theorem WeightedPerturbation.isOpen_badDomain {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace X] [ChartedSpace H X]
+    {b : X → E} {β : E → ℝ} (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) (hβ : ContDiff ℝ ∞ β) :
+    IsOpen (badDomain b β) :=
+  isOpen_ne_fun (contMDiff_scalarDerivative hb hβ).continuous continuous_const
+
+theorem WeightedPerturbation.contMDiffOn_badParameter {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {B H X : Type*}
+    [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
+    [TopologicalSpace X] [ChartedSpace H X] {b : X → E} {f : E → F} {β : E → ℝ}
+    (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) :
+    ContMDiffOn (I.prod 𝓘(ℝ, E)) 𝓘(ℝ, F) ∞ (badParameter b f β) (badDomain b β) := by
+  have hdf : ContMDiff (I.prod 𝓘(ℝ, E)) 𝓘(ℝ, F) ∞ (fun q : X × E => fderiv ℝ f (b q.1) q.2) :=
+    ((hf.fderiv_right (by simp)).contMDiff.comp (hb.comp contMDiff_fst)).clm_apply contMDiff_snd
+  intro q hq
+  exact
+    (((contMDiff_scalarDerivative hb hβ).contMDiffAt.inv₀ hq).smul
+        hdf.contMDiffAt.neg).contMDiffWithinAt
+
+theorem WeightedPerturbation.kernel_iff_of_not_bad {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {X : Type*} {b : X → E} {f : E → F}
+    {β : E → ℝ} (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) {a : F}
+    (hgood : a ∉ badParameter b f β '' badDomain b β) (x : X) (v : E) :
+    fderiv ℝ (perturb f β a) (b x) v = 0 ↔ fderiv ℝ f (b x) v = 0 ∧ fderiv ℝ β (b x) v = 0 := by
+  rw [fderiv_perturb hf hβ]
+  change fderiv ℝ f (b x) v + fderiv ℝ β (b x) v • a = 0 ↔ _
+  constructor
+  · intro hker
+    have hbzero : fderiv ℝ β (b x) v = 0 := by
+      by_contra hn
+      apply hgood
+      refine ⟨(x, v), hn, ?_⟩
+      have heq : fderiv ℝ β (b x) v • a = -(fderiv ℝ f (b x) v) :=
+        eq_neg_of_add_eq_zero_right hker
+      change (fderiv ℝ β (b x) v)⁻¹ • (-(fderiv ℝ f (b x) v)) = a
+      rw [← heq, inv_smul_smul₀ hn]
+    exact ⟨by simpa only [hbzero, zero_smul, add_zero] using hker, hbzero⟩
+  · rintro ⟨hfzero, hbzero⟩
+    simp only [hfzero, hbzero, zero_smul, add_zero]
+
+theorem WeightedPerturbation.exists_small_parameter_with_common_kernel {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
+    {I : ModelWithCorners ℝ B H} [TopologicalSpace X] [ChartedSpace H X] [FiniteDimensional ℝ B]
+    [FiniteDimensional ℝ E] [FiniteDimensional ℝ F] [IsManifold I ∞ X] [LindelofSpace (X × E)]
+    {b : X → E} {f : E → F} {β : E → ℝ} (hb : ContMDiff I 𝓘(ℝ, E) ∞ b) (hf : ContDiff ℝ ∞ f)
+    (hβ : ContDiff ℝ ∞ β) (hdim : Module.finrank ℝ B + Module.finrank ℝ E < Module.finrank ℝ F)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ a : F,
+      ‖a‖ < ε ∧
+        ContDiff ℝ ∞ (perturb f β a) ∧
+          ∀ x v,
+            fderiv ℝ (perturb f β a) (b x) v = 0 ↔
+              fderiv ℝ f (b x) v = 0 ∧ fderiv ℝ β (b x) v = 0 := by
+  have hd : Module.finrank ℝ (B × E) < Module.finrank ℝ F := by
+    simpa only [Module.finrank_prod] using hdim
+  have hdense :=
+    GeneralPosition.dense_compl_manifold_image (isOpen_badDomain hb hβ)
+      (contMDiffOn_badParameter hb hf hβ) hd
+  obtain ⟨a, hgood, hnorm⟩ := hdense.exists_dist_lt 0 hε
+  exact
+    ⟨a, by simpa only [dist_zero_left] using hnorm, contDiff_perturb hf hβ a,
+      kernel_iff_of_not_bad hf hβ hgood⟩
+
+def CurveImmersion.perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : ℝ → F)
+    (a : F) : ℝ → F :=
+  WeightedPerturbation.perturb f id a
+
+theorem CurveImmersion.exists_small_affine_immersion {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : ℝ → F} (hf : ContDiff ℝ ∞ f)
+    (hdim : 3 ≤ Module.finrank ℝ F) {ε : ℝ} (hε : 0 < ε) :
+    ∃ a : F,
+      ‖a‖ < ε ∧ ContDiff ℝ ∞ (perturb f a) ∧ ∀ t, Function.Injective (fderiv ℝ (perturb f a) t) :=
+  by
+  have hd : Module.finrank ℝ ℝ + Module.finrank ℝ ℝ < Module.finrank ℝ F := by
+    simp only [Module.finrank_self]
+    omega
+  obtain ⟨a, ha, hs, hker⟩ :=
+    WeightedPerturbation.exists_small_parameter_with_common_kernel (I := 𝓘(ℝ, ℝ)) (b := id)
+      (β := id) contMDiff_id hf contDiff_id hd hε
+  refine ⟨a, ha, hs, ?_⟩
+  intro t u v huv
+  have hz : fderiv ℝ (perturb f a) t (u - v) = 0 := by rw [map_sub, huv, sub_self]
+  have hzero := ((hker t (u - v)).mp hz).2
+  have huv0 : u - v = 0 := by simpa only [fderiv_id, ContinuousLinearMap.id_apply] using hzero
+  exact sub_eq_zero.mp huv0
+
+def CurveImmersion.weight (β : ℝ → ℝ) (t : ℝ) : ℝ :=
+  β t * t
+
+theorem CurveImmersion.contDiff_weight {β : ℝ → ℝ} (hβ : ContDiff ℝ ∞ β) :
+    ContDiff ℝ ∞ (weight β) :=
+  hβ.mul contDiff_id
+
+theorem CurveImmersion.hasCompactSupport_weight {β : ℝ → ℝ} (hβ : HasCompactSupport β) :
+    HasCompactSupport (weight β) :=
+  hβ.mul_right (f' := id)
+
+theorem CurveImmersion.tsupport_weight_subset (β : ℝ → ℝ) :
+    tsupport (weight β) ⊆ tsupport β :=
+  tsupport_mul_subset_left (f := β) (g := id)
+
+theorem CurveImmersion.weight_eq_zero {β : ℝ → ℝ} {t : ℝ} (ht : β t = 0) : weight β t = 0 :=
+  by simp only [weight, ht, MulZeroClass.zero_mul]
+
+theorem ManifoldImmersion.exists_curve_immersion_patch_with_property_within_target
+    {G F H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : C(ℝ, N))
+    (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f) {β χ : ℝ → ℝ} (hβ : ContDiff ℝ ∞ β) (hχ : ContDiff ℝ ∞ χ)
+    (hcompact : HasCompactSupport β) (hχsupport : tsupport χ ⊆ f ⁻¹' c.source)
+    (hχone : ∀ t ∈ tsupport β, χ t = 1) (hdim : 3 ≤ Module.finrank ℝ F) (Q : (ℝ → N) → Prop)
+    (hQ :
+      ∀ᶠ a : F in 𝓝 0,
+        Q (ChartMapPerturbation.perturb c f (CurveImmersion.weight β) a))
+    {D : Set ℝ} {O : Set N} (hsource : c.source ⊆ O) (hmaps : Set.MapsTo f D O) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        Q g ∧
+          HomotopicRelWithin f g {t | β t = 0} D O ∧
+            ∀ t ∈ interior {t | β t = 1}, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  have hsupport : tsupport β ⊆ f ⁻¹' c.source := by
+    intro t ht
+    exact hχsupport (subset_tsupport χ (by change χ t ≠ 0; rw [hχone t ht]; norm_num))
+  have hw := CurveImmersion.contDiff_weight hβ
+  have hwsupport : tsupport (CurveImmersion.weight β) ⊆ f ⁻¹' c.source :=
+    (CurveImmersion.tsupport_weight_subset β).trans hsupport
+  let k := ChartMapPerturbation.cutoffCoordinates c f χ
+  have hk : ContDiff ℝ ∞ k := by
+    have hm : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, F) ∞ k := fun t =>
+      ChartMapPerturbation.contMDiffAt_cutoffCoordinates c hχsupport hf.contMDiffAt
+        hχ.contMDiff.contMDiffAt
+    exact hm.contDiff
+  obtain ⟨ε, hε, hvalid⟩ :=
+    ChartMapPerturbation.exists_radius_valid c hf hw.contMDiff
+      (CurveImmersion.hasCompactSupport_weight hcompact) hwsupport
+  obtain ⟨δ, hδ, hδkeep⟩ := Metric.mem_nhds_iff.mp hQ
+  obtain ⟨a, ha, -, hderiv⟩ :=
+    CurveImmersion.exists_small_affine_immersion hk hdim (lt_min hε hδ)
+  have haε : ‖a‖ < ε := ha.trans_le (min_le_left _ _)
+  have hv := hvalid a haε
+  have hsmooth := ChartMapPerturbation.contMDiff_perturb c hf hw.contMDiff hwsupport hv
+  let g : C(ℝ, N) :=
+    ⟨ChartMapPerturbation.perturb c f (CurveImmersion.weight β) a, hsmooth.continuous⟩
+  have hcoord (t : ℝ) (ht : β t = 1) : c (g t) = CurveImmersion.perturb k a t := by
+    have hts : t ∈ tsupport β := subset_tsupport β (by change β t ≠ 0; rw [ht]; norm_num)
+    change c (ChartMapPerturbation.perturb c f (CurveImmersion.weight β) a t) = _
+    rw [ChartMapPerturbation.chart_perturb c f (CurveImmersion.weight β) hv
+        (hsupport hts)]
+    simp only [ChartMapPerturbation.coordinateFamily, CurveImmersion.perturb,
+      WeightedPerturbation.perturb, k, ChartMapPerturbation.cutoffCoordinates,
+      CurveImmersion.weight, ht, hχone t hts, one_mul, one_smul, id_eq]
+  have hQg : Q g :=
+    hδkeep
+      (show a ∈ Metric.ball 0 δ by
+        simpa only [Metric.mem_ball, dist_zero_right] using ha.trans_le (min_le_right ε δ))
+  refine ⟨g, hsmooth, hQg, ?_, ?_⟩
+  · have hrel :=
+      ChartMapPerturbation.homotopicRelWithin_of_source_subset c hf hw.contMDiff hwsupport
+        hvalid haε hsource hmaps
+    exact
+      hrel.mono (fun _ hx => CurveImmersion.weight_eq_zero hx) (Set.Subset.refl D)
+        (Set.Subset.refl O)
+  · intro t ht
+    have hβt : β t = 1 := interior_subset (s := {t | β t = 1}) ht
+    have hfs : f t ∈ c.source :=
+      hsupport (subset_tsupport β (by change β t ≠ 0; rw [hβt]; norm_num))
+    have hgs : g t ∈ c.source :=
+      ChartMapPerturbation.perturb_mem_source c f (CurveImmersion.weight β) hv hfs
+    apply (injective_fderiv_chart_iff c (hsmooth.mdifferentiableAt (by simp)) hgs).mp
+    have heq : (c ∘ g) =ᶠ[𝓝 t] CurveImmersion.perturb k a := by
+      filter_upwards [isOpen_interior.mem_nhds ht] with s hs
+      exact hcoord s (interior_subset (s := {t | β t = 1}) hs)
+    change Function.Injective (fderiv ℝ (c ∘ g) t)
+    rw [heq.fderiv_eq]
+    exact hderiv t
+
+theorem ManifoldImmersion.exists_curve_immersion_patch_step_within_target {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {ι : Type*} [Finite ι]
+    (p : ι → ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, ℝ) J (X := ℝ) (N := N)) (i : ι)
+    (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f) (hcompatible : ∀ j, (p j).Compatible f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {K L C : Set ℝ} (hK : IsCompact K)
+    (hinj : ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) (hLsub : L ⊆ (p i).plateau)
+    (hfixed : ∀ t ∈ C, (p i).cutoff t = 0) {D : Set ℝ} {O : Set N}
+    (hsource : (p i).chart.source ⊆ O) (hmaps : Set.MapsTo f D O) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        (∀ j, (p j).Compatible g) ∧
+          HomotopicRelWithin f g C D O ∧
+            ∀ t ∈ K ∪ L, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  let w := CurveImmersion.weight (p i).cutoff
+  have hw : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ∞ w :=
+    (CurveImmersion.contDiff_weight (p i).smooth.contDiff).contMDiff
+  have hinner := (p i).inner_compatible (hcompatible i)
+  have hwsupport : tsupport w ⊆ f ⁻¹' (p i).chart.source :=
+    (CurveImmersion.tsupport_weight_subset (p i).cutoff).trans hinner
+  have hkeep :
+    ∀ᶠ a : G in 𝓝 0,
+      ∀ j, (p j).Compatible (ChartMapPerturbation.perturb (p i).chart f w a) := by
+    apply Filter.eventually_all.mpr
+    intro j
+    exact
+      ChartMapPerturbation.eventually_maps_compact_into_open (p i).chart hf hw hwsupport
+        (p j).outer_compact.isCompact (p j).chart.open_source (hcompatible j)
+  have hold :=
+    ChartMapPerturbation.eventually_perturb_injective_derivative (p i).chart hf hw
+      (CurveImmersion.hasCompactSupport_weight (p i).compact) hwsupport hK hinj
+  let Q : (ℝ → N) → Prop := fun g =>
+    (∀ j, (p j).Compatible g) ∧ ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t)
+  have hQ : ∀ᶠ a : G in 𝓝 0, Q (ChartMapPerturbation.perturb (p i).chart f w a) :=
+    hkeep.and hold
+  obtain ⟨g, hg, ⟨hc, hKnew⟩, hrel, hplateau⟩ :=
+    exists_curve_immersion_patch_with_property_within_target (p i).chart f hf
+      (p i).smooth.contDiff (p i).outer_smooth.contDiff (p i).compact (hcompatible i) (p i).nested
+      hdim Q hQ hsource hmaps
+  refine ⟨g, hg, hc, ?_, ?_⟩
+  · exact hrel.mono hfixed (Set.Subset.refl D) (Set.Subset.refl O)
+  · intro t ht
+    rcases ht with ht | ht
+    · exact hKnew t ht
+    · exact hplateau t (hLsub ht)
+
+theorem ManifoldImmersion.exists_finite_curve_patch_immersion_within_target {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] {ι : Type*} [Finite ι]
+    (p : ι → ManifoldSmoothing.MapSmoothingPatch 𝓘(ℝ, ℝ) J (X := ℝ) (N := N))
+    (L : ι → Set ℝ) (hL : ∀ i, IsCompact (L i)) (hLsub : ∀ i, L i ⊆ (p i).plateau) (f : C(ℝ, N))
+    (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f) (hcompatible : ∀ i, (p i).Compatible f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {K C : Set ℝ} (hK : IsCompact K)
+    (hinj : ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t))
+    (hfixed : ∀ i t, t ∈ C → (p i).cutoff t = 0) {D : Set ℝ} {O : Set N}
+    (hsource : ∀ i, (p i).chart.source ⊆ O) (hmaps : Set.MapsTo f D O) (s : Finset ι) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        (∀ i, (p i).Compatible g) ∧
+          HomotopicRelWithin f g C D O ∧
+            ∀ t ∈ K ∪ ⋃ i ∈ s, L i, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  classical
+    induction s using Finset.induction_on with
+  | empty =>
+    refine ⟨f, hf, hcompatible, HomotopicRelWithin.refl f C hmaps, ?_⟩
+    simpa only [Finset.notMem_empty, Set.iUnion_of_empty, Set.iUnion_empty, Set.union_empty] using
+      hinj
+  | @insert i s _ ih =>
+    obtain ⟨g₁, hg₁, hc₁, hhom₁, hinj₁⟩ := ih
+    have hKold : IsCompact (K ∪ ⋃ j ∈ s, L j) := hK.union (s.isCompact_biUnion (fun j _ => hL j))
+    obtain ⟨g₂, hg₂, hc₂, hhom₂, hinj₂⟩ :=
+      exists_curve_immersion_patch_step_within_target p i g₁ hg₁ hc₁ hdim hKold hinj₁ (hLsub i)
+        (hfixed i) (hsource i) hhom₁.mapsTo_right
+    refine ⟨g₂, hg₂, hc₂, hhom₁.trans hhom₂, ?_⟩
+    intro t ht
+    apply hinj₂ t
+    rcases ht with ht | ht
+    · exact Or.inl (Or.inl ht)
+    · obtain ⟨j, hj, htj⟩ := Set.mem_iUnion₂.mp ht
+      rcases Finset.mem_insert.mp hj with rfl | hjs
+      · exact Or.inr htj
+      · exact Or.inl (Or.inr (Set.mem_iUnion₂.mpr ⟨j, hjs, htj⟩))
+
+theorem ManifoldImmersion.exists_curve_immersion_on_compact_rel_within_target
+    {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
+    [ChartedSpace H N] [IsManifold J ∞ N] (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {K L C : Set ℝ} (hK : IsCompact K) (hL : IsCompact L)
+    (hinj : ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) (hC : IsClosed C)
+    (hdis : Disjoint L C) {D : Set ℝ} {O : Set N} (hO : IsOpen O) (hLO : Set.MapsTo f L O)
+    (hmaps : Set.MapsTo f D O) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        HomotopicRelWithin f g C D O ∧
+          ∀ t ∈ K ∪ L, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  classical
+  have hp (t : L) :=
+    exists_relative_immersion_patch_at_in_open (J := J) f hC
+      (show (t : ℝ) ∉ C from fun ht => Set.disjoint_left.mp hdis t.property ht) hO
+      (hLO t.property)
+  choose p T hcompatible hT hn hsub hfixed hsource using hp
+  have hcover : L ⊆ ⋃ t : L, interior (T t) := by
+    intro t ht
+    exact Set.mem_iUnion.mpr ⟨⟨t, ht⟩, mem_interior_iff_mem_nhds.mpr (hn ⟨t, ht⟩)⟩
+  obtain ⟨s, hs⟩ :=
+    hL.elim_finite_subcover (fun t : L => interior (T t)) (fun _ => isOpen_interior) hcover
+  obtain ⟨g, hg, -, hhom, hderiv⟩ :=
+    exists_finite_curve_patch_immersion_within_target (fun i : s => p i.1) (fun i : s => T i.1)
+      (fun i => hT i.1) (fun i => hsub i.1) f hf (fun i => hcompatible i.1) hdim hK hinj
+      (fun i => hfixed i.1) (fun i => hsource i.1) hmaps Finset.univ
+  refine ⟨g, hg, hhom, ?_⟩
+  intro t ht
+  apply hderiv t
+  rcases ht with ht | ht
+  · exact Or.inl ht
+  · obtain ⟨i, his, hti⟩ := Set.mem_iUnion₂.mp (hs ht)
+    exact Or.inr (Set.mem_iUnion₂.mpr ⟨⟨i, his⟩, Finset.mem_univ _, interior_subset hti⟩)
+
+theorem ManifoldImmersion.exists_relative_compact_curve_embedding_within_target
+    {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
+    [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {K C : Set ℝ} (hK : IsCompact K) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ t ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) {O : Set N} (hO : IsOpen O)
+    (hmaps : Set.MapsTo f (K \ C) O) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        HomotopicRelWithin f g C (K \ C) O ∧
+          Topology.IsClosedEmbedding (fun t : K => g t) ∧
+            ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  let U : Set ℝ := {t | Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)}
+  have hU : IsOpen U := isOpen_injective_derivative hf
+  have hCU : K ∩ C ⊆ U := fun t ht => hderiv t ht
+  obtain ⟨D, hD, hCD, hDU⟩ := exists_compact_between (hK.inter_right hC) hU hCU
+  let L := K \ interior D
+  have hL : IsCompact L := hK.inter_right isOpen_interior.isClosed_compl
+  have hdis : Disjoint L C := Set.disjoint_left.mpr (fun _ ht htC => ht.2 (hCD ⟨ht.1, htC⟩))
+  have hLO : Set.MapsTo f L O := fun t ht => hmaps ⟨ht.1, fun htC => ht.2 (hCD ⟨ht.1, htC⟩)⟩
+  obtain ⟨g₁, hg₁, hhom₁, hinj₁⟩ :=
+    exists_curve_immersion_on_compact_rel_within_target f hf hdim hD hL (fun t ht => hDU ht) hC
+      hdis hO hLO hmaps
+  have hKinj : ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g₁ t) := by
+    intro t ht
+    apply hinj₁ t
+    by_cases htD : t ∈ D
+    · exact Or.inl htD
+    · exact Or.inr ⟨ht, fun hi => htD (interior_subset hi)⟩
+  have hfixed₁ : Set.InjOn g₁ (K ∩ C) := by
+    intro t ht s hs hts
+    apply hfixed ht hs
+    rw [hhom₁.homotopicRel.fst_eq_snd ht.2, hhom₁.homotopicRel.fst_eq_snd hs.2]
+    exact hts
+  have hd : 2 * Module.finrank ℝ ℝ < Module.finrank ℝ G := by
+    simp only [Module.finrank_self]
+    omega
+  obtain ⟨g₂, hg₂, hhom₂, hemb, hinj₂⟩ :=
+    exists_compact_embedding_of_immersion_within_target g₁ hg₁ hd hK hKinj hC hfixed₁ hO
+      hhom₁.mapsTo_right
+  exact ⟨g₂, hg₂, hhom₁.trans hhom₂, hemb, hinj₂⟩
+
+theorem ManifoldImmersion.exists_relative_compact_curve_embedding {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {K C : Set ℝ} (hK : IsCompact K) (hC : IsClosed C)
+    (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ t ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) :
+    ∃ g : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ g ∧
+        f.HomotopicRel g C ∧
+          Topology.IsClosedEmbedding (fun t : K => g t) ∧
+            ∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g t) := by
+  obtain ⟨g, hg, hrel, he, hi⟩ :=
+    exists_relative_compact_curve_embedding_within_target f hf hdim hK hC hfixed hderiv
+      isOpen_univ (Set.mapsTo_univ f (K \ C))
+  exact ⟨g, hg, hrel.homotopicRel, he, hi⟩
+
+theorem ManifoldImmersion.exists_relative_curve_avoidance_of_clean_neighborhood
+    {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
+    [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
+    [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] {F H' Y : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ F] [TopologicalSpace H'] {I' : ModelWithCorners ℝ F H'}
+    [TopologicalSpace Y] [ChartedSpace H' Y] [IsManifold I' ∞ Y] [CompactSpace Y]
+    [LindelofSpace (ℝ × Y)] (f : C(ℝ, N)) (g : C(Y, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
+    (hg : ContMDiff I' J ∞ g) (hdim : 3 ≤ Module.finrank ℝ G)
+    (hobstacle : 1 + Module.finrank ℝ F < Module.finrank ℝ G) {K C B : Set ℝ} (hK : IsCompact K)
+    (hC : IsClosed C) (hBC : B ⊆ interior C) (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ t ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t))
+    (hclean : ∀ t ∈ K ∩ C, t ∉ B → f t ∉ Set.range g) :
+    ∃ f' : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun t : K => f' t) ∧
+            (∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f' t)) ∧
+              ∀ t ∈ K \ B, f' t ∉ Set.range g := by
+  obtain ⟨f₁, hf₁, hhom₁, hemb₁, hderiv₁⟩ :=
+    exists_relative_compact_curve_embedding f hf hdim hK hC hfixed hderiv
+  have hinj₁ : Set.InjOn f₁ K := by
+    intro t ht s hs hts
+    exact congrArg Subtype.val (hemb₁.injective (a₁ := ⟨t, ht⟩) (a₂ := ⟨s, hs⟩) hts)
+  have hclean₁ : ∀ t ∈ K ∩ C, t ∉ B → f₁ t ∉ Set.range g := by
+    intro t ht htB
+    rw [← hhom₁.fst_eq_snd ht.2]
+    exact hclean t ht htB
+  have hself : 2 * Module.finrank ℝ ℝ < Module.finrank ℝ G := by
+    simp only [Module.finrank_self]
+    omega
+  have hobs : Module.finrank ℝ ℝ + Module.finrank ℝ F < Module.finrank ℝ G := by
+    simpa only [Module.finrank_self] using hobstacle
+  obtain ⟨f₂, hf₂, hhom₂, hemb₂, hderiv₂, havoid⟩ :=
+    exists_embedded_avoidance_relative_neighborhood f₁ g hf₁ hg hself hobs hK hC hBC hinj₁ hderiv₁
+      hclean₁
+  exact ⟨f₂, hf₂, hhom₁.trans hhom₂, hemb₂, hderiv₂, havoid⟩
+
+theorem ManifoldImmersion.exists_relative_curve_avoiding_finite {G H N : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
+    [IsManifold J ∞ N] [T2Space N] (f : C(ℝ, N)) (hf : ContMDiff 𝓘(ℝ, ℝ) J ∞ f)
+    (hdim : 3 ≤ Module.finrank ℝ G) {S : Set N} (hS : S.Finite) {K C B : Set ℝ} (hK : IsCompact K)
+    (hC : IsClosed C) (hBC : B ⊆ interior C) (hfixed : Set.InjOn f (K ∩ C))
+    (hderiv : ∀ t ∈ K ∩ C, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t))
+    (hclean : ∀ t ∈ K ∩ C, t ∉ B → f t ∉ S) :
+    ∃ f' : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f' ∧
+        f.HomotopicRel f' C ∧
+          Topology.IsClosedEmbedding (fun t : K => f' t) ∧
+            (∀ t ∈ K, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f' t)) ∧ ∀ t ∈ K \ B, f' t ∉ S := by
+  let : Fintype S := hS.fintype
+  let Z := EuclideanSpace ℝ (Fin 0)
+  let : ChartedSpace Z S := ChartedSpace.ofDiscreteTopology
+  let : IsManifold 𝓘(ℝ, Z) ∞ S := IsManifold.of_discreteTopology _
+  let g : C(S, N) := ⟨Subtype.val, continuous_subtype_val⟩
+  have hg : ContMDiff 𝓘(ℝ, Z) J ∞ g := contMDiff_of_discreteTopology
+  have hrange : Set.range g = S := by ext y; simp [g]
+  have hobs : 1 + Module.finrank ℝ Z < Module.finrank ℝ G := by
+    simp only [Z, finrank_euclideanSpace_fin]
+    omega
+  have hclean' : ∀ t ∈ K ∩ C, t ∉ B → f t ∉ Set.range g := by simpa only [hrange] using hclean
+  obtain ⟨f', hf', hrel, hemb, hi, havoid⟩ :=
+    exists_relative_curve_avoidance_of_clean_neighborhood f g hf hg hdim hobs hK hC hBC hfixed
+      hderiv hclean'
+  refine ⟨f', hf', hrel, hemb, hi, ?_⟩
+  simpa only [hrange] using havoid
+
+theorem exists_embedded_arc_with_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    (a b : C(ℝ, N)) (ha : ContMDiff 𝓘(ℝ, ℝ) J ∞ a) (hb : ContMDiff 𝓘(ℝ, ℝ) J ∞ b)
+    (hia : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J a 0))
+    (hib : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J b 1)) (γ : Path (a 0) (b 1)) (hxy : a 0 ≠ b 1)
+    (hdim : 3 ≤ Module.finrank ℝ G) {S : Set N} (hS : S.Finite) :
+    ∃ f : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧
+        (f =ᶠ[𝓝 (0 : ℝ)] a) ∧
+          (f =ᶠ[𝓝 (1 : ℝ)] b) ∧
+            Topology.IsClosedEmbedding (fun t : unitInterval => f t) ∧
+              (∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) ∧
+                (∀ t ∈ Set.Ioo (0 : ℝ) 1, f t ∉ S) := by
+  obtain ⟨g, hg, hga, hgb⟩ := exists_smooth_curve_with_endpoint_germs a b ha hb γ
+  have hga0 : g =ᶠ[𝓝 (0 : ℝ)] a := by
+    filter_upwards [Iio_mem_nhds (show (0 : ℝ) < 1 / 8 by norm_num)] with t ht
+    change t < 1 / 8 at ht
+    exact hga ht.le
+  have hgb1 : g =ᶠ[𝓝 (1 : ℝ)] b := by
+    filter_upwards [Ioi_mem_nhds (show (7 / 8 : ℝ) < 1 by norm_num)] with t ht
+    change 7 / 8 < t at ht
+    exact hgb ht.le
+  have hgxy : g 0 ≠ g 1 := by
+    rw [hga0.eq_of_nhds, hgb1.eq_of_nhds]
+    exact hxy
+  have hig0 : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g 0) := by
+    rw [hga0.mfderiv_eq]
+    exact hia
+  have hig1 : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J g 1) := by
+    rw [hgb1.mfderiv_eq]
+    exact hib
+  obtain ⟨C, hC, hBC, hinjC, hiC, hclean⟩ :=
+    ManifoldImmersion.exists_clean_curve_endpoint_neighborhood hg hgxy hig0 hig1 hS
+  obtain ⟨f, hf, hrel, hemb, hi, havoid⟩ :=
+    ManifoldImmersion.exists_relative_curve_avoiding_finite g hg hdim hS
+      (CompactIccSpace.isCompact_Icc (a := (0 : ℝ)) (b := 1)) hC.isClosed hBC
+      (hinjC.mono Set.inter_subset_right) (fun t ht => hiC t ht.2) (fun t ht => hclean t ht.2)
+  have hfg (t : ℝ) (ht : t ∈ ({0, 1} : Set ℝ)) : f =ᶠ[𝓝 t] g := by
+    filter_upwards [isOpen_interior.mem_nhds (hBC ht)] with s hs
+    exact (hrel.fst_eq_snd (interior_subset hs)).symm
+  refine ⟨f, hf, (hfg 0 (by simp)).trans hga0, (hfg 1 (by simp)).trans hgb1, hemb, hi, ?_⟩
+  intro t ht
+  apply havoid t ⟨⟨ht.1.le, ht.2.le⟩, ?_⟩
+  intro htB
+  rcases htB with ht0 | ht1
+  · exact ht.1.ne' ht0
+  · exact ht.2.ne ht1
+
+theorem exists_smooth_curve_with_germ_at {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
+    [ChartedSpace H N] {a : ℝ → N} {U : Set ℝ} {t₀ : ℝ} (ha : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ a U)
+    (hU : IsOpen U) (ht₀ : t₀ ∈ U) : ∃ f : C(ℝ, N), ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧ (f =ᶠ[𝓝 t₀] a) := by
+  obtain ⟨f, hf, heq⟩ := exists_smooth_extension_near_point ha hU ht₀
+  exact ⟨⟨f, hf.continuous⟩, hf, heq⟩
+
+theorem exists_embedded_arc_with_local_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
+    [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
+    [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
+    {a b : ℝ → N} {U V : Set ℝ} (ha : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ a U)
+    (hb : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ b V) (hU : IsOpen U) (hV : IsOpen V) (h0U : (0 : ℝ) ∈ U)
+    (h1V : (1 : ℝ) ∈ V) (hia : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J a 0))
+    (hib : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J b 1)) (γ : Path (a 0) (b 1)) (hxy : a 0 ≠ b 1)
+    (hdim : 3 ≤ Module.finrank ℝ G) {S : Set N} (hS : S.Finite) :
+    ∃ f : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧
+        (f =ᶠ[𝓝 (0 : ℝ)] a) ∧
+          (f =ᶠ[𝓝 (1 : ℝ)] b) ∧
+            Topology.IsClosedEmbedding (fun t : unitInterval => f t) ∧
+              (∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) ∧
+                (∀ t ∈ Set.Ioo (0 : ℝ) 1, f t ∉ S) := by
+  obtain ⟨a', ha', heqa⟩ := exists_smooth_curve_with_germ_at ha hU h0U
+  obtain ⟨b', hb', heqb⟩ := exists_smooth_curve_with_germ_at hb hV h1V
+  have hia' : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J a' 0) := by
+    rw [heqa.mfderiv_eq]
+    exact hia
+  have hib' : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J b' 1) := by
+    rw [heqb.mfderiv_eq]
+    exact hib
+  have hxy' : a' 0 ≠ b' 1 := by
+    rw [heqa.eq_of_nhds, heqb.eq_of_nhds]
+    exact hxy
+  obtain ⟨f, hf, hfa, hfb, hemb, hi, havoid⟩ :=
+    exists_embedded_arc_with_endpoint_germs a' b' ha' hb' hia' hib'
+      (γ.cast heqa.eq_of_nhds heqb.eq_of_nhds) hxy' hdim hS
+  exact ⟨f, hf, hfa.trans heqa, hfb.trans heqb, hemb, hi, havoid⟩
+
+theorem MorseCancellation.exists_clean_arc_with_local_endpoint_germs {G V H H' N Y : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace H] [TopologicalSpace H']
+    {J : ModelWithCorners ℝ G H} {I : ModelWithCorners ℝ V H'} [J.Boundaryless]
+    [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N] [TopologicalSpace Y]
+    [ChartedSpace H' Y] [IsManifold I ∞ Y] [SecondCountableTopology Y] {a b : ℝ → N} {U W : Set ℝ}
+    (ha : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ a U) (hb : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ b W) (hU : IsOpen U)
+    (hW : IsOpen W) (h0U : (0 : ℝ) ∈ U) (h1W : (1 : ℝ) ∈ W)
+    (hia : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J a 0))
+    (hib : Function.Injective (mfderiv 𝓘(ℝ, ℝ) J b 1)) (γ : Path (a 0) (b 1)) (hxy : a 0 ≠ b 1)
+    (hdim : 3 ≤ Module.finrank ℝ G) (o : C(Y, N)) (ho : ContMDiff I J ∞ o)
+    (hclosed : IsClosed (Set.range o)) (hobdim : 1 + Module.finrank ℝ V < Module.finrank ℝ G)
+    (hclean0 : ∀ᶠ t in 𝓝 (0 : ℝ), a t ∈ Set.range o → t = 0)
+    (hclean1 : ∀ᶠ t in 𝓝 (1 : ℝ), b t ∈ Set.range o → t = 1) :
+    ∃ f : C(ℝ, N),
+      ContMDiff 𝓘(ℝ, ℝ) J ∞ f ∧
+        (f =ᶠ[𝓝 (0 : ℝ)] a) ∧
+          (f =ᶠ[𝓝 (1 : ℝ)] b) ∧
+            Topology.IsClosedEmbedding (fun t : unitInterval => f t) ∧
+              (∀ t ∈ Set.Icc (0 : ℝ) 1, Function.Injective (mfderiv 𝓘(ℝ, ℝ) J f t)) ∧
+                ∀ t ∈ Set.Ioo (0 : ℝ) 1, f t ∉ Set.range o := by
+  obtain ⟨f, hf, hfa, hfb, hemb, hfd, -⟩ :=
+    exists_embedded_arc_with_local_endpoint_germs ha hb hU hW h0U h1W hia hib γ hxy hdim
+      (S := ∅) Set.finite_empty
+  have hnear0 : ∀ᶠ t in 𝓝 (0 : ℝ), f t ∈ Set.range o → t = 0 := by
+    filter_upwards [hfa, hclean0] with t he hc
+    rw [he]
+    exact hc
+  have hnear1 : ∀ᶠ t in 𝓝 (1 : ℝ), f t ∈ Set.range o → t = 1 := by
+    filter_upwards [hfb, hclean1] with t he hc
+    rw [he]
+    exact hc
+  obtain ⟨r, hr, hball0⟩ := Metric.nhds_basis_closedBall.mem_iff.mp hnear0
+  obtain ⟨s, hs, hball1⟩ := Metric.nhds_basis_closedBall.mem_iff.mp hnear1
+  let C : Set ℝ := Metric.closedBall 0 r ∪ Metric.closedBall 1 s
+  have h0C : C ∈ 𝓝 (0 : ℝ) :=
+    Filter.mem_of_superset (Metric.ball_mem_nhds 0 hr)
+      (fun _ ht => Or.inl (Metric.ball_subset_closedBall ht))
+  have h1C : C ∈ 𝓝 (1 : ℝ) :=
+    Filter.mem_of_superset (Metric.ball_mem_nhds 1 hs)
+      (fun _ ht => Or.inr (Metric.ball_subset_closedBall ht))
+  have hBC : ({0, 1} : Set ℝ) ⊆ interior C := by
+    intro t ht
+    rcases ht with rfl | ht
+    · exact mem_interior_iff_mem_nhds.mpr h0C
+    · have ht1 : t = 1 := ht
+      subst t
+      exact mem_interior_iff_mem_nhds.mpr h1C
+  have hclean : ∀ t ∈ Set.Icc (0 : ℝ) 1 ∩ C, t ∉ ({0, 1} : Set ℝ) → f t ∉ Set.range o := by
+    intro t ht htB hto
+    rcases ht.2 with ht0 | ht1
+    · exact htB (Or.inl (hball0 ht0 hto))
+    · exact htB (Or.inr (hball1 ht1 hto))
+  have hfi : Set.InjOn f (Set.Icc (0 : ℝ) 1) := by
+    intro x hx y hy he
+    exact congrArg Subtype.val (hemb.injective (a₁ := ⟨x, hx⟩) (a₂ := ⟨y, hy⟩) he)
+  have hself : 2 * Module.finrank ℝ ℝ < Module.finrank ℝ G := by
+    simp only [Module.finrank_self]
+    omega
+  have hobs : Module.finrank ℝ ℝ + Module.finrank ℝ V < Module.finrank ℝ G := by
+    simpa only [Module.finrank_self] using hobdim
+  obtain ⟨g, hg, hrel, hge, hgd, havoid⟩ :=
+    ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood_of_isClosed_range f o
+      hf ho hclosed hself hobs CompactIccSpace.isCompact_Icc
+      (show IsClosed C from Metric.isClosed_closedBall.union Metric.isClosed_closedBall) hBC hfi
+      hfd hclean
+  refine ⟨g, hg, ?_, ?_, hge, hgd, ?_⟩
+  · filter_upwards [h0C, hfa] with t ht he
+    exact (hrel.fst_eq_snd ht).symm.trans he
+  · filter_upwards [h1C, hfb] with t ht he
+    exact (hrel.fst_eq_snd ht).symm.trans he
+  · intro t ht hto
+    have htB : t ∉ ({0, 1} : Set ℝ) := by
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or]
+      exact ⟨ne_of_gt ht.1, ne_of_lt ht.2⟩
+    exact havoid t ⟨⟨ht.1.le, ht.2.le⟩, htB⟩ hto
+
+theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_starConvex {E M D : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
+    [FiniteDimensional ℝ D] (e : NativeEuclideanEmbedding E M) {f : D → M}
+    (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {K : Set D} (hK : IsCompact K) (hz : (0 : D) ∈ K)
+    (hstar : StarConvex ℝ (0 : D) K)
+    (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) :
+    ∃ V : Set D,
+      IsOpen V ∧
+        K ⊆ V ∧
+          ∃ A : D → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension),
+            ContDiffOn ℝ ∞ A V ∧
+              ∀ x ∈ K, Function.Injective (A x) ∧ (A x).range = e.diskNormalSpace f x := by
+  obtain ⟨U, hU, hKU, hsP, hP⟩ := e.exists_open_diskNormalProjection hf hi
+  have hidem : ∀ x ∈ K, IsIdempotentElem (e.diskNormalProjection f x) := by
+    intro x hx
+    rw [hP x (hKU hx)]
+    exact (e.diskNormalSpace f x).isIdempotentElem_starProjection
+  obtain ⟨V, hV, hKV, A, hA, hAi⟩ :=
+    DiskFraming.exists_smooth_frame_near_starConvex hK hstar hU hKU
+      (e.diskNormalProjection f) hidem hsP
+  have hr : (e.diskNormalProjection f 0).range = e.diskNormalSpace f 0 := by
+    rw [hP 0 (hKU hz), Submodule.range_starProjection]
+  have hdim : Module.finrank ℝ (e.diskNormalSpace f 0) = n := by
+    have h := e.finrank_diskTangent_add_normal hf (hi 0 hz)
+    omega
+  have hcenter : Module.finrank ℝ (e.diskNormalProjection f 0).range = n :=
+    (congrArg
+          (fun S : Submodule ℝ (EuclideanSpace ℝ (Fin e.ambientDimension)) => Module.finrank ℝ S)
+          hr).trans
+      hdim
+  let φ : EuclideanSpace ℝ (Fin n) ≃L[ℝ] (e.diskNormalProjection f 0).range :=
+    ContinuousLinearEquiv.ofFinrankEq (finrank_euclideanSpace_fin.trans hcenter.symm)
+  refine
+    ⟨V, hV, hKV, fun x => (A x).comp φ.toContinuousLinearMap, hA.clm_comp contDiffOn_const, ?_⟩
+  intro x hx
+  refine ⟨((hAi x hx).1).comp φ.injective, ?_⟩
+  calc
+    ((A x).comp φ.toContinuousLinearMap).range = (A x).range :=
+      LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.mpr φ.surjective)
+    _ = (e.diskNormalProjection f x).range := (hAi x hx).2
+    _ = e.diskNormalSpace f x := by rw [hP x (hKU hx), Submodule.range_starProjection]
+
+theorem exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero
+    {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M}
+    (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {K : Set D} (hK : IsCompact K) (hz : (0 : D) ∈ K)
+    (hstar : StarConvex ℝ (0 : D) K) (hinj : Set.InjOn f K)
+    (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+    (hfO : Set.MapsTo f K O) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ :
+          PartialDiffeomorph 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E)
+            (D × EuclideanSpace ℝ (Fin n)) M ∞,
+          K ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧ (∀ x, Φ (x, 0) = f x) ∧ Φ.target ⊆ O := by
+  let : Nonempty M := ⟨f 0⟩
+  obtain ⟨e⟩ := nonempty_nativeEuclideanEmbedding (E := E) (M := M)
+  obtain ⟨r⟩ := e.nonempty_smoothRetraction
+  obtain ⟨V, hV, hKV, A, hA, hframe⟩ :=
+    e.exists_smooth_normalFrame_near_starConvex hf hK hz hstar hi n hcodim
+  obtain ⟨Φ, hzero, -, hΦ⟩ :=
+    r.exists_diskTubularNeighborhood hf hK hV hKV hinj hi hA (fun x hx => (hframe x hx).1)
+      (fun x hx => (hframe x hx).2)
+  let W := Φ.source ∩ Φ ⁻¹' O
+  have hW : IsOpen W := Φ.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage Φ.open_source hO
+  have hWloc : IsLocalDiffeomorphOn 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E) ∞ Φ W :=
+    fun p => PartialDiffeomorph.isLocalDiffeomorphAt _ _ _ Φ p.property.1
+  let Ψ :=
+    partialDiffeomorphOfInjectiveLocal hW (Φ.toPartialEquiv.injOn.mono Set.inter_subset_left)
+      hWloc
+  have hzeroΨ : K ×ˢ {(0 : EuclideanSpace ℝ (Fin n))} ⊆ Ψ.source := by
+    rintro ⟨x, v⟩ ⟨hx, hv⟩
+    have hv0 : v = 0 := hv
+    subst v
+    refine ⟨hzero ⟨hx, rfl⟩, ?_⟩
+    change Φ (x, 0) ∈ O
+    rw [hΦ, r.diskCoordinates_zero]
+    exact hfO hx
+  obtain ⟨ε, hε, hprod⟩ := DiskFraming.exists_pos_prod_closedBall_subset hK Ψ.open_source hzeroΨ
+  refine ⟨ε, hε, Ψ, hprod, ?_, ?_⟩
+  · intro x
+    change Φ (x, 0) = f x
+    rw [hΦ, r.diskCoordinates_zero]
+  · change Φ '' W ⊆ O
+    rintro _ ⟨p, hp, rfl⟩
+    exact hp.2
+
+theorem exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero
+    {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M}
+    (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) {K : Set D} (hK : IsCompact K) (hz : (0 : D) ∈ K)
+    (hstar : StarConvex ℝ (0 : D) K) (hinj : Set.InjOn f K)
+    (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+    (hfO : Set.MapsTo f K O) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ :
+          PartialDiffeomorph 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E)
+            (D × EuclideanSpace ℝ (Fin n)) M ∞,
+          K ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧ (∀ x, Φ (x, 0) = f x) ∧ Φ.target ⊆ O := by
+  let D₀ := EuclideanSpace ℝ (Fin (Module.finrank ℝ D))
+  let e : D₀ ≃L[ℝ] D := ContinuousLinearEquiv.ofFinrankEq finrank_euclideanSpace_fin
+  let f₀ := f ∘ e
+  let K₀ := e ⁻¹' K
+  have hf₀ : ContMDiff 𝓘(ℝ, D₀) 𝓘(ℝ, E) ∞ f₀ := hf.comp e.contDiff.contMDiff
+  have hK₀ : IsCompact K₀ := e.toHomeomorph.isCompact_preimage.mpr hK
+  have hz₀ : (0 : D₀) ∈ K₀ := by
+    change e 0 ∈ K
+    simpa only [map_zero] using hz
+  have hstar₀ : StarConvex ℝ (0 : D₀) K₀ := by
+    apply StarConvex.linear_preimage e.toLinearMap
+    simpa only [ContinuousLinearEquiv.coe_coe, map_zero] using hstar
+  have hinj₀ : Set.InjOn f₀ K₀ := fun _ hx _ hy hxy => e.injective (hinj hx hy hxy)
+  have hi₀ : ∀ x ∈ K₀, Function.Injective (mfderiv 𝓘(ℝ, D₀) 𝓘(ℝ, E) f₀ x) := by
+    intro x hx
+    exact
+      (ManifoldImmersion.injective_mfderiv_comp_linearEquiv_iff e
+            (hf.mdifferentiableAt (by simp))).mpr
+        (hi (e x) hx)
+  have hcodim₀ : Module.finrank ℝ D₀ + n = Module.finrank ℝ E := by
+    simpa only [D₀, finrank_euclideanSpace_fin] using hcodim
+  obtain ⟨ε, hε, Φ, hsource, hzero, htarget⟩ :=
+    exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero hf₀ hK₀ hz₀ hstar₀
+      hinj₀ hi₀ n hcodim₀ hO (fun _ hx => hfO hx)
+  let eprod := e.symm.prodCongr (ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ (Fin n)))
+  let c := eprod.toDiffeomorph
+  let Ψ := c.toPartialDiffeomorph'.trans Φ
+  have hpre (x : D) (hx : x ∈ K) : e.symm x ∈ K₀ := by
+    change e (e.symm x) ∈ K
+    simpa only [e.apply_symm_apply] using hx
+  refine ⟨ε, hε, Ψ, ?_, ?_, ?_⟩
+  · rintro ⟨x, v⟩ ⟨hx, hv⟩
+    exact ⟨Set.mem_univ _, hsource ⟨hpre x hx, hv⟩⟩
+  · intro x
+    change Φ (e.symm x, 0) = f x
+    rw [hzero (e.symm x)]
+    exact congrArg f (e.apply_symm_apply x)
+  · intro y hy
+    exact htarget hy.1
+
+theorem exists_local_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M} {K U : Set D}
+    (hf : ContMDiffOn 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f U) (hK : IsCompact K) (hz : (0 : D) ∈ K)
+    (hstar : StarConvex ℝ (0 : D) K) (hU : IsOpen U) (hKU : K ⊆ U) (hinj : Set.InjOn f K)
+    (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+    (hfO : Set.MapsTo f K O) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ :
+          PartialDiffeomorph 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E)
+            (D × EuclideanSpace ℝ (Fin n)) M ∞,
+          K ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
+            Φ.source ⊆ U ×ˢ Set.univ ∧ (∀ x, (x, 0) ∈ Φ.source → Φ (x, 0) = f x) ∧ Φ.target ⊆ O :=
+  by
+  obtain ⟨g, hg, V, hV, hKV, hVU, heq⟩ :=
+    exists_smooth_extension_near_starConvex hK hz hstar hU hKU hf
+  have hinjg : Set.InjOn g K := by
+    intro x hx y hy hxy
+    apply hinj hx hy
+    simpa only [heq (hKV hx), heq (hKV hy)] using hxy
+  have hig : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) g x) := by
+    intro x hx
+    have hnear : g =ᶠ[𝓝 x] f := Filter.Eventually.mono (hV.mem_nhds (hKV hx)) heq
+    rw [hnear.mfderiv_eq]
+    exact hi x hx
+  have hgO : Set.MapsTo g K O := by
+    intro x hx
+    rw [heq (hKV hx)]
+    exact hfO hx
+  obtain ⟨ε, hε, Φ, hsource, hzero, htarget⟩ :=
+    exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero hg hK hz
+      hstar hinjg hig n hcodim hO hgO
+  let Ψ :=
+    PartialChart.restrictSource Φ
+      (hV.preimage (continuous_fst : Continuous (Prod.fst : D × EuclideanSpace ℝ (Fin n) → D)))
+  refine ⟨ε, hε, Ψ, ?_, ?_, ?_, ?_⟩
+  · intro p hp
+    exact ⟨hsource hp, hKV hp.1⟩
+  · intro p hp
+    exact ⟨hVU hp.2, Set.mem_univ _⟩
+  · intro x hx
+    change Φ (x, 0) = f x
+    exact (hzero x).trans (heq hx.2)
+  · intro y hy
+    exact htarget hy.1
+
+theorem exists_clean_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+    [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M} {K U : Set D}
+    (hf : ContMDiffOn 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f U) (hK : IsCompact K) (hz : (0 : D) ∈ K)
+    (hstar : StarConvex ℝ (0 : D) K) (hU : IsOpen U) (hKU : K ⊆ U)
+    (hemb : Topology.IsEmbedding (fun x : U => f x))
+    (hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x)) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+    (hfO : Set.MapsTo f K O) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ :
+          PartialDiffeomorph 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E)
+            (D × EuclideanSpace ℝ (Fin n)) M ∞,
+          K ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
+            Φ.source ⊆ U ×ˢ Set.univ ∧
+              Φ.target ⊆ O ∧
+                (∀ x, (x, 0) ∈ Φ.source → Φ (x, 0) = f x) ∧
+                  (∀ q ∈ Φ.source, Φ q ∈ f '' U ↔ q.2 = 0) := by
+  have hinj : Set.InjOn f K := by
+    intro x hx y hy hxy
+    exact
+      congrArg Subtype.val
+        (hemb.injective
+          (show (fun u : U => f u) ⟨x, hKU hx⟩ = (fun u : U => f u) ⟨y, hKU hy⟩ from hxy))
+  obtain ⟨a, ha, Φ, hprod, hsource, hzero, htarget⟩ :=
+    exists_local_tubularNeighborhood_of_embedded_starConvex hf hK hz hstar hU hKU hinj hi n hcodim
+      hO hfO
+  have hbase : IsOpen {x : U | ((x : D), (0 : EuclideanSpace ℝ (Fin n))) ∈ Φ.source} :=
+    Φ.open_source.preimage (continuous_subtype_val.prodMk continuous_const)
+  obtain ⟨A, hA, hpreA⟩ := hemb.isInducing.isOpen_iff.mp hbase
+  have haxis {x : D} (hx : x ∈ U) (hxA : f x ∈ A) : (x, 0) ∈ Φ.source := by
+    have hx' : (⟨x, hx⟩ : U) ∈ (fun u : U => f u) ⁻¹' A := hxA
+    rw [hpreA] at hx'
+    exact hx'
+  have hKA : Set.MapsTo f K A := by
+    intro x hx
+    have hx' :
+      (⟨x, hKU hx⟩ : U) ∈ {u : U | ((u : D), (0 : EuclideanSpace ℝ (Fin n))) ∈ Φ.source} :=
+      hprod ⟨hx, Metric.mem_closedBall_self ha.le⟩
+    rw [← hpreA] at hx'
+    exact hx'
+  let Ψ := PartialChart.restrictTarget Φ hA
+  have hKzero : K ×ˢ {(0 : EuclideanSpace ℝ (Fin n))} ⊆ Ψ.source := by
+    rintro ⟨x, v⟩ ⟨hx, hv⟩
+    have hv0 : v = 0 := hv
+    subst v
+    have hxΦ := hprod ⟨hx, Metric.mem_closedBall_self ha.le⟩
+    refine ⟨hxΦ, ?_⟩
+    change Φ (x, 0) ∈ A
+    rw [hzero x hxΦ]
+    exact hKA hx
+  obtain ⟨ε, hε, hεprod⟩ := DiskFraming.exists_pos_prod_closedBall_subset hK Ψ.open_source hKzero
+  refine
+    ⟨ε, hε, Ψ, hεprod, fun _ hq => hsource hq.1, fun _ hy => htarget hy.1, fun x hx =>
+      hzero x hx.1, ?_⟩
+  rintro ⟨x, z⟩ hq
+  constructor
+  · rintro ⟨u, hu, heq⟩
+    have huA : f u ∈ A := heq ▸ hq.2
+    have huΦ := haxis hu huA
+    have hpair : (x, z) = (u, 0) :=
+      Φ.toPartialEquiv.injOn hq.1 huΦ (heq.symm.trans (hzero u huΦ).symm)
+    exact congrArg Prod.snd hpair
+  · intro hz
+    change z = 0 at hz
+    subst z
+    exact ⟨x, (hsource hq.1).1, (hzero x hq.1).symm⟩
+
+theorem exists_clean_embedded_sheet_neighborhood {E M D G N : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
+    [FiniteDimensional ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace N]
+    [ChartedSpace G N] {F : N → M} (hF : ContMDiff 𝓘(ℝ, G) 𝓘(ℝ, E) ∞ F)
+    (hembF : Topology.IsEmbedding F) (c : PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, G) D N ∞) {K : Set D}
+    (hK : IsCompact K) (hz : (0 : D) ∈ K) (hstar : StarConvex ℝ (0 : D) K) (hKc : K ⊆ c.source)
+    (hiF : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, G) 𝓘(ℝ, E) F (c x))) (n : ℕ)
+    (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+    (hFO : Set.MapsTo (F ∘ c) K O) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ :
+          PartialDiffeomorph 𝓘(ℝ, D × EuclideanSpace ℝ (Fin n)) 𝓘(ℝ, E)
+            (D × EuclideanSpace ℝ (Fin n)) M ∞,
+          K ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
+            Φ.source ⊆ c.source ×ˢ Set.univ ∧
+              Φ.target ⊆ O ∧
+                (∀ x, (x, 0) ∈ Φ.source → Φ (x, 0) = F (c x)) ∧
+                  (∀ q ∈ Φ.source, Φ q ∈ Set.range F ↔ q.2 = 0) := by
+  let f := F ∘ c
+  have hf : ContMDiffOn 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f c.source := hF.comp_contMDiffOn c.contMDiffOn_toFun
+  have hembf : Topology.IsEmbedding (fun x : c.source => f x) :=
+    hembF.comp c.toOpenPartialHomeomorph.isEmbedding_restrict
+  have hi : ∀ x ∈ K, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x) := by
+    intro x hx
+    rw [mfderiv_comp x (hF.mdifferentiableAt (by simp)) (c.mdifferentiableAt (by simp) (hKc hx))]
+    exact (hiF x hx).comp (PartialChart.bijective_mfderiv c (hKc hx)).1
+  obtain ⟨A, hA, hpreA⟩ := hembF.isInducing.isOpen_iff.mp c.open_target
+  have hfA : Set.MapsTo f K A := by
+    intro x hx
+    change c x ∈ F ⁻¹' A
+    rw [hpreA]
+    exact c.map_source' (hKc hx)
+  obtain ⟨ε, hε, Φ, hprod, hsource, htarget, hzero, himage⟩ :=
+    exists_clean_tubularNeighborhood_of_embedded_starConvex hf hK hz hstar c.open_source hKc hembf
+      hi n hcodim (hO.inter hA) (fun x hx => ⟨hFO hx, hfA hx⟩)
+  refine ⟨ε, hε, Φ, hprod, hsource, fun _ hy => (htarget hy).1, hzero, ?_⟩
+  intro q hq
+  have hqA := (htarget (Φ.map_source' hq)).2
+  have hrange : Φ q ∈ Set.range F ↔ Φ q ∈ f '' c.source := by
+    constructor
+    · rintro ⟨y, hy⟩
+      have hyA : F y ∈ A := hy ▸ hqA
+      have hyT : y ∈ c.target := by
+        change y ∈ F ⁻¹' A at hyA
+        rwa [hpreA] at hyA
+      exact ⟨c.invFun y, c.map_target' hyT, (congrArg F (c.right_inv' hyT)).trans hy⟩
+    · rintro ⟨u, _, hu⟩
+      exact ⟨c u, hu⟩
+  exact hrange.trans (himage q hq)
+
+def MorseCancellation.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+    [NormedAddCommGroup B] [NormedSpace ℝ B] : (ℝ × (D × B)) ≃L[ℝ] (D × (ℝ × B))
+    where
+  toLinearEquiv :=
+    { toFun := fun p => (p.2.1, (p.1, p.2.2))
+      invFun := fun p => (p.2.1, (p.1, p.2.2))
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  continuous_toFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
+  continuous_invFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
+
+theorem MorseCancellation.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] {E M X : Type*} [FiniteDimensional ℝ D] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X] [ChartedSpace D X]
+    [IsManifold 𝓘(ℝ, D) ∞ X] {f : X → M} (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f)
+    (hemb : Topology.IsEmbedding f) (hi : ∀ x, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
+    (n : ℕ) (hdim : Module.finrank ℝ D + (1 + n) = Module.finrank ℝ E) (x : X) {U : Set M}
+    (hU : IsOpen U) (hxU : f x ∈ U) :
+    ∃ Φ :
+      PartialDiffeomorph 𝓘(ℝ, ℝ × (D × EuclideanSpace ℝ (Fin n))) 𝓘(ℝ, E)
+        (ℝ × (D × EuclideanSpace ℝ (Fin n))) M ∞,
+      (0 : ℝ × (D × EuclideanSpace ℝ (Fin n))) ∈ Φ.source ∧
+        Φ 0 = f x ∧ Φ.target ⊆ U ∧ ∀ z ∈ Φ.source, Φ z ∈ Set.range f ↔ z.1 = 0 ∧ z.2.2 = 0 := by
+  let c := NativeParametrization.centered (D := D) x
+  have hc0 : (0 : D) ∈ c.source := NativeParametrization.zero_mem_centered_source x
+  have hcx : c 0 = x := NativeParametrization.centered_zero x
+  obtain ⟨ε, hε, Q, hprod, -, hQU, hzero, hrecognition⟩ :=
+    exists_clean_embedded_sheet_neighborhood hf hemb c isCompact_singleton
+      (Set.mem_singleton (0 : D)) (starConvex_singleton (0 : D))
+      (Set.singleton_subset_iff.mpr hc0) (fun z _ => hi (c z)) (1 + n) hdim hU
+      (show Set.MapsTo (f ∘ c) {0} U by
+        intro z hz
+        rcases Set.mem_singleton_iff.mp hz with rfl
+        change f (c 0) ∈ U
+        rw [hcx]
+        exact hxU)
+  let B := EuclideanSpace ℝ (Fin n)
+  let N := EuclideanSpace ℝ (Fin (1 + n))
+  let L : (ℝ × B) ≃L[ℝ] N :=
+    ContinuousLinearEquiv.ofFinrankEq
+      (by simp only [B, N, Module.finrank_prod, Module.finrank_self, finrank_euclideanSpace_fin])
+  let P : (ℝ × (D × B)) ≃L[ℝ] (D × N) :=
+    (sheetAxisShuffle (D := D) (B := B)).trans ((ContinuousLinearEquiv.refl ℝ D).prodCongr L)
+  let Φ := P.toDiffeomorph.toPartialDiffeomorph'.trans Q
+  have hQ0 : (0 : D × N) ∈ Q.source :=
+    hprod ⟨Set.mem_singleton 0, Metric.mem_closedBall_self hε.le⟩
+  have hΦ0 : (0 : ℝ × (D × B)) ∈ Φ.source := by
+    refine ⟨Set.mem_univ _, ?_⟩
+    change P 0 ∈ Q.source
+    rw [map_zero]
+    exact hQ0
+  refine ⟨Φ, hΦ0, ?_, fun z hz => hQU hz.1, ?_⟩
+  · change Q (P 0) = f x
+    rw [map_zero]
+    exact (hzero 0 hQ0).trans (congrArg f hcx)
+  · intro z hz
+    change Q (P z) ∈ Set.range f ↔ _
+    rw [hrecognition (P z) hz.2]
+    change L (z.1, z.2.2) = 0 ↔ z.1 = 0 ∧ z.2.2 = 0
+    constructor
+    · intro h
+      have he : (z.1, z.2.2) = (0, (0 : B)) := L.injective (h.trans L.map_zero.symm)
+      exact ⟨congrArg Prod.fst he, congrArg Prod.snd he⟩
+    · rintro ⟨h1, h2⟩
+      rw [h1, h2]
+      exact L.map_zero
+
+theorem MorseCancellation.chart_axis_curve_properties {V E H M : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
+    {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
+    (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) J (ℝ × V) M ∞) (p : ℝ) (hp : (p, (0 : V)) ∈ Φ.source) :
+    ∃ U : Set ℝ,
+      IsOpen U ∧
+        p ∈ U ∧
+          (∀ t ∈ U, (t, (0 : V)) ∈ Φ.source) ∧
+            ContMDiffOn 𝓘(ℝ, ℝ) J ∞ (fun t => Φ (t, (0 : V))) U ∧
+              Function.Injective (mfderiv 𝓘(ℝ, ℝ) J (fun t => Φ (t, (0 : V))) p) := by
+  let L := ContinuousLinearMap.inl ℝ ℝ V
+  have hL : ContDiff ℝ ∞ L := L.contDiff
+  let U : Set ℝ := L ⁻¹' Φ.source
+  have hU : IsOpen U := Φ.open_source.preimage L.continuous
+  have hcurve : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ (Φ ∘ L) U :=
+    Φ.contMDiffOn_toFun.comp hL.contMDiff.contMDiffOn (fun _ ht => ht)
+  refine ⟨U, hU, hp, fun _ ht => ht, hcurve, ?_⟩
+  change Function.Injective (mfderiv 𝓘(ℝ, ℝ) J (Φ ∘ L) p)
+  rw [mfderiv_comp p (Φ.mdifferentiableAt (by simp) hp)
+      (hL.contMDiff.mdifferentiableAt (by simp)),
+    mfderiv_eq_fderiv, L.fderiv]
+  exact
+    (PartialChart.bijective_mfderiv Φ hp).injective.comp (fun _ _ h => congrArg Prod.fst h)
+
+def MorseCancellation.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] :
+    Diffeomorph 𝓘(ℝ, ℝ × (D × D)) 𝓘(ℝ, ℝ × (D × D)) (ℝ × (D × D)) (ℝ × (D × D)) ∞
+    where
+  toEquiv :=
+    { toFun := fun z => (z.1 - 1, (z.2.2, z.2.1))
+      invFun := fun z => (z.1 + 1, (z.2.2, z.2.1))
+      left_inv := by intro z; ext <;> simp
+      right_inv := by intro z; ext <;> simp }
+  contMDiff_toFun :=
+    ((contDiff_fst.sub contDiff_const).prodMk
+        (contDiff_snd.snd.prodMk contDiff_snd.fst)).contMDiff
+  contMDiff_invFun :=
+    ((contDiff_fst.add contDiff_const).prodMk
+        (contDiff_snd.snd.prodMk contDiff_snd.fst)).contMDiff
+
+theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 2)) X] [IsManifold (𝓡 2) ∞ X] [CompactSpace X]
+    [SecondCountableTopology X] [TopologicalSpace Y] [ChartedSpace (EuclideanSpace ℝ (Fin 2)) Y]
+    [IsManifold (𝓡 2) ∞ Y] [CompactSpace Y] [SecondCountableTopology Y] {f : X → M} {g : Y → M}
+    (hf : ContMDiff (𝓡 2) 𝓘(ℝ, E) ∞ f) (hg : ContMDiff (𝓡 2) 𝓘(ℝ, E) ∞ g)
+    (hfe : Topology.IsEmbedding f) (hge : Topology.IsEmbedding g)
+    (hfi : ∀ x, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, E) f x))
+    (hgi : ∀ y, Function.Injective (mfderiv (𝓡 2) 𝓘(ℝ, E) g y)) (hdim : Module.finrank ℝ E = 5)
+    (x : X) (y : Y) (hx : f x ∉ Set.range g) (hy : g y ∉ Set.range f) (γ : Path (f x) (g y)) :
+    ∃ Φ Ψ :
+      PartialDiffeomorph 𝓘(ℝ, (ℝ × ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))))
+        𝓘(ℝ, E) (ℝ × ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) M ∞,
+      (0 : (ℝ × ((EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2))))) ∈ Φ.source ∧
+        ((1 : ℝ), (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) ∈ Ψ.source ∧
+          Φ 0 = f x ∧
+            Ψ (1, 0) = g y ∧
+              Φ.target ⊆ (Set.range g)ᶜ ∧
+                Ψ.target ⊆ (Set.range f)ᶜ ∧
+                  (∀ z ∈ Φ.source, Φ z ∈ Set.range f ↔ z.1 = 0 ∧ z.2.2 = 0) ∧
+                    (∀ z ∈ Ψ.source, Ψ z ∈ Set.range g ↔ z.1 = 1 ∧ z.2.1 = 0) ∧
+                      ∃ a : C(ℝ, M),
+                        ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, E) ∞ a ∧
+                          (a =ᶠ[𝓝 (0 : ℝ)] fun t => Φ (t, 0)) ∧
+                            (a =ᶠ[𝓝 (1 : ℝ)] fun t => Ψ (t, 0)) ∧
+                              Topology.IsClosedEmbedding (fun t : unitInterval => a t) ∧
+                                (∀ t ∈ Set.Icc (0 : ℝ) 1,
+                                    Function.Injective (mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, E) a t)) ∧
+                                  (∀ t ∈ Set.Icc (0 : ℝ) 1, a t ∈ Set.range f ↔ t = 0) ∧
+                                    (∀ t ∈ Set.Icc (0 : ℝ) 1, a t ∈ Set.range g ↔ t = 1) := by
+  have hclosedf : IsClosed (Set.range f) := (isCompact_range hf.continuous).isClosed
+  have hclosedg : IsClosed (Set.range g) := (isCompact_range hg.continuous).isClosed
+  have hcodim : Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) + (1 + 2) = Module.finrank ℝ E := by
+    rw [finrank_euclideanSpace_fin, hdim]
+  obtain ⟨Φ, hΦ0, hΦx, hΦavoid, hΦrec⟩ :=
+    exists_clean_sheet_axis_chart hf hfe hfi 2 hcodim x hclosedg.isOpen_compl hx
+  obtain ⟨Q, hQ0, hQy, hQavoid, hQrec⟩ :=
+    exists_clean_sheet_axis_chart hg hge hgi 2 hcodim y hclosedf.isOpen_compl hy
+  let T := terminalSheetCoordinates (D := (EuclideanSpace ℝ (Fin 2)))
+  let Ψ := T.toPartialDiffeomorph'.trans Q
+  have hT1 : T ((1 : ℝ), (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) = 0 := by
+    change ((1 : ℝ) - 1, ((0 : (EuclideanSpace ℝ (Fin 2))), (0 : (EuclideanSpace ℝ (Fin 2))))) = 0
+    rw [sub_self]
+    rfl
+  have hΨ1 :
+    ((1 : ℝ), (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) ∈ Ψ.source := by
+    refine ⟨Set.mem_univ _, ?_⟩
+    change T (1, 0) ∈ Q.source
+    rw [hT1]
+    exact hQ0
+  have hΨy : Ψ (1, 0) = g y := by
+    change Q (T (1, 0)) = g y
+    rw [hT1]
+    exact hQy
+  have hΨavoid : Ψ.target ⊆ (Set.range f)ᶜ := fun z hz => hQavoid hz.1
+  have hΨrec : ∀ z ∈ Ψ.source, Ψ z ∈ Set.range g ↔ z.1 = 1 ∧ z.2.1 = 0 := by
+    intro z hz
+    change Q (T z) ∈ Set.range g ↔ _
+    rw [hQrec (T z) hz.2]
+    change z.1 - 1 = 0 ∧ z.2.1 = 0 ↔ _
+    rw [sub_eq_zero]
+  let o : C(X ⊕ Y, M) := ⟨Sum.elim f g, hf.continuous.sumElim hg.continuous⟩
+  have ho : ContMDiff (𝓡 2) 𝓘(ℝ, E) ∞ o := hf.sumElim hg
+  have horange : Set.range o = Set.range f ∪ Set.range g := by
+    ext z
+    constructor
+    · rintro ⟨a | b, he⟩
+      · exact Or.inl ⟨a, he⟩
+      · exact Or.inr ⟨b, he⟩
+    · rintro (⟨a, he⟩ | ⟨b, he⟩)
+      · exact ⟨Sum.inl a, he⟩
+      · exact ⟨Sum.inr b, he⟩
+  have hoclosed : IsClosed (Set.range o) := by rw [horange]; exact hclosedf.union hclosedg
+  obtain ⟨U, hU, h0U, hUΦ, ha, hia⟩ := chart_axis_curve_properties Φ 0 hΦ0
+  obtain ⟨W, hW, h1W, hWΨ, hb, hib⟩ := chart_axis_curve_properties Ψ 1 hΨ1
+  have hclean0 :
+    ∀ᶠ t in 𝓝 (0 : ℝ),
+      Φ (t, (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) ∈ Set.range o →
+        t = 0 := by
+    filter_upwards [hU.mem_nhds h0U] with t ht
+    rw [horange]
+    rintro (h | h)
+    · exact ((hΦrec (t, 0) (hUΦ t ht)).mp h).1
+    · exact (hΦavoid (Φ.map_source' (hUΦ t ht)) h).elim
+  have hclean1 :
+    ∀ᶠ t in 𝓝 (1 : ℝ),
+      Ψ (t, (0 : (EuclideanSpace ℝ (Fin 2)) × (EuclideanSpace ℝ (Fin 2)))) ∈ Set.range o →
+        t = 1 := by
+    filter_upwards [hW.mem_nhds h1W] with t ht
+    rw [horange]
+    rintro (h | h)
+    · exact (hΨavoid (Ψ.map_source' (hWΨ t ht)) h).elim
+    · exact ((hΨrec (t, 0) (hWΨ t ht)).mp h).1
+  have hxy : f x ≠ g y := fun h => hx ⟨y, h.symm⟩
+  have hends : Φ (0, 0) ≠ Ψ (1, 0) := by
+    change Φ 0 ≠ Ψ (1, 0)
+    rw [hΦx, hΨy]
+    exact hxy
+  obtain ⟨a, ha', hleft, hright, hemb, hi, havoid⟩ :=
+    exists_clean_arc_with_local_endpoint_germs ha hb hU hW h0U h1W hia hib (γ.cast hΦx hΨy) hends
+      (by omega) o ho hoclosed (by rw [finrank_euclideanSpace_fin, hdim]; norm_num) hclean0
+      hclean1
+  have ha0 : a 0 = f x := hleft.eq_of_nhds.trans hΦx
+  have ha1 : a 1 = g y := hright.eq_of_nhds.trans hΨy
+  refine
+    ⟨Φ, Ψ, hΦ0, hΨ1, hΦx, hΨy, hΦavoid, hΨavoid, hΦrec, hΨrec, a, ha', hleft, hright, hemb, hi,
+      ?_, ?_⟩
+  · intro t ht
+    constructor
+    · intro h
+      by_contra ht0
+      have ht1 : t ≠ 1 := by intro he; subst t; rw [ha1] at h; exact hy h
+      exact
+        havoid t ⟨lt_of_le_of_ne ht.1 (Ne.symm ht0), lt_of_le_of_ne ht.2 ht1⟩
+          (horange.symm ▸ Or.inl h)
+    · intro he
+      subst t
+      rw [ha0]
+      exact Set.mem_range_self x
+  · intro t ht
+    constructor
+    · intro h
+      by_contra ht1
+      have ht0 : t ≠ 0 := by intro he; subst t; rw [ha0] at h; exact hx h
+      exact
+        havoid t ⟨lt_of_le_of_ne ht.1 (Ne.symm ht0), lt_of_le_of_ne ht.2 ht1⟩
+          (horange.symm ▸ Or.inr h)
+    · intro he
+      subst t
+      rw [ha1]
+      exact Set.mem_range_self y
+
+theorem TransverseCoordinates.surjective_normal_comp {D Z E B : Type*}
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    (Q : E →L[ℝ] B) (A : D →L[ℝ] E) (C : Z →L[ℝ] E) (hQ : Function.Surjective Q)
+    (hAC : Function.Surjective (A.coprod C)) (hQA : Q.comp A = 0) :
+    Function.Surjective (Q.comp C) := by
+  intro w
+  obtain ⟨z, hz⟩ := hQ w
+  obtain ⟨⟨u, v⟩, huv⟩ := hAC z
+  have hAu : Q (A u) = 0 := congrArg (fun T : D →L[ℝ] B => T u) hQA
+  refine ⟨v, ?_⟩
+  change Q (C v) = w
+  have hsum : Q (A u + C v) = w := (congrArg Q huv).trans hz
+  simpa only [map_add, hAu, zero_add] using hsum
+
+theorem TransverseCoordinates.bijective_normal_comp {D Z E B : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ Z]
+    [FiniteDimensional ℝ B] (Q : E →L[ℝ] B) (A : D →L[ℝ] E) (C : Z →L[ℝ] E)
+    (hQ : Function.Surjective Q) (hAC : Function.Surjective (A.coprod C)) (hQA : Q.comp A = 0)
+    (hdim : Module.finrank ℝ Z = Module.finrank ℝ B) : Function.Bijective (Q.comp C) := by
+  have hs := surjective_normal_comp Q A C hQ hAC hQA
+  exact ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hs, hs⟩
+
+def FrameField.complementQuotient {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (G : D →L[ℝ] F) (C : Z →L[ℝ] F) : F →L[ℝ] Z :=
+  (ContinuousLinearMap.snd ℝ D Z).comp (G.coprod C).inverse
+
+theorem FrameField.complementQuotient_left {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) (u : D) :
+    complementQuotient G C (G u) = 0 := by
+  have hi := h.inverse_apply_self (u, 0)
+  change (G.coprod C).inverse (G u + C 0) = (u, 0) at hi
+  rw [map_zero, add_zero] at hi
+  exact congrArg Prod.snd hi
+
+theorem FrameField.complementQuotient_right {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) (v : Z) :
+    complementQuotient G C (C v) = v := by
+  have hi := h.inverse_apply_self (0, v)
+  change (G.coprod C).inverse (G 0 + C v) = (0, v) at hi
+  rw [map_zero, zero_add] at hi
+  exact congrArg Prod.snd hi
+
+theorem FrameField.ker_complementQuotient {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) :
+    (complementQuotient G C).ker = G.range := by
+  ext w
+  constructor
+  · intro hw
+    let p := (G.coprod C).inverse w
+    have hp : p.2 = 0 := hw
+    have hi := h.self_apply_inverse w
+    change G p.1 + C p.2 = w at hi
+    rw [hp, map_zero, add_zero] at hi
+    exact ⟨p.1, hi⟩
+  · rintro ⟨u, rfl⟩
+    exact complementQuotient_left G C h u
+
+theorem FrameField.bijective_coprod_of_quotient {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C H : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible)
+    (hH : Function.Bijective ((complementQuotient G C).comp H)) :
+    Function.Bijective (G.coprod H) := by
+  have hG : Function.Injective G := by
+    intro u v huv
+    have hpair : (G.coprod C) (u, 0) = (G.coprod C) (v, 0) := by
+      change G u + C 0 = G v + C 0
+      rw [huv]
+    exact congrArg Prod.fst (h.injective hpair)
+  constructor
+  · intro p q hpq
+    have hq := congrArg (complementQuotient G C) hpq
+    change complementQuotient G C (G p.1 + H p.2) = complementQuotient G C (G q.1 + H q.2) at hq
+    rw [map_add, map_add, complementQuotient_left G C h, complementQuotient_left G C h, zero_add,
+      zero_add] at hq
+    have hp₂ : p.2 = q.2 := hH.1 hq
+    have hp₁ : p.1 = q.1 := by
+      change G p.1 + H p.2 = G q.1 + H q.2 at hpq
+      rw [hp₂] at hpq
+      exact hG (add_right_cancel hpq)
+    exact Prod.ext hp₁ hp₂
+  · intro w
+    obtain ⟨v, hv⟩ := hH.2 (complementQuotient G C w)
+    have hmem : w - H v ∈ G.range := by
+      rw [← ker_complementQuotient G C h]
+      change complementQuotient G C (w - H v) = 0
+      rw [map_sub]
+      change complementQuotient G C w - ((complementQuotient G C).comp H) v = 0
+      rw [hv, sub_self]
+    obtain ⟨u, hu⟩ := hmem
+    refine ⟨(u, v), ?_⟩
+    change G u + H v = w
+    change G u = w - H v at hu
+    rw [hu, sub_add_cancel]
+
+def FrameField.correctedComplement {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z) : Z →L[ℝ] F :=
+  L + C.comp (K - (complementQuotient G C).comp L)
+
+theorem FrameField.quotient_correctedComplement {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z)
+    (h : (G.coprod C).IsInvertible) :
+    (complementQuotient G C).comp (correctedComplement G C L K) = K := by
+  apply ContinuousLinearMap.ext
+  intro v
+  change complementQuotient G C (L v + C ((K - (complementQuotient G C).comp L) v)) = K v
+  rw [map_add, complementQuotient_right G C h]
+  change complementQuotient G C (L v) + (K v - complementQuotient G C (L v)) = K v
+  rw [← add_sub_assoc, add_sub_cancel_left]
+
+theorem FrameField.correctedComplement_self {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) :
+    correctedComplement G C L ((complementQuotient G C).comp L) = L := by
+  simp only [correctedComplement, sub_self, ContinuousLinearMap.comp_zero, add_zero]
+
+theorem FrameField.bijective_coprod_correctedComplement {D Z F : Type*}
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z)
+    (h : (G.coprod C).IsInvertible) (hK : Function.Bijective K) :
+    Function.Bijective (G.coprod (correctedComplement G C L K)) := by
+  apply bijective_coprod_of_quotient G C _ h
+  rw [quotient_correctedComplement G C L K h]
+  exact hK
+
+theorem FrameField.contDiffOn_coprod {X D Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
+    [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] {G : X → (D →L[ℝ] F)}
+    {C : X → (Z →L[ℝ] F)} {U : Set X} (hG : ContDiffOn ℝ ∞ G U) (hC : ContDiffOn ℝ ∞ C U) :
+    ContDiffOn ℝ ∞ (fun x => (G x).coprod (C x)) U :=
+  (hG.clm_comp (contDiffOn_const (c := ContinuousLinearMap.fst ℝ D Z))).add
+    (hC.clm_comp (contDiffOn_const (c := ContinuousLinearMap.snd ℝ D Z)))
+
+theorem FrameField.contDiffOn_complementQuotient {X D Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
+    [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D]
+    [FiniteDimensional ℝ Z] {G : X → (D →L[ℝ] F)} {C : X → (Z →L[ℝ] F)} {U : Set X}
+    (hU : IsOpen U) (hG : ContDiffOn ℝ ∞ G U) (hC : ContDiffOn ℝ ∞ C U)
+    (hi : ∀ x ∈ U, ((G x).coprod (C x)).IsInvertible) :
+    ContDiffOn ℝ ∞ (fun x => complementQuotient (G x) (C x)) U := by
+  have hT := contDiffOn_coprod hG hC
+  have hInv : ContDiffOn ℝ ∞ (fun x => ((G x).coprod (C x)).inverse) U := by
+    intro x hx
+    exact
+      ((hi x hx).contDiffAt_map_inverse.comp x (hT.contDiffAt (hU.mem_nhds hx))).contDiffWithinAt
+  exact contDiffOn_const.clm_comp hInv
+
+theorem FrameField.contDiffOn_correctedComplement {X D Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
+    [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D]
+    [FiniteDimensional ℝ Z] {G : X → (D →L[ℝ] F)} {C L : X → (Z →L[ℝ] F)} {K : X → (Z →L[ℝ] Z)}
+    {U : Set X} (hU : IsOpen U) (hG : ContDiffOn ℝ ∞ G U) (hC : ContDiffOn ℝ ∞ C U)
+    (hL : ContDiffOn ℝ ∞ L U) (hK : ContDiffOn ℝ ∞ K U)
+    (hi : ∀ x ∈ U, ((G x).coprod (C x)).IsInvertible) :
+    ContDiffOn ℝ ∞ (fun x => correctedComplement (G x) (C x) (L x) (K x)) U :=
+  hL.add (hC.clm_comp (hK.sub ((contDiffOn_complementQuotient hU hG hC hi).clm_comp hL)))
+
+def FrameField.shearedBlock {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) : (X × Z) →L[ℝ] (X × F) :=
+  (ContinuousLinearMap.inl ℝ X F).coprod (A.prod T)
+
+theorem FrameField.shearedBlock_apply {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (p : X × Z) :
+    shearedBlock A T p = (p.1 + A p.2, T p.2) := by
+  simp [shearedBlock, ContinuousLinearMap.coprod_apply]
+
+theorem FrameField.shearedBlock_horizontal {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (x : X) :
+    shearedBlock A T (x, 0) = (x, 0) := by simp only [shearedBlock_apply, map_zero, add_zero]
+
+theorem FrameField.bijective_shearedBlock {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (hi : Function.Bijective T) :
+    Function.Bijective (shearedBlock A T) := by
+  constructor
+  · intro p q hpq
+    have hz : p.2 = q.2 := hi.1 (by simpa only [shearedBlock_apply] using congrArg Prod.snd hpq)
+    have hx : p.1 + A p.2 = q.1 + A q.2 := by
+      simpa only [shearedBlock_apply] using congrArg Prod.fst hpq
+    rw [hz] at hx
+    exact Prod.ext (add_right_cancel hx) hz
+  · intro q
+    obtain ⟨z, hz⟩ := hi.2 q.2
+    refine ⟨(q.1 - A z, z), ?_⟩
+    rw [shearedBlock_apply]
+    simp only [sub_add_cancel, hz]
+
+def FrameField.shearedMap {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (A : X → (Z →L[ℝ] X)) (T : X → (Z →L[ℝ] F)) (p : X × Z) : X × F :=
+  (p.1 + A p.1 p.2, T p.1 p.2)
+
+theorem FrameField.shearedMap_zero {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (A : X → (Z →L[ℝ] X)) (T : X → (Z →L[ℝ] F)) (x : X) : shearedMap A T (x, 0) = (x, 0) := by
+  simp only [shearedMap, map_zero, add_zero]
+
+theorem FrameField.contDiffOn_shearedMap {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {A : X → (Z →L[ℝ] X)} {T : X → (Z →L[ℝ] F)} {U : Set X}
+    (hA : ContDiffOn ℝ ∞ A U) (hT : ContDiffOn ℝ ∞ T U) :
+    ContDiffOn ℝ ∞ (shearedMap A T) (Prod.fst ⁻¹' U) :=
+  (contDiffOn_fst.add ((hA.comp contDiffOn_fst (fun _ hp => hp)).clm_apply contDiffOn_snd)).prodMk
+    ((hT.comp contDiffOn_fst (fun _ hp => hp)).clm_apply contDiffOn_snd)
+
+theorem FrameField.hasFDerivAt_shearedMap_zero {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {A : X → (Z →L[ℝ] X)} {T : X → (Z →L[ℝ] F)} {x : X}
+    (hA : DifferentiableAt ℝ A x) (hT : DifferentiableAt ℝ T x) :
+    HasFDerivAt (shearedMap A T) (shearedBlock (A x) (T x)) (x, 0) := by
+  have hAa :
+    HasFDerivAt (fun p : X × Z => A p.1) ((fderiv ℝ A x).comp (ContinuousLinearMap.fst ℝ X Z))
+      (x, 0) :=
+    hA.hasFDerivAt.comp (x, 0) hasFDerivAt_fst
+  have hTt :
+    HasFDerivAt (fun p : X × Z => T p.1) ((fderiv ℝ T x).comp (ContinuousLinearMap.fst ℝ X Z))
+      (x, 0) :=
+    hT.hasFDerivAt.comp (x, 0) hasFDerivAt_fst
+  have hs : HasFDerivAt (fun p : X × Z => p.2) (ContinuousLinearMap.snd ℝ X Z) (x, 0) :=
+    hasFDerivAt_snd
+  have hf : HasFDerivAt (fun p : X × Z => p.1) (ContinuousLinearMap.fst ℝ X Z) (x, 0) :=
+    hasFDerivAt_fst
+  have hd := (hf.add (hAa.clm_apply hs)).prodMk (hTt.clm_apply hs)
+  convert hd using 1 <;>
+    first
+    | rfl
+    | (apply ContinuousLinearMap.ext; intro p; simp [shearedBlock_apply])
+
+theorem FrameField.isInvertible_shearedBlock {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ X] [FiniteDimensional ℝ Z] (A : Z →L[ℝ] X)
+    (T : Z →L[ℝ] F) (hi : T.IsInvertible) : (shearedBlock A T).IsInvertible := by
+  let e :=
+    (LinearEquiv.ofBijective (shearedBlock A T).toLinearMap
+        (bijective_shearedBlock A T hi.bijective)).toContinuousLinearEquiv
+  exact ⟨e, rfl⟩
+
+theorem FrameField.exists_sheared_frame_chart {X Z F : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ X] [FiniteDimensional ℝ Z] {A : X → (Z →L[ℝ] X)}
+    {T : X → (Z →L[ℝ] F)} {K U : Set X} (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U)
+    (hA : ContDiffOn ℝ ∞ A U) (hT : ContDiffOn ℝ ∞ T U) (hi : ∀ x ∈ K, (T x).IsInvertible) :
+    ∃ Φ : PartialDiffeomorph 𝓘(ℝ, X × Z) 𝓘(ℝ, X × F) (X × Z) (X × F) ∞,
+      K ×ˢ {(0 : Z)} ⊆ Φ.source ∧
+        Φ.source ⊆ Prod.fst ⁻¹' U ∧ (Φ : X × Z → X × F) = shearedMap A T := by
+  have hzeroInj : Set.InjOn (shearedMap A T) (K ×ˢ {(0 : Z)}) := by
+    rintro ⟨x, z⟩ ⟨hx, hz⟩ ⟨y, w⟩ ⟨hy, hw⟩ heq
+    have hz0 : z = 0 := hz
+    have hw0 : w = 0 := hw
+    subst z
+    subst w
+    rw [shearedMap_zero, shearedMap_zero] at heq
+    exact Prod.ext (congrArg (fun q : X × F => q.1) heq) rfl
+  have hlocal :
+    ∀ p ∈ K ×ˢ {(0 : Z)}, IsLocalDiffeomorphAt 𝓘(ℝ, X × Z) 𝓘(ℝ, X × F) ∞ (shearedMap A T) p := by
+    rintro ⟨x, z⟩ ⟨hx, hz⟩
+    have hz0 : z = 0 := hz
+    subst z
+    apply
+      isLocalDiffeomorphAt_of_contMDiffOn (D := X × Z) (E := X × F) (M := X × F)
+        (hU.preimage continuous_fst) (show (x, (0 : Z)) ∈ Prod.fst ⁻¹' U from hKU hx)
+        (contDiffOn_shearedMap hA hT).contMDiffOn
+    rw [mfderiv_eq_fderiv,
+      (hasFDerivAt_shearedMap_zero
+          ((hA.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
+          ((hT.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))).fderiv]
+    exact isInvertible_shearedBlock (A x) (T x) (hi x hx)
+  exact
+    exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hzeroInj hlocal
+      (hU.preimage continuous_fst) (fun _ hp => hKU hp.1)
+
+def AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] ℝ :=
+  (ContinuousLinearMap.fst ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
+
+def AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] V :=
+  (ContinuousLinearMap.snd ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
+
+theorem AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] : ContDiff ℝ ∞ (tangentShear (V := V)) :=
+  contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
+
+theorem AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] : ContDiff ℝ ∞ (transverseBlock (V := V)) :=
+  contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
+
+theorem AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) (s : ℝ) (z : V) :
+    L (s, z) = (s + tangentShear L z, transverseBlock L z) := by
+  have hp : (s, z) = s • (1, (0 : V)) + (0, z) := by simp
+  rw [hp, map_add, map_smul, hL]
+  apply Prod.ext <;> simp [tangentShear, transverseBlock]
+
+theorem AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) :
+    L = FrameField.shearedBlock (tangentShear L) (transverseBlock L) := by
+  apply ContinuousLinearMap.ext
+  intro p
+  rw [FrameField.shearedBlock_apply]
+  exact axis_block_apply L hL p.1 p.2
+
+theorem AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
+    (hi : Function.Bijective L) : Function.Bijective (transverseBlock L) := by
+  constructor
+  · intro z w hzw
+    have he : L (-tangentShear L z, z) = L (-tangentShear L w, w) := by
+      rw [axis_block_apply L hL, axis_block_apply L hL]
+      simp only [neg_add_cancel, hzw]
+    exact congrArg (fun p : ℝ × V => p.2) (hi.1 he)
+  · intro w
+    obtain ⟨⟨s, z⟩, hz⟩ := hi.2 (0, w)
+    rw [axis_block_apply L hL] at hz
+    exact ⟨z, congrArg (fun p : ℝ × V => p.2) hz⟩
+
+theorem AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
+    (hi : L.IsInvertible) : (transverseBlock L).IsInvertible := by
+  let e :=
+    (LinearEquiv.ofBijective (transverseBlock L).toLinearMap
+        (bijective_transverseBlock L hL hi.bijective)).toContinuousLinearEquiv
+  exact ⟨e, rfl⟩
+
+theorem AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] {F : (ℝ × V) → (ℝ × V)} {s : ℝ} (hF : ContDiffAt ℝ ∞ F (s, 0))
+    (heq : (fun r : ℝ => F (r, 0)) =ᶠ[𝓝 s] (fun r => (r, (0 : V)))) :
+    fderiv ℝ F (s, 0) (1, 0) = (1, 0) := by
+  have ha : HasDerivAt (fun r : ℝ => (r, (0 : V))) (1, 0) s :=
+    (hasDerivAt_id s).prodMk (hasDerivAt_const s 0)
+  have hd := (hF.differentiableAt (by simp)).hasFDerivAt.comp_hasDerivAt s ha
+  exact hd.deriv.symm.trans (heq.deriv_eq.trans ha.deriv)
+
+theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    (Φ Ψ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞) {s₀ : ℝ}
+    (hΦ : (s₀, (0 : V)) ∈ Φ.source) (hΨ : (s₀, (0 : V)) ∈ Ψ.source)
+    (haxis : (fun s : ℝ => Φ (s, 0)) =ᶠ[𝓝 s₀] (fun s => Ψ (s, 0))) :
+    ∃ U : Set ℝ,
+      IsOpen U ∧
+        s₀ ∈ U ∧
+          (∀ s ∈ U, (s, (0 : V)) ∈ (Φ.trans Ψ.symm).source) ∧
+            (∀ s ∈ U, Ψ.symm (Φ (s, 0)) = (s, 0)) ∧
+              ContDiffOn ℝ ∞ (fun s => tangentShear (fderiv ℝ (Ψ.symm ∘ Φ) (s, 0))) U ∧
+                ContDiffOn ℝ ∞ (fun s => transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (s, 0))) U ∧
+                  (∀ s ∈ U, (transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (s, 0))).IsInvertible) ∧
+                    ∀ s ∈ U,
+                      fderiv ℝ (Ψ.symm ∘ Φ) (s, 0) =
+                        FrameField.shearedBlock
+                          (tangentShear (fderiv ℝ (Ψ.symm ∘ Φ) (s, 0)))
+                          (transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ) (s, 0))) := by
+  let R := Φ.trans Ψ.symm
+  have hR0 : (s₀, (0 : V)) ∈ R.source := by
+    refine ⟨hΦ, ?_⟩
+    change Φ (s₀, 0) ∈ Ψ.target
+    rw [haxis.eq_of_nhds]
+    exact Ψ.map_source' hΨ
+  have hRsource : ∀ᶠ s in 𝓝 s₀, (s, (0 : V)) ∈ R.source :=
+    (continuous_id.prodMk continuous_const).continuousAt (R.open_source.mem_nhds hR0)
+  have hΨsource : ∀ᶠ s in 𝓝 s₀, (s, (0 : V)) ∈ Ψ.source :=
+    (continuous_id.prodMk continuous_const).continuousAt (Ψ.open_source.mem_nhds hΨ)
+  have hRaxis : ∀ᶠ s in 𝓝 s₀, R (s, (0 : V)) = (s, 0) := by
+    filter_upwards [haxis, hΨsource] with s hs hsΨ
+    change Ψ.symm (Φ (s, 0)) = (s, 0)
+    rw [hs]
+    exact Ψ.left_inv' hsΨ
+  obtain ⟨U, hUN, hU, hs₀⟩ := mem_nhds_iff.mp (hRsource.and hRaxis)
+  have hdf : ContDiffOn ℝ ∞ (fun s : ℝ => fderiv ℝ R (s, (0 : V))) U :=
+    (R.contMDiffOn_toFun.contDiffOn.fderiv_of_isOpen R.open_source (m := ∞) (by simp)).comp
+      (contDiff_id.prodMk contDiff_const).contDiffOn (fun s hs => (hUN hs).1)
+  have hfix (s : ℝ) (hs : s ∈ U) : fderiv ℝ R (s, (0 : V)) (1, 0) = (1, 0) := by
+    apply
+      derivative_fixes_axis
+        (R.contMDiffOn_toFun.contDiffOn.contDiffAt (R.open_source.mem_nhds (hUN hs).1))
+    filter_upwards [hU.mem_nhds hs] with r hr
+    exact (hUN hr).2
+  refine
+    ⟨U, hU, hs₀, fun s hs => (hUN hs).1, fun s hs => (hUN hs).2,
+      (contDiff_tangentShear (V := V)).contDiffOn.comp hdf (fun _ _ => Set.mem_univ _),
+      (contDiff_transverseBlock (V := V)).contDiffOn.comp hdf (fun _ _ => Set.mem_univ _), ?_, ?_⟩
+  · intro s hs
+    have hl : IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ R (s, 0) :=
+      PartialDiffeomorph.isLocalDiffeomorphAt _ _ _ R (hUN hs).1
+    have hi : (fderiv ℝ R (s, 0)).IsInvertible := by
+      refine ⟨hl.mfderivToContinuousLinearEquiv (by simp), ?_⟩
+      have he := hl.mfderivToContinuousLinearEquiv_coe (by simp)
+      rw [mfderiv_eq_fderiv] at he
+      exact he
+    exact isInvertible_transverseBlock _ (hfix s hs) hi
+  · intro s hs
+    exact axis_block_eq _ (hfix s hs)
+
+theorem exists_smooth_open_curve_with_germ {B : Type*} [NormedAddCommGroup B]
+    [NormedSpace ℝ B] (S : TopologicalSpace.Opens B) {a : ℝ → B} {U : Set ℝ} {t₀ : ℝ}
+    (ha : ContDiffOn ℝ ∞ a U) (hU : IsOpen U) (ht₀ : t₀ ∈ U) (ha0 : a t₀ ∈ S) :
+    ∃ f : C(ℝ, S), ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, B) ∞ f ∧ (fun t => (f t : B)) =ᶠ[𝓝 t₀] a := by
+  classical
+  let A : ℝ → S := fun t => if h : a t ∈ S then ⟨a t, h⟩ else ⟨a t₀, ha0⟩
+  let V := U ∩ a ⁻¹' (S : Set B)
+  have hV : IsOpen V := ha.continuousOn.isOpen_inter_preimage hU S.isOpen
+  have htV : t₀ ∈ V := ⟨ht₀, ha0⟩
+  have hval {t : ℝ} (ht : t ∈ V) : (Subtype.val ∘ A) =ᶠ[𝓝 t] a := by
+    filter_upwards [hV.mem_nhds ht] with s hs
+    have hsS : a s ∈ S := hs.2
+    simp only [Function.comp_apply, A, dif_pos hsS]
+  have hA : ContMDiffOn 𝓘(ℝ, ℝ) 𝓘(ℝ, B) ∞ A V := by
+    intro t ht
+    have haAt := (ha.contDiffAt (hU.mem_nhds ht.1)).contMDiffAt
+    have hvalAt := haAt.congr_of_eventuallyEq (hval ht)
+    exact ((ContMDiffAt.subtypeVal_comp_iff S A t).mp hvalAt).contMDiffWithinAt
+  obtain ⟨f, hf, heq⟩ := exists_smooth_curve_with_germ_at hA hV htV
+  refine ⟨f, hf, ?_⟩
+  filter_upwards [heq, hval htV] with t ht hta
+  exact (congrArg Subtype.val ht).trans hta
+
+theorem exists_smooth_open_curve_with_endpoint_germs {B : Type*} [NormedAddCommGroup B]
+    [NormedSpace ℝ B] (S : TopologicalSpace.Opens B) {a b : ℝ → B} {U V : Set ℝ}
+    (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
+    (h0U : (0 : ℝ) ∈ U) (h1V : (1 : ℝ) ∈ V) (ha0 : a 0 ∈ S) (hb1 : b 1 ∈ S)
+    (γ : Path (⟨a 0, ha0⟩ : S) (⟨b 1, hb1⟩ : S)) :
+    ∃ f : ℝ → B, ContDiff ℝ ∞ f ∧ (∀ t, f t ∈ S) ∧ (f =ᶠ[𝓝 (0 : ℝ)] a) ∧ (f =ᶠ[𝓝 (1 : ℝ)] b) := by
+  obtain ⟨a', ha', heqa⟩ := exists_smooth_open_curve_with_germ S ha hU h0U ha0
+  obtain ⟨b', hb', heqb⟩ := exists_smooth_open_curve_with_germ S hb hV h1V hb1
+  have hstart : a' 0 = (⟨a 0, ha0⟩ : S) := Subtype.ext heqa.eq_of_nhds
+  have hend : b' 1 = (⟨b 1, hb1⟩ : S) := Subtype.ext heqb.eq_of_nhds
+  obtain ⟨f, hf, hfa, hfb⟩ :=
+    exists_smooth_curve_with_endpoint_germs a' b' ha' hb' (γ.cast hstart hend)
+  refine
+    ⟨fun t => (f t : B), ((contMDiff_subtype_val (I := 𝓘(ℝ, B)) (U := S)).comp hf).contDiff,
+      fun t => (f t).property, ?_, ?_⟩
+  · filter_upwards [Iio_mem_nhds (show (0 : ℝ) < 1 / 8 by norm_num), heqa] with t ht hta
+    change t < 1 / 8 at ht
+    exact (congrArg Subtype.val (hfa ht.le)).trans hta
+  · filter_upwards [Ioi_mem_nhds (show (7 / 8 : ℝ) < 1 by norm_num), heqb] with t ht htb
+    change 7 / 8 < t at ht
+    exact (congrArg Subtype.val (hfb ht.le)).trans htb
+
+def LinearFramePaths.matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ D) : (D →L[ℝ] D) ≃L[ℝ] Matrix ι ι ℝ :=
+  (LinearMap.toContinuousLinearMap.symm.trans (LinearMap.toMatrix b b)).toContinuousLinearEquiv
+
+theorem LinearFramePaths.det_matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℝ D)
+    (A : D →L[ℝ] D) : Matrix.det (matrixCoordinates b A) = A.toLinearMap.det :=
+  LinearMap.det_toMatrix b A.toLinearMap
+
+def LinearFramePaths.operatorComponent {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
+    (σ : ℝ) : TopologicalSpace.Opens (D →L[ℝ] D) :=
+  ⟨{A | 0 < σ * A.toLinearMap.det},
+    isOpen_lt continuous_const (continuous_const.mul ContinuousLinearMap.continuous_det)⟩
+
+theorem LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι] (b : Module.Basis ι ℝ D)
+    {σ : ℝ} (A B : operatorComponent (D := D) σ) : Joined A B := by
+  classical
+  let _ := Fintype.ofFinite ι
+  let e := matrixCoordinates b
+  let A' : determinantComponent (ι := ι) σ :=
+    ⟨e A, by
+      change 0 < σ * Matrix.det (matrixCoordinates b A)
+      rw [det_matrixCoordinates]
+      exact A.property⟩
+  let B' : determinantComponent (ι := ι) σ :=
+    ⟨e B, by
+      change 0 < σ * Matrix.det (matrixCoordinates b B)
+      rw [det_matrixCoordinates]
+      exact B.property⟩
+  let ψ : determinantComponent (ι := ι) σ → operatorComponent (D := D) σ := fun C =>
+    ⟨e.symm C, by
+      have hd := det_matrixCoordinates b (e.symm C)
+      change Matrix.det (e (e.symm C)) = (e.symm C).toLinearMap.det at hd
+      rw [e.apply_symm_apply] at hd
+      change 0 < σ * (e.symm C).toLinearMap.det
+      rw [← hd]
+      exact C.property⟩
+  have hψ : Continuous ψ := (e.symm.continuous.comp continuous_subtype_val).subtype_mk _
+  have hA : ψ A' = A := Subtype.ext (e.symm_apply_apply A)
+  have hB : ψ B' = B := Subtype.ext (e.symm_apply_apply B)
+  have h := (joined_determinantComponent A' B').map hψ
+  rwa [hA, hB] at h
+
+theorem LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type*}
+    [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι]
+    (basis : Module.Basis ι ℝ D) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ} (ha : ContDiffOn ℝ ∞ a U)
+    (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V) (h0U : (0 : ℝ) ∈ U)
+    (h1V : (1 : ℝ) ∈ V) (hsign : 0 < (a 0).toLinearMap.det * (b 1).toLinearMap.det) :
+    ∃ L : ℝ → (D →L[ℝ] D),
+      ContDiff ℝ ∞ L ∧
+        (∀ t, Function.Bijective (L t)) ∧
+          (∀ t, 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det) ∧
+            (L =ᶠ[𝓝 (0 : ℝ)] a) ∧ (L =ᶠ[𝓝 (1 : ℝ)] b) := by
+  let σ := (a 0).toLinearMap.det
+  let S := operatorComponent (D := D) σ
+  have ha0ne : (a 0).toLinearMap.det ≠ 0 := by
+    intro hz
+    rw [hz, MulZeroClass.zero_mul] at hsign
+    exact lt_irrefl _ hsign
+  have ha0 : a 0 ∈ S := mul_self_pos.mpr ha0ne
+  have hb1 : b 1 ∈ S := hsign
+  let γ := (joined_operatorComponent basis (⟨a 0, ha0⟩ : S) ⟨b 1, hb1⟩).somePath
+  obtain ⟨L, hL, hmem, hleft, hright⟩ :=
+    exists_smooth_open_curve_with_endpoint_germs S ha hb hU hV h0U h1V ha0 hb1 γ
+  have hpositive (t : ℝ) : 0 < (a 0).toLinearMap.det * (L t).toLinearMap.det := hmem t
+  refine ⟨L, hL, ?_, hpositive, hleft, hright⟩
+  intro t
+  have hdet : (L t).toLinearMap.det ≠ 0 := by
+    intro hz
+    have hp := hpositive t
+    rw [hz, MulZeroClass.mul_zero] at hp
+    exact lt_irrefl _ hp
+  have hker : (L t).toLinearMap.ker = ⊥ := by
+    by_contra hk
+    exact hdet (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr hk)
+  have hi : Function.Injective (L t) := LinearMap.ker_eq_bot.mp hker
+  exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
+
+theorem AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
+    (basis : Module.Basis ι ℝ V) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)} {T₀ T₁ : ℝ → (V →L[ℝ] V)}
+    {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀) (hA₁ : ContDiffOn ℝ ∞ A₁ U₁)
+    (hT₀ : ContDiffOn ℝ ∞ T₀ U₀) (hT₁ : ContDiffOn ℝ ∞ T₁ U₁) (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁)
+    (h0 : (0 : ℝ) ∈ U₀) (h1 : (1 : ℝ) ∈ U₁)
+    (hsign : 0 < (T₀ 0).toLinearMap.det * (T₁ 1).toLinearMap.det) :
+    ∃ A : ℝ → (V →L[ℝ] ℝ),
+      ∃ T : ℝ → (V →L[ℝ] V),
+        ContDiff ℝ ∞ A ∧
+          ContDiff ℝ ∞ T ∧
+            (∀ s, (T s).IsInvertible) ∧
+              (∀ s, (FrameField.shearedBlock (A s) (T s)).IsInvertible) ∧
+                (A =ᶠ[𝓝 (0 : ℝ)] A₀) ∧
+                  (A =ᶠ[𝓝 (1 : ℝ)] A₁) ∧ (T =ᶠ[𝓝 (0 : ℝ)] T₀) ∧ (T =ᶠ[𝓝 (1 : ℝ)] T₁) := by
+  let S : TopologicalSpace.Opens (V →L[ℝ] ℝ) := ⟨Set.univ, isOpen_univ⟩
+  let γ : Path (⟨A₀ 0, Set.mem_univ _⟩ : S) ⟨A₁ 1, Set.mem_univ _⟩ :=
+    { toFun := fun t => ⟨(1 - (t : ℝ)) • A₀ 0 + (t : ℝ) • A₁ 1, Set.mem_univ _⟩
+      continuous_toFun := by fun_prop
+      source' := by apply Subtype.ext; simp
+      target' := by apply Subtype.ext; simp }
+  obtain ⟨A, hA, -, ha₀, ha₁⟩ :=
+    exists_smooth_open_curve_with_endpoint_germs S hA₀ hA₁ hU₀ hU₁ h0 h1 (Set.mem_univ _)
+      (Set.mem_univ _) γ
+  obtain ⟨T, hT, hi, -, ht₀, ht₁⟩ :=
+    LinearFramePaths.exists_smooth_invertible_frame_join basis hT₀ hT₁ hU₀ hU₁ h0 h1 hsign
+  have hTi (s : ℝ) : (T s).IsInvertible :=
+    ⟨(LinearEquiv.ofBijective (T s).toLinearMap (hi s)).toContinuousLinearEquiv, rfl⟩
+  exact
+    ⟨A, T, hA, hT, hTi, fun s => FrameField.isInvertible_shearedBlock (A s) (T s) (hTi s),
+      ha₀, ha₁, ht₀, ht₁⟩
+
+theorem AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
+    (basis : Module.Basis ι ℝ V) {p q : ℝ} (hpq : p < q) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)}
+    {T₀ T₁ : ℝ → (V →L[ℝ] V)} {U₀ U₁ : Set ℝ} (hA₀ : ContDiffOn ℝ ∞ A₀ U₀)
+    (hA₁ : ContDiffOn ℝ ∞ A₁ U₁) (hT₀ : ContDiffOn ℝ ∞ T₀ U₀) (hT₁ : ContDiffOn ℝ ∞ T₁ U₁)
+    (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁) (hp : p ∈ U₀) (hq : q ∈ U₁)
+    (hsign : 0 < (T₀ p).toLinearMap.det * (T₁ q).toLinearMap.det) :
+    ∃ A : ℝ → (V →L[ℝ] ℝ),
+      ∃ T : ℝ → (V →L[ℝ] V),
+        ContDiff ℝ ∞ A ∧
+          ContDiff ℝ ∞ T ∧
+            (∀ s, (T s).IsInvertible) ∧
+              (∀ s, (FrameField.shearedBlock (A s) (T s)).IsInvertible) ∧
+                (A =ᶠ[𝓝 p] A₀) ∧ (A =ᶠ[𝓝 q] A₁) ∧ (T =ᶠ[𝓝 p] T₀) ∧ (T =ᶠ[𝓝 q] T₁) := by
+  let ξ : ℝ → ℝ := fun t => p + (q - p) * t
+  let ζ : ℝ → ℝ := fun s => (s - p) / (q - p)
+  have hn : q - p ≠ 0 := ne_of_gt (sub_pos.mpr hpq)
+  have hξ : ContDiff ℝ ∞ ξ := by dsimp [ξ]; fun_prop
+  have hζ : ContDiff ℝ ∞ ζ := by dsimp [ζ]; fun_prop
+  have hξ0 : ξ 0 = p := by simp [ξ]
+  have hξ1 : ξ 1 = q := by simp [ξ]
+  have hζp : ζ p = 0 := by simp [ζ]
+  have hζq : ζ q = 1 := by simp [ζ, hn]
+  have hξζ (s : ℝ) : ξ (ζ s) = s := by
+    dsimp [ξ, ζ]
+    field_simp
+    ring
+  have h0 : (0 : ℝ) ∈ ξ ⁻¹' U₀ := by simpa only [Set.mem_preimage, hξ0] using hp
+  have h1 : (1 : ℝ) ∈ ξ ⁻¹' U₁ := by simpa only [Set.mem_preimage, hξ1] using hq
+  have hsgn : 0 < ((T₀ ∘ ξ) 0).toLinearMap.det * ((T₁ ∘ ξ) 1).toLinearMap.det := by
+    simpa only [Function.comp_apply, hξ0, hξ1] using hsign
+  obtain ⟨A, T, hA, hT, hi, hb, ha₀, ha₁, ht₀, ht₁⟩ :=
+    exists_smooth_sheared_frame_join basis (hA₀.comp hξ.contDiffOn (fun _ hs => hs))
+      (hA₁.comp hξ.contDiffOn (fun _ hs => hs)) (hT₀.comp hξ.contDiffOn (fun _ hs => hs))
+      (hT₁.comp hξ.contDiffOn (fun _ hs => hs)) (hU₀.preimage hξ.continuous)
+      (hU₁.preimage hξ.continuous) h0 h1 hsgn
+  have hζ0 : Filter.Tendsto ζ (𝓝 p) (𝓝 0) := by
+    simpa only [hζp] using hζ.continuous.continuousAt.tendsto (x := p)
+  have hζ1 : Filter.Tendsto ζ (𝓝 q) (𝓝 1) := by
+    simpa only [hζq] using hζ.continuous.continuousAt.tendsto (x := q)
+  refine
+    ⟨A ∘ ζ, T ∘ ζ, hA.comp hζ, hT.comp hζ, fun s => hi (ζ s), fun s => hb (ζ s), ?_, ?_, ?_, ?_⟩
+  · filter_upwards [hζ0 ha₀] with s hs
+    exact hs.trans (congrArg A₀ (hξζ s))
+  · filter_upwards [hζ1 ha₁] with s hs
+    exact hs.trans (congrArg A₁ (hξζ s))
+  · filter_upwards [hζ0 ht₀] with s hs
+    exact hs.trans (congrArg T₀ (hξζ s))
+  · filter_upwards [hζ1 ht₁] with s hs
+    exact hs.trans (congrArg T₁ (hξζ s))
+
+theorem AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {H R : E → F} {K U : Set E} {x : E} (hH : ContDiff ℝ ∞ H) (hR : ContDiffOn ℝ ∞ R U)
+    (hU : IsOpen U) (hx : x ∈ U) (hvalue : ∀ y ∈ K ∩ U, R y = H y)
+    (hderiv : ∀ y ∈ K ∩ U, fderiv ℝ R y = fderiv ℝ H y) :
+    ∃ G : E → F,
+      ContDiff ℝ ∞ G ∧
+        (G =ᶠ[𝓝 x] R) ∧
+          (∀ y ∉ U, G =ᶠ[𝓝 y] H) ∧ Set.EqOn G H K ∧ Set.EqOn (fderiv ℝ G) (fderiv ℝ H) K := by
+  obtain ⟨β, hβ, -, hsupp, hone, -⟩ :=
+    exists_compact_smooth_cutoff (isCompact_singleton : IsCompact ({ x } : Set E)) hU
+      (Set.singleton_subset_iff.mpr hx)
+  let G : E → F := fun y => H y + β y • (R y - H y)
+  have hoff (y : E) (hy : y ∉ tsupport β) : G =ᶠ[𝓝 y] H := by
+    filter_upwards [notMem_tsupport_iff_eventuallyEq.mp hy] with z hz
+    simp only [G, hz, Pi.zero_apply, zero_smul, add_zero]
+  have hG : ContDiff ℝ ∞ G := by
+    rw [contDiff_iff_contDiffAt]
+    intro y
+    by_cases hy : y ∈ tsupport β
+    · exact
+        hH.contDiffAt.add
+          (hβ.contDiffAt.smul ((hR.contDiffAt (hU.mem_nhds (hsupp hy))).sub hH.contDiffAt))
+    · exact hH.contDiffAt.congr_of_eventuallyEq (hoff y hy)
+  have hGeq (y : E) (hy : y ∈ K) : G y = H y := by
+    by_cases hb : y ∈ tsupport β
+    · simp only [G, hvalue y ⟨hy, hsupp hb⟩, sub_self, smul_zero, add_zero]
+    · exact (hoff y hb).eq_of_nhds
+  refine ⟨G, hG, ?_, fun y hy => hoff y (fun h => hy (hsupp h)), hGeq, ?_⟩
+  · have hone' : ∀ᶠ y in 𝓝 x, β y = 1 := by simpa only [nhdsSet_singleton] using hone
+    filter_upwards [hone'] with y hy
+    simp only [G, hy, one_smul]
+    abel
+  · intro y hy
+    by_cases hb : y ∈ tsupport β
+    · have hr := (hR.contDiffAt (hU.mem_nhds (hsupp hb))).differentiableAt (by simp)
+      have hh := hH.differentiable (by simp) y
+      have hd : HasFDerivAt (fun z => R z - H z) (0 : E →L[ℝ] F) y := by
+        simpa only [hderiv y ⟨hy, hsupp hb⟩, sub_self, Pi.sub_def] using
+          hr.hasFDerivAt.sub hh.hasFDerivAt
+      have hc : HasFDerivAt (fun z => β z • (R z - H z)) (0 : E →L[ℝ] F) y := by
+        simpa only [hvalue y ⟨hy, hsupp hb⟩, sub_self, smul_zero,
+          ContinuousLinearMap.smulRight_zero, add_zero, Pi.smul_def'] using
+          (hβ.differentiable (by simp) y).hasFDerivAt.smul hd
+      simpa only [add_zero, Pi.add_def, G] using (hh.hasFDerivAt.add hc).fderiv
+    · exact (hoff y hb).fderiv_eq
+
+theorem AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
+    [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {H R₀ R₁ : (ℝ × V) → F} {U₀ U₁ : Set (ℝ × V)} {p q : ℝ} (hpq : p < q) (hH : ContDiff ℝ ∞ H)
+    (hR₀ : ContDiffOn ℝ ∞ R₀ U₀) (hR₁ : ContDiffOn ℝ ∞ R₁ U₁) (hU₀ : IsOpen U₀) (hU₁ : IsOpen U₁)
+    (h0 : (p, (0 : V)) ∈ U₀) (h1 : (q, (0 : V)) ∈ U₁)
+    (hv₀ : (fun s : ℝ => R₀ (s, 0)) =ᶠ[𝓝 p] (fun s => H (s, 0)))
+    (hv₁ : (fun s : ℝ => R₁ (s, 0)) =ᶠ[𝓝 q] (fun s => H (s, 0)))
+    (hd₀ : (fun s : ℝ => fderiv ℝ R₀ (s, 0)) =ᶠ[𝓝 p] (fun s => fderiv ℝ H (s, 0)))
+    (hd₁ : (fun s : ℝ => fderiv ℝ R₁ (s, 0)) =ᶠ[𝓝 q] (fun s => fderiv ℝ H (s, 0))) :
+    ∃ G : (ℝ × V) → F,
+      ContDiff ℝ ∞ G ∧
+        (∀ s : ℝ, G (s, 0) = H (s, 0)) ∧
+          (∀ s : ℝ, fderiv ℝ G (s, 0) = fderiv ℝ H (s, 0)) ∧
+            (G =ᶠ[𝓝 (p, (0 : V))] R₀) ∧ (G =ᶠ[𝓝 (q, (0 : V))] R₁) := by
+  obtain ⟨I₀, hI₀sub, hI₀, h0I⟩ := mem_nhds_iff.mp (hv₀.and hd₀)
+  obtain ⟨I₁, hI₁sub, hI₁, h1I⟩ := mem_nhds_iff.mp (hv₁.and hd₁)
+  let W₀ := U₀ ∩ Prod.fst ⁻¹' (I₀ ∩ Set.Iio ((p + q) / 2))
+  let W₁ := U₁ ∩ Prod.fst ⁻¹' (I₁ ∩ Set.Ioi ((p + q) / 2))
+  have hW₀ : IsOpen W₀ := hU₀.inter ((hI₀.inter isOpen_Iio).preimage continuous_fst)
+  have hW₁ : IsOpen W₁ := hU₁.inter ((hI₁.inter isOpen_Ioi).preimage continuous_fst)
+  have h0W : (p, (0 : V)) ∈ W₀ := ⟨h0, h0I, by change p < (p + q) / 2; linarith⟩
+  have h1W : (q, (0 : V)) ∈ W₁ := ⟨h1, h1I, by change (p + q) / 2 < q; linarith⟩
+  let K : Set (ℝ × V) := Set.univ ×ˢ {0}
+  have hv0 (y : ℝ × V) (hy : y ∈ K ∩ W₀) : R₀ y = H y := by
+    have hz : y.2 = 0 := hy.1.2
+    have hh := (hI₀sub hy.2.2.1).1
+    exact (show (y.1, (0 : V)) = y from Prod.ext rfl hz.symm) ▸ hh
+  have hd0 (y : ℝ × V) (hy : y ∈ K ∩ W₀) : fderiv ℝ R₀ y = fderiv ℝ H y := by
+    have hz : y.2 = 0 := hy.1.2
+    have hh := (hI₀sub hy.2.2.1).2
+    exact (show (y.1, (0 : V)) = y from Prod.ext rfl hz.symm) ▸ hh
+  obtain ⟨G₀, hG₀, hg₀, -, hvG₀, hdG₀⟩ :=
+    exists_flat_local_correction hH (hR₀.mono Set.inter_subset_left) hW₀ h0W hv0 hd0
+  have hv1 (y : ℝ × V) (hy : y ∈ K ∩ W₁) : R₁ y = G₀ y := by
+    rw [hvG₀ hy.1]
+    have hz : y.2 = 0 := hy.1.2
+    have hh := (hI₁sub hy.2.2.1).1
+    exact (show (y.1, (0 : V)) = y from Prod.ext rfl hz.symm) ▸ hh
+  have hd1 (y : ℝ × V) (hy : y ∈ K ∩ W₁) : fderiv ℝ R₁ y = fderiv ℝ G₀ y := by
+    rw [hdG₀ hy.1]
+    have hz : y.2 = 0 := hy.1.2
+    have hh := (hI₁sub hy.2.2.1).2
+    exact (show (y.1, (0 : V)) = y from Prod.ext rfl hz.symm) ▸ hh
+  obtain ⟨G, hG, hg₁, hoff, hvG, hdG⟩ :=
+    exists_flat_local_correction hG₀ (hR₁.mono Set.inter_subset_left) hW₁ h1W hv1 hd1
+  have h0not : (p, (0 : V)) ∉ W₁ := by
+    intro hh
+    have hbad : (p + q) / 2 < p := hh.2.2
+    linarith
+  refine ⟨G, hG, ?_, ?_, (hoff _ h0not).trans hg₀, hg₁⟩
+  · intro s
+    have hs : (s, (0 : V)) ∈ K := ⟨Set.mem_univ s, rfl⟩
+    exact (hvG hs).trans (hvG₀ hs)
+  · intro s
+    have hs : (s, (0 : V)) ∈ K := ⟨Set.mem_univ s, rfl⟩
+    exact (hdG hs).trans (hdG₀ hs)
+
+theorem FrameField.exists_sheared_tubular_chart {X Z F E M : Type*} [NormedAddCommGroup X]
+    [NormedSpace ℝ X] [FiniteDimensional ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    (Ψ : PartialDiffeomorph 𝓘(ℝ, X × F) 𝓘(ℝ, E) (X × F) M ∞) {K U : Set X} (hK : IsCompact K)
+    (hU : IsOpen U) (hKU : K ⊆ U) (hzero : K ×ˢ {(0 : F)} ⊆ Ψ.source) {A : X → (Z →L[ℝ] X)}
+    {T : X → (Z →L[ℝ] F)} (hA : ContDiffOn ℝ ∞ A U) (hT : ContDiffOn ℝ ∞ T U)
+    (hi : ∀ x ∈ K, (T x).IsInvertible) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ : PartialDiffeomorph 𝓘(ℝ, X × Z) 𝓘(ℝ, E) (X × Z) M ∞,
+          K ×ˢ Metric.closedBall (0 : Z) ε ⊆ Φ.source ∧
+            (∀ p, Φ p = Ψ (shearedMap A T p)) ∧
+              Φ.target ⊆ Ψ.target ∧
+                (∀ x ∈ K, (Ψ.symm ∘ Φ) =ᶠ[𝓝 (x, (0 : Z))] shearedMap A T) ∧
+                  ∀ x ∈ K, HasFDerivAt (Ψ.symm ∘ Φ) (shearedBlock (A x) (T x)) (x, 0) := by
+  obtain ⟨χ, hzeroχ, -, hχ⟩ := exists_sheared_frame_chart hK hU hKU hA hT hi
+  let Φ := χ.trans Ψ
+  have hzeroΦ : K ×ˢ {(0 : Z)} ⊆ Φ.source := by
+    rintro ⟨x, z⟩ ⟨hx, hz⟩
+    have hz0 : z = 0 := hz
+    subst z
+    refine ⟨hzeroχ ⟨hx, rfl⟩, ?_⟩
+    change χ (x, 0) ∈ Ψ.source
+    rw [hχ, shearedMap_zero]
+    exact hzero ⟨hx, rfl⟩
+  obtain ⟨ε, hε, hprod⟩ :=
+    DiskFraming.exists_pos_prod_closedBall_subset hK Φ.open_source hzeroΦ
+  have hgerm : ∀ x ∈ K, (Ψ.symm ∘ Φ) =ᶠ[𝓝 (x, (0 : Z))] shearedMap A T := by
+    intro x hx
+    filter_upwards [Φ.open_source.mem_nhds (hzeroΦ ⟨hx, rfl⟩)] with p hp
+    change Ψ.symm (Ψ (χ p)) = shearedMap A T p
+    have hpΨ : χ p ∈ Ψ.source := hp.2
+    exact (Ψ.left_inv' hpΨ).trans (congrFun hχ p)
+  refine ⟨ε, hε, Φ, hprod, ?_, fun _ hy => hy.1, hgerm, ?_⟩
+  · intro p
+    change Ψ (χ p) = Ψ (shearedMap A T p)
+    rw [hχ]
+  · intro x hx
+    apply (hgerm x hx).hasFDerivAt_iff.mpr
+    exact
+      hasFDerivAt_shearedMap_zero
+        ((hA.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
+        ((hT.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
+
+theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
+    [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    (basis : Module.Basis ι ℝ V) (Ψ Φ₀ Φ₁ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞)
+    {p q : ℝ} (hpq : p < q) {K : Set ℝ} (hK : IsCompact K) (hzero : K ×ˢ {(0 : V)} ⊆ Ψ.source)
+    (hΨ₀ : (p, (0 : V)) ∈ Ψ.source) (hΨ₁ : (q, (0 : V)) ∈ Ψ.source)
+    (hΦ₀ : (p, (0 : V)) ∈ Φ₀.source) (hΦ₁ : (q, (0 : V)) ∈ Φ₁.source)
+    (haxis₀ : (fun s : ℝ => Φ₀ (s, 0)) =ᶠ[𝓝 p] (fun s => Ψ (s, 0)))
+    (haxis₁ : (fun s : ℝ => Φ₁ (s, 0)) =ᶠ[𝓝 q] (fun s => Ψ (s, 0)))
+    (hsign :
+      0 <
+        (transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₀) (p, 0))).toLinearMap.det *
+          (transverseBlock (fderiv ℝ (Ψ.symm ∘ Φ₁) (q, 0))).toLinearMap.det) :
+    ∃ ε : ℝ,
+      0 < ε ∧
+        ∃ Φ : PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, E) (ℝ × V) M ∞,
+          K ×ˢ Metric.closedBall (0 : V) ε ⊆ Φ.source ∧
+            Φ.target ⊆ Ψ.target ∧
+              (∀ s : ℝ, Φ (s, 0) = Ψ (s, 0)) ∧
+                ((Φ : (ℝ × V) → M) =ᶠ[𝓝 (p, (0 : V))] Φ₀) ∧
+                  ((Φ : (ℝ × V) → M) =ᶠ[𝓝 (q, (0 : V))] Φ₁) := by
+  let R₀ := Φ₀.trans Ψ.symm
+  let R₁ := Φ₁.trans Ψ.symm
+  obtain ⟨U₀, hU₀, h0U, hs₀, hx₀, ha₀, ht₀, -, hb₀⟩ :=
+    exists_native_axis_transition_data Φ₀ Ψ hΦ₀ hΨ₀ haxis₀
+  obtain ⟨U₁, hU₁, h1U, hs₁, hx₁, ha₁, ht₁, -, hb₁⟩ :=
+    exists_native_axis_transition_data Φ₁ Ψ hΦ₁ hΨ₁ haxis₁
+  obtain ⟨A, T, hA, hT, -, hinv, hA₀, hA₁, hT₀, hT₁⟩ :=
+    exists_smooth_sheared_frame_join_at basis hpq ha₀ ha₁ ht₀ ht₁ hU₀ hU₁ h0U h1U hsign
+  let H := FrameField.shearedMap A T
+  have hH : ContDiff ℝ ∞ H :=
+    (contDiff_fst.add ((hA.comp contDiff_fst).clm_apply contDiff_snd)).prodMk
+      ((hT.comp contDiff_fst).clm_apply contDiff_snd)
+  have hHd (s : ℝ) : fderiv ℝ H (s, (0 : V)) = FrameField.shearedBlock (A s) (T s) :=
+    (FrameField.hasFDerivAt_shearedMap_zero (hA.differentiable (by simp) s)
+        (hT.differentiable (by simp) s)).fderiv
+  have hv₀ : (fun s : ℝ => R₀ (s, (0 : V))) =ᶠ[𝓝 p] (fun s => H (s, 0)) := by
+    filter_upwards [hU₀.mem_nhds h0U] with s hs
+    exact (hx₀ s hs).trans (FrameField.shearedMap_zero A T s).symm
+  have hv₁ : (fun s : ℝ => R₁ (s, (0 : V))) =ᶠ[𝓝 q] (fun s => H (s, 0)) := by
+    filter_upwards [hU₁.mem_nhds h1U] with s hs
+    exact (hx₁ s hs).trans (FrameField.shearedMap_zero A T s).symm
+  have hd₀ : (fun s : ℝ => fderiv ℝ R₀ (s, (0 : V))) =ᶠ[𝓝 p] (fun s => fderiv ℝ H (s, 0)) := by
+    filter_upwards [hU₀.mem_nhds h0U, hA₀, hT₀] with s hs ha ht
+    change fderiv ℝ (Ψ.symm ∘ Φ₀) (s, 0) = _
+    rw [hb₀ s hs, hHd s, ha, ht]
+  have hd₁ : (fun s : ℝ => fderiv ℝ R₁ (s, (0 : V))) =ᶠ[𝓝 q] (fun s => fderiv ℝ H (s, 0)) := by
+    filter_upwards [hU₁.mem_nhds h1U, hA₁, hT₁] with s hs ha ht
+    change fderiv ℝ (Ψ.symm ∘ Φ₁) (s, 0) = _
+    rw [hb₁ s hs, hHd s, ha, ht]
+  obtain ⟨G, hG, hvG, hdG, hg₀, hg₁⟩ :=
+    exists_axis_germ_correction hpq hH R₀.contMDiffOn_toFun.contDiffOn
+      R₁.contMDiffOn_toFun.contDiffOn R₀.open_source R₁.open_source (hs₀ p h0U) (hs₁ q h1U) hv₀
+      hv₁ hd₀ hd₁
+  have hGaxis (s : ℝ) : G (s, (0 : V)) = (s, 0) :=
+    (hvG s).trans (FrameField.shearedMap_zero A T s)
+  have hGi : Set.InjOn G (K ×ˢ {(0 : V)}) := by
+    rintro ⟨s, z⟩ ⟨hs, hz⟩ ⟨t, w⟩ ⟨ht, hw⟩ heq
+    have hz0 : z = 0 := hz
+    have hw0 : w = 0 := hw
+    subst z
+    subst w
+    simpa only [hGaxis] using heq
+  have hGl : ∀ p ∈ K ×ˢ {(0 : V)}, IsLocalDiffeomorphAt 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) ∞ G p := by
+    rintro ⟨s, z⟩ ⟨hs, hz⟩
+    have hz0 : z = 0 := hz
+    subst z
+    apply
+      isLocalDiffeomorphAt_of_contMDiffOn isOpen_univ (Set.mem_univ _)
+        hG.contMDiff.contMDiffOn
+    rw [mfderiv_eq_fderiv, hdG s, hHd s]
+    exact hinv s
+  have hGO : K ×ˢ {(0 : V)} ⊆ G ⁻¹' Ψ.source := by
+    rintro ⟨s, z⟩ ⟨hs, hz⟩
+    have hz0 : z = 0 := hz
+    subst z
+    change G (s, 0) ∈ Ψ.source
+    rw [hGaxis]
+    exact hzero ⟨hs, rfl⟩
+  obtain ⟨χ, hχzero, hχsub, hχ⟩ :=
+    exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hGi hGl
+      (Ψ.open_source.preimage hG.continuous) hGO
+  let Φ := χ.trans Ψ
+  have hΦzero : K ×ˢ {(0 : V)} ⊆ Φ.source := by
+    intro p hp
+    refine ⟨hχzero hp, ?_⟩
+    change χ p ∈ Ψ.source
+    rw [hχ]
+    exact hχsub (hχzero hp)
+  obtain ⟨ε, hε, hprod⟩ :=
+    DiskFraming.exists_pos_prod_closedBall_subset hK Φ.open_source hΦzero
+  have hformula (p : ℝ × V) : Φ p = Ψ (G p) := by
+    change Ψ (χ p) = Ψ (G p)
+    rw [hχ]
+  refine ⟨ε, hε, Φ, hprod, fun _ hy => hy.1, ?_, ?_, ?_⟩
+  · intro s
+    rw [hformula, hGaxis]
+  · filter_upwards [hg₀, R₀.open_source.mem_nhds (hs₀ p h0U)] with p hp hs
+    rw [hformula, hp]
+    exact Ψ.right_inv' hs.2
+  · filter_upwards [hg₁, R₁.open_source.mem_nhds (hs₁ q h1U)] with p hp hs
+    rw [hformula, hp]
+    exact Ψ.right_inv' hs.2
+
+theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
+    [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
+    [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
+    (C : Z →L[ℝ] F) (h : Function.Bijective (G.coprod C)) : (G.coprod C).IsInvertible := by
+  let e := (LinearEquiv.ofBijective (G.coprod C).toLinearMap h).toContinuousLinearEquiv
+  exact ⟨e, rfl⟩

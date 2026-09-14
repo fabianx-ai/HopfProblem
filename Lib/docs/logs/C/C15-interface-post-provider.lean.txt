@@ -1,0 +1,16 @@
+import Lib.Topology.Homeomorph.DiskCube
+noncomputable section
+namespace C15_DiskCubeInterfaceCheck
+abbrev target := @Mathoverflow1973.DiskCube.target
+abbrev target_compact := @Mathoverflow1973.DiskCube.target_compact
+abbrev target_convex := @Mathoverflow1973.DiskCube.target_convex
+abbrev target_interior_nonempty := @Mathoverflow1973.DiskCube.target_interior_nonempty
+abbrev exists_ambient := @Mathoverflow1973.DiskCube.exists_ambient
+abbrev ambient := @Mathoverflow1973.DiskCube.ambient
+abbrev ambient_image := @Mathoverflow1973.DiskCube.ambient_image
+abbrev ambient_frontier := @Mathoverflow1973.DiskCube.ambient_frontier
+abbrev ambient_mem_iff := @Mathoverflow1973.DiskCube.ambient_mem_iff
+abbrev homeomorph := @Mathoverflow1973.DiskCube.homeomorph
+abbrev boundary_iff := @Mathoverflow1973.DiskCube.boundary_iff
+abbrev symm_boundary_iff := @Mathoverflow1973.DiskCube.symm_boundary_iff
+end C15_DiskCubeInterfaceCheck

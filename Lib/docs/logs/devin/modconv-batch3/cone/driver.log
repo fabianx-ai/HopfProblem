@@ -1,0 +1,49 @@
+=== BUILD Lib/AlgebraicTopology/Hurewicz/SimplexCube.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/SimplexCube.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/HomotopyExtension.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/HomotopyExtension.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/Subdivision.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/Subdivision.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/Degree.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/Degree.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/Straightening.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/Straightening.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean
+=== BUILD Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean ===
+EXIT 0 Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean
+=== BUILD Lib/AlgebraicTopology/SingularHomology/LocalContributions.lean ===
+EXIT 0 Lib/AlgebraicTopology/SingularHomology/LocalContributions.lean
+=== BUILD Lib/AlgebraicTopology/SingularHomology/Naturality.lean ===
+EXIT 0 Lib/AlgebraicTopology/SingularHomology/Naturality.lean
+=== BUILD Lib/Topology/Homotopy/CellAttachment.lean ===
+EXIT 0 Lib/Topology/Homotopy/CellAttachment.lean
+=== BUILD Lib/Topology/Homotopy/LocalCollapse.lean ===
+EXIT 0 Lib/Topology/Homotopy/LocalCollapse.lean
+=== BUILD Hopf/LibShims.lean ===
+EXIT 0 Hopf/LibShims.lean
+=== BUILD Hopf/DifferentialTopology.lean ===
+EXIT 0 Hopf/DifferentialTopology.lean
+=== BUILD Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean ===
+EXIT 0 Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean
+=== BUILD Hopf/SingularHomology.lean ===
+EXIT 0 Hopf/SingularHomology.lean
+=== BUILD Lib/Algebra/Module/IntegerPresentation.lean ===
+EXIT 0 Lib/Algebra/Module/IntegerPresentation.lean
+=== BUILD Hopf/SphereTopology.lean ===
+EXIT 0 Hopf/SphereTopology.lean
+=== BUILD Hopf/Hurewicz.lean ===
+EXIT 0 Hopf/Hurewicz.lean
+=== BUILD Lib/LinearAlgebra/SquareZero.lean ===
+EXIT 0 Lib/LinearAlgebra/SquareZero.lean
+=== BUILD Hopf/LCP/CuspFilling.lean ===
+EXIT 0 Hopf/LCP/CuspFilling.lean
+ALL DONE
