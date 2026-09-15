@@ -423,17 +423,20 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
 import Lib.CategoryTheory.Abelian.Injective.Ext
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
-
 /-!
-# Reusable extracted library
+# Reusable V10 Section 6 library
 
 This root exports proof-independent mathematics extracted from checked V10 modules and checked in
 the Hopf development. Files below `Lib/` do not import `S6Shortcuts`, `S6`, `Hopf`, `Challenge`,
 or `Solution`; proof-specific data and adapters live downstream.
+
+The exported modules contain the reusable algebraic results formalized from V10 Section 6. Results
+which still lack a Lean proof are documented as gaps rather than represented by placeholders.
+-/
+# Reusable extracted library
 
 The exported modules contain reusable algebraic results formalized from V10 Section 6 together
 with proof-independent mathematics extracted from the checked Hopf development. Results which
 still lack a Lean proof are documented as gaps rather than represented by placeholders.
 In particular, the topology layer records that classical local contractibility descends along a
 continuous retraction.
--/
