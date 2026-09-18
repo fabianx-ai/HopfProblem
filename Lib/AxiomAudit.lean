@@ -15,6 +15,8 @@ is an evidence command rather than library content.
 
 #check BasedDiskLifting.exists_based_disk_lift_of_surjective
 #print axioms BasedDiskLifting.exists_based_disk_lift_of_surjective
+#check TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+#print axioms TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
 
 /-! ## `Lib.Analysis.Real.MeshScale` -/
 
