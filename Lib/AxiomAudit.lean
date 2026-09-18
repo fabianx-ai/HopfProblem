@@ -23,6 +23,8 @@ is an evidence command rather than library content.
 
 #check LowCellLifting.relativeDiskLifting_of_pi_vanishing
 #print axioms LowCellLifting.relativeDiskLifting_of_pi_vanishing
+#check TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
+#print axioms TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
 
 /-! ## `Lib.Analysis.Real.MeshScale` -/
 
