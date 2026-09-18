@@ -1,5 +1,6 @@
 import Lib
 import Lib.Topology.Homotopy.BasedDiskLifting
+import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
 import Lib.Topology.Dimension.CubeBoundaryThreeCells
 import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
@@ -17,6 +18,11 @@ is an evidence command rather than library content.
 #print axioms BasedDiskLifting.exists_based_disk_lift_of_surjective
 #check TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
 #print axioms TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+
+/-! ## `Lib.Topology.Homotopy.RelativeDiskLifting` -/
+
+#check LowCellLifting.relativeDiskLifting_of_pi_vanishing
+#print axioms LowCellLifting.relativeDiskLifting_of_pi_vanishing
 
 /-! ## `Lib.Analysis.Real.MeshScale` -/
 
