@@ -1,4 +1,5 @@
 import Lib
+import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
 import Lib.Topology.Dimension.CubeBoundaryThreeCells
 import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
@@ -9,6 +10,11 @@ import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 Compile this file directly. It deliberately is not imported by `Lib.lean`, because `#print axioms`
 is an evidence command rather than library content.
 -/
+
+/-! ## `Lib.Topology.Homotopy.BasedDiskLifting` -/
+
+#check BasedDiskLifting.exists_based_disk_lift_of_surjective
+#print axioms BasedDiskLifting.exists_based_disk_lift_of_surjective
 
 /-! ## `Lib.Analysis.Real.MeshScale` -/
 
