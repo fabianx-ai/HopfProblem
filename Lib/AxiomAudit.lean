@@ -1,4 +1,5 @@
 import Lib
+import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
@@ -11,6 +12,13 @@ import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 Compile this file directly. It deliberately is not imported by `Lib.lean`, because `#print axioms`
 is an evidence command rather than library content.
 -/
+
+/-! ## `Lib.AlgebraicTopology.Hurewicz.SphereGenerator` -/
+
+#check SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
+#print axioms SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
+#check SixthHurewicz.exists_sphereMap_of_homologySixEquiv
+#print axioms SixthHurewicz.exists_sphereMap_of_homologySixEquiv
 
 /-! ## `Lib.Topology.Homotopy.BasedDiskLifting` -/
 
