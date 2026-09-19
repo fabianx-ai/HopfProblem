@@ -198,6 +198,108 @@ theorem CoverOverlapHomology.homology_map_out {X : Type} [TopologicalSpace X] {�
       intro i _
       rw [SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply]
 
+/-- In local piece and overlap coordinates, the left Mayer–Vietoris map is the
+sum of regular attachments paired with the negative componentwise filling maps.
+
+The overlap union is a disjoint union, so the inverse homology decomposition is
+the sum of the maps induced by its component inclusions. Apply the regular
+inclusion to that sum and use the regular commuting squares and functoriality.
+For the filling component, the filling squares identify the same sum with the
+inverse disjoint-filling decomposition. Passing to filling coordinates recovers
+each component, retaining the negative sign of the Mayer–Vietoris convention.
+This argument includes degree zero and empty finite families; it requires no
+connectivity, orientation, smoothness or homology-vanishing assumption. -/
+theorem CoverLocalContributions.leftHomologyMap_in_coordinates
+    {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
+    (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
+    (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    {R : Type} [TopologicalSpace R] {P A : ι → Type}
+    [∀ i, TopologicalSpace (P i)] [∀ i, TopologicalSpace (A i)]
+    (r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ ↥(U ∩ V i))
+    (α : ∀ i, C(A i, R)) (β : ∀ i, C(A i, P i))
+    (hr : ∀ i, (r : C(R, U)).comp (α i) =
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (hp : ∀ i, (p i : C(P i, V i)).comp (β i) =
+      (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V i ⊆ V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (n : ℕ) (c : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n) :
+    let E : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n ≃ₗ[ℤ]
+        (∀ i, SingularMayerVietoris.SingularHomology (A i) n) :=
+      (CoverOverlapHomology.homologyEquiv U V hU hV hd n).trans
+      (AddEquiv.piCongrRight fun i =>
+        (SingularHomology.homeomorphHomologyEquiv (a i) n).symm.toAddEquiv).toIntLinearEquiv
+    let Q : (SingularMayerVietoris.SingularHomology U n ×
+        SingularMayerVietoris.SingularHomology (↥(⋃ i, V i)) n) ≃ₗ[ℤ]
+        (SingularMayerVietoris.SingularHomology R n ×
+          (∀ i, SingularMayerVietoris.SingularHomology (P i) n)) :=
+      ((SingularHomology.homeomorphHomologyEquiv r n).symm.toAddEquiv.prodCongr
+      ((DisjointOpenHomology.homologyEquiv V hV hd n).toAddEquiv.trans
+        (AddEquiv.piCongrRight fun i =>
+          (SingularHomology.homeomorphHomologyEquiv (p i) n).symm.toAddEquiv))).toIntLinearEquiv
+    Q (SingularMayerVietoris.leftHomologyMap U (⋃ i, V i) n c) =
+      (∑ i, SingularMayerVietoris.singularHomologyMap (α i) n (E c i),
+        fun i => -SingularMayerVietoris.singularHomologyMap (β i) n (E c i)) := by
+  let d := CoverOverlapHomology.homologyEquiv U V hU hV hd n c
+  let b := fun i => (SingularHomology.homeomorphHomologyEquiv (a i) n).symm (d i)
+  have hab (i : ι) :
+      SingularMayerVietoris.singularHomologyMap (a i : C(A i, ↥(U ∩ V i))) n (b i) =
+        d i :=
+    (SingularHomology.homeomorphHomologyEquiv (a i) n).apply_symm_apply (d i)
+  let jU := ContinuousMap.inclusion
+    (Set.inter_subset_left : U ∩ ⋃ i, V i ⊆ U)
+  let jV := ContinuousMap.inclusion
+    (Set.inter_subset_right : U ∩ ⋃ i, V i ⊆ ⋃ i, V i)
+  have hreg : SingularMayerVietoris.singularHomologyMap jU n c =
+      ∑ i, SingularMayerVietoris.singularHomologyMap (r : C(R, U)) n
+        (SingularMayerVietoris.singularHomologyMap (α i) n (b i)) := by
+    rw [CoverOverlapHomology.homology_map_out U V hU hV hd jU n c]
+    apply Finset.sum_congr rfl
+    intro i _
+    change SingularMayerVietoris.singularHomologyMap
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)) n (d i) = _
+    rw [← hab i, ← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp,
+      ← hr i, SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply]
+  have hfill : SingularMayerVietoris.singularHomologyMap jV n c =
+      (DisjointOpenHomology.homologyEquiv V hV hd n).symm
+        (fun i => SingularMayerVietoris.singularHomologyMap (p i : C(P i, V i)) n
+          (SingularMayerVietoris.singularHomologyMap (β i) n (b i))) := by
+    rw [CoverOverlapHomology.homology_map_out U V hU hV hd jV n c,
+      DisjointOpenHomology.homologyEquiv_symm_apply]
+    apply Finset.sum_congr rfl
+    intro i _
+    change SingularMayerVietoris.singularHomologyMap
+      (jV.comp (CoverOverlapHomology.componentInclusion U V i)) n (d i) = _
+    rw [← hab i, ← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp]
+    have hs : (jV.comp (CoverOverlapHomology.componentInclusion U V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))) =
+        (DisjointOpenHomology.inclusion V i).comp
+          ((p i : C(P i, V i)).comp (β i)) := by
+      rw [hp i]
+      rfl
+    rw [hs, SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply,
+      SingularHomology.singularHomologyMap_comp, LinearMap.comp_apply]
+  dsimp only
+  rw [SingularMayerVietoris.leftHomologyMap_apply]
+  apply Prod.ext
+  · change (SingularHomology.homeomorphHomologyEquiv r n).symm
+      (SingularMayerVietoris.singularHomologyMap jU n c) =
+        ∑ i, SingularMayerVietoris.singularHomologyMap (α i) n (b i)
+    rw [hreg, map_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    exact (SingularHomology.homeomorphHomologyEquiv r n).symm_apply_apply _
+  · funext i
+    change (SingularHomology.homeomorphHomologyEquiv (p i) n).symm
+      ((DisjointOpenHomology.homologyEquiv V hV hd n)
+        (-SingularMayerVietoris.singularHomologyMap jV n c) i) =
+      -SingularMayerVietoris.singularHomologyMap (β i) n (b i)
+    rw [hfill, map_neg, LinearEquiv.apply_symm_apply]
+    change (SingularHomology.homeomorphHomologyEquiv (p i) n).symm
+      (-(SingularHomology.homeomorphHomologyEquiv (p i) n)
+        (SingularMayerVietoris.singularHomologyMap (β i) n (b i))) = _
+    rw [map_neg, LinearEquiv.symm_apply_apply]
+
 /-! ### Local contributions of a cover -/
 
 /-- The connecting map from degree `k+1` homology of `X` to the product of degree `k` homologies of the cover overlaps. -/
