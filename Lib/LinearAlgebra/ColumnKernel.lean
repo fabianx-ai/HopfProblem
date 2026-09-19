@@ -4,7 +4,8 @@ public import Mathlib.Algebra.Module.Submodule.Ker
 
 /-! The kernel of `F (a, b) = f a + e b`, with invertible second column,
 is canonically the first factor. Textbook source: `CENTER_COLUMN_KERNEL_TEXTBOOK.md`,
-CK1–CK7; the inverse recovers the unique second coordinate. -/
+CK1–CK7; the inverse recovers the unique second coordinate. The map is also
+surjective, as in `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, HI7. -/
 
 @[expose] public noncomputable section
 universe u v w
@@ -64,5 +65,15 @@ def kerEquivOfColumnIso
     [Module ℤ (LinearMap.ker F)] (a : A) :
     ((kerEquivOfColumnIso F f e hF).symm a).val =
       (a, -e.symm (f a)) := rfl
+
+/-- An integer-linear map with an invertible second column is surjective;
+the preimage of `d` is `(0, e.symm d)` (textbook HI7). -/
+theorem surjective_of_columnIso {A B D : Type*} [AddCommGroup A]
+    [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
+    (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b) :
+    Function.Surjective F := by
+  intro d
+  refine ⟨(0, e.symm d), ?_⟩
+  rw [hF, map_zero, LinearEquiv.apply_symm_apply, zero_add]
 
 end LinearMap

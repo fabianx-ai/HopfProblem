@@ -3287,6 +3287,8 @@ is an evidence command rather than library content.
 #print axioms LinearMap.kerEquivOfColumnIso_apply
 #check LinearMap.kerEquivOfColumnIso_symm_apply_val
 #print axioms LinearMap.kerEquivOfColumnIso_symm_apply_val
+#check LinearMap.surjective_of_columnIso
+#print axioms LinearMap.surjective_of_columnIso
 
 /-! ## `Lib.LinearAlgebra.CyclicKernel` -/
 
