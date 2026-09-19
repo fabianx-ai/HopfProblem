@@ -7545,3 +7545,10 @@ is an evidence command rather than library content.
 #print axioms ThreefoldGluing.Data.patchHomeomorph
 #check ThreefoldGluing.Data.patchHomeomorph_projection
 #print axioms ThreefoldGluing.Data.patchHomeomorph_projection
+
+/-! ## `Lib.Topology.Homotopy.ConvexContraction` -/
+
+#check Convex.basedLoopContraction
+#print axioms Convex.basedLoopContraction
+#check Convex.basedLoopContraction_apply
+#print axioms Convex.basedLoopContraction_apply

@@ -46,6 +46,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Topology.Homotopy.LoopSubdivision
+import Lib.Topology.Homotopy.ConvexContraction
 import Lib.Topology.MappingTorus.Basic
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
