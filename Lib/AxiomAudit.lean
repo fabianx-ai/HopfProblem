@@ -7583,3 +7583,7 @@ is an evidence command rather than library content.
 #print axioms LatticeImageCollapse.A2_fixes_epsilonPrime
 #check LatticeImageCollapse.image_epsilon_commute_second
 #print axioms LatticeImageCollapse.image_epsilon_commute_second
+#check DeterminingFamily.commute_all_of_hom_ext
+#print axioms DeterminingFamily.commute_all_of_hom_ext
+#check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
+#print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow
