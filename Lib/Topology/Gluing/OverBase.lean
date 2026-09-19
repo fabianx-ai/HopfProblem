@@ -150,6 +150,71 @@ theorem ThreefoldGluing.Data.parametrization_transition {B : Type u} [Topologica
   rw [← hy]
   exact ((D.inclusion_openEmbedding j).toOpenPartialHomeomorph_left_inv).trans he.2.symm
 
+/-! Projection and patch coordinates over the base: the representative, continuity, range,
+and inclusion-homeomorphism argument of `CENTER_GENERIC_PATCH_HOMEOMORPH_TEXTBOOK.md`,
+reviewed sections GP1–GP7. These require no separation or nonempty-piece hypotheses. -/
+
+def ThreefoldGluing.Data.projection {B : Type u} [TopologicalSpace B] (D : ThreefoldGluing.Data B)
+    (x : D.Space) : B :=
+  D.toBase (D.representative x).1 (D.representative x).2
+
+@[simp]
+theorem ThreefoldGluing.Data.projection_inclusion {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) (i : D.J) (x : D.piece i) :
+    D.projection (D.inclusion i x) = D.toBase i x := by
+  let r := D.representative (D.inclusion i x)
+  have h := (D.inclusion_eq_iff r.1 i r.2 x).mp (D.inclusion_representative _)
+  change D.toBase r.1 r.2 = D.toBase i x
+  rw [← h.2]
+  exact (D.preserves_base r.1 i r.2 h.1).symm
+
+theorem ThreefoldGluing.Data.projection_continuous {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) : Continuous D.projection := by
+  rw [continuous_def]
+  intro U hU
+  rw [D.gluing.isOpen_iff]
+  change ∀ i : D.J, IsOpen (D.inclusion i ⁻¹' (D.projection ⁻¹' U))
+  intro i
+  convert hU.preimage (D.toBase i).continuous using 1
+  ext x
+  change D.projection (D.inclusion i x) ∈ U ↔ D.toBase i x ∈ U
+  rw [D.projection_inclusion]
+
+theorem ThreefoldGluing.Data.inclusion_range {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) (i : D.J) :
+    Set.range (D.inclusion i) = D.projection ⁻¹' (D.patch i : Set B) := by
+  ext x
+  constructor
+  · rintro ⟨z, rfl⟩
+    change D.projection (D.inclusion i z) ∈ D.patch i
+    rw [D.projection_inclusion]
+    exact D.toBase_mem i z
+  · intro hx
+    obtain ⟨j, z, rfl⟩ := D.inclusion_jointly_surjective x
+    have hz : z ∈ (D.transition j i).source := by
+      rw [D.source_eq]
+      simpa only [Set.mem_preimage, projection_inclusion] using hx
+    exact ⟨D.transition j i z, ((D.inclusion_eq_iff j i z _).mpr ⟨hz, rfl⟩).symm⟩
+
+def ThreefoldGluing.Data.localProjection {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) (i : D.J) : C(D.piece i, D.patch i)
+    where
+  toFun x := ⟨D.toBase i x, D.toBase_mem i x⟩
+  continuous_toFun := (D.toBase i).continuous.subtype_mk _
+
+def ThreefoldGluing.Data.patchHomeomorph {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) (i : D.J) :
+    D.piece i ≃ₜ (D.projection ⁻¹' (D.patch i : Set B)) :=
+  (D.inclusion_openEmbedding i).isEmbedding.toHomeomorph.trans
+    (Homeomorph.setCongr (D.inclusion_range i))
+
+theorem ThreefoldGluing.Data.patchHomeomorph_projection {B : Type u} [TopologicalSpace B]
+    (D : ThreefoldGluing.Data B) (i : D.J) (x : D.piece i) :
+    (D.patch i : Set B).restrictPreimage D.projection (D.patchHomeomorph i x) =
+      D.localProjection i x := by
+  apply Subtype.ext
+  exact D.projection_inclusion i x
+
 structure SpecialPeriods.Threefold.Star.Input (B : Type u) [TopologicalSpace B] (I : Type u) where
   patch : Option I → TopologicalSpace.Opens B
   cover : TopologicalSpace.IsOpenCover patch

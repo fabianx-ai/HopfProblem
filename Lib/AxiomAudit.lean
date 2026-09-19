@@ -7502,3 +7502,17 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
 #check TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
 #print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
+#check ThreefoldGluing.Data.projection
+#print axioms ThreefoldGluing.Data.projection
+#check ThreefoldGluing.Data.projection_inclusion
+#print axioms ThreefoldGluing.Data.projection_inclusion
+#check ThreefoldGluing.Data.projection_continuous
+#print axioms ThreefoldGluing.Data.projection_continuous
+#check ThreefoldGluing.Data.inclusion_range
+#print axioms ThreefoldGluing.Data.inclusion_range
+#check ThreefoldGluing.Data.localProjection
+#print axioms ThreefoldGluing.Data.localProjection
+#check ThreefoldGluing.Data.patchHomeomorph
+#print axioms ThreefoldGluing.Data.patchHomeomorph
+#check ThreefoldGluing.Data.patchHomeomorph_projection
+#print axioms ThreefoldGluing.Data.patchHomeomorph_projection
