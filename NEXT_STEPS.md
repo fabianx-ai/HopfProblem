@@ -1,4 +1,12 @@
-# Next steps (after integration review 5, 2026-09-14)
+# Next steps (after integration review 6, 2026-09-20)
+
+Integration 6 (`Lib/reviews/INTEGRATION-6.md`) replayed the 358 `Lib/` commits of `center-solution` onto
+this branch; `Lib/` is byte-identical to `center-solution`'s (446 modules). Two small follow-ups from it:
+(a) the 12 `Hopf/Proof` deletions of the mixed commits (`Lib/reports/integration-6/commit-classification.txt`,
+the entries listing a `Hopf/` path): the material they delete now lives in `Lib`, take them over one commit
+each (cherry-pick the `Hopf/` hunk only), then run the environment diff; (b) 13 `Lib` modules are not imported
+by `Lib.lean` (list in INTEGRATION-6 §2): add the imports, in one commit, after checking with the owner that
+`Lib.lean` need not stay identical to `center-solution`'s. The textbook audit below now covers all 446 files.
 
 Owner decision 2026-09-14: the remainder is done by Claude agents; no seat assignment. Head:
 `lib/textbook-extraction`, the commit the owner names (`git log -1`). Reviews: `Lib/reviews/INTEGRATION-5.md`
