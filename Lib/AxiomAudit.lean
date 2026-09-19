@@ -13,6 +13,11 @@ Compile this file directly. It deliberately is not imported by `Lib.lean`, becau
 is an evidence command rather than library content.
 -/
 
+/-! ## `Lib.Algebra.Group.Prod` -/
+
+#check AddMonoidHom.surjective_signed_prod_of_surjective_ker
+#print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
+
 /-! ## `Lib.Data.Int.SignedResidual` -/
 
 #check Int.signed_residual_coordinate_zero
