@@ -7436,3 +7436,8 @@ is an evidence command rather than library content.
 #print axioms DeterminingFamily.commute_all_of_hom_ext
 #check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
 #print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow
+#check AddMonoidHom.surjective_restrict_left_of_signed_zero
+#print axioms AddMonoidHom.surjective_restrict_left_of_signed_zero
+#check AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
+#print axioms AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
+
