@@ -17,6 +17,10 @@ is an evidence command rather than library content.
 
 #check CoverLocalContributions.leftHomologyMap_in_coordinates
 #print axioms CoverLocalContributions.leftHomologyMap_in_coordinates
+#check CoverLocalContributions.connectingRegularKernelEquiv
+#print axioms CoverLocalContributions.connectingRegularKernelEquiv
+#check CoverLocalContributions.connectingRegularKernelEquiv_apply
+#print axioms CoverLocalContributions.connectingRegularKernelEquiv_apply
 
 /-! ## `Lib.AlgebraicTopology.Hurewicz.SphereGenerator` -/
 

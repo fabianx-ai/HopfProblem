@@ -300,6 +300,198 @@ theorem CoverLocalContributions.leftHomologyMap_in_coordinates
         (SingularMayerVietoris.singularHomologyMap (β i) n (b i))) = _
     rw [map_neg, LinearEquiv.symm_apply_apply]
 
+/-- If the regular piece has zero degree-`n+1` homology and every filling piece has
+zero degree-`n+1` and degree-`n` homology, the actual Mayer–Vietoris connecting map,
+in the specified local overlap coordinates, identifies ambient degree-`n+1` homology
+with the kernel of the sum of regular attachment maps.
+
+The proof transfers the local vanishings, uses exactness at the ambient and overlap
+terms, and applies the signed local-coordinate identity. Its forward value is the
+chosen connecting map followed by the fixed overlap-coordinate equivalence.
+This is the general argument in `CENTER_NATIVE_CONNECTING_KERNEL_TEXTBOOK.md`,
+sections CK1–CK4; it includes degree zero and empty finite families. -/
+noncomputable def CoverLocalContributions.connectingRegularKernelEquiv
+    {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
+    (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
+    (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    {R : Type} [TopologicalSpace R] {P A : ι → Type}
+    [∀ i, TopologicalSpace (P i)] [∀ i, TopologicalSpace (A i)]
+    (r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ ↥(U ∩ V i))
+    (α : ∀ i, C(A i, R)) (β : ∀ i, C(A i, P i))
+    (hr : ∀ i, (r : C(R, U)).comp (α i) =
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (hp : ∀ i, (p i : C(P i, V i)).comp (β i) =
+      (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V i ⊆ V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (n : ℕ)
+    (hR : Subsingleton (SingularMayerVietoris.SingularHomology R (n + 1)))
+    (hPnext : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) (n + 1)))
+    (hP : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) n)) :
+    let f : (∀ i, SingularMayerVietoris.SingularHomology (A i) n) →+
+        SingularMayerVietoris.SingularHomology R n :=
+      ∑ i, (SingularMayerVietoris.singularHomologyMap (α i) n).toAddMonoidHom.comp
+        (Pi.evalAddMonoidHom
+          (fun i => SingularMayerVietoris.SingularHomology (A i) n) i)
+
+    let F : (∀ i, SingularMayerVietoris.SingularHomology (A i) n) →ₗ[ℤ]
+        SingularMayerVietoris.SingularHomology R n :=
+      { toFun := f
+        map_add' := f.map_add
+        map_smul' := by
+          intro c x
+          convert! f.map_zsmul c x using 1
+          exact int_smul_eq_zsmul .. }
+    SingularMayerVietoris.SingularHomology X (n + 1) ≃ₗ[ℤ] LinearMap.ker F := by
+  let f : (∀ i, SingularMayerVietoris.SingularHomology (A i) n) →+
+      SingularMayerVietoris.SingularHomology R n :=
+    ∑ i, (SingularMayerVietoris.singularHomologyMap (α i) n).toAddMonoidHom.comp
+      (Pi.evalAddMonoidHom
+        (fun i => SingularMayerVietoris.SingularHomology (A i) n) i)
+
+  let F : (∀ i, SingularMayerVietoris.SingularHomology (A i) n) →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology R n :=
+    { toFun := f
+      map_add' := f.map_add
+      map_smul' := by
+        intro c x
+        convert! f.map_zsmul c x using 1
+        exact int_smul_eq_zsmul .. }
+  change SingularMayerVietoris.SingularHomology X (n + 1) ≃ₗ[ℤ] LinearMap.ker F
+  let E : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n ≃ₗ[ℤ]
+      (∀ i, SingularMayerVietoris.SingularHomology (A i) n) :=
+    (CoverOverlapHomology.homologyEquiv U V hU hV hd n).trans
+      (AddEquiv.piCongrRight fun i =>
+        (SingularHomology.homeomorphHomologyEquiv (a i) n).symm.toAddEquiv).toIntLinearEquiv
+  let Q : (SingularMayerVietoris.SingularHomology U n ×
+      SingularMayerVietoris.SingularHomology (↥(⋃ i, V i)) n) ≃ₗ[ℤ]
+      (SingularMayerVietoris.SingularHomology R n ×
+        (∀ i, SingularMayerVietoris.SingularHomology (P i) n)) :=
+    ((SingularHomology.homeomorphHomologyEquiv r n).symm.toAddEquiv.prodCongr
+      ((DisjointOpenHomology.homologyEquiv V hV hd n).toAddEquiv.trans
+        (AddEquiv.piCongrRight fun i =>
+          (SingularHomology.homeomorphHomologyEquiv (p i) n).symm.toAddEquiv))).toIntLinearEquiv
+  let δ := SingularMayerVietoris.connectingHomomorphism
+    U (⋃ i, V i) hU (isOpen_iUnion hV) hc n
+  let L := SingularMayerVietoris.leftHomologyMap U (⋃ i, V i) n
+  let J := SingularMayerVietoris.rightHomologyMap U (⋃ i, V i) (n + 1)
+  -- Transfer the local degree-(n+1) vanishings to both members of the open cover.
+  letI := hR
+  letI := hPnext
+  letI := hP
+  letI : Subsingleton (SingularMayerVietoris.SingularHomology U (n + 1)) :=
+    (SingularHomology.homeomorphHomologyEquiv r (n + 1)).symm.injective.subsingleton
+  letI : ∀ i, Subsingleton (SingularMayerVietoris.SingularHomology (V i) (n + 1)) :=
+    fun i => (SingularHomology.homeomorphHomologyEquiv (p i) (n + 1)).symm.injective.subsingleton
+  letI : Subsingleton (SingularMayerVietoris.SingularHomology (↥(⋃ i, V i)) (n + 1)) :=
+    (DisjointOpenHomology.homologyEquiv V hV hd (n + 1)).injective.subsingleton
+  -- Exactness at ambient homology gives a zero kernel, since the preceding source is zero.
+  have hδzero (x : SingularMayerVietoris.SingularHomology X (n + 1))
+      (hx : δ x = 0) : x = 0 := by
+    have hxrange : x ∈ LinearMap.range J := by
+      rw [show LinearMap.range J = LinearMap.ker δ from
+        SingularMayerVietoris.exact_at_ambient U (⋃ i, V i) hU (isOpen_iUnion hV) hc n]
+      exact hx
+    obtain ⟨z, hz⟩ := hxrange
+    have hz0 : z = 0 := Subsingleton.elim _ _
+    exact hz.symm.trans (by rw [hz0, map_zero])
+  have hδinj : Function.Injective δ := by
+    intro x y hxy
+    apply sub_eq_zero.mp
+    apply hδzero
+    rw [map_sub, hxy, sub_self]
+  -- The second exactness statement identifies the connecting image with the left-map kernel.
+  have hexact : LinearMap.range δ = LinearMap.ker L :=
+    SingularMayerVietoris.exact_at_intersection U (⋃ i, V i) hU (isOpen_iUnion hV) hc n
+  have hFeval (c : ∀ i, SingularMayerVietoris.SingularHomology (A i) n) :
+      F c = ∑ i, SingularMayerVietoris.singularHomologyMap (α i) n (c i) := by
+    change f c = _
+    simp [f]
+  -- Keep the signed comparison; its filling component vanishes only by the stated local input.
+  have hcoord (c : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n) :
+      Q (L c) = (F (E c),
+        fun i => -SingularMayerVietoris.singularHomologyMap (β i) n (E c i)) := by
+    rw [hFeval]
+    exact CoverLocalContributions.leftHomologyMap_in_coordinates
+      U V hU hV hd hc r p a α β hr hp n c
+  have hker (c : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n) :
+      L c = 0 ↔ F (E c) = 0 := by
+    constructor
+    · intro hc0
+      have h := congrArg Prod.fst (hcoord c)
+      rw [hc0, map_zero] at h
+      exact h.symm
+    · intro hc0
+      apply Q.injective
+      rw [map_zero, hcoord, hc0]
+      exact Prod.ext rfl (Subsingleton.elim _ _)
+  -- Restrict exactly E composed with the chosen connecting map, and prove that restriction bijective.
+  let T := E.toLinearMap.comp δ
+  have hT : ∀ x, T x ∈ LinearMap.ker F := by
+    intro x
+    apply (hker (δ x)).mp
+    have hx : δ x ∈ LinearMap.range δ := LinearMap.mem_range_self δ x
+    rw [hexact] at hx
+    exact hx
+  let K := LinearMap.codRestrict (LinearMap.ker F) T hT
+  have hB : Function.Bijective K := by
+    constructor
+    · intro x y hxy
+      apply hδinj
+      apply E.injective
+      exact congrArg Subtype.val hxy
+    · intro c
+      have hc0 : L (E.symm c.val) = 0 := by
+        apply (hker (E.symm c.val)).mpr
+        rw [E.apply_symm_apply]
+        exact c.property
+      have hcRange : E.symm c.val ∈ LinearMap.range δ := by
+        rw [hexact]
+        exact hc0
+      obtain ⟨x, hx⟩ := hcRange
+      refine ⟨x, ?_⟩
+      apply Subtype.ext
+      change E (δ x) = c.val
+      rw [hx, E.apply_symm_apply]
+  exact LinearEquiv.ofBijective K hB
+
+/-- The kernel equivalence retains the actual connecting map in the fixed local overlap
+coordinates, as in formula (2) of the general connecting/kernel argument. -/
+theorem CoverLocalContributions.connectingRegularKernelEquiv_apply
+    {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
+    (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
+    (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    {R : Type} [TopologicalSpace R] {P A : ι → Type}
+    [∀ i, TopologicalSpace (P i)] [∀ i, TopologicalSpace (A i)]
+    (r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ ↥(U ∩ V i))
+    (α : ∀ i, C(A i, R)) (β : ∀ i, C(A i, P i))
+    (hr : ∀ i, (r : C(R, U)).comp (α i) =
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (hp : ∀ i, (p i : C(P i, V i)).comp (β i) =
+      (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V i ⊆ V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (n : ℕ)
+    (hR : Subsingleton (SingularMayerVietoris.SingularHomology R (n + 1)))
+    (hPnext : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) (n + 1)))
+    (hP : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) n))
+    (x : SingularMayerVietoris.SingularHomology X (n + 1)) :
+    let E : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) n ≃ₗ[ℤ]
+        (∀ i, SingularMayerVietoris.SingularHomology (A i) n) :=
+      (CoverOverlapHomology.homologyEquiv U V hU hV hd n).trans
+        (AddEquiv.piCongrRight fun i =>
+          (SingularHomology.homeomorphHomologyEquiv (a i) n).symm.toAddEquiv).toIntLinearEquiv
+    (CoverLocalContributions.connectingRegularKernelEquiv
+      U V hU hV hd hc r p a α β hr hp n hR hPnext hP x).val =
+      E (SingularMayerVietoris.connectingHomomorphism
+        U (⋃ i, V i) hU (isOpen_iUnion hV) hc n x) := by
+  rfl
+
+
 /-! ### Local contributions of a cover -/
 
 /-- The connecting map from degree `k+1` homology of `X` to the product of degree `k` homologies of the cover overlaps. -/
