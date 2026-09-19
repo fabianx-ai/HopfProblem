@@ -423,6 +423,7 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
 import Lib.CategoryTheory.Abelian.Injective.Ext
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
+import Lib.LinearAlgebra.ColumnKernel
 /-!
 # Reusable V10 Section 6 library
 

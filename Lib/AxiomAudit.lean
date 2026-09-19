@@ -3279,6 +3279,15 @@ is an evidence command rather than library content.
 #check Mathoverflow1973.descendHomOfSurjective_comp
 #print axioms Mathoverflow1973.descendHomOfSurjective_comp
 
+/-! ## `Lib.LinearAlgebra.ColumnKernel` -/
+
+#check LinearMap.kerEquivOfColumnIso
+#print axioms LinearMap.kerEquivOfColumnIso
+#check LinearMap.kerEquivOfColumnIso_apply
+#print axioms LinearMap.kerEquivOfColumnIso_apply
+#check LinearMap.kerEquivOfColumnIso_symm_apply_val
+#print axioms LinearMap.kerEquivOfColumnIso_symm_apply_val
+
 /-! ## `Lib.LinearAlgebra.CyclicKernel` -/
 
 #check Mathoverflow1973.eq_equiv_smul_generator
