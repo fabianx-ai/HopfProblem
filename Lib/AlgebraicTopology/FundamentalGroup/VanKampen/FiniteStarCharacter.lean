@@ -19,7 +19,7 @@ data.
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973.FundamentalGroup.VanKampen
+namespace FundamentalGroup.VanKampen
 
 /-- Every finite attachment stage inherits an abstract character invariant from the empty stage.
 
@@ -39,4 +39,4 @@ theorem exists_stageCharacter {ι : Type*} [DecidableEq ι]
   | @insert i s hi ih =>
       exact attach s i hi x (ih (previousBasepoint s i))
 
-end Mathoverflow1973.FundamentalGroup.VanKampen
+end FundamentalGroup.VanKampen

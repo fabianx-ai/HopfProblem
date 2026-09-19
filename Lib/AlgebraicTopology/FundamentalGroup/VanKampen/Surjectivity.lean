@@ -25,8 +25,8 @@ open Set Function Topology
 If the overlap map onto the `V` chart is surjective, the inclusion of the `U` chart into the
 covered space is surjective on fundamental groups.
 -/
-theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (hV : Function.Surjective D.overlapHomV) : Function.Surjective D.inclusionHomU := by
   intro gamma
   obtain ⟨q, rfl⟩ := D.pushoutEquiv.surjective gamma
@@ -55,8 +55,8 @@ theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_over
 The symmetric form: if the overlap map onto the `U` chart is surjective, the inclusion of the
 `V` chart into the covered space is surjective on fundamental groups.
 -/
-theorem FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
-    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+    {X : Type*} [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (hU : Function.Surjective D.overlapHomU) : Function.Surjective D.inclusionHomV := by
   intro gamma
   obtain ⟨q, rfl⟩ := D.pushoutEquiv.surjective gamma
@@ -170,8 +170,8 @@ theorem FundamentalGroup.simplyConnectedSpace_of_eq_one {X : Type*} [Topological
   (FundamentalGroup.simplyConnectedSpace_iff_eq_one x).mpr hx
 
 /-- A two-open-cover datum already proves that its ambient space is path connected. -/
-theorem FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace {X : Type*}
-    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.TwoOpenCover X) :
+theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) :
     PathConnectedSpace X := by
   apply pathConnectedSpace_iff_univ.mpr
   rw [← D.cover]

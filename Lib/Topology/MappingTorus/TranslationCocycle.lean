@@ -22,7 +22,7 @@ open Set Function
 
 noncomputable section
 
-namespace Mathoverflow1973.MappingTorus
+namespace MappingTorus
 
 variable {X : Type*} [TopologicalSpace X] [AddCommGroup X]
 
@@ -54,8 +54,8 @@ end TopologicalGroup
 
 /-- Equivariance is exact already on cylinder lifts. -/
 theorem cylinder_deck (C : TranslationCocycle monodromy) (ell n : ℤ) (p : ℝ × X) :
-    C.cylinder ell (Mathoverflow1973.MappingTorus.deck monodromy.toHomeomorph n p) =
-      Mathoverflow1973.MappingTorus.deck monodromy.toHomeomorph n (C.cylinder ell p) := by
+    C.cylinder ell (MappingTorus.deck monodromy.toHomeomorph n p) =
+      MappingTorus.deck monodromy.toHomeomorph n (C.cylinder ell p) := by
   have hmapAdd : ∀ (k : ℤ) (x y : X),
       (monodromy.toHomeomorph ^ k) (x + y) =
         (monodromy.toHomeomorph ^ k) x + (monodromy.toHomeomorph ^ k) y := by
@@ -92,7 +92,7 @@ theorem cylinder_deck (C : TranslationCocycle monodromy) (ell n : ℤ) (p : ℝ 
       map_add' := hmapAdd k }
   apply Prod.ext
   · rfl
-  · simp only [cylinder, Mathoverflow1973.MappingTorus.deck]
+  · simp only [cylinder, MappingTorus.deck]
     rw [C.shift_add_int p.1 n, hmapAdd (-n)]
     exact congrArg ((monodromy.toHomeomorph ^ (-n)) p.2 + ·)
       ((powerAddHom (-n)).map_zsmul ell (C.shift p.1)).symm
@@ -103,37 +103,37 @@ variable [IsTopologicalAddGroup X]
 
 /-- The descended mapping-torus self-map. -/
 def map (C : TranslationCocycle monodromy) (ell : ℤ) :
-    C(Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph,
-      Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph) where
+    C(MappingTorus.Torus monodromy.toHomeomorph,
+      MappingTorus.Torus monodromy.toHomeomorph) where
   toFun := Quotient.lift
     (fun p : ℝ × X ↦
-      Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (C.cylinder ell p))
+      MappingTorus.mk monodromy.toHomeomorph (C.cylinder ell p))
     (by
       rintro p q ⟨n, rfl⟩
       rw [C.cylinder_deck]
-      exact (Mathoverflow1973.MappingTorus.mk_deck monodromy.toHomeomorph n
+      exact (MappingTorus.mk_deck monodromy.toHomeomorph n
         (C.cylinder ell p)).symm)
   continuous_toFun :=
-    (Mathoverflow1973.MappingTorus.mk_continuous monodromy.toHomeomorph |>.comp
+    (MappingTorus.mk_continuous monodromy.toHomeomorph |>.comp
       (C.cylinder_continuous ell)).quotient_lift _
 
 @[simp]
 theorem map_mk (C : TranslationCocycle monodromy) (ell : ℤ) (p : ℝ × X) :
-    C.map ell (Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph p) =
-      Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (C.cylinder ell p) :=
+    C.map ell (MappingTorus.mk monodromy.toHomeomorph p) =
+      MappingTorus.mk monodromy.toHomeomorph (C.cylinder ell p) :=
   rfl
 
 /-- Translation parameters add under composition. -/
 theorem map_add_apply (C : TranslationCocycle monodromy) (m n : ℤ)
-    (z : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph) :
+    (z : MappingTorus.Torus monodromy.toHomeomorph) :
     C.map (m + n) z = C.map m (C.map n z) := by
   induction z using Quotient.inductionOn with
   | _ p =>
-      change Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph
+      change MappingTorus.mk monodromy.toHomeomorph
           (C.cylinder (m + n) p) =
-        C.map m (Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (C.cylinder n p))
+        C.map m (MappingTorus.mk monodromy.toHomeomorph (C.cylinder n p))
       rw [C.map_mk]
-      apply congrArg (Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph)
+      apply congrArg (MappingTorus.mk monodromy.toHomeomorph)
       apply Prod.ext
       · rfl
       simp only [cylinder]
@@ -142,18 +142,18 @@ theorem map_add_apply (C : TranslationCocycle monodromy) (m n : ℤ)
 
 /-- The zero translation is the identity. -/
 theorem map_zero_apply (C : TranslationCocycle monodromy)
-    (z : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph) : C.map 0 z = z := by
+    (z : MappingTorus.Torus monodromy.toHomeomorph) : C.map 0 z = z := by
   induction z using Quotient.inductionOn with
   | _ p =>
-      change Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (C.cylinder 0 p) =
-        Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph p
+      change MappingTorus.mk monodromy.toHomeomorph (C.cylinder 0 p) =
+        MappingTorus.mk monodromy.toHomeomorph p
       congr 2
       simp [cylinder]
 
 /-- The descended translation is a homeomorphism, with inverse parameter `-ell`. -/
 def shear (C : TranslationCocycle monodromy) (ell : ℤ) :
-    Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph ≃ₜ
-      Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph where
+    MappingTorus.Torus monodromy.toHomeomorph ≃ₜ
+      MappingTorus.Torus monodromy.toHomeomorph where
   toFun := C.map ell
   invFun := C.map (-ell)
   left_inv z := by
@@ -169,9 +169,9 @@ def shear (C : TranslationCocycle monodromy) (ell : ℤ) :
 
 @[simp]
 theorem base_shear (C : TranslationCocycle monodromy) (ell : ℤ)
-    (z : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph) :
-    Mathoverflow1973.MappingTorus.base monodromy.toHomeomorph (C.shear ell z) =
-      Mathoverflow1973.MappingTorus.base monodromy.toHomeomorph z := by
+    (z : MappingTorus.Torus monodromy.toHomeomorph) :
+    MappingTorus.base monodromy.toHomeomorph (C.shear ell z) =
+      MappingTorus.base monodromy.toHomeomorph z := by
   induction z using Quotient.inductionOn with
   | _ p => rfl
 
@@ -184,19 +184,19 @@ This is the generic lift detector used for parameter injectivity. -/
 theorem zsmul_shift_eq_zero_of_shear_eq (C : TranslationCocycle monodromy)
     {m n : ℤ} (h : C.shear m = C.shear n) (t : ℝ) :
     (m - n) • C.shift t = 0 := by
-  let z : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph :=
-    Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (t, 0)
+  let z : MappingTorus.Torus monodromy.toHomeomorph :=
+    MappingTorus.mk monodromy.toHomeomorph (t, 0)
   have hz := congrArg
-    (fun e : Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph ≃ₜ
-        Mathoverflow1973.MappingTorus.Torus monodromy.toHomeomorph ↦ e z) h
+    (fun e : MappingTorus.Torus monodromy.toHomeomorph ≃ₜ
+        MappingTorus.Torus monodromy.toHomeomorph ↦ e z) h
   change C.map m z = C.map n z at hz
   dsimp only [z] at hz
   rw [C.map_mk, C.map_mk] at hz
-  change Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (t, 0 + m • C.shift t) =
-    Mathoverflow1973.MappingTorus.mk monodromy.toHomeomorph (t, 0 + n • C.shift t) at hz
+  change MappingTorus.mk monodromy.toHomeomorph (t, 0 + m • C.shift t) =
+    MappingTorus.mk monodromy.toHomeomorph (t, 0 + n • C.shift t) at hz
   simp only [zero_add] at hz
   obtain ⟨q, htime, hfibre⟩ :=
-    (Mathoverflow1973.MappingTorus.mk_eq_mk_iff monodromy.toHomeomorph _ _).mp hz
+    (MappingTorus.mk_eq_mk_iff monodromy.toHomeomorph _ _).mp hz
   have hqR : (q : ℝ) = 0 := by linarith
   have hq : q = 0 := by exact_mod_cast hqR
   subst q
@@ -214,4 +214,4 @@ end TopologicalGroup
 
 end TranslationCocycle
 
-end Mathoverflow1973.MappingTorus
+end MappingTorus

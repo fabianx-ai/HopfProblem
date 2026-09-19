@@ -19,14 +19,13 @@ inverse.
 @[expose] public section
 
 open Set Function Filter Manifold Topology
-open Mathoverflow1973
+
 open scoped ContDiff Manifold Topology
 
 noncomputable section
 
 universe u
 
-namespace Mathoverflow1973
 
 @[simp]
 theorem ThreefoldGluing.Data.parametrization_symm_inclusion {B : Type u} [TopologicalSpace B]
@@ -98,11 +97,10 @@ theorem ThreefoldGluing.Data.gluedChart_transition_apply {B : Type u} [Topologic
   change chartAt E y ((D.parametrization j).symm (D.inclusion i ((chartAt E x).symm z))) = _
   rw [he]
 
-end Mathoverflow1973
 
 /-- Coordinate changes between glued charts inherit the differentiability of the underlying
 piece transition. -/
-theorem Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
+theorem ThreefoldGluing.Data.gluedChart_transition_contMDiff
     {B : Type u} [TopologicalSpace B] (D : ThreefoldGluing.Data B)
     [∀ i, Nonempty (D.piece i)]
     {𝕜 E : Type*} [NontriviallyNormedField 𝕜]
@@ -138,7 +136,7 @@ theorem Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
 
 /-- A glued charted space is a manifold when every piece is a manifold and every transition is
 `C^n` over the chosen scalar field. -/
-theorem Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+theorem ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
     {B : Type u} [TopologicalSpace B] (D : ThreefoldGluing.Data B)
     [∀ i, Nonempty (D.piece i)]
     {𝕜 E : Type*} [NontriviallyNormedField 𝕜]
@@ -156,7 +154,7 @@ theorem Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transiti
   simpa using D.gluedChart_transition_contMDiff htr i j x y
 
 /-- The transition system of a star is `C^n` when every overlap and inverse overlap is `C^n`. -/
-theorem Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+theorem SpecialPeriods.Threefold.Star.Input.transition_contMDiff
     {B I : Type u} [TopologicalSpace B]
     (D : SpecialPeriods.Threefold.Star.Input B I)
     {𝕜 E : Type*} [NontriviallyNormedField 𝕜]
@@ -194,7 +192,7 @@ theorem Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDif
             exact contMDiffOn_empty
 
 /-- `Star.Input.transition_contMDiff` for the associated generic gluing data. -/
-theorem Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+theorem SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
     {B I : Type u} [TopologicalSpace B]
     (D : SpecialPeriods.Threefold.Star.Input B I)
     {𝕜 E : Type*} [NontriviallyNormedField 𝕜]

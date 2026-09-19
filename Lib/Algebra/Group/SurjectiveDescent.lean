@@ -16,7 +16,6 @@ kernel criterion used when an overlap character descends across a surjective fil
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
 
 /-- Descend a homomorphism across a surjective homomorphism when it is constant on fibres. -/
 def descendHomOfSurjective
@@ -52,5 +51,3 @@ theorem descendHomOfSurjective_comp
     (descendHomOfSurjective f hf g hfg).comp f = g := by
   ext a
   exact hfg (hf (f a)).choose a (hf (f a)).choose_spec
-
-end Mathoverflow1973

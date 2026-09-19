@@ -16,7 +16,6 @@ kernel identified with `ℤ`, it suffices to evaluate it on the chosen generator
 
 @[expose] public noncomputable section
 
-namespace Mathoverflow1973
 
 /-- Express an element through the generator selected by a linear equivalence with `ℤ`. -/
 theorem eq_equiv_smul_generator {M : Type*} [AddCommGroup M] [Module ℤ M]
@@ -42,5 +41,3 @@ theorem ker_le_of_cyclic_generator_zero
   change χ a = 0
   rw [hval, map_zsmul, hgen]
   exact zsmul_zero (e ka)
-
-end Mathoverflow1973

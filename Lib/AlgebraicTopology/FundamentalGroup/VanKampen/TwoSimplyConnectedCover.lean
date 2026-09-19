@@ -29,7 +29,7 @@ set_option autoImplicit false
 
 open Set TopologicalSpace
 
-namespace FundamentalGroup.VanKampen
+namespace FundamentalGroup.VanKampen.Cocone
 
 /-- Two simply connected open subsets covering a space, with a base point in their overlap. -/
 structure TwoSimplyConnectedCover (X : Type*) [TopologicalSpace X] where
@@ -280,4 +280,4 @@ theorem switchClass_eq_of_paths {X : Type*} [TopologicalSpace X]
 
 end TwoSimplyConnectedCover
 
-end FundamentalGroup.VanKampen
+end FundamentalGroup.VanKampen.Cocone

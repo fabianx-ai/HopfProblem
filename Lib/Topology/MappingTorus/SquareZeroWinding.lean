@@ -27,7 +27,7 @@ open Set Function
 
 noncomputable section
 
-namespace Mathoverflow1973.MappingTorus.SquareZeroWinding
+namespace MappingTorus.SquareZeroWinding
 
 variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
@@ -230,15 +230,15 @@ theorem windingShift_add_int (D : Data V) (t : ℝ) (n : ℤ) :
 
 /-- The corrected winding packaged as a reusable mapping-torus translation cocycle. -/
 def translationCocycle (D : Data V) :
-    Mathoverflow1973.MappingTorus.TranslationCocycle D.monodromy where
+    MappingTorus.TranslationCocycle D.monodromy where
   shift := D.windingShift
   continuous_shift := D.windingShift_continuous
   shift_add_int := D.windingShift_add_int
 
 /-- The resulting integer shear family on the square-zero mapping torus. -/
 def shear (D : Data V) (ell : ℤ) :
-    Mathoverflow1973.MappingTorus.Torus D.monodromy.toHomeomorph ≃ₜ
-      Mathoverflow1973.MappingTorus.Torus D.monodromy.toHomeomorph :=
+    MappingTorus.Torus D.monodromy.toHomeomorph ≃ₜ
+      MappingTorus.Torus D.monodromy.toHomeomorph :=
   D.translationCocycle.shear ell
 
 @[simp]
@@ -246,7 +246,7 @@ theorem shear_zero (D : Data V) : D.shear 0 = Homeomorph.refl _ :=
   D.translationCocycle.shear_zero
 
 theorem shear_add_apply (D : Data V) (m n : ℤ)
-    (z : Mathoverflow1973.MappingTorus.Torus D.monodromy.toHomeomorph) :
+    (z : MappingTorus.Torus D.monodromy.toHomeomorph) :
     D.shear (m + n) z = D.shear m (D.shear n z) :=
   D.translationCocycle.shear_add_apply m n z
 
@@ -305,4 +305,4 @@ theorem shear_injective (P : Detector D) : Function.Injective D.shear := by
 
 end Detector
 
-end Mathoverflow1973.MappingTorus.SquareZeroWinding
+end MappingTorus.SquareZeroWinding

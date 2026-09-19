@@ -28,7 +28,6 @@ noncomputable section
 
 universe u
 
-namespace Mathoverflow1973
 
 structure ThreefoldGluing.Data (B : Type u) [TopologicalSpace B] where
   J : Type u
@@ -420,5 +419,3 @@ abbrev SpecialPeriods.Threefold.Star.Input.toData {B I : Type u} [TopologicalSpa
   symm_eq := D.transition_symm
   preserves_base := D.transition_preserves_base
   cocycle := D.transition_cocycle
-
-end Mathoverflow1973

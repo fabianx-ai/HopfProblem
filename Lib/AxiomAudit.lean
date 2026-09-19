@@ -293,50 +293,12 @@ is an evidence command rather than library content.
 #print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
 #print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
 
--- Lane A (singular homology core)
-#print axioms SingularMayerVietoris.exact_at_ambient
-#print axioms SphereHomology.unitSphere_homology_subsingleton
-#print axioms LinearSphereAction.homology_eq_sign_smul
-
--- Lane D1 (Morse theory I)
-#print axioms ManifoldMorse.exists_morse_function
-#print axioms SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
-#print axioms ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
-#print axioms ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
-
--- Lane H (complex analysis)
-#print axioms RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
-#print axioms HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
-#print axioms AnalyticRootCover.exists_analytic_square_root
-#print axioms AnalyticRootCover.exists_analytic_square_root_ball
-
--- Lane D2 (Whitney embedding, projection bundle, collar, cells)
-#print axioms exists_tubularNeighborhood_in_open_of_embedded_closedBall
-
--- Lane I (quotients, mapping torus, split extensions)
-#print axioms SplitGroupExtension.mulEquiv
-#print axioms MappingTorusHomology.monodromyHomologyMap
-
--- Lane C (Hurewicz theorem, higher degrees and sphere connectivity)
-#print axioms Hurewicz.hurewiczLinearEquiv
-#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE
-#print axioms Hurewicz.pi_subsingleton_of_homology_vanishing
-#print axioms Hurewicz.sphere_pi_subsingleton_of_lt
-#print axioms Hurewicz.sphere_homotopicRel_of_topClass_eq
-#print axioms Hurewicz.sphere_homotopic_id_of_topClass
-#print axioms Hurewicz.right_inverse_is_left_inverse
-#print axioms Hurewicz.exists_basepoint_adjustment
-#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE_natural
-#print axioms Hurewicz.subsingleton_singularHomology_of_lt
-#print axioms DiskCube.homeomorph
-#print axioms DiskCube.boundary_iff
-
-#print axioms MorseCancellation.cancel_of_transverse_level_isotopy
-#print axioms MorseRearrangement.exists_morse_rearrangement_of_no_connection
-#print axioms MorseCancellation.exists_excellent_indexed_morse_birth
-#print axioms simplyConnectedSpace_of_open_cover
-#print axioms MorseCells.built_of_compact_smooth_manifold
-#print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
+#check Monoid.PushoutI.equivOfCocone
+#print axioms Monoid.PushoutI.equivOfCocone
+#check Monoid.PushoutI.equivOfCocone_apply_of
+#print axioms Monoid.PushoutI.equivOfCocone_apply_of
+#check Monoid.PushoutI.equivOfCocone_symm_apply_f
+#print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
 
 #check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
 #print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
@@ -764,13 +726,6 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
 #check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
-#check Monoid.PushoutI.equivOfCocone
-#print axioms Monoid.PushoutI.equivOfCocone
-#check Monoid.PushoutI.equivOfCocone_apply_of
-#print axioms Monoid.PushoutI.equivOfCocone_apply_of
-#check Monoid.PushoutI.equivOfCocone_symm_apply_f
-#print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
-
 
 #check ThreeColumnPage.LowerTransferCondition
 #print axioms ThreeColumnPage.LowerTransferCondition
@@ -943,569 +898,569 @@ is an evidence command rather than library content.
 
 #check Path.trans_mem
 #print axioms Path.trans_mem
-#check FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc
-#print axioms FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc
-#check FundamentalGroup.VanKampen.LocalPathValue
-#print axioms FundamentalGroup.VanKampen.LocalPathValue
-#check FundamentalGroup.VanKampen.LocalPathValue.mk
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.mk
-#check FundamentalGroup.VanKampen.LocalPathValue.value
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.value
-#check FundamentalGroup.VanKampen.LocalPathValue.refl
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.refl
-#check FundamentalGroup.VanKampen.LocalPathValue.trans
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.trans
-#check FundamentalGroup.VanKampen.LocalPathValue.subpath_mul
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.subpath_mul
-#check FundamentalGroup.VanKampen.LocalPathValue.compatible
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.compatible
-#check FundamentalGroup.VanKampen.LocalPathValue.value_cast
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.value_cast
-#check FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant
-#check FundamentalGroup.VanKampen.PathValue
-#print axioms FundamentalGroup.VanKampen.PathValue
-#check FundamentalGroup.VanKampen.PathValue.mk
-#print axioms FundamentalGroup.VanKampen.PathValue.mk
-#check FundamentalGroup.VanKampen.PathValue.value
-#print axioms FundamentalGroup.VanKampen.PathValue.value
-#check FundamentalGroup.VanKampen.PathValue.refl
-#print axioms FundamentalGroup.VanKampen.PathValue.refl
-#check FundamentalGroup.VanKampen.PathValue.trans
-#print axioms FundamentalGroup.VanKampen.PathValue.trans
-#check FundamentalGroup.VanKampen.PathValue.subpath_mul
-#print axioms FundamentalGroup.VanKampen.PathValue.subpath_mul
-#check FundamentalGroup.VanKampen.PathValue.value_cast
-#print axioms FundamentalGroup.VanKampen.PathValue.value_cast
-#check FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one
-#print axioms FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one
-#check FundamentalGroup.VanKampen.PathValue.Extends
-#print axioms FundamentalGroup.VanKampen.PathValue.Extends
-#check FundamentalGroup.VanKampen.PathValue.HomotopyInvariant
-#print axioms FundamentalGroup.VanKampen.PathValue.HomotopyInvariant
-#check FundamentalGroup.VanKampen.TwoOpenCover
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover
-#check FundamentalGroup.VanKampen.TwoOpenCover.mk
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.mk
-#check FundamentalGroup.VanKampen.TwoOpenCover.U
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.U
-#check FundamentalGroup.VanKampen.TwoOpenCover.V
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.V
-#check FundamentalGroup.VanKampen.TwoOpenCover.cover
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.cover
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedU
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedV
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedIntersection
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedIntersection
-#check FundamentalGroup.VanKampen.TwoOpenCover.base
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.base
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseU
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseV
-#check FundamentalGroup.VanKampen.TwoOpenCover.chart
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart
-#check FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart
-#check FundamentalGroup.VanKampen.TwoOpenCover.chart_open
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart_open
-#check FundamentalGroup.VanKampen.TwoOpenCover.chart_cover
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chart_cover
-#check FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V
-#check FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo
-#check FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlap
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlap
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint
-#check FundamentalGroup.VanKampen.TwoOpenCover.baseChart
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.baseChart
-#check FundamentalGroup.VanKampen.TwoOpenCover.UGroup
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.UGroup
-#check FundamentalGroup.VanKampen.TwoOpenCover.VGroup
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.VGroup
-#check FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapToU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapToU
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapToV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapToV
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionU
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionV
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible
-#check FundamentalGroup.VanKampen.TwoOpenCover.Compatible
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.Compatible
-#check FundamentalGroup.VanKampen.pathIn
-#print axioms FundamentalGroup.VanKampen.pathIn
-#check FundamentalGroup.VanKampen.pathIn_apply
-#print axioms FundamentalGroup.VanKampen.pathIn_apply
-#check FundamentalGroup.VanKampen.pathIn_map
-#print axioms FundamentalGroup.VanKampen.pathIn_map
-#check FundamentalGroup.VanKampen.pathIn_refl
-#print axioms FundamentalGroup.VanKampen.pathIn_refl
-#check FundamentalGroup.VanKampen.pathIn_trans
-#print axioms FundamentalGroup.VanKampen.pathIn_trans
-#check FundamentalGroup.VanKampen.homotopyIn
-#print axioms FundamentalGroup.VanKampen.homotopyIn
-#check FundamentalGroup.VanKampen.homotopy_trans_mem
-#print axioms FundamentalGroup.VanKampen.homotopy_trans_mem
-#check FundamentalGroup.VanKampen.homotopy_transRefl_mem
-#print axioms FundamentalGroup.VanKampen.homotopy_transRefl_mem
-#check FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem
-#print axioms FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem
-#check FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem
-#print axioms FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem
-#check FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem
-#print axioms FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem
-#check FundamentalGroup.VanKampen.subpathTransSubpathIn
-#print axioms FundamentalGroup.VanKampen.subpathTransSubpathIn
-#check FundamentalGroup.VanKampen.PathClass.pathClass_property_cast
-#print axioms FundamentalGroup.VanKampen.PathClass.pathClass_property_cast
-#check FundamentalGroup.VanKampen.PathClass.pathClass_induction_of_open_cover
-#print axioms FundamentalGroup.VanKampen.PathClass.pathClass_induction_of_open_cover
-#check FundamentalGroup.VanKampen.PathClass.quotient_symm_trans_cancel
-#print axioms FundamentalGroup.VanKampen.PathClass.quotient_symm_trans_cancel
-#check FundamentalGroup.VanKampen.PathClass.quotient_trans_right_cancel
-#print axioms FundamentalGroup.VanKampen.PathClass.quotient_trans_right_cancel
-#check FundamentalGroup.VanKampen.PathClass.basedLoop
-#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop
-#check FundamentalGroup.VanKampen.PathClass.pathDifference
-#print axioms FundamentalGroup.VanKampen.PathClass.pathDifference
-#check FundamentalGroup.VanKampen.PathClass.basedLoop_refl
-#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_refl
-#check FundamentalGroup.VanKampen.PathClass.basedLoop_trans
-#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_trans
-#check FundamentalGroup.VanKampen.PathClass.basedLoop_comparison
-#print axioms FundamentalGroup.VanKampen.PathClass.basedLoop_comparison
-#check FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.hom_ext
+#check FundamentalGroup.VanKampen.Cocone.subpath_mem_of_mem_Icc
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_mem_of_mem_Icc
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.mk
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.refl
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.refl
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.trans
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.trans
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.compatible
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_cast
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.PathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue
+#check FundamentalGroup.VanKampen.Cocone.PathValue.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.mk
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value
+#check FundamentalGroup.VanKampen.Cocone.PathValue.refl
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.refl
+#check FundamentalGroup.VanKampen.Cocone.PathValue.trans
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.trans
+#check FundamentalGroup.VanKampen.Cocone.PathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_cast
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_subpath_zero_one
+#check FundamentalGroup.VanKampen.Cocone.PathValue.Extends
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.Extends
+#check FundamentalGroup.VanKampen.Cocone.PathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mk
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.U
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedIntersection
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedIntersection
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base_mem_chart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base_mem_chart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_open
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_open
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mem_U_or_V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mem_U_or_V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlap
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlap
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseUPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseUPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseVPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseVPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseOverlapPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseOverlapPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseChart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseChart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.UGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.UGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.VGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.VGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.OverlapGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.OverlapGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_compatible
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Compatible
+#check FundamentalGroup.VanKampen.Cocone.pathIn
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn
+#check FundamentalGroup.VanKampen.Cocone.pathIn_apply
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_apply
+#check FundamentalGroup.VanKampen.Cocone.pathIn_map
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_map
+#check FundamentalGroup.VanKampen.Cocone.pathIn_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_refl
+#check FundamentalGroup.VanKampen.Cocone.pathIn_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_trans
+#check FundamentalGroup.VanKampen.Cocone.homotopyIn
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopyIn
+#check FundamentalGroup.VanKampen.Cocone.homotopy_trans_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_trans_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_transRefl_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_transRefl_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpathRefl_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpathRefl_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpath_mem
+#check FundamentalGroup.VanKampen.Cocone.mem_Icc_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.mem_Icc_of_subpath_mem
+#check FundamentalGroup.VanKampen.Cocone.subpathTransSubpathIn
+#print axioms FundamentalGroup.VanKampen.Cocone.subpathTransSubpathIn
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_property_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_property_cast
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_induction_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_induction_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.PathClass.quotient_symm_trans_cancel
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.quotient_symm_trans_cancel
+#check FundamentalGroup.VanKampen.Cocone.PathClass.quotient_trans_right_cancel
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.quotient_trans_right_cancel
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathDifference
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathDifference
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_refl
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_trans
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_comparison
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_comparison
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.hom_ext
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.hom_ext
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover` -/
 
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.mk
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.mk
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.U
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.U
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.V
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.V
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.cover
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.cover
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyU
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyU
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyV
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.simplyV
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.base
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.base
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseU
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseU
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseV
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.baseV
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.rec
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.rec
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.recOn
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.recOn
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.casesOn
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.casesOn
-#check FundamentalGroup.VanKampen.paths_homotopic_of_mem
-#print axioms FundamentalGroup.VanKampen.paths_homotopic_of_mem
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_mem
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_mem
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_mem
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_mem
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_trans
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathU_trans
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_trans
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.pathV_trans
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_base
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_base
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.switchClass_eq_of_paths
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.mk
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.U
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.V
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.cover
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.base
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.rec
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.rec
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.recOn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.recOn
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.casesOn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.casesOn
+#check FundamentalGroup.VanKampen.Cocone.paths_homotopic_of_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.paths_homotopic_of_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_base
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_paths
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_paths
 
 /-! ## `Lib.Topology.Homotopy.PuncturedCyclicCover` -/
 
-#check FundamentalGroup.VanKampen.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
-#print axioms FundamentalGroup.VanKampen.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
 
 /-! ## `Lib.Topology.Homotopy.PuncturedPlaneCyclic` -/
 
-#check Mathoverflow1973.PuncturedPlaneCyclic.planeOpen
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.planeOpen
-#check Mathoverflow1973.PuncturedPlaneCyclic.Plane
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.Plane
-#check Mathoverflow1973.PuncturedPlaneCyclic.plane_pathConnectedSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.plane_pathConnectedSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSet
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSet
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSet
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSet
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSet_isOpen
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSet_isOpen
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_isOpen
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_isOpen
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSet_subset_punctured
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSet_subset_punctured
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_subset_punctured
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_subset_punctured
-#check Mathoverflow1973.PuncturedPlaneCyclic.slitSets_union
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.slitSets_union
-#check Mathoverflow1973.PuncturedPlaneCyclic.slitSets_inter
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.slitSets_inter
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperBasepoint
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperBasepoint
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperHeightMap
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperHeightMap
-#check Mathoverflow1973.PuncturedPlaneCyclic.upper_vertical_mem
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upper_vertical_mem
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperVerticalHomotopy
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperVerticalHomotopy
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperHorizontalHomotopy
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperHorizontalHomotopy
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperContraction
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperContraction
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSet_contractibleSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSet_contractibleSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.slitConjugation
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.slitConjugation
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_contractibleSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSet_contractibleSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSlit
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSlit
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_union_lowerSlit
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_union_lowerSlit
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSlitHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSlitHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSlitHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSlitHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_contractibleSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_contractibleSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit_contractibleSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit_contractibleSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_simplyConnected
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperSlit_simplyConnected
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit_simplyConnected
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerSlit_simplyConnected
-#check Mathoverflow1973.PuncturedPlaneCyclic.base
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.base
-#check Mathoverflow1973.PuncturedPlaneCyclic.opposite
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.opposite
-#check Mathoverflow1973.PuncturedPlaneCyclic.base_mem_upper
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.base_mem_upper
-#check Mathoverflow1973.PuncturedPlaneCyclic.base_mem_lower
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.base_mem_lower
-#check Mathoverflow1973.PuncturedPlaneCyclic.opposite_mem_upper
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.opposite_mem_upper
-#check Mathoverflow1973.PuncturedPlaneCyclic.opposite_mem_lower
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.opposite_mem_lower
-#check Mathoverflow1973.PuncturedPlaneCyclic.slitCover
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.slitCover
-#check Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap
-#check Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap
-#check Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlapHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlapHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlapHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlapHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap_isPathConnected
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap_isPathConnected
-#check Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap_isPathConnected
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap_isPathConnected
-#check Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
-#check Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
-#check Mathoverflow1973.PuncturedPlaneCyclic.overlap_has_two_components
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.overlap_has_two_components
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle
-#check Mathoverflow1973.PuncturedPlaneCyclic.continuous_meridianHalfCircle
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.continuous_meridianHalfCircle
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_zero
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_zero
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_one
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_one
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_im_pos
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_im_pos
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
-#check Mathoverflow1973.PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperPath
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperPath
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerPath
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerPath
-#check Mathoverflow1973.PuncturedPlaneCyclic.upperPath_mem
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.upperPath_mem
-#check Mathoverflow1973.PuncturedPlaneCyclic.lowerPath_mem
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.lowerPath_mem
-#check Mathoverflow1973.PuncturedPlaneCyclic.meridian
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.meridian
-#check Mathoverflow1973.PuncturedPlaneCyclic.zpowers_meridian_eq_top
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.zpowers_meridian_eq_top
-#check Mathoverflow1973.PuncturedPlaneCyclic.range_eq_zpowers_meridian
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.range_eq_zpowers_meridian
-#check Mathoverflow1973.PuncturedPlaneCyclic.ballHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.ballHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.ballHomeomorph_apply_zero
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.ballHomeomorph_apply_zero
-#check Mathoverflow1973.PuncturedPlaneCyclic.PuncturedBall
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.PuncturedBall
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallHomeomorph
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallHomeomorph
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallMeridianClass
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBallMeridianClass
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
-#check Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
-#print axioms Mathoverflow1973.PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
+#check PuncturedPlaneCyclic.planeOpen
+#print axioms PuncturedPlaneCyclic.planeOpen
+#check PuncturedPlaneCyclic.Plane
+#print axioms PuncturedPlaneCyclic.Plane
+#check PuncturedPlaneCyclic.plane_pathConnectedSpace
+#print axioms PuncturedPlaneCyclic.plane_pathConnectedSpace
+#check PuncturedPlaneCyclic.upperSet
+#print axioms PuncturedPlaneCyclic.upperSet
+#check PuncturedPlaneCyclic.lowerSet
+#print axioms PuncturedPlaneCyclic.lowerSet
+#check PuncturedPlaneCyclic.upperSet_isOpen
+#print axioms PuncturedPlaneCyclic.upperSet_isOpen
+#check PuncturedPlaneCyclic.lowerSet_isOpen
+#print axioms PuncturedPlaneCyclic.lowerSet_isOpen
+#check PuncturedPlaneCyclic.upperSet_subset_punctured
+#print axioms PuncturedPlaneCyclic.upperSet_subset_punctured
+#check PuncturedPlaneCyclic.lowerSet_subset_punctured
+#print axioms PuncturedPlaneCyclic.lowerSet_subset_punctured
+#check PuncturedPlaneCyclic.slitSets_union
+#print axioms PuncturedPlaneCyclic.slitSets_union
+#check PuncturedPlaneCyclic.slitSets_inter
+#print axioms PuncturedPlaneCyclic.slitSets_inter
+#check PuncturedPlaneCyclic.upperBasepoint
+#print axioms PuncturedPlaneCyclic.upperBasepoint
+#check PuncturedPlaneCyclic.upperHeightMap
+#print axioms PuncturedPlaneCyclic.upperHeightMap
+#check PuncturedPlaneCyclic.upper_vertical_mem
+#print axioms PuncturedPlaneCyclic.upper_vertical_mem
+#check PuncturedPlaneCyclic.upperVerticalHomotopy
+#print axioms PuncturedPlaneCyclic.upperVerticalHomotopy
+#check PuncturedPlaneCyclic.upperHorizontalHomotopy
+#print axioms PuncturedPlaneCyclic.upperHorizontalHomotopy
+#check PuncturedPlaneCyclic.upperContraction
+#print axioms PuncturedPlaneCyclic.upperContraction
+#check PuncturedPlaneCyclic.upperSet_contractibleSpace
+#print axioms PuncturedPlaneCyclic.upperSet_contractibleSpace
+#check PuncturedPlaneCyclic.slitConjugation
+#print axioms PuncturedPlaneCyclic.slitConjugation
+#check PuncturedPlaneCyclic.lowerSet_contractibleSpace
+#print axioms PuncturedPlaneCyclic.lowerSet_contractibleSpace
+#check PuncturedPlaneCyclic.upperSlit
+#print axioms PuncturedPlaneCyclic.upperSlit
+#check PuncturedPlaneCyclic.lowerSlit
+#print axioms PuncturedPlaneCyclic.lowerSlit
+#check PuncturedPlaneCyclic.upperSlit_union_lowerSlit
+#print axioms PuncturedPlaneCyclic.upperSlit_union_lowerSlit
+#check PuncturedPlaneCyclic.upperSlitHomeomorph
+#print axioms PuncturedPlaneCyclic.upperSlitHomeomorph
+#check PuncturedPlaneCyclic.lowerSlitHomeomorph
+#print axioms PuncturedPlaneCyclic.lowerSlitHomeomorph
+#check PuncturedPlaneCyclic.upperSlit_contractibleSpace
+#print axioms PuncturedPlaneCyclic.upperSlit_contractibleSpace
+#check PuncturedPlaneCyclic.lowerSlit_contractibleSpace
+#print axioms PuncturedPlaneCyclic.lowerSlit_contractibleSpace
+#check PuncturedPlaneCyclic.upperSlit_simplyConnected
+#print axioms PuncturedPlaneCyclic.upperSlit_simplyConnected
+#check PuncturedPlaneCyclic.lowerSlit_simplyConnected
+#print axioms PuncturedPlaneCyclic.lowerSlit_simplyConnected
+#check PuncturedPlaneCyclic.base
+#print axioms PuncturedPlaneCyclic.base
+#check PuncturedPlaneCyclic.opposite
+#print axioms PuncturedPlaneCyclic.opposite
+#check PuncturedPlaneCyclic.base_mem_upper
+#print axioms PuncturedPlaneCyclic.base_mem_upper
+#check PuncturedPlaneCyclic.base_mem_lower
+#print axioms PuncturedPlaneCyclic.base_mem_lower
+#check PuncturedPlaneCyclic.opposite_mem_upper
+#print axioms PuncturedPlaneCyclic.opposite_mem_upper
+#check PuncturedPlaneCyclic.opposite_mem_lower
+#print axioms PuncturedPlaneCyclic.opposite_mem_lower
+#check PuncturedPlaneCyclic.slitCover
+#print axioms PuncturedPlaneCyclic.slitCover
+#check PuncturedPlaneCyclic.positiveOverlap
+#print axioms PuncturedPlaneCyclic.positiveOverlap
+#check PuncturedPlaneCyclic.negativeOverlap
+#print axioms PuncturedPlaneCyclic.negativeOverlap
+#check PuncturedPlaneCyclic.positiveOverlapHomeomorph
+#print axioms PuncturedPlaneCyclic.positiveOverlapHomeomorph
+#check PuncturedPlaneCyclic.negativeOverlapHomeomorph
+#print axioms PuncturedPlaneCyclic.negativeOverlapHomeomorph
+#check PuncturedPlaneCyclic.positiveOverlap_isPathConnected
+#print axioms PuncturedPlaneCyclic.positiveOverlap_isPathConnected
+#check PuncturedPlaneCyclic.negativeOverlap_isPathConnected
+#print axioms PuncturedPlaneCyclic.negativeOverlap_isPathConnected
+#check PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
+#print axioms PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
+#check PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
+#print axioms PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
+#check PuncturedPlaneCyclic.overlap_has_two_components
+#print axioms PuncturedPlaneCyclic.overlap_has_two_components
+#check PuncturedPlaneCyclic.meridianHalfCircle
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle
+#check PuncturedPlaneCyclic.continuous_meridianHalfCircle
+#print axioms PuncturedPlaneCyclic.continuous_meridianHalfCircle
+#check PuncturedPlaneCyclic.meridianHalfCircle_zero
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_zero
+#check PuncturedPlaneCyclic.meridianHalfCircle_one
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_one
+#check PuncturedPlaneCyclic.meridianHalfCircle_im_pos
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_im_pos
+#check PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
+#check PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
+#print axioms PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
+#check PuncturedPlaneCyclic.upperPath
+#print axioms PuncturedPlaneCyclic.upperPath
+#check PuncturedPlaneCyclic.lowerPath
+#print axioms PuncturedPlaneCyclic.lowerPath
+#check PuncturedPlaneCyclic.upperPath_mem
+#print axioms PuncturedPlaneCyclic.upperPath_mem
+#check PuncturedPlaneCyclic.lowerPath_mem
+#print axioms PuncturedPlaneCyclic.lowerPath_mem
+#check PuncturedPlaneCyclic.meridian
+#print axioms PuncturedPlaneCyclic.meridian
+#check PuncturedPlaneCyclic.zpowers_meridian_eq_top
+#print axioms PuncturedPlaneCyclic.zpowers_meridian_eq_top
+#check PuncturedPlaneCyclic.range_eq_zpowers_meridian
+#print axioms PuncturedPlaneCyclic.range_eq_zpowers_meridian
+#check PuncturedPlaneCyclic.ballHomeomorph
+#print axioms PuncturedPlaneCyclic.ballHomeomorph
+#check PuncturedPlaneCyclic.ballHomeomorph_apply_zero
+#print axioms PuncturedPlaneCyclic.ballHomeomorph_apply_zero
+#check PuncturedPlaneCyclic.PuncturedBall
+#print axioms PuncturedPlaneCyclic.PuncturedBall
+#check PuncturedPlaneCyclic.puncturedBallHomeomorph
+#print axioms PuncturedPlaneCyclic.puncturedBallHomeomorph
+#check PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
+#print axioms PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
+#check PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
+#print axioms PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
+#check PuncturedPlaneCyclic.puncturedBallMeridianClass
+#print axioms PuncturedPlaneCyclic.puncturedBallMeridianClass
+#check PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
+#print axioms PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
+#check PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
+#print axioms PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
 
-#check FundamentalGroup.VanKampen.TwoOpenCover.chartPath
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath
-#check FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base
-#check FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass
-#check FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base
-#check FundamentalGroup.VanKampen.TwoOpenCover.closePath
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath
-#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl
-#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans
-#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic
-#check FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop
-#check FundamentalGroup.VanKampen.TwoOpenCover.chartHom
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.chartHom
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapClose
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapClose
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible
-#check FundamentalGroup.VanKampen.TwoOpenCover.localPathValue
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localPathValue
-#check FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant
-#check FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop
-#check FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom
-#print axioms FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom
-#check FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom_mk
-#print axioms FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom_mk
-#check FundamentalGroup.VanKampen.mem_of_subpath_mem
-#print axioms FundamentalGroup.VanKampen.mem_of_subpath_mem
-#check FundamentalGroup.VanKampen.subpath_mem_mono
-#print axioms FundamentalGroup.VanKampen.subpath_mem_mono
-#check FundamentalGroup.VanKampen.exists_path_subdivision
-#print axioms FundamentalGroup.VanKampen.exists_path_subdivision
-#check FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive
-#check FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo
-#check FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero
-#check FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step
-#check FundamentalGroup.VanKampen.LocalPathValue.exists_primitive
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.exists_primitive
-#check FundamentalGroup.VanKampen.LocalPathValue.primitive_unique
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.primitive_unique
-#check FundamentalGroup.VanKampen.convexComb_monotone
-#print axioms FundamentalGroup.VanKampen.convexComb_monotone
-#check FundamentalGroup.VanKampen.convexComb_comp
-#print axioms FundamentalGroup.VanKampen.convexComb_comp
-#check FundamentalGroup.VanKampen.subpath_subpath
-#print axioms FundamentalGroup.VanKampen.subpath_subpath
-#check FundamentalGroup.VanKampen.intervalHalf
-#print axioms FundamentalGroup.VanKampen.intervalHalf
-#check FundamentalGroup.VanKampen.trans_convexComb_first_half
-#print axioms FundamentalGroup.VanKampen.trans_convexComb_first_half
-#check FundamentalGroup.VanKampen.trans_convexComb_second_half
-#print axioms FundamentalGroup.VanKampen.trans_convexComb_second_half
-#check FundamentalGroup.VanKampen.trans_apply_intervalHalf
-#print axioms FundamentalGroup.VanKampen.trans_apply_intervalHalf
-#check FundamentalGroup.VanKampen.trans_subpath_first_half
-#print axioms FundamentalGroup.VanKampen.trans_subpath_first_half
-#check FundamentalGroup.VanKampen.trans_subpath_second_half
-#print axioms FundamentalGroup.VanKampen.trans_subpath_second_half
-#check FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq
-#check FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath
-#check FundamentalGroup.VanKampen.LocalPathValue.transport
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport
-#check FundamentalGroup.VanKampen.LocalPathValue.transport_zero
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_zero
-#check FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive
-#check FundamentalGroup.VanKampen.LocalPathValue.transport_subpath
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.transport_subpath
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_local
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_local
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul
-#check FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans
-#check FundamentalGroup.VanKampen.LocalPathValue.extension
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.extension
-#check FundamentalGroup.VanKampen.LocalPathValue.extension_extends
-#print axioms FundamentalGroup.VanKampen.LocalPathValue.extension_extends
-#check FundamentalGroup.VanKampen.squareHorizontal
-#print axioms FundamentalGroup.VanKampen.squareHorizontal
-#check FundamentalGroup.VanKampen.squareVertical
-#print axioms FundamentalGroup.VanKampen.squareVertical
-#check FundamentalGroup.VanKampen.squarePathHomotopy
-#print axioms FundamentalGroup.VanKampen.squarePathHomotopy
-#check FundamentalGroup.VanKampen.convexComb_mem_Icc
-#print axioms FundamentalGroup.VanKampen.convexComb_mem_Icc
-#check FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle
-#print axioms FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle
-#check FundamentalGroup.VanKampen.rectangleHorizontalVertical
-#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical
-#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal
-#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal
-#check FundamentalGroup.VanKampen.rectangleHorizontalVertical_map
-#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical_map
-#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map
-#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map
-#check FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem
-#print axioms FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem
-#check FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem
-#print axioms FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem
-#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy
-#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy
-#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply
-#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply
-#check FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem
-#print axioms FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem
-#check FundamentalGroup.VanKampen.PathValue.square_cell_of_local
-#print axioms FundamentalGroup.VanKampen.PathValue.square_cell_of_local
-#check FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant
-#print axioms FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant
-#check FundamentalGroup.VanKampen.PathValue.square_strip
-#print axioms FundamentalGroup.VanKampen.PathValue.square_strip
-#check FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy
-#print axioms FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy
-#check FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero
-#print axioms FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero
-#check FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one
-#print axioms FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one
-#check FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover
-#print axioms FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover
-#check FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover
-#print axioms FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover
-#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue
-#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends
-#check FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant
-#check FundamentalGroup.VanKampen.TwoOpenCover.lift
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift
-#check FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem
-#check FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU
-#check FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV
-#check FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup
-#check FundamentalGroup.VanKampen.TwoOpenCover.overlapHom
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.overlapHom
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom
-#check FundamentalGroup.VanKampen.TwoOpenCover.Pushout
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.Pushout
-#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv
-#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of
-#check FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_refl
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_U
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapClose
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapClose
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop
+#check FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom
+#check FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk
+#check FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem
+#check FundamentalGroup.VanKampen.Cocone.subpath_mem_mono
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_mem_mono
+#check FundamentalGroup.VanKampen.Cocone.exists_path_subdivision
+#print axioms FundamentalGroup.VanKampen.Cocone.exists_path_subdivision
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_step
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_step
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique
+#check FundamentalGroup.VanKampen.Cocone.convexComb_monotone
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_monotone
+#check FundamentalGroup.VanKampen.Cocone.convexComb_comp
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_comp
+#check FundamentalGroup.VanKampen.Cocone.subpath_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_subpath
+#check FundamentalGroup.VanKampen.Cocone.intervalHalf
+#print axioms FundamentalGroup.VanKampen.Cocone.intervalHalf
+#check FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half
+#check FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half
+#check FundamentalGroup.VanKampen.Cocone.trans_apply_intervalHalf
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_apply_intervalHalf
+#check FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half
+#check FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_one
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends
+#check FundamentalGroup.VanKampen.Cocone.squareHorizontal
+#print axioms FundamentalGroup.VanKampen.Cocone.squareHorizontal
+#check FundamentalGroup.VanKampen.Cocone.squareVertical
+#print axioms FundamentalGroup.VanKampen.Cocone.squareVertical
+#check FundamentalGroup.VanKampen.Cocone.squarePathHomotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.squarePathHomotopy
+#check FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc
+#check FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
+#print axioms FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem
+#check FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant
+#check FundamentalGroup.VanKampen.Cocone.PathValue.square_strip
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.square_strip
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homotopy
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_zero
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_one
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_one
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_extends
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_extends
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.ChartGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.ChartGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_comp_overlapHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_comp_overlapHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Pushout
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Pushout
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_of
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_of
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_symm_inclusionHom
 
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
-#check FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
 #check FundamentalGroup.basepointChange_naturality
 #print axioms FundamentalGroup.basepointChange_naturality
 #check FundamentalGroup.basepointChange_naturality_apply
@@ -1520,8 +1475,8 @@ is an evidence command rather than library content.
 #print axioms FundamentalGroup.simplyConnectedSpace_iff_eq_one
 #check FundamentalGroup.simplyConnectedSpace_of_eq_one
 #print axioms FundamentalGroup.simplyConnectedSpace_of_eq_one
-#check FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedSpace
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace
 
 /-! ## `Lib.Topology.Covering.FiberFrameCentralizer` -/
 
@@ -1536,152 +1491,152 @@ is an evidence command rather than library content.
 #print axioms IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
 
 -- Basic: every public source declaration in source order.
-#check Mathoverflow1973.MappingTorus.Circle
-#print axioms Mathoverflow1973.MappingTorus.Circle
-#check Mathoverflow1973.MappingTorus.deck
-#print axioms Mathoverflow1973.MappingTorus.deck
-#check Mathoverflow1973.MappingTorus.deck_zero
-#print axioms Mathoverflow1973.MappingTorus.deck_zero
-#check Mathoverflow1973.MappingTorus.deck_add
-#print axioms Mathoverflow1973.MappingTorus.deck_add
-#check Mathoverflow1973.MappingTorus.deck_continuous
-#print axioms Mathoverflow1973.MappingTorus.deck_continuous
-#check Mathoverflow1973.MappingTorus.deckHomeomorph
-#print axioms Mathoverflow1973.MappingTorus.deckHomeomorph
-#check Mathoverflow1973.MappingTorus.orbitSetoid
-#print axioms Mathoverflow1973.MappingTorus.orbitSetoid
-#check Mathoverflow1973.MappingTorus.Torus
-#print axioms Mathoverflow1973.MappingTorus.Torus
-#check Mathoverflow1973.MappingTorus.instLocal1
-#print axioms Mathoverflow1973.MappingTorus.instLocal1
-#check Mathoverflow1973.MappingTorus.mk
-#print axioms Mathoverflow1973.MappingTorus.mk
-#check Mathoverflow1973.MappingTorus.mk_continuous
-#print axioms Mathoverflow1973.MappingTorus.mk_continuous
-#check Mathoverflow1973.MappingTorus.mk_surjective
-#print axioms Mathoverflow1973.MappingTorus.mk_surjective
-#check Mathoverflow1973.MappingTorus.mk_eq_mk_iff
-#print axioms Mathoverflow1973.MappingTorus.mk_eq_mk_iff
-#check Mathoverflow1973.MappingTorus.mk_deck
-#print axioms Mathoverflow1973.MappingTorus.mk_deck
-#check Mathoverflow1973.MappingTorus.mk_sub_one
-#print axioms Mathoverflow1973.MappingTorus.mk_sub_one
-#check Mathoverflow1973.MappingTorus.mk_add_one
-#print axioms Mathoverflow1973.MappingTorus.mk_add_one
-#check Mathoverflow1973.MappingTorus.mk_preimage_image
-#print axioms Mathoverflow1973.MappingTorus.mk_preimage_image
-#check Mathoverflow1973.MappingTorus.mk_open
-#print axioms Mathoverflow1973.MappingTorus.mk_open
-#check Mathoverflow1973.MappingTorus.circle_intCast
-#print axioms Mathoverflow1973.MappingTorus.circle_intCast
-#check Mathoverflow1973.MappingTorus.circle_coe_eq_iff
-#print axioms Mathoverflow1973.MappingTorus.circle_coe_eq_iff
-#check Mathoverflow1973.MappingTorus.base
-#print axioms Mathoverflow1973.MappingTorus.base
-#check Mathoverflow1973.MappingTorus.base_mk
-#print axioms Mathoverflow1973.MappingTorus.base_mk
+#check MappingTorus.Circle
+#print axioms MappingTorus.Circle
+#check MappingTorus.deck
+#print axioms MappingTorus.deck
+#check MappingTorus.deck_zero
+#print axioms MappingTorus.deck_zero
+#check MappingTorus.deck_add
+#print axioms MappingTorus.deck_add
+#check MappingTorus.deck_continuous
+#print axioms MappingTorus.deck_continuous
+#check MappingTorus.deckHomeomorph
+#print axioms MappingTorus.deckHomeomorph
+#check MappingTorus.orbitSetoid
+#print axioms MappingTorus.orbitSetoid
+#check MappingTorus.Torus
+#print axioms MappingTorus.Torus
+#check MappingTorus.instLocal1
+#print axioms MappingTorus.instLocal1
+#check MappingTorus.mk
+#print axioms MappingTorus.mk
+#check MappingTorus.mk_continuous
+#print axioms MappingTorus.mk_continuous
+#check MappingTorus.mk_surjective
+#print axioms MappingTorus.mk_surjective
+#check MappingTorus.mk_eq_mk_iff
+#print axioms MappingTorus.mk_eq_mk_iff
+#check MappingTorus.mk_deck
+#print axioms MappingTorus.mk_deck
+#check MappingTorus.mk_sub_one
+#print axioms MappingTorus.mk_sub_one
+#check MappingTorus.mk_add_one
+#print axioms MappingTorus.mk_add_one
+#check MappingTorus.mk_preimage_image
+#print axioms MappingTorus.mk_preimage_image
+#check MappingTorus.mk_open
+#print axioms MappingTorus.mk_open
+#check MappingTorus.circle_intCast
+#print axioms MappingTorus.circle_intCast
+#check MappingTorus.circle_coe_eq_iff
+#print axioms MappingTorus.circle_coe_eq_iff
+#check MappingTorus.base
+#print axioms MappingTorus.base
+#check MappingTorus.base_mk
+#print axioms MappingTorus.base_mk
 
 -- TranslationCocycle: every public source declaration in source order.
-#check Mathoverflow1973.MappingTorus.TranslationCocycle
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_continuous
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_continuous
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_deck
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.cylinder_deck
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.map
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_mk
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_mk
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_add_apply
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_add_apply
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.map_zero_apply
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.map_zero_apply
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.base_shear
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.base_shear
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear_add_apply
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
-#check Mathoverflow1973.MappingTorus.TranslationCocycle.shear_zero
-#print axioms Mathoverflow1973.MappingTorus.TranslationCocycle.shear_zero
+#check MappingTorus.TranslationCocycle
+#print axioms MappingTorus.TranslationCocycle
+#check MappingTorus.TranslationCocycle.cylinder
+#print axioms MappingTorus.TranslationCocycle.cylinder
+#check MappingTorus.TranslationCocycle.cylinder_continuous
+#print axioms MappingTorus.TranslationCocycle.cylinder_continuous
+#check MappingTorus.TranslationCocycle.cylinder_deck
+#print axioms MappingTorus.TranslationCocycle.cylinder_deck
+#check MappingTorus.TranslationCocycle.map
+#print axioms MappingTorus.TranslationCocycle.map
+#check MappingTorus.TranslationCocycle.map_mk
+#print axioms MappingTorus.TranslationCocycle.map_mk
+#check MappingTorus.TranslationCocycle.map_add_apply
+#print axioms MappingTorus.TranslationCocycle.map_add_apply
+#check MappingTorus.TranslationCocycle.map_zero_apply
+#print axioms MappingTorus.TranslationCocycle.map_zero_apply
+#check MappingTorus.TranslationCocycle.shear
+#print axioms MappingTorus.TranslationCocycle.shear
+#check MappingTorus.TranslationCocycle.base_shear
+#print axioms MappingTorus.TranslationCocycle.base_shear
+#check MappingTorus.TranslationCocycle.shear_add_apply
+#print axioms MappingTorus.TranslationCocycle.shear_add_apply
+#check MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#print axioms MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#check MappingTorus.TranslationCocycle.shear_zero
+#print axioms MappingTorus.TranslationCocycle.shear_zero
 
 -- SquareZeroWinding: every public source declaration in source order.
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.Torus
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.Torus
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy_zpow
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.monodromy_zpow
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_continuous
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_continuous
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_zero
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_zero
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_one
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_one
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_continuous
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_continuous
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_add_int
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.windingShift_add_int
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.translationCocycle
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.translationCocycle
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_zero
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_zero
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_add_apply
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Data.shear_add_apply
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.functional_windingLift
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.functional_windingLift
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
-#check Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
-#print axioms Mathoverflow1973.MappingTorus.SquareZeroWinding.Detector.shear_injective
+#check MappingTorus.SquareZeroWinding.Data
+#print axioms MappingTorus.SquareZeroWinding.Data
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#check MappingTorus.SquareZeroWinding.Data.Torus
+#print axioms MappingTorus.SquareZeroWinding.Data.Torus
+#check MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#check MappingTorus.SquareZeroWinding.Data.monodromy
+#print axioms MappingTorus.SquareZeroWinding.Data.monodromy
+#check MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#print axioms MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#check MappingTorus.SquareZeroWinding.Data.windingLift
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift
+#check MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#check MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#check MappingTorus.SquareZeroWinding.Data.windingLift_one
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_one
+#check MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#check MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.windingShift
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift
+#check MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#check MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#check MappingTorus.SquareZeroWinding.Data.translationCocycle
+#print axioms MappingTorus.SquareZeroWinding.Data.translationCocycle
+#check MappingTorus.SquareZeroWinding.Data.shear
+#print axioms MappingTorus.SquareZeroWinding.Data.shear
+#check MappingTorus.SquareZeroWinding.Data.shear_zero
+#print axioms MappingTorus.SquareZeroWinding.Data.shear_zero
+#check MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#check MappingTorus.SquareZeroWinding.Detector
+#print axioms MappingTorus.SquareZeroWinding.Detector
+#check MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#print axioms MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#check MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#print axioms MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#check MappingTorus.SquareZeroWinding.Detector.shear_injective
+#print axioms MappingTorus.SquareZeroWinding.Detector.shear_injective
 
 -- Manifold scalar restriction and smooth descent: every public declaration in source order.
 #check IsManifold.restrictScalars
@@ -2271,144 +2226,158 @@ is an evidence command rather than library content.
 
 -- Gluing over a covered base: every handwritten declaration plus structure constructors and
 -- field projections, in compiled public declaration order (generated recursors excluded).
-#check Mathoverflow1973.ThreefoldGluing.Data
-#print axioms Mathoverflow1973.ThreefoldGluing.Data
-#check Mathoverflow1973.ThreefoldGluing.Data.mk
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.mk
-#check Mathoverflow1973.ThreefoldGluing.Data.J
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.J
-#check Mathoverflow1973.ThreefoldGluing.Data.patch
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.patch
-#check Mathoverflow1973.ThreefoldGluing.Data.cover
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.cover
-#check Mathoverflow1973.ThreefoldGluing.Data.piece
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.piece
-#check Mathoverflow1973.ThreefoldGluing.Data.toBase
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.toBase
-#check Mathoverflow1973.ThreefoldGluing.Data.toBase_mem
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.toBase_mem
-#check Mathoverflow1973.ThreefoldGluing.Data.transition
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition
-#check Mathoverflow1973.ThreefoldGluing.Data.source_eq
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.source_eq
-#check Mathoverflow1973.ThreefoldGluing.Data.self_eq
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.self_eq
-#check Mathoverflow1973.ThreefoldGluing.Data.symm_eq
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.symm_eq
-#check Mathoverflow1973.ThreefoldGluing.Data.preserves_base
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.preserves_base
-#check Mathoverflow1973.ThreefoldGluing.Data.cocycle
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.cocycle
-#check Mathoverflow1973.ThreefoldGluing.Data.transition_map_source
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition_map_source
-#check Mathoverflow1973.ThreefoldGluing.Data.transition_inter
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.transition_inter
-#check Mathoverflow1973.ThreefoldGluing.Data.gluingCore
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluingCore
-#check Mathoverflow1973.ThreefoldGluing.Data.gluing
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluing
-#check Mathoverflow1973.ThreefoldGluing.Data.Space
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.Space
-#check Mathoverflow1973.ThreefoldGluing.Data.inclusion
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion
-#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_openEmbedding
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_openEmbedding
-#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_jointly_surjective
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_jointly_surjective
-#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_eq_iff
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_eq_iff
-#check Mathoverflow1973.ThreefoldGluing.Data.representative
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.representative
-#check Mathoverflow1973.ThreefoldGluing.Data.inclusion_representative
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.inclusion_representative
-#check Mathoverflow1973.ThreefoldGluing.Data.parametrization
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization
-#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_target
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_target
-#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_transition
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_transition
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.mk
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.mk
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.patch
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.patch
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.cover
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.cover
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.disjoint
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.disjoint
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.piece
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.piece
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_mem
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_mem
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.source_eq
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.source_eq
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.target_eq
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.target_eq
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.preserves_base
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.preserves_base
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_none
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_none
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_some
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_none_some
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_none
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_none
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_self
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_self
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_self
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_self
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_symm
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_symm
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_source_eq
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_source_eq
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_preserves_base
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_preserves_base
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_cocycle
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_cocycle
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData
-#check Mathoverflow1973.ThreefoldGluing.Data.parametrization_symm_inclusion
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.parametrization_symm_inclusion
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_symm
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_symm
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion_mem_source
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_inclusion_mem_source
-#check Mathoverflow1973.ThreefoldGluing.Data.chartedSpace
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.chartedSpace
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_mem_atlas
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_mem_atlas
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_apply
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_apply
-#check Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.gluedChart_transition_contMDiff
-#check Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
-#print axioms Mathoverflow1973.ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.transition_contMDiff
-#check Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
-#print axioms Mathoverflow1973.SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+#check ThreefoldGluing.Data
+#print axioms ThreefoldGluing.Data
+#check ThreefoldGluing.Data.mk
+#print axioms ThreefoldGluing.Data.mk
+#check ThreefoldGluing.Data.J
+#print axioms ThreefoldGluing.Data.J
+#check ThreefoldGluing.Data.patch
+#print axioms ThreefoldGluing.Data.patch
+#check ThreefoldGluing.Data.cover
+#print axioms ThreefoldGluing.Data.cover
+#check ThreefoldGluing.Data.piece
+#print axioms ThreefoldGluing.Data.piece
+#check ThreefoldGluing.Data.toBase
+#print axioms ThreefoldGluing.Data.toBase
+#check ThreefoldGluing.Data.toBase_mem
+#print axioms ThreefoldGluing.Data.toBase_mem
+#check ThreefoldGluing.Data.transition
+#print axioms ThreefoldGluing.Data.transition
+#check ThreefoldGluing.Data.source_eq
+#print axioms ThreefoldGluing.Data.source_eq
+#check ThreefoldGluing.Data.self_eq
+#print axioms ThreefoldGluing.Data.self_eq
+#check ThreefoldGluing.Data.symm_eq
+#print axioms ThreefoldGluing.Data.symm_eq
+#check ThreefoldGluing.Data.preserves_base
+#print axioms ThreefoldGluing.Data.preserves_base
+#check ThreefoldGluing.Data.cocycle
+#print axioms ThreefoldGluing.Data.cocycle
+#check ThreefoldGluing.Data.transition_map_source
+#print axioms ThreefoldGluing.Data.transition_map_source
+#check ThreefoldGluing.Data.transition_inter
+#print axioms ThreefoldGluing.Data.transition_inter
+#check ThreefoldGluing.Data.gluingCore
+#print axioms ThreefoldGluing.Data.gluingCore
+#check ThreefoldGluing.Data.gluing
+#print axioms ThreefoldGluing.Data.gluing
+#check ThreefoldGluing.Data.Space
+#print axioms ThreefoldGluing.Data.Space
+#check ThreefoldGluing.Data.inclusion
+#print axioms ThreefoldGluing.Data.inclusion
+#check ThreefoldGluing.Data.inclusion_openEmbedding
+#print axioms ThreefoldGluing.Data.inclusion_openEmbedding
+#check ThreefoldGluing.Data.inclusion_jointly_surjective
+#print axioms ThreefoldGluing.Data.inclusion_jointly_surjective
+#check ThreefoldGluing.Data.inclusion_eq_iff
+#print axioms ThreefoldGluing.Data.inclusion_eq_iff
+#check ThreefoldGluing.Data.representative
+#print axioms ThreefoldGluing.Data.representative
+#check ThreefoldGluing.Data.inclusion_representative
+#print axioms ThreefoldGluing.Data.inclusion_representative
+#check ThreefoldGluing.Data.parametrization
+#print axioms ThreefoldGluing.Data.parametrization
+#check ThreefoldGluing.Data.parametrization_target
+#print axioms ThreefoldGluing.Data.parametrization_target
+#check ThreefoldGluing.Data.parametrization_transition
+#print axioms ThreefoldGluing.Data.parametrization_transition
+#check ThreefoldGluing.Data.projection
+#print axioms ThreefoldGluing.Data.projection
+#check ThreefoldGluing.Data.projection_inclusion
+#print axioms ThreefoldGluing.Data.projection_inclusion
+#check ThreefoldGluing.Data.projection_continuous
+#print axioms ThreefoldGluing.Data.projection_continuous
+#check ThreefoldGluing.Data.inclusion_range
+#print axioms ThreefoldGluing.Data.inclusion_range
+#check ThreefoldGluing.Data.localProjection
+#print axioms ThreefoldGluing.Data.localProjection
+#check ThreefoldGluing.Data.patchHomeomorph
+#print axioms ThreefoldGluing.Data.patchHomeomorph
+#check ThreefoldGluing.Data.patchHomeomorph_projection
+#print axioms ThreefoldGluing.Data.patchHomeomorph_projection
+#check SpecialPeriods.Threefold.Star.Input
+#print axioms SpecialPeriods.Threefold.Star.Input
+#check SpecialPeriods.Threefold.Star.Input.mk
+#print axioms SpecialPeriods.Threefold.Star.Input.mk
+#check SpecialPeriods.Threefold.Star.Input.patch
+#print axioms SpecialPeriods.Threefold.Star.Input.patch
+#check SpecialPeriods.Threefold.Star.Input.cover
+#print axioms SpecialPeriods.Threefold.Star.Input.cover
+#check SpecialPeriods.Threefold.Star.Input.disjoint
+#print axioms SpecialPeriods.Threefold.Star.Input.disjoint
+#check SpecialPeriods.Threefold.Star.Input.piece
+#print axioms SpecialPeriods.Threefold.Star.Input.piece
+#check SpecialPeriods.Threefold.Star.Input.toBase
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase
+#check SpecialPeriods.Threefold.Star.Input.toBase_mem
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase_mem
+#check SpecialPeriods.Threefold.Star.Input.overlap
+#print axioms SpecialPeriods.Threefold.Star.Input.overlap
+#check SpecialPeriods.Threefold.Star.Input.source_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.source_eq
+#check SpecialPeriods.Threefold.Star.Input.target_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.target_eq
+#check SpecialPeriods.Threefold.Star.Input.preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.preserves_base
+#check SpecialPeriods.Threefold.Star.Input.transition
+#print axioms SpecialPeriods.Threefold.Star.Input.transition
+#check SpecialPeriods.Threefold.Star.Input.transition_none_none
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_none_none
+#check SpecialPeriods.Threefold.Star.Input.transition_none_some
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_none_some
+#check SpecialPeriods.Threefold.Star.Input.transition_some_none
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_none
+#check SpecialPeriods.Threefold.Star.Input.transition_some_self
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_self
+#check SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#check SpecialPeriods.Threefold.Star.Input.transition_self
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_self
+#check SpecialPeriods.Threefold.Star.Input.transition_symm
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_symm
+#check SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#check SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#check SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#print axioms SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#check SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#check SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#check SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#check SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#print axioms SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#check SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#check SpecialPeriods.Threefold.Star.Input.toData
+#print axioms SpecialPeriods.Threefold.Star.Input.toData
+#check ThreefoldGluing.Data.parametrization_symm_inclusion
+#print axioms ThreefoldGluing.Data.parametrization_symm_inclusion
+#check ThreefoldGluing.Data.gluedChart
+#print axioms ThreefoldGluing.Data.gluedChart
+#check ThreefoldGluing.Data.gluedChart_symm
+#print axioms ThreefoldGluing.Data.gluedChart_symm
+#check ThreefoldGluing.Data.gluedChart_inclusion
+#print axioms ThreefoldGluing.Data.gluedChart_inclusion
+#check ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#print axioms ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#check ThreefoldGluing.Data.chartedSpace
+#print axioms ThreefoldGluing.Data.chartedSpace
+#check ThreefoldGluing.Data.gluedChart_mem_atlas
+#print axioms ThreefoldGluing.Data.gluedChart_mem_atlas
+#check ThreefoldGluing.Data.gluedChart_transition_apply
+#print axioms ThreefoldGluing.Data.gluedChart_transition_apply
+#check ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#print axioms ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#check ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#print axioms ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#check SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#check SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+#print axioms SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
 
 /-! ## `Lib.Topology.Sheaves.ConstantPushforward` -/
 
@@ -3286,12 +3255,12 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Algebra.Group.SurjectiveDescent` -/
 
-#check Mathoverflow1973.descendHomOfSurjective
-#print axioms Mathoverflow1973.descendHomOfSurjective
-#check Mathoverflow1973.fibre_constant_of_ker_le
-#print axioms Mathoverflow1973.fibre_constant_of_ker_le
-#check Mathoverflow1973.descendHomOfSurjective_comp
-#print axioms Mathoverflow1973.descendHomOfSurjective_comp
+#check descendHomOfSurjective
+#print axioms descendHomOfSurjective
+#check fibre_constant_of_ker_le
+#print axioms fibre_constant_of_ker_le
+#check descendHomOfSurjective_comp
+#print axioms descendHomOfSurjective_comp
 
 /-! ## `Lib.LinearAlgebra.ColumnKernel` -/
 
@@ -3306,26 +3275,26 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.LinearAlgebra.CyclicKernel` -/
 
-#check Mathoverflow1973.eq_equiv_smul_generator
-#print axioms Mathoverflow1973.eq_equiv_smul_generator
-#check Mathoverflow1973.ker_le_of_cyclic_generator_zero
-#print axioms Mathoverflow1973.ker_le_of_cyclic_generator_zero
+#check eq_equiv_smul_generator
+#print axioms eq_equiv_smul_generator
+#check ker_le_of_cyclic_generator_zero
+#print axioms ker_le_of_cyclic_generator_zero
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character` -/
 
-#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift
-#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomU
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomU
-#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomV
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_comp_inclusionHomV
-#check FundamentalGroup.VanKampen.TwoOpenCover.characterLift_surjective_of_left
-#print axioms FundamentalGroup.VanKampen.TwoOpenCover.characterLift_surjective_of_left
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` -/
 
-#check Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
-#print axioms Mathoverflow1973.FundamentalGroup.VanKampen.exists_stageCharacter
+#check FundamentalGroup.VanKampen.exists_stageCharacter
+#print axioms FundamentalGroup.VanKampen.exists_stageCharacter
 /-! ## `Lib.Topology.Homotopy.OpenNullhomotopy` -/
 
 #check TopCat.exists_open_nullhomotopic_inclusion
@@ -7531,20 +7500,41 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
 #check TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
 #print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
-#check ThreefoldGluing.Data.projection
-#print axioms ThreefoldGluing.Data.projection
-#check ThreefoldGluing.Data.projection_inclusion
-#print axioms ThreefoldGluing.Data.projection_inclusion
-#check ThreefoldGluing.Data.projection_continuous
-#print axioms ThreefoldGluing.Data.projection_continuous
-#check ThreefoldGluing.Data.inclusion_range
-#print axioms ThreefoldGluing.Data.inclusion_range
-#check ThreefoldGluing.Data.localProjection
-#print axioms ThreefoldGluing.Data.localProjection
-#check ThreefoldGluing.Data.patchHomeomorph
-#print axioms ThreefoldGluing.Data.patchHomeomorph
-#check ThreefoldGluing.Data.patchHomeomorph_projection
-#print axioms ThreefoldGluing.Data.patchHomeomorph_projection
+
+/-! ## Preserved textbook-extraction audit outputs -/
+
+#print axioms AnalyticRootCover.exists_analytic_square_root
+#print axioms AnalyticRootCover.exists_analytic_square_root_ball
+#print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
+#print axioms DiskCube.boundary_iff
+#print axioms DiskCube.homeomorph
+#print axioms HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
+#print axioms Hurewicz.exists_basepoint_adjustment
+#print axioms Hurewicz.hurewiczLinearEquiv
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+#print axioms Hurewicz.pi_subsingleton_of_homology_vanishing
+#print axioms Hurewicz.right_inverse_is_left_inverse
+#print axioms Hurewicz.sphere_homotopicRel_of_topClass_eq
+#print axioms Hurewicz.sphere_homotopic_id_of_topClass
+#print axioms Hurewicz.sphere_pi_subsingleton_of_lt
+#print axioms Hurewicz.subsingleton_singularHomology_of_lt
+#print axioms LinearSphereAction.homology_eq_sign_smul
+#print axioms ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
+#print axioms ManifoldMorse.exists_morse_function
+#print axioms ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
+#print axioms MappingTorusHomology.monodromyHomologyMap
+#print axioms MorseCancellation.cancel_of_transverse_level_isotopy
+#print axioms MorseCancellation.exists_excellent_indexed_morse_birth
+#print axioms MorseCells.built_of_compact_smooth_manifold
+#print axioms MorseRearrangement.exists_morse_rearrangement_of_no_connection
+#print axioms RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
+#print axioms SingularMayerVietoris.exact_at_ambient
+#print axioms SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
+#print axioms SphereHomology.unitSphere_homology_subsingleton
+#print axioms SplitGroupExtension.mulEquiv
+#print axioms exists_tubularNeighborhood_in_open_of_embedded_closedBall
+#print axioms simplyConnectedSpace_of_open_cover
 
 /-! ## `Lib.Topology.Homotopy.ConvexContraction` -/
 

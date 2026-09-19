@@ -31,7 +31,7 @@ set_option autoImplicit false
 open Set Function TopologicalSpace Topology
 open scoped ComplexConjugate
 
-namespace Mathoverflow1973.PuncturedPlaneCyclic
+namespace PuncturedPlaneCyclic
 
 /-- The complex plane with the origin removed. -/
 def planeOpen : Opens ℂ := ⟨{z | z ≠ 0}, isOpen_ne⟩
@@ -218,7 +218,7 @@ theorem opposite_mem_upper : opposite ∈ upperSlit := by
 theorem opposite_mem_lower : opposite ∈ lowerSlit := by
   norm_num [opposite, lowerSlit, lowerSet]
 
-def slitCover : FundamentalGroup.VanKampen.TwoSimplyConnectedCover Plane where
+def slitCover : FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover Plane where
   U := upperSlit
   V := lowerSlit
   cover := upperSlit_union_lowerSlit
@@ -483,4 +483,4 @@ theorem puncturedBall_exists_cyclic_range
   rw [he, ← MonoidHom.range_eq_map] at h
   simpa using h
 
-end Mathoverflow1973.PuncturedPlaneCyclic
+end PuncturedPlaneCyclic

@@ -3,18 +3,20 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Mathlib
-import Lib.Algebra.Homology.MayerVietorisShortExact
-import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
-import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.Topology.Homotopy.Suspension
-import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.AlgebraicTopology.SingularHomology.Suspension
-import Lib.AlgebraicTopology.SingularHomology.Sum
-import Lib.AlgebraicTopology.SingularHomology.CircleProduct
-import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+module
+
+public import Mathlib
+public import Lib.Algebra.Homology.MayerVietorisShortExact
+public import Lib.AlgebraicTopology.SingularHomology.Chains
+public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+public import Lib.Topology.Homotopy.Suspension
+public import Lib.AlgebraicTopology.SingularHomology.Sphere
+public import Lib.AlgebraicTopology.SingularHomology.Suspension
+public import Lib.AlgebraicTopology.SingularHomology.Sum
+public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 /-!
 # The mapping torus of a homeomorphism
 
@@ -25,6 +27,8 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 -/
 
 
+
+@[expose] public section
 
 set_option maxSynthPendingDepth 3
 

@@ -23,13 +23,13 @@ set_option autoImplicit false
 
 open Set TopologicalSpace
 
-namespace FundamentalGroup.VanKampen.TwoSimplyConnectedCover
+namespace FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover
 
 /-- If the overlap of a two-simply-connected-open cover has only the component of the base point
 and the component of `x`, then the switch class at `x` generates the whole fundamental group. -/
 theorem zpowers_switchClass_eq_top
     {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroup.VanKampen.TwoSimplyConnectedCover X)
+    (D : FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover X)
     (x : X) (hxU : x ∈ D.U) (hxV : x ∈ D.V)
     (hcomponents :
       ∀ y (_hyU : y ∈ D.U) (_hyV : y ∈ D.V),
@@ -49,4 +49,4 @@ theorem zpowers_switchClass_eq_top
     simpa only [zpow_one] using
       (Subgroup.zpow_mem_zpowers (D.switchClass x hxU hxV) (1 : ℤ))
 
-end FundamentalGroup.VanKampen.TwoSimplyConnectedCover
+end FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover

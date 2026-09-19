@@ -19,11 +19,11 @@ no competing rebasing API.
 
 open Function Topology
 
-namespace FundamentalGroup.VanKampen.TwoOpenCover
+namespace FundamentalGroup.VanKampen.Cocone.TwoOpenCover
 
 /-- Lift compatible chart characters to the fundamental group of a two-open union. -/
 def characterLift {X G : Type*} [TopologicalSpace X] [Group G]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+    (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G)
     (hcompat : D.Compatible fU fV) :
     FundamentalGroup X D.base →* G :=
@@ -31,7 +31,7 @@ def characterLift {X G : Type*} [TopologicalSpace X] [Group G]
 
 /-- The lifted character restricts to the left-chart character. -/
 theorem characterLift_comp_inclusionHomU {X G : Type*} [TopologicalSpace X] [Group G]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+    (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G)
     (hcompat : D.Compatible fU fV) :
     (D.characterLift fU fV hcompat).comp D.inclusionHomU = fU :=
@@ -39,7 +39,7 @@ theorem characterLift_comp_inclusionHomU {X G : Type*} [TopologicalSpace X] [Gro
 
 /-- The lifted character restricts to the right-chart character. -/
 theorem characterLift_comp_inclusionHomV {X G : Type*} [TopologicalSpace X] [Group G]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+    (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G)
     (hcompat : D.Compatible fU fV) :
     (D.characterLift fU fV hcompat).comp D.inclusionHomV = fV :=
@@ -47,7 +47,7 @@ theorem characterLift_comp_inclusionHomV {X G : Type*} [TopologicalSpace X] [Gro
 
 /-- A lift is surjective when its left-chart character is surjective. -/
 theorem characterLift_surjective_of_left {X G : Type*} [TopologicalSpace X] [Group G]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X)
+    (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G)
     (hcompat : D.Compatible fU fV) (hsurj : Function.Surjective fU) :
     Function.Surjective (D.characterLift fU fV hcompat) := by
@@ -56,4 +56,4 @@ theorem characterLift_surjective_of_left {X G : Type*} [TopologicalSpace X] [Gro
   exact ⟨D.inclusionHomU u,
     (DFunLike.congr_fun (D.characterLift_comp_inclusionHomU fU fV hcompat) u).trans hu⟩
 
-end FundamentalGroup.VanKampen.TwoOpenCover
+end FundamentalGroup.VanKampen.Cocone.TwoOpenCover
