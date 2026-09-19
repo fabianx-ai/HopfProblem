@@ -7552,3 +7552,34 @@ is an evidence command rather than library content.
 #print axioms Convex.basedLoopContraction
 #check Convex.basedLoopContraction_apply
 #print axioms Convex.basedLoopContraction_apply
+
+/-! ## `Lib.Algebra.Group.LatticeImageCollapse` -/
+
+#check LatticeImageCollapse.A1
+#print axioms LatticeImageCollapse.A1
+#check LatticeImageCollapse.A2
+#print axioms LatticeImageCollapse.A2
+#check LatticeImageCollapse.epsilon
+#print axioms LatticeImageCollapse.epsilon
+#check LatticeImageCollapse.epsilonPrime
+#print axioms LatticeImageCollapse.epsilonPrime
+#check LatticeImageCollapse.gamma
+#print axioms LatticeImageCollapse.gamma
+#check LatticeImageCollapse.image_eq_one_of_gamma_eq_zero
+#print axioms LatticeImageCollapse.image_eq_one_of_gamma_eq_zero
+#check LatticeImageCollapse.image_eq_zpow_gamma
+#print axioms LatticeImageCollapse.image_eq_zpow_gamma
+#check LatticeImageCollapse.gamma_epsilonPrime
+#print axioms LatticeImageCollapse.gamma_epsilonPrime
+#check LatticeImageCollapse.image_epsilonPrime_eq
+#print axioms LatticeImageCollapse.image_epsilonPrime_eq
+#check LatticeImageCollapse.image_firstBasis_eq
+#print axioms LatticeImageCollapse.image_firstBasis_eq
+#check LatticeImageCollapse.A1_fixes_epsilon
+#print axioms LatticeImageCollapse.A1_fixes_epsilon
+#check LatticeImageCollapse.image_epsilon_commute_first
+#print axioms LatticeImageCollapse.image_epsilon_commute_first
+#check LatticeImageCollapse.A2_fixes_epsilonPrime
+#print axioms LatticeImageCollapse.A2_fixes_epsilonPrime
+#check LatticeImageCollapse.image_epsilon_commute_second
+#print axioms LatticeImageCollapse.image_epsilon_commute_second

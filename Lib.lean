@@ -1,4 +1,5 @@
 import Lib.Algebra.Group.Prod
+import Lib.Algebra.Group.LatticeImageCollapse
 import Lib.Data.Int.SignedResidual
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
