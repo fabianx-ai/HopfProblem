@@ -300,6 +300,103 @@ theorem CoverLocalContributions.leftHomologyMap_in_coordinates
         (SingularMayerVietoris.singularHomologyMap (β i) n (b i))) = _
     rw [map_neg, LinearEquiv.symm_apply_apply]
 
+/-- Surjectivity of the actual regular attachment sum and vanishing of filling
+homology in degree `n+1` make the signed Mayer–Vietoris left map surjective.
+The preimage uses the inverse of the fixed overlap coordinates; negative filling
+components vanish in their own groups. Textbook: `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`,
+HI1–HI4. No regular or lower-filling vanishing is required. -/
+theorem CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
+    {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
+    (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
+    (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    {R : Type} [TopologicalSpace R] {P A : ι → Type}
+    [∀ i, TopologicalSpace (P i)] [∀ i, TopologicalSpace (A i)]
+    (r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ ↥(U ∩ V i))
+    (α : ∀ i, C(A i, R)) (β : ∀ i, C(A i, P i))
+    (hr : ∀ i, (r : C(R, U)).comp (α i) =
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (hp : ∀ i, (p i : C(P i, V i)).comp (β i) =
+      (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V i ⊆ V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (n : ℕ)
+    (hregular : Function.Surjective
+      (fun z : ∀ i, SingularMayerVietoris.SingularHomology (A i) (n + 1) =>
+        ∑ i, SingularMayerVietoris.singularHomologyMap (α i) (n + 1) (z i)))
+    (hPnext : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) (n + 1))) :
+    Function.Surjective
+      (SingularMayerVietoris.leftHomologyMap U (⋃ i, V i) (n + 1)) := by
+  classical
+  let E : SingularMayerVietoris.SingularHomology (↥(U ∩ ⋃ i, V i)) (n + 1) ≃ₗ[ℤ]
+      (∀ i, SingularMayerVietoris.SingularHomology (A i) (n + 1)) :=
+    (CoverOverlapHomology.homologyEquiv U V hU hV hd (n + 1)).trans
+      (AddEquiv.piCongrRight fun i =>
+        (SingularHomology.homeomorphHomologyEquiv (a i) (n + 1)).symm.toAddEquiv).toIntLinearEquiv
+  let Q : (SingularMayerVietoris.SingularHomology U (n + 1) ×
+      SingularMayerVietoris.SingularHomology (↥(⋃ i, V i)) (n + 1)) ≃ₗ[ℤ]
+      (SingularMayerVietoris.SingularHomology R (n + 1) ×
+        (∀ i, SingularMayerVietoris.SingularHomology (P i) (n + 1))) :=
+    ((SingularHomology.homeomorphHomologyEquiv r (n + 1)).symm.toAddEquiv.prodCongr
+      ((DisjointOpenHomology.homologyEquiv V hV hd (n + 1)).toAddEquiv.trans
+        (AddEquiv.piCongrRight fun i =>
+          (SingularHomology.homeomorphHomologyEquiv (p i) (n + 1)).symm.toAddEquiv))).toIntLinearEquiv
+
+  intro y
+  obtain ⟨z, hz⟩ := hregular (Q y).1
+  refine ⟨E.symm z, Q.injective ?_⟩
+  have hs := CoverLocalContributions.leftHomologyMap_in_coordinates
+    U V hU hV hd hc r p a α β hr hp (n + 1) (E.symm z)
+  change Q (SingularMayerVietoris.leftHomologyMap U (⋃ i, V i) (n + 1) (E.symm z)) =
+    (∑ i, SingularMayerVietoris.singularHomologyMap (α i) (n + 1) (E (E.symm z) i),
+      fun i => -SingularMayerVietoris.singularHomologyMap (β i) (n + 1)
+        (E (E.symm z) i)) at hs
+  rw [E.apply_symm_apply] at hs
+  rw [hs]
+  apply Prod.ext
+  · exact hz
+  · funext i
+    exact (hPnext i).elim _ _
+
+/-- Under regular-sum surjectivity and filling degree-`n+1` vanishing, the
+actual cover connecting map from degree `n+1` to degree `n` is injective.
+Exactness makes the intervening right map zero. Textbook:
+`CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, HI5–HI6. -/
+theorem CoverLocalContributions.connectingHomomorphism_injective_of_regular_surjective
+    {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
+    (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
+    (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    {R : Type} [TopologicalSpace R] {P A : ι → Type}
+    [∀ i, TopologicalSpace (P i)] [∀ i, TopologicalSpace (A i)]
+    (r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ ↥(U ∩ V i))
+    (α : ∀ i, C(A i, R)) (β : ∀ i, C(A i, P i))
+    (hr : ∀ i, (r : C(R, U)).comp (α i) =
+      (ContinuousMap.inclusion (Set.inter_subset_left : U ∩ V i ⊆ U)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (hp : ∀ i, (p i : C(P i, V i)).comp (β i) =
+      (ContinuousMap.inclusion (Set.inter_subset_right : U ∩ V i ⊆ V i)).comp
+        (a i : C(A i, ↥(U ∩ V i))))
+    (n : ℕ)
+    (hregular : Function.Surjective
+      (fun z : ∀ i, SingularMayerVietoris.SingularHomology (A i) (n + 1) =>
+        ∑ i, SingularMayerVietoris.singularHomologyMap (α i) (n + 1) (z i)))
+    (hPnext : ∀ i, Subsingleton
+      (SingularMayerVietoris.SingularHomology (P i) (n + 1))) :
+    Function.Injective
+      (SingularMayerVietoris.connectingHomomorphism U (⋃ i, V i)
+        hU (isOpen_iUnion hV) hc n) := by
+  have hleft := CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
+    U V hU hV hd hc r p a α β hr hp n hregular hPnext
+  have hpair := LinearMap.exact_iff.mpr
+    (SingularMayerVietoris.exact_at_pair U (⋃ i, V i)
+      hU (isOpen_iUnion hV) hc (n + 1)).symm
+  have hright := (LinearMap.surjective_iff_eq_zero_of_exact hpair).mp hleft
+  have hambient := LinearMap.exact_iff.mpr
+    (SingularMayerVietoris.exact_at_ambient U (⋃ i, V i)
+      hU (isOpen_iUnion hV) hc n).symm
+  exact (LinearMap.injective_iff_eq_zero_of_exact hambient).mpr hright
+
+
 /-- If the regular piece has zero degree-`n+1` homology and every filling piece has
 zero degree-`n+1` and degree-`n` homology, the actual Mayer–Vietoris connecting map,
 in the specified local overlap coordinates, identifies ambient degree-`n+1` homology
