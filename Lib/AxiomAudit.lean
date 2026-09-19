@@ -13,6 +13,11 @@ Compile this file directly. It deliberately is not imported by `Lib.lean`, becau
 is an evidence command rather than library content.
 -/
 
+/-! ## `Lib.Data.Int.SignedResidual` -/
+
+#check Int.signed_residual_coordinate_zero
+#print axioms Int.signed_residual_coordinate_zero
+
 /-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
 
 #check CoverLocalContributions.leftHomologyMap_in_coordinates
