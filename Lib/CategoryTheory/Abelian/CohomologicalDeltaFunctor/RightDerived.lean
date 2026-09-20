@@ -33,7 +33,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 
 /-- Assemble the existing additive derived degrees, positive boundary,
 naturality and all exactness/zero laws into the cohomological delta functor
-`n ↦ Rⁿ F` (Weibel 2.4.6(b)). -/
+`n ↦ Rⁿ F` (cf. Weibel §2.4). -/
 @[expose] def ofRightDerived (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     CohomologicalDeltaFunctor C AddCommGrpCat.{w} where
   T n := AdditiveFunctor.of (F.rightDerived n)
@@ -56,7 +56,7 @@ theorem ofRightDerived_δ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     (ofRightDerived F).δ hS n = F.rightDerivedConnecting hS n := rfl
 
 /-- `Rⁿ F` is effaceable in every positive degree: every object embeds into an injective
-object `I`, and `Rⁿ F(I) = 0` for `n > 0` (Weibel 2.4.6(c)). -/
+object `I`, and `Rⁿ F(I) = 0` for `n > 0` (cf. Weibel §2.4). -/
 theorem ofRightDerived_effaceable (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     (ofRightDerived F).Effaceable := by
   intro n hn
@@ -67,7 +67,7 @@ theorem ofRightDerived_effaceable (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
 
 /-- `n ↦ Rⁿ F` is a universal cohomological delta functor: every natural transformation
 out of its degree-zero part extends uniquely to a morphism of delta functors
-(Weibel Theorem 2.4.6(c); Hartshorne III.1.1A). -/
+(Weibel Theorem 2.4.6; Hartshorne III.1.1A). -/
 theorem ofRightDerived_isUniversal (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     (ofRightDerived F).IsUniversal :=
   (ofRightDerived_effaceable F).isUniversal
@@ -81,7 +81,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 
 /-- A natural isomorphism `α : F ≅ G` induces a morphism of delta functors
 `ofRightDerived F ⟶ ofRightDerived G` whose degree-`n` component is `Rⁿ α`
-(Weibel 2.4.6, Exercise 2.4.3). -/
+(cf. Weibel §2.4). -/
 noncomputable def ofRightDerivedHom
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) : Hom (ofRightDerived F) (ofRightDerived G) where

@@ -16,7 +16,8 @@ Each right derived functor `Rⁿ F` of an additive functor into abelian groups i
 additive, and a natural isomorphism `F ≅ G` induces a natural isomorphism `Rⁿ F ≅ Rⁿ G`
 compatible with the degree-zero identification `R⁰ F ≅ F` for left exact `F`.
 
-Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6(a) and Exercise 2.4.3.
+Weibel, *An Introduction to Homological Algebra*, §2.4 (right derived functors of an additive
+functor; the section numbers of the individual statements are not reproduced here).
 -/
 
 @[expose] public section
@@ -31,7 +32,7 @@ set_option backward.defeqAttrib.useBackward true
 namespace CategoryTheory.Functor
 
 /-- Every right derived functor `Rⁿ F` of an additive functor `F : A ⥤ AddCommGrpCat` is
-again additive: `Rⁿ F (f + g) = Rⁿ F f + Rⁿ F g` (Weibel 2.4.6(a)).
+again additive: `Rⁿ F (f + g) = Rⁿ F f + Rⁿ F g` (cf. Weibel §2.4).
 -/
 instance rightDerived_additive {A : Type u} [Category.{v} A] [Abelian A]
     [HasInjectiveResolutions A] (F : A ⥤ AddCommGrpCat.{w}) [F.Additive]
@@ -68,7 +69,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
     {F G : C ⥤ AddCommGrpCat.{w}} [F.Additive] [G.Additive]
 
 /-- A natural isomorphism `α : F ≅ G` of additive functors induces a natural isomorphism
-`Rⁿ α : Rⁿ F ≅ Rⁿ G` in every right-derived degree (Weibel, Exercise 2.4.3). -/
+`Rⁿ α : Rⁿ F ≅ Rⁿ G` in every right-derived degree (cf. Weibel §2.4). -/
 noncomputable def rightDerived (α : F ≅ G) (n : ℕ) :
     F.rightDerived n ≅ G.rightDerived n where
   hom := NatTrans.rightDerived α.hom n
@@ -94,7 +95,7 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- For left exact `F` and `G`, the isomorphism `R⁰ α` commutes with the canonical
 identifications `R⁰ F ≅ F` and `R⁰ G ≅ G`: `R⁰ α ≫ (R⁰G ≅ G) = (R⁰F ≅ F) ≫ α`
-(Weibel 2.4.6(a), Exercise 2.4.3). -/
+(cf. Weibel §2.4). -/
 theorem rightDerived_zero_hom [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) :
     (rightDerived α 0).hom ≫ G.rightDerivedZeroIsoSelf.hom =

@@ -22,7 +22,7 @@ depend on the chosen compatible triple of injective resolutions, and proves its
 naturality in the short exact sequence and its transport along a natural isomorphism
 of functors.
 
-Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6(b);
+Weibel, *An Introduction to Homological Algebra*, §2.4;
 Hartshorne, *Algebraic Geometry* III.1.1A.
 -/
 
@@ -155,7 +155,7 @@ private theorem exists_boundary
 
 /-- The connecting morphism `δ : Rⁿ F(X₃) ⟶ Rⁿ⁺¹ F(X₁)` of the long exact sequence of
 right derived functors attached to a short exact sequence `0 → X₁ → X₂ → X₃ → 0`
-(Weibel 2.4.6(b)). Its value on every compatible triple of injective resolutions is
+(cf. Weibel §2.4). Its value on every compatible triple of injective resolutions is
 given by `rightDerivedConnecting_eq`. -/
 def rightDerivedConnecting (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :

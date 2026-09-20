@@ -24,7 +24,7 @@ is natural in the coefficient and independent of the chosen resolution.
 
 `Ext^n(P, -)` is the `n`-th right derived functor of `Hom(P, -)`, computed by an injective
 resolution of the second variable: Weibel, *An Introduction to Homological Algebra*,
-Definition 2.5.1 and §2.7; Hartshorne, *Algebraic Geometry* III.1.1A and Exercise III.6.4.
+§2.5 and §2.7; Hartshorne, *Algebraic Geometry* III.1.1A and Exercise III.6.4.
 -/
 
 section Representations
@@ -197,7 +197,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 
 /-- For fixed `P`, `Ext^q(P, -)` is the `q`-th right derived functor of `Hom(P, -)`,
-naturally in the coefficient object (Weibel 2.5.1). -/
+naturally in the coefficient object (cf. Weibel §2.5). -/
 noncomputable def extFunctorObjIsoRightDerived (P : C) (q : ℕ) :
   extFunctorObj P q ≅ (preadditiveCoyoneda.obj (op P)).rightDerived q :=
   NatIso.ofComponents (fun A =>
