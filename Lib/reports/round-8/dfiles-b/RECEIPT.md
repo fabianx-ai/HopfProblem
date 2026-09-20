@@ -33,9 +33,9 @@ Auditors: "Mathlib already has it: `MonoidHom.liftOfSurjective`". The only consu
 
 | deleted | surviving twin |
 | --- | --- |
-| `descendHomOfSurjective` | `MonoidHom.liftOfSurjective` (Mathlib/Algebra/Group/Subgroup/Ker.lean) |
+| `descendHomOfSurjective` | `MonoidHom.liftOfSurjective` (**`Mathlib/Algebra/Group/Subgroup/Basic.lean:930` — corrected; this receipt and commit `fff26c16` both said `Subgroup/Ker.lean`, where the name does not occur; the packet had it right**) |
 | `descendHomOfSurjective_comp` | `MonoidHom.liftOfRightInverse_comp` (`liftOfSurjective` is `liftOfRightInverse` at `Function.surjInv`) |
-| `fibre_constant_of_ker_le` | Mathlib's `{ g // f.ker ≤ g.ker }` subtype packaging of the same hypothesis; the lemma existed only to convert that hypothesis into the fibre-constancy form `descendHomOfSurjective` demanded, and has no other use |
+| `fibre_constant_of_ker_le` | **deleted, no named twin (corrected)**.  The `{ g // f.ker ≤ g.ker }` subtype packaging named here is a *type*, not a declaration, and it does not state the implication `∀ a b, f a = f b → g a = g b`; Mathlib has no lemma of that shape (`ker_le_ker`, `ker_le`, `eq_of_ker_le`, `le_ker_iff` were all searched), and `MonoidHom.liftOfRightInverse_comp_apply` is not one either — it needs a right inverse of `f`, which the deleted lemma does not assume.  The reason for deleting stands: the lemma existed only to convert that hypothesis into the fibre-constancy form `descendHomOfSurjective` demanded, it has no consumer outside `Lib/AxiomAudit.lean`, and its content is a four-line consequence of `MonoidHom.mem_ker` + `eq_of_mul_inv_eq_one` (re-proved by the reviewer).  But the protocol asks for a named twin or an explicit "deleted, no twin, because …" entry, and this is the latter.  **A fix agent is re-adding the declaration** (`Lib/reviews/REVIEW-7-8.md` §3, dfiles-b: "re-add it, four lines"), so this deletion is expected to be undone |
 
 `MonoidHom.liftOfSurjective_comp` does **not** exist in Mathlib v4.33.0; the `_comp` twin is
 `MonoidHom.liftOfRightInverse_comp`.
@@ -130,7 +130,7 @@ no type changed.
 | --- | --- |
 | `descendHomOfSurjective` | `MonoidHom.liftOfSurjective` |
 | `descendHomOfSurjective_comp` | `MonoidHom.liftOfRightInverse_comp` |
-| `fibre_constant_of_ker_le` | Mathlib's `{ g // f.ker ≤ g.ker }` subtype hypothesis |
+| `fibre_constant_of_ker_le` | **none — deleted with no named twin (corrected)**; see the item-1 table above for the reason and the note that a fix agent is re-adding it |
 
 The remaining five lost / three added entries are auxiliary (`_proof_*`, `.eq_1`) equation and
 proof constants of the renamed and moved declarations, which the rename map does not cover;
@@ -225,3 +225,66 @@ ba11838f Lib/AlgebraicTopology/Hurewicz/{DegreeSix,SphereGenerator}.lean: move t
 `DegreeSix` and `SphereGenerator` share one commit: `SphereGenerator` imports `DegreeSix` and is
 its only Lib consumer, so splitting them would leave a Lib file importing `Hopf.*` at the
 intermediate commit.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-dfiles-b.md` (ACCEPT WITH FINDINGS; every move,
+rename and extraction is statement-preserving and fully reconciled against envdiff — all 12 commits
+and the whole branch diff were read and the ~60 touched declarations checked exhaustively, not
+sampled).  These corrections are to this receipt's text only; no Lean file was changed by them.
+
+1. **`fibre_constant_of_ker_le` was deleted without a named twin (finding 1)**, corrected in both
+   tables above.  The "twin" given — Mathlib's `{ g // f.ker ≤ g.ker }` subtype packaging — is a
+   type, not a declaration, and does not state the implication.  Mathlib has no lemma of that shape.
+   Nothing mathematical is lost (four lines from `MonoidHom.mem_ker` + `eq_of_mul_inv_eq_one`; no
+   consumer outside `Lib/AxiomAudit.lean`), but the entry must read "deleted, no twin, because …",
+   and it now does.  **A fix agent is re-adding the declaration** under the packet-level fix list
+   (`Lib/reviews/REVIEW-7-8.md` §3, dfiles-b), so the deletion is expected to be undone; the same
+   correction is made in `Lib/reports/round-8/MERGE.md`, which also named no twin.
+   Rule adopted: a lost-source-name table must name a **declaration** per row, or carry an explicit
+   "no twin, reason" — free text describing a type passed the envdiff reconciliation while naming
+   nothing checkable.
+
+2. **Wrong Mathlib file for `MonoidHom.liftOfSurjective` (finding 2)**, corrected in the item-1
+   table.  It is `Mathlib/Algebra/Group/Subgroup/Basic.lean:930`, not
+   `Mathlib/Algebra/Group/Subgroup/Ker.lean` (where `grep -n liftOfSurjective` is empty); the packet
+   had it right at "Basic.lean l.932" and both this receipt and commit `fff26c16` copied a wrong
+   path.  The twins themselves are correct — `liftOfSurjective` is an `abbrev` for
+   `liftOfRightInverse` at `Function.surjInv`, and `liftOfRightInverse_comp` is the `_comp` half —
+   and the claim that `MonoidHom.liftOfSurjective_comp` does not exist in v4.33.0 is true (only
+   `RingHom.liftOfSurjective_comp` does).  Mathlib twin citations should carry a `file:line`
+   produced by `grep`, not from memory.
+
+3. **Packet suggestions silently not taken (finding 3).**  The packet asked, for
+   `Hurewicz/SphereGenerator.lean`, to state `exists_sphereMap_of_homologyEquiv` for general `n ≥ 2`
+   next to `HopfDegree.sphere_homotopicRel_of_topClass_eq` before moving, and for
+   `FiniteStarCharacter` and `SignedResidual` to inline at the call site.  None was done, and this
+   receipt neither does them nor lists them under "Left for a later round".  The moves are
+   statement-preserving, so this is a reporting gap, not unsoundness.  Recorded here as **left,
+   with no attempt**.  Note also the honest description of the three consumer-less modules
+   (`ResidualRelations`, `FiniteStarCharacter`, `LatticeImageCollapse`, verified to have no consumer
+   at base beyond `Lib.lean`/`AxiomAudit.lean`): they are **dead code parked under `Hopf/Proof`**,
+   kept alive by three imports in `Hopf/Proof/Final.lean`.
+
+4. **The stock/proof import direction changed and the receipt does not say so (finding 4).**
+   `Hopf/Recognition.lean` — a *stock* file, not under `Hopf/Proof` — gained
+   `import Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix`; at base it had zero `Hopf.Proof`
+   imports.  No rule in the brief forbids it and the census ratchet counts declarations only, but it
+   should have been recorded.  In the same class: the unused
+   `import Lib.GroupTheory.PresentedGroup.CentralTwist` lines were dropped from the stock
+   `Hopf/LCP/{BoundaryTopology,IntegralHomology}.lean` (correct — `TwistGroup` is used only in
+   `Hopf/Proof/LCP/BoundaryTopology.lean`) and are not listed either.
+
+5. **Unlisted cosmetic edits (finding 5).**  (a) A new section header
+   `/-! ## Lib.Algebra.Group.DeterminingFamily -/` was inserted in `Lib/AxiomAudit.lean` (the
+   `DeterminingFamily` probes had been sitting under the removed `LatticeImageCollapse` header).
+   (b) The seven moved files drop the `Copyright (c) 2026 Fabian Franz` / `Authors` header lines for
+   the `Hopf/Proof` SPDX style but omit the `/- leanprover/lean4:v4.33.0  mathlib v4.33.0 -/` first
+   line that every other `Hopf/Proof` file carries.  (c) `CentralTwist.lean` also lost its unused
+   `open Set Function Filter Manifold Topology` line.  All harmless; all unrecorded until now.
+
+6. **One citation is loose (finding 6), a code fix.**  `LowerDifferentials.lean` cites Weibel §5.2;
+   that section defines bounded spectral sequences, convergence and edge maps and treats the
+   two-column collapse, and the reviewer does not recall a three-column statement there.  The
+   reference is to a section, not a numbered result, so it is loose rather than wrong.  The Hatcher
+   §2.2 citation on `SpherePointTransport.lean` is correct.

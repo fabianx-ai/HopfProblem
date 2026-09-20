@@ -167,3 +167,31 @@ f2f0ea5a Lib/Geometry/Manifold/Transversality/Basic.lean: rewrite stale module d
 ```
 
 Range `9552305f..f2f0ea5a` (plus this receipt).
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-05.md` (ACCEPT WITH FINDINGS).  The reviewer
+found **nothing `[unsound]` and nothing `[wrong receipt]`**: every numeric and "did X" claim in this
+receipt checked out, and the strongest of them was reproduced independently — the comment-stripped
+sources are **byte-identical** before and after for all four files, so the environment provably did
+not change.  One correction to the record:
+
+1. **No per-packet envdiff artefact is in the repository (finding 8).**  This receipt quotes the
+   `envdiff.py` summary ("0 lost, 0 added, 0 changed type") but no `envdiff.json`/`.txt` sits beside
+   it; none of the ten packet receipts has one, and the only round-7 artefact in the tree is the
+   merged `Lib/reports/round-7/envdiff-merged-d950428a.{json,txt}`.  The honesty caveat recorded
+   above — that the base dump may have read post-edit `.olean`s — therefore cannot be checked against
+   the raw dump.  It is moot here: the reviewer confirmed the claim by other means (the merged
+   envdiff has no `lost`/`added`/`changed_type_all`/`moves` entry in any of the four modules or their
+   namespaces, and the stripped-source identity makes any environment change impossible).  Committing
+   the `envdiff.json`/`.txt` beside each receipt is the round-8 rule and now stands for all rounds
+   (`Lib/reviews/REVIEW-7-8.md` §4); for a docstring-only packet the cheaper and stronger check is
+   the one used here — strip comments, diff, and record the sha256 in the receipt.
+
+2. **Docstring findings are code fixes, not receipt fixes.**  `WhitneyPairModel.cornerScale`
+   (docstring says "nearer corner"; the quantity is the distance to the far one),
+   `CleanBigonBoundary` / the `CleanStrips` module docstring (overstate the cleanliness clause),
+   `CleanStripPatch` (drops the `StripCoordinates.reverse`), `SupportedGerms.realizes_det_one` /
+   `realizes_local_germ` (omit `dim E ≥ 2`), `DiskShrinking.exists_chart_disk_shrinking`, the
+   `AnnularExtension` module-docstring bullets, and the Milnor *TDV* §7 citation (the argument
+   formalised is §§2–3) are listed in `Lib/reviews/REVIEW-7-8.md` §3 for the packet-05 fix agent.

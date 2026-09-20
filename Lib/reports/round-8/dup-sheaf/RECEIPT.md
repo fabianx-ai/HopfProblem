@@ -63,8 +63,8 @@ Survivor **`TopCat.Sheaf.sheafification`** in the new module
 | deleted | surviving twin |
 |---|---|
 | `TopCat.SheafificationPushforward.sheafification` | `TopCat.Sheaf.sheafification` |
-| `CategoryTheory.Sheaf.Leray.sheafification` | `TopCat.Sheaf.sheafification` |
-| `CategoryTheory.Sheaf.Leray.sheafification_additive` | `TopCat.Sheaf.sheafification_additive` |
+| `CategoryTheory.Sheaf.Leray.sheafification` (base: `Sites/Leray/HigherDirectImageSheafification.lean:116` — **location added on correction**) | `TopCat.Sheaf.sheafification` |
+| `CategoryTheory.Sheaf.Leray.sheafification_additive` (base: same file, l.121 — **location added on correction**) | `TopCat.Sheaf.sheafification_additive` |
 
 `TopCat.SheafificationLocal.sheaf` (the *object*-level abbreviation `(presheafToSheaf …).obj P`) now
 consumes the survivor rather than repeating its body.
@@ -89,7 +89,7 @@ now call the dependent version.
 | `TopCat.FunctionSheaf.presheaf` | `TopCat.DependentFunctionSheaf.presheaf` |
 | `TopCat.FunctionSheaf.presheaf_obj` | `TopCat.DependentFunctionSheaf.presheaf_obj` |
 | `TopCat.FunctionSheaf.presheaf_map_apply` | `TopCat.DependentFunctionSheaf.presheaf_map_apply` |
-| `TopCat.FunctionSheaf.forgetIso` | `TopCat.DependentFunctionSheaf.forgetIso` |
+| `TopCat.FunctionSheaf.forgetIso` | `TopCat.DependentFunctionSheaf.forgetIso` — **(corrected)** the only twin in this table whose target is not syntactically the same: deleted `presheaf X A ⋙ forget AddCommGrpCat ≅ TopCat.presheafToType X A`, twin at `fun _ => A` `… ≅ TopCat.presheafToTypes X (fun x => (fun _ => A) x)`.  `TopCat.presheafToType X A = TopCat.presheafToTypes X (fun _ => A)` is `rfl`, so it is the same proposition **up to unfolding** — "definitionally equal", not "the same statement".  No consumer used `forgetIso` outside `isSheaf` |
 | `TopCat.FunctionSheaf.isSheaf` | `TopCat.DependentFunctionSheaf.isSheaf` |
 | `TopCat.FunctionSheaf.sheaf` | `TopCat.DependentFunctionSheaf.sheaf` |
 | `TopCat.FunctionSheaf.extendByZero` | `TopCat.DependentFunctionSheaf.extendByZero` |
@@ -248,9 +248,23 @@ was an abbreviation (or an `n = 0` instance) of the survivor.  By cause:
 | statement now names `TopCat.DependentFunctionSheaf.*` instead of `TopCat.FunctionSheaf.*` | 5 |
 | `_proof_1` renamed with its parent (`integralSheafEquivImageIso`) | 1 |
 
-Two further names, `TopCat.SheafH1.globalSectionsFunctor` and `…_additive`, changed type as the
-universe generalisation `{0} ⇝ {u}` made when the survivor moved to the new module; `envdiff`
-classifies them as `PROOF-NAMING` (their use-sets are identical).
+**(corrected)** `envdiff.json`'s `changed_type_proof_naming` list has **five** names, not the two
+this receipt named.  Verbatim:
+
+```
+TopCat.SheafH1.globalSectionsFunctor
+TopCat.SheafH1.globalSectionsFunctor_additive
+TopCat.SheafH1.h0GlobalIso
+TopCat.SingularCochainSheaf.cochainPullbackComplex
+TopCat.SingularCochainSheaf.cochainPullbackComplex_f
+```
+
+The first two changed type through the universe generalisation `{0} ⇝ {u}` made when the survivor
+moved to the new module.  The other three are downstream of the same move and are equally harmless:
+`h0GlobalIso` names `globalSectionsFunctor`, and `cochainPullbackComplex(_f)` names `complexSheaf`,
+which unfolds through the renamed `sheafification`.  `envdiff` classifies all five as
+`PROOF-NAMING` (their use-sets are identical).  "Reconciled line by line" requires the list to be
+pasted, not summarised.
 
 The `FAIL` verdict is the 78 changed types plus the 28 explained deletions: `envdiff` judges any
 changed type unexplained unless it is passed with `--accept`.  Statement-spelling churn of this
@@ -272,3 +286,60 @@ python3 scripts/lib_stock_census.py --check       done 0   (stock declarations u
 
 `Lib.AxiomAudit` reports only `propext`, `Classical.choice`, `Quot.sound`.
 `Lib.lean` lists every `Lib` module, including the two new ones.
+
+**(added on correction)** Two non-library files were edited by this branch and the receipt as first
+written named neither: `Lib.lean` (the two new modules added, the deleted ones dropped) and
+**`Lib/AxiomAudit.lean` (+14 / −~30 `#check` / `#print axioms` lines, 119 diff lines)**.  The audit
+edit is correct — every removed line is a deleted name, or a renamed one re-added under its new
+name; `SmallKernelGlobal` / `smallKernelGlobal` / `initialComplex_exact` move to their new module
+sections and the two new modules get sections of their own — but a reader of this receipt saw only
+`lake build Lib.AxiomAudit done 0` and would not have known the audit file itself changed.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-dup-sheaf.md` (ACCEPT WITH FINDINGS; all 28 deletions
+were checked one by one against their twins — nine of them verified by `example` to be literally the
+`n = 0` / `n = 1` instance — the three unifications are `rfl`, the rename map is complete and
+correctly oriented, and **no `[unsound]` and no `[wrong receipt]` finding was made**.  The specific
+worry in the assignment, that a metrizability-free degree-one statement might have been replaced by
+a metrizability-needing positive-degree one, does not materialise: none of the nine `_succ`/general
+twins carries `[MetrizableSpace X]`, and the metrizability-needing declarations
+(`constantSheafGlobalIso`, `constantSheafCohomologyIsoSingular`, `resolution_isAcyclic`) are exactly
+the ones this receipt refused to use as twins.)  These corrections are to the receipt text only; no
+Lean file was changed by them.
+
+1. **The `PROOF-NAMING` list has five names, not two (finding 1), corrected in the Envdiff
+   section.**  `TopCat.SheafH1.globalSectionsFunctor`, `…_additive`, `TopCat.SheafH1.h0GlobalIso`,
+   `TopCat.SingularCochainSheaf.cochainPullbackComplex` and `…_f`.  The three that were missing are
+   downstream of the same move and harmless, but the list must be pasted verbatim rather than
+   summarised — exactly the discrepancy a verbatim paste prevents
+   (`Lib/reviews/REVIEW-7-8.md` §4).
+
+2. **`Lib/AxiomAudit.lean` was edited and the receipt never said so (finding 2), corrected in the
+   Build section.**  119 diff lines (+14 / −~30 probe lines).  The edit itself is correct.  Every
+   edited non-library file (`Lib.lean`, `Lib/AxiomAudit.lean`) should be listed, so that a reviewer
+   does not have to work out why `AxiomAudit.lean` is in the diff stat.
+
+3. **`FunctionSheaf.forgetIso`'s twin is definitionally equal, not syntactically identical
+   (finding 4), footnoted in the item-8 table.**  `TopCat.presheafToType X A =
+   TopCat.presheafToTypes X (fun _ => A)` is `rfl` (Mathlib's `g ∘ i.unop` vs
+   `fun x => g (i.unop x)`), so the proposition is the same up to unfolding; the table as first
+   written implied the statements were the same text.  No consumer used `forgetIso` outside
+   `isSheaf`.
+
+4. **Two twins were not located (finding 5), locations added to the item-9 table.**
+   `CategoryTheory.Sheaf.Leray.sheafification` and `…_additive` were in
+   `Lib/CategoryTheory/Sites/Leray/HigherDirectImageSheafification.lean:116,121` at the base.
+   (`Leray.integralSheaf`'s home, `Sites/Leray/ResolutionTransgression.lean`, this receipt did give.)
+   Deletion tables should carry the base `file:line` for the deleted declaration and the head
+   `file:line` for the twin.
+
+5. **One docstring finding is a code fix, not a receipt fix (finding 3).**
+   `GlobalUnitPredicates.lean`'s module docstring says the four conditions "are discharged in
+   `GlobalKernelSmall.lean` and `BarycentricSmallChains.lean`".  Three of them are
+   (`GlobalKernelLocallySmall` and `SmallKernelGlobal` at `GlobalKernelSmall.lean:137,142`,
+   `HasSmallChainEquivalences` at `BarycentricSmallChains.lean:34`), but **`GlobalUnitSurjective` is
+   discharged by `globalCochainUnit_surjective` in
+   `SingularCochainSheaf/GlobalSections.lean:82`**, which `GlobalKernelSmall.lean` does not contain.
+   This receipt advertises that docstring ("a docstring saying where each is discharged"), so the
+   sentence is on the fix list (`Lib/reviews/REVIEW-7-8.md` §3, dup-sheaf).

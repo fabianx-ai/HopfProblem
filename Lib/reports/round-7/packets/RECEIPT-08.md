@@ -10,8 +10,8 @@ All 32 files of `Lib/reports/round-7/packets/packet-08.md` were worked; none are
 | item | audited | done | left |
 |---|---|---|---|
 | manuscript citations | 10 files flagged "manuscript citation only" | 32 files now carry a textbook reference; 12 `CD-04`/`CD-04R`/`CD-05E`/`CD-05I`/`CD-05J`/`CD-06` coordinates, 2 "FREE owner" paragraphs, 1 "receipt", 1 "(C24)" removed | 0 |
-| docstrings | not counted in the packet | 33 public declarations documented | 0 (no undocumented public declaration remains in the 32 files) |
-| universe pins `.{0}` | 335 | 118 generalised to `.{u}` in 6 files | 217, every one forced (table below) |
+| docstrings | not counted in the packet | **35 (corrected; the receipt said 33)** public declarations documented — the per-file column sums to 4+2+6+2+3+3+4+8+1+2 | 0 (no undocumented public declaration remains in the 32 files) |
+| universe pins `.{0}` | **334 (corrected; the receipt said 335)** | **108 (corrected; the receipt said 118)** generalised to `.{u}` in 6 files | **226 (corrected; the receipt said 217)**, every one forced (table below) |
 | `: Type` binders | 62 counted by the audit | 0 widened | 54 were false positives (the file already says `Type u` / `Type v` with a `universe` line); 8 are forced (table below) |
 
 ## Per file
@@ -65,11 +65,14 @@ this packet; none was chased across files.
 | `TopCat.SheafCohomology.AcyclicResolution.globalComplex`, `extIsoGlobalHomology` | `Lib/Topology/Sheaves/Cohomology/AcyclicResolution.lean` | `Cohomology/GodementResolution.lean`, `FiniteClosedPushforward/AcyclicResolution.lean` |
 | `TopCat.FiniteClosedPushforward.cohomologyEquiv`, `cohomologyForward` | `Lib/Topology/Sheaves/FiniteClosedPushforward/Cohomology.lean` | `ConstantCohomologyPullback.lean`, `FiniteClosedPushforward/AcyclicResolution.lean`, `FiniteClosedPushforward/AcyclicResolutionH1.lean` |
 | `TopCat.Sheaf.OpenEmbeddingCohomology.openImage`, `restriction` | `Lib/Topology/Sheaves/OpenEmbeddingCohomology.lean` | `FiniteClosedOpenRestriction.lean` |
-| `TopCat.ConstantSheafCohomology.pullback` (itself forced by the row above) | `Lib/Topology/Sheaves/ConstantCohomologyPullback.lean` | `ConstantProductH1.lean`, `ConstantProductH1Comparison.lean`, `ConstantProductH1FibreIndependence.lean`, `ConstantProductPositiveFibreIndependence.lean`, `ConstantSheafH1.lean`, `FiniteClosedOpenRestriction.lean` |
+| `TopCat.ConstantSheafCohomology.pullback` (itself forced by the row above) | `Lib/Topology/Sheaves/ConstantCohomologyPullback.lean` | `FiniteClosedOpenRestriction.lean`.  **(corrected)** this row originally also listed `ConstantProductH1.lean`, `ConstantProductH1Comparison.lean`, `ConstantProductH1FibreIndependence.lean`, `ConstantProductPositiveFibreIndependence.lean` and `ConstantSheafH1.lean` (16 pins, 5 `: Type` binders).  `pullback` is **not** what binds those five files: round 8 lifted it (`f59653c5`) and all five stayed pinned (16 pins at head `39f1d12b`).  Their real forcer is `AlgebraicTopology.SingularCochains.chains` / `.complex` (`ModuleCat.of ℤ ℤ`, `X : Type`), which was visible in-packet — `ConstantProductH1.lean` imports `Lib.AlgebraicTopology.SingularCochains` and uses `SingularCochains.pullback A` with `(S X : Type)`.  See `Lib/reports/round-8/pins/RECEIPT.md` §3 |
 
-The same declarations force the 8 genuine `: Type` binders: `(S X : Type)` in the four
-`ConstantProduct*` files and `{X Y : Type}` in `ConstantSheafH1.lean` are `Type 0` because
-`TopCat.of X` has to land in `TopCat.{0}` for `TopCat.ConstantSheafCohomology.pullback`; the
+The same declarations force the 8 genuine `: Type` binders.  **(corrected)** the reason given for
+five of them was wrong: `(S X : Type)` in the four `ConstantProduct*` files and `{X Y : Type}` in
+`ConstantSheafH1.lean` are **not** `Type 0` because `TopCat.of X` has to land in `TopCat.{0}` for
+`TopCat.ConstantSheafCohomology.pullback` — round 8 lifted `pullback` and they stayed pinned.  They
+are `Type 0` because of `AlgebraicTopology.SingularCochains.chains`, whose coefficient object
+`ModuleCat.of ℤ ℤ` lives in `ModuleCat.{0}` and whose space argument is `X : Type`.  The
 `(… : Type)` ascription in `ShortExactDegreeZeroSections.lean` is the carrier of an
 `AddCommGrpCat.{0}` object.
 
@@ -100,7 +103,7 @@ VERDICT PASS
 * **source declarations added: 0**
 * **changed types: 233**, all explained below.
 
-### A. Declarations generalised in this packet (92)
+### A. Declarations generalised in this packet (**100 — corrected; the heading said 92**; the rows below list 100 names)
 
 | module | declarations with a changed type |
 |---|---|
@@ -111,7 +114,7 @@ VERDICT PASS
 | `Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension` (7) | `TopCat.Sheaf.equivalenceOfIso`, `TopCat.Sheaf.equivalenceOfIso._proof_1`, `TopCat.Sheaf.equivalenceOfIso._proof_2`, `TopCat.Sheaf.equivalenceOfIso_functor_additive`, `TopCat.Sheaf.equivalenceOfIso_inverse_additive`, `TopCat.Sheaf.unitSheafEquivImageIso`, `TopCat.Sheaf.unitSheafEquivImageIso._proof_1` |
 | `Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension` (6) | `TopCat.Sheaf.OpenRestriction.pointOpen`, `TopCat.Sheaf.OpenRestriction.pointOpen._proof_1`, `TopCat.Sheaf.OpenRestriction.pointOpen.eq_1`, `TopCat.Sheaf.OpenRestriction.pointOpen_le`, `TopCat.Sheaf.OpenRestriction.pointOpen_mem`, `TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology` |
 
-### B. Downstream declarations, source unchanged (141)
+### B. Downstream declarations, source unchanged (**133 — corrected; the heading said 141**; the rows below list 133 names, and 100 + 133 = 233)
 
 Their statements are byte-identical to the base; the type hash moved only because a
 constant they mention (column 2) now carries an explicit universe level, instantiated
@@ -178,3 +181,80 @@ No changed type is unexplained.
 ## Commits
 
 `b0155721..` on `r7/packet-08`, one commit per file (32) plus this receipt.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-08.md` (ACCEPT WITH FINDINGS; every sampled
+universe lift keeps its `u = 0` statement literally — five re-elaborated at the head against the base
+signatures — nothing lost, hygiene clean).  These corrections are to this receipt's text only; no
+Lean file was changed by them.
+
+1. **Headline counts (finding 2), corrected in place.**  The summary row said "335 audited, 118
+   generalised, 217 left".  The per-file table sums to **334 base, 108 lifted
+   (1 + 7 + 1 + 35 + 48 + 16), 226 left**, and an independent `grep -o '\.{0}'` over the 32 files
+   gives 334 at `9552305f` and 226 at `01fc1877^2`.  Likewise "33 public declarations documented" is
+   **35** by the per-file docstring column (4+2+6+2+3+3+4+8+1+2), and the envdiff section headings
+   "A (92)" / "B (141)" do not match their own tables, which list **100** and **133** names
+   (233 total, no duplicates).
+   **The wrong pair 118 / 217 propagated out of this receipt** into the commit message of `835b39be`
+   and into the coordinator's assignment and `Lib/reviews/INTEGRATION-7.md`; the coordinator file is
+   corrected separately.  Summaries must be generated from the per-file table, not typed
+   (`Lib/reviews/REVIEW-7-8.md` §4).
+
+2. **The forcing claim for five files was wrong (finding 1).**  The "Pins left" table attributed
+   `ConstantProductH1.lean`, `ConstantProductH1Comparison.lean`,
+   `ConstantProductH1FibreIndependence.lean`, `ConstantProductPositiveFibreIndependence.lean` and
+   `ConstantSheafH1.lean` (16 pins, 5 `: Type` binders) to
+   `TopCat.ConstantSheafCohomology.pullback`.  Round 8 lifted `pullback` (`f59653c5`) and those five
+   files **stayed pinned** — 16 pins at head `39f1d12b`.  The binding forcer is
+   `AlgebraicTopology.SingularCochains.chains` / `.complex`, pinned by the coefficient object
+   `ModuleCat.of ℤ ℤ : ModuleCat.{0} ℤ` with `X : Type`
+   (`Lib/reports/round-8/pins/RECEIPT.md` §3).  It was visible from inside the packet:
+   `ConstantProductH1.lean` imports `Lib.AlgebraicTopology.SingularCochains` and uses
+   `SingularCochains.pullback A` with `(S X : Type)`.  Both the table row and the paragraph under it
+   are corrected above.  Every **other** forcing row was confirmed by round 8 lifting exactly the
+   named declaration (`cohomologyAddCommGroup`, `unitSheaf`/`globalSectionsFunctor`/`h0GlobalIso`,
+   the `HasExt.{0}` instance in `Flasque.lean`, `openImage`, `OpenRestriction.freeOpen`/
+   `cohomologyEquiv`, `FiniteClosedPushforward/Cohomology.lean`, `pullback`) and the 15 remaining
+   packet-08 files then going to 0 pins.  A "forced by" claim must name the forcer that still binds
+   after the named one is lifted.
+
+3. **One manuscript coordinate survives (finding 4).**  The item-1 row says "1 `(C24)` removed",
+   which is true — the base had **two**.  The second is still at
+   `Lib/Topology/Sheaves/Cohomology/Cech/LongExact.lean:47`: "This is the initial injection in
+   equation (C24), transported through the canonical …".  It is on the fix list
+   (`Lib/reviews/REVIEW-7-8.md` §3, packet 08).
+
+4. **Internal inconsistencies in the envdiff section (finding 7).**
+   (a) Section A's heading says "Declarations generalised in this packet" but lists
+   `TopCat.Sheaf.unitSheafEquivImageIso` and its `._proof_1` under
+   `HomeomorphProjectiveDimension (7)`, whereas the closing paragraph correctly says they were *not*
+   generalised (still `{X Y : TopCat.{0}}` at the branch head, l.78).
+   (b) The section-B row for `TopCat.FiniteClosedPushforward.h0GlobalIso_mk₀` names
+   `TopCat.ConstantSheaf.presheaf` as the constant it mentions; the paragraph below and the source
+   (`AcyclicResolutionH1.lean` l.39–45) show it mentions `integralHomGlobalEquiv`.
+   (c) `exists_restriction_constant` / `presheafAugmentation_stalk_injective` are tabulated under
+   module `SingularCochainSheaf.Augmentation`, while the paragraph below places them in
+   `AugmentationMono.lean` / `LocalExactH1.lean` — the paragraph is right; private names are
+   module-mangled in the dump, so the table's module attribution is off.
+
+5. **No `envdiff.json` for this packet is in the repository (finding 3).**  This receipt names
+   `--receipt envdiff.json` and the brief assumes it sits beside the receipt;
+   `git ls-tree -r 39f1d12b | grep envdiff` shows only `round-7/{names,preamble}/envdiff.json` and
+   the merged `round-7/envdiff-merged-d950428a.{json,txt}`.  The reviewer could only confirm that all
+   233 names of sections A and B occur in the merged file's `changed_type_all` (0 missing); the line
+   "lost 233 added 233 of which source 0 0" is **unverifiable from the tree**.
+
+6. **A cross-receipt correction this review raised, applied in the other receipt.**
+   `Lib/reports/round-8/pins/RECEIPT.md` names
+   `TopCat.FiniteClosedPushforward.pushforwardStalkEquiv` as a chokepoint "in
+   `FiniteClosedPushforward/Exact.lean`".  That declaration lives in `FiniteClosedPushforward.lean`
+   and was lifted by **this** packet; `Exact.lean`'s pin was its own `variable {X Y : TopCat.{0}}`.
+   Corrected in the round-8 pins receipt so the two agree.
+
+7. **Docstring and citation findings are code fixes, not receipt fixes.**
+   `basedFibreInclusion_isClosedMap`'s docstring ("when the product is compact Hausdorff"; the
+   declaration is under `omit [CompactSpace S] in`, so it is the *source* `X` that is compact),
+   Hartshorne "III Ex. 8.1" in `FiniteClosedPushforward/AcyclicResolution.lean` (Ex. 8.2 is the
+   closer one; 8.1 is the sheafification description of `R^i f_*`), and the unconfirmed Iversen III.2
+   / Godement II.5.10.1 pointers are on the `Lib/reviews/REVIEW-7-8.md` §3 list.

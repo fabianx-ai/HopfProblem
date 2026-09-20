@@ -56,14 +56,53 @@ Mathlib before any deletion (scratch file under the job directory).
 | file | Mathlib twin | consumers |
 |---|---|---|
 | `Lib/CategoryTheory/Sites/Leray/DegreeZero.lean` | `CategoryTheory.Functor.rightDerivedZeroIsoSelf` | none (only the `Lib.lean` import and two `AxiomAudit` probe pairs) |
-| `Lib/LinearAlgebra/Dual/Contragredient.lean` | `Representation.dual` | none (only the `Lib.lean` import and seven `AxiomAudit` probe pairs) |
+| `Lib/LinearAlgebra/Dual/Contragredient.lean` | **see the per-declaration table below (corrected)** — only two of the seven have a named twin, and it is not the same statement | none (only the `Lib.lean` import and seven `AxiomAudit` probe pairs) |
 | `MorseCancellation.range_tanh` in `Lib/Geometry/Manifold/Morse/Cubic.lean` | `Real.tanh_bijOn` (with `Set.image_univ`) | its own two uses, rewritten to `← Set.image_univ, Real.tanh_bijOn.image_eq` |
+
+#### `Contragredient.lean`, per declaration (added on correction, 2026-09-21)
+
+The file-level row above said "Mathlib twin `Representation.dual`", which is right for at most two of
+the seven declarations.  Per declaration:
+
+| deleted declaration | twin | verdict |
+|---|---|---|
+| `contragredient` | `Representation.dual` (`Mathlib/RepresentationTheory/Basic.lean:678`) | **twin up to `LinearEquiv.toLinearMap`, not the same statement**.  Deleted: `(ρ : G →* (N ≃ₗ[R] N)) : G →* (Module.Dual R N ≃ₗ[R] Module.Dual R N)`; Mathlib: `(ρV : Representation k G V := G →* V →ₗ[k] V) : Representation k G (Module.Dual k V)`.  Input is `→* (V →ₗ V)` not `→* (V ≃ₗ V)`, output is linear maps not linear equivalences |
+| `contragredient_apply` | `Representation.dual_apply` | same caveat |
+| `ofMultiplicativeEquiv` | — | **deleted, no twin** |
+| `ofMultiplicativeEquiv_apply` | — | **deleted, no twin** |
+| `ofMultiplicative` | — | **deleted, no twin** |
+| `ofMultiplicative_apply` | — | **deleted, no twin** |
+| `freeGroup_invariant_iff` | — | **deleted, no twin.**  The audit row (`AUDIT.md` l.520) asked to *move* this to a `FreeGroup` file, not to delete it |
+
+Mitigation, verified: **no consumer anywhere**.  Only `Lib/AxiomAudit.lean` probed the seven names
+(the seven probe pairs the row above mentions); the sole other grep hit in the tree is the word
+"contragredient" in two docstrings of
+`Lib/AlgebraicTopology/SingularCochains/DualEvaluation/CoordinateChange.lean`.  The five twin-less
+deletions are therefore **dead code deleted with no twin — a recorded protocol exception**, not
+"true Mathlib duplicates".  `Lib/reviews/INTEGRATION-7.md` l.14, which describes this file that way,
+is corrected there.  The fix list (`Lib/reviews/REVIEW-7-8.md` §3) offers the alternative: restate
+`freeGroup_invariant_iff` in a `FreeGroup` file.
 
 ### Left, with the reason
 
 | file | why it stays |
 |---|---|
-| `Lib/Topology/Sheaves/Cohomology/AddCommGroup.lean` | The file is one registered `instance`, `CategoryTheory.Sheaf.cohomologyAddCommGroup := Ext.instAddCommGroup`. Rerouting was **tried**: all ten call sites were rewritten to `CategoryTheory.Abelian.Ext.instAddCommGroup`, the eight `public import`s of the module were replaced by its own three Mathlib imports, and the file deleted. `lake build Lib` then fails with `failed to synthesize Add (Sheaf.H Q 0)` / `AddZero (Sheaf.H F n)` in `ShortExactDegreeOne` and `FiniteClosedPushforward/Cohomology`: `Sheaf.H` is not reducible to `Ext` for instance search, so Mathlib's instance does not fire and this registration is load-bearing. This is the "instance-resolution gap" the audit row itself names as the alternative; fixing it is an upstream change. The attempt was reverted. |
+| `Lib/Topology/Sheaves/Cohomology/AddCommGroup.lean` | The file is one registered `instance`, `CategoryTheory.Sheaf.cohomologyAddCommGroup := Ext.instAddCommGroup`. Rerouting was **tried**: all ten call sites were rewritten to `CategoryTheory.Abelian.Ext.instAddCommGroup`, the eight `public import`s of the module were replaced by its own three Mathlib imports, and the file deleted. `lake build Lib` then fails with `failed to synthesize Add (Sheaf.H Q 0)` / `AddZero (Sheaf.H F n)` in `ShortExactDegreeOne` and `FiniteClosedPushforward/Cohomology`: **(corrected)** the observed failure and the conclusion are right — the registration *is*
+load-bearing, re-confirmed by `#synth` — but the mechanism stated here was wrong.  In this Mathlib
+`CategoryTheory.Sheaf.H` is an `abbrev`
+(`Mathlib/CategoryTheory/Sites/SheafCohomology/Basic.lean:59`), hence reducible, and instance
+resolution *does* see through it: with a site-typed
+`F : CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat`, `#synth AddCommGroup (Sheaf.H F n)`
+succeeds and prints `Ext.instAddCommGroup`.  What blocks synthesis is that `Lib` feeds
+**`TopCat.Sheaf`**-typed objects to the site-level `Sheaf.H`, and Mathlib's `TopCat.Sheaf`
+(`Mathlib/Topology/Sheaves/Sheaf.lean:108`) is a plain non-reducible `def`, which the unifier cannot
+identify with `CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat` at instance
+transparency; making `TopCat.Sheaf` locally reducible also makes `#synth` succeed.  So the gap is
+`TopCat.Sheaf`'s reducibility, not `Sheaf.H`, and "fixing it is an upstream change to `Sheaf.H`" is
+wrong — a third option, never considered here, is to state the instance for the site-typed sheaf or
+make `Lib`'s sheaves site-typed (an owner decision).  The attempt was reverted; the instance stays.
+See `Lib/reports/round-8/dfiles-c/RECEIPT.md`, whose module docstring inherited the same
+mis-diagnosis and is corrected there. |
 | `Lib/Topology/Sheaves/SheafificationLocal.lean` | Mathlib has the two facts the file *cites* (`Presheaf.isLocallySurjective_toSheafify`, `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`, both `#check`ed) but not the three it *proves* on top of them — `exists_local_representative`, `germ_unit_eq_iff`, `exists_restriction_eq_of_germ_unit_eq`. Four `Lib` modules (`Leray/SheafificationStalkCompatibility`, `Leray/SheafificationNeighborhoodGerm`, `Leray/CanonicalPositiveNeighborhoodSection`, `SingularCochainSheaf/GlobalSections`) use `sheaf`/`unit`/`exists_local_representative`. Deleting the file means restating and reproving those three — a real proof change. The audit row agrees: it asks to *keep* `exists_local_representative` and drop only `sheaf`/`unit`, which is a refactor, not this task. |
 | `Lib/GroupTheory/SplitExtension.lean` | Mathlib's `GroupExtension.Splitting.semidirectProductMulEquiv` is `N ⋊[s.conjAct] G ≃* E` — the action is *fixed* to the splitting's `conjAct`. The consumer, `Hopf/Proof/LCP/BoundaryTopology.lean` (`PeriodFamily.Data.semidirectFundamentalGroupEquiv` plus the two `_symm_inclusion`/`_symm_section` simp lemmas), needs `N ⋊[φ] H ≃* E` for an independently given `φ = D.fundamentalGroupAction hq b`. Those are different types. A reroute is possible in principle — bundle `GroupExtension`/`Splitting` from the eight hypotheses, prove `φ = s.conjAct` from `hconj` and injectivity of `i`, and transport with `SemidirectProduct.congr` — but that is a genuine new proof of several dozen lines plus reproving the two simp lemmas, not the one-line wrapper the plan allows. The audit's own claim that a sibling already uses the Mathlib version refers to `Lib/GroupTheory/GroupExtension/Abelianization.lean`, which works with a bundled `Splitting` and therefore does not face this mismatch. Unused import `Lib.GroupTheory.SplitExtension` in `Lib/GroupTheory/PresentedGroup/CentralTwist.lean` left in place (stock-preamble cleanup is finding 2, not this task). |
 | `MorseCancellation.hasDerivAt_tanh`, `MorseCancellation.contDiffAt_artanh` | Not in this Mathlib. `grep` over `Mathlib/` finds no `hasDerivAt_tanh`/`deriv_tanh`, no `HasDerivAt Real.tanh`, and no `ContDiff` lemma for `tanh` or `artanh`; `Analysis/SpecialFunctions/Artanh.lean` stops at `tanh_bijOn`, `tanh_injective`, `artanh_tanh`, `tanh_artanh` and the monotonicity lemmas. The audit entry says the same ("missing pieces should go there"), so these two are upstream candidates, not duplicates. |
@@ -210,3 +249,57 @@ no `Hopf/` file imported them either (Piece D's forwards now do).
 None. `envdiff` reports no 1-to-1 source move; the 70 "ambiguous" entries are the duplicate removals
 of `77af0c88` (a key losing its `Hopf.Proof.LCP.GlobalAssembly` copy and gaining nothing), and the 40
 auxiliary module changes are their equation lemmas and `_proof_n` abstractions.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-names.md` (ACCEPT WITH FINDINGS; every number,
+deletion, rename, import and cherry-pick reproduces from the history and the head; the ten replayed
+commits reproduce their originals byte-for-byte).  These corrections are to this receipt's text
+only; no Lean file was changed by them.
+
+1. **`Contragredient.lean` is not a clean Mathlib duplicate (finding 1).**  A per-declaration twin
+   table is now in the Piece B "Deleted" section above: **five of the seven declarations were
+   deleted with no surviving twin at all** (`ofMultiplicativeEquiv`, `ofMultiplicativeEquiv_apply`,
+   `ofMultiplicative`, `ofMultiplicative_apply`, `freeGroup_invariant_iff`), and for the other two
+   the named twin `Representation.dual` / `dual_apply` has a **different type** (linear maps, not
+   linear equivalences — the match is only up to `LinearEquiv.toLinearMap`, as the audit row itself
+   says).  The protocol requires a named surviving twin for every deletion; the file-level table and
+   the coordinator summary presented this as a clean duplicate, and the lost-source table's "no
+   replacement" cells were the only place the gap was visible.  The five are now recorded explicitly
+   as **deleted unused code, no twin, protocol exception**, with the verified mitigation that they
+   have no consumer anywhere in the tree.  `Lib/reviews/INTEGRATION-7.md` l.14 ("true Mathlib
+   duplicates, no consumers") is corrected in that file.  The audit's own request — move
+   `freeGroup_invariant_iff` to a `FreeGroup` file rather than delete it — is on the fix list
+   (`Lib/reviews/REVIEW-7-8.md` §3, names).
+
+2. **The `AddCommGroup.lean` reason named the wrong mechanism (finding 2).**  Corrected in the Piece
+   B "Left, with the reason" table: `Sheaf.H` is an `abbrev` and *is* reducible; instance resolution
+   sees through it for a site-typed sheaf.  The blocker is Mathlib's `TopCat.Sheaf` being a
+   non-reducible `def`.  The conclusion — the registration is load-bearing, keep it — stands and was
+   independently re-confirmed by `#synth`.  Round 8's `dfiles-c` receipt and the module docstring it
+   wrote inherited this mis-diagnosis; both are corrected there.
+
+3. **The cherry-picked commits do not cite their originals (finding 3).**  None of the ten Piece D
+   commit messages contains the `center-solution` hash it replays; author name and email are
+   preserved but the author dates are the replay dates (e.g. `7416076`, Aug 30 → `77af0c88`,
+   Sep 20), so `git log` alone cannot tell that these are replays and the mapping exists only in the
+   Piece D table of this receipt.  Every replay *was* verified byte-for-byte against its original by
+   the reviewer.  From round 8 on, cherry-picks carry `(cherry picked from commit …)`
+   (`Lib/reviews/REVIEW-7-8.md` §4).
+
+4. **`77af0c88` deletes one blank line more than the union of its two originals (finding 4).**  The
+   `Hopf`-side hunks of `7416076` + `240fe7dd` and of `77af0c88` are identical as line multisets
+   except for one extra removed empty line in the branch commit — the by-hand context conflict this
+   receipt describes.  Harmless; recorded so that "byte-identical" is precise.
+
+5. **One claim in this receipt has since gone stale.**  Piece D's replacement for
+   `signed_residual_coordinate_zero` is given as `Int.signed_residual_coordinate_zero` in
+   `Lib/Data/Int/SignedResidual.lean`.  Round 8 (`cd893c55`, branch `r8/dfiles-b`) moved that file to
+   `Hopf/Proof/Data/Int/SignedResidual.lean` and renamed the declaration to
+   `ThreefoldHomology.signed_residual_coordinate_zero`, so the name in the table above no longer
+   exists at head `39f1d12b`.  The statement is unchanged and the move is recorded in
+   `Lib/reports/round-8/dfiles-b/RECEIPT.md`.
+
+6. **Probe counts mix two units.**  "3,352 probes = 3,361 − 9" takes 3,361 from the preamble
+   receipt's *build-output* count while the −9 is a *source* count (`#print axioms` lines drop by
+   exactly 9, 3,374 → 3,365 top-level).  Receipts should say which unit they are quoting.
