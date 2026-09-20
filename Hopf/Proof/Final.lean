@@ -63,6 +63,7 @@ Original source lines 248759--248811; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.Proof.Recognition
+import Hopf.Proof.Algebra.Group.ResidualRelations
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact

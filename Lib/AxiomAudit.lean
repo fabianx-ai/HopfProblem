@@ -7546,5 +7546,3 @@ is an evidence command rather than library content.
 #print axioms DeterminingFamily.commute_all_of_hom_ext
 #check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
 #print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow
-#check ResidualRelations.eq_one_of_mul_eq_one_cube_fourth
-#print axioms ResidualRelations.eq_one_of_mul_eq_one_cube_fourth

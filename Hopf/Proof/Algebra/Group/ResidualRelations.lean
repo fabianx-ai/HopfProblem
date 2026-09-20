@@ -1,24 +1,26 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
-module
 
-public import Mathlib.Algebra.Group.Basic
+import Mathlib.Algebra.Group.Basic
 
 /-!
-# Cancellation of residual group relations
+# Cancellation of the project's residual gluing relations
 
-In any group, an ordered product-one relation eliminates the second element
-as the inverse of the first. A cube and inverse fourth-power relation then
-identify consecutive powers of that first element, forcing it and the common
-power to be the identity. No commutativity or generation assumption is needed.
-Source: CENTER_NATIVE_TRIVIALITY_TEXTBOOK.md, reviewed NT1.
+Proof-specific: the exponents `3` and `4` below are the orders of the two exceptional gluing
+matrices `T₁`, `T₂` of `Hopf/Proof/FiniteCore.lean`, and the conclusion is the residual step of
+the centre-triviality argument.  In any group, `x * y = 1` eliminates `y` as `x⁻¹`; the cube and
+inverse-fourth-power relations then identify two consecutive powers of `x`, forcing `x`, `y` and
+the common power `d` to be trivial.
+
+This module carries no textbook statement; the reusable content of the argument is Mathlib's
+`mul_left_cancel` on `x ^ 3 * x = x ^ 3 * 1`.  Moved out of `Lib/Algebra/Group/ResidualRelations.lean`
+by the round-8 D-file pass (`Lib/reports/round-7/judgement/d-files.md`).
 -/
 
-@[expose] public section
 universe u
+
 namespace ResidualRelations
 
 /-- The relations `x * y = 1`, `x ^ 3 = d`, and `y ^ 4 = d⁻¹` force all

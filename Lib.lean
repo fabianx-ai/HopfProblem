@@ -1,7 +1,6 @@
 import Lib.Algebra.Group.Prod
 import Lib.Algebra.Group.LatticeImageCollapse
 import Lib.Algebra.Group.DeterminingFamily
-import Lib.Algebra.Group.ResidualRelations
 import Lib.Data.Int.SignedResidual
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
