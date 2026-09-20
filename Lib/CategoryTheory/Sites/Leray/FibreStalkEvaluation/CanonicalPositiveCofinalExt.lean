@@ -16,6 +16,14 @@ The canonical Ext-defined neighborhood germs jointly generate the actual higher-
 stalk.  It is enough to test maps out of that stalk on a cofinal family of neighborhoods.  This
 is the formal reduction needed to replace a global special-to-nearby square by a coordinate-disc
 identity.
+
+## Source
+
+There is no textbook statement to cite here: the only input is germ extensionality for a
+presheaf stalk, Mathlib's `TopCat.Presheaf.stalk_hom_ext`, in the shrink-once form
+`TopCat.Presheaf.stalk_hom_ext_of_cofinal` of
+`Lib/Topology/Sheaves/OpenRestriction/NearbyEvaluationCompatibility.lean`; the rest is the
+transport of that principle along `canonicalDerivedStalkIsoPositive`.
 -/
 
 @[expose] public section
