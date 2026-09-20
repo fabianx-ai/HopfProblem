@@ -54,16 +54,28 @@ import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
 
 /-!
-# Adapted windows
+# Adapted windows of a Morse surgery system
 
-Level transport, attaching-circle transport, middle-family descent and realization of middle
-blocks for adapted windows of a Morse surgery system (`AdaptedWindows.exists_embedded_level_transport`,
-`AdaptedWindows.exists_middle_block_realization`, `AdaptedWindows.exists_ordered_middle_family`),
-together with the relative regular-level isotopy realization
-(`FlowSuspension.exists_relative_regular_level_isotopy_realization`).
+For a Morse function `f` on a compact manifold `M` with a gradient-like field and a system
+`S : AdaptedWindows E f` of surgery windows around its critical points, this file collects the
+facts about the trajectories of `S` that the handle-rearrangement argument uses:
 
-Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see
-`Lib/reports/integration-4/spheretop-moves.md` for the per-declaration receipt.
+* realising a compactly supported relative isotopy of a regular level by a modification of the
+  gradient-like field (`FlowSuspension.exists_relative_regular_level_isotopy_realization`,
+  `AdaptedWindows.exists_relative_level_surgery_system`), the mechanism behind Milnor,
+  *Lectures on the h-cobordism theorem*, §4 (Theorem 4.1, rearrangement);
+* which points of a level flow down to a lower level (`attachingSphere_reaches_lower_cut`,
+  `backward_basin_reaches_attaching_level`, `reaches_lower_in_regular_band`,
+  `reaches_lower_of_excluded_critical_limit`, `reaches_old_lower_of_belt_avoidance`);
+* identification of the descending sphere of a critical point with the set of points whose
+  backward orbit converges to it (`transported_attaching_range_iff`,
+  `transported_backward_basin_image`, `not_backward_basin_on_upper_level`);
+* the absence of a gradient trajectory between two critical points when one of the two relevant
+  index spaces is trivial (`no_connection_of_upper_index_zero`,
+  `no_connection_of_lower_positive_zero`), the elementary case of Milnor §4;
+* a regular value separating the critical points of index `≤ k` from those of index `≥ k+1`
+  once the function is ordered by index (`exists_ordered_index_cut`), the cut used by Milnor's
+  self-indexing theorem (Milnor, *Lectures on the h-cobordism theorem*, Theorem 4.8).
 -/
 
 open Set Function Filter Manifold Topology
@@ -72,6 +84,13 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- A compactly supported relative isotopy `D` of a regular level `f⁻¹(c)` is realised by the
+flow of a modified descending vector field: there are a band `f⁻¹(c-r, c)` and fields `W`, `V'`
+whose flows `H`, `G` have the same orbits and the same limit points as the original flow, agree
+with it near the critical points and outside a compact subset of the band, and satisfy
+`G 1 x = H 1 (D x)` on the level, `H 1` carrying `f⁻¹(c)` to `f⁻¹(c-r)`, with `G = H` on the set
+where `D` is the identity.  This is the modification of a gradient-like field used in the proof
+of Milnor, *Lectures on the h-cobordism theorem*, Theorem 4.1. -/
 theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -170,6 +189,8 @@ theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : 
     rw [hA0, zero_add, hformula] at hh
     exact hh
 
+/-- If `a` lies below the critical value `f p` and above every smaller critical value, then every
+point of the attaching (descending) sphere of `p` flows forward to the level `a`. -/
 theorem AdaptedWindows.attachingSphere_reaches_lower_cut {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -194,6 +215,8 @@ theorem AdaptedWindows.attachingSphere_reaches_lower_cut {E M : Type*} [NormedAd
     FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hback
       hforward hap hqa
 
+/-- A regular point whose backward orbit converges to the critical point `p` flows forward to
+the lower level of the window around `p`. -/
 theorem AdaptedWindows.backward_basin_reaches_attaching_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -214,6 +237,9 @@ theorem AdaptedWindows.backward_basin_reaches_attaching_level {E M : Type*} [Nor
     FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hback
       hforward (S.toSurgeryWindows.lower_lt_value p) hqlo
 
+/-- If a family `Γ` in a regular level `f⁻¹(a)` is obtained by flowing the attaching sphere of
+`p` and `e` covers that sphere, then the image of `Γ` is exactly the set of points of `f⁻¹(a)`
+whose backward orbit converges to `p`: the descending sphere of `p` traced out on the level. -/
 theorem AdaptedWindows.transported_attaching_range_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -249,6 +275,8 @@ theorem AdaptedWindows.transported_attaching_range_iff {E M : Type*} [NormedAddC
       MorseCancellation.native_same_level_orbit_points hf S.smooth S.flow S.integral
         (fun w hw => S.descent w (ha w hw)) (Γ z).property y.property hshared
 
+/-- If every point of the attaching sphere of `q` flows forward to `p`, then every regular point
+whose backward orbit converges to `q` also flows forward to `p`. -/
 theorem AdaptedWindows.forward_endpoint_of_attaching_branches {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -270,6 +298,8 @@ theorem AdaptedWindows.forward_endpoint_of_attaching_branches {E M : Type*} [Nor
     exact hbranches u
   exact (MorseCancellation.flow_time_atTop_limit_iff S.flow t x p.val).mp hyforward
 
+/-- The property "every point of the attaching sphere of `q` flows forward to `p`" only depends
+on the flow, so it transfers to a second window system with the same flow. -/
 theorem AdaptedWindows.attaching_branches_of_same_flow {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S T : AdaptedWindows E f)
@@ -291,6 +321,9 @@ theorem AdaptedWindows.attaching_branches_of_same_flow {E M : Type*} [NormedAddC
       ((T.data q).lower_regular x.val x.property) hback
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Given a regular value `a`, the windows can be shrunk, keeping the same gradient-like field,
+flow and Morse charts, so that no window meets the level `a`: the windows around critical points
+below `a` stay below it and those above stay above. -/
 theorem AdaptedWindows.exists_same_flow_windows_avoiding_level {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -328,6 +361,7 @@ theorem AdaptedWindows.exists_same_flow_windows_avoiding_level {E M : Type*}
     change a < f p - (T.data p).radius ^ 2
     linarith
 
+/-- A regular value has a closed interval of regular values around it. -/
 theorem AdaptedWindows.regular_interval_around_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -346,6 +380,11 @@ theorem AdaptedWindows.regular_interval_around_level {E M : Type*} [NormedAddCom
     constructor <;> linarith [hx.1, hx.2]
   exact hball hh ⟨x, hcrit, rfl⟩
 
+/-- Relative form of the previous realisation for a whole window system: a compactly supported
+relative isotopy `D` of a regular level `f⁻¹(c)` is realised by a new window system `T` with
+arbitrarily small window radii, with the same Morse charts, with the same field near the critical
+points, with unchanged backward limits, with forward limits composed with `D`, and with unchanged
+orbits over the set where `D` is the identity. -/
 theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -411,6 +450,8 @@ theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type} [Normed
     rw [heq]
     exact (hgeometry x.val).1
 
+/-- In a band `[a, b]` containing at most the critical point `p`, a point of the level `b` whose
+forward orbit does not converge to `p` flows down to the level `a`. -/
 theorem AdaptedWindows.reaches_lower_of_excluded_critical_limit {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -436,6 +477,8 @@ theorem AdaptedWindows.reaches_lower_of_excluded_critical_limit {E M : Type}
     FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hback
       hforward habove hbelow
 
+/-- A point of the upper level of the window around `p` whose transported image avoids the belt
+sphere of `p` flows down, in the transported system, to the lower level of that window. -/
 theorem AdaptedWindows.reaches_old_lower_of_belt_avoidance {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S T : AdaptedWindows E f)
@@ -455,6 +498,8 @@ theorem AdaptedWindows.reaches_old_lower_of_belt_avoidance {E M : Type} [NormedA
   intro h
   exact hx ((S.belt_basin_iff hf p (D x)).mp ((hforward x p.val).mp h))
 
+/-- No point of the upper level of the window around `p` has its backward orbit converging to
+`p`: the ascending sphere of `p` meets that level, but backward orbits leave the window. -/
 theorem AdaptedWindows.not_backward_basin_on_upper_level {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -470,6 +515,8 @@ theorem AdaptedWindows.not_backward_basin_on_upper_level {E M : Type} [NormedAdd
   rw [heq, x.property] at hh
   exact (not_lt_of_ge (S.toSurgeryWindows.value_lt_upper p).le) hh
 
+/-- Flowing a family from a regular level `a` down to a lower regular level `b` preserves the
+description of its image as the set of points whose backward orbit converges to `p`. -/
 theorem AdaptedWindows.transported_backward_basin_image {E M X : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -511,6 +558,8 @@ theorem AdaptedWindows.transported_backward_basin_image {E M X : Type} [NormedAd
       MorseCancellation.native_same_level_orbit_points hf S.smooth S.flow S.integral
         (fun z hz => S.descent z (hb z hz)) (β z).property y.property hshared
 
+/-- If the band `[b, a]` contains no critical value, every point of the level `a` flows down to
+the level `b`. -/
 theorem AdaptedWindows.reaches_lower_in_regular_band {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -530,6 +579,8 @@ theorem AdaptedWindows.reaches_lower_in_regular_band {E M : Type} [NormedAddComm
     FlowCancellation.exists_level_crossing_of_endpoint_limits S.flow hf.continuous hback
       hforward (hab.trans haq) hrb
 
+/-- There is no gradient trajectory from a critical point `q` of index `0` down to a critical
+point `p` below it: a local minimum has no descending sphere. -/
 theorem AdaptedWindows.no_connection_of_upper_index_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -550,6 +601,8 @@ theorem AdaptedWindows.no_connection_of_upper_index_zero {E M : Type*} [NormedAd
   obtain ⟨v, -⟩ := (S.attaching_basin_iff hf q y).mp hlim
   exact isEmptyElim v
 
+/-- There is no gradient trajectory from a critical point `q` down to a critical point `p` of
+index `dim M` below it: a local maximum has no ascending sphere. -/
 theorem AdaptedWindows.no_connection_of_lower_positive_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -571,6 +624,10 @@ theorem AdaptedWindows.no_connection_of_lower_positive_zero {E M : Type*} [Norme
   exact isEmptyElim v
 
 attribute [local instance 100] Classical.propDecidable in
+/-- If the critical values are ordered by Morse index, then above any critical point of index
+`≤ k` there is a regular value `a` separating the critical points of index `≤ k` (below `a`) from
+those of index `≥ k+1` (above `a`).  This is the cut supplied by the self-indexing theorem,
+Milnor, *Lectures on the h-cobordism theorem*, Theorem 4.8. -/
 theorem AdaptedWindows.exists_ordered_index_cut {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)

@@ -41,12 +41,24 @@ import Lib.Topology.MappingTorus.Wang
 /-!
 # Circle gluing along surgery windows
 
-Circle gluing on belt and attaching spheres (`CircleGluing`), the surgery band and inner-band lemmas of `MorseCancellation`, immersion avoidance (`ManifoldImmersion`), adapted windows, flow suspensions and the first `ManifoldMorse.MorseSurgeryData` rows.
+An embedded arc and an embedded return arc with matching endpoint germs glue to a smooth
+embedded circle.  Concretely, given `α : ℝ → N` embedded on `[-r, r]` and `β : ℝ → N` embedded on
+`[0, 1]` with `β` agreeing near `0` with `t ↦ α (t + r)` and near `1` with `t ↦ α (t - 1 - r)`,
+`CircleGluing.joinedArc` concatenates them, `CircleGluing.joinedLoop` makes the concatenation
+periodic of period `2r + 1` (through `CircleGluing.periodicExtension`), and
+`CircleGluing.periodicCircle` turns a periodic map into a map out of `Circle`.  The resulting
+`γ : Circle → N` is smooth, injective, and an immersion
+(`CircleGluing.periodicCircle_contMDiff`, `_injective`, `_derivative_injective`), so it is an
+embedded circle whose image is the union of the two arcs.
 
-Moved verbatim from the project stock file `Hopf/SingularHomology.lean` (integration 4,
-`Lib/reports/integration-4/singhom-moves.md`); the families here are
-`CircleGluing`, `MorseCancellation`, `ManifoldImmersion`, `NativeOpenSubmanifold`, `AdaptedWindows`, `FlowSuspension`, `ManifoldMorse.MorseSurgeryData`. The declarations keep their historical dotted names
-and their order; the file order is the dependency order.
+The remaining declarations produce the two arcs inside a prescribed open set and use the circle:
+embedded arcs realising a prescribed path with prescribed endpoint germs
+(`MorseCancellation.exists_embedded_native_open_arc_with_local_germs`,
+`exists_embedded_return_arc_inside_open`, `exists_disjoint_embedded_return_arc`,
+`exists_embedded_circle_through_arc`), avoidance of the image of a second map by a relative
+homotopy in the general-position range (`ManifoldImmersion.exists_relative_embedded_avoidance_*`),
+and statements about the flow and the belt sphere of a surgery window
+(`AdaptedWindows.*`, `FlowSuspension.*`, `ManifoldMorse.MorseSurgeryData.*`).
 
 ## References
 
@@ -54,7 +66,8 @@ and their order; the file order is the dependency order.
 
 ## Twin
 
-No Mathlib counterpart exists.
+Mathlib has `Circle`, `Circle.exp` and `Function.Periodic` but no gluing of arcs to an embedded
+circle.
 
 ## Tags
 
@@ -67,6 +80,8 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- A smooth curve defined near `t₀` with `a t₀` in an open set `S` is, near `t₀`, a globally
+defined smooth curve in `S`. -/
 theorem MorseCancellation.exists_native_open_curve_with_germ {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] (S : TopologicalSpace.Opens N) {a : ℝ → N} {U : Set ℝ} {t₀ : ℝ}
@@ -90,6 +105,9 @@ theorem MorseCancellation.exists_native_open_curve_with_germ {G H N : Type*} [No
   filter_upwards [heq, hval htV] with t ht hta
   exact (congrArg Subtype.val ht).trans hta
 
+/-- In a manifold of dimension at least `3`, two immersed curve germs at distinct points of an
+open set `S`, joined by a path in `S`, are the two ends of a single smooth arc in `S` which is an
+embedding of `[0, 1]` and an immersion there, agreeing with the given germs near `0` and `1`. -/
 theorem MorseCancellation.exists_embedded_native_open_arc_with_local_germs {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] [FiniteDimensional ℝ G] [J.Boundaryless]
@@ -140,6 +158,7 @@ theorem MorseCancellation.exists_embedded_native_open_arc_with_local_germs {G H 
   · filter_upwards [hgb, heqb] with t htb htb'
     exact (congrArg Subtype.val htb).trans htb'
 
+/-- Injectivity of the derivative of a curve is preserved by translating the parameter. -/
 theorem MorseCancellation.injective_mfderiv_curve_translate {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] {α : ℝ → N} {s c : ℝ} (hα : MDifferentiableAt 𝓘(ℝ, ℝ) J α (s + c))
@@ -167,6 +186,9 @@ theorem MorseCancellation.injective_mfderiv_curve_translate {G H N : Type*} [Nor
   rw [hdx, hdy] at hxy
   exact hxy
 
+/-- Return-arc form of the previous statement: an embedded immersed arc `α` on `[-R, R]` whose
+endpoints `α r` and `α (-r)` lie in an open `S` and are joined by a path in `S` admits a return
+arc in `S`, embedded and immersed on `[0, 1]`, matching `α` near both ends. -/
 theorem MorseCancellation.exists_embedded_return_arc_inside_open {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] [FiniteDimensional ℝ G] [J.Boundaryless] [IsManifold J ∞ N] [T2Space N]
@@ -222,6 +244,8 @@ theorem MorseCancellation.exists_embedded_return_arc_inside_open {G H N : Type*}
     exists_embedded_native_open_arc_with_local_germs S ha hb hU hV h0U h1V haS hbS hia hib hpath
       hxy hdim
 
+/-- A return arc matching `α` near its two ends avoids the arc `α '' [-r, r]` on a closed
+neighbourhood of `{0, 1}`, away from `0` and `1` themselves. -/
 theorem MorseCancellation.exists_clean_return_endpoint_neighborhood {N : Type*} [TopologicalSpace N]
     {α β : ℝ → N} {R r : ℝ} (hr : 0 < r) (hrR : r < R) (hinj : Set.InjOn α (Set.Icc (-R) R))
     (h0 : β =ᶠ[𝓝 (0 : ℝ)] (fun t => α (t + r)))
@@ -275,6 +299,12 @@ theorem MorseCancellation.exists_clean_return_endpoint_neighborhood {N : Type*} 
       have htlt : t < 1 := lt_of_le_of_ne ht.1.2 htne
       linarith [hs.1]
 
+/-- Relative embedding with avoidance, for a closed obstacle: a map `f` of a surface into an
+open set `U`, already embedded, immersed and avoiding the closed image of `g` outside `B` on
+`K ∩ C`, is homotopic rel `C` to a map that is an embedding and an immersion on the whole of the
+compact set `K` and avoids the image of `g` outside `B`.  The dimension hypotheses are the
+general-position ones, `dim N ≥ 5` and `dim E + dim E' < dim N` (Hirsch, *Differential
+Topology*, Ch. 3, Ch. 8). -/
 theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open_of_isClosed_range
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -307,6 +337,9 @@ theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open_of_isClosed
   intro x hx hmem
   exact havoid x hx ((OpenObstacle.mem_range_restrict_iff g U (f' x)).mpr hmem)
 
+/-- Variant of the preceding statement in which the obstacle is the image `g '' A` of a subset,
+`f` is already an embedding and an immersion on `K`, and the new map is required to keep `K`
+inside a prescribed open subset `O` of `U`. -/
 theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_in_open
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -344,6 +377,8 @@ theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood_
   rw [OpenObstacle.image_restrict]
   exact hmem
 
+/-- Version of `exists_relative_embedded_avoidance_in_open_of_isClosed_range` for a compact
+source `Y`, where the closedness of the image of `g` is automatic. -/
 theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -370,6 +405,8 @@ theorem ManifoldImmersion.exists_relative_embedded_avoidance_in_open
       (isCompact_range g.continuous).isClosed hsourceDim hdim hobstacle hK hC hBC hinj hderiv
       hclean
 
+/-- Combination of `exists_embedded_return_arc_inside_open` with avoidance: the return arc can
+moreover be chosen to meet `α '' [-r, r]` only at its two endpoints. -/
 theorem MorseCancellation.exists_disjoint_embedded_return_arc {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -444,14 +481,18 @@ theorem MorseCancellation.exists_disjoint_embedded_return_arc {G H N : Type*} [N
       exact ⟨ne_of_gt ht.1, ne_of_lt ht.2⟩
     exact havoid t ⟨⟨ht.1.le, ht.2.le⟩, htB⟩ (himage.symm ▸ hmem)
 
+/-- The `T`-periodic extension of `f` obtained by reducing the parameter into `[0, T)`. -/
 def CircleGluing.periodicExtension {N : Type*} {T : ℝ} (hT : 0 < T) (f : ℝ → N) (t : ℝ) :
     N :=
   f (toIcoMod hT 0 t)
 
+/-- The periodic extension is `T`-periodic. -/
 theorem CircleGluing.periodicExtension_periodic {N : Type*} {T : ℝ} (hT : 0 < T)
     (f : ℝ → N) : Function.Periodic (periodicExtension hT f) T := fun t =>
   congrArg f (toIcoMod_add_right hT 0 t)
 
+/-- If `f` matches its own translate by `T` near `0`, the periodic extension agrees with `f`
+near every point of the fundamental interval `[0, T)`. -/
 theorem CircleGluing.periodicExtension_germ_in_fundamental_interval {N : Type*} {T : ℝ}
     (hT : 0 < T) {f : ℝ → N} (hmatch : (fun t => f (t + T)) =ᶠ[𝓝 (0 : ℝ)] f) {x : ℝ}
     (hx : x ∈ Set.Ico (0 : ℝ) T) : periodicExtension hT f =ᶠ[𝓝 x] f := by
@@ -472,6 +513,7 @@ theorem CircleGluing.periodicExtension_germ_in_fundamental_interval {N : Type*} 
     change f (toIcoMod hT 0 t) = f t
     rw [(toIcoMod_eq_self hT).mpr ⟨ht.1.le, by simpa only [zero_add] using ht.2⟩]
 
+/-- Near any point, the periodic extension is a translate of `f`. -/
 theorem CircleGluing.periodicExtension_germ {N : Type*} {T : ℝ} (hT : 0 < T) {f : ℝ → N}
     (hmatch : (fun t => f (t + T)) =ᶠ[𝓝 (0 : ℝ)] f) (x : ℝ) :
     ∃ c : ℝ, x + c ∈ Set.Ico (0 : ℝ) T ∧ periodicExtension hT f =ᶠ[𝓝 x] (fun t => f (t + c)) := by
@@ -492,6 +534,8 @@ theorem CircleGluing.periodicExtension_germ {N : Type*} {T : ℝ} (hT : 0 < T) {
     congrArg f (toIcoMod_sub_zsmul hT 0 t n)
   exact heq.symm.trans ht
 
+/-- The periodic extension of a map that is smooth on `[0, T)` and matches its translate by `T`
+near `0` is smooth on all of `ℝ`. -/
 theorem CircleGluing.periodicExtension_contMDiff {N : Type*} {T : ℝ} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (hT : 0 < T) {f : ℝ → N}
@@ -504,6 +548,8 @@ theorem CircleGluing.periodicExtension_contMDiff {N : Type*} {T : ℝ} {G H : Ty
     ((hf (x + c) hc).comp x (contMDiff_id.add contMDiff_const).contMDiffAt).congr_of_eventuallyEq
       heq
 
+/-- Under the same hypotheses, the periodic extension is an immersion if `f` is one on
+`[0, T)`. -/
 theorem CircleGluing.periodicExtension_derivative_injective {N : Type*} {T : ℝ}
     {G H : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N] (hT : 0 < T) {f : ℝ → N}
@@ -516,27 +562,35 @@ theorem CircleGluing.periodicExtension_derivative_injective {N : Type*} {T : ℝ
   exact MorseCancellation.injective_mfderiv_curve_translate (hf (x + c) hc) (hi (x + c) hc)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The concatenation of `α` on `[0, 2r]` (as `t ↦ α (t - r)`) with `β` on `(2r, 2r+1]` (as
+`t ↦ β (t - 2r)`). -/
 def CircleGluing.joinedArc {N : Type*} (α β : ℝ → N) (r t : ℝ) : N :=
   if t ≤ 2 * r then α (t + (-r)) else β (t + (-2 * r))
 
+/-- Before the seam, the concatenation is the translate of `α`. -/
 theorem CircleGluing.joinedArc_left {N : Type*} {α β : ℝ → N} {r t : ℝ} (ht : t ≤ 2 * r) :
     joinedArc α β r t = α (t + (-r)) :=
   if_pos ht
 
+/-- After the seam, the concatenation is the translate of `β`. -/
 theorem CircleGluing.joinedArc_right {N : Type*} {α β : ℝ → N} {r t : ℝ} (ht : 2 * r < t) :
     joinedArc α β r t = β (t + (-2 * r)) :=
   if_neg (not_le.mpr ht)
 
+/-- Near a parameter strictly before the seam, the concatenation is the translate of `α`. -/
 theorem CircleGluing.joinedArc_left_germ {N : Type*} {α β : ℝ → N} {r t : ℝ}
     (ht : t < 2 * r) : joinedArc α β r =ᶠ[𝓝 t] (fun s => α (s + (-r))) := by
   filter_upwards [Iio_mem_nhds ht] with s hs
   exact joinedArc_left hs.le
 
+/-- Near a parameter strictly after the seam, the concatenation is the translate of `β`. -/
 theorem CircleGluing.joinedArc_right_germ {N : Type*} {α β : ℝ → N} {r t : ℝ}
     (ht : 2 * r < t) : joinedArc α β r =ᶠ[𝓝 t] (fun s => β (s + (-2 * r))) := by
   filter_upwards [Ioi_mem_nhds ht] with s hs
   exact joinedArc_right hs
 
+/-- At the seam `2r`, the concatenation is still the translate of `α`, because `β` agrees with
+that translate near `0`. -/
 theorem CircleGluing.joinedArc_seam_germ {N : Type*} {α β : ℝ → N} {r : ℝ}
     (h0 : β =ᶠ[𝓝 (0 : ℝ)] (fun t => α (t + r))) :
     joinedArc α β r =ᶠ[𝓝 (2 * r)] (fun s => α (s + (-r))) := by
@@ -551,6 +605,8 @@ theorem CircleGluing.joinedArc_seam_germ {N : Type*} {α β : ℝ → N} {r : �
     congr 1
     ring
 
+/-- The concatenation matches its translate by the period `2r + 1` near `0`, because `β` agrees
+with `t ↦ α (t - 1 - r)` near `1`. -/
 theorem CircleGluing.joinedArc_periodic_germ {N : Type*} {α β : ℝ → N} {r : ℝ} (hr : 0 < r)
     (h1 : β =ᶠ[𝓝 (1 : ℝ)] (fun t => α (t + (-1 - r)))) :
     (fun t => joinedArc α β r (t + (2 * r + 1))) =ᶠ[𝓝 (0 : ℝ)] joinedArc α β r := by
@@ -565,6 +621,8 @@ theorem CircleGluing.joinedArc_periodic_germ {N : Type*} {α β : ℝ → N} {r 
   congr 1
   ring
 
+/-- The concatenation is injective on one period when both arcs are injective and `β` meets the
+arc `α '' [-r, r]` only at its endpoints. -/
 theorem CircleGluing.joinedArc_injOn {N : Type*} {α β : ℝ → N} {r : ℝ}
     (hα : Set.InjOn α (Set.Icc (-r) r)) (hβ : Set.InjOn β (Set.Icc (0 : ℝ) 1))
     (havoid : ∀ t ∈ Set.Ioo (0 : ℝ) 1, β t ∉ α '' Set.Icc (-r) r) :
@@ -588,6 +646,7 @@ theorem CircleGluing.joinedArc_injOn {N : Type*} {α β : ℝ → N} {r : ℝ}
         (Set.Ioo_subset_Icc_self (hright hy (lt_of_not_ge hyl))) hxy
     linarith
 
+/-- The concatenation is smooth at every parameter of one period. -/
 theorem CircleGluing.joinedArc_contMDiffAt {N : Type*} {G H : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] {α β : ℝ → N} {R r : ℝ} (hrR : r < R)
@@ -607,6 +666,7 @@ theorem CircleGluing.joinedArc_contMDiffAt {N : Type*} {G H : Type*} [NormedAddC
       (hβ.comp (contMDiff_id.add contMDiff_const)).contMDiffAt.congr_of_eventuallyEq
         (joinedArc_right_germ (lt_of_not_ge htle))
 
+/-- The concatenation is an immersion at every parameter of one period. -/
 theorem CircleGluing.joinedArc_derivative_injective {N : Type*} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] {α β : ℝ → N} {R r : ℝ} (hrR : r < R)
@@ -631,13 +691,16 @@ theorem CircleGluing.joinedArc_derivative_injective {N : Type*} {G H : Type*}
     exact
       MorseCancellation.injective_mfderiv_curve_translate (hβ.mdifferentiableAt (by simp)) (hiβ _ htβ)
 
+/-- The `(2r+1)`-periodic extension of the concatenation `joinedArc α β r`. -/
 def CircleGluing.joinedLoop {N : Type*} {r : ℝ} (hr : 0 < r) (α β : ℝ → N) : ℝ → N :=
   periodicExtension (show 0 < 2 * r + 1 by linarith) (joinedArc α β r)
 
+/-- The glued loop is periodic of period `2r + 1`. -/
 theorem CircleGluing.joinedLoop_periodic {N : Type*} {r : ℝ} (hr : 0 < r) (α β : ℝ → N) :
     Function.Periodic (joinedLoop hr α β) (2 * r + 1) :=
   periodicExtension_periodic _ _
 
+/-- On the first part of a period the glued loop traverses `α` on `[-r, r]`. -/
 theorem CircleGluing.joinedLoop_left {N : Type*} {r : ℝ} (hr : 0 < r) (α β : ℝ → N) {s : ℝ}
     (hs : s ∈ Set.Icc (-r) r) : joinedLoop hr α β (s + r) = α s := by
   change joinedArc α β r (toIcoMod _ 0 (s + r)) = α s
@@ -646,6 +709,7 @@ theorem CircleGluing.joinedLoop_left {N : Type*} {r : ℝ} (hr : 0 < r) (α β :
   congr 1
   ring
 
+/-- On the second part of a period the glued loop traverses `β` on `[0, 1]`. -/
 theorem CircleGluing.joinedLoop_right {N : Type*} {r : ℝ} (hr : 0 < r) {α β : ℝ → N}
     (h0 : β 0 = α r) (h1 : β 1 = α (-r)) {s : ℝ} (hs : s ∈ Set.Icc (0 : ℝ) 1) :
     joinedLoop hr α β (2 * r + s) = β s := by
@@ -672,6 +736,7 @@ theorem CircleGluing.joinedLoop_right {N : Type*} {r : ℝ} (hr : 0 < r) {α β 
       congr 1
       ring
 
+/-- The image of the glued loop is the union of the two arcs. -/
 theorem CircleGluing.joinedLoop_range {N : Type*} {r : ℝ} (hr : 0 < r) {α β : ℝ → N}
     (h0 : β 0 = α r) (h1 : β 1 = α (-r)) :
     Set.range (joinedLoop hr α β) = α '' Set.Icc (-r) r ∪ β '' Set.Icc (0 : ℝ) 1 := by
@@ -691,6 +756,7 @@ theorem CircleGluing.joinedLoop_range {N : Type*} {r : ℝ} (hr : 0 < r) {α β 
     · exact ⟨s + r, joinedLoop_left hr α β hs⟩
     · exact ⟨2 * r + s, joinedLoop_right hr h0 h1 hs⟩
 
+/-- The glued loop is injective on one period. -/
 theorem CircleGluing.joinedLoop_injOn {N : Type*} {r : ℝ} (hr : 0 < r) {α β : ℝ → N}
     (hα : Set.InjOn α (Set.Icc (-r) r)) (hβ : Set.InjOn β (Set.Icc (0 : ℝ) 1))
     (havoid : ∀ t ∈ Set.Ioo (0 : ℝ) 1, β t ∉ α '' Set.Icc (-r) r) :
@@ -702,6 +768,7 @@ theorem CircleGluing.joinedLoop_injOn {N : Type*} {r : ℝ} (hr : 0 < r) {α β 
     (toIcoMod_eq_self _).mpr (by simpa only [zero_add] using hy)] at hxy
   exact hxy
 
+/-- The glued loop is smooth. -/
 theorem CircleGluing.joinedLoop_contMDiff {N : Type*} {r : ℝ} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (hr : 0 < r) {α β : ℝ → N} {R : ℝ} (hrR : r < R)
@@ -712,6 +779,7 @@ theorem CircleGluing.joinedLoop_contMDiff {N : Type*} {r : ℝ} {G H : Type*}
   periodicExtension_contMDiff _ (joinedArc_periodic_germ hr h1)
     (fun _ ht => joinedArc_contMDiffAt hrR hα hβ h0 ht)
 
+/-- The glued loop is an immersion. -/
 theorem CircleGluing.joinedLoop_derivative_injective {N : Type*} {r : ℝ} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (hr : 0 < r) {α β : ℝ → N} {R : ℝ} (hrR : r < R)
@@ -724,6 +792,7 @@ theorem CircleGluing.joinedLoop_derivative_injective {N : Type*} {r : ℝ} {G H 
     (fun _ ht => (joinedArc_contMDiffAt hrR hα hβ h0 ht).mdifferentiableAt (by simp))
     (fun _ ht => joinedArc_derivative_injective hrR hα hβ h0 hiα hiβ ht) t
 
+/-- `Circle.exp : ℝ → Circle` is an immersion. -/
 theorem CircleGluing.circleExp_derivative_injective (t : ℝ) :
     Function.Injective (mfderiv 𝓘(ℝ, ℝ) (𝓡 1) Circle.exp t) := by
   let _ : Fact (Module.finrank ℝ ℂ = 1 + 1) := ⟨Complex.finrank_real_complex⟩
@@ -747,6 +816,7 @@ theorem CircleGluing.circleExp_derivative_injective (t : ℝ) :
   intro x y hxy
   exact hi (congrArg (mfderiv (𝓡 1) 𝓘(ℝ, ℂ) c (Circle.exp t)) hxy)
 
+/-- `Circle.exp` is a local diffeomorphism at every point. -/
 theorem CircleGluing.circleExp_localDiffeomorph (t : ℝ) :
     IsLocalDiffeomorphAt 𝓘(ℝ, ℝ) (𝓡 1) ∞ Circle.exp t := by
   let L : ℝ →L[ℝ] EuclideanSpace ℝ (Fin 1) := mfderiv 𝓘(ℝ, ℝ) (𝓡 1) Circle.exp t
@@ -759,6 +829,8 @@ theorem CircleGluing.circleExp_localDiffeomorph (t : ℝ) :
       (contMDiff_circleExp (m := ∞)).contMDiffOn
   exact ⟨(LinearEquiv.ofBijective L.toLinearMap ⟨hi, hs⟩).toContinuousLinearEquiv, rfl⟩
 
+/-- A map out of `Circle` is smooth as soon as its composite with `Circle.exp` is, since
+`Circle.exp` is a surjective local diffeomorphism. -/
 theorem CircleGluing.contMDiff_of_comp_circleExp {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] {γ : Circle → N} (hγ : ContMDiff 𝓘(ℝ, ℝ) J ∞ (γ ∘ Circle.exp)) :
@@ -772,10 +844,12 @@ theorem CircleGluing.contMDiff_of_comp_circleExp {G H N : Type*} [NormedAddCommG
   filter_upwards [h.localInverse_eventuallyEq_right] with y hy
   exact (congrArg γ hy).symm
 
+/-- A `T`-periodic map `ℝ → N` seen as a map `Circle → N`. -/
 def CircleGluing.periodicCircle {N : Type*} {T : ℝ} {f : ℝ → N} (hT : T ≠ 0)
     (hper : Function.Periodic f T) (z : Circle) : N :=
   hper.lift ((AddCircle.homeomorphCircle hT).symm z)
 
+/-- The defining property: the induced map on `Circle` recovers `f` along the exponential. -/
 theorem CircleGluing.periodicCircle_exp {N : Type*} {T : ℝ} {f : ℝ → N} (hT : T ≠ 0)
     (hper : Function.Periodic f T) (t : ℝ) :
     periodicCircle hT hper (Circle.exp (2 * Real.pi / T * t)) = f t := by
@@ -783,6 +857,7 @@ theorem CircleGluing.periodicCircle_exp {N : Type*} {T : ℝ} {f : ℝ → N} (h
     by rw [AddCircle.homeomorphCircle_apply, AddCircle.toCircle_apply_mk]
   rw [heq, periodicCircle, Homeomorph.symm_apply_apply, Function.Periodic.lift_coe]
 
+/-- Composing the induced map with `Circle.exp` rescales the parameter by `T / 2π`. -/
 theorem CircleGluing.periodicCircle_comp_exp {N : Type*} {T : ℝ} {f : ℝ → N} (hT : T ≠ 0)
     (hper : Function.Periodic f T) :
     periodicCircle hT hper ∘ Circle.exp = (fun t => f (T / (2 * Real.pi) * t)) := by
@@ -792,6 +867,7 @@ theorem CircleGluing.periodicCircle_comp_exp {N : Type*} {T : ℝ} {f : ℝ → 
   rw [heq] at hh
   exact hh
 
+/-- The induced map on `Circle` is injective when `f` is injective on one period. -/
 theorem CircleGluing.periodicCircle_injective {N : Type*} {T : ℝ} {f : ℝ → N} (hT : 0 < T)
     (hper : Function.Periodic f T) (hi : Set.InjOn f (Set.Ico (0 : ℝ) T)) :
     Function.Injective (periodicCircle hT.ne' hper) := by
@@ -812,6 +888,7 @@ theorem CircleGluing.periodicCircle_injective {N : Type*} {T : ℝ} {f : ℝ →
   apply e.symm.injective
   rw [← hx, ← hy, hxy]
 
+/-- The induced map on `Circle` has the same image as `f`. -/
 theorem CircleGluing.periodicCircle_range {N : Type*} {T : ℝ} {f : ℝ → N} (hT : T ≠ 0)
     (hper : Function.Periodic f T) : Set.range (periodicCircle hT hper) = Set.range f := by
   ext z
@@ -823,6 +900,7 @@ theorem CircleGluing.periodicCircle_range {N : Type*} {T : ℝ} {f : ℝ → N} 
   · rintro ⟨t, rfl⟩
     exact ⟨Circle.exp (2 * Real.pi / T * t), periodicCircle_exp hT hper t⟩
 
+/-- The induced map on `Circle` is smooth when `f` is. -/
 theorem CircleGluing.periodicCircle_contMDiff {N : Type*} {T : ℝ} {f : ℝ → N} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (hT : T ≠ 0) (hper : Function.Periodic f T)
@@ -831,6 +909,8 @@ theorem CircleGluing.periodicCircle_contMDiff {N : Type*} {T : ℝ} {f : ℝ →
   rw [periodicCircle_comp_exp]
   exact hf.comp (contDiff_const.mul contDiff_id).contMDiff
 
+/-- Injectivity of the derivative of a curve is preserved by rescaling the parameter by a
+nonzero constant. -/
 theorem CircleGluing.injective_mfderiv_curve_const_mul {N : Type*} {G H : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] {α : ℝ → N} {s a : ℝ} (ha : a ≠ 0)
@@ -850,6 +930,7 @@ theorem CircleGluing.injective_mfderiv_curve_const_mul {N : Type*} {G H : Type*}
   intro x y hxy
   exact hmul (hi hxy)
 
+/-- The induced map on `Circle` is an immersion when `f` is. -/
 theorem CircleGluing.periodicCircle_derivative_injective {N : Type*} {T : ℝ} {f : ℝ → N}
     {G H : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N] (hT : T ≠ 0)
@@ -883,6 +964,7 @@ theorem CircleGluing.periodicCircle_derivative_injective {N : Type*} {T : ℝ} {
         exact hxy)
   exact hux.symm.trans ((congrArg (mfderiv 𝓘(ℝ, ℝ) (𝓡 1) Circle.exp t) huv).trans hvy)
 
+/-- The inclusion of an open subset of a manifold is an immersion. -/
 theorem NativeOpenSubmanifold.injective_mfderiv_subtype_val {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [TopologicalSpace M] [ChartedSpace H M] (U : TopologicalSpace.Opens M) (p : U) :
@@ -912,6 +994,10 @@ theorem NativeOpenSubmanifold.injective_mfderiv_subtype_val {E H M : Type*}
   have hw' := congrArg (fun L => L w) heq
   exact hv'.trans (hh.trans hw'.symm)
 
+/-- Main gluing statement: in a manifold of dimension at least `3`, an embedded immersed arc
+`α` on `[-R, R]` whose endpoints `α (±r)` lie in an open set `S` and are joined by a path in `S`
+lies on a smoothly embedded circle `γ : Circle → N` which traverses `α` on `[-r, r]` and whose
+remaining image is contained in `S`. -/
 theorem MorseCancellation.exists_embedded_circle_through_arc {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -973,6 +1059,8 @@ theorem MorseCancellation.exists_embedded_circle_through_arc {G H N : Type*} [No
     · exact Or.inl hz
     · exact Or.inr (b t).property
 
+/-- If a flow cylinder `N × ℝ ≃ X` is given by `(z, t) ↦ F t (ι z)` and `B ⊆ X` is dense and
+flow-invariant, then `ι ⁻¹' B` is dense in `N`. -/
 theorem MorseCancellation.dense_section_of_flow_cylinder {N X : Type*} [TopologicalSpace N]
     [TopologicalSpace X] (A : OpenPartialHomeomorph (N × ℝ) X) (hsource : A.source = Set.univ)
     (F : Flow ℝ X) (ι : N → X) (hformula : ∀ z, A z = F z.2 (ι z.1)) {B : Set X} (hB : Dense B)
@@ -991,6 +1079,8 @@ theorem MorseCancellation.dense_section_of_flow_cylinder {N X : Type*} [Topologi
   apply (hinv t (ι w)).mp
   rwa [hformula] at hxB
 
+/-- On a regular level, the points whose forward orbit converges to a critical point of index
+`0` form a dense subset. -/
 theorem AdaptedWindows.dense_regular_level_minimum_basins {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1018,7 +1108,9 @@ theorem AdaptedWindows.dense_regular_level_minimum_basins {E M : Type*} [NormedA
     · rintro ⟨p, hp, hlim⟩
       exact ⟨p, hp, (MorseCancellation.flow_time_atTop_limit_iff S.flow t x p.val).mpr hlim⟩
 
-theorem MorseCancellation.unitSphere_eq_two_points_of_finrank_one {V : Type} [NormedAddCommGroup V]
+/-- The unit sphere of a one-dimensional real normed space has exactly two points: any point of
+it equals one of two given distinct points. -/
+theorem MorseCancellation.unitSphere_eq_two_points_of_finrank_one {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (hdim : Module.finrank ℝ V = 1)
     (u v : Metric.sphere (0 : V) 1) (huv : u ≠ v) (w : Metric.sphere (0 : V) 1) : w = u ∨ w = v :=
   by
@@ -1040,6 +1132,9 @@ theorem MorseCancellation.unitSphere_eq_two_points_of_finrank_one {V : Type} [No
       (fun h => Or.inr (e.injective (Subtype.ext h)))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Between two consecutive critical points there is a diffeomorphism of `M` carrying the
+sublevel set below the upper window of `p` onto the sublevel set below the lower window of `q`,
+restricting to a diffeomorphism of the two levels and moving every point along its orbit. -/
 theorem AdaptedWindows.exists_orbit_bandBridge {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1060,6 +1155,8 @@ theorem AdaptedWindows.exists_orbit_bandBridge {E M : Type*} [NormedAddCommGroup
     (S.data p).upper_regular (S.data q).lower_regular
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A point of the upper level of the window at `p` has its backward orbit converging to `q`
+exactly when it lies on the attaching sphere of `q` transported to that level. -/
 theorem AdaptedWindows.transported_attaching_basin_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -1079,6 +1176,9 @@ theorem AdaptedWindows.transported_attaching_basin_iff {E M : Type*} [NormedAddC
   rw [← ht]
   exact (MorseCancellation.flow_time_atBot_limit_iff S.flow t (x : M) q.val).symm
 
+/-- If, on a regular level between `q` and `p`, exactly one point both flows back to `p` and
+flows forward through `D` to `q`, then the modified flow `G` has a connecting orbit from `p` to
+`q`, and it is unique up to reparametrisation. -/
 theorem FlowSuspension.exists_unique_connection_of_unit_level_count {M : Type*}
     [TopologicalSpace M] (F G : Flow ℝ M) {f : M → ℝ} (hf : Continuous f) {p q : M} {c : ℝ}
     (hpc : c < f p) (hqc : f q < c) (D : { x : M // f x = c } → { x : M // f x = c })
@@ -1117,6 +1217,8 @@ theorem FlowSuspension.exists_unique_connection_of_unit_level_count {M : Type*}
       unique_connection_of_level_basin_intersection F G hf hpc hqc D hback hforward z hmem.1
         hmem.2 hu⟩
 
+/-- If no point of the level both flows back to `p` and flows forward through `D` to `q`, then
+the modified flow `G` has no connecting orbit from `p` to `q`. -/
 theorem FlowSuspension.no_connection_of_level_basin_disjointness {M : Type*}
     [TopologicalSpace M] (F G : Flow ℝ M) {f : M → ℝ} (hf : Continuous f) {p q : M} {c : ℝ}
     (hpc : c < f p) (hqc : f q < c) (D : { x : M // f x = c } → { x : M // f x = c })
@@ -1146,6 +1248,8 @@ theorem FlowSuspension.no_connection_of_level_basin_disjointness {M : Type*}
   exact hdisjoint u ⟨(hback u).mp hub, (hforward u).mp huf⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The normal coordinate of the belt sphere in the upper level has surjective derivative along
+the belt sphere: the belt sphere is a regular level of that coordinate. -/
 theorem ManifoldMorse.MorseSurgeryData.surjective_beltNormal_derivative {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -1222,6 +1326,8 @@ theorem ManifoldMorse.MorseSurgeryData.surjective_beltNormal_derivative {E M : T
       (d.surgery.beltSphere v) (hn.mdifferentiableAt (by simp)) R hLR hBR
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The tangent space to the belt sphere is exactly the kernel of the derivative of the normal
+coordinate: the belt sphere is cut out transversally by that coordinate. -/
 theorem ManifoldMorse.MorseSurgeryData.range_belt_derivative_eq_normal_kernel {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -1261,6 +1367,9 @@ theorem ManifoldMorse.MorseSurgeryData.range_belt_derivative_eq_normal_kernel {E
   omega
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A map `g` of an `m`-sphere into the upper level that is transverse to the belt sphere at a
+point meets it transversally in the strong sense: the derivative of the normal coordinate
+composed with `g` is bijective there. -/
 theorem ManifoldMorse.MorseSurgeryData.bijective_beltNormal_comp_of_transverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}

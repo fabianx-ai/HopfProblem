@@ -21,19 +21,30 @@ For a continuous map `f : X ⟶ Y`, an abelian sheaf `F` on `X`, and an injectiv
 tower of the derived object represented by the pushed complex `f_* I`.
 
 Its initial page is exposed as the shifted representable group of each Postnikov slice.  The
-cohomology objects of the total derived object are identified with the genuine higher direct
-images `Rᵠf_*F`, yielding an objectwise identification of the page with
-`Hᵖ(Y, Rᵠf_*F)` (universe-lifted at the categorical level).
+cohomology objects of the total derived object are identified with the higher direct images
+`Rᑫf_*F`, yielding an objectwise identification of the page with `Hᵖ(Y, Rᑫf_*F)`
+(universe-lifted at the categorical level, because the standard derived category of small
+sheaves has large morphism types).
 
-This is the page-construction owner, not by itself the complete Leray theorem.  The page adapter
-uses the normalized slice-to-homology comparison whose naturality is proved in
-`Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality`; the generic stable endpoint,
-finite-page stabilization, and the pushed-resolution abutment are supplied downstream by the
-`SpectralObject.StableEndpoint`, `SpectralObject.FinitePageStabilization`, and
-`Leray.ResolutionAbutment` owners.  The literal page-two differential is expanded downstream in
-`Leray.ResolutionPostnikovD2`; both endpoint coordinates are matched with resolution cohomology
-in `Leray.ResolutionPostnikovD2Coordinates`.  The complete positive comparison with the two-step
-resolution transgression is supplied by `Leray.ResolutionPostnikovD2Transgression`.
+This is the `E₂` page of the Leray spectral sequence
+
+`E₂^{p,q} = Hᵖ(Y, Rᑫf_*F) ⇒ Hᵖ⁺ᑫ(X, F)`
+
+(Godement, *Topologie algébrique et théorie des faisceaux*, II.4.17.1; Weibel, *An Introduction
+to Homological Algebra*, 5.8.6), constructed from the Postnikov tower of the `t`-structure on the
+derived category rather than from a filtration of a double complex (Kashiwara–Schapira,
+*Categories and Sheaves*, §12–13; Verdier).  Convergence and the identification of the abutment
+are not part of this file.
+
+## Main definitions
+
+* `pushedResolutionDerivedObject f I`: the object of `D(Sh(Y))` represented by `f_*I`.
+* `resolutionPostnikovSpectralObject f I`, `resolutionPostnikovSpectralSequence f I`: its
+  Postnikov spectral object and the resulting first-quadrant spectral sequence.
+* `pushedResolutionDerivedObjectHomologyHigherDirectImageIso`: `Hᑫ(f_*I) ≅ Rᑫf_*F`
+  (Hartshorne III.8).
+* `resolutionPostnikovE₂Iso`, `resolutionPostnikovE₂AddEquiv`: the `E₂` page at `(p, q)` is
+  `Hᵖ(Y, Rᑫf_*F)`, up to the universe lift.
 -/
 
 @[expose] public section

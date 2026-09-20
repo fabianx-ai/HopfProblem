@@ -13,9 +13,12 @@ public import Mathlib.Topology.Sheaves.Stalks
 /-!
 # A local lift-and-kill criterion for stalk maps
 
-A map out of a sheaf stalk is bijective when every target element has a representative on some
-neighborhood and every local section in its kernel vanishes after shrinking.  This is the standard
-filtered-colimit argument, packaged independently of any geometric application.
+A map out of a presheaf stalk is bijective when every target element has a representative on some
+neighborhood and every local section in its kernel vanishes after shrinking.
+
+This is the filtered-colimit criterion for bijectivity of a map out of a stalk (Godement,
+*Topologie algébrique et théorie des faisceaux*, II.1.1), in the form obtained from
+`TopCat.Presheaf.exists_germ_eq` and `TopCat.Presheaf.germ_res_apply`.
 -/
 
 @[expose] public section
@@ -26,8 +29,10 @@ open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
 namespace CategoryTheory.Sheaf.Leray
 
-variable {X : TopCat.{0}} (P : TopCat.Presheaf AddCommGrpCat.{0} X)
-  (x : X) (A : AddCommGrpCat.{0})
+universe u
+
+variable {X : TopCat.{u}} (P : TopCat.Presheaf AddCommGrpCat.{u} X)
+  (x : X) (A : AddCommGrpCat.{u})
   (m : TopCat.Presheaf.stalk P x ⟶ A)
   (e : ∀ (U : Opens X), x ∈ U → (P.obj (op U) ⟶ A))
 

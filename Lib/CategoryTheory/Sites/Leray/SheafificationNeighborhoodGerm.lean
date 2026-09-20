@@ -14,11 +14,14 @@ public import Lib.Topology.Sheaves.SheafificationLocal
 /-!
 # Local representatives and normalized higher-direct-image germs
 
-This adapter sends a local representative in the resolution presheaf to the normalized
-Ext-defined neighborhood germ used by fibre evaluation.  It is purely a sheafification and
-normalization compatibility statement; it assumes no proper-base-change theorem.
+A section of `Rⁿf_*F` near `y` is, by Hartshorne III.8.1 and the fact that sheafification
+preserves stalks (Hartshorne II.1.2), represented on some neighbourhood `U` of `y` by a class in
+`Hⁿ(Γ(f⁻¹U, I))`.  This file identifies the germ at `y` of such a local representative with the
+normalized Ext-defined neighbourhood germ of `FibreStalkEvaluation.derivedNeighborhoodGerm`.
 
-It does not identify a higher-direct-image stalk with the cohomology of a geometric fibre.
+There is no separate textbook statement: it is the compatibility of the two descriptions of a
+germ of `Rⁿf_*F` used here.  It assumes no proper-base-change theorem and does not identify a
+higher-direct-image stalk with the cohomology of a geometric fibre.
 -/
 
 @[expose] public section

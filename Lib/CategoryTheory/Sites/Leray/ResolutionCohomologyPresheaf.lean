@@ -13,12 +13,21 @@ public import Lib.Topology.Sheaves.OpenRestriction.Cohomology
 /-!
 # Resolution cohomology as a presheaf
 
-This file identifies the homology presheaf of an explicit injective resolution with Mathlib's
-native Ext-defined cohomology presheaf in every strictly positive degree.  It then records the
-same comparison after exact presheaf pushforward.
+This file identifies the homology presheaf of an explicit injective resolution with the
+Ext-defined cohomology presheaf in every strictly positive degree: for an injective resolution
+`I` of a sheaf `G` on `X`,
 
-The endpoint is a natural isomorphism of presheaves, so restriction maps, germs, and stalks are
-included.  No proper-base-change theorem or fibre-cohomology identification is asserted here.
+`U ↦ Hⁿ⁺¹(Γ(U, I))`  is  `U ↦ Hⁿ⁺¹(U, G)`,
+
+and, after the exact presheaf pushforward along `f : X ⟶ Y`, `U ↦ Hⁿ⁺¹(Γ(f⁻¹U, I))` is
+`U ↦ Hⁿ⁺¹(f⁻¹U, G)`.  This presheaf identification is the first half of the proof of Hartshorne,
+*Algebraic Geometry*, III.8.1; the sheafification that completes it is in
+`Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification`.
+
+The ingredients are the representability `Hom(ℤ_U, −) = Γ(U, −)` of sections by the free sheaf on
+an open and the exactness of evaluation at an open and of presheaf pushforward.  The endpoint is a
+natural isomorphism of presheaves, so restriction maps, germs, and stalks are included.  No
+proper-base-change theorem or fibre-cohomology identification is asserted here.
 -/
 
 @[expose] public section
@@ -33,6 +42,8 @@ open CategoryTheory.Abelian CochainComplex.HomComplex
 open CategoryTheory.InjectiveResolution
 
 namespace CategoryTheory.Sheaf.Leray
+
+universe u
 
 section SheafSections
 
@@ -61,29 +72,41 @@ def freeOpenSectionsIso (U : Opens X) :
       ext h
       exact freeHomEquiv_naturality U h g)
 
+/-- Taking sections over an open is an additive functor of the coefficient sheaf. -/
 theorem sectionsFunctor_additive (U : Opens X) : (sectionsFunctor U).Additive where
   map_add := by intros; rfl
 
 attribute [local instance] sectionsFunctor_additive
 
+section Evaluation
+
+variable {X : TopCat.{u}}
+
 /-- Evaluation of an abelian presheaf at an open. -/
 abbrev presheafEvaluation (U : Opens X) :
-    TopCat.Presheaf AddCommGrpCat.{0} X ⥤ AddCommGrpCat.{0} :=
+    TopCat.Presheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
   (evaluation (Opens X)ᵒᵖ AddCommGrpCat).obj (op U)
 
+/-- Evaluation of abelian presheaves at an open is an additive functor. -/
 theorem presheafEvaluation_additive (U : Opens X) :
     (presheafEvaluation U).Additive where
   map_add := by intros; rfl
 
+/-- Evaluation of abelian presheaves at an open preserves finite limits: limits of presheaves
+are computed objectwise. -/
 theorem presheafEvaluation_preservesFiniteLimits (U : Opens X) :
     PreservesFiniteLimits (presheafEvaluation U) :=
   inferInstanceAs (PreservesFiniteLimits
-    ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{0}).obj (op U)))
+    ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op U)))
 
+/-- Evaluation of abelian presheaves at an open preserves finite colimits; with the previous
+lemma, evaluation at an open is an exact functor on abelian presheaves. -/
 theorem presheafEvaluation_preservesFiniteColimits (U : Opens X) :
     PreservesFiniteColimits (presheafEvaluation U) :=
   inferInstanceAs (PreservesFiniteColimits
-    ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{0}).obj (op U)))
+    ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op U)))
+
+end Evaluation
 
 attribute [local instance] presheafEvaluation_additive
   presheafEvaluation_preservesFiniteLimits presheafEvaluation_preservesFiniteColimits
@@ -190,8 +213,9 @@ def representedHomologyPresheafIso
   NatIso.ofComponents (fun U => homSectionsHomologyIso K U.unop m)
     (fun i => homSectionsHomologyIso_hom_naturality_open K i.unop m)
 
-/-- In every positive degree, an explicit injective resolution computes
-Mathlib's native sheaf-cohomology presheaf. -/
+/-- In every positive degree, an explicit injective resolution computes the sheaf-cohomology
+presheaf: `U ↦ Hⁿ⁺¹(Γ(U, I))` is `U ↦ Hⁿ⁺¹(U, G)`.  This is the presheaf identification used in
+the proof of Hartshorne III.8.1. -/
 def resolutionCohomologyPresheafIsoPositive
     {G : TopCat.Sheaf AddCommGrpCat.{0} X} (I : InjectiveResolution G) (n : ℕ) :
     homologyPresheaf I.cocomplex (n + 1) ≅
@@ -206,26 +230,37 @@ section Pushforward
 
 variable {X Y : TopCat.{0}} (f : X ⟶ Y)
 
+section PresheafLevel
+
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
+
 /-- Presheaf pushforward is literal precomposition with inverse image
 on opens. -/
-abbrev presheafPushforward : TopCat.Presheaf AddCommGrpCat.{0} X ⥤
-    TopCat.Presheaf AddCommGrpCat.{0} Y :=
+abbrev presheafPushforward : TopCat.Presheaf AddCommGrpCat.{u} X ⥤
+    TopCat.Presheaf AddCommGrpCat.{u} Y :=
   TopCat.Presheaf.pushforward AddCommGrpCat f
 
+/-- Presheaf pushforward is an additive functor. -/
 theorem presheafPushforward_additive : (presheafPushforward f).Additive where
   map_add := by intros; rfl
 
+/-- Presheaf pushforward preserves finite limits, being precomposition with `(Opens.map f).op`
+on a functor category. -/
 theorem presheafPushforward_preservesFiniteLimits :
     PreservesFiniteLimits (presheafPushforward f) :=
   inferInstanceAs (PreservesFiniteLimits
-    ((Functor.whiskeringLeft (Opens Y)ᵒᵖ (Opens X)ᵒᵖ AddCommGrpCat.{0}).obj
+    ((Functor.whiskeringLeft (Opens Y)ᵒᵖ (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj
       (Opens.map f).op))
 
+/-- Presheaf pushforward preserves finite colimits; with the previous lemma, `f_*` on abelian
+presheaves is exact. -/
 theorem presheafPushforward_preservesFiniteColimits :
     PreservesFiniteColimits (presheafPushforward f) :=
   inferInstanceAs (PreservesFiniteColimits
-    ((Functor.whiskeringLeft (Opens Y)ᵒᵖ (Opens X)ᵒᵖ AddCommGrpCat.{0}).obj
+    ((Functor.whiskeringLeft (Opens Y)ᵒᵖ (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj
       (Opens.map f).op))
+
+end PresheafLevel
 
 attribute [local instance] presheafPushforward_additive
   presheafPushforward_preservesFiniteLimits presheafPushforward_preservesFiniteColimits
@@ -237,9 +272,9 @@ def homologyPresheafPushforwardIso
       (Opens.map f).op ⋙ homologyPresheaf K m :=
   mapComplexHomologyIso (underlyingPresheafComplex K) (presheafPushforward f) m
 
-/-- Literal positive-degree R1 presheaf comparison: the pushed
-resolution homology presheaf is the inverse-image-open cohomology
-presheaf, with all restriction maps intact. -/
+/-- Inverse-image form of the previous comparison: in every positive degree the homology
+presheaf of the pushed resolution `f_*I` is the presheaf `U ↦ Hⁿ⁺¹(f⁻¹U, G)`, with all
+restriction maps intact.  This is the presheaf appearing in the proof of Hartshorne III.8.1. -/
 def pushedResolutionCohomologyPresheafIsoPositive
     {G : AbelianSheaf X} (I : InjectiveResolution G) (n : ℕ) :
     homologyPresheaf (pushedResolution f I) (n + 1) ≅

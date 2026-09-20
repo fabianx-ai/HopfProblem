@@ -19,10 +19,12 @@ sheafification of the presheaf
 
 `U ↦ Hⁿ(Γ(f⁻¹ U, I))`.
 
-This is the resolution form of the standard local description of higher direct images.  It uses
-only exactness of filtered colimits, exactness of evaluation and presheaf pushforward, and exactness
-of abelian sheafification.  It does **not** assert proper base change, identify the displayed
-resolution cohomology with the cohomology of a fibre, or compute any local monodromy.
+This is the resolution form of Hartshorne, *Algebraic Geometry*, III.8.1 (`Rⁱf_*F` is the
+sheafification of the presheaf `V ↦ Hⁱ(f⁻¹V, F)`); see also Godement, *Topologie algébrique et
+théorie des faisceaux*, II.4.17.1.  It uses only exactness of filtered colimits, exactness of
+evaluation and presheaf pushforward, and exactness of abelian sheafification (Godement II.1.2).
+It does **not** assert proper base change, identify the displayed resolution cohomology with the
+cohomology of a fibre, or compute any local monodromy.
 -/
 
 @[expose] public section
@@ -34,19 +36,23 @@ open TopCat.Presheaf
 
 namespace CategoryTheory.Sheaf.Leray
 
-variable {X : TopCat.{0}} (x : X)
+universe u
+
+section Generic
+
+variable {X : TopCat.{u}} (x : X)
 
 /-- Presheaf stalks preserve finite limits: they are filtered colimits of evaluations, and
 filtered colimits of abelian groups are exact. -/
 instance presheafStalk_preservesFiniteLimits :
-    PreservesFiniteLimits (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x) := by
+    PreservesFiniteLimits (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) := by
   change PreservesFiniteLimits
     ((Functor.whiskeringLeft _ _ AddCommGrpCat).obj (OpenNhds.inclusion x).op ⋙ colim)
   infer_instance
 
 /-- Presheaf stalks preserve finite colimits. -/
 instance presheafStalk_preservesFiniteColimits :
-    PreservesFiniteColimits (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x) := by
+    PreservesFiniteColimits (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) := by
   change PreservesFiniteColimits
     ((Functor.whiskeringLeft _ _ AddCommGrpCat).obj (OpenNhds.inclusion x).op ⋙ colim)
   infer_instance
@@ -101,32 +107,37 @@ def stalkHomologyPresheafIso (K : CochainComplex (AbelianSheaf X) ℕ) (n : ℕ)
     TopCat.Presheaf.stalk (K.homology n).obj x ≅
       TopCat.Presheaf.stalk (homologyPresheaf K n) x :=
   (mapComplexHomologyIso K
-    (TopCat.Sheaf.forget AddCommGrpCat X ⋙
-      TopCat.Presheaf.stalkFunctor AddCommGrpCat x) n).symm ≪≫
+    (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) n).symm ≪≫
     mapComplexHomologyIso (underlyingPresheafComplex K)
-      (TopCat.Presheaf.stalkFunctor AddCommGrpCat x) n
+      (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) n
 
 /-- The native abelian sheafification functor on a topological space. -/
-abbrev sheafification (X : TopCat.{0}) :
-    TopCat.Presheaf AddCommGrpCat.{0} X ⥤ AbelianSheaf X :=
+abbrev sheafification (X : TopCat.{u}) :
+    TopCat.Presheaf AddCommGrpCat.{u} X ⥤ AbelianSheaf X :=
   presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat
 
-instance sheafification_additive (X : TopCat.{0}) : (sheafification X).Additive :=
+/-- Abelian sheafification is additive. -/
+instance sheafification_additive (X : TopCat.{u}) : (sheafification X).Additive :=
   inferInstanceAs
-    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).Additive
+    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).Additive
 
-instance sheafification_preservesFiniteLimits (X : TopCat.{0}) :
+/-- Abelian sheafification is left exact: it preserves finite limits. -/
+instance sheafification_preservesFiniteLimits (X : TopCat.{u}) :
     PreservesFiniteLimits (sheafification X) :=
   inferInstanceAs (PreservesFiniteLimits
-    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}))
+    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}))
 
-instance sheafification_preservesFiniteColimits (X : TopCat.{0}) :
+/-- Abelian sheafification is right exact: being a left adjoint, it preserves finite colimits.
+Together with the previous instance this is exactness of sheafification
+(Godement II.1.2; Hartshorne II.1.2). -/
+instance sheafification_preservesFiniteColimits (X : TopCat.{u}) :
     PreservesFiniteColimits (sheafification X) :=
   inferInstanceAs (PreservesFiniteColimits
-    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}))
+    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}))
 
 /-- Sheafifying the underlying presheaf of a sheaf recovers the sheaf. -/
-def sheafificationUnderlyingIso (X : TopCat.{0}) :
+def sheafificationUnderlyingIso (X : TopCat.{u}) :
     TopCat.Sheaf.forget AddCommGrpCat X ⋙ sheafification X ≅ 𝟭 (AbelianSheaf X) :=
   (sheafificationNatIso (Opens.grothendieckTopology X) AddCommGrpCat).symm
 
@@ -142,10 +153,12 @@ def sheafHomologyIsoSheafification (K : CochainComplex (AbelianSheaf X) ℕ) (n 
   HomologicalComplex.homologyMapIso (sheafificationComplexIso K).symm n ≪≫
     mapComplexHomologyIso (underlyingPresheafComplex K) (sheafification X) n
 
-variable {Y : TopCat.{0}} (f : X ⟶ Y)
+end Generic
 
-/-- The genuine higher direct image is the sheafification of the homology presheaf of any
-pushed injective resolution. -/
+variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+
+/-- Hartshorne III.8.1: the genuine higher direct image `Rⁿf_*F` is the sheafification of the
+homology presheaf `U ↦ Hⁿ(Γ(f⁻¹U, I))` of any pushed injective resolution `I` of `F`. -/
 def higherDirectImageResolutionSheafificationIso (F : AbelianSheaf X)
     (I : InjectiveResolution F) (n : ℕ) :
     higherDirectImageSheaf f F n ≅

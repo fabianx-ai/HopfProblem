@@ -16,8 +16,15 @@ public import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates
 
 This file specializes the normalized generic Postnikov `d₂` calculation to a pushed injective
 resolution.  The source and target page coordinates identify its literal page-two differential
-with the positive two-step resolution transgression.  No convergence or support hypothesis is
-used.
+
+`d₂ : E₂^{0,q+1} = H⁰(Y, Rᑫ⁺¹f_*F) → E₂^{2,q} = H²(Y, Rᑫf_*F)`
+
+with the two-step resolution transgression of
+`Lib.CategoryTheory.Sites.Leray.ResolutionTransgression`.  That the `d₂` on the edge of the Leray
+spectral sequence is the transgression is Godement, *Topologie algébrique et théorie des
+faisceaux*, II.4.17 (Weibel, *An Introduction to Homological Algebra*, 5.8.6).
+
+No convergence or support hypothesis is used.
 -/
 
 @[expose] public section
@@ -40,7 +47,8 @@ variable {X Y : TopCat.{0}} (f : X ⟶ Y)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the canonical resolution page coordinates, the literal page-two Postnikov differential
-from `(0,q+1)` to `(2,q)` is the positive two-step resolution transgression. -/
+`d₂ : H⁰(Y, Rᑫ⁺¹f_*F) → H²(Y, Rᑫf_*F)` is the two-step resolution transgression: the Leray `d₂`
+on the edge is the transgression (Godement II.4.17). -/
 lemma resolutionPostnikovE₂_d₂_eq_transgression
     {F : AbelianSheaf X} (I : InjectiveResolution F) (q : ℕ)
     (x : ((resolutionPostnikovSpectralSequence f I).page 2).X (0, q + 1)) :

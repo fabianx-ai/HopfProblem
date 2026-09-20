@@ -12,10 +12,18 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 /-!
 # Finite-source evaluation after restriction to an open
 
-If the image of a finite closed map lies in an ambient open, restriction of its pushforward is
-canonically the pushforward along the induced map to that open.  The comparison respects the
-native integral representing endpoint and hence the Ext-defined cohomology comparison in every
-degree.  This is an elementary composition statement, not proper base change.
+If the image of a map `i : T ⟶ X` lies in an open `U ⊆ X`, then restricting `i_*G` to `U` gives
+the pushforward of `G` along the induced map `i' : T ⟶ U`:
+
+`(i_*G)|_U ≅ (i')_*G`.
+
+This is the functoriality of pushforward for the factorisation `i = i' ≫ (U ↪ X)` together with
+`(Opens.map i) ∘ (open image of U) = Opens.map i'`; see Hartshorne, *Algebraic Geometry*, II.1
+and Godement II.1 for direct images and restriction of sheaves.  It is an elementary composition
+statement, not proper base change.
+
+The comparison respects the representing map out of the constant integral sheaf, and hence the
+Ext-defined cohomology comparison of `TopCat.FiniteClosedPushforward` in every degree.
 -/
 
 @[expose] public section
@@ -40,6 +48,7 @@ variable {T X : TopCat.{0}} (i : T ⟶ X) (U : Opens X)
 def induced : T ⟶ TopCat.of U :=
   TopCat.ofHom ⟨fun t ↦ ⟨i t, hU t⟩, i.hom.continuous.subtype_mk _⟩
 
+/-- The underlying point of `induced i U hU t` in `X` is `i t`. -/
 @[simp]
 theorem induced_apply (t : T) : (induced i U hU t).1 = i t := rfl
 
@@ -94,6 +103,8 @@ def restrictionPushforwardIso :
     (Opens.grothendieckTopology (TopCat.of U))
     (Opens.grothendieckTopology X) (Opens.grothendieckTopology T)
 
+/-- On the open `W ⊆ U`, the comparison `(i_*G)|_U ≅ (i')_*G` is the restriction map of `G`
+along the equality of inverse images `openImage_preimage_obj`. -/
 @[simp]
 theorem restrictionPushforwardIso_hom_app
     (F : TopCat.Sheaf AddCommGrpCat.{0} T) (W : Opens U) :

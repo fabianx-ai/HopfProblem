@@ -26,7 +26,14 @@ this bounded-below complex is K-injective.  Derived Hom out of the integral shea
 computed by its explicit representable Hom complex.  The integral-sheaf pushforward equivalence
 identifies that complex with `Hom(ℤ_X,I•)`, whose homology is `Extⁿ(ℤ_X,F) = Hⁿ(X,F)`.
 
-This is the abutment-object comparison, not by itself a convergence theorem.  In particular, it
+This is the abutment identification of the Leray spectral sequence
+`E₂^{p,q} = Hᵖ(Y, Rᑫf_*F) ⇒ Hᵖ⁺ᑫ(X, F)` (Godement, *Topologie algébrique et théorie des
+faisceaux*, II.4.17; Weibel, *An Introduction to Homological Algebra*, 5.8.6, the Grothendieck
+spectral sequence of the composite `Γ(Y, −) ∘ f_*`).  That `f_*` preserves injectives, because it
+is right adjoint to the exact inverse image `f⁻¹`, is Weibel 2.3.10 (Hartshorne III.8.1's
+standing remark).
+
+It is the abutment-object comparison, not by itself a convergence theorem.  In particular, it
 does not construct an `E_∞` page, a finite filtration on `Hⁿ(X,F)`, or identify associated
 graded pieces.  Those data are not fields of Mathlib's current `SpectralSequence` structure.
 -/
@@ -60,7 +67,8 @@ def mappedExtendedResolutionIso {F : AbelianSheaf X} (I : InjectiveResolution F)
   HomologicalComplex.mapExtendIso (F := pushforward f) I.cocomplex
     ComplexShape.embeddingUpNat
 
-/-- Direct image of abelian sheaves preserves injective objects. -/
+/-- Direct image of abelian sheaves preserves injective objects, being right adjoint to the
+exact inverse image `f⁻¹` (Weibel 2.3.10). -/
 theorem pushforwardPreservesInjectiveObjects :
     (pushforward f).PreservesInjectiveObjects := by
   let _ : PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{0} f) := by
@@ -149,8 +157,9 @@ def resolutionDerivedHomCohomologyEquiv {F : AbelianSheaf X}
   let e₄ := (I.coyonedaHomologyExtAddEquiv (integralSheaf X) n).toEquiv
   exact e₁.trans (e₂.trans (e₃.trans e₄))
 
-/-- The total interval of the pushed-resolution Postnikov spectral object is the actual degree-`n`
-cohomology of the source sheaf. -/
+/-- The total interval of the pushed-resolution Postnikov spectral object is the degree-`n`
+cohomology `Hⁿ(X, F)` of the source sheaf.  This is the abutment of the Leray spectral sequence
+(Godement II.4.17, Weibel 5.8.6). -/
 def resolutionPostnikovTotalCohomologyEquiv {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) :
     (((resolutionPostnikovSpectralObject f I).H (n : ℤ)).obj
