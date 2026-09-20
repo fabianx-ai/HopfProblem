@@ -26,8 +26,6 @@ induced bilinear map on homology:
   (SingularChains.singularComplex Y).homology n →ₗ[ℤ]
   (SingularChains.singularComplex (X × Y)).homology (n + 1)`.
 
-(The cross-product declarations use the general `SingularHomology` namespace. Historical
-`PeriodTorusHigherHomology` names are available only through the project compatibility shims.)
 
 ## Outline of the construction
 
@@ -47,8 +45,7 @@ the prism side condition), in five steps.
    `n`-simplex to the product chain pushed forward along `σ.prodMap τ`
    (`SingularHomology.crossProductEdge_simplex`); it is natural (`SingularHomology.crossProductEdge_natural`) and satisfies the
    Leibniz rule `SingularHomology.crossProductEdge_boundary`; likewise `SingularHomology.crossProductTriangle` in left degree
-   two, which is the prism operator for the homotopy-invariance arguments of the Hurewicz
-   lane.
+   two, which is the prism operator used in homotopy-invariance arguments.
 4. *Descent to homology.* A cycle times a cycle is a cycle (`SingularHomology.crossProductCycles`); a boundary
    times a cycle is a boundary (`SingularHomology.crossProductCycleClasses_boundary_right`,
    `SingularHomology.crossProductHomologyCycles_boundary_left`), so the product descends twice
@@ -67,13 +64,12 @@ the prism side condition), in five steps.
 * `SingularHomology.integerLinearMapModule`, `.integerTensorModule` :
   `@[instance_reducible]` `Module ℤ` instances on `A →ₗ[ℤ] B` and `A ⊗[ℤ] B`, used as local
   instances throughout this file: they pin the diamond between Mathlib's two instances and
-  the one the product constructions elaborate against. A disposable removal of the local instance wrappers fails at scalar-action
-  elaboration in `integerBilinearRightApply`, `integerBilinearFlip`,
-  `integerBilinearPostcompose` and `crossProductHomologyCycles`; the instances are
-  retained.
-* Consumers: the Hurewicz lane (the fundamental cube chain by recursion on degree), the torus
-  lane (the section of the circle-splitting sequence), the Pontryagin product (the addition
-  pushforward of this product).
+  the one the product constructions elaborate against.  Without them, the scalar action in
+  `integerBilinearRightApply`, `integerBilinearFlip`, `integerBilinearPostcompose` and
+  `crossProductHomologyCycles` does not elaborate.
+
+The left degree is fixed to `1` (and to `2` for the prism), where Hatcher's cross product is
+`H_p ⊗ H_q → H_{p+q}` for all `p`.
 
 ## References
 
@@ -86,6 +82,8 @@ singular homology, cross product, Künneth
 
 
 @[expose] public noncomputable section
+
+universe u
 
 /-! ### ℤ-module instances on linear maps and tensor products -/
 
@@ -1572,13 +1570,13 @@ theorem SingularHomology.crossProductEdge_boundary_of_left_cycle {X Y : Type}
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- The submodule of degree-`n` cycles of `K` consisting of boundaries, as a submodule
 of the cycle module. -/
-abbrev SingularHomology.homologyBoundaries (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+abbrev SingularHomology.homologyBoundaries (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (n : ℕ) : Submodule ℤ (SingularMayerVietoris.ModuleHomology.Cycle K n) :=
   SingularChains.ChainHomology.ShortBoundaries (K.sc n)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- Two linear maps out of `K.homology n` agreeing on all cycle classes are equal. -/
-theorem SingularHomology.homologyLinearMap_ext (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularHomology.homologyLinearMap_ext (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M] {f g : K.homology n →ₗ[ℤ] M}
     (h :
       ∀ c : SingularMayerVietoris.ModuleHomology.Cycle K n,
@@ -1593,7 +1591,7 @@ theorem SingularHomology.homologyLinearMap_ext (K : ChainComplex (ModuleCat.{0} 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- If `f` vanishes on every boundary cycle, the boundary submodule is contained in
 the kernel of `f`. -/
-theorem SingularHomology.homologyBoundaries_le_ker (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularHomology.homologyBoundaries_le_ker (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M]
     (f : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] M)
     (hf : ∀ b : K.X (n + 1), f (SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0) :
@@ -1609,7 +1607,7 @@ theorem SingularHomology.homologyBoundaries_le_ker (K : ChainComplex (ModuleCat.
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- A linear map on degree-`n` cycles of `K` vanishing on boundaries descends to a
 linear map on `K.homology n`. -/
-def SingularHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+def SingularHomology.homologyDesc (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ)
     {M : Type*} [AddCommGroup M] [Module ℤ M]
     (f : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] M)
     (hf : ∀ b : K.X (n + 1), f (SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0) :
@@ -1620,7 +1618,7 @@ def SingularHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- `homologyDesc f hf` sends the class of a cycle `c` to `f c`. -/
 @[simp]
-theorem SingularHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (n : ℕ) {M : Type*} [AddCommGroup M] [Module ℤ M]
     (f : SingularMayerVietoris.ModuleHomology.Cycle K n →ₗ[ℤ] M)
     (hf : ∀ b : K.X (n + 1), f (SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0)
