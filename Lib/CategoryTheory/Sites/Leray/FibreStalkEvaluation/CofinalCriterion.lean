@@ -33,12 +33,14 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
 open TopCat.FiniteClosedPushforward
 open TopCat.Sheaf.OpenRestriction
 
-variable {T X Y : TopCat.{0}} [T2Space T] (i : T ⟶ X)
+variable {T X Y : TopCat.{u}} [T2Space T] (i : T ⟶ X)
   (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
   {F : AbelianSheaf X} {G : AbelianSheaf T} (κ : F ⟶ (pushforward i).obj G)
   (f : X ⟶ Y) (y : Y) (hfi : ∀ t : T, f (i t) = y)
@@ -78,14 +80,14 @@ theorem canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
 
 namespace ConstantPointFibre
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y) (y : Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y) (y : Y)
 variable [T2Space X] [T1Space Y]
 
 /-- Constant-coefficient specialization: a cofinal basis of neighborhoods whose Ext restriction
 to the literal point fibre is bijective makes the canonical positive-degree stalk map an
 isomorphism. -/
 theorem canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
-    (A : AddCommGrpCat.{0})
+    (A : AddCommGrpCat.{u})
     (I : InjectiveResolution (TopCat.ConstantSheaf.sheaf X A)) (n : ℕ)
     (hlocal : ∀ (U : Opens Y) (_hy : y ∈ U),
       ∃ (V : Opens Y) (_hVU : V ≤ U) (hyV : y ∈ V),

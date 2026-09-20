@@ -36,12 +36,14 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.NestedOpenCohomology
 
 open TopCat.Sheaf.OpenRestriction
 open CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization
 
-variable {X : TopCat.{0}} {U W : Opens X}
+variable {X : TopCat.{u}} {U W : Opens X}
 
 /-- The inclusion `U ⟶ W` of nested open subspaces, as a map of topological spaces. -/
 def inclusion (h : U ≤ W) : TopCat.of U ⟶ TopCat.of W :=
@@ -112,7 +114,7 @@ def restrictionIso (h : U ≤ W) :
 identity of `F(A)`, read through the two descriptions of `A` as an open of `X`. -/
 @[simp]
 theorem restrictionIso_hom_app (h : U ≤ W)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (A : Opens U) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (A : Opens U) :
     (((restrictionIso h).hom.app F).hom.app (op A)) =
       F.obj.map (eqToHom (openImage_comp_obj h A).symm).op := by
   let _ : (TopCat.Sheaf.OpenEmbeddingCohomology.openImage
@@ -130,7 +132,7 @@ theorem restrictionIso_hom_app (h : U ≤ W)
 
 /-- The canonical constant-sheaf restriction morphisms compose through the nested restriction
 isomorphism. -/
-theorem constantRestrictionHom_comp (h : U ≤ W) (A : AddCommGrpCat.{0}) :
+theorem constantRestrictionHom_comp (h : U ≤ W) (A : AddCommGrpCat.{u}) :
     TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
           (inclusion h) (inclusion_isOpenEmbedding h) A ≫
         (TopCat.Sheaf.OpenEmbeddingCohomology.restriction
@@ -184,7 +186,7 @@ restriction of the universal represented section. -/
 theorem representingUnit_app_unit (U : Opens X) (V : Opens U) :
     (representingUnit U).hom.app (op V)
         ((TopCat.ConstantSheaf.unit (TopCat.of U)
-          (AddCommGrpCat.of (ULift.{0} ℤ))).app (op V) (ULift.up 1)) =
+          (AddCommGrpCat.of (ULift.{u} ℤ))).app (op V) (ULift.up 1)) =
       (freeOpen U).obj.map (homOfLE (openImage_obj_le U V)).op
         (freeHomEquiv U (freeOpen U) (𝟙 _)) := by
   let F := freeOpen U
@@ -194,7 +196,7 @@ theorem representingUnit_app_unit (U : Opens X) (V : Opens U) :
   let iTop : op U ⟶ op ((openImage U).obj (⊤ : Opens U)) :=
     (eqToIso (congrArg op (openImage_top U))).inv
   let zTop := (TopCat.ConstantSheaf.unit (TopCat.of U)
-    (AddCommGrpCat.of (ULift.{0} ℤ))).app (op (⊤ : Opens U)) (ULift.up 1)
+    (AddCommGrpCat.of (ULift.{u} ℤ))).app (op (⊤ : Opens U)) (ULift.up 1)
   have hglobal := homRestrictionEquiv_sections U F (𝟙 F)
   have hnat := TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
     (TopCat.of U) (𝟙 (TopCat.ConstantSheaf.integralSheaf (TopCat.of U))) g
@@ -217,18 +219,18 @@ theorem representingUnit_app_unit (U : Opens X) (V : Opens U) :
         (freeHomEquiv U F (𝟙 F)) at he
     exact he
   have hu := (TopCat.ConstantSheaf.unit (TopCat.of U)
-    (AddCommGrpCat.of (ULift.{0} ℤ))).naturality q.op
+    (AddCommGrpCat.of (ULift.{u} ℤ))).naturality q.op
   have hgn := g.hom.naturality q.op
   have hvalue : g.hom.app (op V)
         ((TopCat.ConstantSheaf.unit (TopCat.of U)
-          (AddCommGrpCat.of (ULift.{0} ℤ))).app (op V) (ULift.up 1)) =
+          (AddCommGrpCat.of (ULift.{u} ℤ))).app (op V) (ULift.up 1)) =
       F.obj.map ((openImage U).map q).op
         (g.hom.app (op (⊤ : Opens U)) zTop) := by
     have hu' := ConcreteCategory.congr_hom hu (ULift.up 1)
     change (TopCat.ConstantSheaf.unit (TopCat.of U)
-        (AddCommGrpCat.of (ULift.{0} ℤ))).app (op V) (ULift.up 1) =
+        (AddCommGrpCat.of (ULift.{u} ℤ))).app (op V) (ULift.up 1) =
       (TopCat.ConstantSheaf.sheaf (TopCat.of U)
-        (AddCommGrpCat.of (ULift.{0} ℤ))).obj.map q.op zTop at hu'
+        (AddCommGrpCat.of (ULift.{u} ℤ))).obj.map q.op zTop at hu'
     have hgn' := ConcreteCategory.congr_hom hgn zTop
     exact (congrArg (g.hom.app (op V)) hu').trans hgn'
   rw [hvalue, hg]
@@ -240,12 +242,12 @@ theorem representingUnit_app_unit (U : Opens X) (V : Opens U) :
 /-- The integral global-section equivalence evaluates a morphism on the distinguished global
 section. -/
 theorem integralHomGlobalEquiv_eq_app_unit (U : Opens X)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of U))
+    (F : TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of U))
     (g : TopCat.ConstantSheaf.integralSheaf (TopCat.of U) ⟶ F) :
     TopCat.ConstantSheaf.integralHomGlobalEquiv (TopCat.of U) F g =
       g.hom.app (op (⊤ : Opens U))
         ((TopCat.ConstantSheaf.unit (TopCat.of U)
-          (AddCommGrpCat.of (ULift.{0} ℤ))).app
+          (AddCommGrpCat.of (ULift.{u} ℤ))).app
             (op (⊤ : Opens U)) (ULift.up 1)) := by
   have hnat := TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
     (TopCat.of U) (𝟙 (TopCat.ConstantSheaf.integralSheaf (TopCat.of U))) g
@@ -257,7 +259,7 @@ theorem integralHomGlobalEquiv_eq_app_unit (U : Opens X)
 theorem representingUnit_comp (h : U ≤ W) :
     TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
           (inclusion h) (inclusion_isOpenEmbedding h)
-          (AddCommGrpCat.of (ULift.{0} ℤ)) ≫
+          (AddCommGrpCat.of (ULift.{u} ℤ)) ≫
         (TopCat.Sheaf.OpenEmbeddingCohomology.restriction
           (inclusion h) (inclusion_isOpenEmbedding h)).map
           (representingUnit W) ≫
@@ -287,14 +289,14 @@ theorem representingUnit_comp (h : U ≤ W) :
       ((representingUnit W).hom.app (op V)
         ((TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
           (inclusion h) (inclusion_isOpenEmbedding h)
-          (AddCommGrpCat.of (ULift.{0} ℤ))).hom.app (op (⊤ : Opens U))
+          (AddCommGrpCat.of (ULift.{u} ℤ))).hom.app (op (⊤ : Opens U))
             ((TopCat.ConstantSheaf.unit (TopCat.of U)
-              (AddCommGrpCat.of (ULift.{0} ℤ))).app
+              (AddCommGrpCat.of (ULift.{u} ℤ))).app
                 (op (⊤ : Opens U)) (ULift.up 1)))) =
     φ.hom.app (op ((openImage U).obj ⊤))
       ((representingUnit U).hom.app (op (⊤ : Opens U))
         ((TopCat.ConstantSheaf.unit (TopCat.of U)
-          (AddCommGrpCat.of (ULift.{0} ℤ))).app
+          (AddCommGrpCat.of (ULift.{u} ℤ))).app
             (op (⊤ : Opens U)) (ULift.up 1)))
   rw [TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_app_unit]
   rw [representingUnit_app_unit]
@@ -324,8 +326,8 @@ theorem representingUnit_comp (h : U ≤ W) :
 /-- Restriction in the cohomology presheaf `V ↦ H^n(V, F)` from `W` to `U` agrees with
 restriction of cohomology along the inclusion `U ⊆ W`, in every degree. -/
 theorem cohomologyEquiv_restrict (h : U ≤ W)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ)
-    (a : CategoryTheory.Sheaf.H'.{0} F n W) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ)
+    (a : CategoryTheory.Sheaf.H'.{u} F n W) :
     CategoryTheory.Sheaf.H.map ((restrictionIso h).hom.app F) n
         (TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap
           (inclusion h) (inclusion_isOpenEmbedding h)
@@ -338,10 +340,10 @@ theorem cohomologyEquiv_restrict (h : U ≤ W)
     (CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.freeOpenFunctor X).map
       (homOfLE h)
   have hc := @Ext.ExactFunctorComparison.comp_natTrans
-    (TopCat.Sheaf AddCommGrpCat.{0} X) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of W)) _ _
+    (TopCat.Sheaf AddCommGrpCat.{u} X) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of W)) _ _
       (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of U)) _ _
+    (TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of U)) _ _
       (IsGrothendieckAbelian.hasExt _)
     (restriction W) (restriction_additive W)
     (restriction_preservesFiniteLimits W) (restriction_preservesFiniteColimits W)
@@ -362,7 +364,7 @@ theorem cohomologyEquiv_restrict (h : U ≤ W)
     (representingUnit W)
     (TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
       (inclusion h) (inclusion_isOpenEmbedding h)
-      (AddCommGrpCat.of (ULift.{0} ℤ)))
+      (AddCommGrpCat.of (ULift.{u} ℤ)))
     (representingUnit U ≫ (restriction U).map φ)
     (representingUnit_comp h) n a
   have hp := Ext.ExactFunctorComparison.precompose
@@ -376,8 +378,8 @@ on a nested open `U ⊆ W`. -/
 theorem intrinsicOpenClass_restrict (h : U ≤ W)
     [LocallyConnectedSpace (TopCat.of W)]
     [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (a : CategoryTheory.Sheaf.H'.{0}
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (a : CategoryTheory.Sheaf.H'.{u}
       (TopCat.ConstantSheaf.sheaf X A) n W) :
     intrinsicOpenClass U A n
         ((CategoryTheory.Sheaf.cohomologyPresheaf

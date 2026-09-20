@@ -35,27 +35,29 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
 open TopCat.FiniteClosedPushforward
 open TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 section Stalk
 
-variable {T X Y : TopCat.{0}} [T2Space T] (i : T ⟶ X)
+variable {T X Y : TopCat.{u}} [T2Space T] (i : T ⟶ X)
   (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
   {F : AbelianSheaf X} {G : AbelianSheaf T} (κ : F ⟶ (pushforward i).obj G)
   (f : X ⟶ Y) (y : Y) (hfi : ∀ t : T, f (i t) = y)
 
 /-- The Ext-defined source cohomology presheaf on inverse-image opens. -/
-abbrev sourceCohomologyPresheaf (n : ℕ) : TopCat.Presheaf AddCommGrpCat.{0} Y :=
+abbrev sourceCohomologyPresheaf (n : ℕ) : TopCat.Presheaf AddCommGrpCat.{u} Y :=
   (Opens.map f).op ⋙ CategoryTheory.Sheaf.cohomologyPresheaf F n
 
 /-- The explicit-resolution source presheaf used by the current higher-direct-image theorem. -/
 abbrev sourceResolutionPresheaf (I : InjectiveResolution F) (n : ℕ) :
-    TopCat.Presheaf AddCommGrpCat.{0} Y :=
+    TopCat.Presheaf AddCommGrpCat.{u} Y :=
   homologyPresheaf (pushedResolution f I) n
 
 omit [T2Space T] in
@@ -70,11 +72,11 @@ theorem fibre_mem_preimage (U : Opens Y) (hy : y ∈ U) (t : T) :
 /-- The neighborhood evaluations form their canonical cocone. -/
 def evaluationCocone (n : ℕ) :
     Cocone ((OpenNhds.inclusion y).op ⋙ sourceCohomologyPresheaf (F := F) f n) where
-  pt := AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n)
+  pt := AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n)
   ι :=
     { app U := AddCommGrpCat.ofHom
-        (X := ↥(CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U.unop.val)))
-        (Y := CategoryTheory.Sheaf.H.{0} G n)
+        (X := ↥(CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U.unop.val)))
+        (Y := CategoryTheory.Sheaf.H.{u} G n)
         (cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U.unop.val)
           (fibre_mem_preimage i f y hfi U.unop.val U.unop.property) n)
       naturality U V r := by
@@ -89,7 +91,7 @@ def evaluationCocone (n : ℕ) :
 /-- The colimit universal property gives the canonical cohomology-presheaf stalk map. -/
 def presheafStalkEvaluation (n : ℕ) :
     TopCat.Presheaf.stalk (sourceCohomologyPresheaf (F := F) f n) y ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n) :=
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n) :=
   colimit.desc _ (evaluationCocone i hi hfinite κ f y hfi n)
 
 /-- The stalk map on a neighborhood germ is the literal finite-closed Ext restriction. -/
@@ -121,7 +123,7 @@ def derivedStalkIso (I : InjectiveResolution F) (n : ℕ)
 def derivedStalkEvaluation (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n) :
     TopCat.Presheaf.stalk (higherDirectImageSheaf f F n).obj y ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n) :=
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n) :=
   (derivedStalkIso (F := F) f y I n ρ).hom ≫
     presheafStalkEvaluation i hi hfinite κ f y hfi n
 
@@ -130,7 +132,7 @@ determines a class in the literal derived stalk. -/
 def derivedNeighborhoodGerm (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n)
     (U : Opens Y) (hy : y ∈ U) :
-    CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U) ⟶
+    CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U) ⟶
       TopCat.Presheaf.stalk (higherDirectImageSheaf f F n).obj y :=
   TopCat.Presheaf.germ (sourceCohomologyPresheaf (F := F) f n) U y hy ≫
     (derivedStalkIso (F := F) f y I n ρ).inv
@@ -153,7 +155,7 @@ end Stalk
 
 section LocalCriterion
 
-variable {T X Y : TopCat.{0}} [T2Space T] (i : T ⟶ X)
+variable {T X Y : TopCat.{u}} [T2Space T] (i : T ⟶ X)
   (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
   {F : AbelianSheaf X} {G : AbelianSheaf T} (κ : F ⟶ (pushforward i).obj G)
   (f : X ⟶ Y) (y : Y) (hfi : ∀ t : T, f (i t) = y)
@@ -161,13 +163,13 @@ variable {T X Y : TopCat.{0}} [T2Space T] (i : T ⟶ X)
 /-- The canonical cohomology-presheaf stalk evaluation is bijective under the standard local
 lift-and-kill hypotheses. -/
 theorem presheafStalkEvaluation_bijective_of_local_lift_kill (n : ℕ)
-    (hlift : ∀ b : CategoryTheory.Sheaf.H.{0} G n,
+    (hlift : ∀ b : CategoryTheory.Sheaf.H.{u} G n,
       ∃ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U)),
         cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) n a = b)
     (hkill : ∀ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U)),
       cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) n a = 0 →
         ∃ (V : Opens Y) (hVU : V ≤ U) (_hyV : y ∈ V),
@@ -175,15 +177,15 @@ theorem presheafStalkEvaluation_bijective_of_local_lift_kill (n : ℕ)
     Function.Bijective (presheafStalkEvaluation i hi hfinite κ f y hfi n) := by
   let e : ∀ (U : Opens Y), y ∈ U →
       ((sourceCohomologyPresheaf (F := F) f n).obj (op U) ⟶
-        AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n)) :=
+        AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n)) :=
     fun U hy ↦ AddCommGrpCat.ofHom
       (X := (sourceCohomologyPresheaf (F := F) f n).obj (op U))
-      (Y := AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n))
+      (Y := AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n))
       (cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
         (fibre_mem_preimage i f y hfi U hy) n)
   apply stalkMap_bijective_of_local_lift_kill
     (sourceCohomologyPresheaf (F := F) f n) y
-    (AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G n))
+    (AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G n))
     (presheafStalkEvaluation i hi hfinite κ f y hfi n) e
   · intro U hy
     dsimp [e]
@@ -196,13 +198,13 @@ higher-direct-image stalk evaluation an isomorphism. -/
 theorem derivedStalkEvaluation_isIso_of_local_lift_kill
     (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n)
-    (hlift : ∀ b : CategoryTheory.Sheaf.H.{0} G n,
+    (hlift : ∀ b : CategoryTheory.Sheaf.H.{u} G n,
       ∃ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U)),
         cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) n a = b)
     (hkill : ∀ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F n ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F n ((Opens.map f).obj U)),
       cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) n a = 0 →
         ∃ (V : Opens Y) (hVU : V ≤ U) (_hyV : y ∈ V),

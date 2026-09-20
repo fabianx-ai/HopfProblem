@@ -29,13 +29,15 @@ noncomputable section
 
 open CategoryTheory Opposite TopologicalSpace
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}} (U : Opens X)
+variable {X : TopCat.{u}} (U : Opens X)
 
 /-- At a point `x ∈ U`, the canonical comparison from the stalk of `j_*(F|_U)` to the stalk of
 `F|_U`. -/
-def nearbyStalkPushforward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
+def nearbyStalkPushforward (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : U) :
     nearbySectionsStalk U F x.1 ⟶
       TopCat.Presheaf.stalk ((restriction U).obj F).obj x :=
   TopCat.Presheaf.stalkPushforward AddCommGrpCat (inclusion U)
@@ -44,7 +46,7 @@ def nearbyStalkPushforward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
 /-- At a point of `U` the comparison `(j_*(F|_U))_x ⟶ (F|_U)_x` is an isomorphism, because `j` is
 an embedding. -/
 instance nearbyStalkPushforward_isIso
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : U) :
     IsIso (nearbyStalkPushforward U F x) :=
   TopCat.Presheaf.stalkPushforward.stalkPushforward_iso_of_isInducing
     AddCommGrpCat (inclusion_isOpenEmbedding U).isInducing
@@ -54,7 +56,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- At a point `x ∈ U`, the stalk map of the unit followed by the pushforward-stalk comparison is
 the isomorphism `F_x ≅ (F|_U)_x`. -/
 theorem nearbyStalkUnit_comp_nearbyStalkPushforward
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : U) :
     nearbyStalkUnit U F x.1 ≫ nearbyStalkPushforward U F x =
       (stalkIso U F x).hom := by
   apply F.presheaf.stalk_hom_ext
@@ -71,7 +73,7 @@ theorem nearbyStalkUnit_comp_nearbyStalkPushforward
 
 /-- The unit `F ⟶ j_*j^*F` is an isomorphism on stalks at every point of `U`. -/
 theorem nearbyStalkUnit_isIso_of_mem
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) (hx : x ∈ U) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X) (hx : x ∈ U) :
     IsIso (nearbyStalkUnit U F x) := by
   let xU : U := ⟨x, hx⟩
   have hcomp : IsIso
@@ -84,7 +86,7 @@ theorem nearbyStalkUnit_isIso_of_mem
 /-- The unit `F ⟶ j_*j^*F` is an isomorphism as soon as its stalk maps at the points outside `U`
 are isomorphisms. -/
 theorem nearbyRestrictionUnit_app_isIso_of_isIso_outside
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (hout : ∀ (x : X), x ∉ U → IsIso (nearbyStalkUnit U F x)) :
     IsIso ((nearbyRestrictionUnit U).app F) := by
   have stalkwise : ∀ (x : X), IsIso
@@ -102,7 +104,7 @@ theorem nearbyRestrictionUnit_app_isIso_of_isIso_outside
 /-- If the stalk maps of the unit are isomorphisms outside `U`, then restriction of sections
 `Γ(X, F) ≅ Γ(U, F)` is an isomorphism. -/
 def globalRestrictionIsoOfIsIsoOutside
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (hout : ∀ (x : X), x ∉ U → IsIso (nearbyStalkUnit U F x)) :
     F.obj.obj (op (⊤ : Opens X)) ≅ F.obj.obj (op U) := by
   let _ : IsIso ((nearbyRestrictionUnit U).app F) :=

@@ -32,28 +32,30 @@ noncomputable section
 
 open Set TopologicalSpace CategoryTheory CategoryTheory.Limits
 
+universe u
+
 namespace TopCat.FiniteClosedPushforward
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- The inverse-image functor `f^{-1}` on sheaves of abelian groups is left exact: it preserves
 finite limits. -/
 theorem pullback_preservesFiniteLimits :
-    PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{0} f) := by
-  change PreservesFiniteLimits ((Opens.map f).sheafPullback AddCommGrpCat.{0}
+    PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{u} f) := by
+  change PreservesFiniteLimits ((Opens.map f).sheafPullback AddCommGrpCat.{u}
     (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X))
-  exact Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map f) AddCommGrpCat.{0}
+  exact Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map f) AddCommGrpCat.{u}
     (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X)
 
 /-- For any continuous map, `f_*` preserves injective sheaves, since its left adjoint `f^{-1}` is
 exact (Hartshorne III Prop. 2.4). -/
 theorem pushforward_preservesInjectiveObjects :
-    (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).PreservesInjectiveObjects := by
+    (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).PreservesInjectiveObjects := by
   let _ := pullback_preservesFiniteLimits f
   let _ := preservesMonomorphisms_of_preservesLimitsOfShape
-    (TopCat.Sheaf.pullback AddCommGrpCat.{0} f)
+    (TopCat.Sheaf.pullback AddCommGrpCat.{u} f)
   exact Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms
-    (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{0} f)
+    (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f)
 
 variable [T2Space X] (hf : IsClosedMap f) (hfinite : ∀ y : Y, (f ⁻¹' {y}).Finite)
 
@@ -62,32 +64,32 @@ include hf hfinite
 /-- For a finite closed map, `f_*` is exact: it takes exact short complexes of sheaves of abelian
 groups to exact short complexes (Hartshorne II Ex. 1.19). -/
 theorem pushforward_exact
-    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)) (hS : S.Exact) :
-    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f)).Exact := by
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)) (hS : S.Exact) :
+    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f)).Exact := by
   classical
   apply (TopCat.Sheaf.exact_iff_stalkFunctor_map_exact
-    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f))).mpr
+    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f))).mpr
   intro y
-  let K := TopCat.Sheaf.forget AddCommGrpCat.{0} Y ⋙
-    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} y
+  let K := TopCat.Sheaf.forget AddCommGrpCat.{u} Y ⋙
+    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} y
   let e₁ := pushforwardStalkEquiv f hf S.X₁ y (hfinite y)
   let e₂ := pushforwardStalkEquiv f hf S.X₂ y (hfinite y)
   let e₃ := pushforwardStalkEquiv f hf S.X₃ y (hfinite y)
-  apply (((S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f)).map K).ab_exact_iff).mpr
+  apply (((S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f)).map K).ab_exact_iff).mpr
   intro s hs
-  have hzero : e₃ (K.map ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).map S.g) s) = 0 :=
+  have hzero : e₃ (K.map ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).map S.g) s) = 0 :=
     (congrArg e₃ hs).trans e₃.map_zero
   have hker (x : f ⁻¹' {y}) :
-      (TopCat.Sheaf.forget AddCommGrpCat.{0} X ⋙
-        TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x.val).map S.g (e₂ s x) = 0 :=
+      (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+        TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val).map S.g (e₂ s x) = 0 :=
     (pushforwardStalkEquiv_naturality f hf S.g y (hfinite y) s x).symm.trans
       (congrFun hzero x)
   have hlocal (x : f ⁻¹' {y}) :
-      ∃ u, (TopCat.Sheaf.forget AddCommGrpCat.{0} X ⋙
-          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x.val).map S.f u = e₂ s x := by
+      ∃ u, (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val).map S.f u = e₂ s x := by
     have hexact := (TopCat.Sheaf.exact_iff_stalkFunctor_map_exact S).mp hS x.val
-    exact ((S.map (TopCat.Sheaf.forget AddCommGrpCat.{0} X ⋙
-      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x.val)).ab_exact_iff.mp hexact)
+    exact ((S.map (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val)).ab_exact_iff.mp hexact)
       (e₂ s x) (hker x)
   choose u hu using hlocal
   refine ⟨e₁.symm u, ?_⟩
@@ -95,29 +97,29 @@ theorem pushforward_exact
   funext x
   exact (pushforwardStalkEquiv_naturality f hf S.f y (hfinite y)
     (e₁.symm u) x).trans
-      ((congrArg ((TopCat.Sheaf.forget AddCommGrpCat.{0} X ⋙
-          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{0} x.val).map S.f)
+      ((congrArg ((TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val).map S.f)
         (congrFun (e₁.apply_symm_apply u) x)).trans (hu x))
 
 /-- For a finite closed map, `f_*` preserves finite limits and finite colimits. -/
 theorem pushforward_preservesFiniteLimitsAndColimits :
-    PreservesFiniteLimits (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f) ∧
-      PreservesFiniteColimits (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f) :=
-  ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).exact_tfae.out 1 3).mp
+    PreservesFiniteLimits (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f) ∧
+      PreservesFiniteColimits (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f) :=
+  ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).exact_tfae.out 1 3).mp
     (pushforward_exact f hf hfinite)
 
 /-- For a finite closed map, `f_*` preserves finite colimits; in particular it is right exact. -/
 theorem pushforward_preservesFiniteColimits :
-    PreservesFiniteColimits (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f) :=
+    PreservesFiniteColimits (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f) :=
   (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).2
 
 /-- For a finite closed map, `f_*` takes short exact sequences of sheaves to short exact
 sequences. -/
 theorem pushforward_shortExact
-    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)) (hS : S.ShortExact) :
-    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f)).ShortExact := by
+    (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)) (hS : S.ShortExact) :
+    (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f)).ShortExact := by
   let _ := (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).1
   let _ := pushforward_preservesFiniteColimits f hf hfinite
-  exact hS.map_of_exact (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f)
+  exact hS.map_of_exact (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f)
 
 end TopCat.FiniteClosedPushforward

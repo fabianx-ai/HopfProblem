@@ -39,11 +39,13 @@ open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open CategoryTheory.Abelian.ExtTransgression
 open CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 attribute [local instance] HasDerivedCategory.standard
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Under the canonical resolution page coordinates, the literal page-two Postnikov differential
@@ -77,7 +79,7 @@ lemma resolutionPostnikovE₂_d₂_eq_transgression
   rw [resolutionTransgressionAddOfResolution_apply_eq_connectingTwo]
   erw [Iso.hom_inv_id_apply]
   rw [hgeneric]
-  rw [← homologyTwoStepResolutionExtendUpNat_connectingTwo
+  rw [← homologyTwoStepResolutionExtendUpNat_connectingTwo (C := AbelianSheaf Y)
     (pushedResolution f I) q (TopCat.ConstantSheaf.integralSheaf Y)
       (Ext.mk₀ (coyonedaPostnikovD₂SourceHom
         ((pushedResolution f I).extend ComplexShape.embeddingUpNat)

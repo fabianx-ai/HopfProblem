@@ -38,19 +38,21 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open TopologicalSpace Opposite
 
+universe u
+
 namespace TopCat.SheafH1
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- The canonical identification of degree-zero sheaf cohomology with global sections. -/
-def h0GlobalIso (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} F 0) ≅
+def h0GlobalIso (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} F 0) ≅
       (TopCat.Sheaf.globalSectionsFunctor X).obj F :=
   (CategoryTheory.Sheaf.H.equiv₀ F
     (show IsTerminal (⊤ : Opens X) from isTerminalTop)).toAddCommGrpIso
 
 /-- The identification `H⁰(X, F) ≅ Γ(X, F)` is natural in the sheaf `F`. -/
-theorem h0GlobalIso_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) :
+theorem h0GlobalIso_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X} (f : F ⟶ G) :
     (extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) 0).map f ≫ (h0GlobalIso G).hom =
       (h0GlobalIso F).hom ≫ (TopCat.Sheaf.globalSectionsFunctor X).map f := by
   ext x
@@ -60,10 +62,10 @@ theorem h0GlobalIso_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F �
 namespace AcyclicResolutionH1
 
 variable (R : CategoryTheory.Abelian.Ext.AcyclicResolutionH1
-  (C := TopCat.Sheaf AddCommGrpCat.{0} X))
+  (C := TopCat.Sheaf AddCommGrpCat.{u} X))
 
 /-- Literal global sections of the three-term complex. -/
-abbrev globalComplex : ShortComplex AddCommGrpCat.{0} :=
+abbrev globalComplex : ShortComplex AddCommGrpCat.{u} :=
   R.complex.map (TopCat.Sheaf.globalSectionsFunctor X)
 
 /-- Degree-zero Ext and global sections agree as short complexes. -/
@@ -73,10 +75,10 @@ def extZeroGlobalIso : R.extZeroComplex (TopCat.ConstantSheaf.integralSheaf X) �
       (h0GlobalIso_naturality R.complex.g).symm
 
 /-- Native Ext-defined sheaf H¹ is the homology of literal global sections. -/
-def h1GlobalIso [Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)] :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} R.F 1) ≅ (globalComplex R).homology := by
-  letI : Subsingleton (Ext.{0} (TopCat.ConstantSheaf.integralSheaf X) R.complex.X₁ 1) :=
-    ‹Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)›
+def h1GlobalIso [Subsingleton (CategoryTheory.Sheaf.H.{u} R.complex.X₁ 1)] :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} R.F 1) ≅ (globalComplex R).homology := by
+  letI : Subsingleton (Ext.{u} (TopCat.ConstantSheaf.integralSheaf X) R.complex.X₁ 1) :=
+    ‹Subsingleton (CategoryTheory.Sheaf.H.{u} R.complex.X₁ 1)›
   exact R.extOneIso (TopCat.ConstantSheaf.integralSheaf X) ≪≫ ShortComplex.homologyMapIso (extZeroGlobalIso R)
 
 end AcyclicResolutionH1

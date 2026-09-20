@@ -33,25 +33,27 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.SheafCohomology.AcyclicResolution
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- An indexed resolution of an abelian sheaf on `X`, in the sense of `Ext.AcyclicResolution`. -/
 abbrev Resolution := Ext.AcyclicResolution
-  (C := TopCat.Sheaf AddCommGrpCat.{0} X)
+  (C := TopCat.Sheaf AddCommGrpCat.{u} X)
 
 variable (R : Resolution (X := X))
 
 /-- Literal global sections of the full indexed resolution complex. -/
-abbrev globalComplex : CochainComplex AddCommGrpCat.{0} ℕ :=
+abbrev globalComplex : CochainComplex AddCommGrpCat.{u} ℕ :=
   ((TopCat.Sheaf.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).obj R.complex
 
 /-- Positive-degree acyclicity of every resolution term for global sections. -/
 def IsAcyclic : Prop :=
   ∀ (i q : ℕ), 0 < q →
-    Subsingleton (CategoryTheory.Sheaf.H.{0} (R.X i) q)
+    Subsingleton (CategoryTheory.Sheaf.H.{u} (R.X i) q)
 
 /-- Positive-degree vanishing of the cohomology of the resolution terms is exactly acyclicity
 for the constant sheaf that defines sheaf cohomology. -/
@@ -71,7 +73,7 @@ def extZeroGlobalIso :
 /-- Native Ext-defined sheaf cohomology in degree `n+1` is the corresponding homology of
 literal global sections of an acyclic resolution. -/
 def extIsoGlobalHomology (h : IsAcyclic R) (n : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} (R.Z 0) (n + 1)) ≅
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} (R.Z 0) (n + 1)) ≅
       (globalComplex R).homology (n + 1) := by
   exact Iso.trans
     (R.extIsoHomology (TopCat.ConstantSheaf.integralSheaf X) (isAcyclicFor R h) n)

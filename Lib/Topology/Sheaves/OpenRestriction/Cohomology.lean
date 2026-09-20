@@ -36,27 +36,29 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}} (U : Opens X)
+variable {X : TopCat.{u}} (U : Opens X)
 
 /-- The sheaf cohomology group `H^n(U, F|_U)` of the open subspace `U`, as an object of
 `AddCommGrpCat`. -/
 abbrev restrictedCohomologyGroup
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) : AddCommGrpCat.{0} :=
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) : AddCommGrpCat.{u} :=
   (@CategoryTheory.Sheaf.functorH
     (Opens (TopCat.of U)) inferInstance
     (Opens.grothendieckTopology (TopCat.of U)) inferInstance
     (IsGrothendieckAbelian.hasExt _) n).obj ((restriction U).obj F)
 
 /-- The free abelian sheaf represented by the ambient open `U`. -/
-abbrev freeOpen : TopCat.Sheaf AddCommGrpCat.{0} X :=
+abbrev freeOpen : TopCat.Sheaf AddCommGrpCat.{u} X :=
   (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).obj
     (yoneda.obj U ⋙ AddCommGrpCat.free)
 
 /-- Sheafification, the free-group adjunction, and Yoneda identify maps from `freeOpen U` with
 sections over `U`. -/
-def freeHomEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+def freeHomEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (freeOpen U ⟶ F) ≃ F.obj.obj (op U) :=
   ((sheafificationAdjunction (Opens.grothendieckTopology X) AddCommGrpCat).homEquiv _ F).trans
     (((Adjunction.whiskerRight (Opens X)ᵒᵖ AddCommGrpCat.adj).homEquiv _ F.obj).trans
@@ -64,12 +66,12 @@ def freeHomEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
 
 /-- The identification of maps out of the free sheaf on `U` with sections over `U` is natural in
 the coefficient sheaf. -/
-theorem freeHomEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
+theorem freeHomEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
     (h : freeOpen U ⟶ F) (g : F ⟶ G) :
     freeHomEquiv U G (h ≫ g) = g.hom.app (op U) (freeHomEquiv U F h) := rfl
 
 /-- The representing-section equivalence as an additive equivalence. -/
-def freeHomAddEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+def freeHomAddEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (freeOpen U ⟶ F) ≃+ F.obj.obj (op U) where
   __ := freeHomEquiv U F
   map_add' _ _ := rfl
@@ -77,7 +79,7 @@ def freeHomAddEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
 /-- The representing-section equivalence commutes with restriction along an inclusion of ambient
 opens. -/
 theorem freeHomEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (h : freeOpen V ⟶ F) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (h : freeOpen V ⟶ F) :
     freeHomEquiv U F
         ((yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
           presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).map i ≫ h) =
@@ -98,7 +100,7 @@ theorem freeHomEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
 
 /-- Additive form of naturality of represented sections under restriction of the ambient open. -/
 theorem freeHomAddEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (h : freeOpen V ⟶ F) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (h : freeOpen V ⟶ F) :
     freeHomAddEquiv U F
         ((yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
           presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).map i ≫ h) =
@@ -116,13 +118,13 @@ theorem openImage_top : (openImage U).obj ⊤ = U := by
     exact ⟨⟨x, hx⟩, by simp, rfl⟩
 
 /-- Global sections of the restriction are sections over the original open. -/
-def restrictionGlobalEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+def restrictionGlobalEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     ((restriction U).obj F).obj.obj (op (⊤ : Opens U)) ≃+ F.obj.obj (op U) :=
   (F.obj.mapIso (eqToIso (congrArg op (openImage_top U)))).addCommGroupIsoToAddEquiv
 
 /-- The identification of global sections of `F|_U` with sections of `F` over `U` is natural in
 the coefficient sheaf. -/
-theorem restrictionGlobalEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
+theorem restrictionGlobalEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
     (g : F ⟶ G) (s : ((restriction U).obj F).obj.obj (op (⊤ : Opens U))) :
     restrictionGlobalEquiv U G (((restriction U).map g).hom.app (op ⊤) s) =
       g.hom.app (op U) (restrictionGlobalEquiv U F s) := by
@@ -132,7 +134,7 @@ theorem restrictionGlobalEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} 
   exact (g.hom.naturality_apply (eqToHom (congrArg op (openImage_top U))) s).symm
 
 /-- The representing-object comparison for open restriction. -/
-def homRestrictionEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+def homRestrictionEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (freeOpen U ⟶ F) ≃
       (TopCat.ConstantSheaf.integralSheaf (TopCat.of U) ⟶ (restriction U).obj F) :=
   (freeHomEquiv U F).trans ((restrictionGlobalEquiv U F).toEquiv.symm.trans
@@ -141,7 +143,7 @@ def homRestrictionEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
 
 /-- The representing-object comparison is computed on sections: it sends a map out of the free
 sheaf on `U` to the map out of `ℤ_U` with the same section over `U`. -/
-theorem homRestrictionEquiv_sections (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+theorem homRestrictionEquiv_sections (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (h : freeOpen U ⟶ F) :
     restrictionGlobalEquiv U F
       (TopCat.ConstantSheaf.integralHomGlobalEquiv
@@ -157,7 +159,7 @@ theorem homRestrictionEquiv_sections (F : TopCat.Sheaf AddCommGrpCat.{0} X)
 
 /-- The representing-object comparison for open restriction is natural in the coefficient
 sheaf. -/
-theorem homRestrictionEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
+theorem homRestrictionEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
     (h : freeOpen U ⟶ F) (g : F ⟶ G) :
     homRestrictionEquiv U G (h ≫ g) =
       homRestrictionEquiv U F h ≫ (restriction U).map g := by
@@ -176,7 +178,7 @@ def representingUnit :
   homRestrictionEquiv U (freeOpen U) (𝟙 _)
 
 /-- Composing with the representing unit recovers the representing-object comparison. -/
-theorem representingUnit_comp {F : TopCat.Sheaf AddCommGrpCat.{0} X}
+theorem representingUnit_comp {F : TopCat.Sheaf AddCommGrpCat.{u} X}
     (h : freeOpen U ⟶ F) :
     representingUnit U ≫ (restriction U).map h = homRestrictionEquiv U F h :=
   (homRestrictionEquiv_naturality U (𝟙 _) h).symm.trans
@@ -184,7 +186,7 @@ theorem representingUnit_comp {F : TopCat.Sheaf AddCommGrpCat.{0} X}
 
 /-- Composition with the representing unit is a bijection from maps out of the free sheaf on `U`
 to maps out of the constant sheaf `ℤ` on the subspace `U`. -/
-theorem representingUnit_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+theorem representingUnit_bijective (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     Function.Bijective
       (fun h : freeOpen U ⟶ F ↦ representingUnit U ≫ (restriction U).map h) := by
   have he : (fun h : freeOpen U ⟶ F ↦ representingUnit U ≫ (restriction U).map h) =
@@ -193,41 +195,41 @@ theorem representingUnit_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
   exact (homRestrictionEquiv U F).bijective
 
 /-- Degree zero of the cohomology presheaf is the section group over `U`. -/
-def zeroEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
-    CategoryTheory.Sheaf.H'.{0} F 0 U ≃+ F.obj.obj (op U) :=
-  (Ext.addEquiv₀ (C := TopCat.Sheaf AddCommGrpCat.{0} X)
+def zeroEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
+    CategoryTheory.Sheaf.H'.{u} F 0 U ≃+ F.obj.obj (op U) :=
+  (Ext.addEquiv₀ (C := TopCat.Sheaf AddCommGrpCat.{u} X)
     (X := freeOpen U) (Y := F)).trans (freeHomAddEquiv U F)
 
 /-- The comparison map `Ext^n(ℤ_U, F) → H^n(U, F|_U)` induced by restriction to `U`. -/
-def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
-    CategoryTheory.Sheaf.H'.{0} F n U →+
+def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    CategoryTheory.Sheaf.H'.{u} F n U →+
       restrictedCohomologyGroup U F n :=
   Ext.ExactFunctorComparison.map (restriction U) (representingUnit U) F n
 
 /-- The comparison `Ext^n(ℤ_U, F) → H^n(U, F|_U)` is bijective in every degree. -/
-theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
+theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     Function.Bijective (cohomologyForward U F n) :=
   Ext.ExactFunctorComparison.map_bijective (restriction U) (representingUnit U)
     (representingUnit_bijective U) F n
 
 /-- `Ext^n(ℤ_U, F) ≅ H^n(U, F|_U)`: the value at `U` of the cohomology presheaf on `X` is sheaf
 cohomology of the open subspace `U` (Godement II.4; Hartshorne III §6). -/
-def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
-    CategoryTheory.Sheaf.H'.{0} F n U ≃+
+def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    CategoryTheory.Sheaf.H'.{u} F n U ≃+
       restrictedCohomologyGroup U F n :=
   AddEquiv.ofBijective (cohomologyForward U F n) (cohomologyForward_bijective U F n)
 
 /-- In degree zero the comparison sends the class of a map out of the free sheaf on `U` to the
 class of the corresponding map on the subspace. -/
-theorem cohomologyEquiv_mk₀ {F : TopCat.Sheaf AddCommGrpCat.{0} X}
+theorem cohomologyEquiv_mk₀ {F : TopCat.Sheaf AddCommGrpCat.{u} X}
     (h : freeOpen U ⟶ F) :
     cohomologyEquiv U F 0 (Ext.mk₀ h) =
       Ext.mk₀ (representingUnit U ≫ (restriction U).map h) :=
   Ext.ExactFunctorComparison.map_mk₀ (restriction U) (representingUnit U) h
 
 /-- The comparison `Ext^n(ℤ_U, F) ≅ H^n(U, F|_U)` is natural in the coefficient sheaf `F`. -/
-theorem cohomologyEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
-    (g : F ⟶ G) (n : ℕ) (x : CategoryTheory.Sheaf.H'.{0} F n U) :
+theorem cohomologyEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (g : F ⟶ G) (n : ℕ) (x : CategoryTheory.Sheaf.H'.{u} F n U) :
     cohomologyEquiv U G n
         (((CategoryTheory.Sheaf.cohomologyPresheafFunctor
           (Opens.grothendieckTopology X) n).map g).app (op U) x) =

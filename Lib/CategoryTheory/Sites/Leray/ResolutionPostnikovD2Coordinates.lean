@@ -38,11 +38,13 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 attribute [local instance] HasDerivedCategory.standard
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 set_option maxHeartbeats 3200000 in
 set_option backward.isDefEq.respectTransparency false in

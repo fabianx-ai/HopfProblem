@@ -27,10 +27,12 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre
 
-variable {X Y : TopCat.{0}} [T2Space X] [T1Space Y]
-  (f : X ⟶ Y) (y : Y) (A : AddCommGrpCat.{0})
+variable {X Y : TopCat.{u}} [T2Space X] [T1Space Y]
+  (f : X ⟶ Y) (y : Y) (A : AddCommGrpCat.{u})
   (I : InjectiveResolution (TopCat.ConstantSheaf.sheaf X A)) (n : ℕ)
 
 omit [T2Space X] [T1Space Y] in
@@ -38,7 +40,7 @@ omit [T2Space X] [T1Space Y] in
 composites with the canonical Ext neighborhood germs agree after one sufficiently small
 shrinking of every neighborhood. -/
 theorem canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
-    {B : AddCommGrpCat.{0}}
+    {B : AddCommGrpCat.{u}}
     {u v : TopCat.Presheaf.stalk
         (higherDirectImageSheaf f (TopCat.ConstantSheaf.sheaf X A) (n + 1)).obj y ⟶ B}
     (hlocal : ∀ (U : Opens Y) (_hyU : y ∈ U),

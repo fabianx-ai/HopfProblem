@@ -36,12 +36,14 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open TopologicalSpace Opposite
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
 open TopCat.FiniteClosedPushforward
 open TopCat.Sheaf.OpenRestriction
 
-variable {T X : TopCat.{0}} (i : T ⟶ X) (U : Opens X)
+variable {T X : TopCat.{u}} (i : T ⟶ X) (U : Opens X)
   (hU : ∀ t : T, i t ∈ U)
 
 /-- A map whose image lies in `U` as a map to the open subspace. -/
@@ -90,8 +92,8 @@ theorem openImage_preimage :
 
 /-- Restricting the pushforward of `i` to `U` is pushforward along the induced map into `U`. -/
 def restrictionPushforwardIso :
-    TopCat.Sheaf.pushforward AddCommGrpCat.{0} i ⋙ restriction U ≅
-      TopCat.Sheaf.pushforward AddCommGrpCat.{0} (induced i U hU) := by
+    TopCat.Sheaf.pushforward AddCommGrpCat.{u} i ⋙ restriction U ≅
+      TopCat.Sheaf.pushforward AddCommGrpCat.{u} (induced i U hU) := by
   let _ : (Opens.map (induced i U hU)).IsContinuous
       (Opens.grothendieckTopology (TopCat.of U))
       (Opens.grothendieckTopology T) := by
@@ -107,7 +109,7 @@ def restrictionPushforwardIso :
 along the equality of inverse images `openImage_preimage_obj`. -/
 @[simp]
 theorem restrictionPushforwardIso_hom_app
-    (F : TopCat.Sheaf AddCommGrpCat.{0} T) (W : Opens U) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} T) (W : Opens U) :
     (((restrictionPushforwardIso i U hU).hom.app F).hom.app (op W)) =
       F.obj.map (eqToHom (openImage_preimage_obj i U hU W).symm).op := by
   let _ : (Opens.map (induced i U hU)).IsContinuous
@@ -125,15 +127,15 @@ theorem restrictionPushforwardIso_hom_app
 /-- On global sections, the pushforward-restriction isomorphism is the evident source-global
 section comparison. -/
 theorem restrictionPushforwardIso_global
-    (G : TopCat.Sheaf AddCommGrpCat.{0} T)
+    (G : TopCat.Sheaf AddCommGrpCat.{u} T)
     (s : ((restriction U).obj
-      ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} i).obj G)).obj.obj
+      ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} i).obj G)).obj.obj
         (op (⊤ : Opens U))) :
     ((restrictionPushforwardIso i U hU).hom.app G).hom.app
         (op (⊤ : Opens U)) s =
       sectionsEquiv i U hU G
         (restrictionGlobalEquiv U
-          ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} i).obj G) s) := by
+          ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} i).obj G) s) := by
   rw [restrictionPushforwardIso_hom_app]
   simp only [sectionsEquiv, restrictionGlobalEquiv]
   let fd := (eqToHom
@@ -156,9 +158,9 @@ theorem restrictionPushforwardIso_neighborhoodUnit :
         (restrictionPushforwardIso i U hU).hom.app
           (TopCat.ConstantSheaf.integralSheaf T) =
       TopCat.ConstantSheaf.pushforwardHom
-        (AddCommGrpCat.of (ULift.{0} ℤ)) (induced i U hU) := by
+        (AddCommGrpCat.of (ULift.{u} ℤ)) (induced i U hU) := by
   apply (TopCat.ConstantSheaf.integralHomGlobalEquiv (TopCat.of U)
-    ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} (induced i U hU)).obj
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} (induced i U hU)).obj
       (TopCat.ConstantSheaf.integralSheaf T))).injective
   rw [← Category.assoc, representingUnit_comp,
     TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality]
@@ -173,12 +175,12 @@ variable [T2Space T] (hi : IsClosedMap i)
 /-- Neighborhood cohomology followed by genuine open restriction agrees with the global
 finite-closed comparison for the induced map, in every degree. -/
 theorem neighborhoodCohomologyForward_openRestriction
-    (F : TopCat.Sheaf AddCommGrpCat.{0} T) (n : ℕ)
-    (a : CategoryTheory.Sheaf.H.{0} F n) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} T) (n : ℕ)
+    (a : CategoryTheory.Sheaf.H.{u} F n) :
     CategoryTheory.Sheaf.H.map
         ((restrictionPushforwardIso i U hU).hom.app F) n
       (cohomologyEquiv U
-        ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} i).obj F) n
+        ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} i).obj F) n
         (neighborhoodCohomologyForward i U hU hi hfinite F n a)) =
       TopCat.FiniteClosedPushforward.cohomologyForward
         (induced i U hU) (induced_isClosedMap i U hU hi)
@@ -191,17 +193,17 @@ theorem neighborhoodCohomologyForward_openRestriction
     (induced i U hU) hiU hfinU).1
   let _ := pushforward_preservesFiniteColimits (induced i U hU) hiU hfinU
   exact @Ext.ExactFunctorComparison.comp_natTrans
-    (TopCat.Sheaf AddCommGrpCat.{0} T) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} X) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of U)) _ _
+    (TopCat.Sheaf AddCommGrpCat.{u} T) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} X) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of U)) _ _
       (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf.pushforward AddCommGrpCat.{0} i)
+    (TopCat.Sheaf.pushforward AddCommGrpCat.{u} i)
     (TopCat.Sheaf.pushforwardAdditive i)
     (pushforward_preservesFiniteLimitsAndColimits i hi hfinite).1
     (pushforward_preservesFiniteColimits i hi hfinite)
     (restriction U) (restriction_additive U)
     (restriction_preservesFiniteLimits U) (restriction_preservesFiniteColimits U)
-    (TopCat.Sheaf.pushforward AddCommGrpCat.{0} (induced i U hU))
+    (TopCat.Sheaf.pushforward AddCommGrpCat.{u} (induced i U hU))
     (TopCat.Sheaf.pushforwardAdditive (induced i U hU))
     (pushforward_preservesFiniteLimitsAndColimits
       (induced i U hU) hiU hfinU).1
@@ -211,7 +213,7 @@ theorem neighborhoodCohomologyForward_openRestriction
     (freeOpen U) (TopCat.ConstantSheaf.integralSheaf (TopCat.of U))
     (neighborhoodUnit i U hU) (representingUnit U)
     (TopCat.ConstantSheaf.pushforwardHom
-      (AddCommGrpCat.of (ULift.{0} ℤ)) (induced i U hU))
+      (AddCommGrpCat.of (ULift.{u} ℤ)) (induced i U hU))
     (restrictionPushforwardIso_neighborhoodUnit i U hU) n a
 
 end CategoryTheory.Sheaf.Leray.FibreStalkEvaluation

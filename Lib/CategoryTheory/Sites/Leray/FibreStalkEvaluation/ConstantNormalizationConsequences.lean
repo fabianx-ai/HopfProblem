@@ -25,11 +25,13 @@ noncomputable section
 
 open CategoryTheory TopologicalSpace
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization
 
 open CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
-variable {T X : TopCat.{0}} [T2Space T]
+variable {T X : TopCat.{u}} [T2Space T]
   (i : T ⟶ X) (U : Opens X) (hU : ∀ t : T, i t ∈ U)
   (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
 
@@ -37,8 +39,8 @@ variable {T X : TopCat.{0}} [T2Space T]
 along the induced map to the open, after normalizing the ambient open class. -/
 theorem canonicalConstantEvaluation_eq_intrinsicConstantPullback
     [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
     canonicalConstantEvaluation i U hU hi hfinite A n x =
       intrinsicConstantPullback i U hU hi hfinite A n x := by
   let iU := induced i U hU

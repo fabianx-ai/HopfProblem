@@ -29,9 +29,11 @@ noncomputable section
 open CategoryTheory TopologicalSpace
 open CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- Mayer--Vietoris raises the projective-dimension bound by at most one when two opens are
 united. -/

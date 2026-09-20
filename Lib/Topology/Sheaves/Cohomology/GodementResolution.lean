@@ -98,18 +98,18 @@ instance resolution_term_isFlasque (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : �
 
 section Small
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- The canonical Godement resolution is acyclic for global sections. -/
-theorem resolution_isAcyclic (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+theorem resolution_isAcyclic (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     TopCat.SheafCohomology.AcyclicResolution.IsAcyclic (resolution F) := by
   intro i q hq
   exact TopCat.SheafCohomology.subsingleton_h_of_isFlasque
     ((resolution F).X i) q hq
 
 /-- Native positive-degree sheaf cohomology is computed by the global Godement complex. -/
-def cohomologyIsoGlobalHomology (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} F (n + 1)) ≅
+def cohomologyIsoGlobalHomology (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} F (n + 1)) ≅
       (TopCat.SheafCohomology.AcyclicResolution.globalComplex (resolution F)).homology
         (n + 1) :=
   TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology

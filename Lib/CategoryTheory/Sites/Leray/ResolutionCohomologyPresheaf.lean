@@ -47,19 +47,19 @@ universe u
 
 section SheafSections
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 open TopCat.Sheaf.OpenRestriction
 /-- The free-open-sheaf functor occurring literally in Mathlib's
 cohomology presheaf. -/
-abbrev freeOpenFunctor (X : TopCat.{0}) :
-    Opens X ⥤ TopCat.Sheaf AddCommGrpCat.{0} X :=
+abbrev freeOpenFunctor (X : TopCat.{u}) :
+    Opens X ⥤ TopCat.Sheaf AddCommGrpCat.{u} X :=
   yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
     presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat
 
 /-- Sections on an open as a functor of the coefficient sheaf. -/
 abbrev sectionsFunctor (U : Opens X) :
-    TopCat.Sheaf AddCommGrpCat.{0} X ⥤ AddCommGrpCat.{0} :=
+    TopCat.Sheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
   (TopCat.Sheaf.forget AddCommGrpCat X).flip.obj (op U)
 
 /-- The free sheaf on an open represents its sections, naturally in
@@ -113,7 +113,7 @@ attribute [local instance] presheafEvaluation_additive
 
 /-- Representing Hom and sections give isomorphic evaluated complexes. -/
 def homSectionsComplexIso
-    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{0} X) ℕ)
+    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ)
     (U : Opens X) :
     (((preadditiveCoyoneda.obj (op (freeOpen U))).mapHomologicalComplex _).obj K) ≅
       (((sectionsFunctor U).mapHomologicalComplex _).obj K) :=
@@ -122,7 +122,7 @@ def homSectionsComplexIso
 /-- The complex comparison commutes with restriction of opens. -/
 @[reassoc]
 theorem homSectionsComplexIso_hom_naturality_open
-    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{0} X) ℕ)
+    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ)
     {U V : Opens X} (i : U ⟶ V) :
     (NatTrans.mapHomologicalComplex
         (preadditiveCoyoneda.map ((freeOpenFunctor X).map i).op) _).app K ≫
@@ -159,7 +159,7 @@ theorem evaluationHomologyIso_hom_naturality_open
 /-- Homology of the represented Hom complex is the value of the
 actual homology presheaf at the open. -/
 def homSectionsHomologyIso
-    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{0} X) ℕ)
+    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ)
     (U : Opens X) (m : ℕ) :
     ((((preadditiveCoyoneda.obj (op (freeOpen U))).mapHomologicalComplex _).obj K).homology m) ≅
       (homologyPresheaf K m).obj (op U) :=
@@ -170,7 +170,7 @@ def homSectionsHomologyIso
 /-- Naturality in the open survives taking homology. -/
 @[reassoc]
 theorem homSectionsHomologyIso_hom_naturality_open
-    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{0} X) ℕ)
+    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ)
     {U V : Opens X} (i : U ⟶ V) (m : ℕ) :
     HomologicalComplex.homologyMap
         ((NatTrans.mapHomologicalComplex
@@ -207,7 +207,7 @@ theorem homSectionsHomologyIso_hom_naturality_open
 /-- The represented Hom-complex homology is the actual homology
 presheaf, including restriction maps. -/
 def representedHomologyPresheafIso
-    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{0} X) ℕ) (m : ℕ) :
+    (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ) (m : ℕ) :
     (freeOpenFunctor X).op ⋙ coyonedaHomologyFunctor K m ≅
       homologyPresheaf K m :=
   NatIso.ofComponents (fun U => homSectionsHomologyIso K U.unop m)
@@ -217,7 +217,7 @@ def representedHomologyPresheafIso
 presheaf: `U ↦ Hⁿ⁺¹(Γ(U, I))` is `U ↦ Hⁿ⁺¹(U, G)`.  This is the presheaf identification used in
 the proof of Hartshorne III.8.1. -/
 def resolutionCohomologyPresheafIsoPositive
-    {G : TopCat.Sheaf AddCommGrpCat.{0} X} (I : InjectiveResolution G) (n : ℕ) :
+    {G : TopCat.Sheaf AddCommGrpCat.{u} X} (I : InjectiveResolution G) (n : ℕ) :
     homologyPresheaf I.cocomplex (n + 1) ≅
       CategoryTheory.Sheaf.cohomologyPresheaf G (n + 1) :=
   (representedHomologyPresheafIso I.cocomplex (n + 1)).symm ≪≫
@@ -228,7 +228,7 @@ end SheafSections
 
 section Pushforward
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 section PresheafLevel
 
