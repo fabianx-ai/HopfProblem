@@ -133,6 +133,8 @@ import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 import Lib.Geometry.Manifold.Morse.RearrangementAmbient
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
+import Lib.Algebra.BigOperators.SignedCancellation
+import Lib.Geometry.Manifold.Morse.RadialFilling
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse

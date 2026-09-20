@@ -51,21 +51,65 @@ import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
+import Lib.Algebra.BigOperators.SignedCancellation
+import Lib.Geometry.Manifold.Morse.RadialFilling
 
 /-!
-# Homology of Morse surgery data
+# Homology of Morse surgery data and ordered surgery windows
 
-The exact sequences of a Morse surgery step (`ManifoldMorse.MorseSurgeryData.morse_exact_at_lower`,
-`ManifoldMorse.MorseSurgeryData.morseConnectingMap`), ordered surgery windows
-(`ManifoldMorse.SurgeryWindows.point`, `ManifoldMorse.SurgeryWindows.BandData`), belt-face
-coordinates and attaching collapses, finite signed cancellation of belt intersections, radial
-fillings, and the index-two and index-three presentations of the middle homology
-(`ManifoldMorse.SurgeryWindows.middlePresentation`, `ManifoldMorse.SurgeryWindows.middleMatrix`).
+The round-7 audit graded this module D: its docstring promised four declarations
+that live in `Lib.Geometry.Manifold.Morse.SurgeryCollapse`, no declaration
+carried a docstring, and three unrelated subjects shared the file.  The stale
+docstring is replaced by this one, the signed-cancellation combinatorics moved to
+`Lib.Algebra.BigOperators.SignedCancellation` and the radial filling to
+`Lib.Geometry.Manifold.Morse.RadialFilling`; the tail that no `Lib` module
+consumes is now `Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology`.
 
-Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see
-`Lib/reports/integration-4/spheretop-moves.md` for the per-declaration receipt.
+What is declared here:
+
+* ordered surgery windows: `ManifoldMorse.SurgeryWindows.values`, `count`,
+  `point` and the fact that `point` enumerates the critical values in increasing
+  order (`point_value`, `point_strictMono`, `point_consecutive`,
+  `ordered_windows`, `consecutive_regular`, `exists_consecutiveBandBridge`), the
+  first and last window (`first`, `last`, `value_first_le`, `value_le_last`,
+  `count_pos`, `unique_first`, `last_upper_univ`) and the two ends of an ordered
+  Morse function on a closed manifold: the first critical point is a global
+  minimum of index `0` and the last a global maximum of index `dim M`
+  (`first_globalMin`, `last_globalMax`, `first_index_zero`,
+  `last_index_dimension`, `nonempty_firstSublevelDisk`);
+* the band between two consecutive windows: `BandData`,
+  `nonempty_consecutiveBandData`, `consecutiveBandData`,
+  `BandData.sublevelHomeomorph`, `bandSublevelHomeomorph`;
+* regular levels through the gradient-like flow
+  (`FlowConstruction.regularLevelHomeomorphOfFlow`,
+  `nonempty_regularLevelHomeomorph`, `circle_nullhomotopies_regular_level`);
+* the belt face of a handle and its collapse: `beltFaceCoordinates`,
+  `beltClosedDiskPoint`, `beltClosedDiskMap`, `newPiece_beltFaceCoordinates`,
+  `range_newPiece_eq_range_beltClosedDiskMap`,
+  `beltClosedDiskMap_mem_newInterior_iff`, `collapseNormal` and the chart-level
+  derivative computations `MorseHandle.contDiff_beltFaceMap`,
+  `hasFDerivAt_beltFaceMap_zero`, `beltCollapseCoordinate` and friends;
+* the project's index-`2` prefix and index-`3` block predicates
+  (`indexTwoNormalModel`, `SurgeryWindows.HasIndexTwoPrefix`,
+  `indexTwoPrefix_mono`, `indexThreeBoundaryEquiv`, `indexThreeBoundary_scalar`,
+  `SurgeryWindows.HasIndexThreeBlock`, `indexThreeBlock_mono`,
+  `indexThreeBlock_last`, `attachingHomology_subsingleton_of_index`).  The last
+  group is the dimension-6 argument of the project and is not textbook material;
+  it stays here only because `Lib.Geometry.Manifold.Morse.SurgeryCollapse` and
+  `Lib.Geometry.Manifold.Morse.OrderedCancellation` -- both `Lib` modules, which
+  may never import `Hopf` -- consume it.  It should follow the tail into
+  `Hopf/Proof/` when those two modules are split.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §4
+  (self-indexing/ordered Morse functions).
+* [Allen Hatcher, *Algebraic topology*][hatcher02], §2.2.
+
+## Tags
+
+Morse theory, surgery, handle, belt sphere, ordered Morse function
 -/
-
 open Set Function Filter Manifold Topology
 
 open scoped ContDiff
@@ -376,137 +420,6 @@ theorem FlowConstruction.circle_nullhomotopies_regular_level {E M : Type*}
     (ContinuousMap.Homotopic.refl forward).comp hq
   exact ⟨e q, heq ▸ hh⟩
 
-theorem FiniteSignedCancellation.opposite_signs_distinct {a b : SignType} (h : a * b = -1) :
-    a ≠ b := by cases a <;> cases b <;> simp_all
-
-theorem FiniteSignedCancellation.cast_add_eq_zero_of_opposite {a b : SignType}
-    (h : a * b = -1) : (a : ℤ) + (b : ℤ) = 0 := by cases a <;> cases b <;> simp_all
-
-theorem FiniteSignedCancellation.sum_sdiff_pair {X : Type*} [DecidableEq X] (s : Finset X)
-    (σ : X → SignType) {x y : X} (hx : x ∈ s) (hy : y ∈ s) (hxy : σ x * σ y = -1) :
-    ∑ z ∈ s \ { x, y }, (σ z : ℤ) = ∑ z ∈ s, (σ z : ℤ) := by
-  classical
-  have hne : x ≠ y := fun h => opposite_signs_distinct hxy (congrArg σ h)
-  have hsub : ({ x, y } : Finset X) ⊆ s := by
-    intro z hz
-    rcases Finset.mem_insert.mp hz with rfl | hz
-    · exact hx
-    · exact Finset.mem_singleton.mp hz ▸ hy
-  have hsum : ∑ z ∈ ({ x, y } : Finset X), (σ z : ℤ) = 0 := by
-    rw [Finset.sum_pair hne]
-    exact cast_add_eq_zero_of_opposite hxy
-  have h := Finset.sum_sdiff (f := fun z => (σ z : ℤ)) hsub
-  simpa only [hsum, add_zero] using h
-
-theorem FiniteSignedCancellation.sum_sdiff_pair_of_eq {X : Type*} [DecidableEq X]
-    (s : Finset X) (σ τ : X → SignType) {x y : X} (hx : x ∈ s) (hy : y ∈ s) (hxy : σ x * σ y = -1)
-    (heq : ∀ z ∈ s \ { x, y }, τ z = σ z) : ∑ z ∈ s \ { x, y }, (τ z : ℤ) = ∑ z ∈ s, (σ z : ℤ) := by
-  calc
-    _ = ∑ z ∈ s \ { x, y }, (σ z : ℤ) :=
-      Finset.sum_congr rfl (fun z hz => congrArg (fun a : SignType => (a : ℤ)) (heq z hz))
-    _ = _ := sum_sdiff_pair s σ hx hy hxy
-
-theorem FiniteSignedCancellation.card_eq_natAbs_sum_of_no_opposite {X : Type*}
-    (s : Finset X) (σ : X → SignType) (hunit : ∀ x ∈ s, σ x = 1 ∨ σ x = -1)
-    (hno : ∀ x ∈ s, ∀ y ∈ s, σ x * σ y ≠ -1) : s.card = (∑ x ∈ s, (σ x : ℤ)).natAbs := by
-  classical
-  rcases s.eq_empty_or_nonempty with rfl | ⟨x, hx⟩
-  · simp
-  have heq (y : X) (hy : y ∈ s) : σ y = σ x := by
-    rcases hunit x hx with hxp | hxn <;> rcases hunit y hy with hyp | hyn
-    · exact hyp.trans hxp.symm
-    · exact (hno x hx y hy (by rw [hxp, hyn]; simp)).elim
-    · exact (hno x hx y hy (by rw [hxn, hyp]; simp)).elim
-    · exact hyn.trans hxn.symm
-  have hsum : (∑ y ∈ s, (σ y : ℤ)) = ∑ _ ∈ s, (σ x : ℤ) := by
-    apply Finset.sum_congr rfl
-    intro y hy
-    rw [heq y hy]
-  rw [hsum]
-  rcases hunit x hx with hp | hn
-  · simp [hp]
-  · simp [hn]
-
-def RadialFilling.direction {n : ℕ} (b : Hemisphere.Sphere n)
-    (v : Hemisphere.Ambient (n + 1)) : Hemisphere.Sphere n := by
-  classical
-    exact
-    if hv : v = 0 then b
-    else
-      ⟨NormedSpace.normalize v, by
-        simpa only [Metric.mem_sphere, dist_zero_right] using NormedSpace.norm_normalize hv⟩
-
-theorem RadialFilling.direction_coe {n : ℕ} (b : Hemisphere.Sphere n)
-    {v : Hemisphere.Ambient (n + 1)} (hv : v ≠ 0) :
-    (direction b v : Hemisphere.Ambient (n + 1)) = NormedSpace.normalize v := by
-  classical simp only [direction, dif_neg hv]
-
-theorem RadialFilling.direction_of_mem_sphere {n : ℕ} (b v : Hemisphere.Sphere n) :
-    direction b v.1 = v := by
-  have hn : ‖v.1‖ = 1 := mem_sphere_zero_iff_norm.mp v.2
-  have hv : v.1 ≠ 0 := by intro h; simp [h] at hn
-  apply Subtype.ext
-  rw [direction_coe b hv, NormedSpace.normalize_eq_self_of_norm_eq_one hn]
-
-def RadialFilling.radialTime {n : ℕ} (v : Hemisphere.Ambient (n + 1)) :
-    unitInterval :=
-  Set.projIcc 0 1 zero_le_one (1 - ‖v‖)
-
-theorem RadialFilling.coe_radialTime {n : ℕ} (v : Hemisphere.Ambient (n + 1)) :
-    (radialTime v : ℝ) = Max.max 0 (Min.min 1 (1 - ‖v‖)) :=
-  rfl
-
-theorem RadialFilling.radialTime_le_quarter {n : ℕ} {v : Hemisphere.Ambient (n + 1)}
-    (hv : 3 / 4 ≤ ‖v‖) : (radialTime v : ℝ) ≤ 1 / 4 := by
-  rw [coe_radialTime]
-  exact max_le (by norm_num) ((min_le_right _ _).trans (by linarith))
-
-theorem RadialFilling.three_quarters_le_radialTime {n : ℕ}
-    {v : Hemisphere.Ambient (n + 1)} (hv : ‖v‖ ≤ 1 / 4) : 3 / 4 ≤ (radialTime v : ℝ) := by
-  rw [coe_radialTime]
-  exact le_max_of_le_right (le_min (by norm_num) (by linarith))
-
-theorem RadialFilling.contMDiffAt_radialTime {n : ℕ} {v : Hemisphere.Ambient (n + 1)}
-    (hv : 0 < ‖v‖) (hunit : ‖v‖ < 1) :
-    ContMDiffAt 𝓘(ℝ, Hemisphere.Ambient (n + 1)) (𝓡∂ 1) ∞ radialTime v := by
-  have : Fact ((0 : ℝ) < 1) := ⟨zero_lt_one⟩
-  have hp : ContMDiffOn 𝓘(ℝ, ℝ) (𝓡∂ 1) ∞ (Set.projIcc (0 : ℝ) 1 zero_le_one) (Set.Icc 0 1) :=
-    contMDiffOn_projIcc
-  have hm : 1 - ‖v‖ ∈ Set.Icc (0 : ℝ) 1 := ⟨by linarith, by linarith⟩
-  have hn : Set.Icc (0 : ℝ) 1 ∈ 𝓝 (1 - ‖v‖) := Icc_mem_nhds (by linarith) (by linarith)
-  have hproj := (hp _ hm).contMDiffAt hn
-  have hnorm : ContDiffAt ℝ ∞ (Norm.norm : Hemisphere.Ambient (n + 1) → ℝ) v :=
-    contDiffAt_norm ℝ (norm_pos_iff.mp hv)
-  exact hproj.comp v (contDiffAt_const.sub hnorm).contMDiffAt
-
-def RadialFilling.filling {n : ℕ} {M : Type*} [TopologicalSpace M]
-    {f : C(Hemisphere.Sphere n, M)} {c : M} (H : f.Homotopy (ContinuousMap.const _ c))
-    (b : Hemisphere.Sphere n) (v : Hemisphere.Ambient (n + 1)) : M :=
-  H (radialTime v, direction b v)
-
-theorem RadialFilling.filling_eq_center {n : ℕ} {M : Type*} [TopologicalSpace M]
-    {f : C(Hemisphere.Sphere n, M)} {c : M} (H : f.Homotopy (ContinuousMap.const _ c))
-    (b : Hemisphere.Sphere n)
-    (htop : ∀ t : unitInterval, ∀ x, 3 / 4 ≤ (t : ℝ) → H (t, x) = c)
-    {v : Hemisphere.Ambient (n + 1)} (hv : ‖v‖ ≤ 1 / 4) : filling H b v = c :=
-  htop _ _ (three_quarters_le_radialTime hv)
-
-theorem RadialFilling.filling_eq_boundary {n : ℕ} {M : Type*} [TopologicalSpace M]
-    {f : C(Hemisphere.Sphere n, M)} {c : M} (H : f.Homotopy (ContinuousMap.const _ c))
-    (b : Hemisphere.Sphere n)
-    (hbottom : ∀ t : unitInterval, ∀ x, (t : ℝ) ≤ 1 / 4 → H (t, x) = f x)
-    {v : Hemisphere.Ambient (n + 1)} (hv : 3 / 4 ≤ ‖v‖) :
-    filling H b v = f (direction b v) :=
-  hbottom _ _ (radialTime_le_quarter hv)
-
-theorem RadialFilling.filling_on_sphere {n : ℕ} {M : Type*} [TopologicalSpace M]
-    {f : C(Hemisphere.Sphere n, M)} {c : M} (H : f.Homotopy (ContinuousMap.const _ c))
-    (b : Hemisphere.Sphere n)
-    (hbottom : ∀ t : unitInterval, ∀ x, (t : ℝ) ≤ 1 / 4 → H (t, x) = f x)
-    (v : Hemisphere.Sphere n) : filling H b v.1 = f v := by
-  have hn : ‖v.1‖ = 1 := mem_sphere_zero_iff_norm.mp v.2
-  rw [filling_eq_boundary H b hbottom (by rw [hn]; norm_num), direction_of_mem_sphere]
-
 attribute [local instance 100] Classical.propDecidable in
 def ManifoldMorse.MorseSurgeryData.beltFaceCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
@@ -796,11 +709,6 @@ theorem ManifoldMorse.MorseSurgeryData.contMDiffAt_collapseNormal_comp {E M : Ty
     hq.comp _ (contDiff_id.const_smul d.radius⁻¹).contDiffAt
   exact hs.contMDiffAt.comp x hn
 
-def ManifoldMorse.MorseSurgeryData.upperLevelInclusion {E M : Type} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
-    (d : ManifoldMorse.MorseSurgeryData E f p) :
-    C(d.UpperLevel, { y : M // f y ≤ f p + d.radius ^ 2 }) :=
-  ⟨Set.inclusion (fun _ hx => hx.le), continuous_inclusion _⟩
 
 def ManifoldMorse.MorseSurgeryData.bandSublevelHomeomorph {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
@@ -929,11 +837,5 @@ theorem ManifoldMorse.SurgeryWindows.indexThreeBlock_last {E M : Type}
     Module.finrank ℝ (S.data (S.point ⟨r + (c + 1), hc⟩)).chart.NegativeCoordinates = 3 :=
   h ⟨r + (c + 1), hc⟩ (by change r < r + (c + 1); omega) le_rfl
 
-def ManifoldMorse.SurgeryWindows.lastUpperHomeomorph {E M : Type} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
-    [CompactSpace M] {f : M → ℝ} (S : ManifoldMorse.SurgeryWindows E f)
-    (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (h : 0 < S.count) :
-    { x : M // f x ≤ S.upper (S.last h) } ≃ₜ M :=
-  (Homeomorph.setCongr (S.last_upper_univ hf h)).trans (Homeomorph.Set.univ M)
 
 end
