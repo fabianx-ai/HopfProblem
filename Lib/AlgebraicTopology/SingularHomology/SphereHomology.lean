@@ -23,8 +23,8 @@ circle dictionary `H_1(S¹) ≅ ℤ`:
 
 * `SphereHomology.unitSphereTopClass` — the top class of `Sⁿ` generating `H_n(Sⁿ)`;
 * `SphereHomology.unitSphere_homology_subsingleton` — no higher homology;
-* `SphereHomology.unitCircleAddCircleHomeomorph` — the circle as `ℝ/ℤ`, identifying the two
-  circle models used in the sources;
+* `SphereHomology.unitCircleAddCircleHomeomorph` — the circle as `ℝ/ℤ`, identifying the
+  unit-sphere and `AddCircle` models of `S¹`;
 * the Mayer–Vietoris injectivity helpers (`singularHomologyMap_zero_injective`,
   `leftHomologyMap_zero_ker`) and `suspension_middleBand_pathConnectedSpace`.
 
