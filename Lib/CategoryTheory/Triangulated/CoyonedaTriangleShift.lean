@@ -12,14 +12,17 @@ public import Mathlib.CategoryTheory.Triangulated.Yoneda
 /-!
 # Coyoneda connecting maps and shifted triangles
 
-For a triangle `T` and an integer `n`, Mathlib's triangle shift multiplies all three arrows by
-`n.negOnePow`.  This file records how its connecting arrow and the corresponding representable
-homology-sequence map compare with those of `T` after the canonical shift associators are
-inserted.
+For a triangle `T` and an integer `n`, Mathlib's triangle shift `Triangle.shiftFunctor`
+multiplies all three arrows of `T⟦n⟧` by the sign `n.negOnePow`; this is the standard sign
+convention for the shift of a distinguished triangle (Neeman, *Triangulated Categories*, §1.1;
+Verdier).  This file records how the connecting arrow of `T⟦n⟧` and the associated representable
+homology-sequence map of `preadditiveCoyoneda` compare with those of `T` once the canonical shift
+associators `shiftFunctorAdd` are inserted, and specialises the comparison to degree zero, where
+the formally present shift by `0` is removed.
 
-The degree-zero statement also removes the formally present shift by zero.  Together, these
-lemmas expose the exact parity factor needed when an adjacent Postnikov triangle is shifted to
-degrees `-1` and `0`.
+The homology sequence of a representable functor on a triangle is
+`CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_apply` in
+`Mathlib/CategoryTheory/Triangulated/Yoneda.lean`.
 -/
 
 @[expose] public section
