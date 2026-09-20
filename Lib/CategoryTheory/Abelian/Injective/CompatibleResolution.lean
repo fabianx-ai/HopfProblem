@@ -16,7 +16,11 @@ public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 Iterate the specified-endpoint embedding and cokernel successor on one shared
 short exact row. The three columns retain these same quotient maps and give
 injective resolutions with consecutive differential given by quotient followed
-by the next embedding. This is the construction of PD-L07, PD7–PD8.
+by the next embedding.
+
+This is the Horseshoe lemma in its dual (injective) form together with its
+comparison theorem: Weibel, *An Introduction to Homological Algebra*,
+Proposition 2.2.8 and Theorem 2.2.6 (dualised); Cartan–Eilenberg V.2.
 -/
 
 @[expose] public section
@@ -126,7 +130,7 @@ private theorem augmentationQuasiIso (X : C) (K : CochainComplex C ℕ) (e : X �
       simp)
     (by change 𝟙 (K.X 0) ≫ K.d 0 1 = K.d 0 1 ≫ 𝟙 (K.X 1); simp)
 
-/-- PD8: the intervening embedding followed by its quotient is zero. -/
+/-- The intervening embedding followed by its quotient is zero. -/
 private theorem consecutiveSquare
     (X J : ℕ → C) (e : ∀ n, X n ⟶ J n)
     (r : ∀ n, J n ⟶ X (n + 1)) (w : ∀ n, e n ≫ r n = 0) :
@@ -154,7 +158,7 @@ private theorem augmentationExact
 
 /-- At positive degrees, postcomposition by the next embedding preserves
 the kernel, and precomposition by the preceding epic quotient preserves
-the image. The same PD7 row therefore gives consecutive exactness. -/
+the image. The presentation row therefore gives consecutive exactness. -/
 private theorem consecutiveExact
     (X J : ℕ → C) (e : ∀ n, X n ⟶ J n)
     (r : ∀ n, J n ⟶ X (n + 1)) (w : ∀ n, e n ≫ r n = 0)
@@ -226,7 +230,7 @@ presentations give consecutive differentials by quotient followed by the
 next embedding. Their zero composites, positive exactness and augmentation
 exactness yield three injective resolutions on these very terms and maps.
 All four stage squares and all quotient universal properties are retained.
-This is PD-L07, equations PD7 and PD8; no strict cochain maps are asserted. -/
+No strict cochain maps are asserted. -/
 theorem exists_recursive_injective_presentations
     {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
     (S : ShortComplex C) (hS : S.ShortExact) :
@@ -325,8 +329,8 @@ open CategoryTheory.Limits
 
 variable {C : Type u} [Category.{v} C] [Abelian C]
 
-/- PD-L08 (PD9): the four stage squares make inclusion and projection commute
-with the consecutive differentials r followed by e. -/
+/- The four stage squares make inclusion and projection commute with the consecutive
+differentials `r` followed by `e`. -/
 private theorem inclusion_comm
     (T : ℕ → ShortComplex C) (L R : ℕ → C)
     (eA : ∀ n, (T n).X₁ ⟶ L n) (eB : ∀ n, (T n).X₂ ⟶ L n ⊞ R n)
@@ -478,8 +482,8 @@ private def splittingOfComponents (X Y Z A B : C) (h₁ : X = A) (h₂ : Y = (A 
   subst q
   exact ShortComplex.Splitting.ofHasBinaryBiproduct A B
 
-/-- PD-L08, textbook PD9: the recursive presentations give a strict short exact
-sequence on the very three supplied injective resolutions. Each degree is the
+/-- The recursive presentations give a strict short exact sequence of complexes on the
+very three supplied injective resolutions. Each degree is the
 transported split biproduct row; its splitting need not commute with differentials. -/
 theorem strict_sequence_of_recursive_presentations
     {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
@@ -563,7 +567,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C]
 
 /-- Exactness makes the differential induced out of the cokernel monic. Its next
 composite is zero by cancellation of the epic quotient, and the quotient comparison
-transports the next exact pair. This is the single-column induction in PD-L10. -/
+transports the next exact pair. -/
 private theorem column_successor
     {X J K L : C} (e : X ⟶ J) [Mono e] (d : J ⟶ K) (d' : K ⟶ L)
     (w : e ≫ d = 0) (h : (ShortComplex.mk e d w).Exact)
@@ -787,9 +791,9 @@ private def initialState
           monoC := (inferInstance : Mono (IC.ι.f 0))
           zero := wz, exactA := hA, exactB := hB, exactC := hC }
 
-/-- Take the canonical cokernel row and descend the original differential.
-The three column successor receipts supply monicity and exactness, while the
-snake receipt supplies the successor short exact row. -/
+/-- Take the canonical cokernel row and descend the original differential: the three
+column successors supply monicity and exactness, and the snake lemma supplies the
+successor short exact row. -/
 private def nextState
     (E : ℕ → ShortComplex C) (d : ∀ n, E n ⟶ E (n + 1))
     (n : ℕ) (s : PresentationState E d n) (hE : (E n).ShortExact)
@@ -855,7 +859,7 @@ recursive short exact presentations. Start with its given augmentations, take
 actual cokernels, and descend the original differentials. Degreewise injectivity
 splits each original row; these splittings need not commute with differentials.
 The same witnesses retain all quotient universal properties, strict row squares
-and differential factorizations (PD-L10, PD7–PD8). -/
+and differential factorizations. -/
 public theorem exists_presentations_of_compatible_resolutions
     (S : ShortComplex C) (hS : S.ShortExact)
     (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
@@ -934,7 +938,7 @@ open CategoryTheory CategoryTheory.Limits
 variable {C : Type u} [Category.{v} C] [Abelian C]
 
 /-- Extend the current whole-row map along the monic embedding into the specified
-split injective target. This preserves both sequence squares at once (PD-L12, PD12). -/
+split injective target. This preserves both sequence squares at once. -/
 private theorem stage_extension {T E T' E' : ShortComplex C}
     (hT : T.ShortExact) (hE : E.ShortExact) (e : T ⟶ E)
     [Mono e.τ₁] [Mono e.τ₂] [Mono e.τ₃]
@@ -976,7 +980,7 @@ private def actualDesc {A B Q Z : C} (e : A ⟶ B) (r : B ⟶ Q)
     (k : B ⟶ Z) (hk : e ≫ k = 0) : Q ⟶ Z :=
   hr.desc (CokernelCofork.ofπ k hk)
 
-/-- The descended map retains its defining quotient equation (PD13 component). -/
+/-- The descended map retains its defining quotient equation. -/
 private theorem actualDesc_fac {A B Q Z : C} (e : A ⟶ B) (r : B ⟶ Q)
     (z : e ≫ r = 0) (hr : IsColimit (CokernelCofork.ofπ r z))
     (k : B ⟶ Z) (hk : e ≫ k = 0) :
@@ -1020,7 +1024,7 @@ private def descendedRow {E Q E' Q' : ShortComplex C}
   ShortComplex.homMk a b c (comparisonDescendedSquares r r' u a b c ha hb hc).1
     (comparisonDescendedSquares r r' u a b c ha hb hc).2
 
-/-- Bundle the three quotient restrictions into the whole-row equation PD13. -/
+/-- Bundle the three quotient restrictions into the whole-row quotient equation. -/
 private theorem descendedRow_fac {E Q E' Q' : ShortComplex C}
     (r : E ⟶ Q) (r' : E' ⟶ Q') (u : E ⟶ E')
     [Epi r.τ₁] [Epi r.τ₂]
@@ -1031,8 +1035,8 @@ private theorem descendedRow_fac {E Q E' Q' : ShortComplex C}
     r ≫ descendedRow r r' u a b c ha hb hc = u ≫ r' :=
   ShortComplex.hom_ext _ _ ha hb hc
 
-/-- One recursive comparison stage retains the whole extension and its
-simultaneous successor, together with PD12 and PD13. -/
+/-- One recursive comparison stage retains the whole extension, its simultaneous
+successor, and both the embedding and quotient equations. -/
 private structure ComparisonStep {T E Q T' E' Q' : ShortComplex C}
     (e : T ⟶ E) (r : E ⟶ Q) (e' : T' ⟶ E') (r' : E' ⟶ Q')
     (f : T ⟶ T') where
@@ -1090,8 +1094,8 @@ private def comparisonTower (T T' : ℕ → ShortComplex C) (f0 : T 0 ⟶ T' 0)
 /-- Any original sequence morphism admits recursive whole-row comparisons on
 the supplied compatible presentations. At each degree extend along the monic
 embedding into the split injective target and descend through the actual three
-cokernels. The same comparisons satisfy PD12 and PD13, with the given map in
-degree zero; no monicity or epicity is required of that map (PD-L12). -/
+cokernels. The comparisons agree with the given map in degree zero; no monicity or
+epicity is required of that map. -/
 public theorem exists_recursive_comparison
     {S S' : ShortComplex C} (f : S ⟶ S')
     (T E T' E' : ℕ → ShortComplex C) (h0 : T 0 = S) (h0' : T' 0 = S')
@@ -1132,7 +1136,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C]
 
 /-- The quotient-embedding differential factorization and the two recursive
 comparison equations give the five-term differential identity, in each position
-of the original compatible triple (PD-L13, PD14). -/
+of the original compatible triple. -/
 private theorem comparisonDifferential (K K' : CochainComplex C ℕ)
     (X X' : ℕ → C)
     (e : ∀ n, X n ⟶ K.X n) (r : ∀ n, K.X n ⟶ X (n + 1))
@@ -1210,11 +1214,11 @@ private def comparisonStrictMap (S S' : ShortComplex (CochainComplex C ℕ))
     (HomologicalComplex.hom_ext _ _ hb)
 
 /-- Every morphism of short exact sequences admits a strict simultaneous
-comparison on any two supplied compatible injective resolution triples.
-Use their recursive presentations and whole-row comparisons; PD14 supplies
-the cochain equations, the row maps supply both strict sequence squares, and
-PD12 at zero gives all three original augmentations. No monicity or epicity
-of the given morphism is required (PD-L13). -/
+comparison on any two supplied compatible injective resolution triples
+(the comparison theorem, Weibel 2.2.6 dualised). The recursive presentations and
+whole-row comparisons supply the cochain equations, both strict sequence squares and
+all three original augmentations. No monicity or epicity of the given morphism is
+required. -/
 public theorem exists_strict_comparison_of_compatible_resolutions (S S' : ShortComplex C) (hS : S.ShortExact) (hS' : S'.ShortExact)
     (f : S ⟶ S')
     (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
