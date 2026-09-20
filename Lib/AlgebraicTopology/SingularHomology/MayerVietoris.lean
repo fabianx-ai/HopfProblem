@@ -83,6 +83,8 @@ open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
+universe u
+
 /-- The submodule of singular chains supported on a set `U`: chains whose simplices all have image inside `U` (the carrier set underlying the Mayer-Vietoris small-chain argument). -/
 def SingularMayerVietoris.supportedChainSubmodule {X : Type} [TopologicalSpace X] (U : Set X)
     (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=
@@ -600,51 +602,51 @@ theorem SingularMayerVietoris.chainSequence_shortExact {X : Type} [TopologicalSp
 /-! ### Homology of the short complex -/
 
 /-- The homology map induced by a chain map. -/
-abbrev SingularMayerVietoris.homologyLinearMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+abbrev SingularMayerVietoris.homologyLinearMap {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : K ⟶ L) (n : ℕ) : K.homology n →ₗ[ℤ] L.homology n :=
   (HomologicalComplex.homologyMap f n).hom
 
 /-- Homology maps compose. -/
-theorem SingularMayerVietoris.homologyLinearMap_comp {K L M : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SingularMayerVietoris.homologyLinearMap_comp {K L M : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : K ⟶ L) (g : L ⟶ M) (n : ℕ) :
     homologyLinearMap (f ≫ g) n = (homologyLinearMap g n).comp (homologyLinearMap f n) :=
   congrArg ModuleCat.Hom.hom (HomologicalComplex.homologyMap_comp f g n)
 
 /-- The homology map of a negated chain map is negated. -/
 @[simp]
-theorem SingularMayerVietoris.homologyLinearMap_neg {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SingularMayerVietoris.homologyLinearMap_neg {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : K ⟶ L) (n : ℕ) : homologyLinearMap (-f) n = -homologyLinearMap f n :=
   congrArg ModuleCat.Hom.hom (HomologicalComplex.homologyMap_neg f n)
 
 /-- The connecting homomorphism of the short complex. -/
 def SingularMayerVietoris.connectingMap
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) : S.X₃.homology (n + 1) →ₗ[ℤ] S.X₁.homology n :=
   (hS.δ (n + 1) n (by simp)).hom
 
 /-- Exactness at the left homology term. -/
 theorem SingularMayerVietoris.exact_at_leftHomology
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) : LinearMap.range (connectingMap hS n) = LinearMap.ker (homologyLinearMap S.f n) :=
   (hS.homology_exact₁ (n + 1) n (by simp)).moduleCat_range_eq_ker
 
 /-- Exactness at the middle homology term. -/
 theorem SingularMayerVietoris.exact_at_middleHomology
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) :
     LinearMap.range (homologyLinearMap S.f n) = LinearMap.ker (homologyLinearMap S.g n) :=
   (hS.homology_exact₂ n).moduleCat_range_eq_ker
 
 /-- Exactness at the right homology term. -/
 theorem SingularMayerVietoris.exact_at_rightHomology
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) :
     LinearMap.range (homologyLinearMap S.g (n + 1)) = LinearMap.ker (connectingMap hS n) :=
   (hS.homology_exact₃ (n + 1) n (by simp)).moduleCat_range_eq_ker
 
 /-- The degree-zero right map is surjective. -/
 theorem SingularMayerVietoris.homologyLinearMap_second_zero_surjective
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact) :
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact) :
     Function.Surjective (homologyLinearMap S.g 0) := by
   have := hS.epi_g
   have := HomologicalComplex.epi_homologyMap_of_epi_of_not_rel S.g 0 (by intro j; simp)
@@ -652,7 +654,7 @@ theorem SingularMayerVietoris.homologyLinearMap_second_zero_surjective
 
 /-- The connecting map is natural in the short exact sequence. -/
 theorem SingularMayerVietoris.connectingMap_naturality
-    {S T : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S T : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (φ : S ⟶ T) (hT : T.ShortExact) (n : ℕ) :
     (homologyLinearMap φ.τ₁ n).comp (connectingMap hS n) =
       (connectingMap hT n).comp (homologyLinearMap φ.τ₃ (n + 1)) :=
@@ -660,21 +662,21 @@ theorem SingularMayerVietoris.connectingMap_naturality
     (HomologicalComplex.HomologySequence.δ_naturality φ hS hT (n + 1) n (by simp))
 
 /-- The homology class of a cycle element. -/
-def SingularMayerVietoris.homologyClassOfCycle (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) {i : ℕ}
+def SingularMayerVietoris.homologyClassOfCycle (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) {i : ℕ}
     (z : K.X i) (j : ℕ) (hj : (ComplexShape.down ℕ).next i = j) (hz : (K.d i j).hom z = 0) :
     K.homology i :=
   (K.homologyπ i).hom (K.cyclesMk z j hj hz)
 
 /-- The chosen lift of a connecting preimage is a cycle. -/
 theorem SingularMayerVietoris.connectingMap_lift_is_cycle
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (z₂ : S.X₂.X (n + 1)) (z₁ : S.X₁.X n)
     (hz₁ : (S.f.f n).hom z₁ = (S.X₂.d (n + 1) n).hom z₂) (k : ℕ) : (S.X₁.d n k).hom z₁ = 0 :=
   hS.d_eq_zero_of_f_eq_d_apply (n + 1) n z₂ z₁ hz₁ k
 
 /-- The connecting map computes on cycle classes. -/
 theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (z₃ : S.X₃.X (n + 1)) (hz₃ : (S.X₃.d (n + 1) n).hom z₃ = 0) (z₂ : S.X₂.X (n + 1))
     (hz₂ : (S.g.f (n + 1)).hom z₂ = z₃) (z₁ : S.X₁.X n)
     (hz₁ : (S.f.f n).hom z₁ = (S.X₂.d (n + 1) n).hom z₂) :
@@ -686,7 +688,7 @@ theorem SingularMayerVietoris.connectingMap_homologyClassOfCycle
 
 /-- The left component of an `inl` homology class. -/
 theorem SingularMayerVietoris.homology_fst_inl
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
           a) =
@@ -699,7 +701,7 @@ theorem SingularMayerVietoris.homology_fst_inl
 
 /-- The right component of an `inl` homology class. -/
 theorem SingularMayerVietoris.homology_snd_inl
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : K.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
           a) =
@@ -712,7 +714,7 @@ theorem SingularMayerVietoris.homology_snd_inl
 
 /-- The left component of an `inr` homology class. -/
 theorem SingularMayerVietoris.homology_fst_inr
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
           b) =
@@ -725,7 +727,7 @@ theorem SingularMayerVietoris.homology_fst_inr
 
 /-- The right component of an `inr` homology class. -/
 theorem SingularMayerVietoris.homology_snd_inr
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (b : L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.snd : K ⊞ L ⟶ L) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
           b) =
@@ -738,7 +740,7 @@ theorem SingularMayerVietoris.homology_snd_inr
 
 /-- Every pair-homology class splits into `inl` and `inr` parts. -/
 theorem SingularMayerVietoris.homology_biprod_total
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (K ⊞ L).homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : (K ⊞ L).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom
           ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.fst : K ⊞ L ⟶ K) n).hom
             a) +
@@ -763,7 +765,7 @@ theorem SingularMayerVietoris.homology_biprod_total
 /-! ### Homology of a bipod sequence -/
 
 /-- Homology of a bipod complex is the product of homologies. -/
-def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) :
+def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) :
     (K ⊞ L).homology n ≃ₗ[ℤ] (K.homology n × L.homology n) :=
   ({    toFun
           a :=
@@ -811,7 +813,7 @@ def SingularMayerVietoris.homologyBiprodEquiv (K L : ChainComplex (ModuleCat.{0}
 
 /-- The inverse equivalence computes the pair class. -/
 theorem SingularMayerVietoris.homologyBiprodEquiv_symm_apply
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.homology n × L.homology n) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : K.homology n × L.homology n) :
     (homologyBiprodEquiv K L n).symm a =
       (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L) n).hom a.1 +
         (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L) n).hom
@@ -819,8 +821,8 @@ theorem SingularMayerVietoris.homologyBiprodEquiv_symm_apply
   rfl
 
 /-- The equivalence descends a pair of homology maps. -/
-theorem SingularMayerVietoris.homologyBiprodEquiv_desc {K : ChainComplex (ModuleCat.{0} ℤ) ℕ}
-    {L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (n : ℕ) {A : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SingularMayerVietoris.homologyBiprodEquiv_desc {K : ChainComplex (ModuleCat.{u} ℤ) ℕ}
+    {L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (n : ℕ) {A : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : K ⟶ A) (g : L ⟶ A) (a : K.homology n × L.homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biprod.desc f g) n).hom
         ((homologyBiprodEquiv K L n).symm a) =
@@ -840,18 +842,18 @@ theorem SingularMayerVietoris.homologyBiprodEquiv_desc {K : ChainComplex (Module
     exact (congrArg (fun k => k.hom a.2) h).symm
 
 /-- The first map of the bipod sequence. -/
-def SingularMayerVietoris.biprodSequenceFirstMap {A K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+def SingularMayerVietoris.biprodSequenceFirstMap {A K L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : A ⟶ K ⊞ L) (n : ℕ) : A.homology n →ₗ[ℤ] (K.homology n × L.homology n) :=
   (homologyBiprodEquiv K L n).toLinearMap.comp (homologyLinearMap f n)
 
 /-- The second map of the bipod sequence. -/
-def SingularMayerVietoris.biprodSequenceSecondMap {K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+def SingularMayerVietoris.biprodSequenceSecondMap {K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (g : K ⊞ L ⟶ B) (n : ℕ) : (K.homology n × L.homology n) →ₗ[ℤ] B.homology n :=
   (homologyLinearMap g n).comp (homologyBiprodEquiv K L n).symm.toLinearMap
 
 /-- The second map descends the two components. -/
 theorem SingularMayerVietoris.biprodSequenceSecondMap_desc
-    {K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : K ⟶ B) (g : L ⟶ B) (n : ℕ)
+    {K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ} (f : K ⟶ B) (g : L ⟶ B) (n : ℕ)
     (a : K.homology n × L.homology n) :
     biprodSequenceSecondMap (CategoryTheory.Limits.biprod.desc f g) n a =
       homologyLinearMap f n a.1 + homologyLinearMap g n a.2 :=
@@ -859,7 +861,7 @@ theorem SingularMayerVietoris.biprodSequenceSecondMap_desc
 
 /-- The bipod sequence is exact at the left term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_leftHomology
-    {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
+    {A K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
     LinearMap.range (connectingMap hS n) = LinearMap.ker (biprodSequenceFirstMap f n) := by
   rw [exact_at_leftHomology hS n]
@@ -873,7 +875,7 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_leftHomology
 
 /-- The bipod sequence is exact at the middle term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_middleHomology
-    {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
+    {A K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
     LinearMap.range (biprodSequenceFirstMap f n) = LinearMap.ker (biprodSequenceSecondMap g n) := by
   ext a
@@ -898,7 +900,7 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_middleHomology
 
 /-- The bipod sequence is exact at the right term. -/
 theorem SingularMayerVietoris.biprodSequence_exact_at_rightHomology
-    {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
+    {A K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) (n : ℕ) :
     LinearMap.range (biprodSequenceSecondMap g (n + 1)) = LinearMap.ker (connectingMap hS n) := by
   rw [← exact_at_rightHomology hS n]
@@ -915,7 +917,7 @@ theorem SingularMayerVietoris.biprodSequence_exact_at_rightHomology
 
 /-- The degree-zero second map is surjective. -/
 theorem SingularMayerVietoris.biprodSequence_second_zero_surjective
-    {A K L B : ChainComplex (ModuleCat.{0} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
+    {A K L B : ChainComplex (ModuleCat.{u} ℤ) ℕ} {f : A ⟶ K ⊞ L} {g : K ⊞ L ⟶ B} {hfg : f ≫ g = 0}
     (hS : (CategoryTheory.ShortComplex.mk f g hfg).ShortExact) :
     Function.Surjective (biprodSequenceSecondMap g 0) :=
   (homologyLinearMap_second_zero_surjective hS).comp (homologyBiprodEquiv K L 0).symm.surjective
