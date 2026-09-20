@@ -16,6 +16,12 @@ public import Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointCon
 This file compares the upper edge of the shifted adjacent Postnikov triangle with the standard
 mapping-cone model. The sole scalar is the explicit parity scalar introduced by shifting the
 triangle; all endpoint and homology comparisons are normalized without an additional sign.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter III, §4.
+
 -/
 
 @[expose] public section
