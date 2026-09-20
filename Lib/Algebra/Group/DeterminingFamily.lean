@@ -52,10 +52,11 @@ theorem commute_all_of_hom_ext
   have hb : a * b * a⁻¹ = b := DFunLike.congr_fun hconj b
   exact mul_inv_eq_iff_eq_mul.mp hb
 
-/-- Let `φ : Multiplicative (Fin 4 → ℤ) →* G` have image contained in the powers
-of the single element `c = φ (ofAdd ![1, 2, -4, 0])`, and let `x y : G` be such that
-the image of `φ` together with `x` and `y` determines endomorphisms of `G`.
-If `x * y = 1` and `c` commutes with `x`, then `G` is commutative. -/
+/-- Write `c = φ (ofAdd ![1, 2, -4, 0])` and let `φ : Multiplicative (Fin 4 → ℤ) →* G` be given
+by the exponent formula `φ (ofAdd z) = c ^ z 0` for every `z : Fin 4 → ℤ`, the exponent being the
+zeroth coordinate of `z` (this is stronger than saying the image of `φ` lies in the powers of
+`c`).  Let `x y : G` be such that the image of `φ` together with `x` and `y` determines
+endomorphisms of `G`.  If `c` commutes with `x` and `x * y = 1`, then `G` is commutative. -/
 theorem commute_all_of_lattice_image_eq_zpow
     {G : Type u} [Group G]
     (φ : Multiplicative (Fin 4 → ℤ) →* G) (x y : G)
