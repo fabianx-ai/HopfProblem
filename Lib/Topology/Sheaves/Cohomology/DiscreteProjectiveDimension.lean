@@ -16,6 +16,8 @@ public import Mathlib.Topology.Sheaves.SheafCondition.UniqueGluing
 On a discrete space, sections extend across inclusions one point at a time and are glued over the
 singleton cover.  Hence every additive sheaf is flasque, every represented-open sheaf is
 projective, and in particular the integral unit sheaf has projective dimension zero.
+
+A sheaf on a discrete space is the product of its stalks; see Bredon, *Sheaf Theory*, I.1.
 -/
 
 @[expose] public section
@@ -28,9 +30,13 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open TopologicalSpace Opposite
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}}
+section Discrete
+
+variable {X : TopCat.{u}}
 
 private def pointOpen [DiscreteTopology X] (x : X) : Opens X :=
   ⟨{x}, isOpen_discrete {x}⟩
@@ -46,7 +52,7 @@ private theorem pointOpen_le [DiscreteTopology X] {U : Opens X} (x : U) :
 
 /-- Every additive sheaf on a discrete space is flasque. -/
 instance sheaf_isFlasque_of_discreteTopology [DiscreteTopology X]
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) : F.IsFlasque where
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) : F.IsFlasque where
   epi {U V} i := by
     classical
     rw [AddCommGrpCat.epi_iff_surjective]
@@ -91,6 +97,10 @@ instance sheaf_isFlasque_of_discreteTopology [DiscreteTopology X]
         intro y hy
         have hyx : y = xu.1 := by simpa [W, pointOpen] using hy
         exact hyx.symm ▸ hx)) x hxW s
+
+end Discrete
+
+variable {X : TopCat.{0}}
 
 /-- The sheaf represented by any open of a discrete space is projective. -/
 instance freeOpen_projective_of_discreteTopology [DiscreteTopology X] (U : Opens X) :
