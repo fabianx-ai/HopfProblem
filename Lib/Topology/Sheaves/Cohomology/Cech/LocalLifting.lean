@@ -17,17 +17,22 @@ public import Mathlib.Topology.Sheaves.LocallySurjective
 /-!
 # Local lifting of normalized Cech cochains
 
-This file formalizes textbook section CD-05G, equations (C18)--(C20).  For a morphism of sheaves
-of abelian groups, its section quotient is the presheaf whose value on an open set is the quotient
-of target sections by the image of source sections.  If the sheaf morphism is an epimorphism, this
-presheaf is locally zero.  Independently, its value on the empty open is zero by the empty-cover
-sheaf axiom.
+This is the lifting step in the construction of the long exact Čech sequence on a paracompact
+space.  For a morphism of sheaves of abelian groups, its section quotient is the presheaf whose
+value on an open set is the quotient of target sections by the image of source sections.  If the
+sheaf morphism is an epimorphism, this presheaf is locally zero.  Independently, its value on the
+empty open is zero by the empty-cover sheaf axiom.
 
 The locally-zero cochain theorem then makes the quotient of any normalized cochain literally zero
 on one refinement.  Choosing a preimage in every ordered-simplex component produces a single
 source-valued cochain whose coefficient image is the refined pullback of the original cochain.
 The refinement may depend on the cochain and its degree; no surjectivity statement is made for
 sections on the original cover.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.10
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
