@@ -12,10 +12,16 @@ public import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1
 /-!
 # Sheaf cohomology from an indexed acyclic resolution
 
-This specializes the arbitrary-degree dimension-shifting theorem to additive sheaves.  Mathlib's
-canonical degree-zero Ext comparison is applied degreewise, identifying the evaluated resolution
-with its literal complex of global sections.  The construction is natural under maps of indexed
-resolutions.
+If `0 → F → R⁰ → R¹ → ⋯` is a resolution of an abelian sheaf by sheaves whose positive-degree
+cohomology vanishes, then `Hⁿ(X, F)` is the `n`-th homology of the complex of global sections
+`Γ(X, R•)`.  This is the theorem that acyclic resolutions compute derived functors, and the
+comparison is natural in the resolution.
+
+## References
+
+* R. Hartshorne, *Algebraic Geometry*, III, Proposition 1.2A
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.4.7
+* C. Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6
 -/
 
 @[expose] public section
@@ -31,6 +37,7 @@ namespace TopCat.SheafCohomology.AcyclicResolution
 
 variable {X : TopCat.{0}}
 
+/-- An indexed resolution of an abelian sheaf on `X`, in the sense of `Ext.AcyclicResolution`. -/
 abbrev Resolution := Ext.AcyclicResolution
   (C := TopCat.Sheaf AddCommGrpCat.{0} X)
 
@@ -46,6 +53,8 @@ def IsAcyclic : Prop :=
   ∀ (i q : ℕ), 0 < q →
     Subsingleton (CategoryTheory.Sheaf.H.{0} (R.X i) q)
 
+/-- Positive-degree vanishing of the cohomology of the resolution terms is exactly acyclicity
+for the constant sheaf that defines sheaf cohomology. -/
 theorem isAcyclicFor (h : IsAcyclic R) :
     R.IsAcyclicFor (TopCat.SheafH1.unitSheaf X) := h
 
@@ -77,11 +86,13 @@ def globalComplexMap : globalComplex R ⟶ globalComplex S :=
   ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).map f.complexMap
 
+/-- The identity map of resolutions induces the identity on global-section complexes. -/
 @[simp]
 theorem globalComplexMap_id (R : Resolution (X := X)) :
     globalComplexMap (Ext.AcyclicResolution.Hom.id R) = 𝟙 (globalComplex R) := by
   simp [globalComplexMap]
 
+/-- Passing to global-section complexes preserves composition of resolution maps. -/
 @[simp]
 theorem globalComplexMap_comp (f : Ext.AcyclicResolution.Hom R S)
     (g : Ext.AcyclicResolution.Hom S T) :
