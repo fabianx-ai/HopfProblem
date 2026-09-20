@@ -14,10 +14,11 @@ matrix.
 
 Alongside the presentation API the file records the general module lemmas used to build
 presentations: `LinearMap.ker_comp_eq_ker_sup_span_singleton`, the splitting of an extension
-of a ring by a module (`LinearMap.exists_split_of_ker_eq_range` and its additive form
-`LinearMap.exists_addEquiv_split_of_ker_eq_range`), the head/tail splitting `Fin.tailHeadAddEquiv`
-of `Fin (n + 1) → ℤ`, `LinearEquiv.natAbs_apply_one`, and
-`Matrix.cols_eq_rows_of_bijective_mulVec`.
+of a ring by a module (`LinearMap.exists_split_of_ker_eq_range` and its additive
+form `LinearMap.exists_addEquiv_split_of_ker_eq_range`),
+`LinearEquiv.natAbs_apply_one`, and `Matrix.cols_eq_rows_of_bijective_mulVec`.  The head/tail
+splitting of `Fin (n + 1) → ℤ` is Mathlib's
+`(Fin.consLinearEquiv ℤ _).symm.trans (LinearEquiv.prodComm ℤ ℤ _)`.
 
 ## References
 
@@ -290,18 +291,6 @@ theorem LinearMap.exists_addEquiv_split_of_ker_eq_range {R : Type*} [CommRing R]
     ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
   obtain ⟨e, he, hp⟩ := LinearMap.exists_split_of_ker_eq_range i p hi hp hk
   exact ⟨e.toAddEquiv, he, hp⟩
-/-- Splitting off the first coordinate of `Fin (n+1) → ℤ`. -/
-def Fin.tailHeadAddEquiv (n : ℕ) :
-    (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
-    where
-  toFun v := (fun i => v i.succ, v 0)
-  invFun v := Fin.cons v.2 v.1
-  left_inv
-    v := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  right_inv v := rfl
-  map_add' _ _ := rfl
 /-- A linear automorphism of `ℤ` sends `1` to a unit, that is, to `±1`. -/
 theorem LinearEquiv.natAbs_apply_one (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
   have h : e.symm 1 * e 1 = 1 := by

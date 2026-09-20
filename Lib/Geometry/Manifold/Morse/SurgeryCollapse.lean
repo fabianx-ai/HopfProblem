@@ -5202,7 +5202,8 @@ theorem ManifoldMorse.MorseSurgeryData.exists_indexTwoBasis_extension {E M : Typ
         ∀ v, d.indexTwoCollapseCoordinate hf hindex (H v) = v 0 := by
   obtain ⟨H, hH, hcoord⟩ := d.exists_indexTwoHomology_split hf hindex
   let G :=
-    (Fin.tailHeadAddEquiv n).trans
+    (((Fin.consLinearEquiv ℤ fun _ : Fin (n + 1) => ℤ).symm.trans
+          (LinearEquiv.prodComm ℤ ℤ (Fin n → ℤ))).toAddEquiv).trans
       ((e.toAddEquiv.prodCongr (AddEquiv.refl ℤ)).trans H.toAddEquiv)
   refine ⟨G.toIntLinearEquiv, ?_, ?_⟩
   · intro v
