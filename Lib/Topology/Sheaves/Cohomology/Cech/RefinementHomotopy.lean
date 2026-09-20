@@ -12,8 +12,14 @@ public import Mathlib.Algebra.Homology.Homotopy
 /-!
 # Prism homotopies between Čech refinement maps
 
-This file continues textbook section CD-04 by constructing the standard prism homotopy between
-the normalized Čech cochain maps induced by two choices of refinement function.
+Two refinement functions between the index sets of a cover and a refining cover induce Čech
+cochain maps that differ by the standard prism homotopy.  The headline consequence is
+`refinementMap_homologyMap_eq`: the induced map on normalized Čech cohomology does not depend on
+the chosen refinement function, so the Čech cohomology of a cover is functorial in the thin
+refinement preorder.
+
+Reference: Godement, *Topologie algébrique et théorie des faisceaux*, II.5.7 (see also Bredon,
+*Sheaf Theory*, III.4).
 -/
 
 @[expose] public section
