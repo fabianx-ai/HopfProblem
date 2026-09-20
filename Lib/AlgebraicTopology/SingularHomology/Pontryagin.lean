@@ -20,16 +20,13 @@ product G n : H₁(G) → H_n(G) → H_{n+1}(G)
 a ⋆ b = (additionMap G)_* (a × b)
 ```
 
-This file carries the coherence-free core (boundary J-C1): the continuous addition maps
-(`additionMap`, `rightAdditionMap`, `cyclicMap`) and their naturality/cyclicity lemmas,
-the bilinear `product`, the `product11`/`product12` slices and the `tripleProduct`, and the
-generic multilinear/alternating plumbing (`multilinearOfBilinear`, `alternatingOfBilinear`,
-`skewBilinear_diagonal_zero`, `multilinearOfTrilinear`, `alternatingOfTrilinear`) used by
-the graded-commutativity and alternativity results.
-
-The skew-symmetry/self-vanishing laws (`product11_skew`, `product11_self`, the
-`tripleProduct_self*` family) and the naturality statements that go through
-`crossProductHomology_natural` are J-C2/J-C3 material and do not live here.
+The file contains the continuous addition maps (`additionMap`, `rightAdditionMap`,
+`cyclicMap`) and their naturality and cyclicity lemmas, the bilinear `product`, its
+`product11`/`product12` slices and the `tripleProduct`, the graded-commutativity laws
+`product11_skew`, `product11_self` and the `tripleProduct_self*` family, and the generic
+multilinear/alternating plumbing (`multilinearOfBilinear`, `alternatingOfBilinear`,
+`skewBilinear_diagonal_zero`, `multilinearOfTrilinear`, `alternatingOfTrilinear`) used to
+present the products as maps out of exterior powers of `H₁(G)`.
 
 ## References
 
@@ -40,18 +37,22 @@ Hatcher, *Algebraic Topology*, §3.C (Pontryagin products).
 
 open SingularHomology
 
+/-- The cyclic shuffle homeomorphism `Y × (Z × X) → X × (Y × Z)`. -/
 def PeriodTorusHigherHomologyPontryagin.cyclicMap (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z)) :=
   ⟨fun p => (p.2.2, (p.1, p.2.1)), by fun_prop⟩
 
+/-- Addition `G × G → G` of a topological abelian group, as a continuous map. -/
 def PeriodTorusHigherHomologyPontryagin.additionMap (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × G, G) :=
   ⟨fun p => p.1 + p.2, continuous_fst.add continuous_snd⟩
 
+/-- The right-bracketed triple sum `G × (G × G) → G`, `(x, y, z) ↦ x + (y + z)`. -/
 def PeriodTorusHigherHomologyPontryagin.rightAdditionMap (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] : C(G × (G × G), G) :=
   (additionMap G).comp ((ContinuousMap.id G).prodMap (additionMap G))
 
+/-- The triple sum is invariant under the cyclic shuffle of its three arguments. -/
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.rightAdditionMap_comp_cyclic (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] :
@@ -60,6 +61,7 @@ theorem PeriodTorusHigherHomologyPontryagin.rightAdditionMap_comp_cyclic (G : Ty
   change p.2.2 + (p.1 + p.2.1) = p.1 + (p.2.1 + p.2.2)
   abel
 
+/-- On singular homology, the triple sum is invariant under the cyclic shuffle. -/
 theorem PeriodTorusHigherHomologyPontryagin.rightAddition_homology_cyclic (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ) :
     (SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n).comp
@@ -67,6 +69,7 @@ theorem PeriodTorusHigherHomologyPontryagin.rightAddition_homology_cyclic (G : T
       SingularMayerVietoris.singularHomologyMap (rightAdditionMap G) n := by
   rw [← singularHomologyMap_comp, rightAdditionMap_comp_cyclic]
 
+/-- An additive continuous map `f : G → H` commutes with addition: `f ∘ (+) = (+) ∘ (f × f)`. -/
 theorem PeriodTorusHigherHomologyPontryagin.additionMap_natural {G : Type} [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type} [TopologicalSpace H] [AddCommGroup H]
     [IsTopologicalAddGroup H] (f : C(G, H)) (hf : ∀ x y, f (x + y) = f x + f y) :
@@ -74,6 +77,7 @@ theorem PeriodTorusHigherHomologyPontryagin.additionMap_natural {G : Type} [Topo
   ext p
   exact hf p.1 p.2
 
+/-- An additive continuous map `f : G → H` commutes with addition on singular homology. -/
 theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G] {H : Type}
     [TopologicalSpace H] [AddCommGroup H] [IsTopologicalAddGroup H] (f : C(G, H))
@@ -87,6 +91,8 @@ theorem PeriodTorusHigherHomologyPontryagin.addition_homology_natural {G : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product `H₁(G) ⊗ Hₙ(G) → H_{n+1}(G)` of a topological abelian group: the
+cross product followed by the map induced by addition (Hatcher, *Algebraic Topology*, §3.C). -/
 def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G] [AddCommGroup G]
     [IsTopologicalAddGroup G] (n : ℕ) :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -98,6 +104,7 @@ def PeriodTorusHigherHomologyPontryagin.product (G : Type) [TopologicalSpace G] 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product of `a` and `b` is the pushforward along addition of `a × b`. -/
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] (n : ℕ)
@@ -110,6 +117,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product_apply (G : Type) [Topologica
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product `H₁(G) ⊗ H₁(G) → H₂(G)`. -/
 abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -119,6 +127,7 @@ abbrev PeriodTorusHigherHomologyPontryagin.product11 (G : Type) [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product `H₁(G) ⊗ H₂(G) → H₃(G)`. -/
 abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -128,6 +137,8 @@ abbrev PeriodTorusHigherHomologyPontryagin.product12 (G : Type) [TopologicalSpac
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product `H₁(G)^{⊗3} → H₃(G)`, `(a, b, c) ↦ a ⋆ (b ⋆ c)`, as a
+trilinear map. -/
 def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G] :
     SingularMayerVietoris.SingularHomology G 1 →ₗ[ℤ]
@@ -165,6 +176,7 @@ def PeriodTorusHigherHomologyPontryagin.tripleProduct (G : Type) [TopologicalSpa
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product is `a ⋆ (b ⋆ c)`. -/
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -173,6 +185,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_apply (G : Type) [Topo
   rfl
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- A bilinear map `M → M → N` read as a multilinear map on `Fin 2`-indexed families. -/
 def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N) :
     MultilinearMap ℤ (fun _ : Fin 2 => M) N
@@ -190,6 +203,7 @@ def PeriodTorusHigherHomologyPontryagin.multilinearOfBilinear {M N : Type*} [Add
     fin_cases i <;> simp
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- A bilinear map vanishing on the diagonal is an alternating map on `Fin 2`. -/
 def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (β : M →ₗ[ℤ] M →ₗ[ℤ] N)
     (hdiag : ∀ x : M, β x x = 0) : AlternatingMap ℤ M N (Fin 2)
@@ -203,6 +217,8 @@ def PeriodTorusHigherHomologyPontryagin.alternatingOfBilinear {M N : Type*} [Add
     exact hdiag _
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- A skew-symmetric bilinear map into a torsion-free abelian group vanishes on the
+diagonal. -/
 theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Type*}
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N] [Module.IsTorsionFree ℤ N]
     (β : M →ₗ[ℤ] M →ₗ[ℤ] N) (hskew : ∀ x y : M, β x y = -β y x) (x : M) : β x x = 0 := by
@@ -211,6 +227,7 @@ theorem PeriodTorusHigherHomologyPontryagin.skewBilinear_diagonal_zero {M N : Ty
   exact add_eq_zero_iff_eq_neg.mpr (hskew x x)
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- A trilinear map `M → M → M → N` read as a multilinear map on `Fin 3`-indexed families. -/
 def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N) :
     MultilinearMap ℤ (fun _ : Fin 3 => M) N
@@ -228,6 +245,8 @@ def PeriodTorusHigherHomologyPontryagin.multilinearOfTrilinear {M N : Type*} [Ad
     fin_cases i <;> simp
 
 attribute [local instance] SingularHomology.integerLinearMapModule in
+/-- A trilinear map vanishing whenever two of its three arguments agree is an alternating map
+on `Fin 3`. -/
 def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [AddCommGroup M]
     [Module ℤ M] [AddCommGroup N] [Module ℤ N] (g : M →ₗ[ℤ] M →ₗ[ℤ] M →ₗ[ℤ] N)
     (h01 : ∀ x z : M, g x x z = 0) (h02 : ∀ x y : M, g x y x = 0) (h12 : ∀ x y : M, g x y y = 0) :
@@ -248,6 +267,8 @@ def PeriodTorusHigherHomologyPontryagin.alternatingOfTrilinear {M N : Type*} [Ad
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product is natural for continuous additive maps:
+`f_*(a ⋆ b) = f_* a ⋆ f_* b`. -/
 theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [TopologicalSpace G]
     [TopologicalSpace H] [AddCommGroup G] [AddCommGroup H] [IsTopologicalAddGroup G]
     [IsTopologicalAddGroup H] (f : C(G, H)) (hf : ∀ x y, f (x + y) = f x + f y) (n : ℕ)
@@ -263,6 +284,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [Topolo
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product is natural for continuous additive maps. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_natural {G H : Type}
     [TopologicalSpace G] [TopologicalSpace H] [AddCommGroup G] [AddCommGroup H]
     [IsTopologicalAddGroup G] [IsTopologicalAddGroup H] (f : C(G, H))
@@ -280,6 +302,8 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_natural {G H : Type}
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product is the triple cross product pushed forward along the
+triple sum `G × (G × G) → G`. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
@@ -322,12 +346,15 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [T
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product on `H₁` is skew-symmetric: `a ⋆ b = -(b ⋆ a)`
+(Hatcher §3.C, graded commutativity in degree `1 · 1`). -/
 theorem PeriodTorusHigherHomologyPontryagin.product11_skew (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b : SingularMayerVietoris.SingularHomology G 1) : product11 G a b = -product11 G b a :=
   PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute (additionMap G)
     (by ext p; exact add_comm p.2 p.1) a b
 
+/-- When `H₂(G)` is torsion free, `a ⋆ a = 0` for every `a ∈ H₁(G)`. -/
 theorem PeriodTorusHigherHomologyPontryagin.product11_self (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -336,6 +363,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product11_self (G : Type) [Topologic
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The Pontryagin product `H₁(G) × H₁(G) → H₂(G)` as an alternating map. -/
 def PeriodTorusHigherHomologyPontryagin.homologyAlternatingTwo (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
@@ -345,6 +373,7 @@ def PeriodTorusHigherHomologyPontryagin.homologyAlternatingTwo (G : Type) [Topol
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The induced linear map `⋀²H₁(G) → H₂(G)` from the Pontryagin product. -/
 def PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
@@ -354,6 +383,7 @@ def PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo (G : Type) [Topological
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a decomposable wedge `v₀ ∧ v₁`, the map `⋀²H₁(G) → H₂(G)` is the Pontryagin product. -/
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
@@ -364,6 +394,7 @@ theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeTwo_apply_ιMulti (G : 
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product is invariant under a cyclic permutation of its arguments. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_cyclic (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
@@ -382,6 +413,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_cyclic (G : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product vanishes when its last two arguments agree. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self12 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -390,6 +422,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self12 (G : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product vanishes when its first and last arguments agree. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self02 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -398,6 +431,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self02 (G : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product vanishes when its first two arguments agree. -/
 theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self01 (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)]
@@ -406,6 +440,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_self01 (G : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The triple Pontryagin product `H₁(G)³ → H₃(G)` as an alternating map. -/
 def PeriodTorusHigherHomologyPontryagin.homologyAlternatingThree (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
@@ -416,6 +451,7 @@ def PeriodTorusHigherHomologyPontryagin.homologyAlternatingThree (G : Type) [Top
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- The induced linear map `⋀³H₁(G) → H₃(G)` from the triple Pontryagin product. -/
 def PeriodTorusHigherHomologyPontryagin.homologyWedgeThree (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     [Module.IsTorsionFree ℤ (SingularMayerVietoris.SingularHomology G 2)] :
@@ -425,6 +461,8 @@ def PeriodTorusHigherHomologyPontryagin.homologyWedgeThree (G : Type) [Topologic
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
+/-- On a decomposable wedge `v₀ ∧ v₁ ∧ v₂`, the map `⋀³H₁(G) → H₃(G)` is the triple
+Pontryagin product. -/
 @[simp]
 theorem PeriodTorusHigherHomologyPontryagin.homologyWedgeThree_apply_ιMulti (G : Type)
     [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
