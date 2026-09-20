@@ -12,13 +12,13 @@ public import Lib.Topology.Sheaves.OpenEmbeddingCohomology
 /-!
 # Factoring finite-closed pullback through an open embedding
 
-Suppose a finite closed map `f : T ⟶ X` factors as a finite closed map `s : T ⟶ V`
-followed by an open embedding `h : V ⟶ X`.  This file proves the elementary comparison
-between pushforward followed by open restriction and pushforward along `s`, then deduces that
-native constant-coefficient pullback along `f` is restriction to `V` followed by pullback along
-`s`.  All coefficient groups and Ext degrees are allowed.
-
-This is a comparison of exact functors; it is not a higher-direct-image base-change theorem.
+Suppose a map `f : T ⟶ X` factors as `f = s ≫ h` with `s : T ⟶ V` a finite closed map and
+`h : V ⟶ X` an open embedding.  Then `(f_*F)|_V = s_*F`, because restriction to an open subspace
+commutes with pushforward along a map into that subspace (Hartshorne, *Algebraic Geometry*, II §1;
+Iversen, *Cohomology of Sheaves*, II).  Consequently pullback `f^*` on constant-coefficient sheaf
+cohomology is restriction to `V` followed by `s^*`; this is the functoriality
+`(s ≫ h)^* = s^* ∘ h^*` of constant-coefficient pullback, in every degree and for every
+coefficient group.
 -/
 
 @[expose] public section
@@ -78,6 +78,8 @@ def restrictionPushforwardIso :
     (Opens.grothendieckTopology X) (Opens.grothendieckTopology T)
 
 include hcomp in
+/-- On sections over an open `W ⊆ V`, the comparison `(f_*F)|_V ≅ s_*F` is the identification of
+`F(f⁻¹ h(W))` with `F(s⁻¹ W)`. -/
 @[simp]
 theorem restrictionPushforwardIso_hom_app
     (F : TopCat.Sheaf AddCommGrpCat.{0} T) (W : Opens V) :
@@ -95,8 +97,8 @@ theorem restrictionPushforwardIso_hom_app
       (congrArg F.obj.map (Subsingleton.elim _ _))
 
 include hcomp in
-/-- The comparison carries the composite constant-sheaf endpoint to the native endpoint for
-`s`. -/
+/-- The comparison `(f_*F)|_V ≅ s_*F` carries the canonical morphism `A_V ⟶ (f_*A_T)|_V` of
+constant sheaves to the canonical morphism `A_V ⟶ s_*A_T`. -/
 theorem restrictionPushforwardIso_restrictionHom (A : AddCommGrpCat.{0}) :
     OpenEmbeddingCohomology.restrictionHom h hh A ≫
         (OpenEmbeddingCohomology.restriction h hh).map
@@ -141,8 +143,8 @@ variable [T2Space T]
   (hs : IsClosedMap s) (hsf : ∀ v : V, (s ⁻¹' ({v} : Set V)).Finite)
 
 include hcomp in
-/-- Finite-closed comparison commutes with restriction through the open factorization, in every
-degree. -/
+/-- The finite-map cohomology comparison commutes with restriction to the open subspace `V`, in
+every degree. -/
 theorem cohomologyForward_openRestriction
     (F : TopCat.Sheaf AddCommGrpCat.{0} T) (n : ℕ)
     (a : CategoryTheory.Sheaf.H.{0} F n) :
@@ -189,7 +191,8 @@ theorem cohomologyForward_openRestriction
 
 include hcomp in
 omit [T2Space T] in
-/-- The coefficient morphism remaining after normalizing the open restriction. -/
+/-- After identifying `A_V` with `(A_X)|_V` on a locally connected `V`, the remaining coefficient
+morphism is the canonical `A_V ⟶ s_*A_T`. -/
 theorem normalizedCoefficient [LocallyConnectedSpace V]
     (A : AddCommGrpCat.{0}) :
     inv (OpenEmbeddingCohomology.restrictionHom h hh A)
@@ -211,7 +214,8 @@ theorem normalizedCoefficient [LocallyConnectedSpace V]
     (IsIso.inv_hom_id_assoc e C (I := ie))
 
 include hcomp in
-/-- Forward comparison of pullback after normalized open restriction. -/
+/-- Restriction to `V` followed by the pullback `s^*` is computed by the finite-map comparison
+for `s`, in every degree. -/
 theorem normalizedOpenPullback_forward [LocallyConnectedSpace V]
     (A : AddCommGrpCat.{0}) (n : ℕ)
     (a : CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf X A) n) :
@@ -252,7 +256,8 @@ theorem normalizedOpenPullback_forward [LocallyConnectedSpace V]
       (normalizedCoefficient f h hh s hcomp A))
 
 include hcomp in
-/-- Forward comparison of direct finite-closed pullback, viewed on the open factorization. -/
+/-- The pullback `f^*` along the composite is computed by the finite-map comparison for `f`,
+read through the open factorization. -/
 theorem directPullback_forward_open
     (A : AddCommGrpCat.{0}) (n : ℕ)
     (a : CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf X A) n) :
@@ -290,8 +295,8 @@ theorem directPullback_forward_open
 
 set_option linter.style.haveILetI false in
 include hcomp in
-/-- Native constant-coefficient pullback along the finite-closed map factors through normalized
-restriction to the open and finite-closed pullback along the factoring map, in every degree. -/
+/-- Constant-coefficient pullback along `f = s ≫ h` is restriction to the open subspace `V`
+followed by pullback along `s`: `(s ≫ h)^* = s^* ∘ h^*` in every degree. -/
 theorem constantPullback_factorization [LocallyConnectedSpace V]
     (A : AddCommGrpCat.{0}) (n : ℕ) :
     OpenEmbeddingCohomology.constantPullback h hh A n ≫
