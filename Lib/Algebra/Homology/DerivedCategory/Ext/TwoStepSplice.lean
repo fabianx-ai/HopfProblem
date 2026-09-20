@@ -79,11 +79,13 @@ noncomputable def compositeTriangleIsoMappingCone :
           ((CochainComplex.singleFunctor C 0).map R.complex.f)
       rfl)
 
+/-- The comparison with the mapping-cone triangle is the identity on the first vertex. -/
 @[simp]
 lemma compositeTriangleIsoMappingCone_hom_hom₁ :
     (compositeTriangleIsoMappingCone R).hom.hom₁ = 𝟙 _ := by
   simp [compositeTriangleIsoMappingCone]
 
+/-- The comparison with the mapping-cone triangle is the identity on the second vertex. -/
 @[simp]
 lemma compositeTriangleIsoMappingCone_hom_hom₂ :
     (compositeTriangleIsoMappingCone R).hom.hom₂ = 𝟙 _ := by
