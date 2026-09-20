@@ -78,13 +78,13 @@ instance openImage_cocontinuous :
     refine ⟨W', homOfLE hW'V, ?_, htW⟩
     exact S.downward_closed hi k
 
-/-- Restriction along an open embedding is a right adjoint, namely of the inverse image. -/
+/-- Restriction along an open embedding is a right adjoint, namely of extension by zero `j_!`. -/
 instance restriction_rightAdjoint : (restriction f hf).IsRightAdjoint :=
   (Functor.sheafPullbackConstruction.sheafAdjunctionContinuous (openImage f hf)
     AddCommGrpCat (Opens.grothendieckTopology T)
       (Opens.grothendieckTopology X)).isRightAdjoint
 
-/-- Restriction along an open embedding is also a left adjoint, namely of extension by zero. -/
+/-- Restriction along an open embedding is also a left adjoint, namely of the pushforward `j_*`. -/
 instance restriction_leftAdjoint : (restriction f hf).IsLeftAdjoint :=
   ((openImage f hf).sheafAdjunctionCocontinuous AddCommGrpCat
     (Opens.grothendieckTopology T)
