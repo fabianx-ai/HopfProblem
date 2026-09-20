@@ -165,7 +165,7 @@ import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.CutTransport
-import Lib.Geometry.Manifold.Morse.MiddleBlocks
+import Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks
 
 set_option maxSynthPendingDepth 3
 
@@ -2150,7 +2150,7 @@ theorem AdaptedWindows.exists_common_cut_prescribed_family_slide {E M : Type}
     MorseCancellation.nativeMiddleBasinFamily_replace_zero S hf ha q p αq βq α hfamily hrange hβs hβe
       hβi
   obtain ⟨u, hu, hunit⟩ :=
-    MorseCancellation.same_image_section_classes_unit αq βq (hfamily.2.1 0).isEmbedding hβe.isEmbedding
+    MorseCancellation.middleSectionClass_unit_smul_of_range_eq αq βq (hfamily.2.1 0).isEmbedding hβe.isEmbedding
       hrange
   have hku : k * u = 1 ∨ k * u = -1 := by
     rcases hk with rfl | rfl <;> rcases hu with rfl | rfl <;> norm_num

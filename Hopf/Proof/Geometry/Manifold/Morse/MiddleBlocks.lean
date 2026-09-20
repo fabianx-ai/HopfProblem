@@ -8,44 +8,47 @@ import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CutTransport
+import Lib.Geometry.Manifold.Morse.EqualRangeHomology
 
 /-!
-# Middle blocks of adapted Morse windows
+# Middle blocks of adapted Morse windows (proof-specific)
 
-Second batch of stock results on the middle critical points of a Morse function on a compact
-manifold between two regular cut values, joining the ordered-cancellation chain
-(`Lib.Geometry.Manifold.Morse.AdaptedWindows`) with the belt chain
-(`Lib.Geometry.Manifold.Morse.BeltCancellation`):
+Proof-specific material of the six-sphere formalization: this module is not
+library mathematics and is not registered in `Lib.lean`.  It is the part of the
+former `Lib.Geometry.Manifold.Morse.MiddleBlocks` that the round-7 audit graded
+D — every statement below is about the project's `AdaptedWindows E f` /
+`SurgeryWindows` data with `nativeMorseIndex … = 2, 3` and the dimension-6
+belt-intersection count, i.e. the W4W1 index-2/index-3 accounting rather than a
+textbook statement.  The two general islands of the old module
+(`SingularHomology.homologyMap_unit_smul_of_range_eq` and the
+`LocalDegree.SeparatedNeighborhoods` helpers) stayed in `Lib` in
+`Lib.Geometry.Manifold.Morse.EqualRangeHomology`.
 
-* counting of the native middle block (`MorseCancellation.nativeMorseCount_eq_interval_length`,
-  `native_middle_block_counts`, `native_middle_block_complete_and_cut`,
-  `middle_blocks_complete_of_no_four_five`, `critical_pair_of_surgery_count_two`);
-* the canonical cut sequence (`MorseCancellation.nativeMiddleBaseCut`, `nativeMiddleCutSequence`,
-  `nativeMiddleCutSequence_bands`, `lower_cuts_preserved_of_critical_bound`,
-  `AdaptedWindows.no_connection_above_canonical_cut`, `exists_common_cut_value_exchange`,
-  `exists_relative_surgery_cut_transport`);
-* native middle basin families (`MorseCancellation.nativeMiddleBasinFamily_equalCut`,
-  `nativeMiddleBasinFamily_labels_injective`, `nativeMiddleBasinFamily_replace_zero`,
-  `nativeMiddleBasinFamily_reindex`, `nativeIndexThreeAttachingSphere_regular`);
-* basin sections reaching compact sections and core inclusions
-  (`AdaptedWindows.attaching_sphere_reaches_of_compact_basin_section`,
-  `backward_basin_reaches_compact_section`, `exists_native_core_inclusion_equiv`,
-  `cancel_single_basin_section_isotopy`);
-* sphere maps with the same image (`MorseCancellation.same_image_sphere_maps_unit`,
-  `same_image_section_classes_unit`, `attaching_contributions_opposite_of_relative_det_neg`);
-* centered passages with prescribed normal factors
-  (`MorseCancellation.exists_centered_passage_normal_factors`,
-  `opposite_centered_passages_of_normal_factors`, `exists_native_opposite_centered_passages`);
-* belt intersections (`ManifoldMorse.MorseSurgeryData.beltIntersectionCount_smul`,
-  `exists_transverse_representative`) and separated neighborhoods
-  (`LocalDegree.SeparatedNeighborhoods.pointComplementInclusion`,
-  `componentConnecting_singlePoint`).
+Contents: counting of the native middle block
+(`MorseCancellation.nativeMorseCount_eq_interval_length`,
+`native_middle_block_counts`, `native_middle_block_complete_and_cut`,
+`middle_blocks_complete_of_no_four_five`, `critical_pair_of_surgery_count_two`);
+the canonical cut sequence (`nativeMiddleBaseCut`, `nativeMiddleCutSequence`,
+`nativeMiddleCutSequence_bands`, `lower_cuts_preserved_of_critical_bound`,
+`AdaptedWindows.no_connection_above_canonical_cut`,
+`exists_common_cut_value_exchange`, `exists_relative_surgery_cut_transport`);
+native middle basin families (`nativeMiddleBasinFamily_equalCut`,
+`nativeMiddleBasinFamily_labels_injective`, `nativeMiddleBasinFamily_replace_zero`,
+`nativeMiddleBasinFamily_reindex`, `nativeIndexThreeAttachingSphere_regular`);
+basin sections and core inclusions
+(`AdaptedWindows.attaching_sphere_reaches_of_compact_basin_section`,
+`backward_basin_reaches_compact_section`, `exists_native_core_inclusion_equiv`,
+`cancel_single_basin_section_isotopy`); centered passages with prescribed normal
+factors (`exists_centered_passage_normal_factors`,
+`opposite_centered_passages_of_normal_factors`,
+`exists_native_opposite_centered_passages`,
+`attaching_contributions_opposite_of_relative_det_neg`); and belt intersections
+(`ManifoldMorse.MorseSurgeryData.beltIntersectionCount_smul`,
+`exists_transverse_representative`).
 
-Moved verbatim from `Hopf/Recognition.lean` (statements unchanged; qualifier retarget
-`PeriodTorusHigherHomology.{homeomorphHomologyEquiv, singularHomologyMap_comp,
-singularHomologyMap_id} -> SingularHomology.*`, naming the same constants).
+Moved verbatim from `Hopf/Recognition.lean` via
+`Lib/Geometry/Manifold/Morse/MiddleBlocks.lean`; statements unchanged.
 -/
-
 open Set Function Filter Manifold Topology
 
 open scoped ContDiff ContinuousMap
@@ -756,64 +759,6 @@ theorem AdaptedWindows.exists_relative_surgery_cut_transport {E M : Type} [Norme
         MorseCancellation.lower_forward_basins_preserved S T hf hW H hH (fun x v => (hgeometry x).2.1 v)
           hlow p (hp.trans hql.le)⟩
 
-theorem MorseCancellation.same_image_sphere_maps_unit {Y : Type} [TopologicalSpace Y]
-    (α β : C((Hemisphere.Sphere 2), Y)) (hα : Topology.IsEmbedding α)
-    (hβ : Topology.IsEmbedding β) (hrange : Set.range β = Set.range α) :
-    ∃ k : ℤ,
-      (k = 1 ∨ k = -1) ∧
-        SingularMayerVietoris.singularHomologyMap β 2 =
-          k • SingularMayerVietoris.singularHomologyMap α 2 := by
-  let e : (Hemisphere.Sphere 2) ≃ₜ (Hemisphere.Sphere 2) :=
-    hβ.toHomeomorph.trans ((Homeomorph.setCongr hrange).trans hα.toHomeomorph.symm)
-  have heq : α.comp (e : C((Hemisphere.Sphere 2), (Hemisphere.Sphere 2))) = β := by
-    apply ContinuousMap.ext
-    intro x
-    have hh :=
-      congrArg Subtype.val
-        (hα.toHomeomorph.apply_symm_apply ((Homeomorph.setCongr hrange) (hβ.toHomeomorph x)))
-    exact hh
-  have hbij :
-    Function.Bijective
-      (SingularMayerVietoris.singularHomologyMap
-        (e : C((Hemisphere.Sphere 2), (Hemisphere.Sphere 2))) 2) :=
-    (SingularHomology.homeomorphHomologyEquiv e 2).bijective
-  obtain ⟨k, hk, hu⟩ :=
-    two_sphere_map_unit_of_homology_bijective (Homeomorph.refl (Hemisphere.Sphere 2))
-      (e : C((Hemisphere.Sphere 2), (Hemisphere.Sphere 2))) hbij
-  rcases hk with rfl | rfl
-  · refine ⟨1, Or.inl rfl, ?_⟩
-    simp only [one_smul] at hu ⊢
-    rw [← heq, SingularHomology.singularHomologyMap_comp, hu]
-    change
-      (SingularMayerVietoris.singularHomologyMap α 2).comp
-          (SingularMayerVietoris.singularHomologyMap
-            (ContinuousMap.id (Hemisphere.Sphere 2)) 2) =
-        _
-    rw [SingularHomology.singularHomologyMap_id, LinearMap.comp_id]
-  · refine ⟨-1, Or.inr rfl, ?_⟩
-    simp only [neg_one_zsmul] at hu ⊢
-    rw [← heq, SingularHomology.singularHomologyMap_comp, hu, LinearMap.comp_neg]
-    change
-      -((SingularMayerVietoris.singularHomologyMap α 2).comp
-            (SingularMayerVietoris.singularHomologyMap
-              (ContinuousMap.id (Hemisphere.Sphere 2)) 2)) =
-        _
-    rw [SingularHomology.singularHomologyMap_id, LinearMap.comp_id]
-
-theorem MorseCancellation.same_image_section_classes_unit {M : Type} [TopologicalSpace M] [T2Space M]
-    [CompactSpace M] {f : M → ℝ} {a : ℝ}
-    (α β : C((Hemisphere.Sphere 2), { y : M // f y = a })) (hα : Topology.IsEmbedding α)
-    (hβ : Topology.IsEmbedding β) (hrange : Set.range β = Set.range α) :
-    ∃ k : ℤ, (k = 1 ∨ k = -1) ∧ middleSectionClass β = k • middleSectionClass α := by
-  obtain ⟨k, hk, hm⟩ := same_image_sphere_maps_unit α β hα hβ hrange
-  have heval :
-    (k • SingularMayerVietoris.singularHomologyMap α 2) (SphereHomology.unitSphereTopClass 1) =
-      k • SingularMayerVietoris.singularHomologyMap α 2 (SphereHomology.unitSphereTopClass 1) :=
-    map_zsmul (LinearMap.evalAddMonoidHom (SphereHomology.unitSphereTopClass 1)) k
-      (SingularMayerVietoris.singularHomologyMap α 2)
-  refine ⟨k, hk, ?_⟩
-  simp only [middleSectionClass, SingularHomology.singularHomologyMap_comp,
-    LinearMap.comp_apply, hm, heval, map_zsmul]
 
 theorem MorseCancellation.nativeMiddleBasinFamily_replace_zero {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1211,33 +1156,6 @@ theorem MorseCancellation.native_middle_block_complete_and_cut {E M : Type} [Nor
       (W.point_strictMono.monotone (show i ≤ ⟨r, by omega⟩ from hir)).trans_lt
         (W.value_lt_upper _)
 
-def LocalDegree.SeparatedNeighborhoods.pointComplementInclusion {E F M : Type}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {P : Set M} {f : M → F}
-    {W : Set M} (D : LocalDegree.SeparatedNeighborhoods E P f W) (x : P) :
-    C(↥(Pᶜ ∩ D.neighborhood x), ↥({(x : M)}ᶜ ∩ D.neighborhood x)) :=
-  (Homeomorph.setCongr (D.overlap_eq x)).toHomotopyEquiv.toFun
-
-theorem LocalDegree.SeparatedNeighborhoods.componentConnecting_singlePoint {E F M : Type}
-    [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
-    [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T1Space M] {P : Set M}
-    {f : M → F} {W : Set M} (D : LocalDegree.SeparatedNeighborhoods E P f W) [Fintype P]
-    (k : ℕ) (a : SingularMayerVietoris.SingularHomology M (k + 1)) (x : P) :
-    SingularMayerVietoris.singularHomologyMap (D.pointComplementInclusion x) k
-        (CoverLocalContributions.componentConnecting Pᶜ D.neighborhood
-          (Set.toFinite P).isClosed.isOpen_compl D.isOpen_neighborhood D.pairwise_disjoint
-          D.open_cover k a x) =
-      SingularMayerVietoris.connectingHomomorphism {(x : M)}ᶜ (D.neighborhood x)
-        isClosed_singleton.isOpen_compl (D.isOpen_neighborhood x)
-        (LocalDegree.NativeNeighborhood.singlePoint_cover (x : M) (D.data x)) k a := by
-  have hsub : Pᶜ ⊆ {(x : M)}ᶜ := by
-    intro y hy hxy
-    exact hy (hxy ▸ x.property)
-  exact
-    CoverLocalContributions.componentConnecting_enlarge Pᶜ {(x : M)}ᶜ D.neighborhood
-      (Set.toFinite P).isClosed.isOpen_compl isClosed_singleton.isOpen_compl D.isOpen_neighborhood
-      D.pairwise_disjoint D.open_cover hsub x
-      (LocalDegree.NativeNeighborhood.singlePoint_cover (x : M) (D.data x)) k a
 
 attribute [local instance] ManifoldMorse.MorseSurgeryData.instLocal1 in
 attribute [local instance 100] Classical.propDecidable in
