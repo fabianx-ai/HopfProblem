@@ -10,13 +10,18 @@ public import Lib.Topology.Sheaves.OpenRestriction
 public import Mathlib.Topology.Sheaves.Stalks
 
 /-!
-# The open-restriction unit on stalks
+# The unit `F ⟶ j_*j^*F` on stalks
 
-For an open subspace `U ⊆ X`, this file transports the pullback-pushforward adjunction unit to
-the literal open restriction functor.  At a point of the complement its target is the filtered
-colimit of sections on punctured neighborhoods.  This is the sheaf-theoretic interface often
-called a generization map on a stratified `T₁` space; it is not a specialization map between the
-stalks at two distinct points.
+For the inclusion `j : U → X` of an open subspace, the adjunction unit `F ⟶ j_*j^*F` induces a
+map on stalks.  At a point `x` its target is the filtered colimit of `F(V ∩ U)` over the
+neighbourhoods `V` of `x`, so for `x ∉ U` it is the group of sections of `F` near `x` but away
+from the complement of `U` (Iversen, *Cohomology of Sheaves*, II.6; Godement II.2.9).
+
+## Main results
+
+* `nearbyRestrictionUnit`: the unit `F ⟶ j_*j^*F`.
+* `nearbyExtensionObjIso`: `(j_*j^*F)(V) ≅ F(V ∩ U)`.
+* `nearbyStalkUnit`: the induced map `F_x ⟶ colim_{V ∋ x} F(V ∩ U)`.
 -/
 
 @[expose] public section
@@ -30,71 +35,74 @@ open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits
 
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}} (U : Opens X)
+universe u
 
-/-- Generic sheaf pullback along the open inclusion is canonically the literal restriction. -/
+variable {X : TopCat.{u}} (U : Opens X)
+
+/-- Sheaf pullback `j^*` along the inclusion of an open subspace is canonically restriction to
+that subspace. -/
 def pullbackRestrictionIso :
-    TopCat.Sheaf.pullback AddCommGrpCat (inclusion U) ≅ restriction U :=
-  (inclusion_isOpenEmbedding U).sheafPullbackIso AddCommGrpCat
+    TopCat.Sheaf.pullback AddCommGrpCat.{u} (inclusion U) ≅ restriction U :=
+  (inclusion_isOpenEmbedding U).sheafPullbackIso AddCommGrpCat.{u}
 
-/-- Restrict to the open subspace and push forward to the ambient space. -/
+/-- The functor `F ↦ j_*j^*F`: restrict to the open subspace `U` and push forward again. -/
 abbrev nearbyExtension :
-    TopCat.Sheaf AddCommGrpCat.{0} X ⥤ TopCat.Sheaf AddCommGrpCat.{0} X :=
-  restriction U ⋙ TopCat.Sheaf.pushforward AddCommGrpCat (inclusion U)
+    TopCat.Sheaf AddCommGrpCat.{u} X ⥤ TopCat.Sheaf AddCommGrpCat.{u} X :=
+  restriction U ⋙ TopCat.Sheaf.pushforward AddCommGrpCat.{u} (inclusion U)
 
-/-- The canonical unit `F ⟶ j_* j^* F`, transported from generic pullback to literal open
-restriction. -/
-def nearbyRestrictionUnit : 𝟭 (TopCat.Sheaf AddCommGrpCat.{0} X) ⟶ nearbyExtension U :=
-  (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat (inclusion U)).unit ≫
+/-- The adjunction unit `F ⟶ j_*j^*F` for the inclusion `j : U → X` of an open subspace. -/
+def nearbyRestrictionUnit : 𝟭 (TopCat.Sheaf AddCommGrpCat.{u} X) ⟶ nearbyExtension U :=
+  (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} (inclusion U)).unit ≫
     Functor.whiskerRight (pullbackRestrictionIso U).hom
-      (TopCat.Sheaf.pushforward AddCommGrpCat (inclusion U))
+      (TopCat.Sheaf.pushforward AddCommGrpCat.{u} (inclusion U))
 
 /-- The value of `j_*j^*F` on an ambient open `V` is canonically the value of `F` on
 `V ∩ U`. -/
-def nearbyExtensionObjIso (F : TopCat.Sheaf AddCommGrpCat.{0} X) (V : Opens X) :
+def nearbyExtensionObjIso (F : TopCat.Sheaf AddCommGrpCat.{u} X) (V : Opens X) :
     ((nearbyExtension U).obj F).obj.obj (op V) ≅ F.obj.obj (op (V ⊓ U)) := by
   change F.obj.obj (op ((openImage U).obj (preimageOpen U V))) ≅ _
   rw [show (openImage U).obj (preimageOpen U V) = V ⊓ U from
     TopologicalSpace.Opens.functor_map_eq_inf U V]
 
-/-- The nearby-sections diagram over all ambient neighborhoods of `x`. -/
+/-- The diagram `V ↦ F(V ∩ U)` over the neighbourhoods `V` of `x`. -/
 abbrev nearbyNeighborhoodDiagram
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) :=
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X) :=
   (OpenNhds.inclusion x).op ⋙ ((nearbyExtension U).obj F).obj
 
 /-- The target of the open-restriction unit on the stalk at `x`: the filtered colimit of
 `F(V ∩ U)` over ambient neighborhoods `V` of `x`. -/
 abbrev nearbySectionsStalk
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) : AddCommGrpCat.{0} :=
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X) : AddCommGrpCat.{u} :=
   TopCat.Presheaf.stalk ((nearbyExtension U).obj F).obj x
 
+/-- The stalk of `j_*j^*F` at `x` is by definition the filtered colimit of `F(V ∩ U)` over the
+neighbourhoods `V` of `x`. -/
 theorem nearbySectionsStalk_eq_colimit
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X) :
     nearbySectionsStalk U F x = colimit (nearbyNeighborhoodDiagram U F x) :=
   rfl
 
-/-- The canonical map from the ambient stalk to the punctured-neighborhood/nearby-sections
-stalk. -/
-def nearbyStalkUnit (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) :
+/-- The map `F_x ⟶ (j_*j^*F)_x = colim_{V ∋ x} F(V ∩ U)` induced by the unit on stalks. -/
+def nearbyStalkUnit (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X) :
     TopCat.Presheaf.stalk F.obj x ⟶ nearbySectionsStalk U F x :=
-  (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+  (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
     ((nearbyRestrictionUnit U).app F).hom
 
-/-- The open-restriction stalk unit is natural in the sheaf. -/
+/-- The stalk map induced by the unit `F ⟶ j_*j^*F` is natural in `F`. -/
 theorem nearbyStalkUnit_natural
-    {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) (x : X) :
-    (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map f.hom ≫
+    {F G : TopCat.Sheaf AddCommGrpCat.{u} X} (f : F ⟶ G) (x : X) :
+    (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map f.hom ≫
         nearbyStalkUnit U G x =
       nearbyStalkUnit U F x ≫
-        (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+        (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
           (((nearbyExtension U).map f).hom) := by
   change
-    (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map f.hom ≫
-        (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map f.hom ≫
+        (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
           ((nearbyRestrictionUnit U).app G).hom =
-      (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+      (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
           ((nearbyRestrictionUnit U).app F).hom ≫
-        (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+        (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
           (((nearbyExtension U).map f).hom)
   rw [← Functor.map_comp, ← Functor.map_comp]
   apply congrArg
@@ -103,10 +111,10 @@ theorem nearbyStalkUnit_natural
     ((nearbyRestrictionUnit U).app F).hom ≫ ((nearbyExtension U).map f).hom at h
   exact h
 
-/-- On a germ from an ambient neighborhood, the stalk unit is represented by the corresponding
-component of `F ⟶ j_*j^*F`. -/
+/-- On the germ of a section over a neighbourhood `V` of `x`, the stalk map of the unit is the
+component of `F ⟶ j_*j^*F` at `V`. -/
 theorem germ_nearbyStalkUnit
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : X)
     (V : Opens X) (hx : x ∈ V) :
     TopCat.Presheaf.germ F.obj V x hx ≫ nearbyStalkUnit U F x =
       ((nearbyRestrictionUnit U).app F).hom.app (op V) ≫
