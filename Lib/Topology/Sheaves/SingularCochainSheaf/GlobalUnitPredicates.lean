@@ -17,9 +17,12 @@ The cohomology isomorphism for the comparison `S^•(X; A) → Γ(X, 𝒮^•(·
 steps of the proof of Bredon, *Sheaf Theory* III Thm. 1.1: the comparison map is surjective and
 its kernel is exactly the cochains vanishing on the chains small for a point-indexed open cover;
 and the inclusion of those small chains is a chain-homotopy equivalence (Hatcher, *Algebraic
-Topology* Prop. 2.21).  This module names those four conditions; they are discharged in
-`GlobalKernelSmall.lean` and `BarycentricSmallChains.lean` and consumed in
-`GlobalUnitPositive.lean`.
+Topology* Prop. 2.21).  This module names those four conditions.  `GlobalUnitSurjective` is
+discharged by `globalCochainUnit_surjective` in `GlobalSections.lean`;
+`GlobalKernelLocallySmall` and `SmallKernelGlobal` by `globalKernelLocallySmall` and
+`smallKernelGlobal` in `GlobalKernelSmall.lean`; `HasSmallChainEquivalences` by
+`hasSmallChainEquivalences_barycentric` in `BarycentricSmallChains.lean`.  All four are consumed
+in `GlobalUnitPositive.lean`.
 
 ## Main definitions
 

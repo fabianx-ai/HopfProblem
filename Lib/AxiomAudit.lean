@@ -4152,14 +4152,6 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularSmallChains.cochainRestrictionHomotopyEquiv
 #check TopCat.SingularSmallChains.cochainMap_d
 #print axioms TopCat.SingularSmallChains.cochainMap_d
-#check TopCat.SingularSmallChains.homotopy_on_cocycle_one
-#print axioms TopCat.SingularSmallChains.homotopy_on_cocycle_one
-#check TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one
-#print axioms TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one
-#check TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one
-#print axioms TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one
-#check TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one
-#print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one
 
 /-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalChains` -/
 

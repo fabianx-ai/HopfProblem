@@ -54,8 +54,7 @@ only to keep this change a move.
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §3 (sublevel
-  sets across a regular interval).
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §3, Thm. 3.4.
 * [Allen Hatcher, *Algebraic topology*][hatcher02], §2.2.
 
 ## Tags
