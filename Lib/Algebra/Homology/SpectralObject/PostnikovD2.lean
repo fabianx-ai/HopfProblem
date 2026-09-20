@@ -15,6 +15,12 @@ This file expands the page-two differential of a coyoneda Postnikov spectral obj
 connecting map of the adjacent two-slice truncation triangle.  The endpoint isomorphisms use
 normalized integer cutoffs.  This avoids a dependent transport between the propositionally equal
 expressions `↑(q + 1)` and `↑q + 1` in the natural-indexed spectral-sequence API.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [P. Deligne, *Théorie de Hodge, II*][deligne71], §1.4.
+
 -/
 
 @[expose] public section
