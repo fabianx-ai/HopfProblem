@@ -15,13 +15,18 @@ public import Mathlib.Topology.Homeomorph.Lemmas
 public import Mathlib.Topology.Metrizable.Uniformity
 
 /-!
-# Open restriction of native singular cochains
+# Open restriction of the singular-cochain sheaf
 
-This file identifies the native singular-cochain presheaf restricted to an open subspace
-with the intrinsic singular-cochain presheaf of that subspace.  Combined with the general
-compatibility of sheafification and continuous/cocontinuous open restriction, this is the
-textbook bridge needed to reduce extension of sheaf sections on an ambient open to the already
-proved global representative theorem on the corresponding open subspace.
+The singular-cochain presheaf of `X` restricted to an open subspace `U` is canonically isomorphic
+to the singular-cochain presheaf of `U`, and the same holds after sheafification.  Since
+restriction of singular cochains along an inclusion of opens is surjective, the sheaf `𝒮^n(·; A)`
+is flabby on a hereditarily paracompact space (Bredon, *Sheaf Theory* III.1; Warner, *Foundations
+of Differentiable Manifolds and Lie Groups* 5.32).
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.OpenRestriction.presheafIso`, `…sheafIso`
+* `TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_open_normal_paracompact`
 -/
 
 @[expose] public section
@@ -39,7 +44,7 @@ variable {X : TopCat.{0}} (U : Opens X) (A : AddCommGrpCat.{0}) (n : ℕ)
 
 open AlgebraicTopology.SingularCochains
 
-/-- Extend a native cochain on an open subspace to the ambient space, assigning zero to every
+/-- Extend a singular cochain on an open subspace to the ambient space, assigning zero to every
 singular simplex whose image is not contained in that open. -/
 def extendByZero (t : Cochains U A n) : Cochains X A n := by
   classical
@@ -49,7 +54,7 @@ def extendByZero (t : Cochains U A n) : Cochains X A n := by
         (simplexInOpen n sigma U hsigma))
     else 0
 
-/-- Restricting an extension-by-zero native cochain recovers the original cochain. -/
+/-- Restricting an extension by zero recovers the original cochain. -/
 theorem restrict_extendByZero (t : Cochains U A n) :
     restrictGlobalCochain A n (extendByZero U A n t) U = t := by
   classical
@@ -101,7 +106,8 @@ theorem map_extendByZeroAlong {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
   congr 2
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Every native singular-cochain restriction along an inclusion of opens is surjective. -/
+/-- Restriction of singular cochains along an inclusion of opens is surjective: the
+singular-cochain presheaf is flabby (Bredon, *Sheaf Theory* III.1). -/
 theorem presheaf_map_surjective {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) :
     Function.Surjective ((presheaf X A n).map i) := by
   change Function.Surjective
@@ -174,7 +180,7 @@ abbrev restrictedPresheaf : TopCat.Presheaf AddCommGrpCat.{0} (TopCat.of U) :=
   (TopCat.Sheaf.OpenRestriction.openImage U).op ⋙ presheaf X A n
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Restricting the ambient native singular-cochain presheaf to an open subspace is canonically
+/-- Restricting the ambient singular-cochain presheaf to an open subspace is canonically
 isomorphic to the intrinsic singular-cochain presheaf of that subspace. -/
 def presheafIso : restrictedPresheaf U A n ≅ presheaf (TopCat.of U) A n :=
   NatIso.ofComponents
@@ -212,7 +218,8 @@ def presheafIso : restrictedPresheaf U A n ≅ presheaf (TopCat.of U) A n :=
           ← AlgebraicTopology.SingularCochains.pullback_comp, hmap]
       exact congrArg (fun f => f.f n) hcomplex)
 
-/-- Sheafification of native singular cochains commutes with restriction to an open subspace. -/
+/-- Sheafification of singular cochains commutes with restriction to an open subspace:
+`(𝒮^n_X)|_U ≅ 𝒮^n_U`. -/
 def sheafIso :
     (TopCat.Sheaf.OpenRestriction.restriction U).obj (sheaf X A n) ≅
       sheaf (TopCat.of U) A n :=
@@ -269,7 +276,7 @@ theorem unit_sheafIso_hom_app (V : Opens U)
   exact congrArg (fun q => q.app (op V) t) (unit_sheafIso_hom U A n)
 
 /-- On a normal paracompact open subspace, every section of the ambient singular-cochain
-sheaf over that open has a native-cochain representative. -/
+sheaf over that open has a singular-cochain representative. -/
 theorem unit_app_surjective [NormalSpace U] [ParacompactSpace U] :
     Function.Surjective ((unit X A n).app (op U)) := by
   intro s
@@ -311,8 +318,9 @@ theorem unit_app_surjective [NormalSpace U] [ParacompactSpace U] :
     exact eApp.addCommGroupIsoToAddEquiv.injective hsq
   exact (congrArg rS hu).trans (rS.apply_symm_apply s)
 
-/-- On a space whose open subspaces are normal and paracompact, every sheafified native
-singular-cochain sheaf is flasque. -/
+/-- On a hereditarily paracompact space — one all of whose open subspaces are normal and
+paracompact — the singular-cochain sheaf `𝒮^n(·; A)` is flasque (Bredon, *Sheaf Theory*
+III.1). -/
 theorem isFlasque_of_open_normal_paracompact
     [∀ V : Opens X, NormalSpace V]
     [∀ V : Opens X, ParacompactSpace V] :
@@ -330,8 +338,7 @@ theorem isFlasque_of_open_normal_paracompact
   rw [htU, htV] at hnat
   exact hnat.symm
 
-/-- In particular, every sheafified native singular-cochain sheaf on a metrizable space is
-flasque. -/
+/-- In particular the singular-cochain sheaf on a metrizable space is flasque. -/
 theorem isFlasque_of_metrizable [MetrizableSpace X] :
     (sheaf X A n).IsFlasque := by
   let _ : ∀ V : Opens X, NormalSpace V := fun V => by
