@@ -10,12 +10,17 @@ public import Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 
 /-!
-# The global singular-cochain sheafification unit in every positive degree
+# The singular-cochain comparison in every positive degree
 
-Closed locally finite patching, exact detection of the sheafification-unit kernel on cover-small
-chains, and the classical small-chain homotopy equivalence imply that the actual global unit is a
-quasi-isomorphism in every positive degree.  This is the degree-independent form of the existing
-degree-one argument.
+On a normal paracompact space the comparison map `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
+on cohomology in every positive degree.  This is Bredon, *Sheaf Theory* III Thm. 1.1 (see also
+Warner, *Foundations of Differentiable Manifolds and Lie Groups* 5.31); the ingredients are
+surjectivity of the comparison map, detection of its kernel on the chains small for an open cover,
+and the small-chain homotopy equivalence (Hatcher, *Algebraic Topology* Prop. 2.21).
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ`
 -/
 
 @[expose] public section
@@ -31,8 +36,8 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- Vanishing on a point-indexed cover-small complex forces vanishing under the global unit in
-degree `n`. -/
+/-- A degree-`n` singular cochain vanishing on the chains small with respect to some point-indexed
+open cover of `X` is killed by the comparison map in degree `n`. -/
 def SmallKernelGlobal (n : ℕ) : Prop :=
   ∀ (U : X → Opens X), (∀ x, x ∈ U x) →
     ∀ (phi : (AlgebraicTopology.SingularCochains.complex X A).X n),
@@ -40,7 +45,8 @@ def SmallKernelGlobal (n : ℕ) : Prop :=
         (fun x => (U x : Set X))).f n phi = 0 →
         globalCochainUnit X A n phi = 0
 
-/-- Exact positive-degree cocycle lifting for the actual global sheafification-unit map. -/
+/-- Cocycle lifting in degree `n + 1`: every cocycle in `Γ(X, 𝒮^{n+1}(·; A))` is the image of a
+singular cocycle on `X`. -/
 theorem globalCochainComparison_cycle_lift_succ (n : ℕ)
     (hunit : GlobalUnitSurjective X A (n + 1))
     (hkernelNext : GlobalKernelLocallySmall X A (n + 2))
@@ -76,7 +82,8 @@ theorem globalCochainComparison_cycle_lift_succ (n : ℕ)
   exact sub_eq_zero.mp
     ((map_sub (globalCochainUnit X A (n + 1)).hom phi alpha).symm.trans hunitDiff)
 
-/-- Detection of actual positive-degree boundaries for the global sheafification-unit map. -/
+/-- Boundary detection in degree `n + 1`: a singular cocycle whose image in `Γ(X, 𝒮^{n+1}(·; A))`
+is a coboundary is itself a coboundary. -/
 theorem globalCochainComparison_boundary_detect_succ (n : ℕ)
     (hunitPrev : GlobalUnitSurjective X A n)
     (hkernel : GlobalKernelLocallySmall X A (n + 1))
@@ -114,8 +121,9 @@ theorem globalCochainComparison_boundary_detect_succ (n : ℕ)
   exact TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_succ A
     (fun x => (U x : Set X)) e he n phi hphi (r.f n beta) hboundary
 
-/-- The positive-degree homology map of the actual global unit is an isomorphism from the
-degree-independent patching, kernel-locality, and small-chain hypotheses. -/
+/-- The comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism on cohomology in degree
+`n + 1` as soon as it is surjective, its kernel is detected on point-indexed open covers, and the
+small-chain inclusions are chain-homotopy equivalences. -/
 theorem globalCochainComparison_homology_isIso_succ_of_small_chains (n : ℕ)
     (hunitPrev : GlobalUnitSurjective X A n)
     (hunit : GlobalUnitSurjective X A (n + 1))
@@ -133,16 +141,18 @@ theorem globalCochainComparison_homology_isIso_succ_of_small_chains (n : ℕ)
     exact globalCochainComparison_boundary_detect_succ X A n hunitPrev hkernel
       hsmall phi hphi s hs
 
-/-- The concrete global-unit kernel supplies the reverse cover-small implication in every
-degree. -/
+/-- A singular cochain vanishing on the chains small for a point-indexed open cover is killed by
+the comparison map, in every degree. -/
 theorem smallKernelGlobal (n : ℕ) : SmallKernelGlobal X A n := by
   intro U hxU phi hphi
   exact globalCochainUnit_eq_zero_of_smallRestriction X A n U
     (fun x => ⟨x, hxU x⟩) phi hphi
 
-/-- On a normal paracompact space, the actual global sheafification unit is an isomorphism on
-every positive-degree cohomology group once the textbook small-chain equivalences are supplied. -/
+/-- On a normal paracompact space the comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
+on cohomology in every positive degree, given the small-chain homotopy equivalences for open
+covers of `X` (Bredon, *Sheaf Theory* III Thm. 1.1). -/
 theorem globalCochainComparison_homology_isIso_succ
+
     [NormalSpace X] [ParacompactSpace X]
     (hsmall : HasSmallChainEquivalences X) (n : ℕ) :
     IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) (n + 1)) :=
