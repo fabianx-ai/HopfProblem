@@ -72,6 +72,8 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 set_option linter.unusedSimpArgs false in
 omit [HasDerivedCategory C] in
+/-- Composing the literal lift with the connecting map of the mapping-cone triangle gives the
+shifted augmentation. -/
 lemma mappingConeLowerLift_comp_mor₃
     (R : TwoStepResolution (C := C)) :
     mappingConeLowerLift R ≫
@@ -109,6 +111,8 @@ lemma mappingConeLowerLift_comp_mor₃
 
 set_option backward.isDefEq.respectTransparency false in
 omit [HasDerivedCategory C] in
+/-- Composing the inclusion with the connecting map of the mapping-cone triangle gives minus the
+shifted augmentation. -/
 lemma mappingConeLowerInclusion_comp_mor₃
     (R : TwoStepResolution (C := C)) :
     mappingConeLowerInclusion R ≫
