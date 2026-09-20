@@ -48,6 +48,8 @@ def nextCycleIso (n : ℕ) : R.Z (n + 1) ≅ kernel (R.d (n + 1)) :=
   IsLimit.conePointUniqueUpToIso (R.iIsKernel (n + 1))
     (limit.isLimit (parallelPair (R.d (n + 1)) 0))
 
+/-- The canonical isomorphism from the chosen cycle object to Mathlib's kernel is compatible
+with the two inclusions into `X (n+1)`. -/
 @[reassoc (attr := simp)]
 theorem nextCycleIso_hom_kernel_ι (n : ℕ) :
     (R.nextCycleIso n).hom ≫ kernel.ι (R.d (n + 1)) = R.i (n + 1) := by
@@ -122,9 +124,11 @@ def stepToFirst (n : ℕ) : R.step n ⟶ (R.trunc n).first := by
   rw [Category.id_comp]
   exact (R.p_nextCycleIso n).symm
 
+/-- The comparison `stepToFirst` is the identity on the cycle object in degree `n`. -/
 @[simp]
 theorem stepToFirst_τ₁ (n : ℕ) : (R.stepToFirst n).τ₁ = 𝟙 _ := rfl
 
+/-- The comparison `stepToFirst` is the canonical cycle-to-kernel isomorphism on the third term. -/
 @[simp]
 theorem stepToFirst_τ₃ (n : ℕ) : (R.stepToFirst n).τ₃ = (R.nextCycleIso n).hom := rfl
 
@@ -145,24 +149,32 @@ def stepToKernelFirst (n : ℕ) : R.step (n + 1) ⟶ (R.kernelTrunc n).first := 
     rw [Category.id_comp]
     exact (R.p_nextCycleIso (n + 1)).symm
 
+/-- The comparison `stepToKernelFirst` is the canonical cycle-to-kernel isomorphism on the first term. -/
 @[simp]
 theorem stepToKernelFirst_τ₁ (n : ℕ) :
     (R.stepToKernelFirst n).τ₁ = (R.nextCycleIso n).hom := rfl
 
+/-- The comparison `stepToKernelFirst` is the canonical cycle-to-kernel isomorphism on the third term. -/
 @[simp]
 theorem stepToKernelFirst_τ₃ (n : ℕ) :
     (R.stepToKernelFirst n).τ₃ = (R.nextCycleIso (n + 1)).hom := rfl
 
+/-- The degree-two finite view of an indexed resolution has the degree-zero truncation as its
+truncation. -/
 @[simp]
 theorem toAcyclicResolutionH2_trunc : R.toAcyclicResolutionH2.trunc = R.trunc 0 := rfl
 
+/-- The degree-two finite view of an indexed resolution has the degree-zero kernel truncation as
+its tail. -/
 @[simp]
 theorem toAcyclicResolutionH2_tail : R.toAcyclicResolutionH2.tail = R.kernelTrunc 0 := rfl
 
+/-- The first tail of the degree-three finite view is the degree-zero kernel truncation. -/
 @[simp]
 theorem toAcyclicResolutionH3_firstTail :
     R.toAcyclicResolutionH3.tail.trunc = R.kernelTrunc 0 := rfl
 
+/-- The second tail of the degree-three finite view is the degree-one kernel truncation. -/
 @[simp]
 theorem toAcyclicResolutionH3_secondTail :
     R.toAcyclicResolutionH3.tail.tail = R.kernelTrunc 1 := rfl
