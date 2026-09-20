@@ -24,12 +24,22 @@ two-step Ext transgression
 
 `H⁰(Y, Rⁿ⁺¹f_*F) → H²(Y, Rⁿf_*F)`
 
-from Mathlib's actual sheaf pushforward, its actual right-derived functors, and a chosen injective
-resolution of `F`.
+from Mathlib's sheaf pushforward `f_*`, its right-derived functors `Rⁿf_* = (f_*).rightDerived n`
+(Hartshorne, *Algebraic Geometry*, III.8; Godement II.4.17), and a chosen injective resolution
+of `F`.
 
-This is the resolution-level map underlying the expected Leray `d₂`. This file does not
-construct a Leray spectral sequence and does not prove independence from the chosen resolution or
-identify this map with the differential of a spectral-sequence object.
+On the Leray spectral sequence `E₂^{p,q} = Hᵖ(Y, Rᑫf_*F) ⇒ Hᵖ⁺ᑫ(X, F)` (Godement II.4.17.1;
+Weibel, *An Introduction to Homological Algebra*, 5.8.6) the map constructed here is the
+transgression `d₂ : E₂^{0,n+1} → E₂^{2,n}`; it is built here at the level of a resolution, and
+this file neither constructs the spectral sequence nor proves independence of the chosen
+resolution.
+
+## Main definitions
+
+* `AbelianSheaf X`, `pushforward f`, `higherDirectImage f n`: the sheaf `f_*` and its right
+  derived functors `Rⁿf_*` (Hartshorne III.8).
+* `E₂ f F p q`: the group `Hᵖ(Y, Rᑫf_*F)`.
+* `resolutionTransgression f F n : E₂ f F 0 (n+1) →ₗ[ℤ] E₂ f F 2 n`: the two-step transgression.
 -/
 
 @[expose] public section
@@ -40,15 +50,17 @@ open TopologicalSpace Opposite CategoryTheory.Limits CategoryTheory.Abelian
 
 namespace CategoryTheory.Sheaf.Leray
 
+universe u
+
 /-- The small category of sheaves of abelian groups on a topological space. -/
-abbrev AbelianSheaf (X : TopCat.{0}) := TopCat.Sheaf AddCommGrpCat.{0} X
+abbrev AbelianSheaf (X : TopCat.{u}) := TopCat.Sheaf AddCommGrpCat.{u} X
 
 /-- Compatibility spelling for the canonical integral constant sheaf. -/
 abbrev integralSheaf (X : TopCat.{0}) : AbelianSheaf X :=
   TopCat.ConstantSheaf.integralSheaf X
 
 /-- Compatibility spelling for the canonical `HasExt` instance on small abelian sheaves. -/
-theorem abelianSheafHasExt (X : TopCat.{0}) : HasExt.{0} (AbelianSheaf X) :=
+theorem abelianSheafHasExt (X : TopCat.{u}) : HasExt.{u} (AbelianSheaf.{u} X) :=
   IsGrothendieckAbelian.hasExt _
 
 /-- Compatibility spelling for the canonical additive group on sheaf cohomology. -/
@@ -57,7 +69,7 @@ abbrev sheafCohomologyAddCommGroup {X : TopCat.{0}} (F : AbelianSheaf X) (n : �
   CategoryTheory.Sheaf.cohomologyAddCommGroup F n
 
 /-- The actual pushforward of abelian sheaves along a continuous map. -/
-abbrev pushforward {X Y : TopCat.{0}} (f : X ⟶ Y) :
+abbrev pushforward {X Y : TopCat.{u}} (f : X ⟶ Y) :
     AbelianSheaf X ⥤ AbelianSheaf Y :=
   TopCat.Sheaf.pushforward AddCommGrpCat f
 
@@ -90,7 +102,7 @@ abbrev pushedResolution {F : AbelianSheaf X} (I : InjectiveResolution F) :
   ((pushforward f).mapHomologicalComplex (ComplexShape.up ℕ)).obj I.cocomplex
 
 /-- The actual sheaf-cohomological group `Hᵃ(Y, Rᵇf_*F)`. -/
-abbrev E₂ (F : AbelianSheaf X) (a b : ℕ) : Type :=
+abbrev E₂ (F : AbelianSheaf X) (a b : ℕ) :=
   CategoryTheory.Sheaf.H.{0} (higherDirectImageSheaf f F b) a
 
 /-- Cohomology of resolution homology is cohomology of the corresponding higher direct image. -/
