@@ -19,11 +19,12 @@ form), realized through the finite biproduct of the chain complexes:
 
 * `Coproduct.sigmaHomologyEquiv` — the homology iso, with `_symm_single` computing it on a
   single summand's class;
-* the local instance `Coproduct.singularChainsFiniteBiproducts` — finite biproducts of
-  `ModuleCat ℤ`-valued chain complexes exist (attached to every declaration of the block,
-  as in the source).
+* `Coproduct.singularChainsFiniteBiproducts` — chain complexes of `ℤ`-modules have finite
+  biproducts; it is used as a local instance.
 
-Consumed by the local-contributions and recognition files.
+The index type is required to be finite: Hatcher's statement holds for an arbitrary index
+set with the direct sum on the right, and the finiteness here is what the biproduct
+presentation needs.
 
 ## Outline of the proof
 
