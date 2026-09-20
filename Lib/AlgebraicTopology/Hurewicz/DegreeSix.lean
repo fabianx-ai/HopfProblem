@@ -35,16 +35,7 @@ Moved verbatim from `Hopf/Recognition.lean` (statements unchanged; qualifier ret
 `SecondHurewicz.mapGenLoop -> Hurewicz.DegreeTwo.mapGenLoop`, which name the same constants).
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
-
-open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
-  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
-  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
-  UpperHalfPlane
-
-universe u v
 
 noncomputable section
 

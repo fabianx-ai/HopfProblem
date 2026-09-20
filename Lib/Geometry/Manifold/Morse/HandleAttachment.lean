@@ -39,22 +39,9 @@ handle attachment, surgery, radial extension
 
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
-open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
-  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
-  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
-  UpperHalfPlane
-
-universe u v
-
 @[expose] public noncomputable section
-
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 attribute [local instance 100] Classical.propDecidable in
 /-- The attaching handle map of a signed Morse chart: the piecewise quadratic map that inserts the handle of the chart along the descending and ascending coordinates across a regular level (Milnor, Morse Theory, Section 3; Hatcher, Algebraic Topology, the index-lambda handle). -/

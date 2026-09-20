@@ -59,22 +59,11 @@ Riemann mapping theorem, normal families, Koebe maximization, boundary extension
 
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
-open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
-  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
-  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
-  UpperHalfPlane
-
-universe u v
+open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
 
 noncomputable section
-
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 /-- The disc coordinate: the affine identification of the triangle with the unit disc underlying the normalization of the Riemann mapping target (Ahlfors, Complex Analysis, Ch. 6). -/
 def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]

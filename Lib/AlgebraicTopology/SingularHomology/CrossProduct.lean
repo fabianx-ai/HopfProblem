@@ -10,8 +10,6 @@ public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 public import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators TensorProduct

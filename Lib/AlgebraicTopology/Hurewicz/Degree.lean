@@ -48,8 +48,6 @@ Hurewicz theorem, straightening, cycles, singular homology
 -/
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

@@ -53,16 +53,9 @@ Topology*, Ch. 2-3; Guillemin-Pollack, *Differential Topology*, Ch. 2).
 transversality, general-position, perturbation, disc-theorem
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
-open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
-  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
-  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
-  UpperHalfPlane
-
-universe u v
+open scoped ContDiff Matrix NNReal
 
 @[expose] public noncomputable section
 

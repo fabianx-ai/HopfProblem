@@ -46,8 +46,6 @@ triangulation, cube, simplex, Kuhn, boundary cancellation
 -/
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

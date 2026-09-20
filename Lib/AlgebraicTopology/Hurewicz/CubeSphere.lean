@@ -52,8 +52,6 @@ degree `n ≥ 2`.
 Hurewicz theorem, cube, sphere, quotient, singular homology
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

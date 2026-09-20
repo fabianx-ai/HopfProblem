@@ -14,22 +14,11 @@ import Mathlib
 
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
-open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
-  Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups
-  Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity
-  UpperHalfPlane
-
-universe u v
+open scoped ContinuousMap
 
 noncomputable section
-
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
 
 /-! ### Extending a homotopy off the positive locus -/
 
