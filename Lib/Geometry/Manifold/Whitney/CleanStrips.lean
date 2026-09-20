@@ -36,7 +36,8 @@ embedded neighbourhood of the boundary of a Whitney bigon.
   blending construction that interpolates two such charts.
 * `CleanCornerPatch`, `CleanStripPatch`, `CleanBigonBoundary` and
   `exists_clean_bigon_boundary_neighborhood` : an embedded neighbourhood of the boundary of the
-  Whitney bigon which meets the two sheets exactly in the two edges of the bigon.
+  Whitney bigon which, on the bigon side, avoids the two sheets off the two edges of the bigon
+  (nothing is asserted about the part of the neighbourhood outside the bigon).
 
 ## References
 
@@ -2054,9 +2055,9 @@ def CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
 
 /-- A clean strip patch along an arc `a` joining two corners: an immersed injective map of a
 neighbourhood of the strip `[0, 1] × [-w, w]` into `M` which is a closed embedding on that
-strip, meets the sheet `S` exactly in the centre line and the sheet `T` exactly in the two ends,
-restricts to `a` on the centre line, and agrees near its two ends with the given corner patches
-`k₀` and `k₁`.
+strip, meets the sheet `S` exactly in the centre line `s = 0` and the sheet `T` exactly in the two
+vertical lines `t = 0` and `t = 1`, restricts to `a` on the centre line, agrees near `(0, 0)` with
+the corner patch `k₀`, and agrees near `(1, 0)` with `k₁ ∘ StripCoordinates.reverse`.
 -/
 structure CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a : ℝ → M) (k₀ k₁ : (ℝ × ℝ) → M) where
@@ -2744,8 +2745,9 @@ theorem bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup E]
 /-- A clean embedded neighbourhood of the boundary of the Whitney bigon of height `h`: an immersed
 injective map defined on an open set containing a compact neighbourhood of the frontier of the
 bigon, a closed embedding there, restricting to the arcs `a` and `b` on the two edges, given
-near the edges by the strip charts `k` and `l`, and meeting the sheets `S` and `T` only along
-those edges.
+near the edges by the strip charts `k` and `l`, and avoiding the sheets `S` and `T` at every point
+of the bigon off its frontier. Only the bigon side is constrained: nothing is asserted about the
+points of the neighbourhood outside the bigon.
 -/
 structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
