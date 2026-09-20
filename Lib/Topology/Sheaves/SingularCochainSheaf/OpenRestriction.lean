@@ -20,8 +20,9 @@ public import Mathlib.Topology.Metrizable.Uniformity
 The singular-cochain presheaf of `X` restricted to an open subspace `U` is canonically isomorphic
 to the singular-cochain presheaf of `U`, and the same holds after sheafification.  Since
 restriction of singular cochains along an inclusion of opens is surjective, the sheaf `𝒮^n(·; A)`
-is flabby on a hereditarily paracompact space (Bredon, *Sheaf Theory* III.1; Warner, *Foundations
-of Differentiable Manifolds and Lie Groups* 5.32).
+is flabby on a space all of whose open subspaces are normal and paracompact (for instance a
+metrizable space) (Bredon, *Sheaf Theory* III.1; Warner, *Foundations of Differentiable Manifolds
+and Lie Groups* 5.32).
 
 ## Main results
 
@@ -318,9 +319,8 @@ theorem unit_app_surjective [NormalSpace U] [ParacompactSpace U] :
     exact eApp.addCommGroupIsoToAddEquiv.injective hsq
   exact (congrArg rS hu).trans (rS.apply_symm_apply s)
 
-/-- On a hereditarily paracompact space — one all of whose open subspaces are normal and
-paracompact — the singular-cochain sheaf `𝒮^n(·; A)` is flasque (Bredon, *Sheaf Theory*
-III.1). -/
+/-- On a space all of whose open subspaces are normal and paracompact (for instance a metrizable
+space) the singular-cochain sheaf `𝒮^n(·; A)` is flasque (Bredon, *Sheaf Theory* III.1). -/
 theorem isFlasque_of_open_normal_paracompact
     [∀ V : Opens X, NormalSpace V]
     [∀ V : Opens X, ParacompactSpace V] :
