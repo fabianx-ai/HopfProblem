@@ -3,7 +3,9 @@
 Worktree `/home/goblin/hopf-r7-p03`, branch `r7/packet-03`, base `9552305f`,
 Lean v4.33.0 / Mathlib v4.33.0.
 
-32 files in the packet, 32 done, 0 left.
+32 files in the packet, 32 done, 0 left.  **(corrected)** 30 files were touched by a commit;
+`Sum.lean` is declared below as "nothing to do", but `…/CanonicalPositiveCofinalExt.lean` was
+skipped silently — see the corrections section at the end.
 
 ## Totals
 
@@ -12,7 +14,7 @@ Lean v4.33.0 / Mathlib v4.33.0.
 | 1. manuscript citations | 116 manuscript coordinates removed and replaced by a textbook reference, in 14 files; 8 further files given the textbook reference their module docstring lacked | 0 |
 | 2. docstrings | 171 declaration docstrings added (10 files); every public declaration in the packet now has one | 0 |
 | 3. universe pins | 13 declarations generalised (SquareRoot 10, CochainHomotopy 1, DimensionEquivalence 2); 146 pins left, all forced, listed below | 146 forced |
-| 4. `: Type` binders | 0 widened; 99 left, all forced or already polymorphic, listed below | 99 forced / false positives |
+| 4. `: Type` binders | 0 widened; **the "99 left" is not reproducible from this receipt's own rows (corrected)**: they give 34 false positives + 106 forced = 140, and an independent literal count of `: Type)`/`: Type}` at the branch head gives 193.  The counting rule was never stated; see the corrections section | 0 widened; **106 forced by this receipt's own rows** |
 
 ## Per file
 
@@ -154,7 +156,7 @@ with `$S=/home/goblin/.claude/jobs/06995e68/tmp/r7-p03/`.
 The property the envdiff checks was instead established directly from the source diff, which is
 the stronger statement (it inspects every changed byte rather than a hash of the result):
 
-* `git diff -U0 9552305f..HEAD -- '*.lean'` has **858 changed lines**. Filtering out every line
+* `git diff -U0 9552305f..HEAD -- '*.lean'` has **857 changed lines (corrected; the receipt said 858)**. Filtering out every line
   that lies inside a `/-- … -/` or `/-! … -/` block leaves exactly these code lines:
 
   | file | change |
@@ -226,3 +228,62 @@ citation-only files, which share one commit).
 * `91521e99` Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean: name the two circle models instead of 'the sources'
 
 Plus this receipt.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-03.md` (ACCEPT WITH FINDINGS; the branch does
+exactly what this receipt says at the code level — three universe generalisations and nothing else
+outside comments, 171 docstrings, 146 pins, no hygiene issue; the comment-stripping check was
+reproduced independently).  The corrections are to this receipt's text only; no Lean file was
+changed by them.
+
+1. **The `: Type` binder total is not reproducible (finding 5).**  The receipt's item-4 row says
+   "99 left, all forced or already polymorphic".  Its own per-file numbers give
+   4 + 2 + 1 + 2 + 2 + 2 + 4 + 9 + 7 + 1 = **34 false positives** and
+   1 + 19 + 6 + 6 + 2 + 4 + 2 + 30 + 10 + 1 + 4 + 21 = **106 forced**, i.e. 140 in total, and the
+   reviewer's own count of literal `: Type)` / `: Type}` at the branch head is **193**
+   (`Basic.lean` alone has 79).  Whatever the intended counting rule was, it is not stated anywhere
+   in this receipt, so the three numbers cannot be reconciled.  What stands: **0 binders were
+   widened**, and **106 is the forced count this receipt's own rows support**.  The "99" is
+   withdrawn.  (`Lib/reviews/INTEGRATION-7.md`'s cell for this packet, which quoted a fourth figure,
+   "61", is corrected in that file.)  The pin count — 146 — was reproduced exactly, per file.
+
+2. **`…/FibreStalkEvaluation/CanonicalPositiveCofinalExt.lean` was skipped silently (finding 4).**
+   The file is in the packet (3 pins) but was touched by no commit and is mentioned nowhere in the
+   "work done" text, while the receipt says "the six remaining Leray files … each module docstring
+   now carries its textbook twin" and heads the file with "32 done, 0 left".  Nine Leray files minus
+   the two worked ones leaves seven; the seventh is this one, and its module docstring still names
+   no source.  Its audit twin is a Mathlib lemma (`TopCat.Presheaf.stalk_hom_ext`), so "nothing to
+   cite" may well be the right answer — but it should have been declared, as `Sum.lean` was.  The
+   module docstring is on the fix list (`Lib/reviews/REVIEW-7-8.md` §3, packet 03).
+
+3. **The "forced by" claims were true at the base and stale at the merge (finding 6).**  This receipt
+   attributes the 130 Leray `.{0}` pins to `Sheaf.Leray.AbelianSheaf (X : TopCat.{0})`,
+   `ConstantSheaf.sheaf (X : TopCat.{0})` and the like, and the `SingularSmallChains`
+   `AddCommGrpCat.{0}` pins to `SingularCochains.complex`/`dualComplex`/`moduleDual`.  Every one of
+   those forcing declarations was lifted **in the same round by another packet** (`7c5050a3`
+   `ResolutionTransgression` → `TopCat.{u}`; `3716c339`/`ec11b484` `ConstantPushforward` →
+   `TopCat.{u}`; `c31bbc73` `SingularCochains` → `AddCommGrpCat.{w}`), so at the stage-2 merge
+   `d950428a` this packet's pins were the new chokepoints, not forced pins; round 8 (`a140e4b1`)
+   then lifted the Leray cluster.  The receipt could not have known this, but "146 forced" must not
+   be read as still true after the merge.  `SingularCochains.chains (X : Type)` and
+   `SingularChains.SingularSimplex (X : Type)` are still pinned at head, so the `(X : Type)` binder
+   claims do remain valid.
+
+4. **Changed-line count (finding 9).**  858 → **857** (`git diff -U0 9552305f 1262ac63^2 -- '*.lean'`
+   excluding hunk headers).  Corrected in place.
+
+5. **Envdiff attribution.**  This receipt deliberately replaced the envdiff by the stronger
+   source-level statement ("nothing outside a docstring changed"), which the reviewer reproduced.
+   Note for readers of the merged diff: `envdiff-merged-d950428a.json` attributes **76** changed-type
+   names to this packet's modules, of which **63** were induced by the upstream lifts of item 3
+   above and not caused here; a per-packet envdiff would have shown 13.  The merged file cannot
+   separate own changes from induced ones.
+
+6. **Docstring and citation findings are code fixes, not receipt fixes.**  The reviewer's findings 1
+   (`neighborhoodCohomologyEquiv_symm_apply` says "inverse to the forward comparison" where the
+   statement says it *is* the forward comparison, by `rfl`), 2 and 3 (Weibel 2.4.6(a)/(b)/(c)
+   lettering, "Exercise 2.4.3", "Theorem" vs "Definition" 2.5.1, "Weibel 2.4.5"), 7 (`coordinateH1`
+   and `coordinatePeriodLoop` assert identifications the library does not prove) and 8
+   (`Pontryagin.cyclicMap` is a `C(…)`, not a `Homeomorph`) are listed in
+   `Lib/reviews/REVIEW-7-8.md` §3 for the packet-03 fix agent.
