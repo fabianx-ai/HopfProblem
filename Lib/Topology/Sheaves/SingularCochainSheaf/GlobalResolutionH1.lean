@@ -11,11 +11,13 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic
 public import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionH1
 
 /-!
-# Constant-sheaf H¹ from global singular-cochain sheaf sections
+# Constant-sheaf `H¹` from global sections of the singular-cochain resolution
 
-The generic sheaf acyclic-resolution comparison is instantiated with the locally exact native
-singular-cochain sheaf resolution.  Its short-complex homology is then identified with native
-degree-one homology of the full literal global-section complex.
+Sheaf cohomology is computed by the cohomology of the global sections of an acyclic resolution
+(Godement, *Topologie algébrique et théorie des faisceaux* II.4.7; Bredon, *Sheaf Theory* II.4.1).
+Applied to the resolution of the constant sheaf `A_X` by the sheafified singular cochains, this
+identifies `H¹(X; A_X)` with degree-one cohomology of the complex of global sections
+`Γ(X, 𝒮^•(·; A))`.
 -/
 
 @[expose] public section
@@ -31,12 +33,14 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- Literal global sections of the full sheafified native cochain complex. -/
+/-- The complex `Γ(X, 𝒮^•(·; A))` of global sections of the sheafified singular-cochain
+complex. -/
 def globalCochainComplex : CochainComplex AddCommGrpCat.{0} ℕ :=
   ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).obj (complexSheaf X A)
 
-/-- Native homology of a cochain complex is computed by its literal three-term window. -/
+/-- Degree-one cohomology of the global-section complex is the homology of its three-term window
+`Γ(𝒮^0) → Γ(𝒮^1) → Γ(𝒮^2)`. -/
 def globalWindowH1Iso :
     (globalCochainComplex X A).homology 1 ≅
       ((globalCochainComplex X A).sc' 0 1 2).homology :=
@@ -44,7 +48,8 @@ def globalWindowH1Iso :
     0 1 2 ((ComplexShape.up ℕ).prev_eq' (by rfl))
       ((ComplexShape.up ℕ).next_eq' (by rfl))).app (globalCochainComplex X A)
 
-/-- Constant-sheaf `H¹` is native degree-one homology of literal global cochain-sheaf sections. -/
+/-- `H¹(X; A_X)` is degree-one cohomology of the complex of global sections of the sheafified
+singular cochains (Bredon, *Sheaf Theory* II.4.1 for cohomology via an acyclic resolution). -/
 def constantSheafGlobalH1Iso (hLC : LocallyContractibleSpace X) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
       (TopCat.ConstantSheaf.sheaf X A) 1) ≅
