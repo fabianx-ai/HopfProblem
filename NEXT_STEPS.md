@@ -1,4 +1,12 @@
-# Next steps (after integration review 7, 2026-09-21)
+# Next steps (after integration review 8, 2026-09-21)
+
+Round 8 (`Lib/reviews/INTEGRATION-8.md`) did the judgement packets except the monoliths: universe pins
+1,024 → 320 (the rest is the chain-interface decision, `ULift ℤ` vs literal `ℤ`), 280 duplicate
+declarations gone with twins, the D files moved or split, project namespaces renamed. Open, in order:
+(1) fresh-reviewer pass over `Lib/reports/round-7/**/RECEIPT*.md` and `Lib/reports/round-8/*/RECEIPT.md`
++ `MERGE.md`, one reviewer per receipt; (2) the monolith wave, `Lib/reports/round-7/judgement/monoliths.md`
+(25 files; `SurgeryCollapse`/`OrderedCancellation` first, they hold the last Morse D material);
+(3) the owner decisions: chain interface coefficients, `Hopf`-side axiom probes, the pre-PR chain tower.
 
 Round 7 (`Lib/reviews/INTEGRATION-7.md`) did the scriptable and checklist blocks of the textbook audit with
 Opus 5 agents: preamble gone, `_mo1973` names gone, `Lib.lean` complete, about 2,057 docstrings added,
