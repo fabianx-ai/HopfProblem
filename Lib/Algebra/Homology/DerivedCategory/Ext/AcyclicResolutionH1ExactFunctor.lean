@@ -17,7 +17,9 @@ exact additive functor.  This is the H¹-only form of the standard functoriality
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, Proposition 1.2A
+  (an acyclic resolution computes the derived functors).
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.4.
 * [A. Grothendieck, *Sur quelques points d'algèbre homologique*][grothendieck57], §2 (an exact
   functor preserving injectives commutes with `Ext`).
 

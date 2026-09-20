@@ -24,9 +24,10 @@ identify the resulting transgression with a differential of one.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Exercise 1.3.x and §2.4
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §1.3 and §2.4
   (the two canonical short exact sequences of a complex and the connecting maps they give).
-* [H. Cartan, S. Eilenberg, *Homological algebra*][cartanEilenberg56], Chapter V.
+* [H. Cartan, S. Eilenberg, *Homological algebra*][cartanEilenberg56], cf. Chapter V (derived
+  functors); general background, not the statement constructed here.
 -/
 
 @[expose] public section

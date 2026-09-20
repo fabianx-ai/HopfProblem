@@ -17,8 +17,9 @@ specializations of the indexed all-degree construction.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3 (degrees two
-  and three).
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, Proposition 1.2A
+  (an acyclic resolution computes the derived functors); here degrees two and three.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.4.
 
 -/
 

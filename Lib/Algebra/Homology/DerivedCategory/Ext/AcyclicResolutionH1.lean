@@ -19,9 +19,9 @@ arbitrary abelian category with small Ext groups.  Given an augmented complex
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3
-  (degree-one case).
-* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, Proposition 1.2A.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, Proposition 1.2A
+  (an acyclic resolution computes the derived functors); here the degree-one case.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.4.
 -/
 
 @[expose] public section

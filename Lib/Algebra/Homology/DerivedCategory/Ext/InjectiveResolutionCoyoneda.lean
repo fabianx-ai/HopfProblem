@@ -21,7 +21,9 @@ Mathlib's Hom-complex homology comparison, and Mathlib's injective-resolution Ex
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.7.6.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.5 (`Ext` as the right
+  derived functor of `Hom`, computed from an injective resolution) and §2.7 (its agreement with
+  the projective computation).
 * [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, §1 (`Ext` computed from an
   injective resolution).
 
