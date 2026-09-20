@@ -15,6 +15,10 @@ This file extracts the degree-independent statements used by the sheafification 
 For every positive degree, a small cocycle lifts to a global cocycle with exactly the prescribed
 restriction, and a global cocycle whose small restriction is a boundary is already a global
 boundary.
+
+These are the cohomological form of Hatcher, *Algebraic Topology*, Proposition 2.21: a chain
+homotopy equivalence induces isomorphisms on cohomology with any coefficients
+(`HomotopyEquiv.quasiIso`).
 -/
 
 @[expose] public section
@@ -26,10 +30,14 @@ noncomputable section
 
 open CategoryTheory
 
+universe u
+
 namespace TopCat.SingularSmallChains
 
-/-- Evaluation of a cochain homotopy on a positive-degree cocycle. -/
-theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{0} ℕ}
+/-- Evaluation of a cochain homotopy on a positive-degree cocycle: if `h` is a homotopy
+between `f` and `g` and `x` is a cocycle in degree `n + 1`, then
+`f x = d (h x) + g x`. -/
+theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
     {f g : K ⟶ L} (h : _root_.Homotopy f g) (n : ℕ) (x : K.X (n + 1))
     (hx : K.d (n + 1) (n + 2) x = 0) :
     f.f (n + 1) x =
