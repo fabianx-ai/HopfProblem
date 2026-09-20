@@ -14,10 +14,11 @@ matrix.
 
 Alongside the presentation API the file records the general module lemmas used to build
 presentations: `LinearMap.ker_comp_eq_ker_sup_span_singleton`, the splitting of an extension
-of a ring by a module (`LinearMap.exists_split_of_ker_eq_range` and its additive form
-`LinearMap.exists_addEquiv_split_of_ker_eq_range`), the head/tail splitting `Fin.tailHeadAddEquiv`
-of `Fin (n + 1) → ℤ`, `LinearEquiv.natAbs_apply_one`, and
-`Matrix.cols_eq_rows_of_bijective_mulVec`.
+of a ring by a module (`LinearMap.exists_prodEquiv_of_functional_ker_eq_range` and its additive
+form `LinearMap.exists_prodAddEquiv_of_functional_ker_eq_range`),
+`Int.natAbs_linearEquiv_apply_one`, and `Matrix.cols_eq_rows_of_bijective_mulVec`.  The head/tail
+splitting of `Fin (n + 1) → ℤ` is Mathlib's
+`(Fin.consLinearEquiv ℤ _).symm.trans (LinearEquiv.prodComm ℤ ℤ _)`.
 
 ## References
 
@@ -241,7 +242,7 @@ theorem IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup 
 /-- An extension of `R` by `A`, given by an injection `i` and a surjection `p` onto `R` with
 `ker p = range i`, splits: there is a linear isomorphism `A × R ≃ₗ[R] B` compatible with `i`
 and `p`. -/
-theorem LinearMap.exists_split_of_ker_eq_range {R : Type*} [CommRing R]
+theorem LinearMap.exists_prodEquiv_of_functional_ker_eq_range {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
@@ -283,27 +284,15 @@ theorem LinearMap.exists_split_of_ker_eq_range {R : Type*} [CommRing R]
   rw [map_zero, add_zero]
 
 /-- The additive form of the splitting of an extension of `R` by `A`. -/
-theorem LinearMap.exists_addEquiv_split_of_ker_eq_range {R : Type*} [CommRing R]
+theorem LinearMap.exists_prodAddEquiv_of_functional_ker_eq_range {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
     ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
-  obtain ⟨e, he, hp⟩ := LinearMap.exists_split_of_ker_eq_range i p hi hp hk
+  obtain ⟨e, he, hp⟩ := LinearMap.exists_prodEquiv_of_functional_ker_eq_range i p hi hp hk
   exact ⟨e.toAddEquiv, he, hp⟩
-/-- Splitting off the first coordinate of `Fin (n+1) → ℤ`. -/
-def Fin.tailHeadAddEquiv (n : ℕ) :
-    (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
-    where
-  toFun v := (fun i => v i.succ, v 0)
-  invFun v := Fin.cons v.2 v.1
-  left_inv
-    v := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  right_inv v := rfl
-  map_add' _ _ := rfl
 /-- A linear automorphism of `ℤ` sends `1` to a unit, that is, to `±1`. -/
-theorem LinearEquiv.natAbs_apply_one (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
+theorem Int.natAbs_linearEquiv_apply_one (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
   have h : e.symm 1 * e 1 = 1 := by
     calc
       e.symm 1 * e 1 = e (e.symm 1 • (1 : ℤ)) := by

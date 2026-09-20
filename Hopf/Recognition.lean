@@ -82,7 +82,6 @@ import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Combinatorics.IndexDisorder
-import Lib.Combinatorics.IndexDisorder
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
@@ -3023,7 +3022,7 @@ theorem SpherePoint.sourceCountMark_topClass_natAbs (n : ℕ) {N : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     (sourceCountMark n j B (SphereHomology.unitSphereTopClass (n + 1))).natAbs = 1 :=
-  LinearEquiv.natAbs_apply_one
+  Int.natAbs_linearEquiv_apply_one
     ((SphereHomology.unitSphereHomologyTopEquiv (n + 1)).symm.trans (sourceCountMark n j B))
 
 theorem OnePointCover.overlapHomologyEquiv_symm_include {N : Type} [NormedAddCommGroup N]

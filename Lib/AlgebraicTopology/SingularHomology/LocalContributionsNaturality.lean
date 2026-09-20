@@ -35,6 +35,10 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
+/-- Hypotheses: `U` an open set, `V` a finite family of pairwise disjoint open sets (`hU`, `hV`,
+`hd`), a degree `k`, an index `i` and a class `a` in the homology of `U ∩ V i`.  Conclusion: the
+inverse of `CoverOverlapHomology.homologyEquiv` takes the coordinate vector `Pi.single i a` to
+the image of `a` under the map induced by the inclusion `U ∩ V i ⊆ U ∩ ⋃ j, V j`. -/
 theorem CoverOverlapHomology.homologyEquiv_symm_single {X : Type} [TopologicalSpace X]
     {ι : Type} [Fintype ι] [DecidableEq ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
     (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (k : ℕ) (i : ι)
@@ -47,6 +51,11 @@ theorem CoverOverlapHomology.homologyEquiv_symm_single {X : Type} [TopologicalSp
     rw [Pi.single_eq_of_ne hji, map_zero]
   · simp
 
+/-- Hypotheses: `U` an open set, `V` a finite family of pairwise disjoint open sets (`hU`, `hV`,
+`hd`), a degree `k`, an index `i` and a class `a` in the homology of `U ∩ V i`.  Conclusion:
+`CoverOverlapHomology.homologyEquiv` takes the image of `a` under the map induced by the
+inclusion `U ∩ V i ⊆ U ∩ ⋃ j, V j` to the coordinate vector `Pi.single i a`; the statement
+`homologyEquiv_symm_single` read through the equivalence. -/
 theorem CoverOverlapHomology.homologyEquiv_inclusion {X : Type} [TopologicalSpace X]
     {ι : Type} [Fintype ι] [DecidableEq ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
     (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (k : ℕ) (i : ι)
@@ -57,12 +66,20 @@ theorem CoverOverlapHomology.homologyEquiv_inclusion {X : Type} [TopologicalSpac
   apply (homologyEquiv U V hU hV hd k).symm.injective
   rw [LinearEquiv.symm_apply_apply, homologyEquiv_symm_single]
 
+/-- Hypotheses: sets `U`, `V i` in `X` and `U'`, `V' i` in `Y` indexed by the same `ι`, a
+continuous `f : X → Y` with `Set.MapsTo f U U'` and `Set.MapsTo f (V i) (V' i)` for every `i`,
+and an index `i`.  Definition: the restriction of `f` to a continuous map
+`U ∩ V i → U' ∩ V' i`. -/
 def CoverOverlapHomology.componentMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
     (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) (i : ι) :
     C(↥(U ∩ V i), ↥(U' ∩ V' i)) :=
   SingularMayerVietoris.coverRestriction f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
 
+/-- Hypotheses: sets `U`, `V i` in `X` and `U'`, `V' i` in `Y` indexed by the same `ι` and a
+continuous `f : X → Y` with `Set.MapsTo f U U'` and `Set.MapsTo f (V i) (V' i)` for every `i`.
+Definition: the restriction of `f` to a continuous map
+`U ∩ ⋃ i, V i → U' ∩ ⋃ i, V' i`. -/
 def CoverOverlapHomology.overlapMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
     (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) :
@@ -73,6 +90,11 @@ def CoverOverlapHomology.overlapMap {X Y : Type} [TopologicalSpace X] [Topologic
       obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx.2
       exact ⟨hfU hx.1, Set.mem_iUnion.mpr ⟨i, hfV i hi⟩⟩)
 
+/-- Hypotheses: the data of `CoverOverlapHomology.overlapMap` (sets `U`, `V` in `X` and `U'`,
+`V'` in `Y`, a continuous `f` with `Set.MapsTo f U U'` and `Set.MapsTo f (V i) (V' i)` for every
+`i`) together with an index `i`.  Conclusion: the square of continuous maps commutes, that is
+`overlapMap … ∘ componentInclusion U V i = componentInclusion U' V' i ∘ componentMap … i`; both
+sides restrict `f`, so this holds by `rfl`. -/
 theorem CoverOverlapHomology.overlapMap_component {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y)
     (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) (i : ι) :
@@ -80,6 +102,12 @@ theorem CoverOverlapHomology.overlapMap_component {X Y : Type} [TopologicalSpace
       (componentInclusion U' V' i).comp (componentMap U V U' V' f hfU hfV i) :=
   rfl
 
+/-- Naturality of `CoverOverlapHomology.homologyEquiv` for a map of covers.  Hypotheses: a
+continuous `f : X → Y` with `Set.MapsTo f U U'` and `Set.MapsTo f (V i) (V' i)` for every `i`, a
+`Fintype ι`, both `U`, `V` and `U'`, `V'` open with both families pairwise disjoint (`hU`, `hV`,
+`hd`, `hU'`, `hV'`, `hd'`), a degree `k` and a class `a` in the homology of `U ∩ ⋃ i, V i`.
+Conclusion: the coordinates under `homologyEquiv` of the image of `a` along `overlapMap` are the
+images along the `componentMap`s of the coordinates of `a`. -/
 theorem CoverOverlapHomology.homologyEquiv_map {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y)
     (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) [Fintype ι]
@@ -98,6 +126,13 @@ theorem CoverOverlapHomology.homologyEquiv_map {X Y : Type} [TopologicalSpace X]
   rw [overlapMap_component, SingularHomology.singularHomologyMap_comp,
     LinearMap.comp_apply]
 
+/-- Hypotheses: open sets `U ⊆ U'` (`hU`, `hU'`, `hsub`), a finite family `V` of pairwise
+disjoint open sets (`hV`, `hd`) with `U ∪ ⋃ i, V i = Set.univ` (`hc`), an index `i` with
+`U' ∪ V i = Set.univ` (`hci`), a degree `k` and a class `a` in the homology of `X` in degree
+`k + 1`.  Conclusion: pushing the `i`-th component of the localized connecting homomorphism
+`CoverLocalContributions.componentConnecting` of the cover `U`, `V` forward along the inclusion
+`U ∩ V i ⊆ U' ∩ V i` gives the Mayer-Vietoris connecting homomorphism of the two-set cover `U'`,
+`V i` applied to `a`; enlarging `U` to `U'` leaves the component unchanged. -/
 theorem CoverLocalContributions.componentConnecting_enlarge {X : Type} [TopologicalSpace X]
     {ι : Type} [Fintype ι] (U U' : Set X) (V : ι → Set X) (hU : IsOpen U) (hU' : IsOpen U')
     (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
