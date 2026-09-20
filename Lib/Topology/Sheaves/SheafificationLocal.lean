@@ -44,8 +44,8 @@ The two inputs are Mathlib's:
   criterion `TopCat.Presheaf.isLocallySurjective_iff`
   (`Mathlib/Topology/Sheaves/LocallySurjective.lean`);
 * `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`
-  (`Mathlib/Topology/Sheaves/Stalks.lean`), together with `TopCat.Presheaf.germ_eq` from the
-  same file.
+  (`Mathlib/Topology/Sheaves/Sheafify.lean`), together with `TopCat.Presheaf.germ_eq`
+  (`Mathlib/Topology/Sheaves/Stalks.lean`).
 
 Mathlib does not state the three results above in this shrink-the-neighbourhood form; that is
 what this file adds.  Everything is stated for `TopCat.{u}` with `AddCommGrpCat.{u}`
