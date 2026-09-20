@@ -10,19 +10,18 @@ public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
-# Homotopy six-sphere data: connectivity and homology vanishing
+# Homotopy six-sphere data: connectivity and homology vanishing (proof-specific)
 
-`SixSphere` is the round unit sphere in `ℝ⁷`. A space homotopy equivalent to it
-inherits its basic invariants: `simplyConnectedSpace_of_homotopySixSphere` and
-`pathConnectedSpace_of_homotopySixSphere` give simple and path connectivity, and
-`homotopySixSphere_homology_subsingleton` gives `Subsingleton` singular homology in
-every degree other than `0` and `6` (transported through
-`SingularHomology.homotopyEquivHomologyEquiv` from
-`SphereHomology.unitSphere_homology_subsingleton`).
-
-This is the hypothesis-generation input for the six-dimensional recognition
-theorem (Smale 1961, Theorem A): the two-critical-point Morse conclusion is
-assembled over this data, not inside this file.
+Proof-specific material of the six-sphere formalization; it is not library
+mathematics and is therefore not registered in `Lib.lean`.  `SixSphere` is the
+project's round unit sphere in `ℝ⁷`, and the three lemmas below are the
+specialisations of Mathlib's `ContinuousMap.HomotopyEquiv.simplyConnectedSpace`,
+`EuclideanSphere.simplyConnectedSpace` and of
+`SphereHomology.unitSphere_homology_subsingleton` to that one sphere, used as
+the hypothesis-generation input of the six-dimensional recognition argument
+(Smale 1961, Theorem A).  Because every statement is pinned to `Fin 7`, none of
+them is a textbook statement; the general facts they instantiate already live in
+Mathlib and in `Lib.AlgebraicTopology.SingularHomology.SphereHomology`.
 
 ## Main declarations
 
@@ -36,11 +35,6 @@ assembled over this data, not inside this file.
 
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], Ch. 9
   (the recognition application this data feeds).
-
-## Twin
-
-No Mathlib counterpart exists; the declarations are upstream-shaped but have no
-Mathlib file to converge to.
 
 ## Tags
 

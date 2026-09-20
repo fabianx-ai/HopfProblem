@@ -390,3 +390,44 @@ theorem RegularLevel.injective_mfderiv_of_inclusion {E M : Type*} [NormedAddComm
     hi
       (congrArg (mfderiv 𝓘(ℝ, Model E) 𝓘(ℝ, E) (Subtype.val : { x : M // f x = b } → M) (g x))
         hvw)
+
+/-- A map into the regular level `{f = b}` of a `C^∞` function is `C^∞` within a set at a point
+exactly when its composition with the inclusion into the ambient manifold is. -/
+theorem RegularLevel.contMDiffWithinAt_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
+    [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (S : Set X) (x : X) :
+    letI := chartedSpace hf hreg
+    ContMDiffWithinAt I 𝓘(ℝ, Model E) ∞ g S x ↔
+      ContMDiffWithinAt I 𝓘(ℝ, E) ∞ (Subtype.val ∘ g) S x := by
+  let _ := chartedSpace hf hreg
+  constructor
+  · intro hg
+    exact (RegularLevel.contMDiff_inclusion hf hreg).contMDiffAt.comp_contMDiffWithinAt x hg
+  · intro hg
+    apply contMDiffWithinAt_iff_target.mpr
+    refine ⟨Topology.IsInducing.subtypeVal.continuousWithinAt_iff.mpr hg.continuousWithinAt, ?_⟩
+    let Φ := heightChart hf hreg (g x)
+    have hΦ : ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, ℝ × Model E) ∞ Φ (g x) :=
+      Φ.contMDiffOn_toFun.contMDiffAt
+        (Φ.open_source.mem_nhds (heightChart_mem_source hf hreg (g x)))
+    have hcomp := hΦ.comp_contMDiffWithinAt x hg
+    change ContMDiffWithinAt I 𝓘(ℝ, Model E) ∞ (fun y => (Φ (g y)).2) S x
+    exact contDiff_snd.contMDiff.contMDiffAt.comp_contMDiffWithinAt x hcomp
+
+/-- A map into the regular level `{f = b}` of a `C^∞` function is `C^∞` on a set exactly when
+its composition with the inclusion into the ambient manifold is. -/
+theorem RegularLevel.contMDiffOn_iff_inclusion {E M : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {b : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
+    (hreg : ∀ x, f x = b → x ∉ ManifoldMorse.criticalPoints E f) {G H X : Type*}
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] (I : ModelWithCorners ℝ G H)
+    [TopologicalSpace X] [ChartedSpace H X] (g : X → { x : M // f x = b }) (S : Set X) :
+    letI := chartedSpace hf hreg
+    ContMDiffOn I 𝓘(ℝ, Model E) ∞ g S ↔ ContMDiffOn I 𝓘(ℝ, E) ∞ (Subtype.val ∘ g) S := by
+  let _ := chartedSpace hf hreg
+  exact
+    forall_congr'
+      (fun x => forall_congr' (fun _ => contMDiffWithinAt_iff_inclusion hf hreg I g S x))

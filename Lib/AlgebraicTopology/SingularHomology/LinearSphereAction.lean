@@ -56,6 +56,8 @@ singular-homology, spheres, degree, determinant, reflection
 
 open Set Function Filter Manifold Topology
 
+open scoped ContinuousMap
+
 noncomputable section
 
 /-! ### Normalizing linear maps -/
@@ -582,3 +584,56 @@ theorem LinearSphereAction.homology_relative_sign {F : Type} [NormedAddCommGroup
   rw [sphereMap_relative A B, SingularHomology.singularHomologyMap_comp,
     LinearMap.comp_apply, homology_eq_sign_smul]
   exact map_zsmul _ _ _
+
+/-- Radially rescaling a unit vector to norm `r` and normalising again returns the vector. -/
+theorem PuncturedRadial.toSphere_fromSphere {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] (r : ℝ) (hr : 0 < r) (u : Metric.sphere (0 : N) 1) :
+    toSphere (fromSphere r hr u) = u := by
+  apply Subtype.ext
+  change ‖r • (u : N)‖⁻¹ • (r • (u : N)) = (u : N)
+  rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property, mul_one,
+    inv_smul_smul₀ hr.ne']
+
+/-- The radial deformation of the punctured space `N \ {0}` onto the sphere of radius `r`:
+a homotopy from the identity to `fromSphere r ∘ toSphere`. -/
+def PuncturedRadial.deformation {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (r : ℝ)
+    (hr : 0 < r) : (ContinuousMap.id (Space N)).Homotopy ((fromSphere r hr).comp toSphere)
+    where
+  toFun q := ⟨blendVector r q, blendVector_ne_zero r hr q⟩
+  continuous_toFun := (continuous_blendVector r).subtype_mk _
+  map_zero_left
+    u := by
+    apply Subtype.ext
+    simp [blendVector]
+  map_one_left
+    u := by
+    apply Subtype.ext
+    simp [blendVector, fromSphere, toSphere, RadialExtension.direction, div_eq_mul_inv,
+      smul_smul]
+
+/-- `N \ {0}` is homotopy equivalent to the unit sphere of `N`, by radial deformation. -/
+def PuncturedRadial.sphereHomotopyEquiv {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    (r : ℝ) (hr : 0 < r) : Metric.sphere (0 : N) 1 ≃ₕ Space N
+    where
+  toFun := fromSphere r hr
+  invFun := toSphere
+  left_inv := by
+    have heq : toSphere.comp (fromSphere r hr) = ContinuousMap.id (Metric.sphere (0 : N) 1) :=
+      ContinuousMap.ext (toSphere_fromSphere r hr)
+    rw [heq]
+  right_inv := ⟨(deformation r hr).symm⟩
+
+/-- A continuous linear equivalence `E ≃L[ℝ] F` makes the unit sphere of `E` homotopy
+equivalent to the punctured space `F \ {0}`. -/
+def LocalDegree.linearSphereEquiv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] (L : E ≃L[ℝ] F) (r : ℝ) (hr : 0 < r) :
+    Metric.sphere (0 : E) 1 ≃ₕ PuncturedRadial.Space F :=
+  (PuncturedRadial.sphereHomotopyEquiv r hr).trans
+    (puncturedLinearHomeomorph L).toHomotopyEquiv
+
+/-- The boundary map of local-degree boundary data, normalised to a map of unit spheres. -/
+def LocalDegree.BoundaryData.normalizedMap {E F : Type} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {L : E ≃L[ℝ] F}
+    {s : Set E} (b : LocalDegree.BoundaryData f L s) :
+    C(Metric.sphere (0 : E) 1, Metric.sphere (0 : F) 1) :=
+  PuncturedRadial.toSphere.comp b.map

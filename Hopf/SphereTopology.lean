@@ -102,7 +102,7 @@ import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.Topology.OnePointCollapse
-import Lib.Geometry.Manifold.Morse.MinimalSystem
+import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Geometry.Manifold.Morse.SublevelSets
@@ -116,6 +116,7 @@ import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 import Lib.Geometry.Manifold.Morse.RearrangementAmbient
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
+import Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse

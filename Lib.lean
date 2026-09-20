@@ -75,10 +75,9 @@ import Lib.Geometry.Manifold.Quotient.LocalOrbit
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
-import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.CutTransport
-import Lib.Geometry.Manifold.Morse.MiddleBlocks
+import Lib.Geometry.Manifold.Morse.EqualRangeHomology
 import Lib.Algebra.Group.Filtration
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
@@ -133,6 +132,8 @@ import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 import Lib.Geometry.Manifold.Morse.RearrangementAmbient
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
+import Lib.Algebra.BigOperators.SignedCancellation
+import Lib.Geometry.Manifold.Morse.RadialFilling
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse
