@@ -17,6 +17,10 @@ the kernel.
 
 It is a direct corollary of `GroupExtension.Splitting.semidirectProductMulEquiv` and
 `SemidirectProduct.abelianizationMulEquiv`.
+
+## References
+
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. II (`H₁` of a split extension).
 -/
 
 @[expose] public section
