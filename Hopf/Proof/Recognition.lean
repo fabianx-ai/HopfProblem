@@ -532,14 +532,13 @@ theorem TopCellLifting.sphereMap_relativeDiskLifting_six
     (x : SpecialPeriods.Threefold.Space) :
     FiniteCells.RelativeDiskLifting
       (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) 6 := by
-  intro V _ _ _ hd a u H h0 h1
-  by_cases hlow : Module.finrank ℝ V ≤ 5
-  · exact LowCellLifting.sphereMap_relativeDiskLifting_five x V hlow a u H h0 h1
-  · have heq : Module.finrank ℝ V = 6 := by omega
-    obtain ⟨L⟩ :=
-      FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-        (show Module.finrank ℝ V = Module.finrank ℝ (Fin 6 → ℝ) by simpa using heq)
-    exact exists_top_disk_lift x L hd a u H h0 h1
+  letI := SpecialPeriods.Threefold.space_simplyConnected
+  exact TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint
+    (fun k hk hkn => Sphere.pi_subsingleton hk hkn)
+    (fun k hk hkn => LowCellLifting.threefold_pi_subsingleton hk hkn)
+    (sphereMap_piSix_bijective x).2
 
 attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space
