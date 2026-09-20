@@ -10,7 +10,9 @@ Elementary column operations on integer matrices, realized as right multiplicati
 whose associated map `ℤⁿ → ℤ` is surjective can be brought by column additions to a row having an
 entry `±1`.  Alongside this we record the coordinate-matrix API transporting a `ℤ`-basis through
 such operations: the matrix of a family of vectors in a chosen basis, its behaviour under
-`Matrix.mulVec`, and the transport of these rows along a linear isomorphism.
+`Matrix.mulVec`, and the transport of these rows along a linear isomorphism.  That coordinate
+matrix is Mathlib's `Module.Basis.toMatrix` for the basis `Module.Basis.ofEquivFun B.symm`
+(`LinearEquiv.coordMatrix_eq_toMatrix`).
 
 ## Main results
 
@@ -27,10 +29,25 @@ such operations: the matrix of a family of vectors in a chosen basis, its behavi
 @[expose] public noncomputable section
 
 /-- The matrix of a family `v : Fin n → A` in a chosen basis `B : (Fin r → ℤ) ≃ₗ[ℤ] A`: its
-`j`-th column is the coordinate vector of `v j`. -/
+`j`-th column is the coordinate vector of `v j`.
+
+This is Mathlib's `Module.Basis.toMatrix` for the basis `Module.Basis.ofEquivFun B.symm`
+attached to `B`; see `LinearEquiv.coordMatrix_eq_toMatrix`.  It is kept as a separate definition
+because the downstream files phrase everything in terms of the linear equivalence `B` rather
+than a `Module.Basis`. -/
 def LinearEquiv.coordMatrix {A : Type*} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
     (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) : Matrix (Fin r) (Fin n) ℤ := fun i j =>
   B.symm (v j) i
+
+/-- Hypotheses: a `ℤ`-module `A`, a linear equivalence `B : (Fin r → ℤ) ≃ₗ[ℤ] A` and a family
+`v : Fin n → A`.  Conclusion: `LinearEquiv.coordMatrix B v` is the Mathlib matrix
+`Module.Basis.toMatrix` of `v` in the basis `Module.Basis.ofEquivFun B.symm` determined by
+`B`. -/
+theorem LinearEquiv.coordMatrix_eq_toMatrix {A : Type*} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
+    (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) :
+    coordMatrix B v = (Module.Basis.ofEquivFun B.symm).toMatrix v := by
+  ext i j
+  simp [coordMatrix, Module.Basis.toMatrix, Module.Basis.ofEquivFun_repr_apply]
 
 /-- Multiplying the coordinate matrix of `v` by a vector of scalars gives, in the basis `B`, the
 corresponding linear combination `∑ j, z j • v j`. -/
