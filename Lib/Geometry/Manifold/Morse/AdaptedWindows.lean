@@ -61,7 +61,7 @@ For a Morse function `f` on a compact manifold `M` with a gradient-like field an
 facts about the trajectories of `S` that the handle-rearrangement argument uses:
 
 * realising a compactly supported relative isotopy of a regular level by a modification of the
-  gradient-like field (`FlowSuspension.exists_relative_regular_level_isotopy_realization`,
+  gradient-like field (`RegularLevel.exists_flow_realization_of_relative_isotopy`,
   `AdaptedWindows.exists_relative_level_surgery_system`), the mechanism behind Milnor,
   *Lectures on the h-cobordism theorem*, §4 (Theorem 4.1, rearrangement);
 * which points of a level flow down to a lower level (`attachingSphere_reaches_lower_cut`,
@@ -91,7 +91,7 @@ with it near the critical points and outside a compact subset of the band, and s
 `G 1 x = H 1 (D x)` on the level, `H 1` carrying `f⁻¹(c)` to `f⁻¹(c-r)`, with `G = H` on the set
 where `D` is the identity.  This is the modification of a gradient-like field used in the proof
 of Milnor, *Lectures on the h-cobordism theorem*, Theorem 4.1. -/
-theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : Type*}
+theorem RegularLevel.exists_flow_realization_of_relative_isotopy {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} {f : M → ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -154,7 +154,8 @@ theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : 
   obtain
     ⟨C, V', G, Ψ, hC, hCsub, hV', hG, hzero, hneg, hgerm, -, -, hfull, hend, hfixed, -, hleft,
       hright, -⟩ :=
-    exists_native_whole_level_holonomy A hsource hf hr (fun p hp => hheight p ⟨hp.1.le, hp.2.le⟩)
+    FlowSuspension.exists_native_whole_level_holonomy A hsource hf hr
+      (fun p hp => hheight p ⟨hp.1.le, hp.2.le⟩)
       W hW hmodel H hH D hK I
   have hCband : C ⊆ f ⁻¹' Set.Ioo a b := by
     intro y hy
@@ -167,7 +168,8 @@ theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : 
     filter_upwards [hgerm y hout, hWgerm y hy] with x hx hx'
     exact hx.trans hx'
   obtain ⟨htailLeft, htailRight⟩ :=
-    native_whole_level_exterior_tails A Subtype.val H G hformula D Ψ hleft hright hfull
+    FlowSuspension.native_whole_level_exterior_tails A Subtype.val H G hformula D Ψ hleft
+      hright hfull
   have hA0 (x : { y : M // f y = c }) : A (x, 0) = (x : M) := by rw [hformula, H.map_zero_apply]
   have hA1 (x : { y : M // f y = c }) : A (x, 1) = H 1 x := hformula (x, 1)
   refine
@@ -422,7 +424,7 @@ theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type} [Normed
   obtain
     ⟨_, _, _, V, H, G, -, -, -, -, -, -, hgeometry, hV, hG, hzero, hdesc, hgerms, -, hend, -,
       hleft, hright, hprotected⟩ :=
-    FlowSuspension.exists_relative_regular_level_isotopy_realization hf S.smooth S.descent
+    RegularLevel.exists_flow_realization_of_relative_isotopy hf S.smooth S.descent
       S.flow S.integral ha hb hband hc z D K P hK I
   have hmodel (p : ManifoldMorse.criticalPoints E f) :
     ∀ᶠ y in 𝓝 p.val, V y = (S.data p).chart.descentField y := by

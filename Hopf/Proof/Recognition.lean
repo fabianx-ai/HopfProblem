@@ -691,7 +691,7 @@ theorem MorseCancellation.canonical_middle_matrix_surjective {E M : Type} [Norme
                   x).val =
             (γ j x).val) :
     Function.Surjective (canonicalMiddleMatrix B γ).mulVec :=
-  classCoordinateMatrix_surjective B _
+  LinearEquiv.surjective_coordMatrix_mulVec B _
     (middle_section_classes_span S T hf hdim e horder hzero hone r n hr hn hrc hp hbefore γ
       horbit)
 
@@ -837,7 +837,7 @@ theorem ManifoldMorse.SurgeryWindows.middle_counts_equal {E M : Type} [NormedAdd
     (hdim : Module.finrank ℝ E = 6) (hM : M ≃ₕ MetricSixSphere) (r c : ℕ)
     (htwo : S.HasIndexTwoPrefix r) (hc : r + c < S.count) (hthree : S.HasIndexThreeBlock r c)
     (hcount : r + c + 2 = S.count) : r = c :=
-  (HomologyTransport.matrix_sizes_eq_of_bijective (S.middleMatrix hf r c htwo hc hthree)
+  (Matrix.cols_eq_rows_of_bijective_mulVec (S.middleMatrix hf r c htwo hc hthree)
       (S.middleMatrix_bijective_of_complete_blocks hf hdim hM r c htwo hc hthree hcount)).symm
 
 

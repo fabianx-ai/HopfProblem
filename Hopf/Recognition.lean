@@ -81,6 +81,8 @@ import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
+import Lib.Combinatorics.IndexDisorder
+import Lib.Combinatorics.IndexDisorder
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
@@ -689,7 +691,7 @@ theorem AdaptedWindows.middle_inclusion_step {E M : Type} [NormedAddCommGroup E]
   · rw [← htotal]
     exact hQ.comp (hJ.surjective.comp hsurj)
   · rw [← htotal,
-      HomologyTransport.ker_comp_span_singleton (J.comp P) Q
+      LinearMap.ker_comp_eq_ker_sup_span_singleton (J.comp P) Q
         (MorseCancellation.middleSectionClass γ) hker,
       hkerJ]
 
@@ -996,10 +998,10 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
                                     a <
                                       T.toSurgeryWindows.lower
                                         ⟨(p j).val, hc.symm ▸ (p j).property⟩) ∧
-                                  MorseRearrangement.beforeValueRank (fun j => g (p j)) q =
+                                  IndexDisorder.beforeValueRank (fun j => g (p j)) q =
                                     m
   have hex : ∃ m, P m :=
-    ⟨MorseRearrangement.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
+    ⟨IndexDisorder.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
       Iff.rfl, fun _ => Iff.rfl, ha, S₀, horder, fun _ _ => rfl, fun _ _ _ => rfl, rfl, rfl,
       fun _ _ => Filter.EventuallyEq.rfl, hlower, rfl⟩
   obtain
@@ -1053,17 +1055,17 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
       T.exists_middle_family_value_exchange hg hmg hga hgorder pg hpg hglower Bg γg hfamily hgsurj
         i q hiq hglobal
     have hdecrease :
-      MorseRearrangement.beforeValueRank (fun k => u (p k)) q <
-        MorseRearrangement.beforeValueRank (fun k => g (p k)) q := by
+      IndexDisorder.beforeValueRank (fun k => u (p k)) q <
+        IndexDisorder.beforeValueRank (fun k => g (p k)) q := by
       apply
-        MorseRearrangement.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
+        IndexDisorder.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
       intro k hki hkq
       apply huothers (pg k) (pg k).property
       · exact fun heq => hki (hpinj (Subtype.ext heq))
       · exact fun heq => hkq (hpinj (Subtype.ext heq))
     have hminimal :=
       Nat.find_min' hex
-        (show P (MorseRearrangement.beforeValueRank (fun k => u (p k)) q) from
+        (show P (IndexDisorder.beforeValueRank (fun k => u (p k)) q) from
           ⟨u, hu, hmu, hcu.trans hcrit, fun y => (hus y).trans (hsub y), fun y =>
             (hul y).trans (hlevel y), hua, U, huorder, fun z hz =>
             (huindices z (hcrit.symm ▸ hz)).trans (hindices z hz), fun z hz hzoutside =>
@@ -2520,7 +2522,7 @@ theorem AdaptedWindows.exists_labelled_integer_slide {E M : Type} [NormedAddComm
         (MorseCancellation.lower_window_le_of_radius_le S.toSurgeryWindows T.toSurgeryWindows (p j)
           (hradii _))
   · rw [hmatrix]
-    exact MorseCancellation.mul_transvection_surjective _ q i hqi k hsurj
+    exact Matrix.surjective_mulVec_mul_transvection _ q i hqi k hsurj
 
 attribute [local irreducible] MorseCancellation.canonicalMiddleMatrix in
 theorem AdaptedWindows.exists_arbitrary_column_addition {E M : Type} [NormedAddCommGroup E]
@@ -2936,26 +2938,26 @@ theorem AdaptedWindows.exists_primitive_functional_unit {E M : Type} [NormedAddC
   let A : Matrix (Fin 1) (Fin n) ℤ := fun _ j => L (MorseCancellation.middleSectionClass (γ j))
   have hsurj' :
     Function.Surjective
-      (MorseCancellation.classCoordinateMatrix B
+      (LinearEquiv.coordMatrix B
           (fun j => MorseCancellation.middleSectionClass (γ j))).mulVec := by
     simpa only [MorseCancellation.canonicalMiddleMatrix] using hsurj
   have hA : Function.Surjective A.mulVec :=
-    MorseCancellation.functional_class_row_surjective B (fun j => MorseCancellation.middleSectionClass (γ j))
+    LinearEquiv.surjective_functional_row_mulVec B (fun j => MorseCancellation.middleSectionClass (γ j))
       hsurj' L hL
-  obtain ⟨ops, hvalid, i, hi⟩ := MorseCancellation.primitive_row_has_unit_after_column_additions A hA
+  obtain ⟨ops, hvalid, i, hi⟩ := Matrix.primitive_row_has_unit_after_column_additions A hA
   obtain
     ⟨g, hg, hmg, hcrit, hgorder, hindices, hcounts, houtside, hgcut, hsub, hlevel, hga, T, hgerms,
       hfgerms, hpg, hgcomplete, hglower, Γ, hΓ, hother, hmatrix, hgsurj, hkeep⟩ :=
     S.exists_arbitrary_column_sequence hf hm hdim horder ha hcut p hp hcomplete hlower B γ hγ
       hsurj ops hvalid
   have hcoord :
-    MorseCancellation.classCoordinateMatrix (B.trans (MorseCancellation.equalCutHomologyEquiv hsub))
+    LinearEquiv.coordMatrix (B.trans (MorseCancellation.equalCutHomologyEquiv hsub))
         (fun j => MorseCancellation.middleSectionClass (Γ j)) =
-      MorseCancellation.classCoordinateMatrix B (fun j => MorseCancellation.middleSectionClass (γ j)) *
+      LinearEquiv.coordMatrix B (fun j => MorseCancellation.middleSectionClass (γ j)) *
         (ops.map (fun op => Matrix.transvection op.1 op.2.1 op.2.2)).prod := by
     simpa only [MorseCancellation.canonicalMiddleMatrix] using hmatrix
   have hrows :=
-    MorseCancellation.functional_rows_of_matrix_product B (MorseCancellation.equalCutHomologyEquiv hsub)
+    LinearEquiv.functional_row_eq_mul_of_coordMatrix_eq_mul B (MorseCancellation.equalCutHomologyEquiv hsub)
       (fun j => MorseCancellation.middleSectionClass (γ j))
       (fun j => MorseCancellation.middleSectionClass (Γ j)) _ hcoord L
   have hentry := congrFun (congrFun hrows 0) i
@@ -3004,7 +3006,7 @@ theorem AdaptedWindows.exists_lower_cut_geometric_matrix {E M : Type} [NormedAdd
   have hmatrix : MorseCancellation.canonicalMiddleMatrix B' β = MorseCancellation.canonicalMiddleMatrix B γ :=
     by
     funext i j
-    simp only [MorseCancellation.canonicalMiddleMatrix, MorseCancellation.classCoordinateMatrix]
+    simp only [MorseCancellation.canonicalMiddleMatrix, LinearEquiv.coordMatrix]
     change
       B.symm
           (MorseCancellation.regularCutHomologyEquiv hf hba.le hband
@@ -3020,7 +3022,7 @@ theorem SpherePoint.sourceCountMark_topClass_natAbs (n : ℕ) {N : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     (sourceCountMark n j B (SphereHomology.unitSphereTopClass (n + 1))).natAbs = 1 :=
-  HomologyTransport.integerEquiv_one_natAbs
+  LinearEquiv.natAbs_apply_one
     ((SphereHomology.unitSphereHomologyTopEquiv (n + 1)).symm.trans (sourceCountMark n j B))
 
 theorem OnePointCover.overlapHomologyEquiv_symm_include {N : Type} [NormedAddCommGroup N]

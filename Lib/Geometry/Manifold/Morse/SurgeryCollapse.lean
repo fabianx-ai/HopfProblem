@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+import Lib.Combinatorics.IndexDisorder
+import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -1044,7 +1046,7 @@ theorem MorseCancellation.unique_connection_of_distinct_minimum_branches {E M : 
     (hp' : Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p.val)) :
     x = (S.data q).surgery.attachingSphere u := by
     obtain ⟨w, hw⟩ := (hback x).mp hb
-    rcases unitSphere_eq_two_points_of_finrank_one hdim u v huv w with h | h
+    rcases Metric.unitSphere_eq_two_points_of_finrank_eq_one hdim u v huv w with h | h
     · exact (congrArg (S.data q).surgery.attachingSphere h).symm.trans hw |>.symm
     · have hx : (S.data q).surgery.attachingSphere v = x := h ▸ hw
       have hrv : Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 r.val) := hx ▸ hv
@@ -2464,7 +2466,7 @@ theorem MorseCancellation.exists_index_ordered_morse_system_preserving_critical_
     by_contra hnot
     let _ := S.finite.fintype
     obtain ⟨p, q, hpq, hconsecutive, hinversion⟩ :=
-      MorseRearrangement.exists_adjacent_index_inversion (h :=
+      IndexDisorder.exists_adjacent_index_inversion (h :=
         fun x : ManifoldMorse.criticalPoints E f => f x)
         (fun x y h => Subtype.ext (hinj x.property y.property h))
         (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) hnot
@@ -3063,7 +3065,7 @@ theorem AdaptedWindows.place_one_handle_in_unique_minimum_basin {E M : Type*}
   refine
     ⟨d, hd, S.forward_limit_below_regular_level hf (S.data q).lower_regular (d (α u)) hpu, ?_⟩
   intro w
-  rcases MorseCancellation.unitSphere_eq_two_points_of_finrank_one hi u v huv w with rfl | rfl
+  rcases Metric.unitSphere_eq_two_points_of_finrank_eq_one hi u v huv w with rfl | rfl
   · exact hpu
   · exact hpv
 
@@ -5180,7 +5182,7 @@ theorem ManifoldMorse.MorseSurgeryData.exists_indexTwoHomology_split {E M : Type
       (∀ a, H (a, 0) = d.lowerRealizationHomologyMap 2 a) ∧
         ∀ z, d.indexTwoCollapseCoordinate hf hindex (H z) = z.2 := by
   obtain ⟨H, hH, hcoord⟩ :=
-    HomologyTransport.exists_add_split_rank_one_extension (d.lowerRealizationHomologyMap 2)
+    LinearMap.exists_addEquiv_split_of_ker_eq_range (d.lowerRealizationHomologyMap 2)
       (d.indexTwoCollapseCoordinate hf hindex) (d.lowerRealization_two_injective hf hindex)
       (d.indexTwoCoordinate_surjective hf hindex) (d.indexTwoCoordinate_kernel hf hindex)
   exact ⟨H.toIntLinearEquiv, hH, hcoord⟩
@@ -5202,7 +5204,7 @@ theorem ManifoldMorse.MorseSurgeryData.exists_indexTwoBasis_extension {E M : Typ
         ∀ v, d.indexTwoCollapseCoordinate hf hindex (H v) = v 0 := by
   obtain ⟨H, hH, hcoord⟩ := d.exists_indexTwoHomology_split hf hindex
   let G :=
-    (HomologyTransport.integerCoordinateSplit n).trans
+    (Fin.tailHeadAddEquiv n).trans
       ((e.toAddEquiv.prodCongr (AddEquiv.refl ℤ)).trans H.toAddEquiv)
   refine ⟨G.toIntLinearEquiv, ?_, ?_⟩
   · intro v

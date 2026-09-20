@@ -12,6 +12,13 @@ operations of transporting a presentation along an isomorphism and of adjoining 
 and the triviality criterion: a presentation of the zero module has surjective presentation
 matrix.
 
+Alongside the presentation API the file records the general module lemmas used to build
+presentations: `LinearMap.ker_comp_eq_ker_sup_span_singleton`, the splitting of an extension
+of a ring by a module (`LinearMap.exists_split_of_ker_eq_range` and its additive form
+`LinearMap.exists_addEquiv_split_of_ker_eq_range`), the head/tail splitting `Fin.tailHeadAddEquiv`
+of `Fin (n + 1) → ℤ`, `LinearEquiv.natAbs_apply_one`, and
+`Matrix.cols_eq_rows_of_bijective_mulVec`.
+
 ## References
 
 * [J. Milnor, *Lectures on the h-cobordism theorem*][milnor65], §7 (the algebra behind
@@ -24,7 +31,7 @@ matrix.
 
 /-- If the kernel of `q` is the line spanned by `p v`, then the kernel of `q ∘ p` is the kernel
 of `p` together with the line spanned by `v`. -/
-theorem HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
+theorem LinearMap.ker_comp_eq_ker_sup_span_singleton {R A B C : Type*} [CommRing R]
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module R A] [Module R B] [Module R C]
     (p : A →ₗ[R] B) (q : B →ₗ[R] C) (v : A) (hq : LinearMap.ker q = Submodule.span R {p v}) :
     LinearMap.ker (q.comp p) = LinearMap.ker p ⊔ Submodule.span R { v } := by
@@ -116,7 +123,7 @@ def IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [
     have hk : LinearMap.ker q = Submodule.span ℤ {P.map (P.liftRelation b)} := by
       rw [P.map_liftRelation]
       exact hker
-    rw [HomologyTransport.ker_comp_span_singleton P.map q (P.liftRelation b) hk,
+    rw [LinearMap.ker_comp_eq_ker_sup_span_singleton P.map q (P.liftRelation b) hk,
       P.kernel_eq, Fin.range_cons, Submodule.span_insert, sup_comm]
 
 /-- The presentation matrix, whose columns are the relation vectors. -/
@@ -234,7 +241,7 @@ theorem IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup 
 /-- An extension of `R` by `A`, given by an injection `i` and a surjection `p` onto `R` with
 `ker p = range i`, splits: there is a linear isomorphism `A × R ≃ₗ[R] B` compatible with `i`
 and `p`. -/
-theorem HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing R]
+theorem LinearMap.exists_split_of_ker_eq_range {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
@@ -276,15 +283,15 @@ theorem HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing 
   rw [map_zero, add_zero]
 
 /-- The additive form of the splitting of an extension of `R` by `A`. -/
-theorem HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommRing R]
+theorem LinearMap.exists_addEquiv_split_of_ker_eq_range {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
     (hk : LinearMap.ker p = LinearMap.range i) :
     ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
-  obtain ⟨e, he, hp⟩ := exists_split_rank_one_extension i p hi hp hk
+  obtain ⟨e, he, hp⟩ := LinearMap.exists_split_of_ker_eq_range i p hi hp hk
   exact ⟨e.toAddEquiv, he, hp⟩
 /-- Splitting off the first coordinate of `Fin (n+1) → ℤ`. -/
-def HomologyTransport.integerCoordinateSplit (n : ℕ) :
+def Fin.tailHeadAddEquiv (n : ℕ) :
     (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
     where
   toFun v := (fun i => v i.succ, v 0)
@@ -296,7 +303,7 @@ def HomologyTransport.integerCoordinateSplit (n : ℕ) :
   right_inv v := rfl
   map_add' _ _ := rfl
 /-- A linear automorphism of `ℤ` sends `1` to a unit, that is, to `±1`. -/
-theorem HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
+theorem LinearEquiv.natAbs_apply_one (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
   have h : e.symm 1 * e 1 = 1 := by
     calc
       e.symm 1 * e 1 = e (e.symm 1 • (1 : ℤ)) := by
@@ -306,7 +313,7 @@ theorem HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e
   exact Int.isUnit_iff_natAbs_eq.mp (IsUnit.of_mul_eq_one_right _ h)
 /-- A matrix over a ring with the strong rank condition whose associated map is bijective is
 square. -/
-theorem HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
+theorem Matrix.cols_eq_rows_of_bijective_mulVec {R : Type*} [CommRing R]
     [Nontrivial R] [StrongRankCondition R] {r c : ℕ} (A : Matrix (Fin r) (Fin c) R)
     (hA : Function.Bijective A.mulVec) : c = r := by
   let e := LinearEquiv.ofBijective A.mulVecLin hA

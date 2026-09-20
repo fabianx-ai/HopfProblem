@@ -672,7 +672,7 @@ theorem AdaptedWindows.exists_relative_surgery_cut_transport {E M : Type} [Norme
   obtain
     ⟨r, C, W, V, H, G, hr, hrbound, hC, hCband, hW, hH, hgeometry, hV, hG, hzero, hdesc, hgerms,
       houtside, hend, hheight, hleft, hright, hprotected⟩ :=
-    FlowSuspension.exists_relative_regular_level_isotopy_realization hf S.smooth S.descent
+    RegularLevel.exists_flow_realization_of_relative_isotopy hf S.smooth S.descent
       S.flow S.integral hl hu hband (S.data q).upper_regular z D K P hK I
   have hmodel (p : ManifoldMorse.criticalPoints E f) :
     ∀ᶠ y in 𝓝 p.val, V y = (S.data p).chart.descentField y := by

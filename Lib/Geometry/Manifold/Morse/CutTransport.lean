@@ -179,7 +179,7 @@ def MorseCancellation.canonicalMiddleMatrix {M : Type} [TopologicalSpace M] {f :
     {a : ℝ} (B : (Fin r → ℤ) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology { y : M // f y ≤ a } 2)
     (γ : Fin n → C((Hemisphere.Sphere 2), { y : M // f y = a })) :
     Matrix (Fin r) (Fin n) ℤ :=
-  classCoordinateMatrix B (fun j => middleSectionClass (γ j))
+  LinearEquiv.coordMatrix B (fun j => middleSectionClass (γ j))
 
 def MorseCancellation.equalCutSection {M : Type} [TopologicalSpace M] {f g : M → ℝ} {a : ℝ}
     (hlevel : ∀ y, g y = a ↔ f y = a) (γ : C((Hemisphere.Sphere 2), { y : M // f y = a })) :
@@ -1247,13 +1247,13 @@ theorem MorseCancellation.canonicalMiddleMatrix_single_class_addition {M : Type}
     canonicalMiddleMatrix (M := M) (f := f) (a := a) (r := r) (n := n) B Γ =
       canonicalMiddleMatrix (M := M) (f := f) (a := a) (r := r) (n := n) B α *
         Matrix.transvection q i k := by
-  refine eq_mul_transvection_of_columns _ _ q i k ?_ ?_
+  refine Matrix.eq_mul_transvection_of_columns _ _ q i k ?_ ?_
   · intro u
-    simp only [canonicalMiddleMatrix, classCoordinateMatrix]
+    simp only [canonicalMiddleMatrix, LinearEquiv.coordMatrix]
     rw [hclass, map_add, map_zsmul]
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   · intro u j hji
-    simp only [canonicalMiddleMatrix, classCoordinateMatrix, hother j hji]
+    simp only [canonicalMiddleMatrix, LinearEquiv.coordMatrix, hother j hji]
 
 attribute [local irreducible] MorseCancellation.canonicalMiddleMatrix in
 theorem MorseCancellation.SurgeryWindows.regular_before_first_middle_pivot {E M : Type}

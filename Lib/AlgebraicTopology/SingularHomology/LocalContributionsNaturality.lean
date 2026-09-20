@@ -25,9 +25,10 @@ of the homologies of the pieces `U ∩ V i`. This file records:
   connecting homomorphism is unchanged when `U` is enlarged to `U'` as long as `U' ∪ V i` still
   covers the space.
 
-Moved verbatim from `Hopf/Recognition.lean` (statements unchanged; qualifier retarget
-`PeriodTorusHigherHomology.singularHomologyMap_{comp,id} -> SingularHomology.singularHomologyMap_{comp,id}`,
-naming the same constants).
+## References
+
+* [A. Hatcher, *Algebraic Topology*][hatcher02], §2.2 (the Mayer-Vietoris sequence and its
+  naturality for maps of covers, p. 150).
 -/
 
 open Set Function Filter Manifold Topology

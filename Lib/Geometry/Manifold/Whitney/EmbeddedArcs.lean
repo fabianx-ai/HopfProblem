@@ -1069,7 +1069,7 @@ theorem CleanBigonBoundary.exists_filled_bigon_of_complement_contractions {E M D
     intro p hp
     change Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) (Subtype.val ∘ F) p)
     rw [mfderiv_comp p (hv.mdifferentiableAt (by simp)) (hF.mdifferentiableAt (by simp))]
-    exact (NativeOpenSubmanifold.injective_mfderiv_subtype_val U (F p)).comp (hi p hp)
+    exact (TopologicalSpace.Opens.injective_mfderiv_subtype_val U (F p)).comp (hi p hp)
   have havoidF' : ∀ p ∈ WhitneyPairModel.bigon h, F' p ∉ Set.range g ∪ T := by
     intro p hp hmem
     rcases hmem with hmem | hmem
