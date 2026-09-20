@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
 module
 public import Lib.Topology.Dimension.SphereTwo
 public import Lib.Topology.Sheaves.Cohomology.CoveringDimension
@@ -5,20 +11,35 @@ public import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 public import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 
 /-!
-# Arbitrary-coefficient cohomology vanishing on a two-sphere
+# Two-sphere specialisation of the covering-dimension vanishing theorem
 
-For any space homeomorphic to the standard two-sphere, every abelian sheaf has
-vanishing derived global sections in every degree at least three (Corollary 6.5,
-equation (9)). The same given homeomorphism supplies the covering-dimension bound
-two and transports the sphere's paracompact Hausdorff properties. The sphere is
-compact in its proper finite-dimensional real ambient space; compactness gives
-paracompactness, while its inherited metric topology gives Hausdorffness.
+Proof-specific application file.  The textbook result behind everything here is
+Godement, *Topologie algébrique et théorie des faisceaux*, II.5.12: on a
+paracompact Hausdorff space of Lebesgue covering dimension at most `n`, the
+right-derived global-sections functor kills every abelian sheaf in degrees
+above `n`.  That general theorem is the library declaration
+`TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE`
+in `Lib/Topology/Sheaves/Cohomology/CoveringDimension.lean`; the dimension
+input for the two-sphere is
+`TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two_of_homeomorph` in
+`Lib/Topology/Dimension/SphereTwo.lean`.
 
-Apply the covering-dimension theorem with n = 2, since a ≥ 3 implies a > 2.
-No constancy, constructibility, rank, freeness, finite-generation or torsion
-condition is imposed on the coefficient sheaf. This formal application uses
-Type0 spaces and native abelian-group coefficients in the same universe; its
-target is the right-derived functor of literal sections at the top open.
+This module adds no mathematics to those two.  It only instantiates them at
+`n = 2` for a space presented by a homeomorphism to the standard two-sphere,
+and then rephrases the instance in the three shapes the project's manuscript
+asks for (Corollary 6.5, equations (9), (14), (11) and (10)): vanishing for an
+arbitrary coefficient sheaf in degrees at least three, the equivalent
+projective-dimension bound for the constant integer sheaf, and the substitution
+of a higher direct image into the coefficient slot.  Singling out the
+two-sphere, fixing `TopCat.{0}` and `AddCommGrpCat.{0}`, and naming the
+manuscript's equations are exactly why this is not library material: it lives
+under `Hopf/Proof/` and the general statements stay in `Lib/`.
+
+The same homeomorphism supplies all hypotheses.  The sphere is compact in its
+finite-dimensional real ambient space, so it is paracompact, and its metric
+topology is Hausdorff; both transport along the homeomorphism.  No constancy,
+constructibility, rank, freeness, finite-generation or torsion condition is
+imposed on the coefficient sheaf.
 -/
 
 public section
