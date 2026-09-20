@@ -19,8 +19,11 @@ contractible space.  The universal coefficient theorem turns vanishing of two ad
 integral homology groups into vanishing of the corresponding positive-degree cohomology
 group.
 
-The homotopy-invariance statements hold for an arbitrary coefficient group.  The universal
-coefficient statements are stated for the coefficient group `ULift ℤ`.
+The homotopy-invariance statements, and the vanishing statements for a point and for a
+contractible space, take the coefficient group as `A : AddCommGrpCat.{w}` with `w`
+arbitrary.  The universal coefficient statements are pinned to the coefficient group
+`AddCommGrpCat.of (ULift.{0} ℤ)`, the one the local universal-coefficient interface
+supplies.
 
 ## Main results
 
@@ -52,13 +55,15 @@ noncomputable section
 open CategoryTheory
 open scoped ContinuousMap
 
+universe w
+
 namespace AlgebraicTopology.SingularCochains
 
 /-- Vanishing of native singular cohomology transports backwards across a homotopy
 equivalence. -/
 theorem cohomology_subsingleton_of_homotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (A : AddCommGrpCat.{0}) (e : X ≃ₕ Y) (n : ℕ)
+    (A : AddCommGrpCat.{w}) (e : X ≃ₕ Y) (n : ℕ)
     (hY : Subsingleton ((complex Y A).homology n)) :
     Subsingleton ((complex X A).homology n) := by
   let _ : Subsingleton ((complex Y A).homology n) := hY
@@ -69,7 +74,7 @@ theorem cohomology_subsingleton_of_homotopyEquiv
 vanishes on the other. -/
 theorem cohomology_subsingleton_iff_of_homotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (A : AddCommGrpCat.{0}) (e : X ≃ₕ Y) (n : ℕ) :
+    (A : AddCommGrpCat.{w}) (e : X ≃ₕ Y) (n : ℕ) :
     Subsingleton ((complex X A).homology n) ↔
       Subsingleton ((complex Y A).homology n) := by
   constructor
@@ -79,23 +84,23 @@ theorem cohomology_subsingleton_iff_of_homotopyEquiv
 /-- Native singular cohomology vanishing is invariant under homeomorphism. -/
 theorem cohomology_subsingleton_iff_of_homeomorph
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
-    (A : AddCommGrpCat.{0}) (e : X ≃ₜ Y) (n : ℕ) :
+    (A : AddCommGrpCat.{w}) (e : X ≃ₜ Y) (n : ℕ) :
     Subsingleton ((complex X A).homology n) ↔
       Subsingleton ((complex Y A).homology n) :=
   cohomology_subsingleton_iff_of_homotopyEquiv A e.toHomotopyEquiv n
 
-/-- Native singular cohomology of a point vanishes in every positive degree, for arbitrary
-small abelian coefficients. -/
-theorem pointCohomology_subsingleton (A : AddCommGrpCat.{0}) (n : ℕ) (hn : n ≠ 0) :
+/-- Native singular cohomology of a point vanishes in every positive degree, for an abelian
+coefficient group in any universe. -/
+theorem pointCohomology_subsingleton (A : AddCommGrpCat.{w}) (n : ℕ) (hn : n ≠ 0) :
     Subsingleton ((complex Unit A).homology n) :=
   AddCommGrpCat.subsingleton_of_isZero
     (pointCochain_exactAt_positive A n hn).isZero_homology
 
 /-- Native singular cohomology of a contractible space vanishes in every positive degree, for
-arbitrary small abelian coefficients. -/
+an abelian coefficient group in any universe. -/
 theorem contractibleCohomology_subsingleton
     (X : Type) [TopologicalSpace X] [ContractibleSpace X]
-    (A : AddCommGrpCat.{0}) (n : ℕ) (hn : n ≠ 0) :
+    (A : AddCommGrpCat.{w}) (n : ℕ) (hn : n ≠ 0) :
     Subsingleton ((complex X A).homology n) :=
   cohomology_subsingleton_of_homotopyEquiv A
     (Classical.choice (ContractibleSpace.hequiv_unit X)) n

@@ -58,14 +58,16 @@ open Set Function Filter Manifold Topology
 
 open scoped CategoryTheory
 
+universe u
+
 @[expose] public noncomputable section
 
 /-! ### Singular chains of a disjoint union -/
 
 /-- Chain complexes of `ℤ`-modules have finite biproducts. -/
 theorem Coproduct.singularChainsFiniteBiproducts :
-    CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
-  CategoryTheory.Limits.HasFiniteBiproducts.of_hasFiniteProducts
+    CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{u} ℤ) ℕ) :=
+  CategoryTheory.Abelian.hasFiniteBiproducts
 
 attribute [local instance] Coproduct.singularChainsFiniteBiproducts in
 /-- The inclusion of a summand into the sigma type. -/
@@ -319,13 +321,13 @@ def Coproduct.sigmaChainComplexIso {ι : Type} (X : ι → Type)
 
 /-- Homology chain complexes admit finite biproducts. -/
 theorem Coproduct.homologyFiniteBiproducts :
-    CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
-  CategoryTheory.Limits.HasFiniteBiproducts.of_hasFiniteProducts
+    CategoryTheory.Limits.HasFiniteBiproducts (ChainComplex (ModuleCat.{u} ℤ) ℕ) :=
+  CategoryTheory.Abelian.hasFiniteBiproducts
 
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- The projection of an inclusion is the identity on homology. -/
 theorem Coproduct.homology_π_ι_self {ι : Type} [Finite ι]
-    (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (i : ι) (a : (K i).homology n) :
+    (K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (i : ι) (a : (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K i) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom a) =
       a := by
@@ -338,7 +340,7 @@ theorem Coproduct.homology_π_ι_self {ι : Type} [Finite ι]
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- Distinct biproduct homology components are orthogonal. -/
 theorem Coproduct.homology_π_ι_ne {ι : Type} [Finite ι]
-    (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) {i j : ι} (hij : i ≠ j)
+    (K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) {i j : ι} (hij : i ≠ j)
     (a : (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K j) n).hom
         ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom a) =
@@ -354,7 +356,7 @@ theorem Coproduct.homology_π_ι_ne {ι : Type} [Finite ι]
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- Every biproduct homology class decomposes. -/
 theorem Coproduct.homology_biproduct_total {ι : Type}
-    [Fintype ι] (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : (⨁ K).homology n) :
+    [Fintype ι] (K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : (⨁ K).homology n) :
     ∑ i,
         (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom
           ((HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.π K i) n).hom a) =
@@ -381,7 +383,7 @@ theorem Coproduct.homology_biproduct_total {ι : Type}
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- Homology of a biproduct is the product of homologies. -/
 def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
-    (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) :
+    (K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) :
     (⨁ K).homology n ≃ₗ[ℤ] (∀ i, (K i).homology n) := by
   classical
     exact
@@ -418,7 +420,7 @@ def Coproduct.homologyBiproductEquiv {ι : Type} [Fintype ι]
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- The inverse equivalence sums the inclusion images. -/
 theorem Coproduct.homologyBiproductEquiv_symm_apply {ι : Type} [Fintype ι]
-    (K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : ∀ i, (K i).homology n) :
+    (K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : ∀ i, (K i).homology n) :
     (homologyBiproductEquiv K n).symm a =
       ∑ i, (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.ι K i) n).hom (a i) :=
   rfl
@@ -426,7 +428,7 @@ theorem Coproduct.homologyBiproductEquiv_symm_apply {ι : Type} [Fintype ι]
 attribute [local instance] Coproduct.homologyFiniteBiproducts in
 /-- The equivalence descends a family of chain maps. -/
 theorem Coproduct.homologyBiproductEquiv_desc {ι : Type} [Fintype ι]
-    {K : ι → ChainComplex (ModuleCat.{0} ℤ) ℕ} (n : ℕ) {L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+    {K : ι → ChainComplex (ModuleCat.{u} ℤ) ℕ} (n : ℕ) {L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (f : ∀ i, K i ⟶ L) (a : ∀ i, (K i).homology n) :
     (HomologicalComplex.homologyMap (CategoryTheory.Limits.biproduct.desc f) n).hom
         ((homologyBiproductEquiv K n).symm a) =
