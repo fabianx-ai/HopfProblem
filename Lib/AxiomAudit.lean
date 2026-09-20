@@ -3260,10 +3260,6 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
 #print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
 
-/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` -/
-
-#check FundamentalGroup.VanKampen.exists_stageCharacter
-#print axioms FundamentalGroup.VanKampen.exists_stageCharacter
 /-! ## `Lib.Topology.Homotopy.OpenNullhomotopy` -/
 
 #check TopCat.exists_open_nullhomotopic_inclusion

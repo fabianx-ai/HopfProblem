@@ -142,7 +142,6 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Basic
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.PathValue
 import Lib.AlgebraicTopology.SingularCochains
