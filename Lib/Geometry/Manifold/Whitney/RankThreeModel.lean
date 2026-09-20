@@ -26,6 +26,10 @@ intersection of the two sheets.
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (Whitney's lemma and the
   cancellation of a pair of intersection points of opposite sign).
 
+## Twin
+
+No Mathlib counterpart exists.
+
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
@@ -1048,8 +1052,8 @@ theorem StripNormalData.contDiffOn_retimedSheetTransition {A B Z E M : Type*}
   (d.contDiffOn_sheetTransition Ψ).comp
     WhitneyPairModel.contDiff_sheetTimeCoordinates.contDiffOn (fun _ hp => hp)
 
-/-- The centre of the strip at a parameter of `[0, 1]` lies in the domain of the retimed transition.
-The centre of the strip at a parameter of `[0, 1]` lies in the domain of the retimed transition. -/
+/-- The centre of the strip at a parameter of `[0, 1]` lies in the domain of the retimed
+transition. -/
 theorem StripNormalData.retimedDomain_contains_center {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1355,8 +1359,8 @@ theorem RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type*}
     | rfl
     | simp only [add_zero]
 
-/-- The sheared coordinates of a tangent-adapted chart: the model map of its base and normal blocks.
-The sheared coordinates of a tangent-adapted chart: the model map of its base and normal blocks. -/
+/-- The sheared coordinates of a tangent-adapted chart: the model map of its base and normal
+blocks. -/
 def TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
