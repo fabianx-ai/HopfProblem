@@ -21,8 +21,9 @@ The singular cochain complex of a point is exact in every positive degree: a poi
 totally disconnected, so its singular chain complex is homotopy equivalent to the free
 module on the point concentrated in degree `0`, and dualising an additive homotopy
 equivalence gives one again.  Combining this with cochain homotopy shows that the pullback
-of a positive-degree cocycle along a nullhomotopic map is a coboundary.  Everything is
-stated for an arbitrary coefficient group.
+of a positive-degree cocycle along a nullhomotopic map is a coboundary.  Every result here
+takes its coefficient group as `A : AddCommGrpCat.{w}` with `w` arbitrary; the spaces are
+in `Type` and the chains are the integral ones over `ModuleCat.{0} ℤ`.
 
 ## Main results
 
@@ -53,7 +54,7 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits Opposite
 
-universe u
+universe u w
 
 namespace AlgebraicTopology.SingularCochains
 
@@ -69,7 +70,7 @@ private noncomputable def pointChainHomotopyEquiv :
     (ChainComplex.alternatingConstHomotopyEquiv pointFreeModule)
 
 private noncomputable def dualHomotopyEquiv
-    (A : AddCommGrpCat.{0}) {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+    (A : AddCommGrpCat.{w}) {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
     (e : HomotopyEquiv K L) :
     HomotopyEquiv (dualComplex A L) (dualComplex A K) where
   hom := dualMap A e.hom
@@ -79,13 +80,13 @@ private noncomputable def dualHomotopyEquiv
   homotopyInvHomId := by
     simpa only [dualMap_comp, dualMap_id] using dualHomotopy A e.homotopyHomInvId
 
-private noncomputable def pointCochainHomotopyEquiv (A : AddCommGrpCat.{0}) :
+private noncomputable def pointCochainHomotopyEquiv (A : AddCommGrpCat.{w}) :
     HomotopyEquiv
       (dualComplex A ((ChainComplex.single₀ (ModuleCat.{0} ℤ)).obj pointFreeModule))
       (complex Unit A) :=
   dualHomotopyEquiv A pointChainHomotopyEquiv
 
-private theorem dualPointSingle_exactAt (A : AddCommGrpCat.{0}) (n : ℕ)
+private theorem dualPointSingle_exactAt (A : AddCommGrpCat.{w}) (n : ℕ)
     (hn : n ≠ 0) :
     (dualComplex A
       ((ChainComplex.single₀ (ModuleCat.{0} ℤ)).obj pointFreeModule)).ExactAt n := by
@@ -100,14 +101,14 @@ private theorem dualPointSingle_exactAt (A : AddCommGrpCat.{0}) (n : ℕ)
   apply AddCommGrpCat.isZero_of_subsingleton
 
 /-- Native singular cochains on a point are exact in every positive degree. -/
-theorem pointCochain_exactAt_positive (A : AddCommGrpCat.{0}) (n : ℕ)
+theorem pointCochain_exactAt_positive (A : AddCommGrpCat.{w}) (n : ℕ)
     (hn : n ≠ 0) : (complex Unit A).ExactAt n := by
   let E := pointCochainHomotopyEquiv A
   exact (quasiIsoAt_iff_exactAt E.hom n (dualPointSingle_exactAt A n hn)).mp
     (E.quasiIsoAt_hom n)
 
 /-- Every positive-degree cocycle on a point has an actual primitive. -/
-theorem pointCocycle_boundary (A : AddCommGrpCat.{0}) (n : ℕ)
+theorem pointCocycle_boundary (A : AddCommGrpCat.{w}) (n : ℕ)
     (c : (complex Unit A).X (n + 1))
     (hc : (complex Unit A).d (n + 1) (n + 2) c = 0) :
     ∃ b : (complex Unit A).X n, (complex Unit A).d n (n + 1) b = c := by
@@ -127,7 +128,7 @@ private theorem cochainMap_d_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
 /-- Pullback preserves a native cocycle equation in consecutive degrees. -/
 private theorem pullback_closed_succ {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y]
-    (A : AddCommGrpCat.{0}) (f : C(X, Y)) (n : ℕ)
+    (A : AddCommGrpCat.{w}) (f : C(X, Y)) (n : ℕ)
     (c : (complex Y A).X (n + 1))
     (hc : (complex Y A).d (n + 1) (n + 2) c = 0) :
     (complex X A).d (n + 1) (n + 2) ((pullback A f).f (n + 1) c) = 0 := by
@@ -136,7 +137,7 @@ private theorem pullback_closed_succ {X Y : Type}
 /-- Pullback along a nullhomotopic map sends every positive cocycle to an actual coboundary. -/
 theorem nullhomotopic_pullback_closed_succ {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y]
-    (A : AddCommGrpCat.{0}) (f : C(X, Y)) (hf : f.Nullhomotopic)
+    (A : AddCommGrpCat.{w}) (f : C(X, Y)) (hf : f.Nullhomotopic)
     (n : ℕ) (c : (complex Y A).X (n + 1))
     (hc : (complex Y A).d (n + 1) (n + 2) c = 0) :
     ∃ b : (complex X A).X n,
