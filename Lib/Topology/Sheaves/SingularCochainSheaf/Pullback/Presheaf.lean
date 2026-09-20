@@ -10,11 +10,12 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.Augmentation
 public import Mathlib.Topology.Sheaves.Functors
 
 /-!
-# Pullback on native singular-cochain presheaves
+# Functoriality of the singular-cochain presheaf in the space
 
-A continuous map restricts over every open subset to a map from its preimage.  Native singular
-cochain pullback along those maps assembles to a map into the genuine presheaf pushforward.  The
-map commutes with the cochain differential and the constant augmentation.
+A continuous map `f : X → Y` restricts over every open `U ⊆ Y` to a map `f⁻¹U → U`, and pullback
+of singular cochains along those restrictions assembles to a map of presheaves
+`S^n(·; A)_Y → f_*(S^n(·; A)_X)` commuting with the coboundary and with the constant
+augmentation (Bredon, *Sheaf Theory* III.1).
 -/
 
 @[expose] public section
@@ -35,10 +36,12 @@ def preimageMap (U : Opens Y) : C((Opens.map f).obj U, U) where
   toFun x := ⟨f x.val, x.property⟩
   continuous_toFun := (f.hom.continuous.comp continuous_subtype_val).subtype_mk _
 
+/-- The restriction of `f` to the preimage of `U` acts by `f` on underlying points. -/
 @[simp]
 theorem preimageMap_apply (U : Opens Y) (x : (Opens.map f).obj U) :
     preimageMap f U x = ⟨f x.val, x.property⟩ := rfl
 
+/-- The restrictions of `f` to preimages of opens commute with the inclusions of opens. -/
 theorem preimageMap_restrict {U V : Opens Y} (r : U ⟶ V) :
     (preimageMap f V).comp
         (((Opens.toTopCat X).map ((Opens.map f).map r)).hom) =
@@ -48,6 +51,8 @@ theorem preimageMap_restrict {U V : Opens Y} (r : U ⟶ V) :
 
 variable (A : AddCommGrpCat.{0})
 
+/-- Pullback of singular cochains along the restrictions of `f` commutes with restriction along
+an inclusion of open sets. -/
 theorem openPullback_restrict {_U _V : Opens Y} (r : _U ⟶ _V) :
     AlgebraicTopology.SingularCochains.pullback A
           (((Opens.toTopCat Y).map r).hom) ≫
@@ -62,18 +67,21 @@ theorem openPullback_restrict {_U _V : Opens Y} (r : _U ⟶ _V) :
         (AlgebraicTopology.SingularCochains.pullback_comp A
           (((Opens.toTopCat X).map ((Opens.map f).map r)).hom) (preimageMap f _V)))
 
-/-- Native cochain pullback as a map into the actual presheaf pushforward. -/
+/-- Pullback of singular cochains along `f`, as a map of presheaves on `Y` into the pushforward
+of the singular-cochain presheaf of `X`. -/
 def presheafPullback (n : ℕ) : presheaf Y A n ⟶
     (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).obj (presheaf X A n) where
   app U := (AlgebraicTopology.SingularCochains.pullback A (preimageMap f U.unop)).f n
   naturality _ _ r := congrArg (fun g => g.f n) (openPullback_restrict f A r.unop)
 
+/-- Over an open `U`, the pullback map of presheaves is pullback of singular cochains along the
+restriction `f⁻¹U → U`. -/
 @[simp]
 theorem presheafPullback_app (n : ℕ) (U : Opens Y) :
     (presheafPullback f A n).app (op U) =
       (AlgebraicTopology.SingularCochains.pullback A (preimageMap f U)).f n := rfl
 
-/-- Pullback commutes with every native cochain differential. -/
+/-- Pullback of singular cochains along `f` commutes with the coboundary. -/
 @[reassoc]
 theorem presheafPullback_d (i j : ℕ) :
     presheafPullback f A i ≫
@@ -92,7 +100,7 @@ def constantPresheafPullback : TopCat.ConstantSheaf.presheaf Y A ⟶
   app _ := 𝟙 A
   naturality _ _ _ := rfl
 
-/-- The constant augmentation is natural for native presheaf pullback. -/
+/-- The constant augmentation `A → S^0(·; A)` is natural in the space. -/
 @[reassoc]
 theorem presheafPullback_augmentation :
     presheafAugmentation Y A ≫ presheafPullback f A 0 =
