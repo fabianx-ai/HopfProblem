@@ -13,8 +13,13 @@ public import Mathlib.Topology.Sets.Opens
 # Native singular-cochain generators
 
 Native singular cochains are determined freely by their values on singular simplices.  This
-module supplies the generator-level construction, extensionality, open-subspace simplex, and
-pullback evaluation lemmas independently of sheafification and degree-one arguments.
+module supplies the generator-level construction, extensionality, the open-subspace simplex,
+and the pullback evaluation lemma.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 (a cochain is a function on singular
+  simplices, `Hom(⨁_σ ℤ, A) ≅ ∏_σ A`); compare `Finsupp.lhom_ext` in Mathlib.
 -/
 
 @[expose] public section
@@ -43,6 +48,7 @@ def simplexInOpen {X : Type} [TopologicalSpace X] (n : ℕ)
   toFun z := ⟨sigma z, hsigma (Set.mem_range_self z)⟩
   continuous_toFun := sigma.continuous.subtype_mk _
 
+/-- The restricted simplex has the same underlying point map as the original one. -/
 @[simp]
 theorem simplexInOpen_val {X : Type} [TopologicalSpace X] (n : ℕ)
     (sigma : TopCat.SingularSmallChains.SingularSimplex X n)
@@ -93,6 +99,7 @@ def cochainFromValues {X : Type} [TopologicalSpace X]
     Cochains X A n :=
   (TopCat.SingularSmallChains.chainLift X n value).toAddMonoidHom
 
+/-- The cochain extending a family of values takes exactly those values on singular simplices. -/
 @[simp]
 theorem cochainFromValues_simplex {X : Type} [TopologicalSpace X]
     (A : AddCommGrpCat.{0}) (n : ℕ)
