@@ -13,7 +13,10 @@ public import Mathlib.CategoryTheory.Abelian.Exact
 # Effaceable and universal cohomological delta functors
 
 Reusable definitions of effaceability and the universal extension property for cohomological
-delta functors.
+delta functors, together with the theorem that an effaceable cohomological delta functor is
+universal: Grothendieck, *Sur quelques points d'algèbre homologique* (Tôhoku),
+Proposition 2.2.1; Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.7
+and Exercise 2.4.5; Hartshorne, *Algebraic Geometry* III.1.3A.
 -/
 
 @[expose] public section
@@ -32,32 +35,32 @@ variable {C : Type u₁} [Category.{v₁} C] [Abelian C]
 variable {D : Type u₂} [Category.{v₂} D] [Abelian D]
 
 /-- A delta functor is effaceable at degree `n` when every object embeds into one on which the
-induced degree-`n` map vanishes (L-E1). -/
+induced degree-`n` map vanishes. -/
 def EffaceableAt (T : CohomologicalDeltaFunctor C D) (n : ℕ) : Prop :=
   ∀ A : C, ∃ (M : C) (i : A ⟶ M), Mono i ∧ (T.T n).obj.map i = 0
 
-/-- A delta functor is effaceable when it is effaceable in every positive degree (L-E2). -/
+/-- A delta functor is effaceable when it is effaceable in every positive degree. -/
 def Effaceable (T : CohomologicalDeltaFunctor C D) : Prop :=
   ∀ n : ℕ, 0 < n → T.EffaceableAt n
 
 /-- Universality is the unique extension of every degree-zero natural transformation to a
-morphism of delta functors (L-U1). -/
+morphism of delta functors. -/
 def IsUniversal (T : CohomologicalDeltaFunctor C D) : Prop :=
   ∀ (S : CohomologicalDeltaFunctor C D) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj),
     ∃! η : Hom T S, η.app 0 = η₀
 
-/-- The universal extension selected from the unique-existence property (L-U2). -/
+/-- The universal extension selected from the unique-existence property. -/
 def IsUniversal.extend {T : CohomologicalDeltaFunctor C D} (h : T.IsUniversal)
     (S : CohomologicalDeltaFunctor C D) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) : Hom T S :=
   (h S η₀).exists.choose
 
-/-- The selected universal extension has the prescribed degree-zero component (L-U3). -/
+/-- The selected universal extension has the prescribed degree-zero component. -/
 theorem IsUniversal.extend_app_zero {T : CohomologicalDeltaFunctor C D} (h : T.IsUniversal)
     (S : CohomologicalDeltaFunctor C D) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
     (h.extend S η₀).app 0 = η₀ :=
   (h S η₀).exists.choose_spec
 
-/-- Universal morphisms agreeing in degree zero agree in every degree (L-U4). -/
+/-- Universal morphisms agreeing in degree zero agree in every degree. -/
 theorem IsUniversal.hom_ext {T : CohomologicalDeltaFunctor C D} (h : T.IsUniversal)
     {S : CohomologicalDeltaFunctor C D} {η η' : Hom T S}
     (h0 : η.app 0 = η'.app 0) : η = η' :=
@@ -65,7 +68,7 @@ theorem IsUniversal.hom_ext {T : CohomologicalDeltaFunctor C D} (h : T.IsUnivers
 
 /-! ## Constructing the next degree from effacements -/
 
-/-- An effacement of `A` in degree `m`: a monomorphism killed by `Tᵐ` (U-E1; before (U5)). -/
+/-- An effacement of `A` in degree `m`: a monomorphism killed by `Tᵐ`. -/
 structure Effacement (T : CohomologicalDeltaFunctor C D) (m : ℕ) (A : C) where
   M : C
   i : A ⟶ M
@@ -78,18 +81,18 @@ namespace Effacement
 
 variable {T S : CohomologicalDeltaFunctor C D} {m n : ℕ} {A A' : C}
 
-/-- The canonical cokernel short complex of an effacement (U-E2). -/
+/-- The canonical cokernel short complex of an effacement. -/
 def shortComplex (e : Effacement T m A) : ShortComplex C :=
   ShortComplex.mk e.i (cokernel.π e.i) (cokernel.condition e.i)
 
-/-- The cokernel short complex of an effacement is short exact (U-E3). -/
+/-- The cokernel short complex of an effacement is short exact. -/
 theorem shortExact (e : Effacement T m A) : e.shortComplex.ShortExact :=
   ShortComplex.ShortExact.mk' (ShortComplex.exact_cokernel e.i) e.mono
     (inferInstance : Epi (cokernel.π e.i))
 
 end Effacement
 
-/-- Choose an effacement from effaceability at a degree (U-E4). -/
+/-- Choose an effacement from effaceability at a degree. -/
 def EffaceableAt.effacement {T : CohomologicalDeltaFunctor C D} {m : ℕ} (h : T.EffaceableAt m)
     (A : C) : Effacement T m A where
   M := (h A).choose
@@ -101,11 +104,11 @@ namespace Effacement
 
 variable {T S : CohomologicalDeltaFunctor C D} {m n : ℕ} {A A' : C}
 
-/-- The connecting morphism associated to an effacement is epic (U-G1; equation (U5)). -/
+/-- The connecting morphism associated to an effacement is epic. -/
 theorem epi_δ (e : Effacement T (n + 1) A) : Epi (T.δ e.shortExact n) :=
   (T.exact₃ e.shortExact n).epi_f e.map_eq_zero
 
-/-- The candidate next component vanishes on the preceding image (U-G2a; equation (U6)). -/
+/-- The candidate next component vanishes on the preceding image. -/
 theorem map_comp_δ_zero (η : (T.T n).obj ⟶ (S.T n).obj)
     (e : Effacement T (n + 1) A) :
     (T.T n).obj.map e.shortComplex.g ≫ (η.app (cokernel e.i) ≫ S.δ e.shortExact n) = 0 := by
@@ -113,29 +116,26 @@ theorem map_comp_δ_zero (η : (T.T n).obj ⟶ (S.T n).obj)
     (η.app e.shortComplex.X₃ ≫ S.δ e.shortExact n) = 0
   rw [← Category.assoc, η.naturality, Category.assoc, S.comp₂ e.shortExact n, comp_zero]
 
-/-- The next-degree component factored through the epic connecting morphism
-(U-G2b; equations (U7)–(U8)). -/
+/-- The next-degree component factored through the epic connecting morphism. -/
 def component (η : (T.T n).obj ⟶ (S.T n).obj) (e : Effacement T (n + 1) A) :
     (T.T (n + 1)).obj.obj A ⟶ (S.T (n + 1)).obj.obj A :=
   haveI := e.epi_δ
   (T.exact₂ e.shortExact n).desc (η.app (cokernel e.i) ≫ S.δ e.shortExact n)
     (map_comp_δ_zero η e)
 
-/-- The defining square for an effacement component (U-G2c; equation (U7)). -/
+/-- The defining square for an effacement component. -/
 theorem δ_component (η : (T.T n).obj ⟶ (S.T n).obj) (e : Effacement T (n + 1) A) :
     T.δ e.shortExact n ≫ component η e = η.app (cokernel e.i) ≫ S.δ e.shortExact n :=
   haveI := e.epi_δ
   (T.exact₂ e.shortExact n).g_desc _ _
 
-/-- The cokernel obligation induced by a commuting square of effacements
-(U-G3a′; equation (U9)). -/
+/-- The cokernel obligation induced by a commuting square of effacements. -/
 theorem comm_comp_π (e : Effacement T m A) (e' : Effacement T m A') (a : A ⟶ A')
     (b : e.M ⟶ e'.M) (h : e.i ≫ b = a ≫ e'.i) :
     e.i ≫ (b ≫ cokernel.π e'.i) = 0 := by
   rw [← Category.assoc, h, Category.assoc, cokernel.condition, comp_zero]
 
-/-- A commuting square of effacements induces a morphism of their cokernel sequences
-(U-G3a; equation (U9)). -/
+/-- A commuting square of effacements induces a morphism of their cokernel sequences. -/
 def homOfComm (e : Effacement T m A) (e' : Effacement T m A') (a : A ⟶ A')
     (b : e.M ⟶ e'.M) (h : e.i ≫ b = a ≫ e'.i) : e.shortComplex ⟶ e'.shortComplex where
   τ₁ := a
@@ -144,7 +144,7 @@ def homOfComm (e : Effacement T m A) (e' : Effacement T m A') (a : A ⟶ A')
   comm₁₂ := h.symm
   comm₂₃ := (cokernel.π_desc _ _ _).symm
 
-/-- Components respect comparisons of effacements (U-G3b; equations (U10)–(U11)). -/
+/-- Components respect comparisons of effacements. -/
 theorem component_comm (η : (T.T n).obj ⟶ (S.T n).obj)
     (e : Effacement T (n + 1) A) (e' : Effacement T (n + 1) A') (a : A ⟶ A') (b : e.M ⟶ e'.M)
     (h : e.i ≫ b = a ≫ e'.i) :
@@ -184,20 +184,20 @@ theorem component_comm (η : (T.T n).obj ⟶ (S.T n).obj)
         simpa only [Category.assoc] using
           congrArg (fun k => k ≫ (S.T (n + 1)).obj.map a) hδe.symm
 
-/-- The biproduct common effacement is killed by the functor (U-G3c; equation (U13)). -/
+/-- The biproduct common effacement is killed by the functor. -/
 theorem biprod_map_eq_zero (e e' : Effacement T m A) :
     (T.T m).obj.map (biprod.lift e.i e'.i) = 0 := by
   simp only [Limits.biprod.lift_eq, CategoryTheory.Functor.map_add,
     CategoryTheory.Functor.map_comp, e.map_eq_zero, e'.map_eq_zero, zero_comp, add_zero]
 
-/-- The common biproduct effacement comparing two choices (U-G3d; equation (U12)). -/
+/-- The common biproduct effacement comparing two choices. -/
 def biprod (e e' : Effacement T m A) : Effacement T m A where
   M := e.M ⊞ e'.M
   i := biprod.lift e.i e'.i
   mono := mono_of_mono_fac (biprod.lift_fst e.i e'.i)
   map_eq_zero := biprod_map_eq_zero e e'
 
-/-- Comparison with the left summand of a common effacement (U-G3e-left; equation (U14)). -/
+/-- Comparison with the left summand of a common effacement. -/
 theorem component_biprod_left (η : (T.T n).obj ⟶ (S.T n).obj)
     (e e' : Effacement T (n + 1) A) :
     component η (e.biprod e') = component η e := by
@@ -206,7 +206,7 @@ theorem component_biprod_left (η : (T.T n).obj ⟶ (S.T n).obj)
   rwa [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp,
     Category.comp_id, eq_comm] at h
 
-/-- Comparison with the right summand of a common effacement (U-G3e-right; equation (U14)). -/
+/-- Comparison with the right summand of a common effacement. -/
 theorem component_biprod_right (η : (T.T n).obj ⟶ (S.T n).obj)
     (e e' : Effacement T (n + 1) A) :
     component η (e.biprod e') = component η e' := by
@@ -215,19 +215,19 @@ theorem component_biprod_right (η : (T.T n).obj ⟶ (S.T n).obj)
   rwa [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp,
     Category.comp_id, eq_comm] at h
 
-/-- The constructed component is independent of the chosen effacement (U-G3f). -/
+/-- The constructed component is independent of the chosen effacement. -/
 theorem component_eq (η : (T.T n).obj ⟶ (S.T n).obj)
     (e e' : Effacement T (n + 1) A) : component η e = component η e' :=
   (component_biprod_left η e e').symm.trans (component_biprod_right η e e')
 
-/-- The graph effacement is killed by the functor (U-G4a; equation (U16)). -/
+/-- The graph effacement is killed by the functor. -/
 theorem graph_map_eq_zero (e : Effacement T m A) (f : A ⟶ A')
     (e' : Effacement T m A') :
     (T.T m).obj.map (biprod.lift e.i (f ≫ e'.i)) = 0 := by
   simp only [Limits.biprod.lift_eq, CategoryTheory.Functor.map_add,
     CategoryTheory.Functor.map_comp, e.map_eq_zero, e'.map_eq_zero, zero_comp, comp_zero, add_zero]
 
-/-- The graph effacement associated to an arbitrary morphism (U-G4b; equation (U15)). -/
+/-- The graph effacement associated to an arbitrary morphism. -/
 def graph (e : Effacement T m A) (f : A ⟶ A') (e' : Effacement T m A') :
     Effacement T m A where
   M := e.M ⊞ e'.M
@@ -235,14 +235,14 @@ def graph (e : Effacement T m A) (f : A ⟶ A') (e' : Effacement T m A') :
   mono := mono_of_mono_fac (biprod.lift_fst e.i (f ≫ e'.i))
   map_eq_zero := graph_map_eq_zero e f e'
 
-/-- Comparing along the graph effacement (U-G4c; equation (U17)). -/
+/-- Comparing along the graph effacement. -/
 theorem component_graph (η : (T.T n).obj ⟶ (S.T n).obj)
     (e : Effacement T (n + 1) A) (f : A ⟶ A') (e' : Effacement T (n + 1) A') :
     (T.T (n + 1)).obj.map f ≫ component η e' =
       component η (e.graph f e') ≫ (S.T (n + 1)).obj.map f :=
   component_comm η (e.graph f e') e' f Limits.biprod.snd (Limits.biprod.lift_snd _ _)
 
-/-- The constructed components are natural in the object (U-G4d; equation (U18)). -/
+/-- The constructed components are natural in the object. -/
 theorem component_naturality (η : (T.T n).obj ⟶ (S.T n).obj)
     (e : Effacement T (n + 1) A) (e' : Effacement T (n + 1) A') (f : A ⟶ A') :
     (T.T (n + 1)).obj.map f ≫ component η e' = component η e ≫ (S.T (n + 1)).obj.map f :=
@@ -254,18 +254,17 @@ section
 
 variable {T S : CohomologicalDeltaFunctor C D} {n : ℕ}
 
-/-- The natural transformation in the next degree selected from effaceability
-(U-N1; after equation (U18)). -/
+/-- The natural transformation in the next degree selected from effaceability. -/
 def nextApp (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1)) :
     (T.T (n + 1)).obj ⟶ (S.T (n + 1)).obj where
   app A := Effacement.component η (h.effacement A)
   naturality _ _ f := Effacement.component_naturality η _ _ f
 
-/-- The selected next-degree component at an object (U-N2). -/
+/-- The selected next-degree component at an object. -/
 theorem nextApp_app (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1)) (A : C) :
     (nextApp η h).app A = Effacement.component η (h.effacement A) := rfl
 
-/-- The selected component agrees with the component from every effacement (U-N3; (U7)). -/
+/-- The selected component agrees with the component from every effacement. -/
 theorem nextApp_app_eq_component (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1))
     {A : C} (e : Effacement T (n + 1) A) :
     (nextApp η h).app A = Effacement.component η e :=
@@ -278,14 +277,12 @@ namespace Effacement
 variable {T S : CohomologicalDeltaFunctor C D} {m n : ℕ}
 
 set_option linter.unusedVariables false in
-/-- Enlarging through the middle object of a short exact sequence remains effacing
-(U-G5a; equation (U19)). -/
+/-- Enlarging through the middle object of a short exact sequence remains effacing. -/
 theorem ofShortExact_map_eq_zero {E : ShortComplex C} (hE : E.ShortExact)
     (e : Effacement T m E.X₂) : (T.T m).obj.map (E.f ≫ e.i) = 0 := by
   rw [CategoryTheory.Functor.map_comp, e.map_eq_zero, comp_zero]
 
-/-- The effacement of the left object obtained by composing through the middle object
-(U-G5b; before equation (U19)). -/
+/-- The effacement of the left object obtained by composing through the middle object. -/
 def ofShortExact {E : ShortComplex C} (hE : E.ShortExact) (e : Effacement T m E.X₂) :
     Effacement T m E.X₁ where
   M := e.M
@@ -293,13 +290,12 @@ def ofShortExact {E : ShortComplex C} (hE : E.ShortExact) (e : Effacement T m E.
   mono := haveI := hE.mono_f; mono_comp _ _
   map_eq_zero := ofShortExact_map_eq_zero hE e
 
-/-- The cokernel obligation for the middle-object enlargement (U-G5b′; before (U20)). -/
+/-- The cokernel obligation for the middle-object enlargement. -/
 theorem f_comp_comp_π {E : ShortComplex C} (e : Effacement T m E.X₂) :
     E.f ≫ (e.i ≫ cokernel.π (E.f ≫ e.i)) = 0 := by
   rw [← Category.assoc, cokernel.condition]
 
-/-- The morphism from an arbitrary short exact sequence to its effacing enlargement
-(U-G5c; equation (U20)). -/
+/-- The morphism from an arbitrary short exact sequence to its effacing enlargement. -/
 def homOfShortExact {E : ShortComplex C} (hE : E.ShortExact)
     (e : Effacement T m E.X₂) : E ⟶ (ofShortExact hE e).shortComplex where
   τ₁ := 𝟙 _
@@ -316,7 +312,7 @@ section Assembly
 variable {T S : CohomologicalDeltaFunctor C D} {n : ℕ}
 
 /-- The next-degree transformation commutes with the connecting morphism of every short exact
-sequence (U-G5d; equations (U21)–(U22)). -/
+sequence. -/
 theorem nextApp_comm (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1))
     {E : ShortComplex C} (hE : E.ShortExact) :
     T.δ hE n ≫ (nextApp η h).app E.X₁ = η.app E.X₃ ≫ S.δ hE n := by
@@ -338,8 +334,7 @@ theorem nextApp_comm (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n +
   rw [nextApp_app_eq_component η h e, ← hT, Category.assoc, hδ,
     ← Category.assoc, hη, Category.assoc, hS]
 
-/-- A next-degree extension compatible with every effacing connecting morphism is unique
-(U-G6; equation (U23)). -/
+/-- A next-degree extension compatible with every effacing connecting morphism is unique. -/
 theorem nextApp_unique (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n + 1))
     (θ : (T.T (n + 1)).obj ⟶ (S.T (n + 1)).obj)
     (hθ : ∀ {A : C} (e : Effacement T (n + 1) A),
@@ -359,36 +354,35 @@ theorem nextApp_unique (η : (T.T n).obj ⟶ (S.T n).obj) (h : T.EffaceableAt (n
   change dT ≫ Effacement.component η e = η.app (cokernel e.i) ≫ dS at hδe
   exact hθe.trans hδe.symm
 
-/-- The recursively constructed degreewise family extending a degree-zero transformation
-(U-A1; induction after (U22)). -/
+/-- The recursively constructed degreewise family extending a degree-zero transformation. -/
 def Effaceable.extendApp (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
     ∀ n : ℕ, (T.T n).obj ⟶ (S.T n).obj
   | 0 => η₀
   | n + 1 => nextApp (Effaceable.extendApp hT η₀ n) (hT (n + 1) (Nat.succ_pos n))
 
-/-- The recursive extension starts with the prescribed degree-zero transformation (U-A2). -/
+/-- The recursive extension starts with the prescribed degree-zero transformation. -/
 theorem Effaceable.extendApp_zero (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
     Effaceable.extendApp hT η₀ 0 = η₀ := rfl
 
-/-- The successor equation for the recursive extension (U-A3). -/
+/-- The successor equation for the recursive extension. -/
 theorem Effaceable.extendApp_succ (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj)
     (n : ℕ) :
     Effaceable.extendApp hT η₀ (n + 1) =
       nextApp (Effaceable.extendApp hT η₀ n) (hT (n + 1) (Nat.succ_pos n)) := rfl
 
-/-- The recursive family assembled as a morphism of cohomological delta functors (U-A4). -/
+/-- The recursive family assembled as a morphism of cohomological delta functors. -/
 def Effaceable.extendHom (hT : T.Effaceable) (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) : Hom T S where
   app := Effaceable.extendApp hT η₀
   comm hE n := nextApp_comm (Effaceable.extendApp hT η₀ n)
     (hT (n + 1) (Nat.succ_pos n)) hE
 
-/-- The assembled morphism has the prescribed degree-zero component (U-A5). -/
+/-- The assembled morphism has the prescribed degree-zero component. -/
 theorem Effaceable.extendHom_app_zero (hT : T.Effaceable)
     (η₀ : (T.T 0).obj ⟶ (S.T 0).obj) :
     (Effaceable.extendHom hT η₀).app 0 = η₀ := rfl
 
 /-- Every morphism out of an effaceable delta functor is the recursively constructed extension
-of its degree-zero component (U-A6; final induction after (U23)). -/
+of its degree-zero component. -/
 theorem Effaceable.hom_eq_extendHom (hT : T.Effaceable) (θ : Hom T S) :
     θ = Effaceable.extendHom hT (θ.app 0) := by
   apply Hom.ext
@@ -411,7 +405,7 @@ theorem Effaceable.hom_eq_extendHom (hT : T.Effaceable) (θ : Hom T S) :
         rw [hcomm, ih])
 
 /-- Hartshorne III.1.3A / Grothendieck, Tôhoku II.2.2.1 / Stacks 010T: an effaceable
-cohomological delta functor is universal (U-A7). -/
+cohomological delta functor is universal. -/
 theorem Effaceable.isUniversal (hT : T.Effaceable) : T.IsUniversal :=
   fun S η₀ =>
     ⟨Effaceable.extendHom hT η₀, Effaceable.extendHom_app_zero hT η₀,
