@@ -15,6 +15,9 @@ public import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalIterat
 The universal subdivided simplex is evaluated as genuine affine singular simplices and then
 pushed forward by the original singular simplex.  These operators act directly on Mathlib's
 native integral singular-chain complex.
+
+This is the subdivision operator `S : Cₙ(X) → Cₙ(X)` of Hatcher, *Algebraic Topology*,
+Proposition 2.21, step (3) (Bredon IV.17; Spanier 4.6).
 -/
 
 @[expose] public section
@@ -36,6 +39,8 @@ def subdivision (X : Type) [TopologicalSpace X] (k n : ℕ) :
       ((formalSubdivision (simplexCenter n) (n + 1))^[k]
         (formalSimplex (stdVertices n))))
 
+/-- On the basis chain of a singular simplex `σ`, `k`-fold subdivision is `σ` applied to the
+`k`-fold affine subdivision of the standard simplex. -/
 @[simp]
 theorem subdivision_simplex (X : Type) [TopologicalSpace X] (k n : ℕ)
     (sigma : TopCat.SingularSmallChains.SingularSimplex X n) :
@@ -150,6 +155,7 @@ def subdivisionChainMap (X : Type) [TopologicalSpace X] (k : ℕ) :
     intro c
     exact subdivision_boundary k j c
 
+/-- The degree-`n` component of the subdivision chain map is `subdivision X k n`. -/
 @[simp]
 theorem subdivisionChainMap_f (X : Type) [TopologicalSpace X] (k n : ℕ) :
     ((subdivisionChainMap X k).f n).hom = subdivision X k n := rfl

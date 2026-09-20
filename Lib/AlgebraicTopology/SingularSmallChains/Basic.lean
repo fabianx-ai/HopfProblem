@@ -13,10 +13,13 @@ public import Mathlib.AlgebraicTopology.TopologicalSimplex
 /-!
 # Cover-small native singular chains
 
-This prototype isolates the algebraic first layer of the textbook small-chain theorem.  It uses
-Mathlib's native integral singular-chain complex, its genuine coproduct simplex generators, and
-an arbitrary family of subsets.  No cohomology comparison or Mayer--Vietoris exact sequence is
+This file isolates the algebraic first layer of the small-chain theorem.  It uses Mathlib's
+native integral singular-chain complex, its genuine coproduct simplex generators, and an
+arbitrary family of subsets.  No cohomology comparison or Mayer--Vietoris exact sequence is
 assumed.
+
+The subcomplex `Cₙ^𝒰(X) ⊆ Cₙ(X)` of `𝒰`-small chains and its inclusion are the objects of
+Hatcher, *Algebraic Topology*, Proposition 2.21 (Bredon IV.17; Spanier 4.4).
 -/
 
 @[expose] public section
@@ -60,6 +63,8 @@ def chainLift (X : Type) [TopologicalSpace X] (n : ℕ)
       (f ((TopCat.of X).toSSetObjEquiv (Opposite.op (SimplexCategory.mk n)) s)))) :
     (AlgebraicTopology.SingularCochains.chains X).X n ⟶ ModuleCat.of ℤ M).hom
 
+/-- The map determined by values on simplex generators takes the prescribed value on each
+generator. -/
 @[simp]
 theorem chainLift_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
     {M : Type} [AddCommGroup M] [Module ℤ M]
@@ -114,6 +119,7 @@ def chainsFromFinsupp (X : Type) [TopologicalSpace X] (n : ℕ) :
       (AlgebraicTopology.SingularCochains.chains X).X n :=
   Finsupp.linearCombination ℤ (simplexChain X n)
 
+/-- Assembling a single coefficient `a` at `σ` gives the chain `a • σ`. -/
 @[simp]
 theorem chainsFromFinsupp_single (X : Type) [TopologicalSpace X] (n : ℕ)
     (sigma : SingularSimplex X n) (a : ℤ) :
@@ -123,6 +129,7 @@ theorem chainsFromFinsupp_single (X : Type) [TopologicalSpace X] (n : ℕ)
       ((AlgebraicTopology.SingularCochains.chains X).X n).isModule a
         (simplexChain X n sigma))
 
+/-- Reassembling a chain from its simplex coordinates recovers the chain. -/
 theorem chainsFromFinsupp_comp_repr (X : Type) [TopologicalSpace X] (n : ℕ) :
     (chainsFromFinsupp X n).comp (chainsRepr X n) = LinearMap.id := by
   apply chainMap_ext X n
@@ -130,6 +137,8 @@ theorem chainsFromFinsupp_comp_repr (X : Type) [TopologicalSpace X] (n : ℕ) :
   simp only [LinearMap.comp_apply, chainsRepr, chainLift_simplex,
     chainsFromFinsupp_single, one_smul, LinearMap.id_apply]
 
+/-- The coordinates of the chain assembled from a finitely supported family are that
+family. -/
 theorem chainsRepr_comp_fromFinsupp (X : Type) [TopologicalSpace X] (n : ℕ) :
     (chainsRepr X n).comp (chainsFromFinsupp X n) = LinearMap.id := by
   apply Finsupp.lhom_ext
@@ -153,10 +162,12 @@ def chainBasis (X : Type) [TopologicalSpace X] (n : ℕ) :
       ((AlgebraicTopology.SingularCochains.chains X).X n) :=
   Module.Basis.ofRepr (chainsEquivFinsupp X n)
 
+/-- The coordinate map of the simplex basis is `chainsEquivFinsupp`. -/
 @[simp]
 theorem chainBasis_repr (X : Type) [TopologicalSpace X] (n : ℕ) :
     (chainBasis X n).repr = chainsEquivFinsupp X n := rfl
 
+/-- The basis vector at a singular simplex `σ` is the generator chain of `σ`. -/
 @[simp]
 theorem chainBasis_apply (X : Type) [TopologicalSpace X] (n : ℕ)
     (sigma : SingularSimplex X n) : chainBasis X n sigma = simplexChain X n sigma := by
@@ -198,6 +209,8 @@ def simplexFace (n : ℕ) (i : Fin (n + 2)) :
   ⟨stdSimplex.map (SimplexCategory.δ i).toOrderHom,
     stdSimplex.continuous_map (SimplexCategory.δ i).toOrderHom⟩
 
+/-- The `i`-th face of the index of a singular simplex `σ` is the index of the restriction of
+`σ` to the `i`-th face of the standard simplex. -/
 theorem simplexIndex_face (X : Type) [TopologicalSpace X] (n : ℕ)
     (sigma : SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
     (singularSet X).δ i (simplexIndex X (n + 1) sigma) =
@@ -271,6 +284,7 @@ theorem boundary_mem {X : Type} [TopologicalSpace X] {I : Type}
     rw [he]
     exact Submodule.zero_mem _
 
+/-- The `ℤ`-module structure on the submodule of `𝒰`-small chains. -/
 instance smallChainModule {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) : Module ℤ (submodule U n) :=
   (submodule U n).module
@@ -282,6 +296,8 @@ def differential {X : Type} [TopologicalSpace X] {I : Type}
     (submodule U i).subtype).codRestrict _
       (fun c => boundary_mem U i j c.1 c.2))
 
+/-- The differential of the small-chain subcomplex is the restriction of the singular
+boundary. -/
 @[simp]
 theorem differential_val {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (i j : ℕ) (c : submodule U i) :
@@ -322,11 +338,13 @@ def inclusion {X : Type} [TopologicalSpace X] {I : Type}
     intro c
     rfl
 
+/-- In each degree the inclusion of the small-chain subcomplex is the underlying chain. -/
 @[simp]
 theorem inclusion_f_apply {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) (c : (complex U).X n) :
     (inclusion U).f n c = c.1 := rfl
 
+/-- The inclusion of the small-chain subcomplex is injective in each degree. -/
 theorem inclusion_f_injective {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) :
     Function.Injective ((inclusion U).f n) :=
@@ -337,6 +355,7 @@ abbrev SmallSimplex {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) :=
   {sigma : SingularSimplex X n // IsSmallSimplex U sigma}
 
+/-- The generator chains of the `𝒰`-small singular simplices are linearly independent. -/
 theorem smallSimplex_linearIndependent {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) :
     LinearIndependent ℤ (fun sigma : SmallSimplex U n => simplexChain X n sigma.1) := by
@@ -346,6 +365,8 @@ theorem smallSimplex_linearIndependent {X : Type} [TopologicalSpace X] {I : Type
     at hcomp
   simpa only [chainBasis_apply] using hcomp
 
+/-- The range of the small-simplex generator family is the image of the set of `𝒰`-small
+simplices. -/
 theorem smallSimplex_range {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) :
     Set.range (fun sigma : SmallSimplex U n => simplexChain X n sigma.1) =
@@ -368,6 +389,8 @@ def smallChainBasis {X : Type} [TopologicalSpace X] {I : Type}
   exact (Module.Basis.span (smallSimplex_linearIndependent U n)).map
     (LinearEquiv.ofEq _ _ (congrArg (Submodule.span ℤ) (smallSimplex_range U n)))
 
+/-- The basis vector of the small-chain subcomplex at a `𝒰`-small simplex `σ` is the generator
+chain of `σ`. -/
 @[simp]
 theorem smallChainBasis_apply_val {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) (sigma : SmallSimplex U n) :
@@ -397,6 +420,7 @@ def chainProjection {X : Type} [TopologicalSpace X] {I : Type}
       ⟨simplexChain X n sigma, simplexChain_mem U n sigma hsigma⟩
     else 0
 
+/-- The projection onto small chains fixes the generator chain of a `𝒰`-small simplex. -/
 @[simp]
 theorem chainProjection_small_simplex {X : Type} [TopologicalSpace X] {I : Type}
     (U : I → Set X) (n : ℕ) (sigma : SingularSimplex X n)
@@ -430,6 +454,8 @@ def addHomToIntLinearMap {M N : Type} [AddCommGroup M] [AddCommGroup N]
     rw [int_smul_eq_zsmul, int_smul_eq_zsmul]
     exact f.map_zsmul z x
 
+/-- An additive homomorphism of abelian groups, read as a `ℤ`-linear map, has the same
+underlying function. -/
 @[simp]
 theorem addHomToIntLinearMap_apply {M N : Type} [AddCommGroup M] [AddCommGroup N]
     [Module ℤ M] [Module ℤ N] (f : M →+ N) (x : M) :

@@ -25,11 +25,11 @@ noncomputable section
 
 open CategoryTheory.Abelian CategoryTheory.Limits
 
-universe v u
+universe v₁ v₂ u₁ u₂
 
 namespace CategoryTheory.Equivalence
 
-variable {C D : Type u} [Category.{v} C] [Category.{v} D] [Abelian C] [Abelian D]
+variable {C : Type u₁} {D : Type u₂} [Category.{v₁} C] [Category.{v₂} D] [Abelian C] [Abelian D]
 
 /-- An additive equivalence sends an object of projective dimension less than `n` to another such
 object. -/

@@ -11,11 +11,9 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 
 `SphereHomology.suspensionConeCover X x` is the `FundamentalGroup.VanKampen.TwoOpenCover`
 of the unreduced suspension `Suspension X` by its north and south cones, with the middle
-band as intersection. It is the cover used for van Kampen and Mayer–Vietoris arguments
-on suspensions (sphere homology, suspension simply-connectedness).
-
-This file is not a Lean `module` because `FundamentalGroup/VanKampen.lean` is not one yet;
-it converts when its dependencies do.
+band as intersection. It is the two-open cover of `ΣX` used in the van Kampen theorem
+(Hatcher, *Algebraic Topology*, Theorem 1.20) and in Mayer–Vietoris arguments on
+suspensions (sphere homology, suspension simply-connectedness).
 -/
 
 noncomputable section

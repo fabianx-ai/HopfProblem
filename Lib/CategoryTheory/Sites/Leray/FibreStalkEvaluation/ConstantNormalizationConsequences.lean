@@ -12,7 +12,8 @@ public import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormal
 # Consequences of constant finite-source normalization
 
 This file records the direct equality between canonical finite-source evaluation of an ambient
-open class and native constant-sheaf pullback of its intrinsic normalized class.
+open class and native constant-sheaf pullback of its intrinsic normalized class.  It has no
+textbook counterpart: it is an identity between two maps defined in this library.
 -/
 
 @[expose] public section

@@ -16,9 +16,10 @@ import Mathlib
 # Holomorphic square roots on simply connected domains
 
 A nowhere-zero holomorphic function on a simply connected domain has a holomorphic square
-root (Rudin 13.11); here specialized to the analytic root covers used by the source
-development (`AnalyticRootCover.*`, `AnalyticRootCoverContinuation.*`), with the
-`exists_analytic_unit_root` step.
+root (Rudin, *Real and Complex Analysis*, Theorem 13.11); here specialized to analytic
+root covers (`AnalyticRootCover.*`, `AnalyticRootCoverContinuation.*`), together with the
+`exists_analytic_unit_root` step giving an analytic `m`-th root of a nonvanishing analytic
+germ.
 
 ## Main definitions and results
 
@@ -26,8 +27,7 @@ development (`AnalyticRootCover.*`, `AnalyticRootCoverContinuation.*`), with the
   square roots of nonvanishing analytic functions on discs/simply connected sets.
 * `AnalyticRootCoverContinuation.*` : continuation of the root along cover refinements.
 * `AnalyticRootCover.exists_analytic_unit_root` : the unit-root step - an analytic
-  `m`-th root of a nonvanishing analytic germ (renamed from the project prefix
-  `SpecialPeriods` per review A item 3; no external consumers).
+  `m`-th root of a nonvanishing analytic germ.
 
 ## References
 
@@ -529,31 +529,33 @@ theorem AnalyticRootCover.even_order_at_all_points {f : ℂ → ℂ} {U : Set �
 
 /-! ### Étale continuation of sections -/
 
+universe u
+
 /-- The presheaf defined by a local predicate. -/
-abbrev AnalyticRootCoverContinuation.predicatePresheaf {X : TopCat.{0}} {Y : Type}
-    (P : TopCat.LocalPredicate (fun _ : X => Y)) : TopCat.Presheaf (Type) X :=
+abbrev AnalyticRootCoverContinuation.predicatePresheaf {X : TopCat.{u}} {Y : Type u}
+    (P : TopCat.LocalPredicate (fun _ : X => Y)) : TopCat.Presheaf (Type u) X :=
   TopCat.subpresheafToTypes P.toPrelocalPredicate
 
 /-- The value of an étale section germ. -/
-def AnalyticRootCoverContinuation.etaleValue {X : TopCat.{0}} {Y : Type}
+def AnalyticRootCoverContinuation.etaleValue {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (g : (predicatePresheaf P).EtaleSpace) : Y :=
   TopCat.stalkToFiber P g.base g.germ
 
 /-- The germ of a section at a point. -/
-def AnalyticRootCoverContinuation.sectionGerm {X : TopCat.{0}} {Y : Type}
+def AnalyticRootCoverContinuation.sectionGerm {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (U : TopologicalSpace.Opens X)
     (s : (predicatePresheaf P).obj (Opposite.op U)) (x : U) : (predicatePresheaf P).EtaleSpace :=
   ⟨x.1, (predicatePresheaf P).germ U x.1 x.2 s⟩
 
 /-- The étale value of a section germ is the value. -/
-theorem AnalyticRootCoverContinuation.etaleValue_sectionGerm {X : TopCat.{0}} {Y : Type}
+theorem AnalyticRootCoverContinuation.etaleValue_sectionGerm {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (U : TopologicalSpace.Opens X)
     (s : (predicatePresheaf P).obj (Opposite.op U)) (x : U) :
     etaleValue P (sectionGerm P U s x) = s.1 x :=
   TopCat.stalkToFiber_germ P U x.1 x.2 s
 
 /-- An étale section is locally the germs of sections. -/
-theorem AnalyticRootCoverContinuation.etaleSection_localGerms {X : TopCat.{0}} {Y : Type}
+theorem AnalyticRootCoverContinuation.etaleSection_localGerms {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
     ∃ (U : TopologicalSpace.Opens X) (_hx : x ∈ U) (s :
@@ -582,7 +584,7 @@ theorem AnalyticRootCoverContinuation.etaleSection_localGerms {X : TopCat.{0}} {
   rw [(predicatePresheaf P).germ_res_apply]
 
 /-- An étale section locally agrees with a section. -/
-theorem AnalyticRootCoverContinuation.etaleSection_locally {X : TopCat.{0}} {Y : Type}
+theorem AnalyticRootCoverContinuation.etaleSection_locally {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
     ∃ (U : TopologicalSpace.Opens X) (_hx : x ∈ U) (s :
@@ -594,7 +596,7 @@ theorem AnalyticRootCoverContinuation.etaleSection_locally {X : TopCat.{0}} {Y :
   rw [hs y hy, etaleValue_sectionGerm]
 
 /-- An étale section satisfies the predicate. -/
-theorem AnalyticRootCoverContinuation.etaleSection_pred {X : TopCat.{0}} {Y : Type}
+theorem AnalyticRootCoverContinuation.etaleSection_pred {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) : P.pred (U := ⊤) (fun x => etaleValue P (σ x.1)) := by
   apply P.locality
@@ -606,13 +608,13 @@ theorem AnalyticRootCoverContinuation.etaleSection_pred {X : TopCat.{0}} {Y : Ty
   exact hs y.1 y.2
 
 /-- A global section built from an étale section. -/
-def AnalyticRootCoverContinuation.sectionOfEtaleSection {X : TopCat.{0}} {Y : Type}
+def AnalyticRootCoverContinuation.sectionOfEtaleSection {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) : (predicatePresheaf P).obj (Opposite.op ⊤) :=
   ⟨fun x => etaleValue P (σ x.1), etaleSection_pred P σ hσ⟩
 
 /-- The built section's germ is the étale value. -/
-theorem AnalyticRootCoverContinuation.sectionOfEtaleSection_germ {X : TopCat.{0}} {Y : Type}
+theorem AnalyticRootCoverContinuation.sectionOfEtaleSection_germ {X : TopCat.{u}} {Y : Type u}
     (P : TopCat.LocalPredicate (fun _ : X => Y)) (σ : C(X, (predicatePresheaf P).EtaleSpace))
     (hσ : ∀ x : X, (σ x).base = x) (x : X) :
     sectionGerm P ⊤ (sectionOfEtaleSection P σ hσ) ⟨x, trivial⟩ = σ x := by
@@ -635,7 +637,7 @@ theorem AnalyticRootCoverContinuation.sectionOfEtaleSection_germ {X : TopCat.{0}
 
 /-- A germ-bijective predicate yields a global section with a prescribed germ. -/
 theorem AnalyticRootCoverContinuation.exists_global_section_with_germ_of_germ_bijective
-    {X : TopCat.{0}} {Y : Type} [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
+    {X : TopCat.{u}} {Y : Type u} [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
     (P : TopCat.LocalPredicate (fun _ : X => Y))
     (hbij :
       ∀ x : X,

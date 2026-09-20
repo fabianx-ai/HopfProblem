@@ -21,7 +21,10 @@ local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 For a fixed object P of an abelian category with enough injectives, native derived-category
 Ext is computed by the cohomology of the nonnegative complex Hom(P,I). The identification
 is natural in the coefficient and independent of the chosen resolution.
-Textbook source: cohomological-dimension/TEXTBOOK.md, lines 1628–1650 (C29a).
+
+`Ext^n(P, -)` is the `n`-th right derived functor of `Hom(P, -)`, computed by an injective
+resolution of the second variable: Weibel, *An Introduction to Homological Algebra*,
+Definition 2.5.1 and §2.7; Hartshorne, *Algebraic Geometry* III.1.1A and Exercise III.6.4.
 -/
 
 section Representations
@@ -193,8 +196,8 @@ open CategoryTheory.InjectiveResolution
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 
-/-- For fixed P, native Ext in the coefficient variable is the existing right-derived
-functor of Hom(P,-), naturally in every coefficient (C29a, textbook lines 1628–1648). -/
+/-- For fixed `P`, `Ext^q(P, -)` is the `q`-th right derived functor of `Hom(P, -)`,
+naturally in the coefficient object (Weibel 2.5.1). -/
 noncomputable def extFunctorObjIsoRightDerived (P : C) (q : ℕ) :
   extFunctorObj P q ≅ (preadditiveCoyoneda.obj (op P)).rightDerived q :=
   NatIso.ofComponents (fun A =>
@@ -264,8 +267,7 @@ local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 
 /-- For fixed P, the canonical natural identification Ext⁰(P,-) ≅ Hom(P,-) is the
 native Ext/right-derived comparison followed by the canonical degree-zero comparison.
-It does not assert equality of separately chosen models
-(cohomological-dimension/TEXTBOOK.md, lines 1763–1766, 1768–1769 and 1773–1776). -/
+It does not assert equality of separately chosen models. -/
 noncomputable def extFunctorObjZeroIsoCoyoneda (P : C) :
     extFunctorObj P 0 ≅ preadditiveCoyoneda.obj (op P) :=
   extFunctorObjIsoRightDerived P 0 ≪≫
@@ -280,8 +282,7 @@ local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 set_option backward.isDefEq.respectTransparency false in
 /-- In any injective resolution, the canonical Ext⁰-to-Hom identification sends a
 degree-zero cocycle to its factorization through the original augmentation. The
-augmentation is a kernel, so this factorization is unique
-(cohomological-dimension/TEXTBOOK.md, lines 1763–1766 and 1773–1776). -/
+augmentation is a kernel, so this factorization is unique. -/
 theorem extFunctorObjZeroIsoCoyoneda_hom_app_extMk (P : C) {A : C}
     (I : InjectiveResolution A) (f : P ⟶ I.cocomplex.X 0)
     (hf : f ≫ I.cocomplex.d 0 1 = 0) :
@@ -328,8 +329,7 @@ local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 
 /-- The additive native Ext boundary is the fixed right-derived boundary of Hom(P,-)
 under the canonical native comparison. It is independent of resolution choices;
-its positive lift convention is computed by any compatible resolution below
-(cohomological-dimension/TEXTBOOK.md, lines 1674–1701, C29b/C29c). -/
+its positive lift convention is computed by any compatible resolution below. -/
 def extConnecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (extFunctorObj P n).obj S.X₃ ⟶ (extFunctorObj P (n + 1)).obj S.X₁ :=
   (extFunctorObjIsoRightDerived P n).hom.app S.X₃ ≫
@@ -339,7 +339,7 @@ def extConnecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
 /-- Compute the same native Ext boundary on any original compatible triple of
 injective resolutions. On the actual Hom complexes it sends the class of z to
 the class of a, with r(b)=z and j(a)=db. Canonical comparisons retain the sign,
-all lift/representative choices and degree zero (TEXTBOOK, lines 1674–1690). -/
+all lift/representative choices and degree zero. -/
 theorem extConnecting_eq (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ)
     (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
     (IC : InjectiveResolution S.X₃)
@@ -381,7 +381,7 @@ theorem extConnecting_eq (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : �
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The original quotient map followed by the positive Ext boundary is zero: a closed
-lift has zero differential. This is the converse before the boundary (TEXTBOOK.md, 1718–1721). -/
+lift has zero differential. This is the converse before the boundary. -/
 theorem comp_extConnecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
   (extFunctorObj P n).map S.g ≫ extConnecting P hS n = 0 := by
   obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
@@ -415,7 +415,7 @@ theorem comp_extConnecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The positive Ext boundary followed by the original subobject map is zero: its
-image is a differential. This is the converse after the boundary (TEXTBOOK.md, 1718–1721). -/
+image is a differential. This is the converse after the boundary. -/
 theorem extConnecting_comp (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
   extConnecting P hS n ≫ (extFunctorObj P (n+1)).map S.f = 0 := by
   obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
@@ -450,7 +450,7 @@ theorem extConnecting_comp (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n :
 set_option backward.isDefEq.respectTransparency false in
 /-- Exactness at the middle coefficient in every nonnegative Ext degree. If r(b)=dw,
 lift w to v and replace b by b-dv. The closed result has a unique closed preimage
-under j; the converse is rj=0 (TEXTBOOK.md, 1703–1714 and 1718–1721). -/
+under j; the converse is rj=0. -/
 theorem ext_exact₁ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
   (S.map (extFunctorObj P n)).Exact := by
   obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
@@ -488,7 +488,7 @@ theorem ext_exact₁ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) 
 set_option backward.isDefEq.respectTransparency false in
 /-- Exactness at the quotient before the positive Ext boundary. If a=dt, replace
 its lift b by b-j(t), which is closed with the same quotient. The converse is
-the zero composite before the boundary (TEXTBOOK.md, 1703–1711 and 1715–1721). -/
+the zero composite before the boundary. -/
 theorem ext_exact₂ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
   (ShortComplex.mk ((extFunctorObj P n).map S.g) (extConnecting P hS n)
     (comp_extConnecting P hS n)).Exact := by
@@ -527,7 +527,7 @@ theorem ext_exact₂ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) 
 set_option backward.isDefEq.respectTransparency false in
 /-- Exactness at the next subobject after the positive Ext boundary. If j(a)=db,
 r(b) is closed and its positive boundary represents a. The converse is the zero
-composite after the boundary (TEXTBOOK.md, 1703–1711 and 1716–1721). -/
+composite after the boundary. -/
 theorem ext_exact₃ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
   (ShortComplex.mk (extConnecting P hS n) ((extFunctorObj P (n+1)).map S.f)
     (extConnecting_comp P hS n)).Exact := by
@@ -567,7 +567,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The original subobject map is injective in degree-zero Ext. Nonnegative
 resolutions have no incoming differential at zero: homology is the outgoing
 kernel, and degreewise monicity gives injection. Transport uses the original
-augmentation-compatible comparison (TEXTBOOK.md, 1719–1721). -/
+augmentation-compatible comparison. -/
 theorem ext_zero_injective (P : C) {S : ShortComplex C} (hS : S.ShortExact) :
   Function.Injective ((extFunctorObj P 0).map S.f) := by
   obtain ⟨T,h0,L,R,eA,eB,eC,rA,rB,rC,hT,hL,hR,hB,hel,her,hrl,hrr,hA,hB',hC,
@@ -608,7 +608,7 @@ theorem ext_zero_injective (P : C) {S : ShortComplex C} (hS : S.ShortExact) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The positive native Ext boundary is natural for every original morphism of
-short exact sequences (TEXTBOOK.md, 1723–1743, C29d; orientation1745–1747).
+short exact sequences.
 A strict comparison sends a chosen cochain lift to a lift of the image cocycle;
 its differential is the image of the original differential. The same positive
 boundary square passes through the canonical resolution identifications.
@@ -695,10 +695,9 @@ local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v, v, u} C
 
 /-- The native Ext boundary is the right-derived Hom boundary conjugated by the
 same canonical Ext-to-right-derived comparison in consecutive degrees. This is
-the defining composition in the textbook positive connecting-map construction
-(M04, C29b): on a compatible resolution the lift satisfies `j(a) = db`, with no
-additional sign. The equation retains that fixed comparison for both forward
-and inverse transport. -/
+the defining composition of the positive connecting map: on a compatible resolution
+the lift satisfies `j(a) = db`, with no additional sign. The equation retains that
+fixed comparison for both forward and inverse transport. -/
 theorem extConnecting_eq_rightDerived (P : C) {S : ShortComplex C}
     (hS : S.ShortExact) (n : ℕ) :
     extConnecting P hS n =

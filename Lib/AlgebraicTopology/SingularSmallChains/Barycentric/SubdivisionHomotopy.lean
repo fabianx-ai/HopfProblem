@@ -14,6 +14,9 @@ public import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Subdivision
 The universal formal homotopy is evaluated as affine singular simplices and pushed forward by
 each singular simplex.  Its telescoping identity gives the genuine chain identity
 `d H + H d = id - sd^k`.
+
+This is the chain homotopy `T` with `∂T + T∂ = 𝟙 − S` of Hatcher, *Algebraic Topology*,
+Proposition 2.21, step (3) (Bredon IV.17.3).
 -/
 
 @[expose] public section
@@ -33,6 +36,8 @@ def subdivisionHomotopy (X : Type) [TopologicalSpace X] (k n : ℕ) :
       (formalSubdivisionIteratedHomotopy (simplexCenter n) k (n + 1)
         (formalSimplex (stdVertices n))))
 
+/-- On the basis chain of a singular simplex `σ`, the subdivision homotopy is `σ` applied to
+the universal affine homotopy chain of the standard simplex. -/
 @[simp]
 theorem subdivisionHomotopy_simplex (X : Type) [TopologicalSpace X] (k n : ℕ)
     (sigma : TopCat.SingularSmallChains.SingularSimplex X n) :

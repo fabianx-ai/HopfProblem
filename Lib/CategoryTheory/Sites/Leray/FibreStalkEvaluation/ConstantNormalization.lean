@@ -17,6 +17,9 @@ For a finite closed map whose image lies in an ambient open, this file identifie
 fibre-evaluation class with constant-coefficient pullback along the induced map to that open.
 The coefficient group and cohomological degree are arbitrary.  The comparison is elementary:
 it uses exact finite pushforward, exact open restriction, and their literal-open composition.
+
+Restriction and pushforward of constant sheaves along an open inclusion, and naturality of
+`Hⁿ`: Bredon, *Sheaf Theory* II.9; Iversen, *Cohomology of Sheaves* II.
 -/
 
 @[expose] public section

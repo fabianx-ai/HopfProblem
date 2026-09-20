@@ -20,6 +20,9 @@ base neighborhood.  Its ordinary sheaf germ is exactly the normalized derived Ex
 
 This is a generic positive-degree sheafification construction. It neither asserts proper base
 change nor identifies a higher-direct-image stalk with the cohomology of a geometric fibre.
+
+The underlying textbook fact is that `Rⁱf_*F` is the sheaf associated to the presheaf
+`V ↦ Hⁱ(f⁻¹V, F)`: Hartshorne, *Algebraic Geometry* III.8.1; Godement II.4.11.
 -/
 
 @[expose] public section

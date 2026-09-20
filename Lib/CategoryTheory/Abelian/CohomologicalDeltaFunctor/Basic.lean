@@ -15,6 +15,10 @@ public import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
 
 A reusable interface for a sequence of additive functors equipped with natural connecting
 morphisms and the three recurring exactness conditions.
+
+This is the notion of a cohomological `∂`-functor of Grothendieck, *Sur quelques points
+d'algèbre homologique* (Tôhoku) §2.1; see also Weibel, *An Introduction to Homological
+Algebra*, Definition 2.1.1, and Hartshorne, *Algebraic Geometry* III.1.
 -/
 
 @[expose] public section
@@ -55,14 +59,15 @@ namespace CohomologicalDeltaFunctor
 variable {C : Type u₁} [Category.{v₁} C] [Abelian C]
 variable {D : Type u₂} [Category.{v₂} D] [Abelian D]
 
-/-- A morphism of cohomological delta functors: degreewise natural transformations commuting
-with connecting morphisms. This is the formal image of textbook coordinate L-H1, equation (U4). -/
+/-- A morphism of cohomological delta functors: a natural transformation `Tⁿ ⟶ Sⁿ` in every
+degree, commuting with the connecting morphisms of every short exact sequence
+(Weibel, Definition 2.1.1). -/
 structure Hom (T S : CohomologicalDeltaFunctor C D) where
   app : ∀ n : ℕ, (T.T n).obj ⟶ (S.T n).obj
   comm : ∀ {X : ShortComplex C} (hX : X.ShortExact) (n : ℕ),
     T.δ hX n ≫ (app (n + 1)).app X.X₁ = (app n).app X.X₃ ≫ S.δ hX n
 
-/-- Morphisms of cohomological delta functors are determined degreewise (L-H2). -/
+/-- Morphisms of cohomological delta functors are determined degreewise. -/
 @[ext]
 theorem Hom.ext {T S : CohomologicalDeltaFunctor C D} {η η' : Hom T S}
     (h : ∀ n, η.app n = η'.app n) : η = η' := by
@@ -72,13 +77,13 @@ theorem Hom.ext {T S : CohomologicalDeltaFunctor C D} {η η' : Hom T S}
   funext n
   exact h n
 
-/-- The identity morphism of a cohomological delta functor (L-H3). -/
+/-- The identity morphism of a cohomological delta functor. -/
 def Hom.id (T : CohomologicalDeltaFunctor C D) : Hom T T where
   app n := 𝟙 _
   comm hX n := by
     rw [NatTrans.id_app, NatTrans.id_app, Category.comp_id, Category.id_comp]
 
-/-- Composition of morphisms of cohomological delta functors (L-H4). -/
+/-- Composition of morphisms of cohomological delta functors. -/
 def Hom.comp {T S R : CohomologicalDeltaFunctor C D} (η : Hom T S) (θ : Hom S R) :
     Hom T R where
   app n := η.app n ≫ θ.app n
@@ -86,11 +91,11 @@ def Hom.comp {T S R : CohomologicalDeltaFunctor C D} (η : Hom T S) (θ : Hom S 
     rw [NatTrans.comp_app, NatTrans.comp_app, ← Category.assoc, η.comm hX n,
       Category.assoc, θ.comm hX n, Category.assoc]
 
-/-- The degree-`n` component of the identity morphism (L-H5). -/
+/-- The degree-`n` component of the identity morphism is the identity. -/
 theorem Hom.id_app (T : CohomologicalDeltaFunctor C D) (n : ℕ) :
     (Hom.id T).app n = 𝟙 (T.T n).obj := rfl
 
-/-- The degree-`n` component of a composite morphism (L-H6). -/
+/-- The degree-`n` component of a composite morphism is the composite of the components. -/
 theorem Hom.comp_app {T S R : CohomologicalDeltaFunctor C D} (η : Hom T S) (θ : Hom S R)
     (n : ℕ) : (Hom.comp η θ).app n = η.app n ≫ θ.app n := rfl
 

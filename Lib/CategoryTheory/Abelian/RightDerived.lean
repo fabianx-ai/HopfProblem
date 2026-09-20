@@ -12,8 +12,11 @@ public import Mathlib.Algebra.Category.Grp.Abelian
 /-!
 # Additivity of the computed right-derived functors
 
-The usual injective-resolution computation gives additive degree functors.
-This module retains the existing derived objects and coefficient maps.
+Each right derived functor `Rⁿ F` of an additive functor into abelian groups is again
+additive, and a natural isomorphism `F ≅ G` induces a natural isomorphism `Rⁿ F ≅ Rⁿ G`
+compatible with the degree-zero identification `R⁰ F ≅ F` for left exact `F`.
+
+Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6(a) and Exercise 2.4.3.
 -/
 
 @[expose] public section
@@ -27,14 +30,8 @@ set_option backward.defeqAttrib.useBackward true
 
 namespace CategoryTheory.Functor
 
-/-- Each right-derived degree of an additive abelian-group-valued functor is additive.
-
-Choose the same source and target injective resolutions for two coefficient maps.
-The sum of their comparisons extends the sum of the coefficient maps. Compute all
-three derived maps using these comparisons; additivity of complex homology and
-bilinearity of composition give the sum law on the existing derived family.
-Identity and composition are existing functor laws; zero and negatives follow
-from this additive instance. This is the PD-L04 comparison-sum argument.
+/-- Every right derived functor `Rⁿ F` of an additive functor `F : A ⥤ AddCommGrpCat` is
+again additive: `Rⁿ F (f + g) = Rⁿ F f + Rⁿ F g` (Weibel 2.4.6(a)).
 -/
 instance rightDerived_additive {A : Type u} [Category.{v} A] [Abelian A]
     [HasInjectiveResolutions A] (F : A ⥤ AddCommGrpCat.{w}) [F.Additive]
@@ -70,12 +67,8 @@ namespace CategoryTheory.NatIso
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
     {F G : C ⥤ AddCommGrpCat.{w}} [F.Additive] [G.Additive]
 
-/-- A natural isomorphism of additive functors induces an isomorphism in each
-right-derived degree. On a common injective resolution, its forward and inverse
-maps are the original natural-isomorphism components applied termwise, followed
-by cohomology. Naturality along differentials makes these cochain maps, and
-naturality along resolution comparisons makes the resulting maps independent
-of the computation and natural in the coefficient object (textbook M09). -/
+/-- A natural isomorphism `α : F ≅ G` of additive functors induces a natural isomorphism
+`Rⁿ α : Rⁿ F ≅ Rⁿ G` in every right-derived degree (Weibel, Exercise 2.4.3). -/
 noncomputable def rightDerived (α : F ≅ G) (n : ℕ) :
     F.rightDerived n ≅ G.rightDerived n where
   hom := NatTrans.rightDerived α.hom n
@@ -85,19 +78,13 @@ noncomputable def rightDerived (α : F ≅ G) (n : ℕ) :
   inv_hom_id := by
     rw [← NatTrans.rightDerived_comp, α.inv_hom_id, NatTrans.rightDerived_id]
 
-/-- The forward derived transport is the original derived natural transformation.
-Together with `InjectiveResolution.rightDerived_app_eq`, this computes it on
-every original injective resolution as the homology of the forward cochain map,
-conjugated by the two resolution-computation isomorphisms. -/
+/-- The forward map of `Rⁿ α` is the derived natural transformation `Rⁿ (α.hom)`. -/
 theorem rightDerived_hom (α : F ≅ G) (n : ℕ) :
     (rightDerived α n).hom = NatTrans.rightDerived α.hom n := by
   unfold rightDerived
   rfl
 
-/-- The inverse derived transport is induced by the original inverse natural
-transformation, on the same resolution. Its computation therefore uses the
-inverse cochain map and the resolution-computation isomorphisms in reverse order,
-not a separately chosen equivalence between the derived objects. -/
+/-- The inverse map of `Rⁿ α` is the derived natural transformation `Rⁿ (α.inv)`. -/
 theorem rightDerived_inv (α : F ≅ G) (n : ℕ) :
     (rightDerived α n).inv = NatTrans.rightDerived α.inv n := by
   unfold rightDerived
@@ -105,12 +92,9 @@ theorem rightDerived_inv (α : F ≅ G) (n : ℕ) :
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
-/-- Derived transport commutes with the canonical degree-zero identifications
-for left-exact functors. The square is fixed by the original augmentation:
-naturality there gives the square on degree-zero cycles; the homology projection
-and resolution-computation maps give the square on the canonical zero units.
-Cancelling those units gives this normalization. Thus no new choice of a
-degree-zero equivalence is made (textbook M09, the same kernel factorization). -/
+/-- For left exact `F` and `G`, the isomorphism `R⁰ α` commutes with the canonical
+identifications `R⁰ F ≅ F` and `R⁰ G ≅ G`: `R⁰ α ≫ (R⁰G ≅ G) = (R⁰F ≅ F) ≫ α`
+(Weibel 2.4.6(a), Exercise 2.4.3). -/
 theorem rightDerived_zero_hom [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) :
     (rightDerived α 0).hom ≫ G.rightDerivedZeroIsoSelf.hom =
