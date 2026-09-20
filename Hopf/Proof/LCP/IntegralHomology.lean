@@ -153,7 +153,6 @@ import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import Lib.Topology.Covering.DiagonalQuotient

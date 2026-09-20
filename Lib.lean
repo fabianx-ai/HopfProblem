@@ -111,7 +111,6 @@ import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
 import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import Lib.Topology.Covering.Quotient
 import Lib.Topology.Covering.DiagonalQuotient
