@@ -25,6 +25,10 @@ usual general-position ones (ambient dimension at least five, sheets of compleme
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney lemma and the
   construction of the Whitney disc).
 
+## Twin
+
+No Mathlib counterpart exists.
+
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
@@ -493,7 +497,7 @@ theorem WhitneyPairModel.continuousAt_inverseInnerBigonMap (h : ℝ) (p : ℝ ×
   unfold inverseInnerBigonMap
   fun_prop (disch := norm_num)
 
-/-- For `0 < r`, the collar cut off by the contraction is compact. -/
+/-- For `0 < h` and `r ≠ 0`, the collar cut off by the contraction is compact. -/
 theorem WhitneyPairModel.isCompact_innerBigonCollar {h r : ℝ} (hh : 0 < h) (hr : r ≠ 0) :
     IsCompact (innerBigonCollar h r) := by
   have ho : IsOpen (innerBigonMap h r '' interior (bigon h)) :=
@@ -3152,8 +3156,10 @@ theorem exists_native_shared_corner_strip_pair_dim_two {E M D Z N P : Type*}
   exact nonempty_cleanBigonBoundary hh c₀ c₁ k' l' hoverlap'
 
 attribute [local instance 100] Classical.propDecidable in
-/-- In a six-manifold with a Morse surgery of index two, a clean bigon boundary between an embedded
-two-sphere and the belt sphere bounds a tubular bigon of codimension three. -/
+/-- In a compact six-manifold (`[CompactSpace M]`) with a Morse surgery of index two whose lower
+level has null-homotopic circles (`hnull`), a clean bigon boundary between a smooth two-sphere
+`g` in the upper level and the belt sphere bounds a tubular bigon of codimension three. No
+injectivity or immersion hypothesis on `g` is assumed. -/
 theorem ManifoldMorse.MorseSurgeryData.nonempty_belt_tubularBigon {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {p : M}
