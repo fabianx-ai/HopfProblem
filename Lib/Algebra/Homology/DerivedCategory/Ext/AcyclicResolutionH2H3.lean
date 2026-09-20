@@ -14,6 +14,12 @@ public import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution
 These structures retain the original finite API.  The connecting-isomorphism engine is owned by
 `AcyclicResolution`; the compatibility module shows that these finite staircases are the first two
 specializations of the indexed all-degree construction.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3 (degrees two
+  and three).
+
 -/
 
 @[expose] public section
