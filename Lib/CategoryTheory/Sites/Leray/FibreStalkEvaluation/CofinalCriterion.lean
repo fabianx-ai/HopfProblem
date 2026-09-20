@@ -19,6 +19,9 @@ evaluation is bijective, then the canonical stalk map is an isomorphism.
 The constant-coefficient specialization is stated separately.  Neither theorem asserts that the
 local bijectivity hypothesis holds; geometric applications must provide the cofinal family and
 the corresponding evaluation isomorphisms.
+
+This is the standard criterion for the base-change map to be an isomorphism:
+Godement II.4.11; Bredon, *Sheaf Theory* II.10.
 -/
 
 @[expose] public section

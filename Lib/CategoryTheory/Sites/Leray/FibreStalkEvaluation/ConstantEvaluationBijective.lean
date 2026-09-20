@@ -15,6 +15,8 @@ Canonical evaluation of constant-coefficient cohomology on an ambient open facto
 maps: normalization to intrinsic cohomology of the open subspace, followed by native pullback to
 the finite closed source.  The normalization is always bijective.  Hence evaluation is bijective
 whenever the intrinsic pullback is an isomorphism.
+
+Restriction of constant-sheaf cohomology to a subspace: Bredon, *Sheaf Theory* II.9–II.10.
 -/
 
 @[expose] public section

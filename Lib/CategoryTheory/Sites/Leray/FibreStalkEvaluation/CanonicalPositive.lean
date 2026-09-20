@@ -16,6 +16,10 @@ The positive-degree natural isomorphism between pushed-resolution homology and M
 Ext-defined cohomology presheaf supplies the displayed normalization expected by the low-level
 fibre-stalk API. The convenience maps here remain relative to the chosen injective resolution and
 to the displayed geometric and coefficient data. They do not assert proper base change.
+
+The textbook statement being approached is the comparison between the stalk of `Rᵠf_*F` at `y`
+and the cohomology of the fibre: Godement II.4.11.1; Bredon, *Sheaf Theory* II.10;
+Iversen, *Cohomology of Sheaves* III.6.2.
 -/
 
 @[expose] public section
