@@ -6,9 +6,20 @@ public import Mathlib.Topology.MetricSpace.Bounded
 /-!
 # The boundary of the three-cube
 
-This file translates `TEXTBOOK.md`, lines 1249--1325: the notation, Definitions 1.1 and 1.3,
-and Lemmas 1.2 and 1.4.  It identifies the boundary of `[-1,1]^3` with the Euclidean unit
-sphere by the two explicit radial maps.
+The boundary of the cube `[-1,1]³`, presented as the level set `‖x‖_∞ = 1` in `ℝ³`, is compact
+and is homeomorphic to the Euclidean unit sphere `S²` by radial projection.  The two explicit
+radial maps, normalisation by the Euclidean norm and normalisation by the maximum norm, are
+mutually inverse and continuous.
+
+This is the standard fact that the frontiers of two convex bodies with `0` in the interior are
+homeomorphic, specialised to the cube and the ball in dimension three.
+
+## References
+
+* R. Engelking, *Dimension Theory*, §1.8
+* W. Hurewicz and H. Wallman, *Dimension Theory*, Chapter IV
+* Mathlib's `gaugeRescaleHomeomorph` (`Mathlib/Analysis/Convex/GaugeRescale.lean`) for the
+  general convex-body form
 -/
 
 @[expose] public section
@@ -19,20 +30,20 @@ open Set
 
 namespace TopologicalSpace.CubeBoundaryThree
 
-/-- Textbook Notation (A0): Euclidean three-space. -/
+/-- Euclidean three-space. -/
 abbrev Ambient := EuclideanSpace ℝ (Fin 3)
 
-/-- Textbook Notation (M1): the maximum of the absolute coordinate values. -/
+/-- The maximum of the absolute coordinate values. -/
 def maxAbs (x : Ambient) : ℝ := max |x 0| (max |x 1| |x 2|)
 
-/-- Textbook Notation, first norm inequality (M2): `‖x‖∞ ≤ |x|`. -/
+/-- `‖x‖∞ ≤ |x|`. -/
 theorem maxAbs_le_norm (x : Ambient) : maxAbs x ≤ ‖x‖ := by
   have h0 : |x 0| ≤ ‖x‖ := (Real.norm_eq_abs (x 0)).symm ▸ PiLp.norm_apply_le x 0
   have h1 : |x 1| ≤ ‖x‖ := (Real.norm_eq_abs (x 1)).symm ▸ PiLp.norm_apply_le x 1
   have h2 : |x 2| ≤ ‖x‖ := (Real.norm_eq_abs (x 2)).symm ▸ PiLp.norm_apply_le x 2
   exact max_le h0 (max_le h1 h2)
 
-/-- Textbook Notation, second norm inequality (M3): `|x| ≤ √3 ‖x‖∞`. -/
+/-- `|x| ≤ √3 ‖x‖∞`. -/
 theorem norm_le_sqrt_three_mul_maxAbs (x : Ambient) :
     ‖x‖ ≤ Real.sqrt 3 * maxAbs x := by
   have hm : 0 ≤ maxAbs x :=
@@ -50,13 +61,13 @@ theorem norm_le_sqrt_three_mul_maxAbs (x : Ambient) :
   simp only [Real.norm_eq_abs]
   nlinarith
 
-/-- Textbook Lemmas 1.2/1.4 (M4): continuity of the maximum norm. -/
+/-- Continuity of the maximum norm. -/
 theorem continuous_maxAbs : Continuous maxAbs := by
   exact ((PiLp.continuous_apply 2 (fun _ : Fin 3 ↦ ℝ) 0).abs).max
     (((PiLp.continuous_apply 2 (fun _ : Fin 3 ↦ ℝ) 1).abs).max
       ((PiLp.continuous_apply 2 (fun _ : Fin 3 ↦ ℝ) 2).abs))
 
-/-- Textbook Lemma 1.4 (M5): positive homogeneity of the maximum norm. -/
+/-- Positive homogeneity of the maximum norm. -/
 theorem maxAbs_smul_of_nonneg (c : ℝ) (hc : 0 ≤ c) (x : Ambient) :
     maxAbs (c • x) = c * maxAbs x := by
   simp only [maxAbs, PiLp.smul_apply, smul_eq_mul, abs_mul, abs_of_nonneg hc]
@@ -64,21 +75,21 @@ theorem maxAbs_smul_of_nonneg (c : ℝ) (hc : 0 ≤ c) (x : Ambient) :
     simpa [mul_comm] using (max_mul_of_nonneg |x 1| |x 2| hc).symm]
   simpa [mul_comm] using (max_mul_of_nonneg |x 0| (max |x 1| |x 2|) hc).symm
 
-/-- Textbook Definition 1.1 (Q1): the level-set model of the cube boundary. -/
+/-- The level-set model of the cube boundary. -/
 def boundary : Set Ambient := {x | maxAbs x = 1}
 
-/-- Textbook Definition 1.1 (Q2): the cube boundary with its Euclidean subspace topology. -/
+/-- The cube boundary with its Euclidean subspace topology. -/
 abbrev Boundary := boundary
 
-/-- Textbook Definition 1.1 (F1): one of the six coordinate faces. -/
+/-- One of the six coordinate faces. -/
 def face (i : Fin 3) (σ : {r : ℝ // r = -1 ∨ r = 1}) : Set Ambient :=
   {x | x ∈ boundary ∧ x i = σ.1}
 
-/-- Textbook Definition 1.1 (F2): membership in a face. -/
+/-- Membership in a face. -/
 theorem mem_face_iff (x : Ambient) (i : Fin 3) (σ : {r : ℝ // r = -1 ∨ r = 1}) :
     x ∈ face i σ ↔ x ∈ boundary ∧ x i = σ.1 := Iff.rfl
 
-/-- Textbook Definition 1.1 coverage (F3): every boundary point belongs to a face. -/
+/-- Every boundary point belongs to a face. -/
 theorem exists_mem_face {x : Ambient} (hx : x ∈ boundary) :
     ∃ (i : Fin 3) (σ : {r : ℝ // r = -1 ∨ r = 1}), x ∈ face i σ := by
   obtain ⟨i, -, hi⟩ := Finset.exists_max_image (Finset.univ : Finset (Fin 3))
@@ -96,7 +107,7 @@ theorem exists_mem_face {x : Ambient} (hx : x ∈ boundary) :
   · exact ⟨i, ⟨1, Or.inr rfl⟩, hx, hpos⟩
   · exact ⟨i, ⟨-1, Or.inl rfl⟩, hx, hneg⟩
 
-/-- Textbook Lemma 1.2 (B3): the first basis vector lies on the boundary. -/
+/-- The first basis vector lies on the boundary. -/
 theorem boundary_nonempty : boundary.Nonempty := by
   refine ⟨EuclideanSpace.single 0 1, ?_⟩
   change max |(EuclideanSpace.single 0 1 : Ambient) 0|
@@ -104,12 +115,12 @@ theorem boundary_nonempty : boundary.Nonempty := by
       |(EuclideanSpace.single 0 1 : Ambient) 2|) = 1
   simp
 
-/-- Textbook Lemma 1.2 (B1, B2, B4): Heine--Borel compactness of the boundary. -/
+/-- Heine--Borel compactness of the boundary. -/
 theorem isCompact_boundary : IsCompact boundary := by
-  -- Textbook Lemma 1.2 (B1): the boundary is the closed preimage of `{1}`.
+  -- The boundary is the closed preimage of `{1}`.
   have isClosed_boundary : IsClosed boundary := by
     exact isClosed_singleton.preimage continuous_maxAbs
-  -- Textbook Lemma 1.2 (B2): the second norm inequality gives a bounding ball.
+  -- The second norm inequality gives a bounding ball.
   have isBounded_boundary : Bornology.IsBounded boundary :=
     (Metric.isBounded_iff_subset_ball 0).2 ⟨Real.sqrt 3 + 1, by
       intro x hx
@@ -120,20 +131,20 @@ theorem isCompact_boundary : IsCompact boundary := by
       exact lt_add_one (Real.sqrt 3)⟩
   exact Metric.isCompact_iff_isClosed_bounded.mpr ⟨isClosed_boundary, isBounded_boundary⟩
 
-/-- Textbook Lemma 1.2 (P1): the boundary is inhabited. -/
+/-- The boundary is inhabited. -/
 noncomputable instance instNonemptyBoundary : Nonempty Boundary := boundary_nonempty.to_subtype
 
-/-- Textbook Lemma 1.2 (P2): the boundary subtype is compact. -/
+/-- The boundary subtype is compact. -/
 noncomputable instance instCompactSpaceBoundary : CompactSpace Boundary :=
   isCompact_iff_compactSpace.mp isCompact_boundary
 
-/-- Textbook Lemma 1.4 well-definedness (W1): boundary points have positive Euclidean norm. -/
+/-- Boundary points have positive Euclidean norm. -/
 theorem norm_pos_of_mem_boundary (x : Boundary) : 0 < ‖(x : Ambient)‖ := by
   have h := maxAbs_le_norm (x : Ambient)
   rw [x.property] at h
   exact lt_of_lt_of_le zero_lt_one h
 
-/-- Textbook Lemma 1.4 well-definedness (W2): sphere points have positive maximum norm. -/
+/-- Sphere points have positive maximum norm. -/
 theorem maxAbs_pos_of_mem_sphere (y : Metric.sphere (0 : Ambient) 1) :
     0 < maxAbs (y : Ambient) := by
   have hy : ‖(y : Ambient)‖ = 1 := by
@@ -144,18 +155,18 @@ theorem maxAbs_pos_of_mem_sphere (y : Metric.sphere (0 : Ambient) 1) :
   have hsqrt : 0 < Real.sqrt 3 := Real.sqrt_pos.2 (by norm_num)
   nlinarith
 
-/-- Textbook Definition 1.3 (R1, with local W3): radial normalization onto the sphere. -/
+/-- Radial normalization onto the sphere. -/
 noncomputable def toSphere (x : Boundary) : Metric.sphere (0 : Ambient) 1 := by
-  -- Textbook Lemma 1.4 (W3): Euclidean normalization lands on the unit sphere.
+  -- Euclidean normalization lands on the unit sphere.
   have normalize_mem_sphere :
       ‖(x : Ambient)‖⁻¹ • (x : Ambient) ∈ Metric.sphere (0 : Ambient) 1 := by
     rw [Metric.mem_sphere, dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2
       (norm_pos_of_mem_boundary x)), inv_mul_cancel₀ (ne_of_gt (norm_pos_of_mem_boundary x))]
   exact ⟨‖(x : Ambient)‖⁻¹ • (x : Ambient), normalize_mem_sphere⟩
 
-/-- Textbook Definition 1.3 (R2, with local W4): maximum-norm normalization onto the cube. -/
+/-- Maximum-norm normalization onto the cube. -/
 noncomputable def fromSphere (y : Metric.sphere (0 : Ambient) 1) : Boundary := by
-  -- Textbook Lemma 1.4 (W4): maximum-norm normalization lands on the boundary.
+  -- Maximum-norm normalization lands on the boundary.
   have normalizeMax_mem_boundary :
       (maxAbs (y : Ambient))⁻¹ • (y : Ambient) ∈ boundary := by
     change maxAbs ((maxAbs (y : Ambient))⁻¹ • (y : Ambient)) = 1
@@ -163,29 +174,29 @@ noncomputable def fromSphere (y : Metric.sphere (0 : Ambient) 1) : Boundary := b
       inv_mul_cancel₀ (ne_of_gt (maxAbs_pos_of_mem_sphere y))]
   exact ⟨(maxAbs (y : Ambient))⁻¹ • (y : Ambient), normalizeMax_mem_boundary⟩
 
-/-- Textbook Definition 1.3 formula (R3) for Euclidean normalization onto the sphere. -/
+/-- The defining formula for Euclidean normalization onto the sphere. -/
 theorem toSphere_apply (x : Boundary) :
     ((toSphere x : Metric.sphere (0 : Ambient) 1) : Ambient) =
       ‖(x : Ambient)‖⁻¹ • (x : Ambient) := rfl
 
-/-- Textbook Definition 1.3 formula (R4) for maximum-norm normalization onto the cube. -/
+/-- The defining formula for maximum-norm normalization onto the cube. -/
 theorem fromSphere_apply (y : Metric.sphere (0 : Ambient) 1) :
     ((fromSphere y : Boundary) : Ambient) =
       (maxAbs (y : Ambient))⁻¹ • (y : Ambient) := rfl
 
-/-- Textbook Lemma 1.4 continuity (R5): explicit continuity of Euclidean normalization. -/
+/-- Explicit continuity of Euclidean normalization. -/
 theorem continuous_toSphere : Continuous toSphere := by
   apply Continuous.subtype_mk
   exact ((continuous_norm.comp continuous_subtype_val).inv₀
     (fun x ↦ ne_of_gt (norm_pos_of_mem_boundary x))).smul continuous_subtype_val
 
-/-- Textbook Lemma 1.4 continuity (R6): explicit continuity of maximum-norm normalization. -/
+/-- Explicit continuity of maximum-norm normalization. -/
 theorem continuous_fromSphere : Continuous fromSphere := by
   apply Continuous.subtype_mk
   exact ((continuous_maxAbs.comp continuous_subtype_val).inv₀
     (fun y ↦ ne_of_gt (maxAbs_pos_of_mem_sphere y))).smul continuous_subtype_val
 
-/-- Textbook Lemma 1.4 inverse law (I1): maximum normalization after Euclidean normalization. -/
+/-- Maximum normalization after Euclidean normalization. -/
 theorem fromSphere_toSphere (x : Boundary) : fromSphere (toSphere x) = x := by
   apply Subtype.ext
   rw [fromSphere_apply, toSphere_apply,
@@ -193,7 +204,7 @@ theorem fromSphere_toSphere (x : Boundary) : fromSphere (toSphere x) = x := by
     x.property, mul_one, smul_smul, inv_inv,
     mul_inv_cancel₀ (ne_of_gt (norm_pos_of_mem_boundary x)), one_smul]
 
-/-- Textbook Lemma 1.4 inverse law (I2): Euclidean normalization after maximum normalization. -/
+/-- Euclidean normalization after maximum normalization. -/
 theorem toSphere_fromSphere (y : Metric.sphere (0 : Ambient) 1) : toSphere (fromSphere y) = y := by
   apply Subtype.ext
   rw [toSphere_apply, fromSphere_apply, norm_smul,
@@ -204,7 +215,7 @@ theorem toSphere_fromSphere (y : Metric.sphere (0 : Ambient) 1) : toSphere (from
   rw [hy, mul_one, smul_smul, inv_inv,
     mul_inv_cancel₀ (ne_of_gt (maxAbs_pos_of_mem_sphere y)), one_smul]
 
-/-- Textbook Lemma 1.4 (H1): the explicit radial homeomorphism `Q ≃ₜ S²`. -/
+/-- The explicit radial homeomorphism `Q ≃ₜ S²`. -/
 noncomputable def homeomorphSphere : Boundary ≃ₜ Metric.sphere (0 : Ambient) 1 where
   toFun := toSphere
   invFun := fromSphere
