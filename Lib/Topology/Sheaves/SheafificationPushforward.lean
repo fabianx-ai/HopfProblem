@@ -17,9 +17,11 @@ public import Mathlib.Topology.Sheaves.Sheafify
 /-!
 # Sheafification maps into pushforward sheaves
 
-A presheaf map into the underlying presheaf of a genuine pushforward sheaf extends uniquely
-through native sheafification.  This supplies the categorical lift used by singular-cochain
-pullback, without any exactness hypothesis on pushforward.
+Sheafification is left adjoint to the inclusion of sheaves into presheaves, so a presheaf map
+`P ⟶ f_*F` into a sheaf extends uniquely along the unit `P ⟶ P⁺⁺` (Mathlib
+`CategoryTheory.sheafifyLift`, `toSheafify_sheafifyLift`).  Applied to a presheaf map
+`P ⟶ f_*Q`, this produces a canonical map `P⁺⁺ ⟶ f_*(Q⁺⁺)`, natural in commuting squares of
+presheaf maps.  No exactness hypothesis on `f_*` is used.
 -/
 
 @[expose] public section
@@ -33,73 +35,82 @@ open CategoryTheory Opposite TopologicalSpace
 
 namespace TopCat.SheafificationPushforward
 
-/-- Additive sheafification on the open-set site of `X`. -/
-abbrev sheafification (X : TopCat.{0}) :
-    TopCat.Presheaf AddCommGrpCat.{0} X ⥤ TopCat.Sheaf AddCommGrpCat.{0} X :=
-  presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}
+universe u
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+/-- Sheafification of presheaves of abelian groups on the open-set site of `X`. -/
+abbrev sheafification (X : TopCat.{u}) :
+    TopCat.Presheaf AddCommGrpCat.{u} X ⥤ TopCat.Sheaf AddCommGrpCat.{u} X :=
+  presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}
 
-/-- Extend a presheaf map through sheafification to a pushforward sheaf. -/
-def liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
-    (η : P ⟶ ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F).obj) :
-    (sheafification Y).obj P ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F :=
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
+
+/-- The unique extension of a presheaf map `P ⟶ f_*F` into a sheaf along the sheafification
+unit. -/
+def liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
+    (η : P ⟶ ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).obj) :
+    (sheafification Y).obj P ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F :=
   ⟨CategoryTheory.sheafifyLift (Opens.grothendieckTopology Y) η
-    ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F).property⟩
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).property⟩
 
+/-- The extension of `P ⟶ f_*F` along the sheafification unit restricts to the original map. -/
 @[reassoc]
-theorem toSheafify_liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
-    (η : P ⟶ ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F).obj) :
+theorem toSheafify_liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
+    (η : P ⟶ ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).obj) :
     toSheafify (Opens.grothendieckTopology Y) P ≫ (liftToPushforward f F η).hom = η :=
   CategoryTheory.toSheafify_sheafifyLift (Opens.grothendieckTopology Y) η
-    ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F).property
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).property
 
-theorem liftToPushforward_hom_ext {P : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    {F : TopCat.Sheaf AddCommGrpCat.{0} X}
+/-- Two maps `P⁺⁺ ⟶ f_*F` into a sheaf are equal as soon as they agree after the sheafification
+unit. -/
+theorem liftToPushforward_hom_ext {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X}
     {a b : (sheafification Y).obj P ⟶
-      (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F}
+      (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F}
     (h : toSheafify (Opens.grothendieckTopology Y) P ≫ a.hom =
       toSheafify (Opens.grothendieckTopology Y) P ≫ b.hom) : a = b := by
   apply CategoryTheory.Sheaf.hom_ext
   exact CategoryTheory.sheafify_hom_ext (Opens.grothendieckTopology Y) a.hom b.hom
-    ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F).property h
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).property h
 
-/-- A raw presheaf pullback induces a map of native sheafifications into pushforward. -/
-def sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    {Q : TopCat.Presheaf AddCommGrpCat.{0} X}
-    (η : P ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).obj Q) :
+/-- A presheaf map `P ⟶ f_*Q` induces a canonical map `P⁺⁺ ⟶ f_*(Q⁺⁺)` of the sheafifications. -/
+def sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    {Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    (η : P ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q) :
     (sheafification Y).obj P ⟶
-      (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj ((sheafification X).obj Q) :=
+      (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj ((sheafification X).obj Q) :=
   liftToPushforward f ((sheafification X).obj Q)
-    (η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).map
+    (η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map
       (toSheafify (Opens.grothendieckTopology X) Q))
 
+/-- The induced map `P⁺⁺ ⟶ f_*(Q⁺⁺)` restricts along the sheafification unit to the original
+presheaf map followed by `f_*` of the unit on `Q`. -/
 @[reassoc]
-theorem toSheafify_sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    {Q : TopCat.Presheaf AddCommGrpCat.{0} X}
-    (η : P ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).obj Q) :
+theorem toSheafify_sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    {Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    (η : P ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q) :
     toSheafify (Opens.grothendieckTopology Y) P ≫ (sheafifyPullback f η).hom =
-      η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).map
+      η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map
         (toSheafify (Opens.grothendieckTopology X) Q) :=
   toSheafify_liftToPushforward f ((sheafification X).obj Q) _
 
-/-- Sheafification pullback respects every commuting presheaf square. -/
+/-- The construction `P ⟶ f_*Q ↦ P⁺⁺ ⟶ f_*(Q⁺⁺)` is natural: it carries every commuting square
+of presheaf maps to a commuting square of sheaf maps. -/
 theorem sheafifyPullback_naturality
-    {P₁ P₂ : TopCat.Presheaf AddCommGrpCat.{0} Y}
-    {Q₁ Q₂ : TopCat.Presheaf AddCommGrpCat.{0} X}
+    {P₁ P₂ : TopCat.Presheaf AddCommGrpCat.{u} Y}
+    {Q₁ Q₂ : TopCat.Presheaf AddCommGrpCat.{u} X}
     (α : P₁ ⟶ P₂) (β : Q₁ ⟶ Q₂)
-    (η₁ : P₁ ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).obj Q₁)
-    (η₂ : P₂ ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).obj Q₂)
+    (η₁ : P₁ ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q₁)
+    (η₂ : P₂ ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q₂)
     (h : α ≫ η₂ = η₁ ≫
-      (TopCat.Presheaf.pushforward AddCommGrpCat.{0} f).map β) :
+      (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map β) :
     (sheafification Y).map α ≫ sheafifyPullback f η₂ =
       sheafifyPullback f η₁ ≫
-        (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).map
+        (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).map
           ((sheafification X).map β) := by
   apply liftToPushforward_hom_ext f
-  let R := TopCat.Presheaf.pushforward AddCommGrpCat.{0} f
+  let R := TopCat.Presheaf.pushforward AddCommGrpCat.{u} f
   have hα : toSheafify (Opens.grothendieckTopology Y) P₁ ≫
       ((sheafification Y).map α).hom =
       α ≫ toSheafify (Opens.grothendieckTopology Y) P₂ :=
