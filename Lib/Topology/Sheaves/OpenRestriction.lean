@@ -18,8 +18,10 @@ public import Mathlib.Topology.Sheaves.Over
 
 Restriction `F ↦ F|_U` along the inclusion of an open subspace is exact and preserves injective
 objects (Hartshorne, *Algebraic Geometry*, III Lemma 6.1; Iversen, *Cohomology of Sheaves*, II.6;
-Godement II.4).  Both facts come from the left adjoint, extension by zero `j_!`, which is exact and
-in particular preserves monomorphisms.
+Godement II §4).  Restriction sits in two adjunctions, and the three facts come from different
+ones: it preserves finite limits because it is the right adjoint in `j_! ⊣ j^*`, finite colimits
+because it is the left adjoint in `j^* ⊣ j_*`, and injective objects because the left adjoint `j_!`
+of the first adjunction preserves monomorphisms.
 
 ## Main results
 
