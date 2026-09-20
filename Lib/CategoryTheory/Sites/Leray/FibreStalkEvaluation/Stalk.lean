@@ -13,10 +13,20 @@ public import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
 /-!
 # Stalk evaluation and normalization-relative derived adapters
 
-Neighborhood evaluations form a cocone and hence a canonical map from the Ext-defined
-cohomology-presheaf stalk. The derived adapters remain visibly relative to an explicit natural
-isomorphism between a pushed injective-resolution homology presheaf and that Ext presheaf.
-This module does not choose such a normalization and does not assert proper base change.
+For a map `f : X ⟶ Y`, a point `y : Y` and a sheaf `F` on `X`, the cohomology groups
+`Hⁿ(f⁻¹U, F)` of the inverse images of the open neighbourhoods `U` of `y` form a filtered system,
+and the higher direct image has the local description
+
+`(Rⁿf_*F)_y = colim_{U ∋ y} Hⁿ(f⁻¹U, F)`
+
+(Godement, *Topologie algébrique et théorie des faisceaux*, II.4.11; Hartshorne, *Algebraic
+Geometry*, III.8.1).  This file builds the map out of that colimit induced by a compatible family
+of evaluations on a finite closed subspace `i : T ⟶ X` contained in the fibre over `y`, and gives
+the filtered-colimit criterion for it to be bijective.
+
+The comparison with a pushed injective resolution is kept relative to an explicit natural
+isomorphism `ρ` between the resolution homology presheaf and the Ext-defined cohomology presheaf;
+this file chooses no such `ρ` and asserts no proper base change theorem.
 -/
 
 @[expose] public section
@@ -91,13 +101,14 @@ theorem presheafStalkEvaluation_germ (n : ℕ) (U : Opens Y) (hy : y ∈ U) :
             (fibre_mem_preimage i f y hfi U hy) n) :=
   colimit.ι_desc (evaluationCocone i hi hfinite κ f y hfi n) (op ⟨U, hy⟩)
 
-/-- The one missing normalization has a precise generic type: it compares the explicit source
-resolution presheaf with Mathlib's Ext-defined source cohomology presheaf. -/
+/-- A normalization comparing the explicit source resolution presheaf `U ↦ Hⁿ(Γ(f⁻¹U, I))` with
+the Ext-defined source cohomology presheaf `U ↦ Hⁿ(f⁻¹U, F)`. -/
 abbrev ResolutionCohomologyNormalization (I : InjectiveResolution F) (n : ℕ) :=
   sourceResolutionPresheaf f I n ≅ sourceCohomologyPresheaf (F := F) f n
 
-/-- The current higher-direct-image comparison relative to a displayed resolution/Ext
-normalization. -/
+/-- Relative to a normalization `ρ`, the stalk of `Rⁿf_*F` at `y` is the stalk at `y` of the
+cohomology presheaf `U ↦ Hⁿ(f⁻¹U, F)`, i.e. the filtered colimit `colim_{U ∋ y} Hⁿ(f⁻¹U, F)`
+(Godement II.4.11, Hartshorne III.8.1). -/
 def derivedStalkIso (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n) :
     TopCat.Presheaf.stalk (higherDirectImageSheaf f F n).obj y ≅
@@ -105,8 +116,8 @@ def derivedStalkIso (I : InjectiveResolution F) (n : ℕ)
   higherDirectImageResolutionStalkIso f F I n y ≪≫
     (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).mapIso ρ
 
-/-- The current higher-direct-image stalk comparison followed by a displayed resolution/Ext
-normalization and the normalization-relative fibre evaluation. -/
+/-- The evaluation map from the stalk `(Rⁿf_*F)_y` to `Hⁿ(T, G)`, relative to a normalization
+`ρ`: the stalk comparison followed by the colimit evaluation. -/
 def derivedStalkEvaluation (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n) :
     TopCat.Presheaf.stalk (higherDirectImageSheaf f F n).obj y ⟶
@@ -124,7 +135,8 @@ def derivedNeighborhoodGerm (I : InjectiveResolution F) (n : ℕ)
   TopCat.Presheaf.germ (sourceCohomologyPresheaf (F := F) f n) U y hy ≫
     (derivedStalkIso (F := F) f y I n ρ).inv
 
-/-- The normalization-relative derived-stalk adapter retains the literal neighborhood fibre evaluation. -/
+/-- On the germ of a neighborhood class, the derived stalk evaluation is the evaluation
+`Hⁿ(f⁻¹U, F) → Hⁿ(T, G)` of that neighborhood. -/
 theorem derivedStalkEvaluation_germ (I : InjectiveResolution F) (n : ℕ)
     (ρ : ResolutionCohomologyNormalization (F := F) f I n)
     (U : Opens Y) (hy : y ∈ U) :
