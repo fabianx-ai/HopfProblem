@@ -21,6 +21,14 @@ The second comparison identifies the triangle occurring in the canonical spectra
 the ordinary truncation triangle of this concrete two-slice. It is deliberately stated before
 shifting the two degrees to `-1` and `0`; the cochain-shift sign is handled by the explicit
 two-slice model in `AdjacentTwoSlice`.
+
+## References
+
+* [M. Kashiwara, P. Schapira, *Categories and sheaves*][kashiwaraSchapira06], §10.1 (compatibility
+  of t-structure truncation with the good truncation of
+  complexes).
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+
 -/
 
 @[expose] public section
