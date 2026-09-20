@@ -122,6 +122,8 @@ def truncationTriangleIso (K : CochainComplex C ℤ) (n : ℤ) :
       constructor
       exact ⟨K.truncLE (n - 1), Iso.refl _, inferInstance⟩) hright (by omega)).choose
 
+/-- The comparison between the truncation triangle of the t-structure and the triangle of the
+short exact sequence of complexes is the identity on the middle vertex. -/
 @[simp]
 theorem truncationTriangleIso_hom_hom₂ (K : CochainComplex C ℤ) (n : ℤ) :
     (truncationTriangleIso K n).hom.hom₂ = 𝟙 (Q.obj K) := by
