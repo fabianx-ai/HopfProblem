@@ -26,6 +26,11 @@ The index type is required to be finite: Hatcher's statement holds for an arbitr
 set with the direct sum on the right, and the finiteness here is what the biproduct
 presentation needs.
 
+This is the *finite-index* form of Proposition 2.6.  The binary form is
+`SingularHomology.sumHomologyEquiv` in `Lib/AlgebraicTopology/SingularHomology/Sum.lean`.
+The two are different statements, not two copies of one — see the note there — and both are
+kept.
+
 ## Outline of the proof
 
 1. *Finite biproducts of chain complexes.*  `singularChainsFiniteBiproducts` supplies the

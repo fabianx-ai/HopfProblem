@@ -45,7 +45,6 @@ import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Topology.Homotopy.LoopSubdivision
@@ -161,6 +160,8 @@ import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone
 import Lib.Algebra.Homology.FunctorCoherence
 import Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift
+import Lib.Algebra.Homology.Homotopy.CocycleEvaluation
+import Lib.Algebra.Homology.ShortComplex.AbCycleClass
 import Lib.Algebra.Homology.ShortComplex.LeftHomologyData
 import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 import Lib.Algebra.Homology.ThreeColumnPage

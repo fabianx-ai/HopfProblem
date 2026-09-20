@@ -151,7 +151,7 @@ import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import Lib.Topology.Covering.DiagonalQuotient
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import S6.TwoExceptionalGluing
 import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
 

@@ -23,6 +23,14 @@ simplex identifications (`singularSimplex_sum_split`, `sumSimplexEquiv`) to a ch
 isomorphism whose components are inverse (`sumChainInverseDegree_*`) — so the statement is
 an equality of homology functors on coproducts, not a mere abstract iso.
 
+This is the *binary* form of Proposition 2.6.  The finite-index form is
+`Coproduct.sigmaHomologyEquiv` in `Lib/AlgebraicTopology/SingularHomology/Coproduct.lean`.
+The two are different statements, not two copies of one: here the space is `X ⊕ Y` and the
+target is a product of two homologies, there it is `Σ i, X i` with `[Fintype ι]` and the
+target is `∀ i, H_n (X i)`.  Neither is an instance of the other in Lean without a transport
+along `X ⊕ Y ≃ₜ Σ b : Bool, …`, and each carries API the other does not (the `sumElim`/fold
+calculus here, the `Pi.single` decomposition there), so both are kept.
+
 ## Outline of the proof
 
 1. *Simplices over a disjoint union split.*  Each simplex of `⊔ Xᵢ` lands in one summand;

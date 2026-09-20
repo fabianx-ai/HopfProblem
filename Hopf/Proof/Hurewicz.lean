@@ -75,7 +75,7 @@ import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.Topology.Homeomorph.DiskCube
 import Hopf.Hurewicz
 import Hopf.Proof.SphereTopology
@@ -178,12 +178,12 @@ theorem simplyConnectedSpace_of_fundamentalGroup_eq_one {X : Type*} [Topological
 
 
 theorem SphereHomology.twoOpenCover_simplyConnectedSpace {X : Type*} [TopologicalSpace X]
-    (D : FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace D.U]
+    (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) [SimplyConnectedSpace D.U]
     [SimplyConnectedSpace D.V] : SimplyConnectedSpace X := by
-  let := twoOpenCover_pathConnectedSpace D
+  let := D.pathConnectedSpace
   exact
     simplyConnectedSpace_of_fundamentalGroup_eq_one D.base
-      (twoOpenCover_fundamentalGroup_eq_one D)
+      (D.fundamentalGroup_eq_one)
 
 
 instance SphereHomology.suspension_simplyConnectedSpace (X : Type) [TopologicalSpace X]

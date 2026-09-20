@@ -271,7 +271,7 @@ theorem SphereNormalCoordinates.normalDerivative_smul_isInvertible {N : Type*}
 def CoverLocalContributions.localMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {ι : Type} (U : Set X) (V : ι → Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U')
     (hfV : ∀ i, Set.MapsTo f (V i) V') (i : ι) : C(↥(U ∩ V i), ↥(U' ∩ V')) :=
-  CoverNaturality.mapOn f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
+  SingularMayerVietoris.coverRestriction f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
 
 theorem CoverLocalContributions.connecting_sum {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {ι : Type} [Fintype ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
@@ -285,7 +285,7 @@ theorem CoverLocalContributions.connecting_sum {X Y : Type} [TopologicalSpace X]
         SingularMayerVietoris.singularHomologyMap (localMap U V U' V' f hfU hfV i) k
           (componentConnecting U V hU hV hd hc k a i) := by
   rw [←
-    CoverNaturality.connecting_naturality_apply U (⋃ i, V i) U' V' f hfU
+    SingularMayerVietoris.connectingHomomorphism_naturality_apply f U (⋃ i, V i) U' V' hfU
       (map_union V V' f hfV) hU (isOpen_iUnion hV) hc hU' hV' hc' k a]
   rw [CoverOverlapHomology.homology_map_out U V hU hV hd]
   apply Finset.sum_congr rfl

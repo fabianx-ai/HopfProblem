@@ -121,7 +121,7 @@ import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting

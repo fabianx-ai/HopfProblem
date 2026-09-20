@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Algebra.Homology.Homotopy.CocycleEvaluation
 public import Lib.AlgebraicTopology.SingularSmallChains.Basic
 
 /-!
@@ -34,22 +35,6 @@ universe u
 
 namespace TopCat.SingularSmallChains
 
-/-- Evaluation of a cochain homotopy on a positive-degree cocycle: if `h` is a homotopy
-between `f` and `g` and `x` is a cocycle in degree `n + 1`, then
-`f x = d (h x) + g x`. -/
-theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
-    {f g : K ⟶ L} (h : _root_.Homotopy f g) (n : ℕ) (x : K.X (n + 1))
-    (hx : K.d (n + 1) (n + 2) x = 0) :
-    f.f (n + 1) x =
-      L.d n (n + 1) (h.hom (n + 1) n x) + g.f (n + 1) x := by
-  have he := h.comm (n + 1)
-  rw [dNext_eq h.hom (show (ComplexShape.up ℕ).Rel (n + 1) (n + 2) from rfl),
-    prevD_eq h.hom (show (ComplexShape.up ℕ).Rel n (n + 1) from rfl)] at he
-  have hx' := congrArg (fun k : K.X (n + 1) ⟶ L.X (n + 1) => k x) he
-  change f.f (n + 1) x = h.hom (n + 2) (n + 1) (K.d (n + 1) (n + 2) x) +
-    L.d n (n + 1) (h.hom (n + 1) n x) + g.f (n + 1) x at hx'
-  simpa only [hx, map_zero, zero_add] using hx'
-
 /-- Under a literal small-chain homotopy equivalence, every positive-degree small cocycle is the
 exact restriction of a global cocycle. -/
 theorem smallCochain_cocycle_lift_exact_succ
@@ -72,7 +57,7 @@ theorem smallCochain_cocycle_lift_exact_succ
   have hchi : (cochainRestriction A U).f (n + 1) psi =
       (AlgebraicTopology.SingularCochains.dualComplex A (complex U)).d
         n (n + 1) chi + phi := by
-    exact homotopy_on_cocycle_succ E.homotopyInvHomId n phi hphi
+    exact CochainComplex.homotopy_on_cocycle_succ E.homotopyInvHomId n phi hphi
   let eta := cochainExtension A U n chi
   refine ⟨psi - (AlgebraicTopology.SingularCochains.complex X A).d
     n (n + 1) eta, ?_, ?_⟩
@@ -105,7 +90,7 @@ theorem smallCochain_boundary_of_restriction_boundary_succ
   let E := cochainRestrictionHomotopyEquiv A U e he
   refine ⟨E.inv.f n chi - E.homotopyHomInvId.hom (n + 1) n phi, ?_⟩
   rw [map_sub, cochainMap_d E.inv n (n + 1), hchi]
-  have hh := homotopy_on_cocycle_succ E.homotopyHomInvId n phi hphi
+  have hh := CochainComplex.homotopy_on_cocycle_succ E.homotopyHomInvId n phi hphi
   change E.inv.f (n + 1) ((cochainRestriction A U).f (n + 1) phi) =
     (AlgebraicTopology.SingularCochains.complex X A).d n (n + 1)
       (E.homotopyHomInvId.hom (n + 1) n phi) + phi at hh
