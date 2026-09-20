@@ -17,11 +17,13 @@ This file specializes the generic Postnikov page-two differential formula to the
 represented by a pushed injective resolution.  The result names the literal differential of
 `resolutionPostnikovSpectralSequence` as the connecting map of its adjacent two-slice triangle.
 
-The source and target Leray-page normalizations are supplied downstream by
-`Leray.ResolutionPostnikovD2Coordinates`; their complete unsigned match with the positive
-two-step resolution class is proved in `Leray.ResolutionPostnikovD2Transgression`.  This owner
-exposes the exact page morphism without assuming convergence or any application-specific support
-theorem.
+That the `d₂` of a spectral sequence obtained from a Postnikov (t-structure) tower is the
+connecting morphism of the triangle joining two adjacent slices is the standard description of
+the differentials of the spectral object of a filtered object (Verdier, *Des catégories dérivées
+des catégories abéliennes*, II.4.3; Kashiwara–Schapira, *Categories and Sheaves*, §12).  For the
+Leray spectral sequence this `d₂` is the transgression of Godement II.4.17.
+
+No convergence and no support hypothesis is used.
 -/
 
 @[expose] public section
