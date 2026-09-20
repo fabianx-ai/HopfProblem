@@ -119,9 +119,10 @@ theorem cechDerivedGlobalSectionsInv_comp_hom :
     hE, Category.id_comp]
   exact hD
 
-/-- The entire degree-zero transformation is χ followed by κ inverse. The fixed
-α-zero and Φ-zero receipts cancel the SAME ε inverse and ε, all over literal
-global sections (textbook M13, fixed natural degree-zero identifications). -/
+/-- In degree zero the comparison `cechDerivedGlobalSectionsHom` is the identification of
+degree-zero Čech cohomology with global sections, followed by the inverse of the identification
+of degree-zero derived global sections with global sections.  Both are the fixed natural
+degree-zero identifications, taken over the literal global-sections functor. -/
 theorem cechDerivedGlobalSectionsHom_app_zero :
     (cechDerivedGlobalSectionsHom X).app 0 =
       (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫
@@ -156,8 +157,7 @@ that source gives its whole delta-morphism identity. Thus every degree is a
 natural isomorphism, proving the textbook comparison statement (4). Both original
 morphisms retain all coefficient naturalities and original positive connecting
 squares. Any other normalized comparison equals the original forward morphism.
-Only afterward is this comparison identified with the earlier fixed Ext composite
-(textbook M14, lines 1880–1891 through “sections must be (C30).”).
+Only afterward is this comparison identified with the earlier fixed Ext composite.
 No Godement comparison is used in this construction or its canonicity.
 -/
 
