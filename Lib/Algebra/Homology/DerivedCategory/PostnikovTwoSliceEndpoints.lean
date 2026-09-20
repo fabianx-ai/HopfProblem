@@ -20,6 +20,12 @@ After shifting the triangle by `q + 1`, this file identifies them with single ob
 The same normalizations are transported to the cutoff-zero triangle of the explicit shifted
 two-slice.  The exported composition equalities make that transport available without unfolding
 the endpoint components selected by t-structure triangle uniqueness.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3 (endpoints of the
+  adjacent Postnikov triangle).
+
 -/
 
 @[expose] public section
