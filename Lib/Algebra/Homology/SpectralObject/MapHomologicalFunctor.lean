@@ -14,6 +14,14 @@ public import Mathlib.CategoryTheory.Triangulated.SpectralObject
 
 A homological functor turns every distinguished triangle of a triangulated spectral object into
 the functorial long exact sequence required by an abelian spectral object.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3 (exact couples
+  from a homological functor on a filtered
+  triangulated object).
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter II.
+
 -/
 
 @[expose] public section
