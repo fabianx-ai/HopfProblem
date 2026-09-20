@@ -25,8 +25,8 @@ Degree zero, which uses the augmentation kernel, is deliberately separate.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], Theorem 2.7.6.
-* [R. Hartshorne, *Algebraic geometry*][hartshorne1977], Chapter III, §1.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.7.6.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, §1.
 -/
 
 @[expose] public section

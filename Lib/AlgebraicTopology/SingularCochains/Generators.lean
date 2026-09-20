@@ -18,7 +18,7 @@ and the pullback evaluation lemma.
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 (a cochain is a function on singular
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 (a cochain is a function on singular
   simplices, `Hom(⨁_σ ℤ, A) ≅ ∏_σ A`); compare `Finsupp.lhom_ext` in Mathlib.
 -/
 

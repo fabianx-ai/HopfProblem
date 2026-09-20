@@ -25,8 +25,8 @@ The path-factorization argument was adapted from Sebastian Kumar's Mathlib PR 28
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], Theorem 1.20 (van Kampen).
-* [T. tom Dieck, *Algebraic topology*][tomDieck2008], §2.6.
+* [A. Hatcher, *Algebraic topology*][hatcher02], Theorem 1.20 (van Kampen).
+* [T. tom Dieck, *Algebraic topology*][tomDieck08], §2.6.
 -/
 
 @[expose] public noncomputable section

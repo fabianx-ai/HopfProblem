@@ -21,9 +21,9 @@ No injective, flasque, or sheaf-specific hypothesis occurs here.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §2.4 (breaking a
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.4 (breaking a
   resolution into short exact sequences).
-* [R. Hartshorne, *Algebraic geometry*][hartshorne1977], Chapter III, §1.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, §1.
 -/
 
 @[expose] public section

@@ -18,8 +18,8 @@ surjectivity on positive-degree homology, while detection of actual boundaries g
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §2.1 (cycles modulo boundaries).
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §1.1; compare
+* [A. Hatcher, *Algebraic topology*][hatcher02], §2.1 (cycles modulo boundaries).
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §1.1; compare
   `ShortComplex.ab_exact_iff` in Mathlib.
 -/
 

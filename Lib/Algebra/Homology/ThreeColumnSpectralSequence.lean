@@ -23,7 +23,7 @@ successive quotients.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §5.2 (spectral sequences
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §5.2 (spectral sequences
   supported in finitely many columns and their degeneration).
 -/
 

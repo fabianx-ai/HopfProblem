@@ -24,7 +24,7 @@ bijectivity requires the usual extra hypotheses eliminating the `Ext` term.
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 and Theorem 3.2 (the Kronecker
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 and Theorem 3.2 (the Kronecker
   pairing `⟨φ, z⟩` and the evaluation half of the universal coefficient theorem).
 -/
 

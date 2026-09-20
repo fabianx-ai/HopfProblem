@@ -18,8 +18,8 @@ complexes.
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §2.1 (cycles modulo boundaries).
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §1.1; compare
+* [A. Hatcher, *Algebraic topology*][hatcher02], §2.1 (cycles modulo boundaries).
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §1.1; compare
   `HomologicalComplex.quasiIso_iff` in Mathlib.
 -/
 

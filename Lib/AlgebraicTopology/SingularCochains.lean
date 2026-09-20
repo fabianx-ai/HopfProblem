@@ -21,7 +21,7 @@ a continuous homotopy proves homotopy invariance for every small abelian coeffic
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 (singular cochains `Hom(Cₙ(X), G)`
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 (singular cochains `Hom(Cₙ(X), G)`
   and their homotopy invariance).
 -/
 

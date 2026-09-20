@@ -14,9 +14,9 @@ matrix.
 
 ## References
 
-* [J. Milnor, *Lectures on the h-cobordism theorem*][milnor1965], §7 (the algebra behind
+* [J. Milnor, *Lectures on the h-cobordism theorem*][milnor65], §7 (the algebra behind
   Theorem 7.6).
-* [S. Lang, *Algebra*][lang2002], Chapter III (presentations of modules by generators and
+* [S. Lang, *Algebra*][lang02], Chapter III (presentations of modules by generators and
   relations); compare `Module.Presentation` in Mathlib.
 -/
 

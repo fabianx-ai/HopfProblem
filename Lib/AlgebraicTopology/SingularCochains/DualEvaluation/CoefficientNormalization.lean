@@ -18,7 +18,7 @@ universal coefficient statement for native singular chains.
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 and Theorem 3.2.
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 and Theorem 3.2.
 -/
 
 @[expose] public section

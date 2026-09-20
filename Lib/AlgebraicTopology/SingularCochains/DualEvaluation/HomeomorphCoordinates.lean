@@ -17,7 +17,7 @@ induced homology map.  The degree-one statements are kept alongside the positive
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 (naturality of the Kronecker pairing,
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 (naturality of the Kronecker pairing,
   `⟨f^*φ, c⟩ = ⟨φ, f_* c⟩`).
 -/
 

@@ -20,7 +20,7 @@ hypothesis.
 
 ## References
 
-* [A. Hatcher, *Algebraic topology*][hatcher2002], Theorem 3.2 (the universal coefficient
+* [A. Hatcher, *Algebraic topology*][hatcher02], Theorem 3.2 (the universal coefficient
   theorem for a free chain complex, the `Ext` term vanishing when `Hₙ` is projective).
 -/
 

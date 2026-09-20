@@ -20,8 +20,8 @@ mapping cone.  The unique nonzero differential is `f`, with no sign.
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §1.5 (mapping cones).
-* [S. I. Gelfand, Yu. I. Manin, *Methods of homological algebra*][gelfandManin2003], Chapter III.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §1.5 (mapping cones).
+* [S. I. Gelfand, Yu. I. Manin, *Methods of homological algebra*][gelfandManin03], Chapter III.
 -/
 
 @[expose] public section
