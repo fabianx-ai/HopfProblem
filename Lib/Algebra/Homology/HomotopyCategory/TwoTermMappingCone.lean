@@ -17,6 +17,11 @@ A morphism `f : X ⟶ Y` regarded as a morphism of cochain complexes concentrate
 has a mapping cone concentrated in degrees `-1` and `0`.  This file constructs that literal
 two-term complex with Mathlib's `ConnectData` and gives an exact complex-level isomorphism to the
 mapping cone.  The unique nonzero differential is `f`, with no sign.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §1.5 (mapping cones).
+* [S. I. Gelfand, Yu. I. Manin, *Methods of homological algebra*][gelfandManin2003], Chapter III.
 -/
 
 @[expose] public section
@@ -36,9 +41,11 @@ universe v u
 variable {C : Type u} [Category.{v} C] [Abelian C]
 variable {X Y : C} (f : X ⟶ Y)
 
+/-- In the cochain complex shape on `ℤ`, degree `-1` is adjacent to degree `0`. -/
 lemma relNegOneZero : (ComplexShape.up ℤ).Rel (-1) 0 :=
   ComplexShape.up_mk (-1) 0 (by omega)
 
+/-- In the cochain complex shape on `ℤ`, degree `0` is adjacent to degree `1`. -/
 lemma relZeroOne : (ComplexShape.up ℤ).Rel 0 1 :=
   ComplexShape.up_mk 0 1 (by omega)
 
@@ -61,6 +68,7 @@ noncomputable def twoTermData : ConnectData (chainSingleZero X) (cochainSingleZe
 `f`. -/
 abbrev twoTerm : CochainComplex C ℤ := (twoTermData f).cochainComplex
 
+/-- The two-term complex vanishes outside degrees `-1` and `0`. -/
 lemma twoTerm_isZero_X (i : ℤ) (hneg : i ≠ -1) (hzero : i ≠ 0) :
     IsZero ((twoTerm f).X i) := by
   rcases i with (n | n)
@@ -75,6 +83,8 @@ lemma twoTerm_isZero_X (i : ℤ) (hneg : i ≠ -1) (hzero : i ≠ 0) :
     subst n
     exact hneg rfl
 
+/-- The mapping cone of a morphism of complexes concentrated in degree zero vanishes outside
+degrees `-1` and `0`. -/
 lemma mappingCone_single_isZero_X (i : ℤ) (hneg : i ≠ -1) (hzero : i ≠ 0) :
     IsZero ((mappingCone ((singleFunctor C 0).map f)).X i) := by
   rw [mappingCone.isZero_X_iff]
@@ -84,6 +94,7 @@ lemma mappingCone_single_isZero_X (i : ℤ) (hneg : i ≠ -1) (hzero : i ≠ 0) 
   · apply HomologicalComplex.isZero_single_obj_X
     exact hzero
 
+/-- In degree `-1` the two-term complex is `X`, which is the degree `-1` term of the mapping cone. -/
 noncomputable def twoTermPointIsoNegOne :
     (twoTerm f).X (-1) ≅ (mappingCone ((singleFunctor C 0).map f)).X (-1) :=
   HomologicalComplex.singleObjXSelf (ComplexShape.down ℕ) 0 X ≪≫
@@ -93,6 +104,7 @@ noncomputable def twoTermPointIsoNegOne :
     (HomologicalComplex.homotopyCofiber.XIsoBiprod
       ((singleFunctor C 0).map f) (-1) 0 relNegOneZero).symm
 
+/-- In degree `0` the two-term complex is `Y`, which is the degree `0` term of the mapping cone. -/
 noncomputable def twoTermPointIsoZero :
     (twoTerm f).X 0 ≅ (mappingCone ((singleFunctor C 0).map f)).X 0 :=
   HomologicalComplex.singleObjXSelf (ComplexShape.up ℕ) 0 Y ≪≫
@@ -102,6 +114,8 @@ noncomputable def twoTermPointIsoZero :
     (HomologicalComplex.homotopyCofiber.XIsoBiprod
       ((singleFunctor C 0).map f) 0 1 relZeroOne).symm
 
+/-- Degreewise comparison between the two-term complex `X ⟶ Y` in degrees `-1, 0` and the
+mapping cone of `f` viewed in degree zero. -/
 noncomputable def twoTermPointIso (i : ℤ) :
     (twoTerm f).X i ≅ (mappingCone ((singleFunctor C 0).map f)).X i := by
   by_cases hneg : i = -1
@@ -115,6 +129,7 @@ noncomputable def twoTermPointIso (i : ℤ) :
 
 set_option backward.isDefEq.respectTransparency false
 
+/-- In degree `-1` the comparison is the mapping-cone inclusion `inl`. -/
 lemma twoTermPointIsoNegOne_hom :
     (twoTermPointIso f (-1)).hom =
       (mappingCone.inl ((singleFunctor C 0).map f)).v 0 (-1) (by omega) := by
@@ -126,6 +141,7 @@ lemma twoTermPointIsoNegOne_hom :
   simp only [Category.id_comp]
   rfl
 
+/-- In degree `0` the comparison is the mapping-cone inclusion `inr`. -/
 lemma twoTermPointIsoZero_hom :
     (twoTermPointIso f 0).hom =
       (mappingCone.inr ((singleFunctor C 0).map f)).f 0 := by
