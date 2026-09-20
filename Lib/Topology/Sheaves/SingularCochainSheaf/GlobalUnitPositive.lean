@@ -13,7 +13,7 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 # The singular-cochain comparison in every positive degree
 
 On a normal paracompact space the comparison map `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
-on cohomology in every positive degree.  This is Bredon, *Sheaf Theory* III Thm. 1.1 (see also
+on cohomology in every positive degree.  This is Bredon, *Sheaf Theory* III §1 (see also
 Warner, *Foundations of Differentiable Manifolds and Lie Groups* 5.31); the ingredients are
 surjectivity of the comparison map, detection of its kernel on the chains small for an open cover,
 and the small-chain homotopy equivalence (Hatcher, *Algebraic Topology* Prop. 2.21).
@@ -134,7 +134,7 @@ theorem globalCochainComparison_homology_isIso_succ_of_small_chains (n : ℕ)
 
 /-- On a normal paracompact space the comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
 on cohomology in every positive degree, given the small-chain homotopy equivalences for open
-covers of `X` (Bredon, *Sheaf Theory* III Thm. 1.1). -/
+covers of `X` (Bredon, *Sheaf Theory* III §1). -/
 theorem globalCochainComparison_homology_isIso_succ
     [NormalSpace X] [ParacompactSpace X]
     (hsmall : HasSmallChainEquivalences X) (n : ℕ) :

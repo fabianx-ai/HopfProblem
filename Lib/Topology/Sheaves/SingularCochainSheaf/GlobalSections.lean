@@ -15,7 +15,7 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit
 
 On a normal paracompact space the comparison map `S^n(X; A) → Γ(X, 𝒮^n(·; A))` is surjective:
 every global section of the sheafified singular-cochain presheaf is represented by a singular
-cochain on `X`.  This is Bredon, *Sheaf Theory* III Prop. 1.1 (see also Warner, *Foundations of
+cochain on `X`.  This is Bredon, *Sheaf Theory* III §1 (see also Warner, *Foundations of
 Differentiable Manifolds and Lie Groups* 5.31); it is proved by patching local representatives
 along a closed locally finite refinement of a cover.
 
@@ -78,7 +78,7 @@ theorem globalCochainUnit_germ (phi : Cochains X A n) (U : Opens X)
 
 /-- On a normal paracompact space every global section of `𝒮^n(·; A)` is the image of a singular
 cochain on `X`: the comparison map `S^n(X; A) → Γ(X, 𝒮^n(·; A))` is surjective (Bredon, *Sheaf
-Theory* III Prop. 1.1). -/
+Theory* III §1). -/
 theorem globalCochainUnit_surjective [NormalSpace X] [ParacompactSpace X] :
     Function.Surjective (globalCochainUnit X A n) := by
   classical

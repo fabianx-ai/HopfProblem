@@ -14,8 +14,8 @@ public import Mathlib.Topology.Sheaves.Abelian
 /-!
 # Local kernel lifts and exactness after sheafification
 
-Exactness of a short complex of sheaves is a stalkwise condition (Iversen, *Cohomology of Sheaves*
-II.1; Hartshorne, *Algebraic Geometry* II Ex. 1.2).  Consequently a short complex of presheaves
+Exactness of a short complex of sheaves is a stalkwise condition (Hartshorne, *Algebraic Geometry*
+II Ex. 1.2; cf. Iversen, *Cohomology of Sheaves*).  Consequently a short complex of presheaves
 whose section kernels are locally in the image of the previous map has exact sheafification.
 
 ## Main results

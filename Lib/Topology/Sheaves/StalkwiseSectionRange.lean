@@ -16,7 +16,7 @@ public import Mathlib.Topology.Sheaves.Stalks
 
 For a monomorphism of sheaves of abelian groups, a section lies in the image over an open set
 exactly when each of its germs lies in the image of the corresponding map of stalks (Hartshorne,
-*Algebraic Geometry* II Ex. 1.2; Iversen, *Cohomology of Sheaves* II.1).  The reverse implication
+*Algebraic Geometry* II Ex. 1.2; cf. Iversen, *Cohomology of Sheaves*).  The reverse implication
 chooses local representatives of the stalk preimages and glues them; monicity supplies
 compatibility and uniqueness on overlaps.
 
