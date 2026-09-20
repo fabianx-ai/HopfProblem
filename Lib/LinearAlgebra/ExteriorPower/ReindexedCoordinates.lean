@@ -13,8 +13,25 @@ public import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
 /-!
 # Reindexed coordinates on finite exterior powers
 
-This file transports the standard powerset-indexed exterior basis, its minor matrix, and its
-coordinate formula across an arbitrary finite coordinate ordering.
+This file transports the standard powerset-indexed exterior basis of `⋀[R]^n (Fin m → R)`, its
+compound matrix of minors, and its coordinate formula across an arbitrary bijection `I ≃
+Set.powersetCard (Fin m) n`, i.e. across a chosen ordering of the coordinates of the exterior
+power.
+
+## Main definitions
+
+* `exteriorPower.reindexedFinBasis`: the standard exterior basis reindexed by `I`.
+* `exteriorPower.reindexedFinCoordinates`: the resulting coordinates in `I → R`.
+* `exteriorPower.reindexedFinMatrix`: the compound matrix of minors reindexed on both sides.
+
+## Main results
+
+* `exteriorPower.toMatrix_map_reindexed`, `exteriorPower.reindexedFinCoordinates_map`: the matrix
+  of `⋀^n A` in the reindexed bases is the reindexed compound matrix.
+
+## References
+
+* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §8.5–8.6.
 -/
 
 @[expose] public section
@@ -33,6 +50,7 @@ noncomputable def reindexedFinBasis {m n : ℕ} {I : Type v₁}
     Module.Basis I R (⋀[R]^n (Fin m → R)) :=
   (finBasis R m n).reindex e.symm
 
+/-- A reindexed basis vector is the standard basis vector at the corresponding subset. -/
 @[simp]
 theorem reindexedFinBasis_apply {m n : ℕ} {I : Type v₁}
     (e : I ≃ Set.powersetCard (Fin m) n) (i : I) :
@@ -46,12 +64,14 @@ noncomputable def reindexedFinCoordinates {m n : ℕ} {I : Type v₁} [Fintype I
     (⋀[R]^n (Fin m → R)) ≃ₗ[R] (I → R) :=
   (reindexedFinBasis R e).equivFun
 
+/-- The reindexed coordinates of a vector are its coefficients in the reindexed basis. -/
 @[simp]
 theorem reindexedFinCoordinates_apply {m n : ℕ} {I : Type v₁} [Fintype I]
     (e : I ≃ Set.powersetCard (Fin m) n) (x : ⋀[R]^n (Fin m → R)) (i : I) :
     reindexedFinCoordinates R e x i = (reindexedFinBasis R e).repr x i :=
   congrFun ((reindexedFinBasis R e).equivFun_apply x) i
 
+/-- A reindexed basis vector has the corresponding coordinate unit vector. -/
 @[simp]
 theorem reindexedFinCoordinates_basis {m n : ℕ} {I : Type v₁}
     [Fintype I] [DecidableEq I]
