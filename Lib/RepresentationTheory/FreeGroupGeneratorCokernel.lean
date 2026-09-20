@@ -31,8 +31,9 @@ generator `x_a` may independently be replaced by its inverse without changing th
 
 ## References
 
-* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], II.3 (the beginning of the free
-  resolution of `ℤ` over `ℤF` and `H₀(F(A); M) ≅ M_F`).
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. I §4 (the beginning of the free
+  resolution of `ℤ` over `ℤF` for a free group `F`), II.2 (coinvariants) and III.1 (homology with
+  coefficients, `H₀(F(A); M) ≅ M_F`).
 -/
 
 @[expose] public section
@@ -141,8 +142,9 @@ theorem freeGroupGeneratorCokernelEquivCoinvariants_mk [Fintype A] [DecidableEq 
 
 /-- The oriented generator cokernel as the standard zeroth group-homology module.
 
-The ring, the generating set and the module share one universe because Mathlib's `Rep` (hence
-`groupHomology`) is defined for a ring and a group in the same universe as the module. -/
+The ring, the generating set and the module share one universe because Mathlib's `groupHomology`
+is declared for a ring and a group in a single universe `{k G : Type u} (A : Rep.{u} k G)`
+(`Rep` itself is universe-polymorphic in all three). -/
 def freeGroupGeneratorCokernelEquivGroupHomologyH0
     {S B M : Type u} [CommRing S] [AddCommGroup M] [Module S M]
     [Fintype B] [DecidableEq B]
