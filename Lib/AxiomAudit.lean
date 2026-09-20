@@ -3231,15 +3231,6 @@ is an evidence command rather than library content.
 #check chartedSpaceStronglyLocallyContractible
 #print axioms chartedSpaceStronglyLocallyContractible
 
-/-! ## `Lib.Algebra.Group.SurjectiveDescent` -/
-
-#check descendHomOfSurjective
-#print axioms descendHomOfSurjective
-#check fibre_constant_of_ker_le
-#print axioms fibre_constant_of_ker_le
-#check descendHomOfSurjective_comp
-#print axioms descendHomOfSurjective_comp
-
 /-! ## `Lib.LinearAlgebra.ColumnKernel` -/
 
 #check LinearMap.kerEquivOfColumnIso

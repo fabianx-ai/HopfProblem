@@ -147,7 +147,6 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Basic
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.PathValue
 import Lib.AlgebraicTopology.SingularCochains
-import Lib.Algebra.Group.SurjectiveDescent
 import Lib.Algebra.Homology.Embedding.ExtendHomologySequence
 import Lib.Algebra.Homology.HomologicalComplex.CycleLift
 import Lib.Algebra.Homology.HomologicalComplex.ChainCycleLift
