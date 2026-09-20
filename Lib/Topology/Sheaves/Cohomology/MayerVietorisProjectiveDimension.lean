@@ -15,6 +15,8 @@ public import Mathlib.Topology.Sheaves.MayerVietoris
 The Mayer--Vietoris short exact sequence of represented-open sheaves gives the standard
 dimension bound for a union: a bound `< n` on the intersection and bounds `< n + 1` on the two
 opens imply a bound `< n + 1` on their union.
+
+Reference: Bredon, *Sheaf Theory*, II.13 (the Mayer--Vietoris sequence in sheaf cohomology).
 -/
 
 @[expose] public section
