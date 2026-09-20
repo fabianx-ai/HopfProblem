@@ -56,8 +56,9 @@ def IsAcyclic : Prop :=
   ∀ (i q : ℕ), 0 < q →
     Subsingleton (CategoryTheory.Sheaf.H.{u} (R.X i) q)
 
-/-- Positive-degree vanishing of the cohomology of the resolution terms is exactly acyclicity
-for the constant sheaf that defines sheaf cohomology. -/
+/-- If every term of the resolution `R` has vanishing sheaf cohomology in all positive degrees,
+then `R` is an acyclic resolution for the constant integral sheaf that defines sheaf cohomology.
+The two properties unfold to the same statement, so the hypothesis is itself the proof. -/
 theorem isAcyclicFor (h : IsAcyclic R) :
     R.IsAcyclicFor (TopCat.ConstantSheaf.integralSheaf X) := h
 
