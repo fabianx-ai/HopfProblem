@@ -258,8 +258,11 @@ private structure FiniteBrickRefinement {ι : Type r} (U : ι → Opens Boundary
   refinement : OpenCover.Refinement (brickOpens hN hh epsilon) U
   multiplicity : OpenCover.MultiplicityLE (brickOpens hN hh epsilon) 3
 
-/- assemble the previously proved receipts at one supplied scale.
-Every component uses the same original cover and the same mesh-indexed brick family. -/
+/- Build a `FiniteBrickRefinement U` from a supplied mesh scale: the brick family
+`brickOpens hN hh epsilon` at mesh `h = 2 / N` with margin `epsilon`, packaged with the
+finiteness of its index type, the fact that it is an open cover, its refinement of `U`, and its
+multiplicity bound `3`.  Every component uses the same original cover and the same mesh-indexed
+brick family. -/
 private noncomputable def finiteBrickRefinementOfScale {ι : Type r}
     {N : ℕ} {h epsilon lambda : ℝ} (U : ι → Opens Boundary)
     (hN : 0 < N) (hh : h = 2 / (N : ℝ))
