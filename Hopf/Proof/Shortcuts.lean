@@ -34,7 +34,7 @@ import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
-import Lib.Geometry.Manifold.Morse.MinimalSystem
+import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Topology.Homotopy.Suspension
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.Suspension

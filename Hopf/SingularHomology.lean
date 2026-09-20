@@ -92,7 +92,7 @@ import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
-import Lib.Geometry.Manifold.Morse.MinimalSystem
+import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Topology.MappingTorus.Wang

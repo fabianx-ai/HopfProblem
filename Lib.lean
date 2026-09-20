@@ -78,7 +78,6 @@ import Lib.Geometry.Manifold.Quotient.LocalOrbit
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.Morse.CellStructure
-import Lib.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.CutTransport
 import Lib.Geometry.Manifold.Morse.MiddleBlocks
