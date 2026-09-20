@@ -17,31 +17,45 @@ public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # The immersion chain: plane, curve and manifold immersions in charts
 
-Immersion existence and extension in the chart-native setting: the plane
-immersion chain (generalize `Plane := ℝ x ℝ`), curve immersions, the manifold
-immersion relation with its tubular-neighborhood one-offs, and the perturbation
-machinery feeding the relative immersion theorem (Hirsch, *Differential
-Topology*, Ch. 8; the weak Whitney immersion theorem).
+Existence of immersions and embeddings, in the relative form, for maps of a plane or of a line
+into a manifold, and the perturbation machinery they rest on.  The statements are those of
+Hirsch, *Differential Topology*, Ch. 8 (relative immersion and embedding theorems) and of
+Whitney's weak embedding theorem (Whitney, *Differentiable manifolds*, Thm 5): in the ranges
+`2 dim X < dim N` (embedding) and `2 dim X ≤ dim N` (immersion), a continuous map is homotopic,
+relative to a closed set where it is already good, to an embedding or an immersion.
 
 ## Outline
 
-1. `ManifoldImmersion`: the immersion relation for charted manifolds,
-   its local criteria and its stability under perturbation.
-2. `PlaneImmersion`: the two-dimensional model chain, stated for a
-   general `Plane` (representation-only generality dictated by the twin file).
-3. `CurveImmersion` and the arc/germ existence one-offs.
-4. Support machinery: `OpenObstacle`, `ManifoldSmoothing`,
-   `FrameField` with `AxisCoordinates`, and the tubular
-   neighborhood existence one-offs.
+1. Homogeneity of a manifold: `MorseCancellation.exists_isotopic_pointMoving_of_path` and the
+   point orbits under diffeomorphisms supported in an open set.
+2. `ChartMapPerturbation` and `PlaneImmersion`: the chart-supported perturbation of a map and the
+   Sard-style count showing that the parameters creating a double point or a kernel vector form a
+   set of Hausdorff dimension smaller than the parameter space.
+3. `ManifoldImmersion`: the patch-by-patch induction giving the relative immersion theorem
+   (`exists_immersion_on_compact_rel`), the relative embedding theorem
+   (`exists_relative_compact_embedding`, `exists_relative_compact_embedding_twoDimensional`) and
+   their forms with avoidance of a second map's image.
+4. `CurveImmersion` and `WeightedPerturbation`: the same chain in dimension one, ending in
+   `exists_embedded_arc_with_local_endpoint_germs` and
+   `MorseCancellation.exists_clean_arc_with_local_endpoint_germs`.
+5. Tubular neighbourhoods of a star-convex embedded immersed compact set
+   (`exists_clean_tubularNeighborhood_of_embedded_starConvex`, Hirsch Ch. 4 §5), and the frame
+   algebra (`FrameField`, `AxisCoordinates`, `LinearFramePaths`) used to produce charts with
+   prescribed germs at two points of an arc.
 
-## Main definitions and results
+## Main results
 
-* `ManifoldImmersion` - the immersion relation used downstream.
-* The `exists_*_tubularNeighborhood_of_embedded_starConvex` family.
+* `ManifoldImmersion.exists_relative_compact_embedding_twoDimensional` - the relative embedding
+  theorem for a two-dimensional source into a manifold of dimension at least `5`.
+* `ManifoldImmersion.exists_relative_compact_curve_embedding` - its one-dimensional counterpart.
+* `exists_clean_tubularNeighborhood_of_embedded_starConvex` - the tubular neighbourhood theorem
+  in the form used here.
+* `MorseCancellation.exists_clean_two_sheet_arc` - two disjoint embedded surfaces in a
+  five-manifold joined by a clean embedded arc.
 
 ## References
 
-* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 8.
+* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 3, Ch. 4 §5, Ch. 8.
 * [whitney36] H. Whitney, *Differentiable manifolds*, Thm 5.
 
 ## Tags
@@ -55,6 +69,9 @@ open scoped ContDiff ENNReal
 
 @[expose] public noncomputable section
 
+/-- Homogeneity of a manifold, local form: every point `x` of an open set `U` has a neighbourhood `V
+⊆ U` such that any `y ∈ V` is the image of `x` under a diffeomorphism isotopic to the identity
+and supported in `U`. -/
 theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -92,6 +109,8 @@ theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [Norm
     · intro z hz
       exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
 
+/-- Two distinct points can be pushed simultaneously into any dense set by a diffeomorphism isotopic
+to the identity. -/
 theorem MorseCancellation.exists_isotopic_two_points_in_dense {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -115,6 +134,7 @@ theorem MorseCancellation.exists_isotopic_two_points_in_dense {E H M : Type*} [N
     rw [hdfix y hyU, hey]
     exact hy'B
 
+/-- A point and its image under a diffeomorphism isotopic to the identity are joined by a path. -/
 theorem MorseCancellation.isotopicToIdentity_joined {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -127,6 +147,8 @@ theorem MorseCancellation.isotopicToIdentity_joined {E H M : Type*} [NormedAddCo
         source' := hzero x
         target' := hone x }⟩
 
+/-- The set of points reachable from `x` by a diffeomorphism isotopic to the identity and supported
+in `U`. -/
 def MorseCancellation.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace M] [ChartedSpace H M] (J : ModelWithCorners ℝ E H)
     (U : Set M) (x : M) : Set M :=
@@ -135,6 +157,7 @@ def MorseCancellation.isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E] 
       ∃ d : Diffeomorph J J M M ∞,
         SupportedDiffeomorph.IsotopicToIdentity d ∧ d x = y ∧ ∀ z ∉ U, d z = z}
 
+/-- The orbit of `x` under isotopies supported in an open set is open. -/
 theorem MorseCancellation.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -152,6 +175,8 @@ theorem MorseCancellation.isOpen_isotopicPointOrbit {E H M : Type*} [NormedAddCo
     change e (d w) = w
     rw [hdfix w hw, hefix w hw]
 
+/-- The complement of the orbit of `x` inside `U` is open; with the previous lemma this makes the
+orbit relatively clopen in `U`. -/
 theorem MorseCancellation.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -173,6 +198,8 @@ theorem MorseCancellation.isOpen_sdiff_isotopicPointOrbit {E H M : Type*} [Norme
     rw [hdfix w hw]
     exact SupportedDiffeomorph.inverse_fixed_outside e.toEquiv hefix w hw
 
+/-- Homogeneity of a manifold: any two points of a preconnected subset of an open set `U` are
+exchanged by a diffeomorphism isotopic to the identity and supported in `U`. -/
 theorem MorseCancellation.exists_isotopic_pointMoving_of_preconnected {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
@@ -196,6 +223,8 @@ theorem MorseCancellation.exists_isotopic_pointMoving_of_preconnected {E H M : T
       (isOpen_sdiff_isotopicPointOrbit hU x) hdisjoint hcover ⟨x, hx, hxOrbit⟩
   exact (hsub hy).2
 
+/-- Path form of homogeneity: if `x` and `y` are joined by a path inside `U`, some diffeomorphism
+isotopic to the identity and supported in `U` carries `x` to `y`. -/
 theorem MorseCancellation.exists_isotopic_pointMoving_of_path {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -209,9 +238,12 @@ theorem MorseCancellation.exists_isotopic_pointMoving_of_path {E H M : Type*} [N
   · exact ⟨0, γ.source⟩
   · exact ⟨1, γ.target⟩
 
+/-- A smooth surjection `ℝ → [0, 1]` that is flat at the two ends, used to reparametrise a path
+smoothly. -/
 def CurveImmersion.smoothTime (t : ℝ) : unitInterval :=
   Set.projIcc 0 1 zero_le_one (Real.smoothTransition t)
 
+/-- `smoothTime` is smooth as a map into the unit interval with boundary. -/
 theorem CurveImmersion.contMDiff_smoothTime : ContMDiff 𝓘(ℝ, ℝ) (𝓡∂ 1) ∞ smoothTime := by
   let : Fact ((0 : ℝ) < 1) := ⟨zero_lt_one⟩
   have hp : ContMDiffOn 𝓘(ℝ, ℝ) (𝓡∂ 1) ∞ (Set.projIcc (0 : ℝ) 1 zero_le_one) (Set.Icc 0 1) :=
@@ -222,14 +254,17 @@ theorem CurveImmersion.contMDiff_smoothTime : ContMDiff 𝓘(ℝ, ℝ) (𝓡∂ 
     hp.comp ht.contMDiff.contMDiffOn
       (fun t _ => ⟨Real.smoothTransition.nonneg t, Real.smoothTransition.le_one t⟩)
 
+/-- `smoothTime` sends `0` to `0`. -/
 theorem CurveImmersion.smoothTime_zero : smoothTime 0 = 0 := by
   apply Subtype.ext
   simp [smoothTime]
 
+/-- `smoothTime` sends `1` to `1`. -/
 theorem CurveImmersion.smoothTime_one : smoothTime 1 = 1 := by
   apply Subtype.ext
   simp [smoothTime]
 
+/-- Two points joined by a continuous path in a manifold are joined by a smooth curve `ℝ → N`. -/
 theorem exists_smooth_connecting_curve {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
     [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] {x y : N} (γ : Path x y) :
@@ -256,11 +291,13 @@ theorem exists_smooth_connecting_curve {G H N : Type*} [NormedAddCommGroup G]
     rw [CurveImmersion.smoothTime_one, H'.apply_one]
     rfl
 
+/-- The set of points reachable from `x` by a diffeomorphism that is the identity outside `U`. -/
 def SupportedDiffeomorph.pointOrbit {E H M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace H] [TopologicalSpace M] [ChartedSpace H M] (J : ModelWithCorners ℝ E H)
     (U : Set M) (x : M) : Set M :=
   {y | y ∈ U ∧ ∃ d : Diffeomorph J J M M ∞, d x = y ∧ ∀ z ∉ U, d z = z}
 
+/-- The orbit of `x` under diffeomorphisms supported in an open set is open. -/
 theorem SupportedDiffeomorph.isOpen_pointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -278,6 +315,7 @@ theorem SupportedDiffeomorph.isOpen_pointOrbit {E H M : Type*} [NormedAddCommGro
     change e (d w) = w
     rw [hdfix w hw, hefix w hw]
 
+/-- The complement of that orbit inside `U` is open. -/
 theorem SupportedDiffeomorph.isOpen_sdiff_pointOrbit {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
@@ -300,6 +338,8 @@ theorem SupportedDiffeomorph.isOpen_sdiff_pointOrbit {E H M : Type*} [NormedAddC
     rw [hdfix w hw]
     exact inverse_fixed_outside e.toEquiv hefix w hw
 
+/-- Any two points of a preconnected subset of an open set `U` are exchanged by a diffeomorphism
+that is the identity outside `U`. -/
 theorem SupportedDiffeomorph.exists_pointMoving_of_preconnected {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
@@ -320,6 +360,8 @@ theorem SupportedDiffeomorph.exists_pointMoving_of_preconnected {E H M : Type*}
       hdisjoint hcover ⟨x, hx, hxOrbit⟩
   exact (hsub hy).2
 
+/-- Path form: if `x` and `y` are joined by a path inside `U`, some diffeomorphism that is the
+identity outside `U` carries `x` to `y`. -/
 theorem SupportedDiffeomorph.exists_pointMoving_of_path {E H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M]
@@ -331,6 +373,8 @@ theorem SupportedDiffeomorph.exists_pointMoving_of_path {E H M : Type*}
   · exact ⟨0, γ.source⟩
   · exact ⟨1, γ.target⟩
 
+/-- In a manifold of dimension at least `2`, a path between two points off a finite set can be
+replaced by a smooth path avoiding that finite set. -/
 theorem exists_smooth_path_avoiding_finite {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -373,6 +417,8 @@ theorem exists_smooth_path_avoiding_finite {G H N : Type*} [NormedAddCommGroup G
   rw [hrange] at hdisjoint
   exact Set.disjoint_left.mp hdisjoint ⟨t, rfl⟩ ht
 
+/-- In dimension at least `2`, if `x` and `y` are joined by a path and both lie off a finite set
+`S`, a diffeomorphism fixing `S` pointwise carries `x` to `y`. -/
 theorem exists_pointMoving_fixing_finite {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -383,18 +429,23 @@ theorem exists_pointMoving_fixing_finite {G H N : Type*} [NormedAddCommGroup G]
     SupportedDiffeomorph.exists_pointMoving_of_path (J := J) hS.isClosed.isOpen_compl η hη
   exact ⟨d, hd, fun z hz => hfix z (fun hn => hn hz)⟩
 
+/-- The pairs of distinct points of the source at which a chart-supported perturbation could create
+a double point: both are in the chart and the cutoff distinguishes them. -/
 def ChartMapPerturbation.collisionDomain {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) : Set (X × X) :=
   {q | f q.1 ∈ c.source ∧ f q.2 ∈ c.source ∧ β q.1 - β q.2 ≠ 0}
 
+/-- The parameter value that would make the two points of a pair collide under the chart-supported
+perturbation. -/
 def ChartMapPerturbation.collisionParameter {G F K X N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (β : X → ℝ) (q : X × X) : F :=
   (β q.1 - β q.2)⁻¹ • (c (f q.2) - c (f q.1))
 
+/-- The collision domain is open. -/
 theorem ChartMapPerturbation.isOpen_collisionDomain {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -404,6 +455,8 @@ theorem ChartMapPerturbation.isOpen_collisionDomain {G F K X N : Type*}
     ((c.open_source.preimage (hf.comp continuous_snd)).inter
       (isOpen_ne_fun ((hβ.comp continuous_fst).sub (hβ.comp continuous_snd)) continuous_const))
 
+/-- The collision parameter is smooth on the collision domain, so its image is a set of measure zero
+once the dimensions allow. -/
 theorem ChartMapPerturbation.contMDiffOn_collisionParameter {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -423,6 +476,8 @@ theorem ChartMapPerturbation.contMDiffOn_collisionParameter {E G F H K X N : Typ
     (hβ.comp contMDiff_fst).contMDiffAt.sub (hβ.comp contMDiff_snd).contMDiffAt
   exact ((hb.inv₀ hq.2.2).smul (hcg.sub hcf)).contMDiffWithinAt
 
+/-- If the parameter avoids the image of the collision map, then the perturbed map identifies two
+points only when the original map does and the cutoff agrees there. -/
 theorem ChartMapPerturbation.collision_imp_old_and_equal_cutoff {G F K X N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -468,6 +523,8 @@ theorem ChartMapPerturbation.collision_imp_old_and_equal_cutoff {G F K X N : Typ
       exact hy (hsupport (subset_tsupport β hn))
     exact ⟨hpx.symm.trans (heq.trans hpy), hβx.trans hβy.symm⟩
 
+/-- Sard-type statement: if `2 dim X < dim F`, arbitrarily small parameters `a` give a smooth
+perturbation that creates no new double points. -/
 theorem ChartMapPerturbation.exists_small_collision_removing_parameter
     {E G F H K X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
@@ -497,12 +554,15 @@ theorem ChartMapPerturbation.exists_small_collision_removing_parameter
     ⟨a, lt_of_lt_of_le ha (min_le_left _ _), hv, contMDiff_perturb c hf hβ hsupport hv,
       fun _ _ heq => collision_imp_old_and_equal_cutoff c hsupport hv hgood heq⟩
 
+/-- The pairs `(x, y) ∈ X × Y` at which a chart-supported perturbation of `f` could make `f x` hit
+`g y`. -/
 def ChartMapPerturbation.obstacleDomain {G F K X Y N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
     (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞) (f : X → N) (g : Y → N) (β : X → ℝ) : Set (X × Y) :=
   {q | f q.1 ∈ c.source ∧ g q.2 ∈ c.source ∧ β q.1 ≠ 0}
 
+/-- The parameter value that would make `f x` hit the obstacle point `g y`. -/
 def ChartMapPerturbation.obstacleParameter {G F K X Y N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace K]
     {J : ModelWithCorners ℝ G K} [TopologicalSpace N] [ChartedSpace K N]
@@ -510,6 +570,7 @@ def ChartMapPerturbation.obstacleParameter {G F K X Y N : Type*} [NormedAddCommG
     F :=
   (β q.1)⁻¹ • (c (g q.2) - c (f q.1))
 
+/-- The obstacle domain is open. -/
 theorem ChartMapPerturbation.isOpen_obstacleDomain {G F K X Y N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace Y]
@@ -520,6 +581,7 @@ theorem ChartMapPerturbation.isOpen_obstacleDomain {G F K X Y N : Type*}
     ((c.open_source.preimage (hg.comp continuous_snd)).inter
       (isOpen_ne_fun (hβ.comp continuous_fst) continuous_const))
 
+/-- The obstacle parameter is smooth on the obstacle domain. -/
 theorem ChartMapPerturbation.contMDiffOn_obstacleParameter {E E' G F H H' K X Y N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E']
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -539,6 +601,8 @@ theorem ChartMapPerturbation.contMDiffOn_obstacleParameter {E E' G F H H' K X Y 
       (hg.comp contMDiff_snd).contMDiffAt
   exact (((hβ.comp contMDiff_fst).contMDiffAt.inv₀ hq.2.2).smul (hcg.sub hcf)).contMDiffWithinAt
 
+/-- If the parameter avoids the image of the obstacle map, the perturbed map misses the obstacle
+wherever the cutoff is nonzero. -/
 theorem ChartMapPerturbation.avoids_of_not_obstacle_parameter {G F K X Y N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace X] [TopologicalSpace N]
@@ -557,6 +621,9 @@ theorem ChartMapPerturbation.avoids_of_not_obstacle_parameter {G F K X Y N : Typ
   change (β x)⁻¹ • (c (g y) - c (f x)) = a
   rw [← hcoord, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hx, one_smul]
 
+/-- General position in a chart: if `2 dim X < dim F` and `dim X + dim Y < dim F`, arbitrarily small
+parameters give a smooth perturbation that creates no new double points and avoids the image of
+`g` wherever the cutoff is nonzero. -/
 theorem ChartMapPerturbation.exists_small_embedding_avoiding_parameter
     {E E' G F H H' K X Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E']
@@ -605,6 +672,8 @@ theorem ChartMapPerturbation.exists_small_embedding_avoiding_parameter
     exact (collision_imp_old_and_equal_cutoff c hsupport hv (fun h => hgood (Or.inl h)) hxy).1
   · exact avoids_of_not_obstacle_parameter c hsupport hv (fun h => hgood (Or.inr h))
 
+/-- Being an immersion at a point can be tested in a chart: the Fréchet derivative of the chart
+representative is injective if and only if the manifold derivative is. -/
 theorem ManifoldImmersion.injective_fderiv_chart_iff {E G F H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -621,6 +690,8 @@ theorem ManifoldImmersion.injective_fderiv_chart_iff {E G F H N : Type*}
     exact h (congrArg (mfderiv J 𝓘(ℝ, F) c (f x)) hvw)
   · exact fun h => hc.comp h
 
+/-- A tangent vector is in the kernel of the chart representative's derivative exactly when it is in
+the kernel of the manifold derivative. -/
 theorem ManifoldImmersion.fderiv_chart_eq_zero_iff {E G F H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -640,6 +711,8 @@ theorem ManifoldImmersion.fderiv_chart_eq_zero_iff {E G F H N : Type*}
   · intro h
     rw [h, map_zero]
 
+/-- For a smooth family of maps, the set of parameters and points at which the map is an immersion
+is open. -/
 theorem ManifoldImmersion.isOpen_injective_nativeDerivative {P E G H N : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
@@ -681,6 +754,7 @@ theorem ManifoldImmersion.isOpen_injective_nativeDerivative {P E G H N : Type*}
   intro r hr
   exact ⟨hr.1.1, (hiff r hr.1).mp hr.2⟩
 
+/-- The set of points of an open set at which a smooth map is an immersion is open. -/
 theorem ManifoldImmersion.isOpen_injective_derivative_on {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
@@ -696,6 +770,7 @@ theorem ManifoldImmersion.isOpen_injective_derivative_on {E G H N : Type*}
       ((continuous_const (y := (0 : ℝ))).prodMk (continuous_id : Continuous (id : E → E)))
   exact hopen
 
+/-- The immersion locus of a smooth map is open. -/
 theorem ManifoldImmersion.isOpen_injective_derivative {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
@@ -711,6 +786,7 @@ theorem ManifoldImmersion.isOpen_injective_derivative {E G H N : Type*}
   change IsOpen {x : E | True ∧ Function.Injective (mfderiv 𝓘(ℝ, E) J f x)} at hopen
   simpa only [true_and] using hopen
 
+/-- Being an immersion on a compact set is an open condition on the parameter of a smooth family. -/
 theorem ManifoldImmersion.eventually_injective_nativeDerivative {P E G H N : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
@@ -726,6 +802,7 @@ theorem ManifoldImmersion.eventually_injective_nativeDerivative {P E G H N : Typ
   filter_upwards [hn] with a ha x hx
   exact (ha x hx).2
 
+/-- Small chart-supported perturbations preserve the immersion property on a compact set. -/
 theorem ChartMapPerturbation.eventually_perturb_injective_derivative {E G F H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
@@ -752,6 +829,9 @@ theorem ChartMapPerturbation.eventually_perturb_injective_derivative {E G F H N 
     rw [heq]
     exact hinj x hx
 
+/-- One patch of the avoidance induction: a small perturbation supported in the patch `p i` keeps
+the map an immersion on `K`, creates no new double points, stays inside the open set `O`, and
+pushes the image off `g '' A` wherever that patch's cutoff is nonzero. -/
 theorem ManifoldImmersion.exists_embedded_image_avoidance_step_controlled
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -817,6 +897,8 @@ theorem ManifoldImmersion.exists_embedded_image_avoidance_step_controlled
     · rintro ⟨y, _, hy⟩
       exact havoid x hzero y hy.symm
 
+/-- Iterating the previous step over a finite set of patches: the resulting map avoids `g '' A`
+wherever one of the chosen cutoffs is nonzero. -/
 theorem ManifoldImmersion.exists_finite_embedded_image_avoidance_controlled
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -865,6 +947,10 @@ theorem ManifoldImmersion.exists_finite_embedded_image_avoidance_controlled
       · exact Or.inr hactive
       · exact Or.inl (havoid₁ x (Or.inr ⟨j, hjs, hactive⟩))
 
+/-- Relative embedding with avoidance of a closed obstacle `g '' A`, keeping the map inside a
+prescribed open set: in the general-position range `2 dim E < dim G`, `dim E + dim E' < dim G`,
+the map can be made a closed embedding and an immersion on `K` while avoiding the obstacle on
+`L`. -/
 theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image_controlled
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -919,6 +1005,8 @@ theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image
         exact Or.inr ⟨⟨i, hi⟩, Finset.mem_univ _, hix⟩
       · exact Or.inl hxg
 
+/-- The same statement with an ordinary relative homotopy in place of the homotopy constrained to
+the open target. -/
 theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -944,6 +1032,7 @@ theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image
       hobstacle hK hL hC hinj hderiv hfixed hO hmaps
   exact ⟨f', hf', hhom.homotopicRel, hemb, hd, hnoNew, hmaps', havoid⟩
 
+/-- Version of the previous statement with the obstacle the whole closed image of `g`. -/
 theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_range
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -971,21 +1060,26 @@ theorem ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_range
   refine ⟨f', hf', hhom, hemb, hd, hnoNew, ?_⟩
   simpa only [Set.image_univ] using havoid
 
+/-- The two-dimensional source of the plane-immersion chain, `ℝ × ℝ`. -/
 abbrev PlaneImmersion.Plane :=
   ℝ × ℝ
 
+/-- The linear map `Plane →L[ℝ] F` with the two given columns. -/
 def PlaneImmersion.linearMap {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : F × F) : Plane →L[ℝ] F :=
   (ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight A.1 + (ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight A.2
 
+/-- `linearMap A` sends `v` to `v.1 • A.1 + v.2 • A.2`. -/
 theorem PlaneImmersion.linearMap_apply {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : F × F) (v : Plane) : linearMap A v = v.1 • A.1 + v.2 • A.2 :=
   rfl
 
+/-- Perturbation of a map on the plane by an affine term with matrix `A`. -/
 def PlaneImmersion.perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : Plane → F) (A : F × F) (x : Plane) : F :=
   f x + linearMap A x
 
+/-- The perturbation is smooth jointly in the parameter and the point. -/
 theorem PlaneImmersion.contDiff_perturb_family {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (fun q : (F × F) × Plane => perturb f q.1 q.2) :=
@@ -993,33 +1087,45 @@ theorem PlaneImmersion.contDiff_perturb_family {F : Type*} [NormedAddCommGroup F
     (((contDiff_fst.comp contDiff_snd).smul (contDiff_fst.comp contDiff_fst)).add
       ((contDiff_snd.comp contDiff_snd).smul (contDiff_snd.comp contDiff_fst)))
 
+/-- The derivative of the perturbed map is the derivative of the original plus the constant linear
+map `linearMap A`. -/
 theorem PlaneImmersion.fderiv_perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {f : Plane → F} (hf : ContDiff ℝ ∞ f) (A : F × F) (x : Plane) :
     fderiv ℝ (perturb f A) x = fderiv ℝ f x + linearMap A :=
   ((hf.differentiable (by simp) x).hasFDerivAt.add (linearMap A).hasFDerivAt).fderiv
 
+/-- The parameters of pairs of distinct points whose first coordinates differ; the domain on which
+the first collision map is defined. -/
 def PlaneImmersion.firstCollisionDomain {F : Type*} : Set (Plane × (Plane × F)) :=
   {q | q.1.1 - q.2.1.1 ≠ 0}
 
+/-- The parameters of pairs of distinct points whose second coordinates differ. -/
 def PlaneImmersion.secondCollisionDomain {F : Type*} : Set (Plane × (Plane × F)) :=
   {q | q.1.2 - q.2.1.2 ≠ 0}
 
+/-- The perturbation matrix that would identify the two points of a pair, solved through its first
+coordinate. -/
 def PlaneImmersion.firstCollision {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : Plane → F) (q : Plane × (Plane × F)) : F × F :=
   ((q.1.1 - q.2.1.1)⁻¹ • (f q.2.1 - f q.1 - (q.1.2 - q.2.1.2) • q.2.2), q.2.2)
 
+/-- The perturbation matrix that would identify the two points of a pair, solved through its second
+coordinate. -/
 def PlaneImmersion.secondCollision {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : Plane → F) (q : Plane × (Plane × F)) : F × F :=
   (q.2.2, (q.1.2 - q.2.1.2)⁻¹ • (f q.2.1 - f q.1 - (q.1.1 - q.2.1.1) • q.2.2))
 
+/-- The first collision domain is open. -/
 theorem PlaneImmersion.isOpen_firstCollisionDomain {F : Type*} [NormedAddCommGroup F] :
     IsOpen (firstCollisionDomain (F := F)) :=
   isOpen_ne.preimage (continuous_fst.fst.sub continuous_snd.fst.fst)
 
+/-- The second collision domain is open. -/
 theorem PlaneImmersion.isOpen_secondCollisionDomain {F : Type*} [NormedAddCommGroup F] :
     IsOpen (secondCollisionDomain (F := F)) :=
   isOpen_ne.preimage (continuous_fst.snd.sub continuous_snd.fst.snd)
 
+/-- The first collision map is smooth on its domain. -/
 theorem PlaneImmersion.contDiffOn_firstCollision {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
     ContDiffOn ℝ ∞ (firstCollision f) firstCollisionDomain := by
@@ -1033,6 +1139,7 @@ theorem PlaneImmersion.contDiffOn_firstCollision {F : Type*} [NormedAddCommGroup
               (h₂.smul contDiff_snd.snd)).contDiffOn).prodMk
       contDiff_snd.snd.contDiffOn
 
+/-- The second collision map is smooth on its domain. -/
 theorem PlaneImmersion.contDiffOn_secondCollision {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
     ContDiffOn ℝ ∞ (secondCollision f) secondCollisionDomain := by
@@ -1046,6 +1153,8 @@ theorem PlaneImmersion.contDiffOn_secondCollision {F : Type*} [NormedAddCommGrou
         (((hf.comp contDiff_snd.fst).sub (hf.comp contDiff_fst)).sub
             (h₁.smul contDiff_snd.snd)).contDiffOn)
 
+/-- If the perturbed map identifies two distinct points, the parameter lies in the image of one of
+the two collision maps. -/
 theorem PlaneImmersion.mem_collision_of_eq {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] (f : Plane → F) (A : F × F) {x y : Plane} (hxy : x ≠ y)
     (heq : perturb f A x = perturb f A y) :
@@ -1068,6 +1177,7 @@ theorem PlaneImmersion.mem_collision_of_eq {F : Type*} [NormedAddCommGroup F]
     change (x.1 - y.1)⁻¹ • (f y - f x - (x.2 - y.2) • A.2) = A.1
     rw [← eq_sub_of_add_eq hlinear, inv_smul_smul₀ hfirst]
 
+/-- Conversely, a parameter outside both collision images gives an injective perturbation. -/
 theorem PlaneImmersion.injective_perturb_of_not_collision {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] (f : Plane → F) {A : F × F}
     (hA :
@@ -1077,14 +1187,19 @@ theorem PlaneImmersion.injective_perturb_of_not_collision {F : Type*} [NormedAdd
   by_contra hxy
   exact hA (mem_collision_of_eq f A hxy heq)
 
+/-- The perturbation matrix that would put a vector with nonzero first coordinate in the kernel of
+the perturbed derivative. -/
 def PlaneImmersion.badFirst {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : Plane → F) (q : Plane × (ℝ × F)) : F × F :=
   (-fderiv ℝ f q.1 (1, q.2.1) - q.2.1 • q.2.2, q.2.2)
 
+/-- The perturbation matrix that would put a vector with nonzero second coordinate in the kernel of
+the perturbed derivative. -/
 def PlaneImmersion.badSecond {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : Plane → F) (q : Plane × (ℝ × F)) : F × F :=
   (q.2.2, -fderiv ℝ f q.1 (q.2.1, 1) - q.2.1 • q.2.2)
 
+/-- The first bad-parameter map is smooth. -/
 theorem PlaneImmersion.contDiff_badFirst {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (badFirst f) := by
   have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (by simp)
@@ -1094,6 +1209,7 @@ theorem PlaneImmersion.contDiff_badFirst {F : Type*} [NormedAddCommGroup F]
     (he.neg.sub ((contDiff_fst.comp contDiff_snd).smul (contDiff_snd.comp contDiff_snd))).prodMk
       (contDiff_snd.comp contDiff_snd)
 
+/-- The second bad-parameter map is smooth. -/
 theorem PlaneImmersion.contDiff_badSecond {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (badSecond f) := by
   have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (by simp)
@@ -1103,6 +1219,8 @@ theorem PlaneImmersion.contDiff_badSecond {F : Type*} [NormedAddCommGroup F]
     (contDiff_snd.comp contDiff_snd).prodMk
       (he.neg.sub ((contDiff_fst.comp contDiff_snd).smul (contDiff_snd.comp contDiff_snd)))
 
+/-- If the perturbed derivative has a nonzero kernel vector, the parameter is in the range of one of
+the two bad-parameter maps. -/
 theorem PlaneImmersion.mem_bad_of_nonzero_kernel {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] (f : Plane → F) (A : F × F) (x v : Plane) (hv : v ≠ 0)
     (hker : (fderiv ℝ f x + linearMap A) v = 0) :
@@ -1142,6 +1260,8 @@ theorem PlaneImmersion.mem_bad_of_nonzero_kernel {F : Type*} [NormedAddCommGroup
     change -fderiv ℝ f x (1, r) - r • A.2 = A.1
     rw [sub_eq_add_neg, ← hsolve, neg_add_cancel_left]
 
+/-- Conversely, a parameter outside both bad ranges makes the perturbed derivative injective at
+every point. -/
 theorem PlaneImmersion.injective_add_linearMap_of_not_bad {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] (f : Plane → F) {A : F × F}
     (hA : A ∉ Set.range (badFirst f) ∪ Set.range (badSecond f)) (x : Plane) :
@@ -1153,6 +1273,8 @@ theorem PlaneImmersion.injective_add_linearMap_of_not_bad {F : Type*} [NormedAdd
     exact hA (mem_bad_of_nonzero_kernel f A x (v - w) hne hz)
   exact sub_eq_zero.mp heq
 
+/-- The set of bad parameters has Hausdorff dimension at most `dim (Plane × (ℝ × F)) = 3 + dim F`,
+being the image of that space under a smooth map. -/
 theorem PlaneImmersion.dimH_bad_parameters_le {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
     dimH (Set.range (badFirst f) ∪ Set.range (badSecond f)) ≤
@@ -1170,6 +1292,8 @@ theorem PlaneImmersion.dimH_bad_parameters_le {F : Type*} [NormedAddCommGroup F]
   rw [dimH_union]
   exact max_le hfirst hsecond
 
+/-- The set of collision parameters has Hausdorff dimension at most `dim (Plane × (Plane × F)) = 4 +
+dim F`. -/
 theorem PlaneImmersion.dimH_collision_parameters_le {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F} (hf : ContDiff ℝ ∞ f) :
     dimH (firstCollision f '' firstCollisionDomain ∪ secondCollision f '' secondCollisionDomain) ≤
@@ -1183,6 +1307,9 @@ theorem PlaneImmersion.dimH_collision_parameters_le {F : Type*} [NormedAddCommGr
   rw [dimH_union]
   exact max_le hfirst hsecond
 
+/-- Sard/Whitney counting argument: when `dim F ≥ 5`, the bad and collision parameters together have
+Hausdorff dimension less than `2 dim F`, so their complement in `F × F` is dense (Whitney,
+*Differentiable manifolds*, Thm 5; Hirsch, *Differential Topology*, Ch. 3). -/
 theorem PlaneImmersion.dense_injective_immersive_parameters {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F}
     (hf : ContDiff ℝ ∞ f) (hdim : 5 ≤ Module.finrank ℝ F) :
@@ -1204,6 +1331,8 @@ theorem PlaneImmersion.dense_injective_immersive_parameters {F : Type*}
     max_lt ((dimH_bad_parameters_le hf).trans_lt (Nat.cast_lt.mpr hd₁))
       ((dimH_collision_parameters_le hf).trans_lt (Nat.cast_lt.mpr hd₂))
 
+/-- Weak Whitney embedding theorem for the plane, affine form: when `dim F ≥ 5`, arbitrarily small
+affine perturbations of a smooth map `Plane → F` are injective immersions. -/
 theorem PlaneImmersion.exists_small_affine_injective_immersion {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : Plane → F}
     (hf : ContDiff ℝ ∞ f) (hdim : 5 ≤ Module.finrank ℝ F) {ε : ℝ} (hε : 0 < ε) :
@@ -1221,24 +1350,30 @@ theorem PlaneImmersion.exists_small_affine_injective_immersion {F : Type*}
     rw [fderiv_perturb hf]
     exact injective_add_linearMap_of_not_bad f (fun h => hA (Or.inl h)) x
 
+/-- The displacement `β x • (linearMap A x)` by which a cutoff-weighted affine perturbation moves
+the point `x`. -/
 def PlaneImmersion.displacement {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (β : Plane → ℝ) (A : F × F) (x : Plane) : F :=
   β x • linearMap A x
 
+/-- The displacement is smooth jointly in the parameter and the point. -/
 theorem PlaneImmersion.contDiff_displacement_family {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) :
     ContDiff ℝ ∞ (fun q : (F × F) × Plane => displacement β q.1 q.2) :=
   (hβ.comp contDiff_snd).smul
     ((contDiff_snd.fst.smul contDiff_fst.fst).add (contDiff_snd.snd.smul contDiff_fst.snd))
 
+/-- The zero parameter displaces nothing. -/
 theorem PlaneImmersion.displacement_zero {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] (β : Plane → ℝ) (x : Plane) : displacement β (0 : F × F) x = 0 := by
   simp only [displacement, linearMap_apply, Prod.fst_zero, Prod.snd_zero, smul_zero, add_zero]
 
+/-- Where the cutoff vanishes, the displacement vanishes. -/
 theorem PlaneImmersion.displacement_of_zero {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {β : Plane → ℝ} (A : F × F) {x : Plane} (hx : β x = 0) :
     displacement β A x = 0 := by simp only [displacement, hx, zero_smul]
 
+/-- For a compactly supported cutoff, small parameters give uniformly small displacements. -/
 theorem PlaneImmersion.eventually_displacement_lt {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β)
     {ε : ℝ} (hε : 0 < ε) : ∀ᶠ A : F × F in 𝓝 0, ∀ x, ‖displacement β A x‖ < ε := by
@@ -1259,6 +1394,8 @@ theorem PlaneImmersion.eventually_displacement_lt {F : Type*} [NormedAddCommGrou
       exact hx (subset_tsupport β hne)
     simpa only [displacement_of_zero A hzero, norm_zero] using hε
 
+/-- Quantitative form of the previous lemma: there is a radius below which all parameters give
+displacements smaller than `ε`. -/
 theorem PlaneImmersion.exists_radius_displacement_lt {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {β : Plane → ℝ} (hβ : ContDiff ℝ ∞ β) (hcompact : HasCompactSupport β)
     {ε : ℝ} (hε : 0 < ε) : ∃ δ > (0 : ℝ), ∀ A : F × F, ‖A‖ < δ → ∀ x, ‖displacement β A x‖ < ε := by
@@ -1267,6 +1404,8 @@ theorem PlaneImmersion.exists_radius_displacement_lt {F : Type*} [NormedAddCommG
   obtain ⟨δ, hδ, hball⟩ := Metric.mem_nhds_iff.mp hn
   exact ⟨δ, hδ, fun A hA => hball (by simpa only [Metric.mem_ball, dist_zero_right] using hA)⟩
 
+/-- The map obtained from `f` by applying, inside the chart `c`, the cutoff-weighted affine
+perturbation with matrix `A`. -/
 def ManifoldImmersion.affinePatch {G F H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [TopologicalSpace N] [ChartedSpace H N] (c : PartialDiffeomorph J 𝓘(ℝ, F) N F ∞)
@@ -1274,6 +1413,8 @@ def ManifoldImmersion.affinePatch {G F H N : Type*} [NormedAddCommGroup G] [Norm
     PlaneImmersion.Plane → N :=
   ChartMapPerturbation.variablePerturb c f β (PlaneImmersion.displacement β A)
 
+/-- On the plateau of the cutoff, the chart representative of the patched map is the affine
+perturbation of the chart representative of `f`. -/
 theorem ManifoldImmersion.chart_affinePatch_on_plateau {G F H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1293,6 +1434,7 @@ theorem ManifoldImmersion.chart_affinePatch_on_plateau {G F H N : Type*}
     ChartMapPerturbation.cutoffCoordinates, PlaneImmersion.displacement, hx, hχ x hxs,
     one_smul]
 
+/-- The patched map is smooth. -/
 theorem ManifoldImmersion.contMDiff_affinePatch {G F H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1311,6 +1453,9 @@ theorem ManifoldImmersion.contMDiff_affinePatch {G F H N : Type*} [NormedAddComm
     ChartMapPerturbation.contMDiffAt_variablePerturb c hsupport hf.contMDiffAt
       hβ.contMDiff.contMDiffAt hd.contMDiff.contMDiffAt (hvalid x)
 
+/-- Patch step of the relative embedding theorem for the plane: if a property `Q` holds for all
+small parameters, some patched map satisfies `Q`, is homotopic to `f` rel the zero set of the
+cutoff, is a closed embedding on the compact set `K`, and is an immersion on the plateau. -/
 theorem ManifoldImmersion.exists_affine_embedding_patch_with_property {G F H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1389,6 +1534,7 @@ theorem ManifoldImmersion.exists_affine_embedding_patch_with_property {G F H N :
     rw [heq.fderiv_eq]
     exact hderiv x
 
+/-- The zero parameter leaves the map unchanged. -/
 theorem ManifoldImmersion.affinePatch_zero {G F H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1399,6 +1545,7 @@ theorem ManifoldImmersion.affinePatch_zero {G F H N : Type*} [NormedAddCommGroup
     ChartMapPerturbation.perturb c f β (PlaneImmersion.displacement β 0 x) x = f x
   rw [PlaneImmersion.displacement_zero, ChartMapPerturbation.perturb_zero]
 
+/-- The patched map is smooth jointly in the parameter and the point. -/
 theorem ManifoldImmersion.contMDiffAt_affinePatch_family {G F H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1424,6 +1571,7 @@ theorem ManifoldImmersion.contMDiffAt_affinePatch_family {G F H N : Type*}
       q (f := fun r : (F × F) × PlaneImmersion.Plane =>
       (PlaneImmersion.displacement β r.1 r.2, r.2)) (hd.prodMk contMDiffAt_snd)
 
+/-- Small parameters keep a compact set inside a prescribed open target. -/
 theorem ManifoldImmersion.eventually_affinePatch_maps_compact_into_open {G F H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1444,6 +1592,7 @@ theorem ManifoldImmersion.eventually_affinePatch_maps_compact_into_open {G F H N
   rw [affinePatch_zero]
   exact hmap hx
 
+/-- Small parameters preserve the immersion property on a compact set. -/
 theorem ManifoldImmersion.eventually_affinePatch_injective_derivative {G F H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -1481,6 +1630,9 @@ theorem ManifoldImmersion.eventually_affinePatch_injective_derivative {G F H N :
     rw [affinePatch_zero]
     exact hinj x hx
 
+/-- One step of the immersion existence induction: a perturbation supported in a single patch makes
+the map an immersion on the plateau of that patch while keeping it an immersion where it already
+was. -/
 theorem ManifoldImmersion.exists_immersion_patch_step {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -1526,6 +1678,8 @@ theorem ManifoldImmersion.exists_immersion_patch_step {G H N : Type*} [NormedAdd
     · exact hKnew x hx
     · exact hplateau x (hLsub hx)
 
+/-- Iterating the patch step over a finite family of patches gives a map that is an immersion on the
+union of the chosen plateaus. -/
 theorem ManifoldImmersion.exists_finite_patch_immersion {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -1568,6 +1722,8 @@ theorem ManifoldImmersion.exists_finite_patch_immersion {G H N : Type*}
       · exact Or.inr hxj
       · exact Or.inl (Or.inr (Set.mem_iUnion₂.mpr ⟨j, hjs, hxj⟩))
 
+/-- Existence of a smoothing patch at a point off a closed set `C`, with chart inside a prescribed
+open target and cutoff vanishing on `C`. -/
 theorem ManifoldImmersion.exists_relative_immersion_patch_at_in_open {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
@@ -1611,6 +1767,7 @@ theorem ManifoldImmersion.exists_relative_immersion_patch_at_in_open {E G H N : 
         exact one_ne_zero)
   exact (hχ ho).2 hy
 
+/-- Existence of a smoothing patch at a point off a closed set `C`, with cutoff vanishing on `C`. -/
 theorem ManifoldImmersion.exists_relative_immersion_patch_at {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
@@ -1623,6 +1780,9 @@ theorem ManifoldImmersion.exists_relative_immersion_patch_at {E G H N : Type*}
     exists_relative_immersion_patch_at_in_open (J := J) f hC hx isOpen_univ (Set.mem_univ _)
   exact ⟨p, L, hc, hL, hn, hp, hfix⟩
 
+/-- Relative immersion theorem for the plane: when `dim N ≥ 5`, a smooth map `Plane → N` which is
+already an immersion on a compact set `K` is homotopic rel a closed set `C` disjoint from `L` to
+a map that is an immersion on `K ∪ L` (Hirsch, *Differential Topology*, Ch. 8). -/
 theorem ManifoldImmersion.exists_immersion_on_compact_rel {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -1658,6 +1818,8 @@ theorem ManifoldImmersion.exists_immersion_on_compact_rel {G H N : Type*}
   · obtain ⟨i, his, hxi⟩ := Set.mem_iUnion₂.mp (hs hx)
     exact Or.inr (Set.mem_iUnion₂.mpr ⟨⟨i, his⟩, Finset.mem_univ _, interior_subset hxi⟩)
 
+/-- One step of the self-intersection removal: a perturbation supported in a single avoidance patch
+creates no new double points and keeps the map an immersion on `K`. -/
 theorem ManifoldImmersion.exists_selfIntersection_removal_step_within_target
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1703,6 +1865,7 @@ theorem ManifoldImmersion.exists_selfIntersection_removal_step_within_target
       (hcompatible i) hvalid har hsource hmaps
   exact hrel.mono (fun x hx => (p i).fixed x hx) (Set.Subset.refl D) (Set.Subset.refl O)
 
+/-- Iterating the removal step over a finite family of patches. -/
 theorem ManifoldImmersion.exists_finite_selfIntersection_removal_within_target
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1740,6 +1903,8 @@ theorem ManifoldImmersion.exists_finite_selfIntersection_removal_within_target
     · exact hnew.2
     · exact hold.2 j hjs
 
+/-- If a finite family of patches separates every pair of double points on `K`, the map can be made
+a closed embedding and an immersion on `K` by a homotopy rel `C` within the open target. -/
 theorem ManifoldImmersion.exists_embedding_of_finite_separating_patches_within_target
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1771,6 +1936,8 @@ theorem ManifoldImmersion.exists_embedding_of_finite_separating_patches_within_t
   obtain ⟨i, hi⟩ := hseparate x x.property y y.property hne hold
   exact hi (hcutoffs i (Finset.mem_univ i))
 
+/-- Existence of an avoidance patch whose cutoff is `1` at `x` and `0` at a second point `y ≠ x`,
+with chart inside a prescribed open target. -/
 theorem ManifoldImmersion.exists_separating_patch_in_open {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
@@ -1798,6 +1965,8 @@ theorem ManifoldImmersion.exists_separating_patch_in_open {E G H N : Type*}
   refine ⟨p, (fun _ ht => (hβ ht).1), β.eq_one, ?_, fun _ hz => hz.2⟩
   exact image_eq_zero_of_notMem_tsupport (fun ht => (hβ ht).2 (Or.inr rfl))
 
+/-- Existence of an avoidance patch separating two distinct points, provided they are not both in
+the fixed closed set. -/
 theorem ManifoldImmersion.exists_separating_patch_of_not_both_fixed_in_open
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -1815,6 +1984,9 @@ theorem ManifoldImmersion.exists_separating_patch_of_not_both_fixed_in_open
       exists_separating_patch_in_open (J := J) f hC hx hxy hO (hxO hx)
     exact ⟨p, hp, by rw [hpx, hpy]; exact one_ne_zero, hs⟩
 
+/-- Local injectivity from an injective derivative: a smooth map with injective derivative at `x` is
+injective on a neighbourhood of `x` (the local immersion theorem, Hirsch, *Differential
+Topology*, Ch. 1). -/
 theorem ManifoldImmersion.exists_open_injOn_of_injective_fderiv {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : E → F} {U : Set E} {x : E} (hU : IsOpen U)
@@ -1837,6 +2009,7 @@ theorem ManifoldImmersion.exists_open_injOn_of_injective_fderiv {E F : Type*}
   rw [hφeq]
   exact congrArg L hyz
 
+/-- Manifold form of local injectivity, for a map smooth on an open set. -/
 theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative_on {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1857,6 +2030,7 @@ theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative_on {E 
     ⟨V, hV, hxV, hVU.trans Set.inter_subset_left, fun _ hy _ hz heq =>
       hinjV hy hz (congrArg c heq)⟩
 
+/-- Manifold form of local injectivity for a globally smooth map. -/
 theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1869,6 +2043,7 @@ theorem ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative {E : T
       hinj
   exact ⟨V, hV, hxV, hinjV⟩
 
+/-- An injective immersion on a compact set is injective on a neighbourhood of that set. -/
 theorem ManifoldImmersion.exists_open_injOn_near_compact_on {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1889,6 +2064,8 @@ theorem ManifoldImmersion.exists_open_injOn_near_compact_on {E : Type*}
     ⟨V ∩ W, hV.inter hW, fun _ hx => ⟨hKV hx, hKW hx⟩, Set.inter_subset_right,
       hinjV.mono Set.inter_subset_left⟩
 
+/-- An injective immersion on a compact set is an injective immersion on a neighbourhood of that
+set. -/
 theorem ManifoldImmersion.exists_open_embedded_immersive_neighborhood {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1906,6 +2083,7 @@ theorem ManifoldImmersion.exists_open_embedded_immersive_neighborhood {E : Type*
     exists_open_injOn_near_compact_on hO (hf.mono hOW) hK (fun x hx => ⟨hKW hx, hi x hx⟩) hinj hi
   exact ⟨V, hV, hKV, hVO.trans hOW, hinjV, fun x hx => (hVO hx).2⟩
 
+/-- Globally smooth form of the previous lemma. -/
 theorem ManifoldImmersion.exists_open_injOn_near_compact {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -1918,9 +2096,11 @@ theorem ManifoldImmersion.exists_open_injOn_near_compact {E : Type*} [NormedAddC
   obtain ⟨V, hV, hxV, hinjV⟩ := exists_open_injOn_of_injective_nativeDerivative hf (hi x hx)
   exact ⟨V, hV.mem_nhds hxV, hinjV⟩
 
+/-- The set of pairs of distinct points of `K` with the same image. -/
 def ManifoldImmersion.doublePoints {X N : Type*} (f : X → N) (K : Set X) : Set (X × X) :=
   {q | q.1 ∈ K ∧ q.2 ∈ K ∧ q.1 ≠ q.2 ∧ f q.1 = f q.2}
 
+/-- For a locally injective continuous map, the double-point set over a compact set is compact. -/
 theorem ManifoldImmersion.isCompact_doublePoints_of_locally_injective {X N : Type*}
     [TopologicalSpace X] [TopologicalSpace N] [T2Space N] {f : X → N} (hf : Continuous f)
     {K : Set X} (hK : IsCompact K)
@@ -1951,6 +2131,7 @@ theorem ManifoldImmersion.isCompact_doublePoints_of_locally_injective {X N : Typ
   rw [heq]
   exact ((hK.prod hK).inter_right hclosed).inter_right hV.isClosed_compl
 
+/-- For an immersion, the double-point set over a compact set is compact. -/
 theorem ManifoldImmersion.isCompact_doublePoints_of_injective_nativeDerivative
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -1961,6 +2142,9 @@ theorem ManifoldImmersion.isCompact_doublePoints_of_injective_nativeDerivative
   isCompact_doublePoints_of_locally_injective hf.continuous hK
     (fun _ hx => exists_open_injOn_of_injective_nativeDerivative hf (hinj _ hx))
 
+/-- In the range `2 dim E < dim G`, an immersion on a compact set `K` which is already injective on
+`K ∩ C` is homotopic rel `C`, within a prescribed open target, to a closed embedding of `K` that
+is still an immersion there (Hirsch, *Differential Topology*, Ch. 3). -/
 theorem ManifoldImmersion.exists_compact_embedding_of_immersion_within_target
     {E G H N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
@@ -2005,6 +2189,7 @@ theorem ManifoldImmersion.exists_compact_embedding_of_immersion_within_target
   obtain ⟨i, hi, hsep⟩ := Set.mem_iUnion₂.mp (hs hxy)
   exact ⟨⟨i, hi⟩, hsep⟩
 
+/-- The same statement with an ordinary relative homotopy. -/
 theorem ManifoldImmersion.exists_compact_embedding_of_immersion {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -2023,6 +2208,10 @@ theorem ManifoldImmersion.exists_compact_embedding_of_immersion {E G H N : Type*
       (Set.mapsTo_univ f (K \ C))
   exact ⟨g, hg, hrel.homotopicRel, he, hi⟩
 
+/-- Relative embedding theorem for the plane: when `dim N ≥ 5`, a smooth map `Plane → N` that is an
+injective immersion on `K ∩ C` is homotopic rel the closed set `C` to a map which is a closed
+embedding and an immersion on the compact set `K` (Hirsch, *Differential Topology*, Ch. 8;
+Whitney, *Differentiable manifolds*, Thm 5). -/
 theorem ManifoldImmersion.exists_relative_compact_embedding {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2064,6 +2253,8 @@ theorem ManifoldImmersion.exists_relative_compact_embedding {G H N : Type*}
     exists_compact_embedding_of_immersion g₁ hg₁ hd hK hKinj hC hfixed₁
   exact ⟨g₂, hg₂, hhom₁.trans hhom₂, hemb, hinj₂⟩
 
+/-- Precomposition with a linear isomorphism does not change whether a map is an immersion at a
+point. -/
 theorem ManifoldImmersion.injective_mfderiv_comp_linearEquiv_iff {E E' G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup E'] [NormedSpace ℝ E']
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -2086,6 +2277,8 @@ theorem ManifoldImmersion.injective_mfderiv_comp_linearEquiv_iff {E E' G H N : T
         (hvw.trans (congrArg (mfderiv 𝓘(ℝ, E) J f (e x)) (e.apply_symm_apply (w : E))).symm)
   · exact fun h => h.comp e.injective
 
+/-- The relative embedding theorem for any two-dimensional source, obtained from the plane case by a
+linear isomorphism `E ≃L[ℝ] Plane`. -/
 theorem ManifoldImmersion.exists_relative_compact_embedding_twoDimensional {E G H N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N] [ChartedSpace H N]
@@ -2160,6 +2353,8 @@ theorem ManifoldImmersion.exists_relative_compact_embedding_twoDimensional {E G 
       (injective_mfderiv_comp_linearEquiv_iff e.symm (hgp.mdifferentiableAt (by simp))).mpr
         (hgpderiv (e.symm x) (hpreK x hx))
 
+/-- Relative embedding with avoidance: a map already clean on `K ∩ C` outside a neighbourhood `B` is
+homotopic rel `C` to a closed embedding and immersion on `K` avoiding `g '' A` outside `B`. -/
 theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -2194,6 +2389,7 @@ theorem ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood
   · exact havoid x (Or.inl (hclean x ⟨hx.1, hxC⟩ hx.2))
   · exact havoid x (Or.inr ⟨hx.1, fun hi => hxC (interior_subset hi)⟩)
 
+/-- Version of the previous statement with obstacle the closed image of `g`. -/
 theorem ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood_of_isClosed_range
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -2256,6 +2452,8 @@ theorem
       hobstacle hK hC hBC hinj₁ hderiv₁ hclean₁
   exact ⟨f₂, hf₂, hhom₁.trans hhom₂, hemb₂, hderiv₂, havoid₂⟩
 
+/-- Version of the previous statement for a compact source `Y`, where the closedness of the image of
+`g` is automatic. -/
 theorem ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
@@ -2278,16 +2476,19 @@ theorem ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood
   exists_embedded_avoidance_relative_neighborhood_of_isClosed_range f g hf hg
     (isCompact_range g.continuous).isClosed hself hobstacle hK hC hBC hinj hderiv hclean
 
+/-- The open preimage `g ⁻¹' U` of an open set under a continuous map. -/
 def OpenObstacle.source {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
     (g : C(Y, N)) (U : TopologicalSpace.Opens N) : TopologicalSpace.Opens Y :=
   ⟨g ⁻¹' (U : Set N), U.isOpen.preimage g.continuous⟩
 
+/-- The restriction of `g` to the open preimage of `U`, as a map into `U`. -/
 def OpenObstacle.restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
     (g : C(Y, N)) (U : TopologicalSpace.Opens N) : C(source g U, U)
     where
   toFun y := ⟨g y, y.property⟩
   continuous_toFun := (g.continuous.comp continuous_subtype_val).subtype_mk _
 
+/-- A point of `U` is in the image of the restriction exactly when it is in the image of `g`. -/
 theorem OpenObstacle.mem_range_restrict_iff {Y N : Type*} [TopologicalSpace Y]
     [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N) (x : U) :
     x ∈ Set.range (OpenObstacle.restrict g U) ↔ (x : N) ∈ Set.range g := by
@@ -2300,12 +2501,14 @@ theorem OpenObstacle.mem_range_restrict_iff {Y N : Type*} [TopologicalSpace Y]
       exact hy.symm ▸ x.property
     exact ⟨⟨y, hyU⟩, Subtype.ext hy⟩
 
+/-- The image of the restriction is the trace of the image of `g` on `U`. -/
 theorem OpenObstacle.range_restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
     (g : C(Y, N)) (U : TopologicalSpace.Opens N) :
     Set.range (OpenObstacle.restrict g U) = (Subtype.val : U → N) ⁻¹' Set.range g := by
   ext x
   exact mem_range_restrict_iff g U x
 
+/-- The image of the restriction is closed in `U` when the image of `g` is closed. -/
 theorem OpenObstacle.isClosed_range_restrict {Y N : Type*} [TopologicalSpace Y]
     [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N)
     (hclosed : IsClosed (Set.range g)) : IsClosed (Set.range (OpenObstacle.restrict g U)) :=
@@ -2313,6 +2516,7 @@ theorem OpenObstacle.isClosed_range_restrict {Y N : Type*} [TopologicalSpace Y]
   rw [OpenObstacle.range_restrict]
   exact hclosed.preimage continuous_subtype_val
 
+/-- The image under the restriction of the trace of `A` is the trace on `U` of `g '' A`. -/
 theorem OpenObstacle.image_restrict {Y N : Type*} [TopologicalSpace Y] [TopologicalSpace N]
     (g : C(Y, N)) (U : TopologicalSpace.Opens N) (A : Set Y) :
     OpenObstacle.restrict g U '' ((Subtype.val : source g U → Y) ⁻¹' A) =
@@ -2327,6 +2531,7 @@ theorem OpenObstacle.image_restrict {Y N : Type*} [TopologicalSpace Y] [Topologi
       exact heq.symm ▸ x.property
     exact ⟨⟨y, hyU⟩, hy, Subtype.ext heq⟩
 
+/-- The restricted image of `A` is closed in `U` when `g '' A` is closed. -/
 theorem OpenObstacle.isClosed_image_restrict {Y N : Type*} [TopologicalSpace Y]
     [TopologicalSpace N] (g : C(Y, N)) (U : TopologicalSpace.Opens N) (A : Set Y)
     (hclosed : IsClosed (g '' A)) :
@@ -2334,6 +2539,7 @@ theorem OpenObstacle.isClosed_image_restrict {Y N : Type*} [TopologicalSpace Y]
   rw [OpenObstacle.image_restrict]
   exact hclosed.preimage continuous_subtype_val
 
+/-- The restriction of a smooth map to the open preimage of an open set is smooth. -/
 theorem OpenObstacle.contMDiff_restrict {E' G H H' Y N : Type*} [NormedAddCommGroup E']
     [NormedSpace ℝ E'] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace H'] {J : ModelWithCorners ℝ G H} {I' : ModelWithCorners ℝ E' H'}
@@ -2343,6 +2549,8 @@ theorem OpenObstacle.contMDiff_restrict {E' G H H' Y N : Type*} [NormedAddCommGr
   apply (ContMDiff.subtypeVal_comp_iff U (OpenObstacle.restrict g U)).mp
   exact hg.comp contMDiff_subtype_val
 
+/-- A path between two points off the closed image of `g` can be replaced by a smooth path avoiding
+that image, provided `1 + dim Y < dim N`. -/
 theorem MorseCancellation.exists_smooth_path_avoiding_closed_image {E G H H' N Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2375,6 +2583,7 @@ theorem MorseCancellation.exists_smooth_path_avoiding_closed_image {E G H H' N Y
   let η : Path x y := { toContinuousMap := f', source' := h0, target' := h1 }
   exact ⟨η, hf', fun t ht => Set.disjoint_left.mp hdisjoint ⟨t, rfl⟩ ht⟩
 
+/-- The same statement inside an open subset `U` of the ambient manifold. -/
 theorem MorseCancellation.exists_smooth_path_avoiding_closed_image_in_open {E G H H' N Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2394,6 +2603,8 @@ theorem MorseCancellation.exists_smooth_path_avoiding_closed_image_in_open {E G 
   exact
     ⟨η, hη, fun t ht => havoid t ((OpenObstacle.mem_range_restrict_iff g U (η t)).mpr ht)⟩
 
+/-- A continuous map which is smooth off a compact set and smooth near a closed set `C` is homotopic
+rel `C`, within a prescribed open target, to a globally smooth map. -/
 theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact_within_target
     {E G H H' X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2424,6 +2635,7 @@ theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact_w
     exact Or.inr ⟨⟨i, his⟩, Finset.mem_univ _, hxi⟩
   · exact Or.inl ((hfK x hx).contMDiffAt (hK.isClosed.isOpen_compl.mem_nhds hx))
 
+/-- The same smoothing statement with an ordinary relative homotopy. -/
 theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact
     {E G H H' X N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -2438,6 +2650,8 @@ theorem ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact
       isOpen_univ (Set.mapsTo_univ f K) (Set.mapsTo_univ f Set.univ)
   exact ⟨f', hf', hrel.homotopicRel⟩
 
+/-- Two curves whose endpoints are joined by a path are the two ends of a single continuous curve `ℝ
+→ N`, agreeing with the first on `(-∞, 1/4]` and with the second on `[3/4, ∞)`. -/
 theorem CurveImmersion.exists_continuous_curve_with_endpoint_germs {N : Type*}
     [TopologicalSpace N] (a b : C(ℝ, N)) (γ : Path (a 0) (b 1)) :
     ∃ f : C(ℝ, N), Set.EqOn f a (Set.Iic (1 / 4 : ℝ)) ∧ Set.EqOn f b (Set.Ici (3 / 4 : ℝ)) := by
@@ -2482,6 +2696,8 @@ theorem CurveImmersion.exists_continuous_curve_with_endpoint_germs {N : Type*}
       simpa only [if_pos le_rfl] using hm₁
     · exact if_neg (by intro h; exact hte (le_antisymm h ht))
 
+/-- Smooth form of the previous statement: two smooth curves whose endpoints are joined by a path
+are the two ends of a single smooth curve, agreeing with them on `(-∞, 1/8]` and `[7/8, ∞)`. -/
 theorem exists_smooth_curve_with_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless]
     [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] (a b : C(ℝ, N))
@@ -2534,6 +2750,9 @@ theorem exists_smooth_curve_with_endpoint_germs {G H N : Type*} [NormedAddCommGr
       (hrel.fst_eq_snd (Or.inr ht)).symm.trans
         (hgright (show t ∈ Set.Ici (3 / 4 : ℝ) from by change 3 / 4 ≤ t; linarith))
 
+/-- A curve that is an immersion at its two endpoints and has distinct endpoints is injective and
+immersive on a compact neighbourhood of `{0, 1}`, on which it meets a given finite set only at
+the endpoints. -/
 theorem ManifoldImmersion.exists_clean_curve_endpoint_neighborhood {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2588,15 +2807,18 @@ theorem ManifoldImmersion.exists_clean_curve_endpoint_neighborhood {G H N : Type
   · have ht1 : t = 1 := hinjV (hCU ht).1.1 (hBV h1B) h1
     exact htB (by simp [ht1])
 
+/-- Perturbation of a map by adding the cutoff-weighted constant `β x • a`. -/
 def WeightedPerturbation.perturb {E F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (f : E → F) (β : E → ℝ) (a : F) (x : E) : F :=
   f x + β x • a
 
+/-- The weighted perturbation is smooth. -/
 theorem WeightedPerturbation.contDiff_perturb {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {β : E → ℝ}
     (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) (a : F) : ContDiff ℝ ∞ (perturb f β a) :=
   hf.add (hβ.smul contDiff_const)
 
+/-- The derivative of the weighted perturbation is `fderiv f x + (fderiv β x).smulRight a`. -/
 theorem WeightedPerturbation.fderiv_perturb {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {β : E → ℝ}
     (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) (a : F) (x : E) :
@@ -2604,15 +2826,19 @@ theorem WeightedPerturbation.fderiv_perturb {E F : Type*} [NormedAddCommGroup E]
   ((hf.differentiable (by simp) x).hasFDerivAt.add
       ((hβ.differentiable (by simp) x).hasFDerivAt.smul_const a)).fderiv
 
+/-- The points and directions at which the cutoff has nonzero derivative, where the perturbation can
+change the kernel. -/
 def WeightedPerturbation.badDomain {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {X : Type*} (b : X → E) (β : E → ℝ) : Set (X × E) :=
   {q | fderiv ℝ β (b q.1) q.2 ≠ 0}
 
+/-- The parameter that would create a new kernel vector at a given point and direction. -/
 def WeightedPerturbation.badParameter {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {X : Type*} (b : X → E) (f : E → F) (β : E → ℝ)
     (q : X × E) : F :=
   (fderiv ℝ β (b q.1) q.2)⁻¹ • (-(fderiv ℝ f (b q.1) q.2))
 
+/-- The scalar derivative `(x, v) ↦ fderiv β (b x) v` is smooth. -/
 theorem WeightedPerturbation.contMDiff_scalarDerivative {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace X] [ChartedSpace H X]
@@ -2620,6 +2846,7 @@ theorem WeightedPerturbation.contMDiff_scalarDerivative {E : Type*} [NormedAddCo
     ContMDiff (I.prod 𝓘(ℝ, E)) 𝓘(ℝ, ℝ) ∞ (fun q : X × E => fderiv ℝ β (b q.1) q.2) :=
   ((hβ.fderiv_right (by simp)).contMDiff.comp (hb.comp contMDiff_fst)).clm_apply contMDiff_snd
 
+/-- The bad domain is open. -/
 theorem WeightedPerturbation.isOpen_badDomain {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace X] [ChartedSpace H X]
@@ -2627,6 +2854,7 @@ theorem WeightedPerturbation.isOpen_badDomain {E : Type*} [NormedAddCommGroup E]
     IsOpen (badDomain b β) :=
   isOpen_ne_fun (contMDiff_scalarDerivative hb hβ).continuous continuous_const
 
+/-- The bad parameter is smooth on the bad domain. -/
 theorem WeightedPerturbation.contMDiffOn_badParameter {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {B H X : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
@@ -2640,6 +2868,8 @@ theorem WeightedPerturbation.contMDiffOn_badParameter {E F : Type*} [NormedAddCo
     (((contMDiff_scalarDerivative hb hβ).contMDiffAt.inv₀ hq).smul
         hdf.contMDiffAt.neg).contMDiffWithinAt
 
+/-- For a parameter outside the image of the bad-parameter map, the kernel of the perturbed
+derivative is the intersection of the kernels of `fderiv f` and `fderiv β`. -/
 theorem WeightedPerturbation.kernel_iff_of_not_bad {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {X : Type*} {b : X → E} {f : E → F}
     {β : E → ℝ} (hf : ContDiff ℝ ∞ f) (hβ : ContDiff ℝ ∞ β) {a : F}
@@ -2661,6 +2891,8 @@ theorem WeightedPerturbation.kernel_iff_of_not_bad {E F : Type*} [NormedAddCommG
   · rintro ⟨hfzero, hbzero⟩
     simp only [hfzero, hbzero, zero_smul, add_zero]
 
+/-- When `dim X + dim E < dim F`, arbitrarily small parameters give a smooth perturbation whose
+derivative has exactly the common kernel of `f` and the cutoff. -/
 theorem WeightedPerturbation.exists_small_parameter_with_common_kernel {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {B H X : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
@@ -2685,10 +2917,13 @@ theorem WeightedPerturbation.exists_small_parameter_with_common_kernel {E F : Ty
     ⟨a, by simpa only [dist_zero_left] using hnorm, contDiff_perturb hf hβ a,
       kernel_iff_of_not_bad hf hβ hgood⟩
 
+/-- Perturbation of a curve by the linear term `t • a`. -/
 def CurveImmersion.perturb {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : ℝ → F)
     (a : F) : ℝ → F :=
   WeightedPerturbation.perturb f id a
 
+/-- When `dim F ≥ 3`, arbitrarily small linear perturbations of a smooth curve are immersions
+everywhere. -/
 theorem CurveImmersion.exists_small_affine_immersion {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] {f : ℝ → F} (hf : ContDiff ℝ ∞ f)
     (hdim : 3 ≤ Module.finrank ℝ F) {ε : ℝ} (hε : 0 < ε) :
@@ -2708,24 +2943,33 @@ theorem CurveImmersion.exists_small_affine_immersion {F : Type*} [NormedAddCommG
   have huv0 : u - v = 0 := by simpa only [fderiv_id, ContinuousLinearMap.id_apply] using hzero
   exact sub_eq_zero.mp huv0
 
+/-- The weight `t ↦ t * β t` used to turn a cutoff into a curve perturbation with the same
+support. -/
 def CurveImmersion.weight (β : ℝ → ℝ) (t : ℝ) : ℝ :=
   β t * t
 
+/-- The weight of a smooth cutoff is smooth. -/
 theorem CurveImmersion.contDiff_weight {β : ℝ → ℝ} (hβ : ContDiff ℝ ∞ β) :
     ContDiff ℝ ∞ (weight β) :=
   hβ.mul contDiff_id
 
+/-- The weight of a compactly supported cutoff has compact support. -/
 theorem CurveImmersion.hasCompactSupport_weight {β : ℝ → ℝ} (hβ : HasCompactSupport β) :
     HasCompactSupport (weight β) :=
   hβ.mul_right (f' := id)
 
+/-- The support of the weight is contained in the support of the cutoff. -/
 theorem CurveImmersion.tsupport_weight_subset (β : ℝ → ℝ) :
     tsupport (weight β) ⊆ tsupport β :=
   tsupport_mul_subset_left (f := β) (g := id)
 
+/-- Where the cutoff vanishes the weight vanishes. -/
 theorem CurveImmersion.weight_eq_zero {β : ℝ → ℝ} {t : ℝ} (ht : β t = 0) : weight β t = 0 :=
   by simp only [weight, ht, MulZeroClass.zero_mul]
 
+/-- Patch step of the curve immersion theorem: if a property `Q` holds for all small parameters,
+some cutoff-supported perturbation of the curve satisfies `Q`, is homotopic to `f` rel the zero
+set of the cutoff within the open target, and is an immersion on the plateau. -/
 theorem ManifoldImmersion.exists_curve_immersion_patch_with_property_within_target
     {G F H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -2798,6 +3042,8 @@ theorem ManifoldImmersion.exists_curve_immersion_patch_with_property_within_targ
     rw [heq.fderiv_eq]
     exact hderiv t
 
+/-- One step of the curve immersion induction: a perturbation supported in one patch makes the curve
+an immersion on `K ∪ L`. -/
 theorem ManifoldImmersion.exists_curve_immersion_patch_step_within_target {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2845,6 +3091,7 @@ theorem ManifoldImmersion.exists_curve_immersion_patch_step_within_target {G H N
     · exact hKnew t ht
     · exact hplateau t (hLsub ht)
 
+/-- Iterating the curve patch step over a finite family of patches. -/
 theorem ManifoldImmersion.exists_finite_curve_patch_immersion_within_target {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2883,6 +3130,9 @@ theorem ManifoldImmersion.exists_finite_curve_patch_immersion_within_target {G H
       · exact Or.inr htj
       · exact Or.inl (Or.inr (Set.mem_iUnion₂.mpr ⟨j, hjs, htj⟩))
 
+/-- Relative immersion theorem for curves: when `dim N ≥ 3`, a smooth curve that is an immersion on
+a compact set `K` is homotopic rel a closed set `C` disjoint from `L`, within a prescribed open
+target, to a curve that is an immersion on `K ∪ L`. -/
 theorem ManifoldImmersion.exists_curve_immersion_on_compact_rel_within_target
     {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
@@ -2918,6 +3168,9 @@ theorem ManifoldImmersion.exists_curve_immersion_on_compact_rel_within_target
   · obtain ⟨i, his, hti⟩ := Set.mem_iUnion₂.mp (hs ht)
     exact Or.inr (Set.mem_iUnion₂.mpr ⟨⟨i, his⟩, Finset.mem_univ _, interior_subset hti⟩)
 
+/-- Relative embedding theorem for curves within an open target: when `dim N ≥ 3`, a curve which is
+an injective immersion on `K ∩ C` is homotopic rel `C` to a curve that is a closed embedding and
+an immersion on the compact set `K`. -/
 theorem ManifoldImmersion.exists_relative_compact_curve_embedding_within_target
     {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
@@ -2961,6 +3214,8 @@ theorem ManifoldImmersion.exists_relative_compact_curve_embedding_within_target
       hhom₁.mapsTo_right
   exact ⟨g₂, hg₂, hhom₁.trans hhom₂, hemb, hinj₂⟩
 
+/-- The same statement with an ordinary relative homotopy (Hirsch, *Differential Topology*, Ch. 8,
+in dimension one). -/
 theorem ManifoldImmersion.exists_relative_compact_curve_embedding {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2978,6 +3233,9 @@ theorem ManifoldImmersion.exists_relative_compact_curve_embedding {G H N : Type*
       isOpen_univ (Set.mapsTo_univ f (K \ C))
   exact ⟨g, hg, hrel.homotopicRel, he, hi⟩
 
+/-- Relative curve embedding with avoidance: when `dim N ≥ 3` and `1 + dim Y < dim N`, a curve clean
+on `K ∩ C` outside `B` is homotopic rel `C` to an embedded immersed curve on `K` avoiding the
+image of `g` outside `B`. -/
 theorem ManifoldImmersion.exists_relative_curve_avoidance_of_clean_neighborhood
     {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
     [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N]
@@ -3015,6 +3273,7 @@ theorem ManifoldImmersion.exists_relative_curve_avoidance_of_clean_neighborhood
       hclean₁
   exact ⟨f₂, hf₂, hhom₁.trans hhom₂, hemb₂, hderiv₂, havoid⟩
 
+/-- Version of the previous statement with a finite obstacle set. -/
 theorem ManifoldImmersion.exists_relative_curve_avoiding_finite {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -3045,6 +3304,9 @@ theorem ManifoldImmersion.exists_relative_curve_avoiding_finite {G H N : Type*}
   refine ⟨f', hf', hrel, hemb, hi, ?_⟩
   simpa only [hrange] using havoid
 
+/-- Two smooth curves which are immersions at their matching endpoints and have distinct endpoints,
+joined by a path, are the two ends of a single arc which is an embedding and an immersion on
+`[0, 1]` and meets a given finite set only at its endpoints; it requires `dim N ≥ 3`. -/
 theorem exists_embedded_arc_with_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -3094,6 +3356,8 @@ theorem exists_embedded_arc_with_endpoint_germs {G H N : Type*} [NormedAddCommGr
   · exact ht.1.ne' ht0
   · exact ht.2.ne ht1
 
+/-- A curve defined and smooth near a parameter is the germ at that parameter of a globally defined
+smooth curve. -/
 theorem exists_smooth_curve_with_germ_at {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] {a : ℝ → N} {U : Set ℝ} {t₀ : ℝ} (ha : ContMDiffOn 𝓘(ℝ, ℝ) J ∞ a U)
@@ -3101,6 +3365,8 @@ theorem exists_smooth_curve_with_germ_at {G H N : Type*} [NormedAddCommGroup G]
   obtain ⟨f, hf, heq⟩ := exists_smooth_extension_near_point ha hU ht₀
   exact ⟨⟨f, hf.continuous⟩, hf, heq⟩
 
+/-- Version of `exists_embedded_arc_with_endpoint_germs` for curve germs defined only near the two
+endpoints. -/
 theorem exists_embedded_arc_with_local_endpoint_germs {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
     [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J ∞ N] [T2Space N]
@@ -3132,6 +3398,8 @@ theorem exists_embedded_arc_with_local_endpoint_germs {G H N : Type*} [NormedAdd
       (γ.cast heqa.eq_of_nhds heqb.eq_of_nhds) hxy' hdim hS
   exact ⟨f, hf, hfa.trans heqa, hfb.trans heqb, hemb, hi, havoid⟩
 
+/-- Version of the previous statement in which the arc is required in addition to avoid the closed
+image of a map `o` except at its endpoints; it requires `dim N ≥ 3` and `1 + dim Y < dim N`. -/
 theorem MorseCancellation.exists_clean_arc_with_local_endpoint_germs {G V H H' N Y : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [TopologicalSpace H] [TopologicalSpace H']
@@ -3209,6 +3477,10 @@ theorem MorseCancellation.exists_clean_arc_with_local_endpoint_germs {G V H H' N
       exact ⟨ne_of_gt ht.1, ne_of_lt ht.2⟩
     exact havoid t ⟨⟨ht.1.le, ht.2.le⟩, htB⟩ hto
 
+/-- A smooth normal frame along an embedded immersed star-convex compact set: on a neighbourhood of
+`K` there is a smooth family of injective maps whose ranges are the normal spaces of `f`.
+Star-convexity makes the normal bundle trivial, which is the first step of the tubular
+neighbourhood theorem (Hirsch, *Differential Topology*, Ch. 4 §5). -/
 theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_starConvex {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -3253,6 +3525,10 @@ theorem NativeEuclideanEmbedding.exists_smooth_normalFrame_near_starConvex {E M 
     _ = (e.diskNormalProjection f x).range := (hAi x hx).2
     _ = e.diskNormalSpace f x := by rw [hP x (hKU hx), Submodule.range_starProjection]
 
+/-- Tubular neighbourhood theorem for an embedded immersed star-convex compact set in an
+inner-product source: there is a partial diffeomorphism of `D × ℝⁿ` onto a neighbourhood of `f '' K`
+inside a prescribed open set, restricting to `f` on `D × {0}` (Hirsch, *Differential Topology*,
+Ch. 4 §5). -/
 theorem exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -3300,6 +3576,7 @@ theorem exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_ze
     rintro _ ⟨p, hp, rfl⟩
     exact hp.2
 
+/-- The same tubular neighbourhood statement for a general normed source. -/
 theorem exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero
     {E M D : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -3355,6 +3632,8 @@ theorem exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_gl
   · intro y hy
     exact htarget hy.1
 
+/-- Tubular neighbourhood for a map that is only defined and smooth on an open set `U` containing
+`K`; the chart source is then contained in `U × ℝⁿ`. -/
 theorem exists_local_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -3404,6 +3683,8 @@ theorem exists_local_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
   · intro y hy
     exact htarget hy.1
 
+/-- Clean tubular neighbourhood: the chart of the previous statement can be chosen so that a point
+of its source lies over `f '' U` exactly when its normal coordinate vanishes. -/
 theorem exists_clean_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -3474,6 +3755,8 @@ theorem exists_clean_tubularNeighborhood_of_embedded_starConvex {E M D : Type*}
     subst z
     exact ⟨x, (hsource hq.1).1, (hzero x hq.1).symm⟩
 
+/-- Clean tubular neighbourhood of a sheet: for an embedded immersed `F : N → M` read in a chart
+`c`, a chart of `M` in which the sheet is exactly the zero set of the normal coordinate. -/
 theorem exists_clean_embedded_sheet_neighborhood {E M D G N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -3526,6 +3809,8 @@ theorem exists_clean_embedded_sheet_neighborhood {E M D G N : Type*} [NormedAddC
       exact ⟨c u, hu⟩
   exact hrange.trans (himage q hq)
 
+/-- The linear isomorphism `ℝ × (D × B) ≃L[ℝ] D × (ℝ × B)` exchanging the axis coordinate with the
+first block. -/
 def MorseCancellation.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup B] [NormedSpace ℝ B] : (ℝ × (D × B)) ≃L[ℝ] (D × (ℝ × B))
     where
@@ -3539,6 +3824,9 @@ def MorseCancellation.sheetAxisShuffle {D B : Type*} [NormedAddCommGroup D] [Nor
   continuous_toFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
   continuous_invFun := continuous_snd.fst.prodMk (continuous_fst.prodMk continuous_snd.snd)
 
+/-- Axis-adapted clean chart: for an embedded immersed `f : X → M` of codimension `1 + n`, every
+point of the image has a chart `ℝ × (D × ℝⁿ) → M` in which the image of `f` is exactly `{z | z.1
+= 0 ∧ z.2.2 = 0}`. -/
 theorem MorseCancellation.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {E M X : Type*} [FiniteDimensional ℝ D] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -3596,6 +3884,8 @@ theorem MorseCancellation.exists_clean_sheet_axis_chart {D : Type*} [NormedAddCo
       rw [h1, h2]
       exact L.map_zero
 
+/-- The axis curve `t ↦ Φ (t, 0)` of a chart is defined, smooth and immersive on a neighbourhood of
+any parameter whose axis point lies in the chart's source. -/
 theorem MorseCancellation.chart_axis_curve_properties {V E H M : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {J : ModelWithCorners ℝ E H} [TopologicalSpace M] [ChartedSpace H M]
@@ -3620,6 +3910,8 @@ theorem MorseCancellation.chart_axis_curve_properties {V E H M : Type*} [NormedA
   exact
     (PartialChart.bijective_mfderiv Φ hp).injective.comp (fun _ _ h => congrArg Prod.fst h)
 
+/-- The diffeomorphism of `ℝ × (D × D)` exchanging the two `D` blocks, used to put the second sheet
+of a two-sheet configuration in terminal position. -/
 def MorseCancellation.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] :
     Diffeomorph 𝓘(ℝ, ℝ × (D × D)) 𝓘(ℝ, ℝ × (D × D)) (ℝ × (D × D)) (ℝ × (D × D)) ∞
     where
@@ -3635,6 +3927,11 @@ def MorseCancellation.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D
     ((contDiff_fst.add contDiff_const).prodMk
         (contDiff_snd.snd.prodMk contDiff_snd.fst)).contMDiff
 
+/-- Two disjoint embedded immersed surfaces in a five-manifold, together with a path from a point of
+one to a point of the other, admit adapted clean charts at the two endpoints and an embedded
+immersed arc joining them which meets the first surface only at its initial point and the second
+only at its terminal point.  This is the configuration the Whitney trick starts from (Hirsch,
+*Differential Topology*, Ch. 8; Milnor, *Lectures on the h-cobordism theorem*, §6). -/
 theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X]
@@ -3768,6 +4065,8 @@ theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAd
       rw [ha1]
       exact Set.mem_range_self y
 
+/-- If `Q` is surjective, `A ⊕ C` is surjective and `Q ∘ A = 0`, then `Q ∘ C` is surjective: the
+normal component of a transverse complement is onto. -/
 theorem TransverseCoordinates.surjective_normal_comp {D Z E B : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -3783,6 +4082,8 @@ theorem TransverseCoordinates.surjective_normal_comp {D Z E B : Type*}
   have hsum : Q (A u + C v) = w := (congrArg Q huv).trans hz
   simpa only [map_add, hAu, zero_add] using hsum
 
+/-- Under the same hypotheses, `Q ∘ C` is bijective as soon as the dimensions of source and target
+agree. -/
 theorem TransverseCoordinates.bijective_normal_comp {D Z E B : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ Z]
@@ -3792,11 +4093,13 @@ theorem TransverseCoordinates.bijective_normal_comp {D Z E B : Type*} [NormedAdd
   have hs := surjective_normal_comp Q A C hQ hAC hQA
   exact ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hs, hs⟩
 
+/-- The projection `F →L[ℝ] Z` onto the complement `Z` determined by an invertible `G ⊕ C`. -/
 def FrameField.complementQuotient {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (G : D →L[ℝ] F) (C : Z →L[ℝ] F) : F →L[ℝ] Z :=
   (ContinuousLinearMap.snd ℝ D Z).comp (G.coprod C).inverse
 
+/-- The projection kills the image of `G`. -/
 theorem FrameField.complementQuotient_left {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) (u : D) :
@@ -3806,6 +4109,7 @@ theorem FrameField.complementQuotient_left {D Z F : Type*} [NormedAddCommGroup D
   rw [map_zero, add_zero] at hi
   exact congrArg Prod.snd hi
 
+/-- The projection restricts to the identity on the complement `C`. -/
 theorem FrameField.complementQuotient_right {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) (v : Z) :
@@ -3815,6 +4119,7 @@ theorem FrameField.complementQuotient_right {D Z F : Type*} [NormedAddCommGroup 
   rw [map_zero, zero_add] at hi
   exact congrArg Prod.snd hi
 
+/-- The kernel of the projection is exactly the image of `G`. -/
 theorem FrameField.ker_complementQuotient {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible) :
@@ -3831,6 +4136,7 @@ theorem FrameField.ker_complementQuotient {D Z F : Type*} [NormedAddCommGroup D]
   · rintro ⟨u, rfl⟩
     exact complementQuotient_left G C h u
 
+/-- `G ⊕ H` is bijective as soon as the projection of `H` to the complement is. -/
 theorem FrameField.bijective_coprod_of_quotient {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C H : Z →L[ℝ] F) (h : (G.coprod C).IsInvertible)
@@ -3868,11 +4174,14 @@ theorem FrameField.bijective_coprod_of_quotient {D Z F : Type*} [NormedAddCommGr
     change G u = w - H v at hu
     rw [hu, sub_add_cancel]
 
+/-- The complement `C ∘ K + (L - C ∘ (complementQuotient G C) ∘ L)`, which has prescribed projection
+`K` and agrees with `L` along the image of `G`. -/
 def FrameField.correctedComplement {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z) : Z →L[ℝ] F :=
   L + C.comp (K - (complementQuotient G C).comp L)
 
+/-- The corrected complement has projection exactly `K`. -/
 theorem FrameField.quotient_correctedComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z)
@@ -3885,12 +4194,14 @@ theorem FrameField.quotient_correctedComplement {D Z F : Type*} [NormedAddCommGr
   change complementQuotient G C (L v) + (K v - complementQuotient G C (L v)) = K v
   rw [← add_sub_assoc, add_sub_cancel_left]
 
+/-- Correcting `L` by its own projection returns `L`. -/
 theorem FrameField.correctedComplement_self {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) :
     correctedComplement G C L ((complementQuotient G C).comp L) = L := by
   simp only [correctedComplement, sub_self, ContinuousLinearMap.comp_zero, add_zero]
 
+/-- `G ⊕ correctedComplement G C L K` is bijective when `K` is. -/
 theorem FrameField.bijective_coprod_correctedComplement {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (G : D →L[ℝ] F) (C L : Z →L[ℝ] F) (K : Z →L[ℝ] Z)
@@ -3900,6 +4211,7 @@ theorem FrameField.bijective_coprod_correctedComplement {D Z F : Type*}
   rw [quotient_correctedComplement G C L K h]
   exact hK
 
+/-- A smooth family of coproducts is smooth. -/
 theorem FrameField.contDiffOn_coprod {X D Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] {G : X → (D →L[ℝ] F)}
@@ -3908,6 +4220,7 @@ theorem FrameField.contDiffOn_coprod {X D Z F : Type*} [NormedAddCommGroup X]
   (hG.clm_comp (contDiffOn_const (c := ContinuousLinearMap.fst ℝ D Z))).add
     (hC.clm_comp (contDiffOn_const (c := ContinuousLinearMap.snd ℝ D Z)))
 
+/-- A smooth family of projections onto complements is smooth where the coproduct is invertible. -/
 theorem FrameField.contDiffOn_complementQuotient {X D Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D]
@@ -3922,6 +4235,7 @@ theorem FrameField.contDiffOn_complementQuotient {X D Z F : Type*} [NormedAddCom
       ((hi x hx).contDiffAt_map_inverse.comp x (hT.contDiffAt (hU.mem_nhds hx))).contDiffWithinAt
   exact contDiffOn_const.clm_comp hInv
 
+/-- A smooth family of corrected complements is smooth. -/
 theorem FrameField.contDiffOn_correctedComplement {X D Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D]
@@ -3932,22 +4246,27 @@ theorem FrameField.contDiffOn_correctedComplement {X D Z F : Type*} [NormedAddCo
     ContDiffOn ℝ ∞ (fun x => correctedComplement (G x) (C x) (L x) (K x)) U :=
   hL.add (hC.clm_comp (hK.sub ((contDiffOn_complementQuotient hU hG hC hi).clm_comp hL)))
 
+/-- The block map `(x, z) ↦ (x + A z, T z)` of `X × Z → X × F`: a shear along `X` followed by `T` on
+the transverse factor. -/
 def FrameField.shearedBlock {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) : (X × Z) →L[ℝ] (X × F) :=
   (ContinuousLinearMap.inl ℝ X F).coprod (A.prod T)
 
+/-- The formula for the sheared block. -/
 theorem FrameField.shearedBlock_apply {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (p : X × Z) :
     shearedBlock A T p = (p.1 + A p.2, T p.2) := by
   simp [shearedBlock, ContinuousLinearMap.coprod_apply]
 
+/-- The sheared block fixes the horizontal subspace `X × {0}` pointwise. -/
 theorem FrameField.shearedBlock_horizontal {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (x : X) :
     shearedBlock A T (x, 0) = (x, 0) := by simp only [shearedBlock_apply, map_zero, add_zero]
 
+/-- The sheared block is bijective as soon as its transverse part `T` is. -/
 theorem FrameField.bijective_shearedBlock {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (A : Z →L[ℝ] X) (T : Z →L[ℝ] F) (hi : Function.Bijective T) :
@@ -3965,16 +4284,19 @@ theorem FrameField.bijective_shearedBlock {X Z F : Type*} [NormedAddCommGroup X]
     rw [shearedBlock_apply]
     simp only [sub_add_cancel, hz]
 
+/-- The nonlinear shear `(x, z) ↦ (x + A x z, T x z)` given by a field of sheared blocks. -/
 def FrameField.shearedMap {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : X → (Z →L[ℝ] X)) (T : X → (Z →L[ℝ] F)) (p : X × Z) : X × F :=
   (p.1 + A p.1 p.2, T p.1 p.2)
 
+/-- The sheared map fixes the zero section pointwise. -/
 theorem FrameField.shearedMap_zero {X Z F : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : X → (Z →L[ℝ] X)) (T : X → (Z →L[ℝ] F)) (x : X) : shearedMap A T (x, 0) = (x, 0) := by
   simp only [shearedMap, map_zero, add_zero]
 
+/-- The sheared map is smooth over the domain of the fields. -/
 theorem FrameField.contDiffOn_shearedMap {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {A : X → (Z →L[ℝ] X)} {T : X → (Z →L[ℝ] F)} {U : Set X}
@@ -3983,6 +4305,7 @@ theorem FrameField.contDiffOn_shearedMap {X Z F : Type*} [NormedAddCommGroup X]
   (contDiffOn_fst.add ((hA.comp contDiffOn_fst (fun _ hp => hp)).clm_apply contDiffOn_snd)).prodMk
     ((hT.comp contDiffOn_fst (fun _ hp => hp)).clm_apply contDiffOn_snd)
 
+/-- Along the zero section the derivative of the sheared map is the corresponding sheared block. -/
 theorem FrameField.hasFDerivAt_shearedMap_zero {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {A : X → (Z →L[ℝ] X)} {T : X → (Z →L[ℝ] F)} {x : X}
@@ -4006,6 +4329,7 @@ theorem FrameField.hasFDerivAt_shearedMap_zero {X Z F : Type*} [NormedAddCommGro
     | rfl
     | (apply ContinuousLinearMap.ext; intro p; simp [shearedBlock_apply])
 
+/-- The sheared block is invertible when its transverse part is. -/
 theorem FrameField.isInvertible_shearedBlock {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ X] [FiniteDimensional ℝ Z] (A : Z →L[ℝ] X)
@@ -4015,6 +4339,8 @@ theorem FrameField.isInvertible_shearedBlock {X Z F : Type*} [NormedAddCommGroup
         (bijective_shearedBlock A T hi.bijective)).toContinuousLinearEquiv
   exact ⟨e, rfl⟩
 
+/-- A field of invertible sheared blocks over a compact set integrates to a partial diffeomorphism
+of `X × Z` onto `X × F` given by the sheared map. -/
 theorem FrameField.exists_sheared_frame_chart {X Z F : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ X] [FiniteDimensional ℝ Z] {A : X → (Z →L[ℝ] X)}
@@ -4049,22 +4375,29 @@ theorem FrameField.exists_sheared_frame_chart {X Z F : Type*} [NormedAddCommGrou
     exists_partialDiffeomorph_near_compact (hK.prod isCompact_singleton) hzeroInj hlocal
       (hU.preimage continuous_fst) (fun _ hp => hKU hp.1)
 
+/-- The shear component `V →L[ℝ] ℝ` of an endomorphism of `ℝ × V` fixing the axis vector
+`(1, 0)`. -/
 def AxisCoordinates.tangentShear {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] ℝ :=
   (ContinuousLinearMap.fst ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
+/-- The transverse component `V →L[ℝ] V` of such an endomorphism. -/
 def AxisCoordinates.transverseBlock {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) : V →L[ℝ] V :=
   (ContinuousLinearMap.snd ℝ ℝ V).comp (L.comp (ContinuousLinearMap.inr ℝ ℝ V))
 
+/-- The shear component depends smoothly on the endomorphism. -/
 theorem AxisCoordinates.contDiff_tangentShear {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (tangentShear (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
+/-- The transverse component depends smoothly on the endomorphism. -/
 theorem AxisCoordinates.contDiff_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] : ContDiff ℝ ∞ (transverseBlock (V := V)) :=
   contDiff_const.clm_comp (contDiff_id.clm_comp contDiff_const)
 
+/-- An endomorphism fixing the axis vector acts by `(s, z) ↦ (s + tangentShear z, transverseBlock
+z)`. -/
 theorem AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) (s : ℝ) (z : V) :
     L (s, z) = (s + tangentShear L z, transverseBlock L z) := by
@@ -4072,6 +4405,7 @@ theorem AxisCoordinates.axis_block_apply {V : Type*} [NormedAddCommGroup V]
   rw [hp, map_add, map_smul, hL]
   apply Prod.ext <;> simp [tangentShear, transverseBlock]
 
+/-- Hence such an endomorphism is the sheared block of its two components. -/
 theorem AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0)) :
     L = FrameField.shearedBlock (tangentShear L) (transverseBlock L) := by
@@ -4080,6 +4414,7 @@ theorem AxisCoordinates.axis_block_eq {V : Type*} [NormedAddCommGroup V] [Normed
   rw [FrameField.shearedBlock_apply]
   exact axis_block_apply L hL p.1 p.2
 
+/-- The transverse component of a bijective endomorphism fixing the axis is bijective. -/
 theorem AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : Function.Bijective L) : Function.Bijective (transverseBlock L) := by
@@ -4094,6 +4429,7 @@ theorem AxisCoordinates.bijective_transverseBlock {V : Type*} [NormedAddCommGrou
     rw [axis_block_apply L hL] at hz
     exact ⟨z, congrArg (fun p : ℝ × V => p.2) hz⟩
 
+/-- The transverse component of an invertible endomorphism fixing the axis is invertible. -/
 theorem AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : (ℝ × V) →L[ℝ] (ℝ × V)) (hL : L (1, 0) = (1, 0))
     (hi : L.IsInvertible) : (transverseBlock L).IsInvertible := by
@@ -4102,6 +4438,8 @@ theorem AxisCoordinates.isInvertible_transverseBlock {V : Type*} [NormedAddCommG
         (bijective_transverseBlock L hL hi.bijective)).toContinuousLinearEquiv
   exact ⟨e, rfl⟩
 
+/-- A map that restricts to the identity along the axis has derivative fixing the axis vector `(1,
+0)`. -/
 theorem AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] {F : (ℝ × V) → (ℝ × V)} {s : ℝ} (hF : ContDiffAt ℝ ∞ F (s, 0))
     (heq : (fun r : ℝ => F (r, 0)) =ᶠ[𝓝 s] (fun r => (r, (0 : V)))) :
@@ -4111,6 +4449,9 @@ theorem AxisCoordinates.derivative_fixes_axis {V : Type*} [NormedAddCommGroup V]
   have hd := (hF.differentiableAt (by simp)).hasFDerivAt.comp_hasDerivAt s ha
   exact hd.deriv.symm.trans (heq.deriv_eq.trans ha.deriv)
 
+/-- Transition data between two charts agreeing along the axis: on a neighbourhood of the parameter,
+the transition fixes the axis, its derivative is the sheared block of its two components, these
+depend smoothly on the parameter, and the transverse component is invertible. -/
 theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -4171,6 +4512,8 @@ theorem AxisCoordinates.exists_native_axis_transition_data {V E M : Type*}
   · intro s hs
     exact axis_block_eq _ (hfix s hs)
 
+/-- A curve in an open subset of a normed space, smooth near a parameter, is the germ there of a
+globally defined smooth curve staying in that open set. -/
 theorem exists_smooth_open_curve_with_germ {B : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] (S : TopologicalSpace.Opens B) {a : ℝ → B} {U : Set ℝ} {t₀ : ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hU : IsOpen U) (ht₀ : t₀ ∈ U) (ha0 : a t₀ ∈ S) :
@@ -4194,6 +4537,8 @@ theorem exists_smooth_open_curve_with_germ {B : Type*} [NormedAddCommGroup B]
   filter_upwards [heq, hval htV] with t ht hta
   exact (congrArg Subtype.val ht).trans hta
 
+/-- Two curve germs in an open subset of a normed space, joined by a path in that open set, are the
+two ends of a single smooth curve staying in it. -/
 theorem exists_smooth_open_curve_with_endpoint_germs {B : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] (S : TopologicalSpace.Opens B) {a b : ℝ → B} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
@@ -4216,21 +4561,27 @@ theorem exists_smooth_open_curve_with_endpoint_germs {B : Type*} [NormedAddCommG
     change 7 / 8 < t at ht
     exact (congrArg Subtype.val (hfb ht.le)).trans htb
 
+/-- The linear isomorphism between endomorphisms of `D` and `ι × ι` matrices given by a basis. -/
 def LinearFramePaths.matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℝ D) : (D →L[ℝ] D) ≃L[ℝ] Matrix ι ι ℝ :=
   (LinearMap.toContinuousLinearMap.symm.trans (LinearMap.toMatrix b b)).toContinuousLinearEquiv
 
+/-- The determinant of the matrix of an endomorphism is its determinant. -/
 theorem LinearFramePaths.det_matrixCoordinates {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℝ D)
     (A : D →L[ℝ] D) : Matrix.det (matrixCoordinates b A) = A.toLinearMap.det :=
   LinearMap.det_toMatrix b A.toLinearMap
 
+/-- The open set of endomorphisms of `D` whose determinant has the sign of `σ`; for `σ ≠ 0` these
+are the two connected components of the invertible endomorphisms. -/
 def LinearFramePaths.operatorComponent {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     (σ : ℝ) : TopologicalSpace.Opens (D →L[ℝ] D) :=
   ⟨{A | 0 < σ * A.toLinearMap.det},
     isOpen_lt continuous_const (continuous_const.mul ContinuousLinearMap.continuous_det)⟩
 
+/-- Two invertible endomorphisms with determinants of the same sign are joined by a path: `GL(D)`
+has two connected components. -/
 theorem LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι] (b : Module.Basis ι ℝ D)
     {σ : ℝ} (A B : operatorComponent (D := D) σ) : Joined A B := by
@@ -4261,6 +4612,8 @@ theorem LinearFramePaths.joined_operatorComponent {D ι : Type*} [NormedAddCommG
   have h := (joined_determinantComponent A' B').map hψ
   rwa [hA, hB] at h
 
+/-- Two germs of smooth families of endomorphisms at `0` and `1`, invertible and with determinants
+of the same sign, extend to a single smooth family of invertible endomorphisms with those germs. -/
 theorem LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Nontrivial ι] [Finite ι]
     (basis : Module.Basis ι ℝ D) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ} (ha : ContDiffOn ℝ ∞ a U)
@@ -4296,6 +4649,8 @@ theorem LinearFramePaths.exists_smooth_invertible_frame_join {D ι : Type*}
   have hi : Function.Injective (L t) := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
+/-- Two germs of sheared frames at `0` and `1`, whose transverse parts have determinants of the same
+sign, extend to a single smooth family of invertible sheared blocks with those germs. -/
 theorem AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)} {T₀ T₁ : ℝ → (V →L[ℝ] V)}
@@ -4328,6 +4683,7 @@ theorem AxisCoordinates.exists_smooth_sheared_frame_join {V ι : Type*}
     ⟨A, T, hA, hT, hTi, fun s => FrameField.isInvertible_shearedBlock (A s) (T s) (hTi s),
       ha₀, ha₁, ht₀, ht₁⟩
 
+/-- The previous statement at two arbitrary parameters `p < q` in place of `0` and `1`. -/
 theorem AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     (basis : Module.Basis ι ℝ V) {p q : ℝ} (hpq : p < q) {A₀ A₁ : ℝ → (V →L[ℝ] ℝ)}
@@ -4379,6 +4735,8 @@ theorem AxisCoordinates.exists_smooth_sheared_frame_join_at {V ι : Type*}
   · filter_upwards [hζ1 ht₁] with s hs
     exact hs.trans (congrArg T₁ (hξζ s))
 
+/-- A smooth map can be modified near a point so as to have a prescribed germ there while keeping
+its values and first derivatives on a set `K` and its germ outside an open set `U`. -/
 theorem AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R : E → F} {K U : Set E} {x : E} (hH : ContDiff ℝ ∞ H) (hR : ContDiffOn ℝ ∞ R U)
@@ -4426,6 +4784,9 @@ theorem AxisCoordinates.exists_flat_local_correction {E F : Type*} [NormedAddCom
       simpa only [add_zero, Pi.add_def, G] using (hh.hasFDerivAt.add hc).fderiv
     · exact (hoff y hb).fderiv_eq
 
+/-- Two prescribed germs at `(p, 0)` and `(q, 0)`, agreeing with `H` in value and derivative along
+the axis, are realised by a single smooth map agreeing with `H` in value and derivative along
+the whole axis. -/
 theorem AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {H R₀ R₁ : (ℝ × V) → F} {U₀ U₁ : Set (ℝ × V)} {p q : ℝ} (hpq : p < q) (hH : ContDiff ℝ ∞ H)
@@ -4483,6 +4844,9 @@ theorem AxisCoordinates.exists_axis_germ_correction {V F : Type*} [NormedAddComm
     have hs : (s, (0 : V)) ∈ K := ⟨Set.mem_univ s, rfl⟩
     exact (hdG hs).trans (hdG₀ hs)
 
+/-- Shearing a tubular chart: a field of invertible sheared blocks over a compact set turns a
+tubular chart `Ψ` into a tubular chart `Φ` with the same zero section, prescribed transition
+germs and prescribed derivative along the zero section. -/
 theorem FrameField.exists_sheared_tubular_chart {X Z F E M : Type*} [NormedAddCommGroup X]
     [NormedSpace ℝ X] [FiniteDimensional ℝ X] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup E]
@@ -4528,6 +4892,10 @@ theorem FrameField.exists_sheared_tubular_chart {X Z F E M : Type*} [NormedAddCo
         ((hA.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
         ((hT.contDiffAt (hU.mem_nhds (hKU hx))).differentiableAt (by simp))
 
+/-- Axis chart with prescribed endpoint germs: given a chart `Ψ` along a compact piece of the axis
+and two charts `Φ₀`, `Φ₁` agreeing with it along the axis near `p` and `q`, with transverse
+determinants of the same sign, there is a chart `Φ` with the same axis as `Ψ` that agrees with
+`Φ₀` near `(p, 0)` and with `Φ₁` near `(q, 0)`. -/
 theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Finite ι] [Nontrivial ι]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -4632,6 +5000,7 @@ theorem AxisCoordinates.exists_native_axis_chart_with_endpoint_germs {V E M ι :
     rw [hformula, hp]
     exact Ψ.right_inv' hs.2
 
+/-- In finite dimension a bijective coproduct is invertible as a continuous linear map. -/
 theorem FrameField.isInvertible_coprod_of_bijective {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z] (G : D →L[ℝ] F)
