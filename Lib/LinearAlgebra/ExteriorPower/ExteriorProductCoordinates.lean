@@ -14,7 +14,24 @@ public import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 # Exterior products in standard coordinates
 
 This file equips homogeneous exterior powers with their bilinear exterior product and computes
-that product on the standard ordered bases of finite coordinate modules.
+that product on the standard ordered bases of finite coordinate modules: `e_S ∧ e_T` vanishes when
+`S` and `T` meet, and equals `± e_{S ∪ T}` otherwise, the sign being the signature of the
+permutation that sorts the concatenation of the increasing enumerations of `S` and `T`
+(`Set.powersetCard.permOfDisjoint`).
+
+## Main definitions
+
+* `exteriorPower.wedge`: the exterior product `⋀^p M →ₗ ⋀^q M →ₗ ⋀^(p + q) M`.
+
+## Main results
+
+* `exteriorPower.finBasis_wedge_of_not_disjoint`, `exteriorPower.finBasis_wedge_of_disjoint`:
+  the product of two standard basis vectors.
+
+## References
+
+* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §8.5 (multiplication in the
+  exterior algebra of a free module on a basis).
 -/
 
 @[expose] public section
@@ -44,6 +61,8 @@ def wedge (p q : ℕ) :
       apply Subtype.ext
       exact Algebra.mul_smul_comm c x.1 y.1)
 
+/-- The exterior product is the multiplication of the exterior algebra, read on the homogeneous
+components. -/
 @[simp]
 theorem coe_wedge (p q : ℕ) (x : ⋀[R]^p M) (y : ⋀[R]^q M) :
     (wedge R p q x y : ExteriorAlgebra R M) = x.1 * y.1 :=
