@@ -14,9 +14,9 @@ public import Lib.Topology.Sheaves.ConstantProductH1Comparison
 Restriction of a constant-sheaf H¹ class to the fibres of `S × X` is independent
 of the chosen point of a contractible base `S`, under the canonical product marking.
 
-This is a generic degree-one consequence of the canonical constant-sheaf/singular comparison
-and homotopy invariance.  It neither constructs a geometric family nor identifies a stalk,
-Leray page, or spectral-sequence differential.
+This is the degree-one case of the statement that homotopic maps induce the same map on sheaf
+cohomology with constant coefficients (Bredon, *Sheaf Theory*, II.11), obtained here from the
+comparison with singular cohomology.
 -/
 
 @[expose] public section
