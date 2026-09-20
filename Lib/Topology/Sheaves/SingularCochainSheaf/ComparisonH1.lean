@@ -9,11 +9,13 @@ module
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit
 
 /-!
-# The degree-one constant-sheaf/singular comparison assembly
+# Constant-sheaf cohomology and singular cohomology in degree one
 
-This module isolates the final categorical assembly.  Local exactness and degree-zero acyclicity
-produce the comparison with global sheafified cochains; an `IsIso` instance for the actual global
-sheafification-unit homology map then produces the native singular-cohomology comparison.
+For a locally contractible space `X` and an abelian group `A` the first cohomology group of the
+constant sheaf `A_X` is isomorphic to the first singular cohomology group `H¹(X; A)`
+(Bredon, *Sheaf Theory*, III Thm. 1.1; Warner, *Foundations of Differentiable Manifolds and Lie
+Groups*, 5.32).  The isomorphism is obtained from the singular-cochain sheafification unit, whose
+degree-one homology map is assumed invertible.
 -/
 
 @[expose] public section
@@ -29,8 +31,8 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- The canonical degree-one comparison, assembled from the actual resolution and actual global
-sheafification-unit map. -/
+/-- For a locally contractible space `X`, the first cohomology group of the constant sheaf `A_X`
+is isomorphic to the first singular cohomology group `H¹(X; A)` (Bredon III Thm. 1.1). -/
 def h1Comparison (hLC : LocallyContractibleSpace X)
     [IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)] :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
@@ -39,7 +41,8 @@ def h1Comparison (hLC : LocallyContractibleSpace X)
   constantSheafGlobalH1Iso X A hLC ≪≫
     (asIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)).symm
 
-/-- The comparison is characterized by the actual global sheafification-unit homology map. -/
+/-- The degree-one comparison composed with the homology map of the singular-cochain
+sheafification unit is the constant-sheaf comparison isomorphism; this characterises it. -/
 @[reassoc]
 theorem h1Comparison_global (hLC : LocallyContractibleSpace X)
     [IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)] :
