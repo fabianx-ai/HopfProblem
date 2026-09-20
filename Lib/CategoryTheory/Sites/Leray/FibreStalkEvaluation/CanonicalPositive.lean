@@ -141,7 +141,7 @@ theorem canonicalStalkToFibre_neighborhoodGermPositive
           (CategoryTheory.Sheaf.H.{u}
             (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) (n + 1))
           Ext.instAddCommGroup
-          (CategoryTheory.Sheaf.cohomologyAddCommGroup
+          (CategoryTheory.Sheaf.instAddCommGroupH
             (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) (n + 1))
           (cohomologyEvaluation (fibreInclusion f y)
             (fibreInclusion_isClosedMap f y) (fibreInclusion_finite_fibres f y)

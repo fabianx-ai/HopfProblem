@@ -51,14 +51,14 @@ theorem exists_h1Comparison_natural
         @AddCommGrpCat.of
             (CategoryTheory.Sheaf.H.{0}
               (TopCat.ConstantSheaf.sheaf (TopCat.of X) A) 1)
-            (CategoryTheory.Sheaf.cohomologyAddCommGroup
+            (CategoryTheory.Sheaf.instAddCommGroupH
               (TopCat.ConstantSheaf.sheaf (TopCat.of X) A) 1) ≅
           (AlgebraicTopology.SingularCochains.complex X A).homology 1)
       (cY :
         @AddCommGrpCat.of
             (CategoryTheory.Sheaf.H.{0}
               (TopCat.ConstantSheaf.sheaf (TopCat.of Y) A) 1)
-            (CategoryTheory.Sheaf.cohomologyAddCommGroup
+            (CategoryTheory.Sheaf.instAddCommGroupH
               (TopCat.ConstantSheaf.sheaf (TopCat.of Y) A) 1) ≅
           (AlgebraicTopology.SingularCochains.complex Y A).homology 1),
       TopCat.ConstantSheafCohomology.pullback f hf hfinite A 1 ≫ cX.hom =

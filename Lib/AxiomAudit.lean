@@ -2074,8 +2074,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.AddCommGroup` -/
 
-#check CategoryTheory.Sheaf.cohomologyAddCommGroup
-#print axioms CategoryTheory.Sheaf.cohomologyAddCommGroup
+#check CategoryTheory.Sheaf.instAddCommGroupH
+#print axioms CategoryTheory.Sheaf.instAddCommGroupH
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing` -/
 
@@ -7412,20 +7412,6 @@ is an evidence command rather than library content.
 #print axioms TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
 #check TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
 #print axioms TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
-
--- Arbitrary abelian coefficients on a space homeomorphic to the standard two-sphere.
-#check TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-
--- The constant integer sheaf has native projective dimension strictly less than three.
-#check TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
-
--- Higher-direct-image coefficients: all high columns and the integral R1 degree-three/four pair.
-#check TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#check TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
 
 /-! ## Preserved textbook-extraction audit outputs -/
 

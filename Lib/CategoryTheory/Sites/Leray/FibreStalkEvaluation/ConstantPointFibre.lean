@@ -86,7 +86,7 @@ def stalkToFibre (A : AddCommGrpCat.{u})
       @AddCommGrpCat.of
         (CategoryTheory.Sheaf.H.{u}
           (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) n)
-        (CategoryTheory.Sheaf.cohomologyAddCommGroup
+        (CategoryTheory.Sheaf.instAddCommGroupH
           (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) n) :=
   derivedStalkEvaluation (fibreInclusion f y)
     (fibreInclusion_isClosedMap f y) (fibreInclusion_finite_fibres f y)
@@ -115,7 +115,7 @@ theorem stalkToFibre_neighborhoodGerm (A : AddCommGrpCat.{u})
         (CategoryTheory.Sheaf.H.{u}
           (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) n)
         Ext.instAddCommGroup
-        (CategoryTheory.Sheaf.cohomologyAddCommGroup
+        (CategoryTheory.Sheaf.instAddCommGroupH
           (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) n)
         (cohomologyEvaluation (fibreInclusion f y)
           (fibreInclusion_isClosedMap f y) (fibreInclusion_finite_fibres f y)

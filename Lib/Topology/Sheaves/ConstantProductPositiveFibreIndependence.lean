@@ -44,13 +44,13 @@ theorem nativePullback_isIso_of_comparison
     (cY : @AddCommGrpCat.of
         (CategoryTheory.Sheaf.H.{0}
           (TopCat.ConstantSheaf.sheaf (TopCat.of Y) A) (n + 1))
-        (CategoryTheory.Sheaf.cohomologyAddCommGroup
+        (CategoryTheory.Sheaf.instAddCommGroupH
           (TopCat.ConstantSheaf.sheaf (TopCat.of Y) A) (n + 1)) ≅
       (AlgebraicTopology.SingularCochains.complex Y A).homology (n + 1))
     (cZ : @AddCommGrpCat.of
         (CategoryTheory.Sheaf.H.{0}
           (TopCat.ConstantSheaf.sheaf (TopCat.of Z) A) (n + 1))
-        (CategoryTheory.Sheaf.cohomologyAddCommGroup
+        (CategoryTheory.Sheaf.instAddCommGroupH
           (TopCat.ConstantSheaf.sheaf (TopCat.of Z) A) (n + 1)) ≅
       (AlgebraicTopology.SingularCochains.complex Z A).homology (n + 1))
     (hcomm : TopCat.ConstantSheafCohomology.pullback f hf hfinite A (n + 1) ≫ cZ.hom =

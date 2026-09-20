@@ -160,6 +160,7 @@ import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
+import Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo
 
 set_option maxSynthPendingDepth 3
 
