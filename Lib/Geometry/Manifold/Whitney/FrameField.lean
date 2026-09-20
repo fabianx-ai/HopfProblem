@@ -24,6 +24,10 @@ have opposite signs, which is the content of the frame-existence statements here
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney trick and the
   framing of the Whitney disc).
 
+## Twin
+
+No Mathlib counterpart exists.
+
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
@@ -1862,8 +1866,8 @@ def TubularBigon.rankThreeSheetPairDet {E M : Type*} [NormedAddCommGroup E]
     (t : ℝ) : ℝ :=
   (tube.rankThreeSheetPairJacobian d e t).toLinearMap.det
 
-/-- At the two corners of the bigon the strip charts of the two sheets have the same centre point.
-At the two corners of the bigon the strip charts of the two sheets have the same centre point. -/
+/-- At the two corners of the bigon the strip charts of the two sheets have the same centre
+point. -/
 theorem TubularBigon.rankThree_corner_sheet_charts_coincide {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -2230,8 +2234,8 @@ theorem StripNormalData.contDiffOn_sheetComplement {A B Z E M : Type*}
           d.chart (StripCoordinates.center t) ∈ Ψ.target} :=
   (d.contDiffOn_tubularTransitionDerivative Ψ).clm_comp contDiffOn_const
 
-/-- The transition derivative is bijective, being the derivative of a transition between two charts.
-The transition derivative is bijective, being the derivative of a transition between two charts. -/
+/-- The transition derivative is bijective, being the derivative of a transition between two
+charts. -/
 theorem StripNormalData.bijective_tubularTransitionDerivative {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
