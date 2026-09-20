@@ -29,8 +29,8 @@ notion is introduced.
 
 ## References
 
-* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. II (the low-degree Lyndon–Hochschild–
-  Serre sequence gives `H₁(K ⋊ Q) ≅ H₁(Q) ⊕ (H₁(K))_Q`).
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. VII §6, Cor. VII.6.4 (the
+  low-degree Lyndon–Hochschild–Serre sequence gives `H₁(K ⋊ Q) ≅ H₁(Q) ⊕ (H₁(K))_Q`).
 -/
 
 @[expose] public section
