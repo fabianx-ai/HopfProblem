@@ -12,16 +12,15 @@ public import Lib.CategoryTheory.Abelian.RightDerived.Connecting
 /-!
 # The cohomological delta functor of a derived family
 
-This is the final assembly of the fixed injectively computed degree functors
-and their positive connecting morphisms (TEXTBOOK 1589–1598).
-The existing canonical `Functor.rightDerivedZeroIsoSelf`, under preservation
-of finite limits, identifies the first three terms and both arrows with the
-original functor. `InjectiveResolution.toRightDerivedZero_eq` and
-`InjectiveResolution.toRightDerivedZero'_comp_iCycles` retain agreement with
-every auxiliary resolution's augmentation.
-The initial injection `Functor.rightDerived_zero_injective` and positive
-injective vanishing `Functor.isZero_rightDerived_obj_injective_succ` apply to
-these same degree functors. They remain separate existing receipts, not new
+For an additive functor `F` on an abelian category with enough injectives, the family
+`n ↦ Rⁿ F` with the connecting morphisms of the long exact sequence is a cohomological
+delta functor, and it is universal because `Rⁿ⁺¹ F` vanishes on injectives. This is
+Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6 (see also
+Hartshorne, *Algebraic Geometry* III.1.1A).
+
+The degree-zero identification `Functor.rightDerivedZeroIsoSelf` (under preservation of
+finite limits), the injection `Functor.rightDerived_zero_injective` and the vanishing
+`Functor.isZero_rightDerived_obj_injective_succ` remain separate theorems rather than
 fields of the delta-functor structure.
 -/
 
@@ -33,8 +32,8 @@ namespace CategoryTheory.CohomologicalDeltaFunctor
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 
 /-- Assemble the existing additive derived degrees, positive boundary,
-naturality and all exactness/zero laws into the cohomological delta functor.
-No degree object, coefficient map or boundary is replaced (TEXTBOOK 1596–1598). -/
+naturality and all exactness/zero laws into the cohomological delta functor
+`n ↦ Rⁿ F` (Weibel 2.4.6(b)). -/
 @[expose] def ofRightDerived (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     CohomologicalDeltaFunctor C AddCommGrpCat.{w} where
   T n := AdditiveFunctor.of (F.rightDerived n)
@@ -46,23 +45,18 @@ No degree object, coefficient map or boundary is replaced (TEXTBOOK 1596–1598)
   comp₃ hS n := F.rightDerivedConnecting_comp hS n
   exact₃ hS n := F.rightDerived_exact₃ hS n
 
-/-- The entire degree functor is the fixed right-derived computation, so the
-canonical degree-zero identification and positive injective vanishing apply
-without a change of model (TEXTBOOK 1589–1595). -/
+/-- The degree-`n` functor of `ofRightDerived F` is the right derived functor `Rⁿ F`. -/
 theorem ofRightDerived_T_obj (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] (n : ℕ) :
     ((ofRightDerived F).T n).obj = F.rightDerived n := rfl
 
-/-- The packaged boundary is exactly the established positive connecting
-morphism, retaining its computation by every compatible resolution choice
-(TEXTBOOK 1596–1598 and the preceding fixed-family construction). -/
+/-- The connecting morphism of `ofRightDerived F` is the boundary
+`Rⁿ F(X₃) ⟶ Rⁿ⁺¹ F(X₁)` of the long exact sequence of right derived functors. -/
 theorem ofRightDerived_δ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (ofRightDerived F).δ hS n = F.rightDerivedConnecting hS n := rfl
 
-/-- Positive derived degrees are effaceable: embed each object into its chosen
-injective object. The same derived degree of that target is zero, so the
-induced map is zero. This is the generic injective-effacement argument of
-M00-D (TEXTBOOK 1606–1607, before “Thus both”). -/
+/-- `Rⁿ F` is effaceable in every positive degree: every object embeds into an injective
+object `I`, and `Rⁿ F(I) = 0` for `n > 0` (Weibel 2.4.6(c)). -/
 theorem ofRightDerived_effaceable (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     (ofRightDerived F).Effaceable := by
   intro n hn
@@ -71,10 +65,9 @@ theorem ofRightDerived_effaceable (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
   refine ⟨Injective.under A, Injective.ι A, inferInstance, ?_⟩
   exact (F.isZero_rightDerived_obj_injective_succ (n-1) (Injective.under A)).eq_of_tgt _ _
 
-/-- The same derived delta functor is universal as a source: apply the existing
-effaceability-implies-universality theorem to its injective effacements.
-This is M00-D's oriented CD05L consequence, without any sheaf or comparison
-assumptions and without a new universality proof. -/
+/-- `n ↦ Rⁿ F` is a universal cohomological delta functor: every natural transformation
+out of its degree-zero part extends uniquely to a morphism of delta functors
+(Weibel Theorem 2.4.6(c); Hartshorne III.1.1A). -/
 theorem ofRightDerived_isUniversal (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] :
     (ofRightDerived F).IsUniversal :=
   (ofRightDerived_effaceable F).isUniversal
@@ -86,29 +79,24 @@ namespace CategoryTheory.CohomologicalDeltaFunctor
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
   {F G : C ⥤ AddCommGrpCat.{w}} [F.Additive] [G.Additive]
 
-/-- A natural isomorphism induces a forward morphism of derived delta functors.
-Its degrees are the original derived natural transformations. Their established
-boundary squares come from applying the isomorphism to the same compatible
-resolutions, with the positive convention `j(a) = db`. Thus these fields assemble
-the existing maps without a new choice of comparison (TEXTBOOK M10, 1820–1826). -/
+/-- A natural isomorphism `α : F ≅ G` induces a morphism of delta functors
+`ofRightDerived F ⟶ ofRightDerived G` whose degree-`n` component is `Rⁿ α`
+(Weibel 2.4.6, Exercise 2.4.3). -/
 noncomputable def ofRightDerivedHom
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) : Hom (ofRightDerived F) (ofRightDerived G) where
   app i := (NatIso.rightDerived α i).hom
   comm hX i := NatIso.rightDerived_hom_connecting α hX i
 
-/-- The original inverse derived maps form the reverse delta morphism.
-The inverse boundary square uses the same compatible resolutions and positive
-lift convention as the forward square, with no independent sign choice
-(TEXTBOOK M10, 1819–1826). -/
+/-- The inverse of `α : F ≅ G` induces the reverse morphism of delta functors
+`ofRightDerived G ⟶ ofRightDerived F`, with degree-`n` component `(Rⁿ α)⁻¹`. -/
 noncomputable def ofRightDerivedInv
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) : Hom (ofRightDerived G) (ofRightDerived F) where
   app i := (NatIso.rightDerived α i).inv
   comm hX i := NatIso.rightDerived_inv_connecting α hX i
 
-/-- The whole forward degree transformation is the fixed derived isomorphism's
-forward map, retaining its coefficient naturality (TEXTBOOK M10, 1820–1826). -/
+/-- The degree-`n` component of `ofRightDerivedHom α` is the forward map of `Rⁿ α`. -/
 theorem ofRightDerivedHom_app
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) (n : ℕ) :
@@ -116,8 +104,7 @@ theorem ofRightDerivedHom_app
   unfold ofRightDerivedHom
   rfl
 
-/-- The whole reverse degree transformation is the same derived isomorphism's
-inverse map, not a separately selected equivalence (TEXTBOOK M10, 1819–1826). -/
+/-- The degree-`n` component of `ofRightDerivedInv α` is the inverse map of `Rⁿ α`. -/
 theorem ofRightDerivedInv_app
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) (n : ℕ) :
@@ -125,10 +112,8 @@ theorem ofRightDerivedInv_app
   unfold ofRightDerivedInv
   rfl
 
-/-- Forward transport followed by inverse transport is the identity delta
-morphism on the source derived family. Composition is degreewise, where the
-two maps are inverse; extensionality gives equality of entire delta morphisms,
-not merely objectwise bijections (TEXTBOOK M10, 1820–1826). -/
+/-- `ofRightDerivedHom α` followed by `ofRightDerivedInv α` is the identity morphism of
+delta functors on `ofRightDerived F`. -/
 theorem ofRightDerivedHom_comp_inv
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) :
@@ -138,10 +123,8 @@ theorem ofRightDerivedHom_comp_inv
   rw [Hom.comp_app, Hom.id_app, ofRightDerivedHom_app, ofRightDerivedInv_app]
   exact (NatIso.rightDerived α n).hom_inv_id
 
-/-- Inverse transport followed by forward transport is independently the
-identity delta morphism on the target derived family. The reverse inverse law
-in every degree and extensionality give this second whole-morphism identity
-(TEXTBOOK M10, 1820–1826). -/
+/-- `ofRightDerivedInv α` followed by `ofRightDerivedHom α` is the identity morphism of
+delta functors on `ofRightDerived G`. -/
 theorem ofRightDerivedInv_comp_hom
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) :
