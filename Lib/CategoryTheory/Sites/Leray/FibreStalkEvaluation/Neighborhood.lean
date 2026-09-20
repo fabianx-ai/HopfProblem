@@ -19,6 +19,10 @@ For a finite-fibre closed map whose image lies in an ambient open, this module c
 Mathlib's native Ext cohomology on that neighborhood with native sheaf cohomology on the
 source. It proves both orientations of nested-open compatibility and constructs the resulting
 coefficient evaluation. No proper-base-change or geometric local-triviality assertion is made.
+
+The underlying textbook fact is that a finite (more generally proper) map `i : T ⟶ X` has
+exact pushforward, so `Hⁿ(U, i_*G) ≅ Hⁿ(T, G)` whenever `i(T) ⊆ U`: Bredon, *Sheaf Theory*
+II.9–II.11; Iversen, *Cohomology of Sheaves* II; Godement II.4.
 -/
 
 @[expose] public section
@@ -156,6 +160,8 @@ def neighborhoodCohomologyEquiv (G : TopCat.Sheaf AddCommGrpCat.{0} T) (n : ℕ)
   (AddEquiv.ofBijective (neighborhoodCohomologyForward i U hU hi hfinite G n)
     (neighborhoodCohomologyForward_bijective i U hU hi hfinite G n)).symm
 
+/-- The inverse of `neighborhoodCohomologyEquiv` is inverse to the forward comparison
+`Hⁿ(T, G) → H'ⁿ(U, i_*G)`. -/
 @[simp] theorem neighborhoodCohomologyEquiv_symm_apply (G : TopCat.Sheaf AddCommGrpCat.{0} T) (n : ℕ)
     (a : CategoryTheory.Sheaf.H.{0} G n) :
     (neighborhoodCohomologyEquiv i U hU hi hfinite G n).symm a =
@@ -277,6 +283,8 @@ def cohomologyEvaluation (U : Opens X) (hU : ∀ t : T, i t ∈ U) (n : ℕ) :
   (neighborhoodCohomologyEquiv i U hU hi hfinite G n).toAddMonoidHom.comp
     ((coefficientMap i κ n).app (op U)).hom
 
+/-- `cohomologyEvaluation` is the coefficient map `κ : F ⟶ i_*G` in degree `n` on the
+neighborhood `U`, followed by the comparison isomorphism `H'ⁿ(U, i_*G) ≅ Hⁿ(T, G)`. -/
 @[simp] theorem cohomologyEvaluation_apply (U : Opens X) (hU : ∀ t : T, i t ∈ U)
     (n : ℕ) (a : CategoryTheory.Sheaf.H'.{0} F n U) :
     cohomologyEvaluation i hi hfinite κ U hU n a =
