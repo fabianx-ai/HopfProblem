@@ -18,6 +18,12 @@ is an evidence command rather than library content.
 #print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
 
 
+/-! ## `Lib.Algebra.Group.Ker` -/
+
+#check MonoidHom.apply_eq_apply_of_ker_le
+#print axioms MonoidHom.apply_eq_apply_of_ker_le
+
+
 /-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
 
 #check CoverLocalContributions.leftHomologyMap_in_coordinates
@@ -235,6 +241,11 @@ is an evidence command rather than library content.
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inl
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
 #print axioms GroupExtension.Splitting.abelianizationMulEquiv
+
+/-! ## `Lib.GroupTheory.FreeGroup.Invariant` -/
+
+#check FreeGroup.forall_apply_eq_self_iff
+#print axioms FreeGroup.forall_apply_eq_self_iff
 
 /-! ## `Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector` -/
 

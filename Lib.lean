@@ -1,5 +1,6 @@
 import Lib.Algebra.Group.Prod
 import Lib.Algebra.Group.DeterminingFamily
+import Lib.Algebra.Group.Ker
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
@@ -232,6 +233,7 @@ import Lib.Geometry.Manifold.ContMDiff.Descent
 import Lib.Topology.Gluing.OverBase
 import Lib.Geometry.Manifold.Gluing.OverBase
 import Lib.Geometry.Manifold.LocalDiffeomorph
+import Lib.GroupTheory.FreeGroup.Invariant
 import Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector
 import Lib.GroupTheory.Pushout.EquivOfCocone
 import Lib.RepresentationTheory.FreeGroupCoinvariants
