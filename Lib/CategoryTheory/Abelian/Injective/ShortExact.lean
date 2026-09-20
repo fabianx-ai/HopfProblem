@@ -15,6 +15,10 @@ public import Mathlib.Algebra.Homology.ShortComplex.SnakeLemma
 
 Specified embeddings of the endpoints into injectives extend to a compatible
 embedding of the middle object into their biproduct.
+
+This is the first step of the Horseshoe lemma in its dual (injective) form:
+Weibel, *An Introduction to Homological Algebra*, Proposition 2.2.8 (dualised);
+Cartan–Eilenberg V.2.
 -/
 
 @[expose] public section
@@ -27,13 +31,10 @@ namespace CategoryTheory.ShortComplex.ShortExact
 
 open CategoryTheory CategoryTheory.Limits
 
-/-- Extend the specified left endpoint embedding across the first arrow, and pair
-that extension with the right endpoint embedding composed with the second arrow.
-Both sequence squares commute. To prove the resulting middle map monic, project
-a map in its kernel onto the right summand and cancel the right embedding. Exactness
-then factors it through the first arrow. Projection onto the left summand and the
-extension equation allow cancellation of the left embedding, so the original map
-is zero. This is the specified-endpoint construction of PD-L05. -/
+/-- Given monomorphisms `α : X₁ ⟶ I` and `γ : X₃ ⟶ K` into injectives for a short exact
+sequence `0 → X₁ → X₂ → X₃ → 0`, there is a monomorphism `β : X₂ ⟶ I ⊞ K` making both
+squares commute, namely `β = ⟨x, g ≫ γ⟩` for an extension `x` of `α` along `f`.
+This is the horseshoe step of Weibel 2.2.8, dualised to injectives. -/
 theorem exists_injective_biprod_embedding
     {C : Type u} [Category.{v} C] [Abelian C]
     {S : ShortComplex C} (hS : S.ShortExact)
@@ -83,11 +84,10 @@ set_option backward.defeqAttrib.useBackward true in
 middle term. Its three component cokernels, with the arrows induced by the standard
 biproduct inclusion and projection, form a short exact successor sequence.
 
-Assemble the component cokernel universal properties into the lower row of the
-snake diagram. The snake lemma gives middle exactness and the final epimorphism.
-The preceding kernel is a kernel of the monic right endpoint embedding, hence zero;
-the snake exactness at the first cokernel therefore gives the initial monomorphism.
-The actual cokernel maps and both quotient squares are retained. This is PD-L06. -/
+The biproduct `I ⊞ K` is injective, the biproduct row `0 → I → I ⊞ K → K → 0` is short
+exact, and the induced sequence of cokernels
+`0 → coker α → coker β → coker γ → 0` is again short exact.  This is the inductive step
+of the Horseshoe lemma, Weibel 2.2.8 dualised. -/
 theorem injective_biprod_cokernel_successor
     {C : Type u} [Category.{v} C] [Abelian C]
     {S : ShortComplex C} (hS : S.ShortExact)
@@ -181,10 +181,9 @@ private theorem coordinates {T : ShortComplex C} {I K : C} (v : T ⟶ row I K) :
   · have h := congrArg (fun f => f ≫ biprod.fst) v.comm₁₂
     simpa [row, Category.assoc] using h
 
-/-- Extend the first middle coordinate and the right endpoint into their injective
-targets. The left component is then forced. The zero composite proves the left
-square; projection proves the right square and all three restrictions. Thus the
-extension is a single map of rows, not three unrelated extensions (PD-L11). -/
+/-- A map `v : T ⟶ row I K` from a short exact sequence into a biproduct row with
+injective endpoints extends along any componentwise monic map `m : T ⟶ U` of short exact
+sequences, as a single map of rows: there is `w : U ⟶ row I K` with `m ≫ w = v`. -/
 private theorem coordinate_extension {T U : ShortComplex C}
     (hT : T.ShortExact) (hU : U.ShortExact)
     (m : T ⟶ U) [Mono m.τ₁] [Mono m.τ₂] [Mono m.τ₃]
@@ -231,11 +230,11 @@ private def splitIso (E : ShortComplex C) (s : E.Splitting) : E ≅ row E.X₁ E
 
 end
 
-/-- A whole-row map extends across a componentwise monic map of short exact
-sequences into any specified split target with injective endpoints. Identify the
-target with its biproduct row, extend the two coordinates, and compose back with
-the inverse identification. This preserves both strict squares and every component
-restriction, including the arbitrary split-target clause of PD-L11. -/
+/-- A map of short exact sequences `v : T ⟶ E` into a split short exact sequence `E`
+with injective endpoints extends along any componentwise monic map `m : T ⟶ U`: there is
+`w : U ⟶ E` with `m ≫ w = v`.  Equivalently, a split short exact sequence with injective
+endpoints is an injective object of the category of short exact sequences
+(Weibel 2.2.8, dualised). -/
 public theorem exists_extension_to_split_injective
     {C : Type u} [Category.{v} C] [Abelian C]
     {T U E : ShortComplex C} (hT : T.ShortExact) (hU : U.ShortExact)
