@@ -19,6 +19,12 @@ an `Ext²` class.  The comparison with the lower endpoint of the shifted adjacen
 triangle keeps both shift associators visible and introduces no sign.  Two generic coherence
 lemmas move a morphism through the final pair of shift adapters and cancel an intervening
 single-object shift isomorphism.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [P. Deligne, *Théorie de Hodge, II*][deligne71], §1.4.
+
 -/
 
 @[expose] public section

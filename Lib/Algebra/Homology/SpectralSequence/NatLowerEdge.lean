@@ -32,6 +32,13 @@ all columns beyond two vanish.
 Likewise, `E₂^(1,2)` reaches page four unchanged if the two successive targets
 `E₂^(3,1)` and `E₂^(4,0)` vanish.  This lets an application use a single targeted
 off-axis calculation instead of constructing a separate degree-one local-coefficient complex.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §5.2 (first-quadrant
+  spectral sequences and the degrees in
+  which they stabilise).
+
 -/
 
 @[expose] public section

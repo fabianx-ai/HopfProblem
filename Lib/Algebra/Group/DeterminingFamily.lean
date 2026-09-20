@@ -22,16 +22,21 @@ two additional determining elements with product one reduce to one element
 and its inverse. Commutation of the fixed element with the first one then
 gives centrality of each, and finally commutativity of the entire group.
 The argument uses no commutative-group instance or generation presentation.
-Source: CENTER_NATIVE_GENERATION_TEXTBOOK.md, reviewed NG4–NG10.
+
+## References
+
+The first lemma is the folklore centrality criterion: an element whose inner automorphism
+agrees with the identity on a family that determines endomorphisms lies in the centre
+(`Subgroup.center`).  It is `MonoidHom.ext` applied to `MulAut.conj`.
 -/
 
 @[expose] public section
 universe u v
 namespace DeterminingFamily
 
-/-- An element commuting with an endomorphism-determining family commutes
-with the whole group. Compare its conjugation with the identity, evaluate
-their equality, and cancel the final inverse on the right (NG5–NG6). -/
+/-- If `a` commutes with every member of a family `s` that determines
+endomorphisms of `G` (two endomorphisms agreeing on `s` are equal), then `a`
+commutes with every element of `G`, that is, `a` is central. -/
 theorem commute_all_of_hom_ext
     {G : Type u} [Group G] {ι : Type v} (s : ι → G)
     (hext : ∀ f g : G →* G, (∀ i : ι, f (s i) = g (s i)) → f = g)
@@ -47,11 +52,10 @@ theorem commute_all_of_hom_ext
   have hb : a * b * a⁻¹ = b := DFunLike.congr_fun hconj b
   exact mul_inv_eq_iff_eq_mul.mp hb
 
-/-- A cyclic lattice image and two further determining elements force
-commutativity when their product is one and the positive lattice generator
-commutes with the first. In the reviewed order (NG7–NG10), eliminate the
-second as an inverse, make the lattice generator central, make the first
-element central, and apply the criterion to an arbitrary element. -/
+/-- Let `φ : Multiplicative (Fin 4 → ℤ) →* G` have image contained in the powers
+of the single element `c = φ (ofAdd ![1, 2, -4, 0])`, and let `x y : G` be such that
+the image of `φ` together with `x` and `y` determines endomorphisms of `G`.
+If `x * y = 1` and `c` commutes with `x`, then `G` is commutative. -/
 theorem commute_all_of_lattice_image_eq_zpow
     {G : Type u} [Group G]
     (φ : Multiplicative (Fin 4 → ℤ) →* G) (x y : G)

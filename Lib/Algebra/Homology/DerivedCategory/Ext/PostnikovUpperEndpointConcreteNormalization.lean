@@ -17,6 +17,12 @@ This file computes the upper edge of the standard mapping-cone model for an adja
 Postnikov two-slice. After the canonical derived/chain homology comparisons and the good
 truncation transports, this edge is exactly the homology quotient. No scalar occurs in this
 concrete calculation; the parity scalar belongs to the shifted Postnikov triangle comparison.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter III, §4.
+
 -/
 
 @[expose] public section

@@ -18,13 +18,15 @@ open AlgebraicTopology.SingularCochains.DualEvaluation
 
 namespace AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT
 
-variable (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+universe v
+
+variable (K : ChainComplex (ModuleCat.{v} ℤ) ℕ)
 
 /-- Replacing homology coordinates `e` by `r ∘ e` precomposes the resulting dual coordinate by
-`r⁻¹`.  This is the coordinate-level source of contragredient monodromy. -/
+`r⁻¹`: dual coordinates transform contragrediently. -/
 @[simp]
 theorem cohomologyEvaluationAlong_trans_apply
-    {L : Type} [AddCommGroup L] [Module ℤ L]
+    {L : Type v} [AddCommGroup L] [Module ℤ L]
     (n : ℕ) (e : K.homology (n + 1) ≃ₗ[ℤ] L) (r : L ≃ₗ[ℤ] L)
     (a : (dualComplex (AddCommGrpCat.of ℤ) K).homology (n + 1)) (x : L) :
     cohomologyEvaluationAlong K n (e.trans r) a x =
@@ -33,7 +35,7 @@ theorem cohomologyEvaluationAlong_trans_apply
 
 /-- Bundled dual-map form of coordinate change. -/
 theorem cohomologyEvaluationAlong_trans
-    {L : Type} [AddCommGroup L] [Module ℤ L]
+    {L : Type v} [AddCommGroup L] [Module ℤ L]
     (n : ℕ) (e : K.homology (n + 1) ≃ₗ[ℤ] L) (r : L ≃ₗ[ℤ] L) :
     cohomologyEvaluationAlong K n (e.trans r) =
       cohomologyEvaluationAlong K n e ≫

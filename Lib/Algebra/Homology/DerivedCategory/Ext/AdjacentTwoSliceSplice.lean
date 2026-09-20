@@ -22,6 +22,15 @@ The middle-object comparison is fixed by the explicit signed isomorphism from th
 two-slice to the mapping cone on `opcyclesToCycles`.  The resulting third square carries the
 canonical truncation connecting morphism to the positive composite of the two short-exact
 connecting morphisms; no additional negation is introduced.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3 (adjacent
+  truncations of the canonical t-structure).
+* [M. Kashiwara, P. Schapira, *Categories and sheaves*][kashiwaraSchapira06], §10.1.
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter II (the
+  octahedral axiom).
+
 -/
 
 @[expose] public section

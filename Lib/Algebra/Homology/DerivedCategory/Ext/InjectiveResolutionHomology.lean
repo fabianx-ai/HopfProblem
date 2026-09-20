@@ -22,6 +22,11 @@ The proof maps the direct cycles-modulo-boundaries quotient to `Ext` using
 `InjectiveResolution.extMk`.  Surjectivity and injectivity are exactly
 `InjectiveResolution.extMk_surjective` and `InjectiveResolution.extMk_eq_zero_iff`.
 Degree zero, which uses the augmentation kernel, is deliberately separate.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.7.6.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, §1.
 -/
 
 @[expose] public section
@@ -36,13 +41,15 @@ open CategoryTheory.Abelian CochainComplex.HomComplex
 
 namespace CategoryTheory
 
+universe v u
+
 namespace ShortComplex
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /-- Element-free compatibility missing beside `ShortComplex.abHomologyIso`. -/
 theorem ab_homologyπ_comp_abHomologyIso_hom
-    (S : ShortComplex AddCommGrpCat.{0}) :
+    (S : ShortComplex AddCommGrpCat.{v}) :
     S.homologyπ ≫ S.abHomologyIso.hom =
       S.abCyclesIso.hom ≫
         AddCommGrpCat.ofHom (QuotientAddGroup.mk' S.abToCycles.range) := by
@@ -50,12 +57,12 @@ theorem ab_homologyπ_comp_abHomologyIso_hom
 
 /-- An explicit cocycle class in the categorical homology of a short
 complex of abelian groups. -/
-def shortCycleClass (S : ShortComplex AddCommGrpCat.{0}) (z : S.X₂)
+def shortCycleClass (S : ShortComplex AddCommGrpCat.{v}) (z : S.X₂)
     (hz : S.g z = 0) : S.homology :=
   S.homologyπ (S.abCyclesIso.inv ⟨z, hz⟩)
 
 /-- Homology maps preserve explicit cocycle representatives. -/
-theorem shortHomologyMap_cycleClass {S T : ShortComplex AddCommGrpCat.{0}}
+theorem shortHomologyMap_cycleClass {S T : ShortComplex AddCommGrpCat.{v}}
     (φ : S ⟶ T) (z : S.X₂) (hz : S.g z = 0) (hφz : T.g (φ.τ₂ z) = 0) :
     ShortComplex.homologyMap φ (shortCycleClass S z hz) =
       shortCycleClass T (φ.τ₂ z) hφz := by
@@ -96,13 +103,11 @@ end HomologicalComplex
 
 namespace InjectiveResolution
 
-universe u
-
-variable {C : Type u} [Category.{0} C] [Abelian C] [HasExt.{0} C]
+variable {C : Type u} [Category.{v} C] [Abelian C] [HasExt.{v} C]
   {F : C} (R : InjectiveResolution F)
 
 /-- The literal complex `A ↦ Hom(A, R•)`. -/
-abbrev evaluatedResolution (A : C) : CochainComplex AddCommGrpCat.{0} ℕ :=
+abbrev evaluatedResolution (A : C) : CochainComplex AddCommGrpCat.{v} ℕ :=
   ((preadditiveCoyoneda.obj (op A)).mapHomologicalComplex (.up ℕ)).obj R.cocomplex
 
 /-- Precomposition on the literal evaluated resolution. -/
@@ -117,13 +122,15 @@ def evaluatedResolutionXAddEquiv (A : C) (i : ℕ) :
     (evaluatedResolution R A).X i ≃+ (A ⟶ R.cocomplex.X i) := AddEquiv.refl _
 
 omit [HasExt C] in
+/-- Under the explicit description of the terms, the differential of the evaluated resolution is
+postcomposition with the differential of the resolution. -/
 @[simp] theorem evaluatedResolutionXAddEquiv_d (A : C) (i j : ℕ)
     (x : (evaluatedResolution R A).X i) :
     evaluatedResolutionXAddEquiv R A j ((evaluatedResolution R A).d i j x) =
       evaluatedResolutionXAddEquiv R A i x ≫ R.cocomplex.d i j := rfl
 
 /-- Three explicit consecutive terms around positive degree `n + 1`. -/
-abbrev positiveShortComplex (A : C) (n : ℕ) : ShortComplex AddCommGrpCat.{0} :=
+abbrev positiveShortComplex (A : C) (n : ℕ) : ShortComplex AddCommGrpCat.{v} :=
   (evaluatedResolution R A).sc' n (n + 1) ((n + 1) + 1)
 
 /-- Precomposition on the three explicit terms in positive degree. -/
@@ -149,12 +156,14 @@ def positiveX₃AddEquiv (A : C) (n : ℕ) :
   AddEquiv.refl _
 
 omit [HasExt C] in
+/-- The incoming map of the positive-degree short complex is postcomposition with `d n (n+1)`. -/
 @[simp] theorem positiveShortComplex_f_apply (A : C) (n : ℕ)
     (x : (positiveShortComplex R A n).X₁) :
     positiveX₂AddEquiv R A n ((positiveShortComplex R A n).f x) =
       positiveX₁AddEquiv R A n x ≫ R.cocomplex.d n (n + 1) := rfl
 
 omit [HasExt C] in
+/-- The outgoing map of the positive-degree short complex is postcomposition with `d (n+1) (n+2)`. -/
 @[simp] theorem positiveShortComplex_g_apply (A : C) (n : ℕ)
     (x : (positiveShortComplex R A n).X₂) :
     positiveX₃AddEquiv R A n ((positiveShortComplex R A n).g x) =
@@ -162,6 +171,8 @@ omit [HasExt C] in
         R.cocomplex.d (n + 1) ((n + 1) + 1) := rfl
 
 omit [HasExt C] in
+/-- Precomposition acts on the middle term of the positive-degree short complex by composing
+with `a` on the left. -/
 @[simp] theorem positiveShortComplexMap_τ₂_apply {A A' : C} (a : A' ⟶ A)
     (n : ℕ) (x : (positiveShortComplex R A n).X₂) :
     positiveX₂AddEquiv R A' n ((positiveShortComplexMap R a n).τ₂ x) =
@@ -193,6 +204,7 @@ def positiveCyclePrecomp {A A' : C} (a : A' ⟶ A) (n : ℕ)
     simp⟩
 
 omit [HasExt C] in
+/-- Precomposition sends a cocycle to the cocycle obtained by composing with `a`. -/
 theorem positiveShortComplexMap_τ₂_cycle {A A' : C} (a : A' ⟶ A)
     (n : ℕ) (z : AddMonoidHom.ker ((positiveShortComplex R A n).g.hom)) :
     (positiveShortComplexMap R a n).τ₂ z.1 =
@@ -261,6 +273,7 @@ def positiveQuotientToExt (A : C) (n : ℕ) :
     obtain ⟨x, rfl⟩ := hz
     exact positiveCyclesToExt_boundary R A n x)
 
+/-- Every class in `Extⁿ⁺¹(A, F)` comes from a cocycle in `Hom(A, R•)`. -/
 theorem positiveQuotientToExt_surjective (A : C) (n : ℕ) :
     Function.Surjective (positiveQuotientToExt R A n) := by
   intro α
@@ -279,6 +292,7 @@ theorem positiveQuotientToExt_surjective (A : C) (n : ℕ) :
   have hz : positiveX₂AddEquiv R A n z.1 = f := AddEquiv.apply_symm_apply _ _
   simpa only [hz] using hfα
 
+/-- Every class in `Extⁿ⁺¹(A, F)` is the class of a literal cocycle. -/
 theorem positiveCyclesToExt_surjective (A : C) (n : ℕ) :
     Function.Surjective (positiveCyclesToExt R A n) := by
   intro α
@@ -286,6 +300,7 @@ theorem positiveCyclesToExt_surjective (A : C) (n : ℕ) :
   obtain ⟨z, rfl⟩ := QuotientAddGroup.mk'_surjective _ q
   exact ⟨z, hq⟩
 
+/-- A cocycle whose Ext class vanishes is a coboundary. -/
 theorem positiveQuotientToExt_injective (A : C) (n : ℕ) :
     Function.Injective (positiveQuotientToExt R A n) := by
   rw [injective_iff_map_eq_zero]
@@ -306,6 +321,7 @@ theorem positiveQuotientToExt_injective (A : C) (n : ℕ) :
   rw [positiveShortComplex_f_apply, AddEquiv.apply_symm_apply]
   exact hg
 
+/-- Cocycles modulo coboundaries in positive degree are in bijection with `Extⁿ⁺¹(A, F)`. -/
 theorem positiveQuotientToExt_bijective (A : C) (n : ℕ) :
     Function.Bijective (positiveQuotientToExt R A n) :=
   ⟨positiveQuotientToExt_injective R A n, positiveQuotientToExt_surjective R A n⟩
@@ -356,6 +372,7 @@ theorem positiveCycleClass_naturality {A A' : C} (a : A' ⟶ A) (n : ℕ)
   apply Subtype.ext
   exact positiveShortComplexMap_τ₂_cycle R a n z
 
+/-- The comparison isomorphism sends the class of a cocycle to its `Ext` class. -/
 theorem positiveHomologyExtIso_hom_cycleClass (A : C) (n : ℕ)
     (z : AddMonoidHom.ker ((positiveShortComplex R A n).g.hom)) :
     (positiveHomologyExtIso R A n).hom (positiveCycleClass R A n z) =
@@ -380,6 +397,7 @@ theorem positiveHomologyExtIso_hom_cycleClass (A : C) (n : ℕ)
   rw [hz]
   rfl
 
+/-- Every element of the positive homology of the evaluated resolution is the class of a cocycle. -/
 theorem positiveCycleClass_surjective (A : C) (n : ℕ) :
     Function.Surjective (positiveCycleClass R A n) := by
   intro x
@@ -390,9 +408,8 @@ theorem positiveCycleClass_surjective (A : C) (n : ℕ) :
     (positiveHomologyExtIso R A n).hom).mp inferInstance
   rw [positiveHomologyExtIso_hom_cycleClass, hz]
 
-/-- The direct positive-degree resolution/Ext comparison is natural in
-the represented object.  This is the restriction coherence needed to form
-a presheaf isomorphism and hence to pass to germs and stalks. -/
+/-- The positive-degree comparison between the homology of the evaluated resolution and `Ext`
+is natural in the represented object. -/
 @[reassoc]
 theorem positiveHomologyExtIso_hom_naturality {A A' : C} (a : A' ⟶ A)
     (n : ℕ) :

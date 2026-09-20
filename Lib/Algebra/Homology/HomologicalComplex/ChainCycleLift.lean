@@ -15,6 +15,12 @@ public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 This is the homological counterpart of the positive cochain cycle-lift criterion.  It works in
 every natural degree, including degree zero, and talks only about elements of the original chain
 complexes.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher02], §2.1 (cycles modulo boundaries).
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §1.1; compare
+  `HomologicalComplex.quasiIso_iff` in Mathlib.
 -/
 
 @[expose] public section
@@ -30,16 +36,21 @@ namespace CategoryTheory.HomologicalComplex
 
 namespace ChainCycleLift
 
-variable (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+universe v
+
+variable (K : ChainComplex (ModuleCat.{v} ℤ) ℕ)
 
 /-- The concrete kernel of the outgoing differential. -/
 abbrev Cycle (n : ℕ) := LinearMap.ker (K.d n ((ComplexShape.down ℕ).next n)).hom
 
+/-- The cycles in degree `n` form a `ℤ`-module. -/
 instance cycleModule (n : ℕ) : Module ℤ (Cycle K n) := (Cycle K n).module
 
+/-- In the chain complex shape on `ℕ`, the degree after `n` is `n - 1`. -/
 theorem next_nat (n : ℕ) : (ComplexShape.down ℕ).next n = n - 1 := by
   cases n <;> simp
 
+/-- A cycle is killed by the ordinary `n` to `n - 1` differential. -/
 theorem cycle_condition (n : ℕ) (c : Cycle K n) :
     (K.d n (n - 1)).hom c.1 = 0 := by
   rw [← next_nat n]
@@ -52,30 +63,37 @@ def mkCycle (n : ℕ) (c : K.X n) (hc : (K.d n (n - 1)).hom c = 0) : Cycle K n :
     rw [next_nat n]
     exact hc⟩
 
+/-- The underlying element of a cycle built by `mkCycle` is the given element. -/
 @[simp]
 theorem mkCycle_val (n : ℕ) (c : K.X n)
     (hc : (K.d n (n - 1)).hom c = 0) : (mkCycle K n c hc).1 = c := rfl
 
-abbrev ShortCycle (S : ShortComplex (ModuleCat.{0} ℤ)) :=
+/-- The concrete kernel of the outgoing map of a short complex of modules. -/
+abbrev ShortCycle (S : ShortComplex (ModuleCat.{v} ℤ)) :=
   LinearMap.ker S.g.hom
 
-instance shortCycleModule (S : ShortComplex (ModuleCat.{0} ℤ)) :
+/-- The cycles of a short complex of modules form a `ℤ`-module. -/
+instance shortCycleModule (S : ShortComplex (ModuleCat.{v} ℤ)) :
     Module ℤ (ShortCycle S) := (LinearMap.ker S.g.hom).module
 
-abbrev ShortBoundaries (S : ShortComplex (ModuleCat.{0} ℤ)) :
+/-- The submodule of cycles that are images of the incoming map. -/
+abbrev ShortBoundaries (S : ShortComplex (ModuleCat.{v} ℤ)) :
     Submodule ℤ (ShortCycle S) :=
   LinearMap.range S.moduleCatToCycles
 
-def shortCycleClass (S : ShortComplex (ModuleCat.{0} ℤ)) :
+/-- The class in homology of a concrete cycle of a short complex. -/
+def shortCycleClass (S : ShortComplex (ModuleCat.{v} ℤ)) :
     ShortCycle S →ₗ[ℤ] S.homology :=
   S.moduleCatHomologyIso.inv.hom.comp (ShortBoundaries S).mkQ
 
-theorem shortCycleClass_surjective (S : ShortComplex (ModuleCat.{0} ℤ)) :
+/-- Every homology class of a short complex of modules is the class of a concrete cycle. -/
+theorem shortCycleClass_surjective (S : ShortComplex (ModuleCat.{v} ℤ)) :
     Function.Surjective (shortCycleClass S) :=
   ((ModuleCat.epi_iff_surjective S.moduleCatHomologyIso.inv).mp inferInstance).comp
     (ShortBoundaries S).mkQ_surjective
 
-theorem shortCycleClass_eq_zero_iff (S : ShortComplex (ModuleCat.{0} ℤ))
+/-- A concrete cycle has vanishing homology class exactly when it is a boundary. -/
+theorem shortCycleClass_eq_zero_iff (S : ShortComplex (ModuleCat.{v} ℤ))
     (c : ShortCycle S) :
     shortCycleClass S c = 0 ↔ ∃ b : S.X₁, S.f b = c.1 := by
   have hinj : Function.Injective S.moduleCatHomologyIso.inv :=
@@ -96,9 +114,11 @@ theorem shortCycleClass_eq_zero_iff (S : ShortComplex (ModuleCat.{0} ℤ))
 def cycleClass (n : ℕ) : Cycle K n →ₗ[ℤ] K.homology n :=
   shortCycleClass (K.sc n)
 
+/-- Every homology class of a chain complex of modules is the class of a concrete cycle. -/
 theorem cycleClass_surjective (n : ℕ) : Function.Surjective (cycleClass K n) :=
   shortCycleClass_surjective (K.sc n)
 
+/-- A concrete cycle has vanishing homology class exactly when it is a boundary. -/
 theorem cycleClass_eq_zero_iff (n : ℕ) (c : Cycle K n) :
     cycleClass K n c = 0 ↔ ∃ b : K.X (n + 1), (K.d (n + 1) n).hom b = c.1 := by
   refine (shortCycleClass_eq_zero_iff (K.sc n) c).trans ?_
@@ -106,16 +126,18 @@ theorem cycleClass_eq_zero_iff (n : ℕ) (c : Cycle K n) :
     (K.d ((ComplexShape.down ℕ).prev n) n).hom b = c.1) ↔ _
   rw [ChainComplex.prev]
 
+/-- Two concrete cycles have the same homology class exactly when they differ by a boundary. -/
 theorem cycleClass_eq_iff (n : ℕ) (c d : Cycle K n) :
     cycleClass K n c = cycleClass K n d ↔
       ∃ b : K.X (n + 1), (K.d (n + 1) n).hom b = c.1 - d.1 := by
   simpa only [map_sub, sub_eq_zero, Submodule.coe_sub] using
     cycleClass_eq_zero_iff K n (c - d)
 
-variable {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : L ⟶ K)
+variable {K L : ChainComplex (ModuleCat.{v} ℤ) ℕ} (f : L ⟶ K)
 
+/-- The map of short complexes in degree `n` induced by a chain map. -/
 abbrev shortMap (n : ℕ) : L.sc n ⟶ K.sc n :=
-  (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} ℤ)
+  (HomologicalComplex.shortComplexFunctor (ModuleCat.{v} ℤ)
     (ComplexShape.down ℕ) n).map f
 
 /-- The actual cycle map through the concrete kernel descriptions. -/
@@ -123,6 +145,7 @@ def mapCycles (n : ℕ) : Cycle L n →ₗ[ℤ] Cycle K n :=
   ((L.sc n).moduleCatCyclesIso.inv ≫ ShortComplex.cyclesMap (shortMap f n) ≫
     (K.sc n).moduleCatCyclesIso.hom).hom
 
+/-- The concrete cycle map is the restriction of the chain map in that degree. -/
 @[simp]
 theorem mapCycles_val (n : ℕ) (c : Cycle L n) :
     (mapCycles f n c).1 = (f.f n).hom c.1 := by

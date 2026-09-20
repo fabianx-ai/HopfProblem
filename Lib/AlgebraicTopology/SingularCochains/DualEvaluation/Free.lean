@@ -17,6 +17,11 @@ For a chain complex of free integral modules, canonical cohomology evaluation in
 is an isomorphism when the preceding homology `Hₙ` is projective.  The native singular-chain
 specialization uses the genuine arbitrary simplex basis, so it has no finite-generation
 hypothesis.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher02], Theorem 3.2 (the universal coefficient
+  theorem for a free chain complex, the `Ext` term vanishing when `Hₙ` is projective).
 -/
 
 @[expose] public section
@@ -30,10 +35,12 @@ open CategoryTheory
 
 namespace AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT
 
+universe v w
+
 open HomologicalComplex.ChainCycleLift
 
-variable (A : AddCommGrpCat.{0})
-  (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+variable (A : AddCommGrpCat.{w})
+  (K : ChainComplex (ModuleCat.{v} ℤ) ℕ)
 
 section FreeChains
 
@@ -67,6 +74,7 @@ def cohomologyEvaluationLinear (n : ℕ) :
     AddCommGrpCat.ofHom
       (addHomIntLinearEquiv (K.homology (n + 1)) ℤ).toAddMonoidHom
 
+/-- The integral-linear evaluation has the same values as the canonical evaluation. -/
 @[simp]
 theorem cohomologyEvaluationLinear_apply (n : ℕ)
     (a : (dualComplex (AddCommGrpCat.of ℤ) K).homology (n + 1))
@@ -76,15 +84,16 @@ theorem cohomologyEvaluationLinear_apply (n : ℕ)
 
 /-- Re-express the canonical evaluation through chosen coordinates on homology.  Its value is
 literally evaluation on the inverse-coordinate class. -/
-def cohomologyEvaluationAlong {L : Type} [AddCommGroup L] [Module ℤ L]
+def cohomologyEvaluationAlong {L : Type v} [AddCommGroup L] [Module ℤ L]
     (n : ℕ) (e : K.homology (n + 1) ≃ₗ[ℤ] L) :
     (dualComplex (AddCommGrpCat.of ℤ) K).homology (n + 1) ⟶
       AddCommGrpCat.of (Module.Dual ℤ L) :=
   cohomologyEvaluationLinear K n ≫
     AddCommGrpCat.ofHom e.dualMap.symm.toAddEquiv.toAddMonoidHom
 
+/-- Evaluation in chosen homology coordinates is evaluation on the inverse-coordinate class. -/
 @[simp]
-theorem cohomologyEvaluationAlong_apply {L : Type} [AddCommGroup L] [Module ℤ L]
+theorem cohomologyEvaluationAlong_apply {L : Type v} [AddCommGroup L] [Module ℤ L]
     (n : ℕ) (e : K.homology (n + 1) ≃ₗ[ℤ] L)
     (a : (dualComplex (AddCommGrpCat.of ℤ) K).homology (n + 1)) (x : L) :
     cohomologyEvaluationAlong K n e a x =
@@ -108,7 +117,7 @@ theorem cohomologyEvaluationLinear_isIso_of_free_of_projective (n : ℕ)
 /-- Transporting the homology target along any linear equivalence preserves the local UCT
 isomorphism. -/
 theorem cohomologyEvaluationAlong_isIso_of_free_of_projective
-    {L : Type} [AddCommGroup L] [Module ℤ L]
+    {L : Type v} [AddCommGroup L] [Module ℤ L]
     (n : ℕ) (e : K.homology (n + 1) ≃ₗ[ℤ] L)
     [Module.Projective ℤ (K.homology n)] :
     IsIso (cohomologyEvaluationAlong K n e) := by

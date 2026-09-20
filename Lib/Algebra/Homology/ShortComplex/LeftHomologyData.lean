@@ -11,6 +11,12 @@ public import Mathlib.Algebra.Homology.ShortComplex.Exact
 
 /-!
 # Homology data from exact kernel and cokernel presentations
+
+Mathlib builds `ShortComplex.LeftHomologyData` from a limit kernel fork
+(`LeftHomologyData.ofIsLimitKernelFork`) and a colimit cokernel cofork
+(`LeftHomologyData.ofIsColimitCokernelCofork`).  This file combines the two: in an abelian
+category, a factorization `S.f = a ≫ i` with `i` a monomorphism, `p` an epimorphism and the two
+short complexes `K ⟶ X₂ ⟶ X₃` and `X₁ ⟶ K ⟶ H` exact already exhibits `H` as the homology of `S`.
 -/
 
 @[expose] public section

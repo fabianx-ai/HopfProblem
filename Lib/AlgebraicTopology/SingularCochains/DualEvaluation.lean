@@ -21,6 +21,11 @@ defined on actual cycles, descends through actual boundaries, and is natural for
 
 No universal-coefficient isomorphism is asserted: evaluation exists without projectivity, while
 bijectivity requires the usual extra hypotheses eliminating the `Ext` term.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher02], §3.1 and Theorem 3.2 (the Kronecker
+  pairing `⟨φ, z⟩` and the evaluation half of the universal coefficient theorem).
 -/
 
 @[expose] public section
@@ -36,11 +41,13 @@ namespace AlgebraicTopology.SingularCochains
 
 namespace DualEvaluation
 
-variable (A : AddCommGrpCat.{0})
+universe v w
+
+variable (A : AddCommGrpCat.{w})
 
 /-! ## Concrete positive-degree cohomology classes -/
 
-variable (C : CochainComplex AddCommGrpCat.{0} ℕ)
+variable (C : CochainComplex AddCommGrpCat.{w} ℕ)
 
 /-- Concrete cocycles in positive degree `n + 1`. -/
 abbrev PositiveCocycle (n : ℕ) :=
@@ -56,23 +63,24 @@ theorem positiveCocycleClass_surjective (n : ℕ) :
     Function.Surjective (positiveCocycleClass C n) := by
   exact (AddCommGrpCat.epi_iff_surjective _).mp inferInstance
 
-variable {C D : CochainComplex AddCommGrpCat.{0} ℕ} (f : C ⟶ D)
+variable {C D : CochainComplex AddCommGrpCat.{w} ℕ} (f : C ⟶ D)
 
 /-- The concrete cocycle map induced by a cochain map. -/
 def mapPositiveCocycles (n : ℕ) :
     PositiveCocycle C n →+ PositiveCocycle D n :=
   ((C.sc (n + 1)).abCyclesIso.inv ≫
       ShortComplex.cyclesMap
-        ((HomologicalComplex.shortComplexFunctor AddCommGrpCat.{0}
+        ((HomologicalComplex.shortComplexFunctor AddCommGrpCat.{w}
           (ComplexShape.up ℕ) (n + 1)).map f) ≫
       (D.sc (n + 1)).abCyclesIso.hom).hom
 
+/-- The induced cocycle map is the underlying cochain map in degree `n + 1`. -/
 @[simp]
 theorem mapPositiveCocycles_val (n : ℕ) (c : PositiveCocycle C n) :
     (mapPositiveCocycles (f := f) n c).1 = f.f (n + 1) c.1 := by
   change (D.sc (n + 1)).iCycles
       (ShortComplex.cyclesMap
-        ((HomologicalComplex.shortComplexFunctor AddCommGrpCat.{0}
+        ((HomologicalComplex.shortComplexFunctor AddCommGrpCat.{w}
           (ComplexShape.up ℕ) (n + 1)).map f)
         ((C.sc (n + 1)).abCyclesIso.inv c)) = f.f (n + 1) c.1
   rw [← ConcreteCategory.comp_apply, ShortComplex.cyclesMap_i,
@@ -84,7 +92,7 @@ theorem mapPositiveCocycles_val (n : ℕ) (c : PositiveCocycle C n) :
 theorem homologyMap_positiveCocycleClass (n : ℕ) (c : PositiveCocycle C n) :
     HomologicalComplex.homologyMap f (n + 1) (positiveCocycleClass C n c) =
       positiveCocycleClass D n (mapPositiveCocycles (f := f) n c) := by
-  let φ := (HomologicalComplex.shortComplexFunctor AddCommGrpCat.{0}
+  let φ := (HomologicalComplex.shortComplexFunctor AddCommGrpCat.{w}
     (ComplexShape.up ℕ) (n + 1)).map f
   have hcat :
       (C.sc (n + 1)).abCyclesIso.inv ≫ (C.sc (n + 1)).homologyπ ≫
@@ -98,7 +106,7 @@ theorem homologyMap_positiveCocycleClass (n : ℕ) (c : PositiveCocycle C n) :
 
 /-! ## Evaluation of a closed functional -/
 
-variable (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+variable (K : ChainComplex (ModuleCat.{v} ℤ) ℕ) (n : ℕ)
 
 /-- A linear functional is closed when it annihilates the incoming chain boundary. -/
 def IsClosedFunctional (phi : K.X n →ₗ[ℤ] A) : Prop :=
@@ -114,15 +122,15 @@ theorem boundaryRange_le_ker (phi : K.X n →ₗ[ℤ] A)
   exact hphi b
 
 /-- Chains modulo boundaries, in the degree selected by a short complex. -/
-abbrev ChainClass (S : ShortComplex (ModuleCat.{0} ℤ)) :=
+abbrev ChainClass (S : ShortComplex (ModuleCat.{v} ℤ)) :=
   S.X₂ ⧸ LinearMap.range S.f.hom
 
-local instance chainClassModule (S : ShortComplex (ModuleCat.{0} ℤ)) :
+local instance chainClassModule (S : ShortComplex (ModuleCat.{v} ℤ)) :
     Module ℤ (ChainClass S) :=
   Submodule.Quotient.module (LinearMap.range S.f.hom)
 
 /-- The canonical embedding of homology into chains modulo boundaries. -/
-def homologyToChainClass (S : ShortComplex (ModuleCat.{0} ℤ)) :
+def homologyToChainClass (S : ShortComplex (ModuleCat.{v} ℤ)) :
     S.homology →ₗ[ℤ] ChainClass S :=
   (S.homologyι ≫ S.moduleCatOpcyclesIso.hom).hom
 
@@ -182,7 +190,7 @@ def cochainLinear (q : ℕ) (phi : (dualComplex A K).X q) : K.X q →ₗ[ℤ] A 
 
 /-- The canonical normalization of the short complex at positive degree. -/
 noncomputable abbrev normalizedPositiveScIso
-    (E : CochainComplex AddCommGrpCat.{0} ℕ) (m : ℕ) :
+    (E : CochainComplex AddCommGrpCat.{w} ℕ) (m : ℕ) :
     E.sc (m + 1) ≅ E.sc' m (m + 1) (m + 1 + 1) :=
   E.isoSc' m (m + 1) (m + 1 + 1)
     (CochainComplex.prev_nat_succ m) (CochainComplex.next ℕ (m + 1))
@@ -195,6 +203,8 @@ def positiveCocycleValue (m : ℕ) (c : PositiveCocycle C m) : C.X (m + 1) :=
   (normalizedPositiveScIso C m).hom.τ₂
     ((C.sc (m + 1)).iCycles ((C.sc (m + 1)).abCyclesIso.inv c))
 
+/-- The cochain represented by a concrete cocycle is its underlying element, transported along
+the normalization isomorphism. -/
 @[simp]
 theorem positiveCocycleValue_eq_val (m : ℕ) (c : PositiveCocycle C m) :
     positiveCocycleValue (C := C) m c =
@@ -202,12 +212,13 @@ theorem positiveCocycleValue_eq_val (m : ℕ) (c : PositiveCocycle C m) :
   exact congrArg (fun x ↦ (normalizedPositiveScIso C m).hom.τ₂ x)
     ((C.sc (m + 1)).abCyclesIso_inv_apply_iCycles c)
 
+/-- The cochain represented by a concrete cocycle is literally its underlying element. -/
 @[simp]
 theorem positiveCocycleValue_eq_literal_val (m : ℕ) (c : PositiveCocycle C m) :
     positiveCocycleValue (C := C) m c = c.1 := by
   rw [positiveCocycleValue_eq_val]
   have hτ : (normalizedPositiveScIso C m).hom.τ₂ = 𝟙 (C.X (m + 1)) :=
-    HomologicalComplex.natIsoSc'_hom_app_τ₂ AddCommGrpCat.{0}
+    HomologicalComplex.natIsoSc'_hom_app_τ₂ AddCommGrpCat.{w}
       (ComplexShape.up ℕ) m (m + 1) (m + 1 + 1)
         (CochainComplex.prev_nat_succ m) (CochainComplex.next ℕ (m + 1)) C
   exact ConcreteCategory.congr_hom hτ c.1
@@ -217,6 +228,7 @@ def linearCochain (q : ℕ) (phi : K.X q →ₗ[ℤ] A) : (dualComplex A K).X q 
   change K.X q →+ A
   exact phi.toAddMonoidHom
 
+/-- Reading a linear functional back off the cochain it defines returns that functional. -/
 @[simp]
 theorem cochainLinear_linearCochain (q : ℕ) (phi : K.X q →ₗ[ℤ] A) :
     cochainLinear A K q (linearCochain A K q phi) = phi := by
@@ -229,6 +241,7 @@ def normalizedLinearCochain (m : ℕ) (phi : K.X (m + 1) →ₗ[ℤ] A) :
   change (dualComplex A K).X (m + 1)
   exact linearCochain A K (m + 1) phi
 
+/-- A normalized linear cochain evaluates as the linear functional it comes from. -/
 @[simp]
 theorem normalizedLinearCochain_apply (m : ℕ) (phi : K.X (m + 1) →ₗ[ℤ] A)
     (x : K.X (m + 1)) :
@@ -254,6 +267,8 @@ def mkPositiveCocycleOfClosed (m : ℕ) (phi : K.X (m + 1) →ₗ[ℤ] A)
   rw [ht, map_zero] at h
   exact h
 
+/-- The underlying element of the cocycle attached to a closed functional is that functional,
+transported along the normalization isomorphism. -/
 @[simp]
 theorem mkPositiveCocycleOfClosed_val (m : ℕ) (phi : K.X (m + 1) →ₗ[ℤ] A)
     (hphi : IsClosedFunctional A K (m + 1) phi) :
@@ -261,6 +276,7 @@ theorem mkPositiveCocycleOfClosed_val (m : ℕ) (phi : K.X (m + 1) →ₗ[ℤ] A
       (normalizedPositiveScIso (dualComplex A K) m).inv.τ₂
         (normalizedLinearCochain A K m phi) := rfl
 
+/-- The cochain represented by the cocycle of a closed functional is that functional. -/
 @[simp]
 theorem positiveCocycleValue_mkPositiveCocycleOfClosed (m : ℕ)
     (phi : K.X (m + 1) →ₗ[ℤ] A) (hphi : IsClosedFunctional A K (m + 1) phi) :
@@ -277,6 +293,7 @@ theorem positiveCocycleValue_mkPositiveCocycleOfClosed (m : ℕ)
   simpa only [ShortComplex.comp_τ₂, ShortComplex.id_τ₂,
     AddCommGrpCat.comp_apply, AddCommGrpCat.id_apply] using h
 
+/-- The zero cocycle represents the zero cochain. -/
 @[simp]
 theorem positiveCocycleValue_zero (m : ℕ) :
     positiveCocycleValue (C := C) m 0 = 0 := by
@@ -284,6 +301,7 @@ theorem positiveCocycleValue_zero (m : ℕ) :
     ((C.sc (m + 1)).iCycles ((C.sc (m + 1)).abCyclesIso.inv 0)) = 0
   simp only [map_zero]
 
+/-- Passing from a cocycle to the cochain it represents is additive. -/
 @[simp]
 theorem positiveCocycleValue_add (m : ℕ) (c d : PositiveCocycle C m) :
     positiveCocycleValue (C := C) m (c + d) =
@@ -296,6 +314,8 @@ theorem positiveCocycleValue_add (m : ℕ) (c d : PositiveCocycle C m) :
         ((C.sc (m + 1)).iCycles ((C.sc (m + 1)).abCyclesIso.inv d))
   simp only [map_add]
 
+/-- The differential of the dual complex is precomposition with the differential of the chain
+complex: `(dφ)(x) = φ(∂x)`. -/
 @[simp]
 theorem dualComplex_d_apply_apply (i j : ℕ)
     (phi : (dualComplex A K).X i) (x : K.X j) :
@@ -334,6 +354,8 @@ def evaluationOfPositiveCocycle (m : ℕ)
     (cochainLinear A K (m + 1) (positiveCocycleValue (C := dualComplex A K) m c))
     (positiveCocycle_isClosedFunctional A K m c)).toAddMonoidHom
 
+/-- Evaluating the functional of a cocycle on the class of a cycle is the Kronecker pairing
+`⟨φ, z⟩` of the represented cochain with the cycle. -/
 @[simp]
 theorem evaluationOfPositiveCocycle_cycleClass (m : ℕ)
     (c : PositiveCocycle (dualComplex A K) m)
@@ -349,6 +371,7 @@ theorem evaluationOfPositiveCocycle_cycleClass (m : ℕ)
   rw [evaluationOfClosed_cycleClass]
   rfl
 
+/-- The zero cocycle evaluates to the zero functional on homology. -/
 theorem evaluationOfPositiveCocycle_zero (m : ℕ) :
     evaluationOfPositiveCocycle A K m 0 = 0 := by
   apply AddMonoidHom.ext
@@ -359,6 +382,7 @@ theorem evaluationOfPositiveCocycle_zero (m : ℕ) :
   simp only [positiveCocycleValue_zero, cochainAddHom, AddMonoidHom.zero_apply]
   rfl
 
+/-- Evaluation on homology is additive in the cocycle. -/
 theorem evaluationOfPositiveCocycle_add (m : ℕ)
     (c d : PositiveCocycle (dualComplex A K) m) :
     evaluationOfPositiveCocycle A K m (c + d) =
@@ -386,6 +410,7 @@ def positiveCocycleEvaluation (m : ℕ) :
   map_zero' := evaluationOfPositiveCocycle_zero A K m
   map_add' := evaluationOfPositiveCocycle_add A K m
 
+/-- The bundled evaluation map agrees with the Kronecker pairing on classes of cycles. -/
 @[simp]
 theorem positiveCocycleEvaluation_cycleClass (m : ℕ)
     (c : PositiveCocycle (dualComplex A K) m)
@@ -401,6 +426,8 @@ def previousCochainValue (m : ℕ)
     (b : ((dualComplex A K).sc (m + 1)).X₁) : (dualComplex A K).X m :=
   (normalizedPositiveScIso (dualComplex A K) m).hom.τ₁ b
 
+/-- The incoming map of the normalized short complex agrees with the one of the native short
+complex under the normalization isomorphism. -/
 theorem positiveSc_f_apply (m : ℕ)
     (b : ((dualComplex A K).sc (m + 1)).X₁) :
     ((dualComplex A K).sc' m (m + 1) (m + 1 + 1)).f
@@ -516,6 +543,8 @@ theorem cohomologyEvaluation_positiveCocycleClass (m : ℕ)
     (AddMonoidHom.range ((dualComplex A K).sc (m + 1)).abToCycles)
     (positiveCoboundaryRange_le_ker A K m) c
 
+/-- The Kronecker evaluation of the class of a cocycle on the class of a cycle is the value of
+the cochain on the cycle. -/
 @[simp]
 theorem cohomologyEvaluation_cocycle_cycle (m : ℕ)
     (c : PositiveCocycle (dualComplex A K) m)
@@ -529,7 +558,7 @@ theorem cohomologyEvaluation_cocycle_cycle (m : ℕ)
 
 /-! ## Naturality -/
 
-variable {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+variable {K L : ChainComplex (ModuleCat.{v} ℤ) ℕ}
 
 /-- The dual of a chain map acts by literal precomposition in every degree. -/
 @[simp]
@@ -666,6 +695,8 @@ def addHomIntLinearEquiv (M P : Type*) [AddCommGroup M] [AddCommGroup P]
     rfl
   map_add' q r := by ext; rfl
 
+/-- The equivalence between additive maps and `ℤ`-linear maps does not change the underlying
+function. -/
 @[simp]
 theorem addHomIntLinearEquiv_apply (M P : Type*) [AddCommGroup M] [AddCommGroup P]
     [Module ℤ M] [Module ℤ P] (q : M →+ P) (x : M) :
@@ -675,7 +706,7 @@ theorem addHomIntLinearEquiv_apply (M P : Type*) [AddCommGroup M] [AddCommGroup 
 
 open HomologicalComplex.ChainCycleLift
 
-variable (J : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+variable (J : ChainComplex (ModuleCat.{v} ℤ) ℕ) (n : ℕ)
 
 /-- The image of the outgoing differential in degree `n`. -/
 abbrev OutgoingImage :=
@@ -696,31 +727,33 @@ def boundaryCycle (b : J.X (n + 1)) : Cycle J n :=
     have hdd := J.d_comp_d (n + 1) n ((ComplexShape.down ℕ).next n)
     exact ConcreteCategory.congr_hom hdd b⟩
 
+/-- The underlying element of the cycle attached to a boundary is that boundary. -/
 @[simp]
 theorem boundaryCycle_val (b : J.X (n + 1)) :
     (boundaryCycle J n b).1 = (J.d (n + 1) n).hom b := rfl
 
+/-- A boundary has vanishing homology class. -/
 @[simp]
 theorem cycleClass_boundaryCycle (b : J.X (n + 1)) :
     cycleClass J n (boundaryCycle J n b) = 0 :=
   (cycleClass_eq_zero_iff J n (boundaryCycle J n b)).mpr ⟨b, rfl⟩
 
 /-- A predecessor functional in the normalized positive-degree short complex. -/
-def normalizedPreviousLinearCochain (A : AddCommGrpCat.{0})
+def normalizedPreviousLinearCochain (A : AddCommGrpCat.{w})
     (psi : J.X n →ₗ[ℤ] A) :
     ((dualComplex A J).sc' n (n + 1) (n + 1 + 1)).X₁ := by
   change (dualComplex A J).X n
   exact linearCochain A J n psi
 
 /-- The same predecessor functional transported to the native short complex. -/
-def previousLinearCochain (A : AddCommGrpCat.{0}) (psi : J.X n →ₗ[ℤ] A) :
+def previousLinearCochain (A : AddCommGrpCat.{w}) (psi : J.X n →ₗ[ℤ] A) :
     ((dualComplex A J).sc (n + 1)).X₁ :=
   (normalizedPositiveScIso (dualComplex A J) n).inv.τ₁
     (normalizedPreviousLinearCochain J n A psi)
 
 /-- The value of the coboundary represented by a predecessor functional. -/
 theorem positiveCocycleValue_abToCycles_previousLinearCochain
-    (A : AddCommGrpCat.{0}) (psi : J.X n →ₗ[ℤ] A) :
+    (A : AddCommGrpCat.{w}) (psi : J.X n →ₗ[ℤ] A) :
     positiveCocycleValue (C := dualComplex A J) n
         (((dualComplex A J).sc (n + 1)).abToCycles
           (previousLinearCochain J n A psi)) =
@@ -743,9 +776,10 @@ theorem positiveCocycleValue_abToCycles_previousLinearCochain
   rw [hb] at hcomm
   exact hcomm.symm
 
+/-- The coboundary of a functional `ψ` in degree `n` evaluates on a chain `x` as `ψ (∂x)`. -/
 @[simp]
 theorem positiveCocycleValue_abToCycles_previousLinearCochain_apply
-    (A : AddCommGrpCat.{0}) (psi : J.X n →ₗ[ℤ] A) (x : J.X (n + 1)) :
+    (A : AddCommGrpCat.{w}) (psi : J.X n →ₗ[ℤ] A) (x : J.X (n + 1)) :
     cochainAddHom A J (n + 1)
         (positiveCocycleValue (C := dualComplex A J) n
           (((dualComplex A J).sc (n + 1)).abToCycles
@@ -760,7 +794,7 @@ theorem exists_cycle_retraction [Module.Projective ℤ (OutgoingImage J n)] :
   exists_kernel_retraction (J.d n ((ComplexShape.down ℕ).next n)).hom
 
 /-- A functional on cycles extends when the outgoing image is projective. -/
-theorem exists_extension_from_cycles (A : AddCommGrpCat.{0})
+theorem exists_extension_from_cycles (A : AddCommGrpCat.{w})
     [Module.Projective ℤ (OutgoingImage J n)]
     (phi : Cycle J n →ₗ[ℤ] A) :
     ∃ psi : J.X n →ₗ[ℤ] A, ∀ z : Cycle J n, psi z = phi z :=
@@ -769,7 +803,7 @@ theorem exists_extension_from_cycles (A : AddCommGrpCat.{0})
 /-- Every homology functional is represented by a genuine cocycle when the outgoing image in
 that degree is projective. -/
 theorem cohomologyEvaluation_surjective_of_outgoing_projective
-    (A : AddCommGrpCat.{0}) [Module.Projective ℤ (OutgoingImage J (n + 1))] :
+    (A : AddCommGrpCat.{w}) [Module.Projective ℤ (OutgoingImage J (n + 1))] :
     Function.Surjective (cohomologyEvaluation A J n).hom := by
   intro phi
   let phiLin : J.homology (n + 1) →ₗ[ℤ] A := addHomToIntLinear phi
@@ -829,7 +863,7 @@ theorem exists_boundary_retraction [Module.Projective ℤ (OutgoingImage J n)]
 
 /-- A functional vanishing on all `(n+1)`-cycles is an actual coboundary when the preceding
 outgoing image and homology are projective. -/
-theorem exists_coboundary_of_vanishing_on_cycles (A : AddCommGrpCat.{0})
+theorem exists_coboundary_of_vanishing_on_cycles (A : AddCommGrpCat.{w})
     [Module.Projective ℤ (OutgoingImage J n)] [Module.Projective ℤ (J.homology n)]
     (phi : J.X (n + 1) →ₗ[ℤ] A)
     (hphi : ∀ z : Cycle J (n + 1), phi z.1 = 0) :
@@ -855,7 +889,7 @@ theorem exists_coboundary_of_vanishing_on_cycles (A : AddCommGrpCat.{0})
 /-- Evaluation in degree `n+1` is injective when the preceding outgoing image and homology are
 projective.  This is the chain-level vanishing of the UCT `Ext¹(Hₙ, A)` term. -/
 theorem cohomologyEvaluation_injective_of_local_projective
-    (A : AddCommGrpCat.{0}) [Module.Projective ℤ (OutgoingImage J n)]
+    (A : AddCommGrpCat.{w}) [Module.Projective ℤ (OutgoingImage J n)]
     [Module.Projective ℤ (J.homology n)] :
     Function.Injective (cohomologyEvaluation A J n).hom := by
   intro a b hab
@@ -914,7 +948,7 @@ theorem cohomologyEvaluation_injective_of_local_projective
 under precisely the two image-projectivity conditions used to extend cochains, together with
 projectivity of the preceding homology that kills the `Ext¹` obstruction. -/
 theorem cohomologyEvaluation_bijective_of_local_projective
-    (A : AddCommGrpCat.{0}) [Module.Projective ℤ (OutgoingImage J n)]
+    (A : AddCommGrpCat.{w}) [Module.Projective ℤ (OutgoingImage J n)]
     [Module.Projective ℤ (OutgoingImage J (n + 1))]
     [Module.Projective ℤ (J.homology n)] :
     Function.Bijective (cohomologyEvaluation A J n).hom :=
@@ -923,7 +957,7 @@ theorem cohomologyEvaluation_bijective_of_local_projective
 
 /-- Categorical form of the local UCT isomorphism. -/
 theorem cohomologyEvaluation_isIso_of_local_projective
-    (A : AddCommGrpCat.{0}) [Module.Projective ℤ (OutgoingImage J n)]
+    (A : AddCommGrpCat.{w}) [Module.Projective ℤ (OutgoingImage J n)]
     [Module.Projective ℤ (OutgoingImage J (n + 1))]
     [Module.Projective ℤ (J.homology n)] :
     IsIso (cohomologyEvaluation A J n) := by

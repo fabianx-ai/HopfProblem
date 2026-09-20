@@ -22,6 +22,13 @@ in nonnegative degrees, it also proves the first-quadrant hypotheses and exposes
 The construction supplies pages and page-to-page homology isomorphisms.  It does not claim an
 associated-graded identification with the total object: Mathlib's current `SpectralSequence` API
 does not yet package that convergence datum.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [S. I. Gelfand, Yu. I. Manin, *Methods of homological algebra*][gelfandManin03], Chapter IV,
+  §4 (the hypercohomology spectral sequence of the t-structure filtration).
+
 -/
 
 @[expose] public section

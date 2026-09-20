@@ -78,6 +78,7 @@ noncomputable def extZeroEquivKerPostcompG
   AddEquiv.ofBijective (postcompFZeroToKerPostcompG P S)
     (postcompFZeroToKerPostcompG_bijective P hS)
 
+/-- The kernel coordinate of `Ext⁰(P, X₁)` is postcomposition with the class of `S.f`. -/
 @[simp]
 theorem extZeroEquivKerPostcompG_apply
     (P : C) {S : ShortComplex C} (hS : S.ShortExact)

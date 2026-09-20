@@ -5,24 +5,25 @@ public import Mathlib
 /-!
 # Integer presentations
 
-Presentations of `ℤ`-modules by generators and explicit relation columns: a
-`IntegerPresentation B r c` is a surjective linear map `Fin r → ℤ →ₗ B` whose kernel
-is the span of `c` explicit column vectors. Includes the presentation matrix and the
-triviality criterion (a presentation of the zero module has surjective presentation
-matrix) — Milnor, *Lectures on the h-cobordism theorem*, §7, Thm. 7.6's algebra.
+Presentations of `ℤ`-modules by generators and explicit relation columns: an
+`IntegerPresentation B r c` is a surjective linear map `(Fin r → ℤ) →ₗ[ℤ] B` whose kernel
+is the span of `c` explicit column vectors.  The file provides the presentation matrix, the
+operations of transporting a presentation along an isomorphism and of adjoining one relation,
+and the triviality criterion: a presentation of the zero module has surjective presentation
+matrix.
 
-## Provenance
+## References
 
-Moved verbatim from `Hopf/SphereTopology.lean` (lane F0b). The declarations keep their
-`*` names so existing consumers re-point through unchanged fully
-qualified names; the upstream-shaped rename is a separate commit. The interleaved
-geometric gluers `MorseSurgeryData.indexThreePresentation` and
-`SurgeryWindows.middlePresentation` stay in `Hopf/SphereTopology.lean` and move with
-lane F10.
+* [J. Milnor, *Lectures on the h-cobordism theorem*][milnor65], §7 (the algebra behind
+  Theorem 7.6).
+* [S. Lang, *Algebra*][lang02], Chapter III (presentations of modules by generators and
+  relations); compare `Module.Presentation` in Mathlib.
 -/
 
 @[expose] public noncomputable section
 
+/-- If the kernel of `q` is the line spanned by `p v`, then the kernel of `q ∘ p` is the kernel
+of `p` together with the line spanned by `v`. -/
 theorem HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Module R A] [Module R B] [Module R C]
     (p : A →ₗ[R] B) (q : B →ₗ[R] C) (v : A) (hq : LinearMap.ker q = Submodule.span R {p v}) :
@@ -53,12 +54,15 @@ theorem HomologyTransport.ker_comp_span_singleton {R A B C : Type*} [CommRing R]
       rw [hq]
       exact Submodule.subset_span (by simp)
 
+/-- A presentation of a `ℤ`-module `B` by `r` generators and `c` explicit relation columns:
+a surjective map `(Fin r → ℤ) →ₗ[ℤ] B` whose kernel is spanned by the columns. -/
 structure IntegerPresentation (B : Type*) [AddCommGroup B] [Module ℤ B] (r c : ℕ) where
   map : (Fin r → ℤ) →ₗ[ℤ] B
   columns : Fin c → (Fin r → ℤ)
   surjective : Function.Surjective map
   kernel_eq : LinearMap.ker map = Submodule.span ℤ (Set.range columns)
 
+/-- A free module of rank `r` is presented by `r` generators and no relations. -/
 def IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B] {r : ℕ}
     (e : (Fin r → ℤ) ≃ₗ[ℤ] B) : IntegerPresentation B r 0
     where
@@ -69,6 +73,7 @@ def IntegerPresentation.ofEquiv {B : Type*} [AddCommGroup B] [Module ℤ B] {r :
     rw [LinearMap.ker_eq_bot.mpr e.injective]
     simp
 
+/-- Transport a presentation along a linear isomorphism of the presented module. -/
 def IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommGroup C]
     [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (e : B ≃ₗ[ℤ] C) :
     IntegerPresentation C r c
@@ -87,14 +92,18 @@ def IntegerPresentation.transport {B C : Type*} [AddCommGroup B] [AddCommGroup C
         rw [hv, map_zero]
     exact h.trans P.kernel_eq
 
+/-- A chosen preimage of an element under the presenting map. -/
 def IntegerPresentation.liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
     (P : IntegerPresentation B r c) (b : B) : Fin r → ℤ :=
   Classical.choose (P.surjective b)
 
+/-- The chosen preimage is indeed a preimage. -/
 theorem IntegerPresentation.map_liftRelation {B : Type*} [AddCommGroup B] [Module ℤ B]
     {r c : ℕ} (P : IntegerPresentation B r c) (b : B) : P.map (P.liftRelation b) = b :=
   Classical.choose_spec (P.surjective b)
 
+/-- Present a quotient `C` of `B` whose kernel is the line spanned by `b`, by adjoining a lift
+of `b` to the relation columns. -/
 def IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [Module ℤ B]
     [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
     (hq : Function.Surjective q) (b : B) (hker : LinearMap.ker q = Submodule.span ℤ { b }) :
@@ -110,15 +119,20 @@ def IntegerPresentation.adjoin {B C : Type*} [AddCommGroup B] [AddCommGroup C] [
     rw [HomologyTransport.ker_comp_span_singleton P.map q (P.liftRelation b) hk,
       P.kernel_eq, Fin.range_cons, Submodule.span_insert, sup_comm]
 
+/-- The presentation matrix, whose columns are the relation vectors. -/
 def IntegerPresentation.matrix {B : Type*} [AddCommGroup B] [Module ℤ B] {r c : ℕ}
     (P : IntegerPresentation B r c) : Matrix (Fin r) (Fin c) ℤ := fun i j => P.columns j i
 
+/-- An integer combination of the relation columns is the matrix-vector product of the
+presentation matrix with the coefficient vector. -/
 theorem IntegerPresentation.columns_sum_eq_mulVec {B : Type*} [AddCommGroup B] [Module ℤ B]
     {r c : ℕ} (P : IntegerPresentation B r c) (z : Fin c → ℤ) :
     (∑ j, z j • P.columns j) = P.matrix.mulVec z := by
   funext i
   simp [IntegerPresentation.matrix, Matrix.mulVec, dotProduct, mul_comm]
 
+/-- A vector is in the image of the presentation matrix exactly when it lies in the span of the
+relation columns. -/
 theorem IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup B] [Module ℤ B]
     {r c : ℕ} (P : IntegerPresentation B r c) (v : Fin r → ℤ) :
     v ∈ Set.range P.matrix.mulVec ↔ v ∈ Submodule.span ℤ (Set.range P.columns) := by
@@ -129,6 +143,7 @@ theorem IntegerPresentation.mem_range_matrix_iff {B : Type*} [AddCommGroup B] [M
   · rintro ⟨z, hz⟩
     exact ⟨z, (P.columns_sum_eq_mulVec z).symm.trans hz⟩
 
+/-- The image of the presentation matrix is the kernel of the presenting map. -/
 theorem IntegerPresentation.matrix_image_eq_kernel {B : Type*} [AddCommGroup B] [Module ℤ B]
     {r c : ℕ} (P : IntegerPresentation B r c) :
     Set.range P.matrix.mulVec = (LinearMap.ker P.map : Set (Fin r → ℤ)) := by
@@ -136,6 +151,7 @@ theorem IntegerPresentation.matrix_image_eq_kernel {B : Type*} [AddCommGroup B] 
   rw [P.mem_range_matrix_iff, P.kernel_eq]
   rfl
 
+/-- Every vector in the image of the presentation matrix is a relation. -/
 theorem IntegerPresentation.matrix_relation {B : Type*} [AddCommGroup B] [Module ℤ B]
     {r c : ℕ} (P : IntegerPresentation B r c) (z : Fin c → ℤ) :
     P.map (P.matrix.mulVec z) = 0 := by
@@ -143,6 +159,7 @@ theorem IntegerPresentation.matrix_relation {B : Type*} [AddCommGroup B] [Module
   rw [P.matrix_image_eq_kernel] at h
   exact h
 
+/-- A presentation of the zero module has relation columns spanning everything. -/
 theorem IntegerPresentation.columns_span_of_subsingleton {B : Type*} [AddCommGroup B]
     [Module ℤ B] {r c : ℕ} (P : IntegerPresentation B r c) [Subsingleton B] :
     Submodule.span ℤ (Set.range P.columns) = ⊤ := by
@@ -151,6 +168,7 @@ theorem IntegerPresentation.columns_span_of_subsingleton {B : Type*} [AddCommGro
   rw [← P.kernel_eq]
   exact Subsingleton.elim _ _
 
+/-- The presentation matrix of a presentation of the zero module is surjective. -/
 theorem IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} [AddCommGroup B]
     [Module ℤ B] {r c : ℕ} (P : IntegerPresentation B r c) [Subsingleton B] :
     Function.Surjective P.matrix.mulVec := by
@@ -161,10 +179,13 @@ theorem IntegerPresentation.matrix_surjective_of_subsingleton {B : Type*} [AddCo
 
 
 
+/-- The empty presentation matrix of a free module is injective. -/
 theorem IntegerPresentation.ofEquiv_matrix_injective {B : Type*} [AddCommGroup B]
     [Module ℤ B] {r : ℕ} (e : (Fin r → ℤ) ≃ₗ[ℤ] B) :
     Function.Injective (ofEquiv e).matrix.mulVec := fun _ _ _ => Subsingleton.elim _ _
 
+/-- The matrix of an adjoined presentation acts by the first coordinate on the new column and by
+the old matrix on the remaining coordinates. -/
 theorem IntegerPresentation.adjoin_mulVec {B C : Type*} [AddCommGroup B] [AddCommGroup C]
     [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c) (q : B →ₗ[ℤ] C)
     (hq : Function.Surjective q) (b : B) (hker : LinearMap.ker q = Submodule.span ℤ { b })
@@ -176,6 +197,8 @@ theorem IntegerPresentation.adjoin_mulVec {B C : Type*} [AddCommGroup B] [AddCom
   rw [P.columns_sum_eq_mulVec]
   rfl
 
+/-- Applying the presenting map of `B` to a relation of the adjoined presentation recovers the
+first coordinate times `b`. -/
 theorem IntegerPresentation.adjoin_coefficient {B C : Type*} [AddCommGroup B]
     [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c)
     (q : B →ₗ[ℤ] C) (hq : Function.Surjective q) (b : B)
@@ -184,6 +207,8 @@ theorem IntegerPresentation.adjoin_coefficient {B C : Type*} [AddCommGroup B]
   rw [P.adjoin_mulVec q hq b hker, map_add, map_zsmul, P.map_liftRelation, P.matrix_relation,
     add_zero]
 
+/-- If the old presentation matrix is injective and `b` is not torsion, the adjoined presentation
+matrix is injective. -/
 theorem IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup B]
     [AddCommGroup C] [Module ℤ B] [Module ℤ C] {r c : ℕ} (P : IntegerPresentation B r c)
     (q : B →ₗ[ℤ] C) (hq : Function.Surjective q) (b : B)
@@ -206,6 +231,9 @@ theorem IntegerPresentation.adjoin_matrix_injective {B C : Type*} [AddCommGroup 
   apply hzero (x - y)
   rw [Matrix.mulVec_sub, hxy, sub_self]
 
+/-- An extension of `R` by `A`, given by an injection `i` and a surjection `p` onto `R` with
+`ker p = range i`, splits: there is a linear isomorphism `A × R ≃ₗ[R] B` compatible with `i`
+and `p`. -/
 theorem HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
@@ -247,6 +275,7 @@ theorem HomologyTransport.exists_split_rank_one_extension {R : Type*} [CommRing 
   change i a + s 0 = i a
   rw [map_zero, add_zero]
 
+/-- The additive form of the splitting of an extension of `R` by `A`. -/
 theorem HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommRing R]
     {A B : Type*} [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B] (i : A →ₗ[R] B)
     (p : B →ₗ[R] R) (hi : Function.Injective i) (hp : Function.Surjective p)
@@ -254,6 +283,7 @@ theorem HomologyTransport.exists_add_split_rank_one_extension {R : Type*} [CommR
     ∃ e : (A × R) ≃+ B, (∀ a, e (a, 0) = i a) ∧ ∀ z, p (e z) = z.2 := by
   obtain ⟨e, he, hp⟩ := exists_split_rank_one_extension i p hi hp hk
   exact ⟨e.toAddEquiv, he, hp⟩
+/-- Splitting off the first coordinate of `Fin (n+1) → ℤ`. -/
 def HomologyTransport.integerCoordinateSplit (n : ℕ) :
     (Fin (n + 1) → ℤ) ≃+ ((Fin n → ℤ) × ℤ)
     where
@@ -265,6 +295,7 @@ def HomologyTransport.integerCoordinateSplit (n : ℕ) :
     exact Fin.cases rfl (fun _ => rfl) i
   right_inv v := rfl
   map_add' _ _ := rfl
+/-- A linear automorphism of `ℤ` sends `1` to a unit, that is, to `±1`. -/
 theorem HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e 1).natAbs = 1 := by
   have h : e.symm 1 * e 1 = 1 := by
     calc
@@ -273,6 +304,8 @@ theorem HomologyTransport.integerEquiv_one_natAbs (e : ℤ ≃ₗ[ℤ] ℤ) : (e
         simp
       _ = 1 := by simp
   exact Int.isUnit_iff_natAbs_eq.mp (IsUnit.of_mul_eq_one_right _ h)
+/-- A matrix over a ring with the strong rank condition whose associated map is bijective is
+square. -/
 theorem HomologyTransport.matrix_sizes_eq_of_bijective {R : Type*} [CommRing R]
     [Nontrivial R] [StrongRankCondition R] {r c : ℕ} (A : Matrix (Fin r) (Fin c) R)
     (hA : Function.Bijective A.mulVec) : c = r := by

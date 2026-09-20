@@ -20,6 +20,13 @@ The triangle comparison is applied only after shifting by `q + 1`.  Consequently
 Postnikov connecting map carries exactly the scalar `(q + 1).negOnePow`.  The theorem below
 keeps that scalar, both endpoint transports, and both canonical shift associators visible; after
 those explicit transports, the result is the positive two-step extension class.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter III
+  (connecting maps of adjacent triangles).
+
 -/
 
 @[expose] public section

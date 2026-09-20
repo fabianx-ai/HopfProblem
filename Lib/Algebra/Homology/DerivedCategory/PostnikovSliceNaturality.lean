@@ -14,6 +14,12 @@ public import Lib.Algebra.Homology.DerivedCategory.PostnikovSlice
 This file records the all-index compatibility between the derived quotient's shift comparison
 and the induced homology shift sequence, then applies the same normalization machinery to
 single objects and Postnikov slices.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [M. Kashiwara, P. Schapira, *Categories and sheaves*][kashiwaraSchapira06], §10.1.
+
 -/
 
 @[expose] public section

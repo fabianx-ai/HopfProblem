@@ -14,6 +14,13 @@ public import Lib.Algebra.Homology.DerivedCategory.Ext.ExactFunctorComparison
 
 The canonical degree-one acyclic-resolution comparison commutes with the endpoint Ext map of an
 exact additive functor.  This is the H¹-only form of the standard functoriality argument.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3.
+* [A. Grothendieck, *Sur quelques points d'algèbre homologique*][grothendieck57], §2 (an exact
+  functor preserving injectives commutes with `Ext`).
+
 -/
 
 @[expose] public section

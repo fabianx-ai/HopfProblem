@@ -18,6 +18,13 @@ extension `I.cochainComplex`, including degree zero.
 
 The construction is a direct composition of the single-source Hom-complex isomorphism,
 Mathlib's Hom-complex homology comparison, and Mathlib's injective-resolution Ext comparison.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.7.6.
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, §1 (`Ext` computed from an
+  injective resolution).
+
 -/
 
 @[expose] public section

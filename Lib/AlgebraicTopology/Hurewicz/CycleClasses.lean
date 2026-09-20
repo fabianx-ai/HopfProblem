@@ -276,7 +276,7 @@ lemma cycleClass_comp_homologyMap :
     cycleClass K ≫ HomologicalComplex.homologyMap F 1 = mapCycles F ≫ cycleClass L :=
   pi_homologyIso_inv_naturality (shortMap F)
 
-/-- Element form of `cycleClass_comp_homologyMap`, in the direction consumers use. -/
+/-- Element form of `cycleClass_comp_homologyMap`. -/
 lemma homologyMap_cycleClass (c : Cycle1 K) :
     (HomologicalComplex.homologyMap F 1).hom (cycleClass K c) = cycleClass L (mapCycles F c) :=
   congr($(cycleClass_comp_homologyMap F) c)

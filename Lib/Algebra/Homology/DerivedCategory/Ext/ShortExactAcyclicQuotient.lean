@@ -68,6 +68,7 @@ def extTwoEquivMiddleOfSubsingletonQuotient
   AddEquiv.ofBijective ((mk₀ S.f).postcomp P (add_zero 2))
     (postcomp_f_two_bijective_of_subsingleton_quotient P hS)
 
+/-- The degree-two equivalence is postcomposition with the class of the inclusion `S.f`. -/
 @[simp]
 theorem extTwoEquivMiddleOfSubsingletonQuotient_apply
     (P : C) {S : ShortComplex C} (hS : S.ShortExact)

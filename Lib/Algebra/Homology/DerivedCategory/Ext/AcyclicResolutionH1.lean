@@ -16,6 +16,12 @@ This is the degree-one part of the standard acyclic-resolution comparison.  It w
 arbitrary abelian category with small Ext groups.  Given an augmented complex
 `0 ⟶ F ⟶ K⁰ ⟶ K¹ ⟶ K²` exact through degree one, it identifies `Ext¹(P,F)` with the homology of the degree-zero
 `Ext` complex, assuming only `Ext¹(P,K⁰) = 0`.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Theorem 2.4.3
+  (degree-one case).
+* [R. Hartshorne, *Algebraic geometry*][hartshorne77], Chapter III, Proposition 1.2A.
 -/
 
 @[expose] public section
@@ -42,6 +48,7 @@ def connecting (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     Ext P S.X₃ n →+ Ext P S.X₁ (n + 1) :=
   hS.extClass.postcomp P rfl
 
+/-- The connecting homomorphism is postcomposition with the class of the short exact sequence. -/
 @[simp]
 theorem connecting_apply (P : C) {S : ShortComplex C}
     (hS : S.ShortExact) (n : ℕ) (x : Ext P S.X₃ n) :
@@ -86,10 +93,12 @@ abbrev cycles : C := kernel R.complex.g
 def toCycles : R.complex.X₁ ⟶ R.cycles :=
   kernel.lift R.complex.g R.complex.f R.complex.zero
 
+/-- Composing `toCycles` with the kernel inclusion recovers the first differential. -/
 @[reassoc (attr := simp)]
 theorem toCycles_ι : R.toCycles ≫ kernel.ι R.complex.g = R.complex.f :=
   kernel.lift_ι _ _ _
 
+/-- The augmentation followed by `toCycles` vanishes. -/
 theorem augmentation_toCycles : R.ι ≫ R.toCycles = 0 := by
   apply (cancel_mono (kernel.ι R.complex.g)).mp
   simp only [Category.assoc, toCycles_ι, R.zero, Limits.zero_comp]
@@ -98,6 +107,7 @@ theorem augmentation_toCycles : R.ι ≫ R.toCycles = 0 := by
 abbrev first : ShortComplex C :=
   ShortComplex.mk R.ι R.toCycles R.augmentation_toCycles
 
+/-- The sequence `0 ⟶ F ⟶ K⁰ ⟶ cycles ⟶ 0` is short exact. -/
 theorem first_shortExact : R.first.ShortExact where
   exact := by
     let φ : R.first ⟶ ShortComplex.mk R.ι R.complex.f R.zero :=

@@ -20,6 +20,12 @@ the parity `(q + 1).negOnePow` contributed by shifting the Postnikov triangle by
 Both page endpoint transports, both components of the Postnikov-to-splice triangle isomorphism,
 and the shift associators remain explicit.  This makes the result independent of any later
 choice of coordinates on the two homology objects.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [P. Deligne, *Théorie de Hodge, II*][deligne71], §1.4.
+
 -/
 
 @[expose] public section

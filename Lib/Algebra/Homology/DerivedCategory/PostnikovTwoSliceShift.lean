@@ -19,6 +19,13 @@ The prescribed middle component first uses the concrete good-truncation model an
 canonical comparison between shifting before and after the derived quotient.  Since Mathlib's
 shift functor on triangles scales every arrow by `(q + 1).negOnePow`, the third-square statement
 records that parity factor and the canonical commutation of the shifts by `1` and `q + 1`.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3, §1.1 (shifted
+  triangles and their sign convention).
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter II.
+
 -/
 
 @[expose] public section

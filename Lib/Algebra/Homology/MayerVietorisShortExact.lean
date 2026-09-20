@@ -15,7 +15,7 @@ For chain complexes of ℤ-modules `K`, `L`, `J`, `T` with chain maps `a : J ⟶
 produces a short complex
 
 `SmallChainBiprod.shortComplexOfComplexes a b u v w :
-  CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)`
+  CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{v} ℤ) ℕ)`
 
 with left leg `J →^{⟨a, -b⟩} K ⊞ L` and right leg `K ⊞ L →^{⟨u, v⟩} T`. Under the degreewise
 Mayer–Vietoris conditions — `a` degreewise injective, `u` and `v` jointly degreewise
@@ -67,16 +67,16 @@ This is the biproduct half of [hatcher02], proof of Theorem 2.20, in four steps.
 chain complexes, short exact sequence, biproducts, Mayer–Vietoris
 -/
 
-open Set Function Filter Manifold Topology
-
 open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
+universe v
+
 /-! ### Element calculus of biproducts in `ModuleCat ℤ` -/
 
 /-- `biprod.fst` after `biprod.lift` is the first component. -/
-theorem SmallChainBiprod.fst_lift_apply {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B)
+theorem SmallChainBiprod.fst_lift_apply {A B I : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B)
     (z : I) :
     (CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom
         ((CategoryTheory.Limits.biprod.lift a b).hom z) =
@@ -84,7 +84,7 @@ theorem SmallChainBiprod.fst_lift_apply {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A
   exact congrArg (fun f : I ⟶ A => f.hom z) (CategoryTheory.Limits.biprod.lift_fst a b)
 
 /-- The second projection of a biprod lift applied to `z` recovers `b z`. -/
-theorem SmallChainBiprod.snd_lift_apply {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B)
+theorem SmallChainBiprod.snd_lift_apply {A B I : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B)
     (z : I) :
     (CategoryTheory.Limits.biprod.snd : A ⊞ B ⟶ B).hom
         ((CategoryTheory.Limits.biprod.lift a b).hom z) =
@@ -92,7 +92,7 @@ theorem SmallChainBiprod.snd_lift_apply {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A
   exact congrArg (fun f : I ⟶ B => f.hom z) (CategoryTheory.Limits.biprod.lift_snd a b)
 
 /-- A descended biprod map applied to a left inclusion computes the `u`-component. -/
-theorem SmallChainBiprod.desc_inl_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v : B ⟶ S)
+theorem SmallChainBiprod.desc_inl_apply {A B S : ModuleCat.{v} ℤ} (u : A ⟶ S) (v : B ⟶ S)
     (x : A) :
     (CategoryTheory.Limits.biprod.desc u v).hom
         ((CategoryTheory.Limits.biprod.inl : A ⟶ A ⊞ B).hom x) =
@@ -100,7 +100,7 @@ theorem SmallChainBiprod.desc_inl_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S
   exact congrArg (fun f : A ⟶ S => f.hom x) (CategoryTheory.Limits.biprod.inl_desc u v)
 
 /-- A descended biprod map applied to a right inclusion computes the `v`-component. -/
-theorem SmallChainBiprod.desc_inr_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v : B ⟶ S)
+theorem SmallChainBiprod.desc_inr_apply {A B S : ModuleCat.{v} ℤ} (u : A ⟶ S) (v : B ⟶ S)
     (y : B) :
     (CategoryTheory.Limits.biprod.desc u v).hom
         ((CategoryTheory.Limits.biprod.inr : B ⟶ A ⊞ B).hom y) =
@@ -108,7 +108,7 @@ theorem SmallChainBiprod.desc_inr_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S
   exact congrArg (fun f : B ⟶ S => f.hom y) (CategoryTheory.Limits.biprod.inr_desc u v)
 
 /-- Recombining the two biprod components of an element recovers the element. -/
-theorem SmallChainBiprod.total_apply {A B : ModuleCat.{0} ℤ} (z : (A ⊞ B : ModuleCat ℤ)) :
+theorem SmallChainBiprod.total_apply {A B : ModuleCat.{v} ℤ} (z : (A ⊞ B : ModuleCat ℤ)) :
     (CategoryTheory.Limits.biprod.inl : A ⟶ A ⊞ B).hom
           ((CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom z) +
         (CategoryTheory.Limits.biprod.inr : B ⟶ A ⊞ B).hom
@@ -116,7 +116,7 @@ theorem SmallChainBiprod.total_apply {A B : ModuleCat.{0} ℤ} (z : (A ⊞ B : M
       z := by exact congrArg (fun f : A ⊞ B ⟶ A ⊞ B => f.hom z) CategoryTheory.Limits.biprod.total
 
 /-- Two elements of a biprod with equal components are equal. -/
-theorem SmallChainBiprod.element_ext {A B : ModuleCat.{0} ℤ} {z z' : (A ⊞ B : ModuleCat ℤ)}
+theorem SmallChainBiprod.element_ext {A B : ModuleCat.{v} ℤ} {z z' : (A ⊞ B : ModuleCat ℤ)}
     (hfst :
       (CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom z =
         (CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom z')
@@ -139,7 +139,7 @@ theorem SmallChainBiprod.element_ext {A B : ModuleCat.{0} ℤ} {z z' : (A ⊞ B 
     _ = z' := total_apply z'
 
 /-- A descended biprod map applied to an element is the sum of the two component maps. -/
-theorem SmallChainBiprod.desc_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v : B ⟶ S)
+theorem SmallChainBiprod.desc_apply {A B S : ModuleCat.{v} ℤ} (u : A ⟶ S) (v : B ⟶ S)
     (z : (A ⊞ B : ModuleCat ℤ)) :
     (CategoryTheory.Limits.biprod.desc u v).hom z =
       u.hom ((CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom z) +
@@ -157,8 +157,8 @@ theorem SmallChainBiprod.desc_apply {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v
 /-! ### The module-level short complex -/
 
 /-- The short complex `I → A ⊞ B → S` assembled from a commuting square `a ≫ u = b ≫ v`. -/
-def SmallChainBiprod.shortComplex {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B) (u : A ⟶ S)
-    (v : B ⟶ S) (w : a ≫ u = b ≫ v) : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ) :=
+def SmallChainBiprod.shortComplex {A B I S : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B) (u : A ⟶ S)
+    (v : B ⟶ S) (w : a ≫ u = b ≫ v) : CategoryTheory.ShortComplex (ModuleCat.{v} ℤ) :=
   CategoryTheory.ShortComplex.mk (CategoryTheory.Limits.biprod.lift a (-b))
     (CategoryTheory.Limits.biprod.desc u v)
     (by
@@ -166,7 +166,7 @@ def SmallChainBiprod.shortComplex {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b
         add_neg_cancel])
 
 /-- Injectivity of `a` makes the lifted map into the biprod injective. -/
-theorem SmallChainBiprod.left_injective {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B)
+theorem SmallChainBiprod.left_injective {A B I : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B)
     (ha : Function.Injective a.hom) :
     Function.Injective (CategoryTheory.Limits.biprod.lift a (-b)).hom := by
   intro z z' h
@@ -175,7 +175,7 @@ theorem SmallChainBiprod.left_injective {A B I : ModuleCat.{0} ℤ} (a : I ⟶ A
   simpa only [fst_lift_apply] using hf
 
 /-- Joint surjectivity of `u` and `v` makes the descended map surjective. -/
-theorem SmallChainBiprod.right_surjective {A B S : ModuleCat.{0} ℤ} (u : A ⟶ S) (v : B ⟶ S)
+theorem SmallChainBiprod.right_surjective {A B S : ModuleCat.{v} ℤ} (u : A ⟶ S) (v : B ⟶ S)
     (hjoint : ∀ s : S, ∃ x : A, ∃ y : B, u.hom x + v.hom y = s) :
     Function.Surjective (CategoryTheory.Limits.biprod.desc u v).hom := by
   intro s
@@ -187,7 +187,7 @@ theorem SmallChainBiprod.right_surjective {A B S : ModuleCat.{0} ℤ} (u : A ⟶
   simpa only [map_add, desc_inl_apply, desc_inr_apply] using hxy
 
 /-- The biprod short complex is exact when every pair with equal images comes from the source. -/
-theorem SmallChainBiprod.exact {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B) (u : A ⟶ S)
+theorem SmallChainBiprod.exact {A B I S : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B) (u : A ⟶ S)
     (v : B ⟶ S) (w : a ≫ u = b ≫ v)
     (hoverlap : ∀ (x : A) (y : B), u.hom x = v.hom y → ∃ z : I, a.hom z = x ∧ b.hom z = y) :
     (shortComplex a b u v w).Exact := by
@@ -214,7 +214,7 @@ theorem SmallChainBiprod.exact {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : 
     rw [hbz, neg_neg]
 
 /-- The biprod short complex is short exact under injectivity, joint surjectivity, and the overlap condition. -/
-theorem SmallChainBiprod.shortExact {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) (b : I ⟶ B)
+theorem SmallChainBiprod.shortExact {A B I S : ModuleCat.{v} ℤ} (a : I ⟶ A) (b : I ⟶ B)
     (u : A ⟶ S) (v : B ⟶ S) (w : a ≫ u = b ≫ v) (ha : Function.Injective a.hom)
     (hjoint : ∀ s : S, ∃ x : A, ∃ y : B, u.hom x + v.hom y = s)
     (hoverlap : ∀ (x : A) (y : B), u.hom x = v.hom y → ∃ z : I, a.hom z = x ∧ b.hom z = y) :
@@ -227,7 +227,7 @@ theorem SmallChainBiprod.shortExact {A B I S : ModuleCat.{0} ℤ} (a : I ⟶ A) 
 /-! ### The short complex of chain complexes -/
 
 /-- In each degree, a biprod lift commutes with the biprod isomorphism on chain complexes. -/
-theorem SmallChainBiprod.lift_f_biprodXIso_hom {K L J : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SmallChainBiprod.lift_f_biprodXIso_hom {K L J : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (a : J ⟶ K) (b : J ⟶ L) (n : ℕ) :
     (CategoryTheory.Limits.biprod.lift a b).f n ≫ (HomologicalComplex.biprodXIso K L n).hom =
       CategoryTheory.Limits.biprod.lift (a.f n) (b.f n) := by
@@ -238,7 +238,7 @@ theorem SmallChainBiprod.lift_f_biprodXIso_hom {K L J : ChainComplex (ModuleCat.
       HomologicalComplex.biprod_lift_snd_f, CategoryTheory.Limits.biprod.lift_snd]
 
 /-- In each degree, the inverse biprod isomorphism commutes with a descended chain map. -/
-theorem SmallChainBiprod.biprodXIso_inv_desc_f {K L T : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SmallChainBiprod.biprodXIso_inv_desc_f {K L T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (u : K ⟶ T) (v : L ⟶ T) (n : ℕ) :
     (HomologicalComplex.biprodXIso K L n).inv ≫ (CategoryTheory.Limits.biprod.desc u v).f n =
       CategoryTheory.Limits.biprod.desc (u.f n) (v.f n) := by
@@ -249,7 +249,7 @@ theorem SmallChainBiprod.biprodXIso_inv_desc_f {K L T : ChainComplex (ModuleCat.
       HomologicalComplex.biprod_inr_desc_f, CategoryTheory.Limits.biprod.inr_desc]
 
 /-- In each degree, the biprod isomorphism commutes with a descended chain map. -/
-theorem SmallChainBiprod.biprodXIso_hom_desc_f {K L T : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SmallChainBiprod.biprodXIso_hom_desc_f {K L T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (u : K ⟶ T) (v : L ⟶ T) (n : ℕ) :
     (HomologicalComplex.biprodXIso K L n).hom ≫
         CategoryTheory.Limits.biprod.desc (u.f n) (v.f n) =
@@ -257,9 +257,9 @@ theorem SmallChainBiprod.biprodXIso_hom_desc_f {K L T : ChainComplex (ModuleCat.
   rw [← biprodXIso_inv_desc_f u v n, CategoryTheory.Iso.hom_inv_id_assoc]
 
 /-- The short complex of chain complexes assembled from a commuting square of chain maps. -/
-def SmallChainBiprod.shortComplexOfComplexes {K L J T : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+def SmallChainBiprod.shortComplexOfComplexes {K L J T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (a : J ⟶ K) (b : J ⟶ L) (u : K ⟶ T) (v : L ⟶ T) (w : a ≫ u = b ≫ v) :
-    CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
+    CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{v} ℤ) ℕ) :=
   CategoryTheory.ShortComplex.mk (CategoryTheory.Limits.biprod.lift a (-b))
     (CategoryTheory.Limits.biprod.desc u v)
     (by
@@ -267,16 +267,16 @@ def SmallChainBiprod.shortComplexOfComplexes {K L J T : ChainComplex (ModuleCat.
         add_neg_cancel])
 
 /-- A commuting square of chain maps still commutes after evaluation in degree `n`. -/
-theorem SmallChainBiprod.square_f {K L J T : ChainComplex (ModuleCat.{0} ℤ) ℕ} (a : J ⟶ K)
+theorem SmallChainBiprod.square_f {K L J T : ChainComplex (ModuleCat.{v} ℤ) ℕ} (a : J ⟶ K)
     (b : J ⟶ L) (u : K ⟶ T) (v : L ⟶ T) (w : a ≫ u = b ≫ v) (n : ℕ) :
     a.f n ≫ u.f n = b.f n ≫ v.f n :=
   congrArg (fun f : J ⟶ T => f.f n) w
 
 /-- Evaluating the complex-level short complex in degree `n` is the module-level short complex. -/
-def SmallChainBiprod.shortComplexOfComplexesEvalIso {K L J T : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+def SmallChainBiprod.shortComplexOfComplexesEvalIso {K L J T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (a : J ⟶ K) (b : J ⟶ L) (u : K ⟶ T) (v : L ⟶ T) (w : a ≫ u = b ≫ v) (n : ℕ) :
     (shortComplexOfComplexes a b u v w).map
-        (HomologicalComplex.eval (ModuleCat.{0} ℤ) (ComplexShape.down ℕ) n) ≅
+        (HomologicalComplex.eval (ModuleCat.{v} ℤ) (ComplexShape.down ℕ) n) ≅
       shortComplex (a.f n) (b.f n) (u.f n) (v.f n) (square_f a b u v w n) := by
   refine
     CategoryTheory.ShortComplex.isoMk (CategoryTheory.Iso.refl _)
@@ -293,7 +293,7 @@ def SmallChainBiprod.shortComplexOfComplexesEvalIso {K L J T : ChainComplex (Mod
     simpa only [CategoryTheory.Category.comp_id] using biprodXIso_hom_desc_f u v n
 
 /-- Degreewise injectivity, joint surjectivity, and overlap make a square of chain maps short exact. -/
-theorem SmallChainBiprod.shortExactOfComplexes {K L J T : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SmallChainBiprod.shortExactOfComplexes {K L J T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     (a : J ⟶ K) (b : J ⟶ L) (u : K ⟶ T) (v : L ⟶ T) (w : a ≫ u = b ≫ v)
     (ha : ∀ n : ℕ, Function.Injective (a.f n).hom)
     (hjoint : ∀ (n : ℕ) (s : T.X n), ∃ x : K.X n, ∃ y : L.X n, (u.f n).hom x + (v.f n).hom y = s)

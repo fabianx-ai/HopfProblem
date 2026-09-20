@@ -50,24 +50,28 @@ def toThreeColumnPageData (N : OuterNormalization R P)
     · exact A.middle_E₂_subsingleton 1 hH₂
     · exact A.middle_E₂_subsingleton 2 hH₃
 
+/-- The page entries of the packaged data are the `E₂` objects of the spectral sequence. -/
 @[simp]
 theorem toThreeColumnPageData_E (N : OuterNormalization R P)
     (hH₂ : Subsingleton (A.H 2)) (hH₃ : Subsingleton (A.H 3)) (a : Fin 3) (b : Fin 4) :
     (A.toThreeColumnPageData N hH₂ hH₃).E a b = P.E₂ a b :=
   rfl
 
+/-- The differentials of the packaged data are the `d₂` morphisms of the spectral sequence. -/
 @[simp]
 theorem toThreeColumnPageData_differential (N : OuterNormalization R P)
     (hH₂ : Subsingleton (A.H 2)) (hH₃ : Subsingleton (A.H 3)) (i : Fin 3) :
     (A.toThreeColumnPageData N hH₂ hH₃).differential i = (P.d₂ 0 i).hom :=
   rfl
 
+/-- The source coordinates of the packaged data are the chosen ones. -/
 @[simp]
 theorem toThreeColumnPageData_source (N : OuterNormalization R P)
     (hH₂ : Subsingleton (A.H 2)) (hH₃ : Subsingleton (A.H 3)) (i : Fin 3) :
     (A.toThreeColumnPageData N hH₂ hH₃).source i = N.source i :=
   rfl
 
+/-- The target coordinates of the packaged data are the chosen ones. -/
 @[simp]
 theorem toThreeColumnPageData_target (N : OuterNormalization R P)
     (hH₂ : Subsingleton (A.H 2)) (hH₃ : Subsingleton (A.H 3)) (i : Fin 3) :

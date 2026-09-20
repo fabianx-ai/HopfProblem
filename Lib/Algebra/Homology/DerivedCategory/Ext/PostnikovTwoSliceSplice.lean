@@ -17,6 +17,12 @@ This file composes the concrete shifted Postnikov comparison with the mapping-co
 splice comparison for the canonical adjacent homology sequence.  The resulting bridge starts at
 the actual `triangleω₁δ` used by the canonical spectral object and ends at the two-step splice
 whose connecting map is the positive Yoneda product.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [J.-L. Verdier, *Des catégories dérivées des catégories abéliennes*][verdier96], Chapter III, §4.
+
 -/
 
 @[expose] public section

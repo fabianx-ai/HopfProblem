@@ -21,6 +21,12 @@ and
 
 It is pure homological algebra.  In particular, it does not construct a spectral sequence or
 identify the resulting transgression with a differential of one.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Exercise 1.3.x and §2.4
+  (the two canonical short exact sequences of a complex and the connecting maps they give).
+* [H. Cartan, S. Eilenberg, *Homological algebra*][cartanEilenberg56], Chapter V.
 -/
 
 @[expose] public section
@@ -31,7 +37,7 @@ open CategoryTheory CategoryTheory.Limits HomologicalComplex
 
 namespace CategoryTheory.Abelian.ExtTransgression
 
-universe v u
+universe w v u
 
 variable {C : Type u} [Category.{v} C] [Abelian C]
 
@@ -60,10 +66,12 @@ abbrev boundary : C := kernel R.complex.g
 def toBoundary : R.complex.X₁ ⟶ R.boundary :=
   kernel.lift R.complex.g R.complex.f R.complex.zero
 
+/-- Composing `toBoundary` with the kernel inclusion recovers the first middle arrow. -/
 @[simp] theorem toBoundary_ι :
     R.toBoundary ≫ kernel.ι R.complex.g = R.complex.f :=
   kernel.lift_ι _ _ _
 
+/-- The augmentation followed by `toBoundary` vanishes. -/
 theorem ι_toBoundary : R.ι ≫ R.toBoundary = 0 := by
   rw [← cancel_mono (kernel.ι R.complex.g), Category.assoc, toBoundary_ι,
     R.zero, zero_comp]
@@ -76,6 +84,7 @@ abbrev first : ShortComplex C :=
 abbrev second : ShortComplex C :=
   ShortComplex.mk (kernel.ι R.complex.g) R.complex.g (kernel.condition R.complex.g)
 
+/-- The sequence `0 ⟶ F ⟶ X₁ ⟶ ker g ⟶ 0` is short exact. -/
 theorem first_shortExact : R.first.ShortExact where
   exact := by
     let φ : R.first ⟶ ShortComplex.mk R.ι R.complex.f R.zero :=
@@ -91,15 +100,16 @@ theorem first_shortExact : R.first.ShortExact where
   mono_f := R.mono_ι
   epi_g := R.exact.epi_kernelLift
 
+/-- The sequence `0 ⟶ ker g ⟶ X₂ ⟶ X₃ ⟶ 0` is short exact. -/
 theorem second_shortExact : R.second.ShortExact where
   exact := R.second.exact_of_f_is_kernel (kernelIsKernel R.complex.g)
   mono_f := by dsimp [second]; infer_instance
   epi_g := R.epi_g
 
-variable [HasExt.{v} C]
+variable [HasExt.{w} C]
 
 /-- The composite of the two covariant Ext connecting maps of a two-step resolution. -/
-def connectingTwo (P : C) : Ext.{v} P R.complex.X₃ 0 →+ Ext.{v} P R.F 2 :=
+def connectingTwo (P : C) : Ext.{w} P R.complex.X₃ 0 →+ Ext.{w} P R.F 2 :=
   (R.first_shortExact.extClass.postcomp P rfl).comp
     (R.second_shortExact.extClass.postcomp P rfl)
 
@@ -114,18 +124,23 @@ def cyclesComplex : ShortComplex C :=
   ShortComplex.mk (K.toCycles n (n + 1)) (K.homologyπ (n + 1))
     (K.toCycles_comp_homologyπ n (n + 1))
 
+/-- The short complex `Kⁿ ⟶ Zⁿ⁺¹K ⟶ Hⁿ⁺¹K` is exact: the homology projection is the cokernel
+of the map into cycles. -/
 theorem cyclesComplex_exact : (cyclesComplex K n).Exact :=
   (cyclesComplex K n).exact_of_g_is_cokernel
     (K.homologyIsCokernel n (n + 1) (CochainComplex.prev_nat_succ n))
 
+/-- The homology projection out of the cycles is an epimorphism. -/
 instance cyclesComplex_epi_g : Epi (cyclesComplex K n).g :=
   inferInstanceAs (Epi (K.homologyπ (n + 1)))
 
+/-- The composite `ZⁿK ⟶ Kⁿ ⟶ Zⁿ⁺¹K` vanishes. -/
 @[simp] theorem iCycles_toCycles :
     K.iCycles n ≫ K.toCycles n (n + 1) = 0 := by
   rw [← cancel_mono (K.iCycles (n + 1)), Category.assoc, K.toCycles_i, zero_comp]
   exact K.iCycles_d n (n + 1)
 
+/-- The short complex `ZⁿK ⟶ Kⁿ ⟶ Zⁿ⁺¹K` is exact. -/
 theorem cyclesInitial_exact :
     (ShortComplex.mk (K.iCycles n) (K.toCycles n (n + 1)) (iCycles_toCycles K n)).Exact := by
   let S := ShortComplex.mk (K.iCycles n) (K.toCycles n (n + 1)) (iCycles_toCycles K n)
@@ -155,6 +170,8 @@ def cyclesResolution : TwoStepResolution (C := C) where
   mono_ι := inferInstanceAs (Mono (K.iCycles n))
   epi_g := cyclesComplex_epi_g K n
 
+-- The Ext universe is pinned to the hom universe `v` here: `cochainTransgression` compares the
+-- literal group `P ⟶ Hⁿ⁺¹K`, which lives in `AddCommGrpCat.{v}`, with a group of Ext classes.
 variable [HasExt.{v} C]
 
 /-- The two-step Ext transgression from morphisms into degree `n+1` cohomology to degree-two

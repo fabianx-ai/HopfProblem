@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
 module
 public import Mathlib.Algebra.Group.Subgroup.Ker
 
@@ -14,9 +19,10 @@ universe u v w
 
 namespace AddMonoidHom
 
-/-- Lift the negative second target through `g`, correct the first target inside
-`ker(g)`, and add the two lifts. The resulting signed pair is surjective.
-Textbook source: `CENTER_SIGNED_PAIR_SURJECTIVITY_TEXTBOOK.md`, SP1–SP6. -/
+/-- The signed pair `e ↦ (f e, -g e)` of two additive group homomorphisms out of the
+same group `E` is surjective as soon as `g` is surjective and the restriction of `f`
+to `ker g` is surjective.  (Elementary; compare `AddMonoidHom.prod` and
+`AddMonoidHom.ker`.) -/
 theorem surjective_signed_prod_of_surjective_ker
     {E : Type u} {A : Type v} {B : Type w}
     [AddCommGroup E] [AddCommGroup A] [AddCommGroup B]

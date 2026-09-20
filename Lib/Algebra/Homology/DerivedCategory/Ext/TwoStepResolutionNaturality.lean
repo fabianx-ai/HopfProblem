@@ -53,6 +53,7 @@ variable {R S : TwoStepResolution (C := C)} (f : Hom R S)
 def boundary : R.boundary ⟶ S.boundary :=
   kernel.map R.complex.g S.complex.g f.τ₂ f.τ₃ f.comm_g.symm
 
+/-- The induced map on boundaries is compatible with the two kernel inclusions. -/
 @[reassoc (attr := simp)]
 lemma boundary_ι : f.boundary ≫ kernel.ι S.complex.g = kernel.ι R.complex.g ≫ f.τ₂ := by
   exact kernel.lift_ι _ _ _

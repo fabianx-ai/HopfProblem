@@ -20,6 +20,13 @@ No middle-column vanishing is assumed.  The adapter's two middle-column fields c
 derived from degree-two and degree-three abutment vanishing.  When two adjacent abutment groups
 vanish, the resulting bijection also transports a chosen rank-one coordinate from either edge to
 the other.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §5.2 (edge maps of a
+  spectral sequence supported in finitely
+  many columns).
+
 -/
 
 @[expose] public section
