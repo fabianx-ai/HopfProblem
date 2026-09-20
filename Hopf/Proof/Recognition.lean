@@ -124,6 +124,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.Topology.Homotopy.BasedDiskLifting
+import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.LinearAlgebra.SquareZero
 import Lib.Topology.MappingTorus.Basic
 import Lib.Topology.Covering.Quotient
@@ -485,16 +486,9 @@ theorem LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
     [PathConnectedSpace Y] (F : C(SixSphereCube.StandardSphere, Y))
     (hpi : ∀ n, 0 < n → n < 6 → ∀ y : Y, Subsingleton (π_ n Y y)) :
     FiniteCells.RelativeDiskLifting F 5 := by
-  intro V _ _ _ hd a u H h0 h1
-  obtain ⟨v, hv, _⟩ :=
-    Sphere.exists_boundary_extension (hd.trans (by decide)) a SixSphereCube.sphereBasePoint
-  have h0' : ∀ s, H (0, s) = (F.comp v) (DiskCylinder.boundaryToDisk s) := by
-    intro s
-    exact (h0 s).trans (congrArg F (hv s).symm)
-  obtain ⟨G, hG0, hG1, hGside⟩ :=
-    CylinderFilling.exists_filling hpi (by omega : Module.finrank ℝ V + 1 ≤ 6) (F.comp v) u
-      H h0' h1 (F SixSphereCube.sphereBasePoint)
-  exact ⟨v, G, hv, hG0, hG1, hGside⟩
+  exact LowCellLifting.relativeDiskLifting_of_pi_vanishing
+    F SixSphereCube.sphereBasePoint
+    (fun k hk hkd => Sphere.pi_subsingleton hk (by omega)) hpi
 
 attribute [local instance] SpecialPeriods.Threefold.space_simplyConnected in
 theorem LowCellLifting.threefold_pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
