@@ -32,8 +32,8 @@ This is the `E₂` page of the Leray spectral sequence
 
 (Godement, *Topologie algébrique et théorie des faisceaux*, II.4.17.1; Weibel, *An Introduction
 to Homological Algebra*, 5.8.6), constructed from the Postnikov tower of the `t`-structure on the
-derived category rather than from a filtration of a double complex (Kashiwara–Schapira,
-*Categories and Sheaves*, §12–13; Verdier).  Convergence and the identification of the abutment
+derived category rather than from a filtration of a double complex (cf. Kashiwara–Schapira,
+*Categories and Sheaves*, Ch. 10 and Ch. 12; Verdier).  Convergence and the identification of the abutment
 are not part of this file.
 
 ## Main definitions

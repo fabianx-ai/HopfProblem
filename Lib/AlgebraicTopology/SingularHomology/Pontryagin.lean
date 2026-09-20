@@ -37,7 +37,8 @@ Hatcher, *Algebraic Topology*, §3.C (Pontryagin products).
 
 open SingularHomology
 
-/-- The cyclic shuffle homeomorphism `Y × (Z × X) → X × (Y × Z)`. -/
+/-- The cyclic shuffle `Y × (Z × X) → X × (Y × Z)`, `(y, z, x) ↦ (x, y, z)`, as a continuous
+map. -/
 def PeriodTorusHigherHomologyPontryagin.cyclicMap (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z)) :=
   ⟨fun p => (p.2.2, (p.1, p.2.1)), by fun_prop⟩

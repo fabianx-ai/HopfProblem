@@ -14,8 +14,8 @@ public import Mathlib.CategoryTheory.Triangulated.Yoneda
 
 For a triangle `T` and an integer `n`, Mathlib's triangle shift `Triangle.shiftFunctor`
 multiplies all three arrows of `T⟦n⟧` by the sign `n.negOnePow`; this is the standard sign
-convention for the shift of a distinguished triangle (Neeman, *Triangulated Categories*, §1.1;
-Verdier).  This file records how the connecting arrow of `T⟦n⟧` and the associated representable
+convention for the shift of a distinguished triangle (cf. Neeman, *Triangulated Categories*,
+Ch. 1; Verdier).  This file records how the connecting arrow of `T⟦n⟧` and the associated representable
 homology-sequence map of `preadditiveCoyoneda` compare with those of `T` once the canonical shift
 associators `shiftFunctorAdd` are inserted, and specialises the comparison to degree zero, where
 the formally present shift by `0` is removed.

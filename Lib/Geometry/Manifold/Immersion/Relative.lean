@@ -19,7 +19,8 @@ public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 Existence of immersions and embeddings, in the relative form, for maps of a plane or of a line
 into a manifold, and the perturbation machinery they rest on.  The statements are those of
-Hirsch, *Differential Topology*, Ch. 8 (relative immersion and embedding theorems) and of
+Hirsch, *Differential Topology*, Ch. 2 §2 and Ch. 3 §2 (immersion and embedding theorems, general
+position) and of
 Whitney's weak embedding theorem (Whitney, *Differentiable manifolds*, Thm 5): in the ranges
 `2 dim X < dim N` (embedding) and `2 dim X ≤ dim N` (immersion), a continuous map is homotopic,
 relative to a closed set where it is already good, to an embedding or an immersion.
@@ -50,12 +51,12 @@ relative to a closed set where it is already good, to an embedding or an immersi
 * `ManifoldImmersion.exists_relative_compact_curve_embedding` - its one-dimensional counterpart.
 * `exists_clean_tubularNeighborhood_of_embedded_starConvex` - the tubular neighbourhood theorem
   in the form used here.
-* `MorseCancellation.exists_clean_two_sheet_arc` - two disjoint embedded surfaces in a
-  five-manifold joined by a clean embedded arc.
+* `MorseCancellation.exists_clean_two_sheet_arc` - two embedded immersed surfaces in a
+  five-manifold, with a point of each off the other, joined by a clean embedded arc.
 
 ## References
 
-* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 3, Ch. 4 §5, Ch. 8.
+* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 2, Ch. 3, Ch. 4 §5.
 * [whitney36] H. Whitney, *Differentiable manifolds*, Thm 5.
 
 ## Tags
@@ -1782,7 +1783,7 @@ theorem ManifoldImmersion.exists_relative_immersion_patch_at {E G H N : Type*}
 
 /-- Relative immersion theorem for the plane: when `dim N ≥ 5`, a smooth map `Plane → N` which is
 already an immersion on a compact set `K` is homotopic rel a closed set `C` disjoint from `L` to
-a map that is an immersion on `K ∪ L` (Hirsch, *Differential Topology*, Ch. 8). -/
+a map that is an immersion on `K ∪ L` (Hirsch, *Differential Topology*, Ch. 2 §2, Ch. 3 §2). -/
 theorem ManifoldImmersion.exists_immersion_on_compact_rel {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -2210,8 +2211,8 @@ theorem ManifoldImmersion.exists_compact_embedding_of_immersion {E G H N : Type*
 
 /-- Relative embedding theorem for the plane: when `dim N ≥ 5`, a smooth map `Plane → N` that is an
 injective immersion on `K ∩ C` is homotopic rel the closed set `C` to a map which is a closed
-embedding and an immersion on the compact set `K` (Hirsch, *Differential Topology*, Ch. 8;
-Whitney, *Differentiable manifolds*, Thm 5). -/
+embedding and an immersion on the compact set `K` (Hirsch, *Differential Topology*, Ch. 2 §2,
+Ch. 3 §2; Whitney, *Differentiable manifolds*, Thm 5). -/
 theorem ManifoldImmersion.exists_relative_compact_embedding {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -3214,8 +3215,8 @@ theorem ManifoldImmersion.exists_relative_compact_curve_embedding_within_target
       hhom₁.mapsTo_right
   exact ⟨g₂, hg₂, hhom₁.trans hhom₂, hemb, hinj₂⟩
 
-/-- The same statement with an ordinary relative homotopy (Hirsch, *Differential Topology*, Ch. 8,
-in dimension one). -/
+/-- The same statement with an ordinary relative homotopy (Hirsch, *Differential Topology*,
+Ch. 2 §2, Ch. 3 §2, in dimension one). -/
 theorem ManifoldImmersion.exists_relative_compact_curve_embedding {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -3927,11 +3928,13 @@ def MorseCancellation.terminalSheetCoordinates {D : Type*} [NormedAddCommGroup D
     ((contDiff_fst.add contDiff_const).prodMk
         (contDiff_snd.snd.prodMk contDiff_snd.fst)).contMDiff
 
-/-- Two disjoint embedded immersed surfaces in a five-manifold, together with a path from a point of
-one to a point of the other, admit adapted clean charts at the two endpoints and an embedded
-immersed arc joining them which meets the first surface only at its initial point and the second
-only at its terminal point.  This is the configuration the Whitney trick starts from (Hirsch,
-*Differential Topology*, Ch. 8; Milnor, *Lectures on the h-cobordism theorem*, §6). -/
+/-- Two embedded immersed surfaces `f : X → M`, `g : Y → M` in a five-manifold, together with a
+point `x` whose image `f x` is off `range g`, a point `y` whose image `g y` is off `range f`, and a
+path from `f x` to `g y`, admit adapted clean charts at the two endpoints and an embedded immersed
+arc joining them which meets `range f` only at its initial point and `range g` only at its terminal
+point.  The two surfaces are *not* assumed disjoint: only the two endpoints are required to lie off
+the other surface.  This is the configuration the Whitney trick starts from (Hirsch, *Differential
+Topology*, Ch. 3; Milnor, *Lectures on the h-cobordism theorem*, §6). -/
 theorem MorseCancellation.exists_clean_two_sheet_arc {E M X Y : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [TopologicalSpace X]

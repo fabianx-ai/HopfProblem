@@ -10,8 +10,8 @@ public import Mathlib.Algebra.Category.Grp.Zero
 For a fixed object `P` of an abelian category with enough injectives, the family
 `n ↦ Ext^n(P, -)` with its long-exact-sequence connecting morphisms is a cohomological
 delta functor, and it is universal because `Ext^{n+1}(P, I) = 0` for `I` injective.
-This is Weibel, *An Introduction to Homological Algebra*, Theorem 2.5.1 (see also
-Example 2.4.8 and Hartshorne, *Algebraic Geometry* III.1.1A).
+This is Weibel, *An Introduction to Homological Algebra*, §2.5 (see also §2.4 and Hartshorne,
+*Algebraic Geometry* III.1.1A).
 
 The positive boundary raises degree by one, from the quotient coefficient to the
 subobject coefficient, without reversing coefficient maps. The degree-zero injection
@@ -28,7 +28,7 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v,v,u} C
 
 /-- For a fixed `P`, the family `n ↦ Ext^n(P, -)` with the connecting morphisms of the
-Ext long exact sequence is a cohomological delta functor (Weibel 2.5.1): exactness at all
+Ext long exact sequence is a cohomological delta functor (cf. Weibel §2.5): exactness at all
 three positions, both zero composites and naturality in the short exact sequence hold. -/
 @[expose] def ofExt (P : C) : CohomologicalDeltaFunctor C AddCommGrpCat.{v} where
   T n := AdditiveFunctor.of (extFunctorObj P n)
@@ -53,7 +53,7 @@ theorem ofExt_δ (P : C) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
 
 set_option backward.isDefEq.respectTransparency false in
 /-- `Ext^n(P, -)` is effaceable in every positive degree: every object embeds into an
-injective object `I`, and `Ext^{n+1}(P, I) = 0` (Weibel 2.5.1, using Weibel 2.4.5). -/
+injective object `I`, and `Ext^{n+1}(P, I) = 0` (cf. Weibel §2.4, §2.5). -/
 theorem ofExt_effaceable (P : C) : (ofExt P).Effaceable := by
   intro q hq A
   refine ⟨Injective.under A, Injective.ι A, inferInstance, ?_⟩
@@ -66,7 +66,7 @@ theorem ofExt_effaceable (P : C) : (ofExt P).Effaceable := by
 
 /-- `n ↦ Ext^n(P, -)` is a universal cohomological delta functor: every natural
 transformation out of its degree-zero part extends uniquely to a morphism of delta
-functors (Weibel Theorem 2.5.1; Hartshorne III.1.1A). -/
+functors (cf. Weibel §2.5; Hartshorne III.1.1A). -/
 theorem ofExt_isUniversal (P : C) : (ofExt P).IsUniversal :=
   (ofExt_effaceable P).isUniversal
 

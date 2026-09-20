@@ -162,8 +162,9 @@ def neighborhoodCohomologyEquiv (G : TopCat.Sheaf AddCommGrpCat.{u} T) (n : ℕ)
   (AddEquiv.ofBijective (neighborhoodCohomologyForward i U hU hi hfinite G n)
     (neighborhoodCohomologyForward_bijective i U hU hi hfinite G n)).symm
 
-/-- The inverse of `neighborhoodCohomologyEquiv` is inverse to the forward comparison
-`Hⁿ(T, G) → H'ⁿ(U, i_*G)`. -/
+/-- The inverse of `neighborhoodCohomologyEquiv` *is* the forward comparison
+`Hⁿ(T, G) → H'ⁿ(U, i_*G)`: the equivalence is that comparison, made into an `AddEquiv` by its
+bijectivity and then reversed. -/
 @[simp] theorem neighborhoodCohomologyEquiv_symm_apply (G : TopCat.Sheaf AddCommGrpCat.{u} T) (n : ℕ)
     (a : CategoryTheory.Sheaf.H.{u} G n) :
     (neighborhoodCohomologyEquiv i U hU hi hfinite G n).symm a =

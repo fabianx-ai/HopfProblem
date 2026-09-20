@@ -120,8 +120,9 @@ instance sheafification_preservesFiniteLimits (X : TopCat.{u}) :
     (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}))
 
 /-- Abelian sheafification is right exact: being a left adjoint, it preserves finite colimits.
-Together with the previous instance this is exactness of sheafification
-(Godement II.1.2; Hartshorne II.1.2). -/
+Together with the previous instance this is exactness of sheafification, a corollary of the
+construction of the associated sheaf and its stalk isomorphism (Godement II.1.2;
+Hartshorne II.1.2). -/
 instance sheafification_preservesFiniteColimits (X : TopCat.{u}) :
     PreservesFiniteColimits (TopCat.Sheaf.sheafification X) :=
   inferInstanceAs (PreservesFiniteColimits
