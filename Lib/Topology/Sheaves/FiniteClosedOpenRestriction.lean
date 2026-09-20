@@ -31,9 +31,11 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.FiniteClosedOpenRestriction
 
-variable {K U V : TopCat.{0}}
+variable {K U V : TopCat.{u}}
   (j : K ⟶ U) (hj : Function.Injective j)
   (h : V ⟶ U) (hh : Topology.IsOpenEmbedding h)
   (v : V ⟶ K) (hv : Topology.IsOpenEmbedding v)
@@ -66,7 +68,7 @@ include hj hcomp in
 /-- Restricting a pushforward through the ambient open embedding agrees with direct restriction
 through the induced open embedding. -/
 def restrictionPushforwardIso :
-    TopCat.Sheaf.pushforward AddCommGrpCat.{0} j ⋙
+    TopCat.Sheaf.pushforward AddCommGrpCat.{u} j ⋙
         OpenEmbeddingCohomology.restriction h hh ≅
       OpenEmbeddingCohomology.restriction v hv := by
   letI := OpenEmbeddingCohomology.openImage_continuous h hh
@@ -81,7 +83,7 @@ include hj hcomp in
 two open images. -/
 @[simp]
 theorem restrictionPushforwardIso_hom_app
-    (F : TopCat.Sheaf AddCommGrpCat.{0} K) (W : Opens V) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} K) (W : Opens V) :
     (((restrictionPushforwardIso j hj h hh v hv hcomp).hom.app F).hom.app (op W)) =
       F.obj.map (eqToHom (openImage_preimage_obj j hj h hh v hv hcomp W).symm).op := by
   exact (CategoryTheory.Functor.sheafPushforwardContinuousComp'_hom_app_hom_app
@@ -94,7 +96,7 @@ include hj hcomp in
 /-- The Beck--Chevalley isomorphism carries the composite constant-coefficient endpoint to the
 direct open-restriction endpoint. -/
 theorem restrictionPushforwardIso_restrictionHom
-    (A : AddCommGrpCat.{0}) :
+    (A : AddCommGrpCat.{u}) :
     OpenEmbeddingCohomology.restrictionHom h hh A ≫
         (OpenEmbeddingCohomology.restriction h hh).map
           (TopCat.ConstantSheaf.pushforwardHom A j) ≫
@@ -140,12 +142,12 @@ include hj hcomp in
 /-- Finite-closed pushforward followed by open restriction agrees, in every cohomological degree,
 with direct open restriction through the induced open embedding. -/
 theorem cohomologyForward_openRestriction
-    (F : TopCat.Sheaf AddCommGrpCat.{0} K) (n : ℕ)
-    (a : CategoryTheory.Sheaf.H.{0} F n) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} K) (n : ℕ)
+    (a : CategoryTheory.Sheaf.H.{u} F n) :
     CategoryTheory.Sheaf.H.map
         ((restrictionPushforwardIso j hj h hh v hv hcomp).hom.app F) n
       (OpenEmbeddingCohomology.cohomologyMap h hh
-        ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} j).obj F) n
+        ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} j).obj F) n
         (TopCat.FiniteClosedPushforward.cohomologyForward
           j hjclosed hjfinite F n a)) =
       OpenEmbeddingCohomology.cohomologyMap v hv F n a := by
@@ -154,10 +156,10 @@ theorem cohomologyForward_openRestriction
   let _ := TopCat.FiniteClosedPushforward.pushforward_preservesFiniteColimits
     j hjclosed hjfinite
   exact @Ext.ExactFunctorComparison.comp_natTrans
-    (TopCat.Sheaf AddCommGrpCat.{0} K) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} U) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} V) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf.pushforward AddCommGrpCat.{0} j)
+    (TopCat.Sheaf AddCommGrpCat.{u} K) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} U) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} V) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf.pushforward AddCommGrpCat.{u} j)
     (TopCat.Sheaf.pushforwardAdditive j)
     (TopCat.FiniteClosedPushforward.pushforward_preservesFiniteLimitsAndColimits
       j hjclosed hjfinite).1
@@ -173,20 +175,20 @@ theorem cohomologyForward_openRestriction
     (OpenEmbeddingCohomology.restriction_preservesFiniteColimits v hv)
     (restrictionPushforwardIso j hj h hh v hv hcomp).hom
     inferInstance
-    (TopCat.ConstantSheaf.sheaf K (AddCommGrpCat.of (ULift.{0} ℤ))) F
-    (TopCat.ConstantSheaf.sheaf U (AddCommGrpCat.of (ULift.{0} ℤ)))
-    (TopCat.ConstantSheaf.sheaf V (AddCommGrpCat.of (ULift.{0} ℤ)))
-    (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{0} ℤ)) j)
+    (TopCat.ConstantSheaf.sheaf K (AddCommGrpCat.of (ULift.{u} ℤ))) F
+    (TopCat.ConstantSheaf.sheaf U (AddCommGrpCat.of (ULift.{u} ℤ)))
+    (TopCat.ConstantSheaf.sheaf V (AddCommGrpCat.of (ULift.{u} ℤ)))
+    (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{u} ℤ)) j)
     (OpenEmbeddingCohomology.restrictionHom h hh
-      (AddCommGrpCat.of (ULift.{0} ℤ)))
+      (AddCommGrpCat.of (ULift.{u} ℤ)))
     (OpenEmbeddingCohomology.restrictionHom v hv
-      (AddCommGrpCat.of (ULift.{0} ℤ)))
+      (AddCommGrpCat.of (ULift.{u} ℤ)))
     (restrictionPushforwardIso_restrictionHom j hj h hh v hv hcomp
-      (AddCommGrpCat.of (ULift.{0} ℤ))) n a
+      (AddCommGrpCat.of (ULift.{u} ℤ))) n a
 
 include hj hcomp in
 /-- The coefficient morphism in the finite-closed/open sandwich. -/
-def sandwichCoefficient (A : AddCommGrpCat.{0}) :
+def sandwichCoefficient (A : AddCommGrpCat.{u}) :
     (OpenEmbeddingCohomology.restriction h hh).obj
         (TopCat.ConstantSheaf.sheaf U A) ⟶
       (OpenEmbeddingCohomology.restriction v hv).obj
@@ -198,10 +200,10 @@ def sandwichCoefficient (A : AddCommGrpCat.{0}) :
 
 include hj hcomp in
 /-- Open restriction followed by the sandwich coefficient. -/
-def openRestrictionThenCoefficient (A : AddCommGrpCat.{0}) (n : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+def openRestrictionThenCoefficient (A : AddCommGrpCat.{u}) (n : ℕ) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         (TopCat.ConstantSheaf.sheaf U A) n) ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         ((OpenEmbeddingCohomology.restriction v hv).obj
           (TopCat.ConstantSheaf.sheaf K A)) n) :=
   AddCommGrpCat.ofHom (OpenEmbeddingCohomology.cohomologyMap h hh
@@ -210,10 +212,10 @@ def openRestrictionThenCoefficient (A : AddCommGrpCat.{0}) (n : ℕ) :
       (sandwichCoefficient j hj h hh v hv hcomp A)
 
 /-- Finite-closed pullback followed by open restriction. -/
-def closedPullbackThenRestriction (A : AddCommGrpCat.{0}) (n : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+def closedPullbackThenRestriction (A : AddCommGrpCat.{u}) (n : ℕ) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         (TopCat.ConstantSheaf.sheaf U A) n) ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         ((OpenEmbeddingCohomology.restriction v hv).obj
           (TopCat.ConstantSheaf.sheaf K A)) n) :=
   TopCat.ConstantSheafCohomology.pullback j hjclosed hjfinite A n ≫
@@ -223,7 +225,7 @@ def closedPullbackThenRestriction (A : AddCommGrpCat.{0}) (n : ℕ) :
 include hj hcomp in
 /-- The native constant-coefficient finite-closed pullback commutes with open restriction through
 the coefficient-level Beck--Chevalley isomorphism, in every degree. -/
-theorem pullback_openRestriction (A : AddCommGrpCat.{0}) (n : ℕ) :
+theorem pullback_openRestriction (A : AddCommGrpCat.{u}) (n : ℕ) :
     openRestrictionThenCoefficient j hj h hh v hv hcomp A n =
       closedPullbackThenRestriction (j := j) (v := v) hv hjclosed hjfinite A n := by
   apply AddCommGrpCat.hom_ext
@@ -264,7 +266,7 @@ include hj hcomp in
 /-- After the canonical constant-sheaf normalizations, open restriction through the ambient space
 is the finite-closed pullback followed by restriction inside the closed subspace. -/
 theorem constantPullback_sandwich [LocallyConnectedSpace V]
-    (A : AddCommGrpCat.{0}) (n : ℕ) :
+    (A : AddCommGrpCat.{u}) (n : ℕ) :
     OpenEmbeddingCohomology.constantPullback h hh A n =
       TopCat.ConstantSheafCohomology.pullback j hjclosed hjfinite A n ≫
         OpenEmbeddingCohomology.constantPullback v hv A n := by

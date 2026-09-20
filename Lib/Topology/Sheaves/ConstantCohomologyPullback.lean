@@ -30,19 +30,21 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.ConstantSheafCohomology
 
-variable {X Y : TopCat.{0}} [T2Space X]
+variable {X Y : TopCat.{u}} [T2Space X]
 
 /-- The native Ext-defined pullback on cohomology with constant coefficient group `A`, for a
 closed map with finite fibres. -/
 def pullback (f : X ⟶ Y) (hf : IsClosedMap f)
     (hfinite : ∀ y : Y, (f ⁻¹' ({y} : Set Y)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ) :
+    (A : AddCommGrpCat.{u}) (n : ℕ) :
     AddCommGrpCat.of
-        (CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf Y A) n) ⟶
+        (CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf Y A) n) ⟶
       AddCommGrpCat.of
-        (CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf X A) n) :=
+        (CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf X A) n) :=
   AddCommGrpCat.ofHom
     ((TopCat.FiniteClosedPushforward.cohomologyEquiv f hf hfinite
       (TopCat.ConstantSheaf.sheaf X A) n).toAddMonoidHom.comp
@@ -53,7 +55,7 @@ cohomology map induced by the constant-sheaf pushforward morphism. -/
 @[reassoc]
 theorem pullback_forward (f : X ⟶ Y) (hf : IsClosedMap f)
     (hfinite : ∀ y : Y, (f ⁻¹' ({y} : Set Y)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ) :
+    (A : AddCommGrpCat.{u}) (n : ℕ) :
     pullback f hf hfinite A n ≫
         AddCommGrpCat.ofHom
           (TopCat.FiniteClosedPushforward.cohomologyForward f hf hfinite
