@@ -12,14 +12,15 @@ public import Mathlib.Topology.Sheaves.Abelian
 /-!
 # Functoriality of normalized Cech cohomology in the coefficients
 
-This file supplies the coefficient functoriality implicit in the natural comparison of textbook
-section CD-05. A morphism of coefficient presheaves acts componentwise on the normalized ordered
-Cech complex. The resulting cochain map is functorial and commutes with every chosen refinement
-map. Passing to homology gives the corresponding naturality square for normalized fixed-cover
-Cech cohomology.
+Cech cohomology of a fixed open cover is functorial in the coefficient presheaf.  A morphism of
+coefficient presheaves acts componentwise on the normalized ordered Cech complex; the resulting
+cochain map is functorial and commutes with every chosen refinement map, so passing to homology
+gives the naturality square for normalized fixed-cover Cech cohomology.
 
-No direct-limit comparison, effaceability assertion, or derived-functor identification is made
-here.
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.1--5.3
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -317,6 +318,8 @@ noncomputable def normalizedCechCohomologyCoefficientFunctor
   map_id P := normalizedCechCohomologyCoefficientMap_id P U n
   map_comp f g := normalizedCechCohomologyCoefficientMap_comp f g U n
 
+/-- The coefficient functor of a fixed cover sends a presheaf to its normalized Cech cohomology
+for that cover. -/
 @[simp]
 theorem normalizedCechCohomologyCoefficientFunctor_obj
     (U : SetOpenCover X) (n : ℕ) (P : TopCat.Presheaf A X) :
@@ -324,6 +327,8 @@ theorem normalizedCechCohomologyCoefficientFunctor_obj
       normalizedCechCohomology P U n :=
   rfl
 
+/-- The coefficient functor of a fixed cover sends a morphism of presheaves to the induced map
+on normalized Cech cohomology. -/
 @[simp]
 theorem normalizedCechCohomologyCoefficientFunctor_map
     (U : SetOpenCover X) (n : ℕ) {P Q : TopCat.Presheaf A X} (f : P ⟶ Q) :
