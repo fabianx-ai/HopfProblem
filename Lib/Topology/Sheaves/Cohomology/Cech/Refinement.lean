@@ -15,10 +15,9 @@ public import Mathlib.GroupTheory.Perm.Sign
 /-!
 # Refinement pullbacks for normalized Čech cochains
 
-This file begins the refinement-map portion of textbook section CD-04. A chosen refinement
-function between index sets need not preserve the chosen orders and need not be injective on an
-ordered simplex. Consequently, its image cannot in general be used directly as an
-`OrderedSimplex`.
+A chosen refinement function between index sets need not preserve the chosen orders and need not
+be injective on an ordered simplex. Consequently, its image cannot in general be used directly as
+an `OrderedSimplex`.
 
 For an arbitrary index tuple, the normalized cochain is therefore evaluated by the standard
 alternating extension: a tuple with a repeated index is sent to zero, while an injective tuple is
@@ -29,6 +28,10 @@ The arbitrary-tuple coboundary identity then shows that evaluation along a chose
 followed by restriction to the fine intersection, defines a morphism of normalized ordered Čech
 cochain complexes. This file makes no claim that different refinement choices induce equal or
 homotopic maps, and introduces no direct limit or comparison with derived sheaf cohomology.
+
+Reference: Godement, *Topologie algébrique et théorie des faisceaux*, II.5.7, where the
+refinement map on alternating Čech cochains is defined with the sign of the sorting permutation
+(see also Bredon, *Sheaf Theory*, III.4).
 -/
 
 @[expose] public section
