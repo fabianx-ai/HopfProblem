@@ -9,7 +9,7 @@ touched.
 
 ### Item 1 — van Kampen monolith vs the `VanKampen/` split — DONE (`ba7f0b36`)
 
-`Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean` (1823 lines, 167 source declarations)
+`Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean` (**1,810 lines (corrected; the receipt said 1823 — the figure was copied from the packet)**, 167 source declarations)
 and `VanKampen/{Basic,PathValue,Pushout,Surjectivity}.lean` were two complete copies of the
 Seifert–van Kampen development, the first under `FundamentalGroup.VanKampen.`, the second under
 `FundamentalGroup.VanKampen.Cocone.`.  149 declaration names agreed modulo the `Cocone.`
@@ -98,9 +98,11 @@ hypotheses, once under `CoverNaturality.` and once under `SingularMayerVietoris.
 external uses against 9, and it alone states the general forms
 `connectingHomomorphism_naturality_of_sequenceMap` (naturality along an arbitrary chain-sequence
 map) and `smallHomologyComparison_naturality_of_comm` (an arbitrary chain map with a commutation
-hypothesis).  13 declarations deleted, twins in table B below; two of those twins
-(`smallConnecting_naturality`, `comparison_naturality`) are the more general statements, so the
-deleted declarations are instances of them.
+hypothesis).  13 declarations deleted, twins in table B below.  **(corrected)** this originally read "two of
+those twins (`smallConnecting_naturality`, `comparison_naturality`) are the more general statements,
+so the deleted declarations are instances of them"; that is true for `comparison_naturality` only.
+For `smallConnecting_naturality` the twin named was wrong — see the corrected row in table B and the
+corrections section at the end.
 
 Kept, with reasons: `CoverNaturality.chainMap_comp` and `map_intersection` (no twin); the
 cover-order swap block (`intersectionSwap` … `connecting_swap`: swapping `U` and `V` negates
@@ -258,7 +260,9 @@ The module move is the `ShortComplex` block of item 6 moving to its own file; th
 module changes are its `_proof_` companions.
 
 **Added source names (32):** the 16 ported pushout declarations plus
-`TwoOpenCover.pushoutToFundamentalGroup_of` and `TwoOpenCover.fundamentalGroup_eq_one` under
+`TwoOpenCover.fundamentalGroup_eq_one` **(corrected: the sentence as first written also listed
+`TwoOpenCover.pushoutToFundamentalGroup_of`, which is already one of the 16; the total 32 =
+17 + 3 + 1 + 11 is right only when it is counted once)** under
 `FundamentalGroup.VanKampen.Cocone.` (item 1); the three helpers promoted from `private` in
 `CycleLift.lean` to `CategoryTheory.ShortComplex.shortCycleClass_{surjective,quotient,eq_zero_iff}`
 (item 6); `CochainComplex.homotopy_on_cocycle_succ` (item 10); and the 11 names below, which
@@ -535,7 +539,7 @@ trans_subpath_second_half
 | `CoverNaturality.intersection_left` | `SingularMayerVietoris.coverRestriction_intersection_left` |
 | `CoverNaturality.intersection_right` | `SingularMayerVietoris.coverRestriction_intersection_right` |
 | `CoverNaturality.mapOn` | `SingularMayerVietoris.coverRestriction` |
-| `CoverNaturality.smallConnecting_naturality` | `SingularMayerVietoris.connectingHomomorphism_naturality_of_sequenceMap` |
+| `CoverNaturality.smallConnecting_naturality` | **`SingularMayerVietoris.connectingMap_naturality` applied at `chainSequenceMapOfMapsTo` (corrected; the receipt named `connectingHomomorphism_naturality_of_sequenceMap`, which is *not* a twin: it carries six extra hypotheses — `IsOpen U/V/U'/V'` and the two cover equations — and is about `connectingHomomorphism`, the singular-level map, not `smallConnectingMap`, the chain-level one, so it does not imply the deleted statement).  `connectingMap_naturality` (`MayerVietoris.lean:656`, general short-exact sequences) is exactly what the deleted proof term used; the deleted statement re-proves from it in one term** |
 | `CoverNaturality.smallMap` | `SingularMayerVietoris.smallMapOfMapsTo` |
 | `CoverNaturality.smallMap_inclusion` | `SingularMayerVietoris.smallMapOfMapsTo_inclusion` |
 | `CoverNaturality.smallMap_left` | `SingularMayerVietoris.toSmallLeft_smallMapOfMapsTo` |
@@ -615,3 +619,73 @@ plus this receipt.  Range `4e15a034..HEAD`.
 6. **Mesh two-set tails** — dead code in `MeshLebesgue`/`MeshAffine`/`MeshSubdivision`; re-derive
    them from `ArbitraryCoverMesh.lean` at `ι := Bool` (a rewrite, not a deletion), together with
    the fourth copy in `MayerVietoris.lean:2283–2631`.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-dup-hom.md` (ACCEPT WITH FINDINGS; every deletion has
+a surviving twin of equal or greater strength, the 17 ported van Kampen statements are the
+monolith's statements verbatim modulo `Cocone.` and line wrapping, and the proofs are byte-identical;
+nothing `[unsound]`).  These corrections are to this receipt's text only; no Lean file was changed
+by them.
+
+1. **Table B named the wrong twin for `CoverNaturality.smallConnecting_naturality` (finding 1),
+   corrected in the table and in §1 item 4.**  The named twin
+   `SingularMayerVietoris.connectingHomomorphism_naturality_of_sequenceMap` needs `IsOpen U/V/U'/V'`
+   and two cover equations that the deleted lemma does not have, and it is about
+   `connectingHomomorphism` (singular level), not `smallConnectingMap` (chain level); it does **not**
+   imply the deleted statement.  The true twin is
+   **`SingularMayerVietoris.connectingMap_naturality`** (`MayerVietoris.lean:656`, general
+   short-exact sequences) **applied at `chainSequenceMapOfMapsTo`** — which is exactly what the
+   deleted proof term was.  The reviewer re-proved the deleted statement from it in one term (with
+   `mapOn`/`smallMap` respelled to `intersectionRestriction`/`smallMapOfMapsTo`), so nothing is lost
+   from the library; only this receipt's twin entry was wrong.  Twin tables should give a `file:line`
+   for the twin and, where the twin is "stronger", the instantiation — writing that down would have
+   caught this at the time (`Lib/reviews/REVIEW-7-8.md` §4).
+
+2. **Monolith size (finding 2), corrected in §1.**  `wc -l` on
+   `git show 4e15a034:…/VanKampen.lean` gives **1,810**, and the branch diff records 1,810 deletions.
+   The 1823 was copied from the packet.
+
+3. **§3 double-counted one added name (finding 3), corrected in §3.**
+   `TwoOpenCover.pushoutToFundamentalGroup_of` is already one of the 16 ported pushout declarations;
+   the total 32 = 17 + 3 + 1 + 11 is right only with it counted once (`envdiff.json`'s `added` has 37
+   entries, 5 of them `_proof_` auxiliaries).
+
+4. **"Character-for-character identical" holds modulo whitespace (finding 4).**  Three signatures
+   (`pushoutToFundamentalGroup_comp_of` / `_ofU` / `_ofV`) and two docstrings were re-wrapped to fit
+   100 columns after the `Cocone.` segment lengthened the names, and the `fundamentalGroup_eq_one`
+   docstring says "charts" where the original said "opens".  Token-for-token, whitespace collapsed,
+   all 17 are identical, and the proofs are byte-identical; no hypothesis added, no `sorry`.
+
+5. **Two file/line references are off by a little (finding 5).**  "`PostnikovD2PageSplice.lean:12`"
+   — the import of `SpectralObject.PostnikovD2` is at line **11**.  "431 `#check`/`#print axioms`
+   lines" in `AxiomAudit.lean` — **426** lines mention `FundamentalGroup.VanKampen.Cocone` at the
+   base.  Neither affects the argument: the monolith is indeed probed nowhere (the only non-`Cocone`
+   `VanKampen` probe is `exists_stageCharacter`, from `FiniteStarCharacter`).
+
+6. **The rename map covers only the 17 ports and one rename (finding 6).**  The 13 table-B and 5
+   table-C pairs are also old-name → new-name correspondences of surviving content; listing them in
+   `rename.txt` would have let the envdiff show them as bijections instead of 18 lost + 18 added.
+   Treating them as deletions-with-twins is defensible under the protocol, but it makes the envdiff
+   harder to read.  Relatedly, 72 of the 335 lost names are auxiliaries of deleted definitions that
+   the tool buckets as `auxiliary` (116); an explicit "auxiliaries of deleted definitions, not
+   listed" line with the count per parent declaration would save the reader reconstructing it.
+
+7. **One "left" item is no longer blocked (added on correction).**  §7 item 3, the degree-one cochain
+   lemmas, was blocked on the consumers at
+   `Lib/Topology/Sheaves/SingularCochainSheaf/GlobalUnitH1Criterion.lean:92,135`.  That file was
+   **deleted later in the same round** by `r8/dup-sheaf` (`0d8e2b19`), so the blocker no longer
+   exists at head `39f1d12b` and the `_one` lemmas can now be retired.  On the fix list
+   (`Lib/reviews/REVIEW-7-8.md` §3, dup-hom).
+
+8. **A `MERGE.md` error this branch is credited with (finding, reviewer tool note).**
+   `Lib/reports/round-8/MERGE.md` attributes "`dup-hom`'s four `sphereMap_*` / `homology_relative_sign`
+   declarations" in `LinearSphereAction.lean` to this branch.  This branch never touches that file;
+   its round-8 history is `513197b9` / `1a7358c0` on `r8/dfiles-a`.  Corrected in `MERGE.md`.
+
+9. **The item-2 refusal (the pre-PR chain tower) was judged right by the reviewer.**  The obstruction
+   is not size alone: the `ChainHomology.*` half of `Chains.lean` (35 names, none with a counterpart
+   in the PR trio) is a different presentation of what `Degree1.lean` does, the trio's "kept
+   verbatim" header forbids adapting it, and the bridge must therefore be built on the
+   `SingularChains` side and threaded through 57 importers — a multi-day rewrite, not a
+   de-duplication.  Recorded, not hidden, and correctly declined by this seat.
