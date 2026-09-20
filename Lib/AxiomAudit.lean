@@ -2060,8 +2060,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.AddCommGroup` -/
 
-#check CategoryTheory.Sheaf.cohomologyAddCommGroup
-#print axioms CategoryTheory.Sheaf.cohomologyAddCommGroup
+#check CategoryTheory.Sheaf.instAddCommGroupH
+#print axioms CategoryTheory.Sheaf.instAddCommGroupH
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing` -/
 

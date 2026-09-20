@@ -66,7 +66,7 @@ theorem abelianSheafHasExt (X : TopCat.{u}) : HasExt.{u} (AbelianSheaf.{u} X) :=
 /-- Compatibility spelling for the canonical additive group on sheaf cohomology. -/
 abbrev sheafCohomologyAddCommGroup {X : TopCat.{0}} (F : AbelianSheaf X) (n : ℕ) :
     AddCommGroup (CategoryTheory.Sheaf.H.{0} F n) :=
-  CategoryTheory.Sheaf.cohomologyAddCommGroup F n
+  CategoryTheory.Sheaf.instAddCommGroupH F n
 
 /-- The actual pushforward of abelian sheaves along a continuous map. -/
 abbrev pushforward {X Y : TopCat.{u}} (f : X ⟶ Y) :
