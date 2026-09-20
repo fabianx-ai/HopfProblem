@@ -17,10 +17,25 @@ connectivity or homology hypothesis is needed. This is not an exact lifting
 theorem. For nonconstant boundary data with a supplied source nullhomotopy,
 the second theorem retains an exact prescribed boundary homotopy.
 
+This is the disk-lifting step used in the proof of the Whitehead theorem and in cellular
+approximation: a map which is surjective on `π_n` lets one push a cell of the target back into
+the source, up to a homotopy fixing the attaching map.
+
 The disk is the closed unit ball of a finite-dimensional real normed space,
 with a supplied continuous linear identification with real `n`-space. The
 positive-dimension hypothesis is expressed by `Nonempty (Fin n)`, as required
 by the existing induced homotopy-group map.
+
+## Main results
+
+* `BasedDiskLifting.exists_based_disk_lift_of_surjective`: lifting of a disk with constant
+  boundary data.
+* `TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic`: lifting with a prescribed
+  boundary homotopy.
+
+## References
+
+* A. Hatcher, *Algebraic Topology*, §4.1 (the compression lemma and the Whitehead theorem)
 -/
 
 set_option autoImplicit false
@@ -29,29 +44,10 @@ open Set Topology
 noncomputable section
 universe u
 
-/-- A based disk map lifts up to relative homotopy when the induced map on its
-homotopy group is surjective.
-
-## Proof
-
-Let `D` be the closed unit disk and `S` its norm-one boundary. Choose the
-boundary-preserving disk–cube homeomorphism `e : D → Iⁿ` supplied by the
-linear identification. Define `q(w) = u(e⁻¹(w))`. It is continuous and equals
-`F(x)` on the cube boundary, since the inverse homeomorphism carries that
-boundary into `S`. Hence it represents a based homotopy class.
-
-Surjectivity gives a preimage class. Choose a representative `p : Iⁿ → X`,
-equal to `x` on the cube boundary. Equality of the image class with `[q]`
-means that there is a continuous homotopy `H` from `F ∘ p` to `q`, keeping
-the entire cube boundary at `F(x)` throughout.
-
-Set `v(z) = p(e(z))`. This is continuous and equals `x` on `S`. Pull back
-the homotopy by defining `K(t,z) = H(t,e(z))`. Continuity follows from
-continuity of `H` and the product map `(t,z) ↦ (t,e(z))`. At time zero this
-is `F(v(z))`; at time one it is `u(e⁻¹(e(z))) = u(z)`. For `z ∈ S`, the
-point `e(z)` lies on the cube boundary, so `K(t,z) = F(x)` at every time.
-Thus `K` is the required homotopy relative to `S`.
--/
+/-- If `F : X → Y` is surjective on `π_n(X, x)`, then every map `u` of the `n`-disk into `Y`
+which is constant equal to `F x` on the boundary sphere lifts to a map `v` of the disk into `X`,
+constant equal to `x` on the boundary, with `F ∘ v` homotopic to `u` relative to the boundary
+(Hatcher, *Algebraic Topology*, §4.1). -/
 theorem BasedDiskLifting.exists_based_disk_lift_of_surjective
     {n : ℕ} [Nonempty (Fin n)]
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
@@ -68,6 +64,20 @@ theorem BasedDiskLifting.exists_based_disk_lift_of_surjective
         ‖(z : V)‖ = 1 → v z = x) ∧
       (F.comp v).HomotopicRel u
         {z : DiskCylinder.Disk (E := V) | ‖(z : V)‖ = 1} := by
+  -- Let `D` be the closed unit disk and `S` its norm-one boundary. Choose the
+  -- boundary-preserving disk-cube homeomorphism `e : D → Iⁿ` supplied by the linear
+  -- identification. Define `q(w) = u(e⁻¹(w))`. It is continuous and equals `F(x)` on the cube
+  -- boundary, since the inverse homeomorphism carries that boundary into `S`. Hence it
+  -- represents a based homotopy class.
+  --
+  -- Surjectivity gives a preimage class. Choose a representative `p : Iⁿ → X`, equal to `x` on
+  -- the cube boundary. Equality of the image class with `[q]` means that there is a continuous
+  -- homotopy `H` from `F ∘ p` to `q`, keeping the entire cube boundary at `F(x)` throughout.
+  --
+  -- Set `v(z) = p(e(z))`. This is continuous and equals `x` on `S`. Pull back the homotopy by
+  -- defining `K(t,z) = H(t,e(z))`. At time zero this is `F(v(z))`; at time one it is
+  -- `u(e⁻¹(e(z))) = u(z)`. For `z ∈ S`, the point `e(z)` lies on the cube boundary, so
+  -- `K(t,z) = F(x)` at every time. Thus `K` is the required homotopy relative to `S`.
   let e := DiskCube.homeomorph L
   let q : GenLoop (Fin n) Y (F x) :=
     ⟨u.comp (e.symm : C(_, _)), fun z hz =>
@@ -97,38 +107,11 @@ theorem BasedDiskLifting.exists_based_disk_lift_of_surjective
   · intro t z hz
     exact H.eq_fst t ((DiskCube.boundary_iff L z).mpr hz)
 
-/-- A disk map lifts up to homotopy with an exact prescribed boundary homotopy,
-given a supplied nullhomotopy of its source boundary and surjectivity on the
-based homotopy group.
-
-## Proof
-
-Write D for the disk and S for its boundary, and c for the constant map at x.
-Reverse the supplied nullhomotopy to get a mapping-space path A from c to a.
-Postcompose to get FA from F ∘ c to F ∘ a. The prescribed H gives a path HP
-from F ∘ a to u|S. Then K = HP⁻¹ · FA⁻¹ runs from u|S to F ∘ c.
-
-Boundary transport extends K to a path E from u to a disk map u₀ whose
-boundary is F(x). The based-disk theorem gives p with boundary x and a homotopy
-B from F ∘ p to u₀ fixed on S. Viewed as a mapping-space path, B restricts
-to the constant path at F ∘ c.
-
-Transport p along A to obtain v with boundary a and a path P from p to v
-restricting to A. Its postcomposition FP restricts to FA. Thus
-R = FP⁻¹ · (B · E⁻¹) runs from F ∘ v to u, and its exact restriction is
-Q = FA⁻¹ · (const · K⁻¹). Restriction commutes with reversal and concatenation.
-
-Path normalization gives an endpoint-fixed homotopy from Q to HP: reverse
-the inner concatenation, remove the constant segment, reassociate and cancel
-FA⁻¹ · FA. This is a homotopy of paths, not equality of parametrized paths.
-Cylinder side rectification extends this change of side while fixing both
-end faces. Its final slice G therefore has endpoints F ∘ v and u and side
-exactly HP(t)(s) = H(t,s). Together with v|S = a these are the four equations.
-
-Boundary transport and cylinder rectification are the existing relative
-homotopy extension results for finite-dimensional disks, valid for arbitrary
-topological targets. No connectivity condition is added.
--/
+/-- If `F : X → Y` is surjective on `π_n(X, x)`, `a` is a map of the boundary sphere into `X`
+which is nullhomotopic, and `H` is a homotopy from `F ∘ a` to the boundary restriction of a disk
+map `u`, then `u` lifts to a disk map `v` of the disk into `X` with boundary exactly `a`,
+together with a homotopy from `F ∘ v` to `u` whose boundary restriction is exactly `H`
+(Hatcher, *Algebraic Topology*, §4.1). -/
 theorem TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
     {n : ℕ} [Nonempty (Fin n)]
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
@@ -148,6 +131,25 @@ theorem TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
       (∀ z, G (0, z) = F (v z)) ∧
       (∀ z, G (1, z) = u z) ∧
       ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s) := by
+  -- Write `D` for the disk and `S` for its boundary, and `c` for the constant map at `x`.
+  -- Reverse the supplied nullhomotopy to get a mapping-space path `A` from `c` to `a`.
+  -- Postcompose to get `FA` from `F ∘ c` to `F ∘ a`. The prescribed `H` gives a path `HP` from
+  -- `F ∘ a` to `u|S`. Then `K = HP⁻¹ · FA⁻¹` runs from `u|S` to `F ∘ c`.
+  --
+  -- Boundary transport extends `K` to a path `E` from `u` to a disk map `u₀` whose boundary is
+  -- `F(x)`. The based-disk theorem gives `p` with boundary `x` and a homotopy `B` from `F ∘ p`
+  -- to `u₀` fixed on `S`. Viewed as a mapping-space path, `B` restricts to the constant path at
+  -- `F ∘ c`.
+  --
+  -- Transport `p` along `A` to obtain `v` with boundary `a` and a path `P` from `p` to `v`
+  -- restricting to `A`. Its postcomposition `FP` restricts to `FA`. Thus
+  -- `R = FP⁻¹ · (B · E⁻¹)` runs from `F ∘ v` to `u`, and its exact restriction is
+  -- `Q = FA⁻¹ · (const · K⁻¹)`.
+  --
+  -- Path normalization gives an endpoint-fixed homotopy from `Q` to `HP`: reverse the inner
+  -- concatenation, remove the constant segment, reassociate and cancel `FA⁻¹ · FA`. Cylinder
+  -- side rectification extends this change of side while fixing both end faces. Its final slice
+  -- `G` therefore has endpoints `F ∘ v` and `u` and side exactly `HP(t)(s) = H(t,s)`.
   let c : C(DiskCylinder.Sphere (E := V), X) :=
     ContinuousMap.const _ x
   obtain ⟨Ac⟩ := ha.symm
