@@ -3490,7 +3490,7 @@ def EmbeddedCellAttachment.collapseOverlapMap {N X : Type} [NormedAddCommGroup N
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     C(↥(D.oldNeighborhood ∩ D.diskPatch),
       ↥(OnePointCover.oldPatch (N := N) ∩ OnePointCover.finitePatch)) :=
-  CoverNaturality.mapOn D.collapseMap _ _
+  SingularMayerVietoris.coverRestriction D.collapseMap _ _
     (CoverNaturality.map_intersection _ _ _ _ D.collapseMap D.collapseMaps_oldNeighborhood
       D.collapseMaps_diskPatch)
 
@@ -3592,8 +3592,8 @@ theorem EmbeddedCellAttachment.collapse_connecting_compare {N X : Type}
   rw [LinearEquiv.apply_symm_apply, ← D.collapse_overlapHomology_compare,
     LinearEquiv.apply_symm_apply]
   exact
-    (CoverNaturality.connecting_naturality_apply D.oldNeighborhood D.diskPatch
-        OnePointCover.oldPatch OnePointCover.finitePatch D.collapseMap
+    (SingularMayerVietoris.connectingHomomorphism_naturality_apply D.collapseMap
+        D.oldNeighborhood D.diskPatch OnePointCover.oldPatch OnePointCover.finitePatch
         D.collapseMaps_oldNeighborhood D.collapseMaps_diskPatch D.isOpen_oldNeighborhood
         D.isOpen_diskPatch D.open_cover OnePointCover.oldPatch_open
         OnePointCover.finitePatch_open OnePointCover.cover k a).symm
@@ -4105,7 +4105,7 @@ def ManifoldMorse.MorseSurgeryData.collapseOverlapMap {E M : Type} [NormedAddCom
     C(↥((d.beltIntersectionPoints m g)ᶜ ∩ D.neighborhood i),
       ↥(OnePointCover.oldPatch (N := d.chart.NegativeCoordinates) ∩
           OnePointCover.finitePatch)) :=
-  CoverNaturality.mapOn (d.attachingCollapse hf m g) _ _
+  SingularMayerVietoris.coverRestriction (d.attachingCollapse hf m g) _ _
     (fun _ hx =>
       ⟨d.attachingCollapse_maps_old hf m g hx.1,
         d.attachingCollapse_maps_neighborhood hf m g D i hx.2⟩)

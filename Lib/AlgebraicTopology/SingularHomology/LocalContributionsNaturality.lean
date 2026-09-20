@@ -60,13 +60,13 @@ def CoverOverlapHomology.componentMap {X Y : Type} [TopologicalSpace X] [Topolog
     {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
     (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) (i : ι) :
     C(↥(U ∩ V i), ↥(U' ∩ V' i)) :=
-  CoverNaturality.mapOn f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
+  SingularMayerVietoris.coverRestriction f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
 
 def CoverOverlapHomology.overlapMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {ι : Type} (U : Set X) (V : ι → Set X) (U' : Set Y) (V' : ι → Set Y) (f : C(X, Y))
     (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) (V' i)) :
     C(↥(U ∩ ⋃ i, V i), ↥(U' ∩ ⋃ i, V' i)) :=
-  CoverNaturality.mapOn f _ _
+  SingularMayerVietoris.coverRestriction f _ _
     (by
       intro x hx
       obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx.2
@@ -114,9 +114,9 @@ theorem CoverLocalContributions.componentConnecting_enlarge {X : Type} [Topologi
     have hx : x ∈ U ∪ (⋃ j, V j) := hc.symm ▸ Set.mem_univ x
     exact hx.elim (fun hu => Or.inl (hsub hu)) Or.inr
   have hbig :=
-    CoverNaturality.connecting_naturality_apply U (⋃ j, V j) U' (⋃ j, V j)
-      (ContinuousMap.id X) hsub (fun _ hx => hx) hU (isOpen_iUnion hV) hc hU' (isOpen_iUnion hV)
-      hc' k a
+    SingularMayerVietoris.connectingHomomorphism_naturality_apply (ContinuousMap.id X) U
+      (⋃ j, V j) U' (⋃ j, V j) hsub (fun _ hx => hx) hU (isOpen_iUnion hV) hc hU'
+      (isOpen_iUnion hV) hc' k a
   rw [SingularHomology.singularHomologyMap_id, LinearMap.id_apply] at hbig
   change
     SingularMayerVietoris.singularHomologyMap
@@ -136,8 +136,9 @@ theorem CoverLocalContributions.componentConnecting_enlarge {X : Type} [Topologi
       i
   rw [hnat] at hcoord
   have hsmall :=
-    CoverNaturality.connecting_naturality_apply U' (V i) U' (⋃ j, V j) (ContinuousMap.id X)
-      (fun _ hx => hx) (Set.subset_iUnion V i) hU' (hV i) hci hU' (isOpen_iUnion hV) hc' k a
+    SingularMayerVietoris.connectingHomomorphism_naturality_apply (ContinuousMap.id X) U' (V i)
+      U' (⋃ j, V j) (fun _ hx => hx) (Set.subset_iUnion V i) hU' (hV i) hci hU'
+      (isOpen_iUnion hV) hc' k a
   rw [SingularHomology.singularHomologyMap_id, LinearMap.id_apply] at hsmall
   change
     SingularMayerVietoris.singularHomologyMap
