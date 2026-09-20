@@ -5,25 +5,36 @@ public import Mathlib
 /-!
 # Transvection reduction of integer matrices
 
-Elementary column operations on integer matrices realized as right multiplication by
-`Matrix.transvection`, and the reduction of a unimodular row to a row containing `±1`
-(Milnor, *Lectures on the h-cobordism theorem*, §7, Thm. 7.6's algebra), together with
-the coordinate-matrix API that transports `ℤ`-bases through these operations.
+Elementary column operations on integer matrices, realized as right multiplication by
+`Matrix.transvection`, and the Euclidean reduction of a unimodular row: a `1 × n` integer row
+whose associated map `ℤⁿ → ℤ` is surjective can be brought by column additions to a row having an
+entry `±1`.  Alongside this we record the coordinate-matrix API transporting a `ℤ`-basis through
+such operations: the matrix of a family of vectors in a chosen basis, its behaviour under
+`Matrix.mulVec`, and the transport of these rows along a linear isomorphism.
 
-## Provenance
+## Main results
 
-Moved verbatim from `Hopf/Recognition.lean` (lane F0a). The declarations keep their
-`MorseCancellation.*` names so existing consumers re-point through unchanged
-fully qualified names; the upstream-shaped rename to `Matrix.*` is a separate commit.
+* `MorseCancellation.primitive_row_has_unit_after_column_additions`: a unimodular row becomes a
+  row containing `1` or `-1` after finitely many column additions.
+* `MorseCancellation.mul_transvection_list_surjective`: column additions preserve surjectivity.
+
+## References
+
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §7 (the algebra of Theorem 7.6:
+  elementary column operations on a unimodular row).
 -/
 
 @[expose] public noncomputable section
 
-def MorseCancellation.classCoordinateMatrix {A : Type} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
+/-- The matrix of a family `v : Fin n → A` in a chosen basis `B : (Fin r → ℤ) ≃ₗ[ℤ] A`: its
+`j`-th column is the coordinate vector of `v j`. -/
+def MorseCancellation.classCoordinateMatrix {A : Type*} [AddCommGroup A] [Module ℤ A] {r n : ℕ}
     (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) : Matrix (Fin r) (Fin n) ℤ := fun i j =>
   B.symm (v j) i
 
-theorem MorseCancellation.classCoordinateMatrix_mulVec {A : Type} [AddCommGroup A] [Module ℤ A]
+/-- Multiplying the coordinate matrix of `v` by a vector of scalars gives, in the basis `B`, the
+corresponding linear combination `∑ j, z j • v j`. -/
+theorem MorseCancellation.classCoordinateMatrix_mulVec {A : Type*} [AddCommGroup A] [Module ℤ A]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A) (z : Fin n → ℤ) :
     B ((classCoordinateMatrix B v).mulVec z) = ∑ j, z j • v j := by
   have hvec : (classCoordinateMatrix B v).mulVec z = ∑ j, z j • B.symm (v j) := by
@@ -34,7 +45,8 @@ theorem MorseCancellation.classCoordinateMatrix_mulVec {A : Type} [AddCommGroup 
   intro j hj
   rw [map_zsmul, LinearEquiv.apply_symm_apply]
 
-theorem MorseCancellation.classCoordinateMatrix_surjective {A : Type} [AddCommGroup A] [hA : Module ℤ A]
+/-- If a family `v` spans `A`, then multiplication by its coordinate matrix is surjective. -/
+theorem MorseCancellation.classCoordinateMatrix_surjective {A : Type*} [AddCommGroup A] [hA : Module ℤ A]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] A) (v : Fin n → A)
     (hspan : Submodule.span ℤ (Set.range v) = ⊤) :
     Function.Surjective (classCoordinateMatrix B v).mulVec := by
@@ -48,6 +60,8 @@ theorem MorseCancellation.classCoordinateMatrix_surjective {A : Type} [AddCommGr
     intro j hj
     exact (int_smul_eq_zsmul hA (z j) (v j)).symm
   exact hsum.trans hz
+/-- An elementary column operation preserves surjectivity of `Matrix.mulVec`, because the
+transvection is invertible with inverse the opposite transvection. -/
 theorem MorseCancellation.mul_transvection_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
     (i j : Fin n) (hij : i ≠ j) (k : ℤ) (hA : Function.Surjective A.mulVec) :
     Function.Surjective (A * Matrix.transvection i j k).mulVec := by
@@ -58,6 +72,8 @@ theorem MorseCancellation.mul_transvection_surjective {r n : ℕ} (A : Matrix (F
     add_neg_cancel, Matrix.transvection_zero, Matrix.mul_one]
   exact hz
 
+/-- A matrix obtained from `A` by adding `k` times the `i`-th column to the `j`-th column, and
+leaving the other columns unchanged, is `A * Matrix.transvection i j k`. -/
 theorem MorseCancellation.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Matrix (Fin r) (Fin n) ℤ)
     (i j : Fin n) (k : ℤ) (hchanged : ∀ u, A' u j = A u j + k * A u i)
     (hother : ∀ u v, v ≠ j → A' u v = A u v) : A' = A * Matrix.transvection i j k := by
@@ -67,6 +83,8 @@ theorem MorseCancellation.eq_mul_transvection_of_columns {r n : ℕ} (A A' : Mat
     exact (hchanged u).trans (Matrix.mul_transvection_apply_same i j u k A).symm
   · exact (hother u v hv).trans (Matrix.mul_transvection_apply_of_ne i j u v hv k A).symm
 
+/-- Any finite sequence of elementary column operations preserves surjectivity of
+`Matrix.mulVec`. -/
 theorem MorseCancellation.mul_transvection_list_surjective {r n : ℕ} (A : Matrix (Fin r) (Fin n) ℤ)
     (hA : Function.Surjective A.mulVec) (ops : List (Fin n × Fin n × ℤ))
     (hvalid : ∀ op ∈ ops, op.1 ≠ op.2.1) :
@@ -84,6 +102,9 @@ theorem MorseCancellation.mul_transvection_list_surjective {r n : ℕ} (A : Matr
     simpa only [List.map_append, List.map_singleton, List.prod_append, List.prod_singleton,
       ← Matrix.mul_assoc] using mul_transvection_surjective _ op.1 op.2.1 hop op.2.2 (ih hprev)
 
+/-- Euclidean reduction of a unimodular row (Milnor, *Lectures on the h-cobordism theorem*, §7,
+the algebra of Theorem 7.6): if the `1 × n` integer row `A` has surjective `Matrix.mulVec`, then
+finitely many column additions turn it into a row having an entry `1` or `-1`. -/
 theorem MorseCancellation.primitive_row_has_unit_after_column_additions {n : ℕ}
     (A : Matrix (Fin 1) (Fin n) ℤ) (hA : Function.Surjective A.mulVec) :
     ∃ ops : List (Fin n × Fin n × ℤ),
@@ -161,7 +182,10 @@ theorem MorseCancellation.primitive_row_has_unit_after_column_additions {n : ℕ
     exact Finset.dvd_sum (fun j _ => dvd_mul_of_dvd_left (hdiv j) (x j))
   obtain ⟨v, hv⟩ := hdvd
   exact ⟨ops, hvalid, i, Int.eq_one_or_neg_one_of_mul_eq_one hv.symm⟩
-theorem MorseCancellation.functional_class_row_surjective {H : Type} [AddCommGroup H] [Module ℤ H]
+/-- If the coordinate matrix of a family `v` has surjective `Matrix.mulVec` and `L : H →ₗ[ℤ] ℤ`
+is surjective, then the row `(L (v j))_j` has surjective `Matrix.mulVec`, i.e. it is
+unimodular. -/
+theorem MorseCancellation.functional_class_row_surjective {H : Type*} [AddCommGroup H] [Module ℤ H]
     {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (v : Fin n → H)
     (hA : Function.Surjective (classCoordinateMatrix B v).mulVec) (L : H →ₗ[ℤ] ℤ)
     (hL : Function.Surjective L) :
@@ -184,7 +208,10 @@ theorem MorseCancellation.functional_class_row_surjective {H : Type} [AddCommGro
   intro j hj
   exact mul_comm _ _
 
-theorem MorseCancellation.transported_classes_of_matrix_product {H K : Type} [AddCommGroup H]
+/-- If the coordinate matrix of a family `w`, taken in the basis transported along `e`, is the
+coordinate matrix of `v` times `P`, then each `e⁻¹ (w j)` is the combination `∑ i, P i j • v i`
+of the family `v`. -/
+theorem MorseCancellation.transported_classes_of_matrix_product {H K : Type*} [AddCommGroup H]
     [Module ℤ H] [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (e : H ≃ₗ[ℤ] K)
     (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
     (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P) (j : Fin n) :
@@ -198,7 +225,9 @@ theorem MorseCancellation.transported_classes_of_matrix_product {H K : Type} [Ad
       exact (B.apply_symm_apply (e.symm (w j))).symm
     _ = _ := classCoordinateMatrix_mulVec B v _
 
-theorem MorseCancellation.functional_rows_of_matrix_product {H K : Type} [AddCommGroup H] [Module ℤ H]
+/-- In the situation above, the row of values of a functional `L` on `e⁻¹ ∘ w` is the row of its
+values on `v` times `P`: column operations on coordinate matrices act on functional rows. -/
+theorem MorseCancellation.functional_rows_of_matrix_product {H K : Type*} [AddCommGroup H] [Module ℤ H]
     [AddCommGroup K] [Module ℤ K] {r n : ℕ} (B : (Fin r → ℤ) ≃ₗ[ℤ] H) (e : H ≃ₗ[ℤ] K)
     (v : Fin n → H) (w : Fin n → K) (P : Matrix (Fin n) (Fin n) ℤ)
     (hmatrix : classCoordinateMatrix (B.trans e) w = classCoordinateMatrix B v * P)

@@ -12,13 +12,25 @@ public import Mathlib.LinearAlgebra.ExteriorPower.Basis
 /-!
 # Matrix coordinates on exterior powers of finite free modules
 
-This file gives the standard basis of `⋀[R]^n (Fin m → R)`, identifies the matrix of an induced
-exterior-power map with the corresponding matrix of minors, and exposes the resulting coordinate
-formula.
+This file gives the standard basis of `⋀[R]^n (Fin m → R)`, indexed by the `n`-element subsets of
+`Fin m`, and shows that the matrix of `⋀^n A` in these bases is the compound matrix of `A`: its
+`(s, t)` entry is the `n × n` minor of `A` on rows `s` and columns `t`.
 
-The implementation was extracted and generalized from the integral rank-four development in
-`Hopf/LCP/Specialization.lean`, itself move-only extracted from `Solution.lean` at
-`9ac8a456b526527837d7082ff775213ca8bc9809` (original monolith lines 133802--148196).
+## Main definitions
+
+* `exteriorPower.finBasis`: the standard basis of `⋀[R]^n (Fin m → R)`.
+* `exteriorPower.finMatrix`: the compound matrix of `n × n` minors of a matrix.
+* `exteriorPower.finCoordinates`: coordinates on `⋀[R]^n (Fin m → R)` in the standard basis.
+
+## Main results
+
+* `exteriorPower.toMatrix_map`: the matrix of `⋀^n A` is the compound matrix of `A`.
+* `exteriorPower.finCoordinates_map`: in coordinates, `⋀^n A` acts by the compound matrix.
+
+## References
+
+* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §8.5–8.6 (exterior powers of
+  a free module, the basis `e_S` and the minors of the induced map).
 -/
 
 @[expose] public section
@@ -79,6 +91,7 @@ noncomputable def finCoordinates (m n : ℕ) :
     (⋀[R]^n (Fin m → R)) ≃ₗ[R] (Set.powersetCard (Fin m) n → R) :=
   (finBasis R m n).equivFun
 
+/-- The coordinates of a vector in the standard exterior basis are its basis coefficients. -/
 @[simp]
 theorem finCoordinates_apply (m n : ℕ) (x : ⋀[R]^n (Fin m → R))
     (s : Set.powersetCard (Fin m) n) :

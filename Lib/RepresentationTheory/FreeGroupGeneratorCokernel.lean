@@ -12,14 +12,27 @@ public import Mathlib.RepresentationTheory.Homological.GroupHomology.LowDegree
 /-!
 # Oriented free-generator cokernels
 
-For a finite set of free generators, this module identifies the cokernel of the sum of the
-generator-difference maps with the standard coinvariants.  Each generator may independently be
-replaced by its inverse, as happens when cellular edge orientations or slit-cover transitions are
-changed.  The resulting cokernel is also identified with standard zeroth group homology.
+For a representation `ρ` of a free group `F(A)` on a module `V` with `A` finite, the map
+`(v_a) ↦ ∑_a (ρ (x_a) v_a - v_a) : (A → V) →ₗ V` has image the submodule of coinvariant relations,
+so its cokernel is the coinvariants `V_F` and hence the zeroth group homology `H₀(F(A); V)`.  Each
+generator `x_a` may independently be replaced by its inverse without changing the image, since
+`ρ (x⁻¹) - 1` and `ρ (x) - 1` have the same range.
 
-This is the algebraic endpoint needed by a future cellular or local-coefficient Poincare-duality
-comparison.  It contains no topology, sheaf, spectral sequence, or application-specific
-monodromy representation.
+## Main definitions
+
+* `Representation.freeGroupOrientedGeneratorDifference`: the sum of the generator differences for
+  a choice of generator or inverse generator at each index.
+* `Representation.FreeGroupGeneratorCokernel`: its cokernel.
+
+## Main results
+
+* `Representation.freeGroupGeneratorCokernelEquivCoinvariants`: the cokernel is the coinvariants.
+* `Representation.freeGroupGeneratorCokernelEquivGroupHomologyH0`: the cokernel is `H₀(F(A); V)`.
+
+## References
+
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], II.3 (the beginning of the free
+  resolution of `ℤ` over `ℤF` and `H₀(F(A); M) ≅ M_F`).
 -/
 
 @[expose] public section
@@ -51,6 +64,8 @@ def freeGroupOrientedGeneratorDifference [Fintype A] [DecidableEq A]
   map_smul' r x := by
     simp only [Pi.smul_apply, map_smul, smul_sub, Finset.smul_sum, RingHom.id_apply]
 
+/-- The generator difference `ρ (x_a) v - v` is hit by the oriented difference map, at the
+one-point family supported at `a`. -/
 theorem freeGroupOrientedGeneratorDifference_single [Fintype A] [DecidableEq A]
     (rho : Representation R (FreeGroup A) V) (orientation : A → Bool)
     (a : A) (x : V) :
@@ -115,6 +130,8 @@ def freeGroupGeneratorCokernelEquivCoinvariants [Fintype A] [DecidableEq A]
   Submodule.quotEquivOfEq _ _
     (freeGroupOrientedGeneratorDifference_range_eq_coinvariants_ker rho orientation)
 
+/-- The identification of the cokernel with the coinvariants sends the class of `x` to the
+coinvariant class of `x`. -/
 @[simp]
 theorem freeGroupGeneratorCokernelEquivCoinvariants_mk [Fintype A] [DecidableEq A]
     (rho : Representation R (FreeGroup A) V) (orientation : A → Bool) (x : V) :
@@ -122,7 +139,10 @@ theorem freeGroupGeneratorCokernelEquivCoinvariants_mk [Fintype A] [DecidableEq 
         (Submodule.Quotient.mk x) = Coinvariants.mk rho x := by
   rfl
 
-/-- The oriented generator cokernel as the standard zeroth group-homology module. -/
+/-- The oriented generator cokernel as the standard zeroth group-homology module.
+
+The ring, the generating set and the module share one universe because Mathlib's `Rep` (hence
+`groupHomology`) is defined for a ring and a group in the same universe as the module. -/
 def freeGroupGeneratorCokernelEquivGroupHomologyH0
     {S B M : Type u} [CommRing S] [AddCommGroup M] [Module S M]
     [Fintype B] [DecidableEq B]

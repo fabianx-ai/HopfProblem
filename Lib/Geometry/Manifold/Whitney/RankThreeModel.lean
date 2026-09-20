@@ -10,20 +10,21 @@ import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
 /-!
 # The rank-three Whitney model
 
-Graph motions of the Whitney pair model, the rank-three Whitney model and its native cancellation, rank-three tangent-adapted, sheet-parametrized and compatible charts of a tubular bigon, sheet corrections and sheet recognition, and supported diffeomorphisms realising the bigon cancellation.
+The last step of the Whitney trick in the rank-three model: the graph motion pushing one sheet
+across the Whitney disc, charts of a tubular bigon adapted first to the tangent planes of the two
+sheets, then to their parametrisations, and finally compatible with the two sheets themselves, the
+sheet corrections and the sheet recognition that produce them, and the supported diffeomorphisms
+that turn the model motion into an ambient isotopy.
 
-Moved verbatim from the project stock file `Hopf/SingularHomology.lean` (integration 4,
-`Lib/reports/integration-4/singhom-moves.md`); the families here are
-`WhitneyPairModel`, `RankThreeWhitneyModel`, `TubularBigon`, `StripNormalData`, `SheetCorrection`, `SheetRecognition`, `SupportedDiffeomorph`. The declarations keep their historical dotted names
-and their order; the file order is the dependency order.
+The conclusion (`TubularBigon.exists_rankThree_relative_cancellation`) is Whitney's lemma in this
+model: a bigon whose two corner intersection signs are opposite yields an ambient isotopy,
+supported away from the other intersection points, removing exactly those two points from the
+intersection of the two sheets.
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6.
-
-## Twin
-
-No Mathlib counterpart exists.
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (Whitney's lemma and the
+  cancellation of a pair of intersection points of opposite sign).
 
 ## Tags
 
@@ -36,18 +37,24 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- The bigon embedding rescaled by `r`: the reparametrisation `p ↦ (r p₁, r² p₂)` of the planar
+bigon, which keeps the family of parabolas `y = h(1 - x²)` invariant up to the height. -/
 def WhitneyPairModel.scaledBigonEmbedding (r : ℝ) (p : ℝ × ℝ) : Space :=
   bigonEmbedding (r * p.1, r ^ 2 * p.2)
 
+/-- Rescaling by one is the bigon embedding itself. -/
 theorem WhitneyPairModel.scaledBigonEmbedding_one (p : ℝ × ℝ) :
     scaledBigonEmbedding 1 p = bigonEmbedding p := by
   simp only [scaledBigonEmbedding, one_mul, one_pow, Prod.eta]
 
+/-- The rescaled bigon embedding is jointly continuous in the scale and the point. -/
 theorem WhitneyPairModel.continuous_scaledBigonEmbedding :
     Continuous (fun z : ℝ × (ℝ × ℝ) => scaledBigonEmbedding z.1 z.2) := by
   unfold scaledBigonEmbedding bigonEmbedding
   fun_prop
 
+/-- If an open set contains the image of the bigon, it contains the image of a slightly enlarged
+bigon. -/
 theorem WhitneyPairModel.exists_scaled_bigon_in_open {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     ∃ r : ℝ, 1 < r ∧ Set.MapsTo (scaledBigonEmbedding r) (bigon h) U := by
@@ -66,6 +73,8 @@ theorem WhitneyPairModel.exists_scaled_bigon_in_open {h : ℝ} (hh : 0 < h) {U :
     exact half_lt_self hε
   exact ⟨1 + ε / 2, by linarith, fun p hp => hball hrball p hp⟩
 
+/-- A point of the bigon enlarged to height `h r²` is the image of a point of the bigon under the
+rescaled embedding. -/
 theorem WhitneyPairModel.enlarged_cap_parametrization {h r : ℝ} (hr : 0 < r) {p : ℝ × ℝ}
     (hp : 0 ≤ p.2 ∧ h * p.1 ^ 2 + p.2 ≤ h * r ^ 2) :
     ∃ q ∈ bigon h, scaledBigonEmbedding r q = bigonEmbedding p := by
@@ -85,9 +94,13 @@ theorem WhitneyPairModel.enlarged_cap_parametrization {h r : ℝ} (hr : 0 < r) {
   · change r ^ 2 * (p.2 / r ^ 2) = p.2
     field_simp
 
+/-- The vertical graph of the height function `B` at time `t`: the point `((s, t B s), 0)`, i.e. the
+graph pushed up by the fraction `t` of its height. -/
 def WhitneyPairModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
   ((s, t * B s), 0)
 
+/-- There is a smooth compactly supported height function lying above the upper boundary arc of the
+bigon whose whole vertical trace stays in a prescribed open neighbourhood of the bigon. -/
 theorem WhitneyPairModel.exists_supported_graph_height {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     ∃ B : ℝ → ℝ,
@@ -159,15 +172,21 @@ theorem WhitneyPairModel.exists_supported_graph_height {h : ℝ} (hh : 0 < h) {U
     rw [heq] at hmem
     exact hmem
 
+/-- The trace of the vertical graph motion: the set of pairs (time, point) swept out over the
+support of the height function. -/
 def WhitneyPairModel.graphTrace (B : ℝ → ℝ) : Set (ℝ × Space) :=
   (fun p : ℝ × ℝ => (p.1, verticalGraph B p.1 p.2)) '' (Set.Icc (0 : ℝ) 1 ×ˢ tsupport B)
 
+/-- The trace of a compactly supported continuous height function is compact. -/
 theorem WhitneyPairModel.isCompact_graphTrace {B : ℝ → ℝ} (hB : Continuous B)
     (hcompact : HasCompactSupport B) : IsCompact (graphTrace B) := by
   apply (CompactIccSpace.isCompact_Icc.prod hcompact.isCompact).image
   unfold verticalGraph
   fun_prop
 
+/-- A smooth compactly supported cut-off supported in a prescribed open set whose value at a point
+of the vertical graph at time `t` is the height at that point; it is the weight driving the
+graph motion. -/
 theorem WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB : ContDiff ℝ ∞ B)
     (hcompact : HasCompactSupport B) (hnonneg : ∀ s, 0 ≤ B s) {U : Set Space} (hU : IsOpen U)
     (htrace : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ s ∈ tsupport B, verticalGraph B t s ∈ U) :
@@ -204,6 +223,8 @@ theorem WhitneyPairModel.exists_graph_motion_cutoff {B : ℝ → ℝ} (hB : Cont
   change η (t, verticalGraph B t s) * B s = B s
   rw [hηpoint, one_mul]
 
+/-- The data of a graph motion of the planar model: a height function above the bigon and a cut-off
+tracking it, both compactly supported in a prescribed open set. -/
 structure WhitneyPairModel.GraphMotionData (h : ℝ) (U : Set Space) where
   height : ℝ → ℝ
   smooth_height : ContDiff ℝ ∞ height
@@ -218,6 +239,7 @@ structure WhitneyPairModel.GraphMotionData (h : ℝ) (U : Set Space) where
   nonneg_cutoff : ∀ p, 0 ≤ cutoff p
   tracking : ∀ t ∈ Set.Icc (0 : ℝ) 1, ∀ s, cutoff (t, verticalGraph height t s) = height s
 
+/-- Graph-motion data exist over any open neighbourhood of the image of the bigon. -/
 theorem WhitneyPairModel.nonempty_graphMotionData {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : Set.MapsTo bigonEmbedding (bigon h) U) :
     Nonempty (GraphMotionData h U) := by
@@ -238,17 +260,22 @@ theorem WhitneyPairModel.nonempty_graphMotionData {h : ℝ} (hh : 0 < h) {U : Se
         nonneg_cutoff := hβnonneg
         tracking := hβtrack }⟩
 
+/-- The vertical vector `((0, δ), 0)` of the model, of norm `δ`. -/
 def WhitneyPairModel.verticalVector (δ : ℝ) : Space :=
   ((0, δ), 0)
 
+/-- The vertical vector of a nonnegative parameter has that parameter as its norm. -/
 theorem WhitneyPairModel.norm_verticalVector {δ : ℝ} (hδ : 0 ≤ δ) :
     ‖verticalVector δ‖ = δ := by
   simp [verticalVector, Prod.norm_def, Real.norm_eq_abs, abs_of_nonneg hδ, hδ]
 
+/-- One step of the graph motion: the translation by the cut-off weight at time `i δ` times the
+vertical vector `δ`, smoothed in the time parameter. -/
 def WhitneyPairModel.graphStep (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (p : ℝ × Space) :
     Space :=
   p.2 + β ((i : ℝ) * δ, p.2) • (Real.smoothTransition p.1 • verticalVector δ)
 
+/-- Each step of the graph motion is smooth. -/
 theorem WhitneyPairModel.contDiff_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
     (δ : ℝ) (i : ℕ) : ContDiff ℝ ∞ (graphStep β δ i) := by
   have hθ : ContDiff ℝ ∞ Real.smoothTransition := Real.smoothTransition.contDiff
@@ -257,16 +284,20 @@ theorem WhitneyPairModel.contDiff_graphStep {β : ℝ × Space → ℝ} (hβ : C
       ((hβ.comp (contDiff_const.prodMk contDiff_snd)).smul
         ((hθ.comp contDiff_fst).smul contDiff_const))
 
+/-- Each step is the identity at time zero. -/
 theorem WhitneyPairModel.graphStep_zero (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (z : Space) :
     graphStep β δ i (0, z) = z := by
   simp only [graphStep, Real.smoothTransition.zero, zero_smul, smul_zero, add_zero]
 
+/-- Each step leaves the first horizontal coordinate unchanged. -/
 theorem WhitneyPairModel.graphStep_horizontal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     (z : Space) : (graphStep β δ i (t, z)).1.1 = z.1.1 := by simp [graphStep, verticalVector]
 
+/-- Each step leaves the normal coordinates unchanged. -/
 theorem WhitneyPairModel.graphStep_normal (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     (z : Space) : (graphStep β δ i (t, z)).2 = z.2 := by simp [graphStep, verticalVector]
 
+/-- Each step is the identity outside the support of the cut-off. -/
 theorem WhitneyPairModel.graphStep_fixed (β : ℝ × Space → ℝ) (δ : ℝ) (i : ℕ) (t : ℝ)
     {z : Space} (hz : z ∉ Prod.snd '' tsupport β) : graphStep β δ i (t, z) = z := by
   have hzero : β ((i : ℝ) * δ, z) = 0 := by
@@ -274,6 +305,8 @@ theorem WhitneyPairModel.graphStep_fixed (β : ℝ × Space → ℝ) (δ : ℝ) 
     exact hz ⟨((i : ℝ) * δ, z), subset_tsupport β hne, rfl⟩
   simp only [graphStep, hzero, zero_smul, add_zero]
 
+/-- Below a uniform radius, every step of the graph motion is realised by a diffeomorphism of the
+model. -/
 theorem WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → ℝ} (hβ : ContDiff ℝ ∞ β)
     (hcompact : HasCompactSupport β) :
     ∃ ε : ℝ,
@@ -297,6 +330,8 @@ theorem WhitneyPairModel.exists_radius_graphStep {β : ℝ × Space → ℝ} (h�
     hsmall ((i : ℝ) * δ) (Real.smoothTransition t • verticalVector δ) (hnorm.trans_lt hδε)
   exact ⟨d, hd⟩
 
+/-- The tracking property of the steps: the step at index `i` carries the vertical graph at time `i
+δ` to the vertical graph at time `(i + 1) δ`. -/
 theorem WhitneyPairModel.graphStep_tracking {h : ℝ} {U : Set Space}
     (g : GraphMotionData h U) {δ : ℝ} {i : ℕ} (hi : (i : ℝ) * δ ∈ Set.Icc (0 : ℝ) 1) (s : ℝ) :
     graphStep g.cutoff δ i (1, verticalGraph g.height ((i : ℝ) * δ) s) =
@@ -305,6 +340,9 @@ theorem WhitneyPairModel.graphStep_tracking {h : ℝ} {U : Set Space}
   ext <;> simp [verticalGraph, verticalVector, smul_eq_mul]
   ring
 
+/-- A graph motion of the planar model: a compactly supported smooth ambient isotopy preserving the
+horizontal and normal coordinates and pushing the lower sheet onto the vertical graph of the
+height function. -/
 structure WhitneyPairModel.GraphMotion {h : ℝ} {U : Set Space}
     (g : GraphMotionData h U) where
   support : Set Space
@@ -320,6 +358,8 @@ structure WhitneyPairModel.GraphMotion {h : ℝ} {U : Set Space}
   normal : ∀ t z, (family (t, z)).2 = z.2
   tracking : ∀ s, family (1, firstSheet (s, 0)) = verticalGraph g.height 1 s
 
+/-- Graph-motion data give rise to a graph motion: iterating the steps of a sufficiently fine
+subdivision. -/
 theorem WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
     {U : Set WhitneyPairModel.Space} (g : WhitneyPairModel.GraphMotionData h U) :
     Nonempty (WhitneyPairModel.GraphMotion g) := by
@@ -393,6 +433,8 @@ theorem WhitneyPairModel.GraphMotionData.nonempty_graphMotion {h : ℝ}
       SmallPerturbation.composeFamily B N (1, WhitneyPairModel.firstSheet (s, 0)) = _
     rw [htrack N le_rfl s, htotal]
 
+/-- After the graph motion the lower sheet has been pushed above the upper sheet, so the two no
+longer meet. -/
 theorem WhitneyPairModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
     {U : Set WhitneyPairModel.Space} {g : WhitneyPairModel.GraphMotionData h U}
     (a : WhitneyPairModel.GraphMotion g) (hh : 0 < h) (p q : WhitneyPairModel.Sheet) :
@@ -417,56 +459,75 @@ theorem WhitneyPairModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
     abs_le.mpr ⟨by nlinarith [sq_nonneg (q.1 + 1)], by nlinarith [sq_nonneg (q.1 - 1)]⟩
   exact (g.above q.1 habs).ne ht.symm
 
+/-- The sheet direction of the lower sheet in the rank-three model: a line. -/
 abbrev RankThreeWhitneyModel.Lower :=
   EuclideanSpace ℝ (Fin 1)
 
+/-- The sheet direction of the upper sheet in the rank-three model: a plane. -/
 abbrev RankThreeWhitneyModel.Upper :=
   EuclideanSpace ℝ (Fin 2)
 
+/-- The ambient model of the rank-three Whitney situation: the bigon plane times the lower and upper
+normal directions. -/
 abbrev RankThreeWhitneyModel.Space :=
   (ℝ × ℝ) × (Lower × Upper)
 
+/-- The parameter space of the lower sheet: a time coordinate and the lower sheet direction. -/
 abbrev RankThreeWhitneyModel.LowerSheet :=
   ℝ × Lower
 
+/-- The parameter space of the upper sheet: a time coordinate and the upper sheet direction. -/
 abbrev RankThreeWhitneyModel.UpperSheet :=
   ℝ × Upper
 
+/-- The lower sheet of the rank-three model: the sheet through the lower boundary arc, spread in the
+lower direction. -/
 def RankThreeWhitneyModel.firstSheet (p : LowerSheet) : Space :=
   ((p.1, 0), (p.2, 0))
 
+/-- The upper sheet of the rank-three model: the sheet through the parabolic boundary arc, spread in
+the upper direction. -/
 def RankThreeWhitneyModel.secondSheet (h : ℝ) (p : UpperSheet) : Space :=
   ((p.1, h * (1 - p.1 ^ 2)), (0, p.2))
 
+/-- The lower sheet is smooth. -/
 theorem RankThreeWhitneyModel.contDiff_firstSheet : ContDiff ℝ ∞ firstSheet := by
   unfold firstSheet
   fun_prop
 
+/-- The upper sheet is smooth. -/
 theorem RankThreeWhitneyModel.contDiff_secondSheet (h : ℝ) : ContDiff ℝ ∞ (secondSheet h) :=
   by
   unfold secondSheet
   fun_prop
 
+/-- The derivative of the lower sheet parametrisation. -/
 def RankThreeWhitneyModel.firstSheetDerivative : LowerSheet →L[ℝ] Space :=
   ((ContinuousLinearMap.fst ℝ ℝ Lower).prod 0).prod ((ContinuousLinearMap.snd ℝ ℝ Lower).prod 0)
 
+/-- The derivative of the upper sheet parametrisation at the time `s`, whose vertical component is
+the slope `-2 h s` of the parabola. -/
 def RankThreeWhitneyModel.secondSheetDerivative (h s : ℝ) : UpperSheet →L[ℝ] Space :=
   ((ContinuousLinearMap.fst ℝ ℝ Upper).prod
         ((-2 * h * s) • ContinuousLinearMap.fst ℝ ℝ Upper)).prod
     ((0 : UpperSheet →L[ℝ] Lower).prod (ContinuousLinearMap.snd ℝ ℝ Upper))
 
+/-- Value of the derivative of the lower sheet parametrisation. -/
 theorem RankThreeWhitneyModel.firstSheetDerivative_apply (p : LowerSheet) :
     firstSheetDerivative p = ((p.1, 0), (p.2, 0)) :=
   rfl
 
+/-- Value of the derivative of the upper sheet parametrisation. -/
 theorem RankThreeWhitneyModel.secondSheetDerivative_apply (h s : ℝ) (p : UpperSheet) :
     secondSheetDerivative h s p = ((p.1, (-2 * h * s) * p.1), (0, p.2)) :=
   rfl
 
+/-- The lower sheet parametrisation has the stated derivative. -/
 theorem RankThreeWhitneyModel.hasFDerivAt_firstSheet (p : LowerSheet) :
     HasFDerivAt firstSheet firstSheetDerivative p :=
   firstSheetDerivative.hasFDerivAt
 
+/-- The upper sheet parametrisation has the stated derivative. -/
 theorem RankThreeWhitneyModel.hasFDerivAt_secondSheet (h : ℝ) (p : UpperSheet) :
     HasFDerivAt (secondSheet h) (secondSheetDerivative h p.1) p := by
   have hs := (ContinuousLinearMap.fst ℝ ℝ Upper).hasFDerivAt (x := p)
@@ -482,55 +543,71 @@ theorem RankThreeWhitneyModel.hasFDerivAt_secondSheet (h : ℝ) (p : UpperSheet)
   norm_num [two_smul]
   ring
 
+/-- A linear identification of the lower direction plus a line with the plane. -/
 def RankThreeWhitneyModel.lowerSplit : (Lower × ℝ) ≃L[ℝ] WhitneyPairModel.Plane :=
   ContinuousLinearEquiv.ofFinrankEq
     (by simp [Lower, WhitneyPairModel.Plane, Module.finrank_prod])
 
+/-- The inclusion of the lower direction into the plane. -/
 def RankThreeWhitneyModel.lowerInclude : Lower →L[ℝ] WhitneyPairModel.Plane :=
   lowerSplit.toContinuousLinearMap.comp (ContinuousLinearMap.inl ℝ Lower ℝ)
 
+/-- The projection of the plane onto the lower direction. -/
 def RankThreeWhitneyModel.lowerProject : WhitneyPairModel.Plane →L[ℝ] Lower :=
   (ContinuousLinearMap.fst ℝ Lower ℝ).comp lowerSplit.symm.toContinuousLinearMap
 
+/-- The projection is a left inverse of the inclusion of the lower direction. -/
 theorem RankThreeWhitneyModel.lowerProject_include (u : Lower) :
     lowerProject (lowerInclude u) = u := by
   change (lowerSplit.symm (lowerSplit (u, 0))).1 = u
   rw [lowerSplit.symm_apply_apply]
 
+/-- The inclusion of the pair of normal directions into the pair of planes of the planar model. -/
 def RankThreeWhitneyModel.normalInclude :
     (Lower × Upper) →L[ℝ] (WhitneyPairModel.Plane × WhitneyPairModel.Plane) :=
   lowerInclude.prodMap (ContinuousLinearMap.id ℝ Upper)
 
+/-- The projection of the pair of planes onto the pair of normal directions. -/
 def RankThreeWhitneyModel.normalProject :
     (WhitneyPairModel.Plane × WhitneyPairModel.Plane) →L[ℝ] (Lower × Upper) :=
   lowerProject.prodMap (ContinuousLinearMap.id ℝ Upper)
 
+/-- The normal projection is a left inverse of the normal inclusion. -/
 theorem RankThreeWhitneyModel.normalProject_include :
     Function.LeftInverse normalProject normalInclude := fun z =>
   Prod.ext (lowerProject_include z.1) rfl
 
+/-- The inclusion of the rank-three model into the planar model. -/
 def RankThreeWhitneyModel.expand : Space →L[ℝ] WhitneyPairModel.Space :=
   FiberRestriction.embed normalInclude
 
+/-- The projection of the planar model onto the rank-three model. -/
 def RankThreeWhitneyModel.collapse : WhitneyPairModel.Space →L[ℝ] Space :=
   FiberRestriction.project normalProject
 
+/-- The projection is a left inverse of the inclusion. -/
 theorem RankThreeWhitneyModel.collapse_expand (z : Space) : collapse (expand z) = z :=
   FiberRestriction.project_embed normalInclude normalProject normalProject_include z
 
+/-- The inclusion is the identity on the zero section. -/
 theorem RankThreeWhitneyModel.expand_zero (p : ℝ × ℝ) : expand (p, 0) = (p, 0) :=
   Prod.ext rfl normalInclude.map_zero
 
+/-- The projection is the identity on the zero section. -/
 theorem RankThreeWhitneyModel.collapse_zero (p : ℝ × ℝ) : collapse (p, 0) = (p, 0) :=
   Prod.ext rfl normalProject.map_zero
 
+/-- The vertical graph of the height function, read in the rank-three model. -/
 def RankThreeWhitneyModel.verticalGraph (B : ℝ → ℝ) (t s : ℝ) : Space :=
   ((s, t * B s), 0)
 
+/-- The projection carries the planar vertical graph to the rank-three one. -/
 theorem RankThreeWhitneyModel.collapse_verticalGraph (B : ℝ → ℝ) (t s : ℝ) :
     collapse (WhitneyPairModel.verticalGraph B t s) = verticalGraph B t s :=
   collapse_zero _
 
+/-- A graph motion of the rank-three model: the analogue of `WhitneyPairModel.GraphMotion` in the
+model with the two normal directions. -/
 structure RankThreeWhitneyModel.GraphMotion (h : ℝ) (U : Set Space) where
   height : ℝ → ℝ
   nonneg_height : ∀ s, 0 ≤ height s
@@ -548,6 +625,8 @@ structure RankThreeWhitneyModel.GraphMotion (h : ℝ) (U : Set Space) where
   normal : ∀ t z, (family (t, z)).2 = z.2
   tracking : ∀ s, family (1, firstSheet (s, 0)) = verticalGraph height 1 s
 
+/-- A graph motion of the rank-three model exists over any open neighbourhood of the zero section of
+the bigon. -/
 theorem RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) {U : Set Space}
     (hU : IsOpen U) (hKU : ∀ p ∈ WhitneyPairModel.bigon h, (p, (0 : Lower × Upper)) ∈ U) :
     Nonempty (GraphMotion h U) := by
@@ -614,6 +693,7 @@ theorem RankThreeWhitneyModel.nonempty_graphMotion {h : ℝ} (hh : 0 < h) {U : S
     change collapse (a.family (1, expand (firstSheet (s, 0)))) = verticalGraph g.height 1 s
     rw [he, a.tracking, collapse_verticalGraph]
 
+/-- After the rank-three graph motion the lower sheet has been pushed off the upper sheet. -/
 theorem RankThreeWhitneyModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
     {U : Set RankThreeWhitneyModel.Space} (a : RankThreeWhitneyModel.GraphMotion h U)
     (hh : 0 < h) (p : RankThreeWhitneyModel.LowerSheet)
@@ -641,6 +721,9 @@ theorem RankThreeWhitneyModel.GraphMotion.firstSheet_ne_secondSheet {h : ℝ}
     abs_le.mpr ⟨by nlinarith [sq_nonneg (q.1 + 1)], by nlinarith [sq_nonneg (q.1 - 1)]⟩
   exact (a.above q.1 habs).ne ht.symm
 
+/-- A tangent-adapted chart of a rank-three tubular bigon: a chart of the tubular neighbourhood in
+the coordinates of the rank-three model whose differential along the bigon is a sheared block
+matching the two sheet differentials on the two boundary arcs. -/
 structure TubularBigon.RankThreeTangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -687,6 +770,8 @@ structure TubularBigon.RankThreeTangentAdaptedChart {E M : Type*} [NormedAddComm
       HasFDerivAt (tube.chart.symm ∘ chart) (FrameField.shearedBlock (base p) (normal p))
         (p, 0)
 
+/-- The Whitney condition gives a tangent-adapted chart: if the two corner intersection signs are
+opposite, a rank-three tangent-adapted chart exists. -/
 theorem TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -796,6 +881,8 @@ theorem TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_si
   intro p
   rw [hformula, FrameField.shearedMap_zero, tube.zero_section]
 
+/-- The tangent-adapted chart in the planar model: the variant of `RankThreeTangentAdaptedChart`
+whose two sheet directions are planes. -/
 structure TubularBigon.TangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -842,10 +929,12 @@ structure TubularBigon.TangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
       HasFDerivAt (tube.chart.symm ∘ chart) (FrameField.shearedBlock (base p) (normal p))
         (p, 0)
 
+/-- The derivative of the affine retiming `s ↦ (s + 1) / 2` of the time coordinate. -/
 def WhitneyPairModel.halfTimeDerivative {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : (ℝ × A) →L[ℝ] (ℝ × A) :=
   (((1 / 2 : ℝ) • ContinuousLinearMap.fst ℝ ℝ A)).prod (ContinuousLinearMap.snd ℝ ℝ A)
 
+/-- The retiming derivative halves the time coordinate and leaves the sheet directions alone. -/
 theorem WhitneyPairModel.halfTimeDerivative_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (v : (ℝ × A)) : halfTimeDerivative v = (v.1 / 2, v.2) := by
   apply Prod.ext
@@ -853,10 +942,13 @@ theorem WhitneyPairModel.halfTimeDerivative_apply {A : Type*} [NormedAddCommGrou
     ring
   · rfl
 
+/-- The affine change of time coordinate `s ↦ (s + 1) / 2` carrying the boundary-arc parameter `[-1,
+1]` to `[0, 1]`. -/
 def WhitneyPairModel.sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : (ℝ × A) :=
   halfTimeDerivative p + ((1 / 2 : ℝ), 0)
 
+/-- Value of the retiming of the time coordinate. -/
 theorem WhitneyPairModel.sheetTimeCoordinates_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : sheetTimeCoordinates p = ((p.1 + 1) / 2, p.2) := by
   rw [sheetTimeCoordinates, halfTimeDerivative_apply]
@@ -865,6 +957,7 @@ theorem WhitneyPairModel.sheetTimeCoordinates_apply {A : Type*} [NormedAddCommGr
     ring
   · exact add_zero _
 
+/-- The retiming sends the boundary-arc parameter `2 t - 1` to `t`. -/
 theorem WhitneyPairModel.sheetTimeCoordinates_center {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (t : ℝ) : sheetTimeCoordinates (2 * t - 1, (0 : A)) = (t, 0) := by
   rw [sheetTimeCoordinates_apply]
@@ -873,14 +966,18 @@ theorem WhitneyPairModel.sheetTimeCoordinates_center {A : Type*} [NormedAddCommG
     ring
   · rfl
 
+/-- The retiming is smooth. -/
 theorem WhitneyPairModel.contDiff_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : ContDiff ℝ ∞ (sheetTimeCoordinates (A := A)) :=
   (halfTimeDerivative (A := A)).contDiff.add contDiff_const
 
+/-- The retiming has derivative `halfTimeDerivative` everywhere. -/
 theorem WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : (ℝ × A)) : HasFDerivAt sheetTimeCoordinates halfTimeDerivative p :=
   halfTimeDerivative.hasFDerivAt.add_const ((1 / 2 : ℝ), (0 : A))
 
+/-- The domain of the transition from the strip chart of a sheet to a tubular chart, read along the
+sheet directions. -/
 def StripNormalData.sheetTransitionDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -888,6 +985,7 @@ def StripNormalData.sheetTransitionDomain {A B Z E M : Type*} [NormedAddCommGrou
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) : Set (ℝ × A) :=
   (ContinuousLinearMap.inl ℝ (ℝ × A) B) ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target)
 
+/-- The domain of the sheet transition is open. -/
 theorem StripNormalData.isOpen_sheetTransitionDomain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -899,6 +997,7 @@ theorem StripNormalData.isOpen_sheetTransitionDomain {A B Z E M : Type*}
     d.chart.contMDiffOn_toFun.continuousOn.isOpen_inter_preimage d.chart.open_source Ψ.open_target
   exact hO.preimage (ContinuousLinearMap.inl ℝ (ℝ × A) B).continuous
 
+/-- The sheet transition is smooth on its domain. -/
 theorem StripNormalData.contDiffOn_sheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -911,6 +1010,7 @@ theorem StripNormalData.contDiffOn_sheetTransition {A B Z E M : Type*}
         (fun _ hp => hp.2)).contDiffOn
   exact hfull.comp (ContinuousLinearMap.inl ℝ (ℝ × A) B).contDiff.contDiffOn (fun _ hp => hp)
 
+/-- The sheet transition read in the boundary-arc time parameter. -/
 def StripNormalData.retimedSheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -919,6 +1019,7 @@ def StripNormalData.retimedSheetTransition {A B Z E M : Type*} [NormedAddCommGro
     (ℝ × A) → ((ℝ × ℝ) × Z) :=
   d.sheetTransition Ψ ∘ WhitneyPairModel.sheetTimeCoordinates
 
+/-- The domain of the retimed sheet transition. -/
 def StripNormalData.retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -926,6 +1027,7 @@ def StripNormalData.retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     (Ψ : PartialDiffeomorph 𝓘(ℝ, (ℝ × ℝ) × Z) 𝓘(ℝ, E) ((ℝ × ℝ) × Z) M ∞) : Set (ℝ × A) :=
   WhitneyPairModel.sheetTimeCoordinates ⁻¹' d.sheetTransitionDomain Ψ
 
+/-- The domain of the retimed sheet transition is open. -/
 theorem StripNormalData.isOpen_retimedDomain {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -935,6 +1037,7 @@ theorem StripNormalData.isOpen_retimedDomain {A B Z E M : Type*} [NormedAddCommG
   (d.isOpen_sheetTransitionDomain Ψ).preimage
     WhitneyPairModel.contDiff_sheetTimeCoordinates.continuous
 
+/-- The retimed sheet transition is smooth on its domain. -/
 theorem StripNormalData.contDiffOn_retimedSheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -945,6 +1048,8 @@ theorem StripNormalData.contDiffOn_retimedSheetTransition {A B Z E M : Type*}
   (d.contDiffOn_sheetTransition Ψ).comp
     WhitneyPairModel.contDiff_sheetTimeCoordinates.contDiffOn (fun _ hp => hp)
 
+/-- The centre of the strip at a parameter of `[0, 1]` lies in the domain of the retimed transition.
+The centre of the strip at a parameter of `[0, 1]` lies in the domain of the retimed transition. -/
 theorem StripNormalData.retimedDomain_contains_center {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -958,6 +1063,8 @@ theorem StripNormalData.retimedDomain_contains_center {A B Z E M : Type*}
   rw [WhitneyPairModel.sheetTimeCoordinates_center]
   exact ⟨d.line ht, htarget⟩
 
+/-- The derivative of the retimed sheet transition at a centre point is the sheet differential
+composed with the retiming derivative. -/
 theorem StripNormalData.hasFDerivAt_retimedSheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -976,6 +1083,8 @@ theorem StripNormalData.hasFDerivAt_retimedSheetTransition {A B Z E M : Type*}
     exact ((d.contDiffAt_sheetTransition Ψ ht htarget).differentiableAt (by simp)).hasFDerivAt
   exact hd.comp (2 * t - 1, (0 : A)) (WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates _)
 
+/-- Along the lower boundary arc, the sheared block of a tangent-adapted chart restricts to the
+retimed sheet differential of the lower sheet. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.lower_model_tangent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1022,6 +1131,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.lower_model_tangent {E M : Typ
       congr 1
       simp
 
+/-- Along the upper boundary arc, the sheared block of a tangent-adapted chart restricts to the
+retimed sheet differential of the upper sheet. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.upper_model_tangent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1074,28 +1185,35 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.upper_model_tangent {E M : Typ
       congr 1
       simp
 
+/-- The projection of a sheet parameter to its centre: `(s, u) ↦ (s, 0)`. -/
 def SheetCorrection.centerProjection {A : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A] :
     (ℝ × A) →L[ℝ] (ℝ × A) :=
   (ContinuousLinearMap.fst ℝ ℝ A).prod (0 : (ℝ × A) →L[ℝ] A)
 
+/-- Value of the centre projection. -/
 theorem SheetCorrection.centerProjection_apply {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (p : ℝ × A) : centerProjection p = (p.1, 0) :=
   rfl
 
+/-- The correction of `G` towards `R` along a sheet: the difference `R - G` with its value at the
+centre subtracted, so that it vanishes on the centre line. -/
 def SheetCorrection.centeredCorrection {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] (R G : (ℝ × A) → F) (p : ℝ × A) : F :=
   (R p - G p) - (R (centerProjection p) - G (centerProjection p))
 
+/-- The centred correction vanishes on the centre line. -/
 theorem SheetCorrection.centeredCorrection_zero {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] (R G : (ℝ × A) → F) (s : ℝ) :
     centeredCorrection R G (s, 0) = 0 := by
   simp only [centeredCorrection, centerProjection_apply, sub_self]
 
+/-- Where `R` and `G` agree at the centre, the centred correction is simply `R - G`. -/
 theorem SheetCorrection.centeredCorrection_eq_sub {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] {R G : (ℝ × A) → F} {p : ℝ × A}
     (hcenter : R (p.1, 0) = G (p.1, 0)) : centeredCorrection R G p = R p - G p := by
   simp only [centeredCorrection, centerProjection_apply, hcenter, sub_self, sub_zero]
 
+/-- The centred correction is smooth where `R` and `G` are. -/
 theorem SheetCorrection.contDiffOn_centeredCorrection {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F] {R G : (ℝ × A) → F}
     {D : Set (ℝ × A)} (hR : ContDiffOn ℝ ∞ R D) (hG : ContDiffOn ℝ ∞ G D) :
@@ -1103,6 +1221,8 @@ theorem SheetCorrection.contDiffOn_centeredCorrection {A F : Type*} [NormedAddCo
   ((hR.sub hG).mono Set.inter_subset_left).sub
     ((hR.sub hG).comp (centerProjection (A := A)).contDiff.contDiffOn (fun _ hp => hp.2))
 
+/-- If `R` and `G` have the same derivative at a centre point, the centred correction has vanishing
+derivative there. -/
 theorem SheetCorrection.hasFDerivAt_centeredCorrection_zero {A F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {R G : (ℝ × A) → F} {L : (ℝ × A) →L[ℝ] F} {s : ℝ} (hR : HasFDerivAt R L (s, 0))
@@ -1119,21 +1239,28 @@ theorem SheetCorrection.hasFDerivAt_centeredCorrection_zero {A F : Type*}
     | rfl
     | simp only [ContinuousLinearMap.zero_comp, sub_self]
 
+/-- The lower sheet coordinates of a point of the rank-three model: its time coordinate and its
+lower normal coordinate. -/
 def RankThreeWhitneyModel.lowerSheetCoordinates : Space →L[ℝ] LowerSheet :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).comp (ContinuousLinearMap.fst ℝ (ℝ × ℝ) (Lower × Upper))).prod
     ((ContinuousLinearMap.fst ℝ Lower Upper).comp
       (ContinuousLinearMap.snd ℝ (ℝ × ℝ) (Lower × Upper)))
 
+/-- The upper sheet coordinates of a point of the rank-three model: its time coordinate and its
+upper normal coordinate. -/
 def RankThreeWhitneyModel.upperSheetCoordinates : Space →L[ℝ] UpperSheet :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).comp (ContinuousLinearMap.fst ℝ (ℝ × ℝ) (Lower × Upper))).prod
     ((ContinuousLinearMap.snd ℝ Lower Upper).comp
       (ContinuousLinearMap.snd ℝ (ℝ × ℝ) (Lower × Upper)))
 
+/-- The map `G` corrected along both sheets so as to agree with the prescribed parametrisations
+`Rlo` and `Rhi` there, without changing it on the zero section. -/
 def RankThreeWhitneyModel.correctedSheetMap {F : Type*} [NormedAddCommGroup F]
     (G : Space → F) (Rlo : LowerSheet → F) (Rhi : UpperSheet → F) (h : ℝ) (p : Space) : F :=
   G p + SheetCorrection.centeredCorrection Rlo (G ∘ firstSheet) (lowerSheetCoordinates p) +
     SheetCorrection.centeredCorrection Rhi (G ∘ secondSheet h) (upperSheetCoordinates p)
 
+/-- The corrected map agrees with `G` on the zero section of the model. -/
 theorem RankThreeWhitneyModel.correctedSheetMap_zero {F : Type*} [NormedAddCommGroup F]
     (G : Space → F) (Rlo : LowerSheet → F) (Rhi : UpperSheet → F) (h : ℝ) (p : ℝ × ℝ) :
     correctedSheetMap G Rlo Rhi h (p, 0) = G (p, 0) := by
@@ -1144,6 +1271,7 @@ theorem RankThreeWhitneyModel.correctedSheetMap_zero {F : Type*} [NormedAddCommG
   rw [SheetCorrection.centeredCorrection_zero,
     SheetCorrection.centeredCorrection_zero, add_zero, add_zero]
 
+/-- On the lower sheet the corrected map is the prescribed lower parametrisation. -/
 theorem RankThreeWhitneyModel.correctedSheetMap_lower {F : Type*} [NormedAddCommGroup F]
     {G : Space → F} {Rlo : LowerSheet → F} {Rhi : UpperSheet → F} {h : ℝ} (q : LowerSheet)
     (hcenter : Rlo (q.1, 0) = G (firstSheet (q.1, 0))) :
@@ -1155,6 +1283,7 @@ theorem RankThreeWhitneyModel.correctedSheetMap_lower {F : Type*} [NormedAddComm
   dsimp only [Function.comp_apply]
   abel
 
+/-- On the upper sheet the corrected map is the prescribed upper parametrisation. -/
 theorem RankThreeWhitneyModel.correctedSheetMap_upper {F : Type*} [NormedAddCommGroup F]
     {G : Space → F} {Rlo : LowerSheet → F} {Rhi : UpperSheet → F} {h : ℝ} (q : UpperSheet)
     (hcenter : Rhi (q.1, 0) = G (secondSheet h (q.1, 0))) :
@@ -1166,12 +1295,15 @@ theorem RankThreeWhitneyModel.correctedSheetMap_upper {F : Type*} [NormedAddComm
   dsimp only [Function.comp_apply]
   abel
 
+/-- The domain of the correction: the points whose sheet coordinates and their centres lie in the
+two sheet domains. -/
 def RankThreeWhitneyModel.correctionDomain (U : Set Space) (Dlo : Set LowerSheet)
     (Dhi : Set UpperSheet) : Set Space :=
   U ∩
     (lowerSheetCoordinates ⁻¹' (Dlo ∩ SheetCorrection.centerProjection ⁻¹' Dlo) ∩
       upperSheetCoordinates ⁻¹' (Dhi ∩ SheetCorrection.centerProjection ⁻¹' Dhi))
 
+/-- The correction domain is open. -/
 theorem RankThreeWhitneyModel.isOpen_correctionDomain {U : Set Space} {Dlo : Set LowerSheet}
     {Dhi : Set UpperSheet} (hU : IsOpen U) (hDlo : IsOpen Dlo) (hDhi : IsOpen Dhi) :
     IsOpen (correctionDomain U Dlo Dhi) :=
@@ -1181,6 +1313,7 @@ theorem RankThreeWhitneyModel.isOpen_correctionDomain {U : Set Space} {Dlo : Set
       ((hDhi.inter (hDhi.preimage SheetCorrection.centerProjection.continuous)).preimage
         upperSheetCoordinates.continuous))
 
+/-- The corrected map is smooth on the correction domain. -/
 theorem RankThreeWhitneyModel.contDiffOn_correctedSheetMap {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {G : Space → F} {Rlo : LowerSheet → F}
     {Rhi : UpperSheet → F} {h : ℝ} {U : Set Space} {Dlo : Set LowerSheet} {Dhi : Set UpperSheet}
@@ -1194,6 +1327,8 @@ theorem RankThreeWhitneyModel.contDiffOn_correctedSheetMap {F : Type*}
     ((SheetCorrection.contDiffOn_centeredCorrection hRhi hGhi).comp
       upperSheetCoordinates.contDiff.contDiffOn (fun _ hp => hp.2.2))
 
+/-- At a point of the zero section the corrected map has the same derivative as the uncorrected one,
+the two corrections having vanishing derivative there. -/
 theorem RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {G : Space → F} {Rlo : LowerSheet → F}
     {Rhi : UpperSheet → F} {h : ℝ} {p : ℝ × ℝ} {L : Space →L[ℝ] F} {Llo : LowerSheet →L[ℝ] F}
@@ -1220,6 +1355,8 @@ theorem RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero {F : Type*}
     | rfl
     | simp only [add_zero]
 
+/-- The sheared coordinates of a tangent-adapted chart: the model map of its base and normal blocks.
+The sheared coordinates of a tangent-adapted chart: the model map of its base and normal blocks. -/
 def TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1236,6 +1373,8 @@ def TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates {E M : Type*}
     RankThreeWhitneyModel.Space → ((ℝ × ℝ) × EuclideanSpace ℝ (Fin 3)) :=
   FrameField.shearedMap c.base c.normal
 
+/-- The corrected coordinates: the sheared coordinates corrected along the two sheets to agree with
+the two retimed sheet transitions. -/
 def TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1253,6 +1392,7 @@ def TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates {E M : Type*}
   RankThreeWhitneyModel.correctedSheetMap c.shearedCoordinates
     (d.retimedSheetTransition tube.chart) (e.retimedSheetTransition tube.chart) h
 
+/-- The corrected coordinates are the identity on the zero section. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1270,6 +1410,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_zero {E M
   rw [correctedCoordinates, RankThreeWhitneyModel.correctedSheetMap_zero]
   exact FrameField.shearedMap_zero c.base c.normal p
 
+/-- At a point of the bigon, the sheared coordinates have the sheared block as derivative. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_shearedCoordinates_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1292,6 +1433,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_shearedCoordinates
     ((c.smooth_normal.contDiffAt (c.open_domain.mem_nhds (c.contains hp))).differentiableAt
       (by simp))
 
+/-- The restriction of the sheared coordinates to the lower sheet has the retimed lower sheet
+differential as derivative. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_lower {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1315,6 +1458,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_lower {E M
       (RankThreeWhitneyModel.hasFDerivAt_firstSheet (2 * t - 1, 0))
   rwa [WhitneyPairModel.lowerBoundaryArc, c.lower_model_tangent ht] at hd
 
+/-- The restriction of the sheared coordinates to the upper sheet has the retimed upper sheet
+differential as derivative. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_upper {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1338,6 +1483,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_upper {E M
       (RankThreeWhitneyModel.hasFDerivAt_secondSheet h (2 * t - 1, 0))
   rwa [c.upper_model_tangent ht] at hd
 
+/-- The corrected coordinates have the same derivative as the sheared ones at every point of the
+bigon. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoordinates_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1371,6 +1518,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoordinat
     RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero
       (c.hasFDerivAt_shearedCoordinates_zero hp) hRlo hGlo hRhi hGhi
 
+/-- Along the lower boundary arc, the retimed lower sheet transition and the sheared coordinates of
+the lower sheet have the same germ. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_lower_center_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1401,6 +1550,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_lower_center_germ {E M
   have hlin : 2 * ((s + 1) / 2) - 1 = s := by ring
   simp only [WhitneyPairModel.lowerBoundaryArc, hlin]
 
+/-- Along the upper boundary arc, the retimed upper sheet transition and the sheared coordinates of
+the upper sheet have the same germ. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_upper_center_germ {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1431,6 +1582,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.retimed_upper_center_germ {E M
   have hlin : 2 * ((s + 1) / 2) - 1 = s := by ring
   simp only [WhitneyPairModel.upperBoundaryArc, hlin]
 
+/-- The domain of the sheared coordinates: the points whose base coordinate lies in the domain of
+the chart blocks. -/
 def TubularBigon.RankThreeTangentAdaptedChart.shearedDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1447,6 +1600,7 @@ def TubularBigon.RankThreeTangentAdaptedChart.shearedDomain {E M : Type*}
     Set RankThreeWhitneyModel.Space :=
   Prod.fst ⁻¹' c.domain
 
+/-- The domain of the correction along the lower sheet. -/
 def TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1463,6 +1617,7 @@ def TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain {E M : Type*
     Set RankThreeWhitneyModel.LowerSheet :=
   d.retimedDomain tube.chart ∩ RankThreeWhitneyModel.firstSheet ⁻¹' c.shearedDomain
 
+/-- The domain of the correction along the upper sheet. -/
 def TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1479,6 +1634,8 @@ def TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain {E M : Type*
     Set RankThreeWhitneyModel.UpperSheet :=
   e.retimedDomain tube.chart ∩ RankThreeWhitneyModel.secondSheet h ⁻¹' c.shearedDomain
 
+/-- The interior of the set of times at which both sheet transitions agree with the sheared
+coordinates on the centre lines. -/
 def TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1499,6 +1656,8 @@ def TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes {E M : Type*}
         e.retimedSheetTransition tube.chart (s, 0) =
           c.shearedCoordinates (RankThreeWhitneyModel.secondSheet h (s, 0))}
 
+/-- The domain on which the corrected coordinates are defined and smooth: the correction domain
+intersected with the matching times. -/
 def TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1517,6 +1676,7 @@ def TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain {E M : Type*}
       c.upperCorrectionDomain ∩
     (fun p : RankThreeWhitneyModel.Space => p.1.1) ⁻¹' c.centerMatchingTimes
 
+/-- The domain of the sheared coordinates is open. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_shearedDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1532,6 +1692,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_shearedDomain {E M : Ty
     (c : TubularBigon.RankThreeTangentAdaptedChart tube d e) : IsOpen c.shearedDomain :=
   c.open_domain.preimage continuous_fst
 
+/-- The lower correction domain is open. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_lowerCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1549,6 +1710,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_lowerCorrectionDomain {
   (d.isOpen_retimedDomain tube.chart).inter
     (c.isOpen_shearedDomain.preimage RankThreeWhitneyModel.contDiff_firstSheet.continuous)
 
+/-- The upper correction domain is open. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_upperCorrectionDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1567,6 +1729,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_upperCorrectionDomain {
     (c.isOpen_shearedDomain.preimage
       (RankThreeWhitneyModel.contDiff_secondSheet h).continuous)
 
+/-- The domain of the corrected coordinates is open. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_nonlinearDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1584,6 +1747,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.isOpen_nonlinearDomain {E M : 
         c.isOpen_lowerCorrectionDomain c.isOpen_upperCorrectionDomain).inter
     (isOpen_interior.preimage (by fun_prop))
 
+/-- The corrected coordinates are smooth on their domain. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.contDiffOn_correctedCoordinates
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1609,6 +1773,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.contDiffOn_correctedCoordinate
             (fun _ hp => hp.2))).mono
       Set.inter_subset_left
 
+/-- Every parameter of `[0, 1]`, read as a boundary-arc time, is a matching time. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes_contains {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1626,6 +1791,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes_contains {
   mem_interior_iff_mem_nhds.mpr
     ((c.retimed_lower_center_germ ht).and (c.retimed_upper_center_germ ht))
 
+/-- The centre of the lower sheet at a parameter of `[0, 1]` lies in the lower correction domain. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain_contains_center
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1645,6 +1811,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain_contains
     ⟨d.retimedDomain_contains_center tube.chart ht (tube.lower_chart_center_mem_target d ht), ?_⟩
   exact c.contains (tube.lowerBoundaryArc_mem_bigon ht)
 
+/-- The centre of the upper sheet at a parameter of `[0, 1]` lies in the upper correction domain. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain_contains_center
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1664,6 +1831,7 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain_contains
     ⟨e.retimedDomain_contains_center tube.chart ht (tube.upper_chart_center_mem_target e ht), ?_⟩
   exact c.contains (tube.upperBoundaryArc_mem_bigon ht)
 
+/-- The zero section over the bigon lies in the domain of the corrected coordinates. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain_contains_zero
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1692,6 +1860,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain_contains_zero
   rw [htime] at hlo hhi hmatch
   exact ⟨⟨c.contains hp, ⟨hlo, hlo⟩, ⟨hhi, hhi⟩⟩, hmatch⟩
 
+/-- A point of the lower sheet in the domain has its retimed parameter in the source of the lower
+strip chart, with image in the target of the tubular chart. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.lower_native_parameters {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1712,6 +1882,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.lower_native_parameters {E M :
       d.chart (WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
   hq.1.2.1.1.1
 
+/-- A point of the upper sheet in the domain has its retimed parameter in the source of the upper
+strip chart, with image in the target of the tubular chart. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.upper_native_parameters {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1732,6 +1904,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.upper_native_parameters {E M :
       e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0) ∈ tube.chart.target :=
   hq.1.2.2.1.1
 
+/-- On the lower sheet the corrected coordinates are the retimed lower sheet transition: the chart
+is sheet-parametrised there. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_lower_of_mem_domain
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1762,6 +1936,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_lower_of_
       hJ
   exact RankThreeWhitneyModel.correctedSheetMap_lower q hm.1
 
+/-- On the upper sheet the corrected coordinates are the retimed upper sheet transition: the chart
+is sheet-parametrised there. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upper_of_mem_domain
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1792,6 +1968,9 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upper_of_
       hJ
   exact RankThreeWhitneyModel.correctedSheetMap_upper q hm.2
 
+/-- A sheet-parametrised chart of a rank-three tubular bigon: a chart in the coordinates of the
+rank-three model which on the two model sheets is the strip chart of the corresponding sheet,
+read in the retimed parameter. -/
 structure TubularBigon.RankThreeSheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -1832,6 +2011,7 @@ structure TubularBigon.RankThreeSheetParametrizedChart {E M : Type*} [NormedAddC
         chart (RankThreeWhitneyModel.secondSheet h q) =
           e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
 
+/-- The corrected coordinates of a tangent-adapted chart give a sheet-parametrised chart. -/
 theorem TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetParametrizedChart
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1927,6 +2107,8 @@ theorem TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetParamet
     rw [hformula, c.correctedCoordinates_upper_of_mem_domain (hχD hq.1)]
     exact tube.chart.right_inv' (c.upper_native_parameters (hχD hq.1)).2
 
+/-- The Whitney condition gives a sheet-parametrised chart: if the two corner intersection signs are
+opposite, a rank-three sheet-parametrised chart exists. -/
 theorem TubularBigon.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1944,6 +2126,7 @@ theorem TubularBigon.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner
   obtain ⟨c⟩ := tube.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs d e hsign
   exact c.nonempty_rankThreeSheetParametrizedChart
 
+/-- In a sheet-parametrised chart, the model lower sheet lands in the first sheet. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.lower_mem_sheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1963,6 +2146,7 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.lower_mem_sheet {E M : Type
   rw [c.lower q hq]
   exact (d.sheet _ (c.lower_source q hq)).mpr rfl
 
+/-- In a sheet-parametrised chart, the model upper sheet lands in the second sheet. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.upper_mem_sheet {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1982,6 +2166,8 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.upper_mem_sheet {E M : Type
   rw [c.upper q hq]
   exact (e.sheet _ (c.upper_source q hq)).mpr rfl
 
+/-- Sheet recognition: if a chart is parametrised by a sheet through a bijective reparametrisation,
+then near a sheet point the chart meets the sheet exactly in the image of the parametrisation. -/
 theorem SheetRecognition.eventually_mem_sheet_iff {W D B E M : Type*} [NormedAddCommGroup W]
     [NormedSpace ℝ W] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -2040,14 +2226,17 @@ theorem SheetRecognition.eventually_mem_sheet_iff {W D B E M : Type*} [NormedAdd
     rw [← hqz, (hparam q hq).2]
     exact (hsheet _ (hparam q hq).1).mpr rfl
 
+/-- The inverse `s ↦ 2 s - 1` of the retiming of the time coordinate. -/
 def WhitneyPairModel.sheetTimeInverse {A : Type*} (q : (ℝ × A)) : (ℝ × A) :=
   (2 * q.1 - 1, q.2)
 
+/-- The inverse retiming is smooth. -/
 theorem WhitneyPairModel.contDiff_sheetTimeInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : ContDiff ℝ ∞ (sheetTimeInverse (A := A)) := by
   unfold sheetTimeInverse
   fun_prop
 
+/-- The inverse retiming is a left inverse of the retiming. -/
 theorem WhitneyPairModel.sheetTimeInverse_leftInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : Function.LeftInverse (sheetTimeInverse (A := A)) sheetTimeCoordinates := by
   intro q
@@ -2057,6 +2246,7 @@ theorem WhitneyPairModel.sheetTimeInverse_leftInverse {A : Type*} [NormedAddComm
     ring
   · rfl
 
+/-- The inverse retiming is a right inverse of the retiming. -/
 theorem WhitneyPairModel.sheetTimeInverse_rightInverse {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] : Function.RightInverse (sheetTimeInverse (A := A)) sheetTimeCoordinates := by
   intro q
@@ -2066,6 +2256,8 @@ theorem WhitneyPairModel.sheetTimeInverse_rightInverse {A : Type*} [NormedAddCom
     ring
   · rfl
 
+/-- Near a point of the model lower sheet, a sheet-parametrised chart meets the first sheet exactly
+in the model lower sheet. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_lower_mem_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2091,6 +2283,8 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_lower_mem_iff {E
     WhitneyPairModel.sheetTimeInverse_rightInverse
     (fun q hq => ⟨c.lower_source q hq, c.lower q hq⟩) hq
 
+/-- Near a point of the model upper sheet, a sheet-parametrised chart meets the second sheet exactly
+in the model upper sheet. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_upper_mem_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2116,6 +2310,8 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.eventually_upper_mem_iff {E
     WhitneyPairModel.sheetTimeInverse_rightInverse
     (fun q hq => ⟨c.upper_source q hq, c.upper q hq⟩) hq
 
+/-- The sheet-parametrised chart in the planar model: the variant of
+`RankThreeSheetParametrizedChart` whose two sheet directions are planes. -/
 structure TubularBigon.SheetParametrizedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2155,6 +2351,7 @@ structure TubularBigon.SheetParametrizedChart {E M : Type*} [NormedAddCommGroup 
         chart (WhitneyPairModel.secondSheet h q) =
           e.chart (WhitneyPairModel.sheetTimeCoordinates q, 0)
 
+/-- The centre line of the bigon lies in the first sheet. -/
 theorem TubularBigon.lower_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2167,6 +2364,7 @@ theorem TubularBigon.lower_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
           (k.contains_strip ⟨ht, neg_nonpos.mpr k.width_pos.le, k.width_pos.le⟩)).mpr
       rfl
 
+/-- The upper boundary arc of the bigon lies in the second sheet. -/
 theorem TubularBigon.upper_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2180,6 +2378,8 @@ theorem TubularBigon.upper_center_mem_sheet {E M : Type*} [NormedAddCommGroup E]
           (l.contains_strip ⟨ht, neg_nonpos.mpr l.width_pos.le, l.width_pos.le⟩)).mpr
       rfl
 
+/-- In the bigon, the tubular map meets the first sheet exactly along the lower boundary arc `{y =
+0}`. -/
 theorem TubularBigon.map_mem_first_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2215,6 +2415,8 @@ theorem TubularBigon.map_mem_first_iff {E M : Type*} [NormedAddCommGroup E]
     rw [heq]
     exact tube.lower_center_mem_sheet ht
 
+/-- In the bigon, the tubular map meets the second sheet exactly along the parabolic upper boundary
+arc. -/
 theorem TubularBigon.map_mem_second_iff {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2255,6 +2457,8 @@ theorem TubularBigon.map_mem_second_iff {E M : Type*} [NormedAddCommGroup E]
     rw [heq]
     exact tube.upper_center_mem_sheet ht
 
+/-- If a chart meets a closed set exactly in a prescribed subset locally near that subset, and does
+so on a compact set, then it does so on an open neighbourhood of that compact set. -/
 theorem SheetRecognition.exists_open_recognition_domain {W E M : Type*}
     [NormedAddCommGroup W] [NormedSpace ℝ W] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (Φ : PartialDiffeomorph 𝓘(ℝ, W) 𝓘(ℝ, E) W M ∞)
@@ -2279,6 +2483,7 @@ theorem SheetRecognition.exists_open_recognition_domain {W E M : Type*}
     ⟨U, isOpen_interior, fun z hz => mem_interior_iff_mem_nhds.mpr (hnear z hz), fun _ hz =>
       (hsub hz).1, fun _ hz => (hsub hz).2⟩
 
+/-- On the zero section, the rank-three model lower sheet is the lower boundary arc `{y = 0}`. -/
 theorem RankThreeWhitneyModel.zero_mem_firstSheet_iff (p : ℝ × ℝ) :
     (p, (0 : Lower × Upper)) ∈ Set.range firstSheet ↔ p.2 = 0 := by
   constructor
@@ -2288,6 +2493,7 @@ theorem RankThreeWhitneyModel.zero_mem_firstSheet_iff (p : ℝ × ℝ) :
     refine ⟨(p.1, 0), ?_⟩
     exact Prod.ext (Prod.ext rfl hp.symm) rfl
 
+/-- On the zero section, the rank-three model upper sheet is the parabolic boundary arc. -/
 theorem RankThreeWhitneyModel.zero_mem_secondSheet_iff (h : ℝ) (p : ℝ × ℝ) :
     (p, (0 : Lower × Upper)) ∈ Set.range (secondSheet h) ↔ p.2 = h * (1 - p.1 ^ 2) := by
   constructor
@@ -2300,6 +2506,8 @@ theorem RankThreeWhitneyModel.zero_mem_secondSheet_iff (h : ℝ) (p : ℝ × ℝ
     refine ⟨(p.1, 0), ?_⟩
     exact Prod.ext (Prod.ext rfl hp.symm) rfl
 
+/-- A sheet-parametrised chart has an open neighbourhood of the zero section of the bigon on which
+it meets the two sheets exactly in the two model sheets. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_sheet_neighborhood
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2381,16 +2589,20 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_sheet_neig
     ⟨U ∩ V, hU.inter hV, fun z hz => ⟨hKU hz, hKV hz⟩, fun _ hz => hUsource hz.1, fun z hz =>
       hUS z hz.1, fun z hz => hVT z hz.2⟩
 
+/-- The image in the manifold of the model lower sheet under a chart. -/
 def RankThreeWhitneyModel.nativeFirstSheet {F H M : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
     [ChartedSpace H M] (Φ : PartialDiffeomorph 𝓘(ℝ, Space) J Space M ∞) : Set M :=
   Φ '' (Set.range firstSheet ∩ Φ.source)
 
+/-- The image in the manifold of the model upper sheet under a chart. -/
 def RankThreeWhitneyModel.nativeSecondSheet {F H M : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
     [ChartedSpace H M] (Φ : PartialDiffeomorph 𝓘(ℝ, Space) J Space M ∞) (h : ℝ) : Set M :=
   Φ '' (Set.range (secondSheet h) ∩ Φ.source)
 
+/-- A compatible chart of a rank-three tubular bigon: a chart in the rank-three model coordinates
+which meets the two sheets exactly in the two model sheets. -/
 structure TubularBigon.RankThreeCompatibleChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
@@ -2409,6 +2621,8 @@ structure TubularBigon.RankThreeCompatibleChart {E M : Type*} [NormedAddCommGrou
   second_sheet :
     ∀ z ∈ chart.source, chart z ∈ T ↔ z ∈ Set.range (RankThreeWhitneyModel.secondSheet h)
 
+/-- Restricting a sheet-parametrised chart to the recognition neighbourhood gives a compatible
+chart. -/
 theorem TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCompatibleChart
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2452,6 +2666,8 @@ theorem TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCompatibl
   obtain ⟨z, hz, rfl⟩ := hy
   exact c.target_subset (c.chart.map_source' (hUsource hz))
 
+/-- The Whitney condition gives a compatible chart: if the two corner intersection signs are
+opposite, a rank-three compatible chart exists. -/
 theorem TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_signs
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2470,6 +2686,8 @@ theorem TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_signs
   obtain ⟨c⟩ := tube.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs d e hsign
   exact c.nonempty_rankThreeCompatibleChart hS hT
 
+/-- In a compatible chart, the image of the model lower sheet is the part of the first sheet in the
+target. -/
 theorem TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2491,6 +2709,8 @@ theorem TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq {E M : Type*}
     rw [hzy]
     exact hy.1
 
+/-- In a compatible chart, the image of the model upper sheet is the part of the second sheet in the
+target. -/
 theorem TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2512,6 +2732,9 @@ theorem TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq {E M : Type*}
     rw [hzy]
     exact hy.1
 
+/-- The graph motion of the rank-three model, transported through a chart: a compactly supported
+ambient isotopy of the manifold, supported in the target of the chart, whose time-one map pushes
+the image of the model lower sheet off the image of the model upper sheet. -/
 theorem RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H M : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H}
     [TopologicalSpace M] [ChartedSpace H M] [T2Space M]
@@ -2589,6 +2812,7 @@ theorem RankThreeWhitneyModel.GraphMotion.exists_native_cancellation {F H M : Ty
     rw [hp, hq]
     exact heq
 
+/-- The same cancellation with an explicit compact support inside the target of the chart. -/
 theorem RankThreeWhitneyModel.exists_supported_native_bigon_cancellation {F H M : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H}
     [TopologicalSpace M] [ChartedSpace H M] [T2Space M]
@@ -2607,6 +2831,9 @@ theorem RankThreeWhitneyModel.exists_supported_native_bigon_cancellation {F H M 
   obtain ⟨a⟩ := nonempty_graphMotion hh Φ.open_source hsource
   exact a.exists_native_cancellation Φ hh
 
+/-- If a bijection is the identity off `U` and carries `S ∩ U` off `T ∩ U`, then the image of `S`
+meets `T` exactly in `(S ∩ T) \ U`: the intersections inside `U` have been removed and no
+others. -/
 theorem SupportedDiffeomorph.image_inter_eq_diff {X : Type*} (d : X ≃ X) {S T U : Set X}
     (hfix : ∀ x ∉ U, d x = x) (hdisjoint : Disjoint (d '' (S ∩ U)) (T ∩ U)) :
     (d '' S) ∩ T = (S ∩ T) \ U := by
@@ -2625,6 +2852,8 @@ theorem SupportedDiffeomorph.image_inter_eq_diff {X : Type*} (d : X ≃ X) {S T 
   · rintro ⟨⟨hyS, hyT⟩, hyU⟩
     exact ⟨⟨y, hyS, hfix y hyU⟩, hyT⟩
 
+/-- Under the same removal, the preimage of the second sheet along a composed parametrisation loses
+exactly the preimage of the removed set. -/
 theorem SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal {X Y : Type*}
     (d : X ≃ X) (F : Y → X) {T R : Set X} (hfix : ∀ y ∈ (Set.range F ∩ T) \ R, d y = y)
     (himage : (d '' Set.range F) ∩ T = (Set.range F ∩ T) \ R) :
@@ -2644,6 +2873,8 @@ theorem SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal {X Y : 
     rw [hfix _ hy]
     exact hx.1
 
+/-- A map that is the identity off a closed set does not change the germ of a parametrisation at a
+point mapped outside that set. -/
 theorem SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed {X Y : Type*}
     [TopologicalSpace X] [TopologicalSpace Y] {d : X → X} {F : Y → X} {K : Set X}
     (hK : IsClosed K) (hfix : ∀ y ∉ K, d y = y) (hF : Continuous F) {x : Y} (hx : F x ∉ K) :
@@ -2651,6 +2882,8 @@ theorem SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed {X Y : Type*}
   filter_upwards [hF.continuousAt.preimage_mem_nhds (hK.isOpen_compl.mem_nhds hx)] with y hy
   exact hfix _ hy
 
+/-- In the rank-three model the two sheets meet exactly at the two corners of the bigon, at the
+parameters `±1`. -/
 theorem RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff {h : ℝ} (hh : 0 < h)
     (p : LowerSheet) (q : UpperSheet) :
     firstSheet p = secondSheet h q ↔ p.1 = q.1 ∧ p.2 = 0 ∧ q.2 = 0 ∧ (q.1 = -1 ∨ q.1 = 1) := by
@@ -2687,6 +2920,8 @@ theorem RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff {h : ℝ} (hh : 0 < 
       subst t
       simp [firstSheet, secondSheet]
 
+/-- In the target of a compatible chart the two sheets meet exactly at the two corners `a 0` and `a
+1` of the bigon. -/
 theorem TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2761,6 +2996,9 @@ theorem TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq {E M : T
     · rw [← hc1]
       exact hcorner 1 (Or.inr rfl)
 
+/-- The Whitney cancellation in a compatible chart: a compactly supported ambient isotopy whose
+time-one map removes exactly the two intersection points `a 0`, `a 1` from the intersection of
+the two sheets. -/
 theorem TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2797,6 +3035,8 @@ theorem TubularBigon.RankThreeCompatibleChart.exists_cancellation {E M : Type*}
   simp only [Set.mem_sdiff, Set.mem_inter_iff]
   tauto
 
+/-- The cancellation of the previous statement with support disjoint from the remaining intersection
+points, so that it can be performed relative to them. -/
 theorem TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -2822,6 +3062,9 @@ theorem TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation {E M 
   rw [c.intersection_in_target_eq] at hc
   exact hy.2 hc
 
+/-- The rank-three Whitney lemma: a tubular bigon whose two corner intersection signs are opposite
+gives an ambient isotopy, supported away from the other intersection points, whose time-one map
+removes exactly those two points from the intersection of the two sheets. -/
 theorem TubularBigon.exists_rankThree_relative_cancellation {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {S T : Set M} {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}

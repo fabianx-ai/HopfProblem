@@ -11,8 +11,14 @@ public import Mathlib.Topology.Homotopy.Lifting
 /-!
 # Centralizers from monodromy in a principal-cover fibre
 
-If a loop has the same displayed deck transformation at two points of one principal-cover fibre,
-then the deck transformation relating the two fibre frames centralizes that monodromy element.
+If a loop acts by the same deck transformation `a` at two points `e`, `e'` of one fibre of a
+principal (normal) covering, then the deck transformation `h` carrying `e` to `e'` commutes with
+`a`: the monodromy of a loop and the deck group interact through conjugation.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §1.3 (deck transformations of a normal
+  covering and the monodromy action of the fundamental group on a fibre, Prop. 1.39).
 -/
 
 @[expose] public section
@@ -30,8 +36,8 @@ variable {G : Type uG} {E : Type uE} {X : Type uX}
   [Group G] [TopologicalSpace E] [TopologicalSpace X]
   [MulAction G E] {p : E → X}
 
-/-- If the same loop acts at two points of a principal-cover fibre by the same displayed deck
-transformation, then the deck transformation relating those two points centralizes it. -/
+/-- If a loop acts at `e` and at `h • e` by the same deck transformation `a`, then `a` and `h`
+commute. -/
 theorem commute_of_monodromy_eq_toPermFiber
     (hp : IsQuotientCoveringMap p G) {x : X}
     (e : p ⁻¹' {x}) (gamma : FundamentalGroup X x) (a h : G)
@@ -49,7 +55,8 @@ theorem commute_of_monodromy_eq_toPermFiber
   apply hp.toPermFiber_ext x e
   simpa only [map_mul, Equiv.Perm.coe_mul, Function.comp_apply] using heq
 
-/-- Fibre-coordinate form of `commute_of_monodromy_eq_toPermFiber`. -/
+/-- If a loop acts by the same deck transformation `a` at two points `e`, `e'` of one fibre, then
+`a` commutes with the deck transformation carrying `e` to `e'`. -/
 theorem commute_fiberEquivGroup_of_monodromy_eq
     (hp : IsQuotientCoveringMap p G) {x : X}
     (e e' : p ⁻¹' {x}) (gamma : FundamentalGroup X x) (a : G)
