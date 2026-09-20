@@ -695,8 +695,9 @@ theorem cechCohomologyZeroToGlobalSections_isIso :
     cechCohomologyZeroToGlobalSections_comp_globalSectionsTo F,
     globalSectionsToCechCohomologyZero_comp_zeroToGlobalSections F⟩
 
-/-- Refinement-colimit degree-zero Cech cohomology is canonically isomorphic to global
-sections. This is equation (C8), valid without separation or paracompactness hypotheses. -/
+/-- For an abelian sheaf `F` on an arbitrary topological space `X`, refinement-colimit
+degree-zero Cech cohomology `Ȟ⁰(X, F)` is canonically isomorphic to the global sections
+`F(⊤)`.  No separation or paracompactness hypothesis on `X` is used. -/
 noncomputable def cechCohomologyZeroIsoGlobalSections :
     cechCohomology F.presheaf 0 ≅ F.presheaf.obj (op (⊤ : Opens X)) := by
   let _ : IsIso (cechCohomologyZeroToGlobalSections F) :=
