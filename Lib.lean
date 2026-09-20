@@ -45,7 +45,6 @@ import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Topology.Homotopy.LoopSubdivision

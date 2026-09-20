@@ -176,3 +176,24 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace {X : T
   apply pathConnectedSpace_iff_univ.mpr
   rw [← D.cover]
   exact D.pathConnectedU.union D.pathConnectedV ⟨D.base, D.baseU, D.baseV⟩
+
+/-- Van Kampen for a two-open cover: if both charts are simply connected, the fundamental group
+of the covered space at the cover base point is trivial (Hatcher, Algebraic Topology,
+Theorem 1.20). -/
+theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroup_eq_one {X : Type*}
+    [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
+    [SimplyConnectedSpace D.U] [SimplyConnectedSpace D.V] (g : FundamentalGroup X D.base) :
+    g = 1 := by
+  have h :
+    MonoidHom.id (FundamentalGroup X D.base) =
+      (1 : FundamentalGroup X D.base →* FundamentalGroup X D.base) := by
+    apply D.hom_ext
+    · ext a
+      have ha : a = 1 := Subsingleton.elim _ _
+      change D.inclusionHomU a = 1
+      rw [ha, map_one]
+    · ext a
+      have ha : a = 1 := Subsingleton.elim _ _
+      change D.inclusionHomV a = 1
+      rw [ha, map_one]
+  exact DFunLike.congr_fun h g
