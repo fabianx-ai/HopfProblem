@@ -20,6 +20,8 @@ then for ordinary Ext-defined cohomology on open subspaces.
 
 The second form uses the canonical exact-open-restriction comparison, so its hypotheses and
 conclusion are stated directly in terms of sheaf cohomology on the four topological spaces.
+
+Reference: Bredon, *Sheaf Theory*, II.13 (the Mayer--Vietoris sequence in sheaf cohomology).
 -/
 
 @[expose] public section
