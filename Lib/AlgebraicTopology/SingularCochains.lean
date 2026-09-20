@@ -46,7 +46,9 @@ def precompose (A : AddCommGrpCat.{w}) {M N : Type*} [AddCommGroup M] [AddCommGr
   map_zero' := by ext; rfl
   map_add' _ _ := by ext; rfl
 
-/-- The contravariant additive dual of an integral module. -/
+/-- The contravariant additive dual of an integral module.  The target is
+`AddCommGrpCat.{max u w}`, not `AddCommGrpCat.{w}`: the additive homomorphisms out of an object of
+`ModuleCat.{u} ℤ` into `A : AddCommGrpCat.{w}` form a type in `max u w`. -/
 def moduleDual (A : AddCommGrpCat.{w}) :
     (ModuleCat.{u} ℤ)ᵒᵖ ⥤ AddCommGrpCat.{max u w} where
   obj M := AddCommGrpCat.of (M.unop →+ A)
@@ -78,7 +80,9 @@ def dualComplexFunctor (A : AddCommGrpCat.{w}) :
   HomologicalComplex.opFunctor (ModuleCat.{u} ℤ) (ComplexShape.down ℕ) ⋙
     (moduleDual A).mapHomologicalComplex (ComplexShape.down ℕ).symm
 
-/-- Additive dual cochain complex of an integral chain complex. -/
+/-- Additive dual cochain complex of an integral chain complex.  Like `moduleDual`, it lands in
+`AddCommGrpCat.{max u w}`, so for `u ≠ w` the resulting cochain complex lives in a larger universe
+than `A` itself; at `u = 0` this is `AddCommGrpCat.{w}`. -/
 def dualComplex (A : AddCommGrpCat.{w})
     (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     CochainComplex AddCommGrpCat.{max u w} ℕ :=
