@@ -11,6 +11,21 @@ public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 public import Mathlib.Algebra.Category.Grp.Abelian
 public import Lib.CategoryTheory.Abelian.RightDerived
 public import Mathlib.Algebra.Category.Grp.EpiMono
+
+/-!
+# The connecting morphism of the right derived functors
+
+For an additive functor `F` into abelian groups and a short exact sequence
+`0 → X₁ → X₂ → X₃ → 0` in an abelian category with enough injectives, this file
+constructs the connecting morphism `δ : Rⁿ F(X₃) ⟶ Rⁿ⁺¹ F(X₁)`, shows that it does not
+depend on the chosen compatible triple of injective resolutions, and proves its
+naturality in the short exact sequence and its transport along a natural isomorphism
+of functors.
+
+Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6(b);
+Hartshorne, *Algebraic Geometry* III.1.1A.
+-/
+
 public section
 noncomputable section
 universe u v w
@@ -24,9 +39,9 @@ variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 /-- Two arbitrary compatible triples compute the same positive derived boundary.
 The strict identity-sequence comparison retains all three augmentation equations.
 Its three theta computations and complex naturality give the displayed
-postcomposition equality; cancellation proves choice independence (PD-L21,
-TEXTBOOK 1520–1538). Individual comparison choices are already controlled by
-the canonical computation isomorphisms; no simultaneous homotopy is required. -/
+postcomposition equality; cancellation proves choice independence. Individual
+comparison choices are already controlled by the canonical computation
+isomorphisms; no simultaneous homotopy is required. -/
 private theorem choice_independent
     (S : ShortComplex C) (hS : S.ShortExact) (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] (n : ℕ)
     (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
@@ -103,8 +118,8 @@ private theorem choice_independent
 
 /-- Choose one compatible triple from the recursive construction, map its split
 rows by the additive functor, and form the fixed-family composite. Independence
-then computes this same map using every supplied compatible triple (PD-L21,
-TEXTBOOK 1539–1540). Existence is separate from comparison of arbitrary choices. -/
+then computes this same map using every supplied compatible triple. Existence is
+separate from comparison of arbitrary choices. -/
 private theorem exists_boundary
     (S : ShortComplex C) (hS : S.ShortExact) (F : C ⥤ AddCommGrpCat.{w}) [F.Additive] (n : ℕ) :
     ∃ d : (F.rightDerived n).obj S.X₃ ⟶ (F.rightDerived (n + 1)).obj S.X₁,
@@ -138,17 +153,19 @@ private theorem exists_boundary
       choice_independent S hS F n IA IB IC j q z haj haq he hM
         IA' IB' IC' j' q' z' ha' hb' he' hM'⟩
 
-/-- The positive connecting morphism on the fixed injectively computed derived
-groups. It is selected from the choice-independent computation predicate of
-PD-L21, TEXTBOOK 1540; its value for every compatible choice is given below. -/
+/-- The connecting morphism `δ : Rⁿ F(X₃) ⟶ Rⁿ⁺¹ F(X₁)` of the long exact sequence of
+right derived functors attached to a short exact sequence `0 → X₁ → X₂ → X₃ → 0`
+(Weibel 2.4.6(b)). Its value on every compatible triple of injective resolutions is
+given by `rightDerivedConnecting_eq`. -/
 def rightDerivedConnecting (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (F.rightDerived n).obj S.X₃ ⟶ (F.rightDerived (n + 1)).obj S.X₁ :=
   by exact Classical.choose (exists_boundary S hS F n)
 
-/-- Compute the single derived connecting morphism by any original compatible
-triple, with the canonical fixed-to-computed theta maps and positive complex
-boundary. This is the all-choice conclusion of PD-L21, TEXTBOOK 1535–1540. -/
+/-- The connecting morphism `δ` is computed by *any* compatible triple of injective
+resolutions of `X₁`, `X₂`, `X₃`: it is the boundary of the degreewise short exact
+sequence of complexes, conjugated by the canonical resolution-computation
+isomorphisms. -/
 theorem rightDerivedConnecting_eq (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ)
     (IA : InjectiveResolution S.X₁) (IB : InjectiveResolution S.X₂)
@@ -169,7 +186,7 @@ theorem rightDerivedConnecting_eq (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 one strict comparison extending the given object-sequence morphism. Its three
 computation identities and the positive complex boundary square give equality
 after postcomposition with the target computation isomorphism; cancelling that
-isomorphism proves naturality on the fixed derived groups (TEXTBOOK 1542–1561).
+isomorphism proves naturality on the fixed derived groups.
 No component monicity or epimorphicity is required. -/
 private theorem connecting_naturality_of_compatible
     (S S' : ShortComplex C) (hS : S.ShortExact) (hS' : S'.ShortExact)
@@ -257,7 +274,7 @@ private theorem connecting_naturality_of_compatible
 /-- The fixed positive derived connecting morphism is natural for every morphism
 of short exact object sequences. Choose compatible resolutions on each side,
 map their split rows by the additive functor, and apply the arbitrary-choice
-comparison result (TEXTBOOK 1542–1563). The ordinary coefficient squares
+comparison result. The ordinary coefficient squares
 separately follow from the derived functors' composition laws. -/
 theorem rightDerivedConnecting_naturality
     (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
@@ -297,8 +314,7 @@ theorem rightDerivedConnecting_naturality
 
 /-- The degree-n coefficient map to the right term followed by the positive
 connecting map is zero. Compute on a compatible triple, use the q computation
-square and the complex boundary zero, and cancel theta at the next left term
-(PD-L23, TEXTBOOK 1580–1582, first PD21). -/
+square and the complex boundary zero, and cancel theta at the next left term. -/
 theorem comp_rightDerivedConnecting (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (F.rightDerived n).map S.g ≫ F.rightDerivedConnecting hS n = 0 := by
@@ -330,8 +346,7 @@ theorem comp_rightDerivedConnecting (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 
 /-- The positive connecting map followed by the next left coefficient map
 is zero. The j computation square identifies this with the complex boundary
-zero after postcomposition by theta at the next middle term
-(PD-L23, TEXTBOOK 1580–1582, second PD21). -/
+zero after postcomposition by theta at the next middle term. -/
 theorem rightDerivedConnecting_comp (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     F.rightDerivedConnecting hS n ≫ (F.rightDerived (n + 1)).map S.f = 0 := by
@@ -365,7 +380,7 @@ theorem rightDerivedConnecting_comp (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 /-- The fixed derived coefficient sequence is exact at the middle object
 in every degree. All three theta maps identify the two coefficient arrows
 with the homology sequence; transport its image/kernel equality through that
-short-complex isomorphism (PD-L23, TEXTBOOK 1565–1579, first PD20).
+short-complex isomorphism.
 The ordinary within-degree zero is the additive functor's map of S.zero. -/
 theorem rightDerived_exact₁ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
@@ -400,7 +415,7 @@ theorem rightDerived_exact₁ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 /-- The fixed derived sequence is exact at the right object before the
 connecting map. Theta at the middle, right and next left terms identifies
 both arrows with the corresponding complex homology pair; transport its
-image/kernel equality (PD-L23, TEXTBOOK 1565–1579, second PD20). -/
+image/kernel equality. -/
 theorem rightDerived_exact₂ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (ShortComplex.mk ((F.rightDerived n).map S.g) (F.rightDerivedConnecting hS n)
@@ -435,7 +450,7 @@ theorem rightDerived_exact₂ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 /-- The fixed derived sequence is exact at the next left object after the
 connecting map. Theta at the right, next left and next middle terms identifies
 the positive boundary and coefficient arrow with the corresponding homology
-pair (PD-L23, TEXTBOOK 1565–1579, third PD20). -/
+pair. -/
 theorem rightDerived_exact₃ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
     (ShortComplex.mk (F.rightDerivedConnecting hS n) ((F.rightDerived (n + 1)).map S.f)
@@ -470,7 +485,7 @@ theorem rightDerived_exact₃ (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
 /-- The initial degree-zero coefficient map is injective. Nonnegative
 complexes have no incoming differential at zero, so the mapped component
 monomorphism induces a homology monomorphism. The degree-zero theta square
-transports it to the fixed family (PD-L23, TEXTBOOK 1586–1587).
+transports it to the fixed family.
 This initial injection is retained separately from delta-functor assembly. -/
 theorem rightDerived_zero_injective (F : C ⥤ AddCommGrpCat.{w}) [F.Additive]
     {S : ShortComplex C} (hS : S.ShortExact) :
@@ -515,8 +530,7 @@ two short exact complex sequences. For a quotient cocycle lifted to `b`, with
 `j(a) = db`, its lift calculation is
 `d α(b) = α(db) = α(j(a)) = j α(a)`. Homology boundary naturality therefore
 has the ordinary commuting sign. Conjugating by the same original-resolution
-computation isomorphisms gives the square for the actual derived degree maps
-(TEXTBOOK M10, 1808–1824). -/
+computation isomorphisms gives the square for the actual derived degree maps. -/
 theorem rightDerived_hom_connecting
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
@@ -562,7 +576,7 @@ Apply the forward square to the original inverse natural isomorphism on the
 same compatible resolutions. The inverse cochain maps satisfy the identical
 lift calculation `d α⁻¹(b) = α⁻¹(db) = α⁻¹(j(a)) = j α⁻¹(a)`, so the
 convention `j(a) = db` introduces no new sign. The derived maps here are the
-actual inverses of the original derived isomorphism (TEXTBOOK M10, 1819–1823). -/
+actual inverses of the original derived isomorphism. -/
 theorem rightDerived_inv_connecting
     [PreservesFiniteLimits F] [PreservesFiniteLimits G]
     (α : F ≅ G) {S : ShortComplex C} (hS : S.ShortExact) (n : ℕ) :
