@@ -9,7 +9,7 @@ All 34 files of `packet-09.md` are done; one commit per file, in the order liste
 |---|---|---|
 | 1. manuscript citations | 34 module docstrings rewritten to a textbook or Mathlib reference; 177 docstring blocks replaced in total (process narrative, "native"/"actual"/"literal"/"genuine", negated-claims paragraphs, lane/consumer language removed) | 0 |
 | 2. docstrings | 83 missing public docstrings added (260 docstring blocks in the diff, 177 of them replacements); every public declaration in the 34 files is now documented | 0 |
-| 3. universe pins | 77 explicit `.{0}` pins removed across 8 files, now stated for `TopCat.{u}` / `AddCommGrpCat.{u}` | 316 pins left, each forced by an imported interface outside the packet (listed per file below) |
+| 3. universe pins | 77 explicit `.{0}` pins removed across 8 files, now stated for `TopCat.{u}` / `AddCommGrpCat.{u}` | **317 (corrected; the receipt said 316)** pins left.  **(corrected)** "each forced by an imported interface **outside** the packet" is not the whole story: for `H1Vanishing/Flasque.lean`, `OpenRestriction/Cohomology.lean` and `OpenEmbeddingCohomology.lean` the files' own declarations were independent chokepoints — see the corrections section at the end |
 | 4. `: Type` binders | 5 `: Type` coercion ascriptions widened to `Type u` (SkyscraperGlobalSections), `{ι : Type}` → `{ι : Type*}` in GlobalPatch/GlobalPatchLocal, `{G : Type uG} {E X : Type u}` → `{G E X : Type*}` in DeckTranslate | 37 binders left, forced (listed per file below) |
 
 No statement was weakened or strengthened, no hypothesis added, no declaration deleted, no `sorry`/`axiom`/`admit` introduced.
@@ -52,7 +52,7 @@ The only proof-side change anywhere is one local `set_option synthInstance.maxHe
 | `SingularCochainSheaf/DegreeZeroFunctions.lean` | module + 16 restated → Bredon III §1, Warner 5.31 | 9 | 20 left, forced as in Augmentation.lean | 18 left, same obstacle |
 | `SingularCochainSheaf/GlobalKernelLocal.lean` | module + 3 restated → Bredon III §1 | 0 | 2 left, forced by `TopCat.SingularCochainSheaf.presheaf` | — |
 | `SingularCochainSheaf/GlobalKernelSmall.lean` | module + 7 restated → Bredon III §1, Hatcher Prop. 2.21 | 0 | 3 left, forced by `AlgebraicTopology.SingularCochains.Cochains` | 1 left: `{X : Type}` forced by `Cochains`, `{ι : Type}` by `TopCat.SingularSmallChains.IsSmallSimplex` |
-| `SingularCochainSheaf/GlobalPatch.lean` | module + 5 restated → Bredon III Prop. 1.1, Warner 5.31 | 3 | 7 left, forced by `TopCat.SingularCochainSheaf.presheaf` | **`{ι : Type}` → `{ι : Type*}`** (5 declarations) |
+| `SingularCochainSheaf/GlobalPatch.lean` | module + 5 restated → Bredon III Prop. 1.1, Warner 5.31 | 3 | **8 left (corrected; the receipt said 7)** — the file has 8 `.{0}` occurrences on 6 lines at base and at the tip, and nothing was lifted here — forced by `TopCat.SingularCochainSheaf.presheaf` | **`{ι : Type}` → `{ι : Type*}`** (5 declarations) |
 | `SingularCochainSheaf/GlobalPatchLocal.lean` | module + 2 restated → Bredon III Prop. 1.1 | 0 | 1 left, forced by `presheaf` | **`{ι : Type}` → `{ι : Type*}`** (2 declarations) |
 
 ## Builds
@@ -158,3 +158,65 @@ applied, so that no declaration is renamed, merged or deleted: merging `H1Vanish
 renaming `nearby*` to `pushforwardRestrict*`; replacing `inclusion`/`restriction` by `Opens.inclusion'`/
 `Opens.sheafRestrict`; deleting `BarycentricSmallChains.lean`; folding `ComparisonH1.lean` into
 `ComparisonPositive.lean`; moving `DeckTranslate.lean` under `Lib/Topology/Covering/`.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-09.md` (ACCEPT WITH FINDINGS; the structural
+work — 77 lifts, 10 binder widenings, 83 added docstrings, 35 commits, one disclosed heartbeat bump
+and no other proof change — checks out against the diff and the environment, and every named forcer
+was genuinely `.{0}`-pinned at base and referenced by its file).  These corrections are to this
+receipt's text only; no Lean file was changed by them.
+
+1. **Pin count (finding 12), corrected in place.**  `SingularCochainSheaf/GlobalPatch.lean` has **8**
+   `.{0}` occurrences (on 6 lines) at base and at the tip, not 7, and nothing was lifted there; so
+   "316 left" is **317** by the audit's occurrence count.  Every other per-file count reproduces.
+
+2. **"Each forced by an imported interface outside the packet" is not the whole story (finding 7).**
+   No attribution here is *false* — each named forcer was pinned at base and is referenced by its
+   file — but three files had their own declarations as independent chokepoints, which this receipt
+   does not mention and which round 8 then had to rediscover:
+   * `H1Vanishing/Flasque.lean` ("37 left, forced by `cohomologyAddCommGroup`"): the file's own
+     `private instance abelianSheaf_hasExt : HasExt.{0} …`, `Ext.mk₀.{0}` and `ULift.{0} ℤ` were a
+     second chokepoint; round 8 lifted them as a separate item (`f5a50893`).
+   * `OpenRestriction/Cohomology.lean` ("27 left, forced by `integralSheaf` /
+     `integralHomGlobalEquiv`"): packet 08 lifted both of those in parallel, and the file stayed
+     pinned because its own `freeOpen`, `freeHomEquiv` and `cohomologyEquiv` were chokepoints
+     (round 8 `ccf092a2`).
+   * `OpenEmbeddingCohomology.lean`: `openImage`, declared in this very file, was itself listed as a
+     chokepoint by round 8 (`6973220d`).
+
+   The rule adopted from this (`Lib/reviews/REVIEW-7-8.md` §4): a "forced by X" line lists **every**
+   pinned declaration the file depends on, its own included, quotes X's signature, and says which
+   forcers a parallel packet was lifting in the same round.
+
+3. **No per-packet `envdiff.json` is in the repository (finding 6).**  This receipt reports
+   `envdiff.py … --receipt envdiff.json` with 159 changed types, but
+   `Lib/reports/round-7/packets/` contains no envdiff for any packet; only the stage-2 merged
+   `Lib/reports/round-7/envdiff-merged-d950428a.{json,txt}` exists.  Reconciled against the merged
+   file, every name this receipt lists is present, and the only extras in packet-09-owned modules are
+   auxiliaries (`_proof_*`, `eq_1`, `congr_simp`); but the extras in the downstream modules
+   (`ConstantNormalization` +4, `NestedOpenCohomology` +2, `SingularCochainSheaf.OpenRestriction` +1,
+   `Pullback.Sheaf` +2) **cannot be attributed** to this packet or to packets 07/08 without the
+   per-packet dump.  Committing the JSON/TXT beside the receipt is the standing rule from round 8 on.
+
+4. **Binder counting rule.**  The `: Type` binder figures taken from the audit (8/18/1/4/2/2/2,
+   "37 left") are not reproducible: the counting method is stated nowhere and the reviewer's regex
+   gives different totals, so neither figure is adopted over the other.  For
+   `PrincipalCoverLocalSystem*` the "binders left" are in fact already universe-polymorphic
+   (`Type u`), which this receipt says only indirectly.
+
+5. **Docstring and citation findings are code fixes, not receipt fixes.**  The reviewer's findings 1
+   (both adjunction docstrings at `OpenEmbeddingCohomology.lean:79–89` name the wrong adjoint —
+   restriction *is* `j^*`, right adjoint of `j_!` and left adjoint of `j_*`; the `OpenRestriction.lean`
+   pair at l.180–186 is worded correctly and should be copied), 2 (Hartshorne "III Prop. 2.4" does
+   not exist), 3 (III Ex. 4.1 / 8.2 are scheme exercises; III Ex. 8.1 is the topological statement;
+   "II Ex. 1.19" is the closed-embedding exercise), 4 (Bredon III "Prop. 1.1" and "Thm. 1.1" are both
+   cited for different results; Godement II.4.3 and II.3.1 both cited for flasque ⇒ acyclic),
+   5 (the audit's "KS Prop. 2.3.?" was filled in as 2.3.6 without evidence), 8 (`h1Comparison`'s
+   docstring reads as if the textbook theorem were proved, while the real content
+   `[IsIso (homologyMap (globalCochainComparison X A) 1)]` is a hypothesis), 9
+   (`stalkFunctor_map_germ` "is an isomorphism for sheafification" — it is an equation lemma),
+   10 (`OpenRestriction.lean`'s module docstring attributes both facts to `j_!`; the limit half comes
+   from `j^* ⊣ j_*`) and 11 (`DegreeZeroAcyclic.lean`'s new title overstates;
+   `ComparisonPositive.lean` says "paracompact" where the code requires `[MetrizableSpace X]`) are
+   all on the `Lib/reviews/REVIEW-7-8.md` §3 list for the packet-09 fix agent.
