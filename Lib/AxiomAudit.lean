@@ -236,6 +236,11 @@ is an evidence command rather than library content.
 #print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
 #print axioms GroupExtension.Splitting.abelianizationMulEquiv
 
+/-! ## `Lib.GroupTheory.FreeGroup.Invariant` -/
+
+#check FreeGroup.forall_apply_eq_self_iff
+#print axioms FreeGroup.forall_apply_eq_self_iff
+
 /-! ## `Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector` -/
 
 #check Subgroup.zpowers_eq_of_mem_of_multiplicativeInt_detector
