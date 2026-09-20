@@ -14,6 +14,12 @@ For a principal quotient cover over a path-connected base, surjectivity of the f
 monodromy onto the deck group implies that the total space is path-connected.  This is the
 converse of `IsQuotientCoveringMap.fundamentalGroupToMulOpposite_surjective` under the natural
 base connectedness hypothesis.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §1.3 (a covering space of a path-connected,
+  locally path-connected base is path-connected exactly when the monodromy action on a fibre is
+  transitive).
 -/
 
 @[expose] public section
