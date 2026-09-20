@@ -19,8 +19,9 @@ represented by a pushed injective resolution.  The result names the literal diff
 
 That the `d₂` of a spectral sequence obtained from a Postnikov (t-structure) tower is the
 connecting morphism of the triangle joining two adjacent slices is the standard description of
-the differentials of the spectral object of a filtered object (Verdier, *Des catégories dérivées
-des catégories abéliennes*, II.4.3; Kashiwara–Schapira, *Categories and Sheaves*, §12).  For the
+the differentials of the spectral object of a filtered object (cf. Verdier, *Des catégories
+dérivées des catégories abéliennes*, Ch. II; Kashiwara–Schapira, *Categories and Sheaves*,
+Ch. 10 and Ch. 12).  For the
 Leray spectral sequence this `d₂` is the transgression of Godement II.4.17.
 
 No convergence and no support hypothesis is used.

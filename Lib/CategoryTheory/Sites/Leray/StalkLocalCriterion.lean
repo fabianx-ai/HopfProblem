@@ -16,9 +16,8 @@ public import Mathlib.Topology.Sheaves.Stalks
 A map out of a presheaf stalk is bijective when every target element has a representative on some
 neighborhood and every local section in its kernel vanishes after shrinking.
 
-This is the filtered-colimit criterion for bijectivity of a map out of a stalk (Godement,
-*Topologie algébrique et théorie des faisceaux*, II.1.1), in the form obtained from
-`TopCat.Presheaf.exists_germ_eq` and `TopCat.Presheaf.germ_res_apply`.
+This is the filtered-colimit criterion for bijectivity of a map out of a stalk, in the form
+obtained from `TopCat.Presheaf.exists_germ_eq` and `TopCat.Presheaf.germ_res_apply`.
 -/
 
 @[expose] public section
