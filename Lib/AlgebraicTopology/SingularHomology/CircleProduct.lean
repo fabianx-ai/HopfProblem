@@ -16,15 +16,15 @@ public import Lib.AlgebraicTopology.SingularHomology.Naturality
 # The Künneth theorem for S¹ × X and the homology of the circle
 
 For the product of the circle with a space, the homology splits as
-`H_n(S¹ × X) ≅ H_n(X) ⊕ H_{n-1}(X)` — the Künneth formula for the circle (Hatcher, Cor 2.11's
-content for one factor `S¹`). The engine is the two-open cover of `S¹` by contractible arcs,
-transported to the product:
+`H_n(S¹ × X) ≅ H_n(X) ⊕ H_{n-1}(X)` — the Künneth formula in the case of one circle factor
+(Hatcher, §3.B). It is proved here, as in Hatcher §2.2, from the two-open cover of `S¹` by
+contractible arcs, transported to the product:
 
 * `SingularHomology.circleProductHomologyEquiv`-family — the splitting of
   `H_n(S¹ × X)`, with the circle section and projection lemmas
   (`circleSectionHomology`, `circleProjection_section`, `productArcHomologyEquiv`);
 * `SingularHomology.circle_homology_subsingleton` — `H_k(S¹) = 0` for `k ≥ 2`
-  (Hatcher Cor 2.14's circle rows).
+  (Hatcher, Corollary 2.14 for the sphere `S¹`).
 
 ## Outline of the proof
 
@@ -49,7 +49,8 @@ transported to the product:
 
 ## References
 
-* [Allen Hatcher, *Algebraic Topology*][hatcher02], Corollary 2.11 and §2.2's torus example
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §2.2 (Mayer–Vietoris, and the torus
+  example) and §3.B (the Künneth formula); Corollary 2.14 (the homology of spheres)
 
 ## Tags
 
@@ -63,6 +64,8 @@ open Set Function Filter Manifold Topology
 open scoped ContinuousMap
 
 @[expose] public noncomputable section
+
+universe u
 
 /-! ### The two-arc cover of the circle -/
 
@@ -933,7 +936,7 @@ def SingularHomology.circleProductHomologyZeroEquiv (X : Type) [TopologicalSpace
 
 /-- The categorical cycle constructor agrees with the cycle subtype. -/
 theorem SingularMayerVietoris.ModuleHomology.cyclesMk_eq_moduleCatCyclesIso_inv
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+    (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) (j : ℕ)
     (hj : (ComplexShape.down ℕ).next n = j) (hc : (K.d n j).hom c.1 = 0) :
     K.cyclesMk c.1 j hj hc = ((K.sc n).moduleCatCyclesIso.inv).hom c := by
@@ -944,7 +947,7 @@ theorem SingularMayerVietoris.ModuleHomology.cyclesMk_eq_moduleCatCyclesIso_inv
 
 /-- The cycle class is the homology class of the cycle. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle_of_next
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+    (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) (j : ℕ)
     (hj : (ComplexShape.down ℕ).next n = j) (hc : (K.d n j).hom c.1 = 0) :
     cycleClass K n c = SingularMayerVietoris.homologyClassOfCycle K c.1 j hj hc := by
@@ -953,7 +956,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle_
 
 /-- The cycle class equals the homology class at the next index. -/
 theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+    (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ)
     (c : SingularMayerVietoris.ModuleHomology.Cycle K n) :
     cycleClass K n c =
       SingularMayerVietoris.homologyClassOfCycle K c.1 (n - 1) (next_nat n)
@@ -962,7 +965,7 @@ theorem SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle
 
 /-- The connecting map of a short exact sequence on cycle classes. -/
 theorem SingularHomology.connectingMap_cycleClass
-    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (hS : S.ShortExact)
+    {S : CategoryTheory.ShortComplex (ChainComplex (ModuleCat.{u} ℤ) ℕ)} (hS : S.ShortExact)
     (n : ℕ) (c : SingularMayerVietoris.ModuleHomology.Cycle S.X₃ (n + 1)) (z₂ : S.X₂.X (n + 1))
     (hz₂ : (S.g.f (n + 1)).hom z₂ = c.1) (z₁ : SingularMayerVietoris.ModuleHomology.Cycle S.X₁ n)
     (hz₁ : (S.f.f n).hom z₁.1 = (S.X₂.d (n + 1) n).hom z₂) :
