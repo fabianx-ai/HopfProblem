@@ -56,14 +56,29 @@ import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 /-!
 # Ambient patches and index disorder for rearrangement
 
-Supported ambient isotopies and patches (`MorseRearrangement.exists_ambient_patch_in_open`,
-`MorseRearrangement.exists_finite_relative_patch_diffeomorph`), sheet sums of finite families of
-submanifolds (`MorseRearrangement.sheetSum`), whole-family avoidance, and the combinatorial
-index-disorder counters (`MorseRearrangement.finiteIndexDisorder`,
-`MorseRearrangement.upperValueRank`) that drive the rearrangement induction.
+This file contains the two ingredients of the reordering of the critical points of a Morse
+function by index (Milnor, *Lectures on the h-cobordism theorem*, §4).
 
-Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see
-`Lib/reports/integration-4/spheretop-moves.md` for the per-declaration receipt.
+**General position by a compactly supported ambient isotopy.**  For smooth maps `f : X → N`,
+`g : Y → N` of compact manifolds, `f` can be moved by a diffeomorphism `e` of `N`, isotopic to
+the identity through an isotopy supported in a compact subset of a prescribed open set and fixing
+a prescribed closed set, so that `e ∘ f` is transverse to `g` when `dim X + dim Y = dim N`, and
+has image disjoint from that of `g` when `dim X + dim Y < dim N`
+(`exists_supported_ambient_transverse_in_open`, `exists_supported_ambient_disjoint_in_open`,
+`exists_supported_ambient_disjoint_fixing_closed`, `exists_whole_family_avoidance`).  This is
+general position by isotopy, Hirsch, *Differential Topology*, Ch. 3.  It is proved patch by patch
+(`exists_ambient_patch_in_open`, `exists_relative_ambient_patch_step`,
+`exists_finite_relative_patch_diffeomorph`), the patches being composed by
+`compose_supported_ambient_isotopies`; a finite family of sources is replaced by a single source
+through the iterated disjoint union `sheetSum`.
+
+**The inversion count.**  For a finite set `X` with an injective height `h : X → ℝ` and weights
+`w : X → ℕ`, `upperValueRank h x` is the number of points above `x` and
+`finiteIndexDisorder h w = ∑ x, w x * upperValueRank h x`.  Exchanging the heights of two
+consecutive points whose weights are inverted strictly decreases this count
+(`finiteIndexDisorder_swap_lt`), and an inverted pair which is consecutive exists whenever the
+weights are not monotone (`exists_adjacent_index_inversion`).  This is the induction in Milnor's
+proof of Theorem 4.8 (self-indexing), with `w` the Morse index.
 -/
 
 open Set Function Filter Manifold Topology
@@ -72,6 +87,9 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- A compactly supported bump in a chart gives, for all small enough translation vectors `a`,
+a supported relative isotopy of the bump diffeomorphism: it is supported in the image of the
+support of the bump and fixes any set `C` disjoint from that image. -/
 theorem MorseRearrangement.exists_radius_supported_bump_preparation {E F H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
@@ -117,6 +135,7 @@ theorem MorseRearrangement.exists_radius_supported_bump_preparation {E F H M : T
   obtain ⟨d, hd⟩ := hdiff t
   exact ⟨d, fun y => (hd y).symm⟩
 
+/-- The image in `N` of the support of the cutoff of a patch is compact. -/
 theorem MorseRearrangement.ambient_patch_support_compact {G K N X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K}
     [TopologicalSpace N] [ChartedSpace K N] [TopologicalSpace X]
@@ -125,6 +144,9 @@ theorem MorseRearrangement.ambient_patch_support_compact {G K N X : Type*}
   p.cutoff_compact.isCompact.image_of_continuousOn
     (p.chart.contMDiffOn_invFun.continuousOn.mono p.cutoff_support)
 
+/-- Every point of a compact source has a patch compatible with `f`, containing it in the
+interior of its core, and with support contained in a prescribed open neighbourhood of its
+image. -/
 theorem MorseRearrangement.exists_ambient_patch_in_open {G K N X : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K}
     [TopologicalSpace N] [ChartedSpace K N] [TopologicalSpace X] [FiniteDimensional ℝ G]
@@ -175,6 +197,10 @@ theorem MorseRearrangement.exists_ambient_patch_in_open {G K N X : Type*}
   rintro y ⟨z, hz, rfl⟩
   exact (hball (hsupport hz)).2
 
+/-- One patch of the general-position induction: if `f` is already transverse to `g` on a
+compact set `B`, there is a diffeomorphism `e` of `N`, supported in the patch `p i` and fixing a
+set `C` disjoint from that patch, making `e ∘ f` transverse to `g` on `B ∪ (p i).core` while
+keeping all patches compatible.  The dimension hypothesis is `dim X + dim Y = dim N`. -/
 theorem MorseRearrangement.exists_relative_ambient_patch_step {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -249,6 +275,8 @@ theorem MorseRearrangement.exists_relative_ambient_patch_step {D Z G H H' K X Y 
       have hplateau := hcompatible i hx
       exact hnew x ((p i).plateau_source hplateau) ((p i).plateau_one _ hplateau) y hxy
 
+/-- Two supported relative isotopies fixing the same set compose: the composite diffeomorphism
+is supported in the union of the two supports and still fixes that set. -/
 def MorseRearrangement.compose_supported_ambient_isotopies {G K N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K}
     [TopologicalSpace N] [ChartedSpace K N] {e d : Diffeomorph J J N N ∞} {K₁ K₂ C : Set N}
@@ -275,6 +303,10 @@ def MorseRearrangement.compose_supported_ambient_isotopies {G K N : Type*}
     intro t x hx
     rw [A.fixedOn t x hx, B.fixedOn t x hx]
 
+/-- Iterating `exists_relative_ambient_patch_step` over a finite set of patches: there is a
+diffeomorphism `e` of `N`, isotopic to the identity through an isotopy supported in a compact
+subset of `U` and fixing `Uᶜ`, keeping all patches compatible and making `e ∘ f` transverse to
+`g` on the core of every patch in the given finite set. -/
 theorem MorseRearrangement.exists_finite_relative_patch_diffeomorph
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
@@ -330,6 +362,10 @@ theorem MorseRearrangement.exists_finite_relative_patch_diffeomorph
     · exact ht₂ x (Or.inr hx) y
     · exact ht₂ x (Or.inl (Set.mem_iUnion₂.mpr ⟨j, hjs, hx⟩)) y
 
+/-- General position by ambient isotopy: for `f : X → N` with `X` compact and image in an open
+`U`, and `dim X + dim Y = dim N`, there is a diffeomorphism `e` of `N`, isotopic to the identity
+through an isotopy supported in a compact subset of `U` and fixing `Uᶜ`, with `e ∘ f` transverse
+to `g` everywhere (Hirsch, *Differential Topology*, Ch. 3). -/
 theorem MorseRearrangement.exists_supported_ambient_transverse_in_open
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
@@ -364,6 +400,8 @@ theorem MorseRearrangement.exists_supported_ambient_transverse_in_open
   obtain ⟨i, hi, hxi⟩ := Set.mem_iUnion₂.mp (hscover (Set.mem_univ x))
   exact ht ⟨i, hi⟩ (Finset.mem_univ _) x (interior_subset hxi) y
 
+/-- Same statement below the transversality dimension: if `dim X + dim Y < dim N`, the ambient
+isotopy can be chosen so that the images of `e ∘ f` and `g` are disjoint. -/
 theorem MorseRearrangement.exists_supported_ambient_disjoint_in_open
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
@@ -404,6 +442,8 @@ theorem MorseRearrangement.exists_supported_ambient_disjoint_in_open
     exact ht (x, w) y
   exact ⟨e, C, hC, hCU, hIso, disjoint_ranges_of_native_transverse_dimension htrans hdim⟩
 
+/-- Disjunction by an ambient isotopy fixing a prescribed closed set `C` disjoint from the
+image of `f`, again when `dim X + dim Y < dim N`. -/
 theorem MorseRearrangement.exists_supported_ambient_disjoint_fixing_closed
     {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
@@ -427,53 +467,64 @@ theorem MorseRearrangement.exists_supported_ambient_disjoint_fixing_closed
   refine ⟨e, K, hK, hKU, ?_, hdisj⟩
   simpa only [compl_compl] using hIso
 
+/-- The union of the images of all members of a family except the `i`-th. -/
 def MorseRearrangement.otherSheetImages {ι X N : Type*} (a : ι → X → N) (i : ι) : Set N :=
   ⋃ j : { j : ι // j ≠ i }, Set.range (a j.val)
 
+/-- A value of the `j`-th member of a family, `j ≠ i`, lies in `otherSheetImages a i`. -/
 theorem MorseRearrangement.mem_otherSheetImages {ι X N : Type*} (a : ι → X → N) (i j : ι)
     (hji : j ≠ i) (x : X) : a j x ∈ otherSheetImages a i :=
   Set.mem_iUnion.mpr ⟨⟨j, hji⟩, Set.mem_range_self x⟩
 
-def MorseRearrangement.sheetSum (X : Type) : ℕ → Type
+universe u
+
+/-- The disjoint union of `n` copies of `X`, defined by recursion on `n`. -/
+def MorseRearrangement.sheetSum (X : Type u) : ℕ → Type u
   | 0 => PEmpty
   | n + 1 => X ⊕ sheetSum X n
 
-instance MorseRearrangement.sheetSumTopology {X : Type} [TopologicalSpace X] :
+/-- `sheetSum X n` carries the disjoint-union topology. -/
+instance MorseRearrangement.sheetSumTopology {X : Type*} [TopologicalSpace X] :
     (n : ℕ) → TopologicalSpace (sheetSum X n)
   | 0 => inferInstanceAs (TopologicalSpace PEmpty)
   | n + 1 =>
     let _ := sheetSumTopology (X := X) n
     inferInstanceAs (TopologicalSpace (X ⊕ sheetSum X n))
 
-instance MorseRearrangement.sheetSumCompact {X : Type} [TopologicalSpace X]
+/-- A finite disjoint union of compact spaces is compact. -/
+instance MorseRearrangement.sheetSumCompact {X : Type*} [TopologicalSpace X]
     [CompactSpace X] : (n : ℕ) → CompactSpace (sheetSum X n)
   | 0 => inferInstanceAs (CompactSpace PEmpty)
   | n + 1 =>
     let _ := sheetSumCompact (X := X) n
     inferInstanceAs (CompactSpace (X ⊕ sheetSum X n))
 
-instance MorseRearrangement.sheetSumT2 {X : Type} [TopologicalSpace X] [T2Space X] :
+/-- A finite disjoint union of Hausdorff spaces is Hausdorff. -/
+instance MorseRearrangement.sheetSumT2 {X : Type*} [TopologicalSpace X] [T2Space X] :
     (n : ℕ) → T2Space (sheetSum X n)
   | 0 => inferInstanceAs (T2Space PEmpty)
   | n + 1 =>
     let _ := sheetSumT2 (X := X) n
     inferInstanceAs (T2Space (X ⊕ sheetSum X n))
 
-instance MorseRearrangement.sheetSumSecondCountable {X : Type} [TopologicalSpace X]
+/-- A finite disjoint union of second-countable spaces is second countable. -/
+instance MorseRearrangement.sheetSumSecondCountable {X : Type*} [TopologicalSpace X]
     [SecondCountableTopology X] : (n : ℕ) → SecondCountableTopology (sheetSum X n)
   | 0 => inferInstanceAs (SecondCountableTopology PEmpty)
   | n + 1 =>
     let _ := sheetSumSecondCountable (X := X) n
     inferInstanceAs (SecondCountableTopology (X ⊕ sheetSum X n))
 
-instance MorseRearrangement.sheetSumChartedSpace {X : Type} [TopologicalSpace X] {H : Type}
+/-- A finite disjoint union of charted spaces on `H` is a charted space on `H`. -/
+instance MorseRearrangement.sheetSumChartedSpace {X : Type*} [TopologicalSpace X] {H : Type*}
     [TopologicalSpace H] [ChartedSpace H X] : (n : ℕ) → ChartedSpace H (sheetSum X n)
   | 0 => ChartedSpace.empty H PEmpty
   | n + 1 =>
     let _ := sheetSumChartedSpace (X := X) (H := H) n
     inferInstanceAs (ChartedSpace H (X ⊕ sheetSum X n))
 
-instance MorseRearrangement.sheetSumIsManifold {X : Type} [TopologicalSpace X] {E H : Type}
+/-- A finite disjoint union of smooth manifolds is a smooth manifold. -/
+instance MorseRearrangement.sheetSumIsManifold {X : Type*} [TopologicalSpace X] {E H : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [ChartedSpace H X] [IsManifold I ∞ X] : (n : ℕ) → IsManifold I ∞ (sheetSum X n)
   | 0 =>
@@ -483,12 +534,14 @@ instance MorseRearrangement.sheetSumIsManifold {X : Type} [TopologicalSpace X] {
     let _ := sheetSumIsManifold (X := X) (I := I) n
     inferInstanceAs (IsManifold I ∞ (X ⊕ sheetSum X n))
 
-def MorseRearrangement.sheetSumMap {X : Type} {N : Type} :
+/-- The map out of `sheetSum X n` assembled from a family of `n` maps `X → N`. -/
+def MorseRearrangement.sheetSumMap {X : Type*} {N : Type*} :
     (n : ℕ) → (Fin n → X → N) → sheetSum X n → N
   | 0, _, x => x.elim
   | n + 1, a, x => Sum.elim (a 0) (sheetSumMap n (fun i => a i.succ)) x
 
-theorem MorseRearrangement.range_sheetSumMap {X : Type} [TopologicalSpace X] {N : Type}
+/-- The image of the assembled map is the union of the images of the family. -/
+theorem MorseRearrangement.range_sheetSumMap {X : Type*} [TopologicalSpace X] {N : Type*}
     (n : ℕ) (a : Fin n → X → N) : Set.range (sheetSumMap n a) = ⋃ i, Set.range (a i) := by
   induction n with
   | zero =>
@@ -520,9 +573,10 @@ theorem MorseRearrangement.range_sheetSumMap {X : Type} [TopologicalSpace X] {N 
         obtain ⟨z, hz⟩ := hy'
         exact ⟨Sum.inr z, hz⟩
 
-theorem MorseRearrangement.contMDiff_sheetSumMap {X : Type} [TopologicalSpace X]
-    {E H : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
-    {I : ModelWithCorners ℝ E H} [ChartedSpace H X] {G K N : Type} [NormedAddCommGroup G]
+/-- The assembled map is smooth when each member of the family is. -/
+theorem MorseRearrangement.contMDiff_sheetSumMap {X : Type*} [TopologicalSpace X]
+    {E H : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} [ChartedSpace H X] {G K N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace N]
     [ChartedSpace K N] (n : ℕ) (a : Fin n → X → N) (ha : ∀ i, ContMDiff I J ∞ (a i)) :
     ContMDiff I J ∞ (sheetSumMap n a) := by
@@ -530,11 +584,13 @@ theorem MorseRearrangement.contMDiff_sheetSumMap {X : Type} [TopologicalSpace X]
   | zero => intro x; exact x.elim
   | succ n ih => exact (ha 0).sumElim (ih (fun i => a i.succ) (fun i => ha i.succ))
 
-theorem MorseRearrangement.exists_sheetSumMap_for_finite_family {X : Type}
-    [TopologicalSpace X] {E H : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [ChartedSpace H X] {G K N : Type}
+/-- A finite family of smooth maps `X → N` is the assembly of a single smooth map out of a
+finite disjoint union of copies of `X`, with the same image. -/
+theorem MorseRearrangement.exists_sheetSumMap_for_finite_family {X : Type*}
+    [TopologicalSpace X] {E H : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [ChartedSpace H X] {G K N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K}
-    [TopologicalSpace N] [ChartedSpace K N] {ι : Type} [Finite ι] (a : ι → X → N)
+    [TopologicalSpace N] [ChartedSpace K N] {ι : Type*} [Finite ι] (a : ι → X → N)
     (ha : ∀ i, ContMDiff I J ∞ (a i)) :
     ∃ (n : ℕ) (b : sheetSum X n → N), ContMDiff I J ∞ b ∧ Set.range b = ⋃ i, Set.range (a i) := by
   classical
@@ -555,7 +611,10 @@ theorem MorseRearrangement.exists_sheetSumMap_for_finite_family {X : Type}
     refine Set.mem_iUnion.mpr ⟨e i, ?_⟩
     simpa only [a', e.symm_apply_apply] using hi
 
-theorem MorseRearrangement.exists_whole_family_avoidance {ι D Z G H H' K X Y N : Type}
+/-- Simultaneous disjunction: a finite family of smooth maps `a j : X → N`, all with image
+disjoint from a closed set `C`, can be moved by a single ambient isotopy fixing `C` so that every
+`e ∘ a j` has image disjoint from that of `g`, provided `dim X + dim Y < dim N`. -/
+theorem MorseRearrangement.exists_whole_family_avoidance {ι D Z G H H' K X Y N : Type*}
     [Finite ι] [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -597,13 +656,18 @@ theorem MorseRearrangement.exists_whole_family_avoidance {ι D Z G H H' K X Y N 
   exact hx
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The number of points of a finite set whose height exceeds that of `x`. -/
 def MorseRearrangement.upperValueRank {X : Type*} [Fintype X] (h : X → ℝ) (x : X) : ℕ :=
   (Finset.univ.filter (fun y => h x < h y)).card
 
+/-- The weighted inversion count `∑ x, w x * upperValueRank h x` of a height function `h` with
+weights `w`.  This is the quantity whose decrease drives Milnor's reordering induction
+(*Lectures on the h-cobordism theorem*, Theorem 4.8). -/
 def MorseRearrangement.finiteIndexDisorder {X : Type*} [Fintype X] (h : X → ℝ)
     (w : X → ℕ) : ℕ :=
   ∑ x, w x * upperValueRank h x
 
+/-- `upperValueRank` is invariant under reindexing by an equivalence. -/
 theorem MorseRearrangement.upperValueRank_comp_equiv {X : Type*} [Fintype X] {Y : Type*}
     [Fintype Y] (h : Y → ℝ) (e : X ≃ Y) (x : X) :
     upperValueRank (h ∘ e) x = upperValueRank h (e x) := by
@@ -612,6 +676,7 @@ theorem MorseRearrangement.upperValueRank_comp_equiv {X : Type*} [Fintype X] {Y 
   rw [← Fintype.card_subtype, ← Fintype.card_subtype]
   exact Fintype.card_congr (e.subtypeEquiv (fun _ => Iff.rfl))
 
+/-- `finiteIndexDisorder` is invariant under reindexing by an equivalence. -/
 theorem MorseRearrangement.finiteIndexDisorder_comp_equiv {X : Type*} [Fintype X]
     {Y : Type*} [Fintype Y] (h : Y → ℝ) (w : Y → ℕ) (e : X ≃ Y) :
     finiteIndexDisorder (h ∘ e) (w ∘ e) = finiteIndexDisorder h w := by
@@ -625,6 +690,8 @@ theorem MorseRearrangement.finiteIndexDisorder_comp_equiv {X : Type*} [Fintype X
       rfl
     _ = _ := e.sum_comp (fun y => w y * upperValueRank h y)
 
+/-- If `p` is immediately below `q` in an injective height function, then exactly one more
+point lies above `p` than above `q`. -/
 theorem MorseRearrangement.upperValueRank_consecutive {X : Type*} [Fintype X] {h : X → ℝ}
     (hi : Function.Injective h) {p q : X} (hpq : h p < h q)
     (hconsecutive : ∀ x, ¬(h p < h x ∧ h x < h q)) :
@@ -650,6 +717,7 @@ theorem MorseRearrangement.upperValueRank_consecutive {X : Type*} [Fintype X] {h
   rw [hset, Finset.card_insert_of_notMem (by simp)]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- A sum over a finite type splits off the two distinct terms `p` and `q`. -/
 theorem MorseRearrangement.sum_erase_two_nat {X : Type*} [Fintype X] (v : X → ℕ) {p q : X}
     (hpq : p ≠ q) : ∑ x, v x = (∑ x ∈ (Finset.univ.erase p).erase q, v x) + v p + v q := by
   classical
@@ -660,6 +728,7 @@ theorem MorseRearrangement.sum_erase_two_nat {X : Type*} [Fintype X] (v : X → 
   omega
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Transposing two values in a weighted sum changes it by exchanging the two crossed terms. -/
 theorem MorseRearrangement.weighted_sum_swap_identity {X : Type*} [Fintype X] (w v : X → ℕ)
     {p q : X} (hpq : p ≠ q) :
     (∑ x, w x * v (Equiv.swap p q x)) + w p * v p + w q * v q =
@@ -680,6 +749,8 @@ theorem MorseRearrangement.weighted_sum_swap_identity {X : Type*} [Fintype X] (w
   omega
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Exchanging the heights of two consecutive points whose weights are inverted strictly
+decreases the inversion count.  This is the induction step of Milnor's proof of Theorem 4.8. -/
 theorem MorseRearrangement.finiteIndexDisorder_swap_lt {X : Type*} [Fintype X] {h : X → ℝ}
     (hi : Function.Injective h) (w : X → ℕ) {p q : X} (hpq : h p < h q)
     (hconsecutive : ∀ x, ¬(h p < h x ∧ h x < h q)) (hw : w q < w p) :
@@ -701,6 +772,8 @@ theorem MorseRearrangement.finiteIndexDisorder_swap_lt {X : Type*} [Fintype X] {
   rw [hnew]
   omega
 
+/-- If the weights are not monotone along the height, there is a consecutive pair `p`, `q` with
+`h p < h q` and `w q < w p`: an adjacent inversion. -/
 theorem MorseRearrangement.exists_adjacent_index_inversion {X : Type*} [Finite X]
     {h : X → ℝ} (hi : Function.Injective h) (w : X → ℕ) (hnot : ¬∀ x y, h x < h y → w x ≤ w y) :
     ∃ p q, h p < h q ∧ (∀ x, ¬(h p < h x ∧ h x < h q)) ∧ w q < w p := by
@@ -720,6 +793,8 @@ theorem MorseRearrangement.exists_adjacent_index_inversion {X : Type*} [Finite X
   obtain ⟨p, q, hcover, hweights⟩ := hnotadj
   exact ⟨p, q, hcover.lt, fun x hx => hcover.2 hx.1 hx.2, hweights⟩
 
+/-- If some point lies strictly between `p` and `q`, there is one lying immediately below
+`q`. -/
 theorem MorseRearrangement.exists_consecutive_below_of_intermediate {X : Type*} [Finite X]
     {h : X → ℝ} {p q : X} (hintermediate : ∃ x, h p < h x ∧ h x < h q) :
     ∃ r, h p < h r ∧ h r < h q ∧ ∀ x, ¬(h r < h x ∧ h x < h q) := by
@@ -733,10 +808,13 @@ theorem MorseRearrangement.exists_consecutive_below_of_intermediate {X : Type*} 
   intro x hx
   exact (not_lt_of_ge (hmax x (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx.2⟩))) hx.1
 
+/-- The number of points of a finite set whose height is below that of `q`. -/
 def MorseRearrangement.beforeValueRank {X : Type*} [Fintype X] (h : X → ℝ) (q : X) : ℕ :=
   upperValueRank (fun x => -h x) q
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Exchanging the heights of a consecutive pair `p < q` strictly decreases the number of
+points below `q`. -/
 theorem MorseRearrangement.beforeValueRank_exchange_lt {X : Type*} [Fintype X]
     {h g : X → ℝ} (hi : Function.Injective h) {p q : X} (hpq : h p < h q)
     (hconsecutive : ∀ x, ¬(h p < h x ∧ h x < h q)) (hgp : g p = h q) (hgq : g q = h p)
