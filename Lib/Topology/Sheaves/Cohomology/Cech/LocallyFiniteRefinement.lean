@@ -12,14 +12,16 @@ public import Mathlib.Topology.Compactness.Paracompact
 /-!
 # Locally finite refinements in the set-cover preorder
 
-This file formalizes the locally finite refinement input in textbook section CD-05. Mathlib's
-precise-refinement theorem gives a locally finite open refinement indexed by the original cover.
-Passing to the set-valued range cover removes repeated members while preserving local finiteness
-and the chosen refinement. Consequently, locally finite covers are upper cofinal in the thin
-refinement preorder used to define direct-limit Cech cohomology.
+On a paracompact space the locally finite open covers are cofinal in the refinement preorder.
+Mathlib's `precise_refinement` gives a locally finite open refinement indexed by the original
+cover; passing to the set-valued range cover removes repeated members while preserving local
+finiteness and the chosen refinement.  This is the cofinality used when direct-limit Cech
+cohomology is computed on locally finite covers.
 
-No cohomological comparison, effaceability statement, or derived-functor identification is made
-here.
+## References
+
+* J. R. Munkres, *Topology*, §41 (paracompactness)
+* Mathlib's `precise_refinement` (`Mathlib/Topology/Compactness/Paracompact.lean`)
 -/
 
 @[expose] public section
