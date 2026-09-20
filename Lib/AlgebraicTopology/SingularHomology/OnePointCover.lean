@@ -478,7 +478,7 @@ theorem SpherePoint.chart_transition_ambient_derivative {V : Type} [NormedAddCom
   have hR := R.toContinuousLinearEquiv.toContinuousLinearMap.hasFDerivAt.comp 0 hx
   exact hchain.unique (hR.congr_of_eventuallyEq (chart_transition_eventually_eq x y R he))
 
-theorem SphereNormalCoordinates.sign_factor_mo1973_5719 {a b c : ℝ} (hb : b ≠ 0)
+theorem SphereNormalCoordinates.sign_factor {a b c : ℝ} (hb : b ≠ 0)
     (h : a * b = c) : SignType.sign c * SignType.sign b = SignType.sign a := by
   have hsq : SignType.sign b * SignType.sign b = 1 := by
     rw [← sign_mul]

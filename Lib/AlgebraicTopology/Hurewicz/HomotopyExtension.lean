@@ -436,7 +436,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.CofaceCompatible {X : Type} [TopologicalS
 /-- For a coface-compatible family `F`, if the `a`-face of `s` equals the `b`-face of `t`
 (with `a < b`), then `F` already agrees on the two cylinders: face compatibility is a
 consequence of coface compatibility. -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.faceCompatible_of_cofaceCompatible_lt_mo1973_6084
+private theorem Hurewicz.DegreeTwo.SimplyConnected.faceCompatible_of_cofaceCompatible_lt
     {X : Type} [TopologicalSpace X] {n : ℕ}
     (F : Fin (n + 3) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hF : CofaceCompatible F) {a b : Fin (n + 3)} (hab : a < b)
@@ -458,10 +458,10 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.faceCompatible_of_cofaceCompatible {X
     (hF : CofaceCompatible F) : FaceCompatible F := by
   intro a b s t hst r
   rcases lt_trichotomy a b with hab | hab | hba
-  · exact faceCompatible_of_cofaceCompatible_lt_mo1973_6084 F hF hab hst r
+  · exact faceCompatible_of_cofaceCompatible_lt F hF hab hst r
   · subst b
     exact congrArg (fun u => F a (r, u)) (simplexFace_injective (n + 1) a hst)
-  · exact (faceCompatible_of_cofaceCompatible_lt_mo1973_6084 F hF hba hst.symm r).symm
+  · exact (faceCompatible_of_cofaceCompatible_lt F hF hba hst.symm r).symm
 
 /-- Any family of two homotopies on the `1`-simplex's two faces is face-compatible
 (the codimension-two faces are degenerate). -/
@@ -788,36 +788,36 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.cylinderRetraction_side (n : ℕ) (t 
 
 /-- The function on the bottom-or-side part of the cylinder boundary: `f` on the bottom
 face (`u.val.1 = 0`) and `h` on the side faces. -/
-private def Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_mo1973_6129 {n : ℕ} {X : Type*}
+private def Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction {n : ℕ} {X : Type*}
     [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (u : ↥(bottomOrSide n)) : X :=
   if hu : u.val.1 = 0 then f u.val.2 else h (u.val.1, ⟨u.val.2, u.property.resolve_left hu⟩)
 
 /-- On the bottom face the glued function is `f`. -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom_mo1973_6130 {n : ℕ}
+private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom {n : ℕ}
     {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (u : ↥(bottomOrSide n)) (hu : u.val.1 = 0) :
-    gluedBoundaryFunction_mo1973_6129 f h u = f u.val.2 := by classical exact dif_pos hu
+    gluedBoundaryFunction f h u = f u.val.2 := by classical exact dif_pos hu
 
 /-- On the side faces the glued function is `h` (the seam case `u.val.1 = 0` reduces to
 `h0`). -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side_mo1973_6131 {n : ℕ}
+private theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side {n : ℕ}
     {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val)
     (u : ↥(bottomOrSide n)) (hu : u.val.2 ∈ simplexBoundary n) :
-    gluedBoundaryFunction_mo1973_6129 f h u = h (u.val.1, ⟨u.val.2, hu⟩) := by
+    gluedBoundaryFunction f h u = h (u.val.1, ⟨u.val.2, hu⟩) := by
   classical
   by_cases ht : u.val.1 = 0
-  · rw [gluedBoundaryFunction_bottom_mo1973_6130 f h u ht]
+  · rw [gluedBoundaryFunction_bottom f h u ht]
     simpa only [ht] using (h0 ⟨u.val.2, hu⟩).symm
   · exact dif_neg ht
 
 /-- The glued bottom-or-side function is continuous: the two closed pieces agree on their
 intersection by `h0`. -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction_mo1973_6132
+private theorem Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction
     {n : ℕ} {X : Type*} [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val) :
-    Continuous (gluedBoundaryFunction_mo1973_6129 f h) := by
+    Continuous (gluedBoundaryFunction f h) := by
   let B : Set (↥(bottomOrSide n)) := {u | u.val.1 = 0}
   let S : Set (↥(bottomOrSide n)) := {u | u.val.2 ∈ simplexBoundary n}
   have hB : IsClosed B :=
@@ -828,17 +828,17 @@ private theorem Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunct
     apply Set.eq_univ_of_forall
     intro u
     exact u.property
-  have hbottom : ContinuousOn (gluedBoundaryFunction_mo1973_6129 f h) B :=
+  have hbottom : ContinuousOn (gluedBoundaryFunction f h) B :=
     (f.continuous.comp (continuous_snd.comp continuous_subtype_val)).continuousOn.congr
-      (fun u hu => gluedBoundaryFunction_bottom_mo1973_6130 f h u hu)
-  have hside : ContinuousOn (gluedBoundaryFunction_mo1973_6129 f h) S := by
+      (fun u hu => gluedBoundaryFunction_bottom f h u hu)
+  have hside : ContinuousOn (gluedBoundaryFunction f h) S := by
     apply continuousOn_iff_continuous_domRestrict.mpr
     have hc : Continuous (fun u : S => h (u.val.val.1, ⟨u.val.val.2, u.property⟩)) :=
       h.continuous.comp
         ((continuous_fst.comp (continuous_subtype_val.comp continuous_subtype_val)).prodMk
           ((continuous_snd.comp (continuous_subtype_val.comp continuous_subtype_val)).subtype_mk
             _))
-    exact hc.congr fun u => (gluedBoundaryFunction_side_mo1973_6131 f h h0 u.val u.property).symm
+    exact hc.congr fun u => (gluedBoundaryFunction_side f h h0 u.val u.property).symm
   apply continuousOn_univ.mp
   rw [← hcover]
   exact hbottom.union_of_isClosed hside hB hS
@@ -851,8 +851,8 @@ def Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryMap {n : ℕ} {X : Type*} [T
     (f : C(SingularChains.Simplex n, X)) (h : C(unitInterval × SimplexBoundary n, X))
     (h0 : ∀ s, h (0, s) = f s.val) : C(↥(bottomOrSide n), X)
     where
-  toFun := gluedBoundaryFunction_mo1973_6129 f h
-  continuous_toFun := continuous_gluedBoundaryFunction_mo1973_6132 f h h0
+  toFun := gluedBoundaryFunction f h
+  continuous_toFun := continuous_gluedBoundaryFunction f h h0
 
 /-- The glued boundary map restricts on the bottom to `f`. -/
 @[simp]
@@ -860,7 +860,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryMap_bottomInclusion {n :
     [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val)
     (s : SingularChains.Simplex n) : gluedBoundaryMap f h h0 (bottomInclusion n s) = f s :=
-  gluedBoundaryFunction_bottom_mo1973_6130 f h (bottomInclusion n s) rfl
+  gluedBoundaryFunction_bottom f h (bottomInclusion n s) rfl
 
 /-- The glued boundary map restricts on the lateral part to `h`. -/
 @[simp]
@@ -868,7 +868,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryMap_sideInclusion {n : �
     [TopologicalSpace X] (f : C(SingularChains.Simplex n, X))
     (h : C(unitInterval × SimplexBoundary n, X)) (h0 : ∀ s, h (0, s) = f s.val)
     (u : unitInterval × SimplexBoundary n) : gluedBoundaryMap f h h0 (sideInclusion n u) = h u :=
-  gluedBoundaryFunction_side_mo1973_6131 f h h0 (sideInclusion n u) u.2.property
+  gluedBoundaryFunction_side f h h0 (sideInclusion n u) u.2.property
 
 /-- The extension of `f` and the boundary homotopy `h` to the whole cylinder:
 `gluedBoundaryMap f h h0 ∘ cylinderRetraction`. -/

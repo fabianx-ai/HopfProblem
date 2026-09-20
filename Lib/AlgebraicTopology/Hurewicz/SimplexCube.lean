@@ -305,7 +305,7 @@ theorem Hurewicz.isCompact_flatSimplexSet (n : ℕ) : IsCompact (flatSimplexSet 
 
 /-- The coordinate-sum functional `v ↦ ∑ i, v i` on `Fin n → ℝ`, as a continuous linear
 map. -/
-private def Hurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) →L[ℝ] ℝ
+private def Hurewicz.flatCoordinateSum (n : ℕ) : (Fin n → ℝ) →L[ℝ] ℝ
     where
   toFun v := ∑ i, v i
   map_add' v w := Finset.sum_add_distrib
@@ -314,15 +314,15 @@ private def Hurewicz.flatCoordinateSum_mo1973_5884 (n : ℕ) : (Fin n → ℝ) �
 
 /-- The coordinate-sum functional is nonzero in dimension `n + 1` (it maps the constant-`1`
 vector to `n + 1`). -/
-private theorem Hurewicz.flatCoordinateSum_succ_ne_zero_mo1973_5885 (n : ℕ) :
-    flatCoordinateSum_mo1973_5884 (n + 1) ≠ 0 := by
+private theorem Hurewicz.flatCoordinateSum_succ_ne_zero (n : ℕ) :
+    flatCoordinateSum (n + 1) ≠ 0 := by
   intro h
   have he := congrArg (fun f : (Fin (n + 1) → ℝ) →L[ℝ] ℝ => f 1) h
-  have hn : (n : ℝ) + 1 = 0 := by simpa [flatCoordinateSum_mo1973_5884] using he
+  have hn : (n : ℝ) + 1 = 0 := by simpa [flatCoordinateSum] using he
   exact (ne_of_gt (Nat.cast_add_one_pos n)) hn
 
 /-- The strict flat simplex (positive coordinates, sum `< 1`) is open in `Fin n → ℝ`. -/
-private theorem Hurewicz.isOpen_flatSimplexStrict_mo1973_5886 (n : ℕ) :
+private theorem Hurewicz.isOpen_flatSimplexStrict (n : ℕ) :
     IsOpen {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} := by
   have he :
     {v : Fin n → ℝ | (∀ i, 0 < v i) ∧ ∑ i, v i < 1} =
@@ -350,17 +350,17 @@ theorem Hurewicz.interior_flatSimplexSet (n : ℕ) :
       | zero => simp
       | succ
         n =>
-        have hs : v ∈ interior (flatCoordinateSum_mo1973_5884 (n + 1) ⁻¹' Set.Iic 1) :=
+        have hs : v ∈ interior (flatCoordinateSum (n + 1) ⁻¹' Set.Iic 1) :=
           interior_mono (fun w hw => hw.2) hv
         have h :=
-          ((flatCoordinateSum_mo1973_5884 (n + 1)).isOpenMap_of_ne_zero
-                (flatCoordinateSum_succ_ne_zero_mo1973_5885
+          ((flatCoordinateSum (n + 1)).isOpenMap_of_ne_zero
+                (flatCoordinateSum_succ_ne_zero
                   n)).interior_preimage_subset_preimage_interior
             hs
-        simpa only [Set.mem_preimage, interior_Iic, Set.mem_Iio, flatCoordinateSum_mo1973_5884,
+        simpa only [Set.mem_preimage, interior_Iic, Set.mem_Iio, flatCoordinateSum,
           ContinuousLinearMap.coe_mk', LinearMap.coe_mk, AddHom.coe_mk] using h
   · exact
-      (isOpen_flatSimplexStrict_mo1973_5886 n).subset_interior_iff.mpr
+      (isOpen_flatSimplexStrict n).subset_interior_iff.mpr
         (fun _ hv => ⟨fun i => (hv.1 i).le, hv.2.le⟩)
 
 /-- The interior of the flat simplex is nonempty. -/

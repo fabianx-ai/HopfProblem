@@ -883,7 +883,7 @@ theorem Hurewicz.NativeSubdivision.permuteCubeLoop_additiveClass {N : Type*} {X 
     simp [Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hij]
 
 /-- Below `i`'s value, `Fin.succAbove` preserves the `< k` prefix test. -/
-private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff_mo1973_8180 {n : ℕ}
+private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff {n : ℕ}
     (i : Fin (n + 1)) (j : Fin n) (k : ℕ) (h : k ≤ i.val) : (i.succAbove j).val < k ↔ j.val < k :=
   by
   by_cases hji : j.castSucc < i
@@ -896,7 +896,7 @@ private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff_mo1973_8180 {n 
 
 /-- At or above `i`'s value, `Fin.succAbove j < k + 1` iff `j < k`: the skip at `i` is
 absorbed by the `+1`. -/
-private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_succ_iff_mo1973_8181 {n : ℕ}
+private theorem Hurewicz.SimplexGeometry.succAbove_lt_prefix_succ_iff {n : ℕ}
     (i : Fin (n + 1)) (j : Fin n) (k : ℕ) (h : i.val ≤ k) :
     (i.succAbove j).val < k + 1 ↔ j.val < k := by
   by_cases hji : j.castSucc < i
@@ -916,7 +916,7 @@ theorem Hurewicz.SimplexGeometry.prefixMinimum_insertNth_le {n : ℕ} (i : Fin (
   simp only [prefixMinimum, Finset.le_inf_iff, Finset.mem_filter, Finset.mem_univ, true_and]
   rw [Fin.forall_iff_succAbove i]
   simp only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove,
-    succAbove_lt_prefix_iff_mo1973_8180 i _ k h, not_lt_of_ge h, false_implies, true_and]
+    succAbove_lt_prefix_iff i _ k h, not_lt_of_ge h, false_implies, true_and]
 
 /-- The prefix minimum of an `insertNth` tuple at a successor index. -/
 theorem Hurewicz.SimplexGeometry.prefixMinimum_insertNth_succ {n : ℕ} (i : Fin (n + 1))
@@ -928,7 +928,7 @@ theorem Hurewicz.SimplexGeometry.prefixMinimum_insertNth_succ {n : ℕ} (i : Fin
     le_min_iff]
   rw [Fin.forall_iff_succAbove i]
   simp only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove,
-    succAbove_lt_prefix_succ_iff_mo1973_8181 i _ k h, Nat.lt_succ_of_le h, true_implies]
+    succAbove_lt_prefix_succ_iff i _ k h, Nat.lt_succ_of_le h, true_implies]
 
 /-- The prefix minimum of an `insertNth 1` tuple is dominated by `1`. -/
 theorem Hurewicz.SimplexGeometry.prefixMinimum_insertNth_one_le {n : ℕ} (i : Fin (n + 1))

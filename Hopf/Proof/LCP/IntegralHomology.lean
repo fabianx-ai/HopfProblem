@@ -7861,7 +7861,7 @@ theorem MappingTorusHomology.Covering.coverSmallCycle_productCover_eq {X : Type}
     SingularMayerVietoris.ModuleHomology.mapCycles
         (SingularMayerVietoris.smallInclusion (MappingTorus.HomologyCover.U B.symm)
           (MappingTorus.HomologyCover.V B.symm))
-        (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b) =
+        (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period m B hB) n b) =
       SingularMayerVietoris.ModuleHomology.mapCycles
         (FirstHurewicz.singularChainMap (productCover m B hB)) (n + 1)
         (PeriodTorusHigherHomology.crossProductCycles (MappingTorus.Circle) X n (arcSumCycle m)
@@ -7892,7 +7892,7 @@ theorem MappingTorusHomology.Covering.coverSmallCycle_productCover_class {X : Ty
         (SingularMayerVietoris.ModuleHomology.mapCycles
           (SingularMayerVietoris.smallInclusion (MappingTorus.HomologyCover.U B.symm)
             (MappingTorus.HomologyCover.V B.symm))
-          (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b)) =
+          (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period m B hB) n b)) =
       productCoverHomology m B hB (n + 1)
         (PeriodTorusHigherHomology.positiveCircleCross X n
           (SingularMayerVietoris.ModuleHomology.cycleClass (FirstHurewicz.singularComplex X) n
@@ -7921,7 +7921,7 @@ theorem MappingTorusHomology.Covering.boundaryCoordinates_productCover_cross_cyc
             b)) := by
   rw [← coverSmallCycle_productCover_class]
   exact
-    coverSmallCycle_boundaryCoordinates B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b
+    coverSmallCycle_boundaryCoordinates B.symm m (inverseMonodromy_period m B hB) n b
 
 theorem MappingTorusHomology.Covering.wangBoundary_productCover_cross_cycleClass {X : Type}
     [TopologicalSpace X] [CompactSpace X] [T2Space X] (m : ℕ) [NeZero m] (B : X ≃ₜ X)

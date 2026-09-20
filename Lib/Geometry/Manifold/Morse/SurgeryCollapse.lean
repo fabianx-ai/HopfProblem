@@ -3390,7 +3390,7 @@ theorem OnePointCover.instLocal1 (n : ℕ) :
   ⟨finrank_euclideanSpace_fin⟩
 
 attribute [local instance] OnePointCover.instLocal1 in
-private def OnePointCover.spherePunctureHomeomorph_mo1973_5327 (n : ℕ)
+private def OnePointCover.spherePunctureHomeomorph (n : ℕ)
     (a : Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) :
     ↥({ a }ᶜ : Set (Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) ≃ₜ
       EuclideanSpace ℝ (Fin n) :=
@@ -3409,7 +3409,7 @@ def OnePointCover.punctureHomeomorph {N : Type*} [NormedAddCommGroup N] [NormedS
       (fun x => by
         change x ≠ a ↔ e x ≠ e a
         exact e.injective.ne_iff.symm)
-  exact es.trans (spherePunctureHomeomorph_mo1973_5327 _ (e a))
+  exact es.trans (spherePunctureHomeomorph _ (e a))
 
 attribute [local instance] OnePointCover.instLocal1 in
 theorem OnePointCover.oldPatch_contractible {N : Type*} [NormedAddCommGroup N]
@@ -4414,7 +4414,7 @@ theorem SphereNormalCoordinates.chartJacobian_sign_factor {V F : Type}
         SignType.sign (B.symm.toContinuousLinearMap.comp (fderiv ℝ (f ∘ c) z)).det =
       SignType.sign (normalJacobian j (c z) (mfderiv (𝓡 m) 𝓘(ℝ, F) f (c z))) := by
   have h := chartJacobian_factor c j B hz f hf hA
-  apply sign_factor_mo1973_5719 _ h
+  apply sign_factor _ h
   intro hd
   rw [hd, MulZeroClass.mul_zero] at h
   exact chartJacobian_ne_zero c j B hz h.symm
@@ -4599,7 +4599,7 @@ theorem LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius {E F : Type}
           NativeParametrization.centered (D := E) x ⁻¹' W))
     (r : ℝ) (hr : 0 < r) (hrR : r ≤ d.radius) :
     LocalDegree.PointTransition.coordinateMap x x (d.restrictRadius r hr hrR) d
-        (Homeomorph.refl M) (identity_center_mo1973_5731 x) (mapsTo_restrictRadius x d r hr hrR) =
+        (Homeomorph.refl M) (identity_center x) (mapsTo_restrictRadius x d r hr hrR) =
       ContinuousMap.id (Metric.sphere (0 : E) 1) := by
   apply ContinuousMap.ext
   intro u
@@ -4636,7 +4636,7 @@ theorem LocalDegree.NativeNeighborhood.sphereConnecting_restrictRadius {E F : Ty
     sphereConnecting x (d.restrictRadius r hr hrR) k a = sphereConnecting x d k a := by
   have h :=
     LocalDegree.PointTransition.connecting_naturality x x (d.restrictRadius r hr hrR) d
-      (Homeomorph.refl M) (identity_center_mo1973_5731 x) (mapsTo_restrictRadius x d r hr hrR) k a
+      (Homeomorph.refl M) (identity_center x) (mapsTo_restrictRadius x d r hr hrR) k a
   rw [coordinateMap_restrictRadius, SingularHomology.singularHomologyMap_id,
     LinearMap.id_apply] at h
   change

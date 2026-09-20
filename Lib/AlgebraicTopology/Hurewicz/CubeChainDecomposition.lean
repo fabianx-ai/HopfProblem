@@ -777,7 +777,7 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard {X : 
   exact orientedPrismRealization_canonicalPrismDiscrepancy p
 
 /-- Scalar multiplication of a `ℤ`-linear map acts pointwise: `(r • f) a = r • f a`. -/
-private theorem Hurewicz.CubeSubdivision.linearMap_zsmul_apply_mo1973_8057 {M N : Type*}
+private theorem Hurewicz.CubeSubdivision.linearMap_zsmul_apply {M N : Type*}
     [AddCommGroup M] [AddCommGroup N] [Module ℤ M] [Module ℤ N] (r : ℤ) (f : M →ₗ[ℤ] N) (a : M) :
     (r • f) a = r • f a :=
   map_zsmul (LinearMap.evalAddMonoidHom a) r f
@@ -798,8 +798,8 @@ theorem Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum {X : Type}
     apply SingularMayerVietoris.formalChains_ext
     intro v
     simp only [orientedPrismRealization_simplex, LinearMap.sum_apply,
-      linearMap_zsmul_apply_mo1973_8057, prismCubeRealization_simplex]
-  simpa only [LinearMap.sum_apply, linearMap_zsmul_apply_mo1973_8057] using
+      linearMap_zsmul_apply, prismCubeRealization_simplex]
+  simpa only [LinearMap.sum_apply, linearMap_zsmul_apply] using
     LinearMap.congr_fun h c
 
 /-! ### Permutation insertion -/

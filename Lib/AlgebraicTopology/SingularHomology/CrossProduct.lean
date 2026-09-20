@@ -2914,7 +2914,7 @@ theorem PeriodTorusHigherHomology.formalMap_associatorDefect {V W Z V' W' Z' : T
   rfl
 /-- Private plumbing: postcompose the output of a trilinear map on formal chain groups. -/
 
-private def PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 {V W Z U U' : Type*}
+private def PeriodTorusHigherHomology.triplePostcomp {V W Z U U' : Type*}
     {n m l r s : ℕ}
     (F :
       SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
@@ -2929,7 +2929,7 @@ private def PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 {V W Z U U' : 
       (SingularMayerVietoris.FormalChains U r) (SingularMayerVietoris.FormalChains U' s) f)
 
 /-- Private plumbing: precompose the last argument of a trilinear map on formal chain groups. -/
-private def PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 {V W Z Z' U : Type*}
+private def PeriodTorusHigherHomology.triplePrecompLast {V W Z Z' U : Type*}
     {n m l l' r : ℕ}
     (F :
       SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
@@ -3007,9 +3007,9 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Typ
   | zero =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) 1)
+      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) 1)
             (SingularMayerVietoris.formalBoundary 4) +
-          PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 (PeriodTorusHigherHomology.formalAssociatorHomotopy 0)
+          PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy 0)
             (SingularMayerVietoris.formalBoundary 1) =
         PeriodTorusHigherHomology.formalAssociatorDefect 1 := by
       apply PeriodTorusHigherHomology.formalChains_trilinear_ext
@@ -3040,9 +3040,9 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Typ
   | succ q ih =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 2))
+      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 2))
             (SingularMayerVietoris.formalBoundary (q + 5)) +
-          PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
+          PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
             (SingularMayerVietoris.formalBoundary (q + 2)) =
         PeriodTorusHigherHomology.formalAssociatorDefect (q + 2) := by
       apply PeriodTorusHigherHomology.formalChains_trilinear_ext
@@ -3102,9 +3102,9 @@ theorem PeriodTorusHigherHomology.formalMap_associatorHomotopy {V W Z V' W' Z' :
   | succ q ih =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp_mo1973_13949 (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 1))
+      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 1))
           (SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) (q + 5)) =
-        ((PeriodTorusHigherHomology.triplePrecompLast_mo1973_13950 (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
+        ((PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
                   (SingularMayerVietoris.formalMap h (q + 2))).compl₂
               (SingularMayerVietoris.formalMap g 2)).comp
           (SingularMayerVietoris.formalMap f 2) := by

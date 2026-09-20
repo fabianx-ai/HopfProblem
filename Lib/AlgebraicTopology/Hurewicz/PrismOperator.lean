@@ -4402,7 +4402,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy {X : Type} [Topolog
 
 /-- Two based triangles agree on the diagonal edge (the `s 1 = 0` face where both are
 constantly the basepoint). -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.basedTriangles_diagonal_mo1973_6743 {X : Type}
+private theorem Hurewicz.DegreeTwo.SimplyConnected.basedTriangles_diagonal {X : Type}
     [TopologicalSpace X] {x : X} (τ υ : BasedTriangle x) (s : SingularChains.Simplex 2)
     (hs : s 1 = 0) : τ.val s = υ.val s :=
   (τ.property s ⟨1, hs⟩).trans (υ.property s ⟨1, hs⟩).symm
@@ -4411,12 +4411,12 @@ private theorem Hurewicz.DegreeTwo.SimplyConnected.basedTriangles_diagonal_mo197
 def Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop {X : Type} [TopologicalSpace X] {x : X}
     (τ υ : BasedTriangle x) : GenLoop (Fin 2) X x :=
   ⟨(gluedTriangleHomotopyMap (τ.val.comp ContinuousMap.snd) (υ.val.comp ContinuousMap.snd)
-          (fun _ => basedTriangles_diagonal_mo1973_6743 τ υ)).comp
+          (fun _ => basedTriangles_diagonal τ υ)).comp
       ⟨fun t => ((0 : (unitInterval)), t), by fun_prop⟩,
     by
     intro t ht
     exact
-      gluedTriangleHomotopyMap_boundary _ _ (fun _ => basedTriangles_diagonal_mo1973_6743 τ υ) x
+      gluedTriangleHomotopyMap_boundary _ _ (fun _ => basedTriangles_diagonal τ υ) x
         (fun _ s hs => τ.property s (hs.elim (fun h => ⟨0, h⟩) (fun h => ⟨2, h⟩)))
         (fun _ s hs => υ.property s (hs.elim (fun h => ⟨0, h⟩) (fun h => ⟨2, h⟩))) 0 t ht⟩
 
@@ -4455,7 +4455,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_lower {X : Type} [
 
 /-- The triangle quotient of the swapped upper-square-triangle pair returns the original
 simplex: the upper triangle of the square covers the standard triangle. -/
-private theorem Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_swapped_upper_mo1973_6748
+private theorem Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_swapped_upper
     (s : SingularChains.Simplex 2) :
     triangleQuotient (upperSquareTriangle s 1, upperSquareTriangle s 0) = s := by
   have hpair : (upperSquareTriangle s 1, upperSquareTriangle s 0) = lowerProductTriangle s := by
@@ -4481,10 +4481,10 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_upper {X : Type} [
       apply Subtype.ext
       rw [upperSquareTriangle_zero, upperSquareTriangle_one, hs, zero_add]
     have hq : triangleQuotient (upperSquareTriangle s 0, upperSquareTriangle s 1) = s := by
-      simpa only [he] using triangleQuotient_swapped_upper_mo1973_6748 s
+      simpa only [he] using triangleQuotient_swapped_upper s
     rw [hq]
-    exact basedTriangles_diagonal_mo1973_6743 τ υ s hs
-  · rw [triangleQuotient_swapped_upper_mo1973_6748]
+    exact basedTriangles_diagonal τ υ s hs
+  · rw [triangleQuotient_swapped_upper]
 
 /-- The `HomotopyRel` from `p` to `basedTrianglesLoop τ υ` assembled from triangle homotopies `L`, `U`. -/
 def Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy {X : Type} [TopologicalSpace X] {x : X}

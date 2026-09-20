@@ -172,19 +172,19 @@ theorem PeriodTorusHigherHomology.crossProductEdge_path_boundary {X Y : Type} [T
   simp only [SingularChains.pointChain, crossProductZeroLeft_simplex_left]
   rfl
 
-theorem PeriodTorusHigherHomology.const_prodMk_id_eq_crossInsertLeft_mo1973_12793
+theorem PeriodTorusHigherHomology.const_prodMk_id_eq_crossInsertLeft
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (x : X) :
     (ContinuousMap.const Y x).prodMk (ContinuousMap.id Y) = crossInsertLeft x := by
   apply ContinuousMap.ext
   intro y
   rfl
 
-def PeriodTorusHigherHomology.biprodElement_mo1973_12801
+def PeriodTorusHigherHomology.biprodElement
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.X n) (b : L.X n) : (K ⊞ L).X n :=
   ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).f n).hom a +
     ((CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L).f n).hom b
 
-theorem PeriodTorusHigherHomology.biprod_lift_f_apply_mo1973_12802
+theorem PeriodTorusHigherHomology.biprod_lift_f_apply
     {J K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (n : ℕ) (z : J.X n) :
     ((CategoryTheory.Limits.biprod.lift f g).f n).hom z =
       ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).f n).hom ((f.f n).hom z) +
@@ -213,10 +213,10 @@ theorem PeriodTorusHigherHomology.biprod_lift_f_apply_mo1973_12802
   rw [hfst, hsnd] at htotal
   exact htotal.symm
 
-theorem PeriodTorusHigherHomology.biprodElement_desc_mo1973_12803
+theorem PeriodTorusHigherHomology.biprodElement_desc
     {K L T : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : K ⟶ T) (g : L ⟶ T) (n : ℕ) (a : K.X n)
     (b : L.X n) :
-    ((CategoryTheory.Limits.biprod.desc f g).f n).hom (biprodElement_mo1973_12801 K L n a b) =
+    ((CategoryTheory.Limits.biprod.desc f g).f n).hom (biprodElement K L n a b) =
       (f.f n).hom a + (g.f n).hom b := by
   change
     ((CategoryTheory.Limits.biprod.desc f g).f n).hom
@@ -228,10 +228,10 @@ theorem PeriodTorusHigherHomology.biprodElement_desc_mo1973_12803
   · exact congrArg (fun h => h.hom a) (HomologicalComplex.biprod_inl_desc_f f g n)
   · exact congrArg (fun h => h.hom b) (HomologicalComplex.biprod_inr_desc_f f g n)
 
-theorem PeriodTorusHigherHomology.biprodElement_boundary_mo1973_12804
+theorem PeriodTorusHigherHomology.biprodElement_boundary
     (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (i j : ℕ) (a : K.X i) (b : L.X i) :
-    ((K ⊞ L).d i j).hom (biprodElement_mo1973_12801 K L i a b) =
-      biprodElement_mo1973_12801 K L j ((K.d i j).hom a) ((L.d i j).hom b) := by
+    ((K ⊞ L).d i j).hom (biprodElement K L i a b) =
+      biprodElement K L j ((K.d i j).hom a) ((L.d i j).hom b) := by
   have hK := congrArg (fun f => f.hom a) ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).comm i j)
   have hL := congrArg (fun f => f.hom b) ((CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L).comm i j)
   change
@@ -248,21 +248,21 @@ theorem PeriodTorusHigherHomology.biprodElement_boundary_mo1973_12804
   rw [map_add, hK, hL]
   rfl
 
-theorem PeriodTorusHigherHomology.biprod_lift_eq_boundary_mo1973_12805
+theorem PeriodTorusHigherHomology.biprod_lift_eq_boundary
     {J K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (i j : ℕ) (a : K.X i)
     (b : L.X i) (z : J.X j) (ha : (K.d i j).hom a = (f.f j).hom z)
     (hb : (L.d i j).hom b = (g.f j).hom z) :
     ((CategoryTheory.Limits.biprod.lift f g).f j).hom z =
-      ((K ⊞ L).d i j).hom (biprodElement_mo1973_12801 K L i a b) := by
-  have hlift := biprod_lift_f_apply_mo1973_12802 f g j z
-  have hboundary := biprodElement_boundary_mo1973_12804 K L i j a b
-  have hab := congrArg₂ (biprodElement_mo1973_12801 K L j) ha hb
+      ((K ⊞ L).d i j).hom (biprodElement K L i a b) := by
+  have hlift := biprod_lift_f_apply f g j z
+  have hboundary := biprodElement_boundary K L i j a b
+  have hab := congrArg₂ (biprodElement K L j) ha hb
   exact hlift.trans (hab.symm.trans hboundary.symm)
 
 def PeriodTorusHigherHomology.twoChainMiddle {X : Type} [TopologicalSpace X] (U V : Set X) (n : ℕ)
     (a : SingularChains.Chains U (n + 1)) (b : SingularChains.Chains V (n + 1)) :
     (SingularMayerVietoris.middleComplex U V).X (n + 1) :=
-  biprodElement_mo1973_12801 (SingularChains.singularComplex U) (SingularChains.singularComplex V)
+  biprodElement (SingularChains.singularComplex U) (SingularChains.singularComplex V)
     (n + 1) a b
 
 theorem PeriodTorusHigherHomology.twoChainMiddle_rightMap {X : Type} [TopologicalSpace X]
@@ -271,7 +271,7 @@ theorem PeriodTorusHigherHomology.twoChainMiddle_rightMap {X : Type} [Topologica
     ((SingularMayerVietoris.rightMap U V).f (n + 1)).hom (twoChainMiddle U V n a b) =
       ((SingularMayerVietoris.toSmallLeft U V).f (n + 1)).hom a +
         ((SingularMayerVietoris.toSmallRight U V).f (n + 1)).hom b :=
-  biprodElement_desc_mo1973_12803 (SingularMayerVietoris.toSmallLeft U V)
+  biprodElement_desc (SingularMayerVietoris.toSmallLeft U V)
     (SingularMayerVietoris.toSmallRight U V) (n + 1) a b
 
 theorem PeriodTorusHigherHomology.twoChainMiddle_boundary {X : Type} [TopologicalSpace X]
@@ -290,7 +290,7 @@ theorem PeriodTorusHigherHomology.twoChainMiddle_boundary {X : Type} [Topologica
             n z.1) :
     ((SingularMayerVietoris.leftMap U V).f n).hom z.1 =
       ((SingularMayerVietoris.middleComplex U V).d (n + 1) n).hom (twoChainMiddle U V n a b) :=
-  biprod_lift_eq_boundary_mo1973_12805 (SingularMayerVietoris.intersectionToLeft U V)
+  biprod_lift_eq_boundary (SingularMayerVietoris.intersectionToLeft U V)
     (-(SingularMayerVietoris.intersectionToRight U V)) (n + 1) n a b z.1 ha hb
 
 theorem PeriodTorusHigherHomology.twoChainSmallCycle_condition {X : Type} [TopologicalSpace X]
@@ -876,11 +876,11 @@ theorem PeriodTorusHigherHomology.uCrossChain_boundary (X : Type) [TopologicalSp
   · have h :=
       congrArg (fun f => SingularChains.inducedChain f n b.1)
         (threeQuarterIntersectionSection_toU X)
-    simpa only [const_prodMk_id_eq_crossInsertLeft_mo1973_12793, SingularChains.inducedChain_comp,
+    simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
   · have h :=
       congrArg (fun f => SingularChains.inducedChain f n b.1) (quarterIntersectionSection_toU X)
-    simpa only [const_prodMk_id_eq_crossInsertLeft_mo1973_12793, SingularChains.inducedChain_comp,
+    simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
 
 theorem PeriodTorusHigherHomology.vCrossChain_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
@@ -895,12 +895,12 @@ theorem PeriodTorusHigherHomology.vCrossChain_boundary (X : Type) [TopologicalSp
   congr 1
   · have h :=
       congrArg (fun f => SingularChains.inducedChain f n b.1) (quarterIntersectionSection_toV X)
-    simpa only [const_prodMk_id_eq_crossInsertLeft_mo1973_12793, SingularChains.inducedChain_comp,
+    simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
   · have h :=
       congrArg (fun f => SingularChains.inducedChain f n b.1)
         (threeQuarterIntersectionSection_toV X)
-    simpa only [const_prodMk_id_eq_crossInsertLeft_mo1973_12793, SingularChains.inducedChain_comp,
+    simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
 
 theorem PeriodTorusHigherHomology.uCrossChain_inclusion (X : Type) [TopologicalSpace X] (n : ℕ)

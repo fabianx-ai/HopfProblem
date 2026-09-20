@@ -742,7 +742,7 @@ def LocalDegree.NeighborhoodData.restrictRadius {E F : Type} [NormedAddCommGroup
   continuous := d.continuous.mono (Metric.closedBall_subset_closedBall hrR)
   remainder_bound x hx := d.remainder_bound x (Metric.closedBall_subset_closedBall hrR hx)
 
-theorem LocalDegree.NativeNeighborhood.identity_center_mo1973_5731 {M : Type}
+theorem LocalDegree.NativeNeighborhood.identity_center {M : Type}
     [TopologicalSpace M] (x : M) : (Homeomorph.refl M) x = x :=
   rfl
 
