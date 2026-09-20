@@ -1,12 +1,32 @@
-# Next steps (after integration review 8, 2026-09-21)
+# Next steps (after the fresh-reviewer pass over rounds 7 and 8, 2026-09-21)
+
+The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers, one receipt each, reviews in
+`Lib/reports/review-7-8/`) accepted all twenty-one receipts with findings and found nothing unsound: no
+weakened statement, no added hypothesis, no lost content, merges replayed clean. What it found is in the
+receipts, the docstrings and the citations. Open, in order:
+(1) the fix list of `REVIEW-7-8.md` §3 (about forty docstring/citation/receipt corrections, the two
+refuted "forced" claims of packet 02 to be lifted, the `Coproduct` biproduct pins, the `SphereTwo` probes
+in a new `Hopf/Proof/AxiomAudit.lean`, the duplicate `import` lines, the twin-less deletions recorded),
+one commit each, then the receipts' counts corrected in one commit; (2) the monolith wave,
+`Lib/reports/round-7/judgement/monoliths.md` (25 files; `SurgeryCollapse`/`OrderedCancellation` first,
+they hold the last Morse D material); (3) the owner decisions: chain-interface coefficients (the pins
+reviewer confirms the `ULift ℤ` obstruction is real and a protocol obstruction; the clean route is a new
+polymorphic `chains` beside the pinned one plus a `u = 0` comparison, i.e. an addition), the pre-PR chain
+tower (dup-hom item 2, refusal judged right). The `Hopf`-side axiom probes are no longer a decision:
+the reviewers' standing rule is that a move to `Hopf/Proof` carries its probes.
+Also carried over from the receipts' "left" sections (dropped by the previous version of this file):
+the 40 Jev two-letter disagreements and the auditors' ten low-confidence calls; the remaining project
+namespaces (`nativeMorseIndex`, `NativeTransversality`, `ThreefoldGluing`, `SpecialPeriods.Threefold.Star`,
+`MorseCancellation.`); dup-hom items 3–6 (the degree-one cochain lemmas are unblocked now that
+`GlobalUnitH1Criterion.lean` is gone); dup-sheaf items 1–5; dfiles-c's `sheaf`/`unit` removal; moved's
+`Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattributed remaining pins.
+Two facts every later round must know: `autoImplicit` is on in 221 of 446 `Lib` files (no `leanOptions`
+in `lakefile.toml`), and a statement can be pinned at universe 0 with no `.{0}` in its text (instance
+arguments resolved at a universe metavariable; `#check` with `pp.universes` finds it).
 
 Round 8 (`Lib/reviews/INTEGRATION-8.md`) did the judgement packets except the monoliths: universe pins
 1,024 → 320 (the rest is the chain-interface decision, `ULift ℤ` vs literal `ℤ`), 280 duplicate
-declarations gone with twins, the D files moved or split, project namespaces renamed. Open, in order:
-(1) fresh-reviewer pass over `Lib/reports/round-7/**/RECEIPT*.md` and `Lib/reports/round-8/*/RECEIPT.md`
-+ `MERGE.md`, one reviewer per receipt; (2) the monolith wave, `Lib/reports/round-7/judgement/monoliths.md`
-(25 files; `SurgeryCollapse`/`OrderedCancellation` first, they hold the last Morse D material);
-(3) the owner decisions: chain interface coefficients, `Hopf`-side axiom probes, the pre-PR chain tower.
+declarations gone with twins, the D files moved or split, project namespaces partly renamed.
 
 Round 7 (`Lib/reviews/INTEGRATION-7.md`) did the scriptable and checklist blocks of the textbook audit with
 Opus 5 agents: preamble gone, `_mo1973` names gone, `Lib.lean` complete, about 2,057 docstrings added,
