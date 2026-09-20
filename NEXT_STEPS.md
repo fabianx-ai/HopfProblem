@@ -1,4 +1,13 @@
-# Next steps (after integration review 6, 2026-09-20)
+# Next steps (after integration review 7, 2026-09-21)
+
+Round 7 (`Lib/reviews/INTEGRATION-7.md`) did the scriptable and checklist blocks of the textbook audit with
+Opus 5 agents: preamble gone, `_mo1973` names gone, `Lib.lean` complete, about 2,057 docstrings added,
+about 467 universe pins lifted, manuscript citations replaced by textbook references in ~150 files. The
+judgement round is prepared in `Lib/reports/round-7/judgement/`: `chokepoint-pins.md` (lift these first,
+then re-run the checklist on the files they release), `monoliths.md` (25 files to split, with the
+auditors' cut lists), `d-files.md` (21), `moved-verbatim.md` (7), `duplicates.md` (11 groups). Then the
+fresh-reviewer pass over `Lib/reports/round-7/**/RECEIPT*.md`. The audit itself: `Lib/reports/textbook-audit/AUDIT.md`;
+Jev calibration: `Lib/reports/textbook-audit/jev/JEV2.md`.
 
 Integration 6 (`Lib/reviews/INTEGRATION-6.md`) replayed the 358 `Lib/` commits of `center-solution` onto
 this branch; `Lib/` is byte-identical to `center-solution`'s (446 modules). Two small follow-ups from it:
