@@ -10,11 +10,21 @@ public import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormal
 public import Lib.Topology.Sheaves.OpenEmbeddingCohomology
 
 /-!
-# Cohomology and constant normalization for nested opens
+# Cohomology and constant coefficients for nested opens
 
-For literal opens `U ⊆ W` of one space, this file compares ambient cohomology-presheaf
-restriction with exact restriction along the actual inclusion `U → W`.  It also proves that the
-intrinsic constant-coefficient normalization commutes with this restriction.
+For opens `U ⊆ W` of a space `X`, restriction of sheaves is transitive: `(F|_W)|_U = F|_U`
+(Hartshorne, *Algebraic Geometry*, II §1; Iversen, *Cohomology of Sheaves*, II.2).  This file
+records that natural isomorphism, deduces that restriction in the cohomology presheaf
+`V ↦ H^n(V, F)` agrees with restriction of cohomology along `U ⊆ W`, and shows that the
+constant-coefficient class is compatible with it.
+
+## Main results
+
+* `restrictionIso`: `(F|_W)|_U ≅ F|_U` naturally in `F`.
+* `cohomologyEquiv_restrict`: restriction in the cohomology presheaf is restriction of
+  cohomology along `U ⊆ W`.
+* `intrinsicOpenClass_restrict`: the constant-coefficient class restricts to the
+  constant-coefficient class.
 -/
 
 @[expose] public section
@@ -33,10 +43,11 @@ open CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization
 
 variable {X : TopCat.{0}} {U W : Opens X}
 
-/-- The literal inclusion of nested open subspaces. -/
+/-- The inclusion `U ⟶ W` of nested open subspaces, as a map of topological spaces. -/
 def inclusion (h : U ≤ W) : TopCat.of U ⟶ TopCat.of W :=
   TopCat.ofHom ⟨Opens.inclusion h, (Opens.isOpenEmbedding_of_le h).continuous⟩
 
+/-- The inclusion of nested opens acts on points as the coercion `U → W`. -/
 @[simp]
 theorem inclusion_apply (h : U ≤ W) (x : U) :
     inclusion h x = Opens.inclusion h x := rfl
@@ -46,6 +57,8 @@ theorem inclusion_isOpenEmbedding (h : U ≤ W) :
     Topology.IsOpenEmbedding (inclusion h) :=
   Opens.isOpenEmbedding_of_le h
 
+/-- The inclusion `U ⟶ W` followed by the inclusion of `W` into `X` is the inclusion of `U`
+into `X`. -/
 @[simp]
 theorem inclusion_comp_ambientInclusion (h : U ≤ W) :
     inclusion h ≫ TopCat.Sheaf.OpenRestriction.inclusion W =
@@ -76,7 +89,8 @@ theorem openImage_comp (h : U ≤ W) :
   CategoryTheory.Functor.ext (openImage_comp_obj h)
     (fun _ _ _ ↦ Subsingleton.elim _ _)
 
-/-- Successive restriction to `W` and then `U` agrees with direct restriction to `U`. -/
+/-- Transitivity of restriction: `(F|_W)|_U ≅ F|_U` for nested opens `U ⊆ W`, naturally in the
+sheaf `F` (Hartshorne II §1; Iversen II.2). -/
 def restrictionIso (h : U ≤ W) :
     TopCat.Sheaf.OpenRestriction.restriction W ⋙
         TopCat.Sheaf.OpenEmbeddingCohomology.restriction
@@ -94,6 +108,8 @@ def restrictionIso (h : U ≤ W) :
     (Opens.grothendieckTopology (TopCat.of W))
     (Opens.grothendieckTopology X)
 
+/-- On sections over an open `A ⊆ U`, the transitivity isomorphism `(F|_W)|_U ≅ F|_U` is the
+identity of `F(A)`, read through the two descriptions of `A` as an open of `X`. -/
 @[simp]
 theorem restrictionIso_hom_app (h : U ≤ W)
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (A : Opens U) :
@@ -305,8 +321,8 @@ theorem representingUnit_comp (h : U ≤ W) :
     (congrArg F.obj.map (Subsingleton.elim
       (iW.op ≫ e) (r.op ≫ iU.op))) _
 
-/-- Ambient cohomology-presheaf restriction agrees with successive exact restriction through
-the literal nested open, in every degree. -/
+/-- Restriction in the cohomology presheaf `V ↦ H^n(V, F)` from `W` to `U` agrees with
+restriction of cohomology along the inclusion `U ⊆ W`, in every degree. -/
 theorem cohomologyEquiv_restrict (h : U ≤ W)
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ)
     (a : CategoryTheory.Sheaf.H'.{0} F n W) :
@@ -355,7 +371,8 @@ theorem cohomologyEquiv_restrict (h : U ≤ W)
 
 set_option maxHeartbeats 250000 in
 set_option linter.style.haveILetI false in
-/-- The intrinsic normalized constant class commutes with restriction to a nested literal open. -/
+/-- The constant-coefficient cohomology class on `W` restricts to the constant-coefficient class
+on a nested open `U ⊆ W`. -/
 theorem intrinsicOpenClass_restrict (h : U ≤ W)
     [LocallyConnectedSpace (TopCat.of W)]
     [LocallyConnectedSpace (TopCat.of U)]
