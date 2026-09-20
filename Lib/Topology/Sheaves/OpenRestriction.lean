@@ -14,11 +14,20 @@ public import Mathlib.Topology.Sheaves.Abelian
 public import Mathlib.Topology.Sheaves.Over
 
 /-!
-# Exact restriction of additive sheaves to an open subspace
+# Exact restriction of sheaves of abelian groups to an open subspace
 
-Restriction along an open inclusion is exact and preserves injective objects.  The proof builds
-extension by zero as sheafified left Kan extension and proves that the presheaf Kan extension
-preserves monomorphisms by separating opens contained in the subspace from opens outside it.
+Restriction `F ↦ F|_U` along the inclusion of an open subspace is exact and preserves injective
+objects (Hartshorne, *Algebraic Geometry*, III Lemma 6.1; Iversen, *Cohomology of Sheaves*, II.6;
+Godement II.4).  Both facts come from the left adjoint, extension by zero `j_!`, which is exact and
+in particular preserves monomorphisms.
+
+## Main results
+
+* `restriction_preservesFiniteLimits`, `restriction_preservesFiniteColimits`: restriction to an
+  open subspace is exact.
+* `extension_preservesMonomorphisms`: extension by zero preserves monomorphisms.
+* `restriction_preservesInjectiveObjects`: restriction to an open subspace preserves injective
+  sheaves (Hartshorne III Lemma 6.1).
 -/
 
 @[expose] public section
@@ -29,31 +38,39 @@ open Set TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits
 
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}} (U : Opens X)
+universe u
 
-/-- The open-subspace inclusion. -/
+variable {X : TopCat.{u}} (U : Opens X)
+
+/-- The inclusion of an open subspace `U ⊆ X` as a map of topological spaces. -/
 def inclusion : TopCat.of U ⟶ X := TopCat.ofHom ⟨Subtype.val, continuous_subtype_val⟩
 
+/-- The inclusion of an open subspace is an open embedding. -/
 theorem inclusion_isOpenEmbedding : Topology.IsOpenEmbedding (inclusion U) :=
   U.isOpenEmbedding
 
+/-- The inclusion of an open subspace is a monomorphism of spaces. -/
 instance inclusion_mono : Mono (inclusion U) :=
   (TopCat.mono_iff_injective _).mpr Subtype.val_injective
 
-/-- Direct image of open sets along the open inclusion. -/
+/-- The functor taking an open of the subspace `U` to the corresponding open of `X`. -/
 abbrev openImage : Opens U ⥤ Opens X := (inclusion_isOpenEmbedding U).functor
 
+/-- The direct-image functor on opens along an open inclusion is full: an inclusion between image
+opens comes from an inclusion of opens of `U`. -/
 instance openImage_full : (openImage U).Full :=
   @IsOpenMap.functorFullOfMono (TopCat.of U) X (inclusion U)
     (inclusion_isOpenEmbedding U).isOpenMap (inclusion_mono U)
 
-/-- Preimage of an ambient open in the open subspace. -/
+/-- The trace `V ∩ U` of an open `V ⊆ X` on the subspace `U`. -/
 abbrev preimageOpen (V : Opens X) : Opens U := (Opens.map (inclusion U)).obj V
 
+/-- An open of the subspace `U` has image contained in `U`. -/
 theorem openImage_obj_le (V : Opens U) : (openImage U).obj V ≤ U := by
   rintro x ⟨y, _, rfl⟩
   exact y.property
 
+/-- An open `V ⊆ U` of the ambient space is recovered from its trace on `U`. -/
 theorem openImage_preimage {V : Opens X} (hV : V ≤ U) :
     (openImage U).obj (preimageOpen U V) = V := by
   apply Opens.ext
@@ -62,12 +79,13 @@ theorem openImage_preimage {V : Opens X} (hV : V ≤ U) :
   intro x hx
   exact ⟨⟨x, hV hx⟩, rfl⟩
 
-/-- Outside the open subspace, the pointwise extension diagram is empty. -/
+/-- For an open `V` not contained in `U` there is no open of `U` whose image contains `V`, so the
+diagram computing extension by zero at `V` is empty. -/
 theorem costructuredArrow_isEmpty (V : Opens X) (hV : ¬ V ≤ U) :
     IsEmpty (CostructuredArrow (openImage U).op (op V)) :=
   ⟨fun a ↦ hV (a.hom.unop.le.trans (openImage_obj_le U a.left.unop))⟩
 
-/-- Left Kan extension along the open inclusion is zero off opens contained in the subspace. -/
+/-- Presheaf extension by zero vanishes on every open not contained in `U`. -/
 theorem lan_obj_isZero_of_not_le (F : (Opens U)ᵒᵖ ⥤ AddCommGrpCat)
     (V : Opens X) (hV : ¬ V ≤ U) :
     IsZero (((openImage U).op.lan.obj F).obj (op V)) := by
@@ -78,7 +96,8 @@ theorem lan_obj_isZero_of_not_le (F : (Opens U)ᵒᵖ ⥤ AddCommGrpCat)
       (colimit.isColimit D)).isZero
   exact hz.of_iso ((openImage U).op.leftKanExtensionObjIsoColimit F (op V))
 
-/-- Presheaf extension by zero preserves monomorphisms. -/
+/-- Presheaf extension by zero `j_!` preserves monomorphisms: on opens inside `U` it is the given
+map, and outside `U` it is a map out of the zero group. -/
 instance lan_preservesMonomorphisms :
     ((openImage U).op.lan : ((Opens U)ᵒᵖ ⥤ AddCommGrpCat) ⥤
       ((Opens X)ᵒᵖ ⥤ AddCommGrpCat)).PreservesMonomorphisms where
@@ -103,12 +122,15 @@ instance lan_preservesMonomorphisms :
       infer_instance
     · exact (lan_obj_isZero_of_not_le U F V.unop hV).mono _
 
+/-- The direct-image functor on opens along an open inclusion is continuous for the open-cover
+topologies. -/
 instance openImage_continuous :
     (openImage U).IsContinuous (Opens.grothendieckTopology U)
       (Opens.grothendieckTopology X) :=
   (inclusion_isOpenEmbedding U).functor_isContinuous
 
-/-- Covers lift along an open inclusion. -/
+/-- The direct-image functor on opens along an open inclusion is cocontinuous: every cover of an
+image open is refined by the image of a cover of an open of `U`. -/
 instance openImage_cocontinuous :
     (openImage U).IsCocontinuous (Opens.grothendieckTopology U)
       (Opens.grothendieckTopology X) where
@@ -127,37 +149,45 @@ instance openImage_cocontinuous :
     refine ⟨W', homOfLE hW'V, ?_, hxW⟩
     exact S.downward_closed hi k
 
-/-- Restriction of additive sheaves to the open subspace. -/
-abbrev restriction : TopCat.Sheaf AddCommGrpCat.{0} X ⥤
-    TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of U) :=
+/-- Restriction `F ↦ F|_U` of sheaves of abelian groups to the open subspace `U`. -/
+abbrev restriction : TopCat.Sheaf AddCommGrpCat.{u} X ⥤
+    TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of U) :=
   (openImage U).sheafPushforwardContinuous AddCommGrpCat
     (Opens.grothendieckTopology U) (Opens.grothendieckTopology X)
 
+/-- This restriction functor is Mathlib's `Opens.sheafRestrict`. -/
 theorem restriction_eq_sheafRestrict : restriction U = U.sheafRestrict := rfl
 
+/-- Restriction to an open subspace is an additive functor. -/
 instance restriction_additive : (restriction U).Additive where
   map_add := by intros; rfl
 
+/-- Restriction to an open subspace is a right adjoint, namely of extension by zero `j_!`. -/
 instance restriction_rightAdjoint : (restriction U).IsRightAdjoint :=
   (Functor.sheafPullbackConstruction.sheafAdjunctionContinuous (openImage U)
     AddCommGrpCat (Opens.grothendieckTopology U) (Opens.grothendieckTopology X)).isRightAdjoint
 
+/-- Restriction to an open subspace is also a left adjoint, namely of the pushforward `j_*`. -/
 instance restriction_leftAdjoint : (restriction U).IsLeftAdjoint :=
   ((openImage U).sheafAdjunctionCocontinuous AddCommGrpCat
     (Opens.grothendieckTopology U) (Opens.grothendieckTopology X)).isLeftAdjoint
 
+/-- Restriction to an open subspace is left exact (Iversen II.6). -/
 theorem restriction_preservesFiniteLimits : PreservesFiniteLimits (restriction U) := by
   infer_instance
 
+/-- Restriction to an open subspace is right exact (Iversen II.6). -/
 theorem restriction_preservesFiniteColimits : PreservesFiniteColimits (restriction U) := by
   infer_instance
 
-/-- Sheafified extension by zero from the open subspace. -/
-abbrev extension : TopCat.Sheaf AddCommGrpCat.{0} (TopCat.of U) ⥤
-    TopCat.Sheaf AddCommGrpCat.{0} X :=
+/-- Extension by zero `j_!` from the open subspace `U`, the left adjoint of restriction. -/
+abbrev extension : TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of U) ⥤
+    TopCat.Sheaf AddCommGrpCat.{u} X :=
   Functor.sheafPullbackConstruction.sheafPullback (openImage U) AddCommGrpCat
     (Opens.grothendieckTopology U) (Opens.grothendieckTopology X)
 
+set_option synthInstance.maxHeartbeats 80000 in
+/-- Extension by zero preserves monomorphisms. -/
 instance extension_preservesMonomorphisms : (extension U).PreservesMonomorphisms := by
   have : (sheafToPresheaf (Opens.grothendieckTopology U)
       AddCommGrpCat).PreservesMonomorphisms := by infer_instance
@@ -170,7 +200,8 @@ instance extension_preservesMonomorphisms : (extension U).PreservesMonomorphisms
       presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).PreservesMonomorphisms
   infer_instance
 
-/-- Open restriction preserves injective additive sheaves. -/
+/-- Restriction to an open subspace preserves injective sheaves, because its left adjoint
+`j_!` preserves monomorphisms (Hartshorne III Lemma 6.1). -/
 instance restriction_preservesInjectiveObjects : (restriction U).PreservesInjectiveObjects :=
   Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms
     (Functor.sheafPullbackConstruction.sheafAdjunctionContinuous (openImage U)
