@@ -10,10 +10,12 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonH1
 public import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Global
 
 /-!
-# Detecting H¹ comparison naturality on global sheafified cochains
+# Naturality of the degree-one singular–sheaf comparison
 
-Once the global sheafification unit is an isomorphism on H¹, its continuous-map naturality lets
-the native comparison detect any compatible map on Ext-defined sheaf cohomology.
+When the comparison `S^•(·; A) → Γ(·, 𝒮^•)` is an isomorphism on degree-one cohomology, a map of
+constant-sheaf cohomology groups that is compatible with the global-section comparison is
+compatible with the comparison `H¹(X; A_X) ≅ H¹_sing(X; A)` (Bredon, *Sheaf Theory* III.1;
+Warner, *Foundations of Differentiable Manifolds and Lie Groups* 5.32).
 -/
 
 @[expose] public section
@@ -44,8 +46,8 @@ private theorem compare_naturality {C : Type*} [Category C]
 
 variable {X Y : TopCat.{0}} (f : X ⟶ Y) (A : AddCommGrpCat.{0})
 
-/-- Compatibility with the actual global-section resolution comparison implies compatibility
-with the native singular H¹ comparison. -/
+/-- A map of degree-one constant-sheaf cohomology groups compatible with the global-section
+comparison is compatible with the comparison `H¹(·; A_·) ≅ H¹_sing(·; A)`. -/
 theorem h1Comparison_naturality_of_global
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
     [IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)]

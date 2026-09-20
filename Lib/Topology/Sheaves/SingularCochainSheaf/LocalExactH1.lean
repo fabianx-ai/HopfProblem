@@ -11,11 +11,18 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.LocalKernels
 public import Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1
 
 /-!
-# Local exactness of native singular cochains through degree one
+# Exactness of the sheafified singular-cochain complex through degree one
 
-Local contractibility supplies a smaller open set whose inclusion is nullhomotopic.  The two
-degree-specific primitive theorems then prove exactness of the augmented sheafified native
-singular-cochain complex at `C⁰` and `C¹`.
+On a locally contractible space the augmented complex of sheafified singular cochains
+`0 → A_X → 𝒮^0 → 𝒮^1 → ⋯` is exact at `𝒮^0` and at `𝒮^1`.  This is the low-degree part of Bredon,
+*Sheaf Theory* III.1 (see also Warner, *Foundations of Differentiable Manifolds and Lie Groups*
+5.31): a cocycle acquires a primitive after shrinking to a neighbourhood whose inclusion is
+nullhomotopic.
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.initialComplex_exact`
+* `TopCat.SingularCochainSheaf.complexSheaf_exactAt_one`
 -/
 
 @[expose] public section
@@ -56,7 +63,8 @@ private theorem exists_restriction_primitive_one (hLC : LocallyContractibleSpace
     ((Opens.toTopCat X).map (homOfLE hVU)).hom hf c hc
   exact ⟨V, hVU, hxV, b, hb⟩
 
-/-- The constant sheaf is the kernel of the first sheafified native coboundary. -/
+/-- On a locally contractible space the constant sheaf `A_X` is the kernel of the first
+coboundary `𝒮^0 → 𝒮^1`, i.e. the augmented complex is exact at `𝒮^0`. -/
 theorem initialComplex_exact (hLC : LocallyContractibleSpace X) :
     (initialComplex X A).Exact := by
   let S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{0} X) :=
@@ -67,7 +75,7 @@ theorem initialComplex_exact (hLC : LocallyContractibleSpace X) :
   intro U x hx c hc
   exact exists_restriction_constant X A hLC U x hx c hc
 
-/-- The sheafified native singular-cochain complex is exact at degree one. -/
+/-- On a locally contractible space the sheafified singular-cochain complex is exact at `𝒮^1`. -/
 theorem complexSheaf_exactAt_one (hLC : LocallyContractibleSpace X) :
     (complexSheaf X A).ExactAt 1 := by
   rw [HomologicalComplex.exactAt_iff' _ 0 1 2 (by simp) (by simp)]

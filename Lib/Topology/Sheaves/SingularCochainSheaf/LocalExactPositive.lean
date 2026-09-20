@@ -11,11 +11,18 @@ public import Lib.Topology.Homotopy.OpenNullhomotopy
 public import Lib.Topology.Sheaves.SingularCochainSheaf.LocalKernels
 
 /-!
-# Positive-degree local exactness of native singular cochains
+# Exactness of the sheafified singular-cochain complex in positive degrees
 
-On a locally contractible space, every positive-degree native cocycle acquires a primitive after
-shrinking to a nullhomotopic neighborhood.  Exactness then passes through genuine sheafification
-by the local-kernel criterion.
+On a locally contractible space the complex of sheafified singular cochains `𝒮^•(·; A)` is exact
+in every positive degree: a cocycle acquires a primitive after shrinking to a neighbourhood whose
+inclusion is nullhomotopic, and exactness passes to the sheafification because it can be checked
+on local kernel lifts.  Together with exactness at `𝒮^0` this says that `𝒮^•(·; A)` is a
+resolution of the constant sheaf `A_X` (Bredon, *Sheaf Theory* III.1; Warner, *Foundations of
+Differentiable Manifolds and Lie Groups* 5.31).
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ`
 -/
 
 @[expose] public section
@@ -49,7 +56,8 @@ private theorem exists_restriction_primitive_succ
     ((Opens.toTopCat X).map (homOfLE hVU)).hom hf n c hc
   exact ⟨V, hVU, hxV, b, hb⟩
 
-/-- The sheafified native singular-cochain complex is exact in every positive degree. -/
+/-- On a locally contractible space the sheafified singular-cochain complex is exact at `𝒮^{n+1}`
+for every `n` (Bredon, *Sheaf Theory* III.1). -/
 theorem complexSheaf_exactAt_succ (hLC : LocallyContractibleSpace X) (n : ℕ) :
     (complexSheaf X A).ExactAt (n + 1) := by
   rw [HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2)

@@ -11,13 +11,13 @@ public import Lib.Algebra.Homology.HomologicalComplex.CycleLift
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit
 
 /-!
-# The exact H¹ seam for the global singular-cochain sheafification unit
+# A criterion for the degree-one singular-cochain comparison
 
-This module reduces the degree-one homology isomorphism for the actual global unit to the two
-textbook geometric inputs.  First, the global sheafification unit is surjective in degrees zero
-and one and its kernel is detected on a point-indexed open cover.  Second, the inclusion of chains
-small with respect to such a cover is a chain-homotopy equivalence.  No degree-two cohomology,
-Mayer--Vietoris sequence, or Hurewicz comparison occurs.
+The degree-one cohomology isomorphism for the comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is reduced
+to two inputs, which are the two steps of the proof of Bredon, *Sheaf Theory* III Thm. 1.1: the
+comparison map is surjective in degrees zero and one and its kernel is detected on a point-indexed
+open cover; and the inclusion of the chains small with respect to such a cover is a
+chain-homotopy equivalence (Hatcher, *Algebraic Topology* Prop. 2.21).
 -/
 
 @[expose] public section
@@ -33,12 +33,12 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- The global unit is surjective in degree `n`. -/
+/-- The comparison map `S^n(X; A) → Γ(X, 𝒮^n(·; A))` is surjective. -/
 def GlobalUnitSurjective (n : ℕ) : Prop :=
   Function.Surjective (globalCochainUnit X A n)
 
-/-- A zero of the global unit in degree `n` vanishes on chains small with respect to some
-point-indexed open cover. -/
+/-- Every degree-`n` singular cochain killed by the comparison map vanishes on the chains small
+with respect to some point-indexed open cover of `X`. -/
 def GlobalKernelLocallySmall (n : ℕ) : Prop :=
   ∀ (phi : (AlgebraicTopology.SingularCochains.complex X A).X n),
     globalCochainUnit X A n phi = 0 →
@@ -46,8 +46,8 @@ def GlobalKernelLocallySmall (n : ℕ) : Prop :=
         (TopCat.SingularSmallChains.cochainRestriction A
           (fun x => (U x : Set X))).f n phi = 0
 
-/-- Vanishing on a point-indexed cover-small complex implies vanishing under the degree-one
-global unit. -/
+/-- Conversely, a degree-one singular cochain vanishing on the chains small with respect to some
+point-indexed open cover of `X` is killed by the comparison map. -/
 def SmallKernelGlobalOne : Prop :=
   ∀ (U : X → Opens X), (∀ x, x ∈ U x) →
     ∀ (phi : (AlgebraicTopology.SingularCochains.complex X A).X 1),
@@ -55,8 +55,8 @@ def SmallKernelGlobalOne : Prop :=
         (fun x => (U x : Set X))).f 1 phi = 0 →
         globalCochainUnit X A 1 phi = 0
 
-/-- The cover-small inclusion is a literal chain-homotopy equivalence for every point-indexed
-open cover. -/
+/-- For every point-indexed open cover of `X` the inclusion of the small chains into all singular
+chains is a chain-homotopy equivalence (Hatcher, *Algebraic Topology* Prop. 2.21). -/
 def HasSmallChainEquivalences : Prop :=
   ∀ (U : X → Opens X), (∀ x, x ∈ U x) →
     ∃ e : HomotopyEquiv
@@ -64,7 +64,8 @@ def HasSmallChainEquivalences : Prop :=
         (AlgebraicTopology.SingularCochains.chains X),
       e.hom = TopCat.SingularSmallChains.inclusion (fun x => (U x : Set X))
 
-/-- Exact degree-one cocycle lifting for the actual global sheafification-unit comparison. -/
+/-- Degree-one cocycle lifting for the comparison map: every cocycle in `Γ(X, 𝒮^1(·; A))` is the
+image of a singular cocycle on `X`. -/
 theorem globalCochainComparison_cycle_lift_one
     (hunitOne : GlobalUnitSurjective X A 1)
     (hkernelTwo : GlobalKernelLocallySmall X A 2)
@@ -98,8 +99,8 @@ theorem globalCochainComparison_cycle_lift_one
   exact sub_eq_zero.mp
     ((map_sub (globalCochainUnit X A 1).hom phi alpha).symm.trans hunitDiff)
 
-/-- Detection of actual degree-one boundaries for the actual global sheafification-unit
-comparison. -/
+/-- Degree-one boundary detection for the comparison map: a singular cocycle whose image in
+`Γ(X, 𝒮^1(·; A))` is a coboundary is itself a coboundary. -/
 theorem globalCochainComparison_boundary_detect_one
     (hunitZero : GlobalUnitSurjective X A 0)
     (hkernelOne : GlobalKernelLocallySmall X A 1)
@@ -134,8 +135,9 @@ theorem globalCochainComparison_boundary_detect_one
   exact TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one A
     (fun x => (U x : Set X)) e he phi hphi (r.f 0 beta) hboundary
 
-/-- The degree-one homology map of the actual global unit is an isomorphism from exactly the
-degree-zero/one global patching, degree-one/two kernel locality, and cover-small chain inputs. -/
+/-- The comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism on degree-one cohomology as
+soon as it is surjective in degrees zero and one, its kernel in degrees one and two is detected on
+point-indexed open covers, and the small-chain inclusions are chain-homotopy equivalences. -/
 theorem globalCochainComparison_homology_isIso_one_of_small_chains
     (hunitZero : GlobalUnitSurjective X A 0)
     (hunitOne : GlobalUnitSurjective X A 1)

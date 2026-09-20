@@ -10,11 +10,16 @@ public import Lib.AlgebraicTopology.SingularCochains.Vanishing
 public import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive
 
 /-!
-# Vanishing across the positive constant-sheaf comparison
+# Vanishing of constant-sheaf cohomology in positive degrees
 
-On a locally contractible metrizable space, the canonical positive-degree comparison identifies
-Ext-defined constant-sheaf cohomology with native singular cohomology.  This FREE owner records
-the resulting equivalence of vanishing statements.
+On a locally contractible paracompact space the comparison isomorphism
+`H^{n+1}(X; A_X) ≅ H^{n+1}_sing(X; A)` (Bredon, *Sheaf Theory* III Thm. 1.1) turns vanishing of
+singular cohomology into vanishing of constant-sheaf cohomology.  In particular constant-sheaf
+cohomology of a contractible space vanishes in every positive degree.
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.constantSheafCohomology_succ_subsingleton_of_contractible`
 -/
 
 @[expose] public section
@@ -28,8 +33,8 @@ open CategoryTheory TopologicalSpace
 
 namespace TopCat.SingularCochainSheaf
 
-/-- Ext-defined constant-sheaf cohomology in degree `n+1` vanishes exactly when the corresponding
-native singular cohomology group vanishes. -/
+/-- Constant-sheaf cohomology `H^{n+1}(X; A_X)` vanishes if and only if the singular cohomology
+group `H^{n+1}(X; A)` vanishes. -/
 theorem constantSheafCohomology_subsingleton_iff_singular
     (X : TopCat.{0}) (A : AddCommGrpCat.{0})
     (hLC : LocallyContractibleSpace X) [MetrizableSpace X] (n : ℕ) :

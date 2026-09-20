@@ -12,10 +12,11 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1
 public import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.ComparisonH1
 
 /-!
-# Finite closed pullback and the H¹ singular-cochain resolution
+# Naturality of the degree-one comparison for finite closed maps
 
-For a finite closed map, native Ext pullback commutes with the H¹ comparison supplied by the
-singular-cochain sheaf resolution.  Only the degree-zero cochain sheaf is required to be acyclic.
+For a closed map with finite fibres, pullback on constant-sheaf cohomology commutes with the
+comparison `H¹(X; A_X) ≅ H¹_sing(X; A)` computed from the singular-cochain resolution (Bredon,
+*Sheaf Theory* III.1).
 -/
 
 @[expose] public section
@@ -33,8 +34,8 @@ variable {X Y : TopCat.{0}} [T2Space X] (f : X ⟶ Y)
   (hf : IsClosedMap f) (hfinite : ∀ y : Y, (f ⁻¹' ({y} : Set Y)).Finite)
   (A : AddCommGrpCat.{0})
 
-/-- Pullback of singular cochains as a map from the target resolution to the exact pushforward
-of the source resolution. -/
+/-- Pullback of singular cochains as a map from the three-term resolution on `Y` to the
+pushforward of the three-term resolution on `X`. -/
 def resolutionH1Pullback
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom (resolutionH1 Y A hY)
@@ -49,8 +50,8 @@ def resolutionH1Pullback
       comm₂₃ := cochainPullback_d f A 1 2 }
   comm := (cochainPullback_augmentation f A).symm
 
-/-- On global sections, the resolution map is the three-term window of literal sheafified
-cochain pullback. -/
+/-- On global sections, the map of resolutions is the three-term window of the pullback of
+sheafified singular cochains. -/
 private theorem resolutionH1Pullback_globalMap
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     (TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap
@@ -64,8 +65,8 @@ private theorem resolutionH1Pullback_globalMap
         (globalSheafPullback f A).f 2 := by
   exact ⟨rfl, rfl, rfl⟩
 
-/-- The three-term global-window map and the full global cochain pullback induce the same H¹ map
-after the canonical window identifications. -/
+/-- The three-term window of the map of resolutions and the pullback of the full complex of
+global sections induce the same map on degree-one cohomology. -/
 theorem globalWindowH1Iso_pullback
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     ShortComplex.homologyMap
@@ -128,8 +129,8 @@ private theorem reassoc_eq {C : Type*} [Category C]
   rw [← Category.assoc, h]
 
 set_option maxHeartbeats 1000000 in
-/-- Native finite-closed Ext pullback commutes with the actual resolution-to-global-cochain H¹
-comparison. -/
+/-- Pullback on constant-sheaf cohomology along a closed map with finite fibres commutes with the
+identification of `H¹(·; A_·)` with degree-one cohomology of `Γ(·, 𝒮^•)`. -/
 theorem h1_global_naturality
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     TopCat.ConstantSheafCohomology.pullback f hf hfinite A 1 ≫
@@ -188,8 +189,9 @@ theorem h1_global_naturality
         ((TopCat.FiniteClosedPushforward.pushedH1GlobalIso f hf hfinite R).hom ≫
           (globalWindowH1Iso X A).inv) hpq).trans hnat)
 
-/-- Consequently native finite-closed Ext pullback commutes with the canonical singular H¹
-comparison whenever the global sheafification-unit map is an isomorphism on H¹. -/
+/-- Consequently pullback on constant-sheaf cohomology along a closed map with finite fibres
+commutes with the comparison `H¹(·; A_·) ≅ H¹_sing(·; A)`, whenever the global-section comparison
+is an isomorphism on degree-one cohomology. -/
 theorem h1Comparison_naturality
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
     [IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)]

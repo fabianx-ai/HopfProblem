@@ -14,10 +14,15 @@ public import Mathlib.Topology.Sheaves.Stalks
 /-!
 # Stalkwise range criterion for sections of a mono
 
-For a monomorphism of additive sheaves, a section lies in the image on an open set exactly when
-each of its germs lies in the corresponding stalk-map image.  The reverse implication chooses
-local representatives of the stalk preimages and glues them; monicity supplies compatibility and
-uniqueness on overlaps.
+For a monomorphism of sheaves of abelian groups, a section lies in the image over an open set
+exactly when each of its germs lies in the image of the corresponding map of stalks (Hartshorne,
+*Algebraic Geometry* II Ex. 1.2; Iversen, *Cohomology of Sheaves* II.1).  The reverse implication
+chooses local representatives of the stalk preimages and glues them; monicity supplies
+compatibility and uniqueness on overlaps.
+
+## Main results
+
+* `TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage`
 -/
 
 @[expose] public section
@@ -31,11 +36,14 @@ open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
 namespace TopCat.Presheaf
 
-variable {X : TopCat.{0}}
-variable {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
+universe u
 
-/-- A section of the target of a monomorphism of additive sheaves has a preimage over an open set
-if and only if its germ at every point of that open has a preimage under the stalk map. -/
+variable {X : TopCat.{u}}
+variable {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
+
+/-- A section of the target of a monomorphism of sheaves of abelian groups has a preimage over an
+open set if and only if its germ at every point of that open set has a preimage under the map of
+stalks. -/
 theorem app_exists_preimage_iff_stalkwise_exists_preimage
     (f : F ⟶ G) [Mono f] (U : Opens X)
     (t : ToType (G.presheaf.obj (op U))) :

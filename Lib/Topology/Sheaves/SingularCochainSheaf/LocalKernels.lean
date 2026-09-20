@@ -14,9 +14,13 @@ public import Mathlib.Topology.Sheaves.Abelian
 /-!
 # Local kernel lifts and exactness after sheafification
 
-This is the categorical stalk argument needed by the `H¹` comparison.  It is independent of
-singular cochains: actual local lifts in a presheaf short complex imply exactness of its genuine
-sheafification.
+Exactness of a short complex of sheaves is a stalkwise condition (Iversen, *Cohomology of Sheaves*
+II.1; Hartshorne, *Algebraic Geometry* II Ex. 1.2).  Consequently a short complex of presheaves
+whose section kernels are locally in the image of the previous map has exact sheafification.
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.sheafify_exact_of_local_kernels`
 -/
 
 @[expose] public section
@@ -30,19 +34,21 @@ open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
 namespace TopCat.SingularCochainSheaf
 
-variable {X : TopCat.{0}}
+universe u
+
+variable {X : TopCat.{u}}
 
 private theorem presheaf_stalk_exact_of_local_kernels
-    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{0} X))
+    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{u} X))
     (h : ∀ (U : Opens X) (x : X) (_hx : x ∈ U) (s : S.X₂.obj (op U)),
       S.g.app (op U) s = 0 →
       ∃ (V : Opens X) (hVU : V ≤ U) (_hxV : x ∈ V) (t : S.X₁.obj (op V)),
         S.f.app (op V) t = S.X₂.map (homOfLE hVU).op s)
-    (x : X) : (S.map (TopCat.Presheaf.stalkFunctor AddCommGrpCat x)).Exact := by
+    (x : X) : (S.map (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x)).Exact := by
   apply (ShortComplex.ab_exact_iff _).mpr
   intro a ha
   obtain ⟨U, hxU, s, rfl⟩ := S.X₂.exists_germ_eq a
-  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map S.g
+  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map S.g
     (S.X₂.germ U x hxU s) = 0 at ha
   rw [TopCat.Presheaf.stalkFunctor_map_germ_apply] at ha
   have hz : S.X₃.germ U x hxU (S.g.app (op U) s) = S.X₃.germ U x hxU 0 :=
@@ -53,21 +59,21 @@ private theorem presheaf_stalk_exact_of_local_kernels
       (S.X₃.map jVU.op).hom.map_zero
   obtain ⟨W, hWV, hxW, t, ht⟩ := h V x hxV (S.X₂.map iVU.op s) hv
   refine ⟨S.X₁.germ W x hxW t, ?_⟩
-  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map S.f
+  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map S.f
     (S.X₁.germ W x hxW t) = S.X₂.germ U x hxU s
   rw [TopCat.Presheaf.stalkFunctor_map_germ_apply, ht,
     S.X₂.germ_res_apply, S.X₂.germ_res_apply]
 
 private def sheafificationStalkIso
-    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{0} X)) (x : X) :
-    S.map (TopCat.Presheaf.stalkFunctor AddCommGrpCat x) ≅
+    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{u} X)) (x : X) :
+    S.map (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) ≅
       (S.map (sheafification X)).map
-        (TopCat.Sheaf.forget AddCommGrpCat X ⋙
-          TopCat.Presheaf.stalkFunctor AddCommGrpCat x) := by
-  let K := TopCat.Presheaf.stalkFunctor AddCommGrpCat x
-  let e (P : TopCat.Presheaf AddCommGrpCat.{0} X) :
+        (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) := by
+  let K := TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x
+  let e (P : TopCat.Presheaf AddCommGrpCat.{u} X) :
       K.obj P ≅ K.obj ((sheafification X).obj P).obj :=
-    @asIso AddCommGrpCat.{0} _ _ _
+    @asIso AddCommGrpCat.{u} _ _ _
       (K.map (toSheafify (Opens.grothendieckTopology X) P))
       (TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat P)
   refine ShortComplex.isoMk (e S.X₁) (e S.X₂) (e S.X₃) ?_ ?_
@@ -84,9 +90,10 @@ private def sheafificationStalkIso
     exact congrArg K.map
       (toSheafify_naturality (Opens.grothendieckTopology X) S.g).symm
 
-/-- Local section-kernel lifts imply exactness of the genuine sheafification. -/
+/-- A short complex of presheaves in which every section killed by the second map is locally in
+the image of the first has exact sheafification. -/
 theorem sheafify_exact_of_local_kernels
-    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{0} X))
+    (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{u} X))
     (h : ∀ (U : Opens X) (x : X) (_hx : x ∈ U) (s : S.X₂.obj (op U)),
       S.g.app (op U) s = 0 →
       ∃ (V : Opens X) (hVU : V ≤ U) (_hxV : x ∈ V) (t : S.X₁.obj (op V)),

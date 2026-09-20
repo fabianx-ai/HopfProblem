@@ -11,10 +11,15 @@ public import Mathlib.Topology.Sheaves.Stalks
 /-!
 # Lifting one sheaf section from stalkwise lifts
 
-A section which belongs locally to the image of a sheaf morphism belongs globally to the image
-when the morphism is stalkwise injective.  This is the one-section form of the familiar fact that
-compatible local lifts glue uniquely.  Unlike a stalkwise-surjectivity criterion, it asks for
-local lifts only of the displayed section.
+A section which lies in the image of a morphism of sheaves in every stalk lies in the image
+globally, provided the morphism is stalkwise injective: the local lifts are then unique on
+overlaps and glue (Hartshorne, *Algebraic Geometry* II Ex. 1.2; Iversen, *Cohomology of Sheaves*
+II.1).  Unlike a stalkwise-surjectivity criterion this asks for local lifts only of the given
+section.
+
+## Main results
+
+* `TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range`
 -/
 
 @[expose] public section
