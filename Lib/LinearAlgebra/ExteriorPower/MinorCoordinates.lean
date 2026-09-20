@@ -14,9 +14,11 @@ public import Mathlib.Data.Fintype.Pi
 /-!
 # Minor coordinates on exterior powers
 
-Generic coordinate infrastructure for `⋀[ℤ]^n (Fin m → ℤ)`, extracted from the
-rank-4 `squareBasis`/`squareCoordinates`/`exteriorSquare` constructions of
-`Hopf/LCP/Specialization.lean` (boundary J-A of `Lib/docs/J.md`).
+Coordinates on `⋀[ℤ]^n (Fin m → ℤ)` in the standard basis indexed by the `n`-element subsets of
+`Fin m`, enumerated lexicographically by `Fin (m.choose n)`, and the Cauchy–Binet law: the matrix
+of `⋀^n` of a product is the product of the matrices of `n × n` minors (the compound matrices).
+
+## Main definitions
 
 * `SortedSubset m n` — `n`-subsets of `Fin m` carrying the lexicographic order on
   sorted tuples (the `Lex` synonym is needed because `↥(Set.powersetCard _ _)`
@@ -28,6 +30,13 @@ rank-4 `squareBasis`/`squareCoordinates`/`exteriorSquare` constructions of
 * `exteriorMinorMatrix`, `exteriorPowerMap`, `exteriorPowerMap_toMatrix`,
   `cauchyBinet_minors` — the rectangular minor matrix of a linear map and the
   Cauchy–Binet multiplication law.
+
+## References
+
+* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §8.6 (the minors of a
+  composite map: Cauchy–Binet).
+* [Roger A. Horn and Charles R. Johnson, *Matrix Analysis*][horn_johnson2012], §0.8.7 (compound
+  matrices and the Cauchy–Binet formula).
 -/
 
 open scoped Matrix
@@ -40,6 +49,7 @@ namespace PeriodTorusHigherHomologyExterior
 /-- `n`-subsets of `Fin m` carrying the lexicographic order on sorted tuples. -/
 abbrev SortedSubset (m n : ℕ) := Lex (Set.powersetCard (Fin m) n)
 
+/-- `n`-subsets of `Fin m` form a finite type. -/
 instance sortedSubsetFintype (m n : ℕ) : Fintype (SortedSubset m n) :=
   inferInstanceAs (Fintype (Set.powersetCard (Fin m) n))
 
@@ -50,6 +60,7 @@ instance sortedSubsetLinearOrder (m n : ℕ) : LinearOrder (SortedSubset m n) :=
       have h2 := congrArg List.toFinset h
       rwa [Finset.sort_toFinset, Finset.sort_toFinset] at h2
 
+/-- There are `m.choose n` subsets of `Fin m` of cardinality `n`. -/
 theorem sortedSubset_card (m n : ℕ) :
     Fintype.card (SortedSubset m n) = m.choose n := by
   rw [show Fintype.card (SortedSubset m n) =
