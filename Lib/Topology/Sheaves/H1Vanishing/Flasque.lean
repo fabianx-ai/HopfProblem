@@ -19,7 +19,7 @@ public import Mathlib.Topology.Sheaves.Flasque
 
 A flasque sheaf of abelian groups on a topological space has vanishing first cohomology
 (Hartshorne, *Algebraic Geometry*, III Prop. 2.5; Godement, *Topologie algébrique et théorie des
-faisceaux*, II.4.3), here in the degree-one case and for the `Ext`-defined cohomology.
+faisceaux*, II §§3–4), here in the degree-one case and for the `Ext`-defined cohomology.
 -/
 
 @[expose] public section

@@ -17,7 +17,7 @@ Given a locally finite closed refinement of an open cover and a family of singul
 the members of the cover, one obtains a global singular cochain by evaluating each simplex in the
 member selected by its first vertex.  This is the patching step in the proof that the
 singular-cochain presheaf sheafifies to a resolution of the constant sheaf (Bredon, *Sheaf
-Theory*, III Prop. 1.1; Warner 5.31).
+Theory*, III §1; Warner 5.31).
 -/
 
 @[expose] public section

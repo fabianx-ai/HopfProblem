@@ -14,7 +14,7 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatch
 Because the selector attached to a locally finite closed refinement is locally constant in the
 relevant sense, compatible local cochains agree with the patched global cochain on a
 neighbourhood of every point.  This is a step in the proof of Bredon, *Sheaf Theory*,
-III Prop. 1.1.
+III §1.
 -/
 
 @[expose] public section
