@@ -34,8 +34,6 @@ torus, singular homology, coordinate basis, right translation
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 open SingularHomology

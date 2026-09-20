@@ -43,8 +43,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v w
-
 noncomputable section
 
 theorem MappingTorusHomology.Covering.mk_add_int {X : Type} [TopologicalSpace X] (f : X ≃ₜ X)

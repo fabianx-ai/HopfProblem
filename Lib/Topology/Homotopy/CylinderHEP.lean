@@ -28,8 +28,6 @@ public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 @[expose] public noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

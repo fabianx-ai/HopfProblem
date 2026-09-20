@@ -49,8 +49,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff ContinuousMap
 
-universe u v
-
 noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

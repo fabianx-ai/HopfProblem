@@ -53,8 +53,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff ENNReal
 
-universe u v
-
 @[expose] public noncomputable section
 
 theorem MorseCancellation.exists_open_isotopic_pointMoving {E H M : Type*} [NormedAddCommGroup E]

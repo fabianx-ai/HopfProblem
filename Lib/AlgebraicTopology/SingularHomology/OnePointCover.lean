@@ -70,8 +70,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 def EmbeddedCellAttachment.oldHomologyEquiv {N X : Type} [NormedAddCommGroup N]

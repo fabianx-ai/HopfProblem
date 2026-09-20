@@ -63,8 +63,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
 
-universe u v
-
 noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

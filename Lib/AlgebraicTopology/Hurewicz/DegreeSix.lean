@@ -37,8 +37,6 @@ Moved verbatim from `Hopf/Recognition.lean` (statements unchanged; qualifier ret
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 def SixthHurewicz.fundamentalCubeChain : SingularChains.Chains (Fin 6 → (unitInterval)) 6 :=

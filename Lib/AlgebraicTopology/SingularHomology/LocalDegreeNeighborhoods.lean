@@ -68,8 +68,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 def PuncturedBall.toSphere {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (R : ℝ) :

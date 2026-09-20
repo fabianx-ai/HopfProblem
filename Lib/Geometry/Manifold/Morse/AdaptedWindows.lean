@@ -70,8 +70,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 theorem FlowSuspension.exists_relative_regular_level_isotopy_realization {E M : Type*}

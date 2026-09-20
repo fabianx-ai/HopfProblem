@@ -60,8 +60,6 @@ circle, positive loop, Mayer–Vietoris, cross product, Künneth
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 @[expose] public noncomputable section
 
 open SingularHomology

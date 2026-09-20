@@ -34,8 +34,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 def WhitneyPairModel.scaledBigonEmbedding (r : ℝ) (p : ℝ × ℝ) : Space :=

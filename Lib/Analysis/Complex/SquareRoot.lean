@@ -43,8 +43,6 @@ open Set Function Filter Manifold Topology
 
 open scoped UpperHalfPlane
 
-universe u v
-
 noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

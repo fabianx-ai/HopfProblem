@@ -55,8 +55,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 @[expose] public noncomputable section
 
 /-! ### Linear transverse chart corrections -/

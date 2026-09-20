@@ -28,8 +28,6 @@ Hurewicz theorem, first homology, fundamental group
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 theorem SingularChains.basedLoopClass_triangleFacePath {X : Type} [TopologicalSpace X] {b : X}

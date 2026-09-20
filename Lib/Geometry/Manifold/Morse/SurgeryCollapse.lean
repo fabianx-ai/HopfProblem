@@ -82,8 +82,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff ContinuousMap
 
-universe u v
-
 
 noncomputable section
 

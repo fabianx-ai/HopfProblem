@@ -34,8 +34,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff InnerProductSpace NNReal
 
-universe u v
-
 noncomputable section
 
 def SphereNormalCoordinates.radialFrame {V N : Type*} [NormedAddCommGroup V]

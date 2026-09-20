@@ -20,8 +20,6 @@ Topology*, Theorem 1.20), not a construction of a universal covering space.
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

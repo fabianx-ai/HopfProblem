@@ -34,8 +34,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff InnerProductSpace
 
-universe u v
-
 noncomputable section
 
 def TransverseCoordinates.sumMap {D Z A : Type*} [NormedAddCommGroup D]

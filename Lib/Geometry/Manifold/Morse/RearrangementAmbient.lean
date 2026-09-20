@@ -70,8 +70,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 theorem MorseRearrangement.exists_radius_supported_bump_preparation {E F H M : Type*}

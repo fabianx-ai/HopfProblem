@@ -71,8 +71,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff ContinuousMap
 
-universe u v
-
 noncomputable section
 
 theorem IntLinearAutomorphism.apply_eq_mul (e : ℤ ≃ₗ[ℤ] ℤ) (k : ℤ) : e k = e 1 * k := by

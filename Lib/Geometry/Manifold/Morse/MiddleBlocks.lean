@@ -50,8 +50,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff ContinuousMap
 
-universe u v
-
 noncomputable section
 
 theorem MorseCancellation.nativeMorseCount_eq_interval_length {E M : Type} [NormedAddCommGroup E]

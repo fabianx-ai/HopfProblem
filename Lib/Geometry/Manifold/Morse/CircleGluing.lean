@@ -65,8 +65,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 theorem MorseCancellation.exists_native_open_curve_with_germ {G H N : Type*} [NormedAddCommGroup G]

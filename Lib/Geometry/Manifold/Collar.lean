@@ -60,8 +60,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff NNReal
 
-universe u v
-
 @[expose] public noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

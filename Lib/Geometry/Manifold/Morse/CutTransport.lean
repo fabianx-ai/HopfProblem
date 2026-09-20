@@ -54,8 +54,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff
 
-universe u v
-
 noncomputable section
 
 def MorseCancellation.levelSublevelMap {M : Type} [TopologicalSpace M] (f : M → ℝ) {a b : ℝ}

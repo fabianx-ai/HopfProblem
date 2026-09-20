@@ -32,8 +32,6 @@ naming the same constants).
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 theorem CoverOverlapHomology.homologyEquiv_symm_single {X : Type} [TopologicalSpace X]

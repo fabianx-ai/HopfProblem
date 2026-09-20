@@ -16,8 +16,6 @@ import Mathlib
 
 open Set Function Filter Manifold Topology
 
-universe u v
-
 noncomputable section
 
 local infixr:80 " ≫ₚ " => Path.trans

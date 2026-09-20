@@ -57,8 +57,6 @@ open Set Function Filter Manifold Topology
 
 open scoped ContDiff Matrix NNReal
 
-universe u v
-
 @[expose] public noncomputable section
 
 /-- Transparent variant of `Diffeomorph.toPartialDiffeomorph`: Mathlib's version is not
