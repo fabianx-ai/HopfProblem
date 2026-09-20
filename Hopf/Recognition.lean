@@ -689,7 +689,7 @@ theorem AdaptedWindows.middle_inclusion_step {E M : Type} [NormedAddCommGroup E]
   · rw [← htotal]
     exact hQ.comp (hJ.surjective.comp hsurj)
   · rw [← htotal,
-      HomologyTransport.ker_comp_span_singleton (J.comp P) Q
+      LinearMap.ker_comp_eq_ker_sup_span_singleton (J.comp P) Q
         (MorseCancellation.middleSectionClass γ) hker,
       hkerJ]
 
@@ -3020,7 +3020,7 @@ theorem SpherePoint.sourceCountMark_topClass_natAbs (n : ℕ) {N : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     (sourceCountMark n j B (SphereHomology.unitSphereTopClass (n + 1))).natAbs = 1 :=
-  HomologyTransport.integerEquiv_one_natAbs
+  LinearEquiv.natAbs_apply_one
     ((SphereHomology.unitSphereHomologyTopEquiv (n + 1)).symm.trans (sourceCountMark n j B))
 
 theorem OnePointCover.overlapHomologyEquiv_symm_include {N : Type} [NormedAddCommGroup N]
