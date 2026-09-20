@@ -104,6 +104,7 @@ import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character
 import Lib.AlgebraicTopology.Hurewicz.PeriodicLoop
 import Lib.AlgebraicTopology.Hurewicz.SimplexPaths
+import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.GeneratingSet
@@ -143,6 +144,8 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Basic
+import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.PathValue
 import Lib.AlgebraicTopology.SingularCochains
 import Lib.Algebra.Group.SurjectiveDescent
 import Lib.Algebra.Homology.Embedding.ExtendHomologySequence
@@ -217,7 +220,6 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionAbutment
-import Lib.CategoryTheory.Sites.Leray.DegreeZero
 import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
 import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
 import Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm
@@ -228,7 +230,9 @@ import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
 import Lib.Geometry.Manifold.RestrictScalars
 import Lib.Geometry.Manifold.ChartedSpace.LocallyContractible
 import Lib.Geometry.Manifold.ContMDiff.Descent
+import Lib.Topology.Gluing.OverBase
 import Lib.Geometry.Manifold.Gluing.OverBase
+import Lib.Geometry.Manifold.LocalDiffeomorph
 import Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector
 import Lib.GroupTheory.Pushout.EquivOfCocone
 import Lib.RepresentationTheory.FreeGroupCoinvariants
@@ -238,7 +242,6 @@ import Lib.LinearAlgebra.ColumnKernel
 import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.Dual.TriangularRankTwo
 import Lib.LinearAlgebra.Dual.TriangularRankTwoInjective
-import Lib.LinearAlgebra.Dual.Contragredient
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ReindexedCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
@@ -262,6 +265,8 @@ import Lib.Topology.Homotopy.LocallyContractible
 import Lib.Topology.Homotopy.OpenNullhomotopy
 import Lib.Topology.Homotopy.PuncturedCyclicCover
 import Lib.Topology.Homotopy.PuncturedPlaneCyclic
+import Lib.Topology.Homotopy.BasedDiskLifting
+import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.MappingTorus.TranslationCocycle
 import Lib.Topology.MappingTorus.SquareZeroWinding
 import Lib.Topology.Sheaves.AddCommGrpPushforward
@@ -325,6 +330,8 @@ import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 import Lib.Topology.Sheaves.OpenRestriction.StalkCriterion
 import Lib.Topology.Sheaves.StalkwiseSectionRange
 import Lib.Topology.Sheaves.OpenRestriction.Cohomology
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem
+import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Stalk
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate
 import Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison
@@ -396,6 +403,10 @@ import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalization
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantEvaluationBijective
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CofinalCriterion
 import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositiveCofinalExt
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Neighborhood
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantPointFibre
+import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositive
 import Lib.Topology.Sheaves.NestedOpenCohomology
 import Lib.Topology.Sheaves.FiniteClosedOpenRestriction
 import Lib.Topology.Sheaves.OpenFiniteClosedFactorization

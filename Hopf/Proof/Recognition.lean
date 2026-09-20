@@ -123,6 +123,8 @@ import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
+import Lib.Topology.Homotopy.BasedDiskLifting
+import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.LinearAlgebra.SquareZero
 import Lib.Topology.MappingTorus.Basic
 import Lib.Topology.Covering.Quotient
@@ -156,6 +158,7 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
@@ -396,46 +399,16 @@ theorem sphereMap_piSix_bijective (x : SpecialPeriods.Threefold.Space) :
     Function.Bijective
       (SixthHurewicz.homotopyMap (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
         SixSphereCube.sphereBasePoint) := by
-  let f := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let := Sphere.piTwo_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piThree_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piFour_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piFive_subsingleton SixSphereCube.sphereBasePoint
   let := SpecialPeriods.Threefold.space_simplyConnected
-  let := SpecialPeriods.Threefold.HomotopyTwo.piTwo_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyThree.piThree_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyFour.piFour_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton (f SixSphereCube.sphereBasePoint)
-  let source := SixthHurewicz.hurewiczLinearEquiv SixSphereCube.sphereBasePoint
-  let target := SixthHurewicz.hurewiczLinearEquiv (f SixSphereCube.sphereBasePoint)
-  let middle := SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyEquiv x 6
-  have natural (a : π_ 6 SixSphereCube.StandardSphere SixSphereCube.sphereBasePoint) :
-    middle (source (Additive.ofMul a)) =
-      target (Additive.ofMul (SixthHurewicz.homotopyMap f SixSphereCube.sphereBasePoint a)) :=
-    SixthHurewicz.hurewiczLinearEquiv_natural f SixSphereCube.sphereBasePoint (Additive.ofMul a)
-  constructor
-  · intro a b hab
-    have hm : middle (source (Additive.ofMul a)) = middle (source (Additive.ofMul b)) :=
-      (natural a).trans
-        ((congrArg (fun c => target (Additive.ofMul c)) hab).trans (natural b).symm)
-    exact congrArg Additive.toMul (source.injective (middle.injective hm))
-  · intro b
-    let a := source.symm (middle.symm (target (Additive.ofMul b)))
-    refine ⟨Additive.toMul a, ?_⟩
-    have ht :
-      target
-          (Additive.ofMul
-            (SixthHurewicz.homotopyMap f SixSphereCube.sphereBasePoint (Additive.toMul a))) =
-        target (Additive.ofMul b) := by
-      calc
-        _ = middle (source a) := (natural (Additive.toMul a)).symm
-        _ = target (Additive.ofMul b) := by
-          dsimp [a]
-          rw [source.apply_symm_apply, middle.apply_symm_apply]
-    exact congrArg Additive.toMul (target.injective ht)
+  apply SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
+    (fun k hk hk6 y => ?_)
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective x 6)
+  interval_cases k
+  · exact SpecialPeriods.Threefold.HomotopyTwo.piTwo_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyThree.piThree_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyFour.piFour_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton y
 
 theorem BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (x : SpecialPeriods.Threefold.Space)
@@ -452,36 +425,9 @@ theorem BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup 
           ‖(z : V)‖ = 1 → v z = SixSphereCube.sphereBasePoint) ∧
         ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp v).HomotopicRel u
           {z : DiskCylinder.Disk (E := V) | ‖(z : V)‖ = 1} := by
-  let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let e := DiskCube.homeomorph L
-  let q : GenLoop (Fin 6) SpecialPeriods.Threefold.Space (F SixSphereCube.sphereBasePoint) :=
-    ⟨u.comp (e.symm : C(_, _)), fun z hz =>
-      hu (e.symm z) ((DiskCube.symm_boundary_iff L z).mpr hz)⟩
-  obtain ⟨a, ha⟩ := (sphereMap_piSix_bijective x).2 ⟦q⟧
-  obtain ⟨p, hp⟩ := Quotient.exists_rep a
-  have he : SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint ⟦p⟧ = ⟦q⟧ :=
-    (congrArg (SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint) hp).trans ha
-  have hh : GenLoop.Homotopic (SecondHurewicz.mapGenLoop F SixSphereCube.sphereBasePoint p) q :=
-    Quotient.exact he
-  obtain ⟨H⟩ := hh
-  let v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere) :=
-    p.val.comp (e : C(_, _))
-  refine
-    ⟨v, ?_,
-      ⟨{  toFun := fun z => H (z.1, e z.2)
-          continuous_toFun :=
-            H.continuous.comp (continuous_fst.prodMk (e.continuous.comp continuous_snd))
-          map_zero_left := ?_
-          map_one_left := ?_
-          prop' := ?_ }⟩⟩
-  · intro z hz
-    exact p.property (e z) ((DiskCube.boundary_iff L z).mpr hz)
-  · intro z
-    exact H.apply_zero (e z)
-  · intro z
-    exact (H.apply_one (e z)).trans (congrArg u (e.symm_apply_apply z))
-  · intro t z hz
-    exact H.eq_fst t ((DiskCube.boundary_iff L z).mpr hz)
+  exact BasedDiskLifting.exists_based_disk_lift_of_surjective
+    (n := 6) (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint (sphereMap_piSix_bijective x).2 L u hu
 
 theorem Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
     (x : SixSphereCube.StandardSphere) : Subsingleton (π_ n SixSphereCube.StandardSphere x) := by
@@ -511,16 +457,9 @@ theorem LowCellLifting.relativeDiskLifting_five {Y : Type} [TopologicalSpace Y]
     [PathConnectedSpace Y] (F : C(SixSphereCube.StandardSphere, Y))
     (hpi : ∀ n, 0 < n → n < 6 → ∀ y : Y, Subsingleton (π_ n Y y)) :
     FiniteCells.RelativeDiskLifting F 5 := by
-  intro V _ _ _ hd a u H h0 h1
-  obtain ⟨v, hv, _⟩ :=
-    Sphere.exists_boundary_extension (hd.trans (by decide)) a SixSphereCube.sphereBasePoint
-  have h0' : ∀ s, H (0, s) = (F.comp v) (DiskCylinder.boundaryToDisk s) := by
-    intro s
-    exact (h0 s).trans (congrArg F (hv s).symm)
-  obtain ⟨G, hG0, hG1, hGside⟩ :=
-    CylinderFilling.exists_filling hpi (by omega : Module.finrank ℝ V + 1 ≤ 6) (F.comp v) u
-      H h0' h1 (F SixSphereCube.sphereBasePoint)
-  exact ⟨v, G, hv, hG0, hG1, hGside⟩
+  exact LowCellLifting.relativeDiskLifting_of_pi_vanishing
+    F SixSphereCube.sphereBasePoint
+    (fun k hk hkd => Sphere.pi_subsingleton hk (by omega)) hpi
 
 attribute [local instance] SpecialPeriods.Threefold.space_simplyConnected in
 theorem LowCellLifting.threefold_pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
@@ -555,75 +494,22 @@ theorem TopCellLifting.exists_top_disk_lift {V : Type} [NormedAddCommGroup V]
         (∀ z, G (0, z) = SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x (v z)) ∧
           (∀ z, G (1, z) = u z) ∧ ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s) :=
   by
-  let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let c : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere) :=
-    ContinuousMap.const _ SixSphereCube.sphereBasePoint
-  obtain ⟨Ac⟩ := (Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint).symm
-  let A : Path c a := MappingPaths.ofHomotopy Ac
-  let FA : Path (F.comp c) (F.comp a) := A.map (ContinuousMap.continuous_postcomp F)
-  let HP : Path (F.comp a) (u.comp DiskCylinder.boundaryToDisk) :=
-    { toContinuousMap := H.curry
-      source' := ContinuousMap.ext h0
-      target' := ContinuousMap.ext h1 }
-  let K := HP.symm.trans FA.symm
-  obtain ⟨u₀, E, hE, hu₀⟩ := BoundaryPathTransport.exists_transport u K rfl
-  have hu₀' :
-    ∀ z : DiskCylinder.Disk (E := V),
-      ‖(z : V)‖ = 1 → u₀ z = F SixSphereCube.sphereBasePoint := by
-    intro z hz
-    exact ContinuousMap.congr_fun hu₀ ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
-  obtain ⟨p, hp, ⟨B⟩⟩ := BasedDiskLifting.exists_based_disk_lift x L u₀ hu₀'
-  have hp' : p.comp DiskCylinder.boundaryToDisk = c := by
-    apply ContinuousMap.ext
-    intro s
-    exact hp (DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)
-  obtain ⟨v, P, hP, hv⟩ := BoundaryPathTransport.exists_transport p A hp'
-  let FP : Path (F.comp p) (F.comp v) := P.map (ContinuousMap.continuous_postcomp F)
-  let BP := MappingPaths.ofHomotopy B.toHomotopy
-  have hFP :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      FP FA := by
-    intro t
-    apply ContinuousMap.ext
-    intro s
-    exact congrArg F (ContinuousMap.congr_fun (hP t) s)
-  have hBP :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      BP (Path.refl (F.comp c)) := by
-    intro t
-    apply ContinuousMap.ext
-    intro s
-    have hs : ‖(DiskCylinder.boundaryToDisk s : V)‖ = 1 :=
-      mem_sphere_zero_iff_norm.mp s.property
-    exact (B.eq_fst t hs).trans (congrArg F (hp (DiskCylinder.boundaryToDisk s) hs))
-  let R := FP.symm.trans (BP.trans E.symm)
-  let Q := FA.symm.trans ((Path.refl (F.comp c)).trans K.symm)
-  have hR :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      R Q :=
-    hFP.symm.trans (hBP.trans hE.symm)
-  have hQ : Q.Homotopic HP := MappingPaths.normalization_cancellation FA HP
-  obtain ⟨G, hG0, hG1, hGside⟩ := SideRectification.exists_rectification R Q HP hR hQ
-  exact ⟨v, G, fun s => ContinuousMap.congr_fun hv s, hG0, hG1, hGside⟩
+  exact TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+    (n := 6) (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint (sphereMap_piSix_bijective x).2 L a
+    (Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint) u H h0 h1
 
 theorem TopCellLifting.sphereMap_relativeDiskLifting_six
     (x : SpecialPeriods.Threefold.Space) :
     FiniteCells.RelativeDiskLifting
       (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x) 6 := by
-  intro V _ _ _ hd a u H h0 h1
-  by_cases hlow : Module.finrank ℝ V ≤ 5
-  · exact LowCellLifting.sphereMap_relativeDiskLifting_five x V hlow a u H h0 h1
-  · have heq : Module.finrank ℝ V = 6 := by omega
-    obtain ⟨L⟩ :=
-      FiniteDimensional.nonempty_continuousLinearEquiv_of_finrank_eq
-        (show Module.finrank ℝ V = Module.finrank ℝ (Fin 6 → ℝ) by simpa using heq)
-    exact exists_top_disk_lift x L hd a u H h0 h1
+  letI := SpecialPeriods.Threefold.space_simplyConnected
+  exact TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint
+    (fun k hk hkn => Sphere.pi_subsingleton hk hkn)
+    (fun k hk hkn => LowCellLifting.threefold_pi_subsingleton hk hkn)
+    (sphereMap_piSix_bijective x).2
 
 attribute [local instance] SpecialPeriods.Threefold.chartedSpace
     SpecialPeriods.Threefold.space_compact SpecialPeriods.Threefold.space_t2Space

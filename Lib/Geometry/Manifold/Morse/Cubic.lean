@@ -2536,26 +2536,16 @@ theorem MorseCancellation.hasDerivAt_tanh (t : ℝ) : HasDerivAt Real.tanh (1 - 
 theorem MorseCancellation.strictMono_tanh : StrictMono Real.tanh :=
   strictMono_of_hasDerivAt_pos hasDerivAt_tanh (fun t => sub_pos.mpr (Real.tanh_sq_lt_one t))
 
-/-- `tanh` has range `(−1, 1)`. -/
-theorem MorseCancellation.range_tanh : Set.range Real.tanh = Set.Ioo (-1 : ℝ) 1 := by
-  ext s
-  constructor
-  · rintro ⟨t, rfl⟩
-    exact ⟨Real.neg_one_lt_tanh t, Real.tanh_lt_one t⟩
-  · intro hs
-    obtain ⟨t, -, ht⟩ := Real.tanh_surjOn hs
-    exact ⟨t, ht⟩
-
 /-- `tanh` tends to `1` at infinity. -/
 theorem MorseCancellation.tendsto_tanh_atTop : Filter.Tendsto Real.tanh Filter.atTop (𝓝 (1 : ℝ)) := by
   apply tendsto_atTop_isLUB strictMono_tanh.monotone
-  rw [range_tanh]
+  rw [← Set.image_univ, Real.tanh_bijOn.image_eq]
   exact isLUB_Ioo (by norm_num)
 
 /-- `tanh` tends to `−1` at negative infinity. -/
 theorem MorseCancellation.tendsto_tanh_atBot : Filter.Tendsto Real.tanh Filter.atBot (𝓝 (-1 : ℝ)) := by
   apply tendsto_atBot_isGLB strictMono_tanh.monotone
-  rw [range_tanh]
+  rw [← Set.image_univ, Real.tanh_bijOn.image_eq]
   exact isGLB_Ioo (by norm_num)
 
 /-- The time parameter along the cubic axis. -/

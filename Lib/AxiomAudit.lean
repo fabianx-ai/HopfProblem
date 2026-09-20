@@ -2218,11 +2218,6 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
 
--- DegreeZero: every intended public source declaration in source order.
-#check CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
-#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
-#check CategoryTheory.Sheaf.Leray.higherDirectImageZeroSheafIsoPushforward
-#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroSheafIsoPushforward
 
 -- Gluing over a covered base: every handwritten declaration plus structure constructors and
 -- field projections, in compiled public declaration order (generated recursors excluded).
@@ -3184,23 +3179,6 @@ is an evidence command rather than library content.
 
 #check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
 #print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
-
-/-! ## `Lib.LinearAlgebra.Dual.Contragredient` -/
-
-#check LinearRepresentation.ofMultiplicativeEquiv
-#print axioms LinearRepresentation.ofMultiplicativeEquiv
-#check LinearRepresentation.ofMultiplicativeEquiv_apply
-#print axioms LinearRepresentation.ofMultiplicativeEquiv_apply
-#check LinearRepresentation.ofMultiplicative
-#print axioms LinearRepresentation.ofMultiplicative
-#check LinearRepresentation.ofMultiplicative_apply
-#print axioms LinearRepresentation.ofMultiplicative_apply
-#check LinearRepresentation.contragredient
-#print axioms LinearRepresentation.contragredient
-#check LinearRepresentation.contragredient_apply
-#print axioms LinearRepresentation.contragredient_apply
-#check LinearRepresentation.freeGroup_invariant_iff
-#print axioms LinearRepresentation.freeGroup_invariant_iff
 
 /-! ## `Lib.LinearAlgebra.Dual.TriangularRankTwo` -/
 

@@ -62,6 +62,9 @@ Original source lines 211736--237524; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
+import Lib.LinearAlgebra.ColumnKernel
+import Lib.Data.Int.SignedResidual
+import Lib.Algebra.Group.Prod
 import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
@@ -7861,7 +7864,7 @@ theorem MappingTorusHomology.Covering.coverSmallCycle_productCover_eq {X : Type}
     SingularMayerVietoris.ModuleHomology.mapCycles
         (SingularMayerVietoris.smallInclusion (MappingTorus.HomologyCover.U B.symm)
           (MappingTorus.HomologyCover.V B.symm))
-        (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b) =
+        (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period m B hB) n b) =
       SingularMayerVietoris.ModuleHomology.mapCycles
         (FirstHurewicz.singularChainMap (productCover m B hB)) (n + 1)
         (PeriodTorusHigherHomology.crossProductCycles (MappingTorus.Circle) X n (arcSumCycle m)
@@ -7892,7 +7895,7 @@ theorem MappingTorusHomology.Covering.coverSmallCycle_productCover_class {X : Ty
         (SingularMayerVietoris.ModuleHomology.mapCycles
           (SingularMayerVietoris.smallInclusion (MappingTorus.HomologyCover.U B.symm)
             (MappingTorus.HomologyCover.V B.symm))
-          (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b)) =
+          (n + 1) (coverSmallCycle B.symm m (inverseMonodromy_period m B hB) n b)) =
       productCoverHomology m B hB (n + 1)
         (PeriodTorusHigherHomology.positiveCircleCross X n
           (SingularMayerVietoris.ModuleHomology.cycleClass (FirstHurewicz.singularComplex X) n
@@ -7921,7 +7924,7 @@ theorem MappingTorusHomology.Covering.boundaryCoordinates_productCover_cross_cyc
             b)) := by
   rw [← coverSmallCycle_productCover_class]
   exact
-    coverSmallCycle_boundaryCoordinates B.symm m (inverseMonodromy_period_mo1973_27385 m B hB) n b
+    coverSmallCycle_boundaryCoordinates B.symm m (inverseMonodromy_period m B hB) n b
 
 theorem MappingTorusHomology.Covering.wangBoundary_productCover_cross_cycleClass {X : Type}
     [TopologicalSpace X] [CompactSpace X] [T2Space X] (m : ℕ) [NeZero m] (B : X ≃ₜ X)
@@ -11964,25 +11967,15 @@ theorem ThreefoldHomology.CapElimination.regularFibreIntoSpace_homology_surjecti
 theorem ThreefoldHomology.CapElimination.starLeft_surjective_of_nativeCapKernel (n : ℕ)
     (h : Function.Surjective (nativeCapKernelRegularMap n)) :
     Function.Surjective (ThreefoldHomology.starLeftHomologyMap n) := by
-  intro p
-  obtain ⟨b, hb⟩ := starOverlapToFillingsHomologyMap_surjective n (-p.2)
-  have hrel :
-    p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b ∈
-      LinearMap.range (nativeCapKernelRegularMap n) :=
-    h (p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b)
+  apply AddMonoidHom.surjective_signed_prod_of_surjective_ker
+    (ThreefoldHomology.starOverlapToRegularHomologyMap n).toAddMonoidHom
+    (ThreefoldHomology.starOverlapToFillingsHomologyMap n).toAddMonoidHom
+    (starOverlapToFillingsHomologyMap_surjective n)
+  intro a
+  have hrel : a ∈ LinearMap.range (nativeCapKernelRegularMap n) := h a
   rw [nativeCapKernelRegularMap_range] at hrel
   obtain ⟨c, hc⟩ := hrel
-  have hc' :
-    ThreefoldHomology.starOverlapToRegularHomologyMap n c.val =
-      p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b :=
-    hc
-  refine ⟨c.val + b, ?_⟩
-  rw [starLeft_regular_fillings]
-  apply Prod.ext
-  · change ThreefoldHomology.starOverlapToRegularHomologyMap n (c.val + b) = p.1
-    rw [map_add, hc', sub_add_cancel]
-  · change -ThreefoldHomology.starOverlapToFillingsHomologyMap n (c.val + b) = p.2
-    rw [map_add, c.property, zero_add, hb, neg_neg]
+  exact ⟨⟨c.val, c.property⟩, hc⟩
 
 theorem ThreefoldHomology.SecondDegree.regularFibre_homologyTwo_surjective :
     Function.Surjective
@@ -22037,12 +22030,6 @@ theorem ThreefoldHomology.FourthFibre.fibre_range_le :
   rintro _ ⟨a, rfl⟩
   exact fibre_mem_range a
 
-theorem ThreefoldHomology.FifthDegree.signed_residual_coordinate_zero (k u v d : ℤ)
-    (hthree : 3 * u = k) (hfour : -4 * v = k) (hregular : u + v = d * k) : k = 0 := by
-  have h : (12 * d - 1) * k = 0 := by linear_combination 4 * hthree - 3 * hfour - 12 * hregular
-  have hn : 12 * d - 1 ≠ 0 := by omega
-  exact (mul_eq_zero.mp h).resolve_left hn
-
 theorem ThreefoldHomology.TopDegree.connecting_five_injective :
     Function.Injective (ThreefoldHomology.starConnectingHomomorphism 5) := by
   have := ThreefoldHomology.Finiteness.starPairHomology_subsingleton (by decide : 5 < 6)
@@ -22448,47 +22435,6 @@ theorem ThreefoldHomology.TopDegree.ellipticAttachmentFifthEquiv_toLinearMap :
   change regularFifthEquiv (regularFifthEquiv.symm (ellipticFifthCoordinates a)) = _
   rw [LinearEquiv.apply_symm_apply, ellipticAttachmentFifth_coordinates]
 
-theorem ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso {A B D : Type*} [AddCommGroup A]
-    [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
-    (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b) :
-    Function.Surjective F := by
-  intro d
-  refine ⟨(0, e.symm d), ?_⟩
-  rw [hF, map_zero, LinearEquiv.apply_symm_apply, zero_add]
-
-private def ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150
-    {A B D : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B]
-    [Module ℤ D] [Module ℤ (A × B)] (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D)
-    (hF : ∀ a b, F (a, b) = f a + e b) : LinearMap.ker F ≃+ A
-    where
-  toFun x := x.val.1
-  invFun
-    a :=
-    ⟨(a, -e.symm (f a)), by
-      change F (a, -e.symm (f a)) = 0
-      rw [hF, map_neg, LinearEquiv.apply_symm_apply, add_neg_cancel]⟩
-  left_inv
-    x := by
-    apply Subtype.ext
-    change (x.val.1, -e.symm (f x.val.1)) = x.val
-    refine Prod.ext (by rfl) ?_
-    apply e.injective
-    change e (-e.symm (f x.val.1)) = e x.val.2
-    rw [map_neg, LinearEquiv.apply_symm_apply]
-    have hx : f x.val.1 + e x.val.2 = 0 := (hF x.val.1 x.val.2).symm.trans x.property
-    calc
-      -f x.val.1 = -f x.val.1 + 0 := (add_zero _).symm
-      _ = -f x.val.1 + (f x.val.1 + e x.val.2) := (congrArg (fun d => -f x.val.1 + d) hx.symm)
-      _ = e x.val.2 := by rw [← add_assoc, neg_add_cancel, zero_add]
-  right_inv _ := rfl
-  map_add' _ _ := rfl
-
-def ThreefoldHomologyTopDegreeAlgebra.kernelEquivOfColumnIso {A B D : Type*} [AddCommGroup A]
-    [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
-    (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b)
-    [Module ℤ (LinearMap.ker F)] : LinearMap.ker F ≃ₗ[ℤ] A :=
-  (kernelProjectionAddEquiv_mo1973_30150 F f e hF).toIntLinearEquiv
-
 theorem ThreefoldHomology.TopDegree.groupedAttachmentFifth_columnIso
     (a :
       SingularMayerVietoris.SingularHomology (SpecialPeriods.Threefold.RegularOverlap Option.none)
@@ -22510,7 +22456,7 @@ def ThreefoldHomology.TopDegree.homologySixCuspEquiv :
       SingularMayerVietoris.SingularHomology (SpecialPeriods.Threefold.RegularOverlap Option.none)
         5 :=
   (homologySixGroupedKernelEquiv.toAddEquiv.trans
-      (ThreefoldHomologyTopDegreeAlgebra.kernelEquivOfColumnIso groupedAttachmentFifth
+      (LinearMap.kerEquivOfColumnIso groupedAttachmentFifth
           (SingularMayerVietoris.singularHomologyMap
             (ThreefoldHomology.overlapToRegularFamily Option.none) 5)
           ellipticAttachmentFifthEquiv
@@ -22559,7 +22505,7 @@ theorem ThreefoldHomology.TopDegree.eq_smul_topClass
 theorem ThreefoldHomology.FifthDegree.regularAttachment_five_surjective :
     Function.Surjective (ThreefoldHomology.starOverlapToRegularHomologyMap 5) := by
   have hs :=
-    ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso
+    LinearMap.surjective_of_columnIso
       ThreefoldHomology.TopDegree.groupedAttachmentFifth
       (SingularMayerVietoris.singularHomologyMap
         (ThreefoldHomology.overlapToRegularFamily Option.none) 5)
@@ -23103,7 +23049,7 @@ theorem ThreefoldHomology.FifthDegree.fifthWangCoordinate_vanishes
       cuspResidualCoefficient * ThreefoldHomology.FourthWang.fifthWangCoordinate a := by
     linear_combination hsum - hcusp
   exact
-    signed_residual_coordinate_zero (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
+    Int.signed_residual_coordinate_zero (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .three)))
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .four))) cuspResidualCoefficient
       hthree hfour hregular
