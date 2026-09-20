@@ -217,7 +217,6 @@ import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionAbutment
-import Lib.CategoryTheory.Sites.Leray.DegreeZero
 import Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification
 import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
 import Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm

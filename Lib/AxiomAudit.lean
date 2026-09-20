@@ -2218,11 +2218,6 @@ is an evidence command rather than library content.
 #check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
 #print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
 
--- DegreeZero: every intended public source declaration in source order.
-#check CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
-#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward
-#check CategoryTheory.Sheaf.Leray.higherDirectImageZeroSheafIsoPushforward
-#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageZeroSheafIsoPushforward
 
 -- Gluing over a covered base: every handwritten declaration plus structure constructors and
 -- field projections, in compiled public declaration order (generated recursors excluded).
