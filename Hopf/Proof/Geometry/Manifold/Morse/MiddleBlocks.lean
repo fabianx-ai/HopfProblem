@@ -8,6 +8,7 @@ import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CutTransport
+import Hopf.Proof.Geometry.Manifold.Morse.CutTransport
 import Lib.Geometry.Manifold.Morse.EqualRangeHomology
 
 /-!

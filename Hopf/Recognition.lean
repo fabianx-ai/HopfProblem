@@ -165,6 +165,7 @@ import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.CutTransport
+import Hopf.Proof.Geometry.Manifold.Morse.CutTransport
 import Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks
 
 set_option maxSynthPendingDepth 3
@@ -785,7 +786,7 @@ theorem AdaptedWindows.finite_middle_inclusion_relations {E M : Type} [NormedAdd
         exact aux _ _ heq
       refine ⟨hstep'.1, ?_⟩
       rw [hstep'.2, hkernel]
-      exact MorseCancellation.span_prefix_succ (fun i => MorseCancellation.middleSectionClass (γ i)) hkn
+      exact Submodule.span_range_fin_succ (fun i => MorseCancellation.middleSectionClass (γ i)) hkn
   simpa only using hprefix n le_rfl
 
 theorem MorseCancellation.ordered_middle_inclusion_relations {E M : Type} [NormedAddCommGroup E]
@@ -3748,7 +3749,7 @@ theorem MorseCancellation.cancel_from_preserved_unit_belt_cut {E M : Type} [Norm
   have hβ₀ : ContMDiff (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) ∞ β₀ := (S.data p).belt_smooth hf 3
   have hβ : ContMDiff (𝓡 3) 𝓘(ℝ, RegularLevel.Model E) ∞ β := e.contMDiff.comp hβ₀
   let D' := e.symm.trans (D.trans e)
-  have hD' : SupportedDiffeomorph.IsotopicToIdentity D' := conjugate_level_isotopy e D hD
+  have hD' : SupportedDiffeomorph.IsotopicToIdentity D' := SupportedDiffeomorph.IsotopicToIdentity.conj e D hD
   have hDγ : D' ∘ γ = e ∘ δ := by
     funext x
     change e (D (α x)) = e (δ x)
@@ -3778,7 +3779,7 @@ theorem MorseCancellation.cancel_from_preserved_unit_belt_cut {E M : Type} [Norm
     exact hh hxy
   have hcount : (Set.range (D' ∘ γ) ∩ Set.range β).ncard = 1 := by
     rw [hDγ]
-    exact (intersection_count_under_injective_map e e.injective δ β₀).trans hsingle
+    exact (Set.ncard_range_comp_inter_range_comp_of_injective e e.injective δ β₀).trans hsingle
   exact
     T.cancel_single_basin_section_isotopy hg hmg hdim ⟨p.val, hpcg⟩ q hconsecutive hpg hq hpc hcq
       hga γ β hγ hβ hback hβfull D' hD' ht hcount
