@@ -19,6 +19,13 @@ explicit representable complex `Hom(X, K•)`.
 The result is stated as an equivalence rather than an additive equivalence because Mathlib's
 current `CohomologyClass.equivOfIsKInjective` and `SmallShiftedHom.equiv` APIs expose plain
 equivalences.  All intermediate homology comparisons are additive.
+
+## References
+
+* [N. Spaltenstein, *Resolutions of unbounded complexes*][spaltenstein88].
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §§10.4–10.7 (K-injective
+  complexes compute derived Hom).
+
 -/
 
 @[expose] public section
