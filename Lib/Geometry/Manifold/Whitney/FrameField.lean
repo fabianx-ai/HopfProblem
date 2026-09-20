@@ -10,20 +10,19 @@ import Lib.Geometry.Manifold.Whitney.AnnularExtension
 /-!
 # Frame fields along tubular bigons
 
-Frame fields, planar frames, intersection coordinates and disk framings along a tubular bigon, the strip normal data of the bigon boundary, native sheet coordinates, and the invertibility of coproducts of frame maps.
+Frame fields along a tubular Whitney bigon: planar frames and the two components of `GL₂(ℝ)`,
+intersection coordinates of two sheets, disk framings, the strip normal data of the two boundary
+arcs, native sheet coordinates, and the invertibility of coproducts of frame maps.
 
-Moved verbatim from the project stock file `Hopf/SingularHomology.lean` (integration 4,
-`Lib/reports/integration-4/singhom-moves.md`); the families here are
-`FrameField`, `PlanarFrame`, `IntersectionCoordinates`, `DiskFraming`, `TubularBigon`, `WhitneyPairModel`, `StripNormalData`, `ManifoldMorse.MorseSurgeryData`, `NativeSheetCoordinates`. The declarations keep their historical dotted names
-and their order; the file order is the dependency order.
+The Whitney trick needs a field of frames over the Whitney disc restricting on the two boundary
+arcs to the normal frames of the two sheets; such a field exists when the two intersection points
+have opposite signs, which is the content of the frame-existence statements here
+(`TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs`).
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6.
-
-## Twin
-
-No Mathlib counterpart exists.
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney trick and the
+  framing of the Whitney disc).
 
 ## Tags
 
@@ -36,18 +35,24 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- The lower boundary arc of the standard planar bigon: the segment `t ↦ (2 t - 1, 0)`, `t ∈ [0,
+1]`. -/
 def WhitneyPairModel.lowerBoundaryArc (t : ℝ) : ℝ × ℝ :=
   (2 * t - 1, 0)
 
+/-- The upper boundary arc of the standard planar bigon of height `h`: the parabolic arc `t ↦ (2 t -
+1, h (1 - (2 t - 1)^2))`, `t ∈ [0, 1]`. -/
 def WhitneyPairModel.upperBoundaryArc (h t : ℝ) : ℝ × ℝ :=
   (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))
 
+/-- The lower boundary arc has constant velocity `(2, 0)`. -/
 theorem WhitneyPairModel.hasDerivAt_lowerBoundaryArc (t : ℝ) :
     HasDerivAt lowerBoundaryArc (2, 0) t := by
   have hs : HasDerivAt (fun s : ℝ => 2 * s - 1) 2 t := by
     simpa using ((hasDerivAt_id t).const_mul 2).sub_const 1
   exact hs.prodMk (hasDerivAt_const t (0 : ℝ))
 
+/-- The upper boundary arc has velocity `(2, -4 h (2 t - 1))` at time `t`. -/
 theorem WhitneyPairModel.hasDerivAt_upperBoundaryArc (h t : ℝ) :
     HasDerivAt (upperBoundaryArc h) (2, -4 * h * (2 * t - 1)) t := by
   have hs : HasDerivAt (fun s : ℝ => 2 * s - 1) 2 t := by
@@ -59,6 +64,7 @@ theorem WhitneyPairModel.hasDerivAt_upperBoundaryArc (h t : ℝ) :
       | ring
   exact hs.prodMk hy
 
+/-- The lower boundary arc stays inside the bigon on the parameter interval `[0, 1]`. -/
 theorem TubularBigon.lowerBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
@@ -70,6 +76,7 @@ theorem TubularBigon.lowerBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGrou
       ⟨t, ht, Or.inl rfl⟩
   exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
 
+/-- The upper boundary arc stays inside the bigon on the parameter interval `[0, 1]`. -/
 theorem TubularBigon.upperBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
@@ -81,6 +88,8 @@ theorem TubularBigon.upperBoundaryArc_mem_bigon {E M : Type*} [NormedAddCommGrou
       ⟨t, ht, Or.inr rfl⟩
   exact ((WhitneyPairModel.mem_frontier_bigon_iff h _).mp hf).1
 
+/-- The zero section over a point of the lower boundary arc lies in the source of the tubular chart
+of a tubular bigon. -/
 theorem TubularBigon.lowerBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
@@ -89,6 +98,8 @@ theorem TubularBigon.lowerBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCo
   tube.source_contains
     ⟨tube.lowerBoundaryArc_mem_bigon ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
 
+/-- The zero section over a point of the upper boundary arc lies in the source of the tubular chart
+of a tubular bigon. -/
 theorem TubularBigon.upperBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} {n : ℕ} (tube : TubularBigon (E := E) S T a b k l h n)
@@ -97,6 +108,8 @@ theorem TubularBigon.upperBoundaryArc_zero_mem_source {E M : Type*} [NormedAddCo
   tube.source_contains
     ⟨tube.upperBoundaryArc_mem_bigon ht, Metric.mem_closedBall_self tube.radius_pos.le⟩
 
+/-- Along the lower sheet, the centre line of a strip chart lands in the target of the tubular chart
+of the bigon. -/
 theorem TubularBigon.lower_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -110,6 +123,8 @@ theorem TubularBigon.lower_chart_center_mem_target {E M A B : Type*} [NormedAddC
   rw [tube.zero_section, WhitneyPairModel.lowerBoundaryArc, hg] at hp
   exact hp
 
+/-- Along the upper sheet, the centre line of a strip chart lands in the target of the tubular chart
+of the bigon. -/
 theorem TubularBigon.upper_chart_center_mem_target {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -123,6 +138,9 @@ theorem TubularBigon.upper_chart_center_mem_target {E M A B : Type*} [NormedAddC
   rw [tube.zero_section, WhitneyPairModel.upperBoundaryArc, hg] at hp
   exact hp
 
+/-- Near each parameter `t ∈ [0, 1]`, the transition from the strip chart of the lower sheet to the
+tubular chart of the bigon carries the centre line onto the lower boundary arc, with vanishing
+normal component. -/
 theorem TubularBigon.lower_sheetTransition_center_germ {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -136,6 +154,9 @@ theorem TubularBigon.lower_sheetTransition_center_germ {E M A B : Type*}
     (tube.lowerBoundaryArc_zero_mem_source ht)
     (WhitneyPairModel.lowerStripCoordinates_lower h) (tube.lower_germ t ht)
 
+/-- Near each parameter `t ∈ [0, 1]`, the transition from the strip chart of the upper sheet to the
+tubular chart of the bigon carries the centre line onto the upper boundary arc, with vanishing
+normal component. -/
 theorem TubularBigon.upper_sheetTransition_center_germ {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -149,6 +170,8 @@ theorem TubularBigon.upper_sheetTransition_center_germ {E M A B : Type*}
     (tube.upperBoundaryArc_zero_mem_source ht)
     (WhitneyPairModel.upperStripCoordinates_upper h) (tube.upper_germ t ht)
 
+/-- The differential of the lower sheet transition sends the unit tangent of the centre line to the
+velocity `((2, 0), 0)` of the lower boundary arc. -/
 theorem TubularBigon.lower_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -159,6 +182,8 @@ theorem TubularBigon.lower_sheetDifferential_arc {E M A B : Type*} [NormedAddCom
     (WhitneyPairModel.hasDerivAt_lowerBoundaryArc t)
     (tube.lower_sheetTransition_center_germ d ht)
 
+/-- The differential of the upper sheet transition sends the unit tangent of the centre line to the
+velocity `((2, -4 h (2 t - 1)), 0)` of the upper boundary arc. -/
 theorem TubularBigon.upper_sheetDifferential_arc {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -169,6 +194,8 @@ theorem TubularBigon.upper_sheetDifferential_arc {E M A B : Type*} [NormedAddCom
     (WhitneyPairModel.hasDerivAt_upperBoundaryArc h t)
     (tube.upper_sheetTransition_center_germ d ht)
 
+/-- An endomorphism of `D × Z` preserving the first factor `D × {0}` is block triangular, so its
+determinant is the product of the determinants of its two diagonal blocks. -/
 theorem FrameField.det_of_zero_lower_left {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] (T : (D × Z) →L[ℝ] (D × Z)) (hT : ∀ u : D, (T (u, 0)).2 = 0) :
@@ -191,6 +218,8 @@ theorem FrameField.det_of_zero_lower_left {D Z : Type*} [NormedAddCommGroup D]
   rw [← LinearMap.det_toMatrix (bD.prod bZ), hmat, Matrix.det_fromBlocks_zero₂₁,
     LinearMap.det_toMatrix, LinearMap.det_toMatrix]
 
+/-- An endomorphism of `D × Z` fixing the first factor `D × {0}` pointwise has the determinant of
+its lower right block on `Z`. -/
 theorem FrameField.det_of_fixed_first_factor {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] (T : (D × Z) →L[ℝ] (D × Z)) (hT : ∀ u : D, T (u, 0) = (u, 0)) :
@@ -211,6 +240,9 @@ theorem FrameField.det_of_fixed_first_factor {D Z : Type*} [NormedAddCommGroup D
   rw [← LinearMap.det_toMatrix (bD.prod bZ), hmat, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one,
     one_mul, LinearMap.det_toMatrix]
 
+/-- Replacing the second block `C` of an invertible frame `G ⊞ C` by a map `L` multiplies the
+determinant of the frame by the determinant of `L` read in the quotient complement of the range
+of `G`. -/
 theorem FrameField.det_frame_eq_det_split_mul_det_coefficient {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -251,25 +283,32 @@ theorem FrameField.det_frame_eq_det_split_mul_det_coefficient {D Z F : Type*}
     map_mul LinearMap.det _ _
   rw [hmul, hdetA]
 
+/-- The area form of two vectors of the plane: the determinant `u₁ v₂ - u₂ v₁`. -/
 def PlanarFrame.area (u v : PlaneImmersion.Plane) : ℝ :=
   u.1 * v.2 - u.2 * v.1
 
+/-- The squared Euclidean length of a plane vector. -/
 def PlanarFrame.squareLength (u : PlaneImmersion.Plane) : ℝ :=
   u.1 ^ 2 + u.2 ^ 2
 
+/-- The quarter turn of the plane, `(u₁, u₂) ↦ (-u₂, u₁)`. -/
 def PlanarFrame.quarterTurn (u : PlaneImmersion.Plane) : PlaneImmersion.Plane :=
   (-u.2, u.1)
 
+/-- The coefficient of `v` along `u` in the orthogonal basis `(u, quarterTurn u)`. -/
 def PlanarFrame.parallelCoeff (u v : PlaneImmersion.Plane) : ℝ :=
   (u.1 * v.1 + u.2 * v.2) / squareLength u
 
+/-- The coefficient of `v` along `quarterTurn u` in the orthogonal basis `(u, quarterTurn u)`. -/
 def PlanarFrame.transverseCoeff (u v : PlaneImmersion.Plane) : ℝ :=
   area u v / squareLength u
 
+/-- The determinant of an endomorphism of the plane, as the area of its two columns. -/
 def PlanarFrame.determinant
     (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) : ℝ :=
   area (L (1, 0)) (L (0, 1))
 
+/-- A nonzero plane vector has positive squared length. -/
 theorem PlanarFrame.squareLength_pos {u : PlaneImmersion.Plane} (hu : u ≠ 0) :
     0 < squareLength u := by
   have hsq₁ := sq_nonneg u.1
@@ -280,6 +319,8 @@ theorem PlanarFrame.squareLength_pos {u : PlaneImmersion.Plane} (hu : u ≠ 0) :
   have hu₂ : u.2 = 0 := by nlinarith
   exact hu (Prod.ext hu₁ hu₂)
 
+/-- For `u ≠ 0`, the basis `(u, quarterTurn u)` decomposes every plane vector: `v = parallelCoeff u
+v • u + transverseCoeff u v • quarterTurn u`. -/
 theorem PlanarFrame.decompose_second_column {u : PlaneImmersion.Plane} (hu : u ≠ 0)
     (v : PlaneImmersion.Plane) :
     parallelCoeff u v • u + transverseCoeff u v • quarterTurn u = v := by
@@ -292,19 +333,25 @@ theorem PlanarFrame.decompose_second_column {u : PlaneImmersion.Plane} (hu : u �
     simp only [squareLength]
     ring
 
+/-- The area of `u` with a vector written in the basis `(u, quarterTurn u)` reads off the transverse
+coefficient: `area u (a • u + b • quarterTurn u) = b * squareLength u`. -/
 theorem PlanarFrame.area_transverse (u : PlaneImmersion.Plane) (a b : ℝ) :
     area u (a • u + b • quarterTurn u) = b * squareLength u := by
   dsimp [area, quarterTurn, squareLength]
   ring
 
+/-- The plane endomorphism with columns `(u, v)` sends the first basis vector to `u`. -/
 theorem PlanarFrame.linearMap_first (u v : PlaneImmersion.Plane) :
     PlaneImmersion.linearMap (u, v) (1, 0) = u := by
   simp [PlaneImmersion.linearMap_apply]
 
+/-- The plane endomorphism with columns `(u, v)` sends the second basis vector to `v`. -/
 theorem PlanarFrame.linearMap_second (u v : PlaneImmersion.Plane) :
     PlaneImmersion.linearMap (u, v) (0, 1) = v := by
   simp [PlaneImmersion.linearMap_apply]
 
+/-- An endomorphism of the plane is the endomorphism whose columns are its values on the two basis
+vectors. -/
 theorem PlanarFrame.linearMap_columns
     (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :
     PlaneImmersion.linearMap (L (1, 0), L (0, 1)) = L := by
@@ -313,16 +360,19 @@ theorem PlanarFrame.linearMap_columns
   have hp : p = p.1 • ((1 : ℝ), 0) + p.2 • (0, 1) := by ext <;> simp
   rw [PlaneImmersion.linearMap_apply, ← map_smul, ← map_smul, ← map_add, ← hp]
 
+/-- The determinant of the plane endomorphism with columns `(u, v)` is the area of `u` and `v`. -/
 theorem PlanarFrame.determinant_linearMap (u v : PlaneImmersion.Plane) :
     determinant (PlaneImmersion.linearMap (u, v)) = area u v := by
   rw [determinant, linearMap_first, linearMap_second]
 
+/-- The planar determinant agrees with the determinant of the underlying linear map. -/
 theorem PlanarFrame.determinant_eq_det
     (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :
     determinant L = L.toLinearMap.det := by
   rw [← LinearMap.det_toMatrix (Module.Basis.finTwoProd ℝ), Matrix.det_fin_two]
   simp [LinearMap.toMatrix_apply, Module.Basis.coe_finTwoProd_repr, determinant, area, mul_comm]
 
+/-- An endomorphism of the plane with nonzero determinant is bijective. -/
 theorem PlanarFrame.bijective_of_determinant_ne_zero
     (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (hL : determinant L ≠ 0) :
     Function.Bijective L := by
@@ -333,6 +383,7 @@ theorem PlanarFrame.bijective_of_determinant_ne_zero
   have hi : Function.Injective L := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
+/-- The determinant is continuous on endomorphisms of the plane. -/
 theorem PlanarFrame.continuous_determinant : Continuous determinant := by
   have h₁ :
     Continuous
@@ -344,9 +395,11 @@ theorem PlanarFrame.continuous_determinant : Continuous determinant := by
     continuous_id.clm_apply continuous_const
   exact (h₁.fst.mul h₂.snd).sub (h₁.snd.mul h₂.fst)
 
+/-- The quarter turn is continuous. -/
 theorem PlanarFrame.continuous_quarterTurn : Continuous quarterTurn :=
   continuous_snd.neg.prodMk continuous_fst
 
+/-- Assembling an endomorphism of the plane from its two columns is continuous. -/
 theorem PlanarFrame.continuous_linearMap :
     Continuous
       (PlaneImmersion.linearMap :
@@ -360,6 +413,9 @@ theorem PlanarFrame.continuous_linearMap :
             (ContinuousLinearMap.snd ℝ ℝ ℝ)).continuous.comp
         continuous_snd)
 
+/-- The endomorphism of `Plane × (A × B)` built from two sheet frames `P` and `Q`: the plane
+coordinates record the two tangent directions and the remaining coordinates the two normal
+blocks, read through the splitting `j`. -/
 def IntersectionCoordinates.jointBlock {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
@@ -370,6 +426,8 @@ def IntersectionCoordinates.jointBlock {A B F : Type*} [NormedAddCommGroup A]
     ((P.coprod Q).comp
       (ContinuousLinearEquiv.prodProdProdComm ℝ ℝ A ℝ B).symm.toContinuousLinearMap)
 
+/-- Value of the joint block: the plane component is the first component of the sum of the two
+frames, and the remaining component is that sum read through `j⁻¹`. -/
 theorem IntersectionCoordinates.jointBlock_apply {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F))
@@ -380,12 +438,16 @@ theorem IntersectionCoordinates.jointBlock_apply {A B F : Type*} [NormedAddCommG
         j.symm ((P (p.1.1, p.2.1) + Q (p.1.2, p.2.2)).2)) :=
   rfl
 
+/-- A continuous linear map is homogeneous along the first axis: `P (s, 0) = s • P (1, 0)`. -/
 theorem IntersectionCoordinates.map_first_axis {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (P : (ℝ × A) →L[ℝ] (PlaneImmersion.Plane × F)) (s : ℝ) : P (s, 0) = s • P (1, 0) := by
   have hs : (s, (0 : A)) = s • ((1 : ℝ), 0) := by ext <;> simp
   rw [hs, map_smul]
 
+/-- If the two frames have first columns `(u, 0)` and `(v, 0)` in the plane directions, the
+determinant of their joint block factors as the planar determinant of `(u, v)` times the
+determinant of the two normal blocks. -/
 theorem IntersectionCoordinates.det_jointBlock {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ A] [FiniteDimensional ℝ B] (j : (A × B) ≃L[ℝ] F)
@@ -429,6 +491,8 @@ theorem IntersectionCoordinates.det_jointBlock {A B F : Type*} [NormedAddCommGro
     rfl
   rw [FrameField.det_of_zero_lower_left _ hzero, hfirst, hsecond]
 
+/-- In an inner-product space, the coproduct of two injective maps is bijective as soon as the range
+of the second is the orthogonal complement of the range of the first. -/
 theorem FrameField.bijective_coprod_of_orthogonal_range {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup F] [InnerProductSpace ℝ F] (L : D →L[ℝ] F)
@@ -445,6 +509,9 @@ theorem FrameField.bijective_coprod_of_orthogonal_range {D Z F : Type*}
     rw [← LinearMap.range_eq_top, LinearMap.range_coprod, hr]
     exact L.range.isCompl_orthogonal.sup_eq_top
 
+/-- A smooth family of injective maps `L x : D →L F` on a neighbourhood of a compact star-shaped set
+`K` admits a smooth family of complements: a family `B` whose range is `(L x)ᗮ` on `K` and for
+which `L x ⊞ B x` is bijective on a neighbourhood of `K`. -/
 theorem FrameField.exists_smooth_complement_near_starConvex_on {E D F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -530,6 +597,8 @@ theorem FrameField.exists_smooth_complement_near_starConvex_on {E D F : Type*}
     exact hdim
   exact ⟨hx.2, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim').mp hx.2⟩
 
+/-- Version of `FrameField.exists_smooth_complement_near_starConvex_on` for a family that is smooth
+on the whole space. -/
 theorem FrameField.exists_smooth_complement_near_starConvex {E D F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup D] [NormedSpace ℝ D]
     [FiniteDimensional ℝ D] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -546,6 +615,8 @@ theorem FrameField.exists_smooth_complement_near_starConvex {E D F : Type*}
   exists_smooth_complement_near_starConvex_on isOpen_univ hL.contDiffOn hK hstar h0
     (Set.subset_univ K) hi n hdim
 
+/-- Along the lower sheet of a tubular bigon, the normal frame of the strip chart is smooth on a
+neighbourhood of `[0, 1]` and injective at every parameter of `[0, 1]`. -/
 theorem TubularBigon.lower_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -585,6 +656,8 @@ theorem TubularBigon.lower_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
         (WhitneyPairModel.contDiff_lowerStripCoordinates tube.height_pos.ne').contDiffAt
         (WhitneyPairModel.lowerStripCoordinates_lower h t) hcs (tube.lower_germ t ht)
 
+/-- Along the upper sheet of a tubular bigon, the normal frame of the strip chart is smooth on a
+neighbourhood of `[0, 1]` and injective at every parameter of `[0, 1]`. -/
 theorem TubularBigon.upper_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {S T : Set M} {a b : ℝ → M}
@@ -629,6 +702,9 @@ theorem TubularBigon.upper_sheetFrame {E M A B : Type*} [NormedAddCommGroup E]
         (WhitneyPairModel.contDiff_upperStripCoordinates tube.height_pos.ne').contDiffAt
         (WhitneyPairModel.upperStripCoordinates_upper h t) hcs (tube.upper_germ t ht)
 
+/-- When the sheet directions and the chosen complement fill the normal fibre by dimension count,
+the normal frame along the upper sheet extends to a smooth field of complements `C t`,
+orthogonal to the frame on `[0, 1]`, with `normalFrame t ⊞ C t` bijective. -/
 theorem TubularBigon.upper_sheetFrame_complement_of_finrank {E M A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -656,10 +732,13 @@ theorem TubularBigon.upper_sheetFrame_complement_of_finrank {E M A B : Type*}
     ⟨W ∩ U, hW.inter hU, fun t ht => ⟨hIW ht, hIU ht⟩, hs.mono Set.inter_subset_right, C,
       hC.mono Set.inter_subset_left, hr, fun t ht => hc t ht.1⟩
 
+/-- The punctured model of a normed space: the open set of nonzero vectors. -/
 def DiskFraming.puncturedModel (B : Type*) [NormedAddCommGroup B] :
     TopologicalSpace.Opens B :=
   ⟨{0}ᶜ, isClosed_singleton.isOpen_compl⟩
 
+/-- A smooth curve defined near `t₀` and nonzero there is the germ at `t₀` of a globally defined
+smooth curve avoiding the origin. -/
 theorem DiskFraming.exists_smooth_punctured_curve_with_germ {B : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] {a : ℝ → B} {U : Set ℝ} {t₀ : ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hU : IsOpen U) (ht₀ : t₀ ∈ U) (ha0 : a t₀ ≠ 0) :
@@ -685,6 +764,8 @@ theorem DiskFraming.exists_smooth_punctured_curve_with_germ {B : Type*}
   filter_upwards [hfgerm, hval htV] with t ht htval
   exact (congrArg Subtype.val ht).trans htval
 
+/-- In a real vector space of dimension at least two, two prescribed nonzero smooth germs at the
+endpoints `0` and `1` are realised by a single smooth nowhere-zero curve. -/
 theorem DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : Type*}
     [NormedAddCommGroup B] [NormedSpace ℝ B] [FiniteDimensional ℝ B] {a b : ℝ → B} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
@@ -712,11 +793,13 @@ theorem DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs {B : Type*}
     change 7 / 8 < t at ht
     exact (congrArg Subtype.val (hfb ht.le)).trans htb
 
+/-- The open set of plane endomorphisms whose determinant has the sign `σ`. -/
 def PlanarFrame.determinantComponent (σ : ℝ) :
     TopologicalSpace.Opens (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) :=
   ⟨{L | 0 < σ * determinant L},
     isOpen_lt continuous_const (continuous_const.mul continuous_determinant)⟩
 
+/-- An endomorphism with a definite determinant sign has nonzero first column. -/
 theorem PlanarFrame.first_column_ne_zero {σ : ℝ} (L : determinantComponent σ) :
     (L : PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane) (1, 0) ≠ 0 := by
   intro hz
@@ -729,6 +812,8 @@ theorem PlanarFrame.first_column_ne_zero {σ : ℝ} (L : determinantComponent σ
   rw [hz] at h
   simp [area] at h
 
+/-- For an endomorphism with determinant of sign `σ`, the transverse coefficient of the second
+column relative to the first has that same sign. -/
 theorem PlanarFrame.signed_transverseCoeff_pos {σ : ℝ} (L : determinantComponent σ) :
     0 <
       σ *
@@ -737,6 +822,8 @@ theorem PlanarFrame.signed_transverseCoeff_pos {σ : ℝ} (L : determinantCompon
   rw [transverseCoeff, ← mul_div_assoc]
   exact div_pos L.property (squareLength_pos (first_column_ne_zero L))
 
+/-- The set of plane endomorphisms of a fixed determinant sign is path-connected: `GL₂(ℝ)` has two
+path components, distinguished by the sign of the determinant. -/
 theorem PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
     (a b : determinantComponent σ) : Nonempty (Path a b) := by
   have hrank : 1 < Module.rank ℝ PlaneImmersion.Plane := by
@@ -817,6 +904,8 @@ theorem PlanarFrame.nonempty_path_determinantComponent {σ : ℝ}
         source' := Subtype.ext hF0
         target' := Subtype.ext hF1 }⟩
 
+/-- Two smooth germs of plane endomorphisms at the endpoints `0` and `1`, whose determinants have
+the same sign, are joined by a smooth path of invertible endomorphisms of that determinant sign. -/
 theorem PlanarFrame.exists_smooth_join_of_same_determinant_sign
     {a b : ℝ → (PlaneImmersion.Plane →L[ℝ] PlaneImmersion.Plane)} {U V : Set ℝ}
     (ha : ContDiffOn ℝ ∞ a U) (hb : ContDiffOn ℝ ∞ b V) (hU : IsOpen U) (hV : IsOpen V)
@@ -859,6 +948,8 @@ theorem PlanarFrame.exists_smooth_join_of_same_determinant_sign
   rw [hz, MulZeroClass.mul_zero] at h
   exact lt_irrefl _ h
 
+/-- Version of the join of two germs of invertible endomorphisms of the same determinant sign for an
+abstract real vector space of dimension two. -/
 theorem FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     (hdim : Module.finrank ℝ D = 2) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ}
@@ -910,6 +1001,8 @@ theorem FrameField.exists_smooth_invertible_join_of_finrank_two {D : Type*}
     change e (e.symm (b t (e (e.symm v)))) = b t v
     simp only [e.apply_symm_apply]
 
+/-- A map defined and smooth on an open set is the germ along any closed subset of that open set of
+a globally smooth map. -/
 theorem FrameField.exists_global_field_with_closed_germ {F : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] {L : PlaneImmersion.Plane → F} {U C : Set PlaneImmersion.Plane}
     (hU : IsOpen U) (hL : ContDiffOn ℝ ∞ L U) (hC : IsClosed C) (hCU : C ⊆ U) :
@@ -938,6 +1031,10 @@ theorem FrameField.exists_global_field_with_closed_germ {F : Type*} [NormedAddCo
   change β x • L x = L x
   rw [hx, one_smul]
 
+/-- A smooth field with values in a space of dimension larger than that of the source can be
+perturbed relative to a closed set, on which it is nowhere zero, to a field that is nowhere zero
+on a prescribed compact set (general position for a section of a bundle of rank exceeding the
+base dimension). -/
 theorem FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAddCommGroup P]
     [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ F] {v : P → F} (hv : ContDiff ℝ ∞ v)
@@ -969,6 +1066,9 @@ theorem FrameField.exists_nonzero_field_rel_closed {P F : Type*} [NormedAddCommG
     · simpa only [hβx, zero_smul, add_zero] using hfixed x hx hβx
     · exact ha x hβx (0 : Z)
 
+/-- A locally defined nowhere-zero field on the plane, given near a closed set, extends to a
+globally smooth field, unchanged near the closed set, that is nowhere zero on a prescribed
+compact set, provided the target has dimension at least three. -/
 theorem FrameField.exists_nonzero_extension_of_local_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
     {v : PlaneImmersion.Plane → F} {U C K : Set PlaneImmersion.Plane} (hU : IsOpen U)
@@ -987,6 +1087,7 @@ theorem FrameField.exists_nonzero_extension_of_local_field {F : Type*}
   obtain ⟨v', hv', hgerm, hne'⟩ := exists_nonzero_field_rel_closed hv₀ hdim' hK hC hne₀
   exact ⟨v', hv', hgerm.trans heq, hne'⟩
 
+/-- A linear map out of a line is injective exactly when it is nonzero. -/
 theorem FrameField.injective_iff_ne_zero_of_finrank_one {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (hA : Module.finrank ℝ A = 1) (L : A →L[ℝ] F) : Function.Injective L ↔ L ≠ 0 := by
@@ -1012,12 +1113,16 @@ theorem FrameField.injective_iff_ne_zero_of_finrank_one {A F : Type*} [NormedAdd
       omega
     exact LinearMap.ker_eq_bot.mp (Submodule.finrank_eq_zero.mp hk)
 
+/-- The space of linear maps out of a line has the dimension of the target. -/
 theorem FrameField.finrank_one_column {A F : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [FiniteDimensional ℝ A] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (hA : Module.finrank ℝ A = 1) : Module.finrank ℝ (A →L[ℝ] F) = Module.finrank ℝ F := by
   rw [← (LinearMap.toContinuousLinearMap : (A →ₗ[ℝ] F) ≃ₗ[ℝ] (A →L[ℝ] F)).finrank_eq,
     Module.finrank_linearMap, hA, one_mul]
 
+/-- Version of the nowhere-zero extension for one-column frames: a locally defined family of
+injective maps out of a line extends to a global smooth family, unchanged near the closed set,
+injective on a prescribed compact set. -/
 theorem FrameField.exists_one_column_extension_of_local_field {A F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] (hA : Module.finrank ℝ A = 1)
@@ -1033,6 +1138,9 @@ theorem FrameField.exists_one_column_extension_of_local_field {A F : Type*}
   exact
     ⟨L', hL', heq, fun x hx => (injective_iff_ne_zero_of_finrank_one hA (L' x)).mpr (hne' x hx)⟩
 
+/-- In a three-dimensional target, a one-column frame given near a closed set extends to a global
+smooth frame, unchanged near that closed set, which on a neighbourhood of a compact star-shaped
+set is completed by a smooth two-column field spanning its orthogonal complement. -/
 theorem FrameField.exists_completed_one_column_frame {A F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     [FiniteDimensional ℝ F] (hA : Module.finrank ℝ A = 1)
@@ -1058,6 +1166,7 @@ theorem FrameField.exists_completed_one_column_frame {A F : Type*} [NormedAddCom
     exists_smooth_complement_near_starConvex hL' hK hstar h0 hi' 2 hcodim
   exact ⟨L', hL', heq, V, hV, hKV, B, hB, hr, hb⟩
 
+/-- On a line, every endomorphism is multiplication by its determinant. -/
 theorem FrameField.eq_det_smul_id_of_finrank_one {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] (hdim : Module.finrank ℝ D = 1) (A : D →L[ℝ] D) :
     A.toLinearMap = A.toLinearMap.det • LinearMap.id := by
@@ -1067,6 +1176,7 @@ theorem FrameField.eq_det_smul_id_of_finrank_one {D : Type*} [NormedAddCommGroup
   rw [hdet]
   exact ha
 
+/-- On a line, the determinant is linear: `det (a • A + b • B) = a det A + b det B`. -/
 theorem FrameField.det_smul_add_of_finrank_one {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] (hdim : Module.finrank ℝ D = 1) (A B : D →L[ℝ] D) (a b : ℝ) :
     (a • A + b • B).toLinearMap.det = a * A.toLinearMap.det + b * B.toLinearMap.det := by
@@ -1080,6 +1190,8 @@ theorem FrameField.det_smul_add_of_finrank_one {D : Type*} [NormedAddCommGroup D
       _ = _ := by rw [smul_smul, smul_smul, ← add_smul]
   rw [hlin, LinearMap.det_smul, hdim, pow_one, LinearMap.det_id, mul_one]
 
+/-- Version of the join of two germs of invertible endomorphisms of the same determinant sign for a
+space of dimension one. -/
 theorem FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     (hdim : Module.finrank ℝ D = 1) {a b : ℝ → (D →L[ℝ] D)} {U V : Set ℝ}
@@ -1144,6 +1256,8 @@ theorem FrameField.exists_smooth_invertible_join_of_finrank_one {D : Type*}
   have hi : Function.Injective (L t) := LinearMap.ker_eq_bot.mp hker
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
 
+/-- A continuous nowhere-zero real function on `[0, 1]` has endpoint values of the same sign, so
+their product is positive. -/
 theorem FrameField.mul_endpoints_pos_of_continuous_nonzero {f : ℝ → ℝ}
     (hf : ContinuousOn f (Set.Icc (0 : ℝ) 1)) (hne : ∀ t ∈ Set.Icc (0 : ℝ) 1, f t ≠ 0) :
     0 < f 0 * f 1 := by
@@ -1154,6 +1268,8 @@ theorem FrameField.mul_endpoints_pos_of_continuous_nonzero {f : ℝ → ℝ}
   · obtain ⟨t, ht, hft⟩ := intermediate_value_Icc (show (0 : ℝ) ≤ 1 by norm_num) hf h
     exact hne t ht hft
 
+/-- A continuous path of invertible endomorphisms on `[0, 1]` has endpoint determinants of the same
+sign. -/
 theorem FrameField.det_mul_endpoints_pos {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {T : ℝ → (E →L[ℝ] E)}
     (hT : ContinuousOn T (Set.Icc (0 : ℝ) 1))
@@ -1166,6 +1282,9 @@ theorem FrameField.det_mul_endpoints_pos {E : Type*} [NormedAddCommGroup E]
   have hker : (T t).toLinearMap.ker ≠ ⊥ := LinearMap.det_eq_zero_iff_ker_ne_bot.mp hz
   exact hker (LinearMap.ker_eq_bot.mpr (hi t ht).1)
 
+/-- For a path of frames `G ⊞ C` that stays invertible, the two endpoint determinants of `G ⊞ L`
+have the same sign exactly when the two endpoint determinants of `L` read in the quotient
+complement of `G` do. -/
 theorem FrameField.same_sign_frames_iff_coefficients {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F] (j : (D × Z) ≃L[ℝ] F)
@@ -1197,6 +1316,9 @@ theorem FrameField.same_sign_frames_iff_coefficients {D Z F : Type*} [NormedAddC
   rw [heq]
   exact mul_pos_iff_of_pos_left hpositive
 
+/-- If the complement directions have dimension one or two, a path `L` whose endpoint coefficients
+in the quotient complement have determinants of the same sign can be replaced, keeping its germs
+at `0` and `1`, by a path `H` for which `G ⊞ H` is invertible throughout. -/
 theorem FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two
     {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F]
@@ -1235,6 +1357,8 @@ theorem FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank_one_o
     rw [ht]
     exact correctedComplement_self (G t) (C t) (L t)
 
+/-- Frame-determinant form of the previous statement: the hypothesis is the sign of the product of
+the two endpoint determinants of `G ⊞ L` read through the splitting `j`. -/
 theorem FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two
     {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F]
@@ -1258,6 +1382,8 @@ theorem FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_
     exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two hdim hU (hIU (by simp))
       (hIU (by simp)) hG hC hL hi hcoeff
 
+/-- Two smooth fields along the two boundary arcs of the bigon, agreeing near the two corners, are
+the restrictions of one smooth field defined on a neighbourhood of the boundary of the bigon. -/
 theorem WhitneyPairModel.exists_smooth_bigon_boundary_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {h : ℝ} (hh : 0 < h) {L H : ℝ → F} {D : Set ℝ}
     (hD : IsOpen D) (hID : Set.Icc (0 : ℝ) 1 ⊆ D) (hL : ContDiffOn ℝ ∞ L D)
@@ -1312,6 +1438,9 @@ theorem WhitneyPairModel.exists_smooth_bigon_boundary_field {F : Type*}
       hLH
   exact ⟨U, V, hU, hV, hfront, hlowU, huppV, W, hW.contDiffOn, hWL, hWH⟩
 
+/-- Version of the previous statement for fields of injective linear maps: the resulting field on a
+neighbourhood of the boundary of the bigon has the prescribed germs along the two arcs and is
+injective at every boundary point. -/
 theorem WhitneyPairModel.exists_injective_bigon_boundary_field {F : Type*}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {A : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     {h : ℝ} (hh : 0 < h) {L H : ℝ → (A →L[ℝ] F)} {D : Set ℝ} (hD : IsOpen D)
@@ -1347,16 +1476,23 @@ theorem WhitneyPairModel.exists_injective_bigon_boundary_field {F : Type*}
       rw [htime]
       exact hiH t ht
 
+/-- A fixed linear identification `ℝ² × ℝ¹ ≃ ℝ³` of the split rank-three normal space with
+`EuclideanSpace ℝ (Fin 3)`. -/
 def FrameField.rankThreePairCoordinates :
     (EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 1)) ≃L[ℝ] EuclideanSpace ℝ (Fin 3) :=
   ContinuousLinearEquiv.ofFinrankEq
     (by simp only [Module.finrank_prod, finrank_euclideanSpace_fin])
 
+/-- The determinant of a pair of frames `A : ℝ² →L ℝ³` and `B : ℝ¹ →L ℝ³`, read through the
+identification `ℝ² × ℝ¹ ≃ ℝ³`. -/
 def FrameField.rankThreePairDet
     (A : EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3))
     (B : EuclideanSpace ℝ (Fin 1) →L[ℝ] EuclideanSpace ℝ (Fin 3)) : ℝ :=
   (rankThreePairCoordinates.symm.toContinuousLinearMap.comp (A.coprod B)).toLinearMap.det
 
+/-- In the rank-three situation, if the two corner frame determinants have the same sign, the normal
+frame along the lower sheet can be replaced by a smooth complement `H` of the upper normal frame
+on a neighbourhood of `[0, 1]`, with the same germs at both corners. -/
 theorem TubularBigon.exists_rankThree_boundary_complement_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1401,6 +1537,9 @@ theorem TubularBigon.exists_rankThree_boundary_complement_of_normal_sign {E M : 
       hLU hsplit hsign
   exact ⟨U, hU, hIU, hLU, H, hH, hiH, hleft, hright⟩
 
+/-- The complement of the previous statement, transported to a field on a neighbourhood of the
+boundary of the bigon: it has the germ of the lower normal frame along the lower arc, completes
+the upper normal frame along the upper arc, and is injective on the boundary. -/
 theorem TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1457,6 +1596,9 @@ theorem TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign {E M 
   rw [htime]
   exact hcomp t (hID ht)
 
+/-- The boundary field of the previous statement extends to a globally smooth field on the plane
+which, on a neighbourhood of the bigon, is completed by a smooth two-column field spanning its
+orthogonal complement. -/
 theorem TubularBigon.exists_rankThree_planar_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1512,6 +1654,7 @@ theorem TubularBigon.exists_rankThree_planar_frame_of_normal_sign {E M : Type*}
     rw [heq.self_of_nhdsSet hp]
     exact hhi t ht
 
+/-- The coproduct of two maps is bijective irrespective of the order of the two blocks. -/
 theorem FrameField.bijective_coprod_comm {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (H : Z →L[ℝ] F) (hi : Function.Bijective (H.coprod W)) :
@@ -1526,11 +1669,13 @@ theorem FrameField.bijective_coprod_comm {D Z F : Type*} [NormedAddCommGroup D]
   rw [heq]
   exact hi.comp (ContinuousLinearEquiv.prodComm ℝ D Z).bijective
 
+/-- The complement `H` of the reference frame `W₀ ⊞ B₀`, transported to the frame `W ⊞ B`. -/
 def FrameField.transportComplement {D Z F : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F) : Z →L[ℝ] F :=
   (W.coprod B).comp ((W₀.coprod B₀).inverse.comp H)
 
+/-- Transporting a complement along the identity frame does nothing. -/
 theorem FrameField.transportComplement_self {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B H : Z →L[ℝ] F) (h : (W.coprod B).IsInvertible) :
@@ -1539,6 +1684,8 @@ theorem FrameField.transportComplement_self {D Z F : Type*} [NormedAddCommGroup 
   intro z
   exact h.self_apply_inverse (H z)
 
+/-- The transported complement is characterised by `W ⊞ transport H = (W ⊞ B) ∘ (W₀ ⊞ B₀)⁻¹ ∘ (W₀ ⊞
+H)`. -/
 theorem FrameField.coprod_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F)
@@ -1553,6 +1700,8 @@ theorem FrameField.coprod_transportComplement {D Z F : Type*} [NormedAddCommGrou
   simp only [transportComplement, ContinuousLinearMap.comp_apply,
     ContinuousLinearMap.coprod_apply, map_add, hfirst, map_zero, add_zero]
 
+/-- Transport preserves invertibility of a frame: if `W₀ ⊞ H` is bijective then so is `W ⊞ transport
+H`. -/
 theorem FrameField.bijective_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (W : D →L[ℝ] F) (B : Z →L[ℝ] F) (W₀ : D →L[ℝ] F) (B₀ H : Z →L[ℝ] F)
@@ -1562,6 +1711,8 @@ theorem FrameField.bijective_transportComplement {D Z F : Type*} [NormedAddCommG
   rw [coprod_transportComplement W B W₀ B₀ H h₀]
   exact (h.bijective.comp h₀.inverse.bijective).comp hH
 
+/-- The transported complement depends smoothly on a parameter when all five data do and the
+reference frame stays invertible. -/
 theorem FrameField.contDiffOn_transportComplement {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ D]
@@ -1577,6 +1728,10 @@ theorem FrameField.contDiffOn_transportComplement {D Z F : Type*} [NormedAddComm
       ((hi x hx).contDiffAt_map_inverse.comp x (hT₀.contDiffAt (hU.mem_nhds hx))).contDiffWithinAt
   exact (contDiffOn_coprod hW hB).clm_comp (hInv.clm_comp hH)
 
+/-- In the rank-three situation with corner frame determinants of the same sign, there is a globally
+smooth field `W` with the germs of the lower normal frame along the lower arc, completed on a
+neighbourhood of the bigon by a smooth field `C` that restricts to the upper normal frame along
+the upper arc. -/
 theorem TubularBigon.exists_rankThree_adapted_frame_of_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1684,6 +1839,8 @@ theorem TubularBigon.exists_rankThree_adapted_frame_of_normal_sign {E M : Type*}
       simp only [Module.finrank_prod, finrank_euclideanSpace_fin]
     exact ⟨hp.2, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hp.2⟩
 
+/-- The joint block of the two sheet differentials of a rank-three tubular bigon at the parameter
+`t`, read in the coordinates `ℝ² × ℝ¹ ≃ ℝ³`. -/
 def TubularBigon.rankThreeSheetPairJacobian {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -1695,6 +1852,8 @@ def TubularBigon.rankThreeSheetPairJacobian {E M : Type*} [NormedAddCommGroup E]
   IntersectionCoordinates.jointBlock FrameField.rankThreePairCoordinates
     (e.sheetDifferential tube.chart t) (d.sheetDifferential tube.chart t)
 
+/-- The determinant of the joint block of the two sheet differentials: the intersection sign of the
+two sheets at the parameter `t`. -/
 def TubularBigon.rankThreeSheetPairDet {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -1703,6 +1862,8 @@ def TubularBigon.rankThreeSheetPairDet {E M : Type*} [NormedAddCommGroup E]
     (t : ℝ) : ℝ :=
   (tube.rankThreeSheetPairJacobian d e t).toLinearMap.det
 
+/-- At the two corners of the bigon the strip charts of the two sheets have the same centre point.
+At the two corners of the bigon the strip charts of the two sheets have the same centre point. -/
 theorem TubularBigon.rankThree_corner_sheet_charts_coincide {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -1719,6 +1880,8 @@ theorem TubularBigon.rankThree_corner_sheet_charts_coincide {E M : Type*}
   rw [WhitneyPairModel.upperStripCoordinates_upper, e.center t, hheight] at he
   exact hd.symm.trans he
 
+/-- At each parameter, the sheet pair determinant is `8 h (2 t - 1)` times the determinant of the
+pair of normal frames: the two differ by the velocity factor of the boundary arcs. -/
 theorem TubularBigon.rankThreeSheetPairDet_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -1744,6 +1907,9 @@ theorem TubularBigon.rankThreeSheetPairDet_eq {E M : Type*} [NormedAddCommGroup 
   rw [hplane]
   rfl
 
+/-- The two corner sheet-pair determinants have opposite signs exactly when the two corner
+normal-frame determinants have the same sign: the factor `8 h (2 t - 1)` changes sign between
+the corners. -/
 theorem TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -1776,6 +1942,8 @@ theorem TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sign {E M
     have hp : 0 < (8 * h) ^ 2 * n := mul_pos hscale hn
     linarith
 
+/-- The adapted frame over the bigon exists as soon as the two corner intersection signs are
+opposite, which is the Whitney condition on the two intersection points. -/
 theorem TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ}
@@ -1805,6 +1973,8 @@ theorem TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs {E 
   tube.exists_rankThree_adapted_frame_of_normal_sign d e
     ((tube.opposite_rankThree_corner_determinants_iff_normal_sign d e).mp hsign)
 
+/-- The regrouping `(ℝ × A) × (ℝ × B) ≃ Plane × F` splitting off the two tangent directions, built
+from a splitting `j : A × B ≃ F`. -/
 def IntersectionCoordinates.pairCoordinates {A B F : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F) :
@@ -1812,6 +1982,8 @@ def IntersectionCoordinates.pairCoordinates {A B F : Type*} [NormedAddCommGroup 
   (ContinuousLinearEquiv.prodProdProdComm ℝ ℝ A ℝ B).trans
     (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ PlaneImmersion.Plane) j)
 
+/-- The determinant of the joint block of two frames equals the determinant of their coproduct read
+in the regrouped coordinates. -/
 theorem IntersectionCoordinates.det_jointBlock_eq_tangentSum {A B F : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (j : (A × B) ≃L[ℝ] F)
@@ -1831,6 +2003,8 @@ theorem IntersectionCoordinates.det_jointBlock_eq_tangentSum {A B F : Type*}
   rw [heq]
   exact LinearMap.det_conj T.toLinearMap k.toLinearEquiv
 
+/-- A map `Q` killing the range of `G` factors through the quotient complement of `G` in an
+invertible frame `G ⊞ C`. -/
 theorem FrameField.normalDetector_eq_comp_quotient {D Z F : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup F]
     [NormedSpace ℝ F] (G : D →L[ℝ] F) (C : Z →L[ℝ] F) (Q : F →L[ℝ] Z)
@@ -1844,6 +2018,8 @@ theorem FrameField.normalDetector_eq_comp_quotient {D Z F : Type*} [NormedAddCom
   change Q v = Q (C w.2)
   rw [← hv, map_add, hzero, zero_add]
 
+/-- The determinant identity relating the two ways of measuring `L` against an invertible frame `G ⊞
+C`: `det (G ⊞ L) * det (Q ∘ C) = det (G ⊞ C) * det (Q ∘ L)` for any `Q` killing `G`. -/
 theorem FrameField.det_intersection_mul_normalComplement {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
@@ -1865,6 +2041,8 @@ theorem FrameField.det_intersection_mul_normalComplement {D Z F : Type*}
   rw [hframe, hdet]
   ring
 
+/-- Endpoint form of the previous identity: the two corner determinants of `G ⊞ L` have opposite
+signs exactly when the two corner determinants of `Q ∘ L` do. -/
 theorem FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
@@ -1922,6 +2100,8 @@ theorem FrameField.opposite_intersectionDet_iff_normalDet {D Z F : Type*}
     · exact (not_lt_of_gt hKpos hk).elim
     · exact ha
 
+/-- The plane component of the sheet differential along the sheet directions: the base frame of the
+sheet at the parameter `t`. -/
 def StripNormalData.sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1931,6 +2111,8 @@ def StripNormalData.sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
   (ContinuousLinearMap.fst ℝ (ℝ × ℝ) Z).comp
     ((d.sheetDifferential Ψ t).comp (ContinuousLinearMap.inr ℝ ℝ A))
 
+/-- The sheet differential depends smoothly on the parameter where the centre line is in the source
+of the strip chart and its image in the target of the tubular chart. -/
 theorem StripNormalData.contDiffOn_sheetDifferential {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1951,6 +2133,7 @@ theorem StripNormalData.contDiffOn_sheetDifferential {A B Z E M : Type*}
   have hc : ContDiff ℝ ∞ (fun s : ℝ => (s, (0 : A))) := contDiff_id.prodMk contDiff_const
   exact ((hs.fderiv_right (by simp)).comp t hc.contDiffAt).contDiffWithinAt
 
+/-- The sheet base frame depends smoothly on the parameter on the same set. -/
 theorem StripNormalData.contDiffOn_sheetBaseFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1962,6 +2145,8 @@ theorem StripNormalData.contDiffOn_sheetBaseFrame {A B Z E M : Type*} [NormedAdd
           d.chart (StripCoordinates.center t) ∈ Ψ.target} :=
   contDiffOn_const.clm_comp ((d.contDiffOn_sheetDifferential Ψ).clm_comp contDiffOn_const)
 
+/-- If the centre line lands in the target of the tubular chart over all of `[0, 1]`, the sheet base
+frame is smooth on an open neighbourhood of `[0, 1]`. -/
 theorem StripNormalData.exists_open_sheetBaseFrame_domain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1978,6 +2163,8 @@ theorem StripNormalData.exists_open_sheetBaseFrame_domain {A B Z E M : Type*}
     ⟨StripCoordinates.center ⁻¹' (d.chart.source ∩ d.chart ⁻¹' Ψ.target), hO.preimage hc,
       fun t ht => ⟨d.line ht, htarget t ht⟩, d.contDiffOn_sheetBaseFrame Ψ⟩
 
+/-- In the tubular chart, the sheet differential splits along the sheet directions into its plane
+part, the base frame, and its normal part, the normal frame. -/
 theorem StripNormalData.sheetDifferential_transverse_eq {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1990,6 +2177,7 @@ theorem StripNormalData.sheetDifferential_transverse_eq {A B Z E M : Type*}
   · rfl
   · exact congrArg (fun L : A →L[ℝ] Z => L u) (d.normal_sheetDifferential Ψ ht htarget)
 
+/-- The derivative at the centre of the transition from the strip chart to the tubular chart. -/
 def StripNormalData.tubularTransitionDerivative {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1998,6 +2186,8 @@ def StripNormalData.tubularTransitionDerivative {A B Z E M : Type*} [NormedAddCo
     StripCoordinates.Space A B →L[ℝ] ((ℝ × ℝ) × Z) :=
   fderiv ℝ (Ψ.symm ∘ d.chart) (StripCoordinates.center t)
 
+/-- The block of that derivative on the complementary directions `B` of the strip chart: the
+complement of the sheet in the tubular chart. -/
 def StripNormalData.sheetComplement {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -2006,6 +2196,8 @@ def StripNormalData.sheetComplement {A B Z E M : Type*} [NormedAddCommGroup A]
     B →L[ℝ] ((ℝ × ℝ) × Z) :=
   (d.tubularTransitionDerivative Ψ t).comp (ContinuousLinearMap.inr ℝ (ℝ × A) B)
 
+/-- The transition derivative is smooth in the parameter where the centre line is in the source of
+the strip chart and its image in the target of the tubular chart. -/
 theorem StripNormalData.contDiffOn_tubularTransitionDerivative {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2025,6 +2217,7 @@ theorem StripNormalData.contDiffOn_tubularTransitionDerivative {A B Z E M : Type
     (contDiff_id.prodMk contDiff_const).prodMk contDiff_const
   exact ((htransition.fderiv_right (by simp)).comp t hc.contDiffAt).contDiffWithinAt
 
+/-- The sheet complement is smooth in the parameter on the same set. -/
 theorem StripNormalData.contDiffOn_sheetComplement {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2037,6 +2230,8 @@ theorem StripNormalData.contDiffOn_sheetComplement {A B Z E M : Type*}
           d.chart (StripCoordinates.center t) ∈ Ψ.target} :=
   (d.contDiffOn_tubularTransitionDerivative Ψ).clm_comp contDiffOn_const
 
+/-- The transition derivative is bijective, being the derivative of a transition between two charts.
+The transition derivative is bijective, being the derivative of a transition between two charts. -/
 theorem StripNormalData.bijective_tubularTransitionDerivative {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2054,6 +2249,8 @@ theorem StripNormalData.bijective_tubularTransitionDerivative {A B Z E M : Type*
     (PartialChart.bijective_mfderiv Ψ.symm htarget).comp
       (PartialChart.bijective_mfderiv d.chart (d.line ht))
 
+/-- The sheet differential and the sheet complement together make up the transition derivative:
+`sheetDifferential ⊞ sheetComplement = tubularTransitionDerivative`. -/
 theorem StripNormalData.sheet_coprod_complement_eq {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2073,6 +2270,7 @@ theorem StripNormalData.sheet_coprod_complement_eq {A B Z E M : Type*}
   rw [← map_add]
   simp
 
+/-- Consequently the frame `sheetDifferential ⊞ sheetComplement` is invertible. -/
 theorem StripNormalData.isInvertible_sheet_coprod_complement {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2086,6 +2284,8 @@ theorem StripNormalData.isInvertible_sheet_coprod_complement {A B Z E M : Type*}
   rw [d.sheet_coprod_complement_eq Ψ ht htarget]
   exact d.bijective_tubularTransitionDerivative Ψ ht htarget
 
+/-- The derivative in the tubular chart of an ambient map `q`, at the point of the centre line with
+parameter `t`: the linear detector of the normal directions of `q`. -/
 def StripNormalData.normalDetector {A B Z E M N : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup N]
@@ -2095,6 +2295,8 @@ def StripNormalData.normalDetector {A B Z E M N : Type*} [NormedAddCommGroup A]
     ((ℝ × ℝ) × Z) →L[ℝ] N :=
   fderiv ℝ (q ∘ Ψ) (Ψ.symm (d.chart (StripCoordinates.center t)))
 
+/-- An ambient map smooth at a centre point is smooth in the tubular chart near the corresponding
+point. -/
 theorem StripNormalData.contDiffAt_normalMap_in_tube {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2116,6 +2318,8 @@ theorem StripNormalData.contDiffAt_normalMap_in_tube {A B Z E M N : Type*}
         (Ψ.contMDiffOn_toFun.contMDiffAt
           (Ψ.open_source.mem_nhds (Ψ.map_target' htarget)))).contDiffAt
 
+/-- The normal detector is smooth on `[0, 1]` when the ambient map is smooth on an open set
+containing the centre line. -/
 theorem StripNormalData.contDiffOn_normalDetector {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2136,6 +2340,8 @@ theorem StripNormalData.contDiffOn_normalDetector {A B Z E M N : Type*}
     (d.contDiffAt_tubularTransition Ψ ht (htarget t ht)).comp t hc.contDiffAt
   exact ((hqΨ.fderiv_right (by simp)).comp t hx).contDiffWithinAt
 
+/-- The normal detector is the composite of the differential of the ambient map with the
+differential of the tubular chart. -/
 theorem StripNormalData.normalDetector_eq_native {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2161,6 +2367,7 @@ theorem StripNormalData.normalDetector_eq_native {A B Z E M N : Type*}
   rw [← mfderiv_eq_fderiv,
     mfderiv_comp _ hq' (Ψ.mdifferentiableAt (by simp) (Ψ.map_target' htarget)), hinv]
 
+/-- The normal detector is surjective wherever the differential of the ambient map is. -/
 theorem StripNormalData.surjective_normalDetector {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2176,6 +2383,7 @@ theorem StripNormalData.surjective_normalDetector {A B Z E M N : Type*}
   rw [d.normalDetector_eq_native Ψ q htarget hq]
   exact hqs.comp (PartialChart.bijective_mfderiv Ψ (Ψ.map_target' htarget)).surjective
 
+/-- If the ambient map vanishes on the sheet, its normal detector kills the sheet differential. -/
 theorem StripNormalData.normalDetector_comp_sheet_eq_zero {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2211,6 +2419,8 @@ theorem StripNormalData.normalDetector_comp_sheet_eq_zero {A B Z E M N : Type*}
     exact (hasFDerivAt_const (𝕜 := ℝ) (0 : N) (t, (0 : A))).fderiv
   exact hchain.symm.trans hder
 
+/-- The normal detector composed with the sheet differential is the derivative of the ambient map
+read in the strip chart of the sheet. -/
 theorem StripNormalData.normalDetector_comp_sheet {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2238,6 +2448,9 @@ theorem StripNormalData.normalDetector_comp_sheet {A B Z E M N : Type*}
     fderiv_comp (t, (0 : A)) (hqΨ.differentiableAt (by simp)) (hsheet.differentiableAt (by simp))
   exact hchain.symm.trans heq.fderiv_eq
 
+/-- In the rank-three situation, the two corner sheet-pair determinants have opposite signs exactly
+when the two corner determinants of a defining map of the second sheet, read in the strip chart
+of the first, do: the intersection signs can be computed from a local defining function. -/
 theorem TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determinants {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M}
     {a b : ℝ → M} {k l : (ℝ × ℝ) → M} {h : ℝ} (tube : TubularBigon (E := E) S T a b k l h 3)
@@ -2322,6 +2535,8 @@ theorem TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determinants {E
   rw [hdet 0, hdet 1]
   exact hsign.trans (by rw [hcoeff 0 (Or.inl rfl), hcoeff 1 (Or.inr rfl)])
 
+/-- The normal coordinates of the belt sphere in the negative directions of a Morse chart, read
+through a chosen splitting `j`. -/
 def ManifoldMorse.MorseSurgeryData.beltSheetNormal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (D : ManifoldMorse.MorseSurgeryData E f p)
@@ -2330,6 +2545,9 @@ def ManifoldMorse.MorseSurgeryData.beltSheetNormal {E M : Type*} [NormedAddCommG
   j.symm ∘ D.beltNormal
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For a rank-three tubular bigon between a sheet and a belt sphere of a Morse surgery, the two
+corner intersection signs are opposite exactly when the two corner determinants of the belt
+normal coordinates are. -/
 theorem ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sheet_determinants
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -2394,12 +2612,15 @@ theorem ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sheet_de
       hJ]
     exact j.symm.surjective.comp (D.surjective_beltNormal_derivative hf v)
 
+/-- The sheet coordinate of a point: the first component of its image under the inverse of a chart
+in which the sheet is the zero set of the second coordinate. -/
 def NativeSheetCoordinates.projection {D B E M N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) (F : N → M) (x : N) : D :=
   (Φ.symm (F x)).1
 
+/-- The sheet projection is smooth on the preimage of the chart target. -/
 theorem NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -2411,6 +2632,9 @@ theorem NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
     Φ.contMDiffOn_invFun.comp hF.contMDiffOn (fun _ hx => hx)
   exact contDiff_fst.contMDiff.comp_contMDiffOn hcoord
 
+/-- Where the chart is clean for the image of `F` (the image meets the chart exactly in the zero set
+of the second coordinate), the differential of the sheet projection is injective wherever that
+of `F` is. -/
 theorem NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -2464,6 +2688,8 @@ theorem NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Typ
   · have hz (w : G) : (T w).2 = 0 := congrArg (fun L : G →L[ℝ] B => L w) hsnd
     rw [hz u, hz v]
 
+/-- Under the same cleanness hypothesis, and when source and sheet directions have the same
+dimension, the sheet projection is a local diffeomorphism on the preimage of the chart target. -/
 theorem NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -2485,6 +2711,9 @@ theorem NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : 
     ⟨(LinearEquiv.ofBijective A.toLinearMap hb).toContinuousLinearEquiv, rfl⟩
   exact isLocalDiffeomorphAt_boundaryless hU x.2 (contMDiffOn_projection Φ F hF) hA
 
+/-- A clean chart for an injective immersion `F` induces a chart of the source: a partial
+diffeomorphism onto the slice `{u | (u, 0) ∈ Φ.source}` whose inverse is the sheet projection
+and which is carried by `F` to `u ↦ Φ (u, 0)`. -/
 theorem NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
