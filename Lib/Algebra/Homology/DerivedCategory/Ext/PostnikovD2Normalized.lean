@@ -18,6 +18,13 @@ This file identifies the page-two differential in the coyoneda Postnikov spectra
 the two-step connecting homomorphism of the canonical homology resolution.  The shift comparison
 contributes the same parity scalar to the page differential and its source coordinate; these
 factors cancel, so the exported comparison is unsigned.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3.
+* [P. Deligne, *Théorie de Hodge, II*][deligne71], §1.4 (the `d₂` of the hypercohomology
+  spectral sequence as a Yoneda product).
+
 -/
 
 @[expose] public section
