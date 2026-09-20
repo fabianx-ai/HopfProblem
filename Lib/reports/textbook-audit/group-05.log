@@ -1,0 +1,188 @@
+# group-05 — head f0e28a82 — 2026-09-20
+
+## Lib/Geometry/Manifold/Complex/Biholomorph.lean  (7 declarations, 216 lines)
+verdict: C (project namespace on general statements)
+twin: Forster, Lectures on Riemann Surfaces §1–2 (holomorphic bijection is biholomorphic; named in docstring, no theorem number); Mathlib Analysis/Complex/RemovableSingularity.lean (`Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt`, used at l.96/148) and Geometry/Manifold/Diffeomorph.lean
+findings:
+- l.58–214 all seven declarations live in namespace `TriangleUniformizationGluing`, a project object with no mathematical meaning here; the statements are for arbitrary `[IsManifold 𝓘(ℂ) ω M]` and would be `ContMDiffAt.of_continuousAt_of_punctured`, `Homeomorph.contMDiff_symm`, `Homeomorph.toDiffeomorph`-style names
+- l.67 `contMDiffAt_of_continuousAt_of_punctured` and l.103 `contMDiff_of_continuous_of_finite` are the manifold form of Riemann's removable-singularity theorem: genuinely general, good textbook material
+- l.117 `eventually_deriv_ne_zero_of_differentiableOn` and l.142 `differentiableOn_symm_of_differentiableOn` are stated for `OpenPartialHomeomorph ℂ ℂ`; the docstring says "chart" but they are about any injective holomorphic map (Mathlib phrasing: `OpenPartialHomeomorph.differentiableOn_symm`)
+- l.9–10 imports `Lib.Analysis.Complex.Mobius` and `Lib.Geometry.Manifold.Instances.RiemannSphere` are unused (grep for Mobius/RiemannSphere empty); l.11 `import Mathlib` where RemovableSingularity + Diffeomorph would do
+- l.38–53 `set_option maxSynthPendingDepth 3`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation` (`Path.trans`, `SlashAction`)
+- 0 missing docstrings; module docstring has references and tags
+suggestion: move the seven declarations out of `TriangleUniformizationGluing` into `Homeomorph`/`ContMDiffAt` namespaces and drop the two unused Lib imports and the preamble
+
+## Lib/Geometry/Manifold/ContMDiff/Descent.lean  (3 declarations, 90 lines)
+verdict: B (minor: docs/names)
+twin: Lee, Introduction to Smooth Manifolds, Thm 4.29 (characteristic property of surjective submersions, local-diffeomorphism case); Mathlib Geometry/Manifold/LocalDiffeomorph.lean (`IsLocalDiffeomorph`, `localInverse_contMDiffAt` used at l.41) — no descent lemma there
+findings:
+- l.25 `contMDiff_of_comp_surjective_localDiffeomorph` and l.49 `…_restrictScalars`: fully general (`𝕜`, arbitrary models with corners, `n : ℕ∞ω`), 0 missing docstrings, clean `module`/`public import` preamble, no project residue — textbook-ready statements
+- l.10–16 module docstring names no reference and has no `## Main results`/`## References` sections; it should cite Lee Thm 4.29 or Mathlib's `IsLocalDiffeomorph`
+- names: Mathlib would dot-notate `IsLocalDiffeomorph.contMDiff_of_comp_surjective` / `ContMDiff.of_comp_surjective_isLocalDiffeomorph`; l.77 `contMDiffOn_of_contMDiff_restriction` is a general `Opens` fact that belongs beside `contMDiffAt_subtype_iff` (Mathlib ContMDiff/Atlas or Basic), not in a "descent" file
+- l.62 restrict-scalars variant fixes the models to `𝓘(𝕜', E)`/`𝓘(𝕜, E)` (vector-space models only) where l.25 is for any `ModelWithCorners`; acceptable since scalar restriction of a general model is not in Mathlib, but say so in the docstring
+suggestion: add references/main-results sections to the module docstring and rename the three theorems to Mathlib dot-notation (`IsLocalDiffeomorph.contMDiff_of_comp_surjective`)
+
+## Lib/Geometry/Manifold/Flow/Compact.lean  (28 declarations, 645 lines)
+verdict: C (three unrelated topics; Morse-block section is project machinery)
+twin: Lee, Introduction to Smooth Manifolds, Thm 9.12 (fundamental theorem on flows) and Thm 9.16 (compact ⇒ complete); Mathlib Geometry/Manifold/IntegralCurve/ExistUnique.lean (`IsMIntegralCurve`, `exists_isMIntegralCurve_of_isMIntegralCurveOn` used at l.230) and Geometry/Manifold/LocalDiffeomorph.lean; no Mathlib `Flow` from a vector field on a compact manifold — genuine gap for §1–2
+findings:
+- l.16–19 docstring promises `MorseCancellation.morseClosedBlock*` in this file; `morseClosedBlock` is only used (l.440), defined in Morse/Handle — stale sentence; the "Main results" list omits the actual headline `FlowConstruction.compactFlow : Flow ℝ M` (l.393)
+- l.58–404 flows section (`exists_localFlow_in_open`, `exists_manifoldLocalFlow`, `exists_globalIntegralCurve`, `flow`, `flow_zero/add`, `continuous_flow`, `compactFlow`) is general (`[CompactSpace M]`, any `E`, `C^1` field) and textbook: Lee Thm 9.16 in Mathlib vocabulary; namespace `FlowConstruction` names no object — Mathlib would use `VectorField.flow`/`IsMIntegralCurve`
+- l.235 `flow` is defined by `.choose` of `exists_globalIntegralCurve` with the group law (l.260) proved afterwards; fine, but Mathlib would build via `IsMIntegralCurve` uniqueness explicitly (docstring should say uniqueness is what makes `choose` canonical)
+- l.415–545 `MorseCancellation.exists_disjoint_morse_block_field`, `exists_morse_block_enlargement`, `exists_disjoint_surgery_block_field`: stated in terms of `ManifoldMorse.SignedMorseChart`, `splitChart`, the `2*r < R < 3*r` block constants — proof-step lemmas for the cancellation argument with no textbook counterpart (Milnor, Lectures on the h-cobordism theorem, §4–5 do not isolate these); belong in Morse/Cancellation or the proof tree, not in a flows file
+- l.461 `exists_larger_closedBall_inside_open` is a pure metric-space fact placed in namespace `MorseCancellation`
+- l.550–640 `exists_partialDiffeomorph_of_contDiffOn`, `tangentModelEquiv`, `modelChartPartialDiffeomorph`, `isLocalDiffeomorphAt_of_invertible_mvfderiv`: inverse function theorem on manifolds (Lee Thm 4.5); a third topic, `ℝ`-only where `HasStrictFDerivAt.toPartialHomeomorph` (Mathlib Analysis/Calculus/InverseFunctionTheorem) is over any complete `𝕜`; should live in Geometry/Manifold/LocalDiffeomorph.lean (this file already imports it)
+- l.7 `public import Mathlib` plus l.11 `Mathlib.Geometry.Manifold.LocalDiffeomorph` redundantly; l.35–53 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`
+- 0 missing docstrings (28/28)
+suggestion: split the file — keep §1–3 as `Flow/Compact.lean` under a `VectorField`-style namespace, move l.550–640 into `LocalDiffeomorph.lean`, and move the `MorseCancellation` block lemmas next to their only consumer
+
+## Lib/Geometry/Manifold/Flow/HeightTranslating.lean  (106 declarations, 1835 lines)
+verdict: C (two subjects: general flow/collar theory plus SignedMorseChart handle machinery; docstring promises absent declarations)
+twin: Milnor, Morse Theory, Thm 3.1 (sublevel `M^a` a deformation retract of `M^{a+ε}` via a flow) and Lectures on the h-cobordism theorem §4; no Mathlib twin (Mathlib `Flow` in Topology/Algebra/Flow? has no entry-time or collar API — genuine gap for §"entry time"/"collar")
+findings:
+- l.16–25 module docstring names as its two main results `FlowConstruction.exists_heightTranslatingFlow` and `exists_regularSublevelHomeomorph_with_level`; neither is in this file (they live in Morse/CubicFlow.lean:148 and Morse/Reeb.lean:573) — the docstring describes a different file; the title "height-translating flows" does not match the content (entry times, flow collars, attaching maps)
+- l.661–835 `FlowConstruction.entryTime` (`sInf {t | 0 ≤ t ∧ F t x ∈ A}`), `entryRetraction`, `entryDeformation`, `entryHomotopyEquiv` and l.1236–1745 `FlowCollarData` (`rescale`, `homeomorph`, `exists_absorbingSublevelHomeomorph_with_boundary_orbits`) are stated for an arbitrary `Flow ℝ X` on a topological space: clean, general, textbook (Milnor Thm 3.1's argument made explicit) — the best material in the file, but hidden under the namespace `FlowConstruction`, which names no object (Mathlib: `Flow.entryTime`, `Flow.CollarData`)
+- l.59–245 `MorseHandle.unitBallHomeomorph`, `SignedMorseChart.handleBallCoordinates/normHandleMap/attachmentBoundaryData/attachingCoreMap` and l.249–460 descent-model lemmas (`quadratic_descentFlow_lt`, `flow_eqOn_descentModel`) are handle-attachment specifics tied to `ManifoldMorse.SignedMorseChart`, `PuncturedHandle.UnitBall`, `UnitDisk`: they belong in Morse/HandleAttachment, not in a flows file
+- l.1118 `exists_absorbingSublevelHomotopyEquiv` and l.1745 carry 12–13 explicit hypotheses (`hdesc`, `hcurve`, `hmono`, `hforward`, `hentry`, `htop`, …) that a textbook packages as "gradient-like field for `f`" and "`A` is forward-invariant absorbing"; a structure (as `FlowCollarData` already does at l.1236) would make these statements readable
+- l.1804 `frontier_sublevel_eq_of_strict_flow` is a pure topology fact at the end of the file after the main theorem
+- l.7–12 `public import Mathlib` plus four Lib imports; l.34–53 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`
+- 0 missing docstrings (106/106); read statements and the docstrings only, proofs sampled at l.661–760 and l.1745–1835
+suggestion: rewrite the module docstring to describe the entry-time/collar theory that is actually here (moving the `SignedMorseChart` attaching-map section to Morse/HandleAttachment) and rename the namespace to `Flow`
+
+## Lib/Geometry/Manifold/Gluing/OverBase.lean  (12 declarations, 208 lines)
+verdict: C (`Threefold`/`SpecialPeriods` project namespaces on a general gluing statement)
+twin: Lee, Introduction to Smooth Manifolds, Lemma 1.35 (smooth manifold chart lemma) / Prop. 1.? gluing of smooth manifolds; Mathlib `isManifold_of_contDiffOn` (used l.152) and Topology/Gluing.lean (`TopCat.GlueData`, categorical, no manifold version — gap)
+findings:
+- l.31–154 every declaration is `ThreefoldGluing.Data.*` and l.157–208 `SpecialPeriods.Threefold.Star.Input.*`: the gluing data itself (from Lib/Topology/Gluing/OverBase) is generic (pieces, transitions over a base `B`), so the names carry the project's Threefold/special-periods vocabulary into a statement that is "a space glued from `C^n` manifolds along `C^n` transitions is a `C^n` manifold" (Mathlib would say `GluingData.chartedSpace`, `GluingData.isManifold_of_contMDiffOn_transition`)
+- l.139 `isManifold_of_contMDiffOn_transition` and l.103 are correctly general (`𝕜`, `E`, `n : ℕ∞ω`, `𝓘(𝕜, E)` model): good; the model is fixed to `𝓘(𝕜, E)` (no corners/boundary) — say so in the docstring or generalise to `ModelWithCorners`
+- 8 of 12 declarations lack docstrings (l.31 `parametrization_symm_inclusion`, l.36 `gluedChart`, l.42, l.50, l.57, l.68 `chartedSpace`, l.80, l.87)
+- l.68 `chartedSpace` is a `def` with `@[instance_reducible]`, not an `instance`, so downstream users must `letI` it (l.83, l.149): document why (diamond with an existing instance on `D.Space`?) or make it an instance
+- l.11–17 module docstring has no reference, no `## Main results`; l.27 `universe u` used only to force `B : Type u` — fine
+- preamble is clean (`module`, two `public import`s, `open scoped ContDiff Manifold Topology`): positive
+suggestion: rename the namespaces to the generic gluing data's own name (drop `Threefold`/`SpecialPeriods`) and add the 8 missing docstrings plus a Lee Lemma 1.35 reference
+
+## Lib/Geometry/Manifold/LocalDiffeomorph.lean  (4 declarations, 130 lines)
+verdict: B (minor: an `@[expose]` workaround file; ℝ-only where Mathlib is over `𝕜`)
+twin: Mathlib Geometry/Manifold/LocalDiffeomorph.lean (`IsLocalDiffeomorphAt`, `PartialDiffeomorph.isLocalDiffeomorphAt`, `IsLocalDiffeomorph.diffeomorphOfBijective`)
+findings:
+- l.10–28 module docstring is honest and precise: the file exists because Mathlib's `IsLocalDiffeomorphAt` is not `@[expose]`d for module-mode importers; the four declarations (`IsLocalDiffeomorphAt.of_eqOn`, `.exists_partialDiffeomorph`, `Diffeomorph.toPartialDiffeomorphUniv`, `IsLocalDiffeomorph.diffeomorphOfBijective'`) are exactly the constructor/destructor Mathlib should provide — upstream candidates as is
+- l.37–42, l.76–81 `variable` blocks fix `NormedSpace ℝ` and `ModelWithCorners ℝ`; Mathlib's `IsLocalDiffeomorphAt` is over any `[NontriviallyNormedField 𝕜]` — needless specialisation, generalise to `𝕜`
+- l.42 `{n : WithTop ℕ∞}` where the rest of Lib writes `ℕ∞ω`; l.80 the Transparent section fixes `n = ∞` although `Diffeomorph.toPartialDiffeomorph` is for any `n`
+- l.23–27 docstring says the transparent variants "coincide with `Diffeomorph.toPartialDiffeomorph'` and `IsLocalDiffeomorph.diffeomorph'` of `Lib.Geometry.Manifold.Transversality.Basic`": a duplicate pair exists in the library (import-graph reason given); one of the two should go
+- 0 missing docstrings; clean preamble (single `public import`, `open scoped ContDiff Manifold`)
+suggestion: generalise `ℝ` → `𝕜` and `∞` → `n`, then propose `IsLocalDiffeomorphAt.of_eqOn`/`exists_partialDiffeomorph` upstream and delete the `Transversality.Basic` duplicates
+
+## Lib/Geometry/Manifold/Instances/RiemannSphere.lean  (37 declarations, 418 lines)
+verdict: B (minor: preamble residue, non-`module` file; the `TwoAffineCharts` abstraction is an unusual but general way to state the atlas)
+twin: Forster, Lectures on Riemann Surfaces §1 (Example 1.? ℙ¹ as two charts, named in docstring); Mathlib Topology/Compactification/OnePoint.lean (`OnePoint ℂ`) and Geometry/Manifold/Instances/Sphere.lean (real sphere only) — no complex-manifold instance on `OnePoint ℂ` found in Mathlib (not exhaustively checked)
+findings:
+- l.339 `abbrev RiemannSphere := OnePoint ℂ` and l.413/417 `ChartedSpace ℂ RiemannSphere`, `IsManifold 𝓘(ℂ) ω RiemannSphere` are the textbook statements and the natural upstream contribution; the two `instance`s are on an `abbrev`, so they are really instances on `OnePoint ℂ` — say so, and consider stating them for `OnePoint ℂ` directly to avoid a second name for the same type
+- l.54 `structure TwoAffineCharts (Y)` (left/right embeddings of `ℂ`, inversion on the overlap, `covered`) abstracts "a space glued from two copies of `ℂ` by `z ↦ z⁻¹`" over an arbitrary `T2Space Y`; l.294 `TwoAffineCharts.isManifold` is the general "two-chart gluing is an analytic manifold" — legitimate generality, but it is only ever instantiated once (l.396 `standardCharts`); Mathlib would build the two `OpenPartialHomeomorph`s on `OnePoint ℂ` directly (compare `Instances/Sphere.lean`'s stereographic charts) without the intermediate structure
+- l.343 `infinityParametrization` is defined by `if z = 0 then ∞ else z⁻¹` via `classical`; Mathlib style would state it through `OnePoint.map`/`Function.update` or an `Equiv`
+- l.6 `import Mathlib`, non-`module` file (the rest of `Instances/`? uses `module`); l.34–49 `set_option maxSynthPendingDepth 3`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`
+- 0 missing docstrings (37/37); docstring, references, tags present; names follow `Foo.bar_baz` conventions; no project vocabulary
+suggestion: drop the `TwoAffineCharts` layer (or keep it in a separate `Gluing/TwoCharts.lean`) and state the charted-space/manifold instances directly on `OnePoint ℂ` with stereographic-style charts, then propose upstream next to `Instances/Sphere.lean`
+
+## Lib/Geometry/Manifold/Immersion/Relative.lean  (214 declarations, 4647 lines)
+verdict: C (omnibus of five topics; `MorseCancellation` names; `Plane := ℝ × ℝ` specialisation; no docstrings)
+twin: Hirsch, Differential Topology, Ch. 8 §? (relative immersion/embedding theorems, Whitney's weak theorem — named in docstring, no theorem numbers); Whitney 1936 Thm 5; Mathlib has no immersion-existence or tubular-neighbourhood theory (nearest: Geometry/Manifold/Immersion? only `Immersion` predicate) — genuine gap
+findings:
+- 0 of 214 declarations have a docstring (`grep -c '^/-- '` = 0); the module docstring itself admits "tubular-neighborhood one-offs", "arc/germ existence one-offs" and "representation-only generality dictated by the twin file" (l.22–35)
+- l.65–215 `MorseCancellation.exists_open_isotopic_pointMoving`, `isotopicPointOrbit`, `exists_isotopic_pointMoving_of_path`, and 16 `MorseCancellation.*` names in total (e.g. l.2353 `exists_smooth_path_avoiding_closed_image`, l.3142 `exists_clean_arc_with_local_endpoint_germs`, l.3536 `sheetAxisShuffle`): homogeneity-of-manifolds and path-avoidance lemmas that are general (Hirsch Ch. 8 / Milnor h-cobordism Lemma 6.?) but named after their consumer
+- l.981 `abbrev PlaneImmersion.Plane := ℝ × ℝ` and l.2033 `ManifoldImmersion.exists_relative_compact_embedding (f : C(Plane, N)) (hdim : 5 ≤ finrank ℝ G)`: the headline relative embedding theorem is stated only for a 2-dimensional source (`2·2+1 = 5`); Hirsch/Whitney state it for any compact `m`-manifold into `N^n`, `n ≥ 2m+1`; l.2096 `…_twoDimensional` confirms the specialisation is deliberate
+- l.393–610 `ChartMapPerturbation`, l.981–1275 `PlaneImmersion` (`firstCollision`, `badFirst`, `dimH_bad_parameters_le` — a Hausdorff-dimension/Sard-style parametric transversality argument), l.2598–2733 `WeightedPerturbation`, l.3778–4660 `FrameField`/`AxisCoordinates`/`LinearFramePaths`: five namespaces, each a separate file's worth, with no section docstrings (`/-!` headers: none found)
+- l.3263–3484 `exists_*_tubularNeighborhood_of_embedded_starConvex*` are general tubular-neighbourhood existence statements (Hirsch Ch. 4 §5) misfiled under `Immersion/`
+- l.6–16 `public import Mathlib` plus eight Lib imports (Morse.Existence, SurgeryWindows, CubicFlow — Morse-theory dependencies in an immersion file signal the consumer-driven organisation); l.44–60 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped`, unused `universe u v`
+- read: module docstring, all 214 statement heads, and the statements at l.65, l.981, l.2033, l.3142 in full; stopped there
+suggestion: split into `Immersion/Relative` (l.615–2286 relative immersion/embedding, generalised from `Plane` to any compact source with `n ≥ 2m+1`), `Isotopy/PointMoving`, `TubularNeighborhood/StarConvex`, `FrameField`, and add docstrings; drop the `MorseCancellation` prefix
+
+## Lib/Geometry/Manifold/Morse/BeltCancellation.lean  (60 declarations, 1730 lines)
+verdict: D (proof-specific: dimension 6 / index 2 belt-sphere cancellation for the project's manifold; "moved verbatim from `Hopf/SingularHomology.lean`")
+twin: Milnor, Lectures on the h-cobordism theorem, §§5–6 (Thm 5.4 first cancellation, Thm 6.4 second cancellation via the Whitney trick — named in docstring, no theorem numbers); docstring says "No Mathlib counterpart exists" — correct
+findings:
+- l.47 `MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs` and l.117 `exists_signed_belt_cancellation_step` carry `(hdim : Module.finrank ℝ E = 6) (hindex : finrank NegativeCoordinates = 2)` and `Hemisphere.Sphere 1/2`, `Hemisphere.Ambient 3` (4 statements with `finrank ℝ E = 6`, 42 mentions of `Hemisphere`): Milnor's second cancellation theorem is for any `n ≥ 6`, `2 ≤ λ ≤ n−3`, simply connected level — these are the project's instance, not the theorem
+- l.15–19 module docstring: "Moved verbatim from the project stock file … The declarations keep their historical dotted names and their order"; six unrelated families in one file (`MorseSurgeryData`, `AdaptedWindows`, `MorseCancellation`, `RegularLevel`, `PuncturedRadial`, `LocalDegree.BoundaryData`) — the file is a transit container, not a library module
+- 0 of 60 declarations have a docstring
+- general material buried inside: l.547/571 `RegularLevel.contMDiffWithinAt_iff_inclusion`/`contMDiffOn_iff_inclusion` (smoothness into a regular level via the inclusion — a `ContMDiff` submanifold lemma), l.769 `surjective_coprod_comp_left` (linear algebra), l.1624–1650 `PuncturedRadial.deformation/sphereHomotopyEquiv` (`E \ 0 ≃ₕ S(E)`, Mathlib has `Homeomorph`-level versions in Analysis/InnerProductSpace? not checked) — these should be extracted; the rest belongs under `Hopf/Proof`
+- l.280–400 `HandleDomain`, `handleMap`, `coreMap`, `coreUnionHomotopyEquiv`, `coreCellPresentation`: the core-of-a-handle cell presentation is textbook (Milnor Morse Theory Thm 3.2) but stated for the project's `MorseSurgeryData`, not for a general handle
+- l.6 `import Mathlib`, l.32–46 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`; non-`module` file
+- read: module docstring, all 60 statement heads, the statements at l.47, l.117, l.421 in full; stopped there
+suggestion: move the file under `Hopf/Proof` (or `W4W1`) and extract the four general lemmas named above into `RegularLevel`/`Topology/Homotopy` files with docstrings
+
+## Lib/Geometry/Manifold/Morse/Birth.lean  (26 declarations, 958 lines)
+verdict: B (minor: `MorseCancellation` namespace and `native` vocabulary on a general, fully documented birth theorem)
+twin: Cerf, La stratification naturelle… (1970) / Hatcher–Wagoner (birth of a cancelling pair); Milnor, Lectures on the h-cobordism theorem, §5 (the cubic model — named in docstring); no Mathlib twin (Mathlib has no Morse theory) — genuine gap
+findings:
+- l.881 `MorseCancellation.exists_excellent_indexed_morse_birth`: general (`E` finite-dimensional, compact `M`, `k < finrank E`, any open `U`), the right textbook statement; the 19-conjunct existential conclusion (`g p < g q`, `ncard` count, `=ᶠ[𝓝 y]` germ agreement, three `nativeMorseCount` clauses) would be a `structure IsMorseBirth f g p q k U` in Mathlib style
+- names: the namespace `MorseCancellation` is the wrong subject for a birth theorem (Mathlib: `ManifoldMorse.exists_birth` or `IsMorse.exists_birth_pair`); `nativeMorseIndex`, `nativeMorseCount`, `exists_native_morse_birth`, `exists_centered_native_height_chart` use the project's "native" (chart-native) vocabulary with no textbook counterpart; "excellent" is Cerf's term and fine, but say so
+- l.109 `exists_exact_cubic_birth` on `Model m` (`ℝ × (Fin m → ℝ)`) is the one-parameter family `x³ − 3a²x + Σ σ_i y_i²`: good local model, the docstring at l.8–31 explains why it is built directly rather than by reversing cancellation — positive
+- l.240–330 `hessian_comp_linearEquiv`, `euclidean_isMorse_comp_linearEquiv`, `euclidean_isMorse_affine`, `exists_pos_compact_smul_subset`: general Morse-lemma facts that belong in `Analysis/Calculus/MorseLemma` or `Morse/Index`, not in the birth file
+- l.6 single `import Lib.Geometry.Manifold.Morse.Cancellation` (3,814 lines) — the birth file depends on the cancellation file only for the cubic model and index lemmas; l.46–60 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`
+- 0 missing docstrings (26/26); module docstring has outline, main results, references, tags: the best-documented Morse file of the group
+suggestion: rename the namespace to `ManifoldMorse` (dropping `native`) and package the conclusion of l.881 as a structure; move the four Morse-lemma facts at l.240–330 next to `MorseLemma`
+
+## Lib/Geometry/Manifold/Morse/AdaptedWindows.lean  (17 declarations, 622 lines)
+verdict: C (proof-step lemmas for the project's surgery system; docstring describes a different file; no docstrings)
+twin: Milnor, Lectures on the h-cobordism theorem, §4 (Thm 4.1 rearrangement, Thm 4.8 self-indexing) for l.581 `exists_ordered_index_cut`; the rest (level transport of attaching circles for an `AdaptedWindows E f` system) has no textbook counterpart; no Mathlib twin
+findings:
+- l.56–63 module docstring lists as main results `AdaptedWindows.exists_embedded_level_transport`, `exists_middle_block_realization`, `exists_ordered_middle_family`; none is in this file — all three live in Morse/SurgeryCollapse.lean (l.238, l.891, l.5392); the docstring was written for the pre-split file ("Moved verbatim from `Hopf/SphereTopology.lean`", l.65)
+- 0 of 17 declarations have a docstring
+- l.7–55 imports 49 Lib files (singular homology, Mayer–Vietoris, suspension, `SimplyConnectedSphere`, `Whitney.BigonModel`, `OrderedCancellation`, …) for a 622-line file whose statements use only Morse/flow vocabulary: the import list is the old stock file's, not this file's
+- l.82 `FlowSuspension.exists_relative_regular_level_isotopy_realization` is the one general statement (a supported relative isotopy of a regular level is realised by a flow) — it belongs with the flow/collar theory of Flow/HeightTranslating, under a namespace that is not `FlowSuspension`
+- l.180–560 `attachingSphere_reaches_lower_cut`, `backward_basin_reaches_attaching_level`, `exists_same_flow_windows_avoiding_level`, `reaches_old_lower_of_belt_avoidance`, `no_connection_of_upper_index_zero`, …: each is a step of the surgery-window argument stated for `S : AdaptedWindows E f` with `MorseCancellation.nativeMorseIndex`; the general core ("no gradient connection from an index-0 point upward") is textbook but is not isolated
+- l.581 `exists_ordered_index_cut`: given self-indexing order, a regular value separating indices `≤ k` from `≥ k+1` — general, textbook (Milnor Thm 4.8 corollary), should be stated for `IsMorse` + `Finite criticalPoints` without `S : AdaptedWindows`
+- l.6 `import Mathlib`, l.66–80 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`; non-`module` file
+suggestion: rewrite the module docstring for the 17 declarations actually present, cut the import list to what is used, and extract l.82 and l.581 as documented general lemmas
+
+## Lib/Geometry/Manifold/Morse/Cancellation.lean  (137 declarations, 3814 lines)
+verdict: C (headline theorem is textbook-grade but the file is five namespaces of proof machinery in project ("native") vocabulary)
+twin: Milnor, Lectures on the h-cobordism theorem, Thm 5.4 (first cancellation theorem — named in docstring) for l.3597 `cancel_of_transverse_level_isotopy`; no Mathlib twin (no Morse theory in Mathlib) — genuine gap
+findings:
+- l.3597 `MorseCancellation.cancel_of_transverse_level_isotopy`: general (`finrank E = m+1`, adjacent indices via `SignedMorseChart.weights`, compact `M`), but ~25 explicit hypotheses (`hV hzero hdesc F hF hinj hpc hqc hl hu hpair ha hb hpc' hqc' hband hreg heqp heqq`, then `∀ D : Diffeomorph … ` of the regular level) where Milnor's statement has three: gradient-like field, one connecting trajectory, transversality; a `structure` (as l.809 `NativeConnectionCancellationData` already does) should carry them
+- the word "native" (chart-native data) occurs 144 times — `nativeCubicDescent`, `NativeConnectionCancellationData`, `exists_native_backward_morse_level_exit`, `nativeMorseIndex`, `nativeMorseCount` (l.3710): project vocabulary with no textbook counterpart; the Morse index and count should be `ManifoldMorse.index`/`ManifoldMorse.count`
+- five namespaces in one file: `MorseCancellation` (cubic model, index, count), `FlowCancellation` (l.859–2370: Lyapunov residence bounds, `logarithmicCoordinate`, `descentBlend`, `flowTube`, `bandReplacement` — flow-analysis lemmas independent of Morse theory), `NativeCubicCancellation`, `MorseCancellationPreservation` (l.2471–2498, generic "Morse iff Morse on germs" facts), `TransverseGerms` (l.3023–3384, transversality of sheet factorisations) — at least three files' worth
+- l.62–222 cubic model `cancelledDescent`, `exists_cubic_field_cancellation` on `Model m = ℝ × (Fin m → ℝ)` and l.2374–2445 `hessian`, `cubic_isMorse`: the local model of Milnor §5 — general and good; l.1742–1850 `logarithmicCoordinate`, `exists_logarithmic_cutoff` are one-variable calculus lemmas (`Analysis/SpecialFunctions`) placed here
+- 1 of 137 declarations lacks a docstring; module docstring has main results, reference, tags — good; l.6 `import Mathlib`, l.34–56 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`; non-`module` file
+- read: module docstring, all 137 statement heads, l.809 structure and l.3597 statement in full; stopped there
+suggestion: split off `FlowCancellation` (flow/Lyapunov analysis) and `TransverseGerms` into their own files, rename `native*` to plain Morse vocabulary, and restate l.3597 with a hypothesis structure
+
+## Lib/Geometry/Manifold/Morse/CellStructure.lean  (63 declarations, 1006 lines)
+verdict: C (main statement fixed to universe `Type`; stale docstring; general handle-attachment topology mixed with the Morse theorem)
+twin: Milnor, Morse Theory, Thm 3.5 (compact manifold has the homotopy type of a finite CW complex — named in docstring); Mathlib Topology/CWComplex/Classical/Basic.lean (`Topology.RelCWComplex`, finite CW complexes) is the natural target for `FiniteCells.Built` but is not mentioned
+findings:
+- l.35–36 module docstring says `MorseCells.built_of_compact_smooth_manifold` is "the theorem (in `Hopf/`, see obstruction note in Lib/reports/A.md)": the theorem is here at l.979 — the obstruction was resolved and the sentence is stale
+- l.528 `inductive FiniteCells.Built (d : ℕ) : (X : Type) → [TopologicalSpace X] → Prop` and l.979 `built_of_compact_smooth_manifold {E M : Type}`: universe fixed to `Type` (the rest of the file uses `Type*`); the textbook statement is universe-polymorphic; `Built.equiv` closes under homotopy equivalence `≃ₕ`, so `Built` is "has the homotopy type of a finite cell complex of dimension ≤ d" — the docstring should say so and relate it to `Topology.RelCWComplex`
+- l.68–222 `Attachment.Union/sumQuotient/cylinderQuotient/unionFamily`, l.227–285 `Handle.interpolate/deformation`, l.291–425 `CoreAttachment.*` (deformation of a handle onto its core — Milnor Morse Theory Thm 3.2's homotopy) and l.543–600 `AttachmentMaps.glue/glueFamily` are general point-set/homotopy constructions on `ClosedAttachment.Space` that belong in `Topology/Homotopy/CellAttachment`, not in a Morse file
+- l.607–715 `FiniteCells.RelativeDiskLifting`, `MapsLift`, `mapsLift_of_built`: a relative-lifting datum for built complexes — the beginning of a CW-approximation/Whitehead-style argument, undocumented in the module docstring's outline
+- l.905 `FlowConstruction.exists_regularSublevelHomotopyEquiv` is a flow lemma (Milnor Morse Theory Thm 3.1) in the wrong namespace and file
+- 0 missing docstrings (63/63); l.6 `import Mathlib`, l.46–60 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`; non-`module` file
+suggestion: make `Built` and l.979 universe-polymorphic, delete the stale "in `Hopf/`" sentence, and move `Attachment`/`CoreAttachment`/`AttachmentMaps` to `Topology/Homotopy/CellAttachment.lean`
+
+## Lib/Geometry/Manifold/Morse/CircleGluing.lean  (56 declarations, 1315 lines)
+verdict: C (transit container "moved verbatim" from the stock file: seven families, proof-step lemmas, no docstrings; the `CircleGluing` core is general)
+twin: Milnor, Lectures on the h-cobordism theorem, §§5–6 (named in docstring, no theorem number); docstring says "No Mathlib counterpart exists" — true for the surgery rows; for `CircleGluing.periodicCircle` the nearest Mathlib is `AddCircle`/`Circle.exp` (Analysis/SpecialFunctions/Complex/Circle) and `Periodic`
+findings:
+- l.14–18 module docstring: "Moved verbatim from the project stock file `Hopf/SingularHomology.lean` … The declarations keep their historical dotted names and their order"; seven families (`CircleGluing`, `MorseCancellation`, `ManifoldImmersion`, `NativeOpenSubmanifold`, `AdaptedWindows`, `FlowSuspension`, `ManifoldMorse.MorseSurgeryData`) in one file — not a library module
+- 0 of 56 declarations have a docstring
+- l.454–890 `CircleGluing.periodicExtension`, `joinedArc`, `joinedLoop`, `circleExp_localDiffeomorph`, `periodicCircle` (+ `_injOn`, `_contMDiff`, `_derivative_injective`): a self-contained, general construction "two embedded arcs with matching endpoint germs glue to an embedded smooth circle in `N`" — the one textbook-grade block; it should be its own documented file (`Geometry/Manifold/Curve/CircleGluing.lean`) stated via `AddCircle`/`Circle`
+- l.77–450 `MorseCancellation.exists_native_open_curve_with_germ`, `exists_embedded_return_arc_inside_open`, `exists_disjoint_embedded_return_arc` and l.285–380 `ManifoldImmersion.exists_relative_embedded_avoidance_in_open*`: continuations of Immersion/Relative.lean's avoidance lemmas, split across two files by history rather than subject
+- l.1028 `MorseCancellation.unitSphere_eq_two_points_of_finrank_one` is a linear-algebra fact (`sphere 0 1 = {v, -v}` in a 1-dimensional space) in a Morse namespace; l.893 `NativeOpenSubmanifold.injective_mfderiv_subtype_val` is a general open-submanifold lemma
+- l.983–1290 `dense_section_of_flow_cylinder`, `AdaptedWindows.exists_orbit_bandBridge`, `FlowSuspension.exists_unique_connection_of_unit_level_count`, `MorseSurgeryData.bijective_beltNormal_comp_of_transverse`: steps of the project's belt-sphere argument with no isolated textbook statement
+- l.6 `import Mathlib`, l.28–44 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`; non-`module` file
+- read: module docstring and all 56 statement heads; proofs not read
+suggestion: extract l.454–890 into a documented `CircleGluing` file and merge the rest into their subject files (Immersion/Relative, the surgery-window file) or `Hopf/Proof`
+
+## Lib/Geometry/Manifold/Morse/Connection.lean  (231 declarations, 8180 lines)
+verdict: C (8,000 lines of proof machinery for one step of Milnor Thm 5.4 — the "unique transverse connection ⇒ cubic field chart" lemma — in project ("native") vocabulary across eight namespaces)
+twin: Milnor, Lectures on the h-cobordism theorem, Thm 5.4 and its preliminary Lemmas 5.1–5.3 (the assertion that the gradient-like field near the single trajectory can be put in the cubic model form) — named in docstring; no Mathlib twin (no Morse theory, no flow-box/suspension theory in Mathlib) — genuine gap
+findings:
+- l.8–20 module docstring is a list of 20 sub-topics ("clock, chart and suspension machinery … cylinder holonomy, phase clocks and phase flow coordinates …") and states the file was made by merging two former files; it names one main result, `MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder` (l.7874); no `## Main results` list for the other 230 declarations; 31 `/-!` section headers do the outlining
+- eight namespaces in one file: `MorseCancellation`, `FlowSuspension` (l.73–3100, 5783–6160, 8048–8120: the suspended flow `nativeSuspensionFlow`, level cylinders, holonomy), `FlowCancellation`, `FlowTimeChange` (l.1566–1940, 6164–6870: time changes, clocks, `PhaseFlowCoordinates`), `TransverseGerms` (l.3104–3160, 4275–4520, 5093–5760), `SignedCoordinates` (l.4852–4955: pure `Fintype`/`Fin` sign-enumeration combinatorics), `FieldChartGluing` (l.7102–7640: gluing three flow-box charts), `SmoothODE` (l.301, one lemma) — each is a separate subject; `FlowTimeChange` and `FieldChartGluing` have textbook content (flow-box theorem, Lee Thm 9.22; time reparametrisation of flows) hidden under Morse-specific names
+- "native" occurs 403 times in names/statements (`exists_native_vertical_field_replacement`, `nativeSuspensionFlow`, `native_no_return_of_supported_perturbation`, `exists_native_phase_realization`, …): chart-native data is the project's private notion; a textbook would say "in a flow-box chart"
+- l.972–1280 `nativeBeltArc`, `nativeLowerMeridian`, `nativeUpperMeridian`: belt-sphere arcs/meridians of the specific surgery, feeding BeltCancellation.lean — proof-step definitions with no counterpart in Milnor
+- l.4852–4955 `SignedCoordinates.exists_adjacent_sign_enumerations`, `negative_card_split` (duplicated as `MorseCancellation.negative_card_split` in Birth.lean:815) and l.502 `interior_zero_product_empty`, l.478 `compact_partial_chart_image_nowhereDense`: general combinatorics/topology lemmas misfiled
+- 0 missing docstrings (231/231); l.6 `import Mathlib`, l.26–48 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped … UpperHalfPlane`, unused `universe u v`, unused `local notation`; non-`module` file
+- read: module docstring, all 31 section headers, all 231 statement heads, l.53 in full and the proof of l.7874 sampled at l.7999–8010; stopped there — pattern (one giant chain of "exists_native_…" existence lemmas) was clear by l.3000
+suggestion: split by namespace into `Flow/TimeChange.lean`, `Flow/Suspension.lean`, `Flow/FieldChartGluing.lean` (each with a textbook-style docstring: flow box, time change, suspension) and keep only the `MorseCancellation` chain here; replace "native" by "flow-box chart" throughout
+
+# done 15 files

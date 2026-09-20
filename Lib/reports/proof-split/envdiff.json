@@ -1,0 +1,264 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/dump_split.jsonl",
+ "prefix": "Hopf",
+ "constants": [
+  19992,
+  19996
+ ],
+ "lost": [
+  [
+   "Mathoverflow1973.Elliptic.Kind.noConfusion",
+   655124879,
+   {
+    "Hopf.LCP.LocalModels": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.Elliptic.Kind.noConfusionType",
+   2111636473,
+   {
+    "Hopf.LCP.LocalModels": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+   1184501673,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+   3357842709,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+   2165915963,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+   2575186661,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+   3552621750,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+   624149181,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+   3860502116,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.piSixEquiv._proof_1",
+   2096436044,
+   {
+    "Hopf.Recognition": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "Mathoverflow1973.CuspCentralHomology.SmallCentralModel.singularH1Equiv._proof_1",
+   2096436044,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.Elliptic.Kind.noConfusion",
+   3585575867,
+   {
+    "Hopf.Proof.LCP.LocalModels": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.Elliptic.Kind.noConfusionType",
+   213018897,
+   {
+    "Hopf.Proof.LCP.LocalModels": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+   1180137574,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+   370595818,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+   3357842709,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_4",
+   2165915963,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+   1635492264,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_2",
+   23609778,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+   3584761660,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+   1381740423,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+   3287387080,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.piSixEquiv._proof_1",
+   672332986,
+   {
+    "Hopf.Proof.Recognition": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.piSixEquiv._proof_2",
+   2096436044,
+   {
+    "Hopf.Proof.Recognition": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_all": [
+  "Mathoverflow1973.Elliptic.Kind.noConfusion",
+  "Mathoverflow1973.Elliptic.Kind.noConfusionType",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+  "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+  "Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.piSixEquiv._proof_1"
+ ],
+ "moves": [
+  [
+   "Hopf.Final",
+   "Hopf.Proof.Final",
+   6
+  ],
+  [
+   "Hopf.FiniteCore",
+   "Hopf.Proof.FiniteCore",
+   81
+  ],
+  [
+   "Hopf.Hurewicz",
+   "Hopf.Proof.Hurewicz",
+   7
+  ],
+  [
+   "Hopf.LCP.AnalyticFillings",
+   "Hopf.Proof.LCP.AnalyticFillings",
+   1105
+  ],
+  [
+   "Hopf.LCP.BoundaryTopology",
+   "Hopf.Proof.LCP.BoundaryTopology",
+   2231
+  ],
+  [
+   "Hopf.LCP.CuspFilling",
+   "Hopf.Proof.LCP.CuspFilling",
+   1751
+  ],
+  [
+   "Hopf.LCP.GlobalAssembly",
+   "Hopf.Proof.LCP.GlobalAssembly",
+   468
+  ],
+  [
+   "Hopf.LCP.IntegralHomology",
+   "Hopf.Proof.LCP.IntegralHomology",
+   2155
+  ],
+  [
+   "Hopf.LCP.LocalModels",
+   "Hopf.Proof.LCP.LocalModels",
+   1036
+  ],
+  [
+   "Hopf.LCP.PeriodConstruction",
+   "Hopf.Proof.LCP.PeriodConstruction",
+   1818
+  ],
+  [
+   "Hopf.LCP.Specialization",
+   "Hopf.Proof.LCP.Specialization",
+   1188
+  ],
+  [
+   "Hopf.Recognition",
+   "Hopf.Proof.Recognition",
+   56
+  ],
+  [
+   "Hopf.Shortcuts",
+   "Hopf.Proof.Shortcuts",
+   5
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 4966,
+ "verdict": "PASS"
+}

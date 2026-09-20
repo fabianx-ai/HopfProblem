@@ -1,0 +1,565 @@
+# group-10 — head f0e28a82 — 2026-09-20
+
+## Lib/Topology/Sheaves/OpenEmbeddingCohomology.lean  (17 declarations, 208 lines)
+verdict: B (minor: docs/names)
+twin: Iversen, Cohomology of Sheaves II.5 / Bredon, Sheaf Theory II.9 (restriction to an open subset is exact); Mathlib/Topology/Sheaves/Functors.lean (`TopCat.Presheaf.pushforward`, `IsOpenEmbedding.functor`) is the nearest but has no cohomology
+findings:
+- l.16–23 module docstring is a short paragraph with no `## Main results`, no references, no tags; the theorem it proves (exactness of open restriction) is not named as such
+- l.36 `{T X : TopCat.{0}}`, l.47 `AddCommGrpCat.{0}`, l.177 `ULift.{0} ℤ`: everything is at universe 0 where Mathlib's `IsOpenEmbedding.functor` and `sheafPushforwardContinuous` are universe-polymorphic; project residue by specialisation
+- l.82, l.86 `restriction_preservesFiniteLimits`/`_preservesFiniteColimits` are `theorem`s whose statement is a class (`PreservesFiniteLimits …`) proved by `infer_instance`; Mathlib would make them `instance`s or drop them; they are then re-introduced by `let _ :=` in l.174–175, l.185–186
+- l.137 `restrictionHom_isIso` names the standard fact (constant sheaf commutes with open restriction on a locally connected space); namespace `OpenEmbeddingCohomology` is fine, `restriction`/`restrictionHom` are generic names
+- 2 missing docstrings (`restriction_preservesFiniteLimits`, `restriction_preservesFiniteColimits`); `@[simp]` on `restrictionHom_app_unit` is appropriate
+suggestion: turn the two `PreservesFinite*` theorems into instances and lift the file to `TopCat.{u}`/`AddCommGrpCat.{v}` so it can sit next to `Mathlib/Topology/Sheaves/Functors.lean`
+
+## Lib/Topology/Sheaves/OpenFiniteClosedFactorization.lean  (10 declarations, 308 lines)
+verdict: C (functoriality of pullback specialised to the project's factorisation pattern)
+twin: none found (the textbook statement is functoriality `(s ≫ h)^* = s^* ∘ h^*` of constant-coefficient pullback for all continuous maps, Bredon II.8 / Iversen II.5; no Mathlib twin)
+findings:
+- l.12–22 module docstring is a paragraph without `## Main results`/references; it is honest about scope ("not a higher-direct-image base-change theorem")
+- l.36–40, l.139–141 hypotheses: `f = s ≫ h` with `h` an open embedding and `s`, `f` closed with finite fibres over a `T2Space`; this is exactly the pattern the project meets (`FiniteClosedPushforward` + `OpenEmbedding`), not a textbook hypothesis; the file exists to feed `constantPullback_factorization` (l.295) into one downstream proof
+- l.44 `openImage_preimage_obj`, l.59 `openImage_preimage` are general `Opens` facts about `h.functor ⋙ Opens.map (s ≫ h) = Opens.map s`, misplaced in a cohomology file
+- l.66 `restrictionPushforwardIso` is the general base change `h^* f_* ≅ s_*` for an open `h` (no finiteness needed); could be stated in `OpenEmbeddingCohomology`
+- l.70–74, l.86–90 the same `let _ : (Opens.map s).IsContinuous …` is re-derived by hand in every proof: an instance is missing upstream
+- `TopCat.{0}`/`AddCommGrpCat.{0}` throughout; 1 missing docstring (`restrictionPushforwardIso_hom_app` l.82); `set_option linter.style.haveILetI false` l.291
+suggestion: replace the file by a general functoriality theorem `ConstantSheafCohomology.pullback_comp` for continuous maps (with the exactness hypotheses as instances), from which the open/finite-closed factorisation is a corollary
+
+## Lib/Topology/Sheaves/OpenRestriction.lean  (23 declarations, 179 lines)
+verdict: B (minor: docs/names)
+twin: Hartshorne III Lemma 6.1 / Iversen II.6.? (restriction to an open preserves injectives, via extension by zero); Mathlib/Topology/Sheaves/Over.lean (`Opens.sheafRestrict`, `sheafRestrict_isRightAdjoint`) covers the functor but not injective preservation
+findings:
+- l.16–22 module docstring names the result but gives no reference and has no `## Main results`; the main statement `restriction_preservesInjectiveObjects` (l.174) is the textbook lemma
+- l.131 `restriction U` is definitionally `U.sheafRestrict` (l.136 `restriction_eq_sheafRestrict … := rfl`); the file should use Mathlib's name directly instead of an alias plus a `rfl` bridge
+- l.35 `inclusion U` duplicates Mathlib's `Opens.inclusion'`/`TopCat.ofHom ⟨Subtype.val, …⟩` (`U.inclusion'` exists in Mathlib/Topology/Category/TopCat/Opens.lean)
+- l.149, l.152 `restriction_preservesFiniteLimits`/`_Colimits` are theorems proving classes by `infer_instance` (see OpenEmbeddingCohomology.lean, same pattern)
+- l.156 `extension` (extension by zero as `sheafPullback`) and l.161 `extension_preservesMonomorphisms` are the mathematical content; l.71 `lan_obj_isZero_of_not_le` is the key `j_!`-vanishing lemma, good name
+- `TopCat.{0}` / `AddCommGrpCat` only; 6 missing docstrings (l.37, 53, 57, 136, 149, 152); no unused preamble
+suggestion: drop `inclusion`/`restriction` in favour of `U.inclusion'`/`U.sheafRestrict`, generalise the universe, and propose `extension_preservesMonomorphisms` + `restriction_preservesInjectiveObjects` upstream next to `Opens.sheafRestrict`
+
+## Lib/Topology/Sheaves/OpenRestriction/Cohomology.lean  (22 declarations, 219 lines)
+verdict: B (minor: docs/names)
+twin: Hartshorne III Prop. 6.? / Godement II.4 (`H^n(U, F|_U) = Ext^n(ℤ_U, F)`); Mathlib/CategoryTheory/Sites/SheafCohomology/Basic.lean (`Sheaf.H'`, `cohomologyPresheafFunctor`) defines the left side but has no comparison with `H^n(U, F|_U)`
+findings:
+- l.17–25 module docstring states the result precisely but cites nothing and has no `## Main results`
+- l.40 `restrictedCohomologyGroup` is spelled with an explicit `@CategoryTheory.Sheaf.functorH … (IsGrothendieckAbelian.hasExt _)` instance: the missing `HasExt` instance should be declared once, not inlined into a definition
+- l.48 `freeOpen U` is Mathlib's `(yoneda ⋙ … AddCommGrpCat.free ⋙ presheafToSheaf _ _).obj U` (the free abelian sheaf on `U`); the name is fine but it should be stated as `.obj U` of Mathlib's functor so that l.72–98 `freeHomEquiv_naturality_open` need not write the functor out twice
+- l.125 `homRestrictionEquiv`, l.159 `representingUnit`, l.184 `cohomologyForward`, l.197 `cohomologyEquiv`: standard content, generic names; `cohomologyEquiv_naturality` l.209 is the right API
+- 8 missing docstrings (l.60, 101, 115, 132, 146, 163, 169, 202), `TopCat.{0}`/`AddCommGrpCat.{0}`/`H'.{0}` throughout
+suggestion: add the `HasExt` instance and a `## Main results` list, then propose `cohomologyEquiv` upstream as `Sheaf.H'_iso_H_sheafRestrict` next to `Sheaf.H'`
+
+## Lib/Topology/Sheaves/OpenRestriction/NearbyEvaluationCompatibility.lean  (10 declarations, 203 lines)
+verdict: B (minor: docs/names)
+twin: formal filtered-colimit lemmas (Mathlib/Topology/Sheaves/Stalks.lean `stalk_hom_ext`, `stalkFunctor_map_germ`); no textbook statement — genuine glue, standard content
+findings:
+- l.12–24 module docstring describes the mechanism ("isolates the formal filtered-colimit part of a special-to-nearby compatibility argument") rather than a result; no `## Main results`, no reference
+- l.35–58 `TopCat.Presheaf.stalk_hom_ext_of_cofinal` is a general lemma (any `C` with colimits, any `X : TopCat.{0}`) in the right namespace and would be accepted upstream next to `stalk_hom_ext`; note `Category.{0,u} C`/`TopCat.{0}` while the second section (l.64) uses `TopCat.{u}` — inconsistent universes inside one file
+- l.60–116 the `CompatibleNeighborhoodEvaluation` API (`precomp`, `stalkFunctorMap_comp_stalkMap`, `stalkMap_eq_of_cofinal_app`) is generic; `precomp` is the right Mathlib name
+- l.118–203 the four `nearbyStalkUnit_comp_*` theorems are the first section instantiated at the open-restriction unit; "nearby" is project vocabulary for `j_*j^*` (see StalkUnit.lean); names of length 40+ (`germ_nearbyStalkUnit_comp_map_comp_stalkMap`) are unreadable
+- three sections with three different subjects in one file (general stalk extensionality, evaluation API, open-restriction instance); 0 missing docstrings; `set_option backward.isDefEq.respectTransparency false in` used 3 times (l.87, 161, 177)
+suggestion: move `stalk_hom_ext_of_cofinal` to a `Presheaf/Stalks` helper (universe-polymorphic), keep the `CompatibleNeighborhoodEvaluation` lemmas with their definition, and leave only the open-restriction instance here
+
+## Lib/Topology/Sheaves/OpenRestriction/NearbyRestrictionGerm.lean  (3 declarations, 207 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/Topology/Sheaves/Stalks.lean (`stalkPullbackIso`, `germ_stalkPushforward`-style germ compatibilities); no textbook statement (formal)
+findings:
+- l.11–16 module docstring is two sentences, no reference, no `## Main results`
+- l.34 `nearbyRestrictionUnit_app` (100 lines of proof) unfolds the transported unit on sections: a `@[simp]` lemma that should have existed at the definition site (StalkUnit.lean l.47)
+- l.131 `germ_stalkIso_hom_nearbyRestrictionUnit`, l.188 `stalkIso_inv_germ_nearbyRestrictionUnit` are the germ/unit compatibilities; correct but "nearby" is project vocabulary for `j_*j^*F`
+- universe: `{X : TopCat}` and `TopCat.Sheaf AddCommGrpCat X` without explicit `.{0}` — inconsistent with the sibling files but harmless
+- all three theorems need `set_option backward.isDefEq.respectTransparency false in` (l.31, 128, 185): the definitions they unfold are too opaque; 0 missing docstrings
+suggestion: merge the three lemmas into StalkUnit.lean as `@[simp]` lemmas right after `nearbyRestrictionUnit` and rename `nearby*` to `restrictPushforward*` / `unit*`
+
+## Lib/Topology/Sheaves/OpenRestriction/StalkCriterion.lean  (6 declarations, 120 lines)
+verdict: B (minor: docs/names)
+twin: Iversen II.6 / Kashiwara–Schapira Prop. 2.3.? (`F ⟶ j_*j^*F` is an iso on stalks over `U`; it is an iso iff it is one at the points of `X \ U`); no Mathlib twin
+findings:
+- l.11–17 module docstring states the criterion precisely and is honest about what it does not claim; no reference, no `## Main results`
+- l.36 `nearbyStalkPushforward`, l.70 `nearbyStalkUnit_isIso_of_mem`, l.83 `nearbyRestrictionUnit_app_isIso_of_isIso_outside`: statements are generic over `X : TopCat.{0}`, `U : Opens X`, any abelian sheaf; names follow `foo_of_bar` but "nearby" is project vocabulary for `j_*j^*`
+- l.103 `globalRestrictionIsoOfIsIsoOutside` (`Γ(X,F) ≅ Γ(U,F)` when the unit is an iso off `U`) is the useful corollary; `def … := by` builds an `Iso` by tactic
+- `set_option linter.style.haveILetI false` l.24 file-wide; `set_option backward.isDefEq.respectTransparency false in` l.49; 0 missing docstrings; `TopCat.{0}`/`AddCommGrpCat.{0}` only
+suggestion: rename to `unit_isIso_of_isIso_of_notMem`-style Mathlib names (`nearby` → `pushforwardRestrict`), add the reference, and generalise the universe
+
+## Lib/Topology/Sheaves/OpenRestriction/StalkUnit.lean  (10 declarations, 117 lines)
+verdict: B (minor: docs/names)
+twin: Iversen II.6 / Godement II.2.9 (stalk of `j_*j^*F` at a boundary point is `colim_{V ∋ x} F(V ∩ U)`); Mathlib/Topology/Sheaves/Functors.lean (`pullbackPushforwardAdjunction`, `IsOpenEmbedding.sheafPullbackIso`)
+findings:
+- l.12–19 module docstring explains the object well ("generization map on a stratified `T₁` space; not a specialization map") but has no `## Main results` and no reference
+- l.41 `nearbyExtension U := restriction U ⋙ pushforward (inclusion U)` is `j_*j^*`; l.47 `nearbyRestrictionUnit` is the adjunction unit transported along `sheafPullbackIso`; the word "nearby" appears in 7 of 10 names and is project vocabulary (textbook: `j_*j^*`, unit, stalk of the unit)
+- l.54 `nearbyExtensionObjIso … := by change …; rw …` builds an `Iso` by tactic (`rw` on the goal type): fragile, should be `eqToIso`/`F.obj.mapIso`
+- l.71 `nearbySectionsStalk_eq_colimit … := rfl` is a definitional bridge that exposes the `abbrev`; missing docstring (1 of 10)
+- `TopCat.{0}`/`AddCommGrpCat.{0}` only; no unused preamble
+suggestion: rename `nearbyExtension`/`nearbyRestrictionUnit`/`nearbyStalkUnit` to `pushforwardRestrict`/`pushforwardRestrictUnit`/`stalkUnit` and add a `## Main results` list with the Iversen reference
+
+## Lib/Topology/Sheaves/OpenRestrictionStalk.lean  (4 declarations, 94 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/Topology/Sheaves/Stalks.lean (`TopCat.Presheaf.stalkPullbackIso`, `IsOpenMap.pullbackObjIso`) — the file is a corollary of these; Iversen II.6 (stalks of a restricted sheaf)
+findings:
+- l.11–15 module docstring: two sentences, no reference; the result (`(F|_U)_x ≅ F_x` for `x ∈ U`) is the standard one
+- l.35 `presheafStalkIso`, l.43 `stalkIso` are generic; l.57 `stalkIso_inv_germ` is the one germ compatibility needed and has the standard `iso_inv_germ` naming
+- l.53–54 two `set_option backward.*` overrides on the single theorem; l.29 namespace `TopCat.Sheaf.OpenRestriction` shared with the folder `OpenRestriction/` although this file sits one level up: placement is inconsistent (should be `OpenRestriction/Stalk.lean`)
+- 0 missing docstrings; `TopCat.{0}`/`AddCommGrpCat.{0}` only
+suggestion: move the file to `OpenRestriction/Stalk.lean` and propose `stalkIso`/`stalkIso_inv_germ` upstream as `Opens.sheafRestrict_stalkIso` next to `stalkPullbackIso`
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem.lean  (15 declarations, 262 lines)
+verdict: B (minor: docs/names)
+twin: Whitehead, Elements of Homotopy Theory VI.1–2 / Hatcher §3.H (local coefficient system associated to a principal `G`-cover and a `G`-module); Mathlib has `IsQuotientCoveringMap` (Mathlib/Topology/Covering/Quotient.lean) but no associated sheaf — genuine gap
+findings:
+- l.12–20 module docstring names the construction but not a reference; no `## Main results`; universe-polymorphic (`G : Type uG`, `E X M : Type u`) and generic in `[Group G] [MulAction G E] [DistribMulAction G M]` — good
+- l.40 `LiftedOpen p U := {e // p e ∈ U}` is `p ⁻¹' U` as a subtype; Mathlib would write `↥(p ⁻¹' (U : Set X))` (the file Restriction.lean l.52 later needs a homeomorphism `liftedOpenPreimageHomeomorph` to bridge exactly this)
+- l.63 `equivariantSections`, l.101 `presheaf`, l.122 `presheaf_isSheaf`, l.198 `sheaf`: the standard construction, generic names (`PrincipalCoverLocalSystem.sheaf`); l.218 `globalSectionsEquivInvariantCoefficients` is the textbook `Γ(X, L) = M^G` for connected `E`
+- l.205 `invariantCoefficients := FixedPoints.addSubgroup G M` is an alias with no added content
+- 2 missing docstrings (l.75 `mem_equivariantSections`, l.113 `presheaf_map_apply`); no unused preamble; namespace not under `TopCat.` although the objects are `TopCat.Sheaf`
+suggestion: add the Whitehead/Hatcher reference and a `## Main results` list, and replace `LiftedOpen` by the subtype of `p ⁻¹' U` so the restriction file needs no bridging homeomorphism
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/Comparison.lean  (8 declarations, 156 lines)
+verdict: B (minor: docs/names)
+twin: standard descent of a stalkwise comparison to a morphism into a local system (Whitehead VI.2, no numbered theorem); no Mathlib twin
+findings:
+- l.11–16 module docstring: three sentences, no reference, no `## Main results`
+- l.37 `StalkComparisonData` bundles `stalkMap` + local constancy + equivariance: a legitimate hypothesis package with docstrings on every field; l.106 `hom`, l.143 `hom_isIso` (iso if stalkwise iso) are the expected API and names
+- l.110, 123, 140 all three theorems carry `set_option backward.isDefEq.respectTransparency false in`; l.146 `let (x : X) : IsIso … := by` is an odd spelling of a `have`
+- universe-polymorphic and generic; 0 missing docstrings
+suggestion: add a reference and `## Main results`, and remove the three `backward.isDefEq` overrides by stating `stalkFunctorMap_comp_stalkEvaluation` as a `@[simp]`-friendly `germ`-level lemma
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/CyclicComponentSections.lean  (31 declarations, 573 lines)
+verdict: C (bespoke hypothesis package built for the project's punctured-disc step)
+twin: the textbook fact is `Γ(U, L) ≅ M^{im(π₁(U) → G)}` for connected, locally path-connected `U` (Whitehead VI.2 / Hatcher §3.H); no Mathlib twin
+findings:
+- l.12–22 module docstring says openly "This is the section-theoretic half of the standard punctured-disc computation"; no reference, no `## Main results`
+- l.187–205 `CyclicComponentData` (a distinguished component, `translates_cover`, `generator_base_mem`, `overlap_cyclic : … → ∃ k : ℤ, g = a ^ k`) is a hand-rolled package equivalent to "`U` is connected and the local monodromy image is `⟨a⟩`"; l.260 `ofConnectedComponent` and l.297 `ofPathConnectedComponentStabilizer` show the file knows this; the textbook statement would take `[PathConnectedSpace U]` and a hypothesis on `(localDeckMonodromyHom hp base).range`
+- l.403–469 `sectionEvaluation`/`sectionReconstruction`/`sectionsEquiv` are stated against an arbitrary `N : AddSubgroup M` with `hN : ∀ m, m ∈ N ↔ a • m = m` instead of `MulAction.fixedBy M a`/`FixedPoints.addSubgroup` — an ad-hoc parametrisation
+- l.478 `sectionEvaluation_restrict`, l.495 `invariantActionEquiv`, l.536 `restrict_bijective_of_commuting_component_transport` (hypotheses `Commute a g`, `hbase : … = liftedAction … g c`) exist to feed one downstream restriction argument; no textbook counterpart
+- l.323 `zpow_smul_eq` is Mathlib's `MulAction.mem_fixedBy_zpow` restated; l.75 `openInclusion U : C(U, X)` duplicates `ContinuousMap.inclusion`/`Opens.inclusion'`; l.306–321 `chosenGroup`/`chosenPoint` expose `Classical.choose` data as public defs
+- 14 missing docstrings (l.58, 306, 310, 314, 318, 323, 326, 349, 352, 359, 387, 433, 442, 469); universe-polymorphic; the file is 573 lines for one equivalence
+suggestion: restate the main result as `sectionsEquiv : equivariantSections p hp U ≃+ FixedPoints.addSubgroup (zpowers a) M` under `[PathConnectedSpace U]` plus a range hypothesis on `localDeckMonodromyHom`, and drop `CyclicComponentData` and the `Commute` transport lemma
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/DeckTranslate.lean  (11 declarations, 242 lines)
+verdict: B (minor: docs/names, placement)
+twin: Hatcher Prop. 1.39 / Spanier 2.6 (changing the base point in the fibre conjugates the monodromy); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap.fundamentalGroupToMulOpposite`, `toPermFiber`) is the direct neighbour
+findings:
+- l.12–25 module docstring is precise; its second paragraph ("chooses no geometric family, puncture, meridian, or component … Leray page, or spectral-sequence differential") is project residue by negation
+- the file contains no sheaf: `deckMonodromyHom` (l.78), `fiberTransport` (l.133), `deckMonodromyHom_translate` (l.213) belong in `Topology/Covering/`, next to Mathlib's `IsQuotientCoveringMap`, not under `Topology/Sheaves/PrincipalCoverLocalSystem/`
+- l.78 `deckMonodromyHom := (MulEquiv.inv' G).symm ∘ fundamentalGroupToMulOpposite`: the "inverse-normalised" convention should be documented once and named `IsQuotientCoveringMap.monodromyHom`
+- l.231 `map_conj_zpowers_inv_mul_mul` is pure group theory (`Subgroup.map (MulAut.conj g) (zpowers (g⁻¹ * a * g)) = zpowers a`), misplaced
+- 6 missing docstrings (l.41, 68, 206, 213, 224, 231); universe-polymorphic; no unused preamble
+suggestion: move the file to `Lib/Topology/Covering/DeckTranslate.lean` under namespace `IsQuotientCoveringMap`, and move `map_conj_zpowers_inv_mul_mul` to a `GroupTheory` helper
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/Restriction.lean  (18 declarations, 293 lines)
+verdict: B (minor: docs/names)
+twin: restriction of a covering to an open of the base is a covering, and the associated local system restricts (Whitehead VI.1, no numbered statement); Mathlib has `IsCoveringMap.restrict`-style results? none found for `IsQuotientCoveringMap`
+findings:
+- l.11–16 module docstring: three sentences, no reference, no `## Main results`
+- l.28 `variable {G E X : Type}` — universe 0 only, whereas the parent file is `Type u`/`Type uG`: inconsistent generality inside one namespace
+- l.34 `restrictedMulAction` is a `def` marked `@[instance_reducible]` and then re-introduced by `let _ := restrictedMulAction p hp U` inside every statement (l.65, 147, 228, 246, 256): it should be an `instance` on the subtype (Mathlib: `MulAction` on `p ⁻¹' U` via `Subtype`/`SubMulAction`)
+- l.52 `liftedOpenPreimageHomeomorph : LiftedOpen p U ≃ₜ p ⁻¹' U` exists only because `LiftedOpen` is not the preimage subtype (see parent file)
+- l.63 `restrictedProjection_isQuotientCoveringMap` is the mathematical content and would be a Mathlib lemma `IsQuotientCoveringMap.restrictPreimage`; l.272 `restrictionSheafIso`, l.280 `constantSheafRestrictionIsoOfSection` are the expected API
+- 3 missing docstrings (l.46, 113, 176); `set_option backward.isDefEq.respectTransparency false in` l.250
+suggestion: make `restrictedMulAction` an instance (as `SubMulAction`), lift the universes to match the parent file, and propose `restrictedProjection_isQuotientCoveringMap` upstream as `IsQuotientCoveringMap.restrictPreimage`
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/Stalk.lean  (19 declarations, 297 lines)
+verdict: B (minor: docs/names)
+twin: stalk of a local system at `x` is the coefficient group via a chosen lift (Whitehead VI.1 / Iversen II.? for locally constant sheaves); no Mathlib twin
+findings:
+- l.11–16 module docstring: "begins the textbook identification" — it in fact finishes it (`stalkIsoCoefficientAtLift` l.292); stale sentence; no reference, no `## Main results`
+- l.36–128 nine `private` declarations (`sliceBaseOpen`, `sliceCoordinate`, `sliceSection`, …) build a local section from an evenly covered slice; this is the general "locally constant sheaf is locally constant" lemma and could be public API
+- l.145 `stalkEvaluation`, l.173 `_surjective`, l.268 `_injective`, l.281 `_bijective`, l.286 instance `stalkEvaluation_isIso`, l.292 `stalkIsoCoefficientAtLift`: standard content, Mathlib-style names; l.160 `stalkEvaluation_germ_smul` is the equivariance law
+- 1 public missing docstring (l.150 `stalkEvaluation_germ`, carries `@[simp]`); universe-polymorphic; no unused preamble
+suggestion: fix the stale "begins" sentence, add a `## Main results` list, and expose the slice-section construction as a public lemma `exists_section_of_isOpen_slice`
+
+## Lib/Topology/Sheaves/PrincipalCoverLocalSystem/Trivialization.lean  (9 declarations, 165 lines)
+verdict: B (minor: docs/names)
+twin: a section of a principal cover trivialises the associated local system (Whitehead VI.1; the cover is then `X × G`); no Mathlib twin
+findings:
+- l.11–17 module docstring is a clear paragraph; no reference, no `## Main results`
+- l.29 `variable {G E X M : Type}` — universe 0 only, unlike the parent file (`Type u`)
+- l.34 `sectionCoordinate` (the unique `g` with `g • s(p e) = e`), l.56 `sectionCoordinate_isLocallyConstant`, l.158 `constantSheafIsoOfSection` are the right statements and names; `hs : ∀ x, p (s x) = x` is passed as a bare hypothesis instead of a `Function.RightInverse`/section structure
+- l.88 `set_option maxHeartbeats 1000000 in` on `constantComparisonData` (a 40-line `where` definition)
+- 3 missing docstrings (l.41, 48 — both `@[simp]` lemmas — and l.136)
+suggestion: lift to the parent file's universes, replace `hs` by `Function.RightInverse s p`, and remove the `maxHeartbeats` override by factoring the `section_isLocallyConstant` proof into a lemma
+
+## Lib/Topology/Sheaves/SheafificationLocal.lean  (7 declarations, 89 lines)
+verdict: D (main statements are Mathlib's `Presheaf.isLocallySurjective_toSheafify` and `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`, unpacked)
+twin: Mathlib/CategoryTheory/Sites/LocallySurjective.lean (`isLocallySurjective_toSheafify`), Mathlib/Topology/Sheaves/LocallySurjective.lean (`TopCat.Presheaf.isLocallySurjective_iff`), Mathlib/Topology/Sheaves/Stalks.lean (`stalkFunctor_map_unit_toSheafify_isIso`, used verbatim at l.46)
+findings:
+- l.11–15 module docstring: two sentences, no `## Main results`
+- l.37 `sheaf P` and l.41 `unit P` are aliases for `(presheafToSheaf _ _).obj P` and `toSheafify _ P` with no docstrings; every downstream file must then unfold them
+- l.53 `exists_local_representative` is `isLocallySurjective_toSheafify` read through `TopCat.Presheaf.isLocallySurjective_iff`; l.66 `germ_unit_eq_iff` and l.77 `exists_restriction_eq_of_germ_unit_eq` follow from the stalk iso plus `TopCat.Presheaf.germ_eq`
+- 3 missing docstrings (l.37, 41, 48); `TopCat.{0}` / `AddCommGrpCat.{0}` only
+suggestion: delete `sheaf`/`unit`, keep `exists_local_representative` as a one-line `TopCat.Presheaf` lemma in terms of `toSheafify`, and derive the two germ lemmas from `germ_eq`
+
+## Lib/Topology/Sheaves/SheafificationLocalGerm.lean  (1 declarations, 70 lines)
+verdict: B (minor: docs/names)
+twin: formal (germ of a local representative under `toSheafify`); Mathlib/Topology/Sheaves/Stalks.lean `stalkFunctor_map_germ_apply`
+findings:
+- l.11–19 module docstring is clear and honest ("neither asserts proper base change nor identifies a sheaf stalk with the cohomology of a geometric fibre" — a negation that is project residue)
+- l.39 `inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative` is a 50-character name; the statement takes an arbitrary `e : F ≅ sheaf P` and is generic, but one lemma does not justify a file — it belongs in SheafificationLocal.lean
+- l.35–36 two `set_option backward.*` overrides; `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: merge into SheafificationLocal.lean as `germ_of_localRepresentative` and drop the negated-claims paragraph
+
+## Lib/Topology/Sheaves/SheafificationPushforward.lean  (7 declarations, 145 lines)
+verdict: B (minor: docs/names)
+twin: universal property of sheafification (Mathlib `CategoryTheory.sheafifyLift`, `toSheafify_sheafifyLift`); Mathlib/Topology/Sheaves/Functors.lean (`TopCat.Sheaf.pushforward`)
+findings:
+- l.11–16 module docstring: "This supplies the categorical lift used by singular-cochain pullback" — project residue in the docstring; no `## Main results`
+- l.44 `liftToPushforward` is `sheafifyLift` with target `f_* F`; l.52 `toSheafify_liftToPushforward` is `toSheafify_sheafifyLift`; l.59 `liftToPushforward_hom_ext` is `sheafify_hom_ext` — three wrappers with no added content
+- l.70 `sheafifyPullback : P^# ⟶ f_*(Q^#)` from `η : P ⟶ f_* Q` and l.89 `sheafifyPullback_naturality` are the useful statements; Mathlib would express this as the whiskered composite of `toSheafify` with `sheafifyLift`
+- 3 missing docstrings (l.52, 59, 80); `TopCat.{0}`/`AddCommGrpCat.{0}` only
+suggestion: drop the three `sheafifyLift` wrappers, keep `sheafifyPullback` and its naturality under the name `TopCat.Presheaf.sheafifyPushforwardLift`, and generalise the universe
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Augmentation.lean  (18 declarations, 189 lines)
+verdict: B (minor: docs/names)
+twin: Bredon, Sheaf Theory III.1 / Warner 5.31 (augmentation `A → S^0(·; A)` of the singular-cochain presheaf); Mathlib/AlgebraicTopology/SingularHomology (`singularChainComplexFunctor`, `SingularCochains`) has the complexes, not the sheaf augmentation
+findings:
+- l.11–16 module docstring: two sentences, no reference, no `## Main results`
+- l.21–24 file-wide `set_option backward.defeqAttrib.useBackward true` and `backward.isDefEq.respectTransparency false` (not `in`-scoped)
+- l.34 `chainMap`, l.42 `singularSet` are aliases over `{X Y : Type}` (universe 0) and `ModuleCat.{0} ℤ`; l.99 `integerMultiple A a : ℤ →+ A` duplicates Mathlib's `zmultiplesHom A a`
+- l.46 `rawChainAugmentation` / l.52 `chainAugmentation` (same map, one an `abbrev` of the other), l.105 `constantCochain`, l.149 `presheafAugmentation`, l.170 `sheafAugmentation`, l.184 `initialComplex`: standard content, sensible names; naturality (l.77, 136) and `d = 0` (l.121, 160, 176) lemmas present
+- 1 missing docstring (l.57 `simplex_chainAugmentation`, `@[reassoc (attr := simp)]`)
+suggestion: replace `integerMultiple` by `zmultiplesHom`, merge `rawChainAugmentation`/`chainAugmentation`, scope the two `backward` options, and add the Bredon III.1 reference
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/AugmentationMono.lean  (2 declarations, 99 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 (the augmentation `A_X → 𝒮^0` is injective); no Mathlib twin
+findings:
+- l.11–17 module docstring describes the proof route only; no reference
+- l.62 `sheafAugmentation_mono : Mono (sheafAugmentation X A)` is a theorem proving a class; Mathlib would make it an `instance` (`instance : Mono (sheafAugmentation X A)`)
+- l.34 the stalk-injectivity lemma is `private` although it is the reusable statement (`presheafAugmentation_stalk_injective`); the sheaf-level argument via `mono_iff_stalk_mono` is the textbook one
+- `TopCat.{0}`/`AddCommGrpCat.{0}` only; 1 missing docstring on the private lemma; one theorem per file
+suggestion: turn `sheafAugmentation_mono` into an instance, make the stalk lemma public, and merge the file into Augmentation.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/BarycentricSmallChains.lean  (1 declarations, 38 lines)
+verdict: C (glue lemma feeding a project-defined hypothesis class)
+twin: Hatcher Prop. 2.21 (chains small with respect to a cover) — the actual theorem lives in `TopCat.SingularSmallChains.Barycentric`; no Mathlib twin
+findings:
+- l.9 module docstring is a single title line "Barycentric discharge of the global-unit small-chain input" (project jargon: "discharge", "global-unit input"), no text, no reference
+- l.27 `hasSmallChainEquivalences_barycentric : HasSmallChainEquivalences X` instantiates a project-defined predicate (`HasSmallChainEquivalences`, grep: defined in GlobalUnitH1Criterion.lean/GlobalUnit* family) whose only purpose is to abstract the small-chains theorem for the global-unit files; the textbook has no such intermediate notion
+- the proof is `intro; refine ⟨…smallChainHomotopyEquiv …, ?_⟩; rfl`: this is an instance/`theorem` of 8 lines that belongs where `HasSmallChainEquivalences` is defined
+- `TopCat.{0}` only; 0 missing docstrings
+suggestion: delete the file and the `HasSmallChainEquivalences` indirection, calling `Barycentric.smallChainHomotopyEquiv` directly where the global unit is compared
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/ComparisonH1.lean  (2 declarations, 54 lines)
+verdict: C (assembly of the degree-one comparison under a project-internal `IsIso` hypothesis)
+twin: Bredon III Thm. 1.1 / Warner 5.32 (`H^1(X; A_X) ≅ H^1_sing(X; A)` for locally contractible paracompact `X`) — but stated here with the key step assumed
+findings:
+- l.11–16 module docstring: "isolates the final categorical assembly" — a proof-organisation description, no reference
+- l.34 `h1Comparison` takes `[IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)]` as an instance hypothesis: the mathematical content (global unit is a quasi-iso in degree 1) is outsourced to GlobalUnitH1*.lean, so this file states a conditional theorem no textbook states
+- l.44 `h1Comparison_global` is the characterisation; fine
+- the degree-one case is a separate file from ComparisonPositive.lean (which covers `n+1` for all `n`) only because the resolution files are split H1/positive; this duplication has no textbook counterpart
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; `hLC : LocallyContractibleSpace X` explicit; 0 missing docstrings
+suggestion: fold into ComparisonPositive.lean as the `n = 0` case of `constantSheafCohomologyIsoSingular`, discharging the `IsIso` hypothesis internally
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/ComparisonPositive.lean  (6 declarations, 151 lines)
+verdict: B (minor: docs/names; hypotheses slightly stronger than the textbook)
+twin: Bredon, Sheaf Theory III Thm. 1.1 / Warner 5.32 / Godement II.3.9 (`H^n(X; A_X) ≅ H^n_sing(X; A)`, `X` paracompact and locally contractible); Sella, "Comparison of sheaf cohomology and singular cohomology" (2016); no Mathlib twin — genuine gap
+findings:
+- l.12–19 module docstring states the theorem and its route; no reference, no `## Main results`
+- l.41, l.64 `constantSheafGlobalIso`, `constantSheafCohomologyIsoSingular` assume `[MetrizableSpace X]` where the textbook has paracompact Hausdorff; `hLC : LocallyContractibleSpace X` is an explicit argument (not an instance) — consistent with how `LocallyContractibleSpace` is defined in Lib, but Mathlib would make it a class
+- degrees `n + 1` only; the degree-0 case is left to another file, so the theorem is never stated for all `n`
+- l.95 `private theorem compare_naturality {C : Type*} [Category C]` is a general iso/naturality lemma hidden as private; l.116 `constantSheafCohomologyIsoSingular_naturality_of_global` is the naturality statement, with the correct `_of_global` hypothesis form
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 1 missing docstring (the private lemma)
+suggestion: state the theorem for all `n : ℕ` (absorbing ComparisonH1.lean) with the Bredon/Warner reference, and weaken `[MetrizableSpace X]` to `[ParacompactSpace X] [T2Space X]` if the small-chains input allows
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/DegreeZeroAcyclic.lean  (6 declarations, 84 lines)
+verdict: B (minor: docs/names)
+twin: Bredon II.5 / Godement II.3.1 (flasque sheaves are acyclic; the sheaf of all `A`-valued functions is flasque); Mathlib/Topology/Sheaves/Flasque.lean (`IsFlasque`)
+findings:
+- l.11–16 module docstring: precise, no reference; title says "in H¹" although l.55 `zeroCochainSheaf_isFlasque` is the general statement
+- l.34 `zeroCochainPresheaf_isSheaf`, l.49 `zeroCochainSheafIsoFunctions` (degree-0 singular cochains = all functions) are the textbook remarks; l.80 `zeroCochainSheaf_h1_subsingleton` restricts to `H^1` where `Subsingleton (H (sheaf X A 0) (n+1))` for all `n` is what flasque gives — project's H1-first residue
+- l.39 `zeroCochainDirectSheaf` vs l.49 `sheaf X A 0` (sheafified) are two models of one object, bridged by `sheafificationIso`; acceptable
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: state acyclicity in all positive degrees (`Subsingleton (H (sheaf X A 0) (n+1))`) from the flasque instance and drop "in H¹" from the title
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/DegreeZeroFunctions.lean  (25 declarations, 318 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 / Warner 5.31 (`S^0(X; A) = A^X`, the degree-0 cochain presheaf is the sheaf of all functions); Mathlib `TopCat.toSSetObj₀Equiv` (used) and `SSet.chainComplex`
+findings:
+- l.12–18 module docstring: precise, no reference, no `## Main results`
+- l.26–27 file-wide `set_option backward.defeqAttrib.useBackward true` / `backward.isDefEq.respectTransparency false`
+- l.37 `zeroSingularSet`, l.41 `NativeChains`, l.45 `NativeCochains` are aliases (`zeroSingularSet` duplicates `singularSet` from Augmentation.lean); "Native" is project vocabulary for "Mathlib's"
+- l.82 `integerLinear A a : ModuleCat.of ℤ ℤ ⟶ ModuleCat.of ℤ A` duplicates `LinearMap.toSpanSingleton ℤ A a` (and `integerMultiple` in Augmentation.lean)
+- l.197 `zeroCochainsIsoFunctions`, l.299 `zeroCochainPresheafIsoFunctions` are the results; names fine; `{X : Type}` universe 0 and `ModuleCat.of ℤ ℤ` coefficients throughout
+- 9 missing docstrings (l.60, 65, 99, 106, 117, 145, 161, 220, 263; several are `@[simp]`)
+suggestion: use `LinearMap.toSpanSingleton`, share `singularSet`/`chainMap` with Augmentation.lean, scope the two `backward` options, and add the nine docstrings
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalKernelLocal.lean  (3 declarations, 82 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 (kernel of `S^n(X;A) → Γ(X, 𝒮^n)` is the subgroup `S^n_0` of locally zero cochains); no Mathlib twin
+findings:
+- l.11–16 module docstring: precise; no reference
+- l.35 `globalCochainUnit_eq_zero_of_local`, l.58 `_locally_zero`, l.76 `_eq_zero_iff_local`: the statement is exactly Bredon's, names follow `foo_of_bar`/`_iff`; the "locally zero" predicate is spelled out inline (`∀ x, ∃ U, x ∈ U ∧ restrictGlobalCochain A n phi U = 0`) rather than named (`IsLocallyZero`)
+- `TopCat.{0}`/`AddCommGrpCat.{0}` only; 0 missing docstrings; 3 theorems in an 82-line file that could sit in GlobalSections.lean
+suggestion: name the predicate (`IsLocallyZero phi`) and merge into GlobalSections.lean as the kernel half of Bredon III.1
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalKernelSmall.lean  (7 declarations, 141 lines)
+verdict: C (feeds project-defined predicates `GlobalKernelLocallySmall`, `SmallKernelGlobalOne`)
+twin: Bredon III.1 / Hatcher Prop. 2.21 (locally zero cochains = cochains vanishing on 𝒰-small simplices); no Mathlib twin
+findings:
+- l.11–17 module docstring: "Native simplex bases turn that statement into vanishing after restriction to the chain complex generated by simplices carried by a point-indexed open cover" — accurate, jargon-heavy, no reference
+- l.34 `cochainRestriction_eq_zero_iff`, l.65 `_iff_open_restrictions`, l.120 `globalCochainUnit_eq_zero_iff_smallCover` are generic and correct (`{X : Type} {ι : Type}` at universe 0)
+- l.132 `globalKernelLocallySmall : GlobalKernelLocallySmall X A n` and l.136 `smallKernelGlobalOne : SmallKernelGlobalOne X A` instantiate predicates defined in GlobalUnitH1Criterion.lean whose only role is to parametrise the project's H1 pipeline; the degree-one-only `SmallKernelGlobalOne` has no textbook counterpart
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: keep the three `_iff` lemmas (in GlobalSections.lean) and delete the two predicate instantiations together with the predicates they feed
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalPatch.lean  (8 declarations, 107 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III Prop. 1.1 / Warner 5.31 (patching local cochains along a locally finite closed refinement to a global cochain — the "first vertex" trick); no Mathlib twin
+findings:
+- l.11–17 module docstring describes the construction; no reference
+- l.37 `restrictGlobalCochain` (pullback along `Subtype.val`) is a general definition that belongs in Presheaf.lean, not in the patching file; l.55 `restrictGlobalCochain_restrict` is its naturality
+- l.73 `patchIndex`, l.77 `patchedValue` (`def … := by classical; exact if … then … else 0` — a definition by tactic), l.86 `patchedCochain`: correct names; `ClosedRefinement U` (l.69) is a project structure from another file whose textbook meaning (locally finite closed refinement) should be documented here
+- 3 missing docstrings (l.44, 90, 97); `TopCat.{0}`/`AddCommGrpCat.{0}`, `{ι : Type}` universe 0
+suggestion: move `restrictGlobalCochain` to Presheaf.lean, write `patchedValue` as a term (`open Classical in`), and cite Bredon III.1
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalPatchLocal.lean  (2 declarations, 123 lines)
+verdict: C (two technical lemmas with bespoke control hypotheses feeding the patching proof)
+twin: a step inside the proof of Bredon III Prop. 1.1; no textbook statement, no Mathlib twin
+findings:
+- l.11–15 module docstring: two sentences, no reference
+- l.36 `patchedCochain_restrict_of_compatible` takes `hcontrol : ∀ y ∈ W, ∀ i, y ∈ R.support i → x ∈ R.support i`, `hW`, `hcompat` — hypotheses cut to the shape of the single call site in GlobalSections.lean (`globalCochainUnit_surjective`); l.80 `exists_neighborhood_patchedCochain_eq` likewise
+- the statements are correct and general in `X`, `A`, `n`, but no textbook isolates them; they should be `private` inside GlobalSections.lean or folded into the surjectivity proof
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: inline both lemmas (as `private`) into the proof of `globalCochainUnit_surjective` in GlobalSections.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalResolutionH1.lean  (3 declarations, 61 lines)
+verdict: C (degree-one-only instance of the acyclic-resolution comparison)
+twin: Godement II.4.7 / Bredon II.4.1 (cohomology via an acyclic resolution) restricted to `H^1`; no Mathlib twin
+findings:
+- l.11–16 module docstring: no reference; "generic sheaf acyclic-resolution comparison is instantiated" — the general instance is in ComparisonPositive.lean via `AcyclicResolution.extIsoGlobalHomology`, so this file is the project's H1-first duplicate
+- l.35 `globalCochainComplex` (global sections of the sheafified cochain complex) is a general definition used by the positive-degree files too; it is defined here, in an H1 file
+- l.40 `globalWindowH1Iso` is Mathlib's `homologyFunctorIso'` at `0 1 2`; l.48 `constantSheafGlobalH1Iso` uses `TopCat.SheafH1.*` (the project's separate H1 machinery) instead of the `n = 0` case of `constantSheafGlobalIso`
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: move `globalCochainComplex` to Sheaf.lean and derive `constantSheafGlobalH1Iso` as `constantSheafGlobalIso X A hLC 0`, retiring the `SheafH1` route
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalSections.lean  (5 declarations, 115 lines)
+verdict: B (minor: docs/names)
+twin: Bredon, Sheaf Theory III Prop. 1.1 (for paracompact `X`, `S^n(X;A) → Γ(X, 𝒮^n)` is surjective); Warner 5.31; no Mathlib twin — genuine gap
+findings:
+- l.11–14 module docstring: names the hypotheses ("normal paracompact") and the result, no reference
+- l.69 `globalCochainUnit_surjective [NormalSpace X] [ParacompactSpace X]` is the textbook statement with textbook hypotheses (paracompact Hausdorff ⇒ normal; here normality is assumed separately, which is slightly weaker than needed and fine)
+- l.41 `unit_restrict`, l.48 `globalCochainUnit_restrict`, l.58 `globalCochainUnit_germ` are naturality/germ lemmas that would be `@[simp]`/`reassoc` in Mathlib
+- 1 missing docstring (l.36 `globalCochainUnit_apply`, `@[simp]`, `rfl`); `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: cite Bredon III.1.1, absorb GlobalKernelLocal.lean so that surjectivity and kernel sit together as `globalCochainUnit_surjective` / `ker_globalCochainUnit`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalUnit.lean  (3 declarations, 70 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 (the comparison map `S^*(X;A) → Γ(X, 𝒮^*)`); no Mathlib twin
+findings:
+- l.11–16 module docstring: "It is only a structural comparison here: no quasi-isomorphism claim is made in this module" — a negated claim, project residue in the docs
+- l.33 `globalCochainUnit`, l.41 `globalCochainComparison` (the chain map) are the standard objects with reasonable names; `globalCochainComplex` (its target) is defined in GlobalResolutionH1.lean, so this file depends on an H1 file for a general definition
+- l.67 `globalCochainComparison_f … := rfl` missing docstring, should be `@[simp]`
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 1 missing docstring
+suggestion: move `globalCochainComplex` here (or to Sheaf.lean) and mark `globalCochainComparison_f` `@[simp]`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalUnitH1.lean  (2 declarations, 51 lines)
+verdict: C (degree-one duplicate of GlobalUnitPositive.lean through the project's predicate layer)
+twin: Bredon III Thm. 1.1 at `n = 1`; no Mathlib twin
+findings:
+- l.11–16 module docstring: "discharges all sheafification hypotheses in the degree-one global comparison criterion" — describes the project pipeline, no reference
+- l.33 `globalUnitSurjective : GlobalUnitSurjective X A n` re-packages `globalCochainUnit_surjective` into the predicate of GlobalUnitH1Criterion.lean (no content)
+- l.39 `globalCochainComparison_homology_isIso_one` is `globalCochainComparison_homology_isIso_succ X A hsmall 0` from GlobalUnitPositive.lean, proved separately through the H1 criterion; `hsmall : HasSmallChainEquivalences X` is passed as a hypothesis although BarycentricSmallChains.lean proves it for every `X`
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: delete the file; use `globalCochainComparison_homology_isIso_succ … 0` with the barycentric instance
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalUnitH1Criterion.lean  (7 declarations, 157 lines)
+verdict: C (ad-hoc `Prop` predicates and a degree-one-only criterion built for the project's pipeline)
+twin: the argument is the proof of Bredon III Thm. 1.1 (five-lemma style comparison using small chains); no textbook states the criterion, no Mathlib twin
+findings:
+- l.11–19 module docstring ends with "No degree-two cohomology, Mayer--Vietoris sequence, or Hurewicz comparison occurs" — negated project claims
+- l.37 `GlobalUnitSurjective`, l.42 `GlobalKernelLocallySmall`, l.51 `SmallKernelGlobalOne`, l.60 `HasSmallChainEquivalences` are `def … : Prop` wrappers around statements that are all theorems elsewhere in Lib (GlobalSections.lean, GlobalKernelSmall.lean, BarycentricSmallChains.lean); Mathlib does not name hypotheses that are always provable
+- l.68 `globalCochainComparison_cycle_lift_one`, l.103 `_boundary_detect_one`, l.139 `_homology_isIso_one_of_small_chains` take four to five of these predicates as explicit arguments; the `_succ` versions in GlobalUnitPositive.lean subsume them at `n = 0`
+- l.60 `HasSmallChainEquivalences` requires `e.hom = inclusion` for a `HomotopyEquiv` — a reasonable packaging of Hatcher 2.21, but it should be the theorem, not a predicate
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: delete the four predicates and the three `_one` theorems, proving `globalCochainComparison_homology_isIso_succ` directly from `globalCochainUnit_surjective`, `globalCochainUnit_eq_zero_iff_smallCover` and `Barycentric.smallChainHomotopyEquiv`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/GlobalUnitPositive.lean  (6 declarations, 156 lines)
+verdict: C (correct general-degree theorem wrapped in the same predicate layer as the H1 files)
+twin: Bredon, Sheaf Theory III Thm. 1.1 / Warner 5.31 (`S^*(X;A) → Γ(X, 𝒮^*)` is a quasi-isomorphism on paracompact `X`); no Mathlib twin — genuine gap
+findings:
+- l.11–17 module docstring is accurate ("degree-independent form of the existing degree-one argument"), no reference
+- l.36 `SmallKernelGlobal n` is a fifth `Prop` wrapper, proved for all `X`, `A`, `n` at l.138 twelve lines later
+- l.44 `_cycle_lift_succ`, l.80 `_boundary_detect_succ`, l.119 `_homology_isIso_succ_of_small_chains` carry five predicate hypotheses each; only l.145 `globalCochainComparison_homology_isIso_succ [NormalSpace X] [ParacompactSpace X] (hsmall : HasSmallChainEquivalences X) (n : ℕ)` is the textbook statement — and `hsmall` is still a parameter although it is a theorem (BarycentricSmallChains.lean)
+- degrees `n + 1` only; degree 0 (`Γ(A_X) = H^0_sing`) is never stated
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: state `globalCochainComparison_homology_isIso [NormalSpace X] [ParacompactSpace X] (n : ℕ)` with the barycentric small-chains theorem applied internally, inlining the three criterion lemmas as `private`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/LocalExactH1.lean  (4 declarations, 80 lines)
+verdict: C (half of the file is the `n = 0` case of LocalExactPositive.lean)
+twin: Bredon III.1 / Warner 5.31 (on a locally contractible space `0 → A → 𝒮^0 → 𝒮^1 → …` is exact); no Mathlib twin
+findings:
+- l.11–16 module docstring: "The two degree-specific primitive theorems then prove exactness … at `C⁰` and `C¹`" — no reference
+- l.60 `initialComplex_exact` (exactness at the augmentation) is genuine and not duplicated elsewhere; l.71 `complexSheaf_exactAt_one` is `complexSheaf_exactAt_succ X A hLC 0` from LocalExactPositive.lean reproved
+- l.34, l.46 two `private` local-primitive lemmas (`exists_restriction_constant`, `exists_restriction_primitive_one`) are the textbook "nullhomotopic inclusion kills cocycles" step and deserve to be public and shared with the `_succ` version
+- `hLC : LocallyContractibleSpace X` explicit (Mathlib's `LocallyContractibleSpace` is a `def … : Prop`, so this is forced); `TopCat.{0}`/`AddCommGrpCat.{0}`; 2 missing docstrings (private)
+suggestion: keep `initialComplex_exact`, derive `complexSheaf_exactAt_one` from `complexSheaf_exactAt_succ`, and merge the file into LocalExactPositive.lean as `LocalExact.lean`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/LocalExactPositive.lean  (2 declarations, 63 lines)
+verdict: B (minor: docs/names)
+twin: Bredon, Sheaf Theory III.1 (`𝒮^*(·;A)` is a resolution of `A_X` on HLC spaces) / Warner 5.31; Sella 2016 §3; no Mathlib twin — genuine gap
+findings:
+- l.11–16 module docstring: precise, no reference, no `## Main results`
+- l.53 `complexSheaf_exactAt_succ (hLC : LocallyContractibleSpace X) (n : ℕ) : (complexSheaf X A).ExactAt (n + 1)` is the textbook statement with the textbook hypothesis; name follows Mathlib (`exactAt_succ`)
+- l.36 the `private` primitive lemma `exists_restriction_primitive_succ` is the reusable content ("a cocycle on `U` becomes a coboundary on a nullhomotopic `V ⊆ U`") and should be public
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 1 missing docstring (private)
+suggestion: make the primitive lemma public with a docstring, cite Bredon III.1, and absorb LocalExactH1.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/LocalKernels.lean  (3 declarations, 100 lines)
+verdict: B (minor: docs/names, placement)
+twin: exactness of sheafification is checked on stalks (Iversen II.1 / Hartshorne II Ex. 1.2); Mathlib has `TopCat.Presheaf.stalkFunctor` exactness pieces (`Sheaf.isLocallySurjective_iff_epi`-style results) but no `sheafify_exact_of_local_kernels`
+findings:
+- l.11–15 module docstring says the file "is independent of singular cochains" yet it lives in `SingularCochainSheaf/` under namespace `TopCat.SingularCochainSheaf` and cites "the `H¹` comparison" as its purpose — misplaced, project residue
+- l.88 `sheafify_exact_of_local_kernels` is a clean general statement: a presheaf short complex whose kernels lift locally has exact sheafification; it belongs in `Lib/Topology/Sheaves/` (e.g. `SheafifyExact.lean`) or upstream next to `Mathlib/Topology/Sheaves/Stalks.lean`
+- l.35, l.61 the stalk-exactness lemma and `sheafificationStalkIso` are `private` although general and reusable (2 missing docstrings)
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; the hypothesis `h` is spelled out with `∃ (V) (hVU) (_hxV) (t)` instead of a named "locally exact" predicate
+suggestion: move to `Lib/Topology/Sheaves/SheafifyExact.lean` under `TopCat.Presheaf`, make the stalk lemma public, and propose upstream
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/OpenRestriction.lean  (17 declarations, 346 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 / Warner 5.32 (the singular-cochain presheaf has surjective restrictions and its sheafification is flabby on paracompact spaces); Mathlib/Topology/Sheaves/Flasque.lean (`IsFlasque`); no Mathlib twin for the restriction-to-open identification
+findings:
+- l.12–19 module docstring ends "the textbook bridge needed to reduce extension of sheaf sections … to the already proved global representative theorem" — proof-plan language, no reference
+- l.44 `extendByZero`, l.70 `extendByZeroAlong` (`def … := by classical; exact …` definitions by tactic) and l.105 `presheaf_map_surjective` (restriction of singular cochains is surjective) are the textbook remark that `S^n` is a flabby presheaf; l.179 `presheafIso`, l.216 `sheafIso` (`(𝒮^n_X)|_U ≅ 𝒮^n_U`) are the main identification
+- l.316 `isFlasque_of_open_normal_paracompact [∀ V : Opens X, NormalSpace V] [∀ V, ParacompactSpace V]` is "hereditarily paracompact"; l.335 `isFlasque_of_metrizable` is the textbook corollary
+- namespace `TopCat.SingularCochainSheaf.OpenRestriction` vs `TopCat.Sheaf.OpenRestriction` (the generic file): two `OpenRestriction` namespaces one level apart
+- `set_option backward.isDefEq.respectTransparency false in` at l.81, 103, 176, 225; `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: name the flabbiness result `isFlasque_of_hereditarilyParacompact`, write the two `extendByZero` definitions as terms, and cite Bredon III.1
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Presheaf.lean  (8 declarations, 88 lines)
+verdict: B (minor: docs/names)
+twin: Bredon, Sheaf Theory III.1 (the presheaf `U ↦ S^n(U; A)`); Mathlib/AlgebraicTopology/SingularHomology (`SingularCochains.complex`, `pullback`) supplies the functor; no Mathlib sheaf twin
+findings:
+- l.11–15 module docstring: clear, "independent of any sheaf-cohomology comparison"; no reference, no `## Main results`
+- l.33 `cochainFunctor : TopCat.{0}ᵒᵖ ⥤ CochainComplex AddCommGrpCat.{0} ℕ` is the right general object and could live in `AlgebraicTopology/`; l.41 `presheaf`, l.53 `differential`, l.67 `complex` are standard
+- "native" appears in every docstring (project vocabulary for "Mathlib's")
+- 4 missing docstrings, all on `rfl` lemmas (l.47, 61, 81, 85; the latter two `@[simp]`); `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: move `cochainFunctor` next to `SingularCochains.pullback_comp`, drop "native", and docstring the four `rfl` lemmas
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/PrimitivesH1.lean  (22 declarations, 335 lines)
+verdict: C (degrees 0 and 1 only where the argument is general; private re-definitions)
+twin: Hatcher Thm. 2.10 / Bredon III.1 (a nullhomotopic map pulls back cocycles to coboundaries in every degree); Mathlib has `Homotopy` on complexes but no singular cochain homotopy invariance
+findings:
+- l.11–14 module docstring: "Only the two degrees needed by the constant-sheaf `H¹` comparison are developed here" — the H1-first residue stated outright
+- l.306 `nullhomotopic_pullback_closed_zero`, l.319 `nullhomotopic_pullback_closed_one` are the two public results; LocalExactPositive.lean needs the same statement in degree `n + 1` and gets it from elsewhere, so this file is the low-degree fork of a general lemma
+- l.35–71 `private` `Cochains`, `simplexChain`, `cochainHom`, `cochainValue`, `cochain_ext` re-define public API of `TopCat.SingularSmallChains` (`simplexChain`, `cochain_ext` are used publicly in GlobalPatch.lean); l.197–231 `pointSSet`, `pointSimplex`, `pointChain`, `addHomToIntLinearMap` are private general helpers (the last duplicates `AddMonoidHom.toIntLinearMap`)
+- l.127 `constantCochain_injective [Nonempty X]` is fine and belongs in Augmentation.lean
+- l.24–25 file-wide `backward` options; `{X Y : Type}` universe 0; 7 missing docstrings (all private)
+suggestion: replace by one lemma `nullhomotopic_pullback_closed (n : ℕ)` proved via the cochain homotopy, reuse `SingularSmallChains.simplexChain`/`cochain_ext`, and move `constantCochain_injective` to Augmentation.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/ComparisonH1.lean  (2 declarations, 76 lines)
+verdict: C (degree-one naturality under project-internal `IsIso` instance hypotheses)
+twin: naturality of the de Rham/singular–sheaf comparison (Bredon III.1, Warner 5.32) at `n = 1`; no Mathlib twin
+findings:
+- l.11–15 module docstring: "Once the global sheafification unit is an isomorphism on H¹ …" — conditional, no reference
+- l.30 `private theorem compare_naturality` is byte-identical to the private lemma of the same name in ComparisonPositive.lean l.95: a general cancel-mono lemma duplicated in two files
+- l.49 `h1Comparison_naturality_of_global` takes `[IsIso (homologyMap (globalCochainComparison X A) 1)]` twice (for `X` and `Y`) — the hypotheses are theorems (GlobalUnitH1.lean) on normal paracompact spaces; the `_succ` version in ComparisonPositive.lean l.116 covers this at `n = 0`
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 1 missing docstring (private)
+suggestion: delete; use `constantSheafCohomologyIsoSingular_naturality_of_global … 0`, and make `compare_naturality` one public lemma in `CategoryTheory`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/FiniteClosedH1.lean  (7 declarations, 206 lines)
+verdict: C (degree-one fork of FiniteClosedPositive.lean under the project's finite-closed-map hypotheses)
+twin: naturality of `H^1(X; A_X) ≅ H^1_sing(X; A)` in `X` (Bredon III.1); no Mathlib twin
+findings:
+- l.11–15 module docstring: "Only the degree-zero cochain sheaf is required to be acyclic" — H1 pipeline residue
+- l.32–35 hypotheses `[T2Space X] (hf : IsClosedMap f) (hfinite : ∀ y, (f ⁻¹' {y}).Finite)`: the textbook naturality is for every continuous map; finite closed maps are what the project's `ConstantSheafCohomology.pullback` (via exact pushforward) supports
+- l.38 `resolutionH1Pullback` uses the project's `AcyclicResolutionH1.Hom` (truncated resolution) instead of the indexed `AcyclicResolution.Hom` of the positive file
+- l.117 `compose_squares`, l.125 `reassoc_eq` are private lemmas duplicated verbatim in FiniteClosedPositive.lean l.159, 167; `set_option maxHeartbeats 1000000 in` l.130
+- l.193 `h1Comparison_naturality` again requires the `IsIso` instances as hypotheses; 2 missing docstrings (private)
+suggestion: delete in favour of `constantSheafCohomologyIsoSingular_naturality … 0` in FiniteClosedPositive.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/FiniteClosedPositive.lean  (9 declarations, 313 lines)
+verdict: C (naturality restricted to finite closed maps because of the project's pullback construction)
+twin: naturality of the sheaf/singular comparison for continuous maps (Bredon III.1, Warner 5.32); no Mathlib twin
+findings:
+- l.11–17 module docstring: precise about the method, no reference
+- l.32–35 `[T2Space X] (hf : IsClosedMap f) (hfinite : …)`: the comparison isomorphism is natural for every continuous map; the restriction to finite closed maps comes from `TopCat.ConstantSheafCohomology.pullback` being built through exact pushforward — project residue in the hypotheses
+- l.176 `constantSheafGlobalIso_naturality` needs `set_option maxHeartbeats 3000000 in` plus `backward.isDefEq.respectTransparency false` for a 100-line proof; l.276 `constantSheafCohomologyIsoSingular_naturality` and l.292 `constantSheafCohomology_pullback_isIso_of_singular` are the useful statements
+- l.159, l.167 private `compose_squares`/`reassoc_eq` duplicated from FiniteClosedH1.lean; 3 missing docstrings (l.58 and the two private)
+- `[MetrizableSpace X] [MetrizableSpace Y]`, degrees `n + 1` only, `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: once `ConstantSheafCohomology.pullback` exists for all continuous maps, restate naturality without the finite-closed hypotheses; meanwhile share the two private lemmas and absorb FiniteClosedH1.lean
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/Global.lean  (6 declarations, 105 lines)
+verdict: B (minor: docs/names)
+twin: naturality of `S^*(X) → Γ(𝒮^*_X)` in `X` (Bredon III.1); no Mathlib twin
+findings:
+- l.11–15 module docstring: two sentences, no reference
+- l.32 `preimageMap_inclusion` is a `ContinuousMap` identity (`Subtype.val ∘ restrictPreimage = f ∘ Subtype.val`) misplaced in a sheaf file and missing a docstring; l.49 `globalSheafPullback_f … := rfl` missing docstring, should be `@[simp]`
+- l.40 `globalSheafPullback`, l.53 `globalCochainUnit_pullback`, l.85 `globalCochainComparison_naturality`, l.94 `_homology_naturality`: general (all continuous `f`), well named
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 2 missing docstrings
+suggestion: move `preimageMap_inclusion` next to `preimageMap` in Pullback/Presheaf.lean and add the two docstrings
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/Presheaf.lean  (9 declarations, 109 lines)
+verdict: B (minor: docs/names)
+twin: functoriality of the singular-cochain presheaf in the space (Bredon III.1); Mathlib `Set.restrictPreimage`/`ContinuousMap.restrictPreimage`
+findings:
+- l.11–16 module docstring: adequate, no reference
+- l.34 `preimageMap f U : C((Opens.map f).obj U, U)` duplicates Mathlib's `ContinuousMap.restrictPreimage`-style restriction (`f.restrictPreimage (U : Set Y)` up to the `Opens.map` coercion)
+- l.66 `presheafPullback : presheaf Y A n ⟶ f_* (presheaf X A n)`, l.78 `presheafPullback_d`, l.89 `constantPresheafPullback`, l.97 `presheafPullback_augmentation`: standard, well named
+- 4 missing docstrings (l.39 `@[simp]`, 42, 51, 72); l.51 uses `{_U _V : Opens Y}` underscore-named explicit binders; `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: define `preimageMap` as `ContinuousMap.restrictPreimage` and docstring the four lemmas
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Pullback/Sheaf.lean  (7 declarations, 91 lines)
+verdict: B (minor: docs/names)
+twin: functoriality of the sheafified singular-cochain complex (Bredon III.1); Mathlib `sheafifyLift`/`TopCat.Sheaf.pushforward`
+findings:
+- l.11–15 module docstring: adequate, no reference
+- l.35 `cochainPullback`, l.48 `cochainPullback_d`, l.64 `cochainPullback_augmentation`, l.81 `cochainPullbackComplex`: the expected API; l.58 `constant_sheafifyPullback … := rfl` shows the constant-sheaf pushforward morphism of ConstantPushforward.lean is definitionally the same construction — good
+- 2 missing docstrings (l.40 `@[reassoc]`, l.88 `rfl`); `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: add the two docstrings and a `## Main results` list; otherwise upstream-shaped
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/ResolutionH1.lean  (1 declarations, 50 lines)
+verdict: C (truncated `H¹`-only resolution duplicating ResolutionPositive.lean)
+twin: Bredon III.1 (`0 → A_X → 𝒮^0 → 𝒮^1 → 𝒮^2` exact) as the `sc' 0 1 2` window; no Mathlib twin
+findings:
+- l.11–16 module docstring: "No exactness in degree two is used or asserted" — negated claim, H1 residue
+- l.35 `resolutionH1 : AcyclicResolutionH1` (the project's three-term resolution structure) is the `sc' 0 1 2` truncation of `resolution X A hLC` from ResolutionPositive.lean; both are fed to two parallel comparison pipelines
+- `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: delete together with the `AcyclicResolutionH1` pipeline once ComparisonPositive covers `n = 0`
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/ResolutionPositive.lean  (7 declarations, 96 lines)
+verdict: B (minor: docs/names)
+twin: Bredon, Sheaf Theory III.1 / Warner 5.31–5.32 (the sheafified singular cochains form a flabby resolution of `A_X` on a paracompact locally contractible space); no Mathlib twin — genuine gap
+findings:
+- l.11–17 module docstring states the theorem (exact + flasque ⇒ acyclic resolution), no reference, no `## Main results`
+- l.39 `exactAugmentedComplex`, l.56 `resolution`, l.76 `resolution_isAcyclic [MetrizableSpace X]`, l.88 `resolutionGlobalComplexIso`: the textbook package with sensible names; `[MetrizableSpace X]` where the textbook has paracompact (inherited from OpenRestriction.lean)
+- l.92 uses `TopCat.SheafH1.globalSectionsFunctor` — the global-sections functor is named under the project's `SheafH1` namespace although it is degree-independent
+- 2 missing docstrings (l.61, 65, both `@[simp] … := rfl`); `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: cite Bredon III.1, rename the global-sections functor out of `SheafH1`, and weaken `MetrizableSpace` to hereditarily paracompact
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Sheaf.lean  (10 declarations, 86 lines)
+verdict: B (minor: docs/names)
+twin: Bredon III.1 (`𝒮^n` = sheaf generated by `S^n`); Mathlib `presheafToSheaf`, `toSheafify`
+findings:
+- l.11–16 module docstring: "no local exactness or cohomological acyclicity is asserted here" — negated claim
+- l.34 `sheafification X` is defined identically in SheafificationPushforward.lean l.37 (`TopCat.SheafificationPushforward.sheafification`) and as `TopCat.SheafificationLocal.sheaf`: three aliases for `presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat` across Lib
+- l.43 `sheaf`, l.48 `sheafDifferential`, l.53 `complexSheaf`, l.66 `unit`, l.79 `unitComplex`: the standard objects, clean names; l.38 `sheafification_additive` instance is right
+- 2 missing docstrings (l.58, 62, `@[simp] … := rfl`); `TopCat.{0}`/`AddCommGrpCat.{0}`
+suggestion: use one shared `TopCat.Presheaf.sheafification` abbreviation across Lib and drop the negated sentence
+
+## Lib/Topology/Sheaves/SingularCochainSheaf/Vanishing.lean  (2 declarations, 62 lines)
+verdict: B (minor: docs only)
+twin: corollary of Bredon III Thm. 1.1 (`H^{n}(X; A_X) = 0` for contractible locally contractible paracompact `X`, `n ≥ 1`); no Mathlib twin
+findings:
+- l.11–15 module docstring: "This FREE owner records the resulting equivalence" — a stale project seat/lane sentence, not mathematics
+- l.33 `constantSheafCohomology_subsingleton_iff_singular` (vanishing transported along the comparison) and l.53 `constantSheafCohomology_succ_subsingleton_of_contractible` are fine; the second needs `[ContractibleSpace X]` and `hLC` and `[MetrizableSpace X]` (the last two only because the comparison does)
+- degrees `n + 1` only; `TopCat.{0}`/`AddCommGrpCat.{0}`; 0 missing docstrings
+suggestion: delete the "FREE owner" sentence and cite Bredon III.1.1
+
+## Lib/Topology/Sheaves/StalkwiseSectionLift.lean  (1 declarations, 87 lines)
+verdict: A (textbook-ready)
+twin: gluing of local preimages under a stalkwise-injective morphism (Hartshorne II Ex. 1.2 / Iversen II.1); Mathlib/Topology/Sheaves/Stalks.lean `TopCat.Presheaf.app_surjective_of_stalkFunctor_map_bijective` is the all-sections analogue
+findings:
+- l.11–17 module docstring states the result and distinguishes it from the stalkwise-surjectivity criterion; no reference, but the statement is self-explanatory
+- l.20–30 fully generic: `C` a concrete category with the same `PreservesFilteredColimits (forget C)`/`HasLimits`/`ReflectsIsomorphisms` assumptions as Mathlib's `Stalks.lean`, `X : TopCat.{v}`, universe-polymorphic; namespace `TopCat.Sheaf`
+- l.34 `exists_preimage_of_stalkwise_mem_range` follows Mathlib naming; proof via `existsUnique_gluing'` is the Mathlib route
+- 0 missing docstrings; no preamble residue
+suggestion: propose upstream next to `app_surjective_of_stalkFunctor_map_bijective`, adding a `## Main results` line
+
+## Lib/Topology/Sheaves/StalkwiseSectionRange.lean  (1 declarations, 96 lines)
+verdict: C (specialisation of the sibling StalkwiseSectionLift.lean to `AddCommGrpCat.{0}`, reproved)
+twin: same as StalkwiseSectionLift.lean; Mathlib `TopCat.Presheaf.stalk_mono_of_mono` (used l.50-ish)
+findings:
+- l.11–17 module docstring: fine, no reference
+- l.35 `app_exists_preimage_iff_stalkwise_exists_preimage (f : F ⟶ G) [Mono f]` over `TopCat.{0}`/`AddCommGrpCat.{0}`: the `←` direction is `exists_preimage_of_stalkwise_mem_range` (universe-polymorphic, concrete `C`) with injectivity obtained from `[Mono f]`; the file re-runs the 50-line gluing proof instead of applying the sibling
+- namespace `TopCat.Presheaf` while the statement is about `TopCat.Sheaf` and the sibling lives in `TopCat.Sheaf`
+- 0 missing docstrings; no preamble residue
+suggestion: reduce to a 5-line corollary of `exists_preimage_of_stalkwise_mem_range` in the sibling file (generic `C`) and delete this file
+
+# done 54 files

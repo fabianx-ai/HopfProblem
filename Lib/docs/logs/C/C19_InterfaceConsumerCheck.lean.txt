@@ -1,0 +1,33 @@
+import C19_InterfaceCheck
+
+noncomputable section
+
+namespace C19_InterfaceConsumerCheck
+
+-- The sixteen names resolve and elaborate from a separate importing consumer.
+#check C19_InterfaceCheck.c1
+#check C19_InterfaceCheck.c2
+#check C19_InterfaceCheck.c3
+#check C19_InterfaceCheck.c4
+#check C19_InterfaceCheck.c5
+#check C19_InterfaceCheck.c6
+#check C19_InterfaceCheck.c7
+#check C19_InterfaceCheck.c8
+#check C19_InterfaceCheck.c9
+#check C19_InterfaceCheck.c10
+#check C19_InterfaceCheck.c11
+#check C19_InterfaceCheck.c12
+#check C19_InterfaceCheck.c13
+#check C19_InterfaceCheck.c14
+#check C19_InterfaceCheck.c15
+#check C19_InterfaceCheck.c16
+
+-- An application example: the degree-three equivalence applies at any
+-- simply connected space with pi_2 trivial.
+example {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    [Subsingleton (HomotopyGroup.Pi 2 X x)] :
+    Additive (HomotopyGroup.Pi 3 X x) ≃ₗ[ℤ]
+      Mathoverflow1973.SingularMayerVietoris.SingularHomology X 3 :=
+  Mathoverflow1973.ThirdHurewicz.hurewiczLinearEquiv x
+
+end C19_InterfaceConsumerCheck

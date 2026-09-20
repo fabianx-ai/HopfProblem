@@ -1,0 +1,399 @@
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:85:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:89:7: error(lean.unknownIdentifier): Unknown identifier `hurewiczLinearEquivOfTwoLE`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:97:9: error(lean.unknownIdentifier): Unknown identifier `SphereCube.Sphere`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:97:52: error(lean.unknownIdentifier): Unknown identifier `SphereCube.Sphere`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:31: error(lean.unknownIdentifier): Unknown identifier `SphereCube.Sphere`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:104:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  SimplyConnectedSpace ↑(SphereHomology.UnitSphere (n + 1 + 1))
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:110:5: error: unknown namespace `SphereCube`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:114:16: error: Invalid argument name `m` for function
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:116:21: error: Invalid argument name `m` for function
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:126:36: error: Invalid argument name `m` for function
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:131:21: error(lean.unknownIdentifier): Unknown identifier `hurewiczLinearEquiv`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:139:4: error: Function expected at
+  factorMap_homotopy
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  hn
+
+Hint: The identifier `factorMap_homotopy` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:140:70: error(lean.unknownIdentifier): Unknown identifier `cylinder`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:139:60: error: unsolved goals
+x✝ : Sort u_2
+factorMap_homotopy : x✝
+n : ℕ
+hn : 0 < n
+X : Type u_1
+inst✝ : TopologicalSpace X
+x : X
+p q : ↑(GenLoop (Fin n) X x)
+H : (↑p).HomotopyRel (↑q) (Cube.boundary (Fin n))
+t : ↑unitInterval
+u : Fin n → ↑unitInterval
+⊢ sorry = H (t, u)
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:160:5: error: Function expected at
+  factorMap
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  hn
+
+Hint: The identifier `factorMap` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:173:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:173:34: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:175:11: error(lean.unknownIdentifier): Unknown identifier `quotient`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:177:11: error: Application type mismatch: The argument
+  Sphere
+has type
+  x✝¹
+but is expected to have type
+  ?m.1
+in the application
+  @?m.13 Sphere
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:183:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:183:34: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:184:4: error: Function expected at
+  factorMap
+but this term has type
+  ?m.3
+
+Note: Expected a function because this term is being applied to the argument
+  hn
+
+Hint: The identifier `factorMap` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:185:3: error(lean.unknownIdentifier): Unknown identifier `factorMap_unique`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:190:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:191:13: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:192:4: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.3
+
+Note: Expected a function because this term is being applied to the argument
+  (basedSphereCube f hf)
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:194:9: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.3
+
+Note: Expected a function because this term is being applied to the argument
+  (quotientLoop (m + 2))
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:195:8: error(lean.unknownIdentifier): Unknown identifier `factor_cubeHomologyClass_cycle`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:194:54: error: unsolved goals
+x✝² : Sort u_1
+Sphere : x✝²
+x✝¹ : Sort u_2
+point : x✝¹
+x✝ : Sort u_3
+cubeHomologyClass : x✝
+m : ℕ
+X : Type
+inst✝ : TopologicalSpace X
+x : X
+f : C(sorry, X)
+hf : f sorry = x
+⊢ sorry = (SingularMayerVietoris.singularHomologyMap f (m + 2)) sorry
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:202:13: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:202:13: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:203:13: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:204:13: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:206:11: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.3
+
+Note: Expected a function because this term is being applied to the argument
+  (quotientLoop (m + 2))
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:208:11: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.3
+
+Note: Expected a function because this term is being applied to the argument
+  (quotientLoop (m + 2))
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:209:22: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:210:14: error(lean.unknownIdentifier): Unknown identifier `basedSphereCube`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:210:57: error(lean.unknownIdentifier): Unknown identifier `basedSphereCube`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:211:16: error(lean.unknownIdentifier): Unknown identifier `hurewiczMap`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:212:8: error(lean.unknownIdentifier): Unknown identifier `hurewiczMap`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:226:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:226:39: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:227:12: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:227:29: error: Function expected at
+  point
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  n
+
+Hint: The identifier `point` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:228:11: error(lean.unknownIdentifier): Unknown identifier `simplexCubeHomeomorph`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:227:61: error: unsolved goals
+x✝¹ : Sort u_2
+Sphere : x✝¹
+x✝ : Sort u_3
+point : x✝
+n : ℕ
+hn : 0 < n
+Y : Type u_1
+inst✝ : TopologicalSpace Y
+y : Y
+u : C(sorry, Y)
+P : Path (u sorry) y
+⊢ ∃ v, v sorry = y ∧ u.Homotopic v
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:267:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:267:27: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:269:11: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (quotientLoop (m + 2))
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:270:8: error: Function expected at
+  cubeHomologyClass
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  (quotientLoop (m + 2))
+
+Hint: The identifier `cubeHomologyClass` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:271:35: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:31: error: Function expected at
+  Sphere
+but this term has type
+  x✝¹
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:273:25: error(lean.unknownIdentifier): Unknown identifier `exists_basepoint_adjustment`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:273:2: error: Tactic `generalize` failed: result is not type correct
+  ∀ (x : Type), g.Homotopic (ContinuousMap.id x)
+
+x✝¹ : Sort u_1
+Sphere : x✝¹
+x✝ : Sort u_2
+cubeHomologyClass : x✝
+m : ℕ
+g : C(sorry, sorry)
+hd : (SingularMayerVietoris.singularHomologyMap g (m + 2)) sorry = sorry
+this : sorry := sorry
+⊢ g.Homotopic (ContinuousMap.id sorry)
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:289:11: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:290:14: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:293:44: error: Function expected at
+  Sphere
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (m + 2)
+
+Hint: The identifier `Sphere` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:297:8: error(lean.unknownIdentifier): Unknown identifier `sphere_homotopic_id_of_topClass`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:298:8: error(lean.unknownIdentifier): Unknown identifier `hF`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:299:73: error(lean.unknownIdentifier): Unknown identifier `hh`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:299:77: error(lean.unknownIdentifier): Unknown identifier `m`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:300:5: error(lean.unknownIdentifier): Unknown identifier `cubeHomologyClass`
+Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:293:64: error: unsolved goals
+⊢ Sort u_1

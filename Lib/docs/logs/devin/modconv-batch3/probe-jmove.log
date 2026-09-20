@@ -1,0 +1,108 @@
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+  (f : C(X, Y)) : C(SingularHomology.CircleTopology.Circle × X, SingularHomology.CircleTopology.Circle × Y)
+Mathoverflow1973.PeriodTorusHigherHomology.intersectionProductMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+  (f : C(X, Y)) :
+  C(↑(SingularHomology.CircleTopology.productU X ∩ SingularHomology.CircleTopology.productV X),
+    ↑(SingularHomology.CircleTopology.productU Y ∩ SingularHomology.CircleTopology.productV Y))
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductMap_projection {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) :
+  (SingularHomology.CircleTopology.productProjection Y).comp (PeriodTorusHigherHomology.circleProductMap f) =
+    f.comp (SingularHomology.CircleTopology.productProjection X)
+Mathoverflow1973.PeriodTorusHigherHomology.intersectionProductMap_homotopyEquiv {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) :
+  (SingularHomology.CircleTopology.productIntersectionHomotopyEquiv Y).toFun.comp
+      (PeriodTorusHigherHomology.intersectionProductMap f) =
+    (SingularHomology.CircleTopology.sumContinuousMap f f).comp
+      (SingularHomology.CircleTopology.productIntersectionHomotopyEquiv X).toFun
+Mathoverflow1973.PeriodTorusHigherHomology.circleProjectionHomology_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ) :
+  SingularHomology.circleProjectionHomology Y n ∘ₗ
+      SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) n =
+    SingularMayerVietoris.singularHomologyMap f n ∘ₗ SingularHomology.circleProjectionHomology X n
+Mathoverflow1973.PeriodTorusHigherHomology.sumHomologyEquiv_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] {X' Y' : Type} [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y')) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology (X ⊕ Y) n)) :
+  (SingularHomology.sumHomologyEquiv X' Y' n)
+      ((SingularMayerVietoris.singularHomologyMap (SingularHomology.CircleTopology.sumContinuousMap f g) n) a) =
+    ((SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.sumHomologyEquiv X Y n) a).1,
+      (SingularMayerVietoris.singularHomologyMap g n) ((SingularHomology.sumHomologyEquiv X Y n) a).2)
+Mathoverflow1973.PeriodTorusHigherHomology.productIntersectionHomologyEquiv_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a :
+    ↑(SingularMayerVietoris.SingularHomology
+        (↑(SingularHomology.CircleTopology.productU X ∩ SingularHomology.CircleTopology.productV X)) n)) :
+  (SingularHomology.productIntersectionHomologyEquiv Y n)
+      ((SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.intersectionProductMap f) n) a) =
+    ((SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.productIntersectionHomologyEquiv X n) a).1,
+      (SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.productIntersectionHomologyEquiv X n) a).2)
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductMap_mapsToU {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) :
+  Set.MapsTo (⇑(PeriodTorusHigherHomology.circleProductMap f)) (SingularHomology.CircleTopology.productU X)
+    (SingularHomology.CircleTopology.productU Y)
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductMap_mapsToV {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) :
+  Set.MapsTo (⇑(PeriodTorusHigherHomology.circleProductMap f)) (SingularHomology.CircleTopology.productV X)
+    (SingularHomology.CircleTopology.productV Y)
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductIntersectionRestriction_eq {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) :
+  SingularMayerVietoris.intersectionRestriction (PeriodTorusHigherHomology.circleProductMap f)
+      (SingularHomology.CircleTopology.productU X) (SingularHomology.CircleTopology.productV X)
+      (SingularHomology.CircleTopology.productU Y) (SingularHomology.CircleTopology.productV Y) ⋯ ⋯ =
+    PeriodTorusHigherHomology.intersectionProductMap f
+Mathoverflow1973.PeriodTorusHigherHomology.circleMayerVietorisConnecting_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ) :
+  SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.intersectionProductMap f) n ∘ₗ
+      SingularHomology.circleMayerVietorisConnecting X n =
+    SingularHomology.circleMayerVietorisConnecting Y n ∘ₗ
+      SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1)
+Mathoverflow1973.PeriodTorusHigherHomology.circleBoundaryCoordinates_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle × X) (n + 1))) :
+  (SingularHomology.circleBoundaryCoordinates Y n)
+      ((SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1)) a) =
+    ((SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.circleBoundaryCoordinates X n) a).1,
+      (SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.circleBoundaryCoordinates X n) a).2)
+Mathoverflow1973.PeriodTorusHigherHomology.circleBoundary_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle × X) (n + 1))) :
+  (SingularHomology.circleBoundary Y n)
+      ((SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1)) a) =
+    (SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.circleBoundary X n) a)
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductHomologyEquiv_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology (SingularHomology.CircleTopology.Circle × X) (n + 1))) :
+  (SingularHomology.circleProductHomologyEquiv Y n)
+      ((SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1)) a) =
+    ((SingularMayerVietoris.singularHomologyMap f (n + 1)) ((SingularHomology.circleProductHomologyEquiv X n) a).1,
+      (SingularMayerVietoris.singularHomologyMap f n) ((SingularHomology.circleProductHomologyEquiv X n) a).2)
+Mathoverflow1973.PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_naturality {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology X (n + 1)) × ↑(SingularMayerVietoris.SingularHomology X n)) :
+  (SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1))
+      ((SingularHomology.circleProductHomologyEquiv X n).symm a) =
+    (SingularHomology.circleProductHomologyEquiv Y n).symm
+      ((SingularMayerVietoris.singularHomologyMap f (n + 1)) a.1, (SingularMayerVietoris.singularHomologyMap f n) a.2)
+Mathoverflow1973.PeriodTorusHigherHomology.crossProductCycles_natural {X Y X' Y' : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y')) (n : ℕ)
+  (a : ↥(SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1))
+  (b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) n)) :
+  (SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap (f.prodMap g)) (n + 1))
+      (((SingularHomology.crossProductCycles X Y n) a) b) =
+    ((SingularHomology.crossProductCycles X' Y' n)
+        ((SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap f) 1) a))
+      ((SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap g) n) b)
+Mathoverflow1973.PeriodTorusHigherHomology.crossProductHomology_natural {X Y X' Y' : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X')) (g : C(Y, Y')) (n : ℕ)
+  (a : ↑(HomologicalComplex.homology (SingularChains.singularComplex X) 1))
+  (b : ↑(HomologicalComplex.homology (SingularChains.singularComplex Y) n)) :
+  (ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap (f.prodMap g)) (n + 1)))
+      (((SingularHomology.crossProductHomology X Y n) a) b) =
+    ((SingularHomology.crossProductHomology X' Y' n)
+        ((ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap f) 1)) a))
+      ((ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap g) n)) b)
+Mathoverflow1973.PeriodTorusHigherHomology.crossProductHomology_snd {X Y : Type} [TopologicalSpace X]
+  [TopologicalSpace Y] (n : ℕ) (a : ↑(SingularMayerVietoris.SingularHomology X 1))
+  (b : ↑(SingularMayerVietoris.SingularHomology Y n)) :
+  (SingularMayerVietoris.singularHomologyMap ContinuousMap.snd (n + 1))
+      (((SingularHomology.crossProductHomology X Y n) a) b) =
+    0

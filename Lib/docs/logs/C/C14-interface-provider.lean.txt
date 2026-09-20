@@ -1,0 +1,18 @@
+import Lib.AlgebraicTopology.Hurewicz.Naturality
+noncomputable section
+namespace C14_InterfaceCheck
+abbrev homotopyMap := @Mathoverflow1973.Hurewicz.homotopyMap
+abbrev cubeChain_natural := @Mathoverflow1973.Hurewicz.cubeChain_natural
+abbrev cubeCycle_natural := @Mathoverflow1973.Hurewicz.cubeCycle_natural
+abbrev cubeHomologyClass_natural := @Mathoverflow1973.Hurewicz.cubeHomologyClass_natural
+abbrev hurewiczFunction_natural := @Mathoverflow1973.Hurewicz.hurewiczFunction_natural
+abbrev hurewiczMap_natural := @Mathoverflow1973.Hurewicz.hurewiczMap_natural
+abbrev hurewiczLinearEquiv_natural :=
+  @Mathoverflow1973.Hurewicz.hurewiczLinearEquiv_natural
+abbrev hurewiczLinearEquivOfTwoLE_natural :=
+  @Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+abbrev singularHomology_one_subsingleton :=
+  @Mathoverflow1973.Hurewicz.singularHomology_one_subsingleton
+abbrev subsingleton_singularHomology_of_lt :=
+  @Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt
+end C14_InterfaceCheck

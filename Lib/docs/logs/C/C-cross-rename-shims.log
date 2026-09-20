@@ -1,0 +1,693 @@
+CMD: lake env lean ProbeCrossShims.lean
+START: 1789256084 Sun Sep 13 01:34:44 CEST 2026
+@Mathoverflow1973.SingularHomology.affineSimplex_constant : ∀ {n p : ℕ} (a : ↑(Simplex p)),
+  (Mathoverflow1973.SingularMayerVietoris.affineSimplex fun x => a) = ContinuousMap.const (↑(Simplex n)) a
+@Mathoverflow1973.SingularHomology.affineSimplex_stdVertices_image : ∀ {n p : ℕ} (v : Fin (n + 1) → ↑(Simplex p)),
+  ⇑(Mathoverflow1973.SingularMayerVietoris.affineSimplex v) ∘ Mathoverflow1973.SingularMayerVietoris.stdVertices n = v
+Mathoverflow1973.SingularHomology.chainBilinearLift : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (p q : ℕ) →
+        {M : Type} →
+          [inst_2 : AddCommGroup M] →
+            [modM : Module ℤ M] →
+              (SingularSimplex X p → SingularSimplex Y q → M) → ↑(Chains X p) →ₗ[ℤ] ↑(Chains Y q) →ₗ[ℤ] M
+Mathoverflow1973.SingularHomology.chainBilinearLift_simplex : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (p q : ℕ) {M : Type} [inst_2 : AddCommGroup M] [modM : Module ℤ M]
+  (f : SingularSimplex X p → SingularSimplex Y q → M) (σ : SingularSimplex X p) (τ : SingularSimplex Y q),
+  ((Mathoverflow1973.SingularHomology.chainBilinearLift X Y p q f) (simplexChain X p σ)) (simplexChain Y q τ) = f σ τ
+Mathoverflow1973.SingularHomology.chainBilinearLift_simplex_left : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (p q : ℕ) {M : Type} [inst_2 : AddCommGroup M] [modM : Module ℤ M]
+  (f : SingularSimplex X p → SingularSimplex Y q → M) (σ : SingularSimplex X p),
+  (Mathoverflow1973.SingularHomology.chainBilinearLift X Y p q f) (simplexChain X p σ) = chainLift Y q (f σ)
+Mathoverflow1973.SingularHomology.chainBilinearMap_ext : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (p q : ℕ) {M : Type} [inst_2 : AddCommGroup M] [modM : Module ℤ M]
+  {F G : ↑(Chains X p) →ₗ[ℤ] ↑(Chains Y q) →ₗ[ℤ] M},
+  (∀ (σ : SingularSimplex X p) (τ : SingularSimplex Y q),
+      (F (simplexChain X p σ)) (simplexChain Y q τ) = (G (simplexChain X p σ)) (simplexChain Y q τ)) →
+    F = G
+@Mathoverflow1973.SingularHomology.crossInsertRight : {X Y : Type} →
+  [inst : TopologicalSpace X] → [inst_1 : TopologicalSpace Y] → Y → C(X, X × Y)
+Mathoverflow1973.SingularHomology.crossProductCycleClasses : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1) →ₗ[ℤ]
+          ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n) →ₗ[ℤ]
+            ↑(HomologicalComplex.homology (singularComplex (X × Y)) (n + 1))
+@Mathoverflow1973.SingularHomology.crossProductCycleClasses_boundary_left : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 2))
+  (b : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n)),
+  ((Mathoverflow1973.SingularHomology.crossProductCycleClasses X Y n)
+        (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle (singularComplex X) 1 a))
+      b =
+    0
+@Mathoverflow1973.SingularHomology.crossProductCycleClasses_boundary_right : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ)
+  (a : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1)) (b : ↑(Chains Y (n + 1))),
+  ((Mathoverflow1973.SingularHomology.crossProductCycleClasses X Y n) a)
+      (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle (singularComplex Y) n b) =
+    0
+Mathoverflow1973.SingularHomology.crossProductCycles : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1) →ₗ[ℤ]
+          ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n) →ₗ[ℤ]
+            ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex (X × Y)) (n + 1))
+Mathoverflow1973.SingularHomology.crossProductCycles_pointCycle_right : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y]
+  (a : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1)) (y : Y),
+  ((Mathoverflow1973.SingularHomology.crossProductCycles X Y 0) a) (pointCycle y) =
+    (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.mapCycles
+        (singularChainMap (Mathoverflow1973.SingularHomology.crossInsertRight y)) 1)
+      a
+Mathoverflow1973.SingularHomology.crossProductCycles_val : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ)
+  (a : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1))
+  (b : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n)),
+  ↑(((Mathoverflow1973.SingularHomology.crossProductCycles X Y n) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) ↑a) ↑b
+Mathoverflow1973.SingularHomology.crossProductEdge : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] → (n : ℕ) → ↑(Chains X 1) →ₗ[ℤ] ↑(Chains Y n) →ₗ[ℤ] ↑(Chains (X × Y) (n + 1))
+Mathoverflow1973.SingularHomology.crossProductEdge_affineChainMap : ∀ (p q n : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 2)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) (n + 1)),
+  ((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) n)
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a))
+      ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q n) b) =
+    (Mathoverflow1973.SingularHomology.productAffineChainMap p q (n + 1))
+      (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct n) a) b)
+@Mathoverflow1973.SingularHomology.crossProductEdge_boundary : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 1)) (b : ↑(Chains Y (n + 1))),
+  (ModuleCat.Hom.hom ((singularComplex (X × Y)).d (n + 2) (n + 1)))
+      (((Mathoverflow1973.SingularHomology.crossProductEdge X Y (n + 1)) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductZeroLeft X Y (n + 1))
+          ((ModuleCat.Hom.hom ((singularComplex X).d 1 0)) a))
+        b -
+      ((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) a)
+        ((ModuleCat.Hom.hom ((singularComplex Y).d (n + 1) n)) b)
+Mathoverflow1973.SingularHomology.crossProductEdge_boundary_affine : ∀ (p q n : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 2)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) (n + 2)),
+  (ModuleCat.Hom.hom ((singularComplex (↑(Simplex p) × ↑(Simplex q))).d (n + 2) (n + 1)))
+      (((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) (n + 1))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b)) =
+    ((Mathoverflow1973.SingularHomology.crossProductZeroLeft (↑(Simplex p)) (↑(Simplex q)) (n + 1))
+          ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex p)).d 1 0))
+            ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a)))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b) -
+      ((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) n)
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a))
+        ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex q)).d (n + 1) n))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b))
+@Mathoverflow1973.SingularHomology.crossProductEdge_boundary_of_left_cycle : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 1)),
+  (ModuleCat.Hom.hom ((singularComplex X).d 1 0)) a = 0 →
+    ∀ (b : ↑(Chains Y (n + 1))),
+      (ModuleCat.Hom.hom ((singularComplex (X × Y)).d (n + 2) (n + 1)))
+          (((Mathoverflow1973.SingularHomology.crossProductEdge X Y (n + 1)) a) b) =
+        -((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) a)
+            ((ModuleCat.Hom.hom ((singularComplex Y).d (n + 1) n)) b)
+@Mathoverflow1973.SingularHomology.crossProductEdge_boundary_zero : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (a : ↑(Chains X 1)) (b : ↑(Chains Y 0)),
+  (ModuleCat.Hom.hom ((singularComplex (X × Y)).d 1 0))
+      (((Mathoverflow1973.SingularHomology.crossProductEdge X Y 0) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductZeroLeft X Y 0) ((ModuleCat.Hom.hom ((singularComplex X).d 1 0)) a))
+      b
+Mathoverflow1973.SingularHomology.crossProductEdge_boundary_zero_affine : ∀ (p q : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 2)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) 1),
+  (ModuleCat.Hom.hom ((singularComplex (↑(Simplex p) × ↑(Simplex q))).d 1 0))
+      (((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) 0)
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q 0) b)) =
+    ((Mathoverflow1973.SingularHomology.crossProductZeroLeft (↑(Simplex p)) (↑(Simplex q)) 0)
+        ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex p)).d 1 0))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 1) a)))
+      ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q 0) b)
+@Mathoverflow1973.SingularHomology.crossProductEdge_cycle : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 1)) (b : ↑(Chains Y n)),
+  (ModuleCat.Hom.hom ((singularComplex X).d 1 0)) a = 0 →
+    (ModuleCat.Hom.hom ((singularComplex Y).d n (n - 1))) b = 0 →
+      (ModuleCat.Hom.hom ((singularComplex (X × Y)).d (n + 1) n))
+          (((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) a) b) =
+        0
+@Mathoverflow1973.SingularHomology.crossProductEdge_natural : ∀ {X Y X' Y' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : TopologicalSpace X'] [inst_3 : TopologicalSpace Y'] (f : C(X, X'))
+  (g : C(Y, Y')) (n : ℕ) (a : ↑(Chains X 1)) (b : ↑(Chains Y n)),
+  (inducedChain (f.prodMap g) (n + 1)) (((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge X' Y' n) ((inducedChain f 1) a)) ((inducedChain g n) b)
+Mathoverflow1973.SingularHomology.crossProductEdge_pointCycle_right : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (a : ↑(Chains X 1)) (y : Y),
+  ((Mathoverflow1973.SingularHomology.crossProductEdge X Y 0) a) ↑(pointCycle y) =
+    (inducedChain (Mathoverflow1973.SingularHomology.crossInsertRight y) 1) a
+Mathoverflow1973.SingularHomology.crossProductEdge_simplex : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (σ : SingularSimplex X 1) (τ : SingularSimplex Y n),
+  ((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) (simplexChain X 1 σ)) (simplexChain Y n τ) =
+    (inducedChain (ContinuousMap.prodMap σ τ) (n + 1))
+      ((Mathoverflow1973.SingularHomology.productAffineChainMap 1 n (n + 1))
+        (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct n)
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex
+              (Mathoverflow1973.SingularMayerVietoris.stdVertices 1)))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex
+            (Mathoverflow1973.SingularMayerVietoris.stdVertices n))))
+Mathoverflow1973.SingularHomology.crossProductEdge_zero_eq_zeroRight : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y],
+  Mathoverflow1973.SingularHomology.crossProductEdge X Y 0 =
+    Mathoverflow1973.SingularHomology.crossProductZeroRight X Y 1
+Mathoverflow1973.SingularHomology.crossProductEdge_zero_simplex_right : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (a : ↑(Chains X 1)) (τ : SingularSimplex Y 0),
+  ((Mathoverflow1973.SingularHomology.crossProductEdge X Y 0) a) (simplexChain Y 0 τ) =
+    (inducedChain
+        (Mathoverflow1973.SingularHomology.crossInsertRight (Mathoverflow1973.SingularHomology.zeroSimplexValue τ)) 1)
+      a
+Mathoverflow1973.SingularHomology.crossProductHomology : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↑(HomologicalComplex.homology (singularComplex X) 1) →ₗ[ℤ]
+          ↑(HomologicalComplex.homology (singularComplex Y) n) →ₗ[ℤ]
+            ↑(HomologicalComplex.homology (singularComplex (X × Y)) (n + 1))
+Mathoverflow1973.SingularHomology.crossProductHomologyCycles : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1) →ₗ[ℤ]
+          ↑(HomologicalComplex.homology (singularComplex Y) n) →ₗ[ℤ]
+            ↑(HomologicalComplex.homology (singularComplex (X × Y)) (n + 1))
+@Mathoverflow1973.SingularHomology.crossProductHomologyCycles_boundary_left : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 2)),
+  (Mathoverflow1973.SingularHomology.crossProductHomologyCycles X Y n)
+      (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle (singularComplex X) 1 a) =
+    0
+@Mathoverflow1973.SingularHomology.crossProductHomologyFixed : {X Y : Type} →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      (n : ℕ) →
+        ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1) →
+          ↑(HomologicalComplex.homology (singularComplex Y) n) →ₗ[ℤ]
+            ↑(HomologicalComplex.homology (singularComplex (X × Y)) (n + 1))
+@Mathoverflow1973.SingularHomology.crossProductHomologyFixed_cycleClass : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ)
+  (a : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1))
+  (b : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n)),
+  (Mathoverflow1973.SingularHomology.crossProductHomologyFixed n a)
+      ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex Y) n) b) =
+    (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex (X × Y)) (n + 1))
+      (((Mathoverflow1973.SingularHomology.crossProductCycles X Y n) a) b)
+Mathoverflow1973.SingularHomology.crossProductHomology_cycleClass : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ)
+  (a : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) 1))
+  (b : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle (singularComplex Y) n)),
+  ((Mathoverflow1973.SingularHomology.crossProductHomology X Y n)
+        ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex X) 1) a))
+      ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex Y) n) b) =
+    (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex (X × Y)) (n + 1))
+      (((Mathoverflow1973.SingularHomology.crossProductCycles X Y n) a) b)
+Mathoverflow1973.SingularHomology.crossProductHomology_pointClass_right : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (a : ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 1)) (y : Y),
+  ((Mathoverflow1973.SingularHomology.crossProductHomology X Y 0) a) (pointClass y) =
+    (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap (Mathoverflow1973.SingularHomology.crossInsertRight y)
+        1)
+      a
+Mathoverflow1973.SingularHomology.crossProductTriangle : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] → (n : ℕ) → ↑(Chains X 2) →ₗ[ℤ] ↑(Chains Y n) →ₗ[ℤ] ↑(Chains (X × Y) (n + 2))
+Mathoverflow1973.SingularHomology.crossProductTriangle_affineChainMap : ∀ (p q n : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 3)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) (n + 1)),
+  ((Mathoverflow1973.SingularHomology.crossProductTriangle (↑(Simplex p)) (↑(Simplex q)) n)
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a))
+      ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q n) b) =
+    (Mathoverflow1973.SingularHomology.productAffineChainMap p q (n + 2))
+      (((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct n) a) b)
+@Mathoverflow1973.SingularHomology.crossProductTriangle_boundary : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 2)) (b : ↑(Chains Y (n + 1))),
+  (ModuleCat.Hom.hom ((singularComplex (X × Y)).d (n + 3) (n + 2)))
+      (((Mathoverflow1973.SingularHomology.crossProductTriangle X Y (n + 1)) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge X Y (n + 1))
+          ((ModuleCat.Hom.hom ((singularComplex X).d 2 1)) a))
+        b +
+      ((Mathoverflow1973.SingularHomology.crossProductTriangle X Y n) a)
+        ((ModuleCat.Hom.hom ((singularComplex Y).d (n + 1) n)) b)
+Mathoverflow1973.SingularHomology.crossProductTriangle_boundary_affine : ∀ (p q n : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 3)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) (n + 2)),
+  (ModuleCat.Hom.hom ((singularComplex (↑(Simplex p) × ↑(Simplex q))).d (n + 3) (n + 2)))
+      (((Mathoverflow1973.SingularHomology.crossProductTriangle (↑(Simplex p)) (↑(Simplex q)) (n + 1))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b)) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) (n + 1))
+          ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex p)).d 2 1))
+            ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a)))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b) +
+      ((Mathoverflow1973.SingularHomology.crossProductTriangle (↑(Simplex p)) (↑(Simplex q)) n)
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a))
+        ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex q)).d (n + 1) n))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q (n + 1)) b))
+@Mathoverflow1973.SingularHomology.crossProductTriangle_boundary_of_right_cycle : ∀ {X Y : Type}
+  [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(Chains X 2)) (b : ↑(Chains Y n)),
+  (ModuleCat.Hom.hom ((singularComplex Y).d n (n - 1))) b = 0 →
+    (ModuleCat.Hom.hom ((singularComplex (X × Y)).d (n + 2) (n + 1)))
+        (((Mathoverflow1973.SingularHomology.crossProductTriangle X Y n) a) b) =
+      ((Mathoverflow1973.SingularHomology.crossProductEdge X Y n) ((ModuleCat.Hom.hom ((singularComplex X).d 2 1)) a)) b
+@Mathoverflow1973.SingularHomology.crossProductTriangle_boundary_zero : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (a : ↑(Chains X 2)) (b : ↑(Chains Y 0)),
+  (ModuleCat.Hom.hom ((singularComplex (X × Y)).d 2 1))
+      (((Mathoverflow1973.SingularHomology.crossProductTriangle X Y 0) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge X Y 0) ((ModuleCat.Hom.hom ((singularComplex X).d 2 1)) a)) b
+Mathoverflow1973.SingularHomology.crossProductTriangle_boundary_zero_affine : ∀ (p q : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 3)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) 1),
+  (ModuleCat.Hom.hom ((singularComplex (↑(Simplex p) × ↑(Simplex q))).d 2 1))
+      (((Mathoverflow1973.SingularHomology.crossProductTriangle (↑(Simplex p)) (↑(Simplex q)) 0)
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a))
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q 0) b)) =
+    ((Mathoverflow1973.SingularHomology.crossProductEdge (↑(Simplex p)) (↑(Simplex q)) 0)
+        ((ModuleCat.Hom.hom ((singularComplex ↑(Simplex p)).d 2 1))
+          ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 2) a)))
+      ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q 0) b)
+@Mathoverflow1973.SingularHomology.crossProductTriangle_natural : ∀ {X Y X' Y' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : TopologicalSpace X'] [inst_3 : TopologicalSpace Y'] (f : C(X, X'))
+  (g : C(Y, Y')) (n : ℕ) (a : ↑(Chains X 2)) (b : ↑(Chains Y n)),
+  (inducedChain (f.prodMap g) (n + 2)) (((Mathoverflow1973.SingularHomology.crossProductTriangle X Y n) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductTriangle X' Y' n) ((inducedChain f 2) a)) ((inducedChain g n) b)
+Mathoverflow1973.SingularHomology.crossProductTriangle_simplex : ∀ (X Y : Type) [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (σ : SingularSimplex X 2) (τ : SingularSimplex Y n),
+  ((Mathoverflow1973.SingularHomology.crossProductTriangle X Y n) (simplexChain X 2 σ)) (simplexChain Y n τ) =
+    (inducedChain (ContinuousMap.prodMap σ τ) (n + 2))
+      ((Mathoverflow1973.SingularHomology.productAffineChainMap 2 n (n + 2))
+        (((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct n)
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex
+              (Mathoverflow1973.SingularMayerVietoris.stdVertices 2)))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex
+            (Mathoverflow1973.SingularMayerVietoris.stdVertices n))))
+Mathoverflow1973.SingularHomology.crossProductZeroLeft : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] → (n : ℕ) → ↑(Chains X 0) →ₗ[ℤ] ↑(Chains Y n) →ₗ[ℤ] ↑(Chains (X × Y) n)
+Mathoverflow1973.SingularHomology.crossProductZeroLeft_affineChainMap : ∀ (p q n : ℕ)
+  (a : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p)) 1)
+  (b : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex q)) (n + 1)),
+  ((Mathoverflow1973.SingularHomology.crossProductZeroLeft (↑(Simplex p)) (↑(Simplex q)) n)
+        ((Mathoverflow1973.SingularMayerVietoris.affineChainMap p 0) a))
+      ((Mathoverflow1973.SingularMayerVietoris.affineChainMap q n) b) =
+    (Mathoverflow1973.SingularHomology.productAffineChainMap p q n)
+      (((Mathoverflow1973.SingularHomology.formalPointCrossProduct n) a) b)
+@Mathoverflow1973.SingularHomology.crossProductZeroLeft_natural : ∀ {X Y X' Y' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : TopologicalSpace X'] [inst_3 : TopologicalSpace Y'] (f : C(X, X'))
+  (g : C(Y, Y')) (n : ℕ) (a : ↑(Chains X 0)) (b : ↑(Chains Y n)),
+  (inducedChain (f.prodMap g) n) (((Mathoverflow1973.SingularHomology.crossProductZeroLeft X Y n) a) b) =
+    ((Mathoverflow1973.SingularHomology.crossProductZeroLeft X' Y' n) ((inducedChain f 0) a)) ((inducedChain g n) b)
+@Mathoverflow1973.SingularHomology.crossProductZeroLeft_simplex : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (σ : SingularSimplex X 0) (τ : SingularSimplex Y n),
+  ((Mathoverflow1973.SingularHomology.crossProductZeroLeft X Y n) (simplexChain X 0 σ)) (simplexChain Y n τ) =
+    simplexChain (X × Y) n
+      ((Mathoverflow1973.SingularHomology.crossInsertLeft (Mathoverflow1973.SingularHomology.zeroSimplexValue σ)).comp
+        τ)
+@Mathoverflow1973.SingularHomology.crossProductZeroLeft_simplex_left : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (σ : SingularSimplex X 0),
+  (Mathoverflow1973.SingularHomology.crossProductZeroLeft X Y n) (simplexChain X 0 σ) =
+    inducedChain
+      (Mathoverflow1973.SingularHomology.crossInsertLeft (Mathoverflow1973.SingularHomology.zeroSimplexValue σ)) n
+Mathoverflow1973.SingularHomology.crossProductZeroRight : (X Y : Type) →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] → (n : ℕ) → ↑(Chains X n) →ₗ[ℤ] ↑(Chains Y 0) →ₗ[ℤ] ↑(Chains (X × Y) n)
+@Mathoverflow1973.SingularHomology.crossProductZeroRight_simplex : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (σ : SingularSimplex X n) (τ : SingularSimplex Y 0),
+  ((Mathoverflow1973.SingularHomology.crossProductZeroRight X Y n) (simplexChain X n σ)) (simplexChain Y 0 τ) =
+    simplexChain (X × Y) n
+      ((Mathoverflow1973.SingularHomology.crossInsertRight (Mathoverflow1973.SingularHomology.zeroSimplexValue τ)).comp
+        σ)
+@Mathoverflow1973.SingularHomology.crossProductZeroRight_simplex_right : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (c : ↑(Chains X n)) (τ : SingularSimplex Y 0),
+  ((Mathoverflow1973.SingularHomology.crossProductZeroRight X Y n) c) (simplexChain Y 0 τ) =
+    (inducedChain
+        (Mathoverflow1973.SingularHomology.crossInsertRight (Mathoverflow1973.SingularHomology.zeroSimplexValue τ)) n)
+      c
+@Mathoverflow1973.SingularHomology.formalBilinearLift : {V : Type u_1} →
+  {W : Type u_2} →
+    {M : Type u_3} →
+      {n m : ℕ} →
+        [inst : AddCommGroup M] →
+          [inst_1 : Module ℤ M] →
+            ((Fin n → V) → (Fin m → W) → M) →
+              Mathoverflow1973.SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
+                Mathoverflow1973.SingularMayerVietoris.FormalChains W m →ₗ[ℤ] M
+@Mathoverflow1973.SingularHomology.formalBilinearLift_simplex : ∀ {V : Type u_1} {W : Type u_2} {M : Type u_3} {n m : ℕ}
+  [inst : AddCommGroup M] [inst_1 : Module ℤ M] (f : (Fin n → V) → (Fin m → W) → M) (v : Fin n → V) (w : Fin m → W),
+  ((Mathoverflow1973.SingularHomology.formalBilinearLift f) (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    f v w
+@Mathoverflow1973.SingularHomology.formalBoundary_edgeCrossProduct : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 2)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 2)),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 2))
+      (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct (q + 1)) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalPointCrossProduct (q + 1))
+          ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 1) c))
+        d -
+      ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct q) c)
+        ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalBoundary_edgeCrossProduct_zero : ∀ {V : Type u_1} {W : Type u_2}
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 2)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W 1),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary 1)
+      (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct 0) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalPointCrossProduct 0)
+        ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 1) c))
+      d
+@Mathoverflow1973.SingularHomology.formalBoundary_edge_simplex : ∀ {V : Type u_1} (v : Fin 2 → V),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary 1) (Mathoverflow1973.SingularMayerVietoris.formalSimplex v) =
+    (Mathoverflow1973.SingularMayerVietoris.formalSimplex fun x => v 1) -
+      Mathoverflow1973.SingularMayerVietoris.formalSimplex fun x => v 0
+@Mathoverflow1973.SingularHomology.formalBoundary_pointCrossProduct : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 1)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 2)),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1))
+      (((Mathoverflow1973.SingularHomology.formalPointCrossProduct (q + 1)) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q) c)
+      ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalBoundary_triangleCrossProduct : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 3)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 2)),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 3))
+      (((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct (q + 1)) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct (q + 1))
+          ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 2) c))
+        d +
+      ((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct q) c)
+        ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalBoundary_triangleCrossProduct_zero : ∀ {V : Type u_1} {W : Type u_2}
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 3)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W 1),
+  (Mathoverflow1973.SingularMayerVietoris.formalBoundary 2)
+      (((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct 0) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct 0)
+        ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 2) c))
+      d
+@Mathoverflow1973.SingularHomology.formalChains_bilinear_ext : ∀ {V : Type u_1} {W : Type u_2} {M : Type u_3} {n m : ℕ}
+  [inst : AddCommGroup M] [inst_1 : Module ℤ M]
+  {f g :
+    Mathoverflow1973.SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
+      Mathoverflow1973.SingularMayerVietoris.FormalChains W m →ₗ[ℤ] M},
+  (∀ (v : Fin n → V) (w : Fin m → W),
+      (f (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+        (g (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w)) →
+    f = g
+@Mathoverflow1973.SingularHomology.formalEdgeCrossProduct : {V : Type u_1} →
+  {W : Type u_2} →
+    (q : ℕ) →
+      Mathoverflow1973.SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
+        Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1) →ₗ[ℤ]
+          Mathoverflow1973.SingularMayerVietoris.FormalChains (V × W) (q + 2)
+@Mathoverflow1973.SingularHomology.formalEdgeCrossProduct_mem_supported : ∀ {V : Type u_1} {W : Type u_2} {S : Set V}
+  {T : Set W} (q : ℕ) {c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 2}
+  {d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)},
+  c ∈ Mathoverflow1973.SingularMayerVietoris.formalChainsSupported S 2 →
+    d ∈ Mathoverflow1973.SingularMayerVietoris.formalChainsSupported T (q + 1) →
+      ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct q) c) d ∈
+        Mathoverflow1973.SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 2)
+@Mathoverflow1973.SingularHomology.formalEdgeCrossProduct_simplex_succ : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (v : Fin 2 → V) (w : Fin (q + 2) → W),
+  ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct (q + 1))
+        (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    (Mathoverflow1973.SingularMayerVietoris.formalCone (v 0, w 0) (q + 2))
+      (((Mathoverflow1973.SingularHomology.formalPointCrossProduct (q + 1))
+            ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 1)
+              (Mathoverflow1973.SingularMayerVietoris.formalSimplex v)))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) -
+        ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct q)
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1))
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex w)))
+@Mathoverflow1973.SingularHomology.formalEdgeCrossProduct_zero_simplex_right : ∀ {V : Type u_1} {W : Type u_2}
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 2) (w : Fin 1 → W),
+  ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct 0) c)
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    (Mathoverflow1973.SingularMayerVietoris.formalMap (fun v => (v, w 0)) 2) c
+@Mathoverflow1973.SingularHomology.formalMap_edgeCrossProduct : ∀ {V : Type u_1} {W : Type u_2} {V' : Type u_3}
+  {W' : Type u_4} (f : V → V') (g : W → W') (q : ℕ) (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 2)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)),
+  (Mathoverflow1973.SingularMayerVietoris.formalMap (Prod.map f g) (q + 2))
+      (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct q) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct q)
+        ((Mathoverflow1973.SingularMayerVietoris.formalMap f 2) c))
+      ((Mathoverflow1973.SingularMayerVietoris.formalMap g (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalMap_pointCrossProduct : ∀ {V : Type u_1} {W : Type u_2} {V' : Type u_3}
+  {W' : Type u_4} (f : V → V') (g : W → W') (q : ℕ) (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 1)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)),
+  (Mathoverflow1973.SingularMayerVietoris.formalMap (Prod.map f g) (q + 1))
+      (((Mathoverflow1973.SingularHomology.formalPointCrossProduct q) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q)
+        ((Mathoverflow1973.SingularMayerVietoris.formalMap f 1) c))
+      ((Mathoverflow1973.SingularMayerVietoris.formalMap g (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalMap_triangleCrossProduct : ∀ {V : Type u_1} {W : Type u_2} {V' : Type u_3}
+  {W' : Type u_4} (f : V → V') (g : W → W') (q : ℕ) (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 3)
+  (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)),
+  (Mathoverflow1973.SingularMayerVietoris.formalMap (Prod.map f g) (q + 3))
+      (((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct q) c) d) =
+    ((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct q)
+        ((Mathoverflow1973.SingularMayerVietoris.formalMap f 3) c))
+      ((Mathoverflow1973.SingularMayerVietoris.formalMap g (q + 1)) d)
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct : {V : Type u_1} →
+  {W : Type u_2} →
+    (q : ℕ) →
+      Mathoverflow1973.SingularMayerVietoris.FormalChains V 1 →ₗ[ℤ]
+        Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1) →ₗ[ℤ]
+          Mathoverflow1973.SingularMayerVietoris.FormalChains (V × W) (q + 1)
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct_edge_boundary : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (v : Fin 2 → V) (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)),
+  ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q)
+        ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 1)
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex v)))
+      d =
+    (Mathoverflow1973.SingularMayerVietoris.formalMap (fun w => (v 1, w)) (q + 1)) d -
+      (Mathoverflow1973.SingularMayerVietoris.formalMap (fun w => (v 0, w)) (q + 1)) d
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct_mem_supported : ∀ {V : Type u_1} {W : Type u_2} {S : Set V}
+  {T : Set W} (q : ℕ) {c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 1}
+  {d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)},
+  c ∈ Mathoverflow1973.SingularMayerVietoris.formalChainsSupported S 1 →
+    d ∈ Mathoverflow1973.SingularMayerVietoris.formalChainsSupported T (q + 1) →
+      ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q) c) d ∈
+        Mathoverflow1973.SingularMayerVietoris.formalChainsSupported (S ×ˢ T) (q + 1)
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct_simplex : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (v : Fin 1 → V) (w : Fin (q + 1) → W),
+  ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q)
+        (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    Mathoverflow1973.SingularMayerVietoris.formalSimplex fun i => (v 0, w i)
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct_simplex_left : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (v : Fin 1 → V) (d : Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1)),
+  ((Mathoverflow1973.SingularHomology.formalPointCrossProduct q)
+        (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+      d =
+    (Mathoverflow1973.SingularMayerVietoris.formalMap (fun w => (v 0, w)) (q + 1)) d
+@Mathoverflow1973.SingularHomology.formalPointCrossProduct_zero_simplex_right : ∀ {V : Type u_1} {W : Type u_2}
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 1) (w : Fin 1 → W),
+  ((Mathoverflow1973.SingularHomology.formalPointCrossProduct 0) c)
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    (Mathoverflow1973.SingularMayerVietoris.formalMap (fun v => (v, w 0)) 1) c
+@Mathoverflow1973.SingularHomology.formalTriangleCrossProduct : {V : Type u_1} →
+  {W : Type u_2} →
+    (q : ℕ) →
+      Mathoverflow1973.SingularMayerVietoris.FormalChains V 3 →ₗ[ℤ]
+        Mathoverflow1973.SingularMayerVietoris.FormalChains W (q + 1) →ₗ[ℤ]
+          Mathoverflow1973.SingularMayerVietoris.FormalChains (V × W) (q + 3)
+@Mathoverflow1973.SingularHomology.formalTriangleCrossProduct_simplex_succ : ∀ {V : Type u_1} {W : Type u_2} (q : ℕ)
+  (v : Fin 3 → V) (w : Fin (q + 2) → W),
+  ((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct (q + 1))
+        (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    (Mathoverflow1973.SingularMayerVietoris.formalCone (v 0, w 0) (q + 3))
+      (((Mathoverflow1973.SingularHomology.formalEdgeCrossProduct (q + 1))
+            ((Mathoverflow1973.SingularMayerVietoris.formalBoundary 2)
+              (Mathoverflow1973.SingularMayerVietoris.formalSimplex v)))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) +
+        ((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct q)
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (q + 1))
+            (Mathoverflow1973.SingularMayerVietoris.formalSimplex w)))
+@Mathoverflow1973.SingularHomology.formalTriangleCrossProduct_zero_simplex_right : ∀ {V : Type u_1} {W : Type u_2}
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains V 3) (w : Fin 1 → W),
+  ((Mathoverflow1973.SingularHomology.formalTriangleCrossProduct 0) c)
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+    (Mathoverflow1973.SingularMayerVietoris.formalMap (fun v => (v, w 0)) 3) c
+Mathoverflow1973.SingularHomology.homologyBoundaries : (K : ChainComplex (ModuleCat ℤ) ℕ) →
+  (n : ℕ) → Submodule ℤ ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n)
+Mathoverflow1973.SingularHomology.homologyBoundaries_le_ker : ∀ (K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ)
+  {M : Type u_1} [inst : AddCommGroup M] [inst_1 : Module ℤ M]
+  (f : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n) →ₗ[ℤ] M),
+  (∀ (b : ↑(K.X (n + 1))), f (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0) →
+    Mathoverflow1973.SingularHomology.homologyBoundaries K n ≤ f.ker
+Mathoverflow1973.SingularHomology.homologyDesc : (K : ChainComplex (ModuleCat ℤ) ℕ) →
+  (n : ℕ) →
+    {M : Type u_1} →
+      [inst : AddCommGroup M] →
+        [inst_1 : Module ℤ M] →
+          (f : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n) →ₗ[ℤ] M) →
+            (∀ (b : ↑(K.X (n + 1))),
+                f (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0) →
+              ↑(HomologicalComplex.homology K n) →ₗ[ℤ] M
+Mathoverflow1973.SingularHomology.homologyDesc_cycleClass : ∀ (K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) {M : Type u_1}
+  [inst : AddCommGroup M] [inst_1 : Module ℤ M]
+  (f : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n) →ₗ[ℤ] M)
+  (hf : ∀ (b : ↑(K.X (n + 1))), f (Mathoverflow1973.SingularMayerVietoris.ModuleHomology.boundaryCycle K n b) = 0)
+  (c : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n)),
+  (Mathoverflow1973.SingularHomology.homologyDesc K n f hf)
+      ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass K n) c) =
+    f c
+Mathoverflow1973.SingularHomology.homologyLinearMap_ext : ∀ (K : ChainComplex (ModuleCat ℤ) ℕ) (n : ℕ) {M : Type u_1}
+  [inst : AddCommGroup M] [inst_1 : Module ℤ M] {f g : ↑(HomologicalComplex.homology K n) →ₗ[ℤ] M},
+  (∀ (c : ↥(Mathoverflow1973.SingularMayerVietoris.ModuleHomology.Cycle K n)),
+      f ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass K n) c) =
+        g ((Mathoverflow1973.SingularMayerVietoris.ModuleHomology.cycleClass K n) c)) →
+    f = g
+@Mathoverflow1973.SingularHomology.inducedChain_productAffineChainMap : ∀ {m p q r s : ℕ}
+  (v : Fin (p + 1) → ↑(Simplex r)) (w : Fin (q + 1) → ↑(Simplex s))
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p) × ↑(Simplex q)) (m + 1)),
+  (inducedChain
+        ((Mathoverflow1973.SingularMayerVietoris.affineSimplex v).prodMap
+          (Mathoverflow1973.SingularMayerVietoris.affineSimplex w))
+        m)
+      ((Mathoverflow1973.SingularHomology.productAffineChainMap p q m) c) =
+    (Mathoverflow1973.SingularHomology.productAffineChainMap r s m)
+      ((Mathoverflow1973.SingularMayerVietoris.formalMap
+          (⇑((Mathoverflow1973.SingularMayerVietoris.affineSimplex v).prodMap
+              (Mathoverflow1973.SingularMayerVietoris.affineSimplex w)))
+          (m + 1))
+        c)
+@Mathoverflow1973.SingularHomology.integerBilinearFlip : {A : Type u_1} →
+  {B : Type u_2} →
+    {C : Type u_3} →
+      [inst : AddCommGroup A] →
+        [inst_1 : AddCommGroup B] →
+          [inst_2 : AddCommGroup C] →
+            [inst_3 : Module ℤ A] →
+              [inst_4 : Module ℤ B] → [inst_5 : Module ℤ C] → (A →ₗ[ℤ] B →ₗ[ℤ] C) → B →ₗ[ℤ] A →ₗ[ℤ] C
+@Mathoverflow1973.SingularHomology.integerBilinearFlip_apply : ∀ {A : Type u_1} {B : Type u_2} {C : Type u_3}
+  [inst : AddCommGroup A] [inst_1 : AddCommGroup B] [inst_2 : AddCommGroup C] [inst_3 : Module ℤ A]
+  [inst_4 : Module ℤ B] [inst_5 : Module ℤ C] (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (b : B) (a : A),
+  ((Mathoverflow1973.SingularHomology.integerBilinearFlip F) b) a = (F a) b
+@Mathoverflow1973.SingularHomology.integerBilinearPostcompose : {A : Type u_1} →
+  {B : Type u_2} →
+    {C : Type u_3} →
+      {D : Type u_4} →
+        [inst : AddCommGroup A] →
+          [inst_1 : AddCommGroup B] →
+            [inst_2 : AddCommGroup C] →
+              [inst_3 : AddCommGroup D] →
+                [inst_4 : Module ℤ A] →
+                  [inst_5 : Module ℤ B] →
+                    [inst_6 : Module ℤ C] →
+                      [inst_7 : Module ℤ D] → (A →ₗ[ℤ] B →ₗ[ℤ] C) → (C →ₗ[ℤ] D) → A →ₗ[ℤ] B →ₗ[ℤ] D
+@Mathoverflow1973.SingularHomology.integerBilinearPostcompose_apply : ∀ {A : Type u_1} {B : Type u_2} {C : Type u_3}
+  {D : Type u_4} [inst : AddCommGroup A] [inst_1 : AddCommGroup B] [inst_2 : AddCommGroup C] [inst_3 : AddCommGroup D]
+  [inst_4 : Module ℤ A] [inst_5 : Module ℤ B] [inst_6 : Module ℤ C] [inst_7 : Module ℤ D] (F : A →ₗ[ℤ] B →ₗ[ℤ] C)
+  (g : C →ₗ[ℤ] D) (a : A) (b : B),
+  ((Mathoverflow1973.SingularHomology.integerBilinearPostcompose F g) a) b = g ((F a) b)
+@Mathoverflow1973.SingularHomology.integerBilinearPrecompose : {A : Type u_1} →
+  {B : Type u_2} →
+    {C : Type u_3} →
+      {A' : Type u_4} →
+        {B' : Type u_5} →
+          [inst : AddCommGroup A] →
+            [inst_1 : AddCommGroup B] →
+              [inst_2 : AddCommGroup C] →
+                [inst_3 : AddCommGroup A'] →
+                  [inst_4 : AddCommGroup B'] →
+                    [inst_5 : Module ℤ A] →
+                      [inst_6 : Module ℤ B] →
+                        [inst_7 : Module ℤ C] →
+                          [inst_8 : Module ℤ A'] →
+                            [inst_9 : Module ℤ B'] →
+                              (A →ₗ[ℤ] B →ₗ[ℤ] C) → (A' →ₗ[ℤ] A) → (B' →ₗ[ℤ] B) → A' →ₗ[ℤ] B' →ₗ[ℤ] C
+@Mathoverflow1973.SingularHomology.integerBilinearPrecompose_apply : ∀ {A : Type u_1} {B : Type u_2} {C : Type u_3}
+  {A' : Type u_4} {B' : Type u_5} [inst : AddCommGroup A] [inst_1 : AddCommGroup B] [inst_2 : AddCommGroup C]
+  [inst_3 : AddCommGroup A'] [inst_4 : AddCommGroup B'] [inst_5 : Module ℤ A] [inst_6 : Module ℤ B]
+  [inst_7 : Module ℤ C] [inst_8 : Module ℤ A'] [inst_9 : Module ℤ B'] (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (f : A' →ₗ[ℤ] A)
+  (g : B' →ₗ[ℤ] B) (a : A') (b : B'),
+  ((Mathoverflow1973.SingularHomology.integerBilinearPrecompose F f g) a) b = (F (f a)) (g b)
+@Mathoverflow1973.SingularHomology.integerBilinearRightApply : {A : Type u_1} →
+  {B : Type u_2} →
+    {C : Type u_3} →
+      [inst : AddCommGroup A] →
+        [inst_1 : AddCommGroup B] →
+          [inst_2 : AddCommGroup C] →
+            [inst_3 : Module ℤ A] → [inst_4 : Module ℤ B] → [inst_5 : Module ℤ C] → (A →ₗ[ℤ] B →ₗ[ℤ] C) → B → A →ₗ[ℤ] C
+@Mathoverflow1973.SingularHomology.integerBilinearRightApply_apply : ∀ {A : Type u_1} {B : Type u_2} {C : Type u_3}
+  [inst : AddCommGroup A] [inst_1 : AddCommGroup B] [inst_2 : AddCommGroup C] [inst_3 : Module ℤ A]
+  [inst_4 : Module ℤ B] [inst_5 : Module ℤ C] (F : A →ₗ[ℤ] B →ₗ[ℤ] C) (b : B) (a : A),
+  (Mathoverflow1973.SingularHomology.integerBilinearRightApply F b) a = (F a) b
+Mathoverflow1973.SingularHomology.integerFormalBilinearMap_ext : ∀ (V : Type u_1) (W : Type u_2) (p q : ℕ)
+  {M : Type u_3} [inst : AddCommGroup M] [inst_1 : Module ℤ M]
+  {F G :
+    Mathoverflow1973.SingularMayerVietoris.FormalChains V p →ₗ[ℤ]
+      Mathoverflow1973.SingularMayerVietoris.FormalChains W q →ₗ[ℤ] M},
+  (∀ (v : Fin p → V) (w : Fin q → W),
+      (F (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w) =
+        (G (Mathoverflow1973.SingularMayerVietoris.formalSimplex v))
+          (Mathoverflow1973.SingularMayerVietoris.formalSimplex w)) →
+    F = G
+@Mathoverflow1973.SingularHomology.integerLinearMapModule : {A : Type u_1} →
+  {B : Type u_2} →
+    [inst : AddCommGroup A] →
+      [inst_1 : AddCommGroup B] → [modA : Module ℤ A] → [modB : Module ℤ B] → Module ℤ (A →ₗ[ℤ] B)
+@Mathoverflow1973.SingularHomology.integerTensorModule : {A : Type u_1} →
+  {B : Type u_2} →
+    [inst : AddCommGroup A] →
+      [inst_1 : AddCommGroup B] → [modA : Module ℤ A] → [modB : Module ℤ B] → Module ℤ (TensorProduct ℤ A B)
+@Mathoverflow1973.SingularHomology.prodMap_productAffineSimplex : ∀ {m p q r s : ℕ} (v : Fin (p + 1) → ↑(Simplex r))
+  (w : Fin (q + 1) → ↑(Simplex s)) (z : Fin (m + 1) → ↑(Simplex p) × ↑(Simplex q)),
+  ((Mathoverflow1973.SingularMayerVietoris.affineSimplex v).prodMap
+          (Mathoverflow1973.SingularMayerVietoris.affineSimplex w)).comp
+      (Mathoverflow1973.SingularHomology.productAffineSimplex z) =
+    Mathoverflow1973.SingularHomology.productAffineSimplex fun j =>
+      ((Mathoverflow1973.SingularMayerVietoris.affineSimplex v) (z j).1,
+        (Mathoverflow1973.SingularMayerVietoris.affineSimplex w) (z j).2)
+Mathoverflow1973.SingularHomology.productAffineChainMap : (p q n : ℕ) →
+  Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p) × ↑(Simplex q)) (n + 1) →ₗ[ℤ]
+    ↑(Chains (↑(Simplex p) × ↑(Simplex q)) n)
+Mathoverflow1973.SingularHomology.productAffineChainMap_boundary : ∀ (p q n : ℕ)
+  (c : Mathoverflow1973.SingularMayerVietoris.FormalChains (↑(Simplex p) × ↑(Simplex q)) (n + 2)),
+  (ModuleCat.Hom.hom ((singularComplex (↑(Simplex p) × ↑(Simplex q))).d (n + 1) n))
+      ((Mathoverflow1973.SingularHomology.productAffineChainMap p q (n + 1)) c) =
+    (Mathoverflow1973.SingularHomology.productAffineChainMap p q n)
+      ((Mathoverflow1973.SingularMayerVietoris.formalBoundary (n + 1)) c)
+Mathoverflow1973.SingularHomology.productAffineChainMap_simplex : ∀ (p q n : ℕ)
+  (v : Fin (n + 1) → ↑(Simplex p) × ↑(Simplex q)),
+  (Mathoverflow1973.SingularHomology.productAffineChainMap p q n)
+      (Mathoverflow1973.SingularMayerVietoris.formalSimplex v) =
+    simplexChain (↑(Simplex p) × ↑(Simplex q)) n (Mathoverflow1973.SingularHomology.productAffineSimplex v)
+@Mathoverflow1973.SingularHomology.productAffineSimplex : {n p q : ℕ} →
+  (Fin (n + 1) → ↑(Simplex p) × ↑(Simplex q)) → C(↑(Simplex n), ↑(Simplex p) × ↑(Simplex q))
+@Mathoverflow1973.SingularHomology.productAffineSimplex_face : ∀ {n p q : ℕ}
+  (v : Fin (n + 2) → ↑(Simplex p) × ↑(Simplex q)) (i : Fin (n + 2)),
+  (Mathoverflow1973.SingularHomology.productAffineSimplex v).comp (simplexFace n i) =
+    Mathoverflow1973.SingularHomology.productAffineSimplex fun j => v (i.succAbove j)
+@Mathoverflow1973.SingularHomology.productAffineSimplex_point_left : ∀ {n p q : ℕ} (a : ↑(Simplex p))
+  (v : Fin (n + 1) → ↑(Simplex q)),
+  (Mathoverflow1973.SingularHomology.productAffineSimplex fun i => (a, v i)) =
+    (Mathoverflow1973.SingularHomology.crossInsertLeft a).comp (Mathoverflow1973.SingularMayerVietoris.affineSimplex v)
+@Mathoverflow1973.SingularHomology.productAffineSimplex_point_right : ∀ {n p q : ℕ} (v : Fin (n + 1) → ↑(Simplex p))
+  (b : ↑(Simplex q)),
+  (Mathoverflow1973.SingularHomology.productAffineSimplex fun i => (v i, b)) =
+    (Mathoverflow1973.SingularHomology.crossInsertRight b).comp (Mathoverflow1973.SingularMayerVietoris.affineSimplex v)
+@Mathoverflow1973.SingularHomology.productAffineSimplex_vertex : ∀ {n p q : ℕ}
+  (v : Fin (n + 1) → ↑(Simplex p) × ↑(Simplex q)) (i : Fin (n + 1)),
+  (Mathoverflow1973.SingularHomology.productAffineSimplex v) (Mathoverflow1973.SingularMayerVietoris.stdVertices n i) =
+    v i
+@Mathoverflow1973.SingularHomology.zeroSimplexValue : {X : Type} → [inst : TopologicalSpace X] → SingularSimplex X 0 → X
+@Mathoverflow1973.SingularHomology.zeroSimplexValue_comp : ∀ {X X' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace X'] (f : C(X, X')) (σ : SingularSimplex X 0),
+  Mathoverflow1973.SingularHomology.zeroSimplexValue (f.comp σ) =
+    f (Mathoverflow1973.SingularHomology.zeroSimplexValue σ)
+'Mathoverflow1973.SingularHomology.crossProductHomology' depends on axioms: [propext, Classical.choice, Quot.sound]
+END: 1789256087 Sun Sep 13 01:34:47 CEST 2026
+EXIT: 0

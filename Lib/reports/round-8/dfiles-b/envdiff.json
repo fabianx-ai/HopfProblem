@@ -1,0 +1,161 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-b/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-b/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38588
+ ],
+ "lost": [
+  [
+   "Int.signed_residual_coordinate_zero._proof_1_1",
+   717470783,
+   {
+    "Lib.Data.Int.SignedResidual": 1
+   }
+  ],
+  [
+   "ThreeColumnPage.LowerTransferCondition._proof_1",
+   518125532,
+   {
+    "Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer": 1
+   }
+  ],
+  [
+   "ThreeColumnPage.LowerTransferCondition.eq_1",
+   2364782787,
+   {
+    "Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer": 1
+   }
+  ],
+  [
+   "descendHomOfSurjective",
+   1484757718,
+   {
+    "Lib.Algebra.Group.SurjectiveDescent": 1
+   }
+  ],
+  [
+   "descendHomOfSurjective._proof_1",
+   3142609395,
+   {
+    "Lib.Algebra.Group.SurjectiveDescent": 1
+   }
+  ],
+  [
+   "descendHomOfSurjective._proof_2",
+   2570760527,
+   {
+    "Lib.Algebra.Group.SurjectiveDescent": 1
+   }
+  ],
+  [
+   "descendHomOfSurjective_comp",
+   278736083,
+   {
+    "Lib.Algebra.Group.SurjectiveDescent": 1
+   }
+  ],
+  [
+   "fibre_constant_of_ker_le",
+   2231566744,
+   {
+    "Lib.Algebra.Group.SurjectiveDescent": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero._proof_1",
+   518125532,
+   {
+    "Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials": 1
+   }
+  ],
+  [
+   "ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero.eq_1",
+   904620443,
+   {
+    "Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials": 1
+   }
+  ],
+  [
+   "ThreefoldHomology.signed_residual_coordinate_zero._proof_1_1",
+   717470783,
+   {
+    "Hopf.Proof.Data.Int.SignedResidual": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Algebra.Group.LatticeImageCollapse",
+   "Hopf.Proof.Algebra.Group.LatticeImageCollapse",
+   14
+  ],
+  [
+   "Lib.Algebra.Group.ResidualRelations",
+   "Hopf.Proof.Algebra.Group.ResidualRelations",
+   1
+  ],
+  [
+   "Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer",
+   "Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter",
+   "Hopf.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter",
+   1
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.DegreeSix",
+   "Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix",
+   21
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.SphereGenerator",
+   "Hopf.Proof.AlgebraicTopology.Hurewicz.SphereGenerator",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.Geometry.Manifold.Morse.Reeb",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.OnePointCover",
+   "Lib.AlgebraicTopology.SingularHomology.SpherePointTransport",
+   13
+  ],
+  [
+   "Lib.Analysis.Real.MeshScale",
+   "Lib.Topology.Dimension.CubeBoundaryThreeLebesgue",
+   1
+  ],
+  [
+   "Lib.Data.Int.SignedResidual",
+   "Hopf.Proof.Data.Int.SignedResidual",
+   1
+  ],
+  [
+   "Lib.GroupTheory.PresentedGroup.CentralTwist",
+   "Hopf.Proof.GroupTheory.PresentedGroup.CentralTwist",
+   20
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 34,
+ "verdict": "FAIL"
+}

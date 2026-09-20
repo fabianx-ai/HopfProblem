@@ -1,0 +1,621 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-moved/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-moved/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38593
+ ],
+ "lost": [
+  [
+   "HomologyTransport.integerCoordinateSplit._proof_1",
+   655530081,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "HomologyTransport.integerCoordinateSplit._proof_2",
+   1374387624,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "HomologyTransport.integerCoordinateSplit._proof_3",
+   3427648,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "HomologyTransport.integerCoordinateSplit._proof_4",
+   119029369,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "MorseCancellation.classCoordinateMatrix.eq_1",
+   2854708789,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "MorseCancellation.mul_transvection_list_surjective._simp_1_1",
+   605293790,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "MorseCancellation.primitive_row_has_unit_after_column_additions._simp_1_1",
+   2938267554,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "MorseCancellation.primitive_row_has_unit_after_column_additions._simp_1_2",
+   605293790,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "MorseRearrangement.beforeValueRank_exchange_lt._proof_1_1",
+   1818624478,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.exists_adjacent_index_inversion._simp_1_1",
+   563549242,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.exists_adjacent_index_inversion._simp_1_2",
+   2185636451,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.finiteIndexDisorder_swap_lt._proof_1_1",
+   2788600581,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.sum_erase_two_nat._proof_1_1",
+   2500589487,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.upperValueRank_consecutive._simp_1_1",
+   1253103447,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.upperValueRank_consecutive._simp_1_2",
+   3818362915,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.upperValueRank_consecutive._simp_1_3",
+   1002084111,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "MorseRearrangement.weighted_sum_swap_identity._proof_1_1",
+   1873672645,
+   {
+    "Lib.Geometry.Manifold.Morse.RearrangementAmbient": 1
+   }
+  ],
+  [
+   "TubularBigon",
+   2517914762,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon._sizeOf_inst",
+   246310443,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.chart",
+   3327721126,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.closed_embedding",
+   3644939182,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.ctorIdx",
+   609979900,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.derivative_injective",
+   510934059,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.height_pos",
+   2842212541,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.interior_avoids",
+   3411675602,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.lower",
+   2985558330,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.lower_germ",
+   3968803867,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.map",
+   2907542788,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk",
+   2714041821,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk._flat_ctor",
+   2714041821,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk.noConfusion",
+   3311403426,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk.sizeOf_spec",
+   1442531759,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.radius",
+   4096473164,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.radius_pos",
+   1766746210,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.smooth",
+   775452630,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.source_contains",
+   2385520795,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.upper",
+   1261709632,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.upper_germ",
+   433827495,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.zero_section",
+   264246193,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "Fin.tailHeadAddEquiv._proof_1",
+   655530081,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_2",
+   1374387624,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_3",
+   355730451,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_4",
+   1689327855,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "IndexDisorder.beforeValueRank_exchange_lt._proof_1_1",
+   1818624478,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.exists_adjacent_index_inversion._simp_1_1",
+   563549242,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.exists_adjacent_index_inversion._simp_1_2",
+   2185636451,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.finiteIndexDisorder_swap_lt._proof_1_1",
+   2788600581,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.sum_erase_two_nat._proof_1_1",
+   2500589487,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.upperValueRank_consecutive._simp_1_1",
+   1253103447,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.upperValueRank_consecutive._simp_1_2",
+   3818362915,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.upperValueRank_consecutive._simp_1_3",
+   1002084111,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "IndexDisorder.weighted_sum_swap_identity._proof_1_1",
+   1873672645,
+   {
+    "Lib.Combinatorics.IndexDisorder": 1
+   }
+  ],
+  [
+   "LinearEquiv.coordMatrix.eq_1",
+   2854708789,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "Matrix.primitive_row_has_unit_after_column_additions._simp_1_1",
+   2938267554,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "Matrix.primitive_row_has_unit_after_column_additions._simp_1_2",
+   605293790,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "Matrix.surjective_mulVec_mul_transvection_list._simp_1_1",
+   605293790,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "TubularBigon",
+   2828207372,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon._sizeOf_inst",
+   2119575652,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.chart",
+   867158686,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.closed_embedding",
+   1301022633,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.ctorIdx",
+   1286677815,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.derivative_injective",
+   1412609606,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.height_pos",
+   4006835968,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.interior_avoids",
+   3290316571,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.lower",
+   2638519710,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.lower_germ",
+   1552302548,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.map",
+   869659761,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk",
+   1508181077,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk._flat_ctor",
+   1508181077,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk.noConfusion",
+   2560721253,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.mk.sizeOf_spec",
+   3884410726,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.radius",
+   1380839709,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.radius_pos",
+   2945551801,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.smooth",
+   866672582,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.source_contains",
+   3544025264,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.upper",
+   3303164306,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.upper_germ",
+   577610367,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "TubularBigon.zero_section",
+   285431570,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "TubularBigon",
+  "TubularBigon.chart",
+  "TubularBigon.closed_embedding",
+  "TubularBigon.derivative_injective",
+  "TubularBigon.height_pos",
+  "TubularBigon.interior_avoids",
+  "TubularBigon.lower",
+  "TubularBigon.lower_germ",
+  "TubularBigon.map",
+  "TubularBigon.mk",
+  "TubularBigon.radius",
+  "TubularBigon.radius_pos",
+  "TubularBigon.smooth",
+  "TubularBigon.source_contains",
+  "TubularBigon.upper",
+  "TubularBigon.upper_germ",
+  "TubularBigon.zero_section"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "TubularBigon",
+  "TubularBigon._sizeOf_inst",
+  "TubularBigon.chart",
+  "TubularBigon.closed_embedding",
+  "TubularBigon.ctorIdx",
+  "TubularBigon.derivative_injective",
+  "TubularBigon.height_pos",
+  "TubularBigon.interior_avoids",
+  "TubularBigon.lower",
+  "TubularBigon.lower_germ",
+  "TubularBigon.map",
+  "TubularBigon.mk",
+  "TubularBigon.mk._flat_ctor",
+  "TubularBigon.mk.noConfusion",
+  "TubularBigon.mk.sizeOf_spec",
+  "TubularBigon.radius",
+  "TubularBigon.radius_pos",
+  "TubularBigon.smooth",
+  "TubularBigon.source_contains",
+  "TubularBigon.upper",
+  "TubularBigon.upper_germ",
+  "TubularBigon.zero_section"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.CircleGluing",
+   "Lib.Geometry.Manifold.Curve.CircleGluing",
+   36
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.RearrangementAmbient",
+   "Lib.Combinatorics.IndexDisorder",
+   12
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 12,
+ "verdict": "PASS"
+}

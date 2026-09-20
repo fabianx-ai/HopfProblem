@@ -1,0 +1,36 @@
+module
+
+public import Lib.Geometry.Manifold.Morse.Rearrangement
+public import Lib.Geometry.Manifold.Whitney.BigonModel
+public import Lib.Geometry.Manifold.Morse.MinimalSystem
+public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
+public import Lib.AlgebraicTopology.SingularHomology.CrossProduct
+
+open Mathoverflow1973
+
+-- eight-file cone headline APIs
+#check AdaptedWindows
+#check @MorseCancellation.nativeMorseIndex
+#check @ManifoldImmersion.exists_immersion_on_compact_rel
+#check @exists_tubularNeighborhood_in_open_of_embedded_closedBall
+-- approved helpers
+#check @SmoothMorseLemma.diffeomorphToPartialDiffeomorph
+#check @exists_partialDiffeomorph_of_isLocalDiffeomorphAt
+-- F extraction
+#check @WhitneyPairModel.firstSheet
+#check @WhitneyPairModel.bigon
+#check @WhitneyPairModel.mem_frontier_bigon_iff
+#check @WhitneyPairModel.cornerScale_pos
+#check @WhitneyPairModel.upperStripCoordinates_right
+#check @StripCoordinates.hasDerivAt_verticalSlice
+-- G extraction
+#check SixSphere
+#check @simplyConnectedSpace_of_homotopySixSphere
+#check @pathConnectedSpace_of_homotopySixSphere
+#check @homotopySixSphere_homology_subsingleton
+-- J extraction
+#check @PeriodTorusHigherHomology.circleProductMap
+#check @PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_naturality
+#check @PeriodTorusHigherHomology.crossProductCycles_natural
+#check @PeriodTorusHigherHomology.crossProductHomology_natural
+#check @PeriodTorusHigherHomology.crossProductHomology_snd

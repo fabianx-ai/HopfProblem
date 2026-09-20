@@ -1,0 +1,7 @@
+CMD: lake exe comparator comparator/config.json
+start 03:13:18 epoch 1789261998
+Building Challenge
+could not execute external process 'landrun'
+uncaught exception: Child exited with 255
+exit 1
+end 03:13:18 epoch 1789261998

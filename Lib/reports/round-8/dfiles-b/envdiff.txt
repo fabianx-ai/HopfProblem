@@ -1,0 +1,22 @@
+constants before 38593 after 38588 (keys 38491 38486 )
+lost 8 added 3 of which source declarations: 3 0 ; names with changed type 0 of which source: 0
+  LOST descendHomOfSurjective {'Lib.Algebra.Group.SurjectiveDescent': 1}
+  LOST descendHomOfSurjective_comp {'Lib.Algebra.Group.SurjectiveDescent': 1}
+  LOST fibre_constant_of_ker_le {'Lib.Algebra.Group.SurjectiveDescent': 1}
+auxiliary lost/added/changed (not judged): 5 3 0
+module moves (source declarations, 1-to-1):
+      14  Lib.Algebra.Group.LatticeImageCollapse -> Hopf.Proof.Algebra.Group.LatticeImageCollapse
+       1  Lib.Algebra.Group.ResidualRelations -> Hopf.Proof.Algebra.Group.ResidualRelations
+       5  Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer -> Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials
+       1  Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter -> Hopf.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+      21  Lib.AlgebraicTopology.Hurewicz.DegreeSix -> Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix
+       2  Lib.AlgebraicTopology.Hurewicz.SphereGenerator -> Hopf.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
+       5  Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods -> Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+       2  Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods -> Lib.Geometry.Manifold.Morse.Reeb
+      13  Lib.AlgebraicTopology.SingularHomology.OnePointCover -> Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
+       1  Lib.Analysis.Real.MeshScale -> Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+       1  Lib.Data.Int.SignedResidual -> Hopf.Proof.Data.Int.SignedResidual
+      20  Lib.GroupTheory.PresentedGroup.CentralTwist -> Hopf.Proof.GroupTheory.PresentedGroup.CentralTwist
+ambiguous module changes: 0
+auxiliary constants that changed module: 34
+VERDICT FAIL

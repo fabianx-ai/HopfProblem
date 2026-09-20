@@ -1,0 +1,197 @@
+# group-06 — head f0e28a82 — 2026-09-20
+
+## Lib/Geometry/Manifold/Morse/Cubic.lean  (143 declarations, 2706 lines)
+verdict: C (project residue in the mathematics: five unrelated topics in one file, `native_*`/`AdaptedWindows` vocabulary, general facts filed under `MorseCancellation`)
+twin: Milnor, Lectures on the h-cobordism theorem, Thm 4.1 (cubic model x³/3 + tx + Σσᵢyᵢ²); no Mathlib twin (nearest: Mathlib/Analysis/SpecialFunctions/Artanh.lean for l.2525–2668)
+findings:
+- l.15–35 module docstring names Milnor Thm 4.1 and references; but l.25–28 records file history ("material of the former `Morse/Cancellation.lean`", import order `Cubic → CubicFlow → …`) — maintenance note, not library text
+- l.57–870 (`nonempty_adaptedSurgeryWindows`, `exists_native_morse_basin_block`, `native_attaching_core_flow`, `native_belt_core_basin_iff`, …): 30 theorems on adapted windows/basin blocks whose hypotheses are the project's `AdaptedWindows E f` / `MorseSurgeryData` packages; `native_` is project jargon with no textbook counterpart
+- l.723–850 `FlowCancellation.exists_local_strict_flow_descent`, `forwardInvariant_sublevel_of_boundary`, `flow_level_time_unique`: general `Flow ℝ X` facts on a topological space, unrelated to the cubic model; belong in `Dynamics/Flow`
+- l.885–990 `Model`, `cubic`, `differential`, `critical_iff`, `cubic_critical_values`: the textbook model, generic in `m`, correctly stated; the one part that is library-ready as is
+- l.1105–1225 `LocalFunctionReplacement.replace*` (generic replacement of a function by a chart model on a compact support) is a third subject; fine mathematics, misplaced
+- l.2525–2560 `MorseCancellation.hasDerivAt_tanh`, `strictMono_tanh`, `range_tanh`, `tendsto_tanh_atTop/atBot`, l.2659 `contDiffAt_artanh`: real-analysis facts under a Morse namespace; Mathlib has `Real.tanh_bijOn`, `Real.tanh_injective`, `Real.tanh_lt_one`, `Real.artanh_tanh` (Analysis/SpecialFunctions/Artanh.lean); missing pieces should go there under `Real.`
+- l.1497–1650 `splitLinear`/`splitEquiv` over `Option (Fin m) ≃ Fin n`: an ad-hoc reindexing equivalence that exists only to feed the alignment step; Mathlib would use `Fin.consEquiv`/`finSuccEquiv`
+- l.40 `set_option maxSynthPendingDepth 3`; l.44–47 kitchen-sink `open scoped … Modular UpperHalfPlane`; l.49 `universe u v` unused; l.13 `import all Mathlib.Geometry.Manifold.LocalDiffeomorph` in addition to `import Mathlib`
+- docstrings: 1 declaration without one (good density otherwise); stopped reading proofs after l.1100, statements read throughout
+suggestion: split into `Morse/CubicModel.lean` (l.885–1100, 1228–1420, 2562–2706), `Dynamics/Flow/Sublevel.lean` (l.723–850), `Manifold/LocalReplacement.lean` (l.1105–1225), and a `Real.tanh` upstream patch; leave the `native_*`/`AdaptedWindows` block under Hopf/Proof.
+
+## Lib/Geometry/Manifold/Morse/CubicFlow.lean  (91 declarations, 1623 lines)
+verdict: C (project residue: seven namespaces/subjects in one file, `native*` vocabulary, `AdaptedWindows` hypotheses; docstring admits it is a staging file for the import order)
+twin: Milnor, h-cobordism Thm 4.1 (cubic flow); Milnor Morse Theory §3 (flow of a gradient-like field); nearest Mathlib: Mathlib/Analysis/Calculus/BumpFunction/FiniteDimension.lean (for l.1247), Mathlib/Geometry/Manifold/Diffeomorph.lean
+findings:
+- l.16–25 module docstring lists ten topics and says the file holds "the declarations of the later cancellation subjects that the rearrangement modules need before `Morse.Rearrangement`" — a dependency-ordering file, not a subject
+- l.52–105 `FlowCancellation.levelBasin`, `signedLevelTime` (defined via `Classical.choose`, l.59), `signedLevelTime_flow`: generic `Flow ℝ X` facts, fine, but `FlowCancellation` names a proof not a subject
+- l.163–210 `AdaptedWindows.attaching_basin_iff`, `belt_basin_iff`, `critical_model_germ`, l.1601 `isOpen_minimum_forward_basin`: hypotheses are the project's `AdaptedWindows E f` package
+- l.392–480 `FiberwiseDiffeomorph.retainParameter/diffeomorph` (a family of diffeomorphisms `X × P → X` as a diffeomorphism of `X × P`): general, library-ready, misplaced
+- l.485–510 `PartialChart.vectorProduct`, `PartialChart.prod`: products of partial diffeomorphisms; Mathlib has `PartialHomeomorph.prod`; these belong beside it
+- l.944–1050 `SupportedDiffeomorph.IsotopicToIdentity` (defined as an `∃ A` of a smooth family with each time slice a `Diffeomorph`; no support condition despite the namespace name), `SupportedRelativeIsotopy`: textbook notion (Hirsch Ch. 8 isotopy), non-Mathlib-style: should be a structure `Isotopy J M` with `IsIsotopicToId`
+- l.1247 `exists_compact_smooth_cutoff` (root namespace): Mathlib has `exists_contDiff_one_nhds_of_interior`/`exists_smooth_zero_one_of_isClosed` (Analysis/Calculus/BumpFunction/FiniteDimension.lean); duplicate up to packaging
+- l.1459 `MorseCancellation.nativeMorseIndex` defined by `if Nonempty (SignedMorseChart f p) then finrank … else 0` with `Classical.choice`: a second Morse-index definition beside `Morse/Index.lean`; "native" is project jargon
+- l.1343–1450 `quadratic_germ_derivative`, `signed_morse_chart_negative_finrank_eq`: the index-is-well-defined argument (Milnor Morse Theory §2, Lemma 2.2) hidden in a flow file
+- l.36 `set_option maxSynthPendingDepth 3`, l.40–43 `open scoped … Modular UpperHalfPlane`, l.45 `universe u v` unused, l.15 `import all …LocalDiffeomorph`
+- 0 missing docstrings; statements read throughout, proofs sampled to l.700
+suggestion: dissolve the file: `FiberwiseDiffeomorph`/`PartialChart.prod`/`SupportedDiffeomorph` to `Geometry/Manifold/Isotopy.lean`, `FlowSuspension` to `Geometry/Manifold/Flow/Suspension.lean`, `nativeMorseIndex` merged into `Morse/Index.lean`, and drop `exists_compact_smooth_cutoff` for the Mathlib bump-function lemma.
+
+## Lib/Geometry/Manifold/Morse/CutTransport.lean  (59 declarations, 1496 lines)
+verdict: D (not library material: docstring says "Moved verbatim from `Hopf/Recognition.lean`"; the statements are the project's index-2/3 cancellation bookkeeping)
+twin: Milnor, h-cobordism Thm 7.6/§7 (basis theorem, cut transport) for the idea only; no Mathlib twin
+findings:
+- l.14–41 module docstring is a bullet inventory plus a migration note ("Moved verbatim from `Hopf/Recognition.lean` … qualifier retarget `PeriodTorusHigherHomology.* -> SingularHomology.*`"); no theorem statement, no textbook reference
+- 55 of 59 declarations have no docstring (`levelSublevelMap` l.66, `middleSectionClass` l.140, `canonicalMiddleMatrix` l.185, `equalCutHomologyEquiv` l.207, `exists_sheet_arc_tube_with_normal_change` l.557, …)
+- l.66–560 every `M`/`E` is `Type` (universe 0), unlike the `Type*` of neighbouring files; homology maps hardwired to the project's `SingularHomology` in degree `2`/`3` (`regular_sublevel_inclusion_bijective … 2` l.1373)
+- l.1436 `consecutive_last_two_first_three`, l.1478 `native_index_excluded_of_count_zero`, l.249 `native_index_order_of_equal_index_exchange`: hypotheses `nativeMorseIndex E f p = 2`, `≠ 3`, `SurgeryWindows E f` — the W4W1 index-2/3 cancellation, not a textbook statement
+- l.1375 `ManifoldMorse.MorseSurgeryData.instLocal1 (n : ℕ) : Fact (finrank ℝ (EuclideanSpace ℝ (Fin (n+3))) = (n+2)+1)` stated as a `theorem` named `inst…` — a local instance helper leaked as a public declaration
+- l.1266 `MorseCancellation.SurgeryWindows.regular_before_first_middle_pivot`: nested namespace mixing two project packages; l.1379–1399 `SupportedDiffeomorph.IsotopicToIdentity.homotopic`, `conjugate_level_isotopy` are general (isotopy ⇒ homotopy) and misfiled here
+- l.557–1200 sheet passages / `LongitudinalTubeMotion` / `CenteredSheetPassage`: 25 declarations of Whitney-trick geometry with `mfderiv` determinant computations, unrelated to "cut transport"; second subject
+- l.53 `set_option maxSynthPendingDepth 3`, l.56–60 `open scoped … Modular UpperHalfPlane`, l.62 `universe u v` unused
+- read all statements; proofs not read (pattern clear by l.560)
+suggestion: move the file back under `Hopf/Proof` (or `W4W1`) as is; extract only `SupportedDiffeomorph.IsotopicToIdentity.homotopic`/`comp_homotopic` (l.1379–1399) and `equalCutHomologyEquiv` (l.191–240, docstrings added, `Type*`) into the library.
+
+## Lib/Geometry/Manifold/Morse/Existence.lean  (117 declarations, 2247 lines)
+verdict: C (project residue in the mathematics: three subjects — existence of Morse functions, `SignedMorseChart` attaching/belt-core geometry, Whitney smoothing of continuous maps — under one docstring that names only the first)
+twin: Milnor, h-cobordism Thm 2.5/2.7 (existence, distinct critical values) for l.383–560; Hirsch, Differential Topology Thm 2.2.6 / Lee, Smooth Manifolds Thm 6.26 (Whitney approximation) for l.1173–2247; no Mathlib twin (Mathlib has no Morse functions and no smoothing theorem)
+findings:
+- l.15–33 docstring: "Every compact smooth manifold admits a Morse function (Milnor Thm 2.5), built by chart-wise perturbation"; but `exists_morse_function E M` is imported (used l.559), not proved here; the file's own contribution is `exists_distinct_critical_values` (l.502) and `exists_morse_function_with_distinct_critical_values` (l.551, Milnor Thm 2.7) — docstring names the wrong theorem
+- l.59–1160 (`SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits`, `FollowsModelBoundaryOrbits`, `beltCoreMap`, `attachingCoreMap_isClosedEmbedding`, `SurgeryBoundaryPair.changeNewBoundary`, `ClosedCover.frontierLevelHomeomorph`): 45 declarations of handle-attachment geometry not mentioned in the docstring; belongs in `Morse/HandleAttachment.lean`
+- l.1173–2247 `ManifoldSmoothing.*`, `ChartMapPerturbation.*`, `HomotopicRelWithin` (`exists_smooth_map_homotopic` l.2182: every continuous map from a compact manifold to a boundaryless manifold is homotopic to a smooth one): textbook Whitney approximation, general in `I J`, library-ready but has nothing to do with Morse existence; should be `Geometry/Manifold/SmoothApproximation.lean`
+- l.1812 `HomotopicRelWithin f g C K O` (root namespace) extends Mathlib's `ContinuousMap.HomotopicRel` with a `MapsTo` constraint; Mathlib naming would be `ContinuousMap.HomotopicRelWithin` or a `Homotopy.MapsTo` predicate
+- l.1173 `flattenTime` with the ad-hoc `1/3, 2/3` constants (l.1184, 1191) repeated in statements rather than a `variable`
+- l.942–990 `PartialChart.restrictSource/restrictTarget/bijective_mfderiv`: generic partial-chart API, misfiled
+- statements generic in `E M` (`Type*`, `IsManifold 𝓘(ℝ,E) ∞ M`), 0 missing docstrings, `[milnor65]` reference present
+- l.38 `set_option maxSynthPendingDepth 3`, l.41–45 `open scoped … Modular UpperHalfPlane`, l.47 `universe u v` unused; stopped reading proofs at l.600, statements read throughout
+suggestion: split into `Morse/Existence.lean` (l.252–560, keep docstring corrected to Thm 2.7), `Morse/HandleAttachment.lean` (l.59–1160) and `Geometry/Manifold/SmoothApproximation.lean` (l.1173–2247) with its own Hirsch/Lee docstring.
+
+## Lib/Geometry/Manifold/Morse/Handle.lean  (78 declarations, 835 lines)
+verdict: B (minor: docs/names; the unit-disc handle model is generic and well documented, but the file ends with an unrelated Sard block)
+twin: Milnor, h-cobordism §3 (the model handle `D^λ × D^{n-λ}` and the belt sphere), Milnor Morse Theory Thm 3.2; Sard block: Mathlib `MeasureTheory.addHaar_image_eq_zero_of_det_fderivWithin_eq_zero` (MeasureTheory/Function/Jacobian.lean)
+findings:
+- l.14–34 docstring names Milnor §1–2, Hatcher §0, lists main results; all promised names exist (`UnitDisk` l.56, `modelMap` l.60, `modelMap_injective` l.85, `BeltPassage.time/upper/lower` l.634–656, `dense_regularValues` l.824)
+- l.56 `abbrev MorseHandle.UnitDisk V := Metric.closedBall (0 : V) 1`: Mathlib style would be to use `Metric.closedBall 0 1` directly or `EuclideanSpace`'s `Metric.sphere`; the abbrev hides a standard set
+- l.60 `modelMap ρ (u, v) = (ρ√(1+‖v‖²) u, ρ v)`: the standard handle embedding (Milnor §3, the model `x² − y²` level `-ρ²` swept to the disc); generic in `N P`, good
+- l.775–835 `RegularValues.singularPoints/regularValues/dense_regularValues`: Sard for `f : E → E` over any Haar measure; a topic change (docstring admits it as a third item); `bijective_iff_det_ne_zero` (l.795) is a 6-line general linear-algebra fact under `RegularValues`; namespace `RegularValues` names no object — Mathlib would say `IsRegularValue`/`regularValues f` under `Function`
+- l.171 `beltFaceScale`, l.530 `beltFaceTime`, l.634 `BeltPassage.time`: three reparametrisation clocks with no docstring cross-reference explaining why two are needed
+- 0 missing docstrings; l.36 `set_option maxSynthPendingDepth 3`, l.39–43 `open scoped … Modular UpperHalfPlane`, l.45 `universe u v` unused
+suggestion: move l.775–835 to `Lib/MeasureTheory/Function/RegularValues.lean` (docstring "Sard for `E → E`") and delete the `UnitDisk` abbrev in favour of `Metric.closedBall 0 1`.
+
+## Lib/Geometry/Manifold/Morse/HandleAttachment.lean  (125 declarations, 1670 lines)
+verdict: B (minor: docs/names; statements are generic in `N P`/`E M`, fully docstringed, but the docstring promises a lemma that does not exist and general-topology helpers are filed under handle namespaces)
+twin: Milnor, h-cobordism §3 Thm 3.4 (attaching a handle across a critical level) and Milnor Morse Theory Thm 3.2; Mathlib nearest: Topology/Homeomorph (no closed-cover gluing), Analysis/Normed (no radial extension) — genuine gap for l.678–1060
+findings:
+- l.17–20, l.27 docstring promises `lower_homologyOne_subsingleton_of_indices` "(the homology consequence)"; no such declaration exists anywhere in Lib (grep: only these docstring lines); `attachingHomology_subsingleton_of_index` (l.20) lives in Morse/SurgeryHomology.lean:852, not here — stale outline; the "homology rows" sentence describes another file
+- l.61–290, 419–500, 602–675 `SignedMorseChart.attachingHandleMap*`, `attachingHandleUnionHomeomorph`: the actual subject, generic (`E M : Type*`, `IsManifold 𝓘(ℝ,E) ∞ M`), docstrings present
+- l.1064–1180 `ClosedCover.glue`, `continuous_glue`, `homeomorph`, `homeomorphOfClosedPieces`: the pasting lemma for a closed cover, and gluing two homeomorphisms; general topology, Mathlib-shaped (nearest `Continuous.piecewise`/`ContinuousOn.piecewise`), misfiled under Morse
+- l.678–840 `RadialExtension.radial/homeomorph/closedBallHomeomorph` (extend a sphere homeomorphism `S(E) ≃ₜ S(F)` radially to `E ≃ₜ F`): textbook cone construction, general, misfiled
+- l.844–1060 `PuncturedHandle.polar` (`PuncturedBall E ≃ₜ UnitSphere E × Radius`), `exchange`, `oldPunctured`/`newPunctured`: `Radius` (l.844) is an `abbrev` for a real interval with no docstring cross-reference; names `old*`/`new*` are proof-narrative, Mathlib would say `source*`/`target*` or `attaching*`/`belt*`
+- l.1181 `structure SurgeryBoundaryPair (E F R X Y : Type*)` and l.1454 `AttachmentBoundaryData (N P M)`: two overlapping packaging structures for the same boundary data (`AttachmentBoundaryData.surgeryBoundaryPair` l.1653 converts one to the other); one should be derived from the other or dropped
+- 0 missing docstrings; l.42 `set_option maxSynthPendingDepth 3`, l.45–49 `open scoped … Modular UpperHalfPlane`, l.51 `universe u v` unused
+- read all statements; proofs sampled to l.600
+suggestion: delete the stale `lower_homologyOne_subsingleton_of_indices` sentence, and move `ClosedCover.*` to `Lib/Topology/ClosedCover.lean` and `RadialExtension.*`/`PuncturedHandle.polar` to `Lib/Topology/Homeomorph/Radial.lean` with their own docstrings.
+
+## Lib/Geometry/Manifold/Morse/Index.lean  (26 declarations, 367 lines)
+verdict: B (minor: docs/names; the docstring and file name describe the Morse index, the contents are the regular-band sublevel deformation via a height-translating flow)
+twin: Milnor, Morse Theory Thm 3.1 (`M^a ≃ M^b` when `[a,b]` contains no critical value) for l.46–367; the docstring's Lemma 2.2 (Morse lemma / index) is not in the file; no Mathlib twin
+findings:
+- l.14–21 docstring: "The index of a nondegenerate critical point … (Milnor Lemma 2.2)"; no declaration in the file mentions an index, Hessian or eigenvalue (grep `index|Hessian` empty except the docstring); the file is `FlowConstruction.stretchHeight`, `stretchFlow`, `regularSublevelHomeomorphOfFlow` (l.188), `sublevelDeformation` (l.319), `regularSublevelHomotopyEquivOfFlow` (l.352) — Milnor Thm 3.1
+- l.188, 352 the height-translating hypothesis `hF : ∀ x t, f x ∈ Icc c d → f x + t ∈ Icc c d → f (F t x) = f x + t` is the textbook normalised gradient flow, stated on a bare `TopologicalSpace X` with `Flow ℝ X` — general and reusable, good
+- l.46 `stretchHeight c k r = r + (k−1) max 0 (r−c)`: docstring says "piecewise-linear stretch", correct; namespace `FlowConstruction` names a process, not an object (Mathlib: `Flow.stretchHeight` or a `Sublevel` namespace)
+- l.219 `ManifoldMorse.criticalPoints_neg`, l.228 `SignedMorseChart.neg`: the only index-related content (negating `f` swaps the index), two declarations, no docstring link to the rest
+- 0 missing docstrings; docstring has no `## Main results`/`## References` sections (l.14–21 is a bare paragraph); l.26 `set_option maxSynthPendingDepth 3`, l.29–33 `open scoped … Modular UpperHalfPlane`, l.35 `universe u v` unused
+suggestion: rename to `Morse/RegularBand.lean` with docstring "Milnor, Morse Theory, Thm 3.1" and move `criticalPoints_neg`/`SignedMorseChart.neg` next to the `SignedMorseChart` definition.
+
+## Lib/Geometry/Manifold/Morse/MiddleBlocks.lean  (31 declarations, 1497 lines)
+verdict: D (not library material: docstring says "Moved verbatim from `Hopf/Recognition.lean`"; all statements are the project's index-2/3 middle-block accounting)
+twin: none found (Smale, h-cobordism / Milnor Thm 7.6 area, but no statement here is a textbook one)
+findings:
+- l.14–46 module docstring: a bullet inventory of 30 names plus a migration note (`PeriodTorusHigherHomology.* -> SingularHomology.*`); "Second batch of stock results" is not a statement
+- 29 of 31 declarations lack docstrings (`nativeMorseCount_eq_interval_length` l.62, `nativeMiddleBaseCut` l.280, `nativeMiddleCutSequence` l.285, `exists_relative_surgery_cut_transport` l.622, …)
+- l.62–1470 every type is `Type` (universe 0); hypotheses are the project's `AdaptedWindows E f`, `SurgeryWindows`, `nativeMorseIndex … = 3`, `MorseSurgeryData.beltIntersectionCount`
+- l.1426 `middle_blocks_complete_of_no_four_five`, l.224 `nativeIndexThreeAttachingSphere_regular`, l.1468 `critical_pair_of_surgery_count_two`: names encode the W4W1 dimension-6 index bookkeeping ("no four five")
+- l.766 `same_image_sphere_maps_unit`, l.1221–1250 `LocalDegree.SeparatedNeighborhoods.pointComplementInclusion`/`componentConnecting_singlePoint`: a general topology fact (two sphere maps with the same image) and a local-degree helper, unrelated to the rest
+- l.49 `set_option maxSynthPendingDepth 3`, l.52–56 `open scoped … Modular UpperHalfPlane`, l.58 `universe u v` unused
+- read all statements; proofs not read (pattern clear at l.300)
+suggestion: move back under `Hopf/Proof`/`W4W1`; if anything is kept, only `same_image_sphere_maps_unit` (l.766) after generalising `Y : Type` to `Type*` and adding a docstring.
+
+## Lib/Geometry/Manifold/Morse/MinimalSystem.lean  (4 declarations, 77 lines)
+verdict: D (not library material: `SixSphere` is the project's object; the two connectivity lemmas are instances of Mathlib's `ContinuousMap.HomotopyEquiv.simplyConnectedSpace`, the homology one of the project's `unitSphere_homology_subsingleton`)
+twin: Mathlib `ContinuousMap.HomotopyEquiv.simplyConnectedSpace` (used verbatim at l.64 as `e.simplyConnectedSpace`) and `EuclideanSphere.simplyConnectedSpace`; Smale 1961 Thm A named in docstring for the downstream use only
+findings:
+- declaration count: the rubric grep reports 5 because l.24 of the docstring begins with "theorem (Smale 1961, …"; real count 4 (`SixSphere` l.58, three theorems l.61–71)
+- l.14–46 docstring is long and honest ("the two-critical-point Morse conclusion is assembled over this data, not inside this file"; "No Mathlib counterpart exists; … no Mathlib file to converge to") — it declares itself hypothesis-generation input, i.e. `Hopf/Proof` material
+- l.58 `abbrev SixSphere := Metric.sphere (0 : EuclideanSpace ℝ (Fin 7)) 1` at root namespace: project object, `SixSphere` is a rubric-listed residue name
+- l.61, 66 `simplyConnectedSpace_of_homotopySixSphere`, `pathConnectedSpace_of_homotopySixSphere`: one-line specialisations of Mathlib `HomotopyEquiv.simplyConnectedSpace` + `EuclideanSphere.simplyConnectedSpace 4` to `n = 7`; l.71 `homotopySixSphere_homology_subsingleton` over `M : Type` (universe 0) with `SingularMayerVietoris.SingularHomology`
+- 4 of 4 declarations without docstrings; file name `MinimalSystem` matches nothing in the file (no "minimal", no "system")
+- l.50 `set_option maxSynthPendingDepth 3`; no `universe`, preamble otherwise clean
+suggestion: delete the file from `Lib/` and inline the three one-liners where they are used under `Hopf/Proof` (or state one general `homotopyEquiv_unitSphere_homology_subsingleton (n k)` in SphereHomology and drop `SixSphere`).
+
+## Lib/Geometry/Manifold/Morse/OrderedCancellation.lean  (86 declarations, 2104 lines)
+verdict: D (not library material: docstring says "Moved verbatim from `Hopf/SphereTopology.lean`"; the file is the project's minimal-excellent-Morse-system pipeline with 76 undocumented declarations)
+twin: Milnor, h-cobordism §4 (Rearrangement) and Thm 8.1 (cancellation of a 0/1 pair) for the ideas; no Mathlib twin
+findings:
+- l.14–24 docstring: inventory paragraph plus migration receipt ("base `304a0fea`; see `Lib/reports/integration-4/spheretop-moves.md`"); promises `exists_outer_index_minimal_ordered_morse_system` (l.64) which is not in this file (it is Morse/SurgeryCollapse.lean:3182)
+- 76 of 86 declarations have no docstring (`nativeBeltTubeSource` l.115, `beltBallCoordinates` l.214, `exists_flow_preserving_value_exchange` l.668, `cancel_unique_zero_one_connection` l.902, `nativeIndexDisorder` l.1354, `exists_middle_index_blocks` l.2022, …)
+- universes inconsistent within the file: `{E M : Type}` at l.91–330, 971–1100, 1975–2104 versus `Type*` at l.338–1960
+- l.1268 `exists_minimal_excellent_morse_system (E M)`: "there is a Morse function with an `AdaptedWindows` package and the least number of critical points among functions with distinct critical values" — the only statement of textbook shape, but its conclusion `∃ _ : AdaptedWindows E f` is the project's package
+- l.83–90 `IntLinearAutomorphism.apply_eq_mul`, `apply_one_eq_one_or_neg_one` (`e : ℤ ≃ₗ[ℤ] ℤ`): Mathlib has `Int.isUnit_iff`/`Int.units_eq_one_or`; l.971–1200 `componentChainWeight`, `zeroChainCycle`, `pathConnectedSpace_of_homologyZero_injective` (`H₀` detects path components) is Hatcher Prop 2.7, hidden here without docstrings and over `Type`
+- l.1203–1250 `isMorseAt_neg`, `isMorse_neg`, `nativeMorseIndex_neg_add`, `nativeMorseCount_neg`: index of `−f` is `n − index f` (Milnor Morse Theory §2) — textbook, undocumented, belongs in `Morse/Index.lean`
+- l.542 `nativeIndexThreeAttachingSphere`, l.1140 `native_index_one_excluded`, l.2387 (Rearrangement) `pathConnectedSpace_index_three_upper_level`: fixed indices 0/1/3 of the W4W1 argument
+- l.70 `set_option maxSynthPendingDepth 3`, l.73–77 `open scoped … Modular UpperHalfPlane`, l.79 `universe u v` unused
+- read all statements; proofs not read (pattern clear at l.340)
+suggestion: return the file to `Hopf/Proof`; carve out `isMorse_neg`/`nativeMorseIndex_neg_add` (to Index.lean) and `pathConnectedSpace_of_homologyZero_injective` (to the singular-homology files) with docstrings and `Type*`.
+
+## Lib/Geometry/Manifold/Morse/Rearrangement.lean  (116 declarations, 2784 lines)
+verdict: C (project residue in the mathematics: four subjects the docstring itself calls "the band-cancellation tail of the toolbox" and "rearrangement stragglers"; `NativeTransversality`/`native_*` vocabulary; index-3 statement)
+twin: Milnor, h-cobordism Thm 4.1 and §4 (rearrangement), for l.376–810 only; Mathlib/Analysis/SpecialFunctions/SmoothTransition.lean for l.816–880 (Mathlib has `Real.smoothTransition.monotone`, `contDiff`, but no derivative-positivity or strict monotonicity — genuine upstream gap)
+findings:
+- l.35–36 "## Main definitions and results: `MorseRearrangement.exists_morse_rearrangement_of_no_connection` — the Rearrangement Theorem"; that theorem is in Morse/RearrangementTheorem.lean:1048, not here — the docstring names another file's result as its own
+- l.16–20, l.30–33 outline admits the file is a staging area: "the band-cancellation tail of the toolbox", "`NativeTransversality.Patch` and the rearrangement stragglers"
+- l.376–510 `RegularHeightCoordinates.heightMap/triangularEquiv/longitudinalDiffeomorph` and l.514–710 `MorseRearrangement.IntervalTranslation`, `exists_increasing_interval_translation`, `blendHeight`: the actual Milnor §4 machinery (a diffeomorphism of `ℝ` moving `x` to `y` supported in `(a,b)`, blended along a height function); general, documented, library-ready
+- l.816–880 `MorseCancellation.expNegInvGlue_hasDerivAt`, `smoothTransition_deriv_pos`, `smoothTransition_strictMonoOn`, `exists_unique_smoothTransition_time`: real-analysis facts about `Real.smoothTransition` filed under a Morse namespace; should be `Real.smoothTransition.deriv_pos`/`strictMonoOn` upstream
+- l.885–1300 `LongitudinalTubeMotion` (structure with `native_axis`, `native_germ` fields l.1016–1026), `exists_clean_two_sheet_arc_avoiding`: Whitney-trick tube geometry, second subject
+- l.1632–1700, 2115–2280 `FlowCancellation.native_flow_eq_on_positive_halfline`, `exists_native_smooth_time_germ`, `exists_native_level_flow_cylinder`; l.2387 `AdaptedWindows.pathConnectedSpace_index_three_upper_level`: `AdaptedWindows` hypotheses and a fixed index 3 — the project's dimension-6 argument
+- l.2413–2784 `MorseRearrangement.native_transverse_dimension_bound`, `NativeTransversality.Patch/exists_finite_patch_diffeomorph/exists_ambient_transverse_diffeomorph`: general-position (transversality by ambient isotopy) — a third subject that belongs beside `Geometry/Manifold/Transversality/`
+- l.2081–2115 `SmoothODE.scalar_partial_invertible`, `exists_smooth_scalar_time_germ`: implicit-function-theorem germ for a scalar time; fourth subject
+- 0 missing docstrings; l.54 `set_option maxSynthPendingDepth 3`, l.57–61 `open scoped … Modular UpperHalfPlane`, l.63 `universe u v` unused
+- read all statements; proofs sampled to l.700, then stopped (pattern clear)
+suggestion: keep l.376–810 as `Morse/Rearrangement.lean` with a corrected docstring (main result: `exists_increasing_interval_translation_with_exterior_germs`), move `smoothTransition_*` to `Lib/Analysis/SpecialFunctions/SmoothTransition.lean` under `Real.smoothTransition`, and `NativeTransversality` to `Transversality/AmbientIsotopy.lean`.
+
+## Lib/Geometry/Manifold/Morse/RearrangementAmbient.lean  (35 declarations, 772 lines)
+verdict: C (project residue in the mathematics: two unrelated subjects — ambient transversality patches and the combinatorial inversion counter — and an ad-hoc `sheetSum` disjoint union; docstring says "Moved verbatim from `Hopf/SphereTopology.lean`")
+twin: Milnor, h-cobordism §4 proof of Thm 4.8 (reordering by counting inversions) for l.607–772; Hirsch, Differential Topology Ch. 3 (general position by isotopy) for l.82–430; no Mathlib twin
+findings:
+- l.14–24 module docstring: inventory plus migration receipt (`base 304a0fea`, `spheretop-moves.md`); no theorem statement, no reference
+- 30 of 35 declarations without docstrings (`exists_ambient_patch_in_open` l.135, `sheetSum` l.444, `upperValueRank` l.607, `finiteIndexDisorder` l.610, `finiteIndexDisorder_swap_lt` l.690, …)
+- l.444 `def sheetSum (X : Type) : ℕ → Type | 0 => PEmpty | n+1 => X ⊕ sheetSum X n` with six hand-rolled instances (l.448–490, `sheetSumTopology`, `sheetSumIsManifold`, …): Mathlib would take `Fin n × X` (or `Σ i : Fin n, X`) and get every instance for free; the section is over `Type` (universe 0), the rest over `Type*`
+- l.607–772 `upperValueRank h x = #{y | h x < h y}`, `finiteIndexDisorder h w = Σ w x · upperValueRank h x`, `finiteIndexDisorder_swap_lt`, `exists_adjacent_index_inversion`: the inversion-count induction of Milnor Thm 4.8, pure finite combinatorics, correctly generic in `X`; misplaced in a manifold file and undocumented
+- l.82–430 `exists_radius_supported_bump_preparation`, `exists_relative_ambient_patch_step`, `compose_supported_ambient_isotopies` (a `def` returning an existential? l.259), `exists_supported_ambient_disjoint_fixing_closed`: general-position by supported ambient isotopy with 9–10 type parameters `{D Z G H H' K X Y N}`; textbook content but no docstrings and no statement of what "patch" means
+- l.69 `set_option maxSynthPendingDepth 3`, l.72–76 `open scoped … Modular UpperHalfPlane`, l.78 `universe u v` unused
+- read all statements; proofs not read
+suggestion: split: l.607–772 to `Lib/Combinatorics/IndexDisorder.lean` (docstring: Milnor Thm 4.8 inversion count) and l.82–430 into `Transversality/AmbientIsotopy.lean`; replace `sheetSum X n` by `Fin n × X`.
+
+## Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean  (44 declarations, 1126 lines)
+verdict: B (minor: docs/names; the main theorem is Milnor Thm 4.1 in textbook generality, fully documented; residue is the `native*` vocabulary in intermediate names and the dependence on `MorseCancellation.nativeMorseIndex`)
+twin: Milnor, Lectures on the h-cobordism theorem, Theorem 4.1 (Rearrangement); no Mathlib twin (genuine gap)
+findings:
+- l.14–41 module docstring names the theorem, its hypotheses, a four-step proof outline, references and tags; both promised names exist (`exists_stationary_pair_weight` l.715, `exists_morse_rearrangement_of_no_connection` l.1048)
+- l.1048 main statement: compact preconnected `M`, Morse `f`, gradient-like `V` with flow `F`, signed Morse charts at `p q` on which `V` is the model descent field, a band `(l,u)` containing only `p,q`, no orbit from `q` to `p` ⇒ `g` Morse with the same critical set, prescribed `g p = p'`, `g q = q'`, `V` still descending, `g = f` near every other critical point and off the band, indices preserved — this is Milnor's statement with the hypotheses of his Def. 3.1 ("gradient-like") spelled out; generic in `E M`; good
+- conclusion l.1085 uses `MorseCancellation.nativeMorseIndex E g x` — the index is defined in Morse/CubicFlow.lean:1459 by `Classical.choice`; the theorem inherits that name's `native` prefix
+- l.193, 225, 321–410, 856 `isCompact_native_belt_basin`, `nativeCylinderWeight`, `exists_native_cylinder_plateau_weight`, `exists_small_native_morse_field_block`: "native" (= in the manifold rather than the chart) is project jargon; Mathlib would drop the word or say `ambient`
+- l.64–120 `shiftedSignedMorseChart`, `isMorseAt_add_const`, `nativeMorseIndex_add_const`: `f + k` is Morse with the same index — belongs in Morse/Index.lean beside `isMorse_neg` (currently in OrderedCancellation.lean:1220)
+- l.127–320 `FlowCancellation.levelBasin_eq_of_regular_band`, `isCompact_forward_section_iff_of_regular_band`: general flow facts under a `Cancellation` namespace
+- 0 missing docstrings; l.44 `set_option maxSynthPendingDepth 3`, l.47–51 `open scoped … Modular UpperHalfPlane`, l.53 `universe u v` unused
+- statements read throughout; proof of l.1048 read to l.1100, rest sampled
+suggestion: rename `nativeMorseIndex` → `ManifoldMorse.index` (defined once, in Index.lean) and drop `native` from the six intermediate names; the file then reads as Milnor Thm 4.1.
+
+## Lib/Geometry/Manifold/Morse/Reeb.lean  (50 declarations, 732 lines)
+verdict: B (minor: docs/names; Reeb's theorem in textbook generality with a complete docstring; residue is root-namespace helpers and the copied preamble)
+twin: Milnor, Morse Theory, Theorem 4.1 (Reeb: two critical points ⇒ homeomorphic to a sphere); no Mathlib twin (genuine gap; nearest Mathlib/Topology/Homotopy or Geometry/Manifold/Instances/Sphere for the sphere)
+findings:
+- l.14–41 docstring: statement, five-step outline, main declarations, reference `[milnor63] Thm 4.1`, tags; every promised name exists (`SublevelDisk` l.474, `TwoDiskDecomposition` l.378, `DiskDouble.homeomorphSphere` l.362, `nonempty_regularSublevelDisk` l.597, `nonempty_homeomorphSphere_of_two_critical_points` l.692)
+- l.692 main statement: compact `M` modelled on finite-dimensional `E`, smooth Morse `f` with `criticalPoints E f = {p, q}`, `f p < f q` ⇒ `Nonempty (M ≃ₜ Hemisphere.Sphere (finrank ℝ E))`; textbook hypotheses exactly (Milnor adds nothing); conclusion via the project's `Hemisphere.Sphere n` rather than `Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+1))) 1` — check that `Hemisphere.Sphere` is definitionally that sphere or add a bridge lemma
+- l.296–375 `DiskDouble.hemisphereMap/sphereMap/homeomorphSphere/twistedHomeomorphSphere` (two closed discs glued along the boundary by a homeomorphism are a sphere) and l.378–470 `TwoDiskDecomposition`: general topology, library-ready, would sit in `Lib/Topology/DiskDouble.lean`
+- l.624 `negLevelHomeomorph`, l.635 `twoDiskDecompositionOfSublevels`, l.686 `homeomorphSphereOfSublevelDisks`: three declarations in the root namespace; Mathlib would put them under `SublevelDisk.` / `TwoDiskDecomposition.`
+- l.573, 597 `FlowConstruction.exists_regularSublevelHomeomorph_with_level`, `nonempty_regularSublevelDisk`: the Thm 3.1 band transport, duplicating the role of Index.lean's `regularSublevelHomeomorphOfFlow` (different packaging, same content)
+- 0 missing docstrings; l.43 `set_option maxSynthPendingDepth 3`, l.46–50 `open scoped … Modular UpperHalfPlane`, l.52 `universe u v` unused
+- statements read throughout; proofs sampled (l.64–100, 692–732)
+suggestion: move `DiskDouble`/`TwoDiskDecomposition` to `Lib/Topology/DiskDouble.lean`, namespace the three root helpers, and drop the copied `open scoped`/`universe` preamble — the file is then upstream-shaped.
+
+# done 14 files
