@@ -43,9 +43,10 @@ variable {X : TopCat.{u}}
 
 /-! ## Initial injection -/
 
-/-- The degree-zero Cech coefficient map induced by the left map of a short exact sequence is
-injective. This is the initial injection in equation (C24), transported through the canonical
-degree-zero identification with global sections. -/
+/-- For a short exact sequence `S` of abelian sheaves on `X`, the degree-zero Cech coefficient
+map induced by the left map `S.f` is injective.  This is the initial injection of the long exact
+sequence; it is obtained from the injectivity of `S.f` on global sections, transported through
+the canonical identification of degree-zero Cech cohomology with global sections. -/
 theorem initialCoefficientMap_injective
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     (hS : S.ShortExact) :

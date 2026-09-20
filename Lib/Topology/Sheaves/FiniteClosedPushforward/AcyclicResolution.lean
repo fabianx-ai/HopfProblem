@@ -18,8 +18,8 @@ The native Ext comparison commutes in every positive degree with the correspondi
 literal global sections.
 
 This is the general fact that an exact functor preserving injectives carries an acyclic
-resolution to an acyclic resolution; see Hartshorne, *Algebraic Geometry*, III.1.2A and
-III Ex. 8.1.
+resolution to an acyclic resolution; see Hartshorne, *Algebraic Geometry*, III.1.2A (acyclic
+resolutions compute derived functors); cf. III.8 for the higher direct images of a pushforward.
 -/
 
 @[expose] public section

@@ -27,8 +27,9 @@ other and back.
 
 ## References
 
-* A. Hatcher, *Algebraic Topology*, Theorem 1.7 and Example 1.22 (`π₁(S¹) ≅ ℤ`, and the
-  deformation retraction of `ℂ ∖ {0}` onto `S¹`)
+* A. Hatcher, *Algebraic Topology*, Theorem 1.7 (`π₁(S¹) ≅ ℤ`)
+* A. Hatcher, *Algebraic Topology*, Chapter 0 and §1.1 (the deformation retraction of
+  `ℂ ∖ {0}` onto `S¹`)
 * A. Hatcher, *Algebraic Topology*, §1.2 (van Kampen's theorem)
 -/
 

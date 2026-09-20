@@ -19,7 +19,7 @@ constant-sheaf cohomology in degree one.
 
 This is the degree-one case of homotopy invariance of constant-coefficient sheaf cohomology,
 `H^n(S × X; A) ≅ H^n(X; A)` for contractible `S`; see Bredon, *Sheaf Theory*, II.11.12, and
-Iversen, *Cohomology of Sheaves*, III.2.
+cf. Iversen, *Cohomology of Sheaves*, III.
 -/
 
 @[expose] public section

@@ -20,9 +20,9 @@ small-chain theorem.
 
 This is a topological cohomology comparison only.
 
-Reference: Bredon, *Sheaf Theory*, III.1.1, and Godement, *Topologie algébrique et théorie des
-faisceaux*, II.5.10.1 (sheaf cohomology with constant coefficients agrees with singular
-cohomology on a paracompact locally contractible space).
+Reference: Bredon, *Sheaf Theory*, III.1.1 (sheaf cohomology with constant coefficients agrees
+with singular cohomology on a paracompact locally contractible space); cf. Godement, *Topologie
+algébrique et théorie des faisceaux*, II.5.10.
 -/
 
 @[expose] public section
