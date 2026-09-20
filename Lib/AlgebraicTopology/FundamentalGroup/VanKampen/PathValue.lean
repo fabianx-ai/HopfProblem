@@ -819,15 +819,19 @@ theorem FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
     squarePathHomotopy p q u ∈ Set.Icc s t ×ˢ Set.Icc a b :=
   ⟨convexComb_mem_Icc (hp u.2).1 (hq u.2).1 u.1, convexComb_mem_Icc (hp u.2).2 (hq u.2).2 u.1⟩
 
-/-- The path from `(s, a)` to `(t, b)` in the square that goes vertically first and then
-horizontally. -/
+/-- The path from `(s, a)` to `(t, b)` in the square that takes the horizontal leg first, in the
+sense of `squareHorizontal`: the first leg is `squareHorizontal id s` restricted to `[a, b]`
+(the second coordinate moves, the first stays `s`), the second is `squareVertical id b`
+restricted to `[s, t]`. -/
 def FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) s).subpath a b).trans
     ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) b).subpath s t)
 
-/-- The path from `(s, a)` to `(t, b)` in the square that goes horizontally first and then
-vertically. -/
+/-- The path from `(s, a)` to `(t, b)` in the square that takes the vertical leg first, in the
+sense of `squareVertical`: the first leg is `squareVertical id a` restricted to `[s, t]`
+(the first coordinate moves, the second stays `a`), the second is `squareHorizontal id t`
+restricted to `[a, b]`. -/
 def FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) a).subpath s t).trans
