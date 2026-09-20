@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Algebra.Homology.ShortComplex.AbCycleClass
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 public import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 public import Mathlib.CategoryTheory.Abelian.Injective.Ext
@@ -43,40 +44,6 @@ namespace CategoryTheory
 
 universe v u
 
-namespace ShortComplex
-
-set_option backward.defeqAttrib.useBackward true in
-set_option backward.isDefEq.respectTransparency false in
-/-- Element-free compatibility missing beside `ShortComplex.abHomologyIso`. -/
-theorem ab_homologyπ_comp_abHomologyIso_hom
-    (S : ShortComplex AddCommGrpCat.{v}) :
-    S.homologyπ ≫ S.abHomologyIso.hom =
-      S.abCyclesIso.hom ≫
-        AddCommGrpCat.ofHom (QuotientAddGroup.mk' S.abToCycles.range) := by
-  exact S.abLeftHomologyData.homologyπ_comp_homologyIso_hom
-
-/-- An explicit cocycle class in the categorical homology of a short
-complex of abelian groups. -/
-def shortCycleClass (S : ShortComplex AddCommGrpCat.{v}) (z : S.X₂)
-    (hz : S.g z = 0) : S.homology :=
-  S.homologyπ (S.abCyclesIso.inv ⟨z, hz⟩)
-
-/-- Homology maps preserve explicit cocycle representatives. -/
-theorem shortHomologyMap_cycleClass {S T : ShortComplex AddCommGrpCat.{v}}
-    (φ : S ⟶ T) (z : S.X₂) (hz : S.g z = 0) (hφz : T.g (φ.τ₂ z) = 0) :
-    ShortComplex.homologyMap φ (shortCycleClass S z hz) =
-      shortCycleClass T (φ.τ₂ z) hφz := by
-  have hc : ShortComplex.cyclesMap φ (S.abCyclesIso.inv ⟨z, hz⟩) =
-      T.abCyclesIso.inv ⟨φ.τ₂ z, hφz⟩ := by
-    apply (AddCommGrpCat.mono_iff_injective T.iCycles).mp inferInstance
-    rw [← ConcreteCategory.comp_apply, ShortComplex.cyclesMap_i,
-      ConcreteCategory.comp_apply, ShortComplex.abCyclesIso_inv_apply_iCycles,
-      ShortComplex.abCyclesIso_inv_apply_iCycles]
-  unfold shortCycleClass
-  rw [← ConcreteCategory.comp_apply, ShortComplex.homologyπ_naturality,
-    ConcreteCategory.comp_apply, hc]
-
-end ShortComplex
 
 namespace HomologicalComplex
 

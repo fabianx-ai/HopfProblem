@@ -155,6 +155,7 @@ import Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone
 import Lib.Algebra.Homology.FunctorCoherence
 import Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift
+import Lib.Algebra.Homology.ShortComplex.AbCycleClass
 import Lib.Algebra.Homology.ShortComplex.LeftHomologyData
 import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 import Lib.Algebra.Homology.ThreeColumnPage

@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Algebra.Homology.ShortComplex.AbCycleClass
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 public import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 public import Mathlib.CategoryTheory.Limits.Shapes.ConcreteCategory
@@ -36,63 +37,6 @@ namespace CategoryTheory.HomologicalComplex
 
 universe w
 
-private def shortCycleClass (S : ShortComplex AddCommGrpCat.{w}) (z : S.X₂)
-    (hz : S.g z = 0) : S.homology :=
-  S.homologyπ (S.abCyclesIso.inv ⟨z, hz⟩)
-
-private theorem shortHomologyMap_cycleClass {S T : ShortComplex AddCommGrpCat.{w}}
-    (f : S ⟶ T) (z : S.X₂) (hz : S.g z = 0) (hfz : T.g (f.τ₂ z) = 0) :
-    ShortComplex.homologyMap f (shortCycleClass S z hz) =
-      shortCycleClass T (f.τ₂ z) hfz := by
-  have hc : ShortComplex.cyclesMap f (S.abCyclesIso.inv ⟨z, hz⟩) =
-      T.abCyclesIso.inv ⟨f.τ₂ z, hfz⟩ := by
-    apply (AddCommGrpCat.mono_iff_injective T.iCycles).mp inferInstance
-    rw [← ConcreteCategory.comp_apply, ShortComplex.cyclesMap_i,
-      ConcreteCategory.comp_apply, ShortComplex.abCyclesIso_inv_apply_iCycles,
-      ShortComplex.abCyclesIso_inv_apply_iCycles]
-  unfold shortCycleClass
-  rw [← ConcreteCategory.comp_apply, ShortComplex.homologyπ_naturality,
-    ConcreteCategory.comp_apply, hc]
-
-private theorem shortCycleClass_surjective (S : ShortComplex AddCommGrpCat.{w})
-    (x : S.homology) : ∃ (z : S.X₂) (hz : S.g z = 0),
-      shortCycleClass S z hz = x := by
-  obtain ⟨y, rfl⟩ := (AddCommGrpCat.epi_iff_surjective S.homologyπ).mp inferInstance x
-  let z := S.abCyclesIso.hom y
-  refine ⟨z.val, z.property, ?_⟩
-  exact congrArg S.homologyπ
-    (S.abCyclesIso.addCommGroupIsoToAddEquiv.symm_apply_apply y)
-
-private theorem shortCycleClass_quotient (S : ShortComplex AddCommGrpCat.{w})
-    (z : S.X₂) (hz : S.g z = 0) :
-    S.abHomologyIso.hom (shortCycleClass S z hz) =
-      QuotientAddGroup.mk' S.abToCycles.range ⟨z, hz⟩ := by
-  have h : S.abCyclesIso.inv ≫ S.homologyπ ≫ S.abHomologyIso.hom =
-      AddCommGrpCat.ofHom (QuotientAddGroup.mk' S.abToCycles.range) := by
-    change S.abLeftHomologyData.cyclesIso.inv ≫ S.homologyπ ≫
-      S.abLeftHomologyData.homologyIso.hom = S.abLeftHomologyData.π
-    rw [S.abLeftHomologyData.homologyπ_comp_homologyIso_hom,
-      ← Category.assoc, Iso.inv_hom_id, Category.id_comp]
-  exact ConcreteCategory.congr_hom h ⟨z, hz⟩
-
-private theorem shortCycleClass_eq_zero_iff (S : ShortComplex AddCommGrpCat.{w})
-    (z : S.X₂) (hz : S.g z = 0) :
-    shortCycleClass S z hz = 0 ↔ ∃ b : S.X₁, S.f b = z := by
-  constructor
-  · intro h
-    have hq : QuotientAddGroup.mk' S.abToCycles.range ⟨z, hz⟩ = 0 :=
-      (shortCycleClass_quotient S z hz).symm.trans
-        ((congrArg S.abHomologyIso.hom h).trans S.abHomologyIso.hom.hom.map_zero)
-    have hb : (⟨z, hz⟩ : S.g.hom.ker) ∈ S.abToCycles.range :=
-      (QuotientAddGroup.eq_zero_iff _).mp hq
-    obtain ⟨b, hb⟩ := hb
-    exact ⟨b, congrArg Subtype.val hb⟩
-  · rintro ⟨b, hb⟩
-    have hq : QuotientAddGroup.mk' S.abToCycles.range ⟨z, hz⟩ = 0 :=
-      (QuotientAddGroup.eq_zero_iff _).mpr ⟨b, Subtype.ext hb⟩
-    apply (AddCommGrpCat.mono_iff_injective S.abHomologyIso.hom).mp inferInstance
-    exact ((shortCycleClass_quotient S z hz).trans hq).trans
-      S.abHomologyIso.hom.hom.map_zero.symm
 
 private theorem shortHomologyMap_surjective_of_cycle_lifts
     {S T : ShortComplex AddCommGrpCat.{w}} (f : S ⟶ T)
@@ -100,9 +44,9 @@ private theorem shortHomologyMap_surjective_of_cycle_lifts
       ∃ x : S.X₂, S.g x = 0 ∧ f.τ₂ x = z) :
     Function.Surjective (ShortComplex.homologyMap f) := by
   intro a
-  obtain ⟨z, hz, rfl⟩ := shortCycleClass_surjective T a
+  obtain ⟨z, hz, rfl⟩ := ShortComplex.shortCycleClass_surjective T a
   obtain ⟨x, hx, rfl⟩ := hlift z hz
-  exact ⟨shortCycleClass S x hx, shortHomologyMap_cycleClass f x hx hz⟩
+  exact ⟨ShortComplex.shortCycleClass S x hx, ShortComplex.shortHomologyMap_cycleClass f x hx hz⟩
 
 private theorem shortHomologyMap_injective_of_boundary_detection
     {S T : ShortComplex AddCommGrpCat.{w}} (f : S ⟶ T)
@@ -111,15 +55,15 @@ private theorem shortHomologyMap_injective_of_boundary_detection
     Function.Injective (ShortComplex.homologyMap f) := by
   apply (injective_iff_map_eq_zero (ShortComplex.homologyMap f).hom).mpr
   intro a ha
-  obtain ⟨x, hx, rfl⟩ := shortCycleClass_surjective S a
+  obtain ⟨x, hx, rfl⟩ := ShortComplex.shortCycleClass_surjective S a
   have hfx : T.g (f.τ₂ x) = 0 :=
     (ConcreteCategory.congr_hom f.comm₂₃ x).trans (by
       change f.τ₃ (S.g x) = 0
       rw [hx]
       exact f.τ₃.hom.map_zero)
-  rw [shortHomologyMap_cycleClass f x hx hfx] at ha
-  exact (shortCycleClass_eq_zero_iff S x hx).mpr
-    (hdetect x hx ((shortCycleClass_eq_zero_iff T (f.τ₂ x) hfx).mp ha))
+  rw [ShortComplex.shortHomologyMap_cycleClass f x hx hfx] at ha
+  exact (ShortComplex.shortCycleClass_eq_zero_iff S x hx).mpr
+    (hdetect x hx ((ShortComplex.shortCycleClass_eq_zero_iff T (f.τ₂ x) hfx).mp ha))
 
 private theorem sc_closed_iff (K : CochainComplex AddCommGrpCat.{w} ℕ)
     (n : ℕ) (x : K.X (n + 1)) :
