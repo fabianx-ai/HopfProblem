@@ -13,13 +13,17 @@ public import Mathlib.Algebra.Homology.ExactSequence
 /-!
 # The long exact sequence in refinement-directed Cech cohomology
 
-This file translates reviewed textbook section CD-05I, equation (C24). It proves exactness of
-the refinement-directed Cech sequence attached to a short exact sequence of abelian sheaves by
-the representative calculations in the textbook proof, including its separate degree-zero
-branches, and packages the resulting consecutive exact pairs and finite six-object windows.
+A short exact sequence of abelian sheaves on a paracompact space induces a long exact sequence
+in refinement-directed Čech cohomology.  Exactness is proved here position by position from
+representing cochains, with the degree-zero branches treated separately, and the resulting
+consecutive exact pairs are packaged as finite six-object windows
+(`CategoryTheory.ComposableArrows.Exact`).
 
-Naturality of the connecting morphism and the cohomological-delta-functor structure belong to
-CD-05J and are deliberately not asserted here.
+Naturality of the connecting morphism and the cohomological-δ-functor structure are not asserted
+here.
+
+Reference: Godement, *Topologie algébrique et théorie des faisceaux*, II.5.10 (the long exact
+Čech sequence on a paracompact space).
 -/
 
 @[expose] public section
