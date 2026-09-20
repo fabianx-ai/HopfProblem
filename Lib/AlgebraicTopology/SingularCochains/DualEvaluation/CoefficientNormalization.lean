@@ -13,8 +13,12 @@ public import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
 
 This file transports additive Kronecker evaluation through a chosen integral-linear coefficient
 equivalence and proves that the transported evaluation remains natural for chain maps.  It also
-records the repository convention `ULift ℤ ≃ₗ[ℤ] ℤ` and the corresponding local UCT for
-native singular chains.
+records the normalization `ULift ℤ ≃ₗ[ℤ] ℤ` of the coefficient group and the corresponding
+universal coefficient statement for native singular chains.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 and Theorem 3.2.
 -/
 
 @[expose] public section
@@ -28,11 +32,13 @@ open CategoryTheory
 
 namespace AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT
 
-variable (A : AddCommGrpCat.{0})
+universe v w
+
+variable (A : AddCommGrpCat.{w})
 
 /-- Transport additive functionals through a chosen linear coefficient equivalence. -/
 def dualCoefficientEquiv
-    {B M : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} {M : Type*} [AddCommGroup B] [Module ℤ B]
     [AddCommGroup M] [Module ℤ M]
     (e : A ≃ₗ[ℤ] B) :
     (M →+ A) ≃+ (M →ₗ[ℤ] B) where
@@ -51,9 +57,10 @@ def dualCoefficientEquiv
     intro x
     exact e.map_add (phi x) (psi x)
 
+/-- The transported functional is the original one followed by the coefficient equivalence. -/
 @[simp]
 theorem dualCoefficientEquiv_apply_apply
-    {B M : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} {M : Type*} [AddCommGroup B] [Module ℤ B]
     [AddCommGroup M] [Module ℤ M]
     (e : A ≃ₗ[ℤ] B) (phi : M →+ A) (x : M) :
     dualCoefficientEquiv A e phi x = e (phi x) := rfl
@@ -61,16 +68,17 @@ theorem dualCoefficientEquiv_apply_apply
 /-- Precomposition on integral-linear maps, for an arbitrary displayed integral-module
 structure on the codomain. -/
 def precomposeLinear
-    {B M N : Type} [AddCommGroup B] [Module ℤ B]
+    {B M N : Type*} [AddCommGroup B] [Module ℤ B]
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     (f : M →ₗ[ℤ] N) : (N →ₗ[ℤ] B) →ₗ[ℤ] (M →ₗ[ℤ] B) where
   toFun phi := phi.comp f
   map_add' phi psi := by ext; rfl
   map_smul' z phi := by ext; rfl
 
+/-- Precomposition acts on a linear functional by composing it with the given map. -/
 @[simp]
 theorem precomposeLinear_apply
-    {B M N : Type} [AddCommGroup B] [Module ℤ B]
+    {B M N : Type*} [AddCommGroup B] [Module ℤ B]
     [AddCommGroup M] [Module ℤ M] [AddCommGroup N] [Module ℤ N]
     (f : M →ₗ[ℤ] N) (phi : N →ₗ[ℤ] B) (x : M) :
     precomposeLinear f phi x = phi (f x) := rfl
@@ -78,7 +86,7 @@ theorem precomposeLinear_apply
 /-- For literal integer-valued functionals, generic precomposition is Mathlib's algebraic dual
 map. -/
 theorem precomposeLinear_int_eq_dualMap
-    {M N : Type} [AddCommGroup M] [Module ℤ M]
+    {M N : Type*} [AddCommGroup M] [Module ℤ M]
     [AddCommGroup N] [Module ℤ N] (f : M →ₗ[ℤ] N) :
     precomposeLinear (B := ℤ) f = f.dualMap := by
   apply LinearMap.ext
@@ -87,32 +95,34 @@ theorem precomposeLinear_int_eq_dualMap
   intro x
   rfl
 
-variable (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+variable (K : ChainComplex (ModuleCat.{v} ℤ) ℕ)
 
 /-- Kronecker evaluation with its coefficient target transported through a chosen linear
 equivalence. -/
 def cohomologyEvaluationAlongCoefficient
-    {B : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} [AddCommGroup B] [Module ℤ B]
     (e : A ≃ₗ[ℤ] B) (n : ℕ) :
     (dualComplex A K).homology (n + 1) ⟶
       AddCommGrpCat.of (K.homology (n + 1) →ₗ[ℤ] B) :=
   cohomologyEvaluation A K n ≫
     AddCommGrpCat.ofHom (dualCoefficientEquiv A e).toAddMonoidHom
 
+/-- The transported Kronecker evaluation is the original evaluation followed by the coefficient
+equivalence. -/
 @[simp]
 theorem cohomologyEvaluationAlongCoefficient_apply
-    {B : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} [AddCommGroup B] [Module ℤ B]
     (e : A ≃ₗ[ℤ] B) (n : ℕ)
     (a : (dualComplex A K).homology (n + 1))
     (x : K.homology (n + 1)) :
     cohomologyEvaluationAlongCoefficient A K e n a x =
       e (cohomologyEvaluation A K n a x) := rfl
 
-variable {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+variable {K L : ChainComplex (ModuleCat.{v} ℤ) ℕ}
 
 /-- Coefficient-normalized Kronecker evaluation remains contravariantly natural for chain maps. -/
 theorem cohomologyEvaluationAlongCoefficient_natural
-    {B : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} [AddCommGroup B] [Module ℤ B]
     (e : A ≃ₗ[ℤ] B) (f : K ⟶ L) (n : ℕ) :
     HomologicalComplex.homologyMap (dualMap A f) (n + 1) ≫
         cohomologyEvaluationAlongCoefficient A K e n =
@@ -139,7 +149,7 @@ variable [∀ k, Module.Free ℤ (K.X k)]
 
 /-- Free-chain form of coefficient-normalized local UCT. -/
 theorem cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
-    {B : Type} [AddCommGroup B] [Module ℤ B]
+    {B : Type w} [AddCommGroup B] [Module ℤ B]
     (e : A ≃ₗ[ℤ] B) (n : ℕ)
     [Module.Projective ℤ (K.homology n)] :
     IsIso (cohomologyEvaluationAlongCoefficient A K e n) := by
@@ -151,19 +161,20 @@ theorem cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
 
 end FreeChains
 
-/-- The fixed convention sending the sheaf coefficient `ULift ℤ` back to literal integers. -/
+/-- The normalization sending the small coefficient group `ULift ℤ` back to literal integers. -/
 abbrev uliftIntCoefficientEquiv : ULift.{0} ℤ ≃ₗ[ℤ] ℤ :=
   ULift.moduleEquiv
 
-/-- Positive-degree integral evaluation with the repository's small `ULift ℤ` coefficient
-convention normalized to literal integer-valued functionals. -/
+/-- Positive-degree integral evaluation with the small `ULift ℤ` coefficient group
+normalized to literal integer-valued functionals. -/
 abbrev uliftIntCohomologyEvaluation
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) :=
+    (K : ChainComplex (ModuleCat.{v} ℤ) ℕ) (n : ℕ) :=
   cohomologyEvaluationAlongCoefficient
     (AddCommGrpCat.of (ULift.{0} ℤ)) K uliftIntCoefficientEquiv n
 
+/-- The `ULift ℤ`-normalized evaluation is the original evaluation followed by `ULift.down`. -/
 theorem uliftIntCohomologyEvaluation_apply
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
+    (K : ChainComplex (ModuleCat.{v} ℤ) ℕ) (n : ℕ)
     (a : (dualComplex (AddCommGrpCat.of (ULift.{0} ℤ)) K).homology (n + 1))
     (x : K.homology (n + 1)) :
     uliftIntCohomologyEvaluation K n a x =
@@ -173,7 +184,7 @@ theorem uliftIntCohomologyEvaluation_apply
 /-- The `ULift ℤ → ℤ` normalization commutes with contravariant pullback along every
 integral chain map. -/
 theorem uliftIntCohomologyEvaluation_natural
-    {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : K ⟶ L) (n : ℕ) :
+    {K L : ChainComplex (ModuleCat.{v} ℤ) ℕ} (f : K ⟶ L) (n : ℕ) :
     HomologicalComplex.homologyMap
         (dualMap (AddCommGrpCat.of (ULift.{0} ℤ)) f) (n + 1) ≫
         uliftIntCohomologyEvaluation K n =
@@ -198,7 +209,7 @@ theorem singularUliftIntCohomologyEvaluation_isIso_of_projective
 original map on homology in the same positive degree is surjective and the source cohomology's
 preceding homology is projective. -/
 theorem uliftIntDualHomologyMap_injective_of_homologyMap_surjective
-    {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+    {K L : ChainComplex (ModuleCat.{v} ℤ) ℕ}
     [∀ k, Module.Free ℤ (L.X k)] (f : K ⟶ L) (n : ℕ)
     [Module.Projective ℤ (L.homology n)]
     (h : Function.Surjective (HomologicalComplex.homologyMap f (n + 1))) :
