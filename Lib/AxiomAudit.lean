@@ -18,6 +18,12 @@ is an evidence command rather than library content.
 #print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
 
 
+/-! ## `Lib.Algebra.Group.Ker` -/
+
+#check MonoidHom.apply_eq_apply_of_ker_le
+#print axioms MonoidHom.apply_eq_apply_of_ker_le
+
+
 /-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
 
 #check CoverLocalContributions.leftHomologyMap_in_coordinates
