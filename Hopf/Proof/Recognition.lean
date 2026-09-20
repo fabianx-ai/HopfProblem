@@ -150,7 +150,6 @@ import Lib.Topology.Covering.DiagonalQuotient
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import S6Shortcuts
@@ -158,7 +157,7 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.Naturality
-import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
+import Hopf.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP

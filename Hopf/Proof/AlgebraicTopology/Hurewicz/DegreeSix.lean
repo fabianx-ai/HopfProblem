@@ -1,8 +1,8 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
+
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
@@ -17,22 +17,17 @@ import Lib.AlgebraicTopology.Hurewicz.Naturality
 /-!
 # The Hurewicz map in degree six
 
-The degree-six instance of the higher Hurewicz theory (`Hurewicz.hurewiczMap`,
-`Hurewicz.hurewiczLinearEquiv`, `Hurewicz.cubeChain_natural`, ...): for a space `X` with base
-point `x`, the cube chain and cube cycle of a six-loop, the Hurewicz homomorphism
-`SixthHurewicz.hurewiczPi6 : π_ 6 X x →* Multiplicative (H_6 X)`, its `ℤ`-linear form
-`SixthHurewicz.hurewiczMap`, the inverse and the linear equivalence
-`SixthHurewicz.hurewiczLinearEquiv` when `X` is simply connected with `π_ k X x` trivial for
-`2 ≤ k ≤ 5`, the group isomorphism `SixthHurewicz.hurewiczPi6Equiv`, and the naturality of all of
-these under continuous maps.
+Proof-specific: every declaration below is the `n = 6` (`m = 4`, resp. `m = 3`) case of the
+corresponding general `Hurewicz.*` declaration of `Lib/AlgebraicTopology/Hurewicz/`, with the
+degree `6` fixed because the project's target is `S⁶`.  No textbook states a degree-six Hurewicz
+theorem; the theorems are `Hurewicz.hurewiczLinearEquiv`, `Hurewicz.cubeChain_natural` and their
+companions, instantiated so that a consumer can state the sixth Hurewicz isomorphism without the
+offset bookkeeping.
 
-Every declaration is the `n = 6` (`m = 4`, resp. `m = 3`) case of the corresponding
-`Hurewicz.*` declaration; the file exists so that a consumer can state the sixth Hurewicz
-isomorphism without the offset bookkeeping.
-
-Moved verbatim from `Hopf/Recognition.lean` (statements unchanged; qualifier retargets
-`HigherHurewicz.* -> Hurewicz.*`, `FirstHurewicz.* -> SingularChains.*`,
-`SecondHurewicz.mapGenLoop -> Hurewicz.DegreeTwo.mapGenLoop`, which name the same constants).
+The general statements this file instantiates live in
+`Lib/AlgebraicTopology/Hurewicz/{Degree, HopfDegree, Naturality}.lean`.  Moved out of
+`Lib/AlgebraicTopology/Hurewicz/DegreeSix.lean` by the round-8 D-file pass
+(`Lib/reports/round-7/judgement/d-files.md`).
 -/
 
 open Set Function Filter Manifold Topology

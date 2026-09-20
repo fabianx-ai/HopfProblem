@@ -63,6 +63,9 @@ Original source lines 248759--248811; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.Proof.Recognition
+import Hopf.Proof.Algebra.Group.ResidualRelations
+import Hopf.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+import Hopf.Proof.Algebra.Group.LatticeImageCollapse
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -150,7 +153,6 @@ import Lib.Topology.Covering.DiagonalQuotient
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import S6Shortcuts

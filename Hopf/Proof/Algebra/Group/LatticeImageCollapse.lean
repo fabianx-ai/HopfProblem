@@ -1,32 +1,36 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
-module
 
-public import Mathlib.LinearAlgebra.Matrix.Notation
-public import Mathlib.Algebra.Group.TypeTags.Basic
-public import Mathlib.Algebra.Group.Commute.Hom
-public import Mathlib.Algebra.Group.Basic
+import Mathlib.LinearAlgebra.Matrix.Notation
+import Mathlib.Algebra.Group.TypeTags.Basic
+import Mathlib.Algebra.Group.Commute.Hom
+import Mathlib.Algebra.Group.Basic
 
 /-!
-# Cyclic lattice images from a cusp kernel and two matrix actions
+# Cyclic lattice images for the project's two monodromy matrices
 
-Let a homomorphism send the additive integer four-lattice into an arbitrary
-group. Killing vectors with their first two coordinates zero kills w and d.
-The first conjugation, together with A1*w = u-w, then kills u. The explicit
-three-coordinate decomposition kills the whole first-coordinate kernel.
+Proof-specific: `A1`, `A2` are the project's explicit integer monodromy matrices and `epsilon`,
+`epsilonPrime` its two fixed period vectors, so every statement here is about those constants and
+none of them is a textbook result.
 
-Writing v as gamma(v) times epsilon plus a zero-character remainder shows
-that its image is the corresponding integer power, including negative powers.
-The second fixed vector and the first basis vector have that same image.
-The two fixed-vector equations give commutation with the two specified
-conjugating elements. No commutativity, generation or triviality of the
-ambient group is assumed or concluded.
+Let a homomorphism send the additive integer four-lattice into an arbitrary group.  Killing
+vectors with their first two coordinates zero kills `w` and `d`.  The first conjugation, together
+with `A1 * w = u - w`, then kills `u`.  The explicit three-coordinate decomposition kills the
+whole first-coordinate kernel.  Writing `v` as `gamma v` times `epsilon` plus a zero-character
+remainder shows that its image is the corresponding integer power, including negative powers.
+The second fixed vector and the first basis vector have that same image.  The two fixed-vector
+equations give commutation with the two specified conjugating elements.  No commutativity,
+generation or triviality of the ambient group is assumed or concluded.
+
+These declarations duplicate the `LatticeCuspNormalClosure.*` family of
+`Hopf/Proof/LCP/BoundaryTopology.lean`, stated there for `PeriodLattice`, `A₁`, `A₂`, `ε`, `ε'`
+and `γ` of `Hopf/Proof/FiniteCore.lean`; that family, not this module, is what the proof uses.
+Moved out of `Lib/Algebra/Group/LatticeImageCollapse.lean` by the round-8 D-file pass
+(`Lib/reports/round-7/judgement/d-files.md`).
 -/
 
-@[expose] public section
 universe u
 open Matrix
 namespace LatticeImageCollapse

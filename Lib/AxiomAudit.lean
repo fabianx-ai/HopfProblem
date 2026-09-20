@@ -1,5 +1,4 @@
 import Lib
-import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
@@ -18,10 +17,6 @@ is an evidence command rather than library content.
 #check AddMonoidHom.surjective_signed_prod_of_surjective_ker
 #print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
 
-/-! ## `Lib.Data.Int.SignedResidual` -/
-
-#check Int.signed_residual_coordinate_zero
-#print axioms Int.signed_residual_coordinate_zero
 
 /-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
 
@@ -35,13 +30,6 @@ is an evidence command rather than library content.
 #print axioms CoverLocalContributions.connectingRegularKernelEquiv
 #check CoverLocalContributions.connectingRegularKernelEquiv_apply
 #print axioms CoverLocalContributions.connectingRegularKernelEquiv_apply
-
-/-! ## `Lib.AlgebraicTopology.Hurewicz.SphereGenerator` -/
-
-#check SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
-#print axioms SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
-#check SixthHurewicz.exists_sphereMap_of_homologySixEquiv
-#print axioms SixthHurewicz.exists_sphereMap_of_homologySixEquiv
 
 /-! ## `Lib.Topology.Homotopy.BasedDiskLifting` -/
 
@@ -57,11 +45,6 @@ is an evidence command rather than library content.
 #check TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
 #print axioms TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
 
-/-! ## `Lib.Analysis.Real.MeshScale` -/
-
-#check Real.exists_mesh_scale
-#print axioms Real.exists_mesh_scale
-
 /-! ## `Lib.Topology.MetricSpace.LebesgueNumber` -/
 
 #check Metric.subset_cover_of_diam_lt_of_ball_cover
@@ -71,6 +54,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Dimension.CubeBoundaryThreeLebesgue` -/
 
+#check TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
 #check TopologicalSpace.CubeBoundaryThree.diam_coe_image
 #print axioms TopologicalSpace.CubeBoundaryThree.diam_coe_image
 #check TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale
@@ -727,16 +712,16 @@ is an evidence command rather than library content.
 #check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 
-#check ThreeColumnPage.LowerTransferCondition
-#print axioms ThreeColumnPage.LowerTransferCondition
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_injective
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_injective
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
+#check ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
 
 /-! ## `Lib.Algebra.Homology.SpectralSequence.NatLowerEdge` -/
 
@@ -886,8 +871,8 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
 #check ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
 #print axioms ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
-#check ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
-#print axioms ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
+#check ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 
@@ -3239,15 +3224,6 @@ is an evidence command rather than library content.
 #check chartedSpaceStronglyLocallyContractible
 #print axioms chartedSpaceStronglyLocallyContractible
 
-/-! ## `Lib.Algebra.Group.SurjectiveDescent` -/
-
-#check descendHomOfSurjective
-#print axioms descendHomOfSurjective
-#check fibre_constant_of_ker_le
-#print axioms fibre_constant_of_ker_le
-#check descendHomOfSurjective_comp
-#print axioms descendHomOfSurjective_comp
-
 /-! ## `Lib.LinearAlgebra.ColumnKernel` -/
 
 #check LinearMap.kerEquivOfColumnIso
@@ -3277,10 +3253,6 @@ is an evidence command rather than library content.
 #check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
 #print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
 
-/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` -/
-
-#check FundamentalGroup.VanKampen.exists_stageCharacter
-#print axioms FundamentalGroup.VanKampen.exists_stageCharacter
 /-! ## `Lib.Topology.Homotopy.OpenNullhomotopy` -/
 
 #check TopCat.exists_open_nullhomotopic_inclusion
@@ -7455,39 +7427,9 @@ is an evidence command rather than library content.
 #check Convex.basedLoopContraction_apply
 #print axioms Convex.basedLoopContraction_apply
 
-/-! ## `Lib.Algebra.Group.LatticeImageCollapse` -/
+/-! ## `Lib.Algebra.Group.DeterminingFamily` -/
 
-#check LatticeImageCollapse.A1
-#print axioms LatticeImageCollapse.A1
-#check LatticeImageCollapse.A2
-#print axioms LatticeImageCollapse.A2
-#check LatticeImageCollapse.epsilon
-#print axioms LatticeImageCollapse.epsilon
-#check LatticeImageCollapse.epsilonPrime
-#print axioms LatticeImageCollapse.epsilonPrime
-#check LatticeImageCollapse.gamma
-#print axioms LatticeImageCollapse.gamma
-#check LatticeImageCollapse.image_eq_one_of_gamma_eq_zero
-#print axioms LatticeImageCollapse.image_eq_one_of_gamma_eq_zero
-#check LatticeImageCollapse.image_eq_zpow_gamma
-#print axioms LatticeImageCollapse.image_eq_zpow_gamma
-#check LatticeImageCollapse.gamma_epsilonPrime
-#print axioms LatticeImageCollapse.gamma_epsilonPrime
-#check LatticeImageCollapse.image_epsilonPrime_eq
-#print axioms LatticeImageCollapse.image_epsilonPrime_eq
-#check LatticeImageCollapse.image_firstBasis_eq
-#print axioms LatticeImageCollapse.image_firstBasis_eq
-#check LatticeImageCollapse.A1_fixes_epsilon
-#print axioms LatticeImageCollapse.A1_fixes_epsilon
-#check LatticeImageCollapse.image_epsilon_commute_first
-#print axioms LatticeImageCollapse.image_epsilon_commute_first
-#check LatticeImageCollapse.A2_fixes_epsilonPrime
-#print axioms LatticeImageCollapse.A2_fixes_epsilonPrime
-#check LatticeImageCollapse.image_epsilon_commute_second
-#print axioms LatticeImageCollapse.image_epsilon_commute_second
 #check DeterminingFamily.commute_all_of_hom_ext
 #print axioms DeterminingFamily.commute_all_of_hom_ext
 #check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
 #print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow
-#check ResidualRelations.eq_one_of_mul_eq_one_cube_fourth
-#print axioms ResidualRelations.eq_one_of_mul_eq_one_cube_fourth

@@ -149,7 +149,6 @@ import Lib.Topology.Covering.DiagonalQuotient
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import S6Shortcuts
@@ -164,7 +163,7 @@ import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
-import Lib.AlgebraicTopology.Hurewicz.DegreeSix
+import Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.CutTransport
 import Lib.Geometry.Manifold.Morse.MiddleBlocks

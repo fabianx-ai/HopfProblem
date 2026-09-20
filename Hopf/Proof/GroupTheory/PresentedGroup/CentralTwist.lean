@@ -1,22 +1,25 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
+
 import Mathlib
-import Lib.GroupTheory.SplitExtension
+
 /-!
-# The central twist presented group
+# The central twist presented group of the exceptional gluing
 
-  The presented group `TwistGroup a b d := <c, x, y | relators>` associated with
-  the central twist data of an exceptional gluing, its quotient lemmas, and its
-  realizations into arbitrary groups (presentation taken from the project's
-  gluing data).
+Proof-specific: the presented group `TwistGroup a b d = ⟨c, x, y | c central, xy = cᵃ, x³ = cᵇ,
+y⁴ = cᵈ⟩` is defined by the project's gluing data — the exponents `3` and `4` are the orders of
+the two exceptional gluing matrices `T₁`, `T₂` of `Hopf/Proof/FiniteCore.lean` — and has no
+textbook name.  The content of the file is the computation `x = c ^ (4a - b - d)`,
+`y = c ^ (-3a + b + d)`, hence that the group is cyclic on `c`, together with the universal
+property specialised to this presentation.  The general API it rests on is Mathlib's
+`PresentedGroup.toGroup` / `PresentedGroup.generated_by`.
+
+Moved out of `Lib/GroupTheory/PresentedGroup/CentralTwist.lean` by the round-8 D-file pass
+(`Lib/reports/round-7/judgement/d-files.md`); the unused `Lib.GroupTheory.SplitExtension` import
+was dropped.
 -/
-
-
-
-open Set Function Filter Manifold Topology
 
 noncomputable section
 

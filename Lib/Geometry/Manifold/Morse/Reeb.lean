@@ -5,6 +5,7 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.CellStructure
+import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 /-!
 # Reeb's theorem from two Morse critical points
 
@@ -28,6 +29,8 @@ critical set is exactly `{p, q}`, with `f p < f q`.
 ## Main definitions and results
 
 * `SublevelDisk`: a disk presentation with control of the boundary level.
+* `SublevelDisk.contractibleSpace`, `SublevelDisk.homology_subsingleton`: such a sublevel set is
+  contractible, so its positive-degree singular homology vanishes.
 * `TwoDiskDecomposition`: two disk presentations covering a space.
 * `ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points`: Reeb's theorem.
 
@@ -719,3 +722,16 @@ theorem ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points {E M : Ty
     cq.neg.nonempty_sublevelDisk_before_next_critical hf.neg hminNeg (neg_lt_neg haq) hregularR
   exact ⟨homeomorphSphereOfSublevelDisks L R⟩
 
+/-- A sublevel set presented as a disk is contractible, since the model closed ball is convex. -/
+theorem SublevelDisk.contractibleSpace {M : Type} [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
+    {n : ℕ} (d : SublevelDisk n f a) : ContractibleSpace { x : M // f x ≤ a } := by
+  let : ContractibleSpace (Hemisphere.Ball n) :=
+    (convex_closedBall (0 : Hemisphere.Ambient n) 1).contractibleSpace ⟨0, by simp⟩
+  exact d.homeomorph.symm.contractibleSpace
+
+/-- A sublevel set presented as a disk has vanishing singular homology in every positive degree. -/
+theorem SublevelDisk.homology_subsingleton {M : Type} [TopologicalSpace M] {f : M → ℝ}
+    {a : ℝ} {n : ℕ} (d : SublevelDisk n f a) (k : ℕ) (hk : k ≠ 0) :
+    Subsingleton (SingularMayerVietoris.SingularHomology { x : M // f x ≤ a } k) := by
+  let := d.contractibleSpace
+  exact SingularHomology.contractible_homology_subsingleton _ k hk

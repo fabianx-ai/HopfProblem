@@ -40,6 +40,10 @@ asserted for degree-zero homology.
 * `LinearSphereAction.sphereMap`: the normalized linear sphere map.
 * `SuspensionReflection.reflect_homology`: negation on positive suspension homology.
 * `LinearSphereAction.homology_eq_sign_smul`: the determinant-sign formula.
+* `LinearSphereAction.sphereMap_comp`, `LinearSphereAction.sphereMap_trans`,
+  `LinearSphereAction.sphereMap_relative`: functoriality of the normalized sphere map.
+* `LinearSphereAction.homology_relative_sign`: the determinant-sign formula for two normalized
+  sphere maps of a common source.
 
 ## References
 
@@ -511,4 +515,70 @@ theorem LinearSphereAction.homology_eq_sign_smul (n : ℕ)
   · rw [homology_of_det_pos n A hp, sign_eq_one_iff.mpr hp]
     simp
 
+/-- The normalized sphere map of a composite of injective continuous linear maps is the
+composite of their normalized sphere maps. -/
+theorem LinearSphereAction.sphereMap_comp {E F G : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] (A : E →L[ℝ] F) (B : F →L[ℝ] G) (hA : Function.Injective A)
+    (hB : Function.Injective B) :
+    (sphereMap B hB).comp (sphereMap A hA) = sphereMap (B.comp A) (hB.comp hA) := by
+  apply ContinuousMap.ext
+  intro x
+  apply Subtype.ext
+  change NormedSpace.normalize (B (‖A x.val‖⁻¹ • A x.val)) = NormedSpace.normalize (B (A x.val))
+  rw [map_smul]
+  exact
+    NormedSpace.normalize_smul_of_pos
+      (inv_pos.mpr (norm_pos_iff.mpr (puncturedMap A hA x).property)) _
 
+/-- The normalized sphere map of a composite of continuous linear equivalences, read through
+`ContinuousLinearEquiv.trans`. -/
+theorem LinearSphereAction.sphereMap_trans {E F G : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
+    [NormedSpace ℝ G] (A : E ≃L[ℝ] F) (B : F ≃L[ℝ] G) :
+    sphereMap (A.trans B).toContinuousLinearMap (A.trans B).injective =
+      (sphereMap B.toContinuousLinearMap B.injective).comp
+        (sphereMap A.toContinuousLinearMap A.injective) :=
+  (sphereMap_comp A.toContinuousLinearMap B.toContinuousLinearMap A.injective B.injective).symm
+
+/-- Radially normalizing the local-degree sphere map of a continuous linear equivalence at radius
+`r` gives back the normalized linear sphere map. -/
+theorem LinearSphereAction.normalized_linearSphereMap {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (A : E ≃L[ℝ] F) (r : ℝ)
+    (hr : 0 < r) :
+    PuncturedRadial.toSphere.comp (LocalDegree.linearSphereMap A r hr) =
+      sphereMap A.toContinuousLinearMap A.injective := by
+  apply ContinuousMap.ext
+  intro x
+  apply Subtype.ext
+  change NormedSpace.normalize (A (r • x.val)) = NormedSpace.normalize (A x.val)
+  rw [map_smul, NormedSpace.normalize_smul_of_pos hr]
+
+/-- Any normalized linear sphere map factors through a second one, through the sphere map of the
+relative automorphism `A.trans B.symm`. -/
+theorem LinearSphereAction.sphereMap_relative {E F : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (A B : E ≃L[ℝ] F) :
+    sphereMap A.toContinuousLinearMap A.injective =
+      (sphereMap B.toContinuousLinearMap B.injective).comp
+        (sphereMap (A.trans B.symm).toContinuousLinearMap (A.trans B.symm).injective) := by
+  rw [← sphereMap_trans]
+  have heq : (A.trans B.symm).trans B = A := by
+    ext x
+    exact B.apply_symm_apply (A x)
+  rw [heq]
+
+/-- On positive-degree sphere homology, two normalized linear sphere maps differ by the sign of
+the determinant of the relative automorphism.  This is
+`LinearSphereAction.homology_eq_sign_smul` transported along
+`LinearSphereAction.sphereMap_relative`. -/
+theorem LinearSphereAction.homology_relative_sign {F : Type} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] (n : ℕ) (A B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] F) (k : ℕ)
+    (a : SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 1)) (k + 1)) :
+    SingularMayerVietoris.singularHomologyMap (sphereMap A.toContinuousLinearMap A.injective)
+        (k + 1) a =
+      (SignType.sign (A.trans B.symm).toLinearEquiv.toLinearMap.det : ℤ) •
+        SingularMayerVietoris.singularHomologyMap (sphereMap B.toContinuousLinearMap B.injective)
+          (k + 1) a := by
+  rw [sphereMap_relative A B, SingularHomology.singularHomologyMap_comp,
+    LinearMap.comp_apply, homology_eq_sign_smul]
+  exact map_zsmul _ _ _

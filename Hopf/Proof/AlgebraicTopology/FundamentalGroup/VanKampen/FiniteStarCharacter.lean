@@ -1,23 +1,25 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
-module
 
-public import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Basic
 
 /-!
-# Finite-stage character induction
+# Finite-stage character induction for the star-attachment argument
 
-This module contains only the finite combinatorial induction used by a star-attachment argument.
-The `Character` predicate is deliberately abstract: an application packages its actual group
-character, surjectivity, regular-restriction invariant, local compatibility, and basepoint rebasing
-inside it.  Consequently this owner contains no chart, centre-family, puncture, or residual-group
-data.
+Proof-specific: this is `Finset.induction_on` repackaged with a dependent predicate, in the shape
+the project's star-attachment argument consumes it (an application supplies its group character,
+surjectivity, regular-restriction invariant, local compatibility and basepoint rebasing inside
+`Character` and `attach`).  Nothing about fundamental groups, van Kampen or characters occurs in
+the statement, so it is not a library theorem; the reusable content is Mathlib's
+`Finset.induction_on`.
+
+Moved out of `Lib/AlgebraicTopology/FundamentalGroup/VanKampen/FiniteStarCharacter.lean` by the
+round-8 D-file pass (`Lib/reports/round-7/judgement/d-files.md`).
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 namespace FundamentalGroup.VanKampen
 

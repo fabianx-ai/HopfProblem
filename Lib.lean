@@ -1,8 +1,5 @@
 import Lib.Algebra.Group.Prod
-import Lib.Algebra.Group.LatticeImageCollapse
 import Lib.Algebra.Group.DeterminingFamily
-import Lib.Algebra.Group.ResidualRelations
-import Lib.Data.Int.SignedResidual
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
@@ -24,6 +21,7 @@ import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -101,14 +99,12 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.Hurewicz.Naturality
-import Lib.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.Topology.Homeomorph.DiskCube
 import Lib.AlgebraicTopology.Hurewicz.CycleClasses
 import Lib.AlgebraicTopology.Hurewicz.Degree1
 import Lib.AlgebraicTopology.Hurewicz.H1Character
 import Lib.AlgebraicTopology.Hurewicz.PeriodicLoop
 import Lib.AlgebraicTopology.Hurewicz.SimplexPaths
-import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.GroupTheory.Abelianization.SemidirectProduct
 import Lib.GroupTheory.GroupExtension.Abelianization
 import Lib.GroupTheory.GeneratingSet
@@ -118,7 +114,6 @@ import Lib.LinearAlgebra.FreeModule.RankTwoCokernel
 import Lib.LinearAlgebra.SquareZero
 import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
 import Lib.GroupTheory.SplitExtension
-import Lib.GroupTheory.PresentedGroup.CentralTwist
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import Lib.Topology.Covering.Quotient
 import Lib.Topology.Covering.DiagonalQuotient
@@ -147,11 +142,9 @@ import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character
-import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Basic
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.PathValue
 import Lib.AlgebraicTopology.SingularCochains
-import Lib.Algebra.Group.SurjectiveDescent
 import Lib.Algebra.Homology.Embedding.ExtendHomologySequence
 import Lib.Algebra.Homology.HomologicalComplex.CycleLift
 import Lib.Algebra.Homology.HomologicalComplex.ChainCycleLift
@@ -165,7 +158,7 @@ import Lib.Algebra.Homology.ShortComplex.AbCycleClass
 import Lib.Algebra.Homology.ShortComplex.LeftHomologyData
 import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 import Lib.Algebra.Homology.ThreeColumnPage
-import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
+import Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials
 import Lib.Algebra.Homology.SpectralObject.MapHomologicalFunctor
 import Lib.Algebra.Homology.SpectralObject.TotalFiltration
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence
@@ -219,7 +212,6 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 import Lib.Analysis.Normed.LocallyContractible
-import Lib.Analysis.Real.MeshScale
 import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2

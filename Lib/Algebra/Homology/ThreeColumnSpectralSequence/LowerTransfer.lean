@@ -5,11 +5,11 @@ Authors: Fabian Franz
 -/
 module
 
-public import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
+public import Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials
 public import Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage
 
 /-!
-# Lower transfer from a convergent three-column spectral sequence
+# Lower differentials of a convergent three-column spectral sequence
 
 This file extracts the three lower-differential conditions from genuine convergence and
 abutment vanishing.  The page-three objects at the left and right edges are the homology of the
@@ -175,13 +175,13 @@ noncomputable def outerNormalizationOfAlternatingCoordinates
         (A.targetNormalizationOfSource 2 (by simpa using hH₃) (by simpa using hH₄) source₂)
         (fun i => Fin.elim0 i)))
 
-/-- Abutment vanishing in degrees one through three implies the paper-facing lower transfer
-condition on the actual page-two differentials. -/
-theorem lowerTransferCondition [Nontrivial R] (N : OuterNormalization R P)
+/-- Abutment vanishing in degrees one through three makes the first two page-two differentials
+bijective and the third nonzero. -/
+theorem lowerDifferentialsBijectiveAndNeZero [Nontrivial R] (N : OuterNormalization R P)
     (hH₁ : Subsingleton (A.H 1)) (hH₂ : Subsingleton (A.H 2))
     (hH₃ : Subsingleton (A.H 3)) :
-    ThreeColumnPage.LowerTransferCondition (A.toThreeColumnPageData N hH₂ hH₃) := by
-  rw [ThreeColumnPage.LowerTransferCondition]
+    ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero (A.toThreeColumnPageData N hH₂ hH₃) := by
+  rw [ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero]
   simp only [toThreeColumnPageData_differential]
   refine ⟨⟨A.d₂_injective_of_subsingleton 0 (by simpa using hH₁),
       A.d₂_surjective_of_subsingleton 0 (by simpa using hH₂)⟩,
