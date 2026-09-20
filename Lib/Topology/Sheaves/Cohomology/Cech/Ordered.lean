@@ -11,8 +11,10 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.OpenCover
 /-!
 # Ordered indices and intersections for normalized Čech cochains
 
-This file constructs the strictly-increasing fixed-open-cover Čech model in textbook section
-CD-04. A degree-`n` index is an order embedding `Fin (n + 1) ↪o ι`, which is exactly a tuple
+This file constructs the strictly-increasing (alternating) fixed-open-cover Čech model of
+Godement, *Topologie algébrique et théorie des faisceaux*, II.5.1 (see also Bredon, *Sheaf
+Theory*, III.4). A degree-`n` index is an order embedding `Fin (n + 1) ↪o ι`, which is exactly a
+tuple
 `i₀ < ... < iₙ`. Its associated open is the intersection of those cover members. Deleting a
 vertex gives a face, and the inclusion of the full intersection into a face intersection gives
 the restriction direction used by Čech cofaces.
@@ -39,7 +41,7 @@ namespace TopologicalSpace.OpenCover
 variable {X : Type u} [TopologicalSpace X]
 variable {ι : Type v} [LinearOrder ι]
 
-/-- CD-04's strictly increasing degree-`n` index tuple `i₀ < ... < iₙ`. -/
+/-- A strictly increasing degree-`n` index tuple `i₀ < ... < iₙ`. -/
 abbrev OrderedSimplex (ι : Type v) [LinearOrder ι] (n : ℕ) : Type v :=
   Fin (n + 1) ↪o ι
 
@@ -47,19 +49,19 @@ namespace OrderedSimplex
 
 variable {n : ℕ}
 
-/-- CD-04's `k`th face, obtained by deleting the `k`th entry of an ordered tuple. -/
+/-- The `k`th face of an ordered tuple, obtained by deleting its `k`th entry. -/
 def face (σ : OrderedSimplex ι (n + 1)) (k : Fin (n + 2)) :
     OrderedSimplex ι n :=
   (Fin.succAboveOrderEmb k).trans σ
 
-/-- CD-04's deletion face evaluates by skipping the deleted position. -/
+/-- The deletion face evaluates by skipping the deleted position. -/
 @[simp]
 theorem face_apply (σ : OrderedSimplex ι (n + 1)) (k : Fin (n + 2))
     (j : Fin (n + 1)) :
     σ.face k j = σ (k.succAbove j) :=
   rfl
 
-/-- CD-04's face coherence: deleting two entries in either order gives the same ordered tuple,
+/-- Face coherence: deleting two entries in either order gives the same ordered tuple,
 with the second pair of positions adjusted by `predAbove` and `succAbove`. -/
 theorem face_face_swap (σ : OrderedSimplex ι (n + 2))
     (i : Fin (n + 2)) (j : Fin (n + 3)) :
@@ -68,12 +70,12 @@ theorem face_face_swap (σ : OrderedSimplex ι (n + 2))
   ext k
   exact congrFun (Fin.removeNth_removeNth_eq_swap (fun a => σ a) i j) k
 
-/-- CD-04's open `U_{i₀} ∩ ... ∩ U_{iₙ}` associated to an ordered index tuple. -/
+/-- The open `U_{i₀} ∩ ... ∩ U_{iₙ}` associated to an ordered index tuple. -/
 def intersection (U : ι → TopologicalSpace.Opens X) (σ : OrderedSimplex ι n) :
     TopologicalSpace.Opens X :=
   ⨅ j, U (σ j)
 
-/-- CD-04's ordered open intersection has the expected underlying set. -/
+/-- The ordered open intersection has the expected underlying set. -/
 @[simp]
 theorem coe_intersection (U : ι → TopologicalSpace.Opens X)
     (σ : OrderedSimplex ι n) :
@@ -81,7 +83,7 @@ theorem coe_intersection (U : ι → TopologicalSpace.Opens X)
       ⋂ j, (U (σ j) : Set X) :=
   TopologicalSpace.Opens.coe_iInf _
 
-/-- CD-04's pointwise membership criterion for an ordered open intersection. -/
+/-- Pointwise membership criterion for an ordered open intersection. -/
 @[simp]
 theorem mem_intersection_iff (U : ι → TopologicalSpace.Opens X)
     (σ : OrderedSimplex ι n) (x : X) :
@@ -90,13 +92,13 @@ theorem mem_intersection_iff (U : ι → TopologicalSpace.Opens X)
   rw [coe_intersection]
   exact Set.mem_iInter
 
-/-- CD-04's ordered intersection is contained in each indexed cover member. -/
+/-- The ordered intersection is contained in each indexed cover member. -/
 theorem intersection_le (U : ι → TopologicalSpace.Opens X)
     (σ : OrderedSimplex ι n) (j : Fin (n + 1)) :
     σ.intersection U ≤ U (σ j) :=
   iInf_le _ j
 
-/-- CD-04's full intersection is contained in every face intersection. -/
+/-- The full intersection is contained in every face intersection. -/
 theorem intersection_le_face (U : ι → TopologicalSpace.Opens X)
     (σ : OrderedSimplex ι (n + 1)) (k : Fin (n + 2)) :
     σ.intersection U ≤ (σ.face k).intersection U := by
@@ -104,7 +106,7 @@ theorem intersection_le_face (U : ι → TopologicalSpace.Opens X)
   intro j
   exact σ.intersection_le U (k.succAbove j)
 
-/-- CD-04's inclusion from a full ordered intersection to a face intersection. After applying a
+/-- The inclusion from a full ordered intersection to a face intersection. After applying a
 presheaf contravariantly, this is the restriction map occurring in the `k`th Čech coface. -/
 def faceHom (U : ι → TopologicalSpace.Opens X)
     (σ : OrderedSimplex ι (n + 1)) (k : Fin (n + 2)) :
@@ -118,7 +120,7 @@ namespace OrderedCech
 variable {X : TopCat.{u}} {ι : Type v} [LinearOrder ι]
 variable {A : Type w} [Category.{t} A] [HasProducts.{v} A]
 
-/-- CD-04's normalized degree-`n` Čech cochain object: the product of the coefficient
+/-- The normalized degree-`n` Čech cochain object: the product of the coefficient
 presheaf over the intersections indexed by strictly increasing `(n + 1)`-tuples. -/
 @[implicit_reducible]
 noncomputable def object (P : TopCat.Presheaf A X)
@@ -238,12 +240,14 @@ noncomputable def complex (P : TopCat.Presheaf A X)
   CochainComplex.of (object P U) (differential P U)
     (differential_comp_differential P U)
 
+/-- The degree-`n` term of the normalized Čech complex is the ordered cochain object. -/
 @[simp]
 theorem complex_X (P : TopCat.Presheaf A X)
     (U : ι → TopologicalSpace.Opens X) (n : ℕ) :
     (complex P U).X n = object P U n :=
   rfl
 
+/-- The differential of the normalized Čech complex is the alternating sum of the cofaces. -/
 @[simp]
 theorem complex_d (P : TopCat.Presheaf A X)
     (U : ι → TopologicalSpace.Opens X) (n : ℕ) :
