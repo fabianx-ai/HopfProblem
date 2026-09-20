@@ -75,21 +75,21 @@ end Equivalence
 
 /-- On a locally connected target, the integral unit sheaf is identified with the image of the
 integral unit sheaf under the sheaf equivalence induced by a homeomorphism. -/
-def unitSheafEquivImageIso {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X ≅ Y) :
+def unitSheafEquivImageIso {X Y : TopCat.{u}} [LocallyConnectedSpace Y] (H : X ≅ Y) :
     TopCat.SheafH1.unitSheaf Y ≅
       (equivalenceOfIso H).functor.obj (TopCat.SheafH1.unitSheaf X) := by
   let f := TopCat.ConstantSheaf.pushforwardHom
-    (AddCommGrpCat.of (ULift.{0} ℤ)) H.hom
+    (AddCommGrpCat.of (ULift.{u} ℤ)) H.hom
   letI : IsIso f := TopCat.ConstantSheaf.pushforwardHom_isIso
-    (AddCommGrpCat.of (ULift.{0} ℤ)) H.hom (fun U hU =>
+    (AddCommGrpCat.of (ULift.{u} ℤ)) H.hom (fun U hU =>
       (TopCat.homeoOfIso H).isConnected_preimage.mpr hU)
   change TopCat.ConstantSheaf.integralSheaf Y ≅
-    (pushforward AddCommGrpCat.{0} H.hom).obj (TopCat.ConstantSheaf.integralSheaf X)
+    (pushforward AddCommGrpCat.{u} H.hom).obj (TopCat.ConstantSheaf.integralSheaf X)
   exact asIso f
 
 /-- The projective dimension of the integral unit sheaf is invariant under homeomorphism. -/
 theorem unitSheaf_hasProjectiveDimensionLT_iff_of_iso
-    {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X ≅ Y) (n : ℕ) :
+    {X Y : TopCat.{u}} [LocallyConnectedSpace Y] (H : X ≅ Y) (n : ℕ) :
     HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
       HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf Y) n := by
   let E := equivalenceOfIso H

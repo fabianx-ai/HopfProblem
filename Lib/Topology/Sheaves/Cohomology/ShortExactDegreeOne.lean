@@ -29,19 +29,21 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.SheafCohomology
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- Surjectivity in degree-zero sheaf cohomology is exactly surjectivity on sections over the
 top open. -/
 theorem hZeroMap_surjective_iff_globalSections_surjective
-    {G Q : TopCat.Sheaf AddCommGrpCat.{0} X} (g : G ⟶ Q) :
-    Function.Surjective (CategoryTheory.Sheaf.H.map.{0} g 0) ↔
+    {G Q : TopCat.Sheaf AddCommGrpCat.{u} X} (g : G ⟶ Q) :
+    Function.Surjective (CategoryTheory.Sheaf.H.map.{u} g 0) ↔
       Function.Surjective (g.hom.app (op (⊤ : Opens X))) := by
-  let eG := CategoryTheory.Sheaf.H.equiv₀.{0} G
+  let eG := CategoryTheory.Sheaf.H.equiv₀.{u} G
     (show IsTerminal (⊤ : Opens X) from isTerminalTop)
-  let eQ := CategoryTheory.Sheaf.H.equiv₀.{0} Q
+  let eQ := CategoryTheory.Sheaf.H.equiv₀.{u} Q
     (show IsTerminal (⊤ : Opens X) from isTerminalTop)
   constructor
   · intro h q
@@ -49,7 +51,7 @@ theorem hZeroMap_surjective_iff_globalSections_surjective
     refine ⟨eG x, ?_⟩
     calc
       g.hom.app (op (⊤ : Opens X)) (eG x) =
-          eQ (CategoryTheory.Sheaf.H.map.{0} g 0 x) :=
+          eQ (CategoryTheory.Sheaf.H.map.{u} g 0 x) :=
         CategoryTheory.Sheaf.H.equiv₀_naturality
           (show IsTerminal (⊤ : Opens X) from isTerminalTop) g x
       _ = eQ (eQ.symm q) := congrArg eQ hx
@@ -59,7 +61,7 @@ theorem hZeroMap_surjective_iff_globalSections_surjective
     refine ⟨eG.symm s, ?_⟩
     apply eQ.injective
     calc
-      eQ (CategoryTheory.Sheaf.H.map.{0} g 0 (eG.symm s)) =
+      eQ (CategoryTheory.Sheaf.H.map.{u} g 0 (eG.symm s)) =
           g.hom.app (op (⊤ : Opens X)) (eG (eG.symm s)) :=
         (CategoryTheory.Sheaf.H.equiv₀_naturality
           (show IsTerminal (⊤ : Opens X) from isTerminalTop) g (eG.symm s)).symm
@@ -70,20 +72,20 @@ theorem hZeroMap_surjective_iff_globalSections_surjective
 /-- Low-degree exactness criterion: if the middle sheaf of a short exact sequence has zero `H¹`,
 then the subsheaf has zero `H¹` exactly when the quotient map is onto on global sections. -/
 theorem subsingleton_hOne_iff_globalSections_surjective
-    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
-    (hS : S.ShortExact) [Subsingleton (CategoryTheory.Sheaf.H.{0} S.X₂ 1)] :
-    Subsingleton (CategoryTheory.Sheaf.H.{0} S.X₁ 1) ↔
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
+    (hS : S.ShortExact) [Subsingleton (CategoryTheory.Sheaf.H.{u} S.X₂ 1)] :
+    Subsingleton (CategoryTheory.Sheaf.H.{u} S.X₁ 1) ↔
       Function.Surjective (S.g.hom.app (op (⊤ : Opens X))) := by
   let P :=
-    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-      (AddCommGrpCat.of (ULift.{0} ℤ))
-  let _ : Subsingleton (CategoryTheory.Abelian.Ext.{0} P S.X₂ 1) :=
-    ‹Subsingleton (CategoryTheory.Sheaf.H.{0} S.X₂ 1)›
+    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ))
+  let _ : Subsingleton (CategoryTheory.Abelian.Ext.{u} P S.X₂ 1) :=
+    ‹Subsingleton (CategoryTheory.Sheaf.H.{u} S.X₂ 1)›
   have hExt := CategoryTheory.Abelian.Ext.subsingleton_ext_one_iff_postcomp_g_zero_surjective
     P hS
   change
-    Subsingleton (CategoryTheory.Sheaf.H.{0} S.X₁ 1) ↔
-      Function.Surjective (CategoryTheory.Sheaf.H.map.{0} S.g 0) at hExt
+    Subsingleton (CategoryTheory.Sheaf.H.{u} S.X₁ 1) ↔
+      Function.Surjective (CategoryTheory.Sheaf.H.map.{u} S.g 0) at hExt
   exact hExt.trans (hZeroMap_surjective_iff_globalSections_surjective S.g)
 
 end TopCat.SheafCohomology

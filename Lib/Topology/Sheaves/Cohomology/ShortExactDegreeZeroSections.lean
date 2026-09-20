@@ -29,33 +29,35 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian CategoryTheory.Limits TopologicalSpace Opposite
 
+universe u
+
 namespace TopCat.SheafCohomology
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- The abelian group of global sections of a sheaf, as a type: the value of `F` on the top
 open. -/
-abbrev GlobalSections (F : TopCat.Sheaf AddCommGrpCat.{0} X) :=
-  (F.obj.obj (op (⊤ : Opens X)) : Type)
+abbrev GlobalSections (F : TopCat.Sheaf AddCommGrpCat.{u} X) :=
+  (F.obj.obj (op (⊤ : Opens X)) : Type u)
 
 /-- The additive map on global sections induced by a morphism of sheaves. -/
-def topSectionsMap {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) :
+def topSectionsMap {F G : TopCat.Sheaf AddCommGrpCat.{u} X} (f : F ⟶ G) :
     GlobalSections F →+ GlobalSections G :=
   (f.hom.app (op (⊤ : Opens X))).hom
 
 /-- In a short exact sheaf sequence, global sections of the subobject are canonically the
 kernel of the literal quotient map on global sections. -/
 def globalSectionsSubobjectEquivKer
-    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     (hS : S.ShortExact) :
     GlobalSections S.X₁ ≃+ (topSectionsMap S.g).ker := by
   let P :=
-    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-      (AddCommGrpCat.of (ULift.{0} ℤ))
-  let eExt : CategoryTheory.Sheaf.H.{0} S.X₁ 0 ≃+
-      (CategoryTheory.Sheaf.H.map.{0} S.g 0).ker :=
+    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ))
+  let eExt : CategoryTheory.Sheaf.H.{u} S.X₁ 0 ≃+
+      (CategoryTheory.Sheaf.H.map.{u} S.g 0).ker :=
     CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG P hS
-  let eSections : (CategoryTheory.Sheaf.H.map.{0} S.g 0).ker ≃+
+  let eSections : (CategoryTheory.Sheaf.H.map.{u} S.g 0).ker ≃+
       (topSectionsMap S.g).ker := {
     toFun x := ⟨CategoryTheory.Sheaf.H.equiv₀ S.X₂ isTerminalTop x.1, by
       change topSectionsMap S.g
@@ -86,19 +88,19 @@ def globalSectionsSubobjectEquivKer
 evaluated on the top open. -/
 @[simp]
 theorem globalSectionsSubobjectEquivKer_apply_val
-    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
+    {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     (hS : S.ShortExact) (s : GlobalSections S.X₁) :
     (globalSectionsSubobjectEquivKer hS s).1 =
       S.f.hom.app (op (⊤ : Opens X)) s := by
-  let P : TopCat.Sheaf AddCommGrpCat.{0} X :=
-    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-      (AddCommGrpCat.of (ULift.{0} ℤ))
+  let P : TopCat.Sheaf AddCommGrpCat.{u} X :=
+    (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+      (AddCommGrpCat.of (ULift.{u} ℤ))
   change CategoryTheory.Sheaf.H.equiv₀ S.X₂ isTerminalTop
       ((CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG
         P hS)
         ((CategoryTheory.Sheaf.H.equiv₀ S.X₁ isTerminalTop).symm s)).1 = _
   rw [CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG_apply
-    (C := TopCat.Sheaf AddCommGrpCat.{0} X) P hS
+    (C := TopCat.Sheaf AddCommGrpCat.{u} X) P hS
     ((CategoryTheory.Sheaf.H.equiv₀ S.X₁ isTerminalTop).symm s)]
   change CategoryTheory.Sheaf.H.equiv₀ S.X₂ isTerminalTop
       (CategoryTheory.Sheaf.H.map S.f 0

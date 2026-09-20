@@ -31,6 +31,8 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.SheafH1.AcyclicResolutionH1
 
 private theorem composition_naturality {C : Type*} [Category C]
@@ -41,9 +43,9 @@ private theorem composition_naturality {C : Type*} [Category C]
     x ≫ (a' ≫ b') = (a ≫ b) ≫ z := by
   rw [← Category.assoc, ha, Category.assoc, hb, ← Category.assoc]
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
   {R S : CategoryTheory.Abelian.Ext.AcyclicResolutionH1
-    (C := TopCat.Sheaf AddCommGrpCat.{0} X)}
+    (C := TopCat.Sheaf AddCommGrpCat.{u} X)}
 
 namespace Hom
 
@@ -65,14 +67,14 @@ theorem extZeroGlobalIso_naturality :
 
 /-- The sheaf H¹/global-section comparison commutes with every augmented-resolution map. -/
 theorem h1GlobalIso_naturality
-    [Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)]
-    [Subsingleton (CategoryTheory.Sheaf.H.{0} S.complex.X₁ 1)] :
+    [Subsingleton (CategoryTheory.Sheaf.H.{u} R.complex.X₁ 1)]
+    [Subsingleton (CategoryTheory.Sheaf.H.{u} S.complex.X₁ 1)] :
     (CategoryTheory.Sheaf.functorH _ 1).map φ.augmentation ≫ (h1GlobalIso S).hom =
       (h1GlobalIso R).hom ≫ ShortComplex.homologyMap (globalMap φ) := by
-  let : Subsingleton (Ext.{0} (unitSheaf X) R.complex.X₁ 1) :=
-    ‹Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)›
-  let : Subsingleton (Ext.{0} (unitSheaf X) S.complex.X₁ 1) :=
-    ‹Subsingleton (CategoryTheory.Sheaf.H.{0} S.complex.X₁ 1)›
+  let : Subsingleton (Ext.{u} (unitSheaf X) R.complex.X₁ 1) :=
+    ‹Subsingleton (CategoryTheory.Sheaf.H.{u} R.complex.X₁ 1)›
+  let : Subsingleton (Ext.{u} (unitSheaf X) S.complex.X₁ 1) :=
+    ‹Subsingleton (CategoryTheory.Sheaf.H.{u} S.complex.X₁ 1)›
   change (extFunctorObj (unitSheaf X) 1).map φ.augmentation ≫
       ((S.extOneIso (unitSheaf X)).hom ≫
         ShortComplex.homologyMap (extZeroGlobalIso S).hom) =

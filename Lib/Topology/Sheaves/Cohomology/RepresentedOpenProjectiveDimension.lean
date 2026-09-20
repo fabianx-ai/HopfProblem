@@ -31,11 +31,13 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open TopologicalSpace Opposite
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
 /-- The universal integral section regarded as a map to the free sheaf represented by the top
 open. -/
-def integralToFreeTop (X : TopCat.{0}) :
+def integralToFreeTop (X : TopCat.{u}) :
     TopCat.SheafH1.unitSheaf X ⟶ freeOpen (⊤ : Opens X) :=
   (TopCat.ConstantSheaf.integralHomGlobalEquiv X (freeOpen (⊤ : Opens X))).symm
     (freeHomEquiv (⊤ : Opens X) (freeOpen (⊤ : Opens X)) (𝟙 _))
@@ -43,8 +45,8 @@ def integralToFreeTop (X : TopCat.{0}) :
 set_option backward.isDefEq.respectTransparency false in
 /-- Precomposition by `integralToFreeTop` identifies the two representations of a global
 section. -/
-theorem integralToFreeTop_comp_section (X : TopCat.{0})
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+theorem integralToFreeTop_comp_section (X : TopCat.{u})
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (g : freeOpen (⊤ : Opens X) ⟶ F) :
     TopCat.ConstantSheaf.integralHomGlobalEquiv X F (integralToFreeTop X ≫ g) =
       freeHomEquiv (⊤ : Opens X) F g := by
@@ -55,8 +57,8 @@ theorem integralToFreeTop_comp_section (X : TopCat.{0})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Precomposition by `integralToFreeTop` is bijective on every target Hom-set. -/
-theorem integralToFreeTop_comp_bijective (X : TopCat.{0})
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
+theorem integralToFreeTop_comp_bijective (X : TopCat.{u})
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     Function.Bijective
       (fun g : freeOpen (⊤ : Opens X) ⟶ F ↦ integralToFreeTop X ≫ g) := by
   constructor
@@ -78,7 +80,7 @@ theorem integralToFreeTop_comp_bijective (X : TopCat.{0})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The integral unit sheaf is the free additive sheaf represented by the top open. -/
-def unitFreeTopIso (X : TopCat.{0}) :
+def unitFreeTopIso (X : TopCat.{u}) :
     TopCat.SheafH1.unitSheaf X ≅ freeOpen (⊤ : Opens X) := by
   let e := integralToFreeTop X
   letI : IsIso e := isIso_of_coyoneda_map_bijective e
@@ -87,10 +89,10 @@ def unitFreeTopIso (X : TopCat.{0}) :
 
 /-- Projective dimension of a represented open is equivalent to uniform vanishing, in the
 first requested degree, of cohomology after restriction to that open. -/
-theorem freeOpen_hasProjectiveDimensionLT_iff (X : TopCat.{0})
+theorem freeOpen_hasProjectiveDimensionLT_iff (X : TopCat.{u})
     (U : Opens X) (n : ℕ) :
     HasProjectiveDimensionLT (freeOpen U) n ↔
-      ∀ F : TopCat.Sheaf AddCommGrpCat.{0} X,
+      ∀ F : TopCat.Sheaf AddCommGrpCat.{u} X,
         Subsingleton (restrictedCohomologyGroup U F n) := by
   constructor
   · intro h F
@@ -104,7 +106,7 @@ theorem freeOpen_hasProjectiveDimensionLT_iff (X : TopCat.{0})
 
 /-- A projective-dimension bound for the global unit sheaf is equivalent to the same bound for
 the sheaf represented by the top open. -/
-theorem unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top (X : TopCat.{0}) (n : ℕ) :
+theorem unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top (X : TopCat.{u}) (n : ℕ) :
     HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
       HasProjectiveDimensionLT (freeOpen (⊤ : Opens X)) n := by
   constructor

@@ -37,13 +37,15 @@ noncomputable section
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits
 open CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- The free sheaf represented by an open, functorially in the open. -/
-abbrev freeOpenFunctor (X : TopCat.{0}) :
-    Opens X ⥤ TopCat.Sheaf AddCommGrpCat.{0} X :=
+abbrev freeOpenFunctor (X : TopCat.{u}) :
+    Opens X ⥤ TopCat.Sheaf AddCommGrpCat.{u} X :=
   yoneda ⋙ (Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free ⋙
     presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat
 
@@ -65,12 +67,12 @@ end TopCat.Sheaf.OpenRestriction
 
 namespace TopCat.Sheaf.IsFlasque
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 open TopCat.Sheaf.OpenRestriction
 
 /-- Every injective additive sheaf is flasque. -/
-theorem of_injective (I : TopCat.Sheaf AddCommGrpCat.{0} X) [Injective I] :
+theorem of_injective (I : TopCat.Sheaf AddCommGrpCat.{u} X) [Injective I] :
     TopCat.Sheaf.IsFlasque I := by
   constructor
   intro U V i
@@ -102,17 +104,17 @@ end TopCat.Sheaf.IsFlasque
 
 namespace TopCat.SheafCohomology
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
-private abbrev constantIntegerSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-    (AddCommGrpCat.of (ULift.{0} ℤ))
+private abbrev constantIntegerSheaf : TopCat.Sheaf AddCommGrpCat.{u} X :=
+  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
+    (AddCommGrpCat.of (ULift.{u} ℤ))
 
 /-- A flasque additive sheaf has zero native Ext-defined cohomology in degree `n + 1`. -/
 theorem subsingleton_h_succ_of_isFlasque
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) [TopCat.Sheaf.IsFlasque F]
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) [TopCat.Sheaf.IsFlasque F]
     (n : ℕ) :
-    Subsingleton (CategoryTheory.Sheaf.H.{0} F (n + 1)) := by
+    Subsingleton (CategoryTheory.Sheaf.H.{u} F (n + 1)) := by
   induction n generalizing F with
   | zero =>
       simpa using TopCat.SheafH1.subsingleton_h1_of_isFlasque F
@@ -126,7 +128,7 @@ theorem subsingleton_h_succ_of_isFlasque
         TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ hS
       let _ : TopCat.Sheaf.IsFlasque (cokernel p.f) := hQ
       have hsub : Subsingleton
-          (Ext.{0} constantIntegerSheaf (cokernel p.f) (n + 1)) := by
+          (Ext.{u} constantIntegerSheaf (cokernel p.f) (n + 1)) := by
         exact ih (cokernel p.f)
       refine subsingleton_of_forall_eq 0 ?_
       intro e
@@ -138,9 +140,9 @@ theorem subsingleton_h_succ_of_isFlasque
 
 /-- A flasque additive sheaf has zero native Ext-defined cohomology in every positive degree. -/
 theorem subsingleton_h_of_isFlasque
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) [TopCat.Sheaf.IsFlasque F]
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) [TopCat.Sheaf.IsFlasque F]
     (n : ℕ) (hn : 0 < n) :
-    Subsingleton (CategoryTheory.Sheaf.H.{0} F n) := by
+    Subsingleton (CategoryTheory.Sheaf.H.{u} F n) := by
   cases n with
   | zero => simp at hn
   | succ n =>

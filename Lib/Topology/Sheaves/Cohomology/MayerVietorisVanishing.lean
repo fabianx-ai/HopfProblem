@@ -71,7 +71,7 @@ namespace TopCat.Sheaf.MayerVietoris
 
 open TopologicalSpace
 
-variable {X : TopCat.{0}} (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+variable {X : TopCat.{u}} (F : TopCat.Sheaf AddCommGrpCat.{u} X)
 
 /-- Topological form of Mayer--Vietoris vanishing, stated using ordinary sheaf cohomology on
 the intersection, the two pieces, and their union. -/

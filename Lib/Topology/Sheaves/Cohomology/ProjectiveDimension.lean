@@ -32,6 +32,8 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf
 
 /-- The integral unit sheaf has projective dimension less than `n` exactly when every abelian
@@ -40,10 +42,10 @@ coefficient sheaf has trivial integral sheaf cohomology in every degree at least
 Here `CategoryTheory.Sheaf.H F a` is definitionally `Ext (unitSheaf X) F a`, so Ext is derived in
 the coefficient variable `F`. -/
 theorem unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
-    (X : TopCat.{0}) (n : ℕ) :
+    (X : TopCat.{u}) (n : ℕ) :
     HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
-      ∀ (F : TopCat.Sheaf AddCommGrpCat.{0} X) (a : ℕ), n ≤ a →
-        Subsingleton (CategoryTheory.Sheaf.H.{0} F a) := by
+      ∀ (F : TopCat.Sheaf AddCommGrpCat.{u} X) (a : ℕ), n ≤ a →
+        Subsingleton (CategoryTheory.Sheaf.H.{u} F a) := by
   constructor
   · intro h F a ha
     let _ : HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n := h

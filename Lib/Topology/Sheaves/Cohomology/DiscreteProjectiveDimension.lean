@@ -100,7 +100,7 @@ instance sheaf_isFlasque_of_discreteTopology [DiscreteTopology X]
 
 end Discrete
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 /-- The sheaf represented by any open of a discrete space is projective. -/
 instance freeOpen_projective_of_discreteTopology [DiscreteTopology X] (U : Opens X) :
