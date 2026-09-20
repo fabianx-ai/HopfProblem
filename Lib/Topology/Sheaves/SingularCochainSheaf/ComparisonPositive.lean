@@ -12,13 +12,13 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Global
 public import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive
 
 /-!
-# Constant-sheaf cohomology and native singular cohomology in positive degrees
+# Constant-sheaf cohomology and singular cohomology in positive degrees
 
-The exact singular-cochain sheaf resolution first identifies native Ext-defined constant-sheaf
-cohomology with the homology of global sheafified singular cochains.  Barycentric small chains
-then show that the actual global sheafification unit identifies the latter with native singular
-cohomology.  The resulting comparison is characterized by this literal unit map and is natural
-whenever the resolution-to-global comparison is natural.
+For a locally contractible, paracompact space `X` and an abelian group `A`, sheaf cohomology of
+the constant sheaf `A_X` agrees with singular cohomology: `H^n(X; A_X) ≅ H^n_sing(X; A)`
+(Bredon, *Sheaf Theory*, III Thm. 1.1; Warner, *Foundations of Differentiable Manifolds and Lie
+Groups*, 5.32; Godement II.3.9).  The isomorphism is induced by the sheafification unit on the
+singular-cochain complex, which is a resolution of `A_X`, and is natural in the space.
 -/
 
 @[expose] public section
@@ -36,8 +36,8 @@ section Comparison
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- Constant-sheaf cohomology in degree `n+1` is the corresponding homology of literal global
-sections of the sheafified native singular-cochain complex. -/
+/-- `H^{n+1}(X; A_X)` is the degree-`n+1` homology of the complex of global sections of the
+sheafified singular-cochain complex, which is an acyclic resolution of `A_X` (Bredon III §1). -/
 def constantSheafGlobalIso (hLC : LocallyContractibleSpace X)
     [MetrizableSpace X] (n : ℕ) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
@@ -49,8 +49,9 @@ def constantSheafGlobalIso (hLC : LocallyContractibleSpace X)
     (HomologicalComplex.homologyMapIso
       (resolutionGlobalComplexIso X A hLC) (n + 1))
 
-/-- On a metrizable space, barycentric small chains make the actual global sheafification-unit
-map an isomorphism on every positive-degree homology group. -/
+/-- On a metrizable space the sheafification unit on singular cochains induces an isomorphism on
+homology in every positive degree; small chains suffice to compute cohomology
+(Hatcher, Prop. 2.21). -/
 theorem globalCochainComparison_homology_isIso_succ_of_metrizable
     [MetrizableSpace X] (n : ℕ) :
     IsIso (HomologicalComplex.homologyMap
@@ -59,8 +60,8 @@ theorem globalCochainComparison_homology_isIso_succ_of_metrizable
   exact globalCochainComparison_homology_isIso_succ X A
     (hasSmallChainEquivalences_barycentric X) n
 
-/-- The canonical comparison from Ext-defined constant-sheaf cohomology to native singular
-cohomology in every positive degree. -/
+/-- `H^{n+1}(X; A_X) ≅ H^{n+1}_sing(X; A)` for a locally contractible metrizable space `X`
+(Bredon III Thm. 1.1; Warner 5.32). -/
 def constantSheafCohomologyIsoSingular (hLC : LocallyContractibleSpace X)
     [MetrizableSpace X] (n : ℕ) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
@@ -73,7 +74,8 @@ def constantSheafCohomologyIsoSingular (hLC : LocallyContractibleSpace X)
     (asIso (HomologicalComplex.homologyMap
       (globalCochainComparison X A) (n + 1))).symm
 
-/-- The comparison is characterized by the actual global sheafification-unit homology map. -/
+/-- The comparison composed with the homology map of the singular-cochain sheafification unit is
+the acyclic-resolution isomorphism; this characterises it. -/
 @[reassoc]
 theorem constantSheafCohomologyIsoSingular_global
     (hLC : LocallyContractibleSpace X) [MetrizableSpace X] (n : ℕ) :
@@ -111,8 +113,9 @@ end TopCat.SingularCochainSheaf
 
 namespace TopCat.SingularCochainSheaf
 
-/-- Compatibility with the resolution-to-global comparison implies compatibility with the
-native singular-cohomology comparison in every positive degree. -/
+/-- The isomorphism `H^{n+1}(X; A_X) ≅ H^{n+1}_sing(X; A)` is natural in the space: a map
+compatible with the acyclic-resolution isomorphisms is compatible with the singular-cohomology
+comparison, in every positive degree. -/
 theorem constantSheafCohomologyIsoSingular_naturality_of_global
     {X Y : TopCat.{0}} (f : X ⟶ Y) (A : AddCommGrpCat.{0})
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
