@@ -11,13 +11,24 @@ is left.
   naming Hatcher §3.1 (cohomology of a point vanishes in positive degrees) and
   `Mathlib/Algebra/Homology/AlternatingConst.lean`; 0 manuscript citations were
   present.
-* docstrings: 0 added (all 6 public declarations already had one; the 5 missing ones
-  are `private` and are out of scope).
+* docstrings: 0 added (6 declarations already had one; the 5 missing ones are `private`
+  and are out of scope).  **(corrected)** the public/private split as first written was
+  wrong: the file has 4 public declarations (all documented) and 7 private ones (2
+  documented, 5 not).  Six docstrings and five gaps is right; "all 6 public" is not.
 * universe pins: 2 of 17 generalised — `homotopy_on_cocycle_succ` and the private
   `cochainMap_d_succ` from `AddCommGrpCat.{0}` to `AddCommGrpCat.{u}`.
-  15 left, forced by `AlgebraicTopology.SingularCochains.complex`, `.chains`,
-  `.dualComplex`, `.pullback` (`Lib/AlgebraicTopology/SingularCochains.lean`, outside
-  the packet), which are pinned at `ModuleCat.{0} ℤ` / `AddCommGrpCat.{0}`.
+  15 left.  **(corrected)** the reason given here was wrong: of the four interface
+  declarations named, only `chains` is pinned.  At the branch head
+  `Lib/AlgebraicTopology/SingularCochains.lean` has `dualComplex (A : AddCommGrpCat.{w})
+  (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)` (l.82), `complex (X : Type) (A :
+  AddCommGrpCat.{w}) : CochainComplex AddCommGrpCat.{w} ℕ` (l.122), `pullback (A :
+  AddCommGrpCat.{w})` (l.126), `pullbackHomotopy` (l.160) and
+  `homotopyEquivCohomologyIso` (l.175) all at `.{w}` — packet 01 lifted the coefficient
+  universe in the same round.  Genuinely forced are the `ModuleCat.{0} ℤ` pins on
+  `pointFreeModule`/`single₀` (through `chains`); the `A : AddCommGrpCat.{0}` binders at
+  l.73/83/89/104/111/149/158 are **not** forced by the imported interface (the reviewer
+  restated two of them and `pointCocycle_boundary` at `.{w}` with identical proof bodies
+  and they elaborate).  See the corrections section at the end.
 * `: Type` binders: 0 of 2 widened — forced by `complex (X : Type)` in the same
   imported interface.
 
@@ -28,8 +39,10 @@ is left.
   Hatcher §3.1 and Theorem 3.2 (universal coefficient theorem), with `## Main results`
   and `## References` added.
 * docstrings: 0 added (7/7 present).
-* universe pins: 0 of 7 — forced by the same `SingularCochains.complex`/`.chains`
-  interface and by `DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation`.
+* universe pins: 0 of 7.  **(corrected)** as for `PositivePrimitives`, only `chains` is
+  pinned in that interface.  Genuinely forced here are the two `ULift.{0} ℤ` pins (via
+  `DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation`); the three
+  `A : AddCommGrpCat.{0}` pins at l.61/72/82 lift with identical proof bodies.
 * `: Type` binders: 0 of 3 — same cause.
 
 ### `Lib/AlgebraicTopology/SingularHomology/Chains.lean` (C) — `9a567385`
@@ -97,12 +110,27 @@ is left.
   unify with a bare universe variable.  Supplying
   `HasFiniteProducts (ModuleCat.{u} ℤ) := ⟨fun _ => ModuleCat.hasLimitsOfShape⟩` was
   tried and fails the same way.  Every declaration of the file needs that instance to
-  form `⨁ K`, so the pin is not a local fix.
+  form `⨁ K`.  **(corrected)** the conclusion drawn from this — "so the pin is not a
+  local fix" — is false.  The stuck constraint does reproduce, but the instance is
+  obtainable at a bare `u` by a different proof term:
+
+  ```lean
+  example : HasFiniteBiproducts (ChainComplex (ModuleCat.{u} ℤ) ℕ) := Abelian.hasFiniteBiproducts
+  ```
+
+  which elaborates against this module (`Abelian (ChainComplex (ModuleCat.{u} ℤ) ℕ)` is
+  found by `inferInstance`).  Both pinned instance theorems
+  (`singularChainsFiniteBiproducts` l.62, `homologyFiniteBiproducts` l.317) use the
+  failing term, so the fix is a one-token change in two places; the seven other pins
+  (l.323–424) are abstract homological algebra over `⨁ K` and are not tied to
+  `singularComplex`.  The real reason the item stopped is that only
+  `HasFiniteBiproducts.of_hasFiniteProducts` and an explicit `HasFiniteProducts`
+  instance were tried.  The item is re-opened in `Lib/reviews/REVIEW-7-8.md` §3.
 
 ### `Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean` (C) — `16738df2`
 * citations: 4 pieces of process narrative deleted — the stale claim that the
-  `PeriodTorusHigherHomology` names are only compatibility shims (about a third of the
-  file is in that namespace), "the homotopy-invariance arguments of the Hurewicz lane",
+  `PeriodTorusHigherHomology` names are only compatibility shims (**over half (corrected)**
+  — 113 of the 218 declarations — of the file is in that namespace), "the homotopy-invariance arguments of the Hurewicz lane",
   the record of a disposable experiment with the local `Module ℤ` instances, and the
   "Consumers: the Hurewicz lane, the torus lane, the Pontryagin product" list.  The
   restriction to left degree 1 (and 2) is now stated against Hatcher's
@@ -165,7 +193,10 @@ is left.
   `FirstHurewicz.ChainHomology.shortCycleClass`, `ShortCycle`, `ShortOpchains`,
   `shortHomologyToChainClass`, `homologyDesc`, `homologyToChainClass_cycleClass`,
   `chainClass_eq_iff`, `boundaries1_le_ker` — 8 names none of which is declared here
-  (the namespace `FirstHurewicz.ChainHomology` does not exist) — and named the project
+  (**(corrected)** the namespace `FirstHurewicz.ChainHomology` does not exist *in `Lib`*;
+  `Hopf/LibShims.lean:39-41` has `namespace FirstHurewicz export SingularChains
+  (ChainHomology.shortCycleClass …)`, which creates exactly those aliases.  The rewrite is
+  still right — `Lib` must not document `Hopf`-side aliases — but the stated reason was inexact) — and named the project
   files that consume the API.  Replaced by a description of the declarations the file
   has, with `## Main definitions and results` and `## References` (Hatcher §2.1,
   `ShortComplex/ModuleCat.lean`, `QuasiIso.lean`).
@@ -189,7 +220,7 @@ is left.
 |---|---|---|
 | manuscript citations / process narrative replaced | 13 | 0 |
 | docstrings added | 104 (88 CirclePaths + 16 FirstHurewicz) | 0 (all remaining gaps are `private`) |
-| universe pins generalised | 101 of 126 | 25 (9 Coproduct, 15 PositivePrimitives, 7 Vanishing — all forced, see above; the two files share the same forced interface) |
+| universe pins generalised | **103 of 134 (corrected)** | **31 (corrected)** (9 Coproduct, 15 PositivePrimitives, 7 Vanishing — see the corrections section: the Coproduct obstacle and the "forced by the interface" reason were both wrong) |
 | `: Type` binders widened | 0 of 13 | 13 (all forced by `ModuleCat.of ℤ ℤ : ModuleCat.{0} ℤ`) |
 
 ## Builds
@@ -271,3 +302,64 @@ a379b082  SingularHomology/MayerVietoris.lean
 16738df2  SingularHomology/CrossProduct.lean
 2fda9cbe  SingularHomology/CirclePaths.lean
 ```
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-02.md` (ACCEPT WITH FINDINGS; the code
+changes are sound — pure `.{0}` → `.{u}` lifts with unchanged statements, 63 docstrings checked
+against their statements, none wrong).  What follows corrects this receipt's text only; no Lean file
+was changed by it.  The figures marked "(corrected)" above were fixed in place and are repeated here
+because the originals were reported to the coordinator.
+
+1. **Totals row (finding 3).**  "101 of 126, 25 left (9 Coproduct, 15 PositivePrimitives, 7
+   Vanishing)" is wrong three times: 9 + 15 + 7 = 31, not 25; the per-file "done" numbers sum to
+   2 + 36 + 5 + 4 + 5 + 29 + 22 = **103** (the row dropped `PositivePrimitives`' 2); and the per-file
+   totals sum to 17 + 7 + 36 + 5 + 4 + 9 + 5 + 29 + 22 = **134**.  Correct row: **103 of 134, 31
+   left**.  The per-file numbers themselves are right (re-counted `.{0}` before/after in each file).
+
+2. **`Coproduct.lean`: "the pin is not a local fix" is false (finding 1).**  See the corrected
+   passage in the `Coproduct.lean` section above.  The stuck universe constraint reproduces, but
+   `Abelian.hasFiniteBiproducts` supplies the instance at a bare `u`; only
+   `HasFiniteBiproducts.of_hasFiniteProducts` and an explicit `HasFiniteProducts` instance had been
+   tried.  The item is re-opened (`Lib/reviews/REVIEW-7-8.md` §3, packet 02: lift the two biproduct
+   instances, then the seven abstract pins).  Whether the seven downstream declarations then go
+   through was not tested by the reviewer either.
+
+3. **`PositivePrimitives` / `Vanishing`: "forced by the interface" is wrong (finding 2).**  Of
+   `complex`, `chains`, `dualComplex`, `pullback`, only **`chains`** is pinned; packet 01
+   (`c31bbc73`) lifted the coefficient universe of the other three in the same round.  Corrected in
+   both file sections above.  The genuinely forced pins are the `ModuleCat.{0} ℤ` ones on
+   `pointFreeModule`/`single₀` and the two `ULift.{0} ℤ` in `Vanishing` (via `LocalUCT`).  Whether
+   the private helpers `pointChainHomotopyEquiv` / `dualPointSingle_exactAt` lift was not tested
+   (private, unreachable from a scratch file), but nothing in their statements needs `A` at universe
+   0.  Relatedly, both new module docstrings say "stated for an arbitrary coefficient group" while
+   every statement takes a universe-0 group — a code fix, listed in `REVIEW-7-8.md` §3.
+
+4. **Occurrence counts vs. declaration counts (finding 4).**  The per-file "36 of 36 / 29 of 29 /
+   22 of 22 generalised" are `.{0}` **occurrence** counts, while the envdiff table's 35 / 27 / 19 are
+   **declaration** counts (`shortMap` carries two pins, `homologyBiprodEquiv_desc` three,
+   `ModuleHomology`'s old module docstring two).  The receipt lists 35 names under "all 36" without
+   saying so.  Under the round-8 rule (`REVIEW-7-8.md` §4) the unit must be labelled.
+
+5. **`FirstHurewicz.ChainHomology` (finding 5).**  The namespace does not exist in `Lib`, but
+   `Hopf/LibShims.lean:39-41` creates exactly those aliases by `export`.  Corrected in place; the
+   docstring rewrite itself stands.
+
+6. **`PositivePrimitives` public/private split (finding 6)** and **`CrossProduct`'s
+   `PeriodTorusHigherHomology` share (finding 7)**: corrected in place (4 public + 7 private, not
+   "all 6 public"; 113 of 218 declarations, i.e. over half, not "about a third").  Neither affects
+   the work done.
+
+7. **The envdiff section cannot be checked against anything (finding 4).**  No `envdiff.json`/`.txt`
+   sits beside this receipt, the worktree `/home/goblin/hopf-r7-p02` the dumps came from is gone, and
+   the job directory holds only `*.bak` files and the axiom log.  The only round-7 artefact in the
+   tree is the merged `Lib/reports/round-7/envdiff-merged-d950428a.json`, in which
+   `changed_type_source` is empty and all 1,028 changed names sit under `changed_type_proof_naming`,
+   so the 233 of this packet cannot be isolated.  The arithmetic here is internally consistent
+   (97 direct + 136 downstream = 233) and the spot-checked direct names are in the merged
+   `changed_type_all`, but **"0 lost, 0 added, 233 explained" is unverifiable from the tree**.  The
+   round-8 rule — commit the `envdiff.json`/`.txt` beside the receipt — now applies to all rounds.
+
+8. **`CircleProduct.lean`'s Hatcher "§2.2 (Mayer–Vietoris, and the torus example)" (finding 8)** is a
+   citation the reviewer could not confirm from memory; it is a code fix if it is one at all and is
+   not resolved here.
