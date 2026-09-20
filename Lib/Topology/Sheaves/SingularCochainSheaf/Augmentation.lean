@@ -10,10 +10,12 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf
 public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Basic
 
 /-!
-# Constant augmentation of the native singular-cochain sheaf
+# The augmentation of the singular-cochain sheaf
 
-The augmentation is constructed directly from Mathlib's coproduct presentation of native
-singular zero-chains.  It is natural under continuous maps and its coboundary is zero.
+The constant sheaf `A_X` maps to the degree-zero singular-cochain sheaf `𝒮^0(X; A)` by sending a
+value `a` to the cochain with constant value `a` on every singular `0`-simplex; composed with the
+coboundary this is zero, so it augments the singular-cochain complex of sheaves (Bredon, *Sheaf
+Theory*, III §1; Warner, *Foundations of Differentiable Manifolds and Lie Groups*, 5.31).
 -/
 
 @[expose] public section
@@ -30,7 +32,7 @@ open scoped Simplicial
 
 namespace TopCat.SingularCochainSheaf
 
-/-- The native chain map induced by a continuous map. -/
+/-- The map of singular chain complexes induced by a continuous map. -/
 abbrev chainMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) :
     AlgebraicTopology.SingularCochains.chains X ⟶
@@ -42,17 +44,19 @@ abbrev chainMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 abbrev singularSet (X : Type) [TopologicalSpace X] : SSet :=
   TopCat.toSSet.obj (TopCat.of X)
 
-/-- Sum of coefficients in the literal coproduct model of singular zero-chains. -/
+/-- The augmentation on singular `0`-chains, sending a chain to the sum of its coefficients, in
+the coproduct presentation of `0`-chains. -/
 def rawChainAugmentation (X : Type) [TopologicalSpace X] :
     ((singularSet X).chainComplex (ModuleCat.of ℤ ℤ)).X 0 ⟶ ModuleCat.of ℤ ℤ :=
   Sigma.desc (fun _ : (TopCat.toSSet.obj (TopCat.of X)) _⦋0⦌ =>
     𝟙 (ModuleCat.of ℤ ℤ))
 
-/-- Sum of coefficients on the current native singular zero-chains. -/
+/-- The augmentation `C_0(X) → ℤ` on singular `0`-chains: the sum of the coefficients. -/
 abbrev chainAugmentation (X : Type) [TopologicalSpace X] :
     (AlgebraicTopology.SingularCochains.chains X).X 0 ⟶ ModuleCat.of ℤ ℤ :=
   rawChainAugmentation X
 
+/-- The augmentation sends the basis chain of a singular `0`-simplex to `1`. -/
 @[reassoc (attr := simp)]
 theorem simplex_chainAugmentation (X : Type) [TopologicalSpace X]
     (σ : (TopCat.toSSet.obj (TopCat.of X)) _⦋0⦌) :
@@ -61,7 +65,7 @@ theorem simplex_chainAugmentation (X : Type) [TopologicalSpace X]
   change Sigma.ι _ σ ≫ Sigma.desc (fun _ => 𝟙 (ModuleCat.of ℤ ℤ)) = _
   simp
 
-/-- Sum of coefficients is natural under continuous maps. -/
+/-- The augmentation on `0`-chains is natural under continuous maps. -/
 @[reassoc]
 theorem rawChainAugmentation_naturality {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
@@ -72,14 +76,14 @@ theorem rawChainAugmentation_naturality {X Y : Type}
   rw [SSet.ι_chainComplexMap_f_assoc,
     simplex_chainAugmentation, simplex_chainAugmentation]
 
-/-- Sum of coefficients is natural for the current native singular-chain map. -/
+/-- Naturality of the augmentation, stated for the singular chain map of a continuous map. -/
 @[reassoc]
 theorem chainAugmentation_naturality {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
     (chainMap f).f 0 ≫ chainAugmentation Y = chainAugmentation X :=
   rawChainAugmentation_naturality f
 
-/-- The singular boundary in degree one has coefficient sum zero. -/
+/-- The augmentation kills boundaries: the composite `C_1(X) → C_0(X) → ℤ` is zero. -/
 @[reassoc]
 theorem rawBoundary_chainAugmentation (X : Type) [TopologicalSpace X] :
     ((singularSet X).chainComplex (ModuleCat.of ℤ ℤ)).d 1 0 ≫
@@ -89,19 +93,19 @@ theorem rawBoundary_chainAugmentation (X : Type) [TopologicalSpace X] :
   rw [SSet.ιChainComplex_d_assoc]
   simp
 
-/-- The current native singular boundary in degree one has coefficient sum zero. -/
+/-- The augmentation kills boundaries, stated for the singular chain complex. -/
 @[reassoc]
 theorem boundary_chainAugmentation (X : Type) [TopologicalSpace X] :
     (AlgebraicTopology.SingularCochains.chains X).d 1 0 ≫ chainAugmentation X = 0 :=
   rawBoundary_chainAugmentation X
 
-/-- The additive map sending an integer to its multiple of `a`. -/
+/-- The additive map `ℤ → A`, `n ↦ n • a`. -/
 def integerMultiple (A : AddCommGrpCat.{0}) (a : A) : ℤ →+ A where
   toFun n := n • a
   map_zero' := zero_zsmul a
   map_add' m n := add_zsmul a m n
 
-/-- The constant native zero-cochain with value `a`. -/
+/-- The singular `0`-cochain with constant value `a`: it sends every `0`-simplex to `a`. -/
 def constantCochain (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0}) :
     A →+ (AlgebraicTopology.SingularCochains.complex X A).X 0 where
   toFun a := (integerMultiple A a).comp (chainAugmentation X).hom.toAddMonoidHom
@@ -117,7 +121,7 @@ def constantCochain (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0}) :
       ((chainAugmentation X).hom c : ℤ) • a + ((chainAugmentation X).hom c : ℤ) • b
     exact zsmul_add _ _ _
 
-/-- Constant zero-cochains have zero coboundary. -/
+/-- A constant `0`-cochain has zero coboundary. -/
 theorem constantCochain_d_zero (X : Type) [TopologicalSpace X]
     (A : AddCommGrpCat.{0}) (a : A) :
     (AlgebraicTopology.SingularCochains.complex X A).d 0 1
@@ -132,7 +136,8 @@ theorem constantCochain_d_zero (X : Type) [TopologicalSpace X]
   rw [h]
   exact (integerMultiple A a).map_zero
 
-/-- Pullback preserves the constant native zero-cochain. -/
+/-- Pullback along a continuous map takes the constant `0`-cochain with value `a` to the constant
+`0`-cochain with value `a`. -/
 theorem pullback_constant {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : AddCommGrpCat.{0}) (f : C(X, Y)) (a : A) :
     (AlgebraicTopology.SingularCochains.pullback A f).f 0
@@ -145,7 +150,8 @@ theorem pullback_constant {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
   exact congrArg (integerMultiple A a)
     (ConcreteCategory.congr_hom (chainAugmentation_naturality f) c)
 
-/-- The canonical augmentation from the constant presheaf. -/
+/-- The augmentation `A_X ⟶ S^0(·; A)` of presheaves, sending a value to the constant
+`0`-cochain (Bredon III §1). -/
 def presheafAugmentation (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.presheaf X A ⟶ presheaf X A 0 where
   app U := AddCommGrpCat.ofHom (constantCochain U.unop A)
@@ -155,7 +161,7 @@ def presheafAugmentation (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     intro a
     exact (pullback_constant A ((Opens.toTopCat X).map i.unop).hom a).symm
 
-/-- The presheaf augmentation followed by the native differential is zero. -/
+/-- The presheaf augmentation followed by the first coboundary is zero. -/
 @[reassoc]
 theorem presheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     presheafAugmentation X A ≫ differential X A 0 1 = 0 := by
@@ -166,12 +172,12 @@ theorem presheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
   intro a
   exact constantCochain_d_zero U.unop A a
 
-/-- The genuine constant sheaf augments the sheafified native cochain complex. -/
+/-- The augmentation `A_X ⟶ 𝒮^0(X; A)` of sheaves (Bredon III §1; Warner 5.31). -/
 def sheafAugmentation (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.sheaf X A ⟶ sheaf X A 0 :=
   (sheafification X).map (presheafAugmentation X A)
 
-/-- The sheaf augmentation followed by the sheafified differential is zero. -/
+/-- The sheaf augmentation followed by the first coboundary is zero. -/
 @[reassoc]
 theorem sheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     sheafAugmentation X A ≫ sheafDifferential X A 0 1 = 0 := by
@@ -180,7 +186,8 @@ theorem sheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
       ((congrArg (sheafification X).map (presheafAugmentation_d X A)).trans
         ((sheafification X).map_zero _ _))
 
-/-- The native augmented sheaf complex in degrees zero and one. -/
+/-- The short complex `A_X ⟶ 𝒮^0(X; A) ⟶ 𝒮^1(X; A)` of the augmented singular-cochain
+resolution. -/
 abbrev initialComplex (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X) :=
   ShortComplex.mk (sheafAugmentation X A) (sheafDifferential X A 0 1)
