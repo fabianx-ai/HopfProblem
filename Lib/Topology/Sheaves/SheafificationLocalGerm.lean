@@ -15,8 +15,9 @@ If a section of a sheaf identified with the sheafification of a presheaf is repr
 presheaf section after shrinking, its stalk value becomes the literal presheaf germ after
 applying that identification and undoing the sheafification unit on the stalk.
 
-This is a generic sheafification compatibility statement. It neither asserts proper base change
-nor identifies a sheaf stalk with the cohomology of a geometric fibre.
+This is the compatibility of germs with the sheafification unit
+(`TopCat.Presheaf.stalkFunctor_map_germ`, which is an isomorphism for sheafification), read
+through a local representative.
 -/
 
 @[expose] public section
