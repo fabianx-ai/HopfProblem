@@ -19,9 +19,9 @@ cleared).  No renames; no rename map.
 | `HasExt.{0}` private instance `abelianSheaf_hasExt` and `subsingleton_h1_of_isFlasque` | `H1Vanishing/Flasque.lean` | `f5a50893` | `HasExt.{u} (TopCat.Sheaf AddCommGrpCat.{u} X)`; the whole file `.{u}` |
 | `OpenEmbeddingCohomology.openImage` and its namespace | `OpenEmbeddingCohomology.lean` | `6973220d` | `.{u}` |
 | `TopCat.Sheaf.freeOpen`, `freeHomEquiv`, `OpenRestriction.freeOpen`, `OpenRestriction.cohomologyEquiv` | `OpenRestriction/Cohomology.lean` | `ccf092a2` | `.{u}` |
-| `TopCat.FiniteClosedPushforward.pushforwardStalkEquiv` | `FiniteClosedPushforward/Exact.lean` | `b457a9fe` | `.{u}` |
+| `TopCat.FiniteClosedPushforward.pushforwardStalkEquiv` | **`FiniteClosedPushforward.lean` (corrected; the receipt said `FiniteClosedPushforward/Exact.lean`)** — that declaration was in fact lifted by round-7 packet 08; `Exact.lean`'s own pin was its `variable {X Y : TopCat.{0}}`, which commit `b457a9fe` lifted | `b457a9fe` | `.{u}` |
 | `TopCat.ConstantSheafCohomology.pullback` | `ConstantCohomologyPullback.lean` | `f59653c5` | `.{u}` |
-| `TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit` (and `nearbyRestrictionUnit_app`) | `OpenRestriction/NearbyRestrictionGerm.lean` | `6f4277d9` | was pinned invisibly — a bare `{X : TopCat}` binder and bare `AddCommGrpCat` arguments, which elaborate at universe 0 under this repo's `autoImplicit false`.  Now `{X : TopCat.{u}}`, `AddCommGrpCat.{u}` |
+| `TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit` (and `nearbyRestrictionUnit_app`) | `OpenRestriction/NearbyRestrictionGerm.lean` | `6f4277d9` | was pinned invisibly.  **(corrected)** the mechanism given here — "a bare `{X : TopCat}` binder and bare `AddCommGrpCat` arguments, which elaborate at universe 0 under this repo's `autoImplicit false`" — is **false**.  Bare binders alone become universe *parameters* (`theorem a0 {X : TopCat} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat X) : True` elaborates as `@a0.{u_1,u_2}`), and `autoImplicit` is irrelevant to this.  What pins is **`TopCat.Presheaf.germ`**, whose `[Limits.HasColimits AddCommGrpCat.{?v}]` instance argument is resolved while `?v` is still a metavariable, and instance resolution assigns `?v := 0`: every statement containing `germ` comes out at `.{0}`, statements without it do not.  The observation "it was at universe 0" is right — the base statement re-elaborated verbatim has no universe parameters at all — so the lift to `.{u}` is a genuine lift whose `u = 0` instance is the old statement.  But the rule "bare `TopCat`/`AddCommGrpCat` ⇒ pinned" is the wrong detector in both directions: the three remaining bare `TopCat.Presheaf AddCommGrpCat X` occurrences at head (`HigherDirectImageSheafification.lean:97,102`, `ResolutionCohomologyPresheaf.lean:140`) are fully `.{u_1}`, while a `.{0}`-free statement can still be pinned through an instance argument.  **A census that greps `.{0}` cannot find this class**; `#check` with `pp.universes true` (or `#print`, looking for a missing `.{…}` on the constant) can.  Now `{X : TopCat.{u}}`, `AddCommGrpCat.{u}` |
 
 Already lifted before this packet, verified rather than redone:
 `TopCat.ConstantSheaf.sheaf`, `.integralSheaf`, `integralHomGlobalEquiv`,
@@ -59,7 +59,12 @@ Two `: Type` binders were widened where the lift forced it, both recorded as for
 `ConstantPointFibre.Fibre : Type` → `Type u`.
 
 Universe arguments the elaborator used to default to `0` are now written out.  They are the only
-proof-text edits in this packet:
+edits outside a universe annotation in this packet — **(corrected)** the receipt originally called
+them "the only proof-text edits", but four of the `(C := AbelianSheaf Y)` insertions are inside
+theorem *statements*, not proofs (`ResolutionTransgression.lean` at the branch tip, l.181–185,
+217–221, 231–235, 267–271).  `C` is determined there by
+`pushedResolution f I : CochainComplex (AbelianSheaf Y) ℕ`, so the elaborated term is unchanged and
+the statement at `u = 0` is the same term; the sentence was inaccurate, not the work.  The list:
 `(C := AbelianSheaf Y)` on `ExtTransgression.cochainTransgression`,
 `ExtTransgression.homologyTwoStepResolution` and
 `homologyTwoStepResolutionExtendUpNat_connectingTwo`;
@@ -123,13 +128,34 @@ PositivePrimitives}`, `DualEvaluation/CoefficientNormalization` (the `ULift.{0} 
 `SingularSmallChains/{Basic, CochainHomotopy, Projective}` and
 `Topology/Sheaves/{ConstantProductH1, ConstantProductH1Comparison,
 ConstantProductH1FibreIndependence, ConstantProductPositiveFibreIndependence,
-ConstantSheafH1}` stay pinned for exactly this reason — 271 of the 320 pins left.
+ConstantSheafH1}` stay pinned for exactly this reason — **280 of the 320 pins left (corrected; the
+receipt said 271)**, or 287 counting `SingularCochains.lean`'s own 7.  **(corrected)** the
+`SingularCochainSheaf/*` file count above is **32**, not 26 (`git grep -o -F '.{0}' 5ad9ec3c^2 --
+'Lib/*.lean'` gives 32 files with pins in that directory, 207 pins).
+
+**The obstruction is a protocol obstruction, not only a consumer-proof one (added on correction).**
+Mathlib's `singularChainComplexFunctor` (`Mathlib/AlgebraicTopology/SingularHomology/Basic.lean:30-38`)
+is declared under `universe w v u`, `variable (C : Type u) [Category.{v} C] [HasCoproducts.{w} C]
+[Preadditive C]` with result `C ⥤ TopCat.{w} ⥤ ChainComplex C ℕ`, so the space universe `w` is tied
+to the coproduct-index universe.  `HasCoproducts.{u} (ModuleCat.{u} ℤ)` synthesises;
+`HasCoproducts.{u} (ModuleCat.{0} ℤ)` fails (it needs `UnivLE.{u,0}`); `(ModuleCat.of ℤ ℤ :
+ModuleCat.{1} ℤ)` is a type error; and `ModuleCat.of ℤ (ULift.{0} ℤ) = ModuleCat.of ℤ ℤ` is not
+`rfl`.  So for `X : Type u` the coefficient object must be an object of `ModuleCat.{u} ℤ`, which the
+literal `ℤ` is not for `u > 0`, and **every** polymorphic form (`ULift.{u} ℤ`,
+`AddCommGrpCat.of (ULift ℤ)`, `ModuleCat.{max u v}`) changes the `u = 0` object to `ULift.{0} ℤ` —
+which the protocol ("statement at `u = 0` unchanged") forbids, independently of the four consumer
+rewrites cited above.  Mathlib's own precedent for polymorphic ℤ coefficients is exactly `ULift.{w} ℤ`
+(`Sheaf.H`).  The protocol-clean route is therefore **a new polymorphic `chains` beside the pinned
+one plus a `u = 0` comparison isomorphism — an addition, not a lift**, correctly outside this packet.
+The same verdict applies to `SingularChains.singularComplex` and, by consequence, to `Coproduct.lean`.
 
 ### `SingularChains.singularComplex` (`AlgebraicTopology/SingularHomology/Chains.lean`)
 
 The same obstacle in the homology-side interface: `(TopCat.toSSet.obj (TopCat.of X)).chainComplex
 (ModuleCat.of ℤ ℤ)` with `(X : Type)`, and `chainLift` / `chainMap_ext` reading off the value at
-`1 : ℤ`.  It forces the 8 pins of `AlgebraicTopology/SingularHomology/Coproduct.lean`
+`1 : ℤ`.  It forces the **9 `.{0}` occurrences on 8 lines (corrected; the receipt's "8 pins" is a line
+count, while the headline 1,024 → 320 are occurrence counts)** of
+`AlgebraicTopology/SingularHomology/Coproduct.lean`
 (`ModuleCat.{0} ℤ` in `singularChainsFiniteBiproducts`, `HasFiniteBiproducts`) — the packet's
 "Mathlib `ModuleCat.hasLimits` at `max v w`" item: the coproduct instance is not what pins the
 file, the literal-`ℤ` chain complex is.  Skipped for the same reason.
@@ -197,9 +223,13 @@ VERDICT PASS
 All 398 changed source types are the universe generalisations of this packet and their dependents.
 The largest groups are `FibreStalkEvaluation/Neighborhood` (25), `ResolutionTransgression` (24),
 `OpenRestriction/Cohomology` (22), `OpenEmbeddingCohomology` (17), `ResolutionCohomologyPresheaf`
-(16), `ResolutionPostnikov` (14), `NestedOpenCohomology` (14).  The `SingularCochainSheaf/*` and
-`Cohomology/SphereTwo` entries in that list are dependents whose statements mention a lifted
-declaration; those files themselves were not edited.
+(16), `ResolutionPostnikov` (14), `NestedOpenCohomology` (14).  **(corrected)** of the 398 changed-type source names, **40 live in modules this branch did not
+edit**, in three groups, not two: `SingularCochainSheaf/*` (29 names), `Cohomology/SphereTwo`
+(2 names) and — omitted from the receipt as first written — `ConstantProductH1` (1),
+`ConstantProductH1Comparison` (1), `ConstantProductH1FibreIndependence` (1),
+`ConstantProductPositiveFibreIndependence` (5) and `ConstantSheafH1` (1), **9 names**.  All three
+groups are dependents whose statements mention a lifted declaration; those files themselves were not
+edited (they are listed in §3 as staying pinned, so the omission is only in this reconciliation).
 
 ## 7. Commits
 
@@ -215,3 +245,70 @@ f59653c5 Lib/Topology/Sheaves: lift ConstantSheafCohomology.pullback and the fin
 6f4277d9 Lib/Topology/Sheaves/OpenRestriction: lift the nearby-restriction germ chokepoint to .{u}
 a140e4b1 Lib/CategoryTheory/Sites/Leray: lift the Leray cluster to .{u}
 ```
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-pins.md` (ACCEPT WITH FINDINGS; the work is sound —
+the reviewer's whole-diff residue check, normalising universe annotations and comparing removed
+against added lines per file, leaves over all 54 `.lean` files only the `universe u` lines in 46
+files, the seven `(C := AbelianSheaf Y)` insertions and one dropped docstring word, so **every
+`u = 0` instance is literally the old statement**; nothing deleted, no hypothesis added, the merge
+preserved every lift on what survived; the headline 1,024 / 99 → 320 / 48 reproduces exactly).
+These corrections are to this receipt's text only; no Lean file was changed by them.
+
+1. **Chokepoint 8's mechanism was wrong (finding 1), corrected in the §1 table.**  The "invisible
+   pin" is real, but it is **not** a bare-binder effect and **not** anything to do with
+   `autoImplicit`: bare binders elaborate as universe parameters.  What pins
+   `germ_stalkIso_hom_nearbyRestrictionUnit` is `TopCat.Presheaf.germ`'s
+   `[Limits.HasColimits AddCommGrpCat.{?v}]` instance argument, resolved while `?v` is still a
+   metavariable and assigned `?v := 0`.  Consequence for tooling: a `.{0}` grep census cannot find
+   this class of pin, and "bare `TopCat`/`AddCommGrpCat` ⇒ pinned" is false in both directions
+   (three bare occurrences at head are fully polymorphic).  The detector that works is `#check` with
+   `pp.universes true`; a census script that dumps universe parameters per declaration — the envdiff
+   dumps already carry the types — would have found this chokepoint without a round-7 build failure,
+   and would *prove* "every declaration is now `.{u}`" instead of asserting it.  The corrected
+   mechanism also goes to `lean-agent-ide` (`spec/dump.md`, `Lib/reviews/REVIEW-7-8.md` §5).
+
+2. **§3 counts (finding 2), corrected in place.**  `SingularCochainSheaf/*` has **32** files with
+   pins (207 pins), not 26; the set of files §3 lists as staying pinned carries **280** pins (287
+   with `SingularCochains.lean`'s own 7), not "271 of the 320"; and `Coproduct.lean` has 8 pinned
+   *lines* but **9** occurrences, while the headline 1,024 / 320 are occurrence counts.  None of this
+   affects soundness — it affects a reader's ability to reconcile 320.  State the grep once and use
+   it throughout.
+
+3. **§3's `ULift ℤ` obstruction is also a protocol obstruction (added to §3).**  The receipt argued
+   from four consumer proofs that read the literal `1 : ℤ`.  Independently of those, no
+   `ModuleCat.{u} ℤ` object has carrier literally `ℤ` for `u > 0`, so every polymorphic form changes
+   the `u = 0` object to `ULift.{0} ℤ` — which the protocol forbids.  The clean route is an
+   **addition**: a polymorphic `chains` beside the pinned one, plus a `u = 0` comparison
+   isomorphism.  Correctly outside this packet either way.
+
+4. **"They are the only proof-text edits in this packet" (finding 4), corrected in §2.**  Four of
+   the seven `(C := AbelianSheaf Y)` insertions are inside theorem *statements*
+   (`ResolutionTransgression.lean` l.181–185, 217–221, 231–235, 267–271).  `C` is determined by
+   `pushedResolution f I`, so the elaborated term and the `u = 0` statement are unchanged; only the
+   sentence was inaccurate.
+
+5. **§6 envdiff reconciliation omitted a third group (finding 3), corrected in §6.**  Of the 398
+   changed-type source names, 40 live in modules this branch did not edit: `SingularCochainSheaf/*`
+   (29) and `SphereTwo` (2), both named, **plus 9 in the five `ConstantProduct*`/`ConstantSheafH1`
+   files**, which were not.  All are dependents of lifted declarations.
+   (`envdiff.json`'s `changed_type_proof_naming` list carries names only; adding the module, as the
+   `lost`/`added` entries have, would make this reconciliation checkable directly.)
+
+6. **"One commit per chokepoint" holds for chokepoints 1–6 only (finding 5).**  Chokepoint 7
+   (`ConstantSheafCohomology.pullback`) shares `f59653c5` with five consumer files, and chokepoint 8
+   shares `6f4277d9` with `StalkCriterion.lean`.  The §1 table makes this visible; the sentence
+   should not have been unqualified.
+
+7. **Two packet items were already clean and the receipt does not say so (finding 6).**  The packet
+   lists `TopCat.LocalPredicate` over ℂ (`Analysis/Complex/SquareRoot.lean`, "1 pin") and "`HasExt`
+   pinned to the hom universe in `cochainTransgression`".  At the base both files have **zero**
+   `.{0}` (`Ext.{v}` in `cochainTransgression` is a universe parameter, not a pin).  Both items were
+   stale in the packet, and a receipt should say which of its inputs it found to be wrong rather
+   than pass over them.
+
+8. **One location was wrong (raised by the packet-08 reviewer), corrected in the §1 table.**
+   `TopCat.FiniteClosedPushforward.pushforwardStalkEquiv` lives in `FiniteClosedPushforward.lean`,
+   not `FiniteClosedPushforward/Exact.lean`, and was lifted by round-7 packet 08; `Exact.lean`'s own
+   pin was its `variable {X Y : TopCat.{0}}`, which `b457a9fe` lifted.  The two receipts now agree.
