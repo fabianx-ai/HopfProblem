@@ -20,7 +20,8 @@ It is a direct corollary of `GroupExtension.Splitting.semidirectProductMulEquiv`
 
 ## References
 
-* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. II (`H₁` of a split extension).
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. VII §6, Cor. VII.6.4 (the
+  low-degree Lyndon–Hochschild–Serre sequence, whence `H₁` of a split extension).
 -/
 
 @[expose] public section

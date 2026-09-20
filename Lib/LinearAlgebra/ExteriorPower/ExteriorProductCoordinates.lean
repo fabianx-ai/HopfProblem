@@ -30,8 +30,8 @@ permutation that sorts the concatenation of the increasing enumerations of `S` a
 
 ## References
 
-* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §8.5 (multiplication in the
-  exterior algebra of a free module on a basis).
+* [Nicolas Bourbaki, *Algebra I, Chapters 1–3*][bourbaki1989], A III §7.8 (multiplication in the
+  exterior algebra of a free module on a basis, `e_H e_K = ± e_{H ∪ K}`).
 -/
 
 @[expose] public section

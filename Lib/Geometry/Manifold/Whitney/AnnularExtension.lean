@@ -21,13 +21,14 @@ bigon, and the structure `TubularBigon` of an embedded bigon with a tubular neig
 * `SphereCone.extension` : a nullhomotopy of `f : S(E) → M` extends `f` continuously over the
   closed unit ball, because the cone on the unit sphere is that ball.
 * `AnnularExtension.exists_continuous_annular_extension` : a map defined on a closed annulus
-  `a ≤ ‖x‖ ≤ b` whose restrictions to the two bounding spheres are nullhomotopic extends to a
-  continuous map on all of `E` which is constant far from the annulus.
+  `a ≤ ‖x‖ ≤ b` whose two boundary restrictions `v ↦ g (a • v)` and `v ↦ g (b • v)` extend over
+  the closed unit ball (by `SphereCone.extension`, the same thing as being nullhomotopic) extends
+  to a continuous map on all of `E` which is constant outside radius `2 b`.
 * `sphereMap_nullhomotopic_of_omitted_point` : a map into `Sⁿ` missing a point is nullhomotopic
   (stereographic projection contracts the complement of a point).
 * `sphereMap_nullhomotopic_of_dim_lt` and `sphere_sphere_nullhomotopic` : every continuous map
-  from a compact `m`-dimensional manifold, in particular from `Sᵐ`, into `Sⁿ` with `m < n` is
-  nullhomotopic; that is `π_m(Sⁿ) = 0` for `m < n`.
+  from a compact boundaryless `m`-dimensional manifold (`[I.Boundaryless]`), in particular from
+  `Sᵐ`, into `Sⁿ` with `m < n` is nullhomotopic; that is `π_m(Sⁿ) = 0` for `m < n`.
 * `exists_bigon_neighborhood_extension_of_circle_nullhomotopies` and its smooth counterpart : if
   every circle in the target is nullhomotopic, a map defined near the boundary of the Whitney
   bigon extends over the whole plane.
@@ -36,8 +37,10 @@ bigon, and the structure `TubularBigon` of an embedded bigon with a tubular neig
 ## References
 
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney trick).
-* [Allen Hatcher, *Algebraic topology*][hatcher02], §4.1, and Milnor, *Topology from the
-  differentiable viewpoint*, §7 (`π_m(Sⁿ) = 0` for `m < n`).
+* [Allen Hatcher, *Algebraic topology*][hatcher02], §4.1 (`π_m(Sⁿ) = 0` for `m < n`, by cellular
+  approximation), and Milnor, *Topology from the differentiable viewpoint*, §§2–3 (the Sard–Brown
+  theorem, which is the argument formalised here: a smooth representative of dimension `m < n` is
+  not surjective).
 
 ## Twin
 
