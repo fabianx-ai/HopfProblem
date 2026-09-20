@@ -237,7 +237,6 @@ import Lib.LinearAlgebra.ColumnKernel
 import Lib.LinearAlgebra.Dual.SurjectiveSpecialization
 import Lib.LinearAlgebra.Dual.TriangularRankTwo
 import Lib.LinearAlgebra.Dual.TriangularRankTwoInjective
-import Lib.LinearAlgebra.Dual.Contragredient
 import Lib.LinearAlgebra.ExteriorPower.MatrixCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ReindexedCoordinates
 import Lib.LinearAlgebra.ExteriorPower.ExteriorProductCoordinates
