@@ -125,9 +125,11 @@
  },
  "Lib/Analysis/Complex/SquareRoot.lean": {
   "keep": [
+   "ContDiff",
    "UpperHalfPlane"
   ],
-  "error": ""
+  "error": "",
+  "note": "ContDiff restored: without it the elaborated type of AnalyticRootCover.exists_holomorphic_square_root_upperHalfPlane changes"
  },
  "Lib/Analysis/ODE/SmoothFlow.lean": {
   "keep": [
