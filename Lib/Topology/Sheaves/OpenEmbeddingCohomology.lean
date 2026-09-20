@@ -33,9 +33,11 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace TopCat.Sheaf.OpenEmbeddingCohomology
 
-variable {T X : TopCat.{0}} (f : T ⟶ X) (hf : Topology.IsOpenEmbedding f)
+variable {T X : TopCat.{u}} (f : T ⟶ X) (hf : Topology.IsOpenEmbedding f)
 
 /-- The functor taking an open of the source to its open image in the target. -/
 abbrev openImage : Opens T ⥤ Opens X := hf.functor
@@ -48,8 +50,8 @@ instance openImage_continuous :
   hf.functor_isContinuous
 
 /-- Restriction of additive sheaves along an open embedding. -/
-abbrev restriction : TopCat.Sheaf AddCommGrpCat.{0} X ⥤
-    TopCat.Sheaf AddCommGrpCat.{0} T :=
+abbrev restriction : TopCat.Sheaf AddCommGrpCat.{u} X ⥤
+    TopCat.Sheaf AddCommGrpCat.{u} T :=
   (openImage f hf).sheafPushforwardContinuous AddCommGrpCat
     (Opens.grothendieckTopology T) (Opens.grothendieckTopology X)
 
@@ -100,7 +102,7 @@ theorem restriction_preservesFiniteColimits :
 
 /-- The presheaf-level comparison sending a constant section on `U ⊆ T` to the constant section
 with the same value on the image open `f(U) ⊆ X`. -/
-def rawRestrictionHom (A : AddCommGrpCat.{0}) :
+def rawRestrictionHom (A : AddCommGrpCat.{u}) :
     TopCat.ConstantSheaf.presheaf T A ⟶
       ((restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A)).obj where
   app U := (TopCat.ConstantSheaf.unit X A).app (op ((openImage f hf).obj U.unop))
@@ -117,7 +119,7 @@ def rawRestrictionHom (A : AddCommGrpCat.{0}) :
       ((openImage f hf).map g.unop).op
 
 /-- The canonical morphism `A_T ⟶ (A_X)|_T` of constant sheaves along an open embedding. -/
-def restrictionHom (A : AddCommGrpCat.{0}) :
+def restrictionHom (A : AddCommGrpCat.{u}) :
     TopCat.ConstantSheaf.sheaf T A ⟶
       (restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A) where
   hom := CategoryTheory.sheafifyLift (Opens.grothendieckTopology T)
@@ -126,7 +128,7 @@ def restrictionHom (A : AddCommGrpCat.{0}) :
 
 /-- The comparison of constant sheaves is the unique morphism whose composite with the
 sheafification unit is the presheaf-level comparison. -/
-theorem unit_restrictionHom (A : AddCommGrpCat.{0}) :
+theorem unit_restrictionHom (A : AddCommGrpCat.{u}) :
     TopCat.ConstantSheaf.unit T A ≫ (restrictionHom f hf A).hom =
       rawRestrictionHom f hf A :=
   CategoryTheory.toSheafify_sheafifyLift (Opens.grothendieckTopology T)
@@ -136,7 +138,7 @@ theorem unit_restrictionHom (A : AddCommGrpCat.{0}) :
 /-- On a constant section coming from a coefficient value `a`, the restriction morphism of
 constant sheaves returns the constant section with the same value on the image open. -/
 @[simp]
-theorem restrictionHom_app_unit (A : AddCommGrpCat.{0})
+theorem restrictionHom_app_unit (A : AddCommGrpCat.{u})
     (U : Opens T) (a : A) :
     (restrictionHom f hf A).hom.app (op U)
         ((TopCat.ConstantSheaf.unit T A).app (op U) a) =
@@ -149,7 +151,7 @@ theorem restrictionHom_app_unit (A : AddCommGrpCat.{0})
 /-- If the source is locally connected, the canonical morphism `A_T ⟶ (A_X)|_T` of constant
 sheaves is an isomorphism. -/
 theorem restrictionHom_isIso [LocallyConnectedSpace T]
-    (A : AddCommGrpCat.{0}) : IsIso (restrictionHom f hf A) := by
+    (A : AddCommGrpCat.{u}) : IsIso (restrictionHom f hf A) := by
   let B : Set (Opens T) := {U | IsConnected (U : Set T)}
   let basis : B → Opens T := fun U ↦ U.1
   have hbasis : Opens.IsBasis (Set.range basis) := by
@@ -183,38 +185,38 @@ theorem restrictionHom_isIso [LocallyConnectedSpace T]
 
 /-- The restriction map `H^n(X, F) → H^n(T, F|_T)` on sheaf cohomology along an open embedding,
 in every degree. -/
-def cohomologyMap (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
-    CategoryTheory.Sheaf.H.{0} F n →+
-      CategoryTheory.Sheaf.H.{0} ((restriction f hf).obj F) n := by
+def cohomologyMap (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    CategoryTheory.Sheaf.H.{u} F n →+
+      CategoryTheory.Sheaf.H.{u} ((restriction f hf).obj F) n := by
   let _ := restriction_preservesFiniteLimits f hf
   let _ := restriction_preservesFiniteColimits f hf
   exact Ext.ExactFunctorComparison.map (restriction f hf)
-    (restrictionHom f hf (AddCommGrpCat.of (ULift.{0} ℤ))) F n
+    (restrictionHom f hf (AddCommGrpCat.of (ULift.{u} ℤ))) F n
 
 /-- The restriction map on cohomology is natural in the coefficient sheaf. -/
-theorem cohomologyMap_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
-    (g : F ⟶ G) (n : ℕ) (a : CategoryTheory.Sheaf.H.{0} F n) :
+theorem cohomologyMap_naturality {F G : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (g : F ⟶ G) (n : ℕ) (a : CategoryTheory.Sheaf.H.{u} F n) :
     cohomologyMap f hf G n (CategoryTheory.Sheaf.H.map g n a) =
       CategoryTheory.Sheaf.H.map ((restriction f hf).map g) n
         (cohomologyMap f hf F n a) := by
   let _ := restriction_preservesFiniteLimits f hf
   let _ := restriction_preservesFiniteColimits f hf
   exact @Ext.ExactFunctorComparison.map_naturality
-    (TopCat.Sheaf AddCommGrpCat.{0} X) _ _ (IsGrothendieckAbelian.hasExt _)
-    (TopCat.Sheaf AddCommGrpCat.{0} T) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} X) _ _ (IsGrothendieckAbelian.hasExt _)
+    (TopCat.Sheaf AddCommGrpCat.{u} T) _ _ (IsGrothendieckAbelian.hasExt _)
     (restriction f hf) (restriction_additive f hf)
     (restriction_preservesFiniteLimits f hf)
     (restriction_preservesFiniteColimits f hf)
     _ _ _ _
-    (restrictionHom f hf (AddCommGrpCat.of (ULift.{0} ℤ))) g n a
+    (restrictionHom f hf (AddCommGrpCat.of (ULift.{u} ℤ))) g n a
 
 /-- For a locally connected source, the pullback `H^n(X; A_X) → H^n(T; A_T)` on
 constant-coefficient sheaf cohomology along an open embedding. -/
 def constantPullback [LocallyConnectedSpace T]
-    (A : AddCommGrpCat.{0}) (n : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+    (A : AddCommGrpCat.{u}) (n : ℕ) :
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         (TopCat.ConstantSheaf.sheaf X A) n) ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u}
         (TopCat.ConstantSheaf.sheaf T A) n) :=
   AddCommGrpCat.ofHom (cohomologyMap f hf (TopCat.ConstantSheaf.sheaf X A) n) ≫
     (CategoryTheory.Sheaf.functorH (Opens.grothendieckTopology T) n).map
