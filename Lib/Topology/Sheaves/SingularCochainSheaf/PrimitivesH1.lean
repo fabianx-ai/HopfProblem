@@ -11,10 +11,17 @@ public import Mathlib.Algebra.BigOperators.Fin
 public import Mathlib.Topology.Homotopy.Contractible
 
 /-!
-# Degree-zero and degree-one primitives for native singular cochains
+# Primitives for singular cochains pulled back along a nullhomotopic map
 
-Only the two degrees needed by the constant-sheaf `H¹` comparison are developed here.  The
-proofs use the native singular-chain coproduct generators and the native cochain homotopy.
+A nullhomotopic map pulls a closed singular cochain back to a coboundary (in degree zero, to a
+constant cochain): this is cochain homotopy invariance of singular cohomology, dual to Hatcher,
+*Algebraic Topology* Thm. 2.10, and the local input to the exactness of the singular-cochain
+resolution (Bredon, *Sheaf Theory* III.1).  Degrees zero and one are developed here.
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_zero`
+* `TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_one`
 -/
 
 @[expose] public section
@@ -31,11 +38,11 @@ open scoped Simplicial
 
 namespace TopCat.SingularCochainSheaf
 
-/-- The underlying additive maps in the native singular cochain group. -/
+/-- The underlying additive maps of the group of singular cochains. -/
 private abbrev Cochains (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0}) (n : ℕ) :=
   ((AlgebraicTopology.SingularCochains.chains X).X n : Type) →+ A
 
-/-- The chain represented by a single native singular simplex. -/
+/-- The chain represented by a single singular simplex. -/
 private def simplexChain (X : Type) [TopologicalSpace X] (n : ℕ)
     (σ : (singularSet X) _⦋n⦌) :
     (AlgebraicTopology.SingularCochains.chains X).X n :=
@@ -60,14 +67,14 @@ private def cochainHom (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0})
            _ = (RingHom.id ℤ) z • c x := by rfl } :
       ((AlgebraicTopology.SingularCochains.chains X).X n : Type) →ₗ[ℤ] A)
 
-/-- Evaluation of a native cochain on a native chain. -/
+/-- Evaluation of a cochain on a chain. -/
 private def cochainValue (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0})
     (n : ℕ) (c : (AlgebraicTopology.SingularCochains.complex X A).X n)
     (z : (AlgebraicTopology.SingularCochains.chains X).X n) : A := by
   change Cochains X A n at c
   exact c z
 
-/-- Native cochains are determined by their values on actual singular simplices. -/
+/-- Cochains are determined by their values on singular simplices. -/
 private theorem cochain_ext (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{0})
     (n : ℕ) {c d : (AlgebraicTopology.SingularCochains.complex X A).X n}
     (h : ∀ σ : (singularSet X) _⦋n⦌,
@@ -94,7 +101,7 @@ private theorem cochain_ext (X : Type) [TopologicalSpace X] (A : AddCommGrpCat.{
   intro z
   exact ConcreteCategory.congr_hom he z
 
-/-- Pullback evaluated on a native simplex is evaluation on its image simplex. -/
+/-- Pullback evaluated on a simplex is evaluation on its image simplex. -/
 private theorem pullback_simplex {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : AddCommGrpCat.{0}) (f : C(X, Y)) (n : ℕ)
     (c : (AlgebraicTopology.SingularCochains.complex Y A).X n)
@@ -123,7 +130,8 @@ private theorem constantCochain_simplex (X : Type) [TopologicalSpace X]
   rw [h]
   exact one_zsmul _
 
-/-- A nonempty space distinguishes the coefficients of native constant zero-cochains. -/
+/-- On a nonempty space a constant zero-cochain determines its coefficient: the map from `A` to
+zero-cochains is injective. -/
 theorem constantCochain_injective (X : Type) [TopologicalSpace X] [Nonempty X]
     (A : AddCommGrpCat.{0}) : Function.Injective (constantCochain X A) := by
   intro a b hab
@@ -153,7 +161,8 @@ section Homotopy
 
 variable {K L : CochainComplex AddCommGrpCat.{0} ℕ} {f g : K ⟶ L}
 
-/-- A closed degree-one cochain detects the literal degree-lowering homotopy component. -/
+/-- A closed degree-one cochain is detected by the degree-lowering component of a cochain
+homotopy. -/
 private theorem homotopy_apply_closed_one (h : _root_.Homotopy f g)
     (c : K.X 1) (hc : K.d 1 2 c = 0) :
     f.f 1 c = L.d 0 1 (h.hom 1 0 c) + g.f 1 c := by
@@ -179,7 +188,7 @@ private theorem homotopy_apply_closed_zero (h : _root_.Homotopy f g)
 
 end Homotopy
 
-/-- Pullback preserves a native cocycle equation. -/
+/-- Pullback preserves the cocycle equation. -/
 private theorem pullback_closed {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : AddCommGrpCat.{0}) (f : C(X, Y)) (i j : ℕ)
     (c : (AlgebraicTopology.SingularCochains.complex Y A).X i)
@@ -238,7 +247,7 @@ private def addHomToIntLinearMap {M N : Type*}
     rw [int_smul_eq_zsmul, int_smul_eq_zsmul]
     exact q.map_zsmul z x
 
-/-- A degree-one cocycle on a point is zero in the native cochain group. -/
+/-- A degree-one cocycle on a one-point space is zero. -/
 private theorem cocycle_one_point_zero (A : AddCommGrpCat.{0})
     (c : (AlgebraicTopology.SingularCochains.complex Unit A).X 1)
     (hc : (AlgebraicTopology.SingularCochains.complex Unit A).d 1 2 c = 0) :
@@ -302,7 +311,7 @@ private theorem pullback_const_closed_one_zero {X Y : Type}
     (AlgebraicTopology.SingularCochains.pullback A p).f 1 cPoint at happ
   exact happ.trans (by rw [hPoint, map_zero])
 
-/-- Nullhomotopic pullback of a closed zero-cochain is an actual constant. -/
+/-- A nullhomotopic map pulls a closed zero-cochain back to a constant cochain. -/
 theorem nullhomotopic_pullback_closed_zero {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (A : AddCommGrpCat.{0})
     (f : C(X, Y)) (hf : f.Nullhomotopic)
@@ -315,7 +324,7 @@ theorem nullhomotopic_pullback_closed_zero {X Y : Type}
   exact ⟨a, (homotopy_apply_closed_zero
     (AlgebraicTopology.SingularCochains.pullbackHomotopy A H) c hc).trans ha⟩
 
-/-- Nullhomotopic pullback of a closed degree-one cochain is an actual coboundary. -/
+/-- A nullhomotopic map pulls a closed degree-one cochain back to a coboundary. -/
 theorem nullhomotopic_pullback_closed_one {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (A : AddCommGrpCat.{0})
     (f : C(X, Y)) (hf : f.Nullhomotopic)
