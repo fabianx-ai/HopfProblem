@@ -54,10 +54,6 @@ open scoped ContDiff
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The cancelled birth family -/
 
 /-- The cancelled family: the birth deformation truncated to a plateau. -/

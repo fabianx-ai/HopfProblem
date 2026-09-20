@@ -35,10 +35,6 @@ open scoped Interval
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Rectangle integrals and continuity across the axis -/
 
 /-- The integral of a function around a rectangle. -/

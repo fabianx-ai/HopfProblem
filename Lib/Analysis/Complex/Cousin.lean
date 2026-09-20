@@ -52,10 +52,6 @@ open scoped ContDiff Convolution
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The partition cochain -/
 
 /-- The divided difference of an analytic function is analytic. -/

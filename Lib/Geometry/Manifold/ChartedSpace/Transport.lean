@@ -22,10 +22,6 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Transporting atlases along a homeomorphism -/
 
 /-- The charted space structure on `N` transported from `M` along a homeomorphism. -/

@@ -39,10 +39,6 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The model handle map -/
 
 /-- The closed unit disk of a normed space. -/

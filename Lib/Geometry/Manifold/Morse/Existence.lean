@@ -41,10 +41,6 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Attaching unions of a signed Morse chart -/
 
 attribute [local instance 100] Classical.propDecidable in

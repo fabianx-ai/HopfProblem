@@ -30,10 +30,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The cylinder-to-ball homeomorphism -/
 
 /-- The boundary `I × S ∪ {0,1} × D` of the cylinder ball. -/

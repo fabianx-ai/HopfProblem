@@ -46,10 +46,6 @@ open scoped ContDiff
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Disk sublevels near a Morse minimum -/
 
 attribute [local instance 100] Classical.propDecidable in

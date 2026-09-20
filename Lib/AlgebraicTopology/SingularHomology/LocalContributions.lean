@@ -50,10 +50,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Homology of a disjoint open union -/
 
 /-- The inclusion of one piece `W i` into the union. -/

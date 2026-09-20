@@ -46,10 +46,6 @@ open scoped ContinuousMap
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Radial shrinking of the disk -/
 
 /-- The radial map shrinking a vector's norm by `a`. -/

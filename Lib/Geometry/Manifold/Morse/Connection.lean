@@ -36,10 +36,6 @@ open scoped ContDiff NNReal
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The cancelled descent field -/
 
 /-- The partial chart field vanishes exactly at the critical point. -/

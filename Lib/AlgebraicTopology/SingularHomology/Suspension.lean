@@ -66,10 +66,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Suspension of spheres -/
 
 /-- The map from the suspension of the `n`-sphere to the `n+1`-sphere along latitudes. -/

@@ -65,10 +65,6 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-- The disc coordinate: the affine identification of the triangle with the unit disc underlying the normalization of the Riemann mapping target (Ahlfors, Complex Analysis, Ch. 6). -/
 def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ℂ :=

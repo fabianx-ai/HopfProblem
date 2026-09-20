@@ -21,10 +21,6 @@ open scoped ContDiff
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Discrete-quotient smoothness -/
 
 /-- A continuous map differing from the identity by a discrete-submodule value is smooth. -/

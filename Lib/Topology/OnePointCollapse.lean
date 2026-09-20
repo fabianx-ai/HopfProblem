@@ -48,10 +48,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The collapse map to the one-point compactification -/
 
 /-- The map collapsing `F` to the point at infinity of `OnePoint Fᶜ`. -/

@@ -58,10 +58,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Circle and sphere homology groups -/
 
 /-- The unit circle in `ℝ²` is homeomorphic to the abstract `Circle`. -/

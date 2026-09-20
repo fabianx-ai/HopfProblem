@@ -60,10 +60,6 @@ open scoped ContDiff Convolution
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Linear perturbations and the Morse condition -/
 
 /-- The linear equivalence between the space and its dual given by a basis. -/

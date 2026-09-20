@@ -18,10 +18,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Quotient coverings on an invariant subset -/
 
 /-- The quotient map restricted to an invariant subset's image. -/

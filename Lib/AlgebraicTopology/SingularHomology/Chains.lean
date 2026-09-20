@@ -84,10 +84,6 @@ open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-- The standard singular `n`-simplex: continuous maps from the model simplex to a space (Hatcher, Algebraic Topology, Section 2.1). -/
 abbrev SingularChains.Simplex (n : ℕ) :=
   stdSimplex ℝ (Fin (n + 1))

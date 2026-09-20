@@ -22,10 +22,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Paths in simply connected charts -/
 
 /-- Two paths contained in a simply connected subset are homotopic. -/

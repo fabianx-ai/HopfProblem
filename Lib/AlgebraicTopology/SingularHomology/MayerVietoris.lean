@@ -83,10 +83,6 @@ open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-- The submodule of singular chains supported on a set `U`: chains whose simplices all have image inside `U` (the carrier set underlying the Mayer-Vietoris small-chain argument). -/
 def SingularMayerVietoris.supportedChainSubmodule {X : Type} [TopologicalSpace X] (U : Set X)
     (n : ℕ) : Submodule ℤ (SingularChains.Chains X n) :=

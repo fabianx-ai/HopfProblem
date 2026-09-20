@@ -18,10 +18,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Two-chart transition data -/
 
 /-- A two-open cover of `X` together with a `G`-valued transition function continuous on the overlap. -/

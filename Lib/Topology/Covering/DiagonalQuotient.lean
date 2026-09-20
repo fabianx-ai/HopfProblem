@@ -19,10 +19,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Fibres of locally trivial maps -/
 
 /-- A local trivialization identifies the fibre over a point of the patch with `F`. -/

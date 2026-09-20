@@ -21,10 +21,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The local orbit quotient -/
 
 /-- The `H`-action on an `H`-invariant open set. -/

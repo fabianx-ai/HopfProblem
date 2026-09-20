@@ -52,10 +52,6 @@ open scoped ContinuousMap
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The suspension type -/
 
 /-- The setoid identifying each endpoint fiber of the interval cylinder to a point. -/

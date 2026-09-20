@@ -23,10 +23,6 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Inserting a basepoint into a product factor -/
 
 /-- The map `Y → X × Y` inserting the point `x` in the first factor. -/

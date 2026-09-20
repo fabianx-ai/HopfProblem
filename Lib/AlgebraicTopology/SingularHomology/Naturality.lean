@@ -54,10 +54,6 @@ open scoped CategoryTheory ContinuousMap
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Naturality of the small-chains comparison -/
 
 /-- A map restricting to a continuous map between specified subsets. -/

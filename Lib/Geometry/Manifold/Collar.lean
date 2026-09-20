@@ -62,10 +62,6 @@ open scoped ContDiff NNReal
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### The normal bundle of an embedding -/
 
 /-- The normal space of the embedding at a point. -/

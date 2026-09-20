@@ -51,10 +51,6 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Union and cylinder quotients -/
 
 /-- The union of a space and an attachment along a map. -/

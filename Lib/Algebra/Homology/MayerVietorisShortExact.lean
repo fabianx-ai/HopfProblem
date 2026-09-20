@@ -73,10 +73,6 @@ open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Element calculus of biproducts in `ModuleCat ℤ` -/
 
 /-- `biprod.fst` after `biprod.lift` is the first component. -/

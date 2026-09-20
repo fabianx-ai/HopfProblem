@@ -54,10 +54,6 @@ open scoped CategoryTheory
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Singular chains of a disjoint union -/
 
 /-- Chain complexes of `ℤ`-modules have finite biproducts. -/

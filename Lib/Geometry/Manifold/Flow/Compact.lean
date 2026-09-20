@@ -41,10 +41,6 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Local flows on a manifold -/
 
 /-- A local flow exists on an open subset. -/

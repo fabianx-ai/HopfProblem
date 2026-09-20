@@ -20,10 +20,6 @@ open scoped ContinuousMap
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Extending a homotopy off the positive locus -/
 
 /-- The positive locus `{x | 0 < ρ x}`. -/

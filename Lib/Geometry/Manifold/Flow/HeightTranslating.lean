@@ -42,10 +42,6 @@ open scoped ContDiff ContinuousMap
 
 @[expose] public noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Handle ball coordinates -/
 
 /-- The unit ball homeomorphism of a handle chart. -/

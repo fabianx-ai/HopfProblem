@@ -36,10 +36,6 @@ open scoped ComplexConjugate ContDiff
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Biholomorphisms of the Riemann sphere -/
 
 /-- A holomorphic bijection of the Riemann sphere with holomorphic inverse. -/

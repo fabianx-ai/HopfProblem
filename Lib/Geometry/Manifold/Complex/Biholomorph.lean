@@ -41,10 +41,6 @@ open scoped ContDiff
 
 noncomputable section
 
-local infixr:80 " ≫ₚ " => Path.trans
-
-local notation:100 f " ∣[" k "] " a:100 => SlashAction.map k a f
-
 /-! ### Removability of smoothness at punctured points -/
 
 /-- The inverse of a chart tends to `x` on the punctured neighborhood of `e x`. -/
