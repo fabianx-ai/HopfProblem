@@ -1,0 +1,852 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/fix-p02/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/fix-final/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38254,
+  38248
+ ],
+ "lost": [
+  [
+   "AdaptedWindows.exists_relative_level_surgery_system",
+   1491799320,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.not_backward_basin_on_upper_level",
+   3545320939,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_lower_in_regular_band",
+   3852152407,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_lower_of_excluded_critical_limit",
+   701963425,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_old_lower_of_belt_avoidance",
+   1783782579,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.transported_backward_basin_image",
+   1101304068,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph",
+   640646131,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv",
+   3802911443,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv",
+   4067043244,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton",
+   3702630488,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   1755247458,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   1950726770,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   2751959565,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualPointSingle_exactAt",
+   1696489370,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ",
+   4050958954,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCochainHomotopyEquiv",
+   4241518056,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive",
+   3429540361,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCocycle_boundary",
+   99719896,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCohomology_subsingleton",
+   2951509766,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pullback_closed_succ",
+   3645915380,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv",
+   2588678813,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_1",
+   2016952343,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_2",
+   1981734316,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_3",
+   1588568532,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_4",
+   913087206,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_5",
+   833217323,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv_desc",
+   3241906296,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv_symm_apply",
+   2336309392,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyFiniteBiproducts",
+   2338852569,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_biproduct_total",
+   1078693225,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_\u03c0_\u03b9_ne",
+   642660294,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_\u03c0_\u03b9_self",
+   3114007964,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse",
+   2412366067,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse._proof_1",
+   1767300946,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse_comp_map",
+   3203977852,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse_inclusion",
+   1088939301,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexIso",
+   3718571505,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap",
+   569173300,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap_comp_inverse",
+   1425245241,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap_inclusion",
+   248787239,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree",
+   2826802054,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree.eq_1",
+   3991215020,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree_comp_inclusion",
+   2535942101,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree_inclusion",
+   1534396015,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.singularChainsFiniteBiproducts",
+   2338852569,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv",
+   4040076455,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_1",
+   655530081,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_2",
+   1374387624,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_3",
+   355730451,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "Fin.tailHeadAddEquiv._proof_4",
+   1689327855,
+   {
+    "Lib.Algebra.Module.IntegerPresentation": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.homotopy_apply_closed_one",
+   117288765,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.homotopy_apply_closed_zero",
+   4173464412,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one",
+   658697497,
+   {
+    "Lib.AlgebraicTopology.SingularSmallChains.Basic": 1
+   }
+  ],
+  [
+   "TopCat.SingularSmallChains.homotopy_on_cocycle_one",
+   117288765,
+   {
+    "Lib.AlgebraicTopology.SingularSmallChains.Basic": 1
+   }
+  ],
+  [
+   "TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one",
+   2360680457,
+   {
+    "Lib.AlgebraicTopology.SingularSmallChains.Basic": 1
+   }
+  ],
+  [
+   "TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one",
+   3971761845,
+   {
+    "Lib.AlgebraicTopology.SingularSmallChains.Basic": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "AdaptedWindows.exists_relative_level_surgery_system",
+   1483973242,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.not_backward_basin_on_upper_level",
+   1566972711,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_lower_in_regular_band",
+   514815771,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_lower_of_excluded_critical_limit",
+   3152859559,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.reaches_old_lower_of_belt_avoidance",
+   9967199,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AdaptedWindows.transported_backward_basin_image",
+   3778398349,
+   {
+    "Lib.Geometry.Manifold.Morse.AdaptedWindows": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph",
+   2451767561,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv",
+   2187275607,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv",
+   175721003,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton",
+   2277566523,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   140768443,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   181655784,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   3654990933,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualPointSingle_exactAt",
+   3262859375,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ",
+   1326913299,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCochainHomotopyEquiv",
+   94159268,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive",
+   2234265856,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCocycle_boundary",
+   3028090456,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pointCohomology_subsingleton",
+   2109752493,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.Vanishing": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.pullback_closed_succ",
+   1466087005,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv",
+   3385211967,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_1",
+   1707758171,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_2",
+   4032785571,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_3",
+   247147594,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_4",
+   3784749844,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv._proof_5",
+   2773130114,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv_desc",
+   1571534604,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyBiproductEquiv_symm_apply",
+   2660853864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homologyFiniteBiproducts",
+   3595687190,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_biproduct_total",
+   2256684645,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_\u03c0_\u03b9_ne",
+   3268053332,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.homology_\u03c0_\u03b9_self",
+   3774987722,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse",
+   3808036202,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse._proof_1",
+   3729520645,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse_comp_map",
+   623816109,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexInverse_inclusion",
+   1916044195,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexIso",
+   3505043207,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap",
+   1469012860,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap_comp_inverse",
+   467672235,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainComplexMap_inclusion",
+   595643985,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree",
+   2500022773,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree.eq_1",
+   4226717698,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree_comp_inclusion",
+   1659423910,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.sigmaChainInverseDegree_inclusion",
+   4141869330,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "Coproduct.singularChainsFiniteBiproducts",
+   3595687190,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1
+   }
+  ],
+  [
+   "FreeGroup.forall_apply_eq_self_iff",
+   704351213,
+   {
+    "Lib.GroupTheory.FreeGroup.Invariant": 1
+   }
+  ],
+  [
+   "LinearEquiv.coordMatrix_eq_toMatrix",
+   950928599,
+   {
+    "Lib.LinearAlgebra.Matrix.TransvectionReduction": 1
+   }
+  ],
+  [
+   "MonoidHom.apply_eq_apply_of_ker_le",
+   2231566744,
+   {
+    "Lib.Algebra.Group.Ker": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.homotopy_apply_closed_one",
+   2609573091,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.homotopy_apply_closed_zero",
+   528192724,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "AdaptedWindows.exists_relative_level_surgery_system",
+  "AdaptedWindows.not_backward_basin_on_upper_level",
+  "AdaptedWindows.reaches_lower_in_regular_band",
+  "AdaptedWindows.reaches_lower_of_excluded_critical_limit",
+  "AdaptedWindows.reaches_old_lower_of_belt_avoidance",
+  "AdaptedWindows.transported_backward_basin_image",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv",
+  "AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.dualPointSingle_exactAt",
+  "AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ",
+  "AlgebraicTopology.SingularCochains.pointCochainHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive",
+  "AlgebraicTopology.SingularCochains.pointCocycle_boundary",
+  "AlgebraicTopology.SingularCochains.pointCohomology_subsingleton",
+  "AlgebraicTopology.SingularCochains.pullback_closed_succ",
+  "Coproduct.homologyBiproductEquiv",
+  "Coproduct.homologyBiproductEquiv_desc",
+  "Coproduct.homologyBiproductEquiv_symm_apply",
+  "Coproduct.homologyFiniteBiproducts",
+  "Coproduct.homology_biproduct_total",
+  "Coproduct.homology_\u03c0_\u03b9_ne",
+  "Coproduct.homology_\u03c0_\u03b9_self",
+  "Coproduct.sigmaChainComplexInverse",
+  "Coproduct.sigmaChainComplexInverse_comp_map",
+  "Coproduct.sigmaChainComplexInverse_inclusion",
+  "Coproduct.sigmaChainComplexIso",
+  "Coproduct.sigmaChainComplexMap",
+  "Coproduct.sigmaChainComplexMap_comp_inverse",
+  "Coproduct.sigmaChainComplexMap_inclusion",
+  "Coproduct.sigmaChainInverseDegree",
+  "Coproduct.sigmaChainInverseDegree_comp_inclusion",
+  "Coproduct.sigmaChainInverseDegree_inclusion",
+  "Coproduct.singularChainsFiniteBiproducts",
+  "TopCat.SingularCochainSheaf.homotopy_apply_closed_one",
+  "TopCat.SingularCochainSheaf.homotopy_apply_closed_zero"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "AdaptedWindows.exists_relative_level_surgery_system",
+  "AdaptedWindows.not_backward_basin_on_upper_level",
+  "AdaptedWindows.reaches_lower_in_regular_band",
+  "AdaptedWindows.reaches_lower_of_excluded_critical_limit",
+  "AdaptedWindows.reaches_old_lower_of_belt_avoidance",
+  "AdaptedWindows.transported_backward_basin_image",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv",
+  "AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv",
+  "AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+  "AlgebraicTopology.SingularCochains.dualPointSingle_exactAt",
+  "AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ",
+  "AlgebraicTopology.SingularCochains.pointCochainHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive",
+  "AlgebraicTopology.SingularCochains.pointCocycle_boundary",
+  "AlgebraicTopology.SingularCochains.pointCohomology_subsingleton",
+  "AlgebraicTopology.SingularCochains.pullback_closed_succ",
+  "Coproduct.homologyBiproductEquiv",
+  "Coproduct.homologyBiproductEquiv._proof_1",
+  "Coproduct.homologyBiproductEquiv._proof_2",
+  "Coproduct.homologyBiproductEquiv._proof_3",
+  "Coproduct.homologyBiproductEquiv._proof_4",
+  "Coproduct.homologyBiproductEquiv._proof_5",
+  "Coproduct.homologyBiproductEquiv_desc",
+  "Coproduct.homologyBiproductEquiv_symm_apply",
+  "Coproduct.homologyFiniteBiproducts",
+  "Coproduct.homology_biproduct_total",
+  "Coproduct.homology_\u03c0_\u03b9_ne",
+  "Coproduct.homology_\u03c0_\u03b9_self",
+  "Coproduct.sigmaChainComplexInverse",
+  "Coproduct.sigmaChainComplexInverse._proof_1",
+  "Coproduct.sigmaChainComplexInverse_comp_map",
+  "Coproduct.sigmaChainComplexInverse_inclusion",
+  "Coproduct.sigmaChainComplexIso",
+  "Coproduct.sigmaChainComplexMap",
+  "Coproduct.sigmaChainComplexMap_comp_inverse",
+  "Coproduct.sigmaChainComplexMap_inclusion",
+  "Coproduct.sigmaChainInverseDegree",
+  "Coproduct.sigmaChainInverseDegree.eq_1",
+  "Coproduct.sigmaChainInverseDegree_comp_inclusion",
+  "Coproduct.sigmaChainInverseDegree_inclusion",
+  "Coproduct.singularChainsFiniteBiproducts",
+  "TopCat.SingularCochainSheaf.homotopy_apply_closed_one",
+  "TopCat.SingularCochainSheaf.homotopy_apply_closed_zero"
+ ],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "FAIL"
+}

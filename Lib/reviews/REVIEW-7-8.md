@@ -152,3 +152,15 @@ moved's `Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattribu
   `(cherry picked from commit …)`.
 - Docstring waves get a second pass that re-reads each prose gloss against the unfolded definition and a
   lint for repeated sentences; citations copied from the audit are marked "cf." unless checked.
+
+## 5. Fix round (2026-09-21, same day)
+
+Eleven Opus 5 agents closed the §3 list: every code-side and docstring/citation finding of the
+twenty-one reviews, and every receipt correction (22 files, dated correction sections). Merge receipt
+and per-agent receipts in `Lib/reports/review-7-8/fixes/`; merged head `9a6e125a`, chain green, 3,302
+probes standard (the four moved `SphereTwo` theorems now probed by `Hopf/Proof/AxiomAudit.lean`), census
+123, pins 293 → 269, envdiff reconciled (5 deletions with twins, 3 re-additions, 38 universe lifts).
+Two of the reviewers' own claims were corrected by the fixers and recorded: packet 09's reviewer had the
+limit-preserving adjunction backwards (`j_! ⊣ j^*` gives limits), and packet 02's lifts went further than
+the reviewer's sample (all 12 coefficient pins, not 3). What the fixers left is listed in
+`fixes/MERGE.md` §"Left".
