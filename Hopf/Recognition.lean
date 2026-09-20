@@ -165,6 +165,7 @@ import Lib.Algebra.Module.IntegerPresentation
 import Lib.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.CutTransport
+import Hopf.Proof.Geometry.Manifold.Morse.BeltCancellation
 import Hopf.Proof.Geometry.Manifold.Morse.CutTransport
 import Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks
 

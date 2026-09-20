@@ -3198,3 +3198,18 @@ theorem SupportedDiffeomorph.exists_open_pointMoving {E H M : Type*} [NormedAddC
       exact (hd x).symm.trans hend
     · intro z hz
       exact (hd z).symm.trans (hfix 1 z (fun h => hz h.2))
+
+/-- Precomposing the left summand of a surjective `coprod` with a surjection keeps it
+surjective: if `L.coprod R` and `P` are surjective then so is `(L ∘ P).coprod R`. -/
+theorem ContinuousLinearMap.surjective_coprod_comp_left {A A' B G : Type*} [NormedAddCommGroup A]
+    [NormedSpace ℝ A] [NormedAddCommGroup A'] [NormedSpace ℝ A'] [NormedAddCommGroup B]
+    [NormedSpace ℝ B] [NormedAddCommGroup G] [NormedSpace ℝ G] (L : A →L[ℝ] G) (R : B →L[ℝ] G)
+    (P : A' →L[ℝ] A) (hP : Function.Surjective P) (htrans : Function.Surjective (L.coprod R)) :
+    Function.Surjective ((L.comp P).coprod R) := by
+  intro y
+  obtain ⟨⟨a, b⟩, hab⟩ := htrans y
+  obtain ⟨a', ha⟩ := hP a
+  refine ⟨(a', b), ?_⟩
+  change L (P a') + R b = y
+  rw [ha]
+  exact hab

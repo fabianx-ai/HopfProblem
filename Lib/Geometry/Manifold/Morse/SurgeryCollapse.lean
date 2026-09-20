@@ -309,7 +309,7 @@ theorem MorseCancellation.transverse_comp_standardCircle {G H N : Type*} [Normed
   rw [mfderiv_comp z (hγ.mdifferentiableAt (by simp))
       (standardCircleParametrization.contMDiff.mdifferentiableAt (by simp))]
   change Function.Surjective ((L.comp P).coprod B)
-  exact surjective_coprod_comp_left L B P hP htrans
+  exact ContinuousLinearMap.surjective_coprod_comp_left L B P hP htrans
 
 attribute [local instance 100] Classical.propDecidable in
 theorem AdaptedWindows.exists_attaching_circle_lower_transport {E M : Type*}
