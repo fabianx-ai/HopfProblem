@@ -62,6 +62,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 -/
 
 import Hopf.LibShims
+import Lib.LinearAlgebra.ColumnKernel
 import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
@@ -22456,39 +22457,6 @@ theorem ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso {A B D : Type*
   refine ⟨(0, e.symm d), ?_⟩
   rw [hF, map_zero, LinearEquiv.apply_symm_apply, zero_add]
 
-private def ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150
-    {A B D : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B]
-    [Module ℤ D] [Module ℤ (A × B)] (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D)
-    (hF : ∀ a b, F (a, b) = f a + e b) : LinearMap.ker F ≃+ A
-    where
-  toFun x := x.val.1
-  invFun
-    a :=
-    ⟨(a, -e.symm (f a)), by
-      change F (a, -e.symm (f a)) = 0
-      rw [hF, map_neg, LinearEquiv.apply_symm_apply, add_neg_cancel]⟩
-  left_inv
-    x := by
-    apply Subtype.ext
-    change (x.val.1, -e.symm (f x.val.1)) = x.val
-    refine Prod.ext (by rfl) ?_
-    apply e.injective
-    change e (-e.symm (f x.val.1)) = e x.val.2
-    rw [map_neg, LinearEquiv.apply_symm_apply]
-    have hx : f x.val.1 + e x.val.2 = 0 := (hF x.val.1 x.val.2).symm.trans x.property
-    calc
-      -f x.val.1 = -f x.val.1 + 0 := (add_zero _).symm
-      _ = -f x.val.1 + (f x.val.1 + e x.val.2) := (congrArg (fun d => -f x.val.1 + d) hx.symm)
-      _ = e x.val.2 := by rw [← add_assoc, neg_add_cancel, zero_add]
-  right_inv _ := rfl
-  map_add' _ _ := rfl
-
-def ThreefoldHomologyTopDegreeAlgebra.kernelEquivOfColumnIso {A B D : Type*} [AddCommGroup A]
-    [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
-    (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b)
-    [Module ℤ (LinearMap.ker F)] : LinearMap.ker F ≃ₗ[ℤ] A :=
-  (kernelProjectionAddEquiv_mo1973_30150 F f e hF).toIntLinearEquiv
-
 theorem ThreefoldHomology.TopDegree.groupedAttachmentFifth_columnIso
     (a :
       SingularMayerVietoris.SingularHomology (SpecialPeriods.Threefold.RegularOverlap Option.none)
@@ -22510,7 +22478,7 @@ def ThreefoldHomology.TopDegree.homologySixCuspEquiv :
       SingularMayerVietoris.SingularHomology (SpecialPeriods.Threefold.RegularOverlap Option.none)
         5 :=
   (homologySixGroupedKernelEquiv.toAddEquiv.trans
-      (ThreefoldHomologyTopDegreeAlgebra.kernelEquivOfColumnIso groupedAttachmentFifth
+      (LinearMap.kerEquivOfColumnIso groupedAttachmentFifth
           (SingularMayerVietoris.singularHomologyMap
             (ThreefoldHomology.overlapToRegularFamily Option.none) 5)
           ellipticAttachmentFifthEquiv
