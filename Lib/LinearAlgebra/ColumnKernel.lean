@@ -2,17 +2,23 @@ module
 public import Mathlib.Algebra.Module.Equiv.Basic
 public import Mathlib.Algebra.Module.Submodule.Ker
 
-/-! The kernel of `F (a, b) = f a + e b`, with invertible second column,
-is canonically the first factor. Textbook source: `CENTER_COLUMN_KERNEL_TEXTBOOK.md`,
-CK1–CK7; the inverse recovers the unique second coordinate. The map is also
-surjective, as in `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, HI7. -/
+/-!
+# Kernels of linear maps with an invertible column
+
+A linear map `F (a, b) = f a + e b` out of a product whose second column `e` is an isomorphism
+is surjective, and its kernel is the graph of `-e⁻¹ ∘ f`: the first projection is an isomorphism
+`ker F ≃ₗ A`, with inverse `a ↦ (a, -e⁻¹ (f a))`.
+
+This is the splitting of a short exact sequence along a retraction, specialised to a map given by
+two columns; the nearest Mathlib statements are `LinearMap.coprod` and `LinearMap.ker`.
+-/
 
 @[expose] public noncomputable section
 universe u v w
 namespace LinearMap
 
-/-- First projection identifies the kernel of an integer-linear map with its first
-factor when its second column is invertible (textbook CK1–CK6). -/
+/-- The first projection identifies the kernel of `F (a, b) = f a + e b` with the first factor
+`A`, when the second column `e` is an isomorphism. -/
 def kerEquivOfColumnIso
     {A : Type u} {B : Type v} {D : Type w}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup D]
@@ -45,7 +51,7 @@ def kerEquivOfColumnIso
     }
   E.toIntLinearEquiv
 
-/-- The kernel equivalence is the actual first-coordinate projection (textbook CK7). -/
+/-- The kernel equivalence is the first-coordinate projection. -/
 @[simp] theorem kerEquivOfColumnIso_apply
     {A : Type u} {B : Type v} {D : Type w}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup D]
@@ -55,7 +61,8 @@ def kerEquivOfColumnIso
     [Module ℤ (LinearMap.ker F)] (x : LinearMap.ker F) :
     kerEquivOfColumnIso F f e hF x = x.val.1 := rfl
 
-/-- The inverse has the uniquely forced negative second coordinate (textbook CK7). -/
+/-- The inverse of the kernel equivalence sends `a` to `(a, -e⁻¹ (f a))`, the unique point of the
+kernel above `a`. -/
 @[simp] theorem kerEquivOfColumnIso_symm_apply_val
     {A : Type u} {B : Type v} {D : Type w}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup D]
@@ -66,8 +73,8 @@ def kerEquivOfColumnIso
     ((kerEquivOfColumnIso F f e hF).symm a).val =
       (a, -e.symm (f a)) := rfl
 
-/-- An integer-linear map with an invertible second column is surjective;
-the preimage of `d` is `(0, e.symm d)` (textbook HI7). -/
+/-- A map `F (a, b) = f a + e b` with an invertible second column is surjective: `d` is the image
+of `(0, e⁻¹ d)`. -/
 theorem surjective_of_columnIso {A B D : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
     (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b) :
