@@ -16,6 +16,9 @@ a finite closed map.  The construction uses only the native constant-sheaf pushf
 and the exact finite-closed pushforward comparison.
 
 It deliberately makes no singular-cohomology comparison and no proper-base-change assertion.
+
+This is the induced map `f^* : H^n(Y; A) ⟶ H^n(X; A)` of Bredon, *Sheaf Theory*, II.8 (see also
+Iversen, *Cohomology of Sheaves*, II.5), built from the canonical morphism `A_Y ⟶ f_* A_X`.
 -/
 
 @[expose] public section

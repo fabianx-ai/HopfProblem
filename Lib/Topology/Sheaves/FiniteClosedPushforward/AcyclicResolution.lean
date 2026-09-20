@@ -16,6 +16,10 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 Finite closed pushforward carries an indexed acyclic resolution to an indexed acyclic resolution.
 The native Ext comparison commutes in every positive degree with the corresponding comparison to
 literal global sections.
+
+This is the general fact that an exact functor preserving injectives carries an acyclic
+resolution to an acyclic resolution; see Hartshorne, *Algebraic Geometry*, III.1.2A and
+III Ex. 8.1.
 -/
 
 @[expose] public section

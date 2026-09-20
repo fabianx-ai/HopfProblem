@@ -16,6 +16,9 @@ The free additive sheaf represented by an ambient open `U` computes sheaf cohomo
 restriction to `U`.  Consequently its projective-dimension bound is equivalent to uniform
 vanishing in the first requested degree.  The represented top open is canonically isomorphic to
 the integral unit sheaf, connecting open-cover arguments to ordinary global sheaf cohomology.
+
+The represented sheaf `ℤ[U]` satisfies `Ext^n(ℤ[U], F) ≅ H^n(U, F)`; see Godement, *Topologie
+algébrique et théorie des faisceaux*, II.4, and Hartshorne, *Algebraic Geometry*, III.2.
 -/
 
 @[expose] public section

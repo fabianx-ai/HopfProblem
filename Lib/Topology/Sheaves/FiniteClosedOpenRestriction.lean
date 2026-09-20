@@ -17,6 +17,9 @@ pushforward along an injective map to an open subset of its image.  It also reco
 compatibility of native Ext-defined cohomology maps and constant-coefficient pullbacks.
 
 No base-change theorem for higher direct images is used or asserted here.
+
+References: Kashiwara--Schapira, *Sheaves on Manifolds*, II (base change along an open
+embedding), and Iversen, *Cohomology of Sheaves*, II.
 -/
 
 @[expose] public section
@@ -74,6 +77,8 @@ def restrictionPushforwardIso :
       (Opens.grothendieckTopology U) (Opens.grothendieckTopology K)
 
 include hj hcomp in
+/-- The Beck--Chevalley isomorphism is given on sections by the canonical identification of the
+two open images. -/
 @[simp]
 theorem restrictionPushforwardIso_hom_app
     (F : TopCat.Sheaf AddCommGrpCat.{0} K) (W : Opens V) :

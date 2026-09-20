@@ -15,6 +15,10 @@ public import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1
 
 Homeomorphic spaces have equivalent categories of additive sheaves, and hence the same
 projective-dimension bound for their integral unit sheaves.
+
+The underlying statement is that the sheaf category is invariant under homeomorphism, the
+equivalence being pushforward along the homeomorphism (Godement, *Topologie algébrique et théorie
+des faisceaux*, II.1).
 -/
 
 @[expose] public section
@@ -26,16 +30,22 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits TopologicalSpace
 
+universe u
+
 namespace TopCat.Sheaf
 
+section Equivalence
+
+variable {X Y : TopCat.{u}}
+
 /-- A homeomorphism induces an equivalence of the corresponding sheaf categories. -/
-def equivalenceOfIso {X Y : TopCat.{0}} (H : X ≅ Y) :
-    TopCat.Sheaf AddCommGrpCat.{0} X ≌ TopCat.Sheaf AddCommGrpCat.{0} Y := by
-  let E := TopCat.Presheaf.presheafEquivOfIso AddCommGrpCat.{0} H
+def equivalenceOfIso (H : X ≅ Y) :
+    TopCat.Sheaf AddCommGrpCat.{u} X ≌ TopCat.Sheaf AddCommGrpCat.{u} Y := by
+  let E := TopCat.Presheaf.presheafEquivOfIso AddCommGrpCat.{u} H
   letI : ObjectProperty.IsClosedUnderIsomorphisms
       (CategoryTheory.Presheaf.IsSheaf
         (Opens.grothendieckTopology Y) :
-          ObjectProperty (TopCat.Presheaf AddCommGrpCat.{0} Y)) :=
+          ObjectProperty (TopCat.Presheaf AddCommGrpCat.{u} Y)) :=
     { of_iso := fun e h => (TopCat.Presheaf.isSheaf_iso_iff e).mp h }
   apply E.congrFullSubcategory
   ext F
@@ -47,17 +57,21 @@ def equivalenceOfIso {X Y : TopCat.{0}} (H : X ≅ Y) :
   · intro hF
     exact pushforward_sheaf_of_sheaf H.hom hF
 
-instance equivalenceOfIso_functor_additive {X Y : TopCat.{0}} (H : X ≅ Y) :
+/-- The sheaf equivalence induced by a homeomorphism is additive. -/
+instance equivalenceOfIso_functor_additive (H : X ≅ Y) :
     (equivalenceOfIso H).functor.Additive where
   map_add := by
     intros
     rfl
 
-instance equivalenceOfIso_inverse_additive {X Y : TopCat.{0}} (H : X ≅ Y) :
+/-- The inverse of the sheaf equivalence induced by a homeomorphism is additive. -/
+instance equivalenceOfIso_inverse_additive (H : X ≅ Y) :
     (equivalenceOfIso H).inverse.Additive where
   map_add := by
     intros
     rfl
+
+end Equivalence
 
 /-- On a locally connected target, the integral unit sheaf is identified with the image of the
 integral unit sheaf under the sheaf equivalence induced by a homeomorphism. -/

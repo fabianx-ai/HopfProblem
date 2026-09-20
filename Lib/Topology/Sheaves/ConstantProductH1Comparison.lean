@@ -16,6 +16,10 @@ This file combines the natural constant-sheaf/singular-cochain comparison with h
 invariance of singular cohomology.  It proves that restriction to a based fibre of a product
 with a contractible compact Hausdorff space is an isomorphism on native Ext-defined
 constant-sheaf cohomology in degree one.
+
+This is the degree-one case of homotopy invariance of constant-coefficient sheaf cohomology,
+`H^n(S × X; A) ≅ H^n(X; A)` for contractible `S`; see Bredon, *Sheaf Theory*, II.11.12, and
+Iversen, *Cohomology of Sheaves*, III.2.
 -/
 
 @[expose] public section

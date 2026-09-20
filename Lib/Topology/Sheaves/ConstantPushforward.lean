@@ -27,8 +27,11 @@ sheaf when inverse images of members of a connected open basis are connected.  T
 Mathlib's actual sheafification of the constant presheaf.  It does not identify higher direct
 images or make any cohomological claim.
 
-The coefficient is an arbitrary small abelian group and the spaces are small topological spaces,
-matching Mathlib's small category of additive sheaves used in sheaf cohomology.
+Along the way the sections of a constant sheaf over an open set are identified with the locally
+constant functions on it, so that a connected open set sees exactly one coefficient value.
+
+References: Iversen, *Cohomology of Sheaves*, II (constant sheaves and their sections); Bredon,
+*Sheaf Theory*, I.
 -/
 
 @[expose] public section
@@ -37,33 +40,37 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits
 
+universe u
+
 namespace TopCat.ConstantSheaf
 
 /-- The constant presheaf with coefficient group `A`. -/
-def presheaf (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
-    TopCat.Presheaf AddCommGrpCat.{0} X :=
+def presheaf (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
+    TopCat.Presheaf AddCommGrpCat.{u} X :=
   (Functor.const (Opens X)ᵒᵖ).obj A
 
 /-- Mathlib's sheafification of the constant presheaf with coefficient group `A`. -/
-def sheaf (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
-    TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (CategoryTheory.constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj A
+def sheaf (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
+    TopCat.Sheaf AddCommGrpCat.{u} X :=
+  (CategoryTheory.constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj A
 
 /-- The sheafification unit, sending a value to its constant section. -/
-def unit (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
+def unit (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
     presheaf X A ⟶ (sheaf X A).obj :=
   CategoryTheory.toSheafify (Opens.grothendieckTopology X) (presheaf X A)
 
 /-- The stalk of the constant presheaf is canonically its coefficient group. -/
-def presheafStalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
+def presheafStalkIso (X : TopCat.{u}) (A : AddCommGrpCat.{u}) (x : X) :
     (presheaf X A).stalk x ≅ A := by
   letI : IsConnected (OpenNhds x)ᵒᵖ := IsFiltered.isConnected _
   exact IsColimit.coconePointUniqueUpToIso
     (colimit.isColimit ((OpenNhds.inclusion x).op ⋙ presheaf X A))
     (isColimitConstCocone (OpenNhds x)ᵒᵖ A)
 
+/-- The germ map of the constant presheaf followed by the stalk identification is the
+identity. -/
 @[reassoc (attr := simp)]
-theorem presheaf_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem presheaf_germ_stalkIso_hom (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (x : X) (U : Opens X) (hx : x ∈ U) :
     (presheaf X A).germ U x hx ≫ (presheafStalkIso X A x).hom = 𝟙 A := by
   let : IsConnected (OpenNhds x)ᵒᵖ := IsFiltered.isConnected _
@@ -71,27 +78,31 @@ theorem presheaf_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
     (F := (OpenNhds.inclusion x).op ⋙ presheaf X A)
     (isColimitConstCocone (OpenNhds x)ᵒᵖ A) (op (⟨U, hx⟩ : OpenNhds x))
 
-instance unit_stalk_isIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
-    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A)) :=
-  TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat (presheaf X A)
+/-- Sheafification does not change stalks: the unit is a stalkwise isomorphism. -/
+instance unit_stalk_isIso (X : TopCat.{u}) (A : AddCommGrpCat.{u}) (x : X) :
+    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (unit X A)) :=
+  TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat.{u} (presheaf X A)
 
 /-- The canonical identification of a native constant-sheaf stalk with its coefficient group. -/
-def stalkIso (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
-    TopCat.Presheaf.stalk (C := AddCommGrpCat) (sheaf X A).obj x ≅ A :=
-  (asIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A))).symm ≪≫
+def stalkIso (X : TopCat.{u}) (A : AddCommGrpCat.{u}) (x : X) :
+    TopCat.Presheaf.stalk (C := AddCommGrpCat.{u}) (sheaf X A).obj x ≅ A :=
+  (asIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (unit X A))).symm ≪≫
     presheafStalkIso X A x
 
+/-- The stalk identification of the constant sheaf is compatible with that of the constant
+presheaf along the sheafification unit. -/
 @[reassoc (attr := simp)]
-theorem unit_stalk_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
-    (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A) ≫
+theorem unit_stalk_stalkIso_hom (X : TopCat.{u}) (A : AddCommGrpCat.{u}) (x : X) :
+    (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (unit X A) ≫
       (stalkIso X A x).hom = (presheafStalkIso X A x).hom := by
-  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A) ≫
-    inv ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit X A)) ≫
+  change (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (unit X A) ≫
+    inv ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (unit X A)) ≫
       (presheafStalkIso X A x).hom = _
   exact IsIso.hom_inv_id_assoc _ _
 
+/-- The constant section of value `a` has germ `a` under the stalk identification. -/
 @[reassoc (attr := simp)]
-theorem unit_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem unit_germ_stalkIso_hom (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (x : X) (U : Opens X) (hx : x ∈ U) :
     (unit X A).app (op U) ≫ TopCat.Presheaf.germ (sheaf X A).obj U x hx ≫
       (stalkIso X A x).hom = 𝟙 A := by
@@ -102,18 +113,19 @@ theorem unit_germ_stalkIso_hom (X : TopCat.{0}) (A : AddCommGrpCat.{0})
           (presheaf_germ_stalkIso_hom X A x U hx))
 
 /-- The additive equivalence underlying `stalkIso`. -/
-def stalkEquiv (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (x : X) :
-    TopCat.Presheaf.stalk (C := AddCommGrpCat) (sheaf X A).obj x ≃+ A :=
+def stalkEquiv (X : TopCat.{u}) (A : AddCommGrpCat.{u}) (x : X) :
+    TopCat.Presheaf.stalk (C := AddCommGrpCat.{u}) (sheaf X A).obj x ≃+ A :=
   (stalkIso X A x).addCommGroupIsoToAddEquiv
 
+/-- The germ at `x` of the constant section of value `a` is `a`. -/
 @[simp]
-theorem stalkEquiv_germ_unit (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem stalkEquiv_germ_unit (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (x : X) (U : Opens X) (hx : x ∈ U) (a : A) :
     stalkEquiv X A x
       (TopCat.Presheaf.germ (sheaf X A).obj U x hx ((unit X A).app (op U) a)) = a :=
   ConcreteCategory.congr_hom (unit_germ_stalkIso_hom X A x U hx) a
 
-variable {X : TopCat.{0}} {A : AddCommGrpCat.{0}}
+variable {X : TopCat.{u}} {A : AddCommGrpCat.{u}}
 
 private theorem exists_constant_restriction (U : Opens X)
     (s : (sheaf X A).obj.obj (op U)) (x : X) (hx : x ∈ U) :
@@ -132,11 +144,13 @@ private theorem exists_constant_restriction (U : Opens X)
 def sectionValue (U : Opens X) (s : (sheaf X A).obj.obj (op U)) (x : U) : A :=
   stalkEquiv X A x.1 (TopCat.Presheaf.germ (sheaf X A).obj U x.1 x.2 s)
 
+/-- The constant section of value `a` takes the value `a` at every point. -/
 @[simp]
 theorem sectionValue_unit (U : Opens X) (a : A) (x : U) :
     sectionValue U ((unit X A).app (op U) a) x = a :=
   stalkEquiv_germ_unit X A x.1 U x.2 a
 
+/-- Pointwise evaluation of a section commutes with restriction to a smaller open. -/
 @[simp]
 theorem sectionValue_restrict {U V : Opens X} (i : V ⟶ U)
     (s : (sheaf X A).obj.obj (op U)) (x : V) :
@@ -173,7 +187,7 @@ theorem sectionValue_isLocallyConstant (U : Opens X)
 
 /-- On a preconnected open set, every section of the native constant sheaf is represented by a
 single coefficient value.  This includes the empty open set. -/
-theorem unit_app_surjective (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem unit_app_surjective (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (U : Opens X) (hU : IsPreconnected (U : Set X)) :
     Function.Surjective ((unit X A).app (op U)) := by
   let : PreconnectedSpace U := Subtype.preconnectedSpace hU
@@ -185,7 +199,7 @@ theorem unit_app_surjective (X : TopCat.{0}) (A : AddCommGrpCat.{0})
   exact (sectionValue_unit U a x).trans (congrFun ha x).symm
 
 /-- A nonempty open set distinguishes coefficient values viewed as constant sections. -/
-theorem unit_app_injective (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem unit_app_injective (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (U : Opens X) (hU : (U : Set X).Nonempty) :
     Function.Injective ((unit X A).app (op U)) := by
   obtain ⟨x, hx⟩ := hU
@@ -196,41 +210,43 @@ theorem unit_app_injective (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
 /-- On a connected open set, the sheafification unit identifies sections with the coefficient
 group. -/
-theorem unit_app_bijective (X : TopCat.{0}) (A : AddCommGrpCat.{0})
+theorem unit_app_bijective (X : TopCat.{u}) (A : AddCommGrpCat.{u})
     (U : Opens X) (hU : IsConnected (U : Set X)) :
     Function.Bijective ((unit X A).app (op U)) :=
   ⟨unit_app_injective X A U hU.nonempty,
     unit_app_surjective X A U hU.isPreconnected⟩
 
-variable {X Y : TopCat.{0}} (A : AddCommGrpCat.{0}) (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (A : AddCommGrpCat.{u}) (f : X ⟶ Y)
 
 /-- The canonical map from the constant presheaf on the target to its ordinary pushforward keeps
 the coefficient value on every open set. -/
 def rawPushforwardHom :
     presheaf Y A ⟶
-      (TopCat.Presheaf.pushforward AddCommGrpCat f).obj (presheaf X A) where
+      (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj (presheaf X A) where
   app _ := 𝟙 A
   naturality _ _ _ := rfl
 
 /-- The canonical sheaf map from the constant sheaf on the target to the pushforward of the
 constant sheaf on the source. -/
 def pushforwardHom :
-    sheaf Y A ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat f).obj (sheaf X A) where
+    sheaf Y A ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj (sheaf X A) where
   hom := CategoryTheory.sheafifyLift (Opens.grothendieckTopology Y)
     (rawPushforwardHom A f ≫
-      (TopCat.Presheaf.pushforward AddCommGrpCat f).map (unit X A))
-    ((TopCat.Sheaf.pushforward AddCommGrpCat f).obj (sheaf X A)).property
+      (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map (unit X A))
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj (sheaf X A)).property
 
 /-- The canonical map intertwines the constant-presheaf sheafification units. -/
 theorem unit_pushforwardHom :
     unit Y A ≫ (pushforwardHom A f).hom =
       rawPushforwardHom A f ≫
-        (TopCat.Presheaf.pushforward AddCommGrpCat f).map (unit X A) :=
+        (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map (unit X A) :=
   CategoryTheory.toSheafify_sheafifyLift (Opens.grothendieckTopology Y)
     (rawPushforwardHom A f ≫
-      (TopCat.Presheaf.pushforward AddCommGrpCat f).map (unit X A))
-    ((TopCat.Sheaf.pushforward AddCommGrpCat f).obj (sheaf X A)).property
+      (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map (unit X A))
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj (sheaf X A)).property
 
+/-- The canonical map to the pushforward constant sheaf carries the constant section of value
+`a` on `U` to the constant section of value `a` on `f ⁻¹' U`. -/
 @[simp]
 theorem pushforwardHom_app_unit (U : Opens Y) (a : A) :
     (pushforwardHom A f).hom.app (op U) ((unit Y A).app (op U) a) =

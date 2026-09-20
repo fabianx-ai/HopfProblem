@@ -21,6 +21,10 @@ induces a monomorphism of representing sheaves, and injectivity extends the repr
 Consequently, the cokernel of a flasque sheaf inside an injective sheaf is again flasque.  The
 native Ext long exact sequence then reduces degree `n + 2` to degree `n + 1`, with the existing
 degree-one theorem as the base case.
+
+Reference: Hartshorne, *Algebraic Geometry*, III Lemma 2.4 (injective implies flasque) and
+III Prop. 2.5 (flasque implies acyclic); see also Godement, *Topologie algébrique et théorie des
+faisceaux*, II.4.
 -/
 
 @[expose] public section

@@ -22,6 +22,9 @@ from Mathlib's actual `stalkPushforward` components.  The proof glues simultaneo
 representatives on disjoint neighborhoods and uses closedness to shrink around the whole fibre.
 
 No proper-base-change or derived-pushforward theorem is asserted here.
+
+References: Kashiwara–Schapira, *Sheaves on Manifolds*, Prop. 2.5.2 (the stalk of a proper direct
+image), and Iversen, *Cohomology of Sheaves*, II.
 -/
 
 @[expose] public section
@@ -31,9 +34,11 @@ noncomputable section
 open Set TopologicalSpace Opposite CategoryTheory
 open scoped AlgebraicGeometry
 
+universe u
+
 namespace TopCat.FiniteClosedPushforward
 
-variable {X Y : TopCat.{0}}
+variable {X Y : TopCat.{u}}
 
 /-- Every point of the fibre lies in the inverse image of a neighborhood of its image point. -/
 theorem fiber_mem_preimage (f : X ⟶ Y) (y : Y) (x : f ⁻¹' {y})
@@ -57,16 +62,16 @@ theorem exists_open_preimage_subset (f : X ⟶ Y) (hf : IsClosedMap f)
 
 /-- The canonical pushforward-stalk component at an actual point of the fibre. -/
 def pushforwardStalkComponent (f : X ⟶ Y)
-    (F : TopCat.Presheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X) (y : Y)
     (x : f ⁻¹' {y}) : (f _* F).stalk y ⟶ F.stalk x.val := by
   have hx : f x.val = y := x.property
   exact eqToHom (congrArg (fun z => (f _* F).stalk z) hx.symm) ≫
-    F.stalkPushforward AddCommGrpCat f x.val
+    F.stalkPushforward AddCommGrpCat.{u} f x.val
 
 /-- On a section over an inverse image, the canonical component is its usual germ at the selected
 point of the fibre. -/
 @[simp] theorem pushforwardStalkComponent_germ (f : X ⟶ Y)
-    (F : TopCat.Presheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X) (y : Y)
     (x : f ⁻¹' {y}) (U : Opens Y) (hy : y ∈ U)
     (s : F.obj (op ((Opens.map f).obj U))) :
     pushforwardStalkComponent f F y x ((f _* F).germ U y hy s) =
@@ -75,23 +80,25 @@ point of the fibre. -/
   have hxy : f x = y := hx
   subst y
   simp only [pushforwardStalkComponent, eqToHom_refl, Category.id_comp]
-  exact TopCat.Presheaf.stalkPushforward_germ_apply AddCommGrpCat f F U x hy s
+  exact TopCat.Presheaf.stalkPushforward_germ_apply AddCommGrpCat.{u} f F U x hy s
 
 /-- The canonical additive map from a pushforward stalk to the product of the stalks at all fibre
 points. -/
 def pushforwardStalkHom (f : X ⟶ Y)
-    (F : TopCat.Presheaf AddCommGrpCat.{0} X) (y : Y) :
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X) (y : Y) :
     (f _* F).stalk y →+ ∀ x : f ⁻¹' {y}, F.stalk x.val :=
   AddMonoidHom.pi fun x => (pushforwardStalkComponent f F y x).hom
 
+/-- The `x`-component of the canonical map to the fibre stalks is
+`pushforwardStalkComponent`. -/
 @[simp] theorem pushforwardStalkHom_apply (f : X ⟶ Y)
-    (F : TopCat.Presheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X) (y : Y)
     (s : (f _* F).stalk y) (x : f ⁻¹' {y}) :
     pushforwardStalkHom f F y s x = pushforwardStalkComponent f F y x s := rfl
 
 /-- The product map on an inverse-image section is computed by the actual germ maps. -/
 @[simp] theorem pushforwardStalkHom_germ (f : X ⟶ Y)
-    (F : TopCat.Presheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Presheaf AddCommGrpCat.{u} X) (y : Y)
     (U : Opens Y) (hy : y ∈ U)
     (s : F.obj (op ((Opens.map f).obj U))) (x : f ⁻¹' {y}) :
     pushforwardStalkHom f F y ((f _* F).germ U y hy s) x =
@@ -101,7 +108,7 @@ def pushforwardStalkHom (f : X ⟶ Y)
 /-- Any family of stalk elements at finitely many distinct points of a Hausdorff space has one
 section representative on a neighborhood of those points. -/
 theorem exists_section_germ_eq_of_finite [T2Space X]
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) {s : Set X} (hs : s.Finite)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) {s : Set X} (hs : s.Finite)
     (t : ∀ x : s, F.presheaf.stalk x.val) :
     ∃ (U : Opens X) (hU : s ⊆ U) (u : F.presheaf.obj (op U)),
       ∀ x : s, F.presheaf.germ U x.val (hU x.property) u = t x := by
@@ -138,7 +145,7 @@ theorem exists_section_germ_eq_of_finite [T2Space X]
 /-- Pushforward germs are equal whenever the corresponding section germs coincide at every point
 of the fibre of a closed map. -/
 theorem pushforward_germ_eq_of_fiber_germ_eq (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (U V : Opens Y) (hyU : y ∈ U) (hyV : y ∈ V)
     (s : F.presheaf.obj (op ((Opens.map f).obj U)))
     (t : F.presheaf.obj (op ((Opens.map f).obj V)))
@@ -173,7 +180,7 @@ theorem pushforward_germ_eq_of_fiber_germ_eq (f : X ⟶ Y) (hf : IsClosedMap f)
 
 /-- For a closed map, the canonical map into all stalks of the fibre is injective. -/
 theorem pushforwardStalkHom_injective (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y) :
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y) :
     Function.Injective (pushforwardStalkHom f F.presheaf y) := by
   intro s t hst
   obtain ⟨U, hyU, u, rfl⟩ := (f _* F.presheaf).exists_germ_eq s
@@ -186,7 +193,7 @@ theorem pushforwardStalkHom_injective (f : X ⟶ Y) (hf : IsClosedMap f)
 for every tuple of fibre germs. -/
 theorem pushforwardStalkHom_surjective [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (hfinite : (f ⁻¹' {y}).Finite) :
     Function.Surjective (pushforwardStalkHom f F.presheaf y) := by
   intro t
@@ -202,7 +209,7 @@ theorem pushforwardStalkHom_surjective [T2Space X]
 Hausdorff source. -/
 theorem pushforwardStalkHom_bijective [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (hfinite : (f ⁻¹' {y}).Finite) :
     Function.Bijective (pushforwardStalkHom f F.presheaf y) :=
   ⟨pushforwardStalkHom_injective f hf F y,
@@ -212,15 +219,16 @@ theorem pushforwardStalkHom_bijective [T2Space X]
 fibre. -/
 def pushforwardStalkEquiv [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (hfinite : (f ⁻¹' {y}).Finite) :
     (f _* F.presheaf).stalk y ≃+ ∀ x : f ⁻¹' {y}, F.presheaf.stalk x.val :=
   AddEquiv.ofBijective (pushforwardStalkHom f F.presheaf y)
     (pushforwardStalkHom_bijective f hf F y hfinite)
 
+/-- The `x`-component of the finite-fibre equivalence is `pushforwardStalkComponent`. -/
 @[simp] theorem pushforwardStalkEquiv_apply [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (hfinite : (f ⁻¹' {y}).Finite) (s : (f _* F.presheaf).stalk y)
     (x : f ⁻¹' {y}) :
     pushforwardStalkEquiv f hf F y hfinite s x =
@@ -230,7 +238,7 @@ def pushforwardStalkEquiv [T2Space X]
 points. -/
 @[simp] theorem pushforwardStalkEquiv_germ [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (y : Y)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (y : Y)
     (hfinite : (f ⁻¹' {y}).Finite) (U : Opens Y) (hy : y ∈ U)
     (s : F.presheaf.obj (op ((Opens.map f).obj U))) (x : f ⁻¹' {y}) :
     pushforwardStalkEquiv f hf F y hfinite ((f _* F.presheaf).germ U y hy s) x =
@@ -239,12 +247,12 @@ points. -/
 
 /-- The canonical map to the fibre stalks is natural in the presheaf. -/
 theorem pushforwardStalkHom_naturality (f : X ⟶ Y)
-    {F G : TopCat.Presheaf AddCommGrpCat.{0} X} (α : F ⟶ G)
+    {F G : TopCat.Presheaf AddCommGrpCat.{u} X} (α : F ⟶ G)
     (y : Y) (s : (f _* F).stalk y) (x : f ⁻¹' {y}) :
     pushforwardStalkHom f G y
-        ((TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
-          ((TopCat.Presheaf.pushforward AddCommGrpCat f).map α) s) x =
-      (TopCat.Presheaf.stalkFunctor AddCommGrpCat x.val).map α
+        ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} y).map
+          ((TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map α) s) x =
+      (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val).map α
         (pushforwardStalkHom f F y s x) := by
   obtain ⟨U, hyU, u, rfl⟩ := (f _* F).exists_germ_eq s
   rw [TopCat.Presheaf.stalkFunctor_map_germ_apply,
@@ -256,13 +264,13 @@ theorem pushforwardStalkHom_naturality (f : X ⟶ Y)
 maps at the actual fibre points. -/
 theorem pushforwardStalkEquiv_naturality [T2Space X]
     (f : X ⟶ Y) (hf : IsClosedMap f)
-    {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (α : F ⟶ G)
+    {F G : TopCat.Sheaf AddCommGrpCat.{u} X} (α : F ⟶ G)
     (y : Y) (hfinite : (f ⁻¹' {y}).Finite)
     (s : (f _* F.presheaf).stalk y) (x : f ⁻¹' {y}) :
     pushforwardStalkEquiv f hf G y hfinite
-        ((TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
-          ((TopCat.Presheaf.pushforward AddCommGrpCat f).map α.hom) s) x =
-      (TopCat.Presheaf.stalkFunctor AddCommGrpCat x.val).map α.hom
+        ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} y).map
+          ((TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map α.hom) s) x =
+      (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x.val).map α.hom
         (pushforwardStalkEquiv f hf F y hfinite s x) :=
   pushforwardStalkHom_naturality f α.hom y s x
 

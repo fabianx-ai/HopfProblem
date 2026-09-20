@@ -18,8 +18,11 @@ degree-one comparison from constant-sheaf cohomology to native singular cohomolo
 pullback.  The proof uses the current singular-cochain sheaf resolution and the barycentric
 small-chain theorem.
 
-This is a topological cohomology comparison only.  It makes no differentiable, complex-analytic,
-or lower-transfer assertion.
+This is a topological cohomology comparison only.
+
+Reference: Bredon, *Sheaf Theory*, III.1.1, and Godement, *Topologie algébrique et théorie des
+faisceaux*, II.5.10.1 (sheaf cohomology with constant coefficients agrees with singular
+cohomology on a paracompact locally contractible space).
 -/
 
 @[expose] public section

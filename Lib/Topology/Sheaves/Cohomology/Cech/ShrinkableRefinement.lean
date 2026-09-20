@@ -12,10 +12,11 @@ public import Mathlib.Topology.ShrinkingLemma
 /-!
 # Shrinkable locally finite refinements
 
-This file completes textbook section CD-05E.  An indexed open shrinking of a cover has the same
-index type, still covers the space, and has the closure of each shrunk member contained in the
-corresponding original member.  Mathlib's shrinking lemma supplies such a shrinking for every
-locally finite open cover of a normal space.
+An indexed open shrinking of a cover has the same index type, still covers the space, and has the
+closure of each shrunk member contained in the corresponding original member.  Mathlib's
+shrinking lemma `exists_iUnion_eq_closure_subset` supplies such a shrinking for every locally
+finite open cover of a normal space (Engelking, *General Topology*, 5.1.6; Munkres, *Topology*,
+§41).
 
 Combining this with the locally finite set-cover refinement already provided by
 `SetOpenCover.exists_isLocallyFinite_refinement` shows that every open cover of a paracompact

@@ -18,7 +18,10 @@ Iterating the cokernel of the germ embedding produces short exact sequences
 `0 ⟶ Zⁿ ⟶ Cⁿ ⟶ Zⁿ⁺¹ ⟶ 0`,
 
 where every `Cⁿ` is a flasque dependent-function sheaf.  This file packages those sequences
-as the indexed acyclic-resolution API used by the sheaf-cohomology comparison.
+as an indexed acyclic resolution, from which sheaf cohomology can be computed.
+
+Reference: Godement, *Topologie algébrique et théorie des faisceaux*, II.4.3 (the canonical
+resolution `0 ⟶ F ⟶ 𝒞⁰ ⟶ 𝒞¹ ⟶ ⋯`); see also Bredon, *Sheaf Theory*, II.2.
 -/
 
 @[expose] public section
@@ -43,10 +46,12 @@ def remainder (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
   | 0 => F
   | n + 1 => cokernel (germEmbedding (remainder F n))
 
+/-- The zeroth remainder of the Godement resolution is the sheaf itself. -/
 @[simp]
 theorem remainder_zero (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     remainder F 0 = F := rfl
 
+/-- The `(n+1)`st remainder is the cokernel of the germ embedding of the `n`th remainder. -/
 @[simp]
 theorem remainder_succ (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     remainder F (n + 1) = cokernel (germEmbedding (remainder F n)) := rfl
@@ -64,18 +69,23 @@ def resolution (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     change (ShortComplex.mk f (cokernel.π f) (cokernel.condition f)).ShortExact
     exact { exact := ShortComplex.exact_cokernel f }
 
+/-- The `n`th kernel term of the canonical resolution is the `n`th remainder. -/
 @[simp]
 theorem resolution_Z (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     (resolution F).Z n = remainder F n := rfl
 
+/-- The `n`th term of the canonical resolution is the Godement envelope of the `n`th
+remainder. -/
 @[simp]
 theorem resolution_X (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     (resolution F).X n = envelope (remainder F n) := rfl
 
+/-- The `n`th inclusion of the canonical resolution is the germ embedding. -/
 @[simp]
 theorem resolution_i (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     (resolution F).i n = germEmbedding (remainder F n) := rfl
 
+/-- The `n`th projection of the canonical resolution is the cokernel projection. -/
 @[simp]
 theorem resolution_p (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     (resolution F).p n = cokernel.π (germEmbedding (remainder F n)) := rfl

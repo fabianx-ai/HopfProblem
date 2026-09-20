@@ -18,6 +18,9 @@ This file connects an indexed topological open cover to Mathlib's fixed-family �
 It provides the alternating Čech complex and its degreewise cohomology as functors on presheaves
 and sheaves.
 
+This is the Čech complex of Godement, *Topologie algébrique et théorie des faisceaux*, II.5.1,
+wrapped around Mathlib's `CategoryTheory.cechComplexFunctor` for topological open covers.
+
 Mathlib's `CategoryTheory.cechComplexFunctor` is the all-tuples alternating complex: in degree
 `n`, its factors are indexed by all maps `Fin (n + 1) → ι`, including maps with repeated values.
 Thus the definitions here are deliberately not called normalized complexes and require no order
@@ -60,6 +63,7 @@ noncomputable def sheafCechComplexFunctor
     TopCat.Sheaf A X ⥤ CochainComplex A ℕ :=
   TopCat.Sheaf.forget A X ⋙ hU.presheafCechComplexFunctor A
 
+/-- The Čech complex of a presheaf is Mathlib's fixed-family alternating complex of the cover. -/
 @[simp]
 theorem presheafCechComplexFunctor_obj
     (hU : TopologicalSpace.IsOpenCover U) (P : TopCat.Presheaf A X) :
@@ -67,6 +71,7 @@ theorem presheafCechComplexFunctor_obj
       (CategoryTheory.cechComplexFunctor U).obj P :=
   rfl
 
+/-- The Čech complex of a sheaf is the Čech complex of its underlying presheaf. -/
 @[simp]
 theorem sheafCechComplexFunctor_obj
     (hU : TopologicalSpace.IsOpenCover U) (F : TopCat.Sheaf A X) :
@@ -89,6 +94,7 @@ noncomputable def sheafCechCohomologyFunctor
     TopCat.Sheaf A X ⥤ A :=
   TopCat.Sheaf.forget A X ⋙ hU.presheafCechCohomologyFunctor A n
 
+/-- Degree-`n` Čech cohomology of a presheaf is the degree-`n` homology of its Čech complex. -/
 @[simp]
 theorem presheafCechCohomologyFunctor_obj
     (hU : TopologicalSpace.IsOpenCover U) (P : TopCat.Presheaf A X) (n : ℕ) :
@@ -96,6 +102,7 @@ theorem presheafCechCohomologyFunctor_obj
       ((CategoryTheory.cechComplexFunctor U).obj P).homology n :=
   rfl
 
+/-- Degree-`n` Čech cohomology of a sheaf is computed from its underlying presheaf. -/
 @[simp]
 theorem sheafCechCohomologyFunctor_obj
     (hU : TopologicalSpace.IsOpenCover U) (F : TopCat.Sheaf A X) (n : ℕ) :

@@ -13,14 +13,13 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedPos
 /-!
 # Positive-degree fibre independence from comparison naturality
 
-This isolates the formal last step in the usual contractible-product argument.  Once the
-Ext-defined pullback maps commute with the canonical comparison to native singular cohomology,
-homotopy of the two based-fibre inclusions makes the Ext-defined pullbacks literally equal.
+Once the Ext-defined pullback maps commute with the canonical comparison to native singular
+cohomology, homotopy of the two based-fibre inclusions makes the Ext-defined pullbacks literally
+equal.  The unconditional endpoints assume the stated compactness, separation, metrizability and
+local contractibility hypotheses.
 
-The unconditional endpoints use the separately proved canonical finite-closed comparison
-naturality theorem.  They assume the stated compactness, separation, metrizability, and local
-contractibility hypotheses; this file neither constructs a concrete geometric family nor
-identifies a nearby-cycle stalk, Leray page, or spectral-sequence differential.
+This is homotopy invariance of constant-coefficient sheaf cohomology in all degrees; see Bredon,
+*Sheaf Theory*, II.11.12.
 -/
 
 @[expose] public section

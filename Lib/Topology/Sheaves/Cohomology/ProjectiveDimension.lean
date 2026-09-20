@@ -19,6 +19,8 @@ unit sheaf has projective dimension less than `n`.
 
 This is only an Ext-vanishing formulation. It neither bounds the injective dimension of the
 coefficient sheaves nor asserts the existence of a finite resolution by projective sheaves.
+
+The notion used is Mathlib's `CategoryTheory.Abelian.HasProjectiveDimensionLT`.
 -/
 
 @[expose] public section

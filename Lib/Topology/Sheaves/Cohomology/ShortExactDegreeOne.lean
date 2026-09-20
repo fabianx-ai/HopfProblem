@@ -12,14 +12,12 @@ public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 /-!
 # Degree-one sheaf cohomology from a short exact sequence
 
-For a short exact sequence `0 ⟶ F ⟶ G ⟶ Q ⟶ 0` with `H¹(G) = 0`, the group
-`H¹(F)` vanishes exactly when the map on global sections `G(X) ⟶ Q(X)` is surjective.
-This is the global-sections form of the low-degree `Ext` calculation in
-`ShortExactDegreeOne`.
-
-This FREE owner specializes only that abstract textbook criterion to additive sheaves and the top
-open. It introduces no constructibility, skyscraper decomposition, page, geometric, or
-application-specific assertion.
+For a short exact sequence `0 ⟶ F ⟶ G ⟶ Q ⟶ 0` of abelian sheaves with `H¹(G) = 0`, the group
+`H¹(F)` vanishes exactly when the map on global sections `G(X) ⟶ Q(X)` is surjective.  This is
+the low-degree portion of the long exact cohomology sequence (Hartshorne, *Algebraic Geometry*,
+III.1.1A; Godement, *Topologie algébrique et théorie des faisceaux*, II.4), specialised from the
+`Ext` form in `Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne` to abelian sheaves
+and the top open.
 -/
 
 @[expose] public section
@@ -69,8 +67,8 @@ theorem hZeroMap_surjective_iff_globalSections_surjective
         congrArg (g.hom.app (op (⊤ : Opens X))) (eG.apply_symm_apply s)
       _ = eQ q := hs
 
-/-- Low-degree constructible-sheaf criterion: if the middle sheaf has zero `H¹`, then the
-subsheaf has zero `H¹` exactly when the quotient map is onto on global sections. -/
+/-- Low-degree exactness criterion: if the middle sheaf of a short exact sequence has zero `H¹`,
+then the subsheaf has zero `H¹` exactly when the quotient map is onto on global sections. -/
 theorem subsingleton_hOne_iff_globalSections_surjective
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
     (hS : S.ShortExact) [Subsingleton (CategoryTheory.Sheaf.H.{0} S.X₂ 1)] :
