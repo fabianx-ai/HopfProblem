@@ -475,7 +475,7 @@ theorem AdaptedWindows.place_one_handle_in_distinct_minimum_basins {E M : Type*}
   have hindex : Module.finrank ℝ (S.data q).chart.NegativeCoordinates = 1 :=
     (MorseCancellation.nativeMorseIndex_eq_chart (S.data q).chart).symm.trans hone
   have huv : u ≠ v := fun h => hxy (congrArg α h)
-  rcases MorseCancellation.unitSphere_eq_two_points_of_finrank_one hindex u v huv w with h | h
+  rcases Metric.unitSphere_eq_two_points_of_finrank_eq_one hindex u v huv w with h | h
   · subst w
     exact Or.inl hpu
   · subst w

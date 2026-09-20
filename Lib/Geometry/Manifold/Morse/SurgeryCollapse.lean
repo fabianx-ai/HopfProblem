@@ -1044,7 +1044,7 @@ theorem MorseCancellation.unique_connection_of_distinct_minimum_branches {E M : 
     (hp' : Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 p.val)) :
     x = (S.data q).surgery.attachingSphere u := by
     obtain ⟨w, hw⟩ := (hback x).mp hb
-    rcases unitSphere_eq_two_points_of_finrank_one hdim u v huv w with h | h
+    rcases Metric.unitSphere_eq_two_points_of_finrank_eq_one hdim u v huv w with h | h
     · exact (congrArg (S.data q).surgery.attachingSphere h).symm.trans hw |>.symm
     · have hx : (S.data q).surgery.attachingSphere v = x := h ▸ hw
       have hrv : Filter.Tendsto (fun t => G t x) Filter.atTop (𝓝 r.val) := hx ▸ hv
@@ -3063,7 +3063,7 @@ theorem AdaptedWindows.place_one_handle_in_unique_minimum_basin {E M : Type*}
   refine
     ⟨d, hd, S.forward_limit_below_regular_level hf (S.data q).lower_regular (d (α u)) hpu, ?_⟩
   intro w
-  rcases MorseCancellation.unitSphere_eq_two_points_of_finrank_one hi u v huv w with rfl | rfl
+  rcases Metric.unitSphere_eq_two_points_of_finrank_eq_one hi u v huv w with rfl | rfl
   · exact hpu
   · exact hpv
 
