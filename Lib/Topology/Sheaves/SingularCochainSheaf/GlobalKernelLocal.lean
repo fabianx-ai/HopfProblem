@@ -11,9 +11,10 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections
 /-!
 # The local kernel of the global cochain unit
 
-The sheafification unit kills a native global cochain exactly when that cochain restricts to zero
-on a neighborhood of every point.  The reverse implication uses the genuine stalk isomorphism of
-the concrete sheafification unit.
+The sheafification unit kills a global singular cochain exactly when that cochain restricts to
+zero on a neighbourhood of every point.  Equivalently, the kernel of
+`S^n(X; A) → Γ(X, 𝒮^n(X; A))` is the subgroup of locally zero cochains
+(Bredon, *Sheaf Theory*, III §1).
 -/
 
 @[expose] public section
@@ -31,7 +32,8 @@ open AlgebraicTopology.SingularCochains
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (n : ℕ)
 
-/-- A locally zero native cochain has zero image under the global sheafification unit. -/
+/-- A cochain that restricts to zero on a neighbourhood of every point has zero image under the
+global sheafification unit. -/
 theorem globalCochainUnit_eq_zero_of_local (phi : Cochains X A n)
     (hphi : ∀ x : X, ∃ U : Opens X, x ∈ U ∧ restrictGlobalCochain A n phi U = 0) :
     globalCochainUnit X A n phi = 0 := by
@@ -54,7 +56,8 @@ theorem globalCochainUnit_eq_zero_of_local (phi : Cochains X A n)
           (sheaf X A n).presheaf.germ U x hxU z) hu).trans hg
     _ = (sheaf X A n).presheaf.germ ⊤ x hx 0 := (map_zero _).symm
 
-/-- A zero under the global unit restricts literally to zero near every point. -/
+/-- A cochain in the kernel of the global sheafification unit restricts to zero on some
+neighbourhood of any given point. -/
 theorem globalCochainUnit_locally_zero (phi : Cochains X A n)
     (hphi : globalCochainUnit X A n phi = 0) (x : X) :
     ∃ U : Opens X, x ∈ U ∧ restrictGlobalCochain A n phi U = 0 := by
@@ -72,7 +75,8 @@ theorem globalCochainUnit_locally_zero (phi : Cochains X A n)
   exact ⟨U, hxU, (restrictGlobalCochain_restrict A n phi i).symm.trans
     (hij.trans (map_zero _))⟩
 
-/-- Exact local criterion for the kernel of the global sheafification unit. -/
+/-- The kernel of the global sheafification unit `S^n(X; A) → Γ(X, 𝒮^n(X; A))` consists exactly
+of the locally zero cochains (Bredon III §1). -/
 theorem globalCochainUnit_eq_zero_iff_local (phi : Cochains X A n) :
     globalCochainUnit X A n phi = 0 ↔
       ∀ x : X, ∃ U : Opens X, x ∈ U ∧ restrictGlobalCochain A n phi U = 0 :=
