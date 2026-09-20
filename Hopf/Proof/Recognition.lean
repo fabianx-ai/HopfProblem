@@ -158,6 +158,7 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
@@ -398,46 +399,16 @@ theorem sphereMap_piSix_bijective (x : SpecialPeriods.Threefold.Space) :
     Function.Bijective
       (SixthHurewicz.homotopyMap (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
         SixSphereCube.sphereBasePoint) := by
-  let f := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let := Sphere.piTwo_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piThree_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piFour_subsingleton SixSphereCube.sphereBasePoint
-  let := Sphere.piFive_subsingleton SixSphereCube.sphereBasePoint
   let := SpecialPeriods.Threefold.space_simplyConnected
-  let := SpecialPeriods.Threefold.HomotopyTwo.piTwo_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyThree.piThree_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyFour.piFour_subsingleton (f SixSphereCube.sphereBasePoint)
-  let :=
-    SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton (f SixSphereCube.sphereBasePoint)
-  let source := SixthHurewicz.hurewiczLinearEquiv SixSphereCube.sphereBasePoint
-  let target := SixthHurewicz.hurewiczLinearEquiv (f SixSphereCube.sphereBasePoint)
-  let middle := SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyEquiv x 6
-  have natural (a : π_ 6 SixSphereCube.StandardSphere SixSphereCube.sphereBasePoint) :
-    middle (source (Additive.ofMul a)) =
-      target (Additive.ofMul (SixthHurewicz.homotopyMap f SixSphereCube.sphereBasePoint a)) :=
-    SixthHurewicz.hurewiczLinearEquiv_natural f SixSphereCube.sphereBasePoint (Additive.ofMul a)
-  constructor
-  · intro a b hab
-    have hm : middle (source (Additive.ofMul a)) = middle (source (Additive.ofMul b)) :=
-      (natural a).trans
-        ((congrArg (fun c => target (Additive.ofMul c)) hab).trans (natural b).symm)
-    exact congrArg Additive.toMul (source.injective (middle.injective hm))
-  · intro b
-    let a := source.symm (middle.symm (target (Additive.ofMul b)))
-    refine ⟨Additive.toMul a, ?_⟩
-    have ht :
-      target
-          (Additive.ofMul
-            (SixthHurewicz.homotopyMap f SixSphereCube.sphereBasePoint (Additive.toMul a))) =
-        target (Additive.ofMul b) := by
-      calc
-        _ = middle (source a) := (natural (Additive.toMul a)).symm
-        _ = target (Additive.ofMul b) := by
-          dsimp [a]
-          rw [source.apply_symm_apply, middle.apply_symm_apply]
-    exact congrArg Additive.toMul (target.injective ht)
+  apply SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
+    (fun k hk hk6 y => ?_)
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    (SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective x 6)
+  interval_cases k
+  · exact SpecialPeriods.Threefold.HomotopyTwo.piTwo_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyThree.piThree_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyFour.piFour_subsingleton y
+  · exact SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton y
 
 theorem BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (x : SpecialPeriods.Threefold.Space)
