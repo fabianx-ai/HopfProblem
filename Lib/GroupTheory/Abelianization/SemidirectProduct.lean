@@ -26,6 +26,11 @@ notion is introduced.
   abelianization of the normal factor.
 * `SemidirectProduct.AbelianizationCoinvariants`: its standard representation coinvariants.
 * `SemidirectProduct.abelianizationMulEquiv`: the abelianization formula for a semidirect product.
+
+## References
+
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], Ch. II (the low-degree Lyndon–Hochschild–
+  Serre sequence gives `H₁(K ⋊ Q) ≅ H₁(Q) ⊕ (H₁(K))_Q`).
 -/
 
 @[expose] public section
@@ -181,6 +186,8 @@ noncomputable def abelianizationMulEquiv (φ : Q →* MulAut K) :
         simp [abelianizationToFactors, factorsToAbelianization, toFactors,
           fromCoinvariants_mk] }
 
+/-- On the image of the kernel, the abelianization formula is the canonical map to the
+coinvariants. -/
 @[simp]
 theorem abelianizationMulEquiv_apply_of_inl (φ : Q →* MulAut K) (k : K) :
     abelianizationMulEquiv φ
@@ -188,6 +195,7 @@ theorem abelianizationMulEquiv_apply_of_inl (φ : Q →* MulAut K) (k : K) :
       (1, coinvariantsMk φ k) := by
   rfl
 
+/-- On the image of the quotient, the abelianization formula is the abelianization of `Q`. -/
 @[simp]
 theorem abelianizationMulEquiv_apply_of_inr (φ : Q →* MulAut K) (q : Q) :
     abelianizationMulEquiv φ
@@ -195,6 +203,8 @@ theorem abelianizationMulEquiv_apply_of_inr (φ : Q →* MulAut K) (q : Q) :
       (Abelianization.of q, 1) := by
   rfl
 
+/-- The inverse of the abelianization formula sends a coinvariant class of the kernel back to the
+class of the corresponding element of `K`. -/
 @[simp]
 theorem abelianizationMulEquiv_symm_apply_inl (φ : Q →* MulAut K) (k : K) :
     (abelianizationMulEquiv φ).symm (1, coinvariantsMk φ k) =
@@ -202,6 +212,8 @@ theorem abelianizationMulEquiv_symm_apply_inl (φ : Q →* MulAut K) (k : K) :
   apply (abelianizationMulEquiv φ).injective
   simp
 
+/-- The inverse of the abelianization formula sends a class of `Q` back to the class of the
+corresponding element of the quotient factor. -/
 @[simp]
 theorem abelianizationMulEquiv_symm_apply_inr (φ : Q →* MulAut K) (q : Q) :
     (abelianizationMulEquiv φ).symm (Abelianization.of q, 1) =
