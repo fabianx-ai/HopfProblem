@@ -21,6 +21,13 @@ It records its compatibility with morphisms, connecting classes, composites of e
 and natural transformations, all in arbitrary degree.  A degree-zero representing-object
 comparison becomes an equivalence in every degree when the source has enough injectives and
 `R` preserves injectives.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Exercise 2.4.x.
+* [A. Grothendieck, *Sur quelques points d'algèbre homologique*][grothendieck57], §2
+  (comparison of δ-functors).
+
 -/
 
 @[expose] public section
