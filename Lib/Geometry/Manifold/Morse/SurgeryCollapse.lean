@@ -5180,7 +5180,7 @@ theorem ManifoldMorse.MorseSurgeryData.exists_indexTwoHomology_split {E M : Type
       (∀ a, H (a, 0) = d.lowerRealizationHomologyMap 2 a) ∧
         ∀ z, d.indexTwoCollapseCoordinate hf hindex (H z) = z.2 := by
   obtain ⟨H, hH, hcoord⟩ :=
-    LinearMap.exists_addEquiv_split_of_ker_eq_range (d.lowerRealizationHomologyMap 2)
+    LinearMap.exists_prodAddEquiv_of_functional_ker_eq_range (d.lowerRealizationHomologyMap 2)
       (d.indexTwoCollapseCoordinate hf hindex) (d.lowerRealization_two_injective hf hindex)
       (d.indexTwoCoordinate_surjective hf hindex) (d.indexTwoCoordinate_kernel hf hindex)
   exact ⟨H.toIntLinearEquiv, hH, hcoord⟩
