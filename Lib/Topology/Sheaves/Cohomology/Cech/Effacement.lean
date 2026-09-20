@@ -30,8 +30,9 @@ universe u
 
 variable {X : TopCat.{u}}
 
-/-- Textbook source: “Effacement by the Godement germ sheaf,” the sentence preceding (C28)
-and equation (C28). The positive-degree Čech cohomology of the Godement envelope vanishes. -/
+/-- For every abelian sheaf `F` on `X` and every degree `q > 0`, the refinement-colimit Čech
+cohomology of the Godement envelope of `F` vanishes: the envelope is flasque, and for a flasque
+sheaf the normalized Čech cohomology of every fixed cover vanishes in positive degrees. -/
 theorem cechCohomology_isZero_godementEnvelope
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) {q : ℕ} (hq : 0 < q) :
     IsZero
@@ -45,8 +46,9 @@ theorem cechCohomology_isZero_godementEnvelope
       (fun U => normalizedCechCohomology_isZero_of_isFlasque
         (TopCat.SheafCohomology.Godement.envelope F) U hq))
 
-/-- Textbook source: “Effacement by the Godement germ sheaf,” the sentence after (C28).
-The germ embedding induces the zero map on positive-degree Čech cohomology. -/
+/-- For every abelian sheaf `F` on `X` and every degree `q > 0`, the map induced on degree-`q`
+Čech cohomology by the germ embedding `F ⟶ Godement.envelope F` is zero, because its target is
+a zero object. -/
 theorem cechCohomology_germEmbedding_eq_zero
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) {q : ℕ} (hq : 0 < q) :
     cechCohomologyCoefficientMap
@@ -55,8 +57,9 @@ theorem cechCohomology_germEmbedding_eq_zero
     (cechCohomologyCoefficientMap
       (TopCat.SheafCohomology.Godement.germEmbedding F).hom q) 0
 
-/-- Textbook source: “Effacement by the Godement germ sheaf,” final two sentences following
-(C28). The Čech cohomological delta functor is effaceable in every positive degree. -/
+/-- On a paracompact Hausdorff space `X`, the Čech cohomological delta functor is effaceable in
+every positive degree: every abelian sheaf `F` admits the monomorphism `germEmbedding` into its
+Godement envelope, and that monomorphism induces the zero map in every positive degree. -/
 theorem cechCohomologyDeltaFunctor_effaceable
     (X : TopCat.{u}) [ParacompactSpace X] [T2Space X] :
     (cechCohomologyDeltaFunctor X).Effaceable := by
