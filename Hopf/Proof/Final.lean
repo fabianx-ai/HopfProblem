@@ -65,6 +65,7 @@ import Hopf.LibShims
 import Hopf.Proof.Recognition
 import Hopf.Proof.Algebra.Group.ResidualRelations
 import Hopf.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+import Hopf.Proof.Algebra.Group.LatticeImageCollapse
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
