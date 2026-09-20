@@ -11,11 +11,13 @@ public import Lib.Topology.ClosedRefinement
 public import Lib.Topology.Sheaves.SingularCochainSheaf.Presheaf
 
 /-!
-# Patching native singular cochains
+# Patching local singular cochains to a global one
 
-A closed locally finite refinement lets us choose a local representative using the first vertex
-of each singular simplex.  Since a cochain has no continuity requirement in the simplex variable,
-these chosen values extend to a genuine native cochain.
+Given a locally finite closed refinement of an open cover and a family of singular cochains on
+the members of the cover, one obtains a global singular cochain by evaluating each simplex in the
+member selected by its first vertex.  This is the patching step in the proof that the
+singular-cochain presheaf sheafifies to a resolution of the constant sheaf (Bredon, *Sheaf
+Theory*, III Prop. 1.1; Warner 5.31).
 -/
 
 @[expose] public section
@@ -33,13 +35,16 @@ namespace TopCat.SingularCochainSheaf
 
 open AlgebraicTopology.SingularCochains
 
-/-- Pull a native global cochain back to an open subspace. -/
+/-- Restrict a singular cochain on `X` to an open subspace `U`, by precomposition with the
+inclusion `U → X`. -/
 def restrictGlobalCochain {X : TopCat.{0}} (A : AddCommGrpCat.{0}) (n : ℕ)
     (phi : Cochains X A n) (U : Opens X) : Cochains U A n :=
   (AlgebraicTopology.SingularCochains.pullback A
     (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X))).f n phi
 
 
+/-- The restriction of a cochain to `U` evaluates a simplex of `U` as the original cochain
+evaluates its image simplex in `X`. -/
 @[simp]
 theorem restrictGlobalCochain_simplex {X : TopCat.{0}}
     (A : AddCommGrpCat.{0}) (n : ℕ) (phi : Cochains X A n)
@@ -51,7 +56,7 @@ theorem restrictGlobalCochain_simplex {X : TopCat.{0}}
   pullback_simplex A _ n phi sigma
 
 
-/-- Successive restrictions agree with direct restriction. -/
+/-- Restricting to `U` and then to a smaller open `V` is restricting to `V`. -/
 theorem restrictGlobalCochain_restrict {X : TopCat.{0}}
     (A : AddCommGrpCat.{0}) (n : ℕ) (phi : Cochains X A n)
     {U V : Opens X} (i : V ⟶ U) :
@@ -66,14 +71,16 @@ theorem restrictGlobalCochain_restrict {X : TopCat.{0}}
 
 
 variable {X : TopCat.{0}} (A : AddCommGrpCat.{0}) (n : ℕ)
-variable {ι : Type} (U : ι → Opens X) (R : ClosedRefinement U)
+variable {ι : Type*} (U : ι → Opens X) (R : ClosedRefinement U)
   (t : ∀ i, Cochains (U i) A n)
 
-/-- Choose a cover index using the first vertex of a simplex. -/
+/-- The member of the cover selected for a simplex, namely the one whose closed refinement
+contains the first vertex of the simplex. -/
 def patchIndex (sigma : TopCat.SingularSmallChains.SingularSimplex X n) : ι :=
   R.index (sigma (stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))))
 
-/-- Value selected from the chosen local cochain, or zero if the simplex does not fit. -/
+/-- The value assigned to a simplex: the value of the selected local cochain if the simplex lies
+in the selected member of the cover, and zero otherwise. -/
 def patchedValue (sigma : TopCat.SingularSmallChains.SingularSimplex X n) : A := by
   classical
   exact if hsigma : Set.range sigma ⊆ U (patchIndex n U R sigma) then
@@ -82,10 +89,11 @@ def patchedValue (sigma : TopCat.SingularSmallChains.SingularSimplex X n) : A :=
         (simplexInOpen n sigma (U (patchIndex n U R sigma)) hsigma))
   else 0
 
-/-- The native singular cochain obtained by patching local simplex values. -/
+/-- The global singular cochain obtained by patching the local cochains simplexwise. -/
 def patchedCochain : Cochains X A n :=
   cochainFromValues A n (patchedValue A n U R t)
 
+/-- The patched cochain evaluates a simplex by the selected value. -/
 @[simp]
 theorem patchedCochain_simplex
     (sigma : TopCat.SingularSmallChains.SingularSimplex X n) :
@@ -94,6 +102,8 @@ theorem patchedCochain_simplex
       patchedValue A n U R t sigma :=
   cochainFromValues_simplex A n _ sigma
 
+/-- On a simplex contained in its selected member of the cover, the patched cochain agrees with
+the local cochain there. -/
 theorem patchedCochain_simplex_of_subset
     (sigma : TopCat.SingularSmallChains.SingularSimplex X n)
     (hsigma : Set.range sigma ⊆ U (patchIndex n U R sigma)) :
