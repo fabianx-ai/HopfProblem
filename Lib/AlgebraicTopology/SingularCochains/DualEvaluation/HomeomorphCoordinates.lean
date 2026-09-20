@@ -11,9 +11,14 @@ public import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free
 /-!
 # Kronecker coordinates and pullback
 
-For the coefficient convention `ULift ℤ`, native singular cohomology pullback preserves
+With the small coefficient group `ULift ℤ`, native singular cohomology pullback preserves
 Kronecker coordinates whenever the chosen source and target homology markings commute with the
-induced homology map.  The degree-one API is retained alongside its positive-degree version.
+induced homology map.  The degree-one statements are kept alongside the positive-degree ones.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher2002], §3.1 (naturality of the Kronecker pairing,
+  `⟨f^*φ, c⟩ = ⟨φ, f_* c⟩`).
 -/
 
 @[expose] public section
@@ -30,13 +35,15 @@ open AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT
 
 namespace AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates
 
+universe w
+
 /-- The lifted integral coefficient object used by the coordinate comparison. -/
-abbrev A : AddCommGrpCat.{0} := AddCommGrpCat.of (ULift.{0} ℤ)
+abbrev A : AddCommGrpCat.{w} := AddCommGrpCat.of (ULift.{w} ℤ)
 
 /-- Additive homomorphisms to lifted integers are canonically additive homomorphisms to
 integers. -/
-def uliftDownHomEquiv (H : Type) [AddCommGroup H] :
-    (H →+ ULift.{0} ℤ) ≃+ (H →+ ℤ) where
+def uliftDownHomEquiv (H : Type*) [AddCommGroup H] :
+    (H →+ ULift.{w} ℤ) ≃+ (H →+ ℤ) where
   toFun phi := AddEquiv.ulift.toAddMonoidHom.comp phi
   invFun psi := AddEquiv.ulift.symm.toAddMonoidHom.comp psi
   left_inv phi := by ext x; rfl
@@ -45,16 +52,16 @@ def uliftDownHomEquiv (H : Type) [AddCommGroup H] :
 
 /-- Transport the Kronecker-evaluation target through integral-linear homology coordinates. -/
 def evaluationTargetEquiv
-    {H L : Type} [AddCommGroup H] [AddCommGroup L] [Module ℤ H] [Module ℤ L]
+    {H : Type*} {L : Type w} [AddCommGroup H] [AddCommGroup L] [Module ℤ H] [Module ℤ L]
     (e : H ≃ₗ[ℤ] L) :
-    (H →+ ULift.{0} ℤ) ≃+ Module.Dual ℤ L :=
+    (H →+ ULift.{w} ℤ) ≃+ Module.Dual ℤ L :=
   (uliftDownHomEquiv H).trans
     ((addHomIntLinearEquiv H ℤ).trans e.dualMap.symm.toAddEquiv)
 
 /-- Canonical `H¹` Kronecker evaluation, expressed in chosen integral-linear coordinates on
 first homology. -/
 def coordinateEvaluation
-    (X L : Type) [TopologicalSpace X] [AddCommGroup L] [Module ℤ L]
+    (X : Type) (L : Type w) [TopologicalSpace X] [AddCommGroup L] [Module ℤ L]
     (e : (chains X).homology 1 ≃ₗ[ℤ] L) :
     (complex X A).homology 1 ⟶ AddCommGrpCat.of (Module.Dual ℤ L) :=
   cohomologyEvaluation A (chains X) 0 ≫
@@ -63,7 +70,7 @@ def coordinateEvaluation
 /-- Pullback preserves Kronecker coordinates when the source and target homology markings commute
 with the induced homology map. -/
 theorem coordinateEvaluation_pullback
-    {X Y L : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    {X Y : Type} {L : Type w} [TopologicalSpace X] [TopologicalSpace Y]
     [AddCommGroup L] [Module ℤ L]
     (g : C(X, Y))
     (eX : (chains X).homology 1 ≃ₗ[ℤ] L)
@@ -98,7 +105,7 @@ theorem coordinateEvaluation_pullback
 /-- Positive-degree Kronecker evaluation, expressed in chosen integral-linear coordinates on
 homology in degree `q + 1`. -/
 def coordinateEvaluationPositive
-    (q : ℕ) (X L : Type) [TopologicalSpace X]
+    (q : ℕ) (X : Type) (L : Type w) [TopologicalSpace X]
     [AddCommGroup L] [Module ℤ L]
     (e : (chains X).homology (q + 1) ≃ₗ[ℤ] L) :
     (complex X A).homology (q + 1) ⟶ AddCommGrpCat.of (Module.Dual ℤ L) :=
@@ -108,7 +115,7 @@ def coordinateEvaluationPositive
 /-- Pullback preserves positive-degree Kronecker coordinates when the chosen homology markings
 commute with the induced homology map. -/
 theorem coordinateEvaluationPositive_pullback
-    (q : ℕ) {X Y L : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    (q : ℕ) {X Y : Type} {L : Type w} [TopologicalSpace X] [TopologicalSpace Y]
     [AddCommGroup L] [Module ℤ L]
     (g : C(X, Y))
     (eX : (chains X).homology (q + 1) ≃ₗ[ℤ] L)
@@ -144,7 +151,7 @@ theorem coordinateEvaluationPositive_pullback
 /-- Two pullbacks have the same positive-degree Kronecker coordinates when their induced
 integral homology maps agree in the evaluated degree. -/
 theorem pullback_comp_coordinateEvaluationPositive_eq_of_homologyMap_eq
-    (q : ℕ) {X Y L : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    (q : ℕ) {X Y : Type} {L : Type w} [TopologicalSpace X] [TopologicalSpace Y]
     [AddCommGroup L] [Module ℤ L]
     (f g : C(X, Y))
     (eX : (chains X).homology (q + 1) ≃ₗ[ℤ] L)
