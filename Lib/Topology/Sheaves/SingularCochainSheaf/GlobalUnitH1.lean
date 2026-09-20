@@ -9,11 +9,13 @@ module
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 
 /-!
-# The global singular-cochain unit in degree one
+# The singular-cochain comparison in degree one
 
-Closed locally finite patching discharges all sheafification hypotheses in the degree-one global
-comparison criterion.  The sole remaining geometric input is the classical theorem that chains
-small for an open cover include into all singular chains by a chain-homotopy equivalence.
+On a normal paracompact space the comparison map `S^•(X; A) → Γ(X, 𝒮^•(·; A))` induces an
+isomorphism on degree-one cohomology.  This is the degree-one case of Bredon, *Sheaf Theory* III
+Thm. 1.1; the geometric input is the classical theorem that the chains small for an open cover
+include into all singular chains by a chain-homotopy equivalence (Hatcher, *Algebraic Topology*
+Prop. 2.21).
 -/
 
 @[expose] public section
@@ -29,13 +31,15 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- Closed locally finite patching makes the actual global unit surjective in every degree. -/
+/-- On a normal paracompact space the comparison map `S^n(X; A) → Γ(X, 𝒮^n(·; A))` is surjective
+in every degree (Bredon, *Sheaf Theory* III Prop. 1.1). -/
 theorem globalUnitSurjective [NormalSpace X] [ParacompactSpace X] (n : ℕ) :
     GlobalUnitSurjective X A n :=
   globalCochainUnit_surjective X A n
 
-/-- On a normal paracompact space, the degree-one global comparison is an isomorphism once the
-classical cover-small chain equivalences are supplied. -/
+/-- On a normal paracompact space the comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
+on degree-one cohomology, given the small-chain homotopy equivalences for open covers of `X`
+(Bredon, *Sheaf Theory* III Thm. 1.1 at `n = 1`). -/
 theorem globalCochainComparison_homology_isIso_one
     [NormalSpace X] [ParacompactSpace X]
     (hsmall : HasSmallChainEquivalences X) :
