@@ -525,62 +525,6 @@ theorem LocalDegree.SeparatedNeighborhoods.overlapMap_coe {E F M : Type}
     (y : ↥(Pᶜ ∩ D.neighborhood x)) : (D.overlapMap x y).val = f y.val :=
   LocalDegree.NativeNeighborhood.overlapMap_coe (x : M) (D.data x) _
 
-theorem SublevelDisk.contractibleSpace {M : Type} [TopologicalSpace M] {f : M → ℝ} {a : ℝ}
-    {n : ℕ} (d : SublevelDisk n f a) : ContractibleSpace { x : M // f x ≤ a } := by
-  let : ContractibleSpace (Hemisphere.Ball n) :=
-    (convex_closedBall (0 : Hemisphere.Ambient n) 1).contractibleSpace ⟨0, by simp⟩
-  exact d.homeomorph.symm.contractibleSpace
-
-theorem SublevelDisk.homology_subsingleton {M : Type} [TopologicalSpace M] {f : M → ℝ}
-    {a : ℝ} {n : ℕ} (d : SublevelDisk n f a) (k : ℕ) (hk : k ≠ 0) :
-    Subsingleton (SingularMayerVietoris.SingularHomology { x : M // f x ≤ a } k) := by
-  let := d.contractibleSpace
-  exact SingularHomology.contractible_homology_subsingleton _ k hk
-
-theorem LinearSphereAction.sphereMap_comp {E F G : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
-    [NormedSpace ℝ G] (A : E →L[ℝ] F) (B : F →L[ℝ] G) (hA : Function.Injective A)
-    (hB : Function.Injective B) :
-    (sphereMap B hB).comp (sphereMap A hA) = sphereMap (B.comp A) (hB.comp hA) := by
-  apply ContinuousMap.ext
-  intro x
-  apply Subtype.ext
-  change NormedSpace.normalize (B (‖A x.val‖⁻¹ • A x.val)) = NormedSpace.normalize (B (A x.val))
-  rw [map_smul]
-  exact
-    NormedSpace.normalize_smul_of_pos
-      (inv_pos.mpr (norm_pos_iff.mpr (puncturedMap A hA x).property)) _
-
-theorem LinearSphereAction.sphereMap_trans {E F G : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
-    [NormedSpace ℝ G] (A : E ≃L[ℝ] F) (B : F ≃L[ℝ] G) :
-    sphereMap (A.trans B).toContinuousLinearMap (A.trans B).injective =
-      (sphereMap B.toContinuousLinearMap B.injective).comp
-        (sphereMap A.toContinuousLinearMap A.injective) :=
-  (sphereMap_comp A.toContinuousLinearMap B.toContinuousLinearMap A.injective B.injective).symm
-
-theorem LinearSphereAction.normalized_linearSphereMap {E F : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (A : E ≃L[ℝ] F) (r : ℝ)
-    (hr : 0 < r) :
-    PuncturedRadial.toSphere.comp (LocalDegree.linearSphereMap A r hr) =
-      sphereMap A.toContinuousLinearMap A.injective := by
-  apply ContinuousMap.ext
-  intro x
-  apply Subtype.ext
-  change NormedSpace.normalize (A (r • x.val)) = NormedSpace.normalize (A x.val)
-  rw [map_smul, NormedSpace.normalize_smul_of_pos hr]
-
-theorem LinearSphereAction.sphereMap_relative {E F : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (A B : E ≃L[ℝ] F) :
-    sphereMap A.toContinuousLinearMap A.injective =
-      (sphereMap B.toContinuousLinearMap B.injective).comp
-        (sphereMap (A.trans B.symm).toContinuousLinearMap (A.trans B.symm).injective) := by
-  rw [← sphereMap_trans]
-  have heq : (A.trans B.symm).trans B = A := by
-    ext x
-    exact B.apply_symm_apply (A x)
-  rw [heq]
-
 theorem LocalDegree.NativeNeighborhood.singlePoint_cover {E F M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] (x : M) {f : M → F}
@@ -705,18 +649,6 @@ theorem NativeChartTransition.nonempty_neighborhoodData {E M : Type} [NormedAddC
   exact
     LocalDegree.nonempty_neighborhoodData_of_contDiffAt (linear x y e he)
       (hasFDerivAt_chart x y e he) (chart_zero x y e he) hs (contDiffAt_chart x y e he)
-
-theorem LinearSphereAction.homology_relative_sign {F : Type} [NormedAddCommGroup F]
-    [NormedSpace ℝ F] (n : ℕ) (A B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] F) (k : ℕ)
-    (a : SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 1)) (k + 1)) :
-    SingularMayerVietoris.singularHomologyMap (sphereMap A.toContinuousLinearMap A.injective)
-        (k + 1) a =
-      (SignType.sign (A.trans B.symm).toLinearEquiv.toLinearMap.det : ℤ) •
-        SingularMayerVietoris.singularHomologyMap (sphereMap B.toContinuousLinearMap B.injective)
-          (k + 1) a := by
-  rw [sphereMap_relative A B, SingularHomology.singularHomologyMap_comp,
-    LinearMap.comp_apply, homology_eq_sign_smul]
-  exact map_zsmul _ _ _
 
 theorem LocalDegree.PointTransition.maps_point_complement {M : Type} [TopologicalSpace M]
     (e : M ≃ₜ M) (x y : M) (he : e x = y) : Set.MapsTo e { x }ᶜ { y }ᶜ := by
