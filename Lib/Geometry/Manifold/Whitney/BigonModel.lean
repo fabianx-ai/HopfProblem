@@ -407,8 +407,8 @@ chart.
 def WhitneyPairModel.cornerTransition (t : ℝ) : ℝ :=
   Real.smoothTransition (3 * t - 1)
 
-/-- The interpolated distance to the nearer corner, `(1 - β t) (1 - t) + β t · t` for the transition
-`β`; it equals `1 - t` near the left corner and `t` near the right one.
+/-- The interpolated distance to the opposite corner, `(1 - β t) (1 - t) + β t · t` for the
+transition `β`; it equals `1 - t` near the left corner and `t` near the right one.
 -/
 def WhitneyPairModel.cornerScale (t : ℝ) : ℝ :=
   (1 - cornerTransition t) * (1 - t) + cornerTransition t * t
