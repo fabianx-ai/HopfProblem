@@ -13,11 +13,21 @@ public import Mathlib.Algebra.Homology.ConcreteCategory
 /-!
 # Connecting homomorphisms in refinement-directed Čech cohomology
 
-This file translates reviewed textbook section CD-05H. It constructs the sectionwise exact
-normalized Čech cochain sequence and the lift--differentiate--descend presentation underlying
-equation (C21), proves all lift, cover, refinement-function, cocycle, and direct-limit
-representative choices immaterial via (C22)--(C23), and descends the resulting additive formula
-to the Čech connecting homomorphism.
+For a short exact sequence `0 → F₁ → F₂ → F₃ → 0` of sheaves of abelian groups on a paracompact
+Hausdorff space, this file constructs the connecting homomorphism
+`Ȟ^q(X, F₃) ⟶ Ȟ^{q+1}(X, F₁)` of direct-limit Čech cohomology.
+
+The construction is the usual one: a Čech `q`-cocycle with values in `F₃` lifts, after passing
+to a refinement, to a cochain with values in `F₂`; its Čech differential comes from a unique
+cochain with values in `F₁`, which is a cocycle; the class of that cocycle is the image of the
+original class.  The bulk of the file shows that this class does not depend on the lift, the
+cover, the chosen refinement function, the cocycle representing the class, or the representative
+of the direct-limit class, and that the resulting map is additive.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.9--5.10
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -325,7 +335,8 @@ theorem normalizedCechCohomologyMap_cocycleClass
 /-! ## Lift--differentiate--descend presentations -/
 
 /-- A lift--differentiate--descend presentation of the connecting class of one fixed-cover
-cocycle. The two equations are exactly (C20) and (C21). -/
+cocycle: a refinement on which the cocycle lifts to the middle sheaf, together with the
+descended left-sheaf cochain and the two equations relating them. -/
 structure BoundaryPresentation
     (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X))
     (U : SetOpenCover X) (q : ℕ) (c : CechCocycle S.X₃.presheaf U q) where
@@ -338,10 +349,11 @@ structure BoundaryPresentation
   /-- The unique left-sheaf cochain whose image is the differential of the lift. -/
   descended : OrderedCech.object (A := AddCommGrpCat.{u})
     S.X₁.presheaf cover.family (q + 1)
-  /-- Equation (C20). -/
+  /-- The image of the lift in the right-hand sheaf is the refined cocycle. -/
   lift_eq : OrderedCech.coefficientMapDegree S.g.hom cover.family q lift =
     OrderedCech.refinementMapDegree S.X₃.presheaf refinement q c.1
-  /-- Equation (C21), with no additional sign. -/
+  /-- The image of the descended cochain in the middle sheaf is the differential of the lift,
+with no additional sign. -/
   descended_eq : OrderedCech.coefficientMapDegree S.f.hom cover.family (q + 1) descended =
     OrderedCech.differential S.X₂.presheaf cover.family q lift
 
@@ -406,7 +418,7 @@ private theorem refinement_comp_apply
   have h := congrArg (fun k => k.f n) (OrderedCech.refinementMap_comp P r s)
   exact ConcreteCategory.congr_hom h x
 
-/-- The cochain descended in (C21) is a cocycle: applying the injective left coefficient map
+/-- The descended left-sheaf cochain is a cocycle: applying the injective left coefficient map
 reduces its differential to `d²` of the middle-sheaf lift. -/
 theorem descended_isCocycle (hS : S.ShortExact) (P : BoundaryPresentation S U q c) :
     OrderedCech.differential S.X₁.presheaf P.cover.family (q + 1) P.descended = 0 := by
@@ -482,6 +494,7 @@ def refine (P : BoundaryPresentation S U q c)
               (OrderedCech.refinementMapDegree_comp_differential
                 S.X₂.presheaf s q) P.lift).symm
 
+/-- Refining a lift--differentiate--descend presentation refines its descended cocycle. -/
 @[simp]
 theorem refine_descendedCocycle (hS : S.ShortExact)
     (P : BoundaryPresentation S U q c)
@@ -869,8 +882,8 @@ private noncomputable def boundaryDataOfLift
       descended_eq := Classical.choose_spec hexists }
 
 /-- The connecting class is additive on concrete cocycles. The proof first refines twice so
-that both cocycles have lifts for one common refinement function, then adds equations (C20)
-and (C21) on that cover. -/
+that both cocycles have lifts for one common refinement function, then adds the two defining
+equations on that cover. -/
 theorem boundaryClass_add
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     [ParacompactSpace X] [T2Space X]
@@ -969,6 +982,8 @@ noncomputable def boundaryCocycleMap
   map_zero' := boundaryClass_zero hS U q
   map_add' := boundaryClass_add hS U q
 
+/-- The additive map on cocycles induced by the connecting construction is given by the
+connecting class of the cocycle. -/
 @[simp]
 theorem boundaryCocycleMap_apply
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
@@ -1004,6 +1019,8 @@ def ofRefinedCocycle {U V : SetOpenCover X}
             (refinement_comp_apply S.X₃.presheaf r P.refinement q c.1).symm
   descended_eq := P.descended_eq
 
+/-- A presentation of a refined cocycle, read as a presentation of the original cocycle, has the
+same connecting class. -/
 @[simp]
 theorem ofRefinedCocycle_cechClass {U V : SetOpenCover X}
     (hS : S.ShortExact) (r : Refinement V.family U.family) (q : ℕ)
@@ -1184,6 +1201,8 @@ noncomputable def boundaryCyclesMap
   AddCommGrpCat.ofHom
     ((boundaryCocycleMap hS U q).comp (cyclesCocycleEquiv S.X₃.presheaf U q).toAddMonoidHom)
 
+/-- The additive map on Čech cycles induced by the connecting construction is the connecting
+class of the corresponding cocycle. -/
 @[simp]
 theorem boundaryCyclesMap_apply
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
@@ -1193,6 +1212,8 @@ theorem boundaryCyclesMap_apply
     boundaryCyclesMap hS U q z =
       boundaryClass hS U q (cyclesCocycleEquiv S.X₃.presheaf U q z) := rfl
 
+/-- Čech coboundaries have vanishing connecting class, so the connecting map on cycles factors
+through cohomology. -/
 theorem toCycles_comp_boundaryCyclesMap
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     [ParacompactSpace X] [T2Space X]
@@ -1375,8 +1396,8 @@ theorem cechCohomology_exists_cocycle_rep
   obtain ⟨c, rfl⟩ := cocycleClass_surjective F U q y
   exact ⟨U, c, hy⟩
 
-/-- Every direct-limit class admits the reviewed lift--differentiate--descend formula on a
-fixed cover and a further lifting refinement. -/
+/-- Every direct-limit class admits a lift--differentiate--descend presentation on a fixed cover
+and a further lifting refinement. -/
 theorem connectingHom_exists_boundaryPresentation
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     [ParacompactSpace X] [T2Space X]
@@ -1393,6 +1414,7 @@ theorem connectingHom_exists_boundaryPresentation
   rw [← hc]
   exact connectingHom_cocycleClass_eq_cechClass hS U q c P
 
+/-- The connecting homomorphism sends the zero class to zero. -/
 @[simp]
 theorem connectingHom_zero
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
@@ -1400,6 +1422,7 @@ theorem connectingHom_zero
     (hS : S.ShortExact) (q : ℕ) :
     connectingHom hS q 0 = 0 := map_zero _
 
+/-- The connecting homomorphism is additive. -/
 theorem connectingHom_add
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
     [ParacompactSpace X] [T2Space X]
@@ -1408,7 +1431,7 @@ theorem connectingHom_add
     connectingHom hS q (x + y) = connectingHom hS q x + connectingHom hS q y :=
   map_add _ _ _
 
-/-- The cochain descended through the monomorphism in (C21) is uniquely determined by its
+/-- The cochain descended through the monomorphism `F₁ ⟶ F₂` is uniquely determined by its
 coefficient image. -/
 theorem BoundaryPresentation.descended_unique
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)}
