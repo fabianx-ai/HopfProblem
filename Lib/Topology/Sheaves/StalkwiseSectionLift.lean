@@ -13,8 +13,8 @@ public import Mathlib.Topology.Sheaves.Stalks
 
 A section which lies in the image of a morphism of sheaves in every stalk lies in the image
 globally, provided the morphism is stalkwise injective: the local lifts are then unique on
-overlaps and glue (Hartshorne, *Algebraic Geometry* II Ex. 1.2; Iversen, *Cohomology of Sheaves*
-II.1).  Unlike a stalkwise-surjectivity criterion this asks for local lifts only of the given
+overlaps and glue (Hartshorne, *Algebraic Geometry* II Ex. 1.2; cf. Iversen, *Cohomology of
+Sheaves*).  Unlike a stalkwise-surjectivity criterion this asks for local lifts only of the given
 section.
 
 ## Main results

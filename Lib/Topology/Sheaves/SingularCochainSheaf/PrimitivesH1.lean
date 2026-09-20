@@ -159,7 +159,9 @@ private theorem pullback_const_zero {X Y : Type} [TopologicalSpace X] [Topologic
 
 section Homotopy
 
-variable {K L : CochainComplex AddCommGrpCat.{0} ℕ} {f g : K ⟶ L}
+universe u
+
+variable {K L : CochainComplex AddCommGrpCat.{u} ℕ} {f g : K ⟶ L}
 
 /-- A closed degree-one cochain is detected by the degree-lowering component of a cochain
 homotopy. -/

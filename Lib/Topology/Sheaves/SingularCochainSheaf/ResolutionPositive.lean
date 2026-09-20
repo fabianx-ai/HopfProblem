@@ -19,8 +19,8 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 On a locally contractible space the augmented complex `0 → A_X → 𝒮^0 → 𝒮^1 → ⋯` is exact, so the
 sheafified singular cochains form a resolution of the constant sheaf; on a paracompact space (here
 a metrizable one) every term of the resolution is flasque, hence acyclic for global sections.  The
-resolution is therefore usable to compute `H^•(X; A_X)` (Bredon, *Sheaf Theory* III.1; Warner,
-*Foundations of Differentiable Manifolds and Lie Groups* 5.31–5.32).
+resolution is therefore usable to compute `H^•(X; A_X)` (Bredon, *Sheaf Theory* III §1; Warner,
+*Foundations of Differentiable Manifolds and Lie Groups* 5.31).
 
 ## Main results
 
@@ -80,8 +80,7 @@ theorem resolution_d (hLC : LocallyContractibleSpace X) (n : ℕ) :
     (exactAugmentedComplex X A hLC) n
 
 /-- On a metrizable space the singular-cochain resolution is acyclic for global sections, since
-each `𝒮^n(·; A)` is flasque (Warner, *Foundations of Differentiable Manifolds and Lie Groups*
-5.32). -/
+each `𝒮^n(·; A)` is flasque (Bredon, *Sheaf Theory* III §1). -/
 theorem resolution_isAcyclic (hLC : LocallyContractibleSpace X)
     [MetrizableSpace X] :
     TopCat.SheafCohomology.AcyclicResolution.IsAcyclic

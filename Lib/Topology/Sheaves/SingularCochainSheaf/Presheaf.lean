@@ -94,7 +94,6 @@ theorem complex_X (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (n : ℕ) :
 /-- The differential of the complex of presheaves is the singular-cochain coboundary. -/
 @[simp]
 theorem complex_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) (i j : ℕ) :
-
     (complex X A).d i j = differential X A i j := rfl
 
 end TopCat.SingularCochainSheaf
