@@ -41,8 +41,18 @@ Changed around the move:
 * `Lib/AxiomAudit.lean`: the four `#check` / `#print axioms` probes removed.  `Lib` may never
   import `Hopf.*` (guarded by `scripts/lib_stock_census.py`), so the probes cannot follow the
   declarations; there is no `Hopf`-side probe file to move them to, and creating one was out
-  of scope.  The declarations remain axiom-audited transitively: they are in the import
-  closure of `Solution.lean`, whose `#print axioms` line is unchanged.
+  of scope.  **(corrected)** this bullet originally read "The declarations remain axiom-audited
+  transitively: they are in the import closure of `Solution.lean`, whose `#print axioms` line is
+  unchanged."  That is false: `#print axioms` reports the axioms in the *dependency* closure of the
+  named constant, not of the import graph, and nothing in the `Solution` graph references the four
+  `…_of_homeomorph_sphereTwo` theorems (`git grep homeomorph_sphereTwo 39f1d12b` hits only the moved
+  file; `Hopf/Proof/Final.lean` merely imports the module).  After this branch the four theorems are
+  **unprobed — axiom-audited by nothing**.  By inspection their proofs use only `Lib` theorems,
+  Mathlib and `by decide`, so the practical risk is nil, but the coverage is zero and the receipt
+  must say so; the "Left undone" bullet, which is honest about the missing home, contradicted the
+  sentence above it.  A **`Hopf/Proof/AxiomAudit.lean` carrying the four probes is being added**
+  (`Lib/reviews/REVIEW-7-8.md` §3 and §4: a move to `Hopf/Proof` carries its probes — four lines, a
+  standing rule, not an owner decision).
 * `Hopf/Proof/Final.lean`: added `import Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo`.
   The file had **no** consumer on this base — the only references to it were `Lib.lean` and
   the `AxiomAudit` probes; its manuscript consumers live on `w4-w1-solution`.  The `Hopf`
@@ -61,17 +71,36 @@ that (`Lib/reports/round-7/names/RECEIPT.md`, row for this file): all call sites
 to Mathlib's instance, the `public import`s were replaced, the file was deleted, and
 `lake build Lib` then failed with `failed to synthesize Add (Sheaf.H Q 0)` /
 `AddZero (Sheaf.H F n)` in `Lib/Topology/Sheaves/Cohomology/ShortExactDegreeOne.lean` and
-`Lib/Topology/Sheaves/FiniteClosedPushforward/Cohomology.lean`.  Typeclass resolution does not
-see through `CategoryTheory.Sheaf.H` to `Ext`, so this registration is load-bearing; closing
-the gap is an upstream change to `Sheaf.H`.  The attempt was reverted then and is not repeated
-here.
+`Lib/Topology/Sheaves/FiniteClosedPushforward/Cohomology.lean`.  **The registration is
+load-bearing** — independently re-confirmed with `attribute [-instance]
+CategoryTheory.Sheaf.instAddCommGroupH` plus `#synth`, which fails for a `TopCat.Sheaf`-typed `F`.
+**(corrected)** the *cause* stated here was wrong.  It read: "Typeclass resolution does not see
+through `CategoryTheory.Sheaf.H` to `Ext`, so this registration is load-bearing; closing the gap is
+an upstream change to `Sheaf.H`."  Resolution does see through `Sheaf.H`: for
+`F : CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat` — the same `Sheaf.H`, the
+same site — `#synth AddCommGroup (Sheaf.H F n)` succeeds and prints `Ext.instAddCommGroup`, and
+Mathlib's own `H.map` is defined that way.  The gap is that `Lib` feeds **`TopCat.Sheaf`**-typed
+objects to the site-level `Sheaf.H`, and Mathlib's `TopCat.Sheaf`
+(`Mathlib/Topology/Sheaves/Sheaf.lean:108`) is a plain non-reducible `def`: at instance transparency
+the unifier cannot identify `TopCat.Sheaf AddCommGrpCat X` with
+`CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat`, and the only candidate
+`@Ext.instAddCommGroup` fails at `AddCommGroup (Sheaf.H F n) ≟ AddCommGroup (Ext ?m ?m ?m)`.  Making
+`TopCat.Sheaf` locally reducible makes `#synth` succeed.  So nothing about `Sheaf.H` needs an
+upstream change, and a third option this receipt never considered is to state the instance for the
+site-typed sheaf, or to make `Lib`'s sheaves site-typed — a design decision for the owner.  The
+module docstring written by this branch carries the same mis-diagnosis and is on the fix list
+(`Lib/reviews/REVIEW-7-8.md` §3, dfiles-c).  The round-7 deletion attempt was reverted then and is
+not repeated here.
 
 **What was done instead** (the part of the audit row that does not require deletion):
 
 * renamed `CategoryTheory.Sheaf.cohomologyAddCommGroup` to
   `CategoryTheory.Sheaf.instAddCommGroupH` — the standard Mathlib instance name for
   `AddCommGroup (Sheaf.H F n)`; the old name mentioned a `cohomology` that does not occur in
-  the type.  Statement, binders, universes and proof term are unchanged.  All eleven call
+  the type.  Statement, binders, universes and proof term are unchanged.  All **ten (corrected)**
+  real call sites plus the two `Lib/AxiomAudit.lean` probes — 12 occurrences in 7 files at base, from
+  which "eleven" was miscounted; every one is updated, with no residue at head outside
+  `Lib/reports` — call
   sites were updated (`Lib/AxiomAudit.lean`,
   `Lib/CategoryTheory/Sites/Leray/ResolutionTransgression.lean`,
   `Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/CanonicalPositive.lean`,
@@ -82,7 +111,9 @@ here.
 * module docstring rewritten with `## Main results` and `## Implementation notes`.  It names
   the two Mathlib files the content comes from
   (`Mathlib/CategoryTheory/Sites/SheafCohomology/Basic.lean` for `Sheaf.H` being `Ext`,
-  `Mathlib/CategoryTheory/Abelian/GrothendieckCategory/HasExt.lean` for
+  **`Mathlib/Algebra/Homology/DerivedCategory/Ext/Basic.lean:239` (corrected; this receipt and the
+  docstring said `Mathlib/CategoryTheory/Abelian/GrothendieckCategory/HasExt.lean`, which contains no
+  `AddCommGroup` at all — it supplies the `HasExt` instance for Grothendieck abelian categories)** for
   `Ext.instAddCommGroup`), states that the proof term *is* that Mathlib instance, and records
   the failed-deletion experiment so the next audit does not repeat it.  The previous "This
   module owns that unconditional instance" ownership language is gone;
@@ -109,8 +140,10 @@ generalised:
   (`Mathlib/CategoryTheory/Sites/LocallySurjective.lean`),
   `TopCat.Presheaf.isLocallySurjective_iff`
   (`Mathlib/Topology/Sheaves/LocallySurjective.lean`),
-  `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso` and `TopCat.Presheaf.germ_eq`
-  (`Mathlib/Topology/Sheaves/Stalks.lean`), with an explicit statement that Mathlib does not
+  `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`
+  (**`Mathlib/Topology/Sheaves/Sheafify.lean:137` — corrected; this receipt and the docstring said
+  `Stalks.lean`, repeating the judgement packet's error**) and `TopCat.Presheaf.germ_eq`
+  (`Mathlib/Topology/Sheaves/Stalks.lean:456`, correct), with an explicit statement that Mathlib does not
   carry the three shrink-the-neighbourhood results;
 * docstrings added to the four undocumented declarations `sheaf`, `unit`, `unit_stalk_isIso`,
   `unit_stalk_injective`.  The `sheaf` and `unit` docstrings spell out the Mathlib terms they
@@ -164,7 +197,9 @@ VERDICT PASS
 ```
 
 The single module move is item 1 (four theorems plus the file's two `local instance`s; the one
-auxiliary constant is the `_proof_1` of the first of them).  Nothing is lost, nothing is added,
+auxiliary constant is **the `_proof_1` of the first `local instance`, not of the first theorem
+(corrected)** — base `_private.Lib.Topology.Sheaves.Cohomology.SphereTwo.0.instAdditive…_lib_1._proof_1`,
+after `instAdditive…_lib_1._proof_1` under `Hopf.Proof…SphereTwo`).  Nothing is lost, nothing is added,
 no type changed.
 
 ## Build
@@ -208,3 +243,63 @@ d87ad506  Lib/Topology/Sheaves/Cohomology/AddCommGroup.lean: name the Mathlib tw
 * The four axiom probes for the moved `sphereTwo` theorems have no home: `Lib/AxiomAudit.lean`
   cannot import `Hopf.*`, and there is no `Hopf`-side probe file.  If one is wanted, that is a
   new file and a decision for the owner.
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-dfiles-c.md` (ACCEPT WITH FINDINGS; the three commits
+do what this receipt says — move, rename, docstrings — the envdiff is clean and the twins were
+verified; the `SphereTwo` placement under `Hopf/Proof` was judged right, and nothing general was lost
+by the move: theorem 1 is a 15-line instantiation of two `Lib` theorems plus Mathlib compactness, and
+theorems 2–4 are the manuscript's reformulations).  These corrections are to this receipt's text
+only; no Lean file was changed by them.
+
+1. **"The declarations remain axiom-audited transitively" is false (finding 2)**, corrected in the
+   `Lib/AxiomAudit.lean` bullet of item 1.  `#print axioms` follows *dependencies*, not imports, and
+   nothing in the `Solution` graph references the four moved theorems, so they are **probed by
+   nothing**.  A `Hopf/Proof/AxiomAudit.lean` with the four probes is being added; the rule "a move
+   to `Hopf/Proof` carries its axiom probes" is now standing (`Lib/reviews/REVIEW-7-8.md` §4).
+   `Lib/reviews/INTEGRATION-8.md` and `NEXT_STEPS.md`, which frame this as an owner decision without
+   saying that current coverage is zero, are corrected in `INTEGRATION-8.md`.
+
+2. **The stated cause of the instance-resolution gap is wrong (finding 1)**, corrected in item 2's
+   "Why it stays".  The instance **is** load-bearing — that was re-confirmed, not merely trusted —
+   but not because "resolution does not see through `Sheaf.H` to `Ext`" and not because of anything
+   upstream in `Sheaf.H`.  `Sheaf.H` is an `abbrev` and resolution does see through it for a
+   site-typed sheaf; the blocker is Mathlib's `TopCat.Sheaf` being a non-reducible `def`, which the
+   unifier cannot identify with the site-level `CategoryTheory.Sheaf` at instance transparency
+   (making it locally reducible makes `#synth` succeed).  The module docstring of
+   `Lib/Topology/Sheaves/Cohomology/AddCommGroup.lean` written by this branch repeats the wrong
+   cause and is a code fix on the `REVIEW-7-8.md` §3 list; the round-7 names receipt, which first
+   stated it, is corrected there too.  A "not done because X" for an instance should ship a one-file
+   reproduction (`attribute [-instance] …; #synth …`) so a reviewer can check the cause and not only
+   the symptom.
+
+3. **Two Mathlib file attributions are wrong (finding 3)**, corrected in items 2 and 3.
+   `Ext.instAddCommGroup` is at `Mathlib/Algebra/Homology/DerivedCategory/Ext/Basic.lean:239`, not in
+   `GrothendieckCategory/HasExt.lean`; `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso` is at
+   `Mathlib/Topology/Sheaves/Sheafify.lean:137`, not `Stalks.lean` (`germ_eq` at `Stalks.lean:456`
+   is right).  Both errors were inherited from the judgement packet; the same two paths appear in
+   the new docstrings and are code fixes on the `REVIEW-7-8.md` §3 list.  The declaration names
+   themselves are all correct.
+
+4. **A pending reroute was not listed (finding 4), recorded here.**  Item 1 says "its manuscript
+   consumers live on `w4-w1-solution`".  Concretely, on that branch
+   `W4W1/CenterBaseCohomologicalDimension.lean:1` is
+   `import Lib.Topology.Sheaves.Cohomology.SphereTwo` (the theorems are used at lines 43 and 62), and
+   that branch's `Lib.lean:416` and `Lib/AxiomAudit.lean:7419–7430` still carry the old module and
+   probes.  **When `w4-w1-solution` meets this branch that import must be rerouted to
+   `Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo`**, and the probes moved with it.  Pending.
+
+5. **Call-site count (finding 6), corrected in item 2.**  "All eleven call sites were updated" — at
+   base there are 12 occurrences of `cohomologyAddCommGroup` in 7 `Lib` files outside the defining
+   file: **10 real call sites plus 2 audit probes** (the round-7 receipt says ten).  Every one is
+   updated; only the number was wrong.
+
+6. **Envdiff prose (finding 7), corrected.**  "The one auxiliary constant is the `_proof_1` of the
+   first of them" reads as the first *theorem*; the dumps show it is the `_proof_1` of the first
+   `local instance`.
+
+7. **A design note, not an error (finding 5).**  `Hopf/Proof/Final.lean:165` imports the moved module
+   solely so that it keeps being compiled; nothing in the `Solution` graph uses it.  This receipt
+   says so plainly, so the record is accurate: on this branch the four theorems are dead code kept
+   alive by an import, pending the `w4-w1-solution` reroute of item 4 above.
