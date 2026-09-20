@@ -62,8 +62,11 @@ open Set Function Filter Manifold Topology
 
 @[expose] public noncomputable section
 
+universe u
+
 open SingularHomology
 
+/-- Translation of the circle `ℝ / ℤ` by a real number `a`, as a continuous self-map. -/
 def PeriodTorusHigherHomology.CirclePaths.circleTranslation (a : ℝ) :
     C((CircleTopology.Circle),
       (CircleTopology.Circle)) :=
@@ -75,12 +78,15 @@ def PeriodTorusHigherHomology.CirclePaths.circleTranslation (a : ℝ) :
                 (a : (CircleTopology.Circle)))).add
         continuous_id⟩
 
+/-- Translation by `a` sends `z` to `a + z`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.circleTranslation_apply (a : ℝ)
     (z : (CircleTopology.Circle)) :
     circleTranslation a z = (a : (CircleTopology.Circle)) + z :=
   rfl
 
+/-- Translation by `a` is homotopic to the identity, through the translations by
+`(1 - t) * a`. -/
 def PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy (a : ℝ) :
     (circleTranslation a).Homotopy
       (ContinuousMap.id (CircleTopology.Circle))
@@ -95,17 +101,21 @@ def PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy (a : ℝ) :
   map_zero_left z := by simp
   map_one_left z := by simp
 
+/-- A translation of the circle induces the identity on singular homology in every degree,
+because it is homotopic to the identity. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.circleTranslation_singularHomologyMap (a : ℝ)
     (n : ℕ) : SingularMayerVietoris.singularHomologyMap (circleTranslation a) n = LinearMap.id := by
   rw [homotopy_homologyMap (circleTranslationHomotopy a) n,
     singularHomologyMap_id]
 
+/-- A translation of the circle induces the identity on first singular homology. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.circleTranslation_inducedHomology (a : ℝ) :
     SingularChains.inducedHomology (circleTranslation a) = LinearMap.id :=
   circleTranslation_singularHomologyMap a 1
 
+/-- Translating a loop does not change its singular homology class. -/
 theorem PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTranslation (a : ℝ)
     {x : (CircleTopology.Circle)} (p : Path x x) :
     SingularChains.loopHomologyClass (p.map (circleTranslation a).continuous) =
@@ -114,6 +124,8 @@ theorem PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTransl
     circleTranslation_inducedHomology]
   rfl
 
+/-- The positively oriented loop `t ↦ t` at the base point `0` of the circle `ℝ / ℤ`; it
+generates `π₁(S¹)`. -/
 def PeriodTorusHigherHomology.CirclePaths.positiveLoop :
     Path (0 : (CircleTopology.Circle)) 0
     where
@@ -122,11 +134,15 @@ def PeriodTorusHigherHomology.CirclePaths.positiveLoop :
   source' := AddCircle.coe_zero (1 : ℝ)
   target' := AddCircle.coe_period (1 : ℝ)
 
+/-- The positive loop sends `t` to the class of `t` in `ℝ / ℤ`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.positiveLoop_apply (t : unitInterval) :
     positiveLoop t = ((t : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
+/-- Crossing with the homology class of the positive loop: the map
+`H_n(X) → H_{n+1}(S¹ × X)` given by the singular cross product with
+`[positiveLoop] ∈ H₁(S¹)`. -/
 def PeriodTorusHigherHomology.positiveCircleCross (X : Type) [TopologicalSpace X] (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n →ₗ[ℤ]
       SingularMayerVietoris.SingularHomology
@@ -134,6 +150,9 @@ def PeriodTorusHigherHomology.positiveCircleCross (X : Type) [TopologicalSpace X
   crossProductHomology (CircleTopology.Circle) X n
     (SingularChains.loopHomologyClass CirclePaths.positiveLoop)
 
+/-- Leibniz rule for the cross product of a one-chain with a cycle: the boundary of `a × b` is
+the degree-zero cross product of `∂a` with `b`, the second Leibniz term vanishing because `b`
+is a cycle. -/
 theorem PeriodTorusHigherHomology.crossProductEdge_boundary_of_right_cycle {X Y : Type}
     [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (a : SingularChains.Chains X 1)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) n) :
@@ -149,6 +168,8 @@ theorem PeriodTorusHigherHomology.crossProductEdge_boundary_of_right_cycle {X Y 
           (n + 1) b
     simp only [crossProductEdge_boundary, hb, map_zero, sub_zero]
 
+/-- The boundary of the cross product of a path `p : x ⟶ y` with a cycle `b` is the difference
+of the two slices `{y} × b` and `{x} × b`. -/
 theorem PeriodTorusHigherHomology.crossProductEdge_path_boundary {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) {x y : X} (p : Path x y)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) n) :
@@ -163,6 +184,7 @@ theorem PeriodTorusHigherHomology.crossProductEdge_path_boundary {X Y : Type} [T
   simp only [SingularChains.pointChain, crossProductZeroLeft_simplex_left]
   rfl
 
+/-- Pairing the constant map at `x` with the identity is the slice inclusion `y ↦ (x, y)`. -/
 theorem PeriodTorusHigherHomology.const_prodMk_id_eq_crossInsertLeft
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (x : X) :
     (ContinuousMap.const Y x).prodMk (ContinuousMap.id Y) = crossInsertLeft x := by
@@ -170,13 +192,17 @@ theorem PeriodTorusHigherHomology.const_prodMk_id_eq_crossInsertLeft
   intro y
   rfl
 
+/-- The element of the degree-`n` part of a biproduct `K ⊞ L` of chain complexes with
+components `a` and `b`. -/
 def PeriodTorusHigherHomology.biprodElement
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ) (a : K.X n) (b : L.X n) : (K ⊞ L).X n :=
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (n : ℕ) (a : K.X n) (b : L.X n) : (K ⊞ L).X n :=
   ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).f n).hom a +
     ((CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L).f n).hom b
 
+/-- The lift `⟨f, g⟩ : J ⟶ K ⊞ L` sends an element to the sum of the images of its two
+components under the biproduct inclusions. -/
 theorem PeriodTorusHigherHomology.biprod_lift_f_apply
-    {J K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (n : ℕ) (z : J.X n) :
+    {J K L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (n : ℕ) (z : J.X n) :
     ((CategoryTheory.Limits.biprod.lift f g).f n).hom z =
       ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).f n).hom ((f.f n).hom z) +
         ((CategoryTheory.Limits.biprod.inr : L ⟶ K ⊞ L).f n).hom ((g.f n).hom z) := by
@@ -204,8 +230,9 @@ theorem PeriodTorusHigherHomology.biprod_lift_f_apply
   rw [hfst, hsnd] at htotal
   exact htotal.symm
 
+/-- The map `desc f g : K ⊞ L ⟶ T` sends `biprodElement K L n a b` to `f a + g b`. -/
 theorem PeriodTorusHigherHomology.biprodElement_desc
-    {K L T : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : K ⟶ T) (g : L ⟶ T) (n : ℕ) (a : K.X n)
+    {K L T : ChainComplex (ModuleCat.{u} ℤ) ℕ} (f : K ⟶ T) (g : L ⟶ T) (n : ℕ) (a : K.X n)
     (b : L.X n) :
     ((CategoryTheory.Limits.biprod.desc f g).f n).hom (biprodElement K L n a b) =
       (f.f n).hom a + (g.f n).hom b := by
@@ -219,8 +246,9 @@ theorem PeriodTorusHigherHomology.biprodElement_desc
   · exact congrArg (fun h => h.hom a) (HomologicalComplex.biprod_inl_desc_f f g n)
   · exact congrArg (fun h => h.hom b) (HomologicalComplex.biprod_inr_desc_f f g n)
 
+/-- The differential of a biproduct acts componentwise on `biprodElement`. -/
 theorem PeriodTorusHigherHomology.biprodElement_boundary
-    (K L : ChainComplex (ModuleCat.{0} ℤ) ℕ) (i j : ℕ) (a : K.X i) (b : L.X i) :
+    (K L : ChainComplex (ModuleCat.{u} ℤ) ℕ) (i j : ℕ) (a : K.X i) (b : L.X i) :
     ((K ⊞ L).d i j).hom (biprodElement K L i a b) =
       biprodElement K L j ((K.d i j).hom a) ((L.d i j).hom b) := by
   have hK := congrArg (fun f => f.hom a) ((CategoryTheory.Limits.biprod.inl : K ⟶ K ⊞ L).comm i j)
@@ -239,8 +267,10 @@ theorem PeriodTorusHigherHomology.biprodElement_boundary
   rw [map_add, hK, hL]
   rfl
 
+/-- If the components `a` and `b` have boundaries `f z` and `g z`, then `⟨f, g⟩ z` is the
+boundary of the biproduct element with components `a` and `b`. -/
 theorem PeriodTorusHigherHomology.biprod_lift_eq_boundary
-    {J K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (i j : ℕ) (a : K.X i)
+    {J K L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (f : J ⟶ K) (g : J ⟶ L) (i j : ℕ) (a : K.X i)
     (b : L.X i) (z : J.X j) (ha : (K.d i j).hom a = (f.f j).hom z)
     (hb : (L.d i j).hom b = (g.f j).hom z) :
     ((CategoryTheory.Limits.biprod.lift f g).f j).hom z =
@@ -250,12 +280,16 @@ theorem PeriodTorusHigherHomology.biprod_lift_eq_boundary
   have hab := congrArg₂ (biprodElement K L j) ha hb
   exact hlift.trans (hab.symm.trans hboundary.symm)
 
+/-- A pair of `(n+1)`-chains, one on `U` and one on `V`, as an element of the middle term
+`C(U) ⊞ C(V)` of the Mayer–Vietoris short exact sequence. -/
 def PeriodTorusHigherHomology.twoChainMiddle {X : Type} [TopologicalSpace X] (U V : Set X) (n : ℕ)
     (a : SingularChains.Chains U (n + 1)) (b : SingularChains.Chains V (n + 1)) :
     (SingularMayerVietoris.middleComplex U V).X (n + 1) :=
   biprodElement (SingularChains.singularComplex U) (SingularChains.singularComplex V)
     (n + 1) a b
 
+/-- The Mayer–Vietoris surjection sends such a pair to the sum of the two chains in the
+small-chain complex. -/
 theorem PeriodTorusHigherHomology.twoChainMiddle_rightMap {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularChains.Chains U (n + 1))
     (b : SingularChains.Chains V (n + 1)) :
@@ -265,6 +299,8 @@ theorem PeriodTorusHigherHomology.twoChainMiddle_rightMap {X : Type} [Topologica
   biprodElement_desc (SingularMayerVietoris.toSmallLeft U V)
     (SingularMayerVietoris.toSmallRight U V) (n + 1) a b
 
+/-- If the boundaries of `a` and `b` are the two images of a cycle `z` on `U ∩ V`, with opposite
+signs, then `z` maps to the boundary of the pair `(a, b)` in the middle complex. -/
 theorem PeriodTorusHigherHomology.twoChainMiddle_boundary {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularChains.Chains U (n + 1))
     (b : SingularChains.Chains V (n + 1))
@@ -284,6 +320,8 @@ theorem PeriodTorusHigherHomology.twoChainMiddle_boundary {X : Type} [Topologica
   biprod_lift_eq_boundary (SingularMayerVietoris.intersectionToLeft U V)
     (-(SingularMayerVietoris.intersectionToRight U V)) (n + 1) n a b z.1 ha hb
 
+/-- Under the same boundary hypotheses, the image of the pair `(a, b)` in the small-chain
+complex is a cycle. -/
 theorem PeriodTorusHigherHomology.twoChainSmallCycle_condition {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularChains.Chains U (n + 1))
     (b : SingularChains.Chains V (n + 1))
@@ -318,6 +356,8 @@ theorem PeriodTorusHigherHomology.twoChainSmallCycle_condition {X : Type} [Topol
         (twoChainMiddle_boundary U V n a b z ha hb).symm)
     _ = 0 := hzero
 
+/-- The cycle of the small-chain complex determined by a pair of `(n+1)`-chains on `U` and `V`
+whose boundaries are the two images of a cycle on `U ∩ V`. -/
 def PeriodTorusHigherHomology.twoChainSmallCycle {X : Type} [TopologicalSpace X] (U V : Set X)
     (n : ℕ) (a : SingularChains.Chains U (n + 1)) (b : SingularChains.Chains V (n + 1))
     (z :
@@ -338,6 +378,7 @@ def PeriodTorusHigherHomology.twoChainSmallCycle {X : Type} [TopologicalSpace X]
       rw [Nat.add_sub_cancel]
       exact twoChainSmallCycle_condition U V n a b z ha hb)
 
+/-- The underlying chain of `twoChainSmallCycle` is the image of the pair `(a, b)`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.twoChainSmallCycle_val {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularChains.Chains U (n + 1))
@@ -357,6 +398,8 @@ theorem PeriodTorusHigherHomology.twoChainSmallCycle_val {X : Type} [Topological
       ((SingularMayerVietoris.rightMap U V).f (n + 1)).hom (twoChainMiddle U V n a b) :=
   rfl
 
+/-- Pushed into the ambient singular chain complex, `twoChainSmallCycle` is the sum of the two
+chains `a` and `b`. -/
 theorem PeriodTorusHigherHomology.twoChainSmallCycle_ambient_val {X : Type} [TopologicalSpace X]
     (U V : Set X) (n : ℕ) (a : SingularChains.Chains U (n + 1))
     (b : SingularChains.Chains V (n + 1))
@@ -383,6 +426,9 @@ theorem PeriodTorusHigherHomology.twoChainSmallCycle_ambient_val {X : Type} [Top
     congrArg (fun f => (f.f (n + 1)).hom b) (SingularMayerVietoris.toSmallRight_inclusion U V)
   exact congrArg₂ (· + ·) hU hV
 
+/-- The Mayer–Vietoris connecting homomorphism sends the class of `a + b` to the class of the
+cycle `z` on `U ∩ V` whose images are the boundaries of `a` and `-b`.  This is the chain-level
+description of `δ` (Hatcher, §2.2). -/
 theorem PeriodTorusHigherHomology.connectingHomomorphism_twoChain {X : Type} [TopologicalSpace X]
     (U V : Set X) (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) (n : ℕ)
     (a : SingularChains.Chains U (n + 1)) (b : SingularChains.Chains V (n + 1))
@@ -407,65 +453,81 @@ theorem PeriodTorusHigherHomology.connectingHomomorphism_twoChain {X : Type} [To
   connectingHomomorphism_cycleClass U V hU hV hcover n (twoChainSmallCycle U V n a b z ha hb)
     (twoChainMiddle U V n a b) rfl z (twoChainMiddle_boundary U V n a b z ha hb)
 
+/-- The projection `H_{n+1}(S¹ × X) → H_{n+1}(X)` annihilates the positive circle cross. -/
 @[simp]
 theorem PeriodTorusHigherHomology.circleProjection_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
     circleProjectionHomology X (n + 1) (positiveCircleCross X n b) = 0 :=
   crossProductHomology_snd n (SingularChains.loopHomologyClass CirclePaths.positiveLoop) b
 
+/-- The point `1/4` of the circle, as a point of the overlap `arcU ∩ arcV` lying in its first
+component. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterIntersection :
     ↥(CircleTopology.arcU ∩
         CircleTopology.arcV) :=
   CircleTopology.intersectionHomeomorph.symm
     (Sum.inl ⟨(1 / 4 : ℝ), by norm_num⟩)
 
+/-- The point `3/4` of the circle, as a point of the overlap `arcU ∩ arcV` lying in its second
+component. -/
 def PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection :
     ↥(CircleTopology.arcU ∩
         CircleTopology.arcV) :=
   CircleTopology.intersectionHomeomorph.symm
     (Sum.inr ⟨(3 / 4 : ℝ), by norm_num⟩)
 
+/-- The point `1/4` of the circle `ℝ / ℤ`. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterPoint :
     (CircleTopology.Circle) :=
   quarterIntersection.val
 
+/-- The point `3/4` of the circle `ℝ / ℤ`. -/
 def PeriodTorusHigherHomology.CirclePaths.threeQuarterPoint :
     (CircleTopology.Circle) :=
   threeQuarterIntersection.val
 
+/-- The quarter point is the class of `1/4`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterPoint_coe :
     quarterPoint = ((1 / 4 : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
+/-- The quarter point lies in the first component of the two-component overlap `arcU ∩ arcV`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component :
     CircleTopology.intersectionHomeomorph quarterIntersection =
       Sum.inl ⟨(1 / 4 : ℝ), by norm_num⟩ :=
   CircleTopology.intersectionHomeomorph.apply_symm_apply _
 
+/-- The three-quarter point lies in the second component of the overlap `arcU ∩ arcV`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component :
     CircleTopology.intersectionHomeomorph threeQuarterIntersection =
       Sum.inr ⟨(3 / 4 : ℝ), by norm_num⟩ :=
   CircleTopology.intersectionHomeomorph.apply_symm_apply _
 
+/-- The quarter point, viewed in the arc `arcU`. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterU :
     CircleTopology.arcU :=
   ⟨quarterPoint, quarterIntersection.property.1⟩
 
+/-- The quarter point, viewed in the arc `arcV`. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterV :
     CircleTopology.arcV :=
   ⟨quarterPoint, quarterIntersection.property.2⟩
 
+/-- The three-quarter point, viewed in the arc `arcU`. -/
 def PeriodTorusHigherHomology.CirclePaths.threeQuarterU :
     CircleTopology.arcU :=
   ⟨threeQuarterPoint, threeQuarterIntersection.property.1⟩
 
+/-- The three-quarter point, viewed in the arc `arcV`. -/
 def PeriodTorusHigherHomology.CirclePaths.threeQuarterV :
     CircleTopology.arcV :=
   ⟨threeQuarterPoint, threeQuarterIntersection.property.2⟩
 
+/-- The path inside the arc `arcU` from the quarter point to the three-quarter point, at
+constant speed `1/2`. -/
 def PeriodTorusHigherHomology.CirclePaths.uPath : Path quarterU threeQuarterU
     where
   toFun
@@ -495,6 +557,8 @@ def PeriodTorusHigherHomology.CirclePaths.uPath : Path quarterU threeQuarterU
         ((3 / 4 : ℝ) : (CircleTopology.Circle))
     norm_num
 
+/-- The path inside the arc `arcV` from the three-quarter point back to the quarter point, at
+constant speed `1/2`. -/
 def PeriodTorusHigherHomology.CirclePaths.vPath : Path threeQuarterV quarterV
     where
   toFun
@@ -525,24 +589,29 @@ def PeriodTorusHigherHomology.CirclePaths.vPath : Path threeQuarterV quarterV
     convert AddCircle.coe_add_period (1 : ℝ) (1 / 4 : ℝ) using 1
     norm_num
 
+/-- The first arc path, viewed as a path in the circle. -/
 def PeriodTorusHigherHomology.CirclePaths.uCirclePath : Path quarterPoint threeQuarterPoint :=
   uPath.map continuous_subtype_val
 
+/-- The second arc path, viewed as a path in the circle. -/
 def PeriodTorusHigherHomology.CirclePaths.vCirclePath : Path threeQuarterPoint quarterPoint :=
   vPath.map continuous_subtype_val
 
+/-- The first arc path sends `t` to the class of `1/4 + t/2`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.uCirclePath_apply (t : unitInterval) :
     uCirclePath t =
       (((1 / 4 : ℝ) + (t : ℝ) / 2 : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
+/-- The second arc path sends `t` to the class of `3/4 + t/2`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.vCirclePath_apply (t : unitInterval) :
     vCirclePath t =
       (((3 / 4 : ℝ) + (t : ℝ) / 2 : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
+/-- The positively oriented loop of the circle based at the quarter point. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterLoop : Path quarterPoint quarterPoint
     where
   toFun t := (((1 / 4 : ℝ) + (t : ℝ) : ℝ) : (CircleTopology.Circle))
@@ -556,12 +625,15 @@ def PeriodTorusHigherHomology.CirclePaths.quarterLoop : Path quarterPoint quarte
     simp
   target' := AddCircle.coe_add_period (1 : ℝ) (1 / 4 : ℝ)
 
+/-- The quarter loop sends `t` to the class of `1/4 + t`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterLoop_apply (t : unitInterval) :
     quarterLoop t =
       (((1 / 4 : ℝ) + (t : ℝ) : ℝ) : (CircleTopology.Circle)) :=
   rfl
 
+/-- Concatenating the two arc paths gives the loop at the quarter point: the circle is the union
+of the two arcs, split at the quarter and three-quarter points. -/
 theorem PeriodTorusHigherHomology.CirclePaths.uCirclePath_trans_vCirclePath :
     uCirclePath.trans vCirclePath = quarterLoop := by
   apply Path.ext
@@ -573,11 +645,13 @@ theorem PeriodTorusHigherHomology.CirclePaths.uCirclePath_trans_vCirclePath :
   · congr 1
     ring
 
+/-- Translation by `1/4` sends the base point `0` to the quarter point. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterTranslation_zero :
     circleTranslation (1 / 4) (0 : (CircleTopology.Circle)) =
       quarterPoint := by simp only [circleTranslation_apply, add_zero, quarterPoint_coe]
 
+/-- The quarter loop is the translate by `1/4` of the positive loop. -/
 theorem PeriodTorusHigherHomology.CirclePaths.quarterLoop_eq_translation :
     quarterLoop =
       (positiveLoop.map (circleTranslation (1 / 4)).continuous).cast quarterTranslation_zero.symm
@@ -590,6 +664,8 @@ theorem PeriodTorusHigherHomology.CirclePaths.quarterLoop_eq_translation :
         ((t : ℝ) : (CircleTopology.Circle))
   exact AddCircle.coe_add (1 : ℝ) (1 / 4 : ℝ) (t : ℝ)
 
+/-- The quarter loop and the positive loop have the same first homology class, the base point
+being irrelevant in homology. -/
 theorem PeriodTorusHigherHomology.CirclePaths.quarterLoop_homologyClass :
     SingularChains.loopHomologyClass quarterLoop = SingularChains.loopHomologyClass positiveLoop := by
   have hc :
@@ -604,6 +680,7 @@ theorem PeriodTorusHigherHomology.CirclePaths.quarterLoop_homologyClass :
       SingularChains.pathClass_cast]
   exact hc.trans (loopHomologyClass_map_circleTranslation (1 / 4) positiveLoop)
 
+/-- The sum of the two arc paths, as a one-chain, has zero boundary. -/
 theorem PeriodTorusHigherHomology.CirclePaths.boundaryOne_arcSum :
     SingularChains.boundaryOne (CircleTopology.Circle)
         (SingularChains.pathChain uCirclePath + SingularChains.pathChain vCirclePath) =
@@ -611,11 +688,14 @@ theorem PeriodTorusHigherHomology.CirclePaths.boundaryOne_arcSum :
   rw [map_add, SingularChains.boundaryOne_pathChain, SingularChains.boundaryOne_pathChain]
   abel
 
+/-- The one-cycle of the circle obtained by splitting the positive loop at the quarter and
+three-quarter points into the two arc paths. -/
 def PeriodTorusHigherHomology.CirclePaths.arcSumCycle :
     SingularChains.Cycles1 (CircleTopology.Circle) :=
   SingularChains.mkCycle1 (CircleTopology.Circle)
     (SingularChains.pathChain uCirclePath + SingularChains.pathChain vCirclePath) boundaryOne_arcSum
 
+/-- The arc-sum cycle represents the homology class of the quarter loop. -/
 theorem PeriodTorusHigherHomology.CirclePaths.arcSumCycle_class :
     SingularChains.cycleClass (CircleTopology.Circle) arcSumCycle =
       SingularChains.loopHomologyClass quarterLoop := by
@@ -630,11 +710,15 @@ theorem PeriodTorusHigherHomology.CirclePaths.arcSumCycle_class :
   rw [map_add, ← uCirclePath_trans_vCirclePath, SingularChains.pathClass_trans]
   rfl
 
+/-- The arc-sum cycle represents the homology class of the positive loop; it is a cycle-level
+representative of the generator of `H₁(S¹)`. -/
 theorem PeriodTorusHigherHomology.CirclePaths.arcSumCycle_positiveLoop_class :
     SingularChains.cycleClass (CircleTopology.Circle) arcSumCycle =
       SingularChains.loopHomologyClass positiveLoop :=
   arcSumCycle_class.trans quarterLoop_homologyClass
 
+/-- The section `x ↦ (1/4, x)` of the overlap `(arcU × X) ∩ (arcV × X)` of the product cover, at
+the quarter point. -/
 def PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection (X : Type*)
     [TopologicalSpace X] :
     C(X,
@@ -643,6 +727,7 @@ def PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection (X : Type*)
   ⟨fun x => ⟨(quarterPoint, x), quarterIntersection.property⟩,
     (continuous_const.prodMk continuous_id).subtype_mk _⟩
 
+/-- The section `x ↦ (3/4, x)` of the overlap of the product cover, at the three-quarter point. -/
 def PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection (X : Type*)
     [TopologicalSpace X] :
     C(X,
@@ -651,6 +736,7 @@ def PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection (X : T
   ⟨fun x => ⟨(threeQuarterPoint, x), threeQuarterIntersection.property⟩,
     (continuous_const.prodMk continuous_id).subtype_mk _⟩
 
+/-- The quarter section lands in the first of the two copies of `X` making up the overlap. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_component (X : Type*)
     [TopologicalSpace X] (x : X) :
@@ -667,6 +753,8 @@ theorem PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_compone
   rw [quarterIntersection_component]
   rfl
 
+/-- Composed with the identification of the overlap with `X ⊕ X`, the quarter section is the
+first inclusion. -/
 theorem PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_comp (X : Type*)
     [TopologicalSpace X] :
     (CircleTopology.productIntersectionHomotopyEquiv X).toFun.comp
@@ -676,6 +764,7 @@ theorem PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_comp (X
   intro x
   exact quarterIntersectionSection_component X x
 
+/-- The three-quarter section lands in the second of the two copies of `X`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_component
     (X : Type*) [TopologicalSpace X] (x : X) :
@@ -693,6 +782,8 @@ theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_co
   rw [threeQuarterIntersection_component]
   rfl
 
+/-- Composed with the identification of the overlap with `X ⊕ X`, the three-quarter section is
+the second inclusion. -/
 theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_comp (X : Type*)
     [TopologicalSpace X] :
     (CircleTopology.productIntersectionHomotopyEquiv X).toFun.comp
@@ -702,6 +793,8 @@ theorem PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_co
   intro x
   exact threeQuarterIntersectionSection_component X x
 
+/-- On the class of a cycle `b`, the positive circle cross is realised at cycle level by the
+cross product of the arc-sum cycle with `b`. -/
 theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -728,6 +821,8 @@ theorem PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass (X : Typ
     crossProductHomology_cycleClass (CircleTopology.Circle) X n
       CirclePaths.arcSumCycle b
 
+/-- In the coordinates `H_n(X) × H_n(X)` of the overlap, the quarter section induces
+`a ↦ (a, 0)`. -/
 theorem PeriodTorusHigherHomology.quarterIntersectionHomology_coordinates (X : Type)
     [TopologicalSpace X] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     productIntersectionHomologyEquiv X n
@@ -738,6 +833,8 @@ theorem PeriodTorusHigherHomology.quarterIntersectionHomology_coordinates (X : T
     CirclePaths.quarterIntersectionSection_comp]
   exact sumHomologyEquiv_inl X X n a
 
+/-- In the coordinates `H_n(X) × H_n(X)` of the overlap, the three-quarter section induces
+`a ↦ (0, a)`. -/
 theorem PeriodTorusHigherHomology.threeQuarterIntersectionHomology_coordinates (X : Type)
     [TopologicalSpace X] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X n) :
     productIntersectionHomologyEquiv X n
@@ -748,6 +845,8 @@ theorem PeriodTorusHigherHomology.threeQuarterIntersectionHomology_coordinates (
     CirclePaths.threeQuarterIntersectionSection_comp]
   exact sumHomologyEquiv_inr X X n a
 
+/-- The difference of the two constant sections of the overlap applied to a cycle `b`: a cycle on
+`(arcU × X) ∩ (arcV × X)` whose class is `(-[b], [b])`. -/
 def PeriodTorusHigherHomology.intersectionDifferenceCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularMayerVietoris.ModuleHomology.Cycle
@@ -760,6 +859,8 @@ def PeriodTorusHigherHomology.intersectionDifferenceCycle (X : Type) [Topologica
     SingularMayerVietoris.ModuleHomology.mapCycles
       (SingularChains.singularChainMap (CirclePaths.quarterIntersectionSection X)) n b
 
+/-- The underlying chain of the intersection difference cycle is the difference of the two
+pushforwards of `b`. -/
 @[simp]
 theorem PeriodTorusHigherHomology.intersectionDifferenceCycle_val (X : Type) [TopologicalSpace X]
     (n : ℕ) (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -776,6 +877,7 @@ theorem PeriodTorusHigherHomology.intersectionDifferenceCycle_val (X : Type) [To
   rw [SingularMayerVietoris.ModuleHomology.mapCycles_val,
     SingularMayerVietoris.ModuleHomology.mapCycles_val]
 
+/-- In the coordinates of the overlap, the intersection difference cycle has class `(-[b], [b])`. -/
 theorem PeriodTorusHigherHomology.intersectionDifferenceCycle_class_coordinates (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -804,6 +906,8 @@ theorem PeriodTorusHigherHomology.intersectionDifferenceCycle_class_coordinates 
   rw [threeQuarterIntersectionHomology_coordinates, quarterIntersectionHomology_coordinates]
   simp only [Prod.mk_sub_mk, zero_sub, sub_zero]
 
+/-- The quarter section, followed by the inclusion of the overlap into `arcU × X`, is the slice
+of `X` at the quarter point of `arcU`. -/
 theorem PeriodTorusHigherHomology.quarterIntersectionSection_toU (X : Type) [TopologicalSpace X] :
     (CircleTopology.productIntersectionToU X).comp (CirclePaths.quarterIntersectionSection X) =
       ((CircleTopology.productUHomeomorph X).symm :
@@ -811,6 +915,8 @@ theorem PeriodTorusHigherHomology.quarterIntersectionSection_toU (X : Type) [Top
         ((ContinuousMap.const X CirclePaths.quarterU).prodMk (ContinuousMap.id X)) :=
   rfl
 
+/-- The quarter section, followed by the inclusion of the overlap into `arcV × X`, is the slice
+of `X` at the quarter point of `arcV`. -/
 theorem PeriodTorusHigherHomology.quarterIntersectionSection_toV (X : Type) [TopologicalSpace X] :
     (CircleTopology.productIntersectionToV X).comp (CirclePaths.quarterIntersectionSection X) =
       ((CircleTopology.productVHomeomorph X).symm :
@@ -818,6 +924,8 @@ theorem PeriodTorusHigherHomology.quarterIntersectionSection_toV (X : Type) [Top
         ((ContinuousMap.const X CirclePaths.quarterV).prodMk (ContinuousMap.id X)) :=
   rfl
 
+/-- The three-quarter section, followed by the inclusion of the overlap into `arcU × X`, is the
+slice of `X` at the three-quarter point of `arcU`. -/
 theorem PeriodTorusHigherHomology.threeQuarterIntersectionSection_toU (X : Type)
     [TopologicalSpace X] :
     (CircleTopology.productIntersectionToU X).comp
@@ -827,6 +935,8 @@ theorem PeriodTorusHigherHomology.threeQuarterIntersectionSection_toU (X : Type)
         ((ContinuousMap.const X CirclePaths.threeQuarterU).prodMk (ContinuousMap.id X)) :=
   rfl
 
+/-- The three-quarter section, followed by the inclusion of the overlap into `arcV × X`, is the
+slice of `X` at the three-quarter point of `arcV`. -/
 theorem PeriodTorusHigherHomology.threeQuarterIntersectionSection_toV (X : Type)
     [TopologicalSpace X] :
     (CircleTopology.productIntersectionToV X).comp
@@ -836,6 +946,8 @@ theorem PeriodTorusHigherHomology.threeQuarterIntersectionSection_toV (X : Type)
         ((ContinuousMap.const X CirclePaths.threeQuarterV).prodMk (ContinuousMap.id X)) :=
   rfl
 
+/-- The cross product of the first arc path with a cycle `b`, as an `(n+1)`-chain on
+`arcU × X`. -/
 def PeriodTorusHigherHomology.uCrossChain (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.Chains (CircleTopology.productU X) (n + 1) :=
@@ -845,6 +957,8 @@ def PeriodTorusHigherHomology.uCrossChain (X : Type) [TopologicalSpace X] (n : �
     (n + 1)
     (crossProductEdge CircleTopology.arcU X n (SingularChains.pathChain CirclePaths.uPath) b.1)
 
+/-- The cross product of the second arc path with a cycle `b`, as an `(n+1)`-chain on
+`arcV × X`. -/
 def PeriodTorusHigherHomology.vCrossChain (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.Chains (CircleTopology.productV X) (n + 1) :=
@@ -854,6 +968,8 @@ def PeriodTorusHigherHomology.vCrossChain (X : Type) [TopologicalSpace X] (n : �
     (n + 1)
     (crossProductEdge CircleTopology.arcV X n (SingularChains.pathChain CirclePaths.vPath) b.1)
 
+/-- The boundary of the first arc chain is the intersection difference cycle, pushed into
+`arcU × X`. -/
 theorem PeriodTorusHigherHomology.uCrossChain_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     ((SingularChains.singularComplex (CircleTopology.productU X)).d (n + 1) n).hom
@@ -874,6 +990,8 @@ theorem PeriodTorusHigherHomology.uCrossChain_boundary (X : Type) [TopologicalSp
     simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
 
+/-- The boundary of the second arc chain is minus the intersection difference cycle, pushed into
+`arcV × X`. -/
 theorem PeriodTorusHigherHomology.vCrossChain_boundary (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     ((SingularChains.singularComplex (CircleTopology.productV X)).d (n + 1) n).hom
@@ -894,6 +1012,8 @@ theorem PeriodTorusHigherHomology.vCrossChain_boundary (X : Type) [TopologicalSp
     simpa only [const_prodMk_id_eq_crossInsertLeft, SingularChains.inducedChain_comp,
       LinearMap.comp_apply] using h.symm
 
+/-- Pushed into `S¹ × X`, the first arc chain is the cross product of the first arc path with
+`b`. -/
 theorem PeriodTorusHigherHomology.uCrossChain_inclusion (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.inducedChain (CircleTopology.productUInclusion X) (n + 1) (uCrossChain X n b) =
@@ -912,6 +1032,8 @@ theorem PeriodTorusHigherHomology.uCrossChain_inclusion (X : Type) [TopologicalS
     SingularChains.inducedChain_pathChain]
   rfl
 
+/-- Pushed into `S¹ × X`, the second arc chain is the cross product of the second arc path with
+`b`. -/
 theorem PeriodTorusHigherHomology.vCrossChain_inclusion (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.inducedChain (CircleTopology.productVInclusion X) (n + 1) (vCrossChain X n b) =
@@ -930,6 +1052,8 @@ theorem PeriodTorusHigherHomology.vCrossChain_inclusion (X : Type) [TopologicalS
     SingularChains.inducedChain_pathChain]
   rfl
 
+/-- The two arc chains add up, in `S¹ × X`, to the cross product of the arc-sum one-chain with
+`b`. -/
 theorem PeriodTorusHigherHomology.arcCrossChains_inclusion_sum (X : Type) [TopologicalSpace X]
     (n : ℕ) (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularChains.inducedChain (CircleTopology.productUInclusion X) (n + 1) (uCrossChain X n b) +
@@ -940,6 +1064,9 @@ theorem PeriodTorusHigherHomology.arcCrossChains_inclusion_sum (X : Type) [Topol
           SingularChains.pathChain CirclePaths.vCirclePath)
         b.1 := by rw [uCrossChain_inclusion, vCrossChain_inclusion, map_add, LinearMap.add_apply]
 
+/-- The small-chain cycle assembled from the two arc chains: it represents the positive circle
+cross of the class of `b`, and its Mayer–Vietoris boundary is the intersection difference
+cycle. -/
 def PeriodTorusHigherHomology.positiveCircleSmallCycle (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
     SingularMayerVietoris.ModuleHomology.Cycle
@@ -949,6 +1076,8 @@ def PeriodTorusHigherHomology.positiveCircleSmallCycle (X : Type) [TopologicalSp
     (vCrossChain X n b) (intersectionDifferenceCycle X n b) (uCrossChain_boundary X n b)
     (vCrossChain_boundary X n b)
 
+/-- In the ambient chain complex of `S¹ × X`, the small cycle is the cross product of the
+arc-sum one-chain with `b`. -/
 theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_val (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -965,6 +1094,8 @@ theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_val (X : Type
         (uCrossChain_boundary X n b) (vCrossChain_boundary X n b)).trans
     (arcCrossChains_inclusion_sum X n b)
 
+/-- In the ambient chain complex of `S¹ × X`, the small cycle is the cross product of the
+arc-sum cycle with `b`. -/
 theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_eq (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -977,6 +1108,7 @@ theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_eq (X : Type)
   apply Subtype.ext
   exact positiveCircleSmallCycle_ambient_val X n b
 
+/-- The ambient class of the small cycle is the positive circle cross of the class of `b`. -/
 theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_class (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -993,6 +1125,8 @@ theorem PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_class (X : Ty
   rw [positiveCircleSmallCycle_ambient_eq]
   exact (positiveCircleCross_arcSum_cycleClass X n b).symm
 
+/-- The Mayer–Vietoris connecting map of the product cover sends the positive circle cross of the
+class of `b` to the class of the intersection difference cycle. -/
 theorem PeriodTorusHigherHomology.circleConnecting_positiveCircleCross_cycleClass (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -1013,6 +1147,8 @@ theorem PeriodTorusHigherHomology.circleConnecting_positiveCircleCross_cycleClas
       (intersectionDifferenceCycle X n b) (uCrossChain_boundary X n b)
       (vCrossChain_boundary X n b)
 
+/-- In the coordinates of the overlap, the connecting map sends the positive circle cross of the
+class of `b` to `(-[b], [b])`. -/
 theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross_cycleClass
     (X : Type) [TopologicalSpace X] (n : ℕ)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) n) :
@@ -1032,6 +1168,8 @@ theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross_
   rw [circleConnecting_positiveCircleCross_cycleClass]
   exact intersectionDifferenceCycle_class_coordinates X n b
 
+/-- In the coordinates of the overlap, the connecting map sends the positive circle cross of `b`
+to `(-b, b)`. -/
 theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
     circleBoundaryCoordinates X n (positiveCircleCross X n b) = (-b, b) := by
@@ -1040,6 +1178,8 @@ theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross 
       b
   exact circleBoundaryCoordinates_positiveCircleCross_cycleClass X n c
 
+/-- The boundary map of the circle-product splitting is a left inverse of the positive circle
+cross. -/
 @[simp]
 theorem PeriodTorusHigherHomology.circleBoundary_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
@@ -1047,6 +1187,8 @@ theorem PeriodTorusHigherHomology.circleBoundary_positiveCircleCross (X : Type)
   rw [circleBoundary_apply, circleBoundaryCoordinates_positiveCircleCross]
   exact neg_neg b
 
+/-- Under the splitting `H_{n+1}(S¹ × X) ≅ H_{n+1}(X) ⊕ H_n(X)`, the positive circle cross of `b`
+has coordinates `(0, b)`: it is the section of the `H_n(X)` summand. -/
 @[simp]
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_positiveCircleCross (X : Type)
     [TopologicalSpace X] (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
@@ -1055,12 +1197,15 @@ theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_positiveCircleCross
   · exact circleProjection_positiveCircleCross X n b
   · exact circleBoundary_positiveCircleCross X n b
 
+/-- The positive circle cross is the inverse of the splitting applied to `(0, b)`. -/
 theorem PeriodTorusHigherHomology.positiveCircleCross_eq_symm (X : Type) [TopologicalSpace X]
     (n : ℕ) (b : SingularMayerVietoris.SingularHomology X n) :
     positiveCircleCross X n b = (circleProductHomologyEquiv X n).symm (0, b) := by
   apply (circleProductHomologyEquiv X n).injective
   rw [circleProductHomologyEquiv_positiveCircleCross, LinearEquiv.apply_symm_apply]
 
+/-- The inverse of the circle-product splitting is the sum of the circle section on the first
+coordinate and the positive circle cross on the second. -/
 theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_eq_section_add_cross (X : Type)
     [TopologicalSpace X] (n : ℕ)
     (a :
@@ -1073,6 +1218,8 @@ theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_eq_section_add
     circleProductHomologyEquiv_positiveCircleCross]
   exact Prod.ext (add_zero _).symm (zero_add _).symm
 
+/-- The positive circle cross is natural in `X`: it commutes with the maps induced by
+`id × f`. -/
 theorem PeriodTorusHigherHomology.positiveCircleCross_naturality {X : Type} [TopologicalSpace X]
     {Y : Type} [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
     (b : SingularMayerVietoris.SingularHomology X n) :
