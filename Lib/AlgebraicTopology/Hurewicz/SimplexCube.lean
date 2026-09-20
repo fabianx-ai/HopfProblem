@@ -45,8 +45,6 @@ simplex, cube, homeomorphism, boundary
 -/
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

@@ -53,8 +53,6 @@ basepoint and face compatibilities), since the extension step consumes those pro
 Hurewicz theorem, straightening, normalization tower, simplex
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

@@ -39,8 +39,6 @@ import Lib.AlgebraicTopology.SingularHomology.CirclePaths
   homeomorphisms (Hatcher, Algebraic Topology, Example 2.48).
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

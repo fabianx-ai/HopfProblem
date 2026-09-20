@@ -50,8 +50,6 @@ asserted for degree-zero homology.
 singular-homology, spheres, degree, determinant, reflection
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

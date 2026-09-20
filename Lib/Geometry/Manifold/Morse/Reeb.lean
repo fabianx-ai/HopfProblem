@@ -40,8 +40,6 @@ critical set is exactly `{p, q}`, with `f p < f q`.
 morse-theory, reeb-theorem, sublevel-sets, spheres
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

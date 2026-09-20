@@ -49,8 +49,6 @@ two maps that agree through a given homotopy on the boundary sphere, assuming
 homotopy extension, sphere, cylinder, filling
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

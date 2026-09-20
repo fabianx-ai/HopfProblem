@@ -40,8 +40,6 @@ cell-attachment Mayer–Vietoris cover (Hatcher, Prop 0.16's consequence and §2
 cell attachment, handle, deformation retract
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

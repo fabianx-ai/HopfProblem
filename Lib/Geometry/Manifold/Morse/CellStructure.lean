@@ -45,8 +45,6 @@ of a finite cell complex with one cell per critical point (Milnor, Morse Theory,
 finite cell complex, Morse cells, homotopy type
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

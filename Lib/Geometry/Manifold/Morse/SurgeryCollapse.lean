@@ -78,8 +78,6 @@ Moved verbatim from `Hopf/SphereTopology.lean` (base `b78cfee8`, second pass); s
 `Lib/reports/integration-4/spheretop-moves.md` for the per-declaration receipt.
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

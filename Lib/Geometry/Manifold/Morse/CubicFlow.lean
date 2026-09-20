@@ -33,8 +33,6 @@ later cancellation subjects that the rearrangement modules need before
 morse-theory, cancellation, gradient-like-flow, suspension
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

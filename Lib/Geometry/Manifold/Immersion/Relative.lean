@@ -49,8 +49,6 @@ Topology*, Ch. 8; the weak Whitney immersion theorem).
 immersion, whitney, tubular-neighborhood, relative-form
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

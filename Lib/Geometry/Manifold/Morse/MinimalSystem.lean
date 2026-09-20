@@ -47,8 +47,6 @@ Mathlib file to converge to.
 six-sphere, homotopy equivalence, simple connectivity, singular homology
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 open scoped ContinuousMap
 

@@ -67,8 +67,6 @@ This is the biproduct half of [hatcher02], proof of Theorem 2.20, in four steps.
 chain complexes, short exact sequence, biproducts, Mayer–Vietoris
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

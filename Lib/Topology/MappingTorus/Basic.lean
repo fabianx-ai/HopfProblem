@@ -30,8 +30,6 @@ public import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 
 @[expose] public section
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

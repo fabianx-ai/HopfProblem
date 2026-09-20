@@ -44,8 +44,6 @@ subdivision, cube, Duffy map, chamber, native class
 -/
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 noncomputable section

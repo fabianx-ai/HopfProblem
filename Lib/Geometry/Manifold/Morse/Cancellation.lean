@@ -39,8 +39,6 @@ count after pair removal. The connection machinery is imported from
 morse-theory, cancellation, gradient-like-flow, h-cobordism
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap

@@ -50,8 +50,6 @@ No Mathlib counterpart exists.
 Whitney trick, bigon, strip coordinates, model
 -/
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 open scoped ContDiff
 

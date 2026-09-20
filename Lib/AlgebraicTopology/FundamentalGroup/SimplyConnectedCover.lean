@@ -18,8 +18,6 @@ Topology*, Theorem 1.20), not a construction of a universal covering space.
 
 
 
-set_option maxSynthPendingDepth 3
-
 open Set Function Filter Manifold Topology
 
 open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap
